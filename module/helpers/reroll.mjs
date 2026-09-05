@@ -147,14 +147,18 @@ export function getRerollConfigs(actor) {
     }
 
     if (config) {
-      configs.push({ ...config, source: item.uuid ?? item.name ?? item.type, sourceType: "item" });
+      // `name` is the human-readable label (the Perk's own name) - kept separate from `source`
+      // (an id/uuid used only as the per-grant usage-tracking key, see canUseReroll's sourceKey)
+      // so callers showing the grant to a player, like chat.mjs#addRerollButtons, don't have to
+      // resolve a uuid back to a name themselves.
+      configs.push({ ...config, source: item.uuid ?? item.name ?? item.type, sourceType: "item", name: item.name });
     }
   }
 
   for (const effect of actor.effects) {
     const config = normalizeRerollConfig(effect.system?.reroll);
     if (config) {
-      configs.push({ ...config, source: effect.id ?? effect.name ?? "effect", sourceType: "effect" });
+      configs.push({ ...config, source: effect.id ?? effect.name ?? "effect", sourceType: "effect", name: effect.name });
     }
   }
 

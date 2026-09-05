@@ -152,8 +152,17 @@ export const addRerollButtons = function (message, html) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "e20-reroll-button";
-    button.textContent = `${game.i18n.localize("E20.RerollDice")} (${game.i18n.localize(rerollModeLabel(config.mode))})`;
-    button.title = game.i18n.localize("E20.RerollDiceTitle");
+    const rerollLabel = `${game.i18n.localize("E20.RerollDice")} (${game.i18n.localize(rerollModeLabel(config.mode))})`;
+    // Shows which Perk/effect is actually offering the reroll - "Reroll Dice (Ones)" alone gave
+    // no way to tell one grant from another when an actor has more than one (or to recognize an
+    // unfamiliar one at all), and this is the one place a player sees the grant before deciding
+    // whether to use it.
+    button.textContent = config.name
+      ? game.i18n.format("E20.RerollDiceFrom", { source: config.name, reroll: rerollLabel })
+      : rerollLabel;
+    button.title = config.name
+      ? game.i18n.format("E20.RerollDiceTitleFrom", { source: config.name })
+      : game.i18n.localize("E20.RerollDiceTitle");
     button.addEventListener("click", () => rerollMessage(message, config));
     container.appendChild(button);
   }

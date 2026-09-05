@@ -1,65 +1,449 @@
 @use "../variables" as v;
 
-// Border color comes from --e20-system-color (the speaking Actor's own system.color, set
-// per-message by applyChatMessageSystemColor in chat.mjs on the renderChatMessageHTML hook),
-// falling back to --theme-accent when the actor has no color chosen. --theme-accent has a
-// :root-level default (_theme_wrapper.scss) so this resolves even here, outside any
-// .essence20/.theme-wrapper element - the chat log isn't wrapped in either.
-.chat-message {
-  background: v.$background-image-1;
-  opacity: 80;
-  color: v.$textcolor1;
-  border: 4px solid var(--e20-system-color, var(--theme-accent));
-  box-shadow: v.$boxshadow;
-}
-
-.chat-message .flavor-text {
-  color: v.$textcolor1;
-}
-
-.chat-message .message-sender {
-  color: v.$textcolor1;
-}
-
-.chat-message .message-metadata {
-  color: v.$textcolor1;
-}
-
-.chat-message.whisper {
-  background: v.$background-image-1;
-  opacity: 80;
-  color: v.$textcolor1;
-  border: 4px dashed var(--e20-system-color, var(--theme-accent));
-  box-shadow: v.$boxshadow;
-}
-
-.chat-message.emote {
-  background: v.$background-image-1;
-  border: 4px solid var(--e20-system-color, var(--theme-accent));
-}
-
-// Light-mode override. applyThemeClass() (settings.js) toggles theme-light/theme-dark on each
-// chat message via the renderChatMessageHTML hook (essence20.mjs), mirroring the same toggle
-// already used for sheets/apps - but scoped locally here rather than reusing .theme-wrapper's
-// own rules, since those target ApplicationV2 window chrome (.window-content/.window-header)
-// that a chat message doesn't have. No .theme-dark rule is needed since the bare .chat-message
-// rules above already are the dark look.
+/* Chat messages are never .theme-wrapper elements (that class is for ApplicationV2 windows -
+   sheets/apps), but applyThemeClass() (settings.js) still tags each one with theme-light/
+   theme-dark directly, via the renderChatMessageHTML hook (essence20.mjs). The --theme-* custom
+   property system itself is scoped under .theme-wrapper.theme-light/dark (_theme_wrapper.scss)
+   and never reaches a bare chat message, so a check-card can't just read var(--theme-card-bg)
+   the way a sheet does without it being redefined somewhere reachable here too - done below,
+   copying the exact same values (not inventing a second palette that could quietly drift out of
+   sync with the sheet's own). --theme-success/--theme-failure/--theme-critical are new - the
+   sheet side has never needed a pass/fail/crit color before now. */
 .chat-message.theme-light {
-  background: linear-gradient(180deg, rgba(223,223,223,0.98), rgba(214,214,214,0.98));
-  color: v.$text-color-dark;
+  --theme-border-color: #{v.$border-color-dark};
+  --theme-text-color: #{v.$text-color-dark};
+  --theme-input-color: #{v.$input-color-light};
+  --theme-panel-bg: #{v.$bg-color-light};
+  --theme-card-bg: rgba(255, 255, 255, 0.7);
+  --theme-accent: #{v.$text-color-orange};
+  --theme-accent-contrast: #{v.$input-color-light};
+  --theme-muted-text: #{v.$text-color-dark};
+  --theme-success: #2e7d4f;
+  --theme-failure: #b83a30;
+  --theme-critical: #a6710a;
 }
 
-.chat-message.theme-light .flavor-text,
-.chat-message.theme-light .message-sender,
-.chat-message.theme-light .message-metadata {
-  color: v.$text-color-dark;
+.chat-message.theme-dark {
+  --theme-border-color: #{v.$border-color-light};
+  --theme-text-color: #{v.$text-color-light};
+  --theme-input-color: #{v.$input-color-dark};
+  --theme-panel-bg: #1f2328;
+  --theme-card-bg: rgba(255, 255, 255, 0.04);
+  --theme-accent: #{v.$text-color-cyan};
+  --theme-accent-contrast: #{v.$bg-color-dark};
+  --theme-muted-text: #{v.$textcolor1};
+  --theme-success: #5ec98a;
+  --theme-failure: #e0645a;
+  --theme-critical: #f0b429;
 }
 
-.chat-message.theme-light.whisper {
-  background: linear-gradient(180deg, rgba(223,223,223,0.98), rgba(214,214,214,0.98));
-  color: v.$text-color-dark;
+/* ==========================================================================
+   Envelope - the whole chat-message bubble Foundry itself renders our
+   content into. Same panel-gradient .theme-wrapper .window-content already
+   uses for sheet/app windows, so a check-card reads as the same surface
+   continuing into the chat log rather than a visually separate feature.
+
+   The outer trim is the same chamfered "sliced border" art the actor sheets
+   use (.sliced-border, _sliced_border.scss; .e20-border-accent, _tabs.scss)
+   rather than a plain solid line, so a chat message reads as one more piece
+   of that same frame language instead of a different, plainer widget. Can't
+   reuse either of those classes directly - .sliced-border is fit-content/
+   flex-box shaped (wrong for a full-width message) and .e20-border-accent's
+   rules are scoped under a .essence20 ancestor a chat message never has - so
+   the same two-pseudo-element technique is rebuilt here instead:
+   ::after clips the panel-gradient fill to the chamfered outline (a flat
+   color has no shape of its own to chamfer); ::before paints the actual trim
+   by masking a solid fill (--e20-system-color when the speaking Actor has
+   one, else --theme-accent, matching the old border's own fallback) through
+   the sheets' own border art, the same recoloring trick .e20-border-accent
+   uses - a fixed-color border-image (what .sliced-border uses) can't be
+   tinted per speaker, and deliberately skips .e20-border-accent's own
+   --theme-border-filter: saturate(0) step too - that exists to neutralize
+   the SVG's own literal red stroke color for .sliced-border's un-masked
+   border-image use, and would just as happily strip the hue back out of
+   the accent color this mask is painting with. 16/16 slice-to-width keeps
+   the mask's diagonal
+   aligned with the 16px clip-path corner (matching .sliced-border's own
+   numbers; only .e20-border-accent's larger 22px trim needed the 15/22
+   correction noted there). Message padding is bumped from Foundry's default
+   8px to 16px so header/content text clears the chamfered corners instead of
+   getting cut into by them (16,16 lands exactly on the cut line's own edge).
+   ========================================================================== */
+
+.chat-message {
+  position: relative;
+  background: transparent;
+  color: var(--theme-text-color, #{v.$textcolor1});
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 16px;
+
+  &::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    background: v.$panel-gradient-dark;
+    clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+  }
+
+  /* The border art itself (default-border.svg) is a single 1-unit stroke in a
+     120-unit viewBox - a hairline, not a painted band - so masking it through
+     at any reasonable width still renders close to a 1px line regardless of
+     theme. That reads fine against dark mode's near-black envelope, but the
+     same physically-thin line is much easier to lose against light mode's
+     lighter, lower-contrast gray gradient. Rather than resize the mask
+     (border-image-width scales the whole tile, including the hairline
+     itself, proportionally - getting a meaningfully thicker line that way
+     would also balloon the trim's inset far past what the 16px clip-path
+     chamfer above still lines up with), a drop-shadow stack fattens just the
+     already-masked line by painting 1px-offset copies of it in each
+     direction - a standard trick for bulking up thin mask/alpha art without
+     touching the source image or the chamfer geometry. */
+  &::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background-color: var(--e20-system-color, var(--theme-accent));
+    -webkit-mask-box-image-source: var(--theme-border-image);
+    -webkit-mask-box-image-slice: 16;
+    -webkit-mask-box-image-width: 16px;
+    -webkit-mask-box-image-repeat: stretch;
+    mask-border-source: var(--theme-border-image);
+    mask-border-slice: 16;
+    mask-border-width: 16px;
+    mask-border-repeat: stretch;
+    filter:
+      drop-shadow(1px 0 0 var(--e20-system-color, var(--theme-accent)))
+      drop-shadow(-1px 0 0 var(--e20-system-color, var(--theme-accent)))
+      drop-shadow(0 1px 0 var(--e20-system-color, var(--theme-accent)))
+      drop-shadow(0 -1px 0 var(--e20-system-color, var(--theme-accent)));
+  }
 }
 
-.chat-message.theme-light.emote {
-  background: linear-gradient(180deg, rgba(223,223,223,0.98), rgba(214,214,214,0.98));
+.chat-message.theme-light::after {
+  background: v.$panel-gradient-light;
+}
+
+/* Extra pass on top of the shared reinforcement above - light mode's lower
+   background contrast needs the line bulked up further than dark mode does. */
+.chat-message.theme-light::before {
+  filter:
+    drop-shadow(1px 0 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(-1px 0 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(0 1px 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(0 -1px 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(1px 1px 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(-1px -1px 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(1px -1px 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(-1px 1px 0 var(--e20-system-color, var(--theme-accent)));
+}
+
+.chat-message .flavor-text,
+.chat-message .message-sender,
+.chat-message .message-metadata {
+  color: var(--theme-text-color);
+}
+
+/* Dims (rather than removes) the sliced trim and adds an inset dashed line as
+   the "private" cue - a plain border-style: dashed no longer applies now that
+   the trim is a masked image rather than a real CSS border. */
+.chat-message.whisper {
+  outline: 1px dashed var(--theme-border-color);
+  outline-offset: -6px;
+
+  &::before {
+    opacity: 0.55;
+  }
+}
+
+/* ==========================================================================
+   Card - templates/chat/check-card.hbs. A subtle card-bg fill over the
+   envelope's own panel gradient - the same "card sitting on top of a panel"
+   layering .skill-picker-specializations (_skill-picker.scss) uses on the
+   actor sheet side.
+   ========================================================================== */
+
+.e20-check-card {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.e20-check-flavor {
+  font-weight: 700;
+  font-size: 1.05em;
+  padding-bottom: 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--theme-border-color);
+}
+
+/* ==========================================================================
+   Foundry core's own dice-roll breakdown (Roll#render, inserted verbatim as
+   {{{rollHTML}}}) - restyled to sit inside the card instead of Foundry's
+   default light-chrome look, which read as a visually separate widget glued
+   onto the card rather than part of it.
+   ========================================================================== */
+
+.e20-check-card .dice-roll {
+  margin: 0 0 6px;
+}
+
+.e20-check-card .dice-formula {
+  background: var(--theme-input-color);
+  color: var(--theme-muted-text);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 4px;
+}
+
+.e20-check-card .dice-tooltip {
+  background: var(--theme-input-color);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 4px;
+}
+
+.e20-check-card .dice-tooltip .dice-total {
+  color: var(--theme-text-color);
+}
+
+.e20-check-card .dice-total {
+  background: var(--theme-input-color);
+  color: var(--theme-text-color);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+// Set by highlightCriticalSuccessFailure (chat.mjs) reading the actual rolled dice - a
+// genuinely different result from a plain success/failure, so it gets its own accent rather
+// than reusing --theme-success/--theme-failure.
+.dice-total.critical {
+  color: var(--theme-success, green);
+  border-color: var(--theme-success, green);
+  font-weight: 700;
+}
+
+.dice-total.fumble {
+  color: var(--theme-failure, red);
+  border-color: var(--theme-failure, red);
+  font-weight: 700;
+}
+
+.dice-total.crumble {
+  color: var(--theme-critical, goldenrod);
+  border-color: var(--theme-critical, goldenrod);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   Results - one row per target (or one row for a plain vs-Difficulty test
+   with no target). A left accent bar carries the pass/fail read at a glance,
+   matching the severity-stripe pattern used for status/semantic state
+   elsewhere rather than only coloring the outcome word itself.
+   ========================================================================== */
+
+.e20-check-results {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.e20-check-result {
+  border-left: 3px solid var(--theme-border-color);
+  border-radius: 4px;
+  background: var(--theme-panel-bg);
+  padding: 4px 8px;
+}
+
+.e20-check-result.e20-check-success {
+  border-left-color: var(--theme-success);
+}
+
+.e20-check-result.e20-check-failure {
+  border-left-color: var(--theme-failure);
+}
+
+.e20-check-result-header {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.e20-check-name {
+  font-weight: 700;
+  flex: 1 1 auto;
+}
+
+.e20-check-difficulty {
+  font-size: 0.85em;
+  color: var(--theme-muted-text);
+}
+
+.e20-check-outcome {
+  font-weight: 700;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.e20-check-success .e20-check-outcome {
+  color: var(--theme-success);
+}
+
+.e20-check-failure .e20-check-outcome {
+  color: var(--theme-failure);
+}
+
+/* ==========================================================================
+   Buttons - Apply Damage (base + per-critical-option) and Reroll. Stretched
+   to the full width of whatever row they're in (each stacks on its own line
+   rather than wrapping as an inline pill) so a one-word and a long "label -
+   N Type" button read as the same kind of control instead of two visibly
+   different sizes, and carry the same chamfered trim as the envelope above
+   at a smaller scale (8px vs. the envelope's 16px) - the same
+   background-color-through-a-mask technique, see the envelope comment above
+   for why a plain border-image can't be tinted per speaker.
+
+   Base fill is --theme-input-color/--theme-text-color (the same pairing the
+   dice-formula/dice-total boxes already use) rather than a solid
+   --theme-accent fill at rest - a full-strength accent fill on every action
+   button in a card made the card feel like it was shouting, and buried the
+   one thing --theme-accent actually needs to highlight (the speaking actor's
+   own color on the envelope trim) under a dozen identically-colored copies
+   of it. The accent fill now only appears on hover/focus, so it reads as
+   "this one lights up when you're about to click it" instead of a baseline
+   color every button always wears.
+
+   Selector also matches any bare <button> inside .e20-check-card, not just
+   .e20-check-damage-button - ChatMessage.create() bakes the rendered HTML in
+   at creation time (Foundry never re-renders old messages against a new
+   template), so every Apply Damage button created before this class existed
+   is still sitting in the log unclassed. Matching the wrapper instead of the
+   class means those old messages pick up the same fix live rather than
+   staying stuck looking like a different, older feature. */
+
+.e20-check-card button,
+.e20-reroll-button {
+  position: relative;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  /* Foundry core sets `.chat-message button { height: var(--input-height); }`
+     (foundry2.css) - a fixed single-line height meant for its own short
+     button labels. Never overridden before now because these buttons used
+     to shrink-wrap to their text instead of stretching full-width; a long
+     label (an Effect name plus its damage, or two Effects on one button)
+     can wrap to a second line once it's forced to the row's width, and
+     that fixed height then clips the wrapped line instead of the button
+     growing to fit it. */
+  height: auto;
+  min-height: var(--input-height, 32px);
+  background: var(--theme-input-color);
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  color: var(--theme-text-color);
+  border: none;
+  border-radius: 0;
+  padding: 6px 12px;
+  margin: 6px 0 0;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  /* Only the trim is a pseudo-element - the fill is the button's own real
+     background (clipped by the chamfer above), not a second ::before/::after
+     layer. A <button>'s real background always paints under its own text by
+     definition, where a positioned pseudo-element doesn't: absolutely
+     positioned descendants paint after normal in-flow content regardless of
+     z-index (auto or 0 both land in that same later bucket, ordered only
+     against each other, not against the text) - so a pseudo-element fill
+     would sit ON TOP of the label, hiding it, no matter which pseudo or
+     what z-index. (A negative z-index does move a pseudo-element behind
+     in-flow content on most elements, which is what the envelope's own
+     ::before/::after above rely on - but on this native <button> a negative
+     z-index here silently never painted at all, confirmed by forcing solid
+     debug colors, though it resolved fine in getComputedStyle. Sidestepping
+     z-index entirely avoids both problems at once.) The trim pseudo is safe
+     directly on top of the text because mask-border reduces it to a thin
+     ring with a transparent middle, and the button's own clip-path above
+     (which also clips this pseudo, since clip-path cuts an element's whole
+     box tree, generated content included) keeps its corners aligned with
+     the fill's. */
+  &::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background-color: var(--e20-system-color, var(--theme-accent));
+    -webkit-mask-box-image-source: var(--theme-border-image);
+    -webkit-mask-box-image-slice: 16;
+    -webkit-mask-box-image-width: 8px;
+    -webkit-mask-box-image-repeat: stretch;
+    mask-border-source: var(--theme-border-image);
+    mask-border-slice: 16;
+    mask-border-width: 8px;
+    mask-border-repeat: stretch;
+  }
+
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    background: var(--e20-system-color, var(--theme-accent));
+    color: var(--theme-accent-contrast, #111);
+  }
+
+  &:disabled {
+    background: var(--theme-card-bg);
+    color: var(--theme-muted-text);
+    cursor: default;
+    opacity: 0.7;
+  }
+}
+
+.e20-check-critical-options {
+  display: block;
+  margin-top: 4px;
+}
+
+.e20-check-critical-label {
+  color: var(--theme-critical);
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.e20-reroll-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+/* ==========================================================================
+   Inline @Check[...] enricher links (helpers/enrichers.mjs) - these render
+   inside item/Perk description text on a sheet, not in the chat log itself,
+   but share this file since they're the other half of "roll something,
+   see a card" and carry the same rollable affordance.
+   ========================================================================== */
+
+.e20-check-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.e20-check-send-to-chat {
+  cursor: pointer;
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
 }
