@@ -70,9 +70,12 @@ export async function onSystemActorsDelete(event, actorSheet) {
     return;
   }
 
-  const updateString = `system.actors.-=${keyId}`;
+  // A plain key (no "-=" prefix - that's the old, now-deprecated deletion syntax, which Foundry
+  // v14 logs a compatibility warning for and won't actually apply) paired with ForcedDeletion as
+  // the value is what actually deletes it - see item-sheet.mjs's own _onObjectDelete.
+  const updateString = `system.actors.${keyId}`;
 
-  await actor.update({[updateString]: null});
+  await actor.update({[updateString]: new foundry.data.operators.ForcedDeletion()});
   li.slideUp(200, () => actorSheet.render(false));
 }
 

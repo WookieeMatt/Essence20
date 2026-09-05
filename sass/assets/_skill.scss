@@ -23,6 +23,12 @@
   font-size: 1em;
   margin-left: 5px;
   flex: 1 1 auto;
+
+  // Same rollable hover affordance .specialization-name below already has, so a skill's own name
+  // reads as just as clickable as the Specializations nested under it.
+  &:hover {
+    color: var(--theme-accent);
+  }
 }
 
 .essence20 .skill-header .skill-shift-select {
@@ -66,12 +72,6 @@
   justify-content: center;
   color: var(--theme-text-color);
   opacity: 0.85;
-}
-
-.essence20 .skill-header .add-specialization {
-  flex-grow: 0;
-  margin-right: 8px;
-  font-size: 0.75em;
 }
 
 .essence20 .skill-header .spellcasting-downshift-chip {
@@ -124,15 +124,44 @@
   margin-bottom: 5px;
 }
 
+/* Overrides items/_item-styling.scss's generic ".items-list .item:nth-child(odd)" zebra-stripe
+   (var(--theme-card-bg)) - a Specialization being the sole/first item in its own <ol> means it's
+   always "odd" and always struck, giving it a visibly different background than the plain skill
+   rows around it. This list isn't a generic item collection being zebra-striped for scannability
+   (there's rarely more than one row in it), so flatten it back out to match. */
+.essence20 .skill-body .specializations-list.item:nth-child(odd) {
+  background: transparent;
+}
+
+/* A Specialization reads as its own tab nested under the parent skill - indented past the
+   skill-name link above it. */
 .essence20 .skill-body .specializations-list .specializations-item {
   align-items: center;
   gap: 5px;
   margin-left: 5px;
   margin-right: 5px;
+  padding-left: 8px;
 }
 
-.essence20 .skill-body .specializations-list .specializations-item .item-button-container {
-  padding-top: 3px;
+/* Same rollable affordance as .skill-header .skill-name, just a size down (this is a child of
+   that skill, not a peer of it) and muted until hovered/focused, so the parent skill still reads
+   as the more prominent of the two. */
+.essence20 .skill-body .specializations-list .specialization-name {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--theme-text-color);
+  text-decoration: none;
+  font-size: 0.8em;
+  opacity: 0.85;
+  flex: 1 1 auto;
+
+  &:hover {
+    opacity: 1;
+    color: var(--theme-accent);
+  }
 }
 
 .essence20 .skill-body .specializations-header {

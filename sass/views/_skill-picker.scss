@@ -44,6 +44,27 @@
     font-size: 1.1em;
     margin-bottom: 2px;
   }
+
+  // Shown when the Skill Picker (module/apps/skill-picker.mjs) passes a PC's own Essence max
+  // alongside its spend (skill-rank-allocation.hbs) - same treatment as the unrelated
+  // .skill-picker-attribution-status.unbalanced flag below, kept as its own rule since the two
+  // are shown in different places for different reasons, not shared markup. In practice this
+  // should never actually render checked - the Skill Picker itself refuses to save a change that
+  // would cause it (see getEssenceOverspend) - but is still worth flagging rather than silently
+  // trusting that guard is the only path to this number ever being wrong (e.g. essences.max
+  // itself lowered after points were already spent).
+  .skill-rank-over-budget {
+    color: red;
+    font-weight: 700;
+  }
+
+  // "Spent all your points for this Essence" - a lighter-weight positive counterpart to
+  // .skill-rank-over-budget above (same idea, opposite direction), so hitting the cap exactly
+  // reads as a deliberate milestone rather than looking identical to still having room left.
+  .skill-rank-fully-spent {
+    color: green;
+    font-weight: 700;
+  }
 }
 
 /* Strength/Speed on top, Social/Smarts below (see ESSENCE_GRID_ORDER,
@@ -73,6 +94,18 @@
    the grid's own gap - restore its top margin directly. */
 .skill-picker-any-group {
   margin-top: v.$gap-md;
+}
+
+/* Spellcasting/Weird side by side (see skill-picker.hbs) rather than one stacked under the other -
+   same 2-column shape .skill-picker-essence-grid already uses above, just scoped to this one
+   fieldset's own two rows instead of the whole grid of essence groups. Each column stays its own
+   flex column internally (.skill-picker-row's own flex-wrap already stacks a skill's select,
+   attribution, and Specializations sub-rows within it) - this only changes how the two columns
+   relate to each other, not their own internal layout. */
+.skill-picker-any-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$gap-md;
 }
 
 .skill-picker-row {
@@ -147,4 +180,115 @@
     color: red;
     font-weight: 700;
   }
+}
+
+/* Existing Specializations (as chip pills) plus the add-one control, under each skill row - see
+   templates/actor/parts/misc/skill-picker-specializations.hbs. No fill/border of its own (an
+   earlier pass gave it a card-bg background, but that read as a second nested box sitting inside
+   the already-bordered .skill-picker-essence-group, one frame too many) - just indented to read
+   as a sub-section of the skill row above it. */
+.skill-picker-specializations {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: v.$gap-sm;
+  width: calc(100% - 22px);
+  margin: 2px 0 4px 22px;
+  padding: v.$gap-sm;
+  box-sizing: border-box;
+}
+
+.skill-picker-specialization-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8em;
+  color: var(--theme-text-color);
+  white-space: nowrap;
+
+  .fa-lock {
+    font-size: 0.85em;
+    opacity: 0.6;
+  }
+
+  a {
+    display: inline-flex;
+    color: var(--theme-text-color);
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+      color: var(--theme-accent);
+    }
+  }
+}
+
+.skill-picker-add-specialization {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 140px;
+
+  select,
+  input[type="text"] {
+    flex: 1 1 0;
+    min-width: 0;
+    font-size: 0.8em;
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+
+  input[type="text"][hidden] {
+    display: none;
+  }
+
+  /* Same "read as a hint, not a real value" treatment items/_item-styling.scss already gives
+     every item sheet's own placeholder text (e.g. the Perk sheet's Reroll Cost fields) - this
+     app isn't an item sheet, so that rule's .item-field scoping never reached it, but the two
+     placeholders here (the "Choose a specialization" leading option and the custom-name input)
+     are exactly the same kind of hint text and read as a visibly different, plainer style
+     without it. The leading <option> needs its own rule since ::placeholder only ever applies to
+     input/textarea, never a <select>'s own displayed option. */
+  select option:disabled,
+  input[type="text"]::placeholder {
+    color: color-mix(in srgb, var(--theme-text-color) 65%, black 35%);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  input[type="text"]::placeholder {
+    opacity: 1;
+  }
+
+  /* A round icon-button to match the "+" affordance used elsewhere on this sheet
+     (.npc-skill-list-header a, item-control links), rather than a bare unstyled anchor. */
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    color: var(--theme-text-color);
+    background: var(--theme-panel-bg);
+    border: 1px solid var(--theme-border-color);
+
+    &:hover {
+      color: var(--theme-accent);
+      border-color: var(--theme-accent);
+    }
+  }
+}
+
+// Spellcasting/Weird's still-untrained placeholder (skill-picker-specializations.hbs's alwaysShow
+// case) - the exact same markup as a real add-Specialization row, just invisible. visibility:
+// hidden (not display: none/opacity) is what keeps the two Any-Essence columns lined up: the
+// element still occupies its normal layout space (so the row's height matches its trained
+// neighbor's) but paints nothing and can't be focused, tabbed to, or clicked - unlike opacity, it
+// doesn't need a disabled attribute or its own explanatory tooltip to back that up, since there's
+// nothing left to explain about a control the player can't perceive or reach at all.
+.skill-picker-specializations-placeholder {
+  visibility: hidden;
 }

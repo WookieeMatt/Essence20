@@ -5,6 +5,7 @@
         essenceLabel=group.label
         skillRankAllocation=(lookup (lookup @root.essenceSpend group.essence) 'value')
         skillRankString=(lookup (lookup @root.essenceSpend group.essence) 'string')
+        skillRankMax=(lookup (lookup @root.essenceMax group.essence) 'max')
       }}
     {{/each}}
   </div>
@@ -31,6 +32,10 @@
           {{selectOptions @root.config.skillChoicesShifts selected=entry.fields.shift}}
         </select>
       </div>
+      {{#if entry.isMultiEssence}}
+      {{> "systems/essence20/templates/actor/parts/misc/skill-picker-attribution.hbs" key=entry.key fields=entry.fields attribution=entry.attribution}}
+      {{/if}}
+      {{> "systems/essence20/templates/actor/parts/misc/skill-picker-specializations.hbs" key=entry.key fields=entry.fields}}
       {{/each}}
 
       {{!-- Conditioning (system.conditioning) isn't a system.skills entry and has no shift/die -
@@ -50,39 +55,29 @@
 
   <fieldset class="skill-picker-essence-group skill-picker-any-group">
     <legend>{{localize @root.config.essences.any}}</legend>
-    {{#each anySkills as |entry|}}
-    <div class="skill-picker-row skill-picker-any-row">
-      {{!-- PCs always show every skill already - no picking, just a label. --}}
-      {{#if @root.isPc}}
-      <label>{{localize entry.label}}</label>
-      {{else}}
-      <label class="checkbox">
-        <input type="checkbox" name="system.skills.{{entry.key}}.isChosen" {{checked entry.fields.isChosen}} data-dtype="Boolean" />
-        {{localize entry.label}}
-      </label>
-      {{/if}}
-      <select class="skill-shift-select" name="system.skills.{{entry.key}}.shift">
-        {{selectOptions @root.config.skillChoicesShifts selected=entry.fields.shift}}
-      </select>
-
-      {{!-- An "any"-Essence skill can spend from more than one real Essence at once (e.g. a
-           Weird check built from a Strength point and a Speed point) - these four inputs record
-           how this skill's spend is actually split, feeding each real Essence's own tally
-           above (see computeNpcEssenceSpend, module/helpers/skill-picker.mjs). --}}
-      <div class="skill-picker-attribution" data-tooltip="{{localize 'E20.SkillPickerAttributionTooltip'}}">
-        {{#each @root.config.originEssences as |essenceLabel essenceKey|}}
-        <label class="skill-picker-attribution-input">
-          <span>{{localize essenceLabel}}</span>
-          <input class="two-digit-input" type="number" min="0" step="1"
-            name="system.skills.{{entry.key}}.essenceAttribution.{{essenceKey}}"
-            value="{{lookup entry.fields.essenceAttribution essenceKey}}" />
+    {{!-- Spellcasting and Weird side by side rather than stacked - a plain wrapper div rather
+         than making the fieldset itself the grid, since a <fieldset> containing a <legend> can
+         behave inconsistently as a flex/grid container in some engines. --}}
+    <div class="skill-picker-any-grid">
+      {{#each anySkills as |entry|}}
+      <div class="skill-picker-row skill-picker-any-row">
+        {{!-- PCs always show every skill already - no picking, just a label. --}}
+        {{#if @root.isPc}}
+        <label>{{localize entry.label}}</label>
+        {{else}}
+        <label class="checkbox">
+          <input type="checkbox" name="system.skills.{{entry.key}}.isChosen" {{checked entry.fields.isChosen}} data-dtype="Boolean" />
+          {{localize entry.label}}
         </label>
-        {{/each}}
-        <span class="skill-picker-attribution-status {{#unless entry.attribution.isBalanced}}unbalanced{{/unless}}">
-          {{localize 'E20.SkillPickerAttributed'}}: {{entry.attribution.attributed}} / {{entry.attribution.upshifts}}
-        </span>
+        {{/if}}
+        <select class="skill-shift-select" name="system.skills.{{entry.key}}.shift">
+          {{selectOptions @root.config.skillChoicesShifts selected=entry.fields.shift}}
+        </select>
+
+        {{> "systems/essence20/templates/actor/parts/misc/skill-picker-attribution.hbs" key=entry.key fields=entry.fields attribution=entry.attribution}}
+        {{> "systems/essence20/templates/actor/parts/misc/skill-picker-specializations.hbs" key=entry.key fields=entry.fields alwaysShow=true}}
       </div>
+      {{/each}}
     </div>
-    {{/each}}
   </fieldset>
 </div>
