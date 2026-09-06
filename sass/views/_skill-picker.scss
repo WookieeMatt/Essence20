@@ -218,6 +218,7 @@
   // the wider Any-section columns (Spellcasting/Weird) while correctly wrapping in the narrower
   // per-skill rows elsewhere. Forcing it keeps the layout consistent in both places.
   flex-basis: 100%;
+  text-align: center;
   margin-top: 2px;
   font-size: 0.85em;
   color: var(--theme-text-color);
@@ -225,6 +226,22 @@
   &.unbalanced {
     color: red;
     font-weight: 700;
+  }
+}
+
+/* Spellcasting/Weird have no checkbox to their left the way a normal skill-picker-row's other
+   sub-sections (attribution, add-Specialization) are indented 22px to sit under - so that same
+   indent here just reads as an unexplained gap between the "Spellcasting"/"Weird" label above and
+   its own Strength/Speed/Smarts/Social boxes below. Flush left instead, matching the row's own
+   label. */
+.skill-picker-any-row {
+  .skill-picker-attribution {
+    padding-left: 0;
+  }
+
+  .skill-picker-specializations {
+    width: 100%;
+    margin-left: 0;
   }
 }
 
