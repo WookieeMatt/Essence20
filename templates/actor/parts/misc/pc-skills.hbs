@@ -20,10 +20,6 @@
              shifts below - a plain read-only display here avoids a second editable copy of
              the same field. --}}
         <span class="conditioning-input conditioning-display">{{system.conditioning}}</span>
-        {{!-- Invisible spacer matching add-specialization's exact footprint, so the display above lines up over the skill-shift-select dropdowns in the rows below rather than sitting further left. --}}
-        <a class="add-specialization" aria-hidden="true" tabindex="-1" style="visibility: hidden;">
-          <i class="fas fa-plus"></i>
-        </a>
       </div>
       {{#each @root.config.skillsByEssence.strength as |skill|}}
         {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='strength' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}

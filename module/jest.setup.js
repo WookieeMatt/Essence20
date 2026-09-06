@@ -121,6 +121,13 @@ global.foundry = {
     fields: new Proxy({}, {
       get: () => StubDataField,
     }),
+    // The value paired with a "-=<key>" deletion path (see e.g. specialization-handler.mjs's
+    // deleteSpecialization) - Foundry v14 deprecated plain `null` there in favor of this marker
+    // class. A bare stand-in is enough for unit tests, which only assert on the key/shape of an
+    // update payload, never on Foundry's own deletion behavior.
+    operators: {
+      ForcedDeletion: class ForcedDeletion {},
+    },
   },
   utils: {
     getProperty: (obj, path) => path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj),

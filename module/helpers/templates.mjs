@@ -75,6 +75,8 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/sidebar-defenses.hbs",
     "systems/essence20/templates/actor/parts/misc/sidebar-immunities-resistances.hbs",
     "systems/essence20/templates/actor/parts/misc/sidebar-speeds.hbs",
+    "systems/essence20/templates/actor/parts/misc/skill-picker-attribution.hbs",
+    "systems/essence20/templates/actor/parts/misc/skill-picker-specializations.hbs",
     "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs",
     "systems/essence20/templates/actor/parts/misc/spells.hbs",
     "systems/essence20/templates/actor/parts/misc/stun.hbs",

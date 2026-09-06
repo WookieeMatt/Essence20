@@ -41,6 +41,57 @@ export function createId(items) {
 }
 
 /**
+ * Turns a Specialization's display name into a stable, predictable key (e.g. "Specific Subject"
+ * -> "specificSubject") instead of an opaque random one, so a Perk's Active Effect can target it
+ * directly - e.g. system.skills.science.specializations.medicine.shiftUp (ADD 1) or
+ * system.skills.science.specializations.medicine.edge (OVERRIDE true). Safe now specifically
+ * because a Specialization can no longer be renamed after it's added (see
+ * sheet-handlers/specialization-handler.mjs) - the earlier design (essence20-specialization-
+ * redesign) used an opaque id instead precisely to survive a rename that's no longer possible.
+ * Collision-checked against `existing` (an id -> record map, the same shape as
+ * system.skills.<skill>.specializations) the same way createId() is, so two different names that
+ * happen to slugify the same (e.g. two custom entries differing only in punctuation) get distinct
+ * keys instead of one silently overwriting the other.
+ * @param {String} name The specialization's display name.
+ * @param {Object} existing The skill's existing specializations (id -> record), to check for
+ *   collisions.
+ * @returns {String} A key unique within `existing`.
+ */
+export function slugifySpecializationName(name, existing = {}) {
+  const words = name.trim().split(/[^a-zA-Z0-9]+/).filter(Boolean);
+  const base = words
+    .map((word, i) => i === 0 ? word.toLowerCase() : word[0].toUpperCase() + word.slice(1).toLowerCase())
+    .join('') || 'specialization';
+
+  let key = base;
+  let suffix = 2;
+  while (existing[key]) {
+    key = `${base}${suffix}`;
+    suffix++;
+  }
+
+  return key;
+}
+
+/**
+ * Title-cases a Specialization's display name (e.g. "sniper rifle" -> "Sniper Rifle") so a
+ * custom one a player free-types reads the same as the standard-catalog picks next to it in the
+ * Skill Picker's dropdown (see CONFIG.E20.standardSpecializations), which are already written in
+ * Title Case - rather than showing whatever raw casing the player happened to type. Splits only
+ * on whitespace (not slugifySpecializationName's own punctuation-splitting above) so a hyphenated
+ * or apostrophed word stays one word, just with its own leading letter capitalized.
+ * @param {String} name The specialization's raw display name.
+ * @returns {String} The same name, title-cased.
+ */
+export function titleCaseSpecializationName(name) {
+  return name
+    .trim()
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
+/**
 * Generate a random ID
 * Generate random number and convert it to base 36 and remove the '0.' at the beginning
 * As long as the string is not long enough, generate more random data into it

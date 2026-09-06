@@ -1,0 +1,25 @@
+{{!-- Shown for any multi-Essence skill (see module/helpers/skill-picker.mjs#getSkillEssences) -
+     either one of the two built-in "any"-Essence skills (Spellcasting, Weird - always shown,
+     both Essence flags always true) or a normal skill a Perk has extended to a second Essence at
+     runtime (e.g. GI Joe CRB's Terrifying Presence: system.skills.intimidation.essences.social).
+     Lets the player record how many of the skill's own upshift points came from which Essence,
+     since a single system.skills.<skill>.shift can't say that on its own -
+     module/helpers/skill-picker.mjs#computeEssenceSpend reads this split instead of crediting
+     the whole upshift to one Essence once a skill is multi-Essence. Only shows an input for an
+     Essence this skill is actually flagged for, not all four, so a two-Essence skill like
+     Intimidation reads as a compact pair rather than a mostly-irrelevant row of four. --}}
+<div class="skill-picker-attribution" data-tooltip="{{localize 'E20.SkillPickerAttributionTooltip'}}">
+  {{#each @root.config.originEssences as |essenceLabel essenceKey|}}
+  {{#if (lookup ../fields.essences essenceKey)}}
+  <label class="skill-picker-attribution-input">
+    <span>{{localize essenceLabel}}</span>
+    <input class="two-digit-input" type="number" min="0" step="1"
+      name="system.skills.{{../key}}.essenceAttribution.{{essenceKey}}"
+      value="{{lookup ../fields.essenceAttribution essenceKey}}" />
+  </label>
+  {{/if}}
+  {{/each}}
+  <span class="skill-picker-attribution-status {{#unless attribution.isBalanced}}unbalanced{{/unless}}">
+    {{localize 'E20.SkillPickerAttributed'}}: {{attribution.attributed}} / {{attribution.upshifts}}
+  </span>
+</div>

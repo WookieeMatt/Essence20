@@ -2,7 +2,20 @@
   {{#if essenceLabel}}
   <span class="skill-rank-essence-label">{{localize essenceLabel}}</span>
   {{/if}}
+  {{!-- skillRankMax is only ever passed by the Skill Picker (module/apps/skill-picker.mjs), and
+       only for PCs - every other caller of this partial (the actor sheet sidebar) omits it, so
+       this stays exactly as it was for them. --}}
+  {{#if skillRankMax}}
+  <span class="
+    {{~#if (gt skillRankAllocation skillRankMax)}}skill-rank-over-budget
+    {{~else if (eq skillRankAllocation skillRankMax)}}skill-rank-fully-spent{{/if~}}
+  ">
+    {{localize 'E20.SkillRanksAllocated'}}: {{skillRankAllocation}} / {{skillRankMax}}
+    {{~#if (eq skillRankAllocation skillRankMax)}} <i class="fas fa-check-circle" data-tooltip="{{localize 'E20.SkillRanksFullySpent'}}"></i>{{/if}}
+  </span>
+  {{else}}
   <span>{{localize 'E20.SkillRanksAllocated'}}: {{skillRankAllocation}}</span>
+  {{/if}}
   {{#if defenseLabel}}
   <span class="skill-rank-defense">{{defenseLabel}}: {{defenseValue}}</span>
   {{/if}}

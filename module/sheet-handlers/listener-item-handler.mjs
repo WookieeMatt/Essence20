@@ -154,9 +154,13 @@ export async function onItemDelete(event, actorSheet) {
   // Check if this item has a parent item, such as for deleting an upgrade from a weapon
   if (parentItem) {
     const id = li.data("itemKey");
-    const updateString = `system.items.-=${id}`;
+    // A plain key (no "-=" prefix - that's the old, now-deprecated deletion syntax, which
+    // Foundry v14 logs a compatibility warning for and won't actually apply) paired with
+    // ForcedDeletion as the value is what actually deletes it - see item-sheet.mjs's own
+    // _onObjectDelete.
+    const updateString = `system.items.${id}`;
 
-    await parentItem.update({[updateString]: null});
+    await parentItem.update({[updateString]: new foundry.data.operators.ForcedDeletion()});
 
     item.delete();
     li.slideUp(200, () => actorSheet.render(false));
@@ -220,7 +224,8 @@ export async function _getItemDeleteConfirmDialog(item) {
 }
 
 /**
- * Handle editing specialization names inline
+ * Handle inline-editing a field on an owned Item, or (for a Specialization row - see
+ * essence20-specialization-redesign) a field inside system.skills.<skill>.specializations.
  * @param {Actor} actor The Actor editing the Item
  * @param {Event} event The originating click event
  */
@@ -230,10 +235,20 @@ export async function onInlineEdit(event, actor) {
   let item;
   let element = event.target;
   const dataset = element.closest(".item").dataset;
+  const newValue = element.type == 'checkbox' ? element.checked : element.value;
+  const field = element.dataset.field;
+
+  // A Specialization is no longer its own Item - it's a plain object keyed under its skill (see
+  // sheet-handlers/specialization-handler.mjs), so it's identified by skill+key instead of the
+  // itemId/itemUuid pair below.
+  if (dataset.skill && dataset.specializationKey) {
+    const path = `system.skills.${dataset.skill}.specializations.${dataset.specializationKey}.${field}`;
+    return actor.update({ [path]: newValue });
+  }
+
   const itemId = dataset.itemId;
   const itemUuid = dataset.itemUuid;
   const parentId = dataset.parentId;
-  const newValue = element.type == 'checkbox' ? element.checked : element.value;
 
   // If a child item is being updated, update the parent's copy too
   if (!itemId && itemUuid && parentId) {
@@ -246,7 +261,6 @@ export async function onInlineEdit(event, actor) {
     item = actor.items.get(itemId);
   }
 
-  const field = element.dataset.field;
   return item.update({ [field]: newValue });
 }
 
