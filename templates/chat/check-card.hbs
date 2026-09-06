@@ -9,26 +9,35 @@
   <ul class="e20-check-results">
     {{#each results}}
     <li class="e20-check-result {{#if success}}e20-check-success{{else}}e20-check-failure{{/if}}">
-      <strong>{{name}}</strong>
-      {{#if showDifficulty}} <span class="e20-check-difficulty">({{localize 'E20.CheckDifficultyAbbr'}} {{difficulty}})</span>{{/if}}
-      &mdash;
-      {{#if success}}
-        {{localize 'E20.CheckSuccess'}}{{#if (gt multiplier 1)}} &times;{{multiplier}}{{/if}}
-      {{else}}
-        {{localize 'E20.CheckFailure'}}
-      {{/if}}
+      <div class="e20-check-result-header">
+        <span class="e20-check-name">{{name}}</span>
+        {{#if showDifficulty}}
+        <span class="e20-check-difficulty">{{localize 'E20.CheckDifficultyAbbr'}} {{difficulty}}</span>
+        {{/if}}
+        <span class="e20-check-outcome">
+          {{#if success}}
+            {{localize 'E20.CheckSuccess'}}{{#if (gt multiplier 1)}} &times;{{multiplier}}{{/if}}
+          {{else}}
+            {{localize 'E20.CheckFailure'}}
+          {{/if}}
+        </span>
+      </div>
+
       {{#if damageValue}}
-      <button type="button" data-action="apply-damage" data-key="{{targetUuid}}:base" data-target-uuid="{{targetUuid}}"
+      <button type="button" class="e20-check-damage-button" data-action="apply-damage" data-key="{{targetUuid}}:base" data-target-uuid="{{targetUuid}}"
         data-damage="{{damageValue}}" data-damage-type="{{damageType}}" data-is-might-melee="{{isMightMelee}}">
         {{localize 'E20.CheckApplyDamage'}} {{damageValue}} {{damageTypeLabel}}
       </button>
+      {{#if damageBonusLabel}}
+      <div class="e20-check-damage-bonus-note">{{damageBonusLabel}}</div>
+      {{/if}}
       {{/if}}
 
       {{#if criticalOptions.length}}
       <div class="e20-check-critical-options">
         <span class="e20-check-critical-label">{{localize 'E20.CheckCriticalHit'}}</span>
         {{#each criticalOptions}}
-        <button type="button" data-action="apply-damage" data-key="{{../targetUuid}}:crit:{{key}}"
+        <button type="button" class="e20-check-damage-button" data-action="apply-damage" data-key="{{../targetUuid}}:crit:{{key}}"
           data-target-uuid="{{../targetUuid}}" data-damage="{{damageValue}}" data-damage-type="{{damageType}}">
           {{label}} &mdash; {{damageValue}} {{damageTypeLabel}}
         </button>

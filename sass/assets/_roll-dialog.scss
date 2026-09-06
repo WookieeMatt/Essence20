@@ -120,6 +120,17 @@
   transform: translateX(12px);
 }
 
+// Group label for the dynamic "currently-disabled effects relevant to this roll" list
+// (helpers/skill-effects.mjs) - reads as a section heading over its own .roll-dialog-toggle rows,
+// the same "secondary text" treatment .roll-dialog-role-points-reason below already uses.
+.roll-dialog .roll-dialog-skill-effects > span {
+  display: block;
+  font-size: 0.85em;
+  font-style: italic;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
 /* The auto-detected eligibility explanation shown under a damageBonus Role Points checkbox
    (e.g. Sneak Attack Damage) - a plain sibling div of the checkbox's own .roll-dialog-toggle row,
    so it still gets that shared 10px margin-bottom from ".roll-dialog div" above; just needs to

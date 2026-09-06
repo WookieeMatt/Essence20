@@ -71,6 +71,7 @@ export class RollDialog {
       drivingStrikeAvailable: dataset.drivingStrikeAvailable,
       defenseType: dataset.defenseType || 'none',
       defenseTypes: { none: 'E20.None', ...E20.defenses },
+      availableSkillEffects: dataset.availableSkillEffects || [],
     };
     const title = this._localize('E20.RollDialogTitle', {
       actor: actor.name, skill: E20.originSkills[dataset.skill], shift: E20.skillShifts[skillDataset.shift],

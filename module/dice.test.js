@@ -381,6 +381,7 @@ describe("rollSkill", () => {
       shiftUp: 0,
       shiftDown: 0,
       drivingStrikeAvailable: false,
+      availableSkillEffects: [],
     };
     const expectedSkillDataset = {
       edge: false,
@@ -622,6 +623,7 @@ describe("rollSkill", () => {
       shiftUp: 0,
       shiftDown: 0, // would be 1 from Impaired alone - Expertise cancels it back to 0
       drivingStrikeAvailable: false,
+      availableSkillEffects: [],
     };
 
     await dice.rollSkill(dataset, expertiseActor, null);
@@ -788,6 +790,7 @@ describe("rollSkill", () => {
       shiftUp: 1,
       shiftDown: 2,
       drivingStrikeAvailable: false,
+      availableSkillEffects: [],
     };
     const expectedSkillDataset = {
       edge: true,

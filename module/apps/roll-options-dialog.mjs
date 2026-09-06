@@ -81,6 +81,12 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
 
   static myFormHandler(event, form) {
     this._resolved = true;
+    // Dynamic - one checkbox per currently-disabled effect relevant to this roll (see
+    // helpers/skill-effects.mjs), named by the effect's own id rather than a fixed field like
+    // every option above, so this can't be read by a fixed name the way isAiming/akimbo/etc. are.
+    const selectedSkillEffectIds = (this._context.availableSkillEffects ?? [])
+      .filter(skillEffect => form[`skillEffect-${skillEffect.id}`]?.checked)
+      .map(skillEffect => skillEffect.id);
     this._resolve({
       canCritD2: form.canCritD2.checked,
       edge: form.snagEdge.value == 'edge',
@@ -100,6 +106,7 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       spendEnergon: form?.spendEnergon?.checked,
       drivingStrike: form?.drivingStrike?.value,
       defenseType: form.defenseType.value,
+      selectedSkillEffectIds,
     });
   }
 }
