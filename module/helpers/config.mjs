@@ -344,6 +344,179 @@ E20.skillsByEssence = {
   social: ["animalHandling", "deception", "performance", "persuasion", "streetwise"],
 };
 
+/* Sample Specialization catalogs, one per E20.gameVersions line, keyed by skill - pulled from
+   each line's own "Essence Scores and Skills" chapter ("Sample/Suggested/Example Specializations"
+   per skill: GI Joe CRB p.116-122, MLP CRB p.99-107, Power Rangers CRB p.79-87, Transformers CRB
+   p.95-101, Welcome to Night Vale: Citizens' Guide p.11-14). These are names only, not the
+   books' own descriptive text (see feedback-essence20-no-book-text-descriptions) - every book is
+   explicit that this list is suggestions, not an exhaustive catalog ("Specializations are
+   available for most skills and are open ended... this chapter suggests a few for each skill"),
+   so the Skill Picker's add-specialization control always offers a free-text option alongside
+   this dropdown. Conditioning and Initiative are omitted entirely (every line states plainly
+   neither skill has Specializations) rather than listed with an empty array, so UI code can
+   treat "no entry here" and "skill can't be specialized" as the same check.
+
+   A handful of entries name a *category* rather than a pick - "Specific Subject" (Science),
+   "Specific Environment" (Survival), "Specific Technology" (Technology), "Specific Art"
+   (Performance, GI Joe only), and GI Joe/Transformers' "Weapon Type"/"Weapon Classification"/
+   "Weapon Trait" (Targeting/Might/Finesse). Wherever the book actually names examples for one of
+   these ("such as Biology, Chemistry, Zoology, etc.", "such as Deserts, Forests, or the Arctic"),
+   those are expanded into their own concrete entries below rather than left as one vague catalog
+   entry nobody could actually specialize with by picking it as-is - the free-text "Custom..."
+   option already covers anything not named. Where a book's own text gives no such examples for
+   that category (e.g. Power Rangers' own "Specific Environment", every line's "Specific Culture"
+   except MLP's), it's left as a bare category entry, since there's nothing in the source to
+   expand it into. */
+E20.standardSpecializations = {
+  giJoe: {
+    athletics: ["Climbing", "Running", "Sports Activity", "Swimming", "Throwing"],
+    brawn: ["Force", "Endurance"],
+    intimidation: ["Distract", "Frighten", "Taunt"],
+    might: ["Blunt Weaponry", "Grappling", "Martial Arts"],
+    acrobatics: ["Coordination", "Escape Artist", "Gymnastics", "Maneuverability"],
+    driving: ["Air", "Land", "Sea"],
+    finesse: ["Martial Arts", "Sharp Weaponry", "Throwing"],
+    infiltration: ["Burglary", "Sleight of Hand", "Shadowing", "Stealth"],
+    // "Weapon Type" (GI Joe CRB p.117) isn't itself a pick - it's mastery with one particular
+    // weapon family, "such as pistols, submachine guns, shotguns, assault rifles, sniper rifles,
+    // and other weapon types found in Chapter 8: Equipment. This can be taken multiple times,
+    // once for each weapon family" - so it's expanded here into the book's own named families
+    // rather than left as one vague catalog entry a player couldn't actually specialize with.
+    targeting: [
+      "Archery", "Martial Arts", "Throwing", "Vehicle",
+      "Assault Rifle", "Pistol", "Shotgun", "Sniper Rifle", "Submachine Gun",
+    ],
+    alertness: ["Insight", "Investigation", "Perception", "Situational Awareness"],
+    culture: ["Classified Intel", "History", "Linguistics", "Psychology"],
+    science: ["Medicine", "Biology", "Chemistry", "Zoology"],
+    survival: ["Foraging", "Hunting", "Deserts", "Forests", "Arctic", "Tracking"],
+    technology: [
+      "Advanced Technology", "Communications", "Computers", "Engineering", "Explosives",
+      "Artificial Intelligence", "Drones", "Mechanics", "Robotics",
+    ],
+    animalHandling: ["Pet", "Riding", "Training"],
+    deception: ["Bluffing", "Disguise", "Distraction"],
+    performance: ["Dancing", "Singing", "Painting"],
+    persuasion: ["Diplomacy", "Flattery", "Truth"],
+    streetwise: ["Black Market", "Crime", "Transportation"],
+  },
+  myLittlePony: {
+    athletics: ["Climbing", "Trotting", "Sport (Specific)", "Swimming"],
+    brawn: ["Carry", "Drag", "Lift"],
+    intimidation: ["Distract", "Frighten", "Taunt"],
+    might: ["Grappling", "Shoving", "Unarmed Combat", "Melee Weapon (Specific)"],
+    acrobatics: ["Balance", "Flying", "Gymnastics"],
+    driving: ["Air Vehicle", "Land Vehicle", "Sea Vehicle"],
+    finesse: ["Coordination", "Martial Arts", "Steady Hoof"],
+    infiltration: ["Burglary", "Shadowing", "Sleight of Hoof", "Stealth"],
+    targeting: ["Kicking", "Ranged Weapon (Specific)", "Trajectory"],
+    alertness: ["Insight", "Investigation", "Perception"],
+    culture: ["Cuisine", "Fashion", "History", "Linguistics", "Yakyakistan", "Klugetown"],
+    science: ["Medicine", "Research", "Biology", "Chemistry", "Mathematics"],
+    survival: ["Cartography", "Foraging", "Meteorology", "Deserts", "Forests", "Sea"],
+    technology: ["Engineering", "Simple Machines", "Theoretical Technology"],
+    animalHandling: ["Domesticated Pets", "Mythical Creatures", "Wild Animals"],
+    deception: ["Bluffing", "Disguise", "Misdirect"],
+    performance: ["Career Art (Specific)", "Literary Art (Specific)", "Performing Art (Specific)", "Visual Art (Specific)"],
+    persuasion: ["Diplomacy", "Etiquette", "Understanding"],
+    streetwise: ["Connections", "Gossip", "Underworld"],
+    spellcasting: ["Circle", "Dispelling", "Magical Knowledge"],
+  },
+  powerRangers: {
+    athletics: ["Climbing", "Jogging/Running", "Sports Activity", "Swimming", "Throwing"],
+    brawn: ["Drag", "Lift", "Stamina"],
+    intimidation: ["Distract", "Frighten", "Taunt"],
+    might: ["Blunt Weapons", "Grappling", "Martial Arts", "Power Weapons", "Pushing"],
+    acrobatics: ["Balance", "Flying", "Gymnastics", "Maneuverability"],
+    driving: [
+      "Autopilot", "Boat", "Hovercraft", "Motorcycle", "Rotor", "Submersible", "Tracked",
+      "Wheeled", "Winged", "Zord",
+    ],
+    finesse: ["Escape Artist", "Martial Arts", "Power Weapon", "Sharp Weaponry", "Steady Action", "Throwing"],
+    infiltration: ["Burglary", "Sleight of Hand", "Shadowing", "Stealth"],
+    targeting: [
+      "Archery", "Ballistic", "Energy", "Power Weapon", "Specific Weapon", "Throwing",
+      "Trajectory", "Vehicle",
+    ],
+    alertness: ["Insight", "Investigation", "Perception"],
+    culture: ["Grid Lore", "History", "Language", "Psychology", "Specific Culture"],
+    science: ["Medicine", "Biology", "Chemistry", "Xeno-zoology"],
+    survival: ["Cartography", "Foraging", "Hunting", "Specific Environment", "Weather Prediction"],
+    technology: ["Computer", "Grid Tech", "Engineering", "Artificial Intelligence", "Mechanics", "Robotics"],
+    animalHandling: ["Calming", "Riding", "Animal Type", "Training"],
+    deception: ["Bluffing", "Disguise", "Distraction"],
+    performance: ["Visual Arts", "Literary Arts", "Performing Arts", "Culinary Arts"],
+    persuasion: ["Diplomacy", "Embellishments", "Flattery", "Romance", "Truth"],
+    streetwise: ["Black Market", "Crime", "Gossip", "Transportation"],
+  },
+  // "Weapon Classification" and "Weapon Trait" (Transformers CRB p.97-100) aren't themselves
+  // picks - each is mastery with weapons sharing one specific Classification or Trait, "such as"
+  // the examples actually named per skill (a genuine narrower pick than the full ~65-entry
+  // E20.weaponTraits master list, which spans every game line's weapons and includes plenty with
+  // no combat-specialization narrative at all, like acid/psychic/xenotech) - expanded below into
+  // those named examples rather than left as one vague catalog entry. Athletics' own "Weapon
+  // Trait" has no "such as" example in the book at all, so it's left as a bare entry (same
+  // "Custom" free-text intent as Culture/Science/Survival/Technology's "Specific X" entries).
+  transformers: {
+    athletics: ["Climbing", "Running", "Sports Activity", "Swimming", "Weapon Trait"],
+    brawn: ["Force", "Endurance", "Mettle"],
+    intimidation: ["Distract", "Frighten", "Taunt"],
+    might: ["Grappling", "Martial Arts", "Heavy Swords", "Clubs", "Blunt", "Silent"],
+    acrobatics: ["Balance", "Coordination", "Escape", "Gymnastics"],
+    driving: ["Air", "Land", "Sea"],
+    finesse: ["Dexterity", "Martial Arts", "Swords", "Knives", "Maneuver", "Sharp"],
+    infiltration: ["Burglary", "Sleight of Hand", "Shadow", "Stealth"],
+    targeting: ["Vehicular Weaponry", "Rifles", "Grenades", "Sniper"],
+    alertness: ["Insight", "Investigation", "Perception", "Situational Awareness"],
+    culture: ["Classified Intel", "History", "Linguistics", "Planetary", "Psychology", "Specific Culture"],
+    science: ["Medicine", "Biology", "Chemistry", "Physics", "Zoology"],
+    survival: ["Foraging", "Camping", "Deserts", "Forests", "Arctic", "Tracking"],
+    technology: [
+      "Advanced Technology", "Communications", "Computers", "Engineering", "Explosives",
+      "Repair", "Artificial Intelligence", "Drones", "Mechanics", "Robotics",
+    ],
+    animalHandling: ["Calm", "Pet", "Training"],
+    deception: ["Bluffing", "Disguise", "Distraction"],
+    performance: ["Literary Arts", "Performing Arts", "Visual Arts"],
+    persuasion: ["Diplomacy", "Embellishments", "Flattery", "Truth"],
+    streetwise: ["Black Market", "Crime", "Gossip", "Transportation"],
+  },
+  // Welcome to Night Vale: Citizens' Guide p.11-14 - condensed into per-skill tables ("EXAMPLE
+  // SPECIALIZATIONS") rather than the bulleted prose the other four lines use, but the same
+  // "suggestions, not a fixed catalog" framing applies. Weird (this line's own "any"-Essence
+  // skill, p.14) lists its examples under five broader usage themes instead of one flat list -
+  // flattened here into a single array, same treatment as MLP's own Spellcasting suggestions.
+  // Survival's own third example ("specific environments") names no actual environments the way
+  // Athletics/Survival do in the other three lines that got that treatment - left as a bare
+  // category entry for the same reason Power Rangers' own "Specific Environment" was.
+  welcomeToNightVale: {
+    athletics: ["Climb", "Jump", "Sprint", "Swim", "Sports"],
+    brawn: ["Carry", "Drag", "Lift"],
+    intimidation: ["Distract", "Frighten", "Taunt"],
+    might: ["Brawl", "Grapple", "Clubs", "Hammers"],
+    acrobatics: ["Balance", "Gymnastics", "Tumbling"],
+    driving: ["Cars", "Boats", "Planes"],
+    finesse: ["Coordination", "Martial Arts", "Swords"],
+    infiltration: ["Lockpicking", "Sleight of Hand", "Stealth"],
+    targeting: ["Bows", "Guns", "Trajectory"],
+    alertness: ["Insight", "Investigation", "Perception"],
+    culture: ["Cuisine", "Fashion", "History"],
+    science: ["Medicine", "Research", "Strange Phenomena"],
+    survival: ["Cartography", "Foraging", "Specific Environment"],
+    technology: ["Computers", "Engineering", "Theoretical Tech"],
+    animalHandling: ["Pets", "Training", "Riding"],
+    deception: ["Disguise", "Lying", "Misdirection"],
+    performance: ["Dance", "Painting", "Singing"],
+    persuasion: ["Diplomacy", "Etiquette", "Negotiation"],
+    streetwise: ["Connections", "Gossip", "Underworld"],
+    weird: [
+      "Absorb", "Blend", "Imprint", "Dimensions", "Objects", "Timelines", "Decontaminate",
+      "Disbelieve", "Unveil", "Lucidity", "Scopaesthesia", "Witness", "Communicate",
+      "Comprehend", "Paraphrase",
+    ],
+  },
+};
+
 E20.actorLevels = {
   level1: "E20.Level1",
   level1optional: "E20.Level1Additional",

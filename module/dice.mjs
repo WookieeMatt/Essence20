@@ -167,6 +167,14 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
     const essenceShifts = actor.system.essenceShifts;
+    // The specific Specialization being rolled, if any (essence-skills.hbs sets
+    // data-specialization-key to its slug key - see helpers/utils.mjs#slugifySpecializationName).
+    // Looked up directly off the actor rather than trusted from the dataset, so a Perk's Active
+    // Effect targeting system.skills.<skill>.specializations.<key>.shiftUp/edge/etc (see
+    // essence20-specialization-redesign) actually reaches the roll.
+    const specialization = dataset.specializationKey
+      ? actor.system.skills[rolledSkill]?.specializations?.[dataset.specializationKey]
+      : null;
     const combatModifiers = this._getAutomaticCombatModifiers(actor, item, rolledEssence);
     if (combatModifiers.debilitatedConsumed) {
       await actor.unsetFlag('essence20', 'debilitated');
@@ -209,8 +217,8 @@ export class Dice {
       calculatedShiftDown = dataset.shiftDown + essenceShifts.any.shiftDown;
     }
 
-    calculatedShiftUp += combatModifiers.shiftUp;
-    calculatedShiftDown += combatModifiers.shiftDown;
+    calculatedShiftUp += combatModifiers.shiftUp + (specialization?.shiftUp || 0);
+    calculatedShiftDown += combatModifiers.shiftDown + (specialization?.shiftDown || 0);
 
     // Expertise cancels one point of downshift out of the fully-stacked total ("the first"),
     // not any one particular source of it - see EXPERTISE_PERK_IDS's own doc comment.
@@ -229,8 +237,10 @@ export class Dice {
       : dataset.shift || actorSkillData.shift;
     const skillDataset = {
       shift: initialShift,
-      edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge || combatModifiers.edge,
-      snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag || combatModifiers.snag,
+      edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge || combatModifiers.edge
+        || !!specialization?.edge,
+      snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag || combatModifiers.snag
+        || !!specialization?.snag,
     };
 
     // Any currently-disabled effect (the actor's own, or a Perk's) that would touch this skill if

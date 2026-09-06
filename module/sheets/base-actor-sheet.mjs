@@ -50,6 +50,7 @@ import {
   onShieldEquipToggle,
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
+import { deleteSpecialization } from "../sheet-handlers/specialization-handler.mjs";
 
 export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
@@ -77,6 +78,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       skillPicker: this.#onOpenSkillPicker,
       shieldActivationToggle: this.#onShieldActivationToggle,
       shieldEquipToggle: this.#onShieldEquipToggle,
+      specializationDelete: this.#onSpecializationDelete,
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
       systemActorsDelete: this.#onSystemActorsDelete,
       toggleAccordion: this.#toggleAccordion,
@@ -532,7 +534,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     const powers = []; // Used by PCs
     let shieldEquipped = false;
     const shields = [];
-    const specializations = {};
     const spells = [];
     const upgrades = [];
     const traits = []; // Used by Vehicles
@@ -670,13 +671,13 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       case 'role':
         roles.push(i);
         break;
+      // 'specialization' Items no longer power the sheet - see essence20-specialization-redesign
+      // and migration.mjs's "Migrate Specializations" block, which moves each one into
+      // system.skills.<skill>.specializations and deletes the Item. This case is left registered
+      // (falls through to being ignored) only because the Release N migration hasn't necessarily
+      // run yet for every actor the instant this ships - do not remove until Release N+1, per the
+      // memory's two-release sequencing constraint.
       case 'specialization':
-        {
-          const skill = i.system.skill;
-          const existingSkillSpecializations = specializations[skill];
-          existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
-        }
-
         break;
       case 'trait':
         traits.push(i);
@@ -737,7 +738,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     context.shields = shields;
     context.shieldEquipped = shieldEquipped;
     context.spells = spells;
-    context.specializations = specializations;
     context.traits = traits;
     context.upgrades = upgrades;
     context.weapons = weapons;
@@ -890,6 +890,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onOpenSkillPicker() {
     new SkillPicker(this.actor).render(true);
+  }
+
+  static #onSpecializationDelete(event, target) {
+    deleteSpecialization(this.actor, target.dataset.skill, target.dataset.specializationKey);
   }
 
   static #onEditSpeeds() {

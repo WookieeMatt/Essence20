@@ -172,6 +172,33 @@ describe("rollSkill", () => {
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null, { skill: 'athletics', essence: 'strength', snag: false, isPowerWeaponAttack: false, consummatePerformer: false }, false);
   });
 
+  test("a specialization's own shiftUp/edge merge into the roll (see essence20-specialization-redesign)", async () => {
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'athletics': {
+          modifier: '0',
+          shift: 'd8',
+        },
+      },
+    }));
+    mockActor.system.skills.athletics = {
+      shift: 'd8',
+      specializations: {
+        climbing: { name: 'Climbing', shiftUp: 2, shiftDown: 0, edge: true, snag: false },
+      },
+    };
+    dice._rollSkillHelper = jest.fn();
+
+    const datasetWithSpecialization = { ...dataset, shift: 'd8', specializationKey: 'climbing' };
+    await dice.rollSkill(datasetWithSpecialization, mockActor, null);
+
+    const [updatedShiftDataset, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+    expect(updatedShiftDataset.shiftUp).toBe(2);
+    expect(skillDataset.edge).toBe(true);
+
+    delete mockActor.system.skills.athletics;
+  });
+
   test("normal skill roll works with isSpecialized as false string", async () => {
     const datasetCopy = {
       ...dataset,

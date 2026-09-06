@@ -55,21 +55,41 @@ export function makeSkillFields(essence, canBeInitiative=false, init='d20') {
     shiftDown: makeInt(0),
     shiftUp: makeInt(0),
     snag: makeBool(false),
+    // Specializations under this skill, keyed by a slug of their own name (see
+    // helpers/utils.mjs#slugifySpecializationName) rather than an opaque random id, so a Perk's
+    // Active Effect can target one directly - e.g. system.skills.science.specializations.
+    // medicine.shiftUp (ADD) or .edge (OVERRIDE true), or even grant the entry itself outright
+    // via one OVERRIDE change per field (.name, .granted, etc. - see
+    // specialization-handler.mjs#normalizeSpecializations for how a partially-set grant like
+    // that gets its other fields defaulted). Safe to key by name now specifically because a
+    // Specialization can no longer be renamed once added. Plain ObjectField (not a schema-
+    // validated TypedObjectField) to match the established system.items map convention (data/
+    // item/templates/parent-item.mjs) for this same shape of "id -> record" actor data. Each
+    // entry: {name, shift, isSpecialized, edge, shiftUp, shiftDown, snag, granted}. `granted`
+    // distinguishes a specialization a Perk/Item gave the actor for free from one the player
+    // bought with a skill point - see helpers/skill-picker.mjs#computeEssenceSpend, which only
+    // tallies the latter. See essence20-specialization-redesign for the full design this
+    // replaces (a standalone `specialization` Item type, still readable via a Release N
+    // migration - see migration.mjs).
+    specializations: new fields.ObjectField({}),
   };
 
-  // "Any"-essence skills (Spellcasting, Weird) can draw their invested points from more than
-  // one real Essence at once (e.g. a Weird check built from a Strength point and a Speed
-  // point) - the Skill Picker tracks how an NPC's spend on this skill is split across the four
-  // real Essences so it can be added into each Essence's own spent-total, mirroring how
+  // A skill can draw its invested points from more than one real Essence at once - either one of
+  // the two built-in "any"-Essence skills (Spellcasting, Weird - all four essences true above),
+  // or a normal skill a Perk has extended to a second Essence via its own Active Effect (e.g. GI
+  // Joe CRB's Terrifying Presence: system.skills.intimidation.essences.social = true, on top of
+  // Intimidation's default strength: true). Always present (not gated on essence === 'any' the
+  // way it used to be) since any skill could become multi-Essence this way - see
+  // helpers/skill-picker.mjs#computeEssenceSpend, which only actually reads this once a skill's
+  // own `essences` has more than one flag true; it's a no-op default the rest of the time. The
+  // Skill Picker (module/apps/skill-picker.mjs) is where this gets split, mirroring how
   // character-sheet.mjs#_prepareSkillRankAllocation already tallies ordinary skills.
-  if (essence === 'any') {
-    schema.essenceAttribution = new fields.SchemaField({
-      smarts: makeInt(0),
-      social: makeInt(0),
-      speed: makeInt(0),
-      strength: makeInt(0),
-    });
-  }
+  schema.essenceAttribution = new fields.SchemaField({
+    smarts: makeInt(0),
+    social: makeInt(0),
+    speed: makeInt(0),
+    strength: makeInt(0),
+  });
 
   return new fields.SchemaField(schema);
 }

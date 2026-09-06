@@ -1,4 +1,4 @@
-import { createId } from "./helpers/utils.mjs";
+import { createId, slugifySpecializationName } from "./helpers/utils.mjs";
 
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
@@ -341,6 +341,78 @@ export const migrateActorData = async function(actor, compendiumActor) {
     return updateData;
   }
 
+  /* Release N of the specialization redesign (see essence20-specialization-redesign): a
+     `specialization` Item is converted into a system.skills.<skill>.specializations.<id> entry
+     (see common.mjs#makeSkillFields) and deleted below, same as `contact`. The DataModel itself
+     stays registered this release (data/item/specialization.mjs, its index.mjs entry) so any
+     Item a partially-failed migration leaves behind is still valid and gets picked up next load
+     - do not delete that registration until a Release N+1 confirms no live world still has any
+     `specialization` Items left (a canary check in this function would catch that). Left
+     unconditional (not version-gated like most one-time seeds in this file - see the isChosen
+     seed above) rather than a one-time pass: the DataModel staying registered this release means
+     nothing stops a `specialization` Item turning up again later (an old compendium drag, a
+     manual create) even on an actor that already passed whatever version this shipped in - this
+     needs to keep converting (and the loop below keeps deleting) any it finds, every pass, until
+     Release N+1 finally removes the Item type outright. Naturally a no-op once none remain, so
+     the always-run cost is negligible. Accumulated locally (not written straight into
+     updateData) so slugifySpecializationName's collision check sees every specialization already
+     converted this pass, not just what's already on the actor. Keyed by a slug of the Item's own
+     name (not a random id) so a Perk's Active Effect can target it directly - e.g.
+     system.skills.science.specializations.medicine.shiftUp - now that a Specialization can no
+     longer be renamed after the fact (see helpers/utils.mjs#slugifySpecializationName). */
+  const newSpecializationsBySkill = {};
+  for (const item of actor.items) {
+    if (item.type == 'specialization') {
+      const skill = item.system.skill;
+      const existing = {
+        ...actor.system.skills[skill]?.specializations,
+        ...newSpecializationsBySkill[skill],
+      };
+      const id = slugifySpecializationName(item.name, existing);
+      (newSpecializationsBySkill[skill] ??= {})[id] = {
+        name: item.name,
+        shift: item.system.shift,
+        isSpecialized: item.system.isSpecialized,
+        edge: false,
+        shiftUp: 0,
+        shiftDown: 0,
+        snag: false,
+        granted: false,
+      };
+    }
+  }
+
+  for (const [skill, specializations] of Object.entries(newSpecializationsBySkill)) {
+    for (const [id, specialization] of Object.entries(specializations)) {
+      updateData[`system.skills.${skill}.specializations.${id}`] = specialization;
+    }
+  }
+
+  /* Re-key any Specialization already stored under an old-style random id (written before this
+     slug scheme existed - either by an earlier pass of the conversion above, or live before that
+     changed over) so it becomes Active-Effect-targetable too, without the player needing to
+     delete and re-add it. Reads actor.system.skills directly (not updateData) since the
+     conversion above only ever writes already-correctly-keyed entries - this loop only has old,
+     already-persisted data to fix. */
+  for (const [skill, skillData] of Object.entries(actor.system.skills || {})) {
+    if (foundry.utils.isEmpty(skillData.specializations)) {
+      continue;
+    }
+
+    const rekeyed = {};
+    for (const [key, specialization] of Object.entries(skillData.specializations)) {
+      const properKey = slugifySpecializationName(specialization.name, rekeyed);
+      if (properKey !== key) {
+        // A plain key (no "-=" prefix - that's the old, now-deprecated deletion syntax) paired
+        // with ForcedDeletion as the value is what actually deletes it.
+        updateData[`system.skills.${skill}.specializations.${key}`] = new foundry.data.operators.ForcedDeletion();
+        updateData[`system.skills.${skill}.specializations.${properKey}`] = specialization;
+      }
+
+      rekeyed[properKey] = specialization;
+    }
+  }
+
   const items = [];
   for (const itemData of actor.items) {
     // Migrate the Owned Item
@@ -348,7 +420,7 @@ export const migrateActorData = async function(actor, compendiumActor) {
 
     const itemToDelete = fullActor.items.get(itemData._id);
 
-    if (itemToDelete.type == "contact") {
+    if (itemToDelete.type == "contact" || itemToDelete.type == "specialization") {
       await itemToDelete.delete();
     }
 
