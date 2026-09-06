@@ -1,5 +1,5 @@
 import { E20 } from "./helpers/config.mjs";
-import { _isCritIsFumble, applyDamage } from "./helpers/combat.mjs";
+import { _isCritIsFumble, applyDamage, buildCheckChatData } from "./helpers/combat.mjs";
 import { computeSystemColorVars } from "./helpers/actor.mjs";
 import {
   actorHasPerk, hasUsedThisEncounter, hasUsedThisRound, hasUsedThisTurn,
@@ -100,12 +100,22 @@ async function rerollMessage(message, config) {
   // attack roll), which otherwise silently vanished on every reroll's own posted message - and
   // forces it on for a grant that adds it itself (GI Joe CRB "In My Sights").
   const canCritD2 = !!context.canCritD2 || !!config.grantsCanCritD2;
-  rerolled.toMessage({
-    speaker: message.speaker,
+  // Through the same check-card.hbs box every other roll message (skill test or attack) uses,
+  // not a bare roll.toMessage() - a reroll used to post Foundry's own plain default roll card,
+  // which sat right below the original's own bordered/chamfered e20-check-card and looked like a
+  // visually unrelated, plainer message rather than a continuation of the same roll. results is
+  // always empty here (a reroll has nothing new to compare against a Difficulty - the original
+  // message above it already showed that), which is exactly what makes check-card.hbs render as
+  // this same plain flavor+roll box with no results list, rather than pulling in machinery this
+  // doesn't need.
+  const chatData = await buildCheckChatData(rerolled, {
     flavor: label,
-    rollMode: game.settings.get("core", "rollMode"),
-    flags: { essence20: { canCritD2, rerollConfig: config } },
+    results: [],
+    speaker: message.speaker,
+    canCritD2,
+    rollContext: { rerollConfig: config },
   });
+  ChatMessage.create(chatData);
 }
 
 export const addRerollButtons = function (message, html) {

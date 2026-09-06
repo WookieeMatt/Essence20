@@ -201,7 +201,17 @@
   border-radius: 4px;
 }
 
-.e20-check-card .dice-tooltip {
+/* Foundry core collapses .dice-tooltip to a zero-height grid row by default (foundry2.css's own
+   ".dice-roll .dice-tooltip { grid-template-rows: 0fr }", only opened to 1fr by a core-attached
+   click handler toggling .dice-roll's own .expanded class) - it's meant to be invisible until a
+   player clicks the roll to see the individual-dice breakdown. Giving it a border/background
+   unconditionally, as this rule used to, still painted that border at the collapsed zero height
+   (a border renders regardless of its box's content height), which read as a stray blank line
+   wedged between the formula and the total on every check/attack roll. Scoping the border/
+   background to the .expanded state keeps the roll collapsed by default looking exactly like a
+   plain Skill roll's (no tooltip box at all) while still dressing up the breakdown for whoever
+   actually clicks to expand it. */
+.e20-check-card .dice-roll.expanded .dice-tooltip {
   background: var(--theme-input-color);
   border: 1px solid var(--theme-border-color);
   border-radius: 4px;

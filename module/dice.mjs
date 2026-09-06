@@ -1524,17 +1524,22 @@ export class Dice {
     const speaker = this._chatMessage.getSpeaker({ actor });
 
     if (!checkContext) {
-      roll.toMessage({
-        flags: {
-          essence20: {
-            canCritD2: canCritD2,
-            ...rollContext,
-          },
-        },
-        speaker,
+      // Through the same check-card.hbs box every vs-Difficulty check/attack uses, not a bare
+      // roll.toMessage() - a flat Skill Test (or an attack rolled with no target selected, which
+      // also has no checkContext - see rollSkill's own checkContext = checkEntries ? {...} :
+      // null) used to post Foundry's own plain default roll card, which looked like an unrelated,
+      // plainer message next to every other roll's bordered/chamfered card. results is always
+      // empty here (nothing to compare against a Difficulty), which is exactly what makes
+      // check-card.hbs render as this same flavor+roll box with no results list.
+      await roll.evaluate();
+      const chatData = await buildCheckChatData(roll, {
         flavor,
-        rollMode: game.settings.get('core', 'rollMode'),
+        results: [],
+        speaker,
+        canCritD2,
+        rollContext,
       });
+      this._chatMessage.create(chatData);
       return;
     }
 
