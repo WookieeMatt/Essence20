@@ -64,10 +64,10 @@ export async function pickPowerfulSuggestionOptions() {
 
 /**
  * Resolves the currently-targeted actor, prompts for the Skill/effect, and banks it on them.
- * @param {Actor} actor
+ * @param {Actor} _actor   Unused - kept only for a consistent onPerkUse dispatch signature.
  * @returns {Promise<Actor|null|false>}
  */
-export async function activatePowerfulSuggestions(actor) {
+export async function activatePowerfulSuggestions(_actor) {
   const targetActor = game.user.targets.first()?.actor;
   if (!targetActor) {
     return null;

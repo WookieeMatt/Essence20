@@ -15,10 +15,10 @@ import { getDefenseValue } from "./combat.mjs";
  * Builds the chat message content revealing the currently-targeted actor's highest Defense, most
  * damaging Attack (by printed base damageValue, ignoring situational bonuses this project has no
  * way to precompute for an arbitrary future roll), and Hang-Ups.
- * @param {Actor} actor
+ * @param {Actor} _actor   Unused - kept only for a consistent onPowerUse dispatch signature.
  * @returns {String|null}   The chat content, or null (and a warning) if nothing is targeted.
  */
-export function revealTargetChronoFile(actor) {
+export function revealTargetChronoFile(_actor) {
   const targetActor = game.user.targets.first()?.actor;
   if (!targetActor) {
     ui.notifications.warn(game.i18n.localize('E20.ChronoFileAccessNoTarget'));

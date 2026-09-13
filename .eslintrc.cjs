@@ -22,6 +22,17 @@ module.exports = {
       'unix',
     ],
     'no-undef': 'off',
+    'no-unused-vars': [
+      'error',
+      {
+        // A handful of onPowerUse/onPerkUse-dispatched functions keep an unused leading `actor`
+        // (or similarly-named) parameter purely so every handler shares one call signature - see
+        // e.g. helpers/monster-grow.mjs#activateMonsterGrow's own doc comment. Prefix with `_` to
+        // mark those as deliberate, not oversights.
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+      },
+    ],
     // 'quotes': [
     //     'error',
     //     'single'

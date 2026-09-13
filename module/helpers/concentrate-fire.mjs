@@ -20,10 +20,10 @@ const CONCENTRATE_FIRE_FLAG = 'concentrateFireTargetMark';
 
 /**
  * Marks the actor's currently-targeted token as the Concentrate Fire designee.
- * @param {Actor} actor
+ * @param {Actor} _actor   Unused - kept only for a consistent onPerkUse dispatch signature.
  * @returns {Promise<Boolean>}   False (and no flag set) if nothing is targeted.
  */
-export async function markConcentrateFireTarget(actor) {
+export async function markConcentrateFireTarget(_actor) {
   const targetActor = game.user.targets.first()?.actor;
   if (!targetActor) {
     ui.notifications.warn(game.i18n.localize('E20.ConcentrateFireNoTarget'));

@@ -7019,7 +7019,7 @@ describe("Data Bridge (Enigma of Combination, Hub Focus, Analyst, 1st level, p.2
     global.canvas = realCanvas;
   });
 
-  function makeAllyToken(actorToken) {
+  function makeAllyToken(_actorToken) {
     return {
       document: { disposition: 1 },
       center: {},

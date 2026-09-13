@@ -55,10 +55,10 @@ export async function pickShoulderToShoulderSkill() {
  * Banks the chosen skill's upshift on the currently-targeted ally, once a skill has actually
  * been chosen. Returns false (having banked nothing) if there's no target, or the picker is
  * cancelled.
- * @param {Actor} actor
+ * @param {Actor} _actor   Unused - kept only for a consistent onPerkUse dispatch signature.
  * @returns {Promise<Boolean>}
  */
-export async function activateShoulderToShoulder(actor) {
+export async function activateShoulderToShoulder(_actor) {
   const targetActor = game.user.targets.first()?.actor;
   if (!targetActor) {
     ui.notifications.warn(game.i18n.localize('E20.ShoulderToShoulderNoTarget'));

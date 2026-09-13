@@ -13,10 +13,10 @@ import { getDefenseValue } from "./combat.mjs";
 /**
  * Builds the chat message content revealing the currently-targeted actor's own four Defenses -
  * see this file's own doc comment above.
- * @param {Actor} actor
+ * @param {Actor} _actor   Unused - kept only for a consistent onPerkUse dispatch signature.
  * @returns {String|null}   The chat content, or null (and a warning) if nothing is targeted.
  */
-export function revealTargetDefenses(actor) {
+export function revealTargetDefenses(_actor) {
   const targetActor = game.user.targets.first()?.actor;
   if (!targetActor) {
     ui.notifications.warn(game.i18n.localize('E20.QuickStudyNoTarget'));

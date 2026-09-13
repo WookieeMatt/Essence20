@@ -17,10 +17,10 @@ const DAMAGE_TYPE = 'electric';
  * Deals Grid Empowered's own fixed 1 Electric damage directly to whichever token is currently
  * targeted. The 1-Power spend itself is handled generically by the sheet's own Power-activation
  * flow (power-handler.mjs#powerCost) before this runs, same as every other power-type dispatch.
- * @param {Actor} actor
+ * @param {Actor} _actor   Unused - kept only for a consistent onPowerUse dispatch signature.
  * @returns {Promise<Boolean>}   False (nothing applied) if there's no valid target.
  */
-export async function activateGridEmpowered(actor) {
+export async function activateGridEmpowered(_actor) {
   const targetActor = game.user.targets.first()?.actor;
   if (!targetActor) {
     return false;

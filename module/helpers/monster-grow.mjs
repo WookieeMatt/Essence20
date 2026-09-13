@@ -17,11 +17,11 @@ const GROWN_SIZE = 'gigantic';
 
 /**
  * Toggles Grown on whichever token is currently targeted.
- * @param {Actor} actor   The caster - unused for the effect itself (RAW targets an allied Threat,
+ * @param {Actor} _actor   The caster - unused for the effect itself (RAW targets an allied Threat,
  *   not the caster), kept only for a consistent onPowerUse dispatch signature.
  * @returns {Promise<Boolean|null>}   The new state, or null if nothing is targeted.
  */
-export async function activateMonsterGrow(actor) {
+export async function activateMonsterGrow(_actor) {
   const targetActor = game.user.targets.first()?.actor;
   if (!targetActor) {
     return null;

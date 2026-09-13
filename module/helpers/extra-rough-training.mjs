@@ -73,12 +73,12 @@ export function canTrainAlly(allyActor) {
 /**
  * Resolves the currently-targeted ally, prompts for the skill, and triggers their own DIF 15
  * Skill Test.
- * @param {Actor} officer
+ * @param {Actor} _officer   Unused - kept only for a consistent onPerkUse dispatch signature.
  * @returns {Promise<Boolean|null>}   False if the picker was cancelled, null if there's no valid
  *   ally to target (surfaced as a warning by the caller) or they've already used their attempt
  *   this mission, true once the roll is triggered.
  */
-export async function activateExtraRoughTraining(officer) {
+export async function activateExtraRoughTraining(_officer) {
   const allyActor = game.user.targets.first()?.actor;
   if (!allyActor || !canTrainAlly(allyActor)) {
     return null;
