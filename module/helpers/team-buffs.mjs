@@ -54,7 +54,6 @@ const BENEATH_THE_HELMET = "Compendium.essence20.beneath_the_helmet.Item.";
 // Element/Energy reclassification pass already applied to a mixed-type stat block elsewhere) - so
 // this is built as a plain flat +1 damage bonus, the type left unspecified.
 export const ENVIRONMENTAL_ASSIST_ID = `${BENEATH_THE_HELMET}5gPWxUEkFKDQf6lM`;
-const ENVIRONMENTAL_ASSIST_ENCOUNTER_FLAG = 'environmentalAssistUsedThisEncounter';
 export const PENDING_ENVIRONMENTAL_ASSIST_FLAG_KEY = 'pendingEnvironmentalAssist';
 
 // Elemental Shield (Beneath the Helmet, Aqua Ranger, 9th/18th level, p.42, replaces Power

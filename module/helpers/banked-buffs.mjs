@@ -151,7 +151,7 @@ import { activateGrowl, canUseGrowl } from "./growl.mjs";
 import { isBeastModeActive, toggleBeastMode } from "./beast-mode.mjs";
 import { activateHarass, canUseHarass } from "./harass.mjs";
 import { activateAntagonistic } from "./antagonistic.mjs";
-import { isVersatileProtectionActive, toggleVersatileProtection } from "./versatile-protection.mjs";
+import { toggleVersatileProtection } from "./versatile-protection.mjs";
 import { activatePackAttack, canUsePackAttack } from "./pack-attack.mjs";
 import { getAnimalGaitType, toggleAnimalGait } from "./animal-gait.mjs";
 import { activateHumanBullet } from "./human-bullet.mjs";
@@ -953,7 +953,6 @@ const COMBAT_STANCE_ID = `${THROUGH_THE_SHATTERED_GRID}R2C760BXAI1XKVtm`;
 // hasUsedThisEncounter idiom as Elemental Storm/Curb Your Enthusiasm above, free to switch back
 // OFF or once it auto-deactivates on its own).
 const AT_ALL_COST_ID = `${THROUGH_THE_SHATTERED_GRID}TGnqQAWWi1hBGqeh`;
-const AT_ALL_COST_ENCOUNTER_FLAG = 'atAllCostUsedThisEncounter';
 
 /**
  * "Bank a bonus now, spend it on a Skill Test you haven't rolled yet" Perks - Think On It and
@@ -1178,10 +1177,6 @@ const NINJA_POWER_ID = `${PR_CRB}wN5rjEQIJH68rWCd`;
 
 // Volley (PR CRB, Pink Ranger, 1st level, p.48) - see helpers/volley.mjs's own doc comment.
 const VOLLEY_ID = `${PR_CRB}Xi2sHKmBi21c3wbu`;
-
-// Penetrating Shot (PR CRB, Pink Ranger, 5th level, p.49) - see its own Roll Options Dialog
-// checkbox in dice.mjs.
-const PENETRATING_SHOT_ID = `${PR_CRB}6ay8OIRRwZTnQUV8`;
 
 // Group Strike (PR CRB, Pink Ranger, 5th/10th/15th level, p.49) - see its own doc comment below.
 const GROUP_STRIKE_ID = `${PR_CRB}coGMtK50t3Ojeklx`;

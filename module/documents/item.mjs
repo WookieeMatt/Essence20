@@ -580,8 +580,10 @@ export class Essence20Item extends Item {
         castingCost = Math.max(1, castingCost - 1);
       }
 
-      // Block Magic - see BLOCK_MAGIC_ID's own comment above. Applied after the Efficient/Master
-      // Spellcaster reduction (a real cost increase, not something those Perks should shrink away).
+      // Block Magic (Knights of Canterlot, Virtuoso Enchantment spell, p.49) - see
+      // helpers/block-magic.mjs's own doc comment. "+1 to the cost of any spell you cast" while a
+      // target is under its effect. Applied after the Efficient/Master Spellcaster reduction (a
+      // real cost increase, not something those Perks should shrink away).
       if (isBlockMagicActive(this.actor)) {
         castingCost += 1;
       }
