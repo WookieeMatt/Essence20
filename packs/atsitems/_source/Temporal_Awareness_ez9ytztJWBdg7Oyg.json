@@ -12,11 +12,31 @@
       "page": 73
     },
     "actionType": "free",
-    "canActivate": true,
+    "canActivate": false,
     "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
-    "powerCost": 1,
+    "powerCost": null,
+    "reroll": {
+      "enabled": true,
+      "maxUses": 1,
+      "mode": "all",
+      "reset": "scene",
+      "target": "skillDice",
+      "cost": {
+        "resourcePath": "system.powers.personal.value",
+        "amount": 1,
+        "worldStoryPoints": 0,
+        "rolePointsName": ""
+      },
+      "condition": "none",
+      "skills": [],
+      "essence": "any",
+      "recursive": false,
+      "minDieFaces": 0,
+      "grantsCanCritD2": false,
+      "bonus": 0
+    },
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

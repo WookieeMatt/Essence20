@@ -13,7 +13,29 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "origin"
+    "type": "origin",
+    "reroll": {
+      "enabled": true,
+      "maxUses": 0,
+      "mode": "ones",
+      "reset": "none",
+      "target": "skillDice",
+      "cost": {
+        "resourcePath": "",
+        "amount": 0,
+        "worldStoryPoints": 0,
+        "rolePointsName": ""
+      },
+      "condition": "none",
+      "skills": [],
+      "scopeToOriginSkill": false,
+      "essence": "any",
+      "recursive": false,
+      "minDieFaces": 0,
+      "grantsCanCritD2": false,
+      "bonus": 0,
+      "keepBetter": false
+    }
   },
   "effects": [],
   "flags": {},

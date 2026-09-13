@@ -1,8 +1,9 @@
 import { jest } from '@jest/globals';
-import { getRecklessAbandonStrengthShiftUp, isRecklessAbandonActive } from './reckless-abandon.mjs';
+import { applyAegisDefeatCheck, getRecklessAbandonStrengthShiftUp, isRecklessAbandonActive } from './reckless-abandon.mjs';
 
 const RECKLESS_ABANDON_ID = "Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY";
 const HARDENED_ID = "Compendium.essence20.gi_joe_crb.Item.f7d5bkyxVpbR4dAe";
+const AEGIS_ID = "Compendium.essence20.gi_joe_crb.Item.CKQfEuHDNW6zP0FE";
 const OTHER_HEALTH_BONUS_ID = "Compendium.essence20.pr_crb.Item.someOtherHealthBonus";
 
 function makeActor({ rolePoints, armor = [], perkIds = [] } = {}) {
@@ -90,5 +91,56 @@ describe("getRecklessAbandonStrengthShiftUp", () => {
   test("an unequipped heavier armor item doesn't block the bonus", () => {
     const actor = makeActor({ rolePoints: makeRolePoints(), armor: [makeArmor('heavy', false)] });
     expect(getRecklessAbandonStrengthShiftUp(actor)).toBe(2);
+  });
+});
+
+/* applyAegisDefeatCheck */
+describe("applyAegisDefeatCheck", () => {
+  function makeAegisActor({ hasPerk = true, clamped = true, health = 1 } = {}) {
+    const perkIds = hasPerk ? [AEGIS_ID] : [];
+    const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+    return {
+      items,
+      system: { health: { value: health } },
+      getFlag: jest.fn((scope, key) => (key == 'aegisClamped' ? clamped : undefined)),
+      unsetFlag: jest.fn(),
+      toggleStatusEffect: jest.fn(),
+    };
+  }
+
+  test("applies the real Defeat when still at the clamped Health, with the Perk and flag set", async () => {
+    const actor = makeAegisActor({ health: 1 });
+
+    await applyAegisDefeatCheck(actor);
+
+    expect(actor.toggleStatusEffect).toHaveBeenCalledWith('defeated', { active: true });
+    expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'aegisClamped');
+  });
+
+  test("doesn't apply Defeat if Health has since recovered above the clamp", async () => {
+    const actor = makeAegisActor({ health: 5 });
+
+    await applyAegisDefeatCheck(actor);
+
+    expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
+    expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'aegisClamped');
+  });
+
+  test("does nothing without the Perk", async () => {
+    const actor = makeAegisActor({ hasPerk: false });
+
+    await applyAegisDefeatCheck(actor);
+
+    expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
+    expect(actor.unsetFlag).not.toHaveBeenCalled();
+  });
+
+  test("does nothing without the clamp flag set", async () => {
+    const actor = makeAegisActor({ clamped: false });
+
+    await applyAegisDefeatCheck(actor);
+
+    expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
+    expect(actor.unsetFlag).not.toHaveBeenCalled();
   });
 });

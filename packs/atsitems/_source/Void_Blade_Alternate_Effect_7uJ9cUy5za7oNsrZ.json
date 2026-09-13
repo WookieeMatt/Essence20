@@ -10,7 +10,7 @@
       "skill": "finesse",
       "style": "melee"
     },
-    "damageType": "element",
+    "damageType": "void",
     "damageValue": 2,
     "shiftDown": 2,
     "numHands": "1",

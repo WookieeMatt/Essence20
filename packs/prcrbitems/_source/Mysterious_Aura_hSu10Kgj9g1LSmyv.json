@@ -1,0 +1,37 @@
+{
+  "folder": "S0GzNopuhwUQsi2N",
+  "name": "Mysterious Aura",
+  "type": "perk",
+  "_id": "hSu10Kgj9g1LSmyv",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 45
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role",
+    "canActivate": true
+  },
+  "effects": [],
+  "sort": 200005,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1757700000000,
+    "modifiedTime": 1757700000000,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!hSu10Kgj9g1LSmyv"
+}

@@ -1,4 +1,4 @@
-import { findPerk } from "./perks.mjs";
+import { actorHasPerk, findPerk } from "./perks.mjs";
 
 /**
  * GI Joe CRB p.107-108 - the Vanguard Role's Personal Shield. Its Toughness/Evasion bonus is
@@ -15,6 +15,31 @@ import { findPerk } from "./perks.mjs";
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 const PERSONAL_SHIELD_ROLE_POINTS_ID = `${GI_JOE_CRB}84JYgd6kZgY41wge`;
 const SHIELD_UPGRADE_ID = `${GI_JOE_CRB}ep0OFsU1QIuRpHeR`;
+
+// Protector's Shield (Bodyguard Focus, 10th level, p.110): "While your shield is up, you gain 1
+// Temporary Health." See applyProtectorsShieldHealthBonus's own doc comment below.
+const PROTECTORS_SHIELD_ID = `${GI_JOE_CRB}tGdWBibKFTYfXzVu`;
+
+/**
+ * Protector's Shield's own Temporary Health half - called from base-actor-sheet.mjs's own
+ * Personal Shield Activate/Deactivate click, right alongside the plain isActive toggle (the same
+ * "intercept the existing Activate click" shape Shield Modulation's own damage-type picker already
+ * establishes), since there's no isMorphed-style single flip-point to hook otherwise. A no-op for
+ * anyone who doesn't hold the Perk - safe to call unconditionally from that one shared click
+ * handler. Applied as a flat system.health.bonus add/remove, the same "add on activation, remove
+ * on deactivation" shape Boosted Vigor's own Temporary Health grant already establishes.
+ * @param {Actor} actor
+ * @param {Boolean} activating   Whether the shield is being switched ON (true) or OFF (false).
+ * @returns {Promise<void>}
+ */
+export async function applyProtectorsShieldHealthBonus(actor, activating) {
+  if (!actorHasPerk(actor, PROTECTORS_SHIELD_ID)) {
+    return;
+  }
+
+  const delta = activating ? 1 : -1;
+  await actor.update({ 'system.health.bonus': (actor.system.health.bonus || 0) + delta });
+}
 
 /**
  * Whether the given Role Points Item is GI Joe's own Personal Shield grant, not just some other

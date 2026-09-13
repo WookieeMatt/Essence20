@@ -13,7 +13,40 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 1,
+    "items": {
+      "sig1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.PFuzUrcYw14JRLf9",
+        "img": "systems/essence20/assets/icons/items/weapon.svg",
+        "name": "Close Combat Heavy Blade",
+        "type": "weapon",
+        "role": null
+      },
+      "sig2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN",
+        "img": "systems/essence20/assets/icons/items/weapon.svg",
+        "name": "Close Combat Heavy Bludgeoning",
+        "type": "weapon",
+        "role": null
+      },
+      "sig3": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.vy8VGcdoFiacJ3bT",
+        "img": "systems/essence20/assets/icons/items/weapon.svg",
+        "name": "Element Jet",
+        "type": "weapon",
+        "role": null
+      },
+      "sig4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Jnjio1DtAx0QgE85",
+        "img": "systems/essence20/assets/icons/items/weapon.svg",
+        "name": "Power Tool",
+        "type": "weapon",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "sort": 100000,

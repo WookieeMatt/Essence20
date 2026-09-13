@@ -12,6 +12,18 @@
       "page": 0
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "all",
+      "target": "skillDice",
+      "reset": "none",
+      "maxUses": 0,
+      "recursive": false,
+      "cost": {
+        "resourcePath": "system.powers.personal.value",
+        "amount": 1
+      }
+    },
     "selectionLimit": 1,
     "type": "role",
     "canActivate": true

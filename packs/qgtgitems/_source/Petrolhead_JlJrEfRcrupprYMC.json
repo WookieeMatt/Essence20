@@ -13,7 +13,9 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "origin"
+    "type": "origin",
+    "hasChoice": true,
+    "choiceType": "vehicleType"
   },
   "effects": [],
   "sort": 0,

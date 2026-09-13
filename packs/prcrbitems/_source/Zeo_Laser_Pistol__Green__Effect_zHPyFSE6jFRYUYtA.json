@@ -10,7 +10,7 @@
       "skill": "targeting",
       "style": "energy"
     },
-    "damageType": "element",
+    "damageType": "poison",
     "damageValue": 1,
     "shiftDown": 0,
     "numHands": "1",

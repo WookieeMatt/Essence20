@@ -95,12 +95,23 @@ export async function onItemEdit(event) {
 /**
  * Handles the sheet's "Use" control on a bankable Perk (Think On It, Plan of Action - see
  * helpers/banked-buffs.mjs for the full registry and what "Use" actually does for each).
- * @param {Event} event The originating click event
+ *
+ * Takes the matched [data-action] element directly, NOT the originating click event - Foundry's
+ * own ApplicationV2 action dispatcher (#onClickAction in its core code) invokes a registered
+ * action handler as `handler.call(this, event, target)`, where `target` is the specific element
+ * that carried `data-action`/`data-id` (found via `event.target.closest("[data-action]")`).
+ * `event.currentTarget` is never reassigned to that element - it stays whatever the click
+ * listener itself is bound to (the sheet's own root), which has no `data-id` of its own. Reading
+ * `event.currentTarget.dataset.id` here (as this used to) always resolved to `undefined`, so
+ * `actorSheet.actor.items.get(undefined)` always returned nothing and every "Use" button on every
+ * Perk sheet-wide silently no-op'd on a real click - masked in this project's own development
+ * because every prior live-verification pass called banked-buffs.mjs's onPerkUse() directly,
+ * bypassing the sheet's click handling entirely, rather than actually clicking the button.
+ * @param {HTMLElement} target The clicked "Use" control itself (its own `data-id` names the Perk).
  * @param {ActorSheet} actorSheet The ActorSheet the Perk is attached to
  */
-export async function onPerkUseClick(event, actorSheet) {
-  event.preventDefault();
-  const itemId = event.currentTarget.dataset.id;
+export async function onPerkUseClick(target, actorSheet) {
+  const itemId = target.dataset.id;
   const item = actorSheet.actor.items.get(itemId);
   if (item) {
     await onPerkUse(item);
@@ -266,15 +277,20 @@ export async function onInlineEdit(event, actor) {
 
 /**
  * Handles activating and deactivating the shield
- * @param {Event} event The activation or deactivation of the shield.
+ *
+ * Takes the matched [data-action] element directly, NOT the originating click event - see
+ * onPerkUseClick's own doc comment above for why event.currentTarget (what this used to read)
+ * always resolves to the sheet's own root rather than the specific clicked control, and silently
+ * (here, not so silently - see below) breaks the lookup this needs.
+ * @param {HTMLElement} target The clicked shield-activation control (its own `data-id` names the shield).
  * @param {ActorSheet} actorSheet The ActorSheet that the shield is attached to.
  */
-export async function onShieldActivationToggle(event, actorSheet) {
+export async function onShieldActivationToggle(target, actorSheet) {
   const actor = actorSheet.actor;
   const shields = await actor.items.documentsByType.shield;
   let currentShield = null;
   for (const shield of shields) {
-    if (shield._id == event.currentTarget.dataset.id) {
+    if (shield._id == target.dataset.id) {
       currentShield = shield;
       break;
     }
@@ -293,26 +309,29 @@ export async function onShieldActivationToggle(event, actorSheet) {
   }
 
   const stateString = currentShield.system.active ?  'passiveEffect' : 'activeEffect';
-  shieldUpdate(actor, currentShield, stateString);
+  await shieldUpdate(actor, currentShield, stateString);
 }
 
 /**
  * Handles equipping a shield
- * @param {Event} event The event that is the equip or unequip
+ *
+ * Takes the matched [data-action] element directly, NOT the originating click event - see
+ * onShieldActivationToggle's own doc comment above.
+ * @param {HTMLElement} target The clicked shield-equip checkbox (its own `data-id` names the shield).
  * @param {ActorSheet} actorSheet The ActorSheet that the shield is being equipped or unequipped on
  */
-export async function onShieldEquipToggle(event, actorSheet) {
+export async function onShieldEquipToggle(target, actorSheet) {
   const actor = actorSheet.actor;
   const shields = await actor.items.documentsByType.shield;
   let currentShield = null;
   for (const shield of shields) {
-    if (shield._id == event.currentTarget.dataset.id) {
+    if (shield._id == target.dataset.id) {
       currentShield = shield;
     }
   }
 
-  if (event.currentTarget.checked) {
-    shieldUpdate(actor, currentShield, 'passiveEffect');
+  if (target.checked) {
+    await shieldUpdate(actor, currentShield, 'passiveEffect');
   } else {
     for (const defenseType of Object.keys(CONFIG.E20.defenses)) {
       const shieldString = `system.defenses.${defenseType}.shield`;
@@ -321,7 +340,7 @@ export async function onShieldEquipToggle(event, actorSheet) {
       });
     }
 
-    currentShield.update({
+    await currentShield.update({
       ["system.active"]: false,
     });
   }
@@ -378,11 +397,11 @@ async function shieldUpdate(actor, currentShield, stateString) {
   }
 
   if (stateString == "activeEffect") {
-    currentShield.update({
+    await currentShield.update({
       ["system.active"] : true,
     });
   } else {
-    currentShield.update({
+    await currentShield.update({
       ["system.active"] : false,
     });
   }
@@ -399,12 +418,12 @@ async function shieldUpdate(actor, currentShield, stateString) {
 export async function setShieldOptions(actor, shield, state, value=null, defense=null) {
   if (defense) {
     const updateString = `system.defenses.${defense}.shield`;
-    actor.update({
+    await actor.update({
       [updateString] : value,
     });
   }
 
-  shield.update({
+  await shield.update({
     ["system.active"] : state == "activeEffect",
   });
 }

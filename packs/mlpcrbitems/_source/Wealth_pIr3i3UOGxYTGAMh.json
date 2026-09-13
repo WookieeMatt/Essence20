@@ -10,10 +10,55 @@
       "page": 125
     },
     "prerequisite": "",
-    "selectionLimit": 1,
+    "selectionLimit": 0,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.pIr3i3UOGxYTGAMh",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "RORYOsKKdqlCPDkM",
+      "changes": [
+        {
+          "key": "system.skills.wealth.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Wealth Status",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!pIr3i3UOGxYTGAMh.RORYOsKKdqlCPDkM"
+    }
+  ],
   "flags": {
     "core": {}
   },

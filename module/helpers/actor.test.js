@@ -59,6 +59,42 @@ describe("getNumActions", () => {
     const actor = { system: { essences: { speed: { max: 5 } } } };
     expect(getNumActions(actor)).toEqual({ free: 3, movement: 1, standard: 1 });
   });
+
+  const QUICK_THINKER_ID = "Compendium.essence20.mlp_crb.Item.i0PwoR0hDC0vyDD2";
+
+  test("Quick Thinker: free actions come from Smarts instead of Speed", () => {
+    const actor = {
+      system: { essences: { speed: { max: 5 }, smarts: { max: 3 } } },
+      items: [{ type: 'perk', flags: { core: { sourceId: QUICK_THINKER_ID } } }],
+    };
+    expect(getNumActions(actor)).toEqual({ free: 1, movement: 1, standard: 1 });
+  });
+
+  test("Quick Thinker: doesn't affect movement/standard actions, which still key off Speed", () => {
+    const actor = {
+      system: { essences: { speed: { max: 0 }, smarts: { max: 5 } } },
+      items: [{ type: 'perk', flags: { core: { sourceId: QUICK_THINKER_ID } } }],
+    };
+    expect(getNumActions(actor)).toEqual({ free: 3, movement: 0, standard: 0 });
+  });
+
+  test("without Quick Thinker, free actions still key off Speed even when Smarts differs", () => {
+    const actor = {
+      system: { essences: { speed: { max: 5 }, smarts: { max: 3 } } },
+      items: [],
+    };
+    expect(getNumActions(actor)).toEqual({ free: 3, movement: 1, standard: 1 });
+  });
+
+  const UNIVERSITY_DAYS_ID = "Compendium.essence20.wtnv_citizens_guide.Item.5T3DHQjLjyM9J5tS";
+
+  test("University Days: same effect as Quick Thinker, verbatim identical text in a different book", () => {
+    const actor = {
+      system: { essences: { speed: { max: 5 }, smarts: { max: 3 } } },
+      items: [{ type: 'perk', flags: { core: { sourceId: UNIVERSITY_DAYS_ID } } }],
+    };
+    expect(getNumActions(actor)).toEqual({ free: 1, movement: 1, standard: 1 });
+  });
 });
 
 describe("applySystemColorCssVariables", () => {

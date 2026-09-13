@@ -18,7 +18,7 @@
     "maxPowerCost": null,
     "powerCost": 2,
     "selectionLimit": 1,
-    "type": "grid",
+    "type": "sorcerous",
     "usesInterval": "perTurn",
     "usesPer": 1
   },

@@ -29,3 +29,26 @@ export function getNearbyAllyTokens(actor, radiusFeet) {
     && canvas.grid.measurePath([token.center, actorToken.center]).distance <= radiusFeet,
   );
 }
+
+/**
+ * Finds every OTHER token within radiusFeet of the given actor's own token, regardless of
+ * Disposition - i.e. allies AND enemies alike. First needed by Ground Suppression
+ * (Quartermaster's Guide to Gear, Strafer Focus, Vanguard, 3rd level, p.28), whose own "friend
+ * and foe" AoE is the first Perk in this project to hit BOTH dispositions at once - every prior
+ * AoE either only ever hit allies (getNearbyAllyTokens) or only enemies (getNearbyEnemyTokens).
+ * Excludes the actor's own token, matching both of those siblings.
+ * @param {Actor} actor
+ * @param {Number} radiusFeet
+ * @returns {Array<Token>}
+ */
+export function getAllNearbyTokens(actor, radiusFeet) {
+  const actorToken = actor?.getActiveTokens?.()?.[0];
+  if (!actorToken || !canvas?.tokens || !canvas?.grid) {
+    return [];
+  }
+
+  return canvas.tokens.placeables.filter(token =>
+    token !== actorToken && token.actor
+    && canvas.grid.measurePath([token.center, actorToken.center]).distance <= radiusFeet,
+  );
+}

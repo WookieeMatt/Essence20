@@ -1,0 +1,119 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Stinger Spray",
+  "type": "weapon",
+  "_id": "iOq7mriMr4BCBl78",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "e001": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.b2cIwfYeGzvifR7l",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Stinger Spray Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "poison",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 120,
+          "value": 60
+        },
+        "shiftDown": 0
+      },
+      "e002": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.GZRKwL2vRwXUIjtf",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Stinger Spray Alternate Effect (2 Poison Damage)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "poison",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 120,
+          "value": 60
+        },
+        "shiftDown": 1
+      },
+      "e003": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Bx7lTyG4lBTi66Si",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Stinger Spray Alternate Effect (Blinded)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 0,
+        "damageType": "blindingBlast",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 120,
+          "value": 60
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Path of Venom",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "poison"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1789114659637,
+    "modifiedTime": 1789114659637,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!iOq7mriMr4BCBl78"
+}

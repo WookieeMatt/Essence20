@@ -10,6 +10,9 @@
       "page": 68
     },
     "prerequisite": "",
+    "hasChoice": true,
+    "choiceType": "communityHelperSkill",
+    "numChoices": 1,
     "selectionLimit": 1,
     "type": "influence"
   },

@@ -55,6 +55,12 @@
           "mode": 2,
           "value": "1",
           "priority": null
+        },
+        {
+          "key": "system.trained.weapons.assaultRifle",
+          "mode": 5,
+          "value": "true",
+          "priority": null
         }
       ],
       "description": "",

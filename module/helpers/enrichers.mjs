@@ -1,10 +1,72 @@
 import { E20 } from "./config.mjs";
 
 /**
- * Renders @Check[skill=... dif=15] or @Check[skill=... defense=toughness] as a clickable
- * "<Skill> Skill Test" link (p.88-89's "DIF 15 Sleight of Hand or Technology" phrasing),
- * registered onto CONFIG.TextEditor.enrichers in essence20.mjs's init hook. An optional
+ * Turns a Specialization's slug key (e.g. "investigation", "underTheRadar" - the same camelCase
+ * shape helpers/utils.mjs#slugifySpecializationName produces from a display name) back into a
+ * readable Title Case label for display. This is a best-effort reversal, not a real actor lookup:
+ * an @Check[...] link is static authored text with no specific actor attached at render time, so
+ * there's no live system.skills.<skill>.specializations table to pull the "real" display name
+ * from - the author is expected to pass the same slug the target Specialization would actually
+ * have (matching how `skill=` values are already slugs, e.g. "alertness" not "Alertness").
+ * @param {String} spec
+ * @returns {String}
+ */
+function specializationDisplayName(spec) {
+  return spec
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/^./, c => c.toUpperCase());
+}
+
+/**
+ * Finds the given actor's own Specialization matching the enricher's `spec` hint, if they
+ * actually have one - `spec` is authored text with no actor attached at render time (see
+ * specializationDisplayName's own doc comment), so whether it corresponds to a real
+ * Specialization can only be resolved once a specific actor is about to roll (onCheckLinkClick
+ * below), not at render time. Tries an exact key match first (the common case, when the
+ * Specialization's own name slugifies to exactly this hint - see
+ * helpers/utils.mjs#slugifySpecializationName), then falls back to a normalized name comparison
+ * (lowercased, spaces stripped) in case the actor's real key differs from the naive slug (e.g. a
+ * second same-named Specialization got a numeric suffix).
+ * @param {Actor} actor
+ * @param {String} skill
+ * @param {String} specHint   The raw `spec` param value from the @Check[...] link.
+ * @returns {{key: String, data: Object}|null}
+ */
+function findMatchingSpecialization(actor, skill, specHint) {
+  const specializations = actor.system.skills?.[skill]?.specializations;
+  if (!specializations || !specHint) {
+    return null;
+  }
+
+  if (specializations[specHint]) {
+    return { key: specHint, data: specializations[specHint] };
+  }
+
+  const normalizedHint = specHint.toLowerCase().replace(/\s+/g, '');
+  const match = Object.entries(specializations)
+    .find(([, data]) => data?.name?.toLowerCase().replace(/\s+/g, '') == normalizedHint);
+  return match ? { key: match[0], data: match[1] } : null;
+}
+
+/**
+ * Renders @Check[skill=... dif=15], @Check[skill=... defense=toughness], or
+ * @Check[skill=... spec=investigation ...] as a clickable "<Skill> Skill Test" (or
+ * "<Skill> (<Specialization>) Skill Test") link (p.88-89's "DIF 15 Sleight of Hand or Technology"
+ * phrasing), registered onto CONFIG.TextEditor.enrichers in essence20.mjs's init hook. An optional
  * {Custom Label} suffix overrides the generated label text.
+ *
+ * `spec` names which Specialization the roll SHOULD be made as if the rolling actor actually has
+ * it (e.g. "Investigation" under Alertness) - resolved per-actor at click time
+ * (onCheckLinkClick's own findMatchingSpecialization call), not baked into the rendered link
+ * itself: this same static text can be clicked by different actors, and forcing the Specialized
+ * dice-pool mechanic (roll dice up to your shift, keep highest - a real mechanical advantage) on
+ * an actor who doesn't actually have that Specialization would hand them a bonus they haven't
+ * earned. An actor who DOES have it gets the exact same treatment a real specialization-name link
+ * on the character sheet already provides (data-specialization-key/data-specialization-name/
+ * data-is-specialized, see templates/actor/parts/misc/essence-skills.hbs) - their own Specialization's
+ * shift/Edge/Snag bonuses apply too. An actor who doesn't have it just rolls the plain skill,
+ * unspecialized. Not GM-only like `dif` - which Specialization a check calls for isn't secret
+ * information the way a target Difficulty number is.
  *
  * TextEditor.enrichHTML() re-runs independently on every client against the same raw source
  * text, so the GM-only visibility of a flat `dif` value is enforced here via game.user.isGM:
@@ -28,7 +90,10 @@ export async function enrichCheck(match) {
   }
 
   const isGM = game.user.isGM;
-  const skillLabel = game.i18n.localize(E20.skills[params.skill] ?? params.skill ?? '');
+  let skillLabel = game.i18n.localize(E20.skills[params.skill] ?? params.skill ?? '');
+  if (params.spec) {
+    skillLabel += ` (${specializationDisplayName(params.spec)})`;
+  }
 
   let label = match[2];
   if (!label) {
@@ -46,6 +111,12 @@ export async function enrichCheck(match) {
   anchor.dataset.skill = params.skill ?? '';
   if (params.defense) {
     anchor.dataset.defense = params.defense;
+  }
+
+  if (params.spec) {
+    // Not data-is-specialized here - see onCheckLinkClick's own findMatchingSpecialization call
+    // for why that's resolved per-actor, at click time, instead.
+    anchor.dataset.specializationHint = params.spec;
   }
 
   if (isGM && params.dif) {
@@ -76,6 +147,10 @@ export async function enrichCheck(match) {
   sendToChat.dataset.skill = params.skill ?? '';
   if (params.defense) {
     sendToChat.dataset.defense = params.defense;
+  }
+
+  if (params.spec) {
+    sendToChat.dataset.spec = params.spec;
   }
 
   if (params.dif) {
@@ -110,12 +185,22 @@ export async function onCheckLinkClick(event, link) {
   }
 
   const skill = link.dataset.skill;
+  // Resolved against THIS actor specifically, not baked into the link's own static dataset - see
+  // enrichCheck's own doc comment on `spec` for why forcing isSpecialized regardless of whether
+  // the actor actually has a matching Specialization would be wrong.
+  const matched = link.dataset.specializationHint
+    ? findMatchingSpecialization(actor, skill, link.dataset.specializationHint)
+    : null;
+
   const dataset = {
     skill,
     shiftUp: 0,
     shiftDown: 0,
     defenseType: link.dataset.defense,
     dif: link.dataset.dif,
+    specializationKey: matched?.key,
+    specializationName: matched?.data.name,
+    isSpecialized: !!matched,
   };
 
   actor._dice.rollSkill(dataset, actor);
@@ -137,6 +222,10 @@ export async function onCheckSendToChat(event, button) {
   const params = [`skill=${button.dataset.skill}`];
   if (button.dataset.defense) {
     params.push(`defense=${button.dataset.defense}`);
+  }
+
+  if (button.dataset.spec) {
+    params.push(`spec=${button.dataset.spec}`);
   }
 
   if (button.dataset.dif) {

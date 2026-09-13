@@ -13,7 +13,36 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "general",
+    "items": {
+      "e2ed": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.b3O5i3HMtaIHl6PD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "History Buff",
+        "type": "perk"
+      },
+      "6c06": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.LQGOwXCGvKlL4pzl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Personal Heirloom",
+        "type": "perk"
+      },
+      "74be": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.ZnuLgh6jdUHi9F75",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Savant Skill",
+        "type": "perk"
+      },
+      "1bd4": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.K2mYSJgYuViWFMAb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Well-Traveled",
+        "type": "perk"
+      }
+    },
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 1
   },
   "effects": [],
   "flags": {},

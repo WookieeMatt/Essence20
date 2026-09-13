@@ -57,7 +57,7 @@
           "priority": null
         },
         {
-          "key": "sytem.skills.persuasion.shiftUp",
+          "key": "system.skills.persuasion.shiftUp",
           "mode": 2,
           "value": "1",
           "priority": null

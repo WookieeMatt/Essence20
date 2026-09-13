@@ -10,7 +10,52 @@
       "page": 43
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.9fjtPWl2KE5ZGwq0",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "QZD2Yr4jKZAUp1Hf",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Persuasion Downshift",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!9fjtPWl2KE5ZGwq0.QZD2Yr4jKZAUp1Hf"
+    }
+  ],
   "flags": {
     "core": {}
   },

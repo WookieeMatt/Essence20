@@ -15,7 +15,52 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Silent Running",
+      "origin": "Compendium.essence20.ferocious_fighters.Item.58OZMB7WbAgqgpkX",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "FkhJEETFgd6vudJT",
+      "changes": [
+        {
+          "key": "system.trained.armors.heavy",
+          "mode": 5,
+          "value": "false",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!58OZMB7WbAgqgpkX.FkhJEETFgd6vudJT"
+    }
+  ],
   "sort": 200000,
   "ownership": {
     "default": 0,

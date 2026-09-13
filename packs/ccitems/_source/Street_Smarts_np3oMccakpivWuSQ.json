@@ -32,7 +32,7 @@
       "_id": "LjPHZSNPI3fIlwzf",
       "changes": [
         {
-          "key": "system.skills.streetwise.smarts",
+          "key": "system.skills.streetwise.essences.smarts",
           "mode": 5,
           "value": "true",
           "priority": null

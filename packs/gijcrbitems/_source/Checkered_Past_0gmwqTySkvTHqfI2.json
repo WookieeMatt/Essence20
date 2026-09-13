@@ -10,7 +10,47 @@
       "page": 47
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Not To Be Trusted",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.0gmwqTySkvTHqfI2",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "zMyTiwIPiIjyE46O",
+      "changes": [
+        { "key": "system.essenceShifts.social.snag", "mode": 5, "value": "true", "priority": null }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!0gmwqTySkvTHqfI2.zMyTiwIPiIjyE46O"
+    }
+  ],
   "flags": {
     "core": {}
   },

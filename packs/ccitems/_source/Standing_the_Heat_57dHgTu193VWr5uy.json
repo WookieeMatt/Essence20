@@ -15,7 +15,52 @@
     "selectionLimit": 1,
     "type": "division"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Standing the Heat",
+      "origin": "Compendium.essence20.cobra_codex.Item.57dHgTu193VWr5uy",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "r6S1Q3JcO9RYJBMC",
+      "changes": [
+        {
+          "key": "system.resistances.fire",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!57dHgTu193VWr5uy.r6S1Q3JcO9RYJBMC"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

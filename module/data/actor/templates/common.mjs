@@ -20,6 +20,12 @@ function makeEssenceShift() {
     shiftDown: makeInt(0),
     snag: makeBool(false),
     untrainedBonus: makeBool(false),
+    // Separate from shiftUp - some Perks (Supercharged Essence, PR CRB p.98) only grant their
+    // bonus "while Morphed", unlike a plain shiftUp Active Effect which always applies. Added
+    // to shiftUp in dice.mjs#rollSkill only when system.isMorphed is true, the same way
+    // movement/defenses already have their own separate .morphed field alongside .bonus
+    // (templates/common.mjs's makeMovementFields, actor.mjs's _prepareDefenses).
+    morphed: makeInt(0),
   });
 }
 

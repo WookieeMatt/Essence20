@@ -1,0 +1,75 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Avalanche Stomp",
+  "type": "weapon",
+  "_id": "un2ZyMR9pDFv01iI",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 296
+    },
+    "items": {
+      "e001": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.C3dsyh98mb4TDW9o",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Avalanche Stomp Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "stun",
+        "numHands": "0",
+        "numTargets": 6,
+        "radius": 30,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Path of Stone",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "stun"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1789114659637,
+    "modifiedTime": 1789114659637,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!un2ZyMR9pDFv01iI"
+}

@@ -14,15 +14,62 @@
     "items": {},
     "canActivate": false,
     "choice": null,
-    "choiceType": "none",
+    "choiceType": "viciousOrVenom",
     "isRoleVariant": false,
+    "hasChoice": true,
     "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
     "version": "powerRangers"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Toughness Bonus",
+      "origin": "Compendium.essence20.technorganic_secrets.Item.zey1cJ2IuWlTsjN2",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "pISDSpVa6ikpOtLJ",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!zey1cJ2IuWlTsjN2.pISDSpVa6ikpOtLJ"
+    }
+  ],
   "sort": 1900000,
   "ownership": {
     "default": 0,

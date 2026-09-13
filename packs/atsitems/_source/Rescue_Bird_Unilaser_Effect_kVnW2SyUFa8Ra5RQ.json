@@ -10,7 +10,7 @@
       "skill": "targeting",
       "style": "energy"
     },
-    "damageType": "element",
+    "damageType": "laser",
     "damageValue": 3,
     "shiftDown": 0,
     "numHands": "2",

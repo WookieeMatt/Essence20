@@ -2,11 +2,32 @@ import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { resizeTokens } from "../helpers/actor.mjs";
 import { actorHasPerk, findPerk } from "../helpers/perks.mjs";
+import { getGravityOptionalHeight, isGravityOptionalActive } from "../helpers/gravity-optional.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransformUuid } from "../sheet-handlers/transformer-handler.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
 import { normalizeSpecializations } from "../sheet-handlers/specialization-handler.mjs";
+import { isPowerAdaptationActive } from "../helpers/power-adaptation.mjs";
+import { isSkiing } from "../helpers/skier.mjs";
+import { isWisdomOfTheEldersActive } from "../helpers/wisdom-of-the-elders.mjs";
+import { getMobileModeType } from "../helpers/mobile-mode.mjs";
+import { getAnimalGaitType } from "../helpers/animal-gait.mjs";
+import { getSwiftnessBonusFeet } from "../helpers/swiftness.mjs";
+import { getFlutteryWingsBonus } from "../helpers/fluttery-wings.mjs";
+import { isLightningSpeedActive } from "../helpers/lightning-speed.mjs";
+import { isRushTheLineActive } from "../helpers/rush-the-line.mjs";
+import { isFrictionlessMovementActive } from "../helpers/frictionless-movement.mjs";
+import { isSprinterBoostActive } from "../helpers/sprinter-boost.mjs";
+import { isHotToTrotActive } from "../helpers/hot-to-trot.mjs";
+import { isBulwarkActive } from "../helpers/bulwark.mjs";
+import { hasNearbyDefeatedAlly } from "../helpers/field-aid.mjs";
+import { isEngineOverrideBoostActive } from "../helpers/engine-override.mjs";
+import { getHupHupHupHupHupBonus } from "../helpers/hup-hup-hup-hup-hup.mjs";
+import { isJuryRigBenefitActive } from "../helpers/jury-rig.mjs";
+import { isTheToughGetGoingActive } from "../helpers/the-tough-get-going.mjs";
+import { getNaturalMovementType } from "../helpers/natural-movement.mjs";
+import { hasActiveEnvironmentalExpertise } from "../helpers/environmental-expertise.mjs";
 
 // GI Joe CRB Vanguard Perks that grant a flat, condition-gated Toughness/Evasion bonus - computed
 // fresh in _prepareDefenses() below (like rolePointsDefense already is) rather than written into
@@ -28,11 +49,187 @@ import { normalizeSpecializations } from "../sheet-handlers/specialization-handl
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 const ARMOR_EXPERT_ID = `${GI_JOE_CRB}0a01vmWtbbYYcNvA`;
 const THE_HEAVY_ID = `${GI_JOE_CRB}rlD6YJSr2fgROKHo`;
+
+// Bulwark (Tank Focus, 17th level, p.99) - see helpers/bulwark.mjs's own doc comment. "Your
+// movement becomes zero" while planted, checked in _prepareMovement() below alongside Warrior
+// Rush's own permitted movement-math touch-point.
+const BULWARK_ID = `${GI_JOE_CRB}7758n3XWOzhSjdOk`;
+// Wire Work (Commando base, Infiltrator Focus, 6th level, p.73): "you gain a Climb Movement equal
+// to your Ground Movement" - unlike Lightfoil Wings' identical-shaped aerial=ground copy, this is
+// safe to read system.movement.ground.total directly (movementTypes processes 'climb' AFTER
+// 'ground' in the loop below, so ground's own total is already fully finalized by this point).
+// "Do not have to roll a Skill Test to climb most surfaces" and the jump-distance clauses are pure
+// narrative/GM-adjudicated with no mechanic to hook - not built. The Acrobatics-for-Athletics
+// substitution lives in dice.mjs (see WIRE_WORK_ID's own comment there).
+const WIRE_WORK_ID = `${GI_JOE_CRB}TGqWGjDUy24SPSGZ`;
+const AMPHIBIOUS_ASSAULT_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.X2atZm3eoIBJcwF6";
+// Field Aid (Focus: Medic, 3rd level, p.82) - see helpers/field-aid.mjs's own doc comment.
+const FIELD_AID_ID = `${GI_JOE_CRB}5JUC0fO9hUIJFP6u`;
 // Shared by Infantry and Vanguard - a single compendium Perk both Roles grant, whose chosen
 // Fighting Style lives on its own system.choice field (see sheet-handlers/perk-handler.mjs's
 // 'fightingStyle' choiceType). Only Careful/Defense have a numeric effect built - the other 4
 // options (Akimbo, Close Quarters Battle, Long Shot, Trigger Happy) are recorded but not automated.
 const FIGHTING_STYLE_ID = `${GI_JOE_CRB}2LtDCHxgg9bMvWQK`;
+
+// Transformers CRB Role Perks automated below - Tier 1 of the Transformers Role automation pass
+// (see project plan). Bare `perk` items with no compendium mechanical data of their own, same
+// "content is empty, the fix is code" situation as every Power Ranger Tier 1 Perk.
+const TF_CRB = "Compendium.essence20.tf_crb.Item.";
+
+// Organic Energon (Field Guide to Action and Adventure, General Perk, p.71): "Whether through
+// nature or experimentation, you represent the evolutionary crossing point between organic and
+// robotic life... You gain a pool of Energon Points equal to half your lowest Essence score."
+// Unlike Energon Battery below, this is meant for a NON-transforming character (prerequisite:
+// "You can't have the Robot trait") who would otherwise get no Energon pool at all
+// (_prepareEnergon's own early-return below is gated on system.canTransform) - so this Perk
+// widens that gate rather than fitting inside the existing canTransform branch.
+const ORGANIC_ENERGON_ID = "Compendium.essence20.field_guide_action_adventure.Item.ic1SwixGi3tstr5y";
+
+// Personal Power Supply (Field Guide to Action and Adventure, General Perk, p.71): "You gain a
+// Personal Power Point pool, starting with 1 and growing by 1 every 5 levels (for instance, if
+// you choose this Perk at 6th level, you begin with a pool of 2). You regenerate 2 Personal Power
+// Points per day (up to your maximum)." Only the pool-grant half is built - "you can choose Grid
+// Powers as General Perks" depends on the still-unbuilt Grid Powers system (this project's own
+// repeatedly-flagged #1 infra gap), left unbuilt. The level-scaling formula (1 + floor(level/5))
+// matches RAW's own worked example exactly. `system.powers.personal.max` is otherwise a plain
+// Active-Effect-additive field (see Extra Grid Power's own compendium Active Effect, `mode: 2`
+// ADD, +1) with no existing derived-data computation of its own - this runs in
+// prepareDerivedData(), after Active Effects have already applied, and ADDS on top of whatever
+// value already exists, the same "additive, not overriding" shape every other source of Personal
+// Power already assumes.
+const PERSONAL_POWER_SUPPLY_ID = "Compendium.essence20.field_guide_action_adventure.Item.Uy3t5KLbeGHv08ho";
+
+// Energon Battery (Scientist Role, 1st level, p.79): "you store a number of personal Energon
+// Points equal to your highest Essence Score, not your lowest." Overrides the Math.min() every
+// other transforming actor uses in _prepareEnergon() below.
+const ENERGON_BATTERY_ID = `${TF_CRB}mRwjbhGpqWu7hqDM`;
+
+// Fireproof (Cobra Codex, Ranger Firestarter Focus, 3rd/10th level, p.58): "At 3rd level, you gain
+// Fire Resistance. At 10th level, this improves to Fire Immunity." Level-gated, so - unlike a
+// static compendium Active Effect - this needs a live level check; runs in prepareDerivedData()
+// (after Active Effects have already applied) and only ADDS the Resistance/Immunity on top of
+// whatever's already set, the same "additive, not overriding" idiom PERSONAL_POWER_SUPPLY_ID's own
+// comment above already establishes - it never clears an existing true value down to false.
+const FIREPROOF_ID = "Compendium.essence20.cobra_codex.Item.gaOLMFlImcLRmQV0";
+
+// Animal Gait (Cobra Codex, Ranger Guerilla Focus, 6th level, p.61) - see helpers/animal-gait.mjs's
+// own doc comment. Checked in _prepareMovement() below, same permitted movement-math touch-point
+// Wisdom of the Elders' Lightfoil Wings/Warrior Rush already use.
+
+// Spark of the Ancients (Enigma of Combination, General Perk, p.41): "Your maximum Energon Pool
+// is increased by 2, and you regain a single Energon Point at the beginning of any scene. You do,
+// however, always register as having the highest amount of Energon in a scene for the purpose of
+// scanners, Insecticon hunger, and other related effects." Only the flat +2 max is built, the
+// same additive-on-top-of-whatever-already-exists shape Personal Power Supply's own +1-per-5-
+// levels grant already establishes just below. The "regain 1 Energon at the beginning of any
+// scene" half has nothing to attach to - unlike Personal Power's own real `regeneration` field,
+// Energon has no such field at all, and this project has no scene-boundary hook anywhere (a
+// repeatedly-documented gap) to fire a scene-start regen from even if one existed. "Always
+// register as highest Energon for scanners" is pure narrative - no scanner/detection mechanic
+// exists to hook it to.
+const SPARK_OF_THE_ANCIENTS_ID = "Compendium.essence20.enigma_of_combination.Item.zqPSjUwr1Y7OvGfD";
+
+// Warrior Rush (Wrecker Focus, 1st level, p.92) - see its own check in _prepareMovement() below.
+const WARRIOR_RUSH_ID = `${TF_CRB}jTNi4jENlLEq8ruS`;
+const THUNDEROUS_ADVANCE_ID = "Compendium.essence20.gi_joe_crb.Item.B0yM8ewEoYJb1GBg";
+
+// Keep it Together! (Enigma of Combination, Component Ace Focus, 17th level, p.34) - see its own
+// check in _prepareMegaformCombinerData() below.
+const KEEP_IT_TOGETHER_ID = "Compendium.essence20.enigma_of_combination.Item.9QdGh6Kfb1EVi4N7";
+
+// Better as One (Enigma of Combination, Component Ace Focus, 10th level, p.34) - see its own
+// Specialization-merging check in _prepareMegaformCombinerData() below. Only the Specialization
+// half is built - the "spend 1 personal Energon Point to give the combined form the normal +1
+// bonus (instead of spending from the combined form's own pool)" half needs a "which component's
+// resource to charge" picker this codebase has no precedent for (every existing Energon-spend
+// checkbox charges the ROLLING actor's own pool), left as a documented gap.
+const BETTER_AS_ONE_ID = "Compendium.essence20.enigma_of_combination.Item.XnmVJF4XNcsaXAKL";
+
+// Rush the Line (Factions in Action Vol. 2, Renegade Focus, p.68) - see helpers/rush-the-line.mjs's
+// own doc comment, and its own check in _prepareMovement() below.
+const RUSH_THE_LINE_ID = "Compendium.essence20.intercontinental_adventures.Item.va1HF5CudO4WsguB";
+
+// Frictionless Movement (Technorganic Secrets, Mutant Beast Influence Perk, p.47) - see
+// helpers/frictionless-movement.mjs's own doc comment for the full "double EVERY Movement type"
+// reasoning, unlike Rush the Line's own ground-only reading just above.
+const FRICTIONLESS_MOVEMENT_ID = "Compendium.essence20.technorganic_secrets.Item.9fOrSAd3brtSBk9C";
+
+// Over the Candlestick (Technorganic Secrets, Climber/Nimble Origin Benefit, p.38) - see
+// dice.mjs's own OVER_THE_CANDLESTICK_ID comment for the full Perk text and Agile Reflexes half;
+// this file only handles the Innate Climber half's own movement grant, below.
+const OVER_THE_CANDLESTICK_ID = "Compendium.essence20.technorganic_secrets.Item.zKngKkwDyNv2nnH5";
+
+// Sprinter (Technorganic Secrets, Hunter's Prowess Quadruped Origin choice, p.44): "Add 20 feet to
+// your Alt Mode's Ground Movement. Additionally, once per scene, you may double your Movement for
+// one round." CORRECTED 2026-09-11: this item's own compendium ActiveEffect
+// (`system.movement.ground.bonus +20`) was unconditional - since `.bonus` is added to Ground
+// Movement's own total in EITHER Bot or Alt Mode (see _prepareMovement's own base+bonus/
+// altMode+bonus formulas below), it wrongly buffed Bot Mode too, when RAW scopes this to Alt Mode
+// only. Disabled that static effect and replaced it with the live, Alt-Mode-gated check below -
+// same pattern Innate Climber's own fix just established. The once/scene double-Movement half
+// lives in helpers/sprinter-boost.mjs, reusing Frictionless Movement's exact toggle +
+// combatTurn/combatRound end-of-turn-clear shape, scoped to Ground only (Sprinter's own Alt-Mode-
+// Ground focus, the same reading Rush the Line's identical "your Movement" wording already gets).
+const SPRINTER_ID = "Compendium.essence20.technorganic_secrets.Item.L5P54Ismw81Lhrbe";
+
+// Sprinter (Transformers One Sourcebook, General Perk, p.19): "Increase your Bot Mode Ground
+// Movement by 5 feet." CORRECTED 2026-09-11: the compendium's own unconditional
+// system.movement.ground.bonus effect wrongly buffed Alt Mode too - the same overreach bug already
+// found and fixed for Technorganic Secrets' own identically-named Sprinter Perk this same session,
+// disabled and replaced with this live, Bot-Mode-gated check. A third, unrelated compendium item
+// from this project's own "same name, different book" pile - see dice.mjs's own
+// TF1S_SPRINTER_ID comment for this Perk's Acrobatics/Athletics shiftUp half.
+const TF1S_SPRINTER_ID = "Compendium.essence20.transformers_one_sourcebook.Item.gbDY8UiTgSNZHPAo";
+
+// Prowl (GI Joe CRB, Focus: Predator, 17th level, p.94): "in your environment of expertise, you
+// double your Ground Movement." Gated on the same Environmental Expertise toggle Natural
+// Movement's own identical precondition already reads (see
+// helpers/environmental-expertise.mjs's own doc comment) - see its own check in
+// _prepareMovement() below.
+const PROWL_ID = "Compendium.essence20.gi_joe_crb.Item.ZCOzxoy7d3P5izBB";
+
+const JUMP_THROUGH_TIME = "Compendium.essence20.jump_through_time.Item.";
+const GENERAL_HAWKS_PERSONNEL_FILES = "Compendium.essence20.general_hawk_s_personel_files.Item.";
+
+// Skier (General Hawk's Personnel Files, General Perk, p.175) - see helpers/skier.mjs's own doc
+// comment. "+10ft Ground Movement... while skiing."
+const SKIER_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}dvmY7UiuKejOPY4N`;
+
+// Quantum Master (A Jump Through Time, Quantum Ranger, 20th level, p.47): "double all Movement
+// values while Morphed" - see its own check in _prepareMovement() below, same permanent-while-
+// Morphed doubling shape as Warrior Rush's own round-1-only doubling just above (movement math is
+// one of the few spots this project's own Active Effects/derived-data hold still permits touching -
+// see project_essence20_active_effects's own note on _prepareHealth/_prepareDefenses staying off
+// limits pending the user's separate migration).
+const QUANTUM_MASTER_ID = `${JUMP_THROUGH_TIME}YlHp7yzbOsytNUjD`;
+
+// Eltarian Training (Through the Shattered Grid, General Perk, p.73) - see its own check just
+// below in _prepareMovement(). Not a piloting Perk despite being flagged as one by an earlier,
+// mistaken categorization pass - see dice.mjs's own identical constant/comment for the full
+// discovery (this Perk's Finesse-downshift-immunity half lives there instead, in rollSkill()).
+const ELTARIAN_TRAINING_ID = "Compendium.essence20.through_the_shattered_grid.Item.NXxiyoOB60ems444";
+
+// Air Born (MLP Pegasus Origin Perk, p.37): "Choose one of the following as your starting
+// Movement: 15ft ground and 45ft aerial, 30ft/30ft, or 45ft/15ft." Sets the actor's own BASE
+// ground/aerial Movement outright - see its own check in _prepareMovement() below, which OVERRIDES
+// (not adds to) system.movement.<type>.base before the total is computed, the same permitted
+// movement-math touch-point Warrior Rush/Quantum Master/Eltarian Training above already use.
+const AIR_BORN_ID = "Compendium.essence20.mlp_crb.Item.ekWiJObUf2BAhevg";
+const AIR_BORN_MOVEMENT_OPTIONS = {
+  groundHeavy: { ground: 15, aerial: 45 },
+  balanced: { ground: 30, aerial: 30 },
+  aerialHeavy: { ground: 45, aerial: 15 },
+};
+
+// Static Electricity (WTNV Citizen's Guide, General Perk, p.51, Weird +d6 prereq): "your Movement
+// speed is 35 feet." Sets ground Movement's own base outright - see its own check in
+// _prepareMovement() below, same permitted movement-math touch-point as Air Born just above. The
+// "+2 Evasion" half is a compendium Active Effect.
+const STATIC_ELECTRICITY_ID = "Compendium.essence20.wtnv_citizens_guide.Item.mF6zMzGIfxQgJF9B";
+
+// Gravity Optional (Soldier Role, Blood Space War Veteran Focus, p.37) - see
+// helpers/gravity-optional.mjs's own doc comment.
+const GRAVITY_OPTIONAL_ID = "Compendium.essence20.wtnv_citizens_guide.Item.F5mrzupd6TG2kj3x";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -188,6 +385,7 @@ export class Essence20Actor extends Actor {
     this._prepareNpcData();
     this._prepareVision();
     this._prepareEnergon();
+    this._preparePersonalPowerSupply();
     // Runs after Active Effects have applied (prepareDerivedData is the step after that in
     // Foundry's own document lifecycle) - fills in any field a Specialization-granting effect's
     // OVERRIDE changes left unset (see specialization-handler.mjs#normalizeSpecializations).
@@ -200,6 +398,7 @@ export class Essence20Actor extends Actor {
       this._prepareSorcerousPower();
       this._prepareResource();
       this._preparePoisonTraining();
+      this._prepareFireproofResistance();
     }
 
     if (this.type == 'megaform') {
@@ -260,6 +459,22 @@ export class Essence20Actor extends Actor {
   }
 
   /**
+   * Fireproof - see FIREPROOF_ID's own comment above. Additive only: never clears an already-true
+   * Resistance/Immunity, since some other source (an Alteration, a different Perk) may have
+   * granted it independently.
+   */
+  _prepareFireproofResistance() {
+    if (!actorHasPerk(this, FIREPROOF_ID)) {
+      return;
+    }
+
+    this.system.resistances.fire = true;
+    if (this.system.level >= 10) {
+      this.system.immunities.fire = true;
+    }
+  }
+
+  /**
    * Sets system.energon.normal.max to this actor's lowest current Essence Score (p.104-105 -
    * "capable of storing a number of personal Energon Points equal to their lowest Essence
    * Score"), for actors that can transform. Non-transforming actors (vehicles, etc.) keep
@@ -267,17 +482,42 @@ export class Essence20Actor extends Actor {
    * capacity rather than the Cybertronian Energon Points resource.
    */
   _prepareEnergon() {
-    if (!this.system.canTransform) {
+    const hasOrganicEnergon = actorHasPerk(this, ORGANIC_ENERGON_ID);
+    if (!this.system.canTransform && !hasOrganicEnergon) {
       return;
     }
 
     const essences = this.system.essences;
-    this.system.energon.normal.max = Math.min(
-      essences.strength.value,
-      essences.speed.value,
-      essences.smarts.value,
-      essences.social.value,
-    );
+    const values = [essences.strength.value, essences.speed.value, essences.smarts.value, essences.social.value];
+    const lowest = Math.min(...values);
+
+    if (!this.system.canTransform) {
+      // Organic Energon - see ORGANIC_ENERGON_ID's own comment above.
+      this.system.energon.normal.max = Math.floor(lowest / 2);
+    } else {
+      // Energon Battery - see ENERGON_BATTERY_ID's own comment above.
+      this.system.energon.normal.max = actorHasPerk(this, ENERGON_BATTERY_ID)
+        ? Math.max(...values)
+        : lowest;
+    }
+
+    // Spark of the Ancients - see SPARK_OF_THE_ANCIENTS_ID's own comment above. Applies on top of
+    // either branch above - RAW names no restriction to transforming actors specifically.
+    if (actorHasPerk(this, SPARK_OF_THE_ANCIENTS_ID)) {
+      this.system.energon.normal.max += 2;
+    }
+  }
+
+  /**
+   * Personal Power Supply - see PERSONAL_POWER_SUPPLY_ID's own comment above.
+   */
+  _preparePersonalPowerSupply() {
+    if (!actorHasPerk(this, PERSONAL_POWER_SUPPLY_ID)) {
+      return;
+    }
+
+    this.system.powers.personal.max += 1 + Math.floor((this.system.level ?? 0) / 5);
+    this.system.powers.personal.regeneration += 2;
   }
 
   /**
@@ -295,6 +535,18 @@ export class Essence20Actor extends Actor {
       const parentRole = this.items.get(rolePoints.getFlag('essence20', 'parentId'));
       return !parentRole || !parentRole.system.isAdditive;
     });
+  }
+
+  /**
+   * The actor's own base Role Item, ignoring any additive Role (e.g. Old Hand) - mirrors
+   * _getBaseRolePoints() above, but returns the Role itself rather than its RolePoints. Used by
+   * Perks that read the base Role's own data directly, like Genius's own "Role Skills" list
+   * (system.skills on a role item).
+   * @returns {Item|undefined}
+   */
+  _getBaseRole() {
+    const roleList = this.items.documentsByType.role;
+    return roleList.find(role => !role.system.isAdditive);
   }
 
   _prepareHealth () {
@@ -431,8 +683,34 @@ export class Essence20Actor extends Actor {
     let movementTotal = 0;
     const system = this.system;
 
+    // Air Born - see AIR_BORN_ID's own comment above. Resolved once, outside the per-type loop
+    // (it sets both ground and aerial in the same pick), then applied to each type's own base
+    // inside the loop below.
+    const airBornOption = AIR_BORN_MOVEMENT_OPTIONS[findPerk(this, AIR_BORN_ID)?.system.choice];
+
+    // Static Electricity - see STATIC_ELECTRICITY_ID's own comment above. Sets ground Movement's
+    // own base to a flat 35ft, same override shape as Air Born just above.
+    const hasStaticElectricity = actorHasPerk(this, STATIC_ELECTRICITY_ID);
+
+    // Gravity Optional - see helpers/gravity-optional.mjs's own doc comment. Sets aerial
+    // Movement's own base while the toggle is active, same override shape as Static Electricity
+    // just above.
+    const gravityOptionalActive = actorHasPerk(this, GRAVITY_OPTIONAL_ID) && isGravityOptionalActive(this);
+
     const movementTypes = ['aerial', 'ground', 'climb', 'swim'];
     for (const movementType of movementTypes) {
+      if (airBornOption && (movementType == 'ground' || movementType == 'aerial')) {
+        system.movement[movementType].base = airBornOption[movementType];
+      }
+
+      if (movementType == 'ground' && hasStaticElectricity) {
+        system.movement[movementType].base = 35;
+      }
+
+      if (movementType == 'aerial' && gravityOptionalActive) {
+        system.movement[movementType].base = getGravityOptionalHeight(this);
+      }
+
       system.movement[movementType].base = parseInt(system.movement[movementType].base);
       system.movement[movementType].total = 0;
 
@@ -461,6 +739,253 @@ export class Essence20Actor extends Actor {
           //This equation gives you half speed round down to the nearest 5 ft for certain movements.
           system.movement[movementType].total = Math.floor(system.movement.ground.total / 5 * .5) * 5;
         }
+      }
+
+      // Natural Movement - see helpers/natural-movement.mjs's own doc comment. "Half your Ground
+      // Movement" is the same formula the default climb/swim fallback above already computes, but
+      // this OVERRIDES regardless of whatever that movement type's total already was (unlike the
+      // fallback, which only kicks in when it's still 0) - real value for an actor whose actual
+      // permanent Climb/Swim speed is lower than half their Ground Movement.
+      if (movementType == getNaturalMovementType(this)) {
+        system.movement[movementType].total = Math.floor(system.movement.ground.total / 5 * .5) * 5;
+      }
+
+      // Prowl - see PROWL_ID's own comment above.
+      if (movementType == 'ground' && actorHasPerk(this, PROWL_ID) && hasActiveEnvironmentalExpertise(this)) {
+        system.movement.ground.total *= 2;
+      }
+
+      // Wire Work - see WIRE_WORK_ID's own comment above. Overrides the default half-Ground climb
+      // speed just computed above, the same "last word on this movement type's own total" shape
+      // Bulwark's own zeroing-out already uses.
+      if (movementType == 'climb' && actorHasPerk(this, WIRE_WORK_ID)) {
+        system.movement.climb.total = system.movement.ground.total;
+      }
+
+      // Amphibious Assault (Quartermaster's Guide to Gear, Freebooter Focus, Renegade, 1st level,
+      // p.24): "You gain an Aquatic Movement equal to your Ground Movement. If you already have
+      // an Aquatic Movement, or gain one from another source, increase the better Aquatic
+      // Movement option by 15ft." Same "last word on this movement type's own total" shape as
+      // Wire Work just above - "already have Aquatic Movement" is read off the base value (before
+      // this Perk's own contribution), the same way Wire Work reads a pre-existing Climb base
+      // being nonzero elsewhere in this project. The Initiative Edge half ("while using your
+      // Aquatic Movement") needs an "am I currently in the water" concept this codebase doesn't
+      // track anywhere - correctly left unbuilt, the same environment-tracking gap Feet Wet's own
+      // clause hits.
+      if (movementType == 'swim' && actorHasPerk(this, AMPHIBIOUS_ASSAULT_ID)) {
+        system.movement.swim.total = system.movement.swim.base > 0
+          ? Math.max(system.movement.swim.total, system.movement.ground.total) + 15
+          : system.movement.ground.total;
+      }
+
+      // Warrior Rush (Wrecker Focus, 1st level, p.92): "On the first turn of combat, double your
+      // Movements until the beginning of your next turn." Approximated as "for the whole first
+      // round" rather than tracking whose specific turn it is (this system has no per-actor
+      // "was it your turn yet this round" check outside dice.mjs's own combat-modifier functions,
+      // and derived data like this has no roll/target context to hook one in with) - the same
+      // round-granularity simplification Who Dares Wins/Alpha Strike already use for "until my
+      // next turn" clauses.
+      if (game.combat?.round == 1 && actorHasPerk(this, WARRIOR_RUSH_ID)) {
+        system.movement[movementType].total *= 2;
+      }
+
+      // Rush the Line - see RUSH_THE_LINE_ID's own comment above. Ground Movement only (this
+      // system's own default "Movement" stat), same reading Power Adaptation's own "+20 feet"
+      // clause already uses.
+      if (movementType == 'ground' && actorHasPerk(this, RUSH_THE_LINE_ID) && isRushTheLineActive(this)) {
+        system.movement[movementType].total *= 2;
+      }
+
+      // Frictionless Movement - see FRICTIONLESS_MOVEMENT_ID's own comment above. Every Movement
+      // type, unlike Rush the Line's own ground-only check just above.
+      if (actorHasPerk(this, FRICTIONLESS_MOVEMENT_ID) && isFrictionlessMovementActive(this)) {
+        system.movement[movementType].total *= 2;
+      }
+
+      // The Tough Get Going (Factions in Action Vol. 2, Oktober Guard General Perk, p.95) - see
+      // helpers/the-tough-get-going.mjs's own doc comment. Same round-scoped doubling shape as
+      // Warrior Rush/Rush the Line just above.
+      if (movementType == 'ground' && isTheToughGetGoingActive(this)) {
+        system.movement[movementType].total *= 2;
+      }
+
+      // Thunderous Advance (GI Joe CRB, Mechanized Infantry Focus, 7th level, p.81, built
+      // 2026-09-12): "While piloting a vehicle, its Movement increases by 15 feet in combat, and
+      // 20% out of combat." Held by the DRIVER, applied to the VEHICLE's own movement - checked
+      // here on `this` (the vehicle) by resolving its own crew map directly (the same
+      // fromUuidSync(entry.uuid) idiom _prepareMegaformZordData already establishes) rather than
+      // dice.mjs's private, Dice-class-only _getPilotedVehicle. RAW doesn't scope this to ground
+      // only, unlike Power Adaptation's own "+20 feet" - applied to every movement type, the same
+      // "every type" reading Frictionless Movement's own unscoped clause already uses.
+      if (this.type == 'vehicle') {
+        const driverEntry = Object.values(this.system?.actors ?? {}).find(crew => crew.vehicleRole == 'driver');
+        const driver = driverEntry ? fromUuidSync(driverEntry.uuid) : null;
+        if (driver && actorHasPerk(driver, THUNDEROUS_ADVANCE_ID)) {
+          system.movement[movementType].total += game.combat ? 15 : Math.round(system.movement[movementType].total * 0.2);
+        }
+      }
+
+      // Bulwark - see BULWARK_ID's own comment above. Overrides every movement type to 0 while
+      // planted, the last word on this movement type's own total for this pass.
+      if (actorHasPerk(this, BULWARK_ID) && isBulwarkActive(this)) {
+        system.movement[movementType].total = 0;
+      }
+
+      // Power Adaptation - Boost of Speed (Across the Stars, Silver Ranger, 9th/18th level,
+      // p.57) - see helpers/power-adaptation.mjs's own doc comment. "Increase Movement by 20
+      // feet" is read as the ground Movement specifically (this system's default "Movement"
+      // stat), same reasoning Warrior Rush's own doubling above already applies broadly instead.
+      if (movementType == 'ground' && isPowerAdaptationActive(this, 'boostOfSpeed')) {
+        system.movement[movementType].total += 20;
+      }
+
+      // Over the Candlestick - Innate Climber (Technorganic Secrets, Climber/Nimble Origin
+      // Benefit, p.38) - see OVER_THE_CANDLESTICK_ID's own comment in dice.mjs. "You gain a 40
+      // feet Climb Movement while in your Alt Mode," gated on the actor having actually chosen
+      // this option (hasChoice picker, `system.choice`) rather than Agile Reflexes. A flat SET,
+      // not an addition - overrides the generic "half of Ground" climb fallback just above, the
+      // same "last word on this movement type's own total" shape Wire Work/Natural Movement
+      // already use for their own Climb grants.
+      if (movementType == 'climb' && this.system.isTransformed
+        && findPerk(this, OVER_THE_CANDLESTICK_ID)?.system.choice == 'innateClimber') {
+        system.movement[movementType].total = 40;
+      }
+
+      // Sprinter - see SPRINTER_ID's own comment above. "+20ft Alt Mode Ground Movement," Alt Mode
+      // gated (replacing the item's own now-disabled unconditional compendium effect).
+      if (movementType == 'ground' && this.system.isTransformed && actorHasPerk(this, SPRINTER_ID)) {
+        system.movement[movementType].total += 20;
+      }
+
+      // Sprinter's own once/scene Movement double - see helpers/sprinter-boost.mjs's own doc
+      // comment. Ground only, unlike Frictionless Movement's own every-type doubling.
+      if (movementType == 'ground' && actorHasPerk(this, SPRINTER_ID) && isSprinterBoostActive(this)) {
+        system.movement[movementType].total *= 2;
+      }
+
+      // Sprinter (Transformers One) - see TF1S_SPRINTER_ID's own comment above. +5ft Bot Mode
+      // Ground Movement only.
+      if (movementType == 'ground' && !this.system.isTransformed && actorHasPerk(this, TF1S_SPRINTER_ID)) {
+        system.movement[movementType].total += 5;
+      }
+
+      // Skier - see SKIER_ID's own comment above. Same "flag alone isn't enough" defense-in-depth
+      // check Bulwark's own toggle already uses.
+      if (movementType == 'ground' && actorHasPerk(this, SKIER_ID) && isSkiing(this)) {
+        system.movement[movementType].total += 10;
+      }
+
+      // Field Aid - see helpers/field-aid.mjs's own doc comment.
+      if (movementType == 'ground' && actorHasPerk(this, FIELD_AID_ID) && hasNearbyDefeatedAlly(this)) {
+        system.movement[movementType].total += 10;
+      }
+
+      // Engine Override (Factions in Action Vol. 2, Engineer Troop Focus, 3rd level, p.72) - see
+      // helpers/engine-override.mjs's own doc comment. +15ft Ground Movement to whichever vehicle
+      // this was activated on - checked on THIS actor directly (not gated on actorHasPerk, since
+      // the flag lives on the boosted vehicle, not the Perk holder).
+      if (movementType == 'ground' && isEngineOverrideBoostActive(this)) {
+        system.movement[movementType].total += 15;
+      }
+
+      // Hup! Hup! Hup! Hup! Hup! - see helpers/hup-hup-hup-hup-hup.mjs's own doc comment. Checked
+      // directly on THIS actor, not gated on actorHasPerk - the flag lives on the boosted ally,
+      // not the Officer who granted it, same shape as Engine Override's own +15ft grant above.
+      if (movementType == 'ground') {
+        system.movement[movementType].total += getHupHupHupHupHupBonus(this);
+      }
+
+      // Jury Rig - Engine Turbo-Boost / Watertight Seals (Factions in Action Vol. 2, Engineer
+      // Troop Focus, 17th level, p.73) - see helpers/jury-rig.mjs's own doc comment. Both grant
+      // "an Aerial/Aquatic Movement equal to its Ground Movement" - same override shape as Wisdom
+      // of the Elders' identical Lightfoil Wings clause, checked on THIS actor directly (the flag
+      // lives on the boosted vehicle, not the Engineer who granted it). Read ground's own .base +
+      // .bonus rather than .total for the same reason Lightfoil Wings does - movementTypes
+      // processes aerial/ground/climb/swim in that order, so ground's own .total isn't finalized
+      // yet at this point in the loop.
+      if (movementType == 'aerial' && isJuryRigBenefitActive(this, 'engineTurboBoost')) {
+        system.movement.aerial.total = system.movement.ground.base + system.movement.ground.bonus;
+      }
+
+      if (movementType == 'swim' && isJuryRigBenefitActive(this, 'watertightSeals')) {
+        system.movement.swim.total = system.movement.ground.base + system.movement.ground.bonus;
+      }
+
+      // Swiftness (Quartermaster's Guide to Gear, Grid Power, p.94) - see
+      // helpers/swiftness.mjs's own doc comment. +20ft to whichever of ground/aerial was chosen
+      // at activation, same live-override shape as Boost of Speed just above.
+      if (movementType == 'ground' || movementType == 'aerial') {
+        system.movement[movementType].total += getSwiftnessBonusFeet(this, movementType);
+      }
+
+      // Eltarian Training (Through the Shattered Grid, General Perk, p.73): "+10 Ground
+      // Movement" - a plain flat bonus, same shape as Boost of Speed's own +20 just above.
+      if (movementType == 'ground' && actorHasPerk(this, ELTARIAN_TRAINING_ID)) {
+        system.movement[movementType].total += 10;
+      }
+
+      // Wisdom of the Elders - Lightfoil Wings (Through the Shattered Grid, Guardian of Eltar,
+      // 9th/18th level, p.72): "Gain an Aerial Movement equal to your Ground Movement" while
+      // active. movementTypes processes 'aerial' before 'ground' in this same loop, so ground's
+      // own .total isn't finalized yet at this point (and reading it after processing 'ground'
+      // instead would mean OVERWRITING whatever aerial-specific doubling/bonus this same loop
+      // already applied to aerial.total earlier in its own pass) - computed directly from ground's
+      // own base/bonus/morphed inputs instead, deliberately not including any other Perk's
+      // per-movement-type bonus (Warrior Rush's doubling, Boost of Speed's own +20, etc.), the
+      // same "closest deterministic approximation" idiom this project uses wherever true
+      // computation order would otherwise conflict.
+      if (movementType == 'aerial' && isWisdomOfTheEldersActive(this, 'lightfoilWings')) {
+        system.movement.aerial.total = system.movement.ground.base + system.movement.ground.bonus
+          + (system.isMorphed ? system.movement.ground.morphed : 0);
+      }
+
+      // Animal Gait - see ANIMAL_GAIT_ID's own comment above / helpers/animal-gait.mjs. Same
+      // aerial-before-ground ordering wrinkle Lightfoil Wings already hit (computed from ground's
+      // own base/bonus/morphed inputs, not .total, when the chosen type is 'aerial'); climb/swim
+      // both process after ground in this same loop, so reading ground.total directly is safe for
+      // those two, same as Wire Work's own identical Climb-copy-Ground clause.
+      if (movementType == getAnimalGaitType(this)) {
+        system.movement[movementType].total = movementType == 'aerial'
+          ? system.movement.ground.base + system.movement.ground.bonus + (system.isMorphed ? system.movement.ground.morphed : 0)
+          : system.movement.ground.total;
+      }
+
+      // Mobile Mode (Through the Shattered Grid, Grid Power, p.26): "gain that type of Movement at
+      // 30 feet" while active and Morphed - a floor, not a reduction, if the actor already has more
+      // of that movement type some other way. See helpers/mobile-mode.mjs's own doc comment for why
+      // the movement type is picked fresh at each activation rather than a permanent build-time
+      // choice.
+      if (system.isMorphed && movementType == getMobileModeType(this)) {
+        system.movement[movementType].total = Math.max(system.movement[movementType].total, 30);
+      }
+
+      // Fluttery Wings (MLP CRB, Elementary Aid spell, p.136) - see
+      // helpers/fluttery-wings.mjs's own doc comment. +15ft Aerial Movement while active.
+      if (movementType == 'aerial') {
+        system.movement.aerial.total += getFlutteryWingsBonus(this);
+      }
+
+      // Hot To Trot (Knights of Canterlot, Elementary Enchantment spell, p.43) - see
+      // helpers/hot-to-trot.mjs's own doc comment. "Move 15ft further with each Movement action" -
+      // read as ground Movement (the spell's own flavor text, "quickly catch up to a friend
+      // across town," points at ordinary ground travel, not flight).
+      if (movementType == 'ground' && isHotToTrotActive(this)) {
+        system.movement.ground.total += 15;
+      }
+
+      // Quantum Master - see QUANTUM_MASTER_ID's own comment above. Applied after every other
+      // addend above (Warrior Rush's own doubling included, in the unlikely case an actor somehow
+      // held both), matching "double all Movement values" as the final multiplier on the total.
+      if (system.isMorphed && actorHasPerk(this, QUANTUM_MASTER_ID)) {
+        system.movement[movementType].total *= 2;
+      }
+
+      // Lightning Speed (MLP CRB, Virtuoso Utility spell, p.139) - see
+      // helpers/lightning-speed.mjs's own doc comment. "Doubles all Movement rates" while active -
+      // applied last, same final-multiplier shape as Quantum Master just above (not gated on
+      // isMorphed, unlike Quantum Master - RAW states no such qualifier here).
+      if (isLightningSpeedActive(this)) {
+        system.movement[movementType].total *= 2;
       }
     }
 
@@ -750,6 +1275,25 @@ export class Essence20Actor extends Actor {
       for (const skill of CONFIG.E20.skillsByEssence[essence] ?? []) {
         if (winner.system.skills[skill] && system.skills[skill]) {
           system.skills[skill] = foundry.utils.deepClone(winner.system.skills[skill]);
+
+          // Better as One (Component Ace Focus, 10th level, p.34): "any Skill Specializations
+          // you possess are also applied to the Skills of a Combiner form you are a component
+          // of." A holder's own Specializations in this skill are merged in even when they
+          // weren't the essence's high-score "winner" above (whose own Specializations were
+          // already carried over by the deepClone just above).
+          for (const component of participants) {
+            if (component === winner || !actorHasPerk(component, BETTER_AS_ONE_ID)) {
+              continue;
+            }
+
+            const specializations = component.system.skills[skill]?.specializations;
+            if (specializations) {
+              system.skills[skill].specializations = {
+                ...system.skills[skill].specializations,
+                ...foundry.utils.deepClone(specializations),
+              };
+            }
+          }
         }
       }
     }
@@ -828,7 +1372,14 @@ export class Essence20Actor extends Actor {
     );
 
     const defeatedCount = participants.filter(component => component.system.health.value <= 0).length;
-    system.isDefeated = defeatedCount > participants.length / 2;
+    // Keep it Together! (Component Ace Focus, 17th level, p.34): "a combined form you are
+    // merged with will not fall apart as long as you still have Health" - overrides the normal
+    // majority-defeated rule entirely while ANY component holding the Perk is still above 0
+    // Health, regardless of how many other components have fallen.
+    const hasKeepItTogetherHolderStanding = participants.some(
+      component => component.system.health.value > 0 && actorHasPerk(component, KEEP_IT_TOGETHER_ID),
+    );
+    system.isDefeated = !hasKeepItTogetherHolderStanding && defeatedCount > participants.length / 2;
   }
 
   /**

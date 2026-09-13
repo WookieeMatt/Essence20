@@ -31,7 +31,52 @@
     "value": 0,
     "version": "powerRangers"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "How Strange!",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.zsuQoBsso5SddTAs",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "xkqJKa9oL1KMKNcz",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.weird.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787759972181,
+        "modifiedTime": 1787759972181,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!zsuQoBsso5SddTAs.xkqJKa9oL1KMKNcz"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

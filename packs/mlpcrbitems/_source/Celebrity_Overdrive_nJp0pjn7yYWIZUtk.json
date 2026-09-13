@@ -10,7 +10,52 @@
       "page": 62
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.nJp0pjn7yYWIZUtk",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "6hZrTnugraihnWGW",
+      "changes": [
+        {
+          "key": "system.skills.infiltration.snag",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Infiltration Snag",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!nJp0pjn7yYWIZUtk.6hZrTnugraihnWGW"
+    }
+  ],
   "flags": {
     "core": {}
   },

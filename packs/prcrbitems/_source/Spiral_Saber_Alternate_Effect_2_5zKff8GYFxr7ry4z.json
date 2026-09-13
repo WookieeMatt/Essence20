@@ -10,7 +10,7 @@
       "skill": "might",
       "style": "melee"
     },
-    "damageType": "element",
+    "damageType": "cold",
     "damageValue": 2,
     "shiftDown": 0,
     "numHands": "1",

@@ -12,7 +12,52 @@
       "page": 29
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.v3M50S503FrmcufD",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "DXwQn28lI8Z7aYvk",
+      "changes": [
+        {
+          "key": "system.skills.culture.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Culture Downshift",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!v3M50S503FrmcufD.DXwQn28lI8Z7aYvk"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

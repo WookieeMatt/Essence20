@@ -27,7 +27,7 @@
       "_id": "m8xPc4jow7JQzW3Q",
       "changes": [
         {
-          "key": "system.skills.Alertness.snag",
+          "key": "system.skills.alertness.snag",
           "mode": 5,
           "value": "true",
           "priority": null

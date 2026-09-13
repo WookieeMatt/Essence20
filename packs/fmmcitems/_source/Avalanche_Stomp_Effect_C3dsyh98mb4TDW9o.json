@@ -1,0 +1,51 @@
+{
+  "folder": "bhHf5mBJ6I1YUook",
+  "name": "Avalanche Stomp Effect",
+  "type": "weaponEffect",
+  "_id": "C3dsyh98mb4TDW9o",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "athletics",
+      "style": "melee"
+    },
+    "damageType": "stun",
+    "damageValue": 2,
+    "defenseType": "toughness",
+    "shiftDown": 0,
+    "numHands": "0",
+    "numTargets": 6,
+    "radius": 30,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": null
+    },
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 296
+    },
+    "description": "<p>30 ft radius centered on self; targets all creatures on the ground; on a Critical Success, the target is also knocked Prone</p>"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1789114659637,
+    "modifiedTime": 1789114659637,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!C3dsyh98mb4TDW9o"
+}

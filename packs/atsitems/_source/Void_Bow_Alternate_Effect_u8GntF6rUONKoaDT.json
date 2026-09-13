@@ -10,7 +10,7 @@
       "skill": "targeting",
       "style": "energy"
     },
-    "damageType": "element",
+    "damageType": "void",
     "damageValue": 1,
     "shiftDown": 1,
     "numHands": "2",

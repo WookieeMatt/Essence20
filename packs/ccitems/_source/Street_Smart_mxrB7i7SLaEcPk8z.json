@@ -32,13 +32,13 @@
       "_id": "rIFjXEFQfcOTU9cZ",
       "changes": [
         {
-          "key": "system.skills.culture.essence.social",
+          "key": "system.skills.culture.essences.social",
           "mode": 5,
           "value": "true",
           "priority": null
         },
         {
-          "key": "system.skills.streetwise.essence.smarts",
+          "key": "system.skills.streetwise.essences.smarts",
           "mode": 5,
           "value": "true",
           "priority": null

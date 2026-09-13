@@ -13,7 +13,9 @@
     },
     "prerequisite": "",
     "selectionLimit": 2,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "powerAdaptation"
   },
   "effects": [],
   "sort": 162500,

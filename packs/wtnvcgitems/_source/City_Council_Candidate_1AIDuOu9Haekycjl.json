@@ -7,7 +7,14 @@
   "system": {
     "originalId": "",
     "description": "",
-    "items": {},
+    "items": {
+      "wrd1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.RO0a3eX8MIo5g1Tv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Weird",
+        "type": "perk"
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,

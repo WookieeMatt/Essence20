@@ -10,7 +10,7 @@
       "skill": "might",
       "style": "melee"
     },
-    "damageType": "element",
+    "damageType": "electric",
     "damageValue": 1,
     "shiftDown": 1,
     "numHands": "1",

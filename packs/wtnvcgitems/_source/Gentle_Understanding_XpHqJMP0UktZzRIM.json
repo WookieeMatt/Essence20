@@ -29,7 +29,15 @@
     },
     "type": "influence",
     "value": 0,
-    "version": "powerRangers"
+    "version": "powerRangers",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "skillDice",
+      "essence": "social",
+      "maxUses": 0,
+      "reset": "none"
+    }
   },
   "effects": [],
   "sort": 0,

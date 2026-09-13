@@ -13,7 +13,25 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "items": {
+      "cs01": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.a4BfJxhUC7hAhgdZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gestalt Combiner",
+        "type": "perk",
+        "role": null
+      },
+      "cs02": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.ZIJnA0z3Mrp8pfbd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Matched Combiner",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "sort": 100000,

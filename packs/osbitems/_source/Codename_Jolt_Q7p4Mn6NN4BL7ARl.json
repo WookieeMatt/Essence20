@@ -12,7 +12,7 @@
       "page": 24
     },
     "actionType": "standard",
-    "canActivate": false,
+    "canActivate": true,
     "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,

@@ -13,7 +13,10 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "influence",
+    "hasChoice": true,
+    "choiceType": "skills",
+    "numChoices": 1
   },
   "effects": [],
   "sort": 0,

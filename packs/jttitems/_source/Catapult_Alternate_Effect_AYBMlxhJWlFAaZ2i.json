@@ -15,7 +15,7 @@
       "skill": "targeting",
       "style": "projectile"
     },
-    "damageType": "element",
+    "damageType": "fire",
     "damageValue": 2,
     "isSpecialized": false,
     "numHands": 8,

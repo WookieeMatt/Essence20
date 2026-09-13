@@ -13,12 +13,12 @@
     },
     "armorBonus": {
       "defense": "toughness",
-      "value": 1
+      "value": 2
     },
     "availability": "restricted",
     "benefit": "",
     "traits": [
-      "plating"
+      "deflective"
     ],
     "type": "armor",
     "prerequisite": ""

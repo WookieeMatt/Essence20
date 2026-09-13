@@ -1,5 +1,10 @@
 import { actorHasPerk } from "./perks.mjs";
 import { getNearbyAllyTokens } from "./allies.mjs";
+import { isDugIn } from "./dig-in.mjs";
+import { isBulwarkActive } from "./bulwark.mjs";
+import { isGreasedLightningActive } from "./greased-lightning.mjs";
+import { isCalmingWordsBuffActive } from "./calming-words.mjs";
+import { isIronBravadoFrightenedImmune } from "./iron-bravado.mjs";
 
 /**
  * Generic Condition-immunity enforcement. Several Perks across the GI Joe CRB grant outright
@@ -14,6 +19,9 @@ import { getNearbyAllyTokens } from "./allies.mjs";
  */
 
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
+const TF_CRB = "Compendium.essence20.tf_crb.Item.";
+const DECEPTICON_DIRECTIVE = "Compendium.essence20.decepticon_directive.Item.";
+const PR_CRB = "Compendium.essence20.pr_crb.Item.";
 
 // Perk -> the Conditions it grants immunity to, for the holder only. Each entry is a literal
 // transcription of a real "you are immune to the X, Y, and Z Conditions" grant - not a guess at
@@ -24,6 +32,104 @@ const CONDITION_IMMUNITY_PERKS = [
     // Frightened, Immobilized, Restrained, and Stunned Conditions."
     id: `${GI_JOE_CRB}pJcXVybdqjcWHpJq`,
     conditions: ['blinded', 'deafened', 'frightened', 'immobilized', 'restrained', 'stunned'],
+  },
+  {
+    // Ambush Master (Door-Kicker Focus, 10th level, p.99): "you are also immune to the Blind and
+    // Deafened Conditions." (The other half - "one extra attack with a shotgun or submachine gun
+    // when you surprise an enemy" - is action economy, not built.)
+    id: `${GI_JOE_CRB}UYaPTaAQH5SDXxnz`,
+    conditions: ['blinded', 'deafened'],
+  },
+  {
+    // Shape Shifter (Transformers CRB, Triple Changer Focus, 6th level, p.76): "you become immune
+    // to Maneuver attacks and the Prone Condition." The Maneuver half is a damageType, not a
+    // Condition - handled by this same Perk's own compendium Active Effect
+    // (system.immunities.maneuver) instead, which the existing generic damage-immunity check in
+    // applyDamage() (helpers/combat.mjs) already reads without any code here.
+    id: `${TF_CRB}Um9sT730VGgHPxLh`,
+    conditions: ['prone'],
+  },
+  {
+    // Indomitable (Transformers CRB, Wrecker Focus, 17th level, p.92): "you become immune to the
+    // Frightened Condition." (The other half - "attempts to Intimidate you suffer a Snag" - is a
+    // roll modifier, handled in dice.mjs#_getAutomaticCombatModifiers instead, not a Condition.)
+    id: `${TF_CRB}CXnb6i4d7XhkhFNr`,
+    conditions: ['frightened'],
+  },
+  {
+    // Keep Your Cool (A Jump Through Time, General Perk, p.53, built 2026-09-12): "You are immune
+    // to the Frightened condition." (The other half - "Intimidation attempts against you suffer
+    // Snag" - is a roll modifier, handled in dice.mjs#_getAutomaticCombatModifiers, same shape as
+    // Indomitable's own identical pair of clauses.)
+    id: "Compendium.essence20.jump_through_time.Item.566NsnD5dccg9uVo",
+    conditions: ['frightened'],
+  },
+  {
+    // Dig In (Decepticon Directive Raider, Siegemaster Focus, 10th level, p.64): "you're immune
+    // to the Prone Condition" - but only WHILE dug in (a toggled stance, see helpers/dig-in.mjs),
+    // unlike every other entry in this table which grants immunity unconditionally just for
+    // holding the Perk. `isActive` is the one entry-level escape hatch for that difference - every
+    // other entry implicitly has no `isActive` and is always considered active.
+    id: `${DECEPTICON_DIRECTIVE}9tIkV50YiO3xqxvi`,
+    conditions: ['prone'],
+    isActive: isDugIn,
+  },
+  {
+    // Bulwark (Tank Focus, 17th level, p.99): "immune to... the Frightened Condition" while
+    // planted (see helpers/bulwark.mjs's own doc comment) - same conditional-isActive shape as
+    // Dig In's own Prone immunity just above.
+    id: `${GI_JOE_CRB}7758n3XWOzhSjdOk`,
+    conditions: ['frightened'],
+    isActive: isBulwarkActive,
+  },
+  {
+    // Righteous Heart (PR CRB, General Perk, p.98): "you are completely immune to fear-causing
+    // effects." The Perk's other clause ("Free action to gain Resistance to one damage type until
+    // the end of your next turn") is a toggle + damage-type picker with its own duration tracking
+    // - a distinct, larger piece, not built this pass.
+    id: `${PR_CRB}mOgEBZIbiaT07eAq`,
+    conditions: ['frightened'],
+  },
+  {
+    // Greased Lightning (Knights of Canterlot, Elementary Enchantment spell, p.43) - see
+    // helpers/greased-lightning.mjs's own doc comment. A spell-granted temporary flag, not a
+    // permanently-held Perk - uses `checkFn` (an alternate to every other entry's `id` +
+    // actorHasPerk shape) to check the actor's own flag directly instead.
+    checkFn: isGreasedLightningActive,
+    conditions: ['restrained', 'grappled'],
+  },
+  {
+    // Calming Words (Enigma of Combination, Counselor Focus, 3rd level, p.34) - see
+    // helpers/calming-words.mjs's own doc comment. Same flag-based checkFn shape as Greased
+    // Lightning above - a roll-granted temporary buff, not a permanently-held Perk.
+    checkFn: isCalmingWordsBuffActive,
+    conditions: ['frightened', 'mesmerized'],
+  },
+  {
+    // Get Low (Technorganic Secrets, Slitherer Origin Benefit, p.43): "While in your Alt Mode, you
+    // cannot become Prone" - see dice.mjs's own GET_LOW_ID comment for this Perk's other 2 clauses
+    // (ranged-Snag, Infiltration shiftUp). Alt-Mode-conditional, same isActive escape hatch Dig
+    // In/Bulwark already establish.
+    id: "Compendium.essence20.technorganic_secrets.Item.rEoZEFQR2puQxpIW",
+    conditions: ['prone'],
+    isActive: (actor) => actor.system?.isTransformed === true,
+  },
+  {
+    // Mind of No Mind (Factions in Action Vol. 2, Arashikage General Perk, p.9): "You are immune
+    // to the Frightened Condition." (This Perk's other two clauses - +2 Willpower, a once/scene
+    // ↑1 Alertness toggle - are already built elsewhere, per its own doc comment in dice.mjs.)
+    id: "Compendium.essence20.intercontinental_adventures.Item.edU8dyL3poLU6IuM",
+    conditions: ['frightened'],
+  },
+  {
+    // Iron Bravado (PR CRB, Black Spectrum Modification, replaces Whatever We Need, p.45): "When
+    // you Attack an enemy, you become immune to the Frightened condition until the beginning of
+    // your next turn." A temporary, round-scoped immunity rather than an always-on grant like
+    // every other entry here - checkFn reads the flag dice.mjs#rollSkill stamps on any Attack
+    // (see helpers/iron-bravado.mjs's own doc comment), rather than a plain actorHasPerk + isActive
+    // check against current actor state.
+    checkFn: isIronBravadoFrightenedImmune,
+    conditions: ['frightened'],
   },
 ];
 
@@ -48,7 +154,10 @@ const CONDITION_IMMUNITY_AURA_PERKS = [
  * @returns {Boolean}
  */
 export function isImmuneToCondition(actor, statusId) {
-  const grantsSelf = entry => entry.conditions.includes(statusId) && actorHasPerk(actor, entry.id);
+  const grantsSelf = entry => entry.conditions.includes(statusId)
+    && (entry.checkFn
+      ? entry.checkFn(actor)
+      : actorHasPerk(actor, entry.id) && (!entry.isActive || entry.isActive(actor)));
   if (CONDITION_IMMUNITY_PERKS.some(grantsSelf) || CONDITION_IMMUNITY_AURA_PERKS.some(grantsSelf)) {
     return true;
   }

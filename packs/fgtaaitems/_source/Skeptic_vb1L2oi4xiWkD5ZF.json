@@ -29,7 +29,7 @@
       "_id": "AlrrSExmB7BJC8a9",
       "changes": [
         {
-          "key": "system.defenses.wilpower.bonus",
+          "key": "system.defenses.willpower.bonus",
           "mode": 2,
           "value": "1",
           "priority": null

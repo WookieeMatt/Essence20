@@ -17,6 +17,26 @@
     "hasVariableCost": true,
     "maxPowerCost": 3,
     "powerCost": 1,
+    "reroll": {
+      "enabled": false,
+      "maxUses": 1,
+      "mode": "all",
+      "reset": "scene",
+      "target": "allDice",
+      "cost": {
+        "resourcePath": "",
+        "amount": 0,
+        "worldStoryPoints": 0,
+        "rolePointsName": ""
+      },
+      "condition": "none",
+      "skills": [],
+      "essence": "any",
+      "recursive": false,
+      "minDieFaces": 0,
+      "grantsCanCritD2": false,
+      "bonus": 0
+    },
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

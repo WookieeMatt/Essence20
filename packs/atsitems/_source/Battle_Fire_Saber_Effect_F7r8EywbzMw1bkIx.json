@@ -15,7 +15,7 @@
       "skill": "targeting",
       "style": "energy"
     },
-    "damageType": "element",
+    "damageType": "fire",
     "damageValue": 3,
     "isSpecialized": false,
     "shiftDown": 0,

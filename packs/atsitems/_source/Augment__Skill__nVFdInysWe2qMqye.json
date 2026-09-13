@@ -12,7 +12,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
-    "hasChoice": false
+    "hasChoice": true,
+    "choiceType": "skills"
   },
   "effects": [],
   "flags": {

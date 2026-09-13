@@ -31,7 +31,52 @@
     "value": 0,
     "version": "giJoe"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "The Glory of Cobra-La",
+      "origin": "Compendium.essence20.ferocious_fighters.Item.VAhtHpKlv4gsR0OY",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "6HDgtthxnaWhtmGu",
+      "changes": [
+        {
+          "key": "system.qualified.armors.light",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!VAhtHpKlv4gsR0OY.6HDgtthxnaWhtmGu"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

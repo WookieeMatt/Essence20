@@ -6,6 +6,7 @@ import {
   canMeetRerollScope,
   canUseReroll,
   consumeRerollUsage,
+  findRolePointsItem,
   getRerollConfigs,
   hasEligibleRerollTarget,
   hasRerollCost,
@@ -44,6 +45,26 @@ function makeRoll(dice) {
     _evaluateTotal: jest.fn(() => 42),
   };
 }
+
+/* findRolePointsItem */
+describe("findRolePointsItem", () => {
+  test("returns the matching rolePoints item by exact name", () => {
+    const moxie = { name: "Moxie" };
+    const actor = { items: { documentsByType: { rolePoints: [moxie, { name: "Other" }] } } };
+    expect(findRolePointsItem(actor, "Moxie")).toBe(moxie);
+  });
+
+  test("returns null when there's no match", () => {
+    const actor = { items: { documentsByType: { rolePoints: [{ name: "Other" }] } } };
+    expect(findRolePointsItem(actor, "Moxie")).toBeNull();
+  });
+
+  test("returns null rather than throwing for a minimal actor mock lacking items.documentsByType entirely", () => {
+    expect(findRolePointsItem({ items: {} }, "Moxie")).toBeNull();
+    expect(findRolePointsItem({}, "Moxie")).toBeNull();
+    expect(findRolePointsItem(null, "Moxie")).toBeNull();
+  });
+});
 
 /* getRerollConfigs */
 describe("getRerollConfigs", () => {
@@ -88,6 +109,31 @@ describe("getRerollConfigs", () => {
     // 18th-level Power Infusion ("...and 2s") should still reroll 1s, not just 2s.
     expect(configs[0].values).toEqual([1, 2]);
     expect(configs[0].reset).toBe("scene");
+  });
+
+  test("scopeToOriginSkill (It's A Gift) overrides skills with the actor's own chosen Origin Skill", () => {
+    const actor = makeActor({ system: { originSkillsIncrease: 'streetwise' } });
+    actor.items = [{
+      uuid: "Item.itsAGift",
+      system: { reroll: { enabled: true, mode: "all", target: "allDice", scopeToOriginSkill: true } },
+    }];
+    actor.effects = [];
+
+    const configs = getRerollConfigs(actor);
+    expect(configs).toHaveLength(1);
+    expect(configs[0].skills).toEqual(['streetwise']);
+  });
+
+  test("scopeToOriginSkill is unscoped (empty skills) when the actor hasn't chosen an Origin Skill yet", () => {
+    const actor = makeActor({ system: {} });
+    actor.items = [{
+      uuid: "Item.itsAGift",
+      system: { reroll: { enabled: true, mode: "all", target: "allDice", scopeToOriginSkill: true } },
+    }];
+    actor.effects = [];
+
+    const configs = getRerollConfigs(actor);
+    expect(configs[0].skills).toEqual([]);
   });
 
   test("reads a reroll grant off an ActiveEffect", () => {
@@ -149,6 +195,34 @@ describe("canUseReroll / consumeRerollUsage", () => {
     expect(await canUseReroll(actor, config, "item:x")).toBe(true);
 
     delete global.game.combat;
+  });
+
+  test("a 'turn' reset bucket is independent per combatant-turn (A Jump Through Time 'Quantum Master')", async () => {
+    global.game.combat = { id: "combat-1", round: 1, turn: 0 };
+    const actor = makeActor();
+    const config = { maxUses: 1, reset: "turn" };
+
+    await consumeRerollUsage(actor, config, "item:x");
+    expect(await canUseReroll(actor, config, "item:x")).toBe(false);
+
+    // Same round, next combatant's turn - a fresh bucket.
+    global.game.combat = { id: "combat-1", round: 1, turn: 1 };
+    expect(await canUseReroll(actor, config, "item:x")).toBe(true);
+
+    // Back around to this actor's own turn next round - also a fresh bucket, not a re-use of turn 0.
+    global.game.combat = { id: "combat-1", round: 2, turn: 0 };
+    expect(await canUseReroll(actor, config, "item:x")).toBe(true);
+
+    delete global.game.combat;
+  });
+
+  test("a 'turn' reset bucket outside combat shares one bucket, not unlimited", async () => {
+    delete global.game.combat;
+    const actor = makeActor();
+    const config = { maxUses: 1, reset: "turn" };
+
+    await consumeRerollUsage(actor, config, "item:x");
+    expect(await canUseReroll(actor, config, "item:x")).toBe(false);
   });
 });
 
@@ -306,6 +380,20 @@ describe("canMeetRerollCondition", () => {
     expect(canMeetRerollCondition(actor, { condition: "powerWeapon" }, { isPowerWeaponAttack: false })).toBe(false);
     expect(canMeetRerollCondition(actor, { condition: "powerWeapon" })).toBe(false);
   });
+
+  test("'smallerTarget' reads the triggering roll's own context (Exterminator)", () => {
+    const actor = makeActor();
+    expect(canMeetRerollCondition(actor, { condition: "smallerTarget" }, { smallerTarget: true })).toBe(true);
+    expect(canMeetRerollCondition(actor, { condition: "smallerTarget" }, { smallerTarget: false })).toBe(false);
+    expect(canMeetRerollCondition(actor, { condition: "smallerTarget" })).toBe(false);
+  });
+
+  test("'fumble' requires the triggering roll to have actually Fumbled (Clip Check)", () => {
+    const actor = makeActor();
+    expect(canMeetRerollCondition(actor, { condition: "fumble" }, { isFumble: true })).toBe(true);
+    expect(canMeetRerollCondition(actor, { condition: "fumble" }, { isFumble: false })).toBe(false);
+    expect(canMeetRerollCondition(actor, { condition: "fumble" })).toBe(false);
+  });
 });
 
 /* canMeetRerollScope */
@@ -388,6 +476,44 @@ describe("applyReroll", () => {
     expect(success).toBe(true);
     expect(die.reroll).toHaveBeenCalledWith("r1", { recursive: true });
     expect(roll._evaluateTotal).toHaveBeenCalled();
+  });
+
+  test("bonus (Across the Stars 'Mending the Grid') adds a flat amount on top of the refreshed total", async () => {
+    const die = makeDie(20, [{ result: 1, active: true }]);
+    const roll = makeRoll([die]);
+
+    await applyReroll(roll, { mode: "ones", target: "allDice", values: [], bonus: 2 });
+
+    expect(roll._total).toBe(44); // the mocked _evaluateTotal() of 42, plus the +2 bonus
+  });
+
+  test("no bonus (the default) leaves the refreshed total untouched", async () => {
+    const die = makeDie(20, [{ result: 1, active: true }]);
+    const roll = makeRoll([die]);
+
+    await applyReroll(roll, { mode: "ones", target: "allDice", values: [] });
+
+    expect(roll._total).toBe(42);
+  });
+
+  test("keepBetter (Hawk's Personnel Files 'Backup Planner') keeps the ORIGINAL total when the reroll came out worse", async () => {
+    const die = makeDie(20, [{ result: 1, active: true }]);
+    const roll = makeRoll([die]);
+    roll._total = 50; // the pre-reroll total, better than the mocked post-reroll _evaluateTotal() of 42
+
+    await applyReroll(roll, { mode: "all", target: "allDice", values: [], keepBetter: true });
+
+    expect(roll._total).toBe(50);
+  });
+
+  test("keepBetter takes the REROLLED total when it's the better of the two", async () => {
+    const die = makeDie(20, [{ result: 1, active: true }]);
+    const roll = makeRoll([die]);
+    roll._total = 30; // the pre-reroll total, worse than the mocked post-reroll _evaluateTotal() of 42
+
+    await applyReroll(roll, { mode: "all", target: "allDice", values: [], keepBetter: true });
+
+    expect(roll._total).toBe(42);
   });
 
   test("mode 'onesAndTwos' delegates to Die#reroll with a '<=2' comparison", async () => {

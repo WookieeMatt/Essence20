@@ -9,6 +9,15 @@
     "description": "",
     "prerequisite": "",
     "selectionLimit": 1,
+    "reroll": {
+      "enabled": true,
+      "mode": "all",
+      "target": "allDice",
+      "skills": ["deception"],
+      "maxUses": 3,
+      "reset": "mission",
+      "keepBetter": true
+    },
     "source": {
       "book": "General Hawk's Personnel Files",
       "page": 174

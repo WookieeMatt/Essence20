@@ -64,7 +64,7 @@ export default class PowerCostSelector extends serializeFormSubmits(HandlebarsAp
   static async myFormHandler(event, form, formData) {
     const newCost = getFormData(formData.object);
 
-    _powerCountUpdate(this._actor, this._maxPower, this._powerType, newCost);
+    await _powerCountUpdate(this._actor, this._maxPower, this._powerType, newCost, this._power);
     this.close();
   }
 }

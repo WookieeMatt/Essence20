@@ -29,7 +29,7 @@
       "_id": "oljjmO9WFZ6UxkEU",
       "changes": [
         {
-          "key": "system.skills.acrobatics.ShiftUp",
+          "key": "system.skills.acrobatics.shiftUp",
           "mode": 2,
           "value": "1",
           "priority": null

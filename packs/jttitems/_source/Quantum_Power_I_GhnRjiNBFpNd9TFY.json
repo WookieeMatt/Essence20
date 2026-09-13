@@ -13,7 +13,68 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 1,
+    "items": {
+      "qp00": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.ExplosiveMorphJT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Explosive Morph",
+        "type": "perk",
+        "role": null
+      },
+      "qp01": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.GAWOYpBZm6dLsaSq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Focused Strike",
+        "type": "perk",
+        "role": null
+      },
+      "qp02": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.InterspatialPaus",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Interspatial Pause",
+        "type": "perk",
+        "role": null
+      },
+      "qp03": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.MB1UsageEvasion1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Momentary Blur",
+        "type": "perk",
+        "role": null
+      },
+      "qp04": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.QRexPortalJTTxxx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Q-Rex Portal",
+        "type": "perk",
+        "role": null
+      },
+      "qp05": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.QC1IgnoreArmor01",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quantum Cut",
+        "type": "perk",
+        "role": null
+      },
+      "qp06": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.QuantumTriggerJT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quantum Trigger",
+        "type": "perk",
+        "role": null
+      },
+      "qp07": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.SS1IgnoreRange10",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Solo Shot",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "sort": 400000,

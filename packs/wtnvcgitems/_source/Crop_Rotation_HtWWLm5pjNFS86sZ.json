@@ -7,7 +7,14 @@
   "system": {
     "originalId": "",
     "description": "",
-    "items": {},
+    "items": {
+      "crn1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.2i8jWYZH14Cu30LO",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Imaginary Corn",
+        "type": "gear"
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,

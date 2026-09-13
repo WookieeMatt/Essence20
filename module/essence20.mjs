@@ -15,17 +15,27 @@ import { Essence20ZordActorSheet } from "./sheets/zord-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
-import { handleStoryPointSpendRequest } from "./helpers/story-points.mjs";
+import { handleStoryPointGrantRequest, handleStoryPointSpendRequest } from "./helpers/story-points.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 // Import helper/utility classes and constants.
-import { addConsummatePerformerButton, addRerollButtons, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { addConsummatePerformerButton, addExploitWeaknessButton, addRerollButtons, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { applyVisionToTokens, getNumActions, syncAutoBlindStatus } from "./helpers/actor.mjs";
 import { canUsePerk } from "./helpers/banked-buffs.mjs";
+import { healStunAtTurnStart } from "./helpers/combat.mjs";
+import { applyTimeToThinkEdge } from "./helpers/time-to-think.mjs";
+import { healRegeneratingShellAtTurnEnd } from "./helpers/power-adaptation.mjs";
+import { deactivateRushTheLineAtTurnEnd } from "./helpers/rush-the-line.mjs";
+import { deactivateFrictionlessMovementAtTurnEnd } from "./helpers/frictionless-movement.mjs";
+import { deactivateSprinterBoostAtTurnEnd } from "./helpers/sprinter-boost.mjs";
+import { healUnbeatableAtTurnStart } from "./helpers/unbeatable.mjs";
+import { applyBravado } from "./helpers/bravado.mjs";
+import { applyHardCorpsDeferredDefeat } from "./helpers/hard-corps.mjs";
+import { payMetallicArmorMaintenance } from "./helpers/metallic-armor.mjs";
 import { isImmuneToCondition } from "./helpers/condition-immunity.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
@@ -220,6 +230,8 @@ Hooks.once("init", async function () {
   game.socket.on("system.essence20", (data) => {
     if (data.action === "spendStoryPoints") {
       handleStoryPointSpendRequest(data);
+    } else if (data.action === "grantStoryPoints") {
+      handleStoryPointGrantRequest(data);
     } else {
       game.StoryPointsTracker?.handleStoryPointSignal(data);
     }
@@ -457,6 +469,9 @@ Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
   addRerollButtons(app, html);
   addConsummatePerformerButton(app, html);
+  addSpiteButton(app, html);
+  addSufferButton(app, html);
+  addExploitWeaknessButton(app, html);
   attachCheckCardListeners(app, html);
   hideDifficultyForNonGm(app, html);
   applyChatMessageSystemColor(app, html);
@@ -564,6 +579,79 @@ for (const hookName of ["createActiveEffect", "updateActiveEffect", "deleteActiv
     }
   });
 }
+
+/* Stun (damage type): "heal 1 per turn" - see healStunAtTurnStart's own doc comment for why this
+   reads as the Stunned creature's OWN turn, not a once-per-round tick for everyone. combatTurn
+   fires when the turn advances within a round; combatRound fires instead of combatTurn when the
+   round itself advances (wrapping back to the first combatant) - both are needed to catch every
+   turn change, but combatStart (the very first turn of a brand-new combat) is deliberately not
+   hooked, so that one specific first turn doesn't get a heal tick - a minor, documented gap rather
+   than a third near-identical hook for an edge case. Both hooks fire BEFORE the Combat document's
+   own turn/round properties are updated (confirmed live - combat.turn/combat.combatant still
+   reflect the OLD, ending turn at hook-fire-time), so the new combatant has to be looked up via
+   updateData.turn against combat.turns instead of the (stale) combat.combatant getter. */
+for (const hookName of ["combatTurn", "combatRound"]) {
+  Hooks.on(hookName, (combat, updateData) => {
+    const actor = combat.turns[updateData.turn]?.actor;
+    if (actor) {
+      healStunAtTurnStart(actor);
+
+      // Metallic Armor Power Up! (Through the Shattered Grid, Grid Power, p.26) - "costs 1
+      // Personal Power at the start of each subsequent turn to maintain" - see
+      // payMetallicArmorMaintenance's own doc comment for what this does and doesn't cover.
+      payMetallicArmorMaintenance(actor);
+
+      // Unbeatable (GI Joe CRB, Renegade base, 11th level, p.97) - see
+      // healUnbeatableAtTurnStart's own doc comment.
+      healUnbeatableAtTurnStart(actor);
+    }
+
+    // Power Adaptation - Regenerating Shell (Across the Stars, Silver Ranger, 9th/18th level,
+    // p.57) - "restore 1 Health at the end of each of your turns." Unlike healStunAtTurnStart
+    // above (the NEW turn's own actor), this reads combat.combatant BEFORE the update commits -
+    // still the OLD, ENDING turn's actor at hook-fire-time (confirmed live, see the comment
+    // above) - exactly the actor whose turn is ending, which is what "at the end of each of
+    // your turns" means here.
+    const endingActor = combat.combatant?.actor;
+    if (endingActor) {
+      healRegeneratingShellAtTurnEnd(endingActor);
+
+      // Rush the Line (Factions in Action Vol. 2, Renegade Focus, p.68) - see
+      // deactivateRushTheLineAtTurnEnd's own doc comment. Same "read combat.combatant BEFORE the
+      // update commits" idiom as Regenerating Shell just above.
+      deactivateRushTheLineAtTurnEnd(endingActor);
+
+      // Frictionless Movement (Technorganic Secrets, Mutant Beast Influence Perk, p.47) - see
+      // deactivateFrictionlessMovementAtTurnEnd's own doc comment. Same "read combat.combatant
+      // BEFORE the update commits" idiom as Rush the Line just above.
+      deactivateFrictionlessMovementAtTurnEnd(endingActor);
+
+      // Sprinter (Technorganic Secrets, Hunter's Prowess Quadruped Origin choice, p.44) - see
+      // deactivateSprinterBoostAtTurnEnd's own doc comment. Same "read combat.combatant BEFORE the
+      // update commits" idiom as Frictionless Movement just above.
+      deactivateSprinterBoostAtTurnEnd(endingActor);
+    }
+  });
+}
+
+/* Time To Think (MLP Magic, 3rd level) - see applyTimeToThinkEdge's own doc comment. Checked once,
+   when combat actually begins, by which point every combatant's Initiative should already be
+   set. */
+Hooks.on("combatStart", (combat) => {
+  applyTimeToThinkEdge(combat);
+
+  // Bravado (GI Joe CRB, Renegade base, 13th level, p.97) - see applyBravado's own doc comment.
+  applyBravado(combat);
+});
+
+/* Hard Corps (Sgt Slaughter Sourcebook, Marine Origin Benefit, p.8) - see
+   applyHardCorpsDeferredDefeat's own doc comment. deleteCombat (fired when a GM ends/deletes the
+   encounter) is this codebase's own first "combat has ended" signal - every other "until the end
+   of the scene" clause elsewhere in this project has so far just gone unenforced rather than
+   needing this. */
+Hooks.on("deleteCombat", (combat) => {
+  applyHardCorpsDeferredDefeat(combat);
+});
 
 /* Every DialogV2 (ours or Foundry core's own, e.g. the item-creation dialog) gets the same
    theme-wrapper light/dark theming as the system's actor/item sheets and apps. */

@@ -29,7 +29,15 @@
     },
     "type": "origin",
     "value": 0,
-    "version": "powerRangers"
+    "version": "powerRangers",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "skillDice",
+      "maxUses": 1,
+      "reset": "day",
+      "bonus": 1
+    }
   },
   "effects": [],
   "sort": 0,

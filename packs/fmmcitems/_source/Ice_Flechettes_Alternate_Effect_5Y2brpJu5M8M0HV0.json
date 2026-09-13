@@ -1,0 +1,51 @@
+{
+  "folder": "2R73jUQ5pjDkQ39V",
+  "name": "Ice Flechettes Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "5Y2brpJu5M8M0HV0",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "cold",
+    "damageValue": 2,
+    "defenseType": "toughness",
+    "shiftDown": 1,
+    "numHands": "1",
+    "numTargets": 5,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 120,
+      "value": 60
+    },
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "description": "<p>Multiple Targets (1d4+1) (downshift 1); on a Critical Success, the target loses all armor Defense bonuses until the end of its next turn</p>"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1789114659637,
+    "modifiedTime": 1789114659637,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!5Y2brpJu5M8M0HV0"
+}

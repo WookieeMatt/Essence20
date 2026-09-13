@@ -110,7 +110,7 @@ describe("snortleAtTheSpooky", () => {
     expect(await snortleAtTheSpooky(actor)).toBe(true);
     expect(actor._rolePoints.update).toHaveBeenCalledWith({ "system.resource.value": 1 });
     expect(fluttershy.actor.toggleStatusEffect).toHaveBeenCalledWith('frightened', { active: false });
-    expect(ui.notifications.info).toHaveBeenCalled();
+    expect(global.ChatMessage.create).toHaveBeenCalled();
   });
 
   test("an unlimited-resource actor cures the target without spending a point", async () => {

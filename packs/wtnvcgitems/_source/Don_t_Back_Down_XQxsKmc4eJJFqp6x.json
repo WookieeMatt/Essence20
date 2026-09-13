@@ -29,7 +29,14 @@
     },
     "type": "influence",
     "value": 0,
-    "version": "powerRangers"
+    "version": "powerRangers",
+    "reroll": {
+      "enabled": true,
+      "mode": "single",
+      "target": "anyDie",
+      "maxUses": 1,
+      "reset": "scene"
+    }
   },
   "effects": [],
   "sort": 0,

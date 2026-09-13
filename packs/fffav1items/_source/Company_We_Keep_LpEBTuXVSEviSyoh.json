@@ -11,7 +11,71 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 75
     },
-    "items": {},
+    "items": {
+      "cwk1": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.7d6wjAWVligNBLgu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Alluring",
+        "type": "perk",
+        "role": null
+      },
+      "cwk2": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.362Yyjs1INvYufPN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Animalize",
+        "type": "perk",
+        "role": null
+      },
+      "cwk3": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.WOY0sYAEFzKIhCkb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Crawler",
+        "type": "perk",
+        "role": null
+      },
+      "cwk4": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.edyqqiggTfYAJVOJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhanced Agility",
+        "type": "perk",
+        "role": null
+      },
+      "cwk5": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.oV3afkqtAqClrPls",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Feral Adrenaline",
+        "type": "perk",
+        "role": null
+      },
+      "cwk6": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.ro4Iz7lmNrvOjBM2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heightned Cognizance",
+        "type": "perk",
+        "role": null
+      },
+      "cwk7": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.XmFMrfsM3PH4GQBG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Limited Skin Tempering",
+        "type": "perk",
+        "role": null
+      },
+      "cwk8": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.sVFK8wa26RXzq8rC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Utility Adjustment",
+        "type": "perk",
+        "role": null
+      },
+      "cwk9": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.JPcfpND1LOVLDKIZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enlarged",
+        "type": "perk",
+        "role": null
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,
@@ -20,9 +84,9 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "none",
+    "choiceType": "perks",
     "isRoleVariant": false,
-    "hasChoice": false,
+    "hasChoice": true,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",

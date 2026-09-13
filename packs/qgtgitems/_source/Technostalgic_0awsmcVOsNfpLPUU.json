@@ -15,7 +15,48 @@
     "selectionLimit": 1,
     "type": "influence"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Old-School Equipment",
+      "origin": "Compendium.essence20.quartermasters_guide_to_gear.Item.0awsmcVOsNfpLPUU",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "TechnostalgicEf1",
+      "changes": [
+        { "key": "system.essenceShifts.smarts.edge", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.essenceShifts.social.edge", "mode": 5, "value": "true", "priority": null }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!0awsmcVOsNfpLPUU.TechnostalgicEf1"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

@@ -29,7 +29,7 @@
       "_id": "IJIvmRVU84zCrs6O",
       "changes": [
         {
-          "key": "system.essenceShifts.smarts.shiftUp",
+          "key": "system.essenceShifts.smarts.morphed",
           "mode": 2,
           "value": "1",
           "priority": null

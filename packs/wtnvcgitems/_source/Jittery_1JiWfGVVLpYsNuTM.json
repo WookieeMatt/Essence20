@@ -12,7 +12,52 @@
       "page": 29
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.1JiWfGVVLpYsNuTM",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "DP1ETVDtFugaSIal",
+      "changes": [
+        {
+          "key": "system.skills.intimidation.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Intimidation Downshift",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!1JiWfGVVLpYsNuTM.DP1ETVDtFugaSIal"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

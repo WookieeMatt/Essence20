@@ -12,6 +12,14 @@
       "page": 28
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "d20",
+      "condition": "fumble",
+      "reset": "combat",
+      "maxUses": 1
+    },
     "selectionLimit": 1,
     "type": "general"
   },
