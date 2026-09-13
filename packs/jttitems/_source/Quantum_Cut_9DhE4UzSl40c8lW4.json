@@ -2,7 +2,7 @@
   "folder": "rxku6PTVz0evKZwC",
   "name": "Quantum Cut",
   "type": "perk",
-  "_id": "QC1IgnoreArmor",
+  "_id": "9DhE4UzSl40c8lW4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "originalId": "",
@@ -33,5 +33,5 @@
     "modifiedTime": 1757442700000,
     "lastModifiedBy": "j6WWLUdptyfr6qBb"
   },
-  "_key": "!items!QC1IgnoreArmor"
+  "_key": "!items!9DhE4UzSl40c8lW4"
 }

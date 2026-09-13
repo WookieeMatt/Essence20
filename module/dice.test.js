@@ -9462,7 +9462,7 @@ describe("rollSkill", () => {
   });
 
   describe("Quantum Cut / Solo Shot (A Jump Through Time, Quantum Ranger, Quantum Power options, p.46)", () => {
-    const QUANTUM_CUT_ID = "Compendium.essence20.jump_through_time.Item.QC1IgnoreArmor01";
+    const QUANTUM_CUT_ID = "Compendium.essence20.jump_through_time.Item.9DhE4UzSl40c8lW401";
     const SOLO_SHOT_ID = "Compendium.essence20.jump_through_time.Item.SS1IgnoreRange10";
     const QUANTUM_DEFENDER_SWORD_ID = "Compendium.essence20.jump_through_time.Item.HNgu1rhXK46RG0bW";
     const QUANTUM_DEFENDER_BLASTER_ID = "Compendium.essence20.jump_through_time.Item.gOZtlnZubOZ01ZdF";

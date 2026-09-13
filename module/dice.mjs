@@ -1004,7 +1004,7 @@ const GROWTH_BOOST_ID = "Compendium.essence20.jump_through_time.Item.BVrwQKqvOdy
 // Submachine Gun elsewhere in this file).
 const QUANTUM_DEFENDER_SWORD_ID = "Compendium.essence20.jump_through_time.Item.HNgu1rhXK46RG0bW";
 const QUANTUM_DEFENDER_BLASTER_ID = "Compendium.essence20.jump_through_time.Item.gOZtlnZubOZ01ZdF";
-const QUANTUM_CUT_ID = "Compendium.essence20.jump_through_time.Item.QC1IgnoreArmor01";
+const QUANTUM_CUT_ID = "Compendium.essence20.jump_through_time.Item.9DhE4UzSl40c8lW401";
 const SOLO_SHOT_ID = "Compendium.essence20.jump_through_time.Item.SS1IgnoreRange10";
 
 // Eltarian Tech (Through the Shattered Grid, Guardian of Eltar, 1st level, p.72): "spend 1
