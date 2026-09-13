@@ -14,7 +14,9 @@ function makeEffectsCollection(effects) {
 }
 
 function makeEffect(disabled) {
-  return { disabled, update: jest.fn(async function (data) { this.disabled = data.disabled; }) };
+  return { disabled, update: jest.fn(async function (data) {
+    this.disabled = data.disabled; 
+  }) };
 }
 
 describe('isSpeedBoostActive', () => {

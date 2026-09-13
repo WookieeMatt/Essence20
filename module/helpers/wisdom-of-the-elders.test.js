@@ -10,7 +10,9 @@ function makeActor({ power = 0, eltarianTech = 0, flagStore = {} } = {}) {
     system: { powers: { personal: { value: power } } },
     update: jest.fn(),
     getFlag: jest.fn(() => flagStore.wisdomOfTheEldersActive),
-    setFlag: jest.fn((scope, key, value) => { flagStore[key] = value; }),
+    setFlag: jest.fn((scope, key, value) => {
+      flagStore[key] = value; 
+    }),
     _getBaseRolePoints: jest.fn(() => rolePoints),
     __rolePoints: rolePoints,
   };

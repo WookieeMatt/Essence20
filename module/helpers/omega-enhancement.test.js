@@ -75,7 +75,9 @@ describe("activateOmegaEnhancement", () => {
         actor.system.powers.personal.value = data['system.powers.personal.value'];
       }),
       getFlag: jest.fn((scope, key) => flagStore[key]),
-      setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+      setFlag: jest.fn(async (scope, key, value) => {
+        flagStore[key] = value; 
+      }),
       getActiveTokens: jest.fn(() => [makeToken({ id: 'self', disposition: 1 })]),
       _dice: { rollSkill: jest.fn() },
     };

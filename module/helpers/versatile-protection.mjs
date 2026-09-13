@@ -39,8 +39,8 @@ export async function pickVersatileProtection() {
       game.i18n.localize('E20.VersatileProtectionDamageTypeLabel')
     }</label><select name="damageType">${options}</select></div>
     <div class="form-group"><label>${
-      game.i18n.localize('E20.VersatileProtectionTierLabel')
-    }</label><select name="tier">
+  game.i18n.localize('E20.VersatileProtectionTierLabel')
+}</label><select name="tier">
       <option value="resistance">${game.i18n.localize('E20.VersatileProtectionResistance')}</option>
       <option value="immunity">${game.i18n.localize('E20.VersatileProtectionImmunity')}</option>
     </select></div>`,

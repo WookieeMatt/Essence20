@@ -48,8 +48,8 @@ export async function pickMysteriousAura() {
       <option value="resplendent">${game.i18n.localize('E20.MysteriousAuraResplendent')}</option>
     </select></div>
     <div class="form-group"><label>${
-      game.i18n.localize('E20.MysteriousAuraPickDefenseLabel')
-    }</label><select name="defenseChoice">${defenseOptions}</select></div>`,
+  game.i18n.localize('E20.MysteriousAuraPickDefenseLabel')
+}</label><select name="defenseChoice">${defenseOptions}</select></div>`,
     modal: true,
     buttons: [
       {

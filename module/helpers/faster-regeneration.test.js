@@ -19,9 +19,13 @@ function makeActor({ used = false, health = { value: 5, max: 10 } } = {}) {
   return {
     system: { health: { ...health } },
     getFlag: jest.fn((scope, key) => flagStore[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flagStore[key] = value; 
+    }),
     getRollData: jest.fn(() => ({})),
-    update: jest.fn(async function (data) { this.system.health.value = data['system.health.value']; }),
+    update: jest.fn(async function (data) {
+      this.system.health.value = data['system.health.value']; 
+    }),
   };
 }
 

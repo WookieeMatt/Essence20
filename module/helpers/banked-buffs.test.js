@@ -2047,7 +2047,9 @@ describe("Timely Teammate (Ferocious Fighters, Tiger Force General Perk, p.39)",
   const TIMELY_TEAMMATE_ID = "Compendium.essence20.ferocious_fighters.Item.yrhhCOXpS8Mx1R0C";
 
   function makeCombatant(actor, initiative) {
-    return { actor, initiative, update: jest.fn(async function (data) { this.initiative = data.initiative; }) };
+    return { actor, initiative, update: jest.fn(async function (data) {
+      this.initiative = data.initiative; 
+    }) };
   }
 
   function makeTargetsSet(targetActor) {
@@ -2554,7 +2556,9 @@ describe("It's Time (Field Guide to Action and Adventure, General Perk, p.70)", 
   test("toggles isMorphed from false to true and notifies", async () => {
     const actor = makeActor({ id: 'itstime1', name: 'Roadblock' });
     actor.system = { isMorphed: false };
-    actor.update = jest.fn(async (data) => { actor.system.isMorphed = data["system.isMorphed"]; });
+    actor.update = jest.fn(async (data) => {
+      actor.system.isMorphed = data["system.isMorphed"]; 
+    });
     const item = makePerkItem({ sourceId: ITS_TIME_ID, actor });
 
     await onPerkUse(item);
@@ -2566,7 +2570,9 @@ describe("It's Time (Field Guide to Action and Adventure, General Perk, p.70)", 
   test("toggles isMorphed from true to false", async () => {
     const actor = makeActor({ id: 'itstime1', name: 'Roadblock' });
     actor.system = { isMorphed: true };
-    actor.update = jest.fn(async (data) => { actor.system.isMorphed = data["system.isMorphed"]; });
+    actor.update = jest.fn(async (data) => {
+      actor.system.isMorphed = data["system.isMorphed"]; 
+    });
     const item = makePerkItem({ sourceId: ITS_TIME_ID, actor });
 
     await onPerkUse(item);
@@ -3054,7 +3060,9 @@ describe("Ninja Power (PR CRB, General Perk, p.97)", () => {
       ...makeActor(),
       system: { powers: { personal: { value: power } } },
       getFlag: jest.fn((scope, key) => flagStore[key]),
-      setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+      setFlag: jest.fn(async (scope, key, value) => {
+        flagStore[key] = value; 
+      }),
       update: jest.fn(),
     };
   }
@@ -3115,8 +3123,12 @@ describe("Volley (PR CRB, Pink Ranger, 1st level, p.48)", () => {
       ...makeActor(),
       system: { powers: { personal: { value: power } } },
       getFlag: jest.fn((scope, key) => flagStore[key]),
-      setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
-      unsetFlag: jest.fn(async (scope, key) => { delete flagStore[key]; }),
+      setFlag: jest.fn(async (scope, key, value) => {
+        flagStore[key] = value; 
+      }),
+      unsetFlag: jest.fn(async (scope, key) => {
+        delete flagStore[key]; 
+      }),
       update: jest.fn(),
     };
   }
@@ -5251,6 +5263,7 @@ describe("Tender (MLP CRB, Spirit of Kindness, 6th level, p.85)", () => {
         type: 'perk', flags: { core: { sourceId: EMPATHY_MLP_ID } }, system: { choice: empathyChoice },
       });
     }
+
     return { items, _dice: { rollSkill: jest.fn() } };
   }
 
@@ -5754,7 +5767,9 @@ describe("Knight's Jump (GI Joe CRB, Grandmaster Focus, 1st level, p.87)", () =>
   const KNIGHTS_JUMP_ID = "Compendium.essence20.gi_joe_crb.Item.CG0aeZtKsPVmvUF5";
 
   function makeCombatant(actorId, initiative) {
-    return { actor: { id: actorId }, initiative, update: jest.fn(function (data) { this.initiative = data.initiative; }) };
+    return { actor: { id: actorId }, initiative, update: jest.fn(function (data) {
+      this.initiative = data.initiative; 
+    }) };
   }
 
   beforeEach(() => {
@@ -6237,8 +6252,12 @@ describe("Orange Ranger Prime (A Jump Through Time, 20th level, p.34)", () => {
   test("regains a rolled 2d2 Power and marks the scene used", async () => {
     game.combat = { id: 'combat1' };
     global.Roll = class {
-      constructor() { this.total = 3; }
-      async evaluate() { return this; }
+      constructor() {
+        this.total = 3; 
+      }
+      async evaluate() {
+        return this; 
+      }
     };
     const actor = makeOrangeRangerActor({ power: 1 });
     const item = makePerkItem({ sourceId: ORANGE_RANGER_PRIME_ID, actor });
@@ -6584,11 +6603,14 @@ describe("Omega Enhancement [Form] (Across the Stars, General Perk, p.70)", () =
         actor.system.powers.personal.value = data['system.powers.personal.value'];
       }),
       getFlag: jest.fn((scope, key) => flagStore[key]),
-      setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+      setFlag: jest.fn(async (scope, key, value) => {
+        flagStore[key] = value; 
+      }),
       getActiveTokens: jest.fn(() => [actorToken]),
       _dice: { rollSkill: jest.fn() },
     };
   }
+
   let actor;
 
   beforeEach(() => {
@@ -7554,7 +7576,9 @@ describe("Observer (Through the Shattered Grid, Guardian of Eltar, 10th level, p
       system: { powers: { personal: { value: power } } },
       update: jest.fn(),
       getFlag: jest.fn((scope, key) => flagStore[key]),
-      setFlag: jest.fn((scope, key, value) => { flagStore[key] = value; }),
+      setFlag: jest.fn((scope, key, value) => {
+        flagStore[key] = value; 
+      }),
     };
   }
 
@@ -7601,7 +7625,9 @@ describe("Perfect Disguise (GI Joe CRB, Spy Focus, 10th level, p.76)", () => {
     return {
       ...makeActor(),
       getFlag: jest.fn((scope, key) => flagStore[key]),
-      setFlag: jest.fn((scope, key, value) => { flagStore[key] = value; }),
+      setFlag: jest.fn((scope, key, value) => {
+        flagStore[key] = value; 
+      }),
     };
   }
 
@@ -7699,7 +7725,9 @@ describe("Combat Stance (Through the Shattered Grid, Magna Defender, 1st level, 
       ...makeActor(),
       system: { level },
       getFlag: jest.fn((scope, key) => flagStore[key]),
-      setFlag: jest.fn((scope, key, value) => { flagStore[key] = value; }),
+      setFlag: jest.fn((scope, key, value) => {
+        flagStore[key] = value; 
+      }),
     };
   }
 
@@ -7759,8 +7787,12 @@ describe("At All Cost (Through the Shattered Grid, Magna Defender, 18th level, p
       ...makeActor(),
       system: { isMorphed },
       getFlag: jest.fn((scope, key) => flagStore[key]),
-      setFlag: jest.fn((scope, key, value) => { flagStore[key] = value; }),
-      unsetFlag: jest.fn((scope, key) => { flagStore[key] = undefined; }),
+      setFlag: jest.fn((scope, key, value) => {
+        flagStore[key] = value; 
+      }),
+      unsetFlag: jest.fn((scope, key) => {
+        flagStore[key] = undefined; 
+      }),
     };
   }
 
@@ -10220,7 +10252,9 @@ describe("Spot Weld (Decepticon Directive, General Perk, p.67)", () => {
       ...makeActor({ id }),
       system: { energon: { normal: { value: energon } }, skills: { technology: { shift: 'd20' } } },
       getFlag: jest.fn((scope, key) => flagStore[key]),
-      setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+      setFlag: jest.fn(async (scope, key, value) => {
+        flagStore[key] = value; 
+      }),
       getActiveTokens: jest.fn(() => [{ center: { x: 0, y: 0 } }]),
       update: jest.fn(),
       _dice: { rollSkill: jest.fn() },
@@ -10301,7 +10335,9 @@ describe("Invisibility (Technorganic Secrets, Mutant Beast Influence Perk, p.47)
     return {
       ...makeActor(),
       getFlag: jest.fn((scope, key) => flagStore[key]),
-      setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+      setFlag: jest.fn(async (scope, key, value) => {
+        flagStore[key] = value; 
+      }),
       toggleStatusEffect: jest.fn(),
     };
   }

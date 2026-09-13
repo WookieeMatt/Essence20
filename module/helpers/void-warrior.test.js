@@ -5,7 +5,9 @@ function makeActor(active = false) {
   const flagStore = { voidWarriorActive: active };
   return {
     getFlag: jest.fn((scope, key) => flagStore[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flagStore[key] = value; 
+    }),
   };
 }
 

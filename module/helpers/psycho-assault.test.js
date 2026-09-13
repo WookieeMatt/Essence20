@@ -6,6 +6,7 @@ function makeActor({ isMorphed = true, monsterForm = false, power = 1, usedThisT
   if (usedThisTurn) {
     flagStore.psychoAssaultActiveThisTurn = usedThisTurn;
   }
+
   if (monsterForm) {
     flagStore.monsterFormActive = true;
   }

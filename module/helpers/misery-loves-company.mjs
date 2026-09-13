@@ -79,8 +79,8 @@ export async function pickMiseryLovesCompanyTransfer(actor) {
       game.i18n.localize('E20.MiseryLovesCompanyCureLabel')
     }</label><select name="affected">${affectedOptions}</select></div>
     <div class="form-group"><label>${
-      game.i18n.localize('E20.MiseryLovesCompanyTransmitLabel')
-    }</label><select name="bridged">${bridgedOptions}</select></div>`,
+  game.i18n.localize('E20.MiseryLovesCompanyTransmitLabel')
+}</label><select name="bridged">${bridgedOptions}</select></div>`,
     modal: true,
     buttons: [
       {

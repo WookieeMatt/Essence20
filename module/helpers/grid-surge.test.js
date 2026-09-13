@@ -49,6 +49,7 @@ describe("applyGridSurgeOption", () => {
       // eslint-disable-next-line no-await-in-loop
       await applyGridSurgeOption(actor, { option: 'toughness' });
     }
+
     expect(actor.setFlag).toHaveBeenLastCalledWith(
       'essence20', 'pendingGridSurgeToughness', expect.objectContaining({ bonus: 3 }),
     );

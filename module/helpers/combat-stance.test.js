@@ -23,7 +23,9 @@ function makeActor({ hasContinuousStance = false, level = 5, usedThisEncounter =
     items: hasContinuousStance ? [makePerkItem(CONTINUOUS_STANCE_ID)] : [],
     system: { level },
     getFlag: jest.fn((scope, key) => flagStore[key]),
-    setFlag: jest.fn((scope, key, value) => { flagStore[key] = value; }),
+    setFlag: jest.fn((scope, key, value) => {
+      flagStore[key] = value; 
+    }),
   };
 }
 

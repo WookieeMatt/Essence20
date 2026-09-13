@@ -9,7 +9,9 @@ function makeActor({ used = false } = {}) {
   const flagStore = used ? { zeoCrystalBoostUsedThisEncounter: { combatId: 'combat1' } } : {};
   return {
     getFlag: jest.fn((scope, key) => flagStore[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flagStore[key] = value; 
+    }),
   };
 }
 

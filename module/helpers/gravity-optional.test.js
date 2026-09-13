@@ -12,7 +12,9 @@ function makeActor({ active = false, usedFlag = undefined, level = 1 } = {}) {
   return {
     system: { level },
     getFlag: jest.fn((scope, key) => flags[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flags[key] = value; 
+    }),
   };
 }
 

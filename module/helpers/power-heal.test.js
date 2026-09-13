@@ -11,7 +11,9 @@ function makeActor(id, name, health = { value: 5, max: 10 }) {
     name,
     getActiveTokens: jest.fn(() => []),
     system: { health: { ...health } },
-    update: jest.fn(async function (data) { this.system.health.value = data['system.health.value']; }),
+    update: jest.fn(async function (data) {
+      this.system.health.value = data['system.health.value']; 
+    }),
   };
 }
 

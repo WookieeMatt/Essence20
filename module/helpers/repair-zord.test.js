@@ -16,7 +16,9 @@ global.Roll = FakeRoll;
 function makeZord(health = { value: 5, max: 10 }) {
   return {
     system: { health: { ...health } },
-    update: jest.fn(async function (data) { this.system.health.value = data['system.health.value']; }),
+    update: jest.fn(async function (data) {
+      this.system.health.value = data['system.health.value']; 
+    }),
   };
 }
 

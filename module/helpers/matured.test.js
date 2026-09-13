@@ -12,7 +12,9 @@ function makeEffectsCollection(effects) {
 }
 
 function makeEffect(disabled) {
-  return { disabled, update: jest.fn(async function (data) { this.disabled = data.disabled; }) };
+  return { disabled, update: jest.fn(async function (data) {
+    this.disabled = data.disabled; 
+  }) };
 }
 
 function makeHangUp({ id, name, ignored = false, effects = [] } = {}) {
@@ -21,8 +23,12 @@ function makeHangUp({ id, name, ignored = false, effects = [] } = {}) {
     id, name, type: 'hangUp',
     effects: makeEffectsCollection(effects),
     getFlag: jest.fn((scope, key) => flags[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
-    unsetFlag: jest.fn(async (scope, key) => { delete flags[key]; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flags[key] = value; 
+    }),
+    unsetFlag: jest.fn(async (scope, key) => {
+      delete flags[key]; 
+    }),
   };
 }
 

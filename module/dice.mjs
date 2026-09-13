@@ -63,7 +63,7 @@ import { applyNemesisDrainEffect, getNemesisDrainPenalty } from "./helpers/nemes
 import { isDistractionActive } from "./helpers/distraction.mjs";
 import { getMaximizeFlawsTargetUuid } from "./helpers/maximize-flaws.mjs";
 import { isPowerBleedActive, drainPowerBleedTarget } from "./helpers/power-bleed.mjs";
-import { consumeGrowingSmolderStacks, getGrowingSmolderStacks } from "./helpers/growing-smolder.mjs";
+import { consumeGrowingSmolderStacks } from "./helpers/growing-smolder.mjs";
 import { addToxicTerrorStack, getToxicTerrorShiftDown, isToxicTerrorActive } from "./helpers/toxic-terror.mjs";
 
 // The 6 Finster's Monster-Matic Cookbook Warlord capstones (20th level) - each already has its
@@ -948,7 +948,6 @@ const PR_CRB = "Compendium.essence20.pr_crb.Item.";
 // doc comment. While active: upshift 1 on weaponEffect attacks made with the actor's own Power
 // Weapon (parent weapon's own `powerWeapon` trait, same check Power Boost/Red Ranger Prime's
 // identical clauses already use).
-const AUGMENT_POWER_WEAPON_ID = `${PR_CRB}n7kXeiPmmdg55K1X`;
 
 // Strike Bonus (Yellow Ranger, 2nd/5th/8th/11th level, p.56): "At the beginning of any round you
 // may spend 1 Personal Power to apply a [scaling] shift to the first melee attack you make during
@@ -1096,7 +1095,6 @@ const PREPARE_FOR_WAR_ID = `${TF_CRB}sM2Uk6ZzOS3CPzoW`;
 // War/Sirens Blaring just above.
 const READY_FOR_ANYTHING_ID = `${GI_JOE_CRB}BEAZ1oLp9XeibJoh`;
 const SIRENS_BLARING_ID = `${TF_CRB}WZA3q9BRESFVx6SS`;
-const WARRIOR_RUSH_ID = `${TF_CRB}jTNi4jENlLEq8ruS`;
 const INDOMITABLE_ID = `${TF_CRB}CXnb6i4d7XhkhFNr`;
 // Keep Your Cool (A Jump Through Time, General Perk, p.53, built 2026-09-12) - see its own check
 // near Indomitable's identical shape.
@@ -1120,8 +1118,6 @@ const INFORMED_ACCURACY_ID = `${TF_CRB}JtWhjDRI0HDewaKe`;
 const PSYCHOANALYST_ID = `${TF_CRB}5X4NOluWwc7fv497`;
 const TARGET_VULNERABILITY_ID = `${TF_CRB}SaHjAp42EhhOQr2g`;
 const EXPLOIT_TRUST_ID = `${TF_CRB}TpanlsVW9nobDZyy`;
-const OPPORTUNIST_TF_ID = `${TF_CRB}8JpfjvHVDHWKjMc9`;
-const MARK_TARGET_ID = `${TF_CRB}T2mm6VmvcUxagsjc`;
 const BARREL_THROUGH_ID = `${TF_CRB}uyhMkYlTF9tfoVGC`;
 // Beast of Burden (GI Joe CRB, General Perk, p.96) - see WRESTLER_SLAMMER_ID's own comment below.
 const BEAST_OF_BURDEN_ID = `${GI_JOE_CRB}8m5s0JxTNSMU9zcj`;
@@ -1151,7 +1147,6 @@ const ANALYZE_TARGET_COUNTS_FLAG = 'analyzeTargetCounts';
 // Outwit (GI Joe CRB, Battlefield Psychologist Focus, 3rd level, p.86) - see
 // helpers/outwit.mjs's own doc comment. Needed here (not just in helpers/outwit.mjs/
 // banked-buffs.mjs) so Inundation's own check below can mark a successfully-Outwitted target.
-const OUTWIT_ID = `${GI_JOE_CRB}DVBrtxa9iiXXhDoS`;
 // Inundation (GI Joe CRB, Battlefield Psychologist Focus, 10th level, p.86) - see its own check
 // near Informed Accuracy's identical-shaped counter above, and the marking step in
 // _rollSkillHelper's own isOutwitAttempt post-hit block below.
@@ -1236,7 +1231,6 @@ const STRAIGHT_SHOOTER_TF_ID = "Compendium.essence20.tf_crb.Item.I4Sy2sJIudLAeUl
 // own computation the next time this actor Aims at that same target with the Long Range Rifle
 // specifically (Aiming itself stays a separate, later action - RAW's own "when you Aim" reads as
 // a precondition on the Skill Test, not a combined single action).
-const CALCULATED_ATTACK_ID = "Compendium.essence20.tf_crb.Item.hYWoZnrFKaVTZFuG";
 const CALCULATED_ATTACK_FLAG = 'pendingCalculatedAttack';
 
 // Machinist (Transformers CRB, Influence Perk, p.37): "Edge on any Skill Test to repair or
@@ -1376,7 +1370,6 @@ const WHEN_PUSH_COMES_TO_SHOVE_ID = "Compendium.essence20.enigma_of_combination.
 // Two Heads Are Better Than One (Technorganic Secrets, General Perk, p.46) - see
 // helpers/two-heads-are-better-than-one.mjs's own doc comment for the self-Lend-Assistance half
 // (the ↑1 Alertness half is a plain compendium ActiveEffect, no code needed).
-const TWO_HEADS_ARE_BETTER_THAN_ONE_ID = "Compendium.essence20.technorganic_secrets.Item.2SGJ4ezuiZgb7JqX";
 
 // Big Preds Are My Specialty (Technorganic Secrets, General Perk, p.45): "Gain an Edge to Survival
 // Skill Tests to track down an enemy larger than yourself... When attempting to catch a larger
@@ -1843,7 +1836,6 @@ const ADVENTURER_ID = `${GI_JOE_CRB}T3XgGSGuZsFVifsS`;
 // detected via no parent weapon Item, the same proxy Phantom Ranger Prime/Power Adaptation's own
 // unarmed clauses already use.
 const FORCE_ID = `${MLP_CRB}p4qXDtj2RCJcibCh`;
-const FLEETING_ENERGY_ID = `${MLP_CRB}PblwqCeE7Zyb3jF4`;
 
 // Shoots and Scores (Sporty Influence, p.60): "When you achieve Critical Success at an Athletics
 // Skill Test, you gain a Friendship point." A reactive trigger flagged onto checkContext and
@@ -1897,13 +1889,11 @@ const OUTFOXED_EDGE_FLAG = 'pendingOutfoxedEdge';
 // Infiltration Skill Tests you make until your next turn." Dispatched as a "Use" button
 // (helpers/banked-buffs.mjs) - spends 1 Story Point (MLP's own Friendship Point relabel) and banks
 // an unscoped-by-target Edge, consumed on the actor's own next Deception or Infiltration roll.
-const BAIT_AND_SWITCH_ID = `${MLP_CRB}E6QEmhG9S1skhLLs`;
 
 const KNIGHTS_OF_CANTERLOT = "Compendium.essence20.knights_of_canterlot.Item.";
 
 const DARK_SKIES_OVER_EQUESTRIA = "Compendium.essence20.dark_skies_over_equestria.Item.";
 const DSOE_DISGUISE_ID = `${DARK_SKIES_OVER_EQUESTRIA}N8kMxo82Rot2xMMU`;
-const GET_TO_KNOW_ID = `${DARK_SKIES_OVER_EQUESTRIA}pyRy1dFwuiJpAKj2`;
 const SMOKE_BEAM_ID = `${DARK_SKIES_OVER_EQUESTRIA}b4UMfiQUFohGIrb4`;
 
 const KNIGHTS_OF_CANTERLOT_SPELLS = "Compendium.essence20.knights_of_canterlot.Item.";
@@ -1996,14 +1986,12 @@ const CAMOUFLAGE_HIDE_ID = `${DARK_SKIES_OVER_EQUESTRIA}PuMnUtkl1eZ0HmY7`;
 // forcing the attack's own damageType to 'sharp' isn't - no existing Perk in this project
 // overrides a weaponEffect's own fixed damageType field, and doing so here would be a new,
 // separately-risky precedent rather than a small addition.
-const POINTY_ID = `${DARK_SKIES_OVER_EQUESTRIA}kwkUWzNVdSKDx0jt`;
 
 // Calm Hearted (General Perk, p.43): "Once per session, you may roll with Edge on any single
 // Social test relating to keeping their emotions in check." "Relating to keeping emotions in
 // check" is dropped (unenforceable narrative qualifier) - a "Use" button (helpers/banked-buffs.mjs)
 // banks an Edge scoped to the Social Essence broadly (not one specific Skill, since RAW says "any
 // single Social test"), once per scene via hasUsedThisEncounter.
-const CALM_HEARTED_ID = `${DARK_SKIES_OVER_EQUESTRIA}uZX4nbGjbQ0b6u2i`;
 
 // Different Perspective (Outsider Influence, p.19): "you gain ↑1 on Smarts- and Social Skill
 // Tests if your Culture Skill is equal to or higher than the Skill you're rolling." "When
@@ -2063,12 +2051,10 @@ const KILL_YOUR_DOUBLE_ID = `${WTNV_CITIZENS_GUIDE}dbknbG5RGOz0VTzO`;
 // University Days (General Perk, p.53): "you may determine your Free actions with your Smarts
 // Essence instead of your Speed Essence." Verbatim identical shape to Quick Thinker (MLP CRB) -
 // see helpers/actor.mjs#getNumActions, extended to also check this Perk.
-const UNIVERSITY_DAYS_ID = `${WTNV_CITIZENS_GUIDE}5T3DHQjLjyM9J5tS`;
 
 // Static Electricity (General Perk, p.51, Weird +d6 prereq): "+2 Evasion and your Movement speed
 // is 35 feet." The +2 Evasion half is a compendium Active Effect; the flat-35ft Movement half
 // needs documents/actor.mjs#_prepareMovement (the one permitted movement-math touch-point).
-const STATIC_ELECTRICITY_ID = `${WTNV_CITIZENS_GUIDE}mF6zMzGIfxQgJF9B`;
 
 // Tourniquet Line Chef (General Perk, p.51): "Edge on Science (Medicine) Skill Tests for healing
 // injuries or examining dead bodies." The narrative qualifier is dropped (unconditional Edge on a
@@ -2195,7 +2181,6 @@ const CAT_TRAINING_ID = `${WTNV_CITIZENS_GUIDE}T0pVW1q1T3n234rl`;
 // as a "Use" button (helpers/banked-buffs.mjs BANKABLE_PERKS, target:self) - its default
 // data={edge:true} is exactly what's needed, same as Bait and Switch above - consumed here scoped
 // to Spellcasting specifically, the same inline "check rolledSkill" shape Inner Magic already uses.
-const IF_I_RECALL_CORRECTLY_ID = `${KNIGHTS_OF_CANTERLOT}IHwRuoKUDhYAjTqa`;
 
 // But I Should Know That (Spell Scribe Hang-Up, p.34): "When you fail a Spellcasting Skill Test,
 // you get so frustrated that you suffer Snag on your next Skill Test." A reactive trigger - flagged
@@ -2219,7 +2204,6 @@ const INSTINCTUAL_CASTER_ID = `${KNIGHTS_OF_CANTERLOT}ixNXVuXWjNf8fZHY`;
 // weapon trait exists in this system to check - the "with a bow" qualifier is dropped, same
 // "narrow qualifier, apply unconditionally" idiom Bits To Spare/Truthseeker's own narrower RAW
 // wording already accepts, leaving a plain once-per-scene Edge on Targeting.
-const TRICK_SHOT_ID = `${KNIGHTS_OF_CANTERLOT}sZDDuJOzRq9vg1sP`;
 
 // Camper (General Perk, p.13): "As long as you have at least half your Health remaining... you
 // gain an Edge on Survival Skill Tests to find a safe place to camp and set up camp." Only this
@@ -2339,14 +2323,12 @@ const SILVER_MEDAL_SYNDROME_ID = `${COBRA_CODEX}vaAhMXXlzNWHIikR`;
 // you. On a success, you deal Stun 1." See helpers/menace.mjs. Named BULLY_MENACE_ID, not MENACE_ID
 // - that name is already taken by an unrelated GI Joe CRB Door-Kicker Perk (also called "Menace")
 // declared above.
-const BULLY_MENACE_ID = `${COBRA_CODEX}t0QDESiNz7GEDYHL`;
 
 // Corrupt Origin's Distracting Offer benefit (Cobra Codex, p.42): "As a Standard action, you can
 // make a Skill Test of your Origin skill against a target's Cleverness. On a failure, you can't
 // use this ability again this scene. On a success, your target suffers -1 on Skill Tests until
 // the beginning of your next turn (doubled on a Critical Success), and you can use this ability
 // again this scene, but only against the same target." See helpers/distracting-offer.mjs.
-const DISTRACTING_OFFER_ID = `${COBRA_CODEX}fUSF6fxRyTniN2wT`;
 
 // Cobra Battle School Graduate (Cobra Codex, General Perk, p.176): "You gain shiftUp 1 on
 // Smarts-based Skill Tests in combat other than attacks." See its own check above.
@@ -2392,7 +2374,6 @@ const ID_THE_OUTDOORS_ID = `${KNIGHTS_OF_CANTERLOT}O7JuVYJXdMX1V1LI`;
 // dispatched through team-buffs.mjs's own generic 'edge' effect - that one is hardcoded to the
 // Morphed-only Power Ranger broadcast shape (SHINING_LEADER_EDGE_FLAG, filtered to
 // system.isMorphed allies), which doesn't fit a non-Morphing MLP cast at all.
-const SUPERB_SOLOIST_ID = `${KNIGHTS_OF_CANTERLOT}S3t5zNlhPp7evXbh`;
 
 // Iron Hooves (General Perk, p.126, prereq Strength 3): "Your unarmed attacks deal +1 Damage."
 // Unlike Iron Hands (PR CRB)/Phantom Ranger Prime's own unarmed clauses, this isn't scoped to any
@@ -2469,7 +2450,6 @@ const CUTIE_MARK_PERK_ID = `${MLP_CRB}j4U7F2wEqNJzJnI7`;
 // 15ft ground/45ft aerial, 30ft/30ft, or 45ft/15ft." Sets the actor's own BASE ground/aerial
 // Movement outright (not an added bonus) - see AIR_BORN_MOVEMENT_OPTIONS' own doc comment in
 // documents/actor.mjs#_prepareMovement, the one other permitted touch-point for movement math.
-const AIR_BORN_ID = `${MLP_CRB}ekWiJObUf2BAhevg`;
 
 // Sensitive (Precise Hang-Up, p.60): "When you take Damage, you also suffer Snag on Skill Tests
 // for the next round." A reactive damage-triggered Snag - built via a new hook in
@@ -2479,7 +2459,6 @@ const AIR_BORN_ID = `${MLP_CRB}ekWiJObUf2BAhevg`;
 // round" isn't built - Detail Oriented's own action-cost-override half needs this project's still-
 // missing action-economy tracking (the same gap Talented/Quick Study/Swift Study are blocked on),
 // so there's no working resource to expend against it.
-const SENSITIVE_ID = `${MLP_CRB}cLe7ettmAIaBUYIj`;
 
 // Wild Tales (Adventurer Influence, p.42): "Once per scene, when you tell a short story about
 // your experiences, you gain Edge on a Smarts or Social Skill Test." A "Use" button prompting
@@ -2487,7 +2466,6 @@ const SENSITIVE_ID = `${MLP_CRB}cLe7ettmAIaBUYIj`;
 // pickAgelessKnowledgeSkill), banking an Essence-scoped Edge (a new BANKABLE_PERKS shape - every
 // prior bank is scoped to a specific Skill or entirely unscoped, never "any Skill from one of two
 // named Essences").
-const WILD_TALES_ID = `${MLP_CRB}FkBnUmwiOQgNnmLs`;
 
 // Ranger Prime capstones (20th level, PR CRB) - each color's own "+1 damage with [X] attacks"
 // clause while Morphed, see PRIME_DAMAGE_BONUS_PERKS' own doc comment below. The +2-Defenses and
@@ -2598,7 +2576,6 @@ const IRON_HANDS_ID = `${PR_CRB}uKGtcgg5cgVibGQ7`;
 const SHARPSHOOTERS_GRACE_ID = `${PR_CRB}wgkspIBc4HcOfKDu`;
 const WRESTLER_ID = `${PR_CRB}7QMuaLPZJWNPJHTz`;
 const CARETAKER_PR_ID = `${PR_CRB}4q2SPRzdbGosL62k`;
-const RIGHTEOUS_HEART_ID = `${PR_CRB}mOgEBZIbiaT07eAq`;
 // Heroic Intervention (PR CRB, General Perk, p.96, Level 8+): "As long as you are adjacent to an
 // ally, you gain +1 on all Defenses." The compendium item's own "Adjacent Ally" effect already has
 // the right numbers (+1 to all 4 Defenses) but the wrong SCOPE - it's an unconditional Active
@@ -3079,6 +3056,7 @@ export class Dice {
         }
       }
     }
+
     if (skillRollOptions.applyRapidDeploymentDrillsInfiltration) {
       const infiltrationShift = actor.system.skills.infiltration.shift;
       const currentIndex = E20.skillShiftList.indexOf(actor.system.skills[initSkill].shift);
@@ -3953,6 +3931,7 @@ export class Dice {
       } else {
         skillDataset.edge = true;
       }
+
       if (pendingGuidance) {
         await clearPendingBonus(actor, PENDING_GUIDANCE_FLAG_KEY);
       }
@@ -4036,6 +4015,7 @@ export class Dice {
       if (tradeSchoolResult.isSpecialized) {
         updatedShiftDataset.isSpecialized = true;
       }
+
       if (tradeSchoolResult.canCritD2) {
         updatedShiftDataset.canCritD2 = true;
       }
@@ -5547,6 +5527,7 @@ export class Dice {
       if (distanceVisionApplies) {
         await markUsedThisTurn(actor, 'distanceVisionUsedThisTurn');
       }
+
       if (calculatedAttackApplies) {
         await clearPendingBonus(actor, CALCULATED_ATTACK_FLAG);
       }
@@ -6085,6 +6066,7 @@ export class Dice {
           skillRollOptions.shiftDown += -delta;
         }
       }
+
       await markUsedThisEncounter(actor, TECHNICALLY_CORRECT_ENCOUNTER_FLAG);
     }
 
@@ -6103,6 +6085,7 @@ export class Dice {
           skillRollOptions.shiftDown += -delta;
         }
       }
+
       await markUsedThisEncounter(actor, 'whipIntoShapeUsedThisEncounter');
     }
 
@@ -7002,6 +6985,7 @@ export class Dice {
         }
       }
     }
+
     const primeDamageBonus = primeDamageBonusPerkId ? 1 : 0;
 
     // White Ranger Prime (20th level, p.63) - "+1 damage on Zord (non-Megaform) Attacks." Unlike
@@ -7312,6 +7296,7 @@ export class Dice {
     if (frostWarlordDamageBonus) {
       damageBonusSources.add(findPerk(actor, FROST_WARLORD_ID)?.name ?? 'Frost Warlord');
     }
+
     const venomWarlordDamageBonus = isReachAttack && actorHasPerk(actor, VENOM_WARLORD_ID) ? 1 : 0;
     if (venomWarlordDamageBonus) {
       damageBonusSources.add(findPerk(actor, VENOM_WARLORD_ID)?.name ?? 'Venom Warlord');
@@ -7400,6 +7385,7 @@ export class Dice {
       skillRollOptions.edge = true;
       damageBonusSources.add(findPerk(actor, EXPLOIT_TRUST_ID)?.name ?? 'Exploit Trust');
     }
+
     const exploitTrustDamageBonus = isExploitTrustAttack ? 1 : 0;
 
     const appliesRolePointsDamage = !!(checkEntries && damageRolePoints && skillRollOptions.applyRolePointsDamage);
@@ -7436,9 +7422,11 @@ export class Dice {
     if (forceDamageBonus) {
       damageBonusSources.add(findPerk(actor, FORCE_ID)?.name ?? 'Force');
     }
+
     if (whiteRangerPrimeDamageBonus) {
       damageBonusSources.add(findPerk(whiteRangerPrimePilot, WHITE_RANGER_PRIME_ID)?.name ?? 'White Ranger Prime');
     }
+
     let debilitatingStrike = false;
     // damageRolePoints?. below - damageBonusValue can now be truthy from Warfighter's flat bonus
     // alone, with no damageRolePoints claim active at all (unlike before Warfighter existed, when
@@ -7965,6 +7953,7 @@ export class Dice {
           if (!empathyPerk?.system.choice || rolledSkill != empathyPerk.system.choice) {
             return null;
           }
+
           if (actorHasPerk(actor, SUPER_SUPPORTIVE_FRIEND_ID)) return 'super';
           if (actorHasPerk(actor, EXTRA_SUPPORTIVE_FRIEND_ID)) return 'extra';
           if (actorHasPerk(actor, SUPPORTIVE_FRIEND_ID)) return 'base';
@@ -8485,6 +8474,7 @@ export class Dice {
       } else if (pendingSupportiveFriend.shiftUp) {
         shiftUp += pendingSupportiveFriend.shiftUp;
       }
+
       pendingBonusesToClear.push('pendingSupportiveFriend');
       addSource('supportiveFriend', 'Supportive Friend', pendingSupportiveFriend);
     }
@@ -9494,6 +9484,7 @@ export class Dice {
           shiftUp += 1;
           addSource('giantKiller', giantKillerPerk.name ?? 'Giant-Killer', { shiftUp: 1 });
         }
+
         if (sizeDifference > 5) {
           edge = true;
           addSource('giantKillerEdge', giantKillerPerk.name ?? 'Giant-Killer', { edge: true });
@@ -9756,12 +9747,14 @@ export class Dice {
         } else if (hasLayOfTheLandCoverReduction || actorHasPerk(actor, NOWHERES_SAFE_TF_ID)) {
           coverShiftDown = Math.max(0, coverShiftDown - 1);
         }
+
         // Dig In (Enigma of Combination, Cannoneer Focus, 17th level, p.32) - see
         // helpers/cannoneer-dig-in.mjs's own doc comment: "Cover imposes an additional -1 to
         // attacks against you" while dug in, on top of whatever base Cover penalty applies above.
         if (actorHasPerk(target, CANNONEER_DIG_IN_ID) && isCannoneerDugIn(target)) {
           coverShiftDown += 1;
         }
+
         shiftDown += coverShiftDown;
         addSource('cover', this._localize('E20.StatusCover'), { shiftDown: coverShiftDown });
       }
@@ -10151,6 +10144,7 @@ export class Dice {
           snag = true;
           addSource('moveLikeASong', findPerk(target, MOVE_LIKE_A_SONG_ID)?.name ?? 'Move Like a Song', { snag: true });
         }
+
         moveLikeASongTriggered = true;
       }
     }
@@ -10713,6 +10707,7 @@ export class Dice {
       if (result.damageValue) {
         result.damageValue += sizeDifference;
       }
+
       await targetActor.toggleStatusEffect('prone', { active: true });
     }
   }
@@ -12360,6 +12355,7 @@ export class Dice {
       if (actorHasPerk(actor, SUPPORT_YOURSELF_ID)) {
         allies.push(actor);
       }
+
       for (const allyActor of allies) {
         await bankPendingBonus(allyActor, 'pendingSupportiveFriend', bonus);
       }

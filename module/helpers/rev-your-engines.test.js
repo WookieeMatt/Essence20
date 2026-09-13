@@ -6,7 +6,9 @@ global.game = { combat: null };
 function makeActor() {
   const flagStore = {};
   return {
-    setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flagStore[key] = value; 
+    }),
     getFlag: jest.fn((scope, key) => flagStore[key]),
   };
 }

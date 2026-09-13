@@ -44,5 +44,6 @@ export async function removeScarefyingAppearance(actor) {
   if (originalSize) {
     await actor.update({ 'system.size': originalSize });
   }
+
   await actor.unsetFlag('essence20', SCAREFYING_APPEARANCE_FLAG);
 }

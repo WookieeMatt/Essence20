@@ -338,7 +338,9 @@ describe("applyDamage", () => {
         }),
         items,
         getFlag: jest.fn((scope, key) => flagStore[key]),
-        setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flagStore[key] = value; 
+        }),
       };
     }
 
@@ -407,7 +409,9 @@ describe("applyDamage", () => {
 
     test("regains 1 Eltarian Tech Point on a roll of 10 or above", async () => {
       global.Roll = class {
-        async evaluate() { this.total = 10; return this; }
+        async evaluate() {
+          this.total = 10; return this; 
+        }
       };
       const actor = makeActor({ techValue: 1 });
 
@@ -418,7 +422,9 @@ describe("applyDamage", () => {
 
     test("doesn't regain anything on a roll below 10", async () => {
       global.Roll = class {
-        async evaluate() { this.total = 9; return this; }
+        async evaluate() {
+          this.total = 9; return this; 
+        }
       };
       const actor = makeActor({ techValue: 1 });
 
@@ -429,7 +435,9 @@ describe("applyDamage", () => {
 
     test("caps the regen at the resource's own max", async () => {
       global.Roll = class {
-        async evaluate() { this.total = 20; return this; }
+        async evaluate() {
+          this.total = 20; return this; 
+        }
       };
       const actor = makeActor({ techValue: 3, techMax: 3 });
 
@@ -440,7 +448,9 @@ describe("applyDamage", () => {
 
     test("doesn't roll or regain without the Perk", async () => {
       global.Roll = class {
-        async evaluate() { this.total = 20; return this; }
+        async evaluate() {
+          this.total = 20; return this; 
+        }
       };
       const actor = makeActor({ hasPerk: false });
 
@@ -451,7 +461,9 @@ describe("applyDamage", () => {
 
     test("doesn't apply to a non-Energy damage type", async () => {
       global.Roll = class {
-        async evaluate() { this.total = 20; return this; }
+        async evaluate() {
+          this.total = 20; return this; 
+        }
       };
       const actor = makeActor();
 
@@ -462,7 +474,9 @@ describe("applyDamage", () => {
 
     test("doesn't apply when no damage actually landed (Immune)", async () => {
       global.Roll = class {
-        async evaluate() { this.total = 20; return this; }
+        async evaluate() {
+          this.total = 20; return this; 
+        }
       };
       const actor = makeActor();
       actor.system.immunities = { fire: true };
@@ -653,8 +667,12 @@ describe("applyDamage", () => {
         system: { health: { value: health }, immunities: {}, powers: { personal: { value: power } } },
         update: jest.fn(),
         getFlag: jest.fn((scope, key) => flagStore[key]),
-        setFlag: jest.fn((scope, key, value) => { flagStore[key] = value; }),
-        unsetFlag: jest.fn((scope, key) => { flagStore[key] = undefined; }),
+        setFlag: jest.fn((scope, key, value) => {
+          flagStore[key] = value; 
+        }),
+        unsetFlag: jest.fn((scope, key) => {
+          flagStore[key] = undefined; 
+        }),
         toggleStatusEffect: jest.fn(),
       };
     }
@@ -888,7 +906,9 @@ describe("applyDamage", () => {
         items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: IMMORTAL_REBEL_SOUL_ID } } }] : [],
         update: jest.fn(),
         getFlag: jest.fn((scope, key) => flags[key]),
-        setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value; 
+        }),
         unsetFlag: jest.fn(),
       };
     }
@@ -936,7 +956,9 @@ describe("applyDamage", () => {
         items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: RENEGADE_COMMANDER_ID } } }] : [],
         update: jest.fn(),
         getFlag: jest.fn((scope, key) => flags[key]),
-        setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value; 
+        }),
         unsetFlag: jest.fn(),
       };
     }
@@ -984,7 +1006,9 @@ describe("applyDamage", () => {
         items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: DO_NOT_GO_QUIETLY_ID } } }] : [],
         update: jest.fn(),
         getFlag: jest.fn((scope, key) => flags[key]),
-        setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value; 
+        }),
         unsetFlag: jest.fn(),
         toggleStatusEffect: jest.fn(),
       };
@@ -1039,7 +1063,9 @@ describe("applyDamage", () => {
         },
         update: jest.fn(),
         getFlag: jest.fn((scope, key) => flags[key]),
-        setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value; 
+        }),
         unsetFlag: jest.fn(),
         toggleStatusEffect: jest.fn(),
       };
@@ -1248,7 +1274,9 @@ describe("applyDamage", () => {
         items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: NOT_DONE_YET_ID } } }] : [],
         update: jest.fn(),
         getFlag: jest.fn((scope, key) => flags[key]),
-        setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value; 
+        }),
         unsetFlag: jest.fn(),
         _getBaseRolePoints: jest.fn(() => rolePoints),
       };

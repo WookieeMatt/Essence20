@@ -51,8 +51,8 @@ export async function pickGridSurgeOption() {
       <option value="toughness">${game.i18n.localize('E20.GridSurgeToughnessBoost')}</option>
       <option value="reshape">${game.i18n.localize('E20.GridSurgeReshape')}</option>
     </select></div><div class="form-group"><label>${
-      game.i18n.localize('E20.GridSurgeConstructSkillLabel')
-    }</label><select name="skill">${skillOptions}</select></div>`,
+  game.i18n.localize('E20.GridSurgeConstructSkillLabel')
+}</label><select name="skill">${skillOptions}</select></div>`,
     modal: true,
     buttons: [
       {

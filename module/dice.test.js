@@ -1793,8 +1793,8 @@ describe("rollSkill", () => {
       machinistAvailable: false,
       bootlickerAvailable: false,
       gutterChampionAvailable: false,
-        belovedAvailable: false,
-        thrillseekerAvailable: false,
+      belovedAvailable: false,
+      thrillseekerAvailable: false,
       straightShooterAvailable: false,
       coaxSurrenderAvailable: false,
       ambushPredatorAvailable: false,
@@ -2091,8 +2091,8 @@ describe("rollSkill", () => {
       machinistAvailable: false,
       bootlickerAvailable: false,
       gutterChampionAvailable: false,
-        belovedAvailable: false,
-        thrillseekerAvailable: false,
+      belovedAvailable: false,
+      thrillseekerAvailable: false,
       straightShooterAvailable: false,
       coaxSurrenderAvailable: false,
       ambushPredatorAvailable: false,
@@ -2330,8 +2330,8 @@ describe("rollSkill", () => {
       machinistAvailable: false,
       bootlickerAvailable: false,
       gutterChampionAvailable: false,
-        belovedAvailable: false,
-        thrillseekerAvailable: false,
+      belovedAvailable: false,
+      thrillseekerAvailable: false,
       straightShooterAvailable: false,
       coaxSurrenderAvailable: false,
       ambushPredatorAvailable: false,
@@ -2443,8 +2443,8 @@ describe("rollSkill", () => {
       machinistAvailable: false,
       bootlickerAvailable: false,
       gutterChampionAvailable: false,
-        belovedAvailable: false,
-        thrillseekerAvailable: false,
+      belovedAvailable: false,
+      thrillseekerAvailable: false,
       straightShooterAvailable: false,
       coaxSurrenderAvailable: false,
       ambushPredatorAvailable: false,
@@ -2554,8 +2554,8 @@ describe("rollSkill", () => {
       machinistAvailable: false,
       bootlickerAvailable: false,
       gutterChampionAvailable: false,
-        belovedAvailable: false,
-        thrillseekerAvailable: false,
+      belovedAvailable: false,
+      thrillseekerAvailable: false,
       straightShooterAvailable: false,
       coaxSurrenderAvailable: false,
       ambushPredatorAvailable: false,
@@ -6316,9 +6316,11 @@ describe("rollSkill", () => {
           if (key == 'phantomSuiteActive') {
             return suiteActive;
           }
+
           if (key == 'unseenStrikeUsedThisTurn') {
             return usedThisTurn ? { combatId: 'combat1', round: 1, turn: 0 } : undefined;
           }
+
           return undefined;
         }),
         setFlag: jest.fn(),
@@ -11764,7 +11766,9 @@ describe("rollSkill", () => {
           ...mockActor,
           items,
           getFlag: jest.fn((scope, key) => flagStore[key]),
-          setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+          setFlag: jest.fn(async (scope, key, value) => {
+            flagStore[key] = value; 
+          }),
           getRollData: jest.fn(() => ({
             skills: { athletics: { modifier: '0', shift: 'd20' } },
           })),
@@ -15636,6 +15640,7 @@ describe("rollSkill", () => {
         if (hasPerk) {
           items.push({ type: 'perk', flags: { core: { sourceId: PEACEABLE_ID } } });
         }
+
         if (hasHangUp) {
           items.push({ type: 'hangUp', flags: { core: { sourceId: PEACEABLE_HANGUP_ID } } });
         }
@@ -15707,6 +15712,7 @@ describe("rollSkill", () => {
         if (hasPerk) {
           items.push({ type: 'perk', flags: { core: { sourceId: QUIET_ID } } });
         }
+
         if (hasHangUp) {
           items.push({ type: 'hangUp', flags: { core: { sourceId: QUIET_HANGUP_ID } } });
         }
@@ -21188,8 +21194,12 @@ describe("rollSkill", () => {
           },
         })),
         getFlag: jest.fn((scope, key) => (scope == 'essence20' ? flags[key] : undefined)),
-        setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
-        unsetFlag: jest.fn(async (scope, key) => { delete flags[key]; }),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value; 
+        }),
+        unsetFlag: jest.fn(async (scope, key) => {
+          delete flags[key]; 
+        }),
       };
     }
 
@@ -22702,7 +22712,9 @@ describe("rollSkill", () => {
             },
           },
           getFlag: jest.fn((scope, key) => flagStore[key]),
-          unsetFlag: jest.fn(async (scope, key) => { delete flagStore[key]; }),
+          unsetFlag: jest.fn(async (scope, key) => {
+            delete flagStore[key]; 
+          }),
           getRollData: jest.fn(() => ({ skills: { might: { modifier: '0', shift: 'd20' } } })),
         };
       }
@@ -23392,7 +23404,9 @@ describe("rollSkill", () => {
         dice._rollSkillHelper = jest.fn();
         const actor = makeActor({ perkIds: [DISTANCE_VISION_ID] });
         actor.getRollData = jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd8' } } }));
-        actor.setFlag = jest.fn(async (scope, key, value) => { actor._flags = { ...actor._flags, [key]: value }; });
+        actor.setFlag = jest.fn(async (scope, key, value) => {
+          actor._flags = { ...actor._flags, [key]: value }; 
+        });
         actor.getFlag = jest.fn((scope, key) => actor._flags?.[key]);
 
         await dice.rollSkill({ ...dataset, skill: 'targeting', essence: 'speed', shift: 'd8' }, actor, rangedEffect);
@@ -24689,7 +24703,9 @@ describe("rollSkill", () => {
           ...makeActor(),
           items,
           getFlag: jest.fn((scope, key) => (scope == 'essence20' ? flags[key] : undefined)),
-          setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+          setFlag: jest.fn(async (scope, key, value) => {
+            flags[key] = value; 
+          }),
         };
       }
 
@@ -24979,7 +24995,9 @@ describe("rollSkill", () => {
           items,
           getRollData: jest.fn(() => ({ skills: { science: { modifier: '0', shift: 'd20' } } })),
           getFlag: jest.fn((scope, key) => (scope == 'essence20' ? flags[key] : undefined)),
-          setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+          setFlag: jest.fn(async (scope, key, value) => {
+            flags[key] = value; 
+          }),
         };
       }
 
@@ -26284,15 +26302,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
     expect(dice._getAutomaticCombatModifiers(actor, null))
       .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "impaired",
-      "label": "E20.StatusImpaired",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+        {
+          "edge": false,
+          "id": "impaired",
+          "label": "E20.StatusImpaired",
+          "shiftDown": 1,
+          "shiftUp": 0,
+          "snag": false,
+        },
+      ] });
   });
 
   test("attack with no target only applies self Conditions", () => {
@@ -26300,15 +26318,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
     expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
       .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "selfBlinded",
-      "label": "E20.StatusBlinded",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+        {
+          "edge": false,
+          "id": "selfBlinded",
+          "label": "E20.StatusBlinded",
+          "shiftDown": 0,
+          "shiftUp": 0,
+          "snag": true,
+        },
+      ] });
   });
 
   test("attack applies Size Class shift from the targeted actor", () => {
@@ -26317,15 +26335,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
     expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
       .toEqual({ ...defaultModifiers, shiftUp: 5, sources: [
-    {
-      "edge": false,
-      "id": "size",
-      "label": "E20.CombatModifierSize",
-      "shiftDown": 0,
-      "shiftUp": 5,
-      "snag": false,
-    },
-  ] });
+        {
+          "edge": false,
+          "id": "size",
+          "label": "E20.CombatModifierSize",
+          "shiftDown": 0,
+          "shiftUp": 5,
+          "snag": false,
+        },
+      ] });
   });
 
   test("Prone target grants Edge to a melee attacker", () => {
@@ -26334,15 +26352,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
     expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
       .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "targetProne",
-      "label": "E20.StatusProne",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+        {
+          "edge": true,
+          "id": "targetProne",
+          "label": "E20.StatusProne",
+          "shiftDown": 0,
+          "shiftUp": 0,
+          "snag": false,
+        },
+      ] });
   });
 
   test("Prone target grants Snag to a ranged attacker", () => {
@@ -26351,15 +26369,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
     expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
       .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "targetProneRanged",
-      "label": "E20.StatusProne",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+        {
+          "edge": false,
+          "id": "targetProneRanged",
+          "label": "E20.StatusProne",
+          "shiftDown": 0,
+          "shiftUp": 0,
+          "snag": true,
+        },
+      ] });
   });
 
   test("Immobilized target grants a shift up", () => {
@@ -26368,15 +26386,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
     expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
       .toEqual({ ...defaultModifiers, shiftUp: 1, sources: [
-    {
-      "edge": false,
-      "id": "targetImmobilized",
-      "label": "E20.StatusImmobilized",
-      "shiftDown": 0,
-      "shiftUp": 1,
-      "snag": false,
-    },
-  ] });
+        {
+          "edge": false,
+          "id": "targetImmobilized",
+          "label": "E20.StatusImmobilized",
+          "shiftDown": 0,
+          "shiftUp": 1,
+          "snag": false,
+        },
+      ] });
   });
 
   test("Invisible target grants a Snag", () => {
@@ -26385,15 +26403,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
     expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
       .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "targetInvisible",
-      "label": "E20.StatusInvisible",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+        {
+          "edge": false,
+          "id": "targetInvisible",
+          "label": "E20.StatusInvisible",
+          "shiftDown": 0,
+          "shiftUp": 0,
+          "snag": true,
+        },
+      ] });
   });
 
   describe("Duck & Cover (Infantry/Renegade base, shared Perk)", () => {
@@ -26409,15 +26427,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, explosiveWeaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "duckAndCover",
-      "label": "Duck & Cover",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "duckAndCover",
+            "label": "Duck & Cover",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("suffers a Snag with an area-trait weapon, even if not explosive-style", () => {
@@ -26427,15 +26445,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffectWithParent))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "duckAndCover",
-      "label": "Duck & Cover",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "duckAndCover",
+            "label": "Duck & Cover",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't apply to a non-explosive, non-area attack", () => {
@@ -26460,15 +26478,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 2,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("imposes the same -2 shift against a target with Total Cover", () => {
@@ -26477,15 +26495,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 2,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply to a melee attack - cover doesn't stop a reach past it", () => {
@@ -26511,15 +26529,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 3, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 3,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 3,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Maximize Cover on the ATTACKER (not the target) doesn't widen the shift", () => {
@@ -26529,15 +26547,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 2,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("What Cover? (Enigma of Combination, Cannoneer Focus, 6th level, p.32) reduces it to -1 for the attacker", () => {
@@ -26547,15 +26565,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("What Cover? on the TARGET (not the attacker) doesn't reduce the shift", () => {
@@ -26567,15 +26585,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 2,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Dig In (Enigma of Combination, Cannoneer Focus, 17th level, p.32) adds -1 more when the dug-in target holds it", () => {
@@ -26587,15 +26605,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 3, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 3,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 3,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Dig In (Enigma of Combination Cannoneer) doesn't add anything if the holder isn't actually dug in yet", () => {
@@ -26607,15 +26625,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 2,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Lay of the Land (Enigma of Combination, Surveyor Focus, 3rd level, p.36) reduces it to -1 for the attacker", () => {
@@ -26625,15 +26643,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Two Steps to the Right (Surveyor Focus, 10th level, p.36) shares the same -1 with a nearby ally", () => {
@@ -26652,15 +26670,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
 
       canvas.tokens.placeables = [];
     });
@@ -26674,15 +26692,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 3, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 3,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 3,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Nowhere's Safe (Transformers CRB, Gunner base, 5th level, p.68) reduces it to -1 for the attacker", () => {
@@ -26692,15 +26710,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Absolutely Nowhere's Safe (Transformers CRB, Gunner base, 13th level, p.68) reduces it to 0 for the attacker", () => {
@@ -26710,15 +26728,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 0, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Absolutely Nowhere's Safe takes precedence over Nowhere's Safe (no double reduction) when the actor has both", () => {
@@ -26731,15 +26749,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 0, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cover",
+            "label": "E20.StatusCover",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     describe("Now You Don't (Transformers CRB, General Perk, p.110)", () => {
@@ -26753,15 +26771,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
           .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "cover",
+              "label": "E20.StatusCover",
+              "shiftDown": 2,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
       });
 
       test("doesn't apply in Bot Mode, or without the Perk", () => {
@@ -26786,6 +26804,7 @@ describe("_getAutomaticCombatModifiers", () => {
         if (hasPerk) {
           target.items.push({ type: 'perk', flags: { core: { sourceId: DIG_IN_ID } } });
         }
+
         target.getFlag = jest.fn((scope, key) => (key == 'digInActive' ? dugIn : undefined));
         return target;
       }
@@ -26796,15 +26815,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(actor, maneuverWeaponEffect))
           .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "digIn",
-      "label": "Dig In",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "digIn",
+              "label": "Dig In",
+              "shiftDown": 0,
+              "shiftUp": 0,
+              "snag": true,
+            },
+          ] });
       });
 
       test("doesn't apply if the target holds the Perk but isn't currently dug in", () => {
@@ -26831,6 +26850,7 @@ describe("_getAutomaticCombatModifiers", () => {
         if (hasPerk) {
           target.items.push({ type: 'perk', flags: { core: { sourceId: MEGA_TRAINING_REGIMEN_ID } } });
         }
+
         return target;
       }
 
@@ -26840,15 +26860,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(actor, maneuverWeaponEffect))
           .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "megaTrainingRegimen",
-      "label": "Mega Training Regimen",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "megaTrainingRegimen",
+              "label": "Mega Training Regimen",
+              "shiftDown": 0,
+              "shiftUp": 0,
+              "snag": true,
+            },
+          ] });
       });
 
       test("doesn't apply without the Perk", () => {
@@ -26875,6 +26895,7 @@ describe("_getAutomaticCombatModifiers", () => {
         if (hasPerk) {
           target.items.push({ type: 'perk', flags: { core: { sourceId: STEADY_FOOTING_ID } } });
         }
+
         return target;
       }
 
@@ -26884,15 +26905,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(actor, maneuverWeaponEffect))
           .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "steadyFooting",
-      "label": "Steady Footing",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "steadyFooting",
+              "label": "Steady Footing",
+              "shiftDown": 1,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
       });
 
       test("doesn't apply without the Perk", () => {
@@ -26931,15 +26952,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffectWithParent))
           .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "cover",
+              "label": "E20.StatusCover",
+              "shiftDown": 2,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
       });
 
       test("still applies with the Perk but an unrelated weapon", () => {
@@ -26950,15 +26971,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffectWithParent))
           .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "cover",
+              "label": "E20.StatusCover",
+              "shiftDown": 2,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
       });
     });
 
@@ -26982,15 +27003,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffectWithParent))
           .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "cover",
+              "label": "E20.StatusCover",
+              "shiftDown": 2,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
       });
 
       test("still applies with the Perk but a non-sniper weapon", () => {
@@ -27001,15 +27022,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffectWithParent))
           .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "cover",
+              "label": "E20.StatusCover",
+              "shiftDown": 2,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
       });
     });
   });
@@ -27060,15 +27081,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(makeRangedActor(), rangedEffect({ value: 20, long: 80 })))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "longRange",
-      "label": "E20.CombatModifierLongRange",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "longRange",
+            "label": "E20.CombatModifierLongRange",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("Long Shot (Transformers CRB, Sharpshooter Focus) suppresses the long-range Snag", () => {
@@ -27096,15 +27117,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(makeGraceActor(), rangedEffect({ value: 20, long: 80 })))
           .toEqual({ ...defaultModifiers, shiftUp: 2, sources: [
-    {
-      "edge": false,
-      "id": "sharpshootersGrace",
-      "label": "Sharpshooter's Grace",
-      "shiftDown": 0,
-      "shiftUp": 2,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "sharpshootersGrace",
+              "label": "Sharpshooter's Grace",
+              "shiftDown": 0,
+              "shiftUp": 2,
+              "snag": false,
+            },
+          ] });
       });
 
       test("still suppresses the long-range Snag beyond 30 feet, but doesn't add the +2", () => {
@@ -27121,15 +27142,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(makeRangedActor(), rangedEffect({ value: 20, long: 80 })))
           .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "longRange",
-      "label": "E20.CombatModifierLongRange",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "longRange",
+              "label": "E20.CombatModifierLongRange",
+              "shiftDown": 0,
+              "shiftUp": 0,
+              "snag": true,
+            },
+          ] });
       });
     });
 
@@ -27148,15 +27169,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(makeGraceTfActor(), rangedEffect({ value: 20, long: 80 })))
           .toEqual({ ...defaultModifiers, shiftUp: 2, sources: [
-    {
-      "edge": false,
-      "id": "sharpshootersGraceTf",
-      "label": "Sharpshooter's Grace",
-      "shiftDown": 0,
-      "shiftUp": 2,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "sharpshootersGraceTf",
+              "label": "Sharpshooter's Grace",
+              "shiftDown": 0,
+              "shiftUp": 2,
+              "snag": false,
+            },
+          ] });
       });
 
       test("still suppresses the long-range Snag within 30 feet, but doesn't add the +2 (opposite of the PR/GIJ threshold)", () => {
@@ -27201,15 +27222,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(makeRangedActor(), rangedEffect({ value: 20, long: 80 })))
         .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "reach",
-      "label": "E20.CombatModifierReach",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "reach",
+            "label": "E20.CombatModifierReach",
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("uses the target's own Reach, not the attacker's", () => {
@@ -27229,15 +27250,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(makeRangedActor(), rangedEffect({ min: 10, value: 20, long: 80 })))
         .toEqual({ ...defaultModifiers, tooCloseForMinimumRange: true, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "reach",
-      "label": "E20.CombatModifierReach",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "reach",
+            "label": "E20.CombatModifierReach",
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply without a resolved attacker token", () => {
@@ -27280,15 +27301,15 @@ describe("_getAutomaticCombatModifiers", () => {
         expect(dice._getAutomaticCombatModifiers(
           makeMenaceActor({ hasPerk: false }), shotgunEffect({ value: 20, long: 80 }),
         )).toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "reach",
-      "label": "E20.CombatModifierReach",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "reach",
+            "label": "E20.CombatModifierReach",
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
       });
 
       test("still applies with the Perk but an unrelated weapon", () => {
@@ -27298,15 +27319,15 @@ describe("_getAutomaticCombatModifiers", () => {
         expect(dice._getAutomaticCombatModifiers(
           makeMenaceActor({ weaponSourceId: 'other' }), shotgunEffect({ value: 20, long: 80 }),
         )).toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "reach",
-      "label": "E20.CombatModifierReach",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "reach",
+            "label": "E20.CombatModifierReach",
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
       });
     });
 
@@ -27333,15 +27354,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(makeCqbActor({ hasPerk: false }), rangedEffect({ value: 20, long: 80 })))
           .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "reach",
-      "label": "E20.CombatModifierReach",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "reach",
+              "label": "E20.CombatModifierReach",
+              "shiftDown": 1,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
       });
     });
 
@@ -27376,15 +27397,15 @@ describe("_getAutomaticCombatModifiers", () => {
         expect(dice._getAutomaticCombatModifiers(
           makeTrajectoryActor({ hasPerk: false }), explosiveTargetingEffect({ value: 20, long: 80 }),
         )).toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "longRange",
-      "label": "E20.CombatModifierLongRange",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "longRange",
+            "label": "E20.CombatModifierLongRange",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
       });
 
       test("doesn't apply to a non-explosive or non-Targeting weapon", () => {
@@ -27393,15 +27414,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(makeTrajectoryActor(), rangedEffect({ value: 20, long: 80 })))
           .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "longRange",
-      "label": "E20.CombatModifierLongRange",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "longRange",
+              "label": "E20.CombatModifierLongRange",
+              "shiftDown": 0,
+              "shiftUp": 0,
+              "snag": true,
+            },
+          ] });
       });
     });
 
@@ -27455,15 +27476,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(makeAttackerActor(), rangedEffect({ value: 20, long: 80 })))
           .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "cover",
-      "label": "E20.StatusCover",
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": false,
+              "id": "cover",
+              "label": "E20.StatusCover",
+              "shiftDown": 2,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
       });
 
       test("doesn't apply without a qualifying nearby Bulwark holder", () => {
@@ -27518,15 +27539,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(makeVantagePointActor(30), rangedEffect({ value: 20, long: 80 })))
           .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "vantagePoint",
-      "label": "Vantage Point",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": true,
+              "id": "vantagePoint",
+              "label": "Vantage Point",
+              "shiftDown": 0,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
       });
 
       test("doesn't apply below 30ft of elevation difference", () => {
@@ -27561,15 +27582,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(makeVantagePointActor(30), rangedEffect({ value: 20, long: 80 })))
           .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "vantagePoint",
-      "label": "Vantage Point",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+            {
+              "edge": true,
+              "id": "vantagePoint",
+              "label": "Vantage Point",
+              "shiftDown": 0,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
       });
     });
 
@@ -27673,15 +27694,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(makeBallisticsActor(), ballisticEffect({ value: 20, long: 80 })))
         .toEqual({ ...defaultModifiers, shiftUp: 1, sources: [
-    {
-      "edge": false,
-      "id": "ballisticsPrecision",
-      "label": "Ballistics Precision",
-      "shiftDown": 0,
-      "shiftUp": 1,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "ballisticsPrecision",
+            "label": "Ballistics Precision",
+            "shiftDown": 0,
+            "shiftUp": 1,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply beyond normal range", () => {
@@ -27690,15 +27711,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(makeBallisticsActor(), ballisticEffect({ value: 20, long: 80 })))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "longRange",
-      "label": "E20.CombatModifierLongRange",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "longRange",
+            "label": "E20.CombatModifierLongRange",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't apply without the Ballistic trait, or without the Perk", () => {
@@ -27754,15 +27775,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, triangulationEffect({ value: 20, long: 80 })))
         .toEqual({ ...defaultModifiers, shiftUp: 1, sources: [
-    {
-      "edge": false,
-      "id": "tacticalTriangulation",
-      "label": "Tactical Triangulation",
-      "shiftDown": 0,
-      "shiftUp": 1,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "tacticalTriangulation",
+            "label": "Tactical Triangulation",
+            "shiftDown": 0,
+            "shiftUp": 1,
+            "snag": false,
+          },
+        ] });
     });
 
     test("adds ↑1 per Data-Bridged ally, capped at ↑3", () => {
@@ -27804,15 +27825,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
     expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
       .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "selfProne",
-      "label": "E20.StatusProne",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+        {
+          "edge": false,
+          "id": "selfProne",
+          "label": "E20.StatusProne",
+          "shiftDown": 1,
+          "shiftUp": 0,
+          "snag": false,
+        },
+      ] });
     expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
       .toEqual(defaultModifiers);
   });
@@ -27823,23 +27844,23 @@ describe("_getAutomaticCombatModifiers", () => {
 
     expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
       .toEqual({ ...defaultModifiers, edge: true, snag: true, sources: [
-    {
-      "edge": true,
-      "id": "targetStunned",
-      "label": "E20.StatusStunned",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-    {
-      "edge": false,
-      "id": "targetInvisible",
-      "label": "E20.StatusInvisible",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+        {
+          "edge": true,
+          "id": "targetStunned",
+          "label": "E20.StatusStunned",
+          "shiftDown": 0,
+          "shiftUp": 0,
+          "snag": false,
+        },
+        {
+          "edge": false,
+          "id": "targetInvisible",
+          "label": "E20.StatusInvisible",
+          "shiftDown": 0,
+          "shiftUp": 0,
+          "snag": true,
+        },
+      ] });
   });
 
   describe("Paranoia (18th level)", () => {
@@ -27849,15 +27870,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "paranoia",
-      "label": "Paranoia",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "paranoia",
+            "label": "Paranoia",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't affect a target without the Perk", () => {
@@ -28421,15 +28442,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, triggerHappyWeaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "gallantry",
-      "label": "Gallantry",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "gallantry",
+            "label": "Gallantry",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't affect a target without Gallantry", () => {
@@ -28470,15 +28491,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "alphaStrike",
-      "label": "Alpha Strike",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "alphaStrike",
+            "label": "Alpha Strike",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply once the round has moved on", () => {
@@ -28531,15 +28552,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, fireWeaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "impenetrableShield",
-      "label": "Impenetrable Shield",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "impenetrableShield",
+            "label": "Impenetrable Shield",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't Snag an EMP attack (immunity handles that instead, not a Snag)", () => {
@@ -28598,15 +28619,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, fireWeaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "shieldModulation",
-      "label": "Shield Modulation",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "shieldModulation",
+            "label": "Shield Modulation",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't apply to a different damage type than the one chosen", () => {
@@ -28693,15 +28714,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(makeAttacker(attackerToken), meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "enemyNumberOne",
-      "label": "Enemy Number One",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "enemyNumberOne",
+            "label": "Enemy Number One",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't Snag an attack against the Tank itself, and flags that Tank for later", () => {
@@ -28734,15 +28755,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(attacker, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "enemyNumberOne",
-      "label": "Enemy Number One",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "enemyNumberOne",
+            "label": "Enemy Number One",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't apply outside of combat", () => {
@@ -28809,15 +28830,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "firstStrike",
-      "label": "First Strike",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "firstStrike",
+            "label": "First Strike",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply to a target who already had their turn", () => {
@@ -28872,15 +28893,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null, null, 'deception'))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "justTheFacts",
-      "label": "Just the Facts",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "justTheFacts",
+            "label": "Just the Facts",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't apply to a Skill Test other than Deception", () => {
@@ -29084,15 +29105,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null, null, 'deception'))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "skepticInfluence",
-      "label": "Skeptic",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "skepticInfluence",
+            "label": "Skeptic",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("Influence: doesn't apply to a Skill Test other than Deception", () => {
@@ -29112,15 +29133,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null, null, 'persuasion'))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "skepticHangUp",
-      "label": "Skeptic",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "skepticHangUp",
+            "label": "Skeptic",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Hang-Up: doesn't apply to a Skill Test other than Persuasion", () => {
@@ -29153,15 +29174,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null, 'social', 'persuasion'))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "martialArtistHangUp",
-      "label": "Martial Artist",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "martialArtistHangUp",
+            "label": "Martial Artist",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply to a non-Social Essence Skill Test", () => {
@@ -29195,15 +29216,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null, null, 'deception'))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "indoctrinatedHangUp",
-      "label": "Indoctrinated",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "indoctrinatedHangUp",
+            "label": "Indoctrinated",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply to a Skill Test other than Deception", () => {
@@ -29257,27 +29278,27 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null, null, 'driving'))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "dogfighter",
-      "label": "Dogfighter",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "dogfighter",
+            "label": "Dogfighter",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
 
       expect(dice._getAutomaticCombatModifiers(actor, null, null, 'targeting'))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "dogfighter",
-      "label": "Dogfighter",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "dogfighter",
+            "label": "Dogfighter",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply against a non-aerial vehicle target", () => {
@@ -29733,15 +29754,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null))
         .toEqual({ ...defaultModifiers, edge: true, pendingBonusesToClear: ['pendingMenacingGlareEdge'], sources: [
-    {
-      "edge": true,
-      "id": "menacingGlareEdge",
-      "label": "Menacing Glare",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "menacingGlareEdge",
+            "label": "Menacing Glare",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply against a DIFFERENT target than the one it was banked against", () => {
@@ -29782,15 +29803,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, weaponEffect))
         .toEqual({ ...defaultModifiers, shiftUp: 1, pendingBonusesToClear: ['pendingGrowlShiftUp'], sources: [
-    {
-      "edge": false,
-      "id": "growl",
-      "label": "Growl",
-      "shiftDown": 0,
-      "shiftUp": 1,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "growl",
+            "label": "Growl",
+            "shiftDown": 0,
+            "shiftUp": 1,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply against a DIFFERENT target than the one it was banked against", () => {
@@ -29835,15 +29856,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, weaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, pendingBonusesToClear: ['pendingAntagonisticSnag'], sources: [
-    {
-      "edge": false,
-      "id": "antagonisticSnag",
-      "label": "Antagonistic",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "antagonisticSnag",
+            "label": "Antagonistic",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't apply against a DIFFERENT beneficiary than the one it was banked against", () => {
@@ -29981,15 +30002,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, edge: true, pendingBonusesToClear: ['pendingSpiteEdge'], sources: [
-    {
-      "edge": true,
-      "id": "spite",
-      "label": "Spite",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "spite",
+            "label": "Spite",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply to a plain Skill Test (no weapon item) - Attack-gated, unlike Menacing Glare's Edge", () => {
@@ -30032,15 +30053,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, pendingBonusesToClear: ['pendingCoveringFireSnag'], sources: [
-    {
-      "edge": false,
-      "id": "coveringFireSnag",
-      "label": "Covering Fire",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "coveringFireSnag",
+            "label": "Covering Fire",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't apply to a plain Skill Test - Attack-gated, per RAW's own \"if they attack\"", () => {
@@ -30067,15 +30088,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "fightMe",
-      "label": "Fight Me!",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "fightMe",
+            "label": "Fight Me!",
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply when attacking the marker themselves", () => {
@@ -30111,15 +30132,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftUp: 1, sources: [
-    {
-      "edge": false,
-      "id": "worstNightmare",
-      "label": "Worst Nightmare",
-      "shiftDown": 0,
-      "shiftUp": 1,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "worstNightmare",
+            "label": "Worst Nightmare",
+            "shiftDown": 0,
+            "shiftUp": 1,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply without the Perk, or against a non-Frightened target", () => {
@@ -30187,15 +30208,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftUp: 1, sources: [
-    {
-      "edge": false,
-      "id": "combatStance",
-      "label": "Combat Stance",
-      "shiftDown": 0,
-      "shiftUp": 1,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "combatStance",
+            "label": "Combat Stance",
+            "shiftDown": 0,
+            "shiftUp": 1,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply against a different target", () => {
@@ -30261,15 +30282,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftUp: 2, sources: [
-    {
-      "edge": false,
-      "id": "teamFocus",
-      "label": "Team Focus",
-      "shiftDown": 0,
-      "shiftUp": 2,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "teamFocus",
+            "label": "Team Focus",
+            "shiftDown": 0,
+            "shiftUp": 2,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply to a ranged attack (melee only)", () => {
@@ -30506,15 +30527,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, moveLikeASongTriggered: true, sources: [
-    {
-      "edge": false,
-      "id": "moveLikeASong",
-      "label": "Move Like a Song",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "moveLikeASong",
+            "label": "Move Like a Song",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("forces a miss instead when the attack is already Snagged from another source", () => {
@@ -30530,15 +30551,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, evasionWeaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, forcedMiss: true, moveLikeASongTriggered: true, sources: [
-    {
-      "edge": false,
-      "id": "secondsBetweenClickAndBoom",
-      "label": "Seconds Between Click & Boom",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "secondsBetweenClickAndBoom",
+            "label": "Seconds Between Click & Boom",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't apply again the same round once already triggered", () => {
@@ -30592,15 +30613,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(vehicle, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "heavyOrdnance",
-      "label": "Heavy Ordnance",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "heavyOrdnance",
+            "label": "Heavy Ordnance",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("grants an Edge attacking an enemy the driver's size or greater", () => {
@@ -30611,15 +30632,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(vehicle, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "heavyOrdnance",
-      "label": "Heavy Ordnance",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "heavyOrdnance",
+            "label": "Heavy Ordnance",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply against an enemy smaller than the driver", () => {
@@ -30675,15 +30696,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "whoDaresWins",
-      "label": "Who Dares, Wins",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "whoDaresWins",
+            "label": "Who Dares, Wins",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply in round 2 or later", () => {
@@ -30721,15 +30742,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "shiningLeader",
-      "label": "Shining Leader",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "shiningLeader",
+            "label": "Shining Leader",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("still applies on the following round", () => {
@@ -30738,15 +30759,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "shiningLeader",
-      "label": "Shining Leader",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "shiningLeader",
+            "label": "Shining Leader",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply two rounds later", () => {
@@ -30791,15 +30812,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "cbrnDefender",
-      "label": "CBRN Defender",
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "cbrnDefender",
+            "label": "CBRN Defender",
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply without a banked flag, from a stale different combat, or to a non-attack Skill Test", () => {
@@ -30828,15 +30849,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null, null, 'infiltration'))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "quietOne",
-      "label": "The Quiet One",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "quietOne",
+            "label": "The Quiet One",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply without a banked flag, on a different turn, or to a Skill Test other than Infiltration", () => {
@@ -30867,15 +30888,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, edge: true, sources: [
-    {
-      "edge": true,
-      "id": "rallyingCry",
-      "label": "Rallying Cry",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "rallyingCry",
+            "label": "Rallying Cry",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("still applies on the following round, but not two rounds later", () => {
@@ -30914,15 +30935,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, evasionWeaponEffect))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "secondsBetweenClickAndBoom",
-      "label": "Seconds Between Click & Boom",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "secondsBetweenClickAndBoom",
+            "label": "Seconds Between Click & Boom",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't apply to attacks against a different Defense", () => {
@@ -30941,15 +30962,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null))
         .toEqual({ ...defaultModifiers, snag: true, debilitatedConsumed: true, sources: [
-    {
-      "edge": false,
-      "id": "debilitatingStrike",
-      "label": "Debilitating Strike",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "debilitatingStrike",
+            "label": "Debilitating Strike",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("an actor without the flag is unaffected", () => {
@@ -30971,15 +30992,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null))
         .toEqual({ ...defaultModifiers, edge: true, pendingBonusesToClear: ['pendingBattleCommander'], sources: [
-    {
-      "edge": true,
-      "id": "battleCommander",
-      "label": "Battle Commander",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "battleCommander",
+            "label": "Battle Commander",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Think On It grants an Edge and reports the flag to clear", () => {
@@ -30987,15 +31008,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null))
         .toEqual({ ...defaultModifiers, edge: true, pendingBonusesToClear: ['pendingThinkOnIt'], sources: [
-    {
-      "edge": true,
-      "id": "thinkOnIt",
-      "label": "Think On It",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "thinkOnIt",
+            "label": "Think On It",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Auxiliary Brain grants an Edge and reports the flag to clear", () => {
@@ -31003,15 +31024,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null))
         .toEqual({ ...defaultModifiers, edge: true, pendingBonusesToClear: ['pendingAuxiliaryBrain'], sources: [
-    {
-      "edge": true,
-      "id": "auxiliaryBrain",
-      "label": "Auxiliary Brain",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "auxiliaryBrain",
+            "label": "Auxiliary Brain",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Plan of Action grants its own banked shiftUp and reports the flag to clear", () => {
@@ -31019,15 +31040,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null))
         .toEqual({ ...defaultModifiers, shiftUp: 2, pendingBonusesToClear: ['pendingPlanOfAction'], sources: [
-    {
-      "edge": false,
-      "id": "planOfAction",
-      "label": "Plan of Action",
-      "shiftDown": 0,
-      "shiftUp": 2,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "planOfAction",
+            "label": "Plan of Action",
+            "shiftDown": 0,
+            "shiftUp": 2,
+            "snag": false,
+          },
+        ] });
     });
 
     test("both can be pending on the same roll at once", () => {
@@ -31064,15 +31085,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null))
         .toEqual({ ...defaultModifiers, edge: true, pendingBonusesToClear: ['pendingTimeToThink'], sources: [
-    {
-      "edge": true,
-      "id": "timeToThink",
-      "label": "Time To Think",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "timeToThink",
+            "label": "Time To Think",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Inspiration (Power Ranger White Ranger) reports its own bonusDie and reports the flag to clear", () => {
@@ -31089,15 +31110,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, edge: true, pendingBonusesToClear: ['pendingRushTheLineEdge'], sources: [
-    {
-      "edge": true,
-      "id": "rushTheLine",
-      "label": "Rush the Line",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "rushTheLine",
+            "label": "Rush the Line",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("Rush the Line doesn't apply to a ranged attack or a plain Skill Test (melee only)", () => {
@@ -31463,15 +31484,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, weaponEffectWithParent))
         .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "enemyDownshift",
-      "label": undefined,
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "enemyDownshift",
+            "label": undefined,
+            "shiftDown": 2,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("downshifts a Zord's attack even without a Power Weapon", () => {
@@ -31481,15 +31502,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, weaponEffectWithParent))
         .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
-    {
-      "edge": false,
-      "id": "enemyDownshift",
-      "label": undefined,
-      "shiftDown": 1,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "enemyDownshift",
+            "label": undefined,
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply to a non-Power Weapon attack from a non-Zord", () => {
@@ -31515,15 +31536,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, weaponEffectWithParent))
         .toEqual({ ...defaultModifiers, shiftDown: 2, sources: [
-    {
-      "edge": false,
-      "id": "enemyDownshift",
-      "label": undefined,
-      "shiftDown": 2,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "enemyDownshift",
+            "label": undefined,
+            "shiftDown": 2,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply for any other Role Points bonus type (e.g. defenseBonus)", () => {
@@ -31553,15 +31574,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null, null, 'intimidation'))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "indomitable",
-      "label": "Indomitable",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "indomitable",
+            "label": "Indomitable",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't apply to a Skill Test other than Intimidation", () => {
@@ -31616,15 +31637,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null, null, 'intimidation'))
         .toEqual({ ...defaultModifiers, snag: true, sources: [
-    {
-      "edge": false,
-      "id": "gloryOfCobraLa",
-      "label": "The Glory of Cobra-La",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": true,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "gloryOfCobraLa",
+            "label": "The Glory of Cobra-La",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": true,
+          },
+        ] });
     });
 
     test("doesn't apply to a Skill Test other than Intimidation, or without the Perk", () => {
@@ -31729,15 +31750,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, null, null, 'athletics'))
         .toEqual({ ...defaultModifiers, shiftUp: 1, sources: [
-    {
-      "edge": false,
-      "id": "markTarget",
-      "label": "Mark Target",
-      "shiftDown": 0,
-      "shiftUp": 1,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "markTarget",
+            "label": "Mark Target",
+            "shiftDown": 0,
+            "shiftUp": 1,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply against a different target", () => {
@@ -31885,15 +31906,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftUp: 3, sources: [
-    {
-      "edge": false,
-      "id": "informedAccuracy",
-      "label": "Informed Accuracy",
-      "shiftDown": 0,
-      "shiftUp": 3,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "informedAccuracy",
+            "label": "Informed Accuracy",
+            "shiftDown": 0,
+            "shiftUp": 3,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply to a plain Skill Test (Informed Accuracy is attack-only)", () => {
@@ -31985,15 +32006,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
         .toEqual({ ...defaultModifiers, edge: true, spottedTarget: target, sources: [
-    {
-      "edge": true,
-      "id": "spot",
-      "label": "E20.DamageSpot",
-      "shiftDown": 0,
-      "shiftUp": 0,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": true,
+            "id": "spot",
+            "label": "E20.DamageSpot",
+            "shiftDown": 0,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply to a target that hasn't been spotted", () => {
@@ -32030,15 +32051,15 @@ describe("_getAutomaticCombatModifiers", () => {
 
       expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
         .toEqual({ ...defaultModifiers, shiftUp: 1, eyeForAppraisalTarget: target, sources: [
-    {
-      "edge": false,
-      "id": "eyeForAppraisal",
-      "label": "Eye for Appraisal",
-      "shiftDown": 0,
-      "shiftUp": 1,
-      "snag": false,
-    },
-  ] });
+          {
+            "edge": false,
+            "id": "eyeForAppraisal",
+            "label": "Eye for Appraisal",
+            "shiftDown": 0,
+            "shiftUp": 1,
+            "snag": false,
+          },
+        ] });
     });
 
     test("doesn't apply to a mark left by a DIFFERENT actor", () => {
@@ -33286,7 +33307,9 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
         name: 'Target',
         system: { stun: { value: 0 }, health: { value: 5, max: 5 }, immunities: {} },
         getFlag: jest.fn((scope, key) => flags[key]),
-        setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value; 
+        }),
       };
     }
 
@@ -33393,7 +33416,9 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
         ...makeBankedActor(false),
         items: hasPower ? [{ type: 'power', flags: { core: { sourceId: BRAZEN_STRIKE_ID } } }] : [],
         statuses: new Set(statuses),
-        toggleStatusEffect: jest.fn(async function (condition) { this.statuses.delete(condition); }),
+        toggleStatusEffect: jest.fn(async function (condition) {
+          this.statuses.delete(condition); 
+        }),
       };
     }
 
@@ -33447,7 +33472,9 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
     function makeAlly(statuses = []) {
       return {
         statuses: new Set(statuses),
-        toggleStatusEffect: jest.fn(async function (condition) { this.statuses.delete(condition); }),
+        toggleStatusEffect: jest.fn(async function (condition) {
+          this.statuses.delete(condition); 
+        }),
       };
     }
 
@@ -33512,7 +33539,9 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
       return {
         ...makeBankedActor(false),
         getFlag: jest.fn((scope, key) => flagStore[key]),
-        setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flagStore[key] = value; 
+        }),
         toggleStatusEffect: jest.fn(),
       };
     }
@@ -35101,7 +35130,9 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
       const flagStore = {};
       const actorObj = {
         getFlag: jest.fn((scope, key) => flagStore[key]),
-        setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flagStore[key] = value; 
+        }),
       };
       return { actor: actorObj, document: { disposition: 1 }, center: { x: 0, y: 0 } };
     }
@@ -38964,9 +38995,15 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
         this._total = 30;
       }
       async evaluate() {}
-      get total() { return this._total; }
-      _evaluateTotal() { return this._total; }
-      async render() { return '<div></div>'; }
+      get total() {
+        return this._total; 
+      }
+      _evaluateTotal() {
+        return this._total; 
+      }
+      async render() {
+        return '<div></div>'; 
+      }
     }
     class NonCritRoll {
       constructor() {
@@ -38974,9 +39011,15 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
         this._total = 18;
       }
       async evaluate() {}
-      get total() { return this._total; }
-      _evaluateTotal() { return this._total; }
-      async render() { return '<div></div>'; }
+      get total() {
+        return this._total; 
+      }
+      _evaluateTotal() {
+        return this._total; 
+      }
+      async render() {
+        return '<div></div>'; 
+      }
     }
 
     const meleeCheckContext = {

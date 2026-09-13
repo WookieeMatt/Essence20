@@ -65,9 +65,11 @@ export async function applyExplosiveAftershockEffects(targetActor, effects) {
   if (effects.includes('prone')) {
     await targetActor.toggleStatusEffect('prone', { active: true });
   }
+
   if (effects.includes('deafened')) {
     await targetActor.toggleStatusEffect('deafened', { active: true });
   }
+
   if (effects.includes('penalty')) {
     await bankPendingBonus(targetActor, EXPLOSIVE_AFTERSHOCK_PENALTY_FLAG, { shiftDown: 1 });
   }

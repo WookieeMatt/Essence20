@@ -879,9 +879,11 @@ describe("_prepareMovement", () => {
       if (hasProwl) {
         items.push({ type: 'perk', flags: { core: { sourceId: PROWL_ID } } });
       }
+
       if (hasExpertise) {
         items.push({ type: 'perk', flags: { core: { sourceId: ENVIRONMENTAL_EXPERTISE_ID } } });
       }
+
       const actor = makeActor('playerCharacter', movementSystem(), { perk: items });
       actor.getFlag = jest.fn((scope, key) => (key == 'environmentalExpertiseActive' ? active : undefined));
       return actor;
@@ -1740,7 +1742,9 @@ describe("_prepareMegaformCombinerData", () => {
 
   function makeCombinerActor(participants) {
     const actorsMap = {};
-    participants.forEach((_participant, i) => { actorsMap[`p${i}`] = { uuid: `Actor.p${i}` }; });
+    participants.forEach((_participant, i) => {
+      actorsMap[`p${i}`] = { uuid: `Actor.p${i}` }; 
+    });
     global.fromUuidSync.mockImplementation(uuid => {
       const index = parseInt(uuid.replace('Actor.p', ''), 10);
       return participants[index];

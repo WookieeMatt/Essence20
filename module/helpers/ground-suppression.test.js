@@ -14,7 +14,9 @@ function makeActor({ flags = {} } = {}) {
   return {
     getActiveTokens: jest.fn(() => [{ id: 'token1', center: {} }]),
     getFlag: jest.fn((scope, key) => flags[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flags[key] = value; 
+    }),
     _dice: { rollSkill: jest.fn() },
   };
 }

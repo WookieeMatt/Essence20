@@ -38,8 +38,8 @@ export async function pickCalmingWordsOptions() {
       <option value="cure">${game.i18n.localize('E20.CalmingWordsCure')}</option>
     </select></div>
     <div class="form-group"><label>${
-      game.i18n.localize('E20.WordsCanHurtPickDefenseLabel')
-    }</label><select name="defenseType">
+  game.i18n.localize('E20.WordsCanHurtPickDefenseLabel')
+}</label><select name="defenseType">
       <option value="willpower">${game.i18n.localize('E20.DefenseWillpower')}</option>
       <option value="cleverness">${game.i18n.localize('E20.DefenseCleverness')}</option>
     </select></div>`,

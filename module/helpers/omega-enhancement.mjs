@@ -70,8 +70,8 @@ export async function pickOmegaEnhancementOption() {
       game.i18n.localize('E20.OmegaEnhancementPickOptionLabel')
     }</label><select name="option">${options}</select></div>
     <div class="form-group"><label>${
-      game.i18n.localize('E20.OmegaEnhancementPickEssenceLabel')
-    }</label><select name="essence">${essenceOptions}</select></div>`,
+  game.i18n.localize('E20.OmegaEnhancementPickEssenceLabel')
+}</label><select name="essence">${essenceOptions}</select></div>`,
     modal: true,
     buttons: [
       {

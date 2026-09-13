@@ -43,9 +43,11 @@ export async function pickUninterruptedBreakBenefit(actor) {
   if (!hasUsedThisEncounter(actor, UNINTERRUPTED_BREAK_HEAL_FLAG)) {
     options.push(`<option value="heal">${game.i18n.localize('E20.UninterruptedBreakHealOption')}</option>`);
   }
+
   if (!hasUsedThisEncounter(actor, UNINTERRUPTED_BREAK_STORY_POINT_FLAG)) {
     options.push(`<option value="storyPoint">${game.i18n.localize('E20.UninterruptedBreakStoryPointOption')}</option>`);
   }
+
   if (!options.length) {
     return null;
   }
@@ -82,6 +84,7 @@ export async function applyUninterruptedBreakBenefit(actor, benefit) {
       const newHealth = Math.min(target.system.health.value + 2, target.system.health.max);
       await target.update({ 'system.health.value': newHealth });
     }
+
     await markUsedThisEncounter(actor, UNINTERRUPTED_BREAK_HEAL_FLAG);
   } else if (benefit == 'storyPoint') {
     requestStoryPointGrant(actor);

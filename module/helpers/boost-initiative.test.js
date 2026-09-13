@@ -6,7 +6,9 @@ function makeActor(id = 'actor1') {
 }
 
 function makeCombatant(actor, initiative) {
-  return { actor, initiative, update: jest.fn(async function (data) { this.initiative = data.initiative; }) };
+  return { actor, initiative, update: jest.fn(async function (data) {
+    this.initiative = data.initiative; 
+  }) };
 }
 
 describe("activateBoostInitiative", () => {

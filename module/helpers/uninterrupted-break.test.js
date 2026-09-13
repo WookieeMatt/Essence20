@@ -12,7 +12,9 @@ function makeActor({ id = 'actor1', name = 'Actor', health = 3, healthMax = 10, 
     system: { health: { value: health, max: healthMax } },
     getActiveTokens: jest.fn(() => [{ document: { disposition: 1 }, center: {} }]),
     getFlag: jest.fn((scope, key) => flags[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flags[key] = value; 
+    }),
     update: jest.fn(),
   };
 }

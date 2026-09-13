@@ -2853,6 +2853,7 @@ export async function onPerkUse(item) {
     if (marked) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -2861,6 +2862,7 @@ export async function onPerkUse(item) {
     if (traded) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -2869,6 +2871,7 @@ export async function onPerkUse(item) {
     if (activated) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -2883,6 +2886,7 @@ export async function onPerkUse(item) {
     } else {
       ui.notifications.warn(game.i18n.localize('E20.EngineOverrideNoValidTarget'));
     }
+
     return;
   }
 
@@ -3011,6 +3015,7 @@ export async function onPerkUse(item) {
     if (designated) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3030,6 +3035,7 @@ export async function onPerkUse(item) {
       await markUsedThisTurn(actor, KNIGHTS_JUMP_TURN_FLAG);
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3056,6 +3062,7 @@ export async function onPerkUse(item) {
       await markUsedThisEncounter(actor, STAY_IN_FORMATION_ENCOUNTER_FLAG);
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3071,6 +3078,7 @@ export async function onPerkUse(item) {
       await markUsedThisEncounter(actor, CONCENTRATE_FIRE_ENCOUNTER_FLAG);
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3442,6 +3450,7 @@ export async function onPerkUse(item) {
       await markUsedThisEncounter(actor, TIMELINE_ANOMALY_ENCOUNTER_FLAG);
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3450,6 +3459,7 @@ export async function onPerkUse(item) {
     if (swapped) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3463,6 +3473,7 @@ export async function onPerkUse(item) {
       await markUsedThisEncounter(actor, QUICK_STUDY_ENCOUNTER_FLAG);
       postPerkUseChatCard(actor, content);
     }
+
     return;
   }
 
@@ -3471,6 +3482,7 @@ export async function onPerkUse(item) {
     if (wasSet) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3481,6 +3493,7 @@ export async function onPerkUse(item) {
       await activateCastling(targetActors);
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3489,6 +3502,7 @@ export async function onPerkUse(item) {
     if (synced) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3497,6 +3511,7 @@ export async function onPerkUse(item) {
     if (activated) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3509,6 +3524,7 @@ export async function onPerkUse(item) {
     if (activated) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3556,6 +3572,7 @@ export async function onPerkUse(item) {
     if (marked) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3564,6 +3581,7 @@ export async function onPerkUse(item) {
     if (converted) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3710,6 +3728,7 @@ export async function onPerkUse(item) {
       await rolePoints.update({ 'system.resource.value': rolePoints.system.resource.value - 1 });
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3807,6 +3826,7 @@ export async function onPerkUse(item) {
     if (declared) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3933,6 +3953,7 @@ export async function onPerkUse(item) {
     if (marked) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -3999,6 +4020,7 @@ export async function onPerkUse(item) {
     if (ignored) {
       postPerkUseChatCard(actor, game.i18n.format('E20.MaturedIgnoredNotification', { actor: actor.name, hangUp: ignored.name }));
     }
+
     return;
   }
 
@@ -4046,6 +4068,7 @@ export async function onPerkUse(item) {
     } else {
       ui.notifications.warn(game.i18n.localize('E20.PackAttackNoAllies'));
     }
+
     return;
   }
 
@@ -4062,6 +4085,7 @@ export async function onPerkUse(item) {
     } else if (wasActive) {
       postPerkUseChatCard(actor, game.i18n.format('E20.AnimalGaitDeactivated', { actor: actor.name }));
     }
+
     return;
   }
 
@@ -4388,6 +4412,7 @@ export async function onPerkUse(item) {
     if (removed) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -4396,6 +4421,7 @@ export async function onPerkUse(item) {
     if (removed) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 
@@ -4404,6 +4430,7 @@ export async function onPerkUse(item) {
     if (activated) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
+
     return;
   }
 

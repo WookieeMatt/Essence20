@@ -110,12 +110,6 @@ const MASTER_SPELLCASTER_ID = `${KNIGHTS_OF_CANTERLOT}tEOoAvzj42d20QHu`;
 const POWER_CONSERVATIONIST_ID = `${KNIGHTS_OF_CANTERLOT}75H9N2YqaSDUhiCQ`;
 const POWER_MASTERY_ID = `${KNIGHTS_OF_CANTERLOT}qDsWwo5ipmzMMuO4`;
 
-// Block Magic (Knights of Canterlot, Virtuoso Enchantment spell, p.49) - see
-// helpers/block-magic.mjs's own doc comment. "+1 to the cost of any spell you cast" while a
-// target is under its effect - read directly below, in the one place every spell's own casting
-// cost is already computed.
-const BLOCK_MAGIC_ID = `${KNIGHTS_OF_CANTERLOT}J1jUwu4IIuPxQE10`;
-
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
@@ -549,6 +543,7 @@ export class Essence20Item extends Item {
       } else if (itemSourceId == UNARMED_COMBAT_EFFECT_ID && actorHasPerk(roller, BEASTLY_HANG_UP_ID)) {
         itemShiftDown = this.system.shiftDown + 1;
       }
+
       const shiftDown = roller.system.skills[skill].shiftDown + itemShiftDown;
       const isSpecialized = roller.system.skills[skill].isSpecialized;
       weaponDataset = {

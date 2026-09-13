@@ -39,8 +39,8 @@ export async function pickBolsterDefenseOption() {
       <option value="single">${game.i18n.localize('E20.BolsterDefenseSingle')}</option>
       <option value="all">${game.i18n.localize('E20.BolsterDefenseAll')}</option>
     </select></div><div class="form-group"><label>${
-      game.i18n.localize('E20.BolsterDefenseSingleTypeLabel')
-    }</label><select name="defenseType">${defenseOptions}</select></div>`,
+  game.i18n.localize('E20.BolsterDefenseSingleTypeLabel')
+}</label><select name="defenseType">${defenseOptions}</select></div>`,
     modal: true,
     buttons: [
       {

@@ -8,8 +8,12 @@ function makeActor({ shift = 'd8', used = false, healthBonus = 0 } = {}) {
   return {
     system: { skills: { survival: { shift } }, health: { bonus: healthBonus } },
     getFlag: jest.fn((scope, key) => flagStore[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
-    update: jest.fn(async function (data) { this.system.health.bonus = data['system.health.bonus']; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flagStore[key] = value; 
+    }),
+    update: jest.fn(async function (data) {
+      this.system.health.bonus = data['system.health.bonus']; 
+    }),
   };
 }
 

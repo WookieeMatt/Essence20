@@ -25,7 +25,9 @@ function makeEffectsCollection(effects) {
 }
 
 function makeEffect(disabled) {
-  return { disabled, update: jest.fn(async function (data) { this.disabled = data.disabled; }) };
+  return { disabled, update: jest.fn(async function (data) {
+    this.disabled = data.disabled; 
+  }) };
 }
 
 function makeActor(name = 'Test Actor') {
@@ -124,7 +126,9 @@ describe('onPowerUse', () => {
   test('recognizes Boost Initiative and dispatches with the spent amount', async () => {
     const BOOST_INITIATIVE_ID = "Compendium.essence20.pr_crb.Item.IuQ0tsM2G99fQlSz";
     const actor = { ...makeActor(), id: 'actor1' };
-    const combatant = { actor, initiative: 10, update: jest.fn(async function (data) { this.initiative = data.initiative; }) };
+    const combatant = { actor, initiative: 10, update: jest.fn(async function (data) {
+      this.initiative = data.initiative; 
+    }) };
     global.game.combat = { combatants: [combatant] };
     const item = { name: 'Boost Initiative', flags: { core: { sourceId: BOOST_INITIATIVE_ID } } };
 
@@ -158,7 +162,9 @@ describe('onPowerUse', () => {
 
   test('recognizes Repair Zord, heals the piloted Zord, and posts a chat card', async () => {
     const REPAIR_ZORD_ID = "Compendium.essence20.pr_crb.Item.9S0fkRqxjfiOJ8ip";
-    const zord = { system: { health: { value: 5, max: 10 } }, update: jest.fn(async function (data) { this.system.health.value = data['system.health.value']; }) };
+    const zord = { system: { health: { value: 5, max: 10 } }, update: jest.fn(async function (data) {
+      this.system.health.value = data['system.health.value']; 
+    }) };
     const actor = { ...makeActor(), getRollData: jest.fn(() => ({})), _dice: { _getPilotedVehicle: jest.fn(() => zord) } };
     const item = { name: 'Repair Zord', flags: { core: { sourceId: REPAIR_ZORD_ID } } };
 
@@ -286,7 +292,9 @@ describe('onPowerUse', () => {
   test('recognizes Power Heal, heals whichever ally was targeted, and posts a chat card', async () => {
     const POWER_HEAL_ID = "Compendium.essence20.pr_crb.Item.eiTUR08GXw03M21m";
     const actor = { ...makeActor(), id: 'actor1', getActiveTokens: jest.fn(() => []) };
-    const ally = { id: 'actor2', name: 'Ally', system: { health: { value: 5, max: 10 } }, update: jest.fn(async function (data) { this.system.health.value = data['system.health.value']; }) };
+    const ally = { id: 'actor2', name: 'Ally', system: { health: { value: 5, max: 10 } }, update: jest.fn(async function (data) {
+      this.system.health.value = data['system.health.value']; 
+    }) };
     global.game.user = { targets: new Set([{ actor: ally }]) };
     const item = { name: 'Power Heal', flags: { core: { sourceId: POWER_HEAL_ID } } };
 

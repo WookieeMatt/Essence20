@@ -232,6 +232,7 @@ describe("grantBlendIn (Ferocious Fighters, Tiger Force General Perk / Change It
       if (uuid == BLEND_IN_ID) {
         return { uuid, type: 'perk' };
       }
+
       return { uuid, type: 'upgrade', system: { type: 'armor', description: '' } };
     });
   });

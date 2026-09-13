@@ -41,8 +41,8 @@ export async function pickPowerfulSuggestionOptions() {
       game.i18n.localize('E20.PowerfulSuggestionsPickSkillLabel')
     }</label><select name="skill">${skillOptions}</select></div>
     <div class="form-group"><label>${
-      game.i18n.localize('E20.PowerfulSuggestionsPickEffectLabel')
-    }</label><select name="effect">
+  game.i18n.localize('E20.PowerfulSuggestionsPickEffectLabel')
+}</label><select name="effect">
       <option value="excel">${game.i18n.localize('E20.PowerfulSuggestionsExcel')}</option>
       <option value="fail">${game.i18n.localize('E20.PowerfulSuggestionsFail')}</option>
     </select></div>`,

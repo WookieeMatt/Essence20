@@ -6,7 +6,9 @@ global.canvas = { tokens: { placeables: [] }, grid: { measurePath: jest.fn(() =>
 function makeAlly(statuses = []) {
   return {
     statuses: new Set(statuses),
-    toggleStatusEffect: jest.fn(async function (condition) { this.statuses.delete(condition); }),
+    toggleStatusEffect: jest.fn(async function (condition) {
+      this.statuses.delete(condition); 
+    }),
   };
 }
 

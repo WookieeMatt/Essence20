@@ -11,7 +11,9 @@ function makeActor({ hasPower = true, resistances = {}, power = 1, used = false 
     system: { resistances, powers: { personal: { value: power } } },
     items,
     getFlag: jest.fn((scope, key) => flagStore[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flagStore[key] = value; 
+    }),
     update: jest.fn(),
   };
 }

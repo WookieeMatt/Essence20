@@ -38,5 +38,6 @@ export async function toggleBoxShot(actor) {
   if (nowActive) {
     await markUsedThisEncounter(actor, BOX_SHOT_ENCOUNTER_FLAG);
   }
+
   return nowActive;
 }

@@ -13,8 +13,12 @@ function makeActor({ resourceValue = 1, grantedId = undefined, grantedItem = und
   return {
     items,
     getFlag: jest.fn((scope, key) => flags[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
-    unsetFlag: jest.fn(async (scope, key) => { delete flags[key]; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flags[key] = value; 
+    }),
+    unsetFlag: jest.fn(async (scope, key) => {
+      delete flags[key]; 
+    }),
     createEmbeddedDocuments: jest.fn(async () => [{ id: 'newItem1' }]),
     _getBaseRolePoints: jest.fn(() => rolePoints),
     __rolePoints: rolePoints,

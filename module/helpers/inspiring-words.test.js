@@ -6,7 +6,9 @@ global.game = { combat: null };
 function makeActor(flags = {}) {
   return {
     getFlag: jest.fn((scope, key) => (scope == 'essence20' ? flags[key] : undefined)),
-    setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flags[key] = value; 
+    }),
   };
 }
 

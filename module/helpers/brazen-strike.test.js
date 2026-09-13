@@ -9,6 +9,7 @@ function makeActor(statuses = []) {
     }),
   };
 }
+
 let actor;
 
 describe("applyBrazenStrike", () => {

@@ -9,11 +9,13 @@ function makeActor({ hasTenderPerk = true, empathyChoice = 'survival' } = {}) {
   if (hasTenderPerk) {
     items.push({ type: 'perk', flags: { core: { sourceId: TENDER_ID } } });
   }
+
   if (empathyChoice) {
     items.push({
       type: 'perk', flags: { core: { sourceId: EMPATHY_MLP_ID } }, system: { choice: empathyChoice },
     });
   }
+
   return { items, _dice: { rollSkill: jest.fn() } };
 }
 

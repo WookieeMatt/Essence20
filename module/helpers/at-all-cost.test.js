@@ -16,8 +16,12 @@ function makeActor({ isMorphed = true, active = false, usedThisEncounter = false
   return {
     system: { isMorphed, powers: { personal: { value: power } }, health: { value: 5 } },
     getFlag: jest.fn((scope, key) => flagStore[key]),
-    setFlag: jest.fn((scope, key, value) => { flagStore[key] = value; }),
-    unsetFlag: jest.fn((scope, key) => { flagStore[key] = undefined; }),
+    setFlag: jest.fn((scope, key, value) => {
+      flagStore[key] = value; 
+    }),
+    unsetFlag: jest.fn((scope, key) => {
+      flagStore[key] = undefined; 
+    }),
     update: jest.fn(),
     toggleStatusEffect: jest.fn(),
   };

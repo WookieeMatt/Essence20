@@ -27,9 +27,13 @@ global.fromUuid = jest.fn();
 function makeActor({ flags = {} } = {}) {
   return {
     getFlag: jest.fn((scope, key) => flags[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flags[key] = value; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flags[key] = value; 
+    }),
     system: { health: { bonus: 0 } },
-    update: jest.fn(async function (data) { this.system.health.bonus = data['system.health.bonus']; }),
+    update: jest.fn(async function (data) {
+      this.system.health.bonus = data['system.health.bonus']; 
+    }),
   };
 }
 

@@ -10,7 +10,9 @@ function makeAllyToken(disposition = 1) {
   const flagStore = {};
   const actor = {
     getFlag: jest.fn((scope, key) => flagStore[key]),
-    setFlag: jest.fn(async (scope, key, value) => { flagStore[key] = value; }),
+    setFlag: jest.fn(async (scope, key, value) => {
+      flagStore[key] = value; 
+    }),
     _flags: flagStore,
   };
   return { actor, document: { disposition }, center: { x: 0, y: 0 } };
