@@ -12,6 +12,14 @@
       "page": 20
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "skillDice",
+      "skills": ["deception"],
+      "maxUses": 0,
+      "reset": "none"
+    },
     "selectionLimit": 1,
     "type": "role"
   },

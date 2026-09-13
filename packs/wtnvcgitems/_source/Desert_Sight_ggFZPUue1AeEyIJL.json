@@ -31,7 +31,52 @@
     "value": 0,
     "version": "powerRangers"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.ggFZPUue1AeEyIJL",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "SN5tFlaMV28bxToG",
+      "changes": [
+        {
+          "key": "system.skills.alertness.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Alertness Upshift",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!ggFZPUue1AeEyIJL.SN5tFlaMV28bxToG"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

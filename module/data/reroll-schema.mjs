@@ -53,6 +53,15 @@ export const rerollSchema = () => ({
     // Understanding"/"Survivalist" are always scoped to 1-3 fixed skills). Empty = unscoped,
     // matching every skill roll - the pre-existing behavior for grants that don't set this.
     skills: makeStrArrayWithChoices(Object.keys(E20.skills)),
+    // Scopes this reroll to whichever skill the actor themselves chose as their Origin Skill
+    // (Cobra Codex "It's A Gift", Gifted Origin Benefit, p.44: "reroll a failed Skill Test for
+    // your Origin skill") - a genuinely per-actor dynamic scope, unlike the static `skills` array
+    // above, since Gifted's own Origin Skill is a free player choice ("trained in any one skill"),
+    // not a fixed name the compendium item could name in advance. Resolved in
+    // helpers/reroll.mjs#getRerollConfigs (which already has the actor in scope) by overriding
+    // `skills` with `[actor.system.originSkillsIncrease]` when this is set - left false (the
+    // default) for every other existing grant, which all name their own skills statically.
+    scopeToOriginSkill: makeBool(false),
     // Scopes this reroll to only apply when the rolled skill belongs to this Essence (e.g. MLP/PR
     // CRB "Adolescent Attitude" - "reroll 1s on Social-based skill dice", any Social skill, not
     // one named skill). 'any' (E20.essences' own catch-all key) means unscoped.
@@ -74,5 +83,22 @@ export const rerollSchema = () => ({
     // canCritD2 flag (helpers/combat.mjs#_isCritIsFumble reads it for crit highlighting)
     // regardless of whether the original roll had it. See chat.mjs#rerollMessage.
     grantsCanCritD2: makeBool(false),
+    // A flat bonus added to the REROLLED result itself, on top of whatever the new dice show
+    // (Across the Stars "Mending the Grid": "...the re-rolled Skill Test gains a ↑2 bonus!").
+    // RAW's own wording is an upshift (a bigger skill die), but that's not expressible here - by
+    // the time a reroll runs, the die's own face count is already fixed on an already-evaluated
+    // Roll (see helpers/reroll.mjs#applyReroll's own doc comment on why this file mutates
+    // existing dice in place rather than re-building the roll formula from scratch) - a flat
+    // add-on to the final total is the closest equivalent this engine can express. 0 (the
+    // default) means no bonus, matching every existing grant.
+    bonus: makeInt(0),
+    // Every other existing grant unconditionally commits to the rerolled result, even a worse one
+    // (PR CRB "Weapon Mastery" says so explicitly). Hawk's Personnel Files "Backup Planner":
+    // "...you can reroll a Deception Skill Test and accept either result" is the opposite - the
+    // player isn't forced into a worse reroll. Since this system compares a Skill Test's total
+    // against a Difficulty (higher is always at least as good), "either result" is expressed as
+    // keeping whichever of the two totals is higher, rather than reconstructing the pre-reroll
+    // dice state for a genuine side-by-side choice - see helpers/reroll.mjs#applyReroll.
+    keepBetter: makeBool(false),
   }),
 });

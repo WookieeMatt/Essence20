@@ -1,11 +1,11 @@
 import { jest } from '@jest/globals';
 import {
-  actorHasPerk, bankPendingBonus, clearPendingBonus, findPerk, getPendingBonus,
-  hasUsedThisEncounter, hasUsedThisRound, hasUsedThisTurn,
-  markUsedThisEncounter, markUsedThisRound, markUsedThisTurn,
+  actorHasHangUp, actorHasPerk, bankPendingBonus, clearPendingBonus, findHangUp, findPerk, getPendingBonus,
+  getUsesThisEncounter, getUsesThisScene, hasUsedThisEncounter, hasUsedThisRound, hasUsedThisTurn,
+  markUsedThisEncounter, markUsedThisEncounterCount, markUsedThisRound, markUsedThisScene, markUsedThisTurn,
 } from './perks.mjs';
 
-global.game = { combat: null };
+global.game = { combat: null, scenes: { current: null } };
 
 /* findPerk */
 describe("findPerk", () => {
@@ -31,6 +31,47 @@ describe("findPerk", () => {
     const actor = makeActor([perkItem]);
     expect(actorHasPerk(actor, PERK_ID)).toBe(true);
     expect(actorHasPerk(makeActor([]), PERK_ID)).toBe(false);
+  });
+});
+
+/* findHangUp / actorHasHangUp */
+describe("findHangUp", () => {
+  const HANGUP_ID = "Compendium.essence20.field_guide_action_adventure.Item.gUrBCm0G8ntInUar";
+
+  function makeActor(items) {
+    return { items };
+  }
+
+  test("returns the matching Hang-Up item", () => {
+    const hangUpItem = { type: 'hangUp', flags: { core: { sourceId: HANGUP_ID } } };
+    const actor = makeActor([hangUpItem]);
+    expect(findHangUp(actor, HANGUP_ID)).toBe(hangUpItem);
+  });
+
+  test("returns undefined when there's no match", () => {
+    const actor = makeActor([{ type: 'hangUp', flags: { core: { sourceId: "Compendium.essence20.field_guide_action_adventure.Item.other" } } }]);
+    expect(findHangUp(actor, HANGUP_ID)).toBeUndefined();
+  });
+
+  test("ignores a perk-type item that happens to share the sourceId - findPerk()'s own blind spot this exists to cover", () => {
+    const actor = makeActor([{ type: 'perk', flags: { core: { sourceId: HANGUP_ID } } }]);
+    expect(findHangUp(actor, HANGUP_ID)).toBeUndefined();
+  });
+
+  test("actorHasHangUp is true exactly when findHangUp finds something", () => {
+    const hangUpItem = { type: 'hangUp', flags: { core: { sourceId: HANGUP_ID } } };
+    expect(actorHasHangUp(makeActor([hangUpItem]), HANGUP_ID)).toBe(true);
+    expect(actorHasHangUp(makeActor([]), HANGUP_ID)).toBe(false);
+  });
+
+  test("Matured (Cobra Codex, General Perk, p.176): skips a Hang-Up flagged maturedIgnored", () => {
+    const hangUpItem = {
+      type: 'hangUp', flags: { core: { sourceId: HANGUP_ID } },
+      getFlag: jest.fn((scope, key) => (key == 'maturedIgnored' ? true : undefined)),
+    };
+    const actor = makeActor([hangUpItem]);
+    expect(findHangUp(actor, HANGUP_ID)).toBeUndefined();
+    expect(actorHasHangUp(actor, HANGUP_ID)).toBe(false);
   });
 });
 
@@ -194,6 +235,111 @@ describe("hasUsedThisEncounter / markUsedThisEncounter", () => {
     const actor = { setFlag: jest.fn() };
     await markUsedThisEncounter(actor, 'someFlag');
     expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+});
+
+/* getUsesThisEncounter / markUsedThisEncounterCount */
+describe("getUsesThisEncounter / markUsedThisEncounterCount", () => {
+  beforeEach(() => {
+    game.combat = { id: 'combat1', round: 1, turn: 0 };
+  });
+
+  test("getUsesThisEncounter is 0 outside of combat regardless of any stored flag", () => {
+    game.combat = null;
+    const actor = { getFlag: jest.fn(() => ({ combatId: 'combat1', count: 2 })) };
+    expect(getUsesThisEncounter(actor, 'someFlag')).toBe(0);
+  });
+
+  test("getUsesThisEncounter is 0 with no stored flag at all", () => {
+    const actor = { getFlag: jest.fn(() => undefined) };
+    expect(getUsesThisEncounter(actor, 'someFlag')).toBe(0);
+  });
+
+  test("getUsesThisEncounter returns the stored count when the flag matches the current combat", () => {
+    const actor = { getFlag: jest.fn(() => ({ combatId: 'combat1', count: 1 })) };
+    expect(getUsesThisEncounter(actor, 'someFlag')).toBe(1);
+  });
+
+  test("getUsesThisEncounter is 0 for a stale flag from a different combat", () => {
+    const actor = { getFlag: jest.fn(() => ({ combatId: 'oldCombat', count: 2 })) };
+    expect(getUsesThisEncounter(actor, 'someFlag')).toBe(0);
+  });
+
+  test("markUsedThisEncounterCount records the current combat's id with a count of 1 by default", async () => {
+    const actor = { getFlag: jest.fn(() => undefined), setFlag: jest.fn() };
+    await markUsedThisEncounterCount(actor, 'someFlag');
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { combatId: 'combat1', count: 1 });
+  });
+
+  test("markUsedThisEncounterCount increments an existing count rather than overwriting it", async () => {
+    const actor = { getFlag: jest.fn(() => ({ combatId: 'combat1', count: 1 })), setFlag: jest.fn() };
+    await markUsedThisEncounterCount(actor, 'someFlag');
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { combatId: 'combat1', count: 2 });
+  });
+
+  test("markUsedThisEncounterCount resets the count when the stored flag is from a stale combat", async () => {
+    const actor = { getFlag: jest.fn(() => ({ combatId: 'oldCombat', count: 5 })), setFlag: jest.fn() };
+    await markUsedThisEncounterCount(actor, 'someFlag');
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { combatId: 'combat1', count: 1 });
+  });
+
+  test("markUsedThisEncounterCount no-ops outside of combat", async () => {
+    game.combat = null;
+    const actor = { setFlag: jest.fn() };
+    await markUsedThisEncounterCount(actor, 'someFlag');
+    expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+});
+
+/* getUsesThisScene / markUsedThisScene */
+describe("getUsesThisScene / markUsedThisScene", () => {
+  beforeEach(() => {
+    game.scenes = { current: { id: 'scene1' } };
+  });
+
+  test("getUsesThisScene is 0 with no stored flag at all", () => {
+    const actor = { getFlag: jest.fn(() => undefined) };
+    expect(getUsesThisScene(actor, 'someFlag')).toBe(0);
+  });
+
+  test("getUsesThisScene returns the stored count when the flag matches the current scene", () => {
+    const actor = { getFlag: jest.fn(() => ({ sceneId: 'scene1', count: 1 })) };
+    expect(getUsesThisScene(actor, 'someFlag')).toBe(1);
+  });
+
+  test("getUsesThisScene is 0 for a stale flag from a different scene", () => {
+    const actor = { getFlag: jest.fn(() => ({ sceneId: 'oldScene', count: 3 })) };
+    expect(getUsesThisScene(actor, 'someFlag')).toBe(0);
+  });
+
+  test("getUsesThisScene works with no active scene at all (both stamped null)", () => {
+    game.scenes = { current: null };
+    const actor = { getFlag: jest.fn(() => ({ sceneId: null, count: 1 })) };
+    expect(getUsesThisScene(actor, 'someFlag')).toBe(1);
+  });
+
+  test("markUsedThisScene records the current scene's id with a count of 1 by default", async () => {
+    const actor = { getFlag: jest.fn(() => undefined), setFlag: jest.fn() };
+    await markUsedThisScene(actor, 'someFlag');
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { sceneId: 'scene1', count: 1 });
+  });
+
+  test("markUsedThisScene increments an existing count rather than overwriting it", async () => {
+    const actor = { getFlag: jest.fn(() => ({ sceneId: 'scene1', count: 1 })), setFlag: jest.fn() };
+    await markUsedThisScene(actor, 'someFlag');
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { sceneId: 'scene1', count: 2 });
+  });
+
+  test("markUsedThisScene accepts a larger count in one call (Old Reliable's own 'both d20s' spend)", async () => {
+    const actor = { getFlag: jest.fn(() => undefined), setFlag: jest.fn() };
+    await markUsedThisScene(actor, 'someFlag', 2);
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { sceneId: 'scene1', count: 2 });
+  });
+
+  test("markUsedThisScene resets the count when the stored flag is from a stale scene", async () => {
+    const actor = { getFlag: jest.fn(() => ({ sceneId: 'oldScene', count: 5 })), setFlag: jest.fn() };
+    await markUsedThisScene(actor, 'someFlag');
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { sceneId: 'scene1', count: 1 });
   });
 });
 

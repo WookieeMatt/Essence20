@@ -22,7 +22,52 @@
     "usesInterval": "perScene",
     "usesPer": null
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Faster Recharge",
+      "origin": "Item.OM4FvTSLbxENF2nh",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "fR2ChrgEf3ct0001",
+      "changes": [
+        {
+          "key": "system.powers.personal.regeneration",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!OM4FvTSLbxENF2nh.fR2ChrgEf3ct0001"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

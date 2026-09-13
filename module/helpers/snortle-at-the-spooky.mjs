@@ -1,4 +1,5 @@
 import { findRolePointsItem } from "./reroll.mjs";
+import { postPerkUseChatCard } from "./perks.mjs";
 
 /**
  * MLP CRB "Snortle at the Spooky" (Spirit of Laughter Role, p.86, 6th level): "...when a friend
@@ -90,7 +91,7 @@ export async function snortleAtTheSpooky(actor) {
     curedStatusNames.push(game.i18n.localize(CONFIG.statusEffects.find(effect => effect.id == statusToCure)?.name ?? statusToCure));
   }
 
-  ui.notifications.info(game.i18n.format("E20.SnortleCured", {
+  postPerkUseChatCard(actor, game.i18n.format("E20.SnortleCured", {
     actorName: actor.name,
     targetName: targets.map(target => target.name).join(", "),
     status: curedStatusNames.join(", "),

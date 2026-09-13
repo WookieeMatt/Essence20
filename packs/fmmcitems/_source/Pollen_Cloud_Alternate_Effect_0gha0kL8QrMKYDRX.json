@@ -1,0 +1,51 @@
+{
+  "folder": "qYE3EL3h5C59PNUK",
+  "name": "Pollen Cloud Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "0gha0kL8QrMKYDRX",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "blindingBlast",
+    "damageValue": 0,
+    "defenseType": "toughness",
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 6,
+    "radius": 30,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 80,
+      "value": 30
+    },
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "description": "<p>30 ft x 30 ft Area; can't be defended with Evasion; Target is Blinded until the end of its next turn</p>"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1789114659637,
+    "modifiedTime": 1789114659637,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!0gha0kL8QrMKYDRX"
+}

@@ -29,7 +29,21 @@
     },
     "type": "general",
     "value": 0,
-    "version": "powerRangers"
+    "version": "powerRangers",
+    "reroll": {
+      "enabled": true,
+      "mode": "all",
+      "target": "skillDice",
+      "condition": "rollFailed",
+      "maxUses": 1,
+      "reset": "scene",
+      "cost": {
+        "resourcePath": "system.health.value",
+        "amount": 1,
+        "worldStoryPoints": 0,
+        "rolePointsName": ""
+      }
+    }
   },
   "effects": [],
   "sort": 0,

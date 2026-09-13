@@ -17,6 +17,15 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
+    "reroll": {
+      "enabled": false,
+      "mode": "ones",
+      "target": "skillDice",
+      "minDieFaces": 4,
+      "recursive": false,
+      "maxUses": 0,
+      "reset": "none"
+    },
     "selectionLimit": 1,
     "type": "sorcerous",
     "usesInterval": "special",

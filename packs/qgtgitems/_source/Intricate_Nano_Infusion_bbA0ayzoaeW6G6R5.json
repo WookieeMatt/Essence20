@@ -12,8 +12,43 @@
       "page": 30
     },
     "prerequisite": "8th Level",
-    "selectionLimit": 1,
-    "type": "general"
+    "selectionLimit": 10,
+    "type": "general",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 1,
+    "items": {
+      "90Jo": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.6Ku40JiKZCMbGMtM",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Augmented Combat",
+        "type": "power"
+      },
+      "ZEmr": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.KeDQbX62owtITKDo",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Electric Discharge",
+        "type": "power"
+      },
+      "BzTB": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.IF9v9C3tCJSQYRjd",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Protection",
+        "type": "power"
+      },
+      "Q14a": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.toDyl8zb0XVvqPuj",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Reactive",
+        "type": "power"
+      },
+      "isjd": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.HOM0e2W0aBYnZ8Z3",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Repair Machine",
+        "type": "power"
+      }
+    }
   },
   "effects": [],
   "sort": 0,

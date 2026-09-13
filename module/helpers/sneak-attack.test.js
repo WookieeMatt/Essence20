@@ -3,6 +3,7 @@ import {
   checkPredatorSneakAttackEligibility,
   checkSneakAttackEligibility,
   getPredatorSneakAttackDamage,
+  getSneakAttackDamage,
   hasPredatorSneakAttack,
   isSneakAttackDamageItem,
   markSneakAttackUsed,
@@ -54,6 +55,34 @@ describe("isSneakAttackDamageItem", () => {
   test("false for any other Role Points Item (e.g. Power Strike)", () => {
     const item = { flags: { core: { sourceId: "Compendium.essence20.pr_crb.Item.v3tBCzRQx5pqNSHo" } } };
     expect(isSneakAttackDamageItem(item)).toBe(false);
+  });
+});
+
+/* getSneakAttackDamage */
+describe("getSneakAttackDamage", () => {
+  test("returns the actor's own Sneak Attack Damage bonus value", () => {
+    const actor = {
+      _getBaseRolePoints: () => ({
+        flags: { core: { sourceId: SNEAK_ATTACK_DAMAGE_ID } },
+        system: { bonus: { value: 3 } },
+      }),
+    };
+    expect(getSneakAttackDamage(actor)).toBe(3);
+  });
+
+  test("returns 0 without Sneak Attack Damage as the base Role Points item", () => {
+    const actor = {
+      _getBaseRolePoints: () => ({
+        flags: { core: { sourceId: "Compendium.essence20.pr_crb.Item.v3tBCzRQx5pqNSHo" } },
+        system: { bonus: { value: 5 } },
+      }),
+    };
+    expect(getSneakAttackDamage(actor)).toBe(0);
+  });
+
+  test("returns 0 with no base Role Points item at all", () => {
+    const actor = { _getBaseRolePoints: () => undefined };
+    expect(getSneakAttackDamage(actor)).toBe(0);
   });
 });
 

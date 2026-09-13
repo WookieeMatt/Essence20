@@ -44,7 +44,7 @@
       "_id": "EygAmCiyxeKLWcPi",
       "changes": [
         {
-          "key": "system.defenses.toughness.bonus",
+          "key": "system.defenses.toughness.morphed",
           "mode": 2,
           "value": "1",
           "priority": null

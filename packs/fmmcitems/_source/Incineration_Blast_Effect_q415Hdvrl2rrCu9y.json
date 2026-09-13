@@ -1,0 +1,51 @@
+{
+  "folder": "7fSe2QMPmhP6jKoD",
+  "name": "Incineration Blast Effect",
+  "type": "weaponEffect",
+  "_id": "q415Hdvrl2rrCu9y",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "fire",
+    "damageValue": 2,
+    "defenseType": "evasion",
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 6,
+    "radius": 30,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 150,
+      "value": 50
+    },
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "description": "<p>30 ft x 30 ft Area; on a Critical Success, +1 Fire damage if the target moves before the start of its next turn</p>"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1789114659637,
+    "modifiedTime": 1789114659637,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!q415Hdvrl2rrCu9y"
+}

@@ -31,7 +31,52 @@
     "value": 0,
     "version": "giJoe"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Nu, Pogodi!",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.intercontinental_adventures.Item.sItc8nD7ockbQ1mn",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "NuPogodiResist01",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.resistances.cold",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!sItc8nD7ockbQ1mn.NuPogodiResist01"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

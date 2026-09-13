@@ -12,6 +12,18 @@
       "page": 61
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "all",
+      "target": "allDice",
+      "condition": "rollFailed",
+      "cost": {
+        "worldStoryPoints": 1
+      },
+      "maxUses": 0,
+      "reset": "none",
+      "bonus": 2
+    },
     "selectionLimit": 1,
     "type": "role"
   },

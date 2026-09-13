@@ -76,7 +76,7 @@
       "_id": "9HX4DKrA2gALcrxv",
       "changes": [
         {
-          "key": "system.skills.persuasion,essences.speed",
+          "key": "system.skills.persuasion.essences.speed",
           "mode": 5,
           "value": "true",
           "priority": null

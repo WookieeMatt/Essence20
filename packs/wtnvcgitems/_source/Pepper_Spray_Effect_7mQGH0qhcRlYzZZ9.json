@@ -15,7 +15,7 @@
       "skill": "athletics",
       "style": "projectile"
     },
-    "damageType": "element",
+    "damageType": "acid",
     "damageValue": 1,
     "isSpecialized": false,
     "shiftDown": 0,

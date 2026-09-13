@@ -1,0 +1,33 @@
+{
+  "folder": "GnpjtrDaa4I537Te",
+  "name": "Ninja Powered (Deep Wisdom)",
+  "type": "feature",
+  "_id": "wvJFH2HbSWNab25M",
+  "img": "systems/essence20/assets/icons/items/feature.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 138
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!wvJFH2HbSWNab25M"
+}

@@ -8,6 +8,8 @@
     "originalId": "",
     "description": "",
     "prerequisite": "Coast Guard Origin",
+    "hasChoice": true,
+    "choiceType": "alwaysReadyFunction",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

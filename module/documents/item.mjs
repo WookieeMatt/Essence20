@@ -7,6 +7,108 @@ import { applyShapedCharges } from "../helpers/shaped-charges.mjs";
 import { applyHorseshoesAndHandgrenades } from "../helpers/horseshoes-and-handgrenades.mjs";
 import { applyMightyStrikes } from "../helpers/mighty-strikes.mjs";
 import { applyNoNeedToAim } from "../helpers/no-need-to-aim.mjs";
+import { actorHasPerk } from "../helpers/perks.mjs";
+import { pickEnchantSkill } from "../helpers/enchant.mjs";
+import { autoTargetExplosiveBeam } from "../helpers/explosive-beam.mjs";
+import { autoTargetBeamVolley } from "../helpers/beam-volley.mjs";
+import { pickBestowExpertise } from "../helpers/bestow-expertise.mjs";
+import { pickMindBeamEffect } from "../helpers/mind-beam.mjs";
+import { pickGetToKnowSkill } from "../helpers/get-to-know.mjs";
+import { isBlockMagicActive } from "../helpers/block-magic.mjs";
+
+const KNIGHTS_OF_CANTERLOT = "Compendium.essence20.knights_of_canterlot.Item.";
+const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
+const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
+
+// Adaptable (GI Joe CRB, Scout Focus, 3rd level, p.91): "you gain twice the number of Adaptation
+// Points as the Ranger Role chart at this level and as you advance in this Role." Doubles the
+// computed resource.max specifically for the actor's own Adaptation Points rolePoints item - see
+// _prepareRolePoints()'s own doubling check below, gated tightly on ADAPTION_POINTS_ID so no other
+// rolePoints item across any book is affected.
+const ADAPTION_POINTS_ID = `${GI_JOE_CRB}tqiseYDXnEngUlvd`;
+const ADAPTABLE_ID = `${GI_JOE_CRB}98q6O79HKMPEh4aZ`;
+const FIELDTEST_ID = `${GI_JOE_CRB}bPMgz1ct8T0kgQ6K`;
+
+// Brutal Might (Enigma of Combination, Pugilist Focus, Warrior, 3rd level, p.38): "any of your
+// attacks that normally use the Might Skill can use your Brawn Skill instead." A genuine SKILL
+// SUBSTITUTION for the roll itself - not a shift-delta like Cunning Plan/How Strange! (those
+// convert a shift-list-position difference into a bonus on the SAME already-chosen skill) - so it
+// has to happen here, at the earliest point a weaponEffect's own classification skill is read,
+// before shift/shiftUp/shiftDown/isSpecialized are ever looked up. "Can" is read as "always does,
+// when held and the weapon's own skill is Might" (same idiom as Psychological Warfare's own
+// Evasion-Defense substitution) - not offered as a checkbox, since there's no situation where a
+// Pugilist would prefer the worse of the two. this.system.classification.skill itself is left
+// untouched (still reads 'might' for anything else that inspects the weaponEffect Item directly,
+// e.g. dice.mjs's own Brutal-Might Edge check, which needs to know the ORIGINAL skill to avoid
+// matching an unrelated genuine Brawn attack).
+const BRUTAL_MIGHT_ID = "Compendium.essence20.enigma_of_combination.Item.l0STCEYBuPMYfzSt";
+
+// Beastly (Ferocious Fighters, New Influence, p.75) / its own Hang-Up (p.78): "Your Unarmed
+// Combat attack's Blunt damage Alternate Effect no longer suffers -1" (Perk) / "Your Unarmed
+// Combat attack's Stun effect suffers -1" (Hang-Up). Both target one SPECIFIC weaponEffect item's
+// own inherent system.shiftDown (confirmed via the real compendium JSON: Unarmed Combat Alternate
+// Effect 1 - Blunt - already carries shiftDown:1, matching "no longer suffers -1" meaning it drops
+// to 0; Unarmed Combat Effect - the base Stun attack - carries shiftDown:0, and the Hang-Up adds
+// the -1 it doesn't otherwise have) rather than any actor-level field, so unlike a plain
+// compendium Active Effect this has to be a live check at the exact point below where a
+// weaponEffect's own system.shiftDown folds into the roll - gated on the item actually being one
+// of these two specific compendium items (same flags.core.sourceId-vs-_stats.compendiumSource
+// dual check the weaponSourceId lookups elsewhere in this project already use). Not a one-time
+// item.update() (the Weapon Conversion/grant idiom) since the actor may add Unarmed Combat to
+// their sheet AFTER taking either the Perk or the Hang-Up - a live check catches that
+// automatically, a one-time mutation at grant time would not.
+const UNARMED_COMBAT_ALTERNATE_EFFECT_1_ID = `${GI_JOE_CRB}gA0rOFD3lmwzkZq4`;
+const UNARMED_COMBAT_EFFECT_ID = `${GI_JOE_CRB}eDjovjfygGq8dlQy`;
+const BEASTLY_PERK_ID = "Compendium.essence20.ferocious_fighters.Item.3Y0ETFpJUwdUqgUQ";
+const BEASTLY_HANG_UP_ID = "Compendium.essence20.ferocious_fighters.Item.9o0Qbe6lgqNPnm2R";
+
+// Enchant (MLP CRB, Elementary Enchantment spell, p.136) - see helpers/enchant.mjs's own doc
+// comment. The one hardcoded per-spell-id check in this otherwise fully generic spell-cast
+// branch below, needed because the skill choice must be picked BEFORE the roll (nothing else in
+// this codebase intercepts a spell cast pre-roll the way onPowerUse does for Grid/Sorcerous
+// Powers).
+const ENCHANT_ID = `${MLP_CRB}afYeCCAX0o2Cwf2I`;
+
+// Explosive Beam (MLP CRB, Superior Beam spell, p.137) - see helpers/explosive-beam.mjs's own
+// doc comment. A second per-spell-id pre-roll hook, alongside Enchant's own - auto-targets nearby
+// enemies before the roll fires (no picker needed, so no early-return-on-cancel like Enchant).
+const EXPLOSIVE_BEAM_ID = `${MLP_CRB}VLdz7YvUq2AaUFNz`;
+
+// Beam Volley (MLP CRB, Virtuoso Beam spell, p.138) - see helpers/beam-volley.mjs's own doc
+// comment. Same auto-target-before-rolling shape as Explosive Beam.
+const BEAM_VOLLEY_ID = `${MLP_CRB}UhkhFqFDYjub1a8k`;
+
+// Bestow Expertise (MLP CRB, Superior Enchantment spell, p.137) - see
+// helpers/bestow-expertise.mjs's own doc comment. A third per-spell-id pre-roll hook, alongside
+// Enchant's own - picks the Skill AND the new Specialization's own free-typed name before rolling.
+const BESTOW_EXPERTISE_ID = `${MLP_CRB}stwnP4um6j1xxzIo`;
+
+// Mind Beam (MLP CRB, Virtuoso Beam spell, p.139) - see helpers/mind-beam.mjs's own doc comment.
+// A fifth per-spell-id pre-roll hook, alongside Enchant/Bestow Expertise's own - picks which
+// Condition this cast applies before the roll fires.
+const MIND_BEAM_ID = `${MLP_CRB}gF8otV8Ag9axRp2Z`;
+
+const DARK_SKIES_OVER_EQUESTRIA = "Compendium.essence20.dark_skies_over_equestria.Item.";
+
+// Get To Know (Dark Skies Over Equestria, Elementary Utility spell, p.21) - see
+// helpers/get-to-know.mjs's own doc comment. A sixth per-spell-id pre-roll hook - picks the
+// related Skill before the roll fires.
+const GET_TO_KNOW_ID = `${DARK_SKIES_OVER_EQUESTRIA}pyRy1dFwuiJpAKj2`;
+
+// Efficient Spellcaster / Master Spellcaster (General Perks, p.38): "reduce the total casting
+// cost of any Elementary/Superior spell you cast by ↓1, to a minimum of ↓1." Casting cost is
+// already a real tracked field (spell.mjs's own system.cost, read below) - no new mastery/rank
+// tracking is needed, despite an earlier categorization pass assuming otherwise.
+const EFFICIENT_SPELLCASTER_ID = `${KNIGHTS_OF_CANTERLOT}eQDQwKQfRQU8obWF`;
+const MASTER_SPELLCASTER_ID = `${KNIGHTS_OF_CANTERLOT}tEOoAvzj42d20QHu`;
+
+// Power Conservationist / Power Mastery (General Perks, p.38): "delay the cost of casting the
+// spell until after you have cast it - your Spellcasting Skill Test is made before it is
+// reduced." Both read as the same deferral in this codebase's terms (this system has no separate
+// "augment cost" distinct from a spell's own system.cost to tell them apart) - see the spell-cast
+// branch below.
+const POWER_CONSERVATIONIST_ID = `${KNIGHTS_OF_CANTERLOT}75H9N2YqaSDUhiCQ`;
+const POWER_MASTERY_ID = `${KNIGHTS_OF_CANTERLOT}qDsWwo5ipmzMMuO4`;
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -186,7 +288,33 @@ export class Essence20Item extends Item {
       }
     }
 
+    // Fieldtest (GI Joe CRB, Technician, 13th level, p.104): "you treat the availability of
+    // equipment and upgrades as one step more available." "Stacks with the benefits of Secondary
+    // Tech" is moot for now - Secondary Tech itself is unbuilt (no item-grant mechanism exists to
+    // hand out its own bonus gear yet).
+    if (this.actor && actorHasPerk(this.actor, FIELDTEST_ID)) {
+      totalAvailability = this._stepAvailability(totalAvailability, -1);
+    }
+
     this.system.totalAvailability = totalAvailability;
+  }
+
+  /**
+   * Steps an Availability tier toward more (negative steps) or less (positive steps) available,
+   * per CONFIG.E20.availabilities' own declared tier order, clamped at both ends.
+   * @param {String} tier   A tier key from CONFIG.E20.availabilities.
+   * @param {Number} steps   How many tiers to move (negative = more available).
+   * @returns {String}
+   */
+  _stepAvailability(tier, steps) {
+    const tierOrder = Object.keys(CONFIG.E20.availabilities);
+    const rank = tierOrder.indexOf(tier);
+    if (rank == -1) {
+      return tier;
+    }
+
+    const clamped = Math.max(0, Math.min(tierOrder.length - 1, rank + steps));
+    return tierOrder[clamped];
   }
 
   /**
@@ -246,6 +374,12 @@ export class Essence20Item extends Item {
         this.system.resource.max = this.system.resource.level20Value;
       } else {
         this.system.resource.max = this.system.resource.startingMax + (this.system.resource.increase * resourceLevelIncreases);
+      }
+
+      // Adaptable - see ADAPTABLE_ID's own comment above.
+      const sourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+      if (sourceId == ADAPTION_POINTS_ID && actorHasPerk(this.actor, ADAPTABLE_ID)) {
+        this.system.resource.max *= 2;
       }
     }
 
@@ -396,10 +530,21 @@ export class Essence20Item extends Item {
 
       let weaponDataset = {};
       const roller = childRoller || this.actor;
-      const skill = this.system.classification.skill;
+      const baseSkill = this.system.classification.skill;
+      // Brutal Might - see BRUTAL_MIGHT_ID's own comment above.
+      const skill = baseSkill == 'might' && actorHasPerk(roller, BRUTAL_MIGHT_ID) ? 'brawn' : baseSkill;
       const shift = roller.system.skills[skill].shift;
       const shiftUp = roller.system.skills[skill].shiftUp;
-      const shiftDown = roller.system.skills[skill].shiftDown + this.system.shiftDown;
+      // Beastly / its own Hang-Up - see BEASTLY_PERK_ID's own comment above.
+      const itemSourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+      let itemShiftDown = this.system.shiftDown;
+      if (itemSourceId == UNARMED_COMBAT_ALTERNATE_EFFECT_1_ID && actorHasPerk(roller, BEASTLY_PERK_ID)) {
+        itemShiftDown = 0;
+      } else if (itemSourceId == UNARMED_COMBAT_EFFECT_ID && actorHasPerk(roller, BEASTLY_HANG_UP_ID)) {
+        itemShiftDown = this.system.shiftDown + 1;
+      }
+
+      const shiftDown = roller.system.skills[skill].shiftDown + itemShiftDown;
       const isSpecialized = roller.system.skills[skill].isSpecialized;
       weaponDataset = {
         ...dataset,
@@ -424,21 +569,88 @@ export class Essence20Item extends Item {
       // Casting Cost (MLP CRB p.132): a spell downshifts the caster's Spellcasting Skill by its
       // cost, on top of any downshift already lingering from an earlier cast this scene.
       const priorDownshift = this.actor.system.skills.spellcasting.shiftDown;
-      const shiftDown = priorDownshift + this.system.cost;
+
+      // Efficient Spellcaster / Master Spellcaster (Knights of Canterlot, General Perks, p.38) -
+      // see EFFICIENT_SPELLCASTER_ID's own comment above. Reduces THIS spell's own cost (never
+      // below 1), scoped to Elementary/Superior tier respectively.
+      let castingCost = this.system.cost;
+      if (this.system.tier == 'elementary' && actorHasPerk(this.actor, EFFICIENT_SPELLCASTER_ID)) {
+        castingCost = Math.max(1, castingCost - 1);
+      } else if (this.system.tier == 'superior' && actorHasPerk(this.actor, MASTER_SPELLCASTER_ID)) {
+        castingCost = Math.max(1, castingCost - 1);
+      }
+
+      // Block Magic (Knights of Canterlot, Virtuoso Enchantment spell, p.49) - see
+      // helpers/block-magic.mjs's own doc comment. "+1 to the cost of any spell you cast" while a
+      // target is under its effect. Applied after the Efficient/Master Spellcaster reduction (a
+      // real cost increase, not something those Perks should shrink away).
+      if (isBlockMagicActive(this.actor)) {
+        castingCost += 1;
+      }
+
+      // Power Conservationist / Power Mastery (Knights of Canterlot, General Perks, p.38) - see
+      // POWER_CONSERVATIONIST_ID's own comment above. The roll itself uses only the downshift
+      // already lingering from an earlier cast - THIS spell's own cost is applied to
+      // system.skills.spellcasting.shiftDown afterward instead (still below), so it doesn't
+      // affect the Skill Test being made to cast it.
+      const deferCost = actorHasPerk(this.actor, POWER_CONSERVATIONIST_ID)
+        || actorHasPerk(this.actor, POWER_MASTERY_ID);
+      const shiftDown = deferCost ? priorDownshift : priorDownshift + castingCost;
+
+      // Enchant - see ENCHANT_ID's own comment above. Picked before the roll so a cancelled cast
+      // spends nothing.
+      const sourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+      const enchantSkill = sourceId == ENCHANT_ID ? await pickEnchantSkill() : null;
+      if (sourceId == ENCHANT_ID && !enchantSkill) {
+        return;
+      }
+
+      if (sourceId == EXPLOSIVE_BEAM_ID) {
+        autoTargetExplosiveBeam(this.actor);
+      }
+
+      if (sourceId == BEAM_VOLLEY_ID) {
+        autoTargetBeamVolley(this.actor);
+      }
+
+      const bestowExpertiseChoice = sourceId == BESTOW_EXPERTISE_ID ? await pickBestowExpertise() : null;
+      if (sourceId == BESTOW_EXPERTISE_ID && !bestowExpertiseChoice) {
+        return;
+      }
+
+      const mindBeamEffect = sourceId == MIND_BEAM_ID ? await pickMindBeamEffect() : null;
+      if (sourceId == MIND_BEAM_ID && !mindBeamEffect) {
+        return;
+      }
+
+      const getToKnowSkill = sourceId == GET_TO_KNOW_ID ? await pickGetToKnowSkill() : null;
+      if (sourceId == GET_TO_KNOW_ID && !getToKnowSkill) {
+        return;
+      }
+
       const spellDataset = {
         ...dataset,
         essence,
         shift,
         skill,
         shiftDown,
+        isEnchantAttempt: !!enchantSkill,
+        enchantSkill,
+        isBestowExpertiseAttempt: !!bestowExpertiseChoice,
+        bestowExpertiseSkill: bestowExpertiseChoice?.skill ?? null,
+        bestowExpertiseName: bestowExpertiseChoice?.name ?? null,
+        mindBeamEffect,
+        isGetToKnowAttempt: !!getToKnowSkill,
+        getToKnowSkill,
       };
 
       this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
 
       // Unlike a single-roll shift, this cost lingers on the actor's Spellcasting Skill after
       // the roll - only cleared via onRecoverSpellcastingDownshift/onSufferForSpellcastingDownshift
-      // (listener-misc-handler.mjs).
-      await this.actor.update({ 'system.skills.spellcasting.shiftDown': shiftDown });
+      // (listener-misc-handler.mjs). The cost always ends up applied here eventually, whether or
+      // not it affected the roll that just happened.
+      await this.actor.update({ 'system.skills.spellcasting.shiftDown': priorDownshift + castingCost });
     } else if (this.type == 'magicBauble') {
       const essence = 'any';
       const skill = 'spellcasting';

@@ -18,6 +18,8 @@ import { applySystemActorsColorCssVariables, applySystemColorCssVariables, getNu
 import {
   needsShieldModulationChoice, pickShieldModulationDamageType, setShieldModulationDamageType,
 } from "../helpers/shield-modulation.mjs";
+import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../helpers/personal-shield.mjs";
+import { applyAegisDefeatCheck, isRecklessAbandonItem } from "../helpers/reckless-abandon.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { prepareSystemActors,
   onCrewNumberUpdate,
@@ -299,6 +301,21 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
           }
 
           await setShieldModulationDamageType(this.actor, damageType);
+        }
+
+        // Protector's Shield (Bodyguard Focus, 10th level, p.110) - "While your shield is up, you
+        // gain 1 Temporary Health." See applyProtectorsShieldHealthBonus's own doc comment for why
+        // this intercepts the plain Activate/Deactivate toggle here, same as Shield Modulation
+        // just above. Only fires for the actor's own Personal Shield item specifically, not every
+        // activatable rolePoints item.
+        if (isPersonalShieldItem(item)) {
+          await applyProtectorsShieldHealthBonus(this.actor, activating);
+        }
+
+        // Aegis (Tank Focus, 20th level, p.99) - see applyAegisDefeatCheck's own doc comment in
+        // reckless-abandon.mjs. Only meaningful when Reckless Abandon is being switched OFF.
+        if (isRecklessAbandonItem(item) && !activating) {
+          await applyAegisDefeatCheck(this.actor);
         }
 
         await item.update({ 'system.isActive': activating });
@@ -818,8 +835,8 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     onItemEdit(event);
   }
 
-  static #onPerkUse(event) {
-    onPerkUseClick(event, this);
+  static #onPerkUse(event, target) {
+    onPerkUseClick(target, this);
   }
 
   static #onRoll(event) {
@@ -920,12 +937,12 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     onManageSelectTrait(event, this.document);
   }
 
-  static #onShieldActivationToggle(event) {
-    onShieldActivationToggle(event, this);
+  static #onShieldActivationToggle(event, target) {
+    onShieldActivationToggle(target, this);
   }
 
-  static #onShieldEquipToggle(event) {
-    onShieldEquipToggle(event, this);
+  static #onShieldEquipToggle(event, target) {
+    onShieldEquipToggle(target, this);
   }
 
   static #onToggleLock() {

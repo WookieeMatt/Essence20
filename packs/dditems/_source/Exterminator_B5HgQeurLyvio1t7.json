@@ -13,7 +13,15 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "general",
+    "reroll": {
+      "enabled": true,
+      "maxUses": 0,
+      "mode": "ones",
+      "reset": "none",
+      "target": "skillDice",
+      "condition": "smallerTarget"
+    }
   },
   "effects": [],
   "flags": {},

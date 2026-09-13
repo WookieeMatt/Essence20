@@ -69,6 +69,32 @@ describe("enrichCheck", () => {
     expect(anchor.innerHTML).toContain("E20.DefenseToughness");
   });
 
+  test("a spec reference adds the Specialization to the label and dataset for both GM and non-GM viewers", async () => {
+    setGameUser(false);
+    const anchor = await enrichCheck(checkMatch("skill=alertness spec=investigation dif=12"));
+    // Only a hint lives on the rendered link - whether the CLICKING actor actually has this
+    // Specialization (and so whether the roll should really be Specialized) is resolved later,
+    // per-actor, in onCheckLinkClick - see its own describe block below.
+    expect(anchor.dataset.specializationHint).toBe("investigation");
+    expect(anchor.dataset.isSpecialized).toBeUndefined();
+    expect(anchor.innerHTML).toContain("Investigation");
+    // dif is still GM-only even alongside spec.
+    expect(anchor.dataset.dif).toBeUndefined();
+    expect(anchor.innerHTML).not.toContain("12");
+  });
+
+  test("a camelCase spec key is split into separate title-cased words for display", async () => {
+    setGameUser(false);
+    const anchor = await enrichCheck(checkMatch("skill=alertness spec=underTheRadar"));
+    expect(anchor.innerHTML).toContain("Under The Radar");
+  });
+
+  test("GM check with spec also carries it on the send-to-chat trigger", async () => {
+    const wrapper = await enrichCheck(checkMatch("skill=alertness spec=investigation dif=12"));
+    const sendToChat = wrapper.querySelector('.e20-check-send-to-chat');
+    expect(sendToChat.dataset.spec).toBe("investigation");
+  });
+
   test("a custom {Label} suffix overrides the generated label", async () => {
     const wrapper = await enrichCheck(checkMatch("skill=technology dif=15", "Hack the Mainframe"));
     const anchor = wrapper.querySelector('.content-link');
@@ -94,6 +120,52 @@ describe("onCheckLinkClick", () => {
     expect(event.preventDefault).toHaveBeenCalled();
     expect(rollSkill).toHaveBeenCalledWith(
       expect.objectContaining({ skill: "technology", dif: "15" }),
+      actor,
+    );
+  });
+
+  test("resolves the spec hint against the actor's own Specializations and rolls it Specialized", async () => {
+    const rollSkill = jest.fn();
+    const actor = {
+      _dice: { rollSkill },
+      system: {
+        skills: {
+          alertness: {
+            specializations: {
+              investigation: { name: "Investigation", shiftUp: 0, shiftDown: 0 },
+            },
+          },
+        },
+      },
+    };
+    setGameUser(false, actor);
+
+    const event = { preventDefault: jest.fn() };
+    const link = { dataset: { skill: "alertness", specializationHint: "investigation" } };
+    await onCheckLinkClick(event, link);
+
+    expect(rollSkill).toHaveBeenCalledWith(
+      expect.objectContaining({
+        skill: "alertness", specializationKey: "investigation", specializationName: "Investigation", isSpecialized: true,
+      }),
+      actor,
+    );
+  });
+
+  test("rolls as an ordinary, unspecialized skill test when the actor doesn't have the hinted Specialization", async () => {
+    const rollSkill = jest.fn();
+    // No system.skills.alertness.specializations at all - the actor has never taken it.
+    const actor = { _dice: { rollSkill }, system: { skills: {} } };
+    setGameUser(false, actor);
+
+    const event = { preventDefault: jest.fn() };
+    const link = { dataset: { skill: "alertness", specializationHint: "investigation" } };
+    await onCheckLinkClick(event, link);
+
+    expect(rollSkill).toHaveBeenCalledWith(
+      expect.objectContaining({
+        skill: "alertness", isSpecialized: false, specializationKey: undefined, specializationName: undefined,
+      }),
       actor,
     );
   });
@@ -140,6 +212,16 @@ describe("onCheckSendToChat", () => {
 
     expect(global.ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({
       content: "@Check[skill=technology dif=15]",
+    }));
+  });
+
+  test("posts the raw @Check[...] source with spec", async () => {
+    const event = { preventDefault: jest.fn() };
+    const button = { dataset: { skill: "alertness", spec: "investigation", dif: "12" } };
+    await onCheckSendToChat(event, button);
+
+    expect(global.ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({
+      content: "@Check[skill=alertness spec=investigation dif=12]",
     }));
   });
 

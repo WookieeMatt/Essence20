@@ -1,8 +1,9 @@
 import { jest } from '@jest/globals';
-import { getShieldUpgradeBonus, isPersonalShieldActive } from './personal-shield.mjs';
+import { applyProtectorsShieldHealthBonus, getShieldUpgradeBonus, isPersonalShieldActive } from './personal-shield.mjs';
 
 const PERSONAL_SHIELD_ROLE_POINTS_ID = "Compendium.essence20.gi_joe_crb.Item.84JYgd6kZgY41wge";
 const SHIELD_UPGRADE_ID = "Compendium.essence20.gi_joe_crb.Item.ep0OFsU1QIuRpHeR";
+const PROTECTORS_SHIELD_ID = "Compendium.essence20.gi_joe_crb.Item.tGdWBibKFTYfXzVu";
 
 global.canvas = {
   tokens: { placeables: [] },
@@ -170,5 +171,30 @@ describe("isPersonalShieldActive", () => {
   test("false when the actor has no base Role Points at all", () => {
     const actor = { _getBaseRolePoints: jest.fn(() => null) };
     expect(isPersonalShieldActive(actor)).toBe(false);
+  });
+});
+
+describe("applyProtectorsShieldHealthBonus", () => {
+  function makeActor({ hasPerk = true, healthBonus = 0 } = {}) {
+    const items = hasPerk ? [{ type: 'perk', flags: { core: { sourceId: PROTECTORS_SHIELD_ID } } }] : [];
+    return { items, system: { health: { bonus: healthBonus } }, update: jest.fn() };
+  }
+
+  test("adds 1 Temporary Health when activating, with the Perk", async () => {
+    const actor = makeActor({ healthBonus: 0 });
+    await applyProtectorsShieldHealthBonus(actor, true);
+    expect(actor.update).toHaveBeenCalledWith({ 'system.health.bonus': 1 });
+  });
+
+  test("removes 1 Temporary Health when deactivating, with the Perk", async () => {
+    const actor = makeActor({ healthBonus: 1 });
+    await applyProtectorsShieldHealthBonus(actor, false);
+    expect(actor.update).toHaveBeenCalledWith({ 'system.health.bonus': 0 });
+  });
+
+  test("does nothing without the Perk", async () => {
+    const actor = makeActor({ hasPerk: false });
+    await applyProtectorsShieldHealthBonus(actor, true);
+    expect(actor.update).not.toHaveBeenCalled();
   });
 });

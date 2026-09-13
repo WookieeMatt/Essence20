@@ -1,0 +1,97 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Pollen Cloud",
+  "type": "weapon",
+  "_id": "EgxknpQXbwUFcPP4",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "e001": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.SUphZH7U2CfQw5kg",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Pollen Cloud Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "acid",
+        "numHands": "1",
+        "numTargets": 6,
+        "radius": 30,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 30
+        },
+        "shiftDown": 0
+      },
+      "e002": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.0gha0kL8QrMKYDRX",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Pollen Cloud Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 0,
+        "damageType": "blindingBlast",
+        "numHands": "1",
+        "numTargets": 6,
+        "radius": 30,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 30
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Path of Thorns",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "acid"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1789114659637,
+    "modifiedTime": 1789114659637,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!EgxknpQXbwUFcPP4"
+}

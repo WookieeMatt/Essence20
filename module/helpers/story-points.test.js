@@ -1,9 +1,11 @@
 import { jest } from '@jest/globals';
 
 import {
+  handleStoryPointGrantRequest,
   handleStoryPointSpendRequest,
   hasStoryPointsAvailable,
   isGmConnected,
+  requestStoryPointGrant,
   requestStoryPointSpend,
 } from './story-points.mjs';
 
@@ -110,5 +112,67 @@ describe("handleStoryPointSpendRequest", () => {
     handleStoryPointSpendRequest({ action: "spendStoryPoints", actorName: "Duke" });
 
     expect(global.game.settings.set).toHaveBeenCalledWith("essence20", "sptStoryPoints", 2);
+  });
+});
+
+describe("requestStoryPointGrant", () => {
+  test("emits a grant request over the socket - fire and forget", () => {
+    requestStoryPointGrant({ name: "Rarity" }, 2);
+    expect(global.game.socket.emit).toHaveBeenCalledWith("system.essence20", {
+      action: "grantStoryPoints",
+      amount: 2,
+      actorName: "Rarity",
+    });
+  });
+
+  test("defaults to granting 1", () => {
+    requestStoryPointGrant({ name: "Rarity" });
+    expect(global.game.socket.emit).toHaveBeenCalledWith("system.essence20", {
+      action: "grantStoryPoints",
+      amount: 1,
+      actorName: "Rarity",
+    });
+  });
+});
+
+describe("handleStoryPointGrantRequest", () => {
+  test("is a no-op on a client that isn't the GM", () => {
+    global.game.user.isGM = false;
+
+    handleStoryPointGrantRequest({ action: "grantStoryPoints", amount: 1, actorName: "Rarity" });
+
+    expect(global.game.settings.set).not.toHaveBeenCalled();
+    expect(global.game.socket.emit).not.toHaveBeenCalled();
+  });
+
+  test("grants, broadcasts the new total, and announces - never denied for affordability", () => {
+    global.game.user.isGM = true;
+    mockStoryPoints(3);
+
+    handleStoryPointGrantRequest({ action: "grantStoryPoints", amount: 1, actorName: "Rarity" });
+
+    expect(global.game.settings.set).toHaveBeenCalledWith("essence20", "sptStoryPoints", 4);
+    expect(global.game.socket.emit).toHaveBeenCalledWith("system.essence20", { gmPoints: 0, storyPoints: 4 });
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("updates the GM's own open tracker window directly (the broadcast doesn't loop back)", () => {
+    global.game.user.isGM = true;
+    global.game.StoryPointsTracker = { _storyPoints: 3, render: jest.fn() };
+    mockStoryPoints(3);
+
+    handleStoryPointGrantRequest({ action: "grantStoryPoints", amount: 1, actorName: "Rarity" });
+
+    expect(global.game.StoryPointsTracker._storyPoints).toBe(4);
+    expect(global.game.StoryPointsTracker.render).toHaveBeenCalledWith(false);
+  });
+
+  test("defaults to granting 1 when amount is missing", () => {
+    global.game.user.isGM = true;
+    mockStoryPoints(3);
+
+    handleStoryPointGrantRequest({ action: "grantStoryPoints", actorName: "Rarity" });
+
+    expect(global.game.settings.set).toHaveBeenCalledWith("essence20", "sptStoryPoints", 4);
   });
 });

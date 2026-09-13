@@ -7,7 +7,14 @@
   "system": {
     "originalId": "",
     "description": "",
-    "items": {},
+    "items": {
+      "fng1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.D9UYRGZAngK5CnqX",
+        "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+        "name": "Fangs",
+        "type": "weapon"
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,

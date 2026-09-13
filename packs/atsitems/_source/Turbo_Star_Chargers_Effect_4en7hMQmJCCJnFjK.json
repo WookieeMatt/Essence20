@@ -10,7 +10,7 @@
       "skill": "finesse",
       "style": "melee"
     },
-    "damageType": "element",
+    "damageType": "electric",
     "damageValue": 2,
     "shiftDown": 0,
     "numHands": "1",

@@ -1,8 +1,8 @@
 import { E20 } from "./helpers/config.mjs";
-import { _isCritIsFumble, applyDamage, buildCheckChatData } from "./helpers/combat.mjs";
+import { _isCritIsFumble, applyDamage, buildCheckChatData, grantToughEnoughResistance } from "./helpers/combat.mjs";
 import { computeSystemColorVars } from "./helpers/actor.mjs";
 import {
-  actorHasPerk, hasUsedThisEncounter, hasUsedThisRound, hasUsedThisTurn,
+  actorHasHangUp, actorHasPerk, hasUsedThisEncounter, hasUsedThisRound, hasUsedThisTurn,
   markUsedThisEncounter, markUsedThisRound, markUsedThisTurn,
 } from "./helpers/perks.mjs";
 import { isRecklessAbandonActive } from "./helpers/reckless-abandon.mjs";
@@ -18,8 +18,14 @@ import {
   payRerollCost,
   rerollModeLabel,
 } from "./helpers/reroll.mjs";
-import { isGmConnected } from "./helpers/story-points.mjs";
+import { hasStoryPointsAvailable, isGmConnected, requestStoryPointSpend } from "./helpers/story-points.mjs";
+import { activateIronHide, IRON_HIDE_ID } from "./helpers/iron-hide.mjs";
 import { claimConsummatePerformer } from "./helpers/consummate-performer.mjs";
+import { activateSpite, hasSpite } from "./helpers/spite.mjs";
+import { activateExploitWeakness } from "./helpers/exploit-weakness.mjs";
+import { activateSuffer, hasSuffer } from "./helpers/suffer.mjs";
+import { CBRN_DEFENDER_HANG_UP_ID, markCbrnDefenderTriggered } from "./helpers/cbrn-defender.mjs";
+import { bankHardCorpsDebt, HARD_CORPS_ENCOUNTER_FLAG } from "./helpers/hard-corps.mjs";
 
 export { _isCritIsFumble };
 
@@ -32,6 +38,7 @@ const DIDNT_EVEN_FEEL_IT_ID = "Compendium.essence20.gi_joe_crb.Item.y7hyuXOuARcK
 const DIDNT_EVEN_FEEL_IT_ENCOUNTER_FLAG = 'didntEvenFeelItThisEncounter';
 const SUDDEN_DEATH_ID = "Compendium.essence20.gi_joe_crb.Item.bfBFQH3sxny3BfEK";
 const SUDDEN_DEATH_ENCOUNTER_FLAG = 'suddenDeathThisEncounter';
+const HARD_CORPS_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Item.IR8Rl7IXn0zKBBXV";
 
 // {skill, essence, snag, isPowerWeaponAttack, rollFailed, canCritD2} stashed on the message by
 // dice.mjs#rollSkill/combat.mjs#buildCheckChatData - see
@@ -219,6 +226,144 @@ export const addConsummatePerformerButton = function (message, html) {
   target.appendChild(button);
 };
 
+// Spite (Beneath the Helmet, Dark Ranger, 2nd level, p.39) - see helpers/spite.mjs's own doc
+// comment for why this needs its own reactive, post-roll button rather than a pre-roll checkbox:
+// the trigger ("whenever you MISS your Attack") isn't knowable until the roll has already
+// resolved. Same overall shape as addConsummatePerformerButton just above (a button appended to
+// the roll's own chat message, gated on that roll's outcome, disabled once claimed) - here gated
+// on a miss (rollFailed === true, the mirror of Consummate Performer's own === false check)
+// against a single resolved target, rather than a success.
+export const addSpiteButton = function (message, html) {
+  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
+    return;
+  }
+
+  const flags = message.flags?.essence20;
+  if (!flags?.isAttack || flags?.rollFailed !== true || !flags?.targetUuid) {
+    return;
+  }
+
+  const actor = ChatMessage.getSpeakerActor(message.speaker);
+  if (!actor || !hasSpite(actor)) {
+    return;
+  }
+
+  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
+  if (!target) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "e20-spite-button";
+  button.textContent = game.i18n.localize("E20.SpiteActivate");
+  if (message.getFlag("essence20", "spiteClaimed")) {
+    button.disabled = true;
+  } else if (actor.system.powers.personal.value < 1) {
+    button.disabled = true;
+  } else {
+    button.addEventListener("click", async () => {
+      await activateSpite(actor, flags.targetUuid);
+      await message.setFlag("essence20", "spiteClaimed", true);
+      button.disabled = true;
+    });
+  }
+
+  target.appendChild(button);
+};
+
+// Suffer! (Finster's Monster-Matic Cookbook, Path of Thorns, 15th level, p.300) - see
+// helpers/suffer.mjs's own doc comment. Same overall shape as addSpiteButton above, but gated on
+// dealtDamage === true (the mirror of Spite's own rollFailed === true) rather than a miss, and the
+// spend amount is chosen by the player at click time (helpers/suffer.mjs#pickSufferAmount) rather
+// than a fixed cost, so there's no single "can afford it" number to disable on beyond having any
+// Personal Power at all.
+export const addSufferButton = function (message, html) {
+  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
+    return;
+  }
+
+  const flags = message.flags?.essence20;
+  if (!flags?.isAttack || flags?.dealtDamage !== true || !flags?.targetUuid) {
+    return;
+  }
+
+  const actor = ChatMessage.getSpeakerActor(message.speaker);
+  if (!actor || !hasSuffer(actor)) {
+    return;
+  }
+
+  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
+  if (!target) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "e20-suffer-button";
+  button.textContent = game.i18n.localize("E20.SufferActivate");
+  if (message.getFlag("essence20", "sufferClaimed")) {
+    button.disabled = true;
+  } else if (actor.system.powers.personal.value < 1) {
+    button.disabled = true;
+  } else {
+    button.addEventListener("click", async () => {
+      const activated = await activateSuffer(actor, flags.targetUuid);
+      if (activated) {
+        await message.setFlag("essence20", "sufferClaimed", true);
+        button.disabled = true;
+      }
+    });
+  }
+
+  target.appendChild(button);
+};
+
+const EXPLOIT_WEAKNESS_ID = "Compendium.essence20.pr_crb.Item.BTSdvgvfKHWeV07C";
+
+// Exploit Weakness (Power Rangers CRB, Yellow Ranger, 7th/15th level, p.57) - see
+// helpers/exploit-weakness.mjs's own doc comment for why this needs its own reactive, post-roll
+// button rather than a pre-roll checkbox: the trigger ("after making a melee attack") isn't a
+// choice made before the roll, and RAW doesn't require the attack to have hit. Same overall shape
+// as addSpiteButton just above, but gated on a melee Attack regardless of outcome, with no cost to
+// afford (a free Skill Test, not a Power spend) and no target-scoped rollFailed check.
+export const addExploitWeaknessButton = function (message, html) {
+  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
+    return;
+  }
+
+  const flags = message.flags?.essence20;
+  if (!flags?.isMelee || !flags?.targetUuid) {
+    return;
+  }
+
+  const actor = ChatMessage.getSpeakerActor(message.speaker);
+  if (!actor || !actorHasPerk(actor, EXPLOIT_WEAKNESS_ID)) {
+    return;
+  }
+
+  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
+  if (!target) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "e20-exploit-weakness-button";
+  button.textContent = game.i18n.localize("E20.ExploitWeaknessActivate");
+  if (message.getFlag("essence20", "exploitWeaknessClaimed")) {
+    button.disabled = true;
+  } else {
+    button.addEventListener("click", async () => {
+      await activateExploitWeakness(actor, flags.targetUuid);
+      await message.setFlag("essence20", "exploitWeaknessClaimed", true);
+      button.disabled = true;
+    });
+  }
+
+  target.appendChild(button);
+};
+
 // Wires up the check-card.hbs "Apply Damage"/critical-effect buttons. Called on the
 // renderChatMessageHTML hook. Each button carries its own data-key (e.g. "<uuid>:base" or
 // "<uuid>:crit:<effectId>") so the base effect and any critical-hit bonus effect (p.205 - "the
@@ -352,6 +497,30 @@ export async function onApplyDamage(message, button) {
     }
   }
 
+  // Hard Corps (Sgt Slaughter Sourcebook, Marine Origin Benefit, p.8) - see
+  // helpers/hard-corps.mjs's own doc comment. Checked before Didn't Even Feel It/Just a Graze
+  // below since a confirmed ignore here banks a debt rather than just discarding the damage - if
+  // both this and one of those were somehow available on the same hit, prompting for Hard Corps
+  // first avoids a moot second prompt once damage is already at 0.
+  if (damage > 0 && actorHasPerk(target, HARD_CORPS_ID) && !hasUsedThisEncounter(target, HARD_CORPS_ENCOUNTER_FLAG)) {
+    const confirmation = await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize('E20.HardCorpsConfirmTitle') },
+      classes: ["window-app"],
+      content: `<p>${game.i18n.format('E20.HardCorpsConfirmContent', { name: target.name })}</p>`,
+      modal: true,
+      buttons: [
+        { label: game.i18n.localize('E20.DialogConfirmButton'), action: 'confirm' },
+        { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
+      ],
+    });
+
+    if (confirmation == 'confirm') {
+      await bankHardCorpsDebt(target, damage);
+      damage = 0;
+      await markUsedThisEncounter(target, HARD_CORPS_ENCOUNTER_FLAG);
+    }
+  }
+
   // Just a Graze (GI Joe CRB p.72, Commando 5th level): "Once per turn, you can reduce the
   // damage of an attack against you to 1." The defender's own choice, not something to apply
   // silently - the GM confirms it here, same "auto-detect eligibility, human confirms" approach
@@ -375,7 +544,57 @@ export async function onApplyDamage(message, button) {
     }
   }
 
+  const previousHealth = target.system.health.value;
+  const wasAlreadyDefeated = !!target.statuses?.has?.('defeated');
   const amount = await applyDamage(target, damage, button.dataset.damageType);
+
+  // CBRN Defender's own Hang-Up - see helpers/cbrn-defender.mjs's own doc comment. "Defeats a
+  // living creature through damage" - either the target's own Health reaching 0 from this hit (an
+  // ordinary damage type, which never auto-toggles the Defeated status itself - computed from
+  // applyDamage's own returned amount rather than re-reading target.system.health.value, since a
+  // Stun hit's returned "amount" is Stun dealt, not Health lost, and never reduces Health at all)
+  // or the Defeated status actually getting toggled on (applyDamage's own Stun-crosses-remaining-
+  // Health branch) - covers both real Defeat paths this codebase has. Guarded on not already being
+  // Defeated beforehand, so re-hitting an already-downed target doesn't keep re-triggering this.
+  const isDefeatedByHealthLoss = button.dataset.damageType != 'stun' && (previousHealth - amount) <= 0;
+  const isNowDefeated = isDefeatedByHealthLoss || !!target.statuses?.has?.('defeated');
+  if (attacker && !wasAlreadyDefeated && isNowDefeated && actorHasHangUp(attacker, CBRN_DEFENDER_HANG_UP_ID)) {
+    await markCbrnDefenderTriggered(attacker);
+  }
+
+  // Iron Hide (GI Joe CRB, Vanguard base, 1st level, p.107) - see helpers/iron-hide.mjs's own doc
+  // comment. The damage has already landed above (its own roll's outcome isn't known
+  // synchronously) - a confirmed attempt here spends the Story Point and triggers the real Brawn
+  // DIF 15 Skill Test, which restores the Health on a success via its own post-hit consumption in
+  // dice.mjs. Scoped to isDefeatedByHealthLoss (excludes Stun, same as CBRN Defender's own check
+  // just above) since RAW's own "an attack would make you Defeated" reads as ordinary damage.
+  if (isDefeatedByHealthLoss && actorHasPerk(target, IRON_HIDE_ID) && isGmConnected() && hasStoryPointsAvailable(1)) {
+    const confirmation = await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize('E20.IronHideConfirmTitle') },
+      classes: ["window-app"],
+      content: `<p>${game.i18n.format('E20.IronHideConfirmContent', { name: target.name })}</p>`,
+      modal: true,
+      buttons: [
+        { label: game.i18n.localize('E20.DialogConfirmButton'), action: 'confirm' },
+        { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
+      ],
+    });
+
+    if (confirmation == 'confirm') {
+      requestStoryPointSpend(target, 1);
+      await activateIronHide(target, amount);
+    }
+  }
+
+  // Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99) - see
+  // helpers/combat.mjs#grantToughEnoughResistance's own doc comment. Scoped to "a non-attack
+  // effect against your Toughness" specifically, via the posted roll's own isAttack/defenseType
+  // flags (dice.mjs#rollSkill's own rollContext) - an ordinary weapon Attack against Toughness
+  // does NOT trigger this.
+  if (message.getFlag('essence20', 'isAttack') === false && message.getFlag('essence20', 'defenseType') == 'toughness') {
+    await grantToughEnoughResistance(target, button.dataset.damageType, amount);
+  }
+
   button.disabled = true;
   const appliedKeys = message.getFlag('essence20', 'damageAppliedKeys') || [];
   await message.setFlag('essence20', 'damageAppliedKeys', [...appliedKeys, button.dataset.key]);

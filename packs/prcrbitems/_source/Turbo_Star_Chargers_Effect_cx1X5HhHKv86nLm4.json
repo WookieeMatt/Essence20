@@ -10,7 +10,7 @@
       "skill": "finesse",
       "style": "energy"
     },
-    "damageType": "element",
+    "damageType": "electric",
     "damageValue": 2,
     "shiftDown": 0,
     "numHands": "1",

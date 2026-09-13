@@ -54,6 +54,12 @@
           "mode": 2,
           "value": "2",
           "priority": null
+        },
+        {
+          "key": "system.essenceShifts.social.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
         }
       ],
       "description": "",

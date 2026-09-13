@@ -11,7 +11,298 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "origin"
+    "type": "origin",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "items": {
+      "1001": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.PvfRLoozxgtn4Q5t",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Acrobatic Reaction",
+        "type": "perk",
+        "role": null
+      },
+      "1002": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.xhNYPiLSmYWov9CG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Acute Sense",
+        "type": "perk",
+        "role": null
+      },
+      "1003": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.Fk9At2yvCtpxfgPP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Adolescent Attitude",
+        "type": "perk",
+        "role": null
+      },
+      "1004": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ZBOmQradsrZi9sc5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Always Alert",
+        "type": "perk",
+        "role": null
+      },
+      "1005": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.Lj2zJKh31VNkuSGP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Animal Friend",
+        "type": "perk",
+        "role": null
+      },
+      "1006": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ECHhiqGO5Xs0QLO2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Animal Pet",
+        "type": "perk",
+        "role": null
+      },
+      "1007": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.JGylk3gT2X5NGeGv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Baker",
+        "type": "perk",
+        "role": null
+      },
+      "1008": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.b7qT0W4L9Ito2EB2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "BFF",
+        "type": "perk",
+        "role": null
+      },
+      "1009": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.BysTCPE8xJCT2nsM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bowl-Over",
+        "type": "perk",
+        "role": null
+      },
+      "1010": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.TARp0NItPetoMUv2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Compassionate",
+        "type": "perk",
+        "role": null
+      },
+      "1011": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.Tnr6LTI2yBHUxC7r",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dabbler",
+        "type": "perk",
+        "role": null
+      },
+      "1012": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.geBN3DkixaCXvnSO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dig Deep",
+        "type": "perk",
+        "role": null
+      },
+      "1013": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.jwhdtCaq0MBotupG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dodgy",
+        "type": "perk",
+        "role": null
+      },
+      "1014": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.kQpGvPdJXaDlSzpF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dress Maker",
+        "type": "perk",
+        "role": null
+      },
+      "1015": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.bxJXeIC6xGtdQexn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Educated",
+        "type": "perk",
+        "role": null
+      },
+      "1016": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.f7AttCMMjiNmGSAP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Experienced Spellcaster",
+        "type": "perk",
+        "role": null
+      },
+      "1017": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.06cSi4Q1ztUPXWtw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Expertise",
+        "type": "perk",
+        "role": null
+      },
+      "1018": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.NOkMsAryMwYPDzNh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Effective Spell",
+        "type": "perk",
+        "role": null
+      },
+      "1019": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ckFSBDbqCz4L2bh1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Farmer",
+        "type": "perk",
+        "role": null
+      },
+      "1020": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.NU7KqcXvQbOFbU0C",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fast",
+        "type": "perk",
+        "role": null
+      },
+      "1021": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.H3aqGKmP4k53gqnR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fearsome",
+        "type": "perk",
+        "role": null
+      },
+      "1022": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.z1KTeMR8qjo1J0Ql",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Focus",
+        "type": "perk",
+        "role": null
+      },
+      "1023": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.N6Bs8to6G0QddMVK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Frenemy",
+        "type": "perk",
+        "role": null
+      },
+      "1024": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.lpT5NH2Hm6ct7sdp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gallant",
+        "type": "perk",
+        "role": null
+      },
+      "1025": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.bbaCRhyl6HJvWFv1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Healthy Cooking",
+        "type": "perk",
+        "role": null
+      },
+      "1026": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.MoFfhUOFiR8mayM0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Illusionist",
+        "type": "perk",
+        "role": null
+      },
+      "1027": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.pC5Mn23WAPvmmQ8C",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Inspired",
+        "type": "perk",
+        "role": null
+      },
+      "1028": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.weDVcCpSyZCH5V4M",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Iron Hooves",
+        "type": "perk",
+        "role": null
+      },
+      "1029": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.TJEbR90lLJYSF51p",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Long Lasting Spell",
+        "type": "perk",
+        "role": null
+      },
+      "1030": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.t3jpBkXZdB5XwDNN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Luck",
+        "type": "perk",
+        "role": null
+      },
+      "1031": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.WhTlZdUORCDpZwO2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Magical",
+        "type": "perk",
+        "role": null
+      },
+      "1032": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.R9GgLKxW5x8GBaRg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Potion Brewer",
+        "type": "perk",
+        "role": null
+      },
+      "1033": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.smilN3d0rTCK7XHt",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Prankster",
+        "type": "perk",
+        "role": null
+      },
+      "1034": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.i0PwoR0hDC0vyDD2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quick Thinker",
+        "type": "perk",
+        "role": null
+      },
+      "1035": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.2CIUHerZRRQ5RKKo",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sonic Rainbow",
+        "type": "perk",
+        "role": null
+      },
+      "1036": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.LrcbTJQdNJVyu23f",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stand By Me",
+        "type": "perk",
+        "role": null
+      },
+      "1037": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.M9G2fSExDSG7DKSW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Street Smarts",
+        "type": "perk",
+        "role": null
+      },
+      "1038": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.kepGfqwF3OgkVgap",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Subtle Helper",
+        "type": "perk",
+        "role": null
+      },
+      "1039": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.TuSb6usDweSzf5S9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Super Specialized",
+        "type": "perk",
+        "role": null
+      },
+      "1040": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.UGFiK8wMXQ8fhXbT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Talented",
+        "type": "perk",
+        "role": null
+      },
+      "1041": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.pIr3i3UOGxYTGAMh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wealth",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "flags": {

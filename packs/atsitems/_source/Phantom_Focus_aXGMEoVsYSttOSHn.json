@@ -13,7 +13,9 @@
     },
     "prerequisite": "",
     "selectionLimit": 2,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "phantomFocus"
   },
   "effects": [],
   "sort": 300000,

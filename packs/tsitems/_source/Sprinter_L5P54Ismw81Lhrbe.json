@@ -36,7 +36,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "gEaMDVC8zbMN9GMQ",
       "type": "base",
       "system": {},

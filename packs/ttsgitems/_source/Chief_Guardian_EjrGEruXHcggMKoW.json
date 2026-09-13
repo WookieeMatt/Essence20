@@ -11,10 +11,35 @@
       "book": "Through the Shattered Grid",
       "page": 73
     },
-    "items": {},
+    "items": {
+      "cg00": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.EnergyRebuttal10",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Energy Rebuttal",
+        "type": "perk",
+        "role": null
+      },
+      "cg01": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.GuardianBlast000",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Guardian Blast",
+        "type": "perk",
+        "role": null
+      },
+      "cg02": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.TacticalMedit8ns",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Tactical Meditation",
+        "type": "perk",
+        "role": null
+      }
+    },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 1
   },
   "effects": [],
   "sort": 0,

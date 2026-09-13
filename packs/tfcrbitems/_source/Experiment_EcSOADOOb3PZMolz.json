@@ -11,7 +11,9 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "influence"
+    "type": "influence",
+    "hasChoice": true,
+    "choiceType": "experiment"
   },
   "effects": [],
   "flags": {

@@ -13,9 +13,78 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "influence"
+    "type": "influence",
+    "reroll": {
+      "enabled": true,
+      "maxUses": 0,
+      "mode": "all",
+      "reset": "none",
+      "target": "skillDice",
+      "cost": {
+        "resourcePath": "",
+        "amount": 0,
+        "worldStoryPoints": 0,
+        "rolePointsName": ""
+      },
+      "condition": "none",
+      "skills": [
+        "culture"
+      ],
+      "scopeToOriginSkill": false,
+      "essence": "any",
+      "recursive": true,
+      "minDieFaces": 0,
+      "grantsCanCritD2": false,
+      "bonus": 0,
+      "keepBetter": false
+    }
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Compendium.essence20.jump_through_time.Item.cHOoOXqMGKrxAX3G",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "yWp2ZwkDpUE5te4a",
+      "changes": [
+        {
+          "key": "system.skills.culture.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Historical Recall",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!cHOoOXqMGKrxAX3G.yWp2ZwkDpUE5te4a"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

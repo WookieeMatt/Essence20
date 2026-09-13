@@ -10,7 +10,7 @@
       "skill": "targeting",
       "style": "projectile"
     },
-    "damageType": "element",
+    "damageType": "cold",
     "damageValue": 2,
     "shiftDown": 1,
     "numHands": "2",

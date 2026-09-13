@@ -20,7 +20,58 @@
       "range": 60
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Night Vision Goggles",
+      "origin": "Item.XvqqYOHHpjRzb8T4",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "n7Bg2eKZbNqYQtRw",
+      "changes": [
+        {
+          "key": "system.skills.alertness.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.skills.initiative.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!XvqqYOHHpjRzb8T4.n7Bg2eKZbNqYQtRw"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

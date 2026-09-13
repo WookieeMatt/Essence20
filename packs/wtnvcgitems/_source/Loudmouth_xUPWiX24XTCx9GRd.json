@@ -12,7 +12,52 @@
       "page": 29
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.xUPWiX24XTCx9GRd",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ni4MJIHhzBlTtdiz",
+      "changes": [
+        {
+          "key": "system.skills.infiltration.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Infiltration Downshift",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!xUPWiX24XTCx9GRd.ni4MJIHhzBlTtdiz"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

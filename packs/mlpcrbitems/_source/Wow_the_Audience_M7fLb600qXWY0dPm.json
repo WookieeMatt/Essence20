@@ -29,7 +29,7 @@
       "_id": "TXods3J1J5A4va26",
       "changes": [
         {
-          "key": "system.skills.perofrmance.shiftUp",
+          "key": "system.skills.performance.shiftUp",
           "mode": 2,
           "value": "1",
           "priority": null
@@ -73,7 +73,7 @@
       "_id": "RIyMD6CktG1SeuvC",
       "changes": [
         {
-          "key": "system.skills.perofrmance.shiftUp",
+          "key": "system.skills.performance.shiftUp",
           "mode": 2,
           "value": "1",
           "priority": null
@@ -117,7 +117,7 @@
       "_id": "QJYO4UdLdb2GTTi4",
       "changes": [
         {
-          "key": "system.skills.perofrmance.shiftUp",
+          "key": "system.skills.performance.shiftUp",
           "mode": 2,
           "value": "1",
           "priority": null

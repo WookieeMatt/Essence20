@@ -20,7 +20,7 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "none",
+    "choiceType": "elementDamageType",
     "isRoleVariant": false,
     "hasChoice": true,
     "hasMorphedToughnessBonus": false,

@@ -29,7 +29,16 @@
     },
     "type": "general",
     "value": 0,
-    "version": "powerRangers"
+    "version": "powerRangers",
+    "reroll": {
+      "enabled": true,
+      "mode": "all",
+      "target": "skillDice",
+      "condition": "rollFailed",
+      "maxUses": 1,
+      "reset": "scene",
+      "recursive": false
+    }
   },
   "effects": [],
   "sort": 0,

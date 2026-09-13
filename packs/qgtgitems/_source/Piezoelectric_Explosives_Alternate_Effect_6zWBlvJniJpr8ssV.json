@@ -15,7 +15,7 @@
       "skill": "targeting",
       "style": "explosive"
     },
-    "damageType": "element",
+    "damageType": "electric",
     "damageValue": 3,
     "isSpecialized": false,
     "numHands": 1,

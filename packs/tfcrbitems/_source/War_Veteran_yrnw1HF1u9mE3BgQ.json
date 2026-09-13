@@ -13,7 +13,52 @@
     "selectionLimit": 1,
     "type": "influence"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "War Veteran",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.tf_crb.Item.yrnw1HF1u9mE3BgQ",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "WrVtrnEdgAlrtnss",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.alertness.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1789137000000,
+        "modifiedTime": 1789137000000,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!yrnw1HF1u9mE3BgQ.WrVtrnEdgAlrtnss"
+    }
+  ],
   "flags": {
     "core": {}
   },

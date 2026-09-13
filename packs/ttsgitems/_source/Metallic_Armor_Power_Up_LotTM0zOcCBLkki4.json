@@ -12,10 +12,10 @@
       "page": 26
     },
     "actionType": "free",
-    "canActivate": false,
+    "canActivate": true,
     "hasVariableCost": false,
     "maxPowerCost": null,
-    "powerCost": null,
+    "powerCost": 2,
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

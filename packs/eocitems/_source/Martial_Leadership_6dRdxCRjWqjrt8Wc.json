@@ -15,7 +15,52 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Persuasion Strength Skill",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.enigma_of_combination.Item.6dRdxCRjWqjrt8Wc",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "MartLeadStrngth1",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.persuasion.essences.strength",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.4.1",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!6dRdxCRjWqjrt8Wc.MartLeadStrngth1"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

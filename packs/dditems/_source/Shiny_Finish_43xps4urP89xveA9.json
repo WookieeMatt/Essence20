@@ -15,7 +15,52 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Shiny Finish",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.decepticon_directive.Item.43xps4urP89xveA9",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Sh1nyF1n1shRes01",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.resistances.laser",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1789140000000,
+        "modifiedTime": 1789140000000,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!43xps4urP89xveA9.Sh1nyF1n1shRes01"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

@@ -22,7 +22,52 @@
     "type": "general",
     "version": "powerRangers"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Survival Edge",
+      "origin": "Compendium.essence20.technorganic_secrets.Item.igkuus7jkoqYV5Fr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "QHajNduftHZHjd39",
+      "changes": [
+        {
+          "key": "system.skills.survival.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!igkuus7jkoqYV5Fr.QHajNduftHZHjd39"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

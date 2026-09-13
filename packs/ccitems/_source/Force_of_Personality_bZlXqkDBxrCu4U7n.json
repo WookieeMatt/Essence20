@@ -32,7 +32,7 @@
       "_id": "xVdZ27LS4FnTKfTx",
       "changes": [
         {
-          "key": "system.skills.night.essences.social",
+          "key": "system.skills.might.essences.social",
           "mode": 5,
           "value": "true",
           "priority": null

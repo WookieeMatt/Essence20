@@ -44,6 +44,54 @@ export function requestStoryPointSpend(actor, amount = 1) {
 }
 
 /**
+ * Fires a grant request at whichever GM client is currently connected - the mirror image of
+ * requestStoryPointSpend above (e.g. MLP CRB's "gain a Friendship Point" Perks - Curb Your
+ * Enthusiasm, Stay Humble). Unlike a spend, a grant has no affordability gate to check first;
+ * callers should still confirm isGmConnected() themselves for an honest upfront message if no GM
+ * is connected to actually perform the write.
+ * @param {Actor} actor   The actor gaining the point, for the GM-side chat announcement.
+ * @param {Number} [amount]
+ */
+export function requestStoryPointGrant(actor, amount = 1) {
+  game.socket.emit("system.essence20", {
+    action: "grantStoryPoints",
+    amount,
+    actorName: actor?.name,
+  });
+}
+
+/**
+ * The GM-side handler for a grant request - called from essence20.mjs's own socket listener. A
+ * no-op on any client that isn't actually the GM, same as handleStoryPointSpendRequest below.
+ * @param {Object} data   {action: "grantStoryPoints", amount, actorName}
+ */
+export function handleStoryPointGrantRequest(data) {
+  if (!game.user.isGM) {
+    return;
+  }
+
+  const amount = Number(data.amount) || 1;
+  const current = game.settings.get("essence20", STORY_POINTS_SETTING) ?? 0;
+  const next = current + amount;
+  game.settings.set("essence20", STORY_POINTS_SETTING, next);
+
+  if (game.StoryPointsTracker) {
+    game.StoryPointsTracker._storyPoints = next;
+    game.StoryPointsTracker.render(false);
+  }
+
+  game.socket.emit("system.essence20", {
+    gmPoints: game.settings.get("essence20", "sptGmPoints") ?? 0,
+    storyPoints: next,
+  });
+
+  ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ user: game.user.id }),
+    content: game.i18n.format("E20.SptGrantRequestGranted", { actorName: data.actorName ?? "?" }),
+  });
+}
+
+/**
  * The GM-side handler for a spend request - called from essence20.mjs's own socket listener.
  * A no-op on any client that isn't actually the GM (matches every other GM-only write in this
  * codebase, e.g. apps/story-points.mjs#setStoryPoints's own isGM guard) - if more than one GM is

@@ -13,7 +13,61 @@
     "selectionLimit": 1,
     "type": "origin"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "If It Shoots Training",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.NUiyY9qOCPmuyjQN",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "IfItShoots0000A1",
+      "changes": [
+        { "key": "system.trained.weapons.assaultRifle", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.ballistic", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.blunt", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.closeCombatHeavyBlade", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.element", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.explosives", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.finesse", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.grenades", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.mightMelee", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.oneHanded", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.shotguns", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.silent", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.stun", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.submachineGun", "mode": 5, "value": "true", "priority": null },
+        { "key": "system.trained.weapons.thrown", "mode": 5, "value": "true", "priority": null }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!NUiyY9qOCPmuyjQN.IfItShoots0000A1"
+    }
+  ],
   "flags": {
     "core": {}
   },

@@ -15,7 +15,7 @@
       "skill": "technology",
       "style": "melee"
     },
-    "damageType": "element",
+    "damageType": "emp",
     "damageValue": 2,
     "defenseType": "toughness",
     "isSpecialized": false,

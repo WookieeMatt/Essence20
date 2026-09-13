@@ -1,0 +1,51 @@
+{
+  "folder": "rjqZQ4lccxEfPnia",
+  "name": "Flames of Hate Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "C2A6ZgisRQBnlXMZ",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "blindingBlast",
+    "damageValue": 0,
+    "defenseType": "cleverness",
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 6,
+    "radius": 60,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": null
+    },
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "description": "<p>60 ft Line; Target is Blinded by rage until the end of the target's next turn</p>"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1789114659637,
+    "modifiedTime": 1789114659637,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!C2A6ZgisRQBnlXMZ"
+}

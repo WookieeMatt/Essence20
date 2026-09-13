@@ -13,7 +13,10 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "origin"
+    "type": "origin",
+    "hasChoice": true,
+    "choiceType": "skills",
+    "numChoices": 2
   },
   "effects": [],
   "flags": {},

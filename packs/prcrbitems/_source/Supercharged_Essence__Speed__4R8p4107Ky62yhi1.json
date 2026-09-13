@@ -13,7 +13,52 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Compendium.essence20.pr_crb.Item.4R8p4107Ky62yhi1",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "yo44AZ6odlJCK0kZ",
+      "changes": [
+        {
+          "key": "system.essenceShifts.speed.morphed",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Skill Upshift",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!4R8p4107Ky62yhi1.yo44AZ6odlJCK0kZ"
+    }
+  ],
   "flags": {
     "core": {}
   },

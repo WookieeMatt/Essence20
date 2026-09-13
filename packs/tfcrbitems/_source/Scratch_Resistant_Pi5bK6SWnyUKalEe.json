@@ -15,7 +15,52 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Scratch Resistant",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.tf_crb.Item.Pi5bK6SWnyUKalEe",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "zGmhogY5803nlDsh",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.trained.upgrades.armors.restricted",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1789131172870,
+        "modifiedTime": 1789131172870,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!Pi5bK6SWnyUKalEe.zGmhogY5803nlDsh"
+    }
+  ],
   "sort": -150000,
   "ownership": {
     "default": 0,

@@ -13,6 +13,8 @@
     },
     "items": {},
     "prerequisite": "",
+    "hasChoice": true,
+    "choiceType": "wisdomOfTheElders",
     "selectionLimit": 2,
     "type": "role"
   },

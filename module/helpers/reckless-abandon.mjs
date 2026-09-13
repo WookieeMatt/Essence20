@@ -29,6 +29,24 @@ const RECKLESS_ABANDON_ID = `${GI_JOE_CRB}84d0XTJwKCYMJUgY`;
 const HARDENED_ID = `${GI_JOE_CRB}f7d5bkyxVpbR4dAe`;
 
 /**
+ * Whether the given Role Points Item is GI Joe's own Reckless Abandon grant specifically (not just
+ * any healthBonus Role Points Item) - a plain sourceId check, independent of its current isActive
+ * state. Exported for Aegis's own deactivation check in base-actor-sheet.mjs, which needs to know
+ * WHICH item was just clicked before the click's own isActive flip is written (isRecklessAbandonActive
+ * below would read the state that's about to become stale).
+ * @param {Item} rolePoints
+ * @returns {Boolean}
+ */
+export function isRecklessAbandonItem(rolePoints) {
+  if (!rolePoints) {
+    return false;
+  }
+
+  const sourceId = rolePoints.flags?.core?.sourceId ?? rolePoints._stats?.compendiumSource;
+  return sourceId == RECKLESS_ABANDON_ID;
+}
+
+/**
  * Whether the given actor's base Role Points Item is specifically GI Joe's Reckless Abandon grant
  * (not just any healthBonus Role Points Item - Power Rangers/My Little Pony have their own), and
  * it's currently switched on via the sheet's existing Active toggle.
@@ -37,12 +55,7 @@ const HARDENED_ID = `${GI_JOE_CRB}f7d5bkyxVpbR4dAe`;
  */
 export function isRecklessAbandonActive(actor) {
   const rolePoints = actor._getBaseRolePoints?.();
-  if (!rolePoints) {
-    return false;
-  }
-
-  const sourceId = rolePoints.flags?.core?.sourceId ?? rolePoints._stats?.compendiumSource;
-  return sourceId == RECKLESS_ABANDON_ID && !!rolePoints.system.isActive;
+  return isRecklessAbandonItem(rolePoints) && !!rolePoints.system.isActive;
 }
 
 /**
@@ -66,4 +79,35 @@ export function getRecklessAbandonStrengthShiftUp(actor) {
   });
 
   return armorBlocksIt ? 0 : 2;
+}
+
+// Aegis (Tank Focus, 20th level, p.99): "While fighting with Reckless Abandon, having 0 Health
+// doesn't cause you to be Defeated, and you are only defeated if you still have 0 Health at the
+// end of your Reckless Abandon." Two parts:
+// - AEGIS_CLAMPED_FLAG marks that a hit was about to reduce the actor to 0 Health while Reckless
+//   Abandon was active and Aegis held - see its own consumption in helpers/combat.mjs#applyDamage
+//   (the same "clamp newValue at 1 instead of 0" shape Immortal Rebel Soul/Defender's Oath already
+//   establish), set here so the deactivation check below knows to look.
+// - applyAegisDefeatCheck runs from base-actor-sheet.mjs's own Reckless Abandon Activate/Deactivate
+//   click (the same interception point Protector's Shield's own Temporary Health grant already
+//   hooks), right as it's being switched OFF - if the actor is still at the clamped Health (1, this
+//   codebase's floor) and the flag is set, Aegis's own protection has run out and the real Defeat
+//   finally lands.
+const AEGIS_ID = `${GI_JOE_CRB}CKQfEuHDNW6zP0FE`;
+export const AEGIS_CLAMPED_FLAG = 'aegisClamped';
+
+/**
+ * Called when Reckless Abandon is switched OFF - applies Aegis's own deferred Defeat check.
+ * @param {Actor} actor
+ * @returns {Promise<void>}
+ */
+export async function applyAegisDefeatCheck(actor) {
+  if (!actorHasPerk(actor, AEGIS_ID) || !actor.getFlag?.('essence20', AEGIS_CLAMPED_FLAG)) {
+    return;
+  }
+
+  await actor.unsetFlag('essence20', AEGIS_CLAMPED_FLAG);
+  if (actor.system.health.value <= 1) {
+    await actor.toggleStatusEffect('defeated', { active: true });
+  }
 }

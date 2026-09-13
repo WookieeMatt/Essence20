@@ -11,7 +11,236 @@
       "book": "Transformers One Sourcebook",
       "page": 8
     },
-    "items": {},
+    "items": {
+      "4913": {
+        "uuid": "Compendium.essence20.tf_crb.Item.M5QL4PBD0XoinRKA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Additional Alt Mode",
+        "type": "perk"
+      },
+      "5937": {
+        "uuid": "Compendium.essence20.tf_crb.Item.aMrMtyNJUsSYyMId",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mentor",
+        "type": "perk"
+      },
+      "6562": {
+        "uuid": "Compendium.essence20.tf_crb.Item.yqDvVK13r4ZzX7ic",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Size Change",
+        "type": "perk"
+      },
+      "7229": {
+        "uuid": "Compendium.essence20.tf_crb.Item.OCQ8ZuC793JHQ4YU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "All Out Attack",
+        "type": "perk"
+      },
+      "0782": {
+        "uuid": "Compendium.essence20.tf_crb.Item.rl8hs6ezb6VSDahM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Acute Sense",
+        "type": "perk"
+      },
+      "efad": {
+        "uuid": "Compendium.essence20.tf_crb.Item.f7QOaDUFo1b0184W",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "All-Terrain Alt Mode",
+        "type": "perk"
+      },
+      "a560": {
+        "uuid": "Compendium.essence20.tf_crb.Item.6r0sYiTEtGsge6cB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Always Alert",
+        "type": "perk"
+      },
+      "46f3": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Bam8jV2yfvCF2Be4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bot's Bot",
+        "type": "perk"
+      },
+      "230c": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Swuy85Kou1qbV4H8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cross-Training",
+        "type": "perk"
+      },
+      "a86e": {
+        "uuid": "Compendium.essence20.tf_crb.Item.8GgFGdlmri0GyKNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Daredevil",
+        "type": "perk"
+      },
+      "f357": {
+        "uuid": "Compendium.essence20.tf_crb.Item.uPxkVrCLuBdx9kty",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dig Deep",
+        "type": "perk"
+      },
+      "a8a2": {
+        "uuid": "Compendium.essence20.tf_crb.Item.smkYh73IkfzNuQUl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dodgy",
+        "type": "perk"
+      },
+      "e72b": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Q9DWZNwPe66ewBuG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Durabyllium Super-Alloy",
+        "type": "perk"
+      },
+      "323a": {
+        "uuid": "Compendium.essence20.tf_crb.Item.uyeLgTc55ixz31j1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Earlier is Better Than Later",
+        "type": "perk"
+      },
+      "5b16": {
+        "uuid": "Compendium.essence20.tf_crb.Item.hXBK58yrv1s8IdA4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Educated",
+        "type": "perk"
+      },
+      "e88a": {
+        "uuid": "Compendium.essence20.tf_crb.Item.fQJF7zvHjd39qw99",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Evasive Fighting",
+        "type": "perk"
+      },
+      "cc65": {
+        "uuid": "Compendium.essence20.tf_crb.Item.JYtupHnbYrE2cDad",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fast",
+        "type": "perk"
+      },
+      "0a17": {
+        "uuid": "Compendium.essence20.tf_crb.Item.a8aIMf7h41eg8wCN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Field Repair",
+        "type": "perk"
+      },
+      "c89b": {
+        "uuid": "Compendium.essence20.tf_crb.Item.hW6ESJ1p7GvIGzBe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fuel Efficient",
+        "type": "perk"
+      },
+      "a1d0": {
+        "uuid": "Compendium.essence20.tf_crb.Item.7t0TYx5BMrEHg1BE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Green",
+        "type": "perk"
+      },
+      "984e": {
+        "uuid": "Compendium.essence20.tf_crb.Item.xPW26L1cpi3ax3Ag",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Human Companion",
+        "type": "perk"
+      },
+      "694f": {
+        "uuid": "Compendium.essence20.tf_crb.Item.CcIY1IM10sioKUl3",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Linguistics",
+        "type": "perk"
+      },
+      "0f44": {
+        "uuid": "Compendium.essence20.tf_crb.Item.kFyggRo3fEFsHqcJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mayhem Attack",
+        "type": "perk"
+      },
+      "724b": {
+        "uuid": "Compendium.essence20.tf_crb.Item.VUal4FUlNIrwo2MG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nose for Trouble",
+        "type": "perk"
+      },
+      "ec34": {
+        "uuid": "Compendium.essence20.tf_crb.Item.iW9TjN9X6SsYm2Ql",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Now You Don't",
+        "type": "perk"
+      },
+      "7dc0": {
+        "uuid": "Compendium.essence20.tf_crb.Item.z3qE2fLKzJtsyZ6C",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Object Alt Mode",
+        "type": "perk"
+      },
+      "be26": {
+        "uuid": "Compendium.essence20.tf_crb.Item.b4zeeYax1vrzVGZx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pack Mule",
+        "type": "perk"
+      },
+      "f9a6": {
+        "uuid": "Compendium.essence20.tf_crb.Item.RnNvJRWFEpOH4qiq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Photographic Memory",
+        "type": "perk"
+      },
+      "286e": {
+        "uuid": "Compendium.essence20.tf_crb.Item.vNbbACKhZhbz9T54",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quick Change",
+        "type": "perk"
+      },
+      "2b87": {
+        "uuid": "Compendium.essence20.tf_crb.Item.uxg74cCx9gPIic5i",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rapid Attack",
+        "type": "perk"
+      },
+      "e6df": {
+        "uuid": "Compendium.essence20.tf_crb.Item.jwREkh7fN4FLjDmz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Razor Tongue",
+        "type": "perk"
+      },
+      "574d": {
+        "uuid": "Compendium.essence20.tf_crb.Item.q63dZJjGuZHcE2gH",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Remove & Rebuild",
+        "type": "perk"
+      },
+      "4a4f": {
+        "uuid": "Compendium.essence20.tf_crb.Item.cVyIxoXOZhwrBBBD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sharpshooter's Grace",
+        "type": "perk"
+      },
+      "b490": {
+        "uuid": "Compendium.essence20.tf_crb.Item.oWjvage64Y4KrWjw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Team Player",
+        "type": "perk"
+      },
+      "2b14": {
+        "uuid": "Compendium.essence20.tf_crb.Item.P4qrmsy7AVSuahwx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Terrifying Presence",
+        "type": "perk"
+      },
+      "e968": {
+        "uuid": "Compendium.essence20.tf_crb.Item.B2VtEwa627p0TGo3",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Tongues",
+        "type": "perk"
+      },
+      "7f09": {
+        "uuid": "Compendium.essence20.tf_crb.Item.nLlClqDqI5hZe5l1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Veteran",
+        "type": "perk"
+      },
+      "44c9": {
+        "uuid": "Compendium.essence20.tf_crb.Item.tcPAKXvlB9TaKKpO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Weapon Master",
+        "type": "perk"
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,
@@ -20,9 +249,9 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "none",
+    "choiceType": "perks",
     "isRoleVariant": false,
-    "hasChoice": false,
+    "hasChoice": true,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",

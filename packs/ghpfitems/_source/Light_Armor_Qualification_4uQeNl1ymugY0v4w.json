@@ -15,7 +15,52 @@
     },
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Light Armor Qualification",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.general_hawk_s_personel_files.Item.4uQeNl1ymugY0v4w",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "OoSvx1Nla9vDuEJS",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.qualified.armors.light",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "14.364",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787763529613,
+        "modifiedTime": 1787763529613,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!4uQeNl1ymugY0v4w.OoSvx1Nla9vDuEJS"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

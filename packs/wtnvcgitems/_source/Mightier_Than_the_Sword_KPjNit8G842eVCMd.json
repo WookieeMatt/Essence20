@@ -7,7 +7,14 @@
   "system": {
     "originalId": "",
     "description": "",
-    "items": {},
+    "items": {
+      "dgr1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.ZLvRtMySr9GPe4oD",
+        "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+        "name": "Dagger",
+        "type": "weapon"
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,

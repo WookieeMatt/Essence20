@@ -47,10 +47,21 @@ function normalizeRerollConfig(config) {
     },
     condition: normalized.condition ?? "none",
     skills: Array.isArray(normalized.skills) ? normalized.skills.filter(Boolean) : [],
+    // It's A Gift (Cobra Codex) - see reroll-schema.mjs's own doc comment on this field. Resolved
+    // against the actual actor in getRerollConfigs() below, not here (this function only sees the
+    // raw config object, not the actor it belongs to).
+    scopeToOriginSkill: normalized.scopeToOriginSkill === true,
     essence: normalized.essence || "any",
     recursive: normalized.recursive !== false,
     minDieFaces: Number.isFinite(Number(normalized.minDieFaces)) ? Number(normalized.minDieFaces) : 0,
     grantsCanCritD2: normalized.grantsCanCritD2 === true,
+    // Mending the Grid (Across the Stars, Phantom Ranger, 5th level, p.61) - see
+    // reroll-schema.mjs's own doc comment on this field for why a flat total bonus, not a real
+    // upshift, is what this engine can express here.
+    bonus: Number.isFinite(Number(normalized.bonus)) ? Number(normalized.bonus) : 0,
+    // Backup Planner (Hawk's Personnel Files, General Perk, p.174) - see reroll-schema.mjs's own
+    // doc comment on this field.
+    keepBetter: normalized.keepBetter === true,
   };
 }
 
@@ -67,6 +78,14 @@ function getRerollResetBucket(reset) {
     // No active Combat encounter (game.combat is then null/undefined) shares one bucket rather
     // than being treated as unlimited - see E20.rerollResets's own doc comment.
     return `combat:${game.combat?.id ?? "none"}`;
+  }
+
+  if (reset === "turn") {
+    // Same "no active encounter, shares one bucket" fallback as "combat" above, just scoped down
+    // to the specific combatant-turn (see E20.rerollResets's own doc comment on this bucket).
+    return game.combat
+      ? `turn:${game.combat.id}:${game.combat.round}:${game.combat.turn}`
+      : "turn:none";
   }
 
   // "mission" has no automatic boundary this codebase can detect (see E20.rerollResets in
@@ -146,6 +165,14 @@ export function getRerollConfigs(actor) {
       });
     }
 
+    // It's A Gift (Cobra Codex, Gifted Origin Benefit, p.44) - see reroll-schema.mjs's own doc
+    // comment on scopeToOriginSkill. Overrides the static skills array with whichever skill this
+    // specific actor actually chose as their Origin Skill - a no-op (stays unscoped) if the actor
+    // hasn't picked one yet.
+    if (config?.scopeToOriginSkill) {
+      config.skills = [actor.system?.originSkillsIncrease].filter(Boolean);
+    }
+
     if (config) {
       // `name` is the human-readable label (the Perk's own name) - kept separate from `source`
       // (an id/uuid used only as the per-grant usage-tracking key, see canUseReroll's sourceKey)
@@ -206,7 +233,7 @@ export async function consumeRerollUsage(actor, config, sourceKey) {
 // Exported for reuse by other Cheer-Points-spending abilities that aren't reroll grants (e.g.
 // helpers/snortle-at-the-spooky.mjs) - same lookup, no reason to duplicate it.
 export function findRolePointsItem(actor, name) {
-  return actor.items.documentsByType.rolePoints?.find(item => item.name === name) ?? null;
+  return actor?.items?.documentsByType?.rolePoints?.find(item => item.name === name) ?? null;
 }
 
 export function hasRerollCost(actor, config) {
@@ -289,6 +316,15 @@ const REROLL_CONDITIONS = {
   // on the field) - a plain skill roll with nothing to fail against reads as unmet here, not as
   // an automatic pass.
   rollFailed: (actor, context) => !!context?.rollFailed,
+  // Quartermaster's Guide to Gear "Clip Check" (General Perk, p.28): "...reroll a Fumble on an
+  // Attack Skill Test." The real natural-min-die Fumble (dice.mjs#_isCritIsFumble), not the
+  // unrelated shift-based "fumble" auto-fail tier - see dice.mjs's own doc comment on isFumble.
+  fumble: (actor, context) => !!context?.isFumble,
+  // Decepticon Directive "Exterminator" (General Perk, p.65): "...as long as the target is
+  // smaller than you." Computed once in dice.mjs's own _getAutomaticCombatModifiers (where the
+  // actual Size comparison lives) and threaded through onto the posted message's own context,
+  // same "computed there, read here" shape as isPowerWeaponAttack/notSnagged above.
+  smallerTarget: (actor, context) => !!context?.smallerTarget,
 };
 
 export function canMeetRerollCondition(actor, config, context = {}) {
@@ -570,6 +606,9 @@ export async function applyReroll(roll, config) {
   const target = config.target ?? "allDice";
   const minDieFaces = config.minDieFaces || 0;
   const eligibleDice = getEligibleDice(roll, target).filter(die => die.faces >= minDieFaces);
+  // Captured before any die is touched, so a keepBetter grant (Backup Planner) can fall back to
+  // it if the reroll comes out worse - see reroll-schema.mjs's own doc comment on this field.
+  const originalTotal = roll._total ?? roll._evaluateTotal();
 
   // Edge/Snag (2d20kh/2d20kl) keeps the higher/lower of 2 results on a single Die term, decided
   // once at evaluation time - captured here, before any die is touched, so it can be correctly
@@ -603,7 +642,8 @@ export async function applyReroll(roll, config) {
   // from its member dice - see refreshPoolTerms's own doc comment for why a plain
   // roll._evaluateTotal() alone isn't enough once one of those nested dice has changed.
   await refreshPoolTerms(roll);
-  roll._total = roll._evaluateTotal();
+  const rerolledTotal = roll._evaluateTotal() + (config.bonus || 0);
+  roll._total = config.keepBetter ? Math.max(originalTotal, rerolledTotal) : rerolledTotal;
   return true;
 }
 

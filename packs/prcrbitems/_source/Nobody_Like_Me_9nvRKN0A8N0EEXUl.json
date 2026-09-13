@@ -11,7 +11,305 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "origin"
+    "type": "origin",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "items": {
+      "2063": {
+        "uuid": "Compendium.essence20.pr_crb.Item.R2kcuVGRvvtPQmQX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Garage Band",
+        "type": "perk",
+        "role": null
+      },
+      "4814": {
+        "uuid": "Compendium.essence20.pr_crb.Item.4R8p4107Ky62yhi1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Supercharged Essence (Speed)",
+        "type": "perk",
+        "role": null
+      },
+      "8409": {
+        "uuid": "Compendium.essence20.pr_crb.Item.OQRkRk7PbC0iMdpi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Inspired",
+        "type": "perk",
+        "role": null
+      },
+      "9375": {
+        "uuid": "Compendium.essence20.pr_crb.Item.uKGtcgg5cgVibGQ7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Iron Hands",
+        "type": "perk",
+        "role": null
+      },
+      "9980": {
+        "uuid": "Compendium.essence20.pr_crb.Item.T95n2lwh3F5OHjnB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heroic Intervention",
+        "type": "perk",
+        "role": null
+      },
+      "efa2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.qKoTBo1FKzCq1qTt",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Acute (Sense)",
+        "type": "perk",
+        "role": null
+      },
+      "21e6": {
+        "uuid": "Compendium.essence20.pr_crb.Item.vP9xKXbsQznOe3UF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Adolescent Attitude",
+        "type": "perk",
+        "role": null
+      },
+      "f19f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.oXyaZOw6L1AXiyCj",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Always Alert",
+        "type": "perk",
+        "role": null
+      },
+      "1dad": {
+        "uuid": "Compendium.essence20.pr_crb.Item.KYc9qF93mww0h1XA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Athlete's Grace",
+        "type": "perk",
+        "role": null
+      },
+      "d1c4": {
+        "uuid": "Compendium.essence20.pr_crb.Item.3oeSWdRfUpOq6b9y",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bowl-Over",
+        "type": "perk",
+        "role": null
+      },
+      "09e7": {
+        "uuid": "Compendium.essence20.pr_crb.Item.4kt5qBpgTEgY8cGF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Defender",
+        "type": "perk",
+        "role": null
+      },
+      "99e6": {
+        "uuid": "Compendium.essence20.pr_crb.Item.eC0iByyLbSHQKY2G",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dig Deep",
+        "type": "perk",
+        "role": null
+      },
+      "6bb5": {
+        "uuid": "Compendium.essence20.pr_crb.Item.HdgGywFzuxezzVGy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dodgy",
+        "type": "perk",
+        "role": null
+      },
+      "884f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Jq0jnOgj6oPkMlse",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Educated",
+        "type": "perk",
+        "role": null
+      },
+      "7a6b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.cBezxXDBMpsRwYbP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "EMT Crash Course",
+        "type": "perk",
+        "role": null
+      },
+      "a548": {
+        "uuid": "Compendium.essence20.pr_crb.Item.uoCQgYOCeIQNzF0q",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Expertise",
+        "type": "perk",
+        "role": null
+      },
+      "f97a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.KdL9OkFOIwe6zn4B",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Grid Power",
+        "type": "perk",
+        "role": null
+      },
+      "a37d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.DM3png00SY9CgkMN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fast",
+        "type": "perk",
+        "role": null
+      },
+      "3f7e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.ofiEt8uFPgovBvLQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fearsome Reputation",
+        "type": "perk",
+        "role": null
+      },
+      "3bf2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.ej3F6z4xU3qfzrKO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Giant-Killer",
+        "type": "perk",
+        "role": null
+      },
+      "a83e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.92oS4wTZvjDCpnkg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Champion",
+        "type": "perk",
+        "role": null
+      },
+      "f840": {
+        "uuid": "Compendium.essence20.pr_crb.Item.XVrOmc94bK9G9F5P",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heavy Armor Shell",
+        "type": "perk",
+        "role": null
+      },
+      "fc52": {
+        "uuid": "Compendium.essence20.pr_crb.Item.hxWJxlMLbkBbx73w",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Humanitarian",
+        "type": "perk",
+        "role": null
+      },
+      "658e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.GgeDqallWNwqvDXh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Instinctual Initiative",
+        "type": "perk",
+        "role": null
+      },
+      "403e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Z4YwTrUSDQIrDkQT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Keen Eye",
+        "type": "perk",
+        "role": null
+      },
+      "cd90": {
+        "uuid": "Compendium.essence20.pr_crb.Item.xrwFNj0NDRcWXvXN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Keep 'Em Laughing",
+        "type": "perk",
+        "role": null
+      },
+      "659c": {
+        "uuid": "Compendium.essence20.pr_crb.Item.jRPEqs3Jel1dBfJD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Linguistics",
+        "type": "perk",
+        "role": null
+      },
+      "32cc": {
+        "uuid": "Compendium.essence20.pr_crb.Item.zGPeTGjHeRwVX6J6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Luck",
+        "type": "perk",
+        "role": null
+      },
+      "737a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.d4AKhKlDbkQqGwOu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Medium Armor Shell",
+        "type": "perk",
+        "role": null
+      },
+      "5bf2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.wN5rjEQIJH68rWCd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ninja Power",
+        "type": "perk",
+        "role": null
+      },
+      "b3c2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.dHDCKO4k7dlzyXbC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Peerless Pilot",
+        "type": "perk",
+        "role": null
+      },
+      "06d4": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mOgEBZIbiaT07eAq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Righteous Heart",
+        "type": "perk",
+        "role": null
+      },
+      "25ee": {
+        "uuid": "Compendium.essence20.pr_crb.Item.R8wEt8VfWwQMQeuw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Secret Knowledge",
+        "type": "perk",
+        "role": null
+      },
+      "ac60": {
+        "uuid": "Compendium.essence20.pr_crb.Item.wgkspIBc4HcOfKDu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sharpshooter's Grace",
+        "type": "perk",
+        "role": null
+      },
+      "035a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.HxbEBJ3gXkTQqvxt",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Spectrum Shift",
+        "type": "perk",
+        "role": null
+      },
+      "e199": {
+        "uuid": "Compendium.essence20.pr_crb.Item.oRcjZWMSFIipugZ6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Supercharged Essence (Smarts)",
+        "type": "perk",
+        "role": null
+      },
+      "3b01": {
+        "uuid": "Compendium.essence20.pr_crb.Item.UyekBiANUOlAA0pX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Supercharged Essence (Social)",
+        "type": "perk",
+        "role": null
+      },
+      "36cf": {
+        "uuid": "Compendium.essence20.pr_crb.Item.gr3vEjvGs9BbARnb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Supercharged Essence (Strength)",
+        "type": "perk",
+        "role": null
+      },
+      "b0c8": {
+        "uuid": "Compendium.essence20.pr_crb.Item.cPEDaNdD6XwW8MD2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Terran Study",
+        "type": "perk",
+        "role": null
+      },
+      "da40": {
+        "uuid": "Compendium.essence20.pr_crb.Item.xBeEe7X1MBoo4cYW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ultra-Heavy Armor Shell",
+        "type": "perk",
+        "role": null
+      },
+      "b85a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.bZ4IqEVgHnTL0XV6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Vast Wealth",
+        "type": "perk",
+        "role": null
+      },
+      "de37": {
+        "uuid": "Compendium.essence20.pr_crb.Item.7QMuaLPZJWNPJHTz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wrestler",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "flags": {

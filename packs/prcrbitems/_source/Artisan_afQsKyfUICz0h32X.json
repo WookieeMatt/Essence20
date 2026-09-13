@@ -11,7 +11,58 @@
     },
     "img": "assets/icons/hangups.svg"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Compendium.essence20.pr_crb.Item.afQsKyfUICz0h32X",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "O0PIlhPEx1SpM1wy",
+      "changes": [
+        {
+          "key": "system.essenceShifts.smarts.snag",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.essenceShifts.social.snag",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Absorbed In My Work",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!afQsKyfUICz0h32X.O0PIlhPEx1SpM1wy"
+    }
+  ],
   "flags": {
     "core": {}
   },

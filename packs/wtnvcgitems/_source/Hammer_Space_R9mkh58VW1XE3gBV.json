@@ -7,7 +7,14 @@
   "system": {
     "originalId": "",
     "description": "",
-    "items": {},
+    "items": {
+      "hms1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.kUdy8xJTH8mVmOb5",
+        "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+        "name": "Hammer",
+        "type": "weapon"
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,

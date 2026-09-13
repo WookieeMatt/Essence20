@@ -63,6 +63,25 @@ export function isSneakAttackDamageItem(rolePoints) {
 }
 
 /**
+ * The actor's own current Sneak Attack damage bonus, for Perks that reference it OUTSIDE the
+ * normal weaponEffect damage-bonus flow (e.g. Sabotage, Cobra Codex p.83: "Your Technology Skill
+ * Tests to disable machines gain shiftUp equal to your Sneak Attack damage"). Reads the exact same
+ * system.bonus.value field dice.mjs's own weaponEffect flow already reads for the ordinary Sneak
+ * Attack damage bonus, so this always agrees with whatever the player sees on their own sheet -
+ * not a separate startingValue/increaseLevels computation of its own.
+ * @param {Actor} actor
+ * @returns {Number}
+ */
+export function getSneakAttackDamage(actor) {
+  const rolePoints = actor._getBaseRolePoints?.();
+  if (!isSneakAttackDamageItem(rolePoints)) {
+    return 0;
+  }
+
+  return rolePoints.system.bonus.value;
+}
+
+/**
  * Finds the weapon a weaponEffect belongs to - same parentId-flag lookup already used by
  * dice.mjs#_getLaserSightBonus for the same purpose.
  * @param {Actor} actor

@@ -12,8 +12,43 @@
       "page": 30
     },
     "prerequisite": "Level 12",
-    "selectionLimit": 1,
-    "type": "general"
+    "selectionLimit": 10,
+    "type": "general",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 1,
+    "items": {
+      "SDhU": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.mVwWAgFyNUDfoUJQ",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Disintegrate",
+        "type": "power"
+      },
+      "fid9": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.HwREY90wo09Hkdt1",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Dominate",
+        "type": "power"
+      },
+      "eGBf": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.WI0QTzlWkEusSQqY",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Mimic",
+        "type": "power"
+      },
+      "67J7": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.312ubjCA7mCBDoea",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Regeneration",
+        "type": "power"
+      },
+      "SnU6": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.GBsBp9umblOcz7lu",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Swiftness",
+        "type": "power"
+      }
+    }
   },
   "effects": [],
   "sort": 0,

@@ -1,3 +1,13 @@
+import { actorHasPerk } from "./perks.mjs";
+
+// Quick Thinker (MLP CRB, General Perk, p.125): "you gain a number of Free actions equal to your
+// Smarts Essence minus 2, instead of your Speed Essence minus 2."
+const QUICK_THINKER_ID = "Compendium.essence20.mlp_crb.Item.i0PwoR0hDC0vyDD2";
+
+// University Days (WTNV Citizen's Guide, General Perk, p.53) - verbatim identical text/effect to
+// Quick Thinker above, just a different compendium item (a separate book, same mechanic).
+const UNIVERSITY_DAYS_ID = "Compendium.essence20.wtnv_citizens_guide.Item.5T3DHQjLjyM9J5tS";
+
 /**
  * Handle looking up tokens associated with actor and changing size
  * @param {Actor} actor  The actor
@@ -112,8 +122,16 @@ export function getNumActions(actor) {
   const speedEssence = actor.system.essences.speed;
   const speed = speedEssence.max ?? speedEssence.value ?? 0;
 
+  // Quick Thinker - see QUICK_THINKER_ID's own comment above. Free actions come from Smarts
+  // instead of Speed while the actor holds the Perk; movement/standard actions are unaffected.
+  let freeActionEssence = speed;
+  if (actorHasPerk(actor, QUICK_THINKER_ID) || actorHasPerk(actor, UNIVERSITY_DAYS_ID)) {
+    const smartsEssence = actor.system.essences.smarts;
+    freeActionEssence = smartsEssence.max ?? smartsEssence.value ?? 0;
+  }
+
   return {
-    free: Math.max(0, speed - 2),
+    free: Math.max(0, freeActionEssence - 2),
     movement: speed > 0 ? 1 : 0,
     standard: speed > 1 ? 1 : 0,
   };

@@ -821,10 +821,20 @@ E20.upgradeAvailabilityMatrix = {
 
 // Damage Types
 E20.damageTypes = {
+  acid: "E20.DamageAcid",
   blindingBlast: "E20.DamageBlindingBlast",
   blunt: "E20.DamageBlunt",
+  cold: "E20.DamageCold",
   cover: "E20.DamageCover",
+  electric: "E20.DamageElectric",
   element: "E20.DamageElement",
+  // Electromagnetic (p.170-ish, Damage Types): "energy that disrupts machinery." This is the same
+  // damage type combat.mjs#applyDamage/dice.mjs's own Impenetrable Shield check already assume
+  // exists under the key 'emp' (Personal Shield's "immunity to EMP damage") - added here to
+  // actually match those existing checks against a real schema choice for the first time, rather
+  // than leaving 'emp' a value no weaponEffect's damageType field could ever actually be set to.
+  emp: "E20.DamageEmp",
+  fire: "E20.DamageFire",
   frightened: "E20.DamageFrightened",
   grapple: "E20.DamageGrapple",
   impaired: "E20.DamageImparied",
@@ -835,6 +845,7 @@ E20.damageTypes = {
   mesmerized: "E20.DamageMesmerized",
   modelock: "E20.DamageModeLock",
   poison: "E20.DamagePoison",
+  psychic: "E20.DamagePsychic",
   restrained: "E20.DamageRestrained",
   sharp: "E20.DamageSharp",
   sonic: "E20.DamageSonic",
@@ -842,8 +853,140 @@ E20.damageTypes = {
   spot: "E20.DamageSpot",
   stun: "E20.DamageStun",
   unconscious: "E20.DamageUnconscious",
+  // Void: not part of this system's own core Damage Types chapter (Acid/Cold/Electric/
+  // Electromagnetic/Fire/Laser/Sonic) - introduced by a specific Power Rangers sourcebook
+  // (Across the Stars' Void Blade/Bow, echoed by Finster's Monster-Matic Cookbook's Focused Rage
+  // Flare) as its own rare Element sub-type ("Element (Void)" per Across the Stars' own Traits
+  // glossary, p.79). No distinct mechanical rule is defined for it anywhere found so far - added
+  // here purely so these items can be classified correctly instead of falling back to generic
+  // `element`, same as every other real sub-type this system tracks.
+  void: "E20.DamageVoid",
 };
 preLocalize("damageTypes");
+
+// The concrete, choosable sub-types of the Element damage-type family (Weapon Effects and Traits:
+// "you must first choose the type of element the weapon uses") - the same 7 keys
+// helpers/combat.mjs#ENERGY_DAMAGE_TYPES matches against, minus the generic 'element' catch-all
+// itself (an unspecified type isn't something a Perk like A Jump Through Time's own "Adapted
+// Wavelength" - "choose a single type of Element damage" - could sensibly protect against).
+E20.elementDamageTypes = {
+  acid: "E20.DamageAcid",
+  cold: "E20.DamageCold",
+  electric: "E20.DamageElectric",
+  emp: "E20.DamageEmp",
+  fire: "E20.DamageFire",
+  laser: "E20.DamageLaser",
+  sonic: "E20.DamageSonic",
+};
+preLocalize("elementDamageTypes");
+
+// Defensive Flexibility (A Jump Through Time, Blue Spectrum Modification, replaces Grid Tech,
+// p.45) - see helpers/defensive-flexibility.mjs's own doc comment. A single flat option list
+// combining both of RAW's own choice categories (a +2 bonus to one named Defense, or Resistance to
+// one named Element sub-type) - each option's key encodes both which half it is AND which specific
+// Defense/damage type, since a single Perk instance's system.choice can only hold one value.
+// Electromagnetic Disruption (Technorganic Secrets, Technorganic Influence Perks, p.47,
+// prerequisite: Mutant Beast Influence): "choose one of your Alt Modes to gain one of the
+// following abilities: (1) once per day, send a 15ft electromagnetic pulse dealing 1
+// Electromagnetic damage and 1 Stun to non-organic opponents within range; (2) once per scene,
+// give one of your natural weapons the Electromagnetic trait for 2d2 rounds." Only option 1 is
+// built (see helpers/electromagnetic-disruption.mjs) - option 2 needs the same temporary
+// weapon-trait-mutation mechanism already blocking the item-grant/equipment-mutation cluster
+// generally. "Which Alt Mode" isn't scoped - applies regardless of current Alt Mode, the same
+// accepted simplification this project already uses for every other unenforceable narrative
+// qualifier. "Non-organic opponents" is dropped too - applies to any nearby enemy.
+E20.electromagneticDisruptionOptions = {
+  pulse: "E20.ElectromagneticDisruptionPulse",
+  weaponTrait: "E20.ElectromagneticDisruptionWeaponTrait",
+};
+preLocalize("electromagneticDisruptionOptions");
+
+E20.defensiveFlexibilityOptions = {
+  defenseToughness: "E20.DefensiveFlexibilityDefenseToughness",
+  defenseEvasion: "E20.DefensiveFlexibilityDefenseEvasion",
+  defenseWillpower: "E20.DefensiveFlexibilityDefenseWillpower",
+  defenseCleverness: "E20.DefensiveFlexibilityDefenseCleverness",
+  resistanceAcid: "E20.DefensiveFlexibilityResistanceAcid",
+  resistanceCold: "E20.DefensiveFlexibilityResistanceCold",
+  resistanceElectric: "E20.DefensiveFlexibilityResistanceElectric",
+  resistanceEmp: "E20.DefensiveFlexibilityResistanceEmp",
+  resistanceFire: "E20.DefensiveFlexibilityResistanceFire",
+  resistanceLaser: "E20.DefensiveFlexibilityResistanceLaser",
+  resistanceSonic: "E20.DefensiveFlexibilityResistanceSonic",
+};
+preLocalize("defensiveFlexibilityOptions");
+
+// Spared No Expense (Ferocious Fighters, Dino-Hunters Faction Perk, p.73): "Choose one of the
+// following Skills: Animal Handling, Infiltration, or Survival. You gain ↑1 on Skill Tests of your
+// chosen Skill." A dedicated, narrowly-scoped choiceType (rather than reusing the generic 'skills'
+// choiceType, which offers every skill in the game) since RAW explicitly restricts the choice to
+// these 3 - same "a small option table for a narrow specific list" idiom elementDamageTypes above
+// already established.
+E20.sparedNoExpenseSkills = {
+  animalHandling: "E20.SkillAnimalHandling",
+  infiltration: "E20.SkillInfiltration",
+  survival: "E20.SkillSurvival",
+};
+preLocalize("sparedNoExpenseSkills");
+
+// Roaming the Land (Ferocious Fighters, Mega Monsters Faction Perk, p.75): "Choose to deal either
+// +1 damage with melee attacks targeting smaller creatures or +1 Stun with melee attacks targeting
+// larger creatures." A permanent, one-time pick (unlike Grid Surge's own pick-fresh-each-use
+// shape) - same "no numeric field of its own, read directly off system.choice" idiom as
+// sparedNoExpenseSkill/elementDamageType above.
+E20.roamingTheLandOptions = {
+  smallerDamage: "E20.RoamingTheLandSmallerDamage",
+  largerStun: "E20.RoamingTheLandLargerStun",
+};
+preLocalize("roamingTheLandOptions");
+
+// Community Helper (PR CRB, Influence Perk, p.68): "You gain an Edge on any non-combat tasks
+// related to your chosen service." Table 5-3.1's own 4-option Skill mapping (EMT/Firefighter/
+// Police Officer/National Guard) - a dedicated narrow choiceType (rather than the generic 'skills'
+// picker, which offers every Skill in the game), same "small option table for a narrow specific
+// list" idiom sparedNoExpenseSkills/roamingTheLandOptions above already establish. Keyed directly
+// by the real Skill each profession maps to (rather than a profession-name key) so dice.mjs's own
+// check can compare system.choice against rolledSkill/rolledEssence directly with no extra lookup.
+E20.communityHelperSkills = {
+  science: "E20.CommunityHelperEmt",
+  brawn: "E20.CommunityHelperFirefighter",
+  alertness: "E20.CommunityHelperPoliceOfficer",
+  initiative: "E20.CommunityHelperNationalGuard",
+};
+preLocalize("communityHelperSkills");
+
+// Two-Handed Assault (Factions in Action Vol. 2, Silent Weapons Expert Focus, 3rd level, p.12):
+// "choose to gain either ↑1 on Attacks with two light Silent Martial Arts weapons... or ↑1 on
+// Attacks with two-handed Silent Martial Arts weapons." A permanent, one-time pick determining
+// which weapon-handedness configuration the manual Roll Options Dialog checkbox (same "no dual-
+// wielding/hand-tracking concept exists, so this is a self-declared toggle" idiom Akimbo's own
+// identical checkbox already establishes) checks against.
+E20.twoHandedAssaultOptions = {
+  dualWieldLight: "E20.TwoHandedAssaultDualWieldLight",
+  twoHanded: "E20.TwoHandedAssaultTwoHanded",
+};
+preLocalize("twoHandedAssaultOptions");
+
+// Vicious or Venom (Technorganic Secrets, Saurian Origin Benefit, p.43): "choose one of the
+// following benefits to add to your natural weapon attacks: Acidic Saliva (+1 Acid damage) /
+// Razor-Sharp (+1 Sharp damage) / Venomous (+1 Poison damage)." A distinct 3-option set from
+// elementDamageTypes above - Sharp isn't an Element sub-type at all, and RAW doesn't offer every
+// Element option here, just these 3 specific ones.
+E20.viciousOrVenomOptions = {
+  acid: "E20.DamageAcid",
+  sharp: "E20.DamageSharp",
+  poison: "E20.DamagePoison",
+};
+preLocalize("viciousOrVenomOptions");
+
+// Over the Candlestick (Technorganic Secrets, Climber/Nimble Origin Benefit, p.38): "choose one:
+// Agile Reflexes (once/scene, use Evasion instead of Toughness when targeted) / Innate Climber
+// (+40ft Climb Movement in Alt Mode)."
+E20.overTheCandlestickOptions = {
+  agileReflexes: "E20.OverTheCandlestickAgileReflexes",
+  innateClimber: "E20.OverTheCandlestickInnateClimber",
+};
+preLocalize("overTheCandlestickOptions");
 
 // Perk types
 E20.perkTypes = {
@@ -1064,6 +1207,16 @@ E20.fieldSkills = ['culture', 'science', 'technology'];
 // GI Joe CRB p.79/108 - the 6 Fighting Style options shared by Infantry and Vanguard's identical
 // Perk (a single compendium item, granted by both Roles - see perk-handler.mjs's 'fightingStyle'
 // choiceType).
+// Air Born (MLP Pegasus Origin Perk, p.37): the 3 fixed starting ground/aerial Movement pairs -
+// see dice.mjs's own AIR_BORN_ID comment and documents/actor.mjs#_prepareMovement's own
+// AIR_BORN_MOVEMENT_OPTIONS table for the actual ground/aerial numbers each key maps to.
+E20.airBornMovement = {
+  groundHeavy: "E20.AirBornGroundHeavy",
+  balanced: "E20.AirBornBalanced",
+  aerialHeavy: "E20.AirBornAerialHeavy",
+};
+preLocalize("airBornMovement");
+
 E20.fightingStyle = {
   akimbo: "E20.FightingStyleAkimbo",
   careful: "E20.FightingStyleCareful",
@@ -1073,6 +1226,69 @@ E20.fightingStyle = {
   triggerHappy: "E20.FightingStyleTriggerHappy",
 };
 preLocalize("fightingStyle");
+
+// Power Adaptation (Across the Stars, Silver Ranger, 9th/18th level, p.57) - see
+// helpers/power-adaptation.mjs's own doc comment for how each option is actually applied. Same
+// "no numeric field of its own, read directly off system.choice" shape as fightingStyle above.
+// Always Ready (General Hawk's Personnel Files, Coast Guard Origin Perk, p.172) - see
+// dice.mjs's own ALWAYS_READY_FUNCTION_SKILLS for how each function maps to its own pair of
+// skills, read directly off system.choice at roll time (same "no numeric field of its own" shape
+// as powerAdaptationOptions/phantomFocusOptions below).
+E20.alwaysReadyOptions = {
+  admin: "E20.AlwaysReadyAdmin",
+  biologist: "E20.AlwaysReadyBiologist",
+  engineer: "E20.AlwaysReadyEngineer",
+  pilot: "E20.AlwaysReadyPilot",
+  rescue: "E20.AlwaysReadyRescue",
+  security: "E20.AlwaysReadySecurity",
+};
+preLocalize("alwaysReadyOptions");
+
+E20.powerAdaptationOptions = {
+  boostOfSpeed: "E20.PowerAdaptationBoostOfSpeed",
+  crushingStrength: "E20.PowerAdaptationCrushingStrength",
+  strikingHands: "E20.PowerAdaptationStrikingHands",
+  fastTrigger: "E20.PowerAdaptationFastTrigger",
+  regeneratingShell: "E20.PowerAdaptationRegeneratingShell",
+};
+preLocalize("powerAdaptationOptions");
+
+// Phantom Focus (Across the Stars, Phantom Ranger, 10th/15th level, p.62) - see
+// helpers/banked-buffs.mjs's own PHANTOM_FOCUS_ID comment for how each option is actually applied
+// (or, for multiversalPocket/shipIntegration, why it isn't). Same "no numeric field of its own,
+// read directly off system.choice" shape as fightingStyle/powerAdaptationOptions.
+E20.phantomFocusOptions = {
+  boostedVigor: "E20.PhantomFocusBoostedVigor",
+  healingLight: "E20.PhantomFocusHealingLight",
+  multiversalPocket: "E20.PhantomFocusMultiversalPocket",
+  phaseDefense: "E20.PhantomFocusPhaseDefense",
+  shipIntegration: "E20.PhantomFocusShipIntegration",
+};
+preLocalize("phantomFocusOptions");
+
+// Experiment (Transformers CRB, Influence Perk, p.32) - "choose one of the following four
+// options." Same "no numeric field of its own, read directly off system.choice" shape as
+// fightingStyle/powerAdaptationOptions - shove/technology are real, built grants (see their own
+// checks in dice.mjs); carryingWeight/hardpoint stay in the picker per the "the choice still
+// exists even when unautomated" idiom (carrying-capacity and Integrated-Hardpoint-slot tracking
+// are both confirmed-missing gaps), same as Power Adaptation's own Fast Trigger.
+E20.experimentOptions = {
+  shove: "E20.ExperimentShove",
+  carryingWeight: "E20.ExperimentCarryingWeight",
+  technology: "E20.ExperimentTechnology",
+  hardpoint: "E20.ExperimentHardpoint",
+};
+preLocalize("experimentOptions");
+
+E20.wisdomOfTheEldersOptions = {
+  teleportation: "E20.WisdomOfTheEldersTeleportation",
+  lightshieldArmor: "E20.WisdomOfTheEldersLightshieldArmor",
+  enhancedReflexes: "E20.WisdomOfTheEldersEnhancedReflexes",
+  lightfoilWings: "E20.WisdomOfTheEldersLightfoilWings",
+  resilientArmor: "E20.WisdomOfTheEldersResilientArmor",
+  ferociousStrikes: "E20.WisdomOfTheEldersFerociousStrikes",
+};
+preLocalize("wisdomOfTheEldersOptions");
 
 E20.rerollModes = {
   all: "E20.RerollModeAll",
@@ -1110,6 +1326,13 @@ E20.rerollResets = {
   // is then null) shares one bucket rather than being unlimited, since "once per combat" implies
   // this is meant to apply during one.
   combat: "E20.RerollResetCombat",
+  // A Jump Through Time p.47 "Quantum Master": "Once per turn, you may reroll a single Skill die
+  // result of 1... you must accept the second result." Scoped even narrower than "combat" above -
+  // bucketed on the specific combatant-turn (game.combat's own id/round/turn triple, the exact
+  // identity helpers/perks.mjs#hasUsedThisTurn/markUsedThisTurn already key their own once-per-
+  // turn flags on) rather than the whole encounter. Outside an active Combat, shares one bucket,
+  // same "no active encounter" fallback the "combat" bucket above already uses.
+  turn: "E20.RerollResetTurn",
 };
 preLocalize("rerollResets");
 
@@ -1137,6 +1360,17 @@ E20.rerollConditions = {
   // vs-Difficulty check - a plain skill roll with no Difficulty to fail against never sets it,
   // so this condition reads as unmet rather than assuming success either way).
   rollFailed: "E20.RerollConditionRollFailed",
+  // Decepticon Directive "Exterminator" (General Perk, p.65): "...as long as the target is
+  // smaller than you." Checked against the triggering roll's own context
+  // (rollContext.smallerTarget, computed in dice.mjs's own _getAutomaticCombatModifiers where the
+  // actual actor-vs-target Size comparison lives), the same "computed there, read here" shape as
+  // notSnagged/powerWeapon above.
+  smallerTarget: "E20.RerollConditionSmallerTarget",
+  // Quartermaster's Guide to Gear "Clip Check" (General Perk, p.28): "...reroll a Fumble on an
+  // Attack Skill Test." Checked against the triggering roll's own real natural-min-die Fumble
+  // outcome (rollContext.isFumble, dice.mjs#_isCritIsFumble) - distinct from this codebase's own
+  // unrelated shift-based "fumble" auto-fail tier.
+  fumble: "E20.RerollConditionFumble",
 };
 preLocalize("rerollConditions");
 

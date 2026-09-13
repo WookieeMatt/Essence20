@@ -29,7 +29,7 @@
       "_id": "zHfJNVjwsojMR2Su",
       "changes": [
         {
-          "key": "system.essenceShifts.social",
+          "key": "system.essenceShifts.social.shiftDown",
           "mode": 2,
           "value": "1",
           "priority": null

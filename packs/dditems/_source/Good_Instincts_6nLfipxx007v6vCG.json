@@ -12,6 +12,13 @@
       "page": 61
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "skillDice",
+      "reset": "scene",
+      "maxUses": 1
+    },
     "selectionLimit": 1,
     "type": "role"
   },

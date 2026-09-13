@@ -77,6 +77,50 @@
       "system": {},
       "sort": 0,
       "_key": "!items.effects!EfkIx0B3AN0HipH8.U1sKoQC8mKaTDqsD"
+    },
+    {
+      "name": "Psychic Immunity",
+      "origin": "Compendium.essence20.jump_through_time.Item.EfkIx0B3AN0HipH8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "PRPPsychicImmun1",
+      "changes": [
+        {
+          "key": "system.immunities.psychic",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 1,
+      "_key": "!items.effects!EfkIx0B3AN0HipH8.PRPPsychicImmun1"
     }
   ],
   "sort": 229688,

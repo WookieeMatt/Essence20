@@ -22,10 +22,10 @@
   {{#if (eq item.type "shield")}}
     <div class="item-image flex-grow-0">
       <div class="flexrow nowrap gap-5">
-        <a class="shield-activate flex-grow-0" data-id="{{item._id}}"
-          {{#if system.active}} data-tooltip="{{localize 'E20.ShieldCurrentStateActive'}}" {{else}} data-tooltip="{{localize 'E20.ShieldCurrentStatePassive'}}" {{/if}}
+        <a class="shield-activate flex-grow-0" data-action="shieldActivationToggle" data-id="{{item._id}}"
+          {{#if item.system.active}} data-tooltip="{{localize 'E20.ShieldCurrentStateActive'}}" {{else}} data-tooltip="{{localize 'E20.ShieldCurrentStatePassive'}}" {{/if}}
         >
-          {{#if system.active}}
+          {{#if item.system.active}}
             <i class="fas fa-shield-check fa-lg"></i>
           {{else}}
             <i class="fas fa-shield fa-lg"></i>
@@ -38,6 +38,7 @@
   <div class="flex-grow-0">
     <input class="inline-edit item-label-checkbox {{#if (eq item.type "shield")}} shield-equip{{/if}}"
       data-field="system.equipped" data-id="{{item._id}}" type="checkbox" name="shield.{{@index}}.equipped"
+      {{#if (eq item.type "shield")}} data-action="shieldEquipToggle" {{/if}}
       {{checked item.system.equipped}} data-tooltip="{{localize 'E20.ItemToggleEquipped'}}"
       {{#if @root.shieldEquipped}} {{#unless item.system.equipped}} disabled {{/unless}} {{/if}}
     />

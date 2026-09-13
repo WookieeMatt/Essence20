@@ -13,7 +13,32 @@
     },
     "prerequisite": "Culture Skill at d4 or higher",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "general",
+    "reroll": {
+      "enabled": true,
+      "maxUses": 0,
+      "mode": "single",
+      "reset": "none",
+      "target": "anyDie",
+      "cost": {
+        "resourcePath": "",
+        "amount": 0,
+        "worldStoryPoints": 0,
+        "rolePointsName": ""
+      },
+      "condition": "none",
+      "skills": [
+        "culture",
+        "streetwise"
+      ],
+      "scopeToOriginSkill": false,
+      "essence": "any",
+      "recursive": false,
+      "minDieFaces": 0,
+      "grantsCanCritD2": false,
+      "bonus": 0,
+      "keepBetter": false
+    }
   },
   "effects": [],
   "flags": {},

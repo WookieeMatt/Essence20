@@ -1,11 +1,27 @@
 import { jest } from '@jest/globals';
-import { _powerCountUpdate } from "./power-handler.mjs";
+import { _powerCountUpdate, powerCost } from "./power-handler.mjs";
+
+const SPEED_BOOST_ID = "Compendium.essence20.pr_crb.Item.CDbaCheOK2rUsqli";
 
 function makeActor(personalValue) {
   return {
     update: jest.fn(),
     system: { powers: { personal: { value: personalValue } } },
   };
+}
+
+function makeEffectsCollection(effects) {
+  return {
+    size: effects.length,
+    every: fn => effects.every(fn),
+    [Symbol.iterator]: () => effects[Symbol.iterator](),
+  };
+}
+
+function makeEffect(disabled) {
+  return { disabled, update: jest.fn(async function (data) {
+    this.disabled = data.disabled; 
+  }) };
 }
 
 describe("_powerCountUpdate", () => {
@@ -52,5 +68,96 @@ describe("_powerCountUpdate", () => {
     _powerCountUpdate(actor, 20, 'threat', 25);
     expect(global.ui.notifications.error).toHaveBeenCalled();
     expect(actor.update).not.toHaveBeenCalled();
+  });
+
+  test("dispatches to the Power's own onPowerUse handler once the cost is actually spent", async () => {
+    const actor = makeActor(10);
+    const ground = makeEffect(true);
+    const power = { name: 'Speed Boost', flags: { core: { sourceId: SPEED_BOOST_ID } }, effects: makeEffectsCollection([ground]) };
+
+    await _powerCountUpdate(actor, 20, 'personal', 4, power);
+
+    expect(actor.update).toHaveBeenCalledWith({ "system.powers.personal.value": 6 });
+    expect(ground.disabled).toBe(false);
+  });
+
+  test("does not dispatch when the spend is rejected (unaffordable)", async () => {
+    const actor = makeActor(3);
+    const ground = makeEffect(true);
+    const power = { name: 'Speed Boost', flags: { core: { sourceId: SPEED_BOOST_ID } }, effects: makeEffectsCollection([ground]) };
+
+    await _powerCountUpdate(actor, 10, 'personal', 5, power);
+
+    expect(ground.disabled).toBe(true);
+  });
+});
+
+describe("powerCost", () => {
+  beforeEach(() => {
+    global.ui.notifications.error.mockClear();
+  });
+
+  test("fixed-cost path: spends the cost, then dispatches to onPowerUse", async () => {
+    const actor = makeActor(5);
+    const ground = makeEffect(true);
+    const power = {
+      name: 'Speed Boost',
+      flags: { core: { sourceId: SPEED_BOOST_ID } },
+      effects: makeEffectsCollection([ground]),
+      system: { type: 'grid', hasVariableCost: false, powerCost: 1 },
+    };
+
+    await powerCost(actor, power);
+
+    expect(actor.update).toHaveBeenCalledWith({ "system.powers.personal.value": 4 });
+    expect(ground.disabled).toBe(false);
+  });
+
+  test("fixed-cost path: neither spends nor dispatches when unaffordable", async () => {
+    const actor = makeActor(0);
+    const ground = makeEffect(true);
+    const power = {
+      name: 'Speed Boost',
+      flags: { core: { sourceId: SPEED_BOOST_ID } },
+      effects: makeEffectsCollection([ground]),
+      system: { type: 'grid', hasVariableCost: false, powerCost: 1 },
+    };
+
+    await powerCost(actor, power);
+
+    expect(actor.update).not.toHaveBeenCalled();
+    expect(ground.disabled).toBe(true);
+    expect(global.ui.notifications.error).toHaveBeenCalled();
+  });
+
+  test("free-to-activate grid Power (no cost): still dispatches to onPowerUse (a null cost numerically satisfies the affordability check, so this goes through the same spend-then-dispatch branch as a real cost, spending 0)", async () => {
+    const actor = makeActor(0);
+    const ground = makeEffect(true);
+    const power = {
+      name: 'Speed Boost',
+      flags: { core: { sourceId: SPEED_BOOST_ID } },
+      effects: makeEffectsCollection([ground]),
+      system: { type: 'grid', hasVariableCost: false, powerCost: null },
+    };
+
+    await powerCost(actor, power);
+
+    expect(ground.disabled).toBe(false);
+  });
+
+  test("free-to-activate threat Power (no cost): the dedicated free-activation branch dispatches to onPowerUse with nothing to spend", async () => {
+    const ground = makeEffect(true);
+    const actor = { update: jest.fn(), system: { powers: { threat: {} } } };
+    const power = {
+      name: 'Speed Boost',
+      flags: { core: { sourceId: SPEED_BOOST_ID } },
+      effects: makeEffectsCollection([ground]),
+      system: { type: 'threat', hasVariableCost: false, powerCost: null },
+    };
+
+    await powerCost(actor, power);
+
+    expect(actor.update).not.toHaveBeenCalled();
+    expect(ground.disabled).toBe(false);
   });
 });

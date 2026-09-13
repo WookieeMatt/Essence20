@@ -15,7 +15,52 @@
     "type": "",
     "gearType": "exploration"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Scuba Gear",
+      "origin": "Item.cZpeYK7VoLJKGKL6",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "sT4uJf1G8ZQpXhAn",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!cZpeYK7VoLJKGKL6.sT4uJf1G8ZQpXhAn"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

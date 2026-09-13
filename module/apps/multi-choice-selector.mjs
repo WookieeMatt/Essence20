@@ -1,4 +1,4 @@
-﻿import { onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
+﻿import { onMultiSkillPerkDrop, onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
@@ -68,17 +68,11 @@ export default class MultiChoiceSelector extends serializeFormSubmits(Handlebars
   }
 
   static async myFormHandler(event, form, formData) {
-    let numSelected = 0;
-    const selectedUuids = [];
+    const selectedKeys = Object.entries(formData.object)
+      .filter(([, isSelected]) => isSelected)
+      .map(([key]) => key);
 
-    for (const [key, isSelected] of Object.entries(formData.object)) {
-      if (isSelected) {
-        numSelected += 1;
-        selectedUuids.push(this._perk.system.items[key].uuid);
-      }
-    }
-
-    if (numSelected != this._perk.system.numChoices) {
+    if (selectedKeys.length != this._perk.system.numChoices) {
       throw new Error(
         game.i18n.format(
           'E20.SelectionsRequiredError',
@@ -89,6 +83,15 @@ export default class MultiChoiceSelector extends serializeFormSubmits(Handlebars
       );
     }
 
+    // Expertise (GI Joe CRB, Commando base, p.72) - see onMultiSkillPerkDrop's own doc comment.
+    // Unlike the 'perks' case below, a 'skills' choice has no perk.system.items map of its own
+    // grantable sub-Perks to look selections up in - the selected keys ARE the chosen skills.
+    if (this._perk.system.choiceType == 'skills') {
+      await onMultiSkillPerkDrop(this._actor, this._perk, selectedKeys, this._dropFunc, this._parentPerk);
+      return;
+    }
+
+    const selectedUuids = selectedKeys.map(key => this._perk.system.items[key].uuid);
     const newPerk = await onPerkDrop(this._actor, this._perk, this._dropFunc, null, null, this._parentPerk);
 
     for (const uuid of selectedUuids) {

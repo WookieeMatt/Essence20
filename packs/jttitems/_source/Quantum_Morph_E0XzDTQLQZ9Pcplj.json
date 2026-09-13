@@ -14,7 +14,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role",
-    "canActivate": true
+    "canActivate": true,
+    "hasMorphedToughnessBonus": true
   },
   "effects": [],
   "sort": 200000,

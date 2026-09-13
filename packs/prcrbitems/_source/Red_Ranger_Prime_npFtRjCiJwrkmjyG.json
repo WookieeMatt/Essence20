@@ -32,27 +32,21 @@
       "_id": "c53T3gdUon0xwEJI",
       "changes": [
         {
-          "key": "system.defenses.cleverness.morphed",
-          "mode": 2,
-          "value": "2",
+          "key": "system.resistances.blunt",
+          "mode": 5,
+          "value": "true",
           "priority": null
         },
         {
-          "key": "system.defenses.evasion.morphed",
-          "mode": 2,
-          "value": "2",
+          "key": "system.resistances.sharp",
+          "mode": 5,
+          "value": "true",
           "priority": null
         },
         {
-          "key": "system.defenses.toughness.morphed",
-          "mode": 2,
-          "value": "2",
-          "priority": null
-        },
-        {
-          "key": "system.defenses.willpower.morphed",
-          "mode": 2,
-          "value": "2",
+          "key": "system.essenceShifts.strength.edge",
+          "mode": 5,
+          "value": "true",
           "priority": null
         }
       ],

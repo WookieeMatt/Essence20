@@ -10,7 +10,7 @@
       "skill": "athletics",
       "style": "explosive"
     },
-    "damageType": "element",
+    "damageType": "emp",
     "damageValue": 1,
     "shiftDown": 0,
     "numHands": "1",

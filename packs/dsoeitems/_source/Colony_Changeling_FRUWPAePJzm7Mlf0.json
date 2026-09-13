@@ -57,7 +57,7 @@
           "priority": null
         },
         {
-          "key": "system.defenses.evastion.bonus",
+          "key": "system.defenses.evasion.bonus",
           "mode": 2,
           "value": "1",
           "priority": null
