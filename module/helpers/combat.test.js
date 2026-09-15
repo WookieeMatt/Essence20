@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 import {
-  getDefenseValue, computeMultiplier, getEffectiveLevel, applyDamage, healStunAtTurnStart, _isCritIsFumble,
-  grantToughEnoughResistance,
+  getDefenseValue, getVehicleDriver, computeMultiplier, getEffectiveLevel, applyDamage, healStunAtTurnStart,
+  _isCritIsFumble, grantToughEnoughResistance,
 } from './combat.mjs';
 
 describe("getDefenseValue", () => {
@@ -67,6 +67,147 @@ describe("getDefenseValue", () => {
       const actor = { system: { isMorphed: false, defenses: { toughness: { total: 15, armor: 4 } } } };
       expect(getDefenseValue(actor, 'toughness', { ignoreArmorPoints: 0 })).toBe(15);
     });
+  });
+
+  describe("Vehicle/Zord Willpower/Cleverness driver/pilot substitution (GI Joe CRB p.173, PR CRB p.126/136)", () => {
+    const RELIC_KEY_ID = "Compendium.essence20.pr_crb.Item.uSlClAv3oJjf54pa";
+
+    function makeZord({ driverUuid = null, hasRelicKey = false, base = null, bonus = 0, armor = 0, shield = 0 } = {}) {
+      return {
+        type: 'zord',
+        items: hasRelicKey ? [{ type: 'feature', flags: { core: { sourceId: RELIC_KEY_ID } } }] : [],
+        system: {
+          actors: driverUuid ? { a: { uuid: driverUuid, vehicleRole: 'driver' } } : {},
+          defenses: { willpower: { usesDrivers: true, base, bonus, armor, shield, total: 0 } },
+        },
+      };
+    }
+
+    function makeVehicle({ driverUuid = null, ai = false } = {}) {
+      return {
+        type: 'vehicle',
+        system: {
+          actors: driverUuid ? { a: { uuid: driverUuid, vehicleRole: 'driver' } } : {},
+          traits: { ai },
+          defenses: { willpower: { usesDrivers: true, total: 12 } },
+        },
+      };
+    }
+
+    beforeEach(() => {
+      global.fromUuidSync.mockReset();
+    });
+
+    test("redirects to the current driver's own computed Willpower when one is seated", () => {
+      const zord = makeZord({ driverUuid: 'Actor.driver1' });
+      const driver = { system: { defenses: { willpower: { total: 17 } } } };
+      global.fromUuidSync.mockReturnValue(driver);
+
+      expect(getDefenseValue(zord, 'willpower')).toBe(17);
+    });
+
+    test("Relic Key defaults to a Smarts/Social of 3 when unpiloted", () => {
+      const zord = makeZord({ hasRelicKey: true, base: 10, bonus: 1, armor: 0, shield: 0 });
+
+      // base(10) + 3 (Relic Key's own Smarts/Social default) + bonus(1) + armor(0) + shield(0)
+      expect(getDefenseValue(zord, 'willpower')).toBe(14);
+    });
+
+    test("returns an effectively-unbeatable value with no driver and no Relic Key", () => {
+      const zord = makeZord();
+      expect(getDefenseValue(zord, 'willpower')).toBe(Infinity);
+    });
+
+    test("an A.I.-trait Vehicle computes its own value instead of redirecting, even with a driver seated", () => {
+      const vehicle = makeVehicle({ driverUuid: 'Actor.driver1', ai: true });
+      global.fromUuidSync.mockReturnValue({ system: { defenses: { willpower: { total: 5 } } } });
+
+      expect(getDefenseValue(vehicle, 'willpower')).toBe(12);
+    });
+
+    test("a non-A.I. Vehicle still redirects to its driver", () => {
+      const vehicle = makeVehicle({ driverUuid: 'Actor.driver1' });
+      global.fromUuidSync.mockReturnValue({ system: { defenses: { willpower: { total: 9 } } } });
+
+      expect(getDefenseValue(vehicle, 'willpower')).toBe(9);
+    });
+
+    test("Toughness/Evasion never redirect, even if usesDrivers were somehow set", () => {
+      const zord = {
+        type: 'zord',
+        items: [],
+        system: { actors: {}, defenses: { toughness: { total: 17 } } },
+      };
+      expect(getDefenseValue(zord, 'toughness')).toBe(17);
+    });
+  });
+
+  describe("Responsive (GI Joe CRB, Vehicle Trait) - Evasion driver substitution", () => {
+    function makeVehicle({ driverUuid = null, responsive = true } = {}) {
+      return {
+        type: 'vehicle',
+        system: {
+          actors: driverUuid ? { a: { uuid: driverUuid, vehicleRole: 'driver' } } : {},
+          traits: { responsive },
+          defenses: { evasion: { total: 8 } },
+        },
+      };
+    }
+
+    beforeEach(() => {
+      global.fromUuidSync.mockReset();
+    });
+
+    test("uses the driver's own Evasion when one is seated", () => {
+      const vehicle = makeVehicle({ driverUuid: 'Actor.driver1' });
+      global.fromUuidSync.mockReturnValue({ system: { defenses: { evasion: { total: 15 } } } });
+
+      expect(getDefenseValue(vehicle, 'evasion')).toBe(15);
+    });
+
+    test("falls back to the vehicle's own Evasion with no driver seated", () => {
+      const vehicle = makeVehicle({ driverUuid: null });
+      expect(getDefenseValue(vehicle, 'evasion')).toBe(8);
+    });
+
+    test("a non-Responsive vehicle computes its own Evasion, even with a driver seated", () => {
+      const vehicle = makeVehicle({ driverUuid: 'Actor.driver1', responsive: false });
+      global.fromUuidSync.mockReturnValue({ system: { defenses: { evasion: { total: 15 } } } });
+
+      expect(getDefenseValue(vehicle, 'evasion')).toBe(8);
+    });
+
+    test("Toughness never redirects for a Responsive vehicle", () => {
+      const vehicle = makeVehicle({ driverUuid: 'Actor.driver1' });
+      vehicle.system.defenses.toughness = { total: 20 };
+      global.fromUuidSync.mockReturnValue({ system: { defenses: { toughness: { total: 5 } } } });
+
+      expect(getDefenseValue(vehicle, 'toughness')).toBe(20);
+    });
+  });
+});
+
+describe("getVehicleDriver", () => {
+  beforeEach(() => {
+    global.fromUuidSync.mockReset();
+  });
+
+  test("finds the crew member with vehicleRole 'driver'", () => {
+    const driver = { name: 'Duke' };
+    global.fromUuidSync.mockReturnValue(driver);
+    const vehicle = { system: { actors: { a: { uuid: 'Actor.duke', vehicleRole: 'driver' } } } };
+
+    expect(getVehicleDriver(vehicle)).toBe(driver);
+  });
+
+  test("returns null with no driver seated", () => {
+    const vehicle = { system: { actors: { a: { uuid: 'Actor.gunner', vehicleRole: 'gunner' } } } };
+    expect(getVehicleDriver(vehicle)).toBeNull();
+  });
+
+  test("returns null with no crew at all", () => {
+    expect(getVehicleDriver({ system: { actors: {} } })).toBeNull();
+    expect(getVehicleDriver({ system: {} })).toBeNull();
   });
 });
 
@@ -176,6 +317,81 @@ describe("applyDamage", () => {
 
       expect(actor.update).toHaveBeenCalledWith({ 'system.stun.value': 1 }); // unchanged (+0)
       expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Not On My Watch (Factions in Action Vol. 2, Oktober Guard General Perk, p.95) - reaction on a genuine Defeat transition", () => {
+    const NOT_ON_MY_WATCH_ID = "Compendium.essence20.intercontinental_adventures.Item.xH3iQ0NcXp1eFO35";
+
+    function makeDefeatedActor({ health, stun = 0, immunities = {}, alreadyDefeated = false } = {}) {
+      const token = { document: { disposition: 1 }, center: {} };
+      return {
+        name: 'Fallen Ally',
+        system: { health: { value: health }, stun: { value: stun }, immunities },
+        statuses: new Set(alreadyDefeated ? ['defeated'] : []),
+        update: jest.fn(),
+        toggleStatusEffect: jest.fn(),
+        getActiveTokens: jest.fn(() => [token]),
+        __token: token,
+      };
+    }
+
+    function placeHolderNearby(defeatedActor) {
+      const holderActor = {
+        name: 'Reactor',
+        items: [{ type: 'perk', flags: { core: { sourceId: NOT_ON_MY_WATCH_ID } } }],
+      };
+      const holderToken = { actor: holderActor, document: { disposition: 1 }, center: {} };
+      global.canvas.tokens.placeables = [defeatedActor.__token, holderToken];
+    }
+
+    let originalCanvas;
+    beforeEach(() => {
+      originalCanvas = global.canvas;
+      global.canvas = {
+        tokens: { placeables: [] },
+        grid: { measurePath: jest.fn(() => ({ distance: 5 })) },
+      };
+      global.ChatMessage.create.mockClear();
+    });
+    afterEach(() => {
+      global.canvas = originalCanvas;
+    });
+
+    test("prompts a nearby ally holding the Perk when ordinary damage defeats the target", async () => {
+      const actor = makeDefeatedActor({ health: 5 });
+      placeHolderNearby(actor);
+
+      await applyDamage(actor, 10, 'sharp');
+
+      expect(global.ChatMessage.create).toHaveBeenCalledTimes(1);
+    });
+
+    test("prompts a nearby ally holding the Perk when Stun defeats the target", async () => {
+      const actor = makeDefeatedActor({ health: 5, stun: 3 });
+      placeHolderNearby(actor);
+
+      await applyDamage(actor, 2, 'stun'); // 3 + 2 = 5, matches Health
+
+      expect(global.ChatMessage.create).toHaveBeenCalledTimes(1);
+    });
+
+    test("doesn't prompt again for damage against an actor who was already Defeated", async () => {
+      const actor = makeDefeatedActor({ health: 0, alreadyDefeated: true });
+      placeHolderNearby(actor);
+
+      await applyDamage(actor, 3, 'sharp');
+
+      expect(global.ChatMessage.create).not.toHaveBeenCalled();
+    });
+
+    test("doesn't prompt when the hit doesn't actually defeat the target", async () => {
+      const actor = makeDefeatedActor({ health: 10 });
+      placeHolderNearby(actor);
+
+      await applyDamage(actor, 3, 'sharp');
+
+      expect(global.ChatMessage.create).not.toHaveBeenCalled();
     });
   });
 
@@ -1417,6 +1633,55 @@ describe("healStunAtTurnStart", () => {
     const actor = { system: { stun: { value: 3 } }, update: jest.fn(), toggleStatusEffect: jest.fn() };
     await healStunAtTurnStart(actor);
     expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
+  });
+
+  describe("Megaform redirect", () => {
+    function makeParticipant(stunValue) {
+      return { type: 'zord', system: { stun: { value: stunValue } }, update: jest.fn(), toggleStatusEffect: jest.fn() };
+    }
+
+    beforeEach(() => {
+      global.fromUuidSync.mockReset();
+    });
+
+    test("heals each linked participant's own Stun by 1, not the Megaform's own computed mirror", async () => {
+      const a = makeParticipant(3);
+      const b = makeParticipant(1);
+      global.fromUuidSync.mockImplementation(uuid => (uuid == 'Actor.a' ? a : b));
+
+      const megaform = {
+        type: 'megaform',
+        // Deliberately stale/wrong, to prove this is never written to directly - a real Megaform
+        // would have this freshly computed by Essence20Actor#_prepareMegaformData instead.
+        system: {
+          stun: { value: 99 },
+          subtype: [],
+          actors: {
+            z1: { uuid: 'Actor.a' },
+            z2: { uuid: 'Actor.b' },
+          },
+        },
+        update: jest.fn(),
+      };
+
+      await healStunAtTurnStart(megaform);
+
+      expect(megaform.update).not.toHaveBeenCalled();
+      expect(a.update).toHaveBeenCalledWith({ 'system.stun.value': 2 });
+      expect(b.update).toHaveBeenCalledWith({ 'system.stun.value': 0 });
+      expect(b.toggleStatusEffect).toHaveBeenCalledWith('cantTakeMoveActions', { active: false });
+    });
+
+    test("no-ops cleanly for a Megaform with no linked participants", async () => {
+      const megaform = {
+        type: 'megaform',
+        system: { stun: { value: 0 }, subtype: [], actors: {} },
+        update: jest.fn(),
+      };
+
+      await expect(healStunAtTurnStart(megaform)).resolves.toBeUndefined();
+      expect(megaform.update).not.toHaveBeenCalled();
+    });
   });
 });
 

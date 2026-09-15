@@ -43,7 +43,14 @@ body.game .window-app {
   max-width: 55%;
  }
 
-.actor {
+// :not(.minimized, .minimizing, .maximizing) matters here, not just cosmetically - per the CSS
+// spec (2.1 10.4), when min-width exceeds max-width, min-width wins and max-width is ignored
+// entirely. Foundry's own minimize() sets an inline max-width: var(--minimized-width) (~200px)
+// to collapse the window, but this bare, single-class .actor selector was unconditionally
+// forcing min-width: 860px even then, so the window never actually narrowed - only its height
+// collapsed (once the .window-content display:grid rule above got the same guard), leaving a
+// full-width title bar instead of the compact pill every other window type collapses to.
+.actor:not(.minimized, .minimizing, .maximizing) {
   min-width: 860px;
   min-height: auto;
 }
@@ -87,20 +94,6 @@ body.game .window-app {
 
 .app .window-app dialog {
   background: none;
-}
-
-.minimizing {
-  list-style: none;
-  padding: v.$padding;
-  overflow-y: none;
-  color: var(--theme-text-color);
-  flex-basis: auto;
-  justify-content: center;
-  height: 100%;
-  background: var(--theme-card-bg);
-  border: v.$border;
-  border-radius: v.$border-radius;
-  box-shadow: v.$boxshadow;
 }
 
 #module-management .package-list .package-title {

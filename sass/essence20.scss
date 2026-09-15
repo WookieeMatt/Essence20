@@ -32,6 +32,44 @@ select {
   --checkbox-checkmark-color: var(--theme-panel-bg);
 }
 
+/* Foundry's own UNCHECKED-state glyph (the same appearance:none control the comment above
+   describes) renders with a 0-width border and a transparent fill in this theme - confirmed live
+   via getComputedStyle in both theme-dark and theme-light, so this isn't a dark-mode-only
+   regression, just one that happened to get reported from dark mode first. Every bare checkbox in
+   the system (20 templates, none of which wrap it in any extra markup) shares this same
+   invisible-unchecked-box problem, so the fix belongs on the same broad selector as the
+   color-variable rule right above rather than an opt-in class applied file by file.
+   The CHECKED state needs no such fix: its "box" is the filled swatch layer (::after, colored via
+   --checkbox-checked-color above), which already paints as a solid, clearly-bounded rounded
+   square on its own - confirmed live by comparing screenshots with and without an outline on it.
+
+   Several earlier attempts each drew a visible SECOND box instead of leaving the existing one
+   alone, before this shape became clear (each confirmed live via getComputedStyle/
+   getBoundingClientRect, including scaling the rendered control up 5-15x on-screen to see the
+   actual pixels):
+   - bordering the input itself left Foundry's own icon box floating inside it at its own
+     unchanged size - the input's own intrinsic box (17.5x21.7px, non-square) isn't even the same
+     shape as the icon (a clean 20x20px square), so a border traced on the input can never
+     coincide with the icon no matter its size;
+   - Foundry's "duotone" checkbox glyph turns out to be TWO Font Awesome layers that trade off by
+     STATE rather than always drawing together: unchecked, only ::before renders (an outline-
+     square glyph; ::after is `content: none`, i.e. not generated at all) - checked, ::before
+     switches to the small dark checkmark tick while ::after switches on and becomes the light
+     filled-swatch box;
+   - an outline added on ::after for the checked state (matching it to "whichever pseudo-element
+     is the box layer this state") looked right in isolation but was still visibly a second,
+     slightly offset frame around the swatch's own edge once checked - because ::before is
+     `position: absolute` (pinned exactly to the input's icon box) while ::after here is
+     `position: static` (placed by normal in-flow/line-height metrics instead), the two boxes
+     aren't pixel-coincident, so an outline on ::after doesn't quite trace the swatch it's meant
+     to frame. Since the swatch is already visibly a box without any help, the fix is simply to
+     leave the checked state alone rather than chase that misalignment. */
+.essence20 input[type="checkbox"]:not(:checked)::before {
+  outline: 1px solid var(--theme-text-color);
+  outline-offset: -1px;
+  border-radius: 3px;
+}
+
 option {
   color: var(--theme-text-color);
   background-color: var(--theme-input-color);

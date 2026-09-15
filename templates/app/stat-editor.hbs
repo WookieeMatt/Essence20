@@ -1,8 +1,22 @@
-<div class="stat-editor-rows">
-  {{#each entries as |entry|}}
-    <div class="form-group stat-editor-row">
-      <label>{{entry.label}}</label>
-      <input type="number" name="{{entry.name}}" value="{{entry.value}}" step="1" />
-    </div>
-  {{/each}}
-</div>
+<table class="stat-editor-table">
+  <thead>
+    <tr>
+      <th></th>
+      {{#each columns as |column|}}
+        <th>{{column.label}}</th>
+      {{/each}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#each rows as |row|}}
+      <tr>
+        <th>{{row.label}}</th>
+        {{#each row.cells as |cell|}}
+          <td>
+            <input type="number" name="{{cell.name}}" value="{{cell.value}}" step="1" />
+          </td>
+        {{/each}}
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

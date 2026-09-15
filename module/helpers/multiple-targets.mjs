@@ -55,7 +55,7 @@ export function isMultipleTargetsWeapon(actor, item) {
     return true;
   }
 
-  if (item.system.classification?.style == 'melee' && actor.system?.isTransformed === false
+  if (item.system.classification?.style == 'melee' && actor?.system?.isTransformed === false
     && actorHasPerk(actor, METALLIKATO_ID) && isMetallikatoMultipleTargetsActive(actor)) {
     return true;
   }

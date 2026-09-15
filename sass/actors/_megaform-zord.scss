@@ -24,3 +24,16 @@
   max-width: fit-content;
   flex-grow: 0;
 }
+
+// Double-clicking this card opens the attached actor's own sheet (see vehicle-handler.mjs's
+// onSystemActorOpen) - the pointer cursor is the only hint of that, since the card's Health/Stun
+// inputs and delete icon already look interactive on their own.
+.essence20 .systemActors {
+  cursor: pointer;
+}
+
+.essence20 .systemActors input,
+.essence20 .systemActors select,
+.essence20 .systemActors .item-controls {
+  cursor: default;
+}

@@ -1,6 +1,11 @@
 @use "../variables" as v;
 
-.essence20.actor .window-content:has(> .essence20-sidebar) {
+// :not(.minimized, .minimizing, .maximizing) matters here, not just cosmetically - this
+// selector (.essence20.actor .window-content:has(...), specificity 0-4-0) otherwise beats
+// Foundry core's own .application.minimized .window-content { display: none; } (0-3-0), so the
+// grid layout kept winning and the sheet's full content stayed visible (clipped mid-row by the
+// collapsed window frame) instead of actually hiding when minimized/minimizing/maximizing.
+.essence20.actor:not(.minimized, .minimizing, .maximizing) .window-content:has(> .essence20-sidebar) {
   display: grid;
   grid-template-columns: minmax(220px, 260px) 1fr;
   grid-template-rows: auto auto 1fr;
@@ -145,6 +150,20 @@
   color: var(--theme-muted-text);
   white-space: normal;
   word-break: break-word;
+}
+
+// Megaform's own per-participant Health (Resources panel) - each linked Zord/component's current
+// Health inline, slash-separated, matching the compact "16/12/9/8" a printed stat block uses
+// instead of the single label+value row every other sidebar stat uses.
+.essence20-sidebar .essence20-sidebar-participant-health-values {
+  color: var(--theme-muted-text);
+  flex: 0 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-participant-health-sep {
+  color: var(--theme-muted-text);
+  opacity: 0.6;
+  margin: 0 2px;
 }
 
 .essence20-sidebar .stats-container {

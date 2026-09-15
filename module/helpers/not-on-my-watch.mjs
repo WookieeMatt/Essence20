@@ -1,4 +1,5 @@
 import { getNearbyAllyTokens } from "./allies.mjs";
+import { actorHasPerk } from "./perks.mjs";
 
 /**
  * Not On My Watch (Factions in Action Vol. 2: Intercontinental Adventures, Oktober Guard General
@@ -6,18 +7,25 @@ import { getNearbyAllyTokens } from "./allies.mjs";
  * immediately Move your Ground Movement towards them. You gain +1 Toughness and +1 Evasion while
  * a Defeated teammate is within your Reach."
  *
- * Only the second clause is built - the first ("immediately Move towards a newly-Defeated ally")
- * is a genuine reaction to a Condition being applied to someone ELSE, needing the same still-
- * missing "react to an event" hook this project has flagged many times before (Fe-BURN!, Defender
- * Step, Projectile Deflector, etc.). The Defense-bonus half is a plain live proximity check with
- * no reaction involved at all - same "any Defeated ally" idiom Field Aid's own
- * hasNearbyDefeatedAlly already established, but scoped to a real finite radius ("within your
- * Reach," this system's own 5ft melee range) instead of Field Aid's own unscoped "anywhere on the
- * scene" (Field Aid drops the range because it can't verify movement DIRECTION either way, so an
- * unscoped check is the closest approximation available; this Perk's own "within your Reach" is a
- * plain distance check with nothing else to approximate away).
+ * The first clause ("immediately Move towards a newly-Defeated ally") is a reaction to a
+ * Condition being applied to someone ELSE - the "an ally's own Health just crossed to 0" hook
+ * this project has repeatedly flagged as missing (Fe-BURN!, Defender Step, Projectile Deflector,
+ * etc.). This is that hook's first real use: helpers/combat.mjs#applyDamage calls
+ * grantNotOnMyWatchReaction() below at the exact moment ANY actor's Health crosses from >0 to 0,
+ * for both the Stun-crosses-remaining-Health branch and the ordinary Health-loss branch.
+ *
+ * "You can see" has no visibility check to hook (same unenforceable-narrative-precondition idiom
+ * already accepted throughout this project) - approximated as "anywhere on the scene," the same
+ * Infinity-radius idiom Field Aid's own hasNearbyDefeatedAlly already established for an
+ * identical "no way to verify LOS/direction" gap.
+ *
+ * "You can immediately Move your Ground Movement towards them" has no action-economy or
+ * token-movement-execution concept to grant into (this system has none, for any Perk) - the
+ * closest honest automation is a chat prompt telling the eligible player their reaction is
+ * available, same as every other movement-granting Perk in this codebase already settles for.
+ * Actually moving the token remains the player's own action.
  */
-
+const NOT_ON_MY_WATCH_ID = "Compendium.essence20.intercontinental_adventures.Item.xH3iQ0NcXp1eFO35";
 const REACH_FEET = 5;
 
 /**
@@ -43,4 +51,25 @@ export function getNotOnMyWatchDefenseBonus(actor, defenseType) {
   }
 
   return hasDefeatedAllyInReach(actor) ? 1 : 0;
+}
+
+/**
+ * Called from combat.mjs#applyDamage the moment defeatedActor's Health crosses from >0 to 0.
+ * Posts a chat prompt for every nearby ally holding Not On My Watch, letting that player know
+ * they can now move their own token towards defeatedActor.
+ * @param {Actor} defeatedActor The actor who was just Defeated.
+ */
+export async function grantNotOnMyWatchReaction(defeatedActor) {
+  const reactors = getNearbyAllyTokens(defeatedActor, Infinity)
+    .map(token => token.actor)
+    .filter(actor => actor && actorHasPerk(actor, NOT_ON_MY_WATCH_ID));
+
+  for (const reactor of reactors) {
+    ChatMessage.create({
+      content: game.i18n.format('E20.NotOnMyWatchReactionPrompt', {
+        reactor: reactor.name, ally: defeatedActor.name,
+      }),
+      speaker: ChatMessage.getSpeaker({ actor: reactor }),
+    });
+  }
 }

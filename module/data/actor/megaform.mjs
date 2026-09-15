@@ -15,7 +15,6 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
       ...machine(),
       ...zordBase(),
       subtype: makeStrArrayWithChoices(Object.keys(E20.megaformSubtypes), 'megaformZord'),
-      health: makeInt(null),
       zordIds: makeStrArray(),
       // Combiner-subtype only: how many Energon Points the component members actually spent
       // to merge into this form (2/member for a Matched Combiner, 3/member for a Gestalt,
@@ -30,11 +29,23 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
       combinedHealthMax: makeInt(0),
       combinedHealthValue: makeInt(0),
       hasEnhancedAttack: makeBool(false),
+      hasEnhancedInitiative: makeBool(false),
+      // Light Chassis (PR CRB, Zord Feature, p.137) - see actor.mjs's own LIGHT_CHASSIS_ID
+      // comment. Set when any linked participant holds the Feature; consumed in dice.mjs's
+      // prepareInitiativeRoll as an upshift (Enhanced Initiative just above is an Edge instead,
+      // since that's what its own RAW text grants).
+      hasLightChassisInitiativeUpshift: makeBool(false),
+      hasTitanHardpoint: makeBool(false),
+      hasAssaultWeapon: makeBool(false),
       isDefeated: makeBool(false),
       participantHealth: new fields.ArrayField(new fields.SchemaField({
         name: makeStr(''),
         value: makeInt(0),
         max: makeInt(0),
+      })),
+      participantStun: new fields.ArrayField(new fields.SchemaField({
+        name: makeStr(''),
+        value: makeInt(0),
       })),
     };
   }

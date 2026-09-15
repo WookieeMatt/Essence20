@@ -3,7 +3,10 @@
   <input type="text" class="centered-input" name="system.crew.description" value="{{system.crew.description}}" />
 </div>
 <div class="sliced-border">
-  <label class="sliced-border__label">{{localize 'E20.VehicleFirepoints'}}</label>
+  <label class="sliced-border__label" data-tooltip="{{#if system.firepoints.description}}{{system.firepoints.description}}{{else}}{{localize 'E20.VehicleFirepointsNoDescription'}}{{/if}}">
+    {{localize 'E20.VehicleFirepoints'}}
+    <i class="fas fa-circle-info sliced-border__label-edit-icon"></i>
+  </label>
   <input type="number" class="centered-input" name="system.firepoints.value" value="{{system.firepoints.value}}" min="0" step="1" />
 </div>
 <div class="sliced-border">

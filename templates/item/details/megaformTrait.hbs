@@ -15,6 +15,8 @@
     <select class="item-field-inputs" name="system.essence">
       <option value="strength" {{#if (eq system.essence 'strength')}}selected{{/if}}>{{localize 'E20.EssenceStrength'}}</option>
       <option value="speed" {{#if (eq system.essence 'speed')}}selected{{/if}}>{{localize 'E20.EssenceSpeed'}}</option>
+      <option value="smarts" {{#if (eq system.essence 'smarts')}}selected{{/if}}>{{localize 'E20.EssenceSmarts'}}</option>
+      <option value="social" {{#if (eq system.essence 'social')}}selected{{/if}}>{{localize 'E20.EssenceSocial'}}</option>
     </select>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -31,7 +33,41 @@
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
   {{/if}}
 
-  {{#inArray '["coreAbility", "coreDefenses", "move"]' system.type}}
+  {{#if (eq system.type 'accurateCombiner')}}
+    {{!-- Attack Type --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MegaformTraitAttackType'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.attackType">
+      <option value="melee" {{#if (eq system.attackType 'melee')}}selected{{/if}}>{{localize 'E20.MegaformTraitAttackTypeMelee'}}</option>
+      <option value="ranged" {{#if (eq system.attackType 'ranged')}}selected{{/if}}>{{localize 'E20.MegaformTraitAttackTypeRanged'}}</option>
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
+  {{#if (eq system.type 'skillExpertise')}}
+    {{!-- Skill --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MegaformTraitSkill'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.skill">
+      {{selectOptions config.skills selected=system.skill}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
+  {{#if (eq system.type 'resistant')}}
+    {{!-- Damage Type --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MegaformTraitDamageType'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.damageType">
+      {{selectOptions config.damageTypes selected=system.damageType}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
+  {{#inArray '["assaultWeapon", "coreAbility", "coreDefenses", "defender", "layeredSystems", "move", "skillExpertise"]' system.type}}
     {{!-- Value --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MegaformTraitValue'}}
     {{#*inline "item-field-inputs"}}

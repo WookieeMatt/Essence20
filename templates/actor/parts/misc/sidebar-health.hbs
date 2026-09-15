@@ -1,0 +1,10 @@
+<div>
+  <label>{{localize 'E20.ActorHealth'}}</label>
+  <input class="two-digit-input no-lock" type="number" name="system.health.value" value="{{system.health.value}}" min="0" step="1" />
+  <span>/</span>
+  {{!-- .max is always computed now (Essence20Actor#_prepareHealth runs for every actor type) -
+       disabled here the same way sidebar-defenses.hbs's own .total already is; editing happens
+       exclusively through the Resources header's own gear icon (Stat Editor dialog), same as
+       Defenses/Speeds. --}}
+  <input class="two-digit-input no-lock" type="number" name="system.health.max" value="{{system.health.max}}" title="{{system.health.string}}" disabled />
+</div>

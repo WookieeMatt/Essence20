@@ -328,6 +328,61 @@ describe("_prepareDefenses", () => {
       expect(actor.system.defenses.toughness.total).toBe(15); // unaffected
     });
   });
+
+  describe("H.I.S.S. Column (GI Joe CRB, Vehicle Trait, p.302)", () => {
+    const vehicleToken = { document: { disposition: 1 }, center: { x: 0, y: 0 } };
+
+    function otherHiss(distinguisher) {
+      return {
+        actor: { name: 'H.I.S.S.', system: { traits: { hissColumn: true } } },
+        document: { disposition: 1 },
+        center: { x: distinguisher, y: 0 },
+      };
+    }
+
+    beforeEach(() => {
+      global.canvas = {
+        tokens: { placeables: [vehicleToken] },
+        grid: { measurePath: jest.fn(() => ({ distance: 0 })) },
+      };
+    });
+
+    function makeHissVehicle({ hissColumn = true } = {}) {
+      const actor = makeActor('vehicle', defensesSystem({ traits: { hissColumn } }));
+      actor.name = 'H.I.S.S.';
+      actor.getActiveTokens = jest.fn(() => [vehicleToken]);
+      return actor;
+    }
+
+    test("no bonus with no other H.I.S.S. on the scene", () => {
+      const actor = makeHissVehicle();
+      actor._prepareDefenses();
+      expect(actor.system.defenses.evasion.total).toBe(14); // unaffected
+    });
+
+    test("adds +1 Evasion per other same-named H.I.S.S.-Column-flagged token on the scene", () => {
+      const actor = makeHissVehicle();
+      canvas.tokens.placeables = [vehicleToken, otherHiss(1), otherHiss(2)];
+      actor._prepareDefenses();
+      expect(actor.system.defenses.evasion.total).toBe(16); // 14 + 2
+    });
+
+    test("doesn't count a differently-named vehicle, even with the trait", () => {
+      const actor = makeHissVehicle();
+      const other = otherHiss(1);
+      other.actor.name = 'F.A.N.G.';
+      canvas.tokens.placeables = [vehicleToken, other];
+      actor._prepareDefenses();
+      expect(actor.system.defenses.evasion.total).toBe(14); // unaffected
+    });
+
+    test("does nothing without the hissColumn trait itself", () => {
+      const actor = makeHissVehicle({ hissColumn: false });
+      canvas.tokens.placeables = [vehicleToken, otherHiss(1)];
+      actor._prepareDefenses();
+      expect(actor.system.defenses.evasion.total).toBe(14); // unaffected
+    });
+  });
 });
 
 describe("_prepareMovement", () => {
@@ -1348,6 +1403,18 @@ describe("_prepareMovement", () => {
     actor._prepareMovement();
     expect(actor.system.movementNotSet).toBe(true);
   });
+
+  test("clears movementNotSet once a movement type has a nonzero total", () => {
+    // A stuck-true flag was the actual bug behind a Megaform whose participants had already
+    // supplied real Movement - Foundry's derived-data pass mutates the same system.movement
+    // object across renders rather than resetting it from schema defaults each time, so a prior
+    // "no participants yet" pass leaves movementNotSet stuck true unless this pass explicitly
+    // clears it back to false too, not just sets it true.
+    const actor = makeActor('playerCharacter', movementSystem());
+    actor.system.movementNotSet = true;
+    actor._prepareMovement();
+    expect(actor.system.movementNotSet).toBe(false);
+  });
 });
 
 describe("_prepareSorcerousPower", () => {
@@ -1647,7 +1714,7 @@ describe("prepareDerivedData", () => {
     const actor = makeActor('playerCharacter', {
       level: 1,
       conditioning: 0,
-      health: { bonus: 0 },
+      health: { bonus: 0, origin: 0 },
       isMorphed: false,
       isTransformed: false,
       essences: {
@@ -1679,10 +1746,49 @@ describe("prepareDerivedData", () => {
     expect(actor.system.powers.sorcerous.max).toBe(0);
   });
 
-  test("leaves player-character-only fields untouched for an npc", () => {
-    const actor = makeActor('npc', { health: { bonus: 0 } });
+  test("computes the same shared Health/Defenses/Movement for an npc, but skips PC-only fields", () => {
+    // Health/Defenses/Movement now run for every actor type (see the standing hold this project
+    // had on this code, project_essence20_active_effects memory) - only genuinely PC-specific
+    // extras (Sorcerous Power, Role Points Resource, Poison Training, Fireproof) stay gated to
+    // playerCharacter. This fixture deliberately omits `powers`/`poisonTraining`/`trained`/
+    // `qualified` - if any of those PC-only methods ran against an npc missing them, they'd
+    // throw, so this test doubles as proof they were correctly skipped.
+    const actor = makeActor('npc', {
+      conditioning: 0,
+      health: { bonus: 0, origin: 5 },
+      essences: {
+        strength: { max: 3 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 3 },
+      },
+      defenses: {
+        toughness: { base: 10, armor: 0, bonus: 0, morphed: 0, shield: 0, essence: 'strength' },
+        evasion: { base: 10, armor: 0, bonus: 0, morphed: 0, shield: 0, essence: 'speed' },
+        willpower: { base: 10, armor: 0, bonus: 0, morphed: 0, shield: 0, essence: 'smarts' },
+        cleverness: { base: 10, armor: 0, bonus: 0, morphed: 0, shield: 0, essence: 'social' },
+      },
+      movement: {
+        aerial: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+        ground: { base: 30, bonus: 0, morphed: 0, altMode: 0 },
+        climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+        swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+      },
+    });
+
     actor.prepareDerivedData();
-    expect(actor.system.health.max).toBeUndefined();
+
+    expect(actor.system.health.max).toBe(5);
+    expect(actor.system.defenses.toughness.total).toBe(13);
+    expect(actor.system.movement.ground.total).toBe(30);
+    expect(actor.system.powers).toBeUndefined();
+  });
+
+  test("doesn't throw for an actor type with no registered schema (e.g. a stray/invalid 'party' actor)", () => {
+    // Foundry still calls prepareDerivedData() on a document whose own DataModel failed to
+    // register/validate in some code paths (e.g. sidebar rendering), leaving system.health/
+    // defenses/movement all undefined - _prepareHealth/_prepareDefenses/_prepareMovement now run
+    // unconditionally for every type, so each needs its own defensive guard against that, rather
+    // than assuming every actor.system it's handed matches one of this system's own 6 shapes.
+    const actor = makeActor('party', {});
+    expect(() => actor.prepareDerivedData()).not.toThrow();
   });
 });
 
@@ -1716,11 +1822,258 @@ describe("rollSkill", () => {
   });
 });
 
+describe("_prepareMegaformZordData", () => {
+  function makeZordParticipant({
+    name, health, healthMax = 10, strength = 3, speed = 2, megaformTraitItems = [], featureIds = [], stun = 0,
+  }) {
+    return {
+      name,
+      type: 'zord',
+      items: [
+        ...megaformTraitItems.map(system => ({ type: 'megaformTrait', system })),
+        // Zord Features (Light Chassis, Hardened Chassis, ...) are matched by compendium
+        // sourceId via actorHasZordFeature, not a system.type enum like megaformTrait items -
+        // see helpers/zord-features.mjs's own doc comment.
+        ...featureIds.map(sourceId => ({ type: 'feature', flags: { core: { sourceId } } })),
+      ],
+      system: {
+        essences: { strength: { value: strength }, speed: { value: speed } },
+        movement: { ground: { total: 40, base: 40 }, aerial: {}, climb: {}, swim: {} },
+        health: { value: health, max: healthMax },
+        stun: { value: stun },
+      },
+      // Stands in for the real Actor#prepareData() call the Megaform forces on each participant
+      // before reading it (see actor.mjs's own comment) - a no-op here since this fixture's
+      // system data is already in its final, "already prepared" shape.
+      prepareData() {},
+    };
+  }
+
+  function makeMegazordActor(participants) {
+    const actorsMap = {};
+    participants.forEach((_participant, i) => {
+      actorsMap[`z${i}`] = { uuid: `Actor.z${i}` };
+    });
+    global.fromUuidSync.mockImplementation(uuid => {
+      const index = parseInt(uuid.replace('Actor.z', ''), 10);
+      return participants[index];
+    });
+
+    return makeActor('megaform', {
+      actors: actorsMap,
+      essences: { strength: {}, speed: {} },
+      defenses: { toughness: {}, evasion: {} },
+      movement: { ground: {}, aerial: {}, climb: {}, swim: {} },
+      health: {},
+      stun: {},
+      immunities: {},
+      resistances: {},
+    });
+  }
+
+  beforeEach(() => {
+    global.fromUuidSync.mockReset();
+  });
+
+  test("doubles a Core Body participant's own Health share", () => {
+    const coreBody = makeZordParticipant({ name: 'A', health: 5, healthMax: 5, megaformTraitItems: [{ type: 'coreBody' }] });
+    const plain = makeZordParticipant({ name: 'B', health: 4, healthMax: 4 });
+    const actor = makeMegazordActor([coreBody, plain]);
+
+    actor._prepareMegaformZordData();
+
+    expect(actor.system.combinedHealthMax).toBe((5 * 2) + 4);
+    expect(actor.system.combinedHealthValue).toBe((5 * 2) + 4);
+  });
+
+  test("Layered Systems (Across the Stars, p.105) adds to just its own holder's share, after Core Body doubling", () => {
+    const coreBody = makeZordParticipant({
+      name: 'A', health: 5, healthMax: 5,
+      megaformTraitItems: [{ type: 'coreBody' }, { type: 'layeredSystems', value: 3 }],
+    });
+    const actor = makeMegazordActor([coreBody]);
+
+    actor._prepareMegaformZordData();
+
+    expect(actor.system.combinedHealthMax).toBe((5 * 2) + 3);
+  });
+
+  test("Tenacious Bonds (A Jump Through Time, p.84) adds +1 Health to every participant once, not per holder", () => {
+    const holder = makeZordParticipant({ name: 'A', health: 5, healthMax: 5, megaformTraitItems: [{ type: 'tenaciousBonds' }] });
+    const otherHolder = makeZordParticipant({ name: 'B', health: 4, healthMax: 4, megaformTraitItems: [{ type: 'tenaciousBonds' }] });
+    const plain = makeZordParticipant({ name: 'C', health: 3, healthMax: 3 });
+    const actor = makeMegazordActor([holder, otherHolder, plain]);
+
+    actor._prepareMegaformZordData();
+
+    // 5+4+3 base, plus +1 per participant (3) applied ONCE despite two holders - not +6.
+    expect(actor.system.combinedHealthMax).toBe(5 + 4 + 3 + 3);
+  });
+
+  test("Grounding (A Jump Through Time, p.84) grants EMP immunity to the whole Megaform", () => {
+    const grounded = makeZordParticipant({ name: 'A', health: 5, megaformTraitItems: [{ type: 'grounding' }] });
+    const actor = makeMegazordActor([grounded]);
+
+    actor._prepareMegaformZordData();
+
+    expect(actor.system.immunities.emp).toBe(true);
+  });
+
+  test("Resistant (Across the Stars, p.105) passes its chosen damage type's Resistance to the whole Megaform", () => {
+    const resistant = makeZordParticipant({
+      name: 'A', health: 5, megaformTraitItems: [{ type: 'resistant', damageType: 'fire' }],
+    });
+    const actor = makeMegazordActor([resistant]);
+
+    actor._prepareMegaformZordData();
+
+    expect(actor.system.resistances.fire).toBe(true);
+  });
+
+  test("Defender (Across the Stars, p.104) adds to Toughness only, not Evasion", () => {
+    const defender = makeZordParticipant({
+      name: 'A', health: 5, strength: 3, speed: 2, megaformTraitItems: [{ type: 'defender', value: 1 }],
+    });
+    const actor = makeMegazordActor([defender]);
+
+    actor._prepareMegaformZordData();
+
+    // .armor = base Armor(3) + Defender bonus(1) - the shared _prepareDefenses() (not called
+    // directly by this unit test) adds base(10) + essence on top of this to reach the final
+    // total of 17.
+    expect(actor.system.defenses.toughness.armor).toBe(4);
+    // No Evasion bonus from Defender - .armor stays at 0.
+    expect(actor.system.defenses.evasion.armor).toBe(0);
+  });
+
+  describe("Light Chassis / Hardened Chassis (PR CRB, Zord Features, p.137/139)", () => {
+    const LIGHT_CHASSIS_ID = "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq";
+    const HARDENED_CHASSIS_ID = "Compendium.essence20.pr_crb.Item.7vwrFKj2UAxG4ocf";
+
+    test("Light Chassis sets hasLightChassisInitiativeUpshift when any participant holds it", () => {
+      const holder = makeZordParticipant({ name: 'A', health: 5, featureIds: [LIGHT_CHASSIS_ID] });
+      const actor = makeMegazordActor([holder]);
+
+      actor._prepareMegaformZordData();
+
+      expect(actor.system.hasLightChassisInitiativeUpshift).toBe(true);
+    });
+
+    test("doesn't set the flag without a participant holding Light Chassis", () => {
+      const holder = makeZordParticipant({ name: 'A', health: 5 });
+      const actor = makeMegazordActor([holder]);
+
+      actor._prepareMegaformZordData();
+
+      expect(actor.system.hasLightChassisInitiativeUpshift).toBe(false);
+    });
+
+    test("resets to false with no participants", () => {
+      const actor = makeMegazordActor([]);
+      actor._prepareMegaformZordData();
+      expect(actor.system.hasLightChassisInitiativeUpshift).toBe(false);
+    });
+
+    test("Hardened Chassis adds +1 to the Megaform's Armor bonus to Toughness only", () => {
+      const holder = makeZordParticipant({ name: 'A', health: 5, featureIds: [HARDENED_CHASSIS_ID] });
+      const actor = makeMegazordActor([holder]);
+
+      actor._prepareMegaformZordData();
+
+      // Base Armor(3) + Hardened Chassis(1) = 4 - same "armor, not bonus" shape as Defender's
+      // own test just above.
+      expect(actor.system.defenses.toughness.armor).toBe(4);
+      expect(actor.system.defenses.evasion.armor).toBe(0);
+    });
+
+    test("stacks Hardened Chassis across multiple holders", () => {
+      const a = makeZordParticipant({ name: 'A', health: 5, featureIds: [HARDENED_CHASSIS_ID] });
+      const b = makeZordParticipant({ name: 'B', health: 5, featureIds: [HARDENED_CHASSIS_ID] });
+      const actor = makeMegazordActor([a, b]);
+
+      actor._prepareMegaformZordData();
+
+      expect(actor.system.defenses.toughness.armor).toBe(5); // 3 base + 1 + 1
+    });
+  });
+
+  test("Assault Weapon (A Jump Through Time, p.84) surfaces as a flag rather than auto-applying to an attack", () => {
+    const assaultWeapon = makeZordParticipant({ name: 'A', health: 5, megaformTraitItems: [{ type: 'assaultWeapon' }] });
+    const actor = makeMegazordActor([assaultWeapon]);
+
+    actor._prepareMegaformZordData();
+
+    expect(actor.system.hasAssaultWeapon).toBe(true);
+  });
+
+  test("Core Ability and Move still work alongside the new trait types", () => {
+    const zord = makeZordParticipant({
+      name: 'A', health: 5, strength: 3, speed: 2,
+      megaformTraitItems: [
+        { type: 'coreAbility', essence: 'strength', value: 2 },
+        { type: 'move', movementType: 'aerial', value: 45 },
+      ],
+    });
+    const actor = makeMegazordActor([zord]);
+
+    actor._prepareMegaformZordData();
+
+    expect(actor.system.essences.strength.value).toBe(5);
+    // .total itself is left to the shared _prepareMovement() (not called directly by this unit
+    // test) - this method is only responsible for .base now.
+    expect(actor.system.movement.aerial.base).toBe(45);
+  });
+
+  test("Stun is summed fresh from every participant's own current value, not pooled", () => {
+    const a = makeZordParticipant({ name: 'A', health: 5, stun: 2 });
+    const b = makeZordParticipant({ name: 'B', health: 5, stun: 3 });
+    const actor = makeMegazordActor([a, b]);
+
+    actor._prepareMegaformZordData();
+
+    expect(actor.system.stun.value).toBe(5);
+  });
+
+  test("also lists each participant's own current Stun individually, for the sidebar's per-member display", () => {
+    const a = makeZordParticipant({ name: 'A', health: 5, stun: 2 });
+    const b = makeZordParticipant({ name: 'B', health: 5, stun: 3 });
+    const actor = makeMegazordActor([a, b]);
+
+    actor._prepareMegaformZordData();
+
+    expect(actor.system.participantStun).toEqual([
+      { name: 'A', value: 2 },
+      { name: 'B', value: 3 },
+    ]);
+  });
+
+  test("Stun defaults to 0 with no participants", () => {
+    const actor = makeMegazordActor([]);
+    actor._prepareMegaformZordData();
+    expect(actor.system.stun.value).toBe(0);
+    expect(actor.system.participantStun).toEqual([]);
+  });
+
+  test("zeroes Essences/Defenses/Movement with no participants, instead of leaving them at their own zordBase-inherited schema defaults", () => {
+    const actor = makeMegazordActor([]);
+    actor._prepareMegaformZordData();
+
+    expect(actor.system.essences.strength.value).toBe(0);
+    expect(actor.system.essences.speed.value).toBe(0);
+    expect(actor.system.defenses.toughness.base).toBe(0);
+    expect(actor.system.defenses.toughness.armor).toBe(0);
+    expect(actor.system.defenses.evasion.base).toBe(0);
+    expect(actor.system.defenses.evasion.armor).toBe(0);
+    expect(actor.system.movement.ground.base).toBe(0);
+    expect(actor.system.movement.aerial.base).toBe(0);
+  });
+});
+
 describe("_prepareMegaformCombinerData", () => {
   const KEEP_IT_TOGETHER_ID = "Compendium.essence20.enigma_of_combination.Item.9QdGh6Kfb1EVi4N7";
   const BETTER_AS_ONE_ID = "Compendium.essence20.enigma_of_combination.Item.XnmVJF4XNcsaXAKL";
 
-  function makeComponent({ name, health, perkIds = [], athleticsSpecializations = {} }) {
+  function makeComponent({ name, health, perkIds = [], athleticsSpecializations = {}, stun = 0 }) {
     return {
       name,
       type: 'playerCharacter',
@@ -1731,12 +2084,15 @@ describe("_prepareMegaformCombinerData", () => {
           strength: { value: 3 }, speed: { value: 2 }, smarts: { value: 2 }, social: { value: 2 },
         },
         skills: {
-          athletics: { shift: 'd8', specializations: athleticsSpecializations },
+          athletics: { shift: 'd8', modifier: 0, specializations: athleticsSpecializations },
         },
         defenses: { toughness: { armor: 0 }, evasion: { armor: 0 } },
         movement: { ground: { total: 30, base: 30 } },
         health: { value: health, max: 10 },
+        stun: { value: stun },
       },
+      // See makeZordParticipant's identical stub above for why this is needed.
+      prepareData() {},
     };
   }
 
@@ -1755,16 +2111,31 @@ describe("_prepareMegaformCombinerData", () => {
       essences: {
         strength: {}, speed: {}, smarts: {}, social: {},
       },
-      skills: { athletics: {} },
+      skills: { athletics: { modifier: 0 } },
       defenses: { toughness: {}, evasion: {} },
       movement: { ground: {} },
+      health: {},
+      stun: {},
       energon: { normal: {} },
       energonSpentToMerge: 0,
+      immunities: {},
+      resistances: {},
     });
   }
 
   beforeEach(() => {
     global.fromUuidSync.mockReset();
+  });
+
+  test("zeroes Essences/Defenses/Movement with no participants, instead of leaving them at their own zordBase-inherited schema defaults", () => {
+    const actor = makeCombinerActor([]);
+    actor._prepareMegaformCombinerData();
+
+    expect(actor.system.essences.strength.value).toBe(0);
+    expect(actor.system.essences.smarts.value).toBe(0);
+    expect(actor.system.defenses.toughness.base).toBe(0);
+    expect(actor.system.defenses.toughness.armor).toBe(0);
+    expect(actor.system.movement.ground.base).toBe(0);
   });
 
   describe("Keep it Together! (Component Ace Focus, 17th level, p.34)", () => {
@@ -1837,6 +2208,289 @@ describe("_prepareMegaformCombinerData", () => {
       actor._prepareMegaformCombinerData();
 
       expect(actor.system.skills.athletics.specializations).toEqual({ sprint: { name: 'Sprint' } });
+    });
+  });
+
+  describe("new Megaform Trait types (Enigma of Combination reuses the same shared enum)", () => {
+    function withTrait(component, system) {
+      component.items = [...component.items, { type: 'megaformTrait', system }];
+      return component;
+    }
+
+    test("Layered Systems adds a flat bonus to the combined Health total", () => {
+      const withLayered = withTrait(
+        makeComponent({ name: 'A', health: 10 }), { type: 'layeredSystems', value: 3 },
+      );
+      const plain = makeComponent({ name: 'B', health: 10 });
+      const actor = makeCombinerActor([withLayered, plain]);
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.combinedHealthMax).toBe(10 + 10 + 3);
+    });
+
+    test("Tenacious Bonds adds +1 Health per participant once, not per holder", () => {
+      const holder1 = withTrait(makeComponent({ name: 'A', health: 10 }), { type: 'tenaciousBonds' });
+      const holder2 = withTrait(makeComponent({ name: 'B', health: 10 }), { type: 'tenaciousBonds' });
+      const plain = makeComponent({ name: 'C', health: 10 });
+      const actor = makeCombinerActor([holder1, holder2, plain]);
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.combinedHealthMax).toBe(10 + 10 + 10 + 3);
+    });
+
+    test("Grounding grants EMP immunity to the whole Combiner", () => {
+      const grounded = withTrait(makeComponent({ name: 'A', health: 10 }), { type: 'grounding' });
+      const actor = makeCombinerActor([grounded]);
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.immunities.emp).toBe(true);
+    });
+
+    test("Resistant passes its chosen damage type's Resistance to the whole Combiner", () => {
+      const resistant = withTrait(
+        makeComponent({ name: 'A', health: 10 }), { type: 'resistant', damageType: 'fire' },
+      );
+      const actor = makeCombinerActor([resistant]);
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.resistances.fire).toBe(true);
+    });
+
+    test("Defender adds to Toughness only, not Evasion", () => {
+      const defender = withTrait(makeComponent({ name: 'A', health: 10 }), { type: 'defender', value: 1 });
+      const actor = makeCombinerActor([defender]);
+
+      actor._prepareMegaformCombinerData();
+
+      // makeComponent defaults: Strength 3, Speed 2, 0 armor bonus. .armor = the components'
+      // own min armor bonus (0) + Defender bonus(1) - the shared _prepareDefenses() (not called
+      // directly by this unit test) adds base(10) + essence on top to reach the final total of
+      // 14 for Toughness.
+      expect(actor.system.defenses.toughness.armor).toBe(1);
+      // No Defender bonus applied to Evasion - .armor stays at 0.
+      expect(actor.system.defenses.evasion.armor).toBe(0);
+    });
+
+    test("Assault Weapon surfaces as a flag rather than auto-applying to an attack", () => {
+      const assaultWeapon = withTrait(makeComponent({ name: 'A', health: 10 }), { type: 'assaultWeapon' });
+      const actor = makeCombinerActor([assaultWeapon]);
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.hasAssaultWeapon).toBe(true);
+    });
+
+    test("Enhanced Initiative surfaces as a flag for dice.mjs's own Initiative-Edge check", () => {
+      const holder = withTrait(makeComponent({ name: 'A', health: 10 }), { type: 'enhancedInitiative' });
+      const actor = makeCombinerActor([holder]);
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.hasEnhancedInitiative).toBe(true);
+    });
+
+    test("Titan Hardpoint surfaces as a flag rather than auto-granting weapon access", () => {
+      const holder = withTrait(makeComponent({ name: 'A', health: 10 }), { type: 'titanHardpoint' });
+      const actor = makeCombinerActor([holder]);
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.hasTitanHardpoint).toBe(true);
+    });
+
+    test("Skill Expertise adds a flat modifier to the chosen Skill", () => {
+      const holder = withTrait(
+        makeComponent({ name: 'A', health: 10 }), { type: 'skillExpertise', skill: 'athletics', value: 1 },
+      );
+      const actor = makeCombinerActor([holder]);
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.skills.athletics.modifier).toBe(1);
+    });
+  });
+
+  describe("Commander (Enigma of Combination, p.42)", () => {
+    function withTrait(component, system) {
+      component.items = [...component.items, { type: 'megaformTrait', system }];
+      return component;
+    }
+
+    test("adds +1 to the two highest Essence Scores exactly once, even with multiple holders", () => {
+      const holder1 = withTrait(makeComponent({ name: 'A', health: 10 }), { type: 'commander' });
+      const holder2 = withTrait(makeComponent({ name: 'B', health: 10 }), { type: 'commander' });
+      const actor = makeCombinerActor([holder1, holder2]);
+
+      actor._prepareMegaformCombinerData();
+
+      // makeComponent defaults: Strength 3, Speed/Smarts/Social 2 each - Strength is the clear
+      // highest, Speed wins the 3-way tie for second via the fixed Strength>Speed>Smarts>Social
+      // tie-break order below. Both holders taking Commander still only applies the +1 once.
+      expect(actor.system.essences.strength.value).toBe(4);
+      expect(actor.system.essences.speed.value).toBe(3);
+      expect(actor.system.essences.smarts.value).toBe(2);
+      expect(actor.system.essences.social.value).toBe(2);
+    });
+
+    test("breaks a tie for second place using the fixed Strength > Speed > Smarts > Social order", () => {
+      const holder = makeComponent({ name: 'A', health: 10 });
+      holder.system.essences.strength.value = 5;
+      holder.system.essences.speed.value = 3;
+      holder.system.essences.smarts.value = 3;
+      holder.system.essences.social.value = 1;
+      withTrait(holder, { type: 'commander' });
+      const actor = makeCombinerActor([holder]);
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.essences.strength.value).toBe(6);
+      expect(actor.system.essences.speed.value).toBe(4);
+      expect(actor.system.essences.smarts.value).toBe(3);
+      expect(actor.system.essences.social.value).toBe(1);
+    });
+  });
+
+  test("Stun is summed fresh from every participant's own current value, not pooled", () => {
+    const a = makeComponent({ name: 'A', health: 10, stun: 1 });
+    const b = makeComponent({ name: 'B', health: 10, stun: 4 });
+    const actor = makeCombinerActor([a, b]);
+
+    actor._prepareMegaformCombinerData();
+
+    expect(actor.system.stun.value).toBe(5);
+  });
+
+  test("also lists each participant's own current Stun individually, for the sidebar's per-member display", () => {
+    const a = makeComponent({ name: 'A', health: 10, stun: 1 });
+    const b = makeComponent({ name: 'B', health: 10, stun: 4 });
+    const actor = makeCombinerActor([a, b]);
+
+    actor._prepareMegaformCombinerData();
+
+    expect(actor.system.participantStun).toEqual([
+      { name: 'A', value: 1 },
+      { name: 'B', value: 4 },
+    ]);
+  });
+});
+
+describe("_prepareVehicleData", () => {
+  function makeVehicleActor({ crashed = false, crew = {}, numDrivers = 1, traits = {} } = {}) {
+    return makeActor('vehicle', {
+      crashed,
+      movementIsReadOnly: false,
+      movement: {
+        ground: { total: 30, base: 30 },
+        aerial: { total: 0, base: 0 },
+      },
+      crew: { numDrivers, numPassengers: 0 },
+      actors: crew,
+      traits,
+    });
+  }
+
+  function makeDriverEntry(uuid) {
+    return { vehicleRole: 'driver', uuid };
+  }
+
+  function makeDriver({ shift = 'd2' } = {}) {
+    return { system: { skills: { driving: { shift } } } };
+  }
+
+  beforeEach(() => {
+    global.fromUuidSync.mockReset();
+  });
+
+  test("leaves Movement alone when not crashed and fully staffed with qualified drivers", () => {
+    global.fromUuidSync.mockReturnValue(makeDriver());
+    const actor = makeVehicleActor({ crew: { c1: makeDriverEntry('Actor.d1') } });
+
+    actor._prepareVehicleData();
+
+    expect(actor.system.movement.ground.total).toBe(30);
+    expect(actor.system.movementIsReadOnly).toBe(false);
+  });
+
+  test("zeroes every Movement type's displayed total and makes it read-only while crashed", () => {
+    const actor = makeVehicleActor({ crashed: true, crew: { c1: makeDriverEntry('Actor.d1') } });
+
+    actor._prepareVehicleData();
+
+    expect(actor.system.movement.ground.total).toBe(0);
+    expect(actor.system.movement.aerial.total).toBe(0);
+    expect(actor.system.movementIsReadOnly).toBe(true);
+    // The real stored value underneath is untouched - only the derived .total is overridden.
+    expect(actor.system.movement.ground.base).toBe(30);
+  });
+
+  describe("Crew (GI Joe CRB, p.212) - driver-count Movement penalty", () => {
+    test("halves every Movement type when fewer drivers are seated than the vehicle needs", () => {
+      global.fromUuidSync.mockReturnValue(makeDriver());
+      const actor = makeVehicleActor({ numDrivers: 2, crew: { c1: makeDriverEntry('Actor.d1') } });
+
+      actor._prepareVehicleData();
+
+      expect(actor.system.movement.ground.total).toBe(15);
+    });
+
+    test("halves every Movement type when the seated driver isn't trained (below d2 in Driving)", () => {
+      global.fromUuidSync.mockReturnValue(makeDriver({ shift: 'd20' }));
+      const actor = makeVehicleActor({ crew: { c1: makeDriverEntry('Actor.d1') } });
+
+      actor._prepareVehicleData();
+
+      expect(actor.system.movement.ground.total).toBe(15);
+    });
+
+    test("doesn't penalize a vehicle that needs no drivers at all", () => {
+      const actor = makeVehicleActor({ numDrivers: 0, crew: {} });
+
+      actor._prepareVehicleData();
+
+      expect(actor.system.movement.ground.total).toBe(30);
+    });
+
+    test("a non-driver crew member (e.g. a gunner) doesn't count toward the driver requirement", () => {
+      global.fromUuidSync.mockReturnValue(makeDriver());
+      const actor = makeVehicleActor({ crew: { c1: { vehicleRole: 'gunner', uuid: 'Actor.g1' } } });
+
+      actor._prepareVehicleData();
+
+      expect(actor.system.movement.ground.total).toBe(15);
+    });
+
+    describe("Autopilot (GI Joe CRB, Vehicle Trait, p.173)", () => {
+      test("operates at full capacity with just 1 driver, even understaffed", () => {
+        global.fromUuidSync.mockReturnValue(makeDriver());
+        const actor = makeVehicleActor({
+          numDrivers: 2, crew: { c1: makeDriverEntry('Actor.d1') }, traits: { autopilot: true },
+        });
+
+        actor._prepareVehicleData();
+
+        expect(actor.system.movement.ground.total).toBe(30);
+      });
+
+      test("doesn't help with 0 qualified drivers - still halved, same as Advanced Autopilot's own guarantee", () => {
+        const actor = makeVehicleActor({ crew: {}, traits: { autopilot: true } });
+
+        actor._prepareVehicleData();
+
+        expect(actor.system.movement.ground.total).toBe(15);
+      });
+
+      test("doesn't apply without the trait", () => {
+        global.fromUuidSync.mockReturnValue(makeDriver());
+        const actor = makeVehicleActor({ numDrivers: 2, crew: { c1: makeDriverEntry('Actor.d1') } });
+
+        actor._prepareVehicleData();
+
+        expect(actor.system.movement.ground.total).toBe(15);
+      });
     });
   });
 });

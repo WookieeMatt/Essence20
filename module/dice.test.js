@@ -29,6 +29,14 @@ global.game = {
       first: jest.fn(() => undefined),
     },
   },
+  // Empty by default so helpers/defense-choice.mjs#chooseDefenderDefense (called for every
+  // attack roll with a real target, as of dice.mjs's own per-target resolvedDefenseType) finds no
+  // player owner and no GM to ask, falling straight through to its own "return the suggested
+  // Defense" fallback - preserving every one of this file's existing tests' own assumption that
+  // whatever Defense the weapon/dataset already specifies is exactly what gets used, with no
+  // dialog or socket call involved. Tests that actually exercise the defender-choice mechanic
+  // itself override this locally.
+  users: [],
   combat: null,
 };
 
@@ -280,6 +288,115 @@ describe("prepareInitiativeRoll", () => {
       await dice.prepareInitiativeRoll(makeInitActor([]));
       const [, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
       expect(skillDataset.edge).toBeFalsy();
+    });
+  });
+
+  describe("Enhanced Initiative (Transformers Combiner Feature, Enigma of Combination, p.42)", () => {
+    function makeInitActor({ type = 'megaform', hasEnhancedInitiative = false } = {}) {
+      return {
+        ...mockActor, type, system: { ...mockActor.system, hasEnhancedInitiative }, update: jest.fn(),
+      };
+    }
+
+    test("grants Edge on a Combiner form's own Initiative roll", async () => {
+      await dice.prepareInitiativeRoll(makeInitActor({ hasEnhancedInitiative: true }));
+      const [, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(skillDataset.edge).toBe(true);
+    });
+
+    test("doesn't apply without the flag", async () => {
+      await dice.prepareInitiativeRoll(makeInitActor({ hasEnhancedInitiative: false }));
+      const [, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(skillDataset.edge).toBeFalsy();
+    });
+
+    test("doesn't apply to a non-megaform actor even if the field is somehow set", async () => {
+      await dice.prepareInitiativeRoll(makeInitActor({ type: 'playerCharacter', hasEnhancedInitiative: true }));
+      const [, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(skillDataset.edge).toBeFalsy();
+    });
+  });
+
+  describe("Light Chassis (PR CRB, Zord Feature, p.137)", () => {
+    function makeInitActor({ type = 'megaform', hasLightChassisInitiativeUpshift = false } = {}) {
+      return {
+        ...mockActor, type, system: { ...mockActor.system, hasLightChassisInitiativeUpshift }, update: jest.fn(),
+      };
+    }
+
+    test("grants ↑1 on a Megaform's own Initiative roll when a linked Zord holds it", async () => {
+      await dice.prepareInitiativeRoll(makeInitActor({ hasLightChassisInitiativeUpshift: true }));
+      const [dataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(dataset.shiftUp).toBe(1);
+    });
+
+    test("doesn't apply without the flag", async () => {
+      await dice.prepareInitiativeRoll(makeInitActor({ hasLightChassisInitiativeUpshift: false }));
+      const [dataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(dataset.shiftUp).toBe(0);
+    });
+
+    test("doesn't apply to a non-megaform actor even if the field is somehow set", async () => {
+      await dice.prepareInitiativeRoll(
+        makeInitActor({ type: 'zord', hasLightChassisInitiativeUpshift: true }),
+      );
+      const [dataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(dataset.shiftUp).toBe(0);
+    });
+  });
+
+  describe("Relic Key (PR CRB, Zord Feature, p.140) - Edge on any one roll in the scene", () => {
+    function makeInitActor({ edgeActive = false } = {}) {
+      const flagStore = { relicKeyEdgeActive: edgeActive };
+      return {
+        ...mockActor,
+        update: jest.fn(),
+        getFlag: jest.fn((scope, key) => flagStore[key]),
+        unsetFlag: jest.fn((scope, key) => {
+          delete flagStore[key];
+        }),
+      };
+    }
+
+    test("grants Edge on the Initiative roll and consumes the declaration", async () => {
+      const actor = makeInitActor({ edgeActive: true });
+      await dice.prepareInitiativeRoll(actor);
+
+      const [, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(skillDataset.edge).toBe(true);
+      expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'relicKeyEdgeActive');
+    });
+
+    test("doesn't apply without a declared grant", async () => {
+      const actor = makeInitActor({ edgeActive: false });
+      await dice.prepareInitiativeRoll(actor);
+
+      const [, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(skillDataset.edge).toBeFalsy();
+      expect(actor.unsetFlag).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Warrior Mode (PR CRB, Zord Feature, p.140) - Initiative half", () => {
+    function makeInitActor({ active = false } = {}) {
+      const flagStore = { warriorModeActive: active };
+      return {
+        ...mockActor,
+        update: jest.fn(),
+        getFlag: jest.fn((scope, key) => flagStore[key]),
+      };
+    }
+
+    test("grants ↑2 on the Initiative roll while active", async () => {
+      await dice.prepareInitiativeRoll(makeInitActor({ active: true }));
+      const [dataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(dataset.shiftUp).toBe(2);
+    });
+
+    test("doesn't apply while inactive", async () => {
+      await dice.prepareInitiativeRoll(makeInitActor({ active: false }));
+      const [dataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(dataset.shiftUp).toBe(0);
     });
   });
 
@@ -1831,6 +1948,7 @@ describe("rollSkill", () => {
       eltarianTechAvailable: false,
       observerSnagSubstitutionAvailable: false,
       quantumCutAvailable: false,
+      retributionAvailable: null,
       soloShotAvailable: false,
       seeingTheMatrixAvailable: false,
       allINeedIsOneShotAvailable: false,
@@ -2129,6 +2247,7 @@ describe("rollSkill", () => {
       eltarianTechAvailable: false,
       observerSnagSubstitutionAvailable: false,
       quantumCutAvailable: false,
+      retributionAvailable: null,
       soloShotAvailable: false,
       seeingTheMatrixAvailable: false,
       allINeedIsOneShotAvailable: false,
@@ -2368,6 +2487,7 @@ describe("rollSkill", () => {
       eltarianTechAvailable: false,
       observerSnagSubstitutionAvailable: false,
       quantumCutAvailable: false,
+      retributionAvailable: null,
       soloShotAvailable: false,
       seeingTheMatrixAvailable: false,
       allINeedIsOneShotAvailable: false,
@@ -2481,6 +2601,7 @@ describe("rollSkill", () => {
       eltarianTechAvailable: false,
       observerSnagSubstitutionAvailable: false,
       quantumCutAvailable: false,
+      retributionAvailable: null,
       soloShotAvailable: false,
       seeingTheMatrixAvailable: false,
       allINeedIsOneShotAvailable: false,
@@ -2592,6 +2713,7 @@ describe("rollSkill", () => {
       eltarianTechAvailable: false,
       observerSnagSubstitutionAvailable: false,
       quantumCutAvailable: false,
+      retributionAvailable: null,
       soloShotAvailable: false,
       seeingTheMatrixAvailable: false,
       allINeedIsOneShotAvailable: false,
@@ -5679,6 +5801,597 @@ describe("rollSkill", () => {
     });
   });
 
+  describe("Martial Zord / Zero-G (PR CRB, Zord Features, p.137-138)", () => {
+    const MARTIAL_ZORD_ID = "Compendium.essence20.pr_crb.Item.nQcU1SrVChPaXXpq";
+    const ZERO_G_ID = "Compendium.essence20.pr_crb.Item.8xV4xaz8Hnqk4TgQ";
+    const SHOGUN_UPGRADE_ID = "Compendium.essence20.pr_crb.Item.1Bp1o4k9VhkKPXnd";
+    const SUPER_ZEO_UPGRADE_ID = "Compendium.essence20.pr_crb.Item.sAlfUDoEI9wPjqG2";
+    const PILOT_UUID = 'Actor.pilot1';
+
+    function makeZordActor({ featureId = MARTIAL_ZORD_ID, hasFeature = true, hasDriver = true } = {}) {
+      return {
+        ...mockActor,
+        type: 'zord',
+        uuid: 'Actor.zord1',
+        items: hasFeature ? [{ type: 'feature', flags: { core: { sourceId: featureId } } }] : [],
+        system: {
+          ...mockActor.system,
+          actors: hasDriver ? { crew1: { vehicleRole: 'driver', uuid: PILOT_UUID } } : {},
+          essenceShifts: {
+            any: { shiftUp: 0, shiftDown: 0 },
+            strength: { shiftUp: 0, shiftDown: 0 },
+            speed: { shiftUp: 0, shiftDown: 0 },
+            smarts: { shiftUp: 0, shiftDown: 0 },
+            social: { shiftUp: 0, shiftDown: 0 },
+          },
+        },
+        getRollData: jest.fn(() => ({
+          skills: { might: { modifier: '0', shift: 'd20' } },
+        })),
+      };
+    }
+
+    function weaponEffect(style) {
+      return {
+        type: 'weaponEffect',
+        flags: {},
+        system: { classification: { skill: 'might', style }, damageType: 'blunt', damageValue: 1 },
+      };
+    }
+
+    beforeEach(() => {
+      global.fromUuidSync = jest.fn(() => ({ uuid: PILOT_UUID, type: 'playerCharacter', items: [], system: {} }));
+    });
+
+    test("Martial Zord adds +1 shiftUp on the Zord's own melee attack while it has a driver", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('melee'));
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftUp).toBe(1);
+    });
+
+    test("Martial Zord doesn't apply without the Feature, without a driver, or on a ranged attack", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor({ hasFeature: false }), weaponEffect('melee'),
+      );
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftUp).toBe(0);
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor({ hasDriver: false }), weaponEffect('melee'),
+      );
+      expect(rollDialog.getSkillRollOptions.mock.calls[1][0].shiftUp).toBe(0);
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('energy'),
+      );
+      expect(rollDialog.getSkillRollOptions.mock.calls[2][0].shiftUp).toBe(0);
+    });
+
+    test("Zero-G adds +1 shiftUp on the Zord's own ranged attack while it has a driver", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor({ featureId: ZERO_G_ID }), weaponEffect('energy'),
+      );
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftUp).toBe(1);
+    });
+
+    test("Zero-G doesn't apply on a melee attack", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor({ featureId: ZERO_G_ID }), weaponEffect('melee'),
+      );
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftUp).toBe(0);
+    });
+
+    test("Upgraded Zord: Shogun Upgrade adds +1 shiftUp on melee attacks with no driver needed", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' },
+        makeZordActor({ featureId: SHOGUN_UPGRADE_ID, hasDriver: false }),
+        weaponEffect('melee'),
+      );
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftUp).toBe(1);
+    });
+
+    test("Upgraded Zord: Super-Zeo Upgrade adds +1 shiftUp on ranged attacks with no driver needed", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' },
+        makeZordActor({ featureId: SUPER_ZEO_UPGRADE_ID, hasDriver: false }),
+        weaponEffect('energy'),
+      );
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftUp).toBe(1);
+    });
+
+    test("Upgraded Zord: Super-Zeo Upgrade doesn't apply on a melee attack", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' },
+        makeZordActor({ featureId: SUPER_ZEO_UPGRADE_ID, hasDriver: false }),
+        weaponEffect('melee'),
+      );
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftUp).toBe(0);
+    });
+  });
+
+  describe("Auxiliary Zord (PR CRB, Zord Feature, p.136) - melee damage bonus", () => {
+    const AUXILIARY_ZORD_ID = "Compendium.essence20.pr_crb.Item.QO0kY1y359tSnPTS";
+
+    function makeZordActor({ hasFeature = true } = {}) {
+      return {
+        ...mockActor,
+        type: 'zord',
+        uuid: 'Actor.zord1',
+        items: hasFeature ? [{ type: 'feature', flags: { core: { sourceId: AUXILIARY_ZORD_ID } } }] : [],
+        system: {
+          ...mockActor.system,
+          actors: {},
+          essenceShifts: {
+            any: { shiftUp: 0, shiftDown: 0 },
+            strength: { shiftUp: 0, shiftDown: 0 },
+            speed: { shiftUp: 0, shiftDown: 0 },
+            smarts: { shiftUp: 0, shiftDown: 0 },
+            social: { shiftUp: 0, shiftDown: 0 },
+          },
+        },
+        getRollData: jest.fn(() => ({
+          skills: { might: { modifier: '0', shift: 'd20' } },
+        })),
+      };
+    }
+
+    function weaponEffect(style) {
+      return {
+        type: 'weaponEffect',
+        flags: {},
+        system: { classification: { skill: 'might', style }, damageType: 'blunt', damageValue: 1 },
+      };
+    }
+
+    test("adds +1 damage to the Zord's own melee attacks", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('melee'));
+
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageBonusValue).toBe(1);
+    });
+
+    test("doesn't apply without the Feature or on a ranged attack", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor({ hasFeature: false }), weaponEffect('melee'),
+      );
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageBonusValue).toBe(0);
+
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('energy'));
+      expect(dice._rollSkillHelper.mock.calls[1][4].damageBonusValue).toBe(0);
+    });
+  });
+
+  describe("Upgraded Zord: Thunder Upgrade (PR CRB, Zord Feature, p.138) - all-attack damage bonus", () => {
+    const THUNDER_UPGRADE_ID = "Compendium.essence20.pr_crb.Item.TrahRuyqZz8UAQ6K";
+
+    function makeZordActor({ hasFeature = true } = {}) {
+      return {
+        ...mockActor,
+        type: 'zord',
+        uuid: 'Actor.zord1',
+        items: hasFeature ? [{ type: 'feature', flags: { core: { sourceId: THUNDER_UPGRADE_ID } } }] : [],
+        system: {
+          ...mockActor.system,
+          actors: {},
+          essenceShifts: {
+            any: { shiftUp: 0, shiftDown: 0 },
+            strength: { shiftUp: 0, shiftDown: 0 },
+            speed: { shiftUp: 0, shiftDown: 0 },
+            smarts: { shiftUp: 0, shiftDown: 0 },
+            social: { shiftUp: 0, shiftDown: 0 },
+          },
+        },
+        getRollData: jest.fn(() => ({
+          skills: { might: { modifier: '0', shift: 'd20' } },
+        })),
+      };
+    }
+
+    function weaponEffect(style) {
+      return {
+        type: 'weaponEffect',
+        flags: {},
+        system: { classification: { skill: 'might', style }, damageType: 'blunt', damageValue: 1 },
+      };
+    }
+
+    test("adds +1 damage to the Zord's melee attacks", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('melee'));
+
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageBonusValue).toBe(1);
+    });
+
+    test("also adds +1 damage to the Zord's ranged attacks, unlike Auxiliary Zord's melee-only bonus", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('energy'));
+
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageBonusValue).toBe(1);
+    });
+
+    test("doesn't apply without the Feature", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor({ hasFeature: false }), weaponEffect('melee'),
+      );
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageBonusValue).toBe(0);
+    });
+  });
+
+  describe("Relic Key (PR CRB, Zord Feature, p.140) - Edge on any one roll in the scene", () => {
+    function makeActor({ edgeActive = false } = {}) {
+      const flagStore = { relicKeyEdgeActive: edgeActive };
+      return {
+        ...mockActor,
+        type: 'zord',
+        uuid: 'Actor.zord1',
+        items: [],
+        system: {
+          ...mockActor.system,
+          actors: {},
+          essenceShifts: {
+            any: { shiftUp: 0, shiftDown: 0 },
+            strength: { shiftUp: 0, shiftDown: 0 },
+            speed: { shiftUp: 0, shiftDown: 0 },
+            smarts: { shiftUp: 0, shiftDown: 0 },
+            social: { shiftUp: 0, shiftDown: 0 },
+          },
+        },
+        getRollData: jest.fn(() => ({
+          skills: { might: { modifier: '0', shift: 'd20' } },
+        })),
+        getFlag: jest.fn((scope, key) => flagStore[key]),
+        unsetFlag: jest.fn((scope, key) => {
+          delete flagStore[key];
+        }),
+      };
+    }
+
+    test("grants Edge and consumes the declaration when active", async () => {
+      dice._rollSkillHelper = jest.fn();
+      const actor = makeActor({ edgeActive: true });
+
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, actor, null);
+
+      const [, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(skillDataset.edge).toBe(true);
+      expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'relicKeyEdgeActive');
+    });
+
+    test("doesn't apply without a declared grant", async () => {
+      dice._rollSkillHelper = jest.fn();
+      const actor = makeActor({ edgeActive: false });
+
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, actor, null);
+
+      const [, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(skillDataset.edge).toBeFalsy();
+      expect(actor.unsetFlag).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Warrior Mode (PR CRB, Zord Feature, p.140) - melee damage bonus", () => {
+    function makeZordActor({ active = false } = {}) {
+      const flagStore = { warriorModeActive: active };
+      return {
+        ...mockActor,
+        type: 'zord',
+        uuid: 'Actor.zord1',
+        items: [],
+        system: {
+          ...mockActor.system,
+          actors: {},
+          essenceShifts: {
+            any: { shiftUp: 0, shiftDown: 0 },
+            strength: { shiftUp: 0, shiftDown: 0 },
+            speed: { shiftUp: 0, shiftDown: 0 },
+            smarts: { shiftUp: 0, shiftDown: 0 },
+            social: { shiftUp: 0, shiftDown: 0 },
+          },
+        },
+        getRollData: jest.fn(() => ({
+          skills: { might: { modifier: '0', shift: 'd20' } },
+        })),
+        getFlag: jest.fn((scope, key) => flagStore[key]),
+      };
+    }
+
+    function weaponEffect(style) {
+      return {
+        type: 'weaponEffect',
+        flags: {},
+        system: { classification: { skill: 'might', style }, damageType: 'blunt', damageValue: 1 },
+      };
+    }
+
+    test("adds +1 damage to a melee attack while active", async () => {
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor({ active: true }), weaponEffect('melee'),
+      );
+
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageBonusValue).toBe(1);
+    });
+
+    test("doesn't apply while inactive or on a ranged attack", async () => {
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor({ active: false }), weaponEffect('melee'),
+      );
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageBonusValue).toBe(0);
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor({ active: true }), weaponEffect('energy'),
+      );
+      expect(dice._rollSkillHelper.mock.calls[1][4].damageBonusValue).toBe(0);
+    });
+  });
+
+  describe("Titan Body (PR CRB, Zord Feature, p.140) - base melee damage floor", () => {
+    const TITAN_BODY_ID = "Compendium.essence20.pr_crb.Item.a8qeX4JiDdAKfxyl";
+
+    function makeZordActor({ hasFeature = true } = {}) {
+      return {
+        ...mockActor,
+        type: 'zord',
+        uuid: 'Actor.zord1',
+        items: hasFeature ? [{ type: 'feature', flags: { core: { sourceId: TITAN_BODY_ID } } }] : [],
+        system: {
+          ...mockActor.system,
+          actors: {},
+          essenceShifts: {
+            any: { shiftUp: 0, shiftDown: 0 },
+            strength: { shiftUp: 0, shiftDown: 0 },
+            speed: { shiftUp: 0, shiftDown: 0 },
+            smarts: { shiftUp: 0, shiftDown: 0 },
+            social: { shiftUp: 0, shiftDown: 0 },
+          },
+        },
+        getRollData: jest.fn(() => ({
+          skills: { might: { modifier: '0', shift: 'd20' } },
+        })),
+      };
+    }
+
+    function weaponEffect(style, damageValue) {
+      return {
+        type: 'weaponEffect',
+        flags: {},
+        system: { classification: { skill: 'might', style }, damageType: 'blunt', damageValue },
+      };
+    }
+
+    test("raises a melee attack's base damage up to 3 when it started lower", async () => {
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('melee', 2),
+      );
+
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageValue).toBe(3);
+    });
+
+    test("doesn't lower an already-higher base melee damage", async () => {
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('melee', 5),
+      );
+
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageValue).toBe(5);
+    });
+
+    test("doesn't apply without the Feature or on a ranged attack", async () => {
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor({ hasFeature: false }), weaponEffect('melee', 2),
+      );
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageValue).toBe(2);
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('energy', 2),
+      );
+      expect(dice._rollSkillHelper.mock.calls[1][4].damageValue).toBe(2);
+    });
+  });
+
+  describe("Linked (GI Joe CRB, Vehicle Trait, p.173)", () => {
+    function makeLinkedActor({ hasLinkedTrait = true } = {}) {
+      const items = [];
+      items.get = jest.fn(id => (id == 'weapon1'
+        ? { flags: { core: { sourceId: 'linkedWeapon1' } }, system: { traits: hasLinkedTrait ? ['linked'] : [] } }
+        : null));
+      return {
+        ...mockActor,
+        items,
+        getRollData: jest.fn(() => ({
+          skills: { targeting: { modifier: '0', shift: 'd20' } },
+        })),
+      };
+    }
+
+    function weaponEffect() {
+      return {
+        type: 'weaponEffect',
+        flags: { essence20: { parentId: 'weapon1' } },
+        system: { classification: { skill: 'targeting', style: 'ranged' } },
+      };
+    }
+
+    test("grants Edge on an attack with a Linked weapon", async () => {
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'targeting' }, makeLinkedActor(), weaponEffect());
+
+      const [, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(skillDataset.edge).toBe(true);
+    });
+
+    test("doesn't apply without the trait", async () => {
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'targeting' }, makeLinkedActor({ hasLinkedTrait: false }), weaponEffect(),
+      );
+
+      const [, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(skillDataset.edge).toBeFalsy();
+    });
+
+    test("doesn't apply to a non-weaponEffect roll", async () => {
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'targeting' }, makeLinkedActor(), null);
+
+      const [, skillDataset] = dice._rollDialog.getSkillRollOptions.mock.calls.at(-1);
+      expect(skillDataset.edge).toBeFalsy();
+    });
+  });
+
+  describe("Ninja Powered: Raw Ferocity (PR CRB, Zord Feature, p.138)", () => {
+    const RAW_FEROCITY_ID = "Compendium.essence20.pr_crb.Item.ljHdKAY31JGiknxb";
+
+    function makeZordActor({ hasFeature = true } = {}) {
+      return {
+        ...mockActor,
+        type: 'zord',
+        uuid: 'Actor.zord1',
+        items: hasFeature ? [{ type: 'feature', flags: { core: { sourceId: RAW_FEROCITY_ID } } }] : [],
+        system: {
+          ...mockActor.system,
+          actors: {},
+          essenceShifts: {
+            any: { shiftUp: 0, shiftDown: 0 },
+            strength: { shiftUp: 0, shiftDown: 0 },
+            speed: { shiftUp: 0, shiftDown: 0 },
+            smarts: { shiftUp: 0, shiftDown: 0 },
+            social: { shiftUp: 0, shiftDown: 0 },
+          },
+        },
+        getRollData: jest.fn(() => ({
+          skills: { might: { modifier: '0', shift: 'd20' } },
+        })),
+      };
+    }
+
+    function weaponEffect(style) {
+      return {
+        type: 'weaponEffect',
+        flags: {},
+        system: { classification: { skill: 'might', style }, damageType: 'blunt', damageValue: 1 },
+      };
+    }
+
+    test("adds +2 damage when the final roll choice is Snag on a melee attack", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: true, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('melee'));
+
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageBonusValue).toBe(2);
+    });
+
+    test("doesn't apply without the Feature, on a ranged attack, or without Snag as the final choice", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: true, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeZordActor({ hasFeature: false }), weaponEffect('melee'),
+      );
+      expect(dice._rollSkillHelper.mock.calls[0][4].damageBonusValue).toBe(0);
+
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('energy'));
+      expect(dice._rollSkillHelper.mock.calls[1][4].damageBonusValue).toBe(0);
+
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeZordActor(), weaponEffect('melee'));
+      expect(dice._rollSkillHelper.mock.calls[2][4].damageBonusValue).toBe(0);
+    });
+  });
+
   describe("Eltarian Training (Through the Shattered Grid, General Perk, p.73) - Finesse downshift immunity", () => {
     const ELTARIAN_TRAINING_ID = "Compendium.essence20.through_the_shattered_grid.Item.NXxiyoOB60ems444";
 
@@ -8301,12 +9014,14 @@ describe("rollSkill", () => {
       return { uuid: 'Actor.driver1', type: 'playerCharacter', items, statuses: new Set() };
     }
 
-    function ramWeaponEffect(name = 'Ram') {
+    function ramWeaponEffect({ isRam = true, isFlyby = false } = {}) {
       return {
-        name,
+        name: 'Attack',
         type: 'weaponEffect',
         flags: {},
-        system: { classification: { skill: 'might', style: 'melee' }, damageType: 'blunt', damageValue: 0 },
+        system: {
+          classification: { skill: 'might', style: 'melee' }, damageType: 'blunt', damageValue: 0, isRam, isFlyby,
+        },
       };
     }
 
@@ -8335,7 +9050,9 @@ describe("rollSkill", () => {
       });
       dice._rollSkillHelper = jest.fn();
 
-      await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeVehicleActor(), ramWeaponEffect('Flyby'));
+      await dice.rollSkill(
+        { ...dataset, dif: '10', skill: 'might' }, makeVehicleActor(), ramWeaponEffect({ isRam: false, isFlyby: true }),
+      );
 
       expect(rollDialog.getSkillRollOptions.mock.calls[0][0].demolitionDriverAvailable).toBe(0);
     });
@@ -13797,10 +14514,10 @@ describe("rollSkill", () => {
       expect(dice._rollSkillHelper.mock.calls.length).toBe(2);
       const [firstContext, secondContext] = dice._rollSkillHelper.mock.calls.map(call => call[4]);
       expect(firstContext.entries).toEqual([
-        { name: 'Alpha', targetUuid: 'Actor.Alpha', difficulty: 10, willpowerDifficulty: null, toughnessDifficulty: null },
+        { name: 'Alpha', targetUuid: 'Actor.Alpha', difficulty: 10, defenseType: 'toughness', defenderStepBonus: 0, defenderStepReactorUuid: null, willpowerDifficulty: null, toughnessDifficulty: null },
       ]);
       expect(secondContext.entries).toEqual([
-        { name: 'Bravo', targetUuid: 'Actor.Bravo', difficulty: 15, willpowerDifficulty: null, toughnessDifficulty: null },
+        { name: 'Bravo', targetUuid: 'Actor.Bravo', difficulty: 15, defenseType: 'toughness', defenderStepBonus: 0, defenderStepReactorUuid: null, willpowerDifficulty: null, toughnessDifficulty: null },
       ]);
       // Every other checkContext field (damageValue, damageType, ...) still carries through
       // unchanged to each per-target call, same as a normal shared roll.
@@ -17137,12 +17854,14 @@ describe("rollSkill", () => {
         return { uuid: 'Actor.driver1', type: 'playerCharacter', items, statuses: new Set() };
       }
 
-      function ramWeaponEffect(name = 'Ram') {
+      function ramWeaponEffect({ isRam = true, isFlyby = false } = {}) {
         return {
-          name,
+          name: 'Attack',
           type: 'weaponEffect',
           flags: {},
-          system: { classification: { skill: 'might', style: 'melee' }, damageType: 'blunt', damageValue: 2 },
+          system: {
+            classification: { skill: 'might', style: 'melee' }, damageType: 'blunt', damageValue: 2, isRam, isFlyby,
+          },
         };
       }
 
@@ -17158,7 +17877,7 @@ describe("rollSkill", () => {
         });
         dice._rollSkillHelper = jest.fn();
 
-        await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeVehicleActor(), ramWeaponEffect('Ram'));
+        await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeVehicleActor(), ramWeaponEffect());
 
         expect(dice._rollSkillHelper.mock.calls[0][4].isSideswipeAttempt).toBe(true);
       });
@@ -17171,12 +17890,14 @@ describe("rollSkill", () => {
         });
         dice._rollSkillHelper = jest.fn();
 
-        await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeVehicleActor(), ramWeaponEffect('Flyby'));
+        await dice.rollSkill(
+          { ...dataset, dif: '10', skill: 'might' }, makeVehicleActor(), ramWeaponEffect({ isRam: false, isFlyby: true }),
+        );
 
         expect(dice._rollSkillHelper.mock.calls[0][4].isSideswipeAttempt).toBe(true);
       });
 
-      test("doesn't flag a differently-named attack, without the Perk, without a driver, or when the roller isn't a vehicle", async () => {
+      test("doesn't flag a non-Ram/Flyby attack, without the Perk, without a driver, or when the roller isn't a vehicle", async () => {
         global.fromUuidSync.mockReturnValue(makeDriverActor());
         const rollDialog = createMockRollDialog();
         rollDialog.getSkillRollOptions.mockReturnValue({
@@ -17184,19 +17905,21 @@ describe("rollSkill", () => {
         });
         dice._rollSkillHelper = jest.fn();
 
-        await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeVehicleActor(), ramWeaponEffect('Machine Gun'));
+        await dice.rollSkill(
+          { ...dataset, dif: '10', skill: 'might' }, makeVehicleActor(), ramWeaponEffect({ isRam: false, isFlyby: false }),
+        );
         expect(dice._rollSkillHelper.mock.calls[0][4].isSideswipeAttempt).toBe(false);
 
         global.fromUuidSync.mockReturnValue(makeDriverActor({ hasPerk: false }));
-        await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeVehicleActor(), ramWeaponEffect('Ram'));
+        await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeVehicleActor(), ramWeaponEffect());
         expect(dice._rollSkillHelper.mock.calls[1][4].isSideswipeAttempt).toBe(false);
 
-        await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeVehicleActor({ crew: {} }), ramWeaponEffect('Ram'));
+        await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeVehicleActor({ crew: {} }), ramWeaponEffect());
         expect(dice._rollSkillHelper.mock.calls[2][4].isSideswipeAttempt).toBe(false);
 
         global.fromUuidSync.mockReturnValue(makeDriverActor());
         const nonVehicleActor = { ...makeVehicleActor(), type: 'playerCharacter' };
-        await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, nonVehicleActor, ramWeaponEffect('Ram'));
+        await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, nonVehicleActor, ramWeaponEffect());
         expect(dice._rollSkillHelper.mock.calls[3][4].isSideswipeAttempt).toBe(false);
       });
     });
@@ -26273,7 +26996,7 @@ describe("_getAutomaticCombatModifiers", () => {
     moveLikeASongTriggered: false, spottedTarget: null, eyeForAppraisalTarget: null,
     projectileDancerTargetToMark: null, sources: [], zordbaneDamageBonus: 0, oorahDamageBonus: 0,
     isCatchOffGuardAttempt: false, cruelDamageBonus: 0,
-    exterminatorEligible: false, twoHeadsAssistanceConsumed: false,
+    exterminatorEligible: false, twoHeadsAssistanceConsumed: false, balanceOfJusticeTriggered: false,
   };
 
   const meleeWeaponEffect = {
@@ -27889,6 +28612,140 @@ describe("_getAutomaticCombatModifiers", () => {
     });
   });
 
+  describe("Ninja Powered: Deep Wisdom / Shining Light (PR CRB, Zord Features, p.138)", () => {
+    const DEEP_WISDOM_ID = "Compendium.essence20.pr_crb.Item.wvJFH2HbSWNab25M";
+    const SHINING_LIGHT_ID = "Compendium.essence20.pr_crb.Item.YZivdMV6wIhdrcKt";
+
+    function makeZordActor(featureIds = []) {
+      const actor = { ...makeActor('huge'), type: 'zord' };
+      actor.items = featureIds.map(featureId => ({ type: 'feature', flags: { core: { sourceId: featureId } } }));
+      actor.items.get = jest.fn(() => null);
+      return actor;
+    }
+
+    test("Deep Wisdom grants an Edge attacking a target Resistant to the attack's damage type", () => {
+      game.user.targets.first.mockReturnValue({
+        actor: { ...makeActor('common'), system: { size: 'common', resistances: { blunt: true } } },
+      });
+      const actor = makeZordActor([DEEP_WISDOM_ID]);
+
+      const result = dice._getAutomaticCombatModifiers(
+        actor, { type: 'weaponEffect', system: { classification: { style: 'melee' }, damageType: 'blunt' } },
+      );
+      expect(result.edge).toBe(true);
+    });
+
+    test("Deep Wisdom grants an Edge attacking a target Immune to the attack's damage type", () => {
+      game.user.targets.first.mockReturnValue({
+        actor: { ...makeActor('common'), system: { size: 'common', immunities: { blunt: true } } },
+      });
+      const actor = makeZordActor([DEEP_WISDOM_ID]);
+
+      const result = dice._getAutomaticCombatModifiers(
+        actor, { type: 'weaponEffect', system: { classification: { style: 'melee' }, damageType: 'blunt' } },
+      );
+      expect(result.edge).toBe(true);
+    });
+
+    test("Deep Wisdom doesn't apply without the Feature, or against a target with neither", () => {
+      game.user.targets.first.mockReturnValue({
+        actor: { ...makeActor('common'), system: { size: 'common', resistances: { blunt: true } } },
+      });
+      const actor = makeZordActor([]);
+
+      const result = dice._getAutomaticCombatModifiers(
+        actor, { type: 'weaponEffect', system: { classification: { style: 'melee' }, damageType: 'blunt' } },
+      );
+      expect(result.edge).toBe(false);
+    });
+
+    test("Shining Light imposes a Snag on ranged attacks targeting the Zord", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeZordActor([SHINING_LIGHT_ID]) });
+      const actor = makeActor('common');
+
+      const result = dice._getAutomaticCombatModifiers(
+        actor, { type: 'weaponEffect', system: { classification: { style: 'projectile' }, damageType: 'blunt' } },
+      );
+      expect(result.snag).toBe(true);
+    });
+
+    test("Shining Light doesn't apply to a melee attack, or without the Feature", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeZordActor([SHINING_LIGHT_ID]) });
+      const actor = makeActor('common');
+
+      const meleeResult = dice._getAutomaticCombatModifiers(
+        actor, { type: 'weaponEffect', system: { classification: { style: 'melee' }, damageType: 'blunt' } },
+      );
+      expect(meleeResult.snag).toBe(false);
+
+      game.user.targets.first.mockReturnValue({ actor: makeZordActor([]) });
+      const result = dice._getAutomaticCombatModifiers(
+        actor, { type: 'weaponEffect', system: { classification: { style: 'projectile' }, damageType: 'blunt' } },
+      );
+      expect(result.snag).toBe(false);
+    });
+  });
+
+  describe("Ninja Powered: Balance of Justice (PR CRB, Zord Feature, p.138)", () => {
+    const BALANCE_OF_JUSTICE_ID = "Compendium.essence20.pr_crb.Item.wlXHbN4QHSBGbkTe";
+
+    function makeZordActor(featureIds = []) {
+      const actor = { ...makeActor('huge'), type: 'zord' };
+      actor.items = featureIds.map(featureId => ({ type: 'feature', flags: { core: { sourceId: featureId } } }));
+      actor.items.get = jest.fn(() => null);
+      return actor;
+    }
+
+    function makeMarkedTargetActor({ usedThisRound = false } = {}) {
+      const target = makeActor('common');
+      target.getFlag = jest.fn((scope, key) => (
+        key == 'balanceOfJusticeUsedThisRound' && usedThisRound
+          ? { combatId: 'combat1', round: 2 }
+          : undefined
+      ));
+      return target;
+    }
+
+    beforeEach(() => {
+      game.combat = { id: 'combat1', round: 2 };
+    });
+
+    afterEach(() => {
+      game.combat = null;
+    });
+
+    test("grants an Edge attacking a target already marked this round", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeMarkedTargetActor({ usedThisRound: true }) });
+      const actor = makeActor('common');
+
+      const result = dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect);
+      expect(result.edge).toBe(true);
+    });
+
+    test("doesn't grant an Edge against an unmarked target", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeMarkedTargetActor({ usedThisRound: false }) });
+      const actor = makeActor('common');
+
+      const result = dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect);
+      expect(result.edge).toBe(false);
+    });
+
+    test("flags balanceOfJusticeTriggered when a Zord with the Feature makes a weaponEffect attack", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeMarkedTargetActor() });
+      const actor = makeZordActor([BALANCE_OF_JUSTICE_ID]);
+
+      const result = dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect);
+      expect(result.balanceOfJusticeTriggered).toBe(true);
+    });
+
+    test("doesn't flag balanceOfJusticeTriggered without the Feature, or on a non-Zord actor", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeMarkedTargetActor() });
+
+      expect(dice._getAutomaticCombatModifiers(makeZordActor([]), meleeWeaponEffect).balanceOfJusticeTriggered).toBe(false);
+      expect(dice._getAutomaticCombatModifiers(makeActor('common'), meleeWeaponEffect).balanceOfJusticeTriggered).toBe(false);
+    });
+  });
+
   describe("Zordbane (Finster's Monster-Matic Cookbook, all 6 Psycho Paths, 8th level)", () => {
     const ZORDBANE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.SejEXXGz3edJ734e";
 
@@ -28567,7 +29424,21 @@ describe("_getAutomaticCombatModifiers", () => {
       game.user.targets.first.mockReturnValue({ actor: makeShieldedTarget({ perkIds: [IMPENETRABLE_SHIELD_ID] }) });
       const actor = makeActor('common');
 
-      expect(dice._getAutomaticCombatModifiers(actor, empWeaponEffect)).toEqual(defaultModifiers);
+      // Electromagnetic vs. Computerized (GI Joe CRB, p.207/173) still applies its own ↓3 against
+      // this non-Computerized target - a separate mechanic from Impenetrable Shield, which this
+      // test is really about (no Snag from the shield specifically).
+      expect(dice._getAutomaticCombatModifiers(actor, empWeaponEffect)).toEqual({
+        ...defaultModifiers, shiftDown: 3, sources: [
+          {
+            "edge": false,
+            "id": "electromagneticVsComputerized",
+            "label": "E20.DamageEmp",
+            "shiftDown": 3,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ],
+      });
     });
 
     test("doesn't apply without the shield active", () => {
@@ -28584,6 +29455,99 @@ describe("_getAutomaticCombatModifiers", () => {
       const actor = makeActor('common');
 
       expect(dice._getAutomaticCombatModifiers(actor, fireWeaponEffect)).toEqual(defaultModifiers);
+    });
+  });
+
+  describe("Electromagnetic vs. Computerized (GI Joe CRB, Damage Types p.207 + Computerized Vehicle Trait p.173)", () => {
+    const empWeaponEffect = { ...meleeWeaponEffect, system: { ...meleeWeaponEffect.system, damageType: 'emp' } };
+    const fireWeaponEffect = { ...meleeWeaponEffect, system: { ...meleeWeaponEffect.system, damageType: 'fire' } };
+
+    function makeComputerizedTarget() {
+      const target = makeActor('vehicle');
+      target.system = { ...target.system, traits: { computerized: true } };
+      return target;
+    }
+
+    test("grants ↑3 against a Computerized target", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeComputerizedTarget() });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, empWeaponEffect))
+        .toEqual({ ...defaultModifiers, shiftUp: 3, sources: [
+          {
+            "edge": false,
+            "id": "electromagneticVsComputerized",
+            "label": "E20.DamageEmp",
+            "shiftDown": 0,
+            "shiftUp": 3,
+            "snag": false,
+          },
+        ] });
+    });
+
+    test("imposes ↓3 against a non-Computerized target", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeActor('common') });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, empWeaponEffect))
+        .toEqual({ ...defaultModifiers, shiftDown: 3, sources: [
+          {
+            "edge": false,
+            "id": "electromagneticVsComputerized",
+            "label": "E20.DamageEmp",
+            "shiftDown": 3,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
+    });
+
+    test("doesn't apply to a non-EMP attack", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeComputerizedTarget() });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, fireWeaponEffect)).toEqual(defaultModifiers);
+    });
+  });
+
+  describe("Fragile (GI Joe CRB, Vehicle Trait, p.301) - Ram vs. Fragile ↑1", () => {
+    const ramWeaponEffect = { ...meleeWeaponEffect, system: { ...meleeWeaponEffect.system, isRam: true } };
+
+    function makeFragileTarget() {
+      const target = makeActor('vehicle');
+      target.system = { ...target.system, traits: { fragile: true } };
+      return target;
+    }
+
+    test("grants ↑1 when ramming a Fragile target", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeFragileTarget() });
+      const actor = makeActor('vehicle');
+
+      expect(dice._getAutomaticCombatModifiers(actor, ramWeaponEffect))
+        .toEqual({ ...defaultModifiers, shiftUp: 1, sources: [
+          {
+            "edge": false,
+            "id": "rammingFragileVehicle",
+            "label": "E20.VehicleTraitFragile",
+            "shiftDown": 0,
+            "shiftUp": 1,
+            "snag": false,
+          },
+        ] });
+    });
+
+    test("doesn't apply against a non-Fragile target", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeActor('vehicle') });
+      const actor = makeActor('vehicle');
+
+      expect(dice._getAutomaticCombatModifiers(actor, ramWeaponEffect)).toEqual(defaultModifiers);
+    });
+
+    test("doesn't apply from a non-Ram attack", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeFragileTarget() });
+      const actor = makeActor('vehicle');
+
+      expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect)).toEqual(defaultModifiers);
     });
   });
 

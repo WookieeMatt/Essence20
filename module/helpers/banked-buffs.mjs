@@ -78,6 +78,7 @@ import { activateOutwit } from "./outwit.mjs";
 import { activateShoulderToShoulder } from "./shoulder-to-shoulder.mjs";
 import { activateFearsomePresence } from "./fearsome-presence.mjs";
 import { isRecklessAbandonActive } from "./reckless-abandon.mjs";
+import { canDeclareRelicKeyEdge, declareRelicKeyEdge, RELIC_KEY_ID } from "./relic-key.mjs";
 import { toggleNaturalMovement } from "./natural-movement.mjs";
 import {
   ENVIRONMENTAL_EXPERTISE_ID, GUIDANCE_ID, isEnvironmentalExpertiseActive, PENDING_GUIDANCE_FLAG_KEY,
@@ -1725,7 +1726,12 @@ const IMMEDIATE_ALLY_PERKS = {
  */
 export function canUsePerk(item) {
   const actor = item?.parent;
-  if (!actor || item.type != 'perk') {
+  // Despite the name, this (and onPerkUse below) also covers Relic Key - a `feature`-type Zord
+  // Feature (helpers/relic-key.mjs), not a `perk` item, but the same "Use" control/button this
+  // whole registry already renders generically for any item (collapsible-item-container-label-
+  // buttons.hbs's own {{#if (canUsePerk item)}} check isn't type-scoped) - reusing this existing
+  // registry instead of building a parallel one just for a single Feature.
+  if (!actor || !['perk', 'feature'].includes(item.type)) {
     return false;
   }
 
@@ -1737,6 +1743,10 @@ export function canUsePerk(item) {
 
   if (sourceId == MARK_TARGET_ID) {
     return true;
+  }
+
+  if (sourceId == RELIC_KEY_ID) {
+    return canDeclareRelicKeyEdge(actor);
   }
 
   if (sourceId == EXTRA_ROUGH_TRAINING_ID) {
@@ -2816,6 +2826,11 @@ export async function onPerkUse(item) {
 
   if (isTeamBuffPerk(item)) {
     return onTeamBuffPerkUse(item, actor);
+  }
+
+  if (sourceId == RELIC_KEY_ID) {
+    await declareRelicKeyEdge(actor);
+    return;
   }
 
   if (sourceId == EXTRA_ROUGH_TRAINING_ID) {

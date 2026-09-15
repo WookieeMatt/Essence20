@@ -1,0 +1,42 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Vehicle Parachute",
+  "type": "upgrade",
+  "_id": "2n42BDiMFG7mndgC",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 59
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "limited",
+    "benefit": "The vehicle can be air-dropped without taking falling damage, but can't maneuver until it lands.",
+    "traits": [],
+    "type": "vehicle",
+    "prerequisite": "Land or Sea vehicle"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1789440000000,
+    "modifiedTime": 1789440000000,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!2n42BDiMFG7mndgC"
+}

@@ -5,7 +5,18 @@
     <span>{{numActions.movement}}{{localize "E20.SpeedActionsLabelMovement"}}, {{numActions.standard}}{{localize "E20.SpeedActionsLabelStandard"}}, {{numActions.free}}{{localize "E20.SpeedActionsLabelFree"}}</span>
   </div>
   {{#if system.movementNotSet}}
-    <div>Set PC movement by adding an Origin</div>
+    {{#if (eq @root.document.type "playerCharacter")}}
+      <div>{{localize 'E20.SpeedNotSetPc'}}</div>
+    {{else if (eq @root.document.type "megaform")}}
+      {{!-- A Megaform's own Movement is never GM-typed - RAW (p.140) sets it to the slowest
+           linked participant's own Movement (Essence20Actor#_prepareMegaformData), so with none
+           linked yet, the fix is adding participants on the Combiner Participants tab, not the
+           Speeds editor's flat .bonus (which still exists and still works once participants are
+           linked, for the same reason Health/Defenses keep theirs). --}}
+      <div>{{localize 'E20.SpeedNotSetMegaform'}}</div>
+    {{else}}
+      <div>{{localize 'E20.SpeedNotSetNonPc'}}</div>
+    {{/if}}
   {{else}}
     {{!-- Always read-only here - editing happens exclusively through the Speeds gear-icon's
          Stat Editor dialog (module/apps/stat-editor.mjs), which covers every actor type (a

@@ -2,7 +2,7 @@
   <div class="flexrow gap-6">
     {{#if actors}}
       {{#each actors as |attachedActor key|}}
-      <div class="systemActors zord item stats-container e20-border-accent" data-e20-color="{{attachedActor.system.color}}" data-system-Actors-uuid="{{attachedActor.uuid}}">
+      <div class="systemActors zord item stats-container e20-border-accent" data-e20-color="{{attachedActor.system.color}}" data-system-Actors-uuid="{{attachedActor.uuid}}" data-tooltip="{{localize 'E20.ActorOpenSheetTooltip'}}">
         <div class="flexrow flex-group-center">
           <img class="zord-img" src="{{attachedActor.img}}" data-edit="img" data-tooltip="{{attachedActor.name}}" />
         </div>
@@ -20,8 +20,11 @@
              creature() with its own health, per npc.mjs, and a Contact a player fights
              alongside is exactly where seeing it at a glance is most useful) has this. --}}
         <div>
-          {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="attachedActor.system.health" value="{{attachedActor.system.health.value}}" min="0" step="1" />
+          {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input attached-actor-health" type="number" data-system-Actors-uuid="{{attachedActor.uuid}}" value="{{attachedActor.system.health.value}}" min="0" max="{{attachedActor.system.health.max}}" step="1" />
           / {{attachedActor.system.health.max}}
+        </div>
+        <div>
+          {{ localize 'E20.ActorStun' }}: <input class="two-digit-input attached-actor-stun" type="number" data-system-Actors-uuid="{{attachedActor.uuid}}" value="{{attachedActor.system.stun.value}}" min="0" step="1" />
         </div>
 
         {{#if (eq attachedActor.type "npc")}}
@@ -39,17 +42,35 @@
 
         {{#if (eq attachedActor.type "zord")}}
           <div>{{localize 'E20.ActorSize'}}: {{lookup @root.config.actorSizes attachedActor.system.size}}</div>
+          {{#if (eq @root.document.type "megaform")}}
+            {{!-- Ranger only exists on a Zord (zord.mjs's own system.ranger field) - a Transformers
+                 Combiner's own playerCharacter components have no such field, so this only shows
+                 for a Power Rangers Megazord's linked Zords. --}}
+            <div>
+              <span>{{ localize 'E20.ZordRanger' }}: {{attachedActor.system.ranger}}</span>
+            </div>
+          {{/if}}
         {{/if}}
         {{#if (eq @root.document.type "megaform")}}
-          <div>
-            <span>{{ localize 'E20.ZordRanger' }}: {{attachedActor.system.ranger}}</span>
-          </div>
-
           <div>
           <div>{{ localize 'E20.ItemTypeMegaformTraitPlural' }}:</div>
             <ul>
               {{#each attachedActor.items as |item|}}
               {{#if (eq item.type 'megaformTrait')}}
+              <li>{{item.name}}</li>
+              {{/if}}
+              {{/each}}
+            </ul>
+          </div>
+          {{!-- Zord Features (Martial Zord, Zero-G, Auxiliary Zord, ...) stay owned by the
+               participant that holds them (like Megaform Traits above) - shown here read-only so
+               it's visible at a glance which ones are currently contributing to this merged
+               form, since there's no add/edit control for them on the Megaform's own sheet. --}}
+          <div>
+          <div>{{ localize 'E20.ItemTypeFeaturePlural' }}:</div>
+            <ul>
+              {{#each attachedActor.items as |item|}}
+              {{#if (eq item.type 'feature')}}
               <li>{{item.name}}</li>
               {{/if}}
               {{/each}}

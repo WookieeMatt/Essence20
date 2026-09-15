@@ -13,8 +13,14 @@ function makeTrainingSchema(itemTypes) {
   return new fields.SchemaField(itemSchema);
 }
 
-function makeDefensesFields(name, essence) {
-  return new fields.SchemaField({
+/**
+ * Returns a plain field-definition object (not wrapped in a SchemaField) for one Defense entry,
+ * so callers outside this file can extend it with their own additional fields before wrapping it
+ * themselves - see templates/machine.mjs's own makeMachineDefensesFields, which adds a
+ * `usesDrivers` field on top of this same shape for Vehicle/Zord Willpower/Cleverness.
+ */
+export function makeDefensesFields(name, essence) {
+  return {
     armor: makeInt(0),
     base: makeInt(10),
     bonus: makeInt(0),
@@ -24,7 +30,7 @@ function makeDefensesFields(name, essence) {
     shield: makeInt(0),
     string: makeStr(''),
     total: makeInt(0),
-  });
+  };
 }
 
 function makeSkillRankAllocation() {
@@ -70,10 +76,10 @@ export const character = () => ({
   canTransform: makeBool(false),
   canUseWeird: makeBool(false),
   defenses: new fields.SchemaField({
-    toughness: makeDefensesFields('toughness', 'strength'),
-    evasion: makeDefensesFields('evasion', 'speed'),
-    willpower: makeDefensesFields('willpower', 'smarts'),
-    cleverness: makeDefensesFields('cleverness', 'social'),
+    toughness: new fields.SchemaField(makeDefensesFields('toughness', 'strength')),
+    evasion: new fields.SchemaField(makeDefensesFields('evasion', 'speed')),
+    willpower: new fields.SchemaField(makeDefensesFields('willpower', 'smarts')),
+    cleverness: new fields.SchemaField(makeDefensesFields('cleverness', 'social')),
   }),
   environments: makeStrArrayWithChoices(E20.Environments, null),
   essences: new fields.SchemaField({

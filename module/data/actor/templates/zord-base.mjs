@@ -12,10 +12,10 @@ export const zordBase = () => ({
   armor: makeInt(1),
   conditioning: makeInt(3),
   defenses: new fields.SchemaField({
-    toughness: makeDefensesFields(false, 17),
-    evasion: makeDefensesFields(false, 14),
-    willpower: makeDefensesFields(true, null),
-    cleverness: makeDefensesFields(true, null),
+    toughness: makeDefensesFields('toughness', 'strength', false, 17),
+    evasion: makeDefensesFields('evasion', 'speed', false, 14),
+    willpower: makeDefensesFields('willpower', 'smarts', true, null),
+    cleverness: makeDefensesFields('cleverness', 'social', true, null),
   }),
   essences: new fields.SchemaField({
     strength: makeEssencesFields(false, 6),

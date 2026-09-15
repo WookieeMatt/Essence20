@@ -16,6 +16,11 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
 import { handleStoryPointGrantRequest, handleStoryPointSpendRequest } from "./helpers/story-points.mjs";
+import { handleRemoteChoiceRequest, handleRemoteChoiceResponse } from "./helpers/remote-request.mjs";
+// Registers the "chooseDefense" remote prompt against remote-request.mjs's own registry -
+// imported for this side effect alone (see defense-choice.mjs's own registerRemotePrompt call at
+// its bottom), same reason-for-import-with-no-named-use as any other registration-pattern file.
+import "./helpers/defense-choice.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 // Import helper/utility classes and constants.
@@ -232,6 +237,10 @@ Hooks.once("init", async function () {
       handleStoryPointSpendRequest(data);
     } else if (data.action === "grantStoryPoints") {
       handleStoryPointGrantRequest(data);
+    } else if (data.action === "remoteChoiceRequest") {
+      handleRemoteChoiceRequest(data);
+    } else if (data.action === "remoteChoiceResponse") {
+      handleRemoteChoiceResponse(data);
     } else {
       game.StoryPointsTracker?.handleStoryPointSignal(data);
     }

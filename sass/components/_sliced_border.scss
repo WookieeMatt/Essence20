@@ -139,6 +139,14 @@
     transition: opacity 0.15s ease;
   }
 
+  /* Same hover-reveal feedback as the clickable a.sliced-border__label case above, but for a
+     plain (non-clickable) label whose own data-tooltip is the only interaction - e.g. Firepoints'
+     info icon (vehicle-crew.hbs), which just surfaces a read-only description rather than opening
+     an editor. */
+  label.sliced-border__label:hover .sliced-border__label-edit-icon {
+    opacity: 1;
+  }
+
   .sliced-border__input-row {
     display: flex;
     width: 100%;

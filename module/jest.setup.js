@@ -44,6 +44,8 @@ global.Item = class Item {
   constructor() {}
   prepareData() {}
   prepareDerivedData() {}
+  async _preCreate() {}
+  async _preUpdate() {}
 };
 
 global.ChatMessage = {
