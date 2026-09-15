@@ -243,10 +243,10 @@ export async function onCrewNumberUpdate(event, actorSheet) {
  * for any actor update, so every open Megaform sheet linking this component re-renders itself
  * once the write below lands.
  * @param {Event} event
- * @param {ActorSheet} actorSheet   Unused - kept for the same (event, actorSheet) signature every
+ * @param {ActorSheet} _actorSheet   Unused - kept for the same (event, actorSheet) signature every
  *   other _activateCrewListeners-bound handler uses.
  */
-export async function onAttachedActorHealthUpdate(event, actorSheet) {
+export async function onAttachedActorHealthUpdate(event, _actorSheet) {
   const componentUuid = event.currentTarget.dataset.systemActorsUuid;
   if (!componentUuid) {
     return;
@@ -268,10 +268,10 @@ export async function onAttachedActorHealthUpdate(event, actorSheet) {
  * parent Vehicle/Zord/Megaform sheet it's shown on) - Stun has no max to clamp against (the main
  * sheet's own Stun input has none either; it's compared against current Health, not capped).
  * @param {Event} event
- * @param {ActorSheet} actorSheet   Unused - kept for the same (event, actorSheet) signature every
+ * @param {ActorSheet} _actorSheet   Unused - kept for the same (event, actorSheet) signature every
  *   other _activateCrewListeners-bound handler uses.
  */
-export async function onAttachedActorStunUpdate(event, actorSheet) {
+export async function onAttachedActorStunUpdate(event, _actorSheet) {
   const componentUuid = event.currentTarget.dataset.systemActorsUuid;
   if (!componentUuid) {
     return;
@@ -294,10 +294,10 @@ export async function onAttachedActorStunUpdate(event, actorSheet) {
  * (an input, select, or the delete icon's .item-controls) so it doesn't fight their own behavior
  * (e.g. double-clicking a Health input to select its text).
  * @param {Event} event
- * @param {ActorSheet} actorSheet   Unused - kept for the same (event, actorSheet) signature every
+ * @param {ActorSheet} _actorSheet   Unused - kept for the same (event, actorSheet) signature every
  *   other _activateCrewListeners-bound handler uses.
  */
-export function onSystemActorOpen(event, actorSheet) {
+export function onSystemActorOpen(event, _actorSheet) {
   if (event.target.closest('input, select, .item-controls')) {
     return;
   }

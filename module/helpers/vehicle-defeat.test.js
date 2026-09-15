@@ -43,6 +43,7 @@ function makeVehicle({ type = 'vehicle', crashed = false, health = 10, crew = {}
     if (data['system.health.value'] !== undefined) {
       actor.system.health.value = data['system.health.value'];
     }
+
     if (data['system.crashed'] !== undefined) {
       actor.system.crashed = data['system.crashed'];
     }
