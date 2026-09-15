@@ -52,3 +52,26 @@ export function getAllNearbyTokens(actor, radiusFeet) {
     && canvas.grid.measurePath([token.center, actorToken.center]).distance <= radiusFeet,
   );
 }
+
+/**
+ * H.I.S.S. Column (GI Joe CRB, Vehicle Trait, p.302): "Every H.I.S.S. on a battlefield gains a
+ * bonus to Evasion equal to the number of other H.I.S.S. on the battlefield." Unlike
+ * getNearbyAllyTokens/getAllNearbyTokens above, this has no radius (the whole current scene is
+ * "the battlefield") and matches by actor identity (same actor name) rather than Disposition -
+ * RAW's own "other H.I.S.S." clearly means other copies of this specific named vehicle, not any
+ * unrelated vehicle that happens to also carry this Trait. Excludes the actor's own token.
+ * @param {Actor} actor
+ * @returns {Number}
+ */
+export function getHissColumnBonus(actor) {
+  const actorToken = actor?.getActiveTokens?.()?.[0];
+  if (!actorToken || !canvas?.tokens) {
+    return 0;
+  }
+
+  return canvas.tokens.placeables.filter(token =>
+    token !== actorToken && token.actor
+    && token.actor.name === actor.name
+    && token.actor.system.traits?.hissColumn,
+  ).length;
+}

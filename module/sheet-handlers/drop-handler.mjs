@@ -8,6 +8,9 @@ import { setPerkValues } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
 import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
+import { DETACHED_THIS_SCENE_FLAG } from "./vehicle-handler.mjs";
+import { hasUsedThisEncounter } from "../helpers/perks.mjs";
+import { clearWarriorMode } from "../helpers/warrior-mode.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
@@ -164,9 +167,22 @@ export async function onDropActor(data, actorSheet) {
 
     break;
   case 'megaform':
+    // Detachable (Across the Stars, p.104): "may not reattach in the same scene" - see
+    // vehicle-handler.mjs's own DETACHED_THIS_SCENE_FLAG comment for where this gets set.
+    if (droppedActor.type == 'zord' && hasUsedThisEncounter(droppedActor, DETACHED_THIS_SCENE_FLAG)) {
+      ui.notifications.error(game.i18n.format('E20.DetachableCannotReattach', { name: droppedActor.name }));
+      return;
+    }
+
     if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
       setEntryAndAddActor (droppedActor, targetActor);
       dropIsValid = true;
+
+      // Warrior Mode (PR CRB, Zord Feature, p.140): "...lasts until...the Zord is involved in a
+      // Combiner Megaform." This IS that moment - see helpers/warrior-mode.mjs's own doc comment.
+      if (droppedActor.type == 'zord') {
+        await clearWarriorMode(droppedActor);
+      }
     }
 
     break;

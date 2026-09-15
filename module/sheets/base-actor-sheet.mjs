@@ -22,11 +22,16 @@ import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../helpe
 import { applyAegisDefeatCheck, isRecklessAbandonItem } from "../helpers/reckless-abandon.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { prepareSystemActors,
+  onAttachedActorHealthUpdate,
+  onAttachedActorStunUpdate,
   onCrewNumberUpdate,
+  onSystemActorOpen,
   onSystemActorsDelete,
   onVehicleRoleUpdate,
 } from "../sheet-handlers/vehicle-handler.mjs";
 import { onActivatePowerInfusion, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { actorHasZordFeature } from "../helpers/zord-features.mjs";
+import { isWarriorModeActive, toggleWarriorMode, WARRIOR_MODE_ID } from "../helpers/warrior-mode.mjs";
 import { onActivateSnortleAtTheSpooky } from "../helpers/snortle-at-the-spooky.mjs";
 import { onActivateConsummatePerformer } from "../helpers/consummate-performer.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
@@ -65,6 +70,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       deleteEffect: this.#deleteActiveEffect,
       editDefenses: this.#onEditDefenses,
       editEffect: this.#editActiveEffect,
+      editHealth: this.#onEditHealth,
       editSpeeds: this.#onEditSpeeds,
       inlineEdit: this.#onInlineEdit,
       itemCreate: this.#onItemCreate,
@@ -89,6 +95,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       toggleLock: this.#onToggleLock,
       traitSelector: this.#onManageSelectTrait,
       transform: this.#onTransform,
+      warriorMode: this.#onWarriorMode,
     },
     classes: ["essence20", "sheet", "actor", "theme-wrapper"],
     tag: 'form',
@@ -200,8 +207,9 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   /**
    * Vehicle/zord crew role assignment (system-actors.hbs's .vehicle-role select and the
-   * .num-crew driver/passenger count inputs) are change events, which AppV2's click-only
-   * [data-action] delegation doesn't cover, so they need manual binding.
+   * .num-crew driver/passenger count inputs), plus system-actors.hbs's own per-attached-actor
+   * .attached-actor-health/.attached-actor-stun inputs, are change events, which AppV2's
+   * click-only [data-action] delegation doesn't cover, so they need manual binding.
    */
   _activateCrewListeners() {
     for (const select of this.element.querySelectorAll('.vehicle-role')) {
@@ -210,6 +218,18 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
     for (const input of this.element.querySelectorAll('.num-crew')) {
       input.addEventListener('change', (event) => onCrewNumberUpdate(event, this));
+    }
+
+    for (const input of this.element.querySelectorAll('.attached-actor-health')) {
+      input.addEventListener('change', (event) => onAttachedActorHealthUpdate(event, this));
+    }
+
+    for (const input of this.element.querySelectorAll('.attached-actor-stun')) {
+      input.addEventListener('change', (event) => onAttachedActorStunUpdate(event, this));
+    }
+
+    for (const card of this.element.querySelectorAll('.systemActors')) {
+      card.addEventListener('dblclick', (event) => onSystemActorOpen(event, this));
     }
   }
 
@@ -428,6 +448,12 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     prepareSystemActors(this.document, context);
 
     context.canMorphOrTransform = context.document.system.canMorph || context.document.system.canTransform;
+
+    // Warrior Mode (PR CRB, Zord Feature, p.140) - see helpers/warrior-mode.mjs's own doc
+    // comment. Only ever true for a Zord actually holding the Feature, so the sidebar's toggle
+    // button only shows up for one.
+    context.hasWarriorMode = this.document.type == 'zord' && actorHasZordFeature(this.document, WARRIOR_MODE_ID);
+    context.isWarriorModeActive = isWarriorModeActive(this.document);
 
     return context;
   }
@@ -893,6 +919,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     onTransform(this.document);
   }
 
+  static #onWarriorMode() {
+    toggleWarriorMode(this.document);
+  }
+
   static #onInlineEdit(event) {
     onInlineEdit(event, this.document);
   }
@@ -903,6 +933,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onEditDefenses() {
     new StatEditor(this.actor, "defense").render(true);
+  }
+
+  static #onEditHealth() {
+    new StatEditor(this.actor, "health").render(true);
   }
 
   static #onOpenSkillPicker() {

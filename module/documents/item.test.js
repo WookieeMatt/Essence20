@@ -24,6 +24,68 @@ function makeItem(type, system, actor = null) {
   return item;
 }
 
+describe("_preCreate", () => {
+  function makeMegaformTraitItem(type = 'coreAbility') {
+    const item = makeItem('megaformTrait', { type });
+    item.updateSource = jest.fn((data) => Object.assign(item, data));
+    return item;
+  }
+
+  test("fills in a blank Megaform Trait's Name from its Type", async () => {
+    const item = makeMegaformTraitItem('coreBody');
+    await item._preCreate({}, {}, 'user1');
+    expect(item.updateSource).toHaveBeenCalledWith({ name: CONFIG.E20.megaformTraitTypes.coreBody });
+  });
+
+  test("is a no-op for a compendium drop whose Name already matches its Type", async () => {
+    const item = makeMegaformTraitItem('move');
+    item.name = CONFIG.E20.megaformTraitTypes.move;
+    await item._preCreate({ name: item.name }, {}, 'user1');
+    expect(item.updateSource).toHaveBeenCalledWith({ name: CONFIG.E20.megaformTraitTypes.move });
+  });
+
+  test("doesn't touch Name for other item types", async () => {
+    const item = makeItem('gear', {});
+    item.updateSource = jest.fn();
+    await item._preCreate({}, {}, 'user1');
+    expect(item.updateSource).not.toHaveBeenCalledWith(expect.objectContaining({ name: expect.anything() }));
+  });
+});
+
+describe("_preUpdate", () => {
+  function makeMegaformTraitItem(type) {
+    return makeItem('megaformTrait', { type });
+  }
+
+  test("syncs Name to the new Type when the Type dropdown changes", async () => {
+    const item = makeMegaformTraitItem('coreBody');
+    const change = { system: { type: 'move' } };
+    await item._preUpdate(change, {}, 'user1');
+    expect(change.name).toBe(CONFIG.E20.megaformTraitTypes.move);
+  });
+
+  test("doesn't touch Name if Type isn't changing", async () => {
+    const item = makeMegaformTraitItem('coreBody');
+    const change = { system: { essence: 'speed' } };
+    await item._preUpdate(change, {}, 'user1');
+    expect(change.name).toBeUndefined();
+  });
+
+  test("doesn't overwrite a Name explicitly set in the same update", async () => {
+    const item = makeMegaformTraitItem('coreBody');
+    const change = { name: 'Reinforced Chassis', system: { type: 'move' } };
+    await item._preUpdate(change, {}, 'user1');
+    expect(change.name).toBe('Reinforced Chassis');
+  });
+
+  test("doesn't apply to other item types", async () => {
+    const item = makeItem('gear', {});
+    const change = { system: { type: 'anything' } };
+    await item._preUpdate(change, {}, 'user1');
+    expect(change.name).toBeUndefined();
+  });
+});
+
 describe("_prepareTraits", () => {
   test("collects traits from upgrade items into itemAndUpgradeTraits for weapons", () => {
     const item = makeItem('weapon', {

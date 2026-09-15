@@ -28,6 +28,8 @@ import { isJuryRigBenefitActive } from "../helpers/jury-rig.mjs";
 import { isTheToughGetGoingActive } from "../helpers/the-tough-get-going.mjs";
 import { getNaturalMovementType } from "../helpers/natural-movement.mjs";
 import { hasActiveEnvironmentalExpertise } from "../helpers/environmental-expertise.mjs";
+import { getHissColumnBonus } from "../helpers/allies.mjs";
+import { actorHasZordFeature } from "../helpers/zord-features.mjs";
 
 // GI Joe CRB Vanguard Perks that grant a flat, condition-gated Toughness/Evasion bonus - computed
 // fresh in _prepareDefenses() below (like rolePointsDefense already is) rather than written into
@@ -231,6 +233,25 @@ const STATIC_ELECTRICITY_ID = "Compendium.essence20.wtnv_citizens_guide.Item.mF6
 // helpers/gravity-optional.mjs's own doc comment.
 const GRAVITY_OPTIONAL_ID = "Compendium.essence20.wtnv_citizens_guide.Item.F5mrzupd6TG2kj3x";
 
+const PR_CRB = "Compendium.essence20.pr_crb.Item.";
+// Light Chassis (PR CRB, Zord Feature, p.137): "increases the Zord's Speed by 1 and adds 10 feet
+// [to] one of the Zord's movement types" (both a static compendium Active Effect already) "...
+// While in a Combined Megaform, it grants ↑1 to the Megaform's Initiative Skill Test." That
+// second clause is the Megaform's own gain, not the Zord's, so it can't be a static Active Effect
+// on the Zord (nothing there could reach the Megaform) - checked per-participant in
+// _prepareMegaformZordData/_prepareMegaformCombinerData below, same "Feature on a participant,
+// consumed via a Megaform-only flag" shape Enhanced Initiative (a megaformTrait, not a Feature)
+// already established for hasEnhancedInitiative; the actual ↑1 is applied in dice.mjs's
+// prepareInitiativeRoll, alongside that same flag's own Edge check.
+const LIGHT_CHASSIS_ID = `${PR_CRB}rVW7mvnV4MbGuxoq`;
+// Hardened Chassis (PR CRB, Zord Feature, p.139): "increases its Strength score by 1, it adds +2
+// to its Armor bonus to Toughness as well [both a static Active Effect already] ... While in a
+// Combined Megaform, it adds +1 to the Megaform's Armor bonus to Toughness." Same shape as Light
+// Chassis above - the Megaform-facing clause folds straight into the existing toughnessTraitBonus
+// local variable below, the same aggregate Defender/Core Defenses already feed into
+// system.defenses.toughness.armor.
+const HARDENED_CHASSIS_ID = `${PR_CRB}7vwrFKj2UAxG4ocf`;
+
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
@@ -391,18 +412,81 @@ export class Essence20Actor extends Actor {
     // OVERRIDE changes left unset (see specialization-handler.mjs#normalizeSpecializations).
     normalizeSpecializations(this);
 
+    // Megaform's own aggregate Combiner-rules math (Essence values, each Defense's own `base`
+    // and trait bonuses, each Movement type's own `base`, and `health.origin`) has to run BEFORE
+    // the shared Defenses/Health/Movement pass below, which folds .bonus/armor/shield/Perks on
+    // top of whatever base it just computed from the Megaform's linked participants.
+    if (this.type == 'megaform') {
+      this._prepareMegaformData();
+    }
+
+    // Every actor type now shares the same computed Defenses/Health/Movement pipeline a
+    // playerCharacter always has - see project_essence20_active_effects memory for why this was
+    // held off until now. Each method already degrades gracefully where an actor has no Origin/
+    // RolePoints Items or isMorphed/isTransformed fields (every non-PC type).
+    this._prepareDefenses();
+    this._prepareHealth();
+    this._prepareMovement();
+
     if (this.type == 'playerCharacter') {
-      this._prepareDefenses();
-      this._prepareHealth();
-      this._prepareMovement();
       this._prepareSorcerousPower();
       this._prepareResource();
       this._preparePoisonTraining();
       this._prepareFireproofResistance();
     }
 
-    if (this.type == 'megaform') {
-      this._prepareMegaformData();
+    if (this.type == 'vehicle') {
+      this._prepareVehicleData();
+    }
+  }
+
+  /**
+   * Defeat of a Vehicle (GI Joe CRB, p.214): "The vehicle is considered to have all Movement
+   * types reduced to 0 until repaired." Read-only + zeroed the same way _prepareMegaformData()
+   * already displays a computed-not-edited Movement (system.movementIsReadOnly) - the real
+   * system.movement.<type>.total this Vehicle's sheet directly edits is left untouched
+   * underneath, so clearing system.crashed (repairing it) needs nothing further to restore.
+   *
+   * Crew (GI Joe CRB, p.212): "Drivers must have a d2 or more in the Driving skill and the
+   * vehicle needs the full number of drivers in order to move at full Movement; if understaffed
+   * or untrained, the vehicle can only use half of its listed Movement per turn." Only runs when
+   * not crashed (Movement is already fully zeroed above, a strictly stronger effect) - halves the
+   * same in-memory .total each render rather than the real stored value, for the same
+   * non-destructive reason as the crashed branch.
+   */
+  _prepareVehicleData() {
+    if (this.system.crashed) {
+      this.system.movementIsReadOnly = true;
+      for (const movementType of Object.keys(this.system.movement)) {
+        this.system.movement[movementType].total = 0;
+      }
+
+      return;
+    }
+
+    const d2Index = CONFIG.E20.skillShiftList.indexOf('d2');
+    const qualifiedDrivers = Object.values(this.system.actors ?? {})
+      .filter(entry => entry.vehicleRole == 'driver')
+      .map(entry => fromUuidSync(entry.uuid))
+      .filter(driver => {
+        const shiftIndex = CONFIG.E20.skillShiftList.indexOf(driver?.system.skills?.driving?.shift);
+        return shiftIndex >= 0 && shiftIndex <= d2Index;
+      }).length;
+
+    // Autopilot (GI Joe CRB, Vehicle Trait, p.173): "As long as this vehicle has 1 driver, it
+    // operates at full capacity" - a full exception to the driver-count halving below, not just a
+    // softer penalty, as soon as at least 1 qualified driver is seated (regardless of how many
+    // more the vehicle's own crew.numDrivers calls for). Autopilot, Advanced's own clause
+    // ("operates like a normal vehicle with at least 1 driver but less than its full complement,
+    // even with zero drivers") needs no separate code here - this halving branch already treats 0
+    // qualified drivers the same as an understaffed-but-present crew (halved, not zeroed), which
+    // is exactly that guarantee; nothing currently makes a 0-driver Vehicle fully immobile for
+    // Advanced Autopilot to be an exception to.
+    const hasAutopilot = this.system.traits?.autopilot;
+    if (qualifiedDrivers < this.system.crew.numDrivers && !(hasAutopilot && qualifiedDrivers >= 1)) {
+      for (const movementType of Object.keys(this.system.movement)) {
+        this.system.movement[movementType].total = Math.floor(this.system.movement[movementType].total / 2);
+      }
     }
   }
 
@@ -551,6 +635,15 @@ export class Essence20Actor extends Actor {
 
   _prepareHealth () {
     const system = this.system;
+    // Defensive guard, not a real actor-type gate: an invalid/unregistered actor type (e.g. a
+    // stray "party" actor left over from unrelated in-progress work, which has no DataModel
+    // registered at all - see module/data/actor/index.mjs) still reaches prepareDerivedData()
+    // in some Foundry code paths despite failing its own schema validation, with no system.health
+    // to compute against. Every real actor type this system registers always has one.
+    if (!system.health) {
+      return;
+    }
+
     system.healthIsReadOnly = true;
     const health = system.health;
     let originStartingHealth = 0;
@@ -562,12 +655,19 @@ export class Essence20Actor extends Actor {
     const conditionName = game.i18n.localize('E20.SkillConditioning');
     const bonusName = game.i18n.localize('E20.Bonus');
 
-    // Health from Origin
+    // Health from Origin - non-PC actor types (npc/companion/vehicle/zord/megaform) never have
+    // an embedded Origin Item (that's a PC chargen artifact), so they fall back to the flat
+    // system.health.origin field instead - a GM-entered "starting Health" for those types,
+    // parallel to a PC's Origin Item. Megaform overwrites this field itself in
+    // _prepareMegaformData() (run before this method - see prepareDerivedData()) with its own
+    // aggregate participant math, so it's never GM-typed there either.
     const origins = this.items.documentsByType.origin;
     if (origins.length > 0) {
       const origin = origins[0];
       originStartingHealth = origin.system.startingHealth;
       originName = origin.name;
+    } else {
+      originStartingHealth = system.health.origin ?? 0;
     }
 
     // Health from Role Points
@@ -592,6 +692,11 @@ export class Essence20Actor extends Actor {
   */
   _prepareDefenses() {
     const system = this.system;
+    // Defensive guard - see the identical one in _prepareHealth() above.
+    if (!system.defenses) {
+      return;
+    }
+
     const equippedArmor = this.items.documentsByType.armor.filter(a => a.system.equipped);
     const fightingStyle = findPerk(this, FIGHTING_STYLE_ID)?.system.choice;
 
@@ -604,7 +709,11 @@ export class Essence20Actor extends Actor {
       const shield = defense.shield;
       let rolePointsDefense = 0;
       let perkDefenseBonus = 0;
-      const essence = system.essences[defense.essence].max;
+      // PC/NPC/Companion Essences are a {max, value} pair; Vehicle/Zord Essences (templates/
+      // machine.mjs) are a flat {usesDrivers, value} - .max is undefined there, so this falls
+      // back to .value (which for a Vehicle/Zord's own Smarts/Social is null by default, per
+      // RAW - see makeDefensesFields's own doc comment on Willpower/Cleverness substitution).
+      const essence = system.essences[defense.essence].max ?? system.essences[defense.essence].value;
       const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
       const baseName = game.i18n.localize('E20.DefenseBase');
       const armorName = game.i18n.localize('E20.DefenseArmor');
@@ -664,6 +773,15 @@ export class Essence20Actor extends Actor {
         }
       }
 
+      // H.I.S.S. Column (GI Joe CRB, Vehicle Trait, p.302): "Every H.I.S.S. on a battlefield
+      // gains a bonus to Evasion equal to the number of other H.I.S.S. on the battlefield."
+      // Recomputed fresh every prepareData pass (getHissColumnBonus scans the live scene), same
+      // idiom as every other condition-gated bonus in this loop, so it tracks other H.I.S.S.
+      // tokens entering/leaving the scene automatically.
+      if (defenseType == 'evasion' && this.type == 'vehicle' && system.traits?.hissColumn) {
+        perkDefenseBonus += getHissColumnBonus(this);
+      }
+
       defense.total = base + essence + bonus + rolePointsDefense + perkDefenseBonus;
       defense.total += system.isMorphed ? morphed : armor;
       defense.total += shield;
@@ -682,6 +800,10 @@ export class Essence20Actor extends Actor {
   _prepareMovement() {
     let movementTotal = 0;
     const system = this.system;
+    // Defensive guard - see the identical one in _prepareHealth() above.
+    if (!system.movement) {
+      return;
+    }
 
     // Air Born - see AIR_BORN_ID's own comment above. Resolved once, outside the per-type loop
     // (it sets both ground and aerial in the same pick), then applied to each type's own base
@@ -989,9 +1111,7 @@ export class Essence20Actor extends Actor {
       }
     }
 
-    if (!movementTotal) {
-      system.movementNotSet = true;
-    }
+    system.movementNotSet = !movementTotal;
   }
 
   /**
@@ -1100,17 +1220,52 @@ export class Essence20Actor extends Actor {
       .map(entry => fromUuidSync(entry.uuid))
       .filter(actor => actor?.type == 'zord');
 
+    // Foundry's Actor World Collection initializes every actor in whatever order the DB returns
+    // them, with no dependency graph - if this Megaform happens to be prepared before a linked
+    // Zord is, fromUuidSync above still resolves the Zord Document, but its own derived Health/
+    // Movement/Defenses haven't been computed yet, so reading them below would silently aggregate
+    // stale (often zeroed) values until something unrelated later happens to re-trigger this
+    // Megaform's own prepareDerivedData(). Forcing each participant's own prepareData() first
+    // guarantees this always aggregates current values, regardless of load order.
+    for (const zord of participants) {
+      zord.prepareData();
+    }
+
     system.participantHealth = participants.map(zord => ({
       name: zord.name,
       value: zord.system.health.value,
       max: zord.system.health.max,
+    }));
+    system.participantStun = participants.map(zord => ({
+      name: zord.name,
+      value: zord.system.stun.value,
     }));
 
     if (!participants.length) {
       system.isDefeated = false;
       system.combinedHealthMax = 0;
       system.combinedHealthValue = 0;
+      system.health.origin = 0;
+      system.health.value = 0;
+      system.stun.value = 0;
       system.hasEnhancedAttack = false;
+      system.hasLightChassisInitiativeUpshift = false;
+      // Every other field below is normally computed from the linked Zords - with none linked
+      // yet, these would otherwise sit at whatever this actor's own zordBase-inherited schema
+      // defaults are (e.g. Ground Movement 40, Strength 6, Toughness base 17), showing a
+      // fully-unlinked Megaform as having real combat stats it hasn't actually earned from any
+      // participant. Zeroed here for the same "0 participants = 0 everything" reason Health/Stun
+      // already are above.
+      system.armor = 0;
+      system.essences.strength.value = 0;
+      system.essences.speed.value = 0;
+      system.defenses.toughness.base = 0;
+      system.defenses.toughness.armor = 0;
+      system.defenses.evasion.base = 0;
+      system.defenses.evasion.armor = 0;
+      for (const movementType of Object.keys(system.movement)) {
+        system.movement[movementType].base = 0;
+      }
 
       return;
     }
@@ -1136,17 +1291,45 @@ export class Essence20Actor extends Actor {
     let toughnessTraitBonus = 0;
     let evasionTraitBonus = 0;
     let hasEnhancedAttack = false;
+    let hasAssaultWeapon = false;
+    let hasTenaciousBonds = false;
     let combinedHealthMax = 0;
     let combinedHealthValue = 0;
+    let hasLightChassisInitiativeUpshift = false;
 
     for (const zord of participants) {
       const hasCoreBody = zord.items.some(
         item => item.type == 'megaformTrait' && item.system.type == 'coreBody',
       );
       const healthMultiplier = hasCoreBody ? 2 : 1;
-      combinedHealthMax += zord.system.health.max * healthMultiplier;
-      combinedHealthValue += Math.max(0, zord.system.health.value) * healthMultiplier;
+      let layeredSystemsBonus = 0;
 
+      // Light Chassis / Hardened Chassis - see their own LIGHT_CHASSIS_ID/HARDENED_CHASSIS_ID
+      // comments above. Zord Features, not megaformTrait items, so checked here rather than in
+      // the megaformTrait switch below.
+      if (actorHasZordFeature(zord, LIGHT_CHASSIS_ID)) {
+        hasLightChassisInitiativeUpshift = true;
+      }
+
+      if (actorHasZordFeature(zord, HARDENED_CHASSIS_ID)) {
+        toughnessTraitBonus += 1;
+      }
+
+      // Not handled below - none are a missing switch case, each needs a mechanic this system
+      // doesn't have yet: Accurate Combiner (Across the Stars, p.104) is a per-roll ↑1 that only
+      // applies when the Megaform's attack roll actually uses THIS participant's own melee/
+      // ranged attack, which would need a dice.mjs hook, not a build-time derived stat;
+      // Compensation (A Jump Through Time, p.84) lets the team voluntarily redirect incoming
+      // damage onto this Zord at the moment damage is being distributed, which needs the
+      // Megaform damage-distribution mechanic itself (dividing an attack's damage across
+      // participants) - this system doesn't model that distribution step yet either; and
+      // Detachable (Across the Stars, p.104) grants an out-of-turn action (leave the Megaform at
+      // end of round, can't rejoin this scene) rather than any stat this pass computes - the
+      // "leave the Megaform" half is already fully expressible today by removing the Zord from
+      // system.actors via the sheet's existing delete control, so only the "can't reattach this
+      // scene" and "incompatible with Core Body" guardrails are actually missing, and both are
+      // narrow build/GM-enforced rules in the same class this project leaves unenforced
+      // elsewhere rather than building bespoke tracking for.
       for (const item of zord.items) {
         if (item.type != 'megaformTrait') {
           continue;
@@ -1165,6 +1348,13 @@ export class Essence20Actor extends Actor {
           toughnessTraitBonus += item.system.value;
           evasionTraitBonus += item.system.value;
           break;
+        case 'defender':
+          // Across the Stars, p.104: "+1 bonus to the Megaform's adjusted Toughness Defense."
+          // The reactive half ("piloting Ranger may spend 1 Personal Power to impose a Snag on
+          // an attack targeting the Megaform") needs a "react to an incoming attack" hook this
+          // system doesn't have yet - not built.
+          toughnessTraitBonus += item.system.value;
+          break;
         case 'move':
           system.movement[item.system.movementType].base += item.system.value;
           break;
@@ -1172,23 +1362,89 @@ export class Essence20Actor extends Actor {
         case 'enhancedRangedAttack':
           hasEnhancedAttack = true;
           break;
+        case 'assaultWeapon':
+          hasAssaultWeapon = true;
+          break;
+        case 'tenaciousBonds':
+          hasTenaciousBonds = true;
+          break;
+        case 'layeredSystems':
+          // Across the Stars, p.105: "adds 3 to the Health of its specific section (added after
+          // any modifiers for the Core Body position)" - a flat bonus to just this Zord's own
+          // share, applied after (not doubled by) the Core Body multiplier below.
+          layeredSystemsBonus += item.system.value;
+          break;
+        case 'grounding':
+          // A Jump Through Time, p.84: "immune to Electromagnetic damage." The other half
+          // ("always reduces Electric damage by 1 before distribution") needs the same
+          // damage-distribution mechanic Compensation is blocked on above - not built.
+          system.immunities.emp = true;
+          break;
+        case 'resistant':
+          // Across the Stars, p.105: "adds one of its damage Resistances to the entirety of
+          // the Megaform."
+          system.resistances[item.system.damageType] = true;
+          break;
         }
       }
+
+      combinedHealthMax += (zord.system.health.max * healthMultiplier) + layeredSystemsBonus;
+      combinedHealthValue += (Math.max(0, zord.system.health.value) * healthMultiplier) + layeredSystemsBonus;
+    }
+
+    // Tenacious Bonds (A Jump Through Time, p.84): "this component Zord and all other component
+    // Zords gain 1 additional Health, added after any multipliers for the Core Body Megaform
+    // Trait... This Megaform Trait may only modify the Megaform once" - a flat, non-stacking +1
+    // per participant (not per instance of the trait across multiple holders), so this is a
+    // single conditional add after the main loop rather than accumulated inside it.
+    if (hasTenaciousBonds) {
+      combinedHealthMax += participants.length;
+      combinedHealthValue += participants.length;
     }
 
     system.essences.strength.value = Math.min(MAX_ESSENCE, strength);
     system.essences.speed.value = Math.min(MAX_ESSENCE, speed);
     system.armor = BASE_ARMOR_BONUS;
-    system.defenses.toughness.value = 10 + system.essences.strength.value + BASE_ARMOR_BONUS + toughnessTraitBonus;
-    system.defenses.evasion.value = 10 + system.essences.speed.value + evasionTraitBonus;
 
-    for (const movementType of Object.keys(system.movement)) {
-      system.movement[movementType].total = system.movement[movementType].base;
-    }
+    // Toughness/Evasion no longer get their .value set directly here - the shared
+    // Essence20Actor#_prepareDefenses(), which now runs for every actor type (including
+    // Megaform), computes .total = base(10) + essence + bonus + armor + shield afterward. The
+    // Combiner rules' own "+3 base starting Armor bonus" and the aggregated Core Defenses/
+    // Defender trait bonuses above are folded into .armor here (not .bonus, which stays free
+    // for a GM's own manual add-on - see _prepareDefenses's identical perkDefenseBonus pattern
+    // for PC/NPC/Vehicle/Zord) so the shared formula reproduces the exact same total this method
+    // used to compute directly: 10 + essence + BASE_ARMOR_BONUS + toughnessTraitBonus for
+    // Toughness, 10 + essence + evasionTraitBonus for Evasion (no base Armor bonus there).
+    system.defenses.toughness.armor = BASE_ARMOR_BONUS + toughnessTraitBonus;
+    system.defenses.evasion.armor = evasionTraitBonus;
+
+    // .total is left to the shared Essence20Actor#_prepareMovement() below, which now runs for
+    // every actor type - it reads .base (just finished above) and folds in .bonus/Perks the same
+    // way it always has for a playerCharacter, rather than this method setting .total = .base
+    // directly and skipping that.
 
     system.hasEnhancedAttack = hasEnhancedAttack;
+    system.hasAssaultWeapon = hasAssaultWeapon;
+    system.hasLightChassisInitiativeUpshift = hasLightChassisInitiativeUpshift;
     system.combinedHealthMax = combinedHealthMax;
     system.combinedHealthValue = combinedHealthValue;
+    // Health is NOT pooled per RAW (see this method's own class comment) - combinedHealthMax/
+    // combinedHealthValue above remain the authoritative per-participant-summed display values
+    // and are what megaform-damage.mjs actually distributes damage against. system.health here
+    // just mirrors them so the shared _prepareHealth() below can add an optional GM .bonus on
+    // top for system.health.max, the same "compute a base, let the shared formula finish it"
+    // split every other field on this actor now uses.
+    system.health.origin = combinedHealthMax;
+    system.health.value = combinedHealthValue;
+
+    // Stun (p.170: "shown on the sheet as 'Stun / Health'... every hit that deals Stun damage
+    // adds to this instead of subtracting from Health") isn't pooled either, for the same reason
+    // Health isn't - each participant tracks its own, and helpers/megaform-damage.mjs's
+    // applyMegaformDamage already correctly routes Stun-type damage to each participant's own
+    // system.stun.value (it just calls the ordinary applyDamage() per participant, which
+    // branches on damageType itself). This is purely the same kind of display mirror as
+    // combinedHealthValue above - summed fresh from the participants, not a real separate pool.
+    system.stun.value = participants.reduce((sum, zord) => sum + (zord.system.stun?.value || 0), 0);
 
     const defeatedCount = participants.filter(zord => zord.system.health.value <= 0).length;
     system.isDefeated = defeatedCount > participants.length / 2;
@@ -1230,17 +1486,48 @@ export class Essence20Actor extends Actor {
       .map(entry => fromUuidSync(entry.uuid))
       .filter(actor => actor?.type && actor.type != 'zord' && actor.type != 'vehicle' && actor.type != 'megaform');
 
+    // See _prepareMegaformZordData's identical call for why this is needed - without it, a
+    // Megaform that initializes before a linked component actor would aggregate that
+    // component's still-unprepared (often zeroed) Health/Movement/Defenses/Essences.
+    for (const component of participants) {
+      component.prepareData();
+    }
+
     system.participantHealth = participants.map(component => ({
       name: component.name,
       value: component.system.health.value,
       max: component.system.health.max,
+    }));
+    system.participantStun = participants.map(component => ({
+      name: component.name,
+      value: component.system.stun.value,
     }));
 
     if (!participants.length) {
       system.isDefeated = false;
       system.combinedHealthMax = 0;
       system.combinedHealthValue = 0;
+      system.health.origin = 0;
+      system.health.value = 0;
+      system.stun.value = 0;
       system.hasEnhancedAttack = false;
+      system.hasEnhancedInitiative = false;
+      system.hasTitanHardpoint = false;
+      // Same "0 participants = 0 everything" reasoning as _prepareMegaformZordData's identical
+      // early return above - without this, these fields would sit at whatever this actor's own
+      // zordBase-inherited schema defaults are.
+      system.armor = 0;
+      for (const essence of ['strength', 'speed', 'smarts', 'social']) {
+        system.essences[essence].value = 0;
+      }
+
+      system.defenses.toughness.base = 0;
+      system.defenses.toughness.armor = 0;
+      system.defenses.evasion.base = 0;
+      system.defenses.evasion.armor = 0;
+      for (const movementType of Object.keys(system.movement)) {
+        system.movement[movementType].base = 0;
+      }
 
       return;
     }
@@ -1299,39 +1586,55 @@ export class Essence20Actor extends Actor {
     }
 
     // Defenses get the LOWEST armor bonus among components, not the highest - NPCs and other
-    // actor types without a granular defense.armor field contribute +0.
+    // actor types without a granular defense.armor field contribute +0. Written into .armor
+    // (not .value/.total directly) so the shared Essence20Actor#_prepareDefenses(), which now
+    // runs for every actor type including Megaform, can finish the computation - it reads
+    // .armor and adds it into .total = base(10) + essence + bonus + armor + shield, reproducing
+    // the same 10 + essence + armorBonus this method used to compute directly.
     for (const defenseType of ['toughness', 'evasion']) {
       const armorBonus = Math.min(
         ...participants.map(component => component.system.defenses?.[defenseType]?.armor ?? 0),
       );
-      system.defenses[defenseType].value = 10 + system.essences[
-        defenseType == 'toughness' ? 'strength' : 'speed'
-      ].value + armorBonus;
+      system.defenses[defenseType].armor = armorBonus;
 
       if (defenseType == 'toughness') {
         system.armor = armorBonus;
       }
     }
 
-    // Movement: slowest rate per type among components' current (Bot Mode) movement.
-    // .total is only actively (re)computed for playerCharacter actors (_prepareMovement() is
-    // gated to that type), so an NPC component's .total can be stale; fall back to .base for
-    // those, same as a Megazord falls back to a Zord's .base.
+    // Movement: slowest rate per type among components' current (Bot Mode) movement. Every
+    // actor type now actively (re)computes its own .total (Essence20Actor#_prepareMovement()
+    // runs for all of them), so this always reads a fresh value - no more falling back to .base
+    // for a possibly-stale NPC/Vehicle component. .total itself is left to the shared
+    // _prepareMovement() below, which reads the .base this sets and folds in .bonus/Perks.
     for (const movementType of Object.keys(system.movement)) {
       const rates = participants
-        .map(component => {
-          const move = component.system.movement?.[movementType];
-          return move?.total || move?.base;
-        })
+        .map(component => component.system.movement?.[movementType]?.total)
         .filter(rate => rate);
       system.movement[movementType].base = rates.length ? Math.min(...rates) : 0;
-      system.movement[movementType].total = system.movement[movementType].base;
     }
 
     // Combiner Features always apply - reusing the same megaformTrait items as a Megazord's
-    // Megaform Traits (see the class comment above for why).
+    // Megaform Traits (see the class comment above for why). Accurate Combiner, Compensation,
+    // and Detachable are intentionally not handled here, for the same reasons documented in
+    // _prepareMegaformZordData's own identical comment (a per-roll dice.mjs hook, the
+    // still-missing Megaform damage-distribution mechanic, and an out-of-turn action this
+    // system already supports the core of via the ordinary system.actors remove control,
+    // respectively). Safe Release (Enigma of Combination, p.42: "when you are forced to leave a
+    // Combiner form... you do so with at least 1 Health") and Universal Receptors (p.43: "spend 1
+    // fewer Story Point... merging with Combiner-capable NPCs") are likewise unhandled here -
+    // Safe Release needs Phase 4's still-unbuilt Vehicle/Megaform Defeat subsystem to have
+    // anything to guard against, and Universal Receptors discounts a Story Point cost this system
+    // doesn't charge anywhere yet (no code currently spends one for an NPC joining a Combiner).
+    // Both are real, selectable Item types now so a sheet can record who holds them; the
+    // mechanical payoff waits on those prerequisite gaps closing.
     let toughnessTraitBonus = 0;
     let evasionTraitBonus = 0;
+    let hasTenaciousBonds = false;
+    let hasCommander = false;
+    let layeredSystemsBonus = 0;
+    let hasEnhancedInitiative = false;
+    let hasTitanHardpoint = false;
     for (const component of participants) {
       for (const item of component.items) {
         if (item.type != 'megaformTrait') {
@@ -1348,28 +1651,97 @@ export class Essence20Actor extends Actor {
 
           break;
         case 'coreDefenses':
+        case 'defender':
           toughnessTraitBonus += item.system.value;
-          evasionTraitBonus += item.system.value;
+          if (item.system.type == 'coreDefenses') {
+            evasionTraitBonus += item.system.value;
+          }
+
           break;
         case 'move':
           system.movement[item.system.movementType].base += item.system.value;
-          system.movement[item.system.movementType].total = system.movement[item.system.movementType].base;
+          break;
+        case 'tenaciousBonds':
+          hasTenaciousBonds = true;
+          break;
+        case 'layeredSystems':
+          layeredSystemsBonus += item.system.value;
+          break;
+        case 'grounding':
+          system.immunities.emp = true;
+          break;
+        case 'resistant':
+          system.resistances[item.system.damageType] = true;
+          break;
+        case 'skillExpertise':
+          if (system.skills[item.system.skill]) {
+            system.skills[item.system.skill].modifier += item.system.value;
+          }
+
+          break;
+        case 'enhancedInitiative':
+          hasEnhancedInitiative = true;
+          break;
+        case 'titanHardpoint':
+          hasTitanHardpoint = true;
+          break;
+        case 'commander':
+          // Enigma of Combination, p.42: "Note your two highest Essence Scores... and increase
+          // each of those Essence Scores of the Combined Form by 1... a Combiner form can only
+          // ever benefit from this Combiner feature once" - a flat, non-stacking flag (like
+          // Tenacious Bonds above), applied once after every other Essence bonus is tallied so it
+          // reads the Combiner's own final scores, not a snapshot from before this loop finishes.
+          hasCommander = true;
           break;
         }
       }
     }
 
-    system.defenses.toughness.value += toughnessTraitBonus;
-    system.defenses.evasion.value += evasionTraitBonus;
+    system.defenses.toughness.armor += toughnessTraitBonus;
+    system.defenses.evasion.armor += evasionTraitBonus;
+
+    if (hasCommander) {
+      // RAW breaks a tie between equal Essence Scores by player choice; this system has no
+      // mid-computation player-choice hook, so ties fall back to a fixed Essence order
+      // (Strength > Speed > Smarts > Social), the same "narrative choice left to a deterministic
+      // default" simplification this codebase already accepts elsewhere.
+      const essenceOrder = ['strength', 'speed', 'smarts', 'social'];
+      const topTwoEssences = [...essenceOrder]
+        .sort((a, b) => system.essences[b].value - system.essences[a].value)
+        .slice(0, 2);
+      for (const essence of topTwoEssences) {
+        system.essences[essence].value = Math.min(MAX_ESSENCE, system.essences[essence].value + 1);
+      }
+    }
 
     // Base Energon Point pool = half the Energon spent to merge, rounded up.
     system.energon.normal.max = Math.ceil(system.energonSpentToMerge / 2);
 
     system.hasEnhancedAttack = false;
-    system.combinedHealthMax = participants.reduce((sum, component) => sum + component.system.health.max, 0);
+    system.hasEnhancedInitiative = hasEnhancedInitiative;
+    system.hasTitanHardpoint = hasTitanHardpoint;
+    system.hasAssaultWeapon = participants.some(
+      component => component.items.some(item => item.type == 'megaformTrait' && item.system.type == 'assaultWeapon'),
+    );
+    // Layered Systems has no Core Body-style multiplier to apply after in a Combiner (Combiners
+    // don't have that Trait), so its bonus is just summed in directly; Tenacious Bonds is the
+    // same flat, non-stacking +1 per participant (not per holder) as the Megazord path above.
+    const tenaciousBondsBonus = hasTenaciousBonds ? participants.length : 0;
+    system.combinedHealthMax = participants.reduce((sum, component) => sum + component.system.health.max, 0)
+      + layeredSystemsBonus + tenaciousBondsBonus;
     system.combinedHealthValue = participants.reduce(
       (sum, component) => sum + Math.max(0, component.system.health.value), 0,
-    );
+    ) + layeredSystemsBonus + tenaciousBondsBonus;
+    // Health is NOT pooled per RAW - combinedHealthMax/combinedHealthValue above stay the
+    // authoritative per-participant-summed values (what megaform-damage.mjs actually distributes
+    // damage against); system.health here just mirrors them so the shared _prepareHealth() below
+    // can add an optional GM .bonus on top for system.health.max, same as the Megazord path.
+    system.health.origin = system.combinedHealthMax;
+    system.health.value = system.combinedHealthValue;
+
+    // Stun isn't pooled either, for the same reason Health isn't - see the identical comment in
+    // _prepareMegaformZordData above.
+    system.stun.value = participants.reduce((sum, component) => sum + (component.system.stun?.value || 0), 0);
 
     const defeatedCount = participants.filter(component => component.system.health.value <= 0).length;
     // Keep it Together! (Component Ace Focus, 17th level, p.34): "a combined form you are

@@ -12,7 +12,184 @@
       "page": 137
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Aerial Movement Booster",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.9YQmZGdNCmtXLAd4",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "tGlqvhjW355lbDHp",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.aerial.bonus",
+          "mode": 2,
+          "value": "30",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9YQmZGdNCmtXLAd4.tGlqvhjW355lbDHp"
+    },
+    {
+      "name": "Climb Movement Booster",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.9YQmZGdNCmtXLAd4",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "llL1KEb75Wx1slAl",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.climb.bonus",
+          "mode": 2,
+          "value": "30",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9YQmZGdNCmtXLAd4.llL1KEb75Wx1slAl"
+    },
+    {
+      "name": "Ground Movement Booster",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.9YQmZGdNCmtXLAd4",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "hTDmRopWEQ9xHJGc",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "30",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9YQmZGdNCmtXLAd4.hTDmRopWEQ9xHJGc"
+    },
+    {
+      "name": "Swim Movement Booster",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.9YQmZGdNCmtXLAd4",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "X74wg0eGk369hZwv",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.swim.bonus",
+          "mode": 2,
+          "value": "30",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9YQmZGdNCmtXLAd4.X74wg0eGk369hZwv"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

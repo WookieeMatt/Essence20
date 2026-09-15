@@ -2,10 +2,13 @@
   {{!-- Vehicle-only for now - moved off the Main tab, which was getting crowded. --}}
   {{#if (eq @root.document.type 'vehicle')}}
   <div class="npc-firepoints">
-    {{!-- Firepoint Descriptions --}}
-    <div class="stats-container firepoints">
+    {{!-- Firepoint Descriptions - same sliced-border panel the header/sidebar fields already use
+         throughout this sheet (components/_sliced_border.scss), so this reads as a normal part
+         of the sheet instead of a bare, unstyled textarea floating on the background. --}}
+    <div class="sliced-border --col firepoints">
+      <label class="sliced-border__label">{{localize 'E20.VehicleFirepointsDescription'}}</label>
       <textarea class="firepoints-input" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
-       name="system.firepoints.description" placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
+       name="system.firepoints.description">{{system.firepoints.description}}</textarea>
     </div>
   </div>
   {{/if}}

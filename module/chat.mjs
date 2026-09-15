@@ -26,6 +26,8 @@ import { activateExploitWeakness } from "./helpers/exploit-weakness.mjs";
 import { activateSuffer, hasSuffer } from "./helpers/suffer.mjs";
 import { CBRN_DEFENDER_HANG_UP_ID, markCbrnDefenderTriggered } from "./helpers/cbrn-defender.mjs";
 import { bankHardCorpsDebt, HARD_CORPS_ENCOUNTER_FLAG } from "./helpers/hard-corps.mjs";
+import { applyMegaformDamage } from "./helpers/megaform-damage.mjs";
+import { handleVehicleZeroHealthTransition } from "./helpers/vehicle-defeat.mjs";
 
 export { _isCritIsFumble };
 
@@ -406,6 +408,25 @@ export async function onApplyDamage(message, button) {
 
   let damage = parseInt(button.dataset.damage);
 
+  // A Megaform doesn't take damage against a single pooled Health the way every other actor type
+  // does - RAW (PR CRB p.142) distributes it across its linked participants instead (see
+  // helpers/megaform-damage.mjs's own doc comment). None of the checks below this point (all
+  // PC/NPC Perk-driven mitigations) apply to a Megaform anyway, so this routes to the dedicated
+  // distribution helper and skips straight to the same tail bookkeeping (button disable,
+  // applied-amount chat message) the ordinary path performs after applyDamage() below.
+  if (target.type == 'megaform') {
+    const amount = await applyMegaformDamage(target, damage, button.dataset.damageType);
+    button.disabled = true;
+    const appliedKeys = message.getFlag('essence20', 'damageAppliedKeys') || [];
+    await message.setFlag('essence20', 'damageAppliedKeys', [...appliedKeys, button.dataset.key]);
+    ChatMessage.create({
+      content: `${target.name}: ${amount} ${game.i18n.localize('E20.CheckDamageApplied')}`,
+      speaker: ChatMessage.getSpeaker({ actor: target }),
+    });
+
+    return;
+  }
+
   // Sudden Death (Blitzer Focus, 20th level, p.98): "once per combat, when you successfully hit
   // with a Might melee attack against a target whose Threat Level is equal to or less than your
   // level, you can choose to defeat them instead of dealing damage." Unlike every other check
@@ -560,6 +581,13 @@ export async function onApplyDamage(message, button) {
   const isNowDefeated = isDefeatedByHealthLoss || !!target.statuses?.has?.('defeated');
   if (attacker && !wasAlreadyDefeated && isNowDefeated && actorHasHangUp(attacker, CBRN_DEFENDER_HANG_UP_ID)) {
     await markCbrnDefenderTriggered(attacker);
+  }
+
+  // Defeat of a Vehicle / Recall for Repairs - see helpers/vehicle-defeat.mjs's own doc comment.
+  // Scoped to isDefeatedByHealthLoss (excludes Stun, same as CBRN Defender's own check just
+  // above) since RAW's own trigger is "reaches 0 Health," which Stun damage never touches.
+  if (isDefeatedByHealthLoss && !wasAlreadyDefeated && (target.type == 'vehicle' || target.type == 'zord')) {
+    await handleVehicleZeroHealthTransition(target);
   }
 
   // Iron Hide (GI Joe CRB, Vanguard base, 1st level, p.107) - see helpers/iron-hide.mjs's own doc

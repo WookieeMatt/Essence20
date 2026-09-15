@@ -262,6 +262,7 @@ export class RollDialog {
       observerSnagSubstitutionAvailable: dataset.observerSnagSubstitutionAvailable,
       supremeGuardianTechAvailable: dataset.supremeGuardianTechAvailable,
       combatStanceAvailable: dataset.combatStanceAvailable,
+      retributionAvailable: dataset.retributionAvailable,
       witheringFireAvailable: dataset.witheringFireAvailable,
       dependableTankerAvailable: dataset.dependableTankerAvailable,
       hackingAlgorithmsAvailable: dataset.hackingAlgorithmsAvailable,

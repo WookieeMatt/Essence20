@@ -1,0 +1,22 @@
+{
+  "name": "Zord Features",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "HM2MhIHwmmgMGTGk",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1789350698477,
+    "modifiedTime": 1789350698477,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!HM2MhIHwmmgMGTGk"
+}

@@ -1,7 +1,12 @@
 import { E20 } from "./helpers/config.mjs";
+import { chooseDefenderDefense } from "./helpers/defense-choice.mjs";
+import { checkAndActivateDefenderStep } from "./helpers/defender-step.mjs";
+import {
+  bankRetributionBonus, computeRetributionBonusType, RETRIBUTION_ID, RETRIBUTION_PENDING_FLAG,
+} from "./helpers/retribution.mjs";
 import {
   _isCritIsFumble, applyDamage, buildCheckChatData, computeMultiplier, ENERGY_DAMAGE_TYPES, getDefenseValue,
-  getEffectiveLevel, getSkillRanks, PENDING_SENSITIVE_SNAG_FLAG_KEY,
+  getEffectiveLevel, getSkillRanks, getVehicleDriver, PENDING_SENSITIVE_SNAG_FLAG_KEY,
 } from "./helpers/combat.mjs";
 import {
   checkPredatorSneakAttackEligibility,
@@ -192,6 +197,9 @@ import { isHonestAssessmentActive } from "./helpers/honest-assessment.mjs";
 import { isAugmentPowerWeaponActive } from "./helpers/augment-power-weapon.mjs";
 import { isPenetratingStrikesActive } from "./helpers/penetrating-strikes.mjs";
 import { actorHasPower } from "./helpers/powers.mjs";
+import { actorHasZordFeature, findZordFeature } from "./helpers/zord-features.mjs";
+import { consumeRelicKeyEdge, isRelicKeyEdgeActive } from "./helpers/relic-key.mjs";
+import { isWarriorModeActive } from "./helpers/warrior-mode.mjs";
 import { getZeoCrystalBoostOption } from "./helpers/zeo-crystal-boost.mjs";
 import { applyBrazenStrike } from "./helpers/brazen-strike.mjs";
 import { applyStylishStrike } from "./helpers/stylish-strike.mjs";
@@ -2525,11 +2533,168 @@ const PEERLESS_PILOT_GIJ_ID = `${GI_JOE_CRB}y39VC0CIsI8mdLKK`;
 // clause stays unbuilt - no such Skill Test exists anywhere in this codebase to auto-pass.
 const PEERLESS_PILOT_PR_ID = `${PR_CRB}dHDCKO4k7dlzyXbC`;
 const MOTOR_LANCER_ID = "Compendium.essence20.intercontinental_adventures.Item.YaFY9NhcpZPXdvv0";
+// Martial Zord (PR CRB, Zord Feature, p.137): "The Zord's melee attacks are more in tune with
+// the driver, granting +1." A Zord Feature (a `feature` item on the ZORD itself, matched via
+// helpers/zord-features.mjs - not a Perk on the pilot), so this checks the ROLLING actor (the
+// Zord) for the Feature and _getVehicleDriver for "is it actually being piloted right now,"
+// the mirror image of Motor Lancer just above (a Perk on the pilot boosting their own attack
+// while riding ANY vehicle) - here it's the Zord's own attack, gated on having a driver at all.
+const MARTIAL_ZORD_ID = `${PR_CRB}nQcU1SrVChPaXXpq`;
+// Zero-G (PR CRB, Zord Feature, p.138): "this Zord's ranged attacks all gain +1." The Aerial
+// Movement half (+60ft) is a static compendium Active Effect on the Feature item itself; this
+// covers the live combat-roll half, checked the same "Feature on the rolling Zord" way as
+// Martial Zord above.
+const ZERO_G_ID = `${PR_CRB}8xV4xaz8Hnqk4TgQ`;
+// Auxiliary Zord (PR CRB, Zord Feature, p.136): "+1 damage to Melee Attacks." The Strength/
+// Health half is a static compendium Active Effect on the Feature item itself; this covers the
+// live damage-bonus half, unlike Iron Hands/Iron Hooves below NOT scoped to a weaponless
+// attack - any melee weaponEffect the Zord makes qualifies, parent weapon or not.
+const AUXILIARY_ZORD_ID = `${PR_CRB}QO0kY1y359tSnPTS`;
+// Titan Body (PR CRB, Zord Feature, p.140): "The Zord's base melee attacks deal 3 damage." The
+// Towering Size/+2 Health/Strength+1/Speed-2 halves are already a static compendium Active
+// Effect on the item itself (predates this session). This is the one live half: a FLOOR (not a
+// flat +3 add) on the Zord's own melee weaponEffect damage, applied below wherever the final
+// damageValue is computed, before any other additive damage bonus (Auxiliary Zord, Thunder
+// Upgrade, Warrior Mode, ...) stacks on top. Scoped to any melee weaponEffect this Zord makes,
+// not narrowed to specifically its baseline "Zord Melee Attack" item - this codebase has no flag
+// distinguishing an actor's "base"/innate attack from any other melee weapon someone added to
+// it, the same "closest deterministic approximation" idiom every other RAW clause this codebase
+// can't perfectly scope already accepts (e.g. Auxiliary Zord's own identically-scoped damage
+// bonus just above). The incompatibility list ("can't benefit from Hardened Chassis, Light
+// Chassis, Ninja Powered, Upgraded Zord") is a chargen-time build rule, left GM-enforced like
+// every other build-time restriction this codebase already leaves unenforced (e.g. Detachable/
+// Core Body).
+const TITAN_BODY_ID = `${PR_CRB}a8qeX4JiDdAKfxyl`;
+// Upgraded Zord: Shogun Upgrade (PR CRB, Zord Feature, p.138): "+1 Strength, ↑1 to melee
+// attacks, ability to Defend as a Free action." The Strength half is a static compendium
+// Active Effect on the item itself; this covers the live shiftUp half. Unlike Martial Zord
+// above, RAW doesn't scope this to "while driven" - a permanent Zord upgrade, not a live-
+// piloting bonus - so it's unconditional on the Zord itself. "Defend as a Free action" stays
+// unbuilt - no Defend action exists anywhere in this codebase (action-economy gap).
+const SHOGUN_UPGRADE_ID = `${PR_CRB}1Bp1o4k9VhkKPXnd`;
+// Upgraded Zord: Super-Zeo Upgrade (PR CRB, Zord Feature, p.138): "+2 Toughness, +2 Health, ↑1
+// to ranged attacks." The Toughness/Health halves are a static Active Effect; this covers the
+// live shiftUp half - unconditional (no "while driven" qualifier, unlike Zero-G's own ranged
+// upshift), same reasoning as Shogun Upgrade's own melee upshift just above.
+const SUPER_ZEO_UPGRADE_ID = `${PR_CRB}sAlfUDoEI9wPjqG2`;
+// Upgraded Zord: Thunder Upgrade (PR CRB, Zord Feature, p.138): "+1 Speed, +1 skill rank to
+// Driving, increase all attack damage by 1." The Speed/Driving halves are a static Active
+// Effect; this covers the live damage-bonus half - unconditional on attack style (RAW says "all
+// attack damage," unlike Auxiliary Zord's melee-only "+1 damage to Melee Attacks"), checked
+// alongside Auxiliary Zord's own identical damageBonusSources pattern below.
+const THUNDER_UPGRADE_ID = `${PR_CRB}TrahRuyqZz8UAQ6K`;
+// Ninja Powered: Deep Wisdom (PR CRB, Zord Feature, p.138): "Edge on attacks versus targets
+// with Resistance or Immunity to a type of damage." Checked target-side, alongside this
+// system's own existing Resistance-Snag check (both read the target's static resistances/
+// immunities fields for the attack's own damageType).
+const NINJA_POWERED_DEEP_WISDOM_ID = `${PR_CRB}wvJFH2HbSWNab25M`;
+// Ninja Powered: Shining Light (PR CRB, Zord Feature, p.138): "Snag to ranged attacks
+// targeting it specifically." Checked target-side, same unconditional-Snag-on-target shape as
+// Paranoia below, just scoped to non-melee attacks only.
+const NINJA_POWERED_SHINING_LIGHT_ID = `${PR_CRB}YZivdMV6wIhdrcKt`;
+// Ninja Powered: Raw Ferocity (PR CRB, Zord Feature, p.138): "May choose to take a Snag on
+// melee attacks to inflict 2 damage (of the appropriate type)." Read alongside skillRollOptions
+// below - see that check's own comment for why this needs no dedicated checkbox.
+const NINJA_POWERED_RAW_FEROCITY_ID = `${PR_CRB}ljHdKAY31JGiknxb`;
+// Ninja Powered: Balance of Justice (PR CRB, Zord Feature, p.138): "Grants Edge to allies who
+// attack a target already attacked by this Zord in the same round." Modeled the same
+// mark-the-target/hasUsedThisRound shape Move Like a Song and Alpha Strike already establish
+// (see MOVE_LIKE_A_SONG_ROUND_FLAG's own precedent) - unconditional on the Zord's own attack
+// actually hitting (RAW says "attacked," not "successfully attacked," the same "attempted, not
+// landed" reading Quiet One's own "attacked with" clause already uses) and, like Move Like a
+// Song's own identical "any attacker" shape, not narrowed to actual allies specifically (no
+// ally/enemy distinction is checked at this point in the file for a target-side flag like this
+// one - the same simplification already accepted elsewhere rather than a guess at RAW's exact
+// intent for a Zord attacking itself, a case that doesn't arise in practice).
+const NINJA_POWERED_BALANCE_OF_JUSTICE_ID = `${PR_CRB}wlXHbN4QHSBGbkTe`;
+const BALANCE_OF_JUSTICE_ROUND_FLAG = 'balanceOfJusticeUsedThisRound';
+// Ninja Powered: Stealthy Misdirection (PR CRB, Zord Feature, p.138): "Can take the Defend action
+// as part of any Move action that is more than 20 feet." Not built - no Defend action exists
+// anywhere in this codebase, the same gap Upgraded Zord: Shogun Upgrade's own "Defend as a Free
+// action" clause (see SHOGUN_UPGRADE_ID's own comment above) already hits. Left undocumented in
+// code beyond this comment (no _ID constant, since there's nothing here to check against yet)
+// until a real Defend action mechanic exists to hook into.
+
+// Upgraded Zord: Rescue Upgrade (PR CRB, Zord Feature, p.138): "+1 Strength, +1 Speed, +20 feet
+// to all movement types, +1 Armor bonus to Toughness" - entirely static/flat, no live roll hook
+// needed (fully covered by the item's own compendium Active Effect).
+
+// Targeting System (GI Joe CRB, Vehicle Trait, p.173): "The driver can attack with this weapon
+// as a Free action, using their own Driving skill or the vehicle's Targeting skill... for the
+// Skill Test." Not built - this codebase has no Free-action-vs-Standard-action cost concept
+// anywhere (every roll this file handles is already assumed to cost whatever action the sheet's
+// own control implies, never computed or enforced here), so there's nothing for this trait to
+// grant an exception to yet. The Skill-substitution half (Driving OR Targeting, better of the
+// two) could be built alone, but doing so without the Free-action half would misrepresent RAW's
+// actual grant - left undocumented in code beyond this comment until a real action-cost concept
+// exists to hook into.
+
+// Armored Cabin / Wearable (GI Joe CRB, Vehicle Traits, p.173): "Attacks can't target the
+// vehicle's Crew" (Armored Cabin) / "Attacks can target the crew or the vehicle equally, rolling
+// against the defenses of the target" (Wearable, the opposite allowance). Not built - neither
+// trait has anything to gate: this codebase has no "attack an embarked crew member directly,
+// instead of the vehicle itself" targeting choice anywhere for either trait to permit or forbid.
+// Every existing Vehicle/Zord Willpower-Cleverness redirect (helpers/combat.mjs#getDefenseValue)
+// and driverless-Vehicle-is-an-object rule already only ever resolve TO the vehicle or driver,
+// never let an attacker choose a different embarked passenger as the target in the first place.
+
+// Elusive (GI Joe CRB, Vehicle Trait, A.W.E. Striker p.180) / Hard Target (Skystriker p.185,
+// Night Raven p.307) / Evasive Maneuvers (F.A.N.G. p.303, Reconnaissance Jet p.309, others): "As
+// long as [vehicle] moves 30 ft in a round, it uses Evasion for defense" / "As long as [vehicle]
+// is in flight, ranged attacks target its Evasion defense" / "the driver can halve the speed... to
+// force attacks to target its Evasion defense until the beginning of its next turn." Confirmed
+// ALREADY fully supported, no code needed: helpers/defense-choice.mjs#chooseDefenderDefense (used
+// for every attack resolved in this file) already lets the DEFENDER freely choose Evasion or
+// Toughness on any given attack, matching this system's own general RAW ("in most cases, the
+// defender chooses the Defense based on how they react to the attack" - see that file's own doc
+// comment). A vehicle with any of these three traits could already just always choose Evasion
+// whenever it's the better defense, with or without moving/flying/spending an action first - their
+// specific triggering conditions add nothing the generic system doesn't already grant. The same
+// "positive finding, no code needed" category as Megaform Trait's second slot just below.
+
+// Megaform Trait (PR CRB, Zord Feature, p.139, a Zeo Zord's own automatic Feature): "This Zord is
+// designed to function better as a part of the whole. This feature allows you to choose a second
+// Megaform Trait for your Zord to contribute to any Megaform they are a part of." Confirmed
+// ALREADY fully supported, no code needed: _prepareMegaformZordData/_prepareMegaformCombinerData
+// already iterate every megaformTrait item a participant holds (never limited to one), and the
+// Zord Features "+" add control (zord-common.hbs) never enforced a one-trait cap to begin with -
+// a GM can already add a second Megaform Trait item to any Zord today. This Feature's real
+// function is a chargen-time PERMISSION ("you're now allowed a second one"), not a runtime
+// restriction this system enforces anywhere - the same GM-adjudicated-build-rule category as
+// Titan Body's own incompatibility list just above.
+
+// Enhance (Attack) (PR CRB, Zord Feature, p.138): "Choose one of the Zord's methods of attack.
+// Choose either to add Accurate (↑1) to the attack, add 1 damage, or apply one special effect
+// from the list below." Not built - unlike every other Feature this session added, this one
+// needs real new infrastructure first: the `feature` item type (module/data/item/feature.mjs)
+// has no choice field of any kind today (a bare item()+itemDescription() schema, shared by every
+// other Feature too), so building this means adding schema fields AND a per-item choice UI
+// (checked against this Feature's own sourceId, not shown on the ~20 unrelated Features that
+// share this item type) before any dice.mjs hook has something to read - a genuinely new pattern,
+// not a copy of an existing one. Flagged rather than rushed in half-built.
+
+// Zord Mega-Weapon System (PR CRB, Zord Feature, p.141): "It costs a total of 5 Personal Power
+// expended from any combination of the Crew... and lasts for 1d2+1 attacks... base of 5 damage...
+// can be used while part of a Megaform." Not built - two genuinely new shapes neither Relic Key
+// nor Warrior Mode's own declare/consume idiom cover: spending a cost POOLED ACROSS MULTIPLE
+// actors at once (every other Personal-Power spend in this codebase draws from exactly one
+// actor), and a multi-use DURATION COUNTER (1d2+1 remaining attacks, decrementing per use) rather
+// than a single-roll or on/off-toggle grant. Flagged rather than rushed in half-built.
+
+// Carrier / Extra Attack / Blast Attack / Crew Compartment / Fast Modulation / Additional Attack
+// Type (PR CRB, Zord Features, p.137-139): each needs its own new subsystem with no existing
+// analog in this codebase - a pocket-dimension actor-container concept (Carrier), a multi-attack
+// action-economy concept (Extra Attack), an AoE-shape auto-wire scoped to one specific grant
+// (Blast Attack, distinct from the general helpers/aoe-targeting.mjs an attack with a real
+// `shape` already uses), additional crew-slot capacity (Crew Compartment), a Combiner-join-timer
+// concept (Fast Modulation), or is purely descriptive (Additional Attack Type just grants access
+// to author a new basic attack, nothing to compute). None built - flagged here rather than each
+// getting a half-built partial mechanic.
 const SIDESWIPE_ID = "Compendium.essence20.intercontinental_adventures.Item.1THAJ83WAviS14f0";
 // Demolition Driver (Factions in Action Vol. 2, General Perk, p.64): "When making a Ram attack,
 // you can suffer downshift 1, 2, or 3 on the Skill Test to deal an equal amount of additional
-// damage on a successful hit." Ram-only (unlike Sideswipe, which also covers Flyby) - see
-// _isSideswipeAttack's own doc comment for why "Ram"/"Flyby" are matched by the item's own name.
+// damage on a successful hit." Ram-only (unlike Sideswipe, which also covers Flyby) - matched via
+// weaponEffect.mjs's own isRam flag, see _isDemolitionDriverAttack/_isSideswipeAttack.
 // A genuinely new spend shape: every other numeric Roll Options Dialog spend in this codebase
 // (Terror, Supreme Guardian Tech) draws down a separate banked resource; this one converts a
 // self-imposed downshift on the SAME roll directly into damage, capped at a fixed 3 rather than
@@ -2870,6 +3035,18 @@ export class Dice {
     // of its aura (Alertness lives in rollSkill() instead, since Initiative never rolls through
     // that path in practice).
     const tacticalMeditationShiftUp = hasNearbyTacticalMeditation(actor) ? 2 : 0;
+    // Light Chassis (PR CRB, Zord Feature, p.137): "While in a Combined Megaform, it grants ↑1 to
+    // the Megaform's Initiative Skill Test." A Megaform rolls its own Initiative the same way any
+    // other actor does (same reasoning as Enhanced Initiative's hasEnhancedInitiativeEdge below -
+    // read directly off the flag Essence20Actor#_prepareMegaformZordData computes from its linked
+    // Zords' own Light Chassis Feature), an upshift rather than Enhanced Initiative's Edge since
+    // that's what this Feature's own RAW text grants.
+    const lightChassisShiftUp = actor.type == 'megaform' && actor.system.hasLightChassisInitiativeUpshift ? 1 : 0;
+    // Warrior Mode (PR CRB, Zord Feature, p.140): "Grants ↑2 to Initiative Skill Tests" while
+    // active - see helpers/warrior-mode.mjs's own doc comment for the full Feature and why this
+    // is checked on the Zord itself (unlike Light Chassis just above, Warrior Mode isn't a
+    // Megaform-facing effect - it's the Zord's own transformed state).
+    const warriorModeShiftUp = isWarriorModeActive(actor) ? 2 : 0;
     // Peerless Pilot (GI Joe CRB, General Perk, p.132): "Edge on Initiative rolls while piloting
     // a vehicle you are Specialized in." Checked via _getPilotedVehicle's own reverse crew-lookup
     // (see its doc comment) - "Specialized in" is approximated as "has taken at least one Driving
@@ -2904,7 +3081,8 @@ export class Dice {
     const dataset = {
       shift: actor.system.skills[initSkill].shift,
       shiftUp: actor.system.skills[initSkill].shiftUp + actor.system.essenceShifts.speed.shiftUp
-        + sirensBlaringShiftUp + enhancedReflexesShiftUp + tacticalMeditationShiftUp,
+        + sirensBlaringShiftUp + enhancedReflexesShiftUp + tacticalMeditationShiftUp + lightChassisShiftUp
+        + warriorModeShiftUp,
       shiftDown: actor.system.skills[initSkill].shiftDown + actor.system.essenceShifts.speed.shiftDown,
       skill: initSkill,
       isSpecialized: isSpringy || actor.system.skills[initSkill].isSpecialized,
@@ -2961,15 +3139,28 @@ export class Dice {
       || getNearbyAllyTokens(actor, Infinity).some(token => actorHasPerk(token.actor, ON_YOUR_FEET_ID));
     // Community Helper (National Guard option) - see COMMUNITY_HELPER_ID's own comment above.
     const hasCommunityHelperInitiativeEdge = findPerk(actor, COMMUNITY_HELPER_ID)?.system.choice == 'initiative';
+    // Enhanced Initiative (Transformers Combiner Feature, Enigma of Combination, p.42): "Your
+    // Combiner form gains Edge on Initiative Skill Tests." A Combiner rolls its own Initiative
+    // (Combat#rollInitiative, same as any other actor), so this reads directly off the flag
+    // _prepareMegaformCombinerData computes from its components' own megaformTrait items.
+    const hasEnhancedInitiativeEdge = actor.type == 'megaform' && actor.system.hasEnhancedInitiative;
+    // Relic Key - see helpers/relic-key.mjs's own doc comment. A declared, one-roll-only Edge
+    // grant rather than an automatic check like every other Edge above - consumed (cleared) below
+    // once it actually lands on this roll, so it doesn't linger onto the next one.
+    const hasRelicKeyEdge = isRelicKeyEdgeActive(actor);
     const skillDataset = {
       edge: actor.system.skills[initSkill].edge
         || actorHasPerk(actor, PREPARE_FOR_WAR_ID) || actorHasPerk(actor, SIRENS_BLARING_ID)
         || isPeerlessPilotDriving || isPeerlessPilotPrDriving || actorHasPerk(actor, READY_FOR_ANYTHING_ID)
         || hasReconEdge || isDaredevilTransformed || hasIconoclastEdge || hasOnYourFeetEdge
-        || hasCommunityHelperInitiativeEdge,
+        || hasCommunityHelperInitiativeEdge || hasEnhancedInitiativeEdge || hasRelicKeyEdge,
       shift: actor.system.skills[initSkill].shift,
       snag: actor.system.skills[initSkill].snag,
     };
+    if (hasRelicKeyEdge) {
+      await consumeRelicKeyEdge(actor);
+    }
+
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
@@ -3277,6 +3468,15 @@ export class Dice {
       }
     }
 
+    // Ninja Powered: Balance of Justice - see NINJA_POWERED_BALANCE_OF_JUSTICE_ID's own comment
+    // above. Same synchronous-function-can't-await shape as Move Like a Song just above.
+    if (combatModifiers.balanceOfJusticeTriggered) {
+      const balanceOfJusticeTarget = game.user.targets.first()?.actor;
+      if (balanceOfJusticeTarget) {
+        await markUsedThisRound(balanceOfJusticeTarget, BALANCE_OF_JUSTICE_ROUND_FLAG);
+      }
+    }
+
     // Range for Ranged Attacks (p.201): "Attacks with these weapons can't be made closer than
     // their minimum range" - the one real hard block anywhere in this file (everything else here
     // only ever suggests, via shift/Edge/Snag, never refuses). Checked here, before the Roll
@@ -3575,10 +3775,27 @@ export class Dice {
       await clearPendingBonus(actor, EXTRA_ROUGH_TRAINING_FLAG);
     }
 
+    // Relic Key - see helpers/relic-key.mjs's own doc comment. A declared, one-roll-only Edge
+    // grant (unlike every other check just above, which are all live conditions rather than a
+    // player's own prior declaration) - consumed (cleared) below once it actually lands on this
+    // roll, the same "any ONE roll" scope as its own RAW text, applying here regardless of
+    // rolledSkill since RAW doesn't restrict it to attacks specifically.
+    const hasRelicKeyEdge = isRelicKeyEdgeActive(actor);
+    if (hasRelicKeyEdge) {
+      await consumeRelicKeyEdge(actor);
+    }
+
+    // Linked (GI Joe CRB, Vehicle Trait, p.173): "Linked weapons gain an Edge on attacks." A
+    // weapon-level trait (same idiom as the existing 'ballistic' checks throughout this file,
+    // e.g. Worth a Shot/Straight Shooter above), not scoped to Vehicles specifically - RAW's own
+    // example Linked weapons (Rocket Launcher, Twin Cannons, ...) are all ordinary weapon items.
+    const hasLinkedEdge = item?.type == 'weaponEffect'
+      && !!this._getParentWeapon(actor, item)?.system.traits?.includes('linked');
+
     const skillDataset = {
       shift: initialShift,
       edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge || combatModifiers.edge
-        || !!specialization?.edge || hasExtraRoughTrainingEdge,
+        || !!specialization?.edge || hasExtraRoughTrainingEdge || hasRelicKeyEdge || hasLinkedEdge,
       snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag || combatModifiers.snag
         || !!specialization?.snag,
     };
@@ -4863,6 +5080,24 @@ export class Dice {
       ? getCombatStanceNumber(actor)
       : 0;
 
+    // Retribution (Through the Shattered Grid, Magna Defender, 7th level, p.25) - see
+    // helpers/retribution.mjs's own doc comment. Melee-only ("make a single melee Attack"),
+    // gated on a bonus banked by a Defender Step activation against whichever enemy is currently
+    // targeted - same "resolved via game.user.targets.first() directly" pre-dialog shape Combat
+    // Stance's own check just above already uses, and the same reason (need the ACTUAL target,
+    // not just that this is an Attack). Stores the banked bonusType directly rather than a plain
+    // boolean, since the checkbox's own consumption below needs to know which of the two grants
+    // (damage vs Edge) to apply.
+    {
+      const retributionPending = getPendingBonus(actor, RETRIBUTION_PENDING_FLAG);
+      const retributionTarget = game.user.targets.first()?.actor;
+      updatedShiftDataset.retributionAvailable = isMeleeWeaponEffect && !!retributionPending
+        && !!retributionTarget && retributionPending.targetUuid == retributionTarget.uuid
+        && actor.system.powers?.personal?.value > 0
+        ? retributionPending.bonusType
+        : null;
+    }
+
     // Withering Fire (Factions in Action Vol. 2, Infantry Focus, p.68): "If you Attack a target
     // that an ally Attacked since your last turn, you can spend a Story Point to give the target
     // the Frightened Condition if your Attack hits." Reuses Team Focus's own "attacked by an ally
@@ -5099,6 +5334,34 @@ export class Dice {
     // numHands edit is explicitly permanent, a one-time build-time conversion).
     if (item?.type == 'weaponEffect' && item.system.classification.style == 'melee'
       && actorHasPerk(actor, MOTOR_LANCER_ID) && this._getPilotedVehicle(actor)) {
+      updatedShiftDataset.shiftUp += 1;
+    }
+
+    // Martial Zord / Zero-G - see their own ID comments above. Both are Zord Features (checked
+    // on the actor actually making the roll - the Zord itself, not its pilot), gated on the
+    // Zord currently having a driver seated (_getVehicleDriver, the same pilot-lookup Heavy
+    // Ordnance/Sideswipe/Demolition Driver already use).
+    if (item?.type == 'weaponEffect' && item.system.classification.style == 'melee'
+      && actor?.type == 'zord' && actorHasZordFeature(actor, MARTIAL_ZORD_ID) && this._getVehicleDriver(actor)) {
+      updatedShiftDataset.shiftUp += 1;
+    }
+
+    if (item?.type == 'weaponEffect' && item.system.classification.style != 'melee'
+      && actor?.type == 'zord' && actorHasZordFeature(actor, ZERO_G_ID) && this._getVehicleDriver(actor)) {
+      updatedShiftDataset.shiftUp += 1;
+    }
+
+    // Upgraded Zord: Shogun Upgrade - see its own ID comment above. Unconditional (not gated on
+    // having a driver), unlike Martial Zord/Zero-G just above.
+    if (item?.type == 'weaponEffect' && item.system.classification.style == 'melee'
+      && actor?.type == 'zord' && actorHasZordFeature(actor, SHOGUN_UPGRADE_ID)) {
+      updatedShiftDataset.shiftUp += 1;
+    }
+
+    // Upgraded Zord: Super-Zeo Upgrade - see its own ID comment above. Unconditional, same shape
+    // as Shogun Upgrade just above, but ranged.
+    if (item?.type == 'weaponEffect' && item.system.classification.style != 'melee'
+      && actor?.type == 'zord' && actorHasZordFeature(actor, SUPER_ZEO_UPGRADE_ID)) {
       updatedShiftDataset.shiftUp += 1;
     }
 
@@ -6157,6 +6420,25 @@ export class Dice {
       await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
     }
 
+    // Retribution - see helpers/retribution.mjs's own doc comment. Spent and cleared now (only
+    // ever offered when updatedShiftDataset.retributionAvailable already confirmed both
+    // affordability and that the currently-targeted actor is the one who actually triggered it).
+    // _getAutomaticCombatModifiers (where Outfoxed/Spite's own identical target-scoped Edge grants
+    // live) runs once, BEFORE this dialog even resolves - skillRollOptions doesn't exist yet at
+    // that point, so an Edge that depends on a checkbox has to be set here instead, the same
+    // "skillRollOptions.edge = true" shape Eureka!/Eltarian Tech just above already use for their
+    // own costed Edge grants. The damage half instead folds into damageBonusValue below, matching
+    // Combat Stance's own identical shape just above.
+    const isRetributionDamageAttempt = skillRollOptions.applyRetribution && updatedShiftDataset.retributionAvailable == 'damage';
+    if (skillRollOptions.applyRetribution && updatedShiftDataset.retributionAvailable) {
+      if (updatedShiftDataset.retributionAvailable == 'edge') {
+        skillRollOptions.edge = true;
+      }
+
+      await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
+      await clearPendingBonus(actor, RETRIBUTION_PENDING_FLAG);
+    }
+
     // Withering Fire - see WITHERING_FIRE_ID's own comment above. isWitheringFireAttempt is
     // threaded onto checkContext below for _rollSkillHelper's own post-hit Frightened application;
     // only meaningful once updatedShiftDataset.witheringFireAvailable already confirmed both the
@@ -6496,7 +6778,23 @@ export class Dice {
     let checkEntries = null;
     if (skillRollOptions.defenseType && skillRollOptions.defenseType != 'none' && targets.length) {
       checkEntries = await Promise.all(targets.map(async token => {
-        const deflectiveReduction = isPenetratingRoundsAttack && skillRollOptions.defenseType == 'toughness'
+        // Which Defense this specific target actually uses against this specific attack (Welcome
+        // to Night Vale Host Guide's shared Combat Actions chapter, p.33-34, matching every core
+        // rulebook's own identical text): "in most cases, the defender chooses the Defense based
+        // on how they react to the attack." See helpers/defense-choice.mjs's own doc comment for
+        // the full RAW quote and why this used to be backwards (the ATTACKER's own Roll Options
+        // Dialog dropdown could freely override the weapon's suggested Defense, when only the
+        // defender's own player - or the GM standing in for an unowned NPC - actually has that
+        // say). skillRollOptions.defenseType (the weapon's own configured Defense) is passed
+        // through only as the suggested default; every other use of "the Defense this attack
+        // targets" below this point reads resolvedDefenseType instead, since each target in a
+        // multi-target attack can genuinely choose a different one.
+        const resolvedDefenseType = await chooseDefenderDefense(token.actor, {
+          attackerName: actor.name,
+          suggestedDefenseType: skillRollOptions.defenseType,
+        });
+
+        const deflectiveReduction = isPenetratingRoundsAttack && resolvedDefenseType == 'toughness'
           ? this._getDeflectiveArmorToughness(token.actor)
           : 0;
 
@@ -6505,7 +6803,7 @@ export class Dice {
         // is this system's Toughness-specific armor component (the same Defense Driving Strike's
         // deflective-armor reduction just above is scoped to, for the identical reason).
         const penetratingAimIgnorePoints = skillRollOptions.applyPenetratingAim
-          && skillRollOptions.defenseType == 'toughness' && actorHasPerk(actor, PENETRATING_AIM_ID)
+          && resolvedDefenseType == 'toughness' && actorHasPerk(actor, PENETRATING_AIM_ID)
           ? 1 : 0;
 
         // Metallikato - see METALLIKATO_ID's own comment above. "Up to your Smarts Essence in
@@ -6513,26 +6811,26 @@ export class Dice {
         // not a shift or a flat point count, same Toughness-only scoping Penetrating Aim's
         // identical "armor Defense bonus" wording already established just above.
         const metallikatoIgnorePoints = skillRollOptions.applyMetallikatoIgnoreArmor
-          && skillRollOptions.defenseType == 'toughness' && actorHasPerk(actor, METALLIKATO_ID)
+          && resolvedDefenseType == 'toughness' && actorHasPerk(actor, METALLIKATO_ID)
           ? (actor.system.essences?.smarts?.value ?? 0) : 0;
 
-        let difficulty = getDefenseValue(token.actor, skillRollOptions.defenseType, {
+        let difficulty = getDefenseValue(token.actor, resolvedDefenseType, {
           ignoreArmor: drivingStrikeIgnoreArmor,
           ignoreArmorPoints: penetratingAimIgnorePoints + metallikatoIgnorePoints,
         })
-          + getShieldUpgradeBonus(token.actor, skillRollOptions.defenseType)
+          + getShieldUpgradeBonus(token.actor, resolvedDefenseType)
           - deflectiveReduction;
 
         // Ground Suppression - see helpers/ground-suppression.mjs's own doc comment. The first
         // target-difficulty modifier in this project to SUBTRACT rather than add - benefits ANY
         // attacker comparing against the marked target's Toughness/Evasion, not just the caster.
-        if (['toughness', 'evasion'].includes(skillRollOptions.defenseType)) {
+        if (['toughness', 'evasion'].includes(resolvedDefenseType)) {
           difficulty -= getGroundSuppressionReduction(token.actor);
         }
 
         // Psychological Warfare - see PSYCHOLOGICAL_WARFARE_ID's own comment above.
         if (
-          ['willpower', 'cleverness'].includes(skillRollOptions.defenseType)
+          ['willpower', 'cleverness'].includes(resolvedDefenseType)
           && actorHasPerk(token.actor, PSYCHOLOGICAL_WARFARE_ID)
         ) {
           const evasionDifficulty = getDefenseValue(token.actor, 'evasion', {
@@ -6559,12 +6857,12 @@ export class Dice {
         const tacticalGymnasticsBonus = !targetHasArmorEquipped && actorHasPerk(token.actor, TACTICAL_GYMNASTICS_ID)
           ? getSkillRanks(token.actor, 'acrobatics') : 0;
 
-        if (skillRollOptions.defenseType == 'toughness' && !targetHasArmorEquipped
+        if (resolvedDefenseType == 'toughness' && !targetHasArmorEquipped
           && actorHasPerk(token.actor, BULKED_UP_FRAME_ID)) {
           difficulty += getSkillRanks(token.actor, 'brawn');
         }
 
-        if (skillRollOptions.defenseType == 'evasion') {
+        if (resolvedDefenseType == 'evasion') {
           difficulty += tacticalGymnasticsBonus;
         }
 
@@ -6612,7 +6910,7 @@ export class Dice {
         const drillingShotWeaponSourceId = drillingShotWeapon?.flags?.core?.sourceId
           ?? drillingShotWeapon?._stats?.compendiumSource;
         if (drillingShotWeaponSourceId == LONG_RANGE_RIFLE_ID && actorHasPerk(actor, DRILLING_SHOT_ID)) {
-          difficulty = getDefenseValue(token.actor, skillRollOptions.defenseType, { ignoreArmor: true });
+          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true });
         }
 
         // Quantum Cut (A Jump Through Time, Quantum Ranger, Quantum Power option, p.46) - see
@@ -6630,7 +6928,7 @@ export class Dice {
         // dropdown was set to (Evasion, per activateOmegaEnhancement's own synthetic dataset),
         // unlike Quantum Cut/Drilling Shot above which also force a specific Defense.
         if (dataset.omegaEnhancementMode == 'electro') {
-          difficulty = getDefenseValue(token.actor, skillRollOptions.defenseType, { ignoreArmor: true });
+          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true });
         }
 
         // Over the Candlestick - Agile Reflexes (Technorganic Secrets, Climber/Nimble Origin
@@ -6641,7 +6939,7 @@ export class Dice {
         // it can only help" - the same "automatically exercised" idiom Supreme Guardian's own
         // "you may roll" clause already uses - swapping in the target's own Evasion Defense
         // whenever it's actually being compared against Toughness, once per scene.
-        if (skillRollOptions.defenseType == 'toughness'
+        if (resolvedDefenseType == 'toughness'
           && findPerk(token.actor, OVER_THE_CANDLESTICK_ID)?.system.choice == 'agileReflexes'
           && !hasUsedThisEncounter(token.actor, AGILE_REFLEXES_FLAG)) {
           difficulty = getDefenseValue(token.actor, 'evasion', { ignoreArmor: drivingStrikeIgnoreArmor })
@@ -6656,7 +6954,7 @@ export class Dice {
         // clause already uses) rather than a specific named weapon.
         const penetratingStrikesWeapon = this._getParentWeapon(actor, item);
         if (isPenetratingStrikesActive(actor) && penetratingStrikesWeapon?.system.traits.includes('martialArts')) {
-          difficulty = getDefenseValue(token.actor, skillRollOptions.defenseType, { ignoreArmor: true });
+          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true });
         }
 
         // Exploit Weakness (PR CRB, Yellow Ranger, 7th level, p.57) - see
@@ -6665,7 +6963,7 @@ export class Dice {
         // marked it), same ignoreArmor recompute shape as Drilling Shot/Quantum Cut/Penetrating
         // Strikes above.
         if (isExploitWeaknessMarked(token.actor)) {
-          difficulty = getDefenseValue(token.actor, skillRollOptions.defenseType, { ignoreArmor: true });
+          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true });
         }
 
         // Stronger Together (Strategist Focus, 20th level, p.68): "you gain +1 to your Defenses
@@ -6688,13 +6986,13 @@ export class Dice {
 
         // Defensive Flexibility - see helpers/defensive-flexibility.mjs's own doc comment. Same
         // "add to the fully-computed difficulty" shape as Stronger Together/Pay It Forward above.
-        difficulty += getDefensiveFlexibilityDefenseBonus(token.actor, skillRollOptions.defenseType);
+        difficulty += getDefensiveFlexibilityDefenseBonus(token.actor, resolvedDefenseType);
 
         // Mysterious Aura - see helpers/mysterious-aura.mjs's own doc comment. Imposing (a
         // reciprocal enemy-side penalty) and Protective (an ally-side bonus, self included), same
         // "add to the fully-computed difficulty" shape as the checks just above.
-        difficulty += getMysteriousAuraImposingPenalty(token.actor, skillRollOptions.defenseType);
-        difficulty += getMysteriousAuraProtectiveBonus(token.actor, skillRollOptions.defenseType);
+        difficulty += getMysteriousAuraImposingPenalty(token.actor, resolvedDefenseType);
+        difficulty += getMysteriousAuraProtectiveBonus(token.actor, resolvedDefenseType);
 
         // Impenetrable Armor (Focus: Mechanized Infantry, 10th level, p.79): "increase the
         // Defenses of all vehicles you pilot by +2." The target's own passive bonus, same
@@ -6735,7 +7033,7 @@ export class Dice {
         // half ("you automatically fail Deception Skill Tests" yourself) lives just below, in this
         // same loop's own difficulty-vs-Infinity idiom Just the Facts already established, since
         // it's about the ROLLER holding the Perk, not the target.
-        if (rolledSkill == 'deception' && skillRollOptions.defenseType == 'cleverness'
+        if (rolledSkill == 'deception' && resolvedDefenseType == 'cleverness'
           && actorHasPerk(token.actor, TRUSTWORTHY_ID)) {
           difficulty += 4;
         }
@@ -6752,32 +7050,32 @@ export class Dice {
         // whole combined difficulty (base Defense + Shield Upgrade - deflective reduction) rather
         // than just the base Defense score, the same "one combined number" precision this method
         // already treats every other Defense modifier at.
-        if (await consumeRollWithThePunches(token.actor, skillRollOptions.defenseType)) {
+        if (await consumeRollWithThePunches(token.actor, resolvedDefenseType)) {
           difficulty *= 2;
         }
 
         // Hard Target (Pink Ranger, 2nd level, p.50) - see consumeHardTarget's own doc comment.
-        difficulty += await consumeHardTarget(token.actor, skillRollOptions.defenseType);
+        difficulty += await consumeHardTarget(token.actor, resolvedDefenseType);
 
         // Resilience (Across the Stars, Gold Ranger, 11th level, p.53) - see consumeResilience's
         // own doc comment.
-        difficulty += await consumeResilience(token.actor, skillRollOptions.defenseType);
+        difficulty += await consumeResilience(token.actor, resolvedDefenseType);
 
         // Momentary Blur (A Jump Through Time, Quantum Ranger, Quantum Power option, p.45) - see
         // consumeMomentaryBlur's own doc comment.
-        difficulty += await consumeMomentaryBlur(token.actor, skillRollOptions.defenseType);
+        difficulty += await consumeMomentaryBlur(token.actor, resolvedDefenseType);
 
         // Grid Surge - Toughness Boost (Silver Ranger, 2nd level, p.57) - see
         // consumeGridSurgeToughness's own doc comment.
-        difficulty += await consumeGridSurgeToughness(token.actor, skillRollOptions.defenseType);
+        difficulty += await consumeGridSurgeToughness(token.actor, resolvedDefenseType);
 
         // Phantom Suite (Across the Stars, Phantom Ranger, 1st level, p.60) - see
         // helpers/phantom-suite.mjs's own doc comment for why this is a live, non-consumed read
         // (unlike every other banked bonus in this loop) - it applies to every Evasion-compared
         // attack for as long as the toggle stays on, not just the next one.
         if (isPhantomSuiteActive(token.actor)
-          && (skillRollOptions.defenseType == 'evasion'
-            || (skillRollOptions.defenseType == 'toughness' && hasPhantomFocusOption(token.actor, 'phaseDefense')))) {
+          && (resolvedDefenseType == 'evasion'
+            || (resolvedDefenseType == 'toughness' && hasPhantomFocusOption(token.actor, 'phaseDefense')))) {
           // Phase Defense (Phantom Focus choice, p.62): "you also apply [Phantom Suite's] Evasion
           // Defense bonus to your Toughness Defense" while Phantom Suite is active - the same
           // live, non-consumed bonus as Phantom Suite's own Evasion half above, just also
@@ -6789,7 +7087,7 @@ export class Dice {
         // see helpers/powered-plating.mjs's own doc comment. Same live, non-consumed shape as
         // Phantom Suite's own Evasion bonus above, just Toughness-only and cleared elsewhere
         // (onMorph) instead of by a hit.
-        if (skillRollOptions.defenseType == 'toughness') {
+        if (resolvedDefenseType == 'toughness') {
           difficulty += getPoweredPlatingBonus(token.actor);
           // Monster Morph (Finster's Monster-Matic Cookbook, all 6 Psycho Paths, 3rd level) - see
           // helpers/monster-morph.mjs's own doc comment for why this is a live, non-consumed read
@@ -6800,7 +7098,7 @@ export class Dice {
         // Grow! (Finster's Monster-Matic Cookbook, all 6 Psycho Paths, 10th level) - see
         // helpers/monster-morph.mjs's own doc comment. +2 to BOTH Toughness and Evasion while
         // active, the same live, non-consumed shape as Monster Morph's own Toughness bonus above.
-        if (skillRollOptions.defenseType == 'toughness' || skillRollOptions.defenseType == 'evasion') {
+        if (resolvedDefenseType == 'toughness' || resolvedDefenseType == 'evasion') {
           difficulty += getGrowDefenseBonus(token.actor);
 
           // Nemesis Drain - see helpers/nemesis-drain.mjs's own doc comment. -1 to BOTH Toughness
@@ -6817,14 +7115,14 @@ export class Dice {
 
         // Skier - see SKIER_ID's own comment above. Same "flag alone isn't enough" defense-in-depth
         // check documents/actor.mjs's own Ground Movement half already uses.
-        if (skillRollOptions.defenseType == 'evasion' && actorHasPerk(token.actor, SKIER_ID) && isSkiing(token.actor)) {
+        if (resolvedDefenseType == 'evasion' && actorHasPerk(token.actor, SKIER_ID) && isSkiing(token.actor)) {
           difficulty += 1;
         }
 
         // Lightshield Armor (Through the Shattered Grid, Guardian of Eltar, Wisdom of the Elders
         // option, p.72): "+2 to Toughness" while active - same live, non-consumed shape as
         // Powered Plating's own Toughness bonus just above (can't touch _prepareDefenses).
-        if (skillRollOptions.defenseType == 'toughness' && isWisdomOfTheEldersActive(token.actor, 'lightshieldArmor')) {
+        if (resolvedDefenseType == 'toughness' && isWisdomOfTheEldersActive(token.actor, 'lightshieldArmor')) {
           difficulty += 2;
         }
 
@@ -6832,41 +7130,52 @@ export class Dice {
         // helpers/protection.mjs's own doc comment. Same live, non-consumed shape as Lightshield
         // Armor/Powered Plating just above - the base +1 is a permanent compendium Active Effect,
         // this is only the optional scene-boost's own extra +1.
-        if (skillRollOptions.defenseType == 'toughness') {
+        if (resolvedDefenseType == 'toughness') {
           difficulty += getProtectionBoostBonus(token.actor);
         }
 
         // Zeo Crystal Boost, Morpher option (Across the Stars, Grid Power, p.73) - see
         // helpers/zeo-crystal-boost.mjs's own doc comment. "+1 to all Defenses" - unlike Powered
         // Plating/Lightshield Armor above (Toughness-only), this applies regardless of
-        // skillRollOptions.defenseType, same live non-consumed shape otherwise.
+        // resolvedDefenseType, same live non-consumed shape otherwise.
         // Bolster Defense (Finster's Monster-Matic Cookbook, Sorcerous Power, p.272) - see
         // helpers/bolster-defense.mjs's own doc comment. Same live, non-consumed shape as
         // Zeo Crystal Boost's own "all Defenses" option just below/above, but can also be scoped
         // to one specific Defense instead.
-        difficulty += getBolsterDefenseBonus(token.actor, skillRollOptions.defenseType);
+        difficulty += getBolsterDefenseBonus(token.actor, resolvedDefenseType);
 
         // Roar! (Ferocious Fighters, Tiger Force Faction Perk) - see helpers/roar.mjs's own doc
         // comment. Same live, non-consumed single-Defense shape as Lightshield Armor/Bolster
         // Defense above, self-only.
-        difficulty += getRoarDefenseBonus(token.actor, skillRollOptions.defenseType);
+        difficulty += getRoarDefenseBonus(token.actor, resolvedDefenseType);
 
         // Jury Rig - Align Suspension / Harden Armor (Factions in Action Vol. 2, Engineer Troop
         // Focus, 17th level, p.73) - see helpers/jury-rig.mjs's own doc comment. Same live,
         // non-consumed Defense-bonus shape as Bolster Defense just above.
-        difficulty += getJuryRigDefenseBonus(token.actor, skillRollOptions.defenseType);
+        difficulty += getJuryRigDefenseBonus(token.actor, resolvedDefenseType);
 
         // Like Water (Factions in Action Vol. 2, General Perk, p.30) - see helpers/like-water.mjs's
         // own doc comment. Same live, non-consumed Defense-bonus shape as Bolster Defense/Jury Rig
         // just above, activated once per Combat instead of via a triggered roll.
-        difficulty += getLikeWaterDefenseBonus(token.actor, skillRollOptions.defenseType);
+        difficulty += getLikeWaterDefenseBonus(token.actor, resolvedDefenseType);
 
         // Not On My Watch (Factions in Action Vol. 2, Oktober Guard General Perk, p.95) - see
         // helpers/not-on-my-watch.mjs's own doc comment. A passive, always-live check (no
         // activation at all) rather than a banked/toggled state like Like Water just above.
         if (actorHasPerk(token.actor, NOT_ON_MY_WATCH_ID)) {
-          difficulty += getNotOnMyWatchDefenseBonus(token.actor, skillRollOptions.defenseType);
+          difficulty += getNotOnMyWatchDefenseBonus(token.actor, resolvedDefenseType);
         }
+
+        // Defender Step (Through the Shattered Grid, Magna Defender, 2nd level, p.24) - see
+        // helpers/defender-step.mjs's own doc comment. A THIRD PARTY's own triggered choice
+        // (unlike every bonus above, which is either passive or the target's own activation), so
+        // it prompts rather than just reading a live flag/toggle. reactorUuid/defenderStepBonus
+        // are threaded onto this target's own returned entry below so _rollSkillHelper's own
+        // results loop (which is the first point where this attack's hit/miss is actually known)
+        // can bank Retribution's own follow-up once the outcome is known - see
+        // helpers/retribution.mjs's own doc comment.
+        const { bonus: defenderStepBonus, reactorUuid: defenderStepReactorUuid } = await checkAndActivateDefenderStep(token.actor, actor);
+        difficulty += defenderStepBonus;
 
         if (getZeoCrystalBoostOption(token.actor) == 'morpher') {
           difficulty += 1;
@@ -6876,7 +7185,7 @@ export class Dice {
         // fully-computed difficulty (including the target's own Phantom Suite bonus just above,
         // Shield Upgrade, banked bonuses, etc.) - "the target's Evasion Defense is halved" reads
         // most naturally as the one final number this attack is actually compared against.
-        if (isUnseenStrikeAttempt && skillRollOptions.defenseType == 'evasion') {
+        if (isUnseenStrikeAttempt && resolvedDefenseType == 'evasion') {
           difficulty = Math.ceil(difficulty / 2);
         }
 
@@ -6884,6 +7193,9 @@ export class Dice {
           name: token.actor.name,
           targetUuid: token.actor.uuid,
           difficulty,
+          defenseType: resolvedDefenseType,
+          defenderStepBonus,
+          defenderStepReactorUuid,
           willpowerDifficulty: isTriggerHappyAttack ? getDefenseValue(token.actor, 'willpower') : null,
           toughnessDifficulty: isExplosiveAftershockAttack ? getDefenseValue(token.actor, 'toughness') : null,
         };
@@ -7171,6 +7483,10 @@ export class Dice {
       damageBonusSources.add(findPerk(actor, COMBAT_STANCE_ID)?.name ?? 'Combat Stance');
     }
 
+    if (isRetributionDamageAttempt) {
+      damageBonusSources.add(findPerk(actor, RETRIBUTION_ID)?.name ?? 'Retribution');
+    }
+
     // Ultimate Magna Defender (Through the Shattered Grid, Magna Defender, 20th level, p.25): "An
     // additional point of damage on all your melee Attacks, including the ones you make in Mega
     // Defender form and while forming the Defender Torozord." Only the base-form case is built -
@@ -7276,6 +7592,42 @@ export class Dice {
       ? 1 : 0;
     if (ironHoovesDamageBonus) {
       damageBonusSources.add(findPerk(actor, IRON_HOOVES_ID)?.name ?? 'Iron Hooves');
+    }
+
+    // Auxiliary Zord - see AUXILIARY_ZORD_ID's own comment above.
+    const auxiliaryZordDamageBonus = checkEntries && item?.type == 'weaponEffect'
+      && item.system.classification.style == 'melee' && actor?.type == 'zord'
+      && actorHasZordFeature(actor, AUXILIARY_ZORD_ID)
+      ? 1 : 0;
+    if (auxiliaryZordDamageBonus) {
+      damageBonusSources.add(findZordFeature(actor, AUXILIARY_ZORD_ID)?.name ?? 'Auxiliary Zord');
+    }
+
+    // Titan Body - see TITAN_BODY_ID's own comment above. A floor, not an additive bonus - folded
+    // directly into the base damageValue computation below (not damageBonusValue, which every
+    // other check here adds ON TOP of the item's own damageValue), so it can't be mistaken for a
+    // stacking source in the roll's own damage breakdown.
+    const hasTitanBodyDamageFloor = checkEntries && item?.type == 'weaponEffect'
+      && item.system.classification.style == 'melee' && actor?.type == 'zord'
+      && actorHasZordFeature(actor, TITAN_BODY_ID);
+
+    // Upgraded Zord: Thunder Upgrade - see THUNDER_UPGRADE_ID's own comment above. Unlike
+    // Auxiliary Zord just above, not scoped to melee - RAW says "all attack damage."
+    const thunderUpgradeDamageBonus = checkEntries && item?.type == 'weaponEffect'
+      && actor?.type == 'zord' && actorHasZordFeature(actor, THUNDER_UPGRADE_ID)
+      ? 1 : 0;
+    if (thunderUpgradeDamageBonus) {
+      damageBonusSources.add(findZordFeature(actor, THUNDER_UPGRADE_ID)?.name ?? 'Thunder Upgrade');
+    }
+
+    // Warrior Mode - see helpers/warrior-mode.mjs's own doc comment. "Melee attacks deal 1
+    // additional damage while in Warrior Mode."
+    const warriorModeDamageBonus = checkEntries && item?.type == 'weaponEffect'
+      && item.system.classification.style == 'melee' && actor?.type == 'zord'
+      && isWarriorModeActive(actor)
+      ? 1 : 0;
+    if (warriorModeDamageBonus) {
+      damageBonusSources.add('Warrior Mode');
     }
 
     // Puissance - see PUISSANCE_ID's own comment above. Same "no parent weapon" shape as Iron
@@ -7393,6 +7745,21 @@ export class Dice {
       damageBonusSources.add(damageRolePoints.name);
     }
 
+    // Ninja Powered: Raw Ferocity - see its own ID comment above. Unlike every other checkbox-
+    // confirmed bonus in this block, this reads the roll's own FINAL Snag/Normal/Edge choice
+    // directly (skillRollOptions.snag) rather than needing a separate dedicated checkbox - the
+    // player already declares Snag through the dialog's own existing radio buttons for any
+    // reason (forced or voluntary), and this Feature just rewards that choice landing on a
+    // melee attack, exactly as RAW's own "may choose to take a Snag... to inflict 2 damage"
+    // phrasing describes.
+    const rawFerocityDamageBonus = checkEntries && item?.type == 'weaponEffect'
+      && item.system.classification.style == 'melee' && actor?.type == 'zord'
+      && actorHasZordFeature(actor, NINJA_POWERED_RAW_FEROCITY_ID) && skillRollOptions.snag
+      ? 2 : 0;
+    if (rawFerocityDamageBonus) {
+      damageBonusSources.add(findZordFeature(actor, NINJA_POWERED_RAW_FEROCITY_ID)?.name ?? 'Raw Ferocity');
+    }
+
     // Hard Hitter (Finster's Monster-Matic Cookbook, Path of Venom, 1st level, p.299): "...that
     // attack gains Edge and potential additional damage of its respective type if successful."
     // The damage half is already covered generically by the damageBonus rolePoints checkbox just
@@ -7413,11 +7780,14 @@ export class Dice {
       + targetVulnerabilityDamageBonus + exploitTrustDamageBonus + acidDamageBonus + fireDamageBonus
       + environmentalAssistDamageBonus + silverRangerPrimeDamageBonus + phantomRangerPrimeDamageBonus + viciousOrVenomDamageBonus
       + growthBoostDamageBonus + ninjaPowerDamageBonus + powerBoostDamageBonus + zeoCrystalBoostDamageBonus + spentTerror + spentSupremeGuardianTech + spentDemolitionDriver
-      + ironHandsDamageBonus + ironHoovesDamageBonus + puissanceDamageBonus + forceDamageBonus
+      + ironHandsDamageBonus + ironHoovesDamageBonus + puissanceDamageBonus + forceDamageBonus + auxiliaryZordDamageBonus
+      + thunderUpgradeDamageBonus + warriorModeDamageBonus
+      + rawFerocityDamageBonus
       + combatStanceDamageBonus + ultimateMagnaDefenderDamageBonus + growDamageBonus + psychoAssaultDamageBonus + zordbaneDamageBonus + oorahDamageBonus + cruelDamageBonus + growingSmolderStacks
       + frostWarlordDamageBonus + venomWarlordDamageBonus + cruelWarlordDamageBonus
       + stationManagementDamageBonus + theWeatherDamageBonus + strexStrikesDamageBonus + viralNewsBloggersDamageBonus
       + gridPowerStrikeDamageBonus + weakPointDamageBonus + roamingTheLandDamageBonus
+      + (isRetributionDamageAttempt ? 1 : 0)
       + (appliesRolePointsDamage ? damageRolePoints.value : 0);
     if (forceDamageBonus) {
       damageBonusSources.add(findPerk(actor, FORCE_ID)?.name ?? 'Force');
@@ -7603,8 +7973,13 @@ export class Dice {
         // helpers/phantom-suite.mjs's own doc comment for why _rollSkillHelper's post-hit
         // processing needs to know which Defense this attack was actually compared against
         // (rather than re-deriving it from the item), the same "a fact about the roll, threaded
-        // through checkContext" shape effectName/alternateEffects below already use.
-        defenseType: skillRollOptions.defenseType,
+        // through checkContext" shape effectName/alternateEffects below already use. Reads the
+        // first target's own resolvedDefenseType (see helpers/defense-choice.mjs) - the actual
+        // Defense that target's own owner/GM chose, not just the weapon's suggested default;
+        // this is a single roll-level fact, so a multi-target attack whose targets happened to
+        // choose different Defenses is represented by whichever target is first, the same
+        // "one combined fact per roll" simplification every other entry in this object accepts.
+        defenseType: checkEntries[0]?.defenseType ?? skillRollOptions.defenseType,
         // Terror (Beneath the Helmet, Dark Ranger, 1st level, p.39) - see helpers/terror.mjs's
         // own doc comment for the accrual half this threads into, in _rollSkillHelper below.
         wasEdge: skillRollOptions.edge,
@@ -7619,7 +7994,9 @@ export class Dice {
         isUnarmedAttack,
         damageValue: item?.type == 'weaponEffect'
           ? (guardianStrikesForgoDamage || stickInTheSpokesForgoDamage || interdictionForgoDamage
-            ? 0 : item.system.damageValue + damageBonusValue)
+            ? 0
+            : (hasTitanBodyDamageFloor ? Math.max(item.system.damageValue, 3) : item.system.damageValue)
+              + damageBonusValue)
           : (psychoanalystDamage?.value ?? coaxSurrenderDamage?.value ?? deceptiveWarfareDamage?.value ?? explosiveMorphDamage?.value ?? omegaEnhancementDamage?.value ?? menaceDamage?.value ?? humanBulletDamage?.value ?? electricDischargeDamage?.value ?? disintegrateDamage?.value ?? beamSpellDamage?.value ?? beamVolleyDamage?.value ?? kocFireballDamage?.value ?? powerBlastDamage?.value ?? morphblastDamage?.value ?? null),
         // Read by _rollSkillHelper to build each result's own damageBonusLabel - kept as the raw
         // bonus amount and its source names rather than a pre-built label here, since the actual
@@ -7736,12 +8113,8 @@ export class Dice {
         // damage and the Trip alternate effect." Rolled from the VEHICLE's own attack, held by its
         // driver - same "held by the pilot, checked via _getVehicleDriver" shape as Heavy Ordnance/
         // White Ranger Prime. Neither "Ram" nor "Flyby" is a real classification.style/damageType
-        // value anywhere in this system's schema - per the GI Joe CRB's own "Vehicle Perks, Powers,
-        // and Traits" list (p.172) every vehicle stat block that has one lists it as an ordinarily-
-        // named Attack (e.g. "Ram (Might): ...", "Flyby (Might): ..."), always carrying the
-        // Drive-By weapon trait but with no OTHER shared classification distinguishing Ram from
-        // Flyby from any other Blunt attack - so this matches by the item's own display NAME
-        // instead, the only field RAW itself uses to identify these two specific attacks.
+        // value anywhere in this system's schema - matched instead via weaponEffect.mjs's own
+        // isRam/isFlyby flags, set at content-authoring time (see that file's own doc comment).
         // "The Trip alternate effect" is read as applying the Prone Condition directly (this
         // system's own mechanical translation of being knocked down), applied per-target in this
         // function's own post-hit processing below, gated there on the target NOT being a
@@ -8151,6 +8524,7 @@ export class Dice {
     let tooCloseForMinimumRange = false;
     let forcedMiss = false;
     let moveLikeASongTriggered = false;
+    let balanceOfJusticeTriggered = false;
     let zordbaneDamageBonus = 0;
     let oorahDamageBonus = 0;
     let isCatchOffGuardAttempt = false;
@@ -9355,6 +9729,7 @@ export class Dice {
           tooCloseForMinimumRange, pendingBonusesToClear, bonusDie, forcedMiss, moveLikeASongTriggered,
           spottedTarget, eyeForAppraisalTarget, projectileDancerTargetToMark, sources, zordbaneDamageBonus,
           oorahDamageBonus, isCatchOffGuardAttempt, cruelDamageBonus, exterminatorEligible, twoHeadsAssistanceConsumed,
+          balanceOfJusticeTriggered,
         };
       }
 
@@ -9985,6 +10360,65 @@ export class Dice {
         addSource('paranoia', findPerk(target, PARANOIA_ID)?.name ?? 'Paranoia', { snag: true });
       }
 
+      // Ninja Powered: Deep Wisdom - see its own ID comment above. Checked on the ATTACKING
+      // Zord (actor), reading the TARGET's own resistances/immunities for this attack's
+      // damageType - the reverse direction of the Resistance-Snag check above (that one grants
+      // the target's own Snag; this grants the attacker an Edge for exploiting it).
+      if (actor?.type == 'zord' && actorHasZordFeature(actor, NINJA_POWERED_DEEP_WISDOM_ID)
+        && (target.system.resistances?.[item.system.damageType] || target.system.immunities?.[item.system.damageType])) {
+        edge = true;
+        addSource(
+          'ninjaPoweredDeepWisdom',
+          findZordFeature(actor, NINJA_POWERED_DEEP_WISDOM_ID)?.name ?? 'Deep Wisdom',
+          { edge: true },
+        );
+      }
+
+      // Ninja Powered: Shining Light - see its own ID comment above. Checked on the TARGET (the
+      // Zord being attacked), same unconditional-Snag-on-target shape as Paranoia just above,
+      // scoped to non-melee (this system's own "anything that isn't melee is ranged" idiom -
+      // see Volley's own identical scoping elsewhere in this file).
+      if (item.system.classification?.style != 'melee' && target.type == 'zord'
+        && actorHasZordFeature(target, NINJA_POWERED_SHINING_LIGHT_ID)) {
+        snag = true;
+        addSource(
+          'ninjaPoweredShiningLight',
+          findZordFeature(target, NINJA_POWERED_SHINING_LIGHT_ID)?.name ?? 'Shining Light',
+          { snag: true },
+        );
+      }
+
+      // Electromagnetic vs. Computerized (GI Joe CRB, Damage Types, p.207 + Computerized Vehicle
+      // Trait, p.173): "Electromagnetic weapons... gain ↑3 against computers, Computerized
+      // vehicles, and robots, but take ↓3 against all other targets." No "computer"/"robot"
+      // actor-type concept exists in this codebase to check the first two nouns against, so this
+      // reads the Computerized Vehicle Trait only - the one of the three RAW names an actor can
+      // actually carry here. "Ignore Computerized bonuses to Evasion" is the other half of this
+      // Trait's own clause, not built - no Active Effect anywhere in this codebase currently
+      // grants a Computerized Vehicle a bonus to Evasion for this to strip, so there's nothing to
+      // ignore yet.
+      if (item.system.damageType == 'emp') {
+        if (target.system.traits?.computerized) {
+          shiftUp += 3;
+          addSource('electromagneticVsComputerized', this._localize('E20.DamageEmp'), { shiftUp: 3 });
+        } else {
+          shiftDown += 3;
+          addSource('electromagneticVsComputerized', this._localize('E20.DamageEmp'), { shiftDown: 3 });
+        }
+      }
+
+      // Fragile (GI Joe CRB, Vehicle Trait, p.301): "Vehicles ramming Fragile vehicles gain ↑1 on
+      // their attack." Matched via weapon-effect.mjs's own isRam flag - the same "this weaponEffect
+      // is the vehicle's own inherent Ram attack" signal _isSideswipeAttack/_isDemolitionDriverAttack
+      // already use, since Blunt+Drive-By alone doesn't uniquely identify a Ram. "Too delicate to
+      // make ram attacks" (a restriction on the Fragile vehicle's own actions, not the attacker) is
+      // left GM-enforced, matching this codebase's usual treatment of build/action restrictions. The
+      // "immediately explodes when defeated" half lives in helpers/vehicle-defeat.mjs instead.
+      if (item.system.isRam && target.system.traits?.fragile) {
+        shiftUp += 1;
+        addSource('rammingFragileVehicle', this._localize('E20.VehicleTraitFragile'), { shiftUp: 1 });
+      }
+
       // Gallantry (Infantry base, 2nd level, p.79): "any effect that would cause the Frightened
       // Condition that targets you suffers a Snag." The only thing in this system that can
       // currently cause Frightened is Trigger Happy's own Willpower compare (see
@@ -10147,13 +10581,31 @@ export class Dice {
 
         moveLikeASongTriggered = true;
       }
+
+      // Ninja Powered: Balance of Justice - see its own ID comment above. The GRANT half (any
+      // attacker gets an Edge against a target already marked this round); the mark itself is
+      // set below, once this roll's own actor/item qualify.
+      if (hasUsedThisRound(target, BALANCE_OF_JUSTICE_ROUND_FLAG)) {
+        edge = true;
+        addSource('balanceOfJustice', 'Balance of Justice', { edge: true });
+      }
+
+      // Ninja Powered: Balance of Justice - the MARK half. Reports back via
+      // balanceOfJusticeTriggered (this function is synchronous and can't await
+      // markUsedThisRound itself, same "report, rollSkill() marks" shape as moveLikeASongTriggered
+      // just above) whenever the rolling Zord holds this Feature and is making a weaponEffect
+      // attack against this target - unconditional on hitting, see this constant's own comment.
+      if (item?.type == 'weaponEffect' && actor?.type == 'zord'
+        && actorHasZordFeature(actor, NINJA_POWERED_BALANCE_OF_JUSTICE_ID)) {
+        balanceOfJusticeTriggered = true;
+      }
     }
 
     return {
       shiftUp, shiftDown, edge, snag, debilitatedConsumed, enemyNumberOneTankId, tooCloseForMinimumRange,
       pendingBonusesToClear, bonusDie, forcedMiss, moveLikeASongTriggered, spottedTarget, eyeForAppraisalTarget,
       projectileDancerTargetToMark, sources, zordbaneDamageBonus, oorahDamageBonus, isCatchOffGuardAttempt,
-      cruelDamageBonus, exterminatorEligible, twoHeadsAssistanceConsumed,
+      cruelDamageBonus, exterminatorEligible, twoHeadsAssistanceConsumed, balanceOfJusticeTriggered,
     };
   }
 
@@ -10212,16 +10664,7 @@ export class Dice {
    * @private
    */
   _getVehicleDriver(vehicleActor) {
-    for (const crewMember of Object.values(vehicleActor.system?.actors ?? {})) {
-      if (crewMember.vehicleRole == 'driver') {
-        const driver = fromUuidSync(crewMember.uuid);
-        if (driver) {
-          return driver;
-        }
-      }
-    }
-
-    return null;
+    return getVehicleDriver(vehicleActor);
   }
 
   /**
@@ -10308,19 +10751,16 @@ export class Dice {
 
   /**
    * Sideswipe (Factions in Action Vol. 2, p.64) - see its own checkContext.isSideswipeAttempt
-   * comment above for the full RAW discussion and the "match by name" reasoning.
+   * comment above for the full RAW discussion. Matched via weaponEffect.mjs's own isRam/isFlyby
+   * flags (see that file's own doc comment for why - this used to match by the item's own display
+   * name instead, which broke the moment anyone renamed or localized the item).
    * @param {Actor} actor   The actor performing the roll (the vehicle, not the driver).
    * @param {Item} item   The weaponEffect being rolled.
    * @returns {Boolean}
    * @private
    */
   _isSideswipeAttack(actor, item) {
-    if (actor?.type != 'vehicle' || item?.type != 'weaponEffect') {
-      return false;
-    }
-
-    const name = item.name?.toLowerCase().trim();
-    if (name != 'ram' && name != 'flyby' && name != 'fly by') {
+    if (actor?.type != 'vehicle' || item?.type != 'weaponEffect' || !(item.system.isRam || item.system.isFlyby)) {
       return false;
     }
 
@@ -10331,14 +10771,14 @@ export class Dice {
   /**
    * Demolition Driver (Factions in Action Vol. 2, p.64) - see its own DEMOLITION_DRIVER_ID
    * comment above. Ram-only, otherwise the same "vehicle roller, checked via its driver, matched
-   * by the attack's own name" shape as _isSideswipeAttack.
+   * via weaponEffect.mjs's own isRam flag" shape as _isSideswipeAttack.
    * @param {Actor} actor   The actor performing the roll (the vehicle, not the driver).
    * @param {Item} item   The weaponEffect being rolled.
    * @returns {Boolean}
    * @private
    */
   _isDemolitionDriverAttack(actor, item) {
-    if (actor?.type != 'vehicle' || item?.type != 'weaponEffect' || item.name?.toLowerCase().trim() != 'ram') {
+    if (actor?.type != 'vehicle' || item?.type != 'weaponEffect' || !item.system.isRam) {
       return false;
     }
 
@@ -10973,6 +11413,13 @@ export class Dice {
     let powerfulSuggestionConsumed = false;
     let suckerPunchConsumed = false;
     let silverMedalSyndromeTriggered = false;
+    // Retribution (Through the Shattered Grid, Magna Defender, 7th level, p.25) - see
+    // helpers/retribution.mjs's own doc comment. This is the first point this attack's own
+    // hit/miss is actually known, so it's where a Defender Step reaction against this entry (see
+    // dice.mjs's own per-target difficulty loop) gets resolved into an actual banked bonus.
+    // Array#map can't itself await retribution.mjs's own actor lookup/setFlag calls, so eligible
+    // entries are collected here and actually banked in a separate loop once results.map returns.
+    const retributionsToBank = [];
     const results = checkContext.entries.map(entry => {
       let multiplier = computeMultiplier(roll.total, entry.difficulty);
       // Devastating Strike (Yellow Ranger, 18th level, p.57) - "triple damage... instead of the
@@ -11022,6 +11469,14 @@ export class Dice {
       }
 
       const success = multiplier > 0;
+
+      // Retribution - see this function's own comment above for why the actual banking is
+      // deferred until after this map returns.
+      const retributionBonusType = computeRetributionBonusType(entry, roll.total);
+      if (retributionBonusType) {
+        retributionsToBank.push({ reactorUuid: entry.defenderStepReactorUuid, bonusType: retributionBonusType });
+      }
+
       // Only a resolved target actor (not a flat @Check[dif=...] entry) can take Health damage.
       const canApplyDamage = success && entry.targetUuid && checkContext.damageValue;
       // Trigger Happy - an independent compare against the same roll total, not gated on
@@ -11057,6 +11512,10 @@ export class Dice {
         explosiveAftershock,
       };
     });
+
+    for (const { reactorUuid, bonusType } of retributionsToBank) {
+      await bankRetributionBonus(reactorUuid, actor.uuid, bonusType);
+    }
 
     if (powerfulSuggestionConsumed) {
       await clearPendingBonus(actor, POWERFUL_SUGGESTION_FLAG);

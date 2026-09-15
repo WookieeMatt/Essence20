@@ -3,13 +3,8 @@
   <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
 
   <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-resources">
-    <label class="sliced-border__label"><i class="fas fa-heart"></i> Resources</label>
-    <div>
-      <label>{{localize 'E20.ActorHealth'}}</label>
-      <input class="two-digit-input no-lock" type="number" name="system.health.value" value="{{system.health.value}}" min="0" step="1" />
-      <span>/</span>
-      <input class="two-digit-input no-lock" type="number" name="system.health.max" value="{{system.health.max}}" min="0" step="1"/>
-    </div>
+    <a class="sliced-border__label sliced-border__label--clickable" data-action="editHealth" data-tooltip="{{localize 'E20.StatEditorHealthTooltip'}}"><i class="fas fa-heart"></i> Resources <i class="fas fa-gear sliced-border__label-edit-icon"></i></a>
+    {{> "systems/essence20/templates/actor/parts/misc/sidebar-health.hbs"}}
     <div>
       <label>{{localize 'E20.ActorStun'}}</label>
       <input class="two-digit-input no-lock" type="number" name="system.stun.value" value="{{system.stun.value}}" min="0" step="1" />

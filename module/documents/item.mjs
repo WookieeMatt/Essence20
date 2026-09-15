@@ -151,6 +151,38 @@ export class Essence20Item extends Item {
       const image = CONFIG.E20.defaultIcon[this.type];
       if (image) this.updateSource({ img: image });
     }
+
+    // A Megaform Trait (Core Body, Move, Core Ability, ...) is identified purely by its
+    // system.type enum, which is what Essence20Actor#_prepareMegaformZordData/
+    // _prepareMegaformCombinerData actually switches on - Name is separate flavor text a GM
+    // remains free to retype afterward. Every one of this system's own compendium entries
+    // already names the item exactly after its Type (e.g. "Core Body" for coreBody), so this
+    // just fills that in automatically instead of making a GM type the same thing twice - a
+    // no-op for a compendium drop (name/type already match), a sensible default in place of
+    // "New Megaformtrait" for a blank one created via the sheet's own "+" control.
+    if (this.type == 'megaformTrait') {
+      this.updateSource({ name: CONFIG.E20.megaformTraitTypes[this.system.type] });
+    }
+  }
+
+  /**
+   * Keeps a Megaform Trait's Name in sync with its Type whenever the Details tab's Type dropdown
+   * changes it - see _preCreate's identical reasoning above. Skipped if this same update is ALSO
+   * explicitly setting a new name (e.g. a deliberate GM reflavor happening in the same submit),
+   * so that doesn't get silently overwritten.
+   * @param {Object} change The differential data being updated
+   * @param {Object} options The options from the update operation
+   * @param {String} userId The user performing the update
+   */
+  async _preUpdate(change, options, userId) {
+    await super._preUpdate(change, options, userId);
+
+    if (
+      this.type == 'megaformTrait' && change.system?.type && change.system.type != this.system.type
+      && change.name === undefined
+    ) {
+      change.name = CONFIG.E20.megaformTraitTypes[change.system.type];
+    }
   }
 
   /** @override */
@@ -501,35 +533,44 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'weaponEffect') {
+      // The actual attacker for this roll - almost always this.actor (the weaponEffect's own
+      // parent), but childRoller overrides it for a "roll on behalf of" case (e.g. a Vehicle's
+      // driver rolling its inherent Ram/Flyby attack). Resolved once, up front, so every helper
+      // below consistently sees the real roller instead of this.actor directly - a weaponEffect
+      // freshly resolved via fromUuid() off a compendium/unembedded source (as opposed to one
+      // already embedded on an actor) has a null this.actor until it's actually rolled, which
+      // used to crash several of these (e.g. isMultipleTargetsWeapon's own actor.system read)
+      // whenever only childRoller, not this.actor, was actually valid.
+      const roller = childRoller || this.actor;
+
       // Area of Effect (GitHub #824) - see helpers/aoe-targeting.mjs's own doc comment. Only
       // Blast/AoE-shaped attacks (system.shape set) trigger this; an ordinary single-target or
       // Multiple-Targets attack rolls exactly as it always has, targets chosen by hand as usual.
       if (this.system.shape) {
-        let aoeTokens = await placeAoeTemplate(this.actor, this);
+        let aoeTokens = await placeAoeTemplate(roller, this);
 
         // Shaped Charges (Artillery Focus, 7th level, p.81) - see its own doc comment. Runs
         // before Horseshoes and Handgrenades below so an excluded target dodges that flat-damage
         // tax too, not just the attack roll itself.
-        aoeTokens = await applyShapedCharges(this.actor, this, aoeTokens);
+        aoeTokens = await applyShapedCharges(roller, this, aoeTokens);
 
         // Horseshoes and Handgrenades (Artillery Focus, 18th level, p.82) - see its own doc
         // comment. Reuses whatever's left of the AoE shape's own catch (after Shaped Charges'
         // exclusions above), applied unconditionally before the attack roll itself even happens.
-        await applyHorseshoesAndHandgrenades(this.actor, this, aoeTokens);
+        await applyHorseshoesAndHandgrenades(roller, this, aoeTokens);
       }
 
       // Mighty Strikes (Blitzer Focus, 17th level, p.98) - see its own doc comment. Independent
       // of system.shape entirely (a Might melee weapon never has one set) - targets everyone
       // within the attacker's own reach automatically, no click required.
-      await applyMightyStrikes(this.actor, this);
+      await applyMightyStrikes(roller, this);
 
       // No Need to Aim (Vanguard base, 20th level, p.111) - see its own doc comment. Also
       // independent of system.shape - a Multiple Targets attack targets normally via ordinary
       // Foundry targeting, not a placed shape.
-      await applyNoNeedToAim(this.actor, this);
+      await applyNoNeedToAim(roller, this);
 
       let weaponDataset = {};
-      const roller = childRoller || this.actor;
       const baseSkill = this.system.classification.skill;
       // Brutal Might - see BRUTAL_MIGHT_ID's own comment above.
       const skill = baseSkill == 'might' && actorHasPerk(roller, BRUTAL_MIGHT_ID) ? 'brawn' : baseSkill;
@@ -555,10 +596,10 @@ export class Essence20Item extends Item {
         isSpecialized,
       };
 
-      this._dice.handleSkillItemRoll(weaponDataset, this.actor, this);
+      this._dice.handleSkillItemRoll(weaponDataset, roller, this);
 
       // Decrement class feature, if applicable
-      const classFeature = this.actor.items.get(this.system.classFeatureId);
+      const classFeature = roller.items.get(this.system.classFeatureId);
       if (classFeature) {
         classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
       }

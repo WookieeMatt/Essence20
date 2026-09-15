@@ -1,0 +1,74 @@
+{
+  "folder": "hMxc3Svkb17tNliI",
+  "name": "Zord Ranged Attack",
+  "type": "weapon",
+  "_id": "HjFziQqzzddLxQI9",
+  "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 136
+    },
+    "items": {
+      "SX0q": {
+        "uuid": "Compendium.essence20.pr_crb.Item.98lqiuf85coNE1dC",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zord Ranged Attack Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 120,
+          "value": 50
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "automatic",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "energy"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1757865600000,
+    "modifiedTime": 1757865600000,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!HjFziQqzzddLxQI9"
+}

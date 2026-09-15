@@ -739,6 +739,20 @@
   </div>
   {{/if}}
 
+  {{#if retributionAvailable}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    {{#if (eq retributionAvailable 'edge')}}
+    <span>{{localize 'E20.RollDialogRetributionEdge'}}</span>
+    {{else}}
+    <span>{{localize 'E20.RollDialogRetributionDamage'}}</span>
+    {{/if}}
+    <label class="switch">
+      <input type="checkbox" name="applyRetribution" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
   {{#if witheringFireAvailable}}
   <div class="flexrow align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogWitheringFire'}}</span>
@@ -1016,9 +1030,14 @@
   {{/if}}
 
   <div>
+    {{!-- Which Defense this attack is tested against is the DEFENDER's own choice (or the item's
+         fixed suggestion, when they don't override it) - not something to let the attacker pick
+         here (see helpers/defense-choice.mjs's own doc comment for the full RAW citation and why
+         this used to be an editable dropdown). This is display-only, so the defending side's own
+         prompt always starts from the weapon's actual suggestion regardless of what this shows;
+         the hidden input still submits it through as that suggestion. --}}
     {{localize 'E20.RollDialogDefenseType'}}
-    <select name="defenseType">
-      {{selectOptions defenseTypes selected=defenseType localize=true}}
-    </select>
+    <span>{{localize (lookup defenseTypes defenseType)}}</span>
+    <input type="hidden" name="defenseType" value="{{defenseType}}" />
   </div>
 </div>
