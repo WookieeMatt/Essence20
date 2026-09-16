@@ -2663,15 +2663,22 @@ const BALANCE_OF_JUSTICE_ROUND_FLAG = 'balanceOfJusticeUsedThisRound';
 // restriction this system enforces anywhere - the same GM-adjudicated-build-rule category as
 // Titan Body's own incompatibility list just above.
 
-// Enhance (Attack) (PR CRB, Zord Feature, p.138): "Choose one of the Zord's methods of attack.
+// Enhance (Attack) (PR CRB, Zord Feature, p.137): "Choose one of the Zord's methods of attack.
 // Choose either to add Accurate (↑1) to the attack, add 1 damage, or apply one special effect
-// from the list below." Not built - unlike every other Feature this session added, this one
-// needs real new infrastructure first: the `feature` item type (module/data/item/feature.mjs)
-// has no choice field of any kind today (a bare item()+itemDescription() schema, shared by every
-// other Feature too), so building this means adding schema fields AND a per-item choice UI
-// (checked against this Feature's own sourceId, not shown on the ~20 unrelated Features that
-// share this item type) before any dice.mjs hook has something to read - a genuinely new pattern,
-// not a copy of an existing one. Flagged rather than rushed in half-built.
+// from the list below." Needs no dice.mjs hook of its own - re-checked against the real
+// weaponEffect schema (an earlier pass here called it blocked on the `feature` item type having no
+// choice field, which mistook the shape of the problem: nothing needs to READ a stored choice,
+// because every option is expressible on the chosen attack itself). 5 of the 8 options are plain
+// field edits on the chosen weaponEffect, the same "GM applies the static effect" idiom Heavy
+// Chassis/Increase (Essence) already use: +1 damage -> damageValue; doubled melee reach ->
+// range.reachMultiplier (already derives totalReach); +30/60ft range -> range.value/range.long;
+// Multi-Weapon (2) -> numTargets; change damage type -> damageType. Accurate (↑1) is now live
+// generically for ANY weapon via the 'accurate' weapon trait (see _getAutomaticCombatModifiers's
+// own check) - the GM just ticks that trait on the chosen weapon. The 2 genuinely-unbuilt options
+// are "ignores Armor bonus to Toughness" (getDefenseValue's own ignoreArmor option exists, but no
+// weapon-trait-driven path to it does - same infra gap E20.weaponTraits.antiTank/armorPiercing are
+// already flagged for below) and "reduces target's Speed by 1d2" (needs an on-hit effect
+// application). Which of the 8 a given Zord took is a character-sheet record, not runtime state.
 
 // Zord Mega-Weapon System (PR CRB, Zord Feature, p.141): "It costs a total of 5 Personal Power
 // expended from any combination of the Crew... and lasts for 1d2+1 attacks... base of 5 damage...
@@ -9227,6 +9234,29 @@ export class Dice {
     if (isMelee && selfStatuses.has('prone')) {
       shiftDown += 1;
       addSource('selfProne', this._localize('E20.StatusProne'), { shiftDown: 1 });
+    }
+
+    // Accurate / Inaccurate (standard weapon traits shared across every game line - e.g. PR CRB's
+    // Enhance (Attack) Zord Feature grants "Accurate (↑1)", Decepticon Directive's Weapon
+    // Conversion grants "Inaccurate (↓1)"): a flat ↑1/↓1 on the attack. Both existed in
+    // E20.weaponTraits as selectable labels with nothing reading them anywhere - the same dead-enum
+    // gap 'linked' had. Read off the PARENT weapon's own traits array (same idiom as the 'linked'/
+    // 'ballistic' checks elsewhere in this file), NOT the weaponEffect's own system.shiftDown field,
+    // which stays reserved for an effect's own printed shift (an Alternate Effect's -1, Weapon
+    // Conversion's one-time mutation). That separation is what keeps this from double-counting:
+    // every compendium weapon carrying either trait has its effects at shiftDown 0 today (the only
+    // non-zero values sit on Alternate Effects of ACCURATE weapons, i.e. the unrelated alt-effect
+    // penalty). A weapon carrying both traits (Horseman's Lance does) nets to zero via
+    // _getFinalShift's own shiftUp - shiftDown, with each still listed as its own toggleable source.
+    const attackWeaponTraits = isAttack ? this._getParentWeapon(actor, item)?.system.traits : null;
+    if (attackWeaponTraits?.includes('accurate')) {
+      shiftUp += 1;
+      addSource('accurateWeapon', this._localize('E20.WeaponTraitAccurate'), { shiftUp: 1 });
+    }
+
+    if (attackWeaponTraits?.includes('inaccurate')) {
+      shiftDown += 1;
+      addSource('inaccurateWeapon', this._localize('E20.WeaponTraitInaccurate'), { shiftDown: 1 });
     }
 
     // Resolved for ANY roll, not just weaponEffect attacks - see this function's own doc comment

@@ -288,11 +288,11 @@ describe("onAttachedActorStunUpdate", () => {
 });
 
 describe("onSystemActorOpen", () => {
-  function makeEvent({ uuid, targetClosest = null } = {}) {
-    return {
-      currentTarget: { dataset: { systemActorsUuid: uuid } },
-      target: { closest: jest.fn(() => targetClosest) },
-    };
+  // Driven by the card's own info button now (system-actors.hbs, data-action="systemActorOpen"),
+  // which hands the handler the clicked control directly - not the card-wide dblclick event this
+  // used to take, so there's no longer any "did the click land on an input?" case to cover.
+  function makeTarget(uuid) {
+    return { dataset: { uuid } };
   }
 
   afterEach(() => {
@@ -301,10 +301,9 @@ describe("onSystemActorOpen", () => {
 
   test("opens the resolved component's own sheet", () => {
     const render = jest.fn();
-    const component = { sheet: { render } };
-    global.fromUuidSync.mockReturnValue(component);
+    global.fromUuidSync.mockReturnValue({ sheet: { render } });
 
-    onSystemActorOpen(makeEvent({ uuid: 'Actor.component1' }));
+    onSystemActorOpen(makeTarget('Actor.component1'));
 
     expect(global.fromUuidSync).toHaveBeenCalledWith('Actor.component1');
     expect(render).toHaveBeenCalledWith(true);
@@ -312,21 +311,11 @@ describe("onSystemActorOpen", () => {
 
   test("does nothing if the component can no longer be resolved", () => {
     global.fromUuidSync.mockReturnValue(null);
-    expect(() => onSystemActorOpen(makeEvent({ uuid: 'Actor.gone' }))).not.toThrow();
+    expect(() => onSystemActorOpen(makeTarget('Actor.gone'))).not.toThrow();
   });
 
-  test("does nothing without a uuid on the card", () => {
-    onSystemActorOpen(makeEvent({ uuid: undefined }));
+  test("does nothing without a uuid on the control", () => {
+    onSystemActorOpen(makeTarget(undefined));
     expect(global.fromUuidSync).not.toHaveBeenCalled();
-  });
-
-  test("ignores a dblclick that landed on an input, select, or the delete control", () => {
-    const render = jest.fn();
-    global.fromUuidSync.mockReturnValue({ sheet: { render } });
-
-    onSystemActorOpen(makeEvent({ uuid: 'Actor.component1', targetClosest: {} }));
-
-    expect(global.fromUuidSync).not.toHaveBeenCalled();
-    expect(render).not.toHaveBeenCalled();
   });
 });

@@ -13,9 +13,10 @@ const fields = foundry.data.fields;
  * targeting those Defenses instead target its current driver/pilot. See
  * helpers/combat.mjs#getDefenseValue for where that substitution is actually applied.
  */
-export function makeDefensesFields(name, essence, usesDrivers, base) {
+export function makeDefensesFields(name, essence, usesDrivers, base, armor = 0) {
   return new fields.SchemaField({
     ...makeCharacterDefensesFields(name, essence),
+    armor: makeInt(armor),
     base: makeInt(base),
     usesDrivers: makeBool(usesDrivers),
   });

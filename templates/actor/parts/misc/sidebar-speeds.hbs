@@ -27,12 +27,12 @@
           <label>{{name}}</label>
           {{#if @root.system.isTransformed}}
             {{#if (eq @root.document.type "npc")}}
-              <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" disabled />
+              <span class="sidebar-readout">{{moveData.altMode}}</span>
             {{else}}
-              <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
+              <span class="sidebar-readout">{{moveData.total}}</span>
             {{/if}}
           {{else}}
-            <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
+            <span class="sidebar-readout">{{moveData.total}}</span>
           {{/if}}
         </div>
       {{/with}}

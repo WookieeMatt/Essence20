@@ -15,6 +15,7 @@ import { pickBestowExpertise } from "../helpers/bestow-expertise.mjs";
 import { pickMindBeamEffect } from "../helpers/mind-beam.mjs";
 import { pickGetToKnowSkill } from "../helpers/get-to-know.mjs";
 import { isBlockMagicActive } from "../helpers/block-magic.mjs";
+import { consumeMegaWeaponAttack } from "../helpers/zord-mega-weapon.mjs";
 
 const KNIGHTS_OF_CANTERLOT = "Compendium.essence20.knights_of_canterlot.Item.";
 const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
@@ -597,6 +598,10 @@ export class Essence20Item extends Item {
       };
 
       this._dice.handleSkillItemRoll(weaponDataset, roller, this);
+
+      // Zord Mega-Weapon System (PR CRB, Zord Feature, p.139): "lasts for 1d2+1 attacks (hit or
+      // miss)" - counted here, as the attack is rolled, precisely because a miss still spends one.
+      await consumeMegaWeaponAttack(roller, this);
 
       // Decrement class feature, if applicable
       const classFeature = roller.items.get(this.system.classFeatureId);

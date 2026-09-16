@@ -9,7 +9,7 @@
       <label>{{localize 'E20.ActorStun'}}</label>
       <input class="two-digit-input no-lock" type="number" name="system.stun.value" value="{{system.stun.value}}" min="0" step="1" />
       <span>/</span>
-      <input class="two-digit-input no-unlock" type="number" value="{{system.health.value}}" disabled/>
+      <span class="sidebar-readout">{{system.health.value}}</span>
     </div>
   </div>
   <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-special">
@@ -21,11 +21,21 @@
       <select name="system.initiative.skill">
         {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
       </select>
-      {{!-- Read-only: the shift die is set on the skill itself, not editable from here --}}
-      <input class="two-digit-input no-unlock" type="text"
-        value="{{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}"
-        disabled data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}" />
+      {{!-- Display only: the shift die is set on the skill itself, not editable from here --}}
+      <span data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}">
+        {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
+      </span>
     </div>
+    {{#if @root.hasMegaWeapon}}
+    <a class="essence20-sidebar-action-button" data-action="summonMegaWeapon" data-tooltip="{{localize 'E20.MegaWeaponTooltip'}}">
+      <i class="fas fa-khanda"></i>
+      {{#if @root.megaWeaponAttacksRemaining}}
+        {{localize 'E20.MegaWeaponAttacksLeft'}}: {{@root.megaWeaponAttacksRemaining}}
+      {{else}}
+        {{localize 'E20.MegaWeaponSummonButton'}}
+      {{/if}}
+    </a>
+    {{/if}}
     {{#if @root.hasWarriorMode}}
     <a class="essence20-sidebar-action-button" data-action="warriorMode" data-tooltip="{{localize 'E20.WarriorModeTooltip'}}">
       <i class="fas fa-person-military-rifle"></i>

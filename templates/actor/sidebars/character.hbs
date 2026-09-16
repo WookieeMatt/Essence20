@@ -9,7 +9,7 @@
         <label>{{localize 'E20.ActorStun'}}</label>
         <input class="two-digit-input no-lock" type="number" name="system.stun.value" value="{{system.stun.value}}" min="0" step="1" />
         <span>/</span>
-        <input class="two-digit-input no-unlock" type="number" value="{{system.health.value}}" disabled/>
+        <span class="sidebar-readout">{{system.health.value}}</span>
       </div>
       {{#if system.canTransform}}
       <div>

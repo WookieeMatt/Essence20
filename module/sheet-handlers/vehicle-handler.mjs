@@ -287,22 +287,17 @@ export async function onAttachedActorStunUpdate(event, _actorSheet) {
 }
 
 /**
- * Double-clicking a system-actors.hbs card (Vehicle/Zord crew, or a Megaform's Combiner
- * Participants) opens that attached actor's own sheet - the card only ever exposes its Health/
- * Stun/vehicle-role and a delete control otherwise, with no way to reach the actor itself short
- * of finding it in the sidebar. Ignores a dblclick that lands on one of those existing controls
- * (an input, select, or the delete icon's .item-controls) so it doesn't fight their own behavior
- * (e.g. double-clicking a Health input to select its text).
- * @param {Event} event
- * @param {ActorSheet} _actorSheet   Unused - kept for the same (event, actorSheet) signature every
- *   other _activateCrewListeners-bound handler uses.
+ * Opens an attached actor's own sheet from a system-actors.hbs card (Vehicle/Zord crew, or a
+ * Megaform's Combiner Participants) - the card only ever exposes its Health/Stun/vehicle-role and
+ * a delete control otherwise, with no way to reach the actor itself short of finding it in the
+ * sidebar. Driven by the card's own info button, matching the one attached ITEMS already use
+ * (item-sheet.mjs's viewItem/_onObjectInfo, templates/item/parts/id-drop.hbs). This used to be a
+ * card-wide dblclick handler, which had no visible affordance and had to special-case every
+ * interactive child so it didn't fire while you were editing Health or picking a role.
+ * @param {HTMLElement} target   The clicked control, carrying the actor's uuid in data-uuid.
  */
-export function onSystemActorOpen(event, _actorSheet) {
-  if (event.target.closest('input, select, .item-controls')) {
-    return;
-  }
-
-  const componentUuid = event.currentTarget.dataset.systemActorsUuid;
+export function onSystemActorOpen(target) {
+  const componentUuid = target?.dataset?.uuid;
   if (!componentUuid) {
     return;
   }

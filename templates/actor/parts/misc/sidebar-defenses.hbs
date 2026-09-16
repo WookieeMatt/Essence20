@@ -6,7 +6,7 @@
   {{#each system.defenses as |defense|}}
     <div>
       <label>{{lookup @root.config.defenses defense.name}}</label>
-      <input class="two-digit-input no-lock" data-tooltip="{{defense.string}}" type="number" name="system.defenses.{{defense.name}}.total" value="{{defense.total}}" disabled />
+      <span class="sidebar-readout" data-tooltip="{{defense.string}}">{{defense.total}}</span>
     </div>
   {{/each}}
 </div>

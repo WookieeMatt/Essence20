@@ -305,22 +305,30 @@ export class Essence20Actor extends Actor {
     const RECALL_FOR_REPAIRS_ID = "Compendium.essence20.pr_crb.Item.r1S0Sc4oq8axDL6C";
 
     if (this.type == 'zord') {
+      // game.items.fromCompendium() is exactly what Foundry's own drag-drop path runs a compendium
+      // item through, so an auto-added Feature ends up identical to a hand-dropped one. This used
+      // to hand-build the item data from name/type/img/system, which silently dropped two things:
+      // the item's own Active Effects, and _stats.compendiumSource - the provenance
+      // helpers/zord-features.mjs#actorHasZordFeature matches Features by. Both of these Features
+      // were therefore invisible to every sourceId-based check, and would have quietly lost any
+      // effect added to them in the compendium later.
       const newItems = [];
-      const callToActionPerkData = await fromUuid(CALL_TO_ACTION_ID);
-      const recallForRepairsPerkData = await fromUuid(RECALL_FOR_REPAIRS_ID);
-      newItems.push({
-        name: callToActionPerkData.name,
-        type: callToActionPerkData.type,
-        img: callToActionPerkData.img,
-        system: callToActionPerkData.system,
-      });
-      newItems.push({
-        name: recallForRepairsPerkData.name,
-        type: recallForRepairsPerkData.type,
-        img: recallForRepairsPerkData.img,
-        system: recallForRepairsPerkData.system,
-      });
-      this.updateSource({ items: newItems });
+      for (const uuid of [CALL_TO_ACTION_ID, RECALL_FOR_REPAIRS_ID]) {
+        const source = await fromUuid(uuid);
+        // A missing entry must not make Zords uncreatable: with the pack unbuilt or an id renamed,
+        // this previously threw "Cannot read properties of null" straight out of _preCreate, which
+        // aborts actor creation entirely with no usable explanation.
+        if (!source) {
+          console.warn(`essence20 | Zord Feature ${uuid} could not be found - skipping auto-add.`);
+          continue;
+        }
+
+        newItems.push(game.items.fromCompendium(source));
+      }
+
+      if (newItems.length) {
+        this.updateSource({ items: newItems });
+      }
     }
   }
 
@@ -836,31 +844,32 @@ export class Essence20Actor extends Actor {
       system.movement[movementType].base = parseInt(system.movement[movementType].base);
       system.movement[movementType].total = 0;
 
-      if (system.isMorphed && system.isTransformed) {
-        if (system.movement[movementType].altMode) {
-          system.movement[movementType].total = system.movement[movementType].altMode + system.movement[movementType].bonus + system.movement[movementType].morphed;
-        }
-      } else if (system.isMorphed) {
-        if (system.movement[movementType].base) {
-          system.movement[movementType].total = system.movement[movementType].base + system.movement[movementType].bonus + system.movement[movementType].morphed;
-        }
-      } else if (system.isTransformed) {
-        if (system.movement[movementType].altMode) {
-          system.movement[movementType].total = system.movement[movementType].altMode + system.movement[movementType].bonus;
-        }
-      } else {
-        if (system.movement[movementType].base) {
-          system.movement[movementType].total = system.movement[movementType].base + system.movement[movementType].bonus;
-        }
+      // Each branch sums whichever "innate" value applies in this form (base, or altMode while
+      // Transformed) plus the bonus on top. The guard is `innate || bonus`, NOT `innate` alone:
+      // granting movement of a type the actor didn't previously have is exactly what a bonus is
+      // for - Zero-G's "+60 Aerial", Movement Booster's "creates a NEW kind of movement type",
+      // Light Chassis's "+10 feet to one of the Zord's movement types", Upgraded Zord (Rescue)'s
+      // "+20 feet to all movement types". Gating on the innate value alone silently discarded
+      // every one of those on a movement type sitting at 0, which is precisely the case they
+      // exist to fill (a Zord ships with Ground 40 and Aerial/Climb/Swim all 0).
+      const movement = system.movement[movementType];
+      const innateValue = system.isTransformed ? movement.altMode : movement.base;
+      const morphedBonus = system.isMorphed ? movement.morphed : 0;
+
+      if (innateValue || movement.bonus) {
+        movement.total = innateValue + movement.bonus + morphedBonus;
       }
 
-      movementTotal += system.movement[movementType].total;
+      movementTotal += movement.total;
 
-      if (system.movement[movementType].total == 0) {
-        if (movementType == 'climb' || movementType == 'swim') {
-          //This equation gives you half speed round down to the nearest 5 ft for certain movements.
-          system.movement[movementType].total = Math.floor(system.movement.ground.total / 5 * .5) * 5;
-        }
+      // Climb/Swim default to half Ground Movement. Applied as a FLOOR rather than an only-if-zero
+      // fallback: with the bonus fix above, a small explicit grant (say Light Chassis's +10 Climb)
+      // would otherwise REPLACE a larger default (half of Ground 40 = 20), leaving the actor slower
+      // for having taken a Feature that adds movement.
+      if (movementType == 'climb' || movementType == 'swim') {
+        //This equation gives you half speed round down to the nearest 5 ft for certain movements.
+        const halfGround = Math.floor(system.movement.ground.total / 5 * .5) * 5;
+        movement.total = Math.max(movement.total, halfGround);
       }
 
       // Natural Movement - see helpers/natural-movement.mjs's own doc comment. "Half your Ground

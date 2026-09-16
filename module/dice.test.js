@@ -29551,6 +29551,58 @@ describe("_getAutomaticCombatModifiers", () => {
     });
   });
 
+  describe("Accurate / Inaccurate (standard weapon traits, all game lines)", () => {
+    // _getParentWeapon resolves the parent via this flag, so an attack fixture needs one to have
+    // any parent weapon at all.
+    const attack = { ...meleeWeaponEffect, flags: { essence20: { parentId: 'weapon1' } } };
+
+    function source(id, label, shift) {
+      return { edge: false, id, label, shiftDown: 0, shiftUp: 0, snag: false, ...shift };
+    }
+
+    function makeWielder(traits) {
+      return makeActor('common', [], { weapon: { system: { traits } } });
+    }
+
+    test("an Accurate weapon grants ↑1", () => {
+      expect(dice._getAutomaticCombatModifiers(makeWielder(['accurate']), attack))
+        .toEqual({ ...defaultModifiers, shiftUp: 1, sources: [
+          source('accurateWeapon', 'E20.WeaponTraitAccurate', { shiftUp: 1 }),
+        ] });
+    });
+
+    test("an Inaccurate weapon imposes ↓1", () => {
+      expect(dice._getAutomaticCombatModifiers(makeWielder(['inaccurate']), attack))
+        .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
+          source('inaccurateWeapon', 'E20.WeaponTraitInaccurate', { shiftDown: 1 }),
+        ] });
+    });
+
+    test("a weapon carrying both nets to zero, listing each as its own source", () => {
+      // Horseman's Lance (A Jump Through Time) genuinely ships with both traits.
+      expect(dice._getAutomaticCombatModifiers(makeWielder(['accurate', 'inaccurate']), attack))
+        .toEqual({ ...defaultModifiers, shiftUp: 1, shiftDown: 1, sources: [
+          source('accurateWeapon', 'E20.WeaponTraitAccurate', { shiftUp: 1 }),
+          source('inaccurateWeapon', 'E20.WeaponTraitInaccurate', { shiftDown: 1 }),
+        ] });
+    });
+
+    test("a weapon with neither trait is unaffected", () => {
+      expect(dice._getAutomaticCombatModifiers(makeWielder(['ballistic']), attack))
+        .toEqual(defaultModifiers);
+    });
+
+    test("doesn't apply to an attack with no parent weapon", () => {
+      expect(dice._getAutomaticCombatModifiers(makeWielder(['accurate']), meleeWeaponEffect))
+        .toEqual(defaultModifiers);
+    });
+
+    test("doesn't apply to a non-attack roll", () => {
+      expect(dice._getAutomaticCombatModifiers(makeWielder(['accurate']), null))
+        .toEqual(defaultModifiers);
+    });
+  });
+
   describe("Shield Modulation (Vanguard base, 13th level, p.109)", () => {
     const SHIELD_MODULATION_ID = `${GI_JOE_CRB}16ul4Ev6b9gO5CIN`;
     const PERSONAL_SHIELD_ROLE_POINTS_ID = `${GI_JOE_CRB}84JYgd6kZgY41wge`;

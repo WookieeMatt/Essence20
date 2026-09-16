@@ -1894,6 +1894,16 @@ body.game .window-app {
   flex: 0 0 auto;
 }
 
+/* A computed, never-editable value shown next to an editable one (Health's .max, Stun's Health
+   cap) - plain text rather than a disabled input, so it doesn't read as a field you can click
+   into. Keeps .two-digit-input's own 40px footprint so the numbers still line up in a column with
+   the editable boxes stacked above/below them. Colour and flex sizing come from the panel's
+   generic `> span` rule above. */
+.essence20-sidebar .essence20-sidebar-panel .sidebar-readout {
+  min-width: 40px;
+  text-align: center;
+}
+
 .essence20-sidebar .essence20-sidebar-trait-row {
   display: flex;
   flex-direction: column;
@@ -2270,7 +2280,11 @@ body.game .window-app {
      out-specifies ".essence20 .rollable" so this wins regardless of source order. */
   font-size: 1em;
 }
-.essence20 .npc-skill-buttons .npc-skill-button:hover {
+
+/* Hover affordance scoped to the anchors specifically - Conditioning renders as a static <span>
+   sharing the same pill box (it has no shift die and nothing to roll), and shouldn't light up as
+   though it were clickable. */
+.essence20 .npc-skill-buttons a.npc-skill-button:hover {
   color: var(--theme-accent);
   border-color: var(--theme-accent);
 }
@@ -3069,14 +3083,43 @@ body.game .window-app {
   flex-grow: 0;
 }
 
-.essence20 .systemActors {
-  cursor: pointer;
+/* Health/Stun rows. Previously bare text + input ("Health: [0] / 1"), which left the two inputs
+   starting at whatever x the differing label widths happened to push them to, and gave the rows no
+   consistent vertical rhythm. A shared label column lines the inputs up with each other. */
+.essence20 .systemActors .attached-actor-stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
 }
 
-.essence20 .systemActors input,
-.essence20 .systemActors select,
-.essence20 .systemActors .item-controls {
-  cursor: default;
+.essence20 .systemActors .attached-actor-stat-label {
+  flex: 0 0 auto;
+  min-width: 52px;
+}
+
+.essence20 .systemActors .attached-actor-stat-max {
+  flex: 0 0 auto;
+  opacity: 0.85;
+}
+
+/* .e20-border-accent chamfers this card's bottom-right corner with a 22px clip-path diagonal
+   (_tabs.scss), and clip-path clips CHILD CONTENT, not just the border - so the vehicle-role
+   select, being the last full-width element in the card, had its bottom-right corner (the dropdown
+   arrow end) sliced off by that diagonal. Geometrically a child's bottom-right corner is inside the
+   cut whenever it sits within 16px of the card's bottom edge, which the default 6px padding left it
+   well inside. The extra bottom padding lifts the last row clear of the chamfer.
+
+   Not an overflow problem: the select's natural width is ~100px in a ~192px card, so capping its
+   width never had anything to do with it. max-width is kept only so a long role label can't push
+   the card wider. */
+.essence20 .systemActors {
+  padding-bottom: 18px;
+}
+
+.essence20 .systemActors .vehicle-role {
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .essence20 .pony {

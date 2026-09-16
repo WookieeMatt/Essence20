@@ -32,6 +32,7 @@ import { prepareSystemActors,
 import { onActivatePowerInfusion, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { actorHasZordFeature } from "../helpers/zord-features.mjs";
 import { isWarriorModeActive, toggleWarriorMode, WARRIOR_MODE_ID } from "../helpers/warrior-mode.mjs";
+import { getMegaWeaponAttacksRemaining, MEGA_WEAPON_ID, summonMegaWeapon } from "../helpers/zord-mega-weapon.mjs";
 import { onActivateSnortleAtTheSpooky } from "../helpers/snortle-at-the-spooky.mjs";
 import { onActivateConsummatePerformer } from "../helpers/consummate-performer.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
@@ -88,6 +89,8 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       shieldEquipToggle: this.#onShieldEquipToggle,
       specializationDelete: this.#onSpecializationDelete,
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
+      summonMegaWeapon: this.#onSummonMegaWeapon,
+      systemActorOpen: this.#onSystemActorOpen,
       systemActorsDelete: this.#onSystemActorsDelete,
       toggleAccordion: this.#toggleAccordion,
       toggleAccordionHeader: this.#toggleAccordionHeader,
@@ -228,9 +231,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       input.addEventListener('change', (event) => onAttachedActorStunUpdate(event, this));
     }
 
-    for (const card of this.element.querySelectorAll('.systemActors')) {
-      card.addEventListener('dblclick', (event) => onSystemActorOpen(event, this));
-    }
   }
 
   /**
@@ -434,6 +434,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       this._prepareChosenNpcSkills(context);
     }
 
+    // Conditioning row on the npc-skill-list sheets - ticked per actor in the Skill Picker, the
+    // same way each skill's own isChosen box controls whether that skill is listed.
+    context.showConditioning = context.system.showConditioning === true;
+
     // Prepare WeaponEffect Skill List
     this._prepareWeaponEffectSkills(actorData, context);
 
@@ -454,6 +458,12 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     // button only shows up for one.
     context.hasWarriorMode = this.document.type == 'zord' && actorHasZordFeature(this.document, WARRIOR_MODE_ID);
     context.isWarriorModeActive = isWarriorModeActive(this.document);
+
+    // Zord Mega-Weapon System - see helpers/zord-mega-weapon.mjs. Same "only show the control on a
+    // Zord that actually holds the Feature" shape as Warrior Mode above; the remaining-attacks
+    // count doubles as the button's own summoned/not-summoned state.
+    context.hasMegaWeapon = this.document.type == 'zord' && actorHasZordFeature(this.document, MEGA_WEAPON_ID);
+    context.megaWeaponAttacksRemaining = getMegaWeaponAttacksRemaining(this.document);
 
     return context;
   }
@@ -897,6 +907,14 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onSystemActorsDelete(event) {
     onSystemActorsDelete(event, this);
+  }
+
+  static #onSummonMegaWeapon() {
+    summonMegaWeapon(this.document);
+  }
+
+  static #onSystemActorOpen(event, target) {
+    onSystemActorOpen(target);
   }
 
   static #onMorph() {

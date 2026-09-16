@@ -36,10 +36,10 @@
       <select name="system.initiative.skill">
         {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
       </select>
-      {{!-- Read-only: the shift die is set on the skill itself, not editable from here --}}
-      <input class="two-digit-input no-unlock" type="text"
-        value="{{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}"
-        disabled data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}" />
+      {{!-- Display only: the shift die is set on the skill itself, not editable from here --}}
+      <span data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}">
+        {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
+      </span>
     </div>
   </div>
   {{> "systems/essence20/templates/actor/parts/misc/sidebar-speeds.hbs"}}

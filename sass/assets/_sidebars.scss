@@ -129,6 +129,16 @@
   flex: 0 0 auto;
 }
 
+/* A computed, never-editable value shown next to an editable one (Health's .max, Stun's Health
+   cap) - plain text rather than a disabled input, so it doesn't read as a field you can click
+   into. Keeps .two-digit-input's own 40px footprint so the numbers still line up in a column with
+   the editable boxes stacked above/below them. Colour and flex sizing come from the panel's
+   generic `> span` rule above. */
+.essence20-sidebar .essence20-sidebar-panel .sidebar-readout {
+  min-width: 40px;
+  text-align: center;
+}
+
 .essence20-sidebar .essence20-sidebar-trait-row {
   display: flex;
   flex-direction: column;
