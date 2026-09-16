@@ -86,7 +86,7 @@
     "ActorImmunities": "Immunities",
     "ActorResistances": "Resistances",
     "ActorRole": "Role",
-    "ActorOpenSheetTooltip": "Double-click to open this actor's sheet",
+    "ActorOpenSheetTooltip": "Open Actor",
     "ActorSelect": "Who is performing this roll?",
     "ActorSize": "Size",
     "ActorSizeCommon": "Common",

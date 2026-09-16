@@ -220,6 +220,38 @@
   font-size: 0.85em;
 }
 
+/* Checkboxes in a sidebar panel row (the Vehicle's "Crashed" toggle) came out visibly oblong -
+   17.5x21.7 rather than square. Foundry draws these with appearance:none, painting both the box
+   and the tick from pseudo-elements sized off the inherited font, so a panel row's own reduced
+   font-size (0.9em) skewed width and height by different amounts.
+   Sizing the input alone squares the element but NOT what's painted inside it: the pseudos kept
+   their own font-derived size, so the checked tick rendered visibly smaller than the unchecked
+   outline and the control looked like it shrank when clicked. font-size/line-height are set to
+   match, so the painted box and the element agree in both states. --checkbox-size is Foundry's
+   own variable, which also lines this up with the 20px-tall numeric inputs above it. */
+.essence20-sidebar .essence20-sidebar-panel input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: var(--checkbox-size, 20px);
+  height: var(--checkbox-size, 20px);
+  font-size: var(--checkbox-size, 20px);
+  line-height: 1;
+}
+
+/* The Initiative row borrows .essence20-sidebar-action-button purely for its flex layout - unlike
+   its siblings (Warrior Mode, Mega-Weapon, Transform, Morph) the row itself isn't a button: the
+   only clickable thing in it is the d20 icon, with a skill picker and a read-only shift die beside
+   it. Drop the button chrome so it reads as a row like the Speeds/Defenses panels below, rather
+   than a control the whole width of which looks pressable. Hover is reset too, since the row-wide
+   highlight implied the same thing. */
+.essence20-sidebar .essence20-sidebar-action-button.essence20-sidebar-initiative,
+.essence20-sidebar .essence20-sidebar-action-button.essence20-sidebar-initiative:hover {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  cursor: default;
+}
+
 .essence20-sidebar .essence20-sidebar-action-button select {
   flex: 1 1 auto;
   min-width: 0;
