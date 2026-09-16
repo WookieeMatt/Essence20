@@ -628,7 +628,8 @@
     "MegaformTraitEnhancedRangedAttack": "Enhanced Ranged Attack",
     "MegaformTraitEssence": "Essence",
     "MegaformTraitGrounding": "Grounding",
-    "MegaformTraitLayeredSystems": "Layered Systems",
+    "MegaformTraitLayeredSystems": "Layered Systems",    "MegaformTraitMegaformDropError": "Megaform Traits are contributed by the Zords or Transformers that make up the Megaform - add this to one of its components instead, and it will apply to the Megaform automatically.",
+
     "MegaformTraitMove": "Move",
     "MegaformTraitMovementType": "Movement Type",
     "MegaformTraitResistant": "Resistant",

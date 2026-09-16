@@ -59,6 +59,20 @@ export async function onDropItem(data, actor, dropFunc) {
   case 'influence':
     result = await onInfluenceDrop(actor, sourceItem, dropFunc);
     break;
+  // A Megaform Trait is contributed BY a component - the Zords of a Megazord, or the Transformers
+  // of a Combiner - and the Megaform aggregates whatever its current participants hold (see
+  // Essence20Actor#_prepareMegaformZordData/_prepareMegaformCombinerData). A Megaform holds none
+  // of its own, so dropping one straight onto it used to be accepted silently: the item sat on the
+  // sheet looking applied while contributing nothing, and quietly vanished from the Megaform's
+  // stats the moment you looked for its effect. Refused outright instead, naming where it goes.
+  case 'megaformTrait':
+    if (actor.type == 'megaform') {
+      ui.notifications.error(game.i18n.localize('E20.MegaformTraitMegaformDropError'));
+      break;
+    }
+
+    result = await dropFunc();
+    break;
   case 'origin':
     result = await onOriginDrop(actor, sourceItem, dropFunc);
     break;
