@@ -144,6 +144,28 @@ If this release includes an actor-data migration (anything touching
 - ☐ Open an actor created on the *previous* released version (not a fresh one) and confirm
   essence max/value display correctly, not `NaN`/`undefined`/`0` after migration.
 
+## 13. Guided tours
+
+Tours depend on CSS selectors matching templates they don't live beside, so they rot silently:
+a renamed class breaks a tour that nothing else references. The Jest suite checks their structure
+and localization keys but cannot check a selector without a browser.
+
+- ☐ In a world with an ordinary character, run the lint pass from the console:
+  ```js
+  const { lintTours } = await import("/systems/essence20/module/tours/tour-lint.mjs");
+  await lintTours();
+  ```
+  Pass condition: **no tour reports `UNRESOLVED` or `ERROR`.** A step listed under `skipped` is
+  only acceptable when it is `optional` *and* the UI it points at genuinely isn't present for that
+  character. The pass restores each tour's saved progress and cleans up its demo actors.
+- ☐ Play **one** tour by hand end to end with the console open — the lint pass proves the
+  selectors resolve, not that the copy reads well or the tooltips sit somewhere sensible.
+- ☐ Confirm zero `Tour [...] target element "..." was not found` warnings during that run.
+- ☐ Detach a character sheet into its own window, then start **The Character Sheet** tour.
+  Expected: the sheet is pulled back into the main workspace and the tour proceeds normally.
+- ☐ Confirm the world is unchanged afterwards: no actors left in an `Essence20 Tours` folder,
+  no leftover chat cards from a demo character.
+
 ## Sign-off
 
 | Reviewer | Foundry version | Date | Blocking issues found |

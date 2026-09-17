@@ -42,6 +42,28 @@ Drag-and-drop a Role onto your actor sheet and set your level to automatically a
 ### Drag Ruler Support
 The [Drag Ruler](https://foundryvtt.com/packages/drag-ruler/) module is supported out of the box. Please note that only Ground movement is supported at this time.
 
+### Guided Tours
+The system ships with short in-app tours covering how it works. Find them under `Settings` → `Tour Management`, in the **Essence20** category, or use the <i class="fas fa-circle-question"></i> control in a character sheet's title bar.
+
+| Tour | Covers |
+| --- | --- |
+| Welcome to Essence20 | Where everything lives: the sidebar, the compendium packs, the Compendium Browser, system settings |
+| The Character Sheet | The header, the sidebar panels, defences and movement, the tabs |
+| Skills and Essences | The four Essences, skill shifts, and the Skill Picker |
+| Making a Roll | The Roll Options dialog, edge and snag, automatic modifiers, and reading the result |
+| Gear and Weapons | Weapons, weapon effects, upgrades, armour and shields |
+| Perks and Roles | Where a character's abilities come from, and how Level drives advancement |
+| Powers and Morphing | Power pools, spending on Powers, and morphing |
+| Transformers | Energon, Alt Modes and transforming |
+| Active Effects | How effects change a character, and where to find them |
+| Threats and Combat | NPC sheets, initiative, and the combat tracker |
+| Vehicles, Zords and Megaforms | The three machine sheets, crews, and how a Megaform combines its Zords |
+| Story Points | The tracker, the two pools, and who may spend |
+| Building Items | The item sheet, and how items attach to each other |
+| Links and Macros | `@Check` links in text, and item-to-hotbar macros |
+
+The sheet tours create a temporary demo character in a folder named `Essence20 Tours` and delete it again when the tour ends. They never modify your own actors.
+
 # Installation
 - In the `Game Systems` menu within Foundry, click `Install System` and paste in the Manifest URL for the version of Foundry you're using.
   - Manifest URL v13: `https://github.com/WookieeMatt/Essence20/releases/latest/download/system.json`
