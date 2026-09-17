@@ -1,0 +1,63 @@
+{
+  "namespace": "essence20",
+  "id": "transformers",
+  "title": "E20.Tours.Transformers.Title",
+  "description": "E20.Tours.Transformers.Description",
+  "display": true,
+  "canBeResumed": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Transformers.Intro.Title",
+      "content": "E20.Tours.Transformers.Intro.Content"
+    },
+    {
+      "id": "energon",
+      "app": "transformer",
+      "selector": ".essence20-sidebar-resources",
+      "title": "E20.Tours.Transformers.Energon.Title",
+      "content": "E20.Tours.Transformers.Energon.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "recharge",
+      "app": "transformer",
+      "selector": "[data-action=\"recharge\"]",
+      "title": "E20.Tours.Transformers.Recharge.Title",
+      "content": "E20.Tours.Transformers.Recharge.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "transformButton",
+      "app": "transformer",
+      "selector": "[data-action=\"transform\"]",
+      "title": "E20.Tours.Transformers.TransformButton.Title",
+      "content": "E20.Tours.Transformers.TransformButton.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "altModeTab",
+      "app": "transformer",
+      "tab": "altmode",
+      "selector": "section[data-tab=\"altmode\"]",
+      "title": "E20.Tours.Transformers.AltModeTab.Title",
+      "content": "E20.Tours.Transformers.AltModeTab.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "modeSelector",
+      "app": "transformer",
+      "tab": "gear",
+      "selector": "section[data-tab=\"gear\"] select.mode-select",
+      "title": "E20.Tours.Transformers.ModeSelector.Title",
+      "content": "E20.Tours.Transformers.ModeSelector.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Transformers.Outro.Title",
+      "content": "E20.Tours.Transformers.Outro.Content"
+    }
+  ]
+}

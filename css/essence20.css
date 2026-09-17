@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* importing the partials */
 /* 700 added alongside 500 - _global-windows.scss's .window-app rule (see below) sets
    font-weight: bold (700), but only weight 500 was ever loaded, so the browser had to
@@ -3873,6 +3874,161 @@ body.game .window-app {
   color: var(--theme-text-color) !important;
 }
 
+/* Guided tour steps.
+ *
+ * Core renders every tour step as a tooltip (or a centred <aside>) carrying the classes
+ * "tour themed theme-dark", hard-coded in Tour#_renderStep — a step is always dark, regardless of
+ * the user's colour scheme, and that can't be changed from here without fighting core on every
+ * render. So rather than resist it, this styles the step as a deliberately dark panel matching the
+ * system's own dark theme, and a tour reads as part of Essence20 instead of as stock Foundry.
+ *
+ * Note these selectors sit OUTSIDE any .theme-wrapper — core appends the tooltip and the centred
+ * step to document.body, not into one of our sheets — so the --theme-* custom properties defined
+ * in _theme_wrapper.scss are not in scope here. Values come from the sass variables directly.
+ *
+ * Only the step's own surfaces are touched. The fade cut-out (.tour-fadeout) and the input-blocking
+ * overlay (.tour-overlay) keep core's geometry and z-index untouched: both are positioned from
+ * measurements core takes itself, and restyling them is how tours end up with a highlight that
+ * doesn't line up with its target.
+ */
+#tooltip.tour,
+.tour-center-step {
+  background: linear-gradient(180deg, rgba(14, 17, 20, 0.96), rgba(17, 19, 21, 0.96));
+  border: 1px solid #4dd0e1;
+  border-radius: 0;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+  color: #aaaaaa;
+  max-width: 34ch;
+  padding: 0;
+  text-align: left;
+}
+#tooltip.tour .step-header,
+.tour-center-step .step-header {
+  align-items: center;
+  border-bottom: 1px solid rgba(77, 208, 225, 0.4);
+  gap: 0.5rem;
+  justify-content: space-between;
+  padding: 0.4rem 0.6rem;
+}
+#tooltip.tour .step-header .step-title,
+.tour-center-step .step-header .step-title {
+  /* Rajdhani, matching the sliced-border panel labels used across the sheets. */
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  margin: 0;
+  text-transform: uppercase;
+}
+#tooltip.tour p.content,
+.tour-center-step p.content {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0.45rem 0.6rem;
+  /* Core sets `.tour .content { text-align: center }` directly on the paragraph, so setting
+     alignment on the panel alone never reaches it — it has to be overridden on the element.
+     Centred text is fine for a one-line caption and poor for the multi-sentence copy these
+     steps carry, which is most of them. */
+  text-align: left;
+  /* Core emits one <p class="content"> per line of the step's localized string, so consecutive
+     paragraphs would otherwise stack their padding into an uneven gutter. */
+}
+#tooltip.tour p.content + p.content,
+.tour-center-step p.content + p.content {
+  padding-top: 0;
+}
+#tooltip.tour p.content strong,
+.tour-center-step p.content strong {
+  color: #4dd0e1;
+}
+#tooltip.tour .step-controls,
+.tour-center-step .step-controls {
+  align-items: center;
+  border-top: 1px solid rgba(77, 208, 225, 0.4);
+  justify-content: space-between;
+  padding: 0.3rem 0.6rem;
+}
+#tooltip.tour .step-controls .progress,
+.tour-center-step .step-controls .progress {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+  text-transform: uppercase;
+  /* The step counter changes width as it counts up; tabular figures stop the arrows shifting. */
+  font-variant-numeric: tabular-nums;
+}
+#tooltip.tour .step-button,
+.tour-center-step .step-button {
+  color: #aaaaaa;
+  flex: 0 0 auto;
+  opacity: 0.85;
+  transition: opacity 150ms ease, color 150ms ease;
+  /* Core adds .disabled to every button while a step transition is in flight, to swallow
+     double-clicks. Reflect that so the step doesn't look interactive while it isn't. */
+}
+#tooltip.tour .step-button:hover,
+.tour-center-step .step-button:hover {
+  color: #4dd0e1;
+  opacity: 1;
+  text-shadow: none;
+}
+#tooltip.tour .step-button.disabled,
+.tour-center-step .step-button.disabled {
+  cursor: default;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* The centred step has no target to point at, so it carries its own breathing room. */
+.tour-center-step {
+  max-width: 46ch;
+}
+
+/* The one-off chat card that points new worlds at the tours. Unlike the step panels above this
+   one sits inside a normal chat message, so it follows the message's own light/dark theme rather
+   than forcing a dark panel. */
+.essence20-tour-offer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* Both of these inherit deliberately. Foundry styles headings and buttons inside a chat message
+     for a light ground (near-black, #222 and #111), but a message carries its own theme-dark or
+     theme-light class — so on a dark theme the hard-coded colours render dark-on-dark and the
+     heading is effectively invisible. Inheriting from the message picks up whichever theme it is
+     actually wearing. */
+}
+.essence20-tour-offer h3 {
+  color: inherit;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0;
+  text-transform: uppercase;
+}
+.essence20-tour-offer p {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 0;
+}
+.essence20-tour-offer button {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #tooltip.tour .step-button,
+  .tour-center-step .step-button {
+    transition: none;
+  }
+}
 .story-points {
   height: auto;
   width: min-content;

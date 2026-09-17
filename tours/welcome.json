@@ -1,0 +1,88 @@
+{
+  "namespace": "essence20",
+  "id": "welcome",
+  "title": "E20.Tours.Welcome.Title",
+  "description": "E20.Tours.Welcome.Description",
+  "display": true,
+  "canBeResumed": true,
+  "suggestedNextTours": [
+    "essence20.characterSheet"
+  ],
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Welcome.Intro.Title",
+      "content": "E20.Tours.Welcome.Intro.Content"
+    },
+    {
+      "id": "sidebar",
+      "selector": "#sidebar",
+      "title": "E20.Tours.Welcome.Sidebar.Title",
+      "content": "E20.Tours.Welcome.Sidebar.Content",
+      "tooltipDirection": "LEFT",
+      "action": "expandSidebar"
+    },
+    {
+      "id": "actors",
+      "selector": "#sidebar nav.tabs [data-tab=\"actors\"]",
+      "sidebarTab": "actors",
+      "title": "E20.Tours.Welcome.Actors.Title",
+      "content": "E20.Tours.Welcome.Actors.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "items",
+      "selector": "#sidebar nav.tabs [data-tab=\"items\"]",
+      "sidebarTab": "items",
+      "title": "E20.Tours.Welcome.Items.Title",
+      "content": "E20.Tours.Welcome.Items.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "compendium",
+      "selector": "#sidebar nav.tabs [data-tab=\"compendium\"]",
+      "sidebarTab": "compendium",
+      "title": "E20.Tours.Welcome.Compendium.Title",
+      "content": "E20.Tours.Welcome.Compendium.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "compendiumBrowser",
+      "selector": "#compendium .essence20-open-compendium-browser",
+      "sidebarTab": "compendium",
+      "title": "E20.Tours.Welcome.CompendiumBrowser.Title",
+      "content": "E20.Tours.Welcome.CompendiumBrowser.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "sceneControls",
+      "selector": "#scene-controls",
+      "title": "E20.Tours.Welcome.SceneControls.Title",
+      "content": "E20.Tours.Welcome.SceneControls.Content",
+      "tooltipDirection": "RIGHT",
+      "optional": true
+    },
+    {
+      "id": "settings",
+      "selector": "#sidebar nav.tabs [data-tab=\"settings\"]",
+      "sidebarTab": "settings",
+      "title": "E20.Tours.Welcome.Settings.Title",
+      "content": "E20.Tours.Welcome.Settings.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "manageTours",
+      "selector": "[data-action=\"openApp\"][data-app=\"tours\"]",
+      "sidebarTab": "settings",
+      "title": "E20.Tours.Welcome.ManageTours.Title",
+      "content": "E20.Tours.Welcome.ManageTours.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Welcome.Outro.Title",
+      "content": "E20.Tours.Welcome.Outro.Content"
+    }
+  ]
+}

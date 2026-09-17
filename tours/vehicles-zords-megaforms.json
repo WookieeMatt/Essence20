@@ -1,0 +1,105 @@
+{
+  "namespace": "essence20",
+  "id": "vehiclesZordsMegaforms",
+  "title": "E20.Tours.Machines.Title",
+  "description": "E20.Tours.Machines.Description",
+  "display": true,
+  "canBeResumed": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Machines.Intro.Title",
+      "content": "E20.Tours.Machines.Intro.Content"
+    },
+    {
+      "id": "vehicleSheet",
+      "app": "vehicle",
+      "selector": "header.sheet-header",
+      "title": "E20.Tours.Machines.VehicleSheet.Title",
+      "content": "E20.Tours.Machines.VehicleSheet.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "vehicleStats",
+      "app": "vehicle",
+      "selector": ".essence20-sidebar",
+      "title": "E20.Tours.Machines.VehicleStats.Title",
+      "content": "E20.Tours.Machines.VehicleStats.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "crew",
+      "app": "vehicle",
+      "tab": "passengers",
+      "selector": "section[data-tab=\"passengers\"]",
+      "title": "E20.Tours.Machines.Crew.Title",
+      "content": "E20.Tours.Machines.Crew.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "crewRole",
+      "app": "vehicle",
+      "tab": "passengers",
+      "selector": "section[data-tab=\"passengers\"] select",
+      "title": "E20.Tours.Machines.CrewRole.Title",
+      "content": "E20.Tours.Machines.CrewRole.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "vehicleTraits",
+      "app": "vehicle",
+      "tab": "main",
+      "selector": "section[data-tab=\"main\"]",
+      "title": "E20.Tours.Machines.VehicleTraits.Title",
+      "content": "E20.Tours.Machines.VehicleTraits.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "zordSheet",
+      "app": "zord",
+      "selector": "header.sheet-header",
+      "title": "E20.Tours.Machines.ZordSheet.Title",
+      "content": "E20.Tours.Machines.ZordSheet.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "zordStats",
+      "app": "zord",
+      "selector": ".essence20-sidebar",
+      "title": "E20.Tours.Machines.ZordStats.Title",
+      "content": "E20.Tours.Machines.ZordStats.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "megaformSheet",
+      "app": "megaform",
+      "selector": "header.sheet-header",
+      "title": "E20.Tours.Machines.MegaformSheet.Title",
+      "content": "E20.Tours.Machines.MegaformSheet.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "combiners",
+      "app": "megaform",
+      "tab": "combiners",
+      "selector": "section[data-tab=\"combiners\"]",
+      "title": "E20.Tours.Machines.Combiners.Title",
+      "content": "E20.Tours.Machines.Combiners.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "combinedStats",
+      "app": "megaform",
+      "selector": ".essence20-sidebar",
+      "title": "E20.Tours.Machines.CombinedStats.Title",
+      "content": "E20.Tours.Machines.CombinedStats.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Machines.Outro.Title",
+      "content": "E20.Tours.Machines.Outro.Content"
+    }
+  ]
+}
