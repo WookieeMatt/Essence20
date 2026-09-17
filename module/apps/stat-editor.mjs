@@ -3,20 +3,28 @@ import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
- * Bulk editor for the sidebar's Defenses/Speeds panels, opened by clicking either panel's
- * label. Player Characters compute their defense/speed totals from other fields (essence,
- * armor, shield, etc - see Essence20Actor#_prepareDefenses/#_prepareMovement), so the only
- * thing worth bulk-editing there is the flat .bonus add-on shared by all 4 entries. Every other
- * actor type just stores a flat value/total per entry (no derived computation), so this edits
- * that value directly instead.
+ * Bulk editor for the sidebar's Health/Defenses/Speeds panels, opened by clicking any of their
+ * labels. Every actor type now computes these the same way a playerCharacter always has (base,
+ * armor, bonus, morphed, shield, etc - see Essence20Actor#_prepareHealth/_prepareDefenses/
+ * _prepareMovement), but a Player Character's sheet already has its own dedicated surface for
+ * every field besides the flat .bonus/.origin add-on (essence from its Essence Score, armor from
+ * equipped Armor items, Origin from its Origin Item, etc) - so PC (and Megaform, whose own base
+ * fields are always recomputed from its linked participants, never GM-typed) only bulk-edit that
+ * one add-on field here. Every other actor type (npc/companion/vehicle/zord) has no such other
+ * surface, so this exposes every field the formula actually reads - one row per Defense/Speed
+ * type, one column per field, rather than a long flat list (easier to scan when there are 4-5
+ * fields across all 4 Defenses/Speeds at once).
  */
 export default class StatEditor extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   /**
-   * @param {Actor} actor The actor whose defenses/speeds are being edited
-   * @param {"defense"|"speed"} statType Which panel this editor was opened from
+   * @param {Actor} actor The actor whose Health/Defenses/Speeds are being edited
+   * @param {"health"|"defense"|"speed"} statType Which panel this editor was opened from
    */
   constructor(actor, statType) {
-    super({ id: `essence20-stat-editor-${actor.id}-${statType}` });
+    super({
+      id: `essence20-stat-editor-${actor.id}-${statType}`,
+      position: { width: StatEditor.#computeWidth(actor, statType) },
+    });
     this._actor = actor;
     this._statType = statType;
   }
@@ -34,6 +42,21 @@ export default class StatEditor extends serializeFormSubmits(HandlebarsApplicati
     },
   };
 
+  /**
+   * The table layout needs a wider window than the old single-column list did, scaled to how
+   * many field columns this actor type/statType combination will actually show (1 for the
+   * minimal PC/Megaform bonus-only case, up to 5 for a non-PC Defenses table).
+   */
+  static #computeWidth(actor, statType) {
+    const isMinimal = ["playerCharacter", "megaform"].includes(actor.type);
+    if (isMinimal) {
+      return 320;
+    }
+
+    const columnCount = { health: 2, defense: 5, speed: 4 }[statType];
+    return 110 + (columnCount * 70);
+  }
+
   static PARTS = {
     form: {
       template: "systems/essence20/templates/app/stat-editor.hbs",
@@ -43,22 +66,39 @@ export default class StatEditor extends serializeFormSubmits(HandlebarsApplicati
     },
   };
 
+  /**
+   * @returns {Boolean}   True for the two actor types whose base fields are never GM-typed
+   *   directly (a playerCharacter derives them from Items/Essence Scores; a Megaform recomputes
+   *   them fresh every render from its linked participants - Essence20Actor#
+   *   _prepareMegaformData) - both only bulk-edit the one flat add-on field here.
+   */
+  get #isMinimalEditor() {
+    return ["playerCharacter", "megaform"].includes(this._actor.type);
+  }
+
   get title() {
-    const isPc = this._actor.type === "playerCharacter";
-    const titleKey = this._statType === "defense"
-      ? (isPc ? "E20.StatEditorDefensesBonusTitle" : "E20.StatEditorDefensesTitle")
-      : (isPc ? "E20.StatEditorSpeedsBonusTitle" : "E20.StatEditorSpeedsTitle");
+    const isMinimal = this.#isMinimalEditor;
+    const titleKey = {
+      health: isMinimal ? "E20.StatEditorHealthBonusTitle" : "E20.StatEditorHealthTitle",
+      defense: isMinimal ? "E20.StatEditorDefensesBonusTitle" : "E20.StatEditorDefensesTitle",
+      speed: isMinimal ? "E20.StatEditorSpeedsBonusTitle" : "E20.StatEditorSpeedsTitle",
+    }[this._statType];
 
     return game.i18n.localize(titleKey);
   }
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    const isPc = this._actor.type === "playerCharacter";
+    const isMinimal = this.#isMinimalEditor;
 
-    context.entries = this._statType === "defense"
-      ? this.#getDefenseEntries(isPc)
-      : this.#getSpeedEntries(isPc);
+    const { columns, rows } = {
+      health: () => this.#getHealthTable(isMinimal),
+      defense: () => this.#getDefenseTable(isMinimal),
+      speed: () => this.#getSpeedTable(isMinimal),
+    }[this._statType]();
+
+    context.columns = columns;
+    context.rows = rows;
     context.buttons = [
       { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
     ];
@@ -66,26 +106,77 @@ export default class StatEditor extends serializeFormSubmits(HandlebarsApplicati
     return context;
   }
 
-  #getDefenseEntries(isPc) {
-    const defenses = this._actor.system.defenses;
-    const field = isPc ? "bonus" : "value";
-
-    return Object.entries(CONFIG.E20.defenses).map(([key, labelKey]) => ({
-      label: game.i18n.localize(labelKey),
-      name: `system.defenses.${key}.${field}`,
-      value: defenses[key][field],
+  /**
+   * Builds the {columns, rows} shape stat-editor.hbs renders as a table: one column per field in
+   * `fields`, one row per key in `typeConfig` (e.g. CONFIG.E20.defenses).
+   * @param {Object} dataByKey   The actor's own system.defenses/system.movement object.
+   * @param {Object} typeConfig   CONFIG.E20.defenses or CONFIG.E20.movementTypes.
+   * @param {{field: String, labelKey: String}[]} fields
+   * @param {String} pathPrefix   e.g. "system.defenses" or "system.movement".
+   */
+  #buildTable(dataByKey, typeConfig, fields, pathPrefix) {
+    const columns = fields.map(({ field, labelKey }) => ({
+      field, label: game.i18n.localize(labelKey),
     }));
+
+    const rows = Object.entries(typeConfig).map(([key, labelKey]) => ({
+      label: game.i18n.localize(labelKey),
+      cells: fields.map(({ field }) => ({
+        name: `${pathPrefix}.${key}.${field}`,
+        value: dataByKey[key][field],
+      })),
+    }));
+
+    return { columns, rows };
   }
 
-  #getSpeedEntries(isPc) {
-    const movement = this._actor.system.movement;
-    const field = isPc ? "bonus" : "total";
+  #getHealthTable(isMinimal) {
+    const health = this._actor.system.health;
+    const fields = isMinimal
+      ? [{ field: "bonus", labelKey: "E20.Bonus" }]
+      : [{ field: "origin", labelKey: "E20.Origin" }, { field: "bonus", labelKey: "E20.Bonus" }];
 
-    return Object.entries(CONFIG.E20.movementTypes).map(([key, labelKey]) => ({
-      label: game.i18n.localize(labelKey),
-      name: `system.movement.${key}.${field}`,
-      value: movement[key][field],
-    }));
+    // A single row (there's only one Health, unlike the 4 Defenses/Speed types) - built by hand
+    // rather than through #buildTable, whose column-building generic path assumes an extra
+    // "which type" key segment (system.defenses.<type>.<field>) that Health doesn't have.
+    return {
+      columns: fields.map(({ field, labelKey }) => ({ field, label: game.i18n.localize(labelKey) })),
+      rows: [{
+        label: game.i18n.localize("E20.ActorHealth"),
+        cells: fields.map(({ field }) => ({ name: `system.health.${field}`, value: health[field] })),
+      }],
+    };
+  }
+
+  #getDefenseTable(isMinimal) {
+    const fields = isMinimal
+      ? [{ field: "bonus", labelKey: "E20.Bonus" }]
+      : [
+        { field: "base", labelKey: "E20.DefenseBase" },
+        { field: "armor", labelKey: "E20.DefenseArmor" },
+        { field: "bonus", labelKey: "E20.Bonus" },
+        { field: "morphed", labelKey: "E20.DefenseMorphed" },
+        { field: "shield", labelKey: "E20.DefenseShield" },
+      ];
+
+    return this.#buildTable(
+      this._actor.system.defenses, CONFIG.E20.defenses, fields, "system.defenses",
+    );
+  }
+
+  #getSpeedTable(isMinimal) {
+    const fields = isMinimal
+      ? [{ field: "bonus", labelKey: "E20.Bonus" }]
+      : [
+        { field: "base", labelKey: "E20.DefenseBase" },
+        { field: "bonus", labelKey: "E20.Bonus" },
+        { field: "altMode", labelKey: "E20.AltMode" },
+        { field: "morphed", labelKey: "E20.DefenseMorphed" },
+      ];
+
+    return this.#buildTable(
+      this._actor.system.movement, CONFIG.E20.movementTypes, fields, "system.movement",
+    );
   }
 
   _onRender(context, options) {

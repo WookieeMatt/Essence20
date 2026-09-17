@@ -21,6 +21,18 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       // Which of the target's four Defenses (p.168-169) this attack's Skill Test is rolled
       // against.
       defenseType: makeStrWithChoices(Object.keys(E20.defenses), 'toughness'),
+      // A Vehicle's own inherent Ram/Flyby attack (GI Joe CRB p.172's "Vehicle Perks, Powers, and
+      // Traits" - every vehicle stat block with one names it "Ram" or "Flyby", always carrying
+      // the Drive-By weapon trait but with no OTHER shared classification distinguishing either
+      // from an ordinary Blunt attack). Sideswipe/Demolition Driver (Factions in Action Vol. 2,
+      // p.64, see dice.mjs's own _isSideswipeAttack/_isDemolitionDriverAttack) need to identify
+      // these two specific attacks - previously matched by the item's own display NAME, the only
+      // field RAW itself distinguishes them by, but that broke the instant anyone renamed or
+      // localized the item. An explicit flag set once at content-authoring time is the same fix
+      // this project already applies to every other "no real classification field exists"
+      // Perk-matching gap (e.g. Puissance/Smash's own "no parent weapon" proxy).
+      isRam: makeBool(false),
+      isFlyby: makeBool(false),
       isSpecialized: makeBool(false),
       numHands: makeInt(1),
       numTargets: makeInt(1),

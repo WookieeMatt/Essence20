@@ -175,6 +175,7 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       applyObserverSnagSubstitution: form?.applyObserverSnagSubstitution?.checked,
       spendSupremeGuardianTech: form?.spendSupremeGuardianTech?.value ? parseInt(form.spendSupremeGuardianTech.value) : 0,
       applyCombatStance: form?.applyCombatStance?.checked,
+      applyRetribution: form?.applyRetribution?.checked,
       applyWitheringFire: form?.applyWitheringFire?.checked,
       applyDependableTanker: form?.applyDependableTanker?.checked,
       applyHackingAlgorithms: form?.applyHackingAlgorithms?.checked,

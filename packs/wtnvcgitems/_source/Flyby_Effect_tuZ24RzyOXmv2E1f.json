@@ -1,0 +1,52 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Flyby Effect",
+  "type": "weaponEffect",
+  "_id": "tuZ24RzyOXmv2E1f",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": null
+    },
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "blunt",
+    "damageValue": 2,
+    "isFlyby": true,
+    "shiftDown": 0,
+    "numHands": "0",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1757779200000,
+    "modifiedTime": 1757779200000,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!tuZ24RzyOXmv2E1f"
+}

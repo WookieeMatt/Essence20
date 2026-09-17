@@ -70,6 +70,10 @@
       {{#each system.traits as |trait|}}
       <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.weaponTraits trait)}}</span>
       {{/each}}
+    {{else if (eq system.type 'vehicle')}}
+      {{#each system.traits as |trait|}}
+      <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.vehicleTraits trait)}}</span>
+      {{/each}}
     {{/if}}
     </div>
     {{/inline}}

@@ -6,24 +6,31 @@
   }
 }
 
-.stat-editor-rows {
-  display: flex;
-  flex-direction: column;
-  gap: v.$gap-md;
-}
+.stat-editor-table {
+  width: 100%;
+  border-collapse: collapse;
 
-.stat-editor-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: v.$gap-lg;
+  th,
+  td {
+    padding: v.$gap-sm;
+    text-align: center;
+  }
 
-  label {
+  thead th {
     color: var(--theme-text-color);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  tbody th {
+    color: var(--theme-text-color);
+    text-align: left;
+    white-space: nowrap;
   }
 
   input {
-    width: 70px;
+    width: 100%;
+    min-width: 45px;
     text-align: center;
   }
 }

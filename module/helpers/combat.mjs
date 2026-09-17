@@ -10,6 +10,14 @@ import { isProtectedTarget } from "./protected-target.mjs";
 import { AEGIS_CLAMPED_FLAG, isRecklessAbandonActive } from "./reckless-abandon.mjs";
 import { E20 } from "./config.mjs";
 import { isMonsterFormActive } from "./monster-morph.mjs";
+import { grantNotOnMyWatchReaction } from "./not-on-my-watch.mjs";
+import { actorHasZordFeature } from "./zord-features.mjs";
+import { getMegaformParticipants } from "./megaform-participants.mjs";
+
+// Relic Key (PR CRB p.140, prerequisite Auxiliary Zord) - see getDefenseValue's own doc comment
+// below for the Willpower/Cleverness default this grants while unpiloted.
+const PR_CRB = "Compendium.essence20.pr_crb.Item.";
+const RELIC_KEY_ID = `${PR_CRB}uSlClAv3oJjf54pa`;
 
 // The 3 Finster's Monster-Matic Cookbook Warlord capstones (20th level) whose own "while in
 // Monster Form, reduce incoming damage" clause is built here - see getWarlordDamageReduction's
@@ -403,19 +411,45 @@ async function grantSupremeGuardianTechRegen(actor, damageType, amount) {
 }
 
 /**
+ * Finds the actor currently driving the given vehicle/Zord, via its own system.actors crew map
+ * ({vehicleRole, uuid, ...} entries, resolved with fromUuidSync - the same shape
+ * prepareSystemActors() and vehicle-handler.mjs's own crew-swap logic already read). Shared by
+ * getDefenseValue's own driver/pilot Willpower/Cleverness substitution below and dice.mjs's
+ * identically-named private method, which now just delegates here.
+ * @param {Actor} vehicleActor
+ * @returns {Actor|null}   The driver, or null if the vehicle has no assigned driver.
+ */
+export function getVehicleDriver(vehicleActor) {
+  for (const crewMember of Object.values(vehicleActor.system?.actors ?? {})) {
+    if (crewMember.vehicleRole == 'driver') {
+      const driver = fromUuidSync(crewMember.uuid);
+      if (driver) {
+        return driver;
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
  * Returns the effective numeric value of one of an actor's four Defenses (Toughness, Evasion,
- * Willpower, Cleverness; p.168-169). Player Character/Companion actors compute the final value
- * into system.defenses[type].total (Essence20Actor#_prepareDefenses); every other actor type
- * (NPC, Vehicle, Zord, Megaform) stores it directly as system.defenses[type].value.
+ * Willpower, Cleverness; p.168-169). Every actor type computes its own .total the same way now
+ * (Essence20Actor#_prepareDefenses runs for all of them), with one RAW-mandated exception: a
+ * Vehicle/Zord's Willpower and Cleverness (system.defenses[type].usesDrivers - see templates/
+ * machine.mjs#makeDefensesFields's own doc comment) redirect to its current driver/pilot instead
+ * of using its own computed value, per GI Joe CRB p.173 / PR CRB p.126's "Vehicle" trait and PR
+ * CRB p.136's baseline Zord stat block ("*Use the pilot's Defense"). An A.I.-trait Vehicle is the
+ * one exception to the exception - RAW gives it real Smarts/Social Essence Scores and
+ * Willpower/Cleverness Defenses of its own, so it's excluded from the redirect and computes
+ * normally.
  * @param {Actor} actor
  * @param {String} defenseType
  * @param {Object} [options]
  * @param {Boolean} [options.ignoreArmor]   PR "Driving Strike" (Finster's Monster-Matic Cookbook
  *   p.286): "...ignore a target's bonuses from armor to Defense..." - subtracts the armor (or,
  *   while Morphed, morphed-form) component _prepareDefenses() already folded into .total, read
- *   back out rather than recomputed. Only meaningful for a PC/Companion target, whose .total is
- *   built from those discrete components (see Essence20Actor#_prepareDefenses); an NPC/Vehicle/
- *   Zord/Megaform's flat .value has no such breakdown, so this silently has no effect there.
+ *   back out rather than recomputed.
  * @param {Number} [options.ignoreArmorPoints]   Decepticon Directive Raider "Penetrating Aim"
  *   (Siegemaster Focus, 1st level, p.63): "...ignore 1 point of the target's armor Defense
  *   bonus..." - a partial version of ignoreArmor above (a flat point count instead of an
@@ -425,6 +459,44 @@ async function grantSupremeGuardianTechRegen(actor, damageType, amount) {
  */
 export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignoreArmorPoints = 0 } = {}) {
   const defense = actor.system.defenses?.[defenseType];
+
+  // Responsive (GI Joe CRB, Vehicle Trait): "The vehicle can use the driver's Evasion against
+  // attacks instead of its own." A driver-value substitution like the Willpower/Cleverness
+  // usesDrivers redirect just below, but scoped to Evasion specifically and gated on this one
+  // Vehicle Trait rather than being universal - only kicks in with an actual driver seated; RAW
+  // has nothing to substitute without one, so this falls through to the vehicle's own normal
+  // Evasion below when driverless.
+  if (defenseType == 'evasion' && actor.type == 'vehicle' && actor.system.traits?.responsive) {
+    const driver = getVehicleDriver(actor);
+    if (driver) {
+      return getDefenseValue(driver, 'evasion', { ignoreArmor, ignoreArmorPoints });
+    }
+  }
+
+  if (defense?.usesDrivers && !(actor.type == 'vehicle' && actor.system.traits?.ai)) {
+    const driver = getVehicleDriver(actor);
+    if (driver) {
+      return getDefenseValue(driver, defenseType, { ignoreArmor, ignoreArmorPoints });
+    }
+
+    // Relic Key (PR CRB p.140): "The Zord has a default Smarts and Social of 3 when the Relic
+    // Key is present but no crew is currently driving." Run through the same base + essence +
+    // bonus + armor + shield shape _prepareDefenses() uses (this Defense's own fields are still
+    // real and GM-editable even while unpiloted), substituting 3 for the missing Essence Score.
+    if (actor.type == 'zord' && actorHasZordFeature(actor, RELIC_KEY_ID)) {
+      const RELIC_KEY_ESSENCE = 3;
+      return (defense.base ?? 0) + RELIC_KEY_ESSENCE + (defense.bonus ?? 0)
+        + (defense.armor ?? 0) + (defense.shield ?? 0);
+    }
+
+    // No driver, no Relic Key: RAW says this effect only affects the vehicle "if it has a
+    // driver" - i.e. it doesn't apply at all while driverless, not that it trivially succeeds.
+    // This system has no "this Defense can't be targeted at all" concept to enforce that
+    // directly, so this returns an effectively-unbeatable value instead of 0, erring toward
+    // "the attack has no effect" rather than "the attack trivially crits."
+    return Infinity;
+  }
+
   let value = defense?.total ?? defense?.value ?? 0;
 
   if (ignoreArmor && defense?.total !== undefined) {
@@ -541,6 +613,15 @@ export function getSkillRanks(actor, skill) {
  *   Health the actor had left when damageType isn't 'stun'.
  */
 export async function applyDamage(actor, damageValue, damageType) {
+  // Not On My Watch - see grantNotOnMyWatchReaction's own doc comment. Captured before any of
+  // this function's own mutations, the same "read Defeated status once, up front" idiom
+  // chat.mjs#onApplyDamage's own wasAlreadyDefeated already uses - both branches below only fire
+  // the reaction on a genuine NEW transition into Defeated, not on every subsequent hit against
+  // an actor who was already at 0 Health (the Stun branch's own newStunValue >= health.value
+  // check, in particular, would otherwise re-trigger on literally every later Stun dealt to an
+  // already-Defeated actor, since 0 Health makes that comparison trivially true again).
+  const wasAlreadyDefeated = !!actor.statuses?.has?.('defeated');
+
   // Adapted Wavelength - see ADAPTED_WAVELENGTH_ID's own comment above. A permanent, always-on
   // reduction applied to the incoming value itself, ahead of Immunity/Elemental Shield below -
   // order doesn't matter for an already-Immune actor (still zeroed either way).
@@ -593,6 +674,10 @@ export async function applyDamage(actor, damageValue, damageType) {
     // so an already-Defeated actor doesn't get a redundant toggle call on every later Stun.
     if (amount > 0 && newStunValue >= actor.system.health.value) {
       await actor.toggleStatusEffect('defeated', { active: true });
+
+      if (!wasAlreadyDefeated) {
+        await grantNotOnMyWatchReaction(actor);
+      }
     }
 
     await grantHardenedArmorResistance(actor, damageType, amount);
@@ -703,6 +788,10 @@ export async function applyDamage(actor, damageValue, damageType) {
 
   await actor.update({ 'system.health.value': newValue });
 
+  if (newValue <= 0 && !wasAlreadyDefeated) {
+    await grantNotOnMyWatchReaction(actor);
+  }
+
   await grantHardenedArmorResistance(actor, damageType, previousValue - newValue);
   await grantGridElementalAdaptationResistance(actor, damageType, previousValue - newValue);
   await grantSupremeGuardianTechRegen(actor, damageType, previousValue - newValue);
@@ -723,10 +812,27 @@ export async function applyDamage(actor, damageValue, damageType) {
  * unlike Defeated/Immobilized/etc. this one is safe to auto-clear rather than leaving it to a GM.
  * Still doesn't enforce the Move-action denial itself - this system has no action-economy tracking
  * at all (a documented, separate, larger gap) - only marks and un-marks it.
+ *
+ * A Megaform's own system.stun.value is a live-computed mirror summed fresh from its linked
+ * participants every render (Essence20Actor#_prepareMegaformData), the same "not a real pool"
+ * treatment its Health gets (see helpers/megaform-damage.mjs's own doc comment) - writing to it
+ * directly here would just get overwritten on the Megaform's own next render, silently
+ * no-op'ing the heal. Redirected to heal each linked participant's own Stun by 1 instead (the
+ * same participants helpers/megaform-damage.mjs's applyMegaformDamage distributes damage
+ * across), rather than splitting a single point of healing across them the way damage is split -
+ * each participant heals the same 1 per turn it would if it weren't merged.
  * @param {Actor} actor
  * @returns {Promise<void>}
  */
 export async function healStunAtTurnStart(actor) {
+  if (actor?.type == 'megaform') {
+    for (const participant of getMegaformParticipants(actor)) {
+      await healStunAtTurnStart(participant);
+    }
+
+    return;
+  }
+
   const currentStun = actor?.system?.stun?.value ?? 0;
   if (currentStun <= 0) {
     return;

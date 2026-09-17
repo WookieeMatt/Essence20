@@ -7,7 +7,12 @@ import { onPowerDrop } from "./power-handler.mjs";
 import { setPerkValues } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
+import { onZordFeatureDrop } from "./zord-feature-handler.mjs";
+import { getCombineReadyRound, isCombineReady, rollCombineTimer } from "../helpers/combiner-timer.mjs";
 import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
+import { DETACHED_THIS_SCENE_FLAG } from "./vehicle-handler.mjs";
+import { hasUsedThisEncounter } from "../helpers/perks.mjs";
+import { clearWarriorMode } from "../helpers/warrior-mode.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
@@ -45,11 +50,28 @@ export async function onDropItem(data, actor, dropFunc) {
   case 'faction':
     result = await onFactionDrop(actor, dropFunc);
     break;
+  case 'feature':
+    result = await onZordFeatureDrop(actor, sourceItem, dropFunc);
+    break;
   case 'focus':
     result = await onFocusDrop(actor, sourceItem, dropFunc);
     break;
   case 'influence':
     result = await onInfluenceDrop(actor, sourceItem, dropFunc);
+    break;
+  // A Megaform Trait is contributed BY a component - the Zords of a Megazord, or the Transformers
+  // of a Combiner - and the Megaform aggregates whatever its current participants hold (see
+  // Essence20Actor#_prepareMegaformZordData/_prepareMegaformCombinerData). A Megaform holds none
+  // of its own, so dropping one straight onto it used to be accepted silently: the item sat on the
+  // sheet looking applied while contributing nothing, and quietly vanished from the Megaform's
+  // stats the moment you looked for its effect. Refused outright instead, naming where it goes.
+  case 'megaformTrait':
+    if (actor.type == 'megaform') {
+      ui.notifications.error(game.i18n.localize('E20.MegaformTraitMegaformDropError'));
+      break;
+    }
+
+    result = await dropFunc();
     break;
   case 'origin':
     result = await onOriginDrop(actor, sourceItem, dropFunc);
@@ -164,9 +186,33 @@ export async function onDropActor(data, actorSheet) {
 
     break;
   case 'megaform':
+    // Detachable (Across the Stars, p.104): "may not reattach in the same scene" - see
+    // vehicle-handler.mjs's own DETACHED_THIS_SCENE_FLAG comment for where this gets set.
+    if (droppedActor.type == 'zord' && hasUsedThisEncounter(droppedActor, DETACHED_THIS_SCENE_FLAG)) {
+      ui.notifications.error(game.i18n.format('E20.DetachableCannotReattach', { name: droppedActor.name }));
+      return;
+    }
+
     if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
       setEntryAndAddActor (droppedActor, targetActor);
       dropIsValid = true;
+
+      // Warrior Mode (PR CRB, Zord Feature, p.140): "...lasts until...the Zord is involved in a
+      // Combiner Megaform." This IS that moment - see helpers/warrior-mode.mjs's own doc comment.
+      if (droppedActor.type == 'zord') {
+        await clearWarriorMode(droppedActor);
+      }
+
+      // Combiner join timer (PR CRB p.139) - re-rolled whenever the roster changes, since every
+      // participant rolls its own time and the highest sets the round. Advisory: this warns rather
+      // than refusing the link, see helpers/combiner-timer.mjs's own doc comment for why.
+      if (!isCombineReady(targetActor)) {
+        ui.notifications.warn(game.i18n.format('E20.CombinerTimerNotReady', {
+          round: getCombineReadyRound(targetActor),
+        }));
+      }
+
+      await rollCombineTimer(targetActor);
     }
 
     break;

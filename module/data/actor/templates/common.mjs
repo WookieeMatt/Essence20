@@ -39,7 +39,7 @@ export function makeMovementFields(init=0) {
   });
 }
 
-export function makeSkillFields(essence, canBeInitiative=false, init='d20') {
+export function makeSkillFields(essence, canBeInitiative=false, init='d20', isChosen=false) {
   const schema = {
     canBeInitiative: makeBool(canBeInitiative),
     canCritD2: makeBool(false),
@@ -54,7 +54,7 @@ export function makeSkillFields(essence, canBeInitiative=false, init='d20') {
     // to show on NPC-like sheets - replaces the old auto-detected "does this deviate from
     // default" heuristic entirely, see base-actor-sheet.mjs#_prepareChosenNpcSkills. Unused by
     // PCs (always shown), same as `essences` above being unused by non-Zord/MFZ types.
-    isChosen: makeBool(false),
+    isChosen: makeBool(isChosen),
     isSpecialized: makeBool(false),
     modifier: makeInt(0),
     shift: makeStrWithChoices(Object.keys(E20.skillShifts), init),
@@ -104,6 +104,11 @@ export const common = () => ({
   actors: new fields.ObjectField({}),
   color: new fields.ColorField({initial: '#b5b1b1'}),
   conditioning: makeInt(0),
+  // Whether Conditioning shows on the sheet, ticked in the Skill Picker beside its value - the
+  // same isChosen shape every skill there uses. On by default: unlike a skill, Conditioning always
+  // carries a real value (3 on a Zord, per its baseline stat block), so there's something worth
+  // showing from the moment the actor exists. PCs ignore this - pc-skills.hbs always shows theirs.
+  showConditioning: makeBool(true),
   energon: new fields.SchemaField({
     dark: new fields.SchemaField({
       value: makeInt(0),

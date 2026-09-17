@@ -99,4 +99,18 @@
   <input type="checkbox" name="system.isSpecialized" {{checked system.isSpecialized}} />
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Is Ram (a Vehicle's own inherent Ram attack - see weapon-effect.mjs's own doc comment) --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponEffectIsRam'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="checkbox" name="system.isRam" {{checked system.isRam}} />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Is Flyby (a Vehicle's own inherent Flyby attack - see weapon-effect.mjs's own doc comment) --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponEffectIsFlyby'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="checkbox" name="system.isFlyby" {{checked system.isFlyby}} />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 </section>

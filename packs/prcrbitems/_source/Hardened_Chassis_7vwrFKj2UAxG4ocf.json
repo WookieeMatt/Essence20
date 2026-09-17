@@ -38,7 +38,7 @@
           "priority": null
         },
         {
-          "key": "system.defenses.toughness.value",
+          "key": "system.defenses.toughness.bonus",
           "mode": 2,
           "value": "2",
           "priority": null

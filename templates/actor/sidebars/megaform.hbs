@@ -3,15 +3,28 @@
   <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
 
   <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-resources">
-    <label class="sliced-border__label"><i class="fas fa-heart"></i> Resources</label>
-    {{!-- Megaform's health field is a plain number, not a {value, max} pair like every other
-         type, and was never exposed in the AppV1 sheet either - leaving it out here rather
-         than showing a mismatched, non-functional health input. --}}
+    <a class="sliced-border__label sliced-border__label--clickable" data-action="editHealth" data-tooltip="{{localize 'E20.StatEditorHealthTooltip'}}"><i class="fas fa-heart"></i> Resources <i class="fas fa-gear sliced-border__label-edit-icon"></i></a>
+    {{!-- RAW (p.142) never pools a Megaform's Health into one number, and a printed stat block
+         never shows a max either - just each linked component's own current Health in a single
+         line (e.g. "16/12/9/8"). system.health.value/max is still a real, accurate live-computed
+         sum (Essence20Actor#_prepareMegaformData) - Foundry's own token HP bar reads it directly
+         (system.json's primaryTokenAttribute) - it's just not shown here, where a single blended
+         number would misread as a real pooled Health this actor doesn't have. --}}
+    <div>
+      <label>{{localize 'E20.ActorHealth'}}</label>
+      <span class="essence20-sidebar-participant-health-values">
+        {{#each system.participantHealth}}{{#unless @first}}<span class="essence20-sidebar-participant-health-sep">/</span>{{/unless}}<span title="{{this.name}}">{{this.value}}</span>{{/each}}
+      </span>
+    </div>
+    {{!-- Same treatment as Health above - Stun isn't pooled either (Essence20Actor#
+         _prepareMegaformData's identical comment on system.stun.value), so this shows each
+         linked component's own current Stun in the same slash-separated line instead of one
+         blended number. --}}
     <div>
       <label>{{localize 'E20.ActorStun'}}</label>
-      <input class="two-digit-input no-lock" type="number" name="system.stun.value" value="{{system.stun.value}}" min="0" step="1" />
-      <span>/</span>
-      <input class="two-digit-input no-unlock" type="number" value="{{system.health.value}}" disabled/>
+      <span class="essence20-sidebar-participant-health-values">
+        {{#each system.participantStun}}{{#unless @first}}<span class="essence20-sidebar-participant-health-sep">/</span>{{/unless}}<span title="{{this.name}}">{{this.value}}</span>{{/each}}
+      </span>
     </div>
   </div>
   <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-special">
@@ -23,10 +36,10 @@
       <select name="system.initiative.skill">
         {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
       </select>
-      {{!-- Read-only: the shift die is set on the skill itself, not editable from here --}}
-      <input class="two-digit-input no-unlock" type="text"
-        value="{{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}"
-        disabled data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}" />
+      {{!-- Display only: the shift die is set on the skill itself, not editable from here --}}
+      <span data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}">
+        {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
+      </span>
     </div>
   </div>
   {{> "systems/essence20/templates/actor/parts/misc/sidebar-speeds.hbs"}}

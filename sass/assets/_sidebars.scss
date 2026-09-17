@@ -1,6 +1,11 @@
 @use "../variables" as v;
 
-.essence20.actor .window-content:has(> .essence20-sidebar) {
+// :not(.minimized, .minimizing, .maximizing) matters here, not just cosmetically - this
+// selector (.essence20.actor .window-content:has(...), specificity 0-4-0) otherwise beats
+// Foundry core's own .application.minimized .window-content { display: none; } (0-3-0), so the
+// grid layout kept winning and the sheet's full content stayed visible (clipped mid-row by the
+// collapsed window frame) instead of actually hiding when minimized/minimizing/maximizing.
+.essence20.actor:not(.minimized, .minimizing, .maximizing) .window-content:has(> .essence20-sidebar) {
   display: grid;
   grid-template-columns: minmax(220px, 260px) 1fr;
   grid-template-rows: auto auto 1fr;
@@ -124,6 +129,16 @@
   flex: 0 0 auto;
 }
 
+/* A computed, never-editable value shown next to an editable one (Health's .max, Stun's Health
+   cap) - plain text rather than a disabled input, so it doesn't read as a field you can click
+   into. Keeps .two-digit-input's own 40px footprint so the numbers still line up in a column with
+   the editable boxes stacked above/below them. Colour and flex sizing come from the panel's
+   generic `> span` rule above. */
+.essence20-sidebar .essence20-sidebar-panel .sidebar-readout {
+  min-width: 40px;
+  text-align: center;
+}
+
 .essence20-sidebar .essence20-sidebar-trait-row {
   display: flex;
   flex-direction: column;
@@ -145,6 +160,20 @@
   color: var(--theme-muted-text);
   white-space: normal;
   word-break: break-word;
+}
+
+// Megaform's own per-participant Health (Resources panel) - each linked Zord/component's current
+// Health inline, slash-separated, matching the compact "16/12/9/8" a printed stat block uses
+// instead of the single label+value row every other sidebar stat uses.
+.essence20-sidebar .essence20-sidebar-participant-health-values {
+  color: var(--theme-muted-text);
+  flex: 0 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-participant-health-sep {
+  color: var(--theme-muted-text);
+  opacity: 0.6;
+  margin: 0 2px;
 }
 
 .essence20-sidebar .stats-container {
@@ -189,6 +218,48 @@
 
 .essence20-sidebar .essence20-sidebar-initiative i {
   font-size: 0.85em;
+}
+
+/* Checkboxes in a sidebar panel row (the Vehicle's "Crashed" toggle) rendered oblong, and changed
+   shape when ticked. Foundry draws these with appearance:none and paints the visible box from a
+   ::before pseudo - but only the CHECKED state gives that pseudo `display: block; position:
+   absolute; inset: 0`, so it fills the control at its full square size. Unchecked it stays
+   `display: inline`, where width/height don't apply at all, so the box renders at the Font Awesome
+   glyph's own natural 17.5x21 - oblong, and a different size from the checked state.
+
+   Sizing the input alone can't fix this, because what's painted is the inline pseudo rather than
+   the input itself - which is also why getComputedStyle reported a tidy 20px (the specified value)
+   while devtools showed the real 17.5x21 layout box. Giving the pseudo the checked state's own
+   block/absolute treatment in BOTH states makes the painted box match the control. --checkbox-size
+   is Foundry's own variable, which also lines this up with the 20px numeric inputs above it. */
+.essence20-sidebar .essence20-sidebar-panel input[type="checkbox"] {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--checkbox-size, 20px);
+  height: var(--checkbox-size, 20px);
+  font-size: var(--checkbox-size, 20px);
+  line-height: 1;
+}
+
+.essence20-sidebar .essence20-sidebar-panel input[type="checkbox"]::before {
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+/* The Initiative row borrows .essence20-sidebar-action-button purely for its flex layout - unlike
+   its siblings (Warrior Mode, Mega-Weapon, Transform, Morph) the row itself isn't a button: the
+   only clickable thing in it is the d20 icon, with a skill picker and a read-only shift die beside
+   it. Drop the button chrome so it reads as a row like the Speeds/Defenses panels below, rather
+   than a control the whole width of which looks pressable. Hover is reset too, since the row-wide
+   highlight implied the same thing. */
+.essence20-sidebar .essence20-sidebar-action-button.essence20-sidebar-initiative,
+.essence20-sidebar .essence20-sidebar-action-button.essence20-sidebar-initiative:hover {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  cursor: default;
 }
 
 .essence20-sidebar .essence20-sidebar-action-button select {

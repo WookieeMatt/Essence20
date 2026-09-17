@@ -1,0 +1,22 @@
+{
+  "name": "Vehicle",
+  "sorting": "a",
+  "folder": "4OZuiimal9n8FFOa",
+  "type": "Item",
+  "_id": "iDuTz2RLUFOSEkHp",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1789440000000,
+    "modifiedTime": 1789440000000,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!iDuTz2RLUFOSEkHp"
+}

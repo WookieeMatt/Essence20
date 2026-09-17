@@ -1,0 +1,10 @@
+<div>
+  <label>{{localize 'E20.ActorHealth'}}</label>
+  <input class="two-digit-input no-lock" type="number" name="system.health.value" value="{{system.health.value}}" min="0" step="1" />
+  <span>/</span>
+  {{!-- .max is always computed now (Essence20Actor#_prepareHealth runs for every actor type) and
+       editing happens exclusively through the Resources header's own gear icon (Stat Editor
+       dialog), so this is plain text rather than a disabled input - a box that looks editable but
+       isn't just invites the click. --}}
+  <span class="sidebar-readout" data-tooltip="{{system.health.string}}">{{system.health.max}}</span>
+</div>

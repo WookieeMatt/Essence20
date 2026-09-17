@@ -696,6 +696,84 @@ describe("onApplyDamage", () => {
     });
   });
 
+  describe("Defeat of a Vehicle / Recall for Repairs dispatch", () => {
+    function makeVehicleTarget({ type = 'vehicle', health = 0 } = {}) {
+      const target = makeTarget({ health });
+      target.type = type;
+      target.system.skills = { brawn: { shift: 'd6', modifier: 0 } };
+      target.system.actors = {};
+      target.toggleStatusEffect = jest.fn();
+      target.getActiveTokens = jest.fn(() => []);
+      return target;
+    }
+
+    let originalRoll;
+    beforeEach(() => {
+      originalRoll = global.Roll;
+      global.Roll = class {
+        async evaluate() {
+          this.total = 20; // beats any DIF this subsystem rolls against by default
+          return this;
+        }
+      };
+    });
+    afterEach(() => {
+      global.Roll = originalRoll;
+    });
+
+    test("routes a Vehicle's own 0-Health transition to the crash/explode subsystem", async () => {
+      const target = makeVehicleTarget({ health: 5 });
+      fromUuid.mockResolvedValue(target);
+
+      await onApplyDamage(makeMessage(), makeButton({ damage: '5', damageType: 'blunt' }));
+
+      expect(target.toggleStatusEffect).toHaveBeenCalledWith('defeated', { active: true });
+      expect(target.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.crashed': true }));
+    });
+
+    test("routes a Zord's own 0-Health transition to Recall for Repairs instead", async () => {
+      const target = makeVehicleTarget({ type: 'zord', health: 5 });
+      fromUuid.mockResolvedValue(target);
+
+      await onApplyDamage(makeMessage(), makeButton({ damage: '5', damageType: 'blunt' }));
+
+      expect(target.toggleStatusEffect).toHaveBeenCalledWith('prone', { active: true });
+    });
+
+    test("doesn't trigger for a non-Vehicle/Zord target", async () => {
+      const target = makeTarget({ health: 5 });
+      fromUuid.mockResolvedValue(target);
+
+      await onApplyDamage(makeMessage(), makeButton({ damage: '5', damageType: 'blunt' }));
+
+      expect(target.toggleStatusEffect).toBeUndefined();
+    });
+
+    test("doesn't trigger on a Stun hit, which never reduces Health", async () => {
+      const target = makeVehicleTarget({ health: 5 });
+      target.system.stun = { value: 0 };
+      fromUuid.mockResolvedValue(target);
+
+      await onApplyDamage(makeMessage(), makeButton({ damage: '5', damageType: 'stun' }));
+
+      // applyDamage's own pre-existing Stun branch legitimately toggles Defeated once
+      // accumulated Stun reaches the target's remaining Health - unrelated to this dispatch,
+      // which is what's actually under test here (it never runs the crash/explode subsystem).
+      expect(target.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.crashed': true }));
+      expect(target.toggleStatusEffect).not.toHaveBeenCalledWith('prone', { active: true });
+    });
+
+    test("doesn't re-trigger against an already-Defeated Vehicle", async () => {
+      const target = makeVehicleTarget({ health: 0 });
+      target.statuses = new Set(['defeated']);
+      fromUuid.mockResolvedValue(target);
+
+      await onApplyDamage(makeMessage(), makeButton({ damage: '5', damageType: 'blunt' }));
+
+      expect(target.toggleStatusEffect).not.toHaveBeenCalled();
+    });
+  });
+
   describe("Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99) - Resistance-after-hit dispatch", () => {
     const TOUGH_ENOUGH_ID = "Compendium.essence20.gi_joe_crb.Item.RoIa80w6EAZR0uFP";
 

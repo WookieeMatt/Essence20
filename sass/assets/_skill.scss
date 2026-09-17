@@ -271,11 +271,14 @@
      Reset back to the ambient size; the extra .npc-skill-buttons ancestor in this selector
      out-specifies ".essence20 .rollable" so this wins regardless of source order. */
   font-size: 1em;
+}
 
-  &:hover {
-    color: var(--theme-accent);
-    border-color: var(--theme-accent);
-  }
+/* Hover affordance scoped to the anchors specifically - Conditioning renders as a static <span>
+   sharing the same pill box (it has no shift die and nothing to roll), and shouldn't light up as
+   though it were clickable. */
+.essence20 .npc-skill-buttons a.npc-skill-button:hover {
+  color: var(--theme-accent);
+  border-color: var(--theme-accent);
 }
 
 .essence20 .skillscontainer {

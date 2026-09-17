@@ -46,7 +46,16 @@
            same as the skill shifts. --}}
       {{#if (eq group.essence 'strength')}}
       <div class="skill-picker-row skill-picker-conditioning">
+        {{!-- Same label-is-the-checkbox shape as the skills above: PCs always show Conditioning
+             (pc-skills.hbs), every other type picks whether it appears on the sheet. --}}
+        {{#if @root.isPc}}
         <label>{{localize 'E20.ActorConditioning'}}</label>
+        {{else}}
+        <label class="checkbox">
+          <input type="checkbox" name="system.showConditioning" {{checked @root.showConditioning}} data-dtype="Boolean" />
+          {{localize 'E20.ActorConditioning'}}
+        </label>
+        {{/if}}
         <input type="number" name="system.conditioning" value="{{@root.conditioning}}" min="0" step="1" />
       </div>
       {{/if}}

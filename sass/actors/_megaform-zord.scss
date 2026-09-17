@@ -24,3 +24,46 @@
   max-width: fit-content;
   flex-grow: 0;
 }
+
+// The card itself is no longer clickable - opening the attached actor's sheet is now the explicit
+// info button in its .item-controls (vehicle-handler.mjs's onSystemActorOpen), so the card gets no
+// pointer cursor and its inputs keep their own native ones.
+
+/* Health/Stun rows. Previously bare text + input ("Health: [0] / 1"), which left the two inputs
+   starting at whatever x the differing label widths happened to push them to, and gave the rows no
+   consistent vertical rhythm. A shared label column lines the inputs up with each other. */
+.essence20 .systemActors .attached-actor-stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.essence20 .systemActors .attached-actor-stat-label {
+  flex: 0 0 auto;
+  min-width: 52px;
+}
+
+.essence20 .systemActors .attached-actor-stat-max {
+  flex: 0 0 auto;
+  opacity: 0.85;
+}
+
+/* .e20-border-accent chamfers this card's bottom-right corner with a 22px clip-path diagonal
+   (_tabs.scss), and clip-path clips CHILD CONTENT, not just the border - so the vehicle-role
+   select, being the last full-width element in the card, had its bottom-right corner (the dropdown
+   arrow end) sliced off by that diagonal. Geometrically a child's bottom-right corner is inside the
+   cut whenever it sits within 16px of the card's bottom edge, which the default 6px padding left it
+   well inside. The extra bottom padding lifts the last row clear of the chamfer.
+
+   Not an overflow problem: the select's natural width is ~100px in a ~192px card, so capping its
+   width never had anything to do with it. max-width is kept only so a long role label can't push
+   the card wider. */
+.essence20 .systemActors {
+  padding-bottom: 18px;
+}
+
+.essence20 .systemActors .vehicle-role {
+  max-width: 100%;
+  box-sizing: border-box;
+}

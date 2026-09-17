@@ -218,6 +218,53 @@ export const migrateActorData = async function(actor, compendiumActor) {
     }
   }
 
+  /* Re-decompose an existing Zord's Defenses and Health (zord-base.mjs).
+     Those fields used to store the baseline Zord stat block's own PRINTED totals (PR CRB p.134:
+     "HEALTH 6 ... TOUGHNESS 17 (1 Plating Armor) | EVASION 14") as the `base` component, but
+     _prepareDefenses/_prepareHealth then add the Essence and Conditioning that those printed
+     numbers already include - so a Zord actually rendered at Toughness 23 / Evasion 18, and its
+     Health max came out as just its Conditioning (3) while its value stayed 6, displaying "6 / 3".
+     The schema defaults now decompose properly (base 10 - the same universal base every other
+     actor type and Megaform's own derivation already use - plus the Plating Armor and chassis
+     Health as their own components), but schema defaults only ever apply to NEWLY created actors,
+     so existing Zords keep the old stored numbers until this runs.
+
+     Matched on the exact pre-fix default values rather than overwritten wholesale, so a Zord whose
+     GM has already hand-tuned these is left alone and re-running is a no-op (once a field is
+     corrected it no longer matches, so this can only ever fire once per field per actor).
+
+     Deliberately NOT version-gated, unlike most one-time seeds in this file. system.json ships
+     `"version": "This is auto replaced"` (substituted at release), and migrateWorld() stores
+     game.system.version into systemMigrationVersion verbatim - so any world that has ever run a
+     migration from a dev/unsubstituted build has that literal string recorded, and
+     isNewerVersion(<any semver>, "This is auto replaced") is false. A version gate would silently
+     never fire for those worlds. The value-matching above already provides the run-once property a
+     gate would, without depending on a parseable stored version.
+
+     Megaform is excluded on purpose - it shares zord-base.mjs but _prepareMegaformData() zeroes
+     and recomputes all of these from its participants every derivation, so its stored values never
+     reach the sheet. */
+  if (actor.type == 'zord') {
+    const toughness = actor.system.defenses?.toughness;
+    const evasion = actor.system.defenses?.evasion;
+
+    if (toughness?.base === 17) {
+      updateData['system.defenses.toughness.base'] = 10;
+      // The "(1 Plating Armor)" half of RAW's printed 17, moved out of the base into the armor
+      // component _prepareDefenses already adds separately.
+      updateData['system.defenses.toughness.armor'] = (toughness.armor ?? 0) + 1;
+    }
+
+    if (evasion?.base === 14) {
+      updateData['system.defenses.evasion.base'] = 10;
+    }
+
+    // 3 chassis Health + the baseline Zord's own Conditioning +3 = RAW's printed Health 6.
+    if (actor.system.health?.origin === 0) {
+      updateData['system.health.origin'] = 3;
+    }
+  }
+
   // Migrate Skills
   if (actor.system.skills.strength) {
     const skillsForEssences = actor.system.skills;

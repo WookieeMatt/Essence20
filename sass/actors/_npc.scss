@@ -76,7 +76,31 @@
   width: 100%;
 }
 
+/* Firepoint Descriptions - a sliced-border panel (components/_sliced_border.scss) like the
+   header/sidebar fields use, sized to fill this tab rather than the component's own default
+   fit-content sizing (built for small single-line header fields, not a full editor box).
+   The section.tab this sits in is itself the scrollable element (overflow-y: auto,
+   actors/_tabs.scss) with no padding-top of its own - other sliced-border usages avoid this
+   because they sit inside a container that already has some (the sheet header, the sidebar's
+   own padding), but this is the first element in its tab, flush against that scroll boundary.
+   The label floats HALF above the box's own top edge (.sliced-border__label's
+   translate(-50%, -50%)), so with no clearance there it was getting clipped by the scroll
+   container's edge instead of overflowing visibly above the box like every other sliced-border
+   label does. margin-top gives it room to float clear of that edge. */
+.essence20 .sliced-border.firepoints {
+  width: 100%;
+  height: 200px;
+  max-height: 200px;
+  margin-top: 12px;
+}
+
 .essence20 .firepoints-input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: var(--theme-text-color);
+  font-family: inherit;
+  font-size: inherit;
   border: none;
   outline: none;
 
@@ -85,11 +109,6 @@
   box-shadow: none;
 
   resize: none;
-}
-
-.essence20 .stats-container.firepoints {
-  max-height: 60px;
-  overflow: hidden;
 }
 
 .essence20 .npc-skills {

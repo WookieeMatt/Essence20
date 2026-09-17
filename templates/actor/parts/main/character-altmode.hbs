@@ -3,4 +3,9 @@
   {{> "systems/essence20/templates/actor/parts/items/altMode/container.hbs"}}
   {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
   {{> "systems/essence20/templates/actor/parts/items/upgrade/container.hbs" items=@root.upgrades}}
+  {{!-- Megaform Traits (Core Body, Move, Layered Systems, ...) - a Transformers Combiner's own
+       playerCharacter components hold these directly (unlike a Power Rangers Megazord's Zords,
+       which get this same container on their own sheet via zord-common.hbs), so this is the only
+       place a Combiner participant can see or add them. --}}
+  {{> "systems/essence20/templates/actor/parts/items/megaformTrait/container.hbs"}}
 </section>

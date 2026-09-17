@@ -14,7 +14,7 @@
   },
   "effects": [
     {
-      "name": "New Effect",
+      "name": "Light Chassis",
       "img": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq",
       "duration": {
@@ -56,6 +56,182 @@
         "exportSource": null
       },
       "_key": "!items.effects!rVW7mvnV4MbGuxoq.V0LBMG9yDPFA6Cyq"
+    },
+    {
+      "name": "Light Chassis (Aerial Movement)",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "5HVTDZa9aT5ZmZ6T",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.aerial.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!rVW7mvnV4MbGuxoq.5HVTDZa9aT5ZmZ6T"
+    },
+    {
+      "name": "Light Chassis (Climb Movement)",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "2CkKD77Sj4VCZ0vC",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.climb.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!rVW7mvnV4MbGuxoq.2CkKD77Sj4VCZ0vC"
+    },
+    {
+      "name": "Light Chassis (Ground Movement)",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "WaY8UttXm0sMVCg9",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!rVW7mvnV4MbGuxoq.WaY8UttXm0sMVCg9"
+    },
+    {
+      "name": "Light Chassis (Swim Movement)",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "Gd8xfktobBfanGMl",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.swim.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!rVW7mvnV4MbGuxoq.Gd8xfktobBfanGMl"
     }
   ],
   "sort": 0,

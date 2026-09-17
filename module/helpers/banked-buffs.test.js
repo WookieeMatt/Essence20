@@ -2043,6 +2043,46 @@ describe("Mark Target (Scout, 2nd level, p.84)", () => {
   });
 });
 
+describe("Relic Key (PR CRB, Zord Feature, p.140) - Edge on any one roll in the scene", () => {
+  const RELIC_KEY_ID = "Compendium.essence20.pr_crb.Item.uSlClAv3oJjf54pa";
+
+  function makeFeatureItem(sourceId) {
+    return { type: 'feature', name: 'Test Feature', flags: { core: { sourceId } } };
+  }
+
+  // actorHasZordFeature (helpers/zord-features.mjs) looks the Feature up via actor.items, unlike
+  // actorHasPerk's callers elsewhere in this file which only need item.parent - so the item has
+  // to actually be IN the actor's own items array here, not just point back at it.
+  function makeZordActor(item) {
+    const actor = { ...makeActor(), type: 'zord', items: [item] };
+    item.parent = actor;
+    return actor;
+  }
+
+  describe("canUsePerk", () => {
+    test("true for a Zord holding Relic Key, not yet declared - the Use button works for a Feature item, not just Perks", () => {
+      const item = makeFeatureItem(RELIC_KEY_ID);
+      makeZordActor(item);
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("false for an ordinary non-Relic-Key Feature item", () => {
+      const item = makeFeatureItem('Compendium.essence20.pr_crb.Item.someOtherFeature');
+      makeZordActor(item);
+      expect(canUsePerk(item)).toBe(false);
+    });
+  });
+
+  test("onPerkUse declares the Edge grant", async () => {
+    const item = makeFeatureItem(RELIC_KEY_ID);
+    const actor = makeZordActor(item);
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'relicKeyEdgeActive', true);
+  });
+});
+
 describe("Timely Teammate (Ferocious Fighters, Tiger Force General Perk, p.39)", () => {
   const TIMELY_TEAMMATE_ID = "Compendium.essence20.ferocious_fighters.Item.yrhhCOXpS8Mx1R0C";
 

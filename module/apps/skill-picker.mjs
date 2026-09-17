@@ -85,6 +85,8 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
     context.config = CONFIG.E20;
     context.isPc = this._isPc;
     context.conditioning = system.conditioning;
+    // Drives the Conditioning row's own checkbox, the same way each skill's isChosen does above.
+    context.showConditioning = system.showConditioning === true;
     context.essenceSpend = computeEssenceSpend(this._actor);
     // Only PCs have a per-Essence spend budget to show/enforce at all (see
     // getEssenceOverspend's own doc comment) - undefined for every other actor type, which the

@@ -58,6 +58,10 @@ export function onManageSelectTrait(event, owner, target=null) {
     options.choices = CONFIG.E20.originSkills;
     options.valueKey = null;
     break;
+  case "vehicle":
+    options.choices = CONFIG.E20.vehicleTraits;
+    options.valueKey = null;
+    break;
   case "weapon":
     options.choices = CONFIG.E20.weaponTraits;
     options.valueKey = null;

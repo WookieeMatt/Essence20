@@ -127,6 +127,13 @@ E20.weaponTraits = {
   injection: "E20.WeaponTraitInjection",
   intimidating: "E20.WeaponTraitIntimidating",
   laser: "E20.WeaponTraitLaser",
+  // Linked (GI Joe CRB, Vehicle Trait, p.173): "Linked weapons gain an Edge on attacks." A
+  // per-weapon trait, not just a whole-Vehicle one (RAW's own example stat blocks list "Linked"
+  // directly in individual weapons' own Traits, e.g. the Dragonfly's "Laser-Guided 160MM Cannon
+  // Pod... Traits: Ballistic, Computerized, Linked, Reload") - same shape 'computerized' already
+  // has here, appearing on both this weapon-level enum and E20.vehicleTraits as a separate,
+  // whole-vehicle concept.
+  linked: "E20.WeaponTraitLinked",
   maneuver: "E20.WeaponTraitManeuver",
   marked: "E20.WeaponTraitMarked",
   martialArts: "E20.WeaponTraitMartialArts",
@@ -1029,6 +1036,7 @@ preLocalize("powerTypes");
 E20.upgradeTypes = {
   armor: "E20.UpgradeTypeArmor",
   drone: "E20.UpgradeTypeDrone",
+  vehicle: "E20.UpgradeTypeVehicle",
   weapon: "E20.UpgradeTypeWeapon",
 };
 preLocalize("upgradeTypes");
@@ -1126,14 +1134,40 @@ E20.megaformSubtypes = {
 preLocalize("megaformSubtypes");
 
 // Megaform Trait options a Zord with the Combiner Zord Feature can contribute when it
-// joins a Megaform.
+// joins a Megaform. The base six (coreAbility through move) are from the Power Rangers Core
+// Rulebook (p.140); accurateCombiner/defender/detachable/layeredSystems/resistant were added by
+// Across the Stars (p.104-105) and assaultWeapon/compensation/grounding/tenaciousBonds by A Jump
+// Through Time (p.84) - both sourcebooks call these "accessible to all Power Rangers Roleplaying
+// Game Zords," not scoped to that book's own examples, so they live in this same shared enum
+// rather than a book-specific one. "Multi-Megaform" (A Jump Through Time, p.83) is deliberately
+// NOT a member of this enum - RAW frames it as its own Zord Feature (like Combiner itself) that
+// grants a Zord a choice of three OTHER Megaform Traits to swap between across different
+// combination events, not a trait in its own right; since swapping which megaformTrait item is
+// embedded on a Zord actor is already fully supported by the existing add/remove item UI, it
+// needs no new enum entry or code - just a reference `feature` item documenting the ability,
+// the same non-mechanical role Combiner's own item already plays.
 E20.megaformTraitTypes = {
+  accurateCombiner: "E20.MegaformTraitAccurateCombiner",
+  assaultWeapon: "E20.MegaformTraitAssaultWeapon",
+  commander: "E20.MegaformTraitCommander",
+  compensation: "E20.MegaformTraitCompensation",
   coreAbility: "E20.MegaformTraitCoreAbility",
   coreBody: "E20.MegaformTraitCoreBody",
   coreDefenses: "E20.MegaformTraitCoreDefenses",
+  defender: "E20.MegaformTraitDefender",
+  detachable: "E20.MegaformTraitDetachable",
+  enhancedInitiative: "E20.MegaformTraitEnhancedInitiative",
   enhancedMeleeAttack: "E20.MegaformTraitEnhancedMeleeAttack",
   enhancedRangedAttack: "E20.MegaformTraitEnhancedRangedAttack",
+  grounding: "E20.MegaformTraitGrounding",
+  layeredSystems: "E20.MegaformTraitLayeredSystems",
   move: "E20.MegaformTraitMove",
+  resistant: "E20.MegaformTraitResistant",
+  safeRelease: "E20.MegaformTraitSafeRelease",
+  skillExpertise: "E20.MegaformTraitSkillExpertise",
+  tenaciousBonds: "E20.MegaformTraitTenaciousBonds",
+  titanHardpoint: "E20.MegaformTraitTitanHardpoint",
+  universalReceptors: "E20.MegaformTraitUniversalReceptors",
 };
 preLocalize("megaformTraitTypes");
 
@@ -1407,12 +1441,21 @@ E20.vehicleRoles = {
 preLocalize("vehicleRoles");
 
 // Vehicle Traits
+// A handful of entries this list once carried had no attested source anywhere across the game
+// lines' own rulebooks (Combiner Core, Gridjump, Freight Carry, Instrument Array, Integrated
+// Storage, Landing Pattern, Self-Repair, Shielded, Hydro-Portation) - removed rather than kept as
+// unverifiable vestigial content. Aerospace and Zero-G are kept despite neither appearing as a
+// literal printed Trait either - both are real, well-attested combat-context concepts (GI Joe
+// CRB's own Aerospace Combat/Zero-G Combat rules) worth flagging on a Vehicle even without a
+// stat-block precedent for "Traits: Aerospace". ampibious/ranshackle were misspelled keys with
+// already-correct label strings - renamed to amphibious/ramshackle (confirmed unreferenced
+// anywhere outside this file before renaming, so no migration was needed).
 E20.vehicleTraits = {
   aerospace: "E20.VehicleTraitAerospace",
   ai: "E20.VehicleTraitAI",
   air: "E20.VehicleTraitAir",
   allTerrain: "E20.VehicleTraitAllTerrain",
-  ampibious: "E20.VehicleTraitAmphibious",
+  amphibious: "E20.VehicleTraitAmphibious",
   armoredCabin: "E20.VehicleTraitArmoredCabin",
   attackMode: "E20.VehicleTraitAttackMode",
   autopilot: "E20.VehicleTraitAutopilot",
@@ -1422,7 +1465,6 @@ E20.vehicleTraits = {
   battleStation: "E20.VehicleTraitBattleStation",
   beastOfBurden: "E20.VehicleTraitBeastOfBurden",
   bomber: "E20.VehicleTraitBomber",
-  combinerCore: "E20.VehicleTraitCombinerCore",
   computerized: "E20.VehicleTraitComputerized",
   convertible: "E20.VehicleTraitConvertible",
   deployable: "E20.VehicleTraitDeployable",
@@ -1433,17 +1475,11 @@ E20.vehicleTraits = {
   flyBy: "E20.VehicleTraitFlyBy",
   flyingPodium: "E20.VehicleTraitFlyingPodium",
   fragile: "E20.VehicleTraitFragile",
-  gridjump: "E20.VehicleTraitGridjump",
-  freightCarry: "E20.VehicleTraitFreightCarry",
   heavyWinch: "E20.VehicleTraitHeavyWinch",
   heavyWheels: "E20.VehicleTraitHeavyWheels",
   hissColumn: "E20.VehicleTraitHISSColumn",
   hover: "E20.VehicleTraitHover",
-  hydroPortation: "E20.VehicleTraitHydroPortation",
-  instrumentArray: "E20.VehicleTraitInstrumentArray",
-  integratedStorage: "E20.VehicleTraitIntegratedStorage",
   land: "E20.VehicleTraitLand",
-  landingPattern: "E20.VehicleTraitLandingPattern",
   largeObstacle: "E20.VehicleTraitLargeObstacle",
   linked: "E20.VehicleTraitLinked",
   multifrequencyCameras: "E20.VehicleTraitMultiFrequencyCameras",
@@ -1451,14 +1487,12 @@ E20.vehicleTraits = {
   prowlMode: "E20.VehicleTraitProwlMode",
   pythonPaint: "E20.VehicleTraitPythonPaint",
   ram: "E20.VehicleTraitRam",
-  ranshackle: "E20.VehicleTraitRamshackle",
+  ramshackle: "E20.VehicleTraitRamshackle",
   rapidDeploymentRamps: "E20.VehicleTraitRapidDeploymentRamps",
   responsive: "E20.VehicleTraitResponsive",
   rollCage: "E20.VehicleTraitRollCage",
   sea: "E20.VehicleTraitSea",
-  selfRepair: "E20.VehicleTraitSelfRepair",
   sensors: "E20.VehicleTraitSensors",
-  shielded: "E20.VehicleTraitShielded",
   sidecar: "E20.VehicleTraitSidecar",
   SixWheelDrive: "E20.VehicleTraitSixWheelDrive",
   takeOff: "E20.VehicleTraitTakeOff",
@@ -1474,6 +1508,12 @@ E20.vehicleTraits = {
   zeroG: "E20.VehicleTraitZeroG",
 };
 preLocalize("vehicleTraits");
+
+// E20.upgradeTraits (defined above, before Vehicle Traits exist yet) is augmented here rather
+// than merged in at its own declaration - preLocalize just registers the "upgradeTraits" config
+// key by name (harmless to have already run once above), so the actual localization pass, which
+// runs later at init, still sees every Vehicle Trait folded in by then.
+E20.upgradeTraits = {...E20.upgradeTraits, ...E20.vehicleTraits};
 
 /************************************************
  * Settings                                     *

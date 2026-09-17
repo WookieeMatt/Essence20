@@ -10,8 +10,15 @@
     <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
   </div>
 
-  {{#if @root.chosenSkills.length}}
+  {{#if (or @root.showConditioning @root.chosenSkills.length)}}
   <div class="npc-skill-buttons">
+    {{!-- Conditioning sits in the same run of pills as the skills (it's listed alongside them in
+         the stat blocks this panel mirrors), ticked on/off in the Skill Picker the same way each
+         skill's own isChosen box works. A span rather than an <a>, because unlike every skill here
+         Conditioning has no shift die and nothing to roll - it's a flat value feeding Health. --}}
+    {{#if @root.showConditioning}}
+    <span class="npc-skill-button">{{localize 'E20.ActorConditioning'}} {{@root.system.conditioning}}</span>
+    {{/if}}
     {{#each @root.chosenSkills as |entry|}}
     <a
       class="npc-skill-button rollable" data-action="rollable" data-roll-type="skill"

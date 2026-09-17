@@ -1,6 +1,20 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
+import { markUsedThisEncounter } from "../helpers/perks.mjs";
+
+// Detachable (Across the Stars, p.104): "the Combiner participant can remove itself... roll its
+// Initiative Skill Test for the following Combat round, and become a separate combatant...
+// [but] may not reattach in the same scene." The "leave the Megaform" half needs no new code at
+// all - it's the exact same removal onSystemActorsDelete already performs for any other reason a
+// GM might unlink an actor - so this only needs to flag that removal as a Detach (scoped to
+// "removed a Zord holding this trait from a Megaform while a combat is active," since that's the
+// only context RAW's "detach" action makes sense in) and, in drop-handler.mjs's own onDropActor,
+// refuse to re-add that same Zord to a Megaform while the flag is still set. "Incompatible with
+// the Core Body Megaform Trait" is a chargen-time build restriction rather than something with
+// runtime combat consequences (worst case a GM builds a Zord RAW wouldn't technically allow, not
+// a crash or an exploit) - left as a GM-adjudicated build rule, not enforced in code here.
+export const DETACHED_THIS_SCENE_FLAG = 'detachedFromMegaformThisScene';
 
 /**
  * Prepare Actors that are attached to other actors. system.actors is a single, type-agnostic
@@ -74,6 +88,18 @@ export async function onSystemActorsDelete(event, actorSheet) {
   // v14 logs a compatibility warning for and won't actually apply) paired with ForcedDeletion as
   // the value is what actually deletes it - see item-sheet.mjs's own _onObjectDelete.
   const updateString = `system.actors.${keyId}`;
+
+  // Detachable (Across the Stars, p.104) - see this file's own DETACHED_THIS_SCENE_FLAG comment
+  // above. Only meaningful for a Zord leaving a Megaform mid-combat; markUsedThisEncounter()
+  // already no-ops outside of combat on its own, so removing a roster mistake between sessions
+  // doesn't accidentally lock the Zord out later.
+  const removedActor = fromUuidSync(selectedActor.uuid);
+  if (
+    actor.type == 'megaform' && removedActor?.type == 'zord'
+    && removedActor.items.some(item => item.type == 'megaformTrait' && item.system.type == 'detachable')
+  ) {
+    await markUsedThisEncounter(removedActor, DETACHED_THIS_SCENE_FLAG);
+  }
 
   await actor.update({[updateString]: new foundry.data.operators.ForcedDeletion()});
   li.slideUp(200, () => actorSheet.render(false));
@@ -202,4 +228,80 @@ export async function onCrewNumberUpdate(event, actorSheet) {
     });
     actor.render();
   }
+}
+
+/**
+ * system-actors.hbs's per-attached-actor Health input (.attached-actor-health) writes to the
+ * COMPONENT's own system.health.value, never the parent Vehicle/Zord/Megaform sheet it's shown
+ * on - a Megaform in particular has no Health pool of its own (see megaform.mjs's own comment),
+ * it's purely a live readout of each linked component's real Health. The input previously had a
+ * broken, unresolvable name attribute (a literal "attachedActor.system.health" string, not a real
+ * document path), so editing it either no-op'd or silently wrote nowhere - this is the actual
+ * handler that input needed all along, resolved via its own data-system-Actors-uuid the same way
+ * onSystemActorsDelete already resolves the actor a click came from. No extra refresh logic is
+ * needed here: essence20.mjs's own updateActor hook already calls refreshMegaformsLinkedToActor()
+ * for any actor update, so every open Megaform sheet linking this component re-renders itself
+ * once the write below lands.
+ * @param {Event} event
+ * @param {ActorSheet} _actorSheet   Unused - kept for the same (event, actorSheet) signature every
+ *   other _activateCrewListeners-bound handler uses.
+ */
+export async function onAttachedActorHealthUpdate(event, _actorSheet) {
+  const componentUuid = event.currentTarget.dataset.systemActorsUuid;
+  if (!componentUuid) {
+    return;
+  }
+
+  const component = fromUuidSync(componentUuid);
+  if (!component) {
+    return;
+  }
+
+  const max = component.system.health.max;
+  const newValue = Math.min(Math.max(0, Number(event.currentTarget.value)), max);
+  await component.update({ 'system.health.value': newValue });
+}
+
+/**
+ * system-actors.hbs's per-attached-actor Stun input (.attached-actor-stun), same shape as
+ * onAttachedActorHealthUpdate above (writes to the COMPONENT's own system.stun.value, not the
+ * parent Vehicle/Zord/Megaform sheet it's shown on) - Stun has no max to clamp against (the main
+ * sheet's own Stun input has none either; it's compared against current Health, not capped).
+ * @param {Event} event
+ * @param {ActorSheet} _actorSheet   Unused - kept for the same (event, actorSheet) signature every
+ *   other _activateCrewListeners-bound handler uses.
+ */
+export async function onAttachedActorStunUpdate(event, _actorSheet) {
+  const componentUuid = event.currentTarget.dataset.systemActorsUuid;
+  if (!componentUuid) {
+    return;
+  }
+
+  const component = fromUuidSync(componentUuid);
+  if (!component) {
+    return;
+  }
+
+  const newValue = Math.max(0, Number(event.currentTarget.value));
+  await component.update({ 'system.stun.value': newValue });
+}
+
+/**
+ * Opens an attached actor's own sheet from a system-actors.hbs card (Vehicle/Zord crew, or a
+ * Megaform's Combiner Participants) - the card only ever exposes its Health/Stun/vehicle-role and
+ * a delete control otherwise, with no way to reach the actor itself short of finding it in the
+ * sidebar. Driven by the card's own info button, matching the one attached ITEMS already use
+ * (item-sheet.mjs's viewItem/_onObjectInfo, templates/item/parts/id-drop.hbs). This used to be a
+ * card-wide dblclick handler, which had no visible affordance and had to special-case every
+ * interactive child so it didn't fire while you were editing Health or picking a role.
+ * @param {HTMLElement} target   The clicked control, carrying the actor's uuid in data-uuid.
+ */
+export function onSystemActorOpen(target) {
+  const componentUuid = target?.dataset?.uuid;
+  if (!componentUuid) {
+    return;
+  }
+
+  const component = fromUuidSync(componentUuid);
+  component?.sheet.render(true);
 }
