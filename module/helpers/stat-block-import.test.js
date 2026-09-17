@@ -3,6 +3,8 @@ import { parseStatBlock } from "./stat-block-parser.mjs";
 import {
   applyCompendiumMatches,
   buildMatchLookup,
+  collectEffectContributions,
+  collectUncancellableEffects,
   actorToIr,
   createActorFromStatBlock,
   armorBonusFor,
@@ -298,6 +300,141 @@ describe("buildSimpleItems", () => {
     const [power] = buildSimpleItems({ powers: [{ name: 'Aura', text: 'x', usesPer: null }] });
     expect(power.system.usesPer).toBeUndefined();
     expect(power.system.usesInterval).toBeUndefined();
+  });
+});
+
+describe("collectEffectContributions", () => {
+  /** v13 shape, as the shipped pack _source JSON still stores it. */
+  const v13 = (key, value, mode = 2) => ({
+    disabled: false, transfer: true, changes: [{ key, mode, value: String(value) }],
+  });
+  /** v14 shape, after migration moves changes under system with a string type. */
+  const v14 = (key, value, type = 'add') => ({
+    disabled: false, transfer: true, system: { changes: [{ key, type, value: String(value) }] },
+  });
+  const withEffects = (name, ...effects) => ({ name, type: 'perk', effects });
+
+  test("totals an additive Health bonus in the v13 pack shape", () => {
+    // The observed case: matched "Never Back Down" is system.health.bonus add 2.
+    expect(collectEffectContributions([withEffects('Never Back Down', v13('system.health.bonus', 2))]).health)
+      .toBe(2);
+  });
+
+  test("reads the v14 shape too", () => {
+    expect(collectEffectContributions([withEffects('Ported', v14('system.health.bonus', 3))]).health).toBe(3);
+  });
+
+  test("counts Conditioning towards Health, since _prepareHealth sums it into max", () => {
+    expect(collectEffectContributions([withEffects('Tough', v13('system.conditioning', 1))]).health).toBe(1);
+  });
+
+  test("buckets Defense contributions by Defense, whichever field they target", () => {
+    const contributions = collectEffectContributions([
+      withEffects('Iron Heart', v13('system.defenses.toughness.bonus', 1), v13('system.defenses.evasion.bonus', 1)),
+      withEffects('Plating', v13('system.defenses.toughness.armor', 2)),
+    ]);
+    expect(contributions.defenses).toEqual({ toughness: 3, evasion: 1 });
+  });
+
+  test("buckets Movement contributions by movement type", () => {
+    expect(collectEffectContributions([withEffects('Zero-G', v13('system.movement.aerial.bonus', 60))]).movement)
+      .toEqual({ aerial: 60 });
+  });
+
+  test("ignores a disabled or non-transferring effect, which isn't applying anyway", () => {
+    const off = { disabled: true, transfer: true, changes: [{ key: 'system.health.bonus', mode: 2, value: '5' }] };
+    const noTransfer = { disabled: false, transfer: false, changes: [{ key: 'system.health.bonus', mode: 2, value: '5' }] };
+    expect(collectEffectContributions([withEffects('A', off, noTransfer)].flat()).health).toBe(0);
+  });
+
+  test("refuses to net a non-additive change and reports it instead", () => {
+    const contributions = collectEffectContributions([
+      withEffects('Override', v13('system.defenses.toughness.bonus', 4, 5)),
+    ]);
+    expect(contributions.defenses.toughness).toBeUndefined();
+    expect(contributions.unnetted).toEqual([
+      expect.objectContaining({ item: 'Override', key: 'system.defenses.toughness.bonus' }),
+    ]);
+  });
+
+  test("refuses to net a formula value it cannot evaluate yet", () => {
+    const contributions = collectEffectContributions([
+      withEffects('Scaling', v13('system.health.bonus', '@system.level')),
+    ]);
+    expect(contributions.health).toBe(0);
+    expect(contributions.unnetted).toHaveLength(1);
+  });
+
+  test("ignores effects that touch nothing the printed block shows", () => {
+    const contributions = collectEffectContributions([withEffects('Vision', v13('system.visionGrant.range', 30))]);
+    expect(contributions).toMatchObject({ defenses: {}, health: 0, movement: {}, unnetted: [] });
+  });
+
+  test("copes with items that have no effects at all", () => {
+    expect(collectEffectContributions([{ name: 'Bare', type: 'perk' }, null]))
+      .toMatchObject({ health: 0, unnetted: [] });
+    expect(collectEffectContributions(null)).toMatchObject({ health: 0 });
+  });
+});
+
+describe("collectUncancellableEffects", () => {
+  test("flags a skill shift, which cannot be cancelled arithmetically", () => {
+    const found = collectUncancellableEffects([{
+      name: 'Magna Defense Shell',
+      effects: [{ disabled: false, transfer: true, changes: [
+        { key: 'system.skills.athletics.shiftUp', mode: 2, value: '1' },
+        { key: 'system.health.bonus', mode: 2, value: '1' },
+      ] }],
+    }]);
+    expect(found).toEqual([
+      expect.objectContaining({ item: 'Magna Defense Shell', key: 'system.skills.athletics.shiftUp' }),
+    ]);
+  });
+
+  test("returns nothing when no skill shifts are involved", () => {
+    expect(collectUncancellableEffects([{ name: 'X', effects: [] }])).toEqual([]);
+  });
+});
+
+describe("buildActorData - netting Active Effects out of the residuals", () => {
+  /*
+   * The whole point: a matched Perk keeps its automation AND the sheet still shows the printed
+   * number. Without this the actor silently comes out stronger than the page.
+   */
+  const contributions = {
+    defenses: { toughness: 2 },
+    health: 2,
+    movement: { ground: 10 },
+  };
+
+  test("reduces the Defense residual by what the effect will add back", () => {
+    const plain = buildActorData(ir, {});
+    const netted = buildActorData(ir, { effectContributions: contributions });
+    expect(netted.system.defenses.toughness.bonus).toBe(plain.system.defenses.toughness.bonus - 2);
+  });
+
+  test("leaves Defenses no effect touches alone", () => {
+    const netted = buildActorData(ir, { effectContributions: contributions });
+    expect(netted.system.defenses.evasion).toEqual(buildActorData(ir, {}).system.defenses.evasion);
+  });
+
+  test("reduces Health origin so the derived max still matches the page", () => {
+    const netted = buildActorData(ir, { effectContributions: contributions });
+    // printed 8, conditioning 3 -> origin 5 normally; the +2 effect brings it to 3, so
+    // _prepareHealth's origin + conditioning + bonus = 3 + 3 + 2 = 8, the printed value.
+    expect(netted.system.health.origin).toBe(3);
+    expect(netted.system.health.origin + ir.conditioning + contributions.health).toBe(ir.health);
+  });
+
+  test("reduces a Movement base by the effect's own contribution", () => {
+    const netted = buildActorData(ir, { effectContributions: contributions });
+    expect(netted.system.movement.ground.base).toBe(ir.movement.ground - 10);
+  });
+
+  test("is a no-op when there are no contributions", () => {
+    // `system` only - the flag carries an importedAt timestamp that differs between two calls.
+    expect(buildActorData(ir, { effectContributions: null }).system)
+      .toEqual(buildActorData(ir, {}).system);
   });
 });
 

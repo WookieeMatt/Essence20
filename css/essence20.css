@@ -4761,6 +4761,13 @@ body.game .window-app {
   opacity: 0.7;
 }
 
+/* Reports that printed values were adjusted so a matched Perk's Active Effect lands on the page's
+   own number instead of overshooting it - reassurance, so styled quietly, unlike the caution. */
+.stat-block-importer-effect-netted {
+  margin: 0 0 0.25rem;
+  opacity: 0.8;
+}
+
 /* Options across the top, then a two-column before/after read-out, then the review list. The body
    is the only thing that scrolls so the Create button stays put - same shape as
    _stat-block-importer.scss, which this dialog is the sibling of. */

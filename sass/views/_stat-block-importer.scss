@@ -230,3 +230,10 @@
     opacity: 0.7;
   }
 }
+
+/* Reports that printed values were adjusted so a matched Perk's Active Effect lands on the page's
+   own number instead of overshooting it - reassurance, so styled quietly, unlike the caution. */
+.stat-block-importer-effect-netted {
+  margin: 0 0 v.$gap-sm;
+  opacity: 0.8;
+}

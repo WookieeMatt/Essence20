@@ -1,5 +1,9 @@
 import { applyThemeClass } from "../settings.js";
-import { createActorFromStatBlock } from "../helpers/stat-block-import.mjs";
+import {
+  applyCompendiumMatches, buildSimpleItems, collectEffectContributions,
+  collectUncancellableEffects,
+  createActorFromStatBlock,
+} from "../helpers/stat-block-import.mjs";
 import { parseStatBlock, splitStatBlocks } from "../helpers/stat-block-parser.mjs";
 import {
   buildMatchIndex, countEffectBearingMatches, countMatches, findMatches, folderForGameVersion,
@@ -267,12 +271,32 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
       ? game.i18n.format("E20.StatBlockImportMatchSummary", counts)
       : null;
 
-    // See helpers/stat-block-match.mjs#countEffectBearingMatches - a matched Perk's Active Effect
-    // can double-count a bonus the printed stat block already included in its own numbers.
-    const withEffects = countEffectBearingMatches(this._matches);
-    context.effectCaution = withEffects
-      ? game.i18n.format("E20.StatBlockImportEffectCaution", { count: withEffects })
-      : null;
+    // A matched Perk's Active Effect would otherwise double-count a bonus the printed block
+    // already included. The builder nets those out of the residuals (see
+    // helpers/stat-block-import.mjs#collectEffectContributions); this reports what it did, and
+    // names anything it could not cancel arithmetically.
+    context.effectCaution = null;
+    context.effectNetted = null;
+    if (countEffectBearingMatches(this._matches)) {
+      const { items } = await applyCompendiumMatches(buildSimpleItems(ir), this._matches);
+      const contributions = collectEffectContributions(items);
+      const nettedCount = Object.keys(contributions.defenses).length
+        + Object.keys(contributions.movement).length
+        + (contributions.health ? 1 : 0);
+
+      if (nettedCount) {
+        context.effectNetted = game.i18n.format("E20.StatBlockImportEffectNetted", { count: nettedCount });
+      }
+
+      const uncancellable = [
+        ...collectUncancellableEffects(items).map(entry => entry.item),
+        ...contributions.unnetted.map(entry => entry.item),
+      ];
+      if (uncancellable.length) {
+        context.effectCaution = game.i18n.format("E20.StatBlockImportEffectCaution",
+          { items: [...new Set(uncancellable)].join(', ') });
+      }
+    }
 
     context.errorCount = ir.diagnostics.filter(entry => entry.severity === 'error').length;
     context.diagnostics = ir.diagnostics.map(entry => ({

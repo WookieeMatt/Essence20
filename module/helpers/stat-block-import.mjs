@@ -89,6 +89,127 @@ export function armorBonusFor(ir, defense) {
 }
 
 /* ------------------------------------------------------------------ *
+ * Netting out Active Effects the printed block already accounts for   *
+ * ------------------------------------------------------------------ */
+
+/** `CONST.ACTIVE_EFFECT_MODES.ADD` - the v13 numeric mode still stored in the shipped packs. */
+const ADD_MODE = 2;
+
+/**
+ * An effect's changes, from wherever this Foundry version keeps them. v14 moved them to
+ * `effect.system.changes` with a string `type`; the shipped pack `_source` JSON is still the v13
+ * shape (`effect.changes` with a numeric `mode`), and a document may present either depending on
+ * whether migration has run on it. Both are read rather than assuming one.
+ */
+function effectChanges(effect) {
+  const changes = effect?.system?.changes ?? effect?.changes;
+  return Array.isArray(changes) ? changes : [];
+}
+
+/** Only plain additions can be arithmetically cancelled; see collectEffectContributions. */
+function isAdditive(change) {
+  return change?.type === 'add' || change?.mode === ADD_MODE;
+}
+
+const DEFENSE_CONTRIBUTION = /^system\.defenses\.(toughness|evasion|willpower|cleverness)\.(bonus|armor|shield|morphed)$/;
+const MOVEMENT_CONTRIBUTION = /^system\.movement\.(ground|aerial|swim|climb)\.(base|bonus|morphed)$/;
+
+/**
+ * How much the Active Effects on a set of Items will add to each derived total.
+ *
+ * **Why this exists.** A printed stat block's Defenses, Health and Movement already include that
+ * Threat's own Perks - the book did the arithmetic and printed the result. When the importer
+ * matches a Perk to a real compendium Item, that Item's Active Effect then applies its bonus a
+ * SECOND time, and the actor comes out stronger than the page. Observed live: a matched "Never
+ * Back Down" (`system.health.bonus add 2`) turned a printed Health of 4 into a derived 6.
+ *
+ * The fix is to subtract these contributions from the residual the builder writes, so the sheet
+ * lands on exactly the printed number *with* the automation attached. See buildActorData.
+ *
+ * Only **additive, numeric, currently-applying** changes can be cancelled this way:
+ *  - a non-additive change (override/upgrade/multiply) has no single number to subtract;
+ *  - a formula value (`@system.level`) is not known until the actor exists;
+ *  - a disabled or non-transferring effect is not applying in the first place;
+ *  - a skill `shiftUp` moves a die up a ladder rather than adding to a total, so cancelling it
+ *    would mean downshifting the printed die - a different operation, deliberately not attempted.
+ *
+ * Anything that cannot be cancelled is returned in `unnetted` so the importer can say so plainly
+ * rather than quietly producing a wrong number.
+ *
+ * @param {Object[]} items   Item creation data (post compendium substitution).
+ * @returns {{defenses: Object, health: Number, movement: Object, unnetted: Object[]}}
+ */
+export function collectEffectContributions(items) {
+  const contributions = { defenses: {}, health: 0, movement: {}, unnetted: [] };
+
+  for (const item of items ?? []) {
+    for (const effect of item?.effects ?? []) {
+      if (effect?.disabled || effect?.transfer === false) {
+        continue;
+      }
+
+      for (const change of effectChanges(effect)) {
+        const key = change?.key ?? '';
+        const value = Number(change?.value);
+        const nettable = isAdditive(change) && Number.isFinite(value);
+
+        const defense = key.match(DEFENSE_CONTRIBUTION);
+        const movement = key.match(MOVEMENT_CONTRIBUTION);
+        const isHealth = key === 'system.health.bonus' || key === 'system.health.origin'
+          // Conditioning feeds health.max too (see _prepareHealth), so it double-counts the same way.
+          || key === 'system.conditioning';
+
+        if (!defense && !movement && !isHealth) {
+          continue;
+        }
+
+        if (!nettable) {
+          contributions.unnetted.push({ item: item.name, key, reason: 'notAdditive' });
+          continue;
+        }
+
+        if (defense) {
+          contributions.defenses[defense[1]] = (contributions.defenses[defense[1]] ?? 0) + value;
+        } else if (movement) {
+          contributions.movement[movement[1]] = (contributions.movement[movement[1]] ?? 0) + value;
+        } else {
+          contributions.health += value;
+        }
+      }
+    }
+  }
+
+  return contributions;
+}
+
+/**
+ * Effects that change a stat the printed block shows but which cannot be cancelled arithmetically
+ * - principally skill shifts. Surfaced to the GM rather than silently mis-applied.
+ * @param {Object[]} items
+ * @returns {Object[]}
+ */
+export function collectUncancellableEffects(items) {
+  const found = [];
+
+  for (const item of items ?? []) {
+    for (const effect of item?.effects ?? []) {
+      if (effect?.disabled || effect?.transfer === false) {
+        continue;
+      }
+
+      for (const change of effectChanges(effect)) {
+        const key = change?.key ?? '';
+        if (/^system\.skills\.\w+\.(shift|shiftUp|shiftDown)$/.test(key)) {
+          found.push({ item: item.name, key, value: change.value });
+        }
+      }
+    }
+  }
+
+  return found;
+}
+
+/* ------------------------------------------------------------------ *
  * Actor creation data                                                 *
  * ------------------------------------------------------------------ */
 
@@ -151,7 +272,7 @@ function buildEssences(ir, isMachine) {
   return essences;
 }
 
-function buildDefenses(ir) {
+function buildDefenses(ir, contributions) {
   const defenses = {};
   for (const [name, printed] of Object.entries(ir.defenses ?? {})) {
     if (printed === null) {
@@ -159,23 +280,26 @@ function buildDefenses(ir) {
     }
 
     const armor = armorBonusFor(ir, name);
+    // Subtracting the Active Effects' own contribution here is what makes a matched Perk land on
+    // the printed number instead of overshooting it - see collectEffectContributions.
+    const effectBonus = contributions?.defenses?.[name] ?? 0;
     defenses[name] = {
       armor,
-      bonus: computeDefenseBonus(printed, ir.essences?.[DEFENSE_ESSENCES[name]], armor),
+      bonus: computeDefenseBonus(printed, ir.essences?.[DEFENSE_ESSENCES[name]], armor) - effectBonus,
     };
   }
 
   return defenses;
 }
 
-function buildMovement(ir) {
+function buildMovement(ir, contributions) {
   const movement = {};
   for (const [type, printed] of Object.entries(ir.movement ?? {})) {
     if (printed === null) {
       continue;
     }
 
-    movement[type] = { base: printed };
+    movement[type] = { base: printed - (contributions?.movement?.[type] ?? 0) };
   }
 
   return movement;
@@ -193,21 +317,30 @@ function buildMovement(ir) {
  * @param {String} [options.type]    Actor type to create (npc today; vehicle/zord are Phase 8).
  * @param {String} [options.raw]     The original pasted text, stored for re-parsing later.
  * @param {String} [options.folder]  Folder id to create the actor in.
+ * @param {Object} [options.effectContributions]  From collectEffectContributions - subtracted from
+ *   the residuals so a matched Perk's Active Effect doesn't double-count what the page already
+ *   included.
  * @returns {Object}
  */
-export function buildActorData(ir, { type = 'npc', raw = null, folder = null } = {}) {
+export function buildActorData(ir, {
+  type = 'npc', raw = null, folder = null, effectContributions = null,
+} = {}) {
   const tokenSizes = CONFIG.E20.tokenSizes;
   const tokenSize = tokenSizes[ir.size] ?? tokenSizes.common;
+  const contributions = effectContributions;
   const health = buildHealth(ir.health, ir.conditioning);
+  // Health is derived as origin + conditioning + bonus, so an effect adding to either bonus or
+  // conditioning comes back out of origin.
+  health.origin -= contributions?.health ?? 0;
   const isMachine = MACHINE_TYPES.includes(type);
 
   const system = {
     conditioning: ir.conditioning ?? 0,
-    defenses: buildDefenses(ir),
+    defenses: buildDefenses(ir, contributions),
     essences: buildEssences(ir, isMachine),
     health,
     languages: ir.languages ?? [],
-    movement: buildMovement(ir),
+    movement: buildMovement(ir, contributions),
     skills: buildSkills(ir),
   };
 
@@ -615,8 +748,13 @@ export async function createActorFromStatBlock(ir, options = {}) {
   // avoid (unit tests, a future "export as stat block" path, a headless script).
   const { setEntryAndAddItem } = await import("../sheet-handlers/attachment-handler.mjs");
 
-  const actorData = buildActorData(ir, options);
+  // Items are resolved BEFORE the actor data is built, because the Active Effects they bring
+  // decide how much has to come back out of the residuals - see collectEffectContributions.
   const { items } = await applyCompendiumMatches(buildSimpleItems(ir), options.matches);
+  const actorData = buildActorData(ir, {
+    ...options,
+    effectContributions: options.effectContributions ?? collectEffectContributions(items),
+  });
   actorData.items = items;
 
   const actor = await Actor.create(actorData);
