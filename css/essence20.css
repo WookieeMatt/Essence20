@@ -1982,21 +1982,31 @@ body.game .window-app {
   font-size: 0.85em;
 }
 
-/* Checkboxes in a sidebar panel row (the Vehicle's "Crashed" toggle) came out visibly oblong -
-   17.5x21.7 rather than square. Foundry draws these with appearance:none, painting both the box
-   and the tick from pseudo-elements sized off the inherited font, so a panel row's own reduced
-   font-size (0.9em) skewed width and height by different amounts.
-   Sizing the input alone squares the element but NOT what's painted inside it: the pseudos kept
-   their own font-derived size, so the checked tick rendered visibly smaller than the unchecked
-   outline and the control looked like it shrank when clicked. font-size/line-height are set to
-   match, so the painted box and the element agree in both states. --checkbox-size is Foundry's
-   own variable, which also lines this up with the 20px-tall numeric inputs above it. */
+/* Checkboxes in a sidebar panel row (the Vehicle's "Crashed" toggle) rendered oblong, and changed
+   shape when ticked. Foundry draws these with appearance:none and paints the visible box from a
+   ::before pseudo - but only the CHECKED state gives that pseudo `display: block; position:
+   absolute; inset: 0`, so it fills the control at its full square size. Unchecked it stays
+   `display: inline`, where width/height don't apply at all, so the box renders at the Font Awesome
+   glyph's own natural 17.5x21 - oblong, and a different size from the checked state.
+
+   Sizing the input alone can't fix this, because what's painted is the inline pseudo rather than
+   the input itself - which is also why getComputedStyle reported a tidy 20px (the specified value)
+   while devtools showed the real 17.5x21 layout box. Giving the pseudo the checked state's own
+   block/absolute treatment in BOTH states makes the painted box match the control. --checkbox-size
+   is Foundry's own variable, which also lines this up with the 20px numeric inputs above it. */
 .essence20-sidebar .essence20-sidebar-panel input[type=checkbox] {
+  position: relative;
   flex: 0 0 auto;
   width: var(--checkbox-size, 20px);
   height: var(--checkbox-size, 20px);
   font-size: var(--checkbox-size, 20px);
   line-height: 1;
+}
+
+.essence20-sidebar .essence20-sidebar-panel input[type=checkbox]::before {
+  display: block;
+  position: absolute;
+  inset: 0;
 }
 
 /* The Initiative row borrows .essence20-sidebar-action-button purely for its flex layout - unlike
