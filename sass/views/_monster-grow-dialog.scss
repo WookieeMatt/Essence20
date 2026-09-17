@@ -1,0 +1,218 @@
+@use "../variables" as v;
+
+/* Options across the top, then a two-column before/after read-out, then the review list. The body
+   is the only thing that scrolls so the Create button stays put - same shape as
+   _stat-block-importer.scss, which this dialog is the sibling of. */
+.monster-grow-dialog {
+  .window-content {
+    padding: v.$gap-lg;
+  }
+}
+
+.monster-grow-root {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.monster-grow-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: v.$gap-sm;
+}
+
+.monster-grow-body h3 {
+  align-items: baseline;
+  display: flex;
+  gap: v.$gap-md;
+  justify-content: space-between;
+  margin: v.$gap-md 0 v.$gap-sm;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  em {
+    font-size: 0.8em;
+    font-style: normal;
+    opacity: 0.6;
+  }
+}
+
+.monster-grow-option-grid {
+  display: grid;
+  gap: v.$gap-md;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: v.$gap-sm;
+    min-width: 0;
+  }
+
+  .monster-grow-checkbox {
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+.monster-grow-columns {
+  display: flex;
+  gap: v.$gap-lg;
+  margin-top: v.$gap-md;
+
+  > div {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+}
+
+.monster-grow-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    gap: v.$gap-md;
+    justify-content: space-between;
+
+    span:last-child {
+      opacity: 0.75;
+      text-align: right;
+    }
+  }
+
+  /* Only the rows the grow actually altered are highlighted, so a long read-out still shows at a
+     glance what the options did. */
+  li.changed span:last-child {
+    font-weight: bold;
+    opacity: 1;
+  }
+}
+
+.monster-grow-inputs li {
+  align-items: center;
+
+  .from-to {
+    flex: 1 1 auto;
+    opacity: 0.75;
+    text-align: right;
+  }
+
+  input {
+    flex: 0 0 3.5rem;
+    text-align: center;
+  }
+}
+
+/* Turns red when the allocated Essence points don't add up to 2x the Threat Level increase - a
+   nudge rather than a block, since RAW is a guideline and a GM may deliberately spend fewer. */
+.monster-grow-points {
+  font-size: 0.85rem;
+  font-weight: normal;
+  opacity: 0.75;
+
+  &.mismatch {
+    color: v.$background-r;
+    opacity: 1;
+  }
+}
+
+.monster-grow-review {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    gap: v.$gap-sm;
+    padding: v.$gap-sm 0;
+
+    i {
+      color: v.$text-color-orange;
+    }
+
+    div {
+      min-width: 0;
+    }
+
+    strong {
+      display: block;
+    }
+
+    span {
+      opacity: 0.8;
+    }
+  }
+}
+
+.monster-grow-footer {
+  align-items: center;
+  display: flex;
+  gap: v.$gap-md;
+  justify-content: flex-end;
+  margin-top: v.$gap-md;
+
+  button {
+    flex: 0 0 auto;
+    width: auto;
+  }
+}
+
+/* The mode switch and its link picker sit above the rules block. When "link an actor I already
+   have" is chosen the whole generator UI is hidden, because none of it applies. */
+.monster-grow-mode {
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-md;
+  margin-bottom: v.$gap-md;
+}
+
+.monster-grow-linked {
+  align-items: center;
+  display: flex;
+  gap: v.$gap-sm;
+  margin: 0;
+
+  i {
+    color: v.$background-g;
+  }
+
+  .monster-grow-unlink {
+    flex: 0 0 auto;
+    margin-left: auto;
+    width: auto;
+  }
+}
+
+.monster-grow-mode-picker,
+.monster-grow-link-picker label {
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-sm;
+}
+
+.monster-grow-link-picker {
+  align-items: flex-end;
+  display: flex;
+  gap: v.$gap-md;
+
+  label {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  button {
+    flex: 0 0 auto;
+    width: auto;
+  }
+}
+
+.monster-grow-no-candidates {
+  margin: 0;
+  opacity: 0.7;
+}

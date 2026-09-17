@@ -1,0 +1,132 @@
+{{!-- ApplicationV2 requires each PART to render exactly ONE root element, so the body and the
+      footer are wrapped together rather than sitting side by side at the top level. --}}
+<div class="stat-block-importer-root">
+<div class="stat-block-importer-body">
+  <section class="stat-block-importer-source">
+    <label class="stat-block-importer-label" for="stat-block-text">{{localize "E20.StatBlockImportPasteLabel"}}</label>
+    <textarea id="stat-block-text" name="statBlockText" class="stat-block-importer-text"
+      placeholder="{{localize 'E20.StatBlockImportPastePlaceholder'}}">{{text}}</textarea>
+
+    <div class="stat-block-importer-options">
+      <label>
+        <span>{{localize "E20.StatBlockImportActorType"}}</span>
+        <select name="actorType">{{selectOptions actorTypeChoices selected=actorType}}</select>
+      </label>
+
+      <label>
+        <span>{{localize "E20.StatBlockImportGameLine"}}</span>
+        <select name="gameVersion">{{selectOptions gameVersionChoices selected=gameVersion}}</select>
+      </label>
+
+      <label>
+        <span>{{localize "E20.StatBlockImportFolder"}}</span>
+        <select name="folderId">{{selectOptions folderChoices selected=folderId}}</select>
+      </label>
+    </div>
+  </section>
+
+  <section class="stat-block-importer-preview">
+    {{#if hasParse}}
+      {{#if (gt blockCount 1)}}
+        <p class="stat-block-importer-batch">
+          <i class="fa-solid fa-layer-group" inert></i>
+          {{localize "E20.StatBlockImportBatchFound" count=blockCount}}
+          <span class="batch-names">{{#each blockNames}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+        </p>
+      {{/if}}
+
+      <h2 class="stat-block-importer-name">{{ir.name}}</h2>
+
+      {{#if matchSummary}}<p class="stat-block-importer-match-summary">{{matchSummary}}</p>{{/if}}
+      {{#if effectCaution}}<p class="stat-block-importer-effect-caution"><i class="fa-solid fa-triangle-exclamation" inert></i> {{effectCaution}}</p>{{/if}}
+
+      <dl class="stat-block-importer-summary">
+        {{#each summaryRows as |row|}}
+          <dt>{{row.label}}</dt>
+          <dd>{{row.value}}</dd>
+        {{/each}}
+      </dl>
+
+      <div class="stat-block-importer-scores">
+        <div>
+          <h3>{{localize "E20.StatBlockImportEssences"}}</h3>
+          <ul class="stat-block-importer-list">
+            {{#each essenceRows as |row|}}<li><span>{{row.label}}</span><span>{{row.value}}</span></li>{{/each}}
+          </ul>
+        </div>
+        <div>
+          <h3>{{localize "E20.StatBlockImportDefenses"}}</h3>
+          <ul class="stat-block-importer-list">
+            {{#each defenseRows as |row|}}<li><span>{{row.label}}</span><span>{{row.value}}</span></li>{{/each}}
+          </ul>
+        </div>
+      </div>
+
+      {{#if skills.length}}
+        <h3>{{localize "E20.StatBlockImportSkills"}} ({{skills.length}})</h3>
+        <ul class="stat-block-importer-list">
+          {{#each skills as |skill|}}<li><span>{{skill.label}}</span><span>{{skill.detail}}</span></li>{{/each}}
+        </ul>
+      {{/if}}
+
+      {{#if attacks.length}}
+        <h3>{{localize "E20.StatBlockImportAttacks"}} ({{attacks.length}})</h3>
+        <ul class="stat-block-importer-list">
+          {{#each attacks as |attack|}}<li><span>{{attack.name}}</span><span>{{attack.detail}}</span></li>{{/each}}
+        </ul>
+      {{/if}}
+
+      {{#if perks.length}}
+        <h3>{{localize "E20.StatBlockImportPerks"}} ({{perks.length}})</h3>
+        <ul class="stat-block-importer-list">
+          {{#each perks as |entry|}}<li><span>{{entry.name}}</span><span class="{{entry.matchClass}}">{{entry.matchLabel}}</span></li>{{/each}}
+        </ul>
+      {{/if}}
+
+      {{#if powers.length}}
+        <h3>{{localize "E20.StatBlockImportPowers"}} ({{powers.length}})</h3>
+        <ul class="stat-block-importer-list">
+          {{#each powers as |entry|}}<li><span>{{entry.name}}</span><span class="{{entry.matchClass}}">{{entry.matchLabel}}</span></li>{{/each}}
+        </ul>
+      {{/if}}
+
+      {{#if hangUps.length}}
+        <h3>{{localize "E20.StatBlockImportHangUps"}} ({{hangUps.length}})</h3>
+        <ul class="stat-block-importer-list">
+          {{#each hangUps as |entry|}}<li><span>{{entry.name}}</span><span class="{{entry.matchClass}}">{{entry.matchLabel}}</span></li>{{/each}}
+        </ul>
+      {{/if}}
+
+      {{#if diagnostics.length}}
+        <h3>{{localize "E20.StatBlockImportDiagnostics"}} ({{diagnostics.length}})</h3>
+        <ul class="stat-block-importer-diagnostics">
+          {{#each diagnostics as |entry|}}
+            <li class="severity-{{entry.severity}}">
+              <i class="fa-solid {{entry.icon}}" inert></i>
+              <div>
+                <span class="diagnostic-message">{{entry.message}}</span>
+                {{#if entry.line}}<code class="diagnostic-line">{{entry.line}}</code>{{/if}}
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    {{else}}
+      <p class="stat-block-importer-empty">{{localize "E20.StatBlockImportEmptyPreview"}}</p>
+    {{/if}}
+  </section>
+</div>
+
+<footer class="stat-block-importer-footer">
+  {{#if errorCount}}
+    <span class="stat-block-importer-error-count">
+      <i class="fa-solid fa-circle-exclamation" inert></i>
+      {{localize "E20.StatBlockImportErrorCount" count=errorCount}}
+    </span>
+  {{/if}}
+  <button type="button" data-action="importStatBlock" {{#unless hasParse}}disabled{{/unless}}>
+    <i class="fa-solid fa-file-import" inert></i>
+    <span>{{#if (gt blockCount 1)}}{{localize "E20.StatBlockImportCreateMany" count=blockCount}}{{else}}{{localize "E20.StatBlockImportCreate"}}{{/if}}</span>
+  </button>
+</footer>
+</div>

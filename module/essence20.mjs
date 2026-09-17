@@ -23,6 +23,8 @@ import { handleRemoteChoiceRequest, handleRemoteChoiceResponse } from "./helpers
 import "./helpers/defense-choice.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
+import StatBlockImporter from "./apps/stat-block-importer.mjs";
+import { canSwapTokenForm, swapTokenForm } from "./helpers/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
 import { addConsummatePerformerButton, addExploitWeaknessButton, addRerollButtons, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
@@ -473,6 +475,64 @@ function addCompendiumBrowserFooterButton(app, html) {
 
 Hooks.on("renderCompendiumDirectory", addCompendiumBrowserFooterButton);
 Hooks.on("renderItemDirectory", addCompendiumBrowserFooterButton);
+
+// The same footer treatment on the Actors tab, for the Stat Block Importer. GM-only: it creates
+// world Actors, which a player couldn't do anyway, so showing them the button would just be a
+// button that errors.
+function addStatBlockImporterFooterButton(app, html) {
+  if (!game.user.isGM) {
+    return;
+  }
+
+  const footer = html.querySelector('[data-application-part="footer"]');
+  if (!footer || footer.querySelector(".essence20-open-stat-block-importer")) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.classList.add("essence20-open-stat-block-importer");
+  button.innerHTML = `<i class="fa-solid fa-file-import" inert></i><span>${game.i18n.localize("E20.StatBlockImportOpenTooltip")}</span>`;
+  button.addEventListener("click", () => {
+    new StatBlockImporter().render(true);
+  });
+
+  footer.appendChild(button);
+}
+
+Hooks.on("renderActorDirectory", addStatBlockImporterFooterButton);
+
+/**
+ * "Make My Monster Grow" on the token HUD - the in-combat half (mode B). Only offered for a
+ * token whose Threat actually has a linked other form, so the HUD stays clean for everything
+ * else, and only to a GM, since the swap rewrites a Token and a Combatant.
+ */
+Hooks.on("renderTokenHUD", (hud, html) => {
+  if (!game.user.isGM || !canSwapTokenForm(hud.document)) {
+    return;
+  }
+
+  const column = html.querySelector(".col.right") ?? html.querySelector(".col.left");
+  if (!column || column.querySelector(".essence20-monster-grow")) {
+    return;
+  }
+
+  const isGrown = Boolean(hud.document.actor?.getFlag("essence20", "normalFormId"));
+  const button = document.createElement("button");
+  button.type = "button";
+  button.classList.add("control-icon", "essence20-monster-grow");
+  button.dataset.tooltip = game.i18n.localize(isGrown
+    ? "E20.MonsterGrowShrinkTooltip" : "E20.MonsterGrowSwapTooltip");
+  button.innerHTML = `<i class="fa-solid fa-${isGrown ? "down-left-and-up-right-to-center" : "up-right-and-down-left-from-center"}"></i>`;
+  button.addEventListener("click", async () => {
+    const swapped = await swapTokenForm(hud.document);
+    if (swapped) {
+      ui.notifications.info(game.i18n.format("E20.MonsterGrowSwapped", { name: swapped.name }));
+    }
+  });
+
+  column.appendChild(button);
+});
 
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);

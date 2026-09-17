@@ -2,6 +2,7 @@
 const { ContextMenu } = foundry.applications.ux;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
+import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
 import SheetOptions from "../apps/sheet-options.mjs";
 import SkillPicker from "../apps/skill-picker.mjs";
 import StatEditor from "../apps/stat-editor.mjs";
@@ -83,6 +84,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       recoverSpellcastingDownshift: this.#onRecoverSpellcastingDownshift,
       rest: this.#onRest,
       rollable: this.#onRoll,
+      growMonster: this.#onGrowMonster,
       sheetOptions: this.#onSheetOptions,
       skillPicker: this.#onOpenSkillPicker,
       shieldActivationToggle: this.#onShieldActivationToggle,
@@ -119,6 +121,17 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
           action: "sheetOptions",
           visible: function () {
             return this.actor.isOwner && ["npc", "playerCharacter"].includes(this.actor.type);
+          },
+        },
+        {
+          // "Make My Monster Grow" - builds the Threat's Grown form as its own Actor. GM-only
+          // because it creates world documents, and NPC-only because that is the only actor type
+          // a printed Grown stat block exists for.
+          icon: "fas fa-up-right-and-down-left-from-center",
+          label: "E20.MonsterGrowTitle",
+          action: "growMonster",
+          visible: function () {
+            return game.user.isGM && this.actor.type === "npc";
           },
         },
       ],
@@ -1005,6 +1018,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onSheetOptions(event) {
     new SheetOptions(this.actor, event).render(true);
+  }
+
+  static #onGrowMonster() {
+    new MonsterGrowDialog(this.actor).render(true);
   }
 
 }
