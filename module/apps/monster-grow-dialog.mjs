@@ -258,7 +258,10 @@ export default class MonsterGrowDialog extends serializeFormSubmits(HandlebarsAp
     });
 
     context.review = review;
-    context.hasAllocationOverride = Boolean(this._essenceAllocation || this._skillAllocation);
+    // Only offered in generate mode - it resets the Essence/skill splits, and none of that UI is
+    // even on screen while an existing actor is being linked.
+    context.hasAllocationOverride = context.isGenerateMode
+      && Boolean(this._essenceAllocation || this._skillAllocation);
 
     return context;
   }

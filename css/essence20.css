@@ -4943,6 +4943,18 @@ body.game .window-app {
   gap: 0.25rem;
 }
 
+/* Bounded rather than full-width. Stretched across the whole dialog (812px against the Growth
+   rules selects' 197px) this select stopped reading as a control at all: the border became a
+   banner and the dropdown chevron ended up a dialog-width away from its own label. The chrome was
+   always identical to the other selects - only the width was wrong. */
+.monster-grow-mode-picker {
+  max-width: 24rem;
+}
+
+.monster-grow-link-picker {
+  max-width: 32rem;
+}
+
 .monster-grow-link-picker {
   align-items: flex-end;
   display: flex;
