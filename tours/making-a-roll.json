@@ -1,0 +1,85 @@
+{
+  "namespace": "essence20",
+  "id": "makingARoll",
+  "title": "E20.Tours.Rolling.Title",
+  "description": "E20.Tours.Rolling.Description",
+  "display": true,
+  "canBeResumed": false,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Rolling.Intro.Title",
+      "content": "E20.Tours.Rolling.Intro.Content"
+    },
+    {
+      "id": "skillLink",
+      "app": "character",
+      "tab": "skills",
+      "action": "applyDemoImpaired",
+      "selector": "[data-skill=\"targeting\"]",
+      "title": "E20.Tours.Rolling.SkillLink.Title",
+      "content": "E20.Tours.Rolling.SkillLink.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "dialog",
+      "app": "rollDialog",
+      "skill": "targeting",
+      "selector": ".roll-dialog-app",
+      "title": "E20.Tours.Rolling.Dialog.Title",
+      "content": "E20.Tours.Rolling.Dialog.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "shifts",
+      "app": "rollDialog",
+      "skill": "targeting",
+      "selector": ".roll-dialog-shift-row",
+      "title": "E20.Tours.Rolling.Shifts.Title",
+      "content": "E20.Tours.Rolling.Shifts.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "edgeSnag",
+      "app": "rollDialog",
+      "skill": "targeting",
+      "selector": ".roll-dialog-snag-edge-row",
+      "title": "E20.Tours.Rolling.EdgeSnag.Title",
+      "content": "E20.Tours.Rolling.EdgeSnag.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "sources",
+      "app": "rollDialog",
+      "skill": "targeting",
+      "selector": ".roll-dialog-modifier-sources",
+      "title": "E20.Tours.Rolling.Sources.Title",
+      "content": "E20.Tours.Rolling.Sources.Content",
+      "tooltipDirection": "RIGHT",
+      "optional": true
+    },
+    {
+      "id": "rollButton",
+      "app": "rollDialog",
+      "skill": "targeting",
+      "selector": "footer button[type=\"submit\"]",
+      "title": "E20.Tours.Rolling.RollButton.Title",
+      "content": "E20.Tours.Rolling.RollButton.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "chatCard",
+      "action": "submitRoll",
+      "sidebarTab": "chat",
+      "selector": ".chat-log .chat-message:last-of-type",
+      "title": "E20.Tours.Rolling.ChatCard.Title",
+      "content": "E20.Tours.Rolling.ChatCard.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Rolling.Outro.Title",
+      "content": "E20.Tours.Rolling.Outro.Content"
+    }
+  ]
+}

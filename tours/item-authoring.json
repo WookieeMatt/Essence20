@@ -1,0 +1,64 @@
+{
+  "namespace": "essence20",
+  "id": "itemAuthoring",
+  "title": "E20.Tours.Items.Title",
+  "description": "E20.Tours.Items.Description",
+  "display": true,
+  "canBeResumed": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Items.Intro.Title",
+      "content": "E20.Tours.Items.Intro.Content"
+    },
+    {
+      "id": "sheet",
+      "app": "item",
+      "selector": "nav.tabs",
+      "title": "E20.Tours.Items.Sheet.Title",
+      "content": "E20.Tours.Items.Sheet.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "description",
+      "app": "item",
+      "tab": "description",
+      "selector": "section[data-tab=\"description\"]",
+      "title": "E20.Tours.Items.DescriptionTab.Title",
+      "content": "E20.Tours.Items.DescriptionTab.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "details",
+      "app": "item",
+      "tab": "details",
+      "selector": "section[data-tab=\"details\"]",
+      "title": "E20.Tours.Items.Details.Title",
+      "content": "E20.Tours.Items.Details.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "effects",
+      "app": "item",
+      "tab": "effects",
+      "selector": "section[data-tab=\"effects\"]",
+      "title": "E20.Tours.Items.Effects.Title",
+      "content": "E20.Tours.Items.Effects.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "attachments",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".collapsible-item-subcontainer:has([data-action=\"itemCreate\"][data-type=\"weaponEffect\"])",
+      "title": "E20.Tours.Items.Attachments.Title",
+      "content": "E20.Tours.Items.Attachments.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Items.Outro.Title",
+      "content": "E20.Tours.Items.Outro.Content"
+    }
+  ]
+}

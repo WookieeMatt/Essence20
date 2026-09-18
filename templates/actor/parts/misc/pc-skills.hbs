@@ -18,8 +18,9 @@
         <span class="skill-name">{{localize 'E20.ActorConditioning'}}</span>
         {{!-- Editing moved into the Skill Picker app (skill-picker.hbs), same as the skill
              shifts below - a plain read-only display here avoids a second editable copy of
-             the same field. --}}
-        <span class="conditioning-input conditioning-display">{{system.conditioning}}</span>
+             the same field. It deliberately carries no input styling: wearing the old
+             .conditioning-input class left it looking like a box you could type in. --}}
+        <span class="conditioning-display">{{system.conditioning}}</span>
       </div>
       {{#each @root.config.skillsByEssence.strength as |skill|}}
         {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='strength' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}

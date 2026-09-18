@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* importing the partials */
 /* 700 added alongside 500 - _global-windows.scss's .window-app rule (see below) sets
    font-weight: bold (700), but only weight 500 was ever loaded, so the browser had to
@@ -1982,6 +1983,48 @@ body.game .window-app {
   font-size: 0.85em;
 }
 
+/* Checkboxes in a sidebar panel row (the Vehicle's "Crashed" toggle) rendered oblong, and changed
+   shape when ticked. Foundry draws these with appearance:none and paints the visible box from a
+   ::before pseudo - but only the CHECKED state gives that pseudo `display: block; position:
+   absolute; inset: 0`, so it fills the control at its full square size. Unchecked it stays
+   `display: inline`, where width/height don't apply at all, so the box renders at the Font Awesome
+   glyph's own natural 17.5x21 - oblong, and a different size from the checked state.
+
+   Sizing the input alone can't fix this, because what's painted is the inline pseudo rather than
+   the input itself - which is also why getComputedStyle reported a tidy 20px (the specified value)
+   while devtools showed the real 17.5x21 layout box. Giving the pseudo the checked state's own
+   block/absolute treatment in BOTH states makes the painted box match the control. --checkbox-size
+   is Foundry's own variable, which also lines this up with the 20px numeric inputs above it. */
+.essence20-sidebar .essence20-sidebar-panel input[type=checkbox] {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--checkbox-size, 20px);
+  height: var(--checkbox-size, 20px);
+  font-size: var(--checkbox-size, 20px);
+  line-height: 1;
+}
+
+.essence20-sidebar .essence20-sidebar-panel input[type=checkbox]::before {
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+/* The Initiative row borrows .essence20-sidebar-action-button purely for its flex layout - unlike
+   its siblings (Warrior Mode, Mega-Weapon, Transform, Morph) the row itself isn't a button: the
+   only clickable thing in it is the d20 icon, with a skill picker and a read-only shift die beside
+   it. Drop the button chrome so it reads as a row like the Speeds/Defenses panels below, rather
+   than a control the whole width of which looks pressable. Hover is reset too, since the row-wide
+   highlight implied the same thing. */
+.essence20-sidebar .essence20-sidebar-action-button.essence20-sidebar-initiative,
+.essence20-sidebar .essence20-sidebar-action-button.essence20-sidebar-initiative:hover {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  cursor: default;
+}
+
 .essence20-sidebar .essence20-sidebar-action-button select {
   flex: 1 1 auto;
   min-width: 0;
@@ -2071,23 +2114,17 @@ body.game .window-app {
   opacity: 0.85;
 }
 
-.essence20 .skill-header .conditioning-input {
+/* Conditioning is displayed here and edited in the Skill Picker app (skill-picker.hbs), the same
+   split as the skill shifts above. It used to be an <input> on this sheet; the read-only span that
+   replaced it kept the input's own class, which still supplied a background, a border and a radius
+   - so a value nobody can edit went on rendering as a box that invites a click. Sizing matches the
+   skill shift beside it, with .skill-shift-display's plain-text treatment and none of the
+   decoration. */
+.essence20 .skill-header .conditioning-display {
   flex: 0 0 auto;
   width: 58px;
   font-size: 0.95em;
   padding: 1px 3px;
-  text-align: center;
-  color: var(--theme-text-color);
-  background: var(--theme-input-color);
-  border: 1px solid var(--theme-border-color);
-  border-radius: 6px;
-}
-
-/* Read-only stand-in for .conditioning-input once Conditioning-editing moves into the Skill
-   Picker app - same box/width as the input it replaces (.conditioning-input still supplies
-   that), just centered plain text instead of an editable number field. Same pairing as
-   .skill-shift-display above. */
-.essence20 .skill-header .conditioning-display {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3831,6 +3868,161 @@ body.game .window-app {
   color: var(--theme-text-color) !important;
 }
 
+/* Guided tour steps.
+ *
+ * Core renders every tour step as a tooltip (or a centred <aside>) carrying the classes
+ * "tour themed theme-dark", hard-coded in Tour#_renderStep — a step is always dark, regardless of
+ * the user's colour scheme, and that can't be changed from here without fighting core on every
+ * render. So rather than resist it, this styles the step as a deliberately dark panel matching the
+ * system's own dark theme, and a tour reads as part of Essence20 instead of as stock Foundry.
+ *
+ * Note these selectors sit OUTSIDE any .theme-wrapper — core appends the tooltip and the centred
+ * step to document.body, not into one of our sheets — so the --theme-* custom properties defined
+ * in _theme_wrapper.scss are not in scope here. Values come from the sass variables directly.
+ *
+ * Only the step's own surfaces are touched. The fade cut-out (.tour-fadeout) and the input-blocking
+ * overlay (.tour-overlay) keep core's geometry and z-index untouched: both are positioned from
+ * measurements core takes itself, and restyling them is how tours end up with a highlight that
+ * doesn't line up with its target.
+ */
+#tooltip.tour,
+.tour-center-step {
+  background: linear-gradient(180deg, rgba(14, 17, 20, 0.96), rgba(17, 19, 21, 0.96));
+  border: 1px solid #4dd0e1;
+  border-radius: 0;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+  color: #aaaaaa;
+  max-width: 48ch;
+  padding: 0;
+  text-align: left;
+}
+#tooltip.tour .step-header,
+.tour-center-step .step-header {
+  align-items: center;
+  border-bottom: 1px solid rgba(77, 208, 225, 0.4);
+  gap: 0.5rem;
+  justify-content: space-between;
+  padding: 0.4rem 0.6rem;
+}
+#tooltip.tour .step-header .step-title,
+.tour-center-step .step-header .step-title {
+  /* Rajdhani, matching the sliced-border panel labels used across the sheets. */
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  margin: 0;
+  text-transform: uppercase;
+}
+#tooltip.tour p.content,
+.tour-center-step p.content {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0.45rem 0.6rem;
+  /* Core sets `.tour .content { text-align: center }` directly on the paragraph, so setting
+     alignment on the panel alone never reaches it — it has to be overridden on the element.
+     Centred text is fine for a one-line caption and poor for the multi-sentence copy these
+     steps carry, which is most of them. */
+  text-align: left;
+  /* Core emits one <p class="content"> per line of the step's localized string, so consecutive
+     paragraphs would otherwise stack their padding into an uneven gutter. */
+}
+#tooltip.tour p.content + p.content,
+.tour-center-step p.content + p.content {
+  padding-top: 0;
+}
+#tooltip.tour p.content strong,
+.tour-center-step p.content strong {
+  color: #4dd0e1;
+}
+#tooltip.tour .step-controls,
+.tour-center-step .step-controls {
+  align-items: center;
+  border-top: 1px solid rgba(77, 208, 225, 0.4);
+  justify-content: space-between;
+  padding: 0.3rem 0.6rem;
+}
+#tooltip.tour .step-controls .progress,
+.tour-center-step .step-controls .progress {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+  text-transform: uppercase;
+  /* The step counter changes width as it counts up; tabular figures stop the arrows shifting. */
+  font-variant-numeric: tabular-nums;
+}
+#tooltip.tour .step-button,
+.tour-center-step .step-button {
+  color: #aaaaaa;
+  flex: 0 0 auto;
+  opacity: 0.85;
+  transition: opacity 150ms ease, color 150ms ease;
+  /* Core adds .disabled to every button while a step transition is in flight, to swallow
+     double-clicks. Reflect that so the step doesn't look interactive while it isn't. */
+}
+#tooltip.tour .step-button:hover,
+.tour-center-step .step-button:hover {
+  color: #4dd0e1;
+  opacity: 1;
+  text-shadow: none;
+}
+#tooltip.tour .step-button.disabled,
+.tour-center-step .step-button.disabled {
+  cursor: default;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* The centred step has no target to point at, so it carries its own breathing room. */
+.tour-center-step {
+  max-width: 60ch;
+}
+
+/* The one-off chat card that points new worlds at the tours. Unlike the step panels above this
+   one sits inside a normal chat message, so it follows the message's own light/dark theme rather
+   than forcing a dark panel. */
+.essence20-tour-offer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* Both of these inherit deliberately. Foundry styles headings and buttons inside a chat message
+     for a light ground (near-black, #222 and #111), but a message carries its own theme-dark or
+     theme-light class — so on a dark theme the hard-coded colours render dark-on-dark and the
+     heading is effectively invisible. Inheriting from the message picks up whichever theme it is
+     actually wearing. */
+}
+.essence20-tour-offer h3 {
+  color: inherit;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin: 0;
+  text-transform: uppercase;
+}
+.essence20-tour-offer p {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 0;
+}
+.essence20-tour-offer button {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  gap: 0.25rem;
+  justify-content: center;
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #tooltip.tour .step-button,
+  .tour-center-step .step-button {
+    transition: none;
+  }
+}
 .story-points {
   height: auto;
   width: min-content;
@@ -4632,6 +4824,429 @@ body.game .window-app {
   font-size: 0.75rem;
   opacity: 0.7;
   font-style: italic;
+}
+
+/* Two-pane layout: the paste on the left, the live parse preview on the right. The body takes
+   the full available height and the preview pane is the only thing that scrolls, so editing the
+   paste never moves the Import button - same "one PART, root opts into its own scrolling" shape
+   _skill-picker.scss documents, except here the footer stays pinned outside the scroll area.
+   min-height: 0 is required for a flex child of .window-content (flex-flow: column) to shrink to
+   its container rather than growing to fit content. */
+.stat-block-importer .window-content {
+  padding: 1rem;
+}
+
+/* The PART's single root (ApplicationV2 allows only one per part) - stacks the two-pane body
+   above the footer, and passes the available height straight through to the body. */
+.stat-block-importer-root {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.stat-block-importer-body {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 1rem;
+  min-height: 0;
+}
+
+.stat-block-importer-source,
+.stat-block-importer-preview {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 50%;
+  min-height: 0;
+  min-width: 0;
+}
+
+.stat-block-importer-preview {
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.stat-block-importer-label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.stat-block-importer-text {
+  flex: 1 1 auto;
+  min-height: 0;
+  resize: none;
+  font-family: monospace;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+}
+
+.stat-block-importer-options {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.stat-block-importer-options label {
+  display: flex;
+  flex: 1 1 50%;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.stat-block-importer-name {
+  margin: 0 0 0.25rem;
+}
+
+.stat-block-importer-preview h3 {
+  margin: 0.5rem 0 0.25rem;
+}
+
+/* Two columns of label/value - a definition list rather than a table, since every row is a
+   single scalar and the values are short. */
+.stat-block-importer-summary {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 0.5rem;
+  margin: 0;
+}
+.stat-block-importer-summary dt {
+  font-weight: bold;
+}
+.stat-block-importer-summary dd {
+  margin: 0;
+}
+
+.stat-block-importer-scores {
+  display: flex;
+  gap: 1rem;
+}
+.stat-block-importer-scores > div {
+  flex: 1 1 50%;
+  min-width: 0;
+}
+
+.stat-block-importer-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.stat-block-importer-list li {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+.stat-block-importer-list li span:last-child {
+  opacity: 0.8;
+  text-align: right;
+}
+
+/* Whether an entry arrives as a real compendium copy (with its Active Effects) or as inert text
+   is the most important thing about an import, so it gets colour where the rest of the list stays
+   muted. Ambiguous means a match was chosen on the GM's behalf out of several same-named
+   candidates - worth distinguishing from a confident one. */
+.stat-block-importer-match-summary {
+  margin: 0 0 0.25rem;
+  opacity: 0.85;
+}
+
+.stat-block-importer-list .match-found {
+  color: #008000;
+}
+.stat-block-importer-list .match-ambiguous {
+  color: #ff6400;
+}
+.stat-block-importer-list .match-none {
+  opacity: 0.55;
+}
+
+.stat-block-importer-diagnostics {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Severity is carried by the icon colour rather than a background, so a long list of warnings
+     on a big stat block doesn't turn the whole pane into a wall of colour. */
+}
+.stat-block-importer-diagnostics li {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem 0;
+}
+.stat-block-importer-diagnostics li > div {
+  min-width: 0;
+}
+.stat-block-importer-diagnostics .severity-error i {
+  color: #ff0000;
+}
+.stat-block-importer-diagnostics .severity-warning i {
+  color: #ff6400;
+}
+.stat-block-importer-diagnostics .severity-info i {
+  opacity: 0.6;
+}
+.stat-block-importer-diagnostics .diagnostic-message {
+  display: block;
+}
+.stat-block-importer-diagnostics .diagnostic-line {
+  display: block;
+  font-size: 0.8em;
+  opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stat-block-importer-empty {
+  margin: auto;
+  opacity: 0.6;
+  text-align: center;
+}
+
+.stat-block-importer-footer {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+.stat-block-importer-footer button {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.stat-block-importer-error-count {
+  color: #ff0000;
+}
+
+.stat-block-importer-effect-caution {
+  color: #ff6400;
+  margin: 0 0 0.5rem;
+}
+
+/* Only shown when a paste held more than one block - names every Threat that will be created, so
+   a batch import is never a surprise. */
+.stat-block-importer-batch {
+  margin: 0 0 0.5rem;
+}
+.stat-block-importer-batch .batch-names {
+  display: block;
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+/* Reports that printed values were adjusted so a matched Perk's Active Effect lands on the page's
+   own number instead of overshooting it - reassurance, so styled quietly, unlike the caution. */
+.stat-block-importer-effect-netted {
+  margin: 0 0 0.25rem;
+  opacity: 0.8;
+}
+
+/* Options across the top, then a two-column before/after read-out, then the review list. The body
+   is the only thing that scrolls so the Create button stays put - same shape as
+   _stat-block-importer.scss, which this dialog is the sibling of. */
+.monster-grow-dialog .window-content {
+  padding: 1rem;
+}
+
+.monster-grow-root {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.monster-grow-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.monster-grow-body h3 {
+  align-items: baseline;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin: 0.5rem 0 0.25rem;
+}
+.monster-grow-body h3:first-child {
+  margin-top: 0;
+}
+.monster-grow-body h3 em {
+  font-size: 0.8em;
+  font-style: normal;
+  opacity: 0.6;
+}
+
+.monster-grow-option-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+.monster-grow-option-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+.monster-grow-option-grid .monster-grow-checkbox {
+  align-items: center;
+  flex-direction: row;
+}
+
+.monster-grow-columns {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.monster-grow-columns > div {
+  flex: 1 1 50%;
+  min-width: 0;
+}
+
+.monster-grow-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Only the rows the grow actually altered are highlighted, so a long read-out still shows at a
+     glance what the options did. */
+}
+.monster-grow-list li {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+.monster-grow-list li span:last-child {
+  opacity: 0.75;
+  text-align: right;
+}
+.monster-grow-list li.changed span:last-child {
+  font-weight: bold;
+  opacity: 1;
+}
+
+.monster-grow-inputs li {
+  align-items: center;
+}
+.monster-grow-inputs li .from-to {
+  flex: 1 1 auto;
+  opacity: 0.75;
+  text-align: right;
+}
+.monster-grow-inputs li input {
+  flex: 0 0 3.5rem;
+  text-align: center;
+}
+
+/* Turns red when the allocated Essence points don't add up to 2x the Threat Level increase - a
+   nudge rather than a block, since RAW is a guideline and a GM may deliberately spend fewer. */
+.monster-grow-points {
+  font-size: 0.85rem;
+  font-weight: normal;
+  opacity: 0.75;
+}
+.monster-grow-points.mismatch {
+  color: #ff0000;
+  opacity: 1;
+}
+
+.monster-grow-review {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.monster-grow-review li {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem 0;
+}
+.monster-grow-review li i {
+  color: #ff6400;
+}
+.monster-grow-review li div {
+  min-width: 0;
+}
+.monster-grow-review li strong {
+  display: block;
+}
+.monster-grow-review li span {
+  opacity: 0.8;
+}
+
+.monster-grow-footer {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+.monster-grow-footer button {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+/* The mode switch and its link picker sit above the rules block. When "link an actor I already
+   have" is chosen the whole generator UI is hidden, because none of it applies. */
+.monster-grow-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.monster-grow-linked {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+  margin: 0;
+}
+.monster-grow-linked i {
+  color: #008000;
+}
+.monster-grow-linked .monster-grow-unlink {
+  flex: 0 0 auto;
+  margin-left: auto;
+  width: auto;
+}
+
+.monster-grow-mode-picker,
+.monster-grow-link-picker label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Bounded rather than full-width. Stretched across the whole dialog (812px against the Growth
+   rules selects' 197px) this select stopped reading as a control at all: the border became a
+   banner and the dropdown chevron ended up a dialog-width away from its own label. The chrome was
+   always identical to the other selects - only the width was wrong. */
+.monster-grow-mode-picker {
+  max-width: 24rem;
+}
+
+.monster-grow-link-picker {
+  max-width: 32rem;
+}
+
+.monster-grow-link-picker {
+  align-items: flex-end;
+  display: flex;
+  gap: 0.5rem;
+}
+.monster-grow-link-picker label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.monster-grow-link-picker button {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.monster-grow-no-candidates {
+  margin: 0;
+  opacity: 0.7;
 }
 
 select {

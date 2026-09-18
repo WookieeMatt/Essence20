@@ -1,0 +1,64 @@
+{
+  "namespace": "essence20",
+  "id": "storyPoints",
+  "title": "E20.Tours.StoryPoints.Title",
+  "description": "E20.Tours.StoryPoints.Description",
+  "display": true,
+  "canBeResumed": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.StoryPoints.Intro.Title",
+      "content": "E20.Tours.StoryPoints.Intro.Content"
+    },
+    {
+      "id": "tracker",
+      "app": "storyPoints",
+      "selector": ".story-points__top",
+      "title": "E20.Tours.StoryPoints.Tracker.Title",
+      "content": "E20.Tours.StoryPoints.Tracker.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "pools",
+      "app": "storyPoints",
+      "selector": ".story-points__input",
+      "title": "E20.Tours.StoryPoints.Pools.Title",
+      "content": "E20.Tours.StoryPoints.Pools.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "spend",
+      "app": "storyPoints",
+      "selector": "[data-action=\"decrementStoryPoints\"]",
+      "title": "E20.Tours.StoryPoints.Spend.Title",
+      "content": "E20.Tours.StoryPoints.Spend.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "majorScene",
+      "app": "storyPoints",
+      "selector": "[data-action=\"rollMajorSceneGmPoints\"]",
+      "title": "E20.Tours.StoryPoints.MajorScene.Title",
+      "content": "E20.Tours.StoryPoints.MajorScene.Content",
+      "tooltipDirection": "DOWN",
+      "restricted": true,
+      "optional": true
+    },
+    {
+      "id": "settings",
+      "sidebarTab": "settings",
+      "selector": "[data-action=\"openApp\"][data-app=\"configure\"]",
+      "title": "E20.Tours.StoryPoints.Settings.Title",
+      "content": "E20.Tours.StoryPoints.Settings.Content",
+      "tooltipDirection": "LEFT",
+      "restricted": true,
+      "optional": true
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.StoryPoints.Outro.Title",
+      "content": "E20.Tours.StoryPoints.Outro.Content"
+    }
+  ]
+}

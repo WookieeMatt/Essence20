@@ -1,0 +1,239 @@
+@use "../variables" as v;
+
+/* Two-pane layout: the paste on the left, the live parse preview on the right. The body takes
+   the full available height and the preview pane is the only thing that scrolls, so editing the
+   paste never moves the Import button - same "one PART, root opts into its own scrolling" shape
+   _skill-picker.scss documents, except here the footer stays pinned outside the scroll area.
+   min-height: 0 is required for a flex child of .window-content (flex-flow: column) to shrink to
+   its container rather than growing to fit content. */
+.stat-block-importer {
+  .window-content {
+    padding: v.$gap-lg;
+  }
+}
+
+/* The PART's single root (ApplicationV2 allows only one per part) - stacks the two-pane body
+   above the footer, and passes the available height straight through to the body. */
+.stat-block-importer-root {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.stat-block-importer-body {
+  display: flex;
+  flex: 1 1 auto;
+  gap: v.$gap-lg;
+  min-height: 0;
+}
+
+.stat-block-importer-source,
+.stat-block-importer-preview {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 50%;
+  min-height: 0;
+  min-width: 0;
+}
+
+.stat-block-importer-preview {
+  overflow-y: auto;
+  padding-right: v.$gap-sm;
+}
+
+.stat-block-importer-label {
+  font-weight: bold;
+  margin-bottom: v.$gap-sm;
+}
+
+.stat-block-importer-text {
+  flex: 1 1 auto;
+  min-height: 0;
+  resize: none;
+  font-family: monospace;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+}
+
+.stat-block-importer-options {
+  display: flex;
+  gap: v.$gap-md;
+  margin-top: v.$gap-md;
+
+  label {
+    display: flex;
+    flex: 1 1 50%;
+    flex-direction: column;
+    gap: v.$gap-sm;
+    min-width: 0;
+  }
+}
+
+.stat-block-importer-name {
+  margin: 0 0 v.$gap-sm;
+}
+
+.stat-block-importer-preview h3 {
+  margin: v.$gap-md 0 v.$gap-sm;
+}
+
+/* Two columns of label/value - a definition list rather than a table, since every row is a
+   single scalar and the values are short. */
+.stat-block-importer-summary {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: v.$gap-sm v.$gap-md;
+  margin: 0;
+
+  dt {
+    font-weight: bold;
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.stat-block-importer-scores {
+  display: flex;
+  gap: v.$gap-lg;
+
+  > div {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+}
+
+.stat-block-importer-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    gap: v.$gap-md;
+    justify-content: space-between;
+
+    span:last-child {
+      opacity: 0.8;
+      text-align: right;
+    }
+  }
+}
+
+/* Whether an entry arrives as a real compendium copy (with its Active Effects) or as inert text
+   is the most important thing about an import, so it gets colour where the rest of the list stays
+   muted. Ambiguous means a match was chosen on the GM's behalf out of several same-named
+   candidates - worth distinguishing from a confident one. */
+.stat-block-importer-match-summary {
+  margin: 0 0 v.$gap-sm;
+  opacity: 0.85;
+}
+
+.stat-block-importer-list {
+  .match-found {
+    color: v.$background-g;
+  }
+
+  .match-ambiguous {
+    color: v.$text-color-orange;
+  }
+
+  .match-none {
+    opacity: 0.55;
+  }
+}
+
+.stat-block-importer-diagnostics {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    gap: v.$gap-sm;
+    padding: v.$gap-sm 0;
+
+    > div {
+      min-width: 0;
+    }
+  }
+
+  /* Severity is carried by the icon colour rather than a background, so a long list of warnings
+     on a big stat block doesn't turn the whole pane into a wall of colour. */
+  .severity-error i {
+    color: v.$background-r;
+  }
+
+  .severity-warning i {
+    color: v.$text-color-orange;
+  }
+
+  .severity-info i {
+    opacity: 0.6;
+  }
+
+  .diagnostic-message {
+    display: block;
+  }
+
+  .diagnostic-line {
+    display: block;
+    font-size: 0.8em;
+    opacity: 0.7;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.stat-block-importer-empty {
+  margin: auto;
+  opacity: 0.6;
+  text-align: center;
+}
+
+.stat-block-importer-footer {
+  align-items: center;
+  display: flex;
+  gap: v.$gap-md;
+  justify-content: flex-end;
+  margin-top: v.$gap-md;
+
+  button {
+    flex: 0 0 auto;
+    width: auto;
+  }
+}
+
+.stat-block-importer-error-count {
+  color: v.$background-r;
+}
+
+.stat-block-importer-effect-caution {
+  color: v.$text-color-orange;
+  margin: 0 0 v.$gap-md;
+}
+
+/* Only shown when a paste held more than one block - names every Threat that will be created, so
+   a batch import is never a surprise. */
+.stat-block-importer-batch {
+  margin: 0 0 v.$gap-md;
+
+  .batch-names {
+    display: block;
+    font-size: 0.85em;
+    opacity: 0.7;
+  }
+}
+
+/* Reports that printed values were adjusted so a matched Perk's Active Effect lands on the page's
+   own number instead of overshooting it - reassurance, so styled quietly, unlike the caution. */
+.stat-block-importer-effect-netted {
+  margin: 0 0 v.$gap-sm;
+  opacity: 0.8;
+}

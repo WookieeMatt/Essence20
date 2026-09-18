@@ -2,6 +2,7 @@
 const { ContextMenu } = foundry.applications.ux;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
+import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
 import SheetOptions from "../apps/sheet-options.mjs";
 import SkillPicker from "../apps/skill-picker.mjs";
 import StatEditor from "../apps/stat-editor.mjs";
@@ -83,11 +84,13 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       recoverSpellcastingDownshift: this.#onRecoverSpellcastingDownshift,
       rest: this.#onRest,
       rollable: this.#onRoll,
+      growMonster: this.#onGrowMonster,
       sheetOptions: this.#onSheetOptions,
       skillPicker: this.#onOpenSkillPicker,
       shieldActivationToggle: this.#onShieldActivationToggle,
       shieldEquipToggle: this.#onShieldEquipToggle,
       specializationDelete: this.#onSpecializationDelete,
+      startSheetTour: this.#onStartSheetTour,
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
       summonMegaWeapon: this.#onSummonMegaWeapon,
       systemActorOpen: this.#onSystemActorOpen,
@@ -121,8 +124,43 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
             return this.actor.isOwner && ["npc", "playerCharacter"].includes(this.actor.type);
           },
         },
+        {
+          icon: "fas fa-circle-question",
+          label: "E20.TourSheetHelp",
+          action: "startSheetTour",
+          visible: function () {
+            // Only offer it where a tour actually exists for this actor type, so the control
+            // never promises a walkthrough that isn't there. New entries in TOUR_BY_ACTOR_TYPE
+            // light this up for their sheet automatically.
+            const tour = game.tours.get(Essence20BaseActorSheet.TOUR_BY_ACTOR_TYPE[this.actor.type]);
+            return !!tour?.canStart;
+          },
+        },
+        {
+          // "Make My Monster Grow" - builds the Threat's Grown form as its own Actor. GM-only
+          // because it creates world documents, and NPC-only because that is the only actor type
+          // a printed Grown stat block exists for.
+          icon: "fas fa-up-right-and-down-left-from-center",
+          label: "E20.MonsterGrowTitle",
+          action: "growMonster",
+          visible: function () {
+            return game.user.isGM && this.actor.type === "npc";
+          },
+        },
       ],
     },
+  };
+
+  /**
+   * Which guided tour the titlebar help control starts, per actor type.
+   *
+   * Sheet tours run against their own demo character rather than the sheet they were launched
+   * from — a tour that reorganised the user's real character to make a point would be a bad
+   * trade. The control is really a "show me how this sheet works" shortcut into Tour Management.
+   * @type {Record<string, string>}
+   */
+  static TOUR_BY_ACTOR_TYPE = {
+    playerCharacter: "essence20.characterSheet",
   };
 
   _onRender(context, options) {
@@ -1007,4 +1045,19 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     new SheetOptions(this.actor, event).render(true);
   }
 
+  /**
+   * Start the guided tour for this sheet type from the titlebar help control.
+   */
+  static async #onStartSheetTour() {
+    const tour = game.tours.get(Essence20BaseActorSheet.TOUR_BY_ACTOR_TYPE[this.actor.type]);
+    if (!tour) return;
+
+    // A tour takes over the screen, so get out of the way of the sheet it was launched from.
+    await this.minimize();
+    return tour.start();
+  }
+
+  static #onGrowMonster() {
+    new MonsterGrowDialog(this.actor).render(true);
+  }
 }

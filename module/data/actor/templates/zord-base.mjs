@@ -1,6 +1,6 @@
 import { E20 } from "../../../helpers/config.mjs";
 
-import { makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 import { makeDefensesFields, makeEssencesFields } from "./machine.mjs";
 
@@ -40,6 +40,8 @@ export const zordBase = () => ({
     // baseline Zord's own Conditioning +3) and keeps health.bonus live for the Feature items that
     // write to it (Heavy Chassis, Auxiliary Zord, Carrier, Titan Body).
     origin: makeInt(3),
+    // See common.mjs's own health.string comment — a Zord renders the same sidebar-health.hbs.
+    string: makeStr(''),
     value: makeInt(6),
   }),
   movement: new fields.SchemaField({

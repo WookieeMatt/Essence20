@@ -1,0 +1,69 @@
+{
+  "namespace": "essence20",
+  "id": "npcsAndCombat",
+  "title": "E20.Tours.Combat.Title",
+  "description": "E20.Tours.Combat.Description",
+  "display": true,
+  "canBeResumed": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Combat.Intro.Title",
+      "content": "E20.Tours.Combat.Intro.Content"
+    },
+    {
+      "id": "threatSheet",
+      "app": "threat",
+      "selector": "header.sheet-header",
+      "title": "E20.Tours.Combat.ThreatSheet.Title",
+      "content": "E20.Tours.Combat.ThreatSheet.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "threatSidebar",
+      "app": "threat",
+      "selector": ".essence20-sidebar",
+      "title": "E20.Tours.Combat.ThreatSidebar.Title",
+      "content": "E20.Tours.Combat.ThreatSidebar.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "threatSkills",
+      "app": "threat",
+      "selector": ".npc-skill-list",
+      "title": "E20.Tours.Combat.ThreatSkills.Title",
+      "content": "E20.Tours.Combat.ThreatSkills.Content",
+      "tooltipDirection": "UP"
+    },
+    {
+      "id": "initiative",
+      "app": "character",
+      "selector": ".essence20-sidebar-initiative",
+      "title": "E20.Tours.Combat.Initiative.Title",
+      "content": "E20.Tours.Combat.Initiative.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "tracker",
+      "sidebarTab": "combat",
+      "selector": "#combat",
+      "title": "E20.Tours.Combat.Tracker.Title",
+      "content": "E20.Tours.Combat.Tracker.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "conditions",
+      "app": "character",
+      "selector": ".essence20-sidebar-immunities-resistances",
+      "title": "E20.Tours.Combat.Conditions.Title",
+      "content": "E20.Tours.Combat.Conditions.Content",
+      "tooltipDirection": "RIGHT",
+      "optional": true
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Combat.Outro.Title",
+      "content": "E20.Tours.Combat.Outro.Content"
+    }
+  ]
+}

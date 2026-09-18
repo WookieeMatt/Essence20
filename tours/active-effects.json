@@ -1,0 +1,82 @@
+{
+  "namespace": "essence20",
+  "id": "activeEffects",
+  "title": "E20.Tours.Effects.Title",
+  "description": "E20.Tours.Effects.Description",
+  "display": true,
+  "canBeResumed": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Effects.Intro.Title",
+      "content": "E20.Tours.Effects.Intro.Content"
+    },
+    {
+      "id": "defenceBefore",
+      "app": "character",
+      "selector": ".essence20-sidebar-defenses",
+      "title": "E20.Tours.Effects.DefenceBefore.Title",
+      "content": "E20.Tours.Effects.DefenceBefore.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "effectsTab",
+      "app": "character",
+      "tab": "effects",
+      "selector": "section[data-tab=\"effects\"] .effects-list",
+      "title": "E20.Tours.Effects.EffectsTab.Title",
+      "content": "E20.Tours.Effects.EffectsTab.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "categories",
+      "app": "character",
+      "tab": "effects",
+      "selector": "section[data-tab=\"effects\"] li.items-header[data-effect-type]",
+      "title": "E20.Tours.Effects.Categories.Title",
+      "content": "E20.Tours.Effects.Categories.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "toggle",
+      "app": "character",
+      "tab": "effects",
+      "selector": "section[data-tab=\"effects\"] [data-action=\"toggleEffect\"]",
+      "title": "E20.Tours.Effects.Toggle.Title",
+      "content": "E20.Tours.Effects.Toggle.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "edit",
+      "app": "character",
+      "tab": "effects",
+      "selector": "section[data-tab=\"effects\"] [data-action=\"editEffect\"]",
+      "title": "E20.Tours.Effects.Edit.Title",
+      "content": "E20.Tours.Effects.Edit.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "create",
+      "app": "character",
+      "tab": "effects",
+      "selector": "section[data-tab=\"effects\"] [data-action=\"createEffect\"]",
+      "title": "E20.Tours.Effects.Create.Title",
+      "content": "E20.Tours.Effects.Create.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "conditions",
+      "sidebarTab": "compendium",
+      "selector": "#compendium",
+      "title": "E20.Tours.Effects.Conditions.Title",
+      "content": "E20.Tours.Effects.Conditions.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Effects.Outro.Title",
+      "content": "E20.Tours.Effects.Outro.Content"
+    }
+  ]
+}

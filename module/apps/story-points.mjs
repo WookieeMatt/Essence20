@@ -211,7 +211,12 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       const messageData = {
         user: game.user.id,
         speaker: speaker,
-        type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        // v14 split these apart: `type` is now the ChatMessage document subtype (a string, e.g.
+        // "base") while the numeric CHAT_MESSAGE_STYLES value lives in `style`. Passing the
+        // number as `type` fails validation outright — `"0" is not a valid type for the
+        // ChatMessage Document class` — so every point adjustment threw a visible error and
+        // announced nothing, even though the point value itself updated.
+        style: CONST.CHAT_MESSAGE_STYLES.OTHER,
         content,
       };
 

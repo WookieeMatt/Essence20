@@ -1,0 +1,111 @@
+{
+  "namespace": "essence20",
+  "id": "characterSheet",
+  "title": "E20.Tours.CharacterSheet.Title",
+  "description": "E20.Tours.CharacterSheet.Description",
+  "display": true,
+  "canBeResumed": true,
+  "suggestedNextTours": ["essence20.skillsAndEssences"],
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.CharacterSheet.Intro.Title",
+      "content": "E20.Tours.CharacterSheet.Intro.Content"
+    },
+    {
+      "id": "header",
+      "app": "character",
+      "selector": "header.sheet-header",
+      "title": "E20.Tours.CharacterSheet.Header.Title",
+      "content": "E20.Tours.CharacterSheet.Header.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "level",
+      "app": "character",
+      "selector": "input[name=\"system.level\"]",
+      "title": "E20.Tours.CharacterSheet.Level.Title",
+      "content": "E20.Tours.CharacterSheet.Level.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "lock",
+      "app": "character",
+      "selector": ".window-header [data-action=\"toggleLock\"]",
+      "title": "E20.Tours.CharacterSheet.Lock.Title",
+      "content": "E20.Tours.CharacterSheet.Lock.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "sidebar",
+      "app": "character",
+      "selector": ".essence20-sidebar",
+      "title": "E20.Tours.CharacterSheet.Sidebar.Title",
+      "content": "E20.Tours.CharacterSheet.Sidebar.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "resources",
+      "app": "character",
+      "selector": ".essence20-sidebar-resources",
+      "title": "E20.Tours.CharacterSheet.Resources.Title",
+      "content": "E20.Tours.CharacterSheet.Resources.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "special",
+      "app": "character",
+      "selector": ".essence20-sidebar-special",
+      "title": "E20.Tours.CharacterSheet.Special.Title",
+      "content": "E20.Tours.CharacterSheet.Special.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "morph",
+      "app": "character",
+      "selector": "[data-action=\"morph\"]",
+      "title": "E20.Tours.CharacterSheet.Morph.Title",
+      "content": "E20.Tours.CharacterSheet.Morph.Content",
+      "tooltipDirection": "RIGHT",
+      "optional": true
+    },
+    {
+      "id": "speeds",
+      "app": "character",
+      "selector": ".essence20-sidebar-speeds",
+      "title": "E20.Tours.CharacterSheet.Speeds.Title",
+      "content": "E20.Tours.CharacterSheet.Speeds.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "defenses",
+      "app": "character",
+      "selector": ".essence20-sidebar-defenses",
+      "title": "E20.Tours.CharacterSheet.Defenses.Title",
+      "content": "E20.Tours.CharacterSheet.Defenses.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "tabs",
+      "app": "character",
+      "selector": "nav.tabs",
+      "title": "E20.Tours.CharacterSheet.Tabs.Title",
+      "content": "E20.Tours.CharacterSheet.Tabs.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "gear",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".collapsible-item-container",
+      "title": "E20.Tours.CharacterSheet.Gear.Title",
+      "content": "E20.Tours.CharacterSheet.Gear.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.CharacterSheet.Outro.Title",
+      "content": "E20.Tours.CharacterSheet.Outro.Content"
+    }
+  ]
+}

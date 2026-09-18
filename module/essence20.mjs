@@ -3,6 +3,7 @@ import EffectWizard from "./apps/effect-wizard.mjs";
 import { addEffectKeyWarnings } from "./helpers/effect-key-warnings.mjs";
 import { auditEffectCatalog, probeClobberedKeys } from "./helpers/effect-catalog-audit.mjs";
 import * as data from "./data/index.mjs";
+import { createEffectMacro, toggleEffectMacro } from "./helpers/effects.mjs";
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
 import { Essence20Combat } from "./documents/combat.mjs";
@@ -26,6 +27,8 @@ import { handleRemoteChoiceRequest, handleRemoteChoiceResponse } from "./helpers
 import "./helpers/defense-choice.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
+import StatBlockImporter from "./apps/stat-block-importer.mjs";
+import { canSwapTokenForm, swapTokenForm } from "./helpers/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
 import { addConsummatePerformerButton, addExploitWeaknessButton, addRerollButtons, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
@@ -49,6 +52,8 @@ import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
 import { applyThemeClass, refreshChatMessageThemes, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
 import { updateRoleCache } from "./helpers/utils.mjs";
+import { registerEssence20Tours, sweepTourDemoContent } from "./tours/index.mjs";
+import { activateWelcomeOfferListeners, offerWelcomeTour } from "./tours/welcome-offer.mjs";
 
 function registerSystemSettings() {
   game.settings.register("essence20", "systemMigrationVersion", {
@@ -119,6 +124,7 @@ Hooks.once("init", async function () {
     // Live counterpart: applies each numeric key to a throwaway actor to catch fields derived
     // data silently overwrites, which no static check can see. Creates and deletes an Actor.
     probeClobberedKeys,
+    toggleEffectMacro,
   };
 
   // Add custom constants for configuration.
@@ -383,6 +389,11 @@ Handlebars.registerHelper('default', function(value) {
 // Perform one-time pre-localization and sorting of some configuration objects
 Hooks.once("i18nInit", () => performPreLocalization(CONFIG.E20));
 
+// Register the system's guided tours. This has to be "setup" rather than "init": game.tours exists
+// from the Game constructor, but the Tour constructor reads game.i18n._fallback, which isn't
+// populated until i18n.initialize() runs — which core does after "init" and before "setup".
+Hooks.once("setup", registerEssence20Tours);
+
 // Foundry only re-themes its own core UI (sidebar, HUD, compendium, etc.) when the
 // color scheme setting changes; re-theme any open Essence20 sheets/apps in place too.
 Hooks.on("clientSettingChanged", (key) => {
@@ -402,10 +413,25 @@ Hooks.once("ready", async function () {
     auditEffectCatalog();
   }
 
+  // Remove demo actors from a tour that was interrupted rather than exited (refresh, crash).
+  await sweepTourDemoContent();
+
+  // Point first-time users at the guided tours, once per world.
+  await offerWelcomeTour();
+
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => {
-    if (["Item", "ActiveEffect"].includes(data.type)) {
+    // Both branches return false to suppress Foundry's own handling, which would otherwise make a
+    // generic "toggle this document's sheet" macro (Hotbar##onDragDrop -> _createDocumentSheetToggle).
+    // ActiveEffect was listed here from the start but only ever reached createItemMacro, which
+    // returns early for a non-Item - so dropping an effect silently did nothing.
+    if (data.type === "Item") {
       createItemMacro(data, slot);
+      return false;
+    }
+
+    if (data.type === "ActiveEffect") {
+      createEffectMacro(data, slot);
       return false;
     }
   });
@@ -490,6 +516,64 @@ function addCompendiumBrowserFooterButton(app, html) {
 Hooks.on("renderCompendiumDirectory", addCompendiumBrowserFooterButton);
 Hooks.on("renderItemDirectory", addCompendiumBrowserFooterButton);
 
+// The same footer treatment on the Actors tab, for the Stat Block Importer. GM-only: it creates
+// world Actors, which a player couldn't do anyway, so showing them the button would just be a
+// button that errors.
+function addStatBlockImporterFooterButton(app, html) {
+  if (!game.user.isGM) {
+    return;
+  }
+
+  const footer = html.querySelector('[data-application-part="footer"]');
+  if (!footer || footer.querySelector(".essence20-open-stat-block-importer")) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.classList.add("essence20-open-stat-block-importer");
+  button.innerHTML = `<i class="fa-solid fa-file-import" inert></i><span>${game.i18n.localize("E20.StatBlockImportOpenTooltip")}</span>`;
+  button.addEventListener("click", () => {
+    new StatBlockImporter().render(true);
+  });
+
+  footer.appendChild(button);
+}
+
+Hooks.on("renderActorDirectory", addStatBlockImporterFooterButton);
+
+/**
+ * "Make My Monster Grow" on the token HUD - the in-combat half (mode B). Only offered for a
+ * token whose Threat actually has a linked other form, so the HUD stays clean for everything
+ * else, and only to a GM, since the swap rewrites a Token and a Combatant.
+ */
+Hooks.on("renderTokenHUD", (hud, html) => {
+  if (!game.user.isGM || !canSwapTokenForm(hud.document)) {
+    return;
+  }
+
+  const column = html.querySelector(".col.right") ?? html.querySelector(".col.left");
+  if (!column || column.querySelector(".essence20-monster-grow")) {
+    return;
+  }
+
+  const isGrown = Boolean(hud.document.actor?.getFlag("essence20", "normalFormId"));
+  const button = document.createElement("button");
+  button.type = "button";
+  button.classList.add("control-icon", "essence20-monster-grow");
+  button.dataset.tooltip = game.i18n.localize(isGrown
+    ? "E20.MonsterGrowShrinkTooltip" : "E20.MonsterGrowSwapTooltip");
+  button.innerHTML = `<i class="fa-solid fa-${isGrown ? "down-left-and-up-right-to-center" : "up-right-and-down-left-from-center"}"></i>`;
+  button.addEventListener("click", async () => {
+    const swapped = await swapTokenForm(hud.document);
+    if (swapped) {
+      ui.notifications.info(game.i18n.format("E20.MonsterGrowSwapped", { name: swapped.name }));
+    }
+  });
+
+  column.appendChild(button);
+});
+
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
   addRerollButtons(app, html);
@@ -500,6 +584,7 @@ Hooks.on("renderChatMessageHTML", (app, html, data) => {
   attachCheckCardListeners(app, html);
   hideDifficultyForNonGm(app, html);
   applyChatMessageSystemColor(app, html);
+  activateWelcomeOfferListeners(app, html);
   applyThemeClass(html);
 });
 

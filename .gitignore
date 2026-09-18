@@ -21,3 +21,9 @@ css/essence20.css.map
 
 # Jest coverage report (npm test -- --coverage)
 coverage/
+
+# Compiled compendium packs. Only packs/*/_source/*.json is source; the LevelDB files beside
+# it (CURRENT, LOCK, LOG, MANIFEST-*, *.log, *.ldb) are build output from `npm run build:db`,
+# and Foundry rewrites them again every time it opens a world against this checkout.
+packs/*/*
+!packs/*/_source/
