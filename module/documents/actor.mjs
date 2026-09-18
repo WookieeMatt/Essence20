@@ -118,19 +118,6 @@ const FIREPROOF_ID = "Compendium.essence20.cobra_codex.Item.gaOLMFlImcLRmQV0";
 // own doc comment. Checked in _prepareMovement() below, same permitted movement-math touch-point
 // Wisdom of the Elders' Lightfoil Wings/Warrior Rush already use.
 
-// Spark of the Ancients (Enigma of Combination, General Perk, p.41): "Your maximum Energon Pool
-// is increased by 2, and you regain a single Energon Point at the beginning of any scene. You do,
-// however, always register as having the highest amount of Energon in a scene for the purpose of
-// scanners, Insecticon hunger, and other related effects." Only the flat +2 max is built, the
-// same additive-on-top-of-whatever-already-exists shape Personal Power Supply's own +1-per-5-
-// levels grant already establishes just below. The "regain 1 Energon at the beginning of any
-// scene" half has nothing to attach to - unlike Personal Power's own real `regeneration` field,
-// Energon has no such field at all, and this project has no scene-boundary hook anywhere (a
-// repeatedly-documented gap) to fire a scene-start regen from even if one existed. "Always
-// register as highest Energon for scanners" is pure narrative - no scanner/detection mechanic
-// exists to hook it to.
-const SPARK_OF_THE_ANCIENTS_ID = "Compendium.essence20.enigma_of_combination.Item.zqPSjUwr1Y7OvGfD";
-
 // Warrior Rush (Wrecker Focus, 1st level, p.92) - see its own check in _prepareMovement() below.
 const WARRIOR_RUSH_ID = `${TF_CRB}jTNi4jENlLEq8ruS`;
 const THUNDEROUS_ADVANCE_ID = "Compendium.essence20.gi_joe_crb.Item.B0yM8ewEoYJb1GBg";
@@ -572,6 +559,18 @@ export class Essence20Actor extends Actor {
    * Score"), for actors that can transform. Non-transforming actors (vehicles, etc.) keep
    * whatever value was set manually, since they may use system.energon.normal as literal fuel
    * capacity rather than the Cybertronian Energon Points resource.
+   *
+   * Note the assignment below is `=`, not `+=`: this method OWNS the value, which is why anything
+   * wanting to add to the pool has to land after it. Spark of the Ancients (Enigma of
+   * Combination, General Perk, p.41 - "Your maximum Energon Pool is increased by 2") used to be a
+   * branch at the bottom of this method for exactly that reason; it is now an ordinary Active
+   * Effect on the compendium Perk itself (packs/eocitems/_source/Spark_Of_the_Ancients_*.json),
+   * applied in the FINAL phase so core runs it after prepareDerivedData rather than before, where
+   * this assignment would simply overwrite it. Any future "+N maximum Energon" effect needs that
+   * same phase - see docs/ACTIVE_EFFECTS_UI_PLAN.md §13. The Perk's other two halves ("regain 1
+   * Energon at the beginning of any scene", "always register as having the highest amount of
+   * Energon") remain unbuilt: there is no scene-boundary hook and no scanner mechanic to hang
+   * them on.
    */
   _prepareEnergon() {
     const hasOrganicEnergon = actorHasPerk(this, ORGANIC_ENERGON_ID);
@@ -591,12 +590,6 @@ export class Essence20Actor extends Actor {
       this.system.energon.normal.max = actorHasPerk(this, ENERGON_BATTERY_ID)
         ? Math.max(...values)
         : lowest;
-    }
-
-    // Spark of the Ancients - see SPARK_OF_THE_ANCIENTS_ID's own comment above. Applies on top of
-    // either branch above - RAW names no restriction to transforming actors specifically.
-    if (actorHasPerk(this, SPARK_OF_THE_ANCIENTS_ID)) {
-      this.system.energon.normal.max += 2;
     }
   }
 
@@ -827,7 +820,12 @@ export class Essence20Actor extends Actor {
     // just above.
     const gravityOptionalActive = actorHasPerk(this, GRAVITY_OPTIONAL_ID) && isGravityOptionalActive(this);
 
-    const movementTypes = ['aerial', 'ground', 'climb', 'swim'];
+    // Order matters here and is not alphabetical: 'climb' is processed AFTER 'ground' so Wire
+    // Work's climb-equals-ground clause can read ground's finished total (see WIRE_WORK_ID's own
+    // comment above). 'burrow' is appended last because nothing derives from it - unlike climb and
+    // swim it has no half-Ground default, since an actor only ever has Burrow Movement because
+    // something explicitly granted it (Burrower, tsitems).
+    const movementTypes = ['aerial', 'ground', 'climb', 'swim', 'burrow'];
     for (const movementType of movementTypes) {
       if (airBornOption && (movementType == 'ground' || movementType == 'aerial')) {
         system.movement[movementType].base = airBornOption[movementType];

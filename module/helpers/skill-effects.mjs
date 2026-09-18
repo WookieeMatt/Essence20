@@ -1,56 +1,22 @@
 import { E20 } from "./config.mjs";
+import { readChanges, resolveRollScopedChange, summarize } from "./effect-catalog.mjs";
 
-// Which per-skill schema fields (module/data/actor/templates/common.mjs#makeSkillFields) a
-// toggleable effect's change can target - anything else on the actor (Health, a Defense,
-// Movement, ...) isn't roll-scoped in a way that makes sense as a one-roll toggle here.
-const SKILL_FIELDS = new Set([
-  "edge", "snag", "shift", "shiftUp", "shiftDown", "modifier", "isSpecialized", "canCritD2",
-]);
-
-// Which fields on an Essence-wide shift (common.mjs#makeEssenceShift) apply to EVERY skill under
-// that Essence (or, for "any", every skill at all) rather than one specific skill - e.g. a
-// disabled "system.essenceShifts.speed.edge" effect would grant Edge on any Speed skill, Targeting
-// included, if it were on. untrainedBonus is the one field with no direct skillRollOptions
-// counterpart of its own - see applySkillEffectBonus's own handling of it below.
-const ESSENCE_SHIFT_FIELDS = new Set(["edge", "snag", "shiftUp", "shiftDown", "untrainedBonus"]);
-
-/**
- * Resolves an ActiveEffect change's key to the {scope, field} it targets, if any - `scope` is
- * "skill" for a change scoped to the exact skill being rolled, or "essence" for one scoped to
- * that skill's own Essence (or "any", which affects every skill) - or null if the key doesn't
- * target a roll-relevant field on either.
- * @param {String} key
- * @param {String} skillKey
- * @param {String} essence
- * @returns {{scope: String, field: String}|null}
- */
-function parseChangeTarget(key, skillKey, essence) {
-  if (typeof key !== "string") {
-    return null;
-  }
-
-  const skillPrefix = `system.skills.${skillKey}.`;
-  if (key.startsWith(skillPrefix)) {
-    const field = key.slice(skillPrefix.length);
-    return SKILL_FIELDS.has(field) ? { scope: "skill", field } : null;
-  }
-
-  for (const essenceKey of essence === "any" ? ["any"] : [essence, "any"]) {
-    const essencePrefix = `system.essenceShifts.${essenceKey}.`;
-    if (key.startsWith(essencePrefix)) {
-      const field = key.slice(essencePrefix.length);
-      return ESSENCE_SHIFT_FIELDS.has(field) ? { scope: "essence", field } : null;
-    }
-  }
-
-  return null;
-}
+// Which fields a toggleable effect's change may target is the effect catalog's business now
+// (helpers/effect-catalog.mjs#resolveRollScopedChange, driven by each property's own
+// `rollScoped` flag) rather than two hand-maintained Sets of field-name strings kept in step
+// with the schema by memory. The catalog builds every key from the same templates the Effect
+// Wizard writes from, so "which keys are real" and "which keys matter to a roll" can no longer
+// disagree - and a new roll-relevant property is one edit in the catalog instead of two edits
+// in two files. The set this resolves to is unchanged: the per-skill fields
+// (edge/snag/shift/shiftUp/shiftDown/modifier/isSpecialized/canCritD2) plus the Essence-wide
+// ones (edge/snag/shiftUp/shiftDown/untrainedBonus), which is exactly what
+// applySkillEffectBonus below knows how to fold into one roll.
 
 /**
  * Every currently-disabled effect on the actor (its own, or transferred from an owned Item like a
  * Perk - see Actor#allApplicableEffects) that would change something about the given skill, or
  * its Essence (which reaches every skill under that Essence, "any" reaching every skill at all -
- * see parseChangeTarget), if it were turned on. Surfaced in the Roll Options Dialog as an
+ * see resolveRollScopedChange), if it were turned on. Surfaced in the Roll Options Dialog as an
  * optional, roll-scoped toggle (see applySkillEffectBonus below) - the same "off by default, opt
  * in for just this roll" shape Aiming already has, but sourced from real Active Effects instead
  * of a hardcoded bonus. A disabled effect otherwise never applies at all (Foundry's own default
@@ -58,7 +24,7 @@ function parseChangeTarget(key, skillKey, essence) {
  * make the roll, then remember to disable it again - this lets a situational bonus stay off by
  * default and still be reachable from the one place it actually matters.
  *
- * Only changes resolving to a roll-relevant field (see parseChangeTarget) are considered - an
+ * Only changes resolving to a roll-relevant field (see resolveRollScopedChange) are considered - an
  * effect that also changes something else (a different skill/Essence, Health, a Defense, ...)
  * still shows, but only its relevant changes are returned, so toggling it on here can't silently
  * also grant whatever else it does.
@@ -66,7 +32,7 @@ function parseChangeTarget(key, skillKey, essence) {
  * @param {String} skillKey
  * @param {String} essence   The Essence the skill being rolled belongs to (E20.originSkills'
  *   grouping) - "any" for a skill like Weird/Spellcasting that isn't tied to one Essence.
- * @returns {Array<{id: String, name: String, changes: Array<Object>}>}
+ * @returns {Array<{id: String, name: String, changes: Array<Object>, summaries: Array<String>}>}
  */
 export function getToggleableSkillEffects(actor, skillKey, essence) {
   const effects = actor.allApplicableEffects ? [...actor.allApplicableEffects()] : (actor.effects ?? []);
@@ -76,11 +42,17 @@ export function getToggleableSkillEffects(actor, skillKey, essence) {
       continue;
     }
 
-    const changes = (effect.changes ?? [])
-      .map(change => ({ ...change, ...parseChangeTarget(change.key, skillKey, essence) }))
+    const changes = readChanges(effect)
+      .map(change => ({ ...change, ...resolveRollScopedChange(change.key, skillKey, essence) }))
       .filter(change => change.field);
     if (changes.length) {
-      results.push({ id: effect.id, name: effect.name, changes });
+      // The dialog used to offer these by name alone ("Shadow Training"), which tells a player
+      // nothing about what toggling it will do to the roll in front of them. The catalog already
+      // knows how to say it in book vocabulary, so say it - only for the changes that actually
+      // apply to THIS roll, so an effect that also boosts Health doesn't advertise that here.
+      const summaries = changes.map(change => summarize(change)).filter(summary => !!summary);
+
+      results.push({ id: effect.id, name: effect.name, changes, summaries });
     }
   }
 

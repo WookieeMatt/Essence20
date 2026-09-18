@@ -26,7 +26,7 @@
       "_id": "yicsRepL5eoee2Ov",
       "changes": [
         {
-          "key": "system.skills.smarts.alertness.shiftDown",
+          "key": "system.skills.alertness.shiftDown",
           "mode": 2,
           "value": "1",
           "priority": null

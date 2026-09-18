@@ -989,7 +989,12 @@
     <span>{{localize 'E20.RollDialogAvailableEffects'}}</span>
     {{#each availableSkillEffects}}
     <div class="flexrow align-center roll-dialog-toggle">
-      <span>{{name}}</span>
+      <span>
+        {{name}}
+        {{#if summaries.length}}
+          <span class="roll-dialog-effect-summary">{{#each summaries}}{{this}}{{#unless @last}}; {{/unless}}{{/each}}</span>
+        {{/if}}
+      </span>
       <label class="switch">
         <input type="checkbox" name="skillEffect-{{id}}" />
         <span class="switch-slider"></span>

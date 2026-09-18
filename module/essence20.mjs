@@ -1,4 +1,7 @@
 // Import data models
+import EffectWizard from "./apps/effect-wizard.mjs";
+import { addEffectKeyWarnings } from "./helpers/effect-key-warnings.mjs";
+import { auditEffectCatalog, probeClobberedKeys } from "./helpers/effect-catalog-audit.mjs";
 import * as data from "./data/index.mjs";
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
@@ -110,6 +113,12 @@ Hooks.once("init", async function () {
     Essence20Item,
     CompendiumBrowser: Essence20CompendiumBrowser,
     rollItemMacro,
+    // Developer tooling: cross-checks the Effect Wizard's catalog against the actor DataModels it
+    // claims to describe, in both directions. See helpers/effect-catalog-audit.mjs.
+    auditEffectCatalog,
+    // Live counterpart: applies each numeric key to a throwaway actor to catch fields derived
+    // data silently overwrites, which no static check can see. Creates and deletes an Actor.
+    probeClobberedKeys,
   };
 
   // Add custom constants for configuration.
@@ -386,6 +395,13 @@ Hooks.on("clientSettingChanged", (key) => {
 Hooks.once("ready", async function () {
   runMigrations();
 
+  /* Opt-in developer check that the Effect Wizard's catalog still matches the actor schemas -
+     off by default, since it is noise for a player. Set CONFIG.debug.essence20Catalog = true (or
+     call game.essence20.auditEffectCatalog() from the console at any time). */
+  if (CONFIG.debug?.essence20Catalog) {
+    auditEffectCatalog();
+  }
+
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => {
     if (["Item", "ActiveEffect"].includes(data.type)) {
@@ -660,6 +676,28 @@ Hooks.on("combatStart", (combat) => {
    needing this. */
 Hooks.on("deleteCombat", (combat) => {
   applyHardCorpsDeferredDefeat(combat);
+});
+
+/* Reaches the Effect Wizard from an effect that already exists, for adding another change to it
+   later. Deliberately a header-control entry on Foundry's own ActiveEffectConfig rather than a
+   subclassed sheet: the normal editor stays exactly as core renders it, for everyone who already
+   knows the key vocabulary. ApplicationV2 dispatches getHeaderControls{ClassName} up the whole
+   inheritance chain (client/applications/api/application.mjs#_headerControlButtons), and each
+   entry may carry its own onClick - see docs/ACTIVE_EFFECTS_UI_PLAN.md §3. */
+Hooks.on("getHeaderControlsActiveEffectConfig", (app, controls) => {
+  controls.push({
+    icon: "fa-solid fa-wand-magic-sparkles",
+    label: "E20.EffectWizardTitle",
+    action: "essence20EffectWizard",
+    visible: () => app.isEditable,
+    onClick: () => new EffectWizard(app.document).render(true),
+  });
+});
+
+/* Flags a change key that will never apply, inline on Foundry's own effect sheet - see
+   helpers/effect-key-warnings.mjs. Decoration only; the sheet itself is untouched. */
+Hooks.on("renderActiveEffectConfig", (app, html) => {
+  addEffectKeyWarnings(app, html);
 });
 
 /* Every DialogV2 (ours or Foundry core's own, e.g. the item-creation dialog) gets the same

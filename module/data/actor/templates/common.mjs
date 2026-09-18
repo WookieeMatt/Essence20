@@ -151,6 +151,7 @@ export const common = () => ({
   isLocked: makeBool(false),
   movement: new fields.SchemaField({
     aerial: makeMovementFields(),
+    burrow: makeMovementFields(),
     climb: makeMovementFields(),
     ground: makeMovementFields(),
     swim: makeMovementFields(),

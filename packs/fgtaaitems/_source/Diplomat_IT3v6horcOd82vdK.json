@@ -33,12 +33,6 @@
           "mode": 2,
           "value": "2",
           "priority": null
-        },
-        {
-          "key": "",
-          "mode": 2,
-          "value": "",
-          "priority": null
         }
       ],
       "tint": "#ffffff",

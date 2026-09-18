@@ -1,3 +1,5 @@
+import EffectWizard from "../apps/effect-wizard.mjs";
+import { summarizeEffect } from "./effect-catalog.mjs";
 import { checkIsLocked } from "../helpers/actor.mjs";
 
 /**
@@ -35,14 +37,21 @@ export function onManageActiveEffect(event, owner) {
 
 /**
  * Create a new Active Effect on an actor or item.
+ *
+ * Offers two ways in, because the two audiences want opposite things: someone who knows the key
+ * vocabulary wants the blank effect and the normal editor they have always had, and someone who
+ * doesn't wants to be asked what the effect should DO. Which of those happens is the client's own
+ * "effectAddBehavior" setting - "ask" (the default) prompts, "wizard"/"blank" skip straight
+ * through, so nobody has to answer the same question every time. See
+ * docs/ACTIVE_EFFECTS_UI_PLAN.md §5.
  * @param {MouseEvent} event The click event to create the AE
  * @param {Document} owner The item or actor that the AE is created on.
  * @param {HTMLElement} target The element carrying data-action (see this function's own doc
  *   comment on onEditActiveEffect below for why this - not event.target - is what carries the
  *   dataset this needs).
- * @returns
+ * @returns {Promise<ActiveEffect[]>|void}
  */
-export function onCreateActiveEffect(event, owner, target) {
+export async function onCreateActiveEffect(event, owner, target) {
   event.preventDefault();
   const data = target.dataset;
 
@@ -50,13 +59,58 @@ export function onCreateActiveEffect(event, owner, target) {
     return;
   }
 
-  return owner.createEmbeddedDocuments("ActiveEffect", [{
-    name: "New Effect",
+  const behavior = game.settings.get("essence20", "effectAddBehavior");
+  let useWizard = behavior === "wizard";
+
+  if (behavior === "ask") {
+    const choice = await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("E20.EffectAddChooseTitle") },
+      classes: ["window-app"],
+      content: `<p>${game.i18n.localize("E20.EffectAddChoosePrompt")}</p>`,
+      buttons: [
+        {
+          label: game.i18n.localize("E20.EffectAddChooseWizard"),
+          action: "wizard",
+          icon: "fa-solid fa-wand-magic-sparkles",
+        },
+        {
+          label: game.i18n.localize("E20.EffectAddChooseBlank"),
+          action: "blank",
+          icon: "fa-solid fa-file",
+        },
+      ],
+      // Dismissing the dialog means "I didn't mean to click that" - create nothing at all,
+      // rather than silently leaving a blank effect behind.
+      rejectClose: false,
+    });
+
+    if (!choice) {
+      return;
+    }
+
+    useWizard = choice === "wizard";
+  }
+
+  const effectData = {
+    name: game.i18n.localize("E20.EffectNewName"),
     img: "icons/svg/aura.svg",
     origin: owner.uuid,
     "duration.rounds": data.effectType === "temporary" ? 1 : undefined,
     disabled: data.effectType === "inactive",
-  }]);
+  };
+
+  if (useWizard) {
+    // Nothing is created yet - the wizard creates it, complete with its changes, only when the
+    // author clicks "Add to Effect". Cancelling therefore leaves the sheet untouched instead of
+    // stranding an empty "New Effect" they have to notice and delete. Opening the normal effect
+    // sheet afterwards is deliberate: the wizard teaches the vocabulary rather than hiding it, so
+    // the author sees the rows it produced in the editor they will use next time.
+    EffectWizard.forNewEffect(owner, effectData, { openSheetWhenDone: true }).render(true);
+
+    return;
+  }
+
+  return owner.createEmbeddedDocuments("ActiveEffect", [effectData]);
 }
 
 /**
@@ -165,6 +219,12 @@ export function prepareActiveEffectCategories(effects) {
 
   // Iterate over active effects, classifying them into categories
   for (const effect of effects) {
+    // A plain-English line per change ("Infiltration is shifted up by 1"), so an effect can be
+    // read off the sheet without opening it - the other half of the "I don't know what the keys
+    // look like" problem the wizard solves for authoring. Changes the catalog can't describe are
+    // simply left out rather than rendered as raw paths.
+    effect.e20Summaries = summarizeEffect(effect);
+
     if (effect.disabled) categories.inactive.effects.push(effect);
     else if (effect.isTemporary) categories.temporary.effects.push(effect);
     else categories.passive.effects.push(effect);

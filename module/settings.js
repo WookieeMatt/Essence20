@@ -91,6 +91,15 @@ export const registerSettings = function () {
     pony: game.i18n.localize("E20.ThemePony"),
   };
 
+  // What the Effects tab's add button does. "ask" offers both; anyone who already knows the key
+  // vocabulary can set "blank" and never see the prompt again, which is the whole premise of the
+  // wizard being opt-in rather than a replacement for the effect sheet.
+  const EFFECT_ADD_OPTIONS = {
+    ask: game.i18n.localize("E20.EffectAddBehaviorAsk"),
+    wizard: game.i18n.localize("E20.EffectAddBehaviorWizard"),
+    blank: game.i18n.localize("E20.EffectAddBehaviorBlank"),
+  };
+
   /* -------------------------------------------- */
   /*  Config settings                             */
   /* -------------------------------------------- */
@@ -102,6 +111,16 @@ export const registerSettings = function () {
     type: String,
     choices: ACCESS_OPTIONS,
     onChange: debouncedReload,
+  });
+
+  game.settings.register(systemName, "effectAddBehavior", {
+    name: game.i18n.localize("E20.EffectAddBehaviorLabel"),
+    hint: game.i18n.localize("E20.EffectAddBehaviorHint"),
+    scope: "client",
+    config: true,
+    default: "ask",
+    type: String,
+    choices: EFFECT_ADD_OPTIONS,
   });
 
   game.settings.register(systemName, "sptGmPointsArePublic", {

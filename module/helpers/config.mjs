@@ -1174,6 +1174,7 @@ preLocalize("megaformTraitTypes");
 // Types of movement used by Actors
 E20.movementTypes = {
   aerial: "E20.MovementTypeAerial",
+  burrow: "E20.MovementTypeBurrow",
   climb: "E20.MovementTypeClimb",
   ground: "E20.MovementTypeGround",
   swim: "E20.MovementTypeSwim",

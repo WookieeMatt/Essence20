@@ -393,6 +393,7 @@ describe("_prepareMovement", () => {
       movement: {
         aerial: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         ground: { base: 30, bonus: 5, morphed: 10, altMode: 60 },
+        burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
       },
@@ -400,6 +401,31 @@ describe("_prepareMovement", () => {
     };
   }
 
+  // Burrow Movement (Burrower, tsitems) - added as a full movement type rather than left as a
+  // dangling Active Effect key. Unlike climb/swim it has NO half-Ground default: an actor only
+  // has Burrow Movement because something explicitly granted it.
+  test("burrow stays at zero when nothing grants it", () => {
+    const actor = makeActor('playerCharacter', movementSystem());
+    actor._prepareMovement();
+    expect(actor.system.movement.burrow.total).toBe(0);
+  });
+
+  test("burrow granted by an effect overriding its base is totalled like any other type", () => {
+    const system = movementSystem();
+    // Exactly what Burrower's own Active Effect does: override system.movement.burrow.base.
+    system.movement.burrow.base = 25;
+    const actor = makeActor('playerCharacter', system);
+    actor._prepareMovement();
+    expect(actor.system.movement.burrow.total).toBe(25);
+  });
+
+  test("burrow honours bonus and morphed the same way ground does", () => {
+    const system = movementSystem({ isMorphed: true });
+    system.movement.burrow = { base: 25, bonus: 5, morphed: 10, altMode: 0 };
+    const actor = makeActor('playerCharacter', system);
+    actor._prepareMovement();
+    expect(actor.system.movement.burrow.total).toBe(40);
+  });
   test("normal movement uses base + bonus", () => {
     const actor = makeActor('playerCharacter', movementSystem());
     actor._prepareMovement();
@@ -1054,6 +1080,7 @@ describe("_prepareMovement", () => {
         movement: {
           aerial: { base: 40, bonus: 0, morphed: 0, altMode: 0 },
           ground: { base: 30, bonus: 5, morphed: 10, altMode: 60 },
+          burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         },
@@ -1195,6 +1222,7 @@ describe("_prepareMovement", () => {
         movement: {
           aerial: { base: 5, bonus: 0, morphed: 0, altMode: 0 },
           ground: { base: 30, bonus: 5, morphed: 10, altMode: 60 },
+          burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         },
@@ -1301,6 +1329,7 @@ describe("_prepareMovement", () => {
         movement: {
           aerial: { base: 40, bonus: 0, morphed: 0, altMode: 0 },
           ground: { base: 30, bonus: 5, morphed: 10, altMode: 60 },
+          burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         },
@@ -1396,6 +1425,7 @@ describe("_prepareMovement", () => {
       movement: {
         aerial: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         ground: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+        burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
       },
@@ -1520,42 +1550,22 @@ describe("_prepareEnergon", () => {
   });
 
   describe("Spark of the Ancients (Enigma of Combination, General Perk, p.41)", () => {
-    const SPARK_OF_THE_ANCIENTS_ID = "Compendium.essence20.enigma_of_combination.Item.zqPSjUwr1Y7OvGfD";
-
-    test("adds +2 on top of a transforming actor's own pool", () => {
-      const actor = makeActor('playerCharacter', energonSystem(), {
-        perk: [{ type: 'perk', flags: { core: { sourceId: SPARK_OF_THE_ANCIENTS_ID } } }],
-      });
-      actor._prepareEnergon();
-      expect(actor.system.energon.normal.max).toBe(4); // 2 (lowest) + 2
-    });
-
-    test("stacks with Energon Battery", () => {
-      const actor = makeActor('playerCharacter', energonSystem(), {
-        perk: [
-          { type: 'perk', flags: { core: { sourceId: SPARK_OF_THE_ANCIENTS_ID } } },
-          { type: 'perk', flags: { core: { sourceId: ENERGON_BATTERY_ID } } },
-        ],
-      });
-      actor._prepareEnergon();
-      expect(actor.system.energon.normal.max).toBe(7); // 5 (highest) + 2
-    });
-
-    test("adds +2 on top of a non-transforming Organic Energon actor's own pool", () => {
-      const actor = makeActor('playerCharacter', energonSystem({ canTransform: false, energon: { normal: { max: 99 } } }), {
-        perk: [
-          { type: 'perk', flags: { core: { sourceId: SPARK_OF_THE_ANCIENTS_ID } } },
-          { type: 'perk', flags: { core: { sourceId: "Compendium.essence20.field_guide_action_adventure.Item.ic1SwixGi3tstr5y" } } },
-        ],
-      });
-      actor._prepareEnergon();
-      expect(actor.system.energon.normal.max).toBe(3); // floor(2/2) + 2
-    });
-
-    test("doesn't apply without the Perk", () => {
+    // No longer computed here: the Perk carries an ordinary Active Effect targeting
+    // system.energon.normal.max, applied in the FINAL phase so it lands after this method has
+    // assigned the pool. What this method owes that effect is a clean, fully-computed maximum
+    // with nothing Perk-specific folded in - which is what these two assert.
+    test("computes the pool from Essences alone, leaving room for a final-phase effect", () => {
       const actor = makeActor('playerCharacter', energonSystem());
       actor._prepareEnergon();
-      expect(actor.system.energon.normal.max).toBe(2);
+      expect(actor.system.energon.normal.max).toBe(2); // the lowest Essence, and nothing else
+    });
+
+    test("still defers to Energon Battery, which an effect then adds on top of", () => {
+      const actor = makeActor('playerCharacter', energonSystem(), {
+        perk: [{ type: 'perk', flags: { core: { sourceId: ENERGON_BATTERY_ID } } }],
+      });
+      actor._prepareEnergon();
+      expect(actor.system.energon.normal.max).toBe(5); // the highest Essence, un-bonused
     });
   });
 });
@@ -1729,6 +1739,7 @@ describe("prepareDerivedData", () => {
       movement: {
         aerial: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         ground: { base: 30, bonus: 0, morphed: 0, altMode: 0 },
+        burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
       },
@@ -1768,6 +1779,7 @@ describe("prepareDerivedData", () => {
       movement: {
         aerial: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         ground: { base: 30, bonus: 0, morphed: 0, altMode: 0 },
+        burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
       },

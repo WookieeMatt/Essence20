@@ -29,6 +29,11 @@
           <div class="item-name effect-name flexrow">
             <img class="item-image" src="{{effect.img}}"/>
             <h4>{{effect.name}}</h4>
+            {{#if effect.e20Summaries.length}}
+              <ul class="effect-summaries">
+                {{#each effect.e20Summaries}}<li>{{this}}</li>{{/each}}
+              </ul>
+            {{/if}}
           </div>
           <div class="effect-source">{{effect.sourceName}}</div>
           <div class="effect-duration">{{effect.duration.name}}</div>

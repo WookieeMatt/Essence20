@@ -1,0 +1,159 @@
+.effect-wizard {
+  .effect-wizard__body {
+    gap: 0.6rem;
+    padding: 0.5rem;
+  }
+
+  .effect-wizard__intro {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+
+  .effect-wizard__search {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="search"] {
+      width: 100%;
+    }
+  }
+
+  // Search results sit directly under the box they came from, as a plain list of "Category >
+  // Target > Change" lines - picking one fills the builder below rather than being a separate
+  // mode of its own.
+  .effect-wizard__results {
+    list-style: none;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    max-height: 9rem;
+    overflow-y: auto;
+    border: 1px solid var(--color-border-light-tertiary, #7a7971);
+    border-radius: 3px;
+
+    li a {
+      display: block;
+      padding: 0.2rem 0.4rem;
+      cursor: pointer;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.08);
+      }
+    }
+  }
+
+  .effect-wizard__builder {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: flex-end;
+  }
+
+  .effect-wizard__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    flex: 1 1 8rem;
+
+    label {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+  }
+
+  .effect-wizard__value {
+    flex: 0 0 7rem;
+  }
+
+  .effect-wizard__hint {
+    margin: 0;
+    font-size: 0.85rem;
+  }
+
+  // The rule in plain English, before anything is written - the part that makes the wizard
+  // teach the vocabulary rather than hide it.
+  .effect-wizard__preview {
+    padding: 0.4rem 0.6rem;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.06);
+    font-style: italic;
+
+    &.--empty {
+      opacity: 0.6;
+    }
+
+    i {
+      margin-right: 0.3rem;
+    }
+  }
+
+  .effect-wizard__pending {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.2rem 0.4rem;
+      border-left: 3px solid var(--color-border-highlight, #ff6400);
+      background: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  .effect-wizard__footer {
+    gap: 0.5rem;
+    justify-content: flex-end;
+  }
+}
+
+// The per-change summaries under each effect on an Actor/Item Effects tab.
+.effect-summaries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.8rem;
+  opacity: 0.75;
+  font-style: italic;
+}
+
+// The inline key warning on Foundry's own Active Effect sheet (helpers/effect-key-warnings.mjs).
+// Sits under the key field of whichever change row is wrong, so the feedback is next to the
+// thing that is wrong rather than in a notification that scrolls away.
+.essence20-key-warning {
+  // Core renders each change as a grid row (key / type / value / priority / controls); these two
+  // make the message occupy a line of its own underneath rather than being crushed into the
+  // key column, whichever layout mode core is using.
+  grid-column: 1 / -1;
+  flex-basis: 100%;
+  width: 100%;
+  margin: 0.2rem 0 0;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  border-radius: 3px;
+
+  a {
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+  }
+}
+
+// What a toggleable Active Effect will actually do to this roll, under its name in the Roll
+// Options Dialog - "Shadow Training" alone says nothing about which way the dice move.
+.roll-dialog-effect-summary {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  font-style: italic;
+}

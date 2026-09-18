@@ -15,7 +15,31 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Spark of the Ancients",
+      "img": "icons/svg/aura.svg",
+      "_id": "SparkAncientsAE1",
+      "type": "base",
+      "system": {
+        "changes": [
+          {
+            "key": "system.energon.normal.max",
+            "type": "add",
+            "value": 2,
+            "phase": "final",
+            "priority": null
+          }
+        ]
+      },
+      "disabled": false,
+      "transfer": true,
+      "description": "",
+      "statuses": [],
+      "flags": {},
+      "_key": "!items.effects!zqPSjUwr1Y7OvGfD.SparkAncientsAE1"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

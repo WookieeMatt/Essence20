@@ -44,6 +44,7 @@ export const zordBase = () => ({
   }),
   movement: new fields.SchemaField({
     aerial: makeMovementFields(0),
+    burrow: makeMovementFields(0),
     climb: makeMovementFields(0),
     ground: makeMovementFields(40),
     swim: makeMovementFields(0),
