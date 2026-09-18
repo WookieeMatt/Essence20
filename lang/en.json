@@ -1780,7 +1780,7 @@
         },
         "Actors": {
           "Title": "Actors",
-          "Content": "Your characters, threats and contacts live here, alongside the system's vehicles, Zords and Megaforms.\nEssence20 uses a different sheet for each, so a Zord and a player character never have to share one layout."
+          "Content": "Your characters, threats and contacts live here, alongside the system's vehicles, Zords and Megaforms.\nEssence20 uses a specialized sheet layout for each type."
         },
         "Items": {
           "Title": "Items",
