@@ -94,6 +94,22 @@ export const registerSettings = function () {
   /* -------------------------------------------- */
   /*  Config settings                             */
   /* -------------------------------------------- */
+  // How a Threat's Health carries across when a placed token is swapped between its Normal and
+  // Grown forms - see helpers/monster-grow-swap.mjs#carryOverHealth for why both behaviours are
+  // canon.
+  game.settings.register(systemName, "monsterGrowHealthMode", {
+    name: game.i18n.localize("E20.MonsterGrowHealthMode"),
+    hint: game.i18n.localize("E20.MonsterGrowHealthModeHint"),
+    scope: "world",
+    config: true,
+    default: "proportional",
+    type: String,
+    choices: {
+      proportional: "E20.MonsterGrowHealthProportional",
+      absolute: "E20.MonsterGrowHealthAbsolute",
+      full: "E20.MonsterGrowHealthFull",
+    },
+  });
   game.settings.register(systemName, "sptAccess", {
     name: game.i18n.localize("E20.SptOptionAccess"),
     scope: "world",

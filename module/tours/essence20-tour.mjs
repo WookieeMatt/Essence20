@@ -61,6 +61,24 @@ export class Essence20Tour extends Tour {
   #opened = new Set();
 
   /**
+   * Watches the shared #tooltip element so a step evicted by an ordinary hover can be restored.
+   * @type {MutationObserver|null}
+   */
+  #tooltipObserver = null;
+
+  /**
+   * Pending restore timer, so a hover in and straight back out restores once rather than twice.
+   * @type {number|null}
+   */
+  #restoreTimer = null;
+
+  /**
+   * True while progress() is mid-transition, when the tooltip is expected to go quiet.
+   * @type {boolean}
+   */
+  #transitioning = false;
+
+  /**
    * Record an application the tour opened, so `#teardown` closes it later.
    * @template {foundry.applications.api.ApplicationV2} T
    * @param {T} app             The application.
@@ -108,6 +126,7 @@ export class Essence20Tour extends Tour {
     // A paused game swallows some of the interactions the tours demonstrate.
     game.togglePause(false);
     this.#skipped.clear();
+    this.#watchTooltip();
     return super.start();
   }
 
@@ -115,6 +134,7 @@ export class Essence20Tour extends Tour {
   exit() {
     this.#app = null;
     this.#skipped.clear();
+    this.#unwatchTooltip();
     const result = super.exit();
     this.#teardown();
     return result;
@@ -128,6 +148,7 @@ export class Essence20Tour extends Tour {
     // in-progress guard in `#teardown` then declines to clean up, and the windows this tour opened
     // survive into the following one. That is how the Skill Picker ended up still on screen two
     // tours later.
+    this.#unwatchTooltip();
     await this.#closeOpenedApps();
 
     const result = await super.complete();
@@ -190,7 +211,16 @@ export class Essence20Tour extends Tour {
    */
   async progress(stepIndex) {
     const previous = this.stepIndex;
-    await super.progress(stepIndex);
+
+    // _postStep() deactivates the tooltip between steps, which looks exactly like the eviction the
+    // observer watches for. Suppress it for the duration of the transition.
+    this.#transitioning = true;
+    this.#cancelRestore();
+    try {
+      await super.progress(stepIndex);
+    } finally {
+      this.#transitioning = false;
+    }
 
     // Only a step that is still current and still targetless needs skipping; super.progress() has
     // already run _preStep and resolved the target by this point.
@@ -731,5 +761,125 @@ export class Essence20Tour extends Tour {
     await app.attachWindow();
     await this._waitForRender(app);
     return app;
+  }
+
+  /* -------------------------------------------- */
+  /*  Tooltip eviction guard                      */
+  /* -------------------------------------------- */
+
+  /**
+   * Watch the shared tooltip element for the current step being evicted.
+   *
+   * Core renders a step *through* the tooltip system - Tour#_renderStep calls
+   * `game.tooltip.activate(targetElement, {html, cssClass: "tour ..."})` - and there is only one
+   * #tooltip element on the page. So hovering anything carrying a data-tooltip (a defense readout,
+   * a skill tally, a control's title) hands that element to TooltipManager#activate, which calls
+   * deactivate() first and drops the step on the floor. The tour stays "in progress" with its
+   * overlay up, but the panel and its Next button are gone, and the user is stuck.
+   *
+   * It is not recoverable by re-rendering alone: by then the sheet has usually re-rendered too, so
+   * `this.targetElement` is a detached node and TooltipManager#activate returns early for an
+   * element its ownerDocument no longer contains. Re-entering through progress() is what fixes it,
+   * because that re-runs _getTargetElement against the live DOM.
+   *
+   * This is the cause of the "the step disappeared and I can't continue" reports. Suppressing
+   * Foundry's own tooltips for the duration of a tour would also fix it, but several steps
+   * deliberately tell the reader to hover a value to see how it is calculated - so the step is
+   * restored after the hover instead, leaving that feature usable.
+   * @returns {void}
+   */
+  #watchTooltip() {
+    if (this.#tooltipObserver) return;
+
+    const tooltip = game.tooltip?.tooltip;
+    if (!tooltip) return;
+
+    // The element is a singleton that survives being moved between documents for detached windows
+    // (TooltipManager#activate adopts the same node rather than making a new one), so observing
+    // the node itself stays valid for the life of the tour.
+    this.#tooltipObserver = new MutationObserver(() => this.#onTooltipChanged());
+    this.#tooltipObserver.observe(tooltip, { attributes: true, attributeFilter: ["class"] });
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Stop watching the tooltip and drop any pending restore.
+   * @returns {void}
+   */
+  #unwatchTooltip() {
+    this.#tooltipObserver?.disconnect();
+    this.#tooltipObserver = null;
+    this.#cancelRestore();
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Cancel a scheduled restore.
+   * @returns {void}
+   */
+  #cancelRestore() {
+    if (this.#restoreTimer === null) return;
+    window.clearTimeout(this.#restoreTimer);
+    this.#restoreTimer = null;
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * React to the tooltip's classes changing.
+   * @returns {void}
+   */
+  #onTooltipChanged() {
+    if (this.#transitioning) return;
+    if (this.status !== Tour.STATUS.IN_PROGRESS) return;
+
+    // A step with no selector is its own <aside> appended to the body, not the shared tooltip, so
+    // nothing can evict it.
+    if (!this.currentStep?.selector) return;
+
+    const tooltip = game.tooltip?.tooltip;
+    if (!tooltip) return;
+
+    // Our step is on screen - either it was never evicted, or a restore has just landed.
+    if (tooltip.classList.contains("tour")) return this.#cancelRestore();
+
+    // Something else is being shown right now. That is the hover the user asked for, so let them
+    // read it; the restore happens once it goes away and this fires again.
+    if (tooltip.classList.contains("active")) return this.#cancelRestore();
+
+    // Neither ours nor anyone else's: the foreign tooltip has been dismissed and the step is owed
+    // back. Debounced, because a hover across several elements churns these classes.
+    this.#cancelRestore();
+    this.#restoreTimer = window.setTimeout(() => {
+      this.#restoreTimer = null;
+      this.#restoreStep();
+    }, 150);
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Put the current step back after it was evicted.
+   * @returns {Promise<void>}
+   */
+  async #restoreStep() {
+    if (this.#transitioning) return;
+    if (this.status !== Tour.STATUS.IN_PROGRESS) return;
+    if (game.tooltip?.tooltip?.classList.contains("tour")) return;
+
+    const index = this.stepIndex;
+    if (!Number.isFinite(index)) return;
+
+    try {
+      // progress() only tears the previous step down when the index actually changes, so
+      // re-entering the same index would leave the old overlay and fade-out behind and stack a
+      // second set on top. Tear down explicitly first.
+      await this._postStep();
+      await this.progress(index);
+    } catch (err) {
+      console.warn(`Essence20 | Tour "${this.id}" could not restore step ${index + 1}`, err);
+    }
   }
 }

@@ -4707,6 +4707,429 @@ body.game .window-app {
   gap: 6px;
 }
 
+/* Two-pane layout: the paste on the left, the live parse preview on the right. The body takes
+   the full available height and the preview pane is the only thing that scrolls, so editing the
+   paste never moves the Import button - same "one PART, root opts into its own scrolling" shape
+   _skill-picker.scss documents, except here the footer stays pinned outside the scroll area.
+   min-height: 0 is required for a flex child of .window-content (flex-flow: column) to shrink to
+   its container rather than growing to fit content. */
+.stat-block-importer .window-content {
+  padding: 1rem;
+}
+
+/* The PART's single root (ApplicationV2 allows only one per part) - stacks the two-pane body
+   above the footer, and passes the available height straight through to the body. */
+.stat-block-importer-root {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.stat-block-importer-body {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 1rem;
+  min-height: 0;
+}
+
+.stat-block-importer-source,
+.stat-block-importer-preview {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 50%;
+  min-height: 0;
+  min-width: 0;
+}
+
+.stat-block-importer-preview {
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.stat-block-importer-label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.stat-block-importer-text {
+  flex: 1 1 auto;
+  min-height: 0;
+  resize: none;
+  font-family: monospace;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+}
+
+.stat-block-importer-options {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.stat-block-importer-options label {
+  display: flex;
+  flex: 1 1 50%;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.stat-block-importer-name {
+  margin: 0 0 0.25rem;
+}
+
+.stat-block-importer-preview h3 {
+  margin: 0.5rem 0 0.25rem;
+}
+
+/* Two columns of label/value - a definition list rather than a table, since every row is a
+   single scalar and the values are short. */
+.stat-block-importer-summary {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 0.5rem;
+  margin: 0;
+}
+.stat-block-importer-summary dt {
+  font-weight: bold;
+}
+.stat-block-importer-summary dd {
+  margin: 0;
+}
+
+.stat-block-importer-scores {
+  display: flex;
+  gap: 1rem;
+}
+.stat-block-importer-scores > div {
+  flex: 1 1 50%;
+  min-width: 0;
+}
+
+.stat-block-importer-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.stat-block-importer-list li {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+.stat-block-importer-list li span:last-child {
+  opacity: 0.8;
+  text-align: right;
+}
+
+/* Whether an entry arrives as a real compendium copy (with its Active Effects) or as inert text
+   is the most important thing about an import, so it gets colour where the rest of the list stays
+   muted. Ambiguous means a match was chosen on the GM's behalf out of several same-named
+   candidates - worth distinguishing from a confident one. */
+.stat-block-importer-match-summary {
+  margin: 0 0 0.25rem;
+  opacity: 0.85;
+}
+
+.stat-block-importer-list .match-found {
+  color: #008000;
+}
+.stat-block-importer-list .match-ambiguous {
+  color: #ff6400;
+}
+.stat-block-importer-list .match-none {
+  opacity: 0.55;
+}
+
+.stat-block-importer-diagnostics {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Severity is carried by the icon colour rather than a background, so a long list of warnings
+     on a big stat block doesn't turn the whole pane into a wall of colour. */
+}
+.stat-block-importer-diagnostics li {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem 0;
+}
+.stat-block-importer-diagnostics li > div {
+  min-width: 0;
+}
+.stat-block-importer-diagnostics .severity-error i {
+  color: #ff0000;
+}
+.stat-block-importer-diagnostics .severity-warning i {
+  color: #ff6400;
+}
+.stat-block-importer-diagnostics .severity-info i {
+  opacity: 0.6;
+}
+.stat-block-importer-diagnostics .diagnostic-message {
+  display: block;
+}
+.stat-block-importer-diagnostics .diagnostic-line {
+  display: block;
+  font-size: 0.8em;
+  opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stat-block-importer-empty {
+  margin: auto;
+  opacity: 0.6;
+  text-align: center;
+}
+
+.stat-block-importer-footer {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+.stat-block-importer-footer button {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.stat-block-importer-error-count {
+  color: #ff0000;
+}
+
+.stat-block-importer-effect-caution {
+  color: #ff6400;
+  margin: 0 0 0.5rem;
+}
+
+/* Only shown when a paste held more than one block - names every Threat that will be created, so
+   a batch import is never a surprise. */
+.stat-block-importer-batch {
+  margin: 0 0 0.5rem;
+}
+.stat-block-importer-batch .batch-names {
+  display: block;
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+/* Reports that printed values were adjusted so a matched Perk's Active Effect lands on the page's
+   own number instead of overshooting it - reassurance, so styled quietly, unlike the caution. */
+.stat-block-importer-effect-netted {
+  margin: 0 0 0.25rem;
+  opacity: 0.8;
+}
+
+/* Options across the top, then a two-column before/after read-out, then the review list. The body
+   is the only thing that scrolls so the Create button stays put - same shape as
+   _stat-block-importer.scss, which this dialog is the sibling of. */
+.monster-grow-dialog .window-content {
+  padding: 1rem;
+}
+
+.monster-grow-root {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.monster-grow-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.monster-grow-body h3 {
+  align-items: baseline;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin: 0.5rem 0 0.25rem;
+}
+.monster-grow-body h3:first-child {
+  margin-top: 0;
+}
+.monster-grow-body h3 em {
+  font-size: 0.8em;
+  font-style: normal;
+  opacity: 0.6;
+}
+
+.monster-grow-option-grid {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+.monster-grow-option-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+.monster-grow-option-grid .monster-grow-checkbox {
+  align-items: center;
+  flex-direction: row;
+}
+
+.monster-grow-columns {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+.monster-grow-columns > div {
+  flex: 1 1 50%;
+  min-width: 0;
+}
+
+.monster-grow-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Only the rows the grow actually altered are highlighted, so a long read-out still shows at a
+     glance what the options did. */
+}
+.monster-grow-list li {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+.monster-grow-list li span:last-child {
+  opacity: 0.75;
+  text-align: right;
+}
+.monster-grow-list li.changed span:last-child {
+  font-weight: bold;
+  opacity: 1;
+}
+
+.monster-grow-inputs li {
+  align-items: center;
+}
+.monster-grow-inputs li .from-to {
+  flex: 1 1 auto;
+  opacity: 0.75;
+  text-align: right;
+}
+.monster-grow-inputs li input {
+  flex: 0 0 3.5rem;
+  text-align: center;
+}
+
+/* Turns red when the allocated Essence points don't add up to 2x the Threat Level increase - a
+   nudge rather than a block, since RAW is a guideline and a GM may deliberately spend fewer. */
+.monster-grow-points {
+  font-size: 0.85rem;
+  font-weight: normal;
+  opacity: 0.75;
+}
+.monster-grow-points.mismatch {
+  color: #ff0000;
+  opacity: 1;
+}
+
+.monster-grow-review {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.monster-grow-review li {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem 0;
+}
+.monster-grow-review li i {
+  color: #ff6400;
+}
+.monster-grow-review li div {
+  min-width: 0;
+}
+.monster-grow-review li strong {
+  display: block;
+}
+.monster-grow-review li span {
+  opacity: 0.8;
+}
+
+.monster-grow-footer {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+.monster-grow-footer button {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+/* The mode switch and its link picker sit above the rules block. When "link an actor I already
+   have" is chosen the whole generator UI is hidden, because none of it applies. */
+.monster-grow-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.monster-grow-linked {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+  margin: 0;
+}
+.monster-grow-linked i {
+  color: #008000;
+}
+.monster-grow-linked .monster-grow-unlink {
+  flex: 0 0 auto;
+  margin-left: auto;
+  width: auto;
+}
+
+.monster-grow-mode-picker,
+.monster-grow-link-picker label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Bounded rather than full-width. Stretched across the whole dialog (812px against the Growth
+   rules selects' 197px) this select stopped reading as a control at all: the border became a
+   banner and the dropdown chevron ended up a dialog-width away from its own label. The chrome was
+   always identical to the other selects - only the width was wrong. */
+.monster-grow-mode-picker {
+  max-width: 24rem;
+}
+
+.monster-grow-link-picker {
+  max-width: 32rem;
+}
+
+.monster-grow-link-picker {
+  align-items: flex-end;
+  display: flex;
+  gap: 0.5rem;
+}
+.monster-grow-link-picker label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.monster-grow-link-picker button {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+.monster-grow-no-candidates {
+  margin: 0;
+  opacity: 0.7;
+}
+
 select {
   color: var(--theme-text-color);
 }
