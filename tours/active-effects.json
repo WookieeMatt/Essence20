@@ -67,7 +67,7 @@
     {
       "id": "conditions",
       "sidebarTab": "compendium",
-      "selector": "#compendium",
+      "selector": "[data-pack=\"essence20.conditions\"]",
       "title": "E20.Tours.Effects.Conditions.Title",
       "content": "E20.Tours.Effects.Conditions.Content",
       "tooltipDirection": "LEFT",

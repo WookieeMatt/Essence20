@@ -36,6 +36,14 @@
       "tooltipDirection": "UP"
     },
     {
+      "id": "threatPicker",
+      "app": "skillPicker:threat",
+      "selector": ".skill-picker-essence-grid",
+      "title": "E20.Tours.Combat.ThreatPicker.Title",
+      "content": "E20.Tours.Combat.ThreatPicker.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
       "id": "initiative",
       "app": "character",
       "selector": ".essence20-sidebar-initiative",

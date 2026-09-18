@@ -225,13 +225,20 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   // Handles clicking Close button or toggling in toolbar
-  close() {
-    // Deactivate in toolbar
-    const toggleDialogControl = ui.controls.controls.tokens.tools.sptTracker;
-    toggleDialogControl.active = false;
+  async close(options) {
+    // Deactivate in toolbar. That tool only exists while sptShow is "toggle" (see the
+    // getSceneControlButtons hook in essence20.mjs), so this reads through optional chaining
+    // rather than straight off the object - reading .active from undefined threw, and a close()
+    // that throws takes its caller down with it.
+    const toggleDialogControl = ui.controls.controls.tokens?.tools?.sptTracker;
+    if (toggleDialogControl) toggleDialogControl.active = false;
     game.settings.set("essence20", "sptToggleState", false);
     ui.controls.render();
     game.StoryPointsTracker = null;
-    super.close();
+
+    // ApplicationV2#close() is async. Overriding it without returning that promise made
+    // `await app.close()` resolve before the window had gone, and `app.close().catch(...)`
+    // throw outright on undefined.
+    return super.close(options);
   }
 }

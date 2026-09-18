@@ -22,7 +22,8 @@ $e20-tour-accent: v.$text-color-cyan;
 $e20-tour-text: v.$text-color-light;
 
 #tooltip.tour,
-.tour-center-step {
+.tour-center-step,
+.essence20-tour-step {
   background: v.$panel-gradient-dark;
   border: 1px solid $e20-tour-accent;
   border-radius: 0;
@@ -110,6 +111,16 @@ $e20-tour-text: v.$text-color-light;
       pointer-events: none;
     }
   }
+}
+
+/* The step panel Essence20Tour renders for a targeted step, in place of core putting it in the
+   shared #tooltip element where any passing hover could take it away. Positioned from script
+   against the step target; this only has to place it in the layer core uses for its own centred
+   step, which sits above .tour-overlay. */
+.essence20-tour-step {
+  position: fixed;
+  width: max-content;
+  z-index: var(--z-index-tooltip, 9999);
 }
 
 /* The centred step has no target to point at, so it carries its own breathing room. */
