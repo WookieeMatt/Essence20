@@ -79,8 +79,8 @@
       "app": "character",
       "tab": "background",
       "selector": ".tab.background",
-      "title": "E20.Tours.Perks.Background.Title",
-      "content": "E20.Tours.Perks.Background.Content",
+      "title": "E20.Tours.Perks.Bio.Title",
+      "content": "E20.Tours.Perks.Bio.Content",
       "tooltipDirection": "LEFT",
       "optional": true
     },

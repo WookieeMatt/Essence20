@@ -3886,7 +3886,8 @@ body.game .window-app {
  * doesn't line up with its target.
  */
 #tooltip.tour,
-.tour-center-step {
+.tour-center-step,
+.essence20-tour-step {
   background: linear-gradient(180deg, rgba(14, 17, 20, 0.96), rgba(17, 19, 21, 0.96));
   border: 1px solid #4dd0e1;
   border-radius: 0;
@@ -3897,7 +3898,8 @@ body.game .window-app {
   text-align: left;
 }
 #tooltip.tour .step-header,
-.tour-center-step .step-header {
+.tour-center-step .step-header,
+.essence20-tour-step .step-header {
   align-items: center;
   border-bottom: 1px solid rgba(77, 208, 225, 0.4);
   gap: 0.5rem;
@@ -3905,7 +3907,8 @@ body.game .window-app {
   padding: 0.4rem 0.6rem;
 }
 #tooltip.tour .step-header .step-title,
-.tour-center-step .step-header .step-title {
+.tour-center-step .step-header .step-title,
+.essence20-tour-step .step-header .step-title {
   /* Rajdhani, matching the sliced-border panel labels used across the sheets. */
   font-family: "Rajdhani", sans-serif;
   font-size: 1.05rem;
@@ -3916,7 +3919,8 @@ body.game .window-app {
   text-transform: uppercase;
 }
 #tooltip.tour p.content,
-.tour-center-step p.content {
+.tour-center-step p.content,
+.essence20-tour-step p.content {
   font-size: 0.9rem;
   line-height: 1.5;
   margin: 0;
@@ -3930,22 +3934,26 @@ body.game .window-app {
      paragraphs would otherwise stack their padding into an uneven gutter. */
 }
 #tooltip.tour p.content + p.content,
-.tour-center-step p.content + p.content {
+.tour-center-step p.content + p.content,
+.essence20-tour-step p.content + p.content {
   padding-top: 0;
 }
 #tooltip.tour p.content strong,
-.tour-center-step p.content strong {
+.tour-center-step p.content strong,
+.essence20-tour-step p.content strong {
   color: #4dd0e1;
 }
 #tooltip.tour .step-controls,
-.tour-center-step .step-controls {
+.tour-center-step .step-controls,
+.essence20-tour-step .step-controls {
   align-items: center;
   border-top: 1px solid rgba(77, 208, 225, 0.4);
   justify-content: space-between;
   padding: 0.3rem 0.6rem;
 }
 #tooltip.tour .step-controls .progress,
-.tour-center-step .step-controls .progress {
+.tour-center-step .step-controls .progress,
+.essence20-tour-step .step-controls .progress {
   font-family: "Rajdhani", sans-serif;
   font-size: 0.75rem;
   letter-spacing: 0.08em;
@@ -3955,7 +3963,8 @@ body.game .window-app {
   font-variant-numeric: tabular-nums;
 }
 #tooltip.tour .step-button,
-.tour-center-step .step-button {
+.tour-center-step .step-button,
+.essence20-tour-step .step-button {
   color: #aaaaaa;
   flex: 0 0 auto;
   opacity: 0.85;
@@ -3964,16 +3973,28 @@ body.game .window-app {
      double-clicks. Reflect that so the step doesn't look interactive while it isn't. */
 }
 #tooltip.tour .step-button:hover,
-.tour-center-step .step-button:hover {
+.tour-center-step .step-button:hover,
+.essence20-tour-step .step-button:hover {
   color: #4dd0e1;
   opacity: 1;
   text-shadow: none;
 }
 #tooltip.tour .step-button.disabled,
-.tour-center-step .step-button.disabled {
+.tour-center-step .step-button.disabled,
+.essence20-tour-step .step-button.disabled {
   cursor: default;
   opacity: 0.3;
   pointer-events: none;
+}
+
+/* The step panel Essence20Tour renders for a targeted step, in place of core putting it in the
+   shared #tooltip element where any passing hover could take it away. Positioned from script
+   against the step target; this only has to place it in the layer core uses for its own centred
+   step, which sits above .tour-overlay. */
+.essence20-tour-step {
+  position: fixed;
+  width: max-content;
+  z-index: var(--z-index-tooltip, 9999);
 }
 
 /* The centred step has no target to point at, so it carries its own breathing room. */

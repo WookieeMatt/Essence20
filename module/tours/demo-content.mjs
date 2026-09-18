@@ -84,6 +84,11 @@ export const DEMO_ACTORS = {
       // what a reviewer reasonably read as the block being broken rather than simply unset.
       // A Power Rangers Role hides the Weapons column, so only armor matters for this one.
       trained: { armors: { light: true, medium: true } },
+      // Matches what dropping "Field Trained" would have written (its baseGroundMovement is 30).
+      // Origin movement is applied by the drop handler, which building the actor directly skips -
+      // leaving movementNotSet true and the sidebar showing "Set PC movement by adding an Origin"
+      // on a character that plainly has one.
+      movement: { ground: { base: 30 } },
       // A spread of shifts so the Skills tab has something to read and the roll tour has a trained
       // skill to roll, rather than a wall of identical defaults.
       //
@@ -352,6 +357,9 @@ export const DEMO_ACTORS = {
         might: { shift: "d8", isChosen: true },
         alertness: { shift: "d6", isChosen: true },
         intimidation: { shift: "d6", isChosen: true },
+        // The Initiative step points at this sheet's own Initiative now, so give it a trained value
+        // rather than leaving the step explaining a die that reads d20.
+        initiative: { shift: "d6" },
       },
     },
     items: [

@@ -3,6 +3,17 @@ import { canProvisionDemo, cleanupDemoActors, DEMO_ACTORS, ensureDemoActor, find
 const Tour = foundry.nue.Tour;
 
 /**
+ * Normalize a step's requested tooltip direction, defaulting to RIGHT the way core's tooltip does
+ * when a step names no direction.
+ * @param {string} [direction] The step's tooltipDirection
+ * @returns {string}
+ */
+function stepDirection(direction) {
+  const value = String(direction ?? "").toUpperCase();
+  return ["UP", "DOWN", "LEFT", "RIGHT"].includes(value) ? value : "RIGHT";
+}
+
+/**
  * How long, in milliseconds, a step will wait for its target element to appear before giving up.
  * Generous enough to cover a sheet render plus a tab switch on a slow machine, short enough that a
  * genuinely missing selector doesn't stall the tour for an uncomfortable length of time.
@@ -61,22 +72,24 @@ export class Essence20Tour extends Tour {
   #opened = new Set();
 
   /**
-   * Watches the shared #tooltip element so a step evicted by an ordinary hover can be restored.
-   * @type {MutationObserver|null}
+   * The step panel this tour renders and owns, for steps that have a target to anchor to.
+   * @type {HTMLElement|null}
    */
-  #tooltipObserver = null;
+  #stepElement = null;
 
   /**
-   * Pending restore timer, so a hover in and straight back out restores once rather than twice.
-   * @type {number|null}
+   * The `app` key the current step scoped to, so a step that moves to a different one can retire
+   * the window the tour is finished with.
+   * @type {string|null}
    */
-  #restoreTimer = null;
+  #appKey = null;
 
   /**
-   * True while progress() is mid-transition, when the tooltip is expected to go quiet.
-   * @type {boolean}
+   * Which application each `app` key opened, so a key can be retired whatever kind of window it
+   * turned out to be - an actor sheet, an item sheet or one of the standalone apps.
+   * @type {Map<string, foundry.applications.api.ApplicationV2>}
    */
-  #transitioning = false;
+  #appsByKey = new Map();
 
   /**
    * Record an application the tour opened, so `#teardown` closes it later.
@@ -102,7 +115,9 @@ export class Essence20Tour extends Tour {
   get requiredDemoActors() {
     const keys = new Set();
     for (const step of this.config.steps ?? []) {
-      const demoKey = this.constructor.DEMO_APPS[step.app];
+      // A compound key ("skillPicker:threat") names its actor after the colon.
+      const appKey = String(step.app ?? "").split(":").pop();
+      const demoKey = this.constructor.DEMO_APPS[appKey];
       if (demoKey) keys.add(demoKey);
     }
 
@@ -126,15 +141,15 @@ export class Essence20Tour extends Tour {
     // A paused game swallows some of the interactions the tours demonstrate.
     game.togglePause(false);
     this.#skipped.clear();
-    this.#watchTooltip();
     return super.start();
   }
 
   /** @override */
   exit() {
     this.#app = null;
+    this.#appKey = null;
+    this.#appsByKey.clear();
     this.#skipped.clear();
-    this.#unwatchTooltip();
     const result = super.exit();
     this.#teardown();
     return result;
@@ -148,7 +163,6 @@ export class Essence20Tour extends Tour {
     // in-progress guard in `#teardown` then declines to clean up, and the windows this tour opened
     // survive into the following one. That is how the Skill Picker ended up still on screen two
     // tours later.
-    this.#unwatchTooltip();
     await this.#closeOpenedApps();
 
     const result = await super.complete();
@@ -163,6 +177,8 @@ export class Essence20Tour extends Tour {
    */
   async #teardown() {
     this.#app = null;
+    this.#appKey = null;
+    this.#appsByKey.clear();
     await this.#closeOpenedApps();
     if (!this.requiredDemoActors.length) return;
 
@@ -197,9 +213,49 @@ export class Essence20Tour extends Tour {
     // animation, so a sequential loop cost about a second per window and made leaving a tour feel
     // like it had hung. Nothing here is being watched by the time teardown runs, so the animation
     // buys nothing.
-    await Promise.allSettled(apps.map(app => app.close({ animate: false }).catch((err) => {
-      console.warn(`Essence20 | Tour "${this.id}" could not close ${app.id}`, err);
-    })));
+    // Wrapped in an async function rather than chained off close(): an app whose close() is not
+    // async - or which throws before returning - would otherwise escape the very handler meant to
+    // contain it and reject this method. StoryPoints#close() did exactly that, and taking
+    // complete() down with it left the finished tour’s panel on screen with its buttons dead and
+    // the overlay still blocking the page.
+    await Promise.allSettled(apps.map(async (app) => {
+      try {
+        await app.close({ animate: false });
+      } catch (err) {
+        console.warn(`Essence20 | Tour "${this.id}" could not close ${app.id}`, err);
+      }
+    }));
+  }
+
+  /**
+   * Close the window a step has just moved away from, when no later step needs it again.
+   *
+   * Every sheet the tours open renders at the same default position and size, so opening the demo
+   * character over the demo threat covered it exactly - same x, y, width and height, one z-index
+   * apart. Nothing had closed, but nothing was visible either, and a reviewer reasonably read a
+   * pixel-perfect occlusion as "the threat sheet closed". Leaving a window stacked invisibly under
+   * another is not worth defending, so the tour closes what it is done with.
+   *
+   * Only windows this tour opened are touched (`#opened`), and only when no remaining step scopes
+   * to that same app - going back re-opens it through `_ensureApp` as usual.
+   * @param {string} key The `app` key being left behind
+   * @returns {Promise<void>}
+   */
+  async #retireApp(key) {
+    const steps = this.steps ?? [];
+    const neededAgain = steps.slice(this.stepIndex + 1).some(s => s.app === key);
+    if (neededAgain) return;
+
+    const app = this.#appsByKey.get(key);
+    if (!app?.rendered || !this.#opened.has(app)) return;
+
+    this.#appsByKey.delete(key);
+    this.#opened.delete(app);
+    try {
+      await app.close({ animate: false });
+    } catch (err) {
+      console.warn(`Essence20 | Tour "${this.id}" could not retire ${key}`, err);
+    }
   }
 
   /* -------------------------------------------- */
@@ -211,16 +267,7 @@ export class Essence20Tour extends Tour {
    */
   async progress(stepIndex) {
     const previous = this.stepIndex;
-
-    // _postStep() deactivates the tooltip between steps, which looks exactly like the eviction the
-    // observer watches for. Suppress it for the duration of the transition.
-    this.#transitioning = true;
-    this.#cancelRestore();
-    try {
-      await super.progress(stepIndex);
-    } finally {
-      this.#transitioning = false;
-    }
+    await super.progress(stepIndex);
 
     // Only a step that is still current and still targetless needs skipping; super.progress() has
     // already run _preStep and resolved the target by this point.
@@ -258,7 +305,17 @@ export class Essence20Tour extends Tour {
     }
 
     if (step.app) {
+      const leaving = this.#appKey;
       this.#app = await this._ensureApp(step.app);
+      this.#appKey = step.app;
+      if (this.#app) this.#appsByKey.set(step.app, this.#app);
+      if (leaving && leaving !== step.app) await this.#retireApp(leaving);
+
+      // Whatever a step points at has to actually be on top. Every window here opens at the same
+      // default position and size, and z-order follows whatever was rendered or focused last - so
+      // the Skill Picker came up *behind* the character sheet that spawned it, entirely inside its
+      // bounds, leaving the step highlighting something no one could see.
+      this.#app?.bringToFront?.();
     } else {
       this.#app = null;
     }
@@ -512,16 +569,142 @@ export class Essence20Tour extends Tour {
     const step = this.currentStep;
     if (step?.optional && step.selector && !this.targetElement) return;
 
-    await super._renderStep();
+    // A step with no selector is already core's own <aside>, which nothing else competes for.
+    if (!step?.selector) {
+      await super._renderStep();
+      requestAnimationFrame(() => this._repositionHighlight());
+      this.#onResize ??= foundry.utils.debounce(() => this._repositionHighlight(), 100);
+      window.addEventListener("resize", this.#onResize);
+      return;
+    }
 
-    // Rebuilding the fade element is safe; it carries no listeners. The tooltip deliberately isn't
-    // re-activated here, because core binds the step's button handlers to it after activation and
-    // re-activating would silently drop them.
+    if (!this.targetElement) throw new Error(`The expected targetElement ${step.selector} does not exist`);
+
+    await this.#renderOwnStep(step);
+
     requestAnimationFrame(() => this._repositionHighlight());
-
     this.#onResize ??= foundry.utils.debounce(() => this._repositionHighlight(), 100);
     window.addEventListener("resize", this.#onResize);
+    window.addEventListener("scroll", this.#onResize, { capture: true, passive: true });
   }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Render a targeted step into an element this tour owns.
+   *
+   * Core renders a targeted step *through* the tooltip system - `game.tooltip.activate(target,
+   * {html, cssClass: "tour ..."})` - and the page has exactly one #tooltip element. So any hover
+   * that activates another tooltip hands that element away and the step is gone, along with its
+   * Next and Exit buttons, while the tour stays "in progress" with its overlay up.
+   *
+   * That is not a rare collision here. Steps point at readouts, tallies and controls that carry
+   * their own data-tooltip, and the highlight draws the pointer straight to them - so the tour
+   * leads the user into the one gesture that breaks it. A pointer merely coming to *rest* there is
+   * enough, and it stays broken for as long as it rests.
+   *
+   * Core already sidesteps this for steps with no target by building its own <aside>. This does the
+   * same for targeted steps and positions it against the target, so a step is ours for its whole
+   * life and hovering is just hovering again.
+   * @param {object} step The current step
+   * @returns {Promise<void>}
+   */
+  async #renderOwnStep(step) {
+    const content = await foundry.applications.handlebars.renderTemplate("templates/apps/tour-step.html", {
+      title: _loc(step.title),
+      content: _loc(step.content).split("\n"),
+      step: this.stepIndex + 1,
+      totalSteps: this.steps.length,
+      hasNext: this.hasNext,
+      hasPrevious: this.hasPrevious,
+    });
+
+    this.targetElement.scrollIntoView({ block: "nearest", inline: "nearest" });
+
+    const doc = this.targetElement.ownerDocument;
+    const element = doc.createElement("aside");
+    // "tour themed theme-dark" is what core puts on both of its own step surfaces, so core's tour
+    // rules (the absolutely-positioned exit button, button sizing) apply unchanged.
+    element.className = "tour themed theme-dark essence20-tour-step";
+    element.innerHTML = content;
+    doc.body.appendChild(element);
+    this.#stepElement = element;
+
+    this.#positionStep();
+
+    // Fade out the rest of the screen and block input, exactly as core does.
+    this.fadeElement = Tour.highlightElement(this.targetElement, { padding: Tour.HIGHLIGHT_PADDING });
+    this.overlayElement = doc.createElement("div");
+    this.overlayElement.classList.add("tour-overlay");
+    doc.body.appendChild(this.overlayElement);
+
+    const buttons = element.querySelectorAll(".step-button");
+    for (const button of buttons) {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        // Disable them all so a double-click cannot advance two steps, matching core.
+        for (const b of buttons) b.classList.add("disabled");
+        switch (event.currentTarget.dataset.action) {
+        case "exit": return this.exit();
+        case "previous": return this.previous();
+        case "next": return this.next();
+        default: return undefined;
+        }
+      });
+    }
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Place the step panel beside its target, clamped to stay on screen.
+   * @returns {void}
+   */
+  #positionStep() {
+    const element = this.#stepElement;
+    if (!element?.isConnected || !this.targetElement?.isConnected) return;
+
+    const gap = 8;
+    const margin = 8;
+    const target = this.targetElement.getBoundingClientRect();
+    const own = element.getBoundingClientRect();
+    const view = element.ownerDocument.defaultView;
+    const vw = view.innerWidth;
+    const vh = view.innerHeight;
+
+    let top;
+    let left;
+    switch (stepDirection(this.currentStep?.tooltipDirection)) {
+    case "UP":
+      top = target.top - own.height - gap;
+      left = target.left + ((target.width - own.width) / 2);
+      break;
+    case "DOWN":
+      top = target.bottom + gap;
+      left = target.left + ((target.width - own.width) / 2);
+      break;
+    case "LEFT":
+      top = target.top + ((target.height - own.height) / 2);
+      left = target.left - own.width - gap;
+      break;
+    default: // RIGHT
+      top = target.top + ((target.height - own.height) / 2);
+      left = target.right + gap;
+      break;
+    }
+
+    // A step pushed off-screen is as useless as one that vanished, so clamp rather than trust the
+    // requested direction - a wide panel beside a sidebar readout would otherwise hang off the edge.
+    element.style.top = `${Math.round(Math.min(Math.max(top, margin), Math.max(margin, vh - own.height - margin)))}px`;
+    element.style.left = `${Math.round(Math.min(Math.max(left, margin), Math.max(margin, vw - own.width - margin)))}px`;
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Remove the step panel this tour owns before core tears the rest of the step down.
+   * @override
+   */
 
   /**
    * Bound resize handler, kept so it can be removed again in `_postStep`.
@@ -533,8 +716,13 @@ export class Essence20Tour extends Tour {
   async _postStep() {
     if (this.#onResize) {
       window.removeEventListener("resize", this.#onResize);
+      window.removeEventListener("scroll", this.#onResize, { capture: true });
       this.#onResize = null;
     }
+
+    // The panel is ours, so core's teardown knows nothing about it.
+    this.#stepElement?.remove();
+    this.#stepElement = null;
 
     return super._postStep();
   }
@@ -550,6 +738,9 @@ export class Essence20Tour extends Tour {
     this.fadeElement = Tour.highlightElement(this.targetElement, {
       padding: this.currentStep?.selector ? Tour.HIGHLIGHT_PADDING : 0,
     });
+
+    // The panel is anchored to the same rect, so it moves whenever the cut-out does.
+    this.#positionStep();
   }
 
   /* -------------------------------------------- */
@@ -581,7 +772,11 @@ export class Essence20Tour extends Tour {
 
     // The Skill Picker is instantiated per actor, so its id isn't known until we know whose sheet
     // the tour is running against.
-    if (key === "skillPicker") return this._ensureSkillPicker();
+    // "skillPicker" opens the demo character's, "skillPicker:threat" the demo threat's - the app
+    // is per-actor, so a tour that walks more than one sheet has to be able to say whose it means.
+    if (key === "skillPicker" || key.startsWith("skillPicker:")) {
+      return this._ensureSkillPicker(key.split(":")[1] || "character");
+    }
 
     // The roll dialog only exists once a roll has been started, and `_preStep` resolves `app`
     // before it runs `action` — so opening it has to happen here rather than as a step action.
@@ -604,18 +799,31 @@ export class Essence20Tour extends Tour {
    * @returns {Promise<foundry.applications.api.ApplicationV2|null>}
    * @protected
    */
-  async _ensureSkillPicker() {
-    const sheet = await this._ensureActorSheet(this.constructor.DEMO_APPS.character ?? "character");
+  async _ensureSkillPicker(demoKey = "character") {
+    const sheet = await this._ensureActorSheet(this.constructor.DEMO_APPS[demoKey] ?? demoKey);
     if (!sheet) return null;
 
     const pickerId = `essence20-skill-picker-${sheet.document.id}`;
     const existing = foundry.applications.instances.get(pickerId);
     if (existing) return this._attachIfDetached(existing);   // the user's, not ours — leave it
 
-    // The button lives on the Skills tab, so make sure that tab is showing before reaching for it.
-    sheet.changeTab("skills", "primary");
-    await this._waitForRender(sheet);
-    sheet.element.querySelector("[data-action='skillPicker']")?.click();
+    // Where the button lives depends on the sheet. A player character keeps one per Essence column
+    // on the Skills tab; an NPC-like has a single one in its skill list header, on a sheet with no
+    // Skills tab at all - asking for that tab there throws outright. So look first, and only reach
+    // for the tab if the button is not already on screen.
+    let button = sheet.element.querySelector("[data-action='skillPicker']");
+    if (!button) {
+      try {
+        sheet.changeTab("skills", "primary");
+        await this._waitForRender(sheet);
+      } catch {
+        // No such tab on this sheet; the button simply is not here.
+      }
+
+      button = sheet.element.querySelector("[data-action='skillPicker']");
+    }
+
+    button?.click();
 
     const picker = await this._awaitApp(pickerId);
     return picker ? this._attachIfDetached(this._track(picker, true)) : null;
@@ -763,123 +971,4 @@ export class Essence20Tour extends Tour {
     return app;
   }
 
-  /* -------------------------------------------- */
-  /*  Tooltip eviction guard                      */
-  /* -------------------------------------------- */
-
-  /**
-   * Watch the shared tooltip element for the current step being evicted.
-   *
-   * Core renders a step *through* the tooltip system - Tour#_renderStep calls
-   * `game.tooltip.activate(targetElement, {html, cssClass: "tour ..."})` - and there is only one
-   * #tooltip element on the page. So hovering anything carrying a data-tooltip (a defense readout,
-   * a skill tally, a control's title) hands that element to TooltipManager#activate, which calls
-   * deactivate() first and drops the step on the floor. The tour stays "in progress" with its
-   * overlay up, but the panel and its Next button are gone, and the user is stuck.
-   *
-   * It is not recoverable by re-rendering alone: by then the sheet has usually re-rendered too, so
-   * `this.targetElement` is a detached node and TooltipManager#activate returns early for an
-   * element its ownerDocument no longer contains. Re-entering through progress() is what fixes it,
-   * because that re-runs _getTargetElement against the live DOM.
-   *
-   * This is the cause of the "the step disappeared and I can't continue" reports. Suppressing
-   * Foundry's own tooltips for the duration of a tour would also fix it, but several steps
-   * deliberately tell the reader to hover a value to see how it is calculated - so the step is
-   * restored after the hover instead, leaving that feature usable.
-   * @returns {void}
-   */
-  #watchTooltip() {
-    if (this.#tooltipObserver) return;
-
-    const tooltip = game.tooltip?.tooltip;
-    if (!tooltip) return;
-
-    // The element is a singleton that survives being moved between documents for detached windows
-    // (TooltipManager#activate adopts the same node rather than making a new one), so observing
-    // the node itself stays valid for the life of the tour.
-    this.#tooltipObserver = new MutationObserver(() => this.#onTooltipChanged());
-    this.#tooltipObserver.observe(tooltip, { attributes: true, attributeFilter: ["class"] });
-  }
-
-  /* -------------------------------------------- */
-
-  /**
-   * Stop watching the tooltip and drop any pending restore.
-   * @returns {void}
-   */
-  #unwatchTooltip() {
-    this.#tooltipObserver?.disconnect();
-    this.#tooltipObserver = null;
-    this.#cancelRestore();
-  }
-
-  /* -------------------------------------------- */
-
-  /**
-   * Cancel a scheduled restore.
-   * @returns {void}
-   */
-  #cancelRestore() {
-    if (this.#restoreTimer === null) return;
-    window.clearTimeout(this.#restoreTimer);
-    this.#restoreTimer = null;
-  }
-
-  /* -------------------------------------------- */
-
-  /**
-   * React to the tooltip's classes changing.
-   * @returns {void}
-   */
-  #onTooltipChanged() {
-    if (this.#transitioning) return;
-    if (this.status !== Tour.STATUS.IN_PROGRESS) return;
-
-    // A step with no selector is its own <aside> appended to the body, not the shared tooltip, so
-    // nothing can evict it.
-    if (!this.currentStep?.selector) return;
-
-    const tooltip = game.tooltip?.tooltip;
-    if (!tooltip) return;
-
-    // Our step is on screen - either it was never evicted, or a restore has just landed.
-    if (tooltip.classList.contains("tour")) return this.#cancelRestore();
-
-    // Something else is being shown right now. That is the hover the user asked for, so let them
-    // read it; the restore happens once it goes away and this fires again.
-    if (tooltip.classList.contains("active")) return this.#cancelRestore();
-
-    // Neither ours nor anyone else's: the foreign tooltip has been dismissed and the step is owed
-    // back. Debounced, because a hover across several elements churns these classes.
-    this.#cancelRestore();
-    this.#restoreTimer = window.setTimeout(() => {
-      this.#restoreTimer = null;
-      this.#restoreStep();
-    }, 150);
-  }
-
-  /* -------------------------------------------- */
-
-  /**
-   * Put the current step back after it was evicted.
-   * @returns {Promise<void>}
-   */
-  async #restoreStep() {
-    if (this.#transitioning) return;
-    if (this.status !== Tour.STATUS.IN_PROGRESS) return;
-    if (game.tooltip?.tooltip?.classList.contains("tour")) return;
-
-    const index = this.stepIndex;
-    if (!Number.isFinite(index)) return;
-
-    try {
-      // progress() only tears the previous step down when the index actually changes, so
-      // re-entering the same index would leave the old overlay and fade-out behind and stack a
-      // second set on top. Tear down explicitly first.
-      await this._postStep();
-      await this.progress(index);
-    } catch (err) {
-      console.warn(`Essence20 | Tour "${this.id}" could not restore step ${index + 1}`, err);
-    }
-  }
 }

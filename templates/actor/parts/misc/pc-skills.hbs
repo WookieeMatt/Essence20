@@ -11,7 +11,7 @@
       <div class="essence-header">
         {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
           skillRankAllocation=system.skillRankAllocation.strength.value skillRankString=system.skillRankAllocation.strength.string
-          defenseLabel=(lookup @root.config.defenses 'toughness') defenseValue=system.defenses.toughness.total}}
+          defenseLabel=(lookup @root.config.defenses 'toughness') defenseValue=system.defenses.toughness.total defenseString=system.defenses.toughness.string}}
         <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
       </div>
       <div class="flexrow skill-header e20-skill-header conditioning-row" data-e20-color="{{system.color}}">
@@ -40,7 +40,7 @@
       <div class="essence-header">
         {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
           skillRankAllocation=system.skillRankAllocation.speed.value skillRankString=system.skillRankAllocation.speed.string
-          defenseLabel=(lookup @root.config.defenses 'evasion') defenseValue=system.defenses.evasion.total}}
+          defenseLabel=(lookup @root.config.defenses 'evasion') defenseValue=system.defenses.evasion.total defenseString=system.defenses.evasion.string}}
         <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
       </div>
       {{#each @root.config.skillsByEssence.speed as |skill|}}
@@ -61,7 +61,7 @@
       <div class="essence-header">
         {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
           skillRankAllocation=system.skillRankAllocation.smarts.value skillRankString=system.skillRankAllocation.smarts.string
-          defenseLabel=(lookup @root.config.defenses 'willpower') defenseValue=system.defenses.willpower.total}}
+          defenseLabel=(lookup @root.config.defenses 'willpower') defenseValue=system.defenses.willpower.total defenseString=system.defenses.willpower.string}}
         <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
       </div>
      {{#each @root.config.skillsByEssence.smarts as |skill|}}
@@ -82,7 +82,7 @@
       <div class="essence-header">
         {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
           skillRankAllocation=system.skillRankAllocation.social.value skillRankString=system.skillRankAllocation.social.string
-          defenseLabel=(lookup @root.config.defenses 'cleverness') defenseValue=system.defenses.cleverness.total}}
+          defenseLabel=(lookup @root.config.defenses 'cleverness') defenseValue=system.defenses.cleverness.total defenseString=system.defenses.cleverness.string}}
         <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
       </div>
       {{#each @root.config.skillsByEssence.social as |skill|}}

@@ -17,6 +17,9 @@
   <span>{{localize 'E20.SkillRanksAllocated'}}: {{skillRankAllocation}}</span>
   {{/if}}
   {{#if defenseLabel}}
-  <span class="skill-rank-defense">{{defenseLabel}}: {{defenseValue}}</span>
+  {{!-- Its own tooltip, so hovering the defense explains the defense rather than falling through
+       to the rank breakdown on the wrapper. TooltipManager picks the closest element carrying
+       data-tooltip, so the two do not fight. --}}
+  <span class="skill-rank-defense" data-tooltip="{{defenseString}}">{{defenseLabel}}: {{defenseValue}}</span>
   {{/if}}
 </div>
