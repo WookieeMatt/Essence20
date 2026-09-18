@@ -1,0 +1,147 @@
+<div class="effect-wizard__body flexcol">
+
+  <p class="effect-wizard__intro">
+    {{localize "E20.EffectWizardIntro" name=effectName}}
+  </p>
+
+  {{!-- Search first: this is the whole point of the wizard for someone who does not know what
+        the keys look like. Browsing the dropdowns below is the fallback, not the primary path. --}}
+  <div class="effect-wizard__search">
+    <label for="effect-wizard-search">{{localize "E20.EffectWizardSearchLabel"}}</label>
+    <input type="search" id="effect-wizard-search" data-wizard-field="search"
+      value="{{search}}" placeholder="{{localize 'E20.EffectWizardSearchPlaceholder'}}" />
+
+    {{!-- Filled by the app, not by this template - see effect-wizard-results.hbs. Typing must not
+          re-render the wizard, or the search input is replaced under the cursor. --}}
+    <div data-search-results></div>
+  </div>
+
+  <div class="effect-wizard__builder flexrow">
+    <div class="effect-wizard__field">
+      <label for="effect-wizard-group">{{localize "E20.EffectWizardGroup"}}</label>
+      <select id="effect-wizard-group" data-wizard-field="group">
+        {{#each groups}}
+          <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    {{#if targets}}
+      <div class="effect-wizard__field">
+        <label for="effect-wizard-target">{{localize "E20.EffectWizardTarget"}}</label>
+        <select id="effect-wizard-target" data-wizard-field="target">
+          <option value="">{{localize "E20.EffectWizardChoose"}}</option>
+          {{#each targets}}
+            <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    {{/if}}
+
+    <div class="effect-wizard__field">
+      <label for="effect-wizard-property">{{localize "E20.EffectWizardProperty"}}</label>
+      <select id="effect-wizard-property" data-wizard-field="property">
+        {{#each properties}}
+          <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    {{#if targets2}}
+      <div class="effect-wizard__field">
+        <label for="effect-wizard-target2">{{target2Label}}</label>
+        <select id="effect-wizard-target2" data-wizard-field="target2">
+          <option value="">{{localize "E20.EffectWizardChoose"}}</option>
+          {{#each targets2}}
+            <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    {{else if dynamicTarget2}}
+      {{!-- Specializations are named freely rather than chosen from a table, so this is a text
+            box - with whatever the owning actor already has offered as suggestions. --}}
+      <div class="effect-wizard__field">
+        <label for="effect-wizard-target2">{{target2Label}}</label>
+        <input type="text" id="effect-wizard-target2" data-wizard-field="target2"
+          value="{{target2Value}}" list="effect-wizard-target2-options"
+          placeholder="{{localize 'E20.EffectWizardSpecializationPlaceholder'}}" />
+        {{#if target2Suggestions.length}}
+          <datalist id="effect-wizard-target2-options">
+            {{#each target2Suggestions}}<option value="{{this}}"></option>{{/each}}
+          </datalist>
+        {{/if}}
+      </div>
+    {{/if}}
+
+    {{#unless hideValue}}
+    <div class="effect-wizard__field effect-wizard__value">
+      <label for="effect-wizard-value">{{localize "E20.EffectWizardValue"}}</label>
+
+      {{#if (eq widget "signedInt")}}
+        {{!-- One signed number, because that is the game concept. The schema's two positive
+              fields (shiftUp / shiftDown) are the catalog's problem, not the author's. --}}
+        <input type="number" id="effect-wizard-value" data-wizard-field="value" value="{{value}}" step="1" />
+      {{else if (eq widget "int")}}
+        <input type="number" id="effect-wizard-value" data-wizard-field="value" value="{{value}}" step="1" />
+      {{else if (eq widget "edgeSnag")}}
+        <select id="effect-wizard-value" data-wizard-field="value">
+          <option value="plus" {{#if (eq value "plus")}}selected{{/if}}>{{localize "E20.EffectDirectionEdge"}}</option>
+          <option value="minus" {{#if (eq value "minus")}}selected{{/if}}>{{localize "E20.EffectDirectionSnag"}}</option>
+        </select>
+      {{else if (eq widget "text")}}
+        <input type="text" id="effect-wizard-value" data-wizard-field="value" value="{{value}}"
+          placeholder="{{localize 'E20.EffectWizardSpecializationPlaceholder'}}" />
+      {{else if (eq widget "choice")}}
+        <select id="effect-wizard-value" data-wizard-field="value">
+          {{#each choices}}
+            <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      {{else}}
+        <select id="effect-wizard-value" data-wizard-field="value">
+          <option value="true" {{#unless (eq value "false")}}selected{{/unless}}>{{localize "E20.EffectValueYes"}}</option>
+          <option value="false" {{#if (eq value "false")}}selected{{/if}}>{{localize "E20.EffectValueNo"}}</option>
+        </select>
+      {{/if}}
+    </div>
+    {{/unless}}
+  </div>
+
+  {{#if hint}}
+    <p class="effect-wizard__hint notification info">{{hint}}</p>
+  {{/if}}
+
+  {{!-- The rule in English, before anything is written. --}}
+  <div class="effect-wizard__preview {{#unless preview}}--empty{{/unless}}">
+    {{#if preview}}
+      <i class="fas fa-check"></i> {{preview}}
+    {{else}}
+      {{localize "E20.EffectWizardNoPreview"}}
+    {{/if}}
+  </div>
+
+  {{#if pending.length}}
+    <ol class="effect-wizard__pending">
+      {{#each pending}}
+        <li>
+          <span>{{this.summary}}</span>
+          <a data-action="removePending" data-index="{{this.index}}" data-tooltip="{{localize 'E20.EffectWizardRemove'}}">
+            <i class="fas fa-trash"></i>
+          </a>
+        </li>
+      {{/each}}
+    </ol>
+  {{/if}}
+
+  <footer class="effect-wizard__footer flexrow">
+    <button type="button" data-action="addPending">
+      <i class="fas fa-plus"></i> {{localize "E20.EffectWizardAddAnother"}}
+    </button>
+    <button type="button" data-action="cancel">
+      {{localize "E20.DialogCancelButton"}}
+    </button>
+    <button type="button" data-action="finish" {{#unless canFinish}}disabled{{/unless}}>
+      <i class="fas fa-wand-magic-sparkles"></i> {{localize "E20.EffectWizardFinish"}}
+    </button>
+  </footer>
+</div>

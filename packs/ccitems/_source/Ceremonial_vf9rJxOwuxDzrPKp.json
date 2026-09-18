@@ -41,7 +41,7 @@
       "system": {},
       "changes": [
         {
-          "key": "system.skillspersuasion.shiftUp",
+          "key": "system.skills.persuasion.shiftUp",
           "mode": 2,
           "value": "1",
           "priority": null

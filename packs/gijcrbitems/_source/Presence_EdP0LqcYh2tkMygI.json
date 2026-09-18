@@ -32,7 +32,7 @@
       "_id": "TXNXCBdY4KiqetiH",
       "changes": [
         {
-          "key": "system.skills.intimidation.essence.social",
+          "key": "system.skills.intimidation.essences.social",
           "mode": 5,
           "value": "true",
           "priority": null

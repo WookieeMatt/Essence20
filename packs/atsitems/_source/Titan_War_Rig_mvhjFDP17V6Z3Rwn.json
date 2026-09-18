@@ -55,7 +55,7 @@
           "priority": null
         },
         {
-          "key": "systen.skills.might.shiftUp",
+          "key": "system.skills.might.shiftUp",
           "mode": 2,
           "value": "1",
           "priority": null

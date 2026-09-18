@@ -42,7 +42,7 @@
       "system": {},
       "changes": [
         {
-          "key": "system.movement.underground.base",
+          "key": "system.movement.burrow.base",
           "mode": 5,
           "value": "25",
           "priority": null

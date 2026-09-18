@@ -32,7 +32,7 @@
       "_id": "3xOeRCnqy0IwmA7z",
       "changes": [
         {
-          "key": "system.skills.alertness.isSpeciailzed",
+          "key": "system.skills.alertness.isSpecialized",
           "mode": 5,
           "value": "true",
           "priority": null

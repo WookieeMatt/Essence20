@@ -4722,6 +4722,131 @@ body.game .window-app {
   gap: 6px;
 }
 
+.effect-wizard .effect-wizard__body {
+  gap: 0.6rem;
+  padding: 0.5rem;
+}
+.effect-wizard .effect-wizard__intro {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+.effect-wizard .effect-wizard__search {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.effect-wizard .effect-wizard__search label {
+  font-weight: bold;
+}
+.effect-wizard .effect-wizard__search input[type=search] {
+  width: 100%;
+}
+.effect-wizard .effect-wizard__results {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  max-height: 9rem;
+  overflow-y: auto;
+  border: 1px solid var(--color-border-light-tertiary, #7a7971);
+  border-radius: 3px;
+}
+.effect-wizard .effect-wizard__results li a {
+  display: block;
+  padding: 0.2rem 0.4rem;
+  cursor: pointer;
+}
+.effect-wizard .effect-wizard__results li a:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+.effect-wizard .effect-wizard__builder {
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+.effect-wizard .effect-wizard__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1 1 8rem;
+}
+.effect-wizard .effect-wizard__field label {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+.effect-wizard .effect-wizard__value {
+  flex: 0 0 7rem;
+}
+.effect-wizard .effect-wizard__hint {
+  margin: 0;
+  font-size: 0.85rem;
+}
+.effect-wizard .effect-wizard__preview {
+  padding: 0.4rem 0.6rem;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.06);
+  font-style: italic;
+}
+.effect-wizard .effect-wizard__preview.--empty {
+  opacity: 0.6;
+}
+.effect-wizard .effect-wizard__preview i {
+  margin-right: 0.3rem;
+}
+.effect-wizard .effect-wizard__pending {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.effect-wizard .effect-wizard__pending li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  border-left: 3px solid var(--color-border-highlight, #ff6400);
+  background: rgba(0, 0, 0, 0.04);
+}
+.effect-wizard .effect-wizard__footer {
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.effect-summaries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.8rem;
+  opacity: 0.75;
+  font-style: italic;
+}
+
+.essence20-key-warning {
+  grid-column: 1/-1;
+  flex-basis: 100%;
+  width: 100%;
+  margin: 0.2rem 0 0;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  border-radius: 3px;
+}
+.essence20-key-warning a {
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.roll-dialog-effect-summary {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  font-style: italic;
+}
+
 /* Two-pane layout: the paste on the left, the live parse preview on the right. The body takes
    the full available height and the preview pane is the only thing that scrolls, so editing the
    paste never moves the Import button - same "one PART, root opts into its own scrolling" shape
