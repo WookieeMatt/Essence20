@@ -1,0 +1,56 @@
+{
+  "namespace": "essence20",
+  "id": "powersAndMorphing",
+  "title": "E20.Tours.Powers.Title",
+  "description": "E20.Tours.Powers.Description",
+  "display": true,
+  "canBeResumed": true,
+  "suggestedNextTours": ["essence20.transformers"],
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Powers.Intro.Title",
+      "content": "E20.Tours.Powers.Intro.Content"
+    },
+    {
+      "id": "pool",
+      "app": "character",
+      "selector": ".essence20-sidebar-resources",
+      "title": "E20.Tours.Powers.Pool.Title",
+      "content": "E20.Tours.Powers.Pool.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "powersTab",
+      "app": "character",
+      "tab": "powers",
+      "selector": "section[data-tab=\"powers\"] .collapsible-item-container",
+      "title": "E20.Tours.Powers.PowersTab.Title",
+      "content": "E20.Tours.Powers.PowersTab.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "cost",
+      "app": "character",
+      "tab": "powers",
+      "selector": "section[data-tab=\"powers\"] li.item",
+      "title": "E20.Tours.Powers.Cost.Title",
+      "content": "E20.Tours.Powers.Cost.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "morph",
+      "app": "character",
+      "selector": "[data-action=\"morph\"]",
+      "title": "E20.Tours.Powers.Morph.Title",
+      "content": "E20.Tours.Powers.Morph.Content",
+      "tooltipDirection": "RIGHT",
+      "optional": true
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Powers.Outro.Title",
+      "content": "E20.Tours.Powers.Outro.Content"
+    }
+  ]
+}

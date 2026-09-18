@@ -1,0 +1,112 @@
+{
+  "namespace": "essence20",
+  "id": "gearAndWeapons",
+  "title": "E20.Tours.Gear.Title",
+  "description": "E20.Tours.Gear.Description",
+  "display": true,
+  "canBeResumed": true,
+  "suggestedNextTours": ["essence20.perksAndRoles"],
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Gear.Intro.Title",
+      "content": "E20.Tours.Gear.Intro.Content"
+    },
+    {
+      "id": "training",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".tab.gear > .stats-container",
+      "title": "E20.Tours.Gear.Training.Title",
+      "content": "E20.Tours.Gear.Training.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "weapons",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".tab.gear > .collapsible-item-container:has([data-action=\"itemCreate\"][data-type=\"weapon\"])",
+      "title": "E20.Tours.Gear.Weapons.Title",
+      "content": "E20.Tours.Gear.Weapons.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "addWeapon",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".tab.gear > .collapsible-item-container [data-action=\"itemCreate\"][data-type=\"weapon\"]",
+      "title": "E20.Tours.Gear.AddWeapon.Title",
+      "content": "E20.Tours.Gear.AddWeapon.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "effects",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".tab.gear .collapsible-item-subcontainer:has([data-action=\"itemCreate\"][data-type=\"weaponEffect\"])",
+      "title": "E20.Tours.Gear.Effects.Title",
+      "content": "E20.Tours.Gear.Effects.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "rollEffect",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".tab.gear [data-roll-type=\"weaponEffect\"]",
+      "title": "E20.Tours.Gear.RollEffect.Title",
+      "content": "E20.Tours.Gear.RollEffect.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "upgrades",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".tab.gear .collapsible-item-subcontainer:has([data-action=\"itemCreate\"][data-type=\"upgrade\"])",
+      "title": "E20.Tours.Gear.Upgrades.Title",
+      "content": "E20.Tours.Gear.Upgrades.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "armor",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".tab.gear > .collapsible-item-container:has([data-action=\"itemCreate\"][data-type=\"armor\"])",
+      "title": "E20.Tours.Gear.Armor.Title",
+      "content": "E20.Tours.Gear.Armor.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "shields",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".tab.gear > .collapsible-item-container:has([data-action=\"itemCreate\"][data-type=\"shield\"])",
+      "title": "E20.Tours.Gear.Shields.Title",
+      "content": "E20.Tours.Gear.Shields.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "shieldToggle",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".tab.gear [data-action=\"shieldActivationToggle\"]",
+      "title": "E20.Tours.Gear.ShieldToggle.Title",
+      "content": "E20.Tours.Gear.ShieldToggle.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "gear",
+      "app": "character",
+      "tab": "gear",
+      "selector": ".tab.gear > .collapsible-item-container:has([data-action=\"itemCreate\"][data-type=\"gear\"])",
+      "title": "E20.Tours.Gear.Gear.Title",
+      "content": "E20.Tours.Gear.Gear.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Gear.Outro.Title",
+      "content": "E20.Tours.Gear.Outro.Content"
+    }
+  ]
+}

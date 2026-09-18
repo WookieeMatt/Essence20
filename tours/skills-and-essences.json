@@ -1,0 +1,100 @@
+{
+  "namespace": "essence20",
+  "id": "skillsAndEssences",
+  "title": "E20.Tours.Skills.Title",
+  "description": "E20.Tours.Skills.Description",
+  "display": true,
+  "canBeResumed": true,
+  "suggestedNextTours": ["essence20.makingARoll"],
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Skills.Intro.Title",
+      "content": "E20.Tours.Skills.Intro.Content"
+    },
+    {
+      "id": "container",
+      "app": "character",
+      "tab": "skills",
+      "selector": ".skillscontainer",
+      "title": "E20.Tours.Skills.Container.Title",
+      "content": "E20.Tours.Skills.Container.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "essenceColumn",
+      "app": "character",
+      "tab": "skills",
+      "selector": ".essence-column",
+      "title": "E20.Tours.Skills.EssenceColumn.Title",
+      "content": "E20.Tours.Skills.EssenceColumn.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "allocation",
+      "app": "character",
+      "tab": "skills",
+      "selector": ".skill-rank-allocation",
+      "title": "E20.Tours.Skills.Allocation.Title",
+      "content": "E20.Tours.Skills.Allocation.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "conditioning",
+      "app": "character",
+      "tab": "skills",
+      "selector": ".conditioning-row",
+      "title": "E20.Tours.Skills.Conditioning.Title",
+      "content": "E20.Tours.Skills.Conditioning.Content",
+      "tooltipDirection": "RIGHT",
+      "optional": true
+    },
+    {
+      "id": "skillRow",
+      "app": "character",
+      "tab": "skills",
+      "selector": "[data-skill=\"athletics\"]",
+      "title": "E20.Tours.Skills.SkillRow.Title",
+      "content": "E20.Tours.Skills.SkillRow.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "pickerButton",
+      "app": "character",
+      "tab": "skills",
+      "selector": "[data-action=\"skillPicker\"]",
+      "title": "E20.Tours.Skills.PickerButton.Title",
+      "content": "E20.Tours.Skills.PickerButton.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "picker",
+      "app": "skillPicker",
+      "selector": ".skill-picker-body",
+      "title": "E20.Tours.Skills.Picker.Title",
+      "content": "E20.Tours.Skills.Picker.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "tally",
+      "app": "skillPicker",
+      "selector": ".skill-picker-essence-tally",
+      "title": "E20.Tours.Skills.Tally.Title",
+      "content": "E20.Tours.Skills.Tally.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "specialization",
+      "app": "skillPicker",
+      "selector": ".skill-picker-row select",
+      "title": "E20.Tours.Skills.Specialization.Title",
+      "content": "E20.Tours.Skills.Specialization.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Skills.Outro.Title",
+      "content": "E20.Tours.Skills.Outro.Content"
+    }
+  ]
+}

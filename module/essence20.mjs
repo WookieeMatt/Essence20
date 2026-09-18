@@ -1,5 +1,6 @@
 // Import data models
 import * as data from "./data/index.mjs";
+import { createEffectMacro, toggleEffectMacro } from "./helpers/effects.mjs";
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
 import { Essence20Combat } from "./documents/combat.mjs";
@@ -48,6 +49,8 @@ import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
 import { applyThemeClass, refreshChatMessageThemes, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
 import { updateRoleCache } from "./helpers/utils.mjs";
+import { registerEssence20Tours, sweepTourDemoContent } from "./tours/index.mjs";
+import { activateWelcomeOfferListeners, offerWelcomeTour } from "./tours/welcome-offer.mjs";
 
 function registerSystemSettings() {
   game.settings.register("essence20", "systemMigrationVersion", {
@@ -112,6 +115,7 @@ Hooks.once("init", async function () {
     Essence20Item,
     CompendiumBrowser: Essence20CompendiumBrowser,
     rollItemMacro,
+    toggleEffectMacro,
   };
 
   // Add custom constants for configuration.
@@ -376,6 +380,11 @@ Handlebars.registerHelper('default', function(value) {
 // Perform one-time pre-localization and sorting of some configuration objects
 Hooks.once("i18nInit", () => performPreLocalization(CONFIG.E20));
 
+// Register the system's guided tours. This has to be "setup" rather than "init": game.tours exists
+// from the Game constructor, but the Tour constructor reads game.i18n._fallback, which isn't
+// populated until i18n.initialize() runs — which core does after "init" and before "setup".
+Hooks.once("setup", registerEssence20Tours);
+
 // Foundry only re-themes its own core UI (sidebar, HUD, compendium, etc.) when the
 // color scheme setting changes; re-theme any open Essence20 sheets/apps in place too.
 Hooks.on("clientSettingChanged", (key) => {
@@ -388,10 +397,25 @@ Hooks.on("clientSettingChanged", (key) => {
 Hooks.once("ready", async function () {
   runMigrations();
 
+  // Remove demo actors from a tour that was interrupted rather than exited (refresh, crash).
+  await sweepTourDemoContent();
+
+  // Point first-time users at the guided tours, once per world.
+  await offerWelcomeTour();
+
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => {
-    if (["Item", "ActiveEffect"].includes(data.type)) {
+    // Both branches return false to suppress Foundry's own handling, which would otherwise make a
+    // generic "toggle this document's sheet" macro (Hotbar##onDragDrop -> _createDocumentSheetToggle).
+    // ActiveEffect was listed here from the start but only ever reached createItemMacro, which
+    // returns early for a non-Item - so dropping an effect silently did nothing.
+    if (data.type === "Item") {
       createItemMacro(data, slot);
+      return false;
+    }
+
+    if (data.type === "ActiveEffect") {
+      createEffectMacro(data, slot);
       return false;
     }
   });
@@ -544,6 +568,7 @@ Hooks.on("renderChatMessageHTML", (app, html, data) => {
   attachCheckCardListeners(app, html);
   hideDifficultyForNonGm(app, html);
   applyChatMessageSystemColor(app, html);
+  activateWelcomeOfferListeners(app, html);
   applyThemeClass(html);
 });
 

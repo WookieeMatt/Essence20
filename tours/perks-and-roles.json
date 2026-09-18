@@ -1,0 +1,93 @@
+{
+  "namespace": "essence20",
+  "id": "perksAndRoles",
+  "title": "E20.Tours.Perks.Title",
+  "description": "E20.Tours.Perks.Description",
+  "display": true,
+  "canBeResumed": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Perks.Intro.Title",
+      "content": "E20.Tours.Perks.Intro.Content"
+    },
+    {
+      "id": "roleField",
+      "app": "character",
+      "selector": "header.sheet-header .sliced-border:has(label[for=\"system.role\"])",
+      "title": "E20.Tours.Perks.RoleField.Title",
+      "content": "E20.Tours.Perks.RoleField.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "level",
+      "app": "character",
+      "selector": "input[name=\"system.level\"]",
+      "title": "E20.Tours.Perks.Level.Title",
+      "content": "E20.Tours.Perks.Level.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "rolePoints",
+      "app": "character",
+      "selector": ".role-points-item",
+      "title": "E20.Tours.Perks.RolePoints.Title",
+      "content": "E20.Tours.Perks.RolePoints.Content",
+      "tooltipDirection": "RIGHT",
+      "optional": true
+    },
+    {
+      "id": "perksTab",
+      "app": "character",
+      "tab": "perks",
+      "selector": ".tab.perks",
+      "title": "E20.Tours.Perks.PerksTab.Title",
+      "content": "E20.Tours.Perks.PerksTab.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "roleSection",
+      "app": "character",
+      "tab": "perks",
+      "selector": ".tab.perks > .collapsible-item-container:has(.leveled-item-badge)",
+      "title": "E20.Tours.Perks.RoleSection.Title",
+      "content": "E20.Tours.Perks.RoleSection.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "badge",
+      "app": "character",
+      "tab": "perks",
+      "selector": ".tab.perks .leveled-item-badge",
+      "title": "E20.Tours.Perks.Badge.Title",
+      "content": "E20.Tours.Perks.Badge.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "generalSection",
+      "app": "character",
+      "tab": "perks",
+      "selector": ".tab.perks > .collapsible-item-container:has([data-action=\"itemCreate\"][data-type=\"perk\"])",
+      "title": "E20.Tours.Perks.GeneralSection.Title",
+      "content": "E20.Tours.Perks.GeneralSection.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "background",
+      "app": "character",
+      "tab": "background",
+      "selector": ".tab.background",
+      "title": "E20.Tours.Perks.Bio.Title",
+      "content": "E20.Tours.Perks.Bio.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Perks.Outro.Title",
+      "content": "E20.Tours.Perks.Outro.Content"
+    }
+  ]
+}

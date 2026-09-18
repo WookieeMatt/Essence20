@@ -87,6 +87,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       traitSelector: this.#traitSelector,
       viewItem: this.#viewItem,
       editDescription: this.#editDescription,
+      startSheetTour: this.#onStartSheetTour,
       createEffect: this.#createActiveEffect,
       deleteEffect: this.#deleteActiveEffect,
       editEffect: this.#editActiveEffect,
@@ -113,6 +114,16 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     tag: 'form',
     window: {
       resizable: true,
+      controls: [
+        {
+          icon: "fas fa-circle-question",
+          label: "E20.TourSheetHelp",
+          action: "startSheetTour",
+          visible: function () {
+            return !!game.tours.get("essence20.itemAuthoring")?.canStart;
+          },
+        },
+      ],
     },
   };
 
@@ -361,5 +372,17 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
 
   static #toggleActiveEffect(event, target){
     onToggleActiveEffect(event, target);
+  }
+
+  /**
+   * Start the item-authoring tour from the titlebar help control. The tour runs against its own
+   * demo item rather than this one, so opening it never rearranges something the user is editing.
+   */
+  static async #onStartSheetTour() {
+    const tour = game.tours.get("essence20.itemAuthoring");
+    if (!tour) return;
+
+    await this.minimize();
+    return tour.start();
   }
 }

@@ -178,6 +178,20 @@ export const registerSettings = function () {
     config: false,
   });
 
+  /* -------------------------------------------- */
+  /*  Guided tours                                */
+  /* -------------------------------------------- */
+
+  /* Whether the one-off "there are guided tours" chat card has been posted in this world yet.
+     World-scoped rather than per-client so a table of five players gets one card between them,
+     not one each; the card is posted to everyone and any of them can take it up. */
+  game.settings.register(systemName, "tourWelcomeOffered", {
+    scope: "world",
+    default: false,
+    type: Boolean,
+    config: false,
+  });
+
   game.settings.register(systemName, "sptGmPoints", {
     scope: "world",
     default: 0,

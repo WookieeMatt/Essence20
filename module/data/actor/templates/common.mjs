@@ -138,6 +138,11 @@ export const common = () => ({
     bonus: makeInt(0),
     max: makeInt(0),
     origin: makeInt(0),
+    // _prepareHealth builds a "20 (Origin) + 0 (Role Points) + ..." breakdown here for the Health
+    // readout's hover tooltip (sidebar-health.hbs), the same way makeDefensesFields declares one
+    // for each defense. Without the field the DataModel drops that assignment before the template
+    // sees it, which is why hovering Health showed an empty tooltip.
+    string: makeStr(''),
     value: makeInt(0),
   }),
   immunities: makeDamageSchema(E20.damageTypes),

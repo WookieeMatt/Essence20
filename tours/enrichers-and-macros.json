@@ -1,0 +1,46 @@
+{
+  "namespace": "essence20",
+  "id": "enrichersAndMacros",
+  "title": "E20.Tours.Enrichers.Title",
+  "description": "E20.Tours.Enrichers.Description",
+  "display": true,
+  "canBeResumed": false,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Enrichers.Intro.Title",
+      "content": "E20.Tours.Enrichers.Intro.Content"
+    },
+    {
+      "id": "link",
+      "action": "postDemoCheck",
+      "sidebarTab": "chat",
+      "selector": ".e20-tour-check .e20-check-link",
+      "title": "E20.Tours.Enrichers.Link.Title",
+      "content": "E20.Tours.Enrichers.Link.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "sendToChat",
+      "sidebarTab": "chat",
+      "selector": ".e20-tour-check .e20-check-send-to-chat",
+      "title": "E20.Tours.Enrichers.SendToChat.Title",
+      "content": "E20.Tours.Enrichers.SendToChat.Content",
+      "tooltipDirection": "LEFT",
+      "restricted": true,
+      "optional": true
+    },
+    {
+      "id": "hotbar",
+      "selector": "#hotbar",
+      "title": "E20.Tours.Enrichers.Hotbar.Title",
+      "content": "E20.Tours.Enrichers.Hotbar.Content",
+      "tooltipDirection": "UP"
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Enrichers.Outro.Title",
+      "content": "E20.Tours.Enrichers.Outro.Content"
+    }
+  ]
+}
