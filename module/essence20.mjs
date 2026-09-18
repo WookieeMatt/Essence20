@@ -1,5 +1,6 @@
 // Import data models
 import * as data from "./data/index.mjs";
+import { createEffectMacro, toggleEffectMacro } from "./helpers/effects.mjs";
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
 import { Essence20Combat } from "./documents/combat.mjs";
@@ -112,6 +113,7 @@ Hooks.once("init", async function () {
     Essence20Item,
     CompendiumBrowser: Essence20CompendiumBrowser,
     rollItemMacro,
+    toggleEffectMacro,
   };
 
   // Add custom constants for configuration.
@@ -401,8 +403,17 @@ Hooks.once("ready", async function () {
 
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => {
-    if (["Item", "ActiveEffect"].includes(data.type)) {
+    // Both branches return false to suppress Foundry's own handling, which would otherwise make a
+    // generic "toggle this document's sheet" macro (Hotbar##onDragDrop -> _createDocumentSheetToggle).
+    // ActiveEffect was listed here from the start but only ever reached createItemMacro, which
+    // returns early for a non-Item - so dropping an effect silently did nothing.
+    if (data.type === "Item") {
       createItemMacro(data, slot);
+      return false;
+    }
+
+    if (data.type === "ActiveEffect") {
+      createEffectMacro(data, slot);
       return false;
     }
   });

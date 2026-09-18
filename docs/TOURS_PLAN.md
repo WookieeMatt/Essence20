@@ -694,6 +694,9 @@ at a readable size. `demo-content.test.js` now walks the definitions and asserts
 
   Full pass, 2026-09-16: **14 tours, 125 steps, zero unresolved, zero skipped, zero errors**, world
   identical before and after.
+  Full pass, 2026-09-17, after the PR review fixes: **14 tours, 126 steps, zero unresolved, zero
+  skipped, zero errors**, world identical before and after. The extra step is the Skill Picker one
+  added to Threats and Combat.
   It takes a couple of minutes — each tour provisions and tears down its own demo content — so it
   belongs in the release checklist rather than in a watch loop.
 

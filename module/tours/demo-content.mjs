@@ -79,6 +79,11 @@ export const DEMO_ACTORS = {
         social: { value: 3, max: 3 },
       },
       initiative: { skill: "initiative" },
+      // Armor training, so the Gear tab's Training block has something in it. It renders a
+      // boolean list per armor type, so an untrained character shows an empty table — which is
+      // what a reviewer reasonably read as the block being broken rather than simply unset.
+      // A Power Rangers Role hides the Weapons column, so only armor matters for this one.
+      trained: { armors: { light: true, medium: true } },
       // A spread of shifts so the Skills tab has something to read and the roll tour has a trained
       // skill to roll, rather than a wall of identical defaults.
       //
@@ -340,7 +345,14 @@ export const DEMO_ACTORS = {
         strength: { value: 3, max: 3 }, speed: { value: 2, max: 2 },
         smarts: { value: 1, max: 1 }, social: { value: 1, max: 1 },
       },
-      skills: { might: { shift: "d8" }, alertness: { shift: "d6" }, intimidation: { shift: "d6" } },
+      // isChosen is what puts a skill on an NPC-like sheet at all (npc-skill-list.hbs reads
+      // base-actor-sheet.mjs#_prepareChosenNpcSkills); without it the Skills panel renders empty
+      // no matter what shifts are set, and the tour step pointing at it has nothing to show.
+      skills: {
+        might: { shift: "d8", isChosen: true },
+        alertness: { shift: "d6", isChosen: true },
+        intimidation: { shift: "d6", isChosen: true },
+      },
     },
     items: [
       {

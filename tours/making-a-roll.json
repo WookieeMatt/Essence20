@@ -25,7 +25,7 @@
       "id": "dialog",
       "app": "rollDialog",
       "skill": "targeting",
-      "selector": ".roll-dialog",
+      "selector": ".roll-dialog-app",
       "title": "E20.Tours.Rolling.Dialog.Title",
       "content": "E20.Tours.Rolling.Dialog.Content",
       "tooltipDirection": "RIGHT"

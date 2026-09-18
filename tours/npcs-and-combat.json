@@ -28,6 +28,14 @@
       "tooltipDirection": "RIGHT"
     },
     {
+      "id": "threatSkills",
+      "app": "threat",
+      "selector": ".npc-skill-list",
+      "title": "E20.Tours.Combat.ThreatSkills.Title",
+      "content": "E20.Tours.Combat.ThreatSkills.Content",
+      "tooltipDirection": "UP"
+    },
+    {
       "id": "initiative",
       "app": "character",
       "selector": ".essence20-sidebar-initiative",

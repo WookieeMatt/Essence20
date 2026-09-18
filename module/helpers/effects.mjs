@@ -172,3 +172,78 @@ export function prepareActiveEffectCategories(effects) {
 
   return categories;
 }
+
+/* -------------------------------------------- */
+
+/**
+ * Create a hotbar Macro which toggles an Active Effect on and off.
+ *
+ * The companion to createItemMacro (essence20.mjs) for the other document type the hotbarDrop
+ * hook claims: dropping an effect previously did nothing at all, because createItemMacro returns
+ * early for anything that is not an Item while the hook had already returned false and suppressed
+ * Foundry's own handling.
+ * @param {object} data The drop data for the dragged ActiveEffect
+ * @param {number} slot The hotbar slot to assign the macro to
+ * @returns {Promise<boolean>}
+ */
+export async function createEffectMacro(data, slot) {
+  if (data.type !== "ActiveEffect") return false;
+
+  if (!("uuid" in data)) {
+    ui.notifications.warn(game.i18n.localize("E20.EffectMacroUnowned"));
+    return false;
+  }
+
+  const effect = await fromUuid(data.uuid);
+  if (!effect) return false;
+
+  // Keyed on id + name rather than uuid, matching createItemMacro: the macro resolves against
+  // whichever Actor the user currently controls, so one macro works for every token that carries
+  // an effect of that name instead of being pinned to the single document that was dragged.
+  const command = `game.essence20.toggleEffectMacro("${effect.id}", "${effect.name}");`;
+  let macro = game.macros.find(m => m.name === effect.name && m.command === command);
+  if (!macro) {
+    macro = await Macro.create({
+      name: effect.name,
+      type: "script",
+      img: effect.img || "icons/svg/aura.svg",
+      command,
+      flags: { "essence20.effectMacro": true },
+    });
+  }
+
+  game.user.assignHotbarMacro(macro, slot);
+  return false;
+}
+
+/* -------------------------------------------- */
+
+/**
+ * Toggle an Active Effect on the controlled Actor, for a macro made by createEffectMacro.
+ * @param {string} effectId The id of the effect as it was when dragged
+ * @param {string} effectName The effect's name, used when the id no longer resolves
+ * @returns {Promise|void}
+ */
+export function toggleEffectMacro(effectId, effectName) {
+  const speaker = ChatMessage.getSpeaker();
+  let actor;
+  if (speaker.token) actor = game.actors.tokens[speaker.token];
+  if (!actor) actor = game.actors.get(speaker.actor);
+
+  // allApplicableEffects() covers effects granted by owned Items as well as the Actor's own, which
+  // is what the sheet's Effects tab lists - the guard mirrors skill-effects.mjs, for actor-likes
+  // that predate it. Falling back to the name keeps a macro working after the effect is deleted
+  // and recreated, or when it is used by a different character than the one it was dragged from.
+  const effects = actor
+    ? (actor.allApplicableEffects ? [...actor.allApplicableEffects()] : [...(actor.effects ?? [])])
+    : [];
+  const effect = effects.find(e => e.id === effectId) ?? effects.find(e => e.name === effectName);
+
+  if (!effect) {
+    return ui.notifications.warn(
+      game.i18n.format("E20.EffectMacroMissing", { name: effectName }),
+    );
+  }
+
+  return effect.update({ disabled: !effect.disabled });
+}

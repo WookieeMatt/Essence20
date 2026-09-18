@@ -59,10 +59,10 @@ The system ships with short in-app tours covering how it works. Find them under 
 | Threats and Combat | NPC sheets, initiative, and the combat tracker |
 | Vehicles, Zords and Megaforms | The three machine sheets, crews, and how a Megaform combines its Zords |
 | Story Points | The tracker, the two pools, and who may spend |
-| Building Items | The item sheet, and how items attach to each other |
-| Links and Macros | `@Check` links in text, and item-to-hotbar macros |
+| Building Items | The Item sheet, and how Items attach to each other |
+| Links and Macros | `@Check` links in text, and Item-to-hotbar macros |
 
-The sheet tours create a temporary demo character in a folder named `Essence20 Tours` and delete it again when the tour ends. They never modify your own actors.
+The sheet tours create a temporary demo character in a folder named `Essence20 Tours` and delete it again when the tour ends. They never modify your own Actors.
 
 # Installation
 - In the `Game Systems` menu within Foundry, click `Install System` and paste in the Manifest URL for the version of Foundry you're using.

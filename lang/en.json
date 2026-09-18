@@ -3,7 +3,6 @@
    "Actor": {
       "playerCharacter": "Player Character",
       "npc": "NPC/Contact",
-      "threat": "Threat",
       "vehicle": "Vehicle",
       "zord": "Zord",
       "megaform": "Megaform",
@@ -369,6 +368,8 @@
     "DialogConfirmButton": "Confirm",
     "DialogNoButton": "No",
     "DialogYesButton": "Yes",
+    "EffectMacroMissing": "Your controlled Actor does not have an effect named {name}.",
+    "EffectMacroUnowned": "You can only create macro buttons for effects on an owned Actor or Item.",
     "EffectShapeCircle": "Circle",
     "EffectShapeCone": "Cone",
     "EffectShapeSquare": "Square",
@@ -1776,7 +1777,7 @@
         },
         "Sidebar": {
           "Title": "The Sidebar",
-          "Content": "Everything in your world is reachable from here: characters, items, compendium content, chat and settings.\nThe next few steps walk the tabs that matter most in Essence20."
+          "Content": "Everything in your world is reachable from here: characters, Items, compendium content, chat and settings.\nThe next few steps walk the tabs that matter most in Essence20."
         },
         "Actors": {
           "Title": "Actors",
@@ -1784,15 +1785,15 @@
         },
         "Items": {
           "Title": "Items",
-          "Content": "Weapons, armor, gear, Perks, Roles, Origins, Influences, Powers and more.\nMost of what defines a character in Essence20 is an item dropped onto their sheet, which is why this tab fills up quickly."
+          "Content": "Weapons, armor, gear, Perks, Roles, Origins, Influences, Powers and more.\nMost of what defines a character in Essence20 is an Item dropped onto their sheet, which is why this tab fills up quickly."
         },
         "Compendium": {
           "Title": "Compendium Packs",
-          "Content": "Every sourcebook ships as its own pack, grouped into folders by game line.\nA GM can turn individual sourcebooks on and off in the system settings, and the packs appear or disappear for everyone accordingly."
+          "Content": "Every sourcebook ships as its own pack, grouped into folders by game line: Perks, Roles, Origins, Influences and Hang Ups, plus the weapons, armor, gear and Powers that go with them.\nThe books' own wording is copyrighted, so an Item carries its mechanics and a brief description of its own, not the published text. The packs are a companion to the sourcebooks, not a replacement.\nA GM can turn individual sourcebooks on and off in the system settings, and the packs follow for everyone."
         },
         "CompendiumBrowser": {
           "Title": "The Compendium Browser",
-          "Content": "With this many packs, scrolling them one at a time gets old fast.\nThe <strong>Compendium Browser</strong> searches across all of them at once and filters by type, source and the traits that matter for each item. Drag a result straight onto a sheet.\nThe same button sits at the bottom of the Items tab."
+          "Content": "With this many packs, scrolling them one at a time gets old fast.\nThe <strong>Compendium Browser</strong> searches across all of them at once and filters by type, source and the traits that matter for each Item. Drag a result straight onto a sheet.\nThe same button sits at the bottom of the Items tab."
         },
         "SceneControls": {
           "Title": "Scene Controls",
@@ -1820,7 +1821,7 @@
         },
         "Header": {
           "Title": "The Header",
-          "Content": "Everything that identifies the character: portrait, name, size, Faction, Level, Role, Origin, and a colour that tints the sheet.\nRole and Origin are <em>items</em> — you drag them on from a compendium rather than typing them in, and they bring their own mechanics with them."
+          "Content": "Everything that identifies the character: portrait, name, size, Faction, Level, Role, Origin, and a color that tints the sheet.\nRole and Origin are <em>Items</em> — you drag them on from a compendium rather than typing them in, and they bring their own mechanics with them."
         },
         "Level": {
           "Title": "Level",
@@ -1832,7 +1833,7 @@
         },
         "Sidebar": {
           "Title": "The Sidebar",
-          "Content": "The left column holds everything you reach for mid-scene, so it stays put no matter which tab you are on."
+          "Content": "The left column holds everything you reach for mid-scene, so it stays put no matter which tab you are on.\nMost of these numbers are worked out for you rather than typed in. Hover one and a tooltip shows the arithmetic — what Health is built from, or which pieces add up to a defense."
         },
         "Resources": {
           "Title": "Resources",
@@ -1848,15 +1849,15 @@
         },
         "Speeds": {
           "Title": "Movement",
-          "Content": "Ground, aerial and aquatic movement, in feet.\nThese are worked out for you from Origin, Role, armour and any active effects — which is why they are read-only."
+          "Content": "Ground, aerial and aquatic movement, in feet.\nThese are worked out for you from Origin, Role, armor and any active effects — which is why they are read-only."
         },
         "Defenses": {
-          "Title": "Defences",
-          "Content": "Toughness, Evasion, Willpower and Cleverness — one per Essence.\nAttacks roll against these, and each is derived from its Essence plus armour and effects."
+          "Title": "Defenses",
+          "Content": "Toughness, Evasion, Willpower and Cleverness — one per Essence.\nAttacks roll against these, and each is derived from its Essence plus armor and effects."
         },
         "Tabs": {
           "Title": "The Tabs",
-          "Content": "Skills, Gear, Powers, Perks and the rest.\nTabs that do not apply stay quiet — a character who cannot cast spells still has the tab, it just will not have anything in it."
+          "Content": "Skills, Gear, Powers, Perks and the rest.\nWhich tabs you get depends on the character — a Transformer has an Alt Mode tab, a Ranger has Zords, and a character with no spellcasting has no Spells tab to fill."
         },
         "Gear": {
           "Title": "Gear",
@@ -1876,15 +1877,15 @@
         },
         "Container": {
           "Title": "Four Essences",
-          "Content": "Strength, Speed, Smarts and Social.\nEach Essence has a value, a matching defence, and its own set of skills. Raising an Essence raises what you can spend on its skills."
+          "Content": "Strength, Speed, Smarts and Social.\nEach Essence has a rating, a matching defense, and its own set of skills. Raising an Essence raises what you can spend on its skills."
         },
         "EssenceColumn": {
           "Title": "An Essence",
-          "Content": "The number at the top is the Essence itself.\nEverything below it is a skill that draws on it — so Strength covers Athletics, Brawn, Intimidation and Might."
+          "Content": "Two numbers, and they are not the same thing: the second is the Essence rating, and the first is its current value — what Essence damage comes off, until something restores it.\nEverything below is a skill that draws on that Essence — so Strength covers Athletics, Brawn, Intimidation and Might."
         },
         "Allocation": {
-          "Title": "Ranks and Defence",
-          "Content": "Here you can see how many skill ranks you have spent in this Essence, and the defense it feeds.\nThe Essence's value is your budget."
+          "Title": "Ranks and Defense",
+          "Content": "Here you can see how many skill ranks you have spent in this Essence, and the defense it feeds.\nThe Essence’s rating is your budget. Hover the tally to see which skills it is made of."
         },
         "Conditioning": {
           "Title": "Conditioning",
@@ -1896,7 +1897,7 @@
         },
         "PickerButton": {
           "Title": "Editing Skills",
-          "Content": "Skill dice are not edited on this tab — this gear opens the <strong>Skill Picker</strong>, which is where ranks, Conditioning and specialisations are actually set.\nOne place to spend, so the budget can be checked as you go."
+          "Content": "Skill dice are not edited on this tab — this gear opens the <strong>Skill Picker</strong>, which is where ranks, Conditioning and specializations are actually set.\nOne place to spend, so the budget can be checked as you go."
         },
         "Picker": {
           "Title": "The Skill Picker",
@@ -1907,8 +1908,8 @@
           "Content": "The running tally per Essence: ranks spent against ranks available.\nGo over and it is flagged immediately, so you find out here rather than halfway through a session."
         },
         "Specialization": {
-          "Title": "Specialisations",
-          "Content": "A specialisation narrows a skill to something you are especially good at — Climbing under Athletics, say.\nPick one from the list, or write your own."
+          "Title": "Specializations",
+          "Content": "A specialization narrows a skill to something you are especially good at — Climbing under Athletics, say.\nPick one from the list, or write your own."
         },
         "Outro": {
           "Title": "Skills Covered",
@@ -1920,7 +1921,7 @@
         "Description": "Rolling a skill, reading the Roll Options dialog, and what lands in chat.",
         "Intro": {
           "Title": "Making a Roll",
-          "Content": "Every roll in Essence20 goes through one dialog, and that dialog is where the system shows its working.\nThis tour rolls a skill for the demo character and reads the result. The demo character is removed afterwards."
+          "Content": "This tour rolls a skill for the demo character and reads the result. The demo character is removed afterwards."
         },
         "SkillLink": {
           "Title": "Rolling a Skill",
@@ -1932,7 +1933,7 @@
         },
         "Shifts": {
           "Title": "Shifting",
-          "Content": "A shift moves the skill up or down the die ladder, for this roll only.\nShift up for favourable circumstances, down for awkward ones. These two boxes are the manual controls; the automatic ones are below."
+          "Content": "A shift moves the skill up or down the die ladder, for this roll only.\nShift up for favorable circumstances, down for unfavorable ones. These two boxes are the manual controls; the automatic ones are below."
         },
         "EdgeSnag": {
           "Title": "Edge and Snag",
@@ -1940,7 +1941,7 @@
         },
         "Sources": {
           "Title": "Automatic Modifiers",
-          "Content": "This is the part worth knowing about.\nAnything already affecting the roll is listed <em>by name</em> — here, the <strong>Impaired</strong> condition shifting you down one. Perks, conditions and effects all show up in this list.\nEach one has its own switch, so you can turn a single modifier off without unpicking the rest or doing the sums yourself."
+          "Content": "This is the part worth knowing about.\nAnything already affecting the roll is listed <em>by name</em> — here, the <strong>Impaired</strong> condition shifting you down one. Perks, conditions and effects all show up in this list.\nEach one has its own switch, so you can turn a single modifier off without undoing the rest or doing the math yourself."
         },
         "RollButton": {
           "Title": "Rolling",
@@ -1952,27 +1953,27 @@
         },
         "Outro": {
           "Title": "Roll Complete",
-          "Content": "Click a skill, set what is true about the roll, read the working in chat.\nThat is the core loop. The demo character is being cleaned up now — the rest of the tours are under Settings, in Tour Management."
+          "Content": "Click a skill, set what is true about the roll, read the full formula in chat.\nThat is the core loop. The demo character is being cleaned up now — the rest of the tours are under Settings, in Tour Management."
         }
       },
       "Gear": {
         "Title": "Gear and Weapons",
-        "Description": "Weapons, weapon effects, upgrades, armour and shields on the Gear tab.",
+        "Description": "Weapons, weapon effects, upgrades, armor and shields on the Gear tab.",
         "Intro": {
           "Title": "Gear and Weapons",
           "Content": "The Gear tab is where a character's equipment lives.\nThis tour uses the same temporary demo character as the others, and removes it when it finishes."
         },
         "Training": {
-          "Title": "Armour Training",
-          "Content": "Which armour a character is trained in.\nWearing armour you are not trained in still works — it just costs you, so it is worth knowing what is ticked here before a fight rather than during one."
+          "Title": "Armor Training",
+          "Content": "Which armor a character is trained in.\nWearing armor you are not trained in still works — it just costs you, so it is worth knowing what is ticked here before a fight rather than during one."
         },
         "Weapons": {
           "Title": "Weapons",
-          "Content": "Gear groups into a section per kind, and each section collapses.\nA weapon is more than a damage number here: it is a small container that other items attach to."
+          "Content": "Gear groups into a section per kind, and each section collapses.\nA weapon is more than a damage number here: it is a small container that other Items attach to."
         },
         "AddWeapon": {
           "Title": "Adding Gear",
-          "Content": "Every section has a plus that creates a blank item of that kind.\nMore often you will drag something in from a compendium instead — the Compendium Browser searches every sourcebook at once, and a dragged item arrives complete with its effects and upgrades already attached."
+          "Content": "Every section has a plus that creates a blank Item of that kind.\nMore often you will drag something in from a compendium instead — the Compendium Browser searches every sourcebook at once, and a dragged Item arrives complete with its effects and upgrades already attached."
         },
         "Effects": {
           "Title": "Weapon Effects",
@@ -1987,12 +1988,12 @@
           "Content": "An <strong>Upgrade</strong> modifies the weapon it is attached to.\nUpgrades nest the same way effects do, and travel with the weapon when it moves between characters."
         },
         "Armor": {
-          "Title": "Armour",
-          "Content": "Armour adds to Toughness and Evasion, but only while it is equipped — the tick box on the row.\nThose bonuses feed straight into the defences in the sidebar, so you can watch them change as you equip."
+          "Title": "Armor",
+          "Content": "Armor adds to Toughness and Evasion, but only while it is equipped — the tick box on the row.\nThose bonuses feed straight into the defenses in the sidebar, so you can watch them change as you equip."
         },
         "Shields": {
           "Title": "Shields",
-          "Content": "Shields are tracked separately from armour because they have a second state.\nAs well as equipping one, you can turn it on and off during play."
+          "Content": "Shields are tracked separately from armor because they have a second state.\nAs well as equipping one, you can turn it on and off during play."
         },
         "ShieldToggle": {
           "Title": "Active and Passive",
@@ -2004,7 +2005,7 @@
         },
         "Outro": {
           "Title": "Gear Covered",
-          "Content": "Weapons carry effects and upgrades, armour and shields feed the defences, and you roll effects rather than weapons.\nNext: <strong>Perks and Roles</strong>, which covers where a character's abilities come from."
+          "Content": "Weapons carry effects and upgrades, armor and shields feed the defenses, and you roll effects rather than weapons.\nNext: <strong>Perks and Roles</strong>, which covers where a character's abilities come from."
         }
       },
       "Perks": {
@@ -2012,11 +2013,11 @@
         "Description": "Where a character's abilities come from, and how Level drives advancement.",
         "Intro": {
           "Title": "Perks and Roles",
-          "Content": "A character's abilities arrive from four directions, and the sheet keeps them visibly separate.\nThis tour uses the same temporary demo character, and removes it afterwards."
+          "Content": "A character's abilities arrive from four sources, and the sheet keeps them visibly separate.\nThis tour uses the same temporary demo character, and removes it afterwards."
         },
         "RoleField": {
           "Title": "The Role",
-          "Content": "The Role is the single biggest thing on a character sheet.\nDrag one in from a compendium and it brings a whole advancement track with it: which Perks arrive at which level, how skills grow, and what resources you get."
+          "Content": "The Role is the most impactful thing on a character sheet.\nDrag one in from a compendium and it brings a whole advancement track with it: which Perks arrive at which level, how skills grow, and what resources you get."
         },
         "Level": {
           "Title": "Level Drives Everything",
@@ -2060,7 +2061,7 @@
         },
         "Energon": {
           "Title": "Energon",
-          "Content": "Transformers run on <strong>Energon</strong> rather than the power pools other characters use.\nIt sits in the same place in the sidebar, and it is spent the same way — but it is also fuel, so running dry is its own problem."
+          "Content": "Transformers run on <strong>Energon</strong> rather than the power pools other characters use.\nIt sits in the same place in the sidebar, and it is spent the same way."
         },
         "Recharge": {
           "Title": "Recharge",
@@ -2076,7 +2077,7 @@
         },
         "ModeSelector": {
           "Title": "Gear by Mode",
-          "Content": "On a Transformer every piece of gear grows a mode selector.\nIt controls which shapes that item is available in — a weapon mounted in vehicle mode may simply not be reachable as a robot."
+          "Content": "On a Transformer every piece of gear grows a mode selector.\nIt controls which shapes that Item is available in — a weapon mounted in vehicle mode may simply not be reachable as a robot."
         },
         "Outro": {
           "Title": "Transformers Covered",
@@ -2088,11 +2089,11 @@
         "Description": "How Active Effects change a character, and where to find them.",
         "Intro": {
           "Title": "Active Effects",
-          "Content": "An <strong>Active Effect</strong> changes a character's numbers without you editing them.\nBuffs, conditions, a Perk's ongoing bonus — they all work this way. This tour uses a temporary demo character carrying one."
+          "Content": "An <strong>Active Effect</strong> changes a character's numbers without having to edit them.\nBuffs, conditions, a Perk's ongoing bonus — they all work this way. This tour uses a temporary demo character carrying an active effect."
         },
         "DefenceBefore": {
           "Title": "Watch This Number",
-          "Content": "Toughness reads <strong>15</strong> for the demo character.\nOnly part of that is the character. Two points of it come from an effect, and the tour is about to show you where."
+          "Content": "Toughness reads <strong>15</strong> for the demo character, but only thirteen of that is directly from the character. Two points of it come from an effect, and the tour will show you where next."
         },
         "EffectsTab": {
           "Title": "The Effects Tab",
@@ -2108,19 +2109,19 @@
         },
         "Edit": {
           "Title": "What an Effect Does",
-          "Content": "Opening an effect shows its <em>changes</em>: which field it touches, how, and by how much.\nField Adrenaline adds 2 to the Toughness bonus. Anything on the sheet can be targeted this way, which is how the sourcebook content automates itself."
+          "Content": "Opening an effect shows its <em>changes</em>: which field it touches, how, and by how much. Field Adrenaline adds 2 to the Toughness <strong>bonus</strong>, not the total.\nEffects apply before the sheet does its math, so they target its inputs — a <strong>bonus</strong> or <strong>base</strong>, a skill’s <strong>shiftUp</strong>, an <strong>edge</strong> or <strong>snag</strong>. The totals are recalculated from those.\nThe field is a data path you type; there is no list to pick from. The surest way to get one right is to copy it from an effect that already works — the sourcebook Perks, armor and Powers ship hundreds."
         },
         "Create": {
           "Title": "Making One",
-          "Content": "You can add effects by hand for anything the table invents mid-session.\nMost of the time you will not need to — items and Perks from the compendiums bring their own."
+          "Content": "You can add effects by hand for anything the table invents mid-session.\nMost of the time you will not need to — Items and Perks from the compendiums bring their own."
         },
         "Conditions": {
           "Title": "The Conditions Pack",
-          "Content": "The system ships the standard conditions — Impaired, Blinded, Immobilised and the rest — as ready-made effects in a compendium.\nApply one to a token and its effect comes with it, including the way it announces itself in the roll dialog."
+          "Content": "The system ships the standard conditions — Impaired, Blinded, Immobilized and the rest — as ready-made effects in a compendium.\nApply one to a token and its effect comes with it, including the way it announces itself in the roll dialog."
         },
         "Outro": {
           "Title": "Effects Covered",
-          "Content": "Effects change numbers for you, sort themselves by behaviour, and can be switched off without losing them.\nThe demo character is being cleaned up now."
+          "Content": "Effects change numbers for you, sort themselves by behavior, and can be switched off without losing them.\nThe demo character is being cleaned up now."
         }
       },
       "Combat": {
@@ -2132,11 +2133,15 @@
         },
         "ThreatSheet": {
           "Title": "The Threat Sheet",
-          "Content": "Threats and contacts use a lighter sheet than player characters.\nThey have the same Essences and skills underneath, without the advancement machinery a player character carries — a GM can build one in a minute."
+          "Content": "There is no Threat type to create: a threat is an <strong>NPC/Contact</strong>, and one sheet covers both. The <em>Character is a Contact</em> checkbox under <strong>Sheet Options</strong>, in this window’s <i class=\"fa-solid fa-ellipsis-vertical\"></i> menu, is what tells the two apart.\nIt is a lighter sheet than a player character’s — the same Essences and skills underneath, without the advancement machinery — with a Threat Level in the header where a character would carry a Level."
         },
         "ThreatSidebar": {
           "Title": "What a Threat Tracks",
-          "Content": "The same resources, defences and movement, in the same places.\nAnything you learned reading a character sheet reads the same way here."
+          "Content": "The same resources, defenses and movement, in the same places.\nAnything you learned reading a character sheet reads the same way here."
+        },
+        "ThreatSkills": {
+          "Title": "Choosing Skills",
+          "Content": "A threat lists only the skills you picked for it, the way a printed stat block does — the gear icon opens the <strong>Skill Picker</strong>, where both the shifts and that choice are made.\nIt is the same Skill Picker a player character uses, with one difference: a player character always lists every skill and spends Essence points on them, while a threat lists only what you tick and has no budget to keep to."
         },
         "Initiative": {
           "Title": "Rolling Initiative",
@@ -2168,7 +2173,7 @@
         },
         "PowersTab": {
           "Title": "The Powers Tab",
-          "Content": "Everything this character can spend the pool on.\nPowers arrive with a Role, an Origin or an item, so the list fills itself in as the character grows."
+          "Content": "Everything this character can spend the pool on.\nPowers arrive with a Role, an Origin or an Item, so the list fills itself in as the character grows."
         },
         "Cost": {
           "Title": "Paying for It",
@@ -2176,7 +2181,7 @@
         },
         "Morph": {
           "Title": "Morphing",
-          "Content": "For a Ranger the pool does one more thing: it pays to morph.\nMorphing is a state the sheet tracks, not a note — it swaps stats and unlocks the gear that only exists once you are morphed."
+          "Content": "For a Ranger, morphing is the other thing the sheet tracks here.\nIt is a real state, not a note — it swaps stats and unlocks the gear that only exists once you are morphed."
         },
         "Outro": {
           "Title": "Powers Covered",
@@ -2188,7 +2193,7 @@
         "Description": "The Story Points tracker: pools, spending, and who is allowed to touch it.",
         "Intro": {
           "Title": "Story Points",
-          "Content": "Story Points are the table's shared currency for bending a scene, and the system keeps a tracker for them.\nThis tour opens it. It creates nothing and changes no points."
+          "Content": "Story Points are the table's shared currency for bending a scene, and the system keeps a tracker for them.\nThis tour only opens it. It creates nothing and changes no points."
         },
         "Tracker": {
           "Title": "The Tracker",
@@ -2196,11 +2201,11 @@
         },
         "Pools": {
           "Title": "Two Pools",
-          "Content": "Points move between the pools rather than appearing from nowhere — a player spending one usually hands it to the GM.\nSeeing both at once is the point: everyone can tell what the other side has."
+          "Content": "Each pool is tracked separately, and neither one feeds the other — spending a Story Point lowers the players' pool, it does not hand anything to the GM.\nSeeing both at once is the point: everyone can tell what the other side has."
         },
         "Spend": {
           "Title": "Spending",
-          "Content": "The arrows move points a step at a time, and the tracker announces the change in chat so nobody has to be watching.\nA GM can rename the players' pool in the settings — some game lines call it something else."
+          "Content": "The arrows move points a step at a time, and the tracker announces the change in chat so that everyone is made aware.\nA GM can rename the players' pool in the settings — some game lines call it something else."
         },
         "MajorScene": {
           "Title": "Major Scenes",
@@ -2217,14 +2222,14 @@
       },
       "Items": {
         "Title": "Building Items",
-        "Description": "The item sheet, and how items attach to each other.",
+        "Description": "The Item sheet, and how Items attach to each other.",
         "Intro": {
           "Title": "Building Items",
-          "Content": "Almost everything that defines a character in Essence20 is an item, so the item sheet is where homebrew happens.\nThis tour uses a temporary demo character's weapon, and removes the character afterwards."
+          "Content": "Almost everything that defines a character in Essence20 is an Item, so the Item sheet is where homebrew happens.\nThis tour uses a temporary demo character's weapon, and removes the character afterwards."
         },
         "Sheet": {
           "Title": "Three Tabs",
-          "Content": "Every item type uses the same three tabs: <strong>Description</strong>, <strong>Details</strong> and <strong>Effects</strong>.\nWhat changes between an armour and a Perk is what Details holds."
+          "Content": "Every Item type uses the same three tabs: <strong>Description</strong>, <strong>Details</strong> and <strong>Effects</strong>.\nWhat changes between an armor and a Perk is what Details holds."
         },
         "Details": {
           "Title": "Details",
@@ -2232,31 +2237,31 @@
         },
         "Effects": {
           "Title": "Effects",
-          "Content": "Active Effects attached to the item itself.\nAn effect here travels with the item — equip it and the effect applies, unequip it and the effect stops, without anyone having to remember."
+          "Content": "Active Effects attached to the Item itself.\nAn effect here travels with the Item — equip it and the effect applies, unequip it and the effect stops, without anyone having to remember."
         },
         "Attachments": {
           "Title": "Items Inside Items",
-          "Content": "Items nest. A weapon carries its Weapon Effects and Upgrades, a Role carries the Perks it grants, an Origin carries its own.\nThat is what makes drag-and-drop work: dropping one item brings everything hanging off it along too."
+          "Content": "Items nest. A weapon carries its Weapon Effects and Upgrades, a Role carries the Perks it grants, an Origin carries its own.\nThat is what makes drag-and-drop work: dropping one Item brings everything hanging off it along too."
         },
         "Outro": {
           "Title": "Items Covered",
-          "Content": "Three tabs, Details doing the mechanical work, and items that carry other items.\nThe demo character is being cleaned up now."
+          "Content": "Three tabs, Details doing the mechanical work, and Items that carry other Items.\nThe demo character is being cleaned up now."
         },
         "DescriptionTab": {
           "Title": "Description",
-          "Content": "Free text — what the thing is, in words.\nThis is what shows when someone expands the item on a character sheet or posts it to chat."
+          "Content": "Free text — what the thing is, in words.\nThis is what shows when someone expands the Item on a character sheet or posts it to chat."
         }
       },
       "Enrichers": {
         "Title": "Links and Macros",
-        "Description": "Clickable check links in text, and turning items into hotbar macros.",
+        "Description": "Clickable check links in text, and turning Items into hotbar macros.",
         "Intro": {
           "Title": "Links and Macros",
           "Content": "Two small things that save a lot of clicking during play.\nThis tour posts one whispered chat message and removes it when it finishes."
         },
         "Link": {
           "Title": "Check Links",
-          "Content": "Writing <code>@Check[skill=athletics dif=15]</code> in a journal, an item description or chat turns into this link.\nClicking it rolls that check for whoever clicked, against the difficulty you set — so an adventure can carry its own rolls instead of the GM reading numbers aloud."
+          "Content": "Writing <code>@Check[skill=athletics dif=15]</code> in a journal, an Item description or chat turns into this link.\nClicking it rolls that check for whoever clicked, against the difficulty you set — so an adventure can carry its own rolls instead of the GM reading numbers aloud."
         },
         "SendToChat": {
           "Title": "Sending It Round",
@@ -2264,7 +2269,7 @@
         },
         "Hotbar": {
           "Title": "Macros",
-          "Content": "Drag any item from a character sheet onto the hotbar and it becomes a macro.\nA weapon, a Perk, a Power — one click to use it, without opening the sheet. The system writes the macro for you."
+          "Content": "A macro is a saved button that runs something for you, and the hotbar is this numbered row — press a slot’s number key and it fires.\nDrag any Item from a character sheet onto it — a weapon, a Perk, a Power — and you get that Item as one click, without opening the sheet. There is nothing to write: the system builds the macro itself."
         },
         "Outro": {
           "Title": "That's the Suite",
@@ -2276,15 +2281,15 @@
         "Description": "The three machine sheets, their crews, and how a Megaform combines its Zords.",
         "Intro": {
           "Title": "Vehicles, Zords and Megaforms",
-          "Content": "Three actor types for things characters ride, pilot or become.\nThis tour creates a temporary demo vehicle, Zord and Megazord, and removes them when it finishes."
+          "Content": "Three Actor types for things characters ride or pilot.\nThis tour creates a temporary demo vehicle, Zord and Megazord, and removes them when it finishes."
         },
         "VehicleSheet": {
           "Title": "The Vehicle Sheet",
-          "Content": "A vehicle is an actor in its own right, with its own Health, defences and movement.\nIt is lighter than a character sheet because a vehicle does not advance — a GM builds one and it stays built."
+          "Content": "A vehicle is an Actor in its own right, with its own Health, defenses and movement.\nIt is lighter than a character sheet because a vehicle does not advance — a GM builds one and it stays built."
         },
         "VehicleStats": {
           "Title": "What a Vehicle Tracks",
-          "Content": "Health and defences in the same places as any other sheet.\nA vehicle's Essences describe the machine rather than a person, and its Toughness is what attacks roll against."
+          "Content": "Health and defenses in the same places as any other sheet.\nA vehicle's Essences describe the machine rather than a person, and its Toughness is what attacks roll against."
         },
         "Crew": {
           "Title": "The Crew",
@@ -2296,7 +2301,7 @@
         },
         "VehicleTraits": {
           "Title": "Traits and Firepoints",
-          "Content": "Traits describe what the vehicle can do — all-terrain, armoured cabin, amphibious.\nFirepoints are the positions someone aboard can shoot from, which is what makes a vehicle a platform rather than just transport."
+          "Content": "Traits describe what the vehicle can do — all-terrain, armored cabin, amphibious.\nFirepoints are the positions someone aboard can shoot from, which is what makes a vehicle a platform rather than just transport."
         },
         "ZordSheet": {
           "Title": "The Zord Sheet",
@@ -2304,11 +2309,11 @@
         },
         "ZordStats": {
           "Title": "Zord Scale",
-          "Content": "Zords are titanic, and their numbers say so.\nArmour contributes directly to Toughness here rather than coming from an equipped item, because a Zord does not carry gear the way a character does."
+          "Content": "Zords are titanic, and their numbers say so.\nArmor contributes directly to Toughness here rather than coming from an equipped Item, because a Zord does not carry gear the way a character does."
         },
         "MegaformSheet": {
           "Title": "The Megaform",
-          "Content": "A Megazord is what several Zords become when they combine.\nIt is a separate actor, and almost nothing on it is typed in by hand."
+          "Content": "A Megazord is what several Zords become when they combine.\nIt is a separate Actor, and almost nothing on it is typed in by hand."
         },
         "Combiners": {
           "Title": "The Participants",

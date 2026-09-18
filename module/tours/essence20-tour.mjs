@@ -46,6 +46,33 @@ export class Essence20Tour extends Tour {
    */
   #skipped = new Set();
 
+  /**
+   * Applications this tour opened itself, so teardown can close them again.
+   *
+   * Only ones the tour opened: anything the user already had up is left alone, because closing a
+   * window someone was working in would be worse than leaving one of ours behind.
+   *
+   * Deleting a demo actor closes its *sheet* for free, since a DocumentSheet is bound to its
+   * document — but not every window the tours open is document-bound. The Skill Picker is a plain
+   * ApplicationV2 constructed with an actor, so it outlived the actor's deletion and stayed on
+   * screen into the following tour.
+   * @type {Set<foundry.applications.api.ApplicationV2>}
+   */
+  #opened = new Set();
+
+  /**
+   * Record an application the tour opened, so `#teardown` closes it later.
+   * @template {foundry.applications.api.ApplicationV2} T
+   * @param {T} app             The application.
+   * @param {boolean} weOpened  False when it was already on screen and belongs to the user.
+   * @returns {T}
+   * @protected
+   */
+  _track(app, weOpened) {
+    if (app && weOpened) this.#opened.add(app);
+    return app;
+  }
+
   /* -------------------------------------------- */
   /*  Lifecycle                                   */
   /* -------------------------------------------- */
@@ -95,6 +122,14 @@ export class Essence20Tour extends Tour {
 
   /** @override */
   async complete() {
+    // Close our windows *before* delegating. On completion core may raise the "Suggested Next
+    // Tour" dialog and `super.complete()` does not resolve until the user answers it — so anything
+    // left until afterwards runs too late. Answer "yes" and the next tour starts first, the
+    // in-progress guard in `#teardown` then declines to clean up, and the windows this tour opened
+    // survive into the following one. That is how the Skill Picker ended up still on screen two
+    // tours later.
+    await this.#closeOpenedApps();
+
     const result = await super.complete();
     await this.#teardown();
     return result;
@@ -107,6 +142,7 @@ export class Essence20Tour extends Tour {
    */
   async #teardown() {
     this.#app = null;
+    await this.#closeOpenedApps();
     if (!this.requiredDemoActors.length) return;
 
     // `exit()` is synchronous in core, so this runs fire-and-forget. Give anything that starts
@@ -122,6 +158,27 @@ export class Essence20Tour extends Tour {
     } catch (err) {
       console.error(`Essence20 | Tour "${this.id}" failed to clean up its demo actors`, err);
     }
+  }
+
+  /**
+   * Close every application this tour opened.
+   *
+   * Runs before the demo actors are deleted so each window is closed while its document still
+   * exists, and never throws: failing to tidy up is not a reason to make exiting look broken.
+   * @returns {Promise<void>}
+   */
+  async #closeOpenedApps() {
+    const apps = [...this.#opened].filter(app => app?.rendered);
+    this.#opened.clear();
+    if (!apps.length) return;
+
+    // Closed in parallel and without the closing animation: ApplicationV2#close() awaits that
+    // animation, so a sequential loop cost about a second per window and made leaving a tour feel
+    // like it had hung. Nothing here is being watched by the time teardown runs, so the animation
+    // buys nothing.
+    await Promise.allSettled(apps.map(app => app.close({ animate: false }).catch((err) => {
+      console.warn(`Essence20 | Tour "${this.id}" could not close ${app.id}`, err);
+    })));
   }
 
   /* -------------------------------------------- */
@@ -177,8 +234,18 @@ export class Essence20Tour extends Tour {
     }
 
     if (step.tab && this.#app) {
+      // `changeTab()` is synchronous and only toggles `.active` classes — it fires no render
+      // event. Waiting for one therefore burned the full `_waitForRender` timeout on *every*
+      // tab-switching step, and that gap was doing real damage: the previous step's overlay is
+      // already gone by then and the new one has not rendered, so for three seconds the UI is
+      // live and hoverable. Foundry's TooltipManager picks up whatever is under the pointer and
+      // deactivates the tour's tooltip the moment it finally appears — the step visibly vanishes
+      // and, with its buttons gone but the overlay back, the tour cannot be continued.
+      //
+      // One frame is enough for the class toggle to take effect; the `_await` + `_settle` below
+      // do the real waiting, against the step's own selector.
       this.#app.changeTab(step.tab, step.tabGroup ?? "primary");
-      await this._waitForRender(this.#app);
+      await this._frame();
     }
 
     if (step.action) {
@@ -207,6 +274,24 @@ export class Essence20Tour extends Tour {
   /* -------------------------------------------- */
 
   /**
+   * Wait for one animation frame, or 50ms, whichever comes first.
+   *
+   * `requestAnimationFrame` does not fire while the tab is hidden or the window is minimised, so a
+   * bare `await rAF` parks forever and takes the tour with it the moment someone alt-tabs. Racing
+   * it against a timer keeps things moving regardless; when frames aren't running, nothing is
+   * being laid out anyway, so proceeding immediately is the correct behaviour rather than a
+   * compromise.
+   * @returns {Promise<void>}
+   * @protected
+   */
+  _frame() {
+    return Promise.race([
+      new Promise((resolve) => requestAnimationFrame(resolve)),
+      new Promise((resolve) => window.setTimeout(resolve, 50)),
+    ]);
+  }
+
+  /**
    * Wait until an element's position and size stop changing.
    *
    * Rather than hard-coding knowledge of which core animations move which elements (sidebar
@@ -220,14 +305,7 @@ export class Essence20Tour extends Tour {
   async _settle(element, timeout = 1000) {
     const deadline = performance.now() + timeout;
 
-    // requestAnimationFrame does not fire while the tab is hidden or the window is minimised, so
-    // a bare `await rAF` here would park forever and take the tour with it the moment someone
-    // alt-tabs. Racing it against a timer keeps the loop advancing to its deadline regardless;
-    // when frames aren't running nothing is moving anyway, so settling immediately is correct.
-    const frame = () => Promise.race([
-      new Promise((resolve) => requestAnimationFrame(resolve)),
-      new Promise((resolve) => window.setTimeout(resolve, 50)),
-    ]);
+    const frame = () => this._frame();
     const box = () => {
       const { x, y, width, height } = element.getBoundingClientRect();
       return `${x},${y},${width},${height}`;
@@ -262,7 +340,16 @@ export class Essence20Tour extends Tour {
    * @override
    */
   _getTargetElement(selector) {
-    if (this.#app) return this._pickVisible(this.#app.element?.querySelectorAll(selector));
+    if (this.#app) {
+      // `querySelectorAll` only searches descendants, so a step scoped to an app could never
+      // highlight that app's own window — only something inside it. Checking the root first lets a
+      // step point at the whole dialog (frame, header and footer included) rather than just its
+      // form part, which is usually what "highlight this window" means.
+      const root = this.#app.element;
+      if (root?.matches?.(selector)) return root;
+      return this._pickVisible(root?.querySelectorAll(selector));
+    }
+
     return this._pickVisible(document.querySelectorAll(selector))
       ?? this._queryDetachedWindows(selector);
   }
@@ -493,7 +580,7 @@ export class Essence20Tour extends Tour {
 
     const pickerId = `essence20-skill-picker-${sheet.document.id}`;
     const existing = foundry.applications.instances.get(pickerId);
-    if (existing) return this._attachIfDetached(existing);
+    if (existing) return this._attachIfDetached(existing);   // the user's, not ours — leave it
 
     // The button lives on the Skills tab, so make sure that tab is showing before reaching for it.
     sheet.changeTab("skills", "primary");
@@ -501,7 +588,7 @@ export class Essence20Tour extends Tour {
     sheet.element.querySelector("[data-action='skillPicker']")?.click();
 
     const picker = await this._awaitApp(pickerId);
-    return picker ? this._attachIfDetached(picker) : null;
+    return picker ? this._attachIfDetached(this._track(picker, true)) : null;
   }
 
   /**
@@ -535,7 +622,7 @@ export class Essence20Tour extends Tour {
 
     link.click();
     const dialog = await this._awaitApp("roll-options");
-    return dialog ? this._attachIfDetached(dialog) : null;
+    return dialog ? this._attachIfDetached(this._track(dialog, true)) : null;
   }
 
   /**
@@ -557,12 +644,13 @@ export class Essence20Tour extends Tour {
       return null;
     }
 
-    if (!item.sheet.rendered) {
+    const weOpened = !item.sheet.rendered;
+    if (weOpened) {
       await item.sheet.render(true);
       await this._waitForRender(item.sheet);
     }
 
-    return this._attachIfDetached(item.sheet);
+    return this._attachIfDetached(this._track(item.sheet, weOpened));
   }
 
   /**
@@ -580,7 +668,7 @@ export class Essence20Tour extends Tour {
     const { StoryPoints } = await import("../apps/story-points.mjs");
     await StoryPoints.open();
     const app = await this._awaitApp("story-points");
-    return app ? this._attachIfDetached(app) : null;
+    return app ? this._attachIfDetached(this._track(app, true)) : null;
   }
 
   /**
@@ -614,12 +702,13 @@ export class Essence20Tour extends Tour {
       return null;
     }
 
-    if (!actor.sheet.rendered) {
+    const weOpened = !actor.sheet.rendered;
+    if (weOpened) {
       await actor.sheet.render(true);
       await this._waitForRender(actor.sheet);
     }
 
-    return this._attachIfDetached(actor.sheet);
+    return this._attachIfDetached(this._track(actor.sheet, weOpened));
   }
 
   /**

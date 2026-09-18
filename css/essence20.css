@@ -3898,7 +3898,7 @@ body.game .window-app {
   border-radius: 0;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
   color: #aaaaaa;
-  max-width: 34ch;
+  max-width: 48ch;
   padding: 0;
   text-align: left;
 }
@@ -3984,7 +3984,7 @@ body.game .window-app {
 
 /* The centred step has no target to point at, so it carries its own breathing room. */
 .tour-center-step {
-  max-width: 46ch;
+  max-width: 60ch;
 }
 
 /* The one-off chat card that points new worlds at the tours. Unlike the step panels above this
