@@ -57,23 +57,17 @@
   opacity: 0.85;
 }
 
-.essence20 .skill-header .conditioning-input {
+/* Conditioning is displayed here and edited in the Skill Picker app (skill-picker.hbs), the same
+   split as the skill shifts above. It used to be an <input> on this sheet; the read-only span that
+   replaced it kept the input's own class, which still supplied a background, a border and a radius
+   - so a value nobody can edit went on rendering as a box that invites a click. Sizing matches the
+   skill shift beside it, with .skill-shift-display's plain-text treatment and none of the
+   decoration. */
+.essence20 .skill-header .conditioning-display {
   flex: 0 0 auto;
   width: 58px;
   font-size: 0.95em;
   padding: 1px 3px;
-  text-align: center;
-  color: var(--theme-text-color);
-  background: var(--theme-input-color);
-  border: 1px solid var(--theme-border-color);
-  border-radius: 6px;
-}
-
-/* Read-only stand-in for .conditioning-input once Conditioning-editing moves into the Skill
-   Picker app - same box/width as the input it replaces (.conditioning-input still supplies
-   that), just centered plain text instead of an editable number field. Same pairing as
-   .skill-shift-display above. */
-.essence20 .skill-header .conditioning-display {
   display: flex;
   align-items: center;
   justify-content: center;
