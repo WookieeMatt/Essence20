@@ -2113,7 +2113,7 @@
         },
         "RoleSection": {
           "Title": "Role Perks",
-          "Content": "These arrived from the Role, at the levels it specifies.\nYou did not pick them, and the Role updates them as its Level changes — that, rather than this list, is where what belongs here is decided."
+          "Content": "These arrived from the Role, at the levels it specifies.\nLeveling the character up or down updates them as needed."
         },
         "Badge": {
           "Title": "Level Badges",
@@ -2313,7 +2313,7 @@
         },
         "Sheet": {
           "Title": "Three Tabs",
-          "Content": "Every Item type uses the same three tabs: <strong>Description</strong>, <strong>Details</strong> and <strong>Effects</strong>.\nWhat changes between an armor and a Perk is what Details holds."
+          "Content": "Every Item type uses the same three tabs: <strong>Description</strong>, <strong>Details</strong> and <strong>Effects</strong>."
         },
         "Details": {
           "Title": "Details",
@@ -2325,7 +2325,7 @@
         },
         "Attachments": {
           "Title": "Items Inside Items",
-          "Content": "Items nest. A weapon carries its Weapon Effects and Upgrades, a Role carries the Perks it grants, an Origin carries Origin Perks.\nThat is what makes drag-and-drop work: dropping one Item brings everything hanging off it along too."
+          "Content": "Items nest. A weapon carries its Weapon Effects and Upgrades, while Roles and Origins carry the Perks they grant.\nThat is what makes drag-and-drop work: dropping one Item brings everything hanging off it along too."
         },
         "Outro": {
           "Title": "Items Covered",
