@@ -263,6 +263,19 @@ function buildEssences(ir, isMachine) {
   const essences = {};
   for (const [name, printed] of Object.entries(ir.essences ?? {})) {
     if (printed === null) {
+      // A character-shaped actor's Essences default to 3 (makeEssenceFields), and
+      // _prepareDefenses adds that default into every Defense total - so leaving an unprinted
+      // Essence alone silently inflates the Defenses by 3 each. Some printings omit the Essence
+      // line entirely (the PR CRB 1st printing does), so this is a real case, not a malformed
+      // paste. Writing an explicit 0 keeps the Defense arithmetic self-consistent with the
+      // residual computeDefenseBonus already calculated against 0.
+      //
+      // Machines are left alone deliberately: `--` there means "uses the driver's" (see
+      // templates/machine.mjs's usesDrivers), which a 0 would wrongly override.
+      if (!isMachine) {
+        essences[name] = { max: 0, value: 0 };
+      }
+
       continue;
     }
 

@@ -158,16 +158,42 @@ describe("buildActorData", () => {
     expect(data.flags.essence20.statBlockSource.ir.threatLevel).toBe(6);
   });
 
-  test("omits Essences and Defenses the block printed as '--'", () => {
+  test("omits Defenses the block printed as '--'", () => {
+    const sparse = parseStatBlock([
+      'Rig', 'THREAT LEVEL: 2', 'SIZE: Large | HEALTH: 4',
+      'STRENGTH: 3 | SPEED: 2 | SMARTS: -- | SOCIAL: --',
+      'TOUGHNESS: 13 | EVASION: 12', 'WILLPOWER: -- | CLEVERNESS: --',
+    ].join('\n'));
+    expect(Object.keys(buildActorData(sparse).system.defenses)).toEqual(['toughness', 'evasion']);
+  });
+
+  test("writes 0 for an Essence a character-shaped block does not print", () => {
+    /*
+     * Not cosmetic. A character-shaped actor's Essences default to 3, and _prepareDefenses adds
+     * that default into every Defense - so leaving an unprinted Essence alone inflates each
+     * Defense by 3. Real case: the PR CRB 1st printing's Chunky Chicken prints no Essence line at
+     * all, and every one of its four Defenses came out 3 too high before this.
+     */
+    const noEssences = parseStatBlock([
+      'Chunky Chicken', 'THREAT LEVEL: 5', 'SIZE: LARGE | HEALTH: 5',
+      'TOUGHNESS: 16 | EVASION: 14', 'WILLPOWER: 12 | CLEVERNESS: 11',
+      'GROUND MOVEMENT: 30 ft.',
+    ].join('\n'));
+    const built = buildActorData(noEssences);
+
+    expect(built.system.essences.strength).toEqual({ max: 0, value: 0 });
+    // 10 base + 0 essence + 6 bonus = the printed 16.
+    expect(built.system.defenses.toughness.bonus).toBe(6);
+  });
+
+  test("leaves a machine's '--' Essences unwritten, since that means 'uses the driver's'", () => {
     const vehicle = parseStatBlock([
       'Rig', 'THREAT LEVEL: 2', 'SIZE: Large | HEALTH: 4',
       'STRENGTH: 3 | SPEED: 2 | SMARTS: -- | SOCIAL: --',
       'TOUGHNESS: 13 | EVASION: 12', 'WILLPOWER: -- | CLEVERNESS: --',
     ].join('\n'));
-    const built = buildActorData(vehicle);
-
-    expect(built.system.essences).toEqual({ strength: { max: 3, value: 3 }, speed: { max: 2, value: 2 } });
-    expect(Object.keys(built.system.defenses)).toEqual(['toughness', 'evasion']);
+    expect(buildActorData(vehicle, { type: 'vehicle' }).system.essences)
+      .toEqual({ strength: { value: 3 }, speed: { value: 2 } });
   });
 });
 

@@ -294,6 +294,88 @@ describe("parseStatBlock - G.I. JOE vehicle dialect", () => {
   });
 });
 
+/**
+ * Power Rangers CRB **1st printing** layout, shaped like its Chunky Chicken entry: section
+ * headings carry a trailing colon, there is no Essence line at all, skills use the pre-errata
+ * names, and a damage clause wraps onto its own line. Every one of those broke the parser.
+ */
+const DIALECT_D = `Shear Terror (normal)
+THREAT LEVEL: 5
+SIZE: LARGE | HEALTH: 5
+TOUGHNESS: 16 | EVASION: 14
+WILLPOWER: 12 | CLEVERNESS: 11
+GROUND MOVEMENT: 30 ft.
+A cruel monster that rips holes in the Grid to
+teleport, and fights with a giant pair of shears.
+SKILLS:
+Brawn +4
+Melee +d8*
+Perception +d4*
+Stealth +d4
+Languages: Putty
+ATTACKS:
+Giant Scissors (Melee): +d8*, Reach
+(Toughness, 1 Sharp Damage)
+POWERS:
+Teleportation (2/Scene, Move):
+It cuts a hole in the Grid and steps up to 100 ft. away.
+Levitate (Move): It can float up to 60 ft. in the air.`;
+
+describe("parseStatBlock - Power Rangers CRB 1st-printing dialect", () => {
+  const ir = parseStatBlock(DIALECT_D);
+
+  test("finds sections whose headings carry a trailing colon", () => {
+    // "SKILLS:" / "ATTACKS:" / "POWERS:" - previously every section was silently dropped,
+    // producing an actor with no skills, attacks or powers and NO diagnostics at all.
+    expect(ir.skills.length).toBeGreaterThan(0);
+    expect(ir.attacks).toHaveLength(1);
+    expect(ir.powers).toHaveLength(2);
+  });
+
+  test("still refuses to treat a labelled field as a heading", () => {
+    expect(ir.threatLevel).toBe(5);
+    expect(ir.health).toBe(5);
+  });
+
+  test("reads a movement value written with a trailing period", () => {
+    expect(ir.movement.ground).toBe(30);
+  });
+
+  test("leaves every Essence null when the block prints no Essence line", () => {
+    expect(ir.essences).toEqual({ strength: null, speed: null, smarts: null, social: null });
+  });
+
+  test("maps the pre-errata skill names onto their modern equivalents", () => {
+    // The 2nd printing renders this same Threat's skills as Alertness (Perception),
+    // Infiltration and Might (Scissors).
+    const keys = ir.skills.map(skill => skill.key);
+    expect(keys).toEqual(expect.arrayContaining(['might', 'alertness', 'infiltration', 'brawn']));
+  });
+
+  test("reads a flat numeric skill bonus as a modifier, not a die shift", () => {
+    expect(ir.skills.find(skill => skill.key === 'brawn'))
+      .toMatchObject({ shift: null, modifier: 4 });
+  });
+
+  test("joins an attack's damage clause from the following line", () => {
+    expect(ir.attacks[0]).toMatchObject({
+      name: 'Giant Scissors', skill: 'might', damageValue: 1, damageType: 'sharp',
+      isReach: true, defenseType: 'toughness',
+    });
+  });
+
+  test("reads a Power whose description starts on the next line", () => {
+    expect(ir.powers[0]).toMatchObject({
+      name: 'Teleportation', usesPer: 2, usesInterval: 'perScene', actionType: 'move',
+    });
+    expect(ir.powers[0].text).toContain('100 ft. away');
+  });
+
+  test("raises no diagnostics at all", () => {
+    expect(ir.diagnostics).toEqual([]);
+  });
+});
+
 describe("parseStatBlock - diagnostics", () => {
   test("reports an empty paste as an error instead of throwing", () => {
     const ir = parseStatBlock('   \n  \n');

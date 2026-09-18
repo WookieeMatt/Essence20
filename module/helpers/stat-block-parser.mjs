@@ -64,6 +64,13 @@ const ACTION_LOOKUP = buildLookup(E20.actionTypes);
  */
 const SKILL_ALIASES = {
   melee: 'might',
+  // The Power Rangers CRB's FIRST printing uses pre-errata skill names that no longer exist in
+  // E20.skills. Confirmed by comparing the same Threat across printings: 1st-printing Chunky
+  // Chicken lists "Perception", "Stealth" and "Melee", where the 2nd printing of that very block
+  // lists "Alertness (Perception)", "Infiltration" and "Might (Scissors)". 2nd-printing text uses
+  // Perception/Stealth zero times as skills and Alertness/Infiltration 44 times.
+  perception: 'alertness',
+  stealth: 'infiltration',
 };
 
 /**
@@ -347,7 +354,10 @@ function parseMovement(ir, headerText) {
 
 /** The section key a line introduces, or null if it isn't a heading. */
 function sectionFor(line) {
-  const candidate = line.trim().toUpperCase();
+  // A trailing colon is stripped first: several printings head their sections "SKILLS:" /
+  // "ATTACKS:" / "POWERS:" rather than bare. Any OTHER colon still disqualifies the line, so a
+  // field like "THREAT LEVEL: 7" is never mistaken for a heading.
+  const candidate = line.trim().toUpperCase().replace(/:$/, '');
   if (!candidate || candidate.includes(':') || /\d/.test(candidate)) {
     return null;
   }
