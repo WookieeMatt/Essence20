@@ -2325,7 +2325,7 @@
         },
         "Attachments": {
           "Title": "Items Inside Items",
-          "Content": "Items nest. A weapon carries its Weapon Effects and Upgrades, a Role carries the Perks it grants, an Origin carries its own.\nThat is what makes drag-and-drop work: dropping one Item brings everything hanging off it along too."
+          "Content": "Items nest. A weapon carries its Weapon Effects and Upgrades, a Role carries the Perks it grants, an Origin carries Origin Perks.\nThat is what makes drag-and-drop work: dropping one Item brings everything hanging off it along too."
         },
         "Outro": {
           "Title": "Items Covered",
