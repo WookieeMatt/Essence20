@@ -2209,7 +2209,7 @@
         "Description": "NPC sheets, rolling initiative, and the combat tracker.",
         "Intro": {
           "Title": "Threats and Combat",
-          "Content": "The other side of the screen.\nThis tour creates a temporary demo character and a demo threat, and removes both when it finishes."
+          "Content": "The other side of the screen.\nThis tour creates a temporary demo threat, and removes it when it finishes."
         },
         "ThreatSheet": {
           "Title": "The Threat Sheet",
@@ -2229,7 +2229,7 @@
         },
         "Initiative": {
           "Title": "Rolling Initiative",
-          "Content": "The die beside Initiative rolls it, on any sheet.\nThe dropdown next to it chooses which skill does the rolling — most characters use Initiative, but some Roles change that."
+          "Content": "The die beside Initiative rolls it, and every sheet in the system has one.\nThe dropdown next to it chooses which skill does the rolling — Initiative for most, though some player characters’ Roles change that."
         },
         "Tracker": {
           "Title": "The Combat Tracker",
@@ -2241,7 +2241,7 @@
         },
         "Outro": {
           "Title": "Combat Covered",
-          "Content": "Threats are lighter characters, initiative rolls from the sheet, and the tracker drives the system's round timing.\nThe demo characters are being cleaned up now."
+          "Content": "Threats are lighter characters, initiative rolls from the sheet, and the tracker drives the system’s round timing.\nThe demo threat is being cleaned up now."
         }
       },
       "Powers": {

@@ -357,6 +357,9 @@ export const DEMO_ACTORS = {
         might: { shift: "d8", isChosen: true },
         alertness: { shift: "d6", isChosen: true },
         intimidation: { shift: "d6", isChosen: true },
+        // The Initiative step points at this sheet's own Initiative now, so give it a trained value
+        // rather than leaving the step explaining a die that reads d20.
+        initiative: { shift: "d6" },
       },
     },
     items: [

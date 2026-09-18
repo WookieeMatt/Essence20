@@ -45,7 +45,7 @@
     },
     {
       "id": "initiative",
-      "app": "character",
+      "app": "threat",
       "selector": ".essence20-sidebar-initiative",
       "title": "E20.Tours.Combat.Initiative.Title",
       "content": "E20.Tours.Combat.Initiative.Content",
@@ -61,7 +61,7 @@
     },
     {
       "id": "conditions",
-      "app": "character",
+      "app": "threat",
       "selector": ".essence20-sidebar-immunities-resistances",
       "title": "E20.Tours.Combat.Conditions.Title",
       "content": "E20.Tours.Combat.Conditions.Content",
