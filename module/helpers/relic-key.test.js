@@ -13,7 +13,7 @@ function makeActor({
   type = 'zord', hasRelicKey = true, usedThisEncounter = false, edgeActive = false,
 } = {}) {
   const flagStore = {
-    relicKeyUsedThisEncounter: usedThisEncounter ? { combatId: 'combat1' } : undefined,
+    relicKeyUsedThisEncounter: usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined,
     relicKeyEdgeActive: edgeActive,
   };
   return {

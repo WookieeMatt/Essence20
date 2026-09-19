@@ -18,9 +18,20 @@
     "maxPowerCost": null,
     "powerCost": 3,
     "selectionLimit": 1,
-    "type": "grid",
+    "type": "sorcerous",
     "usesInterval": "perTurn",
-    "usesPer": 1
+    "usesPer": 1,
+    "shape": "circle",
+    "radius": 5,
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
+    "attackSkill": "targeting",
+    "damageValue": 2,
+    "damageType": "fire",
+    "defenseType": "toughness"
   },
   "effects": [],
   "flags": {},

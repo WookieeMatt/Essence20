@@ -1,5 +1,6 @@
 import { Essence20Item } from "./item.mjs";
 import { jest } from '@jest/globals';
+import { getLedger, spend } from "../helpers/action-economy.mjs";
 
 /**
  * Builds a bare Essence20Item instance with the given type/system/actor,
@@ -368,19 +369,19 @@ describe("roll", () => {
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
 
-  test("perk items post source/prerequisite/description to chat", () => {
+  test("perk items post source/prerequisite/description to chat", async () => {
     const item = makeItem('perk', {
       source: "Core Rulebook", prerequisite: "None", description: "Does a thing",
     });
-    item.roll({});
+    await item.roll({});
     expect(global.ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({
       content: expect.stringContaining("Does a thing"),
     }));
   });
 
-  test("items without a formula send their description to chat", () => {
+  test("items without a formula send their description to chat", async () => {
     const item = makeItem('gear', { description: "Just flavor text", formula: "" });
-    item.roll({});
+    await item.roll({});
     expect(global.ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({
       content: "Just flavor text",
     }));
@@ -752,10 +753,13 @@ describe("roll", () => {
     });
   });
 
-  describe("Explosive Beam (MLP CRB, Superior Beam spell, p.137)", () => {
-    const EXPLOSIVE_BEAM_ID = "Compendium.essence20.mlp_crb.Item.VLdz7YvUq2AaUFNz";
-
-    function makeExplosiveBeamCasterActor() {
+  // An area spell (system.shape set) places a real Region shape via helpers/aoe-targeting.mjs,
+  // rather than each such spell carrying its own bespoke auto-targeting helper keyed on its
+  // compendium id. Explosive Beam (MLP CRB, Superior Beam spell, p.137 - "a 15ft diameter circle
+  // of the chosen space", so a 7.5ft radius) was the last spell to do it the old way and now
+  // carries system.shape/radius in the compendium like any other area spell.
+  describe("area spells", () => {
+    function makeAreaCasterActor() {
       const items = [];
       items.get = jest.fn(() => undefined);
       return {
@@ -766,20 +770,61 @@ describe("roll", () => {
       };
     }
 
-    test("auto-targets nearby enemies before rolling", async () => {
-      const actor = makeExplosiveBeamCasterActor();
-      const enemyToken = { id: 'enemy1', document: { disposition: -1 }, actor: {}, center: { x: 10, y: 0 } };
+    function stubAoeCanvas(actor) {
+      // placeRegion resolving null is the "placement cancelled" path - enough to prove the
+      // placement was offered without having to stand up a whole RegionDocument.
       global.canvas = {
-        tokens: { placeables: [...actor.getActiveTokens(), enemyToken], setTargets: jest.fn() },
-        grid: { measurePath: () => ({ distance: 10 }) },
+        dimensions: { distancePixels: 20 },
+        level: { id: 'level1' },
+        regions: { placeRegion: jest.fn(async () => null) },
+        tokens: { placeables: actor.getActiveTokens(), setTargets: jest.fn() },
       };
-      const item = makeItem('spell', { cost: 3, tier: 'superior' }, actor);
-      item.flags = { core: { sourceId: EXPLOSIVE_BEAM_ID } };
+      global.game.user = { color: '#000000' };
+      global.CONST = { REGION_VISIBILITY: { ALWAYS: 0 } };
+    }
+
+    test("places an area shape before rolling when the spell has one", async () => {
+      const actor = makeAreaCasterActor();
+      stubAoeCanvas(actor);
+      const item = makeItem('spell', { cost: 3, tier: 'superior', shape: 'circle', radius: 7.5 }, actor);
       item._dice.handleSkillItemRoll = jest.fn();
 
       await item.roll({});
 
-      expect(global.canvas.tokens.setTargets).toHaveBeenCalledWith(['enemy1']);
+      expect(global.canvas.regions.placeRegion).toHaveBeenCalledWith(
+        expect.objectContaining({
+          // 7.5ft at 20px per foot - the radius reaches placeRegion already in pixels.
+          shapes: [expect.objectContaining({ type: 'circle', radius: 150 })],
+        }),
+        // Never written to the scene: an Instant-duration area only lives long enough to
+        // decide who it caught.
+        expect.objectContaining({ create: false }),
+      );
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
+    });
+
+    test("still rolls when the placement is cancelled", async () => {
+      const actor = makeAreaCasterActor();
+      stubAoeCanvas(actor);
+      const item = makeItem('spell', { cost: 3, tier: 'superior', shape: 'circle', radius: 7.5 }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      // placeAoeTemplate can't tell "cancelled" from "placed, caught nobody", and an area that
+      // legitimately catches nobody must still resolve - see the spell branch's own comment.
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
+    });
+
+    test("doesn't place anything for an ordinary single-target spell", async () => {
+      const actor = makeAreaCasterActor();
+      stubAoeCanvas(actor);
+      const item = makeItem('spell', { cost: 3, tier: 'superior' }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(global.canvas.regions.placeRegion).not.toHaveBeenCalled();
       expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
     });
   });
@@ -936,5 +981,94 @@ describe("roll", () => {
       expect(item._dice.handleSkillItemRoll).not.toHaveBeenCalled();
       expect(actor.update).not.toHaveBeenCalled();
     });
+  });
+});
+
+describe("_rollWithRefund", () => {
+  // The action economy spends at the TOP of roll(), long before the roll options dialog opens.
+  // Backing out of that dialog is an ordinary thing for a player to do, so the action has to come
+  // back - see helpers/action-economy.mjs#refund.
+  function makeRollingItem(rollResult) {
+    const item = makeItem('weaponEffect', {}, { name: 'Duke' });
+    item._dice = { handleSkillItemRoll: jest.fn(async () => rollResult) };
+    return item;
+  }
+
+  /**
+   * A real combatant/actor pair wired into global.game, so the refund can be asserted against the
+   * actual ledger rather than a mock. Restores the previous game object afterwards - the rest of
+   * this file shares one.
+   */
+  function withCombat() {
+    const flags = {};
+    const combatant = {
+      tokenId: 'token1',
+      isOwner: true,
+      group: null,
+      getFlag: (scope, key) => flags[key],
+      setFlag: async (scope, key, value) => {
+        flags[key] = value;
+      },
+    };
+    const actor = {
+      name: 'Duke',
+      token: { id: 'token1' },
+      system: {
+        actions: {
+          enabled: true,
+          standard: { base: 1, bonus: 0, max: 1 },
+          move: { base: 1, bonus: 0, max: 1 },
+          free: { base: null, bonus: 0, max: null },
+          reaction: { base: 1, bonus: 0, max: 1 },
+        },
+      },
+    };
+
+    const previous = global.game;
+    global.game = {
+      ...previous,
+      user: { isGM: false, isActiveGM: false },
+      settings: { get: (scope, key) => (key == 'actionEconomyMode' ? 'track' : undefined) },
+      combat: { combatants: [combatant], getCombatantsByActor: () => [combatant] },
+    };
+
+    return { actor, combatant, restore: () => {
+      global.game = previous;
+    } };
+  }
+
+  test("refunds the spent action when the roll dialog is cancelled", async () => {
+    const { actor, restore } = withCombat();
+    try {
+      const spent = await spend(actor, 'standard', { source: 'Blaster' });
+      expect(getLedger(actor).standard).toBe(1);
+
+      const item = makeRollingItem({ cancelled: true });
+      await item._rollWithRefund({}, actor, spent);
+
+      expect(getLedger(actor).standard).toBe(0);
+    } finally {
+      restore();
+    }
+  });
+
+  test("keeps the spent action when the roll goes through", async () => {
+    const { actor, restore } = withCombat();
+    try {
+      const spent = await spend(actor, 'standard', { source: 'Blaster' });
+
+      const item = makeRollingItem(undefined);
+      await item._rollWithRefund({}, actor, spent);
+
+      expect(getLedger(actor).standard).toBe(1);
+    } finally {
+      restore();
+    }
+  });
+
+
+  test("is a no-op when nothing was spent to begin with", async () => {
+    const item = makeRollingItem({ cancelled: true });
+    await expect(item._rollWithRefund({}, { name: 'Duke' }, null)).resolves.toEqual({ cancelled: true });
   });
 });

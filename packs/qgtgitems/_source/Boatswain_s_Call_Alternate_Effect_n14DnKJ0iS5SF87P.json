@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "description": "<p>15 ft cone</p>",
     "source": {
       "book": "Quartermaster's Guide to Gear",
@@ -27,7 +28,8 @@
       "long": null,
       "value": null
     },
-    "shiftDown": 1
+    "shiftDown": 1,
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

@@ -1,7 +1,8 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
+import { consumeForItem, describeCost, refund } from "../helpers/action-economy.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
-import { updateRoleCache } from "../helpers/utils.mjs";
+import { betterShift, updateRoleCache } from "../helpers/utils.mjs";
 import { placeAoeTemplate } from "../helpers/aoe-targeting.mjs";
 import { applyShapedCharges } from "../helpers/shaped-charges.mjs";
 import { applyHorseshoesAndHandgrenades } from "../helpers/horseshoes-and-handgrenades.mjs";
@@ -9,7 +10,6 @@ import { applyMightyStrikes } from "../helpers/mighty-strikes.mjs";
 import { applyNoNeedToAim } from "../helpers/no-need-to-aim.mjs";
 import { actorHasPerk } from "../helpers/perks.mjs";
 import { pickEnchantSkill } from "../helpers/enchant.mjs";
-import { autoTargetExplosiveBeam } from "../helpers/explosive-beam.mjs";
 import { autoTargetBeamVolley } from "../helpers/beam-volley.mjs";
 import { pickBestowExpertise } from "../helpers/bestow-expertise.mjs";
 import { pickMindBeamEffect } from "../helpers/mind-beam.mjs";
@@ -70,13 +70,12 @@ const BEASTLY_HANG_UP_ID = "Compendium.essence20.ferocious_fighters.Item.9o0Qbe6
 // Powers).
 const ENCHANT_ID = `${MLP_CRB}afYeCCAX0o2Cwf2I`;
 
-// Explosive Beam (MLP CRB, Superior Beam spell, p.137) - see helpers/explosive-beam.mjs's own
-// doc comment. A second per-spell-id pre-roll hook, alongside Enchant's own - auto-targets nearby
-// enemies before the roll fires (no picker needed, so no early-return-on-cancel like Enchant).
-const EXPLOSIVE_BEAM_ID = `${MLP_CRB}VLdz7YvUq2AaUFNz`;
-
 // Beam Volley (MLP CRB, Virtuoso Beam spell, p.138) - see helpers/beam-volley.mjs's own doc
-// comment. Same auto-target-before-rolling shape as Explosive Beam.
+// comment. Auto-targets the 3 nearest enemies before the roll fires (no picker, so no
+// early-return-on-cancel like Enchant). Explosive Beam used to sit alongside it here; its own
+// "15ft diameter circle" is a real AoE shape, so it now carries system.shape/radius and goes
+// through helpers/aoe-targeting.mjs like any other area spell. Beam Volley's "3 targets in range"
+// is Multiple Targets, not an area, so it stays a bespoke auto-targeter.
 const BEAM_VOLLEY_ID = `${MLP_CRB}UhkhFqFDYjub1a8k`;
 
 // Bestow Expertise (MLP CRB, Superior Enchantment spell, p.137) - see
@@ -466,7 +465,55 @@ export class Essence20Item extends Item {
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Actor} childRoller Optional attached Actor making the roll
    */
+  /**
+   * Fire a dialog-backed skill roll, and hand back the action it already cost if the player backs
+   * out of the roll options dialog.
+   *
+   * The action economy spends at the TOP of roll(), before any of the pre-roll work (AoE template
+   * placement, target pickers, Perk prompts) - which is the only place a single insertion can
+   * cover every item type. The roll dialog opens well after that, and cancelling it is an ordinary
+   * thing to do, not an edge case; without this the cancelled roll would quietly eat the turn.
+   *
+   * @param {Object} dataset   The roll dataset to dispatch.
+   * @param {Actor} actor      The actor actually rolling.
+   * @param {Object} spent     The result of consumeForItem, or null if nothing was spent.
+   * @returns {Promise<*>}   Whatever the roll returned.
+   */
+  async _rollWithRefund(dataset, actor, spent) {
+    const result = await this._dice.handleSkillItemRoll(dataset, actor, this);
+    if (result?.cancelled && spent?.spendId) {
+      await refund(actor, spent.spendId);
+    }
+
+    return result;
+  }
+
   async roll(dataset, childRoller=null) {
+    /* Action economy. This one insertion covers every weapon, weapon effect, Power and spell in
+       the game, because every sheet click funnels through here - see
+       helpers/action-economy.mjs#consumeForItem.
+
+       Placed above the rollType == 'info' branch and skipped for it, so posting an item's details
+       to chat stays free; only an actual use spends. In every mode except 'strict' this records
+       the spend and reports it without standing in the way, which is what lets it ship while the
+       overwhelming majority of compendium items still declare no action cost at all. */
+    let spent = null;
+    if (dataset.rollType != 'info') {
+      spent = await consumeForItem(this, { actor: childRoller, bypass: dataset.bypassEconomy });
+      if (spent.blocked) {
+        // Nothing to say when the player themselves backed out of the 'warn' confirmation - they
+        // already know. The notification is for 'strict', where the refusal is the world's.
+        if (!spent.cancelled) {
+          ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
+            name: (childRoller || this.actor)?.name ?? '',
+            action: describeCost(spent.cost),
+          }));
+        }
+
+        return;
+      }
+    }
+
     if (dataset.rollType == 'info') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
@@ -597,7 +644,7 @@ export class Essence20Item extends Item {
         isSpecialized,
       };
 
-      this._dice.handleSkillItemRoll(weaponDataset, roller, this);
+      await this._rollWithRefund(weaponDataset, roller, spent);
 
       // Zord Mega-Weapon System (PR CRB, Zord Feature, p.139): "lasts for 1d2+1 attacks (hit or
       // miss)" - counted here, as the attack is rolled, precisely because a miss still spends one.
@@ -651,10 +698,6 @@ export class Essence20Item extends Item {
         return;
       }
 
-      if (sourceId == EXPLOSIVE_BEAM_ID) {
-        autoTargetExplosiveBeam(this.actor);
-      }
-
       if (sourceId == BEAM_VOLLEY_ID) {
         autoTargetBeamVolley(this.actor);
       }
@@ -674,6 +717,18 @@ export class Essence20Item extends Item {
         return;
       }
 
+      // Area of Effect - see helpers/aoe-targeting.mjs. Only an area spell (system.shape set)
+      // places a shape; an ordinary single-target spell is targeted by hand as usual. Placed
+      // after every cancellable picker above, so backing out of one of those never costs the
+      // player a placement gesture, and before the roll, so dice.mjs's own checkEntries sees the
+      // targets it caught. Deliberately the same "a cancelled placement still rolls" behavior the
+      // weaponEffect branch above already has - placeAoeTemplate can't distinguish "cancelled"
+      // from "placed, caught nobody", and a blast that legitimately catches nobody must still
+      // resolve.
+      if (this.system.shape) {
+        await placeAoeTemplate(this.actor, this);
+      }
+
       const spellDataset = {
         ...dataset,
         essence,
@@ -690,7 +745,7 @@ export class Essence20Item extends Item {
         getToKnowSkill,
       };
 
-      this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
+      await this._rollWithRefund(spellDataset, this.actor, spent);
 
       // Unlike a single-roll shift, this cost lingers on the actor's Spellcasting Skill after
       // the roll - only cleared via onRecoverSpellcastingDownshift/onSufferForSpellcastingDownshift
@@ -700,9 +755,16 @@ export class Essence20Item extends Item {
     } else if (this.type == 'magicBauble') {
       const essence = 'any';
       const skill = 'spellcasting';
-      const shift = this.system.spellcastingShift;
-      // Magic Baubles override the caster's base Spellcasting shift entirely (their own fixed
-      // shift), but any lingering Casting Cost downshift (MLP CRB p.132) still applies on top.
+      /* "If the spell calls for a Spellcasting Skill Test, you use your own Spellcasting Skill, or
+         the Spellcasting Skill noted on the Magic Bauble (whichever is higher)" (MLP CRB p.143).
+
+         This used to take the bauble's own shift unconditionally, which had it backwards for the
+         case the rule exists to cover: a trained spellcaster drinking a d2 potion was DOWNGRADED to
+         the potion's rank instead of keeping their own. The bauble only ever helps - it is a floor
+         under an untrained pony, not a ceiling on a skilled one. */
+      const shift = betterShift(this.actor.system.skills.spellcasting.shift, this.system.spellcastingShift);
+      // Whichever shift wins, any lingering Casting Cost downshift (MLP CRB p.132) still applies
+      // on top - the bauble supplies a rank, not immunity to what earlier casting has cost you.
       const shiftDown = this.actor.system.skills.spellcasting.shiftDown;
       const spellDataset = {
         ...dataset,
@@ -712,7 +774,42 @@ export class Essence20Item extends Item {
         shiftDown,
       };
 
-      this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
+      const baubleResult = await this._rollWithRefund(spellDataset, this.actor, spent);
+
+      /* "As a consumable item, once any magic bauble is used, it is done. A potion is drunk, a
+         scroll is consumed by magic, a statue crumbles to dust... it can only ever be used once"
+         (MLP CRB p.143).
+
+         Deleted only once the roll has actually resolved. A cancelled roll refunds the action
+         economy just above, and a potion the player decided not to drink after all is still in
+         their saddlebag - consuming it there would destroy an item for a dialog they backed out
+         of, which is not recoverable from the sheet.
+
+         isEmbedded guards the source: rolling a bauble straight out of a compendium or the world
+         Items directory must consume nothing, or a single click would delete the master copy every
+         other actor's is made from. */
+      if (!baubleResult?.cancelled && this.isEmbedded) {
+        const name = this.name;
+        const actorName = this.actor?.name ?? '';
+        // A holder can carry several of the same potion, so one use spends one of them; the item
+        // itself only goes when the last is gone. Treat a missing quantity as 1 rather than 0, so
+        // a bauble authored before this field existed still behaves like a single potion.
+        const remaining = (this.system.quantity ?? 1) - 1;
+        if (remaining > 0) {
+          await this.update({ 'system.quantity': remaining });
+          ui.notifications.info(game.i18n.format('E20.MagicBaubleUsed', {
+            actor: actorName,
+            item: name,
+            remaining,
+          }));
+        } else {
+          await this.delete();
+          ui.notifications.info(game.i18n.format('E20.MagicBaubleConsumed', {
+            actor: actorName,
+            item: name,
+          }));
+        }
+      }
     } else {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });

@@ -10,7 +10,7 @@ global.game = {
 function makeActor({ isMorphed = true, active = false, usedThisEncounter = false, power = 3 } = {}) {
   const flagStore = {
     atAllCostActive: active,
-    atAllCostUsedThisEncounter: usedThisEncounter ? { combatId: 'combat1' } : undefined,
+    atAllCostUsedThisEncounter: usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined,
   };
 
   return {

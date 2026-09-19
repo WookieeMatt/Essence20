@@ -11,7 +11,13 @@
       "book": "In a Jam",
       "page": 34
     },
-    "duration": "1 day",
+    "actionType": "standard",
+    "duration": {
+      "units": "days",
+      "value": 1,
+      "text": ""
+    },
+    "quantity": 1,
     "range": "Reach",
     "spellcastingShift": "d2"
   },

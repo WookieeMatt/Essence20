@@ -11,9 +11,14 @@
       "book": "Dark Skies Over Equestria",
       "page": 21
     },
+    "actionType": "standard",
     "circle": "aid",
     "cost": 1,
-    "duration": "1 Scene",
+    "duration": {
+      "units": "scenes",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "20 feet",
     "tier": "elementary"

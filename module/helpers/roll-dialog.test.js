@@ -145,33 +145,33 @@ describe("_isUntrainedSnag", () => {
     });
 
     test("false (suppressed) with uses remaining, and marks the count used", async () => {
-      const actor = makeGreenActor({ stored: { combatId: 'combat1', count: 1 } });
+      const actor = makeGreenActor({ stored: { epoch: 1, window: 'encounter', count: 1 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
 
       expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'greenUsesThisEncounter', { combatId: 'combat1', count: 2 },
+        'essence20', 'greenUsesThisEncounter', { epoch: 1, window: 'encounter', count: 2 },
       );
     });
 
     test("true once all 3 uses this combat are spent", async () => {
-      const actor = makeGreenActor({ stored: { combatId: 'combat1', count: 3 } });
+      const actor = makeGreenActor({ stored: { epoch: 1, window: 'encounter', count: 3 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(true);
       expect(actor.setFlag).not.toHaveBeenCalled();
     });
 
     test("resets to 0 uses when the stored count is from a different Combat", async () => {
-      const actor = makeGreenActor({ stored: { combatId: 'oldCombat', count: 3 } });
+      const actor = makeGreenActor({ stored: { epoch: 0, window: 'encounter', count: 3 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
       expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'greenUsesThisEncounter', { combatId: 'combat1', count: 1 },
+        'essence20', 'greenUsesThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
       );
     });
 
     test("unconstrained (always false) outside of combat", async () => {
-      const actor = makeGreenActor({ combat: null, stored: { combatId: 'combat1', count: 3 } });
+      const actor = makeGreenActor({ combat: null, stored: { epoch: 1, window: 'encounter', count: 3 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
       expect(actor.setFlag).not.toHaveBeenCalled();
@@ -182,13 +182,13 @@ describe("_isUntrainedSnag", () => {
       game.combat = { id: 'combat1' };
       const actor = {
         ...makeActor([GREEN_GIJ_ID]),
-        getFlag: jest.fn(() => ({ combatId: 'combat1', count: 1 })),
+        getFlag: jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 })),
         setFlag: jest.fn(),
       };
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
       expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'greenUsesThisEncounter', { combatId: 'combat1', count: 2 },
+        'essence20', 'greenUsesThisEncounter', { epoch: 1, window: 'encounter', count: 2 },
       );
       game.combat = null;
     });

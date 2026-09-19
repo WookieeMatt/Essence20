@@ -18,7 +18,7 @@ function makePerkItem(sourceId) {
 }
 
 function makeActor({ hasContinuousStance = false, level = 5, usedThisEncounter = false } = {}) {
-  const flagStore = { combatStanceUsedThisEncounter: usedThisEncounter ? { combatId: 'combat1' } : undefined };
+  const flagStore = { combatStanceUsedThisEncounter: usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined };
   return {
     items: hasContinuousStance ? [makePerkItem(CONTINUOUS_STANCE_ID)] : [],
     system: { level },

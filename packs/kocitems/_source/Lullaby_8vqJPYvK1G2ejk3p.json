@@ -11,9 +11,14 @@
       "book": "Knights of Canterlot",
       "page": 50
     },
+    "actionType": "standard",
     "circle": "aid",
     "cost": 3,
-    "duration": "4 rounds or until disrupted",
+    "duration": {
+      "units": "rounds",
+      "value": 4,
+      "text": "4 rounds or until disrupted"
+    },
     "isSpecialized": false,
     "range": "60 feet",
     "tier": "virtuoso"

@@ -3856,9 +3856,12 @@ export class Dice {
     // dataset.defenseType (e.g. a @Check[defense=...] enricher link, see helpers/enrichers.mjs),
     // and the player can always still choose a Defense manually to roll a Skill Test against a
     // targeted actor.
-    updatedShiftDataset.defenseType = item?.type == 'weaponEffect'
-      ? item.system.defenseType
-      : (dataset.defenseType || 'none');
+    // Keyed on the item actually declaring a Defense rather than on its type, so an attack SPELL
+    // (spell.mjs's own system.defenseType, null for the ordinary non-attack majority) pre-selects
+    // the dropdown exactly the way a weaponEffect always has. A weaponEffect's own field is
+    // non-null by schema default, so it still always wins, and every other item type has no such
+    // field at all and falls straight through - this is a widening, not a behavior change.
+    updatedShiftDataset.defenseType = item?.system?.defenseType ?? (dataset.defenseType || 'none');
 
     // Silent Weapon Expertise (Ranger's Environmental Exposure choice, p.91): "you get [1
     // upshift] on attacks with weapons with the Silent trait." (The "trained in Silent weapons"
@@ -5769,7 +5772,11 @@ export class Dice {
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
-      return;
+      // Reported rather than returning a bare undefined, so an item roll that spent an action
+      // before opening this dialog can tell "the player backed out" apart from "the roll finished
+      // and returned nothing", and refund accordingly (documents/item.mjs#_rollWithRefund). Every
+      // other early return in this method is a real outcome, not a cancellation, and stays bare.
+      return { cancelled: true };
     }
 
     for (const skillEffect of updatedShiftDataset.availableSkillEffects) {
@@ -7950,6 +7957,21 @@ export class Dice {
     // above.
     const spellSourceId = item?.type == 'spell'
       ? (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) : null;
+
+    // A spell's OWN authored damage (spell.mjs's system.damageValue/damageType). Every entry
+    // below this one is keyed to a specific compendium id, which meant a homebrew attack spell -
+    // or any of the many printed ones nobody has hardcoded yet - could never deal damage at all.
+    // This reads the schema instead, so it works for any spell whatsoever, and is checked FIRST
+    // in the ?? chains below so an authored value beats the legacy per-id table. No compendium
+    // spell carries an authored damageValue today (the field defaults to 0, which is falsy here),
+    // so nothing existing changes until those entries are migrated onto the schema one by one.
+    // Authored damage on a spell OR a Power - both carry the same attack fields (see
+    // data/attack-schema.mjs). The Power half is what the Sorcerous attack Powers use: Arcane
+    // Blast, Fireball, Volcanic Eruption, Icy Breath and Aura of Decay each print an attack Skill,
+    // a damage value and a damage type, and before this they had nowhere to put any of it.
+    const authoredSpellDamage = (item?.type == 'spell' || item?.type == 'power') && item.system.damageValue
+      ? { value: item.system.damageValue, type: item.system.damageType }
+      : null;
     const beamSpellDamage = (spellSourceId == ENERGY_BEAM_ID || spellSourceId == LANCING_BEAM_ID
       || spellSourceId == EXPLOSIVE_BEAM_ID) ? { value: 1, type: 'element' } : null;
 
@@ -8004,7 +8026,7 @@ export class Dice {
             ? 0
             : (hasTitanBodyDamageFloor ? Math.max(item.system.damageValue, 3) : item.system.damageValue)
               + damageBonusValue)
-          : (psychoanalystDamage?.value ?? coaxSurrenderDamage?.value ?? deceptiveWarfareDamage?.value ?? explosiveMorphDamage?.value ?? omegaEnhancementDamage?.value ?? menaceDamage?.value ?? humanBulletDamage?.value ?? electricDischargeDamage?.value ?? disintegrateDamage?.value ?? beamSpellDamage?.value ?? beamVolleyDamage?.value ?? kocFireballDamage?.value ?? powerBlastDamage?.value ?? morphblastDamage?.value ?? null),
+          : (authoredSpellDamage?.value ?? psychoanalystDamage?.value ?? coaxSurrenderDamage?.value ?? deceptiveWarfareDamage?.value ?? explosiveMorphDamage?.value ?? omegaEnhancementDamage?.value ?? menaceDamage?.value ?? humanBulletDamage?.value ?? electricDischargeDamage?.value ?? disintegrateDamage?.value ?? beamSpellDamage?.value ?? beamVolleyDamage?.value ?? kocFireballDamage?.value ?? powerBlastDamage?.value ?? morphblastDamage?.value ?? null),
         // Read by _rollSkillHelper to build each result's own damageBonusLabel - kept as the raw
         // bonus amount and its source names rather than a pre-built label here, since the actual
         // per-target amount still needs scaling by that target's own Degrees of Success
@@ -8013,7 +8035,7 @@ export class Dice {
         damageBonusSources: [...damageBonusSources],
         damageType: item?.type == 'weaponEffect'
           ? (overriddenDamageType ?? item.system.damageType)
-          : (psychoanalystDamage?.type ?? coaxSurrenderDamage?.type ?? deceptiveWarfareDamage?.type ?? explosiveMorphDamage?.type ?? omegaEnhancementDamage?.type ?? menaceDamage?.type ?? humanBulletDamage?.type ?? electricDischargeDamage?.type ?? disintegrateDamage?.type ?? beamSpellDamage?.type ?? beamVolleyDamage?.type ?? kocFireballDamage?.type ?? powerBlastDamage?.type ?? morphblastDamage?.type ?? null),
+          : (authoredSpellDamage?.type ?? psychoanalystDamage?.type ?? coaxSurrenderDamage?.type ?? deceptiveWarfareDamage?.type ?? explosiveMorphDamage?.type ?? omegaEnhancementDamage?.type ?? menaceDamage?.type ?? humanBulletDamage?.type ?? electricDischargeDamage?.type ?? disintegrateDamage?.type ?? beamSpellDamage?.type ?? beamVolleyDamage?.type ?? kocFireballDamage?.type ?? powerBlastDamage?.type ?? morphblastDamage?.type ?? null),
         // Plate Piercing (Artillery Focus, 10th level) - read by _applyPlatePiercingVehicleDamage
         // once the roll resolves, the same "a fact about the attack, threaded through
         // checkContext rather than re-derived from item" shape as effectName/alternateEffects
@@ -13280,7 +13302,10 @@ export class Dice {
    * @param {Actor} actor   The actor performing the roll.
    */
   async handleSkillItemRoll(dataset, actor, item) {
-    this.rollSkill(dataset, actor, item);
+    // Awaited and returned, rather than fired and forgotten, so documents/item.mjs#roll can see a
+    // cancelled roll dialog and hand back the action it spent up front - see its own
+    // _rollWithRefund.
+    return this.rollSkill(dataset, actor, item);
   }
 
   /**

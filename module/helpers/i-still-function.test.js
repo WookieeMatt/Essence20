@@ -42,7 +42,7 @@ describe("canUseIStillFunction", () => {
   });
 
   test("false once already used this combat", () => {
-    const actor = makeActor({ defeated: true, usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ defeated: true, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     expect(canUseIStillFunction(actor)).toBe(false);
   });
 
@@ -97,7 +97,7 @@ describe("activateIStillFunction", () => {
     await activateIStillFunction(actor);
 
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'iStillFunctionUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'iStillFunctionUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
   });
 

@@ -109,3 +109,20 @@
     }
   }
 }
+
+// Scene Clock readout and the GM's New Scene control - see helpers/scene-clock.mjs. Everyone sees
+// which scene they are in, because that is what refreshes their own once-per-scene abilities.
+.essence20 .story-points {
+  &__scene {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  &__scene-label {
+    font-size: 11px;
+    text-align: center;
+    opacity: 0.8;
+  }
+}

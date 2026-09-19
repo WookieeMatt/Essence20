@@ -29,7 +29,7 @@ describe("canUseSprinterBoost", () => {
   });
 
   test("false once already used this scene", () => {
-    const actor = makeActor({ usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     expect(canUseSprinterBoost(actor)).toBe(false);
   });
 });
@@ -52,7 +52,7 @@ describe("activateSprinterBoost", () => {
 
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'sprinterBoostActive', true);
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'sprinterBoostUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'sprinterBoostUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
     expect(isSprinterBoostActive(actor)).toBe(true);
   });

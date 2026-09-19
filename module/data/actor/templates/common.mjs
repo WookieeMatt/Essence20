@@ -100,8 +100,47 @@ export function makeSkillFields(essence, canBeInitiative=false, init='d20', isCh
   return new fields.SchemaField(schema);
 }
 
+/* One per-turn action budget. `bonus` exists purely as an Active Effect target - "you gain an
+   additional Standard action each turn" (GI Joe CRB p.81) is then a one-line AE change
+   (system.actions.standard.bonus, ADD 1) rather than another bespoke helper file, the same way
+   movement/defenses already split .base from .bonus.
+
+   `base` is NOT stored: the rules derive it from the Speed Essence (GI Joe CRB p.192-193), so it's
+   computed in documents/actor.mjs#_prepareActions along with `max`, which also applies the
+   Condition clamps. Storing it would just let it drift out of sync with Speed. */
+function makeActionBudget() {
+  return new fields.SchemaField({
+    base: makeInt(0),
+    bonus: makeInt(0),
+    max: makeInt(0),
+  });
+}
+
 export const common = () => ({
   actors: new fields.ObjectField({}),
+  /* Per-turn action budgets, on the shared common template so every actor type inherits them -
+     playerCharacter, npc, companion, vehicle, zord, megaform. Only the BUDGET lives here; what an
+     actor has actually spent this turn is a per-encounter ledger on the Combatant instead (see
+     helpers/action-economy.mjs), so it can never go stale on the actor, and two unlinked tokens of
+     the same actor get separate ledgers.
+
+     There is no `reaction` budget, because Essence20 has no reactions. The readied-action
+     mechanism is the Contingency action (GI Joe CRB p.196), which is a STANDARD action you set on
+     your turn to resolve later - see E20.actionTypeCosts, where 'contingency' costs a Standard.
+     Perks that change that (Vigilance p.110, Not Getting Away That Easy p.98 - "take a Contingency
+     action as a Free action") are per-Perk overrides, not a separate resource.
+
+     `enabled` is a per-actor opt-out for an actor the GM doesn't want tracked at all (a narrative
+     NPC, a set-piece vehicle). `shared` is derived, not authored - see _prepareActions. */
+  actions: new fields.SchemaField({
+    enabled: makeBool(true),
+    // Speed 1: "Move OR Standard action... then ends their turn" (CRB p.193). Spending either one
+    // consumes the other, which getRemaining honours - see helpers/action-economy.mjs.
+    shared: makeBool(false),
+    free: makeActionBudget(),
+    move: makeActionBudget(),
+    standard: makeActionBudget(),
+  }),
   color: new fields.ColorField({initial: '#b5b1b1'}),
   conditioning: makeInt(0),
   // Whether Conditioning shows on the sheet, ticked in the Skill Picker beside its value - the

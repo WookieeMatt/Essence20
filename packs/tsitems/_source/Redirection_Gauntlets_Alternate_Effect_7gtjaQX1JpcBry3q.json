@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "Technorganic Secrets",
@@ -27,7 +28,8 @@
       "long": 50,
       "value": 25
     },
-    "shiftDown": 3
+    "shiftDown": 3,
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

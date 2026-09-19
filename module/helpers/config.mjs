@@ -23,11 +23,53 @@ preLocalize("gameVersions");
 // Essence-based defenses
 // Area of Effect shape (GitHub #824) - see data/item/weapon-effect.mjs's own system.shape field
 // and helpers/aoe-targeting.mjs for what each one actually does.
-E20.weaponEffectShapes = {
-  burst: "E20.WeaponShapeBurst",
-  cone: "E20.WeaponShapeCone",
+/* Area of Effect shapes, shared by weaponEffects, spells and Powers (module/data/aoe-schema.mjs).
+   The keys are Foundry's OWN region shape type names, not a vocabulary of this system's own, so a
+   stored value can be handed straight to canvas.regions.placeRegion() - see
+   helpers/aoe-targeting.mjs. Foundry v14 offers ten shape types; only the three that map onto
+   something this system's books actually describe are exposed here:
+     circle    - centred on a chosen impact point (a thrown grenade's "Blast (10ft radius)").
+                 Stored as "burst" before this became a shared schema; migration.mjs remaps it.
+     cone      - apex on the attacker's own token, aimed at a chosen point (a flamethrower's
+                 "Blast (15ft cone)").
+     emanation - anchored to a token and moving with it, for an area that emanates from a creature
+                 rather than from a point on the ground. */
+/* How long a spell or Power's effect lasts (module/data/duration-schema.mjs). "instant" and
+   "special" carry no count; the rest are counted units. Read by helpers/aoe-targeting.mjs to
+   decide whether a placed area is discarded immediately or persists on the scene. */
+E20.durationUnits = {
+  instant: "E20.DurationUnitInstant",
+  rounds: "E20.DurationUnitRounds",
+  minutes: "E20.DurationUnitMinutes",
+  hours: "E20.DurationUnitHours",
+  days: "E20.DurationUnitDays",
+  scenes: "E20.DurationUnitScenes",
+  special: "E20.DurationUnitSpecial",
 };
-preLocalize("weaponEffectShapes");
+preLocalize("durationUnits");
+
+/* Singular forms of the counted units above, used only to build a display label - "1 Scene"
+   rather than "1 Scene(s)". Deliberately not a choices list: nothing is ever STORED as one of
+   these, so it holds only the units that can actually carry a count. */
+E20.durationUnitsSingular = {
+  rounds: "E20.DurationUnitRound",
+  minutes: "E20.DurationUnitMinute",
+  hours: "E20.DurationUnitHour",
+  days: "E20.DurationUnitDay",
+  scenes: "E20.DurationUnitScene",
+};
+preLocalize("durationUnitsSingular");
+
+E20.aoeShapes = {
+  circle: "E20.AoeShapeCircle",
+  cone: "E20.AoeShapeCone",
+  // A straight band from the attacker, aimed at a chosen point (PR CRB's own "Blast: 60ft line").
+  // Rarer than the others - one printed example across every book - but it IS printed, so a Blast
+  // quality can't be fully expressed without it.
+  line: "E20.AoeShapeLine",
+  emanation: "E20.AoeShapeEmanation",
+};
+preLocalize("aoeShapes");
 
 E20.defenses = {
   cleverness: "E20.DefenseCleverness",
@@ -675,9 +717,20 @@ E20.wealthShifts = {
 
 // Options for Actions
 E20.actionTypes = {
+  // The default for every item type. With ~2,600 Perks carrying no authored action cost, anything
+  // else would have the system inventing costs it can't justify - see actionTypeCosts below, where
+  // 'none' deliberately spends nothing.
+  none: "E20.ActionTypeNone",
   free: "E20.ActionTypeFree",
   fullAction: "E20.ActionTypeFullAction",
   move: "E20.ActionTypeMove",
+  // The Contingency action (GI Joe CRB, p.196): "making your character ready to do something when
+  // something else occurs... a predetermined action after your place in the Initiative order, but
+  // before the start of your next turn." This is Essence20's readied/interrupt mechanism, and it
+  // is a STANDARD action - there is no separate reaction resource anywhere in the rules. Listed
+  // separately from plain 'standard' because several Perks change its cost specifically (Vigilance
+  // p.110 and Not Getting Away That Easy p.98 both allow "a Contingency action as a Free action").
+  contingency: "E20.ActionTypeContingency",
   standard: "E20.ActionTypeStandard",
   standardAndMove: "E20.ActionTypeStandardAndMove",
   wholeTurn: "E20.ActionTypeWholeTurn",
@@ -685,6 +738,57 @@ E20.actionTypes = {
   oneHour: "E20.ActionTypeOneHour",
 };
 preLocalize("actionTypes");
+
+/* The three per-turn budgets an actor tracks - the keys of system.actions (see
+   data/actor/templates/common.mjs) and of a Combatant's own spend ledger. Three, not four: the
+   rules define exactly Move, Standard and Free (CRB p.192-193), and the Contingency action spends
+   a Standard rather than a resource of its own. */
+E20.actionCategories = {
+  standard: "E20.ActionTypeStandard",
+  move: "E20.ActionTypeMove",
+  free: "E20.ActionTypeFree",
+};
+preLocalize("actionCategories");
+
+/* What each actionType above actually costs, as {category: amount}. An empty object means "spends
+   nothing", which covers three genuinely different cases: 'none' (a passive item, the default),
+   and tenMinutes/oneHour, which are out-of-combat DURATIONS rather than budgets - modelling those
+   as a cost of zero rather than excluding them outright is what would otherwise have every
+   downtime Perk asking the combat tracker for permission.
+
+   fullAction/standardAndMove/wholeTurn all consume both budgets and are spent atomically (see
+   helpers/action-economy.mjs#spend) - if either half is gone, neither is taken. wholeTurn
+   additionally flags the NEXT turn, which is why it's listed separately from standardAndMove
+   despite the identical cost. */
+E20.actionTypeCosts = {
+  none: {},
+  free: { free: 1 },
+  fullAction: { standard: 1, move: 1 },
+  move: { move: 1 },
+  // Setting a Contingency costs the Standard action; it resolves later, out of turn, at no
+  // further cost. See E20.actionTypes' own comment.
+  contingency: { standard: 1 },
+  standard: { standard: 1 },
+  standardAndMove: { standard: 1, move: 1 },
+  wholeTurn: { standard: 1, move: 1 },
+  tenMinutes: {},
+  oneHour: {},
+};
+
+// Action types that also consume the actor's NEXT turn - see resetTurn's own carry-over handling.
+E20.actionTypesConsumingNextTurn = ['wholeTurn'];
+
+/* How hard the action economy is enforced, world-wide. 'track' is the default and not as a hedge:
+   with the overwhelming majority of Perks carrying no authored action cost, shipping 'strict'
+   would gate real abilities on absent data. It also matches the idiom this codebase already
+   settled on elsewhere - "visible marker, not hard enforcement" (see helpers/undo-engine.mjs). */
+E20.actionEconomyModes = {
+  off: "E20.ActionEconomyModeOff",
+  track: "E20.ActionEconomyModeTrack",
+  warn: "E20.ActionEconomyModeWarn",
+  strict: "E20.ActionEconomyModeStrict",
+};
+preLocalize("actionEconomyModes");
 
 // Options for Intervals
 E20.usesInterval = {

@@ -1,5 +1,5 @@
 import { E20 } from "./config.mjs";
-import { actorHasPerk, findPerk } from "./perks.mjs";
+import { actorHasPerk, findPerk, getUsesThisEncounter, markUsedThisEncounterCount } from "./perks.mjs";
 import RollOptionsDialog from "../apps/roll-options-dialog.mjs";
 
 // Presence (GI Joe CRB p.76, Commando's Spy Focus, 1st level): "You do not suffer a Snag for
@@ -169,10 +169,13 @@ export class RollDialog {
         return false;
       }
 
-      const stored = actor.getFlag('essence20', GREEN_USES_FLAG);
-      const uses = stored?.combatId == game.combat.id ? stored.count : 0;
-      if (uses < 3) {
-        await actor.setFlag('essence20', GREEN_USES_FLAG, { combatId: game.combat.id, count: uses + 1 });
+      // Green's three-uses-per-encounter counter used to be hand-rolled here against
+      // game.combat.id, a duplicate of helpers/perks.mjs's own getUsesThisEncounter that carried
+      // the same out-of-combat bug: with no combat, the stored stamp never matched, so the count
+      // reset on every roll and the cap never applied. It now shares the Scene Clock with every
+      // other once-per-encounter ability.
+      if (getUsesThisEncounter(actor, GREEN_USES_FLAG) < 3) {
+        await markUsedThisEncounterCount(actor, GREEN_USES_FLAG);
         return false;
       }
     }

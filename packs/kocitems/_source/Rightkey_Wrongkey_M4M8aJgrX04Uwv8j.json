@@ -11,9 +11,14 @@
       "book": "Knights of Canterlot",
       "page": 48
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 3,
-    "duration": "Instant",
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "30 feet",
     "tier": "superior"

@@ -26,7 +26,7 @@ describe("canUseNuPogodiCondition", () => {
   test("false once already used this encounter", async () => {
     game.combat = { id: 'combat1' };
     const actor = makeActor();
-    await actor.setFlag('essence20', 'nuPogodiConditionUsedThisEncounter', { combatId: 'combat1' });
+    await actor.setFlag('essence20', 'nuPogodiConditionUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
     expect(canUseNuPogodiCondition(actor)).toBe(false);
     game.combat = null;
   });
@@ -55,7 +55,7 @@ describe("applyNuPogodiCondition", () => {
 
   test("does nothing once already used this encounter", async () => {
     const actor = makeActor(['frightened']);
-    await actor.setFlag('essence20', 'nuPogodiConditionUsedThisEncounter', { combatId: 'combat1' });
+    await actor.setFlag('essence20', 'nuPogodiConditionUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
 
     const removed = await applyNuPogodiCondition(actor);
 

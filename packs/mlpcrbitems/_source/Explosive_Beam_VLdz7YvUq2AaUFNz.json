@@ -11,11 +11,18 @@
       "book": "My Little Pony Core Rulebook",
       "page": 137
     },
+    "actionType": "standard",
     "circle": "beam",
     "cost": 3,
-    "duration": "Instant",
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "60 feet",
+    "shape": "circle",
+    "radius": 7.5,
     "tier": "superior"
   },
   "effects": [],

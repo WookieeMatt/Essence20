@@ -2373,6 +2373,97 @@ body.game .window-app {
   overflow: auto;
 }
 
+.essence20 .action-economy {
+  min-width: fit-content;
+  gap: 6px;
+  /* This box shares the header's bottom row with Role/Focus/Origin/Color, whose content is a
+     single select - about 32px inside the row's 8px padding. Three stacked categories only fit
+     that without making the whole row taller if they are tight: line-height 1 at 10px gives
+     3 x 10px plus the 1px gaps, which lands on the same 48px box height as its neighbours.
+     Anything looser and the Actions box alone sets the row's height. */
+  /* Trade and the Speed 1 note are both usually absent; when they are, this column has no
+     children and would otherwise still draw the parent's gap beside the pips. */
+  /* Icons rather than the sentences they stand for. Both read as full text in their tooltips;
+     spelled out in the box, the trade line alone was 126px - half the width of the whole
+     Actions box, and wider than the Origin field next to it. */
+}
+.essence20 .action-economy__rows {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  padding: 0;
+}
+.essence20 .action-economy__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  line-height: 1;
+}
+.essence20 .action-economy__label {
+  flex: 1 0 auto;
+  white-space: nowrap;
+}
+.essence20 .action-economy__pips {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+.essence20 .action-economy__pip {
+  font-size: 7px;
+  color: transparent;
+  -webkit-text-stroke: 1px currentColor;
+  opacity: 0.85;
+}
+.essence20 .action-economy__pip--spent {
+  color: #9e9b9b;
+  -webkit-text-stroke: 0;
+  opacity: 0.45;
+}
+.essence20 .action-economy__none {
+  color: #9e9b9b;
+  opacity: 0.5;
+}
+.essence20 .action-economy__controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.essence20 .action-economy__controls a {
+  font-size: 9px;
+  opacity: 0.55;
+}
+.essence20 .action-economy__controls a:hover {
+  opacity: 1;
+}
+.essence20 .action-economy__notes {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+.essence20 .action-economy__notes:empty {
+  display: none;
+}
+.essence20 .action-economy__trade, .essence20 .action-economy__hint {
+  font-size: 11px;
+  line-height: 1;
+}
+.essence20 .action-economy__trade {
+  opacity: 0.55;
+}
+.essence20 .action-economy__trade:hover {
+  opacity: 1;
+}
+.essence20 .action-economy__hint {
+  color: #9e9b9b;
+  opacity: 0.75;
+}
+.essence20 .action-economy--skipped .essence20 .action-economy__rows {
+  opacity: 0.4;
+}
+
 .essence20 .powers-section {
   list-style: none;
   padding: 4px;
@@ -4044,6 +4135,28 @@ body.game .window-app {
     transition: none;
   }
 }
+.waypoint-label .e20-push-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+/* Three states, coloured by how bad the news is: Pushing is affordable and merely costs Free
+   actions, unaffordable means not this turn, and capped means not at any price (past double the
+   rating). Amber and red rather than the system palette, because a ruler label sits over arbitrary
+   map art and has to read against all of it. */
+.waypoint-label.e20-push--pushing .e20-push-note {
+  color: #ffc861;
+}
+
+.waypoint-label.e20-push--unaffordable .e20-push-note,
+.waypoint-label.e20-push--noPush .e20-push-note,
+.waypoint-label.e20-push--capped .e20-push-note {
+  color: #ff8a7a;
+}
+
 .story-points {
   height: auto;
   width: min-content;
@@ -4135,6 +4248,18 @@ body.game .window-app {
 }
 .story-points .story-points__btn.--increment i {
   color: #4dd0e1;
+}
+
+.essence20 .story-points__scene {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+}
+.essence20 .story-points__scene-label {
+  font-size: 11px;
+  text-align: center;
+  opacity: 0.8;
 }
 
 .stat-editor .window-content {
@@ -5268,6 +5393,52 @@ body.game .window-app {
 .monster-grow-no-candidates {
   margin: 0;
   opacity: 0.7;
+}
+
+.essence20 .e20-tracker-actions,
+#combat .e20-tracker-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+}
+.essence20 .e20-tracker-actions__group,
+#combat .e20-tracker-actions__group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.essence20 .e20-tracker-actions__pip,
+#combat .e20-tracker-actions__pip {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.9;
+  /* One hue per category. The sheet pip row gets away with plain currentColor because each row
+     is labelled; here three groups sit side by side in a cramped sidebar with no room for
+     labels, so colour is what tells Standard from Move at a glance. Defined locally rather than
+     in _variables.scss because nothing else in the system uses them yet. */
+}
+.essence20 .e20-tracker-actions__pip--spent,
+#combat .e20-tracker-actions__pip--spent {
+  opacity: 0.25;
+}
+.essence20 .e20-tracker-actions__pip--standard,
+#combat .e20-tracker-actions__pip--standard {
+  color: #c96a3c;
+}
+.essence20 .e20-tracker-actions__pip--move,
+#combat .e20-tracker-actions__pip--move {
+  color: #4bb6ab;
+}
+.essence20 .e20-tracker-actions__pip--free,
+#combat .e20-tracker-actions__pip--free {
+  color: #9aa8ae;
+}
+.essence20 .e20-tracker-actions--skipped,
+#combat .e20-tracker-actions--skipped {
+  opacity: 0.45;
 }
 
 select {

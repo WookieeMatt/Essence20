@@ -7,6 +7,9 @@ import { createEffectMacro, toggleEffectMacro } from "./helpers/effects.mjs";
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
 import { Essence20Combat } from "./documents/combat.mjs";
+import { Essence20TokenDocument } from "./documents/token.mjs";
+import { Essence20CombatTracker } from "./apps/combat-tracker.mjs";
+import { Essence20TokenRuler } from "./canvas/token-ruler.mjs";
 import { Essence20Combatant } from "./documents/combatant.mjs";
 import { Essence20Item } from "./documents/item.mjs";
 // Import sheet classes.
@@ -21,6 +24,7 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
 import { handleStoryPointGrantRequest, handleStoryPointSpendRequest } from "./helpers/story-points.mjs";
 import { handleRemoteChoiceRequest, handleRemoteChoiceResponse } from "./helpers/remote-request.mjs";
+import { handleSetActionLedger } from "./helpers/action-economy.mjs";
 // Registers the "chooseDefense" remote prompt against remote-request.mjs's own registry -
 // imported for this side effect alone (see defense-choice.mjs's own registerRemotePrompt call at
 // its bottom), same reason-for-import-with-no-named-use as any other registration-pattern file.
@@ -50,6 +54,7 @@ import { payMetallicArmorMaintenance } from "./helpers/metallic-armor.mjs";
 import { isImmuneToCondition } from "./helpers/condition-immunity.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
+import { expireAoeRegions, expireAoeRegionsForScene, reconcileAoeRegions } from "./helpers/aoe-expiry.mjs";
 import { applyThemeClass, refreshChatMessageThemes, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
 import { updateRoleCache } from "./helpers/utils.mjs";
 import { registerEssence20Tours, sweepTourDemoContent } from "./tours/index.mjs";
@@ -142,6 +147,14 @@ Hooks.once("init", async function () {
   CONFIG.Actor.documentClass = Essence20Actor;
   CONFIG.Combat.documentClass = Essence20Combat;
   CONFIG.Combatant.documentClass = Essence20Combatant;
+  // Charges token movement against the action economy - see documents/token.mjs and
+  // helpers/token-movement.mjs. Inert unless the world opts in to movement tracking.
+  CONFIG.Token.documentClass = Essence20TokenDocument;
+  // Remaining-action marks per combatant - see apps/combat-tracker.mjs. Draws nothing unless the
+  // world is tracking the action economy.
+  CONFIG.ui.combat = Essence20CombatTracker;
+  // Live "this move will cost you N Free actions" on the drag ruler - see canvas/token-ruler.mjs.
+  CONFIG.Token.rulerClass = Essence20TokenRuler;
   CONFIG.Item.documentClass = Essence20Item;
   CONFIG.statusEffects = foundry.utils.deepClone(E20.statusEffects);
 
@@ -256,6 +269,8 @@ Hooks.once("init", async function () {
       handleRemoteChoiceRequest(data);
     } else if (data.action === "remoteChoiceResponse") {
       handleRemoteChoiceResponse(data);
+    } else if (data.action === "setActionLedger") {
+      handleSetActionLedger(data);
     } else {
       game.StoryPointsTracker?.handleStoryPointSignal(data);
     }
@@ -405,6 +420,10 @@ Hooks.on("clientSettingChanged", (key) => {
 
 Hooks.once("ready", async function () {
   runMigrations();
+
+  /* Catch any lingering Area of Effect region that should have expired while nobody was logged in,
+     or whose expiry was missed because no GM was connected at the time. */
+  reconcileAoeRegions();
 
   /* Opt-in developer check that the Effect Wizard's catalog still matches the actor schemas -
      off by default, since it is noise for a player. Set CONFIG.debug.essence20Catalog = true (or
@@ -744,6 +763,27 @@ for (const hookName of ["combatTurn", "combatRound"]) {
   });
 }
 
+/* Action economy: repaint every open actor sheet when the turn changes, so the header pip row
+   reflects the new turn's budget.
+
+   combatTurnChange is Foundry v14's own post-update, all-clients companion to the GM-only
+   Combat#_onStartTurn that does the authoritative ledger reset (see documents/combat.mjs). That
+   split is the whole point: one client writes, every client re-renders. A plain re-render is
+   enough because the pip row is built from the combatant's flags at render time, which the GM's
+   write has already propagated by the time this fires. */
+Hooks.on("combatTurnChange", () => {
+  // foundry.applications.instances is v14's own ApplicationV2 registry, which is what every sheet
+  // in this system is (the legacy ui.windows map only ever held AppV1 windows). Walking it rather
+  // than game.actors also catches the sheet of an unlinked token's synthetic actor, which never
+  // appears in the world collection - and unlinked tokens are exactly the combatants most likely
+  // to be in an encounter.
+  for (const app of foundry.applications.instances.values()) {
+    if (app.rendered && app.document instanceof Actor) {
+      app.render();
+    }
+  }
+});
+
 /* Time To Think (MLP Magic, 3rd level) - see applyTimeToThinkEdge's own doc comment. Checked once,
    when combat actually begins, by which point every combatant's Initiative should already be
    set. */
@@ -761,6 +801,17 @@ Hooks.on("combatStart", (combat) => {
    needing this. */
 Hooks.on("deleteCombat", (combat) => {
   applyHardCorpsDeferredDefeat(combat);
+
+  /* Lingering Area of Effect regions whose duration is tied to the encounter rather than to a
+     clock - "1 scene", plus any round-counting area that outlived the combat it was counting
+     rounds in. See helpers/aoe-expiry.mjs. */
+  expireAoeRegionsForScene();
+});
+
+/* World time moved, so a minutes/hours/days area may have run out. Fires on every client, but
+   expireAoeRegions gates itself to the one designated GM - see helpers/aoe-expiry.mjs. */
+Hooks.on("updateWorldTime", () => {
+  expireAoeRegions();
 });
 
 /* Reaches the Effect Wizard from an effect that already exists, for adding another change to it

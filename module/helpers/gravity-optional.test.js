@@ -53,11 +53,11 @@ describe("toggleGravityOptional", () => {
 
     expect(result).toBe(true);
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'gravityOptionalActive', true);
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'gravityOptionalUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'gravityOptionalUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("returns null and changes nothing when already used this scene", async () => {
-    const actor = makeActor({ active: false, usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ active: false, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     const result = await toggleGravityOptional(actor);
 
     expect(result).toBe(null);
@@ -65,7 +65,7 @@ describe("toggleGravityOptional", () => {
   });
 
   test("turns back off for free, even if already used this scene", async () => {
-    const actor = makeActor({ active: true, usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ active: true, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     const result = await toggleGravityOptional(actor);
 
     expect(result).toBe(false);

@@ -36,6 +36,7 @@ import { isWarriorModeActive, toggleWarriorMode, WARRIOR_MODE_ID } from "../help
 import { getMegaWeaponAttacksRemaining, MEGA_WEAPON_ID, summonMegaWeapon } from "../helpers/zord-mega-weapon.mjs";
 import { onActivateSnortleAtTheSpooky } from "../helpers/snortle-at-the-spooky.mjs";
 import { onActivateConsummatePerformer } from "../helpers/consummate-performer.mjs";
+import { adjust, getSheetContext, tradeStandardForFree } from "../helpers/action-economy.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onEditMorphToughnessBonus,
@@ -67,6 +68,9 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       activatePowerInfusion: this.#onActivatePowerInfusion,
       activateSnortleAtTheSpooky: this.#onActivateSnortleAtTheSpooky,
       activateConsummatePerformer: this.#onActivateConsummatePerformer,
+      actionRestore: this.#onActionRestore,
+      actionTradeForFree: this.#onActionTradeForFree,
+      actionSpend: this.#onActionSpend,
       bonusEdit: this.#onEditMorphToughnessBonus,
       createEffect: this.#createActiveEffect,
       deleteEffect: this.#deleteActiveEffect,
@@ -475,6 +479,12 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     // Conditioning row on the npc-skill-list sheets - ticked per actor in the Skill Picker, the
     // same way each skill's own isChosen box controls whether that skill is listed.
     context.showConditioning = context.system.showConditioning === true;
+
+    // Per-turn action budget for the header pip row. Null - and so the whole block is skipped -
+    // whenever the actor isn't in the active encounter or the world has tracking switched off;
+    // see helpers/action-economy.mjs#getSheetContext. Read from this.actor rather than the
+    // toObject(false) clone above, because the budget's own `max` is derived data.
+    context.actionEconomy = getSheetContext(this.actor);
 
     // Prepare WeaponEffect Skill List
     this._prepareWeaponEffectSkills(actorData, context);
@@ -1009,6 +1019,33 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onRest() {
     onRest(this);
+  }
+
+  /**
+   * Spend one action of a category by hand, from the header pip row. Manual adjustment is a
+   * first-class control rather than a debug affordance: the overwhelming majority of items don't
+   * declare an action cost yet, so this is how most actions actually get marked as taken.
+   */
+  static async #onActionSpend(event, target) {
+    await adjust(this.actor, target.dataset.category, 1);
+    this.render();
+  }
+
+  /**
+   * Hand one action of a category back - the undo for the control above.
+   */
+  static async #onActionRestore(event, target) {
+    await adjust(this.actor, target.dataset.category, -1);
+    this.render();
+  }
+
+  /**
+   * "Alternatively, a character may trade in a Standard action for two Free actions"
+   * (GI Joe CRB p.193) - see helpers/action-economy.mjs#tradeStandardForFree.
+   */
+  static async #onActionTradeForFree() {
+    await tradeStandardForFree(this.actor);
+    this.render();
   }
 
   static #onRecharge() {

@@ -2506,3 +2506,172 @@ describe("_prepareVehicleData", () => {
     });
   });
 });
+
+describe("_prepareActions", () => {
+  /**
+   * An actor carrying the shared system.actions block plus a Speed Essence, which is what the
+   * rules actually derive the budget from (GI Joe CRB p.192-193).
+   */
+  function actionsActor({ statuses = [], bonus = {}, speed = 2 } = {}) {
+    const budget = (category) => ({ base: 0, bonus: bonus[category] ?? 0, max: 0 });
+    const actor = makeActor("playerCharacter", {
+      essences: { speed: { value: speed, max: speed }, smarts: { value: 0, max: 0 } },
+      actions: {
+        enabled: true,
+        shared: false,
+        free: budget("free"),
+        move: budget("move"),
+        standard: budget("standard"),
+      },
+    });
+    actor.statuses = new Set(statuses);
+    return actor;
+  }
+
+  // The three budget shapes the rules define, by Speed Essence.
+  test("Speed 1 gets one Move and one Standard, flagged as a shared single action", () => {
+    const actor = actionsActor({ speed: 1 });
+    actor._prepareActions();
+
+    expect(actor.system.actions.shared).toBe(true);
+    expect(actor.system.actions.standard.max).toBe(1);
+    expect(actor.system.actions.move.max).toBe(1);
+    expect(actor.system.actions.free.max).toBe(0);
+  });
+
+  test("Speed 2 gets a Move and a Standard and no Free actions", () => {
+    const actor = actionsActor({ speed: 2 });
+    actor._prepareActions();
+
+    expect(actor.system.actions.shared).toBe(false);
+    expect(actor.system.actions.free.max).toBe(0);
+  });
+
+  test.each([[3, 1], [4, 2], [5, 3]])("Speed %i grants %i Free actions", (speed, expected) => {
+    const actor = actionsActor({ speed });
+    actor._prepareActions();
+
+    expect(actor.system.actions.free.max).toBe(expected);
+  });
+
+  test("an actor type with no Essences falls back to the ordinary Speed 2 turn", () => {
+    const actor = makeActor("vehicle", {
+      actions: {
+        enabled: true, shared: false,
+        free: { base: 0, bonus: 0, max: 0 },
+        move: { base: 0, bonus: 0, max: 0 },
+        standard: { base: 0, bonus: 0, max: 0 },
+      },
+    });
+    actor.statuses = new Set();
+    actor._prepareActions();
+
+    expect(actor.system.actions.standard.max).toBe(1);
+    expect(actor.system.actions.move.max).toBe(1);
+    expect(actor.system.actions.free.max).toBe(0);
+    expect(actor.system.actions.shared).toBe(false);
+  });
+
+  // "You gain an additional Standard action each turn" (CRB p.81) is a plain Active Effect on
+  // .bonus, which is the whole reason base and bonus are separate fields.
+  test("an Active Effect bonus adds on top of the Speed-derived base", () => {
+    const actor = actionsActor({ speed: 4, bonus: { standard: 1, free: 1 } });
+    actor._prepareActions();
+
+    expect(actor.system.actions.standard.max).toBe(2);
+    expect(actor.system.actions.free.max).toBe(3);
+  });
+
+  test("a negative bonus can not push a budget below zero", () => {
+    const actor = actionsActor({ bonus: { standard: -5 } });
+    actor._prepareActions();
+
+    expect(actor.system.actions.standard.max).toBe(0);
+  });
+
+  // The two Conditions below have existed in E20.statusEffects since the MLP CRB
+  // Laughtracting/Distraughter Perks were built, doing nothing at all because there was no action
+  // economy to gate against. These are the tests that they now do something.
+  test("cantTakeFreeActions clamps Free actions to zero, leaving the rest alone", () => {
+    const actor = actionsActor({ speed: 4, statuses: ["cantTakeFreeActions"] });
+    actor._prepareActions();
+
+    expect(actor.system.actions.free.max).toBe(0);
+    expect(actor.system.actions.standard.max).toBe(1);
+    expect(actor.system.actions.move.max).toBe(1);
+  });
+
+  test("cantTakeMoveActions clamps the Move action only", () => {
+    const actor = actionsActor({ speed: 4, statuses: ["cantTakeMoveActions"] });
+    actor._prepareActions();
+
+    expect(actor.system.actions.move.max).toBe(0);
+    expect(actor.system.actions.standard.max).toBe(1);
+    expect(actor.system.actions.free.max).toBe(2);
+  });
+
+  test.each(["asleep", "defeated", "unconscious"])("%s zeroes every budget", (status) => {
+    const actor = actionsActor({ speed: 5, statuses: [status] });
+    actor._prepareActions();
+
+    expect(actor.system.actions.standard.max).toBe(0);
+    expect(actor.system.actions.move.max).toBe(0);
+    expect(actor.system.actions.free.max).toBe(0);
+  });
+
+  // Immobilized/Grappled/Restrained restrict movement DISTANCE rather than denying the Move action
+  // itself - inventing a rule for them is not this method job, so they deliberately do nothing.
+  test.each(["grappled", "immobilized", "restrained"])("%s leaves the Move action alone", (status) => {
+    const actor = actionsActor({ statuses: [status] });
+    actor._prepareActions();
+
+    expect(actor.system.actions.move.max).toBe(1);
+  });
+
+  test("an actor type without an actions block is left untouched", () => {
+    const actor = makeActor("vehicle", {});
+    expect(() => actor._prepareActions()).not.toThrow();
+  });
+});
+
+describe("_prepareActions agrees with getNumActions", () => {
+  /* The budget used to be derived here a second time, independently of helpers/actor.mjs#
+     getNumActions - the helper that already drove the sheet's own "1M, 1S, 1F" readout. The two
+     silently disagreed whenever Speed's .max and .value differed, so the sheet showed one number
+     beside a different set of pips. Live testing caught it; these pin the agreement. */
+  function essenceActor({ speedMax, speedValue, smarts = 0 }) {
+    const actor = makeActor('playerCharacter', {
+      essences: {
+        speed: { max: speedMax, value: speedValue },
+        smarts: { max: smarts, value: smarts },
+      },
+      actions: {
+        enabled: true, shared: false,
+        free: { base: 0, bonus: 0, max: 0 },
+        move: { base: 0, bonus: 0, max: 0 },
+        standard: { base: 0, bonus: 0, max: 0 },
+      },
+    });
+    actor.statuses = new Set();
+    return actor;
+  }
+
+  test("uses Speed's max rather than its current value", () => {
+    const actor = essenceActor({ speedMax: 5, speedValue: 2 });
+    actor._prepareActions();
+
+    // getNumActions reads .max ?? .value, so a drained Speed still budgets from the maximum.
+    expect(actor.system.actions.free.max).toBe(3);
+  });
+
+  test("Speed 1 grants both actions and marks them shared", () => {
+    const actor = essenceActor({ speedMax: 1, speedValue: 1 });
+    actor._prepareActions();
+
+    // getNumActions reports standard 0 here; the rules say "Move OR Standard", so both are
+    // granted and `shared` makes them mutually exclusive.
+    expect(actor.system.actions.shared).toBe(true);
+    expect(actor.system.actions.standard.max).toBe(1);
+    expect(actor.system.actions.move.max).toBe(1);
+  });
+});

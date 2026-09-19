@@ -2,6 +2,9 @@ import { E20 } from "../../helpers/config.mjs";
 
 import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
+import { aoeSchema } from "../aoe-schema.mjs";
+
+import { activation } from './templates/activation.mjs';
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
 
@@ -11,6 +14,7 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),
+      ...activation(),
       ...itemDescription(),
       classification: new fields.SchemaField({
         skill: makeStrWithChoices([...Object.keys(E20.skills), 'roleSkillDie'], 'athletics'),
@@ -36,13 +40,9 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       isSpecialized: makeBool(false),
       numHands: makeInt(1),
       numTargets: makeInt(1),
-      radius: makeInt(0),
-      // Area of Effect shape (GitHub #824) - "burst" is a circle centered on a chosen impact
-      // point (e.g. a thrown grenade's "Blast (10ft radius)"); "cone" originates at the
-      // attacker's own token and is aimed at a chosen point (e.g. a flamethrower's "Blast (15ft
-      // cone)"). Null for an ordinary single/Multiple-Targets attack with no AoE shape at all.
-      // Consumed by helpers/aoe-targeting.mjs, keyed on this and the existing radius field above.
-      shape: makeStrWithChoices(['burst', 'cone'], null),
+      // Area of Effect shape + radius (GitHub #824), shared with spells and Powers - see
+      // module/data/aoe-schema.mjs. Consumed by helpers/aoe-targeting.mjs.
+      ...aoeSchema(),
       range: new fields.SchemaField({
         min: makeInt(null),
         reachMultiplier: makeInt(null),

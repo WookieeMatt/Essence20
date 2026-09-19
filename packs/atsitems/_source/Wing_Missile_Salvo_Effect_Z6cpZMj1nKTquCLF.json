@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "Across the Stars",
@@ -27,7 +28,8 @@
       "reachMultiplier": 0,
       "long": 150,
       "value": 60
-    }
+    },
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "targeting",
       "style": "projectile"
@@ -27,7 +28,8 @@
       "book": "Finster's Monster-Matic Cookbook",
       "page": 302
     },
-    "description": "<p>30 ft x 30 ft Area; on a Critical Success, +1 Fire damage if the target moves before the start of its next turn</p>"
+    "description": "<p>30 ft x 30 ft Area; on a Critical Success, +1 Fire damage if the target moves before the start of its next turn</p>",
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

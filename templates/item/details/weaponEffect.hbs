@@ -1,4 +1,7 @@
 <div>
+
+  {{!-- Action cost - see templates/item/parts/activation-fields.hbs --}}
+  {{> "systems/essence20/templates/item/parts/activation-fields.hbs"}}
   {{!-- Skill --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSkill'}}
   {{#*inline "item-field-inputs"}}
@@ -43,21 +46,8 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Radius --}}
-  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRadius'}}
-  {{#*inline "item-field-inputs"}}
-  {{numberInput system.radius name="system.radius" min=0 step=1}}
-  {{/inline}}
-  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-  {{!-- Area of Effect Shape (GitHub #824) --}}
-  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponShape'}}
-  {{#*inline "item-field-inputs"}}
-  <select class="item-field-inputs" name="system.shape">
-    {{selectOptions config.weaponEffectShapes selected=system.shape localize=true blank=(localize 'E20.None')}}
-  </select>
-  {{/inline}}
-  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{!-- Area of Effect shape + radius (GitHub #824) --}}
+  {{> "systems/essence20/templates/item/parts/aoe-fields.hbs"}}
 
   {{!-- Shift Down --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShiftDown'}}

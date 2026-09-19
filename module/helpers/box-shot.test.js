@@ -37,12 +37,12 @@ describe("canUseBoxShot", () => {
   });
 
   test("false once already used this scene, while inactive", () => {
-    const actor = makeActor({ usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     expect(canUseBoxShot(actor)).toBe(false);
   });
 
   test("true while already active, even if used this scene (so it can be turned back off)", () => {
-    const actor = makeActor({ active: true, usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ active: true, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     expect(canUseBoxShot(actor)).toBe(true);
   });
 });
@@ -54,7 +54,7 @@ describe("toggleBoxShot", () => {
     expect(result).toBe(true);
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'boxShotActive', true);
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'boxShotUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'boxShotUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
     expect(isBoxShotActive(actor)).toBe(true);
   });

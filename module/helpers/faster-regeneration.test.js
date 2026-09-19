@@ -15,7 +15,7 @@ class FakeRoll {
 global.Roll = FakeRoll;
 
 function makeActor({ used = false, health = { value: 5, max: 10 } } = {}) {
-  const flagStore = used ? { fasterRegenerationUsedThisEncounter: { combatId: 'combat1' } } : {};
+  const flagStore = used ? { fasterRegenerationUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } } : {};
   return {
     system: { health: { ...health } },
     getFlag: jest.fn((scope, key) => flagStore[key]),
@@ -37,7 +37,7 @@ describe("activateFasterRegeneration", () => {
 
     expect(healAmount).toBe(2);
     expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 7 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'fasterRegenerationUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'fasterRegenerationUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("caps the heal at max Health", async () => {

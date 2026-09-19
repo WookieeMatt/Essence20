@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "originalId": "",
+    "actionType": "move",
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",

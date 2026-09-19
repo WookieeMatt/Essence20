@@ -188,6 +188,82 @@ export const registerSettings = function () {
   });
 
   /* -------------------------------------------- */
+  /*  Action Economy settings                     */
+  /* -------------------------------------------- */
+  const ACTION_ECONOMY_MODES = {};
+  for (const [key, str] of Object.entries(CONFIG.E20.actionEconomyModes)) {
+    ACTION_ECONOMY_MODES[key] = game.i18n.localize(str);
+  }
+
+  /* Default is "track", not "strict", and not as a hedge: the overwhelming majority of compendium
+     items carry no authored action cost yet, so blocking on absent data would break every table on
+     upgrade. See helpers/action-economy.mjs's own doc comment. */
+  game.settings.register(systemName, "actionEconomyMode", {
+    name: game.i18n.localize("E20.ActionEconomyOptionMode"),
+    hint: game.i18n.localize("E20.ActionEconomyOptionModeHint"),
+    scope: "world",
+    config: true,
+    default: "track",
+    type: String,
+    choices: ACTION_ECONOMY_MODES,
+  });
+
+  /* Whether a CombatantGroup (Foundry v14's own shared-initiative primitive) shares one action
+     budget across all its members, rather than each member tracking their own. Off by default -
+     whether a Zord crew or a vehicle's passengers share an action economy is a rules question that
+     differs by game line, so it's the GM's call rather than something hard-coded per actor type. */
+  game.settings.register(systemName, "actionEconomyGroupBudget", {
+    name: game.i18n.localize("E20.ActionEconomyOptionGroupBudget"),
+    hint: game.i18n.localize("E20.ActionEconomyOptionGroupBudgetHint"),
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean,
+  });
+
+  /* Charging token movement against the Move action. Off by default and separate from the main
+     mode setting, because Foundry fires preMoveToken only on the client initiating the move - so
+     anything decided there is advisory rather than authoritative. See helpers/token-movement.mjs. */
+  game.settings.register(systemName, "actionEconomyMovement", {
+    name: game.i18n.localize("E20.ActionEconomyOptionMovement"),
+    hint: game.i18n.localize("E20.ActionEconomyOptionMovementHint"),
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean,
+  });
+
+  /* -------------------------------------------- */
+  /*  Scene Clock settings                        */
+  /* -------------------------------------------- */
+  /* Whether a combat ending refreshes once-per-encounter abilities. On by default, because that
+     is exactly what they did before the Scene Clock existed - they were stamped with the combat's
+     own id, so every new combat refreshed them. Once-per-SCENE abilities are unaffected either
+     way; only the GM's own "New Scene" refreshes those. See helpers/scene-clock.mjs. */
+  game.settings.register(systemName, "sceneClockAdvanceOnCombatEnd", {
+    name: game.i18n.localize("E20.SceneClockOptionAdvanceOnCombatEnd"),
+    hint: game.i18n.localize("E20.SceneClockOptionAdvanceOnCombatEndHint"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+  });
+
+  /* The counters themselves, and the GM's label for the current scene. Not shown in the settings
+     UI - they're driven by the New Scene control on the Story Points tracker. */
+  game.settings.register(systemName, "sceneClockScene", {
+    scope: "world", config: false, default: 1, type: Number,
+  });
+
+  game.settings.register(systemName, "sceneClockEncounter", {
+    scope: "world", config: false, default: 1, type: Number,
+  });
+
+  game.settings.register(systemName, "sceneClockLabel", {
+    scope: "world", config: false, default: "", type: String,
+  });
+
+  /* -------------------------------------------- */
   /*  System state                                */
   /* -------------------------------------------- */
   game.settings.register(systemName, "sptToggleState", {

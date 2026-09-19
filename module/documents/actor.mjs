@@ -1,6 +1,7 @@
 import { Dice } from "../dice.mjs";
+import { E20 } from "../helpers/config.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { resizeTokens } from "../helpers/actor.mjs";
+import { getNumActions, resizeTokens } from "../helpers/actor.mjs";
 import { actorHasPerk, findPerk } from "../helpers/perks.mjs";
 import { getGravityOptionalHeight, isGravityOptionalActive } from "../helpers/gravity-optional.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
@@ -432,6 +433,90 @@ export class Essence20Actor extends Actor {
 
     if (this.type == 'vehicle') {
       this._prepareVehicleData();
+    }
+
+    // Deliberately last, and deliberately not folded into any of the methods above: action
+    // budgets are their own small, self-contained pass with no dependency on the Defenses/Health/
+    // Movement math.
+    this._prepareActions();
+  }
+
+  /**
+   * Per-turn action budgets, derived from the Speed Essence exactly as the rules define them
+   * (GI Joe CRB p.192-193, and the Combat Flow reference sheet):
+   *
+   *   Speed 1   Move OR Standard - one or the other, then the turn ends.
+   *   Speed 2   Move AND Standard. (The Standard may be traded for two Free actions.)
+   *   Speed 3+  Move, one Standard, and Speed - 2 Free actions.
+   *
+   * So Free actions are NOT unlimited - a Speed 3 character gets exactly one, and a Speed 1 or 2
+   * character gets none by default. Speed 1's "one or the other" is carried by `shared`, which
+   * helpers/action-economy.mjs#getRemaining reads to zero BOTH categories once either is spent.
+   *
+   * An actor type with no Essences at all (nothing on the common template guarantees them - see
+   * data/actor/templates/character.mjs, machine.mjs and zord-base.mjs, which each declare their
+   * own) falls back to the Speed 2 shape, the ordinary one-Move-one-Standard turn.
+   *
+   * Runs in prepareDerivedData (i.e. after Active Effects have applied), which is what lets
+   * "You gain an additional Standard action each turn" (CRB p.81) be a plain AE change on
+   * system.actions.standard.bonus instead of needing its own helper file.
+   *
+   * The clamp is where cantTakeFreeActions and cantTakeMoveActions finally do something. Both have
+   * existed in E20.statusEffects since the MLP CRB Laughtracting/Distraughter Perks were built,
+   * with their own config.mjs comments noting there was no action economy to gate against; there
+   * is now. Only those two purpose-built Conditions and the three incapacitating ones are read
+   * here - Immobilized, Grappled and Restrained all restrict MOVEMENT DISTANCE rather than denying
+   * the Move action itself, and inventing a rule for them isn't this method's job.
+   */
+  _prepareActions() {
+    const actions = this.system.actions;
+    if (!actions) {
+      return;
+    }
+
+    /* The per-Speed counts come from helpers/actor.mjs#getNumActions, which already existed to
+       drive the sheet's own "1M, 1S, 1F" readout. Deriving them a second time here was a mistake:
+       it silently disagreed with that readout for any actor whose Speed .max and .value differ,
+       and for the Perks that move Free actions off Speed entirely (Quick Thinker and University
+       Days source them from Smarts instead). One source of truth, and both displays now agree.
+
+       The one deliberate difference is Speed 1. getNumActions reports it as one Move and zero
+       Standards, but the rules say "Move OR Standard action... then ends their turn" (CRB p.193) -
+       a choice, not a fixed Move. Both budgets are granted and `shared` makes them mutually
+       exclusive, which helpers/action-economy.mjs#getRemaining honours. */
+    const speedEssence = this.system.essences?.speed;
+    // getNumActions reads system.essences.speed without guarding, which is safe for every actor
+    // type the system registers (all six get Essences from character.mjs, machine.mjs or
+    // zord-base.mjs) but not for a partially-built actor. Falling back to the ordinary
+    // one-Move-one-Standard turn keeps derived data from throwing on one.
+    const counts = speedEssence
+      ? getNumActions(this)
+      : { free: 0, movement: 1, standard: 1 };
+    const speed = speedEssence?.max ?? speedEssence?.value ?? 2;
+    actions.shared = speed <= 1;
+
+    const base = {
+      standard: actions.shared ? 1 : counts.standard,
+      move: counts.movement,
+      free: counts.free,
+    };
+
+    const statuses = this.statuses ?? new Set();
+    const incapacitated = ['asleep', 'defeated', 'unconscious'].some(status => statuses.has(status));
+    const zeroed = {
+      free: incapacitated || statuses.has('cantTakeFreeActions'),
+      move: incapacitated || statuses.has('cantTakeMoveActions'),
+      standard: incapacitated,
+    };
+
+    for (const category of Object.keys(E20.actionCategories)) {
+      const budget = actions[category];
+      if (!budget) {
+        continue;
+      }
+
+      budget.base = base[category];
+      budget.max = zeroed[category] ? 0 : Math.max(0, budget.base + budget.bonus);
     }
   }
 

@@ -73,7 +73,7 @@ describe("canUseTeamBuffPerk", () => {
   test("false once already used this encounter", () => {
     const actor = makeActor({ power: 3 });
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'oneForAllUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'oneForAllUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     expect(canUseTeamBuffPerk(makeItem(ONE_FOR_ALL_ID), actor)).toBe(false);
   });
@@ -89,7 +89,7 @@ describe("canUseTeamBuffPerk", () => {
     // onceEncounterFlag on this entry at all, so canUseTeamBuffPerk must never even ask
     // hasUsedThisEncounter about it (an undefined flagKey would otherwise look up game.actor's own
     // undefined-keyed flag, an existing bug this guard specifically prevents).
-    actor.getFlag = jest.fn(() => ({ combatId: 'combat1' }));
+    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
     expect(canUseTeamBuffPerk(makeItem(ENVIRONMENTAL_ASSIST_ID), actor)).toBe(true);
   });
 
@@ -106,7 +106,7 @@ describe("canUseTeamBuffPerk", () => {
   test("Elemental Shield false once already used this encounter - unlike Environmental Assist, RAW does gate this to once per scene", () => {
     const actor = makeActor({ power: 1 });
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'elementalShieldUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'elementalShieldUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     expect(canUseTeamBuffPerk(makeItem(ELEMENTAL_SHIELD_ID), actor)).toBe(false);
   });
@@ -133,7 +133,7 @@ describe("canUseTeamBuffPerk", () => {
   test("Heart Of The Team false once already used this encounter", () => {
     const actor = makeActor({ power: 0 });
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'heartOfTheTeamGijUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'heartOfTheTeamGijUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     expect(canUseTeamBuffPerk(makeItem(HEART_OF_THE_TEAM_GIJ_ID), actor)).toBe(false);
   });

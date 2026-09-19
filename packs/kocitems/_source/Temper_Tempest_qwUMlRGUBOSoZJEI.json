@@ -11,9 +11,14 @@
       "book": "Knights of Canterlot",
       "page": 51
     },
+    "actionType": "standard",
     "circle": "beam",
     "cost": 5,
-    "duration": "Special",
+    "duration": {
+      "units": "special",
+      "value": null,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "Line of Sight",
     "tier": "virtuoso"

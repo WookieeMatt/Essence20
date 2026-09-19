@@ -20,7 +20,12 @@
     "selectionLimit": 1,
     "type": "sorcerous",
     "usesInterval": "special",
-    "usesPer": null
+    "usesPer": null,
+    "duration": {
+      "units": "hours",
+      "value": 1,
+      "text": ""
+    }
   },
   "effects": [],
   "flags": {},

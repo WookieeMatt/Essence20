@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "originalId": "",
+    "actionType": "free",
     "description": "",
     "prerequisite": "Initiative +d6",
     "selectionLimit": 1,

@@ -8,6 +8,7 @@ import {
   makeStrWithChoices,
 } from "../generic-makers.mjs";
 
+import { activation } from './templates/activation.mjs';
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
 import { parentItem } from './templates/parent-item.mjs';
@@ -18,6 +19,7 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),
+      ...activation(),
       ...itemDescription(),
       ...parentItem(),
       availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),

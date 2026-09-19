@@ -11,7 +11,13 @@
       "book": "In a Jam",
       "page": 32
     },
-    "duration": "Instant",
+    "actionType": "standard",
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
+    "quantity": 1,
     "range": "Reach",
     "spellcastingShift": "d8"
   },

@@ -1,3 +1,5 @@
+import { getUses, markUsed } from "./scene-clock.mjs";
+
 /**
  * Finds the given actor's copy of a specific Perk, identified by its compendium Item id (the same
  * hardcoded-ID pattern perk-handler.mjs already uses for SORCERY_PERK_ID/ZORD_PERK_ID -
@@ -141,116 +143,81 @@ export async function markUsedThisTurn(actor, flagKey) {
 }
 
 /**
- * The widest of the three "used already" windows - scoped to a whole encounter rather than a
- * round or a single combatant's turn (e.g. Didn't Even Feel It, Renegade CRB p.97: "once per
- * encounter"). Tracks only {combatId}, not round/turn, so it stays true for every remaining round
- * of the same combat once set - only a brand new combat (a new combatId) clears it.
+ * The widest of the three "used already" windows: scoped to a whole encounter, rather than a round
+ * or a single combatant's turn (e.g. Didn't Even Feel It, Renegade CRB p.97: "once per encounter").
+ *
+ * Now backed by the Scene Clock (helpers/scene-clock.mjs) instead of the current combat's id. The
+ * signature is unchanged, so none of the hundred-plus call sites had to move, but the behaviour
+ * differs in one important way: it works OUT OF COMBAT. The old version opened with
+ * `if (!game.combat) return false`, so a once-per-scene ability used in a roleplay scene was never
+ * recorded as used at all, and was therefore effectively unlimited.
  * @param {Actor} actor
  * @param {String} flagKey   A distinct flag name per ability, e.g. "didntEvenFeelItThisEncounter".
  * @returns {Boolean}
  */
 export function hasUsedThisEncounter(actor, flagKey) {
-  if (!game.combat) {
-    return false;
-  }
-
-  const lastUsed = actor.getFlag?.('essence20', flagKey);
-  return !!lastUsed && lastUsed.combatId == game.combat.id;
+  return getUses(actor, flagKey, 'encounter') > 0;
 }
 
 /**
  * Records that an actor just used a once-per-encounter ability - see hasUsedThisEncounter().
- * No-ops outside of combat, same reasoning as markUsedThisRound()/markUsedThisTurn().
  * @param {Actor} actor
  * @param {String} flagKey
  */
 export async function markUsedThisEncounter(actor, flagKey) {
-  if (!game.combat) {
-    return;
-  }
-
-  await actor.setFlag('essence20', flagKey, {
-    combatId: game.combat.id,
-  });
+  await markUsed(actor, flagKey, { window: 'encounter' });
 }
 
 /**
  * Counting sibling of hasUsedThisEncounter/markUsedThisEncounter above, for an ability whose own
- * per-combat cap can widen (e.g. Slammer Focus's Roll with the Punches, Sgt Slaughter Sourcebook
- * p.12: usable once per combat below 6th level, twice per combat at 6th+) - same "count rather
- * than boolean" shape as getUsesThisScene/markUsedThisScene below, just keyed on the current
- * Combat instead of the current Scene.
+ * per-encounter cap can widen (e.g. Slammer Focus's Roll with the Punches, Sgt Slaughter
+ * Sourcebook p.12: usable once per combat below 6th level, twice per combat at 6th+).
  * @param {Actor} actor
  * @param {String} flagKey
- * @returns {Number}   How many times this actor has already used this ability this combat (0 if
- *   never, outside combat, or if the stored count is stale).
+ * @returns {Number}   How many times this actor has already used this ability this encounter.
  */
 export function getUsesThisEncounter(actor, flagKey) {
-  if (!game.combat) {
-    return 0;
-  }
-
-  const record = actor.getFlag?.('essence20', flagKey);
-  if (!record || record.combatId != game.combat.id) {
-    return 0;
-  }
-
-  return record.count ?? 0;
+  return getUses(actor, flagKey, 'encounter');
 }
 
 /**
- * Records that an actor just used a widened once-per-combat ability - see getUsesThisEncounter().
- * No-ops outside of combat, same reasoning as markUsedThisEncounter().
+ * Records that an actor just used a widened once-per-encounter ability - see
+ * getUsesThisEncounter().
  * @param {Actor} actor
  * @param {String} flagKey
  */
 export async function markUsedThisEncounterCount(actor, flagKey) {
-  if (!game.combat) {
-    return;
-  }
-
-  await actor.setFlag('essence20', flagKey, {
-    combatId: game.combat.id,
-    count: getUsesThisEncounter(actor, flagKey) + 1,
-  });
+  await markUsed(actor, flagKey, { window: 'encounter' });
 }
 
 /**
- * A "once per scene" tracker keyed on the current Scene rather than the current Combat (unlike
- * hasUsedThisEncounter/markUsedThisEncounter above) - correct for a RAW "once per scene" ability
- * that's just as usable outside combat (e.g. Hawk's Personnel Files "Dependable": "Once per
- * scene, before you roll a Skill Test...") as during it, where hasUsedThisEncounter's own combat-
- * only gate would incorrectly disable the ability entirely outside an active Combat encounter.
- * Counts uses rather than a plain boolean, so a grant that can widen its own per-scene cap (e.g.
- * Legendary Dependability widening Dependable from once to twice) can share this same helper.
+ * A "once per scene" tracker - a strictly wider window than the encounter one above, because the
+ * scene counter does not advance when a combat ends. Correct for a RAW "once per scene" ability
+ * that is just as usable outside combat as during it (e.g. Hawk's Personnel Files "Dependable":
+ * "Once per scene, before you roll a Skill Test...").
+ *
+ * Previously keyed on `game.scenes.current.id`, which is a MAP rather than a narrative scene - a
+ * dungeon on one map is many scenes, and a chase across three maps is one. The GM now advances the
+ * scene explicitly; see helpers/scene-clock.mjs.
  * @param {Actor} actor
  * @param {String} flagKey   A distinct flag name per ability, e.g. "dependableUsesThisScene".
- * @returns {Number}   How many times this actor has already used this ability this scene (0 if
- *   never, or if the stored count is stale - stamped with a Scene id other than the current one).
+ * @returns {Number}   How many times this actor has already used this ability this scene.
  */
 export function getUsesThisScene(actor, flagKey) {
-  const sceneId = game.scenes?.current?.id ?? null;
-  const record = actor.getFlag?.('essence20', flagKey);
-  if (!record || record.sceneId !== sceneId) {
-    return 0;
-  }
-
-  return record.count ?? 0;
+  return getUses(actor, flagKey, 'scene');
 }
 
 /**
  * Records that an actor just used a once-per-scene ability - see getUsesThisScene(). Increments
- * (rather than overwrites) so a single Perk that consumes more than one "charge" at a time (e.g.
- * Old Reliable's own "spend an additional Moxie to treat BOTH d20 results as a 10") can pass a
- * larger count in one call.
+ * rather than overwrites, so a single Perk that consumes more than one "charge" at a time (e.g.
+ * Old Reliable's "spend an additional Moxie to treat BOTH d20 results as a 10") can pass a larger
+ * count in one call.
  * @param {Actor} actor
  * @param {String} flagKey
  * @param {Number} count   How many uses to record at once. Defaults to 1.
  */
 export async function markUsedThisScene(actor, flagKey, count = 1) {
-  const sceneId = game.scenes?.current?.id ?? null;
-  const current = getUsesThisScene(actor, flagKey);
-  await actor.setFlag('essence20', flagKey, { sceneId, count: current + count });
+  await markUsed(actor, flagKey, { window: 'scene', count });
 }
 
 /**

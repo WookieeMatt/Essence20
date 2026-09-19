@@ -152,3 +152,32 @@ async function _getAllPackRoles() {
 
   return allRoles;
 }
+
+/**
+ * The better of two skill shifts.
+ *
+ * CONFIG.E20.skillShiftList is ordered best-first (criticalSuccess ... fumble), so the better of
+ * two shifts is the one with the LOWER index - the same convention dice.mjs#_getFinalShift uses
+ * when it subtracts to shift up. An unrecognised shift has no place in that order, so it loses to
+ * any shift that does appear rather than being treated as index -1, which would read as "better
+ * than everything".
+ *
+ * @param {String} a   A key of CONFIG.E20.skillShifts.
+ * @param {String} b   A key of CONFIG.E20.skillShifts.
+ * @return {String}    Whichever of a or b is the better shift.
+ */
+export function betterShift(a, b) {
+  const shifts = CONFIG.E20.skillShiftList;
+  const aIndex = shifts.indexOf(a);
+  const bIndex = shifts.indexOf(b);
+
+  if (aIndex < 0) {
+    return b;
+  }
+
+  if (bIndex < 0) {
+    return a;
+  }
+
+  return aIndex <= bIndex ? a : b;
+}

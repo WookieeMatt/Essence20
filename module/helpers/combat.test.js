@@ -545,7 +545,7 @@ describe("applyDamage", () => {
 
     function makeActor({ hasPower = true, resistances = {}, power = 1, used = false } = {}) {
       const items = hasPower ? [{ type: 'power', flags: { core: { sourceId: GRID_ELEMENTAL_ADAPTATION_ID } } }] : [];
-      const flagStore = used ? { gridElementalAdaptationUsedThisEncounter: { combatId: 'combat1' } } : {};
+      const flagStore = used ? { gridElementalAdaptationUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } } : {};
 
       return {
         system: { health: { value: 10 }, immunities: {}, resistances, powers: { personal: { value: power } } },
@@ -577,7 +577,7 @@ describe("applyDamage", () => {
       expect(actor.update).toHaveBeenCalledWith(expect.objectContaining({
         'system.resistances.fire': true, 'system.powers.personal.value': 1,
       }));
-      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'gridElementalAdaptationUsedThisEncounter', { combatId: 'combat1' });
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'gridElementalAdaptationUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
     });
 
     test("doesn't apply to a non-Energy damage type", async () => {
@@ -1139,11 +1139,11 @@ describe("applyDamage", () => {
 
       expect(applied).toBe(2); // 3 -> 1, not the full 5
       expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
-      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'immortalRebelSoulUsedThisEncounter', { combatId: 'combat1' });
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'immortalRebelSoulUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
     });
 
     test("doesn't apply a second time in the same scene", async () => {
-      const actor = makeActor({ health: 3, usedFlag: { combatId: 'combat1' } });
+      const actor = makeActor({ health: 3, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
       const applied = await applyDamage(actor, 5, 'sharp');
 
       expect(applied).toBe(3);
@@ -1189,11 +1189,11 @@ describe("applyDamage", () => {
 
       expect(applied).toBe(2); // 3 -> 1, not the full 5
       expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
-      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'renegadeCommanderUsedThisEncounter', { combatId: 'combat1' });
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'renegadeCommanderUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
     });
 
     test("doesn't apply a second time in the same scene", async () => {
-      const actor = makeActor({ health: 3, usedFlag: { combatId: 'combat1' } });
+      const actor = makeActor({ health: 3, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
       const applied = await applyDamage(actor, 5, 'sharp');
 
       expect(applied).toBe(3);
@@ -1240,12 +1240,12 @@ describe("applyDamage", () => {
 
       expect(applied).toBe(2); // 3 -> 1, not the full 5
       expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
-      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'doNotGoQuietlyUsedThisEncounter', { combatId: 'combat1' });
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'doNotGoQuietlyUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
       expect(actor.toggleStatusEffect).toHaveBeenCalledWith('impaired', { active: true });
     });
 
     test("doesn't apply a second time in the same scene", async () => {
-      const actor = makeActor({ health: 3, usedFlag: { combatId: 'combat1' } });
+      const actor = makeActor({ health: 3, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
       const applied = await applyDamage(actor, 5, 'sharp');
 
       expect(applied).toBe(3);
@@ -1304,11 +1304,11 @@ describe("applyDamage", () => {
 
       expect(applied).toBe(1); // 3 -> 2, not the full 5
       expect(vehicle.update).toHaveBeenCalledWith({ 'system.health.value': 2 });
-      expect(vehicle.setFlag).toHaveBeenCalledWith('essence20', 'babyHoldTogetherUsedThisEncounter', { combatId: 'combat1' });
+      expect(vehicle.setFlag).toHaveBeenCalledWith('essence20', 'babyHoldTogetherUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
     });
 
     test("doesn't apply a second time in the same encounter, without a driver holding the Perk, or on a non-vehicle", async () => {
-      const usedVehicle = makeVehicleActor({ health: 3, usedFlag: { combatId: 'combat1' } });
+      const usedVehicle = makeVehicleActor({ health: 3, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
       global.fromUuid.mockResolvedValue(makeDriverActor());
       await applyDamage(usedVehicle, 5, 'sharp');
       expect(usedVehicle.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
@@ -1506,12 +1506,12 @@ describe("applyDamage", () => {
       expect(applied).toBe(2); // 3 -> 1, not the full 5
       expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
       expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'notDoneYetUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+        'essence20', 'notDoneYetUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
       );
     });
 
     test("doesn't apply a second time in the same encounter, without the Perk, or without Reckless Abandon active", async () => {
-      const usedActor = makeActor({ health: 3, usedFlag: { combatId: 'combat1' } });
+      const usedActor = makeActor({ health: 3, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
       await applyDamage(usedActor, 5, 'sharp');
       expect(usedActor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
 

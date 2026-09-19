@@ -45,7 +45,7 @@ describe("canUseSpotWeld", () => {
   });
 
   test("false once already used this scene", () => {
-    const actor = makeActor({ usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     expect(canUseSpotWeld(actor)).toBe(false);
   });
 });
@@ -117,7 +117,7 @@ describe("activateSpotWeld", () => {
     expect(target).toBe(actor);
     expect(actor.update).toHaveBeenCalledWith({ 'system.energon.normal.value': 1 });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'spotWeldUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'spotWeldUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
     expect(actor._dice.rollSkill).toHaveBeenCalledWith(
       expect.objectContaining({

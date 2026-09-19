@@ -156,6 +156,9 @@ global.foundry = {
     },
   },
   utils: {
+    // Only the shape matters to the code under test (a unique opaque string); helpers/
+    // action-economy.mjs uses it to tag each spend so it can be refunded later.
+    randomID: () => Math.random().toString(36).slice(2, 12),
     getProperty: (obj, path) => path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj),
     hasProperty: (obj, path) => {
       let o = obj;

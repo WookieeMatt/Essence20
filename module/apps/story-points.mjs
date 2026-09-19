@@ -1,5 +1,6 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 import { applyThemeClass, setting } from "../settings.js";
+import { advanceScene, getSceneEpoch, getSceneLabel } from "../helpers/scene-clock.mjs";
 
 export function getPointsName(plural) {
   return `${
@@ -48,6 +49,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       incrementStoryPoints: StoryPoints.incrementStoryPoints,
       directSetStoryPoints: StoryPoints.directSetStoryPoints,
       rollMajorSceneGmPoints: StoryPoints.rollMajorSceneGmPoints,
+      newScene: StoryPoints.newScene,
     },
   };
 
@@ -67,6 +69,11 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       isGm: game.user.isGM,
       gmPointsArePublic: game.user.isGM || setting("sptGmPointsArePublic"),
       pointsName: getPointsName(true),
+      // Scene Clock - see helpers/scene-clock.mjs. Shown to everyone, advanced only by the GM:
+      // players benefit from knowing which scene they are in, because it is what refreshes their
+      // own once-per-scene abilities.
+      sceneEpoch: getSceneEpoch(),
+      sceneLabel: getSceneLabel(),
     };
   }
 
@@ -131,6 +138,46 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   static incrementStoryPoints() {
     this.setStoryPoints(this._storyPoints + 1);
     this.sendMessage(game.i18n.format("E20.SptAddStoryPoint", {name: getPointsName(false)}));
+  }
+
+  /**
+   * Begin a new scene: both Scene Clock counters advance, refreshing every "once per scene" and
+   * "once per encounter" ability at the table (see helpers/scene-clock.mjs).
+   *
+   * Lives on the Story Points tracker because that is already the one persistent GM widget this
+   * system puts on screen - a second floating window for one button would be worse. Prompts for an
+   * optional name, and does nothing if the GM backs out, so a misclick costs nothing.
+   */
+  static async newScene() {
+    if (!game.user.isGM) {
+      return;
+    }
+
+    const label = await foundry.applications.api.DialogV2.prompt({
+      window: { title: game.i18n.localize("E20.SceneClockNewSceneTitle") },
+      content: `<p>${game.i18n.localize("E20.SceneClockNewScenePrompt")}</p>`
+        + `<input type="text" name="label" value="" placeholder="${
+          game.i18n.localize("E20.SceneClockNewScenePlaceholder")}" />`,
+      ok: {
+        label: game.i18n.localize("E20.SceneClockNewSceneConfirm"),
+        callback: (event, button) => button.form.elements.label.value,
+      },
+      rejectClose: false,
+    });
+
+    if (label === null || label === undefined) {
+      return;
+    }
+
+    await advanceScene(label);
+    ChatMessage.create({
+      content: game.i18n.format("E20.SceneClockAdvanced", {
+        number: getSceneEpoch(),
+        label: label ? ` \u2014 ${label}` : "",
+      }),
+    });
+
+    this.render();
   }
 
   static async rollMajorSceneGmPoints() {

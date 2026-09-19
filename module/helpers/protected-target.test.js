@@ -68,7 +68,7 @@ describe("canDesignateProtectedTarget", () => {
   });
 
   test("false once already used this encounter", () => {
-    const actor = makeActor({ flags: { protectedTargetUsedThisEncounter: { combatId: 'combat1' } } });
+    const actor = makeActor({ flags: { protectedTargetUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } } });
     expect(canDesignateProtectedTarget(actor)).toBe(false);
   });
 });
@@ -85,7 +85,7 @@ describe("designateProtectedTarget", () => {
     expect(result).toBe(true);
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'protectedTargetUuid', 'Actor.target1');
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'protectedTargetUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'protectedTargetUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
     expect(targetActor.system.health.bonus).toBe(1);
   });

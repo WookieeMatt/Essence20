@@ -20,7 +20,14 @@
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",
-    "usesPer": null
+    "usesPer": null,
+    "shape": "emanation",
+    "radius": 30,
+    "duration": {
+      "units": "minutes",
+      "value": 1,
+      "text": ""
+    }
   },
   "effects": [],
   "flags": {},

@@ -350,7 +350,7 @@ describe("Roll With the Punches: canUsePerk's once-per-encounter gate", () => {
     game.combat = { id: 'combat1', round: 1 };
     const actor = makeActor();
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'rollWithThePunchesUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'rollWithThePunchesUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: ROLL_WITH_THE_PUNCHES_ID, actor });
     expect(canUsePerk(item)).toBe(false);
@@ -360,7 +360,7 @@ describe("Roll With the Punches: canUsePerk's once-per-encounter gate", () => {
     game.combat = { id: 'combat2', round: 1 };
     const actor = makeActor();
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'rollWithThePunchesUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'rollWithThePunchesUsedThisEncounter' ? { epoch: 0, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: ROLL_WITH_THE_PUNCHES_ID, actor });
     expect(canUsePerk(item)).toBe(true);
@@ -385,7 +385,7 @@ describe("Roll with the Punches (Slammer Focus): canUsePerk's per-combat cap wid
     const actor = makeActor();
     actor.system = { level: 3 };
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'slammerRollWithThePunchesUsesThisEncounter' ? { combatId: 'combat1', count: 1 } : undefined
+      key == 'slammerRollWithThePunchesUsesThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: SLAMMER_ROLL_WITH_THE_PUNCHES_ID, actor });
     expect(canUsePerk(item)).toBe(false);
@@ -396,7 +396,7 @@ describe("Roll with the Punches (Slammer Focus): canUsePerk's per-combat cap wid
     const actor = makeActor();
     actor.system = { level: 6 };
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'slammerRollWithThePunchesUsesThisEncounter' ? { combatId: 'combat1', count: 1 } : undefined
+      key == 'slammerRollWithThePunchesUsesThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: SLAMMER_ROLL_WITH_THE_PUNCHES_ID, actor });
     expect(canUsePerk(item)).toBe(true);
@@ -407,7 +407,7 @@ describe("Roll with the Punches (Slammer Focus): canUsePerk's per-combat cap wid
     const actor = makeActor();
     actor.system = { level: 6 };
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'slammerRollWithThePunchesUsesThisEncounter' ? { combatId: 'combat1', count: 2 } : undefined
+      key == 'slammerRollWithThePunchesUsesThisEncounter' ? { epoch: 1, window: 'encounter', count: 2 } : undefined
     ));
     const item = makePerkItem({ sourceId: SLAMMER_ROLL_WITH_THE_PUNCHES_ID, actor });
     expect(canUsePerk(item)).toBe(false);
@@ -418,7 +418,7 @@ describe("Roll with the Punches (Slammer Focus): canUsePerk's per-combat cap wid
     const actor = makeActor();
     actor.system = { level: 3 };
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'slammerRollWithThePunchesUsesThisEncounter' ? { combatId: 'combat1', count: 1 } : undefined
+      key == 'slammerRollWithThePunchesUsesThisEncounter' ? { epoch: 0, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: SLAMMER_ROLL_WITH_THE_PUNCHES_ID, actor });
     expect(canUsePerk(item)).toBe(true);
@@ -446,7 +446,7 @@ describe("Roll with the Punches (Slammer Focus): onPerkUse increments the per-co
       'essence20', 'pendingRollWithThePunches', expect.objectContaining({ defenseType: 'toughness' }),
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'slammerRollWithThePunchesUsesThisEncounter', { combatId: 'combat1', count: 1 },
+      'essence20', 'slammerRollWithThePunchesUsesThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
     );
     expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'rollWithThePunchesUsedThisEncounter', expect.anything());
   });
@@ -873,7 +873,7 @@ describe("Field Repair (Transformers CRB, General Perk, p.109)", () => {
     return {
       ...makeActor({ id, name }),
       getFlag: jest.fn((scope, key) => (
-        key == 'fieldRepairUsedThisEncounter' && usedThisEncounter ? { combatId: 'combat1' } : undefined
+        key == 'fieldRepairUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       )),
       system: { health: { value: 5, max: 10, bonus: 0 } },
       update: jest.fn(),
@@ -1107,13 +1107,13 @@ describe("EMT Crash Course (GI Joe CRB, General Perk, p.132)", () => {
     await onPerkUse(item);
 
     expect(ally.update).toHaveBeenCalledWith({ 'system.health.value': 6 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'emtCrashCourseHealUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'emtCrashCourseHealUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("heal option is dropped from the picker once already used this encounter", async () => {
     game.combat = { id: 'combat1' };
     const actor = makeEmtActor();
-    actor.getFlag = jest.fn(() => ({ combatId: 'combat1' }));
+    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
     const ally = makeEmtActor({ id: 'ally1', name: 'Ally' });
     game.user.targets = new Set([{ actor: ally }]);
     foundry.applications.api.DialogV2.wait.mockImplementation(({ content }) => {
@@ -1565,7 +1565,7 @@ describe("Trade School (Quartermaster's Guide to Gear, Tech Officer Focus, Offic
     test("false once already used this encounter", () => {
       const actor = makeActor();
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'tradeSchoolUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'tradeSchoolUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const item = makePerkItem({ sourceId: TRADE_SCHOOL_ID, actor });
       expect(canUsePerk(item)).toBe(false);
@@ -1589,7 +1589,7 @@ describe("Trade School (Quartermaster's Guide to Gear, Tech Officer Focus, Offic
   test("does nothing when already used this encounter, even with an ally targeted", async () => {
     const actor = makeActor();
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'tradeSchoolUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'tradeSchoolUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     const ally = makeActor({ id: 'ally1' });
     game.user.targets = new Set([{ actor: ally }]);
@@ -2239,7 +2239,7 @@ describe("Protected Target (GI Joe CRB, Bodyguard Focus, 1st level, p.110)", () 
     test("false once already used this encounter", () => {
       const actor = makeActor();
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'protectedTargetUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'protectedTargetUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const item = makePerkItem({ sourceId: PROTECTED_TARGET_ID, actor });
       expect(canUsePerk(item)).toBe(false);
@@ -2485,7 +2485,7 @@ describe("Box Shot (Quartermaster's Guide to Gear, General Perk, p.28)", () => {
 
   test("false to activate once already used this scene, while inactive", () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'boxShotUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'boxShotUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: BOX_SHOT_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -2513,7 +2513,7 @@ describe("Box Shot (Quartermaster's Guide to Gear, General Perk, p.28)", () => {
 
   test("does nothing when trying to activate once already used this scene", async () => {
     const actor = makeActor({ id: 'gunner1', name: 'Recoil' });
-    actor.getFlag = jest.fn((scope, key) => (key == 'boxShotUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'boxShotUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: BOX_SHOT_ID, actor });
 
     await onPerkUse(item);
@@ -2731,7 +2731,7 @@ describe("Calm Hearted (Dark Skies Over Equestria, General Perk, p.43)", () => {
     game.combat = { id: 'combat1' };
     const actor = makeActor();
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'calmHeartedUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'calmHeartedUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: CALM_HEARTED_ID, actor });
     expect(canUsePerk(item)).toBe(false);
@@ -2748,7 +2748,7 @@ describe("Calm Hearted (Dark Skies Over Equestria, General Perk, p.43)", () => {
       'essence20', 'pendingCalmHearted', expect.objectContaining({ edge: true }),
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'calmHeartedUsedThisEncounter', { combatId: 'combat1' },
+      'essence20', 'calmHeartedUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
     );
   });
 });
@@ -2770,7 +2770,7 @@ describe("The Nine Hand Seals (Factions in Action Vol. 2, Arashikage Apprentice 
     game.combat = { id: 'combat1' };
     const actor = makeActor();
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'nineHandSealsUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'nineHandSealsUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: NINE_HAND_SEALS_ID, actor });
     expect(canUsePerk(item)).toBe(false);
@@ -2787,7 +2787,7 @@ describe("The Nine Hand Seals (Factions in Action Vol. 2, Arashikage Apprentice 
       'essence20', 'pendingNineHandSeals', expect.objectContaining({ edge: true }),
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'nineHandSealsUsedThisEncounter', { combatId: 'combat1' },
+      'essence20', 'nineHandSealsUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
     );
   });
 });
@@ -4820,7 +4820,7 @@ describe("Menace (Cobra Codex, Bully Origin benefit, p.41)", () => {
     return {
       ...makeActor(),
       system: { originSkillsIncrease: 'brawn' },
-      getFlag: jest.fn(() => (usedThisScene ? { sceneId: null, count: 1 } : undefined)),
+      getFlag: jest.fn(() => (usedThisScene ? { epoch: 1, window: 'scene', count: 1 } : undefined)),
       _dice: { rollSkill: jest.fn() },
     };
   }
@@ -6013,7 +6013,7 @@ describe("Nemesis Drain (Finster's Monster-Matic Cookbook, all 6 Psycho Paths, 7
       game.combat = { id: 'combat1' };
       const actor = makeNemesisDrainActor({ power: 2 });
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'nemesisDrainUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'nemesisDrainUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const item = makePerkItem({ sourceId: NEMESIS_DRAIN_ID, actor });
       expect(canUsePerk(item)).toBe(false);
@@ -6029,7 +6029,7 @@ describe("Nemesis Drain (Finster's Monster-Matic Cookbook, all 6 Psycho Paths, 7
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 0 });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'nemesisDrainUsedThisEncounter', { combatId: 'combat1' },
+      'essence20', 'nemesisDrainUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
     );
     expect(actor._dice.rollSkill).toHaveBeenCalledWith(
       expect.objectContaining({ isNemesisDrain: true }), actor,
@@ -6206,7 +6206,7 @@ describe("Elemental Storm (Beneath the Helmet, Aqua Ranger, 10th level, p.42)", 
       game.combat = { id: 'combat1' };
       const actor = makeAquaRangerActor({ power: 1 });
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'elementalStormUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'elementalStormUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const item = makePerkItem({ sourceId: ELEMENTAL_STORM_ID, actor });
       expect(canUsePerk(item)).toBe(false);
@@ -6223,7 +6223,7 @@ describe("Elemental Storm (Beneath the Helmet, Aqua Ranger, 10th level, p.42)", 
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 0 });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'elementalStormUsedThisEncounter', { combatId: 'combat1' },
+      'essence20', 'elementalStormUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
     );
     expect(actor._dice.rollSkill).toHaveBeenCalledWith(
       expect.objectContaining({ elementalStormCondition: 'prone' }), actor,
@@ -6283,7 +6283,7 @@ describe("Orange Ranger Prime (A Jump Through Time, 20th level, p.34)", () => {
     game.combat = { id: 'combat1' };
     const actor = makeOrangeRangerActor();
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'orangeRangerPrimeUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'orangeRangerPrimeUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: ORANGE_RANGER_PRIME_ID, actor });
     expect(canUsePerk(item)).toBe(false);
@@ -6306,7 +6306,7 @@ describe("Orange Ranger Prime (A Jump Through Time, 20th level, p.34)", () => {
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 4 });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'orangeRangerPrimeUsedThisEncounter', { combatId: 'combat1' },
+      'essence20', 'orangeRangerPrimeUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
     );
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
@@ -6315,7 +6315,7 @@ describe("Orange Ranger Prime (A Jump Through Time, 20th level, p.34)", () => {
     game.combat = { id: 'combat1' };
     const actor = makeOrangeRangerActor();
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'orangeRangerPrimeUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'orangeRangerPrimeUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: ORANGE_RANGER_PRIME_ID, actor });
 
@@ -7660,7 +7660,7 @@ describe("Perfect Disguise (GI Joe CRB, Spy Focus, 10th level, p.76)", () => {
   function makePerfectDisguiseActor({ active = false, usedThisEncounter = false } = {}) {
     const flagStore = {
       perfectDisguiseActive: active,
-      perfectDisguiseUsedThisEncounter: usedThisEncounter ? { combatId: 'combat1' } : undefined,
+      perfectDisguiseUsedThisEncounter: usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined,
     };
     return {
       ...makeActor(),
@@ -7760,7 +7760,7 @@ describe("Combat Stance (Through the Shattered Grid, Magna Defender, 1st level, 
   }
 
   function makeCombatStanceActor({ level = 5, usedThisEncounter = false } = {}) {
-    const flagStore = { combatStanceUsedThisEncounter: usedThisEncounter ? { combatId: 'combat1' } : undefined };
+    const flagStore = { combatStanceUsedThisEncounter: usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined };
     return {
       ...makeActor(),
       system: { level },
@@ -7821,7 +7821,7 @@ describe("At All Cost (Through the Shattered Grid, Magna Defender, 18th level, p
   function makeAtAllCostActor({ isMorphed = true, active = false, usedThisEncounter = false } = {}) {
     const flagStore = {
       atAllCostActive: active,
-      atAllCostUsedThisEncounter: usedThisEncounter ? { combatId: 'combat1' } : undefined,
+      atAllCostUsedThisEncounter: usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined,
     };
     return {
       ...makeActor(),
@@ -8004,7 +8004,7 @@ describe("Paradox (A Jump Through Time, Influence Perk, p.21)", () => {
     test("false once already used this encounter", () => {
       const actor = makeActor();
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'paradoxUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'paradoxUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       game.combat = { id: 'combat1' };
       const item = makePerkItem({ sourceId: PARADOX_ID, actor });
@@ -8045,7 +8045,7 @@ describe("Paradox (A Jump Through Time, Influence Perk, p.21)", () => {
   test("warns and does nothing once already used this encounter", async () => {
     const actor = makeActor();
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'paradoxUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'paradoxUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     game.combat = { id: 'combat1' };
     const item = makePerkItem({ sourceId: PARADOX_ID, actor });
@@ -8081,20 +8081,23 @@ describe("Curb Your Enthusiasm (MLP Loyalty, 5th/15th level, p.90)", () => {
     test("false once already used this encounter", () => {
       const actor = makeActor();
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'curbYourEnthusiasmUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'curbYourEnthusiasmUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const item = makePerkItem({ sourceId: CURB_YOUR_ENTHUSIASM_ID, actor });
       expect(canUsePerk(item)).toBe(false);
     });
 
-    test("true outside of combat entirely (the once-per-scene gate only applies mid-combat)", () => {
+    // This used to assert the opposite - that the once-per-scene gate simply didn't apply outside
+    // combat, because hasUsedThisEncounter began `if (!game.combat) return false`. The Scene Clock
+    // (helpers/scene-clock.mjs) fixed that; the gate now holds wherever the scene is being played.
+    test("false outside of combat once used - the gate is no longer combat-only", () => {
       game.combat = null;
       const actor = makeActor();
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'curbYourEnthusiasmUsedThisEncounter' ? { combatId: 'someOldCombat' } : undefined
+        key == 'curbYourEnthusiasmUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const item = makePerkItem({ sourceId: CURB_YOUR_ENTHUSIASM_ID, actor });
-      expect(canUsePerk(item)).toBe(true);
+      expect(canUsePerk(item)).toBe(false);
     });
   });
 
@@ -8108,7 +8111,7 @@ describe("Curb Your Enthusiasm (MLP Loyalty, 5th/15th level, p.90)", () => {
       action: 'grantStoryPoints', amount: 1, actorName: 'Rainbow Dash',
     });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'curbYourEnthusiasmUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'curbYourEnthusiasmUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
@@ -8145,7 +8148,7 @@ describe("\"I Know A Guy\" (PR CRB, Kind Origin benefit, p.26)", () => {
     test("false once already used this encounter", () => {
       const actor = makeActor();
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'iKnowAGuyUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'iKnowAGuyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const item = makePerkItem({ sourceId: I_KNOW_A_GUY_ID, actor });
       expect(canUsePerk(item)).toBe(false);
@@ -8163,7 +8166,7 @@ describe("\"I Know A Guy\" (PR CRB, Kind Origin benefit, p.26)", () => {
       actor,
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'iKnowAGuyUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'iKnowAGuyUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
   });
 });
@@ -8193,7 +8196,7 @@ describe("Educated (PR CRB, General Perk, p.94)", () => {
     test("false once already used this encounter", () => {
       const actor = makeActor();
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'educatedUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'educatedUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const item = makePerkItem({ sourceId: EDUCATED_ID, actor });
       expect(canUsePerk(item)).toBe(false);
@@ -8210,7 +8213,7 @@ describe("Educated (PR CRB, General Perk, p.94)", () => {
       action: 'grantStoryPoints', amount: 1, actorName: 'Trini',
     });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'educatedUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'educatedUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
@@ -8253,7 +8256,7 @@ describe("Heroic Intervention (PR CRB, General Perk, p.96) - Story Point grant h
     test("false once already used this encounter", () => {
       const actor = makeActor();
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'heroicInterventionUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'heroicInterventionUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const item = makePerkItem({ sourceId: HEROIC_INTERVENTION_ID, actor });
       expect(canUsePerk(item)).toBe(false);
@@ -8270,7 +8273,7 @@ describe("Heroic Intervention (PR CRB, General Perk, p.96) - Story Point grant h
       action: 'grantStoryPoints', amount: 1, actorName: 'Trini',
     });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'heroicInterventionUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'heroicInterventionUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
@@ -8307,7 +8310,7 @@ describe("Legacy (General Hawk's Personnel Files, Influence Perk, p.169) - Story
     const actor = makeActor();
     expect(canUsePerk(makePerkItem({ sourceId: LEGACY_ID, actor }))).toBe(true);
 
-    actor.getFlag = jest.fn((scope, key) => (key == 'legacyUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'legacyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     expect(canUsePerk(makePerkItem({ sourceId: LEGACY_ID, actor }))).toBe(false);
   });
 
@@ -8321,7 +8324,7 @@ describe("Legacy (General Hawk's Personnel Files, Influence Perk, p.169) - Story
       action: 'grantStoryPoints', amount: 1, actorName: 'Billy',
     });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'legacyUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'legacyUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
   });
 
@@ -8355,7 +8358,7 @@ describe("Done the Impossible (General Hawk's Personnel Files, General Perk, p.1
     expect(canUsePerk(makePerkItem({ sourceId: DONE_THE_IMPOSSIBLE_ID, actor }))).toBe(true);
 
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'doneTheImpossibleUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'doneTheImpossibleUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     expect(canUsePerk(makePerkItem({ sourceId: DONE_THE_IMPOSSIBLE_ID, actor }))).toBe(false);
   });
@@ -8370,7 +8373,7 @@ describe("Done the Impossible (General Hawk's Personnel Files, General Perk, p.1
       action: 'grantStoryPoints', amount: 1, actorName: 'Stalker',
     });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'doneTheImpossibleUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'doneTheImpossibleUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
   });
 
@@ -8444,7 +8447,7 @@ describe("Wild Tales (MLP Adventurer Influence, p.42)", () => {
     game.combat = { id: 'combat1' };
     const actor = makeActor();
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'wildTalesUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'wildTalesUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: WILD_TALES_ID, actor });
     expect(canUsePerk(item)).toBe(false);
@@ -8462,7 +8465,7 @@ describe("Wild Tales (MLP Adventurer Influence, p.42)", () => {
       'essence20', 'pendingWildTales', expect.objectContaining({ essence: 'social' }),
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'wildTalesUsedThisEncounter', { combatId: 'combat1' },
+      'essence20', 'wildTalesUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
     );
   });
 
@@ -8564,7 +8567,7 @@ describe("Concentrate Fire (GI Joe CRB, Vanguard base, 15th level, p.109)", () =
     test("false once already used this encounter", () => {
       const actor = makeActor();
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'concentrateFireUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'concentrateFireUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const item = makePerkItem({ sourceId: CONCENTRATE_FIRE_ID, actor });
       expect(canUsePerk(item)).toBe(false);
@@ -8598,7 +8601,7 @@ describe("Concentrate Fire (GI Joe CRB, Vanguard base, 15th level, p.109)", () =
       action: 'spendStoryPoints', amount: 1, actorName: 'Roadblock',
     });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'concentrateFireUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'concentrateFireUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
   });
 
@@ -8838,7 +8841,7 @@ describe("If I Recall Correctly (Knights of Canterlot, Spell Scribe Influence, p
     game.combat = { id: 'combat1' };
     const actor = makeActor();
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'ifIRecallCorrectlyUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'ifIRecallCorrectlyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: IF_I_RECALL_CORRECTLY_ID, actor });
     expect(canUsePerk(item)).toBe(false);
@@ -8855,7 +8858,7 @@ describe("If I Recall Correctly (Knights of Canterlot, Spell Scribe Influence, p
       'essence20', 'pendingIfIRecallCorrectly', expect.objectContaining({ edge: true }),
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'ifIRecallCorrectlyUsedThisEncounter', { combatId: 'combat1' },
+      'essence20', 'ifIRecallCorrectlyUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
     );
   });
 });
@@ -8877,7 +8880,7 @@ describe("Trick Shot (Knights of Canterlot, Archer, p.14)", () => {
     game.combat = { id: 'combat1' };
     const actor = makeActor();
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'trickShotUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'trickShotUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     const item = makePerkItem({ sourceId: TRICK_SHOT_ID, actor });
     expect(canUsePerk(item)).toBe(false);
@@ -8894,7 +8897,7 @@ describe("Trick Shot (Knights of Canterlot, Archer, p.14)", () => {
       'essence20', 'pendingTrickShot', expect.objectContaining({ edge: true }),
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'trickShotUsedThisEncounter', { combatId: 'combat1' },
+      'essence20', 'trickShotUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
     );
   });
 });
@@ -9058,7 +9061,7 @@ describe("Bird's Eye View (Technorganic Secrets, Origin Perk, p.39)", () => {
 
     const usedActor = makeTransformedActor({ isTransformed: true });
     usedActor.getFlag = jest.fn((scope, key) => (
-      key == 'birdEyeViewUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'birdEyeViewUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     expect(canUsePerk(makePerkItem({ sourceId: BIRD_EYE_VIEW_ID, actor: usedActor }))).toBe(false);
   });
@@ -9075,7 +9078,7 @@ describe("Bird's Eye View (Technorganic Secrets, Origin Perk, p.39)", () => {
       'essence20', 'pendingBirdEyeView', expect.objectContaining({ shiftUp: 2 }),
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'birdEyeViewUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'birdEyeViewUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
     game.user.targets = new Set();
   });
@@ -9225,7 +9228,7 @@ describe("Deep Breathing (Welcome to Night Vale: Citizens' Guide, General Perk, 
 
   test("canUsePerk is false once already used this scene", () => {
     const actor = makeDeepBreathingActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'deepBreathingUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'deepBreathingUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: DEEP_BREATHING_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -9237,7 +9240,7 @@ describe("Deep Breathing (Welcome to Night Vale: Citizens' Guide, General Perk, 
     await onPerkUse(item);
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'deepBreathingUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'deepBreathingUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("doesn't heal past the actor's own max Health", async () => {
@@ -9251,7 +9254,7 @@ describe("Deep Breathing (Welcome to Night Vale: Citizens' Guide, General Perk, 
 
   test("does nothing once already used this scene", async () => {
     const actor = makeDeepBreathingActor({ id: 'citizen', health: 4 });
-    actor.getFlag = jest.fn((scope, key) => (key == 'deepBreathingUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'deepBreathingUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: DEEP_BREATHING_ID, actor });
 
     await onPerkUse(item);
@@ -9287,7 +9290,7 @@ describe("Therapeutic Nanotechnology (Technorganic Secrets, Technorganic Influen
 
     const usedActor = makeTherapeuticNanotechnologyActor();
     usedActor.getFlag = jest.fn((scope, key) => (
-      key == 'therapeuticNanotechnologyUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'therapeuticNanotechnologyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     expect(canUsePerk(makePerkItem({ sourceId: THERAPEUTIC_NANOTECHNOLOGY_ID, actor: usedActor }))).toBe(false);
   });
@@ -9299,7 +9302,7 @@ describe("Therapeutic Nanotechnology (Technorganic Secrets, Technorganic Influen
     await onPerkUse(item);
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'therapeuticNanotechnologyUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'therapeuticNanotechnologyUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("does nothing outside Alt Mode, or once already used this scene", async () => {
@@ -9309,7 +9312,7 @@ describe("Therapeutic Nanotechnology (Technorganic Secrets, Technorganic Influen
 
     const usedActor = makeTherapeuticNanotechnologyActor({ id: 'bot', health: 4 });
     usedActor.getFlag = jest.fn((scope, key) => (
-      key == 'therapeuticNanotechnologyUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+      key == 'therapeuticNanotechnologyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
     ));
     await onPerkUse(makePerkItem({ sourceId: THERAPEUTIC_NANOTECHNOLOGY_ID, actor: usedActor }));
     expect(usedActor.update).not.toHaveBeenCalled();
@@ -9362,7 +9365,7 @@ describe("Dig Deep (PR CRB, General Perk, p.94)", () => {
 
   test("canUsePerk is false once already used this scene", () => {
     const actor = makeDigDeepActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepPrCrbUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepPrCrbUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: DIG_DEEP_PR_CRB_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -9374,7 +9377,7 @@ describe("Dig Deep (PR CRB, General Perk, p.94)", () => {
     await onPerkUse(item);
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 6 }); // 4 + 2 (rolled)
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'digDeepPrCrbUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'digDeepPrCrbUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("doesn't heal past the actor's own max Health", async () => {
@@ -9388,7 +9391,7 @@ describe("Dig Deep (PR CRB, General Perk, p.94)", () => {
 
   test("does nothing once already used this scene", async () => {
     const actor = makeDigDeepActor({ id: 'ranger', health: 4 });
-    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepPrCrbUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepPrCrbUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: DIG_DEEP_PR_CRB_ID, actor });
 
     await onPerkUse(item);
@@ -9471,7 +9474,7 @@ describe("Real Angels (Welcome to Night Vale: Citizens' Guide, General Perk, p.5
 
   test("canUsePerk is false once already used this session", () => {
     const actor = makeRealAngelsActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'realAngelsUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'realAngelsUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: REAL_ANGELS_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -9483,12 +9486,12 @@ describe("Real Angels (Welcome to Night Vale: Citizens' Guide, General Perk, p.5
     await onPerkUse(item);
 
     expect(actor.toggleStatusEffect).toHaveBeenCalledWith('cover', { active: true });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'realAngelsUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'realAngelsUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("does nothing once already used this session", async () => {
     const actor = makeRealAngelsActor({ id: 'citizen' });
-    actor.getFlag = jest.fn((scope, key) => (key == 'realAngelsUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'realAngelsUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: REAL_ANGELS_ID, actor });
 
     await onPerkUse(item);
@@ -9510,7 +9513,7 @@ describe("Dig Deep (Welcome to Night Vale: Citizens' Guide, General Perk, p.47)"
 
   test("canUsePerk is false once already used this scene", () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: DIG_DEEP_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -9527,12 +9530,12 @@ describe("Dig Deep (Welcome to Night Vale: Citizens' Guide, General Perk, p.47)"
     expect(actor.setFlag).toHaveBeenCalledWith(
       'essence20', 'pendingDigDeepSnag', expect.objectContaining({ snag: true }),
     );
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'digDeepUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'digDeepUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("does nothing once already used this scene", async () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: DIG_DEEP_ID, actor });
 
     await onPerkUse(item);
@@ -9590,7 +9593,7 @@ describe("Educated (Transformers CRB, General Perk, p.109)", () => {
       action: 'grantStoryPoints', amount: 1, actorName: 'Longarm',
     });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'educatedUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'educatedUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
   });
 });
@@ -9619,7 +9622,7 @@ describe("Timeline Anomaly (Welcome to Night Vale: Citizens' Guide, General Perk
 
   test("canUsePerk is false once already used this session", () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'timelineAnomalyUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'timelineAnomalyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: TIMELINE_ANOMALY_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -9636,7 +9639,7 @@ describe("Timeline Anomaly (Welcome to Night Vale: Citizens' Guide, General Perk
 
     expect(actorCombatant.update).toHaveBeenCalledWith({ initiative: 15 });
     expect(targetCombatant.update).toHaveBeenCalledWith({ initiative: 5 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'timelineAnomalyUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'timelineAnomalyUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("doesn't mark used when there's no valid target to swap with", async () => {
@@ -9652,7 +9655,7 @@ describe("Timeline Anomaly (Welcome to Night Vale: Citizens' Guide, General Perk
 
   test("does nothing once already used this session", async () => {
     const actor = makeActor({ id: 'actor1' });
-    actor.getFlag = jest.fn((scope, key) => (key == 'timelineAnomalyUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'timelineAnomalyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const actorCombatant = makeCombatant('actor1', 5);
     game.combat.combatants = [actorCombatant];
     const item = makePerkItem({ sourceId: TIMELINE_ANOMALY_ID, actor });
@@ -9728,7 +9731,7 @@ describe("Hidden Whispers (Welcome to Night Vale: Citizens' Guide, Politician Ro
 
   test("canUsePerk is false once already used this scene", () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'hiddenWhispersUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'hiddenWhispersUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: HIDDEN_WHISPERS_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -9742,7 +9745,7 @@ describe("Hidden Whispers (Welcome to Night Vale: Citizens' Guide, Politician Ro
     expect(actor.setFlag).toHaveBeenCalledWith(
       'essence20', 'pendingHiddenWhispers', expect.objectContaining({ shiftUp: 3 }),
     );
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'hiddenWhispersUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'hiddenWhispersUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 });
 
@@ -9767,7 +9770,7 @@ describe("Quick Study (Welcome to Night Vale: Citizens' Guide, General Perk, p.5
 
   test("canUsePerk is false once already used this scene", () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'quickStudyUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'quickStudyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: QUICK_STUDY_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -9788,7 +9791,7 @@ describe("Quick Study (Welcome to Night Vale: Citizens' Guide, General Perk, p.5
     await onPerkUse(item);
 
     expect(global.ChatMessage.create).toHaveBeenCalled();
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'quickStudyUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'quickStudyUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("doesn't mark used with no target selected", async () => {
@@ -9803,7 +9806,7 @@ describe("Quick Study (Welcome to Night Vale: Citizens' Guide, General Perk, p.5
 
   test("does nothing once already used this scene", async () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'quickStudyUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'quickStudyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: QUICK_STUDY_ID, actor });
 
     await onPerkUse(item);
@@ -9844,12 +9847,12 @@ describe("Quick Study (GI Joe CRB, Technician, 1st level, p.102)", () => {
     await onPerkUse(item);
 
     expect(global.ChatMessage.create).toHaveBeenCalled();
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'quickStudyUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'quickStudyUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("canUsePerk is false once already used this scene", () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'quickStudyUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'quickStudyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: GIJ_QUICK_STUDY_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -10045,7 +10048,7 @@ describe("Stay In Formation (Quartermaster's Guide to Gear, General Perk, p.31)"
     test("false once already used this encounter", () => {
       const actor = makeActor();
       actor.getFlag = jest.fn((scope, key) => (
-        key == 'stayInFormationUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'stayInFormationUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const item = makePerkItem({ sourceId: STAY_IN_FORMATION_ID, actor });
       expect(canUsePerk(item)).toBe(false);
@@ -10068,7 +10071,7 @@ describe("Stay In Formation (Quartermaster's Guide to Gear, General Perk, p.31)"
 
     expect(allyCombatant.update).toHaveBeenCalledWith({ initiative: 13 });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'stayInFormationUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'stayInFormationUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
   });
 
@@ -10323,7 +10326,7 @@ describe("Spot Weld (Decepticon Directive, General Perk, p.67)", () => {
     });
 
     test("false once already used this scene", () => {
-      const actor = makeSpotWeldActor({ usedFlag: { combatId: 'combat1' } });
+      const actor = makeSpotWeldActor({ usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
       const item = makePerkItem({ sourceId: SPOT_WELD_ID, actor });
       expect(canUsePerk(item)).toBe(false);
     });
@@ -10398,10 +10401,10 @@ describe("Invisibility (Technorganic Secrets, Mutant Beast Influence Perk, p.47)
     });
 
     test("false once already used, unless already active", () => {
-      const usedActor = makeInvisibilityActor({ usedFlag: { combatId: 'combat1' } });
+      const usedActor = makeInvisibilityActor({ usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
       expect(canUsePerk(makePerkItem({ sourceId: INVISIBILITY_ID, actor: usedActor }))).toBe(false);
 
-      const activeActor = makeInvisibilityActor({ active: true, usedFlag: { combatId: 'combat1' } });
+      const activeActor = makeInvisibilityActor({ active: true, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
       expect(canUsePerk(makePerkItem({ sourceId: INVISIBILITY_ID, actor: activeActor }))).toBe(true);
     });
   });
@@ -10417,7 +10420,7 @@ describe("Invisibility (Technorganic Secrets, Mutant Beast Influence Perk, p.47)
   });
 
   test("toggles off freely", async () => {
-    const actor = makeInvisibilityActor({ active: true, usedFlag: { combatId: 'combat1' } });
+    const actor = makeInvisibilityActor({ active: true, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     const item = makePerkItem({ sourceId: INVISIBILITY_ID, actor });
 
     await onPerkUse(item);
@@ -10446,7 +10449,7 @@ describe("Frictionless Movement (Technorganic Secrets, Mutant Beast Influence Pe
 
     test("false once already used this scene", () => {
       const actor = makeActor();
-      actor.getFlag = jest.fn(() => ({ combatId: 'combat1' }));
+      actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
       const item = makePerkItem({ sourceId: FRICTIONLESS_MOVEMENT_ID, actor });
       expect(canUsePerk(item)).toBe(false);
     });
@@ -10464,7 +10467,7 @@ describe("Frictionless Movement (Technorganic Secrets, Mutant Beast Influence Pe
 
   test("does nothing once already used this scene", async () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn(() => ({ combatId: 'combat1' }));
+    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
     const item = makePerkItem({ sourceId: FRICTIONLESS_MOVEMENT_ID, actor });
 
     await onPerkUse(item);
@@ -10493,7 +10496,7 @@ describe("Sprinter (Technorganic Secrets, Hunter's Prowess Quadruped Origin choi
 
     test("false once already used this scene", () => {
       const actor = makeActor();
-      actor.getFlag = jest.fn(() => ({ combatId: 'combat1' }));
+      actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
       const item = makePerkItem({ sourceId: SPRINTER_ID, actor });
       expect(canUsePerk(item)).toBe(false);
     });
@@ -10511,7 +10514,7 @@ describe("Sprinter (Technorganic Secrets, Hunter's Prowess Quadruped Origin choi
 
   test("does nothing once already used this scene", async () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn(() => ({ combatId: 'combat1' }));
+    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
     const item = makePerkItem({ sourceId: SPRINTER_ID, actor });
 
     await onPerkUse(item);
@@ -10550,7 +10553,7 @@ describe("Two Heads Are Better Than One (Technorganic Secrets, General Perk, p.4
 
     test("false once already used this scene", () => {
       const actor = makeActor();
-      actor.getFlag = jest.fn(() => ({ combatId: 'combat1' }));
+      actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
       const item = makePerkItem({ sourceId: TWO_HEADS_ARE_BETTER_THAN_ONE_ID, actor });
       expect(canUsePerk(item)).toBe(false);
     });
@@ -10581,7 +10584,7 @@ describe("Two Heads Are Better Than One (Technorganic Secrets, General Perk, p.4
 
   test("does nothing once already used this scene", async () => {
     const actor = makeActor({ id: 'ts1' });
-    actor.getFlag = jest.fn(() => ({ combatId: 'combat1' }));
+    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
     const targetActor = { uuid: 'Actor.target1' };
     game.user.targets = makeTargetsSet(targetActor);
     const item = makePerkItem({ sourceId: TWO_HEADS_ARE_BETTER_THAN_ONE_ID, actor });

@@ -11,9 +11,14 @@
       "book": "Knights of Canterlot",
       "page": 41
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 2,
-    "duration": "1 hour",
+    "duration": {
+      "units": "hours",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "1 plant",
     "tier": "elementary"

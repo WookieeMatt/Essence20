@@ -11,7 +11,13 @@
       "book": "Knights of Canterlot",
       "page": 53
     },
-    "duration": "1 round",
+    "actionType": "standard",
+    "duration": {
+      "units": "rounds",
+      "value": 1,
+      "text": ""
+    },
+    "quantity": 1,
     "range": "120 foot radius",
     "spellcastingShift": "d4"
   },

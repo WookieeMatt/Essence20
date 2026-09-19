@@ -49,4 +49,16 @@
       <span>{{localize "E20.SptRollButton"}}</span>
     </button>
   {{/if}}
+  {{!-- Scene Clock: what refreshes once-per-scene abilities. Everyone sees which scene they
+        are in; only the GM can advance it. See helpers/scene-clock.mjs. --}}
+  <div class="story-points__scene">
+    <span class="story-points__scene-label">
+      {{localize "E20.SceneClockScene"}} {{sceneEpoch}}{{#if sceneLabel}} &mdash; {{sceneLabel}}{{/if}}
+    </span>
+    {{#if isGm}}
+      <button data-action="newScene" class="story-points__btn --bottom">
+        <span>{{localize "E20.SceneClockNewScene"}}</span>
+      </button>
+    {{/if}}
+  </div>
 </div>

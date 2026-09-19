@@ -11,9 +11,14 @@
       "book": "Knights of Canterlot",
       "page": 46
     },
+    "actionType": "standard",
     "circle": "aid",
     "cost": 3,
-    "duration": "4 hours",
+    "duration": {
+      "units": "hours",
+      "value": 4,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "120 feet",
     "tier": "superior"

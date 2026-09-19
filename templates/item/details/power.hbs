@@ -45,15 +45,8 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     {{/if}}
-
-    {{!--Action Type --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActionTypes'}}
-    {{#*inline "item-field-inputs"}}
-    <select name="system.actionType">
-      {{selectOptions config.actionTypes selected=system.actionType}}
-    </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{!-- Action cost - see templates/item/parts/activation-fields.hbs --}}
+    {{> "systems/essence20/templates/item/parts/activation-fields.hbs"}}
 
     {{!-- Uses Per Scene --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerUsesPer'}}
@@ -65,5 +58,39 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+    {{!-- Area of Effect shape + radius. Inside the canActivate block deliberately: a passive,
+          always-on Power (canActivate false, no click) never places a shape. --}}
+    {{> "systems/essence20/templates/item/parts/aoe-fields.hbs"}}
+
+    {{!-- Duration --}}
+    {{> "systems/essence20/templates/item/parts/duration-fields.hbs"}}
+
+    {{!-- Attack Powers only (the Sorcerous attack Powers). Leave the Skill and Defense blank and
+          the Power isn't rolled at all, which is right for the Grid Power majority. --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerAttackSkill'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.attackSkill">
+      {{selectOptions config.skills selected=system.attackSkill blank=(localize 'E20.None')}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpellDefenseType'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.defenseType">
+      {{selectOptions config.defenses selected=system.defenseType localize=true blank=(localize 'E20.None')}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Damage'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.damageValue name="system.damageValue" min=0 step=1}}
+    <select name="system.damageType">
+      {{selectOptions config.damageTypes selected=system.damageType localize=true blank=(localize 'E20.None')}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
   {{/if}}
-<div>
+</div>

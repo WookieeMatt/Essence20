@@ -19,12 +19,12 @@ describe("canUseMenace", () => {
   });
 
   test("false once already used this scene", () => {
-    const actor = makeActor({ usesThisScene: { sceneId: 'scene1', count: 1 } });
+    const actor = makeActor({ usesThisScene: { epoch: 1, window: 'scene', count: 1 } });
     expect(canUseMenace(actor)).toBe(false);
   });
 
   test("true again in a different scene (stale record)", () => {
-    const actor = makeActor({ usesThisScene: { sceneId: 'scene0', count: 1 } });
+    const actor = makeActor({ usesThisScene: { epoch: 0, window: 'scene', count: 1 } });
     expect(canUseMenace(actor)).toBe(true);
   });
 });

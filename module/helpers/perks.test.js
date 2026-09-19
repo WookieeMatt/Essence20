@@ -7,6 +7,35 @@ import {
 
 global.game = { combat: null, scenes: { current: null } };
 
+/**
+ * A stand-in actor with its own flag store, plus helpers for driving the Scene Clock counters,
+ * which the three windows below now read instead of the current combat id.
+ */
+function makeFlagActor(flags = {}) {
+  const store = { ...flags };
+  return {
+    getFlag: (scope, key) => store[key],
+    setFlag: async (scope, key, value) => {
+      store[key] = value;
+    },
+  };
+}
+
+function setEpochs({ scene = 1, encounter = 1 } = {}) {
+  global.game.settings = {
+    get: (scope, key) => {
+      if (key === "sceneClockScene") return scene;
+      if (key === "sceneClockEncounter") return encounter;
+      return undefined;
+    },
+  };
+}
+
+beforeEach(() => {
+  global.game = { combat: { id: "combat1", round: 1, turn: 0 }, scenes: { current: null }, user: { isGM: true } };
+  setEpochs();
+});
+
 /* findPerk */
 describe("findPerk", () => {
   const PERK_ID = "Compendium.essence20.gi_joe_crb.Item.2LtDCHxgg9bMvWQK";
@@ -202,148 +231,132 @@ describe("hasUsedThisTurn / markUsedThisTurn", () => {
 });
 
 /* hasUsedThisEncounter / markUsedThisEncounter */
+// These three windows moved off the current combat's id and onto the Scene Clock
+// (helpers/scene-clock.mjs). The behavioural change worth testing is that they now work OUT OF
+// COMBAT: the old versions began `if (!game.combat) return`, so a once-per-scene ability used in a
+// roleplay scene was never recorded and was effectively unlimited.
 describe("hasUsedThisEncounter / markUsedThisEncounter", () => {
-  beforeEach(() => {
+  test("is false for an actor that has never used the ability", () => {
+    expect(hasUsedThisEncounter(makeFlagActor(), 'didntEvenFeelIt')).toBe(false);
+  });
+
+  test("is true once marked, and stays true across rounds and turns", async () => {
+    const actor = makeFlagActor();
+    await markUsedThisEncounter(actor, 'didntEvenFeelIt');
+
+    expect(hasUsedThisEncounter(actor, 'didntEvenFeelIt')).toBe(true);
+
+    game.combat.round = 7;
+    game.combat.turn = 3;
+    expect(hasUsedThisEncounter(actor, 'didntEvenFeelIt')).toBe(true);
+  });
+
+  test("records and reads OUT of combat - the bug this replaced", async () => {
     game.combat = null;
+    const actor = makeFlagActor();
+
+    await markUsedThisEncounter(actor, 'dependable');
+
+    expect(hasUsedThisEncounter(actor, 'dependable')).toBe(true);
   });
 
-  test("hasUsedThisEncounter is false outside of combat regardless of any stored flag", () => {
-    const actor = { getFlag: jest.fn(() => ({ combatId: 'combat1' })) };
-    expect(hasUsedThisEncounter(actor, 'someFlag')).toBe(false);
+  test("clears when the encounter counter advances", async () => {
+    const actor = makeFlagActor();
+    await markUsedThisEncounter(actor, 'didntEvenFeelIt');
+
+    setEpochs({ encounter: 2 });
+
+    expect(hasUsedThisEncounter(actor, 'didntEvenFeelIt')).toBe(false);
   });
 
-  test("hasUsedThisEncounter is true when the flag matches the current combat, any round/turn", () => {
-    game.combat = { id: 'combat1', round: 5, turn: 3 };
-    const actor = { getFlag: jest.fn(() => ({ combatId: 'combat1' })) };
-    expect(hasUsedThisEncounter(actor, 'someFlag')).toBe(true);
+  test("keeps separate flag keys apart", async () => {
+    const actor = makeFlagActor();
+    await markUsedThisEncounter(actor, 'abilityOne');
+
+    expect(hasUsedThisEncounter(actor, 'abilityTwo')).toBe(false);
   });
 
-  test("hasUsedThisEncounter is false for a stale flag from a different combat", () => {
-    game.combat = { id: 'newCombat', round: 1, turn: 0 };
-    const actor = { getFlag: jest.fn(() => ({ combatId: 'oldCombat' })) };
-    expect(hasUsedThisEncounter(actor, 'someFlag')).toBe(false);
-  });
-
-  test("markUsedThisEncounter records only the current combat's id under the given flag key", async () => {
-    game.combat = { id: 'combat1', round: 4, turn: 2 };
-    const actor = { setFlag: jest.fn() };
-    await markUsedThisEncounter(actor, 'someFlag');
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { combatId: 'combat1' });
-  });
-
-  test("markUsedThisEncounter no-ops outside of combat", async () => {
-    const actor = { setFlag: jest.fn() };
-    await markUsedThisEncounter(actor, 'someFlag');
-    expect(actor.setFlag).not.toHaveBeenCalled();
+  test("a flag written before the Scene Clock existed reads as unused", () => {
+    const actor = makeFlagActor({ oldStyle: { combatId: 'combat1' } });
+    expect(hasUsedThisEncounter(actor, 'oldStyle')).toBe(false);
   });
 });
 
-/* getUsesThisEncounter / markUsedThisEncounterCount */
 describe("getUsesThisEncounter / markUsedThisEncounterCount", () => {
-  beforeEach(() => {
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+  test("counts from zero", () => {
+    expect(getUsesThisEncounter(makeFlagActor(), 'rollWithThePunches')).toBe(0);
   });
 
-  test("getUsesThisEncounter is 0 outside of combat regardless of any stored flag", () => {
+  test("increments rather than overwriting", async () => {
+    const actor = makeFlagActor();
+    await markUsedThisEncounterCount(actor, 'rollWithThePunches');
+    await markUsedThisEncounterCount(actor, 'rollWithThePunches');
+
+    expect(getUsesThisEncounter(actor, 'rollWithThePunches')).toBe(2);
+  });
+
+  test("resets when the encounter counter advances", async () => {
+    const actor = makeFlagActor();
+    await markUsedThisEncounterCount(actor, 'rollWithThePunches');
+
+    setEpochs({ encounter: 5 });
+
+    expect(getUsesThisEncounter(actor, 'rollWithThePunches')).toBe(0);
+  });
+
+  test("counts out of combat too", async () => {
     game.combat = null;
-    const actor = { getFlag: jest.fn(() => ({ combatId: 'combat1', count: 2 })) };
-    expect(getUsesThisEncounter(actor, 'someFlag')).toBe(0);
-  });
+    const actor = makeFlagActor();
 
-  test("getUsesThisEncounter is 0 with no stored flag at all", () => {
-    const actor = { getFlag: jest.fn(() => undefined) };
-    expect(getUsesThisEncounter(actor, 'someFlag')).toBe(0);
-  });
+    await markUsedThisEncounterCount(actor, 'rollWithThePunches');
 
-  test("getUsesThisEncounter returns the stored count when the flag matches the current combat", () => {
-    const actor = { getFlag: jest.fn(() => ({ combatId: 'combat1', count: 1 })) };
-    expect(getUsesThisEncounter(actor, 'someFlag')).toBe(1);
-  });
-
-  test("getUsesThisEncounter is 0 for a stale flag from a different combat", () => {
-    const actor = { getFlag: jest.fn(() => ({ combatId: 'oldCombat', count: 2 })) };
-    expect(getUsesThisEncounter(actor, 'someFlag')).toBe(0);
-  });
-
-  test("markUsedThisEncounterCount records the current combat's id with a count of 1 by default", async () => {
-    const actor = { getFlag: jest.fn(() => undefined), setFlag: jest.fn() };
-    await markUsedThisEncounterCount(actor, 'someFlag');
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { combatId: 'combat1', count: 1 });
-  });
-
-  test("markUsedThisEncounterCount increments an existing count rather than overwriting it", async () => {
-    const actor = { getFlag: jest.fn(() => ({ combatId: 'combat1', count: 1 })), setFlag: jest.fn() };
-    await markUsedThisEncounterCount(actor, 'someFlag');
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { combatId: 'combat1', count: 2 });
-  });
-
-  test("markUsedThisEncounterCount resets the count when the stored flag is from a stale combat", async () => {
-    const actor = { getFlag: jest.fn(() => ({ combatId: 'oldCombat', count: 5 })), setFlag: jest.fn() };
-    await markUsedThisEncounterCount(actor, 'someFlag');
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { combatId: 'combat1', count: 1 });
-  });
-
-  test("markUsedThisEncounterCount no-ops outside of combat", async () => {
-    game.combat = null;
-    const actor = { setFlag: jest.fn() };
-    await markUsedThisEncounterCount(actor, 'someFlag');
-    expect(actor.setFlag).not.toHaveBeenCalled();
+    expect(getUsesThisEncounter(actor, 'rollWithThePunches')).toBe(1);
   });
 });
 
-/* getUsesThisScene / markUsedThisScene */
 describe("getUsesThisScene / markUsedThisScene", () => {
-  beforeEach(() => {
-    game.scenes = { current: { id: 'scene1' } };
+  test("counts from zero", () => {
+    expect(getUsesThisScene(makeFlagActor(), 'dependable')).toBe(0);
   });
 
-  test("getUsesThisScene is 0 with no stored flag at all", () => {
-    const actor = { getFlag: jest.fn(() => undefined) };
-    expect(getUsesThisScene(actor, 'someFlag')).toBe(0);
+  test("records a multi-charge use in one call", async () => {
+    const actor = makeFlagActor();
+    await markUsedThisScene(actor, 'oldReliable', 2);
+
+    expect(getUsesThisScene(actor, 'oldReliable')).toBe(2);
   });
 
-  test("getUsesThisScene returns the stored count when the flag matches the current scene", () => {
-    const actor = { getFlag: jest.fn(() => ({ sceneId: 'scene1', count: 1 })) };
-    expect(getUsesThisScene(actor, 'someFlag')).toBe(1);
+  // The whole reason the scene and encounter counters are separate: a combat ending refreshes
+  // once-per-encounter abilities, but must NOT refresh once-per-scene ones.
+  test("survives the encounter counter advancing", async () => {
+    const actor = makeFlagActor();
+    await markUsedThisScene(actor, 'dependable');
+
+    setEpochs({ encounter: 9 });
+
+    expect(getUsesThisScene(actor, 'dependable')).toBe(1);
   });
 
-  test("getUsesThisScene is 0 for a stale flag from a different scene", () => {
-    const actor = { getFlag: jest.fn(() => ({ sceneId: 'oldScene', count: 3 })) };
-    expect(getUsesThisScene(actor, 'someFlag')).toBe(0);
+  test("clears when the scene counter advances", async () => {
+    const actor = makeFlagActor();
+    await markUsedThisScene(actor, 'dependable');
+
+    setEpochs({ scene: 2 });
+
+    expect(getUsesThisScene(actor, 'dependable')).toBe(0);
   });
 
-  test("getUsesThisScene works with no active scene at all (both stamped null)", () => {
-    game.scenes = { current: null };
-    const actor = { getFlag: jest.fn(() => ({ sceneId: null, count: 1 })) };
-    expect(getUsesThisScene(actor, 'someFlag')).toBe(1);
-  });
+  test("is independent of the encounter window for the same flag key", async () => {
+    const actor = makeFlagActor();
+    await markUsedThisScene(actor, 'shared');
 
-  test("markUsedThisScene records the current scene's id with a count of 1 by default", async () => {
-    const actor = { getFlag: jest.fn(() => undefined), setFlag: jest.fn() };
-    await markUsedThisScene(actor, 'someFlag');
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { sceneId: 'scene1', count: 1 });
-  });
-
-  test("markUsedThisScene increments an existing count rather than overwriting it", async () => {
-    const actor = { getFlag: jest.fn(() => ({ sceneId: 'scene1', count: 1 })), setFlag: jest.fn() };
-    await markUsedThisScene(actor, 'someFlag');
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { sceneId: 'scene1', count: 2 });
-  });
-
-  test("markUsedThisScene accepts a larger count in one call (Old Reliable's own 'both d20s' spend)", async () => {
-    const actor = { getFlag: jest.fn(() => undefined), setFlag: jest.fn() };
-    await markUsedThisScene(actor, 'someFlag', 2);
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { sceneId: 'scene1', count: 2 });
-  });
-
-  test("markUsedThisScene resets the count when the stored flag is from a stale scene", async () => {
-    const actor = { getFlag: jest.fn(() => ({ sceneId: 'oldScene', count: 5 })), setFlag: jest.fn() };
-    await markUsedThisScene(actor, 'someFlag');
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'someFlag', { sceneId: 'scene1', count: 1 });
+    // The scene mark stamps the scene epoch, so an encounter-window read of the same key does not
+    // see it unless the two counters happen to coincide.
+    setEpochs({ scene: 1, encounter: 4 });
+    expect(hasUsedThisEncounter(actor, 'shared')).toBe(false);
+    expect(getUsesThisScene(actor, 'shared')).toBe(1);
   });
 });
-
-/* bankPendingBonus / getPendingBonus / clearPendingBonus */
 describe("bankPendingBonus / getPendingBonus / clearPendingBonus", () => {
   beforeEach(() => {
     game.combat = null;

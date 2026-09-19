@@ -30,7 +30,9 @@ describe("togglePerfectDisguise", () => {
 
     expect(result).toBe(true);
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'perfectDisguiseUsedThisEncounter', {
-      combatId: 'combat1',
+      epoch: 1,
+      window: 'encounter',
+      count: 1,
     });
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'perfectDisguiseActive', true);
   });
@@ -38,7 +40,7 @@ describe("togglePerfectDisguise", () => {
   test("returns null and doesn't activate once already used this encounter", async () => {
     const actor = makeActor({ active: false });
     actor.getFlag = jest.fn((scope, key) => (
-      key == 'perfectDisguiseUsedThisEncounter' ? { combatId: 'combat1' } : false
+      key == 'perfectDisguiseUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : false
     ));
 
     const result = await togglePerfectDisguise(actor);

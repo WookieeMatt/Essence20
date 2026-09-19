@@ -11,9 +11,14 @@
       "book": "My Little Pony Core Rulebook",
       "page": 140
     },
+    "actionType": "standard",
     "circle": "enchantment",
     "cost": 3,
-    "duration": "1 scene",
+    "duration": {
+      "units": "scenes",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "30 feet",
     "tier": "virtuoso"

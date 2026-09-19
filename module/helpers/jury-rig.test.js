@@ -129,7 +129,7 @@ describe("activateJuryRig", () => {
 
     await activateJuryRig(actor);
 
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'juryRigUsedThisSceneAsStandardAction', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'juryRigUsedThisSceneAsStandardAction', { epoch: 1, window: 'encounter', count: 1 });
     expect(actor._dice.rollSkill).toHaveBeenCalledWith(
       expect.objectContaining({ juryRigStandardAction: true }), actor,
     );

@@ -11,7 +11,13 @@
       "book": "Knights of Canterlot",
       "page": 52
     },
-    "duration": "Instant",
+    "actionType": "standard",
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
+    "quantity": 1,
     "range": "5 feet",
     "spellcastingShift": "d6"
   },

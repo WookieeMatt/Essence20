@@ -3,6 +3,7 @@ import { E20 } from "../../helpers/config.mjs";
 import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { rerollSchema } from '../reroll-schema.mjs';
+import { activation } from './templates/activation.mjs';
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
 import { parentItem } from './templates/parent-item.mjs';
@@ -13,6 +14,7 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),
+      ...activation(),
       ...itemDescription(),
       ...parentItem(),
       advances: new fields.SchemaField({

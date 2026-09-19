@@ -11,9 +11,14 @@
       "book": "Knights of Canterlot",
       "page": 43
     },
+    "actionType": "standard",
     "circle": "enchantment",
     "cost": 1,
-    "duration": "Instant",
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "Line of Sight",
     "tier": "elementary"

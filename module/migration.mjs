@@ -1,4 +1,5 @@
 import { createId, slugifySpecializationName } from "./helpers/utils.mjs";
+import { parseDurationString } from "./data/duration-schema.mjs";
 
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
@@ -546,6 +547,23 @@ export async function getItem(perkId, actor) {
 export async function migrateItemData(item, actor) {
   const updateData = {};
   const pathPrefix = "system.items";
+
+  // Spell and magicBauble duration free text -> structured {units, value, text}. See
+  // module/data/duration-schema.mjs for why this stopped being a plain string. Guarded on the old
+  // value actually still BEING a string, so this is a no-op once migrated (the new value is an
+  // object) and can't re-parse its own output.
+  if (["spell", "magicBauble"].includes(item.type) && typeof item.system?.duration == "string") {
+    updateData["system.duration"] = parseDurationString(item.system.duration);
+  }
+
+  // Area of Effect shape "burst" -> "circle". The shape field originally shipped with a
+  // system-flavoured vocabulary of its own; it now stores Foundry's own region shape type names so
+  // the value can be handed straight to canvas.regions.placeRegion() with no translation table
+  // (see module/data/aoe-schema.mjs). No compendium content ever used "burst", so this only
+  // catches weaponEffects a user authored in their own world between the two.
+  if (item.system?.shape == "burst") {
+    updateData["system.shape"] = "circle";
+  }
 
   if (item.type == "armor") {
     // Armor trait -> traits migration

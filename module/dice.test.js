@@ -225,7 +225,7 @@ describe("prepareInitiativeRoll", () => {
         items: perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } })),
         update: jest.fn(),
         getFlag: jest.fn((scope, key) => (
-          key == 'weImproviseUsedThisEncounter' && usedThisEncounter ? { combatId: 'combat1' } : undefined
+          key == 'weImproviseUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
         )),
         setFlag: jest.fn(),
       };
@@ -251,7 +251,7 @@ describe("prepareInitiativeRoll", () => {
       expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
         action: 'grantStoryPoints', amount: 1, actorName: 'Bot',
       });
-      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'weImproviseUsedThisEncounter', { combatId: 'combat1' });
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'weImproviseUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
     });
 
     test("doesn't grant again once already used this scene, without the Perk, or outside combat", async () => {
@@ -1040,7 +1040,7 @@ describe("prepareInitiativeRoll", () => {
       const vehicle = makeVehicleActor();
       global.game.actors = [vehicle];
       const actor = makePilotActor();
-      actor.getFlag = jest.fn(() => ({ combatId: 'combat1' }));
+      actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
 
       await dice.prepareInitiativeRoll(actor);
 
@@ -5327,7 +5327,7 @@ describe("rollSkill", () => {
         items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: AMBITIOUS_ID } } }] : [],
         getRollData: jest.fn(() => ({ skills: { athletics: { modifier: '0', shift: 'd20' } } })),
         getFlag: jest.fn((scope, key) => (
-          key == 'ambitiousUsedThisEncounter' && usedThisEncounter ? { combatId: 'combat1' } : undefined
+          key == 'ambitiousUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
         )),
         setFlag: jest.fn(),
       };
@@ -5395,7 +5395,7 @@ describe("rollSkill", () => {
         items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: ISOLATED_ID } } }] : [],
         getRollData: jest.fn(() => ({ skills: { athletics: { modifier: '0', shift: 'd20' } } })),
         getFlag: jest.fn((scope, key) => (
-          key == 'isolatedUsedThisEncounter' && usedThisEncounter ? { combatId: 'combat1' } : undefined
+          key == 'isolatedUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
         )),
         setFlag: jest.fn(),
       };
@@ -5464,7 +5464,7 @@ describe("rollSkill", () => {
           skills: { science: { modifier: '0', shift: 'd20' }, athletics: { modifier: '0', shift: 'd20' } },
         })),
         getFlag: jest.fn((scope, key) => (
-          key == 'iRememberReadingAboutUsedThisEncounter' && usedThisEncounter ? { combatId: 'combat1' } : undefined
+          key == 'iRememberReadingAboutUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
         )),
         setFlag: jest.fn(),
       };
@@ -10410,7 +10410,7 @@ describe("rollSkill", () => {
           ? [{ type: 'perk', flags: { core: { sourceId: OVER_THE_CANDLESTICK_ID } }, system: { choice } }]
           : [],
         getFlag: jest.fn((scope, key) => (
-          key == 'agileReflexesUsedThisEncounter' && usedThisEncounter ? { combatId: 'combat1' } : undefined
+          key == 'agileReflexesUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
         )),
         setFlag: jest.fn(),
       };
@@ -10444,7 +10444,7 @@ describe("rollSkill", () => {
       await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength' }, actor, meleeWeaponEffectHere);
 
       expect(dice._rollSkillHelper.mock.calls[0][4].entries[0].difficulty).toBe(6); // Evasion, not 10-3 Toughness
-      expect(targetActor.setFlag).toHaveBeenCalledWith('essence20', 'agileReflexesUsedThisEncounter', { combatId: 'combat1' });
+      expect(targetActor.setFlag).toHaveBeenCalledWith('essence20', 'agileReflexesUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
     });
 
     test("doesn't apply against a different Defense, without the Perk, with Innate Climber chosen instead, or once already used this scene", async () => {
@@ -11506,7 +11506,7 @@ describe("rollSkill", () => {
         }));
         actor.getFlag = jest.fn((scope, key) => (
           key == 'worthAShotCombatUsedThisEncounter' && usedThisEncounter
-            ? { combatId: 'combat1' } : undefined
+            ? { epoch: 1, window: 'encounter', count: 1 } : undefined
         ));
         actor.setFlag = jest.fn();
         return actor;
@@ -11912,7 +11912,7 @@ describe("rollSkill", () => {
       function makeThrillseekerActor({ hasHangUp = true, usesThisEncounter = 0 } = {}) {
         const items = hasHangUp
           ? [{ type: 'hangUp', flags: { core: { sourceId: THRILLSEEKER_HANGUP_ID } } }] : [];
-        const stored = usesThisEncounter > 0 ? { combatId: 'combat1', count: usesThisEncounter } : undefined;
+        const stored = usesThisEncounter > 0 ? { epoch: 1, window: 'encounter', count: usesThisEncounter } : undefined;
         return {
           ...mockActor,
           items,
@@ -11982,7 +11982,7 @@ describe("rollSkill", () => {
 
         expect(resolvedOptions.snag).toBe(true);
         expect(actor.setFlag).toHaveBeenCalledWith(
-          'essence20', 'thrillseekerUsedThisEncounter', expect.objectContaining({ combatId: 'combat1', count: 2 }),
+          'essence20', 'thrillseekerUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 2 }),
         );
       });
     });
@@ -12517,7 +12517,7 @@ describe("rollSkill", () => {
           expect(rollDialog.getSkillRollOptions.mock.calls[0][0].dependableAvailable).toBe(0);
 
           const usedActor = makeActor({ perkIds: [DEPENDABLE_ID] });
-          await usedActor.setFlag('essence20', 'dependableUsesThisScene', { sceneId: null, count: 1 });
+          await usedActor.setFlag('essence20', 'dependableUsesThisScene', { epoch: 1, window: 'scene', count: 1 });
           await dice.rollSkill(dataset, usedActor, null);
           expect(rollDialog.getSkillRollOptions.mock.calls[1][0].dependableAvailable).toBe(0);
         });
@@ -12534,7 +12534,7 @@ describe("rollSkill", () => {
           await dice.rollSkill(dataset, actor, null);
 
           expect(dice._rollSkillHelper.mock.calls[0][0]).toContain('10 + 0');
-          expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'dependableUsesThisScene', { sceneId: null, count: 1 });
+          expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'dependableUsesThisScene', { epoch: 1, window: 'scene', count: 1 });
         });
 
         test("the Hang-Up blocks it without an Edge, but not with one", async () => {
@@ -12642,7 +12642,7 @@ describe("rollSkill", () => {
           expect(dice._rollSkillHelper.mock.calls[0][0]).toContain('15');
           expect(actor.items.documentsByType.rolePoints[0].update).toHaveBeenCalledWith({ 'system.resource.value': 0 });
           expect(actor.setFlag).toHaveBeenCalledWith(
-            'essence20', 'legendaryDependabilityUsesThisScene', { sceneId: null, count: 1 },
+            'essence20', 'legendaryDependabilityUsesThisScene', { epoch: 1, window: 'scene', count: 1 },
           );
         });
 
@@ -12653,7 +12653,7 @@ describe("rollSkill", () => {
           });
           dice._rollSkillHelper = jest.fn();
           const actor = makeActor({ perkIds: [OLD_RELIABLE_ID, LEGENDARY_DEPENDABILITY_ID], moxie: 2 });
-          await actor.setFlag('essence20', 'legendaryDependabilityUsesThisScene', { sceneId: null, count: 1 });
+          await actor.setFlag('essence20', 'legendaryDependabilityUsesThisScene', { epoch: 1, window: 'scene', count: 1 });
 
           await dice.rollSkill(dataset, actor, null);
 
@@ -16058,6 +16058,120 @@ describe("rollSkill", () => {
 
         game.user.targets = { first: jest.fn(() => undefined) };
       });
+
+      // A spell's own authored system.damageValue/damageType, rather than a per-compendium-id
+      // entry in this file - so a homebrew attack spell (or any printed one nobody has hardcoded)
+      // can deal damage at all. See spell.mjs's own comment on those fields.
+      test("an authored damageValue is used for a spell with no hardcoded entry", async () => {
+        const rollDialog = createMockRollDialog();
+        rollDialog.getSkillRollOptions.mockReturnValue({
+          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+          defenseType: 'evasion',
+        });
+        dice._rollSkillHelper = jest.fn();
+        game.user.targets = makeTargetsSet();
+        const spellItem = {
+          type: 'spell',
+          name: 'Homebrew Blast',
+          system: { description: '', damageValue: 4, damageType: 'fire' },
+          flags: { core: { sourceId: 'Compendium.essence20.mlp_crb.Item.homebrew' } },
+        };
+
+        await dice.rollSkill({ ...dataset, skill: 'spellcasting', essence: 'any' }, makeSpellcasterActor(), spellItem);
+
+        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
+        expect(checkContext.damageValue).toBe(4);
+        expect(checkContext.damageType).toBe('fire');
+
+        game.user.targets = { first: jest.fn(() => undefined) };
+      });
+
+      test("an authored damageValue takes precedence over the legacy per-id table", async () => {
+        const rollDialog = createMockRollDialog();
+        rollDialog.getSkillRollOptions.mockReturnValue({
+          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+          defenseType: 'evasion',
+        });
+        dice._rollSkillHelper = jest.fn();
+        game.user.targets = makeTargetsSet();
+        // Explosive Beam is hardcoded to 1 Element damage above; authoring a value overrides it,
+        // which is how those legacy entries eventually migrate onto the schema.
+        const spellItem = {
+          type: 'spell',
+          name: 'Explosive Beam',
+          system: { description: '', damageValue: 3, damageType: 'fire' },
+          flags: { core: { sourceId: EXPLOSIVE_BEAM_ID } },
+        };
+
+        await dice.rollSkill({ ...dataset, skill: 'spellcasting', essence: 'any' }, makeSpellcasterActor(), spellItem);
+
+        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
+        expect(checkContext.damageValue).toBe(3);
+
+        game.user.targets = { first: jest.fn(() => undefined) };
+      });
+
+      test("a damageValue of 0 falls through, leaving a non-attack spell undamaging", async () => {
+        const rollDialog = createMockRollDialog();
+        rollDialog.getSkillRollOptions.mockReturnValue({
+          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+          defenseType: 'evasion',
+        });
+        dice._rollSkillHelper = jest.fn();
+        game.user.targets = makeTargetsSet();
+        const spellItem = {
+          type: 'spell',
+          name: 'Utility Spell',
+          system: { description: '', damageValue: 0, damageType: null },
+          flags: { core: { sourceId: 'Compendium.essence20.mlp_crb.Item.utility' } },
+        };
+
+        await dice.rollSkill({ ...dataset, skill: 'spellcasting', essence: 'any' }, makeSpellcasterActor(), spellItem);
+
+        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
+        expect(checkContext.damageValue).toBe(null);
+
+        game.user.targets = { first: jest.fn(() => undefined) };
+      });
+
+      // The Roll Options Dialog's Defense dropdown used to be pre-selected only for a
+      // weaponEffect; it now keys on the item declaring a Defense at all, so an attack spell
+      // pre-selects it the same way.
+      test("an attack spell's own defenseType pre-selects the Defense dropdown", async () => {
+        const rollDialog = createMockRollDialog();
+        rollDialog.getSkillRollOptions.mockReturnValue({
+          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+        });
+        dice._rollSkillHelper = jest.fn();
+        const spellItem = {
+          type: 'spell',
+          name: 'Homebrew Blast',
+          system: { description: '', defenseType: 'evasion' },
+          flags: { core: {} },
+        };
+
+        await dice.rollSkill({ ...dataset, skill: 'spellcasting', essence: 'any' }, makeSpellcasterActor(), spellItem);
+
+        expect(rollDialog.getSkillRollOptions.mock.calls[0][0].defenseType).toBe('evasion');
+      });
+
+      test("a spell with no defenseType still defaults to none", async () => {
+        const rollDialog = createMockRollDialog();
+        rollDialog.getSkillRollOptions.mockReturnValue({
+          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+        });
+        dice._rollSkillHelper = jest.fn();
+        const spellItem = {
+          type: 'spell',
+          name: 'Utility Spell',
+          system: { description: '', defenseType: null },
+          flags: { core: {} },
+        };
+
+        await dice.rollSkill({ ...dataset, skill: 'spellcasting', essence: 'any' }, makeSpellcasterActor(), spellItem);
+
+        expect(rollDialog.getSkillRollOptions.mock.calls[0][0].defenseType).toBe('none');
+      });
     });
 
     describe("Beam Volley (MLP CRB, Virtuoso Beam spell, p.138)", () => {
@@ -18549,7 +18663,7 @@ describe("rollSkill", () => {
       function makeAngryActor({ perkIds = [], usedThisEncounter = false } = {}) {
         const actor = makeActor({ perkIds });
         actor.getFlag = jest.fn((scope, key) => (
-          key == 'angryUsedThisEncounter' && usedThisEncounter ? { combatId: 'combat1' } : undefined
+          key == 'angryUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
         ));
         actor.setFlag = jest.fn();
         return actor;
@@ -18605,7 +18719,7 @@ describe("rollSkill", () => {
 
         await dice.rollSkill({ ...dataset, skill: 'brawn', essence: 'strength' }, actor, null);
 
-        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'angryUsedThisEncounter', { combatId: 'combat1' });
+        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'angryUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
       });
     });
 
@@ -19169,7 +19283,7 @@ describe("rollSkill", () => {
 
         expect(rollDialog.getSkillRollOptions.mock.calls[0][1].snag).toBe(true);
         expect(actor.setFlag).toHaveBeenCalledWith(
-          'essence20', 'rocketScientistHangUpUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+          'essence20', 'rocketScientistHangUpUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
         );
       });
 
@@ -19959,7 +20073,7 @@ describe("rollSkill", () => {
           items,
           system: { ...mockActor.system, level },
           getFlag: jest.fn((scope, key) => (
-            key == 'stickInTheSpokesUsedThisEncounter' && usedThisEncounter ? { combatId: 'combat1' } : undefined
+            key == 'stickInTheSpokesUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
           )),
           setFlag: jest.fn(),
           getRollData: jest.fn(() => ({ skills: { might: { modifier: '0', shift: 'd8' } } })),
@@ -20125,7 +20239,7 @@ describe("rollSkill", () => {
           items,
           system: { ...mockActor.system, level },
           getFlag: jest.fn((scope, key) => (
-            key == 'interdictionUsedThisEncounter' && usedThisEncounter ? { combatId: 'combat1' } : undefined
+            key == 'interdictionUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
           )),
           setFlag: jest.fn(),
           getRollData: jest.fn(() => ({ skills: { might: { modifier: '0', shift: 'd8' } } })),
@@ -20677,7 +20791,7 @@ describe("rollSkill", () => {
           ...mockActor,
           items,
           getFlag: jest.fn((scope, key) => (
-            key == 'whipIntoShapeUsedThisEncounter' && usedThisEncounter ? { combatId: 'combat1' } : undefined
+            key == 'whipIntoShapeUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
           )),
           setFlag: jest.fn(),
           getRollData: jest.fn(() => ({
@@ -20980,7 +21094,7 @@ describe("rollSkill", () => {
             skills: { intimidation: { modifier: '0', shift: 'd6' }, technology: { modifier: '0', shift: 'd10' } },
           })),
           getFlag: jest.fn((scope, key) => (
-            key == 'technicallyCorrectUsedThisEncounter' && usedThisEncounter ? { combatId: 'combat1' } : undefined
+            key == 'technicallyCorrectUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
           )),
           setFlag: jest.fn(),
         };
@@ -22133,7 +22247,7 @@ describe("rollSkill", () => {
 
         await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts' }, actor, null);
         expect(rollDialog.getSkillRollOptions.mock.calls[0][0].isSpecialized).toBe(true);
-        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'adaptableUsedThisEncounter', { combatId: 'c1' });
+        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'adaptableUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
 
         await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts' }, actor, null);
         expect(rollDialog.getSkillRollOptions.mock.calls[1][0].isSpecialized).toBe(false);
@@ -22167,7 +22281,7 @@ describe("rollSkill", () => {
 
         await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts' }, actor, null);
         expect(rollDialog.getSkillRollOptions.mock.calls[0][1].edge).toBe(true);
-        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'adventurerUsedThisEncounter', { combatId: 'c1' });
+        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'adventurerUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
 
         await dice.rollSkill({ ...dataset, skill: 'persuasion', essence: 'social' }, actor, null);
         expect(rollDialog.getSkillRollOptions.mock.calls[1][1].edge).toBeFalsy();
@@ -22203,7 +22317,7 @@ describe("rollSkill", () => {
 
         await dice.rollSkill({ ...dataset, skill: 'culture', essence: 'smarts' }, actor, null);
         expect(rollDialog.getSkillRollOptions.mock.calls[0][1].edge).toBe(true);
-        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'ninpoJoesUsedThisEncounter', { combatId: 'c1' });
+        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'ninpoJoesUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
 
         await dice.rollSkill({ ...dataset, skill: 'culture', essence: 'smarts' }, actor, null);
         expect(rollDialog.getSkillRollOptions.mock.calls[1][1].edge).toBeFalsy();
@@ -22239,7 +22353,7 @@ describe("rollSkill", () => {
 
         await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength' }, actor, null);
         expect(rollDialog.getSkillRollOptions.mock.calls[0][0].isSpecialized).toBe(true);
-        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'studentOfDivineManualsUsedThisEncounter', { combatId: 'c1' });
+        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'studentOfDivineManualsUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
 
         await dice.rollSkill({ ...dataset, skill: 'culture', essence: 'smarts' }, actor, null);
         expect(rollDialog.getSkillRollOptions.mock.calls[1][0].isSpecialized).toBeFalsy();
@@ -22438,7 +22552,7 @@ describe("rollSkill", () => {
 
         const checkContext = dice._rollSkillHelper.mock.calls[0][4];
         expect(checkContext.damageBonusValue).toBe(1);
-        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'forceUsedThisEncounter', { combatId: 'c1' });
+        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'forceUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
         expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingFleetingEnergy', { shiftDown: 1, combatId: 'c1', round: null });
       });
 
@@ -22450,7 +22564,7 @@ describe("rollSkill", () => {
         });
         dice._rollSkillHelper = jest.fn();
         const actor = makeActor({
-          perkIds: [FORCE_ID], flags: { forceUsedThisEncounter: { combatId: 'c1' } },
+          perkIds: [FORCE_ID], flags: { forceUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } },
         });
 
         await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength', dif: '10' }, actor, unarmedMightEffect);
@@ -23265,7 +23379,7 @@ describe("rollSkill", () => {
         expect(dice._rollSkillHelper.mock.calls[1][4].isSuckerPunchEligible).toBe(false);
 
         game.combat = { round: 1 };
-        actor.getFlag = jest.fn((scope, key) => (key == 'suckerPunchUsedThisEncounter' ? { combatId: undefined, round: undefined } : undefined));
+        actor.getFlag = jest.fn((scope, key) => (key == 'suckerPunchUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
         await dice.rollSkill({ ...dataset, skill: 'finesse', essence: 'speed', dif: '10' }, actor, unarmedEffect);
         expect(dice._rollSkillHelper.mock.calls[2][4].isSuckerPunchEligible).toBe(false);
       });
@@ -24665,7 +24779,7 @@ describe("rollSkill", () => {
 
         const usedActor = makeAlwaysReadyActor({ choice: 'pilot' });
         usedActor.getFlag = jest.fn((scope, key) => (
-          key == 'alwaysReadyUsesThisScene' ? { sceneId: null, count: 1 } : undefined
+          key == 'alwaysReadyUsesThisScene' ? { epoch: 1, window: 'scene', count: 1 } : undefined
         ));
         await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts' }, usedActor, null);
         expect(rollDialog.getSkillRollOptions.mock.calls[2][0].alwaysReadyAvailable).toBe(false);
@@ -24899,7 +25013,7 @@ describe("rollSkill", () => {
           ...mockActor,
           items,
           getFlag: jest.fn((scope, key) => (
-            key == 'seeingTheMatrixUsedThisEncounter' && usedThisEncounter ? { combatId: 'c1' } : undefined
+            key == 'seeingTheMatrixUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
           )),
           setFlag: jest.fn(),
           getRollData: jest.fn(() => ({
@@ -24928,7 +25042,7 @@ describe("rollSkill", () => {
         expect(returnedOptions.shiftUp).toBe(2);
         expect(rollDialog.getSkillRollOptions.mock.calls[0][0].seeingTheMatrixAvailable).toBe(true);
         expect(actor.setFlag).toHaveBeenCalledWith(
-          'essence20', 'seeingTheMatrixUsedThisEncounter', expect.objectContaining({ combatId: 'c1' }),
+          'essence20', 'seeingTheMatrixUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
         );
       });
 
@@ -25446,7 +25560,7 @@ describe("rollSkill", () => {
 
         expect(rollDialog.getSkillRollOptions.mock.calls[0][1].shift).toBe('d2');
         expect(rollDialog.getSkillRollOptions.mock.calls[0][1].snag).toBe(false);
-        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'aForEffortUsedThisEncounter', { combatId: 'c1' });
+        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'aForEffortUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
       });
 
       test("doesn't apply a second time in the same scene", async () => {
@@ -25753,7 +25867,7 @@ describe("rollSkill", () => {
 
         const usedActor = makeStatefulActor({
           perkIds: [EVERYTHING_IS_INSPIRATION_ID],
-          flags: { everythingIsInspirationUsedThisEncounter: { combatId: 'c1' } },
+          flags: { everythingIsInspirationUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } },
         });
         await dice.rollSkill({ ...dataset, skill: 'science', essence: 'smarts', dif: '10' }, usedActor, null);
         expect(dice._rollSkillHelper.mock.calls[1][4].isEverythingIsInspirationAttempt).toBe(false);
@@ -31202,7 +31316,7 @@ describe("_getAutomaticCombatModifiers", () => {
       game.combat = { id: 'combat1' };
       const usedTarget = makeActor('common', [], { perkIds: [PROJECTILE_DANCER_ID] });
       usedTarget.getFlag = jest.fn((scope, key) => (
-        key == 'projectileDancerUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        key == 'projectileDancerUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       game.user.targets.first.mockReturnValue({ actor: usedTarget });
       expect(dice._getAutomaticCombatModifiers(makeActor('common'), rangedWeaponEffect)).toEqual(defaultModifiers);
@@ -37908,7 +38022,7 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
       FakeRoll.nextTotal = 20;
       const actor = makeBrrrActor();
       actor.getFlag = jest.fn((scope, key) => (
-        scope == 'essence20' && key == 'brrrrrrrrrrrrrrtUsedThisEncounter' ? { combatId: 'combat1' } : undefined
+        scope == 'essence20' && key == 'brrrrrrrrrrrrrrtUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
       ));
       const ally = addAlly();
       const checkContext = {

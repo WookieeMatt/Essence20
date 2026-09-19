@@ -51,6 +51,7 @@ export const preloadHandlebarsTemplates = async function () {
 
     // Actor partials - Misc
     "systems/essence20/templates/actor/parts/misc/npc-skill-list.hbs",
+    "systems/essence20/templates/actor/parts/misc/action-economy.hbs",
     "systems/essence20/templates/actor/parts/misc/background.hbs",
     "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs",
     "systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs",
@@ -140,12 +141,16 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/item/tabs/detail-base.hbs",
     // Item partials.
 
+    "systems/essence20/templates/hud/waypoint-label.hbs",
+    "systems/essence20/templates/item/parts/activation-fields.hbs",
     "systems/essence20/templates/item/parts/header.hbs",
     "systems/essence20/templates/item/parts/id-drop.hbs",
 
     "systems/essence20/templates/item/parts/role-perk-drop.hbs",
     "systems/essence20/templates/item/parts/sub-perk-drop.hbs",
     "systems/essence20/templates/item/parts/sheet-field.hbs",
+    "systems/essence20/templates/item/parts/aoe-fields.hbs",
+    "systems/essence20/templates/item/parts/duration-fields.hbs",
 
     //Item details
     "systems/essence20/templates/item/details/alteration.hbs",

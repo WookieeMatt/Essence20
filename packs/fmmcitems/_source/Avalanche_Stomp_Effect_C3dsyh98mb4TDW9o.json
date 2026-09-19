@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "athletics",
       "style": "melee"
@@ -27,7 +28,8 @@
       "book": "Finster's Monster-Matic Cookbook",
       "page": 296
     },
-    "description": "<p>30 ft radius centered on self; targets all creatures on the ground; on a Critical Success, the target is also knocked Prone</p>"
+    "description": "<p>30 ft radius centered on self; targets all creatures on the ground; on a Critical Success, the target is also knocked Prone</p>",
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

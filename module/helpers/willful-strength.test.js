@@ -4,7 +4,7 @@ import { activateWillfulStrength } from './willful-strength.mjs';
 global.game = { combat: { id: 'combat1' } };
 
 function makeActor({ shift = 'd8', used = false, healthBonus = 0 } = {}) {
-  const flagStore = used ? { willfulStrengthUsedThisEncounter: { combatId: 'combat1' } } : {};
+  const flagStore = used ? { willfulStrengthUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } } : {};
   return {
     system: { skills: { survival: { shift } }, health: { bonus: healthBonus } },
     getFlag: jest.fn((scope, key) => flagStore[key]),
