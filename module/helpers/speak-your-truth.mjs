@@ -27,7 +27,7 @@ export async function pickSpeakYourTruthEssence() {
     .map(key => `<option value="${key}">${game.i18n.localize(E20.essences[key])}</option>`).join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.SpeakYourTruthPickTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.SpeakYourTruthPickLabel')
     }</label><select name="essence">${essenceOptions}</select></div>`,

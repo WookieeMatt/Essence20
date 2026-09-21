@@ -11,6 +11,7 @@
       "book": "Cobra Codex",
       "page": 51
     },
+    "actionType": "standard",
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

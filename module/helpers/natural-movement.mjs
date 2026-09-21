@@ -28,7 +28,7 @@ const NATURAL_MOVEMENT_FLAG = 'naturalMovementType';
 export async function pickNaturalMovementType() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.NaturalMovementPickTypeTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<p>${game.i18n.localize('E20.NaturalMovementPickTypeLabel')}</p>`,
     modal: true,
     buttons: [

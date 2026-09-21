@@ -44,7 +44,7 @@ export async function pickMaturedHangUp(actor) {
   const options = hangUps.map(hangUp => `<option value="${hangUp.id}">${hangUp.name}</option>`).join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.MaturedPickHangUpTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.MaturedPickHangUpLabel')
     }</label><select name="hangUp">${options}</select></div>`,

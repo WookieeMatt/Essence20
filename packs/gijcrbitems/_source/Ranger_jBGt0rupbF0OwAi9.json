@@ -15,7 +15,7 @@
       "0c13": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.tqiseYDXnEngUlvd",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Adaption Points",
+        "name": "Adaptation Points",
         "type": "rolePoints",
         "bonus": {
           "defenseBonus": {

@@ -1,4 +1,6 @@
 import { E20 } from "./config.mjs";
+import { isAutomated } from "./named-actions.mjs";
+import { canUsePerk } from "./banked-buffs.mjs";
 
 /**
  * Action Economy.
@@ -70,6 +72,16 @@ export function emptyLedger() {
     freeGranted: 0,
     turnConsumed: false,
     turnSkipped: false,
+    /* Whether a shot is currently being aimed. Aiming is a Free action ("when you Aim as a
+       Free action" - GI Joe CRB) that improves the next roll, so it has to be remembered
+       between the aim and the shot; it clears when that shot is taken, which is what makes it
+       once per roll rather than once per turn. */
+    aimed: false,
+    /* Whether the Sprint action has been taken this turn: "By taking a Standard action to
+       Sprint, you may move up to double your full Movement" (GI Joe CRB p.197). Per-turn, so
+       it belongs here rather than on the actor, and it is read by helpers/token-movement.mjs
+       to raise the allowance both the ruler and the enforcement measure against. */
+    sprinting: false,
     log: [],
   };
 }
@@ -189,27 +201,6 @@ export function getCombatant(actor) {
   return combatants.find(c => tokenId && c.tokenId == tokenId) ?? combatants[0];
 }
 
-/**
- * The document the ledger is actually stored on. Normally the Combatant itself, but when the
- * world has group budgets switched on and the combatant belongs to a CombatantGroup (Foundry
- * v14's own shared-initiative primitive - combat.groups / combatant.group / group.members), the
- * whole group shares one ledger instead.
- *
- * That is the entire implementation of "do a Zord crew share an action economy?" - a lookup, not
- * a schema fork. Whether a given game line SHOULD share is a rules question for the GM, which is
- * why it's a setting rather than a hard-coded rule per actor type.
- * @param {Actor} actor
- * @returns {Combatant|CombatantGroup|null}
- */
-export function getLedgerDocument(actor) {
-  const combatant = getCombatant(actor);
-  if (!combatant) {
-    return null;
-  }
-
-  const shareGroup = readSetting('actionEconomyGroupBudget');
-  return (shareGroup && combatant.group) ? combatant.group : combatant;
-}
 
 /* -------------------------------------------- */
 /*  Reading                                     */
@@ -239,7 +230,7 @@ export function getBudget(actor) {
  * @returns {Object}
  */
 export function getLedger(actor) {
-  const document = getLedgerDocument(actor);
+  const document = getCombatant(actor);
   const stored = document?.getFlag?.(FLAG_SCOPE, FLAG_KEY);
   return stored ? { ...emptyLedger(), ...stored } : emptyLedger();
 }
@@ -289,8 +280,90 @@ export function getRemaining(actor) {
  * @param {Actor} actor
  * @returns {Promise<Boolean>}   Whether the trade happened.
  */
+/**
+ * Whether this actor has Sprinted this turn.
+ *
+ * Read by helpers/token-movement.mjs rather than acted on here: Sprint does not move anyone, it
+ * raises the distance a Move action is allowed to cover, so the only thing that changes is what
+ * the ruler draws in green and what the enforcement measures against.
+ *
+ * @param {Actor} actor
+ * @returns {Boolean}
+ */
+export function isSprinting(actor) {
+  return !!getLedger(actor)?.sprinting;
+}
+
+/**
+ * Start Sprinting. Cleared with the rest of the ledger at the start of the next turn - there is
+ * no "stop sprinting", because the action is spent for the turn either way.
+ *
+ * @param {Actor} actor
+ * @param {Boolean} [sprinting]
+ * @returns {Promise<void>}
+ */
+export async function setSprinting(actor, sprinting = true) {
+  const document = getCombatant(actor);
+  if (!document) {
+    return;
+  }
+
+  const ledger = getLedger(actor);
+  if (!!ledger.sprinting == !!sprinting) {
+    return;
+  }
+
+  ledger.sprinting = !!sprinting;
+  await writeLedger(document, ledger);
+}
+/**
+ * Whether this actor is already aiming a shot that has not been taken yet.
+ *
+ * Aim is a Free action and the rules let a character take several in a turn, so the limit here
+ * is not the budget - it is that a single shot can only be aimed once. Two Aims with no shot in
+ * between would otherwise read as a stacking bonus, which no printed Aim rule grants.
+ *
+ * (The Transformers CRB has its own exception - "you can choose to ignore one of the target's
+ * Armor Upgrades for each Free action you spend Aiming" - which spends repeatedly against one
+ * shot. That is a TF-specific trade, not the general Aim rule, and would need its own option
+ * rather than removing this gate.)
+ *
+ * @param {Actor} actor
+ * @returns {Boolean}
+ */
+export function isAiming(actor) {
+  return !!getLedger(actor)?.aimed;
+}
+
+/**
+ * Start or clear an aim.
+ *
+ * Cleared by the roll the aim was for - see documents/item.mjs#roll, which clears it after a
+ * weapon effect resolves. A weapon effect is what rolls an attack; the weapon itself has no
+ * roll button anywhere in the sheet.
+ *
+ * @param {Actor} actor
+ * @param {Boolean} [aiming]  False to clear.
+ * @returns {Promise<void>}
+ */
+export async function setAiming(actor, aiming = true) {
+  const document = getCombatant(actor);
+  if (!document) {
+    return;
+  }
+
+  const ledger = getLedger(actor);
+  // Out of combat there is no ledger to clear, and a no-op write would touch the combatant on
+  // every single roll for no reason.
+  if (!!ledger.aimed == !!aiming) {
+    return;
+  }
+
+  ledger.aimed = !!aiming;
+  await writeLedger(document, ledger);
+}
 export async function tradeStandardForFree(actor) {
-  const document = getLedgerDocument(actor);
+  const document = getCombatant(actor);
   if (!document || getRemaining(actor).standard < 1) {
     return false;
   }
@@ -342,7 +415,7 @@ export function canSpend(actor, actionType) {
     return result;
   }
 
-  if (!getLedgerDocument(actor)) {
+  if (!getCombatant(actor)) {
     return result;
   }
 
@@ -393,7 +466,7 @@ export async function spend(actor, actionType, { source = null, bypass = false }
     }
   }
 
-  const document = getLedgerDocument(actor);
+  const document = getCombatant(actor);
   if (!document) {
     return { ...check, ok: true, spendId: null, blocked: false };
   }
@@ -425,7 +498,7 @@ export async function refund(actor, spendId) {
     return false;
   }
 
-  const document = getLedgerDocument(actor);
+  const document = getCombatant(actor);
   if (!document) {
     return false;
   }
@@ -459,7 +532,7 @@ export async function refund(actor, spendId) {
  * @returns {Promise<Boolean>}
  */
 export async function adjust(actor, category, delta) {
-  const document = getLedgerDocument(actor);
+  const document = getCombatant(actor);
   if (!document || !(category in E20.actionCategories)) {
     return false;
   }
@@ -543,7 +616,7 @@ export async function consumeForItem(item, { actor = null, bypass = false } = {}
  *   {categories: [{key, label, spent, max, pips}], turnSkipped, shared, canTrade}
  */
 export function getSheetContext(actor) {
-  if (!isTracking() || !actor?.system?.actions?.enabled || !getLedgerDocument(actor)) {
+  if (!isTracking() || !actor?.system?.actions?.enabled || !getCombatant(actor)) {
     return null;
   }
 
@@ -564,13 +637,214 @@ export function getSheetContext(actor) {
     return { key, label, spent, max, pips };
   });
 
+
+  /* What has already gone, newest first. spend() has always recorded a source; nothing ever
+     showed it, so a player could see that a Standard was gone but not what took it. */
+  const spent = [...(ledger.log ?? [])].reverse().map(entry => ({
+    source: entry.source,
+    label: E20.actionTypes[entry.actionType] ?? entry.actionType,
+  }));
+
   return {
     categories,
+    spent,
     turnSkipped: !!ledger.turnSkipped,
     // Speed 1 - worth saying on the sheet, because two full pips that both vanish when either is
     // spent looks like a bug unless the player knows why.
     shared: !!actor.system.actions.shared,
     canTrade: remaining.standard > 0,
+  };
+}
+
+/**
+ * Which of the three tracked categories an action is filed under on the Actions tab. A cost is a
+ * map, not a single category - a Full Action spends a Standard AND a Move - so the heaviest part
+ * decides the group and the row's own label spells the rest out. Actions that cost nothing
+ * tracked (tenMinutes, oneHour) aren't turn actions at all and are filed separately.
+ *
+ * @param {Object} cost    A cost map from getCost().
+ * @returns {String|null}  A key of E20.actionCategories, or null for anything off the turn clock.
+ */
+function primaryCategory(cost) {
+  for (const category of Object.keys(E20.actionCategories)) {
+    if (cost?.[category]) {
+      return category;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Everything this actor can do on its turn, grouped by what it costs, for the Actions tab.
+ *
+ * Two sources, deliberately shown side by side:
+ *
+ * 1. The actions the rules give everyone (E20.namedActions) - Attack, Defend, Aim, Sprint. These
+ *    have no Item behind them, so nothing on the sheet could ever charge for them and a player had
+ *    to know the cost and decrement a pip by hand. Here each one is a button that spends through
+ *    spend() with its own name as the source, which is what the turn log reads back.
+ *
+ * 2. The actor's own items that cost something - a weapon, a Power, an activatable Perk. These
+ *    already charge themselves when rolled (consumeForItem), so the buttons here are the ordinary
+ *    roll/use controls; the tab adds no new spending path, it just puts them all in one place
+ *    sorted by cost, which is the question a player actually has on their turn.
+ *
+ * Returns null when the economy isn't running, exactly as getSheetContext does, so the tab can be
+ * hidden wholesale rather than rendering an empty shell out of combat.
+ *
+ * @param {Actor} actor            The actor whose sheet is being rendered.
+ * @returns {Object|null}          {groups: [{key, label, remaining, max, actions, items}], other}
+ */
+export function getActionsTabContext(actor) {
+  if (!actor?.system?.actions) {
+    return null;
+  }
+
+  /* Whether there is a real budget behind this, which needs all three: the world counting
+     actions at all, this actor taking part, and a Combatant to hold the ledger. Without one the
+     tab still renders - it is the answer to "what can I do and what does it cost", which is worth
+     having open while planning a character - but as a reference: no numbers, and no buttons for
+     the actions that would spend from a ledger that does not exist.
+
+     The rules' own actions in particular must NOT be takeable here. Defend applies a Condition
+     that documents/combat.mjs#_onStartTurn clears at the start of the defender's next turn, and
+     out of combat that turn never comes - it would stick to the actor forever. The items keep
+     their buttons, because rolling a weapon or using a Perk works perfectly well out of an
+     encounter and always has. */
+  const live = isTracking() && !!actor.system.actions.enabled && !!getCombatant(actor);
+
+  const remaining = getRemaining(actor);
+  const budget = getBudget(actor);
+  const ledger = getLedger(actor);
+
+  const groups = Object.entries(E20.actionCategories).map(([key, label]) => ({
+    key,
+    label,
+    remaining: remaining[key] ?? 0,
+    max: (budget[key] ?? 0) + (key == "free" ? (ledger.freeGranted ?? 0) : 0),
+    actions: [],
+    items: [],
+  }));
+  const byCategory = Object.fromEntries(groups.map(group => [group.key, group]));
+
+  for (const [key, action] of Object.entries(E20.namedActions)) {
+    const cost = getCost(action.type);
+    const group = byCategory[primaryCategory(cost)];
+    if (!group) {
+      continue;
+    }
+
+    /* Aim is limited by the shot rather than by the budget: a Free action is still available,
+       but a shot already being aimed cannot be aimed again. Reported separately from
+       `affordable` so the row can say which of the two is stopping it. */
+    const alreadyAimed = live && key == 'aim' && ledger.aimed;
+
+    group.actions.push({
+      key,
+      label: action.label,
+      type: action.type,
+      costLabel: describeCost(cost),
+      affordable: !live || (canSpend(actor, action.type).ok && !alreadyAimed),
+      alreadyAimed,
+      // Whether taking it does anything beyond spending the cost, so the row can say so - the
+      // rest are deliberately cost-only, for the reasons listed in helpers/named-actions.mjs.
+      automated: isAutomated(key),
+      // The ways of taking this action that the character actually owns. Only Attack has any
+      // today - its weapon effects - but an empty array everywhere keeps the template uniform.
+      children: [],
+    });
+  }
+
+  /* Weapon effects hang off the Attack row rather than sitting loose in the Standard group. A
+     weapon effect IS the Attack action - it is the thing that rolls, since a weapon itself has no
+     roll button anywhere in the sheet - so listing them as siblings of Attack read as a list of
+     unrelated options with Attack sitting uselessly among them. They nest under it whatever their
+     own cost says, and each row still shows that cost, so an effect somebody has set to Free is
+     visible as such without being filed away from the action it belongs to. */
+  const attackAction = byCategory[primaryCategory(getCost(E20.namedActions.attack.type))]
+    ?.actions.find(a => a.key == 'attack');
+
+  /* Two different reasons an item belongs on this tab, and they do not overlap:
+
+     1. It costs something - a weapon effect, a Power, a Perk with an authored action cost. Filed
+        under what it costs. Items with no authored cost are the overwhelming majority (see the
+        activation template) and listing them all would bury these under a thousand passives.
+
+     2. It can be ACTIVATED - a Perk with a Use button. Most of these carry no action cost at all
+        (the ~2,600 unauthored Perks), so rule 1 would miss exactly the ones a player most wants
+        to find on their turn. canUsePerk is the same predicate the Perks tab own Use button
+        already renders on, so the two agree: a Perk that has spent its once-per-turn drops off
+        this tab exactly as its bolt icon disappears over there.
+
+     An item can satisfy both - an activatable Perk that also costs a Free action - and is filed
+     under its cost, once, with the Use button its activation earns it. */
+  const untimed = [];
+  for (const item of actor.items) {
+    const actionType = item.system?.actionType;
+    const costs = actionType && actionType != "none" && !item.system?.ignoresEconomy;
+    const activatable = canUsePerk(item);
+    if (!costs && !activatable) {
+      continue;
+    }
+
+    const cost = costs ? getCost(actionType) : {};
+
+    /* A weapon effect's own name is often either redundant ("Auto Blaster Effect", under Auto
+       Blaster) or useless ("New WeaponEffect", the default for one made by hand). The weapon is
+       named alongside it only when the effect's name does not already carry it. */
+    let parentName = null;
+    if (item.type == 'weaponEffect') {
+      const parentId = item.flags?.essence20?.parentId;
+      const parent = parentId ? actor.items.get(parentId) : null;
+      if (parent && !item.name.toLowerCase().includes(parent.name.toLowerCase())) {
+        parentName = parent.name;
+      }
+    }
+
+    const entry = {
+      item,
+      parentName,
+      activatable,
+      costLabel: costs ? describeCost(cost) : null,
+      affordable: !live || (costs ? canSpend(actor, actionType).ok : true),
+      // The trigger is the whole point of a Contingency - "waiting for what?" - and is the one
+      // authored field worth showing next to the name rather than only in the item sheet.
+      trigger: actionType == "contingency" ? (item.system?.contingencyTrigger || null) : null,
+    };
+
+    if (item.type == 'weaponEffect' && attackAction) {
+      attackAction.children.push(entry);
+      continue;
+    }
+
+    /* Nothing tracked to file it under - an activatable Perk with no authored action cost, which
+       is most of them. It still belongs on the tab; it just cannot claim a budget it does not
+       spend, so it goes below the three that do rather than being given a category at random. */
+    const group = byCategory[primaryCategory(cost)];
+    if (group) {
+      group.items.push(entry);
+    } else {
+      untimed.push(entry);
+    }
+  }
+
+  const byName = (a, b) => a.item.name.localeCompare(b.item.name);
+  for (const group of groups) {
+    group.items.sort(byName);
+    for (const action of group.actions) {
+      action.children.sort(byName);
+    }
+  }
+
+  untimed.sort(byName);
+
+  return {
+    live,
+    groups,
+    untimed,
+    turnSkipped: live && !!ledger.turnSkipped,
+    shared: live && !!actor.system.actions.shared,
   };
 }
 

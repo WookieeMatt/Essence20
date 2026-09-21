@@ -6,6 +6,8 @@ import * as data from "./data/index.mjs";
 import { createEffectMacro, toggleEffectMacro } from "./helpers/effects.mjs";
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
+import { Essence20Actors } from "./documents/actors.mjs";
+import { Essence20ActorDirectory } from "./apps/essence20-actor-directory.mjs";
 import { Essence20Combat } from "./documents/combat.mjs";
 import { Essence20TokenDocument } from "./documents/token.mjs";
 import { Essence20CombatTracker } from "./apps/combat-tracker.mjs";
@@ -17,6 +19,7 @@ import { Essence20CharacterActorSheet } from "./sheets/character-sheet.mjs";
 import { Essence20CompanionActorSheet } from "./sheets/companion-sheet.mjs";
 import { Essence20NPCActorSheet } from "./sheets/npc-sheet.mjs";
 import { Essence20MegaformActorSheet } from "./sheets/megaform-sheet.mjs";
+import { Essence20PartyActorSheet } from "./sheets/party-sheet.mjs";
 import { Essence20VehicleActorSheet } from "./sheets/vehicle-sheet.mjs";
 import { Essence20ZordActorSheet } from "./sheets/zord-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
@@ -55,7 +58,7 @@ import { isImmuneToCondition } from "./helpers/condition-immunity.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
 import { expireAoeRegions, expireAoeRegionsForScene, reconcileAoeRegions } from "./helpers/aoe-expiry.mjs";
-import { applyThemeClass, refreshChatMessageThemes, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
+import { applyThemeClass, insertSettingGroupHeadings, migrateSheetThemeSetting, refreshChatMessageThemes, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
 import { updateRoleCache } from "./helpers/utils.mjs";
 import { registerEssence20Tours, sweepTourDemoContent } from "./tours/index.mjs";
 import { activateWelcomeOfferListeners, offerWelcomeTour } from "./tours/welcome-offer.mjs";
@@ -145,6 +148,8 @@ Hooks.once("init", async function () {
 
   // Define custom Document classes
   CONFIG.Actor.documentClass = Essence20Actor;
+  CONFIG.Actor.collection = Essence20Actors;
+  CONFIG.ui.actors = Essence20ActorDirectory;
   CONFIG.Combat.documentClass = Essence20Combat;
   CONFIG.Combatant.documentClass = Essence20Combatant;
   // Charges token movement against the action economy - see documents/token.mjs and
@@ -223,6 +228,15 @@ Hooks.once("init", async function () {
       types: ["npc"],
       makeDefault: true,
       label: "NPC/Contact",
+    },
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    "essence20",
+    Essence20PartyActorSheet,
+    {
+      types: ["party"],
+      makeDefault: true,
+      label: "Party",
     },
   );
   foundry.documents.collections.Actors.registerSheet(
@@ -421,6 +435,10 @@ Hooks.on("clientSettingChanged", (key) => {
 Hooks.once("ready", async function () {
   runMigrations();
 
+  /* Client-scoped, so it cannot ride along with runMigrations() (which is the world-data pass a
+     GM runs once for everyone) - every browser has its own copy to carry across. */
+  await migrateSheetThemeSetting();
+
   /* Catch any lingering Area of Effect region that should have expired while nobody was logged in,
      or whose expiry was missed because no GM was connected at the time. */
   reconcileAoeRegions();
@@ -604,6 +622,9 @@ Hooks.on("renderChatMessageHTML", (app, html, data) => {
   hideDifficultyForNonGm(app, html);
   applyChatMessageSystemColor(app, html);
   activateWelcomeOfferListeners(app, html);
+  // Namespaces the message so _chat.scss can scope its envelope rules to our own cards
+  // rather than styling every message in a shared chat log.
+  html.classList.add("essence20");
   applyThemeClass(html);
 });
 
@@ -832,6 +853,13 @@ Hooks.on("getHeaderControlsActiveEffectConfig", (app, controls) => {
 
 /* Flags a change key that will never apply, inline on Foundry's own effect sheet - see
    helpers/effect-key-warnings.mjs. Decoration only; the sheet itself is untouched. */
+/* Draws the group headings over this system's own settings - see settings.js#SETTING_GROUPS.
+   Decoration only: every setting still renders and behaves exactly as Foundry rendered it, so
+   if this ever stops matching core's markup the settings list simply goes back to being flat. */
+Hooks.on("renderSettingsConfig", (app, html) => {
+  insertSettingGroupHeadings(html);
+});
+
 Hooks.on("renderActiveEffectConfig", (app, html) => {
   addEffectKeyWarnings(app, html);
 });

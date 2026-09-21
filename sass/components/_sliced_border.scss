@@ -9,11 +9,60 @@
   https://codepen.io/glorenz90/pen/wBBVqxG
 */
 
-.sliced-border {
+/* The sliced-corner panel as a mixin, so a container that already has a class of its own can
+   take the look without the template having to add .sliced-border to it.
+
+   This matters for the apps and dialogs: there are two dozen app templates with twenty-two
+   different root containers between them, and 478 DialogV2 call sites building their content as
+   inline HTML strings. Reaching those by editing markup is not realistic; reaching them by
+   including this on the selectors they already have is.
+
+   Kept in lockstep with .sliced-border below by construction - that class is now just this mixin
+   plus its own label/modifier rules, so the two cannot drift. */
+@mixin sliced-panel($corner: 16px) {
+  position: relative;
+
+  &::after {
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+    content: "";
+    inset: 0;
+    background: var(--e20-theme-panel-bg);
+    /* The fill has to be cut to whatever shape the ACTIVE theme's frame art is, not to a
+       fixed one. The Sci-fi border is a chamfered rectangle (top-left and bottom-right cut,
+       the other two square) and that polygon is the fallback below, but the Pony border is a
+       hand-drawn rounded rectangle with all four corners curved. Cutting a pony panel to the
+       sci-fi shape left the fill poking out past the curve at the square corners - most
+       visibly at the top right, where the frame curves away and the fill did not. */
+    clip-path: var(--e20-theme-panel-clip,
+      polygon(#{$corner} 0, 100% 0, 100% calc(100% - #{$corner}), calc(100% - #{$corner}) 100%, 0 100%, 0 #{$corner}));
+  }
+
+  &::before {
+    pointer-events: none;
+    filter: var(--e20-theme-border-filter);
+    position: absolute;
+    z-index: 0;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-style: solid;
+    border-image: var(--e20-theme-border-image);
+    border-image-slice: 16;
+    border-width: 16px;
+  }
+}
+
+/* Both forms: this class is put on a window root (Story Points) as well as on panels
+   inside a sheet, so neither a compound nor a descendant selector covers it alone. */
+.essence20.sliced-border,
+.essence20 .sliced-border {
   width: fit-content;
   height: fit-content;
   display: flex;
-  position: relative;
   padding: 4px 2px;
 
   &:has(> .sliced-border__label) {
@@ -24,64 +73,40 @@
     padding-top: v.$gap-sliced-border + 16px;
   }
 
-  &::after {
-    pointer-events: none;
-    position: absolute;
-    z-index: -1;
-    content: "";
-    inset: 0;
-    background: var(--theme-panel-bg);
-    clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
-  }
-
-  &::before {
-    pointer-events: none;
-    filter: var(--theme-border-filter);
-    position: absolute;
-    z-index: 0;
-    content: "";
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    border-style: solid;
-    border-image: var(--theme-border-image);
-    border-image-slice: 16;
-    border-width: 16px;
-  }
+  @include sliced-panel;
 
   &.--col {
     flex-direction: column;
   }
 
   &.--thin::before {
-    border-image: var(--theme-border-image);
+    border-image: var(--e20-theme-border-image);
     border-image-slice: 16;
   }
 
   &.--filled {
-    color: var(--theme-bg-color) !important; // Could be included, but this is appropriate here
+    color: var(--e20-theme-bg-color) !important; // Could be included, but this is appropriate here
     font-weight: bold;
 
     &::before {
-      border-image: var(--theme-filled-border-image);
+      border-image: var(--e20-theme-filled-border-image);
       border-image-slice: 16 fill;
     }
   }
 
   &.--thick::before {
-    border-image: var(--theme-thick-border-image);
+    border-image: var(--e20-theme-thick-border-image);
     border-image-slice: 16 fill;
   }
 
   &.--tab {
     &::before {
-      border-image: var(--theme-tab-image);
+      border-image: var(--e20-theme-tab-image);
       border-image-slice: 16;
     }
 
     &.--filled::before {
-      border-image: var(--theme-filled-tab-image);
+      border-image: var(--e20-theme-filled-tab-image);
       border-image-slice: 16 fill;
     }
   }
@@ -92,7 +117,7 @@
     gap: v.$gap-md;
     justify-content: center;
     align-items: center;
-    color: var(--theme-text-color);
+    color: var(--e20-theme-text-color);
     width: max-content;
     position: absolute;
     top: 0;
@@ -112,8 +137,8 @@
   a.sliced-border__label {
     padding: 0 8px;
     line-height: 0.75rem;
-    background: var(--theme-panel-bg);
-    color: var(--theme-text-color);
+    background: var(--e20-theme-panel-bg);
+    color: var(--e20-theme-text-color);
     border-radius: 6px;
     padding: 4px 10px;
     box-shadow: 0 1px 0 rgba(0,0,0,0.4) inset;
@@ -124,8 +149,8 @@
     cursor: pointer;
 
     &:hover {
-      color: var(--theme-accent);
-      text-shadow: 0 0 6px var(--theme-accent);
+      color: var(--e20-theme-accent);
+      text-shadow: 0 0 6px var(--e20-theme-accent);
 
       .sliced-border__label-edit-icon {
         opacity: 1;

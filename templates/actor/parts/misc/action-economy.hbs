@@ -11,7 +11,8 @@
       inside the box made it half again as wide and a third taller than its neighbours. --}}
 {{#if actionEconomy}}
   <div class="action-economy sliced-border {{#if actionEconomy.turnSkipped}}action-economy--skipped{{/if}}">
-    <label class="sliced-border__label">{{localize 'E20.ActionEconomyHeader'}}</label>
+    <label class="sliced-border__label"
+           data-tooltip="{{#if actionEconomy.spent}}{{localize 'E20.ActionEconomySpentThisTurn'}}: {{#each actionEconomy.spent as |s|}}{{#if s.source}}{{s.source}}{{else}}{{localize s.label}}{{/if}}{{#unless @last}}, {{/unless}}{{/each}}{{else}}{{localize 'E20.ActionEconomyNothingSpent'}}{{/if}}">{{localize 'E20.ActionEconomyHeader'}}</label>
     <div class="action-economy__rows">
       {{#each actionEconomy.categories as |category|}}
         <div class="action-economy__row" data-category="{{category.key}}">
@@ -40,7 +41,9 @@
     </div>
 
     {{!-- Both of these are usually absent, and the box collapses back to just the pips when they
-          are - see the :empty rule in sass/actors/_action-economy.scss. --}}
+          are - see the :empty rule in sass/actors/_action-economy.scss. The rules' own named
+          actions used to be offered here as a select; they live on the Actions tab now, which has
+          room to group them by cost and to let the same one be taken twice (Aim, repeatedly). --}}
     <div class="action-economy__notes">
       {{!-- "Alternatively, a character may trade in a Standard action for two Free actions"
             (CRB p.193). Only offered while there's still a Standard left to give up. --}}

@@ -300,12 +300,25 @@ export class RollDialog {
       cobraBattleCryDeceptionAvailable: dataset.cobraBattleCryDeceptionAvailable,
       cobraBattleCryIntimidationAvailable: dataset.cobraBattleCryIntimidationAvailable,
       angryAvailable: dataset.angryAvailable,
+      hardpointMovement: dataset.hardpointMovement,
       defenseType: dataset.defenseType || 'none',
       defenseTypes: { none: 'E20.None', ...E20.defenses },
       availableSkillEffects: dataset.availableSkillEffects || [],
     };
+    /* E20.originSkills is conditioning plus E20.skills, and two rollable things are deliberately
+       absent from both: Wealth, which is a real `system.skills.wealth` field but which the sheets
+       present separately as the Wealth Die (see helpers/effect-catalog.mjs's own note), and a
+       Role's own skill die, which is named by the Role rather than by any enum. Both used to make
+       this title read "<actor> <shift> undefined Skill Roll". */
+    const skillLabel = E20.originSkills[dataset.skill]
+      // preLocalize has already turned the tables above into real strings, so this has to be a
+      // localized string too rather than the key.
+      ?? (dataset.skill == 'wealth' ? this._localize('E20.Wealth') : null)
+      ?? dataset.roleSkillName
+      ?? '';
+
     const title = this._localize('E20.RollDialogTitle', {
-      actor: actor.name, skill: E20.originSkills[dataset.skill], shift: E20.skillShifts[skillDataset.shift],
+      actor: actor.name, skill: skillLabel, shift: E20.skillShifts[skillDataset.shift],
     });
 
     return new Promise(resolve => {

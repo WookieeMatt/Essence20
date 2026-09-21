@@ -444,7 +444,7 @@ export async function onApplyDamage(message, button) {
   ) {
     const confirmation = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize('E20.SuddenDeathConfirmTitle') },
-      classes: ["window-app"],
+      classes: ["window-app", "e20-window"],
       content: `<p>${game.i18n.format('E20.SuddenDeathConfirmContent', { name: target.name })}</p>`,
       modal: true,
       buttons: [
@@ -503,7 +503,7 @@ export async function onApplyDamage(message, button) {
   ) {
     const confirmation = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize('E20.DidntEvenFeelItConfirmTitle') },
-      classes: ["window-app"],
+      classes: ["window-app", "e20-window"],
       content: `<p>${game.i18n.format('E20.DidntEvenFeelItConfirmContent', { name: target.name })}</p>`,
       modal: true,
       buttons: [
@@ -526,7 +526,7 @@ export async function onApplyDamage(message, button) {
   if (damage > 0 && actorHasPerk(target, HARD_CORPS_ID) && !hasUsedThisEncounter(target, HARD_CORPS_ENCOUNTER_FLAG)) {
     const confirmation = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize('E20.HardCorpsConfirmTitle') },
-      classes: ["window-app"],
+      classes: ["window-app", "e20-window"],
       content: `<p>${game.i18n.format('E20.HardCorpsConfirmContent', { name: target.name })}</p>`,
       modal: true,
       buttons: [
@@ -550,7 +550,7 @@ export async function onApplyDamage(message, button) {
   if (damage > 1 && actorHasPerk(target, JUST_A_GRAZE_ID) && !hasUsedThisRound(target, JUST_A_GRAZE_ROUND_FLAG)) {
     const confirmation = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize('E20.JustAGrazeConfirmTitle') },
-      classes: ["window-app"],
+      classes: ["window-app", "e20-window"],
       content: `<p>${game.i18n.format('E20.JustAGrazeConfirmContent', { name: target.name })}</p>`,
       modal: true,
       buttons: [
@@ -599,7 +599,7 @@ export async function onApplyDamage(message, button) {
   if (isDefeatedByHealthLoss && actorHasPerk(target, IRON_HIDE_ID) && isGmConnected() && hasStoryPointsAvailable(1)) {
     const confirmation = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize('E20.IronHideConfirmTitle') },
-      classes: ["window-app"],
+      classes: ["window-app", "e20-window"],
       content: `<p>${game.i18n.format('E20.IronHideConfirmContent', { name: target.name })}</p>`,
       modal: true,
       buttons: [

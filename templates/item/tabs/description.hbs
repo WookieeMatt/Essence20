@@ -21,6 +21,14 @@
       {{/if}}
     </div>
     {{#if (eq document.type 'equipmentPackage')}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EquipmentPackageType'}}
+      {{#*inline "item-field-inputs"}}
+      <select name="system.packageType">
+        {{selectOptions config.equipmentPackageTypes selected=system.packageType}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlternateAccess'}}
       {{#*inline "item-field-inputs"}}
       <input type="text" name="system.alternateAccess" value="{{system.alternateAccess}}" />

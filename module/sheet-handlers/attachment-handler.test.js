@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { createEntry, createItemCopies } from './attachment-handler.mjs';
+import { createEntry, createItemCopies, deleteAttachmentsForItem, onEquipmentPackageDrop } from './attachment-handler.mjs';
 import ChoicesSelector from '../apps/choices-selector.mjs';
 
 // This project runs native ESM under Jest (jest.config.js has no Babel transform), so the
@@ -241,5 +241,149 @@ describe("createItemCopies", () => {
 
     expect(global.Item.create).not.toHaveBeenCalled();
     expect(capturedDialog).toBeNull();
+  });
+});
+
+describe("onEquipmentPackageDrop", () => {
+  let created;
+
+  beforeEach(() => {
+    created = [];
+    global.fromUuid = jest.fn(async (uuid) => ({ uuid, type: uuid.includes('gear') ? 'gear' : 'weapon', system: { items: {} } }));
+    global.Item.create = jest.fn(async (doc) => {
+      const made = { type: doc.type, system: doc.system, flags: {} };
+      made.setFlag = jest.fn(async (scope, key, value) => {
+        made.flags[`${scope}.${key}`] = value;
+      });
+      created.push(made);
+      return made;
+    });
+  });
+
+  function makePackage(overrides = {}) {
+    return {
+      name: "Autobot Standard Issue",
+      system: {
+        packageType: 'standardIssue',
+        items: {
+          a: { uuid: "Compendium.essence20.tf_crb.Item.blaster" },
+          b: { uuid: "Compendium.essence20.tf_crb.Item.gear-repair-kit" },
+        },
+      },
+      ...overrides,
+    };
+  }
+
+  test("stamps flags.essence20.equipmentPackage on every granted item", async () => {
+    const actor = { items: [], system: { level: 1 } };
+    await onEquipmentPackageDrop(actor, makePackage());
+
+    expect(created).toHaveLength(2);
+    for (const item of created) {
+      expect(item.setFlag).toHaveBeenCalledWith('essence20', 'equipmentPackage', {
+        name: "Autobot Standard Issue",
+        packageType: 'standardIssue',
+      });
+    }
+  });
+
+  test("falls back to a null packageType when the package doesn't set one", async () => {
+    const pkg = makePackage();
+    delete pkg.system.packageType;
+    await onEquipmentPackageDrop({ items: [], system: { level: 1 } }, pkg);
+
+    expect(created[0].setFlag).toHaveBeenCalledWith('essence20', 'equipmentPackage', {
+      name: "Autobot Standard Issue",
+      packageType: null,
+    });
+  });
+});
+
+describe("deleteAttachmentsForItem", () => {
+  // A Role can list the same Perk uuid at several levels. Two shapes come out of that, and
+  // they have to be taken apart differently on the way back down:
+  //   - a non-stacking Perk gets one copy per entry, each tagged with the entry it came from
+  //   - an advances-stacking Perk gets ONE copy that absorbs every later entry
+  const EXPERTISE = "Compendium.essence20.gi_joe_crb.Item.F9kOLys1Iu4UOg22";
+  const EXTRA_ATTACK = "Compendium.essence20.pr_crb.Item.ExtraAttack000000";
+
+  // Commando: Expertise at 1st and again at 7th (GI Joe CRB p.72).
+  const commando = {
+    _id: "role1",
+    system: {
+      items: {
+        "9bcd": { uuid: EXPERTISE, type: "perk", name: "Expertise", level: 1 },
+        "9bcf": { uuid: EXPERTISE, type: "perk", name: "Expertise", level: 7 },
+      },
+    },
+  };
+
+  const makeCopy = ({ id, sourceId, collectionId, parentId = "role1", canAdvance = false, currentValue = 0, baseValue = 1 }) => ({
+    _id: id,
+    flags: { core: { sourceId } },
+    _stats: {},
+    // onPerkDelete runs for real here (it is fired, unawaited, from the branch under test) and
+    // ends by recursing into deleteAttachmentsForItem with this same copy - so it needs its own
+    // empty items map, or that recursion throws as an unhandled rejection and kills the run.
+    system: { items: {}, advances: { canAdvance, currentValue, baseValue, increaseValue: 1 } },
+    getFlag: (scope, key) => (key === "parentId" ? parentId : key === "collectionId" ? collectionId : undefined),
+    delete: jest.fn(async () => {}),
+    update: jest.fn(async () => {}),
+  });
+
+  const actorWith = (items) => ({
+    system: { level: 6 },
+    items: Object.assign([...items], { get: (id) => items.find(i => i._id === id) }),
+  });
+
+  test("dropping from 7th to 6th removes only the 7th-level Expertise, not the 1st-level one", async () => {
+    const first = makeCopy({ id: "p1", sourceId: EXPERTISE, collectionId: "9bcd" });
+    const second = makeCopy({ id: "p2", sourceId: EXPERTISE, collectionId: "9bcf" });
+    const actor = actorWith([first, second]);
+
+    await deleteAttachmentsForItem(commando, actor, 7, 6);
+
+    expect(second.delete).toHaveBeenCalled();
+    expect(first.delete).not.toHaveBeenCalled();
+  });
+
+  test("the 7th-level twin is removable at all - it carries the Role link its pair does", async () => {
+    // Regression: onMultiSkillPerkDrop used to create this copy with no parentId and no
+    // collectionId, so nothing here could match it and a level reduction left it behind.
+    // null, not undefined - a default parameter would quietly put the real parentId back.
+    const orphan = makeCopy({ id: "p2", sourceId: EXPERTISE, collectionId: null, parentId: null });
+    const actor = actorWith([orphan]);
+
+    await deleteAttachmentsForItem(commando, actor, 7, 6);
+
+    expect(orphan.delete).not.toHaveBeenCalled();   // documents the old, broken shape
+
+    const linked = makeCopy({ id: "p3", sourceId: EXPERTISE, collectionId: "9bcf" });
+    await deleteAttachmentsForItem(commando, actorWith([linked]), 7, 6);
+    expect(linked.delete).toHaveBeenCalled();
+  });
+
+  test("an advances-stacking Perk is still decremented, not deleted", async () => {
+    // One copy absorbs every entry, so it is matched by uuid rather than by collectionId -
+    // the key it carries is the FIRST entry's, not the one being taken away.
+    const role = {
+      _id: "role1",
+      system: {
+        items: {
+          aaa: { uuid: EXTRA_ATTACK, type: "perk", name: "Extra Attack", level: 5 },
+          bbb: { uuid: EXTRA_ATTACK, type: "perk", name: "Extra Attack", level: 15 },
+        },
+      },
+    };
+    const stacked = makeCopy({
+      id: "p1", sourceId: EXTRA_ATTACK, collectionId: "aaa", canAdvance: true, currentValue: 2, baseValue: 1,
+    });
+    const actor = actorWith([stacked]);
+    actor.system.level = 14;
+
+    await deleteAttachmentsForItem(role, actor, 15, 14);
+
+    expect(stacked.update).toHaveBeenCalledWith({ "system.advances.currentValue": 1 });
+    expect(stacked.delete).not.toHaveBeenCalled();
   });
 });

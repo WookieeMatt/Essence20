@@ -14,9 +14,10 @@ import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-ma
  * authored action cost, and defaulting them to anything else would have the system inventing costs
  * it can't justify. 'none' is the honest representation of "nobody has said yet".
  *
- * @param {String} [defaultType]   Overrides the 'none' default - used by `power`, whose own field
+ * @param {String} [defaultType]   Overrides the 'none' default. Used by `power`, whose own field
  *   has always defaulted to 'free', so the handful of Powers that authored their type by omission
- *   aren't silently reclassified.
+ *   aren't silently reclassified; and by `weaponEffect`, where the cost is not a guess - making
+ *   an attack is the Attack action, which is a Standard one.
  */
 export const activation = (defaultType = 'none') => ({
   actionType: makeStrWithChoices(Object.keys(E20.actionTypes), defaultType),

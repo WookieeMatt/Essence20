@@ -6,6 +6,7 @@ import { parseDurationString } from "./data/duration-schema.mjs";
  * @returns {Promise}      A Promise which resolves once the migration is completed
  */
 export const migrateWorld = async function() {
+  resetMigrationCaches();
   const version = game.system.version;
   ui.notifications.info(game.i18n.format("MIGRATION.begin", {version}), {permanent: true});
 
@@ -506,6 +507,56 @@ export const migrateActorData = async function(actor, compendiumActor) {
 * @param {Item|String} item  Either an ID or an Item to find in the compendium
 * @returns {Item}     The Item, if found
 */
+/* One index per pack, for the length of one migration run: migrateActorData is called once per
+   actor and compendiumActionType once per item, so without it a party of six would re-read the
+   same pack index a hundred times.
+
+   Cleared at the start of every run rather than left to live as long as the module, so a GM who
+   edits a compendium and migrates again in the same session gets the value they just wrote
+   rather than the one cached before their edit. */
+const actionTypeIndexCache = new Map();
+
+/**
+ * Drops the cached pack indexes. Called at the start of a migration run, and by tests, which
+ * would otherwise see one test's fixture through another test's lookup.
+ */
+export function resetMigrationCaches() {
+  actionTypeIndexCache.clear();
+}
+
+/**
+ * The action cost the compendium currently gives the item this one was dragged from.
+ *
+ * Embedded items are snapshots: whatever the compendium said the day they were dropped onto a
+ * character is what they still say. When a pass adds an action cost to ~280 Perks, every
+ * character built before it keeps a copy that costs nothing - so the Perk sits in the Actions
+ * tab's "no cost" section forever while the compendium's own copy has said Standard for months.
+ * Takedown was the one that surfaced this; it is not remotely alone.
+ *
+ * Returns null when there is nothing to compare against - no source id, a pack that is not
+ * present (a game line the world does not use), or an entry since deleted.
+ *
+ * @param {Object} item   An item document or its source data.
+ * @returns {Promise<String|null>}
+ */
+async function compendiumActionType(item) {
+  const source = item._stats?.compendiumSource ?? item.flags?.core?.sourceId;
+  if (!source?.startsWith('Compendium.essence20.')) {
+    return null;
+  }
+
+  const [, , packName, , id] = source.split('.');
+  if (!packName || !id) {
+    return null;
+  }
+
+  if (!actionTypeIndexCache.has(packName)) {
+    const pack = game.packs.get(`essence20.${packName}`);
+    actionTypeIndexCache.set(packName, pack ? await pack.getIndex({ fields: ['system.actionType'] }) : null);
+  }
+
+  return actionTypeIndexCache.get(packName)?.get(id)?.system?.actionType ?? null;
+}
 export async function searchCompendium(item) {
   const id = item._id || item;
   for (const pack of game.packs) {
@@ -556,6 +607,54 @@ export async function migrateItemData(item, actor) {
     updateData["system.duration"] = parseDurationString(item.system.duration);
   }
 
+  /* An embedded item whose compendium original has since been given an action cost.
+
+     Only ever `none` -> something. An embedded value that is already set is left alone, because
+     that is either a cost this migration has already applied or one a GM chose deliberately, and
+     there is no way to tell those apart - whereas `none` is this system's own word for "nobody
+     has said yet" (see data/item/templates/activation.mjs), which is exactly what a stale
+     snapshot is. Measured before building this: of 149 embedded compendium items in the dev
+     world, 18 had drifted and every single one was `none` -> something. Not one was a GM
+     disagreeing with the book.
+
+     Value-matched rather than version-gated, same as the migrations below it, and for the same
+     reason: this repo ships an unsubstituted `version` string, so worlds exist whose recorded
+     migration version a gate would skip forever. Once a field is corrected it no longer matches,
+     so this can only fire once per item.
+
+     Deliberately runs for every item type carrying the activation template, not just Perks -
+     the same drift hit Spells and Powers in the dev world. */
+  if ((item.system?.actionType ?? 'none') == 'none') {
+    const authored = await compendiumActionType(item);
+    if (authored && authored != 'none') {
+      updateData["system.actionType"] = authored;
+    }
+  }
+  /* Weapon effects born with no action cost -> Standard.
+
+     Making an attack is the Attack action, which is a Standard action, and the weapon effect is
+     what carries that cost because the weapon effect is what rolls - a weapon has no roll button
+     at all. All 676 compendium weapon effects already store `standard`; this is for the ones a GM
+     made by hand on an actor, which were born as None under the old schema default and so cost
+     nothing however many times they were fired.
+
+     Matched on the old value rather than overwritten wholesale, so this is a no-op the second
+     time it runs and an effect already carrying a cost is left alone. It is deliberately NOT
+     version-gated, for the reason spelled out on the Zord defenses migration below: this repo
+     ships an unsubstituted `version` string, so worlds exist whose recorded migration version is
+     not parseable and which a gate would skip forever. The value match gives the run-once
+     property a gate would.
+
+     The cost of getting this wrong is one field on an effect a GM had deliberately set to None,
+     reset once, and visible on the item's own sheet - against every hand-made weapon silently
+     costing nothing for as long as the world lives. */
+  /* The compendium answer above wins where there is one - a pack effect already says what it
+     costs. This is the fallback for the effect with no compendium original at all, which is the
+     case it was written for. */
+  if (item.type == "weaponEffect" && (item.system?.actionType ?? 'none') == 'none'
+    && !updateData["system.actionType"]) {
+    updateData["system.actionType"] = "standard";
+  }
   // Area of Effect shape "burst" -> "circle". The shape field originally shipped with a
   // system-flavoured vocabulary of its own; it now stores Foundry's own region shape type names so
   // the value can be handed straight to canvas.regions.placeRegion() with no translation table
@@ -748,6 +847,23 @@ export async function migrateItemData(item, actor) {
           };
           const id = await createId(item.system.items);
           updateData[`${pathPrefix}.${id}`] = entry;
+        }
+      }
+    }
+
+    // Legacy transformerMode enum -> structured Hardpoint (TF CRB p.114). Mirrors
+    // WeaponItemData.migrateData(), but written through to the database so it persists.
+    if (item.system.transformerMode && !item.system.hardpoint?.type) {
+      const legacyModeToHardpoint = {
+        modeBotMode: { type: 'external' },
+        modeAltMode: { type: 'integrated', altModeVisibility: 'hidden' },
+        modeAny: { type: 'integrated', altModeVisibility: 'obvious' },
+      };
+      const mapped = legacyModeToHardpoint[item.system.transformerMode];
+      if (mapped) {
+        updateData['system.hardpoint.type'] = mapped.type;
+        if (mapped.altModeVisibility) {
+          updateData['system.hardpoint.altModeVisibility'] = mapped.altModeVisibility;
         }
       }
     }

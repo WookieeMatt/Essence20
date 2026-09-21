@@ -11,6 +11,7 @@
       "book": "Through the Shattered Grid",
       "page": 71
     },
+    "actionType": "standard",
     "items": {},
     "advances": {
       "baseValue": 1,

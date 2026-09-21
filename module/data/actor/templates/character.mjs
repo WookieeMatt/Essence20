@@ -96,6 +96,26 @@ export const character = () => ({
   }),
   faction: makeStr(''),
   focusEssence: makeStr(''),
+  // Transformer Hardpoints (TF CRB p.114). Only meaningful on canTransform actors. `base` is
+  // the "start play with 2 + 2" default; `bonus` is where Role/Perk/Origin grants add slots.
+  // `max` / `used` / `over` are derived each prep by Essence20Actor._prepareLoadout() (kept as
+  // schema fields so they survive Actor#toObject(false) into the sheet context).
+  hardpoints: new fields.SchemaField({
+    external: new fields.SchemaField({
+      base: makeInt(2),
+      bonus: makeInt(0),
+      max: makeInt(0),
+      used: makeInt(0),
+      over: makeBool(false),
+    }),
+    integrated: new fields.SchemaField({
+      base: makeInt(2),
+      bonus: makeInt(0),
+      max: makeInt(0),
+      used: makeInt(0),
+      over: makeBool(false),
+    }),
+  }),
   image: new fields.SchemaField({
     botmode: makeStr(null),
     morphed: makeStr(null),
@@ -104,6 +124,15 @@ export const character = () => ({
   isMorphed: makeBool(false),
   isTransformed: makeBool(false),
   level: makeInt(1),
+  // Load Out limit (GI Joe CRB p.138 / TF CRB p.116 / PR CRB p.103): "six hands of weapons".
+  // handsMax defaults to CONFIG.E20.LOADOUT_BASE_HANDS and can be raised for Perks like Pack
+  // Mule. `handsUsed` / `handsOver` are derived each prep by Essence20Actor._prepareLoadout()
+  // (kept as schema fields so they survive Actor#toObject(false) into the sheet context).
+  loadout: new fields.SchemaField({
+    handsMax: makeInt(6),
+    handsUsed: makeInt(0),
+    handsOver: makeBool(false),
+  }),
   oldHandTransitionLevel: makeInt(null),
   originEssencesIncrease: makeStr(),
   originSkillsIncrease: makeStr(),
@@ -151,6 +180,20 @@ export const character = () => ({
 });
 
 export function migrateCharacterData(source) {
+  // Legacy flat Hardpoint counts (PlayerCharacterActorData.externalHardpoints /
+  // internalHarpoints) -> the structured system.hardpoints schema. Note the original
+  // "internalHarpoints" typo and that "internal" is now "integrated" (matching TF CRB p.114).
+  if (source.externalHardpoints != null || source.internalHarpoints != null) {
+    source.hardpoints ??= {};
+    if (source.externalHardpoints != null) {
+      source.hardpoints.external = { ...(source.hardpoints.external ?? {}), base: source.externalHardpoints };
+    }
+
+    if (source.internalHarpoints != null) {
+      source.hardpoints.integrated = { ...(source.hardpoints.integrated ?? {}), base: source.internalHarpoints };
+    }
+  }
+
   if (source.essences) {
     for (const [essence, value] of Object.entries(source.essences)) {
       if (typeof value == 'number') { // Standard Essence damage migration

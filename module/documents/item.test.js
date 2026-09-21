@@ -1,6 +1,7 @@
 import { Essence20Item } from "./item.mjs";
 import { jest } from '@jest/globals';
 import { getLedger, spend } from "../helpers/action-economy.mjs";
+import { invalidateImportedDescriptions } from "../helpers/book-descriptions-store.mjs";
 
 /**
  * Builds a bare Essence20Item instance with the given type/system/actor,
@@ -1070,5 +1071,337 @@ describe("_rollWithRefund", () => {
   test("is a no-op when nothing was spent to begin with", async () => {
     const item = makeRollingItem({ cancelled: true });
     await expect(item._rollWithRefund({}, { name: 'Duke' }, null)).resolves.toEqual({ cancelled: true });
+  });
+});
+
+/* The traits a weapon or armor effectively has: its own, plus what its upgrades grant, minus what
+   they take away. Upgrades that REMOVE a trait are rare but real - Ammo Feeder (GI Joe CRB p.151)
+   is "Weapon with the Reload trait / The weapon loses the Reload trait". */
+describe("_prepareTraits", () => {
+  /**
+   * A weapon or armor with upgrades attached the way system.items holds them.
+   */
+  function makeTraitItem(type, traits, upgrades = []) {
+    return makeItem(type, {
+      traits: [...traits],
+      items: Object.fromEntries(upgrades.map((upgrade, index) => [`u${index}`, { type: 'upgrade', ...upgrade }])),
+    });
+  }
+
+  test("leaves an item with no upgrades with its own traits", () => {
+    const item = makeTraitItem('weapon', ['silent', 'reload']);
+
+    item._prepareTraits();
+
+    expect(item.system.itemAndUpgradeTraits).toEqual(['silent', 'reload']);
+  });
+
+  test("adds the traits an upgrade grants", () => {
+    const item = makeTraitItem('weapon', ['reload'], [{ traits: ['accurate'] }]);
+
+    item._prepareTraits();
+
+    expect(item.system.itemAndUpgradeTraits).toEqual(['reload', 'accurate']);
+  });
+
+  test("does not list a trait twice when an upgrade grants one the item already has", () => {
+    const item = makeTraitItem('weapon', ['silent'], [{ traits: ['silent'] }]);
+
+    item._prepareTraits();
+
+    expect(item.system.itemAndUpgradeTraits).toEqual(['silent']);
+  });
+
+  // Ammo Feeder, the case this was built for.
+  test("removes a trait an upgrade takes away", () => {
+    const item = makeTraitItem('weapon', ['reload', 'silent'], [{ removedTraits: ['reload'] }]);
+
+    item._prepareTraits();
+
+    expect(item.system.itemAndUpgradeTraits).toEqual(['silent']);
+  });
+
+  /* Removal is applied last, so it does not matter which order the upgrades happen to sit in - the
+     alternative would make the result depend on attachment order, which nothing in the fiction
+     suggests. */
+  test("removal beats a grant, whichever order the upgrades are in", () => {
+    const granterFirst = makeTraitItem('weapon', [], [{ traits: ['silent'] }, { removedTraits: ['silent'] }]);
+    const removerFirst = makeTraitItem('weapon', [], [{ removedTraits: ['silent'] }, { traits: ['silent'] }]);
+
+    granterFirst._prepareTraits();
+    removerFirst._prepareTraits();
+
+    expect(granterFirst.system.itemAndUpgradeTraits).toEqual([]);
+    expect(removerFirst.system.itemAndUpgradeTraits).toEqual([]);
+  });
+
+  test("removing a trait nothing has is harmless", () => {
+    const item = makeTraitItem('weapon', ['silent'], [{ removedTraits: ['reload'] }]);
+
+    item._prepareTraits();
+
+    expect(item.system.itemAndUpgradeTraits).toEqual(['silent']);
+  });
+
+  test("works on armor too", () => {
+    const item = makeTraitItem('armor', ['bulky'], [{ removedTraits: ['bulky'] }, { traits: ['deflective'] }]);
+
+    item._prepareTraits();
+
+    expect(item.system.itemAndUpgradeTraits).toEqual(['deflective']);
+  });
+
+  /* Roughly twenty-five checks in dice.mjs ask a weapon `system.traits.includes(...)` directly and
+     have always been answered with the combined list. Keeping both names on one array is what gives
+     every one of them trait removal without rewriting them - see _prepareTraits' own doc comment. */
+  test("system.traits answers the same as itemAndUpgradeTraits", () => {
+    const item = makeTraitItem('weapon', ['reload'], [{ traits: ['accurate'], removedTraits: ['reload'] }]);
+
+    item._prepareTraits();
+
+    expect(item.system.traits).toEqual(['accurate']);
+    expect(item.system.itemAndUpgradeTraits).toBe(item.system.traits);
+  });
+
+  test("ignores attached items that are not upgrades", () => {
+    const item = makeItem('weapon', {
+      traits: ['silent'],
+      items: { e1: { type: 'weaponEffect', traits: ['accurate'], removedTraits: ['silent'] } },
+    });
+
+    item._prepareTraits();
+
+    expect(item.system.itemAndUpgradeTraits).toEqual(['silent']);
+  });
+
+  test("does nothing for a type that has no upgrade slots", () => {
+    const item = makeItem('perk', { traits: ['whatever'] });
+
+    item._prepareTraits();
+
+    expect(item.system.itemAndUpgradeTraits).toBeUndefined();
+  });
+});
+
+/* A null slot in system.items used to take the whole item's data preparation down with it, since
+   _prepareTraits runs inside prepareDerivedData - the weapon lost its derived traits, availability
+   and aim shift, not just the bad upgrade. Seen for real when a write failed schema validation and
+   left the key behind with nothing in it. */
+describe("_prepareTraits with a damaged upgrade slot", () => {
+  test("skips a null slot instead of throwing", () => {
+    const item = makeItem('weapon', { traits: ['silent'], items: { u1: null } });
+
+    expect(() => item._prepareTraits()).not.toThrow();
+    expect(item.system.itemAndUpgradeTraits).toEqual(['silent']);
+  });
+
+  test("still reads the good slots either side of a bad one", () => {
+    const item = makeItem('weapon', {
+      traits: ['reload'],
+      items: {
+        u1: { type: 'upgrade', traits: ['accurate'] },
+        u2: null,
+        u3: { type: 'upgrade', removedTraits: ['reload'] },
+      },
+    });
+
+    item._prepareTraits();
+
+    expect(item.system.itemAndUpgradeTraits).toEqual(['accurate']);
+  });
+});
+
+describe("_prepareWeaponHands", () => {
+  test("falls back to the Size-based default when system.hands is null", () => {
+    const item = makeItem('weapon', { hands: null, classification: { size: 'long' } });
+    item._prepareWeaponHands();
+    expect(item.system.derivedHands).toBe(2); // weaponSizeHands.long
+  });
+
+  test("uses an explicit system.hands override when set", () => {
+    const item = makeItem('weapon', { hands: 1, classification: { size: 'long' } });
+    item._prepareWeaponHands();
+    expect(item.system.derivedHands).toBe(1);
+  });
+
+  test("respects an explicit 0-hand override (does not treat 0 as unset)", () => {
+    const item = makeItem('weapon', { hands: 0, classification: { size: 'heavy' } });
+    item._prepareWeaponHands();
+    expect(item.system.derivedHands).toBe(0);
+  });
+
+  test("integrated-size weapons default to 0 hands", () => {
+    const item = makeItem('weapon', { hands: null, classification: { size: 'integrated' } });
+    item._prepareWeaponHands();
+    expect(item.system.derivedHands).toBe(0);
+  });
+
+  test("defaults to 1 when the Size is unrecognized", () => {
+    const item = makeItem('weapon', { hands: null, classification: { size: 'bogus' } });
+    item._prepareWeaponHands();
+    expect(item.system.derivedHands).toBe(1);
+  });
+});
+
+describe("_prepareHardpointDerived", () => {
+  test("integrated Hardpoint forces effectiveSize to 'integrated'", () => {
+    const item = makeItem('weapon', {
+      classification: { size: 'long' },
+      hardpoint: { type: 'integrated', altModeVisibility: 'obvious' },
+      requirements: { shift: 'none' },
+    });
+    item._prepareHardpointDerived();
+    expect(item.system.effectiveSize).toBe('integrated');
+  });
+
+  test("external Hardpoint keeps the weapon's own size", () => {
+    const item = makeItem('weapon', {
+      classification: { size: 'long' },
+      hardpoint: { type: 'external' },
+      requirements: { shift: 'd6' },
+    });
+    item._prepareHardpointDerived();
+    expect(item.system.effectiveSize).toBe('long');
+    expect(item.system.effectiveBrawnReq).toBe('d6');
+  });
+
+  test("integrated Hardpoint lowers the requirement shift one die (d4 -> d2)", () => {
+    const item = makeItem('weapon', {
+      classification: { size: 'medium' },
+      hardpoint: { type: 'integrated', altModeVisibility: 'hidden' },
+      requirements: { shift: 'd4' },
+    });
+    item._prepareHardpointDerived();
+    expect(item.system.effectiveBrawnReq).toBe('d2');
+  });
+
+  test("integrated Hardpoint clamps a d2 requirement down to none", () => {
+    const item = makeItem('weapon', {
+      classification: { size: 'medium' },
+      hardpoint: { type: 'integrated', altModeVisibility: 'obvious' },
+      requirements: { shift: 'd2' },
+    });
+    item._prepareHardpointDerived();
+    expect(item.system.effectiveBrawnReq).toBe('none');
+  });
+
+  test("derivedMode: external -> Bot Mode", () => {
+    const item = makeItem('weapon', { classification: {}, hardpoint: { type: 'external' }, requirements: {} });
+    item._prepareHardpointDerived();
+    expect(item.system.derivedMode).toBe('modeBotMode');
+  });
+
+  test("derivedMode: integrated + hidden -> Alt Mode", () => {
+    const item = makeItem('weapon', { classification: {}, hardpoint: { type: 'integrated', altModeVisibility: 'hidden' }, requirements: {} });
+    item._prepareHardpointDerived();
+    expect(item.system.derivedMode).toBe('modeAltMode');
+  });
+
+  test("derivedMode: integrated + obvious -> Any Mode", () => {
+    const item = makeItem('weapon', { classification: {}, hardpoint: { type: 'integrated', altModeVisibility: 'obvious' }, requirements: {} });
+    item._prepareHardpointDerived();
+    expect(item.system.derivedMode).toBe('modeAny');
+  });
+
+  test("derivedMode: none -> null", () => {
+    const item = makeItem('weapon', { classification: {}, hardpoint: { type: 'none' }, requirements: {} });
+    item._prepareHardpointDerived();
+    expect(item.system.derivedMode).toBeNull();
+  });
+
+  test("tolerates a missing hardpoint object entirely", () => {
+    const item = makeItem('weapon', { classification: { size: 'light' }, requirements: {} });
+    item._prepareHardpointDerived();
+    expect(item.system.effectiveSize).toBe('light');
+    expect(item.system.effectiveBrawnReq).toBe('none');
+    expect(item.system.derivedMode).toBeNull();
+  });
+});
+
+// Descriptions a GM imported from their own rulebook PDF (helpers/book-descriptions-store.mjs,
+// filled by apps/book-description-importer.mjs). The compendium ships these empty because this
+// system does not redistribute the publisher's text.
+describe("_prepareDescription", () => {
+  const UUID = "Compendium.essence20.gi_joe_crb.Item.abc123";
+
+  /**
+   * An item with a real _source, which is the whole point of these tests: description is a
+   * STORED field, and Foundry does not roll a data model back to its source between
+   * preparations, so the check has to read _source rather than the live value.
+   */
+  function makeDescribedItem({ stored = "", pack = "essence20.gi_joe_crb", sourceId = null } = {}) {
+    const item = makeItem("perk", { description: stored });
+    item._source = { system: { description: stored } };
+    item.pack = pack;
+    Object.defineProperty(item, "uuid", { value: UUID, configurable: true });
+    item.flags = { core: sourceId ? { sourceId } : {} };
+    item._stats = {};
+    return item;
+  }
+
+  // Mirrors what really happens: the setting changes, and its onChange drops the store cache.
+  const withImport = (descriptions) => {
+    global.game = {
+      settings: {
+        get: () => ({ "A Book": { descriptions } }),
+      },
+    };
+    invalidateImportedDescriptions();
+  };
+
+  afterEach(() => {
+    delete global.game;
+  });
+
+  test("fills a blank description from the import", async () => {
+    withImport({ [UUID]: "Imported rules text." });
+    const item = makeDescribedItem();
+
+    item._prepareDescription();
+
+    expect(item.system.description).toBe("Imported rules text.");
+  });
+
+  test("never overwrites a description the GM wrote", async () => {
+    withImport({ [UUID]: "Imported rules text." });
+    const item = makeDescribedItem({ stored: "<p>My own note.</p>" });
+
+    item._prepareDescription();
+
+    expect(item.system.description).toBe("<p>My own note.</p>");
+  });
+
+  // The regression this shape exists for: the first preparation writes the imported text onto
+  // system.description, so a second one that consulted the LIVE value would mistake it for the
+  // GM's own and refuse to touch it - leaving removed or corrected imports stuck until reload.
+  test("a removed import goes away again without a reload", async () => {
+    withImport({ [UUID]: "Imported rules text." });
+    const item = makeDescribedItem();
+    item._prepareDescription();
+    expect(item.system.description).toBe("Imported rules text.");
+
+    withImport({});
+    item._prepareDescription();
+
+    expect(item.system.description).toBe("");
+  });
+
+  test("a copy on an actor resolves through the uuid it came from", async () => {
+    withImport({ [UUID]: "Imported rules text." });
+    // Not in a pack, and its own uuid is not the compendium one - the sourceId flag is.
+    const item = makeDescribedItem({ pack: null, sourceId: UUID });
+
+    item._prepareDescription();
+
+    expect(item.system.description).toBe("Imported rules text.");
+  });
+
+  test("an item with no compendium origin at all is left alone", async () => {
+    withImport({ [UUID]: "Imported rules text." });
+    const item = makeDescribedItem({ pack: null });
+
+    item._prepareDescription();
+
+    expect(item.system.description).toBe("");
   });
 });

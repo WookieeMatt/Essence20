@@ -1,0 +1,106 @@
+{{!--
+  The GM's screen for filling compendium descriptions from a rulebook PDF they own.
+  See apps/book-description-importer.mjs for why the file input is a plain one (the PDF is read
+  in this tab and never uploaded) and why the watermark is reported rather than required.
+--}}
+<div class="book-import">
+
+  {{!-- Hidden: the visible control is the button below, so it can be styled like the rest. --}}
+  <input type="file" accept="application/pdf,.pdf" class="e20-hidden" />
+
+  <section class="sliced-border --col book-import-intro">
+    <label class="sliced-border__label">{{localize "E20.BookImportSourceLabel"}}</label>
+    <p class="book-import-note">{{localize "E20.BookImportIntro"}}</p>
+    <button type="button" data-action="chooseFile">
+      <i class="fa-solid fa-file-pdf"></i> {{localize "E20.BookImportChoose"}}
+    </button>
+    {{#if status}}<p class="book-import-status">{{status}}</p>{{/if}}
+  </section>
+
+  {{#if hasScan}}
+    <section class="sliced-border --col book-import-scan">
+      <label class="sliced-border__label">{{localize "E20.BookImportScanLabel"}}</label>
+
+      {{#unless scan.recognised}}
+        <p class="book-import-warning">
+          <i class="fa-solid fa-triangle-exclamation"></i> {{localize "E20.BookImportUnrecognised"}}
+        </p>
+      {{/unless}}
+
+      <dl class="book-import-facts">
+        <dt>{{localize "E20.BookImportFile"}}</dt>
+        <dd>{{scan.fileName}} — {{scan.pageCount}}{{localize "E20.BookImportPagesSuffix"}}</dd>
+
+        <dt>{{localize "E20.BookImportBook"}}</dt>
+        <dd>{{#if scan.book}}{{scan.book}}{{else}}{{localize "E20.BookImportBookUnknown"}}{{/if}}</dd>
+
+        <dt>{{localize "E20.BookImportWatermark"}}</dt>
+        <dd>
+          {{#if scan.watermark}}
+            <i class="fa-solid fa-circle-check book-import-attested"></i>
+            {{scan.watermark.purchaser}} — {{scan.watermark.date}}
+          {{else}}
+            <i class="fa-solid fa-circle-minus"></i> {{localize "E20.BookImportNoWatermark"}}
+          {{/if}}
+        </dd>
+
+        <dt>{{localize "E20.BookImportMatched"}}</dt>
+        <dd>{{scan.entries.length}} / {{scan.total}}</dd>
+      </dl>
+
+      <p class="book-import-note">{{localize "E20.BookImportReviewHint"}}</p>
+    </section>
+
+    <section class="book-import-results">
+      <ol class="book-import-entries">
+        {{#each scan.entries as |entry|}}
+          <li class="book-import-entry {{#if entry.excluded}}is-excluded{{/if}}" data-uuid="{{entry.uuid}}">
+            <a class="book-import-toggle" data-action="toggleEntry" data-tooltip="{{localize 'E20.BookImportToggleTooltip'}}">
+              {{#if entry.excluded}}
+                <i class="fa-regular fa-square"></i>
+              {{else}}
+                <i class="fa-solid fa-square-check"></i>
+              {{/if}}
+            </a>
+            <div class="book-import-entry-body">
+              <span class="book-import-entry-name">
+                {{entry.name}}
+                <span class="book-import-entry-meta">
+                  {{entry.type}} · p.{{entry.foundPage}}{{#if entry.continued}} · {{localize "E20.BookImportContinued"}}{{/if}}{{#if entry.loose}} · <span class="book-import-loose">{{localize "E20.BookImportLoose"}}</span>{{/if}}
+                </span>
+              </span>
+              <p class="book-import-entry-text">{{entry.text}}</p>
+            </div>
+          </li>
+        {{/each}}
+      </ol>
+    </section>
+
+    <footer class="book-import-footer">
+      <button type="button" data-action="apply">
+        <i class="fa-solid fa-save"></i> {{localize "E20.BookImportApply"}}
+      </button>
+    </footer>
+  {{/if}}
+
+  {{#if books.length}}
+    <section class="sliced-border --col book-import-existing">
+      <label class="sliced-border__label">{{localize "E20.BookImportExistingLabel"}}</label>
+      <ul class="book-import-book-list">
+        {{#each books as |entry|}}
+          <li data-book="{{entry.book}}">
+            <span class="book-import-book-name">{{entry.book}}</span>
+            <span class="book-import-book-meta">
+              {{entry.count}}{{localize "E20.BookImportEntriesSuffix"}}
+              {{#if entry.purchaser}} · {{entry.purchaser}} ({{entry.purchaseDate}}){{else}} · {{localize "E20.BookImportNoWatermark"}}{{/if}}
+              {{#if entry.importedAt}} · {{entry.importedAt}}{{/if}}
+            </span>
+            <a class="item-control" data-action="clearBook" data-tooltip="{{localize 'E20.BookImportClearTooltip'}}">
+              <i class="fas fa-trash"></i>
+            </a>
+          </li>
+        {{/each}}
+      </ul>
+    </section>
+  {{/if}}
+</div>

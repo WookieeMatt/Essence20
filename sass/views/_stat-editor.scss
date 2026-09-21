@@ -1,12 +1,12 @@
 @use "../variables" as v;
 
-.stat-editor {
+.essence20.stat-editor {
   .window-content {
     padding: v.$gap-lg;
   }
 }
 
-.stat-editor-table {
+.essence20 .stat-editor-table {
   width: 100%;
   border-collapse: collapse;
 
@@ -17,13 +17,13 @@
   }
 
   thead th {
-    color: var(--theme-text-color);
+    color: var(--e20-theme-text-color);
     font-weight: 700;
     white-space: nowrap;
   }
 
   tbody th {
-    color: var(--theme-text-color);
+    color: var(--e20-theme-text-color);
     text-align: left;
     white-space: nowrap;
   }

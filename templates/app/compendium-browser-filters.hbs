@@ -26,6 +26,28 @@
     </fieldset>
   {{/if}}
 
+  {{!-- Facet filters - Traits, Gear Type. These REQUIRE rather than exclude: nothing checked
+        means no filtering, and checking narrows to the items that match. That is the opposite of
+        the Type and Books groups around them, so each carries its own hint line rather than
+        leaving a player to discover it - see FACETS in apps/compendium-browser.mjs. --}}
+  {{#each facets as |facet|}}
+    <details class="compendium-browser-filter-group compendium-browser-facet-group" {{#unless facet.any}}open{{/unless}}>
+      <summary>{{facet.label}}</summary>
+      <p class="compendium-browser-filter-hint">{{facet.hint}}</p>
+      {{#unless facet.any}}
+        <div class="compendium-browser-filter-actions">
+          <a data-action="clearTraits" data-facet="{{facet.key}}">{{localize "E20.CompendiumBrowserClearTraits"}}</a>
+        </div>
+      {{/unless}}
+      {{#each facet.options as |opt|}}
+        <label class="compendium-browser-filter-option">
+          <input type="checkbox" data-facet="{{facet.key}}" data-facet-value="{{opt.key}}" {{checked opt.checked}} />
+          <span>{{opt.label}}</span>
+        </label>
+      {{/each}}
+    </details>
+  {{/each}}
+
   <details class="compendium-browser-filter-group compendium-browser-books-group" {{#if booksExpanded}}open{{/if}}>
     <summary>{{localize "E20.CompendiumBrowserFilterBooks"}}</summary>
     <div class="compendium-browser-filter-actions">

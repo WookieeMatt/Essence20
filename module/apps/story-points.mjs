@@ -34,6 +34,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     classes: [
       "essence20",
       "theme-wrapper",
+      "e20-window",
       "story-points",
       "sliced-border --thick",
     ],

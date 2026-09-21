@@ -98,7 +98,7 @@ export async function promptDefenseChoice(payload) {
 
   const choice = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.format('E20.ChooseDefenseTitle', { actorName: payload.actorName }) },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<p>${game.i18n.format('E20.ChooseDefenseContent', {
       actorName: payload.actorName, attackerName: payload.attackerName,
     })}</p>`,

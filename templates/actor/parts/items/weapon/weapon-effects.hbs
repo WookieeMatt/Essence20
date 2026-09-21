@@ -1,4 +1,4 @@
-<div class="flexrow gap-2 weapon-effect-row">
+<div class="flexrow e20-gap-2 weapon-effect-row">
   <div class="weapon-effect-name">
     {{item.name}}
   </div>
@@ -6,27 +6,27 @@
     {{selectOptions @root.weaponEffectSkills selected=item.classification.skill valueAttr="key" labelAttr="label" localize=true}}
   </select>
 
-  <div class="flexrow gap-2 weapon-effect-chips">
-    <div class="align-center chip weapon-effect-chip" data-tooltip="{{item.numTargets}} {{localize "E20.WeaponTargets"}}">
+  <div class="flexrow e20-gap-2 weapon-effect-chips">
+    <div class="e20-align-center chip weapon-effect-chip" data-tooltip="{{item.numTargets}} {{localize "E20.WeaponTargets"}}">
       {{item.numTargets}} <i class="fas fa-bullseye"></i>
     </div>
     {{#if item.range.reachMultiplier}}
-      <div class="align-center chip weapon-effect-chip" data-tooltip="{{localize "E20.WeaponRangeReach"}} {{item.totalReach}}ft">
+      <div class="e20-align-center chip weapon-effect-chip" data-tooltip="{{localize "E20.WeaponRangeReach"}} {{item.totalReach}}ft">
         {{item.totalReach}}ft
       </div>
     {{else}}
-      <div class="align-center chip weapon-effect-chip" data-tooltip="{{localize "E20.WeaponRange"}} {{#if item.range.value}}{{item.range.value}}{{else}}0{{/if}}ft{{#if item.range.long}}/{{item.range.long}}ft{{/if}}{{#if item.range.min}}/minimum {{item.range.min}}ft{{/if}}">
+      <div class="e20-align-center chip weapon-effect-chip" data-tooltip="{{localize "E20.WeaponRange"}} {{#if item.range.value}}{{item.range.value}}{{else}}0{{/if}}ft{{#if item.range.long}}/{{item.range.long}}ft{{/if}}{{#if item.range.min}}/minimum {{item.range.min}}ft{{/if}}">
         {{#if item.range.value}}{{item.range.value}}{{else}}0{{/if}}ft
       </div>
     {{/if}}
-    <div class="align-center chip weapon-effect-chip" data-tooltip="{{item.shiftDown}} {{localize "E20.ShiftDown"}}">
+    <div class="e20-align-center chip weapon-effect-chip" data-tooltip="{{item.shiftDown}} {{localize "E20.ShiftDown"}}">
       {{item.shiftDown}} <i class="fas fa-arrow-down"></i>
     </div>
-    <div class="align-center chip weapon-effect-chip" data-tooltip="{{item.numHands}} {{localize "E20.WeaponHands"}}">
+    <div class="e20-align-center chip weapon-effect-chip" data-tooltip="{{item.numHands}} {{localize "E20.WeaponHands"}}">
       {{item.numHands}} <i class="fas fa-hand"></i>
     </div>
     {{#if item.damageValue}}
-    <div class="align-center chip weapon-effect-chip" data-tooltip="{{item.damageValue}} {{localize (lookup @root.config.damageTypes item.damageType)}} {{localize "E20.Damage"}}">
+    <div class="e20-align-center chip weapon-effect-chip" data-tooltip="{{item.damageValue}} {{localize (lookup @root.config.damageTypes item.damageType)}} {{localize "E20.Damage"}}">
       {{item.damageValue}}
       {{#if (eq item.damageType 'sharp')}}
         <i class="fas fa-sword"></i>

@@ -27,6 +27,12 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
         size: makeStrWithChoices(Object.keys(E20.weaponSizes), 'integrated'),
       }),
       equipped: makeBool(true),
+      hands: makeInt(null),
+      hardpoint: new fields.SchemaField({
+        type: makeStrWithChoices(Object.keys(E20.hardpointTypes), 'external'),
+        reinforced: makeBool(false),
+        altModeVisibility: makeStrWithChoices(Object.keys(E20.altModeVisibilities), 'obvious'),
+      }),
       isPoison: makeBool(false),
       poisonType: makeStrWithChoices(Object.keys(E20.poisonTypes)),
       poisonApplication: new fields.SchemaField({
@@ -45,5 +51,30 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
       upgradeTraits: makeStrArrayWithChoices(Object.keys(E20.weaponTraits)),
       usesPerScene: makeInt(null),
     };
+  }
+
+  /**
+   * Seeds the Hardpoint sub-schema (TF CRB p.114) from the legacy flat transformerMode enum
+   * for weapons authored before Hardpoints existed. Bot Mode -> held in an External Hardpoint;
+   * Alt Mode / Any Mode -> built into an Integrated Hardpoint (hidden vs obvious in Alt Mode
+   * respectively). Runs on every load for un-migrated worlds and compendium items; the world
+   * migration (migration.mjs) writes the same mapping through to the database.
+   * @param {Object} source The candidate source data for the WeaponItemData model.
+   * @returns {Object} The migrated source data.
+   */
+  static migrateData(source) {
+    if (source.transformerMode && !source.hardpoint?.type) {
+      const legacyModeToHardpoint = {
+        modeBotMode: { type: 'external' },
+        modeAltMode: { type: 'integrated', altModeVisibility: 'hidden' },
+        modeAny: { type: 'integrated', altModeVisibility: 'obvious' },
+      };
+      const mapped = legacyModeToHardpoint[source.transformerMode];
+      if (mapped) {
+        source.hardpoint = { ...(source.hardpoint ?? {}), ...mapped };
+      }
+    }
+
+    return super.migrateData(source);
   }
 }

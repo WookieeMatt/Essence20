@@ -400,7 +400,9 @@ describe("onPerkDrop", () => {
   describe("onMultiSkillPerkDrop (e.g. Expertise choosing both skills at once)", () => {
     const EXPERTISE_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.F9kOLys1Iu4UOg22";
 
-    function makeExpertisePerkItem() {
+    // parentId/collectionId are what grantItemEntry stamps on a Role-granted instance. They
+    // default to unset here so the tests that do not care about them are unaffected.
+    function makeExpertisePerkItem({ parentId, collectionId } = {}) {
       return {
         name: 'Expertise',
         uuid: EXPERTISE_GIJ_ID,
@@ -409,6 +411,7 @@ describe("onPerkDrop", () => {
           hasChoice: true, value: 2, isRoleVariant: false, selectionLimit: 4, numChoices: 2,
           advances: { canAdvance: false },
         },
+        getFlag: (scope, key) => (key === 'parentId' ? parentId : key === 'collectionId' ? collectionId : undefined),
         update: jest.fn(),
         delete: jest.fn(),
       };
@@ -474,6 +477,47 @@ describe("onPerkDrop", () => {
       // table says it's owed at this level, not silently lose it).
       expect(perk.delete).not.toHaveBeenCalled();
       expect(global.Item.create).not.toHaveBeenCalled();
+    });
+
+    // Live bug report: on a Commando, the 7th-level Expertise showed up as two Perks - one
+    // badged "7" and one with no level at all, sorted to the bottom with the ungranted Perks,
+    // which also survived dropping back to 6th. The twin created here was getting neither the
+    // Role link nor the entry key, which is how the sheet resolves a level badge and how
+    // deleteAttachmentsForItem finds what to take away again.
+    test("the second Perk inherits the Role link and entry key from the instance it twins", async () => {
+      const actor = makeActorWithItems([]);
+      const perk = makeExpertisePerkItem({ parentId: 'role1', collectionId: '9bcf' });
+
+      await onMultiSkillPerkDrop(actor, perk, ['stealth', 'streetwise']);
+
+      const secondPerk = await global.Item.create.mock.results[0].value;
+      expect(secondPerk.setFlag).toHaveBeenCalledWith('essence20', 'parentId', 'role1');
+      expect(secondPerk.setFlag).toHaveBeenCalledWith('essence20', 'collectionId', '9bcf');
+    });
+
+    // A Perk granted by another PERK passes parentPerk explicitly; that still wins.
+    test("an explicit parentPerk takes precedence over the twinned instance's own parentId", async () => {
+      const actor = makeActorWithItems([]);
+      const perk = makeExpertisePerkItem({ parentId: 'role1', collectionId: '9bcf' });
+      // onPerkDrop walks a parentPerk's own items map to tag the copy it makes.
+      const parentPerk = { _id: 'perk9', system: { items: {} } };
+
+      await onMultiSkillPerkDrop(actor, perk, ['stealth', 'streetwise'], null, parentPerk);
+
+      const secondPerk = await global.Item.create.mock.results[0].value;
+      expect(secondPerk.setFlag).toHaveBeenCalledWith('essence20', 'parentId', 'perk9');
+    });
+
+    test("an ungranted instance twins cleanly - no parent to inherit, no flags invented", async () => {
+      const actor = makeActorWithItems([]);
+      const perk = makeExpertisePerkItem();
+
+      await onMultiSkillPerkDrop(actor, perk, ['stealth', 'streetwise']);
+
+      const secondPerk = await global.Item.create.mock.results[0].value;
+      const flagged = secondPerk.setFlag.mock.calls.map(call => call.slice(0, 2).join('.'));
+      expect(flagged).not.toContain('essence20.parentId');
+      expect(flagged).not.toContain('essence20.collectionId');
     });
 
     test("rejects when one pick duplicates a skill already chosen by another Expertise instance", async () => {

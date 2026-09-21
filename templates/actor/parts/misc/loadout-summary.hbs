@@ -1,0 +1,25 @@
+{{!--
+  Load Out summary strip for the Gear tab (GI Joe CRB p.138 / TF CRB p.116 / PR CRB p.103).
+  Shows hands used vs the six-hand limit, and - for Transformers - External / Integrated
+  Hardpoint usage (TF CRB p.114). Informational: an over-limit count just highlights, nothing
+  is blocked. Reads derived data from Essence20Actor._prepareLoadout().
+--}}
+{{#if @root.system.loadout}}
+<div class="chip-section loadout-summary">
+  <span class="chip loadout-chip{{#if @root.system.loadout.handsOver}} is-over{{/if}}"
+    data-tooltip="{{localize 'E20.LoadOutHandsHint'}}">
+    {{localize 'E20.LoadOutHands'}}: {{@root.system.loadout.handsUsed}} / {{@root.system.loadout.handsMax}}
+  </span>
+
+  {{#if @root.system.canTransform}}
+    <span class="chip loadout-chip{{#if @root.system.hardpoints.integrated.over}} is-over{{/if}}"
+      data-tooltip="{{localize 'E20.HardpointIntegratedHint'}}">
+      {{localize 'E20.HardpointIntegrated'}}: {{@root.system.hardpoints.integrated.used}} / {{@root.system.hardpoints.integrated.max}}
+    </span>
+    <span class="chip loadout-chip{{#if @root.system.hardpoints.external.over}} is-over{{/if}}"
+      data-tooltip="{{localize 'E20.HardpointExternalHint'}}">
+      {{localize 'E20.HardpointExternal'}}: {{@root.system.hardpoints.external.used}} / {{@root.system.hardpoints.external.max}}
+    </span>
+  {{/if}}
+</div>
+{{/if}}

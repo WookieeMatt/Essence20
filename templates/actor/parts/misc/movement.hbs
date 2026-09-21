@@ -1,14 +1,14 @@
-<div class="stats-container flexrow flex-group-center e20-border-accent">
+<div class="stats-container flexrow e20-flex-group-center e20-border-accent">
   {{#if system.movementNotSet}}
     <div>Set PC movement by adding an Origin</div>
   {{else}}
     {{#each @root.config.movementTypes as |name type|}}
-    <div class="flexcol flex-group-center">
+    <div class="flexcol e20-flex-group-center">
       <label>{{name}}</label>
 
       {{#with (lookup @root.system.movement type) as |moveData|}}
         {{#if @root.system.movementIsReadOnly}}
-          <input class="two-digit-input bg-transparent" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
+          <input class="two-digit-input e20-bg-transparent" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
         {{else if @root.system.isTransformed}}
           {{#if (eq @root.document.type "npc")}}
             <input class="two-digit-input" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" min="0" step="5" />

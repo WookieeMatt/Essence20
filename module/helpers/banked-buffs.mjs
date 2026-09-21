@@ -2556,7 +2556,7 @@ export async function pickAllyTargets(actor, candidateAllies, perkName, maxCount
   const options = candidateAllies.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
   const chosenId = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.format('E20.PickAllyTitle', { perk: perkName }) },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.PickAllyLabel')
     }</label><select name="allyId">${options}</select></div>`,
@@ -2596,7 +2596,7 @@ async function pickEmtCrashCourseAction(actor) {
   ].filter(Boolean).join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.EmtCrashCoursePickActionTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.EmtCrashCoursePickActionLabel')
     }</label><select name="action">${options}</select></div>`,
@@ -2627,7 +2627,7 @@ async function pickDefenseType() {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.RollWithThePunchesPickDefenseTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.RollWithThePunchesPickDefenseLabel')
     }</label><select name="defenseType">${options}</select></div>`,
@@ -2659,7 +2659,7 @@ export async function pickHobbleCondition() {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.HobblePickConditionTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.HobblePickConditionLabel')
     }</label><select name="condition">${options}</select></div>`,
@@ -2690,7 +2690,7 @@ export async function pickGuardianStrikesCondition() {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.GuardianStrikesPickConditionTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.GuardianStrikesPickConditionLabel')
     }</label><select name="condition">${options}</select></div>`,

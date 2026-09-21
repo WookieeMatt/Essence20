@@ -25,6 +25,11 @@ export class UpgradeItemData extends foundry.abstract.TypeDataModel {
       availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),
       benefit: makeStr(''),
       traits: makeStrArrayWithChoices(Object.keys(E20.upgradeTraits)),
+      /* Traits this upgrade takes AWAY from whatever it is attached to. Rare but real: Ammo
+         Feeder (GI Joe CRB p.151) is "Weapon with the Reload trait / The weapon loses the Reload
+         trait", and Factions in Action Vol. 2 p.96 has a weapon upgrade that drops Mounted.
+         Same choices as `traits` above, since anything grantable is also removable. */
+      removedTraits: makeStrArrayWithChoices(Object.keys(E20.upgradeTraits)),
       type: makeStrWithChoices(Object.keys(E20.upgradeTypes), 'armor'),
       prerequisite: makeStr(null),
     };

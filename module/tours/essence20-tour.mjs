@@ -572,6 +572,10 @@ export class Essence20Tour extends Tour {
     // A step with no selector is already core's own <aside>, which nothing else competes for.
     if (!step?.selector) {
       await super._renderStep();
+      // Core builds this one, so it lands with core's classes only. Tagging it the way
+      // #renderOwnStep tags a targeted step lets _tours.scss name a class of ours instead of
+      // styling .tour-center-step, which belongs to core and to every other package's tours.
+      document.querySelector("aside.tour-center-step")?.classList.add("essence20-tour-step");
       requestAnimationFrame(() => this._repositionHighlight());
       this.#onResize ??= foundry.utils.debounce(() => this._repositionHighlight(), 100);
       window.addEventListener("resize", this.#onResize);

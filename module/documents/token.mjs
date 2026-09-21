@@ -1,3 +1,4 @@
+import { setAiming } from "../helpers/action-economy.mjs";
 import { consumeForMovement } from "../helpers/token-movement.mjs";
 
 export class Essence20TokenDocument extends TokenDocument {
@@ -26,6 +27,17 @@ export class Essence20TokenDocument extends TokenDocument {
       return false;
     }
 
-    return consumeForMovement(this, movement);
+    const allowedAfterCost = await consumeForMovement(this, movement);
+    if (allowedAfterCost === false) {
+      return false;
+    }
+
+    /* Moving cancels an aim: the shift holds "as long as you don't use Movement between your
+       Aim and your attack" (GI Joe CRB p.193). Cleared only once the move is actually going
+       to happen - a movement the economy just rejected never took place, so it must not cost
+       the aim either. */
+    await setAiming(this.actor, false);
+
+    return allowedAfterCost;
   }
 }

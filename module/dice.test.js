@@ -1170,6 +1170,7 @@ describe("rollSkill", () => {
     defenseType: "none",
     energonAvailable: false,
     essence: 'strength',
+    hardpointMovement: null,
     ideaPointAvailable: false,
     interdictionAvailable: false,
     isSpecialized: false,
@@ -13739,7 +13740,7 @@ describe("rollSkill", () => {
         },
         getRollData: jest.fn(() => ({ skills: { athletics: { modifier: '0', shift: 'd20' } } })),
         _getBaseRolePoints: jest.fn(() => ({
-          name: 'Reckless Adandon',
+          name: 'Reckless Abandon',
           flags: { core: { sourceId: RECKLESS_ABANDON_ID } },
           system: { bonus: { type: 'healthBonus' }, isActivatable: true, isActive },
         })),
@@ -25962,6 +25963,111 @@ describe("rollSkill", () => {
       });
     });
   });
+
+  test("weaponEffect on an integrated-Hardpoint weapon offers the movement-penalty control and applies the pick as a downshift", async () => {
+    const rollDialog = createMockRollDialog();
+    const dialogResult = {
+      canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0,
+      timesToRoll: 1, hardpointMovePenalty: 2,
+    };
+    rollDialog.getSkillRollOptions.mockReturnValue(dialogResult);
+    const integratedWeapon = { system: { hardpoint: { type: 'integrated', reinforced: false } } };
+    const hardpointActor = {
+      ...mockActor,
+      items: Object.assign([], { get: jest.fn(() => integratedWeapon) }),
+      getRollData: jest.fn(() => ({ skills: { athletics: { modifier: '0', shift: 'd20' } } })),
+    };
+    const weaponEffect = {
+      name: 'Arm Cannon',
+      type: 'weaponEffect',
+      flags: { essence20: { parentId: 'weapon-1' } },
+      system: { classification: { skill: 'athletics', style: 'energy' }, damageType: 'energy', damageValue: 1, defenseType: 'none' },
+    };
+    dice._rollSkillHelper = jest.fn();
+    const realHandleAutoFail = dice._handleAutoFail;
+    dice._handleAutoFail = jest.fn(() => false);
+
+    try {
+      await dice.rollSkill({ ...dataset }, hardpointActor, weaponEffect);
+    } finally {
+      dice._handleAutoFail = realHandleAutoFail;
+    }
+
+    expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(
+      expect.objectContaining({ hardpointMovement: { reinforced: false } }),
+      expect.anything(),
+      hardpointActor,
+    );
+    // the ↓2 dialog pick was folded into the roll's shiftDown
+    expect(dialogResult.shiftDown).toBe(2);
+  });
+
+  test("weaponEffect on an external-Hardpoint weapon gets no movement-penalty control", async () => {
+    const rollDialog = createMockRollDialog();
+    rollDialog.getSkillRollOptions.mockReturnValue({ cancelled: true });
+    const externalWeapon = { system: { hardpoint: { type: 'external' } } };
+    const hardpointActor = {
+      ...mockActor,
+      items: Object.assign([], { get: jest.fn(() => externalWeapon) }),
+      getRollData: jest.fn(() => ({ skills: { athletics: { modifier: '0', shift: 'd20' } } })),
+    };
+    const weaponEffect = {
+      name: 'Blaster',
+      type: 'weaponEffect',
+      flags: { essence20: { parentId: 'weapon-2' } },
+      system: { classification: { skill: 'athletics', style: 'energy' }, damageType: 'energy', damageValue: 1, defenseType: 'none' },
+    };
+
+    await dice.rollSkill({ ...dataset }, hardpointActor, weaponEffect);
+
+    expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(
+      expect.objectContaining({ hardpointMovement: null }),
+      expect.anything(),
+      hardpointActor,
+    );
+  });
+
+
+  // rollSkill used to be fire-and-forget. It now hands its outcome back so a caller can act on
+  // it - Requisition grants the item on a success. See _rollSkillHelper's own return.
+  describe("reported outcome", () => {
+    const difDataset = { ...dataset, dif: '10' };
+
+    beforeEach(() => {
+      mockActor.getRollData = jest.fn(() => ({ skills: { athletics: { modifier: '0', shift: 'd20' } } }));
+    });
+
+    test("reports success when a roll landed", async () => {
+      const rollDialog = createMockRollDialog();
+      const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
+      dice._rollSkillHelper = jest.fn(() => ({ results: [{ success: true }], rollFailed: false }));
+
+      const outcome = await dice.rollSkill(difDataset, mockActor, null);
+      expect(outcome.success).toBe(true);
+      expect(outcome.outcomes).toHaveLength(1);
+    });
+
+    test("reports failure when nothing landed", async () => {
+      const rollDialog = createMockRollDialog();
+      const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
+      dice._rollSkillHelper = jest.fn(() => ({ results: [{ success: false }], rollFailed: true }));
+
+      const outcome = await dice.rollSkill(difDataset, mockActor, null);
+      expect(outcome.success).toBe(false);
+    });
+
+    // The one value rollSkill returned before this change, and the one documents/item.mjs
+    // reads to refund an action - it has to keep coming back unchanged.
+    test("still reports a cancelled dialog", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({ cancelled: true });
+      const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
+      dice._rollSkillHelper = jest.fn();
+
+      expect(await dice.rollSkill(difDataset, mockActor, null)).toEqual({ cancelled: true });
+      expect(dice._rollSkillHelper).not.toHaveBeenCalled();
+    });
+  });
 });
 
 /* _getSkillRollLabel */
@@ -25977,6 +26083,14 @@ describe("_getSkillRollLabel", () => {
     const expected = "E20.RollRollingFor E20.SkillAthletics";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
+  });
+
+  test("a requisition roll gets its own flavor instead of the plain skill label", () => {
+    const dataset = { skill: 'targeting', requisitionItemName: 'Rocket Launcher' };
+    const skillRollOptions = { edge: false, snag: false };
+
+    expect(dice._getSkillRollLabel(dataset, skillRollOptions))
+      .toEqual("<b>E20.RequisitionRollFlavor</b> - Rocket Launcher");
   });
 
   test("skill roll with Edge", () => {

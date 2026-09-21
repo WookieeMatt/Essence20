@@ -75,13 +75,16 @@
     }
   }
 
+  /* The trade and the Speed 1 note share this column. It stays narrow so the box keeps the same
+     height as Role/Focus/Origin beside it in the header row. */
+
   /* Trade and the Speed 1 note are both usually absent; when they are, this column has no
      children and would otherwise still draw the parent's gap beside the pips. */
   &__notes {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 4px;
+    gap: 2px;
 
     &:empty {
       display: none;

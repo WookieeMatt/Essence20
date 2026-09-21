@@ -11,8 +11,8 @@
    synthetically embolden it. Loading the real 700 weight avoids that fake-bold blur. */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap');
 
-select {
-  color: var(--theme-text-color);
+.essence20 select {
+  color: var(--e20-theme-text-color);
 }
 
 /* Foundry core's checkbox/radio duotone checkmark glyph (a Font Awesome icon on ::before/::after,
@@ -28,8 +28,8 @@ select {
    Foundry's amber without needing !important or a fight over the actual color-consuming rule. */
 .essence20 input[type="checkbox"],
 .essence20 input[type="radio"] {
-  --checkbox-checked-color: var(--theme-text-color);
-  --checkbox-checkmark-color: var(--theme-panel-bg);
+  --checkbox-checked-color: var(--e20-theme-text-color);
+  --checkbox-checkmark-color: var(--e20-theme-panel-bg);
 }
 
 /* Foundry's own UNCHECKED-state glyph (the same appearance:none control the comment above
@@ -65,48 +65,53 @@ select {
      to frame. Since the swatch is already visibly a box without any help, the fix is simply to
      leave the checked state alone rather than chase that misalignment. */
 .essence20 input[type="checkbox"]:not(:checked)::before {
-  outline: 1px solid var(--theme-text-color);
+  outline: 1px solid var(--e20-theme-text-color);
   outline-offset: -1px;
   border-radius: 3px;
 }
 
-option {
-  color: var(--theme-text-color);
-  background-color: var(--theme-input-color);
+.essence20 option {
+  color: var(--e20-theme-text-color);
+  background-color: var(--e20-theme-input-color);
 }
 
-form .form-group span.units {
-  color: var(--theme-muted-text);
+.essence20 .form-group span.units {
+  color: var(--e20-theme-muted-text);
 }
 
-form .form-group.slim .form-fields > label {
-  color: var(--theme-muted-text);
+.essence20 .form-group.slim .form-fields > label {
+  color: var(--e20-theme-muted-text);
 }
 
-form .notes, form .hint {
-  color: var(--theme-muted-text);
+.essence20 .notes,
+.essence20 .hint {
+  color: var(--e20-theme-muted-text);
 }
 
-.standard-form .form-group > label {
-  color: var(--theme-muted-text);
+.essence20 .standard-form .form-group > label {
+  color: var(--e20-theme-muted-text);
 }
 
-.filepicker .display-modes a {
-  background: initial;
-}
+/* The three .filepicker rules that used to sit here were `background: initial` resets on
+   core's own FilePicker - they existed to undo the styling this stylesheet was leaking onto
+   it through bare `select`, `input` and `.window-app` selectors. Those are all scoped to
+   .essence20 now, so nothing of ours reaches the FilePicker and there is nothing left to
+   undo. Removed rather than scoped, because scoping them would just have left three rules
+   that can never match. */
 
-.filepicker .display-modes a.active {
-  background: initial;
-}
-
-.filepicker .favorites .path {
-  background: initial;
-}
-
-input[type="number"], input[type="text"], select, textarea {
-  color: var(--theme-text-color);
-  background: var(--theme-input-color);
-  border: 1px solid var(--theme-border-color);
+/* type="search" belongs in this list with the rest. Left out, the only two search fields in the
+   system (the Effect Wizard, the Compendium Browser) were the single controls Foundry core got to
+   style instead of us - visibly a different colour from every field beside them, in every theme.
+   Caught by measuring the Effect Wizard: its search box read rgb(48,40,49) while the selects and
+   number field next to it read the theme's own input colour. */
+.essence20 input[type="number"],
+.essence20 input[type="text"],
+.essence20 input[type="search"],
+.essence20 select,
+.essence20 textarea {
+  color: var(--e20-theme-text-color);
+  background: var(--e20-theme-input-color);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: 6px;
   padding: 4px 6px;
   vertical-align: middle;
@@ -116,8 +121,8 @@ input[type="number"], input[type="text"], select, textarea {
 /* small numeric inputs */
 .essence20 .one-digit-input, .essence20 .two-digit-input {
   background: rgba(255,255,255,0.08);
-  border: 1px solid var(--theme-border-color);
-  color: var(--theme-text-color);
+  border: 1px solid var(--e20-theme-border-color);
+  color: var(--e20-theme-text-color);
   border-radius: 6px;
   min-height: 22px;
   text-align: center;
@@ -140,7 +145,7 @@ input[type="number"], input[type="text"], select, textarea {
 }
 
 .essence20 textarea {
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   border: 1px solid var(--color-border-light-tertiary);
 }
 
@@ -164,7 +169,7 @@ input[type="number"], input[type="text"], select, textarea {
 }
 
 .essence20 .span {
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
 }
 
 .essence20 .sheet-body {
@@ -179,12 +184,12 @@ input[type="number"], input[type="text"], select, textarea {
 // Chat card styling (check-card.hbs and its dice-roll/results/buttons) lives in
 // sass/assets/_chat.scss, alongside the .chat-message envelope rules it depends on.
 
-.sheet-options {
+.essence20.sheet-options {
   min-width: 400px;
   min-height: auto;
 }
 
-.sheet-options-morph {
+.essence20.sheet-options-morph {
   min-width: 500px;
   min-height: auto;
 }

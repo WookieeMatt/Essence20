@@ -39,7 +39,7 @@ export async function pickMysteriousAura() {
     .map(key => `<option value="${key}">${game.i18n.localize(E20.defenses[key])}</option>`).join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.MysteriousAuraPickTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.MysteriousAuraPickTypeLabel')
     }</label><select name="type">

@@ -57,7 +57,7 @@ async function pickWeaponToConvert(candidates) {
   const options = candidates.map(item => `<option value="${item.id}">${item.name}</option>`).join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.WeaponConversionPickWeaponTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.WeaponConversionPickWeaponLabel')
     }</label><select name="weapon">${options}</select></div>`,

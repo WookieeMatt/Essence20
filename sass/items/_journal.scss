@@ -1,17 +1,16 @@
 @use "../variables" as v;
-/* -- Jornal page styling -- */
-.window-content .journal-sheet-container .journal-entry-content {
-  background: v.$background-n;
-  //background-size: cover;
-  color: rgb(163, 163, 163);
-  border: 10px #c9c7b8;
-  /*background-color: blue;*/
-}
 
-.window-content .journal-sheet-container {
-  background: v.$background-image-1;
-  background-size: cover;
-  border-radius: 10px white;
-}
-
-
+/* -- Journal page styling --
+ *
+ * Intentionally empty. This file held two rules hanging off .journal-sheet-container, a
+ * wrapper Foundry stopped emitting when journal sheets moved to ApplicationV2. A v14 journal
+ * is .window-content > aside.journal-sidebar + section.journal-entry-content, so neither rule
+ * had matched anything for a while - confirmed live against a rendered journal, where the
+ * document contains no .journal-sheet-container at all.
+ *
+ * They were also the last rules here that reached one of core's own windows rather than one
+ * of ours, which is what brought them to attention. Re-pointing them at the new structure
+ * would have turned journal theming back ON after it had silently been off, so they are
+ * simply gone; styling a journal again is a deliberate decision, not a side effect of a
+ * namespacing pass.
+ */

@@ -19,6 +19,7 @@ export default class AlterationMovementSelector extends serializeFormSubmits(Han
     classes: [
       "essence20",
       "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",

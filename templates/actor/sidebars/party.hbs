@@ -1,0 +1,16 @@
+<section class="essence20-sidebar sheet-header">
+  {{!-- Profile image --}}
+  <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+
+  <div class="sliced-border --col essence20-sidebar-panel">
+    <label class="sliced-border__label">{{localize 'E20.PartyLine'}}</label>
+    <div>
+      {{#if gameLine}}{{localize (lookup @root.config.gameVersions gameLine)}}{{else}}{{localize 'E20.PartyLineGeneric'}}{{/if}}
+    </div>
+  </div>
+
+  <div class="sliced-border --col essence20-sidebar-panel">
+    <label class="sliced-border__label">{{localize 'E20.PartyMembers'}}</label>
+    <div>{{system.memberCount}}</div>
+  </div>
+</section>

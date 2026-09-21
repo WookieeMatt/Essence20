@@ -11,6 +11,7 @@
       "book": "Factions in Action Vol 2: Intercontinental Adventures",
       "page": 8
     },
+    "actionType": "standard",
     "items": {},
     "advances": {
       "baseValue": 1,

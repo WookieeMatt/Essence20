@@ -3,27 +3,27 @@
 /* Options across the top, then a two-column before/after read-out, then the review list. The body
    is the only thing that scrolls so the Create button stays put - same shape as
    _stat-block-importer.scss, which this dialog is the sibling of. */
-.monster-grow-dialog {
+.essence20.monster-grow-dialog {
   .window-content {
     padding: v.$gap-lg;
   }
 }
 
-.monster-grow-root {
+.essence20 .monster-grow-root {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   min-height: 0;
 }
 
-.monster-grow-body {
+.essence20 .monster-grow-body {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
   padding-right: v.$gap-sm;
 }
 
-.monster-grow-body h3 {
+.essence20 .monster-grow-body h3 {
   align-items: baseline;
   display: flex;
   gap: v.$gap-md;
@@ -41,7 +41,7 @@
   }
 }
 
-.monster-grow-option-grid {
+.essence20 .monster-grow-option-grid {
   display: grid;
   gap: v.$gap-md;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -59,7 +59,7 @@
   }
 }
 
-.monster-grow-columns {
+.essence20 .monster-grow-columns {
   display: flex;
   gap: v.$gap-lg;
   margin-top: v.$gap-md;
@@ -70,7 +70,7 @@
   }
 }
 
-.monster-grow-list {
+.essence20 .monster-grow-list {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -94,7 +94,7 @@
   }
 }
 
-.monster-grow-inputs li {
+.essence20 .monster-grow-inputs li {
   align-items: center;
 
   .from-to {
@@ -111,7 +111,7 @@
 
 /* Turns red when the allocated Essence points don't add up to 2x the Threat Level increase - a
    nudge rather than a block, since RAW is a guideline and a GM may deliberately spend fewer. */
-.monster-grow-points {
+.essence20 .monster-grow-points {
   font-size: 0.85rem;
   font-weight: normal;
   opacity: 0.75;
@@ -122,7 +122,7 @@
   }
 }
 
-.monster-grow-review {
+.essence20 .monster-grow-review {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -150,7 +150,7 @@
   }
 }
 
-.monster-grow-footer {
+.essence20 .monster-grow-footer {
   align-items: center;
   display: flex;
   gap: v.$gap-md;
@@ -165,14 +165,14 @@
 
 /* The mode switch and its link picker sit above the rules block. When "link an actor I already
    have" is chosen the whole generator UI is hidden, because none of it applies. */
-.monster-grow-mode {
+.essence20 .monster-grow-mode {
   display: flex;
   flex-direction: column;
   gap: v.$gap-md;
   margin-bottom: v.$gap-md;
 }
 
-.monster-grow-linked {
+.essence20 .monster-grow-linked {
   align-items: center;
   display: flex;
   gap: v.$gap-sm;
@@ -189,8 +189,8 @@
   }
 }
 
-.monster-grow-mode-picker,
-.monster-grow-link-picker label {
+.essence20 .monster-grow-mode-picker,
+.essence20 .monster-grow-link-picker label {
   display: flex;
   flex-direction: column;
   gap: v.$gap-sm;
@@ -200,15 +200,15 @@
    rules selects' 197px) this select stopped reading as a control at all: the border became a
    banner and the dropdown chevron ended up a dialog-width away from its own label. The chrome was
    always identical to the other selects - only the width was wrong. */
-.monster-grow-mode-picker {
+.essence20 .monster-grow-mode-picker {
   max-width: 24rem;
 }
 
-.monster-grow-link-picker {
+.essence20 .monster-grow-link-picker {
   max-width: 32rem;
 }
 
-.monster-grow-link-picker {
+.essence20 .monster-grow-link-picker {
   align-items: flex-end;
   display: flex;
   gap: v.$gap-md;
@@ -224,7 +224,7 @@
   }
 }
 
-.monster-grow-no-candidates {
+.essence20 .monster-grow-no-candidates {
   margin: 0;
   opacity: 0.7;
 }

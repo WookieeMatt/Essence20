@@ -1,4 +1,9 @@
 import { E20 } from "./helpers/config.mjs";
+import { isAiming } from "./helpers/action-economy.mjs";
+import { DEFENDING_STATUS } from "./helpers/named-actions.mjs";
+import {
+  LEND_ASSISTANCE_EDGE_FLAG, LEND_ASSISTANCE_SHIFT_FLAG,
+} from "./helpers/lend-assistance.mjs";
 import { chooseDefenderDefense } from "./helpers/defense-choice.mjs";
 import { checkAndActivateDefenderStep } from "./helpers/defender-step.mjs";
 import {
@@ -3533,6 +3538,18 @@ export class Dice {
       calculatedShiftUp += getSneakAttackDamage(actor);
     }
 
+    /* Lend Assistance, skill half (GI Joe CRB p.197): "if a character has at least as many
+       levels in a given skill as their ally, they may Lend Assistance to that ally to give them
+       an automatic up-1 shift to their use of that given skill." Banked on the ally by
+       helpers/lend-assistance.mjs, which is also where the levels prerequisite is checked -
+       by the time it reaches here the grant has already been earned. Same shape as Shoulder To
+       Shoulder just below, and cleared the same way: consumed by the first matching roll. */
+    const pendingLendAssistanceShift = getPendingBonus(actor, LEND_ASSISTANCE_SHIFT_FLAG);
+    if (pendingLendAssistanceShift?.skill == rolledSkill) {
+      calculatedShiftUp += pendingLendAssistanceShift.shiftUp;
+      await clearPendingBonus(actor, LEND_ASSISTANCE_SHIFT_FLAG);
+    }
+
     // Shoulder To Shoulder (Focus: Frontline Leader, 3rd level, p.87) - see
     // helpers/shoulder-to-shoulder.mjs's own doc comment.
     const pendingShoulderToShoulder = getPendingBonus(actor, SHOULDER_TO_SHOULDER_FLAG);
@@ -5769,6 +5786,20 @@ export class Dice {
       && this._actorHasPerk(actor, DRIVING_STRIKE_PERK_ID)
       && actor.system.powers?.personal?.value > 0;
 
+    // Integrated Hardpoint movement penalty (TF CRB p.114): attacking with a weapon in an
+    // Integrated Hardpoint takes shiftDown 1 for moving up to your Movement this turn, and
+    // shiftDown 2 for moving beyond it; a Reinforced Hardpoint negates the first. Surfaced as a
+    // Roll Options Dialog choice - the player states how they moved - rather than read from live
+    // token movement, mirroring how Aiming and Energon are handled above. Null unless this is a
+    // weaponEffect whose parent weapon actually sits in an Integrated Hardpoint.
+    updatedShiftDataset.hardpointMovement = null;
+    if (item?.type == 'weaponEffect') {
+      const parentWeapon = actor.items?.get?.(item.flags?.essence20?.parentId);
+      if (parentWeapon?.system.hardpoint?.type == 'integrated') {
+        updatedShiftDataset.hardpointMovement = { reinforced: !!parentWeapon.system.hardpoint.reinforced };
+      }
+    }
+
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
@@ -5797,6 +5828,13 @@ export class Dice {
         skillRollOptions.shiftUp -= source.shiftUp;
         skillRollOptions.shiftDown -= source.shiftDown;
       }
+    }
+
+    // What the player said about their movement, converted into the shiftDown it costs. Sits
+    // with the other shift adjustments rather than at the detection site above, because it can
+    // only be known once the dialog has come back.
+    if (skillRollOptions.hardpointMovePenalty) {
+      skillRollOptions.shiftDown += skillRollOptions.hardpointMovePenalty;
     }
 
     if (skillRollOptions.isAiming) {
@@ -8419,6 +8457,11 @@ export class Dice {
     const isMultipleTargetsAttack = checkEntries?.length > 1 && isMultipleTargetsWeaponAttack;
 
     // Repeat the roll as many times as specified in the skill roll options dialog
+    // Every _rollSkillHelper outcome from this call: one per repeat, and one per target on a
+    // multiple-targets attack. Collected rather than returning just the last, because a caller
+    // asking "did this succeed" for a multi-roll attack needs to see all of them.
+    const rollOutcomes = [];
+
     for (let i = 0; i < skillRollOptions.timesToRoll; i++) {
       let repeatText = '';
       if (skillRollOptions.timesToRoll > 1) {
@@ -8480,15 +8523,30 @@ export class Dice {
         // relies on for repeats, so no other change is needed to get independent totals.
         for (const entry of checkEntries) {
           const targetText = this._i18n.format("E20.RollMultipleTargetsText", { name: entry.name }) + '<br>';
-          this._rollSkillHelper(
+          // Awaited now, where it used to be fired and forgotten. That also settles the order
+          // these cards post in, which was previously whatever order they happened to resolve in.
+          rollOutcomes.push(await this._rollSkillHelper(
             formula, actor, repeatText + targetText + label, canCritD2, { ...checkContext, entries: [entry] },
             rollContext, drivingStrikeReroll,
-          );
+          ));
         }
       } else {
-        this._rollSkillHelper(formula, actor, repeatText + label, canCritD2, checkContext, rollContext, drivingStrikeReroll);
+        rollOutcomes.push(
+          await this._rollSkillHelper(
+            formula, actor, repeatText + label, canCritD2, checkContext, rollContext, drivingStrikeReroll,
+          ),
+        );
       }
     }
+
+    // `success` is the headline a caller usually wants: did ANY roll from this call land? For a
+    // single roll against a flat Difficulty - a Requisition Test, a Skill Test from an enricher -
+    // that is simply "did it pass". `outcomes` is there for anything needing per-roll detail.
+    const outcomes = rollOutcomes.filter(Boolean);
+    return {
+      success: outcomes.some(outcome => outcome.results.some(result => result.success)),
+      outcomes,
+    };
   }
 
   /**
@@ -9187,6 +9245,26 @@ export class Dice {
     const isAttack = item?.type == 'weaponEffect';
     const isMelee = isAttack && item.system.classification.style == 'melee';
 
+    /* Aim (GI Joe CRB p.193): "A Ranged weapon-specific Free action is Aiming, which grants a
+       up-1 shift on a single ranged attack test as long as you don't use Movement between your
+       Aim and your attack."
+
+       Ranged-only, hence isAttack && !isMelee - melee is one of the four weapon styles and the
+       other three (energy, explosive, projectile) are all ranged, so the existing isMelee is
+       exactly the right inverse.
+
+       The other two conditions are enforced where the information is, not here: the aim is
+       spent by the shot (documents/item.mjs#roll clears it once a weapon effect resolves) and
+       cancelled by moving (documents/token.mjs). So by the time this reads the flag, an aim
+       that is still set is one that has survived both.
+
+       Not added to pendingBonusesToClear - that list is for flags on the ACTOR, and this one
+       lives on the combatant ledger with its own clearing path. */
+    if (isAttack && !isMelee && isAiming(actor)) {
+      shiftUp += 1;
+      addSource('aim', this._localize('E20.ActionAim'), { shiftUp: 1 });
+    }
+
     // Shining Leader (White Ranger, 8th level, p.65) - "For the rest of that round and the
     // following round, all of your allies gain Edge on their attack Skill Tests." A 2-round
     // window rather than a one-shot bank, so this reads the flag directly (not via
@@ -9291,6 +9369,27 @@ export class Dice {
     let spottedTarget = null;
     let eyeForAppraisalTarget = null;
     if (target) {
+      /* The Defend action (GI Joe CRB p.196): "all attacks against you from adversaries and
+         effects you can see suffer a Snag on their Attack Skill Test."
+
+         Read off the target rather than banked on the attacker, because the defender does not
+         know who will attack them - that is the whole shape of the action. The Condition is
+         applied by helpers/named-actions.mjs and cleared at the start of the defender's next
+         turn by documents/combat.mjs#_onStartTurn.
+
+         Gated on isAttack: RAW says "attacks against you", not any Skill Test, so a Persuasion
+         test aimed at someone who is Defending is unaffected.
+
+         The "you can see" qualifier is deliberately NOT enforced - this system has no model of
+         which adversaries an actor is aware of, and deriving one from token vision would be
+         wrong about darkness, cover and every Perk that grants awareness. The Snag annotates
+         the Roll Options Dialog with its own name, so a GM ruling the defender never saw this
+         one coming just puts the radio back to Normal. */
+      if (isAttack && target.statuses?.has(DEFENDING_STATUS)) {
+        snag = true;
+        addSource('defending', this._localize('E20.StatusDefending'), { snag: true });
+      }
+
       // First Strike (7th level): "you gain an Edge on Attacks... against opponents who haven't
       // acted yet in combat." RAW also covers plain Skill Tests against such an opponent, and
       // this check touches no weapon/damage fields, so - unlike everything else in this block -
@@ -9303,6 +9402,27 @@ export class Dice {
           edge = true;
           addSource('firstStrike', findPerk(actor, FIRST_STRIKE_ID)?.name ?? 'First Strike', { edge: true });
         }
+      }
+
+      /* Lend Assistance, attack half (GI Joe CRB p.197): "Until the beginning of your next
+         turn, the first attack against the specific target gains an Edge."
+
+         Banked on the ALLY (this roller) scoped to the target the assister named, the same
+         shape as Menacing Glare's own Edge just below. "The first attack" is what the clear
+         implements: it is consumed here whether it hits or misses, which is what "first"
+         means.
+
+         Gated on isAttack - the grant is about "hitting an enemy target in combat", and the
+         action's other half already covers helping with a plain Skill Test.
+
+         The "until the beginning of your next turn" clause is not separately enforced, matching
+         every other banked bonus here (see perks.mjs#bankPendingBonus). */
+      const pendingLendAssistanceEdge = isAttack
+        ? getPendingBonus(actor, LEND_ASSISTANCE_EDGE_FLAG) : null;
+      if (pendingLendAssistanceEdge && pendingLendAssistanceEdge.targetId == target.id) {
+        edge = true;
+        pendingBonusesToClear.push(LEND_ASSISTANCE_EDGE_FLAG);
+        addSource('lendAssistance', this._localize('E20.ActionLendAssistance'), { edge: true });
       }
 
       // Menacing Glare's own Edge effect (Dark Ranger, 2nd level, p.39) - "you have Edge on the
@@ -11387,7 +11507,10 @@ export class Dice {
         rollContext,
       });
       this._chatMessage.create(chatData);
-      return;
+
+      // No checkContext means there was nothing to compare against a Difficulty, so there is no
+      // success to report - the roll itself is still handed back for a caller that wants it.
+      return { results: [], rollFailed: false, isFumble: false, roll };
     }
 
     await roll.evaluate();
@@ -13270,6 +13393,16 @@ export class Dice {
 
     const chatData = await buildCheckChatData(roll, { flavor, results, speaker, canCritD2, rollContext: fullRollContext });
     this._chatMessage.create(chatData);
+
+    // What the card just said, handed back so a caller can act on it. Same values the card is
+    // built from rather than a second computation, so the two can never disagree.
+    return {
+      results,
+      rollFailed: fullRollContext.rollFailed,
+      dealtDamage,
+      isFumble,
+      roll,
+    };
   }
 
   /**
@@ -13280,6 +13413,14 @@ export class Dice {
    * @private
    */
   _getSkillRollLabel(dataset, skillRollOptions) {
+    // A Requisition Test (helpers/requisition.mjs) is a plain Skill Test vs a flat DIF, but
+    // gets its own flavor so the chat card reads as "requisitioning X" rather than a bare
+    // "Rolling for Targeting".
+    if (dataset.requisitionItemName) {
+      return `<b>${this._localize('E20.RequisitionRollFlavor')}</b> - ${dataset.requisitionItemName}`
+        + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
+    }
+
     let rolledSkillStr;
     if (dataset.skill == 'roleSkillDie') {
       rolledSkillStr = dataset.roleSkillName;

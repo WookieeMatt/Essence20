@@ -51,7 +51,7 @@ export default class MonsterGrowDialog extends serializeFormSubmits(HandlebarsAp
       resetAllocations: this.#onResetAllocations,
       unlinkForm: this.#onUnlink,
     },
-    classes: ["essence20", "sheet", "theme-wrapper", "monster-grow-dialog"],
+    classes: ["essence20", "sheet", "theme-wrapper", "e20-window", "monster-grow-dialog"],
     tag: "form",
     window: {
       icon: "fa-solid fa-up-right-and-down-left-from-center",

@@ -136,8 +136,27 @@ export async function onMultiSkillPerkDrop(actor, perk, skills, dropFunc=null, p
   const expertiseSource = await fromUuid(perkSourceId);
   const secondPerk = await Item.create(expertiseSource, { parent: actor });
   await secondPerk.setFlag('core', 'sourceId', perkSourceId);
-  if (parentPerk) {
-    await secondPerk.setFlag('essence20', 'parentId', parentPerk._id);
+
+  // The twin has to carry the SAME granting link as the instance it is paired with, or it
+  // belongs to nothing on the sheet: base-actor-sheet resolves a granted item's level badge
+  // through parentId + collectionId, and deleteAttachmentsForItem finds what to remove the
+  // same way. Without them the second Expertise showed no level, sorted to the bottom of the
+  // Perks list with the ungranted ones, and survived a level reduction that removed its twin.
+  //
+  // parentPerk is only set when another PERK granted this one. When a ROLE did - which is the
+  // usual case, Commando granting Expertise at 1st and again at 7th (GI Joe CRB p.72) - it is
+  // null, and the link is instead the parentId flag grantItemEntry already wrote onto `perk`.
+  // Reading it back off `perk` covers both, and is safe by this point: the picker this runs
+  // from is non-blocking, so grantItemEntry finished stamping its flags long before the
+  // player confirmed a skill.
+  const parentId = parentPerk?._id ?? perk.getFlag('essence20', 'parentId');
+  const collectionId = perk.getFlag('essence20', 'collectionId');
+  if (parentId) {
+    await secondPerk.setFlag('essence20', 'parentId', parentId);
+  }
+
+  if (collectionId) {
+    await secondPerk.setFlag('essence20', 'collectionId', collectionId);
   }
 
   await onPerkDrop(actor, secondPerk, null, skills[1], 'skills', parentPerk);

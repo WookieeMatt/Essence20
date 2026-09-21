@@ -95,6 +95,11 @@ describe("getNumActions", () => {
     };
     expect(getNumActions(actor)).toEqual({ free: 1, movement: 1, standard: 1 });
   });
+
+  test("grants no actions for an actor with no Essence scores (e.g. Party)", () => {
+    const actor = { system: {} };
+    expect(getNumActions(actor)).toEqual({ free: 0, movement: 0, standard: 0 });
+  });
 });
 
 describe("applySystemColorCssVariables", () => {

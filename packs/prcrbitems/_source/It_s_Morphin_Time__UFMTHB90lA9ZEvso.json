@@ -9,6 +9,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 33
     },
+    "actionType": "standard",
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "faction",

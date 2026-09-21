@@ -11,6 +11,7 @@
       "book": "Transformers Core Rulebook",
       "page": 86
     },
+    "actionType": "free",
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

@@ -27,7 +27,7 @@ import { applyDamage } from "./combat.mjs";
 export async function pickVoiceOfPrimusSkill() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.VoiceOfPrimusPickSkillTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.VoiceOfPrimusPickSkillLabel')
     }</label><select name="skill">
@@ -79,7 +79,7 @@ export async function activateVoiceOfPrimus(actor) {
 export async function pickVoiceOfPrimusEffect() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.VoiceOfPrimusPickEffectTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.VoiceOfPrimusPickEffectLabel')
     }</label><select name="effect">

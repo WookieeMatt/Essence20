@@ -11,6 +11,7 @@
       "book": "Decepticon Directive",
       "page": 66
     },
+    "actionType": "standard",
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"

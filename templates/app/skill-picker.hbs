@@ -18,20 +18,43 @@
           skillRankMax=(lookup (lookup @root.essenceMax group.essence) 'max')
         }}
       </div>
+      {{!-- Column headings for the rows below. Only where there are columns worth naming: a PC
+           has neither the Show checkbox nor the Specialized one, so its rows are just a name and
+           a shift. --}}
+      {{#unless @root.isPc}}
+      <div class="skill-picker-row skill-picker-row--head">
+        <span>{{localize 'E20.SkillPickerColumnShow'}}</span>
+        <span>{{localize 'E20.SkillPickerColumnName'}}</span>
+        <span>{{localize 'E20.SkillPickerColumnShift'}}</span>
+        <span>{{localize 'E20.SkillPickerIsSpecialized'}}</span>
+      </div>
+      {{/unless}}
       {{#each group.skills as |entry|}}
       <div class="skill-picker-row">
         {{!-- PCs always show every skill already - no picking, just a label. --}}
         {{#if @root.isPc}}
-        <label>{{localize entry.label}}</label>
+        <label><span></span><span>{{localize entry.label}}</span></label>
         {{else}}
+        {{!-- The text is its own element so the row grid can put the checkbox in the Show column
+             and the name in the Name column while the <label> still wraps both - see
+             _skill-picker.scss, where the label is display:contents. Keeping the input inside the
+             label is what makes the name clickable without needing an id/for pair. --}}
         <label class="checkbox">
           <input type="checkbox" name="system.skills.{{entry.key}}.isChosen" {{checked entry.fields.isChosen}} data-dtype="Boolean" />
-          {{localize entry.label}}
+          <span>{{localize entry.label}}</span>
         </label>
         {{/if}}
         <select class="skill-shift-select" name="system.skills.{{entry.key}}.shift">
           {{selectOptions @root.config.skillChoicesShifts selected=entry.fields.shift}}
         </select>
+        {{#unless @root.isPc}}
+        {{!-- No visible text: the column header says "Specialized" once per section instead of
+             every row repeating it. aria-label keeps the checkbox named for a screen reader. --}}
+        <input type="checkbox" class="skill-picker-specialized" name="system.skills.{{entry.key}}.isSpecialized"
+          {{checked entry.fields.isSpecialized}} data-dtype="Boolean"
+          aria-label="{{localize 'E20.SkillPickerIsSpecialized'}}"
+          data-tooltip="{{localize 'E20.SkillPickerIsSpecializedTooltip'}}" />
+        {{/unless}}
       </div>
       {{#if entry.isMultiEssence}}
       {{> "systems/essence20/templates/actor/parts/misc/skill-picker-attribution.hbs" key=entry.key fields=entry.fields attribution=entry.attribution}}
@@ -68,21 +91,38 @@
     {{!-- Spellcasting and Weird side by side rather than stacked - a plain wrapper div rather
          than making the fieldset itself the grid, since a <fieldset> containing a <legend> can
          behave inconsistently as a flex/grid container in some engines. --}}
+    {{!-- No column header here, unlike the four Essence sections. This grid puts Spellcasting and
+         Weird SIDE BY SIDE, each a little panel with its own Essence attribution boxes beneath -
+         so a single header could not line up with both, and as a grid child it just took a cell of
+         its own and shoved the skills around it. The two rows here keep the word "Specialized"
+         beside their own checkbox instead. --}}
     <div class="skill-picker-any-grid">
       {{#each anySkills as |entry|}}
       <div class="skill-picker-row skill-picker-any-row">
         {{!-- PCs always show every skill already - no picking, just a label. --}}
         {{#if @root.isPc}}
-        <label>{{localize entry.label}}</label>
+        <label><span></span><span>{{localize entry.label}}</span></label>
         {{else}}
+        {{!-- The text is its own element so the row grid can put the checkbox in the Show column
+             and the name in the Name column while the <label> still wraps both - see
+             _skill-picker.scss, where the label is display:contents. Keeping the input inside the
+             label is what makes the name clickable without needing an id/for pair. --}}
         <label class="checkbox">
           <input type="checkbox" name="system.skills.{{entry.key}}.isChosen" {{checked entry.fields.isChosen}} data-dtype="Boolean" />
-          {{localize entry.label}}
+          <span>{{localize entry.label}}</span>
         </label>
         {{/if}}
         <select class="skill-shift-select" name="system.skills.{{entry.key}}.shift">
           {{selectOptions @root.config.skillChoicesShifts selected=entry.fields.shift}}
         </select>
+        {{#unless @root.isPc}}
+        {{!-- Labelled here, unlike the Essence sections: this section has no column header to
+             name it - see the note on the grid above. --}}
+        <label class="checkbox skill-picker-specialized-labelled" data-tooltip="{{localize 'E20.SkillPickerIsSpecializedTooltip'}}">
+          <input type="checkbox" name="system.skills.{{entry.key}}.isSpecialized" {{checked entry.fields.isSpecialized}} data-dtype="Boolean" />
+          <span>{{localize 'E20.SkillPickerIsSpecialized'}}</span>
+        </label>
+        {{/unless}}
 
         {{> "systems/essence20/templates/actor/parts/misc/skill-picker-attribution.hbs" key=entry.key fields=entry.fields attribution=entry.attribution}}
         {{> "systems/essence20/templates/actor/parts/misc/skill-picker-specializations.hbs" key=entry.key fields=entry.fields alwaysShow=true}}

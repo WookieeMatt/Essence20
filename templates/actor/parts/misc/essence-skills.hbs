@@ -64,10 +64,10 @@
           data-shift="{{specialization.shift}}" data-specialization-name="{{specialization.name}}"
           data-specialization-key="{{key}}" data-is-specialized="{{specialization.isSpecialized}}"
         >{{specialization.name}}</a>
-        <select class="inline-edit flex-grow-0" data-field="shift">
+        <select class="inline-edit e20-flex-grow-0" data-field="shift">
           {{selectOptions @root.config.skillChoicesShifts selected=specialization.shift}}
         </select>
-        <span class="specialized-label flex-grow-0">{{localize 'E20.RollIsSpecialized'}}:</span>
+        <span class="specialized-label e20-flex-grow-0">{{localize 'E20.RollIsSpecialized'}}:</span>
         <input class="inline-edit specialized-checkbox" type="checkbox" data-field="isSpecialized" {{checked specialization.isSpecialized}} data-dtype="Boolean"/>
         {{else}}
         <a

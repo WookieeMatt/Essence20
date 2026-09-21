@@ -36,7 +36,8 @@ import { isWarriorModeActive, toggleWarriorMode, WARRIOR_MODE_ID } from "../help
 import { getMegaWeaponAttacksRemaining, MEGA_WEAPON_ID, summonMegaWeapon } from "../helpers/zord-mega-weapon.mjs";
 import { onActivateSnortleAtTheSpooky } from "../helpers/snortle-at-the-spooky.mjs";
 import { onActivateConsummatePerformer } from "../helpers/consummate-performer.mjs";
-import { adjust, getSheetContext, tradeStandardForFree } from "../helpers/action-economy.mjs";
+import { adjust, getSheetContext, isAiming, refund, spend, tradeStandardForFree } from "../helpers/action-economy.mjs";
+import { runNamedAction } from "../helpers/named-actions.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onEditMorphToughnessBonus,
@@ -71,6 +72,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       actionRestore: this.#onActionRestore,
       actionTradeForFree: this.#onActionTradeForFree,
       actionSpend: this.#onActionSpend,
+      actionSpendNamed: this.#onActionSpendNamed,
       bonusEdit: this.#onEditMorphToughnessBonus,
       createEffect: this.#createActiveEffect,
       deleteEffect: this.#deleteActiveEffect,
@@ -107,7 +109,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       transform: this.#onTransform,
       warriorMode: this.#onWarriorMode,
     },
-    classes: ["essence20", "sheet", "actor", "theme-wrapper"],
+    classes: ["essence20", "sheet", "actor", "theme-wrapper", "e20-window"],
     tag: 'form',
     position: {
       width: 1050,
@@ -427,8 +429,11 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
    * Right-click either of the actor's own profile images (the header's, common.hbs, or the
    * sidebar's, sidebars/*.hbs - both share the .profile-img class, so one rule covers both) to
    * broadcast it to every connected player, the same "Show Players" action added to item sheets
-   * (item-sheet.mjs) - left-click still opens the file picker to change the image (data-edit="img",
-   * handled by DocumentSheetV2 itself, untouched by this). GM-only, matching core Foundry's own
+   * (item-sheet.mjs) - left-click still opens the file picker to change the image, which is
+   * DocumentSheetV2's own `editImage` ACTION: the image needs data-action="editImage" to dispatch
+   * it, with data-edit="img" only telling that handler which field to write. Every actor template
+   * carried the latter without the former, so left-click silently did nothing - fixed, and
+   * untouched by the context menu here. GM-only, matching core Foundry's own
    * convention of only showing that control to a GM. Built once (guarded via
    * this._imageContextMenu, same reasoning as _rolePointsContextMenu above) since ContextMenu
    * binds one delegated listener to a persistent container (this.element) rather than either
@@ -558,7 +563,15 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         // schema (zord-base.mjs), for one, has no `weird` entry at all.
         const fields = context.system.skills[skill];
         if (fields?.isChosen) {
-          chosenSkills.push({ skill, essence, fields });
+          /* Flattened here rather than walked in the template: Handlebars treats an empty object
+             as truthy, so `{{#if fields.specializations}}` would have drawn a bare pair of
+             parentheses for every skill that has none. An array also gives the template a
+             `.length` to test and a stable order to render. */
+          const specializations = Object.entries(fields.specializations ?? {})
+            .map(([key, specialization]) => ({ key, ...specialization }))
+            .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''));
+
+          chosenSkills.push({ skill, essence, fields, specializations });
         }
       }
     }
@@ -863,7 +876,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       }
     }
 
-    if (context.system.defenses.evasion.armor != equippedArmorEvasion || context.system.defenses.toughness.armor != equippedArmorToughness) {
+    // Actor types without a `defenses` schema (e.g. Party) still run through this shared
+    // _prepareItems - the `?.` keeps this vestigial reconciliation check (its body is
+    // commented out) from throwing for them.
+    if (context.system.defenses?.evasion.armor != equippedArmorEvasion || context.system.defenses?.toughness.armor != equippedArmorToughness) {
 
     //   this.actor.update({
     //     "system.defenses.evasion.armor": equippedArmorEvasion,
@@ -1028,6 +1044,64 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
    */
   static async #onActionSpend(event, target) {
     await adjust(this.actor, target.dataset.category, 1);
+    this.render();
+  }
+
+  /**
+   * Spend one of the rules' own actions - Defend, Aim, Sprint - from the Actions tab.
+   *
+   * Goes through spend() rather than adjust() so the cost comes from E20.actionTypeCosts (a
+   * Contingency is a Standard action, and stays one here) and so the action's own name is
+   * recorded as the spend's source. That name is what the "spent this turn" tooltip reads back.
+   *
+   * @param {Event} event     The click event.
+   * @param {HTMLElement} target   The button, carrying the action key in data-named-action.
+   */
+  static async #onActionSpendNamed(event, target) {
+    const key = target.dataset.namedAction;
+    const action = CONFIG.E20.namedActions[key];
+    if (!action) {
+      return;
+    }
+
+    /* One aim per shot. Aim is a Free action and a character may well have Free actions left,
+       so this is not a budget refusal and must be checked separately - see
+       helpers/action-economy.mjs#isAiming. The aim clears when the shot is taken. */
+    if (key == 'aim' && isAiming(this.actor)) {
+      ui.notifications.warn(game.i18n.format('E20.ActionEconomyAlreadyAiming', {
+        name: this.actor.name,
+      }));
+      return;
+    }
+
+    const result = await spend(this.actor, action.type, { source: game.i18n.localize(action.label) });
+    if (result.blocked && !result.cancelled) {
+      ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
+        name: this.actor.name,
+        action: game.i18n.localize(action.label),
+      }));
+    }
+
+    /* What the action actually DOES, once its cost is paid - see helpers/named-actions.mjs.
+       Only on a spend that went through: a refused Defend must not leave the actor defending
+       for free. Returns null for the actions that are still cost-only. */
+    if (!result.blocked) {
+      const outcome = await runNamedAction(this.actor, key);
+
+      /* An action that asked who it was helping and got no answer was never taken, so the cost
+         goes back. Only Lend Assistance can reach this today, but refunding on the returned
+         flag rather than on the action key keeps that true for the next one that asks a
+         question. */
+      if (outcome?.cancelled) {
+        await refund(this.actor, result.spendId);
+      } else if (outcome?.message) {
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          content: outcome.message,
+        });
+      }
+    }
+
     this.render();
   }
 

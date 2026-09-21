@@ -1,0 +1,149 @@
+/* The GM's book description importer (apps/book-description-importer.mjs).
+   Namespaced under .essence20 like everything else - see docs on CSS namespacing. */
+
+.essence20 .book-import {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  min-height: 0;
+}
+
+.essence20 .book-import .e20-hidden {
+  display: none;
+}
+
+.essence20 .book-import-note {
+  margin: 0 0 6px;
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+
+.essence20 .book-import-status {
+  margin: 6px 0 0;
+  font-style: italic;
+}
+
+.essence20 .book-import-warning {
+  margin: 0 0 6px;
+  color: var(--e20-theme-warning, #d08a1e);
+}
+
+.essence20 .book-import-attested {
+  color: var(--e20-theme-success, #4caf50);
+}
+
+/* The scan facts read as a label/value list rather than a table - there are only four of them
+   and a table would need borders to be legible against the panel fill. */
+.essence20 .book-import-facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 2px 10px;
+  margin: 0 0 6px;
+}
+
+.essence20 .book-import-facts dt {
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.essence20 .book-import-facts dd {
+  margin: 0;
+}
+
+/* The preview is the tall part and the only thing that scrolls: the GM is reading it to decide
+   what to keep, so it takes whatever height is left over. */
+.essence20 .book-import-results {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.essence20 .book-import-entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.essence20 .book-import-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--e20-theme-rule, rgba(128, 128, 128, 0.25));
+}
+
+/* An unticked entry stays readable but visibly out of the import, rather than disappearing -
+   the GM needs to see what they chose to skip. */
+.essence20 .book-import-entry.is-excluded {
+  opacity: 0.4;
+}
+
+.essence20 .book-import-toggle {
+  flex: 0 0 auto;
+  padding-top: 2px;
+  cursor: pointer;
+}
+
+.essence20 .book-import-entry-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.essence20 .book-import-entry-name {
+  display: block;
+  font-weight: 600;
+}
+
+.essence20 .book-import-entry-meta {
+  margin-left: 6px;
+  font-weight: 400;
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+/* Clamped rather than fully shown: an entry that ran across a page can be several thousand
+   characters, and a preview of thirty of those would be unreadable. */
+.essence20 .book-import-entry-text {
+  margin: 2px 0 0;
+  font-size: 0.85em;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.essence20 .book-import-footer {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.essence20 .book-import-book-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.essence20 .book-import-book-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+}
+
+.essence20 .book-import-book-name {
+  font-weight: 600;
+}
+
+.essence20 .book-import-book-meta {
+  flex: 1 1 auto;
+  font-size: 0.8em;
+  opacity: 0.75;
+}
+
+/* A match found only by relaxing the name (see pluralKeys in helpers/book-descriptions.mjs).
+   Called out because a plural can be a different item, not just a different spelling. */
+.essence20 .book-import-loose {
+  color: var(--e20-theme-warning, #d08a1e);
+}

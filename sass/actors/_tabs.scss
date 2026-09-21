@@ -41,13 +41,13 @@
   /* Black rim (matching the active tab's own border below) around every tab, revealed by
      ::before's 2px inset - the same "2-layer rim" trick used to fake a border along the
      clip-path chamfer, since a plain CSS border can't follow that diagonal edge. */
-  background: #000000;
+  background: var(--e20-theme-tab-rim, #000000);
   clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%, 0 8px);
   border: none;
   padding: 3px 4px 5px;
   flex: 1;
   min-width: 0;
-  /* Plain --theme-text-color reads as low-contrast to unreadable against a solid, arbitrary
+  /* Plain --e20-theme-text-color reads as low-contrast to unreadable against a solid, arbitrary
      system.color fill (same issue the Essence Badge label solves in _essence.scss) - a light gray
      with a dark halo keeps the label legible against any color a player picks, in both themes
      (light gray rather than pure white so it doesn't compete with the active tab's own, brighter
@@ -77,7 +77,7 @@
   inset: 2px;
   z-index: 0;
   pointer-events: none;
-  background: var(--e20-system-color, var(--theme-accent));
+  background: var(--e20-system-color, var(--e20-theme-accent));
   clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%, 0 6px);
   box-shadow: inset 0 -1px 0 rgba(0,0,0,0.18);
 }
@@ -106,17 +106,17 @@
 .essence20 .tabs a[data-tab].active {
   /* Left/top/right outline only - ::before's flush-bottom fill (below) covers the bottom edge
      entirely, same as it already hides the base rule's black rim there. */
-  background: var(--e20-system-color, var(--theme-accent));
+  background: var(--e20-system-color, var(--e20-theme-accent));
   opacity: 1;
   /* No colored fill to contrast against anymore - back to the theme's own text color/weight
      instead of the white-plus-halo treatment the (now solid-colored) non-active tabs use. */
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   -webkit-text-stroke: 0;
 }
 
-/* --theme-text-color in dark mode is $text-color-light (#aaaaaa, _theme_wrapper.scss) - readable
+/* --e20-theme-text-color in dark mode is $text-color-light (#aaaaaa, _theme_wrapper.scss) - readable
    against the active tab's solid system.color fill, but muddier than intended. $textcolor1
-   (#c7c4c4, already this palette's "light gray" - it's dark mode's own --theme-muted-text) reads
+   (#c7c4c4, already this palette's "light gray" - it's dark mode's own --e20-theme-muted-text) reads
    as a cleaner light gray without going all the way to white. */
 .essence20.theme-dark .tabs .item.active,
 .essence20.theme-dark .tabs a[data-tab].active {
@@ -147,7 +147,7 @@
   text-shadow: 0 0 10px rgba(255,255,255,0.4);
 }
 
-.sheet nav.sheet-tabs {
+.essence20.sheet nav.sheet-tabs {
   border-top: none;
   border-bottom: none;
 }
@@ -155,7 +155,7 @@
 /* A plain CSS border cannot draw along a clip-path-cut edge - border only ever follows the
    box's real (rectangular) edges, and the diagonal chamfer below exists purely as a clip-path
    cut, not an actual box edge. So the accent line has to be painted separately, as a masked
-   border-image (--theme-border-image, sliced and stretched through mask-border-* below), and
+   border-image (--e20-theme-border-image, sliced and stretched through mask-border-* below), and
    this clip-path exists to clip the box's OWN background (per-component: .collapsible-item-
    container, .stats-container, table cells, etc., each with their own plain rectangular
    background) to that same trimmed shape, so it doesn't poke out past the mask's visible trim.
@@ -171,11 +171,15 @@
   position: relative;
   border-color: transparent;
   border-radius: 0;
-  clip-path: polygon(
-    min(22px, 50%) 0, 100% 0,
-    100% calc(100% - min(22px, 50%)), calc(100% - min(22px, 50%)) 100%,
-    0 100%, 0 min(22px, 50%)
-  );
+  /* Theme-driven: the shape has to be whatever --e20-theme-border-image actually draws, or
+     the clip cuts a corner the trim does not. The fallback is the Sci-fi chamfer this rule
+     was originally written for. */
+  clip-path: var(--e20-theme-accent-clip,
+    polygon(
+      min(22px, 50%) 0, 100% 0,
+      100% calc(100% - min(22px, 50%)), calc(100% - min(22px, 50%)) 100%,
+      0 100%, 0 min(22px, 50%)
+    ));
 }
 
 /* default-border.svg's/default-border-thick.svg's chamfer is 15 units deep in their 120-unit
@@ -192,13 +196,13 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background-color: var(--e20-system-color, var(--theme-accent));
-  -webkit-mask-box-image-source: var(--theme-border-image);
-  -webkit-mask-box-image-slice: 15;
+  background-color: var(--e20-system-color, var(--e20-theme-accent));
+  -webkit-mask-box-image-source: var(--e20-theme-border-image);
+  -webkit-mask-box-image-slice: var(--e20-theme-accent-slice, 15);
   -webkit-mask-box-image-width: 22px;
   -webkit-mask-box-image-repeat: stretch;
-  mask-border-source: var(--theme-border-image);
-  mask-border-slice: 15;
+  mask-border-source: var(--e20-theme-border-image);
+  mask-border-slice: var(--e20-theme-accent-slice, 15);
   mask-border-width: 22px;
   mask-border-repeat: stretch;
 }
@@ -206,10 +210,51 @@
 /* Needs to match the specificity of the `.sheet-header .profile-img` border shorthand
    in _headers.scss (which sets a hardcoded fallback color) to actually win the cascade. */
 .essence20 .profile-img.e20-border-accent {
-  border-color: var(--e20-system-color, var(--theme-border-color));
+  border-color: var(--e20-system-color, var(--e20-theme-border-color));
 }
 
 .essence20 hr.e20-accent-hr {
-  border-color: var(--e20-system-color, var(--theme-border-color));
+  border-color: var(--e20-system-color, var(--e20-theme-border-color));
 }
 
+/* The MLP modes, added on top rather than folded into the rules above so the Sci-fi themes
+   keep rendering exactly as they did.
+
+   Three things here do not follow --e20-theme-* on their own: the active tab fill names a
+   panel gradient directly, and the dark-mode active label names $textcolor1 directly. Both
+   are deliberate in the Sci-fi themes, so they are overridden for pony rather than made
+   generic - a generic version would have changed Sci-fi light and dark too. */
+.essence20.theme-pony.theme-dark .tabs .item.active::before,
+.essence20.theme-pony.theme-dark .tabs a[data-tab].active::before {
+  background:
+    linear-gradient(v.$section-panel-overlay, v.$section-panel-overlay),
+    v.$mlp-panel-gradient-dark,
+    v.$mlp-panel-gradient-dark;
+}
+
+.essence20.theme-pony.theme-light .tabs .item.active::before,
+.essence20.theme-pony.theme-light .tabs a[data-tab].active::before {
+  background:
+    linear-gradient(v.$section-panel-overlay, v.$section-panel-overlay),
+    v.$mlp-panel-gradient-light,
+    v.$mlp-panel-gradient-light;
+}
+
+/* Five classes, so this outranks the .essence20.theme-dark rule above that pins the active
+   label to $textcolor1 - a neutral grey, which is right against the Sci-fi fill and muddy
+   against this one. */
+/* An inactive tab shows its rim colour as its whole background (only the active one gets a
+   ::before fill), and in both MLP modes that rim is a mid-to-deep purple. The base rule dresses
+   these labels for the Sci-fi black rim - $textcolor3, a mid grey - which goes muddy on purple. */
+/* :not(.active) matters. Without it this ties with the .active colour rule above and wins on
+   source order, so the ACTIVE tab went cream too - unreadable in MLP light, where that tab is
+   filled pale and its label is supposed to be the dark indigo text colour. */
+.essence20.theme-pony .tabs .item:not(.active),
+.essence20.theme-pony .tabs a[data-tab]:not(.active) {
+  color: v.$mlp-cream;
+}
+
+.essence20.theme-pony.theme-dark .tabs .item.active,
+.essence20.theme-pony.theme-dark .tabs a[data-tab].active {
+  color: v.$mlp-cream;
+}

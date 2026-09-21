@@ -38,7 +38,7 @@ export async function pickExplosiveAftershockEffects() {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.ExplosiveAftershockPickTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.ExplosiveAftershockPickLabel')
     }</label><select name="effects">${options}</select></div>`,

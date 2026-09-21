@@ -1,0 +1,56 @@
+/* Party ("Squad") actor sheet - roster tab. */
+
+.essence20 .party-roster-list {
+  padding: 6px;
+}
+
+.essence20 .party-roster-member {
+  padding: 8px;
+  gap: 4px;
+}
+
+.essence20 .party-roster-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex: 0 0 auto;
+}
+
+.essence20 .party-roster-name {
+  font-weight: 700;
+  cursor: pointer;
+  flex: 1 1 auto;
+}
+
+.essence20 .party-roster-name:hover {
+  text-decoration: underline;
+}
+
+.essence20 .party-roster-meta {
+  flex-wrap: wrap;
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+
+/* The per-member Requisition drop target. Deliberately quiet until it matters: the hint is a
+   muted line under the member name, so a tab listing a whole squad does not read as a wall of
+   instructions. */
+.essence20 .requisition-drop-hint {
+  color: var(--e20-theme-muted-text);
+  font-size: 0.85em;
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+.essence20 .requisition-member {
+  border: 1px dashed transparent;
+  border-radius: 4px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+/* Foundry sets .droptarget on the element being dragged over. */
+.essence20 .requisition-member.droptarget {
+  border-color: var(--e20-theme-accent);
+  background: var(--e20-theme-card-bg);
+}

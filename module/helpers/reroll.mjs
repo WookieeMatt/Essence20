@@ -454,7 +454,7 @@ async function promptForDie(eligibleDice) {
 
   const chosenValue = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize("E20.RerollSelectDieTitle") },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content,
     modal: true,
     buttons: [

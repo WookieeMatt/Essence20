@@ -14,7 +14,20 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),
-      ...activation(),
+      /* Attacking costs a Standard action, and the weapon effect is what carries that cost
+         because the weapon effect is what rolls: a weapon has no roll button anywhere in the
+         sheet (see templates/actor/parts/items/weapon/container.hbs, where the d20 sits on the
+         effect rows), so a cost on the weapon itself would never be charged. One effect is one
+         attack, so this is charged once per attack however many effects a weapon has.
+
+         Unlike the Perks, this default is not the system inventing a cost it can't justify -
+         an attack is the Attack action, and the Attack action is a Standard one. All 676 pack
+         weapon effects already store `standard` explicitly, so the packs need no rebuild; what
+         this default fixes is the effect a GM makes by hand on an actor, which until now was
+         born as None and silently cost nothing. Copies already embedded that way carry the old
+         value in their source and are moved by migration.mjs. An effect that genuinely is not
+         an attack can still be set to None on its own sheet. */
+      ...activation('standard'),
       ...itemDescription(),
       classification: new fields.SchemaField({
         skill: makeStrWithChoices([...Object.keys(E20.skills), 'roleSkillDie'], 'athletics'),

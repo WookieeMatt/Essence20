@@ -1,14 +1,14 @@
 <div class="zord-combiners">
-  <div class="flexrow gap-6">
+  <div class="flexrow e20-gap-6">
     {{#if actors}}
       {{#each actors as |attachedActor key|}}
       <div class="systemActors zord item stats-container e20-border-accent" data-e20-color="{{attachedActor.system.color}}" data-system-Actors-uuid="{{attachedActor.uuid}}">
-        <div class="flexrow flex-group-center">
+        <div class="flexrow e20-flex-group-center">
           <img class="zord-img" src="{{attachedActor.img}}" data-edit="img" data-tooltip="{{attachedActor.name}}" />
         </div>
 
-        <div class="flexrow align-center gap-6">
-          <div class="nowrap">{{ localize 'E20.ActorName' }}: {{attachedActor.name}}</div>
+        <div class="flexrow e20-align-center e20-gap-6">
+          <div class="e20-nowrap">{{ localize 'E20.ActorName' }}: {{attachedActor.name}}</div>
 
           <div class="item-controls">
             {{!-- Same info button attached ITEMS use (id-drop.hbs/role-perk-drop.hbs) - an explicit
@@ -41,10 +41,10 @@
                (system.gainingTheContact, npc.mjs) are the two fields specific to NPCs that
                actually say something about who this person is, rather than just their name. --}}
           {{#if attachedActor.system.background.role}}
-            <div class="nowrap">{{localize 'E20.ActorRole'}}: {{attachedActor.system.background.role}}</div>
+            <div class="e20-nowrap">{{localize 'E20.ActorRole'}}: {{attachedActor.system.background.role}}</div>
           {{/if}}
           {{#if attachedActor.system.gainingTheContact}}
-            <div class="nowrap" data-tooltip="{{attachedActor.system.gainingTheContact}}">{{localize 'E20.ContactGainedVia'}}: {{attachedActor.system.gainingTheContact}}</div>
+            <div class="e20-nowrap" data-tooltip="{{attachedActor.system.gainingTheContact}}">{{localize 'E20.ContactGainedVia'}}: {{attachedActor.system.gainingTheContact}}</div>
           {{/if}}
         {{/if}}
 
@@ -98,7 +98,7 @@
       </div>
       {{/each}}
     {{else}}
-      <div class="align-center">
+      <div class="e20-align-center">
         {{localize 'E20.ActorDrop'}}
       </div>
     {{/if}}

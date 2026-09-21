@@ -9,6 +9,10 @@
         {{!-- Item label and buttons --}}
         {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item itemKey=itemKey}}
 
+        {{!-- Optional full-width row under the label, supplied by the calling container via an
+             inline partial (e.g. the Weapons container puts the Hardpoint controls here). --}}
+        {{#> item-subrow item=item}}{{/item-subrow}}
+
         {{!-- Item content --}}
         {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item}}
 
@@ -22,7 +26,7 @@
       {{/each}}
     {{else}}
       {{#if defaultText}}
-      <li class="align-center">{{localize defaultText}}</li>
+      <li class="e20-align-center">{{localize defaultText}}</li>
       {{/if}}
     {{/if}}
   </ol>

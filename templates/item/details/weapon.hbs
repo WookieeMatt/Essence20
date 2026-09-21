@@ -60,6 +60,15 @@
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
   {{/if}}
 
+  {{!-- Hands (Load Out) --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponHands'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.hands name="system.hands" min=0 step=1}}
+  <span class="hint">{{localize 'E20.WeaponHandsHint'}} {{lookup @root.config.weaponSizeHands system.classification.size}}</span>
+
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
   {{!-- Traits --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTraits'}}
   {{#*inline "item-field-edit"}}

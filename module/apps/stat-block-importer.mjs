@@ -47,7 +47,7 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
     actions: {
       importStatBlock: this.#onImport,
     },
-    classes: ["essence20", "sheet", "theme-wrapper", "stat-block-importer"],
+    classes: ["essence20", "sheet", "theme-wrapper", "e20-window", "stat-block-importer"],
     tag: "form",
     window: {
       icon: "fa-solid fa-file-import",

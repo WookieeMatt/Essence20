@@ -29,7 +29,7 @@ export async function pickMobileModeType() {
     .map(key => `<option value="${key}">${game.i18n.localize(E20.movementTypes[key])}</option>`).join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.MobileModePickTypeTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.MobileModePickTypeLabel')
     }</label><select name="movementType">${options}</select></div>`,

@@ -118,8 +118,13 @@ export function checkIsLocked(actor) {
 export function getNumActions(actor) {
   // Character/NPC/Companion essences use .max (character.mjs); Vehicle/Zord/Megaform's
   // machine-based essences (machine.mjs, zord-base.mjs) use .value instead - there's no .max
-  // on those to read.
-  const speedEssence = actor.system.essences.speed;
+  // on those to read. Actor types with no Essence scores at all (e.g. Party) have no action
+  // economy.
+  const speedEssence = actor.system.essences?.speed;
+  if (!speedEssence) {
+    return { free: 0, movement: 0, standard: 0 };
+  }
+
   const speed = speedEssence.max ?? speedEssence.value ?? 0;
 
   // Quick Thinker - see QUICK_THINKER_ID's own comment above. Free actions come from Smarts

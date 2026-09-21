@@ -3,7 +3,7 @@
 // The Pushing note added to the token drag ruler's waypoint label - see
 // module/canvas/token-ruler.mjs. Only rendered while a move is actually past the token's Movement
 // rating, so this markup is absent for ordinary movement.
-.waypoint-label .e20-push-note {
+.essence20 .waypoint-label .e20-push-note {
   display: inline-flex;
   align-items: center;
   gap: 3px;
@@ -15,12 +15,12 @@
    actions, unaffordable means not this turn, and capped means not at any price (past double the
    rating). Amber and red rather than the system palette, because a ruler label sits over arbitrary
    map art and has to read against all of it. */
-.waypoint-label.e20-push--pushing .e20-push-note {
+.essence20 .waypoint-label.e20-push--pushing .e20-push-note {
   color: #ffc861;
 }
 
-.waypoint-label.e20-push--unaffordable .e20-push-note,
-.waypoint-label.e20-push--noPush .e20-push-note,
-.waypoint-label.e20-push--capped .e20-push-note {
+.essence20 .waypoint-label.e20-push--unaffordable .e20-push-note,
+.essence20 .waypoint-label.e20-push--noPush .e20-push-note,
+.essence20 .waypoint-label.e20-push--capped .e20-push-note {
   color: #ff8a7a;
 }

@@ -5,7 +5,7 @@
      it intentionally skips the "Roll is Specialized" checkbox/specializations sub-list that
      essence-skills.hbs shows elsewhere. --}}
 <div class="skills-container npc-skill-list e20-border-accent">
-  <div class="flex-group-center npc-skill-list-header">
+  <div class="e20-flex-group-center npc-skill-list-header">
     <span>{{localize 'E20.AccordionSkillsTitle'}}</span>
     <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
   </div>
@@ -20,15 +20,37 @@
     <span class="npc-skill-button">{{localize 'E20.ActorConditioning'}} {{@root.system.conditioning}}</span>
     {{/if}}
     {{#each @root.chosenSkills as |entry|}}
-    <a
-      class="npc-skill-button rollable" data-action="rollable" data-roll-type="skill"
-      data-skill="{{entry.skill}}" data-essence="{{entry.essence}}"
-      data-shift-up="{{entry.fields.shiftUp}}" data-shift-down="{{entry.fields.shiftDown}}"
-      data-shift="{{entry.fields.shift}}" data-is-specialized="{{entry.fields.isSpecialized}}"
-      data-can-crit-d2="{{entry.fields.canCritD2}}"
-    >
-      {{lookup @root.config.skills entry.skill}} +{{entry.fields.shift}}
-    </a>
+    {{!-- One pill per skill, shaped like the printed stat block line: "Alertness (Perception)
+         +d4*". The skill name and each specialization name are separate roll links, because they
+         roll different things - the skill at its own shift, a specialization at its own, which on
+         an NPC can differ (see essence-skills.hbs: "NPCs can have unspecialized
+         specializations"). Specializations are added and removed in the Skill Picker, which is
+         also where the asterisk is switched on. --}}
+    <span class="npc-skill-button npc-skill-entry">
+      <a
+        class="rollable npc-skill-entry__name" data-action="rollable" data-roll-type="skill"
+        data-skill="{{entry.skill}}" data-essence="{{entry.essence}}"
+        data-shift-up="{{entry.fields.shiftUp}}" data-shift-down="{{entry.fields.shiftDown}}"
+        data-shift="{{entry.fields.shift}}" data-is-specialized="{{entry.fields.isSpecialized}}"
+        data-can-crit-d2="{{entry.fields.canCritD2}}"
+      >{{lookup @root.config.skills entry.skill}}{{#if entry.fields.isSpecialized}}*{{/if}}</a>
+      +{{entry.fields.shift}}
+
+      {{#if entry.specializations.length}}
+      <span class="npc-skill-entry__specializations">(
+        {{~#each entry.specializations as |specialization|~}}
+        {{~#unless @first}}, {{/unless~}}
+        <a
+          class="rollable npc-skill-entry__specialization" data-action="rollable" data-roll-type="skill"
+          data-skill="{{entry.skill}}" data-essence="{{entry.essence}}"
+          data-shift-up="{{entry.fields.shiftUp}}" data-shift-down="{{entry.fields.shiftDown}}"
+          data-shift="{{specialization.shift}}" data-specialization-name="{{specialization.name}}"
+          data-specialization-key="{{specialization.key}}" data-is-specialized="{{specialization.isSpecialized}}"
+        >{{specialization.name}}{{#if specialization.isSpecialized}}*{{/if}} +{{specialization.shift}}</a>
+        {{~/each~}}
+      )</span>
+      {{/if}}
+    </span>
     {{/each}}
   </div>
   {{else}}

@@ -27,6 +27,7 @@ export default class MultiChoiceSelector extends serializeFormSubmits(Handlebars
     classes: [
       "essence20",
       "theme-wrapper",
+      "e20-window",
       "window-app",
     ],
     tag: "form",

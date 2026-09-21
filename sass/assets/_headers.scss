@@ -2,7 +2,7 @@
 
 .essence20 .sheet-header {
   background: rgba(255,255,255,0.04);
-  border: 1px solid var(--theme-border-color);
+  border: 1px solid var(--e20-theme-border-color);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
   padding: v.$padding;
   border-radius: 18px;
@@ -32,7 +32,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   margin-bottom: 10px;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
 }
 
 .essence20 .sheet-header .e20-border-accent {
@@ -47,7 +47,7 @@
   text-transform: uppercase;
 }
 
-.essence20 .sheet-header > .flexrow.gap-2 {
+.essence20 .sheet-header > .flexrow.e20-gap-2 {
   flex: 1 1 100%;
   align-items: flex-start;
   row-gap: v.$gap-md;
@@ -63,12 +63,12 @@
    from templates/actor/headers/common.hbs (Name/Size/Faction/Level all belong on one row) - same
    fix applies to header-row-bottom below (Role/Focus/Origin/Color), which has the identical
    wrap-before-shrink problem (Color was getting pushed to its own third line). */
-.essence20 .sheet-header > .flexrow.gap-2.header-row-top,
-.essence20 .sheet-header > .flexrow.gap-2.header-row-bottom {
+.essence20 .sheet-header > .flexrow.e20-gap-2.header-row-top,
+.essence20 .sheet-header > .flexrow.e20-gap-2.header-row-bottom {
   flex-wrap: nowrap;
 }
 
-.essence20 .sheet-header > .flexrow.gap-2.header-row-bottom {
+.essence20 .sheet-header > .flexrow.e20-gap-2.header-row-bottom {
   margin-top: v.$gap-lg;
 }
 
@@ -80,18 +80,18 @@
    min-height:fit-content fix, above) clips the sliver that pokes past that padding. A small fixed
    nudge on top of the existing centering (rather than changing the shared, everywhere-else-correct
    -50% itself) keeps every other row untouched. */
-.essence20 .sheet-header > .flexrow.gap-2.header-row-top .sliced-border__label {
+.essence20 .sheet-header > .flexrow.e20-gap-2.header-row-top .sliced-border__label {
   transform: translate(-50%, calc(-50% + 4px));
 }
 
-/* Scoped through .flexrow.gap-2 (the header-row-top/header-row-bottom wrapper, common.hbs) -
+/* Scoped through .flexrow.e20-gap-2 (the header-row-top/header-row-bottom wrapper, common.hbs) -
    same cross-contamination bug as the input rule below: the sidebar's own root section also
    carries the "sheet-header" class and its panels also carry "sliced-border", so this rule's
    padding (8px 16px, well above the sidebar panel's own intended 4px bottom / 8px left-right)
    was silently winning on every sidebar panel too, at a specificity the sidebar's own same-file
    rule (.essence20-sidebar .essence20-sidebar-panel, 2 classes vs this rule's 3) couldn't beat -
    that's what was inflating the sidebar's bottom spacing beyond its own padding-bottom: gap-sm. */
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border {
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border {
   flex: 1 1 auto;
   min-width: 6.5em;
   /* .sliced-border's own background (::after) is clipped to its chamfered shape (16px cut at
@@ -123,7 +123,7 @@
   padding-left: 16px;
 }
 
-/* Scoped through .flexrow.gap-2 (the header-row-top/header-row-bottom wrapper, common.hbs)
+/* Scoped through .flexrow.e20-gap-2 (the header-row-top/header-row-bottom wrapper, common.hbs)
    rather than directly off .sheet-header, because the sidebar's own root section also carries
    the "sheet-header" class (essence20-sidebar sheet-header, _sidebars.scss) and its resource
    panels also carry "sliced-border" (essence20-sidebar-resources) - without this extra scope
@@ -134,14 +134,14 @@
    report: width:100% stretched its whole clickable hit-box to fill the field (measured live at
    52x22.5px instead of a normal checkbox's intrinsic ~14px square), and a native checkbox glyph
    doesn't stretch to fill an oversized box the way text does - it stays pinned small at one
-   corner of that box instead, which is what actually read as "off-center" (the box itself,
+.essence20 corner of that box instead, which is what actually read as "off-center" (the box itself,
    invisible outline aside, genuinely was centered by the justify-content/align-items rule
-   further down - confirmed via getBoundingClientRect: 20px/19px gaps either side of a 91px box,
+.essence20 further down - confirmed via getBoundingClientRect: 20px/19px gaps either side of a 91px box,
    correct for a 52px-wide child, wrong for what a checkbox should even be). Excluding checkboxes
    here lets them size naturally so centering actually reads as centered. */
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select):not([type="checkbox"]),
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select),
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border .header-item-name {
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border input:not(.skill-shift-select):not([type="checkbox"]),
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border select:not(.skill-shift-select),
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border .header-item-name {
   flex: 1 1 0;
   min-width: 0;
   width: 100%;
@@ -151,8 +151,8 @@
 
 /* Faction/Role/Focus/Origin's content (.header-item-name + delete button) and Level's (the
    number input + up/down arrow buttons) each sit inside an extra wrapper div one level deeper
-   than .sliced-border itself (<li class="item no-list-style"> for Faction/Role/Focus/Origin,
-   faction.hbs/role.hbs/focus.hbs/origin-field.hbs; .flexrow.align-center.gap-2 for Level,
+.essence20 than .sliced-border itself (<li class="item no-list-style"> for Faction/Role/Focus/Origin,
+.essence20 faction.hbs/role.hbs/focus.hbs/origin-field.hbs; .flexrow.e20-align-center.e20-gap-2 for Level,
    common.hbs) - unlike Size/Name/Color, whose actual content is a direct child of .sliced-border.
    That wrapper was landing at whatever height its own content produced and sitting flush against
    the top padding (confirmed via the browser's own DevTools box model overlay - Size's select
@@ -165,13 +165,13 @@
    (and Role/Focus/Origin's) .sliced-border is .--col (flex-direction: column) instead, where the
    cross axis is horizontal - align-self:flex-end there would shove content sideways, not down
    (confirmed live: it did, clipping "Renegade" to "Renegad"). What moves content along a column
-   container's vertical (main) axis is justify-content, and that's a property of the CONTAINER,
+.essence20 container's vertical (main) axis is justify-content, and that's a property of the CONTAINER,
    not the item, so that part targets .sliced-border.--col itself rather than the li/flexrow
    inside it - its only in-flow child is that li/flexrow (the label is position:absolute, out of
    flow), so this only ever pushes the content that needs it. */
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border > .flexrow.align-center.gap-2,
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border > li.item.no-list-style,
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border > div.flexrow {
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border > .flexrow.e20-align-center.e20-gap-2,
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border > li.item.e20-no-list-style,
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border > div.flexrow {
   height: var(--input-height, 32px);
   box-sizing: border-box;
   /* The wrapper's own box now lands in the right place (confirmed via a red reference line
@@ -183,16 +183,16 @@
   padding-top: 3px;
 }
 
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border:not(.--col) > .flexrow.align-center.gap-2 {
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border:not(.--col) > .flexrow.e20-align-center.e20-gap-2 {
   align-self: flex-end;
 }
 
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border.--col {
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.--col {
   justify-content: flex-end;
 }
 
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border .header-item-name {
-  background: var(--theme-panel-bg);
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border .header-item-name {
+  background: var(--e20-theme-panel-bg);
 }
 
 /* "Invisible" inputs - no separate input-shaped box within the sliced-border field, just the
@@ -203,8 +203,8 @@
    .item-label-checkbox, _collapsible.scss) - !important is the only way to win that. Doesn't
    affect the color picker's own swatch (input.picker[type="color"] below) since the native
    swatch always paints over any background here regardless. */
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select),
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select) {
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border input:not(.skill-shift-select),
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border select:not(.skill-shift-select) {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -225,8 +225,8 @@
    Companion Type/Availability (companion.hbs), Megaform Subtype (megaform.hbs) - vs.
    Faction/Role/Focus/Origin's read-only .header-item-name text and Name/Level/Armor/etc.'s
    plain text/number inputs. appearance:none above strips a select's native dropdown arrow
-   along with everything else, but a select genuinely needs *some* visual cue it's clickable,
-   unlike a text field. A background-image chevron (rather than restoring appearance:auto,
+.essence20 along with everything else, but a select genuinely needs *some* visual cue it's clickable,
+.essence20 unlike a text field. A background-image chevron (rather than restoring appearance:auto,
    which would bring back the full native box/border too) adds just that back without touching
    any other field's look. Same :not(.skill-shift-select) exclusion as the reset rule above -
    that select already draws its value as plain centered text (essence-skills.hbs's readOnly
@@ -238,7 +238,7 @@
    rendered pixels via canvas - solid black regardless of theme). Hardcoding both theme's
    $text-color values directly, the same way img[src$="perk.svg"]'s brightness(0) filter below
    is hardcoded per theme rather than color-matched, is the actual working equivalent. */
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select) {
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border select:not(.skill-shift-select) {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23222222' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M2.5 4.5l3.5 3.5 3.5-3.5'/%3E%3C/svg%3E") !important;
   background-repeat: no-repeat !important;
   background-position: right center !important;
@@ -246,17 +246,17 @@
   padding-right: 14px !important;
 }
 
-.essence20.theme-dark .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select) {
+.essence20.theme-dark .sheet-header .flexrow.e20-gap-2 .sliced-border select:not(.skill-shift-select) {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23aaaaaa' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M2.5 4.5l3.5 3.5 3.5-3.5'/%3E%3C/svg%3E") !important;
 }
 
 /* Foundry core's own input/select rule also sets a visible outline specifically on :focus (its
    --input-focus-outline-color custom property) - the border/outline reset above only covers the
    resting state, since a browser's own focus-state rule otherwise still wins independently. */
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select):focus,
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select):focus-visible,
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select):focus,
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select):focus-visible {
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border input:not(.skill-shift-select):focus,
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border input:not(.skill-shift-select):focus-visible,
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border select:not(.skill-shift-select):focus,
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border select:not(.skill-shift-select):focus-visible {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
@@ -264,18 +264,18 @@
 
 /* Chrome/Safari's number spinner buttons aren't covered by appearance:none on the input itself -
    they're a separate pseudo-element the property doesn't reach. */
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border input[type="number"]::-webkit-inner-spin-button,
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border input[type="number"]::-webkit-outer-spin-button {
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border input[type="number"]::-webkit-inner-spin-button,
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border input[type="number"]::-webkit-outer-spin-button {
   appearance: none !important;
   margin: 0;
 }
 
 /* Zord's Combiner checkbox (system.isCombiner) - reported still sitting left instead of
-   centered even after adding .flex-group-center to its box (zord.hbs). Rewritten as a
+   centered even after adding .e20-flex-group-center to its box (zord.hbs). Rewritten as a
    dedicated, !important, :has()-scoped rule targeting the field directly rather than a shared
    utility class, so there's no other selector anywhere in this file (or loaded after it) that
    could out-specificity or out-order it. */
-.essence20 .sheet-header .flexrow.gap-2 .sliced-border:has(> input[name="system.isCombiner"]) {
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border:has(> input[name="system.isCombiner"]) {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
@@ -284,7 +284,7 @@
 /* Faction/Role/Focus/Origin (faction.hbs, role.hbs, focus.hbs, origin-field.hbs) display the
    name of a dropped Item, not an editable value of their own - there's no actual
    system.faction/role/focus/origin string field backing them, so the <input> they used to be
-   was never wired to anything real (typing into it did nothing on save). Plain text instead,
+.essence20 was never wired to anything real (typing into it did nothing on save). Plain text instead,
    sized/positioned the same as the input it replaced via the shared rule above. */
 .essence20 .sheet-header .header-item-name {
   display: flex;
@@ -292,7 +292,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   /* An <input>/<select> has its own intrinsic height (Foundry core's --input-height, 2rem/32px)
      that a plain <span> doesn't - these rows use align-items: flex-start, not stretch (see the
      .sliced-border rule above), so each box sizes to its own content independently rather than
@@ -302,7 +302,7 @@
 }
 
 .essence20 .sheet-header .header-item-placeholder {
-  color: var(--theme-muted-text);
+  color: var(--e20-theme-muted-text);
 }
 
 /* input[type=color]'s native swatch has its own intrinsic size/padding that isn't fully
@@ -369,9 +369,9 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: var(--theme-card-bg);
-  border: 1px solid var(--theme-border-color);
-  color: var(--theme-accent);
+  background: var(--e20-theme-card-bg);
+  border: 1px solid var(--e20-theme-border-color);
+  color: var(--e20-theme-accent);
   font-weight: bold;
   border-radius: v.$border-radius;
 }

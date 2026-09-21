@@ -11,6 +11,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 41
     },
+    "actionType": "standard",
     "prerequisite": "",
     "selectionLimit": 2,
     "type": "role",

@@ -17,4 +17,6 @@
   {{#if item.system.visionGrant.enabled}}
   <span class="chip" name="chip.gear.visionGrant">{{localize (lookup @root.config.visionModes item.system.visionGrant.mode)}}: {{item.system.visionGrant.range}}ft</span>
   {{/if}}
+
+  {{> "systems/essence20/templates/actor/parts/misc/package-origin-chip.hbs"}}
 </div>

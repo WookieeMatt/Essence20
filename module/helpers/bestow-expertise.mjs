@@ -23,7 +23,7 @@ export async function pickBestowExpertise() {
     .map(key => `<option value="${key}">${game.i18n.localize(E20.skills[key])}</option>`).join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.BestowExpertisePickTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.BestowExpertiseSkillLabel')
     }</label><select name="skill">${skillOptions}</select></div><div class="form-group"><label>${

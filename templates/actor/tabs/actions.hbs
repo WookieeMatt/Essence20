@@ -1,0 +1,145 @@
+{{!-- What this character can do on its turn, grouped by what it costs.
+
+      Three kinds of row. The rules' own actions (Attack, Defend, Aim) have no Item behind them, so
+      nothing on the sheet could ever charge for them - a player had to know the cost and decrement
+      a pip by hand, with nothing recording what it went on. The character's own costed items sit
+      alongside them, and their activatable Perks below. None of these are a new spending path: the
+      items already charge themselves when rolled. The tab just answers "what can I do, and what
+      does it cost?" in one place.
+
+      Weapon effects nest under Attack rather than sitting loose in the Standard group - a weapon
+      effect IS the Attack action, being the thing that rolls, so as siblings they read as a list of
+      unrelated options with Attack sitting uselessly among them.
+
+      Context comes from helpers/action-economy.mjs#getActionsTabContext. The tab is always shown,
+      including out of combat, where it is a reference: the actions and what they cost, with no
+      budget numbers and no buttons for the rules' own actions, since there is no ledger to spend
+      from. Items keep their buttons - rolling a weapon out of an encounter works fine and always
+      has. `actionsTab.live` is the switch. --}}
+<section class="tab actions {{tabs.actions.cssClass}}" data-tab="actions" data-group="primary">
+
+  {{!-- One row per item, wherever it lands: in a cost group, nested under Attack, or in the
+        untimed list at the bottom. Declared once here rather than written out three times, so the
+        three can't drift apart. --}}
+  {{#*inline "actionItemRow"}}
+    <li class="actions-tab__row actions-tab__row--item item {{#if nested}}actions-tab__row--nested{{/if}} {{#unless entry.affordable}}actions-tab__row--unaffordable{{/unless}}"
+        data-item-id="{{entry.item._id}}">
+      {{#if entry.activatable}}
+        <a class="actions-tab__use" data-action="perkUse" data-id="{{entry.item._id}}"
+           data-tooltip="{{localize 'E20.PerkUse'}}">
+          <i class="fas fa-bolt"></i>
+        </a>
+      {{else}}
+        <a class="actions-tab__use rollable" data-action="rollable" data-roll-type="{{entry.item.type}}"
+           data-tooltip="{{localize 'E20.ItemRollTitle'}}">
+          <i class="fas fa-dice-d20" data-roll-type="{{entry.item.type}}"></i>
+        </a>
+      {{/if}}
+      <img class="actions-tab__icon" src="{{entry.item.img}}" alt="{{entry.item.name}}" />
+      <span class="actions-tab__name">
+        {{#if entry.parentName}}{{entry.parentName}}: {{/if}}{{entry.item.name}}
+        {{#if entry.trigger}}
+          <span class="actions-tab__trigger">{{entry.trigger}}</span>
+        {{/if}}
+      </span>
+      <span class="actions-tab__cost">{{entry.costLabel}}</span>
+      {{!-- onItemEdit reads data-uuid off event.target, which is the icon - not the <a>. --}}
+      <a class="actions-tab__edit" data-action="itemEdit" data-tooltip="{{localize 'E20.ItemControlEdit'}}">
+        <i class="fas fa-edit" data-uuid="{{entry.item.uuid}}"></i>
+      </a>
+    </li>
+  {{/inline}}
+
+  {{#if actionsTab}}
+    {{#unless actionsTab.live}}
+      <p class="actions-tab__notice">{{localize 'E20.ActionEconomyInactive'}}</p>
+    {{/unless}}
+
+    {{#if actionsTab.turnSkipped}}
+      <p class="actions-tab__notice">{{localize 'E20.ActionEconomyTurnSkipped'}}</p>
+    {{/if}}
+
+    {{!-- Speed 1 spends one action OR the other, so a full Standard row and a full Move row that
+          empty each other reads as a bug without this. --}}
+    {{#if actionsTab.shared}}
+      <p class="actions-tab__notice">{{localize 'E20.ActionEconomySharedHint'}}</p>
+    {{/if}}
+
+    {{#each actionsTab.groups as |group|}}
+      <div class="actions-tab__group" data-category="{{group.key}}">
+        <h3 class="actions-tab__heading">
+          <span class="actions-tab__heading-label">{{localize group.label}}</span>
+          {{!-- Out of combat there is no ledger, so "remaining" would just restate the maximum. --}}
+          {{#if @root.actionsTab.live}}
+            <span class="actions-tab__budget {{#unless group.remaining}}actions-tab__budget--empty{{/unless}}">
+              {{group.remaining}}/{{group.max}}
+            </span>
+          {{/if}}
+        </h3>
+
+        <ul class="actions-tab__list">
+          {{#each group.actions as |action|}}
+            <li class="actions-tab__row {{#unless action.affordable}}actions-tab__row--unaffordable{{/unless}}">
+              {{!-- A button rather than a select, so taking the same action twice is two clicks:
+                    "you can choose to ignore one of the target's Armor Upgrades for each Free
+                    action you spend Aiming" (TF CRB) means repeats have to be cheap to express. --}}
+              {{#if @root.actionsTab.live}}
+                <a class="actions-tab__use" data-action="actionSpendNamed" data-named-action="{{action.key}}"
+                   data-tooltip="{{#if action.alreadyAimed}}{{localize 'E20.ActionEconomyAimingAlready'}}{{else if action.automated}}{{localize 'E20.ActionEconomyTakeAction'}}{{else}}{{localize 'E20.ActionEconomySpendNamed'}}{{/if}}"
+                   aria-label="{{localize 'E20.ActionEconomySpendNamed'}}">
+                  {{!-- A filled icon for the actions that actually do something when taken, hollow
+                        for the ones that only spend their cost - see helpers/named-actions.mjs,
+                        which lists why each of the rest is still cost-only. --}}
+                  <i class="fas {{#if action.automated}}fa-circle-play{{else}}fa-circle{{/if}}"></i>
+                </a>
+              {{else}}
+                {{!-- Out of combat these are reference only. Taking one would spend from a ledger
+                      that does not exist, and Defend in particular would apply a Condition that
+                      nothing ever clears - see getActionsTabContext. --}}
+                <i class="actions-tab__use actions-tab__use--inert fas fa-circle"></i>
+              {{/if}}
+              <span class="actions-tab__name">
+                {{localize action.label}}
+                {{!-- Aim is limited by the shot, not the budget: Free actions may well be left. --}}
+                {{#if action.alreadyAimed}}
+                  <span class="actions-tab__trigger">{{localize 'E20.ActionEconomyAimingAlready'}}</span>
+                {{/if}}
+              </span>
+              <span class="actions-tab__cost">{{action.costLabel}}</span>
+            </li>
+
+            {{!-- How this character actually takes that action - today only Attack has any, its
+                  weapon effects. Rendered as rows of their own rather than inside the <li> above,
+                  so the list stays flat for a screen reader and only the indent says "these belong
+                  to the row above". --}}
+            {{#each action.children as |entry|}}
+              {{> actionItemRow entry=entry nested=true}}
+            {{/each}}
+          {{/each}}
+
+          {{#each group.items as |entry|}}
+            {{> actionItemRow entry=entry}}
+          {{/each}}
+        </ul>
+      </div>
+    {{/each}}
+
+    {{!-- Perks with a Use button but no printed action cost - which is most of them. They belong on
+          this tab, since they are exactly what a player is looking for on their turn, but they
+          cannot claim a budget they do not spend, so they sit below the three that do rather than
+          being filed under one at random. --}}
+    {{#if actionsTab.untimed}}
+      <div class="actions-tab__group" data-category="untimed">
+        <h3 class="actions-tab__heading">
+          <span class="actions-tab__heading-label">{{localize 'E20.ActionsTabUntimed'}}</span>
+        </h3>
+
+        <ul class="actions-tab__list">
+          {{#each actionsTab.untimed as |entry|}}
+            {{> actionItemRow entry=entry}}
+          {{/each}}
+        </ul>
+      </div>
+    {{/if}}
+  {{/if}}
+</section>

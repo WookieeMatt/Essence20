@@ -32,7 +32,7 @@ export async function pickAngryHangUpSkill(actor) {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.AngryHangUpPickSkillTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.AngryHangUpPickSkillLabel')
     }</label><select name="skill">${options}</select></div>`,

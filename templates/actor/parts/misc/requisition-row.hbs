@@ -1,0 +1,26 @@
+{{!--
+  One Requisition row: a weapon or armor a member already carries, shown with how they stand
+  with it - its Availability, whether they are Qualified or Trained in it, and the DIF a
+  Requisition Test for it would face.
+
+  Reference only, with no control of its own. Requisition happens by dropping the item you
+  want onto the member (see party-requisition.hbs); rolling again for something already
+  carried would acquire nothing and spend one of the squad's attempts doing it.
+--}}
+<tr data-item-id="{{item._id}}" data-member-id="{{memberId}}">
+  <td class="tg-td">
+    <img class="leveled-item-icon" src="{{item.img}}" alt="{{item.name}}" />
+    {{item.name}}
+  </td>
+  <td class="tg-td">{{lookup @root.config.availabilities item.system.totalAvailability}}</td>
+  <td class="tg-td">
+    {{#if (eq access 'qualified')}}
+      {{localize "E20.RequisitionAccessQualified"}}
+    {{else if (eq access 'trained')}}
+      {{localize "E20.RequisitionAccessTrained"}}
+    {{else if (eq access 'none')}}
+      {{localize "E20.RequisitionAccessNone"}}
+    {{/if}}
+  </td>
+  <td class="tg-td">{{lookup @root.config.availabilityDifficulties item.system.totalAvailability}}</td>
+</tr>

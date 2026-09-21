@@ -1,4 +1,4 @@
-.effect-wizard {
+.essence20.effect-wizard {
   .effect-wizard__body {
     gap: 0.6rem;
     padding: 0.5rem;
@@ -117,7 +117,7 @@
 }
 
 // The per-change summaries under each effect on an Actor/Item Effects tab.
-.effect-summaries {
+.essence20 .effect-summaries {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -151,7 +151,7 @@
 
 // What a toggleable Active Effect will actually do to this roll, under its name in the Roll
 // Options Dialog - "Shadow Training" alone says nothing about which way the dice move.
-.roll-dialog-effect-summary {
+.essence20 .roll-dialog-effect-summary {
   display: block;
   font-size: 0.75rem;
   opacity: 0.7;

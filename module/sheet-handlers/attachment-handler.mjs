@@ -30,9 +30,18 @@ export async function onAttachableParentDrop(actor, droppedItem, dropFunc) {
  * @param {EquipmentPackage} droppedItem The equipmentPackage that is being dropped on the actor
  */
 export async function onEquipmentPackageDrop(actor, droppedItem) {
+  // Recorded on every Item this Package grants, so the Gear tab can show where the gear came
+  // from (its Equipment Assignment bucket - see EquipmentPackageItemData / package-origin-chip).
+  const equipmentPackageTag = {
+    name: droppedItem.name,
+    packageType: droppedItem.system.packageType ?? null,
+  };
+
   for (const [, item] of Object.entries(droppedItem.system.items)) {
     const itemToCreate = await fromUuid(item.uuid);
     const parentItem = await Item.create(itemToCreate, { parent: actor });
+    await parentItem.setFlag('essence20', 'equipmentPackage', equipmentPackageTag);
+
     if (["armor", "weapon"].includes(parentItem.type)) {
       await createItemCopies(parentItem.system.items, actor, "upgrade", parentItem);
     }
@@ -322,6 +331,9 @@ export function createEntry(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
+      // The traits this upgrade takes AWAY - see documents/item.mjs#_prepareTraits, which reads
+      // this snapshot rather than the upgrade Item itself.
+      entry['removedTraits'] = droppedItem.system.removedTraits;
       return entry;
     }
 
@@ -413,6 +425,8 @@ export function createEntry(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
+      // See the armor branch above.
+      entry['removedTraits'] = droppedItem.system.removedTraits;
       return entry;
     } else if (droppedItem.type == "weaponEffect") {
       entry['classification'] = droppedItem.system.classification;
@@ -515,7 +529,24 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null, 
 
     for (const [key, attachment] of Object.entries(item.system.items)) {
       if (itemSourceId) {
-        if (itemSourceId == attachment.uuid && item._id == parentId) {
+        // A granting item can list the SAME uuid at several levels - 53 of them do across the
+        // packs, from Commando's Expertise (1st and 7th, GI Joe CRB p.72) to Officer's Plan of
+        // Action (five levels). Matching on uuid alone cannot tell those entries apart, so a
+        // reduction to 6th would test the 7th-level entry against EVERY copy on the actor and
+        // delete the 1st-level one too. collectionId records the entry a copy actually came
+        // from, so prefer it whenever the copy carries one.
+        //
+        // Advances-stacking Perks are the deliberate exception: grantItemEntry folds each later
+        // entry into the FIRST copy instead of creating another (Extra Attack, Power Heal, Plan
+        // of Action, ...), so that one copy legitimately answers for entries whose key it does
+        // not carry, and the branch below decrements it rather than deleting it. Matching those
+        // by uuid is what makes that work.
+        const stacks = actorItem.system.advances?.canAdvance;
+        const entryMatches = (!stacks && collectionId)
+          ? key == collectionId
+          : itemSourceId == attachment.uuid;
+
+        if (entryMatches && item._id == parentId) {
           if (!previousLevel || (attachment.level > effectiveLevel && attachment.level <= previousLevel)) {
             if (attachment.type == "perk") {
               if (actorItem.system.advances.canAdvance) {

@@ -11,7 +11,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 100
     },
-    "actionType": "free",
+    "actionType": "standard",
     "canActivate": true,
     "classFeatureId": null,
     "hasVariableCost": true,

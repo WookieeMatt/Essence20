@@ -52,6 +52,7 @@ export default class ChoicesSelector extends serializeFormSubmits(HandlebarsAppl
     classes: [
       "essence20",
       "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",

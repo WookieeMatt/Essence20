@@ -1,19 +1,30 @@
 {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.weapons title='E20.ItemTypeWeaponPlural' dataType='weapon'}}
+  {{#*inline "container-header-extra"}}
+    {{#if (ne @root.role.system.version 'myLittlePony')}}
+      {{> "systems/essence20/templates/actor/parts/misc/loadout-summary.hbs"}}
+    {{/if}}
+  {{/inline}}
+
   {{#*inline "expand-details" item}}
     {{> "systems/essence20/templates/actor/parts/items/weapon/details.hbs"}}
   {{/inline}}
 
   {{#*inline "item-label" item}}
-    <div class="flexrow align-center gap-5 leveled-item-label">
+    <div class="flexrow e20-align-center e20-gap-5 leveled-item-label">
       {{#if item.system.grantedLevel}}
         <span class="leveled-item-badge">{{item.system.grantedLevel}}</span>
       {{/if}}
       <img class="leveled-item-icon" src="{{item.img}}" alt="{{item.name}}" />
-      {{#if @root.system.canTransform}}
-        {{>"systems/essence20/templates/actor/parts/misc/mode-selector.hbs"}}
-      {{/if}}
       <span class="leveled-item-name">{{item.name}}</span>
     </div>
+  {{/inline}}
+
+  {{!-- Transformer Hardpoint controls get their own full-width line under the weapon, so the
+       type/Reinforced/visibility controls stay on one row instead of wrapping in the label. --}}
+  {{#*inline "item-subrow" item}}
+    {{#if @root.system.canTransform}}
+      {{>"systems/essence20/templates/actor/parts/misc/hardpoint-selector.hbs"}}
+    {{/if}}
   {{/inline}}
 
   {{#*inline "extra-controls" item}}

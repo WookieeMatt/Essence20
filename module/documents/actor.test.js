@@ -2675,3 +2675,256 @@ describe("_prepareActions agrees with getNumActions", () => {
     expect(actor.system.actions.move.max).toBe(1);
   });
 });
+
+
+describe("_prepareLoadout", () => {
+  function loadoutSystem(overrides = {}) {
+    return {
+      loadout: { handsMax: 6 },
+      hardpoints: {
+        external: { base: 2, bonus: 0 },
+        integrated: { base: 2, bonus: 0 },
+      },
+      ...overrides,
+    };
+  }
+
+  function weapon(system) {
+    return { type: 'weapon', system: { equipped: true, hardpoint: { type: 'external' }, ...system } };
+  }
+
+  test("bails out when the actor has no loadout/hardpoints schema", () => {
+    const actor = makeActor('playerCharacter', {});
+    expect(() => actor._prepareLoadout()).not.toThrow();
+  });
+
+  test("sums equipped external weapon hands into loadout.handsUsed", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [
+        weapon({ derivedHands: 2 }),
+        weapon({ derivedHands: 1 }),
+        weapon({ derivedHands: 1 }),
+      ],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(4);
+    expect(actor.system.loadout.handsOver).toBe(false);
+  });
+
+  test("flags handsOver once the six-hand limit is exceeded", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [weapon({ derivedHands: 4 }), weapon({ derivedHands: 3 })],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(7);
+    expect(actor.system.loadout.handsOver).toBe(true);
+  });
+
+  test("ignores unequipped and non-weapon items", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [weapon({ derivedHands: 2, equipped: false }), weapon({ derivedHands: 1 })],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(1);
+  });
+
+  test("integrated-Hardpoint weapons don't count against the six-hand limit", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [
+        weapon({ derivedHands: 2, hardpoint: { type: 'integrated' } }),
+        weapon({ derivedHands: 1 }),
+      ],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(1);
+    expect(actor.system.hardpoints.integrated.used).toBe(2);
+    expect(actor.system.hardpoints.external.used).toBe(1);
+  });
+
+  test("a two-handed integrated weapon uses two Integrated Hardpoint slots", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [weapon({ derivedHands: 2, hardpoint: { type: 'integrated' } })],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.hardpoints.integrated.used).toBe(2);
+    expect(actor.system.hardpoints.integrated.max).toBe(2);
+    expect(actor.system.hardpoints.integrated.over).toBe(false);
+  });
+
+  test("a one-handed integrated weapon still occupies one slot", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [weapon({ derivedHands: 0, hardpoint: { type: 'integrated' } })],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.hardpoints.integrated.used).toBe(1);
+  });
+
+  test("hardpoint max folds in the bonus and flags over", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem({
+      hardpoints: {
+        external: { base: 2, bonus: 1 },
+        integrated: { base: 2, bonus: 0 },
+      },
+    }), {
+      weapon: [
+        weapon({ derivedHands: 1 }),
+        weapon({ derivedHands: 1 }),
+        weapon({ derivedHands: 1 }),
+        weapon({ derivedHands: 1 }),
+      ],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.hardpoints.external.max).toBe(3);
+    expect(actor.system.hardpoints.external.used).toBe(4);
+    expect(actor.system.hardpoints.external.over).toBe(true);
+  });
+
+  test("a weapon set to no Hardpoint still counts against the six-hand limit", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [weapon({ derivedHands: 3, hardpoint: { type: 'none' } })],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(3);
+    expect(actor.system.hardpoints.external.used).toBe(0);
+  });
+});
+
+describe("_preparePartyData", () => {
+  function partySystem(overrides = {}) {
+    return {
+      actors: {},
+      requisition: { attempts: 0, autoFromRoster: true, log: [] },
+      ...overrides,
+    };
+  }
+
+  const realFromUuidSync = global.fromUuidSync;
+  afterEach(() => {
+    global.fromUuidSync = realFromUuidSync;
+  });
+
+  test("counts only Player Character roster entries and derives requisitionMax = 3 x count", () => {
+    global.fromUuidSync = jest.fn((uuid) => ({
+      'Actor.pc1': { type: 'playerCharacter' },
+      'Actor.pc2': { type: 'playerCharacter' },
+      'Actor.npc1': { type: 'npc' },
+    }[uuid]));
+
+    const actor = makeActor('party', partySystem({
+      actors: {
+        a: { uuid: 'Actor.pc1' },
+        b: { uuid: 'Actor.pc2' },
+        c: { uuid: 'Actor.npc1' },
+        d: { uuid: 'Actor.gone' },
+      },
+    }));
+    actor._preparePartyData();
+
+    expect(actor.system.memberCount).toBe(2);
+    expect(actor.system.requisitionMax).toBe(6);
+  });
+
+  test("an empty roster yields 0 members and a 0 pool", () => {
+    global.fromUuidSync = jest.fn(() => null);
+    const actor = makeActor('party', partySystem());
+    actor._preparePartyData();
+
+    expect(actor.system.memberCount).toBe(0);
+    expect(actor.system.requisitionMax).toBe(0);
+  });
+
+  test("when autoFromRoster is off, requisitionMax mirrors the manual attempts value", () => {
+    global.fromUuidSync = jest.fn(() => ({ type: 'playerCharacter' }));
+    const actor = makeActor('party', partySystem({
+      actors: { a: { uuid: 'Actor.pc1' } },
+      requisition: { attempts: 9, autoFromRoster: false, log: [] },
+    }));
+    actor._preparePartyData();
+
+    expect(actor.system.memberCount).toBe(1);
+    expect(actor.system.requisitionMax).toBe(9);
+  });
+});
+
+describe("Party member roster", () => {
+  const realFromUuidSync = global.fromUuidSync;
+  afterEach(() => {
+    global.fromUuidSync = realFromUuidSync;
+  });
+
+  function makeParty(actors = {}) {
+    const p = makeActor('party', { actors });
+    p.update = jest.fn(async () => {});
+    return p;
+  }
+
+  describe("get members", () => {
+    test("resolves system.actors to live Player Character actors, dropping non-PC and unresolved entries", () => {
+      global.fromUuidSync = jest.fn(uuid => ({
+        'Actor.pc1': { type: 'playerCharacter', name: 'Duke' },
+        'Actor.pc2': { type: 'playerCharacter', name: 'Scarlett' },
+        'Actor.npc1': { type: 'npc' },
+      }[uuid] ?? null));
+
+      const party = makeParty({
+        a: { uuid: 'Actor.pc1' },
+        b: { uuid: 'Actor.npc1' },
+        c: { uuid: 'Actor.pc2' },
+        d: { uuid: 'Actor.gone' },
+      });
+
+      expect(party.members.map(m => m.name)).toEqual(['Duke', 'Scarlett']);
+    });
+
+    test("is empty for a non-Party actor", () => {
+      const npc = makeActor('npc', { actors: { a: { uuid: 'Actor.pc1' } } });
+      expect(npc.members).toEqual([]);
+    });
+  });
+
+  describe("addMember", () => {
+    test("writes a new system.actors entry for a Player Character", async () => {
+      const party = makeParty();
+      await party.addMember({ type: 'playerCharacter', uuid: 'Actor.pc1', img: 'a.png', name: 'Duke' });
+
+      expect(party.update).toHaveBeenCalledTimes(1);
+      const update = party.update.mock.calls[0][0];
+      const [path, entry] = Object.entries(update)[0];
+      expect(path).toMatch(/^system\.actors\.[A-Za-z0-9]+$/);
+      expect(entry).toEqual({ uuid: 'Actor.pc1', img: 'a.png', name: 'Duke', type: 'playerCharacter' });
+    });
+
+    test("no-ops when the actor is already on the roster", async () => {
+      const party = makeParty({ a: { uuid: 'Actor.pc1' } });
+      await party.addMember({ type: 'playerCharacter', uuid: 'Actor.pc1', name: 'Duke' });
+      expect(party.update).not.toHaveBeenCalled();
+    });
+
+    test("no-ops for a non-Player-Character actor", async () => {
+      const party = makeParty();
+      await party.addMember({ type: 'npc', uuid: 'Actor.npc1' });
+      expect(party.update).not.toHaveBeenCalled();
+    });
+
+    test("no-ops on a non-Party actor", async () => {
+      const npc = makeActor('npc', { actors: {} });
+      npc.update = jest.fn();
+      await npc.addMember({ type: 'playerCharacter', uuid: 'Actor.pc1' });
+      expect(npc.update).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("removeMember", () => {
+    test("removes the roster entry matching the given UUID", async () => {
+      const party = makeParty({ a: { uuid: 'Actor.pc1' }, b: { uuid: 'Actor.pc2' } });
+      await party.removeMember('Actor.pc2');
+      expect(party.update).toHaveBeenCalledWith({ 'system.actors.-=b': null });
+    });
+
+    test("no-ops when the UUID isn't on the roster", async () => {
+      const party = makeParty({ a: { uuid: 'Actor.pc1' } });
+      await party.removeMember('Actor.nope');
+      expect(party.update).not.toHaveBeenCalled();
+    });
+  });
+});

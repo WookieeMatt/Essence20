@@ -34,7 +34,7 @@ const ZEO_CRYSTAL_BOOST_ENCOUNTER_FLAG = 'zeoCrystalBoostUsedThisEncounter';
 export async function pickZeoCrystalBoostOption() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.ZeoCrystalBoostPickOptionTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.ZeoCrystalBoostPickOptionLabel')
     }</label><select name="option">

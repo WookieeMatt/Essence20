@@ -74,7 +74,7 @@ export async function pickMiseryLovesCompanyTransfer(actor) {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.MiseryLovesCompanyPickTransferTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.MiseryLovesCompanyCureLabel')
     }</label><select name="affected">${affectedOptions}</select></div>

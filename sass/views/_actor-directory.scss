@@ -1,0 +1,96 @@
+/* Essence20ActorDirectory - Party ("Squad") folders at the top of the Actors sidebar. */
+
+#actors .e20-parties {
+  margin: 0 0 4px;
+  padding: 0;
+}
+
+#actors .e20-party-folder > .folder-header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+#actors .e20-party-folder > .folder-header .folder-toggle {
+  transition: transform 120ms ease;
+  flex: 0 0 auto;
+  opacity: 0.7;
+}
+
+#actors .e20-party-folder.expanded > .folder-header .folder-toggle {
+  transform: rotate(90deg);
+}
+
+#actors .e20-party-folder > .folder-header .e20-party-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+  border: none;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+#actors .e20-party-folder > .folder-header .folder-name {
+  flex: 1 1 auto;
+  font-weight: 700;
+}
+
+#actors .e20-party-folder > .folder-header .e20-party-count {
+  flex: 0 0 auto;
+  min-width: 1.4em;
+  padding: 0 5px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.8em;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+#actors .e20-party-folder > .folder-header .inline-control {
+  flex: 0 0 auto;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+#actors .e20-party-folder > .folder-header:hover .inline-control {
+  opacity: 0.85;
+}
+
+/* Pinned (primary) squad: accent the header. */
+#actors .e20-party-folder.pinned > .folder-header {
+  border-left: 2px solid var(--color-warm-2, #ff6400);
+  padding-left: 4px;
+}
+
+/* Nested member list - collapsed unless expanded. */
+#actors .e20-party-folder > .subdirectory {
+  display: none;
+  margin: 0;
+  padding: 0 0 0 18px;
+}
+
+#actors .e20-party-folder.expanded > .subdirectory {
+  display: block;
+}
+
+#actors .e20-party-folder .subdirectory .directory-item.actor {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+#actors .e20-party-folder .subdirectory .directory-item.actor .inline-control {
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+#actors .e20-party-folder .subdirectory .directory-item.actor:hover .inline-control {
+  opacity: 0.85;
+}
+
+#actors .e20-party-folder .subdirectory .blank {
+  padding: 2px 4px;
+  font-size: 0.85em;
+  opacity: 0.6;
+}

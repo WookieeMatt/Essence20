@@ -7,11 +7,13 @@ import {
   movementTypeFor,
   planPush,
 } from './token-movement.mjs';
-import { getLedger, getRemaining } from './action-economy.mjs';
+import { getLedger, getRemaining, isAiming, setAiming, setSprinting } from './action-economy.mjs';
+import { Essence20TokenDocument } from '../documents/token.mjs';
 
 let idCounter = 0;
 
 global.foundry = { utils: { randomID: jest.fn(() => `id${++idCounter}`) } };
+
 
 function makeActor({ enabled = true, ground = 30, aerial = 0, move = 1, free = 0, name = 'Duke' } = {}) {
   return {
@@ -566,5 +568,147 @@ describe("planPush with house rules applied", () => {
 
   test("omitting the rules keeps the printed defaults", () => {
     expect(planPush(40, 30, 3)).toMatchObject({ freeNeeded: 2, cap: 60, canPush: true });
+  });
+});
+
+/* Moving cancels an aim: the Aim shift holds "as long as you don't use Movement between your
+   Aim and your attack" (GI Joe CRB p.193).
+
+   Exercised through Essence20TokenDocument#_preUpdateMovement against the real
+   consumeForMovement rather than a mock, because the whole question is what happens on the
+   boundary between the two - a rejected move must not cost the aim, and only the real
+   consumeForMovement decides when a move is rejected. */
+describe("movement and aiming", () => {
+  /**
+   * A token document with the prototype under test, skipping the real constructor.
+   */
+  const makeTokenDocument = (actor) => Object.assign(
+    Object.create(Essence20TokenDocument.prototype), { id: 'token1', actor },
+  );
+
+  test("a movement that goes through clears the aim", async () => {
+    const actor = makeActor({ ground: 30 });
+    setGame({ actor });
+    await setAiming(actor, true);
+
+    const allowed = await makeTokenDocument(actor)._preUpdateMovement(makeMovement({ cost: 10 }), {});
+
+    expect(allowed).toBe(true);
+    expect(isAiming(actor)).toBe(false);
+  });
+
+  /* The case the live canvas could not be made to exercise, and the one that matters: a move
+     the world refused never happened, so it must not cost the aim. Without the guard, a player
+     in a strict world loses their aim to a move they were not allowed to make. */
+  test("a movement rejected in strict mode leaves the aim alone", async () => {
+    const actor = makeActor({ ground: 30 });
+    setGame({ actor, mode: 'strict' });
+    await setAiming(actor, true);
+
+    const allowed = await makeTokenDocument(actor)._preUpdateMovement(makeMovement({ cost: 45 }), {});
+
+    expect(allowed).toBe(false);
+    expect(isAiming(actor)).toBe(true);
+  });
+
+  // Out of combat there is no aim to clear and no ledger to write to, so this must not throw.
+  test("a movement with no encounter running is harmless", async () => {
+    const actor = makeActor({ ground: 30 });
+    setGame({ actor: null });
+
+    await expect(makeTokenDocument(actor)._preUpdateMovement(makeMovement(), {})).resolves.toBe(true);
+  });
+});
+
+/* Sprint (GI Joe CRB p.197): "By taking a Standard action to Sprint, you may move up to double
+   your full Movement."
+
+   Both the drag ruler and the movement enforcement measure against getMovementAllowance, so
+   doubling it there is what makes the two agree - these tests are as much about the Push cap
+   moving with it as about the doubling itself. */
+describe("Sprint", () => {
+  test("doubles the allowance for the turn", async () => {
+    const actor = makeActor({ ground: 30 });
+    setGame({ actor });
+
+    expect(getMovementAllowance(actor, 'ground')).toBe(30);
+    await setSprinting(actor, true);
+    expect(getMovementAllowance(actor, 'ground')).toBe(60);
+  });
+
+  test("leaves a movement type the actor does not have alone", async () => {
+    const actor = makeActor({ ground: 30 });
+    setGame({ actor });
+    await setSprinting(actor, true);
+
+    expect(getMovementAllowance(actor, 'swim')).toBeNull();
+  });
+
+  /* "A character cannot spend Free actions on buying additional Movement that would double one
+     of their Movement Types" (p.193). The ceiling is on the BASE rating, so it must not move
+     when Sprint doubles the allowance the multiplier is applied to - 2 x 30 either way. */
+  test("the Push cap stays at twice the base rating", async () => {
+    const actor = makeActor({ ground: 30, free: 4 });
+    setGame({ actor });
+
+    const walking = planPush(0, 30, 4, getPushRules(actor));
+    await setSprinting(actor, true);
+    const sprinting = planPush(0, getMovementAllowance(actor, 'ground'), 4, getPushRules(actor));
+
+    expect(walking.cap).toBe(60);
+    expect(sprinting.cap).toBe(60);
+  });
+
+  // Which in practice means a sprinting character is already at the ceiling and cannot Push.
+  test("a sprinting character cannot Push past the doubled distance", async () => {
+    const actor = makeActor({ ground: 30, free: 4 });
+    setGame({ actor });
+    await setSprinting(actor, true);
+
+    const push = planPush(65, getMovementAllowance(actor, 'ground'), 4, getPushRules(actor));
+
+    expect(push.beyondCap).toBe(true);
+  });
+
+  // 60ft on a 30ft rating is an ordinary sprint, not an overrun, so nothing is charged for it.
+  test("moving twice the rating while sprinting costs no Free actions", async () => {
+    const actor = makeActor({ ground: 30, free: 2 });
+    setGame({ actor });
+    await setSprinting(actor, true);
+
+    expect(await consumeForMovement(makeToken(actor), makeMovement({ cost: 60 }))).toBe(true);
+    expect(getRemaining(actor).free).toBe(2);
+  });
+
+  // The same 60ft without Sprinting is 30ft over, which costs six Free actions nobody has.
+  test("the same distance without Sprinting is an overrun", async () => {
+    const actor = makeActor({ ground: 30, free: 2 });
+    setGame({ actor });
+
+    await consumeForMovement(makeToken(actor), makeMovement({ cost: 60 }));
+
+    expect(global.ui.notifications.info).toHaveBeenCalled();
+  });
+
+  // Earlier Is Better's "not limited" has to survive Sprinting, which is why the cap is divided
+  // rather than assigned - Infinity / 2 is still Infinity.
+  test("an uncapped actor stays uncapped while Sprinting", async () => {
+    const actor = makeActor({ ground: 30 });
+    setGame({ actor });
+    await setSprinting(actor, true);
+
+    const rules = getPushRules(actor);
+    rules.capMultiplier = Infinity / 2;
+
+    expect(planPush(500, 60, 0, rules).beyondCap).toBe(false);
+  });
+
+  test("is forgotten out of combat, where there is no ledger to hold it", async () => {
+    const actor = makeActor({ ground: 30 });
+    setGame({ actor: null });
+
+    await setSprinting(actor, true);
+
+    expect(getMovementAllowance(actor, 'ground')).toBe(30);
   });
 });

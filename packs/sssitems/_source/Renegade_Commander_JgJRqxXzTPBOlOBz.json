@@ -11,6 +11,7 @@
       "book": "Sgt Slaughter Sourcebook",
       "page": 12
     },
+    "actionType": "standard",
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

@@ -40,6 +40,54 @@ const SUBTYPE_FILTERS = {
   },
 };
 
+/**
+ * Extra "facet" filters: the ones that narrow by a property of the item rather than by its type.
+ *
+ * Deliberately separate from SUBTYPE_FILTERS above, which works by EXCLUSION - everything starts
+ * checked and you uncheck what you do not want. That is wrong here. The question a player has is
+ * "which weapons are Silent?", which under exclusion semantics would mean unchecking forty other
+ * traits to ask. A facet works the other way round: nothing checked means no filtering, and
+ * checking narrows to the items that match.
+ *
+ * Each facet declares:
+ *   types   which item types it applies to, and where that type's choices come from. A facet only
+ *           appears on a tab that holds at least one of them.
+ *   values  the entry's value(s) for this facet, always as an array.
+ *   match   how several checked values combine, and this differs per facet for a real reason:
+ *
+ *           "all" for a multi-valued field. Picking Silent and Sniper means "a silenced sniper",
+ *           which is the question worth asking; OR is already available by picking one at a time.
+ *
+ *           "any" for a single-valued one. No gear is both Tools and Kits, so AND there would
+ *           always return nothing - checking two can only sensibly mean "either".
+ */
+const FACETS = {
+  traits: {
+    labelKey: "E20.CompendiumBrowserFilterTraits",
+    hintKey: "E20.CompendiumBrowserFilterTraitsHint",
+    match: "all",
+    types: {
+      armor: () => CONFIG.E20.armorTraits,
+      // A shield carries ARMOR traits, not weapon ones - see data/item/shield.mjs.
+      shield: () => CONFIG.E20.armorTraits,
+      weapon: () => CONFIG.E20.weaponTraits,
+    },
+    values: entry => entry.traits,
+  },
+  /* Gear has no traits at all - checked against the schema and all 256 pack entries, not one has
+     the field. What it has is gearType, a single category (Tools, Kits, Medical...), which is the
+     same question asked of the one kind of equipment that cannot answer the trait one. */
+  gearType: {
+    labelKey: "E20.CompendiumBrowserFilterGearType",
+    hintKey: "E20.CompendiumBrowserFilterGearTypeHint",
+    match: "any",
+    types: {
+      gear: () => CONFIG.E20.gearTypes,
+    },
+    values: entry => (entry.gearType ? [entry.gearType] : []),
+  },
+};
+
 /** The tab key a given item type shows up under - its group's key, or just itself. */
 function tabKeyForType(type) {
   for (const [key, group] of Object.entries(TYPE_GROUPS)) {
@@ -72,12 +120,15 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
       booksExpanded: true,
       activeType: null,
       excludedSubtypes: {},
+      /* Values the user has REQUIRED, not excluded, keyed by facet - see FACETS. All empty means
+         no facet filtering, which is the state the browser opens in. */
+      requiredFacets: Object.fromEntries(Object.keys(FACETS).map(key => [key, new Set()])),
     };
   }
 
   static DEFAULT_OPTIONS = {
     id: "essence20-compendium-browser",
-    classes: ["essence20", "theme-wrapper", "compendium-browser"],
+    classes: ["essence20", "theme-wrapper", "e20-window", "compendium-browser"],
     tag: "div",
     window: {
       icon: "fa-solid fa-book-atlas",
@@ -97,6 +148,7 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
       selectNoBooksInGroup: this.#onSelectNoBooksInGroup,
       selectAllSubtypes: this.#onSelectAllSubtypes,
       selectNoSubtypes: this.#onSelectNoSubtypes,
+      clearTraits: this.#onClearTraits,
       selectType: this.#onSelectType,
     },
   };
@@ -149,6 +201,7 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
       booksExpanded: this._filters.booksExpanded,
       tabs,
       subtypeFilter: this._getSubtypeFilterContext(),
+      facets: this._getFacetContexts(),
       search: this._filters.search,
       results,
       resultCount: results.length,
@@ -202,6 +255,115 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
   }
 
   /**
+   * The trait filter for the active tab, or null when nothing on it has filterable traits.
+   *
+   * The choices are the union of every trait enum in play on this tab - the Equipment tab holds
+   * both weapons and armor, and a few traits (Sturdy, for one) appear in both enums - narrowed to
+   * the traits actually present on the entries the rest of the filters have already left. That
+   * last part is what keeps the list usable: the raw weapon enum alone is over forty entries, most
+   * of which match nothing in the books the user has enabled.
+   */
+  /**
+   * Every facet that applies to the active tab, in FACETS order, as sidebar groups.
+   *
+   * A facet's choices are the union of the enums of whichever of its types are on this tab - the
+   * Equipment tab holds weapons, armor and shields at once, and a few traits appear in more than
+   * one enum - narrowed to the values actually present on the entries the other filters have left.
+   * That narrowing is what keeps the list usable: the weapon enum alone is over forty entries, most
+   * of which match nothing in the books a given table has enabled.
+   */
+  _getFacetContexts() {
+    return Object.entries(FACETS)
+      .map(([key, facet]) => this._getFacetContext(key, facet))
+      .filter(Boolean);
+  }
+
+  /**
+   * One facet's sidebar group, or null when it has nothing to offer on this tab.
+   *
+   * @param {String} key     A key of FACETS.
+   * @param {Object} facet   Its definition.
+   * @returns {Object|null}
+   */
+  _getFacetContext(key, facet) {
+    const types = this._typesOnTab(this._filters.activeType).filter(type => facet.types[type]);
+    if (!types.length) {
+      return null;
+    }
+
+    const labels = {};
+    for (const type of types) {
+      Object.assign(labels, facet.types[type]());
+    }
+
+    const required = this._requiredFor(key);
+    const present = new Set();
+    for (const entry of this._getBookAndSearchFiltered()) {
+      if (tabKeyForType(entry.type) !== this._filters.activeType) {
+        continue;
+      }
+
+      for (const value of facet.values(entry) ?? []) {
+        present.add(value);
+      }
+    }
+
+    /* A required value stays listed even if nothing currently shows it - otherwise picking two
+       values with no overlap would make the second vanish from the sidebar, leaving no way to
+       un-pick it. */
+    for (const value of required) {
+      present.add(value);
+    }
+
+    const options = Array.from(present)
+      .filter(value => labels[value])
+      .map(value => ({
+        key: value,
+        label: game.i18n.localize(labels[value]),
+        checked: required.has(value),
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+
+    if (!options.length) {
+      return null;
+    }
+
+    return {
+      key,
+      label: game.i18n.localize(facet.labelKey),
+      hint: game.i18n.localize(facet.hintKey),
+      options,
+      any: !required.size,
+    };
+  }
+
+  /**
+   * The required-value set for a facet, created on demand so an older stored filter state still
+   * works.
+   *
+   * Refuses a key that is not a real facet rather than making a bucket for it. That distinction
+   * matters: a checkbox whose data-facet renders empty - which is exactly what a mistaken `../`
+   * in front of a Handlebars block parameter produces - used to drop every click into a bucket
+   * nothing reads, so the filter did nothing at all and said nothing about why. Now it complains
+   * once and the cause is in the console.
+   *
+   * @param {String} key   A key of FACETS.
+   * @returns {Set|null}
+   */
+  _requiredFor(key) {
+    if (!FACETS[key]) {
+      console.warn(`Essence20 | Compendium Browser: no such filter facet "${key}"`);
+      return null;
+    }
+
+    return this._filters.requiredFacets[key] ??= new Set();
+  }
+  /** The item types that appear under a tab - a group's members, or the tab itself. */
+  _typesOnTab(tabKey) {
+    return TYPE_GROUPS[tabKey]?.types ?? [tabKey];
+  }
+
+  /**
    * The extra ("secondary") filter definition for a tab, if it has one: a type-group
    * tab's own "Type" filter over its member types, a plain type's SUBTYPE_FILTERS
    * entry, or - for a `dynamic` entry - the same shape built from whatever values are
@@ -248,7 +410,7 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
 
     for (const pack of packs) {
       const index = await pack.getIndex({
-        fields: ["img", "type", "system.source.book", "system.source.page", ...subtypeFields],
+        fields: ["img", "type", "system.source.book", "system.source.page", "system.traits", "system.gearType", ...subtypeFields],
       });
 
       for (const entry of index.values()) {
@@ -262,6 +424,12 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
           type: entry.type,
           typeLabel: game.i18n.localize(`TYPES.Item.${entry.type}`),
           subtype: subtypeConfig ? (subtypeConfig.extract ? subtypeConfig.extract(rawSubtypeField) : rawSubtypeField) : null,
+          /* Only for the types a facet actually covers, so an index of several thousand rows does
+             not carry an array each for the types nobody filters by. A compendium item has no
+             upgrades attached, so traits here is its own authored list - which is the right thing
+             to browse by anyway: you are looking for what the book prints. */
+          traits: FACETS.traits.types[entry.type] ? (entry.system?.traits ?? []) : null,
+          gearType: FACETS.gearType.types[entry.type] ? (entry.system?.gearType ?? null) : null,
           book: pack.metadata.label,
           bookId: pack.metadata.id,
           page: entry.system?.source?.page ?? null,
@@ -302,8 +470,44 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
     return this._getBookAndSearchFiltered().filter(entry => {
       if (tabKeyForType(entry.type) !== activeType) return false;
       if (excluded?.has(getSecondaryFilterValue(entry, activeType))) return false;
-      return true;
+      return this._matchesFacets(entry);
     });
+  }
+
+  /**
+   * Whether an entry satisfies every facet that has something required.
+   *
+   * Facets combine with AND - requiring a weapon trait and a gear category matches nothing, which
+   * is honest, since nothing is both. Within a facet, `match` decides: see FACETS.
+   *
+   * An entry with no value for a facet fails it as soon as that facet requires anything. That is
+   * what keeps a coil of rope out of the results for "Silent" while it shares the Equipment tab.
+   *
+   * @param {Object} entry   An index row.
+   * @returns {Boolean}
+   */
+  _matchesFacets(entry) {
+    for (const [key, facet] of Object.entries(FACETS)) {
+      const required = this._requiredFor(key);
+      if (!required?.size) {
+        continue;
+      }
+
+      const values = facet.values(entry);
+      if (!values?.length) {
+        return false;
+      }
+
+      if (facet.match === "any") {
+        if (!values.some(value => required.has(value))) return false;
+      } else {
+        for (const value of required) {
+          if (!values.includes(value)) return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   /** The (visible) pack ids that hold at least one item belonging to the given tab, e.g. only the Transformers books have any Alt Mode items. */
@@ -375,6 +579,22 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
         if (checkbox.checked) excluded.delete(checkbox.dataset.subtype);
         else excluded.add(checkbox.dataset.subtype);
         this.render({ parts: ["results"] });
+      });
+    }
+
+    /* Facet values are required rather than excluded, so checked means "must match" - the
+       opposite of the two filters above. The filters part re-renders as well as the results,
+       because each facet list is narrowed to what the visible entries actually have. */
+    for (const checkbox of filtersEl.querySelectorAll("[data-facet-value]")) {
+      checkbox.addEventListener("change", () => {
+        const required = this._requiredFor(checkbox.dataset.facet);
+        if (!required) {
+          return;
+        }
+
+        if (checkbox.checked) required.add(checkbox.dataset.facetValue);
+        else required.delete(checkbox.dataset.facetValue);
+        this.render({ parts: ["filters", "results"] });
       });
     }
 
@@ -467,6 +687,18 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
 
   static #onSelectAllSubtypes() {
     this._filters.excludedSubtypes[this._filters.activeType]?.clear();
+    this.render({ parts: ["filters", "results"] });
+  }
+
+  /**
+   * Drop everything required in one facet, back to not filtering by it.
+   *
+   * The counterpart of Select All / Select None on the exclusion filters, but there is only one of
+   * it: "require nothing" is a useful state and the one the browser opens in, while "require every
+   * value" would match nothing at all.
+   */
+  static #onClearTraits(event, target) {
+    this._requiredFor(target.dataset.facet)?.clear();
     this.render({ parts: ["filters", "results"] });
   }
 

@@ -1,5 +1,7 @@
 @forward './token-ruler';
 @forward './story-points';
+@forward './actor-directory';
+@forward './book-importer';
 @forward './stat-editor';
 @forward './skill-picker';
 @forward './compendium-browser';
@@ -7,3 +9,4 @@
 @forward './stat-block-importer';
 @forward './monster-grow-dialog';
 @forward './combat-tracker';
+@forward './settings-groups';

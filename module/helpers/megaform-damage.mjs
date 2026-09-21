@@ -62,7 +62,7 @@ export async function applyMegaformDamage(megaformActor, damageValue, damageType
   if (participants.length > 1) {
     const choice = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize('E20.MegaformDamageDistributionTitle') },
-      classes: ["window-app"],
+      classes: ["window-app", "e20-window"],
       content: `<p>${game.i18n.format('E20.MegaformDamageDistributionContent', { name: megaformActor.name })}</p>`,
       modal: true,
       buttons: [
@@ -95,7 +95,7 @@ export async function applyMegaformDamage(megaformActor, damageValue, damageType
 
     const confirmation = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize('E20.CompensationConfirmTitle') },
-      classes: ["window-app"],
+      classes: ["window-app", "e20-window"],
       content: `<p>${game.i18n.format('E20.CompensationConfirmContent', { name: holder.name })}</p>`,
       modal: true,
       buttons: [

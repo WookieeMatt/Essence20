@@ -11,6 +11,7 @@
       "book": "Quartermaster's Guide to Gear",
       "page": 31
     },
+    "actionType": "standard",
     "prerequisite": "Deception +d2",
     "selectionLimit": 1,
     "type": "general"

@@ -1,8 +1,8 @@
 @use "../variables" as v;
 
 .essence20 .zord-combiners {
-  background: var(--theme-card-bg);
-  border: 1px solid var(--theme-border-color);
+  background: var(--e20-theme-card-bg);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: v.$border-radius;
   padding: 8px;
   display: flex;

@@ -4,6 +4,7 @@ import { applyGotToGetTough } from "../helpers/got-to-get-tough.mjs";
 import { advanceEncounter } from "../helpers/scene-clock.mjs";
 import { expireAoeRegions } from "../helpers/aoe-expiry.mjs";
 import { isTracking, resetTurn } from "../helpers/action-economy.mjs";
+import { DEFENDING_STATUS } from "../helpers/named-actions.mjs";
 
 export class Essence20Combat extends Combat {
   constructor(data, context) {
@@ -46,6 +47,15 @@ export class Essence20Combat extends Combat {
 
     if (isTracking()) {
       await resetTurn(combatant);
+    }
+
+    /* "This benefit lasts until the beginning of your next turn" (GI Joe CRB p.196) - so the
+       Defend Snag ends here, on the defender's own next turn, not at the end of the round.
+       Deliberately outside the isTracking() guard above: Defend is a rules effect that works
+       whether or not the world is counting actions, and a Condition that could be applied but
+       never cleared would be worse than not applying it. */
+    if (combatant?.actor?.statuses?.has(DEFENDING_STATUS)) {
+      await combatant.actor.toggleStatusEffect(DEFENDING_STATUS, { active: false });
     }
   }
 

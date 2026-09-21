@@ -1,0 +1,41 @@
+{{!--
+  Party roster tab. `members` is Essence20Actor#members - the live Player Character actors on
+  system.actors. Drops are handled by drop-handler.mjs's onDropActor `party` case (Player
+  Characters only). Remove reuses the shared `systemActorsDelete` action.
+--}}
+<section class="tab roster party-roster {{tabs.roster.cssClass}}" data-tab="roster" data-group="primary">
+  <div class="collapsible-item-container e20-border-accent">
+    <div class="flexrow e20-flex-group-center e20-mb-5">
+      {{localize 'E20.TabRoster'}}
+    </div>
+
+    {{#if members.length}}
+    <div class="party-roster-list flexcol e20-gap-6">
+      {{#each members as |member|}}
+      <div class="party-roster-member item stats-container e20-border-accent" data-e20-color="{{member.system.color}}" data-member-uuid="{{member.uuid}}">
+        <div class="flexrow e20-align-center e20-gap-6">
+          <img class="party-roster-img" src="{{member.img}}" data-tooltip="{{member.name}}" />
+          <a class="party-roster-name" data-action="openMember" data-member-uuid="{{member.uuid}}">{{member.name}}</a>
+          <div class="item-controls flex-right">
+            <a class="item-control" data-action="systemActorsDelete" data-system-Actors-uuid="{{member.uuid}}" data-tooltip="{{localize 'E20.DeleteActor'}}">
+              <i class="fas fa-trash" data-system-Actors-uuid="{{member.uuid}}"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="flexrow e20-gap-6 party-roster-meta">
+          <span>{{localize 'E20.ActorLevel'}}: {{member.system.level}}</span>
+          {{#each member.items.documentsByType.role as |roleItem|}}
+            <span>{{localize 'E20.ActorRole'}}: {{roleItem.name}}</span>
+          {{/each}}
+          {{#if member.system.faction}}<span>{{localize 'E20.ActorFaction'}}: {{member.system.faction}}</span>{{/if}}
+          <span>{{localize 'E20.ActorHealth'}}: {{member.system.health.value}} / {{member.system.health.max}}</span>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+    <div class="e20-align-center">{{localize 'E20.PartyRosterEmpty'}}</div>
+    {{/if}}
+  </div>
+</section>

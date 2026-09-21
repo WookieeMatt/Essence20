@@ -93,7 +93,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       editEffect: this.#editActiveEffect,
       toggleEffect: this.#toggleActiveEffect,
     },
-    classes: ["essence20", "sheet", "item", "window-app", "theme-wrapper"],
+    classes: ["essence20", "sheet", "item", "window-app", "theme-wrapper", "e20-window"],
     form: {
       submitOnChange: true,
       closeOnSubmit: false,

@@ -38,7 +38,7 @@ export function hasSuffer(actor) {
 export async function pickSufferAmount(maxAmount) {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.SufferPickAmountTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.SufferPickAmountLabel')
     }</label><input type="number" name="amount" min="1" max="${maxAmount}" value="1" /></div>`,

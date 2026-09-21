@@ -8,9 +8,10 @@
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Field Guide to Action & Adventure",
+      "book": "Field Guide to Action and Adventure",
       "page": 67
     },
+    "actionType": "free",
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

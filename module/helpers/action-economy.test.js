@@ -5,17 +5,19 @@ import {
   consumeForItem,
   describeCost,
   getBudget,
+  getActionsTabContext,
   getCombatant,
   getCost,
   getLedger,
-  getLedgerDocument,
   getMode,
   getRemaining,
   getSheetContext,
+  isAiming,
   isBlocking,
   isTracking,
   refund,
   resetTurn,
+  setAiming,
   spend,
   tradeStandardForFree,
 } from './action-economy.mjs';
@@ -50,10 +52,11 @@ function makeCombatant({ actor = null, tokenId = 'token1', isOwner = true, group
 }
 
 function makeActor({
-  enabled = true, standard = 1, move = 1, free = 0, shared = false, name = "Duke",
+  enabled = true, standard = 1, move = 1, free = 0, shared = false, name = "Duke", items = [],
 } = {}) {
   return {
     name,
+    items,
     token: { id: "token1" },
     system: {
       actions: {
@@ -70,14 +73,13 @@ function makeActor({
 /**
  * Wires up global.game with an active combat containing the given combatant.
  */
-function setGame({ combatant = null, mode = 'track', isGM = false, groupBudget = false } = {}) {
+function setGame({ combatant = null, mode = 'track', isGM = false } = {}) {
   global.game = {
     user: { isGM, isActiveGM: isGM },
     i18n: { localize: jest.fn(key => key), format: jest.fn(key => key) },
     settings: {
       get: jest.fn((scope, key) => {
         if (key == 'actionEconomyMode') return mode;
-        if (key == 'actionEconomyGroupBudget') return groupBudget;
         return undefined;
       }),
     },
@@ -118,10 +120,9 @@ describe("getMode / isTracking / isBlocking", () => {
   });
 });
 
-describe("getCombatant / getLedgerDocument", () => {
+describe("getCombatant", () => {
   test("returns null with no combat", () => {
     expect(getCombatant(makeActor())).toBeNull();
-    expect(getLedgerDocument(makeActor())).toBeNull();
   });
 
   test("prefers the combatant matching the actor's own token", () => {
@@ -132,16 +133,6 @@ describe("getCombatant / getLedgerDocument", () => {
     expect(getCombatant(makeActor())).toBe(mine);
   });
 
-  test("resolves to the group only when group budgets are switched on", () => {
-    const group = { getFlag: jest.fn(), setFlag: jest.fn() };
-    const combatant = makeCombatant({ group });
-
-    setGame({ combatant, groupBudget: false });
-    expect(getLedgerDocument(makeActor())).toBe(combatant);
-
-    setGame({ combatant, groupBudget: true });
-    expect(getLedgerDocument(makeActor())).toBe(group);
-  });
 });
 
 describe("getBudget / getRemaining", () => {
@@ -529,7 +520,7 @@ describe("settings robustness", () => {
     });
 
     expect(getMode()).toBe('track');
-    expect(() => getLedgerDocument(makeActor())).not.toThrow();
+    expect(() => getCombatant(makeActor())).not.toThrow();
   });
 });
 
@@ -718,5 +709,364 @@ describe("contingency", () => {
     await spend(actor, 'standard');
 
     expect(canSpend(actor, 'contingency').shortfall).toEqual(['standard']);
+  });
+});
+
+/**
+ * Pulls one group out of the tab context by category key.
+ */
+function group(context, key) {
+  return context.groups.find(g => g.key === key);
+}
+
+/**
+ * Finds a named action anywhere in the tab context, whichever group it landed in.
+ */
+function namedAction(context, key) {
+  return context.groups.flatMap(g => g.actions).find(a => a.key === key);
+}
+
+/* One aim per shot.
+
+   Aim is a Free action and a character can have several, so this is deliberately not a budget
+   rule: the check has to be separate from canSpend, and the state has to survive between the
+   aim and the shot. It clears on the shot rather than at end of turn, which is what "once per
+   roll" means. */
+describe("aiming", () => {
+  test("an actor is not aiming until they aim", () => {
+    setGame({ combatant: makeCombatant() });
+
+    expect(isAiming(makeActor())).toBe(false);
+  });
+
+  test("setAiming records and clears the aim", async () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor();
+
+    await setAiming(actor, true);
+    expect(isAiming(actor)).toBe(true);
+
+    await setAiming(actor, false);
+    expect(isAiming(actor)).toBe(false);
+  });
+
+  // The gate is not the budget: the Free action is still there, the shot is what is used up.
+  test("the tab marks Aim unavailable while a shot is already aimed, with Free left", async () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({ free: 2 });
+    await setAiming(actor, true);
+
+    const context = getActionsTabContext(actor);
+    const aim = namedAction(context, 'aim');
+
+    expect(aim).toMatchObject({ affordable: false, alreadyAimed: true });
+    expect(group(context, 'free').remaining).toBe(2);
+    expect(namedAction(context, 'freeAction').affordable).toBe(true);
+  });
+
+  test("Aim is available again once the aim is cleared", async () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({ free: 2 });
+    await setAiming(actor, true);
+    await setAiming(actor, false);
+
+    expect(namedAction(getActionsTabContext(actor), 'aim'))
+      .toMatchObject({ affordable: true, alreadyAimed: false });
+  });
+
+  test("a new turn starts with no aim held over", async () => {
+    const combatant = makeCombatant();
+    setGame({ combatant });
+    const actor = makeActor();
+    await setAiming(actor, true);
+
+    await resetTurn(combatant);
+
+    expect(isAiming(actor)).toBe(false);
+  });
+
+  // Out of combat there is no ledger to hold the aim, and nothing should be written.
+  test("setAiming is a no-op with no combatant", async () => {
+    setGame({ combatant: null });
+
+    await expect(setAiming(makeActor(), true)).resolves.toBeUndefined();
+  });
+});
+describe("getActionsTabContext: the rules' own actions", () => {
+  test("files every named action under the category its cost falls on", () => {
+    setGame({ combatant: makeCombatant() });
+
+    const context = getActionsTabContext(makeActor({ free: 1 }));
+
+    expect(group(context, 'standard').actions.map(a => a.key)).toContain('defend');
+    expect(group(context, 'move').actions.map(a => a.key)).toContain('move');
+    expect(group(context, 'free').actions.map(a => a.key)).toContain('freeAction');
+  });
+
+  // Two books say so: "when you Aim as a Free action" (GI Joe CRB) and "for each Free action you
+  // spend Aiming" (TF CRB). The second is why the tab uses a button - the same action, twice.
+  test("Aim is a Free action", () => {
+    setGame({ combatant: makeCombatant() });
+
+    expect(group(getActionsTabContext(makeActor({ free: 1 })), 'free').actions.map(a => a.key))
+      .toContain('aim');
+  });
+
+  // Contingency is a Standard action (GI Joe CRB p.196); the tab must not invent a fourth
+  // category for it, and the cost comes from actionTypeCosts rather than being restated here.
+  test("a Contingency is filed as a Standard action", () => {
+    setGame({ combatant: makeCombatant() });
+
+    expect(group(getActionsTabContext(makeActor()), 'standard').actions.map(a => a.key))
+      .toContain('contingency');
+  });
+
+  // A Full Action spends a Standard AND a Move, so it can only be filed once - under the heavier
+  // of the two, with its own row spelling the rest out.
+  test("an item costing two categories is filed under the heavier one, and says so", () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({
+      items: [{ _id: 'i1', name: 'Charge', type: 'perk', system: { actionType: 'fullAction' } }],
+    });
+
+    const context = getActionsTabContext(actor);
+
+    expect(group(context, 'standard').items.map(i => i.item.name)).toEqual(['Charge']);
+    expect(group(context, 'move').items).toEqual([]);
+    expect(group(context, 'standard').items[0].costLabel).toContain('E20.ActionTypeMove');
+  });
+
+  // ~2,600 Perks carry no authored cost. Listing them would bury the handful that do.
+  test("leaves out items with no cost and items that opt out of the economy", () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({
+      items: [
+        { _id: 'i1', name: 'Passive', type: 'perk', system: { actionType: 'none' } },
+        { _id: 'i2', name: 'Untracked', type: 'perk',
+          system: { actionType: 'standard', ignoresEconomy: true } },
+        { _id: 'i3', name: 'Counted', type: 'weapon', system: { actionType: 'standard' } },
+      ],
+    });
+
+    expect(group(getActionsTabContext(actor), 'standard').items.map(i => i.item.name))
+      .toEqual(['Counted']);
+  });
+
+  test("marks an action the actor can no longer afford", async () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor();
+    await spend(actor, 'standard');
+
+    const context = getActionsTabContext(actor);
+
+    expect(namedAction(context, 'defend').affordable).toBe(false);
+    expect(namedAction(context, 'move').affordable).toBe(true);
+  });
+
+  test("reports what is left of each budget", async () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({ standard: 2 });
+    await spend(actor, 'standard');
+
+    expect(group(getActionsTabContext(actor), 'standard')).toMatchObject({ remaining: 1, max: 2 });
+  });
+
+  /* The tab is shown out of combat too - it answers "what can I do and what does it cost", which
+     is worth reading while planning a character. What changes is `live`: there is no ledger, so no
+     budget numbers, and the rules' own actions are reference only. Taking one would spend from a
+     ledger that does not exist, and Defend would apply a Condition nothing ever clears. */
+  test("still builds a context with no combatant, but not a live one", () => {
+    setGame({ combatant: null });
+
+    const context = getActionsTabContext(makeActor());
+
+    expect(context).not.toBeNull();
+    expect(context.live).toBe(false);
+    expect(group(context, 'standard').actions.map(a => a.key)).toContain('defend');
+  });
+
+  test("is live once there is a combatant to hold the ledger", () => {
+    setGame({ combatant: makeCombatant() });
+
+    expect(getActionsTabContext(makeActor()).live).toBe(true);
+  });
+
+  // Nothing is unaffordable when there is no budget to fall short of.
+  test("marks nothing unaffordable out of combat", () => {
+    setGame({ combatant: null });
+
+    const context = getActionsTabContext(makeActor({ free: 0 }));
+
+    expect(namedAction(context, 'aim').affordable).toBe(true);
+    expect(namedAction(context, 'defend').affordable).toBe(true);
+  });
+
+  /* Only an actor with no action economy at all gets nothing - which is what the sheet checks
+     before rendering the tab. */
+  test("returns null for an actor with no action economy", () => {
+    setGame({ combatant: null });
+    const actor = makeActor();
+    delete actor.system.actions;
+
+    expect(getActionsTabContext(actor)).toBeNull();
+  });
+
+  // spend() has always recorded a source; until now nothing read it back, so a player could see a
+  // Standard was gone without seeing what took it.
+  test("reports what was spent this turn, newest first", async () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({ free: 2 });
+    await spend(actor, 'standard', { source: 'Defend' });
+    await spend(actor, 'free', { source: 'Draw a weapon' });
+
+    expect(getSheetContext(actor).spent.map(s => s.source)).toEqual(['Draw a weapon', 'Defend']);
+  });
+
+  test("reports nothing spent on a fresh turn", () => {
+    setGame({ combatant: makeCombatant() });
+
+    expect(getSheetContext(makeActor()).spent).toEqual([]);
+  });
+});
+
+/**
+ * Finds the Attack row, which is where weapon effects hang.
+ */
+function attackRow(context) {
+  return context.groups.flatMap(g => g.actions).find(a => a.key === 'attack');
+}
+
+/* Where an item lands on the Actions tab.
+
+   A weapon effect IS the Attack action - it is the thing that rolls, since a weapon has no roll
+   button anywhere in the sheet - so it hangs off the Attack row rather than sitting loose in the
+   Standard group beside it. */
+describe("getActionsTabContext: where an item lands", () => {
+  test("a weapon effect hangs off the Attack row, not the Standard group", () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({
+      items: [{ _id: 'w1', name: 'Rifle Effect', type: 'weaponEffect', system: { actionType: 'standard' } }],
+    });
+
+    const context = getActionsTabContext(actor);
+
+    expect(attackRow(context).children.map(c => c.item.name)).toEqual(['Rifle Effect']);
+    expect(group(context, 'standard').items).toEqual([]);
+  });
+
+  /* Whatever its own cost says. An effect someone has set to Free is still a way of taking the
+     Attack action, and filing it away from Attack would hide it; the row still shows Free. */
+  test("a weapon effect with an unusual cost still nests under Attack", () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({
+      free: 1,
+      items: [{ _id: 'w1', name: 'Quick Shot', type: 'weaponEffect', system: { actionType: 'free' } }],
+    });
+
+    const context = getActionsTabContext(actor);
+
+    expect(attackRow(context).children.map(c => c.item.name)).toEqual(['Quick Shot']);
+    expect(group(context, 'free').items).toEqual([]);
+    expect(attackRow(context).children[0].costLabel).toContain('E20.ActionTypeFree');
+  });
+
+  test("a weapon effect is named under its parent when its own name does not say it", () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({
+      items: [
+        { _id: 'gun', name: 'Fang Handgun', type: 'weapon', system: { actionType: 'none' } },
+        {
+          _id: 'e1', name: 'New WeaponEffect', type: 'weaponEffect',
+          system: { actionType: 'standard' }, flags: { essence20: { parentId: 'gun' } },
+        },
+        {
+          _id: 'e2', name: 'Fang Handgun Effect', type: 'weaponEffect',
+          system: { actionType: 'standard' }, flags: { essence20: { parentId: 'gun' } },
+        },
+      ],
+    });
+    actor.items.get = (id) => actor.items.find(i => i._id === id);
+
+    const children = attackRow(getActionsTabContext(actor)).children;
+
+    expect(children.find(c => c.item.name === 'New WeaponEffect').parentName).toBe('Fang Handgun');
+    expect(children.find(c => c.item.name === 'Fang Handgun Effect').parentName).toBeNull();
+  });
+
+  // Everything else that costs something stays in its own cost group.
+  test("a costed item that is not a weapon effect stays in its group", () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({
+      items: [{ _id: 'p1', name: 'Kitbash', type: 'perk', system: { actionType: 'standard' } }],
+    });
+
+    const context = getActionsTabContext(actor);
+
+    expect(group(context, 'standard').items.map(i => i.item.name)).toEqual(['Kitbash']);
+    expect(attackRow(context).children).toEqual([]);
+  });
+});
+
+/* Mark Target (TF CRB) is the one entry in the Perk activation registry canUsePerk answers true
+   for with no further gate, which makes it the cheapest way to exercise the REAL predicate here
+   rather than a stub. If that id ever moves, these fail - which is the point: this tab and the
+   Perks tab's own Use button have to keep answering the same question. */
+const MARK_TARGET_SOURCE = 'Compendium.essence20.tf_crb.Item.T2mm6VmvcUxagsjc';
+
+/**
+ * A Perk canUsePerk recognises. `parent` is what it reads the actor off.
+ */
+function activatablePerk(actor, { name = 'Mark Target', actionType = 'none' } = {}) {
+  return {
+    _id: 'p1',
+    name,
+    type: 'perk',
+    parent: actor,
+    system: { actionType },
+    _stats: { compendiumSource: MARK_TARGET_SOURCE },
+  };
+}
+
+/* Most of the ~2,600 Perks carry no authored action cost, so filtering on cost alone would miss
+   exactly the ones a player wants to find on their turn. */
+describe("getActionsTabContext: activatable Perks", () => {
+  test("an activatable Perk with no cost lands in the untimed list", () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor();
+    actor.items = [activatablePerk(actor, { name: 'Think On It' })];
+
+    const context = getActionsTabContext(actor);
+
+    expect(context.untimed.map(e => e.item.name)).toEqual(['Think On It']);
+    expect(context.untimed[0].activatable).toBe(true);
+    expect(context.untimed[0].costLabel).toBeNull();
+  });
+
+  // Both reasons at once files it once, under its cost, with the Use button it has earned.
+  test("an activatable Perk that also costs something is filed under the cost, once", () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({ free: 1 });
+    actor.items = [activatablePerk(actor, { name: 'Bulwark', actionType: 'free' })];
+
+    const context = getActionsTabContext(actor);
+
+    expect(context.untimed).toEqual([]);
+    expect(group(context, 'free').items.map(e => e.item.name)).toEqual(['Bulwark']);
+    expect(group(context, 'free').items[0].activatable).toBe(true);
+  });
+
+  /* A Perk that has spent its once-per-turn drops off this tab exactly as its bolt icon disappears
+     from the Perks tab - canUsePerk answers both. An unrecognised Perk is the same "no" from the
+     same function. */
+  test("a Perk canUsePerk says no to is left off", () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor({
+      items: [{ _id: 'p1', name: 'Sneak Attack', type: 'perk', system: { actionType: 'none' } }],
+    });
+
+    const context = getActionsTabContext(actor);
+
+    expect(context.untimed).toEqual([]);
+    expect(group(context, 'standard').items).toEqual([]);
   });
 });

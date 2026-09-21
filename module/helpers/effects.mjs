@@ -65,7 +65,7 @@ export async function onCreateActiveEffect(event, owner, target) {
   if (behavior === "ask") {
     const choice = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize("E20.EffectAddChooseTitle") },
-      classes: ["window-app"],
+      classes: ["window-app", "e20-window"],
       content: `<p>${game.i18n.localize("E20.EffectAddChoosePrompt")}</p>`,
       buttons: [
         {

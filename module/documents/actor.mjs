@@ -239,6 +239,7 @@ const LIGHT_CHASSIS_ID = `${PR_CRB}rVW7mvnV4MbGuxoq`;
 // local variable below, the same aggregate Defender/Core Defenses already feed into
 // system.defenses.toughness.armor.
 const HARDENED_CHASSIS_ID = `${PR_CRB}7vwrFKj2UAxG4ocf`;
+import { createId } from "../helpers/utils.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -435,6 +436,12 @@ export class Essence20Actor extends Actor {
       this._prepareVehicleData();
     }
 
+    // Load Out (hands carried vs the six-hand limit) and Hardpoint allocation. Only the two
+    // types that carry equipment personally - a vehicle or Megaform has no hands to fill.
+    if (this.type == 'playerCharacter' || this.type == 'npc') {
+      this._prepareLoadout();
+    }
+
     // Deliberately last, and deliberately not folded into any of the methods above: action
     // budgets are their own small, self-contained pass with no dependency on the Defenses/Health/
     // Movement math.
@@ -567,6 +574,132 @@ export class Essence20Actor extends Actor {
       for (const movementType of Object.keys(this.system.movement)) {
         this.system.movement[movementType].total = Math.floor(this.system.movement[movementType].total / 2);
       }
+    }
+
+    if (this.type == 'party') {
+      this._preparePartyData();
+    }
+  }
+
+  /**
+   * Party ("Squad") aggregates derived from the roster (system.actors): the Player Character
+   * member count and, from it, the default pooled Requisition budget - "3 attempts per PC,
+   * pooled" (GI Joe CRB p.137-138 / TF CRB p.115-116 / PR CRB p.103). `requisition.attempts`
+   * stays the live spendable counter; `requisitionMax` is only the "Reset" target the sheet
+   * shows.
+   */
+  _preparePartyData() {
+    const system = this.system;
+
+    system.memberCount = this.members.length;
+    system.requisitionMax = system.requisition.autoFromRoster
+      ? 3 * system.memberCount
+      : system.requisition.attempts;
+  }
+
+  /**
+   * This Party's roster (system.actors) resolved to live Player Character Actors. World actors
+   * only - entries that no longer resolve, or that aren't Player Characters, are dropped.
+   * Empty for every non-Party actor type.
+   * @type {Actor[]}
+   */
+  get members() {
+    if (this.type != 'party') {
+      return [];
+    }
+
+    return Object.values(this.system.actors ?? {})
+      .map(entry => fromUuidSync(entry.uuid))
+      .filter(actor => actor?.type == 'playerCharacter');
+  }
+
+  /**
+   * Adds a Player Character to this Party's roster. No-op unless this is a Party, `actor` is a
+   * Player Character, and it isn't already on the roster.
+   * @param {Actor} actor   The Player Character to add.
+   */
+  async addMember(actor) {
+    if (this.type != 'party' || actor?.type != 'playerCharacter') {
+      return;
+    }
+
+    if (Object.values(this.system.actors).some(entry => entry.uuid == actor.uuid)) {
+      return;
+    }
+
+    const key = createId(this.system.actors);
+    await this.update({
+      [`system.actors.${key}`]: {
+        uuid: actor.uuid,
+        img: actor.img,
+        name: actor.name,
+        type: actor.type,
+      },
+    });
+  }
+
+  /**
+   * Removes a roster entry from this Party by its member Actor's UUID. No-op if that UUID
+   * isn't on the roster.
+   * @param {String} uuid   The member Actor's UUID.
+   */
+  async removeMember(uuid) {
+    const key = Object.entries(this.system.actors).find(([, entry]) => entry.uuid == uuid)?.[0];
+    if (key) {
+      await this.update({ [`system.actors.-=${key}`]: null });
+    }
+  }
+
+  /**
+   * Tallies the six-hand Load Out limit (GI Joe CRB p.138 / TF CRB p.116 / PR CRB p.103) and,
+   * for Transformers, External vs Integrated Hardpoint usage (TF CRB p.114) from the actor's
+   * equipped Weapons. Writes derived counts back onto system.loadout and system.hardpoints:
+   *
+   * - system.loadout.handsUsed / .handsOver     - sum of equipped weapon hands vs handsMax.
+   *     Integrated-Hardpoint weapons are excluded (TF CRB p.116: they don't count).
+   * - system.hardpoints.{external,integrated}.max / .used / .over
+   *     max = base + bonus; a two-handed weapon in an Integrated Hardpoint uses two slots.
+   *
+   * Informational only - nothing here blocks equipping or attacking. Matches the system's
+   * existing stance of surfacing Equipment Assignment state rather than enforcing it.
+   */
+  _prepareLoadout() {
+    const system = this.system;
+    if (!system.loadout || !system.hardpoints) {
+      return;
+    }
+
+    const handsMax = system.loadout.handsMax ?? CONFIG.E20.LOADOUT_BASE_HANDS;
+    let handsUsed = 0;
+    let externalUsed = 0;
+    let integratedUsed = 0;
+
+    for (const item of this.items) {
+      if (item.type != 'weapon' || !item.system.equipped) {
+        continue;
+      }
+
+      const hands = item.system.derivedHands ?? 1;
+      const hardpointType = item.system.hardpoint?.type ?? 'external';
+
+      if (hardpointType == 'integrated') {
+        integratedUsed += Math.max(1, hands);
+      } else if (hardpointType == 'external') {
+        externalUsed += Math.max(1, hands);
+        handsUsed += hands;
+      } else { // 'none' - carried but not in a Hardpoint; still counts against the six-hand limit
+        handsUsed += hands;
+      }
+    }
+
+    system.loadout.handsUsed = handsUsed;
+    system.loadout.handsOver = handsUsed > handsMax;
+
+    for (const [key, used] of [['external', externalUsed], ['integrated', integratedUsed]]) {
+      const slot = system.hardpoints[key];
+      slot.max = (slot.base ?? 0) + (slot.bonus ?? 0);
+      slot.used = used;
+      slot.over = used > slot.max;
     }
   }
 
@@ -1871,7 +2004,10 @@ export class Essence20Actor extends Actor {
    * Perform a skill roll.
    */
   rollSkill(dataset) {
-    this._dice.rollSkill(dataset, this);
+    // Forwarded, not swallowed: dice.rollSkill reports whether the roll landed
+    // ({ success, outcomes }) or that the dialog was cancelled ({ cancelled: true }), and
+    // callers such as Requisition branch on it.
+    return this._dice.rollSkill(dataset, this);
   }
 
   /**

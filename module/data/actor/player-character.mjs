@@ -1,6 +1,6 @@
 import { E20 } from "../../helpers/config.mjs";
 
-import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
+import { makeBool, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { character, migrateCharacterData } from './templates/character.mjs';
 import { common } from './templates/common.mjs';
@@ -16,8 +16,6 @@ export class PlayerCharacterActorData extends foundry.abstract.TypeDataModel {
       canSetToughnessBonus: makeBool(false),
       canSpellcast: makeBool(false),
       canTransform: makeBool(false),
-      externalHardpoints: makeInt(2),
-      internalHarpoints: makeInt(2),
       transformerFaction: makeStrWithChoices(Object.keys(E20.transformerFactions), 'autobots'),
     };
   }

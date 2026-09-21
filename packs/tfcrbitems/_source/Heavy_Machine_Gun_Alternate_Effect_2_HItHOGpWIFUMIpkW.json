@@ -23,7 +23,7 @@
       "long": 400,
       "value": 100
     },
-    "shape": "circle"
+    "shape": "cone"
   },
   "effects": [],
   "flags": {},

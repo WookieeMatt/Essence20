@@ -1,6 +1,6 @@
 import { E20 } from "./config.mjs";
 import { actorHasPerk } from "./perks.mjs";
-import { getRemaining, isBlocking, isConfirming, isTracking, spend } from "./action-economy.mjs";
+import { getRemaining, isBlocking, isConfirming, isSprinting, isTracking, spend } from "./action-economy.mjs";
 
 /**
  * Token movement against the action economy.
@@ -54,6 +54,8 @@ const PLAYER_DRIVEN_METHODS = ['dragging', 'keyboard'];
    twice the rating. Three printed things change that, and getPushRules below applies them. */
 const PUSH_FEET_PER_FREE_ACTION = 5;
 const PUSH_CAP_MULTIPLIER = 2;
+// "You may move up to double your full Movement" - the Sprint action (GI Joe CRB p.197).
+const SPRINT_MULTIPLIER = 2;
 const PUSH_FEET_DOUBLED = 10;
 
 /* Sewer Tunneler (Hawk's Personnel Files p.177): "You also add 10 feet to your Movement instead of
@@ -122,6 +124,20 @@ export function getPushRules(actor) {
     rules.capMultiplier = Infinity;
   }
 
+  /* The Push cap is a ceiling on the BASE rating - "a character cannot spend Free actions on
+     buying additional Movement that would double one of their Movement Types" (p.193) - but
+     planPush applies capMultiplier to the ALLOWANCE, which Sprint has already doubled. Dividing
+     keeps the ceiling at the same absolute distance: 2x base either way. In practice that means
+     a sprinting character cannot Push at all, which is the right answer - they are already at
+     double, and buying more would take them past it.
+
+     Dividing rather than assigning 1 is what preserves Earlier Is Better's uncapped Infinity
+     above (Infinity / 2 is Infinity), which "not limited" should stay whether or not the
+     character is also Sprinting. */
+  if (isSprinting(actor)) {
+    rules.capMultiplier = rules.capMultiplier / SPRINT_MULTIPLIER;
+  }
+
   return rules;
 }
 
@@ -187,7 +203,17 @@ export function movementTypeFor(action) {
  */
 export function getMovementAllowance(actor, movementType) {
   const rating = actor?.system?.movement?.[movementType]?.total;
-  return Number.isFinite(rating) ? rating : null;
+  if (!Number.isFinite(rating)) {
+    return null;
+  }
+
+  /* Sprint (GI Joe CRB p.197): "By taking a Standard action to Sprint, you may move up to
+     double your full Movement." Doubling the allowance here rather than at either call site is
+     what makes the drag ruler and the enforcement agree - they both measure against this one
+     number, so a sprinting token draws green all the way to twice its rating and is charged
+     accordingly. SPRINT_MULTIPLIER is named rather than inlined because getPushRules below has
+     to undo exactly this much to keep the Push cap where the rules put it. */
+  return isSprinting(actor) ? rating * SPRINT_MULTIPLIER : rating;
 }
 
 /**

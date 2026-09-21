@@ -27,6 +27,7 @@
       "book": "Welcome to Night Vale: Citizens' Guide",
       "page": 47
     },
+    "actionType": "standard",
     "type": "general",
     "value": 0,
     "version": "powerRangers"

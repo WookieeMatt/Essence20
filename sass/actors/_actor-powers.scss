@@ -4,14 +4,14 @@
   list-style: none;
   padding: 4px;
   overflow-y: auto;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   display: flex;
   flex-direction: row;
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: var(--theme-card-bg);
-  border: 1px solid var(--theme-border-color);
+  background: var(--e20-theme-card-bg);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: v.$border-radius;
   width: 100%;
 }

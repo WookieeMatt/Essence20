@@ -20,7 +20,7 @@
   flex: 1 1 auto;
   min-width: 0;
   font-size: 0.75em;
-  color: var(--theme-muted-text, var(--theme-text-color));
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
 }
 
 .essence20 .essence-header .skill-rank-defense {
@@ -32,7 +32,7 @@
    .skill-rank-allocation above now shares the row instead of taking the full width alone. */
 .essence20 .essence-header > a[data-action="skillPicker"] {
   flex: 0 0 auto;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   opacity: 0.7;
 
   &:hover {
@@ -44,9 +44,9 @@
   font-size: 1.2em;
   vertical-align: middle;
   font-weight: 700;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   background: rgba(255,255,255,0.07);
-  border: 1px solid var(--theme-border-color);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: 6px;
   padding: 2px 8px;
   min-width: 64px;
@@ -75,9 +75,13 @@
   position: relative;
   z-index: 5;
   padding: 5px 12px 5px 16px;
-  background-color: var(--e20-system-color, var(--theme-accent));
+  background-color: var(--e20-system-color, var(--e20-theme-accent));
   box-sizing: border-box;
-  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+  /* Theme-driven, like the panel and accent clips - this chip is the one piece of frame
+     geometry that is drawn by clip-path alone rather than from a border image, so without
+     a theme hook it kept the Sci-fi chamfer on every theme. The fallback is that chamfer. */
+  clip-path: var(--e20-theme-chip-clip,
+    polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px));
 }
 
 .essence20 .essence-header:has(.essence-label) .essence-label {
@@ -85,13 +89,13 @@
   border: none;
   padding: 0;
   min-width: 0;
-  color: var(--theme-muted-text, var(--theme-text-color));
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
   font-weight: 600;
   font-size: 0.85em;
   white-space: nowrap;
 }
 
-/* Light theme's --theme-text-color is dark (for its own light panels), which reads as
+/* Light theme's --e20-theme-text-color is dark (for its own light panels), which reads as
    low-contrast to unreadable against a solid, arbitrary system.color fill. Force white with a
    dark halo so the label stays legible against any color a player picks; dark theme's own text
    color already contrasts fine and is left alone. */

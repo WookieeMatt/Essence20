@@ -1,120 +1,123 @@
-.flex-group-center,
-.flex-group-left,
-.flex-group-right {
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  text-align: center;
-}
+/* Flex, gap, margin and width utilities - scoped for the reason given in _grid.scss. */
+.essence20 {
+  .e20-flex-group-center,
+  .e20-flex-group-left,
+  .e20-flex-group-right {
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    text-align: center;
+  }
 
-.flex-group-left {
-  -webkit-box-pack: start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  text-align: left;
-}
+  .e20-flex-group-left {
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    text-align: left;
+  }
 
-.flex-group-right {
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  justify-content: flex-end;
-  text-align: right;
-}
+  .e20-flex-group-right {
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    text-align: right;
+  }
 
-.flexshrink {
-  -webkit-box-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-}
+  .e20-flexshrink {
+    -webkit-box-flex: 0;
+    -ms-flex: 0;
+    flex: 0;
+  }
 
-.flex-between {
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-}
+  .e20-flex-between {
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
 
-.flexlarge {
-  -webkit-box-flex: 2;
-  -ms-flex: 2;
-  flex: 2;
-}
-
-
-/* Flex for PR Sheet */
-.essence20 .flexrow-nowrap {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-}
+  .e20-flexlarge {
+    -webkit-box-flex: 2;
+    -ms-flex: 2;
+    flex: 2;
+  }
 
 
-.flex-grow-0 {
-  -webkit-box-flex: 0; -ms-flex: 0; flex: 0;
-}
+  /* Flex for PR Sheet */
+  .flexrow-nowrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+  }
 
-.flex-grow-1 {
-   -webkit-box-flex: 1; -ms-flex: 1; flex: 1;
-}
 
-.flex-grow-15 {
-  -webkit-box-flex: 1.5; -ms-flex: 1.5; flex: 1.5;
-}
+  .e20-flex-grow-0 {
+    -webkit-box-flex: 0; -ms-flex: 0; flex: 0;
+  }
 
-.flex-grow-025 {
-  -webkit-box-flex: 0.25; -ms-flex: 0.25; flex: 0.25;
-}
+  .e20-flex-grow-1 {
+     -webkit-box-flex: 1; -ms-flex: 1; flex: 1;
+  }
 
-.flex-grow-0175 {
-  -webkit-box-flex: 0.175; -ms-flex: 0.175; flex: 0.175;
-}
+  .e20-flex-grow-15 {
+    -webkit-box-flex: 1.5; -ms-flex: 1.5; flex: 1.5;
+  }
 
-.nowrap {
-  white-space: nowrap;
-}
+  .e20-flex-grow-025 {
+    -webkit-box-flex: 0.25; -ms-flex: 0.25; flex: 0.25;
+  }
 
-// Gap utilities
-.gap-2 {
-  gap: 2px;
-}
+  .e20-flex-grow-0175 {
+    -webkit-box-flex: 0.175; -ms-flex: 0.175; flex: 0.175;
+  }
 
-.gap-5 {
-  gap: 5px;
-}
+  .e20-nowrap {
+    white-space: nowrap;
+  }
 
-.gap-6 {
-  gap: 6px;
-}
+  // Gap utilities
+  .e20-gap-2 {
+    gap: 2px;
+  }
 
-// Margin utilities
-.ml-2 {
-  margin-left: 2px;
-}
+  .e20-gap-5 {
+    gap: 5px;
+  }
 
-.mb-5 { margin-bottom: 5px;
-}
+  .e20-gap-6 {
+    gap: 6px;
+  }
 
-// Min-width helpers
-.min-width-fit {
-  min-width: fit-content;
-}
+  // Margin utilities
+  .e20-ml-2 {
+    margin-left: 2px;
+  }
 
-// Width utilities
-.w-100 {
-  width: 100%;
-}
+  .e20-mb-5 { margin-bottom: 5px;
+  }
 
-// Small utilities
-.no-list-style {
-  list-style-type: none;
-}
+  // Min-width helpers
+  .e20-min-width-fit {
+    min-width: fit-content;
+  }
 
-.my-10 {
-  margin: 10px 0;
-}
+  // Width utilities
+  .e20-w-100 {
+    width: 100%;
+  }
 
-.bg-transparent {
-  background: transparent;
+  // Small utilities
+  .e20-no-list-style {
+    list-style-type: none;
+  }
+
+  .e20-my-10 {
+    margin: 10px 0;
+  }
+
+  .e20-bg-transparent {
+    background: transparent;
+  }
 }

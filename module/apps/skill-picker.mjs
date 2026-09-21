@@ -51,7 +51,7 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
       addSpecialization: this.#onAddSpecialization,
       removeSpecialization: this.#onRemoveSpecialization,
     },
-    classes: ["essence20", "sheet", "theme-wrapper", "skill-picker"],
+    classes: ["essence20", "sheet", "theme-wrapper", "e20-window", "skill-picker"],
     tag: "form",
     position: {
       width: 640,

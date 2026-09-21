@@ -35,7 +35,7 @@ export async function pickElementalStormCondition() {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.ElementalStormPickConditionTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.ElementalStormPickConditionLabel')
     }</label><select name="condition">${options}</select></div>`,

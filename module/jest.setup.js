@@ -48,6 +48,12 @@ global.Item = class Item {
   async _preUpdate() {}
 };
 
+/* Returning undefined from _preUpdateMovement is what core does when it has no objection -
+   Essence20TokenDocument checks for an explicit false, so the two must not be conflated. */
+global.TokenDocument = class TokenDocument {
+  constructor() {}
+  async _preUpdateMovement() {}
+};
 global.ChatMessage = {
   getSpeaker: jest.fn(() => ({})),
   create: jest.fn(),
@@ -121,6 +127,10 @@ class StubDataField {
 
 global.foundry = {
   applications: {
+    // Foundry keeps every open ApplicationV2 here, keyed by id. Code that wants to refresh an
+    // app it does not own looks it up rather than holding a reference, so the stand-in needs to
+    // be a real Map - an empty one simply reports that nothing is open.
+    instances: new Map(),
     api: {
       ApplicationV2: class ApplicationV2 {},
       HandlebarsApplicationMixin: (Base) => class extends Base {},
@@ -133,6 +143,23 @@ global.foundry = {
     TypeDataModel: class TypeDataModel {
       constructor() {}
       prepareDerivedData() {}
+      static migrateData(source) {
+        return source;
+      }
+    },
+  },
+  documents: {
+    collections: {
+      // Minimal stand-in for the world Actor collection so documents/actors.mjs
+      // (`class Essence20Actors extends foundry.documents.collections.Actors`) can be imported.
+      Actors: class Actors {
+        constructor(entries = []) {
+          this._byId = new Map(entries.map(e => [e._id ?? e.id, e]));
+        }
+        get(id) {
+          return this._byId.get(id);
+        }
+      },
     },
   },
   dice: {

@@ -15,6 +15,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/headers/common.hbs",
     "systems/essence20/templates/actor/headers/megaform.hbs",
     "systems/essence20/templates/actor/headers/npc.hbs",
+    "systems/essence20/templates/actor/headers/party.hbs",
     "systems/essence20/templates/actor/headers/vehicle.hbs",
     "systems/essence20/templates/actor/headers/zord.hbs",
 
@@ -26,8 +27,12 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/main/vehicle.hbs",
     "systems/essence20/templates/actor/parts/main/vehicle-passengers.hbs",
     "systems/essence20/templates/actor/parts/main/npc.hbs",
+    "systems/essence20/templates/actor/parts/main/party-roster.hbs",
+    "systems/essence20/templates/actor/parts/main/party-requisition.hbs",
+    "systems/essence20/templates/actor/parts/main/party-mission-critical.hbs",
     "systems/essence20/templates/actor/parts/main/npc-contact.hbs",
     "systems/essence20/templates/actor/parts/main/npc-altmode.hbs",
+    "systems/essence20/templates/actor/tabs/actions.hbs",
     "systems/essence20/templates/actor/parts/main/character-skills.hbs",
     "systems/essence20/templates/actor/parts/main/character-gear.hbs",
     "systems/essence20/templates/actor/parts/main/character-powers.hbs",
@@ -43,6 +48,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/sidebars/companion.hbs",
     "systems/essence20/templates/actor/sidebars/megaform.hbs",
     "systems/essence20/templates/actor/sidebars/npc.hbs",
+    "systems/essence20/templates/actor/sidebars/party.hbs",
     "systems/essence20/templates/actor/sidebars/vehicle.hbs",
     "systems/essence20/templates/actor/sidebars/zord.hbs",
 
@@ -65,7 +71,10 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/essence-skills.hbs",
     "systems/essence20/templates/actor/parts/misc/health.hbs",
     "systems/essence20/templates/actor/parts/misc/initiative.hbs",
-    "systems/essence20/templates/actor/parts/misc/mode-selector.hbs",
+    "systems/essence20/templates/actor/parts/misc/hardpoint-selector.hbs",
+    "systems/essence20/templates/actor/parts/misc/loadout-summary.hbs",
+    "systems/essence20/templates/actor/parts/misc/package-origin-chip.hbs",
+    "systems/essence20/templates/actor/parts/misc/requisition-row.hbs",
     "systems/essence20/templates/actor/parts/misc/morph-transform.hbs",
     "systems/essence20/templates/actor/parts/misc/movement.hbs",
     "systems/essence20/templates/actor/parts/misc/npc-essence-scores.hbs",
@@ -113,7 +122,6 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/megaformTrait/details.hbs",
     "systems/essence20/templates/actor/parts/items/origin/container.hbs",
     "systems/essence20/templates/actor/parts/items/origin/details.hbs",
-    "systems/essence20/templates/actor/parts/items/origin-field.hbs",
     "systems/essence20/templates/actor/parts/items/perk/container.hbs",
     "systems/essence20/templates/actor/parts/items/perk/details.hbs",
     "systems/essence20/templates/actor/parts/items/power/container.hbs",
@@ -179,5 +187,8 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/item/details/upgrade.hbs",
     "systems/essence20/templates/item/details/weapon.hbs",
     "systems/essence20/templates/item/details/weaponEffect.hbs",
+
+    // Sidebar
+    "systems/essence20/templates/sidebar/party-directory.hbs",
   ]);
 };

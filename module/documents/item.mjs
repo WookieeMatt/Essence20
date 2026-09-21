@@ -1,6 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { consumeForItem, describeCost, refund } from "../helpers/action-economy.mjs";
+import { consumeForItem, describeCost, refund, setAiming } from "../helpers/action-economy.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
 import { betterShift, updateRoleCache } from "../helpers/utils.mjs";
 import { placeAoeTemplate } from "../helpers/aoe-targeting.mjs";
@@ -10,6 +10,7 @@ import { applyMightyStrikes } from "../helpers/mighty-strikes.mjs";
 import { applyNoNeedToAim } from "../helpers/no-need-to-aim.mjs";
 import { actorHasPerk } from "../helpers/perks.mjs";
 import { pickEnchantSkill } from "../helpers/enchant.mjs";
+import { importedDescription } from "../helpers/book-descriptions-store.mjs";
 import { autoTargetBeamVolley } from "../helpers/beam-volley.mjs";
 import { pickBestowExpertise } from "../helpers/bestow-expertise.mjs";
 import { pickMindBeamEffect } from "../helpers/mind-beam.mjs";
@@ -224,6 +225,7 @@ export class Essence20Item extends Item {
   */
   prepareDerivedData() {
     super.prepareDerivedData();
+    this._prepareDescription();
     this._prepareTraits();
 
     if (this.type == 'weapon' || this.type == 'armor') {
@@ -234,39 +236,111 @@ export class Essence20Item extends Item {
       this._prepareArmorBonuses();
     } else if (this.type == 'weapon') {
       this._prepareAimShiftBonus();
+      this._prepareWeaponHands();
+      this._prepareHardpointDerived();
     } else if (this.type == 'rolePoints') {
       this._prepareRolePoints();
     }
   }
 
   /**
-  * Prepares the item and any upgrade traits currently on the item
-  */
+   * The traits this weapon or armor effectively has: its own, plus every trait its attached
+   * upgrades grant, minus every trait they take away.
+   *
+   * Upgrades that REMOVE a trait are rare but real - Ammo Feeder (GI Joe CRB p.151) is "Weapon
+   * with the Reload trait / The weapon loses the Reload trait", and Factions in Action Vol. 2
+   * p.96 has one that drops Mounted. Removal is applied last, so an upgrade that takes a trait
+   * away beats one that grants it; that is the order the fiction implies (the modification is
+   * physical) and it makes the result independent of the order upgrades happen to be attached.
+   *
+   * The result is written back over `system.traits` as well as to `system.itemAndUpgradeTraits`,
+   * and that is deliberate. Roughly twenty-five checks in dice.mjs and the helpers ask a weapon
+   * `system.traits.includes(...)` directly, and they have always been answered with the combined
+   * list - the previous implementation assigned `this.system.traits` to a local and pushed onto
+   * it, mutating the derived array in place. Keeping both names pointing at the same computed
+   * list preserves every one of those answers and gives them trait REMOVAL for free, rather than
+   * rewriting twenty-five call sites and re-verifying each.
+   *
+   * What that shared array must never do is reach an editor. The trait selector used to read it
+   * back off the derived document, which meant opening it on an upgraded weapon pre-checked the
+   * upgrade's traits and saved them onto the weapon itself; with removal in play it would also
+   * have silently deleted a removed trait from the base item for good. apps/trait-selector.mjs
+   * reads _source instead now, which is the authored list this function starts from.
+   */
+  /**
+   * Fill in a description a GM has imported from their own copy of a rulebook.
+   *
+   * The compendium ships these empty - this system does not redistribute Renegade's text -
+   * so a GM who owns the book can import it into their world instead (see
+   * apps/book-description-importer.mjs). Applying it here rather than writing it into the
+   * items themselves is what keeps it out of packs/ and out of any release.
+   *
+   * Only ever fills a blank. An item whose description was written by hand, or edited after
+   * an import, keeps what it has.
+   */
+  _prepareDescription() {
+    // Tested against the SOURCE, not the prepared value. description is a stored field rather
+    // than a derived one, and Foundry does not roll a data model back to source between
+    // preparations - so reading this.system here would see the text a previous preparation
+    // already wrote and take it for something the GM had typed. The import would then be stuck:
+    // removing a book, or importing a corrected one, would leave the old text in place until a
+    // reload.
+    const stored = this._source?.system?.description ?? '';
+    if (stored.trim()) {
+      return;
+    }
+
+    // A compendium item is keyed by its own uuid; a copy on an actor or in the world carries
+    // the uuid it came from instead, which is the same key its compendium original uses.
+    const sourceUuid = this.pack
+      ? this.uuid
+      : (this.flags?.core?.sourceId ?? this._stats?.compendiumSource);
+    if (!sourceUuid) {
+      return;
+    }
+
+    // Falling back to `stored` rather than leaving it alone is what lets a cleared or re-imported
+    // book actually take effect on an item that is already prepared.
+    this.system.description = importedDescription(sourceUuid) ?? stored;
+  }
+
   _prepareTraits() {
-    let itemAndUpgradeTraits = this.system.traits;
-    let upgradeTraits = [];
+    if (this.type != 'weapon' && this.type != 'armor') {
+      return;
+    }
 
-    if (this.type == 'weapon' || this.type == 'armor') {
-      for (const [, item] of Object.entries(this.system.items)) {
-        if (item.type == 'upgrade') {
-          upgradeTraits.push(item.traits);
+    const own = this.system.traits ?? [];
+    const combined = [...own];
+    const removed = new Set();
 
-          for (const traits of upgradeTraits) {
-            if (traits) {
-              for (const trait of traits) {
-                if (!itemAndUpgradeTraits.includes(trait)) {
-                  itemAndUpgradeTraits.push(trait);
-                }
-              }
-            }
-          }
+    for (const attached of Object.values(this.system.items ?? {})) {
+      /* A null slot is possible - system.items is a free-form object and a write that fails
+         validation leaves the key behind with nothing in it. Reading .type off that threw, and
+         because this runs inside prepareDerivedData it took the item's WHOLE preparation with it:
+         the weapon then had no derived traits, no availability, no aim shift. Skipping is the only
+         sane response - one bad slot should not cost the item everything else. */
+      if (attached?.type != 'upgrade') {
+        continue;
+      }
+
+      for (const trait of attached.traits ?? []) {
+        if (!combined.includes(trait)) {
+          combined.push(trait);
         }
       }
 
-      if (itemAndUpgradeTraits) {
-        this.system.itemAndUpgradeTraits = itemAndUpgradeTraits;
+      for (const trait of attached.removedTraits ?? []) {
+        removed.add(trait);
       }
     }
+
+    const effective = removed.size ? combined.filter(trait => !removed.has(trait)) : combined;
+
+    // In place, so anything already holding this array sees the same list - see the note above.
+    own.length = 0;
+    own.push(...effective);
+    this.system.traits = own;
+    this.system.itemAndUpgradeTraits = own;
   }
 
   /**
@@ -307,6 +381,55 @@ export class Essence20Item extends Item {
   }
 
   /**
+  * Resolves how many loadout "hands" this weapon takes to wield (GI Joe CRB p.138 / TF CRB
+  * p.116 / PR CRB p.103) into system.derivedHands, for the Actor's six-hand Load Out tally.
+  * Uses the weapon's own system.hands when set, otherwise a Size-based default from
+  * CONFIG.E20.weaponSizeHands. A two-handed weapon in an Integrated Hardpoint still reports
+  * its full hand count here - the Actor tally is what converts that into two Integrated slots.
+  */
+  _prepareWeaponHands() {
+    const explicit = this.system.hands;
+    const sizeDefault = CONFIG.E20.weaponSizeHands[this.system.classification?.size];
+    this.system.derivedHands = explicit ?? sizeDefault ?? 1;
+  }
+
+  /**
+  * Prepares the display-only consequences of which Hardpoint a weapon is installed in
+  * (TF CRB p.114), for the Gear tab. None of these are enforced anywhere - they surface what
+  * the Hardpoint choice implies so the player doesn't have to cross-reference the book.
+  * - system.effectiveSize: 'integrated' while in an Integrated Hardpoint ("reduce their size
+  *   to Integrated"), otherwise the weapon's own classification.size.
+  * - system.effectiveBrawnReq: the requirements.shift lowered one die while Integrated
+  *   ("lower their Brawn requirements (if any) by one die"), otherwise unchanged.
+  * - system.derivedMode: the legacy Bot/Alt/Any concept re-derived from the Hardpoint, so the
+  *   Gear tab can still show a plain-language mode label (External -> Bot Mode; Integrated ->
+  *   Alt Mode if hidden, Any Mode if obvious).
+  */
+  _prepareHardpointDerived() {
+    const hardpoint = this.system.hardpoint ?? {};
+    const isIntegrated = hardpoint.type == 'integrated';
+
+    this.system.effectiveSize = isIntegrated ? 'integrated' : this.system.classification?.size;
+
+    const shiftLadder = CONFIG.E20.weaponRequirementShiftLadder;
+    const req = this.system.requirements?.shift || 'none';
+    if (isIntegrated && shiftLadder.includes(req)) {
+      const index = shiftLadder.indexOf(req);
+      this.system.effectiveBrawnReq = index > 0 ? shiftLadder[index - 1] : 'none';
+    } else {
+      this.system.effectiveBrawnReq = req;
+    }
+
+    if (hardpoint.type == 'external') {
+      this.system.derivedMode = 'modeBotMode';
+    } else if (isIntegrated) {
+      this.system.derivedMode = hardpoint.altModeVisibility == 'hidden' ? 'modeAltMode' : 'modeAny';
+    } else {
+      this.system.derivedMode = null;
+    }
+  }
+
+  /**
   * Prepares the combined Availability tier that must be Requisitioned to acquire this
   * weapon or armor as currently upgraded, per Table 8-2: Upgrading Equipment. Starts from
   * the item's own Availability and folds in each attached Upgrade's Availability in turn.
@@ -314,9 +437,12 @@ export class Essence20Item extends Item {
   _prepareTotalAvailability() {
     let totalAvailability = this.system.availability;
 
-    for (const [, item] of Object.entries(this.system.items)) {
-      if (item.type == 'upgrade') {
-        totalAvailability = this._getCombinedAvailability(totalAvailability, item.availability);
+    // A null slot skips rather than throws, for the same reason _prepareTraits guards against
+    // one: this runs inside prepareDerivedData, so one bad entry used to cost the item every
+    // other derived field too.
+    for (const attached of Object.values(this.system.items ?? {})) {
+      if (attached?.type == 'upgrade') {
+        totalAvailability = this._getCombinedAvailability(totalAvailability, attached.availability);
       }
     }
 
@@ -511,6 +637,15 @@ export class Essence20Item extends Item {
         }
 
         return;
+      }
+
+      /* The shot the aim was for. An aim improves the next roll and then it is gone, which is
+         what makes Aim once per roll rather than once per turn - see
+         helpers/action-economy.mjs#isAiming. The weapon effect is the attack: a weapon itself
+         has no roll button anywhere in the sheet, only its effects do. Cleared after the spend
+         rather than after the roll resolves so a blocked or cancelled attack keeps the aim. */
+      if (this.type == 'weaponEffect') {
+        await setAiming(childRoller || this.actor, false);
       }
     }
 

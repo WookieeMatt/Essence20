@@ -12,7 +12,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 export default class CompendiumBrowserSourceConfig extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   static DEFAULT_OPTIONS = {
     id: "compendium-browser-sources",
-    classes: ["essence20", "theme-wrapper", "compendium-browser-sources"],
+    classes: ["essence20", "theme-wrapper", "e20-window", "compendium-browser-sources"],
     tag: "form",
     window: {
       icon: "fa-solid fa-book-atlas",
