@@ -145,6 +145,11 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   _prepareContext() {
     return {
       friendshipCircle: this.#circleContext(),
+      // Whose pool this is. The tracker reads the PRIMARY Party and nothing else, so naming it
+      // is the only thing on screen that says which of several Parties the points belong to -
+      // and the only clue a player has that the pinned one changed. Null only in the gap before
+      // helpers/party.mjs pins one at the GM's ready.
+      partyName: getStoryPointsActor()?.name ?? null,
       gmPoints: this._gmPoints,
       storyPoints: this._storyPoints,
       isGm: game.user.isGM,

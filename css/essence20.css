@@ -5004,6 +5004,26 @@
   color: #4dd0e1;
 }
 
+.essence20 .story-points__party {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+.essence20 .story-points__party i {
+  font-size: 10px;
+  opacity: 0.7;
+}
+.essence20 .story-points__party-name {
+  max-width: 14em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
 .essence20 .story-points__scene {
   display: flex;
   flex-direction: column;
@@ -5033,6 +5053,20 @@
 
 .essence20 .story-points__spends .story-points__btn {
   flex: 1 1 0;
+}
+
+/* "Borrow equipment" wraps to two lines in a half-width column, and the base button is a fixed
+   18px tall, so the second line ran straight out of the box. These two size to their own text
+   instead. The row is a plain flex row, so its default align-items: stretch then makes "Get a
+   clue" exactly as tall as its neighbour without a rule of its own - which is what keeps the
+   pair matched however either label is translated. Specificity has to clear the base
+   .--bottom rule (.essence20.story-points .story-points__btn.--bottom), hence the long selector. */
+.essence20.story-points .story-points__spends .story-points__btn.--bottom {
+  height: auto;
+  min-height: 30px;
+  padding: 5px 8px;
+  line-height: 1.15;
+  text-align: center;
 }
 
 /* The Friendship Circle section (helpers/friendship-circle.mjs): who is in, and the three pools. */

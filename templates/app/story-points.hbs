@@ -1,4 +1,14 @@
 <div>
+  {{!-- Which Party these points belong to - the pinned/primary one, which is the only Party
+        the tracker ever reads. Re-rendered on any Party update and on the primaryParty setting
+        changing, so a rename or a reassignment shows up here without reopening. --}}
+  {{#if partyName}}
+    <div class="story-points__party" data-tooltip="{{localize 'E20.SptPrimaryPartyTooltip'}}">
+      <i class="fa-solid fa-thumbtack" inert></i>
+      <span class="story-points__party-name">{{partyName}}</span>
+    </div>
+  {{/if}}
+
   <div class="story-points__top">
     {{#if gmPointsArePublic}}
       <div class="sliced-border">
