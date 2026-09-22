@@ -464,6 +464,13 @@ export class Essence20Actor extends Actor {
       this._prepareVehicleData();
     }
 
+    // Party aggregates. This used to sit at the tail of _prepareVehicleData(), which only ever
+    // runs for a vehicle - so it never ran at all, and every Party reported memberCount 0 and a
+    // requisitionMax of 0 however many Player Characters were on its roster.
+    if (this.type == 'party') {
+      this._preparePartyData();
+    }
+
     // Load Out (hands carried vs the six-hand limit) and Hardpoint allocation. Only the two
     // types that carry equipment personally - a vehicle or Megaform has no hands to fill.
     if (this.type == 'playerCharacter' || this.type == 'npc') {
@@ -608,9 +615,6 @@ export class Essence20Actor extends Actor {
       }
     }
 
-    if (this.type == 'party') {
-      this._preparePartyData();
-    }
   }
 
   /**
@@ -622,6 +626,13 @@ export class Essence20Actor extends Actor {
    */
   _preparePartyData() {
     const system = this.system;
+
+    // Foundry still preps a document whose own DataModel failed to register/validate, which
+    // leaves system.requisition undefined - the same defensive shape _prepareHealth and its
+    // neighbours already carry, and the reason the stray-party test exists.
+    if (!system?.requisition) {
+      return;
+    }
 
     system.memberCount = this.members.length;
     system.requisitionMax = system.requisition.autoFromRoster

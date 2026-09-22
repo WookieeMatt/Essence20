@@ -2824,6 +2824,20 @@ describe("_preparePartyData", () => {
     expect(actor.system.requisitionMax).toBe(6);
   });
 
+  // Regression: this used to be called from the tail of _prepareVehicleData(), which
+  // prepareDerivedData() only runs for a vehicle - so on a Party it never ran, and every Party
+  // reported 0 members and a 0 Requisition pool. The direct-call tests here could not see that,
+  // so this one goes in through prepareDerivedData().
+  test("prepareDerivedData reaches it for a Party", () => {
+    global.fromUuidSync = jest.fn(() => ({ type: 'playerCharacter' }));
+    const actor = makeActor('party', partySystem({ actors: { a: { uuid: 'Actor.pc1' } } }));
+
+    actor.prepareDerivedData();
+
+    expect(actor.system.memberCount).toBe(1);
+    expect(actor.system.requisitionMax).toBe(3);
+  });
+
   test("an empty roster yields 0 members and a 0 pool", () => {
     global.fromUuidSync = jest.fn(() => null);
     const actor = makeActor('party', partySystem());

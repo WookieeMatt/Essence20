@@ -339,6 +339,21 @@ export const DEMO_ACTORS = {
     participants: ["zord"],
   },
 
+  party: {
+    name: "Demo Squad",
+    type: "party",
+    system: {
+      color: "#2e7d32",
+      // A Requisition pool with something in it, so the tracker reads as a live one rather
+      // than a row of zeroes.
+      requisition: { attempts: 3 },
+    },
+    items: [],
+    // A Party's roster rides on the same `system.actors` collection participants writes to,
+    // so the demo squad gets the demo Ranger on it for free.
+    participants: ["character"],
+  },
+
   threat: {
     name: "Demo Threat",
     type: "npc",
@@ -559,7 +574,8 @@ export async function cleanupDemoActors() {
  * This is how the system models a vehicle's crew and a Megaform's constituent Zords, and it is a
  * *runtime* link — each entry stores the participant's uuid, so the participants have to exist
  * first. A Megaform in particular derives its Essences, defences, movement and combined-health
- * breakdown from whatever is in here; given an empty list it renders as a shell.
+ * breakdown from whatever is in here; given an empty list it renders as a shell. `system.actors`
+ * is the type-agnostic attachment collection, so this fills a Party's roster too.
  * @param {Actor} actor               The actor being provisioned.
  * @param {DemoActor} definition      Its definition.
  * @param {string} key                Its own key, used to break reference cycles.

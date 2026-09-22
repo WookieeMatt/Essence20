@@ -762,6 +762,7 @@ export class Essence20Tour extends Tour {
     vehicle: "vehicle",
     zord: "zord",
     megaform: "megaform",
+    party: "party",
   };
 
   /**

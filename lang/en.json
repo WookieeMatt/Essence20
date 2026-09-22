@@ -2358,7 +2358,7 @@
         },
         "Header": {
           "Title": "The Header",
-          "Content": "Everything that identifies the character: portrait, name, size, Faction, Level, Role, Origin, and a color that tints the sheet.\nRole and Origin are <em>Items</em> — you drag them on from a compendium rather than typing them in, and they bring their own mechanics with them."
+          "Content": "Everything that identifies the character: portrait, name, size, Faction, Level and Role — plus a Focus on a GI Joe or Transformers character — and a color that tints the sheet.\nRole and Focus are <em>Items</em>: you drag them on from a compendium rather than typing them in, and they bring their own mechanics with them. Origin and Influence work the same way, over on the <strong>Bio</strong> tab."
         },
         "Level": {
           "Title": "Level",
@@ -2394,11 +2394,15 @@
         },
         "Tabs": {
           "Title": "The Tabs",
-          "Content": "Skills, Gear, Powers, Perks and the rest.\nWhich tabs you get depends on the character — a Transformer has an Alt Mode tab, a Ranger has Zords, and only a character who can cast has a Spells tab."
+          "Content": "Skills, Gear, Powers, Perks, Bio and the rest.\nWhich tabs you get depends on the character — a Transformer has an Alt Mode tab, a Ranger has Zords, and only a character who can cast has a Spells tab."
         },
         "Gear": {
           "Title": "Gear",
           "Content": "Items group into collapsible sections by kind, and each row expands to show its details.\nThe demo character's blaster has a <strong>Weapon Effect</strong> and an <strong>Upgrade</strong> attached — those nest inside the weapon rather than cluttering the top level."
+        },
+        "Bio": {
+          "Title": "Bio",
+          "Content": "Origin, Influences, Bonds and Hang-Ups — where the character comes from, dropped on as Items the same way the Role was.\nThe Perks they carry show up on the Perks tab, sorted by which of them granted each one. Underneath sit the description fields: pronouns, age, height, languages and free notes."
         },
         "Outro": {
           "Title": "That's the Sheet",
@@ -2583,10 +2587,6 @@
         "GeneralSection": {
           "Title": "General Perks",
           "Content": "These Perks are ones you chose. This is the only section with a plus button, because it is the only one you add to directly.\nA Perk that needs activating in play has a lightning-bolt button on its row — the automated Perks in the sourcebook compendiums do this, and they also announce themselves by name in the roll dialog whenever they apply."
-        },
-        "Background": {
-          "Title": "Background",
-          "Content": "Origin and Influence live over here, along with Hang-Ups and the rest of the character's history.\nThey are the source of the Perks in the first two sections of the Perks tab."
         },
         "Outro": {
           "Title": "Perks Covered",
@@ -2955,6 +2955,54 @@
         "Outro": {
           "Title": "Importing Covered",
           "Content": "Stat blocks from a paste, rules text and adventures from PDFs you own — all into your world, none into the system.\nThat is the last tour. Tour Management lists them all if you want to revisit one."
+        }
+      },
+      "Party": {
+        "Title": "The Party Sheet",
+        "Description": "The squad sheet: roster, Requisition, Mission Critical gear, and the pool it quietly holds.",
+        "Intro": {
+          "Title": "The Party Sheet",
+          "Content": "A Party is the group itself as an actor — the squad, the team, the Friend Group — and it owns what the whole table shares rather than any one character.\nThis tour creates a temporary <strong>Demo Squad</strong> and deletes it again at the end. Your own Party is not touched."
+        },
+        "Header": {
+          "Title": "The Header",
+          "Content": "A name, a colour, and the number of characters on the roster.\nThe member count is worked out from the roster below rather than typed in — several things size themselves from it."
+        },
+        "Sidebar": {
+          "Title": "The Sidebar",
+          "Content": "The game line this Party belongs to, and the roster at a glance.\nThe line decides which of the squad rules below actually apply — Requisition is a GI Joe, Transformers and Power Rangers idea."
+        },
+        "Roster": {
+          "Title": "The Roster",
+          "Content": "Drag a player character here to add them to the squad; the trash icon takes them off again.\nClicking a name opens that character. Only Player Characters count — an NPC dropped here is ignored."
+        },
+        "Requisition": {
+          "Title": "Requisition",
+          "Content": "The squad requests gear from a shared pool of attempts rather than each character tracking their own.\nThe cap follows the roster — three per member — and <strong>Reset</strong> refills to it at the start of a mission. Untick <em>from roster</em> to set a number by hand instead."
+        },
+        "RequisitionMembers": {
+          "Title": "Requesting Gear",
+          "Content": "Each member gets their own block: drop a Requisitionable weapon or armor onto it and roll for it from here.\nThe roll is made as <em>that</em> character — their training, their shifts, their chat card — but it spends one attempt from the squad pool. Nothing is enforced; the card says what happened and the log below keeps the history."
+        },
+        "MissionCritical": {
+          "Title": "Mission Critical Items",
+          "Content": "Gear issued to the squad rather than to any one character — a vehicle-mounted weapon, a shared medkit.\nThese Items belong to the Party itself. An Equipment Package dropped here unpacks into these lists."
+        },
+        "StoryPoints": {
+          "Title": "It Holds the Story Points",
+          "Content": "The table's Story Point pool lives on the primary Party, even though nothing on this sheet shows it — the tracker is its one screen.\nIt sits here rather than in the world settings for a practical reason: a setting can only be written by a GM, but a player given ownership of this actor can spend from a pool that lives on it."
+        },
+        "Directory": {
+          "Title": "In the Sidebar",
+          "Content": "Parties appear in the Actors tab as folders you can expand to see the roster, since Foundry has no notion of a party of its own.\nThe pin marks the <strong>primary</strong> one."
+        },
+        "Primary": {
+          "Title": "The Primary Party",
+          "Content": "One Party is always the primary, and the system keeps it that way: it creates one if the world has none, refuses to delete the last one, and hands the points to the next Party if the primary goes.\nEveryone gets Observer on it by default — without that a player's tracker would read zero, because a document nobody can see is never sent to them. Grant a player <strong>Owner</strong> to let them spend unattended."
+        },
+        "Outro": {
+          "Title": "Party Covered",
+          "Content": "A roster, a shared Requisition pool, the squad's own gear, and the Story Points underneath it all.\nNext: <strong>Story Points</strong>, which covers the pool this sheet holds.\nThe Demo Squad is being cleaned up now."
         }
       }
     }
