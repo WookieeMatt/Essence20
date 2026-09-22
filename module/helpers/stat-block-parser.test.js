@@ -107,6 +107,15 @@ describe("preprocessStatBlock", () => {
     expect(preprocessStatBlock('T H R E A T S')).toEqual(['THREATS']);
   });
 
+  // A threat's name is an all-caps line too. Collapsing those gave every block read out of an
+  // adventure a name like "COBRAVIPER".
+  test("leaves an all-caps name made of real words alone", () => {
+    expect(preprocessStatBlock('COBRA VIPER')).toEqual(['COBRA VIPER']);
+    expect(preprocessStatBlock('ICE VIPER')).toEqual(['ICE VIPER']);
+    expect(preprocessStatBlock('SNOW SERPENT')).toEqual(['SNOW SERPENT']);
+    expect(preprocessStatBlock('GENERAL MAYHEM')).toEqual(['GENERAL MAYHEM']);
+  });
+
   test("leaves a heading-shaped line with a colon or digits alone", () => {
     expect(preprocessStatBlock('THREAT LEVEL: 7')).toEqual(['THREAT LEVEL: 7']);
   });
@@ -270,7 +279,7 @@ describe("parseStatBlock - G.I. JOE vehicle dialect", () => {
   test("reads a minimum range and a Blast shape off a wrapped attack line", () => {
     expect(ir.attacks[0]).toMatchObject({
       name: 'Mortar Pod', skill: 'targeting', damageValue: 2, damageType: 'sharp',
-      radius: 15, shape: 'burst',
+      radius: 15, shape: 'circle',
     });
     expect(ir.attacks[0].range).toMatchObject({ value: 90, long: 180, min: 25 });
   });

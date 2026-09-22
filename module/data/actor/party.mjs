@@ -29,6 +29,13 @@ export class PartyActorData extends foundry.abstract.TypeDataModel {
           time: makeInt(0),
         })),
       }),
+      // The table's shared Story Point pool and the GM's own points. They live on the PRIMARY
+      // Party (Essence20Actors#party) rather than in a world setting because a setting can only
+      // be written by a GM, and a player granted ownership of this actor can write this. Not
+      // shown on the sheet - the Story Points tracker is their one screen. Only the primary
+      // Party's copy is ever read; see helpers/story-points.mjs and helpers/party.mjs.
+      storyPoints: makeInt(0),
+      gmPoints: makeInt(0),
       // Derived each prep by Essence20Actor._preparePartyData() - schema-declared so the
       // computed values survive Actor#toObject(false) into the sheet context.
       memberCount: makeInt(0),

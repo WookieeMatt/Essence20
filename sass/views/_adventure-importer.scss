@@ -1,0 +1,168 @@
+/* The GM's adventure importer (apps/adventure-importer.mjs).
+   Shares the book importer's furniture - .book-import-note, -status, -facts, -warning, -toggle,
+   -footer and -entry-meta are all reused by templates/app/adventure-importer.hbs - and only adds
+   what is particular to a journal preview: the nested list of pages under each entry.
+   Namespaced under .essence20 like everything else - see docs on CSS namespacing. */
+
+.essence20 .adventure-import {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.essence20 .adventure-import .e20-hidden {
+  display: none;
+}
+
+/* Bounded like the book importer's, so the Create button stays just below the preview however
+   many hundred sections an adventure has (Operation: Cold Iron flattens to 244). */
+.essence20 .adventure-import-results {
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: 45vh;
+  overflow-y: auto;
+}
+
+.essence20 .adventure-import-entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.essence20 .adventure-import-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--e20-theme-rule, rgba(128, 128, 128, 0.25));
+}
+
+/* Unticked entries stay readable but visibly out of the import - the GM needs to see what they
+   chose to skip, not watch it vanish. */
+.essence20 .adventure-import-entry.is-excluded {
+  opacity: 0.4;
+}
+
+.essence20 .adventure-import-entry-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.essence20 .adventure-import-entry-name {
+  display: block;
+  font-weight: 600;
+}
+
+.essence20 .adventure-import-pages {
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+/* Indented by the section's own depth in the book's contents, so a room reads as sitting inside
+   its Mission rather than as a sibling of it. Depth 0 is the entry's own opening page. */
+.essence20 .adventure-import-page {
+  padding: 1px 0;
+}
+
+.essence20 .adventure-import-page.depth-1 {
+  padding-left: 12px;
+}
+
+.essence20 .adventure-import-page.depth-2 {
+  padding-left: 24px;
+}
+
+.essence20 .adventure-import-page.depth-3,
+.essence20 .adventure-import-page.depth-4,
+.essence20 .adventure-import-page.depth-5 {
+  padding-left: 36px;
+}
+
+/* The maps found in the book. A short list beneath the chapters, because an adventure has a
+   handful of them against a couple of hundred sections. */
+.essence20 .adventure-import-map-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.essence20 .adventure-import-map {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+}
+
+.essence20 .adventure-import-map.is-excluded {
+  opacity: 0.4;
+}
+
+.essence20 .adventure-import-map-name {
+  font-weight: 600;
+}
+
+/* The stat blocks found in the book. Laid out like the map list - a row each, with what the
+   parser could not read called out on the right rather than hidden. */
+.essence20 .adventure-import-threat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+.essence20 .adventure-import-threat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+}
+
+.essence20 .adventure-import-threat.is-excluded {
+  opacity: 0.4;
+}
+
+.essence20 .adventure-import-threat-name {
+  font-weight: 600;
+}
+
+/* Pushed to the end of the row so the count of unread lines lines up down the list. */
+.essence20 .adventure-import-threat .book-import-loose {
+  margin-left: auto;
+  font-size: 0.8em;
+}
+
+/* The roll tables found in the book. Same row as the threats, since both are long lists the
+   GM is skimming rather than reading. */
+.essence20 .adventure-import-table-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+.essence20 .adventure-import-table {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+}
+
+.essence20 .adventure-import-table.is-excluded {
+  opacity: 0.4;
+}
+
+.essence20 .adventure-import-table-name {
+  font-weight: 600;
+}
+
+.essence20 .adventure-import-table .book-import-loose {
+  margin-left: auto;
+}

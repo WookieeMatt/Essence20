@@ -144,3 +144,52 @@
   background: var(--e20-theme-card-bg);
   border-color: var(--e20-theme-accent);
 }
+
+/* The two narrative spends sit side by side: they are small, and stacking them made the window
+   a column of buttons. */
+.essence20 .story-points__spends {
+  display: flex;
+  gap: 6px;
+}
+
+.essence20 .story-points__spends .story-points__btn {
+  flex: 1 1 0;
+}
+
+/* The Friendship Circle section (helpers/friendship-circle.mjs): who is in, and the three pools. */
+.essence20 .story-points__circle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.essence20 .story-points__circle-status {
+  margin: 0;
+  font-size: 0.85em;
+}
+
+.essence20 .story-points__circle-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85em;
+  opacity: 0.6;
+}
+
+/* A pony in the Circle reads as lit; one outside it as waiting. */
+.essence20 .story-points__circle-members li.is-in {
+  opacity: 1;
+  font-weight: 600;
+}
+
+.essence20 .story-points__circle-pools {
+  display: flex;
+  gap: 4px;
+}
+
+.essence20 .story-points__circle-pools .story-points__btn {
+  flex: 1 1 0;
+}

@@ -272,18 +272,29 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
   }
 
   /**
-   * Role is the one item type meant to expand beyond the shared fixed width (DEFAULT_OPTIONS
-   * above) - its Details tab shows substantially more content (granted Role Perks, Spectrum
-   * Modification choiceGroup pairs, ...) than any other item type's. _onFirstRender (not
-   * _onRender, which fires on every re-render, including ones a manual drag-resize should
-   * survive) runs once, before the sheet's first paint, so this only ever sets the *initial*
-   * size - it doesn't fight a resize the user made afterward.
+   * Role is the one item type that needs more than the shared width (DEFAULT_OPTIONS above) -
+   * its Details tab shows substantially more content (granted Role Perks, Spectrum Modification
+   * choiceGroup pairs, ...) than any other item type's.
+   *
+   * Wider, but still FIXED. This used to be `width: "auto"`, which is the very thing the comment
+   * on DEFAULT_OPTIONS warns about: auto measures content before settling on a width, so a long
+   * unwrapped run of prose has nothing to wrap against and stretches the window as far as the
+   * text is long. That stayed hidden only because Role descriptions were empty; the moment a GM
+   * imported them from their own rulebook (apps/book-description-importer.mjs) every Role sheet
+   * opened at the full width of the screen with its description on one line.
+   *
+   * 880 is measured rather than guessed: the Details tab settles at 775px for Commando and 844px
+   * for Red Ranger, the widest in the packs, so this clears both without room to spare mattering.
+   *
+   * _onFirstRender (not _onRender, which fires on every re-render, including ones a manual
+   * drag-resize should survive) runs once, before the sheet's first paint, so this only ever sets
+   * the *initial* size - it doesn't fight a resize the user made afterward.
    */
   async _onFirstRender(context, options) {
     await super._onFirstRender(context, options);
 
     if (this.document.type === 'role') {
-      this.setPosition({ width: 'auto' });
+      this.setPosition({ width: 880 });
     }
   }
 

@@ -1,33 +1,11 @@
 import { applyThemeClass } from "../settings.js";
 import {
   NARRATIVE_TYPES, normalizeBookTitle, findWatermark, findBodyFontSize, findTextFloor,
-  calibrateFolioOffset, buildReadingOrder, findEntry,
+  calibrateFolioOffset, buildReadingOrder, findEntry, findFurnitureBands, findBodyFonts, findBestOffset,
 } from "../helpers/book-descriptions.mjs";
+import { readPdf } from "../helpers/pdf-reader.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-
-/** Where the vendored reader lives. See lib/pdfjs/README.md for why it is vendored at all. */
-const PDFJS = "systems/essence20/lib/pdfjs/pdf.mjs";
-const PDFJS_WORKER = "systems/essence20/lib/pdfjs/pdf.worker.mjs";
-
-/**
- * Load pdf.js on first use.
- *
- * Deliberately a dynamic import rather than a top-level one: the reader is 2.4MB and all but a
- * handful of sessions never open this screen, so it should not be in the startup path.
- * @returns {Promise<Object>} The pdf.js module.
- */
-let pdfjsPromise = null;
-function loadPdfjs() {
-  if (!pdfjsPromise) {
-    pdfjsPromise = import(`/${PDFJS}`).then(module => {
-      module.GlobalWorkerOptions.workerSrc = `/${PDFJS_WORKER}`;
-      return module;
-    });
-  }
-
-  return pdfjsPromise;
-}
 
 /**
  * GM screen for filling in compendium descriptions from a rulebook PDF the GM owns.
@@ -73,7 +51,9 @@ export default class BookDescriptionImporter extends HandlebarsApplicationMixin(
   static PARTS = {
     form: {
       template: "systems/essence20/templates/app/book-description-importer.hbs",
-      scrollable: [".book-import-results"],
+      // The whole panel scrolls, not only the preview: the list of books already imported grows
+      // with every one and pushed the rest out of a fixed-height window with nothing to scroll.
+      scrollable: ["", ".book-import-results"],
     },
   };
 
@@ -142,32 +122,10 @@ export default class BookDescriptionImporter extends HandlebarsApplicationMixin(
       this.#scan = null;
       await this.render();
 
-      const pdfjs = await loadPdfjs();
-      const data = new Uint8Array(await file.arrayBuffer());
-      const doc = await pdfjs.getDocument({ data, useSystemFonts: true }).promise;
-
-      const pages = [];
-      const widths = [];
-      for (let n = 1; n <= doc.numPages; n++) {
-        const page = await doc.getPage(n);
-        const content = await page.getTextContent();
-        widths.push(page.getViewport({ scale: 1 }).width);
-        pages.push(content.items
-          .filter(item => item.str && item.str.trim())
-          .map(item => ({
-            s: item.str.trim(),
-            x: Math.round(item.transform[4]),
-            y: Math.round(item.transform[5]),
-            size: Math.round(item.height * 10) / 10,
-          })));
-
-        // Re-rendering every page would be slower than the parse itself; every 25 is enough to
-        // show the bar moving on a 350-page book.
-        if (n % 25 === 0) {
-          this.#status = game.i18n.format("E20.BookImportStatusReading", { page: n, total: doc.numPages });
-          await this.render();
-        }
-      }
+      const { pages, widths } = await readPdf(file, async (page, total) => {
+        this.#status = game.i18n.format("E20.BookImportStatusReading", { page, total });
+        await this.render();
+      });
 
       this.#status = game.i18n.localize("E20.BookImportStatusMatching");
       await this.render();
@@ -197,7 +155,16 @@ export default class BookDescriptionImporter extends HandlebarsApplicationMixin(
     const bodySize = findBodyFontSize(pages);
     const textFloor = findTextFloor(pages, bodySize);
     const folio = calibrateFolioOffset(pages, textFloor);
-    const orders = pages.map((runs, index) => buildReadingOrder(runs, widths[index], textFloor));
+
+    // Running heads and feet, found by how repetitive they are rather than where they sit - see
+    // findFurnitureBands(). Without this a book that puts its running head at the TOP of the page
+    // (the My Little Pony CRB does) drops it into the middle of every description that carries on
+    // overleaf.
+    const furniture = findFurnitureBands(pages, bodySize);
+    const orders = pages.map((runs, index) => buildReadingOrder(runs, widths[index], textFloor, furniture));
+
+    // Some books mark a heading by weight rather than size - see findBodyFonts().
+    const bodyFonts = findBodyFonts(pages);
 
     const candidates = await this.#candidateItems();
 
@@ -205,11 +172,17 @@ export default class BookDescriptionImporter extends HandlebarsApplicationMixin(
     // the most matches. That is more reliable than reading the PDF's title - these files are
     // named inconsistently and their embedded metadata is often blank or wrong - and it costs
     // only one pass per book, over the books' own item lists rather than the whole PDF.
-    let best = null;
-    for (const [book, items] of candidates) {
+    // Two passes, and the split is what keeps this usable rather than an optimisation.
+    //
+    // Identification has to try every book, so for the 35 a given PDF is NOT, essentially every
+    // item goes unmatched. findEntry's widened search (for books that file an entry under the
+    // page its section starts on) costs sixty page-scans per unmatched item, so running it here
+    // would mean tens of thousands of them and minutes of a locked-up browser. This pass asks
+    // only the cheap question - is the entry within a page of where the data says.
+    const scan = (items, wide) => {
       const matched = [];
       for (const item of items) {
-        const found = findEntry(orders, item.page, folio.offset, item.name, bodySize, item.type);
+        const found = findEntry(orders, item.page, folio.offset, item.name, bodySize, item.type, bodyFonts, wide);
         if (found) {
           matched.push({
             ...item, text: found.text, foundPage: found.page,
@@ -218,9 +191,29 @@ export default class BookDescriptionImporter extends HandlebarsApplicationMixin(
         }
       }
 
+      return matched;
+    };
+
+    let best = null;
+    for (const [book, items] of candidates) {
+      const matched = scan(items, false);
       if (!best || matched.length > best.matched.length) {
-        best = { book, matched, total: items.length };
+        best = { book, matched, total: items.length, items };
       }
+    }
+
+    // Now that the book is known, it is worth the widened search - but only for its own items.
+    if (best) {
+      // A book with no page numbers this can read leaves the offset at 0 with nothing behind it,
+      // which puts every lookup on the wrong page. Ask the content instead, once the book is
+      // known so there is a sensible item list to ask with.
+      if (!folio.samples) {
+        const candidates = Array.from({ length: 25 }, (unused, i) => i - 4);
+        folio.offset = findBestOffset(orders, best.items, bodySize, bodyFonts, candidates).offset;
+        folio.derived = true;
+      }
+
+      best.matched = scan(best.items, true);
     }
 
     // A PDF of something this compendium has no items for (or a completely unrelated file) should

@@ -1,0 +1,192 @@
+{{!--
+  The GM's screen for turning an adventure PDF they own into Journal Entries.
+  See apps/adventure-importer.mjs for why the file input is a plain one (the PDF is read in this
+  tab and never uploaded) and why a book without a PDF outline is refused rather than guessed at.
+--}}
+<div class="adventure-import">
+
+  <input type="file" accept="application/pdf,.pdf" class="e20-hidden" />
+
+  <section class="sliced-border --col adventure-import-intro">
+    <label class="sliced-border__label">{{localize "E20.AdventureImportSourceLabel"}}</label>
+    <p class="book-import-note">{{localize "E20.AdventureImportIntro"}}</p>
+    <button type="button" data-action="chooseFile">
+      <i class="fa-solid fa-file-pdf"></i> {{localize "E20.BookImportChoose"}}
+    </button>
+    {{#if status}}<p class="book-import-status">{{status}}</p>{{/if}}
+  </section>
+
+  {{#if hasScan}}
+    <section class="sliced-border --col adventure-import-scan">
+      <label class="sliced-border__label">{{localize "E20.BookImportScanLabel"}}</label>
+
+      {{#unless scan.hasOutline}}
+        <p class="book-import-warning">
+          <i class="fa-solid fa-triangle-exclamation"></i> {{localize "E20.AdventureImportNoOutline"}}
+        </p>
+      {{/unless}}
+
+      <dl class="book-import-facts">
+        <dt>{{localize "E20.BookImportFile"}}</dt>
+        <dd>{{scan.fileName}} — {{scan.pageCount}}{{localize "E20.BookImportPagesSuffix"}}</dd>
+
+        <dt>{{localize "E20.AdventureImportEntries"}}</dt>
+        <dd>{{scan.entries.length}}</dd>
+
+        {{#if scan.maps.length}}
+          <dt>{{localize "E20.AdventureImportMaps"}}</dt>
+          <dd>{{scan.maps.length}}</dd>
+        {{/if}}
+
+        {{#if scan.threats.length}}
+          <dt>{{localize "E20.AdventureImportThreats"}}</dt>
+          <dd>{{scan.threats.length}}</dd>
+        {{/if}}
+
+        {{#if scan.tables.length}}
+          <dt>{{localize "E20.AdventureImportTables"}}</dt>
+          <dd>{{scan.tables.length}}</dd>
+        {{/if}}
+      </dl>
+
+      {{#if scan.entries.length}}
+        <p class="book-import-note">{{localize "E20.AdventureImportReviewHint"}}</p>
+      {{/if}}
+    </section>
+
+    <section class="adventure-import-results">
+      <ol class="adventure-import-entries">
+        {{#each scan.entries as |entry|}}
+          <li class="adventure-import-entry {{#if entry.excluded}}is-excluded{{/if}}" data-entry="{{entry.name}}">
+            <a class="book-import-toggle" data-action="toggleEntry" data-tooltip="{{localize 'E20.BookImportToggleTooltip'}}">
+              {{#if entry.excluded}}
+                <i class="fa-regular fa-square"></i>
+              {{else}}
+                <i class="fa-solid fa-square-check"></i>
+              {{/if}}
+            </a>
+            <div class="adventure-import-entry-body">
+              <span class="adventure-import-entry-name">
+                {{entry.name}}
+                <span class="book-import-entry-meta">
+                  {{entry.pageCount}}{{entry.pageLabel}} · {{entry.chars}}{{localize "E20.AdventureImportCharsSuffix"}}
+                </span>
+              </span>
+              <ul class="adventure-import-pages">
+                {{#each entry.pages as |page|}}
+                  <li class="adventure-import-page depth-{{page.depth}}">{{page.name}}</li>
+                {{/each}}
+              </ul>
+            </div>
+          </li>
+        {{/each}}
+      </ol>
+    </section>
+
+    {{#if scan.maps.length}}
+      <section class="sliced-border --col adventure-import-maps">
+        <label class="sliced-border__label">{{localize "E20.AdventureImportMaps"}}</label>
+        <p class="book-import-note">{{localize "E20.AdventureImportMapsHint"}}</p>
+
+        <ul class="adventure-import-map-list">
+          {{#each scan.maps as |map|}}
+            <li class="adventure-import-map {{#if map.excluded}}is-excluded{{/if}}" data-map="{{map.page}}">
+              {{#if map.rect}}
+                <a class="book-import-toggle" data-action="toggleMap"
+                   data-tooltip="{{localize 'E20.BookImportToggleTooltip'}}">
+                  {{#if map.excluded}}
+                    <i class="fa-regular fa-square"></i>
+                  {{else}}
+                    <i class="fa-solid fa-square-check"></i>
+                  {{/if}}
+                </a>
+              {{else}}
+                <i class="fa-solid fa-circle-question book-import-loose"
+                   data-tooltip="{{localize 'E20.AdventureImportMapMissing'}}"></i>
+              {{/if}}
+              <span class="adventure-import-map-name">{{map.title}}</span>
+              <span class="book-import-entry-meta">
+                {{#if map.rect}}{{map.size}}{{else}}{{localize "E20.AdventureImportMapMissing"}}{{/if}}
+              </span>
+            </li>
+          {{/each}}
+        </ul>
+      </section>
+    {{/if}}
+
+    {{#if scan.threats.length}}
+      <section class="sliced-border --col adventure-import-threats">
+        <label class="sliced-border__label">{{localize "E20.AdventureImportThreats"}}</label>
+        <p class="book-import-note">{{localize "E20.AdventureImportThreatsHint"}}</p>
+
+        <ul class="adventure-import-threat-list">
+          {{#each scan.threats as |threat|}}
+            <li class="adventure-import-threat {{#if threat.excluded}}is-excluded{{/if}}"
+                data-threat="{{threat.index}}">
+              <a class="book-import-toggle" data-action="toggleThreat"
+                 data-tooltip="{{localize 'E20.BookImportToggleTooltip'}}">
+                {{#if threat.excluded}}
+                  <i class="fa-regular fa-square"></i>
+                {{else}}
+                  <i class="fa-solid fa-square-check"></i>
+                {{/if}}
+              </a>
+              <span class="adventure-import-threat-name">{{threat.name}}</span>
+              <span class="book-import-entry-meta">
+                {{#if threat.isVehicle}}{{localize "E20.AdventureImportVehicle"}} · {{/if}}
+                {{localize "E20.NpcThreatLevel"}} {{threat.threatLevel}} · p{{threat.page}}
+              </span>
+              {{#if threat.warnings}}
+                <span class="book-import-loose"
+                      data-tooltip="{{localize 'E20.AdventureImportThreatWarningsHint'}}">
+                  <i class="fa-solid fa-triangle-exclamation"></i> {{threat.warnings}}
+                </span>
+              {{/if}}
+            </li>
+          {{/each}}
+        </ul>
+      </section>
+    {{/if}}
+
+    {{#if scan.tables.length}}
+      <section class="sliced-border --col adventure-import-tables">
+        <label class="sliced-border__label">{{localize "E20.AdventureImportTables"}}</label>
+        <p class="book-import-note">{{localize "E20.AdventureImportTablesHint"}}</p>
+
+        <ul class="adventure-import-table-list">
+          {{#each scan.tables as |table|}}
+            <li class="adventure-import-table {{#if table.excluded}}is-excluded{{/if}}"
+                data-table="{{table.index}}">
+              <a class="book-import-toggle" data-action="toggleTable"
+                 data-tooltip="{{localize 'E20.BookImportToggleTooltip'}}">
+                {{#if table.excluded}}
+                  <i class="fa-regular fa-square"></i>
+                {{else}}
+                  <i class="fa-solid fa-square-check"></i>
+                {{/if}}
+              </a>
+              <span class="adventure-import-table-name">{{table.name}}</span>
+              <span class="book-import-entry-meta">
+                {{table.die}} · {{table.rowCount}}{{localize "E20.AdventureImportRowsSuffix"}} · p{{table.page}}
+              </span>
+              {{#if table.widened}}
+                <span class="book-import-loose"
+                      data-tooltip="{{localize 'E20.AdventureImportWidenedHint'}}">
+                  <i class="fa-solid fa-dice-d20"></i>
+                </span>
+              {{/if}}
+            </li>
+          {{/each}}
+        </ul>
+      </section>
+    {{/if}}
+
+    {{#if scan.entries.length}}
+      <footer class="book-import-footer">
+        <button type="button" data-action="apply">
+          <i class="fa-solid fa-save"></i> {{localize "E20.AdventureImportApply"}}
+        </button>
+      </footer>
+    {{/if}}
+  {{/if}}
+</div>

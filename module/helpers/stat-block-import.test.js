@@ -245,7 +245,7 @@ describe("inferWeaponStyle", () => {
   });
 
   test("reads a Blast shape as explosive", () => {
-    expect(inferWeaponStyle({ isReach: false, shape: 'burst', damageType: 'sharp' })).toBe('explosive');
+    expect(inferWeaponStyle({ isReach: false, shape: 'circle', damageType: 'sharp' })).toBe('explosive');
   });
 
   test("reads an energy-ish damage type as energy", () => {

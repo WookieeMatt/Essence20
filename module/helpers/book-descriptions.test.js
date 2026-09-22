@@ -1,7 +1,7 @@
 import {
   NARRATIVE_TYPES, normalizeBookTitle, nameKey, itemKeys, headingKeys, findWatermark,
   findBodyFontSize, findTextFloor, calibrateFolioOffset, buildReadingOrder, extractEntry,
-  findEntry, mapSymbolGlyphs, pluralKeys,
+  findEntry, mapSymbolGlyphs, pluralKeys, findFurnitureBands, findBodyFonts,
 } from './book-descriptions.mjs';
 
 // A stand-in page built the way pdf.js reports one: a flat list of positioned runs, y growing
@@ -56,6 +56,12 @@ describe("headingKeys", () => {
     expect([...headingKeys('ORIGIN BENEFIT: ALWAYS IN CONTACT', 'perk')]).toContain(nameKey('Always in Contact'));
   });
 
+  // The My Little Pony CRB heads every spell with its school - "ADAPT (ENCHANTMENT)" for the
+  // item named "Adapt". 27 of that book's 28 spells were missed for want of this.
+  test("strips a qualifier the heading carries and the item name does not", () => {
+    expect([...headingKeys('ADAPT (ENCHANTMENT)', 'spell')]).toContain(nameKey('Adapt'));
+  });
+
   test("only strips the trailing word when it is the type being looked for", () => {
     // Without the type check this would also offer "sneak", and a "Sneak" perk would swallow it.
     expect([...headingKeys('SNEAK ATTACK', 'perk')]).not.toContain('sneak');
@@ -96,10 +102,29 @@ describe("findWatermark", () => {
 });
 
 describe("findBodyFontSize / findTextFloor", () => {
-  const pages = [page({ left: [run('a'), run('b'), run('c')], folio: 1 })];
+  // Real-length body lines: the measure weighs characters, so single letters would be
+  // outweighed by the watermark that every page carries.
+  const pages = [page({
+    left: [
+      run('You live for the roar of the crowd and the exhilaration'),
+      run('of a game well played. Whether you were college or pro,'),
+      run('your athletic career dovetailed into work for the Joes.'),
+    ],
+    folio: 1,
+  })];
 
   test("body size is the most common size, not the largest", () => {
     expect(findBodyFontSize(pages)).toBe(10.5);
+  });
+
+  // Measured in characters, not runs. A book with big stat tables has far more short size-9
+  // runs than long size-10.5 ones; counting runs picks the table and everything downstream
+  // breaks, because a body size one step too small makes every line of prose look like a
+  // heading.
+  test("a size with many short runs loses to the one holding more text", () => {
+    const table = Array.from({ length: 40 }, () => run('x', { size: 9 }));
+    const prose = Array.from({ length: 10 }, () => run('a fairly long line of body prose here'));
+    expect(findBodyFontSize([[...table, ...prose]])).toBe(10.5);
   });
 
   // The counter-intuitive one: header (15), folio (18) and watermark (15) are all set LARGER
@@ -124,6 +149,47 @@ describe("calibrateFolioOffset", () => {
   });
 });
 
+describe("findFurnitureBands", () => {
+  // A running head at the TOP of the page, which findTextFloor cannot see - the My Little Pony
+  // CRB puts one there, and an entry carrying on overleaf resumes right into it.
+  const withHead = (bodyText) => [
+    { s: 'MY LITTLE PONY ROLEPLAYING GAME', x: 63, y: 737, size: 17.1 },
+    { s: bodyText, x: 63, y: 600, size: 10.5 },
+  ];
+
+  test("finds a head that repeats at the same height on most pages", () => {
+    const pages = [withHead('one'), withHead('two'), withHead('three'), withHead('four')];
+    // The band is keyed by a rounded y, so assert that one was found rather than its key.
+    expect(findFurnitureBands(pages, 10.5).size).toBe(1);
+  });
+
+  test("body-sized runs are never furniture, however repetitive", () => {
+    // Otherwise a book with a standing line of prose could lose it.
+    const pages = Array.from({ length: 5 }, () => [{ s: 'Same line', x: 63, y: 600, size: 10.5 }]);
+    expect(findFurnitureBands(pages, 10.5).size).toBe(0);
+  });
+
+  // The discriminator that matters: a chapter of headings can sit at a constant height too,
+  // but says something different every time.
+  test("headings at a constant height are not mistaken for a running head", () => {
+    const pages = Array.from({ length: 10 }, (unused, i) => [
+      { s: `UNIQUE HEADING ${i}`, x: 63, y: 700, size: 22 },
+      { s: 'body', x: 63, y: 600, size: 10.5 },
+    ]);
+    expect(findFurnitureBands(pages, 10.5).has(700)).toBe(false);
+  });
+
+  test("something appearing on only a few pages is not furniture", () => {
+    const pages = [
+      [{ s: 'RARE', x: 63, y: 737, size: 17.1 }],
+      [{ s: 'body', x: 63, y: 600, size: 10.5 }],
+      [{ s: 'body', x: 63, y: 600, size: 10.5 }],
+      [{ s: 'body', x: 63, y: 600, size: 10.5 }],
+    ];
+    expect(findFurnitureBands(pages, 10.5).has(736)).toBe(false);
+  });
+});
+
 describe("buildReadingOrder", () => {
   test("reads the left column top-down, then the right, and drops the furniture", () => {
     const runs = page({
@@ -134,6 +200,19 @@ describe("buildReadingOrder", () => {
 
     const order = buildReadingOrder(runs, 612, 60).map(r => r.s);
     expect(order).toEqual(['LEFT ONE', 'left two', 'RIGHT ONE', 'right two']);
+  });
+
+  test("drops runs sitting in a furniture band", () => {
+    const runs = [
+      { s: 'MY LITTLE PONY ROLEPLAYING GAME', x: 63, y: 737, size: 17.1 },
+      { s: 'real text', x: 63, y: 600, size: 10.5 },
+    ];
+
+    // Bands come from the finder rather than a literal, so the two stay in step whatever
+    // rounding the finder uses.
+    const furniture = findFurnitureBands([runs, runs, runs, runs], 10.5);
+    const order = buildReadingOrder(runs, 612, 60, furniture).map(r => r.s);
+    expect(order).toEqual(['real text']);
   });
 });
 
@@ -147,6 +226,10 @@ describe("mapSymbolGlyphs", () => {
     ['\uF0E2', '\u2193', 'downshift'],
     ['\uF0E0', '\u2192', 'the dice progression arrow'],
     ['\uF06E', '\u25A0', 'a legend bullet'],
+    // A different symbol font, and the book states the meaning itself rather than implying it:
+    // "An Upshift ( [F068] ) or Downshift ( [F069] )".
+    ['\uF068', '\u2191', 'upshift, Welcome to Night Vale'],
+    ['\uF069', '\u2193', 'downshift, Welcome to Night Vale'],
   ])("maps %s to %s (%s)", (from, to) => {
     expect(mapSymbolGlyphs(`a ${from} b`)).toBe(`a ${to} b`);
   });
@@ -218,6 +301,17 @@ describe("extractEntry", () => {
   test("rejoins a word broken across lines", () => {
     const p = page({ right: [run('MOBILITY', { size: 22 }), run('Choose two addi-'), run('tional moves.')], folio: 1 });
     expect(extractEntry([order(p)], 0, 'Mobility', bodySize, 'perk').text).toBe('Choose two additional moves.');
+  });
+
+  // These PDFs often set the break hyphen as a run of its own, which left a space where the
+  // hyphen had been: "an aggres sive and brash approach".
+  test("rejoins a word whose hyphen is a separate run", () => {
+    const p = page({
+      right: [run('MOBILITY', { size: 22 }), run('an aggres'), run('-'), run('sive approach.')],
+      folio: 1,
+    });
+
+    expect(extractEntry([order(p)], 0, 'Mobility', bodySize, 'perk').text).toBe('an aggressive approach.');
   });
 
   test("carries on to the next page when the entry runs off this one", () => {
@@ -313,6 +407,89 @@ describe("extractEntry", () => {
     expect(found.text).toBe('Vehicles you drive there are better.');
   });
 
+  // A display face that starts a new run at every change of case. The My Little Pony CRB
+  // writes "Spirit of Generosity" as nine runs, which is every Role in the book.
+  test("matches a heading broken into many pieces by its display font", () => {
+    const p = page({
+      left: [
+        run('Spi', { size: 30 }), run('R', { size: 30 }), run('it', { size: 30 }),
+        run('O', { size: 30 }), run('f', { size: 30 }), run('gE', { size: 30 }),
+        run('n', { size: 30 }), run('EROS', { size: 30 }), run('ity', { size: 30 }),
+        run('You put others before yourself.'),
+      ],
+      folio: 72,
+    });
+
+    expect(extractEntry([order(p)], 0, 'Spirit of Generosity', bodySize, 'role')).toMatchObject({
+      kind: 'heading',
+      text: 'You put others before yourself.',
+    });
+  });
+
+  // The piece that gets separated is usually the colon itself: a bullet, the name, ":", then
+  // the prose. Without joining, the name run carries no colon and is not a label at all.
+  test("matches a run-in label whose colon is a separate run", () => {
+    const p = page({
+      right: [
+        run('\u2022'), run("So Funny, It's Scary"), run(':'), run('You can use Performance.'),
+        run('\u2022'), run('Comic Relief'), run(':'), run('You crack a joke.'),
+      ],
+      folio: 86,
+    });
+
+    expect(extractEntry([order(p)], 0, "So Funny, It's Scary", bodySize, 'perk')).toMatchObject({
+      kind: 'label',
+      text: 'You can use Performance.',
+    });
+  });
+
+  test("a split label also closes the entry before it", () => {
+    // Recognising a split label one way and not the other let the first Laugh Tactic swallow
+    // every one after it.
+    const p = page({
+      right: [
+        run('\u2022'), run('Comic Relief'), run(':'), run('You crack a joke.'),
+        run('\u2022'), run('Slapstick'), run(':'), run('You take a pratfall.'),
+      ],
+      folio: 86,
+    });
+
+    expect(extractEntry([order(p)], 0, 'Comic Relief', bodySize, 'perk').text)
+      .toBe('You crack a joke.');
+  });
+
+  // A heading can carry its level as a separate, smaller run - "CHEER" then "(1" then
+  // "LEVEL)". Not part of the heading, and not part of the description either.
+  // The book writes the tag at least four ways, and the superscript of "1ST" is a run of its
+  // own that arrives ahead of the bracket.
+  test.each([
+    [['(1', 'LEVEL)'], 'a plain tag'],
+    [['ST', '(1', 'LEVEL)'], 'a tag behind a superscript ordinal'],
+    [['(3RD LEVEL – ALSO 11TH)'], 'a compound tag'],
+    [['(7 LEVEL- ALSO 15 LEVEL)'], 'a compound tag with no space'],
+  ])("drops %#: %s", (pieces) => {
+    const p = page({
+      right: [run('AFTER YOU', { size: 14 }), ...pieces.map(x => run(x)), run('It is rude to go first.')],
+      folio: 122,
+    });
+
+    expect(extractEntry([order(p)], 0, 'After You', bodySize, 'perk').text)
+      .toBe('It is rude to go first.');
+  });
+
+  test("drops a level tag the heading trails behind it", () => {
+    const p = page({
+      right: [
+        run('AFTER YOU', { size: 14 }), run('(6'), run('LEVEL)'),
+        run('It\u2019s rude to go first.'),
+      ],
+      folio: 122,
+    });
+
+    expect(extractEntry([order(p)], 0, 'After You', bodySize, 'perk').text)
+      .toBe('It\u2019s rude to go first.');
+  });
+
   test("the watermark never ends up in an entry", () => {
     const p = page({ right: [run('MOBILITY', { size: 22 }), run('You move well.')], folio: 1 });
     expect(extractEntry([order(p)], 0, 'Mobility', bodySize, 'perk').text).not.toMatch(/Downloded/);
@@ -375,6 +552,197 @@ describe("extractEntry plural fallback", () => {
   });
 });
 
+// An Influence, its Perk and its Hang Up are three compendium items sharing one name - the GI
+// Joe CRB has an Athlete influence, perk and hangUp, all on p.46. The book heads the writeup
+// once with the shared name and then subdivides it by what each part IS, so matching on the
+// name alone found the parent three times and handed all three the whole page.
+describe("influence sub-sections", () => {
+  const bodySize = 10.5;
+  const order = (p) => buildReadingOrder(p, 612, 60);
+
+  // The real shape: a 38pt Influence heading subdivided at 22pt.
+  const athlete = () => page({
+    left: [
+      run('ATHLETE', { size: 38 }),
+      run('You live for the roar of the crowd.'),
+      run('INFLUENCE PERK', { size: 22 }),
+      run('You gain an Edge on Social Skill Tests.'),
+      run('HANG-UP', { size: 22 }),
+      run('You suffer a Snag when breaking rules.'),
+      run('SUGGESTED CHARACTERISTICS', { size: 22 }),
+      run('Roll on the tables.'),
+      run('BOOKWORM', { size: 38 }),
+      run('The next influence entirely.'),
+    ],
+    folio: 45,
+  });
+
+  test("the Influence keeps only its own prose", () => {
+    expect(extractEntry([order(athlete())], 0, 'Athlete', bodySize, 'influence').text)
+      .toBe('You live for the roar of the crowd.');
+  });
+
+  test("the Perk descends into INFLUENCE PERK", () => {
+    expect(extractEntry([order(athlete())], 0, 'Athlete', bodySize, 'perk').text)
+      .toBe('You gain an Edge on Social Skill Tests.');
+  });
+
+  test("the Hang Up descends into HANG-UP", () => {
+    expect(extractEntry([order(athlete())], 0, 'Athlete', bodySize, 'hangUp').text)
+      .toBe('You suffer a Snag when breaking rules.');
+  });
+
+  test("all three end up with different text", () => {
+    const p = order(athlete());
+    const texts = ['influence', 'perk', 'hangUp']
+      .map(type => extractEntry([p], 0, 'Athlete', bodySize, type).text);
+    expect(new Set(texts).size).toBe(3);
+  });
+
+  // Otherwise a Perk would reach past its own Influence and pick up the next one's section.
+  test("a section belonging to the next Influence is not taken", () => {
+    const p = page({
+      left: [
+        run('ATHLETE', { size: 38 }),
+        run('You live for the roar of the crowd.'),
+        run('BOOKWORM', { size: 38 }),
+        run('INFLUENCE PERK', { size: 22 }),
+        run('This belongs to Bookworm.'),
+      ],
+      folio: 45,
+    });
+
+    expect(extractEntry([order(p)], 0, 'Athlete', bodySize, 'perk').text)
+      .toBe('You live for the roar of the crowd.');
+  });
+
+  test("an ordinary Perk with a heading of its own is unaffected", () => {
+    const p = page({
+      right: [run('SNEAK ATTACK', { size: 22 }), run('You deal extra damage.')],
+      folio: 71,
+    });
+
+    expect(extractEntry([order(p)], 0, 'Sneak Attack', bodySize, 'perk').text)
+      .toBe('You deal extra damage.');
+  });
+
+  // The rule that makes the above work: weight alone cannot say where an entry stops, because
+  // these books nest a 22pt section under a 38pt heading.
+  test("an entry stops at a sub-heading lighter than its own", () => {
+    const p = page({
+      left: [
+        run('ATHLETE', { size: 38 }),
+        run('Only this.'),
+        run('A SMALLER HEADING', { size: 16 }),
+        run('Not this.'),
+      ],
+      folio: 45,
+    });
+
+    expect(extractEntry([order(p)], 0, 'Athlete', bodySize, 'influence').text).toBe('Only this.');
+  });
+});
+
+describe("findBodyFonts", () => {
+  const line = (s, font, size = 10.5) => ({ s, x: 63, y: 600, size, font });
+
+  test("keeps the fonts that carry the text and leaves a sparse one out", () => {
+    const prose = Array.from({ length: 20 }, () => line('a long line of ordinary body prose', 'body'));
+    const heading = [line('NOWHERE TO RUN', 'bold', 10)];
+    const fonts = findBodyFonts([[...prose, ...heading]]);
+
+    expect(fonts.has('body')).toBe(true);
+    expect(fonts.has('bold')).toBe(false);
+  });
+
+  // Body text routinely uses more than one face - a roman and an italic, or two subsetted
+  // copies of the same one - so this has to be a set, not a single winner.
+  test("keeps several fonts when the text is split between them", () => {
+    const a = Array.from({ length: 10 }, () => line('a long line of ordinary body prose', 'roman'));
+    const b = Array.from({ length: 10 }, () => line('a long line of ordinary body prose', 'italic'));
+    expect(findBodyFonts([[...a, ...b]]).size).toBe(2);
+  });
+
+  // A book dominated by stat blocks has its size set by those; tallying only at that size
+  // would collect the stat-block fonts and call the actual prose font a heading.
+  test("counts every size, not just the book's dominant one", () => {
+    const stats = Array.from({ length: 30 }, () => line('9pt stat block text here', 'statfont', 9));
+    const prose = Array.from({ length: 20 }, () => line('10.5pt prose that carries the entries', 'prosefont'));
+    const fonts = findBodyFonts([[...stats, ...prose]]);
+
+    expect(fonts.has('prosefont')).toBe(true);
+  });
+});
+
+describe("headings marked by weight rather than size", () => {
+  const bodySize = 10.5;
+  // The Decepticon Directive sets "Nowhere to Run" at 10pt over a 10.5pt body, in a font used
+  // nowhere in the prose - smaller than the text it introduces. 168 of its Perks needed this.
+  const bodyFonts = new Set(['body']);
+  const order = (p) => buildReadingOrder(p, 612, 60);
+
+  // Realistically prose-heavy. The page's own fonts decide what counts as body, and on a toy
+  // page two headings can be a third of the characters and so qualify as body themselves - a
+  // real page is overwhelmingly prose, which is what makes the heading font stand out.
+  const filler = (n) => Array.from({ length: n }, () => (
+    { s: 'a full line of ordinary body prose running the width of the column', size: 10.5, font: 'body' }));
+  const withWeightHeading = (headingText) => page({
+    left: [
+      { s: headingText, size: 10, font: 'bold' },
+      { s: 'When you pour on the firepower, nothing is safe.', size: 10.5, font: 'body' },
+      ...filler(6),
+      { s: 'ANOTHER PERK', size: 10, font: 'bold' },
+      { s: 'Some other rule.', size: 10.5, font: 'body' },
+      ...filler(6),
+    ],
+    folio: 45,
+  });
+
+  test("a bold run is a heading even when smaller than the body", () => {
+    const found = extractEntry([order(withWeightHeading('Nowhere to Run'))], 0, 'Nowhere to Run', bodySize, 'perk', bodyFonts);
+    expect(found.kind).toBe('heading');
+    expect(found.text.startsWith('When you pour on the firepower, nothing is safe.')).toBe(true);
+  });
+
+  // The font list is the whole basis of the weight test, so without one this falls back to size
+  // alone and a heading smaller than the body is simply not found. Books that subset a font per
+  // page land here - see isHeading() for why a per-page list was tried and rejected.
+  test("without a font list, a heading smaller than the body is not found", () => {
+    expect(extractEntry([order(withWeightHeading('Nowhere to Run'))], 0, 'Nowhere to Run', bodySize, 'perk', new Set()))
+      .toBeNull();
+  });
+
+  // The font is the whole signal: a short run starting a line in the SAME font as the prose is
+  // just a short line of prose.
+  test("a run in the prose font is not a heading, however short", () => {
+    const p = page({
+      left: [
+        { s: 'MOBILITY', size: 22, font: 'display' },
+        { s: 'You move well.', size: 10.5, font: 'body' },
+        { s: 'Short line.', size: 10.5, font: 'body' },
+        ...filler(6),
+      ],
+      folio: 45,
+    });
+
+    expect(extractEntry([order(p)], 0, 'Short line', bodySize, 'perk', bodyFonts)).toBeNull();
+  });
+
+  // The guard that matters: bold is also how an emphasised phrase inside a sentence is set,
+  // and treating one as a heading would cut entries in half.
+  test("a bold run sharing its line with prose is not a heading", () => {
+    const runs = [
+      { s: 'MOBILITY', x: 63, y: 700, size: 22, font: 'display' },
+      { s: 'You move well, and', x: 63, y: 680, size: 10.5, font: 'body' },
+      { s: 'Nowhere to Run', x: 200, y: 680, size: 10.5, font: 'bold' },
+      { s: 'is not a heading here.', x: 330, y: 680, size: 10.5, font: 'body' },
+    ];
+
+    const found = extractEntry([buildReadingOrder(runs, 612, 60)], 0, 'Mobility', bodySize, 'perk', bodyFonts);
+    expect(found.text).toBe('You move well, and Nowhere to Run is not a heading here.');
+  });
+});
+
 describe("findEntry", () => {
   const order = (p) => buildReadingOrder(p, 612, 60);
   const withEntry = (name) => page({ right: [run(name, { size: 22 }), run('Some rules text.')], folio: 1 });
@@ -403,5 +771,38 @@ describe("NARRATIVE_TYPES", () => {
     for (const type of ['weapon', 'armor', 'gear', 'upgrade', 'weaponEffect', 'shield', 'equipmentPackage']) {
       expect(NARRATIVE_TYPES).not.toContain(type);
     }
+  });
+});
+
+describe("findFurnitureBands drift", () => {
+  // Operation: Snakebit sets the same running head at y=750 on twenty-two pages and y=754 on
+  // three. Judged apart neither half reaches the threshold and the head survives into the text.
+  test("a head that wanders between two bands is still furniture", () => {
+    const pages = [];
+    for (let i = 0; i < 40; i++) {
+      const y = i < 30 ? 750 : 754;
+      pages.push([
+        { s: "G.I.JOE ROLEPLAYING GAME", x: 176, y, size: 10 },
+        { s: "Prose on the page.", x: 63, y: 700, size: 10.5 },
+      ]);
+    }
+
+    const bands = findFurnitureBands(pages, 10.5);
+    expect(bands.has(750)).toBe(true);
+    expect(bands.has(754)).toBe(true);
+  });
+
+  // Merging must not make the test weaker: a band of genuine headings is still many different
+  // strings, and stays out however its neighbours are grouped.
+  test("neighbouring bands of real headings are still not furniture", () => {
+    const pages = [];
+    for (let i = 0; i < 40; i++) {
+      pages.push([
+        { s: `Heading number ${i}`, x: 63, y: i % 2 ? 750 : 754, size: 14 },
+        { s: "Prose on the page.", x: 63, y: 700, size: 10.5 },
+      ]);
+    }
+
+    expect(findFurnitureBands(pages, 10.5).size).toBe(0);
   });
 });

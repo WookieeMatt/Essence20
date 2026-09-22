@@ -17,8 +17,14 @@ import {
   hasRerollCost,
   payRerollCost,
   rerollModeLabel,
+
+  storyPointRerollConfig,
 } from "./helpers/reroll.mjs";
-import { hasStoryPointsAvailable, isGmConnected, requestStoryPointSpend } from "./helpers/story-points.mjs";
+import {
+  canSpendForActor, canWriteStoryPoints, defenseBoostAfterRoll, hasStoryPointsAvailable, requestStoryPointSpend,
+  spendForActor,
+} from "./helpers/story-points.mjs";
+import { getGameLine } from "./settings.js";
 import { activateIronHide, IRON_HIDE_ID } from "./helpers/iron-hide.mjs";
 import { claimConsummatePerformer } from "./helpers/consummate-performer.mjs";
 import { activateSpite, hasSpite } from "./helpers/spite.mjs";
@@ -86,7 +92,7 @@ async function rerollMessage(message, config) {
     // A world-level Story Point cost (GI Joe CRB "In My Sights") can fail for a reason more
     // specific than "insufficient resource" - nobody able to actually spend it is connected at
     // all, distinct from there not being enough left. See helpers/story-points.mjs.
-    const noGmForStoryPoints = config.cost?.worldStoryPoints > 0 && !isGmConnected();
+    const noGmForStoryPoints = config.cost?.worldStoryPoints > 0 && !canWriteStoryPoints();
     ui.notifications.warn(game.i18n.localize(noGmForStoryPoints ? "E20.RerollNoGmConnected" : "E20.RerollInsufficientResource"));
     return;
   }
@@ -140,7 +146,9 @@ export const addRerollButtons = function (message, html) {
   // here would just be confusing, so both are filtered out at render time instead.
   const context = getRerollContext(message);
   const roll = message.rolls[0];
-  const configs = getRerollConfigs(actor)
+  // The actor's own grants, plus the reroll everyone has: a 1, for a Story Point (see
+  // helpers/reroll.mjs#storyPointRerollConfig).
+  const configs = [...getRerollConfigs(actor), storyPointRerollConfig()]
     .filter(config => canMeetRerollScope(config, context))
     .filter(config => hasEligibleRerollTarget(roll, config));
   if (!configs.length) {
@@ -184,6 +192,54 @@ export const addRerollButtons = function (message, html) {
       : game.i18n.localize("E20.RerollDiceTitle");
     button.addEventListener("click", () => rerollMessage(message, config));
     container.appendChild(button);
+  }
+};
+
+/**
+ * "+1 to a Defense after dice are rolled" for a Story Point (GI Joe CRB p.127, TF p.105; Power
+ * Rangers and My Little Pony have no after-the-roll spend - see
+ * helpers/story-points.mjs#defenseBoostAfterRoll). A single point of Defense only changes
+ * anything when the attack met the Defense exactly, so that is the only time the button appears:
+ * on each target that was hit by a margin of nothing, for whoever can spend for that target.
+ * Buying it turns the hit into a miss, which is announced in chat; the damage button above it
+ * is then simply not pressed. Called on the renderChatMessageHTML hook, alongside
+ * addRerollButtons.
+ */
+export const addDefenseBoostButton = function (message, html) {
+  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !defenseBoostAfterRoll(getGameLine())) {
+    return;
+  }
+
+  const flags = message.flags?.essence20;
+  const total = message.rolls[0].total;
+  const exactHits = (flags?.checkResults ?? []).filter(result => result.success && result.targetUuid && result.difficulty === total);
+  if (!exactHits.length) {
+    return;
+  }
+
+  const anchor = html.querySelector(".e20-check-results") ?? html.querySelector(".message-content") ?? html;
+  for (const result of exactHits) {
+    const target = fromUuidSync(result.targetUuid);
+    if (!target || !(target.isOwner || game.user.isGM) || !canSpendForActor(target)) {
+      continue;
+    }
+
+    const claimedKey = `defenseBoostClaimed.${result.targetUuid.replace(/\./g, "-")}`;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "e20-reroll-button e20-defense-boost-button";
+    button.textContent = game.i18n.format("E20.SptDefenseBoostAfter", { name: target.name });
+    button.disabled = !!foundry.utils.getProperty(flags, claimedKey);
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      await spendForActor(target, 1, { announce: false });
+      await message.setFlag("essence20", claimedKey, true);
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: target }),
+        content: game.i18n.format("E20.SptDefenseBoostAfterSpent", { name: target.name }),
+      });
+    });
+    anchor.appendChild(button);
   }
 };
 
@@ -596,7 +652,7 @@ export async function onApplyDamage(message, button) {
   // DIF 15 Skill Test, which restores the Health on a success via its own post-hit consumption in
   // dice.mjs. Scoped to isDefeatedByHealthLoss (excludes Stun, same as CBRN Defender's own check
   // just above) since RAW's own "an attack would make you Defeated" reads as ordinary damage.
-  if (isDefeatedByHealthLoss && actorHasPerk(target, IRON_HIDE_ID) && isGmConnected() && hasStoryPointsAvailable(1)) {
+  if (isDefeatedByHealthLoss && actorHasPerk(target, IRON_HIDE_ID) && canWriteStoryPoints() && hasStoryPointsAvailable(1)) {
     const confirmation = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize('E20.IronHideConfirmTitle') },
       classes: ["window-app", "e20-window"],

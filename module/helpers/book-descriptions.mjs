@@ -102,7 +102,18 @@ export function findWatermark(pages) {
 }
 
 /**
- * The font size of body text: simply the most common size in the book.
+ * The font size of body text: the size that the most TEXT is set in.
+ *
+ * Measured in characters rather than runs, which matters more than it sounds. A book with big
+ * stat tables has far more size-9 runs than size-10.5 ones, because every cell is its own short
+ * run while a paragraph of prose is a handful of long ones - counting runs picks the table.
+ * A Jump Through Time has 9790 runs at 9pt against 6591 at 10.5pt, but 198k characters against
+ * 245k, so only the character count gets it right.
+ *
+ * Getting this wrong is not a near miss. Everything keys off it: a heading is "bigger than body
+ * text" and an entry ends at the first run bigger than body text, so a body size one step too
+ * small makes every line of prose look like a heading and every entry ends immediately, empty.
+ * That was 2 matches out of 138 in A Jump Through Time and 1 out of 125 in Across the Stars.
  * @param {Array<Array<Object>>} pages
  * @returns {number}
  */
@@ -110,7 +121,7 @@ export function findBodyFontSize(pages) {
   const tally = new Map();
   for (const runs of pages) {
     for (const run of runs) {
-      tally.set(run.size, (tally.get(run.size) ?? 0) + 1);
+      tally.set(run.size, (tally.get(run.size) ?? 0) + (run.s?.length ?? 0));
     }
   }
 
@@ -149,6 +160,81 @@ export function findTextFloor(pages, bodySize) {
   }
 
   return floor === Infinity ? 0 : floor - 1;
+}
+
+/** How far apart two y-bands can be and still be the same piece of furniture, in points. */
+const BAND_DRIFT = 6;
+
+/**
+ * The bands of the page where a running head or foot sits.
+ *
+ * findTextFloor() only deals with furniture BELOW the text, which is where the GI Joe and Power
+ * Rangers books put all of theirs. The My Little Pony CRB puts its running head at the TOP
+ * instead, above the body, so nothing below-the-floor catches it - and because an entry that
+ * carries on overleaf resumes at the top of the next page, the head landed in the middle of 24
+ * of that book's descriptions.
+ *
+ * Position cannot answer this on its own, so repetition does: a running head is the same few
+ * words at the same height on page after page, while a heading is different words every time.
+ * A band therefore has to be BOTH nearly ubiquitous and highly repetitive, which is what keeps
+ * a chapter of similarly-placed headings from being mistaken for one.
+ *
+ * Body-sized runs are never considered, so no amount of coincidence can drop actual prose.
+ * @param {Array<Array<Object>>} pages
+ * @param {number} bodySize
+ * @returns {Set<number>} Rounded y values whose runs are furniture.
+ */
+export function findFurnitureBands(pages, bodySize) {
+  if (!pages.length) return new Set();
+
+  const bands = new Map();
+  for (let i = 0; i < pages.length; i++) {
+    for (const run of pages[i]) {
+      if (run.size === bodySize) continue;
+
+      // Rounded, because the same running head drifts a point or two between pages.
+      const y = Math.round(run.y / 2) * 2;
+      if (!bands.has(y)) bands.set(y, { pages: new Set(), texts: new Set(), total: 0 });
+
+      const band = bands.get(y);
+      band.pages.add(i);
+      band.texts.add(nameKey(run.s));
+      band.total++;
+    }
+  }
+
+  // A running head drifts further than one band is wide: Operation: Snakebit sets the same line
+  // at y=750 on twenty-two pages and y=754 on three, and neither half reaches the threshold on
+  // its own. Bands within a line-height of each other are judged together, then all of them are
+  // marked, so a head that wanders is still recognised as one.
+  const merged = [];
+  for (const y of [...bands.keys()].sort((a, b) => a - b)) {
+    const group = merged[merged.length - 1];
+    if (group && y - group.ys[group.ys.length - 1] <= BAND_DRIFT) group.ys.push(y);
+    else merged.push({ ys: [y] });
+  }
+
+  const ubiquitous = pages.length * 0.6;
+  const furniture = new Set();
+  for (const group of merged) {
+    const seen = new Set();
+    const texts = new Set();
+    let total = 0;
+    for (const y of group.ys) {
+      const band = bands.get(y);
+      for (const page of band.pages) seen.add(page);
+      for (const text of band.texts) texts.add(text);
+      total += band.total;
+    }
+
+    // The floor of 4 distinct strings is for a head that names the chapter: it changes a
+    // dozen times in a book but is still the same handful of words over hundreds of pages.
+    if (seen.size >= ubiquitous && texts.size <= Math.max(4, total * 0.25)) {
+      for (const y of group.ys) furniture.add(y);
+    }
+  }
+
+  return furniture;
 }
 
 /**
@@ -199,10 +285,14 @@ export function calibrateFolioOffset(pages, textFloor) {
  * @param {Array<Object>} runs
  * @param {number} pageWidth
  * @param {number} textFloor
+ * @param {Set<number>} [furniture]   From findFurnitureBands().
  * @returns {Array<Object>} Runs in reading order.
  */
-export function buildReadingOrder(runs, pageWidth, textFloor) {
-  const content = runs.filter(run => run.y >= textFloor && !WATERMARK_RE.test(run.s ?? ''));
+export function buildReadingOrder(runs, pageWidth, textFloor, furniture = new Set()) {
+  const content = runs.filter(run => run.y >= textFloor
+    && !run.rotated
+    && !WATERMARK_RE.test(run.s ?? '')
+    && !furniture.has(Math.round(run.y / 2) * 2));
   const middle = pageWidth / 2;
   const byColumn = [[], []];
   for (const run of content) {
@@ -211,9 +301,75 @@ export function buildReadingOrder(runs, pageWidth, textFloor) {
 
   for (const column of byColumn) {
     column.sort((a, b) => b.y - a.y);   // PDF y grows upward, so descending is top-down
+
+    // Flag each run with whether it has its line to itself, which is what separates a heading
+    // set in bold from a bold phrase inside a sentence. Computed here, once per page, because
+    // the alternative is re-deriving it inside a matcher that runs thousands of times.
+    const perLine = new Map();
+    for (const run of column) {
+      const line = Math.round(run.y / 2) * 2;
+      perLine.set(line, (perLine.get(line) ?? 0) + 1);
+    }
+
+    // Leftmost run on its line, which is where a heading sits when it shares the line with the
+    // prose it introduces - a run-in heading with no colon to give it away.
+    const leftmost = new Map();
+    for (const run of column) {
+      const line = Math.round(run.y / 2) * 2;
+      if (!leftmost.has(line) || run.x < leftmost.get(line)) {
+        leftmost.set(line, run.x);
+      }
+    }
+
+    for (const run of column) {
+      const line = Math.round(run.y / 2) * 2;
+      run.alone = perLine.get(line) === 1;
+      run.startsLine = leftmost.get(line) === run.x;
+    }
   }
 
   return [...byColumn[0], ...byColumn[1]];
+}
+
+/**
+ * The fonts body text is set in.
+ *
+ * Needed because size alone cannot find every heading: the Decepticon Directive sets its
+ * replacement-Perk headings at 10pt against a 10.5pt body, so they are SMALLER than the prose
+ * they introduce and are marked out by weight instead. Without this, 168 of that book's Perks
+ * had no heading to match and only 35% of them resolved.
+ *
+ * A set rather than a single font, because body text routinely uses several - a roman and an
+ * italic, or two subsetted copies of the same face. Anything holding a real share of the body
+ * text counts, so only a font used sparingly (a bold used for headings, say) falls outside it.
+ * @param {Array<Array<Object>>} pages
+ * @param {number} bodySize
+ * @returns {Set<string>} Font names that carry body text.
+ */
+export function findBodyFonts(pages) {
+  const tally = new Map();
+  let total = 0;
+  for (const runs of pages) {
+    for (const run of runs) {
+      if (!run.font) continue;
+
+      // Every size counts, not just the book's dominant one. A book whose page count is
+      // dominated by stat blocks has its "body size" set by those, and restricting the tally to
+      // that size would collect the stat-block fonts and call the actual prose font a heading.
+      const chars = (run.s ?? '').length;
+      tally.set(run.font, (tally.get(run.font) ?? 0) + chars);
+      total += chars;
+    }
+  }
+
+  const fonts = new Set();
+  for (const [font, chars] of tally) {
+    if (chars >= total * 0.15) {
+      fonts.add(font);
+    }
+  }
+
+  return fonts;
 }
 
 /**
@@ -297,6 +453,15 @@ export function headingKeys(text, type) {
     keys.add(nameKey(afterColon));
   }
 
+  // The My Little Pony CRB heads every spell with its school - "ADAPT (ENCHANTMENT)" for the
+  // item named "Adapt" - which is the mirror of the case itemKeys() handles, where the
+  // compendium qualifies a name the book does not. 27 of that book's 28 spells were missed for
+  // want of this.
+  const unqualified = raw.replace(/\s*\([^)]*\)\s*$/, '');
+  if (unqualified && unqualified !== raw) {
+    keys.add(nameKey(unqualified));
+  }
+
   const typeWord = nameKey(type ?? "");
   const full = nameKey(raw);
   if (typeWord && full.length > typeWord.length && full.endsWith(typeWord)) {
@@ -305,6 +470,37 @@ export function headingKeys(text, type) {
 
   return keys;
 }
+
+/**
+ * How many following runs to try joining onto a heading before giving up.
+ *
+ * Sized for the worst real case seen: "Spirit of Generosity" in the My Little Pony CRB arrives
+ * as nine pieces. Twelve leaves room without letting the search wander far.
+ */
+const HEADING_PIECES = 12;
+
+/**
+ * How many runs to try joining into a run-in label.
+ *
+ * Far smaller than HEADING_PIECES, because a label is body-sized and so are the sentences
+ * around it - the more pieces joined, the more chance of building a colon out of ordinary
+ * prose. Three covers what the books actually do: the My Little Pony CRB sets its Laugh Tactics
+ * as a bullet, the name, and the colon, each its own run.
+ */
+const LABEL_PIECES = 3;
+
+/**
+ * How far either side of the recorded page to widen the search when nothing is found nearby.
+ *
+ * Some books record the page a SECTION starts on rather than the page an entry is printed on -
+ * all 34 of Welcome to Night Vale's General Perks say p.47, where that chapter opens, while the
+ * entries run over the pages after it.
+ *
+ * 30 covers a chapter comfortably and keeps the cost bounded. Searching the whole book instead
+ * is quadratic in its length and locked up the browser for minutes on a 250-page one, for no
+ * gain: an entry filed under its section start is a few pages away, never a hundred.
+ */
+const WIDE_SEARCH_PAGES = 30;
 
 /**
  * Whether a run reads like a run-in label rather than a line of prose.
@@ -328,6 +524,75 @@ function looksLikeLabel(text) {
 }
 
 /**
+ * The generic sub-headings an item of a given type is written under, inside a parent entry.
+ *
+ * An Influence's Perk and Hang Up share the Influence's name - the compendium has three items
+ * all called "Athlete" - but the book names them only by what they are: ATHLETE, then INFLUENCE
+ * PERK, then HANG-UP. So matching on the item name alone can only ever find the parent, and all
+ * three items end up with the same text.
+ *
+ * Keys are nameKey()d, which is why "Hang-Up" and "HANG UP" are one entry rather than two.
+ */
+const SECTION_KEYS = {
+  perk: new Set([nameKey('Influence Perk'), nameKey('Perk')]),
+  hangUp: new Set([nameKey('Hang Up'), nameKey('Influence Hang Up')]),
+};
+
+/**
+ * Find the sub-heading an item of this type lives under, within the entry just matched.
+ *
+ * Searches only as far as the next heading of the parent's own weight - that is the start of
+ * the NEXT Influence, and its sections belong to it, not to this one.
+ * @param {Array<Object>} page   Runs in reading order.
+ * @param {number} from   Index just past the parent heading.
+ * @param {Object} start   The parent heading run.
+ * @param {number} bodySize
+ * @param {string} type   The item type being looked for.
+ * @returns {number} The index of the section heading, or -1.
+ */
+function findSection(page, from, start, bodySize, type, bodyFonts) {
+  const keys = SECTION_KEYS[type];
+  if (!keys) return -1;
+
+  for (let i = from; i < page.length; i++) {
+    const run = page[i];
+    if (run.size >= start.size && run.size > bodySize) break;
+
+    if (isHeading(run, bodySize, bodyFonts) && keys.has(nameKey(run.s ?? ''))) {
+      return i;
+    }
+  }
+
+  return -1;
+}
+
+/**
+ * Join runs from `index` into a run-in label, if they make one.
+ *
+ * Stops as soon as the text so far reads like a label, so the shortest join wins and the prose
+ * that follows the colon is left out of the name.
+ * @param {Array<Object>} page   Runs in reading order.
+ * @param {number} index
+ * @param {number} bodySize
+ * @returns {?{text: string, end: number}} The label text and the index of its last run.
+ */
+function joinLabel(page, index, bodySize) {
+  if (!page[index] || page[index].size > bodySize) return null;
+
+  let joined = '';
+  for (let j = index; j < page.length && j <= index + LABEL_PIECES; j++) {
+    if (page[j].size > bodySize) break;
+
+    joined += (joined ? ' ' : '') + (page[j].s ?? '');
+    if (looksLikeLabel(joined)) {
+      return { text: joined, end: j };
+    }
+  }
+
+  return null;
+}
+
+/**
  * Whether a run begins an entry called `key`, and how.
  *
  * Two shapes appear in these books and both have to be recognised:
@@ -341,11 +606,58 @@ function looksLikeLabel(text) {
  * @param {string} type   The item type, for undecorating the heading.
  * @returns {?('heading'|'label')}
  */
-function entryStart(run, keys, bodySize, type) {
+/**
+ * Whether a run is a heading, by size or by weight.
+ *
+ * Bigger than body text is the usual sign and needs nothing else. The second case is for books
+ * that mark a heading by weight instead: the Decepticon Directive sets "Nowhere to Run" at 10pt
+ * over a 10.5pt body, in a font used nowhere in the prose.
+ *
+ * That second case is guarded tightly, because bold at body size is also how a run-in label and
+ * an emphasised phrase are set, and treating either as a heading would cut entries in half:
+ *
+ *   - it must have its line to itself, which an inline phrase never does and a run-in label
+ *     never does either (the prose it introduces continues on the same line);
+ *   - it must be short, so a whole sentence set in an unusual font is not mistaken for a title;
+ *   - it must not be dramatically smaller than the body, which would make it a caption.
+ * @param {Object} run
+ * @param {number} bodySize
+ * @param {Set<string>} bodyFonts   From findBodyFonts(); empty disables the weight test.
+ * @returns {boolean}
+ */
+function isHeading(run, bodySize, bodyFonts) {
+  if (!run) return false;
+  if (run.size > bodySize) return true;
+
+  // Book-wide, deliberately, even though it means books that subset a font per page get no help
+  // here - their book-wide "body font" can be absent from the very pages their entries are on.
+  //
+  // A per-page list was tried, both instead of this one and unioned with it, and both lost: on a
+  // page with a large display heading, the heading's own font can be a quarter of that page's
+  // characters and so be counted as body, at which point the heading stops being a heading. It
+  // cost the GI Joe CRB 50 matches and the My Little Pony CRB 49.
+  const fonts = bodyFonts;
+  if (!fonts?.size || !run.font || fonts.has(run.font)) return false;
+
+  // Having the line to itself stays required, even though that costs the run-in headings the
+  // Enigma of Combination uses. Accepting a run that merely STARTS its line was tried and is too
+  // loose to live with: it finds those, but it also promotes the first run of ordinary paragraphs
+  // to headings, which then end the entry above them. It cost the GI Joe CRB 54 matches and the
+  // My Little Pony CRB 44, and halved the median length of what survived.
+
+  // A point and a half below the body, which is a narrow window chosen from both sides. The
+  // Enigma of Combination sets its Perk headings at 9pt against a 10.5pt body, so anything
+  // tighter rejects every one of them; the GI Joe CRB sets captions and table text at 8.5pt
+  // against the same body, and anything looser promotes those to headings, which then cut short
+  // the entries above them - that cost it 50 matches and halved the median length of the rest.
+  return run.alone === true && run.size >= bodySize - 1.5 && (run.s ?? '').length <= 60;
+}
+
+function entryStart(run, keys, bodySize, type, bodyFonts) {
   const text = run.s ?? '';
   const matches = (candidates) => keys.some(key => candidates.has(key));
 
-  if (run.size > bodySize && matches(headingKeys(text, type))) {
+  if (isHeading(run, bodySize, bodyFonts) && matches(headingKeys(text, type))) {
     return 'heading';
   }
 
@@ -377,9 +689,17 @@ function entryStart(run, keys, bodySize, type) {
  * @param {number} labelMargin   The x of the column's left edge, for spotting the next label.
  * @returns {boolean}
  */
-function entryEnd(run, start, kind, bodySize, labelMargin) {
-  // Any heading of the same weight or heavier closes what came before it.
-  if (run.size >= start.size && run.size > bodySize) {
+function entryEnd(run, start, kind, bodySize, labelMargin, bodyFonts) {
+  // ANY heading closes what came before it, not merely one of the same weight.
+  //
+  // Weight alone is not enough because these books nest: an Influence is headed at 38pt and
+  // then subdivided at 22pt into INFLUENCE PERK, HANG-UP and SUGGESTED CHARACTERISTICS. Ending
+  // only at the next 38pt heading swallowed all of that, which is why a third of the entries in
+  // some books came out several thousand characters long - the Athlete Influence, its Perk and
+  // its Hang Up were three separate items all handed the same whole-page writeup.
+  // The weight-based case counts here too, or a book that heads by weight would have each
+  // entry run on through every sibling after it.
+  if (isHeading(run, bodySize, bodyFonts)) {
     return true;
   }
 
@@ -423,6 +743,12 @@ const SYMBOL_GLYPHS = {
   '\uF0E1': '\u2191',
   '\uF0E2': '\u2193',
   '\uF06E': '\u25A0',
+
+  // Welcome to Night Vale uses a different symbol font and so different codepoints, but it
+  // defines them in its own text - "An Upshift ( [F068] ) or Downshift ( [F069] )" - so these
+  // two are not inferred from context but stated by the book.
+  '\uF068': '\u2191',
+  '\uF069': '\u2193',
 };
 
 /**
@@ -435,6 +761,33 @@ export function mapSymbolGlyphs(text) {
 }
 
 /**
+ * Whether the entry ends at `index`.
+ *
+ * Wraps entryEnd() with the lookahead a split label needs: the run at `index` may be only the
+ * first piece of the next label ("So Funny, It's Scary" with its colon in the run after it), in
+ * which case entryEnd() alone sees no colon and the entry runs on through every sibling.
+ * @param {Array<Object>} page   Runs in reading order.
+ * @param {number} index
+ * @param {Object} start
+ * @param {string} kind
+ * @param {number} bodySize
+ * @param {number} labelMargin
+ * @returns {boolean}
+ */
+function endsHere(page, index, start, kind, bodySize, labelMargin, bodyFonts) {
+  const run = page[index];
+  if (entryEnd(run, start, kind, bodySize, labelMargin, bodyFonts)) {
+    return true;
+  }
+
+  if (kind !== 'label' || Math.abs(run.x - labelMargin) > 3) {
+    return false;
+  }
+
+  return !!joinLabel(page, index, bodySize);
+}
+
+/**
  * Join runs into a paragraph.
  *
  * pdf.js emits one run per styled span, so a single sentence arrives in pieces and line-broken
@@ -442,20 +795,37 @@ export function mapSymbolGlyphs(text) {
  * @param {Array<Object>} runs
  * @returns {string}
  */
-function joinRuns(runs) {
+export function joinRuns(runs) {
   let text = '';
   for (const run of runs) {
     const piece = mapSymbolGlyphs(run.s ?? '').trim();
     if (!piece) continue;
 
     if (text.endsWith('-')) {
-      text = text.slice(0, -1) + piece;   // rejoin a word split across lines
+      // Rejoin a word split across lines. The whitespace before the hyphen has to go too: these
+      // PDFs often put the hyphen in a run of its own, so the join above has already inserted a
+      // separator in front of it and "exhil" + "-" + "aration" would come back as "exhil aration"
+      // rather than "exhilaration".
+      text = text.replace(/\s*-$/, '') + piece;
     } else if (!text) {
       text = piece;
     } else {
       text += ` ${piece}`;
     }
   }
+
+  // A heading can carry the level it is gained at as separate, smaller runs - the My Little Pony
+  // CRB sets "CHEER" then "(1" then "LEVEL)". That is not part of the heading (different size, so
+  // the join above will not take it) and not part of the description either. Left in, entries in
+  // that book opened with "(6 LEVEL)".
+  //
+  // Matched as "a leading parenthetical that talks about levels" rather than one exact shape,
+  // because the book writes at least four: "(1 LEVEL)", "(3RD LEVEL - ALSO 11TH)" and
+  // "(7 LEVEL- ALSO 15 LEVEL)". The optional ordinal in front is the superscript of "1ST", which
+  // is a run of its own at a smaller size again and so arrives ahead of the bracket.
+  // Several ordinals can stack up ("TH TH TH (6 LEVEL - ALSO 14 AND 18 LEVEL))"), one per level
+  // the tag mentions, and the bracket is sometimes doubled - hence the repeats on both.
+  text = text.replace(/^(?:(?:st|nd|rd|th)\s*)*\([^)]*level[^)]*\)+\s*/i, '');
 
   // A shift arrow is drawn as its own run, so joining leaves a space on each side of it and
   // the text reads "gain a  1 dice shift" instead of "gain a 1 dice shift". Close the
@@ -479,9 +849,68 @@ function joinRuns(runs) {
  * @param {string} [type]   The item type, for undecorating the heading.
  * @returns {?{text: string, kind: string, continued: boolean}}
  */
-export function extractEntry(readingOrders, pageIndex, name, bodySize, type) {
+/**
+ * Per-page body size, memoized. See pageBodySize() for why a book-wide figure is not enough.
+ * @type {WeakMap<Array<Object>, number>}
+ */
+const pageBodySizes = new WeakMap();
+
+/**
+ * The size body text is set in on THIS page.
+ *
+ * A single figure for a whole book only holds while the book has one layout. General Hawk's
+ * Personnel Files has 300k characters of 9pt stat blocks against 77k of 10.5pt prose, so the
+ * book-wide answer is 9 - and on the pages that actually carry entries, where the prose is 10.5
+ * and the heading 15, that makes every line of prose look like a heading and ends every entry
+ * before it starts. All 52 of that book's items were missed, and 77 of 79 in Ferocious Fighters.
+ *
+ * A page with too little text to judge keeps the book-wide figure, so a mostly-art page or a
+ * half-empty one does not invent its own.
+ * @param {Array<Object>} page   Runs in reading order.
+ * @param {number} fallback   The book-wide size.
+ * @returns {number}
+ */
+function pageBodySize(page, fallback) {
+  if (pageBodySizes.has(page)) {
+    return pageBodySizes.get(page);
+  }
+
+  const tally = new Map();
+  let total = 0;
+  for (const run of page) {
+    const chars = (run.s ?? '').length;
+    tally.set(run.size, (tally.get(run.size) ?? 0) + chars);
+    total += chars;
+  }
+
+  let best = fallback;
+  if (total >= 400) {
+    let bestChars = -1;
+    for (const [size, chars] of tally) {
+      if (chars > bestChars) {
+        best = size;
+        bestChars = chars;
+      }
+    }
+  }
+
+  // Only ever raise, never lower. The failure this exists for is a book-wide size too SMALL for
+  // the page in hand (General Hawk's Personnel Files, where 300k characters of stat block set the
+  // book's size to 9 while the pages carrying entries are 10.5). A page answering SMALLER is the
+  // opposite case - a page given over to a table, which would drag the threshold below the prose
+  // of any entry sharing it, and cost the GI Joe CRB ten matches. A book whose headings are
+  // genuinely smaller than its body is handled by isHeading()'s weight test instead, which does
+  // not depend on this figure being exact.
+  const size = Math.max(best, fallback);
+  pageBodySizes.set(page, size);
+  return size;
+}
+
+export function extractEntry(readingOrders, pageIndex, name, bodySize, type, bodyFonts) {
   const page = readingOrders[pageIndex];
   if (!page) return null;
+
+  bodySize = pageBodySize(page, bodySize);
 
   /**
    * Look for an entry opening with any of `keys`.
@@ -495,18 +924,26 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type) {
     };
 
     for (let i = 0; i < page.length; i++) {
-      const found = entryStart(page[i], keys, bodySize, type);
+      const found = entryStart(page[i], keys, bodySize, type, bodyFonts);
       if (found) {
         return { startIndex: i, headingEnd: i, kind: found };
       }
 
-      // A display heading can wrap, and pdf.js reports each line of it as a separate run -
-      // "BATTLE-" then "HARDENED". Neither half matches the item on its own, which is what left
-      // a fifth of the GI Joe CRB's General Perks (a chapter set in a narrower column, so its
-      // headings wrap far more often) without a description. Try the neighbours at the same size.
-      if (page[i].size > bodySize) {
+      // A display heading routinely arrives in pieces, and pdf.js reports each one as its own
+      // run. Two reasons, both common:
+      //
+      //   - it wrapped. "BATTLE-" then "HARDENED" - a fifth of the GI Joe CRB's General Perks
+      //     are set in a narrow column and wrap this way.
+      //   - it is set in a display face that starts a new run at every change of case. The My
+      //     Little Pony CRB writes "Spirit of Generosity" as nine runs: Spi R it O f gE n EROS
+      //     ity. Every Role in that book was missed for want of joining them.
+      //
+      // Hence a generous limit. Cost is bounded (the join stops at the first size change, and
+      // headings are a small fraction of a page) and each step is tested as it is built, so the
+      // shortest run of pieces that actually spells the name is the one that wins.
+      if (isHeading(page[i], bodySize, bodyFonts)) {
         let joined = page[i].s ?? '';
-        for (let j = i + 1; j < page.length && j <= i + 2; j++) {
+        for (let j = i + 1; j < page.length && j <= i + HEADING_PIECES; j++) {
           if (page[j].size !== page[i].size) break;
 
           // No space after a hyphen: that hyphen is the wrap itself, not part of the name.
@@ -514,6 +951,17 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type) {
           if (matches(joined)) {
             return { startIndex: i, headingEnd: j, kind: 'heading' };
           }
+        }
+      }
+
+      // A run-in label can arrive in pieces as well, and the piece that gets separated is
+      // usually the colon itself: the My Little Pony CRB sets each Laugh Tactic as a bullet,
+      // then the name, then ":", then the prose. Without joining, the name run carries no colon
+      // and is not recognised as a label at all - that was every Laugh Tactic in the book.
+      if (page[i].size <= bodySize) {
+        const label = joinLabel(page, i, bodySize);
+        if (label && keys.includes(nameKey(label.text))) {
+          return { startIndex: i, headingEnd: label.end, kind: 'label' };
         }
       }
     }
@@ -536,8 +984,21 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type) {
 
   if (!hit) return null;
 
-  const { startIndex, headingEnd, kind } = hit;
-  const start = page[startIndex];
+  let { startIndex, headingEnd, kind } = hit;
+  let start = page[startIndex];
+
+  // A Perk or Hang Up that shares its name with an Influence has just matched the Influence.
+  // Its own text is a section inside that entry, so step down into it. When there is no such
+  // section - an ordinary Perk with a heading of its own - nothing changes.
+  if (kind === 'heading') {
+    const section = findSection(page, headingEnd + 1, start, bodySize, type, bodyFonts);
+    if (section !== -1) {
+      startIndex = section;
+      headingEnd = section;
+      start = page[section];
+    }
+  }
+
   // The margin the NEXT label would start at. It is this entry's own x, not the column's:
   // these books indent a run-in label past the body text it introduces (labels at x=72 against
   // body at x=63 in the GI Joe CRB), so measuring from the column edge never matched a label and
@@ -549,7 +1010,7 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type) {
   let continued = false;
   let reachedEnd = true;
   for (let i = headingEnd + 1; i < page.length; i++) {
-    if (entryEnd(page[i], start, kind, bodySize, labelMargin)) {
+    if (endsHere(page, i, start, kind, bodySize, labelMargin, bodyFonts)) {
       reachedEnd = false;
       break;
     }
@@ -560,15 +1021,57 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type) {
   // Ran to the bottom of the page without being closed, so the entry keeps going overleaf.
   if (reachedEnd) {
     const next = readingOrders[pageIndex + 1] ?? [];
-    for (const run of next) {
-      if (entryEnd(run, start, kind, bodySize, labelMargin)) break;
-      body.push(run);
+    for (let i = 0; i < next.length; i++) {
+      if (endsHere(next, i, start, kind, bodySize, labelMargin, bodyFonts)) break;
+      body.push(next[i]);
       continued = true;
     }
   }
 
   const text = joinRuns(body);
   return text ? { text, kind, continued, loose } : null;
+}
+
+/**
+ * Work out the page offset by trying offsets and seeing which one finds the most entries.
+ *
+ * calibrateFolioOffset() reads the answer off the printed page numbers, which is exact when
+ * there are any to read. Some books have none it can see - the Enigma of Combination yields zero
+ * folio samples - and the offset then falls back to 0 with no evidence behind it, which puts
+ * every lookup on the wrong page. That book matched 9 of 105 items.
+ *
+ * So: ask the content instead. The right offset is the one under which the book's own item names
+ * actually turn up as headings, and a wrong one finds almost nothing, so the signal is stark.
+ *
+ * Sampled rather than exhaustive, because this runs once per candidate offset over the whole
+ * item list and only needs to tell a clear winner from noise.
+ * @param {Array<Array<Object>>} readingOrders
+ * @param {Array<{name: string, type: string, page: number}>} items
+ * @param {number} bodySize
+ * @param {Set<string>} bodyFonts
+ * @param {Array<number>} candidates   Offsets to try.
+ * @param {number} [sampleSize]
+ * @returns {{offset: number, matched: number}}
+ */
+export function findBestOffset(readingOrders, items, bodySize, bodyFonts, candidates, sampleSize = 40) {
+  const step = Math.max(1, Math.floor(items.length / sampleSize));
+  const sample = items.filter((unused, index) => index % step === 0).slice(0, sampleSize);
+
+  let best = { offset: candidates[0] ?? 0, matched: -1 };
+  for (const offset of candidates) {
+    let matched = 0;
+    for (const item of sample) {
+      if (findEntry(readingOrders, item.page, offset, item.name, bodySize, item.type, bodyFonts)) {
+        matched++;
+      }
+    }
+
+    if (matched > best.matched) {
+      best = { offset, matched };
+    }
+  }
+
+  return best;
 }
 
 /**
@@ -586,12 +1089,46 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type) {
  * @param {string} [type]   The item type, for undecorating the heading.
  * @returns {?{text: string, kind: string, continued: boolean, page: number, exact: boolean}}
  */
-export function findEntry(readingOrders, printedPage, offset, name, bodySize, type) {
+export function findEntry(readingOrders, printedPage, offset, name, bodySize, type, bodyFonts, wide = false) {
   const target = printedPage + offset - 1;   // -1 because readingOrders is 0-based
+  const at = (delta) => {
+    const found = extractEntry(readingOrders, target + delta, name, bodySize, type, bodyFonts);
+    return found ? { ...found, page: printedPage + delta, exact: delta === 0 } : null;
+  };
+
   for (const delta of [0, -1, 1]) {
-    const found = extractEntry(readingOrders, target + delta, name, bodySize, type);
-    if (found) {
-      return { ...found, page: printedPage + delta, exact: delta === 0 };
+    const found = at(delta);
+    if (found) return found;
+  }
+
+  // Nothing within a page either way, so widen to the whole book, working outward from where the
+  // data said to look.
+  //
+  // Some books record the page a SECTION starts on rather than the page the entry is printed on:
+  // all 34 of Welcome to Night Vale's General Perks say p.47, which is where that chapter opens,
+  // while the entries themselves run over the pages after it. A one-page window cannot reach
+  // them, and 99 of that book's 165 items were missed for it.
+  //
+  // Outward rather than front-to-back so the nearest candidate wins, which is almost always the
+  // right one, and the result is flagged `loose` either way - the importer shows it as a match to
+  // look at rather than one to take on trust. A stray match is unlikely regardless, because the
+  // whole heading still has to BE the item's name.
+  // Opt-in, because the caller that identifies WHICH book a PDF is runs every book's items
+  // against it, and for the 35 books it is not, essentially every item goes unmatched. Widening
+  // the search for each of those turns identification from one page-scan per item into sixty,
+  // which locked the browser up for minutes. Identification passes wide=false and only the
+  // winning book is scanned again with it on.
+  if (!wide) {
+    return null;
+  }
+
+  // Bounded, not the whole book. A section start is a handful of pages from its entries, never a
+  // hundred, and scanning the lot is quadratic in the book's length for no gain.
+  const span = Math.min(WIDE_SEARCH_PAGES, Math.max(target, readingOrders.length - target));
+  for (let delta = 2; delta <= span; delta++) {
+    for (const signed of [delta, -delta]) {
+      const found = at(signed);
+      if (found) return { ...found, loose: true };
     }
   }
 

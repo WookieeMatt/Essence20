@@ -112,6 +112,7 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       emptyTheMag: form?.emptyTheMag?.checked,
       isAiming: form?.isAiming?.checked,
       spendEnergon: form?.spendEnergon?.checked,
+      spendStoryPointSpecialized: form?.spendStoryPointSpecialized?.checked,
       applyStrikeBonus: form?.applyStrikeBonus?.checked,
       applyHeavyForce: form?.applyHeavyForce?.checked,
       spendIdeaPoint: form?.spendIdeaPoint?.checked,

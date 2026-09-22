@@ -1,4 +1,5 @@
 import { Dice } from "./dice.mjs";
+import { legacyPoolParty } from './jest.legacy-pool-party.js';
 import { jest } from '@jest/globals';
 import { PENDING_ENVIRONMENTAL_ASSIST_FLAG_KEY } from "./helpers/team-buffs.mjs";
 
@@ -1169,6 +1170,8 @@ describe("rollSkill", () => {
     demolitionDriverAvailable: 0,
     defenseType: "none",
     energonAvailable: false,
+
+    storyPointSpecializedAvailable: false,
     essence: 'strength',
     hardpointMovement: null,
     ideaPointAvailable: false,
@@ -9374,16 +9377,18 @@ describe("rollSkill", () => {
     }
 
     const alreadyAttackedFlag = { combatId: 'combat1', round: 2, disposition: 1, attackerId: 'ally1' };
-    let originalGameUsers, originalGameSettings, originalGameSocket;
+    let originalGameUsers, originalGameSettings, originalGameSocket, originalGameActors;
 
     beforeEach(() => {
       game.combat = { id: 'combat1', round: 2 };
       originalGameUsers = global.game.users;
       originalGameSettings = global.game.settings;
       originalGameSocket = global.game.socket;
+      originalGameActors = global.game.actors;
       global.game.users = [{ isGM: true, active: true }];
       global.game.settings = { get: jest.fn(() => 1) };
       global.game.socket = { emit: jest.fn() };
+      global.game.actors = { party: legacyPoolParty() };
     });
 
     afterEach(() => {
@@ -9391,6 +9396,7 @@ describe("rollSkill", () => {
       global.game.users = originalGameUsers;
       global.game.settings = originalGameSettings;
       global.game.socket = originalGameSocket;
+      global.game.actors = originalGameActors;
     });
 
     test("witheringFireAvailable is true against a target already attacked by an ally this round, with a Story Point and a GM connected", async () => {
@@ -9829,7 +9835,7 @@ describe("rollSkill", () => {
 
   describe("Dependable Tanker (Technician Focus, p.70)", () => {
     const DEPENDABLE_TANKER_ID = "Compendium.essence20.intercontinental_adventures.Item.mHqern3w5iGWBi02";
-    let originalGameUsers, originalGameSettings, originalGameSocket;
+    let originalGameUsers, originalGameSettings, originalGameSocket, originalGameActors;
 
     function makeActor({ hasPerk = true } = {}) {
       return {
@@ -9845,15 +9851,18 @@ describe("rollSkill", () => {
       originalGameUsers = global.game.users;
       originalGameSettings = global.game.settings;
       originalGameSocket = global.game.socket;
+      originalGameActors = global.game.actors;
       global.game.users = [{ isGM: true, active: true }];
       global.game.settings = { get: jest.fn(() => 1) };
       global.game.socket = { emit: jest.fn() };
+      global.game.actors = { party: legacyPoolParty() };
     });
 
     afterEach(() => {
       global.game.users = originalGameUsers;
       global.game.settings = originalGameSettings;
       global.game.socket = originalGameSocket;
+      global.game.actors = originalGameActors;
     });
 
     test("offers the checkbox only on Driving/Technology, with the Perk, a GM, and a Story Point", async () => {
@@ -9913,7 +9922,7 @@ describe("rollSkill", () => {
 
   describe("Hacking Algorithms (Commando Focus, p.70)", () => {
     const HACKING_ALGORITHMS_ID = "Compendium.essence20.intercontinental_adventures.Item.6IxjVPikwpSdrYpd";
-    let originalGameUsers, originalGameSettings, originalGameSocket;
+    let originalGameUsers, originalGameSettings, originalGameSocket, originalGameActors;
 
     function makeActor({ hasPerk = true } = {}) {
       return {
@@ -9929,15 +9938,18 @@ describe("rollSkill", () => {
       originalGameUsers = global.game.users;
       originalGameSettings = global.game.settings;
       originalGameSocket = global.game.socket;
+      originalGameActors = global.game.actors;
       global.game.users = [{ isGM: true, active: true }];
       global.game.settings = { get: jest.fn(() => 1) };
       global.game.socket = { emit: jest.fn() };
+      global.game.actors = { party: legacyPoolParty() };
     });
 
     afterEach(() => {
       global.game.users = originalGameUsers;
       global.game.settings = originalGameSettings;
       global.game.socket = originalGameSocket;
+      global.game.actors = originalGameActors;
     });
 
     test("offers the checkbox only on Technology, with the Perk, a GM, and a Story Point", async () => {

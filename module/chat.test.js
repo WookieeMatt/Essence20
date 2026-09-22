@@ -12,7 +12,7 @@ const IRON_HIDE_ID = "Compendium.essence20.gi_joe_crb.Item.hXtchClOmMDDeWB9";
 
 game.user = { isGM: true };
 game.combat = null;
-game.actors = { get: jest.fn(() => null) };
+game.actors = { get: jest.fn(() => null), party: game.actors.party };
 foundry.applications.api.DialogV2 = { wait: jest.fn() };
 
 /* onApplyDamage */

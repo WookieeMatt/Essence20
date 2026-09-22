@@ -4,7 +4,8 @@ import { DEFENDING_STATUS } from "./helpers/named-actions.mjs";
 import {
   LEND_ASSISTANCE_EDGE_FLAG, LEND_ASSISTANCE_SHIFT_FLAG,
 } from "./helpers/lend-assistance.mjs";
-import { chooseDefenderDefense } from "./helpers/defense-choice.mjs";
+import { chooseDefenderDefense, DEFENSE_BOOST, hasSceneDefenseBoost } from "./helpers/defense-choice.mjs";
+import { CIRCLE_SHIFT_FLAG } from "./helpers/friendship-circle.mjs";
 import { checkAndActivateDefenderStep } from "./helpers/defender-step.mjs";
 import {
   bankRetributionBonus, computeRetributionBonusType, RETRIBUTION_ID, RETRIBUTION_PENDING_FLAG,
@@ -52,7 +53,10 @@ import { getNearbyAllyTokens } from "./helpers/allies.mjs";
 import { getShieldUpgradeBonus, isPersonalShieldActive } from "./helpers/personal-shield.mjs";
 import { getShieldModulationDamageType, SHIELD_MODULATION_ID } from "./helpers/shield-modulation.mjs";
 import { getRecklessAbandonStrengthShiftUp } from "./helpers/reckless-abandon.mjs";
-import { hasStoryPointsAvailable, isGmConnected, requestStoryPointGrant, requestStoryPointSpend } from "./helpers/story-points.mjs";
+import {
+  canSpendForActor, canWriteStoryPoints, hasStoryPointsAvailable, poolFor, requestStoryPointGrant,
+  requestStoryPointSpend, spendForActor,
+} from "./helpers/story-points.mjs";
 import { isDugIn } from "./helpers/dig-in.mjs";
 import { isCannoneerDugIn } from "./helpers/cannoneer-dig-in.mjs";
 import { isSkiing } from "./helpers/skier.mjs";
@@ -80,6 +84,9 @@ import { addToxicTerrorStack, getToxicTerrorShiftDown, isToxicTerrorActive } fro
 // own flat "+N to all Defenses" compendium Active Effect; the pieces built here are their own
 // remaining secondary riders (damage bonuses below; Flame/Frost/Stone's own incoming-damage
 // reduction lives in combat.mjs#getWarlordDamageReduction instead).
+// The turn a Defeated actor has bought with a Story Point - see rollSkill()'s own prompt and
+// documents/actor.mjs's action budget, which both read it.
+export const ACT_WHILE_DEFEATED_FLAG = 'actWhileDefeatedThisTurn';
 const WARLORD_FMMC = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.";
 const CRUEL_WARLORD_ID = `${WARLORD_FMMC}F3TRKmoaUOtHrlzq`;
 const FLAME_WARLORD_ID = `${WARLORD_FMMC}TPrNnDxBKHIajafY`;
@@ -3101,7 +3108,7 @@ export class Dice {
     };
     // We Improvise - see WE_IMPROVISE_ID's own comment above.
     if (game.combat && actorHasPerk(actor, WE_IMPROVISE_ID) && !hasUsedThisEncounter(actor, WE_IMPROVISE_ENCOUNTER_FLAG)
-      && isGmConnected()) {
+      && canWriteStoryPoints()) {
       requestStoryPointGrant(actor);
       await markUsedThisEncounter(actor, WE_IMPROVISE_ENCOUNTER_FLAG);
     }
@@ -3370,6 +3377,32 @@ export class Dice {
     const rolledSkill = dataset.skill;
     let rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
 
+    // "When a creature is Defeated, it can no longer take actions normally, but a player may
+    // spend a Story Point to momentarily act as though it has not been Defeated" (GI Joe CRB
+    // p.209; PR p.173 and MLP p.187 say the same - Transformers p.161 charges an Energon Point
+    // instead, which is its own resource and not offered here). Asked at the moment the actor
+    // goes to act, and once per turn: the point buys the turn, not the roll. The action budget
+    // (documents/actor.mjs) reads the same flag, so the bought turn has its actions back too.
+    // Declining does not block the roll - this system has never refused a Defeated actor's
+    // dice, and a table that plays that loosely should not be stopped by a dialog.
+    if (actor?.statuses?.has('defeated') && !hasUsedThisTurn(actor, ACT_WHILE_DEFEATED_FLAG)
+      && actor.type != 'vehicle' && actor.type != 'zord' && canSpendForActor(actor)) {
+      const confirmed = await foundry.applications.api.DialogV2.confirm({
+        window: { title: this._localize('E20.SptActWhileDefeatedTitle') },
+        content: `<p>${this._localize('E20.SptActWhileDefeatedPrompt', { name: actor.name })}</p>`,
+        rejectClose: false,
+      });
+
+      if (confirmed) {
+        await spendForActor(actor, 1, { announce: false });
+        await markUsedThisTurn(actor, ACT_WHILE_DEFEATED_FLAG);
+        this._chatMessage.create({
+          speaker: this._chatMessage.getSpeaker({ actor }),
+          content: this._localize('E20.SptActWhileDefeated', { name: actor.name }),
+        });
+      }
+    }
+
     // Exemplary - see helpers/exemplary.mjs's own doc comment. Recorded regardless of the roll's
     // own outcome, as early as rolledSkill itself is known.
     await recordExemplaryRoll(actor, rolledSkill);
@@ -3548,6 +3581,16 @@ export class Dice {
     if (pendingLendAssistanceShift?.skill == rolledSkill) {
       calculatedShiftUp += pendingLendAssistanceShift.shiftUp;
       await clearPendingBonus(actor, LEND_ASSISTANCE_SHIFT_FLAG);
+    }
+
+    // Friendship Circle (MLP CRB, every Spirit Role, 1st level) - see
+    // helpers/friendship-circle.mjs. "↑1 on a Skill Test per Pony in the Friendship Circle", drawn
+    // from the shared pool onto this pony and taken by whichever Skill Test they make next.
+    // Added here so the Roll Options Dialog opens showing it, but only CLEARED once the roll is
+    // committed (below, after the dialog) - a cancelled dialog must not burn what the pony drew.
+    const pendingCircleShift = getPendingBonus(actor, CIRCLE_SHIFT_FLAG);
+    if (pendingCircleShift?.shiftUp) {
+      calculatedShiftUp += pendingCircleShift.shiftUp;
     }
 
     // Shoulder To Shoulder (Focus: Frontline Leader, 3rd level, p.87) - see
@@ -5134,7 +5177,7 @@ export class Dice {
     const witheringFireTarget = item?.type == 'weaponEffect' ? game.user.targets.first()?.actor : null;
     updatedShiftDataset.witheringFireAvailable = !!witheringFireTarget
       && checkTeamFocus(actor, witheringFireTarget, WITHERING_FIRE_ID)
-      && isGmConnected() && hasStoryPointsAvailable(1);
+      && canWriteStoryPoints() && hasStoryPointsAvailable(1);
 
     // Menacing Glare (Beneath the Helmet, Dark Ranger, 2nd level, p.39) - see
     // helpers/menacing-glare.mjs's own doc comment. A plain Intimidation Skill Test (the player
@@ -5145,11 +5188,11 @@ export class Dice {
 
     // Dependable Tanker - see DEPENDABLE_TANKER_ID's own comment above.
     updatedShiftDataset.dependableTankerAvailable = ['driving', 'technology'].includes(rolledSkill)
-      && actorHasPerk(actor, DEPENDABLE_TANKER_ID) && isGmConnected() && hasStoryPointsAvailable(1);
+      && actorHasPerk(actor, DEPENDABLE_TANKER_ID) && canWriteStoryPoints() && hasStoryPointsAvailable(1);
 
     // Hacking Algorithms - see HACKING_ALGORITHMS_ID's own comment above.
     updatedShiftDataset.hackingAlgorithmsAvailable = rolledSkill == 'technology'
-      && actorHasPerk(actor, HACKING_ALGORITHMS_ID) && isGmConnected() && hasStoryPointsAvailable(1);
+      && actorHasPerk(actor, HACKING_ALGORITHMS_ID) && canWriteStoryPoints() && hasStoryPointsAvailable(1);
 
     // Charge (Warrior, 2nd level, p.91): "If you Move at least 10ft away from your past position...
     // and then Attack with a Might weapon immediately after, you gain an upshift on the Might
@@ -5747,6 +5790,13 @@ export class Dice {
     // evaluates to undefined rather than false, leaking a non-boolean into the dataset.
     updatedShiftDataset.energonAvailable = Boolean(actor.system.canTransform && actor.system.energon.normal.value > 0);
 
+    // "Roll a Skill Test as if Specialized" for a Story Point (GI Joe CRB p.127; every line has
+    // it). Same Roll Options Dialog shape as Energon just above - a toggle the player checks,
+    // paid only once the roll is confirmed - and only offered when the roll is not already
+    // Specialized, since there would be nothing to buy. Draws on whichever pool is this
+    // actor's own (helpers/story-points.mjs#poolFor).
+    updatedShiftDataset.storyPointSpecializedAvailable = !updatedShiftDataset.isSpecialized && canSpendForActor(actor);
+
     // Akimbo (Fighting Style option, p.79/108): "If you have a pistol or a submachine gun in
     // each hand, you receive an upshift on your off-hand attack." No dual-wielding/hand-tracking
     // concept exists anywhere in this system (weapon Items carry no structured type/category
@@ -5893,6 +5943,24 @@ export class Dice {
     if (skillRollOptions.applyUnshakeableAim) {
       skillRollOptions.shiftUp += 2;
       await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
+    }
+
+    // As if Specialized for a Story Point - see updatedShiftDataset.storyPointSpecializedAvailable
+    // above. Forces the dialog's own Specialized toggle on, the same "checkbox forces an
+    // already-resolved field" shape Worth A Shot uses below, and spends once the roll is
+    // committed to.
+    if (skillRollOptions.spendStoryPointSpecialized) {
+      skillRollOptions.isSpecialized = true;
+      await spendForActor(actor, 1, { announce: false });
+      this._chatMessage.create({
+        speaker: this._chatMessage.getSpeaker({ actor }),
+        content: this._localize('E20.SptSpecializedSpent', { name: actor.name }),
+      });
+    }
+
+    // The Friendship Circle upshift drawn above is spent by this roll, now that it is happening.
+    if (pendingCircleShift?.shiftUp) {
+      await clearPendingBonus(actor, CIRCLE_SHIFT_FLAG);
     }
 
     if (skillRollOptions.spendEnergon) {
@@ -6841,7 +6909,7 @@ export class Dice {
         // through only as the suggested default; every other use of "the Defense this attack
         // targets" below this point reads resolvedDefenseType instead, since each target in a
         // multi-target attack can genuinely choose a different one.
-        const resolvedDefenseType = await chooseDefenderDefense(token.actor, {
+        const { defenseType: resolvedDefenseType, storyPointBoost } = await chooseDefenderDefense(token.actor, {
           attackerName: actor.name,
           suggestedDefenseType: skillRollOptions.defenseType,
         });
@@ -6872,6 +6940,14 @@ export class Dice {
         })
           + getShieldUpgradeBonus(token.actor, resolvedDefenseType)
           - deflectiveReduction;
+
+        // "Add +5 to a Defense before dice are rolled" (GI Joe CRB p.127) - the defender's own
+        // Story Point, spent in the Defense prompt just above; or, in My Little Pony, bought
+        // earlier this scene and still standing (helpers/defense-choice.mjs#hasSceneDefenseBoost).
+        // One bonus either way: a boost bought this attack is also the one the scene flag holds.
+        if (storyPointBoost || hasSceneDefenseBoost(token.actor, resolvedDefenseType)) {
+          difficulty += DEFENSE_BOOST;
+        }
 
         // Ground Suppression - see helpers/ground-suppression.mjs's own doc comment. The first
         // target-difficulty modifier in this project to SUBTRACT rather than add - benefits ANY
@@ -12897,14 +12973,14 @@ export class Dice {
     // Rouse (GI Joe CRB, Officer base, 1st level, p.85) - see helpers/rouse.mjs's own doc
     // comment. A success (not failure, unlike Stay Humble/Everything is Inspiration just below)
     // on this flat DIF 15 Persuasion Skill Test grants the Story Point.
-    if (checkContext.isRouseAttempt && results.some(result => result.success) && isGmConnected()) {
+    if (checkContext.isRouseAttempt && results.some(result => result.success) && canWriteStoryPoints()) {
       requestStoryPointGrant(actor);
     }
 
     // Rousing Comeback (GI Joe CRB, Officer base, 11th level, p.86) - see
     // helpers/rousing-comeback.mjs's own doc comment. Same success-grants-a-Story-Point shape as
     // Rouse just above.
-    if (checkContext.isRousingComebackAttempt && results.some(result => result.success) && isGmConnected()) {
+    if (checkContext.isRousingComebackAttempt && results.some(result => result.success) && canWriteStoryPoints()) {
       requestStoryPointGrant(actor);
     }
 
@@ -12922,7 +12998,7 @@ export class Dice {
     // one failure still "fails" for this purpose) - grants only if a GM is actually connected to
     // perform the world-setting write, same upfront-affordability idiom hasRerollCost's own
     // worldStoryPoints check already uses, just for a grant instead of a spend.
-    if (checkContext.isStayHumbleAttempt && results.some(result => !result.success) && isGmConnected()) {
+    if (checkContext.isStayHumbleAttempt && results.some(result => !result.success) && canWriteStoryPoints()) {
       requestStoryPointGrant(actor);
     }
 
@@ -12977,7 +13053,7 @@ export class Dice {
     // comment above. Any failed result on ANY Skill Test counts, same shape as Stay Humble, plus
     // the once-per-scene mark (isEverythingIsInspirationAttempt already confirmed it hasn't been
     // used yet this scene, before the roll happened).
-    if (checkContext.isEverythingIsInspirationAttempt && results.some(result => !result.success) && isGmConnected()) {
+    if (checkContext.isEverythingIsInspirationAttempt && results.some(result => !result.success) && canWriteStoryPoints()) {
       requestStoryPointGrant(actor);
       await markUsedThisEncounter(actor, 'everythingIsInspirationUsedThisEncounter');
     }
@@ -13003,7 +13079,7 @@ export class Dice {
     // Shoots and Scores (MLP Sporty Influence, p.60) - see SHOOTS_AND_SCORES_ID's own comment
     // above. Any Critical Success (multiplier >= 2) on this Athletics roll counts.
     if (checkContext.isShootsAndScoresAttempt && results.some(result => result.multiplier >= 2)
-      && isGmConnected()) {
+      && canWriteStoryPoints()) {
       requestStoryPointGrant(actor);
     }
 
@@ -13034,7 +13110,7 @@ export class Dice {
     // isTilAllAreOneAttempt's own comment above. Same Critical-Success shape as Shoots and Scores
     // just above, plus the once-per-scene mark (checked before the roll happened).
     if (checkContext.isTilAllAreOneAttempt && results.some(result => result.multiplier >= 2)
-      && isGmConnected()) {
+      && canWriteStoryPoints()) {
       requestStoryPointGrant(actor);
       await markUsedThisEncounter(actor, 'tilAllAreOneUsedThisEncounter');
     }
@@ -13389,10 +13465,29 @@ export class Dice {
       rollFailed: results.every(entry => !entry.success),
       dealtDamage,
       isFumble,
+      // What each target was compared against, for chat.mjs#addDefenseBoostButton - "+1 to a
+      // Defense after dice are rolled" only ever matters on a hit by exactly nothing, and that
+      // is a fact about each target's own difficulty, which the card otherwise only prints.
+      checkResults: results.map(entry => ({
+        targetUuid: entry.targetUuid, difficulty: entry.difficulty, success: entry.success,
+      })),
     };
 
     const chatData = await buildCheckChatData(roll, { flavor, results, speaker, canCritD2, rollContext: fullRollContext });
     this._chatMessage.create(chatData);
+
+    // "Fumble - If the result of the d20 part of the roll is a natural '1' AND the Skill Test
+    // fails... the team should learn from these mistakes and also gain a Story Point" (GI Joe
+    // CRB p.126; PR p.91, TF p.104, MLP p.118 agree). The gain side of the rule the spends above
+    // all draw on. The TEAM gains: a player-side actor's fumble feeds the shared pool, and an
+    // NPC's feeds nothing. Only a roll that was actually compared against something can have
+    // failed - a bare roll with no Difficulty is not a Fumble, whatever the d20 shows.
+    // Gated on canWriteStoryPoints(): with nobody able to write the pool - no owner here, no GM
+    // connected - a relayed grant would go nowhere, and a point that was never recorded is
+    // worse than one the GM adds by hand later.
+    if (isFumble && results.length && fullRollContext.rollFailed && poolFor(actor) === 'story' && canWriteStoryPoints()) {
+      await requestStoryPointGrant(actor, 1);
+    }
 
     // What the card just said, handed back so a caller can act on it. Same values the card is
     // built from rather than a second computation, so the two can never disagree.

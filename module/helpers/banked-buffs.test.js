@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+import { legacyPoolParty } from '../jest.legacy-pool-party.js';
 import {
   canUsePerk, consumeHardTarget, consumeMomentaryBlur, consumeResilience, consumeRollWithThePunches, onPerkUse,
 } from './banked-buffs.mjs';
@@ -45,6 +46,7 @@ global.ui = { notifications: { warn: jest.fn(), info: jest.fn() } };
 global.game = {
   combat: null, i18n: { localize: (k) => k, format: (k) => k }, user: { targets: new Set() },
   users: [{ isGM: true, active: true }], socket: { emit: jest.fn() },
+  actors: { party: legacyPoolParty() },
 };
 global.foundry = { applications: { api: { DialogV2: { wait: jest.fn() } } } };
 

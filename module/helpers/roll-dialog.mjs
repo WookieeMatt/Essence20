@@ -209,6 +209,7 @@ export class RollDialog {
       damageRolePoints: dataset.damageRolePoints,
       aimBonus: dataset.aimBonus,
       energonAvailable: dataset.energonAvailable,
+      storyPointSpecializedAvailable: dataset.storyPointSpecializedAvailable,
       strikeBonusAvailable: dataset.strikeBonusAvailable,
       heavyForceAvailable: dataset.heavyForceAvailable,
       ideaPointAvailable: dataset.ideaPointAvailable,

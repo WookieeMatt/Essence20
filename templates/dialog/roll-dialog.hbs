@@ -61,6 +61,16 @@
   </div>
   {{/if}}
 
+  {{#if storyPointSpecializedAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogStoryPointSpecialized'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="spendStoryPointSpecialized" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
   {{#if energonAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogEnergon'}} (<i class="fas fa-arrow-up"></i> 1)</span>

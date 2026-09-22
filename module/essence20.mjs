@@ -26,6 +26,8 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
 import { handleStoryPointGrantRequest, handleStoryPointSpendRequest } from "./helpers/story-points.mjs";
+import { ensurePrimaryParty } from "./helpers/party.mjs";
+import { expireCircleAtTurnEnd } from "./helpers/friendship-circle.mjs";
 import { handleRemoteChoiceRequest, handleRemoteChoiceResponse } from "./helpers/remote-request.mjs";
 import { handleSetActionLedger } from "./helpers/action-economy.mjs";
 // Registers the "chooseDefense" remote prompt against remote-request.mjs's own registry -
@@ -37,7 +39,7 @@ import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 import StatBlockImporter from "./apps/stat-block-importer.mjs";
 import { canSwapTokenForm, swapTokenForm } from "./helpers/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
-import { addConsummatePerformerButton, addExploitWeaknessButton, addRerollButtons, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { addConsummatePerformerButton, addDefenseBoostButton, addExploitWeaknessButton, addRerollButtons, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
@@ -269,11 +271,9 @@ Hooks.once("init", async function () {
 
   registerSettings();
 
-  // Clients (players) listen on the socket to update the UI whenever the GM changes values, and
-  // (GI Joe CRB "In My Sights") a GM's own client listens for a PC's Story Point spend request -
-  // see helpers/story-points.mjs's own doc comment for why that request has to go over the
-  // socket at all. The tracker window being closed (game.StoryPointsTracker is then null) used
-  // to crash this handler outright on an ordinary sync message; that's now handled too.
+  // A client that cannot write the primary Party itself asks the GM's client to spend or grant
+  // a Story Point for it - see helpers/story-points.mjs. The totals themselves are no longer
+  // broadcast here: they live on an Actor now, and reach every client through updateActor.
   game.socket.on("system.essence20", (data) => {
     if (data.action === "spendStoryPoints") {
       handleStoryPointSpendRequest(data);
@@ -285,8 +285,6 @@ Hooks.once("init", async function () {
       handleRemoteChoiceResponse(data);
     } else if (data.action === "setActionLedger") {
       handleSetActionLedger(data);
-    } else {
-      game.StoryPointsTracker?.handleStoryPointSignal(data);
     }
   });
 
@@ -456,6 +454,10 @@ Hooks.once("ready", async function () {
   // Point first-time users at the guided tours, once per world.
   await offerWelcomeTour();
 
+  /* The Story Point pool lives on the primary Party, so one has to exist before the tracker
+     below opens. A new world gets its Party here; an older one gets its points moved over. */
+  await ensurePrimaryParty();
+
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => {
     // Both branches return false to suppress Foundry's own handling, which would otherwise make a
@@ -614,6 +616,7 @@ Hooks.on("renderTokenHUD", (hud, html) => {
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
   addRerollButtons(app, html);
+  addDefenseBoostButton(app, html);
   addConsummatePerformerButton(app, html);
   addSpiteButton(app, html);
   addSufferButton(app, html);
@@ -668,7 +671,23 @@ function refreshMegaformsLinkedToActor(actorUuid) {
 
 Hooks.on("updateActor", (actor) => {
   refreshMegaformsLinkedToActor(actor.uuid);
+  refreshStoryPointsTracker(actor);
 });
+
+/**
+ * The Story Points tracker shows the primary Party's points, so it follows that Party: any
+ * change to it, from any client, re-renders the window everywhere. Creation and deletion are
+ * included because a new world's first Party, or a reassigned primary, changes what it shows.
+ * @param {Actor} actor
+ */
+function refreshStoryPointsTracker(actor) {
+  if (actor.type == "party") {
+    game.StoryPointsTracker?.render(false);
+  }
+}
+
+Hooks.on("createActor", refreshStoryPointsTracker);
+Hooks.on("deleteActor", refreshStoryPointsTracker);
 
 for (const hookName of ["createItem", "updateItem", "deleteItem"]) {
   Hooks.on(hookName, (item) => {
@@ -780,6 +799,10 @@ for (const hookName of ["combatTurn", "combatRound"]) {
       // deactivateSprinterBoostAtTurnEnd's own doc comment. Same "read combat.combatant BEFORE the
       // update commits" idiom as Frictionless Movement just above.
       deactivateSprinterBoostAtTurnEnd(endingActor);
+
+      // Friendship Circle (MLP CRB) - "until the end of the pony who formed the Friendship
+      // Circle's next turn". Same ending-actor idiom; helpers/friendship-circle.mjs decides.
+      expireCircleAtTurnEnd(endingActor, combat);
     }
   });
 }

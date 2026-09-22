@@ -1,3 +1,6 @@
+import { handlePartyDeleted, preventLastPartyDelete, preventPrimaryDeleteByPlayer } from "../helpers/party.mjs";
+import { hasUsedThisTurn } from "../helpers/perks.mjs";
+import { ACT_WHILE_DEFEATED_FLAG } from "../dice.mjs";
 import { Dice } from "../dice.mjs";
 import { E20 } from "../helpers/config.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
@@ -246,6 +249,30 @@ import { createId } from "../helpers/utils.mjs";
  * @extends {Actor}
  */
 export class Essence20Actor extends Actor {
+  /**
+   * The last Party cannot be deleted, and only a GM can delete the primary: it holds the
+   * Story Point pool (see helpers/party.mjs). Returning false here is the one place a deletion
+   * can still be refused.
+   * @override
+   */
+  async _preDelete(options, user) {
+    if (preventLastPartyDelete(this) || preventPrimaryDeleteByPlayer(this)) {
+      return false;
+    }
+
+    return super._preDelete(options, user);
+  }
+
+  /**
+   * A deleted primary Party hands its pin, and its points, to the next one. Every client
+   * hears this; helpers/party.mjs decides which one acts.
+   * @override
+   */
+  _onDelete(options, userId) {
+    super._onDelete(options, userId);
+    handlePartyDeleted(this);
+  }
+
   constructor(...args) {
     super(...args);
     this._dice = new Dice(ChatMessage, new RollDialog(), game.i18n);
@@ -509,7 +536,11 @@ export class Essence20Actor extends Actor {
     };
 
     const statuses = this.statuses ?? new Set();
-    const incapacitated = ['asleep', 'defeated', 'unconscious'].some(status => statuses.has(status));
+    // A Defeated actor who spent a Story Point to "momentarily act as though it has not been
+    // Defeated" (GI Joe CRB p.209) has this turn's actions back - see dice.mjs#rollSkill.
+    const actingWhileDefeated = statuses.has('defeated') && hasUsedThisTurn(this, ACT_WHILE_DEFEATED_FLAG);
+    const incapacitated = ['asleep', 'defeated', 'unconscious']
+      .some(status => statuses.has(status) && !(status === 'defeated' && actingWhileDefeated));
     const zeroed = {
       free: incapacitated || statuses.has('cantTakeFreeActions'),
       move: incapacitated || statuses.has('cantTakeMoveActions'),

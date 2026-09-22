@@ -526,3 +526,11 @@
     opacity: 1;
   }
 }
+
+/* The +5 offer inside the defender's Defense prompt (helpers/defense-choice.mjs). */
+.e20-window .e20-defense-boost {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 2px;
+}

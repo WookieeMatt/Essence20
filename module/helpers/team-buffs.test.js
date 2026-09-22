@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+import { legacyPoolParty } from '../jest.legacy-pool-party.js';
 import {
   canUseTeamBuffPerk, isTeamBuffPerk, onTeamBuffPerkUse, ONE_FOR_ALL_ID, POWER_BURST_ID,
   SHINING_LEADER_ID, SHINING_LEADER_EDGE_FLAG, ENVIRONMENTAL_ASSIST_ID,
@@ -10,6 +11,7 @@ global.ui = { notifications: { warn: jest.fn(), info: jest.fn() } };
 global.game = {
   combat: { id: 'combat1', round: 3 }, i18n: { localize: (k) => k, format: (k) => k },
   users: [{ isGM: true, active: true }], settings: { get: jest.fn(() => 1) }, socket: { emit: jest.fn() },
+  actors: { party: legacyPoolParty() },
 };
 
 class FakeRoll {

@@ -1,5 +1,6 @@
 import CompendiumBrowserSourceConfig from "./apps/compendium-browser-sources.mjs";
 import BookDescriptionImporter from "./apps/book-description-importer.mjs";
+import AdventureImporter from "./apps/adventure-importer.mjs";
 import { invalidateImportedDescriptions } from "./helpers/book-descriptions-store.mjs";
 import { applyGameLineToSourcebooks } from "./helpers/compendium-browser.mjs";
 import { E20 } from "./helpers/config.mjs";
@@ -149,6 +150,7 @@ export const refreshChatMessageThemes = () => {
 export const SETTING_GROUPS = [
   { label: "E20.SettingsGroupCompendiumBrowser", firstKey: "enabledSourcebooksMenu" },
   { label: "E20.SettingsGroupBookDescriptions", firstKey: "bookDescriptionsMenu" },
+  { label: "E20.SettingsGroupAdventure", firstKey: "adventureImporterMenu" },
   { label: "E20.SettingsGroupGameLine", firstKey: "gameLine" },
   { label: "E20.SettingsGroupStoryPointTracker", firstKey: "sptAccess" },
   { label: "E20.SettingsGroupCombat", firstKey: "actionEconomyMode" },
@@ -264,6 +266,9 @@ export const registerSettings = function () {
           app.render();
         }
       }
+
+      // The tracker shows or hides the GM pool by line (My Little Pony has none).
+      game.StoryPointsTracker?.render(false);
     },
   });
 
@@ -462,6 +467,8 @@ export const registerSettings = function () {
     config: false,
   });
 
+  // Where the points lived before they moved onto the primary Party (helpers/party.mjs moves
+  // them across once and zeroes these). Still registered so that migration can read them.
   game.settings.register(systemName, "sptGmPoints", {
     scope: "world",
     default: 0,
@@ -476,13 +483,17 @@ export const registerSettings = function () {
     config: false,
   });
 
-  // The Party actor pinned as primary (Essence20Actors#party). "" = none.
+  // The Party actor pinned as primary (Essence20Actors#party), which holds the Story Point
+  // pool. "" = none - only ever briefly, since helpers/party.mjs pins one at every GM ready.
   game.settings.register(systemName, "primaryParty", {
     scope: "world",
     default: "",
     type: String,
     config: false,
-    onChange: () => ui.actors?.render(),
+    onChange: () => {
+      ui.actors?.render();
+      game.StoryPointsTracker?.render(false);
+    },
   });
 
   // Per-client { [partyId]: boolean } expand/collapse state for the Actors-sidebar party
@@ -544,6 +555,19 @@ export const registerSettings = function () {
     hint: "E20.BookImportMenuHint",
     icon: "fa-solid fa-book-open-reader",
     type: BookDescriptionImporter,
+    restricted: true,
+  });
+
+  /* -------------------------------------------- */
+  /*  Adventures                                  */
+  /* -------------------------------------------- */
+
+  game.settings.registerMenu(systemName, "adventureImporterMenu", {
+    name: "E20.AdventureImportMenuLabel",
+    label: "E20.AdventureImportMenuButton",
+    hint: "E20.AdventureImportMenuHint",
+    icon: "fa-solid fa-book-atlas",
+    type: AdventureImporter,
     restricted: true,
   });
 };

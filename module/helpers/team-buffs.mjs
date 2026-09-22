@@ -1,6 +1,6 @@
 import { bankPendingBonus, hasUsedThisEncounter, markUsedThisEncounter, postPerkUseChatCard } from "./perks.mjs";
 import { getNearbyAllyTokens } from "./allies.mjs";
-import { hasStoryPointsAvailable, isGmConnected, requestStoryPointSpend } from "./story-points.mjs";
+import { hasStoryPointsAvailable, canWriteStoryPoints, requestStoryPointSpend } from "./story-points.mjs";
 
 /**
  * "Once per scene/day, broadcast an immediate effect to every nearby ally" Perks - unlike
@@ -137,7 +137,7 @@ export const NANO_MED_MASTERY_EDGE_FLAG = 'pendingNanoMedMasteryEdge';
 // Team are GI Joe entries, with no Morph state to gate on, so they opt out explicitly rather than
 // the default silently widening who the 5 PR CRB entries above already affect. worldStoryPointCost
 // (an alternative to powerCost, not combined with it by any entry so far) spends a world Story
-// Point instead of Personal Power, the same isGmConnected()/hasStoryPointsAvailable() gate
+// Point instead of Personal Power, the same canWriteStoryPoints()/hasStoryPointsAvailable() gate
 // banked-buffs.mjs's own Bait and Switch/Concentrate Fire dispatches already establish.
 const TEAM_BUFF_PERKS = {
   [ONE_FOR_ALL_ID]: { powerCost: 3, onceEncounterFlag: ONE_FOR_ALL_ENCOUNTER_FLAG, effect: 'power', dieFaces: 2 },
@@ -188,7 +188,7 @@ export function canUseTeamBuffPerk(item, actor) {
   }
 
   if (config.worldStoryPointCost) {
-    return isGmConnected() && hasStoryPointsAvailable(config.worldStoryPointCost);
+    return canWriteStoryPoints() && hasStoryPointsAvailable(config.worldStoryPointCost);
   }
 
   return actor.system.powers.personal.value >= config.powerCost;
@@ -212,7 +212,7 @@ export async function onTeamBuffPerkUse(item, actor) {
     return;
   }
 
-  if (config.worldStoryPointCost && !isGmConnected()) {
+  if (config.worldStoryPointCost && !canWriteStoryPoints()) {
     ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
     return;
   }

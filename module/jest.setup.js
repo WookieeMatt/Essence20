@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
 import { E20 } from './helpers/config.mjs';
+import { legacyPoolParty } from './jest.legacy-pool-party.js';
 
 /*
  * Minimal Foundry VTT client environment so document classes (which do
@@ -105,6 +106,9 @@ global.game = {
   packs: [],
 };
 
+// The Story Point pool lives on the primary Party; see jest.legacy-pool-party.js for why the
+// stand-in reads it from the mocked world setting.
+global.game.actors = { party: legacyPoolParty() };
 global.CONFIG = { E20 };
 
 global.ui = {

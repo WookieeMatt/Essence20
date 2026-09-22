@@ -1,5 +1,14 @@
 import { getDefenseValue } from "./combat.mjs";
 import { registerRemotePrompt, requestChoiceFromUser } from "./remote-request.mjs";
+import { getGameLine } from "../settings.js";
+import { getSceneEpoch } from "./scene-clock.mjs";
+import { canSpendForActor, defenseBoostLastsScene, spendForActor } from "./story-points.mjs";
+
+/** Where a scene-long Defense boost (My Little Pony) is recorded on the defender. */
+const SCENE_BOOST_FLAG = "storyPointDefenseBoost";
+
+/** What a Story Point adds to a Defense before the dice are rolled, in every line. */
+export const DEFENSE_BOOST = 5;
 
 /**
  * Who actually gets to choose which Defense an attack is tested against (Welcome to Night Vale
@@ -31,10 +40,16 @@ const TIMEOUT_MS = 60000;
  *   offered as the pre-highlighted suggestion, never a forced value (matches RAW's own "if an
  *   attack specifies the Defense... the target's ability takes priority" - the target/its player
  *   is always the one with final say, a specified Defense is just the default starting point).
- * @returns {Promise<String>}   One of CONFIG.E20.defenses' own keys.
+ * @returns {Promise<{defenseType: String, storyPointBoost: Boolean}>}   The chosen Defense (one
+ *   of CONFIG.E20.defenses' own keys) and whether a Story Point was just spent to raise it by
+ *   DEFENSE_BOOST for this attack - "Add +5 to a Defense before dice are rolled" (GI Joe CRB
+ *   p.127), which is offered here because this is the one moment the DEFENDER is asked anything
+ *   before the attacker's dice fall. The point is spent on the answering client, which is the
+ *   one that owns the defender or is the GM.
  */
 export async function chooseDefenderDefense(targetActor, { attackerName, suggestedDefenseType }) {
   const payload = {
+    actorUuid: targetActor.uuid,
     actorName: targetActor.name,
     attackerName,
     suggestedDefenseType,
@@ -58,7 +73,7 @@ export async function chooseDefenderDefense(targetActor, { attackerName, suggest
       : await requestChoiceFromUser(owner.id, 'chooseDefense', payload, TIMEOUT_MS);
 
     if (answer) {
-      return answer;
+      return normalizeAnswer(answer);
     }
     // Timed out/no answer from a remote owner - fall through to the GM-decides path below rather
     // than silently forcing the suggested default on a defender who simply didn't get to weigh in.
@@ -72,14 +87,39 @@ export async function chooseDefenderDefense(targetActor, { attackerName, suggest
   if (connectedGm) {
     const answer = await requestChoiceFromUser(connectedGm.id, 'chooseDefense', payload, TIMEOUT_MS);
     if (answer) {
-      return answer;
+      return normalizeAnswer(answer);
     }
   }
 
   // Nobody available to actually make the call (same "an unattended request can't be acted on"
   // limit story-points.mjs's own requestStoryPointSpend already accepts) - the attacking weapon's
   // own suggested Defense is the least-arbitrary fallback available.
-  return suggestedDefenseType;
+  return { defenseType: suggestedDefenseType, storyPointBoost: false };
+}
+
+/**
+ * The answer as an object, whichever shape it came back in: a remote client that predates the
+ * Story Point offer (or a test double) still answers with the bare Defense key.
+ * @param {String|Object} answer
+ * @returns {{defenseType: String, storyPointBoost: Boolean}}
+ */
+function normalizeAnswer(answer) {
+  return typeof answer === "string" ? { defenseType: answer, storyPointBoost: false } : answer;
+}
+
+/**
+ * Whether a Defense of this actor's carries a scene-long Story Point boost right now.
+ *
+ * My Little Pony's version of the spend - "+5 to any single Defense for the scene" (MLP CRB
+ * p.118) - outlives the attack it was bought against, so it is recorded on the defender with the
+ * scene it was bought in, and read back here for every later attack in that scene.
+ * @param {Actor} actor
+ * @param {String} defenseType
+ * @returns {Boolean}
+ */
+export function hasSceneDefenseBoost(actor, defenseType) {
+  const record = actor?.getFlag?.("essence20", SCENE_BOOST_FLAG);
+  return !!record && record.defenseType === defenseType && record.epoch === getSceneEpoch();
 }
 
 /**
@@ -90,23 +130,62 @@ export async function chooseDefenderDefense(targetActor, { attackerName, suggest
  * @returns {Promise<String>}
  */
 export async function promptDefenseChoice(payload) {
+  // The Story Point offer is judged here, on the answering client: it is this client's own
+  // ability to spend for the defender that matters, not the attacker's.
+  const defender = payload.actorUuid ? await fromUuid(payload.actorUuid) : null;
+  const canBoost = !!defender && canSpendForActor(defender);
+  const line = getGameLine();
+
   const buttons = Object.entries(CONFIG.E20.defenses).map(([defenseType, label]) => ({
     label: `${game.i18n.localize(label)} (${payload.defenses[defenseType]})`,
     action: defenseType,
     default: defenseType == payload.suggestedDefenseType,
+    callback: (event, button) => ({
+      defenseType,
+      storyPointBoost: canBoost && !!button.form?.elements?.storyPointBoost?.checked,
+    }),
   }));
+
+  const offer = canBoost
+    ? `<label class="e20-defense-boost"><input type="checkbox" name="storyPointBoost" /> ${
+      game.i18n.format(defenseBoostLastsScene(line) ? 'E20.SptDefenseBoostOfferScene' : 'E20.SptDefenseBoostOffer', {
+        bonus: DEFENSE_BOOST,
+      })}</label>`
+    : "";
 
   const choice = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.format('E20.ChooseDefenseTitle', { actorName: payload.actorName }) },
     classes: ["window-app", "e20-window"],
     content: `<p>${game.i18n.format('E20.ChooseDefenseContent', {
       actorName: payload.actorName, attackerName: payload.attackerName,
-    })}</p>`,
+    })}</p>${offer}`,
     modal: true,
     buttons,
   });
 
-  return choice || payload.suggestedDefenseType;
+  const answer = choice?.defenseType
+    ? choice
+    : { defenseType: choice || payload.suggestedDefenseType, storyPointBoost: false };
+
+  if (answer.storyPointBoost && defender) {
+    await spendForActor(defender, 1, { announce: false });
+    // A scene-long boost (My Little Pony) is remembered on the defender for the rest of the
+    // scene; anywhere else it belongs to this one attack and is carried in the answer alone.
+    if (defenseBoostLastsScene(line)) {
+      await defender.setFlag("essence20", SCENE_BOOST_FLAG, { defenseType: answer.defenseType, epoch: getSceneEpoch() });
+    }
+
+    ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: defender }),
+      content: game.i18n.format(defenseBoostLastsScene(line) ? 'E20.SptDefenseBoostSpentScene' : 'E20.SptDefenseBoostSpent', {
+        name: defender.name,
+        bonus: DEFENSE_BOOST,
+        defense: game.i18n.localize(CONFIG.E20.defenses[answer.defenseType] ?? answer.defenseType),
+      }),
+    });
+  }
+
+  return answer;
 }
 
 registerRemotePrompt('chooseDefense', promptDefenseChoice);

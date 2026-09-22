@@ -147,3 +147,17 @@
 .essence20 .book-import-loose {
   color: var(--e20-theme-warning, #d08a1e);
 }
+
+/* The panel as a whole scrolls. Everything above the preview - the intro, the scan facts, and
+   especially the list of books already imported, which is 670px once a couple of dozen are in -
+   used to be clipped by the window with no way to reach it. */
+.essence20 .book-import {
+  overflow-y: auto;
+}
+
+/* The preview keeps a scroll of its own, bounded, so the Import button stays a short distance
+   below it however many hundred entries a book has rather than a thousand lines down. */
+.essence20 .book-import-results {
+  flex: 0 1 auto;
+  max-height: 45vh;
+}
