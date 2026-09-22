@@ -59,6 +59,16 @@
       "optional": true
     },
     {
+      "id": "storyPoint",
+      "app": "rollDialog",
+      "skill": "targeting",
+      "selector": ".roll-dialog-toggle:has(input[name=\"spendStoryPointSpecialized\"])",
+      "title": "E20.Tours.Rolling.StoryPoint.Title",
+      "content": "E20.Tours.Rolling.StoryPoint.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
       "id": "rollButton",
       "app": "rollDialog",
       "skill": "targeting",

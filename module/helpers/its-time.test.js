@@ -28,7 +28,7 @@ describe("toggleItsTime", () => {
     const actor = makeActor(false);
     const result = await toggleItsTime(actor);
     expect(result).toBe(true);
-    expect(actor.update).toHaveBeenCalledWith({ "system.isMorphed": true });
+    expect(actor.update).toHaveBeenCalledWith({ "system.isMorphed": true }, { essence20: { silentState: true } });
     expect(isItsTimeActive(actor)).toBe(true);
   });
 
@@ -36,7 +36,7 @@ describe("toggleItsTime", () => {
     const actor = makeActor(true);
     const result = await toggleItsTime(actor);
     expect(result).toBe(false);
-    expect(actor.update).toHaveBeenCalledWith({ "system.isMorphed": false });
+    expect(actor.update).toHaveBeenCalledWith({ "system.isMorphed": false }, { essence20: { silentState: true } });
     expect(isItsTimeActive(actor)).toBe(false);
   });
 });

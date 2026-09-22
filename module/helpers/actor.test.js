@@ -23,6 +23,17 @@ describe("changeTokenImage", () => {
 
     expect(token.document.update).toHaveBeenCalledWith({ "texture.src": "path/to/image.webp" });
   });
+
+  // An unset Morphed / Alt Mode image used to blank the token and throw from the token animation.
+  test("leaves the tokens alone when there is no image to switch to", () => {
+    const token = { document: { update: jest.fn() } };
+    const actor = { getActiveTokens: jest.fn(() => [token]) };
+
+    changeTokenImage(actor, null);
+    changeTokenImage(actor, "");
+
+    expect(token.document.update).not.toHaveBeenCalled();
+  });
 });
 
 describe("checkIsLocked", () => {

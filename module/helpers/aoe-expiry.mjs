@@ -48,14 +48,14 @@ export function durationToSeconds(duration, days) {
   const secondsPerDay = secondsPerHour * (days?.hoursPerDay ?? 24);
 
   switch (duration.units) {
-    case 'minutes':
-      return duration.value * secondsPerMinute;
-    case 'hours':
-      return duration.value * secondsPerHour;
-    case 'days':
-      return duration.value * secondsPerDay;
-    default:
-      return null;
+  case 'minutes':
+    return duration.value * secondsPerMinute;
+  case 'hours':
+    return duration.value * secondsPerHour;
+  case 'days':
+    return duration.value * secondsPerDay;
+  default:
+    return null;
   }
 }
 
@@ -89,41 +89,41 @@ export function isAoeExpired(aoe, context = {}) {
   }
 
   switch (duration.units) {
-    case 'instant':
-      // Shouldn't ever be on the scene in the first place (an Instant area is never persisted),
-      // so if one somehow is, it's stale by definition.
-      return true;
+  case 'instant':
+    // Shouldn't ever be on the scene in the first place (an Instant area is never persisted),
+    // so if one somehow is, it's stale by definition.
+    return true;
 
-    case 'special':
-      return false;
+  case 'special':
+    return false;
 
-    case 'scenes':
+  case 'scenes':
+    return !!context.sceneEnded;
+
+  case 'rounds': {
+    // Placed outside combat, so there are no rounds to count. It stays until the encounter ends
+    // or the GM removes it, rather than vanishing on the first round of an unrelated fight.
+    if (aoe.placedAtRound == null || context.round == null) {
       return !!context.sceneEnded;
-
-    case 'rounds': {
-      // Placed outside combat, so there are no rounds to count. It stays until the encounter ends
-      // or the GM removes it, rather than vanishing on the first round of an unrelated fight.
-      if (aoe.placedAtRound == null || context.round == null) {
-        return !!context.sceneEnded;
-      }
-
-      const roundsElapsed = context.round - aoe.placedAtRound + 1;
-      return roundsElapsed >= (duration.value ?? 0);
     }
 
-    case 'minutes':
-    case 'hours':
-    case 'days': {
-      const seconds = durationToSeconds(duration, context.calendarDays);
-      if (seconds == null || aoe.placedAtWorldTime == null || context.worldTime == null) {
-        return !!context.sceneEnded;
-      }
+    const roundsElapsed = context.round - aoe.placedAtRound + 1;
+    return roundsElapsed >= (duration.value ?? 0);
+  }
 
-      return context.worldTime >= aoe.placedAtWorldTime + seconds;
+  case 'minutes':
+  case 'hours':
+  case 'days': {
+    const seconds = durationToSeconds(duration, context.calendarDays);
+    if (seconds == null || aoe.placedAtWorldTime == null || context.worldTime == null) {
+      return !!context.sceneEnded;
     }
 
-    default:
-      return false;
+    return context.worldTime >= aoe.placedAtWorldTime + seconds;
+  }
+
+  default:
+    return false;
   }
 }
 

@@ -472,6 +472,11 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     context.system = actorData.system;
     context.flags = actorData.flags;
 
+    // The header's Alt Mode badge shows which mode, not just that there is one.
+    context.altModeName = actorData.system.isTransformed
+      ? (this.actor.items.get(actorData.system.altModeId)?.name ?? null)
+      : null;
+
     // Roll data for TinyMCE/ProseMirror editors so inline rolls in text can resolve.
     context.rollData = this.actor.getRollData();
 

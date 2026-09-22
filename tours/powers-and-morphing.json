@@ -5,7 +5,9 @@
   "description": "E20.Tours.Powers.Description",
   "display": true,
   "canBeResumed": true,
-  "suggestedNextTours": ["essence20.transformers"],
+  "suggestedNextTours": [
+    "essence20.transformers"
+  ],
   "steps": [
     {
       "id": "intro",
@@ -37,6 +39,17 @@
       "title": "E20.Tours.Powers.Cost.Title",
       "content": "E20.Tours.Powers.Cost.Content",
       "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "aoe",
+      "app": "item",
+      "item": "Grid Surge",
+      "tab": "details",
+      "selector": "select[name=\"system.shape\"]",
+      "title": "E20.Tours.Powers.Aoe.Title",
+      "content": "E20.Tours.Powers.Aoe.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
     },
     {
       "id": "morph",

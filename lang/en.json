@@ -454,6 +454,7 @@
     "AltModeCrew": "Crew",
     "AltModeFirepoints": "Firepoints",
     "AltModeNone": "This character has no Alt Mode to transform into.",
+    "AltModeNoImage": "{mode} has no token image, so {name}’s token will not change. Set one on the Alt Mode.",
     "AltModeSize": "Alt Mode Size",
     "AltModeMovementAerial": "Aerial",
     "AltModeMovementAquatic": "Aquatic",
@@ -643,6 +644,7 @@
     "SptDefenseBoostOfferScene": "Spend a Friendship Point: +{bonus} to this Defense for the rest of the scene",
     "SptDefenseBoostSpent": "{name} spends a Story Point: +{bonus} {defense} against this attack.",
     "SptDefenseBoostSpentScene": "{name} spends a Friendship Point: +{bonus} {defense} for the rest of the scene.",
+    "SptGmGrantGranted": "The GM gains a GM Point: {actorName} Critically Succeeded.",
     "SptGmSpendGranted": "The GM spends a GM Point for {actorName}.",
     "SptGridPowerBloom": "The team spends {cost} Story Points on a Grid Power bloom!",
     "SptGridPowerBloomButton": "Grid Power bloom",
@@ -1031,6 +1033,9 @@
     "ModeBotMode": "Bot Mode",
     "ModeAny": "Any Mode",
     "MorphedImage": "Morphed Token Image",
+    "MorphAnnounceOn": "{name} morphs!",
+    "MorphAnnounceOff": "{name} powers down.",
+    "MorphNoImage": "No Morphed token image is set for {name}, so the token will not change. Set one in Sheet Options.",
     "MovementIncreaseValue": "Movement Increase",
     "MovementTypeAerial": "Aerial",
     "MovementTypeBurrow": "Burrow",
@@ -1913,6 +1918,8 @@
     "StatusInvisible": "Invisible",
     "StatusMesmerized": "Mesmerized",
     "StatusModeLock": "Mode Lock",
+    "StatusMorphed": "Morphed",
+    "StatusAltMode": "Alt Mode",
     "StatusProne": "Prone",
     "StatusRestrained": "Restrained",
     "StatusStunned": "Stunned",
@@ -1950,6 +1957,8 @@
     "TraitSelectorTitle": "Trait Selection",
     "TraitSelectorUpdate": "Update",
     "Transform": "Transform",
+    "TransformAnnounceOn": "{name} transforms into {mode}!",
+    "TransformAnnounceOff": "{name} transforms back to Bot Mode.",
     "Upgrade": "Upgrade",
     "UpgradeAimShiftBonus": "Aiming Bonus Shift",
     "UpgradeAvailability": "Availability",
@@ -2334,6 +2343,10 @@
         "Outro": {
           "Title": "That's the Tour",
           "Content": "That's where everything lives.\nWhen you're ready to go deeper, <strong>The Character Sheet</strong> tour walks the sheet itself — resources, skills, gear and rolling.\nYou'll find it in Tour Management."
+        },
+        "Party": {
+          "Title": "Your Party",
+          "Content": "The pinned folder is your Party — the roster of the player characters, expandable right here.\nIts sheet carries what the group shares: Requisition, Mission Critical gear, and the Story Points pool."
         }
       },
       "CharacterSheet": {
@@ -2478,6 +2491,10 @@
         "Outro": {
           "Title": "Roll Complete",
           "Content": "Click a skill, set what is true about the roll, read the full formula in chat.\nThat is the core loop. The demo character is being cleaned up now — the rest of the tours are under Settings, in Tour Management."
+        },
+        "StoryPoint": {
+          "Title": "Buying a Specialization",
+          "Content": "Not Specialized in this skill? A Story Point makes it so for one roll.\nThis switch spends it when you roll — it only appears when there is a point to spend and you are not already Specialized."
         }
       },
       "Gear": {
@@ -2603,9 +2620,9 @@
           "Title": "Alt Modes",
           "Content": "The other mode, or modes — a character can carry more than one.\nEach Alt Mode has its own size and movement, and transforming applies them."
         },
-        "ModeSelector": {
-          "Title": "Gear by Mode",
-          "Content": "On a Transformer every piece of gear has a mode selector.\nIt controls which modes that Item is available in — a weapon mounted in vehicle mode may simply not be available as a robot."
+        "Hardpoints": {
+          "Title": "Hardpoints",
+          "Content": "On a Transformer every weapon carries a Hardpoint control in place of a mode dropdown.\n<strong>External</strong> weapons are held in hand — Bot Mode only, and they cost Load Out hands. <strong>Integrated</strong> ones are built into the chassis, free of the hand limit, and can be Reinforced or kept hidden in Alt Mode. Which modes the weapon is available in follows from that."
         },
         "Outro": {
           "Title": "Transformers Covered",
@@ -2641,7 +2658,7 @@
         },
         "Create": {
           "Title": "Making One",
-          "Content": "You can add effects by hand for anything the table invents mid-session.\nMost of the time you will not need to — Items and Perks from the compendiums bring their own."
+          "Content": "You can add effects by hand for anything the table invents mid-session.\nThe add button asks whether you want the <strong>Effect Wizard</strong> or a blank effect — a system setting can make either the default. Most of the time you will not need to: Items and Perks from the compendiums bring their own."
         },
         "Conditions": {
           "Title": "The Conditions Pack",
@@ -2650,6 +2667,18 @@
         "Outro": {
           "Title": "Effects Covered",
           "Content": "Effects change numbers for you, sort themselves by behavior, and can be switched off without losing them.\nThe demo character is being cleaned up now."
+        },
+        "Wizard": {
+          "Title": "The Effect Wizard",
+          "Content": "The wizard builds a change from the game's own words instead of data paths.\nStart by searching — type <em>infiltration</em>, or <em>toughness</em> — and pick the match."
+        },
+        "WizardBuilder": {
+          "Title": "Say It in English",
+          "Content": "Or choose it: a group, a target, what about it, and a value.\nThe sentence underneath is the rule as the wizard understood it, before anything is written — if it reads wrong, nothing has happened yet."
+        },
+        "WizardFinish": {
+          "Title": "Ordinary Changes",
+          "Content": "Finish writes plain Active Effect changes — the same rows you would type by hand, and editable in the normal effect sheet afterwards.\nYou can also reach the wizard from any effect's own window, through its header menu, to add another change later."
         }
       },
       "Combat": {
@@ -2690,6 +2719,14 @@
         "ThreatPicker": {
           "Title": "The Skill Picker",
           "Content": "Each skill has a checkbox: tick it and it appears on the sheet, along with the shift you set here.\nIt is the same Skill Picker a player character uses, with one difference — a player character always lists every skill and spends Essence points on them, while a threat lists only what you tick and has no budget to keep to."
+        },
+        "ActionsTab": {
+          "Title": "The Actions Tab",
+          "Content": "Everything a character can do in a turn, in one place: the rules' own actions — Attack, Defend, Aim, Sprint — and every Item with a cost, grouped by what it costs.\nOut of combat it is a reference. In an encounter each group shows how many of that action are left this turn."
+        },
+        "Budget": {
+          "Title": "The Action Economy",
+          "Content": "Budgets come from Speed: Standard and Move actions, and Speed minus two Free actions. A Standard can be traded for two Free.\nDuring an encounter the sheet header shows the turn as pips, the tracker marks who has spent what, and the drag ruler colours a move green, amber or red as it eats into the budget (with token drag preview on).\nHow strictly it is enforced is a world setting — track, confirm, or refuse — and it can be switched off entirely. There are no reactions in Essence20; readying is the Contingency action."
         }
       },
       "Powers": {
@@ -2718,38 +2755,66 @@
         "Outro": {
           "Title": "Powers Covered",
           "Content": "One pool, spent on Powers and on morphing, restored by resting.\nThe demo Ranger is being cleaned up now."
+        },
+        "Aoe": {
+          "Title": "Area of Effect",
+          "Content": "A Power or spell with an area declares its shape and radius here.\nUsing it places the shape on the map with Foundry's own region tools — click to confirm, and everyone inside is targeted with one roll. An instant area vanishes; one with a longer duration stays on the scene and expires on its own."
         }
       },
       "StoryPoints": {
         "Title": "Story Points",
-        "Description": "The Story Points tracker: pools, spending, and who is allowed to touch it.",
+        "Description": "The Story Points tracker: the shared pool, every way to spend it, and who is allowed to.",
         "Intro": {
           "Title": "Story Points",
           "Content": "Story Points are the table's shared currency for bending a scene, and the system keeps a tracker for them.\nThis tour only opens it. It creates nothing and changes no points."
         },
         "Tracker": {
           "Title": "The Tracker",
-          "Content": "Two pools side by side: the GM's, and the players'.\nIt floats above the canvas so it stays readable during play without anyone opening a sheet."
+          "Content": "Two pools side by side: the players' and the GM's.\nIt floats above the canvas so it stays readable during play without anyone opening a sheet."
         },
         "Pools": {
           "Title": "Two Pools",
-          "Content": "Each pool is tracked separately — the players spend from theirs, the GM from theirs.\nSeeing both at once is the point: everyone can tell what the other side has."
+          "Content": "The players share one pool; the GM has their own.\nBoth live on your primary Party actor rather than in the settings — which is what lets a player be given permission to spend. More on that at the end."
         },
         "Spend": {
           "Title": "Spending",
-          "Content": "The arrows move points a step at a time, and the tracker announces the change in chat so that everyone is made aware.\nA GM can rename the players' pool in the settings — some game lines call it something else."
+          "Content": "The arrows move a pool a point at a time and announce it in chat.\nMost spends never touch these, though: they happen where the rule does, and the tracker only shows the result."
+        },
+        "Narrative": {
+          "Title": "Equipment and Clues",
+          "Content": "Two spends have no roll attached — a useful piece of equipment turns out to be in your pack, or a clue turns up.\nThese buttons take the point and post what it bought, so the table sees it."
+        },
+        "InPlay": {
+          "Title": "Spending Where It Happens",
+          "Content": "The rest are offered at the moment they apply:\n<strong>As if Specialized</strong> — a switch in the Roll Options Dialog, when you are not already Specialized.\n<strong>+5 Defense</strong> — a checkbox in the Defense prompt when you are attacked. In GI Joe and Transformers you can also buy <strong>+1</strong> after the roll when a hit lands by exactly zero; in My Little Pony the +5 lasts the scene.\n<strong>Reroll a 1</strong> — a button on the result card.\n<strong>Act while Defeated</strong> — a prompt when a Defeated character tries to roll.\nAnd Fumbles give one back: a natural 1 that fails adds a point to the pool."
+        },
+        "NewSession": {
+          "Title": "A New Session",
+          "Content": "Each session starts fresh: one point per player character on the roster, and the GM's pool to match — leftovers do not carry over.\nThis button does the reset for you, after confirming, using the Party's live roster for the count."
         },
         "MajorScene": {
           "Title": "Major Scenes",
           "Content": "At the start of a major scene the GM rolls for their pool rather than setting it by hand.\nThis button does the roll and posts the result."
         },
-        "Settings": {
-          "Title": "Who Can Change It",
-          "Content": "By default only a GM can move points.\nIf you would rather players spent their own, grant them Foundry's own <strong>Modify Settings</strong> permission — the tracker follows that rather than keeping a list of its own."
+        "GridPower": {
+          "Title": "Powering Up the Team",
+          "Content": "Power Rangers only: spend a point per Ranger to give everyone on the roster some Personal Power back — 1d2 each, capped at their maximum.\nThe button costs what the roster costs, and refuses when the pool cannot cover it."
+        },
+        "FriendshipCircle": {
+          "Title": "The Friendship Circle",
+          "Content": "My Little Pony only, and only when someone on the roster has the Friendship Circle Perk.\nForming one costs a point and opens shared pools of upshifts, healing and assists; joining adds one of each. Draw from them here — a drawn upshift waits for your next Skill Test."
+        },
+        "Party": {
+          "Title": "Where the Points Live",
+          "Content": "The pool sits on your primary Party — the pinned folder here in the Actors tab.\nThere is always one: the system creates it, will not let the last one be deleted, and if the primary goes, the next Party inherits its points."
+        },
+        "Permissions": {
+          "Title": "Who Can Spend",
+          "Content": "Players see the pool because the primary Party is <strong>Observer</strong> to everyone by default.\nTo let a player spend without you online, give them <strong>Owner</strong> on the Party from its ownership configuration. Otherwise their spend is relayed to you and applied on your client."
         },
         "Outro": {
           "Title": "Story Points Covered",
-          "Content": "Two pools, buttons to change their values, and a permission that decides who may.\nThe tracker's visibility and naming are in the system settings."
+          "Content": "One shared pool on the Party, spends offered where the rules call for them, and ownership deciding who may.\nThe tracker's visibility and the pool's name are in the system settings."
         }
       },
       "Items": {
@@ -2805,7 +2870,7 @@
         },
         "Outro": {
           "Title": "That's the Suite",
-          "Content": "That is every tour the system ships.\nThey are all under Settings, in Tour Management, and can be replayed or reset whenever you like."
+          "Content": "That is every tour for players.\nGMs have one more — <strong>Importing From Your Books</strong> is next. They are all under Settings, in Tour Management, and can be replayed or reset whenever you like."
         }
       },
       "Machines": {
@@ -2858,6 +2923,38 @@
         "Outro": {
           "Title": "Machines Covered",
           "Content": "Vehicles carry crews, Zords are bound to Rangers, and a Megaform is computed from the Zords inside it.\nThe demo machines are being cleaned up now. That is every tour the system ships."
+        }
+      },
+      "Importers": {
+        "Title": "Importing From Your Books",
+        "Description": "Turning stat blocks, rulebook text and adventure PDFs into world content.",
+        "Intro": {
+          "Title": "Importing From Your Books",
+          "Content": "The compendiums ship with the mechanics but not Renegade's text, and with no adventure content at all.\nThree GM tools fill that in from books you own. Nothing you import leaves your browser, and none of it ends up in the system's own files."
+        },
+        "StatBlockButton": {
+          "Title": "Stat Blocks",
+          "Content": "Paste a Threat's stat block from a sourcebook and this turns it into an NPC — skills, defenses, attacks, Perks and Powers, with anything it could not place listed for you to check.\nIt lives at the bottom of the Actors tab."
+        },
+        "StatBlock": {
+          "Title": "Paste and Preview",
+          "Content": "Paste here and the preview fills in before anything is created.\nA page carrying several stat blocks imports them all in one go — a Normal and Grown pair included, which <strong>Make My Monster Grow</strong> on the Threat sheet can then link."
+        },
+        "SettingsMenus": {
+          "Title": "The Other Two",
+          "Content": "The book and adventure importers are in Configure Settings, under the Essence20 section, because they read a whole PDF rather than a paste."
+        },
+        "BookDescriptions": {
+          "Title": "Rulebook Text",
+          "Content": "Pick your own copy of a rulebook and it fills the empty description fields in your world — Perks, gear, Powers — with the book's text.\nIt is stored in your world only: the packs themselves are never touched, so it can never ship in a release."
+        },
+        "Adventure": {
+          "Title": "Adventures",
+          "Content": "An adventure PDF with an outline becomes Journal Entries with the book's own chapter structure.\nIt also finds the maps and makes them Scenes, the Threats and makes them Actors, and the random tables and makes them Roll Tables. You choose what to include before anything is written."
+        },
+        "Outro": {
+          "Title": "Importing Covered",
+          "Content": "Stat blocks from a paste, rules text and adventures from PDFs you own — all into your world, none into the system.\nThat is the last tour. Tour Management lists them all if you want to revisit one."
         }
       }
     }

@@ -45,14 +45,13 @@
       "tooltipDirection": "LEFT"
     },
     {
-      "id": "modeSelector",
+      "id": "hardpoints",
       "app": "transformer",
       "tab": "gear",
-      "selector": "section[data-tab=\"gear\"] select.mode-select",
-      "title": "E20.Tours.Transformers.ModeSelector.Title",
-      "content": "E20.Tours.Transformers.ModeSelector.Content",
-      "tooltipDirection": "LEFT",
-      "optional": true
+      "selector": "section[data-tab=\"gear\"] .hardpoint-selector",
+      "title": "E20.Tours.Transformers.Hardpoints.Title",
+      "content": "E20.Tours.Transformers.Hardpoints.Content",
+      "tooltipDirection": "LEFT"
     },
     {
       "id": "outro",

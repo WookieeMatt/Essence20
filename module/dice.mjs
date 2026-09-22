@@ -13489,6 +13489,16 @@ export class Dice {
       await requestStoryPointGrant(actor, 1);
     }
 
+    // The GM-side twin: "The GM's Story Point pool grows... If an NPC Critically Succeeds on a
+    // Skill Test" (GI Joe CRB p.128; PR p.92, TF p.107 agree; MLP has no GM pool at all, which
+    // requestStoryPointGrant's own hasGmPool check covers). A Critical Success is the skill die
+    // showing its max (isCrit, combat.mjs#_isCritIsFumble) on a Test that actually succeeded
+    // against something - a max die on a miss is not a Critical Success, and a bare roll with
+    // no Difficulty succeeded at nothing. Only the actors whose pool is the GM's feed it.
+    if (isCrit && results.some(entry => entry.success) && poolFor(actor) === 'gm' && canWriteStoryPoints()) {
+      await requestStoryPointGrant(actor, 1, { pool: 'gm' });
+    }
+
     // What the card just said, handed back so a caller can act on it. Same values the card is
     // built from rather than a second computation, so the two can never disagree.
     return {

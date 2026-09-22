@@ -363,7 +363,8 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
     return TYPE_GROUPS[tabKey]?.types ?? [tabKey];
   }
 
-  /**
+  /**
+
    * The extra ("secondary") filter definition for a tab, if it has one: a type-group
    * tab's own "Type" filter over its member types, a plain type's SUBTYPE_FILTERS
    * entry, or - for a `dynamic` entry - the same shape built from whatever values are

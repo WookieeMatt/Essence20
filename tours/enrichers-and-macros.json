@@ -5,6 +5,9 @@
   "description": "E20.Tours.Enrichers.Description",
   "display": true,
   "canBeResumed": false,
+  "suggestedNextTours": [
+    "essence20.importers"
+  ],
   "steps": [
     {
       "id": "intro",

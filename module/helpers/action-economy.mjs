@@ -316,6 +316,7 @@ export async function setSprinting(actor, sprinting = true) {
   ledger.sprinting = !!sprinting;
   await writeLedger(document, ledger);
 }
+
 /**
  * Whether this actor is already aiming a shot that has not been taken yet.
  *
@@ -362,6 +363,7 @@ export async function setAiming(actor, aiming = true) {
   ledger.aimed = !!aiming;
   await writeLedger(document, ledger);
 }
+
 export async function tradeStandardForFree(actor) {
   const document = getCombatant(actor);
   if (!document || getRemaining(actor).standard < 1) {

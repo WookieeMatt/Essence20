@@ -153,8 +153,16 @@ export async function requestStoryPointSpend(actor, amount = 1, { pool = "story"
  * @param {Actor} actor   The actor gaining the point, for the chat announcement.
  * @param {number} [amount]
  */
-export async function requestStoryPointGrant(actor, amount = 1) {
-  if (ownsStoryPoints()) {
+export async function requestStoryPointGrant(actor, amount = 1, { pool = "story" } = {}) {
+  // The GM's pool is GM-only to write (setGmPoints), so a GM grants it directly and anyone
+  // else asks - the same split the story pool makes on ownership. See poolFor() for which
+  // actors feed which pool.
+  if (pool === "gm") {
+    if (game.user.isGM) {
+      await grantGm(amount, actor?.name);
+      return;
+    }
+  } else if (ownsStoryPoints()) {
     await grant(amount, actor?.name);
     return;
   }
@@ -163,6 +171,7 @@ export async function requestStoryPointGrant(actor, amount = 1) {
     action: "grantStoryPoints",
     amount,
     actorName: actor?.name,
+    ...(pool === "gm" ? { pool } : {}),
   });
 }
 
@@ -194,10 +203,15 @@ export async function handleStoryPointSpendRequest(data) {
 
 /**
  * The GM-side handler for a grant request from a client that cannot write the Party itself.
- * @param {Object} data   {action: "grantStoryPoints", amount, actorName}
+ * @param {Object} data   {action: "grantStoryPoints", amount, actorName, pool?}
  */
 export async function handleStoryPointGrantRequest(data) {
   if (!isAnsweringGm()) {
+    return;
+  }
+
+  if (data.pool === "gm") {
+    await grantGm(Number(data.amount) || 1, data.actorName);
     return;
   }
 
@@ -251,6 +265,23 @@ async function spendGm(amount, actorName, say = true) {
 async function grant(amount, actorName) {
   if (await setStoryPoints(getStoryPoints() + amount)) {
     announce("E20.SptGrantRequestGranted", actorName);
+  }
+}
+
+/**
+ * Add to the GM's pool - the rules' own gains for it: an NPC's Critical Success (dice.mjs),
+ * and the Major Scene roll the tracker does itself. GM only, by way of setGmPoints; nothing at
+ * all in a line without a GM pool (hasGmPool).
+ * @param {number} amount
+ * @param {string} actorName
+ */
+async function grantGm(amount, actorName) {
+  if (!hasGmPool(getGameLine())) {
+    return;
+  }
+
+  if (await setGmPoints(getGmPoints() + amount)) {
+    announce("E20.SptGmGrantGranted", actorName);
   }
 }
 

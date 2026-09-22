@@ -243,7 +243,8 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       this.sendMessage(game.i18n.format("E20.SptAddStoryPoint", {name: getPointsName(false)}));
     }
   }
-
+
+
   /**
    * Begin a new scene: both Scene Clock counters advance, refreshing every "once per scene" and
    * "once per encounter" ability at the table (see helpers/scene-clock.mjs).

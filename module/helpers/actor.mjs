@@ -30,6 +30,14 @@ export function resizeTokens(actor, width, height) {
  * @param {String} newImage The location of the image file
  */
 export function changeTokenImage(actor, newImage){
+  // No art to switch to (a Morphed image or Alt Mode token image that was never set) - leave
+  // the tokens as they are. Writing an empty path here used to blank every token and throw
+  // "Requested texture path is empty" from the token animation, once per token, on every
+  // morph and transform. helpers/morph-state.mjs tells the user the art is missing.
+  if (!newImage) {
+    return;
+  }
+
   const tokens = actor?.getActiveTokens();
   for (const token of tokens) {
     token.document.update({

@@ -192,6 +192,7 @@ async function sprint(actor) {
 async function lendAssistance(actor) {
   return await activateLendAssistance(actor);
 }
+
 const HANDLERS = {
   aim,
   defend,

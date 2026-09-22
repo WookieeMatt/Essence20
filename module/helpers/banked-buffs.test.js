@@ -2605,7 +2605,7 @@ describe("It's Time (Field Guide to Action and Adventure, General Perk, p.70)", 
 
     await onPerkUse(item);
 
-    expect(actor.update).toHaveBeenCalledWith({ "system.isMorphed": true });
+    expect(actor.update).toHaveBeenCalledWith({ "system.isMorphed": true }, { essence20: { silentState: true } });
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
 
@@ -2619,7 +2619,7 @@ describe("It's Time (Field Guide to Action and Adventure, General Perk, p.70)", 
 
     await onPerkUse(item);
 
-    expect(actor.update).toHaveBeenCalledWith({ "system.isMorphed": false });
+    expect(actor.update).toHaveBeenCalledWith({ "system.isMorphed": false }, { essence20: { silentState: true } });
   });
 });
 

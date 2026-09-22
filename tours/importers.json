@@ -1,0 +1,61 @@
+{
+  "namespace": "essence20",
+  "id": "importers",
+  "title": "E20.Tours.Importers.Title",
+  "description": "E20.Tours.Importers.Description",
+  "display": true,
+  "restricted": true,
+  "canBeResumed": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Importers.Intro.Title",
+      "content": "E20.Tours.Importers.Intro.Content"
+    },
+    {
+      "id": "statBlockButton",
+      "sidebarTab": "actors",
+      "selector": "#actors .essence20-open-stat-block-importer",
+      "title": "E20.Tours.Importers.StatBlockButton.Title",
+      "content": "E20.Tours.Importers.StatBlockButton.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "statBlock",
+      "app": "statBlockImporter",
+      "selector": ".stat-block-importer-source",
+      "title": "E20.Tours.Importers.StatBlock.Title",
+      "content": "E20.Tours.Importers.StatBlock.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "settingsMenus",
+      "sidebarTab": "settings",
+      "selector": "[data-action=\"openApp\"][data-app=\"configure\"]",
+      "title": "E20.Tours.Importers.SettingsMenus.Title",
+      "content": "E20.Tours.Importers.SettingsMenus.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "bookDescriptions",
+      "app": "bookDescriptionImporter",
+      "selector": ".book-import-intro",
+      "title": "E20.Tours.Importers.BookDescriptions.Title",
+      "content": "E20.Tours.Importers.BookDescriptions.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "adventure",
+      "app": "adventureImporter",
+      "selector": ".adventure-import-intro",
+      "title": "E20.Tours.Importers.Adventure.Title",
+      "content": "E20.Tours.Importers.Adventure.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Importers.Outro.Title",
+      "content": "E20.Tours.Importers.Outro.Content"
+    }
+  ]
+}

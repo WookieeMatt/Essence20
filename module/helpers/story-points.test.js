@@ -201,6 +201,40 @@ describe("requestStoryPointGrant", () => {
       actorName: "Rarity",
     });
   });
+
+  // "If an NPC Critically Succeeds on a Skill Test" - the GM pool's own gain.
+  test("a GM grants the GM pool directly, and says so", async () => {
+    global.game.settings.get = jest.fn(() => 'giJoe');
+    global.game.user = { isGM: true, id: 'gm1' };
+    const party = mockParty({ gmPoints: 2, isOwner: true });
+    await requestStoryPointGrant({ type: 'npc', name: 'Viper' }, 1, { pool: 'gm' });
+    expect(party.update).toHaveBeenCalledWith({ 'system.gmPoints': 3 });
+    expect(global.ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: expect.stringContaining("SptGmGrantGranted") }));
+    expect(global.game.socket.emit).not.toHaveBeenCalled();
+  });
+
+  test("a player rolling their own NPC asks the GM for the GM pool, even as a Party owner", async () => {
+    global.game.settings.get = jest.fn(() => 'giJoe');
+    const party = mockParty({ gmPoints: 2, isOwner: true });
+    await requestStoryPointGrant({ type: 'npc', name: 'Viper' }, 1, { pool: 'gm' });
+    expect(party.update).not.toHaveBeenCalled();
+    expect(global.game.socket.emit).toHaveBeenCalledWith("system.essence20", {
+      action: "grantStoryPoints", amount: 1, actorName: "Viper", pool: "gm",
+    });
+
+    global.game.user = { isGM: true, id: 'gm1' };
+    global.game.users.activeGM = { id: 'gm1' };
+    await handleStoryPointGrantRequest({ action: "grantStoryPoints", amount: 1, actorName: "Viper", pool: "gm" });
+    expect(party.update).toHaveBeenCalledWith({ 'system.gmPoints': 3 });
+  });
+
+  test("a Friend Group has no GM pool to gain", async () => {
+    global.game.settings.get = jest.fn(() => 'myLittlePony');
+    global.game.user = { isGM: true, id: 'gm1' };
+    const party = mockParty({ gmPoints: 0, isOwner: true });
+    await requestStoryPointGrant({ type: 'npc', name: 'Chrysalis' }, 1, { pool: 'gm' });
+    expect(party.update).not.toHaveBeenCalled();
+  });
 });
 
 describe("the GM-side handlers", () => {

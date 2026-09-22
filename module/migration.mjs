@@ -557,6 +557,7 @@ async function compendiumActionType(item) {
 
   return actionTypeIndexCache.get(packName)?.get(id)?.system?.actionType ?? null;
 }
+
 export async function searchCompendium(item) {
   const id = item._id || item;
   for (const pack of game.packs) {
@@ -630,6 +631,7 @@ export async function migrateItemData(item, actor) {
       updateData["system.actionType"] = authored;
     }
   }
+
   /* Weapon effects born with no action cost -> Standard.
 
      Making an attack is the Attack action, which is a Standard action, and the weapon effect is
@@ -655,6 +657,7 @@ export async function migrateItemData(item, actor) {
     && !updateData["system.actionType"]) {
     updateData["system.actionType"] = "standard";
   }
+
   // Area of Effect shape "burst" -> "circle". The shape field originally shipped with a
   // system-flavoured vocabulary of its own; it now stores Foundry's own region shape type names so
   // the value can be handed straight to canvas.regions.placeRegion() with no translation table

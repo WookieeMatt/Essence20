@@ -24,6 +24,7 @@ const TOURS = [
   { file: "story-points", id: "storyPoints", cls: Essence20Tour },
   { file: "item-authoring", id: "itemAuthoring", cls: Essence20Tour },
   { file: "enrichers-and-macros", id: "enrichersAndMacros", cls: Essence20Tour },
+  { file: "importers", id: "importers", cls: Essence20Tour },
 ];
 
 /**

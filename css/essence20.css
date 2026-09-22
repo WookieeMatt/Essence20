@@ -1835,6 +1835,38 @@
   font-weight: 700;
 }
 
+/* Morphed / Alt Mode badges under the name - see helpers/morph-state.mjs. Morphed borrows the
+   character's own colour, the same --e20-system-color the header trim reads. */
+.essence20 .e20-state-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+.essence20 .e20-state-badge {
+  padding: 0.1em 0.7em;
+  border-radius: 999px;
+  border: 1px solid var(--e20-system-color, #b5b1b1);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+
+.essence20 .e20-state-badge.--morphed {
+  background: var(--e20-system-color, #b5b1b1);
+  color: #fff;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+}
+
+.essence20 .e20-state-badge.--altmode {
+  background: var(--e20-theme-card-bg);
+}
+
 /* ITEMS */
 .essence20 .items-header {
   height: 28px;
@@ -4412,6 +4444,23 @@
 .essence20 .item-field .item-field-inputs {
   flex: 1.5;
   justify-content: flex-end;
+}
+
+.essence20 .item-field.item-field--list .item-field-label {
+  flex: 0 0 7em;
+}
+
+.essence20 .item-field.item-field--list .item-field-inputs {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.essence20 .item-field.item-field--list .data-drop {
+  width: 100%;
+}
+
+.essence20 .item-field.item-field--list .data-drop .items-list {
+  width: 100%;
 }
 
 .essence20 .item-field input::placeholder,

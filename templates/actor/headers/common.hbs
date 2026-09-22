@@ -12,6 +12,18 @@
         <label class="sliced-border__label">{{localize 'E20.ActorName'}}</label>
         <h1 class="charname"><input name="name" type="text" value="{{document.name}}" placeholder="Name" /></h1>
       </div>
+      {{!-- Morphed / Alt Mode at a glance - the same flags helpers/morph-state.mjs drives the
+           status effect and ring tint from. The Alt Mode badge wears the mode's own name. --}}
+      {{#if (or system.isMorphed system.isTransformed)}}
+        <div class="e20-state-badges">
+          {{#if system.isMorphed}}
+            <span class="e20-state-badge --morphed">{{localize "E20.StatusMorphed"}}</span>
+          {{/if}}
+          {{#if system.isTransformed}}
+            <span class="e20-state-badge --altmode">{{#if altModeName}}{{altModeName}}{{else}}{{localize "E20.StatusAltMode"}}{{/if}}</span>
+          {{/if}}
+        </div>
+      {{/if}}
     </div>
 
     {{!-- Size --}}

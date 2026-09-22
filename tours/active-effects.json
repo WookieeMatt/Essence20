@@ -65,6 +65,30 @@
       "tooltipDirection": "LEFT"
     },
     {
+      "id": "wizard",
+      "app": "effectWizard",
+      "selector": ".effect-wizard__search",
+      "title": "E20.Tours.Effects.Wizard.Title",
+      "content": "E20.Tours.Effects.Wizard.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "wizardBuilder",
+      "app": "effectWizard",
+      "selector": ".effect-wizard__builder",
+      "title": "E20.Tours.Effects.WizardBuilder.Title",
+      "content": "E20.Tours.Effects.WizardBuilder.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "wizardFinish",
+      "app": "effectWizard",
+      "selector": "[data-action=\"finish\"]",
+      "title": "E20.Tours.Effects.WizardFinish.Title",
+      "content": "E20.Tours.Effects.WizardFinish.Content",
+      "tooltipDirection": "UP"
+    },
+    {
       "id": "conditions",
       "sidebarTab": "compendium",
       "selector": "[data-pack=\"essence20.conditions\"]",

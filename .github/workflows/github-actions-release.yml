@@ -11,7 +11,7 @@ jobs:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
 
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
 
@@ -33,7 +33,7 @@ jobs:
           download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/Essence20.zip
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 17.9.x
           cache: npm

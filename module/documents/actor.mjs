@@ -5,6 +5,7 @@ import { Dice } from "../dice.mjs";
 import { E20 } from "../helpers/config.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { getNumActions, resizeTokens } from "../helpers/actor.mjs";
+import { syncMorphState } from "../helpers/morph-state.mjs";
 import { actorHasPerk, findPerk } from "../helpers/perks.mjs";
 import { getGravityOptionalHeight, isGravityOptionalActive } from "../helpers/gravity-optional.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
@@ -2094,6 +2095,20 @@ export class Essence20Actor extends Actor {
         }
       }
     }
+  }
+
+  /**
+   * Every visible sign of being Morphed or in an Alt Mode - status effect, ring tint, chat line -
+   * follows the two flags from here, so it does not matter which path flipped them (the sheet
+   * buttons, the TAH helpers below, or a Perk toggling the flag directly). See
+   * helpers/morph-state.mjs.
+   * @override
+   */
+  _onUpdate(changed, options, userId) {
+    super._onUpdate?.(changed, options, userId);
+    syncMorphState(this, changed, options, userId).catch(err => {
+      console.error("essence20 | Failed to sync Morphed / Alt Mode state", err);
+    });
   }
 
   /**

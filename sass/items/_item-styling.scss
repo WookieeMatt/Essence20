@@ -276,6 +276,26 @@
   justify-content: flex-end;
 }
 
+// A list field (Role / Role Perks drop zones - see item/parts/sheet-field.hbs) is all content and
+// one short label: give the label a fixed narrow column and the list the rest of the row, so a
+// Role Perk row has room for its name, level, choice group and controls side by side.
+.essence20 .item-field.item-field--list .item-field-label {
+  flex: 0 0 7em;
+}
+
+.essence20 .item-field.item-field--list .item-field-inputs {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.essence20 .item-field.item-field--list .data-drop {
+  width: 100%;
+}
+
+.essence20 .item-field.item-field--list .data-drop .items-list {
+  width: 100%;
+}
+
 // Foundry core's own placeholder styling reads too close to real input text at a glance (see the
 // Perk sheet's Reroll Cost fields, e.g. "system.powers.personal.value") - italic plus a color
 // mixed lighter than --e20-theme-text-color itself (not the separate muted-text token, which isn't

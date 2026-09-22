@@ -1870,6 +1870,21 @@ E20.statusEffects = [
     changes: [],
   },
   {
+    // Not a condition: the visible half of system.isMorphed, kept in step by
+    // helpers/morph-state.mjs. Removing it by hand does not un-Morph anyone.
+    img: 'systems/essence20/assets/icons/status_effects/status_morphed.svg',
+    id: 'morphed',
+    name: 'E20.StatusMorphed',
+    changes: [],
+  },
+  {
+    // Likewise for system.isTransformed; the effect takes the Alt Mode's own name and token image.
+    img: 'systems/essence20/assets/icons/status_effects/status_alt_mode.svg',
+    id: 'altMode',
+    name: 'E20.StatusAltMode',
+    changes: [],
+  },
+  {
     img: 'systems/essence20/assets/icons/status_effects/status_prone.svg',
     id: 'prone',
     name: 'E20.StatusProne',

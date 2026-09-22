@@ -36,6 +36,29 @@
       "tooltipDirection": "DOWN"
     },
     {
+      "id": "narrative",
+      "app": "storyPoints",
+      "selector": ".story-points__spends",
+      "title": "E20.Tours.StoryPoints.Narrative.Title",
+      "content": "E20.Tours.StoryPoints.Narrative.Content",
+      "tooltipDirection": "DOWN",
+      "optional": true
+    },
+    {
+      "id": "inPlay",
+      "title": "E20.Tours.StoryPoints.InPlay.Title",
+      "content": "E20.Tours.StoryPoints.InPlay.Content"
+    },
+    {
+      "id": "newSession",
+      "app": "storyPoints",
+      "selector": "[data-action=\"newSession\"]",
+      "title": "E20.Tours.StoryPoints.NewSession.Title",
+      "content": "E20.Tours.StoryPoints.NewSession.Content",
+      "tooltipDirection": "DOWN",
+      "restricted": true
+    },
+    {
       "id": "majorScene",
       "app": "storyPoints",
       "selector": "[data-action=\"rollMajorSceneGmPoints\"]",
@@ -46,14 +69,38 @@
       "optional": true
     },
     {
-      "id": "settings",
-      "sidebarTab": "settings",
-      "selector": "[data-action=\"openApp\"][data-app=\"configure\"]",
-      "title": "E20.Tours.StoryPoints.Settings.Title",
-      "content": "E20.Tours.StoryPoints.Settings.Content",
-      "tooltipDirection": "LEFT",
+      "id": "gridPower",
+      "app": "storyPoints",
+      "selector": "[data-action=\"gridPowerBloom\"]",
+      "title": "E20.Tours.StoryPoints.GridPower.Title",
+      "content": "E20.Tours.StoryPoints.GridPower.Content",
+      "tooltipDirection": "DOWN",
       "restricted": true,
       "optional": true
+    },
+    {
+      "id": "friendshipCircle",
+      "app": "storyPoints",
+      "selector": ".story-points__circle",
+      "title": "E20.Tours.StoryPoints.FriendshipCircle.Title",
+      "content": "E20.Tours.StoryPoints.FriendshipCircle.Content",
+      "tooltipDirection": "DOWN",
+      "optional": true
+    },
+    {
+      "id": "party",
+      "sidebarTab": "actors",
+      "selector": "#actors .e20-party-folder",
+      "title": "E20.Tours.StoryPoints.Party.Title",
+      "content": "E20.Tours.StoryPoints.Party.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "permissions",
+      "title": "E20.Tours.StoryPoints.Permissions.Title",
+      "content": "E20.Tours.StoryPoints.Permissions.Content",
+      "restricted": true
     },
     {
       "id": "outro",

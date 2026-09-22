@@ -37435,6 +37435,76 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
     });
   });
 
+  describe("an NPC's Critical Success - GM Point grant (GI Joe CRB p.128)", () => {
+    // A skill die showing its max face - what combat.mjs#_isCritIsFumble calls a Critical Success.
+    class NpcCritRoll {
+      constructor() {
+        this.dice = [{ faces: 20, values: [12] }, { faces: 6, values: [6] }];
+        this._total = 18;
+      }
+      async evaluate() {}
+      get total() {
+        return this._total;
+      }
+      _evaluateTotal() {
+        return this._total;
+      }
+      async render() {
+        return '<div></div>';
+      }
+    }
+
+    const versus = (difficulty) => ({
+      entries: [{ name: 'Target', targetUuid: null, difficulty, showDifficulty: true }],
+      damageValue: null, damageType: null, effectName: null, alternateEffects: [],
+    });
+
+    beforeEach(() => {
+      game.users = [{ isGM: true, active: true }];
+      game.socket = { emit: jest.fn() };
+      global.Roll = NpcCritRoll;
+    });
+
+    afterEach(() => {
+      delete game.users;
+      delete game.socket;
+    });
+
+    test("an NPC that Critically Succeeds gains the GM a GM Point", async () => {
+      const actor = { ...makeBankedActor(false), type: 'npc', name: 'Cobra Viper' };
+
+      await freshDice._rollSkillHelper('d20 + d6', actor, 'flavor', false, versus(10), {});
+
+      expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
+        action: 'grantStoryPoints', amount: 1, actorName: 'Cobra Viper', pool: 'gm',
+      });
+    });
+
+    test("a max die on a Test that still failed is not a Critical Success", async () => {
+      const actor = { ...makeBankedActor(false), type: 'npc', name: 'Cobra Viper' };
+
+      await freshDice._rollSkillHelper('d20 + d6', actor, 'flavor', false, versus(25), {});
+
+      expect(game.socket.emit).not.toHaveBeenCalled();
+    });
+
+    test("a bare roll against nothing succeeded at nothing", async () => {
+      const actor = { ...makeBankedActor(false), type: 'npc', name: 'Cobra Viper' };
+
+      await freshDice._rollSkillHelper('d20 + d6', actor, 'flavor', false, { entries: [], damageValue: null, damageType: null, effectName: null, alternateEffects: [] }, {});
+
+      expect(game.socket.emit).not.toHaveBeenCalled();
+    });
+
+    test("a player character's Critical Success feeds nobody's pool", async () => {
+      const actor = { ...makeBankedActor(false), type: 'playerCharacter', name: 'Duke' };
+
+      await freshDice._rollSkillHelper('d20 + d6', actor, 'flavor', false, versus(10), {});
+
+      expect(game.socket.emit).not.toHaveBeenCalled();
+    });
+  });
+
   describe("Rouse (GI Joe CRB, Officer base, 1st level, p.85) - Story Point grant on a successful roll", () => {
     beforeEach(() => {
       game.users = [{ isGM: true, active: true }];

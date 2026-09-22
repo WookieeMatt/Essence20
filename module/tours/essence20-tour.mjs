@@ -791,8 +791,81 @@ export class Essence20Tour extends Tour {
 
     if (key === "storyPoints") return this._ensureStoryPoints();
 
+    if (key === "effectWizard") return this._ensureEffectWizard();
+
+    // The GM importers are standalone windows with fixed ids. Opened here rather than by a step
+    // action for the same reason as the roll dialog: `app` resolves before `action` runs.
+    const standalone = this.constructor.STANDALONE_APPS[key];
+    if (standalone) return this._ensureStandalone(standalone);
+
     const app = foundry.applications.instances.get(key) ?? null;
     return app ? this._attachIfDetached(app) : null;
+  }
+
+  /**
+   * Standalone applications a step may name by logical key: the id they register under, and how
+   * to construct one. Imported lazily so the tours module stays free of app dependencies.
+   * @type {Record<string, {id: string, open: () => Promise<foundry.applications.api.ApplicationV2>}>}
+   */
+  static STANDALONE_APPS = {
+    statBlockImporter: {
+      id: "essence20-stat-block-importer",
+      open: async () => new (await import("../apps/stat-block-importer.mjs")).default(),
+    },
+    bookDescriptionImporter: {
+      id: "book-description-importer",
+      open: async () => new (await import("../apps/book-description-importer.mjs")).default(),
+    },
+    adventureImporter: {
+      id: "essence20-adventure-importer",
+      open: async () => new (await import("../apps/adventure-importer.mjs")).default(),
+    },
+  };
+
+  /**
+   * Open one of `STANDALONE_APPS`, or bring it forward if the user already has it up.
+   * @param {{id: string, open: () => Promise<foundry.applications.api.ApplicationV2>}} entry
+   * @returns {Promise<foundry.applications.api.ApplicationV2|null>}
+   * @protected
+   */
+  async _ensureStandalone({ id, open }) {
+    const existing = foundry.applications.instances.get(id);
+    if (existing) return this._attachIfDetached(existing);
+
+    const app = await open();
+    await app.render(true);
+    const rendered = await this._awaitApp(id);
+    return rendered ? this._attachIfDetached(this._track(rendered, true)) : null;
+  }
+
+  /**
+   * Open the Effect Wizard on one of the demo character's effects.
+   *
+   * The effect is named by the step's `effect` property and defaults to the demo effect, so the
+   * wizard opens in its "add another change to this one" mode - the same window the header
+   * control on an effect sheet opens - and never creates anything when the tour is closed.
+   * @returns {Promise<foundry.applications.api.ApplicationV2|null>}
+   * @protected
+   */
+  async _ensureEffectWizard() {
+    const sheet = await this._ensureActorSheet(this.constructor.DEMO_APPS.character ?? "character");
+    if (!sheet) return null;
+
+    const name = this.currentStep?.effect ?? "Field Adrenaline";
+    const effect = sheet.document.effects.find(e => e.name === name);
+    if (!effect) {
+      console.warn(`Essence20 | Tour "${this.id}" found no demo effect named "${name}"`);
+      return null;
+    }
+
+    const id = `essence20-effect-wizard-${effect.id}`;
+    const existing = foundry.applications.instances.get(id);
+    if (existing) return this._attachIfDetached(existing);
+
+    const { default: EffectWizard } = await import("../apps/effect-wizard.mjs");
+    await new EffectWizard(effect).render(true);
+    const app = await this._awaitApp(id);
+    return app ? this._attachIfDetached(this._track(app, true)) : null;
   }
 
   /**
