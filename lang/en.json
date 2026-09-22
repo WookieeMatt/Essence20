@@ -652,7 +652,7 @@
     "SptGridPowerBloomPrompt": "Spend {cost} Story Points - one per team member - for a Grid Power bloom? Every member of the team gains 1d2 Personal Power, up to their maximum.",
     "SptGridPowerBloomTitle": "Grid Power Bloom",
     "SptGridPowerBloomTooltip": "One Story Point per team member: everyone gains 1d2 Personal Power",
-    "SptPrimaryPartyTooltip": "The primary Party. The pool lives on it, which is why a player given ownership of it can spend.",
+    "SptPrimaryPartyTooltip": "The primary (currently playing) Party. The point pools are stored on it, which allows points to be tracked separately for multiple Parties.",
     "SptSpendClue": "{name} spends a Story Point for a clue.",
     "SptSpendClueButton": "Get a clue",
     "SptSpendClueTooltip": "Spend a Story Point: the GM gives you a clue when you are stumped",
