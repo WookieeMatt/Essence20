@@ -2807,7 +2807,7 @@
         },
         "Party": {
           "Title": "Where the Points Live",
-          "Content": "The pool sits on your primary Party — the pinned folder here in the Actors tab.\nThere is always one: the system creates it, will not let the last one be deleted, and if the primary goes, the next Party inherits its points."
+          "Content": "The pool sits on your primary Party — the party currently playing — and can be found in the pinned folder in the Actors tab.\nYou can create multiple Parties, but there there is always one primary Party. The system creates one for you, and will not let the last Party be deleted, and if the primary goes, the next Party becomes the new primary."
         },
         "Permissions": {
           "Title": "Who Can Spend",
