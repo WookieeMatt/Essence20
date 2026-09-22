@@ -2779,7 +2779,7 @@
         },
         "Spend": {
           "Title": "Spending",
-          "Content": "The arrows move a pool a point at a time and announce it in chat.\nMost spends never touch these, though: they happen where the rule does, and the tracker only shows the result."
+          "Content": "The arrows move a pool a point at a time and announce it in chat.\nMost of the time you won't need to use these, though: they're triggered via automation, and the tracker only shows the result."
         },
         "Narrative": {
           "Title": "Equipment and Clues",
