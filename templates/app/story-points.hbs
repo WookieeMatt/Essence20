@@ -56,10 +56,10 @@
   </div>
   {{#if canSpendNarrative}}
     <div class="story-points__spends">
-      <button data-action="spendNarrative" data-spend="equipment" class="story-points__btn --bottom" data-tooltip="{{localize 'E20.SptSpendEquipmentTooltip'}}">
+      <button data-action="spendNarrative" data-spend="equipment" class="story-points__btn --bottom" {{#unless narrativeAffordable}}disabled{{/unless}} data-tooltip="{{localize 'E20.SptSpendEquipmentTooltip'}}">
         <span>{{localize "E20.SptSpendEquipmentButton"}}</span>
       </button>
-      <button data-action="spendNarrative" data-spend="clue" class="story-points__btn --bottom" data-tooltip="{{localize 'E20.SptSpendClueTooltip'}}">
+      <button data-action="spendNarrative" data-spend="clue" class="story-points__btn --bottom" {{#unless narrativeAffordable}}disabled{{/unless}} data-tooltip="{{localize 'E20.SptSpendClueTooltip'}}">
         <span>{{localize "E20.SptSpendClueButton"}}</span>
       </button>
     </div>
