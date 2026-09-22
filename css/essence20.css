@@ -5067,6 +5067,7 @@
   padding: 5px 8px;
   line-height: 1.15;
   text-align: center;
+  border-color: #ff6400;
 }
 
 /* The Friendship Circle section (helpers/friendship-circle.mjs): who is in, and the three pools. */

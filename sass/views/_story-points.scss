@@ -195,6 +195,9 @@
   padding: 5px 8px;
   line-height: 1.15;
   text-align: center;
+  // Outlined like the decrement arrows: both take a point out of the pool. The same variable,
+  // not a copy of the hex, so the two cannot drift apart.
+  border-color: v.$text-color-orange;
 }
 
 /* The Friendship Circle section (helpers/friendship-circle.mjs): who is in, and the three pools. */
