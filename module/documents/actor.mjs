@@ -945,6 +945,19 @@ export class Essence20Actor extends Actor {
       }
     }
 
+    // A Megaform's origin is already a finished total: _prepareMegaformZordData and
+    // _prepareMegaformCombinerData set it to combinedHealthMax, the sum of each participant's
+    // own health.max - and each of those already includes that participant's Conditioning.
+    // Adding the Megaform's Conditioning again counted it twice, so an undamaged Megazord's
+    // token bar never filled. RAW agrees there is nothing on top: the PR CRB's Dino Megazord
+    // (16/9/7/7/7) is the Tyrannosaurus's 8 doubled for Core Body plus 9+7+7+7 = 46, no more.
+    // Only the GM's .bonus goes on top, which is what those two methods' own comments intend.
+    if (this.type == 'megaform') {
+      health.max = originStartingHealth + bonus;
+      health.string = `${originStartingHealth} (${game.i18n.localize('E20.MegaformCombinedHealth')}) + ${bonus} (${bonusName})`;
+      return;
+    }
+
     health.max = originStartingHealth + rolePointsBonusHealth + conditioning + bonus;
     health.string = `${originStartingHealth} (${originName}) + ${rolePointsBonusHealth} (${rolePointsName}) + ${conditioning} (${conditionName}) + ${bonus} (${bonusName})`;
   }

@@ -69,7 +69,8 @@ export const DEMO_ACTORS = {
       level: 5,
       color: "#c62828",
       canMorph: true,
-      health: { value: 20 },
+      // Matches Field Trained's startingHealth below - a Power Rangers Origin gives 1-2.
+      health: { value: 2 },
       stun: { value: 0 },
       powers: { personal: { value: 8, max: 10 } },
       essences: {
@@ -120,7 +121,7 @@ export const DEMO_ACTORS = {
         name: "Field Trained", type: "origin", img: "systems/essence20/assets/icons/items/origin.svg",
         system: {
           description: "<p>A demonstration Origin. Origins set starting Health, base movement, and a couple of starting skills.</p>",
-          startingHealth: 20,
+          startingHealth: 2,
           baseGroundMovement: 30,
           essences: ["speed"],
           skills: ["athletics", "alertness"],
@@ -253,9 +254,19 @@ export const DEMO_ACTORS = {
       // Energon track and the Transform button, and turns on the per-item mode selectors.
       canTransform: true,
       transformerFaction: "autobots",
-      health: { value: 22 },
+      // Health max is derived - Origin starting Health + Role Points + Conditioning + bonus - so
+      // the current value only reads sensibly with an Origin to derive it from (below). Without
+      // one the sheet showed Health 22 / 0. 3 is a Transformers Origin's own typical starting
+      // Health (the CRB's run 2-4); the 22 this used to be was an order of magnitude out.
+      health: { value: 3 },
       stun: { value: 0 },
-      energon: { normal: { value: 6, max: 8 } },
+      // A Transformer's Energon max is derived too: its LOWEST Essence (2 here, Speed and Social),
+      // so a max set by hand is ignored. It used to set 6 of 8 and read 6 / 2.
+      energon: { normal: { value: 2 } },
+      // What dropping the Origin onto a sheet writes (sheet-handlers/background-handler.mjs copies its
+      // baseGroundMovement here). Demo items are created directly, so nothing runs that handler - the
+      // Demo Ranger sets its own the same way.
+      movement: { ground: { base: 30 } },
       essences: {
         strength: { value: 4, max: 4 }, speed: { value: 2, max: 2 },
         smarts: { value: 3, max: 3 }, social: { value: 2, max: 2 },
@@ -269,6 +280,14 @@ export const DEMO_ACTORS = {
       },
     },
     items: [
+      {
+        name: "Forged on Cybertron", type: "origin", img: "systems/essence20/assets/icons/items/origin.svg",
+        system: {
+          description: "<p>A demonstration Origin. It is what the sheet works out starting Health and base movement from, for a Transformer as for anyone else.</p>",
+          startingHealth: 3,
+          baseGroundMovement: 30,
+        },
+      },
       {
         name: "Ground Vehicle Mode", type: "altMode",
         img: "systems/essence20/assets/icons/items/altmode.svg",
@@ -297,7 +316,8 @@ export const DEMO_ACTORS = {
       color: "#6d4c41",
       // Non-PC types have no Origin item, so their Health maximum comes from this flat
       // `health.origin` field instead — setting `health.max` directly does nothing, it is derived.
-      health: { origin: 18, value: 18 },
+      // 4 is what a real Threat Level 2 vehicle carries (their stat blocks run 3-4); this was 18.
+      health: { origin: 4, value: 4 },
       crew: { numDrivers: 1, numPassengers: 3, description: "One driver and up to three passengers." },
       firepoints: { value: 2, description: "Two firing positions." },
       threatLevel: 2,
@@ -313,14 +333,20 @@ export const DEMO_ACTORS = {
     name: "Demo Zord",
     type: "zord",
     system: {
-      size: "titanic",
+      // The Power Rangers CRB's own "Baseline Zord Statistics" (p.136) - Huge, Health 6, Armor 1,
+      // Strength 6, Speed 4, Ground 40 - where this used to be Health 40, Armor 3 and Ground 80,
+      // several times anything the book prints (its 31 Zords run Health 6-11). A Zord has no
+      // Smarts or Social ("*" in the book), so neither is set.
+      size: "huge",
       color: "#c62828",
-      health: { origin: 40, value: 40 },
-      armor: 3,
+      // The sheet shows origin + Conditioning; a Zord's Conditioning is 3, so this displays the
+      // book's 6.
+      health: { origin: 3, value: 6 },
+      armor: 1,
       isCombiner: true,
       crew: { numDrivers: 1, numPassengers: 0 },
-      essences: { strength: { value: 5 }, speed: { value: 3 }, smarts: { value: 2 }, social: { value: 1 } },
-      movement: { ground: { base: 80 } },
+      essences: { strength: { value: 6 }, speed: { value: 4 } },
+      movement: { ground: { base: 40 } },
     },
     items: [],
   },
@@ -329,9 +355,10 @@ export const DEMO_ACTORS = {
     name: "Demo Megazord",
     type: "megaform",
     system: {
-      size: "titanic",
+      // Every combined Megazord in the Power Rangers CRB is Armor 3, and all but one Towering.
+      size: "towering",
       color: "#1565c0",
-      armor: 4,
+      armor: 3,
     },
     items: [],
     // A Megaform derives almost everything — Essences, defences, movement and the combined health
@@ -360,7 +387,11 @@ export const DEMO_ACTORS = {
     system: {
       level: 3,
       color: "#37474f",
-      health: { value: 14 },
+      // An NPC has no Origin Item, so its starting Health is the `health.origin` field - the same
+      // shape as the demo vehicle. Setting only the current value left the sheet at Health 14 / 0.
+      // 3 is what a book Threat of this level carries (Threat Level 3 stat blocks run 3-4).
+      health: { origin: 3, value: 3 },
+      movement: { ground: { base: 30 } },
       essences: {
         strength: { value: 3, max: 3 }, speed: { value: 2, max: 2 },
         smarts: { value: 1, max: 1 }, social: { value: 1, max: 1 },
@@ -622,6 +653,22 @@ async function linkParticipants(actor, definition, key, seen) {
  */
 async function removeDemoActors() {
   if (!game.user.isGM) return;
+
+  // The combat tour's demo encounter (tours/actions.mjs#startDemoEncounter) goes first: its
+  // only combatant is a demo actor, and an encounter left pointing at a deleted actor is debris
+  // on every client's tracker. Same re-check-before-delete as the actors below.
+  const combatIds = game.combats
+    .filter(c => c.getFlag("essence20", DEMO_FLAG))
+    .map(c => c.id)
+    .filter(id => game.combats.has(id));
+
+  if (combatIds.length) {
+    try {
+      await Combat.deleteDocuments(combatIds);
+    } catch (err) {
+      console.warn("Essence20 | Tour demo encounter cleanup: ", err);
+    }
+  }
 
   // Two cleanups can overlap — a tour exiting while the ready sweep runs, or two tours ending in
   // quick succession — and deleting an id that a previous pass already removed throws from the

@@ -1887,6 +1887,26 @@ describe("_prepareMegaformZordData", () => {
     global.fromUuidSync.mockReset();
   });
 
+  // Regression: _prepareHealth used to add the Megaform's own Conditioning on top of
+  // combinedHealthMax, which already includes each participant's. The tests around this one
+  // check combinedHealthMax straight out of _prepareMegaformZordData and so never saw it -
+  // this one runs _prepareHealth after it, the way prepareDerivedData does.
+  test("health.max is the combined total plus only the GM bonus - Conditioning is not added again", () => {
+    const a = makeZordParticipant({ name: 'A', health: 6, healthMax: 6 });
+    const b = makeZordParticipant({ name: 'B', health: 7, healthMax: 7 });
+    const actor = makeMegazordActor([a, b]);
+    actor.system.conditioning = 3;
+    actor.system.health.bonus = 2;
+
+    actor._prepareMegaformZordData();
+    actor._prepareHealth();
+
+    expect(actor.system.combinedHealthMax).toBe(13);
+    expect(actor.system.health.max).toBe(13 + 2);
+    // Undamaged, so the token bar reads full.
+    expect(actor.system.health.value).toBe(13);
+  });
+
   test("doubles a Core Body participant's own Health share", () => {
     const coreBody = makeZordParticipant({ name: 'A', health: 5, healthMax: 5, megaformTraitItems: [{ type: 'coreBody' }] });
     const plain = makeZordParticipant({ name: 'B', health: 4, healthMax: 4 });

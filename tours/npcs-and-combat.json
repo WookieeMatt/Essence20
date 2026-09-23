@@ -57,11 +57,12 @@
       "selector": "#combat",
       "title": "E20.Tours.Combat.Tracker.Title",
       "content": "E20.Tours.Combat.Tracker.Content",
-      "tooltipDirection": "LEFT"
+      "tooltipDirection": "LEFT",
+      "action": "startDemoEncounter"
     },
     {
       "id": "actionsTab",
-      "app": "character",
+      "app": "threat",
       "tab": "actions",
       "selector": "section[data-tab=\"actions\"]",
       "title": "E20.Tours.Combat.ActionsTab.Title",
@@ -72,6 +73,16 @@
       "id": "budget",
       "title": "E20.Tours.Combat.Budget.Title",
       "content": "E20.Tours.Combat.Budget.Content"
+    },
+    {
+      "id": "pips",
+      "app": "threat",
+      "selector": "header.sheet-header .action-economy",
+      "title": "E20.Tours.Combat.Pips.Title",
+      "content": "E20.Tours.Combat.Pips.Content",
+      "tooltipDirection": "DOWN",
+      "timeout": 500,
+      "optional": true
     },
     {
       "id": "conditions",

@@ -2675,11 +2675,11 @@
         },
         "WizardBuilder": {
           "Title": "Say It in English",
-          "Content": "Instead of searching by typing, you can choose it from these selectors: a group, a target, what about it, and a value.\nThe sentence underneath is the rule as the wizard understood it, before anything is written — if it reads wrong, nothing has happened yet."
+          "Content": "Instead of searching by typing, you can choose it from these selectors: <strong>Category</strong>, <strong>Target</strong>, <strong>Change</strong> and <strong>Amount</strong>.\nThe sentence underneath is the rule as the wizard understood it, before anything is written — if it reads wrong, nothing has happened yet."
         },
         "WizardFinish": {
           "Title": "Ordinary Changes",
-          "Content": "Finish writes plain Active Effect changes — the same rows you would type by hand, and editable in the normal effect sheet afterwards.\nYou can also reach the wizard from any effect's own window, through its header menu, to add another change later."
+          "Content": "<strong>Add to Effect</strong> writes plain Active Effect changes — the same rows you would type by hand, and editable in the normal effect sheet afterwards.\nYou can also reach the wizard from any effect's own window, through its header menu, to add another change later."
         }
       },
       "Combat": {
@@ -2728,6 +2728,10 @@
         "Budget": {
           "Title": "The Action Economy",
           "Content": "Budgets come from Speed: Standard and Move actions, and Speed minus two Free actions. A Standard can be traded for two Free.\nDuring an encounter the sheet header shows the turn as pips, the tracker marks who has spent what, and the drag ruler colors a move green, amber or red as it eats into the budget (with token drag preview on).\nHow strictly it is enforced is a world setting — track, confirm, or refuse — and it can be switched off entirely."
+        },
+        "Pips": {
+          "Title": "The Pips",
+          "Content": "There they are, in the demo Threat's header: a row each for Standard, Move and Free actions, one pip per action it has left this turn, dimmed as each is spent.\nThe Threat was put in a short demo encounter so they would show; it is removed when the tour ends."
         }
       },
       "Powers": {
@@ -2907,7 +2911,7 @@
         },
         "ZordStats": {
           "Title": "Zord Scale",
-          "Content": "Zords are titanic, and their numbers say so.\nArmor contributes directly to Toughness here rather than coming from an equipped Item, because a Zord does not carry gear the way a character does."
+          "Content": "Zords are built at a scale no character reaches, and their numbers say so.\nArmor contributes directly to Toughness here rather than coming from an equipped Item, because a Zord does not carry gear the way a character does."
         },
         "MegaformSheet": {
           "Title": "The Megaform",
@@ -2995,7 +2999,7 @@
         },
         "Directory": {
           "Title": "In the Sidebar",
-          "Content": "Parties appear in the Actors tab as folders you can expand to see the roster, since Foundry has no notion of a party of its own.\nThe pin marks the <strong>primary</strong> (currently playing) one."
+          "Content": "The primary (currently playing) Party. The point pools are stored on it, which allows points to be tracked separately for multiple Parties."
         },
         "Primary": {
           "Title": "The Primary Party",

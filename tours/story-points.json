@@ -42,6 +42,7 @@
       "title": "E20.Tours.StoryPoints.Narrative.Title",
       "content": "E20.Tours.StoryPoints.Narrative.Content",
       "tooltipDirection": "DOWN",
+      "timeout": 500,
       "optional": true
     },
     {
@@ -65,6 +66,7 @@
       "title": "E20.Tours.StoryPoints.MajorScene.Title",
       "content": "E20.Tours.StoryPoints.MajorScene.Content",
       "tooltipDirection": "DOWN",
+      "timeout": 500,
       "restricted": true,
       "optional": true
     },
@@ -75,6 +77,7 @@
       "title": "E20.Tours.StoryPoints.GridPower.Title",
       "content": "E20.Tours.StoryPoints.GridPower.Content",
       "tooltipDirection": "DOWN",
+      "timeout": 500,
       "restricted": true,
       "optional": true
     },
@@ -85,6 +88,7 @@
       "title": "E20.Tours.StoryPoints.FriendshipCircle.Title",
       "content": "E20.Tours.StoryPoints.FriendshipCircle.Content",
       "tooltipDirection": "DOWN",
+      "timeout": 500,
       "optional": true
     },
     {
