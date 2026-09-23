@@ -54,3 +54,11 @@
   border-color: var(--e20-theme-accent);
   background: var(--e20-theme-card-bg);
 }
+
+/* The header's Member count. The box grows with its row (.sheet-header .sliced-border is
+   flex: 1 1 auto) but the read-only .two-digit-input inside stays 40px, so it sat against the
+   left padding - the number was centred in its input, and the input 15px left of the box's
+   centre. Centred in the box instead; the box keeps its width, so the MEMBERS label still fits. */
+.essence20 .sheet-header .party-header-members {
+  justify-content: center;
+}
