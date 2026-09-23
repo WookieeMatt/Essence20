@@ -2967,7 +2967,7 @@
         },
         "Header": {
           "Title": "The Header",
-          "Content": "A name, a colour, and the number of characters on the roster.\nThe member count is worked out from the roster below rather than typed in — several things size themselves from it."
+          "Content": "A name, a color, and the number of characters on the roster.\nThe member count is worked out from the roster below rather than typed in — several things size themselves from it."
         },
         "Sidebar": {
           "Title": "The Sidebar",
