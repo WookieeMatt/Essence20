@@ -2675,7 +2675,7 @@
         },
         "WizardBuilder": {
           "Title": "Say It in English",
-          "Content": "Or choose it: a group, a target, what about it, and a value.\nThe sentence underneath is the rule as the wizard understood it, before anything is written — if it reads wrong, nothing has happened yet."
+          "Content": "Instead of searching by typing, you can choose it from these selectors: a group, a target, what about it, and a value.\nThe sentence underneath is the rule as the wizard understood it, before anything is written — if it reads wrong, nothing has happened yet."
         },
         "WizardFinish": {
           "Title": "Ordinary Changes",
