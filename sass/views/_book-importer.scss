@@ -4,9 +4,25 @@
 .essence20 .book-import {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
   height: 100%;
   min-height: 0;
+}
+
+/* The window's own root scrolls here (scrollable: [""] in the app, so Foundry keeps its scroll
+   position across renders), and a scroll container clips anything drawn above its top edge -
+   which is exactly where a sliced-border__label sits, lifted half out of its box. The first
+   section's title lost its top half. Padding is inside the clip, so the overhang goes there; the
+   wider gap does the same for every later section's title against the box above it. */
+.essence20 .book-import {
+  padding-top: 10px;
+}
+
+/* The shared sliced-border box pads 2px at the sides and 4px at the foot - right for a header
+   field, not for a panel of text with a full-width button, which sat against the frame with the
+   frame's cut corner running through it. */
+.essence20 .book-import > .sliced-border {
+  padding: 16px 12px 12px;
 }
 
 .essence20 .book-import .e20-hidden {
