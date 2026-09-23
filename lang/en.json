@@ -929,6 +929,7 @@
     "SuddenDeathConfirmTitle": "Sudden Death?",
     "SuddenDeathConfirmContent": "Sudden Death is available against {name} (once per combat) - defeat them instead of dealing damage?",
     "SuddenDeathApplied": "defeated by Sudden Death.",
+    "LoadOutCarryLimits": "Carry Limits",
     "LoadOutHands": "Hands",
     "LoadOutHandsHint": "Hands of weapons carried vs the six-hand Load Out limit. Weapons in Integrated Hardpoints don't count.",
     "Level1": "1st Level",

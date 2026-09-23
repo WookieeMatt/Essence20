@@ -51,7 +51,9 @@
         <a class="action-economy__trade" data-action="actionTradeForFree"
            data-tooltip="{{localize 'E20.ActionEconomyTradeTooltip'}}"
            aria-label="{{localize 'E20.ActionEconomyTradeTooltip'}}">
-          <i class="fas fa-right-left"></i>
+          {{!-- Spelled out as the trade itself - one Standard for two Free - where an arrows icon
+               left it a guess until hovered. The tooltip still carries the full sentence. --}}
+          <span class="action-economy__trade-label">S&nbsp;&rarr;&nbsp;2&times;F</span>
         </a>
       {{/if}}
 

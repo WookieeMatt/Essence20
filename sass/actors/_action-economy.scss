@@ -85,15 +85,19 @@
     flex-direction: column;
     justify-content: center;
     gap: 2px;
+    // Set apart from the pips and their -/+ controls, so the trade does not read as a fourth
+    // control on the Free row.
+    margin-left: 20px;
 
     &:empty {
       display: none;
     }
   }
 
-  /* Icons rather than the sentences they stand for. Both read as full text in their tooltips;
-     spelled out in the box, the trade line alone was 126px - half the width of the whole
-     Actions box, and wider than the Origin field next to it. */
+  /* Short forms rather than the sentences they stand for - "S → 2×F" for the trade, an icon for
+     the Speed 1 note. Both read as full text in their tooltips; spelled out in the box, the trade
+     line alone was 126px - half the width of the whole Actions box, and wider than the Origin
+     field next to it. */
   &__trade,
   &__hint {
     font-size: 11px;
@@ -102,6 +106,8 @@
 
   &__trade {
     opacity: 0.55;
+    white-space: nowrap;
+    font-size: 10px;
 
     &:hover {
       opacity: 1;
@@ -118,4 +124,15 @@
   &--skipped &__rows {
     opacity: 0.4;
   }
+}
+
+/* The ACTIONS title pill hangs over this box's top edge, and at the header row's 48px the three
+   rows exactly fill the space between 8px paddings - so the pill sat 2px over the Standard row,
+   pips and controls included. Three pixels move from the bottom padding to the top: the rows clear
+   the pill and the box stays the same 48px as the fields beside it. It has to outweigh the header
+   box rule in assets/_headers.scss, hence the long selector. padding-right + padding-bottom still
+   clears the 16px cut corner (16 + 5). */
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.action-economy {
+  padding-top: 11px;
+  padding-bottom: 5px;
 }
