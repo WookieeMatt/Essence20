@@ -2743,7 +2743,7 @@
         },
         "Pool": {
           "Title": "The Pool",
-          "Content": "<strong>Personal Power</strong> for a Ranger, Sorcerous Power for a caster, Energon for a Transformer — the sheet shows whichever this character has.\nIt sits with Health and Stun because Rest restores it."
+          "Content": "<strong>Personal Power</strong> for a Ranger, <strong>Sorcerous Power</strong> for a caster, <strong>Energon</strong> for a Transformer — the sheet shows whichever this character has.\nIt sits with Health and Stun because Rest restores it."
         },
         "PowersTab": {
           "Title": "The Powers Tab",
