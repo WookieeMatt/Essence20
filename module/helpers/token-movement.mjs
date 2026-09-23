@@ -386,7 +386,10 @@ export async function consumeForMovement(token, movement) {
     return !!ok;
   }
 
-  ui.notifications.info(game.i18n.format(message, over));
+  // Yellow, not blue, even though 'track' let the move through: the token has gone past what
+  // the actor can afford, and that is exactly what a warning is for. A successful Push above
+  // stays an info - buying the distance is a legal, ordinary outcome, not a problem.
+  ui.notifications.warn(game.i18n.format(message, over));
   return true;
 }
 
