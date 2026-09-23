@@ -2703,7 +2703,7 @@
         },
         "Initiative": {
           "Title": "Rolling Initiative",
-          "Content": "The die beside Initiative rolls it, and every sheet in the system has one.\nThe dropdown next to it chooses which skill does the rolling — Initiative for most, though some player characters’ Roles change that."
+          "Content": "The die beside Initiative rolls it, and every sheet in the system has one.\nThe dropdown next to it chooses which skill does the rolling — Initiative for most, though some Threats change that."
         },
         "Tracker": {
           "Title": "The Combat Tracker",
