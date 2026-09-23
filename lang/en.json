@@ -2991,7 +2991,7 @@
         },
         "StoryPoints": {
           "Title": "It Holds the Story Points",
-          "Content": "The table's Story Point pool lives on the primary Party, even though nothing on this sheet shows it — the tracker is its one screen.\nIt sits here rather than in the world settings for a practical reason: a setting can only be written by a GM, but a player given ownership of this actor can spend from a pool that lives on it."
+          "Content": "The table's Story Point pool lives on the primary Party, even though nothing on this sheet shows it — the tracker is its one screen.\nIt sits here rather than in the world settings so that it can be tracked per-Party."
         },
         "Directory": {
           "Title": "In the Sidebar",
