@@ -2727,7 +2727,7 @@
         },
         "Budget": {
           "Title": "The Action Economy",
-          "Content": "How much a character can do in a turn comes from Speed. Speed 1 gives a Standard action <em>or</em> a Move action; Speed 2 gives one of each; every point of Speed above 2 adds a Free action. A Standard can also be traded for two Free actions.\nDuring an encounter the sheet header shows the turn as pips, the tracker marks who has spent what, and the drag ruler colors a move green, amber or red as it eats into the budget (with token drag preview on).\nHow strictly it is enforced is a world setting — track, confirm, or refuse — and it can be switched off entirely."
+          "Content": "How much a character can do in a turn comes from Speed. Speed 1 gives a Standard action <em>or</em> a Move action; Speed 2 gives one of each; every point of Speed above 2 adds a Free action. A Standard action can also be traded for two Free actions.\nDuring an encounter the sheet header shows the turn as pips, the tracker marks who has spent what, and the drag ruler colors a move green, amber or red as it eats into the budget (with token drag preview on).\nHow strictly it is enforced is a world setting — track, confirm, or refuse — and it can be switched off entirely."
         },
         "Pips": {
           "Title": "The Pips",
