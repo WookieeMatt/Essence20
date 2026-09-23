@@ -2971,11 +2971,11 @@
         },
         "Header": {
           "Title": "The Header",
-          "Content": "A name, a color, and the number of characters on the roster.\nThe member count is worked out from the roster below rather than typed in — several things size themselves from it."
+          "Content": "A name and a color — the two things you set here.\nEverything the sheet works out for itself is over in the sidebar."
         },
         "Sidebar": {
           "Title": "The Sidebar",
-          "Content": "The game line this Party belongs to, and the roster at a glance.\nThe line decides which of the squad rules below actually apply — Requisition is a GI Joe, Transformers and Power Rangers idea."
+          "Content": "The game line this Party belongs to, and how many characters are on the roster.\nThe count is worked out from the roster rather than typed in — several things size themselves from it — and the line decides which of the squad rules below actually apply: Requisition is a GI Joe, Transformers and Power Rangers idea."
         },
         "Roster": {
           "Title": "The Roster",

@@ -4020,14 +4020,6 @@
   background: var(--e20-theme-card-bg);
 }
 
-/* The header's Member count. The box grows with its row (.sheet-header .sliced-border is
-   flex: 1 1 auto) but the read-only .two-digit-input inside stays 40px, so it sat against the
-   left padding - the number was centred in its input, and the input 15px left of the box's
-   centre. Centred in the box instead; the box keeps its width, so the MEMBERS label still fits. */
-.essence20 .sheet-header .party-header-members {
-  justify-content: center;
-}
-
 .essence20 .pony {
   /* background: rgb(78, 78, 78); */
   color: #c7c4c4;
@@ -6416,6 +6408,11 @@
 .essence20.effect-wizard .effect-wizard__footer {
   gap: 0.5rem;
   justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.essence20.effect-wizard .effect-wizard__footer button {
+  flex: 1 1 auto;
+  white-space: nowrap;
 }
 
 .essence20 .effect-summaries {

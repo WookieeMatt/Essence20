@@ -113,6 +113,19 @@
   .effect-wizard__footer {
     gap: 0.5rem;
     justify-content: flex-end;
+    // If the window is narrowed past what three labels need, wrap to a second row rather than
+    // overrun the frame.
+    flex-wrap: wrap;
+
+    // .flexrow gives every button flex: 1 1 0% - three equal thirds, 161px each at the window's
+    // 560px - and "Add Another Change" needs more than a third, so it wrapped inside a fixed-height
+    // button and overran it. An auto basis sizes each from its own label instead: the long one gets
+    // the room it needs, Cancel stops taking a third it has no use for, and all three still fill
+    // the row. Keeps every label on one line at the normal size rather than shrinking the text.
+    button {
+      flex: 1 1 auto;
+      white-space: nowrap;
+    }
   }
 }
 

@@ -15,12 +15,9 @@
     </div>
 
 
-    {{!-- Member count (derived) --}}
-    <div class="sliced-border party-header-members">
-      <label class="sliced-border__label">{{localize 'E20.PartyMembers'}}</label>
-      <input class="two-digit-input no-lock" type="number" value="{{system.memberCount}}" disabled />
-    </div>
-
+    {{!-- The member count is shown once, in the sidebar with the Game Line: the header holds what
+         a GM edits (Name, Color), the sidebar what the sheet works out - the same split a character
+         sheet makes with its derived Health and Defenses. --}}
     {{!-- Color --}}
     <div class="sliced-border pr-header-color e20-flex-group-center">
       <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
