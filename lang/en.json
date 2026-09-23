@@ -181,7 +181,7 @@
     "ActionEconomySharedHint": "Speed 1 - one Move or one Standard action, not both",
     "ActionEconomyTradeForFree": "Traded Standard for 2 Free actions",
     "ActionEconomyTradeTooltip": "Trade your Standard action for two Free actions",
-    "ActionEconomyMovementUnaffordable": "{name} would need {free} Free action(s) to Push {used} ft on a {allowance} ft {movement} Movement, and has not got them.",
+    "ActionEconomyMovementUnaffordable": "{name} doesn't have the necessary {free} Free action(s) to Push {used} ft on a {allowance} ft {movement} Movement.",
     "ActionEconomyMovementNoPush": "{name} cannot move {used} ft this turn - a driven vehicle cannot Push past its {allowance} ft {movement} Movement.",
     "ActionEconomyMovementCapped": "{name} cannot move {used} ft this turn - Pushing cannot take {movement} Movement past {cap} ft, double their rating.",
     "ActionEconomyPushSource": "Pushing Yourself",
