@@ -2483,7 +2483,7 @@
         },
         "Sources": {
           "Title": "Automatic Modifiers",
-          "Content": "This is the part worth knowing about.\nAnything already affecting the roll is listed <em>by name</em> — here, the <strong>Impaired</strong> condition shifting you down one. Perks, conditions and effects all show up in this list.\nEach one has its own switch, so you can turn a single modifier off without undoing the rest or doing the math yourself."
+          "Content": "Anything already affecting the roll is listed <em>by name</em> — here, the <strong>Impaired</strong> condition shifting you down one. Perks, conditions and effects all show up in this list.\nEach one has its own switch, so you can turn a single modifier off without undoing the rest or doing the math yourself."
         },
         "RollButton": {
           "Title": "Rolling",
