@@ -2727,7 +2727,7 @@
         },
         "Budget": {
           "Title": "The Action Economy",
-          "Content": "Budgets come from Speed: Standard and Move actions, and Speed minus two Free actions. A Standard can be traded for two Free.\nDuring an encounter the sheet header shows the turn as pips, the tracker marks who has spent what, and the drag ruler colours a move green, amber or red as it eats into the budget (with token drag preview on).\nHow strictly it is enforced is a world setting — track, confirm, or refuse — and it can be switched off entirely. There are no reactions in Essence20; readying is the Contingency action."
+          "Content": "Budgets come from Speed: Standard and Move actions, and Speed minus two Free actions. A Standard can be traded for two Free.\nDuring an encounter the sheet header shows the turn as pips, the tracker marks who has spent what, and the drag ruler colors a move green, amber or red as it eats into the budget (with token drag preview on).\nHow strictly it is enforced is a world setting — track, confirm, or refuse — and it can be switched off entirely."
         }
       },
       "Powers": {
