@@ -2943,7 +2943,7 @@
         },
         "SettingsMenus": {
           "Title": "The Other Two",
-          "Content": "The book and adventure importers are in Configure Settings, under the Essence20 section, because they read a whole PDF rather than a paste."
+          "Content": "The book and adventure importers are in Configure Settings, under the Essence20 section, because they read a whole PDF rather than pasting text."
         },
         "BookDescriptions": {
           "Title": "Rulebook Text",
