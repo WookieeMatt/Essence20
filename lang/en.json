@@ -183,7 +183,7 @@
     "ActionEconomyTradeTooltip": "Trade your Standard action for two Free actions",
     "ActionEconomyMovementUnaffordable": "{name} doesn't have the necessary {free} Free action(s) to Push {used} ft on a {allowance} ft {movement} Movement.",
     "ActionEconomyMovementNoPush": "{name} cannot move {used} ft this turn - a driven vehicle cannot Push past its {allowance} ft {movement} Movement.",
-    "ActionEconomyMovementCapped": "{name} cannot move {used} ft this turn - Pushing cannot take {movement} Movement past {cap} ft, double their rating.",
+    "ActionEconomyMovementCapped": "{name} cannot move {used} ft this turn - Pushing cannot take {movement} Movement past {cap} ft (double their rating).",
     "ActionEconomyPushSource": "Pushing Yourself",
     "ActionEconomyPushed": "{name} Pushed themselves, spending {free} Free action(s) to move {used} ft on a {allowance} ft {movement} Movement.",
     "ActionEconomyMovementConfirm": "Move anyway?",
