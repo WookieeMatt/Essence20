@@ -2995,7 +2995,7 @@
         },
         "Directory": {
           "Title": "In the Sidebar",
-          "Content": "Parties appear in the Actors tab as folders you can expand to see the roster, since Foundry has no notion of a party of its own.\nThe pin marks the <strong>primary</strong> one."
+          "Content": "Parties appear in the Actors tab as folders you can expand to see the roster, since Foundry has no notion of a party of its own.\nThe pin marks the <strong>primary</strong> (currently playing) one."
         },
         "Primary": {
           "Title": "The Primary Party",
