@@ -2359,7 +2359,7 @@
         },
         "Header": {
           "Title": "The Header",
-          "Content": "Everything that identifies the character: portrait, name, size, Faction, Level and Role — plus a Focus on a GI Joe or Transformers character — and a color that tints the sheet.\nRole and Focus are <em>Items</em>: you drag them on from a compendium rather than typing them in, and they bring their own mechanics with them. Origin and Influence work the same way, over on the <strong>Bio</strong> tab."
+          "Content": "Everything that identifies the character: name, size, Faction, Level and Role — plus a Focus on a GI Joe or Transformers character — and a color that tints the sheet.\nRole and Focus are <em>Items</em>: you drag them on from a compendium rather than typing them in, and they bring their own mechanics with them. Origin and Influence work the same way, over on the <strong>Bio</strong> tab."
         },
         "Level": {
           "Title": "Level",
