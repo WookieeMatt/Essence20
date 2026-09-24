@@ -494,6 +494,6 @@
     "verified": "14"
   },
   "flags": {
-    "needsMigrationVersion": "5.2.0"
+    "needsMigrationVersion": "6.0.0"
   }
 }
