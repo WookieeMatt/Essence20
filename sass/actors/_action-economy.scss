@@ -23,7 +23,7 @@
   &__row {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     font-size: 10px;
     line-height: 1;
   }
@@ -135,4 +135,10 @@
 .essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.action-economy {
   padding-top: 11px;
   padding-bottom: 5px;
+  // Sized to its content rather than taking an equal share of the row's spare width, which it
+  // never used - the room goes to the Color field instead (assets/_headers.scss). 12px sides
+  // still clear the 16px cut corner with the 5px bottom above (12 + 5).
+  flex: 0 0 auto;
+  padding-left: 12px;
+  padding-right: 12px;
 }

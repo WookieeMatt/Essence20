@@ -1909,6 +1909,20 @@
   justify-content: center;
 }
 
+/* The Color field takes the header row's spare width - the Actions box gave its share up (actors/
+   _action-economy.scss) - and its swatch fills the box, rather than a 32px chip sitting in the
+   middle of a wide one. Both rules need the header box rule's weight above (.flexrow.e20-gap-2
+   .sliced-border) plus one, or the plain .pr-header-color / input.picker sizes never apply. */
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.pr-header-color {
+  flex: 1 1 150px;
+  min-width: 110px;
+}
+
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.pr-header-color input.picker[type=color] {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
 .essence20 .sheet-header .pr-header-color {
   flex: 0 0 auto;
   /* .sliced-border is height: fit-content (a specified, non-auto value), so align-items:stretch
@@ -2968,7 +2982,7 @@
 .essence20 .action-economy__row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   font-size: 10px;
   line-height: 1;
 }
@@ -3047,6 +3061,9 @@
 .essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.action-economy {
   padding-top: 11px;
   padding-bottom: 5px;
+  flex: 0 0 auto;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 /* The Actions tab - templates/actor/parts/main/character-actions.hbs.
