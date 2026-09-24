@@ -31,6 +31,8 @@ jobs:
         run: node scripts/check-pack-content.mjs
       - name: Check Active Effect keys
         run: node scripts/check-effect-keys.mjs
+      - name: Check release zip covers runtime folders
+        run: node scripts/check-release-zip.mjs
       - name: Check pack cross-references
         run: node scripts/check-pack-cross-references.mjs
       - run: echo "🍏 This job's status is ${{ job.status }}."
