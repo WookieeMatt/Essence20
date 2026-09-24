@@ -53,8 +53,12 @@
      (light gray rather than pure white so it doesn't compete with the active tab's own, brighter
      $textcolor1 treatment below). A tight text-stroke hugs the glyph outline itself rather than
      blurring outward like a text-shadow would, keeping the halo crisp at any label length. */
-  color: v.$textcolor3;
-  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.8);
+  /* The grey is only the fallback now. helpers/actor.mjs#applySystemColorCssVariables picks the
+     text tone from the fill's luminance (the WCAG black/white crossover): dark text with no halo
+     on a light fill - grey all but vanished on a yellow Transformer - and near-white over the dark
+     halo on anything darker, where the grey read at under 2:1 on magenta and purple. */
+  color: var(--e20-system-color-contrast, #{v.$textcolor3});
+  -webkit-text-stroke: 1px var(--e20-system-color-halo, rgba(0, 0, 0, 0.8));
   paint-order: stroke fill;
   display: flex;
   align-items: center;
