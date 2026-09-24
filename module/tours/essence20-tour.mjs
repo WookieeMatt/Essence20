@@ -50,12 +50,6 @@ export class Essence20Tour extends Tour {
    */
   #app = null;
 
-  /**
-   * Steps whose target never materialised and which were marked `optional`, so `progress()` knows
-   * to keep skipping in the direction of travel rather than bouncing between two dead steps.
-   * @type {Set<number>}
-   */
-  #skipped = new Set();
 
   /**
    * Applications this tour opened itself, so teardown can close them again.
@@ -140,7 +134,6 @@ export class Essence20Tour extends Tour {
   async start() {
     // A paused game swallows some of the interactions the tours demonstrate.
     game.togglePause(false);
-    this.#skipped.clear();
     return super.start();
   }
 
@@ -149,7 +142,6 @@ export class Essence20Tour extends Tour {
     this.#app = null;
     this.#appKey = null;
     this.#appsByKey.clear();
-    this.#skipped.clear();
     const result = super.exit();
     this.#teardown();
     return result;
@@ -273,12 +265,14 @@ export class Essence20Tour extends Tour {
     // already run _preStep and resolved the target by this point.
     const step = this.currentStep;
     if (!step?.optional || !step.selector || this.targetElement) return;
-    if (this.#skipped.has(this.stepIndex)) return;
 
-    this.#skipped.add(this.stepIndex);
     console.debug(`Essence20 | Tour "${this.id}" skipping optional step "${step.id}" (no target)`);
 
-    // Keep moving the way the user was already moving, so Previous doesn't get stuck.
+    // Keep moving the way the user was already moving, so Previous doesn't get stuck. This has to
+    // happen on EVERY visit: it used to be remembered per run and done only once, so the second
+    // time through - pressing Previous back across a skipped step, for one - the tour parked on a
+    // tooltip describing something that was not on screen. A skip can't bounce: forward only ever
+    // calls next() and backward only previous(), and both stop at the ends of the tour.
     const goingBack = Number.isFinite(previous) && stepIndex < previous;
     if (goingBack) return this.hasPrevious ? this.previous() : this.exit();
     return this.hasNext ? this.next() : this.complete();
@@ -762,6 +756,7 @@ export class Essence20Tour extends Tour {
     vehicle: "vehicle",
     zord: "zord",
     megaform: "megaform",
+    party: "party",
   };
 
   /**

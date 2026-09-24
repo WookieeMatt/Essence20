@@ -1,6 +1,9 @@
 {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.weapons title='E20.ItemTypeWeaponPlural' dataType='weapon'}}
   {{#*inline "container-header-extra"}}
-    {{#if (ne @root.role.system.version 'myLittlePony')}}
+    {{!-- Carry limits are a player character's bookkeeping: a GM running an NPC has no use for a
+         hands count, so the strip shows on character sheets only (Essence20Actor still derives it
+         for NPCs, for anything else that reads it). Not on My Little Pony at all. --}}
+    {{#if (and (ne @root.role.system.version 'myLittlePony') (eq @root.document.type 'playerCharacter'))}}
       {{> "systems/essence20/templates/actor/parts/misc/loadout-summary.hbs"}}
     {{/if}}
   {{/inline}}

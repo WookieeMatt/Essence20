@@ -78,6 +78,45 @@ export const ACTIONS = {
   },
 
   /**
+   * Put the demo Threat into a short demo encounter, so the Combat Tracker has something in it
+   * and the sheet header draws its action pips.
+   *
+   * The header's action block only renders for an actor that is a combatant in the ACTIVE
+   * encounter (helpers/action-economy.mjs#getSheetContext), so without this the combat tour
+   * described pips nobody could see.
+   *
+   * Deliberately does nothing when an encounter is already running here: making another one
+   * active would switch the Combat Tracker on every connected client, mid-session. The step that
+   * points at the pips is `optional`, so it simply skips. Nor for a non-GM, who cannot create
+   * one. Flagged so the tour's own teardown - and the ready sweep, after a crash - deletes it.
+   */
+  async startDemoEncounter() {
+    // game.combats.active, not game.combat: the latter is whatever the tracker is VIEWING, which
+    // can be an encounter that is no longer running. The question here is whether one is.
+    if (!game.user.isGM || game.combats.active) return;
+
+    const actor = await ensureDemoActor("threat");
+    if (!actor) return;
+
+    const combat = await Combat.create({
+      scene: canvas.scene?.id ?? null,
+      active: true,
+      flags: { essence20: { tourDemo: true } },
+    });
+    await combat.createEmbeddedDocuments("Combatant", [{ actorId: actor.id }]);
+    await combat.startCombat();
+
+    // game.combat - which the action block reads - is the tracker's VIEWED encounter, and a new
+    // active one does not always take over the view (an inactive one being viewed keeps it). v14
+    // sets it by assignment; CombatTracker#initialize is deprecated.
+    if (ui.combat) ui.combat.viewed = combat;
+
+    // The sheet was rendered before the encounter existed, and works out its action block at
+    // render time.
+    if (actor.sheet.rendered) await actor.sheet.render();
+  },
+
+  /**
    * Submit the open Roll Options Dialog and wait for the resulting chat message.
    *
    * Resolves once the message count has actually gone up rather than after a fixed delay, so the

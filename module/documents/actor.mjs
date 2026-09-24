@@ -464,6 +464,13 @@ export class Essence20Actor extends Actor {
       this._prepareVehicleData();
     }
 
+    // Party aggregates. This used to sit at the tail of _prepareVehicleData(), which only ever
+    // runs for a vehicle - so it never ran at all, and every Party reported memberCount 0 and a
+    // requisitionMax of 0 however many Player Characters were on its roster.
+    if (this.type == 'party') {
+      this._preparePartyData();
+    }
+
     // Load Out (hands carried vs the six-hand limit) and Hardpoint allocation. Only the two
     // types that carry equipment personally - a vehicle or Megaform has no hands to fill.
     if (this.type == 'playerCharacter' || this.type == 'npc') {
@@ -608,9 +615,6 @@ export class Essence20Actor extends Actor {
       }
     }
 
-    if (this.type == 'party') {
-      this._preparePartyData();
-    }
   }
 
   /**
@@ -622,6 +626,13 @@ export class Essence20Actor extends Actor {
    */
   _preparePartyData() {
     const system = this.system;
+
+    // Foundry still preps a document whose own DataModel failed to register/validate, which
+    // leaves system.requisition undefined - the same defensive shape _prepareHealth and its
+    // neighbours already carry, and the reason the stray-party test exists.
+    if (!system?.requisition) {
+      return;
+    }
 
     system.memberCount = this.members.length;
     system.requisitionMax = system.requisition.autoFromRoster
@@ -932,6 +943,19 @@ export class Essence20Actor extends Actor {
       } else {
         rolePointsBonusHealth = rolePoints.system.bonus.startingValue + roleValueChange(this.system.level, rolePoints.system.bonus.increaseLevels);
       }
+    }
+
+    // A Megaform's origin is already a finished total: _prepareMegaformZordData and
+    // _prepareMegaformCombinerData set it to combinedHealthMax, the sum of each participant's
+    // own health.max - and each of those already includes that participant's Conditioning.
+    // Adding the Megaform's Conditioning again counted it twice, so an undamaged Megazord's
+    // token bar never filled. RAW agrees there is nothing on top: the PR CRB's Dino Megazord
+    // (16/9/7/7/7) is the Tyrannosaurus's 8 doubled for Core Body plus 9+7+7+7 = 46, no more.
+    // Only the GM's .bonus goes on top, which is what those two methods' own comments intend.
+    if (this.type == 'megaform') {
+      health.max = originStartingHealth + bonus;
+      health.string = `${originStartingHealth} (${game.i18n.localize('E20.MegaformCombinedHealth')}) + ${bonus} (${bonusName})`;
+      return;
     }
 
     health.max = originStartingHealth + rolePointsBonusHealth + conditioning + bonus;

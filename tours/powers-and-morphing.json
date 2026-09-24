@@ -45,7 +45,7 @@
       "app": "item",
       "item": "Grid Surge",
       "tab": "details",
-      "selector": "select[name=\"system.shape\"]",
+      "selector": ".item-field:has(select[name=\"system.shape\"])",
       "title": "E20.Tours.Powers.Aoe.Title",
       "content": "E20.Tours.Powers.Aoe.Content",
       "tooltipDirection": "LEFT",

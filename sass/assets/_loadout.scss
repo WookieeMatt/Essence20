@@ -19,6 +19,16 @@
   padding-bottom: 3px;
 }
 
+/* "Carry Limits" ahead of the chips, so the strip says what it is rather than leaving a bare
+   "Hands: 0 / 6" under the Weapons title. Small caps like the other in-panel captions. */
+.essence20 .loadout-summary__label {
+  font-size: 0.75em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
 /* An over-limit hands / Hardpoint count: amber, matching the "needs attention" read the rest
    of the sheet gives warnings without introducing a new colour token. */
 .essence20 .loadout-chip.is-over {

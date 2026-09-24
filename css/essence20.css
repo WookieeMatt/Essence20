@@ -1909,6 +1909,20 @@
   justify-content: center;
 }
 
+/* The Color field takes the header row's spare width - the Actions box gave its share up (actors/
+   _action-economy.scss) - and its swatch fills the box, rather than a 32px chip sitting in the
+   middle of a wide one. Both rules need the header box rule's weight above (.flexrow.e20-gap-2
+   .sliced-border) plus one, or the plain .pr-header-color / input.picker sizes never apply. */
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.pr-header-color {
+  flex: 1 1 150px;
+  min-width: 110px;
+}
+
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.pr-header-color input.picker[type=color] {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
 .essence20 .sheet-header .pr-header-color {
   flex: 0 0 auto;
   /* .sliced-border is height: fit-content (a specified, non-auto value), so align-items:stretch
@@ -1927,6 +1941,15 @@
   gap: 2px;
   font-size: 0.7em;
   line-height: 1;
+}
+
+/* Role's "Level N" chip (actor/parts/items/role.hbs). Its row is a Foundry .flexrow, which grows every
+   child equally, so the chip took as much spare width as the Role name beside it - while the name,
+   set to give way first (flex: 1 1 0 above), was the one cut short ("Field Commanc"). Held at its
+   own content width instead - as small as it can get and still show the number - so the name gets
+   the rest of the box. */
+.essence20 .sheet-header .sliced-border li.item .chip {
+  flex: 0 0 auto;
 }
 
 /* --e20-system-color is set from an Actor's own system.color (helpers/actor.mjs) - Items have
@@ -2032,6 +2055,16 @@
 .essence20 .loadout-chip {
   padding-top: 3px;
   padding-bottom: 3px;
+}
+
+/* "Carry Limits" ahead of the chips, so the strip says what it is rather than leaving a bare
+   "Hands: 0 / 6" under the Weapons title. Small caps like the other in-panel captions. */
+.essence20 .loadout-summary__label {
+  font-size: 0.75em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.75;
 }
 
 /* An over-limit hands / Hardpoint count: amber, matching the "needs attention" read the rest
@@ -2411,7 +2444,7 @@
   letter-spacing: 0.05em;
 }
 
-.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button):not(.essence20-sidebar-trait-row) {
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button):not(.essence20-sidebar-trait-row):not(.party-sidebar-value) {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2943,9 +2976,10 @@
      height as Role/Focus/Origin beside it in the header row. */
   /* Trade and the Speed 1 note are both usually absent; when they are, this column has no
      children and would otherwise still draw the parent's gap beside the pips. */
-  /* Icons rather than the sentences they stand for. Both read as full text in their tooltips;
-     spelled out in the box, the trade line alone was 126px - half the width of the whole
-     Actions box, and wider than the Origin field next to it. */
+  /* Short forms rather than the sentences they stand for - "S → 2×F" for the trade, an icon for
+     the Speed 1 note. Both read as full text in their tooltips; spelled out in the box, the trade
+     line alone was 126px - half the width of the whole Actions box, and wider than the Origin
+     field next to it. */
 }
 .essence20 .action-economy__rows {
   display: flex;
@@ -2957,7 +2991,7 @@
 .essence20 .action-economy__row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   font-size: 10px;
   line-height: 1;
 }
@@ -3002,6 +3036,7 @@
   flex-direction: column;
   justify-content: center;
   gap: 2px;
+  margin-left: 20px;
 }
 .essence20 .action-economy__notes:empty {
   display: none;
@@ -3012,6 +3047,8 @@
 }
 .essence20 .action-economy__trade {
   opacity: 0.55;
+  white-space: nowrap;
+  font-size: 10px;
 }
 .essence20 .action-economy__trade:hover {
   opacity: 1;
@@ -3022,6 +3059,20 @@
 }
 .essence20 .action-economy--skipped .essence20 .action-economy__rows {
   opacity: 0.4;
+}
+
+/* The ACTIONS title pill hangs over this box's top edge, and at the header row's 48px the three
+   rows exactly fill the space between 8px paddings - so the pill sat 2px over the Standard row,
+   pips and controls included. Three pixels move from the bottom padding to the top: the rows clear
+   the pill and the box stays the same 48px as the fields beside it. It has to outweigh the header
+   box rule in assets/_headers.scss, hence the long selector. padding-right + padding-bottom still
+   clears the 16px cut corner (16 + 5). */
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.action-economy {
+  padding-top: 11px;
+  padding-bottom: 5px;
+  flex: 0 0 auto;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
 /* The Actions tab - templates/actor/parts/main/character-actions.hbs.
@@ -3711,8 +3762,12 @@
      (light gray rather than pure white so it doesn't compete with the active tab's own, brighter
      $textcolor1 treatment below). A tight text-stroke hugs the glyph outline itself rather than
      blurring outward like a text-shadow would, keeping the halo crisp at any label length. */
-  color: #9e9b9b;
-  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.8);
+  /* The grey is only the fallback now. helpers/actor.mjs#applySystemColorCssVariables picks the
+     text tone from the fill's luminance (the WCAG black/white crossover): dark text with no halo
+     on a light fill - grey all but vanished on a yellow Transformer - and near-white over the dark
+     halo on anything darker, where the grey read at under 2:1 on magenta and purple. */
+  color: var(--e20-system-color-contrast, #9e9b9b);
+  -webkit-text-stroke: 1px var(--e20-system-color-halo, rgba(0, 0, 0, 0.8));
   paint-order: stroke fill;
   display: flex;
   align-items: center;
@@ -4018,6 +4073,14 @@
 .essence20 .requisition-member.droptarget {
   border-color: var(--e20-theme-accent);
   background: var(--e20-theme-card-bg);
+}
+
+/* The sidebar's two read-only values - Game Line and member count - centred under their titles,
+   which sit centred on the panel's top edge. Scoped to the Party: .essence20-sidebar-panel is
+   shared with every character sidebar, where the values are left-aligned rows. */
+.essence20 .party-sidebar-value {
+  align-self: stretch;
+  text-align: center;
 }
 
 .essence20 .pony {
@@ -4978,7 +5041,7 @@
   color: var(--e20-theme-text-color);
   border: 1px solid var(--e20-theme-border-color);
 }
-.essence20.story-points .story-points__btn:hover {
+.essence20.story-points .story-points__btn:not(:disabled):hover {
   /* Sci-fi keeps its fixed grey (the TODO below still stands for it); the MLP modes get a
      hover that belongs to their own palette instead of a grey flash on a purple control. */
   background: rgb(61.5, 61.5, 61.5);
@@ -5004,6 +5067,26 @@
   color: #4dd0e1;
 }
 
+.essence20 .story-points__party {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 5px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+.essence20 .story-points__party i {
+  font-size: 10px;
+  opacity: 0.7;
+}
+.essence20 .story-points__party-name {
+  max-width: 14em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 700;
+}
 .essence20 .story-points__scene {
   display: flex;
   flex-direction: column;
@@ -5019,7 +5102,7 @@
 /* theme-pony lands on this window's own root, next to .story-points - not on an ancestor - so
    this cannot be nested inside the rule above as ".theme-pony &": that compiles to a descendant
    selector and matches nothing. Written flat instead. */
-.essence20.story-points.theme-pony .story-points__btn:hover {
+.essence20.story-points.theme-pony .story-points__btn:not(:disabled):hover {
   background: var(--e20-theme-card-bg);
   border-color: var(--e20-theme-accent);
 }
@@ -5033,6 +5116,21 @@
 
 .essence20 .story-points__spends .story-points__btn {
   flex: 1 1 0;
+}
+
+/* "Borrow equipment" wraps to two lines in a half-width column, and the base button is a fixed
+   18px tall, so the second line ran straight out of the box. These two size to their own text
+   instead. The row is a plain flex row, so its default align-items: stretch then makes "Get a
+   clue" exactly as tall as its neighbour without a rule of its own - which is what keeps the
+   pair matched however either label is translated. Specificity has to clear the base
+   .--bottom rule (.essence20.story-points .story-points__btn.--bottom), hence the long selector. */
+.essence20.story-points .story-points__spends .story-points__btn.--bottom {
+  height: auto;
+  min-height: 30px;
+  padding: 5px 8px;
+  line-height: 1.15;
+  text-align: center;
+  border-color: #ff6400;
 }
 
 /* The Friendship Circle section (helpers/friendship-circle.mjs): who is in, and the three pools. */
@@ -5071,6 +5169,16 @@
 
 .essence20 .story-points__circle-pools .story-points__btn {
   flex: 1 1 0;
+}
+
+/* A disabled tracker button - an empty pool, an unaffordable Grid Power bloom, a spent Circle
+   pool - used to render exactly like a live one: full colour, full glow, a pointer cursor and a
+   hover highlight, so clicking one and getting nothing read as a bug. Dimmed as a whole instead,
+   border, glow and label together, and the two hover rules above skip it (:not(:disabled)) so it
+   stays inert under the pointer. */
+.essence20.story-points .story-points__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* Essence20ActorDirectory - Party ("Squad") folders at the top of the Actors sidebar. */
@@ -5174,9 +5282,25 @@
 .essence20 .book-import {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
   height: 100%;
   min-height: 0;
+}
+
+/* The window's own root scrolls here (scrollable: [""] in the app, so Foundry keeps its scroll
+   position across renders), and a scroll container clips anything drawn above its top edge -
+   which is exactly where a sliced-border__label sits, lifted half out of its box. The first
+   section's title lost its top half. Padding is inside the clip, so the overhang goes there; the
+   wider gap does the same for every later section's title against the box above it. */
+.essence20 .book-import {
+  padding-top: 10px;
+}
+
+/* The shared sliced-border box pads 2px at the sides and 4px at the foot - right for a header
+   field, not for a panel of text with a full-width button, which sat against the frame with the
+   frame's cut corner running through it. */
+.essence20 .book-import > .sliced-border {
+  padding: 16px 12px 12px;
 }
 
 .essence20 .book-import .e20-hidden {
@@ -5340,10 +5464,26 @@
 .essence20 .adventure-import {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
   height: 100%;
   min-height: 0;
   overflow-y: auto;
+}
+
+/* The window's own root scrolls here (scrollable: [""] in the app, so Foundry keeps its scroll
+   position across renders), and a scroll container clips anything drawn above its top edge -
+   which is exactly where a sliced-border__label sits, lifted half out of its box. The first
+   section's title lost its top half. Padding is inside the clip, so the overhang goes there; the
+   wider gap does the same for every later section's title against the box above it. */
+.essence20 .adventure-import {
+  padding-top: 10px;
+}
+
+/* The shared sliced-border box pads 2px at the sides and 4px at the foot - right for a header
+   field, not for a panel of text with a full-width button, which sat against the frame with the
+   frame's cut corner running through it. */
+.essence20 .adventure-import > .sliced-border {
+  padding: 16px 12px 12px;
 }
 
 .essence20 .adventure-import .e20-hidden {
@@ -6331,6 +6471,11 @@
 .essence20.effect-wizard .effect-wizard__footer {
   gap: 0.5rem;
   justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.essence20.effect-wizard .effect-wizard__footer button {
+  flex: 1 1 auto;
+  white-space: nowrap;
 }
 
 .essence20 .effect-summaries {

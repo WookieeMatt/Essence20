@@ -6,6 +6,7 @@
 --}}
 {{#if @root.system.loadout}}
 <div class="chip-section loadout-summary">
+  <span class="loadout-summary__label">{{localize 'E20.LoadOutCarryLimits'}}</span>
   <span class="chip loadout-chip{{#if @root.system.loadout.handsOver}} is-over{{/if}}"
     data-tooltip="{{localize 'E20.LoadOutHandsHint'}}">
     {{localize 'E20.LoadOutHands'}}: {{@root.system.loadout.handsUsed}} / {{@root.system.loadout.handsMax}}

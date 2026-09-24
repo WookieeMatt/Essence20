@@ -66,6 +66,7 @@
       "title": "E20.Tours.Rolling.StoryPoint.Title",
       "content": "E20.Tours.Rolling.StoryPoint.Content",
       "tooltipDirection": "LEFT",
+      "timeout": 500,
       "optional": true
     },
     {

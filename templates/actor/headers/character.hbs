@@ -1,7 +1,8 @@
 {{#>"systems/essence20/templates/actor/headers/common.hbs"}}
 {{#*inline "topRowFields"}}
-<div class="sliced-border --col">
-  {{> "systems/essence20/templates/actor/parts/items/faction.hbs"}}
+<div class="sliced-border pr-header-color e20-flex-group-center">
+  <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
+  <input type="color" class="picker" name="system.color" value="{{system.color}}" />
 </div>
 <div class="sliced-border pr-header-level">
   <label class="sliced-border__label">{{localize 'E20.ActorLevel'}}</label>
@@ -19,9 +20,8 @@
     {{> "systems/essence20/templates/actor/parts/items/focus.hbs"}}
   </div>
 {{/inArray}}
-<div class="sliced-border pr-header-color e20-flex-group-center">
-  <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
-  <input type="color" class="picker" name="system.color" value="{{system.color}}" />
+<div class="sliced-border --col">
+  {{> "systems/essence20/templates/actor/parts/items/faction.hbs"}}
 </div>
 {{/inline}}
 {{/"systems/essence20/templates/actor/headers/common.hbs"}}

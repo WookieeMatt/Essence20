@@ -86,7 +86,7 @@
     color: var(--e20-theme-text-color);
     border: 1px solid var(--e20-theme-border-color);
 
-    &:hover {
+    &:not(:disabled):hover {
       /* Sci-fi keeps its fixed grey (the TODO below still stands for it); the MLP modes get a
          hover that belongs to their own palette instead of a grey flash on a purple control. */
       background: lighten(#242424, 10%); // TODO: needs to use variable
@@ -123,6 +123,33 @@
 // Scene Clock readout and the GM's New Scene control - see helpers/scene-clock.mjs. Everyone sees
 // which scene they are in, because that is what refreshes their own once-per-scene abilities.
 .essence20 .story-points {
+  // The primary Party's name, across the top. Sized between the pools it labels and the scene
+  // strip at the foot: it names the window's subject, so it should not read as another control.
+  &__party {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    opacity: 0.85;
+
+    i {
+      font-size: 10px;
+      opacity: 0.7;
+    }
+  }
+
+  // The window sizes to its content (width: min-content), so a long Party name would stretch
+  // the whole tracker. Clipped instead; the tooltip carries the full name.
+  &__party-name {
+    max-width: 14em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 700;
+  }
+
   &__scene {
     display: flex;
     flex-direction: column;
@@ -140,7 +167,7 @@
 /* theme-pony lands on this window's own root, next to .story-points - not on an ancestor - so
    this cannot be nested inside the rule above as ".theme-pony &": that compiles to a descendant
    selector and matches nothing. Written flat instead. */
-.essence20.story-points.theme-pony .story-points__btn:hover {
+.essence20.story-points.theme-pony .story-points__btn:not(:disabled):hover {
   background: var(--e20-theme-card-bg);
   border-color: var(--e20-theme-accent);
 }
@@ -154,6 +181,23 @@
 
 .essence20 .story-points__spends .story-points__btn {
   flex: 1 1 0;
+}
+
+/* "Borrow equipment" wraps to two lines in a half-width column, and the base button is a fixed
+   18px tall, so the second line ran straight out of the box. These two size to their own text
+   instead. The row is a plain flex row, so its default align-items: stretch then makes "Get a
+   clue" exactly as tall as its neighbour without a rule of its own - which is what keeps the
+   pair matched however either label is translated. Specificity has to clear the base
+   .--bottom rule (.essence20.story-points .story-points__btn.--bottom), hence the long selector. */
+.essence20.story-points .story-points__spends .story-points__btn.--bottom {
+  height: auto;
+  min-height: 30px;
+  padding: 5px 8px;
+  line-height: 1.15;
+  text-align: center;
+  // Outlined like the decrement arrows: both take a point out of the pool. The same variable,
+  // not a copy of the hex, so the two cannot drift apart.
+  border-color: v.$text-color-orange;
 }
 
 /* The Friendship Circle section (helpers/friendship-circle.mjs): who is in, and the three pools. */
@@ -192,4 +236,14 @@
 
 .essence20 .story-points__circle-pools .story-points__btn {
   flex: 1 1 0;
+}
+
+/* A disabled tracker button - an empty pool, an unaffordable Grid Power bloom, a spent Circle
+   pool - used to render exactly like a live one: full colour, full glow, a pointer cursor and a
+   hover highlight, so clicking one and getting nothing read as a bug. Dimmed as a whole instead,
+   border, glow and label together, and the two hover rules above skip it (:not(:disabled)) so it
+   stays inert under the pointer. */
+.essence20.story-points .story-points__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }

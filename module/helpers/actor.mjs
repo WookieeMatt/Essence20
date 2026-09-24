@@ -151,10 +151,37 @@ export function getNumActions(actor) {
 }
 
 /**
+ * WCAG relative luminance of a hex colour: 0 for black, 1 for white.
+ * @param {String} hex   "#rgb" or "#rrggbb".
+ * @returns {Number|null}   Null for anything that is not a hex colour.
+ */
+export function relativeLuminance(hex) {
+  const value = String(hex ?? "").trim();
+  if (!/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(value)) {
+    return null;
+  }
+
+  const full = value.length === 4 ? value.slice(1).split("").map(c => c + c).join("") : value.slice(1);
+  const channel = (i) => {
+    const c = parseInt(full.slice(i, i + 2), 16) / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  };
+
+  return (0.2126 * channel(0)) + (0.7152 * channel(2)) + (0.0722 * channel(4));
+}
+
+/**
+ * Above this luminance, dark text out-contrasts light text on the colour - WCAG's black/white
+ * crossover, where the two contrast ratios are equal.
+ */
+export const LIGHT_FILL_LUMINANCE = 0.179;
+
+/**
  * Given a system.color string, work out the values for --e20-system-color and its
- * 50%-alpha counterpart --e20-system-color-50.
+ * 50%-alpha counterpart --e20-system-color-50, and which tone of text reads on it.
  * @param {String} color The raw system.color value (expected to be a hex color)
- * @returns {{normalizedColor: String, alphaColor: String}}
+ * @returns {{normalizedColor: String, alphaColor: String, fillTone: "light"|"dark"|null}}
+   fillTone is null for a colour that is not a hex value, where the luminance is unknown.
  */
 export function computeSystemColorVars(color) {
   const normalizedColor = String(color).trim();
@@ -172,7 +199,10 @@ export function computeSystemColorVars(color) {
     })()
     : 'rgba(0, 0, 0, 0.5)';
 
-  return { normalizedColor, alphaColor };
+  const luminance = relativeLuminance(normalizedColor);
+  const fillTone = luminance === null ? null : (luminance > LIGHT_FILL_LUMINANCE ? "light" : "dark");
+
+  return { normalizedColor, alphaColor, fillTone };
 }
 
 /**
@@ -186,9 +216,26 @@ export function applySystemColorCssVariables(element, actor) {
   const color = actor?.system?.color;
   if (!element || !color) return;
 
-  const { normalizedColor, alphaColor } = computeSystemColorVars(color);
+  const { normalizedColor, alphaColor, fillTone } = computeSystemColorVars(color);
   element.style.setProperty('--e20-system-color', normalizedColor);
   element.style.setProperty('--e20-system-color-50', alphaColor);
+
+  // Text laid straight on the colour - the unselected sheet tabs (actors/_tabs.scss). Whichever
+  // of dark or near-white text contrasts more (the WCAG crossover): a light fill gets dark text
+  // and no halo, a dark one near-white over the stylesheet's dark halo. The old one-size light
+  // grey read at under 2:1 on mid-tones like magenta and purple, and all but vanished on yellow.
+  // An unparseable colour keeps the stylesheet default; the properties are removed rather than
+  // left behind, since the sheet can change colour without being re-created.
+  if (fillTone === "light") {
+    element.style.setProperty('--e20-system-color-contrast', '#1a1a1a');
+    element.style.setProperty('--e20-system-color-halo', 'transparent');
+  } else if (fillTone === "dark") {
+    element.style.setProperty('--e20-system-color-contrast', '#f2f2f2');
+    element.style.removeProperty?.('--e20-system-color-halo');
+  } else {
+    element.style.removeProperty?.('--e20-system-color-contrast');
+    element.style.removeProperty?.('--e20-system-color-halo');
+  }
 }
 
 /**

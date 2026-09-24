@@ -54,3 +54,14 @@
   border-color: var(--e20-theme-accent);
   background: var(--e20-theme-card-bg);
 }
+
+/* The sidebar's two read-only values - Game Line and member count - centred under their titles,
+   which sit centred on the panel's top edge. Scoped to the Party: .essence20-sidebar-panel is
+   shared with every character sidebar, where the values are left-aligned rows. */
+.essence20 .party-sidebar-value {
+  // Exempted from the character sidebar's label-left/value-right flex row in
+  // assets/_sidebars.scss (the same :not() list as the skill list and trait rows), so it is a plain
+  // block here and text-align does the centring.
+  align-self: stretch;
+  text-align: center;
+}

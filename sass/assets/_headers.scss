@@ -435,6 +435,22 @@
   justify-content: center;
 }
 
+/* The Color field takes the header row's spare width - the Actions box gave its share up (actors/
+   _action-economy.scss) - and its swatch fills the box, rather than a 32px chip sitting in the
+   middle of a wide one. Both rules need the header box rule's weight above (.flexrow.e20-gap-2
+   .sliced-border) plus one, or the plain .pr-header-color / input.picker sizes never apply. */
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.pr-header-color {
+  // A 150px basis rather than the swatch's own ~50px: with an equal share of the spare width on
+  // top of a 50px start, Role and Focus took almost all the room the Actions box gave up.
+  flex: 1 1 150px;
+  min-width: 110px;
+}
+
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.pr-header-color input.picker[type="color"] {
+  flex: 1 1 auto;
+  width: 100%;
+}
+
 .essence20 .sheet-header .pr-header-color {
   flex: 0 0 auto;
   /* .sliced-border is height: fit-content (a specified, non-auto value), so align-items:stretch
@@ -455,3 +471,11 @@
   line-height: 1;
 }
 
+/* Role's "Level N" chip (actor/parts/items/role.hbs). Its row is a Foundry .flexrow, which grows every
+   child equally, so the chip took as much spare width as the Role name beside it - while the name,
+   set to give way first (flex: 1 1 0 above), was the one cut short ("Field Commanc"). Held at its
+   own content width instead - as small as it can get and still show the number - so the name gets
+   the rest of the box. */
+.essence20 .sheet-header .sliced-border li.item .chip {
+  flex: 0 0 auto;
+}

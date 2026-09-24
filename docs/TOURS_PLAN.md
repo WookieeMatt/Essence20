@@ -406,6 +406,16 @@ Phased so each phase is independently shippable. `suggestedNextTours` chains the
 
 ### Phase 4 — GM and authoring
 
+13b. **`npcs-and-combat` demo encounter** — added 2026-09-22 after PR review ("should I be seeing
+    the pips?"): the header's action block renders only for a combatant in the active encounter,
+    so the `tracker` step now runs `startDemoEncounter` (GM only, and never while an encounter is
+    already active - that would switch every client's tracker mid-session), and an `optional`
+    `pips` step points at the block. The demo encounter is flagged and deleted with the demo actors.
+13a. **`party`** — added 2026-09-22: the Party ("squad") sheet on a demo Party that carries the
+    demo Ranger on its roster (`participants`, which writes the same `system.actors` collection
+    the roster reads). Header and sidebar, the roster, the Requisition tracker and its
+    per-member request blocks, Mission Critical Items, the Story Point pool it holds unseen,
+    the Actors-tab party folders, and the primary-Party guarantees (`restricted`).
 14. **`story-points`** — unrestricted but GM-focused: the tracker app (`#story-points`), GM
     versus player pools, granting and spending. Refreshed 2026-09-21 when the pool moved onto
     the primary Party: the narrative spends, the in-play spends (as-if-Specialized, Defense

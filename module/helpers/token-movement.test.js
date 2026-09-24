@@ -229,6 +229,7 @@ describe("consumeForMovement", () => {
 
     expect(await consumeForMovement(makeToken(actor), makeMovement({ cost: 30 }))).toBe(true);
     expect(global.ui.notifications.info).not.toHaveBeenCalled();
+    expect(global.ui.notifications.warn).not.toHaveBeenCalled();
   });
 
   test("reports but allows an unaffordable overrun in track mode", async () => {
@@ -236,9 +237,11 @@ describe("consumeForMovement", () => {
     setGame({ actor, mode: 'track' });
 
     expect(await consumeForMovement(makeToken(actor), makeMovement({ cost: 45 }))).toBe(true);
-    // Track mode blocks nothing, but still says WHY the movement was flagged.
-    expect(global.ui.notifications.info)
+    // Track mode blocks nothing, but still says WHY the movement was flagged - as a warning,
+    // since an overrun is one whether or not it was stopped.
+    expect(global.ui.notifications.warn)
       .toHaveBeenCalledWith('E20.ActionEconomyMovementUnaffordable');
+    expect(global.ui.notifications.info).not.toHaveBeenCalled();
   });
 
   test("rejects an overrun in strict mode", async () => {
@@ -403,6 +406,9 @@ describe("Pushing Yourself", () => {
     // One Move action, plus two Free actions for the extra 10ft.
     expect(getRemaining(actor).free).toBe(1);
     expect(getLedger(actor).log.filter(l => l.actionType === 'free')).toHaveLength(2);
+    // A legal Push is an ordinary outcome - reported as info, never as a warning.
+    expect(global.ui.notifications.info).toHaveBeenCalledWith('E20.ActionEconomyPushed');
+    expect(global.ui.notifications.warn).not.toHaveBeenCalled();
   });
 
   test("refuses when the actor hasn't the Free actions to buy it", async () => {
@@ -446,7 +452,7 @@ describe("every mode explains why a Push failed", () => {
 
     await consumeForMovement(makeToken(actor), makeMovement({ cost: 70 }));
 
-    expect(global.ui.notifications.info)
+    expect(global.ui.notifications.warn)
       .toHaveBeenCalledWith('E20.ActionEconomyMovementCapped');
   });
 
@@ -687,7 +693,7 @@ describe("Sprint", () => {
 
     await consumeForMovement(makeToken(actor), makeMovement({ cost: 60 }));
 
-    expect(global.ui.notifications.info).toHaveBeenCalled();
+    expect(global.ui.notifications.warn).toHaveBeenCalled();
   });
 
   // Earlier Is Better's "not limited" has to survive Sprinting, which is why the cap is divided

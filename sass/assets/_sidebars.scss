@@ -108,7 +108,7 @@
   letter-spacing: 0.05em;
 }
 
-.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button):not(.essence20-sidebar-trait-row) {
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button):not(.essence20-sidebar-trait-row):not(.party-sidebar-value) {
   display: flex;
   align-items: center;
   justify-content: space-between;

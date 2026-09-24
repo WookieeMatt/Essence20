@@ -145,6 +145,11 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   _prepareContext() {
     return {
       friendshipCircle: this.#circleContext(),
+      // Whose pool this is. The tracker reads the PRIMARY Party and nothing else, so naming it
+      // is the only thing on screen that says which of several Parties the points belong to -
+      // and the only clue a player has that the pinned one changed. Null only in the gap before
+      // helpers/party.mjs pins one at the GM's ready.
+      partyName: getStoryPointsActor()?.name ?? null,
       gmPoints: this._gmPoints,
       storyPoints: this._storyPoints,
       isGm: game.user.isGM,
@@ -156,7 +161,10 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       // buttons here, for anyone who can spend from the pool: the point comes off and chat says
       // what it bought, and the rest is the table's. Power Rangers' Grid Power bloom is the one
       // team-wide spend, and needs the roster, so it is GM-only and line-gated.
-      canSpendNarrative: canWriteStoryPoints() && hasStoryPointsAvailable(1),
+      // Shown to anyone who could spend at all, and disabled rather than hidden while the pool is
+      // empty - a pair of buttons that vanish at zero reads as a missing feature, not an empty pool.
+      canSpendNarrative: canWriteStoryPoints(),
+      narrativeAffordable: hasStoryPointsAvailable(1),
       gridPowerBloom: game.user.isGM && hasGridPowerBloom(getGameLine()) ? {
         cost: getStoryPointsActor()?.members.length ?? 0,
         affordable: (getStoryPointsActor()?.members.length ?? 0) > 0

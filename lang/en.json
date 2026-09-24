@@ -181,9 +181,9 @@
     "ActionEconomySharedHint": "Speed 1 - one Move or one Standard action, not both",
     "ActionEconomyTradeForFree": "Traded Standard for 2 Free actions",
     "ActionEconomyTradeTooltip": "Trade your Standard action for two Free actions",
-    "ActionEconomyMovementUnaffordable": "{name} would need {free} Free action(s) to Push {used} ft on a {allowance} ft {movement} Movement, and has not got them.",
+    "ActionEconomyMovementUnaffordable": "{name} doesn't have the necessary {free} Free action(s) to Push {used} ft on a {allowance} ft {movement} Movement.",
     "ActionEconomyMovementNoPush": "{name} cannot move {used} ft this turn - a driven vehicle cannot Push past its {allowance} ft {movement} Movement.",
-    "ActionEconomyMovementCapped": "{name} cannot move {used} ft this turn - Pushing cannot take {movement} Movement past {cap} ft, double their rating.",
+    "ActionEconomyMovementCapped": "{name} cannot move {used} ft this turn - Pushing cannot take {movement} Movement past {cap} ft (double their rating).",
     "ActionEconomyPushSource": "Pushing Yourself",
     "ActionEconomyPushed": "{name} Pushed themselves, spending {free} Free action(s) to move {used} ft on a {allowance} ft {movement} Movement.",
     "ActionEconomyMovementConfirm": "Move anyway?",
@@ -652,6 +652,7 @@
     "SptGridPowerBloomPrompt": "Spend {cost} Story Points - one per team member - for a Grid Power bloom? Every member of the team gains 1d2 Personal Power, up to their maximum.",
     "SptGridPowerBloomTitle": "Grid Power Bloom",
     "SptGridPowerBloomTooltip": "One Story Point per team member: everyone gains 1d2 Personal Power",
+    "SptPrimaryPartyTooltip": "The primary (currently playing) Party. The point pools are stored on it, which allows points to be tracked separately for multiple Parties.",
     "SptSpendClue": "{name} spends a Story Point for a clue.",
     "SptSpendClueButton": "Get a clue",
     "SptSpendClueTooltip": "Spend a Story Point: the GM gives you a clue when you are stumped",
@@ -928,6 +929,7 @@
     "SuddenDeathConfirmTitle": "Sudden Death?",
     "SuddenDeathConfirmContent": "Sudden Death is available against {name} (once per combat) - defeat them instead of dealing damage?",
     "SuddenDeathApplied": "defeated by Sudden Death.",
+    "LoadOutCarryLimits": "Carry Limits",
     "LoadOutHands": "Hands",
     "LoadOutHandsHint": "Hands of weapons carried vs the six-hand Load Out limit. Weapons in Integrated Hardpoints don't count.",
     "Level1": "1st Level",
@@ -1867,8 +1869,8 @@
     "SptSpendStoryPoint": "A {name} has been spent!",
     "SptGrantRequestGranted": "{actorName} gains a Story Point.",
     "SptNewSession": "New Session",
-    "SptNewSessionPrompt": "Start a new session? {name} reset to {count} - one per Player Character on {party}'s roster - and GM Points to the same. Whatever is left over is discarded, as the rules say.",
-    "SptNewSessionPromptNoGm": "Start a new session? {name} reset to {count} - one per Player Character on {party}'s roster. Whatever is left over is discarded, as the rules say.",
+    "SptNewSessionPrompt": "Start a new session? {name} reset to {count} - one per Player Character on {party}'s roster - and GM Points to the same. Current point values will be discarded.",
+    "SptNewSessionPromptNoGm": "Start a new session? {name} reset to {count} - one per Player Character on {party}'s roster. Current point values will be discarded.",
     "SptNewSessionReset": "A new session begins: {name} reset to {count}.",
     "SptNewSessionTitle": "Begin a New Session",
     "SptNewSessionTooltip": "Reset the pool to one point per Player Character on the primary Party's roster",
@@ -2358,7 +2360,7 @@
         },
         "Header": {
           "Title": "The Header",
-          "Content": "Everything that identifies the character: portrait, name, size, Faction, Level, Role, Origin, and a color that tints the sheet.\nRole and Origin are <em>Items</em> — you drag them on from a compendium rather than typing them in, and they bring their own mechanics with them."
+          "Content": "Everything that identifies the character: name, size, Faction, Level and Role — plus a Focus on a GI Joe or Transformers character — and a color that tints the sheet.\nRole and Focus are <em>Items</em>: you drag them on from a compendium rather than typing them in, and they bring their own mechanics with them. Origin and Influence work the same way, over on the <strong>Bio</strong> tab."
         },
         "Level": {
           "Title": "Level",
@@ -2394,11 +2396,15 @@
         },
         "Tabs": {
           "Title": "The Tabs",
-          "Content": "Skills, Gear, Powers, Perks and the rest.\nWhich tabs you get depends on the character — a Transformer has an Alt Mode tab, a Ranger has Zords, and only a character who can cast has a Spells tab."
+          "Content": "Skills, Gear, Powers, Perks, Bio and the rest.\nWhich tabs you get depends on the character — a Transformer has an Alt Mode tab, a Ranger has Zords, and only a character who can cast has a Spells tab."
         },
         "Gear": {
           "Title": "Gear",
           "Content": "Items group into collapsible sections by kind, and each row expands to show its details.\nThe demo character's blaster has a <strong>Weapon Effect</strong> and an <strong>Upgrade</strong> attached — those nest inside the weapon rather than cluttering the top level."
+        },
+        "Bio": {
+          "Title": "Bio",
+          "Content": "Origin, Influences, Bonds and Hang-Ups — where the character comes from, dropped on as Items the same way the Role was.\nThe Perks they carry show up on the Perks tab, sorted by which of them granted each one. Underneath sit the description fields: pronouns, age, height, languages and free notes."
         },
         "Outro": {
           "Title": "That's the Sheet",
@@ -2478,7 +2484,7 @@
         },
         "Sources": {
           "Title": "Automatic Modifiers",
-          "Content": "This is the part worth knowing about.\nAnything already affecting the roll is listed <em>by name</em> — here, the <strong>Impaired</strong> condition shifting you down one. Perks, conditions and effects all show up in this list.\nEach one has its own switch, so you can turn a single modifier off without undoing the rest or doing the math yourself."
+          "Content": "Anything already affecting the roll is listed <em>by name</em> — here, the <strong>Impaired</strong> condition shifting you down one. Perks, conditions and effects all show up in this list.\nEach one has its own switch, so you can turn a single modifier off without undoing the rest or doing the math yourself."
         },
         "RollButton": {
           "Title": "Rolling",
@@ -2584,10 +2590,6 @@
           "Title": "General Perks",
           "Content": "These Perks are ones you chose. This is the only section with a plus button, because it is the only one you add to directly.\nA Perk that needs activating in play has a lightning-bolt button on its row — the automated Perks in the sourcebook compendiums do this, and they also announce themselves by name in the roll dialog whenever they apply."
         },
-        "Background": {
-          "Title": "Background",
-          "Content": "Origin and Influence live over here, along with Hang-Ups and the rest of the character's history.\nThey are the source of the Perks in the first two sections of the Perks tab."
-        },
         "Outro": {
           "Title": "Perks Covered",
           "Content": "Role sets the track, Level moves along it, and the Perks tab shows where each ability came from.\nThe demo character is being cleaned up now. The rest of the tours are under Settings, in Tour Management."
@@ -2674,11 +2676,11 @@
         },
         "WizardBuilder": {
           "Title": "Say It in English",
-          "Content": "Or choose it: a group, a target, what about it, and a value.\nThe sentence underneath is the rule as the wizard understood it, before anything is written — if it reads wrong, nothing has happened yet."
+          "Content": "Instead of searching by typing, you can choose it from these selectors: <strong>Category</strong>, <strong>Target</strong>, <strong>Change</strong> and <strong>Amount</strong>.\nThe sentence underneath is the rule as the wizard understood it, before anything is written — if it reads wrong, nothing has happened yet."
         },
         "WizardFinish": {
           "Title": "Ordinary Changes",
-          "Content": "Finish writes plain Active Effect changes — the same rows you would type by hand, and editable in the normal effect sheet afterwards.\nYou can also reach the wizard from any effect's own window, through its header menu, to add another change later."
+          "Content": "<strong>Add to Effect</strong> writes plain Active Effect changes — the same rows you would type by hand, and editable in the normal effect sheet afterwards.\nYou can also reach the wizard from any effect's own window, through its header menu, to add another change later."
         }
       },
       "Combat": {
@@ -2698,11 +2700,11 @@
         },
         "ThreatSkills": {
           "Title": "Choosing Skills",
-          "Content": "A threat lists only the skills you picked for it, the way a printed stat block does — everything else stays off the sheet.\nThe gear icon beside the heading is where that choice is made. Let us open it."
+          "Content": "A threat lists only the skills you picked for it, the way a printed stat block does — everything else stays off the sheet.\nThe gear icon beside the heading is where that choice is made. Let's open it."
         },
         "Initiative": {
           "Title": "Rolling Initiative",
-          "Content": "The die beside Initiative rolls it, and every sheet in the system has one.\nThe dropdown next to it chooses which skill does the rolling — Initiative for most, though some player characters’ Roles change that."
+          "Content": "The die beside Initiative rolls it, and every sheet in the system has one.\nThe dropdown next to it chooses which skill does the rolling — Initiative for most, though some Threats change that."
         },
         "Tracker": {
           "Title": "The Combat Tracker",
@@ -2726,7 +2728,11 @@
         },
         "Budget": {
           "Title": "The Action Economy",
-          "Content": "Budgets come from Speed: Standard and Move actions, and Speed minus two Free actions. A Standard can be traded for two Free.\nDuring an encounter the sheet header shows the turn as pips, the tracker marks who has spent what, and the drag ruler colours a move green, amber or red as it eats into the budget (with token drag preview on).\nHow strictly it is enforced is a world setting — track, confirm, or refuse — and it can be switched off entirely. There are no reactions in Essence20; readying is the Contingency action."
+          "Content": "How much a character can do in a turn comes from Speed. Speed 1 gives a Standard action <em>or</em> a Move action; Speed 2 gives one of each; every point of Speed above 2 adds a Free action. A Standard action can also be traded for two Free actions.\nDuring an encounter the sheet header shows the turn as pips, the tracker marks who has spent what, and the drag ruler colors a move green, amber or red as it eats into the budget (with token drag preview on).\nHow strictly it is enforced is a world setting — track, confirm, or refuse — and it can be switched off entirely."
+        },
+        "Pips": {
+          "Title": "The Pips",
+          "Content": "There they are, in the demo Threat's header: a row each for Standard, Move and Free actions, one pip per action it has left this turn, dimmed as each is spent.\nThe Threat was put in a short demo encounter so they would show; it is removed when the tour ends."
         }
       },
       "Powers": {
@@ -2738,7 +2744,7 @@
         },
         "Pool": {
           "Title": "The Pool",
-          "Content": "<strong>Personal Power</strong> for a Ranger, Sorcerous Power for a caster, Energon for a Transformer — the sheet shows whichever this character has.\nIt sits with Health and Stun because Rest restores it."
+          "Content": "<strong>Personal Power</strong> for a Ranger, <strong>Sorcerous Power</strong> for a caster, <strong>Energon</strong> for a Transformer — the sheet shows whichever this character has.\nIt sits with Health and Stun because Rest restores it."
         },
         "PowersTab": {
           "Title": "The Powers Tab",
@@ -2770,7 +2776,7 @@
         },
         "Tracker": {
           "Title": "The Tracker",
-          "Content": "Two pools side by side: the players' and the GM's.\nIt floats above the canvas so it stays readable during play without anyone opening a sheet."
+          "Content": "Two pools side by side: the GM's and the players'.\nIt floats above the canvas so it stays readable during play without anyone opening a sheet."
         },
         "Pools": {
           "Title": "Two Pools",
@@ -2778,7 +2784,7 @@
         },
         "Spend": {
           "Title": "Spending",
-          "Content": "The arrows move a pool a point at a time and announce it in chat.\nMost spends never touch these, though: they happen where the rule does, and the tracker only shows the result."
+          "Content": "The arrows move a pool a point at a time and announce it in chat.\nMost of the time you won't need to use these, though: they're triggered via automation, and the tracker only shows the result."
         },
         "Narrative": {
           "Title": "Equipment and Clues",
@@ -2806,7 +2812,7 @@
         },
         "Party": {
           "Title": "Where the Points Live",
-          "Content": "The pool sits on your primary Party — the pinned folder here in the Actors tab.\nThere is always one: the system creates it, will not let the last one be deleted, and if the primary goes, the next Party inherits its points."
+          "Content": "The pool sits on your primary Party — the party currently playing — and can be found in the pinned folder in the Actors tab.\nYou can create multiple Parties, but there there is always one primary Party. The system creates one for you, and will not let the last Party be deleted, and if the primary goes, the next Party becomes the new primary."
         },
         "Permissions": {
           "Title": "Who Can Spend",
@@ -2906,7 +2912,7 @@
         },
         "ZordStats": {
           "Title": "Zord Scale",
-          "Content": "Zords are titanic, and their numbers say so.\nArmor contributes directly to Toughness here rather than coming from an equipped Item, because a Zord does not carry gear the way a character does."
+          "Content": "Zords are built at a scale no character reaches, and their numbers say so.\nArmor contributes directly to Toughness here rather than coming from an equipped Item, because a Zord does not carry gear the way a character does."
         },
         "MegaformSheet": {
           "Title": "The Megaform",
@@ -2942,7 +2948,7 @@
         },
         "SettingsMenus": {
           "Title": "The Other Two",
-          "Content": "The book and adventure importers are in Configure Settings, under the Essence20 section, because they read a whole PDF rather than a paste."
+          "Content": "The book and adventure importers are in Configure Settings, under the Essence20 section, because they read a whole PDF rather than pasting text."
         },
         "BookDescriptions": {
           "Title": "Rulebook Text",
@@ -2955,6 +2961,54 @@
         "Outro": {
           "Title": "Importing Covered",
           "Content": "Stat blocks from a paste, rules text and adventures from PDFs you own — all into your world, none into the system.\nThat is the last tour. Tour Management lists them all if you want to revisit one."
+        }
+      },
+      "Party": {
+        "Title": "The Party Sheet",
+        "Description": "The squad sheet: roster, Requisition, Mission Critical gear, and the pool it quietly holds.",
+        "Intro": {
+          "Title": "The Party Sheet",
+          "Content": "A Party is the group itself as an actor — the squad, the team, the Friend Group — and it owns what the whole table shares rather than any one character.\nThis tour creates a temporary <strong>Demo Squad</strong> and deletes it again at the end. Your own Party is not touched."
+        },
+        "Header": {
+          "Title": "The Header",
+          "Content": "A name and a color — the two things you set here.\nEverything the sheet works out for itself is over in the sidebar."
+        },
+        "Sidebar": {
+          "Title": "The Sidebar",
+          "Content": "The game line this Party belongs to, and how many characters are on the roster.\nThe count is worked out from the roster rather than typed in — several things size themselves from it — and the line decides which of the squad rules below actually apply: Requisition is a GI Joe, Transformers and Power Rangers idea."
+        },
+        "Roster": {
+          "Title": "The Roster",
+          "Content": "Drag a player character here to add them to the squad; the trash icon takes them off again.\nClicking a name opens that character. Only Player Characters count — an NPC dropped here is ignored."
+        },
+        "Requisition": {
+          "Title": "Requisition",
+          "Content": "The squad requests gear from a shared pool of attempts rather than each character tracking their own.\nThe cap follows the roster — three per member — and <strong>Reset</strong> refills to it at the start of a mission. Untick <em>from roster</em> to set a number by hand instead."
+        },
+        "RequisitionMembers": {
+          "Title": "Requesting Gear",
+          "Content": "Each member gets their own block: drop a Requisitionable weapon or armor onto it and roll for it from here.\nThe roll is made as <em>that</em> character — their training, their shifts, their chat card — but it spends one attempt from the squad pool. Nothing is enforced; the card says what happened and the log below keeps the history."
+        },
+        "MissionCritical": {
+          "Title": "Mission Critical Items",
+          "Content": "Gear issued to the squad rather than to any one character — a vehicle-mounted weapon, a shared medkit.\nThese Items belong to the Party itself. An Equipment Package dropped here unpacks into these lists."
+        },
+        "StoryPoints": {
+          "Title": "It Holds the Story Points",
+          "Content": "The table's Story Point pool lives on the primary Party, even though nothing on this sheet shows it — the tracker is its one screen.\nIt sits here rather than in the world settings so that it can be tracked per-Party."
+        },
+        "Directory": {
+          "Title": "In the Sidebar",
+          "Content": "The primary (currently playing) Party. The point pools are stored on it, which allows points to be tracked separately for multiple Parties."
+        },
+        "Primary": {
+          "Title": "The Primary Party",
+          "Content": "One Party is always the primary, and the system keeps it that way: it creates one if the world has none, refuses to delete the last one, and hands the points to the next Party if the primary goes.\nEveryone gets Observer on it by default — without that a player's tracker would read zero, because a document nobody can see is never sent to them. Grant a player <strong>Owner</strong> to let them spend unattended."
+        },
+        "Outro": {
+          "Title": "Party Covered",
+          "Content": "A roster, a shared Requisition pool, the squad's own gear, and the Story Points underneath it all.\nNext: <strong>Story Points</strong>, which covers the pool this sheet holds.\nThe Demo Squad is being cleaned up now."
         }
       }
     }
