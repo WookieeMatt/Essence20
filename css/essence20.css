@@ -1943,6 +1943,15 @@
   line-height: 1;
 }
 
+/* Role's "Level N" chip (actor/parts/items/role.hbs). Its row is a Foundry .flexrow, which grows every
+   child equally, so the chip took as much spare width as the Role name beside it - while the name,
+   set to give way first (flex: 1 1 0 above), was the one cut short ("Field Commanc"). Held at its
+   own content width instead - as small as it can get and still show the number - so the name gets
+   the rest of the box. */
+.essence20 .sheet-header .sliced-border li.item .chip {
+  flex: 0 0 auto;
+}
+
 /* --e20-system-color is set from an Actor's own system.color (helpers/actor.mjs) - Items have
    no such concept, so every var(--e20-system-color, var(--e20-theme-accent)) rule shared with actor
    sheets (active tab fill in _tabs.scss, etc.) was falling through to the raw --e20-theme-accent on
