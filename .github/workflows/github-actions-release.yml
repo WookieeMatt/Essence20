@@ -46,7 +46,6 @@ jobs:
         run: |
           zip --recurse-paths ./Essence20.zip  \
             system.json                        \
-            template.json                      \
             assets/                            \
             lang/                              \
             module/                            \
