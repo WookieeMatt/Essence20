@@ -11,6 +11,7 @@
       "book": "Transformers Core Rulebook",
       "page": 65
     },
+    "actionType": "move",
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

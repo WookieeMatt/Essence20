@@ -1,9 +1,12 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
 
 <div class="chip-section">
+  <span class="chip" name="chip.magicBauble.quantity">{{localize 'E20.MagicBaubleQuantity'}}: {{item.system.quantity}}</span>
   <span class="chip" name="chip.magicBauble.spellcastingShift">{{localize 'E20.MagicBaubleSpellcastingShift'}}: {{lookup @root.config.skillShifts item.system.spellcastingShift}}</span>
-  {{#if item.system.duration}}
-  <span class="chip" name="chip.magicBauble.duration">{{localize 'E20.MagicBaubleDuration'}}: {{item.system.duration}}</span>
+  {{!-- durationLabel, not duration: the field is a {units, value, text} object now and printing it
+        raw rendered "[object Object]". See SpellItemData for the same label. --}}
+  {{#if item.system.durationLabel}}
+  <span class="chip" name="chip.magicBauble.duration">{{localize 'E20.MagicBaubleDuration'}}: {{item.system.durationLabel}}</span>
   {{/if}}
   {{#if item.system.range}}
   <span class="chip" name="chip.magicBauble.range">{{localize 'E20.MagicBaubleRange'}}: {{item.system.range}}</span>

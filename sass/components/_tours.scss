@@ -8,8 +8,12 @@
  * render. So rather than resist it, this styles the step as a deliberately dark panel matching the
  * system's own dark theme, and a tour reads as part of Essence20 instead of as stock Foundry.
  *
+ * Only .essence20-tour-step is named here. #tooltip and .tour-center-step are core's own
+ * elements, shared with every other package's tours, so styling them directly restyled those
+ * too; Essence20Tour puts our class on both of its step surfaces instead.
+ *
  * Note these selectors sit OUTSIDE any .theme-wrapper — core appends the tooltip and the centred
- * step to document.body, not into one of our sheets — so the --theme-* custom properties defined
+ * step to document.body, not into one of our sheets — so the --e20-theme-* custom properties defined
  * in _theme_wrapper.scss are not in scope here. Values come from the sass variables directly.
  *
  * Only the step's own surfaces are touched. The fade cut-out (.tour-fadeout) and the input-blocking
@@ -21,8 +25,6 @@
 $e20-tour-accent: v.$text-color-cyan;
 $e20-tour-text: v.$text-color-light;
 
-#tooltip.tour,
-.tour-center-step,
 .essence20-tour-step {
   background: v.$panel-gradient-dark;
   border: 1px solid $e20-tour-accent;
@@ -124,7 +126,7 @@ $e20-tour-text: v.$text-color-light;
 }
 
 /* The centred step has no target to point at, so it carries its own breathing room. */
-.tour-center-step {
+.essence20-tour-step {
   max-width: 60ch;
 }
 
@@ -168,8 +170,7 @@ $e20-tour-text: v.$text-color-light;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #tooltip.tour,
-  .tour-center-step {
+  .essence20-tour-step {
     .step-button {
       transition: none;
     }

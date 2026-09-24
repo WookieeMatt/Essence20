@@ -201,3 +201,15 @@ describe("toggleGrow", () => {
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'monsterGrowSelfActive', false);
   });
 });
+
+describe("toggleMonsterMorph while Grow! is active", () => {
+  test("ends Grow! with the Monster Form, so the next one does not start with a stale Grow on", async () => {
+    const actor = makeGrowActor({ growActive: true, size: 'towering' });
+
+    await toggleMonsterMorph(actor);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'monsterGrowSelfActive', false);
+    expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'monsterGrowSelfPreviousSize');
+    expect(isGrowActive(actor)).toBe(false);
+  });
+});

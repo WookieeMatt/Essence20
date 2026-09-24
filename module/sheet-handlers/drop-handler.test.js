@@ -66,7 +66,7 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
     const droppedActor = {
       type: 'zord',
       name: 'Test Zord',
-      getFlag: (scope, key) => (key == DETACHED_THIS_SCENE_FLAG ? { combatId: 'combat1' } : undefined),
+      getFlag: (scope, key) => (key == DETACHED_THIS_SCENE_FLAG ? { epoch: 1, window: 'encounter', count: 1 } : undefined),
     };
     global.fromUuid.mockResolvedValue(droppedActor);
     global.game = { ...originalGame, combat: { id: 'combat1' } };
@@ -85,7 +85,7 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
       uuid: 'Actor.zord1',
       name: 'Test Zord',
       img: 'icon.svg',
-      getFlag: (scope, key) => (key == DETACHED_THIS_SCENE_FLAG ? { combatId: 'oldCombat' } : undefined),
+      getFlag: (scope, key) => (key == DETACHED_THIS_SCENE_FLAG ? { epoch: 0, window: 'encounter', count: 1 } : undefined),
     };
     global.fromUuid.mockResolvedValue(droppedActor);
     global.game = { ...originalGame, combat: { id: 'newCombat' } };

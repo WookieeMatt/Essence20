@@ -2,10 +2,10 @@
 
 {{#if @root.focuses}}
   {{#each @root.focuses as |item|}}
-    <li class="item no-list-style" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
-      <div class="flexrow align-center gap-2">
+    <li class="item e20-no-list-style" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
+      <div class="flexrow e20-align-center e20-gap-2">
         <span class="header-item-name">{{item.name}}</span>
-        <div class="item-controls flex-grow-0">
+        <div class="item-controls e20-flex-grow-0">
           <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'E20.DeleteItem'}}">
             <i class="fas fa-trash"></i>
           </a>

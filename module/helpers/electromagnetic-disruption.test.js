@@ -32,7 +32,7 @@ describe("canUseElectromagneticDisruptionPulse", () => {
 
   test("false once already used this scene", () => {
     game.combat = { id: 'combat1' };
-    expect(canUseElectromagneticDisruptionPulse(makeActor({ usedFlag: { combatId: 'combat1' } }))).toBe(false);
+    expect(canUseElectromagneticDisruptionPulse(makeActor({ usedFlag: { epoch: 1, window: 'encounter', count: 1 } }))).toBe(false);
     game.combat = null;
   });
 });
@@ -59,11 +59,11 @@ describe("activateElectromagneticDisruptionPulse", () => {
     expect(enemy1.update).toHaveBeenCalledWith({ 'system.health.value': 4 });
     expect(enemy1.update).toHaveBeenCalledWith({ 'system.stun.value': 1 });
     expect(enemy2.update).toHaveBeenCalledWith({ 'system.health.value': 4 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'electromagneticDisruptionPulseUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'electromagneticDisruptionPulseUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("does nothing once already used this scene", async () => {
-    const actor = makeActor({ usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     canvas.tokens.placeables.push({ actor, document: { disposition: 1 }, center: { x: 0, y: 0 } });
     const enemy1 = addEnemy('enemy1');
 

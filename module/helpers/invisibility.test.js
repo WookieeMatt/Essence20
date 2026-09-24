@@ -30,10 +30,10 @@ describe("canUseInvisibility", () => {
   });
 
   test("false once already used this scene, unless already active", () => {
-    const actor = makeActor({ usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     expect(canUseInvisibility(actor)).toBe(false);
 
-    const activeActor = makeActor({ active: true, usedFlag: { combatId: 'combat1' } });
+    const activeActor = makeActor({ active: true, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     expect(canUseInvisibility(activeActor)).toBe(true);
   });
 });
@@ -54,12 +54,12 @@ describe("toggleInvisibility", () => {
     expect(result).toBe(true);
     expect(actor.toggleStatusEffect).toHaveBeenCalledWith('invisible', { active: true });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'invisibilityUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'invisibilityUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
   });
 
   test("switches off freely, even without a scene use remaining", async () => {
-    const actor = makeActor({ active: true, usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ active: true, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
 
     const result = await toggleInvisibility(actor);
 
@@ -68,7 +68,7 @@ describe("toggleInvisibility", () => {
   });
 
   test("can't switch on again once already used this scene", async () => {
-    const actor = makeActor({ active: false, usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ active: false, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
 
     const result = await toggleInvisibility(actor);
 

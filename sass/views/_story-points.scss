@@ -1,15 +1,22 @@
 @use "../variables" as v;
 
-.story-points {
+.essence20.story-points {
   height: auto;
   width: min-content;
-  box-shadow: 0 0 20px #000000;
+  /* No box-shadow here: it traced the rectangle, not the cut panel. The shaped drop-shadow
+     on ::after (see _global-windows.scss) replaces it for every window of ours - and it has
+     to go explicitly, because .essence20.story-points and .application.e20-window carry
+     equal weight and views/ is @use'd after assets/, so this would win a tie. */
   position: fixed;
   flex-direction: column;
   display: flex;
-  background: var(--theme-panel-bg);
+  /* No background or clip-path of its own here. This window carries .sliced-border, so the
+     mixin already paints the fill on ::after through that exact same polygon and the frame on
+     ::before. Clipping the ROOT as well was what kept eating the bottom-right border: a
+     clip-path clips the element's own pseudo-elements too, and the cut runs precisely along the
+     diagonal the border-image draws there, so half of that (already sub-pixel) stroke was
+     clipped away and the corner read as unbordered. */
   border-radius: 0;
-  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
 
   .loading {
     display: none;
@@ -44,9 +51,9 @@
     text-align: center;
     font-size: 18px;
     font-weight: bold;
-    background-color: var(--theme-input-color);
-    color: var(--theme-text-color);
-    border: 1px solid var(--theme-border-color);
+    background-color: var(--e20-theme-input-color);
+    color: var(--e20-theme-text-color);
+    border: 1px solid var(--e20-theme-border-color);
 
     // remove arrows
     appearance: textfield;
@@ -75,12 +82,15 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    background: var(--theme-input-color);
-    color: var(--theme-text-color);
-    border: 1px solid var(--theme-border-color);
+    background: var(--e20-theme-input-color);
+    color: var(--e20-theme-text-color);
+    border: 1px solid var(--e20-theme-border-color);
 
-    &:hover {
+    &:not(:disabled):hover {
+      /* Sci-fi keeps its fixed grey (the TODO below still stands for it); the MLP modes get a
+         hover that belongs to their own palette instead of a grey flash on a purple control. */
       background: lighten(#242424, 10%); // TODO: needs to use variable
+
     }
 
     &.--bottom {
@@ -108,4 +118,132 @@
       }
     }
   }
+}
+
+// Scene Clock readout and the GM's New Scene control - see helpers/scene-clock.mjs. Everyone sees
+// which scene they are in, because that is what refreshes their own once-per-scene abilities.
+.essence20 .story-points {
+  // The primary Party's name, across the top. Sized between the pools it labels and the scene
+  // strip at the foot: it names the window's subject, so it should not read as another control.
+  &__party {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    opacity: 0.85;
+
+    i {
+      font-size: 10px;
+      opacity: 0.7;
+    }
+  }
+
+  // The window sizes to its content (width: min-content), so a long Party name would stretch
+  // the whole tracker. Clipped instead; the tooltip carries the full name.
+  &__party-name {
+    max-width: 14em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 700;
+  }
+
+  &__scene {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  &__scene-label {
+    font-size: 11px;
+    text-align: center;
+    opacity: 0.8;
+  }
+}
+
+/* theme-pony lands on this window's own root, next to .story-points - not on an ancestor - so
+   this cannot be nested inside the rule above as ".theme-pony &": that compiles to a descendant
+   selector and matches nothing. Written flat instead. */
+.essence20.story-points.theme-pony .story-points__btn:not(:disabled):hover {
+  background: var(--e20-theme-card-bg);
+  border-color: var(--e20-theme-accent);
+}
+
+/* The two narrative spends sit side by side: they are small, and stacking them made the window
+   a column of buttons. */
+.essence20 .story-points__spends {
+  display: flex;
+  gap: 6px;
+}
+
+.essence20 .story-points__spends .story-points__btn {
+  flex: 1 1 0;
+}
+
+/* "Borrow equipment" wraps to two lines in a half-width column, and the base button is a fixed
+   18px tall, so the second line ran straight out of the box. These two size to their own text
+   instead. The row is a plain flex row, so its default align-items: stretch then makes "Get a
+   clue" exactly as tall as its neighbour without a rule of its own - which is what keeps the
+   pair matched however either label is translated. Specificity has to clear the base
+   .--bottom rule (.essence20.story-points .story-points__btn.--bottom), hence the long selector. */
+.essence20.story-points .story-points__spends .story-points__btn.--bottom {
+  height: auto;
+  min-height: 30px;
+  padding: 5px 8px;
+  line-height: 1.15;
+  text-align: center;
+  // Outlined like the decrement arrows: both take a point out of the pool. The same variable,
+  // not a copy of the hex, so the two cannot drift apart.
+  border-color: v.$text-color-orange;
+}
+
+/* The Friendship Circle section (helpers/friendship-circle.mjs): who is in, and the three pools. */
+.essence20 .story-points__circle {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.essence20 .story-points__circle-status {
+  margin: 0;
+  font-size: 0.85em;
+}
+
+.essence20 .story-points__circle-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85em;
+  opacity: 0.6;
+}
+
+/* A pony in the Circle reads as lit; one outside it as waiting. */
+.essence20 .story-points__circle-members li.is-in {
+  opacity: 1;
+  font-weight: 600;
+}
+
+.essence20 .story-points__circle-pools {
+  display: flex;
+  gap: 4px;
+}
+
+.essence20 .story-points__circle-pools .story-points__btn {
+  flex: 1 1 0;
+}
+
+/* A disabled tracker button - an empty pool, an unaffordable Grid Power bloom, a spent Circle
+   pool - used to render exactly like a live one: full colour, full glow, a pointer cursor and a
+   hover highlight, so clicking one and getting nothing read as a bug. Dimmed as a whole instead,
+   border, glow and label together, and the two hover rules above skip it (:not(:disabled)) so it
+   stays inert under the pointer. */
+.essence20.story-points .story-points__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }

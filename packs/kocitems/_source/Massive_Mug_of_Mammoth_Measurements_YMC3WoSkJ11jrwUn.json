@@ -11,7 +11,13 @@
       "book": "Knights of Canterlot",
       "page": 52
     },
-    "duration": "1 scene",
+    "actionType": "standard",
+    "duration": {
+      "units": "scenes",
+      "value": 1,
+      "text": ""
+    },
+    "quantity": 1,
     "range": "Reach",
     "spellcastingShift": "d4"
   },

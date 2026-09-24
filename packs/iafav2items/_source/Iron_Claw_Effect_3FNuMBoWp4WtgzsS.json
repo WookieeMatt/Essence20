@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "description": "<p>Maneuver</p>",
     "source": {
       "book": "Factions in Action Vol 2: Intercontinental Adventures",

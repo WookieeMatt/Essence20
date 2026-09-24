@@ -1,6 +1,7 @@
 @use "../variables" as v;
+@use "../components/sliced_border" as sliced;
 
-.compendium-browser {
+.essence20.compendium-browser {
   height: 100%;
   overflow: hidden;
 
@@ -30,51 +31,51 @@
   }
 }
 
-.compendium-browser-tabs {
+.essence20 .compendium-browser-tabs {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
-  border-bottom: 1px solid var(--theme-border-color);
-  background: var(--theme-panel-bg);
+  border-bottom: 1px solid var(--e20-theme-border-color);
+  background: var(--e20-theme-panel-bg);
 }
 
-.compendium-browser-tab {
+.essence20 .compendium-browser-tab {
   display: flex;
   align-items: center;
   gap: 6px;
   flex: 0 0 auto;
   padding: 8px 14px;
-  color: var(--theme-muted-text);
+  color: var(--e20-theme-muted-text);
   border-bottom: 2px solid transparent;
   cursor: pointer;
   white-space: nowrap;
 
   &:hover {
-    color: var(--theme-text-color);
+    color: var(--e20-theme-text-color);
   }
 
   &.active {
-    color: var(--theme-text-color);
-    border-bottom-color: var(--theme-accent);
+    color: var(--e20-theme-text-color);
+    border-bottom-color: var(--e20-theme-accent);
   }
 }
 
-.compendium-browser-tab-count {
+.essence20 .compendium-browser-tab-count {
   font-size: var(--font-size-11, 11px);
-  color: var(--theme-muted-text);
-  background: var(--theme-input-color);
+  color: var(--e20-theme-muted-text);
+  background: var(--e20-theme-input-color);
   border-radius: 8px;
   padding: 0 6px;
   line-height: 16px;
 }
 
-.compendium-browser-filters {
+.essence20 .compendium-browser-filters {
   height: 100%;
   padding: 10px;
   gap: 10px;
   overflow-y: auto;
-  border-right: 1px solid var(--theme-border-color);
-  background: var(--theme-panel-bg);
+  border-right: 1px solid var(--e20-theme-border-color);
+  background: var(--e20-theme-panel-bg);
 
   search {
     display: block;
@@ -85,20 +86,23 @@
   }
 }
 
-.compendium-browser-configure-sources {
+.essence20 .compendium-browser-configure-sources {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
 }
 
-.compendium-browser-filter-group {
-  border: 1px solid var(--theme-border-color);
-  border-radius: 6px;
-  padding: 8px;
+/* The sliced-corner panel the sheets use, rather than a plain rounded card - see the mixin in
+   components/_sliced_border.scss. Padding clears the 16px border-image so content does not sit
+   on the corner slices. */
+.essence20 .compendium-browser-filter-group {
+  @include sliced.sliced-panel;
+  border: none;
+  padding: 14px;
 
   legend {
-    color: var(--theme-text-color);
+    color: var(--e20-theme-text-color);
     font-weight: bold;
     padding: 0 4px;
   }
@@ -107,12 +111,12 @@
   // <fieldset>/<legend> - matched to the same look, plus a pointer cursor to
   // signal it's clickable.
   summary {
-    color: var(--theme-text-color);
+    color: var(--e20-theme-text-color);
     font-weight: bold;
     cursor: pointer;
 
     &::marker {
-      color: var(--theme-muted-text);
+      color: var(--e20-theme-muted-text);
     }
   }
 
@@ -121,23 +125,23 @@
   }
 }
 
-.compendium-browser-filter-actions {
+.essence20 .compendium-browser-filter-actions {
   display: flex;
   gap: 8px;
   margin-bottom: 6px;
 
   a {
-    color: var(--theme-muted-text);
+    color: var(--e20-theme-muted-text);
     text-decoration: underline;
     cursor: pointer;
 
     &:hover {
-      color: var(--theme-text-color);
+      color: var(--e20-theme-text-color);
     }
   }
 }
 
-.compendium-browser-filter-subgroup {
+.essence20 .compendium-browser-filter-subgroup {
   margin-bottom: 6px;
 
   &-header {
@@ -155,24 +159,24 @@
 
   &-label {
     font-weight: bold;
-    color: var(--theme-muted-text);
+    color: var(--e20-theme-muted-text);
   }
 }
 
-.compendium-browser-filter-option {
+.essence20 .compendium-browser-filter-option {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 2px 0;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
 }
 
-.compendium-browser-results {
+.essence20 .compendium-browser-results {
   height: 100%;
   overflow: hidden;
 }
 
-.compendium-browser-results-list {
+.essence20 .compendium-browser-results-list {
   list-style: none;
   margin: 0;
   padding: 8px;
@@ -180,7 +184,7 @@
   height: calc(100% - 28px);
 }
 
-.compendium-browser-result {
+.essence20 .compendium-browser-result {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
@@ -190,7 +194,7 @@
   cursor: pointer;
 
   &:hover {
-    background: var(--theme-input-color);
+    background: var(--e20-theme-input-color);
   }
 
   img {
@@ -220,43 +224,43 @@
   &-name {
     flex: 1 1 auto;
     min-width: 0;
-    color: var(--theme-text-color);
+    color: var(--e20-theme-text-color);
   }
 
   &-type {
     flex: 0 0 140px;
-    color: var(--theme-text-color);
+    color: var(--e20-theme-text-color);
   }
 
   &-book {
     flex: 0 0 220px;
-    color: var(--theme-muted-text);
+    color: var(--e20-theme-muted-text);
     text-align: right;
   }
 }
 
-.compendium-browser-no-results {
-  color: var(--theme-muted-text);
+.essence20 .compendium-browser-no-results {
+  color: var(--e20-theme-muted-text);
   padding: 10px;
 }
 
-.compendium-browser-result-count {
+.essence20 .compendium-browser-result-count {
   height: 28px;
   line-height: 28px;
   padding: 0 10px;
-  color: var(--theme-muted-text);
-  border-top: 1px solid var(--theme-border-color);
+  color: var(--e20-theme-muted-text);
+  border-top: 1px solid var(--e20-theme-border-color);
 }
 
-.compendium-browser-sources {
+.essence20.compendium-browser-sources {
   min-width: 400px;
 
   .hint {
-    color: var(--theme-muted-text);
+    color: var(--e20-theme-muted-text);
   }
 }
 
-.compendium-browser-sources-groups {
+.essence20 .compendium-browser-sources-groups {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -264,24 +268,27 @@
   overflow-y: auto;
 }
 
-.compendium-browser-sources-group {
-  border: 1px solid var(--theme-border-color);
-  border-radius: 6px;
-  padding: 8px;
+/* The sliced-corner panel the sheets use, rather than a plain rounded card - see the mixin in
+   components/_sliced_border.scss. Padding clears the 16px border-image so content does not sit
+   on the corner slices. */
+.essence20 .compendium-browser-sources-group {
+  @include sliced.sliced-panel;
+  border: none;
+  padding: 14px;
 
   legend {
-    color: var(--theme-text-color);
+    color: var(--e20-theme-text-color);
     font-weight: bold;
     padding: 0 4px;
   }
 }
 
-.compendium-browser-sources-pack {
+.essence20 .compendium-browser-sources-pack {
   display: flex;
   align-items: center;
   gap: 6px;
   padding: 2px 0;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
 }
 
 .essence20-open-compendium-browser {
@@ -290,4 +297,13 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
+}
+
+/* The trait filter's hint line. Traits are required rather than excluded - the opposite of every
+   other group in this sidebar - so the group carries one line saying so. */
+.essence20 .compendium-browser-filter-hint {
+  margin: 0 0 0.25rem;
+  font-size: 0.85em;
+  font-style: italic;
+  opacity: 0.75;
 }

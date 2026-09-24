@@ -3,7 +3,7 @@
   <div></div>
   {{/unless}}
 
-  <div class="flex-grow-0 nowrap">
+  <div class="e20-flex-grow-0 e20-nowrap">
     {{localize title}}
     {{#if (ne hidePlusButton 'true')}}
       {{#> plus-button dataType=dataType parentId=parentId}}
@@ -23,3 +23,7 @@
     {{/if}}
   </span>
 </div>
+
+{{!-- Optional extra header content, supplied by the calling container via an inline partial
+     (e.g. the Weapons container drops the Load Out / Hardpoint summary strip in here). --}}
+{{#> container-header-extra}}{{/container-header-extra}}

@@ -1,6 +1,11 @@
+import { handlePartyDeleted, preventLastPartyDelete, preventPrimaryDeleteByPlayer } from "../helpers/party.mjs";
+import { hasUsedThisTurn } from "../helpers/perks.mjs";
+import { ACT_WHILE_DEFEATED_FLAG } from "../dice.mjs";
 import { Dice } from "../dice.mjs";
+import { E20 } from "../helpers/config.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { resizeTokens } from "../helpers/actor.mjs";
+import { getNumActions, resizeTokens } from "../helpers/actor.mjs";
+import { syncMorphState } from "../helpers/morph-state.mjs";
 import { actorHasPerk, findPerk } from "../helpers/perks.mjs";
 import { getGravityOptionalHeight, isGravityOptionalActive } from "../helpers/gravity-optional.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
@@ -238,12 +243,37 @@ const LIGHT_CHASSIS_ID = `${PR_CRB}rVW7mvnV4MbGuxoq`;
 // local variable below, the same aggregate Defender/Core Defenses already feed into
 // system.defenses.toughness.armor.
 const HARDENED_CHASSIS_ID = `${PR_CRB}7vwrFKj2UAxG4ocf`;
+import { createId } from "../helpers/utils.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
 export class Essence20Actor extends Actor {
+  /**
+   * The last Party cannot be deleted, and only a GM can delete the primary: it holds the
+   * Story Point pool (see helpers/party.mjs). Returning false here is the one place a deletion
+   * can still be refused.
+   * @override
+   */
+  async _preDelete(options, user) {
+    if (preventLastPartyDelete(this) || preventPrimaryDeleteByPlayer(this)) {
+      return false;
+    }
+
+    return super._preDelete(options, user);
+  }
+
+  /**
+   * A deleted primary Party hands its pin, and its points, to the next one. Every client
+   * hears this; helpers/party.mjs decides which one acts.
+   * @override
+   */
+  _onDelete(options, userId) {
+    super._onDelete(options, userId);
+    handlePartyDeleted(this);
+  }
+
   constructor(...args) {
     super(...args);
     this._dice = new Dice(ChatMessage, new RollDialog(), game.i18n);
@@ -433,6 +463,107 @@ export class Essence20Actor extends Actor {
     if (this.type == 'vehicle') {
       this._prepareVehicleData();
     }
+
+    // Party aggregates. This used to sit at the tail of _prepareVehicleData(), which only ever
+    // runs for a vehicle - so it never ran at all, and every Party reported memberCount 0 and a
+    // requisitionMax of 0 however many Player Characters were on its roster.
+    if (this.type == 'party') {
+      this._preparePartyData();
+    }
+
+    // Load Out (hands carried vs the six-hand limit) and Hardpoint allocation. Only the two
+    // types that carry equipment personally - a vehicle or Megaform has no hands to fill.
+    if (this.type == 'playerCharacter' || this.type == 'npc') {
+      this._prepareLoadout();
+    }
+
+    // Deliberately last, and deliberately not folded into any of the methods above: action
+    // budgets are their own small, self-contained pass with no dependency on the Defenses/Health/
+    // Movement math.
+    this._prepareActions();
+  }
+
+  /**
+   * Per-turn action budgets, derived from the Speed Essence exactly as the rules define them
+   * (GI Joe CRB p.192-193, and the Combat Flow reference sheet):
+   *
+   *   Speed 1   Move OR Standard - one or the other, then the turn ends.
+   *   Speed 2   Move AND Standard. (The Standard may be traded for two Free actions.)
+   *   Speed 3+  Move, one Standard, and Speed - 2 Free actions.
+   *
+   * So Free actions are NOT unlimited - a Speed 3 character gets exactly one, and a Speed 1 or 2
+   * character gets none by default. Speed 1's "one or the other" is carried by `shared`, which
+   * helpers/action-economy.mjs#getRemaining reads to zero BOTH categories once either is spent.
+   *
+   * An actor type with no Essences at all (nothing on the common template guarantees them - see
+   * data/actor/templates/character.mjs, machine.mjs and zord-base.mjs, which each declare their
+   * own) falls back to the Speed 2 shape, the ordinary one-Move-one-Standard turn.
+   *
+   * Runs in prepareDerivedData (i.e. after Active Effects have applied), which is what lets
+   * "You gain an additional Standard action each turn" (CRB p.81) be a plain AE change on
+   * system.actions.standard.bonus instead of needing its own helper file.
+   *
+   * The clamp is where cantTakeFreeActions and cantTakeMoveActions finally do something. Both have
+   * existed in E20.statusEffects since the MLP CRB Laughtracting/Distraughter Perks were built,
+   * with their own config.mjs comments noting there was no action economy to gate against; there
+   * is now. Only those two purpose-built Conditions and the three incapacitating ones are read
+   * here - Immobilized, Grappled and Restrained all restrict MOVEMENT DISTANCE rather than denying
+   * the Move action itself, and inventing a rule for them isn't this method's job.
+   */
+  _prepareActions() {
+    const actions = this.system.actions;
+    if (!actions) {
+      return;
+    }
+
+    /* The per-Speed counts come from helpers/actor.mjs#getNumActions, which already existed to
+       drive the sheet's own "1M, 1S, 1F" readout. Deriving them a second time here was a mistake:
+       it silently disagreed with that readout for any actor whose Speed .max and .value differ,
+       and for the Perks that move Free actions off Speed entirely (Quick Thinker and University
+       Days source them from Smarts instead). One source of truth, and both displays now agree.
+
+       The one deliberate difference is Speed 1. getNumActions reports it as one Move and zero
+       Standards, but the rules say "Move OR Standard action... then ends their turn" (CRB p.193) -
+       a choice, not a fixed Move. Both budgets are granted and `shared` makes them mutually
+       exclusive, which helpers/action-economy.mjs#getRemaining honours. */
+    const speedEssence = this.system.essences?.speed;
+    // getNumActions reads system.essences.speed without guarding, which is safe for every actor
+    // type the system registers (all six get Essences from character.mjs, machine.mjs or
+    // zord-base.mjs) but not for a partially-built actor. Falling back to the ordinary
+    // one-Move-one-Standard turn keeps derived data from throwing on one.
+    const counts = speedEssence
+      ? getNumActions(this)
+      : { free: 0, movement: 1, standard: 1 };
+    const speed = speedEssence?.max ?? speedEssence?.value ?? 2;
+    actions.shared = speed <= 1;
+
+    const base = {
+      standard: actions.shared ? 1 : counts.standard,
+      move: counts.movement,
+      free: counts.free,
+    };
+
+    const statuses = this.statuses ?? new Set();
+    // A Defeated actor who spent a Story Point to "momentarily act as though it has not been
+    // Defeated" (GI Joe CRB p.209) has this turn's actions back - see dice.mjs#rollSkill.
+    const actingWhileDefeated = statuses.has('defeated') && hasUsedThisTurn(this, ACT_WHILE_DEFEATED_FLAG);
+    const incapacitated = ['asleep', 'defeated', 'unconscious']
+      .some(status => statuses.has(status) && !(status === 'defeated' && actingWhileDefeated));
+    const zeroed = {
+      free: incapacitated || statuses.has('cantTakeFreeActions'),
+      move: incapacitated || statuses.has('cantTakeMoveActions'),
+      standard: incapacitated,
+    };
+
+    for (const category of Object.keys(E20.actionCategories)) {
+      const budget = actions[category];
+      if (!budget) {
+        continue;
+      }
+
+      budget.base = base[category];
+      budget.max = zeroed[category] ? 0 : Math.max(0, budget.base + budget.bonus);
+    }
   }
 
   /**
@@ -482,6 +613,136 @@ export class Essence20Actor extends Actor {
       for (const movementType of Object.keys(this.system.movement)) {
         this.system.movement[movementType].total = Math.floor(this.system.movement[movementType].total / 2);
       }
+    }
+
+  }
+
+  /**
+   * Party ("Squad") aggregates derived from the roster (system.actors): the Player Character
+   * member count and, from it, the default pooled Requisition budget - "3 attempts per PC,
+   * pooled" (GI Joe CRB p.137-138 / TF CRB p.115-116 / PR CRB p.103). `requisition.attempts`
+   * stays the live spendable counter; `requisitionMax` is only the "Reset" target the sheet
+   * shows.
+   */
+  _preparePartyData() {
+    const system = this.system;
+
+    // Foundry still preps a document whose own DataModel failed to register/validate, which
+    // leaves system.requisition undefined - the same defensive shape _prepareHealth and its
+    // neighbours already carry, and the reason the stray-party test exists.
+    if (!system?.requisition) {
+      return;
+    }
+
+    system.memberCount = this.members.length;
+    system.requisitionMax = system.requisition.autoFromRoster
+      ? 3 * system.memberCount
+      : system.requisition.attempts;
+  }
+
+  /**
+   * This Party's roster (system.actors) resolved to live Player Character Actors. World actors
+   * only - entries that no longer resolve, or that aren't Player Characters, are dropped.
+   * Empty for every non-Party actor type.
+   * @type {Actor[]}
+   */
+  get members() {
+    if (this.type != 'party') {
+      return [];
+    }
+
+    return Object.values(this.system.actors ?? {})
+      .map(entry => fromUuidSync(entry.uuid))
+      .filter(actor => actor?.type == 'playerCharacter');
+  }
+
+  /**
+   * Adds a Player Character to this Party's roster. No-op unless this is a Party, `actor` is a
+   * Player Character, and it isn't already on the roster.
+   * @param {Actor} actor   The Player Character to add.
+   */
+  async addMember(actor) {
+    if (this.type != 'party' || actor?.type != 'playerCharacter') {
+      return;
+    }
+
+    if (Object.values(this.system.actors).some(entry => entry.uuid == actor.uuid)) {
+      return;
+    }
+
+    const key = createId(this.system.actors);
+    await this.update({
+      [`system.actors.${key}`]: {
+        uuid: actor.uuid,
+        img: actor.img,
+        name: actor.name,
+        type: actor.type,
+      },
+    });
+  }
+
+  /**
+   * Removes a roster entry from this Party by its member Actor's UUID. No-op if that UUID
+   * isn't on the roster.
+   * @param {String} uuid   The member Actor's UUID.
+   */
+  async removeMember(uuid) {
+    const key = Object.entries(this.system.actors).find(([, entry]) => entry.uuid == uuid)?.[0];
+    if (key) {
+      await this.update({ [`system.actors.-=${key}`]: null });
+    }
+  }
+
+  /**
+   * Tallies the six-hand Load Out limit (GI Joe CRB p.138 / TF CRB p.116 / PR CRB p.103) and,
+   * for Transformers, External vs Integrated Hardpoint usage (TF CRB p.114) from the actor's
+   * equipped Weapons. Writes derived counts back onto system.loadout and system.hardpoints:
+   *
+   * - system.loadout.handsUsed / .handsOver     - sum of equipped weapon hands vs handsMax.
+   *     Integrated-Hardpoint weapons are excluded (TF CRB p.116: they don't count).
+   * - system.hardpoints.{external,integrated}.max / .used / .over
+   *     max = base + bonus; a two-handed weapon in an Integrated Hardpoint uses two slots.
+   *
+   * Informational only - nothing here blocks equipping or attacking. Matches the system's
+   * existing stance of surfacing Equipment Assignment state rather than enforcing it.
+   */
+  _prepareLoadout() {
+    const system = this.system;
+    if (!system.loadout || !system.hardpoints) {
+      return;
+    }
+
+    const handsMax = system.loadout.handsMax ?? CONFIG.E20.LOADOUT_BASE_HANDS;
+    let handsUsed = 0;
+    let externalUsed = 0;
+    let integratedUsed = 0;
+
+    for (const item of this.items) {
+      if (item.type != 'weapon' || !item.system.equipped) {
+        continue;
+      }
+
+      const hands = item.system.derivedHands ?? 1;
+      const hardpointType = item.system.hardpoint?.type ?? 'external';
+
+      if (hardpointType == 'integrated') {
+        integratedUsed += Math.max(1, hands);
+      } else if (hardpointType == 'external') {
+        externalUsed += Math.max(1, hands);
+        handsUsed += hands;
+      } else { // 'none' - carried but not in a Hardpoint; still counts against the six-hand limit
+        handsUsed += hands;
+      }
+    }
+
+    system.loadout.handsUsed = handsUsed;
+    system.loadout.handsOver = handsUsed > handsMax;
+
+    for (const [key, used] of [['external', externalUsed], ['integrated', integratedUsed]]) {
+      const slot = system.hardpoints[key];
+      slot.max = (slot.base ?? 0) + (slot.bonus ?? 0);
+      slot.used = used;
+      slot.over = used > slot.max;
     }
   }
 
@@ -682,6 +943,19 @@ export class Essence20Actor extends Actor {
       } else {
         rolePointsBonusHealth = rolePoints.system.bonus.startingValue + roleValueChange(this.system.level, rolePoints.system.bonus.increaseLevels);
       }
+    }
+
+    // A Megaform's origin is already a finished total: _prepareMegaformZordData and
+    // _prepareMegaformCombinerData set it to combinedHealthMax, the sum of each participant's
+    // own health.max - and each of those already includes that participant's Conditioning.
+    // Adding the Megaform's Conditioning again counted it twice, so an undamaged Megazord's
+    // token bar never filled. RAW agrees there is nothing on top: the PR CRB's Dino Megazord
+    // (16/9/7/7/7) is the Tyrannosaurus's 8 doubled for Core Body plus 9+7+7+7 = 46, no more.
+    // Only the GM's .bonus goes on top, which is what those two methods' own comments intend.
+    if (this.type == 'megaform') {
+      health.max = originStartingHealth + bonus;
+      health.string = `${originStartingHealth} (${game.i18n.localize('E20.MegaformCombinedHealth')}) + ${bonus} (${bonusName})`;
+      return;
     }
 
     health.max = originStartingHealth + rolePointsBonusHealth + conditioning + bonus;
@@ -1786,7 +2060,10 @@ export class Essence20Actor extends Actor {
    * Perform a skill roll.
    */
   rollSkill(dataset) {
-    this._dice.rollSkill(dataset, this);
+    // Forwarded, not swallowed: dice.rollSkill reports whether the roll landed
+    // ({ success, outcomes }) or that the dialog was cancelled ({ cancelled: true }), and
+    // callers such as Requisition branch on it.
+    return this._dice.rollSkill(dataset, this);
   }
 
   /**
@@ -1842,6 +2119,20 @@ export class Essence20Actor extends Actor {
         }
       }
     }
+  }
+
+  /**
+   * Every visible sign of being Morphed or in an Alt Mode - status effect, ring tint, chat line -
+   * follows the two flags from here, so it does not matter which path flipped them (the sheet
+   * buttons, the TAH helpers below, or a Perk toggling the flag directly). See
+   * helpers/morph-state.mjs.
+   * @override
+   */
+  _onUpdate(changed, options, userId) {
+    super._onUpdate?.(changed, options, userId);
+    syncMorphState(this, changed, options, userId).catch(err => {
+      console.error("essence20 | Failed to sync Morphed / Alt Mode state", err);
+    });
   }
 
   /**

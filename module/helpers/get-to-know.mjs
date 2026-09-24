@@ -23,7 +23,7 @@ export async function pickGetToKnowSkill() {
     .map(key => `<option value="${key}">${game.i18n.localize(E20.skills[key])}</option>`).join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.GetToKnowPickSkillTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.GetToKnowPickSkillLabel')
     }</label><select name="skill">${skillOptions}</select></div>`,

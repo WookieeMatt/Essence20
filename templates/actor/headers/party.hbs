@@ -1,0 +1,27 @@
+<header class="sheet-header e20-border-accent">
+
+  {{!-- Profile image --}}
+  <div class="flexcol e20-flex-grow-0175 e20-gap-5">
+    <img class="profile-img e20-border-accent" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+  </div>
+
+  <div class="flexrow e20-gap-2 header-row-top">
+    {{!-- Name --}}
+    <div class="header-name-field">
+      <div class="sliced-border">
+        <label class="sliced-border__label">{{localize 'E20.ActorName'}}</label>
+        <h1 class="charname"><input name="name" type="text" value="{{document.name}}" placeholder="Name" /></h1>
+      </div>
+    </div>
+
+
+    {{!-- The member count is shown once, in the sidebar with the Game Line: the header holds what
+         a GM edits (Name, Color), the sidebar what the sheet works out - the same split a character
+         sheet makes with its derived Health and Defenses. --}}
+    {{!-- Color --}}
+    <div class="sliced-border pr-header-color e20-flex-group-center">
+      <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
+      <input type="color" class="picker" name="system.color" value="{{system.color}}" />
+    </div>
+  </div>
+</header>

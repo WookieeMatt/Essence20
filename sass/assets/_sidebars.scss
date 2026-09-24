@@ -18,7 +18,7 @@
   grid-row: 1;
 }
 
-.essence20 .essence20-sidebar {
+.essence20-sidebar {
   grid-column: 1;
   grid-row: 1 / -1;
   min-height: 0;
@@ -44,9 +44,9 @@
 }
 
 /* Sidebar panels (Resources/Special/Defenses/etc.) are .sliced-border boxes - tint their
-   border graphic with the actor's own system color (falling back to the theme accent),
+.essence20 border graphic with the actor's own system color (falling back to the theme accent),
    reusing the same mask-border + solid background-color technique .e20-border-accent already
-   uses elsewhere (_tabs.scss) to recolor this same --theme-border-image asset. Replaces the
+   uses elsewhere (_tabs.scss) to recolor this same --e20-theme-border-image asset. Replaces the
    base .sliced-border::before's plain, un-tinted border-image rendering for sidebar panels only
    - the label used to carry this accent color instead (see .sliced-border__label above), which
    now stays neutral. */
@@ -55,12 +55,12 @@
   border-style: none;
   border-image: none;
   border-width: 0;
-  background-color: var(--e20-system-color, var(--theme-accent));
-  -webkit-mask-box-image-source: var(--theme-border-image);
+  background-color: var(--e20-system-color, var(--e20-theme-accent));
+  -webkit-mask-box-image-source: var(--e20-theme-border-image);
   -webkit-mask-box-image-slice: 15;
   -webkit-mask-box-image-width: 16px;
   -webkit-mask-box-image-repeat: stretch;
-  mask-border-source: var(--theme-border-image);
+  mask-border-source: var(--e20-theme-border-image);
   mask-border-slice: 15;
   mask-border-width: 16px;
   mask-border-repeat: stretch;
@@ -82,7 +82,7 @@
   aspect-ratio: 1;
   object-fit: cover;
   border-radius: 50%;
-  border: 5px solid var(--e20-system-color, var(--theme-accent));
+  border: 5px solid var(--e20-system-color, var(--e20-theme-accent));
   margin: 0 auto;
 }
 
@@ -108,7 +108,7 @@
   letter-spacing: 0.05em;
 }
 
-.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button):not(.essence20-sidebar-trait-row) {
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button):not(.essence20-sidebar-trait-row):not(.party-sidebar-value) {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -117,7 +117,7 @@
 }
 
 .essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row) > label {
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   flex: 1 1 auto;
   white-space: nowrap;
   overflow: hidden;
@@ -125,7 +125,7 @@
 }
 
 .essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row) > span {
-  color: var(--theme-muted-text);
+  color: var(--e20-theme-muted-text);
   flex: 0 0 auto;
 }
 
@@ -152,12 +152,12 @@
 }
 
 .essence20-sidebar .essence20-sidebar-trait-row > label {
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   font-weight: 600;
 }
 
 .essence20-sidebar .essence20-sidebar-trait-row > span {
-  color: var(--theme-muted-text);
+  color: var(--e20-theme-muted-text);
   white-space: normal;
   word-break: break-word;
 }
@@ -166,12 +166,12 @@
 // Health inline, slash-separated, matching the compact "16/12/9/8" a printed stat block uses
 // instead of the single label+value row every other sidebar stat uses.
 .essence20-sidebar .essence20-sidebar-participant-health-values {
-  color: var(--theme-muted-text);
+  color: var(--e20-theme-muted-text);
   flex: 0 0 auto;
 }
 
 .essence20-sidebar .essence20-sidebar-participant-health-sep {
-  color: var(--theme-muted-text);
+  color: var(--e20-theme-muted-text);
   opacity: 0.6;
   margin: 0 2px;
 }
@@ -198,18 +198,18 @@
   width: 100%;
   box-sizing: border-box;
   background: rgba(255,255,255,0.05);
-  border: 1px solid var(--theme-border-color);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: 6px;
   padding: 2px 8px;
   font-size: 0.8em;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   text-decoration: none;
   cursor: pointer;
 }
 
 .essence20-sidebar .essence20-sidebar-action-button:hover {
   background: rgba(255,255,255,0.1);
-  border-color: var(--e20-system-color, var(--theme-accent));
+  border-color: var(--e20-system-color, var(--e20-theme-accent));
 }
 
 .essence20-sidebar .essence20-sidebar-action-button i {
@@ -270,7 +270,7 @@
 }
 
 .essence20-sidebar .essence20-sidebar-initiative select {
-  border: 1px solid var(--theme-border-color);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: 4px;
   padding: 0 2px;
   /* Shrinks the box itself (width/height), not the text inside it - flex:1 1 auto (above) was

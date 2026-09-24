@@ -30,7 +30,7 @@ export const ANTAGONISTIC_SNAG_FLAG = 'pendingAntagonisticSnag';
 export async function pickAntagonisticEffect() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.AntagonisticPickEffectTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.AntagonisticPickEffectLabel')
     }</label><select name="effect">

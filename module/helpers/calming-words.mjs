@@ -30,7 +30,7 @@ export function isCalmingWordsBuffActive(actor) {
 export async function pickCalmingWordsOptions() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.CalmingWordsPickOptionsTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.CalmingWordsPickActionLabel')
     }</label><select name="action">

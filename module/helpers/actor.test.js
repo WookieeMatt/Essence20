@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { resizeTokens, changeTokenImage, checkIsLocked, getNumActions, applySystemColorCssVariables } from "./actor.mjs";
+import { resizeTokens, changeTokenImage, checkIsLocked, getNumActions, applySystemColorCssVariables, relativeLuminance } from "./actor.mjs";
 
 describe("resizeTokens", () => {
   test("updates every active token's document with the new dimensions", () => {
@@ -22,6 +22,17 @@ describe("changeTokenImage", () => {
     changeTokenImage(actor, "path/to/image.webp");
 
     expect(token.document.update).toHaveBeenCalledWith({ "texture.src": "path/to/image.webp" });
+  });
+
+  // An unset Morphed / Alt Mode image used to blank the token and throw from the token animation.
+  test("leaves the tokens alone when there is no image to switch to", () => {
+    const token = { document: { update: jest.fn() } };
+    const actor = { getActiveTokens: jest.fn(() => [token]) };
+
+    changeTokenImage(actor, null);
+    changeTokenImage(actor, "");
+
+    expect(token.document.update).not.toHaveBeenCalled();
   });
 });
 
@@ -95,11 +106,16 @@ describe("getNumActions", () => {
     };
     expect(getNumActions(actor)).toEqual({ free: 1, movement: 1, standard: 1 });
   });
+
+  test("grants no actions for an actor with no Essence scores (e.g. Party)", () => {
+    const actor = { system: {} };
+    expect(getNumActions(actor)).toEqual({ free: 0, movement: 0, standard: 0 });
+  });
 });
 
 describe("applySystemColorCssVariables", () => {
   function makeElement() {
-    return { style: { setProperty: jest.fn() } };
+    return { style: { setProperty: jest.fn(), removeProperty: jest.fn() } };
   }
 
   test("does nothing without an element or a system color", () => {
@@ -126,5 +142,44 @@ describe("applySystemColorCssVariables", () => {
     const element = makeElement();
     applySystemColorCssVariables(element, { system: { color: 'rebeccapurple' } });
     expect(element.style.setProperty).toHaveBeenCalledWith('--e20-system-color-50', 'rgba(0, 0, 0, 0.5)');
+  });
+
+  // The unselected tabs are filled with this colour; light grey text vanished on a light one.
+  test("a light color gets dark text and no halo for the unselected tabs", () => {
+    const element = makeElement();
+    applySystemColorCssVariables(element, { system: { color: '#d4d44a' } });
+    expect(element.style.setProperty).toHaveBeenCalledWith('--e20-system-color-contrast', '#1a1a1a');
+    expect(element.style.setProperty).toHaveBeenCalledWith('--e20-system-color-halo', 'transparent');
+  });
+
+  // Magenta and purple read at under 2:1 with the old light grey.
+  test("a dark color gets near-white text over the default dark halo", () => {
+    const element = makeElement();
+    applySystemColorCssVariables(element, { system: { color: '#c00798' } });
+    expect(element.style.setProperty).toHaveBeenCalledWith('--e20-system-color-contrast', '#f2f2f2');
+    expect(element.style.removeProperty).toHaveBeenCalledWith('--e20-system-color-halo');
+  });
+
+  test("an unparseable color keeps the stylesheet default", () => {
+    const element = makeElement();
+    applySystemColorCssVariables(element, { system: { color: 'rebeccapurple' } });
+    expect(element.style.removeProperty).toHaveBeenCalledWith('--e20-system-color-contrast');
+    expect(element.style.removeProperty).toHaveBeenCalledWith('--e20-system-color-halo');
+  });
+});
+
+describe("relativeLuminance", () => {
+  test("black is 0 and white is 1", () => {
+    expect(relativeLuminance('#000000')).toBe(0);
+    expect(relativeLuminance('#fff')).toBeCloseTo(1, 5);
+  });
+
+  test("green weighs far more than blue, as the eye does", () => {
+    expect(relativeLuminance('#00ff00')).toBeGreaterThan(relativeLuminance('#0000ff'));
+  });
+
+  test("anything that is not a hex color is null", () => {
+    expect(relativeLuminance('rebeccapurple')).toBeNull();
+    expect(relativeLuminance(null)).toBeNull();
   });
 });

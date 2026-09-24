@@ -11,9 +11,14 @@
       "book": "Knights of Canterlot",
       "page": 48
     },
+    "actionType": "standard",
     "circle": "beam",
     "cost": 3,
-    "duration": "3 Rounds",
+    "duration": {
+      "units": "rounds",
+      "value": 3,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "60 feet",
     "tier": "superior"

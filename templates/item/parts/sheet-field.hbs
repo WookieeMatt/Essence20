@@ -1,12 +1,15 @@
-<div class="flexrow item-field">
-  <div class="flexrow align-center gap-5 item-field-label">
-    <label class="flex-grow-0 nowrap">{{localize label}}</label>
+{{!-- A field hosting a dropped-item list (id-drop.hbs / role-perk-drop.hbs pass `type`) gets a
+     narrow label column: the list is the content, and the default 2:1.5 split squeezed every
+     Role Perk row - name, level, choice group, controls - into the right third of the sheet. --}}
+<div class="flexrow item-field{{#if type}} item-field--list{{/if}}">
+  <div class="flexrow e20-align-center e20-gap-5 item-field-label">
+    <label class="e20-flex-grow-0 e20-nowrap">{{localize label}}</label>
     {{#> item-field-edit}}
     {{!-- Custom item field edit button goes here --}}
     {{/item-field-edit}}
   </div>
 
-  <div class="flexrow item-field-inputs align-center">
+  <div class="flexrow item-field-inputs e20-align-center">
     {{#> item-field-inputs}}
     {{!-- Custom item inputs go here --}}
     {{/item-field-inputs}}

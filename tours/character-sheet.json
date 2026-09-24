@@ -5,7 +5,9 @@
   "description": "E20.Tours.CharacterSheet.Description",
   "display": true,
   "canBeResumed": true,
-  "suggestedNextTours": ["essence20.skillsAndEssences"],
+  "suggestedNextTours": [
+    "essence20.skillsAndEssences"
+  ],
   "steps": [
     {
       "id": "intro",
@@ -100,6 +102,15 @@
       "selector": ".collapsible-item-container",
       "title": "E20.Tours.CharacterSheet.Gear.Title",
       "content": "E20.Tours.CharacterSheet.Gear.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "bio",
+      "app": "character",
+      "tab": "background",
+      "selector": ".tab.background",
+      "title": "E20.Tours.CharacterSheet.Bio.Title",
+      "content": "E20.Tours.CharacterSheet.Bio.Content",
       "tooltipDirection": "LEFT"
     },
     {

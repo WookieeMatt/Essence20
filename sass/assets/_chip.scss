@@ -1,19 +1,19 @@
-.chip {
+.essence20 .chip {
   border-radius: 10px;
-  border: 1px solid var(--theme-border-color);
+  border: 1px solid var(--e20-theme-border-color);
   padding-left: 8px;
   padding-right: 8px;
   padding-top: 2px;
   margin-right: 3px;
-  color: var(--theme-text-color);
-  background-color: var(--theme-card-bg);
+  color: var(--e20-theme-text-color);
+  background-color: var(--e20-theme-card-bg);
   width: fit-content;
   height: fit-content;
   text-size-adjust: 8;
   white-space: nowrap;
 }
 
-.chip-section {
+.essence20 .chip-section {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -21,4 +21,12 @@
   margin-bottom: 10px;
   flex-wrap: wrap;
   row-gap: 3px;
+}
+
+/* A trait an upgrade takes AWAY rather than grants - see templates/item/details/upgrade.hbs and
+   documents/item.mjs#_prepareTraits. Struck through rather than coloured, so it reads the same way
+   in both themes and to anyone who cannot tell the two chip colours apart. */
+.essence20 .chip--removed {
+  text-decoration: line-through;
+  opacity: 0.75;
 }

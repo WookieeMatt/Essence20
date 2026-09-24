@@ -1,0 +1,58 @@
+{
+  "folder": null,
+  "name": "Power Ranger Standard Issue",
+  "type": "equipmentPackage",
+  "_id": "4G6Pnug0NUNH326A",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 103
+    },
+    "items": {
+      "p1mo": {
+        "uuid": "Compendium.essence20.pr_crb.Item.qWjYcAaWwPdoReN4",
+        "img": "icons/svg/lightning.svg",
+        "name": "Power Morpher",
+        "type": "gear",
+        "description": ""
+      },
+      "p2wc": {
+        "uuid": "Compendium.essence20.pr_crb.Item.W7nXP8pOQaDJmZbT",
+        "img": "systems/essence20/assets/icons/gear/watch.svg",
+        "name": "Wrist Communicator",
+        "type": "gear",
+        "description": ""
+      },
+      "p3bb": {
+        "uuid": "Compendium.essence20.pr_crb.Item.bOGhc0MIpi12BcK8",
+        "img": "systems/essence20/assets/icons/weapons/pistol.svg",
+        "name": "Blade Blaster",
+        "type": "weapon",
+        "description": ""
+      }
+    },
+    "alternateAccess": "",
+    "packageType": "standardIssue"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "6.0.0",
+    "coreVersion": "13.344",
+    "createdTime": 1756800000000,
+    "modifiedTime": 1756800000000,
+    "lastModifiedBy": "Essence20Builder0",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!4G6Pnug0NUNH326A"
+}

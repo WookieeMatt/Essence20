@@ -49,7 +49,7 @@ describe("canUseTimelyTeammate", () => {
   test("false once already used this combat", () => {
     game.combat = { id: 'combat1' };
     const actor = makeActor('actor1');
-    actor.getFlag = jest.fn(() => ({ combatId: 'combat1' }));
+    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
     expect(canUseTimelyTeammate(actor)).toBe(false);
   });
 });
@@ -77,7 +77,7 @@ describe("activateTimelyTeammate", () => {
     expect(result).toBe(true);
     expect(actorCombatant.update).toHaveBeenCalledWith({ initiative: 18 });
     expect(targetCombatant.update).toHaveBeenCalledWith({ initiative: 10 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'timelyTeammateUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'timelyTeammateUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("warns and does nothing when nothing is targeted", async () => {
@@ -114,7 +114,7 @@ describe("activateTimelyTeammate", () => {
 
   test("does nothing once already used this combat", async () => {
     const actor = makeActor('actor1');
-    actor.getFlag = jest.fn(() => ({ combatId: 'combat1' }));
+    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
     const targetActor = makeActor('actor2');
     game.combat = {
       id: 'combat1', combatants: [makeCombatant(actor, 10), makeCombatant(targetActor, 18)],

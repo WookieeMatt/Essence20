@@ -1,7 +1,7 @@
 @use "../variables" as v;
 
 .essence20 .notes-title {
-  color: var(--theme-accent);
+  color: var(--e20-theme-accent);
   font-size: 16px;
 }
 
@@ -10,7 +10,7 @@
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   display: flex;
   flex-direction: column;
   /* Was justify-content: center - fine back when this held a couple of short lines, but the
@@ -21,8 +21,8 @@
      height instead of sitting at its own min-height) is what actually makes the editor read as
      filling this box, rather than justify-content trying to fake that by centering it. */
   justify-content: flex-start;
-  background: var(--theme-card-bg);
-  border: 1px solid var(--theme-border-color);
+  background: var(--e20-theme-card-bg);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: v.$border-radius;
   width: 100%;
   height: 100%;
@@ -47,7 +47,7 @@
 }
 
 /* Extra clearance above the Pronoun/Gender/Age/etc. row specifically, on top of whatever gap the
-   Origin/Influences/Bonds/Hang Ups item-containers above it already carry (.tab's own gap: 10px,
+.essence20 Origin/Influences/Bonds/Hang Ups item-containers above it already carry (.tab's own gap: 10px,
    actors/_tabs.scss; each container's own margin-bottom, actors/_leveled-item-lists.scss) - that
    stacked spacing still read as too tight coming out of Hang Ups, the last of those containers.
    Targeted via the adjacent-sibling combinator, not :first-of-type - each item-container above
@@ -78,7 +78,7 @@
 .essence20 .biography-row .sliced-border.--col input {
   width: 100%;
   box-sizing: border-box;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
@@ -121,15 +121,15 @@
   font-size: 0.8em;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  /* Was var(--theme-accent) - reads as orange in light theme / cyan in dark theme, which read
+  /* Was var(--e20-theme-accent) - reads as orange in light theme / cyan in dark theme, which read
      as an unwanted stray accent color on these field labels rather than plain text. */
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   margin-bottom: 4px;
 }
 
 .essence20 .biography-editor-field .editor {
-  background: var(--theme-card-bg);
-  border: 1px solid var(--theme-border-color);
+  background: var(--e20-theme-card-bg);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: v.$border-radius;
   min-height: 120px;
   padding: 4px;

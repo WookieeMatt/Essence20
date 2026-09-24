@@ -11,9 +11,14 @@
       "book": "Knights of Canterlot",
       "page": 43
     },
+    "actionType": "standard",
     "circle": "enchantment",
     "cost": 1,
-    "duration": "1 scene",
+    "duration": {
+      "units": "scenes",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "10 feet",
     "tier": "elementary"

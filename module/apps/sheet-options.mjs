@@ -13,7 +13,12 @@ export default class SheetOptions extends serializeFormSubmits(HandlebarsApplica
     allowCustom: false,
     id: "sheet-options",
     classes: [
+      // "essence20" was missing here, alone among this system's apps, so this one silently skipped
+      // every rule the system scopes to that class - the Rajdhani font, the themed colours, all of
+      // it. Found while auditing what the apps actually carry on their window roots.
+      "essence20",
       "theme-wrapper",
+      "e20-window",
       "window-app",
       "sheet-options",
     ],

@@ -43,7 +43,7 @@ export async function pickGridSurgeOption() {
     .map(key => `<option value="${key}">${game.i18n.localize(E20.skills[key])}</option>`).join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.GridSurgePickOptionTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.GridSurgePickOptionLabel')
     }</label><select name="option">

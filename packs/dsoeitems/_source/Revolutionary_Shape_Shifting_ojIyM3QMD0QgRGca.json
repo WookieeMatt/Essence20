@@ -11,9 +11,14 @@
       "book": "Dark Skies Over Equestria",
       "page": 22
     },
+    "actionType": "standard",
     "circle": "enchantment",
     "cost": 3,
-    "duration": "1 scene",
+    "duration": {
+      "units": "scenes",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "20 feet",
     "tier": "virtuoso"

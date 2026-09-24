@@ -1,8 +1,29 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
 
 <div class="chip-section">
-  <span class="chip" name="chip.weapon.classification.size">{{lookup @root.config.weaponSizes item.system.classification.size}} </span>
+  <span class="chip" name="chip.weapon.classification.size">
+    {{lookup @root.config.weaponSizes item.system.effectiveSize}}
+    {{#if (ne item.system.effectiveSize item.system.classification.size)}}({{lookup @root.config.weaponSizes item.system.classification.size}}){{/if}}
+  </span>
+  <span class="chip" name="chip.weapon.hands">{{localize 'E20.WeaponHands'}}: {{item.system.derivedHands}}</span>
   <span class="chip" name="chip.weapon.availability">{{lookup @root.config.availabilities item.system.availability}}</span>
+
+  {{#if (ne item.system.effectiveBrawnReq 'none')}}
+    <span class="chip" name="chip.weapon.brawnReq">
+      {{localize 'E20.WeaponRequirements'}}: {{lookup @root.config.weaponRequirementShifts item.system.effectiveBrawnReq}}{{#if (ne item.system.effectiveBrawnReq item.system.requirements.shift)}} ({{localize 'E20.HardpointReduced'}}){{/if}}
+    </span>
+  {{/if}}
+
+  {{#if @root.system.canTransform}}
+    <span class="chip" name="chip.weapon.hardpoint">{{lookup @root.config.hardpointTypes item.system.hardpoint.type}}</span>
+    {{#if item.system.derivedMode}}
+      <span class="chip" name="chip.weapon.derivedMode">{{lookup @root.config.transformerModes item.system.derivedMode}}</span>
+    {{/if}}
+    {{#if (eq item.system.hardpoint.type 'integrated')}}
+      {{#if item.system.hardpoint.reinforced}}<span class="chip" name="chip.weapon.hardpoint.reinforced">{{localize 'E20.HardpointReinforced'}}</span>{{/if}}
+      <span class="chip" name="chip.weapon.hardpoint.altModeVisibility">{{lookup @root.config.altModeVisibilities item.system.hardpoint.altModeVisibility}}</span>
+    {{/if}}
+  {{/if}}
 
   {{#if (ne item.system.totalAvailability item.system.availability)}}
     <span class="chip" name="chip.weapon.totalAvailability">{{localize 'E20.WeaponTotalAvailability'}}: {{lookup @root.config.availabilities item.system.totalAvailability}}</span>
@@ -22,4 +43,6 @@
   {{#each item.system.traits as |trait|}}
     <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
   {{/each}}
+
+  {{> "systems/essence20/templates/actor/parts/misc/package-origin-chip.hbs"}}
 </div>

@@ -11,9 +11,14 @@
       "book": "Knights of Canterlot",
       "page": 47
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 1,
-    "duration": "1 day",
+    "duration": {
+      "units": "days",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "60 feet",
     "tier": "superior"

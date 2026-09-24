@@ -1,11 +1,13 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 import { computeEssenceSpend } from "../helpers/skill-picker.mjs";
+import { getActionsTabContext } from "../helpers/action-economy.mjs";
 
 export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
   static TABS = {
     primary: {
       tabs: [
         { id: "skills", group: 'primary', label: "E20.TabSkills" },
+        { id: "actions", group: 'primary', label: "E20.TabActions" },
         { id: "gear", group: 'primary', label: "E20.TabGear" },
         { id: "spells", group: 'primary', label: "E20.TabSpells" },
         { id: "powers", group: 'primary', label: "E20.TabPowers" },
@@ -32,6 +34,10 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
     },
     skills: {
       template: "systems/essence20/templates/actor/parts/main/character-skills.hbs",
+      scrollable: [''],
+    },
+    actions: {
+      template: "systems/essence20/templates/actor/tabs/actions.hbs",
       scrollable: [''],
     },
     gear: {
@@ -75,6 +81,7 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     this._prepareSkillRankAllocation(context);
+    context.actionsTab = getActionsTabContext(this.actor);
     return context;
   }
 
@@ -99,6 +106,11 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
   _applyConditionalTabs() {
     const visibility = {
       skills: true,
+      /* Always shown. It used to be hidden outside an encounter, on the grounds that there is
+         no budget to display - but the tab answers "what can I do and what does it cost", which
+         is worth reading while planning a character, and a tab that comes and goes is more
+         confusing than one that is quieter out of combat. See getActionsTabContext. */
+      actions: true,
       gear: true,
       spells: this.actor.system.canSpellcast,
       powers: this.actor.system.canMorph,

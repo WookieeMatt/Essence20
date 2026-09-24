@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
 import { E20 } from './helpers/config.mjs';
+import { legacyPoolParty } from './jest.legacy-pool-party.js';
 
 /*
  * Minimal Foundry VTT client environment so document classes (which do
@@ -48,6 +49,12 @@ global.Item = class Item {
   async _preUpdate() {}
 };
 
+/* Returning undefined from _preUpdateMovement is what core does when it has no objection -
+   Essence20TokenDocument checks for an explicit false, so the two must not be conflated. */
+global.TokenDocument = class TokenDocument {
+  constructor() {}
+  async _preUpdateMovement() {}
+};
 global.ChatMessage = {
   getSpeaker: jest.fn(() => ({})),
   create: jest.fn(),
@@ -99,6 +106,9 @@ global.game = {
   packs: [],
 };
 
+// The Story Point pool lives on the primary Party; see jest.legacy-pool-party.js for why the
+// stand-in reads it from the mocked world setting.
+global.game.actors = { party: legacyPoolParty() };
 global.CONFIG = { E20 };
 
 global.ui = {
@@ -121,6 +131,10 @@ class StubDataField {
 
 global.foundry = {
   applications: {
+    // Foundry keeps every open ApplicationV2 here, keyed by id. Code that wants to refresh an
+    // app it does not own looks it up rather than holding a reference, so the stand-in needs to
+    // be a real Map - an empty one simply reports that nothing is open.
+    instances: new Map(),
     api: {
       ApplicationV2: class ApplicationV2 {},
       HandlebarsApplicationMixin: (Base) => class extends Base {},
@@ -133,6 +147,23 @@ global.foundry = {
     TypeDataModel: class TypeDataModel {
       constructor() {}
       prepareDerivedData() {}
+      static migrateData(source) {
+        return source;
+      }
+    },
+  },
+  documents: {
+    collections: {
+      // Minimal stand-in for the world Actor collection so documents/actors.mjs
+      // (`class Essence20Actors extends foundry.documents.collections.Actors`) can be imported.
+      Actors: class Actors {
+        constructor(entries = []) {
+          this._byId = new Map(entries.map(e => [e._id ?? e.id, e]));
+        }
+        get(id) {
+          return this._byId.get(id);
+        }
+      },
     },
   },
   dice: {
@@ -156,6 +187,9 @@ global.foundry = {
     },
   },
   utils: {
+    // Only the shape matters to the code under test (a unique opaque string); helpers/
+    // action-economy.mjs uses it to tag each spend so it can be refunded later.
+    randomID: () => Math.random().toString(36).slice(2, 12),
     getProperty: (obj, path) => path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj),
     hasProperty: (obj, path) => {
       let o = obj;

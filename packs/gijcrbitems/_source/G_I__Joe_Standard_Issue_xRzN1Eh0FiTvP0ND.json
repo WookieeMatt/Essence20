@@ -1,0 +1,79 @@
+{
+  "folder": null,
+  "name": "G.I. Joe Standard Issue",
+  "type": "equipmentPackage",
+  "_id": "xRzN1Eh0FiTvP0ND",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 136
+    },
+    "items": {
+      "j1pi": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.71D2KcAAVoLMHTm5",
+        "img": "systems/essence20/assets/icons/weapons/pistol.svg",
+        "name": "Pistol",
+        "type": "weapon",
+        "description": ""
+      },
+      "j2bd": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.8lNIijY5XompKHH7",
+        "img": "icons/svg/sword.svg",
+        "name": "Close Combat Blade",
+        "type": "weapon",
+        "description": ""
+      },
+      "j3rf": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.g0bRGmWtApyqBhpU",
+        "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+        "name": "Rifle",
+        "type": "weapon",
+        "description": ""
+      },
+      "j4fg": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.I5BXHrLRKQSRnvuF",
+        "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+        "name": "Frag Grenade",
+        "type": "weapon",
+        "description": ""
+      },
+      "j5cg": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.uWID45bHyKuarkGs",
+        "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+        "name": "Concussion Grenade",
+        "type": "weapon",
+        "description": ""
+      },
+      "j6ra": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ePD7V7VGCwfDvxUB",
+        "img": "systems/essence20/assets/icons/gear/rations.svg",
+        "name": "Rations",
+        "type": "gear",
+        "description": ""
+      }
+    },
+    "alternateAccess": "",
+    "packageType": "standardIssue"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "6.0.0",
+    "coreVersion": "13.344",
+    "createdTime": 1756800000000,
+    "modifiedTime": 1756800000000,
+    "lastModifiedBy": "Essence20Builder0",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!xRzN1Eh0FiTvP0ND"
+}

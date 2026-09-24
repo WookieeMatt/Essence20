@@ -1,6 +1,6 @@
 <section class="essence20-sidebar sheet-header">
   {{!-- Profile image --}}
-  <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+  <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-action="editImage" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
 
   <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-resources">
     <a class="sliced-border__label sliced-border__label--clickable" data-action="editHealth" data-tooltip="{{localize 'E20.StatEditorHealthTooltip'}}"><i class="fas fa-heart"></i> Resources <i class="fas fa-gear sliced-border__label-edit-icon"></i></a>
@@ -26,6 +26,27 @@
         {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
       </span>
     </div>
+
+    {{!-- Wealth Die. Off by default and switched on from the sheet options gear in the header
+         (system.canShowWealthDie), the same as on a character - where it also lives in the
+         sidebar. Beside Initiative because this panel is already where the sheet keeps the dice
+         you roll that are not skills in the list.
+
+         Unlike Initiative just above, the shift IS editable here: Wealth is absent from the
+         Skill Picker that edits every other NPC skill, so this select is the only place to set
+         it. Same markup as the character sidebar, so the two behave identically. --}}
+    {{#if system.canShowWealthDie}}
+    <div class="essence20-sidebar-wealth flexrow skill-header e20-skill-header" data-e20-color="{{system.color}}">
+      <a class="rollable skill-name" data-action="rollable" data-roll-type="skill" data-skill="wealth"
+        data-shift-up="{{system.skills.wealth.shiftUp}}" data-shift-down="{{system.skills.wealth.shiftDown}}"
+        data-shift="{{system.skills.wealth.shift}}" data-is-specialized="{{system.skills.wealth.isSpecialized}}">
+        {{localize 'E20.ActorWealth'}}
+      </a>
+      <select class="skill-shift-select" name="system.skills.wealth.shift">
+        {{selectOptions @root.config.wealthShifts selected=system.skills.wealth.shift}}
+      </select>
+    </div>
+    {{/if}}
   </div>
   {{> "systems/essence20/templates/actor/parts/misc/sidebar-speeds.hbs"}}
   {{> "systems/essence20/templates/actor/parts/misc/sidebar-defenses.hbs"}}

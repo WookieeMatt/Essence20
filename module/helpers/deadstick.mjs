@@ -19,7 +19,7 @@
 export async function pickDeadstickDefenseType() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.DeadstickPickTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.DeadstickPickLabel')
     }</label><select name="defenseType">

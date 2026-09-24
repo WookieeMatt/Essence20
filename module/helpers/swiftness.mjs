@@ -23,7 +23,7 @@ const SWIFTNESS_BONUS_FEET = 20;
 export async function pickSwiftnessMovementType() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.SwiftnessPickTypeTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.SwiftnessPickTypeLabel')
     }</label><select name="movementType">

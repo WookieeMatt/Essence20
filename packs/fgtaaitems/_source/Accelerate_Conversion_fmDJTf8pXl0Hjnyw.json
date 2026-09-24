@@ -6,9 +6,10 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "originalId": "",
+    "actionType": "free",
     "description": "",
     "source": {
-      "book": "Field Guide to Action & Adventure",
+      "book": "Field Guide to Action and Adventure",
       "page": 70
     },
     "items": {},

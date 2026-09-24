@@ -19,7 +19,7 @@ import { getNearbyEnemyTokens } from "./enemies.mjs";
 export async function pickHumanBulletRadius() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.HumanBulletPickRadiusTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.HumanBulletPickRadiusLabel')
     }</label><select name="radius">

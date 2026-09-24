@@ -7,7 +7,7 @@
         <div class="flexrow {{item.type}}" data-item-key="{{item.key}}" data-item-uuid="{{item.uuid}}" data-item-level="{{item.level}}">
           <ul class="items-list">
             <li class="item">
-            <div class="flexrow align-center nowrap">
+            <div class="flexrow e20-align-center e20-nowrap">
               <label class="flexcol">{{item.name}}</label>
               <input type="number" class="level" placeholder="Level" value="{{item.level}}" name="system.items.{{item.key}}.level" min="0" step="1" />
               <input type="text" class="choice-group" placeholder="{{localize 'E20.ChoiceGroupPlaceholder'}}" value="{{item.choiceGroup}}" name="system.items.{{item.key}}.choiceGroup" data-tooltip="{{localize 'E20.ChoiceGroupTooltip'}}" />

@@ -34,7 +34,7 @@ describe("canUseTwoHeadsAreBetterThanOne", () => {
   });
 
   test("false once already used this scene", () => {
-    const actor = makeActor({ usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     expect(canUseTwoHeadsAreBetterThanOne(actor)).toBe(false);
   });
 });
@@ -50,7 +50,7 @@ describe("activateTwoHeadsAreBetterThanOne", () => {
     expect(result).toBe(true);
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'twoHeadsAssistanceTargetUuid', 'Actor.target1');
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'twoHeadsAssistanceUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'twoHeadsAssistanceUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
   });
 

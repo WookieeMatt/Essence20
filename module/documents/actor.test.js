@@ -1887,6 +1887,26 @@ describe("_prepareMegaformZordData", () => {
     global.fromUuidSync.mockReset();
   });
 
+  // Regression: _prepareHealth used to add the Megaform's own Conditioning on top of
+  // combinedHealthMax, which already includes each participant's. The tests around this one
+  // check combinedHealthMax straight out of _prepareMegaformZordData and so never saw it -
+  // this one runs _prepareHealth after it, the way prepareDerivedData does.
+  test("health.max is the combined total plus only the GM bonus - Conditioning is not added again", () => {
+    const a = makeZordParticipant({ name: 'A', health: 6, healthMax: 6 });
+    const b = makeZordParticipant({ name: 'B', health: 7, healthMax: 7 });
+    const actor = makeMegazordActor([a, b]);
+    actor.system.conditioning = 3;
+    actor.system.health.bonus = 2;
+
+    actor._prepareMegaformZordData();
+    actor._prepareHealth();
+
+    expect(actor.system.combinedHealthMax).toBe(13);
+    expect(actor.system.health.max).toBe(13 + 2);
+    // Undamaged, so the token bar reads full.
+    expect(actor.system.health.value).toBe(13);
+  });
+
   test("doubles a Core Body participant's own Health share", () => {
     const coreBody = makeZordParticipant({ name: 'A', health: 5, healthMax: 5, megaformTraitItems: [{ type: 'coreBody' }] });
     const plain = makeZordParticipant({ name: 'B', health: 4, healthMax: 4 });
@@ -2503,6 +2523,442 @@ describe("_prepareVehicleData", () => {
 
         expect(actor.system.movement.ground.total).toBe(15);
       });
+    });
+  });
+});
+
+describe("_prepareActions", () => {
+  /**
+   * An actor carrying the shared system.actions block plus a Speed Essence, which is what the
+   * rules actually derive the budget from (GI Joe CRB p.192-193).
+   */
+  function actionsActor({ statuses = [], bonus = {}, speed = 2 } = {}) {
+    const budget = (category) => ({ base: 0, bonus: bonus[category] ?? 0, max: 0 });
+    const actor = makeActor("playerCharacter", {
+      essences: { speed: { value: speed, max: speed }, smarts: { value: 0, max: 0 } },
+      actions: {
+        enabled: true,
+        shared: false,
+        free: budget("free"),
+        move: budget("move"),
+        standard: budget("standard"),
+      },
+    });
+    actor.statuses = new Set(statuses);
+    return actor;
+  }
+
+  // The three budget shapes the rules define, by Speed Essence.
+  test("Speed 1 gets one Move and one Standard, flagged as a shared single action", () => {
+    const actor = actionsActor({ speed: 1 });
+    actor._prepareActions();
+
+    expect(actor.system.actions.shared).toBe(true);
+    expect(actor.system.actions.standard.max).toBe(1);
+    expect(actor.system.actions.move.max).toBe(1);
+    expect(actor.system.actions.free.max).toBe(0);
+  });
+
+  test("Speed 2 gets a Move and a Standard and no Free actions", () => {
+    const actor = actionsActor({ speed: 2 });
+    actor._prepareActions();
+
+    expect(actor.system.actions.shared).toBe(false);
+    expect(actor.system.actions.free.max).toBe(0);
+  });
+
+  test.each([[3, 1], [4, 2], [5, 3]])("Speed %i grants %i Free actions", (speed, expected) => {
+    const actor = actionsActor({ speed });
+    actor._prepareActions();
+
+    expect(actor.system.actions.free.max).toBe(expected);
+  });
+
+  test("an actor type with no Essences falls back to the ordinary Speed 2 turn", () => {
+    const actor = makeActor("vehicle", {
+      actions: {
+        enabled: true, shared: false,
+        free: { base: 0, bonus: 0, max: 0 },
+        move: { base: 0, bonus: 0, max: 0 },
+        standard: { base: 0, bonus: 0, max: 0 },
+      },
+    });
+    actor.statuses = new Set();
+    actor._prepareActions();
+
+    expect(actor.system.actions.standard.max).toBe(1);
+    expect(actor.system.actions.move.max).toBe(1);
+    expect(actor.system.actions.free.max).toBe(0);
+    expect(actor.system.actions.shared).toBe(false);
+  });
+
+  // "You gain an additional Standard action each turn" (CRB p.81) is a plain Active Effect on
+  // .bonus, which is the whole reason base and bonus are separate fields.
+  test("an Active Effect bonus adds on top of the Speed-derived base", () => {
+    const actor = actionsActor({ speed: 4, bonus: { standard: 1, free: 1 } });
+    actor._prepareActions();
+
+    expect(actor.system.actions.standard.max).toBe(2);
+    expect(actor.system.actions.free.max).toBe(3);
+  });
+
+  test("a negative bonus can not push a budget below zero", () => {
+    const actor = actionsActor({ bonus: { standard: -5 } });
+    actor._prepareActions();
+
+    expect(actor.system.actions.standard.max).toBe(0);
+  });
+
+  // The two Conditions below have existed in E20.statusEffects since the MLP CRB
+  // Laughtracting/Distraughter Perks were built, doing nothing at all because there was no action
+  // economy to gate against. These are the tests that they now do something.
+  test("cantTakeFreeActions clamps Free actions to zero, leaving the rest alone", () => {
+    const actor = actionsActor({ speed: 4, statuses: ["cantTakeFreeActions"] });
+    actor._prepareActions();
+
+    expect(actor.system.actions.free.max).toBe(0);
+    expect(actor.system.actions.standard.max).toBe(1);
+    expect(actor.system.actions.move.max).toBe(1);
+  });
+
+  test("cantTakeMoveActions clamps the Move action only", () => {
+    const actor = actionsActor({ speed: 4, statuses: ["cantTakeMoveActions"] });
+    actor._prepareActions();
+
+    expect(actor.system.actions.move.max).toBe(0);
+    expect(actor.system.actions.standard.max).toBe(1);
+    expect(actor.system.actions.free.max).toBe(2);
+  });
+
+  test.each(["asleep", "defeated", "unconscious"])("%s zeroes every budget", (status) => {
+    const actor = actionsActor({ speed: 5, statuses: [status] });
+    actor._prepareActions();
+
+    expect(actor.system.actions.standard.max).toBe(0);
+    expect(actor.system.actions.move.max).toBe(0);
+    expect(actor.system.actions.free.max).toBe(0);
+  });
+
+  // Immobilized/Grappled/Restrained restrict movement DISTANCE rather than denying the Move action
+  // itself - inventing a rule for them is not this method job, so they deliberately do nothing.
+  test.each(["grappled", "immobilized", "restrained"])("%s leaves the Move action alone", (status) => {
+    const actor = actionsActor({ statuses: [status] });
+    actor._prepareActions();
+
+    expect(actor.system.actions.move.max).toBe(1);
+  });
+
+  test("an actor type without an actions block is left untouched", () => {
+    const actor = makeActor("vehicle", {});
+    expect(() => actor._prepareActions()).not.toThrow();
+  });
+});
+
+describe("_prepareActions agrees with getNumActions", () => {
+  /* The budget used to be derived here a second time, independently of helpers/actor.mjs#
+     getNumActions - the helper that already drove the sheet's own "1M, 1S, 1F" readout. The two
+     silently disagreed whenever Speed's .max and .value differed, so the sheet showed one number
+     beside a different set of pips. Live testing caught it; these pin the agreement. */
+  function essenceActor({ speedMax, speedValue, smarts = 0 }) {
+    const actor = makeActor('playerCharacter', {
+      essences: {
+        speed: { max: speedMax, value: speedValue },
+        smarts: { max: smarts, value: smarts },
+      },
+      actions: {
+        enabled: true, shared: false,
+        free: { base: 0, bonus: 0, max: 0 },
+        move: { base: 0, bonus: 0, max: 0 },
+        standard: { base: 0, bonus: 0, max: 0 },
+      },
+    });
+    actor.statuses = new Set();
+    return actor;
+  }
+
+  test("uses Speed's max rather than its current value", () => {
+    const actor = essenceActor({ speedMax: 5, speedValue: 2 });
+    actor._prepareActions();
+
+    // getNumActions reads .max ?? .value, so a drained Speed still budgets from the maximum.
+    expect(actor.system.actions.free.max).toBe(3);
+  });
+
+  test("Speed 1 grants both actions and marks them shared", () => {
+    const actor = essenceActor({ speedMax: 1, speedValue: 1 });
+    actor._prepareActions();
+
+    // getNumActions reports standard 0 here; the rules say "Move OR Standard", so both are
+    // granted and `shared` makes them mutually exclusive.
+    expect(actor.system.actions.shared).toBe(true);
+    expect(actor.system.actions.standard.max).toBe(1);
+    expect(actor.system.actions.move.max).toBe(1);
+  });
+});
+
+
+describe("_prepareLoadout", () => {
+  function loadoutSystem(overrides = {}) {
+    return {
+      loadout: { handsMax: 6 },
+      hardpoints: {
+        external: { base: 2, bonus: 0 },
+        integrated: { base: 2, bonus: 0 },
+      },
+      ...overrides,
+    };
+  }
+
+  function weapon(system) {
+    return { type: 'weapon', system: { equipped: true, hardpoint: { type: 'external' }, ...system } };
+  }
+
+  test("bails out when the actor has no loadout/hardpoints schema", () => {
+    const actor = makeActor('playerCharacter', {});
+    expect(() => actor._prepareLoadout()).not.toThrow();
+  });
+
+  test("sums equipped external weapon hands into loadout.handsUsed", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [
+        weapon({ derivedHands: 2 }),
+        weapon({ derivedHands: 1 }),
+        weapon({ derivedHands: 1 }),
+      ],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(4);
+    expect(actor.system.loadout.handsOver).toBe(false);
+  });
+
+  test("flags handsOver once the six-hand limit is exceeded", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [weapon({ derivedHands: 4 }), weapon({ derivedHands: 3 })],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(7);
+    expect(actor.system.loadout.handsOver).toBe(true);
+  });
+
+  test("ignores unequipped and non-weapon items", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [weapon({ derivedHands: 2, equipped: false }), weapon({ derivedHands: 1 })],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(1);
+  });
+
+  test("integrated-Hardpoint weapons don't count against the six-hand limit", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [
+        weapon({ derivedHands: 2, hardpoint: { type: 'integrated' } }),
+        weapon({ derivedHands: 1 }),
+      ],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(1);
+    expect(actor.system.hardpoints.integrated.used).toBe(2);
+    expect(actor.system.hardpoints.external.used).toBe(1);
+  });
+
+  test("a two-handed integrated weapon uses two Integrated Hardpoint slots", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [weapon({ derivedHands: 2, hardpoint: { type: 'integrated' } })],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.hardpoints.integrated.used).toBe(2);
+    expect(actor.system.hardpoints.integrated.max).toBe(2);
+    expect(actor.system.hardpoints.integrated.over).toBe(false);
+  });
+
+  test("a one-handed integrated weapon still occupies one slot", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [weapon({ derivedHands: 0, hardpoint: { type: 'integrated' } })],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.hardpoints.integrated.used).toBe(1);
+  });
+
+  test("hardpoint max folds in the bonus and flags over", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem({
+      hardpoints: {
+        external: { base: 2, bonus: 1 },
+        integrated: { base: 2, bonus: 0 },
+      },
+    }), {
+      weapon: [
+        weapon({ derivedHands: 1 }),
+        weapon({ derivedHands: 1 }),
+        weapon({ derivedHands: 1 }),
+        weapon({ derivedHands: 1 }),
+      ],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.hardpoints.external.max).toBe(3);
+    expect(actor.system.hardpoints.external.used).toBe(4);
+    expect(actor.system.hardpoints.external.over).toBe(true);
+  });
+
+  test("a weapon set to no Hardpoint still counts against the six-hand limit", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [weapon({ derivedHands: 3, hardpoint: { type: 'none' } })],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(3);
+    expect(actor.system.hardpoints.external.used).toBe(0);
+  });
+});
+
+describe("_preparePartyData", () => {
+  function partySystem(overrides = {}) {
+    return {
+      actors: {},
+      requisition: { attempts: 0, autoFromRoster: true, log: [] },
+      ...overrides,
+    };
+  }
+
+  const realFromUuidSync = global.fromUuidSync;
+  afterEach(() => {
+    global.fromUuidSync = realFromUuidSync;
+  });
+
+  test("counts only Player Character roster entries and derives requisitionMax = 3 x count", () => {
+    global.fromUuidSync = jest.fn((uuid) => ({
+      'Actor.pc1': { type: 'playerCharacter' },
+      'Actor.pc2': { type: 'playerCharacter' },
+      'Actor.npc1': { type: 'npc' },
+    }[uuid]));
+
+    const actor = makeActor('party', partySystem({
+      actors: {
+        a: { uuid: 'Actor.pc1' },
+        b: { uuid: 'Actor.pc2' },
+        c: { uuid: 'Actor.npc1' },
+        d: { uuid: 'Actor.gone' },
+      },
+    }));
+    actor._preparePartyData();
+
+    expect(actor.system.memberCount).toBe(2);
+    expect(actor.system.requisitionMax).toBe(6);
+  });
+
+  // Regression: this used to be called from the tail of _prepareVehicleData(), which
+  // prepareDerivedData() only runs for a vehicle - so on a Party it never ran, and every Party
+  // reported 0 members and a 0 Requisition pool. The direct-call tests here could not see that,
+  // so this one goes in through prepareDerivedData().
+  test("prepareDerivedData reaches it for a Party", () => {
+    global.fromUuidSync = jest.fn(() => ({ type: 'playerCharacter' }));
+    const actor = makeActor('party', partySystem({ actors: { a: { uuid: 'Actor.pc1' } } }));
+
+    actor.prepareDerivedData();
+
+    expect(actor.system.memberCount).toBe(1);
+    expect(actor.system.requisitionMax).toBe(3);
+  });
+
+  test("an empty roster yields 0 members and a 0 pool", () => {
+    global.fromUuidSync = jest.fn(() => null);
+    const actor = makeActor('party', partySystem());
+    actor._preparePartyData();
+
+    expect(actor.system.memberCount).toBe(0);
+    expect(actor.system.requisitionMax).toBe(0);
+  });
+
+  test("when autoFromRoster is off, requisitionMax mirrors the manual attempts value", () => {
+    global.fromUuidSync = jest.fn(() => ({ type: 'playerCharacter' }));
+    const actor = makeActor('party', partySystem({
+      actors: { a: { uuid: 'Actor.pc1' } },
+      requisition: { attempts: 9, autoFromRoster: false, log: [] },
+    }));
+    actor._preparePartyData();
+
+    expect(actor.system.memberCount).toBe(1);
+    expect(actor.system.requisitionMax).toBe(9);
+  });
+});
+
+describe("Party member roster", () => {
+  const realFromUuidSync = global.fromUuidSync;
+  afterEach(() => {
+    global.fromUuidSync = realFromUuidSync;
+  });
+
+  function makeParty(actors = {}) {
+    const p = makeActor('party', { actors });
+    p.update = jest.fn(async () => {});
+    return p;
+  }
+
+  describe("get members", () => {
+    test("resolves system.actors to live Player Character actors, dropping non-PC and unresolved entries", () => {
+      global.fromUuidSync = jest.fn(uuid => ({
+        'Actor.pc1': { type: 'playerCharacter', name: 'Duke' },
+        'Actor.pc2': { type: 'playerCharacter', name: 'Scarlett' },
+        'Actor.npc1': { type: 'npc' },
+      }[uuid] ?? null));
+
+      const party = makeParty({
+        a: { uuid: 'Actor.pc1' },
+        b: { uuid: 'Actor.npc1' },
+        c: { uuid: 'Actor.pc2' },
+        d: { uuid: 'Actor.gone' },
+      });
+
+      expect(party.members.map(m => m.name)).toEqual(['Duke', 'Scarlett']);
+    });
+
+    test("is empty for a non-Party actor", () => {
+      const npc = makeActor('npc', { actors: { a: { uuid: 'Actor.pc1' } } });
+      expect(npc.members).toEqual([]);
+    });
+  });
+
+  describe("addMember", () => {
+    test("writes a new system.actors entry for a Player Character", async () => {
+      const party = makeParty();
+      await party.addMember({ type: 'playerCharacter', uuid: 'Actor.pc1', img: 'a.png', name: 'Duke' });
+
+      expect(party.update).toHaveBeenCalledTimes(1);
+      const update = party.update.mock.calls[0][0];
+      const [path, entry] = Object.entries(update)[0];
+      expect(path).toMatch(/^system\.actors\.[A-Za-z0-9]+$/);
+      expect(entry).toEqual({ uuid: 'Actor.pc1', img: 'a.png', name: 'Duke', type: 'playerCharacter' });
+    });
+
+    test("no-ops when the actor is already on the roster", async () => {
+      const party = makeParty({ a: { uuid: 'Actor.pc1' } });
+      await party.addMember({ type: 'playerCharacter', uuid: 'Actor.pc1', name: 'Duke' });
+      expect(party.update).not.toHaveBeenCalled();
+    });
+
+    test("no-ops for a non-Player-Character actor", async () => {
+      const party = makeParty();
+      await party.addMember({ type: 'npc', uuid: 'Actor.npc1' });
+      expect(party.update).not.toHaveBeenCalled();
+    });
+
+    test("no-ops on a non-Party actor", async () => {
+      const npc = makeActor('npc', { actors: {} });
+      npc.update = jest.fn();
+      await npc.addMember({ type: 'playerCharacter', uuid: 'Actor.pc1' });
+      expect(npc.update).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("removeMember", () => {
+    test("removes the roster entry matching the given UUID", async () => {
+      const party = makeParty({ a: { uuid: 'Actor.pc1' }, b: { uuid: 'Actor.pc2' } });
+      await party.removeMember('Actor.pc2');
+      expect(party.update).toHaveBeenCalledWith({ 'system.actors.-=b': null });
+    });
+
+    test("no-ops when the UUID isn't on the roster", async () => {
+      const party = makeParty({ a: { uuid: 'Actor.pc1' } });
+      await party.removeMember('Actor.nope');
+      expect(party.update).not.toHaveBeenCalled();
     });
   });
 });

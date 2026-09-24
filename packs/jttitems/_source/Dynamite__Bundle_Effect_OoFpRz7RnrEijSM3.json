@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "description": "<p>Stun 3 and Fire 2</p>",
     "source": {
       "book": "A Jump Through Time",
@@ -27,7 +28,8 @@
       "long": 30,
       "value": 10
     },
-    "shiftDown": 0
+    "shiftDown": 0,
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

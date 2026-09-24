@@ -30,7 +30,7 @@ export default class StatEditor extends serializeFormSubmits(HandlebarsApplicati
   }
 
   static DEFAULT_OPTIONS = {
-    classes: ["essence20", "sheet", "theme-wrapper", "stat-editor"],
+    classes: ["essence20", "sheet", "theme-wrapper", "e20-window", "stat-editor"],
     tag: "form",
     position: {
       width: 320,

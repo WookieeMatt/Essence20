@@ -1,0 +1,96 @@
+{
+  "namespace": "essence20",
+  "id": "party",
+  "title": "E20.Tours.Party.Title",
+  "description": "E20.Tours.Party.Description",
+  "display": true,
+  "canBeResumed": true,
+  "suggestedNextTours": [
+    "essence20.storyPoints"
+  ],
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Party.Intro.Title",
+      "content": "E20.Tours.Party.Intro.Content"
+    },
+    {
+      "id": "header",
+      "app": "party",
+      "selector": "header.sheet-header",
+      "title": "E20.Tours.Party.Header.Title",
+      "content": "E20.Tours.Party.Header.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "sidebar",
+      "app": "party",
+      "selector": ".essence20-sidebar",
+      "title": "E20.Tours.Party.Sidebar.Title",
+      "content": "E20.Tours.Party.Sidebar.Content",
+      "tooltipDirection": "RIGHT"
+    },
+    {
+      "id": "roster",
+      "app": "party",
+      "tab": "roster",
+      "selector": ".party-roster-list",
+      "title": "E20.Tours.Party.Roster.Title",
+      "content": "E20.Tours.Party.Roster.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "requisition",
+      "app": "party",
+      "tab": "requisition",
+      "selector": ".requisition-tracker",
+      "title": "E20.Tours.Party.Requisition.Title",
+      "content": "E20.Tours.Party.Requisition.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "requisitionMembers",
+      "app": "party",
+      "tab": "requisition",
+      "selector": ".requisition-member",
+      "title": "E20.Tours.Party.RequisitionMembers.Title",
+      "content": "E20.Tours.Party.RequisitionMembers.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "missionCritical",
+      "app": "party",
+      "tab": "missionCritical",
+      "selector": ".party-mission-critical",
+      "title": "E20.Tours.Party.MissionCritical.Title",
+      "content": "E20.Tours.Party.MissionCritical.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "storyPoints",
+      "title": "E20.Tours.Party.StoryPoints.Title",
+      "content": "E20.Tours.Party.StoryPoints.Content"
+    },
+    {
+      "id": "directory",
+      "sidebarTab": "actors",
+      "selector": "#actors .e20-party-folder",
+      "title": "E20.Tours.Party.Directory.Title",
+      "content": "E20.Tours.Party.Directory.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "primary",
+      "title": "E20.Tours.Party.Primary.Title",
+      "content": "E20.Tours.Party.Primary.Content",
+      "restricted": true
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Party.Outro.Title",
+      "content": "E20.Tours.Party.Outro.Content"
+    }
+  ]
+}

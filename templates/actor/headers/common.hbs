@@ -1,17 +1,29 @@
 <header class="sheet-header e20-border-accent">
 
   {{!-- Profile image --}}
-  <div class="flexcol flex-grow-0175 gap-5">
-    <img class="profile-img e20-border-accent" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+  <div class="flexcol e20-flex-grow-0175 e20-gap-5">
+    <img class="profile-img e20-border-accent" src="{{document.img}}" data-action="editImage" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
   </div>
 
-  <div class="flexrow gap-2 header-row-top">
+  <div class="flexrow e20-gap-2 header-row-top">
     {{!-- Name --}}
     <div class="header-name-field">
       <div class="sliced-border">
         <label class="sliced-border__label">{{localize 'E20.ActorName'}}</label>
         <h1 class="charname"><input name="name" type="text" value="{{document.name}}" placeholder="Name" /></h1>
       </div>
+      {{!-- Morphed / Alt Mode at a glance - the same flags helpers/morph-state.mjs drives the
+           status effect and ring tint from. The Alt Mode badge wears the mode's own name. --}}
+      {{#if (or system.isMorphed system.isTransformed)}}
+        <div class="e20-state-badges">
+          {{#if system.isMorphed}}
+            <span class="e20-state-badge --morphed">{{localize "E20.StatusMorphed"}}</span>
+          {{/if}}
+          {{#if system.isTransformed}}
+            <span class="e20-state-badge --altmode">{{#if altModeName}}{{altModeName}}{{else}}{{localize "E20.StatusAltMode"}}{{/if}}</span>
+          {{/if}}
+        </div>
+      {{/if}}
     </div>
 
     {{!-- Size --}}
@@ -45,9 +57,11 @@
     {{/topRowFields}}
   </div>
 
-  <div class="flexrow gap-2 header-row-bottom">
+  <div class="flexrow e20-gap-2 header-row-bottom">
     {{#> secondary-fields}}
     {{!-- Custom secondary fields here --}}
     {{/secondary-fields}}
+
+    {{> "systems/essence20/templates/actor/parts/misc/action-economy.hbs"}}
   </div>
 </header>

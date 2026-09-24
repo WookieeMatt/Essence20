@@ -40,6 +40,9 @@
       },
       "companion": {
         "htmlFields": ["notes"]
+      },
+      "party": {
+        "htmlFields": ["notes", "biography"]
       }
     },
     "Item": {

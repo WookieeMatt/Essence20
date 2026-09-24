@@ -111,7 +111,7 @@ export async function pickDataBridgeSpecialization(actor) {
       .join('');
     const chosen = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize('E20.DataBridgePickSpecializationTitle') },
-      classes: ["window-app"],
+      classes: ["window-app", "e20-window"],
       content: `<div class="form-group"><label>${
         game.i18n.localize('E20.ThinkTankPickAllyLabel')
       }</label><select name="option">${optionsHtml}</select></div>`,
@@ -139,7 +139,7 @@ export async function pickDataBridgeSpecialization(actor) {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.DataBridgePickSpecializationTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.DataBridgePickSpecializationLabel')
     }</label><select name="option">${optionsHtml}</select></div>`,

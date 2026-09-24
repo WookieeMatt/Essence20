@@ -1,18 +1,18 @@
 {{#if canMorphOrTransform}}
-<div class="stats-container flexcol e20-border-accent min-width-fit">
+<div class="stats-container flexcol e20-border-accent e20-min-width-fit">
   {{#if system.canTransform}}
-  <div class="flexrow gap-5 align-center nowrap w-100">
-    <a class="transform flex-grow-0" data-action="transform"><i class="fas fa-steering-wheel"></i></a>
-    <span class="align-left">
+  <div class="flexrow e20-gap-5 e20-align-center e20-nowrap e20-w-100">
+    <a class="transform e20-flex-grow-0" data-action="transform"><i class="fas fa-steering-wheel"></i></a>
+    <span class="e20-align-left">
       {{localize 'E20.Transform'}}
     </span>
   </div>
   {{/if}}
 
   {{#if system.canMorph}}
-  <div class="flexrow gap-5 align-center nowrap w-100">
-    <a class="morph flex-grow-0" data-action="morph"><i class="fas fa-sword"></i></a>
-    <span class="align-left">
+  <div class="flexrow e20-gap-5 e20-align-center e20-nowrap e20-w-100">
+    <a class="morph e20-flex-grow-0" data-action="morph"><i class="fas fa-sword"></i></a>
+    <span class="e20-align-left">
       {{#if system.isMorphed}}
       {{localize 'E20.ButtonUnmorph'}}
       {{else}}

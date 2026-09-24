@@ -341,7 +341,7 @@ describe('onPowerUse', () => {
 
   test('recognizes Zeo Crystal Boost but does nothing once already used this scene', async () => {
     const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
-    const actor = { ...makeActor(), getFlag: jest.fn(() => ({ combatId: 'combat1' })), setFlag: jest.fn() };
+    const actor = { ...makeActor(), getFlag: jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 })), setFlag: jest.fn() };
     global.game.combat = { id: 'combat1' };
     const item = { name: 'Zeo Crystal Boost', flags: { core: { sourceId: ZEO_CRYSTAL_BOOST_ID } } };
 

@@ -1,11 +1,12 @@
 {
   "folder": "Z2xK8nOrVV5BbzH4",
-  "name": "Quaser Launcher (Cannon Mode) Effect",
+  "name": "Quasar Launcher (Cannon Mode) Effect",
   "type": "weaponEffect",
   "_id": "xrUEVpcQXWJLh3Jy",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "targeting",
       "style": "projectile"
@@ -21,7 +22,8 @@
       "reachMultiplier": 0,
       "long": 150,
       "value": 60
-    }
+    },
+    "shape": "circle"
   },
   "effects": [],
   "flags": {

@@ -59,6 +59,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "387a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.GPdhYq7n573SR4T2",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Technician",
+        "type": "role"
       }
     },
     "essences": [

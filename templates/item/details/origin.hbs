@@ -2,7 +2,7 @@
   {{!-- Starting Health --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginStartingHealth'}}
   {{#*inline "item-field-inputs"}}
-  <input type="number" class="flex-group-right" name="system.startingHealth" value="{{system.startingHealth}}" min="0" step="1"/>
+  <input type="number" class="e20-flex-group-right" name="system.startingHealth" value="{{system.startingHealth}}" min="0" step="1"/>
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -16,7 +16,7 @@
   {{/inline}}
 
   {{#*inline "item-field-inputs"}}
-  <div class="flex-group-right chip-section">
+  <div class="e20-flex-group-right chip-section">
     {{#each system.essences as |name|}}
     <span class="chip" name="chip.essences.{{type}}">{{lookup @root.config.essences name}}</span>
     {{/each}}
@@ -34,7 +34,7 @@
   {{/inline}}
 
   {{#*inline "item-field-inputs"}}
-  <div class="flex-group-right chip-section">
+  <div class="e20-flex-group-right chip-section">
     {{#each system.skills as |name|}}
     <span class="chip" name="chip.skills.{{type}}">{{lookup @root.config.originSkills name}}</span>
     {{/each}}

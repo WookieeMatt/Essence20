@@ -1,11 +1,12 @@
 {{#>"systems/essence20/templates/actor/headers/common.hbs"}}
 {{#*inline "topRowFields"}}
-<div class="sliced-border --col">
-  {{> "systems/essence20/templates/actor/parts/items/faction.hbs"}}
+<div class="sliced-border pr-header-color e20-flex-group-center">
+  <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
+  <input type="color" class="picker" name="system.color" value="{{system.color}}" />
 </div>
 <div class="sliced-border pr-header-level">
   <label class="sliced-border__label">{{localize 'E20.ActorLevel'}}</label>
-  <div class="flexrow align-center gap-2">
+  <div class="flexrow e20-align-center e20-gap-2">
     {{numberInput system.level name="system.level" min=0 step=1 class="two-digit-input"}}
   </div>
 </div>
@@ -20,11 +21,7 @@
   </div>
 {{/inArray}}
 <div class="sliced-border --col">
-  {{> "systems/essence20/templates/actor/parts/items/origin-field.hbs"}}
-</div>
-<div class="sliced-border pr-header-color flex-group-center">
-  <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
-  <input type="color" data-action="colorPicker" class="picker" name="system.color" value="{{system.color}}" />
+  {{> "systems/essence20/templates/actor/parts/items/faction.hbs"}}
 </div>
 {{/inline}}
 {{/"systems/essence20/templates/actor/headers/common.hbs"}}

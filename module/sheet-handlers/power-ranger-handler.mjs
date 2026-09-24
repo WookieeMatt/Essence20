@@ -1,4 +1,5 @@
 import { changeTokenImage } from "../helpers/actor.mjs";
+import { warnMissingStateImage } from "../helpers/morph-state.mjs";
 import { activatePowerInfusion } from "../helpers/power-infusion.mjs";
 import { applyBoostedVigor } from "../helpers/phantom-focus.mjs";
 import { clearPoweredPlating } from "../helpers/powered-plating.mjs";
@@ -28,6 +29,8 @@ export async function onMorph(actor) {
   if (actor.system.isMorphed) {
     newImage = actor.system.image.unmorphed;
   } else {
+    // The swap below is silent when no Morphed art was ever set - say so, once, on the way in.
+    warnMissingStateImage(actor, "morph");
     await actor.update ({
       "system.image.unmorphed": actor.prototypeToken.texture.src,
     });

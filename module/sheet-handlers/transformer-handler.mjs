@@ -1,5 +1,6 @@
 import TransformOptionSelector from "../apps/transform-option-selector.mjs";
 import { changeTokenImage, resizeTokens } from "../helpers/actor.mjs";
+import { warnMissingStateImage } from "../helpers/morph-state.mjs";
 
 
 /**
@@ -95,6 +96,7 @@ async function _transformBotMode(actor) {
  * @private
  */
 async function _transformAltMode(actor, altMode) {
+  warnMissingStateImage(actor, "altMode", altMode);
   const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
   const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;
   resizeTokens(actor, width, height);

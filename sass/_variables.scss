@@ -80,3 +80,36 @@ $gap-sliced-border: 9px;
 // dark gray on light mode's light background, light gray on dark mode's dark background.
 $scrollbar-thumb-light-mode: #4a4a4a;
 $scrollbar-thumb-dark-mode: #b5b5b5;
+
+// -- My Little Pony theme palette -------------------------------------------------------
+// Sampled from the MLP Core Rulebook itself rather than guessed at: these are the fill and
+// stroke colours its own page layouts set most often, read straight out of the PDF content
+// streams across the book. The counts behind the three leading ones - the deep indigo ground,
+// the hot magenta accent and the purple between them - are what make the book look like the
+// book, so they carry the same roles here.
+// Two entries are derived rather than sampled, and say so; everything else is verbatim.
+$mlp-indigo-deep: #1b1340; // derived: a step below the book ground, for the backdrop behind panels
+$mlp-indigo: #281d57; // the dominant page ground
+$mlp-indigo-raised: #371e58; // raised panels and inset fields
+$mlp-purple: #512265;
+$mlp-periwinkle: #8769d3;
+$mlp-pink: #fb359b; // the signature accent
+$mlp-pink-deep: #c2187a; // derived: the same pink darkened enough to hold contrast on a light ground
+$mlp-orange: #ff8e4a;
+$mlp-teal: #3fc3aa;
+$mlp-sky: #4dc5e8;
+$mlp-sky-pale: #a4e1f4;
+$mlp-lilac: #e0b8da;
+$mlp-lavender-grey: #c4c2d2;
+$mlp-cream: #fff3d4;
+
+// Panel fills for the two MLP modes, matching $panel-gradient-dark/light in shape so the
+// sheet furniture sits on them exactly the way it does on the Sci-fi ones.
+$mlp-panel-gradient-dark: linear-gradient(180deg, rgba(40, 29, 87, 0.96), rgba(27, 19, 64, 0.97));
+$mlp-panel-gradient-light: linear-gradient(180deg, rgba(253, 249, 255, 0.98), rgba(243, 235, 250, 0.98));
+
+// The shadow cast by one of our windows. A drop-shadow FILTER, not a box-shadow: box-shadow
+// traces the border box, which is a plain rectangle, while the panel is cut to a chamfer
+// (Sci-fi) or a rounded rectangle (Pony). A filter is applied after clipping, so it follows
+// whatever silhouette the panel actually has. Blur matches core's own 10px on .application.
+$window-drop-shadow: drop-shadow(0 0 10px rgba(0, 0, 0, 0.85));

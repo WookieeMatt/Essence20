@@ -67,7 +67,7 @@ export async function pickBreakingPointDetail() {
 
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.BreakingPointPickTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.BreakingPointPickLabel')
     }</label><select name="detail">${options}</select></div>`,

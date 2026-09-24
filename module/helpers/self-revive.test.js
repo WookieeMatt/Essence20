@@ -26,12 +26,12 @@ describe("canUseSelfRevive", () => {
   });
 
   test("false once already used this combat", () => {
-    const actor = makeActor({ defeated: true, usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ defeated: true, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     expect(canUseSelfRevive(actor)).toBe(false);
   });
 
   test("true again in a new combat, despite a stale flag from an earlier one", () => {
-    const actor = makeActor({ defeated: true, usedFlag: { combatId: 'oldCombat' } });
+    const actor = makeActor({ defeated: true, usedFlag: { epoch: 0, window: 'encounter', count: 1 } });
     expect(canUseSelfRevive(actor)).toBe(true);
   });
 });
@@ -45,7 +45,7 @@ describe("activateSelfRevive", () => {
     expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
     expect(actor.toggleStatusEffect).toHaveBeenCalledWith('defeated', { active: false });
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'selfReviveUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'selfReviveUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
   });
 });

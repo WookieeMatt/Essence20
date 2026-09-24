@@ -1,4 +1,5 @@
 import { postPerkUseChatCard } from "./perks.mjs";
+import { rollPowerAttack } from "./power-attack.mjs";
 import { applySpeedBoost } from "./speed-boost.mjs";
 import { applyPowerShield } from "./power-shield.mjs";
 import { activateFasterRegeneration } from "./faster-regeneration.mjs";
@@ -61,6 +62,13 @@ import { activateIllusoryDisguiseRoll } from "./illusory-disguise.mjs";
  */
 export async function onPowerUse(actor, item, amountSpent = 0) {
   if (!actor || !item) {
+    return;
+  }
+
+  // Attack Powers resolve generically, off their own schema, before the per-sourceId chain below -
+  // see helpers/power-attack.mjs. A Power that both attacks AND needs a bespoke effect would want
+  // its own entry below instead; none of the printed ones do.
+  if (await rollPowerAttack(actor, item)) {
     return;
   }
 

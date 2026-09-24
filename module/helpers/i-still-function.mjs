@@ -1,6 +1,6 @@
 import { hasUsedThisEncounter, markUsedThisEncounter } from "./perks.mjs";
 import { getSkillRanks } from "./combat.mjs";
-import { isGmConnected, hasStoryPointsAvailable, requestStoryPointSpend } from "./story-points.mjs";
+import { canWriteStoryPoints, hasStoryPointsAvailable, requestStoryPointSpend } from "./story-points.mjs";
 
 /**
  * I Still Function! (Decepticon Directive, General Perk, p.66): "Once per scene, when you are
@@ -24,7 +24,7 @@ const I_STILL_FUNCTION_ENCOUNTER_FLAG = 'iStillFunctionUsedThisEncounter';
 export function canUseIStillFunction(actor) {
   return !!actor.statuses?.has('defeated')
     && !hasUsedThisEncounter(actor, I_STILL_FUNCTION_ENCOUNTER_FLAG)
-    && isGmConnected() && hasStoryPointsAvailable(1);
+    && canWriteStoryPoints() && hasStoryPointsAvailable(1);
 }
 
 /**

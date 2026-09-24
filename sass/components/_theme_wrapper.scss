@@ -2,25 +2,49 @@
 
 // default vars, overridden when needed
 :root {
-  --theme-border-filter: saturate(0);
-  --theme-border-color: #{v.$border-color-dark};
-  --theme-bg-color: #{v.$bg-color-light};
-  --theme-text-color: #{v.$text-color-dark};
-  --theme-input-color: #{v.$input-color-light};
-  --theme-panel-bg: var(--theme-bg-color);
-  --theme-card-bg: rgba(255,255,255,0.04);
-  --theme-accent: #{v.$text-color-cyan};
-  --theme-muted-text: #{v.$textcolor3};
+  --e20-theme-border-filter: saturate(0);
+  --e20-theme-border-color: #{v.$border-color-dark};
+  --e20-theme-bg-color: #{v.$bg-color-light};
+  --e20-theme-text-color: #{v.$text-color-dark};
+  --e20-theme-input-color: #{v.$input-color-light};
+  --e20-theme-panel-bg: var(--e20-theme-bg-color);
+  --e20-theme-card-bg: rgba(255,255,255,0.04);
+  --e20-theme-accent: #{v.$text-color-cyan};
+  --e20-theme-muted-text: #{v.$textcolor3};
 
-  --theme-border-image: url(../assets/borders/default-border.svg);
-  --theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
-  --theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
-  --theme-tab-image: url(../assets/borders/default-tab.svg);
-  --theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
-  --theme-scrollbar-thumb: #{v.$scrollbar-thumb-light-mode};
+  --e20-theme-border-image: url(../assets/borders/default-border.svg);
+  --e20-theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
+  --e20-theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
+  --e20-theme-tab-image: url(../assets/borders/default-tab.svg);
+  --e20-theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
+  --e20-theme-scrollbar-thumb: #{v.$scrollbar-thumb-light-mode};
+
+  /* The panel fill for one of OUR windows. It is applied to the sliced ::after rather than to
+     .window-content, because .window-content sits inside the 16px frame band and painting it
+     there covers the corner art - see _global-windows.scss. */
+  --e20-theme-window-fill: #{v.$panel-gradient-dark};
+
+  /* The shape the sliced fill is cut to - kept in step with --e20-theme-border-image, which
+     is the frame drawn around it. The Sci-fi border chamfers two corners. */
+  --e20-theme-panel-clip: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+
+  /* The same idea one layer in, for .e20-border-accent (actors/_tabs.scss): the shape an
+     inner panel is clipped to, and where its mask-border is sliced. 15 is the depth of the
+     Sci-fi art's chamfer in its 120-unit viewBox. */
+  --e20-theme-accent-clip: polygon(
+    min(22px, 50%) 0, 100% 0,
+    100% calc(100% - min(22px, 50%)), calc(100% - min(22px, 50%)) 100%,
+    0 100%, 0 min(22px, 50%)
+  );
+  --e20-theme-accent-slice: 15;
+
+  /* The Essence chip (actors/_essence.scss) - the "Strength 3 / 3" bar over each Essence
+     column. It is small and has no border image of its own, so it states its shape directly
+     rather than deriving one from a slice. Sci-fi chamfers it to match the panels below. */
+  --e20-theme-chip-clip: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
 }
 
-.theme-wrapper {
+.essence20.theme-wrapper {
   /* scrollbar-color/scrollbar-width are inherited properties in principle, so setting them just
      once on .theme-wrapper looks like it should reach every scrollable descendant for free - but
      Foundry core has its own `* { scrollbar-color: var(--color-scrollbar) ...; }` rule
@@ -40,7 +64,7 @@
   border: none; // TODO: Remove after refactor of styles, this is just to remove the old border;
 
   &, * {
-    scrollbar-color: var(--theme-scrollbar-thumb) transparent;
+    scrollbar-color: var(--e20-theme-scrollbar-thumb) transparent;
     scrollbar-width: thin;
   }
 
@@ -50,7 +74,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--theme-scrollbar-thumb);
+    background: var(--e20-theme-scrollbar-thumb);
     border-radius: 4px;
   }
 
@@ -78,66 +102,168 @@
   }
 
   .window-content {
-    background: v.$panel-gradient-dark;
-    color: var(--theme-text-color);
+    color: var(--e20-theme-text-color);
     border: 1px solid rgba(255,255,255,0.08);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
   }
 
-  &.theme-light .window-content {
+  /* :not(.e20-window) - one of our own windows takes its fill from --e20-theme-window-fill on
+     the sliced ::after instead. A background here would sit inside the frame band and bury the
+     chamfers, which is exactly what it was doing. This is left for the core dialogs that pick
+     up theme-wrapper from the renderDialogV2 hook and have no sliced frame of their own. */
+  &:not(.e20-window) .window-content {
+    background: v.$panel-gradient-dark;
+  }
+
+  &:not(.e20-window).theme-light .window-content {
     background: v.$panel-gradient-light;
+  }
+
+  &.theme-light .window-content {
     border-color: rgba(0,0,0,0.18);
   }
 
   &.theme-light {
-    --theme-border-filter: saturate(0);
-    --theme-border-color: #{v.$border-color-dark};
-    --theme-bg-color: #{v.$bg-color-light};
-    --theme-text-color: #{v.$text-color-dark};
-    --theme-input-color: #{v.$input-color-light};
-    --theme-panel-bg: #{v.$bg-color-light};
-    --theme-card-bg: rgba(255,255,255,0.7);
-    --theme-accent: #{v.$text-color-orange};
-    --theme-muted-text: #{v.$text-color-dark};
-    --theme-scrollbar-thumb: #{v.$scrollbar-thumb-light-mode};
+    --e20-theme-border-filter: saturate(0);
+    --e20-theme-border-color: #{v.$border-color-dark};
+    --e20-theme-bg-color: #{v.$bg-color-light};
+    --e20-theme-text-color: #{v.$text-color-dark};
+    --e20-theme-input-color: #{v.$input-color-light};
+    --e20-theme-panel-bg: #{v.$bg-color-light};
+    --e20-theme-card-bg: rgba(255,255,255,0.7);
+    --e20-theme-accent: #{v.$text-color-orange};
+    --e20-theme-muted-text: #{v.$text-color-dark};
+    --e20-theme-scrollbar-thumb: #{v.$scrollbar-thumb-light-mode};
+    --e20-theme-window-fill: #{v.$panel-gradient-light};
   }
 
   &.theme-dark {
-    --theme-border-filter: saturate(0) brightness(175%);
-    --theme-border-color: #{v.$border-color-light};
-    --theme-bg-color: #{v.$bg-color-dark};
-    --theme-text-color: #{v.$text-color-light};
-    --theme-input-color: #{v.$input-color-dark};
-    --theme-panel-bg: #1f2328;
-    --theme-card-bg: rgba(255,255,255,0.04);
-    --theme-accent: #{v.$text-color-cyan};
-    --theme-muted-text: #{v.$textcolor1};
-    --theme-scrollbar-thumb: #{v.$scrollbar-thumb-dark-mode};
+    --e20-theme-border-filter: saturate(0) brightness(175%);
+    --e20-theme-border-color: #{v.$border-color-light};
+    --e20-theme-bg-color: #{v.$bg-color-dark};
+    --e20-theme-text-color: #{v.$text-color-light};
+    --e20-theme-input-color: #{v.$input-color-dark};
+    --e20-theme-panel-bg: #1f2328;
+    --e20-theme-card-bg: rgba(255,255,255,0.04);
+    --e20-theme-accent: #{v.$text-color-cyan};
+    --e20-theme-muted-text: #{v.$textcolor1};
+    --e20-theme-scrollbar-thumb: #{v.$scrollbar-thumb-dark-mode};
+    --e20-theme-window-fill: #{v.$panel-gradient-dark};
   }
 
   &.theme-default {
-    --theme-border-image: url(../assets/borders/default-border.svg);
-    --theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
-    --theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
-    --theme-tab-image: url(../assets/borders/default-tab.svg);
-    --theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
-    &.essence20 {
-      border-radius: 25px 0;
-    }
+    --e20-theme-border-image: url(../assets/borders/default-border.svg);
+    --e20-theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
+    --e20-theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
+    --e20-theme-tab-image: url(../assets/borders/default-tab.svg);
+    --e20-theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
+    /* No border-radius here. This block never applied until applyThemeClass() started putting
+       the frame class on elements, and switching it on would have rounded every Sci-fi window
+       for the first time - a change to a theme that was supposed to be left alone. It also
+       works against the frame: .application.e20-window sets border-radius: 0 deliberately,
+       because a radius squares off the very corners the sliced clip-path cuts. */
   }
 
+  /* The My Little Pony look.
+   *
+   * This is a THIRD option alongside Sci-fi light and Sci-fi dark, not a replacement for
+   * either: theme-pony only ever adds to whichever of theme-light/theme-dark is already on the
+   * element, so picking it gives an MLP light mode and an MLP dark mode and leaves the two
+   * existing ones exactly as they were.
+   *
+   * The frame images below already existed but nothing ever put theme-pony on an element, so
+   * they had never actually rendered - applyThemeClass() (settings.js) now applies the frame
+   * theme next to the colour scheme, which is what switches this on.
+   *
+   * Colours come from v.$mlp-* in _variables.scss, read out of the rulebook itself. */
   &.theme-pony {
-    --theme-border-image: url(../assets/borders/pony-border.svg);
-    --theme-thick-border-image: url(../assets/borders/pony-border-thick.svg);
-    --theme-filled-border-image: url(../assets/borders/pony-tab-filled.svg);
-    --theme-tab-image: url(../assets/borders/pony-tab.svg);
-    --theme-filled-tab-image: url(../assets/borders/pony-tab-filled.svg);
-    &.essence20 {
-      border-radius: 15px;
-    }
+    --e20-theme-border-image: url(../assets/borders/pony-border.svg);
+    --e20-theme-thick-border-image: url(../assets/borders/pony-border-thick.svg);
+    --e20-theme-filled-border-image: url(../assets/borders/pony-tab-filled.svg);
+    --e20-theme-tab-image: url(../assets/borders/pony-tab.svg);
+    --e20-theme-filled-tab-image: url(../assets/borders/pony-tab-filled.svg);
+    /* Inner panels are rounded here too, and sliced at 16 rather than 15 - 16 is where the pony
+       art puts the boundary between its corner arc and its straight edge.
+
+       The radius is not eyeballed: the art is a rounded rect whose inset plus radius equals the
+       slice, so at the element's own edge the radius is exactly the rendered border-width, and
+       .e20-border-accent draws at 22px. Change one and the other has to follow. */
+    --e20-theme-accent-clip: inset(0 round 22px);
+    --e20-theme-accent-slice: 16;
+
+    /* Rounded, not chamfered: the chip is the only sliced shape on the sheet that is drawn
+       from a clip-path instead of the pony border art, so it was the one angular notch left
+       on an otherwise fully rounded sheet. 12px suits a chip this short - the 14px the larger
+       panels use reads as a full pill at this height. */
+    --e20-theme-chip-clip: inset(0 round 12px);
+
+    /* A rounded rectangle, because that is what the pony frame draws - all four corners
+       curved, none chamfered.
+
+       Same derivation as the accent clip above, at the window frame's 16px border-width: the
+       radius at the element's edge is 16px, and a rounded rect inset by d loses d of radius,
+       so insetting 2px to tuck the fill under the 3px stroke leaves 14px. */
+    --e20-theme-panel-clip: inset(2px round 14px);
+    /* Same reasoning as theme-default above: the sliced frame defines this window's shape. */
+  }
+
+  /* Equestria Night. Four classes, so it outranks the plain theme-dark block above and only
+     the values that should differ are restated. The frame SVGs are drawn in red and recoloured
+     by filter (that is how the Sci-fi themes desaturate them to grey), so here the same filter
+     turns red into the book's magenta instead of removing its colour. */
+  &.theme-pony.theme-dark {
+    --e20-theme-border-filter: hue-rotate(325deg) saturate(1.15) brightness(1.1);
+    --e20-theme-border-color: #{v.$mlp-periwinkle};
+    --e20-theme-bg-color: #{v.$mlp-indigo-deep};
+    --e20-theme-text-color: #{v.$mlp-cream};
+    --e20-theme-input-color: #{v.$mlp-indigo-raised};
+    --e20-theme-panel-bg: #{v.$mlp-indigo};
+    --e20-theme-card-bg: rgba(255, 255, 255, 0.07);
+    --e20-theme-accent: #{v.$mlp-pink};
+    --e20-theme-accent-contrast: #{v.$mlp-indigo-deep};
+    --e20-theme-muted-text: #{v.$mlp-lavender-grey};
+    --e20-theme-scrollbar-thumb: #{v.$mlp-periwinkle};
+    --e20-theme-tab-rim: #{v.$mlp-purple};
+    --e20-theme-window-fill: #{v.$mlp-panel-gradient-dark};
+  }
+
+  /* Equestria Day. The pink has to darken here ($mlp-pink-deep) - the book's own #fb359b is
+     an accent ON indigo and does not hold contrast as text on a pale ground. */
+  &.theme-pony.theme-light {
+    --e20-theme-border-filter: hue-rotate(300deg) saturate(0.95) brightness(0.8);
+    --e20-theme-border-color: #{v.$mlp-periwinkle};
+    --e20-theme-bg-color: #f6f1fb;
+    --e20-theme-text-color: #{v.$mlp-indigo};
+    --e20-theme-input-color: #ffffff;
+    --e20-theme-panel-bg: #fdf9ff;
+    --e20-theme-card-bg: rgba(255, 255, 255, 0.78);
+    --e20-theme-accent: #{v.$mlp-pink-deep};
+    --e20-theme-accent-contrast: #ffffff;
+    --e20-theme-muted-text: #{v.$mlp-purple};
+    --e20-theme-scrollbar-thumb: #{v.$mlp-lilac};
+    --e20-theme-tab-rim: #{v.$mlp-periwinkle};
+    --e20-theme-window-fill: #{v.$mlp-panel-gradient-light};
+  }
+
+  /* Panel fills. These sit after the .theme-light rule further up on purpose: that one and the
+     pony-dark one below carry the same weight, so order is what decides them. */
+  &:not(.e20-window).theme-pony .window-content {
+    background: v.$mlp-panel-gradient-dark;
+  }
+
+  &:not(.e20-window).theme-pony.theme-light .window-content {
+    background: v.$mlp-panel-gradient-light;
+  }
+
+  &.theme-pony .window-content {
+    border-color: rgba(255, 255, 255, 0.10);
+  }
+
+  &.theme-pony.theme-light .window-content {
+    border-color: rgba(40, 29, 87, 0.18);
   }
 
   header * {
-    color: var(--theme-text-color) !important;
+    color: var(--e20-theme-text-color) !important;
   }
 }

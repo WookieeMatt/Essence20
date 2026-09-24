@@ -50,7 +50,7 @@ export async function applyShapedCharges(actor, item, tokens) {
   ).join('');
   const chosenIds = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.ShapedChargesPickTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<p>${game.i18n.format('E20.ShapedChargesPickLabel', { count: excludeCount })}</p>${checkboxes}`,
     modal: true,
     buttons: [

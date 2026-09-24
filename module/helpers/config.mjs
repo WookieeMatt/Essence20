@@ -16,6 +16,20 @@ E20.gameVersions = {
 };
 preLocalize("gameVersions");
 
+/* The compendium pack folder each game line keeps its books in, as named in system.json's
+   packFolders. Deliberately NOT derived from E20.gameVersions' labels: those happen to read
+   the same today ("GI Joe", "My Little Pony", ...), but they are localized and the folder
+   names are not, so the first translation would silently stop matching any book.
+
+   Not preLocalized - these are data, not display strings. */
+E20.gameLinePackFolders = {
+  giJoe: "GI Joe",
+  myLittlePony: "My Little Pony",
+  powerRangers: "Power Rangers",
+  transformers: "Transformers",
+  welcomeToNightVale: "Welcome to Night Vale",
+};
+
 /************************************************
  * Defense                                      *
  ***********************************************/
@@ -23,11 +37,53 @@ preLocalize("gameVersions");
 // Essence-based defenses
 // Area of Effect shape (GitHub #824) - see data/item/weapon-effect.mjs's own system.shape field
 // and helpers/aoe-targeting.mjs for what each one actually does.
-E20.weaponEffectShapes = {
-  burst: "E20.WeaponShapeBurst",
-  cone: "E20.WeaponShapeCone",
+/* Area of Effect shapes, shared by weaponEffects, spells and Powers (module/data/aoe-schema.mjs).
+   The keys are Foundry's OWN region shape type names, not a vocabulary of this system's own, so a
+   stored value can be handed straight to canvas.regions.placeRegion() - see
+   helpers/aoe-targeting.mjs. Foundry v14 offers ten shape types; only the three that map onto
+   something this system's books actually describe are exposed here:
+     circle    - centred on a chosen impact point (a thrown grenade's "Blast (10ft radius)").
+                 Stored as "burst" before this became a shared schema; migration.mjs remaps it.
+     cone      - apex on the attacker's own token, aimed at a chosen point (a flamethrower's
+                 "Blast (15ft cone)").
+     emanation - anchored to a token and moving with it, for an area that emanates from a creature
+                 rather than from a point on the ground. */
+/* How long a spell or Power's effect lasts (module/data/duration-schema.mjs). "instant" and
+   "special" carry no count; the rest are counted units. Read by helpers/aoe-targeting.mjs to
+   decide whether a placed area is discarded immediately or persists on the scene. */
+E20.durationUnits = {
+  instant: "E20.DurationUnitInstant",
+  rounds: "E20.DurationUnitRounds",
+  minutes: "E20.DurationUnitMinutes",
+  hours: "E20.DurationUnitHours",
+  days: "E20.DurationUnitDays",
+  scenes: "E20.DurationUnitScenes",
+  special: "E20.DurationUnitSpecial",
 };
-preLocalize("weaponEffectShapes");
+preLocalize("durationUnits");
+
+/* Singular forms of the counted units above, used only to build a display label - "1 Scene"
+   rather than "1 Scene(s)". Deliberately not a choices list: nothing is ever STORED as one of
+   these, so it holds only the units that can actually carry a count. */
+E20.durationUnitsSingular = {
+  rounds: "E20.DurationUnitRound",
+  minutes: "E20.DurationUnitMinute",
+  hours: "E20.DurationUnitHour",
+  days: "E20.DurationUnitDay",
+  scenes: "E20.DurationUnitScene",
+};
+preLocalize("durationUnitsSingular");
+
+E20.aoeShapes = {
+  circle: "E20.AoeShapeCircle",
+  cone: "E20.AoeShapeCone",
+  // A straight band from the attacker, aimed at a chosen point (PR CRB's own "Blast: 60ft line").
+  // Rarer than the others - one printed example across every book - but it IS printed, so a Blast
+  // quality can't be fully expressed without it.
+  line: "E20.AoeShapeLine",
+  emanation: "E20.AoeShapeEmanation",
+};
+preLocalize("aoeShapes");
 
 E20.defenses = {
   cleverness: "E20.DefenseCleverness",
@@ -73,6 +129,11 @@ E20.weaponRequirementShifts = {
   "3d6": "3d6",
 };
 
+// The Weapon requirement shifts as an ordered ladder, lowest to highest, used to step a
+// requirement down "one die" for a weapon installed in an Integrated Hardpoint (TF CRB p.114:
+// "lower their Brawn requirements (if any) by one die (a requirement of d4 Brawn becomes d2)").
+E20.weaponRequirementShiftLadder = ["none", "d2", "d4", "d6", "d8", "d10", "d12", "2d8", "3d6"];
+
 // Options for Weapon size
 E20.weaponSizes = {
   integrated: "E20.WeaponSizeIntegrated",
@@ -83,6 +144,24 @@ E20.weaponSizes = {
   heavy: "E20.WeaponSizeHeavy",
 };
 preLocalize("weaponSizes");
+
+// Default number of loadout "hands" a Weapon takes to wield, keyed off its Size, when the
+// Weapon itself doesn't set an explicit system.hands override. Used for the six-hand Load Out
+// tally (GI Joe CRB p.137-138 / TF CRB p.116 / PR CRB p.103). Integrated built-in weapons
+// default to 0 - TF integrated-Hardpoint weapons don't count against the six-hand limit anyway.
+E20.weaponSizeHands = {
+  integrated: 0,
+  sidearm: 1,
+  light: 1,
+  medium: 2,
+  long: 2,
+  heavy: 2,
+};
+
+// Base Load Out limit before any Role/Perk bonus: "six hands of weapons" (GI Joe CRB p.138,
+// TF CRB p.116, PR CRB p.103). Actors store only system.loadout.handsMax (defaulting to this),
+// which a GM/player can raise for Perks like Pack Mule.
+E20.LOADOUT_BASE_HANDS = 6;
 
 // Options for Weapon style
 E20.weaponStyles = {
@@ -675,9 +754,20 @@ E20.wealthShifts = {
 
 // Options for Actions
 E20.actionTypes = {
+  // The default for every item type. With ~2,600 Perks carrying no authored action cost, anything
+  // else would have the system inventing costs it can't justify - see actionTypeCosts below, where
+  // 'none' deliberately spends nothing.
+  none: "E20.ActionTypeNone",
   free: "E20.ActionTypeFree",
   fullAction: "E20.ActionTypeFullAction",
   move: "E20.ActionTypeMove",
+  // The Contingency action (GI Joe CRB, p.196): "making your character ready to do something when
+  // something else occurs... a predetermined action after your place in the Initiative order, but
+  // before the start of your next turn." This is Essence20's readied/interrupt mechanism, and it
+  // is a STANDARD action - there is no separate reaction resource anywhere in the rules. Listed
+  // separately from plain 'standard' because several Perks change its cost specifically (Vigilance
+  // p.110 and Not Getting Away That Easy p.98 both allow "a Contingency action as a Free action").
+  contingency: "E20.ActionTypeContingency",
   standard: "E20.ActionTypeStandard",
   standardAndMove: "E20.ActionTypeStandardAndMove",
   wholeTurn: "E20.ActionTypeWholeTurn",
@@ -685,6 +775,87 @@ E20.actionTypes = {
   oneHour: "E20.ActionTypeOneHour",
 };
 preLocalize("actionTypes");
+
+/* The three per-turn budgets an actor tracks - the keys of system.actions (see
+   data/actor/templates/common.mjs) and of a Combatant's own spend ledger. Three, not four: the
+   rules define exactly Move, Standard and Free (CRB p.192-193), and the Contingency action spends
+   a Standard rather than a resource of its own. */
+E20.actionCategories = {
+  standard: "E20.ActionTypeStandard",
+  move: "E20.ActionTypeMove",
+  free: "E20.ActionTypeFree",
+};
+preLocalize("actionCategories");
+
+/* What each actionType above actually costs, as {category: amount}. An empty object means "spends
+   nothing", which covers three genuinely different cases: 'none' (a passive item, the default),
+   and tenMinutes/oneHour, which are out-of-combat DURATIONS rather than budgets - modelling those
+   as a cost of zero rather than excluding them outright is what would otherwise have every
+   downtime Perk asking the combat tracker for permission.
+
+   fullAction/standardAndMove/wholeTurn all consume both budgets and are spent atomically (see
+   helpers/action-economy.mjs#spend) - if either half is gone, neither is taken. wholeTurn
+   additionally flags the NEXT turn, which is why it's listed separately from standardAndMove
+   despite the identical cost. */
+E20.actionTypeCosts = {
+  none: {},
+  free: { free: 1 },
+  fullAction: { standard: 1, move: 1 },
+  move: { move: 1 },
+  // Setting a Contingency costs the Standard action; it resolves later, out of turn, at no
+  // further cost. See E20.actionTypes' own comment.
+  contingency: { standard: 1 },
+  standard: { standard: 1 },
+  standardAndMove: { standard: 1, move: 1 },
+  wholeTurn: { standard: 1, move: 1 },
+  tenMinutes: {},
+  oneHour: {},
+};
+
+// Action types that also consume the actor's NEXT turn - see resetTurn's own carry-over handling.
+/* The actions the rules give everyone, as opposed to the ones an Item provides. An Item is
+   clicked and charges itself through Item#roll (see helpers/action-economy.mjs#consumeForItem),
+   but "I Defend" or "I Sprint" has nothing to click, so before this the player had to work out
+   the cost and decrement a pip by hand with no record of what it went on.
+
+   Standard actions are Attack, Contingency, Defend, Hide, Lend Assistance, Search the Area, Use
+   a Skill and Sprint (GI Joe CRB p.192). Commanding a pet is also a Standard action - "Commanding
+   an animal pet requires a Handle Animal Skill Test as a Standard action" (p.164) - and is listed
+   because two Perks re-cost it and would otherwise have nothing to point at.
+
+   `type` is a key of actionTypeCosts, so the cost lives in one place: Contingency stays a
+   Standard action here exactly as it is there. Only labels are stored, never rule text. */
+E20.namedActions = {
+  attack: { label: 'E20.ActionAttack', type: 'standard' },
+  // Aiming is a Free action and can be taken more than once: "you can choose to ignore one of
+  // the target's Armor Upgrades for each Free action you spend Aiming" (TF CRB), and GI Joe CRB
+  // p.133 speaks of "when you Aim as a Free action".
+  aim: { label: 'E20.ActionAim', type: 'free' },
+  contingency: { label: 'E20.ActionContingency', type: 'contingency' },
+  defend: { label: 'E20.ActionDefend', type: 'standard' },
+  hide: { label: 'E20.ActionHide', type: 'standard' },
+  lendAssistance: { label: 'E20.ActionLendAssistance', type: 'standard' },
+  searchTheArea: { label: 'E20.ActionSearchTheArea', type: 'standard' },
+  useASkill: { label: 'E20.ActionUseASkill', type: 'standard' },
+  sprint: { label: 'E20.ActionSprint', type: 'standard' },
+  commandPet: { label: 'E20.ActionCommandPet', type: 'standard' },
+  move: { label: 'E20.ActionMove', type: 'move' },
+  freeAction: { label: 'E20.ActionFree', type: 'free' },
+};
+preLocalize("namedActions", { key: "label" });
+E20.actionTypesConsumingNextTurn = ['wholeTurn'];
+
+/* How hard the action economy is enforced, world-wide. 'track' is the default and not as a hedge:
+   with the overwhelming majority of Perks carrying no authored action cost, shipping 'strict'
+   would gate real abilities on absent data. It also matches the idiom this codebase already
+   settled on elsewhere - "visible marker, not hard enforcement" (see helpers/undo-engine.mjs). */
+E20.actionEconomyModes = {
+  off: "E20.ActionEconomyModeOff",
+  track: "E20.ActionEconomyModeTrack",
+  warn: "E20.ActionEconomyModeWarn",
+  strict: "E20.ActionEconomyModeStrict",
+};
+preLocalize("actionEconomyModes");
 
 // Options for Intervals
 E20.usesInterval = {
@@ -732,6 +903,18 @@ E20.equipmentTypes = {
   weaponEffect: "E20.WeaponEffect",
 };
 
+// Which Equipment Assignment bucket an Equipment Package represents (GI Joe CRB p.136-138 /
+// TF CRB p.114-115 / PR CRB p.103): the same-for-everyone Standard Issue kit, gear you're
+// Qualified for (taken freely, no roll), squad-level Mission Critical items, or a character's
+// approved Personal gear.
+E20.equipmentPackageTypes = {
+  standardIssue: "E20.EquipmentPackageTypeStandardIssue",
+  qualified: "E20.EquipmentPackageTypeQualified",
+  missionCritical: "E20.EquipmentPackageTypeMissionCritical",
+  personal: "E20.EquipmentPackageTypePersonal",
+};
+preLocalize("equipmentPackageTypes");
+
 // Options for Background Item Types
 E20.backgroundTypes = {
   bond: "E20.Bond",
@@ -774,6 +957,20 @@ E20.availabilities = {
   other: "E20.AvailabilityOther",
 };
 preLocalize("availabilities");
+
+// Table 8-1: Equipment Availability - the Skill Test DIF to Requisition an item of each
+// Availability tier (GI Joe CRB p.138 / PR CRB p.104). "other" has no listed DIF; treat it
+// as Standard.
+E20.availabilityDifficulties = {
+  automatic: 0,
+  standard: 0,
+  limited: 10,
+  restricted: 15,
+  prototype: 20,
+  unique: 25,
+  theoretical: 30,
+  other: 0,
+};
 
 // Options for vision grants (Night Vision Goggles, Thermal Goggles, etc.), mapped directly onto
 // Foundry's own built-in CONFIG.Canvas.visionModes keys so no custom VisionMode/shader is needed.
@@ -1189,13 +1386,35 @@ E20.transformerFactions = {
 };
 preLocalize("transformerFactions");
 
-// Options for Transformer Modes
+// Options for Transformer Modes. Legacy: superseded by hardpointTypes below (a Weapon's mode
+// is now derived from which Hardpoint it's installed in). Kept for the read-only derived-mode
+// label and for reading pre-Hardpoint weapon data - see WeaponItemData.migrateData().
 E20.transformerModes = {
   modeAltMode: "E20.ModeAltMode",
   modeBotMode: "E20.ModeBotMode",
   modeAny: "E20.ModeAny",
 };
 preLocalize("transformerModes");
+
+// Transformer Hardpoints (TF CRB p.114). Every Cybertronian starts with 2 External + 2
+// Integrated. External Hardpoints hold weapons in-hand (no mods, can be disarmed, unusable in
+// Alt Mode) and cost Load Out hands; Integrated Hardpoints build a weapon into the chassis
+// (free of the six-hand limit, size drops to Integrated). "none" = not installed to a Hardpoint.
+E20.hardpointTypes = {
+  external: "E20.HardpointExternal",
+  integrated: "E20.HardpointIntegrated",
+  none: "E20.HardpointNone",
+};
+preLocalize("hardpointTypes");
+
+// For a weapon in an Integrated Hardpoint (TF CRB p.114): whether it's hidden in Alt Mode
+// (needs a Free action to deploy) or obvious in Alt Mode (usable at will, but constrains when
+// the Alt Mode suits the environment).
+E20.altModeVisibilities = {
+  hidden: "E20.AltModeVisibilityHidden",
+  obvious: "E20.AltModeVisibilityObvious",
+};
+preLocalize("altModeVisibilities");
 
 // Options for Companion types
 E20.companionTypes = {
@@ -1583,6 +1802,26 @@ E20.statusEffects = [
     changes: [],
   },
   {
+    /* The Defend action (GI Joe CRB p.196): "all attacks against you from adversaries and
+       effects you can see suffer a Snag on their Attack Skill Test. This benefit lasts until
+       the beginning of your next turn."
+
+       A Condition rather than a flag, so it shows on the token - a GM needs to see who is
+       defending without opening five sheets - and because the attacker reads it off their
+       TARGET, which actor.statuses makes a one-liner. Applied by helpers/named-actions.mjs,
+       read by dice.mjs#_getAutomaticCombatModifiers, cleared at the start of the defender's
+       next turn by documents/combat.mjs#_onStartTurn.
+
+       Borrows the shield art from assets/icons/items rather than adding a new status icon,
+       the same reuse cantTakeFreeActions makes of status_impaired. `changes` stays empty:
+       the Snag lands on the ATTACKER's roll, not on any field of the defender, so there is
+       nothing here for an Active Effect to change. */
+    img: 'systems/essence20/assets/icons/items/shield.svg',
+    id: 'defending',
+    name: 'E20.StatusDefending',
+    changes: [],
+  },
+  {
     img: 'systems/essence20/assets/icons/status_effects/status_defeated.svg',
     id: 'defeated',
     name: 'E20.StatusDefeated',
@@ -1628,6 +1867,21 @@ E20.statusEffects = [
     img: 'systems/essence20/assets/icons/status_effects/status_mode_lock.svg',
     id: 'modeLock',
     name: 'E20.StatusModeLock',
+    changes: [],
+  },
+  {
+    // Not a condition: the visible half of system.isMorphed, kept in step by
+    // helpers/morph-state.mjs. Removing it by hand does not un-Morph anyone.
+    img: 'systems/essence20/assets/icons/status_effects/status_morphed.svg',
+    id: 'morphed',
+    name: 'E20.StatusMorphed',
+    changes: [],
+  },
+  {
+    // Likewise for system.isTransformed; the effect takes the Alt Mode's own name and token image.
+    img: 'systems/essence20/assets/icons/status_effects/status_alt_mode.svg',
+    id: 'altMode',
+    name: 'E20.StatusAltMode',
     changes: [],
   },
   {

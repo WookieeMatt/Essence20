@@ -17,6 +17,7 @@ export default class DefenseModificationSelector extends serializeFormSubmits(Ha
     classes: [
       "essence20",
       "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",

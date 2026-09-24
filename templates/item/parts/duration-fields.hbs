@@ -1,0 +1,21 @@
+{{!-- Structured duration, shared by the spell and power detail sheets - see
+      module/data/duration-schema.mjs. --}}
+
+{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpellDuration'}}
+{{#*inline "item-field-inputs"}}
+{{numberInput system.duration.value name="system.duration.value" min=0 step=1}}
+<select name="system.duration.units">
+  {{selectOptions config.durationUnits selected=system.duration.units localize=true}}
+</select>
+{{/inline}}
+{{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+{{!-- Only shown when the book's own wording says more than "<n> <unit>" can (e.g. "4 rounds or
+      until disrupted"). Blank for almost everything, in which case the label above is generated
+      from the two fields instead. --}}
+{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DurationText'}}
+{{#*inline "item-field-inputs"}}
+<input type="text" name="system.duration.text" value="{{system.duration.text}}"
+  placeholder="{{localize 'E20.DurationTextPlaceholder'}}" />
+{{/inline}}
+{{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

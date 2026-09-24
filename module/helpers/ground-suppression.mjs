@@ -43,7 +43,7 @@ const PENDING_FLAG = 'pendingGroundSuppression';
 export async function pickGroundSuppressionDefenseType() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.GroundSuppressionPickTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.GroundSuppressionPickLabel')
     }</label><select name="defenseType">

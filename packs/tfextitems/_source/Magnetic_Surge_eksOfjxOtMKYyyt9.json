@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "Polarity Gauntlets",
@@ -29,7 +30,8 @@
       "value": 20
     },
     "shiftDown": 0,
-    "totalReach": 0
+    "totalReach": 0,
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

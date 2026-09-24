@@ -30,7 +30,7 @@ const PENDING_EDGE_FLAG = 'pendingMartialLeadershipEdge';
 export async function pickMartialLeadershipEffect() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.MartialLeadershipPickEffectTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.MartialLeadershipPickEffectLabel')
     }</label><select name="effect">

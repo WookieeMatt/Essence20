@@ -11,9 +11,14 @@
       "book": "My Little Pony Core Rulebook",
       "page": 136
     },
+    "actionType": "standard",
     "circle": "aid",
     "cost": 2,
-    "duration": "1 day",
+    "duration": {
+      "units": "days",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "Line of Sight",
     "tier": "elementary"

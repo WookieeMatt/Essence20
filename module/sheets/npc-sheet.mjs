@@ -1,10 +1,12 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
+import { getActionsTabContext } from "../helpers/action-economy.mjs";
 
 export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
   static TABS = {
     primary: {
       tabs: [
         { id: "npc", group: 'primary', label: "E20.TabNPC" },
+        { id: "actions", group: 'primary', label: "E20.TabActions" },
         { id: "contact", group: 'primary', label: "E20.TabContact" },
         { id: "altmode", group: 'primary', label: "E20.TabAltMode" },
         { id: "effects", group: 'primary', label: "E20.TabEffects" },
@@ -28,6 +30,12 @@ export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
       template: "systems/essence20/templates/actor/parts/main/npc.hbs",
       scrollable: [''],
     },
+    // The same tab the character sheet uses - an NPC has the same action economy (both actor types
+    // build from data/actor/templates/common.mjs), so it needs no variant of its own.
+    actions: {
+      template: "systems/essence20/templates/actor/tabs/actions.hbs",
+      scrollable: [''],
+    },
     contact: {
       template: "systems/essence20/templates/actor/parts/main/npc-contact.hbs",
       scrollable: [''],
@@ -46,6 +54,12 @@ export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
     },
   };
 
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    context.actionsTab = getActionsTabContext(this.actor);
+    return context;
+  }
+
   _onRender(context, options) {
     super._onRender(context, options);
     this._applyConditionalTabs();
@@ -54,6 +68,9 @@ export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
   _applyConditionalTabs() {
     const visibility = {
       npc: this.actor.system.isNPC,
+      // Always shown, including out of combat, where it is a reference - see
+      // helpers/action-economy.mjs#getActionsTabContext.
+      actions: true,
       contact: this.actor.system.isContact,
       altmode: this.actor.system.canTransform,
       notes: true,

@@ -101,7 +101,7 @@ describe("onSystemActorsDelete - Detachable flagging (Across the Stars, p.104)",
     ).catch(() => {});
 
     expect(removedActor.setFlag).toHaveBeenCalledWith(
-      'essence20', DETACHED_THIS_SCENE_FLAG, { combatId: 'combat1' },
+      'essence20', DETACHED_THIS_SCENE_FLAG, { epoch: 1, window: 'encounter', count: 1 },
     );
   });
 
@@ -156,7 +156,11 @@ describe("onSystemActorsDelete - Detachable flagging (Across the Stars, p.104)",
     expect(removedActor.setFlag).not.toHaveBeenCalled();
   });
 
-  test("markUsedThisEncounter's own no-op outside combat means no flag gets set between sessions", async () => {
+  // This test used to assert the opposite - that detaching outside combat set no flag at all,
+  // because markUsedThisEncounter began `if (!game.combat) return`. That was the bug the Scene
+  // Clock fixed (helpers/scene-clock.mjs): a Zord detached between encounters was silently allowed
+  // to reattach, and more generally every once-per-scene ability was unlimited out of combat.
+  test("flags the detachment even outside combat, so it still blocks a reattach", async () => {
     const removedActor = {
       type: 'zord',
       items: [{ type: 'megaformTrait', system: { type: 'detachable' } }],
@@ -170,7 +174,9 @@ describe("onSystemActorsDelete - Detachable flagging (Across the Stars, p.104)",
       { target: { dataset: { systemActorsUuid: 'Actor.zord1' } } }, makeActorSheet(actor),
     ).catch(() => {});
 
-    expect(removedActor.setFlag).not.toHaveBeenCalled();
+    expect(removedActor.setFlag).toHaveBeenCalledWith(
+      'essence20', DETACHED_THIS_SCENE_FLAG, { epoch: 1, window: 'encounter', count: 1 },
+    );
   });
 });
 

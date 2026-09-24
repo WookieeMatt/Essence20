@@ -31,6 +31,15 @@
       "tooltipDirection": "LEFT"
     },
     {
+      "id": "party",
+      "sidebarTab": "actors",
+      "selector": "#actors .e20-party-folder",
+      "title": "E20.Tours.Welcome.Party.Title",
+      "content": "E20.Tours.Welcome.Party.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
       "id": "items",
       "selector": "#sidebar nav.tabs [data-tab=\"items\"]",
       "sidebarTab": "items",

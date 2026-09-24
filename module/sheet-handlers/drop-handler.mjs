@@ -216,6 +216,13 @@ export async function onDropActor(data, actorSheet) {
     }
 
     break;
+  case 'party':
+    if (droppedActor.type == 'playerCharacter') {
+      targetActor.addMember(droppedActor);
+      dropIsValid = true;
+    }
+
+    break;
   case 'vehicle':
     if (["playerCharacter", "npc"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);

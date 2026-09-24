@@ -126,7 +126,7 @@ Custom step properties, all optional:
 |---|---|
 | `sidebarTab` | `ui[tab].activate()` before the step, as core's `SidebarTour` does. Not async in v14. |
 | `layer` / `tool` | `ui.controls.activate({control, tool})` (as core's `CanvasTour`). |
-| `app` | Logical key (`"character"`, `"npc"`, `"vehicle"`, `"zord"`, `"megaform"`, `"item"`, `"skillPicker"`, `"rollDialog"`, `"compendiumBrowser"`, `"storyPoints"`). Ensures that app is open **and scopes `selector` to its root element**, so `.tab[data-tab='gear']` can't match a different open sheet. |
+| `app` | Logical key (`"character"`, `"npc"`, `"vehicle"`, `"zord"`, `"megaform"`, `"item"`, `"skillPicker"`, `"rollDialog"`, `"compendiumBrowser"`, `"storyPoints"`, `"effectWizard"`, `"statBlockImporter"`, `"bookDescriptionImporter"`, `"adventureImporter"`). Ensures that app is open **and scopes `selector` to its root element**, so `.tab[data-tab='gear']` can't match a different open sheet. The last four open standalone windows (`STANDALONE_APPS`) — the Effect Wizard on the demo character's own effect, the importers empty. |
 | `tab` | Activates a sheet tab via `app.changeTab(tab, "primary")`, then awaits the re-render. |
 | `action` | Name from the `actions.mjs` whitelist (§2.4) — a side effect performed before the step. |
 | `expand` | Selector of a `.collapsible-item-container` / `.accordion-wrapper` to open first, so the step can point at item details. |
@@ -386,8 +386,8 @@ Phased so each phase is independently shippable. `suggestedNextTours` chains the
 9. **`powers-and-morphing`** — Powers tab, Personal/Sorcerous Power pools, the Power Cost
    Selector, `morph`/`unmorph`, Power Infusion, Grid Power. Steps that depend on
    `system.canMorph` are marked `optional`.
-10. **`transformers`** — the `canTransform` demo actor: Alt Mode tab, the mode selector on gear
-    rows (`mode-selector.hbs`), `transform`, the Energon tracks, Recharge.
+10. **`transformers`** — the `canTransform` demo actor: Alt Mode tab, the Hardpoint control on weapon
+    rows (`hardpoint-selector.hbs`, which replaced the mode dropdown in 21040f8e6), `transform`, the Energon tracks, Recharge.
 11. **`vehicles-zords-megaforms`** — Vehicle sheet (Crew tab, the Vehicle Role Selector,
     crew-driven stats), Zord sheet (Zord Features, Mega Weapon, Warrior Mode), Megaform sheet
     (Combiners tab, participants, Megaform damage).
@@ -406,13 +406,35 @@ Phased so each phase is independently shippable. `suggestedNextTours` chains the
 
 ### Phase 4 — GM and authoring
 
+13b. **`npcs-and-combat` demo encounter** — added 2026-09-22 after PR review ("should I be seeing
+    the pips?"): the header's action block renders only for a combatant in the active encounter,
+    so the `tracker` step now runs `startDemoEncounter` (GM only, and never while an encounter is
+    already active - that would switch every client's tracker mid-session), and an `optional`
+    `pips` step points at the block. The demo encounter is flagged and deleted with the demo actors.
+13a. **`party`** — added 2026-09-22: the Party ("squad") sheet on a demo Party that carries the
+    demo Ranger on its roster (`participants`, which writes the same `system.actors` collection
+    the roster reads). Header and sidebar, the roster, the Requisition tracker and its
+    per-member request blocks, Mission Critical Items, the Story Point pool it holds unseen,
+    the Actors-tab party folders, and the primary-Party guarantees (`restricted`).
 14. **`story-points`** — unrestricted but GM-focused: the tracker app (`#story-points`), GM
-    versus player pools, granting and spending, and the `SETTINGS_MODIFY`-permission model that
-    lets non-GM players modify points.
+    versus player pools, granting and spending. Refreshed 2026-09-21 when the pool moved onto
+    the primary Party: the narrative spends, the in-play spends (as-if-Specialized, Defense
+    boosts, reroll a 1, act while Defeated), New Session, the Grid Power and Friendship Circle
+    blocks (both `optional`, line-gated), the Party folder in the Actors tab, and the Owner
+    permission model that replaced `SETTINGS_MODIFY`.
 15. **`item-authoring`** — the Item sheet: Description / Details / Effects tabs, the item types,
     and how granted items and attachments (weapon effects, upgrades) are modelled.
 16. **`enrichers-and-macros`** — the `@Check[...]` enricher in journals and chat, click-to-roll
     and send-to-chat, and dragging an item to the hotbar to build a macro (`rollItemMacro`).
+17. **`importers`** — `restricted: true`. Added 2026-09-21: the Stat Block Importer footer
+    button in the Actors tab and the window it opens, then the two PDF importers that live in
+    Configure Settings (Book Descriptions, Adventure Importer), each opened and pointed at.
+
+Steps added to existing tours in the same 2026-09-21 refresh, for features that landed after
+the suite shipped: the Party folder (`welcome`), the as-if-Specialized switch (`making-a-roll`,
+`optional`), the Actions tab and the action economy (`npcs-and-combat`), a Power's Area of
+Effect fields (`powers-and-morphing`, `optional`), and the Effect Wizard walked through on the
+demo effect (`active-effects`).
 
 ---
 
@@ -702,6 +724,12 @@ at a readable size. `demo-content.test.js` now walks the definitions and asserts
   Skill Picker walkthrough in two, so the second step opens the picker itself.
   It takes a couple of minutes — each tour provisions and tears down its own demo content — so it
   belongs in the release checklist rather than in a watch loop.
+  Full pass, 2026-09-22, after the refresh: **15 tours, 148 steps, zero unresolved, zero errors**;
+  the three skips are the designed ones (`gridPower` / `friendshipCircle` on a non-PR/MLP world,
+  `modeSelector` when the demo Autobot's gear row has no mode selector). Note that the desktop
+  app's embedded browser pane reports a 0×0 display while it is hidden, and then every sheet-tab,
+  sidebar and scene-control step reads as zero-size — run `lintTours()` with the pane (or a
+  browser window) actually visible.
 
   Note what it cannot tell you: that the copy reads well, that a tooltip sits somewhere sensible,
   or that a step points at the *right* element rather than merely a matching one. Two real bugs in

@@ -1,5 +1,5 @@
 import { E20 } from "./config.mjs";
-import { hasStoryPointsAvailable, isGmConnected, requestStoryPointSpend } from "./story-points.mjs";
+import { canSpendForActor, spendForActor } from "./story-points.mjs";
 
 /**
  * Reroll grant engine - normalizes reroll configs read off Perks/ActiveEffects (schema defined in
@@ -192,6 +192,36 @@ export function getRerollConfigs(actor) {
   return configs;
 }
 
+/**
+ * The reroll every actor has: "Re-roll any dice result of a '1'" for a Story Point (GI Joe
+ * CRB p.127; PR p.91, TF p.105 and MLP p.118 word it the same).
+ *
+ * One point buys one die - the target is anyDie, and the picker only offers dice that are
+ * actually showing a 1 (see applyReroll). Not recursive: a second 1 is a second point. No use
+ * limit beyond what the pool can afford, which hasRerollCost() checks at click time against
+ * whichever pool is the actor's own (helpers/story-points.mjs#poolFor).
+ *
+ * Offered by chat.mjs#addRerollButtons alongside the actor's own grants rather than returned from
+ * getRerollConfigs(): it is not something the actor HAS, and callers that count an actor's grants
+ * should not count it.
+ * @returns {Object} A normalized reroll config.
+ */
+export function storyPointRerollConfig() {
+  return {
+    ...normalizeRerollConfig({
+      mode: "ones",
+      target: "anyDie",
+      reset: "none",
+      maxUses: 0,
+      recursive: false,
+      cost: { worldStoryPoints: 1 },
+    }),
+    source: "storyPoint",
+    sourceType: "world",
+    name: game.i18n?.localize?.("E20.SptStoryPointSource") ?? "Story Point",
+  };
+}
+
 export async function canUseReroll(actor, config, sourceKey) {
   if (!actor || !config) {
     return false;
@@ -238,7 +268,8 @@ export function findRolePointsItem(actor, name) {
 
 export function hasRerollCost(actor, config) {
   const { resourcePath, amount, worldStoryPoints, rolePointsName } = config.cost ?? {};
-  if (worldStoryPoints > 0 && !(isGmConnected() && hasStoryPointsAvailable(worldStoryPoints))) {
+  // From whichever pool is this actor's own - an NPC's Story Point costs come off the GM's.
+  if (worldStoryPoints > 0 && !canSpendForActor(actor, worldStoryPoints)) {
     return false;
   }
 
@@ -266,7 +297,7 @@ export function hasRerollCost(actor, config) {
 export async function payRerollCost(actor, config) {
   const { resourcePath, amount, worldStoryPoints, rolePointsName } = config.cost ?? {};
   if (worldStoryPoints > 0) {
-    requestStoryPointSpend(actor, worldStoryPoints);
+    spendForActor(actor, worldStoryPoints);
   }
 
   if (rolePointsName) {
@@ -454,7 +485,7 @@ async function promptForDie(eligibleDice) {
 
   const chosenValue = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize("E20.RerollSelectDieTitle") },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content,
     modal: true,
     buttons: [
@@ -622,12 +653,23 @@ export async function applyReroll(roll, config) {
   }
 
   if (mode === "single" || target === "anyDie") {
-    const die = await promptForDie(eligibleDice);
+    // Only dice the grant would actually touch are offered: a "reroll a 1" grant aimed at one
+    // die of the player's choice (the universal Story Point spend) should not list a d8
+    // showing 6 and then reroll it. Unconditional grants still see every eligible die.
+    const matches = getRerollMatchPredicate(config);
+    const candidates = eligibleDice.filter(die => die.results.some(result => result.active && matches(result.result)));
+    const die = await promptForDie(candidates);
     if (!die) {
       return false;
     }
 
-    await rerollAllActive(die);
+    // A grant with a match rule rerolls only what matches on the chosen die; a plain "reroll
+    // this die" grant rerolls all of it, as before.
+    if (config.mode === "all" && !config.values?.length) {
+      await rerollAllActive(die);
+    } else {
+      await applyRerollToDie(die, config);
+    }
   } else {
     for (const die of eligibleDice) {
       await applyRerollToDie(die, config);

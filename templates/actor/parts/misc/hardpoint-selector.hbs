@@ -1,0 +1,26 @@
+{{!--
+  Per-weapon Transformer Hardpoint control (TF CRB p.114), shown on the Gear tab in place of
+  the legacy Bot/Alt/Any mode dropdown. External = held in-hand (Bot Mode only, costs Load Out
+  hands); Integrated = built into the chassis (free of the six-hand limit), with Reinforced and
+  Hidden/Obvious-in-Alt-Mode options. Writes straight to the item via onInlineEdit.
+--}}
+<div class="flexrow e20-align-center e20-gap-5 hardpoint-selector">
+  <select class="inline-edit hardpoint-select" data-field="system.hardpoint.type" name="system.hardpoint.type">
+    {{selectOptions @root.config.hardpointTypes selected=item.system.hardpoint.type}}
+  </select>
+
+  {{#if (eq item.system.hardpoint.type 'integrated')}}
+    <label class="hardpoint-reinforced e20-nowrap" data-tooltip="{{localize 'E20.HardpointReinforcedHint'}}">
+      <input type="checkbox" class="inline-edit" data-field="system.hardpoint.reinforced" {{checked item.system.hardpoint.reinforced}} />
+      {{localize 'E20.HardpointReinforced'}}
+    </label>
+
+    <select class="inline-edit hardpoint-visibility" data-field="system.hardpoint.altModeVisibility" name="system.hardpoint.altModeVisibility" data-tooltip="{{localize 'E20.AltModeVisibilityHint'}}">
+      {{selectOptions @root.config.altModeVisibilities selected=item.system.hardpoint.altModeVisibility}}
+    </select>
+  {{/if}}
+
+  {{#if item.system.derivedMode}}
+    <span class="hardpoint-mode-label e20-nowrap">{{lookup @root.config.transformerModes item.system.derivedMode}}</span>
+  {{/if}}
+</div>

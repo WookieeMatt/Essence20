@@ -11,6 +11,7 @@
       "book": "Technorganic Secrets",
       "page": 47
     },
+    "actionType": "move",
     "items": {},
     "canActivate": false,
     "choice": null,

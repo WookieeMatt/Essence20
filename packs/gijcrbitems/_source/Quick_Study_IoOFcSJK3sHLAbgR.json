@@ -11,6 +11,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 102
     },
+    "actionType": "free",
     "items": {},
     "advances": {
       "baseValue": 1,

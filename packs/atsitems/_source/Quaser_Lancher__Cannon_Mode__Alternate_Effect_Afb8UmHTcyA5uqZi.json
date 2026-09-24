@@ -1,11 +1,12 @@
 {
   "folder": "Z2xK8nOrVV5BbzH4",
-  "name": "Quaser Lancher (Cannon Mode) Alternate Effect",
+  "name": "Quasar Launcher (Cannon Mode) Alternate Effect",
   "type": "weaponEffect",
   "_id": "Afb8UmHTcyA5uqZi",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "targeting",
       "style": "melee"

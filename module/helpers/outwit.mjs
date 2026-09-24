@@ -40,7 +40,7 @@ const OUTWIT_OPTIONS = {
 export async function pickOutwitSkill() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.OutwitPickSkillTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<p>${game.i18n.localize('E20.OutwitPickSkillLabel')}</p>`,
     modal: true,
     buttons: [

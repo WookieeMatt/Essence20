@@ -90,7 +90,7 @@ export async function pickJuryRigOption(canUseStandardAction) {
     : '';
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.JuryRigPickOptionTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.JuryRigPickOptionLabel')
     }</label><select name="option">${options}</select></div>${actionTypeField}`,

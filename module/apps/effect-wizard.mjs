@@ -78,7 +78,7 @@ export default class EffectWizard extends HandlebarsApplicationMixin(Application
       finish: EffectWizard.#onFinish,
       cancel: EffectWizard.#onCancel,
     },
-    classes: ["essence20", "sheet", "theme-wrapper", "effect-wizard"],
+    classes: ["essence20", "sheet", "theme-wrapper", "e20-window", "effect-wizard"],
     tag: "form",
     position: { width: 560, height: "auto" },
     window: {

@@ -16,7 +16,7 @@ export const PENDING_WILD_TALES_FLAG_KEY = 'pendingWildTales';
 export async function pickWildTalesEssence() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.WildTalesPickEssenceTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.WildTalesPickEssenceLabel')
     }</label><select name="essence">

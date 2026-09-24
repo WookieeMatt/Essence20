@@ -6,7 +6,7 @@ import {
 global.game = { combat: { id: 'combat1' }, i18n: { localize: (k) => k, format: (k) => k } };
 
 function makeActor({ used = false } = {}) {
-  const flagStore = used ? { zeoCrystalBoostUsedThisEncounter: { combatId: 'combat1' } } : {};
+  const flagStore = used ? { zeoCrystalBoostUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } } : {};
   return {
     getFlag: jest.fn((scope, key) => flagStore[key]),
     setFlag: jest.fn(async (scope, key, value) => {
@@ -29,7 +29,7 @@ describe("activateZeoCrystalBoost / getZeoCrystalBoostOption", () => {
     await activateZeoCrystalBoost(actor, 'morpher');
 
     expect(getZeoCrystalBoostOption(actor)).toBe('morpher');
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'zeoCrystalBoostUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'zeoCrystalBoostUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("getZeoCrystalBoostOption is null with nothing set", () => {

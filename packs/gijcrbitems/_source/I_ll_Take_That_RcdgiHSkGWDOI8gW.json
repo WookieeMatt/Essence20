@@ -11,6 +11,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 76
     },
+    "actionType": "free",
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

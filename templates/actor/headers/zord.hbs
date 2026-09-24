@@ -12,11 +12,11 @@
   <label class="sliced-border__label">{{ localize 'E20.ActorArmor' }}</label>
   {{numberInput system.armor name="system.armor" min=0 step=1}}
 </div>
-<div class="sliced-border pr-header-color flex-group-center">
+<div class="sliced-border pr-header-color e20-flex-group-center">
   <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
   <input type="color" class="picker" name="system.color" value="{{system.color}}" />
 </div>
-<div class="sliced-border flex-group-center">
+<div class="sliced-border e20-flex-group-center">
   <label class="sliced-border__label">{{localize 'E20.MegaformZordCombiner'}}</label>
   <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}} />
 </div>

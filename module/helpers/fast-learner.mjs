@@ -38,7 +38,7 @@ export async function pickFastLearnerAllocation(actor) {
 
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.FastLearnerPickSkillsTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.FastLearnerDecreaseLabel')
     }</label><select name="decreaseSkill">${decreaseOptions}</select></div>` +

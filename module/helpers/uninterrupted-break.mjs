@@ -54,7 +54,7 @@ export async function pickUninterruptedBreakBenefit(actor) {
 
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.UninterruptedBreakPickTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.UninterruptedBreakPickLabel')
     }</label><select name="benefit">${options.join('')}</select></div>`,

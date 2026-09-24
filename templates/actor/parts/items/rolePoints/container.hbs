@@ -1,6 +1,6 @@
   {{#if @root.rolePointsList.length}}
     {{#each @root.rolePointsList as |rolePoints|}}
-      <div class="item flexrow align-center role-points-item" data-item-id="{{rolePoints._id}}">
+      <div class="item flexrow e20-align-center role-points-item" data-item-id="{{rolePoints._id}}">
         {{!-- Label - left-click toggles Activation (if this Role Points item supports it);
              right-click opens a menu to Post to Chat or Spend a Point (see
              base-actor-sheet.mjs#_activateRolePointsListeners). --}}
@@ -16,7 +16,7 @@
         >{{rolePoints.name}}</label>
 
         {{!-- Bonus --}}
-        <div class="flex-grow-0 nowrap">
+        <div class="e20-flex-grow-0 e20-nowrap">
           {{#if (ne rolePoints.system.bonus.type 'none')}}
             {{#if (ne rolePoints.system.bonus.type 'other')}}+{{/if}}{{rolePoints.system.bonus.value}}
           {{/if}}
@@ -36,13 +36,13 @@
         </div>
         {{!-- Resource --}}
         {{#if @root.system.useUnlimitedResource}}
-          <div class="flex-grow-0">{{localize 'E20.RolePointsResourceUnlimited'}}</div>
+          <div class="e20-flex-grow-0">{{localize 'E20.RolePointsResourceUnlimited'}}</div>
         {{else if (ne rolePoints.system.resource.max null)}}
-          <input class="inline-edit two-digit-input no-lock flex-grow-0" data-field="system.resource.value" type="number"
+          <input class="inline-edit two-digit-input no-lock e20-flex-grow-0" data-field="system.resource.value" type="number"
             name="system.resource.value" value="{{rolePoints.system.resource.value}}" min="0"
             step="1" />
           /
-          <input class="two-digit-input no-unlock flex-grow-0" data-field="rolePoints.system.resource.max" type="number"
+          <input class="two-digit-input no-unlock e20-flex-grow-0" data-field="rolePoints.system.resource.max" type="number"
             name="rolePoints.system.resource.max" value="{{rolePoints.system.resource.max}}" min="0"
             step="1" readonly />
         {{/if}}
@@ -50,8 +50,8 @@
     {{/each}}
   {{else if @root.role.system.skillDie.isUsed}}
     {{#with @root.system.skills.roleSkillDie as |roleSkillDie|}}
-      <div class="item flexrow align-center" data-item-id="{{@root.role._id}}">
-        <div class="item-image flex-grow-0">
+      <div class="item flexrow e20-align-center" data-item-id="{{@root.role._id}}">
+        <div class="item-image e20-flex-grow-0">
           <a class="rollable" data-action="rollable" data-roll-type="skill" data-skill="roleSkillDie" data-role-skill-name="{{@root.role.system.skillDie.name}}"
             data-is-specialized="{{roleSkillDie.isSpecialized}}"><i class="fas fa-dice-d20"></i></a>
         </div>
@@ -61,5 +61,5 @@
   {{/if}}
 
   {{#if (not (or @root.rolePointsList.length @root.role.system.skillDie.isUsed))}}
-    <div class="flexrow flex-group-center">{{localize 'E20.RolePointsNone'}}</div>
+    <div class="flexrow e20-flex-group-center">{{localize 'E20.RolePointsNone'}}</div>
   {{/if}}

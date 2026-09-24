@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "prerequisite": "Science or Survival +d8",
     "selectionLimit": 1,

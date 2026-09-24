@@ -14,7 +14,7 @@ import { activateHupHupHupHupHup } from "./hup-hup-hup-hup-hup.mjs";
 import { activateTimelyTeammate, canUseTimelyTeammate } from "./timely-teammate.mjs";
 import { activateRoar, canUseRoar } from "./roar.mjs";
 import { canDesignateProtectedTarget, designateProtectedTarget } from "./protected-target.mjs";
-import { hasStoryPointsAvailable, isGmConnected, requestStoryPointGrant, requestStoryPointSpend } from "./story-points.mjs";
+import { hasStoryPointsAvailable, canWriteStoryPoints, requestStoryPointGrant, requestStoryPointSpend } from "./story-points.mjs";
 import { toggleDigIn } from "./dig-in.mjs";
 import { isMeatShieldActive, toggleMeatShield } from "./meat-shield.mjs";
 import { canUseBoxShot, toggleBoxShot } from "./box-shot.mjs";
@@ -276,7 +276,7 @@ const CURB_YOUR_ENTHUSIASM_ENCOUNTER_FLAG = 'curbYourEnthusiasmUsedThisEncounter
 
 // Concentrate Fire (GI Joe CRB, Vanguard base, 15th level, p.109) - see
 // helpers/concentrate-fire.mjs's own doc comment. Once per encounter, spends 1 Story Point (same
-// isGmConnected()/hasStoryPointsAvailable() gate Bait and Switch already establishes), then marks
+// canWriteStoryPoints()/hasStoryPointsAvailable() gate Bait and Switch already establishes), then marks
 // whichever token is currently targeted.
 const CONCENTRATE_FIRE_ID = "Compendium.essence20.gi_joe_crb.Item.LccKe9ZdDPvS5YbD";
 const CONCENTRATE_FIRE_ENCOUNTER_FLAG = 'concentrateFireUsedThisEncounter';
@@ -297,7 +297,7 @@ const HUMANITARIAN_ID = "Compendium.essence20.pr_crb.Item.hxWJxlMLbkBbx73w";
 const I_KNOW_A_GUY_ID = "Compendium.essence20.pr_crb.Item.anfEVX8bI2eQh40E";
 
 // Time Traveler (A Jump Through Time, Influence Perk, p.24) - see helpers/time-traveler.mjs's own
-// doc comment. An on/off toggle: free to turn OFF, gated on isGmConnected()/hasStoryPointsAvailable()
+// doc comment. An on/off toggle: free to turn OFF, gated on canWriteStoryPoints()/hasStoryPointsAvailable()
 // (same shape Concentrate Fire above already establishes) only when turning ON, since the 1 Story
 // Point cost is paid at that moment via the skill picker inside the toggle itself.
 const TIME_TRAVELER_PERK_ID = "Compendium.essence20.jump_through_time.Item.bXkXXr0VMXpoAiv0";
@@ -305,7 +305,7 @@ const TIME_TRAVELER_PERK_ID = "Compendium.essence20.jump_through_time.Item.bXkXX
 // Clued In (GI Joe CRB, Intelligence Origin Benefit, p.64): "Once per scene, you may spend a Story
 // Point to get a clue pertinent to a character, current scene, or current mission. Alternatively,
 // you may ask the GM a single question with a yes or no answer." Purely narrative payoff (a clue/
-// answer only the GM can actually provide) - same isGmConnected()/hasStoryPointsAvailable() gate
+// answer only the GM can actually provide) - same canWriteStoryPoints()/hasStoryPointsAvailable() gate
 // Concentrate Fire establishes, but with nothing to mark, so the dispatch is just spend + announce.
 // The "once per scene" cap is dropped as unenforceable outside combat - same reasoning Specialist's
 // own once-per-encounter cap was already dropped for (this codebase's only once-per-encounter
@@ -1849,11 +1849,11 @@ export function canUsePerk(item) {
 
   if (sourceId == CONCENTRATE_FIRE_ID) {
     return !hasUsedThisEncounter(actor, CONCENTRATE_FIRE_ENCOUNTER_FLAG)
-      && isGmConnected() && hasStoryPointsAvailable(1);
+      && canWriteStoryPoints() && hasStoryPointsAvailable(1);
   }
 
   if (sourceId == CLUED_IN_ID) {
-    return isGmConnected() && hasStoryPointsAvailable(1);
+    return canWriteStoryPoints() && hasStoryPointsAvailable(1);
   }
 
   if (sourceId == PHANTOM_GIJ_ID) {
@@ -1861,7 +1861,7 @@ export function canUsePerk(item) {
   }
 
   if (sourceId == SURFACE_READ_ID) {
-    return isGmConnected() && hasStoryPointsAvailable(1);
+    return canWriteStoryPoints() && hasStoryPointsAvailable(1);
   }
 
   if (sourceId == SUGGESTION_ID) {
@@ -1873,7 +1873,7 @@ export function canUsePerk(item) {
   }
 
   if (sourceId == TIME_TRAVELER_PERK_ID) {
-    return !!getTimeTravelerActiveSkill(actor) || (isGmConnected() && hasStoryPointsAvailable(1));
+    return !!getTimeTravelerActiveSkill(actor) || (canWriteStoryPoints() && hasStoryPointsAvailable(1));
   }
 
   if (sourceId == INSPIRING_WORDS_ID) {
@@ -2034,7 +2034,7 @@ export function canUsePerk(item) {
   }
 
   if (sourceId == READ_THE_LAND_ID) {
-    return isEnvironmentalExpertiseActive(actor) || (isGmConnected() && hasStoryPointsAvailable(1));
+    return isEnvironmentalExpertiseActive(actor) || (canWriteStoryPoints() && hasStoryPointsAvailable(1));
   }
 
   if (sourceId == HONEST_ASSESSMENT_ID) {
@@ -2222,7 +2222,7 @@ export function canUsePerk(item) {
   }
 
   if (sourceId == RUSH_THE_LINE_ID) {
-    return isGmConnected() && hasStoryPointsAvailable(1) && !hasUsedThisTurn(actor, RUSH_THE_LINE_TURN_FLAG);
+    return canWriteStoryPoints() && hasStoryPointsAvailable(1) && !hasUsedThisTurn(actor, RUSH_THE_LINE_TURN_FLAG);
   }
 
   if (sourceId == ABSOLUTE_MENACE_ID) {
@@ -2442,7 +2442,7 @@ export function canUsePerk(item) {
     // Failure Isn't an Option (Factions in Action Vol. 2, Officer Focus, p.68) - see its own
     // IMMEDIATE_ALLY_PERKS comment above. Same upfront-affordability idiom hasRerollCost/Bait and
     // Switch's own worldStoryPoints check already uses.
-    if (immediate.worldStoryPointCost && !(isGmConnected() && hasStoryPointsAvailable(immediate.worldStoryPointCost))) {
+    if (immediate.worldStoryPointCost && !(canWriteStoryPoints() && hasStoryPointsAvailable(immediate.worldStoryPointCost))) {
       return false;
     }
 
@@ -2498,7 +2498,7 @@ export function canUsePerk(item) {
 
   // Bait and Switch - see BAIT_AND_SWITCH_ID's own comment above. Same upfront-affordability
   // idiom hasRerollCost's own worldStoryPoints check already uses.
-  if (bankable.worldStoryPointCost && !(isGmConnected() && hasStoryPointsAvailable(bankable.worldStoryPointCost))) {
+  if (bankable.worldStoryPointCost && !(canWriteStoryPoints() && hasStoryPointsAvailable(bankable.worldStoryPointCost))) {
     return false;
   }
 
@@ -2556,7 +2556,7 @@ export async function pickAllyTargets(actor, candidateAllies, perkName, maxCount
   const options = candidateAllies.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
   const chosenId = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.format('E20.PickAllyTitle', { perk: perkName }) },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.PickAllyLabel')
     }</label><select name="allyId">${options}</select></div>`,
@@ -2596,7 +2596,7 @@ async function pickEmtCrashCourseAction(actor) {
   ].filter(Boolean).join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.EmtCrashCoursePickActionTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.EmtCrashCoursePickActionLabel')
     }</label><select name="action">${options}</select></div>`,
@@ -2627,7 +2627,7 @@ async function pickDefenseType() {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.RollWithThePunchesPickDefenseTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.RollWithThePunchesPickDefenseLabel')
     }</label><select name="defenseType">${options}</select></div>`,
@@ -2659,7 +2659,7 @@ export async function pickHobbleCondition() {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.HobblePickConditionTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.HobblePickConditionLabel')
     }</label><select name="condition">${options}</select></div>`,
@@ -2690,7 +2690,7 @@ export async function pickGuardianStrikesCondition() {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.GuardianStrikesPickConditionTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.GuardianStrikesPickConditionLabel')
     }</label><select name="condition">${options}</select></div>`,
@@ -2743,7 +2743,7 @@ async function onImmediateAllyPerkUse(item, actor, config) {
     return;
   }
 
-  if (config.worldStoryPointCost && !(isGmConnected() && hasStoryPointsAvailable(config.worldStoryPointCost))) {
+  if (config.worldStoryPointCost && !(canWriteStoryPoints() && hasStoryPointsAvailable(config.worldStoryPointCost))) {
     ui.notifications.warn(game.i18n.localize('E20.StoryPointUnavailable'));
     return;
   }
@@ -3055,7 +3055,7 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == CURB_YOUR_ENTHUSIASM_ID) {
-    if (!isGmConnected()) {
+    if (!canWriteStoryPoints()) {
       ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
       return;
     }
@@ -3077,7 +3077,7 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == CONCENTRATE_FIRE_ID) {
-    if (!isGmConnected()) {
+    if (!canWriteStoryPoints()) {
       ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
       return;
     }
@@ -3093,7 +3093,7 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == CLUED_IN_ID) {
-    if (!isGmConnected()) {
+    if (!canWriteStoryPoints()) {
       ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
       return;
     }
@@ -3110,7 +3110,7 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == SURFACE_READ_ID) {
-    if (!isGmConnected()) {
+    if (!canWriteStoryPoints()) {
       ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
       return;
     }
@@ -3156,7 +3156,7 @@ export async function onPerkUse(item) {
 
   if (sourceId == TIME_TRAVELER_PERK_ID) {
     const wasActive = !!getTimeTravelerActiveSkill(actor);
-    if (!wasActive && !isGmConnected()) {
+    if (!wasActive && !canWriteStoryPoints()) {
       ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
       return;
     }
@@ -3623,7 +3623,7 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == EDUCATED_ID || sourceId == EDUCATED_GIJ_ID || sourceId == EDUCATED_TF_ID) {
-    if (!isGmConnected()) {
+    if (!canWriteStoryPoints()) {
       ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
       return;
     }
@@ -3635,7 +3635,7 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == HEROIC_INTERVENTION_ID) {
-    if (!isGmConnected()) {
+    if (!canWriteStoryPoints()) {
       ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
       return;
     }
@@ -3647,7 +3647,7 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == LEGACY_ID) {
-    if (!isGmConnected()) {
+    if (!canWriteStoryPoints()) {
       ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
       return;
     }
@@ -3659,7 +3659,7 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == DONE_THE_IMPOSSIBLE_ID) {
-    if (!isGmConnected()) {
+    if (!canWriteStoryPoints()) {
       ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
       return;
     }
@@ -3671,7 +3671,7 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == KEEP_EM_LAUGHING_ID) {
-    if (!isGmConnected()) {
+    if (!canWriteStoryPoints()) {
       ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
       return;
     }
@@ -3929,7 +3929,7 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == RUSH_THE_LINE_ID) {
-    if (!isGmConnected() || !hasStoryPointsAvailable(1) || hasUsedThisTurn(actor, RUSH_THE_LINE_TURN_FLAG)) {
+    if (!canWriteStoryPoints() || !hasStoryPointsAvailable(1) || hasUsedThisTurn(actor, RUSH_THE_LINE_TURN_FLAG)) {
       ui.notifications.warn(game.i18n.localize('E20.StoryPointUnavailable'));
       return;
     }
@@ -4577,7 +4577,7 @@ export async function onPerkUse(item) {
   }
 
   // Bait and Switch - see BAIT_AND_SWITCH_ID's own comment above. canUsePerk already gated the
-  // button on isGmConnected()/hasStoryPointsAvailable() above, so this just fires the spend.
+  // button on canWriteStoryPoints()/hasStoryPointsAvailable() above, so this just fires the spend.
   if (bankable.worldStoryPointCost) {
     requestStoryPointSpend(actor, bankable.worldStoryPointCost);
   }

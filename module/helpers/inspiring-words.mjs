@@ -78,7 +78,7 @@ export async function markInspiringWordsUsed(actor) {
 export async function pickInspiringWordsEffect() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.InspiringWordsPickEffectTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.InspiringWordsPickEffectLabel')
     }</label><select name="effect">
@@ -120,7 +120,7 @@ export async function pickInspiringWordsCondition(targetActor) {
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.InspiringWordsPickConditionTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.InspiringWordsPickConditionLabel')
     }</label><select name="condition">${options}</select></div>`,

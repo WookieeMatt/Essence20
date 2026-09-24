@@ -8,6 +8,7 @@ import {
   updateRoleCache,
   slugifySpecializationName,
   titleCaseSpecializationName,
+  betterShift,
 } from "./utils.mjs";
 
 describe("parseId", () => {
@@ -164,5 +165,38 @@ describe("updateRoleCache", () => {
     for (const pack of global.game.packs) {
       expect(pack.getDocuments).toHaveBeenCalledWith({ type: "role" });
     }
+  });
+});
+
+describe("betterShift", () => {
+  // skillShiftList is ordered best-first, so "better" means a lower index - the opposite of the
+  // reading a dice-size intuition suggests.
+  test("picks the stronger of two ordinary shifts, whichever side it is on", () => {
+    expect(betterShift('d8', 'd2')).toBe('d8');
+    expect(betterShift('d2', 'd8')).toBe('d8');
+  });
+
+  test("an untrained d20 loses to any trained shift", () => {
+    expect(betterShift('d20', 'd2')).toBe('d2');
+  });
+
+  test("returns the shift itself when both are the same", () => {
+    expect(betterShift('d6', 'd6')).toBe('d6');
+  });
+
+  test("ranks the exotic tiers above the dice", () => {
+    expect(betterShift('autoSuccess', 'd12')).toBe('autoSuccess');
+    expect(betterShift('fumble', 'autoFail')).toBe('autoFail');
+  });
+
+  // An unrecognised value has no place in the order; indexOf would give it -1 and make it beat
+  // everything, which is the wrong direction to fail in for a shift nobody recognises.
+  test("an unrecognised shift loses to one that is recognised", () => {
+    expect(betterShift('nonsense', 'd4')).toBe('d4');
+    expect(betterShift('d4', 'nonsense')).toBe('d4');
+  });
+
+  test("falls back to the second when neither is recognised", () => {
+    expect(betterShift('nonsense', 'gibberish')).toBe('gibberish');
   });
 });

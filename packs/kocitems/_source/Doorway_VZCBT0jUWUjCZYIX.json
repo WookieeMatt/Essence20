@@ -11,9 +11,14 @@
       "book": "Knights of Canterlot",
       "page": 49
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 5,
-    "duration": "10 minutes",
+    "duration": {
+      "units": "minutes",
+      "value": 10,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "5 feet",
     "tier": "virtuoso"

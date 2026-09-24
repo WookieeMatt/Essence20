@@ -37,7 +37,7 @@ import { E20 } from "./config.mjs";
 export async function pickTakedownSkill() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.TakedownPickSkillTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<p>${game.i18n.localize('E20.TakedownPickSkillLabel')}</p>`,
     modal: true,
     buttons: [

@@ -1,40 +1,97 @@
 @use "../variables" as v;
 
+/* Every selector here is namespaced: the chat log is shared ground, so a bare
+   .chat-message or .dice-total rule restyles core's messages and every other package's
+   cards too. The .essence20 class these ask for is put on each message by the
+   renderChatMessageHTML hook in essence20.mjs. */
+
 /* Chat messages are never .theme-wrapper elements (that class is for ApplicationV2 windows -
    sheets/apps), but applyThemeClass() (settings.js) still tags each one with theme-light/
-   theme-dark directly, via the renderChatMessageHTML hook (essence20.mjs). The --theme-* custom
+   theme-dark directly, via the renderChatMessageHTML hook (essence20.mjs). The --e20-theme-* custom
    property system itself is scoped under .theme-wrapper.theme-light/dark (_theme_wrapper.scss)
-   and never reaches a bare chat message, so a check-card can't just read var(--theme-card-bg)
-   the way a sheet does without it being redefined somewhere reachable here too - done below,
+   and never reaches a bare chat message, so a check-card can't just read var(--e20-theme-card-bg)
+.essence20 the way a sheet does without it being redefined somewhere reachable here too - done below,
    copying the exact same values (not inventing a second palette that could quietly drift out of
-   sync with the sheet's own). --theme-success/--theme-failure/--theme-critical are new - the
+   sync with the sheet's own). --e20-theme-success/--e20-theme-failure/--e20-theme-critical are new - the
    sheet side has never needed a pass/fail/crit color before now. */
-.chat-message.theme-light {
-  --theme-border-color: #{v.$border-color-dark};
-  --theme-text-color: #{v.$text-color-dark};
-  --theme-input-color: #{v.$input-color-light};
-  --theme-panel-bg: #{v.$bg-color-light};
-  --theme-card-bg: rgba(255, 255, 255, 0.7);
-  --theme-accent: #{v.$text-color-orange};
-  --theme-accent-contrast: #{v.$input-color-light};
-  --theme-muted-text: #{v.$text-color-dark};
-  --theme-success: #2e7d4f;
-  --theme-failure: #b83a30;
-  --theme-critical: #a6710a;
+.chat-message.essence20.theme-light {
+  --e20-theme-border-color: #{v.$border-color-dark};
+  --e20-theme-text-color: #{v.$text-color-dark};
+  --e20-theme-input-color: #{v.$input-color-light};
+  --e20-theme-panel-bg: #{v.$bg-color-light};
+  --e20-theme-card-bg: rgba(255, 255, 255, 0.7);
+  --e20-theme-accent: #{v.$text-color-orange};
+  --e20-theme-accent-contrast: #{v.$input-color-light};
+  --e20-theme-muted-text: #{v.$text-color-dark};
+  --e20-theme-success: #2e7d4f;
+  --e20-theme-failure: #b83a30;
+  --e20-theme-critical: #a6710a;
 }
 
-.chat-message.theme-dark {
-  --theme-border-color: #{v.$border-color-light};
-  --theme-text-color: #{v.$text-color-light};
-  --theme-input-color: #{v.$input-color-dark};
-  --theme-panel-bg: #1f2328;
-  --theme-card-bg: rgba(255, 255, 255, 0.04);
-  --theme-accent: #{v.$text-color-cyan};
-  --theme-accent-contrast: #{v.$bg-color-dark};
-  --theme-muted-text: #{v.$textcolor1};
-  --theme-success: #5ec98a;
-  --theme-failure: #e0645a;
-  --theme-critical: #f0b429;
+.chat-message.essence20.theme-dark {
+  --e20-theme-border-color: #{v.$border-color-light};
+  --e20-theme-text-color: #{v.$text-color-light};
+  --e20-theme-input-color: #{v.$input-color-dark};
+  --e20-theme-panel-bg: #1f2328;
+  --e20-theme-card-bg: rgba(255, 255, 255, 0.04);
+  --e20-theme-accent: #{v.$text-color-cyan};
+  --e20-theme-accent-contrast: #{v.$bg-color-dark};
+  --e20-theme-muted-text: #{v.$textcolor1};
+  --e20-theme-success: #5ec98a;
+  --e20-theme-failure: #e0645a;
+  --e20-theme-critical: #f0b429;
+}
+
+/* The MLP modes. A chat message gets theme-pony from applyThemeClass the same way a sheet
+   does, so without these a card would keep the Sci-fi palette while the sheet that rolled it
+   was MLP. Three classes each, so they outrank the two blocks above.
+   The pass/fail/crit trio stays legible rather than going pink for its own sake - those three
+   have to read as pass, fail and crit at a glance before they have to match a theme. */
+.chat-message.essence20.theme-pony.theme-dark {
+  --e20-theme-border-color: #{v.$mlp-periwinkle};
+  --e20-theme-text-color: #{v.$mlp-cream};
+  --e20-theme-input-color: #{v.$mlp-indigo-raised};
+  --e20-theme-panel-bg: #{v.$mlp-indigo};
+  --e20-theme-card-bg: rgba(255, 255, 255, 0.07);
+  --e20-theme-accent: #{v.$mlp-pink};
+  --e20-theme-accent-contrast: #{v.$mlp-indigo-deep};
+  --e20-theme-muted-text: #{v.$mlp-lavender-grey};
+  --e20-theme-success: #{v.$mlp-teal};
+  --e20-theme-failure: #e0645a;
+  --e20-theme-critical: #{v.$mlp-orange};
+}
+
+.chat-message.essence20.theme-pony.theme-light {
+  --e20-theme-border-color: #{v.$mlp-periwinkle};
+  --e20-theme-text-color: #{v.$mlp-indigo};
+  --e20-theme-input-color: #ffffff;
+  --e20-theme-panel-bg: #fdf9ff;
+  --e20-theme-card-bg: rgba(255, 255, 255, 0.78);
+  --e20-theme-accent: #{v.$mlp-pink-deep};
+  --e20-theme-accent-contrast: #ffffff;
+  --e20-theme-muted-text: #{v.$mlp-purple};
+  --e20-theme-success: #1f7a5c;
+  --e20-theme-failure: #b83a30;
+  --e20-theme-critical: #a6710a;
+}
+
+/* Pony cards are bordered in the speaking Actor's own colour.
+
+   --e20-system-color is already on the message: chat.mjs sets it per message from the speaker's
+   system.color, the same property the sheet's own e20-border-accent trim reads. This just spends
+   it on the card's border, which suits the MLP look - a Friend Group's cards read as whose they
+   are at a glance, the way the Pony sheets already do.
+
+   Scoped to theme-pony on purpose. Sci-fi keeps its neutral --e20-theme-border-color, where the
+   system colour is carried by the frame art instead and a coloured card border would compete
+   with it. The fallback keeps a card bordered when the speaker has no colour set (an unowned
+   message, or an Actor left on the default). */
+.chat-message.essence20.theme-pony .e20-check-card {
+  border-color: var(--e20-system-color, var(--e20-theme-border-color));
+  border-width: 2px;
+
+  /* Rounder than the Sci-fi 6px, to sit with the rest of the Pony frame geometry. */
+  border-radius: 10px;
 }
 
 /* ==========================================================================
@@ -54,11 +111,11 @@
    ::after clips the panel-gradient fill to the chamfered outline (a flat
    color has no shape of its own to chamfer); ::before paints the actual trim
    by masking a solid fill (--e20-system-color when the speaking Actor has
-   one, else --theme-accent, matching the old border's own fallback) through
+   one, else --e20-theme-accent, matching the old border's own fallback) through
    the sheets' own border art, the same recoloring trick .e20-border-accent
    uses - a fixed-color border-image (what .sliced-border uses) can't be
    tinted per speaker, and deliberately skips .e20-border-accent's own
-   --theme-border-filter: saturate(0) step too - that exists to neutralize
+   --e20-theme-border-filter: saturate(0) step too - that exists to neutralize
    the SVG's own literal red stroke color for .sliced-border's un-masked
    border-image use, and would just as happily strip the hue back out of
    the accent color this mask is painting with. 16/16 slice-to-width keeps
@@ -70,10 +127,10 @@
    getting cut into by them (16,16 lands exactly on the cut line's own edge).
    ========================================================================== */
 
-.chat-message {
+.chat-message.essence20 {
   position: relative;
   background: transparent;
-  color: var(--theme-text-color, #{v.$textcolor1});
+  color: var(--e20-theme-text-color, #{v.$textcolor1});
   border: none;
   border-radius: 0;
   box-shadow: none;
@@ -108,52 +165,52 @@
     position: absolute;
     z-index: -1;
     inset: 0;
-    background-color: var(--e20-system-color, var(--theme-accent));
-    -webkit-mask-box-image-source: var(--theme-border-image);
+    background-color: var(--e20-system-color, var(--e20-theme-accent));
+    -webkit-mask-box-image-source: var(--e20-theme-border-image);
     -webkit-mask-box-image-slice: 16;
     -webkit-mask-box-image-width: 16px;
     -webkit-mask-box-image-repeat: stretch;
-    mask-border-source: var(--theme-border-image);
+    mask-border-source: var(--e20-theme-border-image);
     mask-border-slice: 16;
     mask-border-width: 16px;
     mask-border-repeat: stretch;
     filter:
-      drop-shadow(2px 0 0 var(--e20-system-color, var(--theme-accent)))
-      drop-shadow(-2px 0 0 var(--e20-system-color, var(--theme-accent)))
-      drop-shadow(0 2px 0 var(--e20-system-color, var(--theme-accent)))
-      drop-shadow(0 -2px 0 var(--e20-system-color, var(--theme-accent)));
+      drop-shadow(2px 0 0 var(--e20-system-color, var(--e20-theme-accent)))
+      drop-shadow(-2px 0 0 var(--e20-system-color, var(--e20-theme-accent)))
+      drop-shadow(0 2px 0 var(--e20-system-color, var(--e20-theme-accent)))
+      drop-shadow(0 -2px 0 var(--e20-system-color, var(--e20-theme-accent)));
   }
 }
 
-.chat-message.theme-light::after {
+.chat-message.essence20.theme-light::after {
   background: v.$panel-gradient-light;
 }
 
 /* Extra pass on top of the shared reinforcement above - light mode's lower
    background contrast needs the line bulked up further than dark mode does. */
-.chat-message.theme-light::before {
+.chat-message.essence20.theme-light::before {
   filter:
-    drop-shadow(2px 0 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(-2px 0 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(0 2px 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(0 -2px 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(2px 2px 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(-2px -2px 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(2px -2px 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(-2px 2px 0 var(--e20-system-color, var(--theme-accent)));
+    drop-shadow(2px 0 0 var(--e20-system-color, var(--e20-theme-accent)))
+    drop-shadow(-2px 0 0 var(--e20-system-color, var(--e20-theme-accent)))
+    drop-shadow(0 2px 0 var(--e20-system-color, var(--e20-theme-accent)))
+    drop-shadow(0 -2px 0 var(--e20-system-color, var(--e20-theme-accent)))
+    drop-shadow(2px 2px 0 var(--e20-system-color, var(--e20-theme-accent)))
+    drop-shadow(-2px -2px 0 var(--e20-system-color, var(--e20-theme-accent)))
+    drop-shadow(2px -2px 0 var(--e20-system-color, var(--e20-theme-accent)))
+    drop-shadow(-2px 2px 0 var(--e20-system-color, var(--e20-theme-accent)));
 }
 
-.chat-message .flavor-text,
-.chat-message .message-sender,
-.chat-message .message-metadata {
-  color: var(--theme-text-color);
+.chat-message.essence20 .flavor-text,
+.chat-message.essence20 .message-sender,
+.chat-message.essence20 .message-metadata {
+  color: var(--e20-theme-text-color);
 }
 
 /* Dims (rather than removes) the sliced trim and adds an inset dashed line as
    the "private" cue - a plain border-style: dashed no longer applies now that
    the trim is a masked image rather than a real CSS border. */
-.chat-message.whisper {
-  outline: 1px dashed var(--theme-border-color);
+.chat-message.essence20.whisper {
+  outline: 1px dashed var(--e20-theme-border-color);
   outline-offset: -6px;
 
   &::before {
@@ -168,19 +225,19 @@
    actor sheet side.
    ========================================================================== */
 
-.e20-check-card {
-  background: var(--theme-card-bg);
-  border: 1px solid var(--theme-border-color);
+.essence20 .e20-check-card {
+  background: var(--e20-theme-card-bg);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: 6px;
   padding: 8px 10px;
 }
 
-.e20-check-flavor {
+.essence20 .e20-check-flavor {
   font-weight: 700;
   font-size: 1.05em;
   padding-bottom: 6px;
   margin-bottom: 6px;
-  border-bottom: 1px solid var(--theme-border-color);
+  border-bottom: 1px solid var(--e20-theme-border-color);
 }
 
 /* ==========================================================================
@@ -190,14 +247,14 @@
    onto the card rather than part of it.
    ========================================================================== */
 
-.e20-check-card .dice-roll {
+.essence20 .e20-check-card .dice-roll {
   margin: 0 0 6px;
 }
 
-.e20-check-card .dice-formula {
-  background: var(--theme-input-color);
-  color: var(--theme-muted-text);
-  border: 1px solid var(--theme-border-color);
+.essence20 .e20-check-card .dice-formula {
+  background: var(--e20-theme-input-color);
+  color: var(--e20-theme-muted-text);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: 4px;
 }
 
@@ -211,53 +268,53 @@
    background to the .expanded state keeps the roll collapsed by default looking exactly like a
    plain Skill roll's (no tooltip box at all) while still dressing up the breakdown for whoever
    actually clicks to expand it. */
-.e20-check-card .dice-roll.expanded .dice-tooltip {
-  background: var(--theme-input-color);
-  border: 1px solid var(--theme-border-color);
+.essence20 .e20-check-card .dice-roll.expanded .dice-tooltip {
+  background: var(--e20-theme-input-color);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: 4px;
 }
 
-.e20-check-card .dice-tooltip .dice-total {
-  color: var(--theme-text-color);
+.essence20 .e20-check-card .dice-tooltip .dice-total {
+  color: var(--e20-theme-text-color);
 }
 
-.e20-check-card .dice-total {
-  background: var(--theme-input-color);
-  color: var(--theme-text-color);
-  border: 1px solid var(--theme-border-color);
+.essence20 .e20-check-card .dice-total {
+  background: var(--e20-theme-input-color);
+  color: var(--e20-theme-text-color);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: 4px;
   font-variant-numeric: tabular-nums;
 }
 
 // Set by highlightCriticalSuccessFailure (chat.mjs) reading the actual rolled dice - a
 // genuinely different result from a plain success/failure, so it gets its own accent rather
-// than reusing --theme-success/--theme-failure.
-.dice-total.critical {
-  color: var(--theme-success, green);
-  border-color: var(--theme-success, green);
+// than reusing --e20-theme-success/--e20-theme-failure.
+.essence20 .dice-total.critical {
+  color: var(--e20-theme-success, green);
+  border-color: var(--e20-theme-success, green);
   font-weight: 700;
 }
 
-.dice-total.fumble {
-  color: var(--theme-failure, red);
-  border-color: var(--theme-failure, red);
+.essence20 .dice-total.fumble {
+  color: var(--e20-theme-failure, red);
+  border-color: var(--e20-theme-failure, red);
   font-weight: 700;
 }
 
-.dice-total.crumble {
-  color: var(--theme-critical, goldenrod);
-  border-color: var(--theme-critical, goldenrod);
+.essence20 .dice-total.crumble {
+  color: var(--e20-theme-critical, goldenrod);
+  border-color: var(--e20-theme-critical, goldenrod);
   font-weight: 700;
 }
 
 /* ==========================================================================
    Results - one row per target (or one row for a plain vs-Difficulty test
-   with no target). A left accent bar carries the pass/fail read at a glance,
+.essence20 with no target). A left accent bar carries the pass/fail read at a glance,
    matching the severity-stripe pattern used for status/semantic state
    elsewhere rather than only coloring the outcome word itself.
    ========================================================================== */
 
-.e20-check-results {
+.essence20 .e20-check-results {
   list-style: none;
   margin: 8px 0 0;
   padding: 0;
@@ -266,51 +323,51 @@
   gap: 6px;
 }
 
-.e20-check-result {
-  border-left: 3px solid var(--theme-border-color);
+.essence20 .e20-check-result {
+  border-left: 3px solid var(--e20-theme-border-color);
   border-radius: 4px;
-  background: var(--theme-panel-bg);
+  background: var(--e20-theme-panel-bg);
   padding: 4px 8px;
 }
 
-.e20-check-result.e20-check-success {
-  border-left-color: var(--theme-success);
+.essence20 .e20-check-result.e20-check-success {
+  border-left-color: var(--e20-theme-success);
 }
 
-.e20-check-result.e20-check-failure {
-  border-left-color: var(--theme-failure);
+.essence20 .e20-check-result.e20-check-failure {
+  border-left-color: var(--e20-theme-failure);
 }
 
-.e20-check-result-header {
+.essence20 .e20-check-result-header {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 6px;
 }
 
-.e20-check-name {
+.essence20 .e20-check-name {
   font-weight: 700;
   flex: 1 1 auto;
 }
 
-.e20-check-difficulty {
+.essence20 .e20-check-difficulty {
   font-size: 0.85em;
-  color: var(--theme-muted-text);
+  color: var(--e20-theme-muted-text);
 }
 
-.e20-check-outcome {
+.essence20 .e20-check-outcome {
   font-weight: 700;
   font-size: 0.9em;
   text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 
-.e20-check-success .e20-check-outcome {
-  color: var(--theme-success);
+.essence20 .e20-check-success .e20-check-outcome {
+  color: var(--e20-theme-success);
 }
 
-.e20-check-failure .e20-check-outcome {
-  color: var(--theme-failure);
+.essence20 .e20-check-failure .e20-check-outcome {
+  color: var(--e20-theme-failure);
 }
 
 /* ==========================================================================
@@ -323,11 +380,11 @@
    background-color-through-a-mask technique, see the envelope comment above
    for why a plain border-image can't be tinted per speaker.
 
-   Base fill is --theme-input-color/--theme-text-color (the same pairing the
+   Base fill is --e20-theme-input-color/--e20-theme-text-color (the same pairing the
    dice-formula/dice-total boxes already use) rather than a solid
-   --theme-accent fill at rest - a full-strength accent fill on every action
+   --e20-theme-accent fill at rest - a full-strength accent fill on every action
    button in a card made the card feel like it was shouting, and buried the
-   one thing --theme-accent actually needs to highlight (the speaking actor's
+   one thing --e20-theme-accent actually needs to highlight (the speaking actor's
    own color on the envelope trim) under a dozen identically-colored copies
    of it. The accent fill now only appears on hover/focus, so it reads as
    "this one lights up when you're about to click it" instead of a baseline
@@ -341,8 +398,8 @@
    class means those old messages pick up the same fix live rather than
    staying stuck looking like a different, older feature. */
 
-.e20-check-card button,
-.e20-reroll-button {
+.essence20 .e20-check-card button,
+.essence20 .e20-reroll-button {
   position: relative;
   display: block;
   width: 100%;
@@ -357,9 +414,9 @@
      growing to fit it. */
   height: auto;
   min-height: var(--input-height, 32px);
-  background: var(--theme-input-color);
+  background: var(--e20-theme-input-color);
   clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   border: none;
   border-radius: 0;
   padding: 6px 12px;
@@ -393,12 +450,12 @@
     pointer-events: none;
     position: absolute;
     inset: 0;
-    background-color: var(--e20-system-color, var(--theme-accent));
-    -webkit-mask-box-image-source: var(--theme-border-image);
+    background-color: var(--e20-system-color, var(--e20-theme-accent));
+    -webkit-mask-box-image-source: var(--e20-theme-border-image);
     -webkit-mask-box-image-slice: 16;
     -webkit-mask-box-image-width: 8px;
     -webkit-mask-box-image-repeat: stretch;
-    mask-border-source: var(--theme-border-image);
+    mask-border-source: var(--e20-theme-border-image);
     mask-border-slice: 16;
     mask-border-width: 8px;
     mask-border-repeat: stretch;
@@ -406,13 +463,13 @@
 
   &:hover:not(:disabled),
   &:focus-visible:not(:disabled) {
-    background: var(--e20-system-color, var(--theme-accent));
-    color: var(--theme-accent-contrast, #111);
+    background: var(--e20-system-color, var(--e20-theme-accent));
+    color: var(--e20-theme-accent-contrast, #111);
   }
 
   &:disabled {
-    background: var(--theme-card-bg);
-    color: var(--theme-muted-text);
+    background: var(--e20-theme-card-bg);
+    color: var(--e20-theme-muted-text);
     cursor: default;
     opacity: 0.7;
   }
@@ -424,24 +481,24 @@
 // than folded into the button's own text: unlike a reroll (which either applies or doesn't), this
 // number is a base weapon value PLUS the bonus, so rewriting the button label itself would imply
 // the whole amount came from that one source instead of just part of it.
-.e20-check-damage-bonus-note {
+.essence20 .e20-check-damage-bonus-note {
   font-size: 0.8em;
-  color: var(--theme-muted-text);
+  color: var(--e20-theme-muted-text);
   margin-top: 2px;
 }
 
-.e20-check-critical-options {
+.essence20 .e20-check-critical-options {
   display: block;
   margin-top: 4px;
 }
 
-.e20-check-critical-label {
-  color: var(--theme-critical);
+.essence20 .e20-check-critical-label {
+  color: var(--e20-theme-critical);
   font-weight: 700;
   margin-right: 4px;
 }
 
-.e20-reroll-buttons {
+.essence20 .e20-reroll-buttons {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -450,22 +507,30 @@
 
 /* ==========================================================================
    Inline @Check[...] enricher links (helpers/enrichers.mjs) - these render
-   inside item/Perk description text on a sheet, not in the chat log itself,
-   but share this file since they're the other half of "roll something,
+.essence20 inside item/Perk description text on a sheet, not in the chat log itself,
+.essence20 but share this file since they're the other half of "roll something,
    see a card" and carry the same rollable affordance.
    ========================================================================== */
 
-.e20-check-wrapper {
+.essence20 .e20-check-wrapper {
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
 
-.e20-check-send-to-chat {
+.essence20 .e20-check-send-to-chat {
   cursor: pointer;
   opacity: 0.7;
 
   &:hover {
     opacity: 1;
   }
+}
+
+/* The +5 offer inside the defender's Defense prompt (helpers/defense-choice.mjs). */
+.e20-window .e20-defense-boost {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 2px;
 }

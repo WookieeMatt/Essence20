@@ -20,7 +20,12 @@
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",
-    "usesPer": null
+    "usesPer": null,
+    "duration": {
+      "units": "special",
+      "value": null,
+      "text": "Indefinitely"
+    }
   },
   "effects": [],
   "flags": {},

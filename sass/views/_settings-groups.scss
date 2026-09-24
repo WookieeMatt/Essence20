@@ -1,0 +1,24 @@
+/* Group headings inserted into Foundry's own Settings app - see settings.js#SETTING_GROUPS.
+
+   Named with the package prefix and nothing else, deliberately. The Settings app is one of core's
+   windows: it carries no .essence20 class to scope to, so there is nothing to hang a descendant
+   selector off. A prefixed class is the other half of Foundry's namespacing guidance, and these
+   <h3>s are the only elements in that window we create, so the name cannot collide.
+
+   Colour comes from currentColor rather than a --e20-theme-* value: the Settings app follows
+   Foundry's own light/dark scheme, not ours, so inheriting is what keeps it legible in both. */
+.e20-settings-group {
+  margin: 0.85rem 0 0.35rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 1px solid currentColor;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.e20-settings-group:first-child {
+  margin-top: 0;
+}

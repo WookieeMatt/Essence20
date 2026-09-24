@@ -26,7 +26,7 @@ const MAX_AMOUNT = 4;
 export async function pickPoweredPlatingAmount(maxAmount) {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.PoweredPlatingPickAmountTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.PoweredPlatingPickAmountLabel')
     }</label><input type="number" name="amount" min="1" max="${maxAmount}" value="1" /></div>`,

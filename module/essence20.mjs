@@ -6,7 +6,12 @@ import * as data from "./data/index.mjs";
 import { createEffectMacro, toggleEffectMacro } from "./helpers/effects.mjs";
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
+import { Essence20Actors } from "./documents/actors.mjs";
+import { Essence20ActorDirectory } from "./apps/essence20-actor-directory.mjs";
 import { Essence20Combat } from "./documents/combat.mjs";
+import { Essence20TokenDocument } from "./documents/token.mjs";
+import { Essence20CombatTracker } from "./apps/combat-tracker.mjs";
+import { Essence20TokenRuler } from "./canvas/token-ruler.mjs";
 import { Essence20Combatant } from "./documents/combatant.mjs";
 import { Essence20Item } from "./documents/item.mjs";
 // Import sheet classes.
@@ -14,13 +19,17 @@ import { Essence20CharacterActorSheet } from "./sheets/character-sheet.mjs";
 import { Essence20CompanionActorSheet } from "./sheets/companion-sheet.mjs";
 import { Essence20NPCActorSheet } from "./sheets/npc-sheet.mjs";
 import { Essence20MegaformActorSheet } from "./sheets/megaform-sheet.mjs";
+import { Essence20PartyActorSheet } from "./sheets/party-sheet.mjs";
 import { Essence20VehicleActorSheet } from "./sheets/vehicle-sheet.mjs";
 import { Essence20ZordActorSheet } from "./sheets/zord-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
 import { handleStoryPointGrantRequest, handleStoryPointSpendRequest } from "./helpers/story-points.mjs";
+import { ensurePrimaryParty } from "./helpers/party.mjs";
+import { expireCircleAtTurnEnd } from "./helpers/friendship-circle.mjs";
 import { handleRemoteChoiceRequest, handleRemoteChoiceResponse } from "./helpers/remote-request.mjs";
+import { handleSetActionLedger } from "./helpers/action-economy.mjs";
 // Registers the "chooseDefense" remote prompt against remote-request.mjs's own registry -
 // imported for this side effect alone (see defense-choice.mjs's own registerRemotePrompt call at
 // its bottom), same reason-for-import-with-no-named-use as any other registration-pattern file.
@@ -30,7 +39,7 @@ import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 import StatBlockImporter from "./apps/stat-block-importer.mjs";
 import { canSwapTokenForm, swapTokenForm } from "./helpers/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
-import { addConsummatePerformerButton, addExploitWeaknessButton, addRerollButtons, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { addConsummatePerformerButton, addDefenseBoostButton, addExploitWeaknessButton, addRerollButtons, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
@@ -50,7 +59,8 @@ import { payMetallicArmorMaintenance } from "./helpers/metallic-armor.mjs";
 import { isImmuneToCondition } from "./helpers/condition-immunity.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
-import { applyThemeClass, refreshChatMessageThemes, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
+import { expireAoeRegions, expireAoeRegionsForScene, reconcileAoeRegions } from "./helpers/aoe-expiry.mjs";
+import { applyThemeClass, insertSettingGroupHeadings, migrateSheetThemeSetting, refreshChatMessageThemes, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
 import { updateRoleCache } from "./helpers/utils.mjs";
 import { registerEssence20Tours, sweepTourDemoContent } from "./tours/index.mjs";
 import { activateWelcomeOfferListeners, offerWelcomeTour } from "./tours/welcome-offer.mjs";
@@ -140,8 +150,18 @@ Hooks.once("init", async function () {
 
   // Define custom Document classes
   CONFIG.Actor.documentClass = Essence20Actor;
+  CONFIG.Actor.collection = Essence20Actors;
+  CONFIG.ui.actors = Essence20ActorDirectory;
   CONFIG.Combat.documentClass = Essence20Combat;
   CONFIG.Combatant.documentClass = Essence20Combatant;
+  // Charges token movement against the action economy - see documents/token.mjs and
+  // helpers/token-movement.mjs. Inert unless the world opts in to movement tracking.
+  CONFIG.Token.documentClass = Essence20TokenDocument;
+  // Remaining-action marks per combatant - see apps/combat-tracker.mjs. Draws nothing unless the
+  // world is tracking the action economy.
+  CONFIG.ui.combat = Essence20CombatTracker;
+  // Live "this move will cost you N Free actions" on the drag ruler - see canvas/token-ruler.mjs.
+  CONFIG.Token.rulerClass = Essence20TokenRuler;
   CONFIG.Item.documentClass = Essence20Item;
   CONFIG.statusEffects = foundry.utils.deepClone(E20.statusEffects);
 
@@ -214,6 +234,15 @@ Hooks.once("init", async function () {
   );
   foundry.documents.collections.Actors.registerSheet(
     "essence20",
+    Essence20PartyActorSheet,
+    {
+      types: ["party"],
+      makeDefault: true,
+      label: "Party",
+    },
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    "essence20",
     Essence20VehicleActorSheet,
     {
       types: ["vehicle"],
@@ -242,11 +271,9 @@ Hooks.once("init", async function () {
 
   registerSettings();
 
-  // Clients (players) listen on the socket to update the UI whenever the GM changes values, and
-  // (GI Joe CRB "In My Sights") a GM's own client listens for a PC's Story Point spend request -
-  // see helpers/story-points.mjs's own doc comment for why that request has to go over the
-  // socket at all. The tracker window being closed (game.StoryPointsTracker is then null) used
-  // to crash this handler outright on an ordinary sync message; that's now handled too.
+  // A client that cannot write the primary Party itself asks the GM's client to spend or grant
+  // a Story Point for it - see helpers/story-points.mjs. The totals themselves are no longer
+  // broadcast here: they live on an Actor now, and reach every client through updateActor.
   game.socket.on("system.essence20", (data) => {
     if (data.action === "spendStoryPoints") {
       handleStoryPointSpendRequest(data);
@@ -256,8 +283,8 @@ Hooks.once("init", async function () {
       handleRemoteChoiceRequest(data);
     } else if (data.action === "remoteChoiceResponse") {
       handleRemoteChoiceResponse(data);
-    } else {
-      game.StoryPointsTracker?.handleStoryPointSignal(data);
+    } else if (data.action === "setActionLedger") {
+      handleSetActionLedger(data);
     }
   });
 
@@ -406,6 +433,14 @@ Hooks.on("clientSettingChanged", (key) => {
 Hooks.once("ready", async function () {
   runMigrations();
 
+  /* Client-scoped, so it cannot ride along with runMigrations() (which is the world-data pass a
+     GM runs once for everyone) - every browser has its own copy to carry across. */
+  await migrateSheetThemeSetting();
+
+  /* Catch any lingering Area of Effect region that should have expired while nobody was logged in,
+     or whose expiry was missed because no GM was connected at the time. */
+  reconcileAoeRegions();
+
   /* Opt-in developer check that the Effect Wizard's catalog still matches the actor schemas -
      off by default, since it is noise for a player. Set CONFIG.debug.essence20Catalog = true (or
      call game.essence20.auditEffectCatalog() from the console at any time). */
@@ -418,6 +453,10 @@ Hooks.once("ready", async function () {
 
   // Point first-time users at the guided tours, once per world.
   await offerWelcomeTour();
+
+  /* The Story Point pool lives on the primary Party, so one has to exist before the tracker
+     below opens. A new world gets its Party here; an older one gets its points moved over. */
+  await ensurePrimaryParty();
 
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => {
@@ -577,6 +616,7 @@ Hooks.on("renderTokenHUD", (hud, html) => {
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
   addRerollButtons(app, html);
+  addDefenseBoostButton(app, html);
   addConsummatePerformerButton(app, html);
   addSpiteButton(app, html);
   addSufferButton(app, html);
@@ -585,6 +625,9 @@ Hooks.on("renderChatMessageHTML", (app, html, data) => {
   hideDifficultyForNonGm(app, html);
   applyChatMessageSystemColor(app, html);
   activateWelcomeOfferListeners(app, html);
+  // Namespaces the message so _chat.scss can scope its envelope rules to our own cards
+  // rather than styling every message in a shared chat log.
+  html.classList.add("essence20");
   applyThemeClass(html);
 });
 
@@ -628,7 +671,23 @@ function refreshMegaformsLinkedToActor(actorUuid) {
 
 Hooks.on("updateActor", (actor) => {
   refreshMegaformsLinkedToActor(actor.uuid);
+  refreshStoryPointsTracker(actor);
 });
+
+/**
+ * The Story Points tracker shows the primary Party's points, so it follows that Party: any
+ * change to it, from any client, re-renders the window everywhere. Creation and deletion are
+ * included because a new world's first Party, or a reassigned primary, changes what it shows.
+ * @param {Actor} actor
+ */
+function refreshStoryPointsTracker(actor) {
+  if (actor.type == "party") {
+    game.StoryPointsTracker?.render(false);
+  }
+}
+
+Hooks.on("createActor", refreshStoryPointsTracker);
+Hooks.on("deleteActor", refreshStoryPointsTracker);
 
 for (const hookName of ["createItem", "updateItem", "deleteItem"]) {
   Hooks.on(hookName, (item) => {
@@ -740,9 +799,34 @@ for (const hookName of ["combatTurn", "combatRound"]) {
       // deactivateSprinterBoostAtTurnEnd's own doc comment. Same "read combat.combatant BEFORE the
       // update commits" idiom as Frictionless Movement just above.
       deactivateSprinterBoostAtTurnEnd(endingActor);
+
+      // Friendship Circle (MLP CRB) - "until the end of the pony who formed the Friendship
+      // Circle's next turn". Same ending-actor idiom; helpers/friendship-circle.mjs decides.
+      expireCircleAtTurnEnd(endingActor, combat);
     }
   });
 }
+
+/* Action economy: repaint every open actor sheet when the turn changes, so the header pip row
+   reflects the new turn's budget.
+
+   combatTurnChange is Foundry v14's own post-update, all-clients companion to the GM-only
+   Combat#_onStartTurn that does the authoritative ledger reset (see documents/combat.mjs). That
+   split is the whole point: one client writes, every client re-renders. A plain re-render is
+   enough because the pip row is built from the combatant's flags at render time, which the GM's
+   write has already propagated by the time this fires. */
+Hooks.on("combatTurnChange", () => {
+  // foundry.applications.instances is v14's own ApplicationV2 registry, which is what every sheet
+  // in this system is (the legacy ui.windows map only ever held AppV1 windows). Walking it rather
+  // than game.actors also catches the sheet of an unlinked token's synthetic actor, which never
+  // appears in the world collection - and unlinked tokens are exactly the combatants most likely
+  // to be in an encounter.
+  for (const app of foundry.applications.instances.values()) {
+    if (app.rendered && app.document instanceof Actor) {
+      app.render();
+    }
+  }
+});
 
 /* Time To Think (MLP Magic, 3rd level) - see applyTimeToThinkEdge's own doc comment. Checked once,
    when combat actually begins, by which point every combatant's Initiative should already be
@@ -761,6 +845,17 @@ Hooks.on("combatStart", (combat) => {
    needing this. */
 Hooks.on("deleteCombat", (combat) => {
   applyHardCorpsDeferredDefeat(combat);
+
+  /* Lingering Area of Effect regions whose duration is tied to the encounter rather than to a
+     clock - "1 scene", plus any round-counting area that outlived the combat it was counting
+     rounds in. See helpers/aoe-expiry.mjs. */
+  expireAoeRegionsForScene();
+});
+
+/* World time moved, so a minutes/hours/days area may have run out. Fires on every client, but
+   expireAoeRegions gates itself to the one designated GM - see helpers/aoe-expiry.mjs. */
+Hooks.on("updateWorldTime", () => {
+  expireAoeRegions();
 });
 
 /* Reaches the Effect Wizard from an effect that already exists, for adding another change to it
@@ -781,6 +876,13 @@ Hooks.on("getHeaderControlsActiveEffectConfig", (app, controls) => {
 
 /* Flags a change key that will never apply, inline on Foundry's own effect sheet - see
    helpers/effect-key-warnings.mjs. Decoration only; the sheet itself is untouched. */
+/* Draws the group headings over this system's own settings - see settings.js#SETTING_GROUPS.
+   Decoration only: every setting still renders and behaves exactly as Foundry rendered it, so
+   if this ever stops matching core's markup the settings list simply goes back to being flat. */
+Hooks.on("renderSettingsConfig", (app, html) => {
+  insertSettingGroupHeadings(html);
+});
+
 Hooks.on("renderActiveEffectConfig", (app, html) => {
   addEffectKeyWarnings(app, html);
 });

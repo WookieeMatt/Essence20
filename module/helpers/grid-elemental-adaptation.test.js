@@ -5,7 +5,7 @@ const GRID_ELEMENTAL_ADAPTATION_ID = "Compendium.essence20.across_the_stars.Item
 
 function makeActor({ hasPower = true, resistances = {}, power = 1, used = false } = {}) {
   const items = hasPower ? [{ type: 'power', flags: { core: { sourceId: GRID_ELEMENTAL_ADAPTATION_ID } } }] : [];
-  const flagStore = used ? { gridElementalAdaptationUsedThisEncounter: { combatId: 'combat1' } } : {};
+  const flagStore = used ? { gridElementalAdaptationUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } } : {};
 
   return {
     system: { resistances, powers: { personal: { value: power } } },
@@ -34,7 +34,7 @@ describe("grantGridElementalAdaptationResistance", () => {
     await grantGridElementalAdaptationResistance(actor, 'cold', 3);
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.resistances.cold': true, 'system.powers.personal.value': 1 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'gridElementalAdaptationUsedThisEncounter', { combatId: 'combat1' });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'gridElementalAdaptationUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
   test("no-ops without the Power, on non-Energy damage, already Resistant, unaffordable, already used, or no damage", async () => {

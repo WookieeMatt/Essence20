@@ -2,6 +2,7 @@ import { jest } from '@jest/globals';
 
 import {
   applyReroll,
+  storyPointRerollConfig,
   canMeetRerollCondition,
   canMeetRerollScope,
   canUseReroll,
@@ -627,6 +628,36 @@ describe("applyReroll", () => {
     expect(die.results[0]).toMatchObject({ active: false, rerolled: true });
   });
 
+  // The universal Story Point spend: "re-roll any dice result of a 1" aimed at one die of the
+  // player's choice. The picker must offer only dice actually showing a 1, and touch only that 1.
+  test("target 'anyDie' with a match rule offers only matching dice and rerolls only the match", async () => {
+    const d20 = makeDie(20, [{ result: 1, active: true }]);
+    const d8 = makeDie(8, [{ result: 6, active: true }]);
+    const roll = makeRoll([d8, d20]);
+
+    // Two dice in the roll, but one candidate - so no dialog is shown and the d20 is taken.
+    const success = await applyReroll(roll, { mode: "ones", target: "anyDie", values: [], recursive: false });
+
+    expect(success).toBe(true);
+    expect(d20.reroll).toHaveBeenCalledWith("r1", { recursive: false });
+    expect(d8.reroll).not.toHaveBeenCalled();
+    expect(d8.results[0]).toMatchObject({ active: true });
+  });
+
+  test("target 'anyDie' with a match rule and nothing matching does nothing", async () => {
+    const d20 = makeDie(20, [{ result: 15, active: true }]);
+    const roll = makeRoll([d20]);
+
+    expect(await applyReroll(roll, { mode: "ones", target: "anyDie", values: [] })).toBe(false);
+    expect(d20.reroll).not.toHaveBeenCalled();
+  });
+
+  test("storyPointRerollConfig: one point, one die showing a 1, no limit but the pool", () => {
+    expect(storyPointRerollConfig()).toMatchObject({
+      mode: "ones", target: "anyDie", maxUses: 0, recursive: false,
+      cost: { worldStoryPoints: 1 }, source: "storyPoint", sourceType: "world",
+    });
+  });
   test("cancelling the die-picker dialog leaves the roll untouched and reports failure", async () => {
     const dieA = makeDie(20, [{ result: 15, active: true }]);
     const dieB = makeDie(20, [{ result: 3, active: true }]);

@@ -130,6 +130,14 @@ export async function toggleMonsterMorph(actor) {
       'system.health.bonus': actor.system.health.bonus - (config?.healthBonus ?? 0),
     });
     await actor.unsetFlag('essence20', MONSTER_FORM_SIZE_FLAG);
+
+    // Grow! can't outlast the Monster Form it needs. The Size restore above already covers it, so
+    // only its flags are dropped - otherwise the next Monster Form would start with a stale Grow
+    // already "on".
+    if (hasGrowFlag(actor)) {
+      await actor.unsetFlag('essence20', GROW_SIZE_FLAG);
+      await actor.setFlag('essence20', GROW_ACTIVE_FLAG, false);
+    }
   }
 
   await actor.setFlag('essence20', MONSTER_FORM_ACTIVE_FLAG, nowActive);
@@ -156,7 +164,7 @@ export async function toggleMonsterMorph(actor) {
 export const GROW_ID = `${FMMC}ZqE7kDEMylFQK6Oa`;
 const GROW_ACTIVE_FLAG = 'monsterGrowSelfActive';
 const GROW_SIZE_FLAG = 'monsterGrowSelfPreviousSize';
-const TOWERING_SIZE = 'towering';
+const GROW_SIZE = 'towering';
 const GROW_DAMAGE_BONUS = 1;
 const GROW_DEFENSE_BONUS = 2;
 
@@ -191,7 +199,7 @@ export async function toggleGrow(actor) {
     }
 
     await actor.setFlag('essence20', GROW_SIZE_FLAG, actor.system.size);
-    await actor.update({ 'system.size': TOWERING_SIZE });
+    await actor.update({ 'system.size': GROW_SIZE });
   } else {
     const previousSize = actor.getFlag('essence20', GROW_SIZE_FLAG) ?? 'large';
     await actor.update({ 'system.size': previousSize });

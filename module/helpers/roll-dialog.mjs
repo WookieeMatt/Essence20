@@ -1,5 +1,5 @@
 import { E20 } from "./config.mjs";
-import { actorHasPerk, findPerk } from "./perks.mjs";
+import { actorHasPerk, findPerk, getUsesThisEncounter, markUsedThisEncounterCount } from "./perks.mjs";
 import RollOptionsDialog from "../apps/roll-options-dialog.mjs";
 
 // Presence (GI Joe CRB p.76, Commando's Spy Focus, 1st level): "You do not suffer a Snag for
@@ -169,10 +169,13 @@ export class RollDialog {
         return false;
       }
 
-      const stored = actor.getFlag('essence20', GREEN_USES_FLAG);
-      const uses = stored?.combatId == game.combat.id ? stored.count : 0;
-      if (uses < 3) {
-        await actor.setFlag('essence20', GREEN_USES_FLAG, { combatId: game.combat.id, count: uses + 1 });
+      // Green's three-uses-per-encounter counter used to be hand-rolled here against
+      // game.combat.id, a duplicate of helpers/perks.mjs's own getUsesThisEncounter that carried
+      // the same out-of-combat bug: with no combat, the stored stamp never matched, so the count
+      // reset on every roll and the cap never applied. It now shares the Scene Clock with every
+      // other once-per-encounter ability.
+      if (getUsesThisEncounter(actor, GREEN_USES_FLAG) < 3) {
+        await markUsedThisEncounterCount(actor, GREEN_USES_FLAG);
         return false;
       }
     }
@@ -206,6 +209,7 @@ export class RollDialog {
       damageRolePoints: dataset.damageRolePoints,
       aimBonus: dataset.aimBonus,
       energonAvailable: dataset.energonAvailable,
+      storyPointSpecializedAvailable: dataset.storyPointSpecializedAvailable,
       strikeBonusAvailable: dataset.strikeBonusAvailable,
       heavyForceAvailable: dataset.heavyForceAvailable,
       ideaPointAvailable: dataset.ideaPointAvailable,
@@ -297,12 +301,25 @@ export class RollDialog {
       cobraBattleCryDeceptionAvailable: dataset.cobraBattleCryDeceptionAvailable,
       cobraBattleCryIntimidationAvailable: dataset.cobraBattleCryIntimidationAvailable,
       angryAvailable: dataset.angryAvailable,
+      hardpointMovement: dataset.hardpointMovement,
       defenseType: dataset.defenseType || 'none',
       defenseTypes: { none: 'E20.None', ...E20.defenses },
       availableSkillEffects: dataset.availableSkillEffects || [],
     };
+    /* E20.originSkills is conditioning plus E20.skills, and two rollable things are deliberately
+       absent from both: Wealth, which is a real `system.skills.wealth` field but which the sheets
+       present separately as the Wealth Die (see helpers/effect-catalog.mjs's own note), and a
+       Role's own skill die, which is named by the Role rather than by any enum. Both used to make
+       this title read "<actor> <shift> undefined Skill Roll". */
+    const skillLabel = E20.originSkills[dataset.skill]
+      // preLocalize has already turned the tables above into real strings, so this has to be a
+      // localized string too rather than the key.
+      ?? (dataset.skill == 'wealth' ? this._localize('E20.Wealth') : null)
+      ?? dataset.roleSkillName
+      ?? '';
+
     const title = this._localize('E20.RollDialogTitle', {
-      actor: actor.name, skill: E20.originSkills[dataset.skill], shift: E20.skillShifts[skillDataset.shift],
+      actor: actor.name, skill: skillLabel, shift: E20.skillShifts[skillDataset.shift],
     });
 
     return new Promise(resolve => {

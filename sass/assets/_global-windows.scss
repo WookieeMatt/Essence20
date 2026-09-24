@@ -1,10 +1,11 @@
 @use "../variables" as v;
+@use "../components/sliced_border" as sliced;
 
 /* Global styles */
-.window-app {
+.essence20.window-app {
   font-family: 'Rajdhani', sans-serif;
   font-weight: bold;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   border: v.$border;
   border-radius: v.$border-radius;
 }
@@ -20,21 +21,143 @@
   font-weight: bold;
 }
 
-.window-app .window-content {
-  color: var(--theme-text-color);
+/* Every window this system owns wears the same sliced-corner frame its sheets use for their own
+   panels - sheets, the twenty-five apps, and the inline dialogs helpers build.
+
+   .e20-window is an explicit opt-in, added by those windows themselves, and it exists because no
+   pre-existing class means "ours". essence20.mjs's renderDialogV2 hook deliberately stamps
+   "essence20", "theme-wrapper" AND "window-app" onto EVERY DialogV2, Foundry's own included, so
+   styling any of those three reaches core windows - which is exactly what went wrong when this
+   was first attempted: core dialogs picked up position/padding/background meant for our own, and
+   the sidebar and directories were pushed out of place.
+
+   An inline dialog opts in through the classes it passes, so a core dialog raised by Foundry
+   itself never carries this no matter what the hook adds to it.
+
+   :not(.sliced-border) keeps Story Points as it was - it already puts that class on its own
+   window root, and applying the treatment twice gave it two sets of ::before/::after plus that
+   class's own fit-content sizing fighting the frame. */
+/* Every window of ours stops painting core's own opaque panel: the sliced ::after supplies
+   the fill inside the clipped corners, and a square background or a border-radius underneath
+   would fill the very corner the clip-path cuts away. That is what made Story Points look like
+   it kept "losing" its bottom-right border - the frame was drawn correctly, but core's opaque
+   background sat behind it on both sides of the diagonal, so the cut never read as a cut.
+   This half applies to .sliced-border windows too; only the frame below is conditional. */
+.application.e20-window {
+  background: none;
+  border: none;
+  border-radius: 0;
+  /* Core puts 0 0 10px on every .application, and it traces the rectangular border box - so
+     it squared off the very corners the panel had just been cut out of. The ::after rules
+     below cast a shaped one instead. */
+  box-shadow: none;
+
+  > .window-header,
+  > .window-content {
+    background: none;
+    border: none;
+  }
+}
+
+/* A .sliced-border window (Story Points) paints its panel with the mixin's ::after, already
+   clipped to the chamfer. Its content must not paint a SECOND, un-chamfered panel on top of
+   that: .sliced-border's padding is 4px 2px while the frame band is 16px, so window-content's
+   own background lands well inside the frame and buries the corner art.
+
+   That is what kept eating the bottom-right corner. The straight edges of the border-image sit
+   about 1.5px in from the edge, inside the 2px/4px sliver the content does not cover, so they
+   survived - but the chamfer runs from 1.5px to 15px inward and was almost entirely covered.
+   The top-left chamfer survived only because it sits over the window HEADER, which is
+   transparent. Hence one corner missing and not the other.
+
+   Four classes, because .essence20.theme-wrapper .window-content (three) sets the gradient and
+   would otherwise win on source order - components/ is @use'd after assets/. */
+.application.e20-window > .window-header,
+.application.e20-window > .window-content {
+  background: none;
+}
+
+/* ...and the fill it used to paint moves to the sliced ::after, which is already clipped to the
+   chamfer, so it can never cover the frame. --e20-theme-window-fill carries whichever gradient
+   the active theme used to put on .window-content, so each theme looks as it did.
+   Both branches need saying: a plain window gets its ::after from the mixin included below, a
+   .sliced-border window from that class's own copy, and each needs outranking in turn. */
+/* THE bottom-right corner fix.
+
+   Foundry gives every ApplicationV2 window a .window-resize-handle: an 11x11 div positioned
+   1px from the right and bottom, painting url(/ui/resize-handle.webp) - an opaque grip
+   graphic. It is z-index:auto and comes after our frame in DOM order, so it paints OVER the
+   ::before that draws the border image. It lands exactly on the corner where the chamfer
+   (Sci-fi) or curve (Pony) is, which is why it was always the BOTTOM-RIGHT that went missing,
+   on every window, in every theme - and why it outlived three other fixes aimed at the
+   clip-path, the window background and the missing e20-window class. None of those touched
+   the handle.
+
+   z-index 1 puts the frame above the handle (auto/0) while still leaving it below
+   .window-header (also 1, but later in DOM, so the header keeps winning the tie and its
+   buttons stay on top). The frame is pointer-events:none, so raising it does not stop the
+   handle being grabbed - the window still resizes, the grip icon just sits behind the
+   border art instead of on top of it. */
+.application.e20-window::before,
+.application.e20-window.sliced-border::before {
+  z-index: 1;
+}
+
+.application.e20-window.sliced-border::after {
+  background: var(--e20-theme-window-fill);
+  filter: v.$window-drop-shadow;
+}
+.application.e20-window:not(.sliced-border) {
+  @include sliced.sliced-panel;
+  /* The mixin opens with position:relative, which is right for a panel sitting in flow and wrong
+     for a floating window: it overrode the position:absolute ApplicationV2 relies on, so Foundry's
+     inline left/top became offsets from the window's static position at the end of <body>. Sheets
+     landed past the sidebar and each new one stacked below the last. absolute is just as much a
+     containing block for the mixin's ::before/::after, so putting it back costs the look nothing. */
+  position: absolute;
+  /* Room for the 16px border-image, so a header button does not sit on the slice. */
+  padding: 6px;
+
+  &::after {
+    background: var(--e20-theme-window-fill);
+    filter: v.$window-drop-shadow;
+  }
+
+  /* A window takes the THICK frame, the same one Story Points already uses.
+
+     The thin asset (--e20-theme-border-image) draws a 1px stroke centred 0.5px from the edge,
+     so half of it falls outside the tile and what is left sits exactly on the boundary between
+     the panel and whatever is behind the window. In dark mode that line is lighter than both
+     and reads as a frame; in light mode it is near-black against a pale panel and a dark scene,
+     so it merges into the background and the window looked unframed. The thick asset strokes
+     3px centred 1.5px in, which lands ON the panel either way.
+
+     No `fill` on the slice: the middle of the image would paint over the content, and the
+     panel fill is the ::after's job. Inline .sliced-border panels are untouched and keep the
+     thin frame - this is only about window frames. */
+  &::before {
+    border-image: var(--e20-theme-thick-border-image);
+    border-image-slice: 16;
+    // Above the resize handle - see the block above for why.
+    z-index: 1;
+  }
+}
+
+.essence20.window-app .window-content {
+  color: var(--e20-theme-text-color);
   border-radius: v.$border-radius;
   background: v.$background-image-1;
   background-size: cover;
 }
 
-.window-app .window-content button {
-  color: var(--theme-text-color);
-  background: var(--theme-card-bg);
-  border-color: var(--theme-border-color);
+.essence20.window-app .window-content button {
+  color: var(--e20-theme-text-color);
+  background: var(--e20-theme-card-bg);
+  border-color: var(--e20-theme-border-color);
   border-radius: 20px;
 }
 
-body.game .window-app {
+.essence20.window-app {
   --color-select-option-bg: #5f5f5f;
 }
 
@@ -50,57 +173,57 @@ body.game .window-app {
 // forcing min-width: 860px even then, so the window never actually narrowed - only its height
 // collapsed (once the .window-content display:grid rule above got the same guard), leaving a
 // full-width title bar instead of the compact pill every other window type collapses to.
-.actor:not(.minimized, .minimizing, .maximizing) {
+.essence20.actor:not(.minimized, .minimizing, .maximizing) {
   min-width: 860px;
   min-height: auto;
 }
 
-.directory-list .actor {
+.essence20 .directory-list .actor {
   min-width: fit-content;
 }
 
-.dialog .dialog-buttons button.default {
-  color: var(--theme-text-color);
-  background: var(--theme-card-bg);
+.essence20.dialog .dialog-buttons button.default {
+  color: var(--e20-theme-text-color);
+  background: var(--e20-theme-card-bg);
 }
 
-.dialog .dialog-buttons button {
-  color: var(--theme-text-color);
-  background: var(--theme-card-bg);
+.essence20.dialog .dialog-buttons button {
+  color: var(--e20-theme-text-color);
+  background: var(--e20-theme-card-bg);
 }
 
-.dialog .dialog-buttons {
-  color: var(--theme-text-color);
+.essence20.dialog .dialog-buttons {
+  color: var(--e20-theme-text-color);
   padding-top: v.$padding;
 }
 
-.dialog-content {
+.essence20 .dialog-content {
   list-style: none;
   padding: v.$padding;
   overflow-y: none;
-  color: var(--theme-text-color);
+  color: var(--e20-theme-text-color);
   flex-basis: auto;
   justify-content: center;
   height: 100%;
-  background: var(--theme-card-bg);
+  background: var(--e20-theme-card-bg);
   border: v.$border;
   border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
 }
 
-.dialog input{
-  color: var(--theme-text-color);
+.essence20.dialog input{
+  color: var(--e20-theme-text-color);
 }
 
-.app .window-app dialog {
+.essence20.app .window-app dialog {
   background: none;
 }
 
-#module-management .package-list .package-title {
-  color: var(--theme-text-color);
+.essence20 #module-management .package-list .package-title {
+  color: var(--e20-theme-text-color);
 }
 
-.item-button-container {
+.essence20 .item-button-container {
   flex-grow: 0;
 }
 
@@ -108,13 +231,13 @@ body.game .window-app {
   font-size: 1.25em;
 }
 
-.rollable:hover,
-.rollable:focus {
-  color: var(--theme-accent);
+.essence20 .rollable:hover,
+.essence20 .rollable:focus {
+  color: var(--e20-theme-accent);
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
 
-.window-app textarea {
-  color: var(--theme-text-color);
+.essence20.window-app textarea {
+  color: var(--e20-theme-text-color);
 }

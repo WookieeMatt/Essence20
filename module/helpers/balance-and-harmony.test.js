@@ -23,7 +23,7 @@ describe("canUseBalanceAndHarmony", () => {
 
   test("false once already used this scene", async () => {
     const actor = makeActor();
-    await actor.setFlag('essence20', 'balanceAndHarmonyUsesThisScene', { sceneId: 'scene1', count: 1 });
+    await actor.setFlag('essence20', 'balanceAndHarmonyUsesThisScene', { epoch: 1, window: 'scene', count: 1 });
     expect(canUseBalanceAndHarmony(actor)).toBe(false);
   });
 });
@@ -65,7 +65,7 @@ describe("applyBalanceAndHarmony", () => {
 
   test("does nothing once already used this scene", async () => {
     const actor = makeActor(['frightened']);
-    await actor.setFlag('essence20', 'balanceAndHarmonyUsesThisScene', { sceneId: 'scene1', count: 1 });
+    await actor.setFlag('essence20', 'balanceAndHarmonyUsesThisScene', { epoch: 1, window: 'scene', count: 1 });
 
     const removed = await applyBalanceAndHarmony(actor);
 

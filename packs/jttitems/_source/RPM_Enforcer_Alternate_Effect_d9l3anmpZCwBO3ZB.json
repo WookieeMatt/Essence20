@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "A Jump Through Time",
@@ -27,7 +28,8 @@
       "long": 200,
       "value": 100
     },
-    "shiftDown": 1
+    "shiftDown": 1,
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

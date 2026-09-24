@@ -1,6 +1,6 @@
 <div class="flexrow item-label">
-  <div class="item-image flex-grow-0">
-    <div class="flexrow nowrap gap-5">
+  <div class="item-image e20-flex-grow-0">
+    <div class="flexrow e20-nowrap e20-gap-5">
       <a class="rollable" data-action="rollable" data-roll-type="info" data-tooltip="{{localize 'E20.ItemRollTitle'}}">
         <i class="fas fa-message-lines" data-roll-type="info" ></i>
       </a>
@@ -10,9 +10,9 @@
     </div>
   </div>
   {{#if (canUsePerk item)}}
-    <div class="item-image flex-grow-0">
-      <div class="flexrow nowrap gap-5">
-        <a class="perk-use flex-grow-0" data-action="perkUse" data-id="{{item._id}}"
+    <div class="item-image e20-flex-grow-0">
+      <div class="flexrow e20-nowrap e20-gap-5">
+        <a class="perk-use e20-flex-grow-0" data-action="perkUse" data-id="{{item._id}}"
           data-tooltip="{{localize 'E20.PerkUse'}}">
           <i class="fas fa-bolt fa-lg"></i>
         </a>
@@ -20,9 +20,9 @@
     </div>
   {{/if}}
   {{#if (eq item.type "shield")}}
-    <div class="item-image flex-grow-0">
-      <div class="flexrow nowrap gap-5">
-        <a class="shield-activate flex-grow-0" data-action="shieldActivationToggle" data-id="{{item._id}}"
+    <div class="item-image e20-flex-grow-0">
+      <div class="flexrow e20-nowrap e20-gap-5">
+        <a class="shield-activate e20-flex-grow-0" data-action="shieldActivationToggle" data-id="{{item._id}}"
           {{#if item.system.active}} data-tooltip="{{localize 'E20.ShieldCurrentStateActive'}}" {{else}} data-tooltip="{{localize 'E20.ShieldCurrentStatePassive'}}" {{/if}}
         >
           {{#if item.system.active}}
@@ -35,7 +35,7 @@
     </div>
   {{/if}}
   {{#if (isdefined item.system.equipped)}}
-  <div class="flex-grow-0">
+  <div class="e20-flex-grow-0">
     <input class="inline-edit item-label-checkbox {{#if (eq item.type "shield")}} shield-equip{{/if}}"
       data-field="system.equipped" data-id="{{item._id}}" type="checkbox" name="shield.{{@index}}.equipped"
       {{#if (eq item.type "shield")}} data-action="shieldEquipToggle" {{/if}}

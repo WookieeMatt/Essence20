@@ -449,12 +449,18 @@ export function buildWeaponEffectData(effect, { name, skill }) {
  * @returns {{weapon: Object, effects: Object[]}}
  */
 export function buildWeaponData(attack) {
+  // The parser resolves a printed Traits: line against BOTH weapon and vehicle traits, because
+  // a vehicle attack prints "Drive-By" and a weapon's does not. The weapon Item's own field
+  // takes weapon traits only, so anything else is dropped here rather than handed to the schema
+  // to refuse - it was never stored either way, and this is the difference between a quiet
+  // import and thirty-six validation errors.
+  const traits = (attack.traits ?? []).filter(trait => trait in CONFIG.E20.weaponTraits);
   const weapon = {
     name: attack.name,
     type: 'weapon',
     system: {
       equipped: true,
-      traits: attack.traits ?? [],
+      traits,
       requirements: {
         skill: attack.skill ?? null,
         shift: null,

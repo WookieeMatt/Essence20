@@ -1,4 +1,14 @@
 <div>
+  {{!-- Which Party these points belong to - the pinned/primary one, which is the only Party
+        the tracker ever reads. Re-rendered on any Party update and on the primaryParty setting
+        changing, so a rename or a reassignment shows up here without reopening. --}}
+  {{#if partyName}}
+    <div class="story-points__party" data-tooltip="{{localize 'E20.SptPrimaryPartyTooltip'}}">
+      <i class="fa-solid fa-thumbtack" inert></i>
+      <span class="story-points__party-name">{{partyName}}</span>
+    </div>
+  {{/if}}
+
   <div class="story-points__top">
     {{#if gmPointsArePublic}}
       <div class="sliced-border">
@@ -8,9 +18,9 @@
           class="story-points__input"
           type="number"
           value="{{gmPoints}}"
-          {{#unless isGm}}disabled{{/unless}}
+          {{#unless canEditGmPoints}}disabled{{/unless}}
         />
-      {{#if isGm}}
+      {{#if canEditGmPoints}}
         <div class="story-points__btn-wrapper">
           <button data-action="incrementGmPoints" class="story-points__btn --increment" data-tooltip="{{localize 'E20.SptIncrement'}}">
             <i class="fas fa-angle-double-up"></i>
@@ -30,9 +40,9 @@
         class="story-points__input"
         type="number"
         value="{{storyPoints}}"
-        {{#unless isGm}}disabled{{/unless}}
+        {{#unless canEditStoryPoints}}disabled{{/unless}}
       />
-      {{#if isGm}}
+      {{#if canEditStoryPoints}}
         <div class="story-points__btn-wrapper">
           <button data-action="incrementStoryPoints" class="story-points__btn --increment" data-tooltip="{{localize 'E20.SptIncrement'}}">
             <i class="fas fa-angle-double-up"></i>
@@ -44,9 +54,86 @@
       {{/if}}
     </div>
   </div>
-  {{#if isGm}}
-    <button data-action="rollMajorSceneGmPoints" class="story-points__btn --bottom">
-      <span>{{localize "E20.SptRollButton"}}</span>
+  {{#if canSpendNarrative}}
+    <div class="story-points__spends">
+      <button data-action="spendNarrative" data-spend="equipment" class="story-points__btn --bottom" {{#unless narrativeAffordable}}disabled{{/unless}} data-tooltip="{{localize 'E20.SptSpendEquipmentTooltip'}}">
+        <span>{{localize "E20.SptSpendEquipmentButton"}}</span>
+      </button>
+      <button data-action="spendNarrative" data-spend="clue" class="story-points__btn --bottom" {{#unless narrativeAffordable}}disabled{{/unless}} data-tooltip="{{localize 'E20.SptSpendClueTooltip'}}">
+        <span>{{localize "E20.SptSpendClueButton"}}</span>
+      </button>
+    </div>
+  {{/if}}
+  {{#if friendshipCircle}}
+    {{!-- Friendship Circle (MLP CRB, every Spirit Role, 1st level) - see helpers/friendship-circle.mjs --}}
+    <div class="sliced-border --col story-points__circle">
+      <label class="sliced-border__label">{{localize "E20.FriendshipCircle"}}</label>
+      {{#if friendshipCircle.pickActor}}
+        <select name="circleActor" class="story-points__circle-actor">
+          {{#each friendshipCircle.members as |member|}}
+            <option value="{{member.uuid}}" {{#if member.selected}}selected{{/if}}>{{member.name}}</option>
+          {{/each}}
+        </select>
+      {{/if}}
+      {{#if friendshipCircle.active}}
+        <p class="story-points__circle-status">{{localize "E20.FriendshipCircleActive" former=friendshipCircle.former}}</p>
+        <ul class="story-points__circle-members">
+          {{#each friendshipCircle.members as |member|}}
+            <li class="{{#if member.inCircle}}is-in{{/if}}">{{member.name}}</li>
+          {{/each}}
+        </ul>
+        <div class="story-points__circle-pools">
+          {{#each friendshipCircle.pools as |pool|}}
+            <button data-action="circleDraw" data-pool="{{pool.pool}}" class="story-points__btn --bottom" {{#unless ../friendshipCircle.canDraw}}disabled{{/unless}} {{#unless pool.count}}disabled{{/unless}}>
+              <span>{{localize pool.label}} ({{pool.count}})</span>
+            </button>
+          {{/each}}
+        </div>
+        {{#if friendshipCircle.canJoin}}
+          <button data-action="circleJoin" class="story-points__btn --bottom" data-tooltip="{{localize 'E20.FriendshipCircleJoinTooltip'}}">
+            <span>{{localize "E20.FriendshipCircleJoin" name=friendshipCircle.actor}}</span>
+          </button>
+        {{/if}}
+        {{#if friendshipCircle.canEnd}}
+          <button data-action="circleEnd" class="story-points__btn --bottom">
+            <span>{{localize "E20.FriendshipCircleEnd"}}</span>
+          </button>
+        {{/if}}
+      {{else}}
+        <p class="story-points__circle-status">{{localize "E20.FriendshipCircleLeft" count=friendshipCircle.left}}</p>
+        {{#if friendshipCircle.canForm}}
+          <button data-action="circleForm" class="story-points__btn --bottom" data-tooltip="{{localize 'E20.FriendshipCircleFormTooltip'}}">
+            <span>{{localize "E20.FriendshipCircleForm" name=friendshipCircle.actor}}</span>
+          </button>
+        {{/if}}
+      {{/if}}
+    </div>
+  {{/if}}
+  {{#if gridPowerBloom}}
+    <button data-action="gridPowerBloom" class="story-points__btn --bottom" {{#unless gridPowerBloom.affordable}}disabled{{/unless}} data-tooltip="{{localize 'E20.SptGridPowerBloomTooltip'}}">
+      <span>{{localize "E20.SptGridPowerBloomButton"}} ({{gridPowerBloom.cost}})</span>
     </button>
   {{/if}}
+  {{#if isGm}}
+    {{#if hasGmPool}}
+      <button data-action="rollMajorSceneGmPoints" class="story-points__btn --bottom">
+        <span>{{localize "E20.SptRollButton"}}</span>
+      </button>
+    {{/if}}
+    <button data-action="newSession" class="story-points__btn --bottom" data-tooltip="{{localize 'E20.SptNewSessionTooltip'}}">
+      <span>{{localize "E20.SptNewSession"}}</span>
+    </button>
+  {{/if}}
+  {{!-- Scene Clock: what refreshes once-per-scene abilities. Everyone sees which scene they
+        are in; only the GM can advance it. See helpers/scene-clock.mjs. --}}
+  <div class="story-points__scene">
+    <span class="story-points__scene-label">
+      {{localize "E20.SceneClockScene"}} {{sceneEpoch}}{{#if sceneLabel}} &mdash; {{sceneLabel}}{{/if}}
+    </span>
+    {{#if isGm}}
+      <button data-action="newScene" class="story-points__btn --bottom">
+        <span>{{localize "E20.SceneClockNewScene"}}</span>
+      </button>
+    {{/if}}
+  </div>
 </div>

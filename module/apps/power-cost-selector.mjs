@@ -19,6 +19,7 @@ export default class PowerCostSelector extends serializeFormSubmits(HandlebarsAp
     classes: [
       "essence20",
       "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",

@@ -1,0 +1,69 @@
+{{!-- Per-turn action budget. Rendered only while the actor is in the active encounter and the
+      world's Action Economy setting isn't Off - see helpers/action-economy.mjs#getSheetContext,
+      which returns null in every other case.
+
+      Every category draws as pips rather than a number, which only works because the rules keep
+      the budgets small: Free actions are Speed - 2 (GI Joe CRB p.193), so even a very fast
+      character draws a handful.
+
+      This sits in the header's bottom row beside Role/Focus/Origin, which are single-field boxes,
+      so everything optional here is an icon with a tooltip rather than a line of text - a sentence
+      inside the box made it half again as wide and a third taller than its neighbours. --}}
+{{#if actionEconomy}}
+  <div class="action-economy sliced-border {{#if actionEconomy.turnSkipped}}action-economy--skipped{{/if}}">
+    <label class="sliced-border__label"
+           data-tooltip="{{#if actionEconomy.spent}}{{localize 'E20.ActionEconomySpentThisTurn'}}: {{#each actionEconomy.spent as |s|}}{{#if s.source}}{{s.source}}{{else}}{{localize s.label}}{{/if}}{{#unless @last}}, {{/unless}}{{/each}}{{else}}{{localize 'E20.ActionEconomyNothingSpent'}}{{/if}}">{{localize 'E20.ActionEconomyHeader'}}</label>
+    <div class="action-economy__rows">
+      {{#each actionEconomy.categories as |category|}}
+        <div class="action-economy__row" data-category="{{category.key}}">
+          <span class="action-economy__label">{{localize category.label}}</span>
+
+          <span class="action-economy__pips">
+            {{#each category.pips as |pip|}}
+              <i class="action-economy__pip {{#if pip.spent}}action-economy__pip--spent{{/if}} fas fa-circle"></i>
+            {{else}}
+              <span class="action-economy__none">&mdash;</span>
+            {{/each}}
+          </span>
+
+          <span class="action-economy__controls">
+            <a data-action="actionSpend" data-category="{{category.key}}"
+               data-tooltip="{{localize 'E20.ActionEconomySpendTooltip'}}">
+              <i class="fas fa-minus"></i>
+            </a>
+            <a data-action="actionRestore" data-category="{{category.key}}"
+               data-tooltip="{{localize 'E20.ActionEconomyRestoreTooltip'}}">
+              <i class="fas fa-plus"></i>
+            </a>
+          </span>
+        </div>
+      {{/each}}
+    </div>
+
+    {{!-- Both of these are usually absent, and the box collapses back to just the pips when they
+          are - see the :empty rule in sass/actors/_action-economy.scss. The rules' own named
+          actions used to be offered here as a select; they live on the Actions tab now, which has
+          room to group them by cost and to let the same one be taken twice (Aim, repeatedly). --}}
+    <div class="action-economy__notes">
+      {{!-- "Alternatively, a character may trade in a Standard action for two Free actions"
+            (CRB p.193). Only offered while there's still a Standard left to give up. --}}
+      {{#if actionEconomy.canTrade}}
+        <a class="action-economy__trade" data-action="actionTradeForFree"
+           data-tooltip="{{localize 'E20.ActionEconomyTradeTooltip'}}"
+           aria-label="{{localize 'E20.ActionEconomyTradeTooltip'}}">
+          {{!-- Spelled out as the trade itself - one Standard for two Free - where an arrows icon
+               left it a guess until hovered. The tooltip still carries the full sentence. --}}
+          <span class="action-economy__trade-label">S&nbsp;&rarr;&nbsp;2&times;F</span>
+        </a>
+      {{/if}}
+
+      {{!-- Speed 1 spends one action OR the other. Without this, two full pips that both vanish
+            when either is spent reads as a bug. --}}
+      {{#if actionEconomy.shared}}
+        <i class="action-economy__hint fas fa-circle-info"
+           data-tooltip="{{localize 'E20.ActionEconomySharedHint'}}"
+           aria-label="{{localize 'E20.ActionEconomySharedHint'}}"></i>
+      {{/if}}
+    </div>
+  </div>
+{{/if}}

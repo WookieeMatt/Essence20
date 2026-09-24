@@ -19,6 +19,7 @@ export default class TransformOptionSelector extends serializeFormSubmits(Handle
     classes: [
       "essence20",
       "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",

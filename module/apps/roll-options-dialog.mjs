@@ -22,6 +22,7 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
     classes: [
       "essence20",
       "theme-wrapper",
+      "e20-window",
       "roll-dialog-app",
       "subconfig",
       "window-app",
@@ -111,6 +112,7 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       emptyTheMag: form?.emptyTheMag?.checked,
       isAiming: form?.isAiming?.checked,
       spendEnergon: form?.spendEnergon?.checked,
+      spendStoryPointSpecialized: form?.spendStoryPointSpecialized?.checked,
       applyStrikeBonus: form?.applyStrikeBonus?.checked,
       applyHeavyForce: form?.applyHeavyForce?.checked,
       spendIdeaPoint: form?.spendIdeaPoint?.checked,
@@ -199,6 +201,7 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       applyCobraBattleCryIntimidation: form?.applyCobraBattleCryIntimidation?.checked,
       applyAngry: form?.applyAngry?.checked,
       drivingStrike: form?.drivingStrike?.value,
+      hardpointMovePenalty: form?.hardpointMovePenalty ? parseInt(form.hardpointMovePenalty.value) : 0,
       defenseType: form.defenseType.value,
       selectedSkillEffectIds,
       disabledModifierSourceIds,

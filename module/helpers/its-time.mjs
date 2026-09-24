@@ -30,6 +30,8 @@ export function isItsTimeActive(actor) {
  */
 export async function toggleItsTime(actor) {
   const nowActive = !isItsTimeActive(actor);
-  await actor.update({ "system.isMorphed": nowActive });
+  // The Morphed status and ring tint follow the flag (helpers/morph-state.mjs); the chat line
+  // does not - this Perk is not a Morph, and its own card already said what happened.
+  await actor.update({ "system.isMorphed": nowActive }, { essence20: { silentState: true } });
   return nowActive;
 }

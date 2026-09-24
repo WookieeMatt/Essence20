@@ -64,7 +64,7 @@ export async function checkAndActivateDefenderStep(targetActor, attackingActor) 
   for (const reactor of reactors) {
     const confirmation = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize('E20.DefenderStepConfirmTitle') },
-      classes: ["window-app"],
+      classes: ["window-app", "e20-window"],
       content: `<p>${game.i18n.format('E20.DefenderStepConfirmContent', {
         reactor: reactor.name, ally: targetActor.name, attacker: attackingActor?.name ?? '?',
       })}</p>`,

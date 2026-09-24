@@ -12,7 +12,7 @@ const IRON_HIDE_ID = "Compendium.essence20.gi_joe_crb.Item.hXtchClOmMDDeWB9";
 
 game.user = { isGM: true };
 game.combat = null;
-game.actors = { get: jest.fn(() => null) };
+game.actors = { get: jest.fn(() => null), party: game.actors.party };
 foundry.applications.api.DialogV2 = { wait: jest.fn() };
 
 /* onApplyDamage */
@@ -296,7 +296,7 @@ describe("onApplyDamage", () => {
     expect(foundry.applications.api.DialogV2.wait).toHaveBeenCalled();
     expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 10 }); // 0 damage applied
     expect(target.setFlag).toHaveBeenCalledWith('essence20', 'hardCorpsIgnoredDamage', { combatId: 'combat1', amount: 5 });
-    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'hardCorpsUsedThisEncounter', { combatId: 'combat1' });
+    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'hardCorpsUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
     game.combat = null;
   });
 
@@ -314,7 +314,7 @@ describe("onApplyDamage", () => {
   });
 
   test("Hard Corps doesn't prompt again once already used this combat", async () => {
-    const target = makeTarget({ perkIds: [HARD_CORPS_ID], hardCorpsFlag: { combatId: 'combat1' } });
+    const target = makeTarget({ perkIds: [HARD_CORPS_ID], hardCorpsFlag: { epoch: 1, window: 'encounter', count: 1 } });
     fromUuid.mockResolvedValue(target);
     game.combat = { id: 'combat1', round: 1, turn: 0 };
 
@@ -335,7 +335,7 @@ describe("onApplyDamage", () => {
 
     expect(foundry.applications.api.DialogV2.wait).toHaveBeenCalled();
     expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 10 }); // 0 damage applied
-    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'didntEvenFeelItThisEncounter', { combatId: 'combat1' });
+    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'didntEvenFeelItThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
     game.combat = null;
   });
 
@@ -367,7 +367,7 @@ describe("onApplyDamage", () => {
   test("Didn't Even Feel It doesn't prompt again once already used this encounter", async () => {
     const target = makeTarget({
       perkIds: [DIDNT_EVEN_FEEL_IT_ID], recklessAbandonActive: true,
-      didntEvenFeelItFlag: { combatId: 'combat1' },
+      didntEvenFeelItFlag: { epoch: 1, window: 'encounter', count: 1 },
     });
     fromUuid.mockResolvedValue(target);
     game.combat = { id: 'combat1', round: 3, turn: 1 }; // later round, same encounter
@@ -382,7 +382,9 @@ describe("onApplyDamage", () => {
   test("Didn't Even Feel It is available again in a new encounter", async () => {
     const target = makeTarget({
       perkIds: [DIDNT_EVEN_FEEL_IT_ID], recklessAbandonActive: true,
-      didntEvenFeelItFlag: { combatId: 'oldCombat' },
+      // A flag left over from an earlier encounter. What makes it stale is now the Scene Clock's
+      // encounter counter having moved on, not a different combat id - see helpers/scene-clock.mjs.
+      didntEvenFeelItFlag: { epoch: 0, window: 'encounter', count: 1 },
     });
     fromUuid.mockResolvedValue(target);
     foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
@@ -433,7 +435,7 @@ describe("onApplyDamage", () => {
 
       expect(foundry.applications.api.DialogV2.wait).toHaveBeenCalled();
       expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
-      expect(attacker.setFlag).toHaveBeenCalledWith('essence20', 'suddenDeathThisEncounter', { combatId: 'combat1' });
+      expect(attacker.setFlag).toHaveBeenCalledWith('essence20', 'suddenDeathThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
     });
 
     test("applies normal damage instead when the GM cancels", async () => {
@@ -510,7 +512,7 @@ describe("onApplyDamage", () => {
     test("doesn't prompt again once already used this combat", async () => {
       const target = makeTarget({ threatLevel: 15 });
       const attacker = makeAttacker({
-        perkIds: [SUDDEN_DEATH_ID], level: 20, usedSuddenDeathFlag: { combatId: 'combat1' },
+        perkIds: [SUDDEN_DEATH_ID], level: 20, usedSuddenDeathFlag: { epoch: 1, window: 'encounter', count: 1 },
       });
       fromUuid.mockResolvedValue(target);
       game.actors.get.mockReturnValue(attacker);
@@ -526,7 +528,7 @@ describe("onApplyDamage", () => {
     test("is available again in a new combat, despite a stale flag from an earlier one", async () => {
       const target = makeTarget({ threatLevel: 15 });
       const attacker = makeAttacker({
-        perkIds: [SUDDEN_DEATH_ID], level: 20, usedSuddenDeathFlag: { combatId: 'oldCombat' },
+        perkIds: [SUDDEN_DEATH_ID], level: 20, usedSuddenDeathFlag: { epoch: 0, window: 'encounter', count: 1 },
       });
       fromUuid.mockResolvedValue(target);
       game.actors.get.mockReturnValue(attacker);

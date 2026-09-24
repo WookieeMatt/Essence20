@@ -1,0 +1,170 @@
+/* Load Out summary strip + per-weapon Hardpoint control on the Gear tab. */
+
+.essence20 .loadout-summary {
+  margin-top: 6px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+/* When the strip lives inside the Weapons container header (character Gear tab), centre it under
+   the centred "Weapons +" title and give it a little breathing room from the first weapon row. */
+.essence20 .collapsible-item-container > .loadout-summary {
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 2px 0 8px;
+}
+
+.essence20 .loadout-chip {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+/* "Carry Limits" ahead of the chips, so the strip says what it is rather than leaving a bare
+   "Hands: 0 / 6" under the Weapons title. Small caps like the other in-panel captions. */
+.essence20 .loadout-summary__label {
+  font-size: 0.75em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+/* An over-limit hands / Hardpoint count: amber, matching the "needs attention" read the rest
+   of the sheet gives warnings without introducing a new colour token. */
+.essence20 .loadout-chip.is-over {
+  color: #b46a00;
+  border-color: #b46a00;
+  font-weight: 700;
+}
+
+/* Rendered on its own full-width line under the weapon label (weapon/container.hbs "item-subrow"),
+   so it stays a single row - type, Reinforced, visibility, derived-mode label - instead of
+   wrapping inside the cramped label row. Indented to line up under the weapon name (past the
+   24px icon + 5px gap). */
+.essence20 .hardpoint-selector {
+  flex-grow: 0;
+  flex-wrap: nowrap;
+  margin: 1px 0 3px 29px;
+}
+
+/* Without a width floor these collapse to ~24px inside the cramped weapon-label flex row, clipping
+   the chosen option to nothing; the sheet's default select colours (#aaa on #333) are also too
+   faint at this size. Give them a legible width and, off the light theme, brighter text. */
+.essence20 .hardpoint-selector select {
+  width: auto;
+  min-width: 8em;
+  max-width: 15em;
+  text-overflow: ellipsis;
+}
+
+/* The visibility options ("Hidden / Obvious in Alt Mode") are longer - give this one more room. */
+.essence20 .hardpoint-selector .hardpoint-visibility {
+  min-width: 11.5em;
+}
+
+.essence20:not(.theme-light) .hardpoint-selector select,
+.essence20:not(.theme-light) .weapon-effect-skill {
+  color: #e8e8e8;
+  font-weight: 600;
+}
+
+.essence20 .hardpoint-selector .hardpoint-reinforced {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.85em;
+}
+
+/* The read-only Bot/Alt/Any mode label derived from the Hardpoint choice. */
+.essence20 .hardpoint-selector .hardpoint-mode-label {
+  font-size: 0.85em;
+  opacity: 0.9;
+}
+
+/* Chip marking which Equipment Package granted an Item (weapon/armor/gear/shield details). */
+.essence20 .package-origin-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-style: italic;
+}
+
+/* Integrated-Hardpoint movement-penalty picker in the roll options dialog. */
+.essence20 .roll-dialog-hardpoint-move {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* Party-sheet Requisition tab. */
+.essence20 .requisition-tracker {
+  margin-bottom: 6px;
+}
+
+.essence20 .requisition-tracker > summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.essence20 .requisition-attempts {
+  margin: 4px 0;
+  flex-wrap: wrap;
+}
+
+.essence20 .requisition-reset {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.essence20 .requisition-auto {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.85em;
+}
+
+.essence20 .requisition-member {
+  margin-top: 8px;
+}
+
+.essence20 .requisition-member-name {
+  font-weight: 700;
+}
+
+.essence20 .requisition-member-empty {
+  font-size: 0.85em;
+  opacity: 0.7;
+  padding-left: 4px;
+}
+
+.essence20 .requisition-attempts input {
+  width: 4em;
+  flex: 0 0 auto;
+}
+
+.essence20 .requisition-table {
+  width: 100%;
+}
+
+.essence20 .requisition-table img.leveled-item-icon {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+
+.essence20 .requisition-log {
+  margin-top: 6px;
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+
+.essence20 .requisition-log-title {
+  font-weight: 700;
+}
+
+.essence20 .requisition-log ul {
+  margin: 2px 0 0;
+  padding-left: 18px;
+}

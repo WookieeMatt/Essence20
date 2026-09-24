@@ -1,0 +1,55 @@
+@use "../variables" as v;
+
+$standard: #c96a3c;
+$move: #4bb6ab;
+$free: #9aa8ae;
+
+// Remaining-action marks on each Combat Tracker row - see apps/combat-tracker.mjs, which injects
+// these after core renders rather than replacing core's own tracker template.
+.essence20 .e20-tracker-actions,
+.essence20 #combat .e20-tracker-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+
+  &__group {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  // Unspent actions read as filled marks; spent ones dim rather than vanish, so the row still
+  // shows how many the combatant started the turn with.
+  &__pip {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.9;
+
+    &--spent {
+      opacity: 0.25;
+    }
+
+    /* One hue per category. The sheet pip row gets away with plain currentColor because each row
+       is labelled; here three groups sit side by side in a cramped sidebar with no room for
+       labels, so colour is what tells Standard from Move at a glance. Defined locally rather than
+       in _variables.scss because nothing else in the system uses them yet. */
+    &--standard {
+      color: $standard;
+    }
+
+    &--move {
+      color: $move;
+    }
+
+    &--free {
+      color: $free;
+    }
+  }
+
+  &--skipped {
+    opacity: 0.45;
+  }
+}

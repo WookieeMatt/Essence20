@@ -34,7 +34,7 @@ describe("canUseRoar", () => {
   test("false once already used this combat", () => {
     game.combat = { id: 'combat1' };
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'roarUsedThisEncounter' ? { combatId: 'combat1' } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'roarUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
     expect(canUseRoar(actor)).toBe(false);
   });
 });

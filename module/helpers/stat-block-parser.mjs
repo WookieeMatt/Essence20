@@ -71,6 +71,10 @@ const SKILL_ALIASES = {
   // Perception/Stealth zero times as skills and Alertness/Infiltration 44 times.
   perception: 'alertness',
   stealth: 'infiltration',
+  // Operation: Cold Iron lists "Awareness" in the Cobra Viper's skills. There is no such skill
+  // in E20, and the same book writes "Alertness (Situational Awareness)" elsewhere, so it is the
+  // same loose printing as Perception above.
+  awareness: 'alertness',
 };
 
 /**
@@ -165,8 +169,18 @@ function isFurniture(line) {
 
 /**
  * Collapses a letter-spaced or ligature-split all-caps heading down to one word: "T H R E A T S"
- * -> "THREATS", "AT TACKS" -> "ATTACKS". Only applied to lines that are purely uppercase letters,
- * spaces and hyphens with no digits or colon, so "THREAT LEVEL: 7" is never touched.
+ * -> "THREATS", "AT TACKS" -> "ATTACKS".
+ *
+ * What is NOT touched matters more than it sounds. The old rule collapsed any all-caps line, and
+ * a threat's name is an all-caps line: every block read out of Operation: Cold Iron came back
+ * named "COBRAVIPER", "SNOWSERPENT", "POLARBEAR". Names with a bracket in them ("BUZZSAW
+ * (DREADNOK SCRAPPER)") escaped only because the bracket failed the character test, which is not
+ * a distinction worth keeping.
+ *
+ * So a line is collapsed only on evidence that its spacing is not real: either it lands on a
+ * section heading, or one of its pieces is a letter or two, which is what a word broken by
+ * letter-spacing leaves behind and what a name made of real words never does. Two rather than
+ * three, because "ICE VIPER" is a threat.
  */
 function collapseHeadingSpacing(line) {
   const trimmed = line.trim();
@@ -174,7 +188,9 @@ function collapseHeadingSpacing(line) {
     return line;
   }
 
-  return trimmed.replace(/\s+/g, '');
+  const collapsed = trimmed.replace(/\s+/g, '');
+  const split = trimmed.split(/\s+/).some(piece => piece.length <= 2);
+  return SECTIONS[collapsed] || split ? collapsed : line;
 }
 
 /**
@@ -536,7 +552,10 @@ function parseEffectClauses(ir, body, sourceLine) {
   const blast = body.match(/\bBlast:?\s*(\d+)\s*(?:ft|feet)?\s*(radius|cone)/i);
   if (blast) {
     effect.radius = Number.parseInt(blast[1], 10);
-    effect.shape = blast[2].toLowerCase() === 'cone' ? 'cone' : 'burst';
+    // The names are Foundry's own region shapes, which is what data/aoe-schema.mjs stores and
+    // what helpers/aoe-targeting.mjs places. "burst" was this parser's own word for a radius
+    // and no schema ever accepted it, so every Blast attack imported was refused its shape.
+    effect.shape = blast[2].toLowerCase() === 'cone' ? 'cone' : 'circle';
   }
 
   const defense = new RegExp(`\\b(${DEFENSE_NAMES.join('|')})\\b`, 'i').exec(body);

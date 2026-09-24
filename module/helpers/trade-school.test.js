@@ -27,7 +27,7 @@ describe("canUseTradeSchool", () => {
   });
 
   test("false once used this scene", () => {
-    const actor = makeActor({ flags: { tradeSchoolUsedThisEncounter: { combatId: 'combat1' } } });
+    const actor = makeActor({ flags: { tradeSchoolUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } } });
     expect(canUseTradeSchool(actor)).toBe(false);
   });
 });

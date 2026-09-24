@@ -8,9 +8,10 @@
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Sgt Slaugter Sourcebook",
+      "book": "Sgt Slaughter Sourcebook",
       "page": 12
     },
+    "actionType": "move",
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

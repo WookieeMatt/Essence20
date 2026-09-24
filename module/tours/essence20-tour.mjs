@@ -50,12 +50,6 @@ export class Essence20Tour extends Tour {
    */
   #app = null;
 
-  /**
-   * Steps whose target never materialised and which were marked `optional`, so `progress()` knows
-   * to keep skipping in the direction of travel rather than bouncing between two dead steps.
-   * @type {Set<number>}
-   */
-  #skipped = new Set();
 
   /**
    * Applications this tour opened itself, so teardown can close them again.
@@ -140,7 +134,6 @@ export class Essence20Tour extends Tour {
   async start() {
     // A paused game swallows some of the interactions the tours demonstrate.
     game.togglePause(false);
-    this.#skipped.clear();
     return super.start();
   }
 
@@ -149,7 +142,6 @@ export class Essence20Tour extends Tour {
     this.#app = null;
     this.#appKey = null;
     this.#appsByKey.clear();
-    this.#skipped.clear();
     const result = super.exit();
     this.#teardown();
     return result;
@@ -273,12 +265,14 @@ export class Essence20Tour extends Tour {
     // already run _preStep and resolved the target by this point.
     const step = this.currentStep;
     if (!step?.optional || !step.selector || this.targetElement) return;
-    if (this.#skipped.has(this.stepIndex)) return;
 
-    this.#skipped.add(this.stepIndex);
     console.debug(`Essence20 | Tour "${this.id}" skipping optional step "${step.id}" (no target)`);
 
-    // Keep moving the way the user was already moving, so Previous doesn't get stuck.
+    // Keep moving the way the user was already moving, so Previous doesn't get stuck. This has to
+    // happen on EVERY visit: it used to be remembered per run and done only once, so the second
+    // time through - pressing Previous back across a skipped step, for one - the tour parked on a
+    // tooltip describing something that was not on screen. A skip can't bounce: forward only ever
+    // calls next() and backward only previous(), and both stop at the ends of the tour.
     const goingBack = Number.isFinite(previous) && stepIndex < previous;
     if (goingBack) return this.hasPrevious ? this.previous() : this.exit();
     return this.hasNext ? this.next() : this.complete();
@@ -572,6 +566,10 @@ export class Essence20Tour extends Tour {
     // A step with no selector is already core's own <aside>, which nothing else competes for.
     if (!step?.selector) {
       await super._renderStep();
+      // Core builds this one, so it lands with core's classes only. Tagging it the way
+      // #renderOwnStep tags a targeted step lets _tours.scss name a class of ours instead of
+      // styling .tour-center-step, which belongs to core and to every other package's tours.
+      document.querySelector("aside.tour-center-step")?.classList.add("essence20-tour-step");
       requestAnimationFrame(() => this._repositionHighlight());
       this.#onResize ??= foundry.utils.debounce(() => this._repositionHighlight(), 100);
       window.addEventListener("resize", this.#onResize);
@@ -758,6 +756,7 @@ export class Essence20Tour extends Tour {
     vehicle: "vehicle",
     zord: "zord",
     megaform: "megaform",
+    party: "party",
   };
 
   /**
@@ -787,8 +786,81 @@ export class Essence20Tour extends Tour {
 
     if (key === "storyPoints") return this._ensureStoryPoints();
 
+    if (key === "effectWizard") return this._ensureEffectWizard();
+
+    // The GM importers are standalone windows with fixed ids. Opened here rather than by a step
+    // action for the same reason as the roll dialog: `app` resolves before `action` runs.
+    const standalone = this.constructor.STANDALONE_APPS[key];
+    if (standalone) return this._ensureStandalone(standalone);
+
     const app = foundry.applications.instances.get(key) ?? null;
     return app ? this._attachIfDetached(app) : null;
+  }
+
+  /**
+   * Standalone applications a step may name by logical key: the id they register under, and how
+   * to construct one. Imported lazily so the tours module stays free of app dependencies.
+   * @type {Record<string, {id: string, open: () => Promise<foundry.applications.api.ApplicationV2>}>}
+   */
+  static STANDALONE_APPS = {
+    statBlockImporter: {
+      id: "essence20-stat-block-importer",
+      open: async () => new (await import("../apps/stat-block-importer.mjs")).default(),
+    },
+    bookDescriptionImporter: {
+      id: "book-description-importer",
+      open: async () => new (await import("../apps/book-description-importer.mjs")).default(),
+    },
+    adventureImporter: {
+      id: "essence20-adventure-importer",
+      open: async () => new (await import("../apps/adventure-importer.mjs")).default(),
+    },
+  };
+
+  /**
+   * Open one of `STANDALONE_APPS`, or bring it forward if the user already has it up.
+   * @param {{id: string, open: () => Promise<foundry.applications.api.ApplicationV2>}} entry
+   * @returns {Promise<foundry.applications.api.ApplicationV2|null>}
+   * @protected
+   */
+  async _ensureStandalone({ id, open }) {
+    const existing = foundry.applications.instances.get(id);
+    if (existing) return this._attachIfDetached(existing);
+
+    const app = await open();
+    await app.render(true);
+    const rendered = await this._awaitApp(id);
+    return rendered ? this._attachIfDetached(this._track(rendered, true)) : null;
+  }
+
+  /**
+   * Open the Effect Wizard on one of the demo character's effects.
+   *
+   * The effect is named by the step's `effect` property and defaults to the demo effect, so the
+   * wizard opens in its "add another change to this one" mode - the same window the header
+   * control on an effect sheet opens - and never creates anything when the tour is closed.
+   * @returns {Promise<foundry.applications.api.ApplicationV2|null>}
+   * @protected
+   */
+  async _ensureEffectWizard() {
+    const sheet = await this._ensureActorSheet(this.constructor.DEMO_APPS.character ?? "character");
+    if (!sheet) return null;
+
+    const name = this.currentStep?.effect ?? "Field Adrenaline";
+    const effect = sheet.document.effects.find(e => e.name === name);
+    if (!effect) {
+      console.warn(`Essence20 | Tour "${this.id}" found no demo effect named "${name}"`);
+      return null;
+    }
+
+    const id = `essence20-effect-wizard-${effect.id}`;
+    const existing = foundry.applications.instances.get(id);
+    if (existing) return this._attachIfDetached(existing);
+
+    const { default: EffectWizard } = await import("../apps/effect-wizard.mjs");
+    await new EffectWizard(effect).render(true);
+    const app = await this._awaitApp(id);
+    return app ? this._attachIfDetached(this._track(app, true)) : null;
   }
 
   /**

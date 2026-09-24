@@ -86,7 +86,7 @@ async function pickOne(title, prompt, choices) {
 
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${prompt}</label><select name="choice">${options}</select></div>`,
     modal: true,
     buttons: [

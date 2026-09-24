@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "description": "<p>or 1 stun damage</p>",
     "source": {
       "book": "A Jump Through Time",

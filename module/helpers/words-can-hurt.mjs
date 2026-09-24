@@ -30,7 +30,7 @@ export function isImmuneToWordsCanHurt(targetActor) {
 export async function pickWordsCanHurtOptions() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.WordsCanHurtPickOptionsTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.WordsCanHurtPickSkillLabel')
     }</label><select name="skill">
@@ -93,7 +93,7 @@ export async function activateWordsCanHurt(actor) {
 export async function pickWordsCanHurtEffect() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.WordsCanHurtPickEffectTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.WordsCanHurtPickEffectLabel')
     }</label><select name="effect">

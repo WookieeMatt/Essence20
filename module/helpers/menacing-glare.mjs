@@ -33,7 +33,7 @@ export const MENACING_GLARE_EDGE_FLAG = 'pendingMenacingGlareEdge';
 export async function pickMenacingGlareEffect() {
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.MenacingGlarePickEffectTitle') },
-    classes: ["window-app"],
+    classes: ["window-app", "e20-window"],
     content: `<div class="form-group"><label>${
       game.i18n.localize('E20.MenacingGlarePickEffectLabel')
     }</label><select name="effect">

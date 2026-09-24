@@ -41,15 +41,15 @@ describe("canUseUninterruptedBreak", () => {
   });
 
   test("true when only one benefit has been used this scene", () => {
-    const actor = makeActor({ flags: { uninterruptedBreakHealUsedThisEncounter: { combatId: 'combat1' } } });
+    const actor = makeActor({ flags: { uninterruptedBreakHealUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } } });
     expect(canUseUninterruptedBreak(actor)).toBe(true);
   });
 
   test("false once both benefits have been used this scene", () => {
     const actor = makeActor({
       flags: {
-        uninterruptedBreakHealUsedThisEncounter: { combatId: 'combat1' },
-        uninterruptedBreakStoryPointUsedThisEncounter: { combatId: 'combat1' },
+        uninterruptedBreakHealUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 },
+        uninterruptedBreakStoryPointUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 },
       },
     });
     expect(canUseUninterruptedBreak(actor)).toBe(false);

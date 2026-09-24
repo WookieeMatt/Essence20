@@ -6,7 +6,7 @@
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.field_guide_action_adventure.Item.VGMl0WRUi7JlpeHD]{Pretender (Common, Ground 30, Aerial 20)}@UUID[Compendium.essence20.field_guide_action_adventure.Item.2RdkwgXojDbxqZwG]{Pretender (Common, Ground 30, Aquatic 20)}@UUID[Compendium.essence20.field_guide_action_adventure.Item.ca4svWchRNjMhEMf]{Pretender (Common, Ground 45)}@UUID[Compendium.essence20.field_guide_action_adventure.Item.WYhFLk3UNGrPpkDc]{Pretender (Small, Ground 30, Aerial 20)}@UUID[Compendium.essence20.field_guide_action_adventure.Item.YBPRmUSQ8YWltd1T]{Pretender (Small, Ground 30, Aquatic 20)}@UUID[Compendium.essence20.field_guide_action_adventure.Item.sew02e01Cw2m4cUd]{Pretender (Small, Ground 45)}</p>",
     "source": {
-      "book": "Field Guide to Action & Adventure",
+      "book": "Field Guide to Action and Adventure",
       "page": 62
     },
     "items": {

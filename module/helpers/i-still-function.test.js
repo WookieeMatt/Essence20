@@ -21,9 +21,11 @@ function makeActor({ defeated = true, usedFlag = undefined, conditioningShift = 
 
 // getSkillRanks (helpers/combat.mjs) reads E20.skillShiftList.indexOf('d20') - indexOf(shift),
 // floored at 0 - 'd8' sits 3 shifts below the untrained d20, matching the tests below.
+// The pool lives on the primary Party now (helpers/story-points.mjs); this client does not
+// own it, so a connected GM is what makes a spend possible.
 function mockStoryPoints({ gmConnected = true, available = true } = {}) {
   global.game.users = gmConnected ? [{ isGM: true, active: true }] : [{ isGM: true, active: false }];
-  global.game.settings.get = jest.fn((scope, key) => (key === 'sptStoryPoints' ? (available ? 3 : 0) : 0));
+  global.game.actors = { party: { isOwner: false, system: { storyPoints: available ? 3 : 0, gmPoints: 0 } } };
 }
 
 beforeEach(() => {
@@ -42,7 +44,7 @@ describe("canUseIStillFunction", () => {
   });
 
   test("false once already used this combat", () => {
-    const actor = makeActor({ defeated: true, usedFlag: { combatId: 'combat1' } });
+    const actor = makeActor({ defeated: true, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
     expect(canUseIStillFunction(actor)).toBe(false);
   });
 
@@ -97,7 +99,7 @@ describe("activateIStillFunction", () => {
     await activateIStillFunction(actor);
 
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'iStillFunctionUsedThisEncounter', expect.objectContaining({ combatId: 'combat1' }),
+      'essence20', 'iStillFunctionUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
     );
   });
 
