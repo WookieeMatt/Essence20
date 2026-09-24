@@ -7,7 +7,20 @@
 <div class="sliced-border pr-header-level">
   <label class="sliced-border__label">{{localize 'E20.ActorLevel'}}</label>
   <div class="flexrow e20-align-center e20-gap-2">
-    {{numberInput system.level name="system.level" min=0 step=1 class="two-digit-input"}}
+    {{!-- Level only moves once there is a Role to advance, and never past 1-20. --}}
+    {{numberInput system.level name="system.level" min=1 max=20 step=1 disabled=(not @root.role) class="two-digit-input"}}
+    {{#unless system.isLocked}}
+      {{#if @root.role}}
+        <div class="flexcol pr-header-level-buttons">
+          <a data-action="levelUp" data-tooltip="E20.LevelButtonUp" {{#if (gte system.level 20)}}disabled{{/if}}>
+            <i class="fa{{#if (gte system.level 20)}}-regular{{/if}} fa-up"></i>
+          </a>
+          <a data-action="levelDown" data-tooltip="E20.LevelButtonDown" {{#if (lte system.level 1)}}disabled{{/if}}>
+            <i class="fa{{#if (lte system.level 1)}}-regular{{/if}} fa-down"></i>
+          </a>
+        </div>
+      {{/if}}
+    {{/unless}}
   </div>
 </div>
 {{/inline}}

@@ -2,6 +2,10 @@
 const { ContextMenu } = foundry.applications.ux;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
+// Essence20 characters run from level 1 to 20.
+const MIN_LEVEL = 1;
+const MAX_LEVEL = 20;
+
 import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
 import SheetOptions from "../apps/sheet-options.mjs";
 import SkillPicker from "../apps/skill-picker.mjs";
@@ -84,6 +88,8 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       itemCreate: this.#onItemCreate,
       itemDelete: this.#onItemDelete,
       itemEdit: this.#onItemEdit,
+      levelDown: this.#onLevelDown,
+      levelUp: this.#onLevelUp,
       morph: this.#onMorph,
       perkUse: this.#onPerkUse,
       recharge: this.#onRecharge,
@@ -326,10 +332,47 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       return;
     }
 
-    const newLevel = parseInt(event.target.value);
-    if (!Number.isNaN(newLevel) && newLevel != this.actor.system.level) {
-      await onLevelChange(this.actor, newLevel);
+    const typedLevel = parseInt(event.target.value);
+    if (Number.isNaN(typedLevel)) {
+      return;
     }
+
+    await this._setLevel(typedLevel);
+  }
+
+  /**
+   * The level field is left out of the sheet's ordinary submitOnChange save: _setLevel owns it,
+   * so a typed 25 (or any level with no Role) can never reach the actor unclamped - racing the
+   * clamped write - or skip onLevelChange's advancement.
+   * @override
+   */
+  _processFormData(event, form, formData) {
+    const submitData = super._processFormData(event, form, formData);
+    foundry.utils.deleteProperty(submitData, "system.level");
+    return submitData;
+  }
+
+  /**
+   * The one path every manual level change goes through (the typed field and the up/down
+   * arrows): there is nothing to advance without a Role, and a level outside 1-20 is clamped to
+   * the nearest end. The level is written before onLevelChange runs, since the sheet's own
+   * submitOnChange has already written the typed value unclamped by then.
+   * @param {Number} level The requested level
+   */
+  async _setLevel(level) {
+    if (!this.actor.items.some(item => item.type == 'role')) {
+      return;
+    }
+
+    const newLevel = Math.clamp(level, MIN_LEVEL, MAX_LEVEL);
+    if (newLevel == this.actor.system.level) {
+      // e.g. 25 typed at level 20 - nothing to save, but the field still shows the typed value.
+      this.render();
+      return;
+    }
+
+    await this.actor.update({ "system.level": newLevel });
+    await onLevelChange(this.actor, newLevel);
   }
 
   /**
@@ -1149,6 +1192,14 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onShieldEquipToggle(event, target) {
     onShieldEquipToggle(target, this);
+  }
+
+  static #onLevelUp() {
+    return this._setLevel(this.actor.system.level + 1);
+  }
+
+  static #onLevelDown() {
+    return this._setLevel(this.actor.system.level - 1);
   }
 
   static #onToggleLock() {

@@ -743,6 +743,218 @@ describe("headings marked by weight rather than size", () => {
   });
 });
 
+describe("books that subset their body font per page", () => {
+  const bodySize = 10.5;
+  const order = (p) => buildReadingOrder(p, 612, 60);
+
+  // The Quartermaster's Guide to Gear embeds a fresh copy of its body face on every page, so the
+  // font findBodyFonts() settles on book-wide is simply absent from most of them.
+  const bookFonts = new Set(['bookBody']);
+  const prose = (n, font = 'pageBody') => Array.from({ length: n }, () => (
+    { s: 'a full line of ordinary body prose running the width of the column', size: 10.5, font }));
+
+  test("a page that does not use the book-wide body font is judged by its own", () => {
+    const p = page({
+      left: [
+        { s: 'ADVANCED ANTI-AIR TRAINING', size: 20, font: 'display' },
+        { s: 'You know how to aim for the most vulnerable parts.', size: 10.5, font: 'pageBody' },
+        ...prose(8),
+      ],
+      folio: 30,
+    });
+
+    const found = extractEntry([order(p)], 0, 'Advanced Anti-Air Training', bodySize, 'perk', bookFonts);
+    expect(found.text.startsWith('You know how to aim for the most vulnerable parts.')).toBe(true);
+  });
+
+  // And the weight test still works on such a page, judged against the page's own prose fonts -
+  // the same book heads its Focuses at 10pt over a 10.5pt body.
+  test("a heading marked by weight is still found on such a page", () => {
+    const p = page({
+      left: [
+        ...prose(4),
+        { s: 'CHAMELEONITE', size: 10, font: 'focusHeading' },
+        { s: 'Like the chameleon, these Commandos change their look.', size: 10.5, font: 'pageBody' },
+        ...prose(6),
+      ],
+      folio: 20,
+    });
+
+    const found = extractEntry([order(p)], 0, 'Chameleonite', bodySize, 'focus', bookFonts);
+    expect(found?.kind).toBe('heading');
+    expect(found.text.startsWith('Like the chameleon')).toBe(true);
+  });
+
+  // Finster's goes further and starts a new subset per PARAGRAPH, so no one font holds much of
+  // the page. A share-of-page rule called every prose line a heading.
+  test("prose split across many subset fonts is not read as headings", () => {
+    const p = page({
+      left: [
+        { s: 'INFILTRATOR', size: 20, font: 'display' },
+        ...prose(3, 'subsetA'), ...prose(3, 'subsetB'), ...prose(3, 'subsetC'),
+        ...prose(3, 'subsetD'), ...prose(3, 'subsetE'),
+      ],
+      folio: 279,
+    });
+
+    const found = extractEntry([order(p)], 0, 'Infiltrator', bodySize, 'influence', bookFonts);
+    expect(found.text.split('a full line').length - 1).toBe(15);
+  });
+});
+
+describe("run-in names", () => {
+  const bodySize = 10.5;
+  const order = (p) => buildReadingOrder(p, 612, 60);
+
+  // Across the Stars names its Origin Perks inside a sentence-sized line: a generic label, then the
+  // Perk's own name after the colon, as two runs on one line.
+  test("a 'Label: Name' line starts the named entry", () => {
+    const runs = [
+      { s: 'Origin Benefit:', x: 72, y: 601, size: 10.5, font: 'bold' },
+      { s: 'Always Seeking', x: 143, y: 601, size: 10.5, font: 'body' },
+      { s: 'Even when you achieve the heights you strive for,', x: 72, y: 584, size: 10.5, font: 'body' },
+      { s: 'you look further into the beyond.', x: 63, y: 571, size: 10.5, font: 'body' },
+    ];
+
+    const found = extractEntry([order(runs)], 0, 'Always Seeking', bodySize, 'perk', new Set(['body']));
+    expect(found.text).toBe('Even when you achieve the heights you strive for, you look further into the beyond.');
+  });
+
+  // Ferocious Fighters wraps the name over two lines, then sets the colon and the first word of
+  // the prose as ONE run.
+  test("a label whose colon arrives with the prose is still found, and keeps that word", () => {
+    const runs = [
+      { s: 'As a member of Cobra-La, you gain these Perks.', x: 63, y: 500, size: 10.5, font: 'body' },
+      { s: 'Hypergenetic', x: 72, y: 472, size: 10.5, font: 'bold' },
+      { s: 'Manipulation', x: 63, y: 459, size: 10.5, font: 'bold' },
+      { s: ': Whether', x: 124, y: 459, size: 10.5, font: 'body' },
+      { s: 'you descend from the ancient civilization or not.', x: 63, y: 447, size: 10.5, font: 'body' },
+    ];
+
+    const found = extractEntry([order(runs)], 0, 'Hypergenetic Manipulation', bodySize, 'perk', new Set());
+    expect(found.text).toBe('Whether you descend from the ancient civilization or not.');
+  });
+});
+
+describe("what ends an entry", () => {
+  const bodySize = 10.5;
+  const bodyFonts = new Set(['body']);
+  const order = (p) => buildReadingOrder(p, 612, 60);
+  const prose = (n) => Array.from({ length: n }, () => (
+    { s: 'a full line of ordinary body prose running the width of the column', size: 10.5, font: 'body' }));
+
+  // Bold, short and alone on its line, so it passed the weight test - and every Perk in the
+  // Quartermaster's Guide to Gear ended at its own prerequisite.
+  test("a bold 'Prerequisite:' line does not end the entry", () => {
+    const p = page({
+      left: [
+        { s: 'ADVANCED ANTI-AIR TRAINING', size: 20, font: 'display' },
+        { s: 'Prerequisite: Anti-Air Combat Training, Level 8', size: 10.5, font: 'bold' },
+        { s: 'You know how to aim for the most vulnerable parts.', size: 10.5, font: 'body' },
+        ...prose(6),
+      ],
+      folio: 30,
+    });
+
+    const found = extractEntry([order(p)], 0, 'Advanced Anti-Air Training', bodySize, 'perk', bodyFonts);
+    expect(found.text).toContain('You know how to aim for the most vulnerable parts.');
+  });
+
+  // Sgt Slaughter's Marine: a stray line of prose in a font subset nothing else uses.
+  test("a line of prose in an odd font does not end the entry", () => {
+    const p = page({
+      left: [
+        { s: 'MARINE', size: 22, font: 'display' },
+        { s: 'The Army fights on land and the Navy fights at sea,', size: 10.5, font: 'body' },
+        { s: 'but Marines fight where needed.', size: 10.5, font: 'stray' },
+        { s: 'Marines exemplify discipline.', size: 10.5, font: 'body' },
+        ...prose(6),
+      ],
+      folio: 7,
+    });
+
+    const found = extractEntry([order(p)], 0, 'Marine', bodySize, 'origin', bodyFonts);
+    expect(found.text).toContain('Marines exemplify discipline.');
+  });
+
+  // Big Swing's prerequisite wraps, and its second line looks like a heading on its own.
+  test("the wrapped second line of a bold run does not end the entry", () => {
+    const p = page({
+      left: [
+        { s: 'BIG SWING', size: 22, font: 'display' },
+        { s: 'Prerequisite: Trained to use a heavy Anti-Tank or', size: 10.5, font: 'bold' },
+        { s: 'Ballistic Weapon', size: 10.5, font: 'bold' },
+        { s: 'When you swing your rocket launcher like a bat.', size: 10.5, font: 'body' },
+        ...prose(6),
+      ],
+      folio: 37,
+    });
+
+    const found = extractEntry([order(p)], 0, 'Big Swing', bodySize, 'perk', bodyFonts);
+    expect(found.text).toContain('When you swing your rocket launcher like a bat.');
+  });
+
+  // Finster's opens every spell with a one-line italic tagline, which is everything the weight
+  // test asks of a heading.
+  test("the first line under a heading never ends it by weight alone", () => {
+    const p = page({
+      left: [
+        { s: 'FIREBALL', size: 13, font: 'display' },
+        { s: 'A projected eruption of flame.', size: 10.5, font: 'italic' },
+        { s: 'Targeting (Sorcery) attack; Range 30ft/60ft', size: 10.5, font: 'body' },
+        ...prose(6),
+      ],
+      folio: 273,
+    });
+
+    const found = extractEntry([order(p)], 0, 'Fireball', bodySize, 'power', bodyFonts);
+    expect(found.text.startsWith('A projected eruption of flame. Targeting (Sorcery) attack')).toBe(true);
+  });
+
+  // The same spell shares its page with an 8.5pt table, and the book's stat blocks make its
+  // book-wide body 9pt - judged by either, the spell's 10.5pt prose is "bigger than body".
+  test("an entry's prose is judged by its own size, not the page's", () => {
+    const table = Array.from({ length: 30 }, () => ({ s: 'Permanently add the Sorcerous trait to a specific attack', size: 8.5, font: 'table' }));
+    const p = page({
+      left: [
+        ...table,
+      ],
+      right: [
+        { s: 'FIREBALL', size: 13, font: 'display' },
+        { s: 'A projected eruption of flame.', size: 10.5, font: 'body' },
+        { s: 'Targeting (Sorcery) attack; Range 30ft/60ft', size: 10.5, font: 'body' },
+        { s: '(2 Fire Damage Blast [5ft radius])', size: 10.5, font: 'body' },
+        { s: 'FORKED LIGHTNING', size: 13, font: 'display' },
+        { s: 'A bolt that splits.', size: 10.5, font: 'body' },
+      ],
+      folio: 273,
+    });
+
+    const found = extractEntry([order(p)], 0, 'Fireball', 9, 'power', new Set());
+    expect(found.text).toBe('A projected eruption of flame. Targeting (Sorcery) attack; Range 30ft/60ft (2 Fire Damage Blast [5ft radius])');
+  });
+
+  // Joining is for display headings that wrap. A weight-marked "heading" is one line, and
+  // joining onto it walked into the prose until twelve lines happened to end in the name.
+  test("lines are not joined onto a heading marked only by weight", () => {
+    const p = page({
+      left: [
+        ...prose(8),
+        { s: 'grew more sophisticated, agents went', size: 10.5, font: 'minor' },
+        { s: 'behind enemy lines using a brand-new', size: 10.5, font: 'body' },
+        { s: 'Influence: Infiltrator.', size: 10.5, font: 'body' },
+        { s: 'Infiltrator', size: 20, font: 'display' },
+        { s: 'You have spent a long time disguised as one of the enemy.', size: 10.5, font: 'body' },
+        ...prose(4),
+      ],
+      folio: 279,
+    });
+
+    const found = extractEntry([order(p)], 0, 'Infiltrator', bodySize, 'influence', bodyFonts);
+    expect(found.text.startsWith('You have spent a long time disguised')).toBe(true);
+  });
+});
+
 describe("findEntry", () => {
   const order = (p) => buildReadingOrder(p, 612, 60);
   const withEntry = (name) => page({ right: [run(name, { size: 22 }), run('Some rules text.')], folio: 1 });
