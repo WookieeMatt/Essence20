@@ -25,4 +25,7 @@
   {{#if item.system.type}}
   <span class="chip" name="chip.perk.type">{{localize 'E20.PerkType'}}: {{lookup @root.config.perkTypes item.system.type}}</span>
   {{/if}}
+  {{#if (and (eq item.system.type "contact") item.system.allegianceCost)}}
+  <span class="chip" name="chip.perk.allegianceCost">{{localize 'E20.PerkAllegianceCost'}}: {{item.system.allegianceCost}}</span>
+  {{/if}}
 </div>

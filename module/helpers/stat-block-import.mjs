@@ -335,6 +335,36 @@ function buildMovement(ir, contributions) {
  *   included.
  * @returns {Object}
  */
+/**
+ * The actor types that can be a Contact - the only ones whose schema carries isContact,
+ * gainingTheContact and allegiancePoints (data/actor/npc.mjs).
+ */
+export const CONTACT_TYPES = ['npc'];
+
+/**
+ * The ways to gain a Contact, as the one block of text the NPC sheet's Contact tab edits: each
+ * printed "Name: text" entry as its own paragraph.
+ * @param {Array<{name: String, text: String}>} gaining
+ * @returns {String}
+ */
+export function gainingText(gaining) {
+  return (gaining ?? [])
+    .map(entry => (entry.name ? `${entry.name}: ${entry.text}` : entry.text).trim())
+    .join('\n\n');
+}
+
+/** The inverse of gainingText, for reading an actor back into the IR. */
+function gainingEntries(text) {
+  return String(text ?? '')
+    .split(/\n\s*\n/)
+    .map(paragraph => paragraph.trim())
+    .filter(Boolean)
+    .map(paragraph => {
+      const match = paragraph.match(/^([^:\n]{1,70}):\s*([\s\S]*)$/);
+      return match ? { name: match[1].trim(), text: match[2].trim() } : { name: '', text: paragraph };
+    });
+}
+
 export function buildActorData(ir, {
   type = 'npc', raw = null, folder = null, effectContributions = null,
 } = {}) {
@@ -364,6 +394,14 @@ export function buildActorData(ir, {
   if (ir.threatLevel !== null && ir.threatLevel !== undefined
     && !TYPES_WITHOUT_THREAT_LEVEL.includes(type)) {
     system.threatLevel = ir.threatLevel;
+  }
+
+  if (ir.contact && CONTACT_TYPES.includes(type)) {
+    system.isContact = true;
+    system.gainingTheContact = gainingText(ir.contact.gaining);
+    if (ir.contact.allegiancePoints !== null && ir.contact.allegiancePoints !== undefined) {
+      system.allegiancePoints = ir.contact.allegiancePoints;
+    }
   }
 
   const data = {
@@ -495,8 +533,20 @@ export function buildWeaponData(attack) {
  * Threat Perks are created as `general` because E20.perkTypes has no `threat` key (E20.powerTypes
  * does) - see the plan's §8 risk 3, which is a schema decision, not a parser one.
  */
-export function buildSimpleItems(ir) {
+export function buildSimpleItems(ir, { type = 'npc' } = {}) {
   const items = [];
+
+  // Contact Perks are their own Perk type - the NPC sheet's Contact tab lists exactly these - and
+  // carry their cost. Only on an actor that can be a Contact at all.
+  if (ir.contact && CONTACT_TYPES.includes(type)) {
+    for (const perk of ir.contact.perks ?? []) {
+      items.push({
+        name: perk.name,
+        type: 'perk',
+        system: { description: perk.text, type: 'contact', allegianceCost: perk.cost ?? 0 },
+      });
+    }
+  }
 
   for (const perk of ir.perks ?? []) {
     items.push({
@@ -574,6 +624,13 @@ export function actorToIr(actor, { preferFlag = true } = {}) {
     hangUps: [],
     attacks: [],
     equipment: [],
+    contact: system.isContact
+      ? {
+        gaining: gainingEntries(system.gainingTheContact),
+        allegiancePoints: system.allegiancePoints ?? null,
+        perks: [],
+      }
+      : null,
     diagnostics: [],
   };
 
@@ -609,7 +666,11 @@ export function actorToIr(actor, { preferFlag = true } = {}) {
 
   for (const item of actor.items ?? []) {
     const entry = { name: item.name, text: item.system?.description ?? '' };
-    if (item.type === 'perk') {
+    if (item.type === 'perk' && item.system?.type === 'contact') {
+      if (ir.contact) {
+        ir.contact.perks.push({ ...entry, cost: item.system.allegianceCost || null });
+      }
+    } else if (item.type === 'perk') {
       ir.perks.push(entry);
     } else if (item.type === 'power') {
       ir.powers.push({
@@ -714,7 +775,9 @@ export async function applyCompendiumMatches(items, matches) {
   let substituted = 0;
 
   for (const item of items) {
-    const match = lookup.get(indexKey(item.type, item.name));
+    // A Contact Perk is never swapped for a compendium Perk that happens to share its name - the
+    // compendium has none, so any hit would be an unrelated general Perk.
+    const match = item.system?.type === 'contact' ? null : lookup.get(indexKey(item.type, item.name));
     const source = match ? await fromUuid(match.uuid) : null;
     if (!source) {
       // A match that can no longer be resolved (pack disabled or re-ids since the preview) falls
@@ -769,7 +832,7 @@ export async function createActorFromStatBlock(ir, options = {}) {
 
   // Items are resolved BEFORE the actor data is built, because the Active Effects they bring
   // decide how much has to come back out of the residuals - see collectEffectContributions.
-  const { items } = await applyCompendiumMatches(buildSimpleItems(ir), options.matches);
+  const { items } = await applyCompendiumMatches(buildSimpleItems(ir, { type: options.type }), options.matches);
   const actorData = buildActorData(ir, {
     ...options,
     effectContributions: options.effectContributions ?? collectEffectContributions(items),

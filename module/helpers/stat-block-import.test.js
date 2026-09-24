@@ -2,6 +2,7 @@ import { jest } from '@jest/globals';
 import { parseStatBlock } from "./stat-block-parser.mjs";
 import {
   applyCompendiumMatches,
+  gainingText,
   buildMatchLookup,
   collectEffectContributions,
   collectUncancellableEffects,
@@ -651,5 +652,87 @@ describe("createActorFromStatBlock", () => {
     // rule against putting rulebook text into shipped compendium items.
     await expect(createActorFromStatBlock(ir, { pack: 'essence20.prcrbitems' }))
       .rejects.toThrow(/world documents only/);
+  });
+});
+
+describe("Contacts", () => {
+  // Invented, in the GI Joe sourcebook layout.
+  const contactIr = parseStatBlock([
+    'CORPORAL TESTWELL', 'THREAT LEVEL: 4', 'SIZE: Common HEALTH: 5', 'MOVEMENT: 30ft Ground',
+    'STRENGTH: 2 SPEED: 3', 'SMARTS: 4 SOCIAL: 2', 'TOUGHNESS: 12 EVASION: 13',
+    'WILLPOWER: 14 CLEVERNESS: 13',
+    'PERKS', 'Steady Hands: Never drops a wrench.',
+    'GAINING CORPORAL TESTWELL AS A CONTACT',
+    'Fix Her Jeep: Repair the jeep.', 'Share Rations: Share a meal.',
+    'Allegiance Points: 3',
+    'CONTACT PERKS',
+    'Quick Patch (1 Allegiance Point): One vehicle regains 2 Health.',
+    'Spare Parts (2 Allegiance Points): The PCs gain one piece of gear.',
+  ].join('\n'));
+
+  test("an NPC is flagged as a Contact, with its pool and ways to gain it", () => {
+    const { system } = buildActorData(contactIr);
+    expect(system.isContact).toBe(true);
+    expect(system.allegiancePoints).toBe(3);
+    expect(system.gainingTheContact).toBe('Fix Her Jeep: Repair the jeep.\n\nShare Rations: Share a meal.');
+  });
+
+  test("Contact Perks become Perks of the contact type, with their cost", () => {
+    const contactPerks = buildSimpleItems(contactIr).filter(item => item.system.type === 'contact');
+    expect(contactPerks).toEqual([
+      { name: 'Quick Patch', type: 'perk', system: { description: 'One vehicle regains 2 Health.', type: 'contact', allegianceCost: 1 } },
+      { name: 'Spare Parts', type: 'perk', system: { description: 'The PCs gain one piece of gear.', type: 'contact', allegianceCost: 2 } },
+    ]);
+  });
+
+  test("the ordinary Perks are untouched", () => {
+    const general = buildSimpleItems(contactIr).filter(item => item.system.type === 'general');
+    expect(general.map(item => item.name)).toEqual(['Steady Hands']);
+  });
+
+  // Only an NPC's schema has somewhere to put any of it.
+  test("a vehicle or Zord ignores the Contact half", () => {
+    expect(buildActorData(contactIr, { type: 'vehicle' }).system.isContact).toBeUndefined();
+    expect(buildSimpleItems(contactIr, { type: 'zord' }).some(item => item.system.type === 'contact')).toBe(false);
+  });
+
+  test("an ordinary Threat is not a Contact", () => {
+    expect(buildActorData(ir).system.isContact).toBeUndefined();
+  });
+
+  test("a Contact Perk is never swapped for a compendium Perk of the same name", async () => {
+    const matches = { perks: [{ name: 'Quick Patch', match: { uuid: 'Compendium.x.Item.1' } }] };
+    const { items, substituted } = await applyCompendiumMatches(buildSimpleItems(contactIr), matches);
+    expect(substituted).toBe(0);
+    expect(items.find(item => item.name === 'Quick Patch').system.type).toBe('contact');
+  });
+
+  test("gainingText leaves a nameless entry as bare text", () => {
+    expect(gainingText([{ name: '', text: 'Just ask nicely.' }])).toBe('Just ask nicely.');
+  });
+
+  test("actorToIr reads a Contact back", () => {
+    const actor = {
+      name: 'Corporal Testwell',
+      getFlag: () => null,
+      system: {
+        isContact: true,
+        allegiancePoints: 3,
+        gainingTheContact: 'Fix Her Jeep: Repair the jeep.\n\nJust ask nicely.',
+        essences: {}, defenses: {}, movement: {}, skills: {},
+      },
+      items: [
+        { name: 'Steady Hands', type: 'perk', system: { description: 'Never drops a wrench.', type: 'general' } },
+        { name: 'Quick Patch', type: 'perk', system: { description: 'Heals a vehicle.', type: 'contact', allegianceCost: 1 } },
+      ],
+    };
+
+    const read = actorToIr(actor);
+    expect(read.perks.map(perk => perk.name)).toEqual(['Steady Hands']);
+    expect(read.contact).toEqual({
+      gaining: [{ name: 'Fix Her Jeep', text: 'Repair the jeep.' }, { name: '', text: 'Just ask nicely.' }],
+      allegiancePoints: 3,
+      perks: [{ name: 'Quick Patch', text: 'Heals a vehicle.', cost: 1 }],
+    });
   });
 });

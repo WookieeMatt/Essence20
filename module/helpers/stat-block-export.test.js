@@ -153,3 +153,25 @@ describe("splitStatBlocks", () => {
     expect(blocks[0]).not.toContain('ROLEPLAYING GAME');
   });
 });
+
+describe("irToStatBlockText - Contacts", () => {
+  const withContact = `${BLOCK}
+GAINING GRAVEL GOLEM AS A CONTACT
+Polish the Pebbles: Tidy its rocks.
+Allegiance Points: 3
+CONTACT PERKS
+Rock Wall (1 Allegiance Point): One ally gains cover.
+Landslide (2 Allegiance Points): Enemies are knocked Prone.`;
+
+  test("prints the Contact half, and it parses back to the same thing", () => {
+    const ir = parseStatBlock(withContact);
+    const text = irToStatBlockText(ir);
+    expect(text).toContain('GAINING GRAVEL GOLEM AS A CONTACT');
+    expect(text).toContain('Rock Wall (1 Allegiance Point): One ally gains cover.');
+    expect(parseStatBlock(text).contact).toEqual(ir.contact);
+  });
+
+  test("prints nothing extra for a block that is not a Contact", () => {
+    expect(irToStatBlockText(parseStatBlock(BLOCK))).not.toContain('CONTACT');
+  });
+});

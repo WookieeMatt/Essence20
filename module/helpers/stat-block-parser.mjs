@@ -143,6 +143,9 @@ const FURNITURE_PATTERNS = [
   /^=+\s*page\s+\d+\s*=+$/i,
   /^\d+$/,
   /^\d{2,6}[A-Z][A-Z' -]{5,}$/,
+  // A chapter running head ("CHAPTER ONE: COBRA STRIKES"). A Contact section often runs over a
+  // page break, and inside one this has exactly the "Name: text" shape of a way to gain the Contact.
+  /^CHAPTER\s+[A-Z]+:\s*[A-Z][A-Z' -]*$/,
 ];
 
 /**
@@ -249,6 +252,7 @@ function makeIr() {
     hangUps: [],
     attacks: [],
     equipment: [],
+    contact: null,
     diagnostics: [],
   };
 
@@ -382,15 +386,59 @@ function sectionFor(line) {
 }
 
 /**
+ * The Contact sections a line introduces, which the plain SECTIONS table cannot express: the
+ * "gaining" heading carries the NPC's own name ("GAINING GENERAL FLAGG AS A CONTACT", or the
+ * Power Rangers books' bare "GAINING AS A CONTACT", or My Little Pony's "Gaining Fluttershy as a
+ * contact:"). Compared with every space removed, since a heading may be letter-spaced or
+ * already collapsed by collapseHeadingSpacing().
+ * @param {String} line
+ * @returns {?String}
+ */
+function contactSectionFor(line) {
+  const compact = line.replace(/\s+/g, '').toUpperCase().replace(/:$/, '');
+  if (/^GAINING.*ASACONTACT$/.test(compact) && compact.length <= 80) {
+    return 'contactGaining';
+  }
+
+  return compact === 'CONTACTPERKS' || compact === 'CONTACTPERK' ? 'contactPerks' : null;
+}
+
+/** "Allegiance Points: 3" - the Contact's pool, printed before or after the ways to gain it. */
+const ALLEGIANCE_LINE = /^allegiance\s+points?\s*:\s*(\d+)\s*$/i;
+
+/**
  * Splits preprocessed lines into the header block plus one bucket of raw lines per section.
- * @returns {{headerLines: String[], sections: Object<String, String[]>}}
+ * @returns {{headerLines: String[], sections: Object<String, String[]>, allegiancePoints: ?Number}}
  */
 function splitSections(lines) {
   const headerLines = [];
   const sections = {};
   let current = null;
+  let allegiancePoints = null;
 
-  for (const line of lines) {
+  for (let index = 0; index < lines.length; index++) {
+    const line = lines[index];
+    const allegiance = line.match(ALLEGIANCE_LINE);
+    if (allegiance) {
+      allegiancePoints = Number.parseInt(allegiance[1], 10);
+      continue;
+    }
+
+    // The gaining heading is long enough to wrap: "GAINING THE MAGNA DEFENDER AS A" / "CONTACT".
+    const ownLine = contactSectionFor(line);
+    const wrapped = !ownLine && /^gaining\b/i.test(line) && lines[index + 1] !== undefined
+      ? contactSectionFor(`${line} ${lines[index + 1]}`)
+      : null;
+    if (ownLine || wrapped) {
+      current = ownLine ?? wrapped;
+      sections[current] ??= [];
+      if (wrapped) {
+        index++;
+      }
+
+      continue;
+    }
+
     const section = sectionFor(line);
     if (section) {
       current = section;
@@ -405,7 +453,7 @@ function splitSections(lines) {
     }
   }
 
-  return { headerLines, sections };
+  return { headerLines, sections, allegiancePoints };
 }
 
 /**
@@ -686,6 +734,56 @@ function parsePowers(ir, lines) {
   }
 }
 
+/**
+ * A Contact Perk's name carries its cost: "Flash the Brass (1 Allegiance Point)", or My Little
+ * Pony's shorter "Animal Expert (2 Allegiance)".
+ */
+const CONTACT_PERK_COST = /^(.+?)\s*\(\s*(\d+)\s+allegiance(?:\s+points?)?\s*\)\s*$/i;
+
+/**
+ * The Contact half of a stat block, or null when it has none. Only a block with at least one of
+ * the three parts counts, so an ordinary Threat stays `contact: null`.
+ */
+function parseContact(ir, sections, allegiancePoints) {
+  const gainingLines = sections.contactGaining ?? [];
+  const perkLines = sections.contactPerks ?? [];
+  if (!gainingLines.length && !perkLines.length && allegiancePoints === null) {
+    return null;
+  }
+
+  // A cost can wrap away from its name - "'I'm only going to say this nicely once!' (3" then
+  // "Allegiance): ...", or "Supply Chain of Command (2 Allegiance" then "Points): ...". The first
+  // half has no colon but still opens a new Perk; the second has one but only finishes the cost.
+  const isCostTail = line => /^(?:allegiance\s*)?(?:points?\s*)?\)\s*:/i.test(line);
+  const opensCost = line => /\(\s*\d+(?:\s+allegiance)?(?:\s+points?)?\s*$/i.test(line);
+  const perks = groupEntries(perkLines, line => !isCostTail(line) && (NAMED_ENTRY.test(line) || opensCost(line)))
+    .map(entry => {
+      const match = entry.match(NAMED_ENTRY);
+      if (!match) {
+        addDiagnostic(ir, 'warning', entry, 'Could not read this as a "Name (cost): description" Contact Perk.');
+        return null;
+      }
+
+      const cost = match[1].trim().match(CONTACT_PERK_COST);
+      if (!cost) {
+        addDiagnostic(ir, 'info', entry, `No Allegiance Point cost found on Contact Perk "${match[1].trim()}".`);
+      }
+
+      return {
+        name: (cost ? cost[1] : match[1]).trim(),
+        cost: cost ? Number.parseInt(cost[2], 10) : null,
+        text: match[2].trim(),
+      };
+    })
+    .filter(Boolean);
+
+  return {
+    gaining: parseNamedEntries(ir, gainingLines),
+    allegiancePoints,
+    perks,
+  };
+}
+
 function parseEquipment(ir, lines) {
   for (const entry of parseNamedEntries(ir, lines)) {
     const kind = normalizeKey(entry.name);
@@ -751,7 +849,7 @@ export function parseStatBlock(text) {
     return ir;
   }
 
-  const { headerLines, sections } = splitSections(lines);
+  const { headerLines, sections, allegiancePoints } = splitSections(lines);
 
   // The name is whatever precedes the first stat label. Anything after it in the header block is
   // flavour prose, which the header regexes simply don't match.
@@ -768,6 +866,7 @@ export function parseStatBlock(text) {
   parseEquipment(ir, sections.equipment ?? []);
   ir.perks = parseNamedEntries(ir, sections.perks ?? []);
   ir.hangUps = parseNamedEntries(ir, sections.hangUps ?? []);
+  ir.contact = parseContact(ir, sections, allegiancePoints);
 
   resolveSkillsFromAttacks(ir);
 

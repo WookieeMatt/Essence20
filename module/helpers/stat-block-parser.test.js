@@ -431,3 +431,108 @@ describe("parseStatBlock - diagnostics", () => {
     expect(() => parseStatBlock('Just some words that are not a stat block at all.')).not.toThrow();
   });
 });
+
+describe("Contact sections", () => {
+  // Invented, in the GI Joe sourcebook layout: stats, then the Contact half after GEAR, running over
+  // a page break (running head and folio in the middle), with one cost wrapped onto the next line.
+  const GI_JOE_CONTACT = `
+CORPORAL TESTWELL
+THREAT LEVEL: 4
+SIZE: Common HEALTH: 5
+MOVEMENT: 30ft Ground
+STRENGTH: 2 SPEED: 3
+SMARTS: 4 SOCIAL: 2
+TOUGHNESS: 12 EVASION: 13
+WILLPOWER: 14 CLEVERNESS: 13
+SKILLS
+- Alertness +d6
+PERKS
+Steady Hands: Never drops a wrench.
+GEAR
+Weapons: Wrench
+GAINING CORPORAL TESTWELL AS A CONTACT
+Fix Her Jeep: The PCs repair the corporal's
+jeep and gain her as a temporary Contact.
+12
+CHAPTER TWO: MOTOR POOL
+Share Rations: Once per mission, a shared meal
+earns a permanent Contact.
+Allegiance Points: 3
+CONTACT PERKS
+Quick Patch (1 Allegiance Point): One vehicle
+regains 2 Health.
+Spare Parts (2 Allegiance
+Points): The PCs gain one piece of gear.
+`;
+
+  test("reads the ways to gain, the pool and the Contact Perks", () => {
+    const ir = parseStatBlock(GI_JOE_CONTACT);
+    expect(ir.contact.allegiancePoints).toBe(3);
+    expect(ir.contact.gaining).toEqual([
+      { name: "Fix Her Jeep", text: "The PCs repair the corporal's jeep and gain her as a temporary Contact." },
+      { name: "Share Rations", text: "Once per mission, a shared meal earns a permanent Contact." },
+    ]);
+    expect(ir.contact.perks).toEqual([
+      { name: "Quick Patch", cost: 1, text: "One vehicle regains 2 Health." },
+      { name: "Spare Parts", cost: 2, text: "The PCs gain one piece of gear." },
+    ]);
+  });
+
+  // Before Contacts were read at all, all of this fell into GEAR as more "equipment".
+  test("keeps the Contact half out of the equipment", () => {
+    const ir = parseStatBlock(GI_JOE_CONTACT);
+    expect(ir.equipment.map(entry => entry.name)).toEqual(["Wrench"]);
+    expect(ir.perks.map(perk => perk.name)).toEqual(["Steady Hands"]);
+  });
+
+  // My Little Pony: a lower-case heading with a colon, "Allegiance" without "Points", and a cost
+  // whose number stays with the name while the word wraps.
+  test("reads the My Little Pony layout", () => {
+    const ir = parseStatBlock(`
+PIPPIN PETALSWORTH
+Gaining Pippin Petalsworth as a contact:
+Tea Time: Share a pot of tea with her.
+Allegiance Points: 2
+Contact Perks:
+Kind Word (1 Allegiance): One friend feels better.
+"I have had quite enough!" (3
+Allegiance): Everyone stops arguing.
+`);
+    expect(ir.contact.allegiancePoints).toBe(2);
+    expect(ir.contact.gaining).toEqual([{ name: "Tea Time", text: "Share a pot of tea with her." }]);
+    expect(ir.contact.perks).toEqual([
+      { name: "Kind Word", cost: 1, text: "One friend feels better." },
+      { name: '"I have had quite enough!"', cost: 3, text: "Everyone stops arguing." },
+    ]);
+  });
+
+  // Power Rangers prints the pool first and a bare "GAINING AS A CONTACT" heading.
+  test("reads the Power Rangers layout, pool first", () => {
+    const ir = parseStatBlock(`
+THE RUSTED SENTINEL
+Allegiance Points: 3
+GAINING AS A CONTACT
+Oil the Joints: Help the sentinel move again.
+CONTACT PERKS
+Stand Guard (2 Allegiance Points): One ally gains +2 Toughness.
+`);
+    expect(ir.contact.allegiancePoints).toBe(3);
+    expect(ir.contact.gaining).toEqual([{ name: "Oil the Joints", text: "Help the sentinel move again." }]);
+    expect(ir.contact.perks).toEqual([{ name: "Stand Guard", cost: 2, text: "One ally gains +2 Toughness." }]);
+  });
+
+  test("a gaining heading that wraps is still a heading", () => {
+    const ir = parseStatBlock(`
+DR. EXAMPLE
+GAINING THE VERY PATIENT DR. EXAMPLE AS A
+CONTACT
+Office Hours: Visit during office hours.
+`);
+    expect(ir.contact.gaining).toEqual([{ name: "Office Hours", text: "Visit during office hours." }]);
+  });
+
+  test("an ordinary Threat has no Contact half", () => {
+    const ir = parseStatBlock(GI_JOE_CONTACT.split('GAINING')[0]);
+    expect(ir.contact).toBeNull();
+  });
+});
