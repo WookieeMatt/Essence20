@@ -84,40 +84,32 @@
     polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px));
 }
 
+/* Coloured the same way as the sheet tabs (actors/_tabs.scss), which sit on the same fill:
+   helpers/actor.mjs#applySystemColorCssVariables picks the text tone from the fill's luminance -
+   dark text and no halo on a light colour, near-white over a dark halo on anything darker. The
+   fixed theme grey this used before vanished on a light grey or yellow chip. The grey stays as
+   the fallback for a colour that cannot be read. */
 .essence20 .essence-header:has(.essence-label) .essence-label {
   background: none;
   border: none;
   padding: 0;
   min-width: 0;
-  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  color: var(--e20-system-color-contrast, var(--e20-theme-muted-text, var(--e20-theme-text-color)));
+  -webkit-text-stroke: 1px var(--e20-system-color-halo, rgba(0, 0, 0, 0.8));
+  paint-order: stroke fill;
   font-weight: 600;
   font-size: 0.85em;
   white-space: nowrap;
 }
 
-/* Light theme's --e20-theme-text-color is dark (for its own light panels), which reads as
-   low-contrast to unreadable against a solid, arbitrary system.color fill. Force white with a
-   dark halo so the label stays legible against any color a player picks; dark theme's own text
-   color already contrasts fine and is left alone. */
-.essence20.theme-light .essence-header:has(.essence-label) .essence-label {
-  color: #ffffff;
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8), 0 0 3px rgba(0, 0, 0, 0.8);
-}
-
+/* The boxes take the same text tone, on a wash that suits the fill (--e20-system-color-inset:
+   light on a light colour, this dark one otherwise). */
 .essence20 .essence-header:has(.essence-label) .two-digit-input {
-  background: rgba(0,0,0,0.35);
+  background: var(--e20-system-color-inset, rgba(0,0,0,0.35));
   border: 1px solid rgba(255,255,255,0.12);
+  color: var(--e20-system-color-contrast, var(--e20-theme-text-color));
   font-weight: 700;
   font-size: 0.85em;
   max-width: 28px;
   padding: 2px;
-}
-
-/* Matches the essence-label's own light-mode treatment above (white + dark halo) rather than
-   the light-gray reused from dark mode - the gray read too close to the chip's own dark
-   background (rgba(0,0,0,0.35)) to be legible, and didn't match the now-white label text
-   right next to it. */
-.essence20.theme-light .essence-header:has(.essence-label) .two-digit-input {
-  color: #ffffff;
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8), 0 0 3px rgba(0, 0, 0, 0.8);
 }
