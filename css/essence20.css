@@ -6153,6 +6153,7 @@
 .essence20 .starting-essences-row .starting-essences-step {
   padding: 0;
   height: 2em;
+  line-height: 1;
 }
 .essence20 .starting-essences-row .starting-essences-value {
   text-align: center;
