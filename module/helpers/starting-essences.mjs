@@ -82,14 +82,56 @@ export function recommendedSpread(high, low) {
 }
 
 /**
- * The actor's current starting spread - what was saved, or the old default for a character
- * from before this existed.
+ * Whether a Role has added anything on top of the starting spread yet. Its increases depend on
+ * level and on the player's own picks (MLP/Transformers progressions), so once one is on the
+ * character the saved spread is the only reliable record of what was spent at creation.
+ * @param {Actor} actor
+ * @returns {Boolean}
+ */
+export function hasRole(actor) {
+  return !!actor.items?.some?.(item => item.type === 'role');
+}
+
+/**
+ * The actor's current starting spread.
+ *
+ * With no Role, nothing but an Origin has added to the Essences - and an Origin records which
+ * Essence it raised (system.originEssencesIncrease, background-handler.mjs) - so the spread is
+ * read straight off them. That is the truth even for a character whose saved spread says
+ * otherwise: one from before this existed is only ASSUMED to have 3 in each, and a character
+ * whose Role was dropped and removed may have had points taken away since (the old Role-delete
+ * bug), which only reading the Essences themselves shows.
+ *
+ * With a Role, the saved spread - or the old 3-each default for a character from before this
+ * existed.
  * @param {Actor} actor
  * @returns {Object<String, Number>}
  */
 export function currentBase(actor) {
+  if (!hasRole(actor)) {
+    const essences = actor._source?.system?.essences ?? actor.system?.essences ?? {};
+    const hasOrigin = actor.items?.some?.(item => item.type === 'origin');
+    const originEssence = hasOrigin ? actor.system?.originEssencesIncrease : null;
+    return Object.fromEntries(ESSENCES.map(essence => [
+      essence,
+      (essences[essence]?.max ?? DEFAULT_BASE[essence]) - (essence === originEssence ? 1 : 0),
+    ]));
+  }
+
   const saved = actor.system?.essenceBase ?? {};
   return Object.fromEntries(ESSENCES.map(essence => [essence, saved[essence] ?? DEFAULT_BASE[essence]]));
+}
+
+/**
+ * Whether the sheet should ask for the starting spread: never assigned, or - on a character with
+ * no Role yet, whose spread is read off its Essences - not a legal one.
+ * @param {Actor} actor
+ * @param {Number} max   From maxEssenceFor().
+ * @returns {Boolean}
+ */
+export function needsStartingEssences(actor, max) {
+  if (!actor.system?.essencesAssigned) return true;
+  return !hasRole(actor) && !checkStartingEssences(currentBase(actor), max).isValid;
 }
 
 /**

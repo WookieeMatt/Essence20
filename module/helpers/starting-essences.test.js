@@ -1,5 +1,5 @@
 import {
-  checkStartingEssences, currentBase, DEFAULT_BASE, essencesOverspentBy, MAX_ESSENCE, MAX_ESSENCE_NIGHT_VALE,
+  checkStartingEssences, needsStartingEssences, currentBase, DEFAULT_BASE, essencesOverspentBy, MAX_ESSENCE, MAX_ESSENCE_NIGHT_VALE,
   maxEssenceFor, recommendedSpread, startingEssencesUpdate,
 } from "./starting-essences.mjs";
 
@@ -12,7 +12,7 @@ function makeActor({ base, assigned = false } = {}) {
     essences[essence] = { max: value + bonus[essence], value: value + bonus[essence] };
   }
 
-  return { system: { essences, essenceBase: base, essencesAssigned: assigned } };
+  return { system: { essences, essenceBase: base, essencesAssigned: assigned }, items: [{ type: 'role' }] };
 }
 
 describe("maxEssenceFor", () => {
@@ -71,7 +71,27 @@ describe("currentBase", () => {
 
   // A character from before Starting Essences existed was given 3 in each.
   test("falls back to 3 each when nothing was saved", () => {
-    expect(currentBase({ system: { essences: {} } })).toEqual(DEFAULT_BASE);
+    expect(currentBase({ system: { essences: {} }, items: [{ type: 'role' }] })).toEqual(DEFAULT_BASE);
+  });
+
+  // With no Role, nothing but an Origin has touched the Essences, so they ARE the spread - even
+  // when the saved one says otherwise (an old character, or one a Role delete took points from).
+  test("with no Role, reads the spread off the Essences, less the Origin's point", () => {
+    const actor = {
+      _source: { system: { essences: { strength: { max: 3 }, speed: { max: 0 }, smarts: { max: 4 }, social: { max: 0 } } } },
+      system: { originEssencesIncrease: 'smarts', essenceBase: { ...DEFAULT_BASE }, essencesAssigned: true },
+      items: [{ type: 'origin' }],
+    };
+    expect(currentBase(actor)).toEqual({ strength: 3, speed: 0, smarts: 3, social: 0 });
+  });
+
+  test("with no Role and no Origin, the Essences are the spread as they stand", () => {
+    const actor = {
+      _source: { system: { essences: { strength: { max: 4 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 2 } } } },
+      system: { originEssencesIncrease: 'smarts' },
+      items: [],
+    };
+    expect(currentBase(actor)).toEqual({ strength: 4, speed: 3, smarts: 3, social: 2 });
   });
 });
 
@@ -109,5 +129,26 @@ describe("essencesOverspentBy", () => {
     // Strength is 3 + 1 = 4 now; taking the base to 1 leaves 2 to pay for 4 skill ranks.
     expect(essencesOverspentBy(actor, { strength: 1, speed: 5, smarts: 3, social: 3 }, spend)).toEqual(['strength']);
     expect(essencesOverspentBy(actor, { strength: 3, speed: 3, smarts: 3, social: 3 }, spend)).toEqual([]);
+  });
+});
+
+describe("needsStartingEssences", () => {
+  const noRole = (essences, assigned = true) => ({
+    _source: { system: { essences: Object.fromEntries(Object.entries(essences).map(([e, max]) => [e, { max }])) } },
+    system: { essencesAssigned: assigned },
+    items: [],
+  });
+
+  test("asks until the spread has been assigned", () => {
+    expect(needsStartingEssences(noRole({ strength: 3, speed: 3, smarts: 3, social: 3 }, false), 15)).toBe(true);
+  });
+
+  test("asks again when a Role-less character's real spread is not a legal 12", () => {
+    expect(needsStartingEssences(noRole({ strength: 3, speed: 0, smarts: 3, social: 0 }), 15)).toBe(true);
+    expect(needsStartingEssences(noRole({ strength: 4, speed: 3, smarts: 3, social: 2 }), 15)).toBe(false);
+  });
+
+  test("trusts the saved spread once a Role is on", () => {
+    expect(needsStartingEssences(makeActor({ assigned: true }), 15)).toBe(false);
   });
 });

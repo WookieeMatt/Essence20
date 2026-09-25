@@ -1,6 +1,8 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 import { computeEssenceSpend } from "../helpers/skill-picker.mjs";
 import { getActionsTabContext } from "../helpers/action-economy.mjs";
+import { currentBase, maxEssenceFor, needsStartingEssences } from "../helpers/starting-essences.mjs";
+import { getGameLine } from "../settings.js";
 
 export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
   static TABS = {
@@ -82,6 +84,16 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
     const context = await super._prepareContext(options);
     this._prepareSkillRankAllocation(context);
     context.actionsTab = getActionsTabContext(this.actor);
+
+    // The Skills tab's Starting Essences bar (pc-skills.hbs) - the spread as it really stands,
+    // and whether to ask for it, rather than the saved fields alone (see currentBase()).
+    const role = this.actor.items.documentsByType.role[0];
+    const max = maxEssenceFor(getGameLine(), role?.system?.version ?? null);
+    context.startingEssences = {
+      base: currentBase(this.actor),
+      needsAttention: needsStartingEssences(this.actor, max),
+      isAssigned: !!this.actor.system.essencesAssigned,
+    };
     return context;
   }
 

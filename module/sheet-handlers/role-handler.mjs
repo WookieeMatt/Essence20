@@ -137,7 +137,12 @@ export async function performSpectrumShift(actor, newRole) {
  *                                    in place of previousLevel, for the same reason.
  */
 export async function setRoleValues(role, actor, newLevel=null, previousLevel=null, essenceLevel=null, perkLevel=null, previousPerkLevel=null) {
-  const currentEssenceLevel = essenceLevel ?? newLevel;
+  // The level being reached - the one passed in on a level change, and otherwise (a Role being
+  // dropped, where no level is passed) the character's own. Falling through to null instead
+  // made a Role drop grant none of its 1st-level Essences, Health or Personal Power, while
+  // deleting the Role still took its 1st-level Essences away: every drop-and-delete of a GI Joe
+  // Commando cost the character a point of Speed and of Social for good.
+  const currentEssenceLevel = essenceLevel ?? newLevel ?? actor.system.level;
   for (const essence in role.system.essenceLevels) {
     const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[essence], previousLevel);
     const essenceMax = actor.system.essences[essence].max + totalChange;
