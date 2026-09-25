@@ -578,7 +578,14 @@ export function buildSimpleItems(ir, { type = 'npc' } = {}) {
     });
   }
 
-  return items;
+  // Each gets its type's own icon here, because nothing else will give it one: these are created
+  // inside the Actor (Actor.create({items})), and an Item created that way never runs its own
+  // _preCreate (documents/item.mjs), which is where the default icon is normally set - every
+  // unmatched Perk, Power and Hang-Up came in with Foundry's generic bag instead.
+  return items.map(item => {
+    const img = CONFIG.E20?.defaultIcon?.[item.type];
+    return img ? { ...item, img } : item;
+  });
 }
 
 /* ------------------------------------------------------------------ *

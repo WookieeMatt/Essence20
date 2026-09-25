@@ -680,9 +680,16 @@ describe("Contacts", () => {
   test("Contact Perks become Perks of the contact type, with their cost", () => {
     const contactPerks = buildSimpleItems(contactIr).filter(item => item.system.type === 'contact');
     expect(contactPerks).toEqual([
-      { name: 'Quick Patch', type: 'perk', system: { description: 'One vehicle regains 2 Health.', type: 'contact', allegianceCost: 1 } },
-      { name: 'Spare Parts', type: 'perk', system: { description: 'The PCs gain one piece of gear.', type: 'contact', allegianceCost: 2 } },
+      { name: 'Quick Patch', type: 'perk', img: CONFIG.E20.defaultIcon.perk, system: { description: 'One vehicle regains 2 Health.', type: 'contact', allegianceCost: 1 } },
+      { name: 'Spare Parts', type: 'perk', img: CONFIG.E20.defaultIcon.perk, system: { description: 'The PCs gain one piece of gear.', type: 'contact', allegianceCost: 2 } },
     ]);
+  });
+
+  // Created inside the Actor, these never run Item#_preCreate, where the default icon is set.
+  test("every item carries its type's own icon rather than Foundry's generic bag", () => {
+    for (const item of buildSimpleItems(contactIr)) {
+      expect(item.img).toBe(CONFIG.E20.defaultIcon[item.type]);
+    }
   });
 
   test("the ordinary Perks are untouched", () => {
