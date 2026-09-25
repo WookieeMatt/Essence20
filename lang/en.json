@@ -1913,6 +1913,7 @@
     "ThemeDefault": "Sci-fi",
     "ThemePony": "Pony",
     "StartingEssencesApply": "Apply",
+    "StartingEssencesBarAssigned": "Starting Essences:",
     "StartingEssencesBarInvalid": "Starting Essences are not a legal 12 - re-spread them:",
     "StartingEssencesBarUnassigned": "Spend your 12 starting Essence points",
     "StartingEssencesEven": "Even (3/3/3/3)",

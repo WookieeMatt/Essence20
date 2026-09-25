@@ -6225,32 +6225,53 @@
   grid-template-rows: auto minmax(0, 1fr);
 }
 
-.essence20 .starting-essences-bar {
+/* The whole bar is a button (pc-skills.hbs), so Foundry's own button look is reset first: it
+   should read as a line of the tab, not a raised control. */
+.essence20 button.starting-essences-bar {
   grid-column: 1/-1;
+  position: relative;
   display: flex;
   align-items: center;
-  /* Centred as one group, the button right after the text it acts on - not pushed to the far
-     edge of the tab, where it read as unrelated to the summary. */
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  margin: 0;
   padding: 2px 0.5rem;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  box-shadow: none;
   font-size: 0.85em;
+  font-weight: 600;
+  line-height: 1.4;
   color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
-  /* Until the points are spent, the bar asks for attention in the character's own colour. */
+  cursor: pointer;
+  /* Until the points are spent (or while they are not a legal 12), the bar is a full-width
+     call to action in the character's own colour, with the warning pinned to its left edge. */
 }
-.essence20 .starting-essences-bar a {
-  white-space: nowrap;
+.essence20 button.starting-essences-bar .starting-essences-bar-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
-.essence20 .starting-essences-bar.is-unassigned {
+.essence20 button.starting-essences-bar:hover, .essence20 button.starting-essences-bar:focus-visible {
+  color: var(--e20-theme-text-color);
+  background: var(--e20-theme-panel-bg);
+}
+.essence20 button.starting-essences-bar.is-unassigned {
   background: var(--e20-system-color, var(--e20-theme-accent));
   color: var(--e20-system-color-contrast, var(--e20-theme-text-color));
-  border-radius: 4px;
-  font-weight: 600;
-  padding: 4px 0.5rem;
+  padding: 4px calc(1rem + 1em);
 }
-.essence20 .starting-essences-bar.is-unassigned a {
-  color: inherit;
+.essence20 button.starting-essences-bar.is-unassigned:hover, .essence20 button.starting-essences-bar.is-unassigned:focus-visible {
+  filter: brightness(1.08);
+}
+.essence20 button.starting-essences-bar .starting-essences-alert {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .essence20.compendium-browser {

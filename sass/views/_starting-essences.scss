@@ -111,33 +111,58 @@
   grid-template-rows: auto minmax(0, 1fr);
 }
 
-.essence20 .starting-essences-bar {
+/* The whole bar is a button (pc-skills.hbs), so Foundry's own button look is reset first: it
+   should read as a line of the tab, not a raised control. */
+.essence20 button.starting-essences-bar {
   grid-column: 1 / -1;
+  position: relative;
   display: flex;
   align-items: center;
-  /* Centred as one group, the button right after the text it acts on - not pushed to the far
-     edge of the tab, where it read as unrelated to the summary. */
   justify-content: center;
-  flex-wrap: wrap;
-  gap: v.$gap-md * 2;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  margin: 0;
   padding: 2px v.$gap-md;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  box-shadow: none;
   font-size: 0.85em;
+  font-weight: 600;
+  line-height: 1.4;
   color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  cursor: pointer;
 
-  a {
-    white-space: nowrap;
+  .starting-essences-bar-text {
+    display: inline-flex;
+    align-items: center;
+    gap: v.$gap-md;
   }
 
-  /* Until the points are spent, the bar asks for attention in the character's own colour. */
+  &:hover,
+  &:focus-visible {
+    color: var(--e20-theme-text-color);
+    background: var(--e20-theme-panel-bg);
+  }
+
+  /* Until the points are spent (or while they are not a legal 12), the bar is a full-width
+     call to action in the character's own colour, with the warning pinned to its left edge. */
   &.is-unassigned {
     background: var(--e20-system-color, var(--e20-theme-accent));
     color: var(--e20-system-color-contrast, var(--e20-theme-text-color));
-    border-radius: 4px;
-    font-weight: 600;
-    padding: 4px v.$gap-md;
+    padding: 4px calc(v.$gap-md * 2 + 1em);
 
-    a {
-      color: inherit;
+    &:hover,
+    &:focus-visible {
+      filter: brightness(1.08);
     }
+  }
+
+  .starting-essences-alert {
+    position: absolute;
+    left: v.$gap-md;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }
