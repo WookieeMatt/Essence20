@@ -1,0 +1,54 @@
+<div class="starting-essences-body">
+  <p class="starting-essences-intro">{{localize 'E20.StartingEssencesIntro' total=total max=max}}</p>
+
+  <div class="starting-essences-rows">
+    {{#each rows as |row|}}
+      <div class="starting-essences-row">
+        <span class="starting-essences-label">{{localize row.label}}</span>
+        <button type="button" class="starting-essences-step" data-action="adjust" data-essence="{{row.essence}}" data-step="-1"
+          {{#unless row.canLower}}disabled{{/unless}} aria-label="{{localize 'E20.StartingEssencesLower' essence=(localize row.label)}}">
+          <i class="fa-solid fa-minus" inert></i>
+        </button>
+        <span class="starting-essences-value">{{row.value}}</span>
+        <button type="button" class="starting-essences-step" data-action="adjust" data-essence="{{row.essence}}" data-step="1"
+          {{#unless row.canRaise}}disabled{{/unless}} aria-label="{{localize 'E20.StartingEssencesRaise' essence=(localize row.label)}}">
+          <i class="fa-solid fa-plus" inert></i>
+        </button>
+        <span class="starting-essences-total" data-tooltip="{{localize 'E20.StartingEssencesTotalTooltip'}}">
+          {{localize 'E20.StartingEssencesTotal' total=row.total}}
+        </span>
+      </div>
+    {{/each}}
+  </div>
+
+  <p class="starting-essences-remaining {{remainingClass}}">{{localize 'E20.StartingEssencesRemaining' remaining=remaining total=total}}</p>
+
+  <div class="starting-essences-presets">
+    <button type="button" data-action="even">{{localize 'E20.StartingEssencesEven'}}</button>
+    <div class="starting-essences-recommended">
+      <span>{{localize 'E20.StartingEssencesRecommendedHigh'}}</span>
+      <select name="high">{{selectOptions essenceChoices selected=high localize=true}}</select>
+      <span>{{localize 'E20.StartingEssencesRecommendedLow'}}</span>
+      <select name="low">{{selectOptions essenceChoices selected=low localize=true}}</select>
+      <button type="button" data-action="recommended">{{localize 'E20.StartingEssencesRecommended'}}</button>
+    </div>
+  </div>
+
+  {{#if overspent}}
+    <p class="starting-essences-warning"><i class="fa-solid fa-triangle-exclamation" inert></i> {{overspent}}</p>
+  {{/if}}
+
+  {{#if isGM}}
+    <label class="starting-essences-override checkbox">
+      <input type="checkbox" name="ignoreLimits" {{checked ignoreLimits}} />
+      {{localize 'E20.StartingEssencesIgnoreLimits'}}
+    </label>
+  {{/if}}
+
+  <footer class="starting-essences-footer">
+    <button type="button" data-action="cancel">{{localize 'Cancel'}}</button>
+    <button type="button" class="bright" data-action="apply" {{#unless canApply}}disabled{{/unless}}>
+      <i class="fa-solid fa-check" inert></i> {{localize 'E20.StartingEssencesApply'}}
+    </button>
+  </footer>
+</div>

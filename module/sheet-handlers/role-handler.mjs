@@ -138,7 +138,6 @@ export async function performSpectrumShift(actor, newRole) {
  */
 export async function setRoleValues(role, actor, newLevel=null, previousLevel=null, essenceLevel=null, perkLevel=null, previousPerkLevel=null) {
   const currentEssenceLevel = essenceLevel ?? newLevel;
-  console.log(currentEssenceLevel);
   for (const essence in role.system.essenceLevels) {
     const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[essence], previousLevel);
     const essenceMax = actor.system.essences[essence].max + totalChange;

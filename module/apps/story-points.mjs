@@ -189,15 +189,19 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
 
     applyThemeClass(this.element);
 
+    // The GM Points box is only drawn when GM Points are shown at all (story-points.hbs's
+    // gmPointsArePublic): not for a player whose GM keeps them private, and not for anyone in a
+    // My Little Pony world, which has no GM pool. Wiring it unconditionally threw "Cannot read
+    // properties of null (reading 'addEventListener')" on every render in either case.
     this.element
       .querySelector("#gm-points-input")
-      .addEventListener("focusout", (e) =>
+      ?.addEventListener("focusout", (e) =>
         this.gmPointsInputHandler(e.target.value),
       );
 
     this.element
       .querySelector("#story-points-input")
-      .addEventListener("focusout", (e) =>
+      ?.addEventListener("focusout", (e) =>
         this.storyPointsInputHandler(e.target.value),
       );
 

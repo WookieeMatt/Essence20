@@ -1,4 +1,19 @@
 <div class="skillscontainer">
+  {{!-- The 12 Essence points spent at creation (apps/starting-essences.mjs). Highlighted until
+       they have been spent; after that a one-line summary with a way back in to re-spread them. --}}
+  {{#if system.essenceBase}}
+  <div class="starting-essences-bar {{#unless system.essencesAssigned}}is-unassigned{{/unless}}">
+    {{#if system.essencesAssigned}}
+      <span>{{localize 'E20.StartingEssencesBarAssigned'}}
+        <strong>{{system.essenceBase.strength}} / {{system.essenceBase.speed}} / {{system.essenceBase.smarts}} / {{system.essenceBase.social}}</strong></span>
+    {{else}}
+      <span><i class="fa-solid fa-circle-exclamation" inert></i> {{localize 'E20.StartingEssencesBarUnassigned'}}</span>
+    {{/if}}
+    <a data-action="startingEssences" data-tooltip="{{localize 'E20.StartingEssencesOpen'}}">
+      <i class="fa-solid fa-sliders" inert></i> {{localize 'E20.StartingEssencesOpenShort'}}
+    </a>
+  </div>
+  {{/if}}
   {{!-- Strength --}}
   <div class="essence-column">
     <div class="essence-header strength">

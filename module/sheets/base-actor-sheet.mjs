@@ -10,6 +10,7 @@ import Essence20CompendiumBrowser from "../apps/compendium-browser.mjs";
 import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
 import SheetOptions from "../apps/sheet-options.mjs";
 import SkillPicker from "../apps/skill-picker.mjs";
+import StartingEssences from "../apps/starting-essences.mjs";
 import StatEditor from "../apps/stat-editor.mjs";
 import { serializeFormSubmits } from "../apps/serialize-form-submits.mjs";
 import { applyThemeClass } from "../settings.js";
@@ -27,6 +28,7 @@ import {
 import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../helpers/personal-shield.mjs";
 import { applyAegisDefeatCheck, isRecklessAbandonItem } from "../helpers/reckless-abandon.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
+import { announceLevelChange, levelSnapshot } from "../helpers/level-announce.mjs";
 import { prepareSystemActors,
   onAttachedActorHealthUpdate,
   onAttachedActorStunUpdate,
@@ -88,6 +90,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       inlineEdit: this.#onInlineEdit,
       itemCreate: this.#onItemCreate,
       openCompendiumBrowser: this.#onOpenCompendiumBrowser,
+      startingEssences: this.#onStartingEssences,
       itemDelete: this.#onItemDelete,
       itemEdit: this.#onItemEdit,
       levelDown: this.#onLevelDown,
@@ -334,8 +337,15 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       return;
     }
 
-    const typedLevel = parseInt(event.target.value);
-    if (Number.isNaN(typedLevel)) {
+    // Anything but a whole number in range is refused outright and the field goes back to the
+    // current level - a typo like 55 or 0 should not quietly become level 20 or 1 and run a
+    // whole advancement the player never asked for. The arrows cannot go out of range, so this
+    // check is for typing only.
+    const typed = String(event.target.value ?? '').trim();
+    const typedLevel = Number(typed);
+    if (!/^\d+$/.test(typed) || typedLevel < MIN_LEVEL || typedLevel > MAX_LEVEL) {
+      ui.notifications.error(game.i18n.format("E20.LevelInvalid", { min: MIN_LEVEL, max: MAX_LEVEL }));
+      event.target.value = this.actor.system.level;
       return;
     }
 
@@ -373,8 +383,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       return;
     }
 
+    const before = levelSnapshot(this.actor);
     await this.actor.update({ "system.level": newLevel });
     await onLevelChange(this.actor, newLevel);
+    await announceLevelChange(this.actor, before, levelSnapshot(this.actor));
   }
 
   /**
@@ -980,6 +992,11 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
    */
   static #onOpenCompendiumBrowser(event, target) {
     return Essence20CompendiumBrowser.openTo(target.dataset.type, { subtype: target.dataset.perkType || null });
+  }
+
+  /** The Skills tab's Starting Essences bar - see apps/starting-essences.mjs. */
+  static #onStartingEssences() {
+    return StartingEssences.open(this.actor);
   }
 
   static #onItemCreate(event) {
