@@ -37,6 +37,7 @@ import { handleSetActionLedger } from "./helpers/action-economy.mjs";
 import "./helpers/defense-choice.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
+import StartingEssences from "./apps/starting-essences.mjs";
 import StatBlockImporter from "./apps/stat-block-importer.mjs";
 import { canSwapTokenForm, swapTokenForm } from "./helpers/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
@@ -709,6 +710,18 @@ function refreshStoryPointsTracker(actor) {
 }
 
 Hooks.on("createActor", refreshStoryPointsTracker);
+
+/**
+ * A new player character opens straight onto spending its 12 starting Essence points, for the
+ * user who made it only. Not for the guided tours' demo characters, which arrive fully built,
+ * nor for a copy of a character that had already spent them (a duplicate keeps that).
+ */
+Hooks.on("createActor", (actor, options, userId) => {
+  if (userId !== game.user.id || actor.type !== "playerCharacter") return;
+  if (actor.system.essencesAssigned || actor.getFlag("essence20", "tourDemo")) return;
+
+  StartingEssences.open(actor);
+});
 Hooks.on("deleteActor", refreshStoryPointsTracker);
 
 for (const hookName of ["createItem", "updateItem", "deleteItem"]) {

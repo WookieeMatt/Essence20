@@ -3826,3 +3826,73 @@ describe("Party member roster", () => {
     });
   });
 });
+
+describe("Zord creation adds its two standard Features", () => {
+  const CALL_TO_ACTION_ID = "Compendium.essence20.pr_crb.Item.yjhd6FRLJOsOQqN4";
+  const RECALL_FOR_REPAIRS_ID = "Compendium.essence20.pr_crb.Item.r1S0Sc4oq8axDL6C";
+  const sources = {
+    [CALL_TO_ACTION_ID]: { name: "Call to Action", type: "feature" },
+    [RECALL_FOR_REPAIRS_ID]: { name: "Recall For Repairs", type: "feature" },
+  };
+
+  /** A Zord about to be created, already carrying `items` - as a duplicate or import would. */
+  function makeNewZord(items) {
+    const actor = new Essence20Actor();
+    actor.type = 'zord';
+    actor.items = items;
+    actor._source = { items: items.map(item => ({ ...item })) };
+    actor.updateSource = jest.fn();
+    return actor;
+  }
+
+  beforeEach(() => {
+    global.fromUuid.mockImplementation(async uuid => sources[uuid] ?? null);
+    global.game.items = { fromCompendium: jest.fn(source => ({ ...source, _stats: { compendiumSource: 'x' } })) };
+  });
+
+  afterEach(() => {
+    global.fromUuid.mockReset();
+    delete global.game.items;
+  });
+
+  test("a new Zord gets both", async () => {
+    const actor = makeNewZord([]);
+    await actor._preCreate({}, {}, {});
+
+    const added = actor.updateSource.mock.calls[0][0].items.map(item => item.name);
+    expect(added).toEqual(["Call to Action", "Recall For Repairs"]);
+  });
+
+  test("a duplicated Zord that already has both gets neither again", async () => {
+    const actor = makeNewZord([
+      { type: 'feature', name: "Call to Action", _stats: { compendiumSource: CALL_TO_ACTION_ID } },
+      { type: 'feature', name: "Recall For Repairs", _stats: { compendiumSource: RECALL_FOR_REPAIRS_ID } },
+    ]);
+    await actor._preCreate({}, {}, {});
+
+    expect(actor.updateSource).not.toHaveBeenCalled();
+  });
+
+  // A copy made outside Foundry's own duplicate can lose the compendium link, but not the name.
+  test("an existing Feature is recognised by name when its source link is gone", async () => {
+    const actor = makeNewZord([
+      { type: 'feature', name: "Call to Action" },
+      { type: 'feature', name: "Recall For Repairs" },
+    ]);
+    await actor._preCreate({}, {}, {});
+
+    expect(actor.updateSource).not.toHaveBeenCalled();
+  });
+
+  test("only the missing one is added, and the Zord keeps its own items", async () => {
+    const weapon = { type: 'weapon', name: "Zord Cannon" };
+    const actor = makeNewZord([
+      weapon,
+      { type: 'feature', name: "Call to Action", _stats: { compendiumSource: CALL_TO_ACTION_ID } },
+    ]);
+    await actor._preCreate({}, {}, {});
+
+    const items = actor.updateSource.mock.calls[0][0].items.map(item => item.name);
+    expect(items).toEqual(["Zord Cannon", "Call to Action", "Recall For Repairs"]);
+  });
+});

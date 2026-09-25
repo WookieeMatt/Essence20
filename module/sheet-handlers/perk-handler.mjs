@@ -1,7 +1,9 @@
-import ChoicesSelector from "../apps/choices-selector.mjs";import MultiChoiceSelector from "../apps/multi-choice-selector.mjs";
+import ChoicesSelector from "../apps/choices-selector.mjs";
+import MultiChoiceSelector from "../apps/multi-choice-selector.mjs";
 import { E20 } from "../helpers/config.mjs";
 import { actorHasPower } from "../helpers/powers.mjs";
-import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
+import { createItemCopies, deleteAttachmentsForItem, setEntryAndAddItem } from "./attachment-handler.mjs";
+import { getVisibleItemPacks } from "../helpers/compendium-browser.mjs";
 import { performSpectrumShift } from "./role-handler.mjs";
 import { isPrincessPerk, removeSpellcastingUpshift } from "../helpers/princess-perks.mjs";
 import { grantBlendInUpgrades } from "../helpers/blend-in.mjs";
@@ -263,6 +265,69 @@ const INFATUATED_ID = "Compendium.essence20.dark_skies_over_equestria.Item.2Kw4m
 const HEAVY_ARMOR_SHELL_ID = "Compendium.essence20.pr_crb.Item.XVrOmc94bK9G9F5P";
 const MEDIUM_ARMOR_SHELL_ID = "Compendium.essence20.pr_crb.Item.d4AKhKlDbkQqGwOu";
 const ULTRA_HEAVY_ARMOR_SHELL_ID = "Compendium.essence20.pr_crb.Item.xBeEe7X1MBoo4cYW";
+
+// Nobody Like Me (PR CRB, Oddball Origin Benefit, p.25): "choose any General Perk you meet the
+// prerequisites for". Its compendium item once listed the Power Rangers CRB's 42 by hand; the
+// choice is built from every enabled book instead - see anyGeneralPerkChoices().
+const NOBODY_LIKE_ME_ID = "Compendium.essence20.pr_crb.Item.9nvRKN0A8N0EEXUl";
+const ANY_GENERAL_PERK_IDS = new Set([NOBODY_LIKE_ME_ID]);
+
+/**
+ * Whether this Perk offers any General Perk rather than a fixed list. Checked by source as well
+ * as by uuid, so a copy already on an actor (Actor.x.Item.y) is recognised too.
+ * @param {Item} perk
+ * @param {String} perkUuid
+ * @returns {Boolean}
+ */
+export function grantsAnyGeneralPerk(perk, perkUuid) {
+  return [perkUuid, perk.flags?.core?.sourceId, perk._stats?.compendiumSource]
+    .some(id => ANY_GENERAL_PERK_IDS.has(id));
+}
+
+/**
+ * The game line (its compendium folder, e.g. "Power Rangers") a compendium uuid belongs to.
+ * @param {String} uuid
+ * @returns {?String}
+ */
+export function gameLineOf(uuid) {
+  const packId = String(uuid ?? '').match(/^Compendium\.([^.]+\.[^.]+)\.Item\./)?.[1];
+  return (packId && game.packs.get(packId)?.folder?.name) ?? null;
+}
+
+/**
+ * Every General Perk in every enabled book, as choices keyed by uuid. The same books the
+ * Compendium Browser shows - a GM who has switched a line off does not want its Perks offered.
+ * Grouped by game line with the book alongside, since the same name is printed in more than one
+ * book. Prerequisites are printed prose, so they are left to the player, as the book asks.
+ * @param {Actor} actor
+ * @returns {Promise<Object>}
+ */
+export async function anyGeneralPerkChoices(actor) {
+  const taken = new Set(actor.items.map(item => item.flags?.core?.sourceId ?? item._stats?.compendiumSource));
+  const choices = {};
+
+  for (const pack of getVisibleItemPacks()) {
+    const index = await pack.getIndex({ fields: ["system.type", "system.source.book"] });
+    for (const entry of index) {
+      if (entry.type != 'perk' || entry.system?.type != 'general') continue;
+
+      const uuid = `Compendium.${pack.metadata.id}.Item.${entry._id}`;
+      if (taken.has(uuid)) continue;
+
+      choices[uuid] = {
+        chosen: false,
+        value: uuid,
+        label: entry.name,
+        uuid,
+        type: 'perks',
+        group: pack.folder?.name ?? pack.metadata.label,
+        detail: entry.system?.source?.book || pack.metadata.label,
+      };
+    }
+  }
+
+  return choices;
+}
 
 /**
  * Expertise (see EXPERTISE_GIJ_ID's own comment above) - the skills already chosen by another
@@ -854,14 +919,30 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
       }
     }
   } else if (selectionType == 'perks') {
-    const chosenPerk = perk.system.items[selection];
+    // A fixed list keys its choices by the entry they came from; an any-General-Perk choice
+    // (anyGeneralPerkChoices) keys them by uuid, with no entry yet. That entry is written onto
+    // this actor's own copy now, because it is what links the chosen Perk back to its parent -
+    // deleting the Origin removes it (deleteAttachmentsForItem), and a chosen Perk with a choice
+    // of its own finds its collectionId there (the parentPerk branch above).
+    // A uuid that is already one of the parent's own entries (Nobody Like Me still lists the Power
+    // Rangers CRB's General Perks) reuses that entry - adding it a second time is refused as a
+    // duplicate, and the Perk was never created.
+    let collectionKey = perk.system.items[selection]
+      ? selection
+      : Object.entries(perk.system.items ?? {}).find(([, entry]) => entry.uuid == selection)?.[0];
+    const chosenPerk = collectionKey ? perk.system.items[collectionKey] : { uuid: selection };
+
     const itemToCreate = await fromUuid(chosenPerk.uuid);
+    if (!collectionKey) {
+      collectionKey = await setEntryAndAddItem(itemToCreate, newPerk);
+      if (!collectionKey) return newPerk;
+    }
 
     if (itemToCreate.system.hasChoice) {
       setPerkValues(actor, itemToCreate, newPerk, null);
     } else {
       const createdPerk = await Item.create(itemToCreate, { parent: actor });
-      createdPerk.setFlag('essence20', 'collectionId', selection);
+      createdPerk.setFlag('essence20', 'collectionId', collectionKey);
       createdPerk.setFlag('essence20', 'parentId', newPerk._id);
       createdPerk.update({
         "_stats.compendiumSource": itemToCreate.uuid,
@@ -1052,6 +1133,8 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
     let choices = {};
     let prompt = null;
     let title = game.i18n.localize("E20.PerkSelect");
+    // The game line a long, filterable list opens on (see ChoicesSelector) - null shows them all.
+    let defaultGroup = null;
 
     switch (perk.system.choiceType) {
     case 'field':
@@ -1161,6 +1244,13 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
         );
       } else {
         prompt = game.i18n.localize("E20.SelectPerk");
+      }
+
+      if (grantsAnyGeneralPerk(perk, perkUuid)) {
+        prompt = game.i18n.localize("E20.SelectGeneralPerk");
+        Object.assign(choices, await anyGeneralPerkChoices(actor));
+        defaultGroup = gameLineOf(perkUuid);
+        break;
       }
 
       for (const [key, item] of Object.entries(perk.system.items)) {
@@ -1606,6 +1696,13 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
       return false;
     }
 
+    // Perk lists read alphabetically. Nothing else is reordered: environments, senses and the
+    // like are short and already listed in the order the books give them.
+    if (perk.system.choiceType == 'perks') {
+      choices = Object.fromEntries(Object.entries(choices)
+        .sort(([, a], [, b]) => a.label.localeCompare(b.label)));
+    }
+
     // Expertise (GI Joe CRB, Commando base, 1st/7th level, p.72) - see EXPERTISE_GIJ_ID's own
     // comment above. "Choose two skills" is now numChoices:2 on the compendium item itself (a
     // single MultiChoiceSelector asking for both at once), fixing the root cause of the
@@ -1615,7 +1712,9 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
     if (perk.system.numChoices > 1 && ["perks", "skills"].includes(perk.system.choiceType)) {
       await new MultiChoiceSelector(choices, actor, prompt, title, perk, dropFunc, parentPerk).render(true);
     } else {
-      await new ChoicesSelector(choices, actor, prompt, title, perk, null, dropFunc, null, parentPerk, null).render(true);
+      const selector = new ChoicesSelector(choices, actor, prompt, title, perk, null, dropFunc, null, parentPerk, null);
+      selector.defaultGroup = defaultGroup;
+      await selector.render(true);
     }
 
   } else {

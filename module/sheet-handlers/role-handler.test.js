@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { _setFocusValues, _trainingUpdate, onFocusDelete, onFocusDrop, roleValueChange } from "./role-handler.mjs";
+import { _setFocusValues, _trainingUpdate, onFocusDelete, onFocusDrop, roleValueChange, setRoleValues } from "./role-handler.mjs";
 
 describe("roleValueChange", () => {
   test("returns 0 when the level hasn't changed", () => {
@@ -240,5 +240,58 @@ describe("onFocusDelete - skips Essence math entirely without a focusEssence", (
     await onFocusDelete(actor, focus);
 
     expect(actor.update).not.toHaveBeenCalled();
+  });
+});
+
+describe("setRoleValues - Essences", () => {
+  /** A 1st-level character with 3 in each Essence, recording every update it is sent. */
+  function makeActor(level = 1) {
+    const actor = {
+      system: {
+        level,
+        essences: Object.fromEntries(['strength', 'speed', 'smarts', 'social'].map(e => [e, { max: 3, value: 3 }])),
+        powers: { personal: { max: 0 } },
+        health: { bonus: 0 },
+      },
+      items: [],
+      flags: { essence20: {} },
+      setFlag: jest.fn(),
+      update: jest.fn(async (changes) => {
+        for (const [path, value] of Object.entries(changes)) {
+          const keys = path.split('.');
+          const last = keys.pop();
+          keys.reduce((node, key) => node[key], actor)[last] = value;
+        }
+      }),
+    };
+    return actor;
+  }
+
+  // A GI Joe Commando raises Speed and Social at 1st level (and Speed again at 3rd).
+  const commando = {
+    system: {
+      essenceLevels: { strength: [], speed: ['level1', 'level3'], smarts: [], social: ['level1'] },
+      powers: { personal: { starting: 0, levels: [] } },
+      adjustments: { health: [] },
+      skillDie: { isUsed: false, levels: [], specializedLevels: [] },
+      items: {},
+    },
+  };
+
+  // Dropping a Role passes no level. Reading that as "no level" granted nothing at all, while
+  // deleting the Role later still took its 1st-level Essences away.
+  test("a Role dropped with no level given grants its 1st-level Essences", async () => {
+    const actor = makeActor(1);
+    await setRoleValues(commando, actor);
+    expect(actor.system.essences.speed.max).toBe(4);
+    expect(actor.system.essences.social.max).toBe(4);
+    expect(actor.system.essences.strength.max).toBe(3);
+  });
+
+  test("a level change still uses the level it is given", async () => {
+    const actor = makeActor(1);
+    await setRoleValues(commando, actor, 3, 1);
+    expect(actor.system.essences.speed.max).toBe(4);
+    expect(actor.system.essences.social.max).toBe(3);
   });
 });

@@ -36,6 +36,7 @@ Math.toRadians ??= function toRadians(degrees) {
 
 global.Actor = class Actor {
   constructor() {}
+  async _preCreate() {}
   getRollData() {
     return foundry.utils.deepClone(this.system ?? {});
   }

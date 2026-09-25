@@ -180,3 +180,38 @@ export function getSkillAttributionStatus(skillData) {
 
   return { upshifts, attributed, isBalanced: upshifts === attributed };
 }
+
+/**
+ * The update that puts one Essence's skills back to untrained - the Skill Picker's per-Essence
+ * reset. Each skill goes to d20, loses its Specializations (a d20 skill cannot hold one, the same
+ * rule SkillPicker#onSubmit applies) and its Specialized mark, and has any essenceAttribution
+ * split zeroed. Strength's Conditioning goes back to 0 too, since it is Strength's to spend.
+ * @param {Actor} actor
+ * @param {String} essence   One of the four real Essences.
+ * @param {String[]} skills   The skills to reset - CONFIG.E20.skillsByEssence[essence], filtered
+ *   to the ones this actor has.
+ * @returns {Object} Flat dotted-key update data.
+ */
+export function resetEssenceUpdate(actor, essence, skills) {
+  const update = {};
+  for (const skill of skills) {
+    const fields = actor.system.skills[skill];
+    if (!fields) continue;
+
+    update[`system.skills.${skill}.shift`] = 'd20';
+    update[`system.skills.${skill}.isSpecialized`] = false;
+    for (const id of Object.keys(fields.specializations ?? {})) {
+      update[`system.skills.${skill}.specializations.${id}`] = new foundry.data.operators.ForcedDeletion();
+    }
+
+    for (const attributedEssence of Object.keys(fields.essenceAttribution ?? {})) {
+      update[`system.skills.${skill}.essenceAttribution.${attributedEssence}`] = 0;
+    }
+  }
+
+  if (essence === 'strength') {
+    update['system.conditioning'] = 0;
+  }
+
+  return update;
+}

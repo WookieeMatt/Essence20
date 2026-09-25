@@ -447,8 +447,17 @@ export class Essence20Actor extends Actor {
       // helpers/zord-features.mjs#actorHasZordFeature matches Features by. Both of these Features
       // were therefore invisible to every sourceId-based check, and would have quietly lost any
       // effect added to them in the compendium later.
+      //
+      // Only the Features the new Zord does not already carry. A duplicated Zord (or one imported,
+      // or dragged in from a compendium) arrives with both already on it, and adding them again
+      // left it with two of each. Matched by compendium source first, then by name, since a copy
+      // made outside Foundry's own duplicate may not keep that link.
       const newItems = [];
       for (const uuid of [CALL_TO_ACTION_ID, RECALL_FOR_REPAIRS_ID]) {
+        if (actorHasZordFeature(this, uuid)) {
+          continue;
+        }
+
         const source = await fromUuid(uuid);
         // A missing entry must not make Zords uncreatable: with the pack unbuilt or an id renamed,
         // this previously threw "Cannot read properties of null" straight out of _preCreate, which
@@ -458,11 +467,17 @@ export class Essence20Actor extends Actor {
           continue;
         }
 
+        if (this.items.some(item => item.type == 'feature' && item.name == source.name)) {
+          continue;
+        }
+
         newItems.push(game.items.fromCompendium(source));
       }
 
+      // The Zord's own items go back in with the new ones: a duplicate arrives with weapons and
+      // Features of its own, and the embedded collection is set from this array, not merged into.
       if (newItems.length) {
-        this.updateSource({ items: newItems });
+        this.updateSource({ items: [...this._source.items, ...newItems] });
       }
     }
   }

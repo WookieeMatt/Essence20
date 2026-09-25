@@ -1,4 +1,27 @@
 <div class="skillscontainer">
+  {{!-- The 12 Essence points spent at creation (apps/starting-essences.mjs). The whole bar is the
+       button that opens them - highlighted with a warning while they still need spending (or
+       are not a legal 12), a quiet one-line summary once they are. --}}
+  {{#if startingEssences}}
+  <button type="button" class="starting-essences-bar {{#if startingEssences.needsAttention}}is-unassigned{{/if}}"
+    data-action="startingEssences" data-tooltip="{{localize 'E20.StartingEssencesOpen'}}">
+    {{#if startingEssences.needsAttention}}
+      <i class="fa-solid fa-circle-exclamation starting-essences-alert" inert></i>
+    {{/if}}
+    <span class="starting-essences-bar-text">
+      <i class="fa-solid fa-sliders" inert></i>
+      {{#unless startingEssences.needsAttention}}
+        {{localize 'E20.StartingEssencesBarAssigned'}}
+        {{startingEssences.base.strength}} / {{startingEssences.base.speed}} / {{startingEssences.base.smarts}} / {{startingEssences.base.social}}
+      {{else if startingEssences.isAssigned}}
+        {{localize 'E20.StartingEssencesBarInvalid'}}
+        {{startingEssences.base.strength}} / {{startingEssences.base.speed}} / {{startingEssences.base.smarts}} / {{startingEssences.base.social}}
+      {{else}}
+        {{localize 'E20.StartingEssencesBarUnassigned'}}
+      {{/unless}}
+    </span>
+  </button>
+  {{/if}}
   {{!-- Strength --}}
   <div class="essence-column">
     <div class="essence-header strength">

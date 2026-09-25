@@ -219,6 +219,8 @@ describe("applySystemColorCssVariables", () => {
     applySystemColorCssVariables(element, { system: { color: '#d4d44a' } });
     expect(element.style.setProperty).toHaveBeenCalledWith('--e20-system-color-contrast', '#1a1a1a');
     expect(element.style.setProperty).toHaveBeenCalledWith('--e20-system-color-halo', 'transparent');
+    // ...and the Essence chips' number boxes a light wash to carry that dark text.
+    expect(element.style.setProperty).toHaveBeenCalledWith('--e20-system-color-inset', 'rgba(255, 255, 255, 0.55)');
   });
 
   // Magenta and purple read at under 2:1 with the old light grey.
@@ -227,6 +229,7 @@ describe("applySystemColorCssVariables", () => {
     applySystemColorCssVariables(element, { system: { color: '#c00798' } });
     expect(element.style.setProperty).toHaveBeenCalledWith('--e20-system-color-contrast', '#f2f2f2');
     expect(element.style.removeProperty).toHaveBeenCalledWith('--e20-system-color-halo');
+    expect(element.style.removeProperty).toHaveBeenCalledWith('--e20-system-color-inset');
   });
 
   test("an unparseable color keeps the stylesheet default", () => {
@@ -234,6 +237,7 @@ describe("applySystemColorCssVariables", () => {
     applySystemColorCssVariables(element, { system: { color: 'rebeccapurple' } });
     expect(element.style.removeProperty).toHaveBeenCalledWith('--e20-system-color-contrast');
     expect(element.style.removeProperty).toHaveBeenCalledWith('--e20-system-color-halo');
+    expect(element.style.removeProperty).toHaveBeenCalledWith('--e20-system-color-inset');
   });
 });
 

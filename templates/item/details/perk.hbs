@@ -11,6 +11,15 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+  {{#if (eq system.type "contact")}}
+    {{!-- Allegiance Point cost --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkAllegianceCost'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.allegianceCost" value="{{system.allegianceCost}}" min="0" step="1" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
   {{#if (eq system.type "faction")}}
     {{!-- System --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RoleVersion'}}

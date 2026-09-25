@@ -98,6 +98,18 @@
         </ul>
       {{/if}}
 
+      {{#if contact}}
+        <h3>{{localize "E20.StatBlockImportContact"}}{{#if contact.allegiance}} ({{contact.allegiance}}){{/if}}</h3>
+        {{#if contact.isNpc}}
+          <ul class="stat-block-importer-list">
+            {{#if contact.gaining}}<li><span>{{localize "E20.StatBlockImportContactGaining"}}</span><span>{{contact.gaining}}</span></li>{{/if}}
+            {{#each contact.perks as |perk|}}<li><span>{{perk.name}}</span><span>{{perk.cost}}</span></li>{{/each}}
+          </ul>
+        {{else}}
+          <p class="stat-block-importer-empty">{{localize "E20.StatBlockImportContactNotNpc"}}</p>
+        {{/if}}
+      {{/if}}
+
       {{#if diagnostics.length}}
         <h3>{{localize "E20.StatBlockImportDiagnostics"}} ({{diagnostics.length}})</h3>
         <ul class="stat-block-importer-diagnostics">

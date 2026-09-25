@@ -126,6 +126,45 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
     };
   }
 
+  /**
+   * Open the browser - or bring the open one forward - on the tab a given item type lives on.
+   * This is what the search icons on an actor sheet call, so each opens where it was clicked:
+   * the Role slot on Roles, a Weapons list on the Equipment tab showing weapons only, a list of
+   * Origin Perks on Perks showing Origin Perks only. A type with no tab (nothing of it in any
+   * enabled book) falls back to the first tab, as the browser always does.
+   * @param {String} type   An Item type.
+   * @param {Object} [options]
+   * @param {String} [options.subtype]   Narrow the tab's own Type filter to this one choice - a
+   *   perk type ("origin", "general") on the Perks tab. On a combined tab like Equipment the
+   *   item type itself is used, so there is no need to pass it.
+   * @returns {Promise<Essence20CompendiumBrowser>}
+   */
+  static async openTo(type, { subtype = null } = {}) {
+    const browser = foundry.applications.instances.get("essence20-compendium-browser")
+      ?? new Essence20CompendiumBrowser();
+    const tab = tabKeyForType(type);
+    browser._filters.activeType = tab;
+    browser._filters.search = "";
+
+    // A combined tab's Type choices come from the index, which a fresh window has not built yet.
+    if (!browser._index) {
+      await browser._buildIndex();
+    }
+
+    const only = TYPE_GROUPS[tab] ? type : subtype;
+    const definition = only ? browser._getSecondaryFilterDefinition(tab) : null;
+    if (definition) {
+      const choices = Object.keys(definition.choices());
+      if (choices.includes(only)) {
+        browser._filters.excludedSubtypes[tab] = new Set(choices.filter(choice => choice !== only));
+      }
+    }
+
+    await browser.render({ force: true });
+    browser.bringToFront();
+    return browser;
+  }
+
   static DEFAULT_OPTIONS = {
     id: "essence20-compendium-browser",
     classes: ["essence20", "theme-wrapper", "e20-window", "compendium-browser"],

@@ -13,6 +13,16 @@
         </a>
       {{/plus-button}}
     {{/if}}
+    {{!-- Opens the Compendium Browser on this list's own tab (and, for a Perk list, its Perk
+         type). Top-level lists only - a weapon's own Upgrades list is not somewhere to browse
+         from - and only for types some book actually ships; Contact Perks are written per NPC,
+         so no book has any to find. A one-item list (singleItem, the Origin) drops it once filled -
+         the trash on the entry is the only thing left to do there. --}}
+    {{#if (and (not parentId) (lookup @root.config.compendiumBrowsableTypes dataType) (ne perkType 'contact') (or (ne singleItem 'true') (not items.length)))}}
+      <a data-action="openCompendiumBrowser" data-type="{{dataType}}" data-perk-type="{{perkType}}" data-tooltip="{{localize 'E20.CompendiumBrowserOpenFor'}}">
+        <i class="fas fa-magnifying-glass" inert></i>
+      </a>
+    {{/if}}
   </div>
 
   <span class="header-accordion-wrapper">

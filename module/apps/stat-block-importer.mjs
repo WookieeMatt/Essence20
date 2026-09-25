@@ -1,7 +1,7 @@
 import { applyThemeClass } from "../settings.js";
 import {
   applyCompendiumMatches, buildSimpleItems, collectEffectContributions,
-  collectUncancellableEffects,
+  collectUncancellableEffects, CONTACT_TYPES,
   createActorFromStatBlock,
 } from "../helpers/stat-block-import.mjs";
 import { parseStatBlock, splitStatBlocks } from "../helpers/stat-block-parser.mjs";
@@ -266,6 +266,23 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
       });
     }
 
+    // The Contact half, when the block has one: what the NPC's Contact tab will be filled with.
+    context.contact = null;
+    if (ir.contact) {
+      const allegiance = ir.contact.allegiancePoints;
+      context.contact = {
+        isNpc: CONTACT_TYPES.includes(this._actorType),
+        allegiance: allegiance !== null && allegiance !== undefined
+          ? game.i18n.format("E20.StatBlockImportContactAllegiance", { points: allegiance })
+          : null,
+        gaining: ir.contact.gaining.map(entry => entry.name).filter(Boolean).join(', '),
+        perks: ir.contact.perks.map(perk => ({
+          name: perk.name,
+          cost: perk.cost ? game.i18n.format("E20.StatBlockImportContactCost", { cost: perk.cost }) : '',
+        })),
+      };
+    }
+
     const counts = countMatches(this._matches);
     context.matchSummary = counts.total
       ? game.i18n.format("E20.StatBlockImportMatchSummary", counts)
@@ -278,7 +295,7 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
     context.effectCaution = null;
     context.effectNetted = null;
     if (countEffectBearingMatches(this._matches)) {
-      const { items } = await applyCompendiumMatches(buildSimpleItems(ir), this._matches);
+      const { items } = await applyCompendiumMatches(buildSimpleItems(ir, { type: this._actorType }), this._matches);
       const contributions = collectEffectContributions(items);
       const nettedCount = Object.keys(contributions.defenses).length
         + Object.keys(contributions.movement).length

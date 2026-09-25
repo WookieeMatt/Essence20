@@ -1,10 +1,13 @@
 import { jest } from '@jest/globals';
 import {
-  getAlreadyChosenExpertiseSkills, grantBattlizerAccess, grantBeatdownWeapon, grantBlendIn, grantPerkEquipmentMap,
-  grantDutyOfTheSilverArmorTraining, grantEmtCrashCourse, grantForTheSyndicateMentor, grantIntoTheVoidDigDeep,
-  grantJackhammerWeapon, grantMetamorphosis, grantColonyChangelingInfatuated, grantNanoflageMimic, grantNaturalScienceQualification,
-  grantPetCompanionAnimalPet, grantShadowSaber, grantSynchronizationStayInFormation, grantYoungButExperiencedVeteran,
-  onMultiSkillPerkDrop, onPerkDelete, onPerkDrop, setPerkAdvancesName, setPerkValues, setRoleVatiantPerks,
+  anyGeneralPerkChoices, gameLineOf, getAlreadyChosenExpertiseSkills, grantBattlizerAccess,
+  grantBeatdownWeapon, grantBlendIn, grantColonyChangelingInfatuated,
+  grantDutyOfTheSilverArmorTraining, grantEmtCrashCourse, grantForTheSyndicateMentor,
+  grantIntoTheVoidDigDeep, grantJackhammerWeapon, grantMetamorphosis, grantNanoflageMimic,
+  grantNaturalScienceQualification, grantPerkEquipmentMap, grantPetCompanionAnimalPet,
+  grantsAnyGeneralPerk, grantShadowSaber, grantSynchronizationStayInFormation,
+  grantYoungButExperiencedVeteran, onMultiSkillPerkDrop, onPerkDelete, onPerkDrop,
+  setPerkAdvancesName, setPerkValues, setRoleVatiantPerks,
 } from "./perk-handler.mjs";
 
 function makePerk(type, currentValue) {
@@ -1595,5 +1598,76 @@ describe("Sorcery / Cost of Sorcery (Finster's Monster-Matic Cookbook, p.271)", 
     items.get = jest.fn(() => null);
     const actor = { update: jest.fn(), items, system: { level: 6 } };
     await expect(onPerkDelete(actor, makePerk())).resolves.not.toThrow();
+  });
+});
+
+describe("Nobody Like Me - any General Perk", () => {
+  const NOBODY_LIKE_ME_ID = "Compendium.essence20.pr_crb.Item.9nvRKN0A8N0EEXUl";
+
+  test("is recognised by uuid, and by source on a copy already on an actor", () => {
+    expect(grantsAnyGeneralPerk({}, NOBODY_LIKE_ME_ID)).toBe(true);
+    expect(grantsAnyGeneralPerk({ _stats: { compendiumSource: NOBODY_LIKE_ME_ID } }, 'Actor.a.Item.b')).toBe(true);
+    expect(grantsAnyGeneralPerk({ flags: { core: { sourceId: NOBODY_LIKE_ME_ID } } }, 'Actor.a.Item.b')).toBe(true);
+    expect(grantsAnyGeneralPerk({}, 'Compendium.essence20.pr_crb.Item.other')).toBe(false);
+  });
+
+  describe("with compendium packs", () => {
+    const originalPacks = game.packs;
+    const makePack = (id, folder, entries, enabled = true) => ({
+      documentName: 'Item',
+      metadata: { id, label: id },
+      folder: folder ? { name: folder } : null,
+      enabled,
+      getIndex: jest.fn(async () => entries),
+    });
+
+    beforeEach(() => {
+      const packs = [
+        makePack('essence20.pr_crb', 'Power Rangers', [
+          { _id: 'p1', name: 'Iron Hands', type: 'perk', system: { type: 'general', source: { book: 'Power Rangers Core Rulebook' } } },
+          { _id: 'p2', name: 'Morph Only', type: 'perk', system: { type: 'role' } },
+          { _id: 'p3', name: 'Taken Already', type: 'perk', system: { type: 'general' } },
+          { _id: 'x1', name: 'A Sword', type: 'weapon', system: {} },
+        ]),
+        makePack('essence20.gi_joe_crb', 'GI Joe', [
+          { _id: 'g1', name: 'Iron Hands', type: 'perk', system: { type: 'general', source: { book: 'GI Joe Core Rulebook' } } },
+        ]),
+        makePack('essence20.hidden', 'My Little Pony', [
+          { _id: 'h1', name: 'Hidden Perk', type: 'perk', system: { type: 'general' } },
+        ]),
+      ];
+      packs.get = (id) => packs.find(pack => pack.metadata.id === id);
+      global.game.packs = packs;
+      // A GM has switched the My Little Pony book off (Configure Sourcebooks).
+      global.game.settings.get.mockImplementation((scope, key) =>
+        key === 'enabledSourcebooks' ? { 'essence20.hidden': false } : 'roll');
+    });
+
+    afterEach(() => {
+      global.game.packs = originalPacks;
+      global.game.settings.get.mockImplementation(() => 'roll');
+    });
+
+    test("offers every General Perk in every enabled book, and nothing already taken", async () => {
+      const actor = { items: [{ _stats: { compendiumSource: 'Compendium.essence20.pr_crb.Item.p3' } }] };
+      const choices = await anyGeneralPerkChoices(actor);
+      expect(Object.keys(choices)).toEqual([
+        'Compendium.essence20.pr_crb.Item.p1',
+        'Compendium.essence20.gi_joe_crb.Item.g1',
+      ]);
+    });
+
+    test("each choice carries its game line and book, since names repeat across books", async () => {
+      const choices = await anyGeneralPerkChoices({ items: [] });
+      expect(choices['Compendium.essence20.gi_joe_crb.Item.g1']).toMatchObject({
+        label: 'Iron Hands', value: 'Compendium.essence20.gi_joe_crb.Item.g1',
+        type: 'perks', group: 'GI Joe', detail: 'GI Joe Core Rulebook',
+      });
+    });
+
+    test("gameLineOf reads the pack folder off a compendium uuid", () => {
+      expect(gameLineOf(NOBODY_LIKE_ME_ID)).toBe('Power Rangers');
+      expect(gameLineOf('Actor.a.Item.b')).toBeNull();
+    });
   });
 });

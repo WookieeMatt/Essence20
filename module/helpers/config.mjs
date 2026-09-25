@@ -1253,6 +1253,16 @@ E20.overTheCandlestickOptions = {
 };
 preLocalize("overTheCandlestickOptions");
 
+// Item types the Compendium Browser has something to show for - the ones any sourcebook pack
+// actually holds. An actor sheet list of one of these gets a search icon that opens the browser
+// on its tab (base-actor-sheet.mjs#onOpenCompendiumBrowser); Bonds and Traits, which no book
+// ships, do not. An object rather than an array so a template can test one with `lookup`.
+E20.compendiumBrowsableTypes = Object.fromEntries([
+  'altMode', 'alteration', 'armor', 'equipmentPackage', 'faction', 'feature', 'focus', 'gear',
+  'hangUp', 'influence', 'magicBauble', 'megaformTrait', 'origin', 'perk', 'power', 'role',
+  'rolePoints', 'shield', 'spell', 'upgrade', 'weapon', 'weaponEffect',
+].map(type => [type, true]));
+
 // Perk types
 E20.perkTypes = {
   contact: "E20.PerkContact",
