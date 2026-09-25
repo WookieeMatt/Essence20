@@ -17,6 +17,18 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Throwing Star Effect",
         "type": "weaponEffect"
+      },
+      "z76o": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.QXmBBtzFDk0ZE61I",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Throwing Star Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "36px": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.kXFeO52IOIbsZIuv",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Throwing Star Alternate Effect 2",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

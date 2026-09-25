@@ -70,7 +70,8 @@
     "traits": [
       "armorPiercing",
       "combined",
-      "energy"
+      "energy",
+      "powerWeapon"
     ],
     "transformerMode": "modeBotMode",
     "upgradeTraits": [],

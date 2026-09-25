@@ -26,7 +26,7 @@
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",
-    "selectionLimit": 1,
+    "selectionLimit": 7,
     "type": "role",
     "value": 0,
     "version": "powerRangers"

@@ -11,7 +11,14 @@
       "book": "Story of the Seasons",
       "page": 131
     },
-    "items": {},
+    "items": {
+      "Scr1": {
+        "uuid": "Compendium.essence20.story_of_the_seasons.Item.kvGkqTvE66u4fGhY",
+        "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+        "name": "Screech",
+        "type": "weapon"
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,

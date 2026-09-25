@@ -13,7 +13,7 @@
     },
     "items": {
       "b867": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.H6Z6NxpLuBFB2FJ9",
+        "uuid": "Compendium.essence20.pr_crb.Item.H6Z6NxpLuBFB2FJ9",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Projectile Launcher Effect",
         "type": "weaponEffect",
@@ -23,7 +23,7 @@
         },
         "damageValue": 1,
         "damageType": "sharp",
-        "numHands": "2",
+        "numHands": "1",
         "numTargets": 1,
         "radius": 0,
         "range": {

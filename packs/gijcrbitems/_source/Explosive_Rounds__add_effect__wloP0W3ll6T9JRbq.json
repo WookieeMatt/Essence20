@@ -19,7 +19,8 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": ""
+    "prerequisite": "",
+    "linkedWeaponEffect": "Compendium.essence20.gi_joe_crb.Item.LSYeY1O3oce9krh9"
   },
   "effects": [],
   "flags": {},

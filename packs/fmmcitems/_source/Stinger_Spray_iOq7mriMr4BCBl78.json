@@ -24,7 +24,7 @@
         "damageValue": 1,
         "damageType": "poison",
         "numHands": "1",
-        "numTargets": 1,
+        "numTargets": 3,
         "radius": 0,
         "range": {
           "min": null,
@@ -46,7 +46,7 @@
         "damageValue": 2,
         "damageType": "poison",
         "numHands": "1",
-        "numTargets": 1,
+        "numTargets": 3,
         "radius": 0,
         "range": {
           "min": null,
@@ -68,7 +68,7 @@
         "damageValue": 0,
         "damageType": "blindingBlast",
         "numHands": "1",
-        "numTargets": 1,
+        "numTargets": 3,
         "radius": 0,
         "range": {
           "min": null,
@@ -92,6 +92,7 @@
       "shift": "none"
     },
     "traits": [
+      "multipleTargets",
       "poison"
     ],
     "upgradeTraits": [],

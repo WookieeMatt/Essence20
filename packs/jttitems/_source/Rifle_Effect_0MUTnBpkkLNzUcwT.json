@@ -16,7 +16,7 @@
       "skill": "targeting",
       "style": "projectile"
     },
-    "damageType": "blunt",
+    "damageType": "sharp",
     "damageValue": 1,
     "isSpecialized": false,
     "numHands": 2,

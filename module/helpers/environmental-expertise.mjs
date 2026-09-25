@@ -49,6 +49,14 @@ export const PENDING_GUIDANCE_FLAG_KEY = 'pendingGuidance';
 // "pay only to activate" idiom Power Boost/Power Adaptation's own toggles already established).
 export const READ_THE_LAND_ID = "Compendium.essence20.intercontinental_adventures.Item.j8wVLLK4XvVEuP6F";
 
+// Adaptation (GI Joe CRB, Ranger base, 2nd level, p.91): "you gain a pool of Adaptation Points. As
+// a Free action, you can spend an Adaptation Point to use one of your Environment Expertise or
+// environment exposure abilities outside of your environments of expertise." Same "which specific
+// environment" collapse as Read The Land above - reuses the identical toggle/flag, just costing an
+// Adaptation Point (the actor's own base rolePoints resource, same actor._getBaseRolePoints()
+// lookup Guidance/Heart of the Team already use) instead of a Story Point to switch ON.
+export const ADAPTATION_ID = `${GI_JOE_CRB}PmY8jGTiemnSdsHi`;
+
 /**
  * @param {Actor} actor
  * @returns {Boolean}

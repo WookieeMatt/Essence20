@@ -129,6 +129,38 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "26dc": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.xvd1sVIqu0sNEI1c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Torozord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "2d01": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.xvd1sVIqu0sNEI1c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Torozord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "e660": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.xvd1sVIqu0sNEI1c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Torozord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "7afe": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.xvd1sVIqu0sNEI1c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Torozord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
       }
     },
     "adjustments": {

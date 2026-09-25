@@ -1,0 +1,77 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Tentacle Vine",
+  "type": "weapon",
+  "_id": "yweG0ur6zgeCHhsP",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "w0yw": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.1FSscv6zKddEmnp3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Tentacle Vine Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "acid",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Path of Thorns",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "acid",
+      "grapple",
+      "ongoing",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790228101154,
+    "modifiedTime": 1790228101154,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!yweG0ur6zgeCHhsP"
+}

@@ -13,7 +13,7 @@
     },
     "damageType": "blunt",
     "damageValue": 2,
-    "shiftDown": 1,
+    "shiftDown": 2,
     "numHands": "2",
     "numTargets": 1,
     "radius": 0,

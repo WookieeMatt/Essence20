@@ -32,6 +32,13 @@ export class UpgradeItemData extends foundry.abstract.TypeDataModel {
       removedTraits: makeStrArrayWithChoices(Object.keys(E20.upgradeTraits)),
       type: makeStrWithChoices(Object.keys(E20.upgradeTypes), 'armor'),
       prerequisite: makeStr(null),
+      // Explosive Rounds / Manipulative (TF CRB, also GI Joe CRB) - some weapon Upgrades' printed
+      // benefit is an entirely alternate weaponEffect (a different attack profile the weapon gains
+      // access to), not a modifier to the weapon's existing effect(s). The uuid of that
+      // weaponEffect Item - see sheet-handlers/attachment-handler.mjs#_attachItem, which grants it
+      // alongside this Upgrade once attached to a weapon. Null (the default) means this Upgrade
+      // grants no alternate effect, true of the overwhelming majority of Upgrades.
+      linkedWeaponEffect: makeStr(null),
     };
   }
 }

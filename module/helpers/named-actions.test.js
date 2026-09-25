@@ -119,6 +119,33 @@ describe('the skill-test actions', () => {
   });
 });
 
+describe('Lend Assistance', () => {
+  // Technorganic Secrets p.47: Invisibility ends "until you take the... Lend Assistance...
+  // action" - the real actor.getFlag/setFlag/toggleStatusEffect surface invisibility.mjs needs,
+  // layered onto the plain makeActor() above.
+  function makeInvisibleActor() {
+    const actor = makeActor();
+    const flags = { invisibilityActive: true };
+    actor.getFlag = jest.fn((scope, key) => flags[key]);
+    actor.setFlag = jest.fn(async (scope, key, value) => {
+      flags[key] = value;
+    });
+    return actor;
+  }
+
+  test('does NOT clear Invisibility when the action is cancelled (no allies to help)', async () => {
+    // No allies nearby (makeActor() has no getActiveTokens/token) - activateLendAssistance itself
+    // reports {cancelled: true} without banking anything, and the action is refunded, so
+    // Invisibility must NOT clear.
+    const actor = makeInvisibleActor();
+
+    await runNamedAction(actor, 'lendAssistance');
+
+    expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'invisibilityActive', false);
+    expect(actor.toggleStatusEffect).not.toHaveBeenCalledWith('invisible', { active: false });
+  });
+});
+
 describe('which actions are wired up', () => {
   test('the automated ones report themselves', () => {
     expect(isAutomated('defend')).toBe(true);

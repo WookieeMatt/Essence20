@@ -12,7 +12,52 @@
       "page": 34
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Life Interrupted (Short-Term Focus)",
+      "origin": "Item.8G9GCYkBGjFpACUq",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "HcYZ7zAjhS8WahOM",
+      "changes": [
+        {
+          "key": "system.essenceShifts.any.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!8G9GCYkBGjFpACUq.HcYZ7zAjhS8WahOM"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

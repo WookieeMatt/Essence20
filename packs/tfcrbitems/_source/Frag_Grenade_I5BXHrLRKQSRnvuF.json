@@ -49,6 +49,7 @@
     },
     "traits": [
       "consumable",
+      "sharp",
       "wrecker"
     ],
     "upgradeTraits": [],

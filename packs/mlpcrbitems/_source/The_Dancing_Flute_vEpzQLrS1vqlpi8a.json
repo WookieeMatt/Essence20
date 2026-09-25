@@ -1,0 +1,36 @@
+{
+  "folder": "eUaNxUQ6YmwqmIHW",
+  "name": "The Dancing Flute",
+  "type": "gear",
+  "_id": "vEpzQLrS1vqlpi8a",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 145
+    },
+    "equipped": false,
+    "gearType": "other",
+    "quantity": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790264003951,
+    "modifiedTime": 1790264003951,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
+  },
+  "_key": "!items!vEpzQLrS1vqlpi8a"
+}

@@ -1,4 +1,5 @@
 import { actorHasPerk } from "./perks.mjs";
+import { buildDetectionModes } from "./blindsight.mjs";
 
 // Quick Thinker (MLP CRB, General Perk, p.125): "you gain a number of Free actions equal to your
 // Smarts Essence minus 2, instead of your Speed Essence minus 2."
@@ -7,6 +8,12 @@ const QUICK_THINKER_ID = "Compendium.essence20.mlp_crb.Item.i0PwoR0hDC0vyDD2";
 // University Days (WTNV Citizen's Guide, General Perk, p.53) - verbatim identical text/effect to
 // Quick Thinker above, just a different compendium item (a separate book, same mechanic).
 const UNIVERSITY_DAYS_ID = "Compendium.essence20.wtnv_citizens_guide.Item.5T3DHQjLjyM9J5tS";
+
+// Foot Soldier (TF CRB, Warrior Role Perk, 1st level, p.91): "When in Bot Mode, treat your Speed
+// as if it was 2 higher when calculating how many Free actions you get on your turn." Unlike
+// Quick Thinker/University Days above (a different SOURCE Essence for the same -2 formula), this
+// keeps Speed as the source and just raises it by 2 - and only applies in Bot Mode.
+const FOOT_SOLDIER_ID = "Compendium.essence20.tf_crb.Item.VXQ32nRPF4qEYTZR";
 
 /**
  * Handle looking up tokens associated with actor and changing size
@@ -66,13 +73,23 @@ export async function applyVisionToTokens(actor) {
     ? { enabled: true, visionMode: grant.mode, range: grant.range }
     : { visionMode: "basic", range: 0 };
 
+  // Blindsight rides along on the same update: it is a detectionModes entry rather than a
+  // sight mode, and the two are independent (see helpers/blindsight.mjs).
+  const range = actor?.system?.blindsightRange ?? 0;
+
   const tokens = actor?.getActiveTokens() ?? [];
   for (const token of tokens) {
-    await token.document.update({ sight });
+    await token.document.update({
+      sight,
+      detectionModes: buildDetectionModes(token.document.detectionModes, range),
+    });
   }
 
   if (actor?.prototypeToken) {
-    await actor.update({ "prototypeToken.sight": sight });
+    await actor.update({
+      "prototypeToken.sight": sight,
+      "prototypeToken.detectionModes": buildDetectionModes(actor.prototypeToken.detectionModes, range),
+    });
   }
 }
 
@@ -102,6 +119,32 @@ export async function syncAutoBlindStatus(actor) {
     await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
   } else if (!shouldBeBlind && isAutoBlind) {
     await blindEffect.delete();
+  }
+}
+
+/**
+ * Restrained (GI Joe CRB, Conditions, p.226): "In addition to the effects of Immobilized..." -
+ * Restrained is written as a strict superset of Immobilized, but nothing actually turned the real
+ * "immobilized" status on for a Restrained actor, so its Movement 0 / +1 shift never applied. Same
+ * "sync a real status from a related one" shape as syncAutoBlindStatus() above (Asleep/Unconscious
+ * -> Blinded), just Restrained -> Immobilized instead, and the same autoImmobilizedFromRestrained
+ * flag distinguishes an auto-applied Immobilized from one toggled on manually for some other
+ * reason, so a Restrained actor losing the condition never strips a manually-applied Immobilized.
+ * @param {Actor} actor The actor whose auto-immobilized status should be synced
+ */
+export async function syncAutoImmobilizedStatus(actor) {
+  if (!actor) return;
+
+  const shouldBeImmobilized = actor.statuses?.has('restrained') || false;
+  const immobilizedEffect = actor.effects.find(effect => effect.statuses?.has('immobilized'));
+  const isAutoImmobilized = !!immobilizedEffect?.getFlag('essence20', 'autoImmobilizedFromRestrained');
+
+  if (shouldBeImmobilized && !immobilizedEffect) {
+    const effectData = await ActiveEffect.implementation.fromStatusEffect('immobilized');
+    effectData.updateSource({ "flags.essence20.autoImmobilizedFromRestrained": true });
+    await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
+  } else if (!shouldBeImmobilized && isAutoImmobilized) {
+    await immobilizedEffect.delete();
   }
 }
 
@@ -141,6 +184,8 @@ export function getNumActions(actor) {
   if (actorHasPerk(actor, QUICK_THINKER_ID) || actorHasPerk(actor, UNIVERSITY_DAYS_ID)) {
     const smartsEssence = actor.system.essences.smarts;
     freeActionEssence = smartsEssence.max ?? smartsEssence.value ?? 0;
+  } else if (actorHasPerk(actor, FOOT_SOLDIER_ID) && !actor.system.isTransformed) {
+    freeActionEssence = speed + 2;
   }
 
   return {

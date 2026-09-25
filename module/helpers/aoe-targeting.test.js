@@ -81,6 +81,16 @@ describe("getEffectiveRadiusFeet", () => {
     const effect = makeEffect({ radius: null });
     expect(getEffectiveRadiusFeet(makeActor(), effect)).toBe(0);
   });
+
+  // Bring It All Down (Decepticon Directive, Demolitionist Focus, 20th level, p.57) - "Double the
+  // blast area of effect radius." See helpers/bring-it-all-down.mjs's own doc comment.
+  test("defaults radiusMultiplier to 1 (no change) when omitted", () => {
+    expect(getEffectiveRadiusFeet(makeActor(), makeEffect())).toBe(15);
+  });
+
+  test("doubles the total radius (base + Bigger Booms) when radiusMultiplier is 2", () => {
+    expect(getEffectiveRadiusFeet(makeActor({ hasPerk: true }), makeEffect(), 2)).toBe(50);
+  });
 });
 
 describe("buildAoeShapeData", () => {

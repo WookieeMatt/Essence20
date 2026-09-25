@@ -47,6 +47,29 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
       }),
       totalAimShiftBonus: makeInt(0),
       traits: makeStrArrayWithChoices(Object.keys(E20.weaponTraits)),
+      // Accurate/Inaccurate (dice.mjs's own _getAutomaticCombatModifiers) default to a flat ↑1/↓1,
+      // which is right for most weapons carrying either trait - but not all: Cannonade/Catapult
+      // (A Jump Through Time, p.?) print Inaccurate (↓2), and the Transdagger Star Formation
+      // (Across the Stars) prints Inaccurate (↓3). Rather than a second trait-array entry per
+      // magnitude (which E20.weaponTraits has no room for), the trait stays a plain membership
+      // check and this carries how many points it's actually worth - 1 leaves every existing
+      // compendium weapon's behavior unchanged.
+      accurateMagnitude: makeInt(1),
+      inaccurateMagnitude: makeInt(1),
+      // Defend (Across the Stars, Weapon Traits, p.79): "wielders add the listed bonus to the
+      // user's Evasion and Toughness Defenses against melee attacks." Same "magnitude field next
+      // to a plain membership check" shape as accurateMagnitude/inaccurateMagnitude above - every
+      // printed Defend weapon found so far is (1), so that's the default. defendRangedMagnitude is
+      // null (grants nothing vs. ranged) unless a weapon's own printed value widens the trait to
+      // cover ranged attacks too, e.g. the Zeo Power Disc/Shield's "(2; 1 vs. Ranged Attacks)".
+      defendMagnitude: makeInt(1),
+      defendRangedMagnitude: makeInt(null),
+      // Consumable (GI Joe CRB, Weapon Effects and Traits, p.147): "Using this weapon destroys it,
+      // even if it misses its target." Same one-potion-can-hold-several shape as
+      // magic-bauble.mjs's own quantity field (documents/item.mjs's magic bauble consumption path)
+      // - a holder can carry more than one of the same Consumable weapon, and only the last one
+      // firing actually deletes the Item.
+      quantity: makeInt(1),
       transformerMode : makeStrWithChoices(E20.transformerModes, 'modeBotMode'),
       upgradeTraits: makeStrArrayWithChoices(Object.keys(E20.weaponTraits)),
       usesPerScene: makeInt(null),

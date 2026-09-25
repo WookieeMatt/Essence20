@@ -23,6 +23,18 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Spear Effect (Thrown)",
         "type": "weaponEffect"
+      },
+      "erss": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.OcSCFt40z5d9FPmi",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Spear Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "ro2d": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.L7hygSNgsX5vhQqN",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Spear Alternate Effect 2",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

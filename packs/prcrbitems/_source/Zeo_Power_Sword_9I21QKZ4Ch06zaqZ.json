@@ -71,6 +71,7 @@
     },
     "traits": [
       "energy",
+      "powerWeapon",
       "sharp"
     ],
     "upgradeTraits": [],

@@ -22,6 +22,45 @@ const PR_CRB = "Compendium.essence20.pr_crb.Item.";
 const ENHANCE_ATTACK_ID = `${PR_CRB}OibmwLDNcXE6eJIO`;
 const ADDITIONAL_ATTACK_TYPE_ID = `${PR_CRB}j5arWXvkd5fHbe0Q`;
 const BLAST_ATTACK_ID = `${PR_CRB}Wb8UARwQKKyiwy77`;
+// Increase (Essence) (PR CRB, Zord Feature, p.137): "This Zord Feature increases one of these two
+// ability scores [Strength or Speed] by +2." The compendium item ships both bonuses as its own
+// Active Effects, one per Essence, both disabled - the exact "prompt, then enable the matching
+// bundled Active Effect" shape helpers/speak-your-truth.mjs#grantSpeakYourTruthEssence already
+// uses for a Perk; this is that idiom's Zord Feature equivalent, run after dropFunc() (unlike
+// Speak Your Truth, which runs on an already-embedded Perk) since a dropped Feature is still the
+// compendium source item at this point - see this file's own dropFunc-last idiom above.
+const INCREASE_ESSENCE_ID = `${PR_CRB}oKGzWCOUCuefWuqD`;
+
+// Light Chassis (PR CRB, Zord Feature, p.137, 2nd ptg): "increases the Zord's Speed by 1 and adds
+// 10 feet [to] one of the Zord's movement types." The Speed+1 (and the Megaform Initiative
+// carry-over - see documents/actor.mjs's own hasLightChassisInitiativeUpshift) are already a
+// plain always-on AE; only the movement pick, among the compendium item's own 4 disabled
+// +10ft-per-type AEs, needed a picker.
+const LIGHT_CHASSIS_ID = `${PR_CRB}rVW7mvnV4MbGuxoq`;
+// Movement Booster (PR CRB, Zord Feature, p.137, 2nd ptg): "adds 30 feet to one of the Zord's
+// movement types or creates a new kind of movement type... at 45 feet." Same picker shape as
+// Light Chassis just above, but with a twist RAW itself calls out: the compendium item only ships
+// disabled +30ft AEs for the 4 movement types a Zord might already possess (matching Light
+// Chassis/Fast's own idiom), so choosing one the Zord DOESN'T already have (base 0, e.g. Burrow
+// for a non-burrowing Zord) creates a brand new +45ft AE instead of enabling a nonexistent one.
+const MOVEMENT_BOOSTER_ID = `${PR_CRB}9YQmZGdNCmtXLAd4`;
+
+const THROUGH_THE_SHATTERED_GRID = "Compendium.essence20.through_the_shattered_grid.Item.";
+// Multi-Limb Attack (Through the Shattered Grid, Zord Feature, p.118): "Choose one of your Zord's
+// melee attacks. The attack gains Multi-Weapon (3)." Same "choose an attack, mutate its
+// weaponEffect" shape as Enhance (Attack)'s own 'multiWeapon' option (a flat 2 the first time,
+// +1 per repeat) - this Feature is a fixed (3) grant instead, so it doesn't stack additively with
+// itself or with Enhance Attack the way that repeatable option does; Math.max keeps a lower
+// existing value from clobbering a higher one either way, matching Enhance Attack's own guard.
+const MULTI_LIMB_ATTACK_ID = `${THROUGH_THE_SHATTERED_GRID}cRtPjBG1OoXwKJ0b`;
+// Restraining Chains (Through the Shattered Grid, Zord Feature, p.35): "Your Zord gains a ranged
+// Attack with a normal range of 30 feet and a long range of 65 feet that Grapples the target if
+// successful." A fixed, pre-configured attack (unlike Additional Attack Type's own melee/ranged +
+// damage-type picker) - built straight from BASELINE_ATTACKS.ranged with no dialog needed, damage
+// replaced by the Grapple damageType (Wrestler/Kung Fu Grip's own real, existing damageType
+// proxy) rather than a numeric damage value - a successful Grapple attack applies the Grapple
+// damageType's own existing "target is Grappled" handling, not raw damage.
+const RESTRAINING_CHAINS_ID = `${THROUGH_THE_SHATTERED_GRID}AVXOwNhDWQJewKAl`;
 
 /**
  * Baseline Zord attack statistics (PR CRB p.134's own Baseline Zord stat block):
@@ -373,9 +412,195 @@ async function onMegaWeaponDrop(actor, dropFunc) {
 }
 
 /**
- * Entry point from the drop dispatcher (drop-handler.mjs). Features other than the three that need
- * a choice fall straight through to the normal drop - their behaviour lives in their own compendium
- * Active Effect or in a dice.mjs check keyed on their id.
+ * Multi-Limb Attack (Through the Shattered Grid, Zord Feature, p.118) - see
+ * MULTI_LIMB_ATTACK_ID's own comment above.
+ * @param {Actor} actor
+ * @param {Function} dropFunc
+ * @returns {Promise<Array<Item>|null>}
+ */
+async function onMultiLimbAttackDrop(actor, dropFunc) {
+  const melee = getAttacks(actor).filter(a => a.effect.system.classification?.style == 'melee');
+  if (!melee.length) {
+    ui.notifications.warn(game.i18n.localize('E20.ZordFeatureNoAttacks'));
+    return null;
+  }
+
+  let chosen = melee[0];
+  if (melee.length > 1) {
+    const index = await pickOne(
+      game.i18n.localize('E20.MultiLimbAttackTitle'),
+      game.i18n.localize('E20.ZordFeatureEnhancePickAttack'),
+      Object.fromEntries(melee.map((a, i) => [String(i), a.label])),
+    );
+    if (index === null) return null;
+
+    chosen = melee[Number(index)];
+  }
+
+  await chosen.effect.update({ 'system.numTargets': Math.max(3, chosen.effect.system.numTargets ?? 1) });
+  ui.notifications.info(game.i18n.format('E20.MultiLimbAttackApplied', { attack: chosen.effect.name }));
+
+  return dropFunc();
+}
+
+/**
+ * Restraining Chains (Through the Shattered Grid, Zord Feature, p.35) - see
+ * RESTRAINING_CHAINS_ID's own comment above. Built straight from BASELINE_ATTACKS.ranged (no
+ * dialog - RAW gives this attack fixed stats), with the Grapple damageType in place of a real
+ * damage value/type - the same "Grapple is a real, existing damageType, an ordinary weaponEffect
+ * attack" idiom Wrestler/Kung Fu Grip already establish elsewhere in this codebase.
+ * @param {Actor} actor
+ * @param {Function} dropFunc
+ * @returns {Promise<Array<Item>|null>}
+ */
+async function onRestrainingChainsDrop(actor, dropFunc) {
+  const attackName = game.i18n.localize('E20.RestrainingChainsAttackName');
+
+  const [weapon] = await actor.createEmbeddedDocuments('Item', [{
+    name: attackName,
+    type: 'weapon',
+    system: {},
+  }]);
+
+  await actor.createEmbeddedDocuments('Item', [{
+    name: game.i18n.format('E20.ZordFeatureAttackEffectName', { name: attackName }),
+    type: 'weaponEffect',
+    flags: { essence20: { parentId: weapon.id } },
+    system: {
+      classification: BASELINE_ATTACKS.ranged.classification,
+      damageType: 'grapple',
+      damageValue: 0,
+      defenseType: 'toughness',
+      range: { min: null, reachMultiplier: 1, long: 65, value: 30 },
+    },
+  }]);
+
+  ui.notifications.info(game.i18n.format('E20.ZordFeatureAttackTypeAdded', { name: attackName }));
+
+  return dropFunc();
+}
+
+/**
+ * Increase (Essence) (PR CRB, Zord Feature, p.137) - see INCREASE_ESSENCE_ID's own doc comment.
+ * @param {Actor} actor
+ * @param {Function} dropFunc
+ * @returns {Promise<Array<Item>|null>}
+ */
+async function onIncreaseEssenceDrop(actor, dropFunc) {
+  const essence = await pickOne(
+    game.i18n.localize('E20.ZordFeatureIncreaseEssenceTitle'),
+    game.i18n.localize('E20.ZordFeatureIncreaseEssencePickEssence'),
+    {
+      strength: game.i18n.localize(CONFIG.E20.essences.strength),
+      speed: game.i18n.localize(CONFIG.E20.essences.speed),
+    },
+  );
+  if (essence === null) return null;
+
+  const droppedItemList = await dropFunc();
+  const newItem = droppedItemList[0];
+  const changeKey = `system.essences.${essence}.value`;
+  const effect = newItem.effects.find(e => e.changes.some(c => c.key == changeKey));
+  if (effect) {
+    await effect.update({ disabled: false });
+  }
+
+  ui.notifications.info(game.i18n.format('E20.ZordFeatureIncreaseEssenceApplied', {
+    essence: game.i18n.localize(CONFIG.E20.essences[essence]),
+  }));
+
+  return droppedItemList;
+}
+
+/**
+ * Enables the embedded item's own pre-baked disabled `system.movement.<type>.bonus` Active
+ * Effect if one exists (Light Chassis/Movement Booster both ship one per movement type they
+ * anticipate), or creates a fresh one at `bonus` if not (Movement Booster's own "new movement
+ * type" case - see MOVEMENT_BOOSTER_ID's own doc comment).
+ * @param {Item} newItem The actor-embedded Zord Feature instance (post-dropFunc)
+ * @param {String} movementType One of CONFIG.E20.movementTypes' own keys
+ * @param {Number} bonus The feet of movement bonus to apply
+ */
+async function applyMovementBonus(newItem, movementType, bonus) {
+  const changeKey = `system.movement.${movementType}.bonus`;
+  const effect = newItem.effects.find(e => e.changes.some(c => c.key == changeKey));
+  if (effect) {
+    await effect.update({ disabled: false, changes: [{ ...effect.changes[0], value: String(bonus) }] });
+  } else {
+    await newItem.createEmbeddedDocuments('ActiveEffect', [{
+      name: `${newItem.name} (${game.i18n.localize(CONFIG.E20.movementTypes[movementType])})`,
+      img: 'icons/svg/aura.svg',
+      disabled: false,
+      transfer: true,
+      changes: [{ key: changeKey, mode: 2, value: String(bonus) }],
+    }]);
+  }
+}
+
+/**
+ * Light Chassis (PR CRB, Zord Feature, p.137) - see LIGHT_CHASSIS_ID's own doc comment.
+ * @param {Actor} actor
+ * @param {Function} dropFunc
+ * @returns {Promise<Array<Item>|null>}
+ */
+async function onLightChassisDrop(actor, dropFunc) {
+  const choices = {};
+  for (const type of Object.keys(CONFIG.E20.movementTypes)) {
+    if (actor.system.movement?.[type]?.base > 0) {
+      choices[type] = game.i18n.localize(CONFIG.E20.movementTypes[type]);
+    }
+  }
+
+  if (!Object.keys(choices).length) {
+    ui.notifications.warn(game.i18n.localize('E20.ZordFeatureNoMovement'));
+    return null;
+  }
+
+  const movementType = await pickOne(
+    game.i18n.localize('E20.ZordFeatureLightChassisTitle'),
+    game.i18n.localize('E20.ZordFeatureMovementPickType'),
+    choices,
+  );
+  if (movementType === null) return null;
+
+  const droppedItemList = await dropFunc();
+  await applyMovementBonus(droppedItemList[0], movementType, 10);
+
+  ui.notifications.info(game.i18n.format('E20.ZordFeatureMovementApplied', { type: choices[movementType] }));
+
+  return droppedItemList;
+}
+
+/**
+ * Movement Booster (PR CRB, Zord Feature, p.137) - see MOVEMENT_BOOSTER_ID's own doc comment.
+ * @param {Actor} actor
+ * @param {Function} dropFunc
+ * @returns {Promise<Array<Item>|null>}
+ */
+async function onMovementBoosterDrop(actor, dropFunc) {
+  const choices = Object.fromEntries(Object.keys(CONFIG.E20.movementTypes)
+    .map(type => [type, game.i18n.localize(CONFIG.E20.movementTypes[type])]));
+
+  const movementType = await pickOne(
+    game.i18n.localize('E20.ZordFeatureMovementBoosterTitle'),
+    game.i18n.localize('E20.ZordFeatureMovementPickType'),
+    choices,
+  );
+  if (movementType === null) return null;
+
+  const isNewType = !(actor.system.movement?.[movementType]?.base > 0);
+  const droppedItemList = await dropFunc();
+  await applyMovementBonus(droppedItemList[0], movementType, isNewType ? 45 : 30);
+
+  ui.notifications.info(game.i18n.format('E20.ZordFeatureMovementApplied', { type: choices[movementType] }));
+
+  return droppedItemList;
+}
+
+/**
+ * Entry point from the drop dispatcher (drop-handler.mjs). Features other than the ones that need
+ * a choice or a pre-configured attack fall straight through to the normal drop - their behaviour
+ * lives in their own compendium Active Effect or in a dice.mjs check keyed on their id.
  * @param {Actor} actor
  * @param {Item} sourceItem
  * @param {Function} dropFunc
@@ -385,12 +610,22 @@ export async function onZordFeatureDrop(actor, sourceItem, dropFunc) {
   switch (featureSourceId(sourceItem)) {
   case ENHANCE_ATTACK_ID:
     return onEnhanceAttackDrop(actor, dropFunc);
+  case INCREASE_ESSENCE_ID:
+    return onIncreaseEssenceDrop(actor, dropFunc);
+  case LIGHT_CHASSIS_ID:
+    return onLightChassisDrop(actor, dropFunc);
+  case MOVEMENT_BOOSTER_ID:
+    return onMovementBoosterDrop(actor, dropFunc);
   case ADDITIONAL_ATTACK_TYPE_ID:
     return onAdditionalAttackTypeDrop(actor, dropFunc);
   case BLAST_ATTACK_ID:
     return onBlastAttackDrop(actor, dropFunc);
   case MEGA_WEAPON_ID:
     return onMegaWeaponDrop(actor, dropFunc);
+  case MULTI_LIMB_ATTACK_ID:
+    return onMultiLimbAttackDrop(actor, dropFunc);
+  case RESTRAINING_CHAINS_ID:
+    return onRestrainingChainsDrop(actor, dropFunc);
   default:
     return dropFunc();
   }

@@ -11,8 +11,12 @@
       "skill": "finesse",
       "style": "melee"
     },
-    "damageType": "stun",
+    "damageType": "blunt",
     "damageValue": 1,
+    "secondaryDamage": {
+      "type": "stun",
+      "value": 1
+    },
     "shiftDown": 0,
     "numHands": "1",
     "numTargets": 1,

@@ -1,0 +1,74 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Tire Strike",
+  "type": "weapon",
+  "_id": "U2bqSgKFdNs9FLPU",
+  "img": "systems/essence20/assets/icons/weapons/wrench.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 87
+    },
+    "items": {
+      "CGvu": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.ujiunrLwEBepTcze",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Tire Strike Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "driving",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "blunt",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "blunt"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265582031,
+    "modifiedTime": 1790265582031,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!U2bqSgKFdNs9FLPU"
+}

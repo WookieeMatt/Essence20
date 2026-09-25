@@ -22,20 +22,20 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "6hZrTnugraihnWGW",
       "changes": [
         {
-          "key": "system.skills.infiltration.snag",
-          "mode": 5,
-          "value": "true",
+          "key": "system.skills.infiltration.shiftDown",
+          "mode": 2,
+          "value": "1",
           "priority": null
         }
       ],
       "tint": "#ffffff",
       "transfer": true,
       "flags": {},
-      "name": "Infiltration Snag",
+      "name": "Infiltration Downshift",
       "description": "",
       "statuses": [],
       "_stats": {

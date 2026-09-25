@@ -20,8 +20,8 @@
     "range": {
       "min": null,
       "reachMultiplier": 0,
-      "long": 20,
-      "value": 10
+      "long": 40,
+      "value": 20
     }
   },
   "effects": [],

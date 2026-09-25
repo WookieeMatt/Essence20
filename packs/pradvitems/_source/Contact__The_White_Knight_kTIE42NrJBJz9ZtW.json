@@ -1,0 +1,36 @@
+{
+  "folder": "iQVgg4KPfii32I5Y",
+  "name": "Contact: The White Knight",
+  "type": "perk",
+  "_id": "kTIE42NrJBJz9ZtW",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Time of Knight",
+      "page": 27
+    },
+    "prerequisite": "Level 4 or higher; must have performed a heroic act",
+    "selectionLimit": 1,
+    "type": "contact"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265613762,
+    "modifiedTime": 1790265613762,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!kTIE42NrJBJz9ZtW"
+}

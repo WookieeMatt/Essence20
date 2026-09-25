@@ -413,6 +413,37 @@ export const EFFECT_GROUPS = [
       },
     ],
   },
+  // The per-turn action budget (data/actor/templates/common.mjs): `bonus` exists purely as an
+  // Active Effect target for "you gain an additional X action each turn" Perks (Of Two Minds, Long
+  // Range Recon, Always On The Move).
+  {
+    id: "actions",
+    label: "E20.EffectGroupActions",
+    targets: () => E20.actionCategories,
+    properties: [
+      {
+        id: "bonus", label: "E20.EffectPropBonus", widget: "int", type: "add",
+        path: "system.actions.{target}.bonus",
+        summary: "E20.EffectSummaryActionBonus",
+        keywords: ["action", "extra action", "turn"],
+      },
+    ],
+  },
+  // Carrying capacity in hands of weapons (data/actor/templates/character.mjs), raised by Perks
+  // like Pack Mule and Bristling with Weapons.
+  {
+    id: "loadout",
+    label: "E20.EffectGroupLoadout",
+    targets: null,
+    properties: [
+      {
+        id: "handsMax", label: "E20.EffectPropHandsMax", widget: "int", type: "add",
+        path: "system.loadout.handsMax",
+        summary: "E20.EffectSummaryLoadoutHandsMax",
+        keywords: ["carry", "hands", "loadout", "weapons"],
+      },
+    ],
+  },
   // Specializations are the one group whose second target cannot be enumerated: they are keyed by
   // a slug of their own name (helpers/utils.mjs#slugifySpecializationName) and only exist once an
   // actor has them, so there is no table to offer. The wizard takes the name as free text and
@@ -604,6 +635,13 @@ function buildDynamicEntries() {
         if (template) {
           entries.push({ pattern: templateToPattern(template), group, property, variant });
         }
+      }
+
+      // The companion changes a property writes alongside its own (e.g. granting a
+      // Specialization also sets .granted) are keys this catalog produces, so it must recognise
+      // them too - otherwise every effect the wizard's own "grant" writes fails validation.
+      for (const { path } of property.alsoSets ?? []) {
+        entries.push({ pattern: templateToPattern(path), group, property, variant: "alsoSets" });
       }
     }
   }

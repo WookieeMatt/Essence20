@@ -14,7 +14,7 @@
     "damageType": "acid",
     "damageValue": 2,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": "0",
     "numTargets": 1,
     "radius": 40,
     "range": {
@@ -28,7 +28,7 @@
       "page": 302
     },
     "description": "<p>40 ft Line</p>",
-    "shape": "circle"
+    "shape": "line"
   },
   "effects": [],
   "sort": 0,

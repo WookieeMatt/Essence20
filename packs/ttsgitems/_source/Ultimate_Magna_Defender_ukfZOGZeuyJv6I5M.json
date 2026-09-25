@@ -18,7 +18,7 @@
   },
   "effects": [
     {
-      "name": "Ultimate Magma Defender",
+      "name": "Ultimate Magna Defender",
       "img": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.through_the_shattered_grid.Item.ukfZOGZeuyJv6I5M",
       "duration": {
@@ -36,29 +36,69 @@
       "system": {},
       "changes": [
         {
-          "key": "system.defenses.cleverness.bonus",
+          "key": "system.defenses.cleverness.morphed",
           "mode": 2,
           "value": "2",
           "priority": null
         },
         {
-          "key": "system.defenses.evasion.bonus",
+          "key": "system.defenses.evasion.morphed",
           "mode": 2,
           "value": "2",
           "priority": null
         },
         {
-          "key": "system.defenses.toughness.bonus",
+          "key": "system.defenses.toughness.morphed",
           "mode": 2,
           "value": "2",
           "priority": null
         },
         {
-          "key": "system.defenses.willpower.bonus",
+          "key": "system.defenses.willpower.morphed",
           "mode": 2,
           "value": "2",
           "priority": null
-        },
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.5.0",
+        "createdTime": 1733101495437,
+        "modifiedTime": 1733101613184,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+        "exportSource": null
+      },
+      "_key": "!items.effects!ukfZOGZeuyJv6I5M.ypHzInfhlG5Af2Z5"
+    },
+    {
+      "name": "Ultimate Magna Defender (Morphed Strength Edge)",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.through_the_shattered_grid.Item.ukfZOGZeuyJv6I5M",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "UMDStrEdgeMorph1",
+      "type": "base",
+      "system": {
+        "whileMorphed": true
+      },
+      "changes": [
         {
           "key": "system.essenceShifts.strength.edge",
           "mode": 5,
@@ -83,7 +123,7 @@
         "lastModifiedBy": "VEn5sPQRoWgUw9qd",
         "exportSource": null
       },
-      "_key": "!items.effects!ukfZOGZeuyJv6I5M.ypHzInfhlG5Af2Z5"
+      "_key": "!items.effects!ukfZOGZeuyJv6I5M.UMDStrEdgeMorph1"
     }
   ],
   "sort": 0,

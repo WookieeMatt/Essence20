@@ -40,8 +40,8 @@
         "name": "Canine Cannon Alternate Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
-          "style": "melee"
+          "skill": "targeting",
+          "style": "energy"
         },
         "damageValue": 3,
         "damageType": "stun",

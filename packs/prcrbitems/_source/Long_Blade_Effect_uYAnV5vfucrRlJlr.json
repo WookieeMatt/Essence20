@@ -12,7 +12,7 @@
       "style": "melee"
     },
     "damageType": "sharp",
-    "damageValue": 1,
+    "damageValue": 2,
     "shiftDown": 0,
     "numHands": "2",
     "numTargets": 1,

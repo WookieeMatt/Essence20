@@ -18,11 +18,11 @@
         "name": "Battle Fire Saber Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "targeting",
+          "skill": "might",
           "style": "energy"
         },
         "damageValue": 3,
-        "damageType": "element",
+        "damageType": "fire",
         "isSpecialized": false,
         "numHands": "1",
         "numTargets": 1,

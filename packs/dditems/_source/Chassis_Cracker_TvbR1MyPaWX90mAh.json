@@ -55,6 +55,28 @@
           "value": null
         },
         "shiftDown": 0
+      },
+      "75dc": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.mpdaazDysqocppQk",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Chassis-Cracker Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": null,
+        "damageType": "impaired",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
       }
     },
     "classFeatureId": null,
@@ -66,8 +88,8 @@
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "brawn",
+      "shift": "d4"
     },
     "traits": [
       "antiTank",

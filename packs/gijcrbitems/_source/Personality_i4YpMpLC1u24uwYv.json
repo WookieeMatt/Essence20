@@ -19,7 +19,7 @@
     "benefit": "",
     "traits": [],
     "type": "drone",
-    "prerequisite": "Social d6, Basic Defenses"
+    "prerequisite": "Social d6"
   },
   "effects": [],
   "flags": {},

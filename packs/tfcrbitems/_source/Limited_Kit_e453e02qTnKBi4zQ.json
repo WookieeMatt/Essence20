@@ -1,0 +1,36 @@
+{
+  "folder": "xPQZVuqXJFCJwWG8",
+  "name": "Limited Kit",
+  "type": "gear",
+  "_id": "e453e02qTnKBi4zQ",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 133
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "kits"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790266490772,
+    "modifiedTime": 1790266490772,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!e453e02qTnKBi4zQ"
+}

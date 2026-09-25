@@ -48,7 +48,7 @@
         "type": "altMode"
       }
     },
-    "baseAerialMovement": 40,
+    "baseAerialMovement": 30,
     "baseAquaticMovement": 0,
     "baseGroundMovement": 0,
     "essences": [

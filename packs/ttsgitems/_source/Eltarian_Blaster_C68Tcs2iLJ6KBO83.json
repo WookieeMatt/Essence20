@@ -41,7 +41,7 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
-          "style": "melee"
+          "style": "energy"
         },
         "damageValue": 2,
         "damageType": "stun",

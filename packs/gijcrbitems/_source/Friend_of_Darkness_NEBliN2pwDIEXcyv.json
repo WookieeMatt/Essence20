@@ -11,7 +11,12 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "visionGrant": {
+      "enabled": true,
+      "mode": "darkvision",
+      "range": 30
+    }
   },
   "effects": [],
   "folder": "4txCmeGYg1JUzKEl",

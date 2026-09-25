@@ -233,6 +233,13 @@ E20.weaponTraits = {
   silent: "E20.WeaponTraitSilent",
   sniper: "E20.WeaponTraitSniper",
   sonic: "E20.WeaponTraitSonic",
+  // Sorcerous (Finster's Monster-Matic Cookbook, Building an Enchanted Item or Focus, p.276):
+  // "If the magical focus is integrated into a piece of armor or a weapon, that equipment gains
+  // the Sorcerous trait." Table 4-1 (p.275) also lets a built Sorcerous Power spend a point to add
+  // this trait to any attack/armor directly. Purely a descriptive marker (no existing weapon trait
+  // triggers dice.mjs logic on its own name) - same "label only, GM/player self-tracks the fictional
+  // permission it grants" shape as e.g. 'tool' or 'obfuscated' above.
+  sorcerous: "E20.WeaponTraitSorcerous",
   spot: "E20.WeaponTraitSpot",
   stun: "E20.WeaponTraitStun",
   temperamental: "E20.WeaponTraitTemperamental",
@@ -259,6 +266,13 @@ E20.weaponTypes = {
   explosives: "E20.WeaponsExplosives",
   finesse: "E20.WeaponsFinesse",
   grenades: "E20.WeaponGrenades",
+  // Martial Art Weapon Specialist (Cobra Codex, Division Perk, p.74): "You are Qualified in
+  // Martial Arts weapons." Added 2026-09-15 - this is a distinct WeaponType-training bucket
+  // (system.qualified/trained.weapons.martialArts) from the pre-existing per-item boolean
+  // E20.weaponTraits.martialArts trait; qualification and a weapon's own trait tag are separate
+  // concepts elsewhere in this schema too (e.g. weaponTypes.finesse vs. a Finesse weapon's own
+  // classification.skill), so this doesn't fold the two together.
+  martialArts: "E20.WeaponsMartialArts",
   mightMelee: "E20.WeaponsMightMelee",
   oneHanded: "E20.WeaponsOneHanded",
   shotguns: "E20.WeaponsShotgun",
@@ -1084,6 +1098,30 @@ E20.elementDamageTypes = {
 };
 preLocalize("elementDamageTypes");
 
+// Stone Warlord (Finster's Monster-Matic Cookbook, Path of Stone, 20th level, p.297) - "Add an
+// additional Damage type to your Numbness list." RAW names no specific type, unlike
+// elementDamageTypes' own scoped Element sub-types above - this is Numbness's own curated list of
+// genuine damage types (excluding E20.damageTypes' own non-damage Alternate-Effect/Condition
+// entries like frightened/grapple/spot, which a Resistance grant wouldn't sensibly apply to).
+E20.stoneWarlordDamageTypes = {
+  acid: "E20.DamageAcid",
+  blunt: "E20.DamageBlunt",
+  cold: "E20.DamageCold",
+  electric: "E20.DamageElectric",
+  element: "E20.DamageElement",
+  emp: "E20.DamageEmp",
+  fire: "E20.DamageFire",
+  laser: "E20.DamageLaser",
+  maneuver: "E20.DamageManeuver",
+  poison: "E20.DamagePoison",
+  psychic: "E20.DamagePsychic",
+  sharp: "E20.DamageSharp",
+  sonic: "E20.DamageSonic",
+  stun: "E20.DamageStun",
+  void: "E20.DamageVoid",
+};
+preLocalize("stoneWarlordDamageTypes");
+
 // Defensive Flexibility (A Jump Through Time, Blue Spectrum Modification, replaces Grid Tech,
 // p.45) - see helpers/defensive-flexibility.mjs's own doc comment. A single flat option list
 // combining both of RAW's own choice categories (a +2 bonus to one named Defense, or Resistance to
@@ -1182,6 +1220,29 @@ E20.viciousOrVenomOptions = {
   poison: "E20.DamagePoison",
 };
 preLocalize("viciousOrVenomOptions");
+
+// Tooth and Claw (Decepticon Directive, Monstrosity Origin Benefit, p.38): "In your Alt Mode, your
+// Unarmed Attacks... inflict Sharp or Blunt damage (based on the attack)." Same "no numeric field
+// of its own, read directly off system.choice" shape as viciousOrVenomOptions above - "based on
+// the attack" is simplified to one fixed choice made when the Perk is taken, the same
+// simplification Adapted Wavelength's own fixed per-instance Element choice already establishes.
+E20.toothAndClawOptions = {
+  sharp: "E20.DamageSharp",
+  blunt: "E20.DamageBlunt",
+};
+preLocalize("toothAndClawOptions");
+
+// Energy Connection (Decepticon Directive, Elementalist Focus, 10th level, p.53): "choose one of
+// the following: Additional Energy Types / Deepen Connection." Only Deepen Connection's own
+// mechanical benefit is built (see helpers/energy-affinity.mjs's own doc comment on
+// DEEPEN_CONNECTION for why Additional Energy Types' Resistance grant isn't) - the choice itself
+// still offers both named options, same "no numeric field of its own, read directly off
+// system.choice" shape as every other choiceType above.
+E20.energyConnectionOptions = {
+  additionalEnergyTypes: "E20.EnergyConnectionAdditionalEnergyTypes",
+  deepenConnection: "E20.EnergyConnectionDeepenConnection",
+};
+preLocalize("energyConnectionOptions");
 
 // Over the Candlestick (Technorganic Secrets, Climber/Nimble Origin Benefit, p.38): "choose one:
 // Agile Reflexes (once/scene, use Evasion instead of Toughness when targeted) / Innate Climber
@@ -1635,6 +1696,37 @@ E20.rerollConditions = {
   // outcome (rollContext.isFumble, dice.mjs#_isCritIsFumble) - distinct from this codebase's own
   // unrelated shift-based "fumble" auto-fail tier.
   fumble: "E20.RerollConditionFumble",
+  // Across the Stars "Destiny" (Influence Perk, p.45): "...the result on your d20 is a lower
+  // value than the maximum that could be rolled on your smallest Skill die..." Checked against
+  // the triggering roll's own raw d20 result (rollContext.d20Result, the base term's own total
+  // before Edge/Snag selection matters - there's always exactly one d20 term) versus the actor's
+  // current lowest-faced trained Skill die (d2-d12; d20 itself, an untrained skill's default, has
+  // MORE faces than any trained die so it's never picked as "smallest" by a plain face-count
+  // comparison, matching RAW's own intent that this reads a real Skill die, not the untrained
+  // default). The only numeric-threshold reroll condition in this set - every other entry here is
+  // a plain boolean state check.
+  belowSmallestSkillDie: "E20.RerollConditionBelowSmallestSkillDie",
+  // GI Joe CRB "Survivalist" (Focus: Predator, 17th level, p.94): "in your environment of
+  // expertise, reroll all skill dice results of 1..." Checked against
+  // helpers/environmental-expertise.mjs#hasActiveEnvironmentalExpertise, the same player-toggled
+  // on/off flag Environmental Armor/Prowl/Recon already read for their own in-environment
+  // bonuses. NOTE: this pass could not add the matching lang/en.json label (out of scope for this
+  // code-only session) - the reroll-config editor's dropdown falls back to showing this raw key
+  // untranslated until that string lands.
+  inEnvironmentOfExpertise: "E20.RerollConditionInEnvironmentOfExpertise",
+  // A Jump Through Time "Focused Strike" (Quantum Ranger, 9th level, p.46): "When you make an
+  // Unarmed Attack, you can spend one Personal Power to re-roll..." Checked against the
+  // triggering roll's own context (rollContext.isUnarmedAttack, dice.mjs's own
+  // "no parent weapon" proxy for unarmed - the same shape Empty Hands/Randori Master already use
+  // elsewhere in dice.mjs), the same "computed there, read here" idiom as powerWeapon/
+  // smallerTarget above.
+  unarmedAttack: "E20.RerollConditionUnarmedAttack",
+  // Decepticon Directive "Homing Shots" (Cannonade Focus, 10th level, p.46): "you may reroll any
+  // single die that is part of a ranged attack using a weapon with the Consumable or Wrecker
+  // trait." Checked against the triggering roll's own context (rollContext
+  // .isConsumableOrWreckerRangedAttack, dice.mjs), the same "computed there, read here" shape as
+  // isPowerWeaponAttack/isUnarmedAttack above.
+  consumableOrWreckerRangedAttack: "E20.RerollConditionConsumableOrWreckerRangedAttack",
 };
 preLocalize("rerollConditions");
 
@@ -1767,6 +1859,19 @@ E20.statusEffects = [
     changes: [],
   },
   {
+    // Ice Flechettes (Finster's Monster-Matic Cookbook, Path of Frost, 9th level, p.293): "On a
+    // Critical Success, the target loses all Defense bonuses provided by armor until the end of
+    // their next turn." Unlike most Conditions here, this one IS mechanically enforced - see
+    // getDefenseValue's own comment in helpers/combat.mjs for how it forces ignoreArmor on
+    // whichever Defense is being computed for a target carrying it. No custom art yet - reuses
+    // Foundry's own bundled shield-slash icon, same "generic core icon" fallback Cover/Blanked
+    // above already use.
+    img: 'icons/svg/downgrade.svg',
+    id: 'armorStripped',
+    name: 'E20.StatusArmorStripped',
+    changes: [],
+  },
+  {
     img: 'systems/essence20/assets/icons/status_effects/status_asleep.svg',
     id: 'asleep',
     name: 'E20.StatusAsleep',
@@ -1779,12 +1884,15 @@ E20.statusEffects = [
     changes: [],
   },
   {
-    // MLP CRB "Laughtracting" (p.86): "...they can't use any Free actions on their next turn."
-    // No existing status icon fits this narrowly - reuses status_impaired's art rather than
-    // adding new assets, same as cantTakeMoveActions below.
-    img: 'systems/essence20/assets/icons/status_effects/status_impaired.svg',
-    id: 'cantTakeFreeActions',
-    name: 'E20.StatusCantTakeFreeActions',
+    // Blanked (Across the Stars, Space Vessel Condition, p.25): a damaged/jammed sensor suite
+    // leaves the crew unable to see anything outside the ship except by physical eyesight. Space
+    // Vessel Conditions are marked here, bookkeeping-only, the same idiom as every actor Condition
+    // below whose effect this system doesn't (yet) mechanically enforce (see e.g. surprised's own
+    // doc comment) - repairing one is a Technology Skill Test (helpers don't model that either).
+    // No dedicated art - reuses Foundry's bundled blind.svg.
+    img: 'icons/svg/blind.svg',
+    id: 'blanked',
+    name: 'E20.StatusBlanked',
     changes: [],
   },
   {
@@ -1795,6 +1903,17 @@ E20.statusEffects = [
     img: 'systems/essence20/assets/icons/status_effects/status_immobilized.svg',
     id: 'cantTakeMoveActions',
     name: 'E20.StatusCantTakeMoveActions',
+    changes: [],
+  },
+  {
+    // Compromised (Across the Stars, Space Vessel Condition, p.25): a weakened hull, stacking -
+    // each instance reduces the vessel's maximum Health by 1, and it's Defeated once that reaches
+    // 0. Marked here rather than wired into the Health formula: this system's Condition framework
+    // is a plain on/off toggle with no built-in stack counter, and inventing one is a bigger,
+    // separate piece than adding the marker itself. Same bookkeeping-only idiom as Blanked above.
+    img: 'icons/svg/downgrade.svg',
+    id: 'compromised',
+    name: 'E20.StatusCompromised',
     changes: [],
   },
   {
@@ -1809,6 +1928,16 @@ E20.statusEffects = [
     img: 'systems/essence20/assets/icons/status_effects/status_deafened.svg',
     id: 'deafened',
     name: 'E20.StatusDeafened',
+    changes: [],
+  },
+  {
+    // Decompressed (Across the Stars, Space Vessel Condition, p.25): a leaking hull turns the
+    // vessel's interior into a Thin Atmosphere environment; a second stack of this same Condition
+    // escalates it to a full Vacuum or Void instead. Bookkeeping-only marker, same idiom as
+    // Blanked/Compromised above - the environment-effect escalation isn't separately modeled.
+    img: 'icons/svg/explosion.svg',
+    id: 'decompressed',
+    name: 'E20.StatusDecompressed',
     changes: [],
   },
   {
@@ -1868,6 +1997,25 @@ E20.statusEffects = [
     changes: [],
   },
   {
+    // Jammed (Across the Stars, Space Vessel Condition, p.25): the ship's own communications are
+    // knocked out (personal communicators may still work). Bookkeeping-only marker, same idiom as
+    // the other Space Vessel Conditions above.
+    img: 'icons/svg/sound-off.svg',
+    id: 'jammed',
+    name: 'E20.StatusJammed',
+    changes: [],
+  },
+  {
+    // Leaking (Across the Stars, Space Vessel Condition, p.25): lost containment on fuel,
+    // lubricant, or other toxic fluids turns the vessel's interior into a Toxic Atmosphere
+    // (Harmful concentration, escalating by one level of toxicity each additional stack).
+    // Bookkeeping-only marker, same idiom as the other Space Vessel Conditions above.
+    img: 'icons/svg/poison.svg',
+    id: 'leaking',
+    name: 'E20.StatusLeaking',
+    changes: [],
+  },
+  {
     img: 'systems/essence20/assets/icons/status_effects/status_mesmerized.svg',
     id: 'mesmerized',
     name: 'E20.StatusMesmerized',
@@ -1907,9 +2055,54 @@ E20.statusEffects = [
     changes: [],
   },
   {
+    // Spun-Out (Across the Stars, Space Vessel Condition, p.25): damaged maneuverability - a
+    // vessel with a zero-G minimum Aerial Movement has that minimum increased by 10 feet and now
+    // needs two Free actions (instead of one) to reduce it by 5 feet; a second stack Immobilizes
+    // the vessel until repaired. Bookkeeping-only marker, same idiom as the other Space Vessel
+    // Conditions above.
+    img: 'icons/svg/direction.svg',
+    id: 'spunOut',
+    name: 'E20.StatusSpunOut',
+    changes: [],
+  },
+  {
+    // Sputtering (Across the Stars, Space Vessel Condition, p.25): engine damage treats the
+    // vessel's non-Ground Movement as Rough Terrain; a second stack Immobilizes it until repaired.
+    // Bookkeeping-only marker, same idiom as the other Space Vessel Conditions above.
+    img: 'icons/svg/down.svg',
+    id: 'sputtering',
+    name: 'E20.StatusSputtering',
+    changes: [],
+  },
+  {
     img: 'systems/essence20/assets/icons/status_effects/status_stunned.svg',
     id: 'stunned',
     name: 'E20.StatusStunned',
+    changes: [],
+  },
+  {
+    // Surprise (GI Joe CRB, Combat chapter): "any creature that doesn't or cannot notice a
+    // possible threat is considered surprised at the start of the combat scene. These creatures
+    // still roll their initiative as usual, but on the surprise round (the first round of the
+    // conflict), they cannot take any actions (including Standard, Move, or Free actions) and
+    // cannot roll Skill Tests, except contested Skill Tests."
+    //
+    // Added 2026-09-15. Its absence was the single most-cited blocker in this system after action
+    // economy - five separate Perks across four books were filed as unbuildable solely because
+    // "no Surprised status exists", and several more mention it in passing. It is a real, printed
+    // RAW Condition, so this is filling a gap rather than inventing one.
+    //
+    // The action-zeroing half is now enforced (documents/actor.mjs#_prepareActions, alongside
+    // Security and Unsurprising's own exceptions to it) now that the action economy exists to
+    // gate against. The "cannot roll Skill Tests, except contested ones" half is still a marker
+    // only - dice.mjs has no generic "which Skill Tests are contested" concept to hang a block on.
+    // What the marker unlocks either way: immunity to it, and Perks that key off a target having it.
+    //
+    // No custom art - reuses Foundry's own bundled daze.svg, the same core-icon fallback cover
+    // above already uses.
+    img: 'icons/svg/daze.svg',
+    id: 'surprised',
+    name: 'E20.StatusSurprised',
     changes: [],
   },
   {
@@ -1924,6 +2117,16 @@ E20.statusEffects = [
     img: 'icons/svg/castle.svg',
     id: 'totalCover',
     name: 'E20.StatusTotalCover',
+    changes: [],
+  },
+  {
+    // Unstable (Across the Stars, Space Vessel Condition, p.25): damaged energy/aiming suites
+    // impose ↓1 on all the vessel's hardpoint weapons, ↓2 on a second stack, and a third stack
+    // renders the hardpoint weapons inoperable entirely until repaired. Bookkeeping-only marker,
+    // same idiom as the other Space Vessel Conditions above.
+    img: 'icons/svg/hazard.svg',
+    id: 'unstable',
+    name: 'E20.StatusUnstable',
     changes: [],
   },
   {

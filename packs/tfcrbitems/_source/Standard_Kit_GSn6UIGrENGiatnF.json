@@ -1,0 +1,36 @@
+{
+  "folder": "xPQZVuqXJFCJwWG8",
+  "name": "Standard Kit",
+  "type": "gear",
+  "_id": "GSn6UIGrENGiatnF",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 133
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "kits"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790266490771,
+    "modifiedTime": 1790266490771,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!GSn6UIGrENGiatnF"
+}

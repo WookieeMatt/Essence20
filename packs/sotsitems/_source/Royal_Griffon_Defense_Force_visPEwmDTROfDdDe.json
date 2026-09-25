@@ -11,7 +11,14 @@
       "book": "Story of the Seasons",
       "page": 131
     },
-    "items": {},
+    "items": {
+      "gdfa": {
+        "uuid": "Compendium.essence20.story_of_the_seasons.Item.oz1HkbZ9vL6oFdUY",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Griffon Defense Force Armor",
+        "type": "armor"
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,

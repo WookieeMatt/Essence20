@@ -187,7 +187,8 @@
         "impulse",
         "light",
         "medium",
-        "tactical"
+        "tactical",
+        "ultraHeavy"
       ],
       "trained": []
     },

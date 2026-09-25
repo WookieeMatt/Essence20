@@ -11,7 +11,29 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 73
     },
-    "items": {},
+    "items": {
+      "hgm1": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.0DQYk8jWOPkur9GQ",
+        "img": "systems/essence20/assets/icons/items/alteration.svg",
+        "name": "Standard Skin Tempering",
+        "type": "alteration",
+        "role": null
+      },
+      "hgm2": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.lIZ82fVg0ariPYcb",
+        "img": "systems/essence20/assets/icons/items/alteration.svg",
+        "name": "Enhanced Photoreceptors",
+        "type": "alteration",
+        "role": null
+      },
+      "hgm3": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.zNN9bu7QMXzpUgHB",
+        "img": "systems/essence20/assets/icons/items/alteration.svg",
+        "name": "Standard Weaponization",
+        "type": "alteration",
+        "role": null
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,
@@ -20,9 +42,9 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "none",
+    "choiceType": "perks",
     "isRoleVariant": false,
-    "hasChoice": false,
+    "hasChoice": true,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",

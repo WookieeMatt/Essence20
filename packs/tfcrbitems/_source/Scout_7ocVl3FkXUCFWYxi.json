@@ -133,8 +133,8 @@
       "social": [
         "level1",
         "level4",
-        "level9",
-        "level14",
+        "level8",
+        "level13",
         "level16"
       ],
       "speed": [
@@ -188,6 +188,13 @@
       "deception",
       "streetwise"
     ],
+    "upgrades": {
+      "armors": {
+        "trained": [
+          "limited"
+        ]
+      }
+    },
     "version": "transformers",
     "weapons": {
       "qualified": [],

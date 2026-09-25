@@ -1,0 +1,98 @@
+{
+  "folder": "jDTSiDyb4mWmnkig",
+  "name": "Paired Power Blades",
+  "type": "weapon",
+  "_id": "cBUT9AA5q9065OOs",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Recipe For Disaster",
+      "page": 30
+    },
+    "items": {
+      "jkV0": {
+        "uuid": "Compendium.essence20.power_rangers_adventures.Item.e49WU4NpIi3C5yyJ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Paired Power Blades Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "JFzv": {
+        "uuid": "Compendium.essence20.power_rangers_adventures.Item.KgBK3eaGKUOnkLGb",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Paired Power Blades Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265613758,
+    "modifiedTime": 1790265613758,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!cBUT9AA5q9065OOs"
+}

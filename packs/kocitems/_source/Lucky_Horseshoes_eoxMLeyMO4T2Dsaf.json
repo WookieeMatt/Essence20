@@ -1,0 +1,117 @@
+{
+  "folder": "nvFMPLEMhsVcysEg",
+  "name": "Lucky Horseshoes",
+  "type": "gear",
+  "_id": "eoxMLeyMO4T2Dsaf",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 54
+    },
+    "quantity": 1,
+    "type": "clothes",
+    "gearType": "clothes"
+  },
+  "effects": [
+    {
+      "name": "Activate Horseshoes (2/day, full set of 4 required)",
+      "origin": "Item.eoxMLeyMO4T2Dsaf",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "BLQsDrE86vJ0Ed2z",
+      "changes": [
+        {
+          "key": "system.skills.acrobatics.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.driving.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.finesse.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.infiltration.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.initiative.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.targeting.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!eoxMLeyMO4T2Dsaf.BLQsDrE86vJ0Ed2z"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790264082168,
+    "modifiedTime": 1790264082168,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
+  },
+  "_key": "!items!eoxMLeyMO4T2Dsaf"
+}

@@ -5,6 +5,7 @@ import { advanceEncounter } from "../helpers/scene-clock.mjs";
 import { expireAoeRegions } from "../helpers/aoe-expiry.mjs";
 import { isTracking, resetTurn } from "../helpers/action-economy.mjs";
 import { DEFENDING_STATUS } from "../helpers/named-actions.mjs";
+import { applyVainglorious } from "../helpers/vainglorious.mjs";
 
 export class Essence20Combat extends Combat {
   constructor(data, context) {
@@ -47,6 +48,10 @@ export class Essence20Combat extends Combat {
 
     if (isTracking()) {
       await resetTurn(combatant);
+      // Vainglorious (Transformers CRB p.43): forced Standard-action spend on the actor's first
+      // turn of this combat - see helpers/vainglorious.mjs for why it's per-combat rather than
+      // assumed to be round 1.
+      await applyVainglorious(combatant.actor);
     }
 
     /* "This benefit lasts until the beginning of your next turn" (GI Joe CRB p.196) - so the

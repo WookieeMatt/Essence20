@@ -21,7 +21,7 @@
           "skill": "might",
           "style": "melee"
         },
-        "damageValue": 2,
+        "damageValue": 1,
         "damageType": "blunt",
         "isSpecialized": false,
         "numHands": "1",

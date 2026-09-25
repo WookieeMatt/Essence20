@@ -161,6 +161,15 @@
       "flags": {}
     },
     {
+      "name": "cobra_con_fusion",
+      "label": "Cobra/Con Fusion",
+      "system": "essence20",
+      "path": "packs/ccfitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "dark_skies_over_equestria",
       "label": "Dark Skies Over Equestria",
       "system": "essence20",
@@ -411,6 +420,15 @@
       "type": "Item",
       "private": false,
       "flags": {}
+    },
+    {
+      "name": "wtnv_host_guide",
+      "label": "Host Guide",
+      "system": "essence20",
+      "path": "packs/wtnvhgitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
     }
   ],
   "packFolders": [
@@ -420,6 +438,7 @@
       "packs": [
         "gi_joe_crb",
         "cobra_codex",
+        "cobra_con_fusion",
         "ferocious_fighters",
         "general_hawk_s_personel_files",
         "intercontinental_adventures",
@@ -444,7 +463,8 @@
       "name": "Welcome to Night Vale",
       "sorting": "m",
       "packs": [
-        "wtnv_citizens_guide"
+        "wtnv_citizens_guide",
+        "wtnv_host_guide"
       ]
     },
     {

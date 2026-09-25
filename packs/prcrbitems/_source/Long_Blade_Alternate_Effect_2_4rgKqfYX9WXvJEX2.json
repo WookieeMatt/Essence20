@@ -13,7 +13,7 @@
     },
     "damageType": "sharp",
     "damageValue": 1,
-    "shiftDown": 3,
+    "shiftDown": 2,
     "numHands": "2",
     "numTargets": 3,
     "radius": 0,

@@ -25,7 +25,9 @@
     },
     "bond": "",
     "mandatoryHangUp": false,
-    "skills": []
+    "skills": [
+      "infiltration"
+    ]
   },
   "effects": [],
   "flags": {

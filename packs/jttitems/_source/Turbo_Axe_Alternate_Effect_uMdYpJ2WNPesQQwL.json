@@ -21,15 +21,15 @@
     "isSpecialized": false,
     "numHands": 1,
     "numTargets": 1,
-    "radius": 1,
+    "radius": 0,
     "range": {
       "min": null,
       "reachMultiplier": 0,
       "long": null,
       "value": 30
     },
-    "shiftDown": 0,
-    "shape": "circle"
+    "shiftDown": 1,
+    "shape": null
   },
   "effects": [],
   "sort": 0,

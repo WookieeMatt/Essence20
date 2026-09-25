@@ -19,7 +19,7 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
-          "style": "melee"
+          "style": "energy"
         },
         "damageValue": 1,
         "damageType": "element",
@@ -29,8 +29,8 @@
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": null,
-          "value": null
+          "long": 100,
+          "value": 50
         },
         "shiftDown": 1
       },

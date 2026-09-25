@@ -59,6 +59,50 @@
       "system": {},
       "sort": 0,
       "_key": "!items.effects!sWnZEyr6M1I5ciDr.cbYu0iFG9YGRP9rM"
+    },
+    {
+      "name": "Hardened",
+      "origin": "Compendium.essence20.tf_crb.Item.sWnZEyr6M1I5ciDr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "kZC1QeIu4t7dCVYt",
+      "changes": [
+        {
+          "key": "system.trained.upgrades.armors.restricted",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!sWnZEyr6M1I5ciDr.kZC1QeIu4t7dCVYt"
     }
   ],
   "sort": 300000,

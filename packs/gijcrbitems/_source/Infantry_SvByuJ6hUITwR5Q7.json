@@ -12,14 +12,6 @@
       "page": 77
     },
     "items": {
-      "9151": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.gZSug7lfUPTCWmbb",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "In My Sights",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
       "a482": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.2LtDCHxgg9bMvWQK",
         "img": "systems/essence20/assets/icons/items/perk.svg",

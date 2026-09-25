@@ -18,10 +18,10 @@
     "numTargets": 1,
     "radius": 15,
     "range": {
-      "min": null,
+      "min": 45,
       "reachMultiplier": 0,
-      "long": null,
-      "value": null
+      "long": 500,
+      "value": 200
     },
     "source": {
       "book": "Enigma of Combination",

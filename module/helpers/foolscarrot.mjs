@@ -6,16 +6,22 @@
 // concrete Skill/Attack to exempt (chasing a spectral illusion isn't itself a Skill Test), so it's
 // dropped as an accepted simplification, the same "grant/deny unconditionally, let the fiction
 // justify the edge cases" idiom Fear My Name's own unenforceable "previously targeted" qualifier
-// already uses.
+// already uses. Duration is now tracked with the Scene Clock (helpers/scene-clock.mjs) - Elementary
+// Enchantment spells in this book last 1 scene - so it clears once the GM calls the scene rather
+// than lingering; the "DIF 10 Alertness Test to break out early" clause is dropped as unbuilt, the
+// same "the concrete duration is tracked, an early-exit isn't" gap already accepted for Block
+// Magic's own Snag-alternative.
+
+import { activateForWindow, isActiveForWindow } from "./scene-clock.mjs";
 
 const FOOLSCARROT_FLAG = 'foolscarrotActive';
 
 export function isFoolscarrotActive(actor) {
-  return !!actor?.getFlag?.('essence20', FOOLSCARROT_FLAG);
+  return isActiveForWindow(actor, FOOLSCARROT_FLAG, 'scene');
 }
 
 export async function applyFoolscarrot(actor) {
-  await actor.setFlag('essence20', FOOLSCARROT_FLAG, true);
+  await activateForWindow(actor, FOOLSCARROT_FLAG, 'scene');
 }
 
 export async function removeFoolscarrot(actor) {

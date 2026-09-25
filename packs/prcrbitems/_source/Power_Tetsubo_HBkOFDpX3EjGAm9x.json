@@ -1,0 +1,75 @@
+{
+  "folder": "Cp5ngUHeZZt7nlpL",
+  "name": "Power Tetsubo",
+  "type": "weapon",
+  "_id": "HBkOFDpX3EjGAm9x",
+  "img": "systems/essence20/assets/icons/weapons/bo.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Pre Gen Characters",
+      "page": 2
+    },
+    "items": {
+      "4qq2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.6PHGfFowZAZBQ6Q3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Tetsubo Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "energy"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265429899,
+    "modifiedTime": 1790265429899,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!HBkOFDpX3EjGAm9x"
+}

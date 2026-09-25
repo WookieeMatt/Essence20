@@ -57,6 +57,50 @@
       "system": {},
       "sort": 0,
       "_key": "!items.effects!JWcFDOr3m8nYJTkS.vOBWpZmwzZdJ1CmC"
+    },
+    {
+      "name": "Royal Wealth",
+      "origin": "Item.JWcFDOr3m8nYJTkS",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "111QtSYtTZ31ZVCQ",
+      "changes": [
+        {
+          "key": "system.skills.wealth.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!JWcFDOr3m8nYJTkS.111QtSYtTZ31ZVCQ"
     }
   ],
   "flags": {

@@ -9,11 +9,11 @@
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",
-      "page": 143
+      "page": 125
     },
     "items": {
       "0ac1": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.ln4X4eCYWHWONcX7",
+        "uuid": "Compendium.essence20.tf_crb.Item.Ya0iiC78NDJxI7Mb",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Grappler Effect",
         "type": "weaponEffect",
@@ -23,7 +23,7 @@
         },
         "damageValue": null,
         "damageType": "maneuver",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 1,
         "radius": 0,
         "range": {
@@ -35,7 +35,7 @@
         "shiftDown": 0
       },
       "533d": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.KuQG7ngt1dMuwfnY",
+        "uuid": "Compendium.essence20.tf_crb.Item.EsV5jP8VTBJ33ECM",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Grappler Alternate Effect",
         "type": "weaponEffect",
@@ -45,7 +45,7 @@
         },
         "damageValue": null,
         "damageType": "intimidate",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 1,
         "radius": 0,
         "range": {

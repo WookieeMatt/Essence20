@@ -75,7 +75,7 @@
             "type": "weaponEffect",
             "classification": {
               "skill": "targeting",
-              "style": "melee"
+              "style": "projectile"
             },
             "damageValue": 2,
             "damageType": "sharp",
@@ -93,7 +93,7 @@
           "caf6": {
             "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.bChPSldjpYZgAnIh",
             "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
-            "name": "Floding Stock",
+            "name": "Folding Stock",
             "type": "upgrade",
             "availability": "standard",
             "benefit": "",

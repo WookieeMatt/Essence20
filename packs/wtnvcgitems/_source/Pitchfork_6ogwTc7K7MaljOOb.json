@@ -17,6 +17,18 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Pitchfork Effect",
         "type": "weaponEffect"
+      },
+      "12pf": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.QpNWXGOq4kzGjgIW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Pitchfork Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "ra5i": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.yidsWJlgYFMJP8PE",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Pitchfork Alternate Effect 2",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

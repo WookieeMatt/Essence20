@@ -10,7 +10,7 @@
       "page": 68
     },
     "prerequisite": "",
-    "selectionLimit": 1,
+    "selectionLimit": 10,
     "type": "general",
     "hasChoice": true,
     "choiceType": "skills"

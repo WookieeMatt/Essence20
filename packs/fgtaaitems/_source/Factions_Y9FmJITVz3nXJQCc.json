@@ -1,0 +1,36 @@
+{
+  "folder": null,
+  "name": "Factions",
+  "type": "perk",
+  "_id": "Y9FmJITVz3nXJQCc",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 64
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790267057100,
+    "modifiedTime": 1790267057100,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Y9FmJITVz3nXJQCc"
+}

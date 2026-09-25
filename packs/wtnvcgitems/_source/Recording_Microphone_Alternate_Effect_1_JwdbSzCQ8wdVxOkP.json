@@ -1,0 +1,57 @@
+{
+  "folder": "OJqRtmPaVn7cPyhL",
+  "name": "Recording Microphone Alternate Effect 1",
+  "type": "weaponEffect",
+  "_id": "JwdbSzCQ8wdVxOkP",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 64
+    },
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "blunt",
+    "damageValue": 1,
+    "secondaryDamage": {
+      "type": "stun",
+      "value": 1
+    },
+    "isSpecialized": false,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790321988463,
+    "modifiedTime": 1790321988463,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!JwdbSzCQ8wdVxOkP"
+}

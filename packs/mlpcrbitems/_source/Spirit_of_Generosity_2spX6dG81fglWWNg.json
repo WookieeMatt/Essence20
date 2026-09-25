@@ -103,7 +103,7 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Subtle Helper",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "role",
         "level": 11
       },
       "b703": {

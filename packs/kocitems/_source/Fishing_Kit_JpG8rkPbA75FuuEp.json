@@ -15,7 +15,52 @@
     "type": "tools",
     "gearType": "tools"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Fishing",
+      "origin": "Item.JpG8rkPbA75FuuEp",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "k1J7yiK1bAaVp5oI",
+      "changes": [
+        {
+          "key": "system.skills.survival.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!JpG8rkPbA75FuuEp.k1J7yiK1bAaVp5oI"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

@@ -1,0 +1,98 @@
+{
+  "folder": "Cp5ngUHeZZt7nlpL",
+  "name": "Power Hammer",
+  "type": "weapon",
+  "_id": "1EmLoN9DRgps867P",
+  "img": "systems/essence20/assets/icons/weapons/hammer.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Pre Gen Characters",
+      "page": 2
+    },
+    "items": {
+      "aeN9": {
+        "uuid": "Compendium.essence20.pr_crb.Item.A6OtrWu1AJhSJiPO",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Hammer Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "blunt",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "58nW": {
+        "uuid": "Compendium.essence20.pr_crb.Item.fi9SgjBN2FhW47D3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Hammer Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "stun",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "blunt",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265429893,
+    "modifiedTime": 1790265429893,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!1EmLoN9DRgps867P"
+}

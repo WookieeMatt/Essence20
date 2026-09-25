@@ -15,17 +15,17 @@
       "4539": {
         "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.EElUaUZ1bxfiDs6x",
         "img": "icons/svg/item-bag.svg",
-        "name": "Smoke Cannister",
+        "name": "Smoke Canister",
         "type": "weapon",
         "items": {
           "2c6a": {
             "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.IhXrUyDfSYIYiLa2",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Smoke Cannister Effect",
+            "name": "Smoke Canister Effect",
             "type": "weaponEffect",
             "classification": {
               "skill": "targeting",
-              "style": "projectile"
+              "style": "explosive"
             },
             "damageValue": 0,
             "damageType": "cover",
@@ -52,7 +52,7 @@
       "b905": {
         "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.SPvAFIDquqFlpVQm",
         "img": "icons/svg/item-bag.svg",
-        "name": "Irritant Dispenser",
+        "name": "Irritant Disperser",
         "type": "weapon",
         "items": {
           "574a": {
@@ -80,7 +80,7 @@
           "2a38": {
             "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.bCi9W6jjrWyq5FLD",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Irritant Dispenser Alternate Effect",
+            "name": "Irritant Disperser Alternate Effect",
             "type": "weaponEffect",
             "classification": {
               "skill": "targeting",

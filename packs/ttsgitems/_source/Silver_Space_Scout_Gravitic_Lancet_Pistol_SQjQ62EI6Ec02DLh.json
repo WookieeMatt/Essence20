@@ -41,7 +41,7 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
-          "style": "melee"
+          "style": "energy"
         },
         "damageValue": 1,
         "damageType": "laser",

@@ -1,0 +1,19 @@
+{
+  "name": "Power Crossbow",
+  "sorting": "a",
+  "folder": "y6hopQhl3OPjCyRs",
+  "type": "Item",
+  "_id": "7cbGCbO9SnTUU2vx",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": null,
+    "systemVersion": null,
+    "coreVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!7cbGCbO9SnTUU2vx"
+}

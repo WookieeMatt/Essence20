@@ -9,7 +9,7 @@
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
-      "page": null
+      "page": 47
     },
     "items": {
       "5Pr3": {
@@ -18,12 +18,34 @@
         "name": "Ram Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "might",
+          "skill": "driving",
           "style": "melee"
         },
-        "damageValue": 2,
+        "damageValue": 1,
         "damageType": "blunt",
         "isRam": true,
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "acd5": {
+        "uuid": "Compendium.essence20.tf_crb.Item.UT9QA0rkrxNQOWmy",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Ram Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "driving",
+          "style": "melee"
+        },
+        "damageValue": null,
+        "damageType": "knocProne",
         "numHands": "0",
         "numTargets": 1,
         "radius": 0,

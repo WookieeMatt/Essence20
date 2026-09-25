@@ -15,7 +15,58 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Ready For Anything",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.BEAZ1oLp9XeibJoh",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "RFA1n1t1a2t3v4e5",
+      "changes": [
+        {
+          "key": "system.skills.brawn.canBeInitiative",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.might.canBeInitiative",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "You may roll Brawn or Might instead of Initiative to determine combat order.",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!BEAZ1oLp9XeibJoh.RFA1n1t1a2t3v4e5"
+    }
+  ],
   "sort": 187500,
   "ownership": {
     "default": 0,

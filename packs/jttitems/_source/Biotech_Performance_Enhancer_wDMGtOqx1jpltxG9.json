@@ -1,0 +1,45 @@
+{
+  "folder": "SbWo8hDMu48EdOFu",
+  "name": "Biotech Performance Enhancer",
+  "type": "upgrade",
+  "_id": "wDMGtOqx1jpltxG9",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 73
+    },
+    "aimShiftBonus": 0,
+    "armorBonus": {
+      "defense": "evasion",
+      "value": 2
+    },
+    "availability": "standard",
+    "benefit": "",
+    "traits": [],
+    "removedTraits": [],
+    "type": "vehicle",
+    "prerequisite": "Ranger Operator Only",
+    "linkedWeaponEffect": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265594019,
+    "modifiedTime": 1790265594019,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!wDMGtOqx1jpltxG9"
+}

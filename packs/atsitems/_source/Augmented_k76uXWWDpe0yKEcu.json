@@ -8,7 +8,9 @@
     "source": {
       "book": "Across the Stars",
       "page": 44
-    }
+    },
+    "hasChoice": true,
+    "choiceType": "damageType"
   },
   "effects": [],
   "flags": {

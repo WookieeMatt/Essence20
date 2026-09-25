@@ -29,7 +29,7 @@
         "startTurn": null
       },
       "disabled": false,
-      "_id": "PrinceHonesty01",
+      "_id": "PrinceHonesty010",
       "changes": [
         {
           "key": "system.health.bonus",
@@ -64,7 +64,7 @@
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!QIJJ9472y6cG82i0.PrinceHonesty01"
+      "_key": "!items.effects!QIJJ9472y6cG82i0.PrinceHonesty010"
     }
   ],
   "sort": -5859,

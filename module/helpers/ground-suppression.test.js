@@ -68,6 +68,62 @@ describe("activateGroundSuppression", () => {
     expect(result).toBe(false);
     expect(actor._dice.rollSkill).not.toHaveBeenCalled();
   });
+
+  describe("Danger Close (Quartermaster's Guide to Gear, Strafer Focus, 17th level, p.28)", () => {
+    const DANGER_CLOSE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.FpwnwD7Pnl6uvLTZ";
+
+    function makeDangerCloseActor(smarts) {
+      const actor = makeActor();
+      actor.items = [{ type: 'perk', flags: { core: { sourceId: DANGER_CLOSE_ID } } }];
+      actor.system = { essences: { smarts: { value: smarts } } };
+      return actor;
+    }
+
+    afterEach(() => {
+      delete game.user;
+    });
+
+    test("excludes up to Smarts many pre-targeted tokens from the scan", async () => {
+      const actor = makeDangerCloseActor(1);
+      const ownToken = actor.getActiveTokens()[0];
+      const ally = { id: 'ally1', actor: {}, document: { disposition: 1 }, center: {} };
+      const enemy = { id: 'enemy1', actor: {}, document: { disposition: -1 }, center: {} };
+      canvas.tokens.placeables = [ownToken, ally, enemy];
+      game.user = { targets: new Set([ally]) };
+      foundry.applications.api.DialogV2.wait.mockResolvedValue('toughness');
+
+      await activateGroundSuppression(actor);
+
+      expect(canvas.tokens.setTargets).toHaveBeenCalledWith(['enemy1']);
+    });
+
+    test("only excludes up to the Smarts cap, in target-set order", async () => {
+      const actor = makeDangerCloseActor(0);
+      const ownToken = actor.getActiveTokens()[0];
+      const ally = { id: 'ally1', actor: {}, document: { disposition: 1 }, center: {} };
+      const enemy = { id: 'enemy1', actor: {}, document: { disposition: -1 }, center: {} };
+      canvas.tokens.placeables = [ownToken, ally, enemy];
+      game.user = { targets: new Set([ally]) };
+      foundry.applications.api.DialogV2.wait.mockResolvedValue('toughness');
+
+      await activateGroundSuppression(actor);
+
+      expect(canvas.tokens.setTargets).toHaveBeenCalledWith(['ally1', 'enemy1']);
+    });
+
+    test("doesn't affect the scan without the Perk", async () => {
+      const actor = makeActor();
+      const ownToken = actor.getActiveTokens()[0];
+      const ally = { id: 'ally1', actor: {}, document: { disposition: 1 }, center: {} };
+      canvas.tokens.placeables = [ownToken, ally];
+      game.user = { targets: new Set([ally]) };
+      foundry.applications.api.DialogV2.wait.mockResolvedValue('toughness');
+
+      await activateGroundSuppression(actor);
+
+      expect(canvas.tokens.setTargets).toHaveBeenCalledWith(['ally1']);
+    });
+  });
 });
 
 describe("markGroundSuppressed / getGroundSuppressionReduction", () => {

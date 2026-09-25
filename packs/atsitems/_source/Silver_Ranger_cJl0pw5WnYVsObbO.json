@@ -169,6 +169,14 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "5a1d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
       }
     },
     "adjustments": {

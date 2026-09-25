@@ -1,0 +1,19 @@
+{
+  "name": "Gear",
+  "sorting": "a",
+  "folder": "7jVmt80WnaYiF3QI",
+  "type": "Item",
+  "_id": "UtK9ZRzmagn7x0CM",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": null,
+    "systemVersion": null,
+    "coreVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!UtK9ZRzmagn7x0CM"
+}

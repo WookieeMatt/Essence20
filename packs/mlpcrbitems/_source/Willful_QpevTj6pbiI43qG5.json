@@ -1,0 +1,81 @@
+{
+  "folder": "neivSnQKsDmMsngy",
+  "name": "Willful",
+  "type": "perk",
+  "_id": "QpevTj6pbiI43qG5",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 157
+    },
+    "prerequisite": "",
+    "selectionLimit": 10,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "name": "Unnamed Effect",
+      "origin": "Item.QpevTj6pbiI43qG5",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "wvR9VhxWfN05Ngf6",
+      "changes": [
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!QpevTj6pbiI43qG5.wvR9VhxWfN05Ngf6"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790264003951,
+    "modifiedTime": 1790264003951,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
+  },
+  "_key": "!items!QpevTj6pbiI43qG5"
+}

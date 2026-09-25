@@ -22,14 +22,14 @@
           "style": "energy"
         },
         "damageValue": 2,
-        "damageType": "element",
+        "damageType": "acid",
         "numHands": "2",
         "numTargets": 1,
         "radius": 10,
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": 300,
+          "long": 350,
           "value": 150
         },
         "shiftDown": 0

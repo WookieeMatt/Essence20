@@ -51,7 +51,11 @@
       "skill": "infiltration",
       "shift": "d4"
     },
-    "traits": [],
+    "traits": [
+      "consumable",
+      "ongoing",
+      "poison"
+    ],
     "transformerMode": "modeBotMode",
     "upgradeTraits": [],
     "usesPerScene": null,

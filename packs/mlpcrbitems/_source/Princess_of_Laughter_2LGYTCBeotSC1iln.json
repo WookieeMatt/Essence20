@@ -28,7 +28,7 @@
         "startTurn": null
       },
       "disabled": false,
-      "_id": "PrinceLaughter1",
+      "_id": "PrinceLaughter10",
       "changes": [
         {
           "key": "system.health.bonus",
@@ -63,7 +63,7 @@
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!2LGYTCBeotSC1iln.PrinceLaughter1"
+      "_key": "!items.effects!2LGYTCBeotSC1iln.PrinceLaughter10"
     }
   ],
   "ownership": {

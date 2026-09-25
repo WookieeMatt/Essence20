@@ -17,6 +17,54 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "A Hint of Independence",
         "type": "perk"
+      },
+      "im01": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.WPCQNiWRVzrUZQ93",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Poor Energon Circulation",
+        "type": "perk"
+      },
+      "im02": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.KnNj4V0TKKIexqLV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fragile Chassis",
+        "type": "perk"
+      },
+      "im03": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.Hy0XgUPiartF6ThR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stress Leak",
+        "type": "perk"
+      },
+      "im04": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.OQ34vTpcZ9Hu6cdc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Vulnerability (Drone Imperfection)",
+        "type": "perk"
+      },
+      "im05": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.0tPZ1mWLqJaXfeKN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Energon Hunger",
+        "type": "perk"
+      },
+      "im06": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.Fs8eNUcXR1oZL7u7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Slow Conversion",
+        "type": "perk"
+      },
+      "im07": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.EmLDSPnpmvPjdA4w",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fiercely Independent",
+        "type": "perk"
+      },
+      "im08": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.AVQ5Dbqm5QAi9dWJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Weak-Willed (Drone Imperfection)",
+        "type": "perk"
       }
     },
     "baseAerialMovement": 0,

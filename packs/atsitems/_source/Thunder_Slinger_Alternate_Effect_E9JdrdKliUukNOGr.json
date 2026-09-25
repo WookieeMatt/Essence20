@@ -9,7 +9,7 @@
     "actionType": "standard",
     "classification": {
       "skill": "targeting",
-      "style": "melee"
+      "style": "energy"
     },
     "damageType": "element",
     "damageValue": 1,
@@ -20,8 +20,8 @@
     "range": {
       "min": null,
       "reachMultiplier": 0,
-      "long": null,
-      "value": null
+      "long": 100,
+      "value": 50
     },
     "shape": "circle"
   },

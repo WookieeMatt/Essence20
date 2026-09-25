@@ -14,7 +14,52 @@
     "quantity": 1,
     "gearType": "other"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Cat Handling",
+      "origin": "Item.Jha5vJto1A0KwIRr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "Ee57bb6k7liydZRE",
+      "changes": [
+        {
+          "key": "system.skills.animalHandling.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!Jha5vJto1A0KwIRr.Ee57bb6k7liydZRE"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

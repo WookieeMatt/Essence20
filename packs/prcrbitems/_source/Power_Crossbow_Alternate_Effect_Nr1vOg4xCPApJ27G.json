@@ -1,0 +1,49 @@
+{
+  "folder": "7cbGCbO9SnTUU2vx",
+  "name": "Power Crossbow Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "Nr1vOg4xCPApJ27G",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "element",
+    "damageValue": 1,
+    "shiftDown": 1,
+    "numHands": "2",
+    "numTargets": 2,
+    "radius": 30,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 100,
+      "value": 50
+    },
+    "source": {
+      "book": "Power Rangers Pre Gen Characters",
+      "page": 2
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265429897,
+    "modifiedTime": 1790265429897,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Nr1vOg4xCPApJ27G"
+}

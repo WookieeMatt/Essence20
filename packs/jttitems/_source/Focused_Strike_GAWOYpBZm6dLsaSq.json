@@ -9,7 +9,7 @@
     "description": "",
     "source": {
       "book": "A Jump Through Time",
-      "page": 0
+      "page": 46
     },
     "prerequisite": "",
     "reroll": {
@@ -19,6 +19,7 @@
       "reset": "none",
       "maxUses": 0,
       "recursive": false,
+      "condition": "unarmedAttack",
       "cost": {
         "resourcePath": "system.powers.personal.value",
         "amount": 1

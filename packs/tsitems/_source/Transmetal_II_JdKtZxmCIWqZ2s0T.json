@@ -42,7 +42,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "influence",
-    "version": "powerRangers"
+    "version": "transformers",
+    "hasChoice": true
   },
   "effects": [],
   "sort": 0,

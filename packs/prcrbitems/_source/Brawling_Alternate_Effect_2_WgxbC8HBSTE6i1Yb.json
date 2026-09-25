@@ -13,7 +13,7 @@
     },
     "damageType": "maneuver",
     "damageValue": 0,
-    "shiftDown": 0,
+    "shiftDown": 1,
     "numHands": "0",
     "numTargets": 1,
     "radius": 0,

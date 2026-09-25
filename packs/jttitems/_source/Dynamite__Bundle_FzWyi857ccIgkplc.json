@@ -21,8 +21,8 @@
           "skill": "athletics",
           "style": "explosive"
         },
-        "damageValue": 2,
-        "damageType": "element",
+        "damageValue": 3,
+        "damageType": "stun",
         "numHands": 1,
         "numTargets": 1,
         "radius": 35,

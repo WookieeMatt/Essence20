@@ -14,7 +14,52 @@
     "quantity": 1,
     "gearType": "tools"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "vs Secret Police",
+      "origin": "Item.FtXEUdgVr6mz4jq1",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "G0j52EUJaxhUPw0z",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!FtXEUdgVr6mz4jq1.G0j52EUJaxhUPw0z"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

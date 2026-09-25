@@ -109,9 +109,9 @@
     },
     "equipped": true,
     "requirements": {
-      "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "custom": "Towering",
+      "skill": "brawn",
+      "shift": "d4"
     },
     "traits": [
       "sharp",

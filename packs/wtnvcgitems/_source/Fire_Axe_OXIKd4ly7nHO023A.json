@@ -17,6 +17,18 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Fire Axe Effect",
         "type": "weaponEffect"
+      },
+      "md3m": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.33fNOXpXecDKGP3F",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Fire Axe Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "slr1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.QxfydUTy5uSqkSPi",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Fire Axe Alternate Effect 2",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

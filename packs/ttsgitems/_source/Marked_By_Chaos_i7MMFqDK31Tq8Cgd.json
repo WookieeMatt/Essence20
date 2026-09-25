@@ -11,7 +11,143 @@
       "book": "Through the Shattered Grid",
       "page": 69
     },
-    "items": {},
+    "items": {
+      "1267": {
+        "uuid": "Compendium.essence20.pr_crb.Item.CDbaCheOK2rUsqli",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Speed Boost",
+        "type": "power"
+      },
+      "7543": {
+        "uuid": "Compendium.essence20.pr_crb.Item.9S0fkRqxjfiOJ8ip",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Repair Zord",
+        "type": "power"
+      },
+      "7790": {
+        "uuid": "Compendium.essence20.pr_crb.Item.sn6zL96S4ejzrWHN",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Translation Grid",
+        "type": "power"
+      },
+      "8945": {
+        "uuid": "Compendium.essence20.pr_crb.Item.EeNQjO1VHh1SiNzy",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Power Blast",
+        "type": "power"
+      },
+      "9a9e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.n7kXeiPmmdg55K1X",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Augment Power Weapon",
+        "type": "power"
+      },
+      "c39b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.IuQ0tsM2G99fQlSz",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Boost Initiative",
+        "type": "power"
+      },
+      "d107": {
+        "uuid": "Compendium.essence20.pr_crb.Item.v5ZJXRVnMiRaI4AU",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Environmentally Sealed",
+        "type": "power"
+      },
+      "0a7e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.UsZ8twgjWJO5B3R4",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Faster Regeneration",
+        "type": "power"
+      },
+      "4c9f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.5TLEiEHEbeDYuL3h",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Harden Armor",
+        "type": "power"
+      },
+      "a28b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.c6Kh8WrtHYfsXZmK",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Illuminate",
+        "type": "power"
+      },
+      "f2f6": {
+        "uuid": "Compendium.essence20.pr_crb.Item.JYo3Kzg7eEHHhxbm",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Machine Merge",
+        "type": "power"
+      },
+      "fc96": {
+        "uuid": "Compendium.essence20.pr_crb.Item.jOYqRnHMYz6nETD0",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Mnemonic Recall",
+        "type": "power"
+      },
+      "58a2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.fgufss1xeV96LDcu",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Penetrating Strikes",
+        "type": "power"
+      },
+      "e7c3": {
+        "uuid": "Compendium.essence20.pr_crb.Item.eiTUR08GXw03M21m",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Power Heal",
+        "type": "power"
+      },
+      "0268": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Jiap1rwBSt9AvCt7",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Power Quake",
+        "type": "power"
+      },
+      "5fc0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.F7QPCcXW9822L5Xs",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Power Shield",
+        "type": "power"
+      },
+      "5ffb": {
+        "uuid": "Compendium.essence20.pr_crb.Item.DT0TOaHfuJzkgUeO",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Power Strike",
+        "type": "power"
+      },
+      "ff09": {
+        "uuid": "Compendium.essence20.pr_crb.Item.QYluNF8M04MmP40d",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Power Transfer",
+        "type": "power"
+      },
+      "5c63": {
+        "uuid": "Compendium.essence20.pr_crb.Item.ypRIRuDdxgCJRSPh",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Relentless Blows",
+        "type": "power"
+      },
+      "9a8a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.h9646p1jwreQl4K3",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Sharkcycle Rider",
+        "type": "power"
+      },
+      "ecf1": {
+        "uuid": "Compendium.essence20.pr_crb.Item.zsLyOSsIhcCbiSTe",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Super Leap",
+        "type": "power"
+      },
+      "a99e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.QsgEWCqnClO13Tfp",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Unseen Hand",
+        "type": "power"
+      }
+    },
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 1,
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin"

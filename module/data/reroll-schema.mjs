@@ -83,15 +83,16 @@ export const rerollSchema = () => ({
     // canCritD2 flag (helpers/combat.mjs#_isCritIsFumble reads it for crit highlighting)
     // regardless of whether the original roll had it. See chat.mjs#rerollMessage.
     grantsCanCritD2: makeBool(false),
-    // A flat bonus added to the REROLLED result itself, on top of whatever the new dice show
-    // (Across the Stars "Mending the Grid": "...the re-rolled Skill Test gains a ↑2 bonus!").
-    // RAW's own wording is an upshift (a bigger skill die), but that's not expressible here - by
-    // the time a reroll runs, the die's own face count is already fixed on an already-evaluated
-    // Roll (see helpers/reroll.mjs#applyReroll's own doc comment on why this file mutates
-    // existing dice in place rather than re-building the roll formula from scratch) - a flat
-    // add-on to the final total is the closest equivalent this engine can express. 0 (the
-    // default) means no bonus, matching every existing grant.
+    // A flat bonus added to the REROLLED result itself, on top of whatever the new dice show. No
+    // printed grant currently uses a flat number - Mending the Grid, which it was first added
+    // for, prints an upshift and uses shiftUp below instead. 0 (the default) means no bonus.
     bonus: makeInt(0),
+    // Upshifts applied to a re-rolled Skill Test (Across the Stars "Mending the Grid": "...the
+    // re-rolled Skill Test gains a ↑2 bonus!"). Unlike `bonus` above this is a real shift: a
+    // non-zero value re-rolls the WHOLE test from its formula with the skill die raised this many
+    // steps (see helpers/reroll.mjs#upshiftFormula and chat.mjs#rerollMessage), rather than
+    // mutating dice in place. 0 (the default) means no shift.
+    shiftUp: makeInt(0),
     // Every other existing grant unconditionally commits to the rerolled result, even a worse one
     // (PR CRB "Weapon Mastery" says so explicitly). Hawk's Personnel Files "Backup Planner":
     // "...you can reroll a Deception Skill Test and accept either result" is the opposite - the

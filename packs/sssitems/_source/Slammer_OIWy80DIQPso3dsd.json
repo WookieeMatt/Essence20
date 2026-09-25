@@ -40,7 +40,7 @@
         "name": "Roll with the Punches",
         "type": "perk",
         "subtype": "role",
-        "level": 2
+        "level": 3
       },
       "ffe4": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.rbgupnDh25Pij5Gp",
@@ -48,7 +48,7 @@
         "name": "This Is For Me",
         "type": "perk",
         "subtype": "role",
-        "level": 2
+        "level": 3
       },
       "a060": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.MViU1s9KdZ1A51Qe",
@@ -56,7 +56,7 @@
         "name": "Knuckle Up",
         "type": "perk",
         "subtype": "role",
-        "level": 3
+        "level": 6
       },
       "3b42": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ro5hMv4XMhOmANao",

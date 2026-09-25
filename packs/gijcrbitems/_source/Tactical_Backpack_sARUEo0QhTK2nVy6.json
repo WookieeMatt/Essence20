@@ -1,0 +1,36 @@
+{
+  "folder": "8pILPlRg2uDTxFNq",
+  "name": "Tactical Backpack",
+  "type": "gear",
+  "_id": "sARUEo0QhTK2nVy6",
+  "img": "systems/essence20/assets/icons/gear/backpack.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 136
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "military"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "6.0.0",
+    "coreVersion": "13.344",
+    "createdTime": 1756800000002,
+    "modifiedTime": 1756800000002,
+    "lastModifiedBy": "Essence20Builder0",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!sARUEo0QhTK2nVy6"
+}

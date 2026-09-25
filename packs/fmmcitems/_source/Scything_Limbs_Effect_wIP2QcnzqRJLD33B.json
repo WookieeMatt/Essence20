@@ -8,18 +8,22 @@
     "originalId": "",
     "actionType": "standard",
     "classification": {
-      "skill": "athletics",
+      "skill": "might",
       "style": "melee"
     },
-    "damageType": "blunt",
+    "damageType": "sharp",
     "damageValue": 1,
+    "secondaryDamage": {
+      "type": "poison",
+      "value": 1
+    },
     "shiftDown": 0,
     "numHands": "1",
-    "numTargets": 1,
+    "numTargets": 3,
     "radius": 0,
     "range": {
       "min": null,
-      "reachMultiplier": 0,
+      "reachMultiplier": 2,
       "long": null,
       "value": null
     },

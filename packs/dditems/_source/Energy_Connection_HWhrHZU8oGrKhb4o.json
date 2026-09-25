@@ -11,6 +11,11 @@
       "book": "Decepticon Directive",
       "page": 53
     },
+    "items": {},
+    "choice": null,
+    "choiceType": "energyConnectionOption",
+    "hasChoice": true,
+    "numChoices": 1,
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

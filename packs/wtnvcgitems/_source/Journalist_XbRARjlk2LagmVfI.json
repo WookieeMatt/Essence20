@@ -35,54 +35,6 @@
         "type": "perk",
         "subtype": "role",
         "level": 1
-      },
-      "7z7X": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.KPjNit8G842eVCMd",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Mightier Than the Sword",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "0Ani": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.dwAnVitIChIWHQ8B",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Ad Reads",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "kvPO": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.TSxzTyW9GUXt70Vr",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Static Snow",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "GiCn": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.ORyWD8AKRIqo0jdS",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Viral News Bloggers",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
-      },
-      "hyML": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.66mBjSaroyx9L6am",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "A Voice for Radio",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
-      },
-      "iVLQ": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.X6ewMrWokIBswYyY",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "A Face for Television",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
       }
     },
     "adjustments": {

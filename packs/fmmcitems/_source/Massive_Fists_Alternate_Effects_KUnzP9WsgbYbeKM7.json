@@ -8,13 +8,13 @@
     "originalId": "",
     "actionType": "standard",
     "classification": {
-      "skill": "athletics",
+      "skill": "might",
       "style": "melee"
     },
     "damageType": "blunt",
     "damageValue": 2,
     "shiftDown": 1,
-    "numHands": "1",
+    "numHands": "0",
     "numTargets": 2,
     "radius": 0,
     "range": {

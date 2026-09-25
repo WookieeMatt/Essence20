@@ -55,6 +55,28 @@
           "value": null
         },
         "shiftDown": 1
+      },
+      "751d": {
+        "uuid": "Compendium.essence20.tf_crb.Item.4LCgqoy5wE2yHWdx",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Medium Blade Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 3,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 3
       }
     },
     "classFeatureId": null,

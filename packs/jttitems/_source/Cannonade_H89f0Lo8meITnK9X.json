@@ -21,7 +21,7 @@
           "skill": "targeting",
           "style": "explosive"
         },
-        "damageValue": 4,
+        "damageValue": 2,
         "damageType": "sharp",
         "numHands": 4,
         "numTargets": 1,
@@ -53,7 +53,8 @@
     ],
     "transformerMode": "modeBotMode",
     "upgradeTraits": [],
-    "usesPerScene": null
+    "usesPerScene": null,
+    "inaccurateMagnitude": 2
   },
   "effects": [],
   "sort": 0,

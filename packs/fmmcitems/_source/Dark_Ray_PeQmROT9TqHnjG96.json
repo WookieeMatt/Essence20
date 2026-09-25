@@ -1,0 +1,49 @@
+{
+  "folder": "KptlIPpiXOKDxPBO",
+  "name": "Dark Ray",
+  "type": "weaponEffect",
+  "_id": "PeQmROT9TqHnjG96",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "cold",
+    "damageValue": 2,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 60,
+      "value": 30
+    },
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 276
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790264776137,
+    "modifiedTime": 1790264776137,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!PeQmROT9TqHnjG96"
+}

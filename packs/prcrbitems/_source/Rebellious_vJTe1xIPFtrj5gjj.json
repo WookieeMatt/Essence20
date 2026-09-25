@@ -24,6 +24,7 @@
       "strength",
       "speed"
     ],
+    "allSkillsGranted": true,
     "languages": "",
     "skills": [
       "initiative",

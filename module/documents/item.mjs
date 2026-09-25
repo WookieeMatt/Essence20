@@ -1,10 +1,12 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { consumeForItem, describeCost, refund, setAiming } from "../helpers/action-economy.mjs";
+import { consumeForItem, describeCost, refund, setAiming, spend } from "../helpers/action-economy.mjs";
+import { clearWeaponReload, markWeaponNeedsReload, weaponNeedsReload } from "../helpers/reload.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
 import { betterShift, updateRoleCache } from "../helpers/utils.mjs";
 import { placeAoeTemplate } from "../helpers/aoe-targeting.mjs";
 import { applyShapedCharges } from "../helpers/shaped-charges.mjs";
+import { pickBringItAllDownEffect } from "../helpers/bring-it-all-down.mjs";
 import { applyHorseshoesAndHandgrenades } from "../helpers/horseshoes-and-handgrenades.mjs";
 import { applyMightyStrikes } from "../helpers/mighty-strikes.mjs";
 import { applyNoNeedToAim } from "../helpers/no-need-to-aim.mjs";
@@ -17,6 +19,9 @@ import { pickMindBeamEffect } from "../helpers/mind-beam.mjs";
 import { pickGetToKnowSkill } from "../helpers/get-to-know.mjs";
 import { isBlockMagicActive } from "../helpers/block-magic.mjs";
 import { consumeMegaWeaponAttack } from "../helpers/zord-mega-weapon.mjs";
+import {
+  canRollLimitedWeaponEffect, isLimitedWeaponEffect, markLimitedWeaponEffectUsed,
+} from "../helpers/limited-weapon-effects.mjs";
 
 const KNIGHTS_OF_CANTERLOT = "Compendium.essence20.knights_of_canterlot.Item.";
 const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
@@ -45,6 +50,11 @@ const FIELDTEST_ID = `${GI_JOE_CRB}bPMgz1ct8T0kgQ6K`;
 // matching an unrelated genuine Brawn attack).
 const BRUTAL_MIGHT_ID = "Compendium.essence20.enigma_of_combination.Item.l0STCEYBuPMYfzSt";
 
+// Obscuring Matrix (Enigma of Combination, Armor Upgrade, p.57) - see _prepareArmorBonuses's own
+// comment for the Grappled/Immobilized/Prone/Restrained negation these two ids gate.
+const OBSCURING_MATRIX_BASIC_ID = "Compendium.essence20.enigma_of_combination.Item.L8ZXz1h0DlCy85UC";
+const OBSCURING_MATRIX_ADVANCED_ID = "Compendium.essence20.enigma_of_combination.Item.HH4q8lx09mV2hhcv";
+
 // Beastly (Ferocious Fighters, New Influence, p.75) / its own Hang-Up (p.78): "Your Unarmed
 // Combat attack's Blunt damage Alternate Effect no longer suffers -1" (Perk) / "Your Unarmed
 // Combat attack's Stun effect suffers -1" (Hang-Up). Both target one SPECIFIC weaponEffect item's
@@ -63,6 +73,32 @@ const UNARMED_COMBAT_ALTERNATE_EFFECT_1_ID = `${GI_JOE_CRB}gA0rOFD3lmwzkZq4`;
 const UNARMED_COMBAT_EFFECT_ID = `${GI_JOE_CRB}eDjovjfygGq8dlQy`;
 const BEASTLY_PERK_ID = "Compendium.essence20.ferocious_fighters.Item.3Y0ETFpJUwdUqgUQ";
 const BEASTLY_HANG_UP_ID = "Compendium.essence20.ferocious_fighters.Item.9o0Qbe6lgqNPnm2R";
+
+// Wrestler (Slammer Focus, Sgt Slaughter Sourcebook, 10th level, p.13): "you no longer suffer
+// downshifts for using the Maneuver alternate effect of Melee weapons." RE-CATEGORIZED - dice.mjs
+// own WRESTLER_SLAMMER_ID comment called this unbuildable ("no automated downshift for a weapon's
+// own Alternate Effects at all... a build-time customization concept, not yet modeled anywhere"),
+// written before helpers/unique-strike.mjs existed - that file's own applyAlternateEffect now
+// confirms the Maneuver Alternate Effect IS modeled exactly as `damageType: 'maneuver'` +
+// `shiftDown: 1` on a weaponEffect, the same live check point Beastly's own item-level shiftDown
+// suppression just above already established. Suppresses THIS weapon's own inherent shiftDown
+// entirely for any Melee weaponEffect whose damageType is 'maneuver' while the actor holds the
+// Perk - other shiftDown sources (checkboxes, Skill-level penalties) are untouched, since RAW only
+// waives the ALTERNATE EFFECT's own downshift, not every downshift on the roll.
+const WRESTLER_SLAMMER_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Item.ro5hMv4XMhOmANao";
+
+// One With Your Weapon(s) (Intercontinental Adventures, Silent Weapons Expert Focus, 10th level,
+// p.13): "you no longer suffer any penalty when you use your Silent Martial Arts weapons'
+// alternate effects." A broader, trait-scoped sibling of Wrestler's own identical shiftDown-
+// suppression shape just above - "Silent Martial Arts weapons" is a real trait pair (the same
+// martialArts+silent check Quiet One's own dice.mjs#_getParentWeapon lookup already establishes),
+// not a damageType, so this resolves the weaponEffect's own PARENT Weapon item directly via its
+// flags.essence20.parentId (the same lookup _onUpdate above already uses to keep a parent's own
+// system.items entry in sync) rather than dice.mjs's actor-scoped _getParentWeapon helper, which
+// isn't available from this file. "Switching... is a Free action" isn't built - action economy is
+// unenforced everywhere in this project, the same accepted no-op idiom as every other Free-action
+// clause.
+const ONE_WITH_YOUR_WEAPON_ID = "Compendium.essence20.intercontinental_adventures.Item.RH3AFV38EBAfTvW1";
 
 // Enchant (MLP CRB, Elementary Enchantment spell, p.136) - see helpers/enchant.mjs's own doc
 // comment. The one hardcoded per-spell-id check in this otherwise fully generic spell-cast
@@ -350,8 +386,22 @@ export class Essence20Item extends Item {
     let armorBonusToughness = this.system.bonusToughness;
     let armorBonusEvasion  = this.system.bonusEvasion;
 
+    // Obscuring Matrix (Enigma of Combination, Armor Upgrade, p.57, Basic +2/Advanced +4 Evasion):
+    // "this bonus is negated while the wearer has the Grappled, Immobilized, Prone, or Restrained
+    // Condition." Checked here, per-upgrade, rather than as a blanket zero on the whole item's
+    // Evasion bonus - only THIS upgrade's own contribution is negated, not any other armorBonus
+    // Upgrade sharing the same armor.
+    const wearerStatuses = this.actor?.statuses;
+    const obscuringMatrixNegated = wearerStatuses?.has
+      && ['grappled', 'immobilized', 'prone', 'restrained'].some(status => wearerStatuses.has(status));
+
     for (const [, item] of Object.entries(this.system.items)) {
       if (item.type == 'upgrade' && item.subtype == 'armor'){
+        if (obscuringMatrixNegated
+          && (item.uuid == OBSCURING_MATRIX_BASIC_ID || item.uuid == OBSCURING_MATRIX_ADVANCED_ID)) {
+          continue;
+        }
+
         if (item.armorBonus.defense == 'toughness') {
           armorBonusToughness += item.armorBonus.value;
         } else if (item.armorBonus.defense == 'evasion') {
@@ -624,7 +674,37 @@ export class Essence20Item extends Item {
        the spend and reports it without standing in the way, which is what lets it ship while the
        overwhelming majority of compendium items still declare no action cost at all. */
     let spent = null;
+    // The weaponEffect's own parent weapon, resolved once here so both the Reload gate just below
+    // and the Reload/Consumable consumption further down (this.type == 'weaponEffect' branch) see
+    // the same lookup - see helpers/reload.mjs's own doc comment.
+    let parentWeapon = null;
     if (dataset.rollType != 'info') {
+      const roller = childRoller || this.actor;
+      if (this.type == 'weaponEffect' && roller) {
+        parentWeapon = this._dice._getParentWeapon(roller, this);
+
+        // Reload (GI Joe CRB, Weapon Effects and Traits, p.147) - gated ahead of the ordinary
+        // action-economy spend below: an unreloaded weapon shouldn't cost its own Attack action
+        // at all. See helpers/reload.mjs's own doc comment for the full RAW quote.
+        if (parentWeapon?.system.traits?.includes('reload') && weaponNeedsReload(parentWeapon)) {
+          const reloadSpend = await spend(roller, 'move', {
+            source: parentWeapon.name, bypass: dataset.bypassEconomy,
+          });
+          if (reloadSpend.blocked) {
+            if (!reloadSpend.cancelled) {
+              ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
+                name: roller?.name ?? '',
+                action: describeCost(reloadSpend.cost),
+              }));
+            }
+
+            return;
+          }
+
+          await clearWeaponReload(parentWeapon);
+        }
+      }
+
       spent = await consumeForItem(this, { actor: childRoller, bypass: dataset.bypassEconomy });
       if (spent.blocked) {
         // Nothing to say when the player themselves backed out of the 'warn' confirmation - they
@@ -726,11 +806,34 @@ export class Essence20Item extends Item {
       // whenever only childRoller, not this.actor, was actually valid.
       const roller = childRoller || this.actor;
 
+      // Once-per-encounter weapon effects (Turbo Thunder Cannon's Energy Attack, Wing Missile
+      // Salvo) - see helpers/limited-weapon-effects.mjs's own doc comment. Checked before any of
+      // the pre-roll work below, refunding the action economy spend just like a cancelled roll,
+      // so a blocked attack never costs the actor their turn.
+      const weaponEffectSourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+      if (isLimitedWeaponEffect(weaponEffectSourceId) && !canRollLimitedWeaponEffect(roller, weaponEffectSourceId)) {
+        if (spent?.spendId) {
+          await refund(roller, spent.spendId);
+        }
+
+        ui.notifications.warn(game.i18n.format('E20.LimitedWeaponEffectAlreadyUsed', { name: this.name }));
+        return;
+      }
+
+      // Bring It All Down (Decepticon Directive, Demolitionist Focus, 20th level, p.57) - see
+      // helpers/bring-it-all-down.mjs's own doc comment. Resolved before AoE placement (rather
+      // than as a Roll Options Dialog checkbox like most declared-intent Perks) because its own
+      // radius-doubling option has to be known before the shape is even placed. A no-op prompt on
+      // a non-explosive attack or without the Perk - see pickBringItAllDownEffect's own gate.
+      const bringItAllDownEffect = await pickBringItAllDownEffect(roller, this);
+
       // Area of Effect (GitHub #824) - see helpers/aoe-targeting.mjs's own doc comment. Only
       // Blast/AoE-shaped attacks (system.shape set) trigger this; an ordinary single-target or
       // Multiple-Targets attack rolls exactly as it always has, targets chosen by hand as usual.
       if (this.system.shape) {
-        let aoeTokens = await placeAoeTemplate(roller, this);
+        let aoeTokens = await placeAoeTemplate(roller, this, {
+          radiusMultiplier: bringItAllDownEffect == 'radius' ? 2 : 1,
+        });
 
         // Shaped Charges (Artillery Focus, 7th level, p.81) - see its own doc comment. Runs
         // before Horseshoes and Handgrenades below so an excluded target dodges that flat-damage
@@ -766,24 +869,68 @@ export class Essence20Item extends Item {
         itemShiftDown = 0;
       } else if (itemSourceId == UNARMED_COMBAT_EFFECT_ID && actorHasPerk(roller, BEASTLY_HANG_UP_ID)) {
         itemShiftDown = this.system.shiftDown + 1;
+      } else if (
+        this.system.damageType == 'maneuver' && this.system.classification.style == 'melee'
+        && actorHasPerk(roller, WRESTLER_SLAMMER_ID)
+      ) {
+        itemShiftDown = 0;
+      } else if (actorHasPerk(roller, ONE_WITH_YOUR_WEAPON_ID)) {
+        const parentWeapon = this.actor?.items?.get(this.flags?.essence20?.parentId);
+        const weaponTraits = parentWeapon?.system.traits ?? [];
+        if (weaponTraits.includes('martialArts') && weaponTraits.includes('silent')) {
+          itemShiftDown = 0;
+        }
       }
 
       const shiftDown = roller.system.skills[skill].shiftDown + itemShiftDown;
       const isSpecialized = roller.system.skills[skill].isSpecialized;
+      // Accurate (Weapon Effects and Traits, p.106) - see WeaponEffectItemData#accurateShiftUp's
+      // own comment (data/item/weapon-effect.mjs) for why this weaponEffect-level field is the
+      // first real mechanical hook for that trait.
+      const totalShiftUp = shiftUp + (this.system.accurateShiftUp ?? 0);
       weaponDataset = {
         ...dataset,
         shift,
         skill,
-        shiftUp,
+        shiftUp: totalShiftUp,
         shiftDown,
         isSpecialized,
+        // Bring It All Down - see its own comment above. Read back in dice.mjs at the three sites
+        // matching RAW's other options (the shift computation, damageBonusValue, and the Armor
+        // Piercing/ignoreArmor recompute).
+        bringItAllDownEffect,
       };
 
-      await this._rollWithRefund(weaponDataset, roller, spent);
+      const weaponRollResult = await this._rollWithRefund(weaponDataset, roller, spent);
+      if (isLimitedWeaponEffect(weaponEffectSourceId) && !weaponRollResult?.cancelled) {
+        await markLimitedWeaponEffectUsed(roller, weaponEffectSourceId);
+      }
 
       // Zord Mega-Weapon System (PR CRB, Zord Feature, p.139): "lasts for 1d2+1 attacks (hit or
       // miss)" - counted here, as the attack is rolled, precisely because a miss still spends one.
       await consumeMegaWeaponAttack(roller, this);
+
+      // Reload - see helpers/reload.mjs's own doc comment. Flags the weapon for next time
+      // regardless of whether this shot hit; "fired" is what matters, "landed" isn't.
+      if (!weaponRollResult?.cancelled && parentWeapon?.system.traits?.includes('reload')) {
+        await markWeaponNeedsReload(parentWeapon);
+      }
+
+      // Consumable (GI Joe CRB, Weapon Effects and Traits, p.147): "Using this weapon destroys it,
+      // even if it misses its target." Same one-potion-can-hold-several shape as the magic bauble
+      // consumption path below (spell branch) - a holder can carry more than one of the same
+      // Consumable weapon, and only the last one firing actually deletes the Item. isEmbedded
+      // guards the source the same way the bauble path does, so rolling straight out of a
+      // compendium or the world Items directory can't delete the master copy.
+      if (!weaponRollResult?.cancelled && parentWeapon?.system.traits?.includes('consumable')
+        && parentWeapon.isEmbedded) {
+        const remaining = (parentWeapon.system.quantity ?? 1) - 1;
+        if (remaining > 0) {
+          await parentWeapon.update({ 'system.quantity': remaining });
+        } else {
+          await parentWeapon.delete();
+        }
+      }
 
       // Decrement class feature, if applicable
       const classFeature = roller.items.get(this.system.classFeatureId);

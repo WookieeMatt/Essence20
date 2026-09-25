@@ -1,0 +1,97 @@
+{
+  "name": "Shadow Morph (Form)",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 70
+    },
+    "prerequisite": "maximum Personal Power 6 or higher",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "origin": "Item.UNgNYpUADVTaNrWt",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "G8E3L5zBXbFvkm9L",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.morphed",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.toughness.morphed",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.infiltration.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Morphed Bonus",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {
+        "whileMorphed": true
+      },
+      "sort": 0,
+      "_key": "!items.effects!UNgNYpUADVTaNrWt.G8E3L5zBXbFvkm9L"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1686268579754,
+    "modifiedTime": 1704127399128,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "UNgNYpUADVTaNrWt",
+  "folder": "wCReLTLx2TAq0REM",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!UNgNYpUADVTaNrWt"
+}

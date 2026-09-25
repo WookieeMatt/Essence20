@@ -5,6 +5,7 @@ import { applyBoostedVigor } from "../helpers/phantom-focus.mjs";
 import { clearPoweredPlating } from "../helpers/powered-plating.mjs";
 import { applyGrowthBoostHealth } from "../helpers/growth-boost.mjs";
 import { deactivateMysteriousAura } from "../helpers/mysterious-aura.mjs";
+import { clearEmotionalMasteryOnMorphOff } from "../helpers/emotional-mastery.mjs";
 
 /**
  * Handles the "Activate" button on a granted Power Infusion Perk (PR CRB p.41) - see
@@ -61,6 +62,14 @@ export async function onMorph(actor) {
   // Plating just above.
   if (actor.system.isMorphed) {
     await deactivateMysteriousAura(actor);
+  }
+
+  // Emotional Mastery (A Jump Through Time, Purple Ranger, p.37) - see
+  // helpers/emotional-mastery.mjs's own doc comment. Same "clear on the way OUT of Morphed" idiom
+  // as Powered Plating/Mysterious Aura just above, except a Heart's Calling option (18th level)
+  // is deliberately kept active, per its own "works even when you are not Morphed" text.
+  if (actor.system.isMorphed) {
+    await clearEmotionalMasteryOnMorphOff(actor);
   }
 
   await actor.update({

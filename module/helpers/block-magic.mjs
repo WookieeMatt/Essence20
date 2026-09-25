@@ -9,16 +9,20 @@
 // this project doesn't have - every existing checkbox is Perk- or item-specific, not "any spell
 // this actor casts"), so the cost increase is applied unconditionally as the simpler of the two
 // RAW options, the same "pick the concretely-buildable option, flag the rest" idiom this project
-// already uses for Whatever Helps/Personal Sacrifice's own unautomated halves.
+// already uses for Whatever Helps/Personal Sacrifice's own unautomated halves. "For the duration of
+// the spell" (1 scene) is now tracked with the Scene Clock (helpers/scene-clock.mjs) so it clears
+// once the GM calls the scene rather than being left applied until manually removed.
+
+import { activateForWindow, isActiveForWindow } from "./scene-clock.mjs";
 
 const BLOCK_MAGIC_FLAG = 'blockMagicActive';
 
 export function isBlockMagicActive(actor) {
-  return !!actor?.getFlag?.('essence20', BLOCK_MAGIC_FLAG);
+  return isActiveForWindow(actor, BLOCK_MAGIC_FLAG, 'scene');
 }
 
 export async function applyBlockMagic(actor) {
-  await actor.setFlag('essence20', BLOCK_MAGIC_FLAG, true);
+  await activateForWindow(actor, BLOCK_MAGIC_FLAG, 'scene');
 }
 
 export async function removeBlockMagic(actor) {

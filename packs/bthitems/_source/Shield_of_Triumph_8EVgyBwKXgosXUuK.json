@@ -48,7 +48,7 @@
       "type": "defenseBonus",
       "other": null
     },
-    "availability": "standard",
+    "availability": "restricted",
     "classification": "medium",
     "equipped": false,
     "passiveEffect": {

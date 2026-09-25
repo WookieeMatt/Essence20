@@ -11,7 +11,14 @@
       "book": "Through the Shattered Grid",
       "page": 23
     },
-    "items": {},
+    "items": {
+      "pSx1": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.LQvGJShBxiMAVcf8",
+        "img": "systems/essence20/assets/icons/weapons/broadsword.svg",
+        "name": "Magna Sword",
+        "type": "weapon"
+      }
+    },
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

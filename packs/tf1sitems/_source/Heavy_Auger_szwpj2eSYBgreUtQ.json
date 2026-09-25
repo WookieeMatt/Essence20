@@ -51,7 +51,12 @@
       "skill": "brawn",
       "shift": "d4"
     },
-    "traits": [],
+    "traits": [
+      "antiTank",
+      "reload",
+      "tool",
+      "wrecker"
+    ],
     "transformerMode": "modeBotMode",
     "upgradeTraits": [],
     "usesPerScene": null

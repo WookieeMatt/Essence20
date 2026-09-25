@@ -26,7 +26,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "YRX6XRqbXbgLE0rT",
       "changes": [
         { "key": "system.skills.alertness.edge", "mode": 5, "value": "true", "priority": null },

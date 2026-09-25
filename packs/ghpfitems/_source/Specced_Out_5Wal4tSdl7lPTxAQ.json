@@ -13,7 +13,48 @@
       "book": "General Hawk's Personnel Files",
       "page": 166
     },
-    "type": "influence"
+    "type": "influence",
+    "items": {
+      "sp01": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.erZl8Udy03P7vHTe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Diver",
+        "type": "perk",
+        "role": null
+      },
+      "sp02": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.BIya60PVJFYtYL2u",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "EOD (Explosive Ordnance Disposal)",
+        "type": "perk",
+        "role": null
+      },
+      "sp03": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.wOxrMAMHJWFs1DBN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Forward Observation",
+        "type": "perk",
+        "role": null
+      },
+      "sp04": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.0OTOD93UCMEaaOhD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rock Climber",
+        "type": "perk",
+        "role": null
+      },
+      "sp05": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.dvmY7UiuKejOPY4N",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Skier",
+        "type": "perk",
+        "role": null
+      }
+    },
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 1,
+    "choice": null
   },
   "effects": [],
   "sort": 0,

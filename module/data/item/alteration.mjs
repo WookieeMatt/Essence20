@@ -1,6 +1,7 @@
 import { E20 } from "../../helpers/config.mjs";
 
 import {
+  makeBool,
   makeInt,
   makeStr,
   makeStrArrayWithChoices,
@@ -33,6 +34,16 @@ export class AlterationItemData extends foundry.abstract.TypeDataModel {
       movementCost: new fields.ObjectField({}),
       selectedEssence: makeStrWithChoices(Object.keys(E20.essences), null),
       type: makeStrWithChoices(Object.keys(E20.alterationTypes), 'other'),
+      // Enhanced Photoreceptors (Cobra Codex, p.84): "You can see in darkness up to 30 feet as if
+      // it was dim light." The vision-granting shape already exists on gear/perk (see
+      // GearItemData's own visionGrant, and helpers/vision-grant.mjs#getBestVisionGrant, which
+      // reads item.system.visionGrant off ANY actor item regardless of type) - Alteration was
+      // simply never given the field, so no alteration could ever declare one.
+      visionGrant: new fields.SchemaField({
+        enabled: makeBool(false),
+        mode: makeStrWithChoices(Object.keys(E20.visionModes), 'darkvision'),
+        range: makeInt(0),
+      }),
     };
   }
 }

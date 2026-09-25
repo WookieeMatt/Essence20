@@ -17,7 +17,11 @@
       "style": "explosive"
     },
     "damageType": "sharp",
-    "damageValue": 4,
+    "damageValue": 2,
+    "secondaryDamage": {
+      "type": "fire",
+      "value": 2
+    },
     "isSpecialized": false,
     "numHands": 4,
     "numTargets": 1,

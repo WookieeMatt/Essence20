@@ -19,7 +19,7 @@
     "radius": 0,
     "range": {
       "min": null,
-      "reachMultiplier": 0,
+      "reachMultiplier": 1,
       "long": null,
       "value": null
     }

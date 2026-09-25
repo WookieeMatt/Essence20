@@ -13,7 +13,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 7,
-    "type": "general",
+    "type": "role",
     "hasChoice": true,
     "choiceType": "perks",
     "items": {

@@ -1,0 +1,76 @@
+{
+  "folder": "fT1wrp647z4EqXSp",
+  "name": "Ptera Grips",
+  "type": "weapon",
+  "_id": "jMkhV0qfkSlaCwH6",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 68
+    },
+    "items": {
+      "a7d8": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.f9DCAkwMJ60kgYL6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Ptera Grips Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "power",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790262353573,
+    "modifiedTime": 1790262353573,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!jMkhV0qfkSlaCwH6"
+}

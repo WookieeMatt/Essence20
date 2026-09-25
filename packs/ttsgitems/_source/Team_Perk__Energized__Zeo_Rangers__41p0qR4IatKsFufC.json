@@ -1,0 +1,81 @@
+{
+  "folder": "IDRVY95fBX5zbxiY",
+  "name": "Team Perk: Energized (Zeo Rangers)",
+  "type": "perk",
+  "_id": "41p0qR4IatKsFufC",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 27
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction"
+  },
+  "effects": [
+    {
+      "name": "Team Perk: Energized (Zeo Rangers)",
+      "origin": "Item.41p0qR4IatKsFufC",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Vki7SlDFsThtBREK",
+      "changes": [
+        {
+          "key": "system.skills.athletics.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!41p0qR4IatKsFufC.Vki7SlDFsThtBREK"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265601274,
+    "modifiedTime": 1790265601274,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!41p0qR4IatKsFufC"
+}

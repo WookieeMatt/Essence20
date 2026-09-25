@@ -91,7 +91,11 @@
       "skill": "athletics",
       "shift": "none"
     },
-    "traits": [],
+    "traits": [
+      "energy",
+      "powerWeapon",
+      "versatile"
+    ],
     "upgradeTraits": [],
     "usesPerScene": null
   },

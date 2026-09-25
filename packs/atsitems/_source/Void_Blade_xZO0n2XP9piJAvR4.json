@@ -22,7 +22,7 @@
           "style": "melee"
         },
         "damageValue": 2,
-        "damageType": "element",
+        "damageType": "void",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
@@ -44,7 +44,7 @@
           "style": "melee"
         },
         "damageValue": 1,
-        "damageType": "element",
+        "damageType": "void",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
@@ -69,7 +69,10 @@
       "skill": "athletics",
       "shift": "none"
     },
-    "traits": [],
+    "traits": [
+      "powerWeapon",
+      "void"
+    ],
     "upgradeTraits": [],
     "usesPerScene": null
   },

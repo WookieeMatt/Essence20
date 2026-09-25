@@ -19,7 +19,7 @@
     "benefit": "",
     "traits": [],
     "type": "drone",
-    "prerequisite": "Initiative d2"
+    "prerequisite": "Attack function or Integrated Specialized Weapon upgrade"
   },
   "effects": [],
   "flags": {},

@@ -18,7 +18,7 @@
         "name": "Predatory Bite (Large-Huge) Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "intimidation",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 2,

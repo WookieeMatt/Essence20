@@ -27,54 +27,6 @@
         "type": "perk",
         "subtype": "role",
         "level": 1
-      },
-      "R8Ej": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.1AIDuOu9Haekycjl",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "City Council Candidate",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "a9js": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.ihphiMNUuj710MzH",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Hidden Whispers",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "1AfR": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.SivYuju5Qcwu3npg",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Riot Gear",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "enxN": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.EYfJvqZZk1PGHyY2",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Soft Meat Crown",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
-      },
-      "EaV4": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.td5xX3OaNFbaMtvG",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Mayoral Speeches",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
-      },
-      "QePf": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.DZvPXbFQtXEiQsMv",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Neighborhood Watcher",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
       }
     },
     "adjustments": {

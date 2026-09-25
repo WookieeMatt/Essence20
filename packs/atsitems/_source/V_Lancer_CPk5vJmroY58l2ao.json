@@ -62,7 +62,7 @@
         "name": "V-Lancer (Lance Mode) Effects",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 1,

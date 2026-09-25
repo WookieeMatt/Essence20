@@ -21,7 +21,7 @@
           "skill": "athletics",
           "style": "explosive"
         },
-        "damageValue": 3,
+        "damageValue": 2,
         "damageType": "stun",
         "numHands": 1,
         "numTargets": 1,
@@ -37,7 +37,7 @@
     },
     "availability": "restricted",
     "classification": {
-      "size": "integrated"
+      "size": "sidearm"
     },
     "equipped": true,
     "requirements": {

@@ -36,7 +36,7 @@
         "startTurn": null
       },
       "disabled": false,
-      "_id": "Protection0001x",
+      "_id": "Protection0001x0",
       "changes": [
         {
           "key": "system.defenses.toughness.bonus",
@@ -65,7 +65,7 @@
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!IF9v9C3tCJSQYRjd.Protection0001x"
+      "_key": "!items.effects!IF9v9C3tCJSQYRjd.Protection0001x0"
     }
   ],
   "sort": 1100000,

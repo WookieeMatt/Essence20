@@ -1,7 +1,7 @@
 // Glittermane (Knights of Canterlot, Superior Utility spell, p.46): "it makes you a little hard
 // to look at, and all attempts to target you with spells, ranged attacks or melee weapons suffer
-// a Snag." A self-only on/off flag (cast on the caster, same shape as Glow), consumed
-// reciprocally: whoever ATTACKS a Glittermane-active actor suffers Snag, read directly in
+// ↓1." A self-only on/off flag (cast on the caster, same shape as Glow), consumed
+// reciprocally: whoever ATTACKS a Glittermane-active actor suffers ↓1, read directly in
 // dice.mjs#_getAutomaticCombatModifiers's per-target block, isAttack-gated (unlike Glow's own
 // unconditional Alertness check - Glittermane specifically names "spells, ranged attacks or melee
 // weapons," i.e. Attacks only). "Trying to cover up or hide the sparkles is at -2" (a self-penalty

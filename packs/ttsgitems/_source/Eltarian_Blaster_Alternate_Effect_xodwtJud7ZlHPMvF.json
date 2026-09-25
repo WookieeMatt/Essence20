@@ -14,7 +14,7 @@
     },
     "classification": {
       "skill": "targeting",
-      "style": "melee"
+      "style": "energy"
     },
     "damageType": "stun",
     "damageValue": 2,
