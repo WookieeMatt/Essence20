@@ -3,8 +3,11 @@
        they have been spent; after that a one-line summary with a way back in to re-spread them. --}}
   {{#if startingEssences}}
   <div class="starting-essences-bar {{#if startingEssences.needsAttention}}is-unassigned{{/if}}">
+    <a data-action="startingEssences" data-tooltip="{{localize 'E20.StartingEssencesOpen'}}">
+      <i class="fa-solid fa-sliders" inert></i> {{localize 'E20.StartingEssencesOpenShort'}}
+    </a>
     {{#unless startingEssences.needsAttention}}
-      <span>{{localize 'E20.StartingEssencesBarAssigned'}}
+      <span>
         <strong>{{startingEssences.base.strength}} / {{startingEssences.base.speed}} / {{startingEssences.base.smarts}} / {{startingEssences.base.social}}</strong></span>
     {{else if startingEssences.isAssigned}}
       <span><i class="fa-solid fa-circle-exclamation" inert></i> {{localize 'E20.StartingEssencesBarInvalid'}}
@@ -12,9 +15,6 @@
     {{else}}
       <span><i class="fa-solid fa-circle-exclamation" inert></i> {{localize 'E20.StartingEssencesBarUnassigned'}}</span>
     {{/unless}}
-    <a data-action="startingEssences" data-tooltip="{{localize 'E20.StartingEssencesOpen'}}">
-      <i class="fa-solid fa-sliders" inert></i> {{localize 'E20.StartingEssencesOpenShort'}}
-    </a>
   </div>
   {{/if}}
   {{!-- Strength --}}

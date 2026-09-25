@@ -115,8 +115,11 @@
   grid-column: 1 / -1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: v.$gap-md;
+  /* Centred as one group, the button right after the text it acts on - not pushed to the far
+     edge of the tab, where it read as unrelated to the summary. */
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: v.$gap-md * 2;
   padding: 2px v.$gap-md;
   font-size: 0.85em;
   color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
