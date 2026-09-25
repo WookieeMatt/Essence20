@@ -18,8 +18,8 @@
         "name": "Smart Grenade Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
-          "style": "melee"
+          "skill": "targeting",
+          "style": "explosive"
         },
         "damageValue": 1,
         "damageType": "element",

@@ -12,7 +12,58 @@
       "page": 72
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Dino Power Surge (Active)",
+      "origin": "Item.ZWH6YAc64tAVgtve",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "JtNYD26t6BJZc8t3",
+      "changes": [
+        {
+          "key": "system.essences.strength.value",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.essences.speed.value",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!ZWH6YAc64tAVgtve.JtNYD26t6BJZc8t3"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

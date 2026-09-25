@@ -16,8 +16,8 @@
       "skill": "targeting",
       "style": "energy"
     },
-    "damageType": "fire",
-    "damageValue": 2,
+    "damageType": "element",
+    "damageValue": 3,
     "isSpecialized": false,
     "shiftDown": 0,
     "numHands": "1",
@@ -26,9 +26,10 @@
     "range": {
       "min": null,
       "reachMultiplier": 0,
-      "long": 100,
-      "value": 40
-    }
+      "long": 120,
+      "value": 30
+    },
+    "accurateShiftUp": 1
   },
   "effects": [],
   "sort": 0,

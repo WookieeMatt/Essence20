@@ -1,5 +1,6 @@
-import { actorHasPerk, findPerk, hasUsedThisRound, markUsedThisRound } from "./perks.mjs";
+import { actorHasPerk, findPerk, hasUsedThisEncounter, hasUsedThisRound, markUsedThisRound } from "./perks.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
+import { canWriteStoryPoints, hasStoryPointsAvailable } from "./story-points.mjs";
 
 /**
  * GI Joe CRB p.72 - the Commando Role's Sneak Attack Perk:
@@ -30,8 +31,24 @@ const SNEAK_ATTACK_DAMAGE_ID = `${GI_JOE_CRB}Mrmbqza0XxVpKj6U`;
 const EVERYTHING_A_WEAPON_ID = `${GI_JOE_CRB}hx4KzTl8iQ8Z22eq`;
 const EVERY_TRICK_IN_THE_BOOK_ID = `${GI_JOE_CRB}HKv38GCtVdSV2qMH`;
 const NEVER_HEARD_IT_COMING_ID = `${GI_JOE_CRB}jIUKR6chHdKQO2vr`;
-const IN_MY_SIGHTS_ID = `${GI_JOE_CRB}MD54SjlTYiCTvmBB`;
+export const IN_MY_SIGHTS_ID = `${GI_JOE_CRB}MD54SjlTYiCTvmBB`;
 const BALLISTIC_ADVANTAGE_ID = `${GI_JOE_CRB}civSjmz83aDYPwvo`;
+
+const COBRA_CODEX = "Compendium.essence20.cobra_codex.Item.";
+
+// Focused Charge (Cobra Codex, Saboteur Focus, 3rd level, p.52): "You can sneak attack using
+// explosives and electromagnetic weapons, even if they aren't silent, as long as you meet all
+// other prerequisites of Sneak Attack." A third weapon-qualifier grant, same shape as Everything's
+// a Weapon/In My Sights/Ballistic Advantage above, just scoped to explosive-classification
+// weaponEffects or weapons carrying the 'electromagnetic' trait rather than any/sniper.
+const FOCUSED_CHARGE_ID = `${COBRA_CODEX}mQ0s9B2it1mqho3H`;
+
+// Sudden Strike (Cobra Codex, Commando Be Ruthless replacement Perk, p.50): "Once per combat, you
+// can spend a Story Point to gain the benefits of Sneak Attack regardless of the circumstances of
+// your attack." Bypasses every other eligibility check in checkSneakAttackEligibility() below,
+// once per combat - see its own use there.
+export const SUDDEN_STRIKE_ID = `${COBRA_CODEX}G3cypoJyLtlLogzO`;
+export const SUDDEN_STRIKE_ENCOUNTER_FLAG = 'suddenStrikeUsedThisEncounter';
 // The "Sneak Attack" Perk itself (as opposed to Sneak Attack Damage above) is flavor text with no
 // mechanical effect of its own - EXCEPT that this exact compendium Item is shared verbatim by both
 // Commando's own base grant and Ranger/Predator's Focus grant (p.93: "you deal additional damage
@@ -167,9 +184,17 @@ function _getWeaponQualifierAndRange(actor, weapon, weaponEffect) {
   // Sniper Focus character will already have In My Sights (3rd level) by the time they reach
   // Ballistic Advantage (17th level), but this doesn't assume that prerequisite is present.
   const hasBallisticAdvantage = isSniperWeapon && actorHasPerk(actor, BALLISTIC_ADVANTAGE_ID);
+  // Focused Charge - see FOCUSED_CHARGE_ID's own comment above. "Explosives" reads as the
+  // weaponEffect's own 'explosive' classification.style (the same field Trajectory's own
+  // explosive-weapon check already reads); "electromagnetic weapons" reads as the weapon's own
+  // 'electromagnetic' trait, the same trait-array shape 'silent'/'sniper' already use above.
+  const isExplosiveOrEmWeapon = weaponEffect?.system?.classification?.style == 'explosive'
+    || !!weapon?.system.traits.includes('electromagnetic');
+  const hasFocusedCharge = isExplosiveOrEmWeapon && actorHasPerk(actor, FOCUSED_CHARGE_ID);
   const qualifies = isSilentWeapon
     || hasInMySights
     || hasBallisticAdvantage
+    || hasFocusedCharge
     || actorHasPerk(actor, EVERYTHING_A_WEAPON_ID);
 
   if (hasBallisticAdvantage) {
@@ -202,6 +227,17 @@ function _getWeaponQualifierAndRange(actor, weapon, weaponEffect) {
  * @returns {{eligible: Boolean, reason: String}}
  */
 export function checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack) {
+  // Sudden Strike - see SUDDEN_STRIKE_ID's own comment above. Bypasses every other check below
+  // ("regardless of the circumstances of your attack"), once per combat, while a Story Point is
+  // actually available to spend - the resource itself is the throttle, same as every other
+  // Story-Point-gated ability in this project. The actual spend + once-per-combat mark happens
+  // where Sneak Attack Damage is actually applied (dice.mjs, alongside markSneakAttackUsed), not
+  // here - this function only decides whether the Roll Options Dialog checkbox can be offered.
+  if (actorHasPerk(actor, SUDDEN_STRIKE_ID) && !hasUsedThisEncounter(actor, SUDDEN_STRIKE_ENCOUNTER_FLAG)
+    && canWriteStoryPoints() && hasStoryPointsAvailable(1)) {
+    return { eligible: true, reason: game.i18n.localize('E20.SneakAttackReasonEligible') };
+  }
+
   const weapon = _getParentWeapon(actor, weaponEffect);
   const { qualifies, rangeCap } = _getWeaponQualifierAndRange(actor, weapon, weaponEffect);
   if (!qualifies) {

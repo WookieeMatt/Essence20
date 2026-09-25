@@ -60,7 +60,7 @@
     "active": false,
     "activeEffect": {
       "option1": {
-        "defense": "toughness",
+        "defense": "evasion",
         "other": "",
         "value": 1
       },

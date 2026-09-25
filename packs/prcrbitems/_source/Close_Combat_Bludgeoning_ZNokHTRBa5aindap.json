@@ -13,34 +13,12 @@
     },
     "items": {
       "748c": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.Ty7ZBubtYM7BIwbT",
+        "uuid": "Compendium.essence20.pr_crb.Item.Ty7ZBubtYM7BIwbT",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Close Combat Bludgeoning Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "finesse",
-          "style": "melee"
-        },
-        "damageValue": 1,
-        "damageType": "blunt",
-        "numHands": "1",
-        "numTargets": 1,
-        "radius": 0,
-        "range": {
-          "min": null,
-          "reachMultiplier": 1,
-          "long": null,
-          "value": null
-        },
-        "shiftDown": 0
-      },
-      "7d6f": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.2X1w4UM04U6LliE0",
-        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Close Combat Bludgeoning Alternate Effect",
-        "type": "weaponEffect",
-        "classification": {
-          "skill": "finesse",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 1,
@@ -54,7 +32,29 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 1
+        "shiftDown": 0
+      },
+      "7d6f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.2X1w4UM04U6LliE0",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Close Combat Bludgeoning Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
       }
     },
     "classFeatureId": null,
@@ -71,7 +71,8 @@
     },
     "traits": [
       "blunt",
-      "silent"
+      "silent",
+      "versatile"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

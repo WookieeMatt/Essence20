@@ -46,6 +46,16 @@
       {{/if}}
     </a>
     {{/if}}
+    {{#if @root.hasHighGear}}
+    <a class="essence20-sidebar-action-button" data-action="highGear" data-tooltip="{{localize 'E20.HighGearTooltip'}}">
+      <i class="fas fa-gauge-high"></i>
+      {{#if @root.isHighGearActive}}
+        {{localize 'E20.HighGearButtonDeactivate'}}
+      {{else}}
+        {{localize 'E20.HighGearButtonActivate'}}
+      {{/if}}
+    </a>
+    {{/if}}
   </div>
   {{> "systems/essence20/templates/actor/parts/misc/sidebar-speeds.hbs"}}
   {{> "systems/essence20/templates/actor/parts/misc/sidebar-defenses.hbs"}}

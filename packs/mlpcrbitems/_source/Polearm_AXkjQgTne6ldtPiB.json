@@ -23,7 +23,7 @@
         },
         "damageValue": 2,
         "damageType": "stun",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 1,
         "radius": 0,
         "range": {
@@ -45,7 +45,7 @@
         },
         "damageValue": 2,
         "damageType": "sharp",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 1,
         "radius": 0,
         "range": {

@@ -93,7 +93,7 @@ export function getRecklessAbandonStrengthShiftUp(actor) {
 //   hooks), right as it's being switched OFF - if the actor is still at the clamped Health (1, this
 //   codebase's floor) and the flag is set, Aegis's own protection has run out and the real Defeat
 //   finally lands.
-const AEGIS_ID = `${GI_JOE_CRB}CKQfEuHDNW6zP0FE`;
+const AEGIS_ID = `${GI_JOE_CRB}0ZTjZ36gN74889am`;
 export const AEGIS_CLAMPED_FLAG = 'aegisClamped';
 
 /**

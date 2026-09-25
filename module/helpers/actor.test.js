@@ -1,5 +1,55 @@
 import { jest } from '@jest/globals';
-import { resizeTokens, changeTokenImage, checkIsLocked, getNumActions, applySystemColorCssVariables, relativeLuminance } from "./actor.mjs";
+import { resizeTokens, changeTokenImage, checkIsLocked, getNumActions, applySystemColorCssVariables, relativeLuminance, syncAutoImmobilizedStatus } from "./actor.mjs";
+
+describe("syncAutoImmobilizedStatus", () => {
+  function makeActor({ restrained, immobilizedEffect } = {}) {
+    const effects = immobilizedEffect ? [immobilizedEffect] : [];
+    return {
+      statuses: new Set(restrained ? ['restrained'] : []),
+      effects,
+      createEmbeddedDocuments: jest.fn(),
+    };
+  }
+
+  test("does nothing when not Restrained and no auto-Immobilized effect exists", async () => {
+    const actor = makeActor({});
+    await syncAutoImmobilizedStatus(actor);
+    expect(actor.createEmbeddedDocuments).not.toHaveBeenCalled();
+  });
+
+  test("adds an auto-flagged Immobilized effect when Restrained and none exists yet", async () => {
+    const actor = makeActor({ restrained: true });
+    await syncAutoImmobilizedStatus(actor);
+    expect(actor.createEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', [expect.objectContaining({
+      updateSource: expect.any(Function),
+    })]);
+  });
+
+  test("doesn't add a second effect when one already exists", async () => {
+    const existing = { statuses: new Set(['immobilized']), getFlag: () => true, delete: jest.fn() };
+    const actor = makeActor({ restrained: true, immobilizedEffect: existing });
+    await syncAutoImmobilizedStatus(actor);
+    expect(actor.createEmbeddedDocuments).not.toHaveBeenCalled();
+  });
+
+  test("removes the auto-applied Immobilized effect once no longer Restrained", async () => {
+    const existing = { statuses: new Set(['immobilized']), getFlag: () => true, delete: jest.fn() };
+    const actor = makeActor({ restrained: false, immobilizedEffect: existing });
+    await syncAutoImmobilizedStatus(actor);
+    expect(existing.delete).toHaveBeenCalled();
+  });
+
+  test("leaves a manually-applied Immobilized effect alone when Restrained ends", async () => {
+    const existing = { statuses: new Set(['immobilized']), getFlag: () => false, delete: jest.fn() };
+    const actor = makeActor({ restrained: false, immobilizedEffect: existing });
+    await syncAutoImmobilizedStatus(actor);
+    expect(existing.delete).not.toHaveBeenCalled();
+  });
+
+  test("no-ops for a null actor", async () => {
+    await expect(syncAutoImmobilizedStatus(null)).resolves.toBeUndefined();
+  });
+});
 
 describe("resizeTokens", () => {
   test("updates every active token's document with the new dimensions", () => {
@@ -110,6 +160,25 @@ describe("getNumActions", () => {
   test("grants no actions for an actor with no Essence scores (e.g. Party)", () => {
     const actor = { system: {} };
     expect(getNumActions(actor)).toEqual({ free: 0, movement: 0, standard: 0 });
+  });
+
+  const FOOT_SOLDIER_ID = "Compendium.essence20.tf_crb.Item.VXQ32nRPF4qEYTZR";
+
+  test("Foot Soldier (tf_crb p.91): +2 free actions in Bot Mode, Speed itself unaffected", () => {
+    const actor = {
+      system: { essences: { speed: { max: 3 } }, isTransformed: false },
+      items: [{ type: 'perk', flags: { core: { sourceId: FOOT_SOLDIER_ID } } }],
+    };
+    // Speed 3 alone -> free:1; treated as Speed 5 for the Free-action count only.
+    expect(getNumActions(actor)).toEqual({ free: 3, movement: 1, standard: 1 });
+  });
+
+  test("Foot Soldier: no bonus while Transformed (Alt Mode)", () => {
+    const actor = {
+      system: { essences: { speed: { max: 3 } }, isTransformed: true },
+      items: [{ type: 'perk', flags: { core: { sourceId: FOOT_SOLDIER_ID } } }],
+    };
+    expect(getNumActions(actor)).toEqual({ free: 1, movement: 1, standard: 1 });
   });
 });
 

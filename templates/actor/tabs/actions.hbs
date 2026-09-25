@@ -30,9 +30,26 @@
           <i class="fas fa-bolt"></i>
         </a>
       {{else}}
+        {{!-- Same icon as the item lists use for the same click: dice only where it really rolls
+              (an attack, a spell, a bauble), the battery for a Power's activation, and the chat
+              bubble for everything that just posts the item to chat. --}}
         <a class="actions-tab__use rollable" data-action="rollable" data-roll-type="{{entry.item.type}}"
-           data-tooltip="{{localize 'E20.ItemRollTitle'}}">
-          <i class="fas fa-dice-d20" data-roll-type="{{entry.item.type}}"></i>
+           {{#if (eq entry.item.type "weaponEffect")}}data-tooltip="{{localize 'E20.WeaponEffectRollTitle'}}"
+           {{else if (eq entry.item.type "spell")}}data-tooltip="{{localize 'E20.SpellRollTitle'}}"
+           {{else if (eq entry.item.type "magicBauble")}}data-tooltip="{{localize 'E20.MagicBaubleTitle'}}"
+           {{else if (eq entry.item.type "power")}}data-tooltip="{{localize 'E20.PowerRollTitle'}}"
+           {{else}}data-tooltip="{{localize 'E20.ItemRollTitle'}}"{{/if}}>
+          {{#if (eq entry.item.type "weaponEffect")}}
+            <i class="fas fa-dice-d20" data-roll-type="{{entry.item.type}}"></i>
+          {{else if (eq entry.item.type "spell")}}
+            <i class="fas fa-dice-d20" data-roll-type="{{entry.item.type}}"></i>
+          {{else if (eq entry.item.type "magicBauble")}}
+            <i class="fas fa-dice-d20" data-roll-type="{{entry.item.type}}"></i>
+          {{else if (eq entry.item.type "power")}}
+            <i class="fas fa-battery-bolt" data-roll-type="{{entry.item.type}}"></i>
+          {{else}}
+            <i class="fas fa-message-lines" data-roll-type="{{entry.item.type}}"></i>
+          {{/if}}
         </a>
       {{/if}}
       <img class="actions-tab__icon" src="{{entry.item.img}}" alt="{{entry.item.name}}" />

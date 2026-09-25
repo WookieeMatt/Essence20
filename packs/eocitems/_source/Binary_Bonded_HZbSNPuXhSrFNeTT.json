@@ -13,7 +13,39 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "influence"
+    "type": "influence",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "items": {
+      "alienCompanion": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.ksrnVFThLDcEFTV9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Alien Companion",
+        "type": "perk",
+        "role": null
+      },
+      "headmaster": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.LY8HGN112nSRlhZ3",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Headmaster Body",
+        "type": "perk",
+        "role": null
+      },
+      "powermaster": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.RUlNdBVlWqFvkYLv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Powermaster",
+        "type": "perk",
+        "role": null
+      },
+      "targetmaster": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.f1QCcxbjf3Y3kskE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Targetmaster",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "sort": 100000,

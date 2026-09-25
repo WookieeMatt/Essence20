@@ -1,0 +1,43 @@
+{
+  "folder": "24nX3baxdoAYw2dI",
+  "name": "Level 3 Element",
+  "type": "armor",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 39
+    },
+    "items": {},
+    "availability": "restricted",
+    "bonusEvasion": 0,
+    "bonusToughness": 0,
+    "classification": "heavy",
+    "equipped": false,
+    "traits": [],
+    "upgradeTraits": [],
+    "totalBonusEvasion": 0,
+    "totalBonusToughness": 0
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790266059201,
+    "modifiedTime": 1790266059201,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_id": "W8PLmZcJamYnTh07",
+  "sort": 0,
+  "_key": "!items!W8PLmZcJamYnTh07"
+}

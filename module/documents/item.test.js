@@ -156,6 +156,57 @@ describe("_prepareArmorBonuses", () => {
     expect(item.system.totalBonusToughness).toBe(1);
     expect(item.system.totalBonusEvasion).toBe(1);
   });
+
+  // Obscuring Matrix (Enigma of Combination, Armor Upgrade, p.57): "this bonus is negated while
+  // the wearer has the Grappled, Immobilized, Prone, or Restrained Condition."
+  describe("Obscuring Matrix (Enigma of Combination, Armor Upgrade, p.57)", () => {
+    const OBSCURING_MATRIX_BASIC_ID = "Compendium.essence20.enigma_of_combination.Item.L8ZXz1h0DlCy85UC";
+    const OBSCURING_MATRIX_ADVANCED_ID = "Compendium.essence20.enigma_of_combination.Item.HH4q8lx09mV2hhcv";
+
+    function makeArmorItem(statuses, upgradeUuid = OBSCURING_MATRIX_BASIC_ID, value = 2) {
+      const actor = { statuses: new Set(statuses) };
+      return makeItem('armor', {
+        bonusToughness: 0,
+        bonusEvasion: 0,
+        items: {
+          a: { type: 'upgrade', subtype: 'armor', uuid: upgradeUuid, armorBonus: { defense: 'evasion', value } },
+        },
+      }, actor);
+    }
+
+    test.each(['grappled', 'immobilized', 'prone', 'restrained'])(
+      "negates the Basic bonus while %s", (status) => {
+        const item = makeArmorItem([status]);
+        item._prepareArmorBonuses();
+        expect(item.system.totalBonusEvasion).toBe(0);
+      },
+    );
+
+    test("negates the Advanced bonus the same way", () => {
+      const item = makeArmorItem(['prone'], OBSCURING_MATRIX_ADVANCED_ID, 4);
+      item._prepareArmorBonuses();
+      expect(item.system.totalBonusEvasion).toBe(0);
+    });
+
+    test("applies normally without any of those Conditions", () => {
+      const item = makeArmorItem(['blinded']);
+      item._prepareArmorBonuses();
+      expect(item.system.totalBonusEvasion).toBe(2);
+    });
+
+    test("doesn't negate an unrelated Evasion upgrade sharing the same armor", () => {
+      const actor = { statuses: new Set(['prone']) };
+      const item = makeItem('armor', {
+        bonusToughness: 0,
+        bonusEvasion: 0,
+        items: {
+          a: { type: 'upgrade', subtype: 'armor', uuid: 'Compendium.essence20.other.Item.xxx', armorBonus: { defense: 'evasion', value: 5 } },
+        },
+      }, actor);
+      item._prepareArmorBonuses();
+      expect(item.system.totalBonusEvasion).toBe(5);
+    });
+  });
 });
 
 describe("_getLevelIncreases", () => {
@@ -427,6 +478,175 @@ describe("roll", () => {
     expect(classFeature.update).toHaveBeenCalledWith({ ["system.uses.value"]: 2 });
   });
 
+  describe("Limited weapon effects (Turbo Thunder Cannon's Energy Attack, Wing Missile Salvo)", () => {
+    // Across the Stars Table 3-1.1 p.78: "Energy Attack: 1/Encounter, 4 Energy damage (↓2)".
+    const TURBO_THUNDER_CANNON_ENERGY_ATTACK_ID =
+      "Compendium.essence20.across_the_stars.Item.Wl7L2wcydXAw9Xei";
+
+    function makeLimitedEffectActor(usedFlags = {}) {
+      return {
+        system: {
+          skills: { targeting: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false } },
+        },
+        items: Object.assign([], { get: jest.fn(() => undefined) }),
+        getFlag: jest.fn((scope, key) => (scope == 'essence20' ? usedFlags[key] : undefined)),
+        setFlag: jest.fn(async (scope, key, value) => {
+          usedFlags[key] = value;
+        }),
+      };
+    }
+
+    function makeLimitedEffectItem(actor) {
+      const item = makeItem('weaponEffect', {
+        classification: { skill: 'targeting' }, shiftDown: 2,
+      }, actor);
+      item.flags = { core: { sourceId: TURBO_THUNDER_CANNON_ENERGY_ATTACK_ID } };
+      item._dice.handleSkillItemRoll = jest.fn();
+      return item;
+    }
+
+    test("rolls normally and marks the flag used when not yet used this encounter", async () => {
+      const actor = makeLimitedEffectActor();
+      const item = makeLimitedEffectItem(actor);
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
+      expect(actor.setFlag).toHaveBeenCalledWith(
+        'essence20', 'turboThunderCannonEnergyAttackUsedThisEncounter', expect.objectContaining({ count: 1 }),
+      );
+    });
+
+    test("blocks the roll and warns instead of marking it used again", async () => {
+      const actor = makeLimitedEffectActor({
+        turboThunderCannonEnergyAttackUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 },
+      });
+      const item = makeLimitedEffectItem(actor);
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).not.toHaveBeenCalled();
+      expect(global.ui.notifications.warn).toHaveBeenCalled();
+      expect(actor.setFlag).not.toHaveBeenCalled();
+    });
+
+    test("leaves an unrelated weaponEffect alone entirely", async () => {
+      const actor = makeLimitedEffectActor();
+      const item = makeItem('weaponEffect', { classification: { skill: 'targeting' }, shiftDown: 0 }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
+      expect(actor.setFlag).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Bring It All Down (Decepticon Directive, Demolitionist Focus, 20th level, p.57)", () => {
+    const BRING_IT_ALL_DOWN_ID = "Compendium.essence20.decepticon_directive.Item.x4PS0cKR25og3lC0";
+
+    function makeBringItAllDownActor(perkIds = []) {
+      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+      items.get = jest.fn(() => undefined);
+      return {
+        system: {
+          skills: { technology: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false } },
+        },
+        items,
+        getActiveTokens: () => [{ document: { disposition: 1 }, center: { x: 0, y: 0 } }],
+      };
+    }
+
+    function stubAoeCanvas(actor) {
+      global.canvas = {
+        dimensions: { distancePixels: 20 },
+        level: { id: 'level1' },
+        regions: { placeRegion: jest.fn(async () => null) },
+        tokens: { placeables: actor.getActiveTokens(), setTargets: jest.fn() },
+      };
+      global.game.user = { color: '#000000' };
+      global.CONST = { REGION_VISIBILITY: { ALWAYS: 0 } };
+    }
+
+    test("prompts and threads the chosen effect through for an explosive attack, with the Perk", async () => {
+      const actor = makeBringItAllDownActor([BRING_IT_ALL_DOWN_ID]);
+      const item = makeItem('weaponEffect', { classification: { skill: 'technology', style: 'explosive' } }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('damage') };
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ bringItAllDownEffect: 'damage' }), actor, item,
+      );
+    });
+
+    test("never prompts (and threads null) without the Perk", async () => {
+      const actor = makeBringItAllDownActor([]);
+      const item = makeItem('weaponEffect', { classification: { skill: 'technology', style: 'explosive' } }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+      const waitMock = jest.fn();
+      global.foundry.applications.api.DialogV2 = { wait: waitMock };
+
+      await item.roll({});
+
+      expect(waitMock).not.toHaveBeenCalled();
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ bringItAllDownEffect: null }), actor, item,
+      );
+    });
+
+    test("never prompts on a non-explosive attack, even with the Perk", async () => {
+      const actor = makeBringItAllDownActor([BRING_IT_ALL_DOWN_ID]);
+      const item = makeItem('weaponEffect', { classification: { skill: 'technology', style: 'melee' } }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+      const waitMock = jest.fn();
+      global.foundry.applications.api.DialogV2 = { wait: waitMock };
+
+      await item.roll({});
+
+      expect(waitMock).not.toHaveBeenCalled();
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ bringItAllDownEffect: null }), actor, item,
+      );
+    });
+
+    test("doubles the placed AoE radius when the radius option is chosen", async () => {
+      const actor = makeBringItAllDownActor([BRING_IT_ALL_DOWN_ID]);
+      stubAoeCanvas(actor);
+      const item = makeItem('weaponEffect', {
+        classification: { skill: 'technology', style: 'explosive' }, shape: 'circle', radius: 10,
+      }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('radius') };
+
+      await item.roll({});
+
+      // 10ft doubled to 20ft, at 20px/ft.
+      expect(global.canvas.regions.placeRegion).toHaveBeenCalledWith(
+        expect.objectContaining({ shapes: [expect.objectContaining({ type: 'circle', radius: 400 })] }),
+        expect.objectContaining({ create: false }),
+      );
+    });
+
+    test("doesn't double the AoE radius when a different option is chosen", async () => {
+      const actor = makeBringItAllDownActor([BRING_IT_ALL_DOWN_ID]);
+      stubAoeCanvas(actor);
+      const item = makeItem('weaponEffect', {
+        classification: { skill: 'technology', style: 'explosive' }, shape: 'circle', radius: 10,
+      }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('shiftUp') };
+
+      await item.roll({});
+
+      expect(global.canvas.regions.placeRegion).toHaveBeenCalledWith(
+        expect.objectContaining({ shapes: [expect.objectContaining({ type: 'circle', radius: 200 })] }),
+        expect.objectContaining({ create: false }),
+      );
+    });
+  });
+
   describe("Brutal Might (Enigma of Combination, Pugilist Focus, 3rd level, p.38)", () => {
     const BRUTAL_MIGHT_ID = "Compendium.essence20.enigma_of_combination.Item.l0STCEYBuPMYfzSt";
 
@@ -554,6 +774,180 @@ describe("roll", () => {
     });
   });
 
+  describe("Wrestler (Slammer Focus, Sgt Slaughter Sourcebook, 10th level, p.13) - Maneuver shiftDown suppression", () => {
+    const WRESTLER_SLAMMER_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Item.ro5hMv4XMhOmANao";
+
+    function makeWrestlerActor(perkIds = []) {
+      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+      items.get = jest.fn(() => undefined);
+      return {
+        system: {
+          skills: { finesse: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false } },
+        },
+        items,
+      };
+    }
+
+    test("suppresses the Maneuver Alternate Effect's own shiftDown on a Melee weaponEffect with the Perk", async () => {
+      const actor = makeWrestlerActor([WRESTLER_SLAMMER_ID]);
+      const item = makeItem('weaponEffect', {
+        classification: { skill: 'finesse', style: 'melee' }, damageType: 'maneuver', shiftDown: 1,
+      }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftDown: 0 }), actor, item,
+      );
+    });
+
+    test("leaves the shiftDown in place without the Perk", async () => {
+      const actor = makeWrestlerActor();
+      const item = makeItem('weaponEffect', {
+        classification: { skill: 'finesse', style: 'melee' }, damageType: 'maneuver', shiftDown: 1,
+      }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftDown: 1 }), actor, item,
+      );
+    });
+
+    test("leaves the shiftDown in place for a Ranged Maneuver attack (RAW says Melee weapons only)", async () => {
+      const actor = makeWrestlerActor([WRESTLER_SLAMMER_ID]);
+      const item = makeItem('weaponEffect', {
+        classification: { skill: 'finesse', style: 'ranged' }, damageType: 'maneuver', shiftDown: 1,
+      }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftDown: 1 }), actor, item,
+      );
+    });
+
+    test("leaves the shiftDown in place for a non-Maneuver Melee attack", async () => {
+      const actor = makeWrestlerActor([WRESTLER_SLAMMER_ID]);
+      const item = makeItem('weaponEffect', {
+        classification: { skill: 'finesse', style: 'melee' }, damageType: 'blunt', shiftDown: 1,
+      }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftDown: 1 }), actor, item,
+      );
+    });
+  });
+
+  describe("One With Your Weapon (Intercontinental Adventures, Silent Weapons Expert Focus, 10th level, p.13) - Silent Martial Arts shiftDown suppression", () => {
+    const ONE_WITH_YOUR_WEAPON_ID = "Compendium.essence20.intercontinental_adventures.Item.RH3AFV38EBAfTvW1";
+
+    function makeActorWithParentWeapon(perkIds, weaponTraits) {
+      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+      const parentWeapon = { system: { traits: weaponTraits } };
+      items.get = jest.fn((id) => (id == 'weapon1' ? parentWeapon : undefined));
+      return {
+        system: {
+          skills: { finesse: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false } },
+        },
+        items,
+      };
+    }
+
+    test("suppresses the shiftDown on a Silent + Martial Arts weapon with the Perk", async () => {
+      const actor = makeActorWithParentWeapon([ONE_WITH_YOUR_WEAPON_ID], ['martialArts', 'silent']);
+      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
+      item.flags = { essence20: { parentId: 'weapon1' } };
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftDown: 0 }), actor, item,
+      );
+    });
+
+    test("leaves the shiftDown in place without the Perk", async () => {
+      const actor = makeActorWithParentWeapon([], ['martialArts', 'silent']);
+      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
+      item.flags = { essence20: { parentId: 'weapon1' } };
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftDown: 1 }), actor, item,
+      );
+    });
+
+    test("leaves the shiftDown in place when the parent weapon is missing only one of the two traits", async () => {
+      const actor = makeActorWithParentWeapon([ONE_WITH_YOUR_WEAPON_ID], ['martialArts']);
+      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
+      item.flags = { essence20: { parentId: 'weapon1' } };
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftDown: 1 }), actor, item,
+      );
+    });
+
+    test("leaves the shiftDown in place with no resolvable parent weapon", async () => {
+      const actor = makeActorWithParentWeapon([ONE_WITH_YOUR_WEAPON_ID], ['martialArts', 'silent']);
+      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
+      item.flags = { essence20: { parentId: 'someOtherWeapon' } };
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftDown: 1 }), actor, item,
+      );
+    });
+  });
+
+  describe("Accurate (Weapon Effects and Traits, p.106) - weaponEffect-level accurateShiftUp", () => {
+    function makeFinesseActor() {
+      const items = [];
+      items.get = jest.fn(() => undefined);
+      return {
+        system: { skills: { finesse: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false } } },
+        items,
+      };
+    }
+
+    test("folds the weaponEffect's own accurateShiftUp into the roll's shiftUp", async () => {
+      const actor = makeFinesseActor();
+      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 0, accurateShiftUp: 1 }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftUp: 1 }), actor, item,
+      );
+    });
+
+    test("adds nothing without accurateShiftUp set", async () => {
+      const actor = makeFinesseActor();
+      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 0 }, actor);
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftUp: 0 }), actor, item,
+      );
+    });
+  });
+
   describe("spell casting cost (Knights of Canterlot, General Perks, p.38)", () => {
     const EFFICIENT_SPELLCASTER_ID = "Compendium.essence20.knights_of_canterlot.Item.eQDQwKQfRQU8obWF";
     const MASTER_SPELLCASTER_ID = "Compendium.essence20.knights_of_canterlot.Item.tEOoAvzj42d20QHu";
@@ -672,7 +1066,7 @@ describe("roll", () => {
 
     test("Block Magic adds 1 to the cost of any spell cast while active", async () => {
       const actor = makeCasterActor();
-      actor.getFlag = jest.fn((scope, key) => (key == 'blockMagicActive' ? true : undefined));
+      actor.getFlag = jest.fn((scope, key) => (key == 'blockMagicActive' ? { epoch: 1, window: 'scene', count: 1 } : undefined));
       const item = makeItem('spell', { cost: 2, tier: 'elementary' }, actor);
       item._dice.handleSkillItemRoll = jest.fn();
 
@@ -1071,6 +1465,187 @@ describe("_rollWithRefund", () => {
   test("is a no-op when nothing was spent to begin with", async () => {
     const item = makeRollingItem({ cancelled: true });
     await expect(item._rollWithRefund({}, { name: 'Duke' }, null)).resolves.toEqual({ cancelled: true });
+  });
+});
+
+describe("Reload / Consumable (weaponEffect roll() integration - see helpers/reload.mjs)", () => {
+  function makeWeapon(traits = [], { quantity = 1 } = {}) {
+    const flags = {};
+    return {
+      name: 'Blaster',
+      isEmbedded: true,
+      system: { traits, quantity },
+      getFlag: jest.fn((scope, key) => flags[key]),
+      setFlag: jest.fn(async (scope, key, value) => {
+        flags[key] = value; 
+      }),
+      unsetFlag: jest.fn(async (scope, key) => {
+        delete flags[key]; 
+      }),
+      update: jest.fn(async () => undefined),
+      delete: jest.fn(async () => undefined),
+    };
+  }
+
+  function makeWeaponEffectItem(weapon, actor, rollResult = {}) {
+    if (!actor.items || typeof actor.items.find != 'function') {
+      actor.items = Object.assign([], { get: jest.fn(() => undefined) });
+    }
+
+    if (!actor.system) {
+      actor.system = {};
+    }
+
+    actor.system.skills = { targeting: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false } };
+
+    const item = makeItem('weaponEffect', { classification: { skill: 'targeting' } }, actor);
+    item._dice = {
+      handleSkillItemRoll: jest.fn(async () => rollResult),
+      _getParentWeapon: jest.fn(() => weapon),
+    };
+    return item;
+  }
+
+  test("Consumable deletes the last copy of the parent weapon after firing", async () => {
+    const weapon = makeWeapon(['consumable'], { quantity: 1 });
+    const item = makeWeaponEffectItem(weapon, { name: 'Duke' });
+
+    await item.roll({});
+
+    expect(weapon.delete).toHaveBeenCalled();
+  });
+
+  test("Consumable decrements quantity instead of deleting when more than one remains", async () => {
+    const weapon = makeWeapon(['consumable'], { quantity: 2 });
+    const item = makeWeaponEffectItem(weapon, { name: 'Duke' });
+
+    await item.roll({});
+
+    expect(weapon.update).toHaveBeenCalledWith({ 'system.quantity': 1 });
+    expect(weapon.delete).not.toHaveBeenCalled();
+  });
+
+  test("Consumable still consumes the weapon on a miss ('even if it misses its target')", async () => {
+    const weapon = makeWeapon(['consumable'], { quantity: 1 });
+    const item = makeWeaponEffectItem(weapon, { name: 'Duke' }, { hit: false });
+
+    await item.roll({});
+
+    expect(weapon.delete).toHaveBeenCalled();
+  });
+
+  test("Consumable does nothing when the roll dialog was cancelled", async () => {
+    const weapon = makeWeapon(['consumable'], { quantity: 1 });
+    const item = makeWeaponEffectItem(weapon, { name: 'Duke' }, { cancelled: true });
+
+    await item.roll({});
+
+    expect(weapon.delete).not.toHaveBeenCalled();
+    expect(weapon.update).not.toHaveBeenCalled();
+  });
+
+  test("Consumable does nothing for an unembedded (compendium/world) weapon", async () => {
+    const weapon = makeWeapon(['consumable'], { quantity: 1 });
+    weapon.isEmbedded = false;
+    const item = makeWeaponEffectItem(weapon, { name: 'Duke' });
+
+    await item.roll({});
+
+    expect(weapon.delete).not.toHaveBeenCalled();
+    expect(weapon.update).not.toHaveBeenCalled();
+  });
+
+  test("Reload flags the weapon needing reload after it fires", async () => {
+    const weapon = makeWeapon(['reload']);
+    const item = makeWeaponEffectItem(weapon, { name: 'Duke' });
+
+    await item.roll({});
+
+    expect(weapon.setFlag).toHaveBeenCalledWith('essence20', 'needsReload', true);
+  });
+
+  test("Reload doesn't flag a weapon without the trait", async () => {
+    const weapon = makeWeapon([]);
+    const item = makeWeaponEffectItem(weapon, { name: 'Duke' });
+
+    await item.roll({});
+
+    expect(weapon.setFlag).not.toHaveBeenCalled();
+  });
+
+  /**
+   * A real combatant/actor pair wired into global.game, same shape as _rollWithRefund's own
+   * withCombat() above, needed here so canSpend()'s Move-action affordability check has a real
+   * ledger to read against instead of a mock.
+   */
+  function withCombat({ moveMax = 1 } = {}) {
+    const flags = {};
+    const combatant = {
+      tokenId: 'token1',
+      isOwner: true,
+      group: null,
+      getFlag: (scope, key) => flags[key],
+      setFlag: async (scope, key, value) => {
+        flags[key] = value;
+      },
+    };
+    const actor = {
+      name: 'Duke',
+      token: { id: 'token1' },
+      system: {
+        actions: {
+          enabled: true,
+          standard: { base: 1, bonus: 0, max: 1 },
+          move: { base: moveMax, bonus: 0, max: moveMax },
+          free: { base: null, bonus: 0, max: null },
+          reaction: { base: 1, bonus: 0, max: 1 },
+        },
+      },
+    };
+
+    const previous = global.game;
+    global.game = {
+      ...previous,
+      user: { isGM: false, isActiveGM: false },
+      settings: { get: (scope, key) => (key == 'actionEconomyMode' ? 'strict' : undefined) },
+      combat: { combatants: [combatant], getCombatantsByActor: () => [combatant] },
+    };
+
+    return { actor, restore: () => {
+      global.game = previous; 
+    } };
+  }
+
+  test("a weapon already awaiting reload can't fire again without an available Move action", async () => {
+    const { actor, restore } = withCombat({ moveMax: 0 });
+    try {
+      const weapon = makeWeapon(['reload']);
+      weapon.getFlag.mockImplementation((scope, key) => (key == 'needsReload' ? true : undefined));
+      const item = makeWeaponEffectItem(weapon, actor);
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).not.toHaveBeenCalled();
+      expect(weapon.unsetFlag).not.toHaveBeenCalled();
+    } finally {
+      restore();
+    }
+  });
+
+  test("a weapon awaiting reload fires once a Move action is spent to clear it", async () => {
+    const { actor, restore } = withCombat({ moveMax: 1 });
+    try {
+      const weapon = makeWeapon(['reload']);
+      weapon.getFlag.mockImplementation((scope, key) => (key == 'needsReload' ? true : undefined));
+      const item = makeWeaponEffectItem(weapon, actor);
+
+      await item.roll({});
+
+      expect(weapon.unsetFlag).toHaveBeenCalledWith('essence20', 'needsReload');
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
+    } finally {
+      restore();
+    }
   });
 });
 

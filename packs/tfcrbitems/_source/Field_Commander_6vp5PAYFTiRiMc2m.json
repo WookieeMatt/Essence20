@@ -182,6 +182,13 @@
       "performance",
       "persuasion"
     ],
+    "upgrades": {
+      "armors": {
+        "trained": [
+          "limited"
+        ]
+      }
+    },
     "version": "transformers",
     "weapons": {
       "qualified": [],

@@ -84,7 +84,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": true,
+      "disabled": false,
       "_id": "Y9kJGFamzEee9kMv",
       "changes": [
         {
@@ -124,7 +124,9 @@
       },
       "img": "icons/svg/aura.svg",
       "type": "base",
-      "system": {},
+      "system": {
+        "whileInEnvironmentOfExpertise": true
+      },
       "sort": 0,
       "_key": "!items.effects!cmj6zfGfpK9YWWfq.Y9kJGFamzEee9kMv"
     }

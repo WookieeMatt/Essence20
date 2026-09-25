@@ -1,3 +1,5 @@
+import { activateForWindow, isActiveForWindow } from "./scene-clock.mjs";
+
 /**
  * Fluttery Wings (MLP CRB, Elementary Aid spell, p.136): "You gift grounded creatures with
  * beautiful wings... The target creature grows wings like a butterfly, gaining 15ft Aerial
@@ -8,19 +10,20 @@
  * On a successful cast, sets a flag on whichever token is currently targeted (or the caster
  * themselves with nothing targeted) - read live in documents/actor.mjs#_prepareMovement (the one
  * permitted movement-math touch-point), the same shape Mobile Mode/Swiftness already established,
- * just granted by someone ELSE's cast rather than the actor's own activation. "1 day" duration has
- * no active expiry hook - left set until manually cleared, this project's usual approximation for
- * a duration this system can't literally track.
+ * just granted by someone ELSE's cast rather than the actor's own activation. "1 day" duration is
+ * approximated to the current scene via the Scene Clock (helpers/scene-clock.mjs) - the coarsest
+ * window this project tracks, since there's no separate day-length counter - so it now clears on
+ * its own once the GM calls the scene, rather than sitting until someone remembers to remove it.
  */
 const FLUTTERY_WINGS_FLAG = 'flutteryWingsActive';
 const FLUTTERY_WINGS_BONUS_FEET = 15;
 
 export function isFlutteryWingsActive(actor) {
-  return !!actor.getFlag?.('essence20', FLUTTERY_WINGS_FLAG);
+  return isActiveForWindow(actor, FLUTTERY_WINGS_FLAG, 'scene');
 }
 
 export async function applyFlutteryWings(targetActor) {
-  await targetActor.setFlag('essence20', FLUTTERY_WINGS_FLAG, true);
+  await activateForWindow(targetActor, FLUTTERY_WINGS_FLAG, 'scene');
 }
 
 export function getFlutteryWingsBonus(actor) {

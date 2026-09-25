@@ -36,6 +36,12 @@
           "mode": 2,
           "value": "1",
           "priority": null
+        },
+        {
+          "key": "system.resistances.fire",
+          "mode": 5,
+          "value": "true",
+          "priority": null
         }
       ],
       "description": "",

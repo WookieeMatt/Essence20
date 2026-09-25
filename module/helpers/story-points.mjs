@@ -21,6 +21,7 @@
  */
 
 import { getGameLine } from "../settings.js";
+import { actorHasBattleHardened, rollBattleHardenedRefund } from "./battle-hardened.mjs";
 
 /**
  * The Party that holds the pool.
@@ -133,7 +134,7 @@ export async function requestStoryPointSpend(actor, amount = 1, { pool = "story"
   }
 
   if (ownsStoryPoints()) {
-    await spend(amount, actor?.name, say);
+    await spend(amount, actor?.name, say, actor?.uuid);
     return;
   }
 
@@ -143,6 +144,10 @@ export async function requestStoryPointSpend(actor, amount = 1, { pool = "story"
     actorName: actor?.name,
     // Only sent when off: the default stays the payload every client already understands.
     ...(say ? {} : { announce: false }),
+    // Battle Hardened (GI Joe CRB, General Perk, p.130) - see helpers/battle-hardened.mjs's own
+    // doc comment. Lets the GM-side handler resolve the actual spending actor after the spend
+    // commits, to check whether they hold that Perk - actorName alone was never enough.
+    actorUuid: actor?.uuid,
   });
 }
 
@@ -198,7 +203,7 @@ export async function handleStoryPointSpendRequest(data) {
     return;
   }
 
-  await spend(Number(data.amount) || 1, data.actorName, data.announce !== false);
+  await spend(Number(data.amount) || 1, data.actorName, data.announce !== false, data.actorUuid);
 }
 
 /**
@@ -222,16 +227,34 @@ export async function handleStoryPointGrantRequest(data) {
  * Take from the pool, refusing rather than going below zero.
  * @param {number} amount
  * @param {string} actorName
+ * @param {boolean} [say]
+ * @param {string} [actorUuid]   The spending actor, for Battle Hardened's refund.
  */
-async function spend(amount, actorName, say = true) {
+async function spend(amount, actorName, say = true, actorUuid = null) {
   const current = getStoryPoints();
   if (current < amount) {
     ui.notifications.warn(game.i18n.format("E20.SptSpendRequestDenied", { actorName: actorName ?? "?" }));
     return;
   }
 
-  if (await setStoryPoints(current - amount) && say) {
+  if (!await setStoryPoints(current - amount)) {
+    return;
+  }
+
+  if (say) {
     announce("E20.SptSpendRequestGranted", actorName);
+  }
+
+  // Battle Hardened (GI Joe CRB, General Perk, p.130) - see helpers/battle-hardened.mjs's own doc
+  // comment. Checked here rather than in the relay handler so a player who owns the Party gets
+  // the same chance as one whose spend is relayed to the GM.
+  const spendingActor = actorUuid ? await fromUuid(actorUuid) : null;
+  if (spendingActor && actorHasBattleHardened(spendingActor) && await rollBattleHardenedRefund()
+    && await setStoryPoints(getStoryPoints() + amount)) {
+    ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ user: game.user.id }),
+      content: game.i18n.format("E20.BattleHardenedRefund", { actorName: actorName ?? "?" }),
+    });
   }
 }
 

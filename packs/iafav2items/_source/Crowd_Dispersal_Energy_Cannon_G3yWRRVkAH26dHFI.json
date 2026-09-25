@@ -1,0 +1,75 @@
+{
+  "folder": "45JaNQtAYrkaSVuG",
+  "name": "Crowd Dispersal Energy Cannon",
+  "type": "weapon",
+  "_id": "G3yWRRVkAH26dHFI",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 92
+    },
+    "items": {
+      "e001": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.vBn26OWdaJfaYFrg",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Crowd Dispersal Energy Cannon Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "impaired",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 100
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "prototype",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "targeting",
+      "shift": "d8"
+    },
+    "traits": [
+      "computerized",
+      "reload",
+      "vehicular"
+    ],
+    "transformerMode": "",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790266348998,
+    "modifiedTime": 1790266348998,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!G3yWRRVkAH26dHFI"
+}

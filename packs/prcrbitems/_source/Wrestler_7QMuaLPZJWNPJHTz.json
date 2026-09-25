@@ -4,6 +4,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "originalId": "",
+    "actionType": "free",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",

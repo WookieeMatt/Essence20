@@ -13,12 +13,12 @@
     },
     "items": {
       "0c0b": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.0BM1VVo7BJgyF5yv",
+        "uuid": "Compendium.essence20.pr_crb.Item.0BM1VVo7BJgyF5yv",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Frag Grenade Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "targeting",
+          "skill": "athletics",
           "style": "explosive"
         },
         "damageValue": 1,

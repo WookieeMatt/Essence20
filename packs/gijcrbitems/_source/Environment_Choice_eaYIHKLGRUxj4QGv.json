@@ -28,7 +28,7 @@
     "numChoices": 2,
     "prerequisite": "",
     "selectionLimit": 2,
-    "type": "general",
+    "type": "role",
     "value": 0,
     "version": "powerRangers"
   },

@@ -1,0 +1,62 @@
+{
+  "folder": "8pILPlRg2uDTxFNq",
+  "name": "Entrenching Tool (Melee)",
+  "type": "weapon",
+  "_id": "ZUssqLjGWcG0YROg",
+  "img": "systems/essence20/assets/icons/gear/entrenching_tool.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 162
+    },
+    "items": {
+      "afe0": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Vn1SaDzmutstqW6M",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Entrenching Tool Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "brawn",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "small"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "none"
+    },
+    "traits": [
+      "blunt"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ZUssqLjGWcG0YROg"
+}

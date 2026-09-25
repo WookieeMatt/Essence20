@@ -22,7 +22,8 @@
       },
       "maxUses": 0,
       "reset": "none",
-      "bonus": 2
+      "bonus": 0,
+      "shiftUp": 2
     },
     "selectionLimit": 1,
     "type": "role"

@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
 import {
+  activateForWindow,
   advanceEncounter,
   advanceScene,
   advancesOnCombatEnd,
@@ -7,6 +8,7 @@ import {
   getSceneEpoch,
   getSceneLabel,
   getUses,
+  isActiveForWindow,
   markUsed,
   setSceneLabel,
 } from './scene-clock.mjs';
@@ -180,6 +182,54 @@ describe("getUses / markUsed", () => {
     await markUsed(actor, 'dependable', { window: 'scene' });
 
     expect(actor.store.dependable).toEqual({ epoch: 1, window: 'scene', count: 1 });
+  });
+});
+
+describe("isActiveForWindow / activateForWindow", () => {
+  test("inactive until activated", () => {
+    expect(isActiveForWindow(makeActor(), 'flutteryWingsActive')).toBe(false);
+  });
+
+  test("active immediately after activating", async () => {
+    const actor = makeActor();
+    await activateForWindow(actor, 'flutteryWingsActive');
+
+    expect(isActiveForWindow(actor, 'flutteryWingsActive')).toBe(true);
+  });
+
+  test("a scene-window flag clears when the scene advances", async () => {
+    const actor = makeActor();
+    await activateForWindow(actor, 'lightningSpeedActive', 'scene');
+
+    await advanceScene();
+
+    expect(isActiveForWindow(actor, 'lightningSpeedActive', 'scene')).toBe(false);
+  });
+
+  test("an encounter-window flag clears when the encounter advances", async () => {
+    const actor = makeActor();
+    await activateForWindow(actor, 'someBuff', 'encounter');
+
+    await advanceEncounter();
+
+    expect(isActiveForWindow(actor, 'someBuff', 'encounter')).toBe(false);
+  });
+
+  test("a scene-window flag survives an encounter advancing", async () => {
+    const actor = makeActor();
+    await activateForWindow(actor, 'hotToTrotActive', 'scene');
+
+    await advanceEncounter();
+
+    expect(isActiveForWindow(actor, 'hotToTrotActive', 'scene')).toBe(true);
+  });
+
+  test("re-activating within the same window does not stack", async () => {
+    const actor = makeActor();
+    await activateForWindow(actor, 'foolscarrotActive', 'scene');
+    await activateForWindow(actor, 'foolscarrotActive', 'scene');
+
+    expect(actor.store.foolscarrotActive.count).toBe(1);
   });
 });
 

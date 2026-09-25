@@ -15,7 +15,52 @@
     "type": "",
     "gearType": "other"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Gestalt Firewall Crown",
+      "origin": "Item.YFF6did5WCNUIExm",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "gFwC0000wnRsstnc",
+      "changes": [
+        {
+          "key": "system.resistances.psychic",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!YFF6did5WCNUIExm.gFwC0000wnRsstnc"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

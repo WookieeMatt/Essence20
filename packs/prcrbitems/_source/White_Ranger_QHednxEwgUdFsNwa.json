@@ -248,7 +248,10 @@
         "level20"
       ]
     },
-    "skills": [],
+    "skills": [
+      "might",
+      "culture"
+    ],
     "version": "powerRangers",
     "weapons": {
       "qualified": [],

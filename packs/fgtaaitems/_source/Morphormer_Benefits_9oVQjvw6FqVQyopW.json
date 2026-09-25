@@ -11,7 +11,14 @@
       "book": "Field Guide to Action and Adventure",
       "page": 70
     },
-    "items": {},
+    "items": {
+      "mb01": {
+        "uuid": "Compendium.essence20.pr_crb.Item.W7nXP8pOQaDJmZbT",
+        "img": "systems/essence20/assets/icons/gear/watch.svg",
+        "name": "Wrist Communicator",
+        "type": "gear"
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,
@@ -31,7 +38,52 @@
     "value": 0,
     "version": "powerRangers"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Enhanced Chassis",
+      "origin": "Item.9oVQjvw6FqVQyopW",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "MBEnhancedChas1",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!9oVQjvw6FqVQyopW.MBEnhancedChas1"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

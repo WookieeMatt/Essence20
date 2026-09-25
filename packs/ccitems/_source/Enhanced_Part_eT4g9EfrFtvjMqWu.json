@@ -11,7 +11,7 @@
       "book": "Cobra Codex",
       "page": 80
     },
-    "prerequisite": "Cybernetic Part of 8th Level",
+    "prerequisite": "Cybernetic Part or 8th Level",
     "selectionLimit": 1,
     "type": "general"
   },

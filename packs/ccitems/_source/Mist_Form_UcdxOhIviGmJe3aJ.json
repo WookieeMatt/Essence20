@@ -15,11 +15,11 @@
       "defense": "toughness",
       "value": 0
     },
-    "availability": "standard",
+    "availability": "limited",
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Contact of Ingested Poison"
+    "prerequisite": "Contact or Ingested Poison"
   },
   "effects": [],
   "sort": 0,

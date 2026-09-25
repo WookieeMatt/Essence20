@@ -10,7 +10,58 @@
       "page": 46
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Oathbound (Acting Against Oath)",
+      "origin": "Item.mg1Nxf9SLWxCeoLo",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "Eb8JdzRH0xwBBpyN",
+      "changes": [
+        {
+          "key": "system.essenceShifts.smarts.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.essenceShifts.social.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!mg1Nxf9SLWxCeoLo.Eb8JdzRH0xwBBpyN"
+    }
+  ],
   "flags": {
     "core": {}
   },

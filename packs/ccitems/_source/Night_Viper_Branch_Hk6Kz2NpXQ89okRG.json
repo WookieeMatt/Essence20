@@ -96,8 +96,8 @@
             "name": "Submachine Gun Alternate Effect 2",
             "type": "weaponEffect",
             "classification": {
-              "skill": "athletics",
-              "style": "melee"
+              "skill": "targeting",
+              "style": "projectile"
             },
             "damageValue": 1,
             "damageType": "sharp",
@@ -107,15 +107,15 @@
             "range": {
               "min": null,
               "reachMultiplier": 0,
-              "long": null,
-              "value": 0
+              "long": 80,
+              "value": 20
             },
             "shiftDown": 1
           },
           "3e6c": {
             "uuid": "Compendium.essence20.gi_joe_crb.Item.rSP76BWjYaifJLIZ",
             "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
-            "name": "Sliencer",
+            "name": "Silencer",
             "type": "upgrade",
             "availability": "standard",
             "benefit": "",

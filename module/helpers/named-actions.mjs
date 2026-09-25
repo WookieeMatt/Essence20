@@ -1,6 +1,7 @@
 import { E20 } from "./config.mjs";
 import { setAiming, setSprinting } from "./action-economy.mjs";
 import { activateLendAssistance } from "./lend-assistance.mjs";
+import { deactivateInvisibilityOnLendAssistance } from "./invisibility.mjs";
 
 /**
  * What the rules' own combat actions actually DO.
@@ -184,13 +185,20 @@ async function sprint(actor) {
  * grants and the picker.
  *
  * The one handler that can come back cancelled: it asks who is being helped, and an action that
- * helped nobody was never taken, so the caller hands the Standard action back.
+ * helped nobody was never taken, so the caller hands the Standard action back - which is also why
+ * Invisibility (Technorganic Secrets p.47, "...until you take the... Lend Assistance... action")
+ * only clears on a real result, not a cancelled one: an action refunded was never actually taken.
  *
  * @param {Actor} actor
  * @returns {Promise<Object>}
  */
 async function lendAssistance(actor) {
-  return await activateLendAssistance(actor);
+  const result = await activateLendAssistance(actor);
+  if (!result.cancelled) {
+    await deactivateInvisibilityOnLendAssistance(actor);
+  }
+
+  return result;
 }
 
 const HANDLERS = {

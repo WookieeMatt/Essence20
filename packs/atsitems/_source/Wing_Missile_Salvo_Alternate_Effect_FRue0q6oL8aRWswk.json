@@ -1,0 +1,54 @@
+{
+  "folder": "Z2xK8nOrVV5BbzH4",
+  "name": "Wing Missile Salvo Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "FRue0q6oL8aRWswk",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 86
+    },
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "element",
+    "damageValue": 2,
+    "isSpecialized": false,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 4,
+    "radius": 30,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 150,
+      "value": 60
+    },
+    "shape": "cone"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774551377,
+    "modifiedTime": 1787774551377,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!FRue0q6oL8aRWswk"
+}

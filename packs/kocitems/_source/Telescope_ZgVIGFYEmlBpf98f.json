@@ -14,7 +14,58 @@
     "quantity": 1,
     "gearType": "tools"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Long Distance",
+      "origin": "Item.ZgVIGFYEmlBpf98f",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "0J2MUnFHDafdyqnq",
+      "changes": [
+        {
+          "key": "system.skills.alertness.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.skills.survival.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!ZgVIGFYEmlBpf98f.0J2MUnFHDafdyqnq"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

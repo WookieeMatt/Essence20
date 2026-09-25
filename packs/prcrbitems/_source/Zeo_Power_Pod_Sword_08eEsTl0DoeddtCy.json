@@ -71,6 +71,7 @@
     },
     "traits": [
       "blunt",
+      "powerWeapon",
       "silent"
     ],
     "upgradeTraits": [],

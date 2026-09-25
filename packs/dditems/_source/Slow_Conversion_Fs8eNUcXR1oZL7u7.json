@@ -1,0 +1,36 @@
+{
+  "folder": "82NMc5Rrlomtpkcr",
+  "name": "Slow Conversion",
+  "type": "perk",
+  "_id": "Fs8eNUcXR1oZL7u7",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 34
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790266845907,
+    "modifiedTime": 1790266845907,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Fs8eNUcXR1oZL7u7"
+}

@@ -1,6 +1,7 @@
 import { E20 } from "./config.mjs";
 import { actorHasPerk } from "./perks.mjs";
 import { getRemaining, isBlocking, isConfirming, isSprinting, isTracking, spend } from "./action-economy.mjs";
+import { isJuryRigBenefitActive } from "./jury-rig.mjs";
 
 /**
  * Token movement against the action economy.
@@ -70,6 +71,15 @@ const SEWER_TUNNELER_ID = "Compendium.essence20.general_hawk_s_personel_files.It
    limited." Both halves at once, and only while transformed. */
 const EARLIER_IS_BETTER_ID = "Compendium.essence20.tf_crb.Item.uyeLgTc55ixz31j1";
 
+/* Burn Rubber (TF CRB, Scout, 1st level, p.86): "On the first round of Combat, if you Push
+   Yourself to buy additional movement, you gain an additional 10ft of Movement for every Free
+   action you spend... and you can buy up to your Movement in additional movement. If you are
+   surprised, you can... use the regular rules to Push Yourself." "Up to your Movement in
+   additional movement" is just the existing 2x-rating cap already in force by default
+   (PUSH_CAP_MULTIPLIER), so the only real change is the 10ft rate - gated on round 1 and NOT
+   Surprised, same statuses.has('surprised') proxy dice.mjs already uses for "you are surprised". */
+export const BURN_RUBBER_ID = "Compendium.essence20.tf_crb.Item.Kn1LyTMvqzMY8LnA";
+
 /**
  * Whether this actor is a vehicle someone is currently driving.
  *
@@ -118,10 +128,22 @@ export function getPushRules(actor) {
     rules.feetPerFreeAction = PUSH_FEET_DOUBLED;
   }
 
+  // Improve Aerodynamics (Jury Rig, Factions in Action Vol. 2, p.73) - see
+  // helpers/jury-rig.mjs's own doc comment. Same doubling as Sewer Tunneler just above, banked on
+  // the vehicle instead of being a Perk it holds outright.
+  if (isJuryRigBenefitActive(actor, 'improveAerodynamics')) {
+    rules.feetPerFreeAction = Math.max(rules.feetPerFreeAction, PUSH_FEET_DOUBLED);
+  }
+
   if (actor?.system?.isTransformed && actorHasPerk(actor, EARLIER_IS_BETTER_ID)) {
     rules.feetPerFreeAction = PUSH_FEET_DOUBLED;
     // "not limited" - no doubling cap at all, so nothing is ever beyondCap.
     rules.capMultiplier = Infinity;
+  }
+
+  // Burn Rubber - see BURN_RUBBER_ID's own comment above.
+  if (game?.combat?.round === 1 && !actor?.statuses?.has?.('surprised') && actorHasPerk(actor, BURN_RUBBER_ID)) {
+    rules.feetPerFreeAction = Math.max(rules.feetPerFreeAction, PUSH_FEET_DOUBLED);
   }
 
   /* The Push cap is a ceiling on the BASE rating - "a character cannot spend Free actions on

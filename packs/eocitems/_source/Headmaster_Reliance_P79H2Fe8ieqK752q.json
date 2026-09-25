@@ -1,0 +1,33 @@
+{
+  "folder": null,
+  "name": "Headmaster Reliance",
+  "type": "hangUp",
+  "_id": "P79H2Fe8ieqK752q",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 40
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790266977126,
+    "modifiedTime": 1790266977126,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!P79H2Fe8ieqK752q"
+}

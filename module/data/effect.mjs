@@ -1,3 +1,6 @@
+import { isSuppressedWhileUnmorphed } from "../helpers/morph-gated-effects.mjs";
+import { isSuppressedOutOfEnvironment } from "../helpers/environment-gated-effects.mjs";
+import { makeBool } from "./generic-makers.mjs";
 import { rerollSchema } from "./reroll-schema.mjs";
 
 export class RerollEffectData extends foundry.data.ActiveEffectTypeDataModel {
@@ -5,7 +8,20 @@ export class RerollEffectData extends foundry.data.ActiveEffectTypeDataModel {
     return {
       ...super.defineSchema(),
       ...rerollSchema(),
+      // Applies only while the actor is Morphed - see helpers/morph-gated-effects.mjs.
+      whileMorphed: makeBool(false),
+      // Applies only while the actor has toggled themselves as in their own environment of
+      // expertise - see helpers/environment-gated-effects.mjs.
+      whileInEnvironmentOfExpertise: makeBool(false),
     };
+  }
+
+  // Read by ActiveEffect#isSuppressed (Foundry v14) - see helpers/morph-gated-effects.mjs and
+  // helpers/environment-gated-effects.mjs. Either gate can suppress independently; neither
+  // overrides the other when both are unset (both return undefined, falling through to Foundry's
+  // own default duration-expiry check).
+  get isSuppressed() {
+    return isSuppressedWhileUnmorphed(this) || isSuppressedOutOfEnvironment(this);
   }
 }
 

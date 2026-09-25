@@ -1,0 +1,90 @@
+{
+  "folder": "rMGNc915Yeq3H18w",
+  "name": "Upgraded Zord (Elemental Time Upgrade)",
+  "type": "feature",
+  "_id": "twuW9Li2MqwfBFpm",
+  "img": "systems/essence20/assets/icons/items/feature.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 105
+    }
+  },
+  "effects": [
+    {
+      "name": "Upgraded Zord (Elemental Time Upgrade)",
+      "origin": "Item.twuW9Li2MqwfBFpm",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ImRBCa9oJk2e6BkC",
+      "changes": [
+        {
+          "key": "system.essences.speed.value",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.initiative.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "15",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!twuW9Li2MqwfBFpm.ImRBCa9oJk2e6BkC"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265582033,
+    "modifiedTime": 1790265582033,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!twuW9Li2MqwfBFpm"
+}

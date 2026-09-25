@@ -1,0 +1,49 @@
+{
+  "folder": "L2MvhPTyBkLoNjeE",
+  "name": "Power Sai Effect",
+  "type": "weaponEffect",
+  "_id": "eawdW56lLt92k4KW",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    },
+    "source": {
+      "book": "Repulsive Developments",
+      "page": 31
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265613759,
+    "modifiedTime": 1790265613759,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!eawdW56lLt92k4KW"
+}

@@ -1,7 +1,7 @@
 {
   "folder": "Vut9CD4jSXSlHVjN",
   "name": "Acid",
-  "type": "gear",
+  "type": "weapon",
   "_id": "R6dTWFgDG319xBgr",
   "img": "icons/svg/acid.svg",
   "system": {
@@ -11,16 +11,56 @@
       "book": "Power Rangers Core Rulebook",
       "page": 119
     },
-    "quantity": 1,
-    "type": "",
-    "gearType": "tools"
+    "items": {
+      "acd1": {
+        "uuid": "Compendium.essence20.pr_crb.Item.AcidVialEffect01",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Acid Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "acid",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 20
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "targeting",
+      "shift": "none"
+    },
+    "traits": [
+      "consumable"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
   },
   "effects": [],
   "sort": 0,
   "ownership": {
     "default": 0
   },
-  "flags": {},
+  "flags": {
+    "core": {}
+  },
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",

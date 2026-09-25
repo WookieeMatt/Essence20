@@ -36,7 +36,7 @@
         "startTurn": null
       },
       "disabled": false,
-      "_id": "PoisonImmunity1",
+      "_id": "PoisonImmunity10",
       "changes": [
         {
           "key": "system.immunities.poison",
@@ -65,7 +65,7 @@
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!m4DwJmV39IELuT84.PoisonImmunity1"
+      "_key": "!items.effects!m4DwJmV39IELuT84.PoisonImmunity10"
     }
   ],
   "sort": 600000,

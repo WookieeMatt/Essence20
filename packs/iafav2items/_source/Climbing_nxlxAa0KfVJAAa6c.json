@@ -21,7 +21,52 @@
     "type": "armor",
     "prerequisite": ""
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Climbing",
+      "origin": "Item.nxlxAa0KfVJAAa6c",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "cL1mB2n3AtHl5tCe",
+      "changes": [
+        {
+          "key": "system.skills.athletics.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!nxlxAa0KfVJAAa6c.cL1mB2n3AtHl5tCe"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

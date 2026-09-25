@@ -5,6 +5,25 @@ import {
   getShiftedSkill,
   parseId,
 } from "../helpers/utils.mjs";
+import { grantIntegratedWeapon } from "./perk-handler.mjs";
+
+// Power Fist (Quartermaster's Guide to Gear, p.93, Standard Cybernetic/Genetic Alteration):
+// "Your punches act as a close combat bludgeon, except that the classification is Finesse or
+// Might Integrated Melee. Cost: Unarmed attacks with Stun effects suffer ↓1." Alterations have no
+// per-ID dispatch hook anywhere in this file (every OTHER type here - essence/movement - has its
+// own dedicated dialog branch, but the 'other' fallback just stamps originalId and stops) - this
+// is the first one added, for the one fixed-grant Alteration this project has found so far.
+// Reuses the existing Beatdown/Battlizer-Access-style grantIntegratedWeapon(), granting the same
+// Close Combat Heavy Bludgeoning weapon Beatdown/Signature Weapon already grant, rather than
+// authoring a brand-new "Integrated Melee" weapon+weaponEffect pair from scratch just to capture
+// the RAW's own narrower classification wording - a documented simplification, not a silent drop.
+// The Stun-downshift COST half is not built (no code anywhere reads a weapon's own Stun
+// alternate-effect to apply a conditional downshift when this Alteration is present - a real,
+// separate gap, not attempted this pass).
+// Bare compendium id, not a full UUID - alterationUuid below is already parseId()'d down to just
+// this (the same bare-id shape system.originalId itself stores on the granted alteration Item).
+const POWER_FIST_ID = "7gT8dddccGA6gbGa";
+const CLOSE_COMBAT_HEAVY_BLUDGEONING_ID = "Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN";
 
 /**
 * Handle the dropping of an Alteration onto an Actor
@@ -29,6 +48,10 @@ export async function onAlterationDrop(actor, alteration, dropFunc) {
   } else if (alteration.system.type == 'movement') {
     await _showAlterationCostMovementDialog(actor, alteration, alterationUuid, dropFunc);
   } else {
+    if (alterationUuid == POWER_FIST_ID) {
+      await grantIntegratedWeapon(actor, CLOSE_COMBAT_HEAVY_BLUDGEONING_ID);
+    }
+
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];
     await newAlteration.update ({

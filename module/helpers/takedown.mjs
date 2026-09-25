@@ -1,4 +1,16 @@
 import { E20 } from "./config.mjs";
+import { actorHasPerk } from "./perks.mjs";
+
+// Science of Subtlety (Cobra Codex, Assassin Infiltrator Focus, 5th level, p.49): "At 5th level,
+// you can use Science in place of Might or Finesse when you attempt an attack with your Takedown
+// Perk." pickTakedownSkill's own DialogV2 already lets the player choose which of the two RAW
+// options to roll up front - adding a third button here, conditioned on this Perk, needs no new
+// template (DialogV2's content/buttons are built inline in this file, not a separate .hbs). The
+// poisoning-Skill-Test half of this same Perk (Science in place of Deception/Infiltration "when
+// attempting to poison a target outside of combat") isn't built - unlike Takedown's own
+// already-existing single dropdown, there's no equivalent trigger point anywhere in this codebase
+// for "attempting to poison someone," so there's nothing to hook this half onto.
+const SCIENCE_OF_SUBTLETY_ID = "Compendium.essence20.cobra_codex.Item.tqY4YomXkTuFXZLo";
 
 /**
  * Takedown (GI Joe CRB, Commando base, 5th level, p.72): "you can make a special attack to
@@ -31,20 +43,28 @@ import { E20 } from "./config.mjs";
  */
 
 /**
- * Prompts for whether this attempt uses Might or Finesse.
- * @returns {Promise<String|null>}   'might'/'finesse', or null if cancelled.
+ * Prompts for whether this attempt uses Might or Finesse - or Science, if the actor has Science
+ * of Subtlety (see SCIENCE_OF_SUBTLETY_ID's own comment above).
+ * @param {Actor} [actor]
+ * @returns {Promise<String|null>}   'might'/'finesse'/'science', or null if cancelled.
  */
-export async function pickTakedownSkill() {
+export async function pickTakedownSkill(actor) {
+  const buttons = [
+    { label: game.i18n.localize(E20.skills.might), action: 'might' },
+    { label: game.i18n.localize(E20.skills.finesse), action: 'finesse' },
+  ];
+  if (actor && actorHasPerk(actor, SCIENCE_OF_SUBTLETY_ID)) {
+    buttons.push({ label: game.i18n.localize(E20.skills.science), action: 'science' });
+  }
+
+  buttons.push({ label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' });
+
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.TakedownPickSkillTitle') },
     classes: ["window-app", "e20-window"],
     content: `<p>${game.i18n.localize('E20.TakedownPickSkillLabel')}</p>`,
     modal: true,
-    buttons: [
-      { label: game.i18n.localize(E20.skills.might), action: 'might' },
-      { label: game.i18n.localize(E20.skills.finesse), action: 'finesse' },
-      { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
-    ],
+    buttons,
   });
 
   return chosen && chosen != 'cancel' ? chosen : null;
@@ -58,7 +78,7 @@ export async function pickTakedownSkill() {
  * @returns {Promise<Boolean>}
  */
 export async function activateTakedown(actor) {
-  const skill = await pickTakedownSkill();
+  const skill = await pickTakedownSkill(actor);
   if (!skill) {
     return false;
   }

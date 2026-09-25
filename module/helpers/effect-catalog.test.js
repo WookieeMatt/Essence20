@@ -409,3 +409,21 @@ describe("effect catalog - Specializations", () => {
     expect(isKnownKey('system.trained.upgrades.armors.standard')).toBe(true);
   });
 });
+
+describe("effect catalog - keys added with their schema fields", () => {
+  test("the per-turn action bonuses are known keys", () => {
+    expect(isKnownKey('system.actions.standard.bonus')).toBe(true);
+    expect(isKnownKey('system.actions.move.bonus')).toBe(true);
+    expect(isKnownKey('system.actions.free.bonus')).toBe(true);
+  });
+
+  test("loadout hands is a known key", () => {
+    expect(isKnownKey('system.loadout.handsMax')).toBe(true);
+  });
+
+  // Granting a Specialization writes .name AND .granted; the catalog has to recognise the
+  // companion key it writes itself, or every granted Specialization fails validation.
+  test("a Specialization grant's companion .granted key is recognised", () => {
+    expect(isKnownKey('system.skills.deception.specializations.bluffing.granted')).toBe(true);
+  });
+});

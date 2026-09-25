@@ -1,0 +1,64 @@
+{
+  "folder": "WemOwkAMqyACTdl8",
+  "name": "Tiller",
+  "type": "focus",
+  "_id": "XUH3dRYEt81ujvWd",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 38
+    },
+    "items": {
+      "g8bY": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.HtWWLm5pjNFS86sZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Crop Rotation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "PC9V": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.5GDpvzG3x2ZgrrQj",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bumper Crop",
+        "type": "perk",
+        "subtype": "role",
+        "level": 4
+      },
+      "hKtB": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.bufk1DTzM0G7WiW5",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Farmer",
+        "type": "role"
+      }
+    },
+    "essences": [],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787762210188,
+    "modifiedTime": 1787762210188,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!XUH3dRYEt81ujvWd"
+}

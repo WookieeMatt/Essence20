@@ -27,38 +27,6 @@
         "type": "perk",
         "subtype": "role",
         "level": 1
-      },
-      "NZG1": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.HtWWLm5pjNFS86sZ",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Crop Rotation",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "IkNF": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.4vYOyC2EuKgrEDNW",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Faithful Companion",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "vR2J": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.5GDpvzG3x2ZgrrQj",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Bumper Crop",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
-      },
-      "VHHA": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.zwm8CrmmYvMj3bMc",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "New Herd",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
       }
     },
     "adjustments": {

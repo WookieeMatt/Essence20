@@ -30,6 +30,23 @@ export function actorHasPerk(actor, perkId) {
 }
 
 /**
+ * Every one of the given actor's copies of a specific Perk - same lookup as findPerk() above, but
+ * for a Perk RAW allows taking multiple times with a different choice each time (e.g. Augment
+ * (Skill), Across the Stars p.68, selectionLimit 10 - choose a different Skill per copy). A plain
+ * findPerk() only ever returns the FIRST copy, which silently drops every choice but one; use this
+ * instead whenever the check needs to match against ANY of the actor's copies, not just the first.
+ * @param {Actor} actor
+ * @param {String} perkId   A full compendium UUID.
+ * @returns {Array<Item>}
+ */
+export function findAllPerks(actor, perkId) {
+  return actor?.items?.filter(item =>
+    item.type == 'perk'
+    && (item.flags?.core?.sourceId == perkId || item._stats?.compendiumSource == perkId),
+  ) ?? [];
+}
+
+/**
  * Finds the given actor's copy of a specific Hang-Up - the same lookup as findPerk() above, but
  * for a genuine `type: "hangUp"` Item rather than a `type: "perk"` one. Needed because a Hang-Up's
  * own mechanical clause sometimes lives directly on the hangUp-type Item itself (e.g. Skeptic's
@@ -63,6 +80,31 @@ export function findHangUp(actor, hangUpId) {
  */
 export function actorHasHangUp(actor, hangUpId) {
   return !!findHangUp(actor, hangUpId);
+}
+
+/**
+ * Finds the given actor's copy of a specific Alteration (e.g. Machine Link, Quartermaster's Guide
+ * to Gear p.91) - same hardcoded-compendium-id lookup as findPerk()/findHangUp() above,
+ * generalized to the 'alteration' item type those two don't cover.
+ * @param {Actor} actor
+ * @param {String} alterationId   A full compendium UUID.
+ * @returns {Item|undefined}
+ */
+export function findAlteration(actor, alterationId) {
+  return actor?.items?.find(item =>
+    item.type == 'alteration'
+    && (item.flags?.core?.sourceId == alterationId || item._stats?.compendiumSource == alterationId),
+  );
+}
+
+/**
+ * Whether the given actor has a specific Alteration - see findAlteration() above.
+ * @param {Actor} actor
+ * @param {String} alterationId
+ * @returns {Boolean}
+ */
+export function actorHasAlteration(actor, alterationId) {
+  return !!findAlteration(actor, alterationId);
 }
 
 /**

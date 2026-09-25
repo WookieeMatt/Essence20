@@ -17,6 +17,7 @@
     "bonusToughness": 3,
     "classification": "heavy",
     "equipped": false,
+    "isPowerArmor": true,
     "traits": [
       "deflective"
     ],

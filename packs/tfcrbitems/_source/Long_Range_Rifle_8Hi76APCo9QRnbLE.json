@@ -11,7 +11,26 @@
       "book": "Transformers Core Rulebook",
       "page": 123
     },
-    "items": {},
+    "items": {
+      "b2cb": {
+        "uuid": "Compendium.essence20.tf_crb.Item.hEKtRYXcwIP7hkBW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Range Rifle Effect",
+        "type": "weaponEffect"
+      },
+      "b8f2": {
+        "uuid": "Compendium.essence20.tf_crb.Item.VkQf2RoxDh20fltE",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Range Rifle Alternate Effect",
+        "type": "weaponEffect"
+      },
+      "b802": {
+        "uuid": "Compendium.essence20.tf_crb.Item.ii4G67VTIw8FVUKW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Range Rifle Alternate Effect 2",
+        "type": "weaponEffect"
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",

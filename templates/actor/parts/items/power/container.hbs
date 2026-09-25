@@ -1,6 +1,6 @@
 {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.powers title='E20.ItemTypePowerPlural' dataType='power'}}
   {{#*inline "roll-button" item}}
-    {{#if item.system.canActivate}}
+    {{#if (canUsePower item)}}
       <a class="rollable" data-action="rollable" data-roll-type={{item.type}} data-tooltip="{{localize 'E20.PowerRollTitle'}}"><i class="fas fa-battery-bolt" data-roll-type={{item.type}}></i></a>
     {{/if}}
   {{/inline}}

@@ -22,11 +22,27 @@ const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 const TF_CRB = "Compendium.essence20.tf_crb.Item.";
 const DECEPTICON_DIRECTIVE = "Compendium.essence20.decepticon_directive.Item.";
 const PR_CRB = "Compendium.essence20.pr_crb.Item.";
+const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
+const THROUGH_THE_SHATTERED_GRID = "Compendium.essence20.through_the_shattered_grid.Item.";
 
 // Perk -> the Conditions it grants immunity to, for the holder only. Each entry is a literal
 // transcription of a real "you are immune to the X, Y, and Z Conditions" grant - not a guess at
 // what a Perk might cover.
 const CONDITION_IMMUNITY_PERKS = [
+  {
+    // Stalk (GI Joe CRB, Predator base, 1st level, p.93): "any time you are in your environment
+    // of expertise, you can not be surprised, and gain an Edge on Infiltration Skill Tests."
+    // The first Perk to key off the Surprised status, added the same day (helpers/config.mjs) -
+    // before it there was no Condition for this clause to name.
+    //
+    // "In your environment of expertise" is NOT enforced. The Perk does record a chosen
+    // environment (perk-handler.mjs's own 'environments' choiceType), but nothing anywhere tracks
+    // which environment a scene IS, so the condition is unknowable at runtime - the same
+    // unenforceable-qualifier drop as Bits To Spare/Truthseeker/Fear My Name. The Infiltration
+    // Edge half is a plain compendium Active Effect on the item itself and needs no code.
+    id: `${GI_JOE_CRB}BOuJREcROMkMjbM1`,
+    conditions: ['surprised'],
+  },
   {
     // Caution (Bodyguard Focus, 17th level, p.110): "you are immune to the Blinded, Deafened,
     // Frightened, Immobilized, Restrained, and Stunned Conditions."
@@ -130,6 +146,36 @@ const CONDITION_IMMUNITY_PERKS = [
     // check against current actor state.
     checkFn: isIronBravadoFrightenedImmune,
     conditions: ['frightened'],
+  },
+  {
+    // Always Alert (Transformers CRB, General Perk, p.108): "you can't be Surprised while
+    // conscious." (This Perk's other clause - an Edge on Initiative Skill Tests - is a plain
+    // compendium Active Effect on system.skills.initiative.edge and needs no code.) "While
+    // conscious" isn't its own isActive escape hatch: an unconscious actor is already covered by
+    // the Unconscious Condition's own effects, so nothing extra is needed to make this immunity
+    // stop applying then.
+    id: `${TF_CRB}6r0sYiTEtGsge6cB`,
+    conditions: ['surprised'],
+  },
+  {
+    // True Self (MLP CRB, Spirit of Honesty, 17th level, p.79): "you become immune to effects
+    // that try to affect your behavior, like the Mind Blast spell." Not a status-clearing effect
+    // (this entry was previously miscategorized against a "clear every active status" gap that
+    // doesn't apply here) - a plain ongoing immunity, same shape as every other entry in this
+    // table. This codebase's own two behavior-compelling Conditions are Frightened ("cannot move
+    // closer toward" the source) and Mesmerized ("view the mesmerizer as a trusted ally, and will
+    // not attack them") - the exact same pair Battlefield Titan's own RAW text already names
+    // together below, confirming this is the right mapping rather than a guess.
+    id: `${MLP_CRB}LtUei3Rd9ygf2dQa`,
+    conditions: ['frightened', 'mesmerized'],
+  },
+  {
+    // Power From Loss (Through the Shattered Grid, General Perk, p.115): "You are immune to the
+    // Mesmerized Condition." (The +2 Willpower half is a plain compendium Active Effect and needs
+    // no code; the "reroll a Skill Test and choose which results to keep" half is a plain
+    // system.reroll grant - see the compendium item's own reroll block, keepBetter:true.)
+    id: `${THROUGH_THE_SHATTERED_GRID}AbKqzmAMQZsetwY0`,
+    conditions: ['mesmerized'],
   },
 ];
 

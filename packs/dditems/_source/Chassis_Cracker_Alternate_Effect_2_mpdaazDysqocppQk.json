@@ -1,0 +1,47 @@
+{
+  "folder": "oKWTunb7j09H7xpd",
+  "name": "Chassis-Cracker Alternate Effect 2",
+  "type": "weaponEffect",
+  "_id": "mpdaazDysqocppQk",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "impaired",
+    "damageValue": null,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 2,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790227721121,
+    "modifiedTime": 1790227721121,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!mpdaazDysqocppQk"
+}

@@ -1,0 +1,51 @@
+{
+  "folder": "IDRVY95fBX5zbxiY",
+  "name": "Team Perk: In Space (Space Rangers)",
+  "type": "perk",
+  "_id": "2sc7lw4eezHrT94D",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 26
+    },
+    "items": {
+      "gP5L": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.tDuSm78HrB37tryx",
+        "img": "systems/essence20/assets/icons/items/powers.svg",
+        "name": "Galaxy Glider",
+        "type": "power"
+      },
+      "p0d3": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.OasmncqkxGO3QCXv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Spacewalker",
+        "type": "perk",
+        "subtype": "general"
+      }
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265601273,
+    "modifiedTime": 1790265601273,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!2sc7lw4eezHrT94D"
+}

@@ -1,5 +1,5 @@
 import { getAllNearbyTokens } from "./allies.mjs";
-import { bankPendingBonus, getPendingBonus } from "./perks.mjs";
+import { actorHasPerk, bankPendingBonus, getPendingBonus } from "./perks.mjs";
 
 /**
  * Ground Suppression (Quartermaster's Guide to Gear, Strafer Focus, Vanguard, 3rd level, p.28):
@@ -35,6 +35,20 @@ const RADIUS_FEET = 60; // no printed radius to reuse - a generic "nearby" scan,
 // "10ft" default before RAW's real radius is known - picked as a reasonable "battlefield-local"
 // range for a vehicle strafing run).
 const PENDING_FLAG = 'pendingGroundSuppression';
+
+// Danger Close (Quartermaster's Guide to Gear, Strafer Focus, 17th level, p.28): "you can exclude
+// a number of targets equal to your Smarts Essence from the area of your explosive weapons and
+// Ground Suppression." The Ground Suppression half is concretely checkable - this scan already
+// builds its own target list (getAllNearbyTokens) rather than relying on the player's own pre-
+// existing canvas targets, so "exclude a target" is read as "the player pre-targets whichever
+// tokens (of the ones about to be caught) they want spared, up to their Smarts score" - the same
+// "auto-detect off the player's own current targeting" idiom Mark Target/Fight Me! already use,
+// rather than a new picker dialog. The explosive-weapons AoE half is NOT built - that scan
+// (helpers/aoe-targeting.mjs#getTokensInShape) is shared by every templated attack in this
+// codebase, and adding a per-Perk exclusion count to that generic pipeline (rather than this one
+// self-contained Focus Perk's own target list) is a far larger change than this single Perk
+// warrants; flagged, not built.
+const DANGER_CLOSE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.FpwnwD7Pnl6uvLTZ";
 
 /**
  * Prompts for which Defense (Toughness or Evasion) this volley is rolled against.
@@ -77,7 +91,17 @@ export async function activateGroundSuppression(actor) {
     return false;
   }
 
-  const nearby = getAllNearbyTokens(actor, RADIUS_FEET);
+  let nearby = getAllNearbyTokens(actor, RADIUS_FEET);
+
+  // Danger Close - see DANGER_CLOSE_ID's own comment above. The player's own current targets (set
+  // BEFORE clicking the Use button) mark who to spare, capped at the actor's Smarts Essence score.
+  if (actorHasPerk(actor, DANGER_CLOSE_ID)) {
+    const excludedIds = new Set(
+      Array.from(game.user.targets ?? []).slice(0, actor.system.essences?.smarts?.value ?? 0).map(token => token.id),
+    );
+    nearby = nearby.filter(token => !excludedIds.has(token.id));
+  }
+
   canvas.tokens.setTargets(nearby.map(token => token.id));
 
   await actor._dice.rollSkill({

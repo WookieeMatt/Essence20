@@ -17,6 +17,24 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Curious Influence Perk",
         "type": "perk"
+      },
+      "hu1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.p2Qk0B5PWp10ZaqN",
+        "img": "icons/svg/hazard.svg",
+        "name": "Bookworm",
+        "type": "hangUp"
+      },
+      "hu2": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.z6Tl7lkAGDqrBb0f",
+        "img": "icons/svg/hazard.svg",
+        "name": "Heretical",
+        "type": "hangUp"
+      },
+      "hu3": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.eOgtG24LKGR6OE0v",
+        "img": "icons/svg/hazard.svg",
+        "name": "Obsessive",
+        "type": "hangUp"
       }
     },
     "mandatoryHangUp": false,

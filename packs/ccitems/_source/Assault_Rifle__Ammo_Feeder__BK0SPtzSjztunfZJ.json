@@ -47,7 +47,10 @@
           "page": 150
         },
         "subtype": "weapon",
-        "traits": []
+        "traits": [],
+        "removedTraits": [
+          "reload"
+        ]
       },
       "e70a": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.RjJbQsuqe1Gxtpmt",
@@ -56,7 +59,7 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
-          "style": "melee"
+          "style": "projectile"
         },
         "damageValue": 2,
         "damageType": "sharp",
@@ -82,7 +85,10 @@
       "skill": "athletics",
       "shift": "none"
     },
-    "traits": [],
+    "traits": [
+      "ballistic",
+      "reload"
+    ],
     "upgradeTraits": [],
     "usesPerScene": null,
     "transformerMode": "modeBotMode"

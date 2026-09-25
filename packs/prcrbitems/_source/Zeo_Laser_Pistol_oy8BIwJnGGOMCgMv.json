@@ -33,6 +33,138 @@
           "value": 40
         },
         "shiftDown": 0
+      },
+      "z1bk": {
+        "uuid": "Compendium.essence20.pr_crb.Item.xThllZn6ehdOWt3K",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Laser Pistol (Black) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "psychic",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 75,
+          "value": 40
+        },
+        "shiftDown": 0
+      },
+      "z2bl": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Yl56kJteYwMgxU7T",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Laser Pistol (Blue) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "cold",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 75,
+          "value": 40
+        },
+        "shiftDown": 0
+      },
+      "z3gr": {
+        "uuid": "Compendium.essence20.pr_crb.Item.zHPyFSE6jFRYUYtA",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Laser Pistol (Green) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "poison",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 75,
+          "value": 40
+        },
+        "shiftDown": 0
+      },
+      "z4pk": {
+        "uuid": "Compendium.essence20.pr_crb.Item.xj8d0ytPxDKOhg78",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Laser Pistol (Pink) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 75,
+          "value": 40
+        },
+        "shiftDown": 0
+      },
+      "z5rd": {
+        "uuid": "Compendium.essence20.pr_crb.Item.XjNYg101ThPB3MAG",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Laser Pistol (Red) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "fire",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 75,
+          "value": 40
+        },
+        "shiftDown": 0
+      },
+      "z6yl": {
+        "uuid": "Compendium.essence20.pr_crb.Item.QOVGWuPC0hrNTIIz",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Laser Pistol (Yellow) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 3,
+        "damageType": "stun",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 75,
+          "value": 40
+        },
+        "shiftDown": 0
       }
     },
     "classFeatureId": null,

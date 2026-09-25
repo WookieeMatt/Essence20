@@ -83,7 +83,7 @@
     "alternateEffects": "",
     "availability": "limited",
     "classification": {
-      "size": "sidearm"
+      "size": "light"
     },
     "equipped": true,
     "requirements": {
@@ -94,6 +94,7 @@
     "traits": [
       "blunt",
       "martialArts",
+      "powerWeapon",
       "silent"
     ],
     "upgradeTraits": [],

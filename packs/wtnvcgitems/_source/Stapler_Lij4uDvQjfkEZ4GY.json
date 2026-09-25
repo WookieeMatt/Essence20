@@ -17,6 +17,18 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Stapler Effect",
         "type": "weaponEffect"
+      },
+      "1k73": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.Dy6jy1SL7s5dFqLR",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Stapler Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "y35l": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.oz8pPCrRn018FUkg",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Stapler Alternate Effect 2",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

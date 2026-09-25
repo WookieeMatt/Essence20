@@ -1,0 +1,98 @@
+{
+  "folder": "Cp5ngUHeZZt7nlpL",
+  "name": "Power Spear",
+  "type": "weapon",
+  "_id": "XmZCw5vdjrMmQmbA",
+  "img": "systems/essence20/assets/icons/weapons/spear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Pre Gen Characters",
+      "page": 2
+    },
+    "items": {
+      "HcAU": {
+        "uuid": "Compendium.essence20.pr_crb.Item.yY5u7ocQAx7mTgzk",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Spear Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "p6BA": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Y6qVhMeJE5FHixNh",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Spear Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265429886,
+    "modifiedTime": 1790265429886,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!XmZCw5vdjrMmQmbA"
+}

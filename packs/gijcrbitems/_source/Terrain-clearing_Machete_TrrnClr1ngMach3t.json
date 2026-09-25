@@ -1,0 +1,121 @@
+{
+  "folder": "EPfL3S8nx5LSxuhK",
+  "name": "Terrain-clearing Machete",
+  "type": "weapon",
+  "_id": "TrrnClr1ngMach3t",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Emerald Oubliette",
+      "page": 39
+    },
+    "items": {
+      "09ee": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.TrrnClrMachEffct",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Terrain-clearing Machete Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "martialArts",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [
+    {
+      "name": "Terrain-clearing Machete",
+      "origin": "Item.TrrnClr1ngMach3t",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "TrrClrMachSurvEd",
+      "changes": [
+        {
+          "key": "system.skills.survival.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!TrrnClr1ngMach3t.TrrClrMachSurvEd"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1695306892684,
+    "modifiedTime": 1704127409594,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!TrrnClr1ngMach3t"
+}

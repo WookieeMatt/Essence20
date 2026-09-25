@@ -40,11 +40,11 @@
         "name": "Delta Max Striker Alternate Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 1,
-        "damageType": "element",
+        "damageType": "electric",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,

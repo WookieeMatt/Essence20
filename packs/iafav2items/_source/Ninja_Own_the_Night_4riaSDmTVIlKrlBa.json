@@ -29,7 +29,12 @@
     "selectionLimit": 1,
     "type": "faction",
     "value": 0,
-    "version": "giJoe"
+    "version": "giJoe",
+    "visionGrant": {
+      "enabled": true,
+      "mode": "darkvision",
+      "range": 30
+    }
   },
   "effects": [],
   "sort": 0,

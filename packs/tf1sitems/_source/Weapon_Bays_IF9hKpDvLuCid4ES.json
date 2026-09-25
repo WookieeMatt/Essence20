@@ -25,11 +25,11 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "",
+    "prerequisite": "Alt Mode with Crew 1 or more",
     "selectionLimit": 1,
     "type": "general",
     "value": 0,
-    "version": "powerRangers"
+    "version": "transformers"
   },
   "effects": [],
   "sort": 0,

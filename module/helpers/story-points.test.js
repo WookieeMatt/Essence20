@@ -22,6 +22,7 @@ import {
   hasGridPowerBloom,
   gridPowerBloomResults,
 } from './story-points.mjs';
+import { BATTLE_HARDENED_ID } from './battle-hardened.mjs';
 
 /** The primary Party as the pool sees it. `update` writes through so a second read sees it. */
 function mockParty({ storyPoints = 3, gmPoints = 0, isOwner = false } = {}) {
@@ -160,6 +161,16 @@ describe("requestStoryPointSpend", () => {
       actorName: "Duke",
     });
   });
+
+  test("includes the actor's own uuid, for Battle Hardened's own post-spend check", () => {
+    requestStoryPointSpend({ name: "Duke", uuid: "Actor.duke1" }, 1);
+    expect(global.game.socket.emit).toHaveBeenCalledWith("system.essence20", {
+      action: "spendStoryPoints",
+      amount: 1,
+      actorName: "Duke",
+      actorUuid: "Actor.duke1",
+    });
+  });
 });
 
 describe("announce: false", () => {
@@ -182,6 +193,102 @@ describe("announce: false", () => {
     await handleStoryPointSpendRequest({ action: "spendStoryPoints", amount: 1, actorName: "Duke", announce: false });
     expect(party.update).toHaveBeenCalled();
     expect(global.ChatMessage.create).not.toHaveBeenCalled();
+  });
+});
+
+describe("Battle Hardened (GI Joe CRB, General Perk, p.130)", () => {
+  class FakeRoll {
+    constructor() {
+      this._total = FakeRoll.nextTotal;
+    }
+    async evaluate() {
+      return this;
+    }
+    get total() {
+      return this._total;
+    }
+  }
+
+  let originalRoll;
+  beforeAll(() => {
+    originalRoll = global.Roll;
+    global.Roll = FakeRoll;
+  });
+  afterAll(() => {
+    global.Roll = originalRoll;
+  });
+
+  function makeHolder() {
+    return { items: [{ type: 'perk', flags: { core: { sourceId: BATTLE_HARDENED_ID } } }] };
+  }
+
+  /** The answering GM, owning the Party, handling a relayed spend. */
+  function asGm() {
+    global.game.user = { isGM: true, id: 'gm1' };
+    global.game.users.activeGM = { id: 'gm1' };
+    return mockParty({ storyPoints: 3, isOwner: true });
+  }
+
+  test("refunds the spent point on a rolled 4", async () => {
+    const party = asGm();
+    global.fromUuid = jest.fn().mockResolvedValue(makeHolder());
+    FakeRoll.nextTotal = 4;
+
+    await handleStoryPointSpendRequest({
+      action: "spendStoryPoints", amount: 1, actorName: "Duke", actorUuid: "Actor.duke1",
+    });
+
+    expect(party.update).toHaveBeenNthCalledWith(1, { 'system.storyPoints': 2 });
+    expect(party.update).toHaveBeenNthCalledWith(2, { 'system.storyPoints': 3 });
+    expect(global.ChatMessage.create).toHaveBeenCalledTimes(2);
+  });
+
+  test("doesn't refund on anything but a 4", async () => {
+    const party = asGm();
+    global.fromUuid = jest.fn().mockResolvedValue(makeHolder());
+    FakeRoll.nextTotal = 1;
+
+    await handleStoryPointSpendRequest({
+      action: "spendStoryPoints", amount: 1, actorName: "Duke", actorUuid: "Actor.duke1",
+    });
+
+    expect(party.update).toHaveBeenCalledTimes(1);
+    expect(global.ChatMessage.create).toHaveBeenCalledTimes(1);
+  });
+
+  test("doesn't roll at all without the Perk", async () => {
+    const party = asGm();
+    global.fromUuid = jest.fn().mockResolvedValue({ items: [] });
+    FakeRoll.nextTotal = 4;
+
+    await handleStoryPointSpendRequest({
+      action: "spendStoryPoints", amount: 1, actorName: "Duke", actorUuid: "Actor.duke1",
+    });
+
+    expect(party.update).toHaveBeenCalledTimes(1);
+  });
+
+  test("doesn't crash without an actorUuid (an older/unrelated caller)", async () => {
+    const party = asGm();
+    global.fromUuid = jest.fn();
+
+    await handleStoryPointSpendRequest({ action: "spendStoryPoints", amount: 1, actorName: "Duke" });
+
+    expect(global.fromUuid).not.toHaveBeenCalled();
+    expect(party.update).toHaveBeenCalledTimes(1);
+  });
+
+  // The refund lives in spend() itself, so a player who owns the Party - and spends without any
+  // relay - gets the same chance.
+  test("also refunds a Party owner's own direct spend", async () => {
+    const party = mockParty({ storyPoints: 3, isOwner: true });
+    global.fromUuid = jest.fn().mockResolvedValue(makeHolder());
+    FakeRoll.nextTotal = 4;
+
+    await requestStoryPointSpend({ name: 'Duke', uuid: 'Actor.duke1' }, 1);
+
+    expect(global.fromUuid).toHaveBeenCalledWith('Actor.duke1');
+    expect(party.update).toHaveBeenNthCalledWith(2, { 'system.storyPoints': 3 });
   });
 });
 

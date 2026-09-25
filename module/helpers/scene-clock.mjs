@@ -189,3 +189,37 @@ export async function markUsed(actor, flagKey, { window = 'encounter', count = 1
     count: getUses(actor, flagKey, window) + count,
   });
 }
+
+/**
+ * Whether a "for the rest of this scene/encounter" duration flag - one set with activateForWindow
+ * below - is still in effect.
+ *
+ * Reuses getUses's own epoch bookkeeping rather than inventing a second storage shape: a flag set
+ * for the current window reads as "used" (count 1) until the window it was stamped with no longer
+ * matches, at which point getUses already reads it as zero. That is precisely "expired" for a
+ * duration flag, so nothing here has to sweep or delete anything - the many "1 scene"/"1 day"
+ * spell and Perk flags across this codebase that used to say "no active expiry hook, left set
+ * until manually cleared" (Fluttery Wings, Lightning Speed, Hot To Trot, and their siblings) can
+ * all resolve their duration through this one check instead.
+ * @param {Actor} actor
+ * @param {String} flagKey
+ * @param {String} [window]   'scene' or 'encounter'.
+ * @returns {Boolean}
+ */
+export function isActiveForWindow(actor, flagKey, window = 'scene') {
+  return getUses(actor, flagKey, window) > 0;
+}
+
+/**
+ * Turns on a duration flag for the rest of the current scene/encounter window. See
+ * isActiveForWindow above. Idempotent within the same window - recasting the same buff before it
+ * expires doesn't stack a count, it just keeps it active.
+ * @param {Actor} actor
+ * @param {String} flagKey
+ * @param {String} [window]   'scene' or 'encounter'.
+ * @returns {Promise<void>}
+ */
+export async function activateForWindow(actor, flagKey, window = 'scene') {
+  const epoch = window === 'scene' ? getSceneEpoch() : getEncounterEpoch();
+  await actor.setFlag('essence20', flagKey, { epoch, window, count: 1 });
+}

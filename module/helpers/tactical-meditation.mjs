@@ -10,10 +10,10 @@ import { getNearbyAllyTokens } from "./allies.mjs";
  * each its own real compendium Item wired via the existing generic `hasChoice: true,
  * choiceType: "perks", numChoices: 1` picker (the same mechanism Modified Shell already uses) -
  * Chief Guardian's own `selectionLimit: 1` means only one is ever picked, unlike Wisdom of the
- * Elders' own toggle-per-instance shape. Energy Rebuttal and Guardian Blast stay Needs new
- * infrastructure (a "react to a failed Defend" hook, and a multi-actor combined-action Skill
- * Test respectively) - still offered in the picker per the "the choice still exists even when
- * unautomated" idiom.
+ * Elders' own toggle-per-instance shape. Energy Rebuttal is also now built (see combat.mjs's own
+ * grantEnergyRebuttalBonus); Guardian Blast alone stays Needs new infrastructure (a multi-actor
+ * combined-action Skill Test, no precedent anywhere in this project) - still offered in the
+ * picker per the "the choice still exists even when unautomated" idiom.
  *
  * "You cannot be surprised" is unenforceable (no Surprised status exists anywhere in this system -
  * the same accepted gap Prepare for War/Sirens Blaring/Exploit Trust already live with). The aura

@@ -67,7 +67,12 @@
       "skill": "technology",
       "shift": "d2"
     },
-    "traits": [],
+    "traits": [
+      "combined",
+      "components",
+      "energy",
+      "powerWeapon"
+    ],
     "transformerMode": "modeBotMode",
     "upgradeTraits": [],
     "usesPerScene": null

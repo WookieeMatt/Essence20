@@ -8,8 +8,8 @@
     "originalId": "",
     "actionType": "standard",
     "classification": {
-      "skill": "athletics",
-      "style": "melee"
+      "skill": "targeting",
+      "style": "explosive"
     },
     "damageType": "element",
     "damageValue": 1,

@@ -1,0 +1,125 @@
+{
+  "folder": "byVUSmcidykORLHn",
+  "name": "Horn of Unity",
+  "type": "gear",
+  "_id": "7w5FR12tpTSiaval",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 56
+    },
+    "quantity": 1,
+    "type": "clothes",
+    "gearType": "clothes"
+  },
+  "effects": [
+    {
+      "name": "Horn of Unity (untrained in Spellcasting)",
+      "origin": "Item.7w5FR12tpTSiaval",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "qk3swiJjIghdHE2u",
+      "changes": [
+        {
+          "key": "system.skills.spellcasting.shift",
+          "mode": 5,
+          "value": "d10",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!7w5FR12tpTSiaval.qk3swiJjIghdHE2u"
+    },
+    {
+      "name": "Horn of Unity (already trained in Spellcasting)",
+      "origin": "Item.7w5FR12tpTSiaval",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "tDDWMulhmRQxoGLO",
+      "changes": [
+        {
+          "key": "system.skills.spellcasting.shiftUp",
+          "mode": 2,
+          "value": "3",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!7w5FR12tpTSiaval.tDDWMulhmRQxoGLO"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790264082168,
+    "modifiedTime": 1790264082168,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
+  },
+  "_key": "!items!7w5FR12tpTSiaval"
+}

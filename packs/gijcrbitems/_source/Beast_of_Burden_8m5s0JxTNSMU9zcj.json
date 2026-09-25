@@ -17,7 +17,7 @@
   },
   "effects": [
     {
-      "name": "Might Up Shift 2",
+      "name": "Push/Drag/Lift: Might Up Shift 2",
       "origin": "Compendium.essence20.gi_joe_crb.Item.8m5s0JxTNSMU9zcj",
       "duration": {
         "startTime": null,
@@ -28,7 +28,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "uoIOujJt1MWm7sLV",
       "changes": [
         {

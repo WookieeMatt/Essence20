@@ -22,7 +22,7 @@
           "style": "energy"
         },
         "damageValue": 2,
-        "damageType": "element",
+        "damageType": "electric",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
@@ -49,7 +49,7 @@
     },
     "traits": [
       "electric",
-      "energy"
+      "powerWeapon"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

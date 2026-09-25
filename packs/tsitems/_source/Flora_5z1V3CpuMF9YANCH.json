@@ -33,7 +33,7 @@
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
-    "baseGroundMovement": 15,
+    "baseGroundMovement": 30,
     "essences": [
       "smarts",
       "social"

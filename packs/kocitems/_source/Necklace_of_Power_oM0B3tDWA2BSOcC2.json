@@ -1,0 +1,36 @@
+{
+  "folder": "byVUSmcidykORLHn",
+  "name": "Necklace of Power",
+  "type": "gear",
+  "_id": "oM0B3tDWA2BSOcC2",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 56
+    },
+    "quantity": 1,
+    "type": "clothes",
+    "gearType": "clothes"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790264082168,
+    "modifiedTime": 1790264082168,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
+  },
+  "_key": "!items!oM0B3tDWA2BSOcC2"
+}

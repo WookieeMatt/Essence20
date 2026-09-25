@@ -32,11 +32,17 @@
       </div>
       {{/if}}
 
+      {{!--
+        Sorcerous Power is a one-time BUILD budget (Finster's Monster-Matic Cookbook p.274), not a
+        spendable-per-use pool - see documents/actor.mjs#_prepareSorcerousPower. committed is
+        derived (sum of every owned Sorcerous Power's own build cost), shown as plain text rather
+        than an editable input, and only warns (is-over highlight) when it exceeds the budget.
+      --}}
       {{#if system.powers.sorcerous.levelTaken}}
       <div>
         <label>Sorcerous Power</label>
-        <input class="two-digit-input no-lock" data-field="system.powers.sorcerous.value" type="number"
-          name="system.powers.sorcerous.value" value="{{system.powers.sorcerous.value}}" min="0" step="1" />
+        <span class="two-digit-input{{#if (gt system.powers.sorcerous.committed system.powers.sorcerous.max)}} is-over{{/if}}"
+          data-tooltip="{{localize 'E20.SorcerousPowerCommittedHint'}}">{{system.powers.sorcerous.committed}}</span>
         /
         <input class="two-digit-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
           value="{{system.powers.sorcerous.max}}" min="0" step="1" />

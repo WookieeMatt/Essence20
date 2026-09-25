@@ -42,6 +42,14 @@
         "subtype": "role",
         "level": 1
       },
+      "l3xm": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.qIiCm9vHXFnLYprP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Lead By Example",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
       "419e": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.bIoMrn9aP9x6QYVL",
         "img": "systems/essence20/assets/icons/items/perk.svg",

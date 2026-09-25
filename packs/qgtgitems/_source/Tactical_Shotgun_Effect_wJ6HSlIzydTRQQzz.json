@@ -13,8 +13,8 @@
       "page": 38
     },
     "classification": {
-      "skill": "athletics",
-      "style": "melee"
+      "skill": "targeting",
+      "style": "projectile"
     },
     "damageType": "sharp",
     "damageValue": 1,

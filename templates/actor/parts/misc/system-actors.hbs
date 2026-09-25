@@ -50,6 +50,23 @@
 
         {{#if (eq attachedActor.type "zord")}}
           <div>{{localize 'E20.ActorSize'}}: {{lookup @root.config.actorSizes attachedActor.system.size}}</div>
+          {{#unless (eq @root.document.type "megaform")}}
+            {{!-- Call to Action (PR CRB, Zord Feature, p.136-137) - see helpers/zord-summon.mjs's
+                 own doc comment. Only meaningful from the piloting Ranger's own sheet, not a
+                 Megaform's read-only participant list. --}}
+            {{#unless (isZordSummonReady attachedActor)}}
+              <div class="e20-nowrap">
+                <a data-action="summonZord" data-system-Actors-uuid="{{attachedActor.uuid}}" data-tooltip="{{localize 'E20.ZordSummonTooltip'}}">
+                  <i class="fas fa-hourglass-half"></i>
+                  {{localize 'E20.ZordSummonArrivingAtRound'}} {{zordSummonReadyRound attachedActor}}
+                </a>
+              </div>
+            {{else}}
+              <a class="e20-nowrap" data-action="summonZord" data-system-Actors-uuid="{{attachedActor.uuid}}" data-tooltip="{{localize 'E20.ZordSummonTooltip'}}">
+                <i class="fas fa-bolt"></i> {{localize 'E20.ZordSummonButton'}}
+              </a>
+            {{/unless}}
+          {{/unless}}
           {{#if (eq @root.document.type "megaform")}}
             {{!-- Ranger only exists on a Zord (zord.mjs's own system.ranger field) - a Transformers
                  Combiner's own playerCharacter components have no such field, so this only shows

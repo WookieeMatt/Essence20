@@ -12,7 +12,7 @@
       "page": 94
     },
     "actionType": "free",
-    "canActivate": false,
+    "canActivate": true,
     "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
@@ -27,7 +27,52 @@
       "text": ""
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Reactive",
+      "origin": "Compendium.essence20.quartermasters_guide_to_gear.Item.toDyl8zb0XVvqPuj",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Reactive0001xxx0",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!toDyl8zb0XVvqPuj.Reactive0001xxx0"
+    }
+  ],
   "sort": 1200000,
   "ownership": {
     "default": 0

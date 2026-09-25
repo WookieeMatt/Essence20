@@ -1,0 +1,36 @@
+{
+  "folder": "j1nUzIlIZazcj1s5",
+  "name": "Constrictor",
+  "type": "perk",
+  "_id": "S63cNsFogI1Ahh2C",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 103
+    },
+    "prerequisite": "Large size",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790266219714,
+    "modifiedTime": 1790266219714,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!S63cNsFogI1Ahh2C"
+}

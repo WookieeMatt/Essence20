@@ -33,6 +33,50 @@
           "value": null
         },
         "shiftDown": 0
+      },
+      "c85e": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.k0lZatEqcocJihVz",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Antimatter Close Combat Weapon Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "energy"
+        },
+        "damageValue": null,
+        "damageType": "intimidate",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "4f3b": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.pEQJrNkjutaASGNh",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Antimatter Close Combat Weapon Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "energy"
+        },
+        "damageValue": null,
+        "damageType": "maneuver",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
       }
     },
     "classFeatureId": null,

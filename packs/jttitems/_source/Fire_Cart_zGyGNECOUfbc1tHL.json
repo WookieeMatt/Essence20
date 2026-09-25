@@ -44,7 +44,7 @@
           "style": "projectile"
         },
         "damageValue": 3,
-        "damageType": "element",
+        "damageType": "fire",
         "numHands": 6,
         "numTargets": 1,
         "radius": 20,
@@ -64,8 +64,8 @@
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "science",
+      "shift": "d4"
     },
     "traits": [
       "reload",

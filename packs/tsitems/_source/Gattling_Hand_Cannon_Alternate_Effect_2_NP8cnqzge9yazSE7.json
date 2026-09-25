@@ -21,7 +21,8 @@
     "isSpecialized": false,
     "numHands": 1,
     "numTargets": 5,
-    "radius": 0,
+    "shape": "cone",
+    "radius": 15,
     "range": {
       "min": 10,
       "reachMultiplier": 0,

@@ -1,0 +1,98 @@
+{
+  "folder": "jDTSiDyb4mWmnkig",
+  "name": "Eltarian Laser",
+  "type": "weapon",
+  "_id": "zr5yC4ToCQEVx51B",
+  "img": "systems/essence20/assets/icons/weapons/pistol.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Recipe For Disaster",
+      "page": 22
+    },
+    "items": {
+      "otoK": {
+        "uuid": "Compendium.essence20.power_rangers_adventures.Item.jrS69cV3ATTIJh00",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Eltarian Laser Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "laser",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 50
+        },
+        "shiftDown": 0
+      },
+      "zGh0": {
+        "uuid": "Compendium.essence20.power_rangers_adventures.Item.dCagNdWXBfhB9c5U",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Eltarian Laser Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 50
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "accurate",
+      "energy",
+      "laser"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265613747,
+    "modifiedTime": 1790265613747,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!zr5yC4ToCQEVx51B"
+}

@@ -14,7 +14,9 @@ import { actorHasPerk, findPerk } from "./perks.mjs";
 
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 const PERSONAL_SHIELD_ROLE_POINTS_ID = `${GI_JOE_CRB}84JYgd6kZgY41wge`;
-const SHIELD_UPGRADE_ID = `${GI_JOE_CRB}ep0OFsU1QIuRpHeR`;
+// Exported for helpers/shield-modulation.mjs, which needs to recognize the same "protection
+// extended to nearby allies" gate this file's own getShieldUpgradeBonus already checks.
+export const SHIELD_UPGRADE_ID = `${GI_JOE_CRB}ep0OFsU1QIuRpHeR`;
 
 // Protector's Shield (Bodyguard Focus, 10th level, p.110): "While your shield is up, you gain 1
 // Temporary Health." See applyProtectorsShieldHealthBonus's own doc comment below.

@@ -1,0 +1,75 @@
+{
+  "folder": "jDTSiDyb4mWmnkig",
+  "name": "Green Gauntlet",
+  "type": "weapon",
+  "_id": "MaOcXBhyt1r4vayk",
+  "img": "systems/essence20/assets/icons/weapons/brass-knuckles.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Recipe For Disaster",
+      "page": 30
+    },
+    "items": {
+      "na8e": {
+        "uuid": "Compendium.essence20.power_rangers_adventures.Item.kGSFZeFkiPfDpGvi",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Green Gauntlet Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "unique",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "blunt",
+      "powerWeapon"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265613754,
+    "modifiedTime": 1790265613754,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!MaOcXBhyt1r4vayk"
+}

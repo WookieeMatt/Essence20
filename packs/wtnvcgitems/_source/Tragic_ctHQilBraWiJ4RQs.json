@@ -17,6 +17,24 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Tragic Influence Perk",
         "type": "perk"
+      },
+      "hu1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.xUPWiX24XTCx9GRd",
+        "img": "icons/svg/hazard.svg",
+        "name": "Loudmouth",
+        "type": "hangUp"
+      },
+      "hu2": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.1JiWfGVVLpYsNuTM",
+        "img": "icons/svg/hazard.svg",
+        "name": "Jittery",
+        "type": "hangUp"
+      },
+      "hu3": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.eOgtG24LKGR6OE0v",
+        "img": "icons/svg/hazard.svg",
+        "name": "Obsessive",
+        "type": "hangUp"
       }
     },
     "mandatoryHangUp": false,

@@ -8,6 +8,7 @@ import { createEffectMacro, toggleEffectMacro } from "./helpers/effects.mjs";
 import { Essence20Actor } from "./documents/actor.mjs";
 import { Essence20Actors } from "./documents/actors.mjs";
 import { Essence20ActorDirectory } from "./apps/essence20-actor-directory.mjs";
+import { registerBlindsightDetectionMode } from "./helpers/blindsight.mjs";
 import { Essence20Combat } from "./documents/combat.mjs";
 import { Essence20TokenDocument } from "./documents/token.mjs";
 import { Essence20CombatTracker } from "./apps/combat-tracker.mjs";
@@ -39,22 +40,27 @@ import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 import StatBlockImporter from "./apps/stat-block-importer.mjs";
 import { canSwapTokenForm, swapTokenForm } from "./helpers/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
-import { addConsummatePerformerButton, addDefenseBoostButton, addExploitWeaknessButton, addRerollButtons, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { addConsummatePerformerButton, addDefenseBoostButton, addExploitWeaknessButton, addFlashyButton, addFrenziedAttackButton, addOneUppingButton, addRerollButtons, addSecretHelperButton, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { applyVisionToTokens, getNumActions, syncAutoBlindStatus } from "./helpers/actor.mjs";
+import { applyVisionToTokens, getNumActions, syncAutoBlindStatus, syncAutoImmobilizedStatus } from "./helpers/actor.mjs";
 import { canUsePerk } from "./helpers/banked-buffs.mjs";
+import { canUsePower } from "./helpers/power-use.mjs";
+import { getSummonReadyRound, isSummonReady } from "./helpers/zord-summon.mjs";
 import { healStunAtTurnStart } from "./helpers/combat.mjs";
 import { applyTimeToThinkEdge } from "./helpers/time-to-think.mjs";
 import { healRegeneratingShellAtTurnEnd } from "./helpers/power-adaptation.mjs";
+import { healRapidRescueResponseAtRoundEnd } from "./helpers/rapid-rescue-response.mjs";
 import { deactivateRushTheLineAtTurnEnd } from "./helpers/rush-the-line.mjs";
 import { deactivateFrictionlessMovementAtTurnEnd } from "./helpers/frictionless-movement.mjs";
+import { deactivateExpandedMysticismQuickenAtTurnEnd } from "./helpers/expanded-mysticism.mjs";
 import { deactivateSprinterBoostAtTurnEnd } from "./helpers/sprinter-boost.mjs";
 import { healUnbeatableAtTurnStart } from "./helpers/unbeatable.mjs";
 import { applyBravado } from "./helpers/bravado.mjs";
 import { applyHardCorpsDeferredDefeat } from "./helpers/hard-corps.mjs";
+import { applyNoFightingSnag } from "./helpers/no-fighting.mjs";
 import { payMetallicArmorMaintenance } from "./helpers/metallic-armor.mjs";
 import { isImmuneToCondition } from "./helpers/condition-immunity.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
@@ -119,6 +125,10 @@ function runMigrations() {
 /* -------------------------------------------- */
 
 Hooks.once("init", async function () {
+  // Blindsight needs its detection mode to exist before any token is drawn - see
+  // helpers/blindsight.mjs's own doc comment.
+  registerBlindsightDetectionMode();
+
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.essence20 = {
@@ -339,6 +349,14 @@ Handlebars.registerHelper("inArray", function (array, value, options) {
 // actually banks for each. A template-level check, the same idiom {{eq item.type "shield"}}
 // already uses for the shield-activate icon right next to where this one renders.
 Handlebars.registerHelper("canUsePerk", canUsePerk);
+Handlebars.registerHelper("canUsePower", canUsePower);
+
+// Call to Action (PR CRB, Zord Feature, p.136-137) - see helpers/zord-summon.mjs's own doc
+// comment. Template-level checks (same idiom as canUsePerk/canUsePower just above) so
+// system-actors.hbs can show a Summon control per zordActors row without pre-computing readiness
+// for every attached actor in prepareSystemActors.
+Handlebars.registerHelper("isZordSummonReady", isSummonReady);
+Handlebars.registerHelper("zordSummonReadyRound", getSummonReadyRound);
 
 // system.items collections (Role/Focus's granted-item lists, among others) are a plain object
 // keyed by short random ids, not an array - {{#each}} over them iterates in insertion order, not
@@ -619,8 +637,12 @@ Hooks.on("renderChatMessageHTML", (app, html, data) => {
   addDefenseBoostButton(app, html);
   addConsummatePerformerButton(app, html);
   addSpiteButton(app, html);
+  addOneUppingButton(app, html);
+  addSecretHelperButton(app, html);
   addSufferButton(app, html);
+  addFrenziedAttackButton(app, html);
   addExploitWeaknessButton(app, html);
+  addFlashyButton(app, html);
   attachCheckCardListeners(app, html);
   hideDifficultyForNonGm(app, html);
   applyChatMessageSystemColor(app, html);
@@ -745,6 +767,9 @@ for (const hookName of ["createActiveEffect", "updateActiveEffect", "deleteActiv
     if (parent instanceof Actor) {
       applyVisionToTokens(parent);
       syncAutoBlindStatus(parent);
+      // Restrained implies Immobilized (GI Joe CRB, Conditions, p.226) - see
+      // syncAutoImmobilizedStatus's own doc comment.
+      syncAutoImmobilizedStatus(parent);
     }
   });
 }
@@ -795,6 +820,11 @@ for (const hookName of ["combatTurn", "combatRound"]) {
       // BEFORE the update commits" idiom as Rush the Line just above.
       deactivateFrictionlessMovementAtTurnEnd(endingActor);
 
+      // Expanded Mysticism - Quicken (MLP CRB, Spirit of Magic, 9th level, p.95) - see
+      // helpers/expanded-mysticism.mjs's own doc comment. Same "read combat.combatant BEFORE the
+      // update commits" idiom as Rush the Line/Frictionless Movement just above.
+      deactivateExpandedMysticismQuickenAtTurnEnd(endingActor);
+
       // Sprinter (Technorganic Secrets, Hunter's Prowess Quadruped Origin choice, p.44) - see
       // deactivateSprinterBoostAtTurnEnd's own doc comment. Same "read combat.combatant BEFORE the
       // update commits" idiom as Frictionless Movement just above.
@@ -806,6 +836,15 @@ for (const hookName of ["combatTurn", "combatRound"]) {
     }
   });
 }
+
+/* R.R.R. (Rapid Rescue Response) (Across the Stars, Zord Feature, p.104) - "regain 1 Health at the
+   end of every round," with no "whose turn is it" scoping at all (unlike Regenerating Shell's own
+   per-TURN heal just above), so this is its own combatRound-only hook rather than joining the
+   combatTurn/combatRound loop above - see healRapidRescueResponseAtRoundEnd's own doc comment for
+   why it walks every Zord in the fight instead of a single ending actor. */
+Hooks.on("combatRound", (combat) => {
+  healRapidRescueResponseAtRoundEnd(combat);
+});
 
 /* Action economy: repaint every open actor sheet when the turn changes, so the header pip row
    reflects the new turn's budget.
@@ -845,6 +884,11 @@ Hooks.on("combatStart", (combat) => {
    needing this. */
 Hooks.on("deleteCombat", (combat) => {
   applyHardCorpsDeferredDefeat(combat);
+
+  /* No Fighting?! (Knights of Canterlot, Fighter Influence Hang-Up, p.16) - see
+     helpers/no-fighting.mjs's own doc comment. Same "combat has ended" signal as Hard Corps
+     just above. */
+  applyNoFightingSnag(combat);
 
   /* Lingering Area of Effect regions whose duration is tied to the encounter rather than to a
      clock - "1 scene", plus any round-counting area that outlived the combat it was counting

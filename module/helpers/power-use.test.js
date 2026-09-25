@@ -1,7 +1,8 @@
 import { jest } from '@jest/globals';
-import { onPowerUse } from './power-use.mjs';
+import { canUsePower, onPowerUse } from './power-use.mjs';
 
 const SPEED_BOOST_ID = "Compendium.essence20.pr_crb.Item.CDbaCheOK2rUsqli";
+const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
 
 // jest.setup.js's own global.Roll stub has no .evaluate() (only used by tests that don't roll
 // dice) - Faster Regeneration/Repair Zord both do, so this file needs a real fake with one.
@@ -54,45 +55,59 @@ describe('onPowerUse', () => {
     expect(global.ChatMessage.create).not.toHaveBeenCalled();
   });
 
-  test('recognizes Speed Boost via flags.core.sourceId, applies it, and posts a chat card', async () => {
-    const actor = makeActor('Power Ranger Test');
-    const ground = makeEffect(true);
-    const initiative = makeEffect(true);
+  // Speed Boost's own flag-backed actor - see helpers/speed-boost.mjs (one banked Initiative Edge).
+  function makeSpeedBoostActor(flags = {}) {
+    const store = { ...flags };
+    return {
+      name: 'Power Ranger Test',
+      getFlag: jest.fn((scope, key) => store[key]),
+      setFlag: jest.fn(async (scope, key, value) => {
+        store[key] = value;
+      }),
+    };
+  }
+
+  function makeMovementEffect(disabled) {
+    return { ...makeEffect(disabled), changes: [{ key: 'system.movement.ground.morphed', mode: 2, value: '10' }] };
+  }
+
+  test('recognizes Speed Boost via flags.core.sourceId, banks an Initiative Edge, and posts a chat card', async () => {
+    const actor = makeSpeedBoostActor();
+    const ground = makeMovementEffect(true);
     const item = {
       name: 'Speed Boost',
       flags: { core: { sourceId: SPEED_BOOST_ID } },
-      effects: makeEffectsCollection([ground, initiative]),
-    };
-
-    await onPowerUse(actor, item);
-
-    expect(ground.disabled).toBe(false);
-    expect(initiative.disabled).toBe(false);
-    expect(global.ChatMessage.create).toHaveBeenCalled();
-  });
-
-  test('recognizes Speed Boost via _stats.compendiumSource too (the flags.core.sourceId fallback)', async () => {
-    const actor = makeActor();
-    const ground = makeEffect(true);
-    const item = {
-      name: 'Speed Boost',
-      flags: {},
-      _stats: { compendiumSource: SPEED_BOOST_ID },
       effects: makeEffectsCollection([ground]),
     };
 
     await onPowerUse(actor, item);
 
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'speedBoostInitiativeEdge', true);
     expect(ground.disabled).toBe(false);
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
 
-  test('does not post a chat card a second time once Speed Boost is already active (idempotent)', async () => {
-    const actor = makeActor();
+  test('recognizes Speed Boost via _stats.compendiumSource too (the flags.core.sourceId fallback)', async () => {
+    const actor = makeSpeedBoostActor();
+    const item = {
+      name: 'Speed Boost',
+      flags: {},
+      _stats: { compendiumSource: SPEED_BOOST_ID },
+      effects: makeEffectsCollection([]),
+    };
+
+    await onPowerUse(actor, item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'speedBoostInitiativeEdge', true);
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test('does not post a chat card a second time while an Edge is already banked (idempotent)', async () => {
+    const actor = makeSpeedBoostActor({ speedBoostInitiativeEdge: true });
     const item = {
       name: 'Speed Boost',
       flags: { core: { sourceId: SPEED_BOOST_ID } },
-      effects: makeEffectsCollection([makeEffect(false)]),
+      effects: makeEffectsCollection([makeMovementEffect(false)]),
     };
 
     await onPowerUse(actor, item);
@@ -555,8 +570,9 @@ describe('onPowerUse', () => {
     delete global.game.user;
   });
 
-  test('recognizes Regeneration, heals 1 Health, and posts a chat card', async () => {
+  test('recognizes Regeneration, heals 1 Health via the automatic mode, and posts a chat card', async () => {
     const REGENERATION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.312ubjCA7mCBDoea";
+    global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('automatic') };
     const actor = { ...makeActor(), system: { health: { value: 5, max: 10 } }, update: jest.fn() };
     const item = { name: 'Regeneration', flags: { core: { sourceId: REGENERATION_ID } } };
 
@@ -564,6 +580,37 @@ describe('onPowerUse', () => {
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 6 });
     expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test('recognizes Regeneration, rolls Science with Edge via the Skill Test mode, and does not heal directly', async () => {
+    const REGENERATION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.312ubjCA7mCBDoea";
+    global.foundry.applications.api.DialogV2 = {
+      wait: jest.fn().mockResolvedValueOnce('skillTest').mockResolvedValueOnce(2),
+    };
+    const actor = {
+      ...makeActor(), system: { health: { value: 5, max: 10 } }, update: jest.fn(), _dice: { rollSkill: jest.fn() },
+    };
+    const item = { name: 'Regeneration', flags: { core: { sourceId: REGENERATION_ID } } };
+
+    await onPowerUse(actor, item);
+
+    expect(actor.update).not.toHaveBeenCalled();
+    expect(actor._dice.rollSkill).toHaveBeenCalledWith(
+      expect.objectContaining({ skill: 'science', dif: '15', isRegeneration: true, regenerationAmount: 2 }),
+      actor,
+    );
+  });
+
+  test('recognizes Regeneration but does nothing when the mode picker is cancelled', async () => {
+    const REGENERATION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.312ubjCA7mCBDoea";
+    global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('cancel') };
+    const actor = { ...makeActor(), system: { health: { value: 5, max: 10 } }, update: jest.fn() };
+    const item = { name: 'Regeneration', flags: { core: { sourceId: REGENERATION_ID } } };
+
+    await onPowerUse(actor, item);
+
+    expect(actor.update).not.toHaveBeenCalled();
+    expect(global.ChatMessage.create).not.toHaveBeenCalled();
   });
 
   test('recognizes Bolster Defense and triggers a real roll after the picker', async () => {
@@ -611,5 +658,41 @@ describe('onPowerUse', () => {
     await onPowerUse(actor, item);
 
     expect(actor._dice.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ isIllusoryDisguiseAttempt: true }), actor);
+  });
+});
+
+describe('canUsePower', () => {
+  afterEach(() => {
+    global.game.combat = undefined;
+  });
+
+  test('false for a non-Power item', () => {
+    expect(canUsePower({ type: 'perk', system: { canActivate: true } })).toBe(false);
+  });
+
+  test('false when canActivate is false', () => {
+    expect(canUsePower({ type: 'power', system: { canActivate: false } })).toBe(false);
+  });
+
+  test('true for a Power with no dynamic gate, once canActivate is true', () => {
+    const item = {
+      type: 'power', system: { canActivate: true },
+      flags: { core: { sourceId: SPEED_BOOST_ID } },
+    };
+    expect(canUsePower(item)).toBe(true);
+  });
+
+  test("delegates to canUseZeoCrystalBoost for Zeo Crystal Boost", () => {
+    const actor = { getFlag: jest.fn(() => undefined) };
+    const item = {
+      type: 'power', system: { canActivate: true }, parent: actor,
+      flags: { core: { sourceId: ZEO_CRYSTAL_BOOST_ID } },
+    };
+    global.game.combat = { id: 'combat1' };
+
+    expect(canUsePower(item)).toBe(true);
+
+    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
+    expect(canUsePower(item)).toBe(false);
   });
 });

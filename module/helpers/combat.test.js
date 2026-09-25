@@ -1,7 +1,8 @@
 import { jest } from '@jest/globals';
 import {
-  getDefenseValue, getVehicleDriver, computeMultiplier, getEffectiveLevel, applyDamage, healStunAtTurnStart,
-  _isCritIsFumble, grantToughEnoughResistance,
+  getDefenseValue, getVehicleDriver, getOwnedZord, computeMultiplier, getEffectiveLevel, applyDamage,
+  healStunAtTurnStart, _isCritIsFumble, grantToughEnoughResistance, getSecondaryDamage,
+  getSecondaryDamageForButton,
 } from './combat.mjs';
 
 describe("getDefenseValue", () => {
@@ -34,6 +35,24 @@ describe("getDefenseValue", () => {
   test("ignoreArmor has no effect on an NPC/Vehicle/Zord's flat .value (no armor breakdown to subtract)", () => {
     const actor = { system: { defenses: { toughness: { value: 12 } } } };
     expect(getDefenseValue(actor, 'toughness', { ignoreArmor: true })).toBe(12);
+  });
+
+  describe("'armorStripped' status (Ice Flechettes) forces ignoreArmor on, target-side", () => {
+    test("subtracts the armor component even with no ignoreArmor option passed", () => {
+      const actor = {
+        system: { isMorphed: false, defenses: { toughness: { total: 15, armor: 4 } } },
+        statuses: new Set(['armorStripped']),
+      };
+      expect(getDefenseValue(actor, 'toughness')).toBe(11);
+    });
+
+    test("has no effect without the status", () => {
+      const actor = {
+        system: { isMorphed: false, defenses: { toughness: { total: 15, armor: 4 } } },
+        statuses: new Set(),
+      };
+      expect(getDefenseValue(actor, 'toughness')).toBe(15);
+    });
   });
 
   describe("ignoreArmorPoints (Decepticon Directive Raider 'Penetrating Aim')", () => {
@@ -69,13 +88,43 @@ describe("getDefenseValue", () => {
     });
   });
 
+  describe("ignoreShield (Cobra Codex Screwball/Arched Weapon Upgrades' Bypassing trait)", () => {
+    test("subtracts the shield component out of .total", () => {
+      const actor = { system: { defenses: { toughness: { total: 15, shield: 2 } } } };
+      expect(getDefenseValue(actor, 'toughness', { ignoreShield: true })).toBe(13);
+      expect(getDefenseValue(actor, 'toughness')).toBe(15); // unaffected without the option
+    });
+
+    test("has no effect on an NPC/Vehicle/Zord's flat .value", () => {
+      const actor = { system: { defenses: { toughness: { value: 12 } } } };
+      expect(getDefenseValue(actor, 'toughness', { ignoreShield: true })).toBe(12);
+    });
+
+    test("false (the default) has no effect", () => {
+      const actor = { system: { defenses: { toughness: { total: 15, shield: 2 } } } };
+      expect(getDefenseValue(actor, 'toughness')).toBe(15);
+    });
+  });
+
   describe("Vehicle/Zord Willpower/Cleverness driver/pilot substitution (GI Joe CRB p.173, PR CRB p.126/136)", () => {
     const RELIC_KEY_ID = "Compendium.essence20.pr_crb.Item.uSlClAv3oJjf54pa";
+    const ZORD_SENTIENCE_ID = "Compendium.essence20.beneath_the_helmet.Item.idhVrfBIKELsl3OW";
 
-    function makeZord({ driverUuid = null, hasRelicKey = false, base = null, bonus = 0, armor = 0, shield = 0 } = {}) {
+    function makeZord({
+      driverUuid = null, hasRelicKey = false, hasZordSentience = false, base = null, bonus = 0, armor = 0, shield = 0,
+    } = {}) {
+      const features = [];
+      if (hasRelicKey) {
+        features.push({ type: 'feature', flags: { core: { sourceId: RELIC_KEY_ID } } });
+      }
+
+      if (hasZordSentience) {
+        features.push({ type: 'feature', flags: { core: { sourceId: ZORD_SENTIENCE_ID } } });
+      }
+
       return {
         type: 'zord',
-        items: hasRelicKey ? [{ type: 'feature', flags: { core: { sourceId: RELIC_KEY_ID } } }] : [],
+        items: features,
         system: {
           actors: driverUuid ? { a: { uuid: driverUuid, vehicleRole: 'driver' } } : {},
           defenses: { willpower: { usesDrivers: true, base, bonus, armor, shield, total: 0 } },
@@ -113,6 +162,13 @@ describe("getDefenseValue", () => {
       expect(getDefenseValue(zord, 'willpower')).toBe(14);
     });
 
+    test("Zord Sentience defaults to a Smarts/Social of 2 when unpiloted", () => {
+      const zord = makeZord({ hasZordSentience: true, base: 10, bonus: 1, armor: 0, shield: 0 });
+
+      // base(10) + 2 (Zord Sentience's own Smarts/Social default) + bonus(1) + armor(0) + shield(0)
+      expect(getDefenseValue(zord, 'willpower')).toBe(13);
+    });
+
     test("returns an effectively-unbeatable value with no driver and no Relic Key", () => {
       const zord = makeZord();
       expect(getDefenseValue(zord, 'willpower')).toBe(Infinity);
@@ -139,6 +195,80 @@ describe("getDefenseValue", () => {
         system: { actors: {}, defenses: { toughness: { total: 17 } } },
       };
       expect(getDefenseValue(zord, 'toughness')).toBe(17);
+    });
+  });
+
+  describe("Dogfighter (Across the Stars, General Perk, p.68) - +2 Evasion Defense half", () => {
+    const DOGFIGHTER_ID = "Compendium.essence20.across_the_stars.Item.twl2N01FD8XKO0s1";
+
+    function makeVehicle({ driverUuid = 'Actor.pilot1', size = 'extended2', aerialBase = 30, evasionTotal = 10 } = {}) {
+      return {
+        type: 'vehicle',
+        system: {
+          size,
+          actors: driverUuid ? { a: { uuid: driverUuid, vehicleRole: 'driver' } } : {},
+          movement: { aerial: { base: aerialBase } },
+          traits: {},
+          defenses: { evasion: { total: evasionTotal } },
+        },
+      };
+    }
+
+    function makePilot(hasDogfighter) {
+      return {
+        items: hasDogfighter ? [{ type: 'perk', flags: { core: { sourceId: DOGFIGHTER_ID } } }] : [],
+      };
+    }
+
+    beforeEach(() => {
+      global.fromUuidSync.mockReset();
+    });
+
+    test("adds +2 Evasion while piloted by a Dogfighter holder", () => {
+      const vehicle = makeVehicle();
+      global.fromUuidSync.mockReturnValue(makePilot(true));
+
+      expect(getDefenseValue(vehicle, 'evasion')).toBe(12);
+    });
+
+    test("no bonus without a Dogfighter-holding driver", () => {
+      const vehicle = makeVehicle();
+      global.fromUuidSync.mockReturnValue(makePilot(false));
+
+      expect(getDefenseValue(vehicle, 'evasion')).toBe(10);
+    });
+
+    test("no bonus without any driver seated", () => {
+      const vehicle = makeVehicle({ driverUuid: null });
+
+      expect(getDefenseValue(vehicle, 'evasion')).toBe(10);
+    });
+
+    test("no bonus on a vehicle larger than Extended II", () => {
+      const vehicle = makeVehicle({ size: 'extended3' });
+      global.fromUuidSync.mockReturnValue(makePilot(true));
+
+      expect(getDefenseValue(vehicle, 'evasion')).toBe(10);
+    });
+
+    test("no bonus on a vehicle with no Aerial Movement", () => {
+      const vehicle = makeVehicle({ aerialBase: 0 });
+      global.fromUuidSync.mockReturnValue(makePilot(true));
+
+      expect(getDefenseValue(vehicle, 'evasion')).toBe(10);
+    });
+
+    test("doesn't apply to a non-vehicle actor", () => {
+      const actor = { type: 'playerCharacter', system: { defenses: { evasion: { total: 10 } } } };
+      expect(getDefenseValue(actor, 'evasion')).toBe(10);
+    });
+
+    test("doesn't apply to a different Defense type", () => {
+      const vehicle = makeVehicle();
+      vehicle.system.defenses.toughness = { total: 10 };
+      global.fromUuidSync.mockReturnValue(makePilot(true));
+
+      expect(getDefenseValue(vehicle, 'toughness')).toBe(10);
     });
   });
 
@@ -208,6 +338,30 @@ describe("getVehicleDriver", () => {
   test("returns null with no crew at all", () => {
     expect(getVehicleDriver({ system: { actors: {} } })).toBeNull();
     expect(getVehicleDriver({ system: {} })).toBeNull();
+  });
+});
+
+describe("getOwnedZord", () => {
+  beforeEach(() => {
+    global.fromUuidSync.mockReset();
+  });
+
+  test("finds the entry with type 'zord' among the pilot's own system.actors", () => {
+    const torozord = { name: 'Torozord' };
+    global.fromUuidSync.mockReturnValue(torozord);
+    const pilot = { system: { actors: { a: { uuid: 'Actor.torozord', type: 'zord' } } } };
+
+    expect(getOwnedZord(pilot)).toBe(torozord);
+  });
+
+  test("skips non-Zord entries (e.g. a companion) and returns null", () => {
+    const pilot = { system: { actors: { a: { uuid: 'Actor.rex', type: 'companion' } } } };
+    expect(getOwnedZord(pilot)).toBeNull();
+  });
+
+  test("returns null with no registered actors at all", () => {
+    expect(getOwnedZord({ system: { actors: {} } })).toBeNull();
+    expect(getOwnedZord({ system: {} })).toBeNull();
   });
 });
 
@@ -317,6 +471,59 @@ describe("applyDamage", () => {
 
       expect(actor.update).toHaveBeenCalledWith({ 'system.stun.value': 1 }); // unchanged (+0)
       expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Emotional Mastery: Anger trigger for Emotional Strength - reactive Power regen on taking damage", () => {
+    const EMOTIONAL_STRENGTH_ID = "Compendium.essence20.jump_through_time.Item.BODEMNm0GIAsMMm0";
+
+    function makeActor({ anger = true } = {}) {
+      const flags = anger ? { activeEmotionalMastery: ['anger'] } : {};
+      return {
+        system: { health: { value: 10 }, immunities: {}, powers: { personal: { value: 1, max: 10 } } },
+        items: [{ type: 'perk', flags: { core: { sourceId: EMOTIONAL_STRENGTH_ID } } }],
+        update: jest.fn(),
+        getFlag: jest.fn((scope, key) => (scope == 'essence20' ? flags[key] : undefined)),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value;
+        }),
+      };
+    }
+
+    let originalRoll;
+    beforeEach(() => {
+      global.game.combat = { id: 'combat1', round: 1, turn: 0 };
+      originalRoll = global.Roll;
+      global.Roll = class {
+        async evaluate() {
+          this.total = 2; return this;
+        }
+      };
+    });
+
+    afterEach(() => {
+      global.game.combat = null;
+      global.Roll = originalRoll;
+    });
+
+    test("regains Power once real damage lands while Anger is active", async () => {
+      const actor = makeActor();
+      await applyDamage(actor, 3, 'fire');
+      expect(actor.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.powers.personal.value': expect.any(Number) }));
+      expect(actor.getFlag('essence20', 'emotionalStrengthUsedThisEncounter')).toBeTruthy();
+    });
+
+    test("doesn't trigger without Anger active", async () => {
+      const actor = makeActor({ anger: false });
+      await applyDamage(actor, 3, 'fire');
+      expect(actor.getFlag('essence20', 'emotionalStrengthUsedThisEncounter')).toBeFalsy();
+    });
+
+    test("doesn't trigger when no damage actually landed (e.g. fully Immune)", async () => {
+      const actor = makeActor();
+      actor.system.immunities.fire = true;
+      await applyDamage(actor, 3, 'fire');
+      expect(actor.getFlag('essence20', 'emotionalStrengthUsedThisEncounter')).toBeFalsy();
     });
   });
 
@@ -463,6 +670,34 @@ describe("applyDamage", () => {
     });
   });
 
+  describe("Energy Mastery (Decepticon Directive, Elementalist Focus, p.54) - Immunity", () => {
+    const ENERGY_AFFINITY_ID = "Compendium.essence20.decepticon_directive.Item.DgFY0ZmAtClAobiA";
+    const ENERGY_MASTERY_ID = "Compendium.essence20.decepticon_directive.Item.bjR8V1BEc3CfrrDu";
+
+    function makeActor({ hasMastery = true, choice = 'fire' } = {}) {
+      const items = [{ type: 'perk', flags: { core: { sourceId: ENERGY_AFFINITY_ID } }, system: { choice } }];
+      if (hasMastery) {
+        items.push({ type: 'perk', flags: { core: { sourceId: ENERGY_MASTERY_ID } }, system: {} });
+      }
+
+      return { system: { health: { value: 10 }, immunities: {} }, update: jest.fn(), items };
+    }
+
+    test("zeroes out damage of the type originally chosen for Energy Affinity", async () => {
+      const actor = makeActor();
+      const applied = await applyDamage(actor, 8, 'fire');
+      expect(applied).toBe(0);
+    });
+
+    test("doesn't apply to other damage types, without the Perk, or without Energy Affinity's own choice", async () => {
+      const actor = makeActor();
+      expect(await applyDamage(actor, 8, 'cold')).toBe(8);
+
+      const noMasteryActor = makeActor({ hasMastery: false });
+      expect(await applyDamage(noMasteryActor, 8, 'fire')).toBe(8);
+    });
+  });
+
   describe("Hardened Armor (Across the Stars, Gold Ranger, 1st level) - Resistance after a hit", () => {
     const HARDENED_ARMOR_ID = "Compendium.essence20.across_the_stars.Item.LVyy4985HSSKCnGs";
 
@@ -485,6 +720,14 @@ describe("applyDamage", () => {
       actor.system.stun = { value: 0 };
       await applyDamage(actor, 2, 'stun');
       expect(actor.update).toHaveBeenCalledWith({ 'system.resistances.stun': true });
+    });
+
+    test("doesn't grant Resistance to Blunt or Sharp damage", async () => {
+      for (const damageType of ['blunt', 'sharp']) {
+        const actor = makeActor({ perkIds: [HARDENED_ARMOR_ID] });
+        await applyDamage(actor, 3, damageType);
+        expect(actor.update).not.toHaveBeenCalledWith({ [`system.resistances.${damageType}`]: true });
+      }
     });
 
     test("doesn't grant Resistance without the Perk", async () => {
@@ -700,6 +943,79 @@ describe("applyDamage", () => {
       await applyDamage(actor, 3, 'fire');
 
       expect(actor.__rolePoints.update).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Energy Rebuttal (Through the Shattered Grid, Guardian of Eltar, 13th level, p.73)", () => {
+    const ENERGY_REBUTTAL_ID = "Compendium.essence20.through_the_shattered_grid.Item.EnergyRebuttal10";
+
+    let originalGame;
+    beforeEach(() => {
+      originalGame = global.game;
+      global.game = { combat: { id: 'combat1' } };
+    });
+    afterEach(() => {
+      global.game = originalGame;
+    });
+
+    function makeActor({ hasPerk = true, usedFlag = undefined } = {}) {
+      const flags = usedFlag !== undefined ? { energyRebuttalUsedThisEncounter: usedFlag } : {};
+      return {
+        system: { health: { value: 10 }, immunities: {}, resistances: {} },
+        items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: ENERGY_REBUTTAL_ID } } }] : [],
+        update: jest.fn(),
+        getFlag: jest.fn((scope, key) => flags[key]),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value;
+        }),
+        unsetFlag: jest.fn(),
+      };
+    }
+
+    test("banks a +2 damage bonus and marks the encounter used, on Energy damage", async () => {
+      const actor = makeActor();
+
+      await applyDamage(actor, 3, 'fire');
+
+      expect(actor.setFlag).toHaveBeenCalledWith(
+        'essence20', 'pendingEnergyRebuttal', expect.objectContaining({ amount: 2, combatId: 'combat1' }),
+      );
+      expect(actor.setFlag).toHaveBeenCalledWith(
+        'essence20', 'energyRebuttalUsedThisEncounter', expect.objectContaining({ epoch: 1, count: 1 }),
+      );
+    });
+
+    test("doesn't bank a second time in the same encounter", async () => {
+      const actor = makeActor({ usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
+
+      await applyDamage(actor, 3, 'fire');
+
+      expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'pendingEnergyRebuttal', expect.anything());
+    });
+
+    test("doesn't bank without the Perk", async () => {
+      const actor = makeActor({ hasPerk: false });
+
+      await applyDamage(actor, 3, 'fire');
+
+      expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'pendingEnergyRebuttal', expect.anything());
+    });
+
+    test("doesn't bank for a non-Energy damage type", async () => {
+      const actor = makeActor();
+
+      await applyDamage(actor, 3, 'sharp');
+
+      expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'pendingEnergyRebuttal', expect.anything());
+    });
+
+    test("doesn't bank when no damage actually landed (Immune)", async () => {
+      const actor = makeActor();
+      actor.system.immunities = { fire: true };
+
+      await applyDamage(actor, 3, 'fire');
+
+      expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'pendingEnergyRebuttal', expect.anything());
     });
   });
 
@@ -979,6 +1295,37 @@ describe("applyDamage", () => {
     });
   });
 
+  describe("Knock, Knock! (Technorganic Secrets, Carapaced Origin) - flat Sharp damage reduction", () => {
+    const KNOCK_KNOCK_ID = "Compendium.essence20.technorganic_secrets.Item.KihkWHZ1lwLfcwk0";
+
+    function makeActor({ hasPerk = false, health = 10 } = {}) {
+      const items = hasPerk
+        ? [{ type: 'perk', flags: { core: { sourceId: KNOCK_KNOCK_ID } }, system: {} }]
+        : [];
+      return { system: { health: { value: health }, immunities: {} }, update: jest.fn(), items };
+    }
+
+    test("reduces incoming Sharp damage by 1", async () => {
+      const actor = makeActor({ hasPerk: true });
+      expect(await applyDamage(actor, 3, 'sharp')).toBe(2);
+    });
+
+    test("floors at 0 rather than going negative", async () => {
+      const actor = makeActor({ hasPerk: true });
+      expect(await applyDamage(actor, 1, 'sharp')).toBe(0);
+    });
+
+    test("doesn't apply to a non-Sharp damage type", async () => {
+      const actor = makeActor({ hasPerk: true });
+      expect(await applyDamage(actor, 3, 'blunt')).toBe(3);
+    });
+
+    test("doesn't apply without the Perk", async () => {
+      const actor = makeActor({ hasPerk: false });
+      expect(await applyDamage(actor, 3, 'sharp')).toBe(3);
+    });
+  });
+
   describe("Wisdom of the Elders - Resilient Armor (Through the Shattered Grid, Guardian of Eltar, 9th/18th level) - flat damage reduction", () => {
     function makeActor({ active = true, health = 10 } = {}) {
       return {
@@ -1212,6 +1559,118 @@ describe("applyDamage", () => {
     });
   });
 
+  describe("Life Supporting (Cobra Codex, Restricted Battledress Upgrade, p.101)", () => {
+    const LIFE_SUPPORTING_ID = "Compendium.essence20.cobra_codex.Item.VokHpoLjUYTzA3Xk";
+
+    function makeActor({ health = 3, usedFlag = undefined, hasUpgrade = true, parentId = undefined } = {}) {
+      const flags = usedFlag !== undefined ? { lifeSupportingUsedThisEncounter: usedFlag } : {};
+      const upgrade = {
+        type: 'upgrade',
+        system: { type: 'armor' },
+        flags: { core: { sourceId: LIFE_SUPPORTING_ID } },
+        getFlag: jest.fn((scope, key) => (key == 'parentId' ? parentId : undefined)),
+      };
+      return {
+        system: { health: { value: health }, immunities: {} },
+        items: hasUpgrade ? [upgrade] : [],
+        update: jest.fn(),
+        getFlag: jest.fn((scope, key) => flags[key]),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value;
+        }),
+        unsetFlag: jest.fn(),
+      };
+    }
+
+    beforeEach(() => {
+      global.game = { combat: { id: 'combat1' } };
+    });
+
+    test("floors Health at 1 instead of 0, and marks the scene used", async () => {
+      const actor = makeActor({ health: 3 });
+      const applied = await applyDamage(actor, 5, 'sharp');
+
+      expect(applied).toBe(2); // 3 -> 1, not the full 5
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'lifeSupportingUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
+    });
+
+    test("doesn't apply a second time in the same scene", async () => {
+      const actor = makeActor({ health: 3, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
+      const applied = await applyDamage(actor, 5, 'sharp');
+
+      expect(applied).toBe(3);
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+    });
+
+    test("doesn't apply without the Upgrade, when Health doesn't reach 0, or for an attached (child) upgrade copy", async () => {
+      const noUpgradeActor = makeActor({ health: 3, hasUpgrade: false });
+      await applyDamage(noUpgradeActor, 5, 'sharp');
+      expect(noUpgradeActor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+
+      const healthyActor = makeActor({ health: 10 });
+      await applyDamage(healthyActor, 5, 'sharp');
+      expect(healthyActor.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
+      expect(healthyActor.setFlag).not.toHaveBeenCalled();
+
+      const attachedActor = makeActor({ health: 3, parentId: 'someArmor1' });
+      await applyDamage(attachedActor, 5, 'sharp');
+      expect(attachedActor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+    });
+  });
+
+  describe("Avoid The Inevitable (Factions in Action Vol 1: Ferocious Fighters, Cobra-La Origin Benefit, p.78)", () => {
+    const AVOID_THE_INEVITABLE_ID = "Compendium.essence20.ferocious_fighters.Item.RfYYmA2bDBVZsMl3";
+
+    function makeActor({ health = 3, usedFlag = undefined, hasPerk = true } = {}) {
+      const flags = usedFlag !== undefined ? { avoidTheInevitableUsedThisEncounter: usedFlag } : {};
+      return {
+        system: { health: { value: health }, immunities: {} },
+        items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: AVOID_THE_INEVITABLE_ID } } }] : [],
+        update: jest.fn(),
+        getFlag: jest.fn((scope, key) => flags[key]),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value;
+        }),
+        unsetFlag: jest.fn(),
+      };
+    }
+
+    beforeEach(() => {
+      global.game = { combat: { id: 'combat1' } };
+    });
+
+    test("floors Health at 1 instead of 0, and marks the scene used", async () => {
+      const actor = makeActor({ health: 3 });
+      const applied = await applyDamage(actor, 5, 'sharp');
+
+      expect(applied).toBe(2); // 3 -> 1, not the full 5
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
+      expect(actor.setFlag).toHaveBeenCalledWith(
+        'essence20', 'avoidTheInevitableUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
+      );
+    });
+
+    test("doesn't apply a second time in the same scene", async () => {
+      const actor = makeActor({ health: 3, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
+      const applied = await applyDamage(actor, 5, 'sharp');
+
+      expect(applied).toBe(3);
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+    });
+
+    test("doesn't apply without the Perk, or when Health doesn't actually reach 0", async () => {
+      const noPerkActor = makeActor({ health: 3, hasPerk: false });
+      await applyDamage(noPerkActor, 5, 'sharp');
+      expect(noPerkActor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+
+      const healthyActor = makeActor({ health: 10 });
+      await applyDamage(healthyActor, 5, 'sharp');
+      expect(healthyActor.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
+      expect(healthyActor.setFlag).not.toHaveBeenCalled();
+    });
+  });
+
   describe("Do Not Go Quietly (A Jump Through Time, Last of my Kind Origin Benefit, p.26)", () => {
     const DO_NOT_GO_QUIETLY_ID = "Compendium.essence20.jump_through_time.Item.llL4HUNxVJDNIaej";
 
@@ -1414,8 +1873,139 @@ describe("applyDamage", () => {
     });
   });
 
+  describe("Rise Again (Through the Shattered Grid, General Perk, p.115) - Defeat prevention", () => {
+    const RISE_AGAIN_ID = "Compendium.essence20.through_the_shattered_grid.Item.9DCNlVGfsEgUX6SC";
+
+    function makeActor({ health = 3, isMorphed = true, hasPerk = true, usedFlag = undefined } = {}) {
+      const flags = usedFlag !== undefined ? { riseAgainDefeatUsedThisEncounter: usedFlag } : {};
+      return {
+        system: { health: { value: health }, immunities: {}, isMorphed },
+        items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: RISE_AGAIN_ID } } }] : [],
+        update: jest.fn(),
+        getFlag: jest.fn((scope, key) => flags[key]),
+        setFlag: jest.fn(async (scope, key, value) => {
+          flags[key] = value;
+        }),
+        unsetFlag: jest.fn(),
+      };
+    }
+
+    beforeEach(() => {
+      global.game = { combat: { id: 'combat1' } };
+    });
+
+    test("heals to 1 instead of 0 while Morphed, on a non-Critical hit, and marks the scene used", async () => {
+      const actor = makeActor({ health: 3 });
+      const applied = await applyDamage(actor, 5, 'sharp', false);
+
+      expect(applied).toBe(2); // 3 -> 1, not the full 5
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'riseAgainDefeatUsedThisEncounter', expect.objectContaining({ epoch: 1, count: 1 }));
+    });
+
+    test("doesn't apply on a Critical Success", async () => {
+      const actor = makeActor({ health: 3 });
+      await applyDamage(actor, 5, 'sharp', true);
+
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+    });
+
+    test("doesn't apply while not Morphed, without the Perk, a second time this scene, or when Health doesn't reach 0", async () => {
+      const notMorphed = makeActor({ health: 3, isMorphed: false });
+      await applyDamage(notMorphed, 5, 'sharp', false);
+      expect(notMorphed.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+
+      const noPerk = makeActor({ health: 3, hasPerk: false });
+      await applyDamage(noPerk, 5, 'sharp', false);
+      expect(noPerk.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+
+      const alreadyUsed = makeActor({ health: 3, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
+      await applyDamage(alreadyUsed, 5, 'sharp', false);
+      expect(alreadyUsed.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+
+      const healthy = makeActor({ health: 10 });
+      await applyDamage(healthy, 5, 'sharp', false);
+      expect(healthy.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
+      expect(healthy.setFlag).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("It's Morphin Time! (PR CRB, p.33) - Defeat prevention", () => {
+    const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
+
+    function makeActor({ health = 3, isMorphed = true, hasPerk = true } = {}) {
+      return {
+        system: { health: { value: health }, immunities: {}, isMorphed },
+        items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: MORPHIN_TIME_PERK_ID } } }] : [],
+        update: jest.fn(),
+        getFlag: jest.fn(() => undefined),
+        setFlag: jest.fn(),
+        unsetFlag: jest.fn(),
+        toggleStatusEffect: jest.fn(),
+      };
+    }
+
+    beforeEach(() => {
+      global.game = { combat: { id: 'combat1' } };
+    });
+
+    test("reverts to 1 Health, un-Morphs, and applies Unconscious instead of Defeat", async () => {
+      const actor = makeActor({ health: 3 });
+      const applied = await applyDamage(actor, 5, 'sharp', false);
+
+      expect(applied).toBe(2); // 3 -> 1, not the full 5
+      expect(actor.update).toHaveBeenCalledWith({ 'system.isMorphed': false });
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
+      expect(actor.toggleStatusEffect).toHaveBeenCalledWith('unconscious', { active: true });
+    });
+
+    test("doesn't apply while not Morphed, without the Perk, or when Health doesn't reach 0", async () => {
+      const notMorphed = makeActor({ health: 3, isMorphed: false });
+      await applyDamage(notMorphed, 5, 'sharp', false);
+      expect(notMorphed.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+      expect(notMorphed.toggleStatusEffect).not.toHaveBeenCalled();
+
+      const noPerk = makeActor({ health: 3, hasPerk: false });
+      await applyDamage(noPerk, 5, 'sharp', false);
+      expect(noPerk.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+
+      const healthy = makeActor({ health: 10 });
+      await applyDamage(healthy, 5, 'sharp', false);
+      expect(healthy.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
+      expect(healthy.toggleStatusEffect).not.toHaveBeenCalled();
+    });
+
+    test("has no once-per-scene limit, unlike Rise Again - fires again on a second lethal hit the same scene", async () => {
+      const actor = makeActor({ health: 3 });
+      await applyDamage(actor, 5, 'sharp', false);
+      actor.update.mockClear();
+      actor.toggleStatusEffect.mockClear();
+
+      // Re-Morphed and hit again - no flag was set the first time to block a second trigger.
+      await applyDamage(actor, 5, 'sharp', false);
+
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
+      expect(actor.toggleStatusEffect).toHaveBeenCalledWith('unconscious', { active: true });
+    });
+
+    // Let's Go Psycho! (Finster's Monster-Matic Cookbook, every Psycho Path, 1st level) grants the
+    // exact same clause off a distinct compendium Item - same widened-array dispatch idiom as Dig
+    // Deep/Perimeter Defender.
+    test("also fires for Let's Go Psycho!'s own distinct compendium Item", async () => {
+      const LETS_GO_PSYCHO_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.qMvUP1yEtsSo6KDh";
+      const actor = makeActor({ health: 3 });
+      actor.items = [{ type: 'perk', flags: { core: { sourceId: LETS_GO_PSYCHO_ID } } }];
+
+      const applied = await applyDamage(actor, 5, 'sharp', false);
+
+      expect(applied).toBe(2);
+      expect(actor.update).toHaveBeenCalledWith({ 'system.isMorphed': false });
+      expect(actor.toggleStatusEffect).toHaveBeenCalledWith('unconscious', { active: true });
+    });
+  });
+
   describe("Aegis (GI Joe CRB, Tank Focus, 20th level, p.99)", () => {
-    const AEGIS_ID = "Compendium.essence20.gi_joe_crb.Item.CKQfEuHDNW6zP0FE";
+    const AEGIS_ID = "Compendium.essence20.gi_joe_crb.Item.0ZTjZ36gN74889am";
     const RECKLESS_ABANDON_ID = "Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY";
 
     function makeActor({ health = 3, hasPerk = true, recklessAbandonActive = true } = {}) {
@@ -1596,6 +2186,112 @@ describe("applyDamage", () => {
       expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
     });
   });
+
+  describe("We are the Coinless (Through the Shattered Grid, Origin Benefit, p.20)", () => {
+    const WE_ARE_THE_COINLESS_ID = "Compendium.essence20.through_the_shattered_grid.Item.DRHPP4jmrjNa53ZA";
+
+    function makeActor({ health = 3, hasPerk = false } = {}) {
+      return {
+        name: 'Kimberly',
+        system: { health: { value: health }, immunities: {} },
+        items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: WE_ARE_THE_COINLESS_ID } } }] : [],
+        update: jest.fn(),
+        getFlag: jest.fn(() => undefined),
+        setFlag: jest.fn(),
+        toggleStatusEffect: jest.fn(),
+        getActiveTokens: jest.fn(() => [{ document: { disposition: 1 }, center: { x: 0, y: 0 } }]),
+      };
+    }
+
+    function makeTeammateToken({ hasPerk = true, disposition = 1, power = 2 } = {}) {
+      const teammate = {
+        name: 'Zack',
+        system: { powers: { personal: { value: power } } },
+        items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: WE_ARE_THE_COINLESS_ID } } }] : [],
+        getFlag: jest.fn(() => undefined),
+        setFlag: jest.fn(),
+        update: jest.fn(),
+      };
+      return { actor: teammate, document: { disposition }, center: { x: 5, y: 0 } };
+    }
+
+    let originalGame;
+
+    beforeEach(() => {
+      global.canvas = { tokens: { placeables: [] }, grid: { measurePath: jest.fn(() => ({ distance: 5 })) } };
+      // This is the one entry in applyDamage's Defeat-prevention chain that announces itself, so
+      // it needs i18n/notifications the other entries' tests never touch.
+      originalGame = global.game;
+      global.game = { ...global.game, i18n: { format: jest.fn(() => 'msg') } };
+      global.ui = { ...global.ui, notifications: { info: jest.fn(), warn: jest.fn() } };
+    });
+
+    afterEach(() => {
+      global.game = originalGame;
+    });
+
+    test("a teammate spends 1 Power to return the actor at 1 Health, Impaired", async () => {
+      const actor = makeActor({ health: 3 });
+      const teammateToken = makeTeammateToken({ power: 2 });
+      canvas.tokens.placeables = [teammateToken];
+
+      await applyDamage(actor, 5, 'sharp');
+
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
+      expect(teammateToken.actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 1 });
+      expect(actor.toggleStatusEffect).toHaveBeenCalledWith('impaired', { active: true });
+    });
+
+    test("RAW says 'another member of your team', so it never rescues the holder themselves", async () => {
+      const actor = makeActor({ health: 3, hasPerk: true });
+      actor.system.powers = { personal: { value: 5 } };
+
+      await applyDamage(actor, 5, 'sharp');
+
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+    });
+
+    test("doesn't fire when the teammate can't afford the Power, or is an enemy, or lacks the Perk", async () => {
+      for (const token of [
+        makeTeammateToken({ power: 0 }),
+        makeTeammateToken({ disposition: -1 }),
+        makeTeammateToken({ hasPerk: false }),
+      ]) {
+        const actor = makeActor({ health: 3 });
+        canvas.tokens.placeables = [token];
+
+        await applyDamage(actor, 5, 'sharp');
+
+        expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+        expect(token.actor.update).not.toHaveBeenCalled();
+      }
+    });
+
+    test("doesn't fire when Health never actually reaches 0", async () => {
+      const actor = makeActor({ health: 10 });
+      const teammateToken = makeTeammateToken();
+      canvas.tokens.placeables = [teammateToken];
+
+      await applyDamage(actor, 5, 'sharp');
+
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
+      expect(teammateToken.actor.update).not.toHaveBeenCalled();
+    });
+
+    test("RAW states no frequency cap, so a teammate with Power can rescue repeatedly", async () => {
+      const teammateToken = makeTeammateToken({ power: 3 });
+      canvas.tokens.placeables = [teammateToken];
+
+      for (const expectedPower of [2, 2]) {
+        const actor = makeActor({ health: 3 });
+        await applyDamage(actor, 5, 'sharp');
+        expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
+        expect(teammateToken.actor.update).toHaveBeenLastCalledWith({
+          'system.powers.personal.value': expectedPower,
+        });
+      }
+    });
+  });
 });
 
 describe("healStunAtTurnStart", () => {
@@ -1707,5 +2403,68 @@ describe("_isCritIsFumble", () => {
     const [isCrit, isFumble] = _isCritIsFumble([{ faces: 20, values: [10] }, { faces: 6, values: [3] }], false);
     expect(isCrit).toBe(false);
     expect(isFumble).toBe(false);
+  });
+});
+
+describe("getSecondaryDamage", () => {
+  test("returns {type, value} for a weaponEffect with a secondary damage component", () => {
+    const item = { type: 'weaponEffect', system: { secondaryDamage: { type: 'stun', value: 1 } } };
+    expect(getSecondaryDamage(item)).toEqual({ type: 'stun', value: 1 });
+  });
+
+  test("returns null when the item is not a weaponEffect", () => {
+    const item = { type: 'weapon', system: { secondaryDamage: { type: 'stun', value: 1 } } };
+    expect(getSecondaryDamage(item)).toBeNull();
+  });
+
+  test("returns null when forgone is true (Guardian Strikes etc.)", () => {
+    const item = { type: 'weaponEffect', system: { secondaryDamage: { type: 'stun', value: 1 } } };
+    expect(getSecondaryDamage(item, true)).toBeNull();
+  });
+
+  test("returns null when there is no type set (the default)", () => {
+    const item = { type: 'weaponEffect', system: { secondaryDamage: { type: null, value: 0 } } };
+    expect(getSecondaryDamage(item)).toBeNull();
+  });
+
+  test("returns null when the value is 0", () => {
+    const item = { type: 'weaponEffect', system: { secondaryDamage: { type: 'stun', value: 0 } } };
+    expect(getSecondaryDamage(item)).toBeNull();
+  });
+
+  test("returns null when the item is missing entirely", () => {
+    expect(getSecondaryDamage(null)).toBeNull();
+  });
+});
+
+describe("getSecondaryDamageForButton", () => {
+  const flags = {
+    checkResults: [
+      { targetUuid: 'Actor.target1', secondaryDamage: { type: 'stun', value: 2, base: 1 } },
+      { targetUuid: 'Actor.target2', secondaryDamage: null },
+    ],
+  };
+
+  test("returns the scaled rider for the base Apply Damage button", () => {
+    expect(getSecondaryDamageForButton(flags, 'Actor.target1:base', 'Actor.target1'))
+      .toEqual({ type: 'stun', value: 2 });
+  });
+
+  test("returns the flat value for the Critical Success 'repeat the effect' button", () => {
+    expect(getSecondaryDamageForButton(flags, 'Actor.target1:crit:double', 'Actor.target1'))
+      .toEqual({ type: 'stun', value: 1 });
+  });
+
+  test("returns null for any other button key", () => {
+    expect(getSecondaryDamageForButton(flags, 'Actor.target1:half', 'Actor.target1')).toBeNull();
+  });
+
+  test("returns null when the target's checkResults entry has no secondary damage", () => {
+    expect(getSecondaryDamageForButton(flags, 'Actor.target2:base', 'Actor.target2')).toBeNull();
+  });
+
+  test("returns null when flags/checkResults are missing entirely", () => {
+    expect(getSecondaryDamageForButton(null, 'Actor.target1:base', 'Actor.target1')).toBeNull();
+    expect(getSecondaryDamageForButton({}, 'Actor.target1:base', 'Actor.target1')).toBeNull();
   });
 });

@@ -1,0 +1,45 @@
+{
+  "folder": "bsdJ7Coa2z9hdtR0",
+  "name": "Grappler Effect",
+  "type": "weaponEffect",
+  "_id": "Ya0iiC78NDJxI7Mb",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "damageType": "maneuver",
+    "damageValue": null,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 3,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790227721115,
+    "modifiedTime": 1790227721115,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 600000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Ya0iiC78NDJxI7Mb"
+}

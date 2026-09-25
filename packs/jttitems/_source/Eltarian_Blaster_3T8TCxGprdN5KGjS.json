@@ -37,7 +37,7 @@
       "b395": {
         "uuid": "Compendium.essence20.jump_through_time.Item.ZprCM70VzEVjtCsW",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Eltarina Blaster Alternate Effect",
+        "name": "Eltarian Blaster Alternate Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -63,8 +63,8 @@
     },
     "equipped": true,
     "requirements": {
-      "custom": "",
-      "skill": "technology",
+      "custom": "Access to Alien Technology",
+      "skill": "science",
       "shift": "d2"
     },
     "traits": [

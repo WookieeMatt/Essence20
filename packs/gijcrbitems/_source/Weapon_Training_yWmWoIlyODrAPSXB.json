@@ -9,7 +9,7 @@
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",
-      "page": 91
+      "page": 134
     },
     "items": {},
     "advances": {
@@ -27,7 +27,7 @@
     "numChoices": 1,
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role",
+    "type": "general",
     "value": 0,
     "version": "powerRangers"
   },

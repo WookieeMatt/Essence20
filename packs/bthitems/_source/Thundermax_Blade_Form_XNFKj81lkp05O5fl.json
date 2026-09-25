@@ -1,0 +1,75 @@
+{
+  "folder": "fT1wrp647z4EqXSp",
+  "name": "Thundermax Blade Form",
+  "type": "weapon",
+  "_id": "XNFKj81lkp05O5fl",
+  "img": "systems/essence20/assets/icons/weapons/blade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 68
+    },
+    "items": {
+      "8ade": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.2yfxQbe7DsWsfisT",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Thundermax Blade Form Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "power",
+      "sharp"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790262353573,
+    "modifiedTime": 1790262353573,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!XNFKj81lkp05O5fl"
+}

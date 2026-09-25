@@ -62,8 +62,9 @@ const DELIBERATE_OMISSIONS = new Map([
   ["energon.red.value", "a spendable pool, not a persistent bonus"],
   ["energon.synthEn.value", "a spendable pool, not a persistent bonus"],
   ["powers.personal.value", "a spendable pool, not a persistent bonus"],
-  ["powers.sorcerous.value", "a spendable pool, not a persistent bonus"],
+  ["powers.sorcerous.value", "legacy field, no longer read or written (see documents/actor.mjs#_prepareSorcerousPower)"],
   ["powers.sorcerous.levelTaken", "character-build bookkeeping"],
+  ["powers.sorcerous.committed", "derived every prepareData pass from owned Sorcerous Powers' own build cost, not a target for an effect"],
 ]);
 
 /**

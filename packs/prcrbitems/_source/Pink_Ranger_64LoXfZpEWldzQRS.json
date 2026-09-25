@@ -246,7 +246,11 @@
       "levels": [],
       "specializedLevels": []
     },
-    "skills": [],
+    "skills": [
+      "finesse",
+      "targeting",
+      "persuasion"
+    ],
     "version": "powerRangers",
     "weapons": {
       "qualified": [],

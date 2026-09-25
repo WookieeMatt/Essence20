@@ -19,7 +19,7 @@
         "willpower": false
       },
       "increase": 1,
-      "level20Value": null,
+      "level20Value": 5,
       "increaseLevels": [
         "level4",
         "level8",
@@ -28,7 +28,8 @@
       ],
       "startingValue": 1,
       "type": "defenseBonus",
-      "value": 0
+      "value": 0,
+      "whileMorphed": true
     },
     "isActivatable": false,
     "isActive": false,

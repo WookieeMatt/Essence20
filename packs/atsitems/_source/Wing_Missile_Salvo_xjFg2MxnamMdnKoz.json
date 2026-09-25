@@ -34,6 +34,28 @@
           "value": 60
         },
         "shiftDown": 0
+      },
+      "1yan": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.FRue0q6oL8aRWswk",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Wing Missile Salvo Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 4,
+        "radius": 30,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 150,
+          "value": 60
+        },
+        "shiftDown": 0
       }
     },
     "classFeatureId": null,

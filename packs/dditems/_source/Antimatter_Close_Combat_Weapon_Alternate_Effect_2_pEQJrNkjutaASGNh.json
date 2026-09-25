@@ -1,0 +1,47 @@
+{
+  "folder": "oKWTunb7j09H7xpd",
+  "name": "Antimatter Close Combat Weapon Alternate Effect 2",
+  "type": "weaponEffect",
+  "_id": "pEQJrNkjutaASGNh",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "finesse",
+      "style": "energy"
+    },
+    "damageType": "maneuver",
+    "damageValue": null,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790227721120,
+    "modifiedTime": 1790227721120,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!pEQJrNkjutaASGNh"
+}

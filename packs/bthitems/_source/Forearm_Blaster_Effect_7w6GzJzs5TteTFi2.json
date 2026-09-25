@@ -17,7 +17,7 @@
       "style": "energy"
     },
     "damageType": "element",
-    "damageValue": 2,
+    "damageValue": 1,
     "isSpecialized": false,
     "shiftDown": 0,
     "numHands": "1",

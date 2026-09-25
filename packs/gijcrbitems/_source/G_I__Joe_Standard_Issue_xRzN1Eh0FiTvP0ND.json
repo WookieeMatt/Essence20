@@ -12,6 +12,20 @@
       "page": 136
     },
     "items": {
+      "j0ft": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Fat1guesSt4ndard",
+        "img": "systems/essence20/assets/icons/gear/clothes.svg",
+        "name": "Fatigues",
+        "type": "gear",
+        "description": ""
+      },
+      "j0tb": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.sARUEo0QhTK2nVy6",
+        "img": "systems/essence20/assets/icons/gear/backpack.svg",
+        "name": "Tactical Backpack",
+        "type": "gear",
+        "description": ""
+      },
       "j1pi": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.71D2KcAAVoLMHTm5",
         "img": "systems/essence20/assets/icons/weapons/pistol.svg",
@@ -51,6 +65,13 @@
         "uuid": "Compendium.essence20.gi_joe_crb.Item.ePD7V7VGCwfDvxUB",
         "img": "systems/essence20/assets/icons/gear/rations.svg",
         "name": "Rations",
+        "type": "gear",
+        "description": ""
+      },
+      "j7hb": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.HTBAcc3ssP4dGear",
+        "img": "systems/essence20/assets/icons/gear/tablet.svg",
+        "name": "HTB Access Pad",
         "type": "gear",
         "description": ""
       }

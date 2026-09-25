@@ -34,6 +34,14 @@
         "name": "Body Shield",
         "type": "perk",
         "subtype": "role",
+        "level": 3
+      },
+      "b23e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.2hwFRZ67xIGt1XTm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Danger Sense",
+        "type": "perk",
+        "subtype": "role",
         "level": 6
       },
       "433f": {

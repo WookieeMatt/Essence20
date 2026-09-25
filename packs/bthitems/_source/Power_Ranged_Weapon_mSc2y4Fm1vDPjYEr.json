@@ -1,0 +1,75 @@
+{
+  "folder": "fT1wrp647z4EqXSp",
+  "name": "Power Ranged Weapon",
+  "type": "weapon",
+  "_id": "mSc2y4Fm1vDPjYEr",
+  "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 68
+    },
+    "items": {
+      "3ced": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.BApgvx4dmUshW8rw",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Ranged Weapon Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "ranged"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 400,
+          "value": 100
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "element",
+      "power"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790262353573,
+    "modifiedTime": 1790262353573,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!mSc2y4Fm1vDPjYEr"
+}

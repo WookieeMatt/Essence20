@@ -29,7 +29,7 @@
         "startTurn": null
       },
       "disabled": false,
-      "_id": "ComedyIsHard1",
+      "_id": "ComedyIsHard1000",
       "changes": [
         {
           "key": "system.health.bonus",
@@ -58,7 +58,7 @@
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!P1ZrldoPSHbpEjzw.ComedyIsHard1"
+      "_key": "!items.effects!P1ZrldoPSHbpEjzw.ComedyIsHard1000"
     }
   ],
   "sort": 0,

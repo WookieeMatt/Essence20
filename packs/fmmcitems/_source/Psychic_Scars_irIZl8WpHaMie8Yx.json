@@ -1,0 +1,33 @@
+{
+  "folder": "E6DeUTYlh8aIeTMe",
+  "name": "Psychic Scars",
+  "type": "hangUp",
+  "_id": "irIZl8WpHaMie8Yx",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 282
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1790262811529,
+    "modifiedTime": 1790262811529,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!irIZl8WpHaMie8Yx"
+}

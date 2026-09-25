@@ -45,6 +45,98 @@
         "img": "systems/essence20/assets/icons/items/gear.svg",
         "name": "Limited Technology (Engineering) Kit",
         "type": "gear"
+      },
+      "6f3a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Jnjio1DtAx0QgE85",
+        "img": "systems/essence20/assets/icons/weapons/chainsaw.svg",
+        "name": "Power Tool (Experimental)",
+        "type": "weapon",
+        "items": {
+          "0dd4": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.Xm8pvaQqI1yxZCDO",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Power Tool Effect (Blunt)",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 2,
+            "damageType": "blunt",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 2,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 2
+          },
+          "9e87": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.as9rtatnTYLpQX04",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Power Tool Effect (Sharp)",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 2,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 2,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 2
+          },
+          "3e45": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.iLToQKSxMbuOQvGI",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Power Tool Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": null,
+            "damageType": "intimidate",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 2,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          },
+          "a1c2": {
+            "uuid": "Compendium.essence20.cobra_codex.Item.HkwjVfn7iILxPUJb",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Experimental",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "Cobra Codex",
+              "page": 96
+            },
+            "subtype": "weapon",
+            "traits": [
+              "temperamental"
+            ]
+          }
+        }
       }
     },
     "alternateAccess": "SciTech Division"

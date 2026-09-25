@@ -10,14 +10,14 @@
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
-      "page": null
+      "page": 47
     },
     "classification": {
-      "skill": "might",
+      "skill": "driving",
       "style": "melee"
     },
     "damageType": "blunt",
-    "damageValue": 2,
+    "damageValue": 1,
     "isRam": true,
     "shiftDown": 0,
     "numHands": "0",

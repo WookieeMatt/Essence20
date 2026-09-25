@@ -10,11 +10,14 @@ import {
   getCost,
   getLedger,
   getMode,
+  getNamedActionType,
   getRemaining,
   getSheetContext,
+  grantActionsThisTurn,
   isAiming,
   isBlocking,
   isTracking,
+  isUnableToAct,
   refund,
   resetTurn,
   setAiming,
@@ -156,6 +159,68 @@ describe("getBudget / getRemaining", () => {
 
     expect(getRemaining(actor)).toEqual({ standard: 0, move: 1, free: 0 });
   });
+
+  test("a Stunned or Unconscious actor has nothing left, and any spend falls short", () => {
+    const combatant = makeCombatant();
+    setGame({ combatant });
+
+    for (const status of ['stunned', 'unconscious']) {
+      const actor = { ...makeActor({ free: 1 }), statuses: new Set([status]) };
+      expect(isUnableToAct(actor)).toBe(true);
+      expect(getRemaining(actor)).toEqual({ standard: 0, move: 0, free: 0 });
+      expect(canSpend(actor, 'standard').ok).toBe(false);
+      expect(canSpend(actor, 'free').ok).toBe(false);
+    }
+
+    expect(isUnableToAct({ ...makeActor(), statuses: new Set(['prone']) })).toBe(false);
+  });
+
+  // Asleep/Defeated join Stunned/Unconscious here too - see isUnableToAct's own doc comment for why
+  // this used to be a second, separately-maintained list inline in documents/actor.mjs.
+  test("an Asleep or Defeated actor is likewise unable to act", () => {
+    for (const status of ['asleep', 'defeated']) {
+      const actor = { ...makeActor(), getFlag: jest.fn(() => undefined), statuses: new Set([status]) };
+      expect(isUnableToAct(actor)).toBe(true);
+    }
+  });
+
+  // A Defeated actor who spent a Story Point to "momentarily act as though it has not been
+  // Defeated" (GI Joe CRB p.209) is the one exception to the blanket Defeated zero-out.
+  test("a Defeated actor who has used their act-while-Defeated Story Point this turn can still act", () => {
+    global.game.combat = { id: 'c1', round: 2, turn: 0 };
+
+    const actingWhileDefeatedActor = {
+      ...makeActor(),
+      statuses: new Set(['defeated']),
+      getFlag: jest.fn((scope, key) => (
+        scope == 'essence20' && key == 'actWhileDefeatedThisTurn'
+          ? { combatId: 'c1', round: 2, turn: 0 }
+          : undefined
+      )),
+    };
+    expect(isUnableToAct(actingWhileDefeatedActor)).toBe(false);
+
+    const staleFlagActor = {
+      ...makeActor(),
+      statuses: new Set(['defeated']),
+      getFlag: jest.fn((scope, key) => (
+        scope == 'essence20' && key == 'actWhileDefeatedThisTurn'
+          ? { combatId: 'c1', round: 1, turn: 0 }
+          : undefined
+      )),
+    };
+    expect(isUnableToAct(staleFlagActor)).toBe(true);
+  });
+
+  test("a Stunned actor is blocked under strict mode", async () => {
+    const combatant = makeCombatant();
+    setGame({ combatant, mode: 'strict' });
+    const actor = { ...makeActor(), statuses: new Set(['stunned']) };
+
+    const result = await spend(actor, 'move');
+
+    expect(result.blocked).toBe(true);
+  });
 });
 
 describe("getCost", () => {
@@ -173,6 +238,33 @@ describe("getCost", () => {
 
   test("an unknown type costs nothing rather than throwing", () => {
     expect(getCost('somethingRemoved')).toEqual({});
+  });
+});
+
+describe("getNamedActionType", () => {
+  const DODGY_ID = "Compendium.essence20.mlp_crb.Item.jwhdtCaq0MBotupG";
+
+  beforeEach(() => {
+    global.CONFIG = { E20: { namedActions: { defend: { label: 'E20.ActionDefend', type: 'standard' }, aim: { label: 'E20.ActionAim', type: 'free' } } } };
+  });
+
+  test("returns the printed type by default", () => {
+    expect(getNamedActionType(makeActor(), 'defend')).toBe('standard');
+    expect(getNamedActionType(makeActor(), 'aim')).toBe('free');
+  });
+
+  test("Dodgy turns Defend into a Free action", () => {
+    const actor = makeActor({ items: [{ type: 'perk', flags: { core: { sourceId: DODGY_ID } } }] });
+    expect(getNamedActionType(actor, 'defend')).toBe('free');
+  });
+
+  test("Dodgy doesn't affect any other named action", () => {
+    const actor = makeActor({ items: [{ type: 'perk', flags: { core: { sourceId: DODGY_ID } } }] });
+    expect(getNamedActionType(actor, 'aim')).toBe('free'); // already free, unaffected
+  });
+
+  test("returns null for an unrecognized key", () => {
+    expect(getNamedActionType(makeActor(), 'somethingRemoved')).toBeNull();
   });
 });
 
@@ -687,6 +779,43 @@ describe("tradeStandardForFree", () => {
     expect(getSheetContext(actor).canTrade).toBe(true);
     await spend(actor, 'standard');
     expect(getSheetContext(actor).canTrade).toBe(false);
+  });
+});
+
+describe("grantActionsThisTurn (Omega Enhancement's Hyper Mode, Across the Stars p.70)", () => {
+  test("adds Move and Free actions to this turn's budget only", async () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor();
+
+    expect(await grantActionsThisTurn(actor, { move: 1, free: 2 }, "Hyper Mode")).toBe(true);
+
+    expect(getRemaining(actor).move).toBe(2);
+    expect(getRemaining(actor).free).toBe(2);
+    expect(getRemaining(actor).standard).toBe(1);
+  });
+
+  test("the granted actions are spendable like any other", async () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor();
+
+    await grantActionsThisTurn(actor, { move: 1, free: 2 });
+    await spend(actor, 'move');
+
+    expect(getRemaining(actor).move).toBe(1);
+  });
+
+  test("stacks with tradeStandardForFree's own Free grant rather than overwriting it", async () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor();
+
+    await tradeStandardForFree(actor);
+    await grantActionsThisTurn(actor, { free: 2 });
+
+    expect(getRemaining(actor).free).toBe(4);
+  });
+
+  test("refuses out of combat, where there is no ledger", async () => {
+    expect(await grantActionsThisTurn(makeActor(), { move: 1 })).toBe(false);
   });
 });
 

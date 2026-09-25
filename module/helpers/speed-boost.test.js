@@ -1,63 +1,73 @@
 import { jest } from '@jest/globals';
-import { isSpeedBoostActive, applySpeedBoost } from './speed-boost.mjs';
+import { applySpeedBoost, consumeSpeedBoostEdge, isSpeedBoostEdgeActive } from './speed-boost.mjs';
 
-// item.effects is a real Foundry EmbeddedCollection (extends Map, but ports over Array-style
-// iteration helpers like .find()/.every() - confirmed against real working code elsewhere in this
-// project, e.g. helpers/actor.mjs's actor.effects.find()). This fake matches only the surface
-// speed-boost.mjs actually touches: .size, .every(), and being directly for-of iterable.
-function makeEffectsCollection(effects) {
+function makeEffect(disabled, key) {
   return {
-    size: effects.length,
-    every: fn => effects.every(fn),
-    [Symbol.iterator]: () => effects[Symbol.iterator](),
+    disabled,
+    changes: [{ key, mode: 2, value: '10' }],
+    update: jest.fn(async function (data) {
+      this.disabled = data.disabled;
+    }),
   };
 }
 
-function makeEffect(disabled) {
-  return { disabled, update: jest.fn(async function (data) {
-    this.disabled = data.disabled; 
-  }) };
+function makeItem() {
+  const ground = makeEffect(true, 'system.movement.ground.morphed');
+  const initiative = makeEffect(true, 'system.skills.initiative.edge');
+  return { ground, initiative, item: { effects: [ground, initiative] } };
 }
 
-describe('isSpeedBoostActive', () => {
-  test('false when the item has no effects at all', () => {
-    const item = { effects: makeEffectsCollection([]) };
-    expect(isSpeedBoostActive(item)).toBe(false);
+function makeActor(flags = {}) {
+  const store = { ...flags };
+  return {
+    getFlag: jest.fn((scope, key) => store[key]),
+    setFlag: jest.fn(async (scope, key, value) => {
+      store[key] = value;
+    }),
+    unsetFlag: jest.fn(async (scope, key) => {
+      delete store[key];
+    }),
+  };
+}
+
+describe('applySpeedBoost', () => {
+  test('banks one Initiative Edge and reports it changed something', async () => {
+    const actor = makeActor();
+    const { item } = makeItem();
+
+    const changed = await applySpeedBoost(actor, item);
+
+    expect(changed).toBe(true);
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'speedBoostInitiativeEdge', true);
+    expect(isSpeedBoostEdgeActive(actor)).toBe(true);
   });
 
-  test('false when any effect is still disabled', () => {
-    const item = { effects: makeEffectsCollection([makeEffect(false), makeEffect(true)]) };
-    expect(isSpeedBoostActive(item)).toBe(false);
+  test('switches the passive Ground Movement effect on, but never the always-on Initiative Edge effect', async () => {
+    const { ground, initiative, item } = makeItem();
+
+    await applySpeedBoost(makeActor(), item);
+
+    expect(ground.update).toHaveBeenCalledWith({ disabled: false });
+    expect(initiative.update).not.toHaveBeenCalled();
   });
 
-  test('true when every effect is enabled', () => {
-    const item = { effects: makeEffectsCollection([makeEffect(false), makeEffect(false)]) };
-    expect(isSpeedBoostActive(item)).toBe(true);
+  test('is a no-op when an Edge is already banked', async () => {
+    const actor = makeActor({ speedBoostInitiativeEdge: true });
+    const { item } = makeItem();
+
+    const changed = await applySpeedBoost(actor, item);
+
+    expect(changed).toBe(false);
+    expect(actor.setFlag).not.toHaveBeenCalled();
   });
 });
 
-describe('applySpeedBoost', () => {
-  test('enables every disabled effect and reports it changed something', async () => {
-    const ground = makeEffect(true);
-    const initiative = makeEffect(true);
-    const item = { effects: makeEffectsCollection([ground, initiative]) };
+describe('consumeSpeedBoostEdge', () => {
+  test('clears the banked Edge', async () => {
+    const actor = makeActor({ speedBoostInitiativeEdge: true });
 
-    const changed = await applySpeedBoost(item);
+    await consumeSpeedBoostEdge(actor);
 
-    expect(changed).toBe(true);
-    expect(ground.update).toHaveBeenCalledWith({ disabled: false });
-    expect(initiative.update).toHaveBeenCalledWith({ disabled: false });
-  });
-
-  test('is a no-op and reports no change when already active', async () => {
-    const ground = makeEffect(false);
-    const initiative = makeEffect(false);
-    const item = { effects: makeEffectsCollection([ground, initiative]) };
-
-    const changed = await applySpeedBoost(item);
-
-    expect(changed).toBe(false);
-    expect(ground.update).not.toHaveBeenCalled();
-    expect(initiative.update).not.toHaveBeenCalled();
+    expect(isSpeedBoostEdgeActive(actor)).toBe(false);
   });
 });

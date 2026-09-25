@@ -30,6 +30,10 @@ export class RolePointsItemData extends foundry.abstract.TypeDataModel {
         startingValue: makeInt(null),
         type: makeStrWithChoices(Object.keys(E20.bonusTypes), 'none'),
         value : makeInt(0),
+        // Some defenseBonus Role Points only apply while Morphed (e.g. Hardened Armor, PR ATS
+        // Gold Ranger p.52: "your Toughness Defense increases while Morphed") - see actor.mjs's
+        // _prepareDefenses, same flag name/shape as an Active Effect's own whileMorphed gate.
+        whileMorphed: makeBool(false),
       }),
       isActivatable: makeBool(false),
       isActive: makeBool(false),

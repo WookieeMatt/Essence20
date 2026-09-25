@@ -181,10 +181,27 @@
       "levels": [],
       "specializedLevels": []
     },
-    "skills": [],
+    "skills": [
+      "alertness",
+      "brawn",
+      "conditioning",
+      "culture",
+      "might",
+      "survival"
+    ],
+    "upgrades": {
+      "armors": {
+        "trained": [
+          "limited",
+          "restricted"
+        ]
+      }
+    },
     "version": "transformers",
     "weapons": {
-      "qualified": [],
+      "qualified": [
+        "mightMelee"
+      ],
       "trained": [
         "assaultRifle",
         "ballistic",

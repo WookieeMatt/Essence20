@@ -1,0 +1,36 @@
+{
+  "folder": "ZQVDbqkf0PdpdQ2c",
+  "name": "Ninja Storm Wind Ranger (Form)",
+  "type": "perk",
+  "_id": "Txv1ODlLKY91hPrA",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 55
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265586947,
+    "modifiedTime": 1790265586947,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Txv1ODlLKY91hPrA"
+}

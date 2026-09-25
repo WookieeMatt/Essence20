@@ -54,7 +54,7 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 2
+        "shiftDown": 1
       },
       "fb17": {
         "uuid": "Compendium.essence20.pr_crb.Item.WgxbC8HBSTE6i1Yb",
@@ -76,7 +76,7 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 0
+        "shiftDown": 1
       }
     },
     "classFeatureId": null,
@@ -93,6 +93,7 @@
     },
     "traits": [
       "blunt",
+      "martialArts",
       "silent"
     ],
     "upgradeTraits": [],

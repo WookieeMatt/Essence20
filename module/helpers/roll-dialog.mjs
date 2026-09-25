@@ -1,5 +1,7 @@
 import { E20 } from "./config.mjs";
-import { actorHasPerk, findPerk, getUsesThisEncounter, markUsedThisEncounterCount } from "./perks.mjs";
+import {
+  actorHasPerk, findPerk, getUsesThisEncounter, getUsesThisScene, markUsedThisEncounterCount, markUsedThisScene,
+} from "./perks.mjs";
 import RollOptionsDialog from "../apps/roll-options-dialog.mjs";
 
 // Presence (GI Joe CRB p.76, Commando's Spy Focus, 1st level): "You do not suffer a Snag for
@@ -22,18 +24,20 @@ const UNTRAINED_SNAG_IMMUNITY_PERKS = [PRESENCE_ID, I_LL_MAKE_IT_WORK_ID];
 const LEADFOOT_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.zdXJzzqekwPAnCtT";
 
 // Green (Transformers CRB, General Perk, p.109 / GI Joe CRB, General Perk, p.131 - same name,
-// same "Level 4 or lower" prerequisite, same text, reprinted in both books): "3 times per day, you
-// suffer no Snag on an unskilled roll." Unlike Presence/I'll Make It Work above (an unconditional
-// grant), this is capped - tracked as a numeric count rather than the usual once/scene boolean,
-// scoped to the current Combat the same way hasUsedThisEncounter's own flag is (perks.mjs) so a
-// new encounter resets the count; "per day" approximated as "per encounter, unconstrained outside
-// combat" - the same already-accepted "no real cap outside combat" simplification this project
-// applies elsewhere (see Worth A Shot's own doc comment in dice.mjs). A small array (like
-// UNTRAINED_SNAG_IMMUNITY_PERKS above), not a second hardcoded ID, so either printing counts.
+// same "Level 4 or lower" prerequisite, near-identical text, reprinted in both books, but NOT
+// verbatim - the two printings disagree on the actual cap window). Transformers CRB: "Three times
+// per day, you do not suffer a Snag when you make an unskilled roll" - "per day" approximated as
+// "per encounter, unconstrained outside combat," the same already-accepted "no real cap outside
+// combat" simplification this project applies elsewhere (see Worth A Shot's own doc comment in
+// dice.mjs). GI Joe CRB: "Three times per mission... you do not suffer a Snag" - a strictly wider
+// window than a single encounter, so it shares helpers/perks.mjs's own "scene" counter instead
+// (the widest window this Scene Clock tracks, the closest available match to "per mission" - see
+// getUsesThisScene's own doc comment), corrected from an earlier version of this file that wrongly
+// folded both printings into one shared per-encounter counter.
 const GREEN_TF_ID = "Compendium.essence20.tf_crb.Item.7t0TYx5BMrEHg1BE";
 const GREEN_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.oelHthPlqIq4eDpp";
-const GREEN_IDS = [GREEN_TF_ID, GREEN_GIJ_ID];
 const GREEN_USES_FLAG = 'greenUsesThisEncounter';
+const GREEN_GIJ_USES_FLAG = 'greenUsesThisScene';
 
 // Air/Land/Sea Vehicle Qualification (Factions in Action Vol. 2, Dreadnok General Perks, p.63):
 // "You roll Driving Skill Tests to drive [type] vehicles without a Snag, even if you have no
@@ -72,6 +76,29 @@ const VEHICLE_QUALIFICATION_PERKS_BY_MOVEMENT_TYPE = {
   ground: [LAND_VEHICLE_QUALIFICATION_ID, NU_POGODI_ID, NOTHING_PERSONAL_ID, THE_PROMISE_OF_RICHES_ID],
   swim: [SEA_VEHICLE_QUALIFICATION_ID, THE_PROMISE_OF_RICHES_ID],
 };
+
+// Zord (PR CRB, Role Perk, p.35, granted at 3rd level): "When piloting your personal Zord, you
+// cannot suffer Snags when using the Driving skill." Textually the same "roll Driving without a
+// Snag even if untrained" grant as Air/Land/Sea Vehicle Qualification just above (same chapter,
+// same wording family), so it's folded into this same untrained-Snag check rather than a second
+// mechanism - gated on actually piloting a Zord (any Zord, since RAW's "personal Zord" is this
+// system's normal one-Ranger-one-Zord relationship and there's no separate "is this MY Zord"
+// ownership check anywhere else in this codebase to reuse) as this actor's own driver.
+const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
+
+// Quantasaurus Rex (A Jump Through Time, Quantum Ranger Role Perk, 4th level, p.46): "When
+// actively piloting Quantasaurus Rex, you cannot suffer Snags on Animal Handling or Driving Skill
+// Tests." Textually the Quantum Ranger's own equivalent of Zord's Driving-only grant just above -
+// wider (also covers Animal Handling), so checked as its own clause rather than folded into
+// ZORD_PERK_ID's.
+const QUANTASAURUS_REX_ID = "Compendium.essence20.jump_through_time.Item.sn5jhTf8sJqRFhKS";
+
+// Phantom Ship (Across the Stars, Phantom Ranger Role Perk, 1st level, p.62): "When piloting the
+// Phantom Ship, you cannot suffer Snags when using the Driving Skill." Same canHaveZord grant as
+// ZORD_PERK_ID (setPerkValues), and Driving-only like it - the Phantom Ship "still follows all the
+// same rules... surrounding Zords," so it's read via the same pilotedVehicle?.type == 'zord' check
+// just below rather than a separate branch.
+const PHANTOM_SHIP_ID = "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWPV88t";
 
 /**
  * Splits every automatic combat modifier that fired this roll (see
@@ -154,6 +181,22 @@ export class RollDialog {
       if (hasMatchingQualification || hasGoodToGoQualification) {
         return false;
       }
+
+      // Zord / Quantasaurus Rex / Phantom Ship - see their own comments above. Same "any Zord"
+      // reading all three share (no per-Zord "is this specifically MY named Zord" marker exists
+      // in this codebase).
+      if (pilotedVehicle?.type == 'zord'
+        && (actorHasPerk(actor, ZORD_PERK_ID) || actorHasPerk(actor, QUANTASAURUS_REX_ID)
+          || actorHasPerk(actor, PHANTOM_SHIP_ID))) {
+        return false;
+      }
+    }
+
+    // Quantasaurus Rex - see QUANTASAURUS_REX_ID's own comment above. Its own Animal Handling half
+    // (Driving is covered by the shared branch just above).
+    if (skill == 'animalHandling' && actorHasPerk(actor, QUANTASAURUS_REX_ID)
+      && actor._dice?._getPilotedVehicle(actor, 'driver')?.type == 'zord') {
+      return false;
     }
 
     // Leadfoot (Quartermaster's Guide to Gear, Influence Perk, p.10) - see LEADFOOT_ID's own
@@ -163,8 +206,8 @@ export class RollDialog {
       return false;
     }
 
-    // Green - see GREEN_IDS's own comment above.
-    if (GREEN_IDS.some(id => actorHasPerk(actor, id))) {
+    // Green (Transformers CRB) - see GREEN_TF_ID's own comment above.
+    if (actorHasPerk(actor, GREEN_TF_ID)) {
       if (!game.combat) {
         return false;
       }
@@ -178,6 +221,15 @@ export class RollDialog {
         await markUsedThisEncounterCount(actor, GREEN_USES_FLAG);
         return false;
       }
+    }
+
+    // Green (GI Joe CRB) - see GREEN_GIJ_ID's own comment above. "Per mission" - a strictly wider
+    // window than the Transformers printing's own per-encounter cap just above, so this uses the
+    // scene counter instead, and (unlike the encounter-scoped check above) isn't gated on an
+    // active combat - a mission-scoped ability is just as usable outside combat as during it.
+    if (actorHasPerk(actor, GREEN_GIJ_ID) && getUsesThisScene(actor, GREEN_GIJ_USES_FLAG) < 3) {
+      await markUsedThisScene(actor, GREEN_GIJ_USES_FLAG);
+      return false;
     }
 
     return true;
@@ -214,14 +266,18 @@ export class RollDialog {
       heavyForceAvailable: dataset.heavyForceAvailable,
       ideaPointAvailable: dataset.ideaPointAvailable,
       precisionAimAvailable: dataset.precisionAimAvailable,
+      kocSneakAttackAvailable: dataset.kocSneakAttackAvailable,
+      wowTheAudienceAvailable: dataset.wowTheAudienceAvailable,
       allINeedIsOneShotAvailable: dataset.allINeedIsOneShotAvailable,
       penetratingShotAvailable: dataset.penetratingShotAvailable,
       hobbleAvailable: dataset.hobbleAvailable,
+      cripplingBlowAvailable: dataset.cripplingBlowAvailable,
       cryogenicTouchAvailable: dataset.cryogenicTouchAvailable,
       guardianStrikesAvailable: dataset.guardianStrikesAvailable,
       stickInTheSpokesAvailable: dataset.stickInTheSpokesAvailable,
       interdictionAvailable: dataset.interdictionAvailable,
       penetratingAimAvailable: dataset.penetratingAimAvailable,
+      savantSkillAvailable: dataset.savantSkillAvailable,
       metallikatoIgnoreArmorAvailable: dataset.metallikatoIgnoreArmorAvailable,
       analyzeTargetAvailable: dataset.analyzeTargetAvailable,
       psychoanalystAvailable: dataset.psychoanalystAvailable,
@@ -229,14 +285,27 @@ export class RollDialog {
       chargeAvailable: dataset.chargeAvailable,
       bumpAndRunAvailable: dataset.bumpAndRunAvailable,
       unshakeableAimAvailable: dataset.unshakeableAimAvailable,
+      jackOfAllTradesAvailable: dataset.jackOfAllTradesAvailable,
       targetVulnerabilityAvailable: dataset.targetVulnerabilityAvailable,
       terrorAvailable: dataset.terrorAvailable,
       demolitionDriverAvailable: dataset.demolitionDriverAvailable,
+      programmableAvailable: dataset.programmableAvailable,
+      militaryFormalityAvailable: dataset.militaryFormalityAvailable,
+      solusChargeAvailable: dataset.solusChargeAvailable,
+      sizeMattersAvailable: dataset.sizeMattersAvailable,
       menacingGlareAvailable: dataset.menacingGlareAvailable,
+      instillWeaknessAvailable: dataset.instillWeaknessAvailable,
+      deconstructionistAvailable: dataset.deconstructionistAvailable,
       cunningPlanAvailable: dataset.cunningPlanAvailable,
       worthAShotAvailable: dataset.worthAShotAvailable,
+      allAroundVisionAvailable: dataset.allAroundVisionAvailable,
+      pressureCookerAvailable: dataset.pressureCookerAvailable,
+      ricochetAvailable: dataset.ricochetAvailable,
       machinistAvailable: dataset.machinistAvailable,
       bootlickerAvailable: dataset.bootlickerAvailable,
+      fastDrawAvailable: dataset.fastDrawAvailable,
+      inventorAvailable: dataset.inventorAvailable,
+      goodSocietyAvailable: dataset.goodSocietyAvailable,
       huntersProwessAvailable: dataset.huntersProwessAvailable,
       ambitiousAvailable: dataset.ambitiousAvailable,
       isolatedAvailable: dataset.isolatedAvailable,
@@ -249,6 +318,7 @@ export class RollDialog {
       kindButFirmAvailable: dataset.kindButFirmAvailable,
       wireWorkAvailable: dataset.wireWorkAvailable,
       ambushPredatorAvailable: dataset.ambushPredatorAvailable,
+      citySlickerAvailable: dataset.citySlickerAvailable,
       hesherAvailable: dataset.hesherAvailable,
       bruteForceIaf2Available: dataset.bruteForceIaf2Available,
       roaringEngineAvailable: dataset.roaringEngineAvailable,
@@ -263,6 +333,7 @@ export class RollDialog {
       quantumCutAvailable: dataset.quantumCutAvailable,
       soloShotAvailable: dataset.soloShotAvailable,
       eltarianTechAvailable: dataset.eltarianTechAvailable,
+      spellcializeAvailable: dataset.spellcializeAvailable,
       observerSnagSubstitutionAvailable: dataset.observerSnagSubstitutionAvailable,
       supremeGuardianTechAvailable: dataset.supremeGuardianTechAvailable,
       combatStanceAvailable: dataset.combatStanceAvailable,
@@ -276,11 +347,14 @@ export class RollDialog {
       emptyTheMagAvailable: dataset.emptyTheMagAvailable,
       drivingStrikeAvailable: dataset.drivingStrikeAvailable,
       everVigilantAvailable: dataset.everVigilantAvailable,
+      noseForTroubleAvailable: dataset.noseForTroubleAvailable,
       dangerSenseAvailable: dataset.dangerSenseAvailable,
       tf1sDeceptiveWarfareAvailable: dataset.tf1sDeceptiveWarfareAvailable,
       needleDropAvailable: dataset.needleDropAvailable,
       rapidDeploymentDrillsAlertnessAvailable: dataset.rapidDeploymentDrillsAlertnessAvailable,
       rapidDeploymentDrillsInfiltrationAvailable: dataset.rapidDeploymentDrillsInfiltrationAvailable,
+      spoofDeceptionAvailable: dataset.spoofDeceptionAvailable,
+      spoofInfiltrationAvailable: dataset.spoofInfiltrationAvailable,
       yourReputationPrecedesYouAvailable: dataset.yourReputationPrecedesYouAvailable,
       dependableAvailable: dataset.dependableAvailable,
       dependableBothAvailable: dataset.dependableBothAvailable,

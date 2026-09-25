@@ -224,7 +224,12 @@
       ],
       "specializedLevels": []
     },
-    "skills": [],
+    "skills": [
+      "acrobatics",
+      "initiative",
+      "finesse",
+      "alertness"
+    ],
     "version": "powerRangers",
     "weapons": {
       "qualified": [],

@@ -10,7 +10,52 @@
       "page": 49
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Ship's Crew (Violated Orders)",
+      "origin": "Item.5WBOO4XFK29o0tYP",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "95njR2DQzJfdNpyW",
+      "changes": [
+        {
+          "key": "system.essenceShifts.any.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!5WBOO4XFK29o0tYP.95njR2DQzJfdNpyW"
+    }
+  ],
   "flags": {
     "core": {}
   },
