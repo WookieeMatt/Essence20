@@ -567,6 +567,28 @@ function findSection(page, from, start, bodySize, type, bodyFonts) {
 }
 
 /**
+ * The whole line starting at `index`, if it reads "Label: Name".
+ *
+ * Only a line that the colon splits into a short label and something after it qualifies, so an
+ * ordinary sentence containing a colon is not taken for one.
+ * @param {Array<Object>} page   Runs in reading order.
+ * @param {number} index
+ * @returns {?{text: string, end: number}}
+ */
+function runInLine(page, index) {
+  const y = page[index].y;
+  let text = '';
+  let end = index;
+  for (let j = index; j < page.length && Math.abs(page[j].y - y) <= 2; j++) {
+    text += (text ? ' ' : '') + (page[j].s ?? '');
+    end = j;
+  }
+
+  const afterColon = text.split(':').slice(1).join(':');
+  return looksLikeLabel(text) && afterColon.trim() && end > index ? { text, end } : null;
+}
+
+/**
  * Join runs from `index` into a run-in label, if they make one.
  *
  * Stops as soon as the text so far reads like a label, so the shortest join wins and the prose
@@ -629,10 +651,11 @@ function isHeading(run, bodySize, bodyFonts) {
   if (!run) return false;
   if (run.size > bodySize) return true;
 
-  // Book-wide, deliberately, even though it means books that subset a font per page get no help
-  // here - their book-wide "body font" can be absent from the very pages their entries are on.
+  // Book-wide, deliberately. Books that subset a font per page - whose book-wide "body font" is
+  // absent from most of their pages - are handled before this is reached: extractEntry() swaps in
+  // that page's own prose fonts via pageBodyFonts(), but only on such pages.
   //
-  // A per-page list was tried, both instead of this one and unioned with it, and both lost: on a
+  // A per-page list for every page was tried, both instead of this one and unioned with it, and both lost: on a
   // page with a large display heading, the heading's own font can be a quarter of that page's
   // characters and so be counted as body, at which point the heading stops being a heading. It
   // cost the GI Joe CRB 50 matches and the My Little Pony CRB 49.
@@ -650,7 +673,21 @@ function isHeading(run, bodySize, bodyFonts) {
   // tighter rejects every one of them; the GI Joe CRB sets captions and table text at 8.5pt
   // against the same body, and anything looser promotes those to headings, which then cut short
   // the entries above them - that cost it 50 matches and halved the median length of the rest.
-  return run.alone === true && run.size >= bodySize - 1.5 && (run.s ?? '').length <= 60;
+  //
+  // And it must not read like a run-in label. "Prerequisite: Anti-Air Combat Training, Level 8"
+  // is bold, short and alone on its line under every Perk in the Quartermaster's Guide to Gear,
+  // so without this it passed as the NEXT heading and every one of those Perks came back empty.
+  // Capitals are the exception: "TABLE 4-3: BRUTE" has the same shape, and is the heading that
+  // closes each of the Decepticon Directive's Focuses before its level table.
+  const text = run.s ?? '';
+  const isLabel = looksLikeLabel(text) && text !== text.toUpperCase();
+
+  // Nor read like a line of prose. Some books start a new font subset every few lines, so a
+  // stray line of ordinary text can sit in a font nothing else on the page uses - "but Marines
+  // fight where they're needed. Beyond" cut Sgt Slaughter's Marine off after one line. A heading
+  // never opens in lower case or closes on a full stop.
+  const isProse = /^\p{Ll}/u.test(text) || /[.,;]$/.test(text);
+  return run.alone === true && run.size >= bodySize - 1.5 && text.length <= 60 && !isLabel && !isProse;
 }
 
 function entryStart(run, keys, bodySize, type, bodyFonts) {
@@ -906,11 +943,123 @@ function pageBodySize(page, fallback) {
   return size;
 }
 
+/**
+ * Per-page answer to pageBodyFonts(), memoized like pageBodySizes but also by body size, since an
+ * entry can raise the size it is judged at (see entryBodySize()).
+ * @type {WeakMap<Array<Object>, Map<number, Set<string>>>}
+ */
+const pageBodyFontSets = new WeakMap();
+
+/**
+ * The book-wide body fonts, or none at all on a page they do not actually set.
+ *
+ * isHeading()'s weight test calls any short line in a non-body font a heading, which is only
+ * safe where the body font really is the one the prose is in. Some PDFs embed a separate subset
+ * of the same face on every page, under a new name each time: the Quartermaster's Guide to Gear
+ * has 63 fonts, and the one findBodyFonts() settles on sets the prose on 26 of its 119 text
+ * pages. On the other 93 every line of prose passed the weight test, so each entry ended at its
+ * own first line and came back empty - 0 of its 81 Perks, and 69 pages of the Enigma of
+ * Combination the same way.
+ *
+ * This keeps the book-wide list wherever it holds (a per-page list everywhere lost matches -
+ * see isHeading()) and only falls back to the page's own prose fonts where the book-wide ones
+ * are not what the page is written in. A page with too little text to judge keeps the
+ * book-wide list, as pageBodySize() does.
+ * @param {Array<Object>} page   Runs in reading order.
+ * @param {Set<string>} bodyFonts   From findBodyFonts().
+ * @returns {Set<string>}
+ */
+function pageBodyFonts(page, bodyFonts, bodySize) {
+  if (!bodyFonts?.size) return bodyFonts;
+  if (!pageBodyFontSets.has(page)) pageBodyFontSets.set(page, new Map());
+  const memo = pageBodyFontSets.get(page);
+  if (memo.has(bodySize)) return memo.get(bodySize);
+
+  const tally = new Map();
+  let total = 0;
+  let body = 0;
+  let atBodySize = 0;
+  for (const run of page) {
+    const chars = (run.s ?? '').length;
+    total += chars;
+    if (bodyFonts.has(run.font)) body += chars;
+    if (run.font && run.size === bodySize) {
+      tally.set(run.font, (tally.get(run.font) ?? 0) + chars);
+      atBodySize += chars;
+    }
+  }
+
+  let fonts = bodyFonts;
+  if (total >= 400 && body < total * 0.25) {
+    // The fonts this page sets its prose in: anything carrying a real share of the text at the
+    // page's body size. Not simply "no weight test here" - the same book heads its Focuses by
+    // weight alone (CHAMELEONITE at 10pt over a 10.5pt body), and those pages need the test as
+    // much as any other. And not the share-of-page rule findBodyFonts() uses book-wide, because
+    // these PDFs can also start a new subset per PARAGRAPH: Finster's sets one page's prose in
+    // five fonts, none holding 15% of it, so every prose line on it passed as a heading.
+    //
+    // Added to the book-wide list, never in place of it: a rare subset can fall under 5% of a page
+    // and still be the one the book-wide tally caught, and dropping it cut Sgt Slaughter's Marine
+    // and two others off mid-sentence. Both lists name prose, so the union only ever makes FEWER
+    // lines look like headings.
+    fonts = new Set(bodyFonts);
+    for (const [font, chars] of tally) {
+      if (chars >= atBodySize * 0.05) fonts.add(font);
+    }
+  }
+
+  memo.set(bodySize, fonts);
+  return fonts;
+}
+
+/**
+ * How many runs under a heading to read the entry's own body size from.
+ */
+const ENTRY_SIZE_RUNS = 15;
+
+/**
+ * The size an entry's own prose is set in, read from the lines directly under its heading.
+ *
+ * pageBodySize() answers for the page as a whole, and a page can be mostly something else: the
+ * Fireball in Finster's Monster-Matic Cookbook shares its page with a spell-cost table - 2,000
+ * characters at 8.5pt against 1,000 of 10.5pt prose - in a book whose 9pt stat blocks set the
+ * book-wide figure. Judged at 9, every line of the spell's 10.5pt prose read as a heading and
+ * ended it. Only raises, for the same reason pageBodySize() only raises; runs at the heading's
+ * own size or bigger are left out so a sub-heading cannot pass for body text.
+ * @param {Array<Object>} page   Runs in reading order.
+ * @param {number} headingEnd   Index of the heading's last run.
+ * @param {Object} start   The heading run.
+ * @param {number} bodySize   The page's body size.
+ * @returns {number}
+ */
+function entryBodySize(page, headingEnd, start, bodySize) {
+  const tally = new Map();
+  for (let i = headingEnd + 1; i < page.length && i <= headingEnd + ENTRY_SIZE_RUNS; i++) {
+    const run = page[i];
+    if (run.size >= start.size) continue;
+    tally.set(run.size, (tally.get(run.size) ?? 0) + (run.s ?? '').length);
+  }
+
+  let local = bodySize;
+  let localChars = -1;
+  for (const [size, chars] of tally) {
+    if (chars > localChars) {
+      local = size;
+      localChars = chars;
+    }
+  }
+
+  return Math.max(bodySize, local);
+}
+
 export function extractEntry(readingOrders, pageIndex, name, bodySize, type, bodyFonts) {
   const page = readingOrders[pageIndex];
   if (!page) return null;
 
+  const bookBodyFonts = bodyFonts;
+  const bookBodySize = bodySize;
   bodySize = pageBodySize(page, bodySize);
+  bodyFonts = pageBodyFonts(page, bookBodyFonts, bodySize);
 
   /**
    * Look for an entry opening with any of `keys`.
@@ -941,7 +1090,13 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type, bod
       // Hence a generous limit. Cost is bounded (the join stops at the first size change, and
       // headings are a small fraction of a page) and each step is tested as it is built, so the
       // shortest run of pieces that actually spells the name is the one that wins.
-      if (isHeading(page[i], bodySize, bodyFonts)) {
+      //
+      // Only a heading set LARGER than the body is joined. One marked by weight alone is a single
+      // line by construction (isHeading() requires it to have its line to itself), and joining
+      // onto it walks straight into the prose below: in Finster's, twelve lines of an
+      // introduction were joined until they ended "...Influence: Infiltrator." and the
+      // introduction was taken for the Infiltrator's heading.
+      if (page[i].size > bodySize && isHeading(page[i], bodySize, bodyFonts)) {
         let joined = page[i].s ?? '';
         for (let j = i + 1; j < page.length && j <= i + HEADING_PIECES; j++) {
           if (page[j].size !== page[i].size) break;
@@ -954,6 +1109,18 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type, bod
         }
       }
 
+      // A whole line reading "Origin Benefit: Always Seeking" - a generic label, then the item's
+      // own name after the colon, both at body size and split across runs. Across the Stars and
+      // Through the Shattered Grid name their Origin Perks this way. Nothing else recognised
+      // them: the line is not a heading by size or weight, and as a label its name is the part
+      // BEFORE the colon.
+      if (page[i].startsLine && page[i].size <= bodySize) {
+        const line = runInLine(page, i);
+        if (line && keys.some(key => headingKeys(line.text, type).has(key)) && nameKey(line.text.split(':')[0]) !== keys[0]) {
+          return { startIndex: i, headingEnd: line.end, kind: 'heading' };
+        }
+      }
+
       // A run-in label can arrive in pieces as well, and the piece that gets separated is
       // usually the colon itself: the My Little Pony CRB sets each Laugh Tactic as a bullet,
       // then the name, then ":", then the prose. Without joining, the name run carries no colon
@@ -962,6 +1129,15 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type, bod
         const label = joinLabel(page, i, bodySize);
         if (label && keys.includes(nameKey(label.text))) {
           return { startIndex: i, headingEnd: label.end, kind: 'label' };
+        }
+
+        // The piece carrying the colon can carry the prose's first word as well: Ferocious
+        // Fighters wraps "Hypergenetic / Manipulation" and then sets ": Whether you descend..."
+        // as one run, so the joined label never equals the name. Matched on what precedes the
+        // colon, and that last piece is left to the body rather than swallowed with the name.
+        if (label && keys.includes(nameKey(label.text.split(':')[0]))) {
+          const tail = (page[label.end].s ?? '').split(':').slice(1).join(':').trim();
+          return { startIndex: i, headingEnd: tail ? label.end - 1 : label.end, kind: 'label' };
         }
       }
     }
@@ -999,6 +1175,12 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type, bod
     }
   }
 
+  // Measured at the size the entry is actually set in, which can be larger than the page's: on
+  // Finster's Icy Breath page the page-size fonts were a single stray 9pt run, so every line of
+  // the spell's 10.5pt prose was "not in a body font" and the second one ended it.
+  bodySize = entryBodySize(page, headingEnd, start, bodySize);
+  bodyFonts = pageBodyFonts(page, bookBodyFonts, bodySize);
+
   // The margin the NEXT label would start at. It is this entry's own x, not the column's:
   // these books indent a run-in label past the body text it introduces (labels at x=72 against
   // body at x=63 in the GI Joe CRB), so measuring from the column edge never matched a label and
@@ -1010,7 +1192,21 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type, bod
   let continued = false;
   let reachedEnd = true;
   for (let i = headingEnd + 1; i < page.length; i++) {
-    if (endsHere(page, i, start, kind, bodySize, labelMargin, bodyFonts)) {
+    // The first line under a heading never ends it by weight alone. Finster's Monster-Matic
+    // Cookbook opens every spell with a one-line italic tagline ("A projected eruption of
+    // flame."), short and alone and in a minor font, which is everything the weight test asks
+    // of a heading - so each spell came back empty. A heading with nothing under it is not an
+    // entry, so the line directly beneath is prose, whatever it is set in.
+    //
+    // Nor does the wrapped second line of something already under way. Ferocious Fighters sets
+    // Big Swing's prerequisite in its own font over two lines, and "Ballistic weapon" - short,
+    // alone, capitalised - passed as the next heading. A line in the same font as the one just
+    // above it, at ordinary line spacing, is that line continuing.
+    const weightOnly = page[i].size <= bodySize;
+    const previous = page[i - 1];
+    const wrapped = weightOnly && previous?.font && previous.font === page[i].font
+      && previous.y - page[i].y > 0 && previous.y - page[i].y <= page[i].size * 1.5;
+    if (!((body.length === 0 || wrapped) && weightOnly) && endsHere(page, i, start, kind, bodySize, labelMargin, bodyFonts)) {
       reachedEnd = false;
       break;
     }
@@ -1021,14 +1217,16 @@ export function extractEntry(readingOrders, pageIndex, name, bodySize, type, bod
   // Ran to the bottom of the page without being closed, so the entry keeps going overleaf.
   if (reachedEnd) {
     const next = readingOrders[pageIndex + 1] ?? [];
+    const nextBodyFonts = pageBodyFonts(next, bookBodyFonts, pageBodySize(next, bookBodySize));
     for (let i = 0; i < next.length; i++) {
-      if (endsHere(next, i, start, kind, bodySize, labelMargin, bodyFonts)) break;
+      if (endsHere(next, i, start, kind, bodySize, labelMargin, nextBodyFonts)) break;
       body.push(next[i]);
       continued = true;
     }
   }
 
-  const text = joinRuns(body);
+  // A label whose colon arrived with the prose leaves that colon at the front of the body.
+  const text = joinRuns(body).replace(/^:\s*/, '');
   return text ? { text, kind, continued, loose } : null;
 }
 

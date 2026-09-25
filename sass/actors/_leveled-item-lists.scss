@@ -13,8 +13,11 @@
    (section.tab.main), so each of those 5 templates additionally carries its own type class
    (npc/vehicle/zord/megaform/companion) precisely for this selector - Companion was originally
    left out here (before it carried that class at all), which is exactly what let its own
-   Weapons list render at unconstrained native image size instead of the compact 24px icon. */
-$leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform, section.tab.main.companion';
+   Weapons list render at unconstrained native image size instead of the compact 24px icon.
+   The NPC sheet's Contact tab (section.tab.contact, npc-contact.hbs) lists Contact Perks with
+   this same perk container, and was missed the same way - an imported Contact's Perks each
+   drew their icon across the whole tab. */
+$leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform, section.tab.main.companion, section.tab.contact';
 
 .essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) {
   margin-bottom: v.$gap-md;

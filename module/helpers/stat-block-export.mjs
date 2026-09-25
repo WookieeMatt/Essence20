@@ -164,6 +164,23 @@ function section(heading, lines) {
   return lines.length ? [heading, ...lines] : [];
 }
 
+/** The Contact half, laid out the way the GI Joe books print it. */
+function contactLines(ir) {
+  const contact = ir.contact;
+  if (!contact) {
+    return [];
+  }
+
+  const cost = perk => (perk.cost ? ` (${perk.cost} Allegiance Point${perk.cost === 1 ? '' : 's'})` : '');
+  return [
+    `GAINING ${(ir.name ?? '').toUpperCase()} AS A CONTACT`.replace(/\s+/g, ' '),
+    ...(contact.gaining ?? []).map(entry => (entry.name ? `${entry.name}: ${entry.text}` : entry.text).trim()),
+    ...(contact.allegiancePoints !== null && contact.allegiancePoints !== undefined
+      ? [`Allegiance Points: ${contact.allegiancePoints}`] : []),
+    ...section('CONTACT PERKS', (contact.perks ?? []).map(perk => `${perk.name}${cost(perk)}: ${perk.text}`.trim())),
+  ];
+}
+
 /**
  * @param {Object} ir   A parsed or actor-derived IR.
  * @returns {String}   Printed-style stat block text.
@@ -181,5 +198,6 @@ export function irToStatBlockText(ir) {
     ...section('POWERS', (ir.powers ?? []).map(power => `${power.name}${powerQualifier(power)}: ${power.text}`.trim())),
     ...section('HANG-UPS', (ir.hangUps ?? []).map(hangUp => `${hangUp.name}: ${hangUp.text}`.trim())),
     ...section('EQUIPMENT', (ir.equipment ?? []).map(entry => `${entry.kind === 'armor' ? 'Armor' : 'Weapons'}: ${entry.text}`)),
+    ...contactLines(ir),
   ].join('\n');
 }

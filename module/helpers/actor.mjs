@@ -226,15 +226,23 @@ export function applySystemColorCssVariables(element, actor) {
   // grey read at under 2:1 on mid-tones like magenta and purple, and all but vanished on yellow.
   // An unparseable colour keeps the stylesheet default; the properties are removed rather than
   // left behind, since the sheet can change colour without being re-created.
+  //
+  // --e20-system-color-inset is the wash behind a field set into that colour - the Essence chips'
+  // number boxes (actors/_essence.scss). The stylesheet's dark wash suits a dark fill; on a light
+  // one it turned the box mid-grey behind grey digits, so a light fill gets a light wash to carry
+  // the dark text instead.
   if (fillTone === "light") {
     element.style.setProperty('--e20-system-color-contrast', '#1a1a1a');
     element.style.setProperty('--e20-system-color-halo', 'transparent');
+    element.style.setProperty('--e20-system-color-inset', 'rgba(255, 255, 255, 0.55)');
   } else if (fillTone === "dark") {
     element.style.setProperty('--e20-system-color-contrast', '#f2f2f2');
     element.style.removeProperty?.('--e20-system-color-halo');
+    element.style.removeProperty?.('--e20-system-color-inset');
   } else {
     element.style.removeProperty?.('--e20-system-color-contrast');
     element.style.removeProperty?.('--e20-system-color-halo');
+    element.style.removeProperty?.('--e20-system-color-inset');
   }
 }
 

@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
 import {
+  anyGeneralPerkChoices, gameLineOf, grantsAnyGeneralPerk,
   getAlreadyChosenExpertiseSkills, grantBeatdownWeapon, grantBlendIn, grantDutyOfTheSilverArmorTraining,
   grantEmtCrashCourse, grantForTheSyndicateMentor, grantJackhammerWeapon, onMultiSkillPerkDrop, onPerkDrop,
   setPerkAdvancesName,
@@ -609,5 +610,76 @@ describe("getAlreadyChosenExpertiseSkills (GI Joe CRB, Commando base, 1st/7th le
     const perk = { flags: { core: { sourceId: OTHER_SKILLS_PERK_ID } }, system: { choice: null } };
 
     expect(getAlreadyChosenExpertiseSkills(actor, perk)).toEqual([]);
+  });
+});
+
+describe("Nobody Like Me - any General Perk", () => {
+  const NOBODY_LIKE_ME_ID = "Compendium.essence20.pr_crb.Item.9nvRKN0A8N0EEXUl";
+
+  test("is recognised by uuid, and by source on a copy already on an actor", () => {
+    expect(grantsAnyGeneralPerk({}, NOBODY_LIKE_ME_ID)).toBe(true);
+    expect(grantsAnyGeneralPerk({ _stats: { compendiumSource: NOBODY_LIKE_ME_ID } }, 'Actor.a.Item.b')).toBe(true);
+    expect(grantsAnyGeneralPerk({ flags: { core: { sourceId: NOBODY_LIKE_ME_ID } } }, 'Actor.a.Item.b')).toBe(true);
+    expect(grantsAnyGeneralPerk({}, 'Compendium.essence20.pr_crb.Item.other')).toBe(false);
+  });
+
+  describe("with compendium packs", () => {
+    const originalPacks = game.packs;
+    const makePack = (id, folder, entries, enabled = true) => ({
+      documentName: 'Item',
+      metadata: { id, label: id },
+      folder: folder ? { name: folder } : null,
+      enabled,
+      getIndex: jest.fn(async () => entries),
+    });
+
+    beforeEach(() => {
+      const packs = [
+        makePack('essence20.pr_crb', 'Power Rangers', [
+          { _id: 'p1', name: 'Iron Hands', type: 'perk', system: { type: 'general', source: { book: 'Power Rangers Core Rulebook' } } },
+          { _id: 'p2', name: 'Morph Only', type: 'perk', system: { type: 'role' } },
+          { _id: 'p3', name: 'Taken Already', type: 'perk', system: { type: 'general' } },
+          { _id: 'x1', name: 'A Sword', type: 'weapon', system: {} },
+        ]),
+        makePack('essence20.gi_joe_crb', 'GI Joe', [
+          { _id: 'g1', name: 'Iron Hands', type: 'perk', system: { type: 'general', source: { book: 'GI Joe Core Rulebook' } } },
+        ]),
+        makePack('essence20.hidden', 'My Little Pony', [
+          { _id: 'h1', name: 'Hidden Perk', type: 'perk', system: { type: 'general' } },
+        ]),
+      ];
+      packs.get = (id) => packs.find(pack => pack.metadata.id === id);
+      global.game.packs = packs;
+      // A GM has switched the My Little Pony book off (Configure Sourcebooks).
+      global.game.settings.get.mockImplementation((scope, key) =>
+        key === 'enabledSourcebooks' ? { 'essence20.hidden': false } : 'roll');
+    });
+
+    afterEach(() => {
+      global.game.packs = originalPacks;
+      global.game.settings.get.mockImplementation(() => 'roll');
+    });
+
+    test("offers every General Perk in every enabled book, and nothing already taken", async () => {
+      const actor = { items: [{ _stats: { compendiumSource: 'Compendium.essence20.pr_crb.Item.p3' } }] };
+      const choices = await anyGeneralPerkChoices(actor);
+      expect(Object.keys(choices)).toEqual([
+        'Compendium.essence20.pr_crb.Item.p1',
+        'Compendium.essence20.gi_joe_crb.Item.g1',
+      ]);
+    });
+
+    test("each choice carries its game line and book, since names repeat across books", async () => {
+      const choices = await anyGeneralPerkChoices({ items: [] });
+      expect(choices['Compendium.essence20.gi_joe_crb.Item.g1']).toMatchObject({
+        label: 'Iron Hands', value: 'Compendium.essence20.gi_joe_crb.Item.g1',
+        type: 'perks', group: 'GI Joe', detail: 'GI Joe Core Rulebook',
+      });
+    });
+
+    test("gameLineOf reads the pack folder off a compendium uuid", () => {
+      expect(gameLineOf(NOBODY_LIKE_ME_ID)).toBe('Power Rangers');
+      expect(gameLineOf('Actor.a.Item.b')).toBeNull();
+    });
   });
 });

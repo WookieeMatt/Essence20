@@ -17,6 +17,9 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
       ...activation(),
       ...itemDescription(),
       ...parentItem(),
+      // What a Contact Perk costs to use, in the Contact's Allegiance Points (1-3 in the books).
+      // Only meaningful when `type` is 'contact'.
+      allegianceCost: makeInt(0),
       advances: new fields.SchemaField({
         baseValue: makeInt(1),
         canAdvance: makeBool(false),

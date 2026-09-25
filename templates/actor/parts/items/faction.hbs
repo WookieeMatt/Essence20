@@ -14,5 +14,8 @@
 {{else}}
   <div class="flexrow">
     <span class="header-item-name header-item-placeholder">{{localize 'E20.FactionDrop'}}</span>
+    <div class="item-controls e20-flex-grow-0">
+      {{> "systems/essence20/templates/actor/parts/misc/browse-compendium.hbs" type='faction'}}
+    </div>
   </div>
 {{/if}}
