@@ -536,3 +536,53 @@ Office Hours: Visit during office hours.
     expect(ir.contact).toBeNull();
   });
 });
+
+describe("GI Joe sourcebook details", () => {
+  const block = (sections) => `
+SERGEANT EXAMPLE
+THREAT LEVEL: 5
+SIZE: Common HEALTH: 5
+MOVEMENT: 30ft Ground
+STRENGTH: 3 SPEED: 3
+SMARTS: 3 SOCIAL: 3
+TOUGHNESS: 14 EVASION: 13
+WILLPOWER: 13 CLEVERNESS: 13
+${sections}`;
+
+  // A wrapped line of prose can hold a colon. General Flagg's Call In the JOEs wraps onto
+  // "was a PC: He can use a Standard action...", which became a Power named "was a PC".
+  test("a lowercase line with a colon continues the entry above", () => {
+    const ir = parseStatBlock(block(`POWERS
+Call the Squad (1/Scene, Standard): The squad acts as though the sergeant
+was a PC: He can spend their points for them.
+Hold the Line (Move): Allies stand firm.`));
+    expect(ir.powers.map(power => power.name)).toEqual(['Call the Squad', 'Hold the Line']);
+    expect(ir.powers[0].text).toContain('was a PC: He can spend their points for them.');
+  });
+
+  // Unarmed Combat prints its damage as "(1 Stun)", without the word "damage".
+  test("Stun damage is read without the word 'damage'", () => {
+    const ir = parseStatBlock(block(`ATTACKS
+Unarmed Combat (Might): +d6, Reach (1 Stun)
+Traits: Blunt, Martial Arts`));
+    expect(ir.attacks[0]).toMatchObject({ damageValue: 1, damageType: 'stun' });
+  });
+
+  // "Integrated" is printed among the traits, but this system keeps it as the weapon's Size.
+  test("Integrated in a Traits line is the weapon's size, not an unknown trait", () => {
+    const ir = parseStatBlock(block(`ATTACKS
+Unarmed Combat (Might): +d6, Reach (1 Stun)
+Traits: Blunt, Integrated, Martial Arts`));
+    expect(ir.attacks[0].size).toBe('integrated');
+    expect(ir.attacks[0].traits).toEqual(['blunt', 'martialArts']);
+    expect(ir.diagnostics.some(d => /Integrated/.test(d.message))).toBe(false);
+  });
+
+  // Armor labelled by what it is rather than "Armor:".
+  test("armor named in the text with a Defense bonus is armor, whatever its label", () => {
+    const ir = parseStatBlock(block(`GEAR
+Battledress: Field Armor (+1 deflective to Toughness)
+Weapons: Knife`));
+    expect(ir.equipment[0]).toMatchObject({ kind: 'armor', bonus: { value: 1, defense: 'toughness' } });
+  });
+});

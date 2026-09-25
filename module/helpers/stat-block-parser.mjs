@@ -483,6 +483,20 @@ function groupEntries(lines, isEntryStart) {
 /** `Name: body` - the shape every Perk, Power, Hang-Up and Equipment entry shares. */
 const NAMED_ENTRY = /^([^:]{1,70}):\s*(.*)$/;
 
+/**
+ * Whether a line starts a new `Name: body` entry, rather than continuing the one above it.
+ *
+ * A colon is not enough: prose wraps anywhere, and a line of it can happen to hold one. General
+ * Flagg's Call In the JOEs wraps onto "was a PC: He can use a Standard action...", which was read
+ * as a Power named "was a PC". A printed name never starts in lower case, so a line that does is
+ * the middle of a sentence.
+ * @param {String} line
+ * @returns {Boolean}
+ */
+function startsNamedEntry(line) {
+  return NAMED_ENTRY.test(line) && !/^\p{Ll}/u.test(line);
+}
+
 /* ------------------------------------------------------------------ *
  * Skills                                                              *
  * ------------------------------------------------------------------ */
@@ -569,7 +583,10 @@ function parseEffectClauses(ir, body, sourceLine) {
     defenseType: null,
   };
 
-  const damage = body.match(/(\d+)\s+([A-Za-z]+)\s+damage/i);
+  // Stun is printed bare, with no "damage" after it - "(1 Stun)" on Unarmed Combat across the GI
+  // Joe books - so it has its own pattern; the general one never matched it, and the attack came
+  // in with no damage at all.
+  const damage = body.match(/(\d+)\s+([A-Za-z]+)\s+damage/i) ?? body.match(/\((\d+)\s+(Stun)\)/i);
   if (damage) {
     effect.damageValue = Number.parseInt(damage[1], 10);
     const type = resolve(damage[2], DAMAGE_LOOKUP, DAMAGE_ALIASES);
@@ -649,6 +666,7 @@ function parseAttacks(ir, lines) {
       shift: shift ? shift[1] : null,
       isSpecialized: /\+\s*d\d+\s*\*/.test(primaryBody),
       numHands: null,
+      size: null,
       traits: [],
       alternateEffects: [],
       ...parseEffectClauses(ir, primaryBody, entry),
@@ -662,6 +680,13 @@ function parseAttacks(ir, lines) {
     const traits = detailBody.match(/\bTraits:\s*([^:]+?)(?=\s+(?:Alternate|Special|Hands)\b|$)/i);
     if (traits) {
       for (const printed of traits[1].split(',').map(trait => trait.trim()).filter(Boolean)) {
+        // The books print "Integrated" among the traits, but this system keeps it as the weapon's
+        // Size (E20.weaponSizes, system.classification.size) - not a trait, so it is read as one.
+        if (normalizeKey(printed) === 'integrated') {
+          attack.size = 'integrated';
+          continue;
+        }
+
         const key = resolve(printed, TRAIT_LOOKUP);
         if (key) {
           attack.traits.push(key);
@@ -688,7 +713,7 @@ function parseAttacks(ir, lines) {
  * ------------------------------------------------------------------ */
 
 function parseNamedEntries(ir, lines) {
-  return groupEntries(lines, line => NAMED_ENTRY.test(line))
+  return groupEntries(lines, startsNamedEntry)
     .map(entry => {
       const match = entry.match(NAMED_ENTRY);
       if (!match) {
@@ -756,7 +781,7 @@ function parseContact(ir, sections, allegiancePoints) {
   // half has no colon but still opens a new Perk; the second has one but only finishes the cost.
   const isCostTail = line => /^(?:allegiance\s*)?(?:points?\s*)?\)\s*:/i.test(line);
   const opensCost = line => /\(\s*\d+(?:\s+allegiance)?(?:\s+points?)?\s*$/i.test(line);
-  const perks = groupEntries(perkLines, line => !isCostTail(line) && (NAMED_ENTRY.test(line) || opensCost(line)))
+  const perks = groupEntries(perkLines, line => !isCostTail(line) && (startsNamedEntry(line) || opensCost(line)))
     .map(entry => {
       const match = entry.match(NAMED_ENTRY);
       if (!match) {
@@ -788,8 +813,12 @@ function parseEquipment(ir, lines) {
   for (const entry of parseNamedEntries(ir, lines)) {
     const kind = normalizeKey(entry.name);
     const bonus = entry.text.match(/\+(\d+)\s+\w+\s+to\s+(\w+)/i);
+    // Armor is not always labelled "Armor": General Flagg's reads "Battledress: Tactical Armor
+    // (+1 deflective to Toughness)". Armor named in the text with a Defense bonus is armor too,
+    // or its bonus is never counted as armor when the Defenses are worked out.
+    const isArmor = kind.startsWith('armor') || (!!bonus && /\barmou?r\b/i.test(entry.text));
     ir.equipment.push({
-      kind: kind.startsWith('armor') ? 'armor' : kind.startsWith('weapon') ? 'weapon' : 'other',
+      kind: isArmor ? 'armor' : kind.startsWith('weapon') ? 'weapon' : 'other',
       name: entry.text.replace(/\s*\(.*\)\s*$/, '').trim(),
       text: entry.text,
       bonus: bonus ? { value: Number.parseInt(bonus[1], 10), defense: bonus[2].toLowerCase() } : null,

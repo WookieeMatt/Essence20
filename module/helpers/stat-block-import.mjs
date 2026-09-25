@@ -506,6 +506,11 @@ export function buildWeaponData(attack) {
     },
   };
 
+  // Printed among the traits, stored as the weapon's Size - see the parser's Traits handling.
+  if (attack.size) {
+    weapon.system.classification = { size: attack.size };
+  }
+
   const effects = [
     buildWeaponEffectData({ ...attack, numHands: attack.numHands }, {
       name: attack.name,

@@ -743,3 +743,15 @@ describe("Contacts", () => {
     });
   });
 });
+
+describe("buildWeaponData - weapon size", () => {
+  test("an Integrated attack becomes an Integrated-size weapon", () => {
+    const { weapon } = buildWeaponData({ name: 'Unarmed Combat', skill: 'might', size: 'integrated', traits: ['blunt'], alternateEffects: [] });
+    expect(weapon.system.classification).toEqual({ size: 'integrated' });
+  });
+
+  test("an attack with no printed size leaves the weapon's own default", () => {
+    const { weapon } = buildWeaponData({ name: 'Rifle', skill: 'targeting', traits: [], alternateEffects: [] });
+    expect(weapon.system.classification).toBeUndefined();
+  });
+});
