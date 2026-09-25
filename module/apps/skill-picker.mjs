@@ -1,6 +1,7 @@
 import { applyThemeClass } from "../settings.js";
 import {
   computeEssenceSpend, getNewEssenceOverspend, getSkillAttributionStatus, getSkillEssences,
+  resetEssenceUpdate,
 } from "../helpers/skill-picker.mjs";
 import { addSpecialization, deleteSpecialization } from "../sheet-handlers/specialization-handler.mjs";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
@@ -50,6 +51,7 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
     actions: {
       addSpecialization: this.#onAddSpecialization,
       removeSpecialization: this.#onRemoveSpecialization,
+      resetEssence: this.#onResetEssence,
     },
     classes: ["essence20", "sheet", "theme-wrapper", "e20-window", "skill-picker"],
     tag: "form",
@@ -264,6 +266,31 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
       }
     }
 
+    await this._actor.update(updateData);
+  }
+
+  /**
+   * Puts one Essence's skills back to untrained, after asking. Every skill listed under it goes
+   * to d20, which also clears its Specializations (a d20 skill cannot hold one - see #onSubmit)
+   * and, on an NPC, its Specialized mark; Strength's Conditioning goes back to 0 as well. Which
+   * skills show on an NPC's sheet (isChosen) is a display choice, not a spend, so it is left.
+   * Spellcasting and Weird are not touched: their spend can be split over several Essences, so
+   * neither belongs to just this one.
+   */
+  static async #onResetEssence(event, target) {
+    const essence = target.dataset.essence;
+    const skills = (CONFIG.E20.skillsByEssence[essence] ?? []).filter((skill) => this._actor.system.skills[skill]);
+    const essenceLabel = game.i18n.localize(CONFIG.E20.essences[essence]);
+
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize('E20.SkillPickerResetEssenceTitle') },
+      content: `<p>${game.i18n.format('E20.SkillPickerResetEssenceConfirm', { essence: essenceLabel })}`
+        + `${essence === 'strength' ? ` ${game.i18n.localize('E20.SkillPickerResetConditioning')}` : ''}</p>`,
+      rejectClose: false,
+    });
+    if (!confirmed) return;
+
+    const updateData = resetEssenceUpdate(this._actor, essence, skills);
     await this._actor.update(updateData);
   }
 

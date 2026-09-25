@@ -6,6 +6,7 @@ const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 const MIN_LEVEL = 1;
 const MAX_LEVEL = 20;
 
+import Essence20CompendiumBrowser from "../apps/compendium-browser.mjs";
 import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
 import SheetOptions from "../apps/sheet-options.mjs";
 import SkillPicker from "../apps/skill-picker.mjs";
@@ -86,6 +87,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       editSpeeds: this.#onEditSpeeds,
       inlineEdit: this.#onInlineEdit,
       itemCreate: this.#onItemCreate,
+      openCompendiumBrowser: this.#onOpenCompendiumBrowser,
       itemDelete: this.#onItemDelete,
       itemEdit: this.#onItemEdit,
       levelDown: this.#onLevelDown,
@@ -971,6 +973,15 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   // Add Inventory Item
+  /**
+   * The search icon beside a list's "+" (or a Role/Focus/Faction slot): opens the Compendium
+   * Browser on that item type's tab, narrowed to the list's Perk type where it has one, so what
+   * is found there can be dragged straight back onto the sheet.
+   */
+  static #onOpenCompendiumBrowser(event, target) {
+    return Essence20CompendiumBrowser.openTo(target.dataset.type, { subtype: target.dataset.perkType || null });
+  }
+
   static #onItemCreate(event) {
     onItemCreate(event, this.document);
   }

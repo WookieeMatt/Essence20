@@ -2340,6 +2340,71 @@
   gap: 0.5em;
   width: 100%;
 }
+.essence20 .choice-buttons .choice[hidden] {
+  display: none;
+}
+
+/* A long list (see ChoicesSelector's SEARCHABLE_AT): search box and game-line filter on one row
+   above a scrolling list, so the dialog stays a sensible height however many choices there are. */
+.essence20 .choice-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+}
+.essence20 .choice-filter input[type=search] {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.essence20 .choice-filter select {
+  flex: 0 1 auto;
+}
+.essence20 .choice-filter .choice-count {
+  flex: 0 0 auto;
+  font-size: 0.85em;
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  white-space: nowrap;
+}
+
+/* The long-list window has a fixed height (set in ChoicesSelector#_onRender), and the list takes
+   whatever the prompt and filter row leave of it, scrolling on its own. Every level down to the
+   list has to be a flex column with min-height 0, or the list grows to its content instead and
+   the window clips it. */
+.essence20.choice-selector-long .window-content,
+.essence20.choice-selector-long .window-content > div {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.essence20.choice-selector-long .window-content > div {
+  flex: 1 1 auto;
+}
+
+.essence20 .choice-buttons.choice-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  align-items: stretch;
+  gap: 0.25em;
+  padding-right: 4px;
+}
+.essence20 .choice-buttons.choice-list .choice button {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1em;
+  text-align: left;
+}
+.essence20 .choice-buttons.choice-list .choice-detail {
+  font-size: 0.8em;
+  opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .essence20.actor:not(.minimized, .minimizing, .maximizing) .window-content:has(> .essence20-sidebar) {
   display: grid;
@@ -5790,6 +5855,20 @@
   padding: 0.25rem 0.5rem;
   border-bottom: 1px solid var(--e20-theme-border-color);
   border-radius: 6px 6px 0 0;
+  /* Room on the right for the reset button, which sits in the corner rather than taking a row. */
+  padding-right: calc(0.5rem + 1.5em);
+}
+
+.essence20 .skill-picker-essence-tally .skill-picker-reset {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  color: var(--e20-theme-text-color);
+  opacity: 0.7;
+}
+.essence20 .skill-picker-essence-tally .skill-picker-reset:hover {
+  opacity: 1;
 }
 
 /* The any-Essence group is the one fieldset still outside .skill-picker-essence-grid, so it lost

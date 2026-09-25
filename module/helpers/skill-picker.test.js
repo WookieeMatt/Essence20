@@ -1,5 +1,6 @@
 import {
   computeEssenceSpend, getEssenceOverspend, getNewEssenceOverspend, getSkillAttributionStatus, getSkillEssences,
+  resetEssenceUpdate,
 } from "./skill-picker.mjs";
 
 /**
@@ -320,5 +321,40 @@ describe("getSkillAttributionStatus", () => {
   test("missing essenceAttribution is treated as all zeros", () => {
     const status = getSkillAttributionStatus({ shift: 'd20' });
     expect(status).toEqual({ upshifts: 0, attributed: 0, isBalanced: true });
+  });
+});
+
+describe("resetEssenceUpdate", () => {
+  test("puts every listed skill back to d20 and clears what a d20 skill cannot hold", () => {
+    const actor = makeActor({
+      skillOverrides: {
+        athletics: { shift: 'd8', isSpecialized: true, specializations: { s1: { name: 'Climbing' } } },
+        might: { shift: 'd4' },
+      },
+    });
+
+    const update = resetEssenceUpdate(actor, 'strength', ['athletics', 'might']);
+    expect(update['system.skills.athletics.shift']).toBe('d20');
+    expect(update['system.skills.athletics.isSpecialized']).toBe(false);
+    expect(update['system.skills.athletics.specializations.s1']).toBeInstanceOf(foundry.data.operators.ForcedDeletion);
+    expect(update['system.skills.might.shift']).toBe('d20');
+    expect(update['system.skills.athletics.essenceAttribution.social']).toBe(0);
+  });
+
+  test("Strength resets Conditioning too, and no other Essence does", () => {
+    const actor = makeActor({ conditioning: 3 });
+    expect(resetEssenceUpdate(actor, 'strength', ['might'])['system.conditioning']).toBe(0);
+    expect(resetEssenceUpdate(actor, 'speed', ['driving'])).not.toHaveProperty('system.conditioning');
+  });
+
+  test("touches only the skills it is given", () => {
+    const actor = makeActor({ skillOverrides: { alertness: { shift: 'd6' } } });
+    const update = resetEssenceUpdate(actor, 'strength', ['might']);
+    expect(Object.keys(update).some(key => key.includes('alertness'))).toBe(false);
+  });
+
+  test("skips a skill this actor does not have", () => {
+    const actor = makeActor();
+    expect(resetEssenceUpdate(actor, 'speed', ['notASkill'])).toEqual({});
   });
 });

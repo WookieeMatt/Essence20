@@ -17,6 +17,11 @@
           skillRankString=(lookup (lookup @root.essenceSpend group.essence) 'string')
           skillRankMax=(lookup (lookup @root.essenceMax group.essence) 'max')
         }}
+        <a class="skill-picker-reset" data-action="resetEssence" data-essence="{{group.essence}}"
+          data-tooltip="{{localize 'E20.SkillPickerResetEssenceTooltip' essence=(localize group.label)}}"
+          aria-label="{{localize 'E20.SkillPickerResetEssenceTooltip' essence=(localize group.label)}}">
+          <i class="fa-solid fa-rotate-left" inert></i>
+        </a>
       </div>
       {{!-- Column headings for the rows below. Only where there are columns worth naming: a PC
            has neither the Show checkbox nor the Specialized one, so its rows are just a name and

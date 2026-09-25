@@ -117,6 +117,21 @@
   padding: v.$gap-sm v.$gap-md;
   border-bottom: 1px solid var(--e20-theme-border-color);
   border-radius: 6px 6px 0 0;
+  /* Room on the right for the reset button, which sits in the corner rather than taking a row. */
+  padding-right: calc(#{v.$gap-md} + 1.5em);
+}
+
+.essence20 .skill-picker-essence-tally .skill-picker-reset {
+  position: absolute;
+  top: 50%;
+  right: v.$gap-md;
+  transform: translateY(-50%);
+  color: var(--e20-theme-text-color);
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 /* The any-Essence group is the one fieldset still outside .skill-picker-essence-grid, so it lost

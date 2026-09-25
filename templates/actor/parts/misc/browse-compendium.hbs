@@ -1,0 +1,7 @@
+{{!-- Opens the Compendium Browser on the tab for `type` - see base-actor-sheet.mjs#onOpenCompendiumBrowser.
+     Used by the single-item header slots (Role, Focus, Faction) while EMPTY only - once one is
+     filled its trash takes this place, since there is nothing more to add there. The item lists carry their own
+     copy in collapsible-item-container-header.hbs, beside their "+". --}}
+<a class="item-control" data-action="openCompendiumBrowser" data-type="{{type}}" data-tooltip="{{localize 'E20.CompendiumBrowserOpenFor'}}">
+  <i class="fas fa-magnifying-glass" inert></i>
+</a>

@@ -9,9 +9,13 @@ import { applyThemeClass } from "../settings.js";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
+/** More choices than this and the dialog gets a search box. */
+const SEARCHABLE_AT = 12;
+
 export default class ChoicesSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(choices, actor, prompt, title, item, key, dropFunc, staticValue, previousSelection1, previousSelection2, actionType) {
-    super();
+    // A long list's window can be resized (see _onRender); a short one keeps its fixed size.
+    super({ window: { resizable: Object.keys(choices ?? {}).length > SEARCHABLE_AT } });
     this._choices = choices;
     this._actor = actor;
     this._prompt = prompt;
@@ -79,6 +83,22 @@ export default class ChoicesSelector extends serializeFormSubmits(HandlebarsAppl
     const context = await super._prepareContext(options);
     context.choices = this._choices;
     context.prompt = this._prompt;
+
+    // A long list gets a search box, and a game-line filter when its choices carry one (Nobody
+    // Like Me offers every General Perk in every enabled book - hundreds of buttons otherwise).
+    // Short lists render exactly as before.
+    const choices = Object.values(this._choices);
+    context.searchable = choices.length > SEARCHABLE_AT;
+    if (context.searchable) {
+      context.choices = Object.fromEntries(Object.entries(this._choices).map(([key, choice]) => [key, {
+        ...choice,
+        search: `${choice.label ?? ''} ${choice.detail ?? ''}`.toLowerCase(),
+      }]));
+    }
+
+    const groups = [...new Set(choices.map(choice => choice.group).filter(Boolean))].sort();
+    context.groups = groups.length > 1 ? groups : [];
+    context.defaultGroup = groups.includes(this.defaultGroup) ? this.defaultGroup : '';
     if (this._actionType) {
       context.type = this._actionType;
     } else if (this._item) {
@@ -94,6 +114,52 @@ export default class ChoicesSelector extends serializeFormSubmits(HandlebarsAppl
     super._onRender(context, options);
 
     applyThemeClass(this.element);
+    this._activateFilter();
+
+    // A long list is sized to the screen once, on first render, and its window made resizable:
+    // left to size itself to hundreds of buttons, the window ran off the bottom of a short screen
+    // with its own content clipped, so the list could not be scrolled to the end.
+    if (context.searchable) {
+      this.element.classList.add('choice-selector-long');
+      if (options.isFirstRender) {
+        this.setPosition({ height: Math.min(680, Math.round(window.innerHeight * 0.85)), width: 560 });
+      }
+    }
+  }
+
+  /**
+   * Shows only the choices matching the search text and the chosen game line. Done in place on
+   * the rendered buttons rather than by re-rendering, so typing stays instant on a list of
+   * hundreds and keeps focus in the box.
+   */
+  _activateFilter() {
+    const search = this.element.querySelector('input[name="choiceSearch"]');
+    if (!search) return;
+
+    const group = this.element.querySelector('select[name="choiceGroup"]');
+    const count = this.element.querySelector('.choice-count');
+    const rows = [...this.element.querySelectorAll('.choice-buttons .choice')];
+    const apply = () => {
+      const text = search.value.trim().toLowerCase();
+      const line = group?.value ?? '';
+      let shown = 0;
+      for (const row of rows) {
+        const visible = (!text || row.dataset.search.includes(text)) && (!line || row.dataset.group === line);
+        row.hidden = !visible;
+        if (visible) shown++;
+      }
+
+      if (count) count.textContent = game.i18n.format("E20.ChoiceSearchCount", { shown, total: rows.length });
+    };
+
+    search.addEventListener('input', apply);
+    group?.addEventListener('change', apply);
+    // Enter would submit the form, and this dialog has no submit - the choice buttons are it.
+    search.addEventListener('keydown', event => {
+      if (event.key === 'Enter') event.preventDefault();
+    });
+    apply();
+    search.focus();
   }
 
   static attach(event, selection) {
