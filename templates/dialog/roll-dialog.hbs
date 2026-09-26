@@ -88,6 +88,9 @@
       <input type="checkbox" name="applyStrikeBonus" />
       <span class="switch-slider"></span>
     </label>
+  </div>
+  {{/if}}
+
   {{#if hardpointMovement}}
   <div class="roll-dialog-hardpoint-move">
     <span>{{localize 'E20.RollDialogHardpointMove'}}</span>
@@ -103,9 +106,22 @@
     </select>
   </div>
   {{/if}}
-  <div>
-    {{localize 'E20.RollDialogTimesToRoll'}}
-    <input type="number" name="timesToRoll" value=1 min="1" step="1" />
+
+  {{!-- Fanning (X) / Retrogen weapon traits - see helpers/fanning.mjs and helpers/retrogen.mjs. --}}
+  {{#if fanningMaxShots}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogFanningShots' max=fanningMaxShots}}</span>
+    <input type="number" name="fanningShots" value="0" min="0" max="{{fanningMaxShots}}" step="1" />
+  </div>
+  {{/if}}
+
+  {{#if retrogenAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogRetrogen'}} (<i class="fas fa-arrow-up"></i> 1)</span>
+    <label class="switch">
+      <input type="checkbox" name="applyRetrogen" />
+      <span class="switch-slider"></span>
+    </label>
   </div>
   {{/if}}
 
@@ -164,6 +180,16 @@
     <span>{{localize 'E20.RollDialogPressureCooker'}}</span>
     <label class="switch">
       <input type="checkbox" name="applyPressureCooker" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if enviroSealedAdverseSituationAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogEnviroSealedAdverseSituation'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyEnviroSealedAdverseSituation" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -1250,11 +1276,31 @@
   </div>
   {{/if}}
 
+  {{#if targetVesselSystemAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogTargetVesselSystem'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyTargetVesselSystem" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
   {{#if streetSmartsAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogStreetSmarts'}}</span>
     <label class="switch">
       <input type="checkbox" name="applyStreetSmarts" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if intimidatingWeaponSkillLabel}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogIntimidatingWeapon' skill=intimidatingWeaponSkillLabel}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyIntimidatingWeapon" />
       <span class="switch-slider"></span>
     </label>
   </div>

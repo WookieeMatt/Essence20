@@ -375,10 +375,9 @@ const REROLL_CONDITIONS = {
     return context.d20Result < Math.min(...faces);
   },
   // GI Joe CRB "Survivalist" (Focus: Predator, 17th level, p.94): "in your environment of
-  // expertise, reroll all skill dice results of 1..." Same player-toggled flag Environmental
-  // Armor/Prowl/Recon already read for their own in-environment bonuses (see
-  // helpers/environmental-expertise.mjs's own doc comment on why this is a manual toggle rather
-  // than an automatic scene/terrain check).
+  // expertise, reroll all skill dice results of 1..." Same check Environmental Armor/Prowl/Recon
+  // read for their own in-environment bonuses - the scene's terrain when the GM has set one, else
+  // the manual toggle (see helpers/environmental-expertise.mjs's own doc comment).
   inEnvironmentOfExpertise: actor => hasActiveEnvironmentalExpertise(actor),
   // A Jump Through Time "Focused Strike": "When you make an Unarmed Attack..." See
   // E20.rerollConditions.unarmedAttack's own doc comment (helpers/config.mjs).

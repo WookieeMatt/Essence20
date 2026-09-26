@@ -326,6 +326,21 @@ describe("spend", () => {
     expect(ledger.log[0].source).toBe('Blaster');
   });
 
+  test("announces the spend on the essence20.actionSpent hook", async () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor();
+    const callAll = jest.fn();
+    global.Hooks = { callAll };
+
+    try {
+      await spend(actor, 'standard');
+    } finally {
+      delete global.Hooks;
+    }
+
+    expect(callAll).toHaveBeenCalledWith('essence20.actionSpent', actor, 'standard', { standard: 1 });
+  });
+
   test("spends both halves of a Full Action together", async () => {
     setGame({ combatant: makeCombatant() });
     const actor = makeActor();

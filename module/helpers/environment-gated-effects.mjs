@@ -3,9 +3,11 @@ import { hasActiveEnvironmentalExpertise } from "./environmental-expertise.mjs";
 
 /**
  * Environment-of-expertise-gated Active Effects - an effect whose own
- * `system.whileInEnvironmentOfExpertise` is set applies only while the actor it lands on has
- * toggled themselves as currently in their own environment of expertise (see
- * helpers/environmental-expertise.mjs's own doc comment on why that's a manual toggle).
+ * `system.whileInEnvironmentOfExpertise` is set applies only while the actor it lands on is in
+ * their own environment of expertise - the scene's terrain when the GM has set one, else the
+ * manual toggle (see helpers/environmental-expertise.mjs's own doc comment). Suppression is
+ * re-evaluated whenever the actor's data is prepared, which helpers/environment.mjs's
+ * refreshTerrainDependentActor forces as soon as their token enters or leaves a Region.
  *
  * Same isSuppressed hook helpers/morph-gated-effects.mjs already established for "while Morphed"
  * effects (Foundry v14's ActiveEffect#isSuppressed reads `this.system.isSuppressed`) - generalized
@@ -13,7 +15,7 @@ import { hasActiveEnvironmentalExpertise } from "./environmental-expertise.mjs";
  * "you gain +1 to Alertness, Initiative, and Survival, or +2 if you are in your environment of
  * expertise") shipped with its own extra +1-in-environment Active Effect already authored and
  * disabled, with nothing to ever enable it - the same "static AE can't be conditioned on a
- * runtime toggle" gap Environmental Armor's own doc comment (dice.mjs) already names, just solved
+ * runtime state" gap Environmental Armor's own doc comment (dice.mjs) already names, just solved
  * here via suppression instead of a live dice.mjs check, since this bonus is a plain skill
  * shiftUp with no attack-roll pipeline to hook into.
  */

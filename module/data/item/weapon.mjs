@@ -70,6 +70,19 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
       // - a holder can carry more than one of the same Consumable weapon, and only the last one
       // firing actually deletes the Item.
       quantity: makeInt(1),
+      // Ongoing/Poison/Toxin (Cobra Codex, New Weapon Effects and Traits, p.93-94) - see
+      // helpers/ongoing-effects.mjs's own doc comment. "For the listed amount of time" - RAW's own
+      // printed NPC stat blocks (e.g. Cobra Codex's Cesspool) show this as "Ongoing (2 rounds)"/
+      // "Ongoing (3 rounds)" per weapon, so this is a magnitude field next to the plain trait
+      // membership check, the same shape as defendMagnitude/accurateMagnitude above. Defaulting to
+      // 1 round is a placeholder for whichever compendium item doesn't have its own printed value
+      // set explicitly yet - see codeneeds_packs.json for the specific items this pass found a
+      // real number for.
+      ongoingDuration: makeInt(1),
+      // Fanning (X) (A Jump Through Time, New Weapon Traits, p.74) - the X, how many Attacks one
+      // Fanning volley may fire; see helpers/fanning.mjs. Same magnitude-next-to-the-trait shape
+      // as ongoingDuration above. Null (no printed X) is treated as 1 there.
+      fanningMagnitude: makeInt(null),
       transformerMode : makeStrWithChoices(E20.transformerModes, 'modeBotMode'),
       upgradeTraits: makeStrArrayWithChoices(Object.keys(E20.weaponTraits)),
       usesPerScene: makeInt(null),

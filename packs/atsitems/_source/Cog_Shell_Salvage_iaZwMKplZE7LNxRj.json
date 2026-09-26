@@ -21,7 +21,8 @@
       "deflective",
       "modular"
     ],
-    "upgradeTraits": []
+    "upgradeTraits": [],
+    "modularAllowance": 1
   },
   "effects": [],
   "flags": {},

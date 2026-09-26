@@ -202,6 +202,12 @@ global.foundry = {
     fields: new Proxy({}, {
       get: () => StubDataField,
     }),
+    // helpers/environment.mjs's own custom "Environment" Region Behavior extends this. Real
+    // behavior isn't needed here - unit tests exercise getEnvironment()/the pure enviroSealed
+    // helpers directly, never this class's own defineSchema().
+    regionBehaviors: {
+      RegionBehaviorType: class RegionBehaviorType {},
+    },
     // The value paired with a "-=<key>" deletion path (see e.g. specialization-handler.mjs's
     // deleteSpecialization) - Foundry v14 deprecated plain `null` there in favor of this marker
     // class. A bare stand-in is enough for unit tests, which only assert on the key/shape of an

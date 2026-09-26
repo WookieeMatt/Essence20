@@ -9,7 +9,7 @@
       </div>
       {{!-- Morphed / Alt Mode at a glance - the same flags helpers/morph-state.mjs drives the
            status effect and ring tint from. The Alt Mode badge wears the mode's own name. --}}
-      {{#if (or system.isMorphed system.isTransformed)}}
+      {{#if (or system.isMorphed system.isTransformed flags.essence20.pendingOngoingEffects.length)}}
         <div class="e20-state-badges">
           {{#if system.isMorphed}}
             <span class="e20-state-badge --morphed">{{localize "E20.StatusMorphed"}}</span>
@@ -17,6 +17,15 @@
           {{#if system.isTransformed}}
             <span class="e20-state-badge --altmode">{{#if altModeName}}{{altModeName}}{{else}}{{localize "E20.StatusAltMode"}}{{/if}}</span>
           {{/if}}
+          {{!-- Ongoing/Poison/Toxin (Cobra Codex p.93-94) - see helpers/ongoing-effects.mjs's own
+               doc comment. One badge per pending effect, each clickable to treat it early
+               ("until treated") - the only sheet-side way to end one before it counts down. --}}
+          {{#each flags.essence20.pendingOngoingEffects}}
+            <span class="e20-state-badge --ongoing" data-action="treatOngoingEffect" data-index="{{@index}}"
+              data-tooltip="{{localize 'E20.OngoingEffectTreat'}}">
+              {{this.sourceName}} ({{this.roundsRemaining}})
+            </span>
+          {{/each}}
         </div>
       {{/if}}
     </div>

@@ -1,8 +1,12 @@
+import { isKnownOutsideEnvironmentOfExpertise } from "./environmental-expertise.mjs";
+
 /**
  * Animal Gait (Cobra Codex, Ranger Guerilla Focus, 6th level, p.61): "As a Standard action, you
  * can gain an Aerial, Climbing, or Swimming Movement equal to your Ground Movement until the end
- * of your turn." ("In your environment of expertise" is dropped, the same narrow-qualifier idiom
- * this project already applies elsewhere - Iconoclast/Indoctrinated/etc.)
+ * of your turn." "In your environment of expertise" is checked against the scene's terrain when
+ * the GM has set one - switching it ON outside every environment of expertise (with no
+ * Adaptation / Read The Land flag covering it) is refused with a warning; on an untagged scene it
+ * stays the player's call, as before (helpers/environmental-expertise.mjs).
  *
  * A toggle (spend nothing this codebase tracks, since Standard actions aren't budgeted) picking
  * which of the 3 movement types to grant - checked in Essence20Actor#_prepareMovement, the same
@@ -60,6 +64,11 @@ export async function toggleAnimalGait(actor) {
   if (getAnimalGaitType(actor)) {
     await actor.unsetFlag('essence20', ANIMAL_GAIT_FLAG);
     return false;
+  }
+
+  if (isKnownOutsideEnvironmentOfExpertise(actor)) {
+    ui.notifications.warn(game.i18n.localize('E20.NotInEnvironmentOfExpertise'));
+    return null;
   }
 
   const movementType = await pickAnimalGaitType();

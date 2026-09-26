@@ -259,3 +259,16 @@ describe("counter coercion", () => {
     expect(getSceneEpoch()).toBe(7);
   });
 });
+
+describe("essence20.sceneAdvanced hook", () => {
+  test("a new scene announces itself, for per-scene environmental damage", async () => {
+    setGame();
+    global.Hooks = { callAll: jest.fn() };
+    try {
+      await advanceScene('Onyx');
+      expect(Hooks.callAll).toHaveBeenCalledWith('essence20.sceneAdvanced', 2);
+    } finally {
+      delete global.Hooks;
+    }
+  });
+});

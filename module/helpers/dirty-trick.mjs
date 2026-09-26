@@ -1,14 +1,16 @@
 import { E20 } from "./config.mjs";
+import { isKnownOutsideEnvironmentOfExpertise } from "./environmental-expertise.mjs";
 
 /**
  * Dirty Trick (GI Joe CRB, Ranger Environmental Exposure choice, p.91): "In your environment of
  * expertise, as an Attack, make a Survival Skill Test against your target's Willpower. On a
  * success, you can choose to Blind or Stun your target for 1 turn or knock them prone."
  *
- * "In your environment of expertise" is dropped as unenforceable - this codebase has no "what
- * environment am I currently in" state to check (the same gap already blocking every other
- * Environmental Exposure choice), the same "player self-polices the fictional precondition" idiom
- * this project already applies broadly. The roll itself is a genuine single-target Skill-Test-vs-
+ * "In your environment of expertise" is checked against the scene's terrain when the GM has set
+ * one: outside every environment of expertise, with no Adaptation flag covering it (Adaptation
+ * buys exactly this - "environment exposure abilities outside of your environments of
+ * expertise"), the roll is refused with a warning. On an untagged scene it stays the player's
+ * call, as before (helpers/environmental-expertise.mjs). The roll itself is a genuine single-target Skill-Test-vs-
  * Defense with a post-hit Condition choice - same "trigger a real dialog roll via
  * actor._dice.rollSkill()" shape Duty Of The Graphite/Absolute Menace already establish, aimed at
  * whichever ONE enemy the player has targeted, with the actual Condition picked afterward via a
@@ -17,6 +19,11 @@ import { E20 } from "./config.mjs";
  * rather than Immobilized/Prone/Restrained).
  */
 export async function activateDirtyTrick(actor) {
+  if (isKnownOutsideEnvironmentOfExpertise(actor)) {
+    ui.notifications.warn(game.i18n.localize('E20.NotInEnvironmentOfExpertise'));
+    return;
+  }
+
   await actor._dice.rollSkill({
     skill: 'survival', essence: 'smarts', shiftUp: 0, shiftDown: 0, defenseType: 'willpower', isDirtyTrick: true,
   }, actor);

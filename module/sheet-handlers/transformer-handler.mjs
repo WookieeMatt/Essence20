@@ -25,6 +25,14 @@ export async function onAltModeDelete(actorSheet, altMode) {
  * @param {Actor} actor The Actor being transformed
  */
 export async function onTransform(actor) {
+  // Mode Lock (Enigma of Combination, Weapon Traits/Conditions, p.49) - see dice.mjs#_applyModeLock's
+  // own doc comment. "Can't convert from their current Mode" blocks the transform button outright,
+  // the one point every Bot Mode <-> Alt Mode conversion in this codebase funnels through.
+  if (actor.statuses?.has('modeLock')) {
+    ui.notifications.warn(game.i18n.format('E20.ModeLockPreventsConversion', { name: actor.name }));
+    return;
+  }
+
   const altModes = actor.items.documentsByType.altMode;
   const isTransformed = actor.system.isTransformed;
 

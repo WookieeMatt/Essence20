@@ -41,7 +41,7 @@ import StartingEssences from "./apps/starting-essences.mjs";
 import StatBlockImporter from "./apps/stat-block-importer.mjs";
 import { canSwapTokenForm, swapTokenForm } from "./helpers/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
-import { addConsummatePerformerButton, addDefenseBoostButton, addExploitWeaknessButton, addFlashyButton, addFrenziedAttackButton, addOneUppingButton, addRerollButtons, addSecretHelperButton, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { addConsummatePerformerButton, addDefenseBoostButton, addExploitWeaknessButton, addFlashyButton, addFrenziedAttackButton, addHighDensityButton, addOneUppingButton, addRerollButtons, addSecretHelperButton, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
@@ -56,6 +56,7 @@ import { healRegeneratingShellAtTurnEnd } from "./helpers/power-adaptation.mjs";
 import { healRapidRescueResponseAtRoundEnd } from "./helpers/rapid-rescue-response.mjs";
 import { deactivateRushTheLineAtTurnEnd } from "./helpers/rush-the-line.mjs";
 import { deactivateFrictionlessMovementAtTurnEnd } from "./helpers/frictionless-movement.mjs";
+import { applyOngoingEffectsAtTurnEnd } from "./helpers/ongoing-effects.mjs";
 import { deactivateExpandedMysticismQuickenAtTurnEnd } from "./helpers/expanded-mysticism.mjs";
 import { deactivateSprinterBoostAtTurnEnd } from "./helpers/sprinter-boost.mjs";
 import { healUnbeatableAtTurnStart } from "./helpers/unbeatable.mjs";
@@ -71,6 +72,18 @@ import { applyThemeClass, insertSettingGroupHeadings, migrateSheetThemeSetting, 
 import { updateRoleCache } from "./helpers/utils.mjs";
 import { registerEssence20Tours, sweepTourDemoContent } from "./tours/index.mjs";
 import { activateWelcomeOfferListeners, offerWelcomeTour } from "./tours/welcome-offer.mjs";
+import { registerExoFrameHooks } from "./helpers/exo-frame.mjs";
+import {
+  ENVIRONMENT_REGION_BEHAVIOR_TYPE, EnvironmentRegionBehaviorType, injectEnvironmentSceneConfigField,
+  refreshTerrainDependentActor,
+} from "./helpers/environment.mjs";
+import { handleCreateRoughTerrainRequest, makeEssence20TerrainData } from "./helpers/rough-terrain.mjs";
+import { applyEnvironmentAtSceneEnd } from "./helpers/environment-hazards.mjs";
+import {
+  decorateTokenHudVesselConditions, handleVesselConditionStacksRequest, isVesselCondition,
+  shouldBlockZordVesselCondition, syncVesselConditionConsequences,
+} from "./helpers/vessel-conditions.mjs";
+import { makeEssence20Token } from "./canvas/token.mjs";
 
 function registerSystemSettings() {
   game.settings.register("essence20", "systemMigrationVersion", {
@@ -199,6 +212,20 @@ Hooks.once("init", async function () {
   CONFIG.ActiveEffect.dataModels = data.effect.config;
   CONFIG.Item.dataModels = data.item.config;
 
+  /* Custom "Environment" Region Behavior - lets a GM override the scene's own default
+     environment (Scene Config's "Basics" tab, see injectEnvironmentSceneConfigField below) for
+     just part of a scene (e.g. a beach map's water) by drawing a Region over it. See
+     helpers/environment.mjs's own doc comment for the full precedence rules getEnvironment()
+     reads back. */
+  CONFIG.RegionBehavior.dataModels[ENVIRONMENT_REGION_BEHAVIOR_TYPE] = EnvironmentRegionBehaviorType;
+  CONFIG.RegionBehavior.typeLabels[ENVIRONMENT_REGION_BEHAVIOR_TYPE] = "E20.RegionBehaviorEnvironmentLabel";
+  CONFIG.RegionBehavior.typeHints[ENVIRONMENT_REGION_BEHAVIOR_TYPE] = "E20.RegionBehaviorEnvironmentHint";
+  CONFIG.RegionBehavior.typeIcons[ENVIRONMENT_REGION_BEHAVIOR_TYPE] = "fa-solid fa-water";
+  // Rough Terrain's doubled Movement cost - see helpers/rough-terrain.mjs's own doc comment.
+  CONFIG.Token.movement.TerrainData = makeEssence20TerrainData(CONFIG.Token.movement.TerrainData);
+  // Stack counts on status icons (Space Vessel Conditions) - see canvas/token.mjs.
+  CONFIG.Token.objectClass = makeEssence20Token(CONFIG.Token.objectClass);
+
   // Register System Settings
   registerSystemSettings();
 
@@ -296,6 +323,10 @@ Hooks.once("init", async function () {
       handleRemoteChoiceResponse(data);
     } else if (data.action === "setActionLedger") {
       handleSetActionLedger(data);
+    } else if (data.action === "createRoughTerrain") {
+      handleCreateRoughTerrainRequest(data);
+    } else if (data.action === "vesselConditionStacks") {
+      handleVesselConditionStacksRequest(data);
     }
   });
 
@@ -642,6 +673,7 @@ Hooks.on("renderChatMessageHTML", (app, html, data) => {
   addSecretHelperButton(app, html);
   addSufferButton(app, html);
   addFrenziedAttackButton(app, html);
+  addHighDensityButton(app, html);
   addExploitWeaknessButton(app, html);
   addFlashyButton(app, html);
   attachCheckCardListeners(app, html);
@@ -752,6 +784,13 @@ Hooks.on("preCreateActiveEffect", (effect) => {
     return true;
   }
 
+  // Zords can't be given Space Vessel Conditions (Across the Stars p.26) - see
+  // helpers/vessel-conditions.mjs#shouldBlockZordVesselCondition for the GM's override.
+  if (shouldBlockZordVesselCondition(actor, effect.statuses)) {
+    ui.notifications.warn(game.i18n.localize("E20.VesselConditionZordBlocked"));
+    return false;
+  }
+
   for (const statusId of effect.statuses ?? []) {
     if (isImmuneToCondition(actor, statusId)) {
       const statusLabel = CONFIG.statusEffects.find(s => s.id == statusId)?.name ?? statusId;
@@ -846,6 +885,13 @@ for (const hookName of ["combatTurn", "combatRound"]) {
       // Friendship Circle (MLP CRB) - "until the end of the pony who formed the Friendship
       // Circle's next turn". Same ending-actor idiom; helpers/friendship-circle.mjs decides.
       expireCircleAtTurnEnd(endingActor, combat);
+
+      // Ongoing / Poison / Toxin (Cobra Codex, New Weapon Effects and Traits, p.93-94) - see
+      // helpers/ongoing-effects.mjs's own doc comment. Same "read combat.combatant BEFORE the
+      // update commits" idiom as Regenerating Shell/Rush the Line/Frictionless Movement above -
+      // here, endingActor is sometimes the AFFECTED creature itself, which is exactly the "end of
+      // their turn" RAW asks for.
+      applyOngoingEffectsAtTurnEnd(endingActor);
     }
   });
 }
@@ -942,6 +988,42 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 
 Hooks.on("renderActiveEffectConfig", (app, html) => {
   addEffectKeyWarnings(app, html);
+});
+
+// Scene-default-environment picker - see helpers/environment.mjs's own doc comment.
+Hooks.on("renderSceneConfig", (app, html) => {
+  injectEnvironmentSceneConfigField(app, html);
+});
+
+// Exo-Frame armor's Driving test prompt (Across the Stars p.85) - see helpers/exo-frame.mjs.
+registerExoFrameHooks();
+
+/* Space Vessel Conditions (Across the Stars p.25-26): Immobilized at two Sputtering/Spun-Out stacks,
+   Defeated once Compromised reaches 0 maximum Health - kept in step however the status was added or
+   removed (core's HUD toggle included). Only the user who made the change acts, so it happens once. */
+for (const hookName of ["createActiveEffect", "updateActiveEffect", "deleteActiveEffect"]) {
+  Hooks.on(hookName, (effect, ...rest) => {
+    const userId = rest.at(-1);
+    if (userId == game.user.id && effect.parent instanceof Actor && [...(effect.statuses ?? [])].some(isVesselCondition)) {
+      syncVesselConditionConsequences(effect.parent);
+    }
+  });
+}
+
+// Stack counts and the Zord override on the token HUD's vessel Conditions.
+Hooks.on("renderTokenHUD", (hud, html) => {
+  decorateTokenHudVesselConditions(hud, html);
+});
+
+// Per-scene environmental damage (Irradiated, Harmful Toxic Atmosphere) when the GM starts a new
+// scene - see helpers/environment-hazards.mjs.
+Hooks.on("essence20.sceneAdvanced", () => {
+  applyEnvironmentAtSceneEnd(canvas?.scene ?? game.scenes?.viewed ?? null);
+});
+
+// Terrain-dependent derived data (Prowl, Taking Point) - see refreshTerrainDependentActor.
+Hooks.on("updateToken", (tokenDoc, changes) => {
+  refreshTerrainDependentActor(tokenDoc, changes);
 });
 
 /* Every DialogV2 (ours or Foundry core's own, e.g. the item-creation dialog) gets the same

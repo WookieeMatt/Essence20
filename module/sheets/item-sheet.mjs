@@ -4,6 +4,8 @@ const { ContextMenu } = foundry.applications.ux;
 import { applyThemeClass } from "../settings.js";
 import { serializeFormSubmits } from "../apps/serialize-form-submits.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
+import { getModularCandidates, normalizeModularWeaponIds } from "../helpers/modular-armor.mjs";
+import { rollExoFrameTest } from "../helpers/exo-frame.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 import {
@@ -85,6 +87,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     actions: {
       deleteItem: this.#deleteItem,
       traitSelector: this.#traitSelector,
+      rollExoFrameTest: this.#rollExoFrameTest,
       viewItem: this.#viewItem,
       editDescription: this.#editDescription,
       startSheetTour: this.#onStartSheetTour,
@@ -202,6 +205,11 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       context.roles = await _getVersionRoles(itemData);
     }
 
+    // Modular armor (Across the Stars p.85) - the wearer's weapons that can be socketed into it.
+    if (this.document.type == 'armor') {
+      context.modularCandidates = getModularCandidates(this.document.parent, this.document);
+    }
+
     return context;
   }
 
@@ -266,6 +274,12 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
         .split(",")
         .map(skill => skill.trim())
         .filter(Boolean);
+    }
+
+    // Modular armor's socketed-weapon checkboxes - see helpers/modular-armor.mjs.
+    const modularWeaponIds = normalizeModularWeaponIds(formData.object["system.modularWeaponIds"]);
+    if (modularWeaponIds) {
+      formData.object["system.modularWeaponIds"] = modularWeaponIds;
     }
 
     return super._prepareSubmitData(event, form, formData, updateData);
@@ -358,6 +372,17 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
 
   static async #traitSelector(event, target) {
     onManageSelectTrait(event, this.document, target);
+  }
+
+  /**
+   * Exo-Frame armor (Across the Stars p.85) - the manual Driving test, DIF from the wearer's
+   * recorded movement this turn. See helpers/exo-frame.mjs.
+   */
+  static async #rollExoFrameTest() {
+    const actor = this.document.parent;
+    if (actor) {
+      await rollExoFrameTest(actor);
+    }
   }
 
   static async #viewItem(event,target){

@@ -78,3 +78,39 @@ describe("toggleNaturalMovement", () => {
     expect(actor.setFlag).not.toHaveBeenCalled();
   });
 });
+
+// An actor standing on a scene tagged with the given terrain, with the given environments of
+// expertise (see helpers/environment.mjs#getTerrain).
+function onTerrain(actor, terrain, environments = ['arctic']) {
+  const scene = { getFlag: (scope, key) => (key == 'terrain' ? terrain : undefined) };
+  return {
+    ...actor,
+    documentName: 'Actor',
+    getActiveTokens: () => [{ regions: [], parent: scene }],
+    system: { ...(actor.system ?? {}), environments },
+  };
+}
+
+describe("toggleNaturalMovement - environment of expertise from the scene's terrain", () => {
+  beforeEach(() => {
+    foundry.applications.api.DialogV2.wait.mockReset();
+    ui.notifications.warn.mockClear();
+  });
+
+  test("refuses to switch on, with a warning, when the terrain isn't an environment of expertise", async () => {
+    const actor = onTerrain(makeActor(), 'desert');
+    expect(await toggleNaturalMovement(actor)).toBeNull();
+    expect(ui.notifications.warn).toHaveBeenCalledWith('E20.NotInEnvironmentOfExpertise');
+    expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
+  });
+
+  test("switches on as normal in an environment of expertise", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('swim');
+    expect(await toggleNaturalMovement(onTerrain(makeActor(), 'arctic'))).toBe('swim');
+    expect(ui.notifications.warn).not.toHaveBeenCalled();
+  });
+
+  test("can always be switched back off", async () => {
+    expect(await toggleNaturalMovement(onTerrain(makeActor('climb'), 'desert'))).toBe(false);
+  });
+});

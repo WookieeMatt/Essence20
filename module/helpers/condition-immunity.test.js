@@ -44,6 +44,34 @@ describe("isImmuneToCondition (Stalk, GI Joe CRB Predator base, 1st level, p.93)
   test("an actor without the Perk is not immune", () => {
     expect(isImmuneToCondition(makeActor(false), "surprised")).toBe(false);
   });
+  describe("'in your environment of expertise', read from the scene's terrain", () => {
+    function onTerrain(terrain, { adaptationFlag = false } = {}) {
+      const scene = { getFlag: (scope, key) => (key == "terrain" ? terrain : undefined) };
+      return {
+        ...makeActor(),
+        documentName: "Actor",
+        getActiveTokens: () => [{ regions: [], parent: scene }],
+        system: { environments: ["woodlands"] },
+        getFlag: (scope, key) => (key == "environmentalExpertiseActive" ? adaptationFlag : undefined),
+      };
+    }
+
+    test("immune in an environment of expertise", () => {
+      expect(isImmuneToCondition(onTerrain("woodlands"), "surprised")).toBe(true);
+    });
+
+    test("not immune outside every environment of expertise", () => {
+      expect(isImmuneToCondition(onTerrain("urban"), "surprised")).toBe(false);
+    });
+
+    test("immune outside it while an Adaptation / Read The Land flag covers it", () => {
+      expect(isImmuneToCondition(onTerrain("urban", { adaptationFlag: true }), "surprised")).toBe(true);
+    });
+
+    test("still immune on a scene with no terrain set (unchanged behavior)", () => {
+      expect(isImmuneToCondition(onTerrain(undefined), "surprised")).toBe(true);
+    });
+  });
 });
 
 describe("isImmuneToCondition (Caution, Bodyguard Focus, 17th level)", () => {

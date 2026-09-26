@@ -5,6 +5,7 @@ import { isBulwarkActive } from "./bulwark.mjs";
 import { isGreasedLightningActive } from "./greased-lightning.mjs";
 import { isCalmingWordsBuffActive } from "./calming-words.mjs";
 import { isIronBravadoFrightenedImmune } from "./iron-bravado.mjs";
+import { isKnownOutsideEnvironmentOfExpertise } from "./environmental-expertise.mjs";
 
 /**
  * Generic Condition-immunity enforcement. Several Perks across the GI Joe CRB grant outright
@@ -35,13 +36,14 @@ const CONDITION_IMMUNITY_PERKS = [
     // The first Perk to key off the Surprised status, added the same day (helpers/config.mjs) -
     // before it there was no Condition for this clause to name.
     //
-    // "In your environment of expertise" is NOT enforced. The Perk does record a chosen
-    // environment (perk-handler.mjs's own 'environments' choiceType), but nothing anywhere tracks
-    // which environment a scene IS, so the condition is unknowable at runtime - the same
-    // unenforceable-qualifier drop as Bits To Spare/Truthseeker/Fear My Name. The Infiltration
-    // Edge half is a plain compendium Active Effect on the item itself and needs no code.
+    // "In your environment of expertise" is checked against the scene's terrain when the GM has
+    // set one (helpers/environmental-expertise.mjs): outside every environment of expertise, with
+    // no Adaptation / Read The Land flag covering it, the immunity is off. On a scene with no
+    // terrain set it stays unconditional, as it always was. The Infiltration Edge half is a plain
+    // compendium Active Effect on the item itself and needs no code.
     id: `${GI_JOE_CRB}BOuJREcROMkMjbM1`,
     conditions: ['surprised'],
+    isActive: (actor) => !isKnownOutsideEnvironmentOfExpertise(actor),
   },
   {
     // Caution (Bodyguard Focus, 17th level, p.110): "you are immune to the Blinded, Deafened,
