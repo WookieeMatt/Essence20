@@ -1867,6 +1867,15 @@
   background: var(--e20-theme-card-bg);
 }
 
+/* Ongoing/Poison/Toxin (Cobra Codex p.93-94) - see helpers/ongoing-effects.mjs's own doc comment.
+   Clickable (treats the effect early), so it gets a pointer cursor unlike the other two badges. */
+.essence20 .e20-state-badge.--ongoing {
+  background: var(--e20-damage-color, #8b2f2f);
+  color: #fff;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
+
 /* ITEMS */
 .essence20 .items-header {
   height: 28px;

@@ -23,7 +23,8 @@
       "enviroSealed",
       "regal"
     ],
-    "upgradeTraits": []
+    "upgradeTraits": [],
+    "bulwarkHealthBonus": 1
   },
   "effects": [
     {

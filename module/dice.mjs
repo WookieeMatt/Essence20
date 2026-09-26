@@ -1,4 +1,10 @@
 import { E20 } from "./helpers/config.mjs";
+import { getEnvironment, getTerrain, hasEquippedEnviroSealedArmor, isEnviroSealedEdgeActive } from "./helpers/environment.mjs";
+import { isImpairedByEnvironment } from "./helpers/environment-hazards.mjs";
+import {
+  areHardpointWeaponsInoperable, canTargetVesselSystem, getUnstablePenalty, imposeVesselConditionOnCrit,
+  resolveVesselRepair, TARGET_VESSEL_SYSTEM_SHIFT_DOWN,
+} from "./helpers/vessel-conditions.mjs";
 import { isAiming, ACT_WHILE_DEFEATED_FLAG, grantActionsThisTurn } from "./helpers/action-economy.mjs";
 import { pickTerrifyingPresenceRider } from "./helpers/terrifying-presence.mjs";
 import { DEFENDING_STATUS } from "./helpers/named-actions.mjs";
@@ -304,7 +310,11 @@ import { EXTRA_ROUGH_TRAINING_FLAG } from "./helpers/extra-rough-training.mjs";
 import { broadcastHupHupHupHupHupBonus } from "./helpers/hup-hup-hup-hup-hup.mjs";
 import { SHOULDER_TO_SHOULDER_FLAG } from "./helpers/shoulder-to-shoulder.mjs";
 import { hasNearbyExemplaryMatch, recordExemplaryRoll } from "./helpers/exemplary.mjs";
-import { hasActiveEnvironmentalExpertise, PENDING_GUIDANCE_FLAG_KEY } from "./helpers/environmental-expertise.mjs";
+import {
+  ENVIRONMENTAL_EXPERTISE_ID, getEnvironmentOfExpertiseSourceLabel, hasActiveEnvironmentalExpertise,
+  PENDING_GUIDANCE_FLAG_KEY,
+} from "./helpers/environmental-expertise.mjs";
+import { applyWreckerRoughTerrain, hasTakePointCover } from "./helpers/rough-terrain.mjs";
 import {
   applyExplosiveAftershockEffects, EXPLOSIVE_AFTERSHOCK_PENALTY_FLAG, pickExplosiveAftershockEffects,
 } from "./helpers/explosive-aftershock.mjs";
@@ -385,6 +395,11 @@ import { hasAquaElementalAdaptation } from "./helpers/aqua-elemental-adaptation.
 import { hasMatchingChosenSpecialization } from "./helpers/chosen-specialization.mjs";
 import { isWithinGetAGripSizeGate, spendGetAGripFreeActions } from "./helpers/get-a-grip.mjs";
 import { NO_FIGHTING_FLAG } from "./helpers/no-fighting.mjs";
+import {
+  STORM_OF_LEAD_ID, adjustFanningShotShift, clampFanningShots, getFanningMaxShots, getFanningShotShifts,
+} from "./helpers/fanning.mjs";
+import { HIGH_DENSITY_FOLLOW_UP_SHIFT_DOWN, isHighDensityWeapon } from "./helpers/high-density.mjs";
+import { hasGeneticAlterations, isRetrogenWeapon } from "./helpers/retrogen.mjs";
 
 // TF CRB Influence Perks (p.33-38) - see helpers/chosen-specialization.mjs's own doc comment.
 const FORMER_SENATOR_ID = "Compendium.essence20.tf_crb.Item.gcqyJw1sXxi2wy8e";
@@ -2384,8 +2399,8 @@ const TOOTH_AND_CLAW_ID = "Compendium.essence20.technorganic_secrets.Item.Z4lShG
 // on Acrobatics and Infiltration Skill Tests and are unimpeded by rough terrain. Additionally,
 // choose one: Agile Reflexes (once/scene, when an attack targets your Toughness, you may use
 // Evasion instead) / Innate Climber (+40ft Climb Movement while in your Alt Mode)." The flat
-// shiftUp half is a plain compendium ActiveEffect; "unimpeded by rough terrain" stays unbuilt (no
-// terrain-classification concept exists anywhere). Innate Climber's movement grant lives in
+// shiftUp half is a plain compendium ActiveEffect; "unimpeded by rough terrain" is
+// helpers/rough-terrain.mjs#ignoresRoughTerrain. Innate Climber's movement grant lives in
 // documents/actor.mjs#_prepareMovement; Agile Reflexes' defenseType override is the live check
 // below, in rollSkill()'s own per-target checkEntries construction (the one place defenseType is
 // actually known - see this project's own tracked "defenseType known only after the dialog
@@ -3591,9 +3606,9 @@ const SCIENCE_FIXES_ALL_ID = `${COBRA_CODEX}cxTzdLpTblPMMEQk`;
 // clause only: "inside and outside of an urban environment, you can use Streetwise in place of
 // Survival for Skill Tests" - RAW's own "inside AND outside" wording makes this one clause
 // explicitly environment-independent, unlike this same Perk's other 3 "in urban environments"
-// clauses (ignore Rough Terrain, Edge on non-attack Skill Tests, Specialized attacks), which stay
-// unbuilt - no environment-tagging exists anywhere in this codebase, the same gap already flagged
-// for several other Perks (Environmental Enforcer, Sewer Tunneler, etc.).
+// clauses, which read the scene's terrain (helpers/environment.mjs#getTerrain): Edge on non-attack
+// Skill Tests and Specialized attacks in rollSkill() next to Environmental Expertise, and ignoring
+// Rough Terrain in helpers/rough-terrain.mjs.
 const URBAN_JUNGLE_ID = `${COBRA_CODEX}wIesQd7U5W2azAWY`;
 
 // Fear Is Universal (Cobra Codex, Officer Taskmaster Focus, 10th level, p.57): "you can use
@@ -4709,6 +4724,10 @@ const WITHERING_FIRE_ID = "Compendium.essence20.intercontinental_adventures.Item
 const MOVE_LIKE_A_SONG_ID = `${PR_CRB}3ax1l5TpluxcSp4o`;
 const MOVE_LIKE_A_SONG_ROUND_FLAG = 'moveLikeASongUsedThisRound';
 
+// Athletics/Brawn shifts per gravity environment (Across the Stars p.24-25) - see the "Environment"
+// block in _getAutomaticCombatModifiers. Negative is a penalty.
+const GRAVITY_ATHLETICS_BRAWN_SHIFTS = { highGravity: -2, lowGravity: 1, zeroGravity: 2 };
+
 export class Dice {
   /**
    * Dice constructor.
@@ -5178,6 +5197,13 @@ export class Dice {
     // method directly with no Item at all.
     const terrifyingPresenceRider = await pickTerrifyingPresenceRider(actor, rolledSkill, dataset.defenseType);
 
+    // Unstable, third stack (Across the Stars p.26): "renders the hardpoint weapons inoperable, and
+    // the vessel can no longer make attacks with its hardpoint weapons until repaired."
+    if (item?.type == 'weaponEffect' && actor?.type == 'vehicle' && areHardpointWeaponsInoperable(actor)) {
+      ui.notifications.warn(this._localize('E20.VesselConditionUnstableInoperable', { name: actor.name }));
+      return;
+    }
+
     // Limited Articulation - see LIMITED_ARTICULATION_SKILLS' own comment above.
     if (LIMITED_ARTICULATION_SKILLS.includes(rolledSkill) && actor.system.altModeId) {
       const activeAltMode = actor.items?.get(actor.system.altModeId);
@@ -5239,6 +5265,16 @@ export class Dice {
     const combatModifiers = this._getAutomaticCombatModifiers(actor, item, rolledEssence, rolledSkill);
     if (combatModifiers.debilitatedConsumed) {
       await actor.unsetFlag('essence20', 'debilitated');
+    }
+
+    // High-Density - see helpers/high-density.mjs's own doc comment. The follow-up Attack's own
+    // "(↓1)", folded into the automatic modifiers so it is listed (and toggleable) like any other.
+    if (dataset.highDensityFollowUp && item?.type == 'weaponEffect') {
+      combatModifiers.shiftDown += HIGH_DENSITY_FOLLOW_UP_SHIFT_DOWN;
+      combatModifiers.sources.push({
+        id: 'highDensityFollowUp', label: this._localize('E20.WeaponTraitHighDensity'),
+        shiftUp: 0, shiftDown: HIGH_DENSITY_FOLLOW_UP_SHIFT_DOWN, edge: false, snag: false,
+      });
     }
 
     // Iron Bravado - see IRON_BRAVADO_ID's own comment above. Stamped on any Attack, hit or miss.
@@ -5385,15 +5421,6 @@ export class Dice {
     calculatedShiftUp += combatModifiers.shiftUp + (specialization?.shiftUp || 0);
     calculatedShiftDown += combatModifiers.shiftDown + (specialization?.shiftDown || 0);
 
-    // Cobra Battle School Graduate (Cobra Codex, General Perk, p.176): "You gain shiftUp 1 on
-    // Smarts-based Skill Tests in combat other than attacks." "Attacks" is read as a weaponEffect
-    // roll (this system's own attack-vs-plain-Skill-Test distinction), the same proxy Spot/Ageless
-    // Knowledge/etc. already use elsewhere.
-    if (game.combat && rolledEssence == 'smarts' && item?.type != 'weaponEffect'
-      && actorHasPerk(actor, COBRA_BATTLE_SCHOOL_GRADUATE_ID)) {
-      calculatedShiftUp += 1;
-    }
-
     // Sabotage - see SABOTAGE_ID's own comment above.
     if (rolledSkill == 'technology' && actorHasPerk(actor, SABOTAGE_ID)) {
       calculatedShiftUp += getSneakAttackDamage(actor);
@@ -5438,6 +5465,20 @@ export class Dice {
         }
       }
     }
+
+    // Enviro-Sealed (Across the Stars, Armor Traits, p.85): "grants immunity to most
+    // environmental conditions and grants Edge on all Skill Tests made to resist adverse
+    // situations." "Which Skill Tests actually resist an adverse situation" isn't a concept this
+    // codebase can identify in general (the same "no hook to check a fictional qualifier against"
+    // gap Environmental Expertise's own doc comment already accepts), so this automatically grants
+    // Edge only for the one adverse-situation case this pass CAN check for free - the wearer's own
+    // physical environment (helpers/environment.mjs) currently being anything other than `normal` -
+    // and otherwise leaves it to the player's own judgment via a Roll Options Dialog checkbox (see
+    // updatedShiftDataset.enviroSealedAvailable below) for adverse situations unrelated to the
+    // physical environment (resisting poison, fear, disease, and the like). The immunity half
+    // ("most environmental conditions") isn't built - this system has no generic "environmental
+    // condition" category to grant immunity from.
+    const hasEnviroSealedEdge = isEnviroSealedEdgeActive(equippedArmor, getEnvironment(actor));
 
     // Nemesis (Decepticon Directive, Influence Perk, p.27) - see helpers/nemesis-decepticon.mjs's
     // own doc comment. "Non-combat" reuses Cobra Battle School Graduate's own item?.type !=
@@ -5928,7 +5969,7 @@ export class Dice {
       // Command's own banked Edge) rather than something this method derives itself.
       edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge || combatModifiers.edge
         || !!specialization?.edge || hasExtraRoughTrainingEdge || hasRelicKeyEdge || hasLinkedEdge
-        || hasWaitForAnOpeningEdge || !!dataset.isRegeneration || !!dataset.edge,
+        || hasWaitForAnOpeningEdge || !!dataset.isRegeneration || !!dataset.edge || hasEnviroSealedEdge,
       snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag || combatModifiers.snag
         || !!specialization?.snag,
     };
@@ -6007,6 +6048,16 @@ export class Dice {
     // individual shiftUp/shiftDown-granting one off for just this roll (edge/snag entries are
     // informational only - see updatedShiftDataset's own consumption below).
     updatedShiftDataset.combatModifierSources = combatModifiers.sources;
+
+    // Retrogen - see helpers/retrogen.mjs's own doc comment. The off-by-default toggle, offered
+    // only when the automatic modifier above didn't already fire for this target.
+    const attackTraitParentWeapon = item?.type == 'weaponEffect' ? this._getParentWeapon(actor, item) : null;
+    updatedShiftDataset.retrogenAvailable = isRetrogenWeapon(attackTraitParentWeapon)
+      && !combatModifiers.sources.some(source => source.id == 'retrogen');
+
+    // Fanning - see helpers/fanning.mjs's own doc comment. 0 hides the dialog's shot-count input.
+    // Never offered on a High-Density follow-up (that is a single extra Attack, not a new volley).
+    updatedShiftDataset.fanningMaxShots = dataset.highDensityFollowUp ? 0 : getFanningMaxShots(actor, attackTraitParentWeapon);
 
     // Pre-select the Roll Options Dialog's Defense dropdown from the weaponEffect's configured
     // Defense (p.168-169). A plain skill roll defaults to 'none' unless the caller already set
@@ -6267,6 +6318,11 @@ export class Dice {
       && !!moxie && moxie.system.resource.value >= 2
       && getUsesThisScene(actor, 'legendaryDependabilityUsesThisScene') < 1;
 
+    // Enviro-Sealed - see hasEnviroSealedEdge's own comment above. Shown whenever the actor wears
+    // this armor at all (not gated on environment - this is specifically the checkbox for adverse
+    // situations OTHER than the physical environment, which is handled automatically instead).
+    updatedShiftDataset.enviroSealedAdverseSituationAvailable = hasEquippedEnviroSealedArmor(equippedArmor);
+
     // Pressure Cooker - see PRESSURE_COOKER_ID's own comment above. "If you only have 1 Health
     // left" - a genuinely enforceable precondition (unlike most fictional qualifiers this project
     // drops), so the checkbox is only offered at exactly 1 Health.
@@ -6465,15 +6521,42 @@ export class Dice {
     // helpers/environmental-expertise.mjs's own GUIDANCE_ID comment) - a bare marker flag banked
     // via BANKABLE_PERKS, consumed on the very next roll of any kind.
     const pendingGuidance = getPendingBonus(actor, PENDING_GUIDANCE_FLAG_KEY);
-    if (hasActiveEnvironmentalExpertise(actor) || pendingGuidance) {
+    // The Edge is also listed as a Roll Options Dialog source, labelled with the scene's terrain
+    // when that (rather than the toggle) is what put the actor in their environment of expertise.
+    const hasOwnEnvironmentalExpertise = hasActiveEnvironmentalExpertise(actor);
+    if (hasOwnEnvironmentalExpertise || pendingGuidance) {
       if (item?.type == 'weaponEffect') {
         updatedShiftDataset.isSpecialized = true;
       } else {
         skillDataset.edge = true;
+        combatModifiers.sources.push({
+          id: 'environmentalExpertise',
+          label: hasOwnEnvironmentalExpertise
+            ? getEnvironmentOfExpertiseSourceLabel(actor, findPerk(actor, ENVIRONMENTAL_EXPERTISE_ID)?.name ?? 'Environmental Expertise')
+            : 'Guidance',
+          shiftUp: 0, shiftDown: 0, edge: true, snag: false,
+        });
       }
 
       if (pendingGuidance) {
         await clearPendingBonus(actor, PENDING_GUIDANCE_FLAG_KEY);
+      }
+    }
+
+    // Urban Jungle (see URBAN_JUNGLE_ID's own comment above): "when in urban environments... You
+    // gain Edge on non-attack Skill Tests. All your attacks are considered Specialized." Only on a
+    // scene (or Region) whose terrain is Urban - with no terrain set there's nothing to go on, so
+    // it stays off as before. Same non-attack/attack split as Environmental Expertise just above.
+    if (actorHasPerk(actor, URBAN_JUNGLE_ID) && getTerrain(actor) == 'urban') {
+      if (item?.type == 'weaponEffect') {
+        updatedShiftDataset.isSpecialized = true;
+      } else {
+        skillDataset.edge = true;
+        combatModifiers.sources.push({
+          id: 'urbanJungle',
+          label: `${findPerk(actor, URBAN_JUNGLE_ID)?.name ?? 'Urban Jungle'} (${this._localize(E20.environments.urban)})`,
+          shiftUp: 0, shiftDown: 0, edge: true, snag: false,
+        });
       }
     }
 
@@ -6493,6 +6576,10 @@ export class Dice {
     if (['alertness', 'survival'].includes(rolledSkill) && actorHasPerk(actor, RECON_ID)
       && hasActiveEnvironmentalExpertise(actor)) {
       skillDataset.edge = true;
+      combatModifiers.sources.push({
+        id: 'recon', label: getEnvironmentOfExpertiseSourceLabel(actor, findPerk(actor, RECON_ID)?.name ?? 'Recon'),
+        shiftUp: 0, shiftDown: 0, edge: true, snag: false,
+      });
     }
 
     // Genius (Technician, 15th level, p.104): "treat all Skill Tests related to your Role Skills
@@ -7420,6 +7507,20 @@ export class Dice {
     // Street Smarts - see STREET_SMARTS_ID's own comment above.
     updatedShiftDataset.streetSmartsAvailable = rolledSkill == 'persuasion' && actorHasPerk(actor, STREET_SMARTS_ID);
 
+    // Intimidating (GI Joe CRB/TF CRB, Weapon Effects and Traits, p.148 etc): "Can be used to make
+    // Intimidation Skill Tests against creatures at up to the weapon's range. The weapon's skill
+    // can be used in place of the Intimidation skill for the purposes of this Skill Test." Same
+    // shift-position-delta substitution mechanism as Street Smarts above, but the substitute skill
+    // is dynamic (whichever skill the actor's own equipped Intimidating weapon actually uses),
+    // hence its own helper rather than a fixed second skill name. The "at up to the weapon's
+    // range" qualifier is dropped as unenforceable outside an actual targeted attack roll, the
+    // same "closest existing mechanism" idiom this project accepts for similar range/timing
+    // qualifiers on non-combat Skill Test substitutions elsewhere (e.g. Reverse Engineer's own
+    // "outside a conflict").
+    updatedShiftDataset.intimidatingWeaponSkill = rolledSkill == 'intimidation'
+      ? this._getIntimidatingWeaponSkill(actor)
+      : null;
+
     // Primal Fear - see PRIMAL_FEAR_ID's own comment above.
     updatedShiftDataset.primalFearAvailable = rolledSkill == 'intimidation' && actorHasPerk(actor, PRIMAL_FEAR_ID);
 
@@ -7612,6 +7713,18 @@ export class Dice {
     // apply automatically) - the roll's own existing success/Critical Success chat display already
     // conveys which outcome happened, so nothing further is built beyond the downshift itself.
     updatedShiftDataset.disarmingShotAvailable = isRangedWeaponEffect && actorHasPerk(actor, DISARMING_SHOT_ID);
+
+    // Attacking Space Vessel Systems (Across the Stars p.25): "the attacker can choose to take a ↓2
+    // penalty to add the following possible Critical Effect... Impose Space Vessel Condition of
+    // attacker's choice on Target until repaired." Offered only when the checkable requirements hold -
+    // see helpers/vessel-conditions.mjs#canTargetVesselSystem. The Critical Effect is applied in
+    // _rollSkillHelper's post-roll processing (checkContext.targetVesselSystemAttempt).
+    updatedShiftDataset.targetVesselSystemAvailable = canTargetVesselSystem({
+      item,
+      attackerShift: actorSkillData?.shift,
+      targets: item?.type == 'weaponEffect' && game.user?.targets?.size == 1
+        ? [game.user.targets.first?.()?.actor].filter(Boolean) : [],
+    });
 
     // Explosive Engineer (General Hawk's Personnel Files, Influence Perk, p.169): "You can use
     // either Science or Technology when making an Attack Skill Test with explosives." An
@@ -7899,8 +8012,7 @@ export class Dice {
     // Hard Tread Wheels (Enigma of Combination, Combiner Feature, p.56): "Alt Mode: You ignore
     // Rough Terrain and gain ↑1 to Ram attacks. Bot Mode: You gain ↑1 on all Athletics Skill
     // Tests." Same mode-gated shape as Sprinter's own Alt-Mode/Bot-Mode split (documents/actor.mjs)
-    // - "ignore Rough Terrain" has no terrain-tracking concept anywhere in this codebase to gate on
-    // (an environment-tracking subsystem, out of scope here), left unbuilt.
+    // - "ignore Rough Terrain" is helpers/rough-terrain.mjs#ignoresRoughTerrain (Alt Mode only).
     if (item?.type == 'weaponEffect' && item.system.isRam && actor.system?.isTransformed
       && hasHardTreadWheels(actor)) {
       updatedShiftDataset.shiftUp += 1;
@@ -8185,6 +8297,12 @@ export class Dice {
     // Tracker - see TRACKER_ENVIRONMENTAL_ID's own comment above.
     if (rolledSkill == 'survival' && actorHasPerk(actor, TRACKER_ENVIRONMENTAL_ID) && hasActiveEnvironmentalExpertise(actor)) {
       updatedShiftDataset.shiftUp += 2;
+      // Listed (and untickable, e.g. when not actually tracking) in the Roll Options Dialog.
+      combatModifiers.sources.push({
+        id: 'trackerEnvironmental',
+        label: getEnvironmentOfExpertiseSourceLabel(actor, findPerk(actor, TRACKER_ENVIRONMENTAL_ID)?.name ?? 'Tracker'),
+        shiftUp: 2, shiftDown: 0, edge: false, snag: false,
+      });
     }
 
     if (rolledSkill == 'infiltration' && actorHasPerk(actor, SAFECRACKER_ID)) {
@@ -8742,6 +8860,21 @@ export class Dice {
       skillRollOptions.shiftDown += skillRollOptions.hardpointMovePenalty;
     }
 
+    // Retrogen - see updatedShiftDataset.retrogenAvailable's own comment above.
+    if (skillRollOptions.applyRetrogen && updatedShiftDataset.retrogenAvailable) {
+      skillRollOptions.shiftUp += 1;
+    }
+
+    // Fanning - see helpers/fanning.mjs's own doc comment. The first shot's own shifts go straight
+    // into the roll's totals here; every later shot is re-resolved from these in the repeat loop.
+    const fanningShots = clampFanningShots(skillRollOptions.fanningShots, updatedShiftDataset.fanningMaxShots);
+    const fanningHasStormOfLead = fanningShots > 0 && actorHasPerk(actor, STORM_OF_LEAD_ID);
+    const firstFanningShot = fanningShots > 0 ? getFanningShotShifts(1, fanningHasStormOfLead) : null;
+    if (firstFanningShot) {
+      skillRollOptions.shiftUp += firstFanningShot.shiftUp;
+      skillRollOptions.shiftDown += firstFanningShot.shiftDown;
+    }
+
     // In My Sights - see updatedShiftDataset.inMySightsAimEdgeAvailable's own comment above.
     // "Instead of the normal benefits of Aim" - suppresses the ordinary Aim shiftUp just below
     // rather than stacking with it.
@@ -9090,6 +9223,24 @@ export class Dice {
       const streetwiseIndex = E20.skillShiftList.indexOf(streetwiseShift);
       if (currentIndex >= 0 && streetwiseIndex >= 0) {
         const delta = currentIndex - streetwiseIndex;
+        if (delta > 0) {
+          skillRollOptions.shiftUp += delta;
+        } else if (delta < 0) {
+          skillRollOptions.shiftDown += -delta;
+        }
+      }
+    }
+
+    // Intimidating - see updatedShiftDataset.intimidatingWeaponSkill's own comment above. Same
+    // shift-position-delta mechanism as Street Smarts just above, but substituting whichever
+    // skill that computed field actually named rather than a fixed one.
+    if (skillRollOptions.applyIntimidatingWeapon) {
+      const intimidatingSkill = this._getIntimidatingWeaponSkill(actor);
+      const intimidatingShift = intimidatingSkill ? actor.getRollData().skills[intimidatingSkill]?.shift : null;
+      const currentIndex = E20.skillShiftList.indexOf(initialShift);
+      const intimidatingIndex = E20.skillShiftList.indexOf(intimidatingShift);
+      if (currentIndex >= 0 && intimidatingIndex >= 0) {
+        const delta = currentIndex - intimidatingIndex;
         if (delta > 0) {
           skillRollOptions.shiftUp += delta;
         } else if (delta < 0) {
@@ -9494,6 +9645,13 @@ export class Dice {
       skillRollOptions.shiftDown += 3;
     }
 
+    // Attacking Space Vessel Systems - see updatedShiftDataset.targetVesselSystemAvailable above.
+    const isTargetVesselSystemAttempt = !!skillRollOptions.applyTargetVesselSystem
+      && !!updatedShiftDataset.targetVesselSystemAvailable;
+    if (isTargetVesselSystemAttempt) {
+      skillRollOptions.shiftDown += TARGET_VESSEL_SYSTEM_SHIFT_DOWN;
+    }
+
     // Bump & Run - see BUMP_AND_RUN_ID's own comment above. The Stun-on-Critical-Success half is
     // read back from this same declared checkbox in checkContext.bumpAndRunAttempt below.
     if (skillRollOptions.applyBumpAndRun) {
@@ -9713,6 +9871,15 @@ export class Dice {
       skillRollOptions.snag = false;
       const eltarianTech = actor._getBaseRolePoints();
       await eltarianTech.update({ 'system.resource.value': eltarianTech.system.resource.value - 1 });
+    }
+
+    // Enviro-Sealed - see this armor trait's own comment above (near hasEnviroSealedEdge). The
+    // automatic half already covers "adverse situation = a non-normal physical environment"; this
+    // checkbox is the player's own declaration of an adverse situation unrelated to the physical
+    // environment (resisting poison, fear, disease...) - free (no resource spent, RAW doesn't
+    // charge for this armor's own passive Edge), same shape as Presence's untrained-Snag waiver.
+    if (skillRollOptions.applyEnviroSealedAdverseSituation && updatedShiftDataset.enviroSealedAdverseSituationAvailable) {
+      skillRollOptions.edge = true;
     }
 
     // Mystical Understanding - Spellcialize - see MYSTICAL_UNDERSTANDING_ID's own comment above.
@@ -9987,6 +10154,37 @@ export class Dice {
     // like every other combatModifiers field, since it isn't a skill-die-selection change.
     if (combatModifiers.bonusDie) {
       formula += ` + ${combatModifiers.bonusDie}`;
+    }
+
+    // Fanning - see helpers/fanning.mjs's own doc comment. One entry per shot of the volley: shot 1
+    // is the formula just built; each later shot re-resolves the shift with its own larger ↓ (and
+    // without Storm of Lead's first-shot ↑1), then gets the same post-shift adjustments shot 1 got.
+    // An autoFail shot can't be rolled at all, which ends the volley there.
+    const fanningVolley = [];
+    if (fanningShots > 1) {
+      fanningVolley.push({ formula, shift: finalShift, autoFail: false });
+      const isSuperSpecialized = isSpecialized && findPerk(actor, SUPER_SPECIALIZED_ID)?.system.choice == rolledSkill;
+      for (let shotNumber = 2; shotNumber <= fanningShots; shotNumber++) {
+        const shot = getFanningShotShifts(shotNumber, fanningHasStormOfLead);
+        const shotShift = this._getFinalShift({
+          ...skillRollOptions,
+          shiftUp: skillRollOptions.shiftUp - firstFanningShot.shiftUp + shot.shiftUp,
+          shiftDown: skillRollOptions.shiftDown - firstFanningShot.shiftDown + shot.shiftDown,
+        }, initialShift, E20.skillShiftList, rolePoints);
+        const adjusted = adjustFanningShotShift(shotShift, {
+          programmableCapD12: !!skillRollOptions.programmableCapD12,
+          savant: !!skillRollOptions.applySavantSkill,
+          superSpecialized: isSuperSpecialized,
+        });
+        fanningVolley.push({
+          shift: adjusted.shift,
+          autoFail: adjusted.autoFail,
+          formula: adjusted.autoFail ? null : this._getFormula(
+            isSpecialized, skillRollOptions, adjusted.shift, Number(modifier), floorD20At10, rollsThreeD20, flatD20Value,
+            flatBothD20s, rumbleBonusDie,
+          ) + (combatModifiers.bonusDie ? ` + ${combatModifiers.bonusDie}` : ''),
+        });
+      }
     }
 
     // If a Defense was chosen (either from the weaponEffect's own configured Defense, or picked
@@ -10476,8 +10674,8 @@ export class Dice {
         // Armor just above already use, now that hasActiveEnvironmentalExpertise(actor) exists as
         // real infrastructure (see helpers/environmental-expertise.mjs's own doc comment) instead
         // of the disabled compendium Active Effect this Perk previously shipped with - a static AE
-        // can't be conditioned on the toggle, so it stays disabled and this live check is the real
-        // mechanism. "Whenever you spend an Adaptation Point to gain an environmental benefit
+        // can't be conditioned on the scene's terrain / the toggle, so it stays disabled and this
+        // live check (terrain-driven when the GM has set one) is the real mechanism. "Whenever you spend an Adaptation Point to gain an environmental benefit
         // outside of your environment of expertise, you gain this bonus until the beginning of
         // your next turn" isn't built - a narrower edge-case clause layered on top of Guidance's
         // own Adaptation Point spend, not the base case this pass covers.
@@ -11995,6 +12193,11 @@ export class Dice {
         // skillRollOptions.applyHobble above; this just carries the declared attempt through to
         // _rollSkillHelper's post-hit Condition-picker.
         hobbleAttempt: !!skillRollOptions.applyHobble,
+        // Attacking Space Vessel Systems - carried through to the Critical Effect picker.
+        targetVesselSystemAttempt: isTargetVesselSystemAttempt,
+        // Repairing a Space Vessel Condition (helpers/vessel-conditions.mjs#openVesselRepairDialog).
+        repairVesselUuid: dataset.repairVesselUuid ?? null,
+        repairVesselCondition: dataset.repairVesselCondition ?? null,
         // Crippling Blow - see CRIPPLING_BLOW_ID's own comment above. Same "already downshifted,
         // just carry the declared attempt through" shape as Hobble just above.
         cripplingBlowAttempt: !!skillRollOptions.applyCripplingBlow,
@@ -12454,6 +12657,41 @@ export class Dice {
         // from the same weapon with that weapon's _id).
         effectName: item?.type == 'weaponEffect' ? item.name : null,
         alternateEffects: item?.type == 'weaponEffect' ? this._getAlternateEffects(actor, item) : [],
+        // Temperamental (Quartermaster's Guide to Gear p.35; weapon AND weapon-upgrade trait) -
+        // see its own check in _rollSkillHelper below for the RAW quote. Resolved here (where
+        // `item` is in scope) rather than there, and carried as the weapon's own name (or null)
+        // so _rollSkillHelper doesn't need its own parentWeapon/actor.items lookup.
+        temperamentalWeaponName: (() => {
+          if (item?.type != 'weaponEffect') {
+            return null;
+          }
+
+          const temperamentalWeapon = this._getParentWeapon(actor, item);
+          if (!temperamentalWeapon) {
+            return null;
+          }
+
+          const hasTemperamentalUpgrade = actor.items.some(actorItem =>
+            actorItem.type == 'upgrade' && actorItem.flags?.essence20?.parentId == temperamentalWeapon.id
+            && actorItem.system?.traits?.includes('temperamental'));
+          return (temperamentalWeapon.system.traits?.includes('temperamental') || hasTemperamentalUpgrade)
+            ? temperamentalWeapon.name
+            : null;
+        })(),
+        // Xenotech (weapon trait) - see its own Snag check in _getAutomaticCombatModifiers above.
+        // The actual Item (not just its name) is carried through so _rollSkillHelper's own isCrit
+        // handling can setFlag directly on it, the first Critical Success achieved with it.
+        xenotechWeaponToMark: item?.type == 'weaponEffect'
+          && this._getParentWeapon(actor, item)?.system.traits?.includes('xenotech')
+          ? this._getParentWeapon(actor, item)
+          : null,
+        // Xenotech Components - see its own check just below (_rollSkillHelper's post-roll
+        // processing) for the RAW quote. Same "carry the Item itself" shape as
+        // xenotechWeaponToMark just above.
+        componentsWeaponToMark: item?.type == 'weaponEffect'
+          && this._getParentWeapon(actor, item)?.system.traits?.includes('components')
+          ? this._getParentWeapon(actor, item)
+          : null,
       }
       : null;
 
@@ -12469,9 +12707,25 @@ export class Dice {
     // asking "did this succeed" for a multi-roll attack needs to see all of them.
     const rollOutcomes = [];
 
-    for (let i = 0; i < skillRollOptions.timesToRoll; i++) {
+    // Fanning - a volley replaces the repeat count with one roll per shot, each with its own
+    // formula and shift (see fanningVolley's own comment above).
+    const rollCount = fanningVolley.length || skillRollOptions.timesToRoll;
+    for (let i = 0; i < rollCount; i++) {
+      const fanningShot = fanningVolley[i] ?? null;
+      if (fanningShot?.autoFail) {
+        this._handleAutoFail(fanningShot.shift, label, actor);
+        break;
+      }
+
+      const shotFormula = fanningShot?.formula ?? formula;
+      const shotFinalShift = fanningShot?.shift ?? finalShift;
       let repeatText = '';
-      if (skillRollOptions.timesToRoll > 1) {
+      if (fanningShot) {
+        repeatText = this._i18n.format("E20.RollFanningShotText", {
+          index: i + 1,
+          total: rollCount,
+        }) + '<br>';
+      } else if (skillRollOptions.timesToRoll > 1) {
         repeatText = this._i18n.format("E20.RollRepeatText", {
           index: i + 1,
           total: skillRollOptions.timesToRoll,
@@ -12486,8 +12740,8 @@ export class Dice {
         essence: rolledEssence,
         // Time Traveler's own Hang-Up - see TIME_TRAVELER_HANGUP_ID's own comment above. The
         // already-resolved skill die size for this roll, needed by _rollSkillHelper's own Fumble
-        // widening check.
-        finalShift,
+        // widening check. A Fanning volley's later shots each carry their own.
+        finalShift: shotFinalShift,
         snag: skillRollOptions.snag,
         isPowerWeaponAttack: item?.type == 'weaponEffect'
           && !!this._getParentWeapon(actor, item)?.system.itemAndUpgradeTraits?.includes('powerWeapon'),
@@ -12542,6 +12796,12 @@ export class Dice {
         // isAttack above so chat.mjs's Apply Damage handler can recognize "a non-attack effect
         // against Toughness" from the posted message alone.
         defenseType: checkContext?.defenseType ?? null,
+        // High-Density - see helpers/high-density.mjs's own doc comment and
+        // chat.mjs#addHighDensityButton, which reads these back off the posted message. Only
+        // stamped when true, so every other roll's flags stay exactly as they were.
+        ...(item?.type == 'weaponEffect' && isHighDensityWeapon(this._getParentWeapon(actor, item))
+          ? { isHighDensityAttack: true } : {}),
+        ...(dataset.highDensityFollowUp ? { highDensityFollowUp: true } : {}),
       };
 
       if (isMultipleTargetsAttack) {
@@ -12554,16 +12814,22 @@ export class Dice {
           // Awaited now, where it used to be fired and forgotten. That also settles the order
           // these cards post in, which was previously whatever order they happened to resolve in.
           rollOutcomes.push(await this._rollSkillHelper(
-            formula, actor, repeatText + targetText + label, canCritD2, { ...checkContext, entries: [entry] },
+            shotFormula, actor, repeatText + targetText + label, canCritD2, { ...checkContext, entries: [entry] },
             rollContext, drivingStrikeReroll,
           ));
         }
       } else {
         rollOutcomes.push(
           await this._rollSkillHelper(
-            formula, actor, repeatText + label, canCritD2, checkContext, rollContext, drivingStrikeReroll,
+            shotFormula, actor, repeatText + label, canCritD2, checkContext, rollContext, drivingStrikeReroll,
           ),
         );
+      }
+
+      // Fanning: "A Fanning Attack ends early if the attacker Fumbles one of their Attack Skill
+      // Tests."
+      if (fanningShot && rollOutcomes.some(outcome => outcome?.isFumble)) {
+        break;
       }
     }
 
@@ -12574,6 +12840,9 @@ export class Dice {
     return {
       success: outcomes.some(outcome => outcome.results.some(result => result.success)),
       outcomes,
+      // Fanning - documents/item.mjs#roll flags the weapon for a reload after any Fanning Attack
+      // ("After a Fanning Attack, the weapon gains the Reload trait").
+      fanned: fanningShots > 0,
     };
   }
 
@@ -12705,9 +12974,157 @@ export class Dice {
       addSource('pressureCooker', findPerk(actor, PRESSURE_COOKER_ID)?.name ?? 'Pressure Cooker', { shiftUp: 1 });
     }
 
+    // Cobra Battle School Graduate - see COBRA_BATTLE_SCHOOL_GRADUATE_ID's own comment above.
+    // "Attacks" is read as a weaponEffect roll (this system's own attack-vs-plain-Skill-Test
+    // distinction), the same proxy Spot/Ageless Knowledge/etc. already use elsewhere.
+    if (game.combat && rolledEssence == 'smarts' && item?.type != 'weaponEffect'
+      && actorHasPerk(actor, COBRA_BATTLE_SCHOOL_GRADUATE_ID)) {
+      shiftUp += 1;
+      addSource('cobraBattleSchoolGraduate',
+        findPerk(actor, COBRA_BATTLE_SCHOOL_GRADUATE_ID)?.name ?? 'Cobra Battle School Graduate', { shiftUp: 1 });
+    }
+
     if (selfStatuses.has('actingSmaller') && ['strength', 'speed'].includes(rolledEssence)) {
       snag = true;
       addSource('actingSmaller', this._localize('E20.StatusActingSmaller'), { snag: true });
+    }
+
+    // Xenotech (Across the Stars, Weapon Traits, p.79; the ARMOR trait of the same name is a
+    // separate rule, already built via dice.mjs's own rollSkill calculatedShiftDown check): "Until
+    // a character achieves a Critical Success with this weapon, they suffer a Snag on attacks with
+    // it." A per-weapon-per-wielder flag on the WEAPON Item itself, same idiom as
+    // helpers/reload.mjs's own needsReload flag - set once isCrit is known, in _rollSkillHelper's
+    // own post-roll processing (see its own comment there), and read back here, before the roll.
+    const xenotechWeapon = item?.type == 'weaponEffect' ? this._getParentWeapon(actor, item) : null;
+    if (xenotechWeapon?.system.traits?.includes('xenotech') && !xenotechWeapon.getFlag?.('essence20', 'xenotechCritted')) {
+      snag = true;
+      addSource('xenotech', this._localize('E20.WeaponTraitXenotech'), { snag: true });
+    }
+
+    // Xenotech Components - see its own check in _rollSkillHelper's post-roll processing for the
+    // RAW quote. ↓1 until the weapon's own componentsSucceeded flag is set, then ↑1 forever after.
+    const componentsWeapon = item?.type == 'weaponEffect' ? this._getParentWeapon(actor, item) : null;
+    if (componentsWeapon?.system.traits?.includes('components')) {
+      if (componentsWeapon.getFlag?.('essence20', 'componentsSucceeded')) {
+        shiftUp += 1;
+        addSource('components', this._localize('E20.WeaponTraitComponents'), { shiftUp: 1 });
+      } else {
+        shiftDown += 1;
+        addSource('components', this._localize('E20.WeaponTraitComponents'), { shiftDown: 1 });
+      }
+    }
+
+    // Environment (physical, not the terrain-of-expertise E20.environments enum - see
+    // helpers/environment.mjs's own doc comment) - Across the Stars' "Exploring Infinite
+    // Environments" (p.24-25) and the GI Joe CRB's own Underwater Combat rules (p.212).
+    const environment = getEnvironment(actor);
+    const environmentWeapon = item?.type == 'weaponEffect' ? this._getParentWeapon(actor, item) : null;
+    const isRangedWeaponEffect = item?.type == 'weaponEffect' && item.system.classification?.style != 'melee';
+
+    // Inertial (Across the Stars, Weapon Traits, p.79): "a self-propelled, guided, or other
+    // projectile weapon that overcomes a lack of gravity or atmosphere. These weapons do not
+    // suffer any low gravity, zero gravity, or vacuum-based penalties for their Attacks." Checked
+    // first so the three penalty blocks just below can simply skip themselves for an Inertial
+    // weapon, rather than duplicating this same guard three times.
+    const isInertialWeapon = !!environmentWeapon?.system.traits?.includes('inertial');
+
+    if (isRangedWeaponEffect && !isInertialWeapon) {
+      // Low Gravity (ATS p.24): "Ranged attacks with the Ballistic trait suffer a Snag."
+      if (environment == 'lowGravity' && environmentWeapon?.system.traits?.includes('ballistic')) {
+        snag = true;
+        addSource('lowGravity', this._localize('E20.SceneEnvironmentLowGravity'), { snag: true });
+      }
+
+      // Zero-G (ATS p.25): "Ranged attacks that do not regularly inflict Energy or Laser damage
+      // suffer a Snag." This project's damageType schema has no 'energy' value of its own (only
+      // the separate 'energy' WEAPON TRAIT and the 'laser' damageType), so "regularly inflict
+      // Energy... damage" reads as the weapon carrying the Energy trait.
+      if (environment == 'zeroGravity'
+        && !environmentWeapon?.system.traits?.includes('energy') && item.system.damageType != 'laser') {
+        snag = true;
+        addSource('zeroGravity', this._localize('E20.SceneEnvironmentZeroGravity'), { snag: true });
+      }
+
+      // Vacuum or Void (ATS p.24-25): "all ranged attacks double their Range values but suffer a
+      // Snag on their Skill Test." Only the Snag half is built - this project has no per-roll
+      // Range-value display to double.
+      if (environment == 'vacuum') {
+        snag = true;
+        addSource('vacuum', this._localize('E20.SceneEnvironmentVacuum'), { snag: true });
+      }
+    }
+
+    if (environment == 'underwater' && item?.type == 'weaponEffect') {
+      // Underwater Combat (GI Joe CRB p.212): "someone without an Aquatic Movement type suffers a
+      // Snag [on a melee Attack]... unless the weapon is specifically crafted for underwater use,
+      // such as weapons with the Amphibious or Aquatic qualities" and "[a ranged Attack] has a
+      // Snag unless the weapon has either the Amphibious or Aquatic qualities." The "beyond the
+      // weapon's normal reach suffers a ↓3" ranged clause isn't built - this system has no
+      // per-roll target-distance check to compare against the weapon's own Range.
+      const isAmphibiousOrAquaticWeapon = !!environmentWeapon?.system.traits?.includes('amphibious')
+        || !!environmentWeapon?.system.traits?.includes('aquatic');
+      if (!isAmphibiousOrAquaticWeapon) {
+        if (!isRangedWeaponEffect && !(actor.system.movement?.swim?.total > 0)) {
+          snag = true;
+          addSource('underwaterMelee', this._localize('E20.SceneEnvironmentUnderwater'), { snag: true });
+        } else if (isRangedWeaponEffect) {
+          snag = true;
+          addSource('underwaterRanged', this._localize('E20.SceneEnvironmentUnderwater'), { snag: true });
+        }
+      }
+
+      // "Fire Element attacks against creatures and objects that are fully immersed in water
+      // suffer an automatic ↓2 dice shift." Approximated as "the attacker is underwater," this
+      // project having no separate wet/immersed flag on a target.
+      if (item.system.damageType == 'fire') {
+        shiftDown += 2;
+        addSource('underwaterFire', this._localize('E20.SceneEnvironmentUnderwater'), { shiftDown: 2 });
+      }
+    }
+
+    // Aquatic (GI Joe CRB, Weapon Traits, p.147): "Can be used underwater without penalty, and on
+    // land with ↓3." Amphibious ("used on land and underwater without penalty") overrides this
+    // when a weapon somehow carries both.
+    if (environment != 'underwater' && item?.type == 'weaponEffect'
+      && environmentWeapon?.system.traits?.includes('aquatic')
+      && !environmentWeapon?.system.traits?.includes('amphibious')) {
+      shiftDown += 3;
+      addSource('aquaticOnLand', this._localize('E20.WeaponTraitAquatic'), { shiftDown: 3 });
+    }
+
+    // Gravity (ATS p.24-25): High Gravity "Athletics and Brawn Skill Tests suffer ↓2", Low Gravity
+    // "...gain ↑1", Zero-G "...gain ↑2". High Gravity's halved and Vacuum's doubled Range values
+    // aren't built - no roll here carries a Range value to change.
+    const gravityShift = GRAVITY_ATHLETICS_BRAWN_SHIFTS[environment];
+    if (gravityShift && ['athletics', 'brawn'].includes(rolledSkill)) {
+      const label = this._localize(E20.sceneEnvironments[environment]);
+      if (gravityShift > 0) {
+        shiftUp += gravityShift;
+        addSource('gravitySkill', label, { shiftUp: gravityShift });
+      } else {
+        shiftDown -= gravityShift;
+        addSource('gravitySkill', label, { shiftDown: -gravityShift });
+      }
+    }
+
+    // Extreme Temperature / Thick or Thin Atmosphere (ATS p.23-24): "they suffer the Impaired
+    // Condition" while unprotected - see helpers/environment-hazards.mjs. Impaired's own ↓1, as its
+    // own labelled source so a player who spent the Free action to steady their breathing can untick
+    // it; skipped when the Impaired status is already counted above.
+    if (!selfStatuses.has('impaired') && isImpairedByEnvironment(actor, environment)) {
+      shiftDown += 1;
+      addSource('environmentImpaired', `${this._localize(E20.sceneEnvironments[environment])} (${this._localize('E20.StatusImpaired')})`,
+        { shiftDown: 1 });
+    }
+
+    // Unstable (Across the Stars, Space Vessel Condition, p.26): "Vehicles with this Condition
+    // suffer ↓1 on all hardpoint weapons... a second time, the penalty increases to ↓2." A Vehicle's
+    // weapons are its hardpoint weapons, rolled as the Vehicle itself. The third stack's refusal is
+    // in rollSkill.
+    const unstablePenalty = item?.type == 'weaponEffect' && actor.type == 'vehicle' ? getUnstablePenalty(actor) : 0;
+    if (unstablePenalty) {
+      shiftDown += unstablePenalty;
+      addSource('vesselUnstable', this._localize('E20.StatusUnstable'), { shiftDown: unstablePenalty });
     }
 
     // Bad Temper (Decepticon Directive, Traitor Origin, suggested Hang-Up, p.31): "The turn after
@@ -13737,6 +14154,13 @@ export class Dice {
       if (isAttack && target.statuses?.has(DEFENDING_STATUS)) {
         snag = true;
         addSource('defending', this._localize('E20.StatusDefending'), { snag: true });
+      }
+
+      // Retrogen - see helpers/retrogen.mjs's own doc comment. Automatic only when the target
+      // plainly has Genetic Alterations; otherwise rollSkill offers retrogenAvailable's toggle.
+      if (isAttack && isRetrogenWeapon(this._getParentWeapon(actor, item)) && hasGeneticAlterations(target)) {
+        shiftUp += 1;
+        addSource('retrogen', this._localize('E20.WeaponTraitRetrogen'), { shiftUp: 1 });
       }
 
       // First Strike (7th level): "you gain an Edge on Attacks... against opponents who haven't
@@ -14978,7 +15402,9 @@ export class Dice {
       // actor.system.isTransformed (see DAREDEVIL_ID's own comment for why this field exists and
       // is safe to key off). The "+5 on a Hide Skill Test" half isn't built - no "Hide action"
       // concept exists anywhere in this codebase to add a bonus onto.
-      const hasNowYouDontCover = actorHasPerk(target, NOW_YOU_DONT_ID) && target.system.isTransformed;
+      const hasNowYouDontCover = (actorHasPerk(target, NOW_YOU_DONT_ID) && target.system.isTransformed)
+        // Take Point - see helpers/rough-terrain.mjs#hasTakePointCover. Same "counts as Cover".
+        || hasTakePointCover(target, targetToken);
       // Indirect - see _isIndirectAttack's own doc comment. Unlike the two Perk-based bypasses
       // beside it, this one does NOT beat total cover: RAW exempts a target with total cover
       // overhead, and totalCover is exactly that case.
@@ -15056,6 +15482,36 @@ export class Dice {
       if (item.system.damageType == 'maneuver' && actorHasPerk(target, UNMOVABLE_ID) && isUnmovableActive(target)) {
         shiftDown += 3;
         addSource('unmovable', findPerk(target, UNMOVABLE_ID)?.name ?? 'Unmovable', { shiftDown: 3 });
+      }
+
+      // Trip (GI Joe CRB, Weapon Effects and Traits, p.148; the WTNV Citizen's Guide, p.59,
+      // spells out the actual comparison, sharing this same paragraph with the unbuilt Shove
+      // trait there): "Compare the higher of the attacker's Brawn or Finesse to the higher of the
+      // target's Brawn or Finesse. If the attacker's Skill is lower, they suffer ↓ equal to the
+      // difference in Ranks." A Trip effect is represented by damageType 'knocProne' (see
+      // NON_DAMAGE_EFFECT_TYPES's own comment above for how that value was identified from real
+      // compendium data), not the generic 'maneuver' value the checks just above key on. Ranks are
+      // compared as E20.skillShiftList positions, the same shift-position-delta idiom every other
+      // skill-substitution/comparison check in this function already uses.
+      if (item.system.damageType == 'knocProne') {
+        // E20.skillShiftList is ordered best-to-worst, so a HIGHER index is a WORSE (lower) Rank -
+        // "the attacker's Skill is lower" is attackerIndex > targetIndex, same direction every
+        // other shift-position-delta check in this function already reads that list in.
+        const attackerRoll = actor.getRollData();
+        const targetRoll = target.getRollData();
+        const attackerIndex = Math.min(
+          E20.skillShiftList.indexOf(attackerRoll.skills?.brawn?.shift),
+          E20.skillShiftList.indexOf(attackerRoll.skills?.finesse?.shift),
+        );
+        const targetIndex = Math.min(
+          E20.skillShiftList.indexOf(targetRoll.skills?.brawn?.shift),
+          E20.skillShiftList.indexOf(targetRoll.skills?.finesse?.shift),
+        );
+        if (attackerIndex >= 0 && targetIndex >= 0 && attackerIndex > targetIndex) {
+          const tripShiftDown = attackerIndex - targetIndex;
+          shiftDown += tripShiftDown;
+          addSource('trip', this._localize('E20.CombatModifierTrip'), { shiftDown: tripShiftDown });
+        }
       }
 
       // Range for Ranged Attacks (p.201): ranged weaponEffects list two range values - "Range
@@ -15163,8 +15619,12 @@ export class Dice {
         const menaceWeaponSourceId = menaceWeapon?.flags?.core?.sourceId ?? menaceWeapon?._stats?.compendiumSource;
         const isMenaceWeapon = actorHasPerk(actor, MENACE_ID)
           && (menaceWeaponSourceId == SHOTGUN_ID || menaceWeaponSourceId == SUBMACHINE_GUN_ID);
-        if (enemyReach && distance <= enemyReach && !isMenaceWeapon && !actorHasPerk(actor, CQB_TRAINING_ID)
-          && !this._hasFightingStyle(actor, 'closeQuartersBattle')) {
+        // Injection (Ferocious Fighters: Factions in Action Vol. 1, New Weapon Traits, p.93): "do
+        // not suffer ↓1 when used within an enemy's reach." Checked against the same parentWeapon
+        // lookup menaceWeapon already resolves just above.
+        const isInjectionWeapon = !!menaceWeapon?.system.traits?.includes('injection');
+        if (enemyReach && distance <= enemyReach && !isMenaceWeapon && !isInjectionWeapon
+          && !actorHasPerk(actor, CQB_TRAINING_ID) && !this._hasFightingStyle(actor, 'closeQuartersBattle')) {
           shiftDown += 1;
           addSource('reach', this._localize('E20.CombatModifierReach'), { shiftDown: 1 });
         }
@@ -15804,6 +16264,30 @@ export class Dice {
   }
 
   /**
+   * Intimidating (GI Joe CRB/TF CRB, Weapon Effects and Traits, p.148 etc) - see
+   * updatedShiftDataset.intimidatingWeaponSkill's own comment (rollSkill above) for the RAW quote.
+   * The actor's own equipped weapon carrying the trait (itemAndUpgradeTraits, so an attached
+   * Upgrade granting Intimidating counts too), and that weapon's own first weaponEffect's
+   * classification.skill - the reverse of _getParentWeapon's own lookup (weapon -> effect instead
+   * of effect -> weapon), since dice.mjs has no other existing "find a weapon's own weaponEffect"
+   * helper to reuse. The first equipped Intimidating weapon found wins if more than one qualifies.
+   * @param {Actor} actor
+   * @returns {String|null}
+   * @private
+   */
+  _getIntimidatingWeaponSkill(actor) {
+    const weapon = actor.items?.find?.(actorItem => actorItem.type == 'weapon' && actorItem.system?.equipped
+      && actorItem.system?.itemAndUpgradeTraits?.includes('intimidating'));
+    if (!weapon) {
+      return null;
+    }
+
+    const weaponEffect = actor.items?.find?.(actorItem => actorItem.type == 'weaponEffect'
+      && actorItem.flags?.essence20?.parentId == weapon.id);
+    return weaponEffect?.system?.classification?.skill ?? null;
+  }
+
+  /**
    * Penetrating Rounds (Door-Kicker Focus, 20th level, p.100): "your shotgun and submachine
    * tactics are adapted to taking out hard targets" - both of its clauses (ignoring cover,
    * ignoring deflective armor bonuses, both below) share this same gate, so it's factored out
@@ -16246,6 +16730,94 @@ export class Dice {
    * @param {Object} checkContext   Its own isUnarmedAttack field, set by rollSkill() above.
    * @private
    */
+  /**
+   * Trip (GI Joe CRB, Weapon Effects and Traits, p.148): "Knocks a target over, giving them the
+   * Prone Condition." The Brawn/Finesse-Rank comparison that can shift the attack itself down is
+   * handled pre-roll, in _getAutomaticCombatModifiers (see its own comment there) - this is just
+   * the "successfully hit" half, applying Prone the same way Smash!'s identical
+   * toggleStatusEffect('prone', ...) call does just below.
+   * @param {Array<Object>} results   The rollSkill()-built per-target result rows.
+   * @param {Object} checkContext   Its own damageType field, set by rollSkill() above.
+   * @private
+   */
+  async _applyTripKnockdown(results, checkContext) {
+    if (checkContext.damageType != 'knocProne') {
+      return;
+    }
+
+    for (const result of results) {
+      if (!result.success || !result.targetUuid) {
+        continue;
+      }
+
+      const targetActor = await fromUuid(result.targetUuid);
+      if (targetActor) {
+        await targetActor.toggleStatusEffect('prone', { active: true });
+      }
+    }
+  }
+
+  /**
+   * Blinding (Quartermaster's Guide to Gear p.33): "A target hit with this effect is blind until
+   * the end of their next turn." Represented by damageType 'blindingBlast' - the same "measured
+   * from real compendium data" idiom NON_DAMAGE_EFFECT_TYPES's own comment above uses for Trip's
+   * 'knocProne' - applying the existing 'blinded' status via helpers/timed-status.mjs's own
+   * applyTimedCondition(..., 1), the same "until the end of their next turn" 1-round idiom
+   * Painmonger's own Impaired application already establishes.
+   * @param {Array<Object>} results   The rollSkill()-built per-target result rows.
+   * @param {Object} checkContext   Its own damageType field, set by rollSkill() above.
+   * @private
+   */
+  async _applyBlindingBlast(results, checkContext) {
+    if (checkContext.damageType != 'blindingBlast') {
+      return;
+    }
+
+    for (const result of results) {
+      if (!result.success || !result.targetUuid) {
+        continue;
+      }
+
+      const targetActor = await fromUuid(result.targetUuid);
+      if (targetActor) {
+        await applyTimedCondition(targetActor, 'blinded', 1);
+      }
+    }
+  }
+
+  /**
+   * Mode Lock (Enigma of Combination, Weapon Traits/Conditions, p.49): "some sinister weapons...
+   * impose a new Condition meant to especially hamper Combiners... A character suffering from Mode
+   * Lock can't convert from their current Mode." Represented by damageType 'modelock' (same
+   * "measured from real compendium data" idiom as Trip/Blinding above), applying the already-
+   * registered 'modeLock' status (helpers/config.mjs's own E20.statusEffects entry, previously
+   * unused anywhere). The actual conversion BLOCK lives at the point of conversion itself - see
+   * sheet-handlers/transformer-handler.mjs#onTransform's own check - not here. The "Energon flush"
+   * removal (1 Energon Point + a DIF 12 Technology Skill Test, as a Standard action) isn't built:
+   * it needs a real roll+resource-spend integration this pass didn't reach, so the status is
+   * granted but only ever GM-cleared by hand, same as every other un-timed Condition this
+   * codebase applies.
+   * @param {Array<Object>} results   The rollSkill()-built per-target result rows.
+   * @param {Object} checkContext   Its own damageType field, set by rollSkill() above.
+   * @private
+   */
+  async _applyModeLock(results, checkContext) {
+    if (checkContext.damageType != 'modelock') {
+      return;
+    }
+
+    for (const result of results) {
+      if (!result.success || !result.targetUuid) {
+        continue;
+      }
+
+      const targetActor = await fromUuid(result.targetUuid);
+      if (targetActor) {
+        await targetActor.toggleStatusEffect('modeLock', { active: true });
+      }
+    }
+  }
+
   async _applySmashDamage(actor, results, checkContext) {
     if (!checkContext.isUnarmedAttack || !actorHasPerk(actor, SMASH_ID)) {
       return;
@@ -16496,6 +17068,13 @@ export class Dice {
       isCrit = false;
     }
 
+    // Xenotech (weapon trait) - see its own Snag check in _getAutomaticCombatModifiers's own
+    // comment above. Stamped the moment a genuine Critical Success lands with the flagged weapon,
+    // clearing that Snag for good on every future attack with it.
+    if (isCrit && checkContext.xenotechWeaponToMark) {
+      await checkContext.xenotechWeaponToMark.setFlag('essence20', 'xenotechCritted', true);
+    }
+
     // Time Traveler's own Hang-Up - see TIME_TRAVELER_HANGUP_ID's own comment above. Widens the
     // ordinary natural-1-only Fumble with an extra natural-2 case, gated on the actor's own
     // already-resolved skill die size for this roll (d4 or lower).
@@ -16534,6 +17113,27 @@ export class Dice {
     // RAW's own Fumble clause isn't Combat-only, unlike Bad Temper/Something To Prove just above.
     if (isFumble && checkContext.isSorcerousAttempt && actorHasHangUp(actor, COST_OF_SORCERY_ID)) {
       await actor.update({ 'system.health.value': Math.max(0, actor.system.health.value - 1) });
+    }
+
+    // Temperamental (Quartermaster's Guide to Gear p.35; a weapon AND weapon-upgrade trait):
+    // "If you Fumble an Attack..., you become the target of the weapon's effect, or a secondary
+    // effect if you are immune to the weapon's effect (or another effect the GM feels
+    // appropriate)." Read as re-applying the weapon's own (unscaled, this attack's own
+    // checkContext.damageValue/damageType) effect straight to the attacker - RAW gives no
+    // indication of a second roll, just that the attacker becomes the target of what would
+    // otherwise have hit. The "or a secondary/GM-appropriate effect if immune" fallback isn't
+    // built (no "pick the next applicable effect" concept exists to fall back to automatically);
+    // applyDamage's own Immunity handling already zeroes an immune attacker's own self-hit, which
+    // is the closest this codebase gets. See checkContext.temperamentalWeaponName's own comment
+    // (rollSkill above) for why the weapon/upgrade-trait lookup itself happens there, not here.
+    if (isFumble && checkContext.temperamentalWeaponName) {
+      await applyDamage(actor, checkContext.damageValue || 0, checkContext.damageType);
+      this._chatMessage.create({
+        speaker,
+        content: this._localize('E20.TemperamentalSelfHit', {
+          name: actor.name, weapon: checkContext.temperamentalWeaponName,
+        }),
+      });
     }
 
     // Powerful Suggestions (Enigma of Combination, Counselor Focus, 17th level, p.34) - see
@@ -16750,6 +17350,11 @@ export class Dice {
     await this._applyPlatePiercingVehicleDamage(actor, results, checkContext);
     await this._applyRazeAndRuinDamage(actor, results, checkContext);
     await this._applySmashDamage(actor, results, checkContext);
+    await this._applyTripKnockdown(results, checkContext);
+    // Wrecker - see helpers/rough-terrain.mjs#applyWreckerRoughTerrain.
+    await applyWreckerRoughTerrain(actor, results, checkContext);
+    await this._applyBlindingBlast(results, checkContext);
+    await this._applyModeLock(results, checkContext);
     this._applyFlameWarlordCritDamage(actor, results);
     this._applyEmptyTheMag(results, checkContext);
     await this._applyNowhereIsSafe(actor, results, checkContext);
@@ -17617,6 +18222,30 @@ export class Dice {
           await applyTimedCondition(targetActor, 'impaired', 1);
         }
       }
+    }
+
+    // Attacking Space Vessel Systems (Across the Stars p.25) - see
+    // updatedShiftDataset.targetVesselSystemAvailable's own comment. The Critical Effect lands on a
+    // Critical Success, the same multiplier >= 2 threshold as Grinder just below.
+    if (checkContext.targetVesselSystemAttempt) {
+      for (const result of results) {
+        if (!result.success || result.multiplier < 2 || !result.targetUuid) {
+          continue;
+        }
+
+        const targetActor = await fromUuid(result.targetUuid);
+        if (targetActor) {
+          await imposeVesselConditionOnCrit(actor, targetActor);
+        }
+      }
+    }
+
+    // Repairing a Space Vessel Condition (Across the Stars p.26) - see
+    // helpers/vessel-conditions.mjs#resolveVesselRepair. A flat-DIF roll, so its one entry decides.
+    if (checkContext.repairVesselUuid) {
+      await resolveVesselRepair(actor, checkContext, {
+        success: !!results[0]?.success, multiplier: results[0]?.multiplier ?? 0, isCrit, isFumble,
+      });
     }
 
     // Grinder - see GRINDER_ID's own comment above. Critical-Success-only, same
@@ -19146,6 +19775,19 @@ export class Dice {
     // inflicting damage" means at least one hit entry actually carries a nonzero damageValue, not
     // just a bare success (a pure-status Alternate Effect with damageValue 0 shouldn't qualify).
     const dealtDamage = results.some(entry => entry.success && entry.damageValue > 0);
+
+    // Xenotech Components (Across the Stars, Tools of the Trade, p.79): "Each Xenotech Component
+    // is tied to a specific Skill, imposing ↓1 on Skill Tests using it. This penalty lasts until
+    // the character succeeds in its use, after which the Xenotech Component conveys ↑1 instead."
+    // "Succeeds" is a plain success (any hit), not a Critical Success like the separate Xenotech
+    // WEAPON trait above - same per-item flag idiom, but graduating from a penalty to a bonus
+    // rather than just clearing, so componentsSucceeded is read on both sides of the shift in
+    // _getAutomaticCombatModifiers's own check.
+    if (checkContext.componentsWeaponToMark && results.length && results.some(entry => entry.success)
+      && !checkContext.componentsWeaponToMark.getFlag?.('essence20', 'componentsSucceeded')) {
+      await checkContext.componentsWeaponToMark.setFlag('essence20', 'componentsSucceeded', true);
+    }
+
     // Clip Check (Quartermaster's Guide to Gear, General Perk, p.28): "You can reroll a Fumble on
     // an Attack Skill Test." - reads the real natural-min-die Fumble (_isCritIsFumble, computed
     // above) rather than the unrelated shift-based "fumble" auto-fail tier - stashed the same way

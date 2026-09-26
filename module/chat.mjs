@@ -38,6 +38,7 @@ import { activateExploitWeakness } from "./helpers/exploit-weakness.mjs";
 import { activateFlashy } from "./helpers/flashy.mjs";
 import { activateSuffer, hasSuffer } from "./helpers/suffer.mjs";
 import { activateFrenziedAttack, canActivateFrenziedAttack } from "./helpers/frenzied-attack.mjs";
+import { canOfferHighDensityFollowUp, hasDifferentTarget, rollHighDensityFollowUp } from "./helpers/high-density.mjs";
 import { consumeDamageRedirect, findEligibleProtector } from "./helpers/interpose.mjs";
 import { activateFeBurn, canUseFeBurn } from "./helpers/fe-burn.mjs";
 import { getTerrorAvailable } from "./helpers/terror.mjs";
@@ -564,6 +565,54 @@ export const addFrenziedAttackButton = function (message, html) {
       button.disabled = true;
       await message.setFlag("essence20", "frenziedAttackClaimed", true);
       await activateFrenziedAttack(actor, item);
+    });
+  }
+
+  target.appendChild(button);
+};
+
+// High-Density (Factions in Action Vol. 2, p.92) - see helpers/high-density.mjs's own doc comment.
+// Same reactive post-roll button shape as addFrenziedAttackButton just above, gated on an Attack
+// with a High-Density weapon that hit something. The player targets the second creature first;
+// clicking with only the original target still selected just warns, without claiming the button.
+export const addHighDensityButton = function (message, html) {
+  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
+    return;
+  }
+
+  const flags = message.flags?.essence20;
+  if (!canOfferHighDensityFollowUp(flags)) {
+    return;
+  }
+
+  const actor = ChatMessage.getSpeakerActor(message.speaker);
+  const item = fromUuidSync(flags.itemUuid);
+  // Only the attacker's own players get the button - the follow-up rolls on their behalf.
+  if (!actor?.isOwner || !item) {
+    return;
+  }
+
+  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
+  if (!target) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "e20-high-density-button";
+  button.textContent = game.i18n.localize("E20.HighDensityFollowUp");
+  if (message.getFlag("essence20", "highDensityClaimed")) {
+    button.disabled = true;
+  } else {
+    button.addEventListener("click", async () => {
+      if (!hasDifferentTarget(game.user.targets, flags.targetUuid)) {
+        ui.notifications.warn(game.i18n.localize("E20.HighDensityNeedsNewTarget"));
+        return;
+      }
+
+      button.disabled = true;
+      await message.setFlag("essence20", "highDensityClaimed", true);
+      await rollHighDensityFollowUp(actor, item);
     });
   }
 

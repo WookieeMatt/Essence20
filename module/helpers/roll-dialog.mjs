@@ -300,6 +300,20 @@ export class RollDialog {
       worthAShotAvailable: dataset.worthAShotAvailable,
       allAroundVisionAvailable: dataset.allAroundVisionAvailable,
       pressureCookerAvailable: dataset.pressureCookerAvailable,
+      enviroSealedAdverseSituationAvailable: dataset.enviroSealedAdverseSituationAvailable,
+      pythonizedAvailable: dataset.pythonizedAvailable,
+      tonguesAvailable: dataset.tonguesAvailable,
+      doubleAgentAvailable: dataset.doubleAgentAvailable,
+      cubePlayerAvailable: dataset.cubePlayerAvailable,
+      wealthAvailable: dataset.wealthAvailable,
+      beastOfBurdenAvailable: dataset.beastOfBurdenAvailable,
+      barrelThroughRamAvailable: dataset.barrelThroughRamAvailable,
+      dirtyBlowsAvailable: dataset.dirtyBlowsAvailable,
+      grinderAvailable: dataset.grinderAvailable,
+      targetingSuiteAvailable: dataset.targetingSuiteAvailable,
+      getAGripAvailable: dataset.getAGripAvailable,
+      noFactorAvailable: dataset.noFactorAvailable,
+      cautionToTheWindAvailable: dataset.cautionToTheWindAvailable,
       ricochetAvailable: dataset.ricochetAvailable,
       machinistAvailable: dataset.machinistAvailable,
       bootlickerAvailable: dataset.bootlickerAvailable,
@@ -365,7 +379,16 @@ export class RollDialog {
       explosiveEngineerTechnologyAvailable: dataset.explosiveEngineerTechnologyAvailable,
       alwaysReadyAvailable: dataset.alwaysReadyAvailable,
       disarmingShotAvailable: dataset.disarmingShotAvailable,
+      targetVesselSystemAvailable: dataset.targetVesselSystemAvailable,
       streetSmartsAvailable: dataset.streetSmartsAvailable,
+      // Intimidating (GI Joe CRB/TF CRB p.148 etc) - see dice.mjs's own
+      // updatedShiftDataset.intimidatingAvailable comment. Localized here (rather than in the
+      // template, which has no `config` in its own context) since the substitute skill is
+      // dynamic - unlike every fixed-skill substitution above, this one names whichever skill the
+      // player's own equipped Intimidating weapon happens to use.
+      intimidatingWeaponSkillLabel: dataset.intimidatingWeaponSkill
+        ? game.i18n.localize(E20.skills[dataset.intimidatingWeaponSkill])
+        : null,
       primalFearAvailable: dataset.primalFearAvailable,
       naturalScienceToSurvivalAvailable: dataset.naturalScienceToSurvivalAvailable,
       naturalScienceToScienceAvailable: dataset.naturalScienceToScienceAvailable,
@@ -375,6 +398,10 @@ export class RollDialog {
       cobraBattleCryDeceptionAvailable: dataset.cobraBattleCryDeceptionAvailable,
       cobraBattleCryIntimidationAvailable: dataset.cobraBattleCryIntimidationAvailable,
       angryAvailable: dataset.angryAvailable,
+      // Retrogen / Fanning weapon traits - see dice.mjs's own updatedShiftDataset.retrogenAvailable
+      // and fanningMaxShots comments.
+      retrogenAvailable: dataset.retrogenAvailable,
+      fanningMaxShots: dataset.fanningMaxShots || 0,
       hardpointMovement: dataset.hardpointMovement,
       defenseType: dataset.defenseType || 'none',
       defenseTypes: { none: 'E20.None', ...E20.defenses },

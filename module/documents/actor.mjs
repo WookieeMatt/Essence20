@@ -45,6 +45,9 @@ import { getMachineMantleBonus } from "../helpers/imperial-machine-mantle.mjs";
 import { ENERGY_AFFINITY_ID } from "../helpers/energy-affinity.mjs";
 import { SELF_PRESERVATION_ID } from "../helpers/self-preservation.mjs";
 import { getInnerMagicWillpowerReduction } from "../helpers/inner-magic.mjs";
+import { applyModularIntegration } from "../helpers/modular-armor.mjs";
+import { DEFAULT_ENVIRONMENT, getEnvironment } from "../helpers/environment.mjs";
+import { changeVesselConditionStacks, getVesselConditionStacks, isStackingVesselCondition } from "../helpers/vessel-conditions.mjs";
 
 // GI Joe CRB Vanguard Perks that grant a flat, condition-gated Toughness/Evasion bonus - computed
 // fresh in _prepareDefenses() below (like rolePointsDefense already is) rather than written into
@@ -234,10 +237,10 @@ const TF1S_SPRINTER_ID = "Compendium.essence20.transformers_one_sourcebook.Item.
 const I_CAN_DIG_IT_ID = "Compendium.essence20.technorganic_secrets.Item.0BrnoOPvwSSQ5oVe";
 
 // Prowl (GI Joe CRB, Focus: Predator, 17th level, p.94): "in your environment of expertise, you
-// double your Ground Movement." Gated on the same Environmental Expertise toggle Natural
-// Movement's own identical precondition already reads (see
-// helpers/environmental-expertise.mjs's own doc comment) - see its own check in
-// _prepareMovement() below.
+// double your Ground Movement." Gated on hasActiveEnvironmentalExpertise - the scene's terrain
+// when the GM has set one, else the manual toggle (see helpers/environmental-expertise.mjs's own
+// doc comment; helpers/environment.mjs#refreshTerrainDependentActor re-prepares the actor when
+// its token changes Region) - see its own check in _prepareMovement() below.
 const PROWL_ID = "Compendium.essence20.gi_joe_crb.Item.ZCOzxoy7d3P5izBB";
 
 const JUMP_THROUGH_TIME = "Compendium.essence20.jump_through_time.Item.";
@@ -395,6 +398,21 @@ export class Essence20Actor extends Actor {
   constructor(...args) {
     super(...args);
     this._dice = new Dice(ChatMessage, new RollDialog(), game.i18n);
+  }
+
+  /**
+   * Space Vessel Conditions that stack (Across the Stars p.25-26 - see helpers/vessel-conditions.mjs):
+   * applying one the actor already has adds a stack rather than doing nothing. Every other status,
+   * and every removal or plain toggle, is core's own behavior.
+   * @override
+   */
+  async toggleStatusEffect(statusId, options = {}) {
+    if (options.active === true && isStackingVesselCondition(statusId) && this.statuses?.has(statusId)) {
+      await changeVesselConditionStacks(this, statusId, 1);
+      return true;
+    }
+
+    return super.toggleStatusEffect(statusId, options);
   }
 
   /** @override */
@@ -612,6 +630,10 @@ export class Essence20Actor extends Actor {
     if (this.type == 'party') {
       this._preparePartyData();
     }
+
+    // Modular armor (Across the Stars p.85) - weapons socketed into equipped Modular armor become
+    // Integrated (0 hands). Before the Load Out tally below, which reads derivedHands.
+    applyModularIntegration(this);
 
     // Load Out (hands carried vs the six-hand limit) and Hardpoint allocation. Only the two
     // types that carry equipment personally - a vehicle or Megaform has no hands to fill.
@@ -1180,9 +1202,15 @@ export class Essence20Actor extends Actor {
       return;
     }
 
-    health.max = originStartingHealth + rolePointsBonusHealth + conditioning + bonus + bulwarkBonusHealth;
+    // Compromised (Across the Stars, Space Vessel Condition, p.25): "each instance of the Condition
+    // reduces the vessel's maximum Health by another point." Defeat at 0 is
+    // helpers/vessel-conditions.mjs#syncVesselConditionConsequences.
+    const compromised = getVesselConditionStacks(this, 'compromised');
+
+    health.max = Math.max(0, originStartingHealth + rolePointsBonusHealth + conditioning + bonus + bulwarkBonusHealth - compromised);
     health.string = `${originStartingHealth} (${originName}) + ${rolePointsBonusHealth} (${rolePointsName}) + ${conditioning} (${conditionName}) + ${bonus} (${bonusName})`
-      + (bulwarkBonusHealth ? ` + ${bulwarkBonusHealth} (${game.i18n.localize('E20.ArmorTraitBulwark')})` : '');
+      + (bulwarkBonusHealth ? ` + ${bulwarkBonusHealth} (${game.i18n.localize('E20.ArmorTraitBulwark')})` : '')
+      + (compromised ? ` - ${compromised} (${game.i18n.localize('E20.StatusCompromised')})` : '');
   }
 
   /**
@@ -1754,6 +1782,42 @@ export class Essence20Actor extends Actor {
     }
 
     system.movementNotSet = !movementTotal;
+    this._applyGravityMovement();
+  }
+
+  /**
+   * Low Gravity and Zero-G (Across the Stars, Exploring Infinite Environments, p.24-25), applied on
+   * top of every other Movement change. Low Gravity: "Movement types gain a 10-foot bonus" (each
+   * type the creature already has). Zero-G: "Treat all Movement like Aerospace Movement, with a rate
+   * of 20 feet/10 feet" - Aerial becomes 20 and every other type 0; the 10-foot inertia minimum has
+   * no field to live in and stays a table rule. High Gravity's tripled cost is a movement-cost rule
+   * instead (helpers/rough-terrain.mjs), so the ruler shows it.
+   *
+   * Creatures only - vehicles, Zords and Megaforms print their own Aerospace Movement for this.
+   * Records the environment it prepared against, so a token walking between Regions re-prepares
+   * (helpers/environment.mjs#refreshTerrainDependentActor).
+   */
+  _applyGravityMovement() {
+    if (!['playerCharacter', 'npc', 'companion'].includes(this.type) || this.pack) {
+      return;
+    }
+
+    const environment = getEnvironment(this, { includeInterior: false }) ?? DEFAULT_ENVIRONMENT;
+    this._e20MovementEnvironment = environment;
+    const movement = this.system.movement;
+    if (environment == 'lowGravity') {
+      for (const type of Object.keys(movement)) {
+        if (movement[type]?.total > 0) {
+          movement[type].total += 10;
+        }
+      }
+    } else if (environment == 'zeroGravity') {
+      for (const type of Object.keys(movement)) {
+        if (movement[type] && typeof movement[type] == 'object') {
+          movement[type].total = type == 'aerial' ? 20 : 0;
+        }
+      }
+    }
   }
 
   /**

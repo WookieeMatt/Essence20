@@ -1,5 +1,6 @@
 import { Essence20Actor } from "./actor.mjs";
 import { jest } from '@jest/globals';
+import { applyModularIntegration } from "../helpers/modular-armor.mjs";
 
 /**
  * Builds a bare Essence20Actor instance with the given type/system/items,
@@ -3625,6 +3626,23 @@ describe("_prepareLoadout", () => {
     expect(actor.system.hardpoints.external.used).toBe(1);
   });
 
+  test("a weapon socketed into equipped Modular armor takes no hands (prepareDerivedData order)", () => {
+    const socketed = { _id: 'w1', id: 'w1', ...weapon({ derivedHands: 1, classification: { size: 'medium' } }) };
+    const armor = {
+      _id: 'a1', id: 'a1', type: 'armor',
+      system: { equipped: true, traits: ['modular'], modularAllowance: 1, modularWeaponIds: ['w1'] },
+    };
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      armor: [armor],
+      weapon: [socketed, weapon({ derivedHands: 2 })],
+    });
+    // Same two calls, in the same order, prepareDerivedData makes.
+    applyModularIntegration(actor);
+    actor._prepareLoadout();
+    expect(socketed.system.effectiveSize).toBe('integrated');
+    expect(actor.system.loadout.handsUsed).toBe(2);
+  });
+
   test("a two-handed integrated weapon uses two Integrated Hardpoint slots", () => {
     const actor = makeActor('playerCharacter', loadoutSystem(), {
       weapon: [weapon({ derivedHands: 2, hardpoint: { type: 'integrated' } })],
@@ -3894,5 +3912,87 @@ describe("Zord creation adds its two standard Features", () => {
 
     const items = actor.updateSource.mock.calls[0][0].items.map(item => item.name);
     expect(items).toEqual(["Zord Cannon", "Call to Action", "Recall For Repairs"]);
+  });
+});
+
+describe("Across the Stars environments and Space Vessel Conditions", () => {
+  function gravitySystem() {
+    return {
+      isMorphed: false,
+      isTransformed: false,
+      movement: {
+        aerial: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+        ground: { base: 30, bonus: 0, morphed: 0, altMode: 0 },
+        burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+        climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+        swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+      },
+    };
+  }
+
+  function placeOnScene(actor, environment) {
+    actor.documentName = 'Actor';
+    actor.getActiveTokens = () => [{
+      documentName: 'Token', regions: [], parent: { getFlag: (scope, key) => (key == 'environment' ? environment : undefined) },
+    }];
+    return actor;
+  }
+
+  test("Compromised lowers a vessel's maximum Health by one per stack, never below 0", () => {
+    const vessel = makeActor('vehicle', { conditioning: 0, health: { bonus: 0, origin: 5 } });
+    vessel.statuses = new Set(['compromised']);
+    vessel.effects = [{ statuses: new Set(['compromised']), flags: { essence20: { stacks: 2 } } }];
+    vessel._prepareHealth();
+    expect(vessel.system.health.max).toBe(3);
+    expect(vessel.system.health.string).toContain('E20.StatusCompromised');
+
+    vessel.effects[0].flags.essence20.stacks = 9;
+    vessel._prepareHealth();
+    expect(vessel.system.health.max).toBe(0);
+  });
+
+  test("Low Gravity adds 10 feet to each Movement type the creature has", () => {
+    const actor = placeOnScene(makeActor('playerCharacter', gravitySystem()), 'lowGravity');
+    actor._prepareMovement();
+    expect(actor.system.movement.ground.total).toBe(40);
+    expect(actor.system.movement.climb.total).toBe(25); // half Ground (15) + 10
+    expect(actor.system.movement.aerial.total).toBe(0);
+    expect(actor._e20MovementEnvironment).toBe('lowGravity');
+  });
+
+  test("Zero-G makes every creature's Movement 20 feet of Aerial and nothing else", () => {
+    const actor = placeOnScene(makeActor('npc', gravitySystem()), 'zeroGravity');
+    actor._prepareMovement();
+    expect(actor.system.movement.aerial.total).toBe(20);
+    expect(actor.system.movement.ground.total).toBe(0);
+    expect(actor.system.movement.swim.total).toBe(0);
+  });
+
+  test("vehicles keep their own printed Movement in either", () => {
+    const vehicle = placeOnScene(makeActor('vehicle', gravitySystem()), 'zeroGravity');
+    vehicle._prepareMovement();
+    expect(vehicle.system.movement.ground.total).toBe(30);
+    expect(vehicle._e20MovementEnvironment).toBeUndefined();
+  });
+
+  test("a normal environment changes nothing", () => {
+    const actor = placeOnScene(makeActor('playerCharacter', gravitySystem()), 'normal');
+    actor._prepareMovement();
+    expect(actor.system.movement.ground.total).toBe(30);
+  });
+
+  describe("toggleStatusEffect", () => {
+    test("applying a stacking vessel Condition the actor already has adds a stack", async () => {
+      const vessel = makeActor('vehicle', { health: { max: 10 } });
+      const effect = { statuses: new Set(['unstable']), flags: {}, update: jest.fn() };
+      vessel.statuses = new Set(['unstable']);
+      vessel.effects = [effect];
+      Object.defineProperty(vessel, 'isOwner', { value: true });
+      vessel.getActiveTokens = () => [];
+      vessel.createEmbeddedDocuments = jest.fn();
+
+      expect(await vessel.toggleStatusEffect('unstable', { active: true })).toBe(true);
+      expect(effect.update).toHaveBeenCalledWith({ 'flags.essence20.stacks': 2, name: 'E20.StatusUnstable ×2' });
+    });
   });
 });

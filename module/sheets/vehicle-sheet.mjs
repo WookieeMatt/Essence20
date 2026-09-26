@@ -1,7 +1,16 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 import { getActionsTabContext } from "../helpers/action-economy.mjs";
+import {
+  getActiveVesselConditions, getVesselConditionStacks, openVesselRepairDialog, stackedName,
+} from "../helpers/vessel-conditions.mjs";
 
 export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
+  static DEFAULT_OPTIONS = {
+    actions: {
+      repairVesselCondition: this.#onRepairVesselCondition,
+    },
+  };
+
   static TABS = {
     primary: {
       tabs: [
@@ -53,6 +62,24 @@ export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.actionsTab = getActionsTabContext(this.actor);
+    // Space Vessel Conditions and their stack counts, for the header's Repair control.
+    context.vesselConditions = getActiveVesselConditions(this.actor).map(statusId => ({
+      id: statusId,
+      label: stackedName(
+        game.i18n.localize(CONFIG.statusEffects.find(status => status.id == statusId)?.name ?? statusId),
+        getVesselConditionStacks(this.actor, statusId),
+      ),
+    }));
     return context;
+  }
+
+  /**
+   * Repairing a Space Vessel Condition (Across the Stars p.26) - see
+   * helpers/vessel-conditions.mjs#openVesselRepairDialog.
+   * @this {Essence20VehicleActorSheet}
+   * @private
+   */
+  static async #onRepairVesselCondition() {
+    await openVesselRepairDialog(this.actor);
   }
 }

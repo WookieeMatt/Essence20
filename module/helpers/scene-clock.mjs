@@ -123,6 +123,9 @@ export async function advanceScene(label = '') {
   await game.settings.set('essence20', SCENE_KEY, next);
   await game.settings.set('essence20', ENCOUNTER_KEY, getEncounterEpoch() + 1);
   await game.settings.set('essence20', LABEL_KEY, label);
+  // Per-scene effects that key off a scene ENDING (helpers/environment-hazards.mjs's Irradiated /
+  // Harmful-toxicity damage) listen for this rather than being imported here.
+  globalThis.Hooks?.callAll?.('essence20.sceneAdvanced', next);
   return next;
 }
 

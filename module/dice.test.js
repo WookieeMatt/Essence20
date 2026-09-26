@@ -2473,7 +2473,10 @@ describe("rollSkill", () => {
       explosiveEngineerTechnologyAvailable: false,
       alwaysReadyAvailable: false,
       disarmingShotAvailable: false,
+
+      targetVesselSystemAvailable: false,
       streetSmartsAvailable: false,
+      intimidatingWeaponSkill: null,
       primalFearAvailable: false,
       naturalScienceToSurvivalAvailable: false,
       naturalScienceToScienceAvailable: false,
@@ -2494,6 +2497,9 @@ describe("rollSkill", () => {
       allINeedIsOneShotAvailable: false,
       availableSkillEffects: [],
       combatModifierSources: [],
+      enviroSealedAdverseSituationAvailable: false,
+      fanningMaxShots: 0,
+      retrogenAvailable: false,
     };
     const expectedSkillDataset = {
       edge: false,
@@ -2624,6 +2630,131 @@ describe("rollSkill", () => {
       expect.objectContaining({ itemUuid: 'Actor.actor1.Item.effect1' }),
       false,
     );
+  });
+
+  describe("attack-pipeline weapon traits (Fanning / High-Density / Retrogen)", () => {
+    const d8Dataset = { ...dataset, shift: 'd8' };
+
+    function makeTraitWeaponRoll(traits, weaponSystem = {}) {
+      const weapon = { system: { traits, ...weaponSystem } };
+      const weaponEffect = {
+        name: 'Six-Shooter Effect',
+        type: 'weaponEffect',
+        flags: { essence20: { parentId: 'weapon1' } },
+        system: { classification: { skill: 'athletics', style: 'projectile' }, damageType: 'sharp', damageValue: 1 },
+      };
+      const items = [];
+      items.get = id => (id === 'weapon1' ? weapon : undefined);
+      const actor = {
+        ...mockActor,
+        items,
+        getRollData: jest.fn(() => ({ skills: { athletics: { modifier: '0', shift: 'd8' } } })),
+      };
+      return { actor, weaponEffect };
+    }
+
+    function mockOptions(rollDialog, extra = {}) {
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, ...extra,
+      });
+    }
+
+    test("Fanning offers up to X shots and rolls each at its own escalating ↓", async () => {
+      const rollDialog = createMockRollDialog();
+      mockOptions(rollDialog, { fanningShots: 2 });
+      const { actor, weaponEffect } = makeTraitWeaponRoll(['fanning'], { fanningMagnitude: 2 });
+      dice._rollSkillHelper = jest.fn(async () => ({ results: [], isFumble: false }));
+
+      const result = await dice.rollSkill(d8Dataset, actor, weaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].fanningMaxShots).toBe(2);
+      expect(dice._rollSkillHelper).toHaveBeenCalledTimes(2);
+      const [firstShot, secondShot] = dice._rollSkillHelper.mock.calls;
+      expect(firstShot[5].finalShift).toBe('d6');
+      expect(secondShot[5].finalShift).toBe('d4');
+      expect(firstShot[0]).not.toEqual(secondShot[0]);
+      expect(firstShot[2]).toContain('E20.RollFanningShotText');
+      expect(result.fanned).toBe(true);
+    });
+
+    test("a Fumble ends the Fanning volley early", async () => {
+      const rollDialog = createMockRollDialog();
+      mockOptions(rollDialog, { fanningShots: 2 });
+      const { actor, weaponEffect } = makeTraitWeaponRoll(['fanning'], { fanningMagnitude: 2 });
+      dice._rollSkillHelper = jest.fn(async () => ({ results: [], isFumble: true }));
+
+      await dice.rollSkill(d8Dataset, actor, weaponEffect);
+
+      expect(dice._rollSkillHelper).toHaveBeenCalledTimes(1);
+    });
+
+    test("0 Fanning shots is an ordinary attack - no ↓, not fanned", async () => {
+      const rollDialog = createMockRollDialog();
+      mockOptions(rollDialog, { fanningShots: 0 });
+      const { actor, weaponEffect } = makeTraitWeaponRoll(['fanning'], { fanningMagnitude: 2 });
+      dice._rollSkillHelper = jest.fn(async () => ({ results: [], isFumble: false }));
+
+      const result = await dice.rollSkill(d8Dataset, actor, weaponEffect);
+
+      expect(dice._rollSkillHelper).toHaveBeenCalledTimes(1);
+      expect(dice._rollSkillHelper.mock.calls[0][5].finalShift).toBe('d8');
+      expect(result.fanned).toBe(false);
+    });
+
+    test("a non-Fanning weapon offers no shots", async () => {
+      const rollDialog = createMockRollDialog();
+      mockOptions(rollDialog);
+      const { actor, weaponEffect } = makeTraitWeaponRoll(['ballistic']);
+      dice._rollSkillHelper = jest.fn(async () => ({ results: [], isFumble: false }));
+
+      await dice.rollSkill(d8Dataset, actor, weaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].fanningMaxShots).toBe(0);
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].retrogenAvailable).toBe(false);
+    });
+
+    test("a High-Density follow-up carries a labelled ↓1 and is flagged so it can't chain", async () => {
+      const rollDialog = createMockRollDialog();
+      mockOptions(rollDialog);
+      const { actor, weaponEffect } = makeTraitWeaponRoll(['highDensity']);
+      dice._rollSkillHelper = jest.fn(async () => ({ results: [], isFumble: false }));
+
+      await dice.rollSkill({ ...d8Dataset, highDensityFollowUp: true }, actor, weaponEffect);
+
+      const dialogDataset = rollDialog.getSkillRollOptions.mock.calls[0][0];
+      expect(dialogDataset.shiftDown).toBe(1);
+      expect(dialogDataset.combatModifierSources).toEqual(expect.arrayContaining([
+        expect.objectContaining({ id: 'highDensityFollowUp', shiftDown: 1 }),
+      ]));
+      expect(dice._rollSkillHelper.mock.calls[0][5])
+        .toEqual(expect.objectContaining({ isHighDensityAttack: true, highDensityFollowUp: true }));
+    });
+
+    test("a High-Density first attack is flagged for the chat button, with no ↓", async () => {
+      const rollDialog = createMockRollDialog();
+      mockOptions(rollDialog);
+      const { actor, weaponEffect } = makeTraitWeaponRoll(['highDensity']);
+      dice._rollSkillHelper = jest.fn(async () => ({ results: [], isFumble: false }));
+
+      await dice.rollSkill(d8Dataset, actor, weaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftDown).toBe(0);
+      const rollContext = dice._rollSkillHelper.mock.calls[0][5];
+      expect(rollContext.isHighDensityAttack).toBe(true);
+      expect(rollContext.highDensityFollowUp).toBeUndefined();
+    });
+
+    test("Retrogen offers its toggle with no marked target, and the toggle grants ↑1", async () => {
+      const rollDialog = createMockRollDialog();
+      mockOptions(rollDialog, { applyRetrogen: true });
+      const { actor, weaponEffect } = makeTraitWeaponRoll(['retrogen']);
+      dice._rollSkillHelper = jest.fn(async () => ({ results: [], isFumble: false }));
+
+      await dice.rollSkill(d8Dataset, actor, weaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].retrogenAvailable).toBe(true);
+      expect(dice._rollSkillHelper.mock.calls[0][5].finalShift).toBe('d10');
+    });
   });
 
   test("weapon effect attack with a Power Weapon parent flags isPowerWeaponAttack", async () => {
@@ -2962,7 +3093,10 @@ describe("rollSkill", () => {
       explosiveEngineerTechnologyAvailable: false,
       alwaysReadyAvailable: false,
       disarmingShotAvailable: false,
+
+      targetVesselSystemAvailable: false,
       streetSmartsAvailable: false,
+      intimidatingWeaponSkill: null,
       primalFearAvailable: false,
       naturalScienceToSurvivalAvailable: false,
       naturalScienceToScienceAvailable: false,
@@ -2986,6 +3120,9 @@ describe("rollSkill", () => {
       combatModifierSources: [
         { id: 'impaired', label: 'E20.StatusImpaired', shiftUp: 0, shiftDown: 1, edge: false, snag: false },
       ],
+      enviroSealedAdverseSituationAvailable: false,
+      fanningMaxShots: 0,
+      retrogenAvailable: false,
     };
 
     await dice.rollSkill(dataset, expertiseActor, null);
@@ -3389,7 +3526,10 @@ describe("rollSkill", () => {
       explosiveEngineerTechnologyAvailable: false,
       alwaysReadyAvailable: false,
       disarmingShotAvailable: false,
+
+      targetVesselSystemAvailable: false,
       streetSmartsAvailable: false,
+      intimidatingWeaponSkill: null,
       primalFearAvailable: false,
       naturalScienceToSurvivalAvailable: false,
       naturalScienceToScienceAvailable: false,
@@ -3411,6 +3551,9 @@ describe("rollSkill", () => {
       heavyForceAvailable: false,
       availableSkillEffects: [],
       combatModifierSources: [],
+      enviroSealedAdverseSituationAvailable: false,
+      fanningMaxShots: 0,
+      retrogenAvailable: false,
     };
     const expectedSkillDataset = {
       edge: true,
@@ -3528,7 +3671,10 @@ describe("rollSkill", () => {
       explosiveEngineerTechnologyAvailable: false,
       alwaysReadyAvailable: false,
       disarmingShotAvailable: false,
+
+      targetVesselSystemAvailable: false,
       streetSmartsAvailable: false,
+      intimidatingWeaponSkill: null,
       primalFearAvailable: false,
       naturalScienceToSurvivalAvailable: false,
       naturalScienceToScienceAvailable: false,
@@ -3550,6 +3696,9 @@ describe("rollSkill", () => {
       heavyForceAvailable: false,
       availableSkillEffects: [],
       combatModifierSources: [],
+      enviroSealedAdverseSituationAvailable: false,
+      fanningMaxShots: 0,
+      retrogenAvailable: false,
     };
     const expectedSkillDataset = {
       edge: false,
@@ -3665,7 +3814,10 @@ describe("rollSkill", () => {
       explosiveEngineerTechnologyAvailable: false,
       alwaysReadyAvailable: false,
       disarmingShotAvailable: false,
+
+      targetVesselSystemAvailable: false,
       streetSmartsAvailable: false,
+      intimidatingWeaponSkill: null,
       primalFearAvailable: false,
       naturalScienceToSurvivalAvailable: false,
       naturalScienceToScienceAvailable: false,
@@ -3687,6 +3839,9 @@ describe("rollSkill", () => {
       heavyForceAvailable: false,
       availableSkillEffects: [],
       combatModifierSources: [],
+      enviroSealedAdverseSituationAvailable: false,
+      fanningMaxShots: 0,
+      retrogenAvailable: false,
     };
     const expectedSkillDataset = {
       edge: false,
@@ -7877,6 +8032,20 @@ describe("rollSkill", () => {
 
       await dice.rollSkill({ ...dataset, skill: 'survival' }, makeTrackerActor({ expertiseActive: false }), null);
       expect(rollDialog.getSkillRollOptions.mock.calls[2][0].shiftUp).toBe(0);
+    });
+
+    test("is listed as an untickable Roll Options Dialog source", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 2, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill({ ...dataset, skill: 'survival' }, makeTrackerActor(), null);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].combatModifierSources).toContainEqual(
+        expect.objectContaining({ id: 'trackerEnvironmental', shiftUp: 2 }),
+      );
     });
   });
 
@@ -18812,6 +18981,115 @@ describe("rollSkill", () => {
     });
   });
 
+  describe("Space Vessel Conditions (Across the Stars p.25-26)", () => {
+    const vesselWeaponEffect = (system = {}) => ({
+      type: 'weaponEffect',
+      flags: {},
+      system: { classification: { skill: 'targeting', style: 'projectile' }, damageType: 'laser', damageValue: 2, numTargets: 1, ...system },
+    });
+
+    function makeShooter({ shift = 'd6', type = 'playerCharacter', statuses = {} } = {}) {
+      const items = [];
+      items.get = jest.fn(() => null);
+      return {
+        ...mockActor,
+        type,
+        items,
+        statuses: new Set(Object.keys(statuses)),
+        effects: Object.entries(statuses).map(([id, stacks]) => ({ statuses: new Set([id]), flags: { essence20: { stacks } } })),
+        getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift } } })),
+      };
+    }
+
+    const bigShip = {
+      type: 'vehicle', statuses: new Set(), items: [], effects: [], getFlag: () => undefined,
+      system: { size: 'gigantic', traits: { zeroG: true }, movement: { aerial: { base: 0 } } },
+    };
+    const originalTargets = game.user.targets;
+    afterEach(() => {
+      game.user.targets = originalTargets;
+    });
+
+    function targetOnly(actor) {
+      game.user.targets = { size: 1, first: () => ({ actor }) };
+    }
+
+    test("offers the targeted-system toggle only when its requirements hold", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      targetOnly(bigShip);
+      await dice.rollSkill({ ...dataset, skill: 'targeting' }, makeShooter(), vesselWeaponEffect());
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].targetVesselSystemAvailable).toBe(true);
+
+      await dice.rollSkill({ ...dataset, skill: 'targeting' }, makeShooter({ shift: 'd2' }), vesselWeaponEffect());
+      expect(rollDialog.getSkillRollOptions.mock.calls[1][0].targetVesselSystemAvailable).toBe(false);
+
+      await dice.rollSkill({ ...dataset, skill: 'targeting' }, makeShooter(), vesselWeaponEffect({ damageValue: 1 }));
+      expect(rollDialog.getSkillRollOptions.mock.calls[2][0].targetVesselSystemAvailable).toBe(false);
+
+      targetOnly({ ...bigShip, type: 'zord' });
+      await dice.rollSkill({ ...dataset, skill: 'targeting' }, makeShooter(), vesselWeaponEffect());
+      expect(rollDialog.getSkillRollOptions.mock.calls[3][0].targetVesselSystemAvailable).toBe(false);
+    });
+
+    test("checking it downshifts 2 and carries the attempt to the Critical Effect", async () => {
+      const rollDialog = createMockRollDialog();
+      const skillRollOptions = {
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+        applyTargetVesselSystem: true,
+      };
+      rollDialog.getSkillRollOptions.mockReturnValue(skillRollOptions);
+      dice._rollSkillHelper = jest.fn();
+      targetOnly(bigShip);
+
+      await dice.rollSkill({ ...dataset, shift: '3d6', skill: 'targeting', dif: '10' }, makeShooter(), vesselWeaponEffect());
+      expect(skillRollOptions.shiftDown).toBe(2);
+      expect(dice._rollSkillHelper.mock.calls[0][4].targetVesselSystemAttempt).toBe(true);
+    });
+
+    test("a checked box without the requirements does nothing", async () => {
+      const rollDialog = createMockRollDialog();
+      const skillRollOptions = {
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+        applyTargetVesselSystem: true,
+      };
+      rollDialog.getSkillRollOptions.mockReturnValue(skillRollOptions);
+      dice._rollSkillHelper = jest.fn();
+      game.user.targets = { size: 0, first: () => undefined };
+
+      await dice.rollSkill({ ...dataset, skill: 'targeting', dif: '10' }, makeShooter(), vesselWeaponEffect());
+      expect(skillRollOptions.shiftDown).toBe(0);
+      expect(dice._rollSkillHelper.mock.calls[0][4].targetVesselSystemAttempt).toBe(false);
+    });
+
+    test("a repair roll carries the vessel and Condition through to the post-roll processing", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill({
+        ...dataset, skill: 'targeting', dif: '12', repairVesselUuid: 'Actor.ship', repairVesselCondition: 'leaking',
+      }, makeShooter());
+      expect(dice._rollSkillHelper.mock.calls[0][4]).toMatchObject({ repairVesselUuid: 'Actor.ship', repairVesselCondition: 'leaking' });
+    });
+
+    test("a vehicle Unstable three times over can't attack with its hardpoint weapons", async () => {
+      const rollDialog = createMockRollDialog();
+      dice._rollSkillHelper = jest.fn();
+      ui.notifications.warn.mockClear();
+
+      await dice.rollSkill({ ...dataset, skill: 'targeting' }, makeShooter({ type: 'vehicle', statuses: { unstable: 3 } }), vesselWeaponEffect());
+      expect(ui.notifications.warn).toHaveBeenCalledWith('E20.VesselConditionUnstableInoperable');
+      expect(rollDialog.getSkillRollOptions).not.toHaveBeenCalled();
+    });
+  });
+
   describe("Street Smarts (Cobra Codex, Criminal Origin Benefit, p.43)", () => {
     const STREET_SMARTS_ID = "Compendium.essence20.cobra_codex.Item.np3oMccakpivWuSQ";
 
@@ -18856,6 +19134,62 @@ describe("rollSkill", () => {
 
       await dice.rollSkill({ ...dataset, skill: 'persuasion', essence: 'social' }, makeStreetSmartsActor({ hasPerk: false }), null);
       expect(rollDialog.getSkillRollOptions.mock.calls[1][0].streetSmartsAvailable).toBe(false);
+    });
+  });
+
+  describe("Intimidating (GI Joe CRB/TF CRB, Weapon Effects and Traits, p.148 etc)", () => {
+    function makeIntimidatingActor({ hasWeapon = true } = {}) {
+      const weapon = {
+        id: 'weapon1', type: 'weapon',
+        system: { equipped: true, itemAndUpgradeTraits: ['intimidating'] },
+      };
+      const weaponEffect = {
+        type: 'weaponEffect', flags: { essence20: { parentId: 'weapon1' } },
+        system: { classification: { skill: 'might' } },
+      };
+      const items = hasWeapon ? [weapon, weaponEffect] : [];
+      items.get = jest.fn(() => null);
+      return {
+        ...mockActor,
+        items,
+        getRollData: jest.fn(() => ({
+          skills: {
+            intimidation: { modifier: '0', shift: 'd6' }, might: { modifier: '0', shift: 'd10' },
+            deception: { modifier: '0', shift: 'd6' },
+          },
+        })),
+      };
+    }
+
+    test("substitutes the weapon's own better skill die as a shiftUp when checked", async () => {
+      const rollDialog = createMockRollDialog();
+      const returnedOptions = {
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+        applyIntimidatingWeapon: true,
+      };
+      rollDialog.getSkillRollOptions.mockReturnValue(returnedOptions);
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill({ ...dataset, skill: 'intimidation', essence: 'social', shift: 'd6' }, makeIntimidatingActor(), null);
+
+      expect(returnedOptions.shiftUp).toBe(2);
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].intimidatingWeaponSkill).toBe('might');
+    });
+
+    test("not offered on a different skill or without an equipped Intimidating weapon", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill({ ...dataset, skill: 'deception', essence: 'social' }, makeIntimidatingActor(), null);
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].intimidatingWeaponSkill).toBeNull();
+
+      await dice.rollSkill(
+        { ...dataset, skill: 'intimidation', essence: 'social' }, makeIntimidatingActor({ hasWeapon: false }), null,
+      );
+      expect(rollDialog.getSkillRollOptions.mock.calls[1][0].intimidatingWeaponSkill).toBeNull();
     });
   });
 
@@ -25984,6 +26318,8 @@ describe("rollSkill", () => {
         await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts' }, actor, null);
 
         expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftUp).toBe(1);
+        expect(rollDialog.getSkillRollOptions.mock.calls[0][0].combatModifierSources)
+          .toEqual(expect.arrayContaining([expect.objectContaining({ id: 'cobraBattleSchoolGraduate', shiftUp: 1 })]));
       });
 
       test("doesn't apply outside combat, without the Perk, on a non-Smarts skill, or on a weaponEffect attack", async () => {
@@ -31288,6 +31624,66 @@ describe("rollSkill", () => {
 
         await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts' }, makeActor(), null);
         expect(rollDialog.getSkillRollOptions.mock.calls[1][1].edge).toBeFalsy();
+      });
+
+      // The scene's terrain (helpers/environment.mjs#getTerrain) decides it without the toggle.
+      function makeActorOnTerrain(terrain) {
+        const actor = makeActor({ perkIds: [ENVIRONMENTAL_EXPERTISE_ID] });
+        const scene = { getFlag: (scope, key) => (key == 'terrain' ? terrain : undefined) };
+        actor.documentName = 'Actor';
+        actor.getActiveTokens = () => [{ regions: [], parent: scene }];
+        actor.system = { ...actor.system, environments: ['desert'] };
+        return actor;
+      }
+
+      test("grants Edge with no toggle when the scene's terrain is an environment of expertise, labelled with it", async () => {
+        const rollDialog = createMockRollDialog();
+        rollDialog.getSkillRollOptions.mockReturnValue({
+          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+        });
+        dice._rollSkillHelper = jest.fn();
+
+        await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts' }, makeActorOnTerrain('desert'), null);
+
+        expect(rollDialog.getSkillRollOptions.mock.calls[0][1].edge).toBe(true);
+        expect(rollDialog.getSkillRollOptions.mock.calls[0][0].combatModifierSources).toContainEqual(
+          expect.objectContaining({ id: 'environmentalExpertise', edge: true, label: expect.stringContaining('E20.EnvironmentDesert') }),
+        );
+      });
+
+      test("Urban Jungle: Edge (labelled Urban) on urban terrain only", async () => {
+        const URBAN_JUNGLE_ID = "Compendium.essence20.cobra_codex.Item.wIesQd7U5W2azAWY";
+        const rollDialog = createMockRollDialog();
+        rollDialog.getSkillRollOptions.mockReturnValue({
+          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+        });
+        dice._rollSkillHelper = jest.fn();
+        const onTerrain = (terrain) => {
+          const actor = makeActorOnTerrain(terrain);
+          actor.items = [{ type: 'perk', flags: { core: { sourceId: URBAN_JUNGLE_ID } } }];
+          return actor;
+        };
+
+        await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts' }, onTerrain('urban'), null);
+        expect(rollDialog.getSkillRollOptions.mock.calls[0][1].edge).toBe(true);
+        expect(rollDialog.getSkillRollOptions.mock.calls[0][0].combatModifierSources).toContainEqual(
+          expect.objectContaining({ id: 'urbanJungle', label: expect.stringContaining('E20.EnvironmentUrban') }),
+        );
+
+        await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts' }, onTerrain('woodlands'), null);
+        expect(rollDialog.getSkillRollOptions.mock.calls[1][1].edge).toBeFalsy();
+      });
+
+      test("no Edge when the scene's terrain isn't an environment of expertise", async () => {
+        const rollDialog = createMockRollDialog();
+        rollDialog.getSkillRollOptions.mockReturnValue({
+          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+        });
+        dice._rollSkillHelper = jest.fn();
+
+        await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts' }, makeActorOnTerrain('urban'), null);
+
+        expect(rollDialog.getSkillRollOptions.mock.calls[0][1].edge).toBeFalsy();
       });
     });
 
@@ -37356,6 +37752,115 @@ describe("_applySmashDamage (Enigma of Combination, Pugilist Focus, Warrior, 20t
   });
 });
 
+describe("_applyTripKnockdown (GI Joe CRB, Weapon Effects and Traits, p.148)", () => {
+  function makeResult({ targetUuid = 'Actor.target1', success = true } = {}) {
+    return { targetUuid, success };
+  }
+
+  beforeEach(() => {
+    fromUuid.mockReset();
+  });
+
+  test("knocks a successfully-hit target Prone on a Trip effect", async () => {
+    const targetActor = { toggleStatusEffect: jest.fn() };
+    fromUuid.mockResolvedValue(targetActor);
+    const results = [makeResult()];
+
+    await dice._applyTripKnockdown(results, { damageType: 'knocProne' });
+
+    expect(targetActor.toggleStatusEffect).toHaveBeenCalledWith('prone', { active: true });
+  });
+
+  test("doesn't apply for a non-Trip effect", async () => {
+    const results = [makeResult()];
+
+    await dice._applyTripKnockdown(results, { damageType: 'sharp' });
+
+    expect(fromUuid).not.toHaveBeenCalled();
+  });
+
+  test("doesn't apply on a miss", async () => {
+    const results = [makeResult({ success: false })];
+
+    await dice._applyTripKnockdown(results, { damageType: 'knocProne' });
+
+    expect(fromUuid).not.toHaveBeenCalled();
+  });
+});
+
+describe("_applyBlindingBlast (Quartermaster's Guide to Gear p.33)", () => {
+  function makeResult({ targetUuid = 'Actor.target1', success = true } = {}) {
+    return { targetUuid, success };
+  }
+
+  beforeEach(() => {
+    fromUuid.mockReset();
+    game.combat = null;
+  });
+
+  test("blinds a successfully-hit target on a Blinding effect", async () => {
+    const targetActor = { toggleStatusEffect: jest.fn(), effects: [] };
+    fromUuid.mockResolvedValue(targetActor);
+    const results = [makeResult()];
+
+    await dice._applyBlindingBlast(results, { damageType: 'blindingBlast' });
+
+    expect(targetActor.toggleStatusEffect).toHaveBeenCalledWith('blinded', { active: true });
+  });
+
+  test("doesn't apply for a non-Blinding effect", async () => {
+    const results = [makeResult()];
+
+    await dice._applyBlindingBlast(results, { damageType: 'sharp' });
+
+    expect(fromUuid).not.toHaveBeenCalled();
+  });
+
+  test("doesn't apply on a miss", async () => {
+    const results = [makeResult({ success: false })];
+
+    await dice._applyBlindingBlast(results, { damageType: 'blindingBlast' });
+
+    expect(fromUuid).not.toHaveBeenCalled();
+  });
+});
+
+describe("_applyModeLock (Enigma of Combination, Weapon Traits/Conditions, p.49)", () => {
+  function makeResult({ targetUuid = 'Actor.target1', success = true } = {}) {
+    return { targetUuid, success };
+  }
+
+  beforeEach(() => {
+    fromUuid.mockReset();
+  });
+
+  test("applies Mode Lock to a successfully-hit target", async () => {
+    const targetActor = { toggleStatusEffect: jest.fn() };
+    fromUuid.mockResolvedValue(targetActor);
+    const results = [makeResult()];
+
+    await dice._applyModeLock(results, { damageType: 'modelock' });
+
+    expect(targetActor.toggleStatusEffect).toHaveBeenCalledWith('modeLock', { active: true });
+  });
+
+  test("doesn't apply for a non-Mode Lock effect", async () => {
+    const results = [makeResult()];
+
+    await dice._applyModeLock(results, { damageType: 'sharp' });
+
+    expect(fromUuid).not.toHaveBeenCalled();
+  });
+
+  test("doesn't apply on a miss", async () => {
+    const results = [makeResult({ success: false })];
+
+    await dice._applyModeLock(results, { damageType: 'modelock' });
+
+    expect(fromUuid).not.toHaveBeenCalled();
+  });
+});
+
 /* _applyEmptyTheMag */
 describe("_applyEmptyTheMag (Vanguard base, 7th level)", () => {
   function makeResult({ damageValue = 5 } = {}) {
@@ -38365,6 +38870,33 @@ describe("_getAutomaticCombatModifiers", () => {
       });
     });
 
+    describe("Take Point (Transformers CRB, Outrider Origin Benefit, p.52) - Cover in Rough Terrain", () => {
+      const TAKE_POINT_ID = "Compendium.essence20.tf_crb.Item.efPOy3Owf2XIAykS";
+
+      function makeTargetToken(target, rough) {
+        const region = { behaviors: [{ type: 'environment', disabled: false, system: { roughTerrain: true } }] };
+        const scene = { getFlag: () => undefined, regions: [region] };
+        return { actor: target, document: { documentName: 'Token', regions: rough ? [region] : [], parent: scene } };
+      }
+
+      test("counts as having Cover while standing in Rough Terrain", () => {
+        const target = makeActor('common', [], { perkIds: [TAKE_POINT_ID] });
+        game.user.targets.first.mockReturnValue(makeTargetToken(target, true));
+
+        expect(dice._getAutomaticCombatModifiers(makeActor('common'), rangedWeaponEffect).sources)
+          .toContainEqual(expect.objectContaining({ id: 'cover', shiftDown: 2 }));
+      });
+
+      test("no Cover outside Rough Terrain, or without the Perk", () => {
+        const target = makeActor('common', [], { perkIds: [TAKE_POINT_ID] });
+        game.user.targets.first.mockReturnValue(makeTargetToken(target, false));
+        expect(dice._getAutomaticCombatModifiers(makeActor('common'), rangedWeaponEffect)).toEqual(defaultModifiers);
+
+        game.user.targets.first.mockReturnValue(makeTargetToken(makeActor('common'), true));
+        expect(dice._getAutomaticCombatModifiers(makeActor('common'), rangedWeaponEffect)).toEqual(defaultModifiers);
+      });
+    });
+
     describe("Dig In (Decepticon Directive Raider, Siegemaster Focus, 10th level, p.64)", () => {
       const DIG_IN_ID = `${DECEPTICON_DIRECTIVE}9tIkV50YiO3xqxvi`;
       const maneuverWeaponEffect = { type: 'weaponEffect', system: { classification: { style: 'melee' }, damageType: 'maneuver' } };
@@ -38544,6 +39076,153 @@ describe("_getAutomaticCombatModifiers", () => {
         game.user.targets.first.mockReturnValue({ actor: makeTargetActor({ hasPerk: true, active: true }) });
         actor = makeActor('common');
         expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect)).toEqual(defaultModifiers);
+      });
+    });
+
+    describe("Trip (GI Joe CRB, Weapon Effects and Traits, p.148)", () => {
+      const tripWeaponEffect = {
+        type: 'weaponEffect',
+        system: { classification: { style: 'melee' }, defenseType: 'toughness', damageType: 'knocProne' },
+      };
+
+      function withRollData(actor, { brawn = 'd8', finesse = 'd8' } = {}) {
+        actor.getRollData = jest.fn(() => ({ skills: { brawn: { shift: brawn }, finesse: { shift: finesse } } }));
+        return actor;
+      }
+
+      test("shifts the attacker down when their better of Brawn/Finesse is worse than the target's", () => {
+        game.user.targets.first.mockReturnValue({ actor: withRollData(makeActor('common'), { brawn: 'd6', finesse: 'd12' }) });
+        const actor = withRollData(makeActor('common'), { brawn: 'd20', finesse: 'd10' });
+
+        expect(dice._getAutomaticCombatModifiers(actor, tripWeaponEffect))
+          .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
+            {
+              "edge": false,
+              "id": "trip",
+              "label": "E20.CombatModifierTrip",
+              "shiftDown": 1,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
+      });
+
+      test("doesn't apply when the attacker's better Skill is equal or higher, or to a non-Trip attack", () => {
+        game.user.targets.first.mockReturnValue({ actor: withRollData(makeActor('common'), { brawn: 'd8', finesse: 'd8' }) });
+        let actor = withRollData(makeActor('common'), { brawn: 'd8', finesse: 'd8' });
+        expect(dice._getAutomaticCombatModifiers(actor, tripWeaponEffect)).toEqual(defaultModifiers);
+
+        game.user.targets.first.mockReturnValue({ actor: withRollData(makeActor('common'), { brawn: 'd20', finesse: 'd20' }) });
+        actor = withRollData(makeActor('common'), { brawn: 'd4', finesse: 'd4' });
+        expect(dice._getAutomaticCombatModifiers(actor, tripWeaponEffect)).toEqual(defaultModifiers);
+
+        game.user.targets.first.mockReturnValue({ actor: withRollData(makeActor('common'), { brawn: 'd6', finesse: 'd12' }) });
+        actor = withRollData(makeActor('common'), { brawn: 'd20', finesse: 'd10' });
+        expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect)).toEqual(defaultModifiers);
+      });
+    });
+
+    describe("Xenotech (Across the Stars, Weapon Traits, p.79) - Snag until a Critical Success", () => {
+      const weaponEffectWithParent = { ...meleeWeaponEffect, flags: { essence20: { parentId: 'weapon1' } } };
+
+      function makeXenotechWeapon({ critted = false } = {}) {
+        return { system: { traits: ['xenotech'] }, getFlag: jest.fn(() => critted) };
+      }
+
+      test("imposes Snag on attacks with an un-critted Xenotech weapon", () => {
+        const actor = makeActor('common', [], { weapon: makeXenotechWeapon() });
+
+        expect(dice._getAutomaticCombatModifiers(actor, weaponEffectWithParent))
+          .toEqual({ ...defaultModifiers, snag: true, sources: [
+            {
+              "edge": false,
+              "id": "xenotech",
+              "label": "E20.WeaponTraitXenotech",
+              "shiftDown": 0,
+              "shiftUp": 0,
+              "snag": true,
+            },
+          ] });
+      });
+
+      test("doesn't apply once the weapon's own flag says it's already critted, or without the trait", () => {
+        const crittedActor = makeActor('common', [], { weapon: makeXenotechWeapon({ critted: true }) });
+        expect(dice._getAutomaticCombatModifiers(crittedActor, weaponEffectWithParent)).toEqual(defaultModifiers);
+
+        const otherWeaponActor = makeActor('common', [], { weapon: { system: { traits: [] }, getFlag: jest.fn(() => false) } });
+        expect(dice._getAutomaticCombatModifiers(otherWeaponActor, weaponEffectWithParent)).toEqual(defaultModifiers);
+      });
+    });
+
+    describe("Xenotech Components (Across the Stars, Tools of the Trade, p.79)", () => {
+      const weaponEffectWithParent = { ...meleeWeaponEffect, flags: { essence20: { parentId: 'weapon1' } } };
+
+      test("imposes ↓1 before the Component has ever succeeded", () => {
+        const weapon = { system: { traits: ['components'] }, getFlag: jest.fn(() => false) };
+        const actor = makeActor('common', [], { weapon });
+
+        expect(dice._getAutomaticCombatModifiers(actor, weaponEffectWithParent))
+          .toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
+            {
+              "edge": false,
+              "id": "components",
+              "label": "E20.WeaponTraitComponents",
+              "shiftDown": 1,
+              "shiftUp": 0,
+              "snag": false,
+            },
+          ] });
+      });
+
+      test("grants ↑1 once the Component's own flag says it has succeeded", () => {
+        const weapon = { system: { traits: ['components'] }, getFlag: jest.fn(() => true) };
+        const actor = makeActor('common', [], { weapon });
+
+        expect(dice._getAutomaticCombatModifiers(actor, weaponEffectWithParent))
+          .toEqual({ ...defaultModifiers, shiftUp: 1, sources: [
+            {
+              "edge": false,
+              "id": "components",
+              "label": "E20.WeaponTraitComponents",
+              "shiftDown": 0,
+              "shiftUp": 1,
+              "snag": false,
+            },
+          ] });
+      });
+
+      test("doesn't apply without the trait", () => {
+        const weapon = { system: { traits: [] }, getFlag: jest.fn(() => false) };
+        const actor = makeActor('common', [], { weapon });
+
+        expect(dice._getAutomaticCombatModifiers(actor, weaponEffectWithParent)).toEqual(defaultModifiers);
+      });
+    });
+
+    describe("Retrogen (Cobra Codex, New Weapon Effects and Traits, p.92)", () => {
+      const ENGRAFTED_MUTATION_ID = "Compendium.essence20.cobra_codex.Item.zuR9YJ2Wy956VGGy";
+      const weaponEffectWithParent = { ...rangedWeaponEffect, flags: { essence20: { parentId: 'weapon1' } } };
+      const retrogenWeapon = { system: { traits: ['retrogen'] }, getFlag: jest.fn(() => false) };
+
+      test("grants ↑1 against a target that plainly has Genetic Alterations", () => {
+        game.user.targets.first.mockReturnValue({ actor: makeActor('common', [], { perkIds: [ENGRAFTED_MUTATION_ID] }) });
+        const actor = makeActor('common', [], { weapon: retrogenWeapon });
+
+        expect(dice._getAutomaticCombatModifiers(actor, weaponEffectWithParent))
+          .toEqual({ ...defaultModifiers, shiftUp: 1, sources: [
+            { edge: false, id: 'retrogen', label: 'E20.WeaponTraitRetrogen', shiftDown: 0, shiftUp: 1, snag: false },
+          ] });
+      });
+
+      test("doesn't apply against an unmarked target, or without the trait", () => {
+        game.user.targets.first.mockReturnValue({ actor: makeActor('common') });
+        expect(dice._getAutomaticCombatModifiers(makeActor('common', [], { weapon: retrogenWeapon }), weaponEffectWithParent))
+          .toEqual(defaultModifiers);
+
+        game.user.targets.first.mockReturnValue({ actor: makeActor('common', [], { perkIds: [ENGRAFTED_MUTATION_ID] }) });
+        const plainWeapon = { system: { traits: [] }, getFlag: jest.fn(() => false) };
+        expect(dice._getAutomaticCombatModifiers(makeActor('common', [], { weapon: plainWeapon }), weaponEffectWithParent))
+          .toEqual(defaultModifiers);
       });
     });
 
@@ -39034,6 +39713,44 @@ describe("_getAutomaticCombatModifiers", () => {
 
         expect(dice._getAutomaticCombatModifiers(
           makeMenaceActor({ weaponSourceId: 'other' }), shotgunEffect({ value: 20, long: 80 }),
+        )).toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
+          {
+            "edge": false,
+            "id": "reach",
+            "label": "E20.CombatModifierReach",
+            "shiftDown": 1,
+            "shiftUp": 0,
+            "snag": false,
+          },
+        ] });
+      });
+    });
+
+    describe("Injection (Ferocious Fighters: Factions in Action Vol. 1, New Weapon Traits, p.93)", () => {
+      function makeInjectionActor({ hasTrait = true } = {}) {
+        const actor = makeRangedActor();
+        actor.items.get = jest.fn(() => ({ system: { traits: hasTrait ? ['injection'] : [] } }));
+        return actor;
+      }
+
+      function injectionEffect(range) {
+        return { ...rangedEffect(range), flags: { essence20: { parentId: 'weapon1' } } };
+      }
+
+      test("suppresses the Reach downshift for an Injection weapon", () => {
+        canvas.grid.measurePath.mockReturnValue({ distance: 3 }); // common reach = 5
+        game.user.targets.first.mockReturnValue(makeToken(makeActor('common')));
+
+        expect(dice._getAutomaticCombatModifiers(makeInjectionActor(), injectionEffect({ value: 20, long: 80 })))
+          .toEqual(defaultModifiers);
+      });
+
+      test("still applies without the trait", () => {
+        canvas.grid.measurePath.mockReturnValue({ distance: 3 });
+        game.user.targets.first.mockReturnValue(makeToken(makeActor('common')));
+
+        expect(dice._getAutomaticCombatModifiers(
+          makeInjectionActor({ hasTrait: false }), injectionEffect({ value: 20, long: 80 }),
         )).toEqual({ ...defaultModifiers, shiftDown: 1, sources: [
           {
             "edge": false,
@@ -46540,6 +47257,193 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
     });
   });
 
+  describe("Temperamental (Quartermaster's Guide to Gear p.35) - Fumble self-hit", () => {
+    class FumbleRoll {
+      constructor() {
+        this.dice = [new FakeDie(20, [{ result: 1, active: true }])];
+        this._total = 1;
+      }
+      async evaluate() {}
+      get total() {
+        return this._total;
+      }
+      async render() {
+        return '<div></div>';
+      }
+    }
+
+    function makeTemperamentalActor() {
+      return {
+        getRollData: () => ({}),
+        getFlag: jest.fn(() => undefined),
+        unsetFlag: jest.fn(),
+        setFlag: jest.fn(),
+        statuses: { has: jest.fn(() => false) },
+        items: [],
+        system: { health: { value: 10 }, immunities: {} },
+        update: jest.fn(),
+        toggleStatusEffect: jest.fn(),
+      };
+    }
+
+    afterEach(() => {
+      global.Roll = FakeRoll;
+      game.combat = null;
+    });
+
+    test("applies the weapon's own effect to the attacker on a Fumble", async () => {
+      global.Roll = FumbleRoll;
+      const actor = makeTemperamentalActor();
+      const checkContext = {
+        entries: [{ name: 'Target', targetUuid: 'Actor.t1', difficulty: 10, showDifficulty: true }],
+        damageValue: 2, damageType: 'sharp', effectName: 'Kinked Rifle Effect', alternateEffects: [],
+        temperamentalWeaponName: 'Kinked Rifle',
+      };
+
+      await freshDice._rollSkillHelper('d20 + 0', actor, 'flavor', false, checkContext, {});
+
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 8 });
+      expect(chatMessage.create).toHaveBeenCalledWith(expect.objectContaining({
+        content: expect.stringContaining('E20.TemperamentalSelfHit'),
+      }));
+    });
+
+    test("doesn't apply on a non-Fumble, or without the weapon/upgrade trait", async () => {
+      global.Roll = FumbleRoll;
+      const actor = makeTemperamentalActor();
+      const checkContext = {
+        entries: [{ name: 'Target', targetUuid: 'Actor.t1', difficulty: 10, showDifficulty: true }],
+        damageValue: 2, damageType: 'sharp', effectName: 'Rifle Effect', alternateEffects: [],
+        temperamentalWeaponName: null,
+      };
+
+      await freshDice._rollSkillHelper('d20 + 0', actor, 'flavor', false, checkContext, {});
+
+      expect(actor.update).not.toHaveBeenCalled();
+
+      global.Roll = FakeRoll;
+      FakeRoll.nextTotal = 20;
+      const noFumbleActor = makeTemperamentalActor();
+      await freshDice._rollSkillHelper('d20 + 0', noFumbleActor, 'flavor', false, {
+        ...checkContext, temperamentalWeaponName: 'Kinked Rifle',
+      }, {});
+      expect(noFumbleActor.update).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Xenotech (Across the Stars, Weapon Traits, p.79) - Critical Success flag", () => {
+    class CritRoll {
+      constructor() {
+        this.dice = [{ faces: 20, values: [15] }, { faces: 8, values: [8] }];
+        this._total = 23;
+      }
+      async evaluate() {}
+      get total() {
+        return this._total;
+      }
+      _evaluateTotal() {
+        return this._total;
+      }
+      async render() {
+        return '<div></div>';
+      }
+    }
+    class NonCritRoll extends CritRoll {
+      constructor() {
+        super();
+        this.dice = [{ faces: 20, values: [15] }, { faces: 8, values: [3] }];
+        this._total = 18;
+      }
+    }
+
+    function makeActor() {
+      return {
+        getRollData: () => ({}),
+        getFlag: jest.fn(() => undefined),
+        unsetFlag: jest.fn(),
+      };
+    }
+
+    afterEach(() => {
+      global.Roll = FakeRoll;
+    });
+
+    test("flags the weapon Item on a genuine Critical Success", async () => {
+      global.Roll = CritRoll;
+      const xenotechWeapon = { setFlag: jest.fn() };
+      const checkContext = {
+        entries: [{ name: 'Target', targetUuid: 'Actor.t1', difficulty: 10, showDifficulty: true }],
+        damageValue: 1, damageType: 'sharp', effectName: 'Xenotech Blade Effect', alternateEffects: [],
+        xenotechWeaponToMark: xenotechWeapon,
+      };
+
+      await freshDice._rollSkillHelper('d20 + 0', makeActor(), 'flavor', false, checkContext, {});
+
+      expect(xenotechWeapon.setFlag).toHaveBeenCalledWith('essence20', 'xenotechCritted', true);
+    });
+
+    test("doesn't flag on a non-Critical hit, or without a weapon to mark", async () => {
+      global.Roll = NonCritRoll;
+      const xenotechWeapon = { setFlag: jest.fn() };
+      const checkContext = {
+        entries: [{ name: 'Target', targetUuid: 'Actor.t1', difficulty: 10, showDifficulty: true }],
+        damageValue: 1, damageType: 'sharp', effectName: 'Xenotech Blade Effect', alternateEffects: [],
+        xenotechWeaponToMark: xenotechWeapon,
+      };
+
+      await freshDice._rollSkillHelper('d20 + 0', makeActor(), 'flavor', false, checkContext, {});
+      expect(xenotechWeapon.setFlag).not.toHaveBeenCalled();
+
+      global.Roll = CritRoll;
+      await freshDice._rollSkillHelper('d20 + 0', makeActor(), 'flavor', false, {
+        ...checkContext, xenotechWeaponToMark: null,
+      }, {});
+      expect(xenotechWeapon.setFlag).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Xenotech Components (Across the Stars, Tools of the Trade, p.79) - success flag", () => {
+    function makeActor() {
+      return { getRollData: () => ({}), getFlag: jest.fn(() => undefined), unsetFlag: jest.fn() };
+    }
+
+    test("flags the weapon on a plain success", async () => {
+      global.Roll = FakeRoll;
+      FakeRoll.nextTotal = 20;
+      const componentsWeapon = { getFlag: jest.fn(() => false), setFlag: jest.fn() };
+      const checkContext = {
+        entries: [{ name: 'Target', targetUuid: 'Actor.t1', difficulty: 10, showDifficulty: true }],
+        damageValue: 1, damageType: 'sharp', effectName: 'Rail Blaster Effect', alternateEffects: [],
+        componentsWeaponToMark: componentsWeapon,
+      };
+
+      await freshDice._rollSkillHelper('d20 + 0', makeActor(), 'flavor', false, checkContext, {});
+
+      expect(componentsWeapon.setFlag).toHaveBeenCalledWith('essence20', 'componentsSucceeded', true);
+    });
+
+    test("doesn't flag again once already succeeded, on a miss, or without a weapon to mark", async () => {
+      global.Roll = FakeRoll;
+      FakeRoll.nextTotal = 20;
+      const alreadySucceeded = { getFlag: jest.fn(() => true), setFlag: jest.fn() };
+      await freshDice._rollSkillHelper('d20 + 0', makeActor(), 'flavor', false, {
+        entries: [{ name: 'Target', targetUuid: 'Actor.t1', difficulty: 10, showDifficulty: true }],
+        damageValue: 1, damageType: 'sharp', effectName: 'Rail Blaster Effect', alternateEffects: [],
+        componentsWeaponToMark: alreadySucceeded,
+      }, {});
+      expect(alreadySucceeded.setFlag).not.toHaveBeenCalled();
+
+      FakeRoll.nextTotal = 5;
+      const missWeapon = { getFlag: jest.fn(() => false), setFlag: jest.fn() };
+      await freshDice._rollSkillHelper('d20 + 0', makeActor(), 'flavor', false, {
+        entries: [{ name: 'Target', targetUuid: 'Actor.t1', difficulty: 10, showDifficulty: true }],
+        damageValue: 1, damageType: 'sharp', effectName: 'Rail Blaster Effect', alternateEffects: [],
+        componentsWeaponToMark: missWeapon,
+      }, {});
+      expect(missWeapon.setFlag).not.toHaveBeenCalled();
+    });
+  });
+
   describe("No Fighting?! (Knights of Canterlot, Fighter Influence Hang-Up, p.16) - one-shot flag clearing", () => {
     function makeActor() {
       return { ...mockActor, getRollData: jest.fn(() => ({})), unsetFlag: jest.fn() };
@@ -50147,6 +51051,80 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
       await freshDice._rollSkillHelper('d20 + 0', makeBankedActor(false), 'flavor', false, grinderCheckContext, {});
 
       expect(target.toggleStatusEffect).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Space Vessel Conditions (Across the Stars p.25-26) - post-roll", () => {
+    // A vessel whose statuses toggle for real, enough for helpers/vessel-conditions.mjs to count.
+    function makeShip(statuses = []) {
+      const ship = {
+        uuid: 'Actor.ship', name: 'Ship', isOwner: true, statuses: new Set(statuses), effects: [], system: { health: { max: 10 } },
+        getActiveTokens: () => [],
+      };
+      ship.effects = statuses.map(id => ({ statuses: new Set([id]), flags: {} }));
+      ship.toggleStatusEffect = jest.fn(async (id, { active }) => {
+        if (active) {
+          ship.statuses.add(id);
+          ship.effects.push({ statuses: new Set([id]), flags: {} });
+        } else {
+          ship.statuses.delete(id);
+          ship.effects = ship.effects.filter(effect => !effect.statuses.has(id));
+        }
+      });
+      return ship;
+    }
+
+    const critContext = {
+      entries: [{ name: 'Ship', targetUuid: 'Actor.ship', difficulty: 10, showDifficulty: true }],
+      damageValue: 2, damageType: 'laser', effectName: null, alternateEffects: [],
+      targetVesselSystemAttempt: true,
+    };
+    const originalApplications = foundry.applications;
+
+    beforeEach(() => {
+      fromUuid.mockReset();
+      foundry.applications = {
+        ...originalApplications,
+        api: { ...(originalApplications?.api ?? {}), DialogV2: { wait: jest.fn(async () => 'sputtering') } },
+      };
+    });
+
+    afterEach(() => {
+      foundry.applications = originalApplications;
+    });
+
+    test("a Critical Success on a declared targeted-system attack imposes the chosen Condition", async () => {
+      global.Roll = FakeRoll;
+      FakeRoll.nextTotal = 20;
+      const ship = makeShip();
+      fromUuid.mockResolvedValue(ship);
+
+      await freshDice._rollSkillHelper('d20 + 0', makeBankedActor(false), 'flavor', false, critContext, {});
+      expect(ship.statuses.has('sputtering')).toBe(true);
+    });
+
+    test("an ordinary hit imposes nothing", async () => {
+      global.Roll = FakeRoll;
+      FakeRoll.nextTotal = 15;
+      const ship = makeShip();
+      fromUuid.mockResolvedValue(ship);
+
+      await freshDice._rollSkillHelper('d20 + 0', makeBankedActor(false), 'flavor', false, critContext, {});
+      expect(ship.toggleStatusEffect).not.toHaveBeenCalled();
+    });
+
+    test("a successful repair roll clears the chosen Condition", async () => {
+      global.Roll = FakeRoll;
+      FakeRoll.nextTotal = 13;
+      const ship = makeShip(['leaking']);
+      fromUuid.mockResolvedValue(ship);
+
+      await freshDice._rollSkillHelper('d20 + 0', makeBankedActor(false), 'flavor', false, {
+        entries: [{ name: 'Repair', targetUuid: null, difficulty: 12, showDifficulty: true }],
+        damageValue: null, damageType: null, effectName: null, alternateEffects: [],
+        repairVesselUuid: 'Actor.ship', repairVesselCondition: 'leaking',
+      }, {});
+      expect(ship.statuses.has('leaking')).toBe(false);
     });
   });
 
@@ -55864,6 +56842,223 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
       await freshDice._rollSkillHelper('d20 + 0', makeBankedActor(false), 'flavor', false, checkContext, {});
 
       expect(targetActor.toggleStatusEffect).not.toHaveBeenCalled();
+    });
+  });
+});
+
+/* Trait rules pass B - environment subsystem + Inertial/Aquatic/Amphibious/Enviro-Sealed. See
+   helpers/environment.mjs for getEnvironment()/getSceneEnvironment()'s own unit tests - these
+   exercise dice.mjs's own _getAutomaticCombatModifiers wiring on top of that. */
+describe("Environment-reading weapon/armor traits (Across the Stars p.24-25/79/85, GI Joe CRB p.147/212)", () => {
+  // Several unrelated target-gated checks elsewhere in _getAutomaticCombatModifiers read
+  // game.user.targets.first() unconditionally; other describe blocks in this file leave it
+  // mocked to return a real target without restoring it afterward, so this insulates these
+  // tests from that ambient state regardless of run order.
+  beforeEach(() => {
+    game.user.targets.first = jest.fn(() => undefined);
+  });
+
+  function makeEnvironmentActor({ environment = 'normal', swimTotal = 0 } = {}) {
+    return {
+      statuses: new Set(),
+      items: [],
+      getFlag: jest.fn(() => undefined),
+      system: {
+        movement: { swim: { total: swimTotal } },
+      },
+      documentName: 'Actor',
+      getActiveTokens: () => [{
+        parent: { getFlag: (scope, key) => (scope == 'essence20' && key == 'environment' ? environment : undefined) },
+        regions: [],
+      }],
+    };
+  }
+
+  function makeWeaponEffect({ traits = [], style = 'ranged', damageType = 'blunt' } = {}) {
+    return {
+      type: 'weaponEffect',
+      flags: { essence20: { parentId: 'weapon1' } },
+      system: { classification: { style }, damageType },
+      _weaponTraits: traits,
+    };
+  }
+
+  function attachWeapon(actor, item) {
+    const items = [];
+    items.get = (id) => (id == 'weapon1' ? { system: { traits: item._weaponTraits } } : null);
+    actor.items = items;
+    return item;
+  }
+
+  describe("Inertial (weapon trait, p.79)", () => {
+    test("ignores the Low Gravity Snag on a Ballistic weapon", () => {
+      const actor = makeEnvironmentActor({ environment: 'lowGravity' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: ['inertial', 'ballistic'] }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(false);
+    });
+
+    test("ignores the Zero-G Snag", () => {
+      const actor = makeEnvironmentActor({ environment: 'zeroGravity' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: ['inertial'] }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(false);
+    });
+
+    test("ignores the Vacuum Snag", () => {
+      const actor = makeEnvironmentActor({ environment: 'vacuum' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: ['inertial'] }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(false);
+    });
+  });
+
+  describe("Low Gravity / Zero-G / Vacuum penalties (p.24-25) on a non-Inertial weapon", () => {
+    test("Low Gravity Snags a Ballistic ranged attack", () => {
+      const actor = makeEnvironmentActor({ environment: 'lowGravity' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: ['ballistic'] }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(true);
+    });
+
+    test("Low Gravity does nothing to a non-Ballistic ranged attack", () => {
+      const actor = makeEnvironmentActor({ environment: 'lowGravity' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: [] }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(false);
+    });
+
+    test("Zero-G Snags a ranged attack that isn't Energy or Laser", () => {
+      const actor = makeEnvironmentActor({ environment: 'zeroGravity' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: [] }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(true);
+    });
+
+    test("Zero-G leaves an Energy-trait weapon alone", () => {
+      const actor = makeEnvironmentActor({ environment: 'zeroGravity' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: ['energy'] }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(false);
+    });
+
+    test("Zero-G leaves a Laser damageType weapon alone", () => {
+      const actor = makeEnvironmentActor({ environment: 'zeroGravity' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: [], damageType: 'laser' }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(false);
+    });
+
+    test("Vacuum Snags any ranged attack", () => {
+      const actor = makeEnvironmentActor({ environment: 'vacuum' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: [] }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(true);
+    });
+
+    test("none of these apply to a melee attack", () => {
+      const actor = makeEnvironmentActor({ environment: 'vacuum' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: [], style: 'melee' }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'might').snag).toBe(false);
+    });
+
+    test("none of these apply in a normal environment", () => {
+      const actor = makeEnvironmentActor({ environment: 'normal' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: [] }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(false);
+    });
+  });
+
+  describe("Gravity, Impaired environments and Unstable (Across the Stars p.23-26)", () => {
+    test("High Gravity ↓2, Low Gravity ↑1 and Zero-G ↑2 on Athletics and Brawn only", () => {
+      const high = dice._getAutomaticCombatModifiers(makeEnvironmentActor({ environment: 'highGravity' }), null, 'strength', 'athletics');
+      expect(high.shiftDown).toBe(2);
+      expect(high.sources).toEqual(expect.arrayContaining([expect.objectContaining({ id: 'gravitySkill', shiftDown: 2 })]));
+      expect(dice._getAutomaticCombatModifiers(makeEnvironmentActor({ environment: 'lowGravity' }), null, 'strength', 'brawn').shiftUp).toBe(1);
+      expect(dice._getAutomaticCombatModifiers(makeEnvironmentActor({ environment: 'zeroGravity' }), null, 'strength', 'athletics').shiftUp).toBe(2);
+      expect(dice._getAutomaticCombatModifiers(makeEnvironmentActor({ environment: 'zeroGravity' }), null, 'strength', 'might').shiftUp).toBe(0);
+    });
+
+    test("Extreme Temperature and Thick/Thin Atmosphere impose Impaired's ↓1 as their own source", () => {
+      for (const environment of ['extremeHeat', 'extremeCold', 'thickAtmosphere', 'thinAtmosphere']) {
+        const mods = dice._getAutomaticCombatModifiers(makeEnvironmentActor({ environment }), null, 'smarts', 'alertness');
+        expect(mods.shiftDown).toBe(1);
+        expect(mods.sources).toEqual(expect.arrayContaining([expect.objectContaining({ id: 'environmentImpaired' })]));
+      }
+
+      expect(dice._getAutomaticCombatModifiers(makeEnvironmentActor({ environment: 'vacuum' }), null, 'smarts', 'alertness').shiftDown).toBe(0);
+    });
+
+    test("no second ↓1 when the actor already has the Impaired status, and none when protected", () => {
+      const impaired = makeEnvironmentActor({ environment: 'thinAtmosphere' });
+      impaired.statuses = new Set(['impaired']);
+      expect(dice._getAutomaticCombatModifiers(impaired, null, 'smarts', 'alertness').shiftDown).toBe(1);
+
+      const sealed = makeEnvironmentActor({ environment: 'thinAtmosphere' });
+      sealed.items = [{ type: 'armor', system: { equipped: true, traits: ['enviroSealed'] } }];
+      expect(dice._getAutomaticCombatModifiers(sealed, null, 'smarts', 'alertness').shiftDown).toBe(0);
+    });
+
+    test("Unstable: ↓1, then ↓2, on a vehicle's weapon attacks only", () => {
+      function unstableVehicle(stacks) {
+        const actor = makeEnvironmentActor();
+        actor.type = 'vehicle';
+        actor.statuses = new Set(['unstable']);
+        actor.effects = [{ statuses: new Set(['unstable']), flags: { essence20: { stacks } } }];
+        return actor;
+      }
+
+      const one = unstableVehicle(1);
+      const item = attachWeapon(one, makeWeaponEffect({ traits: ['energy'], damageType: 'laser' }));
+      expect(dice._getAutomaticCombatModifiers(one, item, 'speed', 'targeting').shiftDown).toBe(1);
+
+      const two = unstableVehicle(2);
+      expect(dice._getAutomaticCombatModifiers(two, attachWeapon(two, makeWeaponEffect({ traits: ['energy'] })), 'speed', 'targeting').shiftDown).toBe(2);
+      expect(dice._getAutomaticCombatModifiers(two, null, 'speed', 'driving').shiftDown).toBe(0);
+    });
+  });
+
+  describe("Underwater Combat (GI Joe CRB p.212) and Aquatic/Amphibious (p.147)", () => {
+    test("Snags a melee attack without Aquatic Movement, on an ordinary weapon", () => {
+      const actor = makeEnvironmentActor({ environment: 'underwater', swimTotal: 0 });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: [], style: 'melee' }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'might').snag).toBe(true);
+    });
+
+    test("doesn't Snag a melee attack once the actor has Aquatic Movement", () => {
+      const actor = makeEnvironmentActor({ environment: 'underwater', swimTotal: 30 });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: [], style: 'melee' }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'might').snag).toBe(false);
+    });
+
+    test("Snags a ranged attack with an ordinary weapon regardless of Aquatic Movement", () => {
+      const actor = makeEnvironmentActor({ environment: 'underwater', swimTotal: 30 });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: [] }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(true);
+    });
+
+    test("Amphibious waives both the melee and ranged underwater Snag", () => {
+      const actor = makeEnvironmentActor({ environment: 'underwater', swimTotal: 0 });
+      const meleeItem = attachWeapon(actor, makeWeaponEffect({ traits: ['amphibious'], style: 'melee' }));
+      expect(dice._getAutomaticCombatModifiers(actor, meleeItem, 'strength', 'might').snag).toBe(false);
+
+      const rangedItem = attachWeapon(actor, makeWeaponEffect({ traits: ['amphibious'], style: 'ranged' }));
+      expect(dice._getAutomaticCombatModifiers(actor, rangedItem, 'strength', 'targeting').snag).toBe(false);
+    });
+
+    test("Aquatic waives the underwater Snag too", () => {
+      const actor = makeEnvironmentActor({ environment: 'underwater', swimTotal: 0 });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: ['aquatic'], style: 'melee' }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'might').snag).toBe(false);
+    });
+
+    test("Aquatic instead costs ↓3 on land", () => {
+      const actor = makeEnvironmentActor({ environment: 'normal' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: ['aquatic'], style: 'melee' }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'might').shiftDown).toBe(3);
+    });
+
+    test("Amphibious never suffers the on-land ↓3", () => {
+      const actor = makeEnvironmentActor({ environment: 'normal' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: ['amphibious'], style: 'melee' }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'might').shiftDown).toBe(0);
+    });
+
+    test("Fire damage underwater suffers an automatic ↓2", () => {
+      const actor = makeEnvironmentActor({ environment: 'underwater', swimTotal: 30 });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: ['amphibious'], damageType: 'fire' }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').shiftDown).toBe(2);
     });
   });
 });

@@ -84,17 +84,18 @@ export function getBlindsightRange(actor) {
 }
 
 /**
- * The detectionModes array to write onto a token, preserving any entry the GM or another module
- * put there and replacing only this system's own.
- * @param {Array<Object>} existing   The token's current detectionModes.
+ * The detectionModes update to write onto a token. Foundry v14 stores detectionModes as an object
+ * keyed by mode id (a TypedObjectField), and an update merges into it - so only this system's own
+ * key is set or deleted, and any entry the GM or another module put there is left alone.
+ * @param {Object} existing   The token's current detectionModes.
  * @param {Number} range
- * @returns {Array<Object>}
+ * @returns {Object}          An update for the detectionModes field (possibly empty).
  */
 export function buildDetectionModes(existing, range) {
-  const others = (existing ?? []).filter(mode => mode.id != BLINDSIGHT_DETECTION_MODE_ID);
-  if (range <= 0) {
-    return others;
+  if (range > 0) {
+    return { [BLINDSIGHT_DETECTION_MODE_ID]: { enabled: true, range } };
   }
 
-  return [...others, { id: BLINDSIGHT_DETECTION_MODE_ID, enabled: true, range }];
+  // v14's ForcedDeletion operator (the global `_del`) removes the key during the update merge.
+  return existing?.[BLINDSIGHT_DETECTION_MODE_ID] ? { [BLINDSIGHT_DETECTION_MODE_ID]: globalThis._del } : {};
 }

@@ -49,40 +49,29 @@ describe("getBlindsightRange", () => {
 });
 
 describe("buildDetectionModes", () => {
-  test("adds this system's own entry when a range is granted", () => {
-    expect(buildDetectionModes([], 10)).toEqual([
-      { id: BLINDSIGHT_DETECTION_MODE_ID, enabled: true, range: 10 },
-    ]);
+  const DELETE = Symbol('ForcedDeletion');
+
+  beforeEach(() => {
+    globalThis._del = DELETE;
   });
 
-  test("leaves other modes alone — a GM's or another module's entries survive", () => {
-    const existing = [{ id: 'feelTremor', enabled: true, range: 30 }];
-
-    expect(buildDetectionModes(existing, 10)).toEqual([
-      { id: 'feelTremor', enabled: true, range: 30 },
-      { id: BLINDSIGHT_DETECTION_MODE_ID, enabled: true, range: 10 },
-    ]);
+  afterEach(() => {
+    delete globalThis._del;
   });
 
-  test("replaces a stale entry of its own rather than stacking a second", () => {
-    const existing = [{ id: BLINDSIGHT_DETECTION_MODE_ID, enabled: true, range: 5 }];
-
-    expect(buildDetectionModes(existing, 10)).toEqual([
-      { id: BLINDSIGHT_DETECTION_MODE_ID, enabled: true, range: 10 },
-    ]);
+  test("sets this system's own entry when a range is granted, touching no other key", () => {
+    const existing = { feelTremor: { enabled: true, range: 30 } };
+    expect(buildDetectionModes(existing, 10)).toEqual({ [BLINDSIGHT_DETECTION_MODE_ID]: { enabled: true, range: 10 } });
   });
 
-  test("removes its entry entirely once the grant is gone", () => {
-    const existing = [
-      { id: 'feelTremor', enabled: true, range: 30 },
-      { id: BLINDSIGHT_DETECTION_MODE_ID, enabled: true, range: 10 },
-    ];
-
-    expect(buildDetectionModes(existing, 0)).toEqual([{ id: 'feelTremor', enabled: true, range: 30 }]);
+  test("deletes its own entry once the grant is gone", () => {
+    const existing = { feelTremor: { enabled: true, range: 30 }, [BLINDSIGHT_DETECTION_MODE_ID]: { enabled: true, range: 10 } };
+    expect(buildDetectionModes(existing, 0)).toEqual({ [BLINDSIGHT_DETECTION_MODE_ID]: DELETE });
   });
 
-  test("tolerates a token with no detectionModes at all", () => {
-    expect(buildDetectionModes(undefined, 0)).toEqual([]);
+  test("writes nothing when there is no grant and no entry to remove", () => {
+    expect(buildDetectionModes({ feelTremor: { enabled: true, range: 30 } }, 0)).toEqual({});
+    expect(buildDetectionModes(undefined, 0)).toEqual({});
   });
 });
 

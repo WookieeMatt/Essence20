@@ -3,6 +3,7 @@ import { E20 } from "../../helpers/config.mjs";
 import {
   makeBool,
   makeInt,
+  makeStrArray,
   makeStrArrayWithChoices,
   makeStrWithChoices,
 } from "../generic-makers.mjs";
@@ -44,6 +45,12 @@ export class ArmorItemData extends foundry.abstract.TypeDataModel {
       // would wrongly stack its Toughness/Evasion bonus on top of ordinary defenses, which RAW
       // never intends since the suit isn't real outside the Morphed state.
       isPowerArmor: makeBool(false),
+      // Modular (Across the Stars, Armor Traits, p.85): "The number listed with this trait is the
+      // allowance for attaching Medium or smaller weapons" - the printed "(X)", same magnitude-
+      // field shape as bulwarkHealthBonus above. modularWeaponIds holds the embedded weapon ids
+      // socketed into it; see helpers/modular-armor.mjs for how they gain Integrated.
+      modularAllowance: makeInt(0),
+      modularWeaponIds: makeStrArray(),
       traits: makeStrArrayWithChoices(Object.keys(E20.armorTraits)),
       totalBonusEvasion: makeInt(0),
       totalBonusToughness: makeInt(0),

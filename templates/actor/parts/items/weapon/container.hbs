@@ -31,6 +31,32 @@
   {{/inline}}
 
   {{#*inline "extra-controls" item}}
+    {{!-- Obfuscated (Quartermaster's Guide to Gear, p.33) - a reminder only; the DIF 25
+         Alertness Skill Test belongs to whoever is trying to notice the weapon. --}}
+    {{#inArray item.system.traits "obfuscated"}}
+      <span data-tooltip="{{localize 'E20.WeaponTraitObfuscatedHint'}}"><i class="fas fa-eye-slash"></i></span>
+    {{/inArray}}
+    {{!-- Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/mounted.mjs's own
+         doc comment. A Standard action to deploy, a Free action to fold back down; the weapon
+         can't be fired (item.mjs#roll) until this has been done. --}}
+    {{#inArray item.system.traits "mounted"}}
+      <a data-action="mountedSetupToggle" data-item-id="{{item._id}}" data-tooltip="{{#if item.flags.essence20.mountedSetUp}}{{localize 'E20.MountedPickUp'}}{{else}}{{localize 'E20.MountedSetUp'}}{{/if}}">
+        {{#if item.flags.essence20.mountedSetUp}}
+          <i class="fas fa-person-carry-box" data-item-id="{{item._id}}"></i>
+        {{else}}
+          <i class="fas fa-screwdriver-wrench" data-item-id="{{item._id}}"></i>
+        {{/if}}
+      </a>
+    {{/inArray}}
+    {{!-- Mythically Modular (Through the Shattered Grid p.116) - switch to this form as a Free
+         action; see helpers/mythically-modular.mjs. --}}
+    {{#inArray item.system.itemAndUpgradeTraits "mythicallyModular"}}
+      {{#unless item.system.equipped}}
+      <a data-action="mythicSwitchForm" data-item-id="{{item._id}}" data-tooltip="{{localize 'E20.MythicallyModularSwitch'}}">
+        <i class="fas fa-arrows-rotate" data-item-id="{{item._id}}"></i>
+      </a>
+      {{/unless}}
+    {{/inArray}}
     <a data-action="itemCreate" data-type="weaponEffect" data-parent-id="{{item._id}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }} {{localize 'E20.WeaponEffect'}}">
       <i class="fas fa-burst" data-type="weaponEffect" data-parent-id="{{item._id}}" ></i>
     </a>

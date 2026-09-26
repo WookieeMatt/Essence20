@@ -591,6 +591,9 @@ export async function spend(actor, actionType, { source = null, bypass = false }
   }
 
   await writeLedger(document, ledger);
+  // For anything reacting to an action being taken (e.g. helpers/exo-frame.mjs's Driving test
+  // prompt). Optional-chained so unit tests without a Hooks global are unaffected.
+  globalThis.Hooks?.callAll?.('essence20.actionSpent', actor, actionType, check.cost);
   return { ...check, ok: true, spendId, blocked: false };
 }
 

@@ -24,7 +24,9 @@
       "exoFrame",
       "modular"
     ],
-    "upgradeTraits": []
+    "upgradeTraits": [],
+    "modularAllowance": 2,
+    "bulwarkHealthBonus": 2
   },
   "effects": [
     {
