@@ -2,6 +2,7 @@
 const { ContextMenu } = foundry.applications.ux;
 
 import { applyThemeClass } from "../settings.js";
+import { setGearNanomitePower } from "../helpers/nanomite-gear.mjs";
 import { serializeFormSubmits } from "../apps/serialize-form-submits.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { getModularCandidates, normalizeModularWeaponIds } from "../helpers/modular-armor.mjs";
@@ -88,6 +89,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       deleteItem: this.#deleteItem,
       traitSelector: this.#traitSelector,
       rollExoFrameTest: this.#rollExoFrameTest,
+      clearGearNanomite: this.#clearGearNanomite,
       viewItem: this.#viewItem,
       editDescription: this.#editDescription,
       startSheetTour: this.#onStartSheetTour,
@@ -247,12 +249,22 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     return context;
   }
 
+  /**
+   * Unlinks a gear item's nanomite Power - see helpers/nanomite-gear.mjs.
+   */
+  static async #clearGearNanomite() {
+    await this.document.update({ 'system.nanomite.powerUuid': null, 'system.nanomite.spent': 0 });
+  }
+
   async _onDrop(event) {
     const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
     const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.document;
     if (droppedItem.type == "base") {
       onDropActiveEffect(droppedItem, targetItem);
+    } else if (targetItem.type == "gear" && droppedItem.type == "power") {
+      // Nanomite equipment - see helpers/nanomite-gear.mjs.
+      await setGearNanomitePower(targetItem, droppedItem);
     } else {
       await setEntryAndAddItem(droppedItem, targetItem);
     }

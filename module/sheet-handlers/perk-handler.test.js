@@ -5,7 +5,7 @@ import {
   grantDutyOfTheSilverArmorTraining, grantEmtCrashCourse, grantForTheSyndicateMentor,
   grantIntoTheVoidDigDeep, grantJackhammerWeapon, grantMetamorphosis, grantNanoflageMimic,
   grantNaturalScienceQualification, grantPerkEquipmentMap, grantPetCompanionAnimalPet,
-  grantsAnyGeneralPerk, grantShadowSaber, grantSynchronizationStayInFormation,
+  grantsAnyGeneralPerk, grantShadowSaber, nanoInfusionAvailability, nanomitePowerChoices, grantSynchronizationStayInFormation,
   grantYoungButExperiencedVeteran, onMultiSkillPerkDrop, onPerkDelete, onPerkDrop,
   setPerkAdvancesName, setPerkValues, setRoleVatiantPerks,
 } from "./perk-handler.mjs";
@@ -1598,6 +1598,65 @@ describe("Sorcery / Cost of Sorcery (Finster's Monster-Matic Cookbook, p.271)", 
     items.get = jest.fn(() => null);
     const actor = { update: jest.fn(), items, system: { level: 6 } };
     await expect(onPerkDelete(actor, makePerk())).resolves.not.toThrow();
+  });
+});
+
+describe("Basal / Intricate / Profound Nano Infusion - a nanomite power by Availability", () => {
+  const QGTG = "Compendium.essence20.quartermasters_guide_to_gear.Item.";
+  const BASAL_ID = `${QGTG}CUhsxOCugyHcEIRx`;
+  const INTRICATE_ID = `${QGTG}bbA0ayzoaeW6G6R5`;
+  const PROFOUND_ID = `${QGTG}su1NVWhDH3Zk7ma5`;
+
+  test("each Perk grants its own Availability, recognised by uuid or by source", () => {
+    expect(nanoInfusionAvailability({}, BASAL_ID)).toBe('standard');
+    expect(nanoInfusionAvailability({}, INTRICATE_ID)).toBe('limited');
+    expect(nanoInfusionAvailability({ _stats: { compendiumSource: PROFOUND_ID } }, 'Actor.a.Item.b')).toBe('restricted');
+    expect(nanoInfusionAvailability({}, 'Compendium.essence20.pr_crb.Item.other')).toBeNull();
+  });
+
+  describe("with compendium packs", () => {
+    const originalPacks = game.packs;
+
+    beforeEach(() => {
+      const nanomite = (id, name, availability, extra = {}) =>
+        ({ _id: id, name, type: 'power', system: { type: 'nanomite', availability, source: { book: 'QGtG' }, ...extra } });
+      const packs = [{
+        documentName: 'Item',
+        metadata: { id: 'essence20.quartermasters_guide_to_gear', label: 'QGtG' },
+        folder: { name: 'GI Joe' },
+        enabled: true,
+        getIndex: jest.fn(async () => [
+          nanomite('rm', 'Repair Machine', 'limited'),
+          nanomite('pr', 'Protection', 'limited'),
+          nanomite('sw', 'Swiftness', 'restricted'),
+          nanomite('rp', 'Reprogrammable', 'standard', { selectionLimit: 10 }),
+          nanomite('cw', 'Create Weapon', 'standard'),
+          { _id: 'gp', name: 'Morph Boost', type: 'power', system: { type: 'grid', availability: 'limited' } },
+        ]),
+      }];
+      packs.get = (id) => packs.find(pack => pack.metadata.id === id);
+      global.game.packs = packs;
+      global.game.settings.get.mockImplementation(() => 'roll');
+    });
+
+    afterEach(() => {
+      global.game.packs = originalPacks;
+    });
+
+    test("offers only nanomite powers of that Availability, not Grid Powers", async () => {
+      const choices = await nanomitePowerChoices({ items: [] }, 'limited');
+      expect(Object.values(choices).map(choice => choice.label).sort()).toEqual(['Protection', 'Repair Machine']);
+      expect(choices[`${QGTG}rm`]).toMatchObject({ uuid: `${QGTG}rm`, type: 'perks', group: 'GI Joe', detail: 'QGtG' });
+    });
+
+    test("leaves out a power already held, unless it may be taken again", async () => {
+      const actor = { items: [
+        { _stats: { compendiumSource: `${QGTG}cw` } },
+        { _stats: { compendiumSource: `${QGTG}rp` } },
+      ] };
+      const choices = await nanomitePowerChoices(actor, 'standard');
+      expect(Object.values(choices).map(choice => choice.label)).toEqual(['Reprogrammable']);
+    });
   });
 });
 

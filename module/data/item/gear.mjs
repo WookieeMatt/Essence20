@@ -15,6 +15,13 @@ export class GearItemData extends foundry.abstract.TypeDataModel {
       equipped: makeBool(true),
       gearType: makeStrWithChoices(Object.keys(E20.gearTypes), 'clothes'),
       quantity: makeInt(1),
+      // Nanomite equipment (Quartermaster's Guide to Gear p.92) - one linked nanomite Power and its
+      // uses, 1 for the usual single-use gear. See helpers/nanomite-gear.mjs.
+      nanomite: new fields.SchemaField({
+        powerUuid: new fields.StringField({ required: false, nullable: true, blank: true, initial: null }),
+        uses: makeInt(1),
+        spent: makeInt(0),
+      }),
       blindsight: new fields.SchemaField({
         enabled: makeBool(false),
         range: makeInt(0),

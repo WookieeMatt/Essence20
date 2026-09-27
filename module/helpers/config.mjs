@@ -873,6 +873,8 @@ preLocalize("actionEconomyModes");
 
 // Options for Intervals
 E20.usesInterval = {
+  // Per day: given back by a Rest - see helpers/nanomite-uses.mjs.
+  perDay: "E20.UsesIntervalDay",
   perScene: "E20.UsesIntervalScene",
   perTurn: "E20.UsesIntervalTurn",
   special: "E20.UsesIntervalSpecial",
@@ -1295,6 +1297,9 @@ preLocalize("gearTypes");
 // Power types
 E20.powerTypes = {
   grid: "E20.PowerSourceGrid",
+  // G.I. Joe nanomite powers (Quartermaster's Guide to Gear p.92) - uses per day, no Power points.
+  // See helpers/nanomite-uses.mjs.
+  nanomite: "E20.PowerSourceNanomite",
   sorcerous: "E20.PowerSourceSorcerous",
   threat: "E20.PowerSourceThreat",
 };

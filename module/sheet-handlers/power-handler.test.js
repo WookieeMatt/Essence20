@@ -117,6 +117,24 @@ describe("powerCost", () => {
     expect(ground.disabled).toBe(false);
   });
 
+  // G.I. Joe nanomite powers: no Power points, two uses a day (helpers/nanomite-uses.mjs).
+  test("a nanomite power spends a daily use, never Power points", async () => {
+    const actor = makeActor(5);
+    actor.items = [];
+    const power = {
+      name: 'Repair Machine',
+      flags: {},
+      effects: makeEffectsCollection([]),
+      system: { type: 'nanomite', usesPer: 2, usesInterval: 'perDay', usesSpent: 0, powerCost: null },
+      update: jest.fn(),
+    };
+
+    await powerCost(actor, power);
+
+    expect(power.update).toHaveBeenCalledWith({ 'system.usesSpent': 1 });
+    expect(actor.update).not.toHaveBeenCalled();
+  });
+
   // A Zord or vehicle has no Power pool; used through a chosen crew member, the member pays.
   test("a crew member pays for a Power on a Zord or vehicle", async () => {
     const zord = { name: 'Zord', update: jest.fn(), getFlag: jest.fn(), setFlag: jest.fn(), system: {} };

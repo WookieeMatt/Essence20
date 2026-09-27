@@ -38,6 +38,12 @@ const SUBTYPE_FILTERS = {
     labelKey: "E20.CompendiumBrowserFilterPerkType",
     choices: () => CONFIG.E20.perkTypes,
   },
+  // Grid (Power Rangers), Nanomite (G.I. Joe), Sorcerous, Threat - they spend different things.
+  power: {
+    field: "type",
+    labelKey: "E20.CompendiumBrowserFilterPowerType",
+    choices: () => CONFIG.E20.powerTypes,
+  },
 };
 
 /**
@@ -85,6 +91,17 @@ const FACETS = {
       gear: () => CONFIG.E20.gearTypes,
     },
     values: entry => (entry.gearType ? [entry.gearType] : []),
+  },
+  /* A nanomite power's printed Availability (Standard, Limited, Restricted) - what the Basal and
+     Intricate Nano Infusion Perks pick by. Single-valued, so checking several means "any of them". */
+  availability: {
+    labelKey: "E20.CompendiumBrowserFilterAvailability",
+    hintKey: "E20.CompendiumBrowserFilterAvailabilityHint",
+    match: "any",
+    types: {
+      power: () => CONFIG.E20.availabilities,
+    },
+    values: entry => (entry.availability ? [entry.availability] : []),
   },
 };
 
@@ -450,7 +467,7 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
 
     for (const pack of packs) {
       const index = await pack.getIndex({
-        fields: ["img", "type", "system.source.book", "system.source.page", "system.traits", "system.gearType", ...subtypeFields],
+        fields: ["img", "type", "system.source.book", "system.source.page", "system.traits", "system.gearType", "system.availability", ...subtypeFields],
       });
 
       for (const entry of index.values()) {
@@ -470,6 +487,7 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
              to browse by anyway: you are looking for what the book prints. */
           traits: FACETS.traits.types[entry.type] ? (entry.system?.traits ?? []) : null,
           gearType: FACETS.gearType.types[entry.type] ? (entry.system?.gearType ?? null) : null,
+          availability: FACETS.availability.types[entry.type] ? (entry.system?.availability ?? null) : null,
           book: pack.metadata.label,
           bookId: pack.metadata.id,
           page: entry.system?.source?.page ?? null,

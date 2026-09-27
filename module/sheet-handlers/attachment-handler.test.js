@@ -120,6 +120,12 @@ describe("createEntry", () => {
     expect(entry.aimShiftBonus).toBe(1);
   });
 
+  test("a Perk can list a Power as well as a Perk (the Nano Infusion Perks' chosen nanomite power)", () => {
+    const power = { uuid: "Item.p", img: "p.svg", name: "Repair Machine", type: "power", system: { description: "" } };
+    expect(createEntry(power, { type: "perk" })).toMatchObject({ uuid: "Item.p", type: "power", role: null });
+    expect(createEntry({ type: "weapon", system: {} }, { type: "perk" })).toBeNull();
+  });
+
   test("weapon + weaponEffect carries over combat stats", () => {
     const dropped = {
       uuid: "Item.abc", img: "icon.svg", name: "Test", type: "weaponEffect",

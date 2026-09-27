@@ -1,6 +1,7 @@
 import PowerCostSelector from "../apps/power-cost-selector.mjs";
 import { parseId } from "../helpers/utils.mjs";
 import { onPowerUse } from "../helpers/power-use.mjs";
+import { spendDailyUse } from "../helpers/nanomite-uses.mjs";
 
 /**
  * Handles dropping a Power on to an Actor
@@ -63,6 +64,16 @@ export async function powerCost(actor, power, payer = actor) {
   // tracking of that same budget. Dispatches straight to the Power's own effect with nothing spent.
   if (powerType == "sorcerous") {
     await onPowerUse(actor, power, 0);
+    return;
+  }
+
+  // G.I. Joe nanomite powers cost no Power points - they're limited to uses per day instead. See
+  // helpers/nanomite-uses.mjs.
+  if (power.system.type == "nanomite") {
+    if (await spendDailyUse(actor, power)) {
+      await onPowerUse(actor, power, 0);
+    }
+
     return;
   }
 

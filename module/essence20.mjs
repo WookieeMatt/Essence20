@@ -81,6 +81,8 @@ import {
 import { handleCreateRoughTerrainRequest, makeEssence20TerrainData } from "./helpers/rough-terrain.mjs";
 import { applyEnvironmentAtSceneEnd } from "./helpers/environment-hazards.mjs";
 import { wireEnvironmentLevelSelects } from "./helpers/environment-levels.mjs";
+import { formatDailyUses } from "./helpers/nanomite-uses.mjs";
+import { getGearNanomitePowerName, getGearNanomiteUsesLeft, isGearNanomiteInert } from "./helpers/nanomite-gear.mjs";
 import {
   decorateTokenHudVesselConditions, handleVesselConditionStacksRequest, isVesselCondition,
   shouldBlockZordVesselCondition, syncVesselConditionConsequences,
@@ -395,6 +397,14 @@ Handlebars.registerHelper("zordSummonReadyRound", getSummonReadyRound);
 // Both damages a weaponEffect deals (main + secondaryDamage) with an icon each - see
 // helpers/damage-display.mjs. Used by the weapon row chips and the weaponEffect details card.
 Handlebars.registerHelper("weaponEffectDamages", getWeaponEffectDamages);
+
+// "1/2 today" for a power with a per-day limit (nanomite powers) - see helpers/nanomite-uses.mjs.
+Handlebars.registerHelper("powerDailyUses", formatDailyUses);
+
+// Nanomite equipment's uses left and inert state - see helpers/nanomite-gear.mjs.
+Handlebars.registerHelper("gearNanomiteUsesLeft", getGearNanomiteUsesLeft);
+Handlebars.registerHelper("isGearNanomiteInert", isGearNanomiteInert);
+Handlebars.registerHelper("gearNanomitePowerName", getGearNanomitePowerName);
 
 // system.items collections (Role/Focus's granted-item lists, among others) are a plain object
 // keyed by short random ids, not an array - {{#each}} over them iterates in insertion order, not

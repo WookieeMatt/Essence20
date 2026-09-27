@@ -13,4 +13,19 @@
   {{numberInput system.quantity name="system.quantity" min=0 step=1}}
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Nanomite equipment (Quartermaster's Guide to Gear p.92) - drop a nanomite Power on this sheet.
+        See helpers/nanomite-gear.mjs. --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.NanomiteGearPower'}}
+  {{#*inline "item-field-inputs"}}
+  {{#if system.nanomite.powerUuid}}
+    <a class="content-link" data-link data-uuid="{{system.nanomite.powerUuid}}"><i class="fas fa-battery-bolt"></i> {{#if (gearNanomitePowerName @root.document)}}{{gearNanomitePowerName @root.document}}{{else}}{{localize 'E20.NanomiteGearLinked'}}{{/if}}</a>
+    <label>{{localize 'E20.NanomiteGearUses'}} {{numberInput system.nanomite.uses name="system.nanomite.uses" min=1 step=1}}</label>
+    <label>{{localize 'E20.NanomiteGearSpent'}} {{numberInput system.nanomite.spent name="system.nanomite.spent" min=0 step=1}}</label>
+    <a data-action="clearGearNanomite" data-tooltip="{{localize 'E20.NanomiteGearClear'}}"><i class="fas fa-xmark"></i></a>
+  {{else}}
+    <span class="hint">{{localize 'E20.NanomiteGearDropHint'}}</span>
+  {{/if}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 <div>

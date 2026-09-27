@@ -30,3 +30,9 @@
   text-decoration: line-through;
   opacity: 0.75;
 }
+
+// A power's daily uses left ("1/2 today"), beside its name on the actor sheet - see helpers/nanomite-uses.mjs.
+.essence20 .e20-power-daily-uses {
+  margin-left: 6px;
+  font-weight: normal;
+}

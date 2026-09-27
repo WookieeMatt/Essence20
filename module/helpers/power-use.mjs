@@ -95,7 +95,7 @@ export function canUsePower(item) {
  *   Initiative, Repair Zord) can scale their own effect by the actual spend - both call sites in
  *   power-handler.mjs now pass it through.
  */
-export async function onPowerUse(actor, item, amountSpent = 0) {
+export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourceIdOverride = null } = {}) {
   if (!actor || !item) {
     return;
   }
@@ -107,7 +107,9 @@ export async function onPowerUse(actor, item, amountSpent = 0) {
     return;
   }
 
-  const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+  // A Power used straight from a compendium (nanomite equipment - helpers/nanomite-gear.mjs) has no
+  // source flags of its own, so the caller names it.
+  const sourceId = sourceIdOverride ?? item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
 
   // Create Weapon - see helpers/create-weapon.mjs's own doc comment.
   if (sourceId == CREATE_WEAPON_ID) {

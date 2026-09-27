@@ -18,14 +18,15 @@
     "maxPowerCost": null,
     "powerCost": 1,
     "selectionLimit": 1,
-    "type": "grid",
+    "type": "nanomite",
     "usesInterval": "perScene",
     "usesPer": 1,
     "duration": {
       "units": "minutes",
       "value": 1,
       "text": ""
-    }
+    },
+    "usesSpent": 0
   },
   "effects": [],
   "sort": 0,

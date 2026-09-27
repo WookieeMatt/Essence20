@@ -18,9 +18,11 @@
     "maxPowerCost": null,
     "powerCost": null,
     "selectionLimit": 1,
-    "type": "grid",
-    "usesInterval": "special",
-    "usesPer": null
+    "type": "nanomite",
+    "usesInterval": "perDay",
+    "usesPer": 2,
+    "availability": "restricted",
+    "usesSpent": 0
   },
   "effects": [],
   "sort": 800000,

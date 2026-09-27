@@ -150,7 +150,8 @@ function attackLines(ir) {
 function powerQualifier(power) {
   const parts = [];
   if (power.usesPer) {
-    parts.push(`${power.usesPer}/${power.usesInterval === 'perTurn' ? 'turn' : 'scene'}`);
+    const interval = { perTurn: 'turn', perDay: 'day' }[power.usesInterval] ?? 'scene';
+    parts.push(`${power.usesPer}/${interval}`);
   }
 
   if (power.actionType) {

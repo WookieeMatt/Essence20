@@ -407,7 +407,8 @@ export function createEntry(droppedItem, targetItem) {
 
     break;
   case "perk":
-    if (droppedItem.type == "perk") {
+    // A Perk can grant a Power as well as a Perk - the Nano Infusion Perks' chosen nanomite Power.
+    if (["perk", "power"].includes(droppedItem.type)) {
       entry['role'] = null;
       return entry;
     }

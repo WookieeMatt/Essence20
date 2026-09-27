@@ -7,6 +7,7 @@ const MIN_LEVEL = 1;
 const MAX_LEVEL = 20;
 
 import Essence20CompendiumBrowser from "../apps/compendium-browser.mjs";
+import { useGearNanomitePower } from "../helpers/nanomite-gear.mjs";
 import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
 import SheetOptions from "../apps/sheet-options.mjs";
 import SkillPicker from "../apps/skill-picker.mjs";
@@ -115,6 +116,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       shieldEquipToggle: this.#onShieldEquipToggle,
       mountedSetupToggle: this.#onMountedSetupToggle,
       mythicSwitchForm: this.#onMythicSwitchForm,
+      useGearNanomite: this.#onUseGearNanomite,
       treatOngoingEffect: this.#onTreatOngoingEffect,
       specializationDelete: this.#onSpecializationDelete,
       startSheetTour: this.#onStartSheetTour,
@@ -1234,6 +1236,16 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   /**
    * Mythically Modular (Through the Shattered Grid p.116) - see helpers/mythically-modular.mjs.
    */
+  /**
+   * Nanomite equipment - uses the gear's linked nanomite Power. See helpers/nanomite-gear.mjs.
+   */
+  static async #onUseGearNanomite(event, target) {
+    const gear = this.actor.items.get(target.dataset.itemId);
+    if (gear) {
+      await useGearNanomitePower(this.actor, gear);
+    }
+  }
+
   static async #onMythicSwitchForm(event, target) {
     const weapon = this.actor.items.get(target.dataset.itemId);
     if (weapon) {

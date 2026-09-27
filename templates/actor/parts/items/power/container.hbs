@@ -17,6 +17,7 @@
       <img class="leveled-item-icon" src="{{item.img}}" alt="{{item.name}}" />
       <strong class="leveled-item-name">
         {{item.name}}
+        {{#if (powerDailyUses item)}}<span class="chip e20-power-daily-uses" data-tooltip="{{localize 'E20.UsesIntervalDay'}}">{{powerDailyUses item}}</span>{{/if}}
         {{#if (eq @root.document.type "npc")}}
           :
           {{#if system.usesPer}}

@@ -3,6 +3,12 @@
 <div class="chip-section">
   <span class="chip" name="chip.power.powerType">{{localize 'E20.PowerTypes'}}: {{lookup @root.config.powerTypes item.system.type}}</span>
   <span class="chip" name="chip.power.actionType">{{localize 'E20.ActionTypes'}}: {{lookup @root.config.actionTypes item.system.actionType}}</span>
+  {{#if item.system.availability}}
+  <span class="chip" name="chip.power.availability">{{localize 'E20.PowerAvailability'}}: {{localize (lookup @root.config.availabilities item.system.availability)}}</span>
+  {{/if}}
+  {{#if (powerDailyUses item)}}
+  <span class="chip" name="chip.power.dailyUses">{{powerDailyUses item}}</span>
+  {{/if}}
   {{#if item.system.powerCost}}
   <span class="chip" name="chip.power.powerCost">{{localize 'E20.PowerCost'}}: {{item.system.powerCost}}</span>
   {{/if}}

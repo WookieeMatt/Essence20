@@ -57,6 +57,11 @@
   opacity: 0.75;
 }
 
+.essence20 .e20-power-daily-uses {
+  margin-left: 6px;
+  font-weight: normal;
+}
+
 .essence20 .collapsible {
   background-color: #eee;
   color: #444;
