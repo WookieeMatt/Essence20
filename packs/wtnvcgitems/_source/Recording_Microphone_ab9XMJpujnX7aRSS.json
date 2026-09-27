@@ -17,6 +17,18 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Recording Microphone Effect",
         "type": "weaponEffect"
+      },
+      "lc7o": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.JwdbSzCQ8wdVxOkP",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Recording Microphone Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "ofar": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.3oE1L6Sf4KyVWgBb",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Recording Microphone Alternate Effect 2",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

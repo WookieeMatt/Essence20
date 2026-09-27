@@ -13,6 +13,7 @@ global.Combat = class Combat {
 global.ChatMessage = { getSpeaker: () => ({}), create: jest.fn() };
 
 const { Essence20Combat } = await import('./combat.mjs');
+const { getRemaining } = await import('../helpers/action-economy.mjs');
 
 /**
  * A combat instance without running the real constructor, which wants a live Dice/RollDialog.
@@ -25,6 +26,7 @@ function setGame({ isActiveGM = true, mode = 'track' } = {}) {
   const store = { sceneClockScene: 1, sceneClockEncounter: 1 };
   global.game = {
     user: { isGM: isActiveGM, isActiveGM },
+    i18n: { localize: (key) => key, format: (key) => key },
     // expireAoeRegions gates on the designated GM via game.users, not game.user.
     users: { activeGM: { isSelf: isActiveGM } },
     settings: {
@@ -95,6 +97,50 @@ describe("_onDelete", () => {
 
     expect(consoleError).toHaveBeenCalled();
     consoleError.mockRestore();
+  });
+});
+
+describe("_onStartTurn", () => {
+  const VAINGLORIOUS_ID = "Compendium.essence20.tf_crb.Item.ztsvCKdnaDZzBR8Q";
+
+  function makeVaingloriousActor() {
+    const flags = {};
+    return {
+      system: {
+        actions: {
+          enabled: true, shared: false,
+          standard: { base: 1, bonus: 0, max: 1 },
+          move: { base: 1, bonus: 0, max: 1 },
+          free: { base: 0, bonus: 0, max: 0 },
+        },
+      },
+      statuses: new Set(),
+      items: [{ type: 'hangUp', flags: { core: { sourceId: VAINGLORIOUS_ID } } }],
+      getFlag: jest.fn((scope, key) => flags[key]),
+      setFlag: jest.fn(async (scope, key, value) => {
+        flags[key] = value;
+      }),
+    };
+  }
+
+  test("forces Vainglorious' Standard-action spend on the actor's first turn", async () => {
+    setGame();
+    const actor = makeVaingloriousActor();
+    const flags = {};
+    const combatant = {
+      actor,
+      isOwner: true,
+      getFlag: jest.fn((scope, key) => flags[key]),
+      setFlag: jest.fn(async (scope, key, value) => {
+        flags[key] = value;
+      }),
+    };
+    global.game.combat = { id: 'combat1', getCombatantsByActor: jest.fn(() => [combatant]) };
+    const combat = makeCombat();
+
+    await combat._onStartTurn(combatant, { round: 1 });
+
+    expect(getRemaining(actor).standard).toBe(0);
   });
 });
 

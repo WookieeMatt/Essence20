@@ -17,7 +17,9 @@
     },
     "availability": "prototype",
     "benefit": "",
-    "traits": [],
+    "traits": [
+      "highDensity"
+    ],
     "type": "weapon",
     "prerequisite": "Weapon with a range measured in feet, with either the Ballistic or Laser trait"
   },

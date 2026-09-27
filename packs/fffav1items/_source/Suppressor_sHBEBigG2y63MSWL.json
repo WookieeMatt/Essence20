@@ -21,7 +21,7 @@
       "silent"
     ],
     "type": "weapon",
-    "prerequisite": ""
+    "prerequisite": "Medium or long targeting weapon without the Silent trait"
   },
   "effects": [],
   "sort": 0,

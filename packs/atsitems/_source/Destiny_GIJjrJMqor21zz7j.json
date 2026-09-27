@@ -11,7 +11,15 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "influence"
+    "type": "influence",
+    "reroll": {
+      "enabled": true,
+      "mode": "all",
+      "target": "d20",
+      "maxUses": 0,
+      "reset": "none",
+      "condition": "belowSmallestSkillDie"
+    }
   },
   "effects": [],
   "flags": {

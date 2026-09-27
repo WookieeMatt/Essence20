@@ -19,7 +19,7 @@
     "benefit": "",
     "traits": [],
     "type": "drone",
-    "prerequisite": ""
+    "prerequisite": "Initiative d2"
   },
   "effects": [],
   "flags": {},

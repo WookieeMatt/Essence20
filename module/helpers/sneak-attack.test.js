@@ -94,6 +94,9 @@ describe("checkSneakAttackEligibility", () => {
   const NEVER_HEARD_IT_COMING_ID = `${GI_JOE_CRB}jIUKR6chHdKQO2vr`;
   const IN_MY_SIGHTS_ID = `${GI_JOE_CRB}MD54SjlTYiCTvmBB`;
   const BALLISTIC_ADVANTAGE_ID = `${GI_JOE_CRB}civSjmz83aDYPwvo`;
+  const COBRA_CODEX = "Compendium.essence20.cobra_codex.Item.";
+  const FOCUSED_CHARGE_ID = `${COBRA_CODEX}mQ0s9B2it1mqho3H`;
+  const SUDDEN_STRIKE_ID = `${COBRA_CODEX}G3cypoJyLtlLogzO`;
 
   const makeWeaponEffect = () => ({
     flags: { essence20: { parentId: 'weapon1' } },
@@ -312,6 +315,68 @@ describe("checkSneakAttackEligibility", () => {
       canvas.grid.measurePath.mockReturnValue({ distance: 500 });
       const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
       expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonOutOfRange' });
+    });
+  });
+
+  describe("Focused Charge (Cobra Codex, Saboteur Focus, 3rd level)", () => {
+    test("an explosive weaponEffect qualifies with the Perk, even without Edge/ally range checks failing", () => {
+      const actor = makeActor({ traits: ['sharp'], perkIds: [FOCUSED_CHARGE_ID] });
+      const weaponEffect = { ...makeWeaponEffect(), system: { classification: { style: 'explosive' } } };
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 10 });
+      const result = checkSneakAttackEligibility(actor, weaponEffect, true);
+      expect(result.eligible).toBe(true);
+    });
+
+    test("an electromagnetic-trait weapon qualifies with the Perk", () => {
+      const actor = makeActor({ traits: ['electromagnetic'], perkIds: [FOCUSED_CHARGE_ID] });
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 10 });
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+      expect(result.eligible).toBe(true);
+    });
+
+    test("an explosive weaponEffect does not qualify without the Perk", () => {
+      const actor = makeActor({ traits: ['sharp'] });
+      const weaponEffect = { ...makeWeaponEffect(), system: { classification: { style: 'explosive' } } };
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      const result = checkSneakAttackEligibility(actor, weaponEffect, true);
+      expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNotSilent' });
+    });
+  });
+
+  describe("Sudden Strike (Cobra Codex, Commando Be Ruthless replacement Perk)", () => {
+    beforeEach(() => {
+      game.actors = { party: { isOwner: true, system: { storyPoints: 1 } } };
+      game.users = [{ isGM: true, active: true }];
+    });
+
+    afterEach(() => {
+      delete game.actors;
+      delete game.users;
+    });
+
+    test("bypasses every other check when the actor has a Story Point available and hasn't used it this combat", () => {
+      const actor = makeActor({ traits: ['sharp'], hasToken: false, perkIds: [SUDDEN_STRIKE_ID] });
+      // No target, no token, no range/Edge/ally - every ordinary gate would fail.
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), false);
+      expect(result.eligible).toBe(true);
+    });
+
+    test("falls through to the ordinary checks once already used this combat", () => {
+      const actor = makeActor({ traits: ['sharp'], hasToken: false, perkIds: [SUDDEN_STRIKE_ID] });
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'suddenStrikeUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+      ));
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), false);
+      expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNotSilent' });
+    });
+
+    test("falls through to the ordinary checks with no Story Point available", () => {
+      game.actors = { party: { isOwner: true, system: { storyPoints: 0 } } };
+      const actor = makeActor({ traits: ['sharp'], hasToken: false, perkIds: [SUDDEN_STRIKE_ID] });
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), false);
+      expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNotSilent' });
     });
   });
 });

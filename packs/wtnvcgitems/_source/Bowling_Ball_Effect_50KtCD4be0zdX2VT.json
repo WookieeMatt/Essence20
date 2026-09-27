@@ -18,6 +18,10 @@
     },
     "damageType": "blunt",
     "damageValue": 1,
+    "secondaryDamage": {
+      "type": "stun",
+      "value": 1
+    },
     "isSpecialized": false,
     "shiftDown": 0,
     "numHands": "2",

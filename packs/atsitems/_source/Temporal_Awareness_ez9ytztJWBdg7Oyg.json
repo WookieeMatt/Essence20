@@ -22,7 +22,7 @@
       "maxUses": 1,
       "mode": "all",
       "reset": "scene",
-      "target": "skillDice",
+      "target": "allDice",
       "cost": {
         "resourcePath": "system.powers.personal.value",
         "amount": 1,

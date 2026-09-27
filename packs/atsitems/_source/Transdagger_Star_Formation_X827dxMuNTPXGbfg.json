@@ -19,12 +19,12 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
-          "style": "explosive"
+          "style": "energy"
         },
         "damageValue": 3,
         "damageType": "element",
-        "numHands": "1",
-        "numTargets": 2,
+        "numHands": "2",
+        "numTargets": 1,
         "radius": 10,
         "range": {
           "min": null,
@@ -53,7 +53,8 @@
       "powerWeapon"
     ],
     "upgradeTraits": [],
-    "usesPerScene": null
+    "usesPerScene": null,
+    "inaccurateMagnitude": 3
   },
   "effects": [],
   "flags": {},

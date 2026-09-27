@@ -18,7 +18,7 @@
         "name": "Lightspeed Rescue Cutter Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
+          "skill": "targeting",
           "style": "melee"
         },
         "damageValue": 1,

@@ -64,8 +64,8 @@
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "brawn",
+      "shift": "d4"
     },
     "traits": [
       "armorPiercing",

@@ -61,7 +61,7 @@
     "alternateEffects": "",
     "availability": "limited",
     "classification": {
-      "size": "sidearm"
+      "size": "medium"
     },
     "equipped": true,
     "requirements": {
@@ -70,7 +70,8 @@
       "shift": "none"
     },
     "traits": [
-      "energy"
+      "energy",
+      "powerWeapon"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

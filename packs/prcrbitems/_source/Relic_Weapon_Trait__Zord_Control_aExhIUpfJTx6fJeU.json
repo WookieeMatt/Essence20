@@ -1,0 +1,36 @@
+{
+  "folder": "hrtEahWgQMWPiEmf",
+  "name": "Relic Weapon Trait: Zord Control",
+  "type": "perk",
+  "_id": "aExhIUpfJTx6fJeU",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 61
+    },
+    "prerequisite": "Grid Relic Weapon",
+    "selectionLimit": 3,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265426112,
+    "modifiedTime": 1790265426112,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!aExhIUpfJTx6fJeU"
+}

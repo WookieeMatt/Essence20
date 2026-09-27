@@ -11,6 +11,14 @@
       "book": "Transformers Core Rulebook",
       "page": 84
     },
+    "items": {
+      "acs1": {
+        "uuid": "Compendium.essence20.tf_crb.Item.rl8hs6ezb6VSDahM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Acute Sense",
+        "type": "perk"
+      }
+    },
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

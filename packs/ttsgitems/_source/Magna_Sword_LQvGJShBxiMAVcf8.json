@@ -1,0 +1,119 @@
+{
+  "folder": "dZQznuv1y8t9ym3l",
+  "name": "Magna Sword",
+  "type": "weapon",
+  "_id": "LQvGJShBxiMAVcf8",
+  "img": "systems/essence20/assets/icons/weapons/broadsword.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 23
+    },
+    "items": {
+      "a1s1": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.eRKPoiuUEkrSOrvl",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Magna Sword Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "a2s2": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.1ZOIvhJLrjduh2OJ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Magna Sword Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "itpo": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.UubcXzpMw4f38HvD",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Magna Blaster Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 60
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "sharp"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265601270,
+    "modifiedTime": 1790265601270,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!LQvGJShBxiMAVcf8"
+}

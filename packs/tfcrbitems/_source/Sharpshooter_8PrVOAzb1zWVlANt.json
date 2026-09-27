@@ -65,6 +65,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "9c22": {
+        "uuid": "Compendium.essence20.tf_crb.Item.8Hi76APCo9QRnbLE",
+        "img": "systems/essence20/assets/icons/weapons/sniper_rifle.svg",
+        "name": "Long Range Rifle",
+        "type": "weapon"
       }
     },
     "essences": [

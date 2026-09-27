@@ -1,0 +1,42 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Non-Newtonian Gel",
+  "type": "upgrade",
+  "_id": "P7dDEKgR8WtRY0G6",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 40
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "standard",
+    "benefit": "Once per combat, repair 1 armor Health as a Standard action.",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": "Counter-Ballistic, Counter-Element, or Counter-Kinetic trait, or Reinforced upgrade"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790266059201,
+    "modifiedTime": 1790266059201,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!P7dDEKgR8WtRY0G6"
+}

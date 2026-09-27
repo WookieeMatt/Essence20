@@ -66,8 +66,8 @@
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "finesse",
+      "shift": "d4"
     },
     "traits": [
       "blunt",

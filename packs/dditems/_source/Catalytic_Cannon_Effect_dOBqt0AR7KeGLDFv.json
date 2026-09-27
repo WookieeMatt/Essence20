@@ -20,7 +20,7 @@
     "range": {
       "min": null,
       "reachMultiplier": 0,
-      "long": 300,
+      "long": 350,
       "value": 150
     },
     "shape": "circle"

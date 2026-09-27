@@ -14,7 +14,52 @@
     "quantity": 1,
     "gearType": "clothes"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Hooded Presence",
+      "origin": "Item.dQXCL3OB9nGbk2YS",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "1xYqKHG2H3OWBVRU",
+      "changes": [
+        {
+          "key": "system.skills.intimidation.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!dQXCL3OB9nGbk2YS.1xYqKHG2H3OWBVRU"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

@@ -8,8 +8,8 @@
     "originalId": "",
     "description": "<p>15 ft cone</p>",
     "source": {
-      "book": "",
-      "page": null
+      "book": "GI Joe Core Rulebook",
+      "page": 141
     },
     "items": {
       "e526": {
@@ -22,7 +22,7 @@
           "style": "projectile"
         },
         "damageValue": 1,
-        "damageType": "blunt",
+        "damageType": "sharp",
         "numHands": "2",
         "numTargets": 2,
         "radius": 15,

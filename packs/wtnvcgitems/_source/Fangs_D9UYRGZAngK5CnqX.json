@@ -17,6 +17,12 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Fangs Effect",
         "type": "weaponEffect"
+      },
+      "441m": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.NAY1u15P5iIBzuzB",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Fangs Alternate Effect",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

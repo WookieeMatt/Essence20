@@ -27,4 +27,11 @@ export const attackSchema = () => ({
   // see dice.mjs, which pre-selects the Roll Options Dialog's Defense from it, and
   // helpers/power-attack.mjs, which uses it to decide whether a Power is rolled or just narrated.
   defenseType: makeStrWithChoices(Object.keys(E20.defenses), null),
+  // Multiple/Multi-Weapon (X) Targets (e.g. Forked Lightning/Wizard Missiles, Finster's
+  // Monster-Magic Cookbook p.273-274) - the same informational "how many targets this attack is
+  // built for" record data/item/weapon-effect.mjs's own numTargets field already keeps for a
+  // weapon. Not independently enforced here either - like that field, the actual multi-target
+  // resolution is just however many tokens the player has Targeted, which dice.mjs's per-target
+  // loop already handles regardless of this number.
+  numTargets: makeInt(1),
 });

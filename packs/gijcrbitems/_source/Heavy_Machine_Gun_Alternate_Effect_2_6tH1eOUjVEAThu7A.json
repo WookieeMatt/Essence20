@@ -15,13 +15,13 @@
     "damageValue": 1,
     "shiftDown": 3,
     "numHands": "2",
-    "numTargets": 15,
+    "numTargets": 5,
     "radius": 30,
     "range": {
-      "min": null,
+      "min": 10,
       "reachMultiplier": 0,
-      "long": null,
-      "value": 0
+      "long": 400,
+      "value": 100
     },
     "shape": "cone"
   },

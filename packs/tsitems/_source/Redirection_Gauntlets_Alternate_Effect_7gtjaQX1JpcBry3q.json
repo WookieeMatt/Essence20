@@ -14,7 +14,7 @@
     },
     "classification": {
       "skill": "targeting",
-      "style": "melee"
+      "style": "energy"
     },
     "damageType": "element",
     "damageValue": 2,

@@ -1,0 +1,43 @@
+{
+  "folder": null,
+  "name": "Combiner Core",
+  "type": "upgrade",
+  "_id": "9oKCarkTuzwK8BQu",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 280
+    },
+    "aimShiftBonus": 0,
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "limited",
+    "benefit": "Grants the Combiner trait, letting you join a Megaform.",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": "Robot trait"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790267057101,
+    "modifiedTime": 1790267057101,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!9oKCarkTuzwK8BQu"
+}

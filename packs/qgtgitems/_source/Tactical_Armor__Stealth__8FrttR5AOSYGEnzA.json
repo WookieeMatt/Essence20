@@ -20,7 +20,7 @@
           "defense": "toughness",
           "value": 0
         },
-        "availability": "standard",
+        "availability": "restricted",
         "benefit": "",
         "description": "",
         "prerequisite": "Silent",

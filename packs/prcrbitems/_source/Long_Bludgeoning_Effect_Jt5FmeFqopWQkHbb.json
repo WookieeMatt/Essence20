@@ -8,13 +8,13 @@
     "originalId": "",
     "actionType": "standard",
     "classification": {
-      "skill": "finesse",
+      "skill": "might",
       "style": "melee"
     },
     "damageType": "stun",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": "1",
     "numTargets": 1,
     "radius": 0,
     "range": {

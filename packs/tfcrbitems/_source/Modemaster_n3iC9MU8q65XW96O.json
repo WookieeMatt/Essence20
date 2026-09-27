@@ -196,6 +196,13 @@
       "specializedLevels": []
     },
     "skills": [],
+    "upgrades": {
+      "armors": {
+        "trained": [
+          "standard"
+        ]
+      }
+    },
     "version": "transformers",
     "weapons": {
       "qualified": [],

@@ -13,7 +13,12 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "visionGrant": {
+      "enabled": true,
+      "mode": "darkvision",
+      "range": 90
+    }
   },
   "effects": [],
   "sort": 200000,

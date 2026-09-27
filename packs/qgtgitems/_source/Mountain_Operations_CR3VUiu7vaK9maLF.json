@@ -88,7 +88,7 @@
               "long": 80,
               "value": 50
             },
-            "shiftDown": 1
+            "shiftDown": 2
           },
           "24c7": {
             "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.4tMexiD6f9auqQqx",
@@ -98,7 +98,7 @@
             "availability": "standard",
             "benefit": "",
             "description": "",
-            "prerequisite": "Medium of smaller weapon",
+            "prerequisite": "Medium or smaller weapon",
             "source": {
               "book": "Quartermaster's Guide to Gear",
               "page": 34
@@ -107,6 +107,14 @@
             "traits": []
           }
         }
+      },
+      "k1im": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.CPmuDN8FX79ZdXO4",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Athletics (Climbing) Kit",
+        "type": "gear",
+        "gearType": "kits",
+        "quantity": 1
       }
     },
     "alternateAccess": ""

@@ -67,13 +67,22 @@
         "level": 20
       }
     },
-    "essences": "",
+    "essences": [
+      "strength",
+      "speed"
+    ],
     "essenceLevels": [
       "level1",
       "level10"
     ],
     "roleId": "",
-    "skills": []
+    "skills": [
+      "finesse",
+      "initiative",
+      "intimidation",
+      "might",
+      "targeting"
+    ]
   },
   "effects": [],
   "sort": 0,

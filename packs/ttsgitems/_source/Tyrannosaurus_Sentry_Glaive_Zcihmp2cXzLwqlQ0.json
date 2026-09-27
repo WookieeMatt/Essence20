@@ -22,8 +22,8 @@
           "style": "melee"
         },
         "damageValue": 1,
-        "damageType": "element",
-        "numHands": 21,
+        "damageType": "electric",
+        "numHands": 2,
         "numTargets": 1,
         "radius": 0,
         "range": {
@@ -64,8 +64,8 @@
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "brawn",
+      "shift": "d2"
     },
     "traits": [
       "electric",

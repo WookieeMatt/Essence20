@@ -1,6 +1,7 @@
 import { jest } from '@jest/globals';
 import {
-  canUseInvisibility, deactivateInvisibilityOnAttack, isInvisibilityActive, toggleInvisibility,
+  canUseInvisibility, deactivateInvisibilityOnAttack, deactivateInvisibilityOnLendAssistance,
+  isInvisibilityActive, toggleInvisibility,
 } from './invisibility.mjs';
 
 global.game = { combat: null };
@@ -91,6 +92,26 @@ describe("deactivateInvisibilityOnAttack", () => {
     const actor = makeActor({ active: false });
 
     await deactivateInvisibilityOnAttack(actor);
+
+    expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
+    expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+});
+
+describe("deactivateInvisibilityOnLendAssistance", () => {
+  test("clears an active Invisibility", async () => {
+    const actor = makeActor({ active: true });
+
+    await deactivateInvisibilityOnLendAssistance(actor);
+
+    expect(actor.toggleStatusEffect).toHaveBeenCalledWith('invisible', { active: false });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'invisibilityActive', false);
+  });
+
+  test("does nothing while already inactive", async () => {
+    const actor = makeActor({ active: false });
+
+    await deactivateInvisibilityOnLendAssistance(actor);
 
     expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
     expect(actor.setFlag).not.toHaveBeenCalled();

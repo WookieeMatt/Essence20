@@ -62,7 +62,7 @@
         "name": "Forge of Solus Prime Alternate Effect 2",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 0,

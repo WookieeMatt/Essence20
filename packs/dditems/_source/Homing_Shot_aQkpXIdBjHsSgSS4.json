@@ -12,6 +12,15 @@
       "page": 46
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "all",
+      "target": "anyDie",
+      "reset": "none",
+      "maxUses": 0,
+      "recursive": false,
+      "condition": "consumableOrWreckerRangedAttack"
+    },
     "selectionLimit": 1,
     "type": "role"
   },

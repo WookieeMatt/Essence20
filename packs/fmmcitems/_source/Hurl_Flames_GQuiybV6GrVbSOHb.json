@@ -22,9 +22,9 @@
           "style": "projectile"
         },
         "damageValue": 2,
-        "damageType": "element",
+        "damageType": "fire",
         "numHands": "2",
-        "numTargets": 1,
+        "numTargets": 3,
         "radius": 0,
         "range": {
           "min": null,
@@ -48,7 +48,8 @@
       "shift": "none"
     },
     "traits": [
-      "fire"
+      "fire",
+      "multipleTargets"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

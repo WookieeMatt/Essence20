@@ -47,7 +47,7 @@
       "_id": "x6nRWWISFa4Eb1Wy",
       "changes": [
         {
-          "key": "system.skills.science.edge",
+          "key": "system.skills.science.specializations.medicine.edge",
           "mode": 5,
           "value": "true",
           "priority": null
@@ -56,7 +56,7 @@
       "tint": "#ffffff",
       "transfer": true,
       "flags": {},
-      "name": "Science Edge",
+      "name": "Science (Medicine) Edge",
       "description": "",
       "statuses": [],
       "_stats": {

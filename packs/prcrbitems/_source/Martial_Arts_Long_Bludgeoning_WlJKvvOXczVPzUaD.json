@@ -18,7 +18,7 @@
         "name": "Long Bludgeoning Alternate Effect 2",
         "type": "weaponEffect",
         "classification": {
-          "skill": "finesse",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": null,
@@ -35,17 +35,17 @@
         "shiftDown": 0
       },
       "886c": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.Jt5FmeFqopWQkHbb",
+        "uuid": "Compendium.essence20.pr_crb.Item.Jt5FmeFqopWQkHbb",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Long Bludgeoning Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "finesse",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 1,
-        "damageType": "blunt",
-        "numHands": "2",
+        "damageType": "stun",
+        "numHands": "1",
         "numTargets": 1,
         "radius": 0,
         "range": {
@@ -57,16 +57,38 @@
         "shiftDown": 0
       },
       "f978": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.91alKZovkgruZU9i",
+        "uuid": "Compendium.essence20.pr_crb.Item.91alKZovkgruZU9i",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Bludgeoning Alternate Effect",
+        "name": "Long Bludgeoning Alternate Effect 1",
         "type": "weaponEffect",
         "classification": {
-          "skill": "finesse",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 1,
-        "damageType": "stun",
+        "damageType": "blunt",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "b2e7": {
+        "uuid": "Compendium.essence20.pr_crb.Item.d0km91rD8rvzywo3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Bludgeoning Alternate Effect 3",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "blunt",
         "numHands": "2",
         "numTargets": 1,
         "radius": 0,
@@ -76,25 +98,26 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 1
+        "shiftDown": 0
       }
     },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
     "classification": {
-      "size": "medium"
+      "size": "long"
     },
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "finesse",
+      "skill": "might",
       "shift": "d6"
     },
     "traits": [
       "blunt",
       "martialArts",
-      "silent"
+      "silent",
+      "versatile"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

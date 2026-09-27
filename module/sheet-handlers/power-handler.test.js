@@ -6,6 +6,8 @@ const SPEED_BOOST_ID = "Compendium.essence20.pr_crb.Item.CDbaCheOK2rUsqli";
 function makeActor(personalValue) {
   return {
     update: jest.fn(),
+    getFlag: jest.fn(),
+    setFlag: jest.fn(),
     system: { powers: { personal: { value: personalValue } } },
   };
 }
@@ -18,9 +20,11 @@ function makeEffectsCollection(effects) {
   };
 }
 
+// Speed Boost is the dispatch probe here: activating it switches its own Ground Movement effect on
+// (see helpers/speed-boost.mjs), which is what these tests observe.
 function makeEffect(disabled) {
-  return { disabled, update: jest.fn(async function (data) {
-    this.disabled = data.disabled; 
+  return { disabled, changes: [{ key: 'system.movement.ground.morphed' }], update: jest.fn(async function (data) {
+    this.disabled = data.disabled;
   }) };
 }
 
@@ -147,7 +151,7 @@ describe("powerCost", () => {
 
   test("free-to-activate threat Power (no cost): the dedicated free-activation branch dispatches to onPowerUse with nothing to spend", async () => {
     const ground = makeEffect(true);
-    const actor = { update: jest.fn(), system: { powers: { threat: {} } } };
+    const actor = { update: jest.fn(), getFlag: jest.fn(), setFlag: jest.fn(), system: { powers: { threat: {} } } };
     const power = {
       name: 'Speed Boost',
       flags: { core: { sourceId: SPEED_BOOST_ID } },
@@ -159,5 +163,67 @@ describe("powerCost", () => {
 
     expect(actor.update).not.toHaveBeenCalled();
     expect(ground.disabled).toBe(false);
+  });
+
+  // USER DECISION (2026-09-24): Sorcerous points (Finster's Monster-Matic Cookbook p.274) are a
+  // one-time BUILD budget spent when the Power is created, not a per-activation pool - see
+  // documents/actor.mjs#_prepareSorcerousPower's own committed/max tracking of that same budget.
+  describe("sorcerous Power type", () => {
+    function makeSorcerousActor(sorcerousValue = 0) {
+      return {
+        update: jest.fn(),
+        getFlag: jest.fn(),
+        setFlag: jest.fn(),
+        system: { powers: { sorcerous: { value: sorcerousValue } } },
+      };
+    }
+
+    test("never spends system.powers.sorcerous.value, but still dispatches to onPowerUse", async () => {
+      const actor = makeSorcerousActor(0);
+      const ground = makeEffect(true);
+      const power = {
+        name: 'Speed Boost',
+        flags: { core: { sourceId: SPEED_BOOST_ID } },
+        effects: makeEffectsCollection([ground]),
+        system: { type: 'sorcerous', hasVariableCost: false, powerCost: 3 },
+      };
+
+      await powerCost(actor, power);
+
+      expect(actor.update).not.toHaveBeenCalled();
+      expect(ground.disabled).toBe(false);
+    });
+
+    test("dispatches even when the actor's sorcerous value is 0 - powerCost is a build cost, not an affordability check", async () => {
+      const actor = makeSorcerousActor(0);
+      const ground = makeEffect(true);
+      const power = {
+        name: 'Speed Boost',
+        flags: { core: { sourceId: SPEED_BOOST_ID } },
+        effects: makeEffectsCollection([ground]),
+        system: { type: 'sorcerous', hasVariableCost: false, powerCost: 10 },
+      };
+
+      await powerCost(actor, power);
+
+      expect(global.ui.notifications.error).not.toHaveBeenCalled();
+      expect(ground.disabled).toBe(false);
+    });
+
+    test("ignores hasVariableCost - never opens the PowerCostSelector spend flow", async () => {
+      const actor = makeSorcerousActor(0);
+      const ground = makeEffect(true);
+      const power = {
+        name: 'Speed Boost',
+        flags: { core: { sourceId: SPEED_BOOST_ID } },
+        effects: makeEffectsCollection([ground]),
+        system: { type: 'sorcerous', hasVariableCost: true, maxPowerCost: 5, powerCost: 3 },
+      };
+
+      await powerCost(actor, power);
+
+      expect(actor.update).not.toHaveBeenCalled();
+      expect(ground.disabled).toBe(false);
+    });
   });
 });

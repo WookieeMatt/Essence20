@@ -340,9 +340,38 @@ export async function onShieldEquipToggle(target, actorSheet) {
       });
     }
 
+    // Unequipping while active drops the shield's own Cover grant too (see
+    // maybeToggleCoverShieldStatus's own doc comment) - shieldUpdate isn't called on this branch
+    // at all, so nothing else would ever turn it back off.
+    if (currentShield.system.active) {
+      await maybeToggleCoverShieldStatus(actor, currentShield, false);
+    }
+
     await currentShield.update({
       ["system.active"]: false,
     });
+  }
+}
+
+/**
+ * Portable Wall (Cobra Codex, Restricted shield, p.98): "Active Effect: Cover" - the only shield
+ * in this system whose activeEffect is a named status rather than a numeric Defense bonus
+ * (E20.shieldEffectTypes.other, "1 Other Bonus"); shieldUpdate's own defenseBonus/
+ * defenseBonusCombo/defenseBonusOption/defenseBonusMixed branches all leave an 'other'-typed
+ * effect doing nothing but flipping system.active. Toggles the real Cover status (already
+ * mechanically enforced - see dice.mjs's own targetStatuses.has('cover') check) to match whenever
+ * the shield's activeEffect names it, so activating/deactivating a Portable Wall actually applies
+ * Cover. Only recognizes the literal text "Cover" - every other shield's own 'other' text in this
+ * system today is flavor-only (e.g. a Repulsor's traits, which live on `traits` instead), so
+ * anything else is left alone rather than guessed at.
+ * @param {Actor} actor
+ * @param {Item} shield
+ * @param {Boolean} becomingActive   Whether the shield's activeEffect is the state being entered.
+ */
+async function maybeToggleCoverShieldStatus(actor, shield, becomingActive) {
+  const activeEffect = shield.system.activeEffect;
+  if (activeEffect?.type == 'other' && activeEffect.other?.trim().toLowerCase() == 'cover') {
+    await actor.toggleStatusEffect?.('cover', { active: becomingActive });
   }
 }
 
@@ -354,6 +383,12 @@ export async function onShieldEquipToggle(target, actorSheet) {
  */
 async function shieldUpdate(actor, currentShield, stateString) {
   const shieldState = currentShield.system[stateString];
+
+  // See maybeToggleCoverShieldStatus's own doc comment. Keyed off the shield's activeEffect
+  // specifically (not `shieldState`, which is whichever state is being ENTERED) so this fires the
+  // same way switching either direction: Cover turns on moving into activeEffect, off moving back
+  // to passiveEffect.
+  await maybeToggleCoverShieldStatus(actor, currentShield, stateString == 'activeEffect');
 
   if (shieldState.type == "defenseBonus" || shieldState.type == "defenseBonusCombo") {
     const shieldString = `system.defenses.${shieldState.option1.defense}.shield`;

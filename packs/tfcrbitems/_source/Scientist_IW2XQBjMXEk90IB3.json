@@ -188,6 +188,13 @@
       "science",
       "technology"
     ],
+    "upgrades": {
+      "armors": {
+        "trained": [
+          "limited"
+        ]
+      }
+    },
     "version": "transformers",
     "weapons": {
       "qualified": [],

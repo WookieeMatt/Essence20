@@ -21,7 +21,7 @@
           "skill": "targeting",
           "style": "energy"
         },
-        "damageValue": 2,
+        "damageValue": 1,
         "damageType": "element",
         "isSpecialized": false,
         "numHands": "1",

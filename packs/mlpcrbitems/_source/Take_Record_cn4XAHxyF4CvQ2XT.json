@@ -12,15 +12,15 @@
       "page": 138
     },
     "actionType": "standard",
-    "circle": "beam",
+    "circle": "utility",
     "cost": 2,
     "duration": {
-      "units": "instant",
-      "value": null,
+      "units": "scenes",
+      "value": 1,
       "text": ""
     },
     "isSpecialized": false,
-    "range": "60 feet",
+    "range": "Range of your senses",
     "tier": "superior"
   },
   "effects": [],

@@ -28,7 +28,7 @@
         "startTurn": null
       },
       "disabled": false,
-      "_id": "PrinceLoyalty01",
+      "_id": "PrinceLoyalty010",
       "changes": [
         {
           "key": "system.health.bonus",
@@ -63,7 +63,7 @@
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!DUBbmWhwiUKmrifW.PrinceLoyalty01"
+      "_key": "!items.effects!DUBbmWhwiUKmrifW.PrinceLoyalty010"
     }
   ],
   "ownership": {

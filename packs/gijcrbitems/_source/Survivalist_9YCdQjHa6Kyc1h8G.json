@@ -16,9 +16,14 @@
       "enabled": true,
       "mode": "ones",
       "target": "skillDice",
-      "skills": ["alertness", "initiative", "survival"],
+      "skills": [
+        "alertness",
+        "initiative",
+        "survival"
+      ],
       "maxUses": 0,
-      "reset": "none"
+      "reset": "none",
+      "condition": "inEnvironmentOfExpertise"
     },
     "selectionLimit": 1,
     "type": "role"

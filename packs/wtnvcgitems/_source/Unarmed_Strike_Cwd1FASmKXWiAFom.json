@@ -17,6 +17,18 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Unarmed Strike Effect",
         "type": "weaponEffect"
+      },
+      "8tnt": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.Hjszzpi43KrSXRlM",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Unarmed Strike Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "m3nu": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.6hYof6SviGFda7RJ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Unarmed Strike Alternate Effect 2",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

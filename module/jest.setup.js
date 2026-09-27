@@ -76,6 +76,18 @@ global.Roll = class Roll {
 // UPGRADE, DOWNGRADE, per-field-type custom handlers); this only needs to be correct for the two
 // modes this system's own content uses.
 global.ActiveEffect = class ActiveEffect {
+  // Minimal stand-in for ActiveEffect.implementation.fromStatusEffect(id) (real Foundry builds a
+  // full effect document from CONFIG.statusEffects) - just enough for helpers/actor.mjs's
+  // syncAutoBlindStatus/syncAutoImmobilizedStatus tests, which only need something with an
+  // updateSource() to flag as auto-applied before createEmbeddedDocuments.
+  static async fromStatusEffect() {
+    return { updateSource: jest.fn() };
+  }
+
+  static get implementation() {
+    return ActiveEffect;
+  }
+
   static applyChange(targetDoc, change) {
     const current = foundry.utils.getProperty(targetDoc, change.key);
     let value = change.value;
@@ -95,6 +107,17 @@ global.ActiveEffect = class ActiveEffect {
 
 global.fromUuid = jest.fn();
 global.fromUuidSync = jest.fn();
+
+// Declares the `canvas` global (Foundry's own scene/token layer) as undefined rather than
+// leaving it undeclared - helpers/allies.mjs#getNearbyAllyTokens and its siblings read it via
+// bare `canvas?.tokens`/`canvas?.grid`, and a bare identifier that was never assigned ANYWHERE
+// throws ReferenceError on read, not just returns undefined, unlike an actual missing object
+// property. Test files that exercise those helpers already set `global.canvas` to a real
+// fixture themselves before calling anything that needs it (and restore it afterward) - this
+// only guarantees the identifier exists at all so a file that happens to run before any of
+// those, or a test within one of them that deliberately leaves canvas unset to exercise the
+// "no scene" path, doesn't crash on ordering alone.
+global.canvas = undefined;
 
 global.game = {
   i18n: {

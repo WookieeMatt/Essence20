@@ -3,7 +3,7 @@ import { applyAegisDefeatCheck, getRecklessAbandonStrengthShiftUp, isRecklessAba
 
 const RECKLESS_ABANDON_ID = "Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY";
 const HARDENED_ID = "Compendium.essence20.gi_joe_crb.Item.f7d5bkyxVpbR4dAe";
-const AEGIS_ID = "Compendium.essence20.gi_joe_crb.Item.CKQfEuHDNW6zP0FE";
+const AEGIS_ID = "Compendium.essence20.gi_joe_crb.Item.0ZTjZ36gN74889am";
 const OTHER_HEALTH_BONUS_ID = "Compendium.essence20.pr_crb.Item.someOtherHealthBonus";
 
 function makeActor({ rolePoints, armor = [], perkIds = [] } = {}) {

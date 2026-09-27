@@ -37,6 +37,24 @@ describe("requisitionDif", () => {
     expect(requisitionDif({ system: { availability: 'limited' } })).toBe(10);
     expect(requisitionDif({ system: {} })).toBe(0);
   });
+
+  const EARLY_ADOPTER_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.WrRChund2zAcHYfe";
+
+  function makeActor(perkIds = []) {
+    return { items: perkIds.map(id => ({ type: 'perk', flags: { core: { sourceId: id } } })) };
+  }
+
+  test("Early Adopter reduces a Prototypical/Theoretical requisition DIF by 5", () => {
+    const actor = makeActor([EARLY_ADOPTER_ID]);
+    expect(requisitionDif({ system: { totalAvailability: 'prototype' } }, actor)).toBe(15);
+    expect(requisitionDif({ system: { totalAvailability: 'theoretical' } }, actor)).toBe(25);
+  });
+
+  test("Early Adopter doesn't touch a lower Availability tier, or apply without the Perk", () => {
+    const actor = makeActor([EARLY_ADOPTER_ID]);
+    expect(requisitionDif({ system: { totalAvailability: 'restricted' } }, actor)).toBe(15);
+    expect(requisitionDif({ system: { totalAvailability: 'prototype' } }, makeActor())).toBe(20);
+  });
 });
 
 describe("requisitionAccess", () => {
@@ -129,6 +147,86 @@ describe("rollRequisition", () => {
       shiftDown: 0,
       requisitionItemName: "Rocket Launcher",
     }));
+  });
+
+  describe("Expert Guidance (Factions in Action Vol. 2, General Perk, p.94)", () => {
+    const EXPERT_GUIDANCE_ID = "Compendium.essence20.intercontinental_adventures.Item.oUQUSWSj3JZ1tBR3";
+
+    function makeMemberWithPerk() {
+      const member = makeMember();
+      member.items = [{ type: 'perk', flags: { core: { sourceId: EXPERT_GUIDANCE_ID } } }];
+      return member;
+    }
+
+    test("grants ↑2 when requisitioning Theoretical equipment", async () => {
+      const member = makeMemberWithPerk();
+      await rollRequisition(
+        member, { name: "Ray Gun", type: 'weapon', system: { totalAvailability: 'theoretical' } }, makePool(),
+      );
+
+      expect(member.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ shiftUp: 2 }));
+    });
+
+    test("doesn't apply below Theoretical, or without the Perk", async () => {
+      const member = makeMemberWithPerk();
+      await rollRequisition(
+        member, { name: "Rocket Launcher", type: 'weapon', system: { totalAvailability: 'restricted' } }, makePool(),
+      );
+      expect(member.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ shiftUp: 0 }));
+
+      const noPerkMember = makeMember();
+      await rollRequisition(
+        noPerkMember, { name: "Ray Gun", type: 'weapon', system: { totalAvailability: 'theoretical' } }, makePool(),
+      );
+      expect(noPerkMember.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ shiftUp: 0 }));
+    });
+  });
+
+  describe("Benefits of Command (GI Joe CRB, Officer base, p.84)", () => {
+    function makeMemberWithBenefitsOfCommand(pending = { edge: true }) {
+      const member = makeMember();
+      member.getFlag = jest.fn((scope, key) => (
+        scope == 'essence20' && key == 'pendingBenefitsOfCommand' ? pending : undefined
+      ));
+      member.unsetFlag = jest.fn();
+      return member;
+    }
+
+    test("passes edge:true to rollSkill when a banked Edge is pending", async () => {
+      const member = makeMemberWithBenefitsOfCommand();
+      member.rollSkill = jest.fn(async () => ({ success: true, outcomes: [] }));
+
+      await rollRequisition(member, { name: "Rocket Launcher", type: 'weapon', system: { totalAvailability: 'restricted' } }, makePool());
+
+      expect(member.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ edge: true }));
+    });
+
+    test("clears the banked Edge after a completed roll", async () => {
+      const member = makeMemberWithBenefitsOfCommand();
+      member.rollSkill = jest.fn(async () => ({ success: true, outcomes: [] }));
+
+      await rollRequisition(member, { name: "Rocket Launcher", type: 'weapon', system: { totalAvailability: 'restricted' } }, makePool());
+
+      expect(member.unsetFlag).toHaveBeenCalledWith('essence20', 'pendingBenefitsOfCommand');
+    });
+
+    test("doesn't clear the banked Edge when the dialog is cancelled", async () => {
+      const member = makeMemberWithBenefitsOfCommand();
+      member.rollSkill = jest.fn(async () => ({ cancelled: true }));
+
+      await rollRequisition(member, { name: "Rocket Launcher", type: 'weapon', system: { totalAvailability: 'restricted' } }, makePool());
+
+      expect(member.unsetFlag).not.toHaveBeenCalled();
+    });
+
+    test("passes edge:false without a banked Edge", async () => {
+      const member = makeMember();
+      member.rollSkill = jest.fn(async () => ({ success: true, outcomes: [] }));
+
+      await rollRequisition(member, { name: "Rocket Launcher", type: 'weapon', system: { totalAvailability: 'restricted' } }, makePool());
+
+      expect(member.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ edge: false }));
+    });
   });
 
   test("spends one attempt from the pool and prepends a log entry tagged with the member", async () => {

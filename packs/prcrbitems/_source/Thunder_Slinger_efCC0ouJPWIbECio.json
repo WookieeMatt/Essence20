@@ -24,8 +24,8 @@
         "damageValue": 1,
         "damageType": "element",
         "numHands": "1",
-        "numTargets": 2,
-        "radius": 30,
+        "numTargets": 1,
+        "radius": 15,
         "range": {
           "min": null,
           "reachMultiplier": 0,
@@ -92,8 +92,8 @@
       "shift": "none"
     },
     "traits": [
-      "silent",
-      "sniper",
+      "powerWeapon",
+      "sonic",
       "stun"
     ],
     "upgradeTraits": [],

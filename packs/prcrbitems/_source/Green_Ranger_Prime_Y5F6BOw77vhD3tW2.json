@@ -80,7 +80,9 @@
       },
       "img": "icons/svg/aura.svg",
       "type": "base",
-      "system": {},
+      "system": {
+        "whileMorphed": true
+      },
       "sort": 0,
       "_key": "!items.effects!Y5F6BOw77vhD3tW2.TqEhC4NVFpZ7nEWN"
     }

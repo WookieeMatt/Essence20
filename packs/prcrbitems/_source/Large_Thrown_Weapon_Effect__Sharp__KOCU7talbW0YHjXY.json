@@ -19,8 +19,8 @@
     "range": {
       "min": null,
       "reachMultiplier": 0,
-      "long": 40,
-      "value": 20
+      "long": 20,
+      "value": 10
     }
   },
   "effects": [],

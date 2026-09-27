@@ -15,7 +15,7 @@
     "damageValue": 2,
     "shiftDown": 0,
     "numHands": "2",
-    "numTargets": 5,
+    "numTargets": 1,
     "radius": 5,
     "range": {
       "min": null,

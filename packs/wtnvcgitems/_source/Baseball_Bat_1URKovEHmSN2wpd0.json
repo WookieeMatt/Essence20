@@ -17,6 +17,18 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Baseball Bat Effect",
         "type": "weaponEffect"
+      },
+      "rzfi": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.howOD7H4ZmRorW3Z",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Baseball Bat Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "pl4c": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.HblDM0jUqE2hBWew",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Baseball Bat Alternate Effect 2",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

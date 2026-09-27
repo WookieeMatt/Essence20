@@ -61,6 +61,52 @@
             "traits": []
           }
         }
+      },
+      "3f26": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.pPYmziuk9RWLR93T",
+        "img": "systems/essence20/assets/icons/weapons/poison.svg",
+        "name": "Deadly Touch (Chemical Sprayer)",
+        "type": "weapon",
+        "items": {
+          "9aa0": {
+            "uuid": "Compendium.essence20.cobra_codex.Item.cvMfCf14h1VLMtTG",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Deadly Touch Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "athletics",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "poison",
+            "numHands": 1,
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          },
+          "dee0": {
+            "uuid": "Compendium.essence20.cobra_codex.Item.PeOeKaDjkhtUWk10",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Chemical Sprayer",
+            "type": "upgrade",
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Contact of Inhaled Poison or Toxin",
+            "source": {
+              "book": "Cobra Codex",
+              "page": 97
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
       }
     },
     "alternateAccess": "Experimental Division"

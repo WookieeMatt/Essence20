@@ -12,8 +12,12 @@
       "page": 31
     },
     "prerequisite": "",
-    "selectionLimit": 1,
-    "type": "origin"
+    "selectionLimit": 3,
+    "type": "origin",
+    "hasChoice": true,
+    "choiceType": "skills",
+    "numChoices": 3,
+    "choiceEssence": "smarts"
   },
   "effects": [],
   "sort": 0,

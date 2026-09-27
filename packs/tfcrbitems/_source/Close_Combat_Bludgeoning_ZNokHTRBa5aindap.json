@@ -65,8 +65,8 @@
           "skill": "finesse",
           "style": "melee"
         },
-        "damageValue": 1,
-        "damageType": "blunt",
+        "damageValue": null,
+        "damageType": "maneuver",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,

@@ -60,6 +60,62 @@
         "exportSource": null
       },
       "_key": "!items.effects!8h7PzFKPoGh6RLYX.mSBruHPjlB6i7wMR"
+    },
+    {
+      "name": "Trustworthy (Bluffing)",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.beneath_the_helmet.Item.8h7PzFKPoGh6RLYX",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "tR9vBhCw8mQ0aXfL",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.deception.specializations.bluffing.name",
+          "mode": 5,
+          "value": "Bluffing",
+          "priority": null
+        },
+        {
+          "key": "system.skills.deception.specializations.bluffing.granted",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.deception.specializations.bluffing.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!8h7PzFKPoGh6RLYX.tR9vBhCw8mQ0aXfL"
     }
   ],
   "sort": 0,

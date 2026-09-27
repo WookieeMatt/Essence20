@@ -34,7 +34,7 @@
         {
           "key": "system.defenses.cleverness.bonus",
           "mode": 2,
-          "value": "2",
+          "value": "3",
           "priority": null
         }
       ],

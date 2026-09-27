@@ -1,6 +1,14 @@
 import { E20 } from "./config.mjs";
 import { isAutomated } from "./named-actions.mjs";
 import { canUsePerk } from "./banked-buffs.mjs";
+import { actorHasPerk, hasUsedThisTurn } from "./perks.mjs";
+
+// The turn a Defeated actor has bought with a Story Point to "momentarily act as though it has not
+// been Defeated" (GI Joe CRB p.209) - see dice.mjs#rollSkill's own prompt, which sets it, and
+// isUnableToAct() below, which reads it back. Lives here (not dice.mjs, where it used to live)
+// because this is the one file both dice.mjs and documents/actor.mjs already import, and dice.mjs
+// importing it back from actor.mjs would be circular.
+export const ACT_WHILE_DEFEATED_FLAG = 'actWhileDefeatedThisTurn';
 
 /**
  * Action Economy.
@@ -70,6 +78,15 @@ export function emptyLedger() {
     // "alternatively, a character may trade in a Standard action for two Free actions"
     // (CRB p.193). Tracked on the ledger rather than the actor because it's a per-turn choice.
     freeGranted: 0,
+    // Extra Move/Standard actions granted THIS TURN by a one-shot Perk effect (e.g. Omega
+    // Enhancement's Hyper Mode, "gain one extra Move and two extra Free actions this turn" -
+    // helpers/omega-enhancement.mjs). Kept apart from system.actions.<category>.bonus, which is
+    // the Active-Effect-driven PERSISTENT budget (see documents/actor.mjs#_prepareActions) - a
+    // one-turn grant has no business living on the actor past the turn that granted it, and
+    // clearing an AE reliably at turn's end is exactly the bookkeeping this ledger already exists
+    // to avoid. See grantActionsThisTurn() below.
+    moveGranted: 0,
+    standardGranted: 0,
     turnConsumed: false,
     turnSkipped: false,
     /* Whether a shot is currently being aimed. Aiming is a Free action ("when you Aim as a
@@ -236,6 +253,34 @@ export function getLedger(actor) {
 }
 
 /**
+ * Conditions that take away every action. Stunned (GI Joe CRB p.226): "Stunned characters can't
+ * take actions (Standard, Movement, or Free)." Asleep, Defeated and Unconscious characters are
+ * likewise unable to act. Checked live rather than written into the ledger, so clearing the
+ * Condition mid-turn hands the turn's actions straight back.
+ *
+ * A Defeated actor gets one exception: spending a Story Point to "momentarily act as though it has
+ * not been Defeated" (GI Joe CRB p.209, dice.mjs#rollSkill) stamps ACT_WHILE_DEFEATED_FLAG for the
+ * rest of that turn, which this reads back.
+ *
+ * This used to be two separate lists - this function (Stunned/Unconscious only, read by
+ * getRemaining below) and a second, near-identical array inline in documents/actor.mjs's
+ * _prepareActions (Asleep/Defeated/Stunned/Unconscious, with the Defeated exception). They agreed
+ * by coincidence, not by sharing code - one is now the single source both callers use.
+ * @param {Actor} actor
+ * @returns {Boolean}
+ */
+export function isUnableToAct(actor) {
+  const statuses = actor?.statuses;
+  if (!statuses?.has) {
+    return false;
+  }
+
+  const actingWhileDefeated = statuses.has('defeated') && hasUsedThisTurn(actor, ACT_WHILE_DEFEATED_FLAG);
+  return ['asleep', 'defeated', 'stunned', 'unconscious']
+    .some(status => statuses.has(status) && !(status === 'defeated' && actingWhileDefeated));
+}
+
+/**
  * How much of each budget the actor has left this turn.
  * @param {Actor} actor
  * @returns {Object}   {standard, move, free}
@@ -250,9 +295,11 @@ export function getRemaining(actor) {
   const shared = !!actor?.system?.actions?.shared;
   const sharedSpent = shared && ((ledger.standard ?? 0) > 0 || (ledger.move ?? 0) > 0);
 
+  const cannotAct = isUnableToAct(actor);
   for (const category of Object.keys(E20.actionCategories)) {
-    // A turn already consumed by last turn's Whole Turn action has nothing left in any category.
-    if (ledger.turnSkipped) {
+    // A turn already consumed by last turn's Whole Turn action has nothing left in any category,
+    // and neither does a Stunned or Unconscious actor.
+    if (ledger.turnSkipped || cannotAct) {
       remaining[category] = 0;
       continue;
     }
@@ -262,7 +309,8 @@ export function getRemaining(actor) {
       continue;
     }
 
-    const granted = category == 'free' ? (ledger.freeGranted ?? 0) : 0;
+    const grantedKey = { free: 'freeGranted', move: 'moveGranted', standard: 'standardGranted' }[category];
+    const granted = (grantedKey ? ledger[grantedKey] : 0) ?? 0;
     const max = (budget[category] ?? 0) + granted;
     remaining[category] = Math.max(0, max - (ledger[category] ?? 0));
   }
@@ -385,6 +433,35 @@ export async function tradeStandardForFree(actor) {
 }
 
 /**
+ * One-shot grant of extra actions for the current turn only, e.g. Omega Enhancement's Hyper Mode
+ * (Across the Stars p.70): "Gain one extra Move and two extra Free actions this turn." Adds to the
+ * same *Granted ledger fields tradeStandardForFree() uses for its own "two extra Free actions",
+ * generalized to all three categories so a future Perk granting a bonus Standard action needs no
+ * further plumbing here.
+ * @param {Actor} actor
+ * @param {Object} grants   {free, move, standard}, each an optional Number (default 0).
+ * @param {String} [source] Logged the same way spend()/tradeStandardForFree() log their source.
+ * @returns {Promise<Boolean>}   False when the actor isn't in the active encounter.
+ */
+export async function grantActionsThisTurn(actor, { free = 0, move = 0, standard = 0 } = {}, source = null) {
+  const document = getCombatant(actor);
+  if (!document) {
+    return false;
+  }
+
+  const ledger = getLedger(actor);
+  ledger.freeGranted = (ledger.freeGranted ?? 0) + free;
+  ledger.moveGranted = (ledger.moveGranted ?? 0) + move;
+  ledger.standardGranted = (ledger.standardGranted ?? 0) + standard;
+  if (source) {
+    ledger.log.push({ id: foundry.utils.randomID(), actionType: 'grant', cost: {}, source });
+  }
+
+  await writeLedger(document, ledger);
+  return true;
+}
+
+/**
  * What a given action type costs, as {category: amount}. An unknown type costs nothing rather than
  * throwing - an item whose actionType predates a config change shouldn't break a roll.
  * @param {String} actionType   A key of E20.actionTypes.
@@ -392,6 +469,35 @@ export async function tradeStandardForFree(actor) {
  */
 export function getCost(actionType) {
   return E20.actionTypeCosts[actionType] ?? {};
+}
+
+// Dodgy (MLP CRB, General Perk, p.123): "On any round where you do not move more than 5 feet you
+// may Defend as a Free action." No per-round distance-moved tracker exists anywhere in this
+// codebase to check the 5ft qualifier against (this file's own ledger tracks an ALLOWANCE
+// consumed, not a queryable "how far did I move this round"), so - same "grant the upside, skip
+// the unenforceable qualifier" idiom this project already accepts elsewhere (e.g. Something To
+// Prove) - Defend is simply Free for any Dodgy holder.
+const DODGY_ID = "Compendium.essence20.mlp_crb.Item.jwhdtCaq0MBotupG";
+
+/**
+ * The actual action-cost type to spend for one of the rules' own named actions (Defend, Aim,
+ * Sprint, ...) - CONFIG.E20.namedActions[key]'s own printed type, EXCEPT for a Perk-driven
+ * override like Dodgy's above.
+ * @param {Actor} actor
+ * @param {String} key   A key of E20.namedActions.
+ * @returns {String|null}   null for an unrecognized key.
+ */
+export function getNamedActionType(actor, key) {
+  const action = CONFIG.E20.namedActions[key];
+  if (!action) {
+    return null;
+  }
+
+  if (key == 'defend' && actorHasPerk(actor, DODGY_ID)) {
+    return 'free';
+  }
+
+  return action.type;
 }
 
 /* -------------------------------------------- */

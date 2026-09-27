@@ -13,6 +13,7 @@ function makeActor(type, system, documentsByType = {}) {
   const byType = {
     armor: [],
     origin: [],
+    power: [],
     role: [],
     rolePoints: [],
     ...documentsByType,
@@ -139,6 +140,66 @@ describe("_prepareHealth", () => {
     actor._prepareHealth();
     expect(actor.system.health.max).toBe(0);
   });
+
+  test("adds Bulwark bonus Health from an equipped Bulwark-trait armor", () => {
+    const actor = makeActor('playerCharacter', {
+      level: 1,
+      conditioning: 0,
+      health: { bonus: 0 },
+    }, {
+      armor: [{
+        system: { equipped: true, traits: ['bulwark'], bulwarkHealthBonus: 3 },
+      }],
+    });
+    actor._prepareHealth();
+    expect(actor.system.health.max).toBe(3);
+    expect(actor.system.health.string).toContain("3 (");
+  });
+
+  test("ignores Bulwark bonus from an unequipped armor", () => {
+    const actor = makeActor('playerCharacter', {
+      level: 1,
+      conditioning: 0,
+      health: { bonus: 0 },
+    }, {
+      armor: [{
+        system: { equipped: false, traits: ['bulwark'], bulwarkHealthBonus: 3 },
+      }],
+    });
+    actor._prepareHealth();
+    expect(actor.system.health.max).toBe(0);
+  });
+
+  test("stacks Bulwark bonus Health across more than one equipped source", () => {
+    const actor = makeActor('playerCharacter', {
+      level: 1,
+      conditioning: 0,
+      health: { bonus: 0 },
+    }, {
+      armor: [
+        { system: { equipped: true, traits: ['bulwark'], bulwarkHealthBonus: 3 } },
+        { system: { equipped: true, traits: ['bulwark'], bulwarkHealthBonus: 2 } },
+      ],
+    });
+    actor._prepareHealth();
+    expect(actor.system.health.max).toBe(5);
+  });
+
+  // Regression check for the Zord Feature/Upgraded Zord option gap flagged in the 2026-09-24
+  // overnight review ("Zord actors got no custom branch so system.health.bonus never folded into
+  // totals") - already fixed by the time this test was written (_prepareHealth runs unconditionally
+  // for every actor type per prepareDerivedData's own comment), but there was no direct test
+  // covering a 'zord' actor specifically until now. A Zord has no Origin Item (falls back to the
+  // flat system.health.origin field, same as any other non-PC type) and no Conditioning skill.
+  test("a Zord's flat health.origin plus a Feature's Active-Effect-applied health.bonus both fold into health.max", () => {
+    const actor = makeActor('zord', {
+      level: 0,
+      conditioning: 0,
+      health: { bonus: 2, origin: 6 }, // e.g. Upgraded Zord (Grave Upgrade) or Super-Zeo Upgrade's +N Health
+    });
+    actor._prepareHealth();
+    expect(actor.system.health.max).toBe(8);
+  });
 });
 
 describe("_prepareDefenses", () => {
@@ -194,6 +255,39 @@ describe("_prepareDefenses", () => {
     actor._prepareDefenses();
     expect(actor.system.defenses.toughness.total).toBe(17); // 15 + 2
     expect(actor.system.defenses.evasion.total).toBe(14); // unaffected, not the bonus's defense type
+  });
+
+  describe("Hardened Armor (PR ATS Gold Ranger, p.52) - a whileMorphed Role Points defenseBonus", () => {
+    function hardenedArmorRolePoints() {
+      return rolePointsItem({
+        type: 'defenseBonus',
+        bonus: {
+          type: 'defenseBonus',
+          startingValue: 2,
+          increaseLevels: [],
+          level20Value: 0,
+          defenseBonus: { toughness: true },
+          whileMorphed: true,
+        },
+      });
+    }
+
+    test("doesn't apply a whileMorphed Role Points defenseBonus when not Morphed", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ isMorphed: false }), {
+        rolePoints: [hardenedArmorRolePoints()],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // unaffected
+    });
+
+    test("applies a whileMorphed Role Points defenseBonus when Morphed", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ isMorphed: true }), {
+        rolePoints: [hardenedArmorRolePoints()],
+      });
+      actor._prepareDefenses();
+      // toughness while Morphed: base 10 + essence 2 + morphed 6 + shield 3 + roleBonus 2
+      expect(actor.system.defenses.toughness.total).toBe(23);
+    });
   });
 
   describe("Vanguard armor-conditional Perk bonuses", () => {
@@ -260,6 +354,181 @@ describe("_prepareDefenses", () => {
       expect(actor.system.defenses.toughness.total).toBe(19); // 15 + 2 + 2
     });
 
+  });
+
+  describe("Equipped Armor items", () => {
+    function armorItem({ equipped = true, totalBonusToughness = 0, totalBonusEvasion = 0, isPowerArmor = false } = {}) {
+      return { type: 'armor', system: { equipped, totalBonusToughness, totalBonusEvasion, isPowerArmor } };
+    }
+
+    function armorUpgrade({ defense, value, parentId = undefined }) {
+      return {
+        type: 'upgrade',
+        system: { type: 'armor', armorBonus: { defense, value } },
+        getFlag: (scope, key) => (scope == 'essence20' && key == 'parentId' ? parentId : undefined),
+      };
+    }
+
+    test("adds an equipped Armor item's totalBonusToughness/Evasion to the matching Defense", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        armor: [armorItem({ totalBonusToughness: 3, totalBonusEvasion: 1 })],
+      });
+      actor._prepareDefenses();
+      // toughness: 15 (prior total, armor 0) + 3 (item)
+      expect(actor.system.defenses.toughness.total).toBe(18);
+      // evasion: 14 (prior total, armor 2) + 1 (item)
+      expect(actor.system.defenses.evasion.total).toBe(15);
+    });
+
+    test("ignores an unequipped Armor item", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        armor: [armorItem({ equipped: false, totalBonusToughness: 3, totalBonusEvasion: 1 })],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15);
+      expect(actor.system.defenses.evasion.total).toBe(14);
+    });
+
+    test("adds on top of an existing hand-typed defense.armor value rather than replacing it", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        armor: [armorItem({ totalBonusEvasion: 2 })],
+      });
+      actor._prepareDefenses();
+      // evasion: base 10 + essence 1 + armor(2 stored + 2 item) + bonus 1 + shield 0 = 16
+      expect(actor.system.defenses.evasion.total).toBe(16);
+    });
+
+    // Power Armor (USER RULING, 2026-09-24) - see armor.mjs#isPowerArmor's own doc comment: the
+    // Ranger's Morphed form itself, so it never contributes to this loop even if left "equipped".
+    test("ignores an equipped Power Armor item's bonus while not Morphed", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ isMorphed: false }), {
+        armor: [armorItem({ totalBonusToughness: 3, totalBonusEvasion: 1, isPowerArmor: true })],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // unaffected
+      expect(actor.system.defenses.evasion.total).toBe(14); // unaffected
+    });
+
+    test("still counts an equipped ordinary armor item alongside an ignored Power Armor item", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ isMorphed: false }), {
+        armor: [
+          armorItem({ totalBonusToughness: 3, isPowerArmor: true }),
+          armorItem({ totalBonusToughness: 1 }),
+        ],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(16); // 15 + 1 (only the non-Power-Armor item)
+    });
+
+    test("Power Armor still doesn't contribute while Morphed (morphed value is used instead)", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ isMorphed: true }), {
+        armor: [armorItem({ totalBonusToughness: 3, isPowerArmor: true })],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(21); // base 10 + essence 2 + morphed 6 + shield 3
+    });
+
+    test("stacks an unparented alt-mode armor Upgrade's bonus when the actor canTransform", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ canTransform: true }), {
+        upgrade: [armorUpgrade({ defense: 'toughness', value: 4 })],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(19); // 15 + 4
+    });
+
+    test("ignores an unparented armor Upgrade when the actor can't transform", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ canTransform: false }), {
+        upgrade: [armorUpgrade({ defense: 'toughness', value: 4 })],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // unaffected
+    });
+
+    test("ignores an armor Upgrade that's parented to an Armor item (already folded into that item's own total)", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ canTransform: true }), {
+        upgrade: [armorUpgrade({ defense: 'toughness', value: 4, parentId: 'someArmorId' })],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // unaffected
+    });
+
+    test("doesn't apply equipped-item armor bonuses to non-PC actor types", () => {
+      const actor = makeActor('npc', defensesSystem(), {
+        armor: [armorItem({ totalBonusToughness: 5, totalBonusEvasion: 5 })],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // unaffected, hand-typed .armor only
+      expect(actor.system.defenses.evasion.total).toBe(14); // unaffected
+    });
+
+    test("doesn't apply equipped-item armor bonuses while Morphed (morphed stat is used instead)", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ isMorphed: true }), {
+        armor: [armorItem({ totalBonusToughness: 5 })],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(21); // unaffected: base 10 + essence 2 + morphed 6 + shield 3
+    });
+  });
+
+  describe("Imperial Machine Mantle (Power Rangers Adventures, p.90)", () => {
+    const MANTLE_ID = "Compendium.essence20.power_rangers_adventures.Item.CjYzIg9gVstsE0wg";
+
+    function mantleUpgrade({ broken = false } = {}) {
+      return {
+        type: 'upgrade',
+        flags: { core: { sourceId: MANTLE_ID } },
+        getFlag: (scope, key) => (scope == 'essence20' && key == 'imperialMachineMantleBroken' ? broken : undefined),
+      };
+    }
+
+    test("adds ceil(50%) of the worn armor value to Toughness only, while not Morphed", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ isMorphed: false }), {
+        upgrade: [mantleUpgrade()],
+      });
+      // toughness armor is 0 in the shared fixture - use evasion's armor(2) via a second actor below
+      // instead, since Toughness's own base armor is 0 here (no bonus expected).
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // ceil(50% of 0) = 0, unaffected
+      expect(actor.system.defenses.evasion.total).toBe(14); // Mantle is Toughness-only
+    });
+
+    test("adds ceil(50%) of the current armor value when there is one, rounding up", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({
+        isMorphed: false,
+        defenses: {
+          ...defensesSystem().defenses,
+          toughness: { base: 10, armor: 3, bonus: 0, morphed: 6, shield: 3, essence: 'strength' },
+        },
+      }), {
+        upgrade: [mantleUpgrade()],
+      });
+      actor._prepareDefenses();
+      // toughness: base 10 + essence 2 + armor 3 + shield 3 + ceil(3 * 0.5) = 2 (Mantle) = 20
+      expect(actor.system.defenses.toughness.total).toBe(20);
+    });
+
+    test("adds ceil(50%) of the Morphed value while Morphed", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ isMorphed: true }), {
+        upgrade: [mantleUpgrade()],
+      });
+      // toughness while Morphed: base 10 + essence 2 + morphed 6 + shield 3 + ceil(6 * 0.5) = 3 (Mantle)
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(24);
+    });
+
+    test("does nothing once the Mantle is flagged broken", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ isMorphed: true }), {
+        upgrade: [mantleUpgrade({ broken: true })],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(21); // unaffected: base 10 + essence 2 + morphed 6 + shield 3
+    });
+
+    test("does nothing without the Mantle", () => {
+      const actor = makeActor('playerCharacter', defensesSystem({ isMorphed: true }));
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(21); // unaffected
+    });
   });
 
   describe("Fighting Style (Infantry/Vanguard, shared Perk)", () => {
@@ -396,6 +665,7 @@ describe("_prepareMovement", () => {
         burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+        underground: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
       },
       ...overrides,
     };
@@ -426,6 +696,19 @@ describe("_prepareMovement", () => {
     actor._prepareMovement();
     expect(actor.system.movement.burrow.total).toBe(40);
   });
+  // Regression check for the same Zord Feature gap flagged above _prepareHealth's own Zord test -
+  // already fixed (_prepareMovement also runs unconditionally for every actor type), but not
+  // directly covered for a 'zord' actor until now. E.g. Movement Booster/Light Chassis/Upgraded
+  // Zord (Elemental Time)'s own Active-Effect-applied movement.<type>.bonus.
+  test("a Zord's Feature-granted movement.<type>.bonus folds into that type's total", () => {
+    const system = movementSystem();
+    system.movement.aerial = { base: 0, bonus: 60, morphed: 0, altMode: 0 }; // e.g. Zero-G
+    const actor = makeActor('zord', system);
+    actor._prepareMovement();
+    expect(actor.system.movement.aerial.total).toBe(60);
+    expect(actor.system.movement.ground.total).toBe(35); // base 30 + bonus 5, unaffected
+  });
+
   test("normal movement uses base + bonus", () => {
     const actor = makeActor('playerCharacter', movementSystem());
     actor._prepareMovement();
@@ -494,6 +777,47 @@ describe("_prepareMovement", () => {
       const actor = makeActor('playerCharacter', movementSystem(), {
         perk: [{ type: 'perk', flags: { core: { sourceId: WARRIOR_RUSH_ID } } }],
       });
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(35);
+    });
+  });
+
+  describe("Emotional Mastery: Distress (A Jump Through Time, Purple Ranger, p.37)", () => {
+    let originalCanvas;
+    beforeEach(() => {
+      originalCanvas = global.canvas;
+    });
+    afterEach(() => {
+      global.canvas = originalCanvas;
+    });
+
+    function makeDistressActor({ active = ['distress'], enemyDistance = 5 } = {}) {
+      const actor = makeActor('playerCharacter', movementSystem());
+      const actorToken = { document: { disposition: 1 }, center: { distance: 0 } };
+      const enemyToken = { document: { disposition: -1 }, center: { distance: enemyDistance }, actor: {} };
+      actor.getFlag = jest.fn((scope, key) => (key == 'activeEmotionalMastery' ? active : undefined));
+      actor.getActiveTokens = jest.fn(() => [actorToken]);
+      global.canvas = {
+        tokens: { placeables: [actorToken, enemyToken] },
+        grid: { measurePath: jest.fn(([otherCenter]) => ({ distance: otherCenter.distance ?? 0 })) },
+      };
+      return actor;
+    }
+
+    test("adds 10ft to every Movement type with an enemy within 10ft, while active", () => {
+      const actor = makeDistressActor({ enemyDistance: 5 });
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(45); // 35 + 10
+    });
+
+    test("doesn't apply with no enemy within 10ft", () => {
+      const actor = makeDistressActor({ enemyDistance: 20 });
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(35);
+    });
+
+    test("doesn't apply without Distress active", () => {
+      const actor = makeDistressActor({ active: ['fear'], enemyDistance: 5 });
       actor._prepareMovement();
       expect(actor.system.movement.ground.total).toBe(35);
     });
@@ -575,6 +899,39 @@ describe("_prepareMovement", () => {
     });
   });
 
+  describe("High Gear (A Jump Through Time, Zord Feature, p.83)", () => {
+    function makeHighGearZord({ active = true } = {}) {
+      const actor = makeActor('zord', movementSystem());
+      actor.getFlag = jest.fn((scope, key) => (key == 'highGearActive' ? active : undefined));
+      return actor;
+    }
+
+    test("doubles a Zord's ground Movement total while the flag is active", () => {
+      const actor = makeHighGearZord({ active: true });
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(70); // 35 * 2
+    });
+
+    test("doesn't double aerial Movement (ground only)", () => {
+      const actor = makeHighGearZord({ active: true });
+      actor._prepareMovement();
+      expect(actor.system.movement.aerial.total).toBe(0);
+    });
+
+    test("doesn't double without the flag active", () => {
+      const actor = makeHighGearZord({ active: false });
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(35);
+    });
+
+    test("doesn't double for a non-Zord actor even with the flag set", () => {
+      const actor = makeActor('playerCharacter', movementSystem());
+      actor.getFlag = jest.fn((scope, key) => (key == 'highGearActive' ? true : undefined));
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(35);
+    });
+  });
+
   describe("Frictionless Movement (Technorganic Secrets, Mutant Beast Influence Perk, p.47)", () => {
     const FRICTIONLESS_MOVEMENT_ID = "Compendium.essence20.technorganic_secrets.Item.9fOrSAd3brtSBk9C";
 
@@ -607,6 +964,40 @@ describe("_prepareMovement", () => {
       actor._prepareMovement();
       expect(actor.system.movement.ground.total).toBe(35);
       expect(actor.system.movement.aerial.total).toBe(20);
+    });
+  });
+
+  describe("Expanded Mysticism - Quicken (MLP CRB, Spirit of Magic, 9th level, p.95)", () => {
+    const EXPANDED_MYSTICISM_ID = "Compendium.essence20.mlp_crb.Item.xL0lmmS7P046RNqO";
+
+    function makeQuickenActor({ hasPerk = true, quickenType = 'ground' } = {}) {
+      const actor = makeActor(
+        'playerCharacter',
+        movementSystem({ movement: { ...movementSystem().movement, aerial: { base: 20, bonus: 0, morphed: 0, altMode: 0 } } }),
+        { perk: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: EXPANDED_MYSTICISM_ID } } }] : [] },
+      );
+      actor.getFlag = jest.fn((scope, key) => (key == 'expandedMysticismQuickenType' ? quickenType : undefined));
+      return actor;
+    }
+
+    test("doubles only the chosen Movement type's total with the Perk and a matching flag", () => {
+      const actor = makeQuickenActor({ quickenType: 'ground' });
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(70); // 35 * 2
+      expect(actor.system.movement.aerial.total).toBe(20); // unchanged
+    });
+
+    test("doesn't double without the Perk, even with a matching flag", () => {
+      const actor = makeQuickenActor({ hasPerk: false, quickenType: 'ground' });
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(35);
+    });
+
+    test("doesn't double with the Perk but no matching flag", () => {
+      const actor = makeQuickenActor({ quickenType: 'aerial' });
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(35); // not doubled - aerial was chosen, not ground
+      expect(actor.system.movement.aerial.total).toBe(40); // 20 * 2
     });
   });
 
@@ -767,6 +1158,70 @@ describe("_prepareMovement", () => {
     });
   });
 
+  describe("Wildfire (Cobra Codex, Ranger Guerilla Focus, 17th level, p.59)", () => {
+    const WILDFIRE_ID = "Compendium.essence20.cobra_codex.Item.ifF6KRO65Yguf7K1";
+
+    function makeWildfireActor({ hasPerk = true, equipped = true } = {}) {
+      const items = [
+        { type: 'weapon', system: { equipped, traits: ['fire'] } },
+      ];
+      if (hasPerk) {
+        items.push({ type: 'perk', flags: { core: { sourceId: WILDFIRE_ID } } });
+      }
+
+      return makeActor('playerCharacter', movementSystem(), { armor: [], weapon: items });
+    }
+
+    test("adds +10ft to every already-nonzero Movement while wielding a Fire weapon", () => {
+      const actor = makeWildfireActor();
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(45); // 30 + 5 + 10
+      // Half of Wildfire-boosted ground (45 -> 20, floored to the nearest 5) + Wildfire's own +10.
+      expect(actor.system.movement.swim.total).toBe(30);
+      expect(actor.system.movement.aerial.total).toBe(0); // stays at 0 - nothing to add to
+    });
+
+    test("doesn't apply without the Perk", () => {
+      const actor = makeWildfireActor({ hasPerk: false });
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(35);
+    });
+
+    test("doesn't apply without an equipped Fire weapon", () => {
+      const actor = makeWildfireActor({ equipped: false });
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(35);
+    });
+  });
+
+  describe("Scuba Gear (GI Joe CRB, Exploration Gear, p.162)", () => {
+    const SCUBA_GEAR_ID = "Compendium.essence20.gi_joe_crb.Item.cZpeYK7VoLJKGKL6";
+
+    function makeScubaActor({ equipped = true } = {}) {
+      return makeActor('playerCharacter', movementSystem(), {
+        gear: [{ type: 'gear', flags: { core: { sourceId: SCUBA_GEAR_ID } }, system: { equipped } }],
+      });
+    }
+
+    test("sets Swim Movement equal to Ground Movement's base + bonus while equipped", () => {
+      const actor = makeScubaActor();
+      actor._prepareMovement();
+      expect(actor.system.movement.swim.total).toBe(35); // 30 (base) + 5 (bonus)
+    });
+
+    test("doesn't apply while unequipped", () => {
+      const actor = makeScubaActor({ equipped: false });
+      actor._prepareMovement();
+      expect(actor.system.movement.swim.total).toBe(15); // unaffected default half-ground fallback
+    });
+
+    test("doesn't apply without the gear at all", () => {
+      const actor = makeActor('playerCharacter', movementSystem());
+      actor._prepareMovement();
+      expect(actor.system.movement.swim.total).toBe(15);
+    });
+  });
+
   describe("Bulwark (GI Joe CRB, Tank Focus, 17th level, p.99)", () => {
     const BULWARK_ID = "Compendium.essence20.gi_joe_crb.Item.7758n3XWOzhSjdOk";
 
@@ -874,6 +1329,95 @@ describe("_prepareMovement", () => {
       const actor = makeActor('playerCharacter', movementSystem());
       actor._prepareMovement();
       expect(actor.system.movement.swim.total).not.toBe(actor.system.movement.ground.total);
+    });
+  });
+
+  describe("I Can Dig It (Technorganic Secrets, General Perk, p.46)", () => {
+    const I_CAN_DIG_IT_ID = "Compendium.essence20.technorganic_secrets.Item.0BrnoOPvwSSQ5oVe";
+
+    test("grants a flat 25ft Underground Movement in Alt Mode, with no prior Underground Movement", () => {
+      const actor = makeActor(
+        'playerCharacter',
+        movementSystem({ isTransformed: true }),
+        { perk: [{ type: 'perk', flags: { core: { sourceId: I_CAN_DIG_IT_ID } } }] },
+      );
+      actor._prepareMovement();
+      expect(actor.system.movement.burrow.total).toBe(25);
+    });
+
+    test("increases an existing Underground Movement by 15ft instead", () => {
+      const actor = makeActor(
+        'playerCharacter',
+        movementSystem({ isTransformed: true, movement: { ...movementSystem().movement, burrow: { base: 20, bonus: 0, morphed: 0, altMode: 0 } } }),
+        { perk: [{ type: 'perk', flags: { core: { sourceId: I_CAN_DIG_IT_ID } } }] },
+      );
+      actor._prepareMovement();
+      expect(actor.system.movement.burrow.total).toBe(35);
+    });
+
+    test("doesn't apply in Bot Mode", () => {
+      const actor = makeActor(
+        'playerCharacter',
+        movementSystem({ isTransformed: false }),
+        { perk: [{ type: 'perk', flags: { core: { sourceId: I_CAN_DIG_IT_ID } } }] },
+      );
+      actor._prepareMovement();
+      expect(actor.system.movement.burrow.total).toBe(0);
+    });
+
+    test("doesn't apply without the Perk", () => {
+      const actor = makeActor('playerCharacter', movementSystem({ isTransformed: true }));
+      actor._prepareMovement();
+      expect(actor.system.movement.burrow.total).toBe(0);
+    });
+  });
+
+  describe("Fast (GI Joe CRB, General Perk, p.131)", () => {
+    const FAST_ID = "Compendium.essence20.gi_joe_crb.Item.5IWpV61QlVwBkpTI";
+
+    function fastPerkList(hasPerk) {
+      return hasPerk ? [{ type: 'perk', flags: { core: { sourceId: FAST_ID } } }] : [];
+    }
+
+    test("raises Ground Movement (a type the actor already has) by the full +10 bonus", () => {
+      const system = movementSystem();
+      system.movement.ground.bonus = 15; // The pre-existing +5 plus Fast's own +10 Active Effect.
+      const actor = makeActor('playerCharacter', system, { perk: fastPerkList(true) });
+      actor._prepareMovement();
+      expect(actor.system.movement.ground.total).toBe(45);
+    });
+
+    test("does NOT grant Aerial Movement to an actor with none, despite the flat AE bonus", () => {
+      const system = movementSystem();
+      system.movement.aerial.bonus = 10; // What Fast's own Active Effect actually stamps on.
+      const actor = makeActor('playerCharacter', system, { perk: fastPerkList(true) });
+      actor._prepareMovement();
+      expect(actor.system.movement.aerial.total).toBe(0);
+    });
+
+    test("does NOT grant Swim Movement to an actor with none, despite the flat AE bonus", () => {
+      const system = movementSystem();
+      system.movement.swim.bonus = 10;
+      const actor = makeActor('playerCharacter', system, { perk: fastPerkList(true) });
+      actor._prepareMovement();
+      // Falls through to the ordinary half-Ground default instead of the backed-out Fast bonus.
+      expect(actor.system.movement.swim.total).toBe(Math.floor(actor.system.movement.ground.total / 5 * .5) * 5);
+    });
+
+    test("still raises Aerial Movement the actor already has", () => {
+      const system = movementSystem();
+      system.movement.aerial = { base: 20, bonus: 10, morphed: 0, altMode: 0 };
+      const actor = makeActor('playerCharacter', system, { perk: fastPerkList(true) });
+      actor._prepareMovement();
+      expect(actor.system.movement.aerial.total).toBe(30);
+    });
+
+    test("doesn't touch movement at all without the Perk", () => {
+      const system = movementSystem();
+      system.movement.aerial.bonus = 10;
+      const actor = makeActor('playerCharacter', system, { perk: fastPerkList(false) });
+      actor._prepareMovement();
+      expect(actor.system.movement.aerial.total).toBe(10);
     });
   });
 
@@ -1083,6 +1627,7 @@ describe("_prepareMovement", () => {
           burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+          underground: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         },
       }));
       actor.getFlag = jest.fn((scope, key) => (key == 'powerAdaptationActive' ? { boostOfSpeed: true } : undefined));
@@ -1225,6 +1770,7 @@ describe("_prepareMovement", () => {
           burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+          underground: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         },
       }));
       actor.getFlag = jest.fn((scope, key) => (key == 'swiftnessMovementType' ? 'aerial' : undefined));
@@ -1242,7 +1788,7 @@ describe("_prepareMovement", () => {
   describe("Fluttery Wings (MLP CRB, Elementary Aid spell, p.136)", () => {
     test("adds +15 to Aerial Movement while active", () => {
       const actor = makeActor('playerCharacter', movementSystem());
-      actor.getFlag = jest.fn((scope, key) => (key == 'flutteryWingsActive' ? true : undefined));
+      actor.getFlag = jest.fn((scope, key) => (key == 'flutteryWingsActive' ? { epoch: 1, window: 'scene', count: 1 } : undefined));
       actor._prepareMovement();
       expect(actor.system.movement.aerial.total).toBe(15); // 0 + 15
     });
@@ -1257,7 +1803,7 @@ describe("_prepareMovement", () => {
   describe("Hot To Trot (Knights of Canterlot, Elementary Enchantment spell, p.43)", () => {
     test("adds +15 to ground Movement while active", () => {
       const actor = makeActor('playerCharacter', movementSystem());
-      actor.getFlag = jest.fn((scope, key) => (key == 'hotToTrotActive' ? true : undefined));
+      actor.getFlag = jest.fn((scope, key) => (key == 'hotToTrotActive' ? { epoch: 1, window: 'scene', count: 1 } : undefined));
       actor._prepareMovement();
       expect(actor.system.movement.ground.total).toBe(50); // 35 + 15
     });
@@ -1272,7 +1818,7 @@ describe("_prepareMovement", () => {
   describe("Lightning Speed (MLP CRB, Virtuoso Utility spell, p.139)", () => {
     test("doubles every Movement type while active", () => {
       const actor = makeActor('playerCharacter', movementSystem());
-      actor.getFlag = jest.fn((scope, key) => (key == 'lightningSpeedActive' ? true : undefined));
+      actor.getFlag = jest.fn((scope, key) => (key == 'lightningSpeedActive' ? { epoch: 1, window: 'scene', count: 1 } : undefined));
       actor._prepareMovement();
       expect(actor.system.movement.ground.total).toBe(70); // 35 * 2
     });
@@ -1332,6 +1878,7 @@ describe("_prepareMovement", () => {
           burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
           swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+          underground: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         },
       }), {
         perk: [{ type: 'perk', flags: { core: { sourceId: ELTARIAN_TRAINING_ID } } }],
@@ -1428,6 +1975,7 @@ describe("_prepareMovement", () => {
         burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+        underground: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
       },
     }));
     actor._prepareMovement();
@@ -1465,6 +2013,44 @@ describe("_prepareSorcerousPower", () => {
     });
     actor._prepareSorcerousPower();
     expect(actor.system.powers.sorcerous.max).toBe(0);
+  });
+
+  // USER DECISION (2026-09-24): Sorcerous points are a one-time build budget, not a spendable
+  // pool - committed sums the powerCost of every owned Sorcerous-type Power, so the sheet can
+  // show budget-vs-committed instead of a remaining/spent value.
+  function sorcerousPower(powerCost) {
+    return { system: { type: 'sorcerous', powerCost } };
+  }
+
+  test("committed sums the powerCost of owned Sorcerous Powers", () => {
+    const actor = makeActor('playerCharacter', {
+      level: 10,
+      powers: { sorcerous: { levelTaken: 4 } },
+    }, {
+      power: [sorcerousPower(2), sorcerousPower(3)],
+    });
+    actor._prepareSorcerousPower();
+    expect(actor.system.powers.sorcerous.committed).toBe(5);
+  });
+
+  test("committed ignores non-Sorcerous (Grid/Threat) Powers", () => {
+    const actor = makeActor('playerCharacter', {
+      level: 10,
+      powers: { sorcerous: { levelTaken: 4 } },
+    }, {
+      power: [sorcerousPower(2), { system: { type: 'grid', powerCost: 1 } }],
+    });
+    actor._prepareSorcerousPower();
+    expect(actor.system.powers.sorcerous.committed).toBe(2);
+  });
+
+  test("committed is 0 with no owned Powers", () => {
+    const actor = makeActor('playerCharacter', {
+      level: 10,
+      powers: { sorcerous: { levelTaken: 4 } },
+    });
+    actor._prepareSorcerousPower();
+    expect(actor.system.powers.sorcerous.committed).toBe(0);
   });
 });
 
@@ -1515,6 +2101,29 @@ describe("_prepareEnergon", () => {
     });
     actor._prepareEnergon();
     expect(actor.system.energon.normal.max).toBe(5);
+  });
+
+  describe("Cybertroid Catalyst (Decepticon Directive, General Perk, p.65)", () => {
+    const CYBERTROID_CATALYST_ID = "Compendium.essence20.decepticon_directive.Item.WfrRHdgPpZiOLT8V";
+
+    test("caps Energon at the second lowest Essence Score instead", () => {
+      const actor = makeActor('playerCharacter', energonSystem(), {
+        perk: [{ type: 'perk', flags: { core: { sourceId: CYBERTROID_CATALYST_ID } } }],
+      });
+      actor._prepareEnergon();
+      expect(actor.system.energon.normal.max).toBe(3); // sorted [2, 3, 4, 5] -> second lowest
+    });
+
+    test("defers to Energon Battery when the actor holds both", () => {
+      const actor = makeActor('playerCharacter', energonSystem(), {
+        perk: [
+          { type: 'perk', flags: { core: { sourceId: ENERGON_BATTERY_ID } } },
+          { type: 'perk', flags: { core: { sourceId: CYBERTROID_CATALYST_ID } } },
+        ],
+      });
+      actor._prepareEnergon();
+      expect(actor.system.energon.normal.max).toBe(5);
+    });
   });
 
   test("non-transforming actors are left untouched", () => {
@@ -1719,6 +2328,105 @@ describe("_prepareFireproofResistance (Cobra Codex, Ranger Firestarter Focus, p.
   });
 });
 
+describe("_prepareMindPalaceBonus (MLP CRB, Role Perk, p.94)", () => {
+  const MIND_PALACE_ID = "Compendium.essence20.mlp_crb.Item.UVFsgco1AMzgZ595";
+
+  function makeMindPalaceActor(level) {
+    return makeActor('playerCharacter', { level, defenses: { willpower: { bonus: 0 } } }, {
+      perk: [{ type: 'perk', flags: { core: { sourceId: MIND_PALACE_ID } } }],
+    });
+  }
+
+  test("no bonus below 5th level", () => {
+    const actor = makeMindPalaceActor(4);
+    actor._prepareMindPalaceBonus();
+    expect(actor.system.defenses.willpower.bonus).toBe(0);
+  });
+
+  test("+1 at 5th-10th level", () => {
+    const actor = makeMindPalaceActor(5);
+    actor._prepareMindPalaceBonus();
+    expect(actor.system.defenses.willpower.bonus).toBe(1);
+  });
+
+  test("+2 at 11th-16th level", () => {
+    const actor = makeMindPalaceActor(11);
+    actor._prepareMindPalaceBonus();
+    expect(actor.system.defenses.willpower.bonus).toBe(2);
+  });
+
+  test("+3 at 17th level and up", () => {
+    const actor = makeMindPalaceActor(17);
+    actor._prepareMindPalaceBonus();
+    expect(actor.system.defenses.willpower.bonus).toBe(3);
+  });
+
+  test("does nothing without the Perk", () => {
+    const actor = makeActor('playerCharacter', { level: 20, defenses: { willpower: { bonus: 0 } } });
+    actor._prepareMindPalaceBonus();
+    expect(actor.system.defenses.willpower.bonus).toBe(0);
+  });
+
+  test("adds onto an existing bonus from another source", () => {
+    const actor = makeActor('playerCharacter', { level: 5, defenses: { willpower: { bonus: 2 } } }, {
+      perk: [{ type: 'perk', flags: { core: { sourceId: MIND_PALACE_ID } } }],
+    });
+    actor._prepareMindPalaceBonus();
+    expect(actor.system.defenses.willpower.bonus).toBe(3);
+  });
+});
+
+describe("_prepareInnerMagicWillpowerReduction (MLP CRB, Magic Role Perk, 2nd level, p.94)", () => {
+  // getSceneEpoch() falls back to epoch 1 when game.settings has no real counter stored (see
+  // scene-clock.mjs's own doc comment) - exactly this test file's own default global.game mock -
+  // so a flag stamped with epoch 1 always reads as "current" here with no extra game setup needed.
+  function makeInnerMagicActor(reduction) {
+    const actor = makeActor('playerCharacter', { defenses: { willpower: { bonus: 0 } } });
+    actor.getFlag = jest.fn((scope, key) => (
+      key == 'innerMagicWillpowerReduction' ? { epoch: 1, count: reduction } : undefined
+    ));
+    return actor;
+  }
+
+  test("subtracts the stacked reduction from Willpower Defense's bonus", () => {
+    const actor = makeInnerMagicActor(2);
+    actor._prepareInnerMagicWillpowerReduction();
+    expect(actor.system.defenses.willpower.bonus).toBe(-2);
+  });
+
+  test("does nothing with no reduction banked", () => {
+    const actor = makeActor('playerCharacter', { defenses: { willpower: { bonus: 0 } } });
+    actor._prepareInnerMagicWillpowerReduction();
+    expect(actor.system.defenses.willpower.bonus).toBe(0);
+  });
+});
+
+describe("_prepareTitansparkSize (Enigma of Combination, Influence Perk, p.26)", () => {
+  const TITANSPARK_ID = "Compendium.essence20.enigma_of_combination.Item.ldnUTXw5w21toLIy";
+
+  test("bumps size one step up from whatever the Origin set", () => {
+    const actor = makeActor('playerCharacter', { size: 'common' }, {
+      perk: [{ type: 'perk', flags: { core: { sourceId: TITANSPARK_ID } } }],
+    });
+    actor._prepareTitansparkSize();
+    expect(actor.system.size).toBe('large');
+  });
+
+  test("caps at the top of the size list", () => {
+    const actor = makeActor('playerCharacter', { size: 'titanic' }, {
+      perk: [{ type: 'perk', flags: { core: { sourceId: TITANSPARK_ID } } }],
+    });
+    actor._prepareTitansparkSize();
+    expect(actor.system.size).toBe('titanic');
+  });
+
+  test("does nothing without the Perk", () => {
+    const actor = makeActor('playerCharacter', { size: 'common' });
+    actor._prepareTitansparkSize();
+    expect(actor.system.size).toBe('common');
+  });
+});
+
 describe("prepareDerivedData", () => {
   test("computes player-character-specific derived data for a playerCharacter", () => {
     const actor = makeActor('playerCharacter', {
@@ -1742,6 +2450,7 @@ describe("prepareDerivedData", () => {
         burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+        underground: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
       },
       powers: { sorcerous: { levelTaken: 0 } },
       poisonTraining: 0,
@@ -1782,6 +2491,7 @@ describe("prepareDerivedData", () => {
         burrow: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         climb: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
         swim: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
+        underground: { base: 0, bonus: 0, morphed: 0, altMode: 0 },
       },
     });
 
@@ -2105,18 +2815,18 @@ describe("_prepareMegaformCombinerData", () => {
   const KEEP_IT_TOGETHER_ID = "Compendium.essence20.enigma_of_combination.Item.9QdGh6Kfb1EVi4N7";
   const BETTER_AS_ONE_ID = "Compendium.essence20.enigma_of_combination.Item.XnmVJF4XNcsaXAKL";
 
-  function makeComponent({ name, health, perkIds = [], athleticsSpecializations = {}, stun = 0 }) {
+  function makeComponent({ name, health, perkIds = [], athleticsSpecializations = {}, stun = 0, size = 'common' }) {
     return {
       name,
       type: 'playerCharacter',
       items: perkIds.map(id => ({ type: 'perk', flags: { core: { sourceId: id } } })),
       system: {
-        size: 'common',
+        size,
         essences: {
           strength: { value: 3 }, speed: { value: 2 }, smarts: { value: 2 }, social: { value: 2 },
         },
         skills: {
-          athletics: { shift: 'd8', modifier: 0, specializations: athleticsSpecializations },
+          athletics: { shift: 'd8', modifier: 0, shiftUp: 0, specializations: athleticsSpecializations },
         },
         defenses: { toughness: { armor: 0 }, evasion: { armor: 0 } },
         movement: { ground: { total: 30, base: 30 } },
@@ -2143,7 +2853,7 @@ describe("_prepareMegaformCombinerData", () => {
       essences: {
         strength: {}, speed: {}, smarts: {}, social: {},
       },
-      skills: { athletics: { modifier: 0 } },
+      skills: { athletics: { modifier: 0, shiftUp: 0 }, brawn: { modifier: 0, shiftUp: 0 } },
       defenses: { toughness: {}, evasion: {} },
       movement: { ground: {} },
       health: {},
@@ -2334,7 +3044,7 @@ describe("_prepareMegaformCombinerData", () => {
       expect(actor.system.hasTitanHardpoint).toBe(true);
     });
 
-    test("Skill Expertise adds a flat modifier to the chosen Skill", () => {
+    test("Skill Expertise adds an upshift to the chosen Skill (Enigma of Combination p.42's own ↑1, not a flat modifier)", () => {
       const holder = withTrait(
         makeComponent({ name: 'A', health: 10 }), { type: 'skillExpertise', skill: 'athletics', value: 1 },
       );
@@ -2342,7 +3052,24 @@ describe("_prepareMegaformCombinerData", () => {
 
       actor._prepareMegaformCombinerData();
 
-      expect(actor.system.skills.athletics.modifier).toBe(1);
+      expect(actor.system.skills.athletics.shiftUp).toBe(1);
+      expect(actor.system.skills.athletics.modifier).toBe(0);
+    });
+
+    test("a second Skill Expertise item (the two-skills choice) adds its own upshift independently", () => {
+      const holder = withTrait(
+        makeComponent({ name: 'A', health: 10 }), { type: 'skillExpertise', skill: 'athletics', value: 1 },
+      );
+      holder.items = [
+        ...holder.items,
+        { type: 'megaformTrait', system: { type: 'skillExpertise', skill: 'brawn', value: 1 } },
+      ];
+      const actor = makeCombinerActor([holder]);
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.skills.athletics.shiftUp).toBe(1);
+      expect(actor.system.skills.brawn.shiftUp).toBe(1);
     });
   });
 
@@ -2352,9 +3079,12 @@ describe("_prepareMegaformCombinerData", () => {
       return component;
     }
 
+    // Size Class: "one larger than the largest component for a duo/trio" (see
+    // _prepareMegaformCombinerData's own comment) - 'extended' components combine up to
+    // 'gigantic', the minimum this Combiner feature requires.
     test("adds +1 to the two highest Essence Scores exactly once, even with multiple holders", () => {
-      const holder1 = withTrait(makeComponent({ name: 'A', health: 10 }), { type: 'commander' });
-      const holder2 = withTrait(makeComponent({ name: 'B', health: 10 }), { type: 'commander' });
+      const holder1 = withTrait(makeComponent({ name: 'A', health: 10, size: 'extended' }), { type: 'commander' });
+      const holder2 = withTrait(makeComponent({ name: 'B', health: 10, size: 'extended' }), { type: 'commander' });
       const actor = makeCombinerActor([holder1, holder2]);
 
       actor._prepareMegaformCombinerData();
@@ -2369,7 +3099,7 @@ describe("_prepareMegaformCombinerData", () => {
     });
 
     test("breaks a tie for second place using the fixed Strength > Speed > Smarts > Social order", () => {
-      const holder = makeComponent({ name: 'A', health: 10 });
+      const holder = makeComponent({ name: 'A', health: 10, size: 'extended' });
       holder.system.essences.strength.value = 5;
       holder.system.essences.speed.value = 3;
       holder.system.essences.smarts.value = 3;
@@ -2383,6 +3113,17 @@ describe("_prepareMegaformCombinerData", () => {
       expect(actor.system.essences.speed.value).toBe(4);
       expect(actor.system.essences.smarts.value).toBe(3);
       expect(actor.system.essences.social.value).toBe(1);
+    });
+
+    test("doesn't apply to a Combiner form smaller than Gigantic", () => {
+      const holder = withTrait(makeComponent({ name: 'A', health: 10, size: 'common' }), { type: 'commander' });
+      const actor = makeCombinerActor([holder]);
+
+      actor._prepareMegaformCombinerData();
+
+      // 'common' combines up to only 'large' for a duo/trio - below the Gigantic floor.
+      expect(actor.system.essences.strength.value).toBe(3);
+      expect(actor.system.essences.speed.value).toBe(2);
     });
   });
 
@@ -2630,13 +3371,37 @@ describe("_prepareActions", () => {
     expect(actor.system.actions.free.max).toBe(2);
   });
 
-  test.each(["asleep", "defeated", "unconscious"])("%s zeroes every budget", (status) => {
+  test.each(["asleep", "defeated", "stunned", "unconscious"])("%s zeroes every budget", (status) => {
     const actor = actionsActor({ speed: 5, statuses: [status] });
     actor._prepareActions();
 
     expect(actor.system.actions.standard.max).toBe(0);
     expect(actor.system.actions.move.max).toBe(0);
     expect(actor.system.actions.free.max).toBe(0);
+  });
+
+  // A Defeated actor who spent a Story Point to "momentarily act as though it has not been
+  // Defeated" (GI Joe CRB p.209) gets this turn's actions back - the one exception the shared
+  // isUnableToAct() (helpers/action-economy.mjs) carves out of the blanket zero-out above.
+  test("a Defeated actor who has spent their act-while-Defeated Story Point this turn keeps their budget", () => {
+    const previousCombat = global.game.combat;
+    global.game.combat = { id: 'c1', round: 2, turn: 0 };
+    try {
+      const actor = actionsActor({ speed: 5, statuses: ["defeated"] });
+      actor.getFlag = jest.fn((scope, key) => (
+        scope == 'essence20' && key == 'actWhileDefeatedThisTurn'
+          ? { combatId: 'c1', round: 2, turn: 0 }
+          : undefined
+      ));
+
+      actor._prepareActions();
+
+      expect(actor.system.actions.standard.max).toBe(1);
+      expect(actor.system.actions.move.max).toBe(1);
+      expect(actor.system.actions.free.max).toBe(3);
+    } finally {
+      global.game.combat = previousCombat;
+    }
   });
 
   // Immobilized/Grappled/Restrained restrict movement DISTANCE rather than denying the Move action
@@ -2651,6 +3416,105 @@ describe("_prepareActions", () => {
   test("an actor type without an actions block is left untouched", () => {
     const actor = makeActor("vehicle", {});
     expect(() => actor._prepareActions()).not.toThrow();
+  });
+
+  // Surprise (GI Joe CRB, Combat chapter): "on the surprise round... they cannot take any actions
+  // (including Standard, Move, or Free actions)." Security and Unsurprising are its two RAW
+  // exceptions (both Transformers CRB) - see actor.mjs's own SECURITY_ID/UNSURPRISING_ID comments.
+  describe("surprised", () => {
+    const SECURITY_ID = "Compendium.essence20.tf_crb.Item.JSIHwTZHlqRPDERC";
+    const UNSURPRISING_ID = "Compendium.essence20.tf_crb.Item.C1PP2JWreUxFJfMa";
+
+    function withPerk(actor, perkId) {
+      actor.items.push({ type: 'perk', flags: { core: { sourceId: perkId } } });
+      return actor;
+    }
+
+    test("zeroes every budget with no exception Perk", () => {
+      const actor = actionsActor({ speed: 5, statuses: ["surprised"] });
+      actor._prepareActions();
+
+      expect(actor.system.actions.standard.max).toBe(0);
+      expect(actor.system.actions.move.max).toBe(0);
+      expect(actor.system.actions.free.max).toBe(0);
+    });
+
+    test("Security keeps the Move action (and only the Move action)", () => {
+      const actor = withPerk(actionsActor({ speed: 5, statuses: ["surprised"] }), SECURITY_ID);
+      actor._prepareActions();
+
+      expect(actor.system.actions.move.max).toBe(1);
+      expect(actor.system.actions.standard.max).toBe(0);
+      expect(actor.system.actions.free.max).toBe(0);
+    });
+
+    test("Unsurprising acts at Speed capped to level, not zeroed, at 1st level", () => {
+      const actor = withPerk(actionsActor({ speed: 9 }), UNSURPRISING_ID);
+      actor.system.level = 1;
+      actor.statuses = new Set(["surprised"]);
+      actor._prepareActions();
+
+      // Speed 1: Move OR Standard, shared, no Free actions - same shape a real Speed 1 turn has.
+      expect(actor.system.actions.shared).toBe(true);
+      expect(actor.system.actions.standard.max).toBe(1);
+      expect(actor.system.actions.move.max).toBe(1);
+      expect(actor.system.actions.free.max).toBe(0);
+    });
+
+    test("Unsurprising acts normally once level catches up to Speed", () => {
+      const actor = withPerk(actionsActor({ speed: 9 }), UNSURPRISING_ID);
+      actor.system.level = 10;
+      actor.statuses = new Set(["surprised"]);
+      actor._prepareActions();
+
+      expect(actor.system.actions.shared).toBe(false);
+      expect(actor.system.actions.standard.max).toBe(1);
+      expect(actor.system.actions.move.max).toBe(1);
+      expect(actor.system.actions.free.max).toBe(7);
+    });
+
+    test("Unsurprising is irrelevant while not Surprised", () => {
+      const actor = withPerk(actionsActor({ speed: 5 }), UNSURPRISING_ID);
+      actor.system.level = 1;
+      actor._prepareActions();
+
+      expect(actor.system.actions.free.max).toBe(3);
+    });
+
+    // Ready For Anything (GI Joe CRB, Renegade base, 9th level, p.97) - see actor.mjs's own
+    // READY_FOR_ANYTHING_ID comment.
+    const READY_FOR_ANYTHING_ID = "Compendium.essence20.gi_joe_crb.Item.BEAZ1oLp9XeibJoh";
+
+    function withActiveRecklessAbandon(actor) {
+      actor._getBaseRolePoints = () => ({
+        flags: { core: { sourceId: "Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY" } },
+        system: { isActive: true },
+      });
+      return actor;
+    }
+
+    test("Ready For Anything acts normally while Surprised with Reckless Abandon active", () => {
+      const actor = withActiveRecklessAbandon(withPerk(actionsActor({ speed: 5 }), READY_FOR_ANYTHING_ID));
+      actor.statuses = new Set(["surprised"]);
+      actor._prepareActions();
+
+      expect(actor.system.actions.standard.max).toBe(1);
+      expect(actor.system.actions.move.max).toBe(1);
+      expect(actor.system.actions.free.max).toBe(3);
+    });
+
+    test("Ready For Anything doesn't help without Reckless Abandon active", () => {
+      const actor = withPerk(actionsActor({ speed: 5, statuses: ["surprised"] }), READY_FOR_ANYTHING_ID);
+      actor._getBaseRolePoints = () => ({
+        flags: { core: { sourceId: "Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY" } },
+        system: { isActive: false },
+      });
+      actor._prepareActions();
+
+      expect(actor.system.actions.standard.max).toBe(0);
+      expect(actor.system.actions.move.max).toBe(0);
+      expect(actor.system.actions.free.max).toBe(0);
+    });
   });
 });
 

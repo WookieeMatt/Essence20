@@ -55,8 +55,16 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Grid Psychic Prime",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "role",
         "level": 20
+      },
+      "gp17": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.atYoqZDXQz1PoDLP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Power",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
       }
     },
     "essences": [

@@ -1,5 +1,5 @@
 import {
-  actorHasPerk, bankPendingBonus, clearPendingBonus, getPendingBonus, hasUsedThisEncounter, markUsedThisEncounter,
+  actorHasPerk, bankPendingBonus, clearPendingBonus, findPerk, getPendingBonus, hasUsedThisEncounter, markUsedThisEncounter,
 } from "./perks.mjs";
 import { isPersonalShieldActive } from "./personal-shield.mjs";
 import { PENDING_ELEMENTAL_SHIELD_FLAG_KEY } from "./team-buffs.mjs";
@@ -13,11 +13,29 @@ import { isMonsterFormActive } from "./monster-morph.mjs";
 import { grantNotOnMyWatchReaction } from "./not-on-my-watch.mjs";
 import { actorHasZordFeature } from "./zord-features.mjs";
 import { getMegaformParticipants } from "./megaform-participants.mjs";
+import { canRiseAgainPreventDefeat, RISE_AGAIN_DEFEAT_ENCOUNTER_FLAG } from "./rise-again.mjs";
+import { checkEmotionalStrengthAngerTrigger, deactivateShynessOnDamage } from "./emotional-mastery.mjs";
+import { deactivatePhantomOnDamage } from "./phantom.mjs";
+import { consumeSelfPreservationImmunity } from "./self-preservation.mjs";
 
 // Relic Key (PR CRB p.140, prerequisite Auxiliary Zord) - see getDefenseValue's own doc comment
 // below for the Willpower/Cleverness default this grants while unpiloted.
 const PR_CRB = "Compendium.essence20.pr_crb.Item.";
 const RELIC_KEY_ID = `${PR_CRB}uSlClAv3oJjf54pa`;
+
+// Zord Sentience (Beneath the Helmet, Zord Feature, p.72, prerequisite Energem Infusion): "The
+// Zord has a default Smarts and Social of 2 when no crew is currently driving." Same
+// unpiloted-default-Essence shape as Relic Key just above, a lower flat value - see
+// getDefenseValue's own doc comment below. The reciprocal "Driving (Autopilot) Skill gains ↑1"
+// half lives in dice.mjs instead (a Skill Test shift, not a Defense).
+const BENEATH_THE_HELMET = "Compendium.essence20.beneath_the_helmet.Item.";
+const ZORD_SENTIENCE_ID = `${BENEATH_THE_HELMET}idhVrfBIKELsl3OW`;
+
+// Dogfighter (Across the Stars, General Perk, p.68) - see getDefenseValue's own doc comment below
+// for the +2 Evasion Defense half. dice.mjs's own Edge-on-Driving/Targeting half uses this exact
+// same ID and qualification shape independently, since the two halves are read from opposite
+// sides (the pilot's own roll vs. the piloted vehicle's own Defense).
+const DOGFIGHTER_ID = "Compendium.essence20.across_the_stars.Item.twl2N01FD8XKO0s1";
 
 // The 3 Finster's Monster-Matic Cookbook Warlord capstones (20th level) whose own "while in
 // Monster Form, reduce incoming damage" clause is built here - see getWarlordDamageReduction's
@@ -61,9 +79,20 @@ function getWarlordDamageReduction(actor, damageType) {
 // Aegis (GI Joe CRB, Tank Focus, 20th level, p.99) - see its own doc comment in
 // reckless-abandon.mjs. Checked here alongside Defender's Oath/Immortal Rebel Soul's identical
 // "clamp newValue at 1 instead of 0" shape.
-const AEGIS_ID = "Compendium.essence20.gi_joe_crb.Item.CKQfEuHDNW6zP0FE";
+const AEGIS_ID = "Compendium.essence20.gi_joe_crb.Item.0ZTjZ36gN74889am";
 // Not Done Yet - see its own check near AEGIS_ID's identical-shaped clamp below.
 const NOT_DONE_YET_ID = "Compendium.essence20.gi_joe_crb.Item.wGAWnAM5zUgcNP9c";
+
+// It's Morphin Time! (PR CRB, p.33) - see its own check near Rise Again's identical isMorphed
+// gate below. Widened to an array: Let's Go Psycho! (Finster's Monster-Matic Cookbook, every
+// Psycho Path Role, 1st level, p.284/288/291/294/298/300) grants the exact same "when reduced to 0
+// Health, you may choose to avoid Defeat by automatically returning to your natural form,
+// unconscious, and at 1 Health" clause verbatim, off a distinct compendium Item - same "same
+// clause, different book" dispatch idiom as Dig Deep/Perimeter Defender's own widened arrays.
+const MORPHIN_TIME_PERK_IDS = [
+  "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso",
+  "Compendium.essence20.finster_s_monster_matic_cookbook.Item.qMvUP1yEtsSo6KDh",
+];
 
 const IMPENETRABLE_SHIELD_ID = "Compendium.essence20.gi_joe_crb.Item.eEUl7OA9yWAk0QD3";
 
@@ -154,6 +183,50 @@ function findWeAllGoHomeHolder(actor) {
   return null;
 }
 
+// We are the Coinless (Through the Shattered Grid, Coinless Resistance Origin Benefit, p.20) - see
+// findCoinlessRescuer's own doc comment below.
+const WE_ARE_THE_COINLESS_ID = "Compendium.essence20.through_the_shattered_grid.Item.DRHPP4jmrjNa53ZA";
+
+/**
+ * We are the Coinless (Through the Shattered Grid, Origin Benefit, p.20): "Whenever another member
+ * of your team would be Defeated in a scene, you may instead spend 1 Personal Power to have that
+ * member return to 1 Health and gain the Impaired Condition for the remainder of the scene."
+ *
+ * Same ally-held Defeat-prevention scan as findWeAllGoHomeHolder just above, with three real
+ * differences taken straight from RAW rather than copied across:
+ * - RAW says "ANOTHER member of your team", so unlike We All Go Home this deliberately has NO self
+ *   case - the holder can't rescue themselves with it.
+ * - The limit is the Personal Power cost, not a frequency cap: RAW states no once-per-scene/
+ *   encounter gate at all, so there's no flag here. A holder with the Power to spare can do this
+ *   repeatedly, which is what the text actually says.
+ * - RAW never gates this on the rescuer's own state, so a Defeated holder isn't excluded (unlike
+ *   Defender's Oath, whose own text does say "and you aren't Defeated"). Left faithful rather than
+ *   tightened on a guess.
+ * "Can see"/range is not a factor here either - RAW scopes it to the team, not a distance - so this
+ * matches on disposition alone, the same team proxy helpers/allies.mjs already uses.
+ * @param {Actor} actor   The actor about to be reduced to 0 Health.
+ * @returns {Actor|null}   A teammate who holds the Perk and can afford the 1 Power, or null.
+ */
+function findCoinlessRescuer(actor) {
+  const actorToken = actor.getActiveTokens?.()?.[0];
+  if (!actorToken || !canvas?.tokens) {
+    return null;
+  }
+
+  for (const token of canvas.tokens.placeables) {
+    if (token === actorToken || !token.actor || token.document.disposition !== actorToken.document.disposition) {
+      continue;
+    }
+
+    if (actorHasPerk(token.actor, WE_ARE_THE_COINLESS_ID)
+      && (token.actor.system?.powers?.personal?.value ?? 0) >= 1) {
+      return token.actor;
+    }
+  }
+
+  return null;
+}
+
 // Immortal Rebel Soul (WTNV Citizen's Guide, Soldier Role, StrexCorp Rebel Focus, p.46) - see its
 // own check below.
 const IMMORTAL_REBEL_SOUL_ID = "Compendium.essence20.wtnv_citizens_guide.Item.SYFScAH8lDshgLNM";
@@ -165,7 +238,43 @@ const IMMORTAL_REBEL_SOUL_ID = "Compendium.essence20.wtnv_citizens_guide.Item.SY
 // they'd rather just go down" idiom this project already accepts for similar always-beneficial
 // once-per-scene saves.
 const RENEGADE_COMMANDER_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Item.JgJRqxXzTPBOlOBz";
+
+// Life Supporting (Cobra Codex, Restricted Battledress Upgrade, p.101): "If you would be Defeated
+// after being reduced to 0 Health, you immediately regain 1 Health. You can't use Life Support
+// again until you succeed at a DIF 20 Technology Skill Test that takes 10 minutes." Same self-
+// clamp-to-1-Health shape as Renegade Commander just above ("regain 1 Health" and "drop to 1
+// Health instead" land on the same actor state from 0), but this is a worn armor Upgrade Item, not
+// a Perk - actorHasPerk can't see it, so this checks for the real Upgrade Item directly (the same
+// "unattached armor-type Upgrade, by sourceId" gate Static Slide Inhibitor's own check in dice.mjs
+// already establishes). The DIF 20 Technology recharge test is dropped in favor of the same
+// once-per-scene approximation this project already uses for every other unenforceable frequency
+// cap (Immortal Rebel Soul/Avoid The Inevitable's own "once per investigation"/"once per combat"
+// above) - there's no in-fiction downtime-Skill-Test infrastructure anywhere in this codebase to
+// actually gate a recharge on.
+const LIFE_SUPPORTING_ID = "Compendium.essence20.cobra_codex.Item.VokHpoLjUYTzA3Xk";
+
+/**
+ * Whether the actor is wearing Life Supporting - see LIFE_SUPPORTING_ID's own comment above.
+ * @param {Actor} actor
+ * @returns {Boolean}
+ */
+function hasLifeSupporting(actor) {
+  return !!actor.items?.some(item => item.type == 'upgrade' && item.system?.type == 'armor'
+    && !item.getFlag?.('essence20', 'parentId')
+    && (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == LIFE_SUPPORTING_ID);
+}
+
 const DO_NOT_GO_QUIETLY_ID = "Compendium.essence20.jump_through_time.Item.llL4HUNxVJDNIaej";
+
+// Avoid The Inevitable (Factions in Action Vol 1: Ferocious Fighters, Cobra-La Origin Benefit,
+// p.78): "Once per combat, when you would be Defeated, you gain 1 temporary Health. This Health
+// lasts until removed or at the end of the scene." This project has no separate temporary-Health
+// pool anywhere (grepped, zero hits) - the same "drop to 1 Health instead of a real second pool"
+// approximation Renegade Commander/Immortal Rebel Soul/Do Not Go Quietly just above already use
+// for an identical "would-be-Defeated becomes survivable" clause is used here too, since the
+// practical effect (1 Health standing between the actor and Defeat, right now) is the same either
+// way.
+const AVOID_THE_INEVITABLE_ID = "Compendium.essence20.ferocious_fighters.Item.RfYYmA2bDBVZsMl3";
 const BABY_HOLD_TOGETHER_ID = "Compendium.essence20.gi_joe_crb.Item.ybthZ8mmCSe3ZO84";
 
 // Elemental Shield (Beneath the Helmet, Aqua Ranger, 9th/18th level, p.42) - see
@@ -262,12 +371,58 @@ function getAdaptedWavelengthReduction(actor, damageType) {
   return hasMatch ? 1 : 0;
 }
 
+// Knock, Knock! (Technorganic Secrets, Carapaced Origin, p.39): "You gain 1 Toughness and reduce
+// incoming Sharp damage by 1 (to a minimum of 0)." The Toughness half is already a plain
+// compendium Active Effect on this Item; this constant/function only cover the flat, always-on
+// Sharp-damage reduction, same "subtract from the incoming value before Immunity/Resistance
+// processing" shape Adapted Wavelength's own reduction already establishes just below - unlike
+// Adapted Wavelength, this isn't a player choice, so a plain actorHasPerk() check is enough.
+const KNOCK_KNOCK_ID = "Compendium.essence20.technorganic_secrets.Item.KihkWHZ1lwLfcwk0";
+
+// Energy Mastery (Decepticon Directive, Elementalist Focus, 20th level, p.54): "you gain Edge on
+// attack Skill Tests with any weapon that deals damage of any of your chosen Elements and those
+// attacks inflict +1 damage. In addition, you gain Immunity to damage of the type you originally
+// chose for Energy Affinity." The Edge/+1-damage half lives in dice.mjs (a roll-time grant, same
+// shape as every other qualifying-attack check there); this constant/function only cover the
+// Immunity half, applied live in applyDamage() below (the same isEmpImmuneViaShield idiom just
+// below already establishes) rather than a persisted system.immunities write, since it's derived
+// from the Perk + Energy Affinity's own choice rather than a standalone toggle. "Any of your
+// chosen Elements" collapses to the single Energy Affinity choice - Energy Connection's own
+// Additional Energy Types option (a second chosen Element) isn't built, see ENERGY_CONNECTION_ID's
+// own comment in dice.mjs.
+const ENERGY_AFFINITY_ID = "Compendium.essence20.decepticon_directive.Item.DgFY0ZmAtClAobiA";
+const ENERGY_MASTERY_ID = "Compendium.essence20.decepticon_directive.Item.bjR8V1BEc3CfrrDu";
+
+/**
+ * Energy Mastery's Immunity half - see ENERGY_MASTERY_ID's own comment above.
+ * @param {Actor} actor
+ * @param {String} damageType
+ * @returns {Boolean}
+ */
+function isEnergyMasteryImmune(actor, damageType) {
+  return actorHasPerk(actor, ENERGY_MASTERY_ID) && !!damageType
+    && findPerk(actor, ENERGY_AFFINITY_ID)?.system.choice == damageType;
+}
+
+/**
+ * Knock, Knock!'s flat -1 (floored at 0) reduction against incoming Sharp damage - see
+ * KNOCK_KNOCK_ID's own comment above.
+ * @param {Actor} actor
+ * @param {String} damageType
+ * @returns {Number}   1 if the actor holds the Perk, 0 otherwise.
+ */
+function getKnockKnockReduction(actor, damageType) {
+  return damageType == 'sharp' && actorHasPerk(actor, KNOCK_KNOCK_ID) ? 1 : 0;
+}
+
 // Hardened Armor (Across the Stars, Gold Ranger, 1st level, p.52) - this is the `perk`-type item
 // (the scaling Toughness-defense half is a separate, already-automated `rolePoints` sub-item read
 // generically by actor.mjs#_prepareDefenses, unrelated to this constant). "After suffering a
-// damage type... you gain Resistance to that damage type... for the remainder of the scene." See
-// applyDamage's own grantHardenedArmorResistance call below.
+// damage type other than Blunt or Sharp, you gain Resistance to that damage type... for the
+// remainder of the scene." See applyDamage's own grantHardenedArmorResistance call below.
 const HARDENED_ARMOR_ID = "Compendium.essence20.across_the_stars.Item.LVyy4985HSSKCnGs";
+// The two damage types RAW excludes from Hardened Armor's own Resistance grant.
+const HARDENED_ARMOR_EXCLUDED_TYPES = ['blunt', 'sharp'];
 
 /**
  * Hardened Armor's own Resistance-after-hit clause (see HARDENED_ARMOR_ID's own comment above):
@@ -282,9 +437,47 @@ const HARDENED_ARMOR_ID = "Compendium.essence20.across_the_stars.Item.LVyy4985HS
  * @param {Number} amount   The amount actually applied (0 means Immune/no-op - see applyDamage).
  */
 async function grantHardenedArmorResistance(actor, damageType, amount) {
-  if (amount > 0 && actorHasPerk(actor, HARDENED_ARMOR_ID) && !actor.system.resistances?.[damageType]) {
+  if (amount > 0 && !HARDENED_ARMOR_EXCLUDED_TYPES.includes(damageType)
+    && actorHasPerk(actor, HARDENED_ARMOR_ID) && !actor.system.resistances?.[damageType]) {
     await actor.update({ [`system.resistances.${damageType}`]: true });
   }
+}
+
+// Energy Rebuttal (Through the Shattered Grid, Guardian of Eltar, Chief Guardian choice, 13th
+// level, p.73): "Whenever you use the Defend action against an oncoming Attack that deals Energy
+// damage and it fails, you absorb some of the residual energy to deal an extra 2 Energy damage on
+// your next Attack. This Role Perk can only be used once per combat scene." RE-CATEGORIZED - this
+// was repeatedly cited alongside Golden Guardian/Fe-BURN! as needing a "counter-attack triggered
+// by being hit" shape this project doesn't have, but "you absorb... to deal extra damage on your
+// NEXT Attack" is exactly the already-established banked-bonus shape (bank now, consume on the
+// next matching roll) - no "you may" in the text either, so it's automatic, not a player choice,
+// same passive-grant idiom as Hardened Armor/Supreme Guardian's own reactive checks just above.
+// "Whenever you use the Defend action... and it fails" is approximated as "whenever you take
+// Energy damage" (the same unenforceable-precondition drop this project already accepts
+// elsewhere - no Defend-action state is tracked anywhere in this codebase). Consumption lives in
+// dice.mjs's own damageBonusValue sum, the same shape Environmental Assist's own banked bonus
+// already established, gated to any weaponEffect Attack (RAW names no damage-type restriction on
+// the NEXT Attack itself).
+const ENERGY_REBUTTAL_ID = "Compendium.essence20.through_the_shattered_grid.Item.EnergyRebuttal10";
+export const PENDING_ENERGY_REBUTTAL_FLAG_KEY = 'pendingEnergyRebuttal';
+const ENERGY_REBUTTAL_ENCOUNTER_FLAG = 'energyRebuttalUsedThisEncounter';
+const ENERGY_REBUTTAL_DAMAGE_BONUS = 2;
+
+/**
+ * @param {Actor} actor
+ * @param {String} damageType
+ * @param {Number} amount   The amount actually applied (0 means Immune/no-op - see applyDamage).
+ */
+async function grantEnergyRebuttalBonus(actor, damageType, amount) {
+  if (
+    amount <= 0 || !ENERGY_DAMAGE_TYPES.has(damageType) || !actorHasPerk(actor, ENERGY_REBUTTAL_ID)
+    || hasUsedThisEncounter(actor, ENERGY_REBUTTAL_ENCOUNTER_FLAG)
+  ) {
+    return;
+  }
+
+  await bankPendingBonus(actor, PENDING_ENERGY_REBUTTAL_FLAG_KEY, { amount: ENERGY_REBUTTAL_DAMAGE_BONUS });
+  await markUsedThisEncounter(actor, ENERGY_REBUTTAL_ENCOUNTER_FLAG);
 }
 
 // Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99): "when you are subjected to a non-attack
@@ -433,6 +626,31 @@ export function getVehicleDriver(vehicleActor) {
 }
 
 /**
+ * Finds the Zord actor a pilot Actor has registered as their own (e.g. Magna Defender's own
+ * Torozord, or any Ranger's plain "Zord") - the entry created when a Zord is dropped directly
+ * onto a playerCharacter's own sheet (sheet-handlers/drop-handler.mjs's onDropActor, case
+ * 'playerCharacter'), stored in the PILOT's own system.actors, not the Zord's. This is the
+ * opposite direction from getVehicleDriver/dice.mjs's own _getPilotedVehicle (both of which read
+ * the ZORD's crew map to find who's currently SEATED in it) - "owns a Zord" and "is currently
+ * piloting a Zord" are different relationships (a Torozord Feature grant should apply to your own
+ * Zord any time, not only while you happen to be seated in it during a live combat roll).
+ * @param {Actor} pilotActor
+ * @returns {Actor|null}   The owned Zord, or null if none is registered.
+ */
+export function getOwnedZord(pilotActor) {
+  for (const entry of Object.values(pilotActor.system?.actors ?? {})) {
+    if (entry.type == 'zord') {
+      const zord = fromUuidSync(entry.uuid);
+      if (zord) {
+        return zord;
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
  * Returns the effective numeric value of one of an actor's four Defenses (Toughness, Evasion,
  * Willpower, Cleverness; p.168-169). Every actor type computes its own .total the same way now
  * (Essence20Actor#_prepareDefenses runs for all of them), with one RAW-mandated exception: a
@@ -455,9 +673,15 @@ export function getVehicleDriver(vehicleActor) {
  *   bonus..." - a partial version of ignoreArmor above (a flat point count instead of an
  *   all-or-nothing strip), capped at the actual armor component so it can never go negative.
  *   Ignored if ignoreArmor is also set (that already strips the whole thing).
+ * @param {Boolean} [options.ignoreShield]   Screwball (Cobra Codex, Weapon Upgrade, p.97)'s own
+ *   Bypassing trait: "Attacks ignore shield bonuses to Defenses" - subtracts the shield component
+ *   _prepareDefenses() already folded into .total, same read-back shape as ignoreArmor above.
+ *   Note: ignoreArmor is also forced on automatically whenever `actor` itself carries the
+ *   'armorStripped' status (Ice Flechettes, dice.mjs's own ICE_FLECHETTES_EFFECT_IDS comment) -
+ *   a target-side effect rather than a caller-passed option.
  * @returns {Number}
  */
-export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignoreArmorPoints = 0 } = {}) {
+export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignoreArmorPoints = 0, ignoreShield = false } = {}) {
   const defense = actor.system.defenses?.[defenseType];
 
   // Responsive (GI Joe CRB, Vehicle Trait): "The vehicle can use the driver's Evasion against
@@ -469,14 +693,14 @@ export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignor
   if (defenseType == 'evasion' && actor.type == 'vehicle' && actor.system.traits?.responsive) {
     const driver = getVehicleDriver(actor);
     if (driver) {
-      return getDefenseValue(driver, 'evasion', { ignoreArmor, ignoreArmorPoints });
+      return getDefenseValue(driver, 'evasion', { ignoreArmor, ignoreArmorPoints, ignoreShield });
     }
   }
 
   if (defense?.usesDrivers && !(actor.type == 'vehicle' && actor.system.traits?.ai)) {
     const driver = getVehicleDriver(actor);
     if (driver) {
-      return getDefenseValue(driver, defenseType, { ignoreArmor, ignoreArmorPoints });
+      return getDefenseValue(driver, defenseType, { ignoreArmor, ignoreArmorPoints, ignoreShield });
     }
 
     // Relic Key (PR CRB p.140): "The Zord has a default Smarts and Social of 3 when the Relic
@@ -489,8 +713,17 @@ export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignor
         + (defense.armor ?? 0) + (defense.shield ?? 0);
     }
 
-    // No driver, no Relic Key: RAW says this effect only affects the vehicle "if it has a
-    // driver" - i.e. it doesn't apply at all while driverless, not that it trivially succeeds.
+    // Zord Sentience - see ZORD_SENTIENCE_ID's own comment above. Identical shape to Relic Key,
+    // just a lower default Essence Score.
+    if (actor.type == 'zord' && actorHasZordFeature(actor, ZORD_SENTIENCE_ID)) {
+      const ZORD_SENTIENCE_ESSENCE = 2;
+      return (defense.base ?? 0) + ZORD_SENTIENCE_ESSENCE + (defense.bonus ?? 0)
+        + (defense.armor ?? 0) + (defense.shield ?? 0);
+    }
+
+    // No driver, no Relic Key/Zord Sentience: RAW says this effect only affects the vehicle "if
+    // it has a driver" - i.e. it doesn't apply at all while driverless, not that it trivially
+    // succeeds.
     // This system has no "this Defense can't be targeted at all" concept to enforce that
     // directly, so this returns an effectively-unbeatable value instead of 0, erring toward
     // "the attack has no effect" rather than "the attack trivially crits."
@@ -499,11 +732,40 @@ export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignor
 
   let value = defense?.total ?? defense?.value ?? 0;
 
-  if (ignoreArmor && defense?.total !== undefined) {
+  // Ice Flechettes (Finster's Monster-Matic Cookbook, Path of Frost, 9th level, p.293): "On a
+  // Critical Success, the target loses all Defense bonuses provided by armor until the end of
+  // their next turn." Read live off the target's own 'armorStripped' status (applied via
+  // applyTimedCondition, see dice.mjs's own isIceFlechettesAttempt comment) rather than a passed-
+  // in option, since this has to apply to every subsequent roll against the target regardless of
+  // who's attacking or whether they declared ignoreArmor themselves - same forced-recompute shape
+  // as the Drilling Shot/Quantum Cut callers already use, just triggered by the defender's own
+  // state instead of the attacker's.
+  const hasArmorStripped = !!actor.statuses?.has?.('armorStripped');
+
+  if ((ignoreArmor || hasArmorStripped) && defense?.total !== undefined) {
     value -= (actor.system.isMorphed ? defense.morphed : defense.armor) ?? 0;
   } else if (ignoreArmorPoints > 0 && defense?.total !== undefined) {
     const armorComponent = (actor.system.isMorphed ? defense.morphed : defense.armor) ?? 0;
     value -= Math.min(armorComponent, ignoreArmorPoints);
+  }
+
+  if (ignoreShield && defense?.total !== undefined) {
+    value -= defense.shield ?? 0;
+  }
+
+  // Dogfighter (Across the Stars, General Perk, p.68) - see DOGFIGHTER_ID's own comment above. The
+  // Perk's own qualifier ("any vehicle of Extended II size or smaller that uses an Aerial Movement
+  // type") is checked against THIS vehicle, mirroring the size/movement check dice.mjs's own
+  // Edge half already performs on the pilot's side.
+  if (defenseType == 'evasion' && actor.type == 'vehicle' && actor.system.movement?.aerial?.base > 0) {
+    const sizeOrder = Object.keys(E20.actorSizes);
+    const sizeIndex = sizeOrder.indexOf(actor.system.size);
+    if (sizeIndex != -1 && sizeIndex <= sizeOrder.indexOf('extended2')) {
+      const driver = getVehicleDriver(actor);
+      if (driver && actorHasPerk(driver, DOGFIGHTER_ID)) {
+        value += 2;
+      }
+    }
   }
 
   return value;
@@ -590,6 +852,9 @@ export function getSkillRanks(actor, skill) {
  * Hardened Armor (Across the Stars, Gold Ranger, 1st level, p.52): once real damage of a given
  * type actually lands here, see grantHardenedArmorResistance's own doc comment above for the
  * Resistance-after-hit grant this function calls on the way out.
+ * Energy Rebuttal (Through the Shattered Grid, Guardian of Eltar, Chief Guardian choice, 13th
+ * level, p.73): once real Energy damage actually lands here, see grantEnergyRebuttalBonus's own
+ * doc comment above for the banked "extra 2 damage on your next Attack" grant this calls.
  * Elemental Shield (Beneath the Helmet, Aqua Ranger, 9th/18th level, p.42): a banked "ignore N
  * Energy damage" grant is consumed against the incoming amount right after Immunity has already
  * zeroed it if applicable - see consumeElementalShieldReduction's own doc comment above.
@@ -612,7 +877,7 @@ export function getSkillRanks(actor, skill) {
  * @returns {Promise<Number>}   The amount actually applied (0 if Immune), clamped to how much
  *   Health the actor had left when damageType isn't 'stun'.
  */
-export async function applyDamage(actor, damageValue, damageType) {
+export async function applyDamage(actor, damageValue, damageType, isCrit = false) {
   // Not On My Watch - see grantNotOnMyWatchReaction's own doc comment. Captured before any of
   // this function's own mutations, the same "read Defeated status once, up front" idiom
   // chat.mjs#onApplyDamage's own wasAlreadyDefeated already uses - both branches below only fire
@@ -626,6 +891,10 @@ export async function applyDamage(actor, damageValue, damageType) {
   // reduction applied to the incoming value itself, ahead of Immunity/Elemental Shield below -
   // order doesn't matter for an already-Immune actor (still zeroed either way).
   damageValue = Math.max(0, damageValue - getAdaptedWavelengthReduction(actor, damageType));
+
+  // Knock, Knock! - see KNOCK_KNOCK_ID's own comment above. Same always-on, ahead-of-
+  // Immunity/Elemental Shield placement as Adapted Wavelength just above.
+  damageValue = Math.max(0, damageValue - getKnockKnockReduction(actor, damageType));
 
   // Wisdom of the Elders - Resilient Armor (Through the Shattered Grid, Guardian of Eltar,
   // 9th/18th level, p.72): "Ignore 1 damage per turn" while active - unlike Adapted Wavelength
@@ -644,7 +913,8 @@ export async function applyDamage(actor, damageValue, damageType) {
 
   const isEmpImmuneViaShield = damageType == 'emp' && isPersonalShieldActive(actor)
     && actorHasPerk(actor, IMPENETRABLE_SHIELD_ID);
-  let amount = (actor.system.immunities?.[damageType] || isEmpImmuneViaShield) ? 0 : damageValue;
+  let amount = (actor.system.immunities?.[damageType] || isEmpImmuneViaShield || isEnergyMasteryImmune(actor, damageType)) ? 0 : damageValue;
+  amount = (await consumeSelfPreservationImmunity(actor, damageType)) ? 0 : amount;
   amount = await consumeElementalShieldReduction(actor, damageType, amount);
   amount = await consumeDigDeepReduction(actor, amount);
 
@@ -683,9 +953,16 @@ export async function applyDamage(actor, damageValue, damageType) {
     await grantHardenedArmorResistance(actor, damageType, amount);
     await grantGridElementalAdaptationResistance(actor, damageType, amount);
     await grantSupremeGuardianTechRegen(actor, damageType, amount);
+    await grantEnergyRebuttalBonus(actor, damageType, amount);
     await grantSensitiveSnag(actor, amount);
     await grantPushThroughPainRegen(actor, amount);
     await grantCruelWarlordPsychicRegen(actor, damageType, amount);
+    if (amount > 0) {
+      await checkEmotionalStrengthAngerTrigger(actor);
+      await deactivateShynessOnDamage(actor);
+      await deactivatePhantomOnDamage(actor);
+    }
+
     return amount;
   }
 
@@ -722,6 +999,22 @@ export async function applyDamage(actor, damageValue, damageType) {
     await markUsedThisEncounter(actor, 'renegadeCommanderUsedThisEncounter');
   }
 
+  // Life Supporting - see LIFE_SUPPORTING_ID's own comment above. Same shape as Renegade
+  // Commander just above.
+  if (newValue <= 0 && amount > 0 && hasLifeSupporting(actor)
+    && !hasUsedThisEncounter(actor, 'lifeSupportingUsedThisEncounter')) {
+    newValue = 1;
+    await markUsedThisEncounter(actor, 'lifeSupportingUsedThisEncounter');
+  }
+
+  // Avoid The Inevitable - see AVOID_THE_INEVITABLE_ID's own comment above. Same shape as
+  // Renegade Commander just above.
+  if (newValue <= 0 && amount > 0 && actorHasPerk(actor, AVOID_THE_INEVITABLE_ID)
+    && !hasUsedThisEncounter(actor, 'avoidTheInevitableUsedThisEncounter')) {
+    newValue = 1;
+    await markUsedThisEncounter(actor, 'avoidTheInevitableUsedThisEncounter');
+  }
+
   // Do Not Go Quietly (A Jump Through Time, Last of my Kind Origin Benefit, p.26, built
   // 2026-09-12): "The first time you face defeat in a scene, you instead drop to 1 Health and
   // gain the Impaired Condition for the rest of the scene." Same once-per-encounter Health clamp
@@ -739,6 +1032,35 @@ export async function applyDamage(actor, damageValue, damageType) {
   // Defender's Oath - see hasNearbyDefendersOathProtection's own doc comment above.
   if (newValue <= 0 && amount > 0 && hasNearbyDefendersOathProtection(actor)) {
     newValue = 1;
+  }
+
+  // Rise Again (Through the Shattered Grid, General Perk, p.115) - see
+  // helpers/rise-again.mjs's own doc comment. Same "once per scene, would-be-Defeated becomes 1
+  // Health instead" shape as Immortal Rebel Soul/Renegade Commander/Do Not Go Quietly above, plus
+  // an isMorphed gate and an "unless a Critical Success" exception (isCrit, threaded in from this
+  // function's one real caller, chat.mjs#onApplyDamage).
+  if (newValue <= 0 && amount > 0 && canRiseAgainPreventDefeat(actor, isCrit)) {
+    newValue = 1;
+    await markUsedThisEncounter(actor, RISE_AGAIN_DEFEAT_ENCOUNTER_FLAG);
+  }
+
+  // It's Morphin Time! (PR CRB, p.33): "When reduced to 0 Health, you may choose to avoid Defeat
+  // by automatically returning to your natural form, unconscious, and at 1 Health." Same "would-be-
+  // Defeated becomes 1 Health instead" clamp shape as Immortal Rebel Soul/Renegade Commander above,
+  // gated on isMorphed like Rise Again just above, but with no once-per-scene limit (RAW states
+  // none) and two extra effects of its own: reverting Morph (system.isMorphed) and applying
+  // Unconscious. Deliberately NOT routed through sheet-handlers/power-ranger-handler.mjs#onMorph
+  // (the sheet's own "Morph" button handler) - that function also swaps the token's image and
+  // clears several other Morph-tied Perk toggles (Boosted Vigor, Powered Plating, etc.), which is
+  // correct for a deliberate, player-driven de-Morph but overreaches for this involuntary one
+  // happening mid-damage-resolution; only the two RAW-stated mechanical effects are applied here.
+  // "You may choose to" is treated as automatic, the same "player self-polices whether they'd have
+  // used it" idiom Renegade Commander's identically-worded clause already accepts just above.
+  if (newValue <= 0 && amount > 0 && actor.system?.isMorphed
+    && MORPHIN_TIME_PERK_IDS.some(id => actorHasPerk(actor, id))) {
+    newValue = 1;
+    await actor.update({ 'system.isMorphed': false });
+    await actor.toggleStatusEffect('unconscious', { active: true });
   }
 
   // Baby Hold Together (GI Joe CRB, Mechanized Infantry Focus, 18th level, p.82, built
@@ -786,6 +1108,27 @@ export async function applyDamage(actor, damageValue, damageType) {
     }
   }
 
+  // We are the Coinless - see findCoinlessRescuer's own doc comment above. Checked LAST in this
+  // whole chain deliberately: every other entry above either costs nothing or spends the victim's
+  // OWN resource, so a teammate's Personal Power is only ever spent once the victim has no
+  // self-rescue of their own left. The spend is automatic rather than prompted, the same "player
+  // self-polices whether they'd have used it" idiom Renegade Commander's identical "you may choose
+  // to" already accepts - but since this is the one entry that spends a DIFFERENT player's
+  // resource, it announces itself so the table can see whose Power paid for it.
+  if (newValue <= 0 && amount > 0) {
+    const coinlessRescuer = findCoinlessRescuer(actor);
+    if (coinlessRescuer) {
+      newValue = 1;
+      await coinlessRescuer.update({
+        'system.powers.personal.value': coinlessRescuer.system.powers.personal.value - 1,
+      });
+      await actor.toggleStatusEffect('impaired', { active: true });
+      ui.notifications.info(game.i18n.format('E20.WeAreTheCoinlessRescue', {
+        rescuer: coinlessRescuer.name, actor: actor.name,
+      }));
+    }
+  }
+
   await actor.update({ 'system.health.value': newValue });
 
   if (newValue <= 0 && !wasAlreadyDefeated) {
@@ -795,9 +1138,16 @@ export async function applyDamage(actor, damageValue, damageType) {
   await grantHardenedArmorResistance(actor, damageType, previousValue - newValue);
   await grantGridElementalAdaptationResistance(actor, damageType, previousValue - newValue);
   await grantSupremeGuardianTechRegen(actor, damageType, previousValue - newValue);
+  await grantEnergyRebuttalBonus(actor, damageType, previousValue - newValue);
   await grantSensitiveSnag(actor, previousValue - newValue);
   await grantPushThroughPainRegen(actor, previousValue - newValue);
   await grantCruelWarlordPsychicRegen(actor, damageType, previousValue - newValue);
+  if (previousValue - newValue > 0) {
+    await checkEmotionalStrengthAngerTrigger(actor);
+    await deactivateShynessOnDamage(actor);
+    await deactivatePhantomOnDamage(actor);
+  }
+
   return previousValue - newValue;
 }
 
@@ -879,6 +1229,49 @@ export const _isCritIsFumble = function (dice, canCritD2) {
 
   return [isCrit, isFumble];
 };
+
+/**
+ * The second damage component a weaponEffect deals on the same hit (weapon-effect.mjs's
+ * secondaryDamage, e.g. "1 Blunt and 1 Stun"), or null when it has none.
+ * @param {Item} item   The rolled item (anything other than a weaponEffect has none).
+ * @param {Boolean} [forgone]   A Perk traded this attack's damage away (Guardian Strikes etc.).
+ * @returns {Object|null}   {type, value}
+ */
+export function getSecondaryDamage(item, forgone = false) {
+  const secondary = item?.type == 'weaponEffect' ? item.system.secondaryDamage : null;
+  if (forgone || !secondary?.type || !(secondary.value > 0)) {
+    return null;
+  }
+
+  return { type: secondary.type, value: secondary.value };
+}
+
+/**
+ * The secondary damage the Apply Damage button `key` should also deal to `targetUuid`, read off
+ * the message's own checkResults (dice.mjs stashes each hit's rider there, since check-card.hbs
+ * has no slot for a second damage type). The base button deals the scaled rider; the Critical
+ * Success "repeat the effect" option deals it again at its flat value, like the rest of that list.
+ * @param {Object} flags   The message's essence20 flags.
+ * @param {String} key   The button's own data-key ("<uuid>:base", "<uuid>:crit:double", ...).
+ * @param {String} targetUuid
+ * @returns {Object|null}   {type, value}
+ */
+export function getSecondaryDamageForButton(flags, key, targetUuid) {
+  const secondary = flags?.checkResults?.find(entry => entry.targetUuid == targetUuid)?.secondaryDamage;
+  if (!secondary?.type) {
+    return null;
+  }
+
+  if (key == `${targetUuid}:base`) {
+    return { type: secondary.type, value: secondary.value };
+  }
+
+  if (key == `${targetUuid}:crit:double`) {
+    return { type: secondary.type, value: secondary.base };
+  }
+
+  return null;
+}
 
 /**
  * Builds the ChatMessage.create() data for a resolved attack or vs-Difficulty Skill Test,

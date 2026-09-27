@@ -19,7 +19,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": ""
+    "prerequisite": "Weapon with the Anti-Tank or Ballistic trait and the Reload trait"
   },
   "effects": [],
   "sort": 0,

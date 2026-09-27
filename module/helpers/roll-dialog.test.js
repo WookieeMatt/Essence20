@@ -100,6 +100,54 @@ describe("_isUntrainedSnag", () => {
       }
     });
 
+    test("false for Zord (PR CRB, Role Perk, p.35) while piloting a Zord", async () => {
+      const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
+      const actor = makeDrivingActor([ZORD_PERK_ID], { type: 'zord', ...makeVehicle('ground') });
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
+    });
+
+    test("true for Zord piloting a non-Zord vehicle", async () => {
+      const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
+      const actor = makeDrivingActor([ZORD_PERK_ID], makeVehicle('ground'));
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(true);
+    });
+
+    test("true for Zord with no piloted vehicle", async () => {
+      const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
+      const actor = makeDrivingActor([ZORD_PERK_ID], null);
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(true);
+    });
+
+    test("false for Phantom Ship (Across the Stars, p.62) on Driving while piloting a Zord", async () => {
+      const PHANTOM_SHIP_ID = "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWPV88t";
+      const actor = makeDrivingActor([PHANTOM_SHIP_ID], { type: 'zord', ...makeVehicle('ground') });
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
+    });
+
+    test("true for Phantom Ship piloting a non-Zord vehicle", async () => {
+      const PHANTOM_SHIP_ID = "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWPV88t";
+      const actor = makeDrivingActor([PHANTOM_SHIP_ID], makeVehicle('ground'));
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(true);
+    });
+
+    test("false for Quantasaurus Rex (A Jump Through Time, p.46) on Driving while piloting a Zord", async () => {
+      const QUANTASAURUS_REX_ID = "Compendium.essence20.jump_through_time.Item.sn5jhTf8sJqRFhKS";
+      const actor = makeDrivingActor([QUANTASAURUS_REX_ID], { type: 'zord', ...makeVehicle('ground') });
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
+    });
+
+    test("false for Quantasaurus Rex on Animal Handling while piloting a Zord", async () => {
+      const QUANTASAURUS_REX_ID = "Compendium.essence20.jump_through_time.Item.sn5jhTf8sJqRFhKS";
+      const actor = makeDrivingActor([QUANTASAURUS_REX_ID], { type: 'zord', ...makeVehicle('ground') });
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'animalHandling')).toBe(false);
+    });
+
+    test("true for Quantasaurus Rex on Animal Handling with no piloted Zord", async () => {
+      const QUANTASAURUS_REX_ID = "Compendium.essence20.jump_through_time.Item.sn5jhTf8sJqRFhKS";
+      const actor = makeDrivingActor([QUANTASAURUS_REX_ID], null);
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'animalHandling')).toBe(true);
+    });
+
     function makeGoodToGoActor(choice, pilotedVehicle) {
       const GOOD_TO_GO_ID = "Compendium.essence20.intercontinental_adventures.Item.Yt3muowN1aALcqOj";
       return {
@@ -177,20 +225,52 @@ describe("_isUntrainedSnag", () => {
       expect(actor.setFlag).not.toHaveBeenCalled();
     });
 
-    test("also applies for GI Joe CRB's own identically-worded reprint", async () => {
-      const GREEN_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.oelHthPlqIq4eDpp";
-      game.combat = { id: 'combat1' };
-      const actor = {
+  });
+
+  // Green (GI Joe CRB, General Perk, p.131) - unlike the Transformers CRB printing above, RAW here
+  // reads "Three times per mission," a strictly wider window than a single encounter - see
+  // GREEN_GIJ_ID's own comment in roll-dialog.mjs. Tracked with the scene counter instead, and
+  // available outside of combat too.
+  describe("Green (GI Joe CRB, General Perk, p.131)", () => {
+    const GREEN_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.oelHthPlqIq4eDpp";
+
+    function makeGreenActor({ combat = null, stored } = {}) {
+      game.combat = combat;
+      return {
         ...makeActor([GREEN_GIJ_ID]),
-        getFlag: jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 })),
+        getFlag: jest.fn(() => stored),
         setFlag: jest.fn(),
       };
+    }
+
+    afterEach(() => {
+      game.combat = null;
+    });
+
+    test("false (suppressed) with uses remaining outside of combat, and marks the count used", async () => {
+      const actor = makeGreenActor({ stored: { epoch: 1, window: 'scene', count: 1 } });
+
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
+
+      expect(actor.setFlag).toHaveBeenCalledWith(
+        'essence20', 'greenUsesThisScene', { epoch: 1, window: 'scene', count: 2 },
+      );
+    });
+
+    test("also works with an active combat", async () => {
+      const actor = makeGreenActor({ combat: { id: 'combat1' }, stored: { epoch: 1, window: 'scene', count: 1 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
       expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'greenUsesThisEncounter', { epoch: 1, window: 'encounter', count: 2 },
+        'essence20', 'greenUsesThisScene', { epoch: 1, window: 'scene', count: 2 },
       );
-      game.combat = null;
+    });
+
+    test("true once all 3 uses this mission (scene) are spent", async () => {
+      const actor = makeGreenActor({ stored: { epoch: 1, window: 'scene', count: 3 } });
+
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(true);
+      expect(actor.setFlag).not.toHaveBeenCalled();
     });
   });
 });

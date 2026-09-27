@@ -71,7 +71,8 @@
     },
     "traits": [
       "blunt",
-      "energy"
+      "energy",
+      "powerWeapon"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

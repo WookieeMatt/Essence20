@@ -28,14 +28,14 @@
       "d78e": {
         "uuid": "Compendium.essence20.pr_crb.Item.WzigK03hIcczvFLK",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Blaster Focus",
+        "name": "Blaster Focusers",
         "type": "perk",
         "role": null
       },
       "fe6b": {
         "uuid": "Compendium.essence20.pr_crb.Item.xz0N8ltXFRFjr9wx",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Defensive Shield",
+        "name": "Defensive Shields",
         "type": "perk",
         "role": null
       },
@@ -49,7 +49,7 @@
       "6e44": {
         "uuid": "Compendium.essence20.pr_crb.Item.fN6N13llWp5ChvIG",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Gridspeak Reciever",
+        "name": "Gridspeak Receivers",
         "type": "perk",
         "role": null
       },

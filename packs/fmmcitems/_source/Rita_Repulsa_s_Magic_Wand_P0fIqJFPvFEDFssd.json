@@ -1,0 +1,97 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Rita Repulsa's Magic Wand",
+  "type": "weapon",
+  "_id": "P0fIqJFPvFEDFssd",
+  "img": "systems/essence20/assets/icons/weapons/winged-scepter.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 275
+    },
+    "items": {
+      "gjCG": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.FcUUGh50DTDcdnNX",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Wicked Hex",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "culture",
+          "style": "projectile"
+        },
+        "damageValue": 3,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 70,
+          "value": 40
+        },
+        "shiftDown": 0
+      },
+      "0Qqj": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.L8SoE1e2deXLccED",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Wicked Hex Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "culture",
+          "style": "projectile"
+        },
+        "damageValue": 0,
+        "damageType": "impaired",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 70,
+          "value": 40
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "unique",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "sorcerous"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790264776136,
+    "modifiedTime": 1790264776136,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!P0fIqJFPvFEDFssd"
+}

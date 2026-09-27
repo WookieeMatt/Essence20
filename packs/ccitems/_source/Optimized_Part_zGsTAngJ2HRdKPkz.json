@@ -11,7 +11,7 @@
       "book": "Cobra Codex",
       "page": 80
     },
-    "prerequisite": "Enhanced Part of 12th Level",
+    "prerequisite": "Enhanced Part or 12th Level",
     "selectionLimit": 1,
     "type": "general"
   },

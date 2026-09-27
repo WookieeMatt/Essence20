@@ -13,7 +13,64 @@
     "selectionLimit": 1,
     "type": "origin"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Are You Who I Think You Are? (Recognized Celebrity)",
+      "origin": "Item.ipeHMugjPNPi1uEG",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "W7h6DXvWLtH7kQiP",
+      "changes": [
+        {
+          "key": "system.skills.deception.isSpecialized",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.persuasion.isSpecialized",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.streetwise.isSpecialized",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!ipeHMugjPNPi1uEG.W7h6DXvWLtH7kQiP"
+    }
+  ],
   "flags": {
     "core": {}
   },

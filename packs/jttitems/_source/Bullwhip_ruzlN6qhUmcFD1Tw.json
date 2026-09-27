@@ -54,7 +54,7 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 0
+        "shiftDown": 1
       },
       "bf33": {
         "uuid": "Compendium.essence20.jump_through_time.Item.0LzJYRHDpWfjCzoo",
@@ -76,7 +76,7 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 0
+        "shiftDown": 1
       }
     },
     "availability": "limited",
@@ -85,7 +85,7 @@
     },
     "equipped": true,
     "requirements": {
-      "custom": "Acriobatics d4",
+      "custom": "Acrobatics d4",
       "skill": "athletics",
       "shift": "d4"
     },

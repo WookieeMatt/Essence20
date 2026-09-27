@@ -18,6 +18,9 @@
     "availability": "restricted",
     "benefit": "",
     "traits": [],
+    "removedTraits": [
+      "mounted"
+    ],
     "type": "weapon",
     "prerequisite": ""
   },

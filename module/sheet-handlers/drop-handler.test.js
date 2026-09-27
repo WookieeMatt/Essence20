@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { onDropActor, verifyDropSelection } from "./drop-handler.mjs";
+import { _onUpgradeDrop, onDropActor, verifyDropSelection } from "./drop-handler.mjs";
 import { DETACHED_THIS_SCENE_FLAG } from "./vehicle-handler.mjs";
 
 function makeVehicle(actors, numDrivers, numPassengers) {
@@ -43,6 +43,31 @@ describe("verifyDropSelection", () => {
     // The one driver seat is filled, but there's still an open passenger seat
     expect(verifyDropSelection(vehicle, 'driver')).toBe(false);
     expect(verifyDropSelection(vehicle, 'passenger')).toBe(true);
+  });
+});
+
+describe("_onUpgradeDrop", () => {
+  test("a vehicle-type Upgrade (e.g. Heavy Water Coolant) attaches directly to a Vehicle actor", async () => {
+    const upgrade = { system: { type: 'vehicle' } };
+    const actor = { type: 'vehicle', system: {} };
+    const dropFunc = jest.fn(async () => [{}]);
+
+    const result = await _onUpgradeDrop(upgrade, actor, dropFunc);
+
+    expect(dropFunc).toHaveBeenCalled();
+    expect(result).toEqual([{}]);
+  });
+
+  test("still errors for a vehicle-type Upgrade dropped on a non-vehicle actor", async () => {
+    const upgrade = { system: { type: 'vehicle' } };
+    const actor = { type: 'playerCharacter', system: {} };
+    const dropFunc = jest.fn();
+
+    const result = await _onUpgradeDrop(upgrade, actor, dropFunc);
+
+    expect(dropFunc).not.toHaveBeenCalled();
+    expect(global.ui.notifications.error).toHaveBeenCalledWith('E20.UpgradeDropError');
+    expect(result).toBe(false);
   });
 });
 

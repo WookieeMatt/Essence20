@@ -27,38 +27,6 @@
         "type": "perk",
         "subtype": "role",
         "level": 1
-      },
-      "BukN": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.F5mrzupd6TG2kj3x",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Gravity Optional",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "NN48": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.8HCbpZLg41UwRObr",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Guerilla Tactics",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "mIfx": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.9w9TjZdznrBsYWHf",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Moon's Haunted",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
-      },
-      "bnrH": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.SYFScAH8lDshgLNM",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Immortal Rebel Soul",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
       }
     },
     "adjustments": {

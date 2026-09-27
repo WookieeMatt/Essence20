@@ -147,7 +147,7 @@ async function _onDropDefault(data, dropFunc, isNewItem=true) {
  * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
  *                                    not permitted.
  */
-async function _onUpgradeDrop(upgrade, actor, dropFunc) {
+export async function _onUpgradeDrop(upgrade, actor, dropFunc) {
   // Drones can only accept drone Upgrades
   if (actor.type == 'companion' && actor.system.type == 'drone' && upgrade.system.type == 'drone') {
     return dropFunc();
@@ -155,6 +155,11 @@ async function _onUpgradeDrop(upgrade, actor, dropFunc) {
     return dropFunc();
   } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
     return onAttachmentDrop(actor, upgrade, dropFunc);
+  } else if (actor.type == 'vehicle' && upgrade.system.type == 'vehicle') {
+    // A Vehicle-type Upgrade (e.g. Heavy Water Coolant, Operation Cold Iron p.49) attaches
+    // directly to the Vehicle actor itself, not to a sub-item on its sheet the way an
+    // armor/weapon Upgrade attaches to a piece of gear - embedded plainly, same as a Perk.
+    return dropFunc();
   } else {
     ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
     return false;

@@ -22,7 +22,7 @@
           "style": "energy"
         },
         "damageValue": 1,
-        "damageType": "element",
+        "damageType": "laser",
         "numHands": "2",
         "numTargets": 1,
         "radius": 0,

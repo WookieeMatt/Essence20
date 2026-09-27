@@ -71,8 +71,10 @@
     },
     "traits": [
       "energy",
+      "powerWeapon",
       "sharp",
-      "silent"
+      "silent",
+      "versatile"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

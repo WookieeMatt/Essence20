@@ -15,7 +15,52 @@
     "type": "",
     "gearType": "security"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Bug Sweeper",
+      "origin": "Item.8de84HzOLEuGOxjA",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "bS4nSf0mgAlB2c6g",
+      "changes": [
+        {
+          "key": "system.skills.alertness.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!8de84HzOLEuGOxjA.bS4nSf0mgAlB2c6g"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

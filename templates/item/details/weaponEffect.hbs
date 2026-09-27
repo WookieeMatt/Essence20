@@ -30,6 +30,16 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+  {{!-- Secondary Damage (e.g. a Bowling Ball's "1 Blunt and 1 Stun") --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSecondaryDamage'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.secondaryDamage.value name="system.secondaryDamage.value" min=0 step=1}}
+  <select name="system.secondaryDamage.type">
+    {{selectOptions config.damageTypes selected=system.secondaryDamage.type localize=true blank=(localize 'E20.None')}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
   {{!-- Defense Type --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponDefenseType'}}
   {{#*inline "item-field-inputs"}}

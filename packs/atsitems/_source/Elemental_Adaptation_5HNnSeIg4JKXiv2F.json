@@ -16,10 +16,10 @@
     "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
-    "powerCost": null,
+    "powerCost": 1,
     "selectionLimit": 1,
     "type": "grid",
-    "usesInterval": "perTurn",
+    "usesInterval": "perScene",
     "usesPer": 1,
     "duration": {
       "units": "scenes",

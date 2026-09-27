@@ -69,7 +69,14 @@
       "skill": "brawn",
       "shift": "d6"
     },
-    "traits": [],
+    "traits": [
+      "antiTank",
+      "ballistic",
+      "mounted",
+      "reload",
+      "vehicular",
+      "wrecker"
+    ],
     "upgradeTraits": [],
     "usesPerScene": null
   },

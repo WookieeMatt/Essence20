@@ -15,7 +15,52 @@
     "type": "tools",
     "gearType": "tools"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Placed Rope Ladder",
+      "origin": "Item.7nZZ6wOHGXT8pZsH",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "JMhowsMjI1DnLvoQ",
+      "changes": [
+        {
+          "key": "system.skills.athletics.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!7nZZ6wOHGXT8pZsH.JMhowsMjI1DnLvoQ"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

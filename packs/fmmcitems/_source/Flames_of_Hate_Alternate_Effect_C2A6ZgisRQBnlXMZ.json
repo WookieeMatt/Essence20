@@ -16,7 +16,7 @@
     "defenseType": "cleverness",
     "shiftDown": 0,
     "numHands": "1",
-    "numTargets": 6,
+    "numTargets": 1,
     "radius": 60,
     "range": {
       "min": null,
@@ -29,7 +29,7 @@
       "page": 302
     },
     "description": "<p>60 ft Line; Target is Blinded by rage until the end of the target's next turn</p>",
-    "shape": "cone"
+    "shape": "line"
   },
   "effects": [],
   "sort": 0,

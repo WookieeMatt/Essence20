@@ -11,7 +11,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "origin"
   },
   "effects": [
     {
@@ -44,7 +44,7 @@
       "tint": "#ffffff",
       "transfer": true,
       "flags": {},
-      "name": "Life of a Thousand Raods",
+      "name": "Life of a Thousand Roads",
       "description": "",
       "statuses": [],
       "_stats": {

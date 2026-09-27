@@ -17,6 +17,12 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Hammer Effect",
         "type": "weaponEffect"
+      },
+      "qf4m": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.fwnoDM8cBLcxbd1l",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Hammer Alternate Effect",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

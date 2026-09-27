@@ -13,10 +13,10 @@
       "page": 70
     },
     "classification": {
-      "skill": "finesse",
-      "style": "melee"
+      "skill": "targeting",
+      "style": "energy"
     },
-    "damageType": "sharp",
+    "damageType": "element",
     "damageValue": 2,
     "isSpecialized": false,
     "shiftDown": 0,
@@ -25,9 +25,9 @@
     "radius": 0,
     "range": {
       "min": null,
-      "reachMultiplier": 1,
-      "long": null,
-      "value": null
+      "reachMultiplier": 0,
+      "long": 100,
+      "value": 40
     }
   },
   "effects": [],

@@ -16,7 +16,7 @@
     "defenseType": "toughness",
     "shiftDown": 0,
     "numHands": "1",
-    "numTargets": 1,
+    "numTargets": 3,
     "radius": 0,
     "range": {
       "min": null,

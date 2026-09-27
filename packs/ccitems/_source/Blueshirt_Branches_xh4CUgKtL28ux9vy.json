@@ -87,6 +87,54 @@
             "traits": []
           }
         }
+      },
+      "7b39": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.2riN1OHDBpVyl1ua",
+        "img": "icons/svg/sword.svg",
+        "name": "Close Combat Blade (Scary)",
+        "type": "weapon",
+        "items": {
+          "bd64": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.hb5fKPK5GNTSlKvY",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Close Combat Blade Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          },
+          "cb18": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.IPpJMAO5tD8bQIKg",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Scary",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": [
+              "intimidating"
+            ]
+          }
+        }
       }
     },
     "alternateAccess": "Cobra Corps Division"

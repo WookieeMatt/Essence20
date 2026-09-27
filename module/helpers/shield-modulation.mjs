@@ -1,5 +1,5 @@
-import { actorHasPerk } from "./perks.mjs";
-import { isPersonalShieldItem } from "./personal-shield.mjs";
+import { actorHasPerk, findPerk } from "./perks.mjs";
+import { isPersonalShieldItem, isPersonalShieldActive, SHIELD_UPGRADE_ID } from "./personal-shield.mjs";
 import { E20 } from "./config.mjs";
 
 /**
@@ -14,9 +14,10 @@ import { E20 } from "./config.mjs";
  * proceeding with the plain isActive toggle it already does for everyone else.
  *
  * Consumption lives in dice.mjs#_getAutomaticCombatModifiers, right next to Impenetrable Shield's
- * own identical "Resistance = a Snag on the attack roll" check - Impenetrable Shield only reads
- * the target's OWN shield/Perk, not allies extended via Shield Upgrade, and this matches that same
- * scope rather than widening it.
+ * own identical "Resistance = a Snag on the attack roll" check. Unlike Impenetrable Shield, this
+ * Perk's own text explicitly reads "You and any allies protected by your shield" - once Shield
+ * Upgrade (5th level) is also held, that's every ally within 10 feet, not just the holder - see
+ * isProtectedByShieldModulation() below, which dice.mjs calls instead of checking the holder alone.
  */
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 export const SHIELD_MODULATION_ID = `${GI_JOE_CRB}16ul4Ev6b9gO5CIN`;
@@ -80,4 +81,44 @@ export async function setShieldModulationDamageType(actor, damageType) {
  */
 export function getShieldModulationDamageType(actor) {
   return actor.getFlag?.('essence20', SHIELD_MODULATION_FLAG_KEY) ?? null;
+}
+
+/**
+ * Whether targetActor is resistant to damageType via Shield Modulation - either they're the
+ * Perk-holder themselves with an active, matching-modulated shield, or Shield Upgrade extends a
+ * nearby ally's own active, matching-modulated shield out to them (same 10-foot,
+ * same-disposition-token scan as personal-shield.mjs#getShieldUpgradeBonus, checking for a live
+ * damage-type match instead of a defense bonus).
+ * @param {Actor} targetActor
+ * @param {String} damageType
+ * @returns {Boolean}
+ */
+export function isProtectedByShieldModulation(targetActor, damageType) {
+  const modulates = (actor) => isPersonalShieldActive(actor) && actorHasPerk(actor, SHIELD_MODULATION_ID)
+    && getShieldModulationDamageType(actor) == damageType;
+
+  if (modulates(targetActor)) {
+    return true;
+  }
+
+  const targetToken = targetActor.getActiveTokens?.()?.[0];
+  if (!targetToken || !canvas?.tokens) {
+    return false;
+  }
+
+  for (const token of canvas.tokens.placeables) {
+    if (token === targetToken || !token.actor || token.document.disposition !== targetToken.document.disposition) {
+      continue;
+    }
+
+    if (!modulates(token.actor) || !findPerk(token.actor, SHIELD_UPGRADE_ID)) {
+      continue;
+    }
+
+    if (canvas.grid.measurePath([token.center, targetToken.center]).distance <= 10) {
+      return true;
+    }
+  }
+
+  return false;
 }

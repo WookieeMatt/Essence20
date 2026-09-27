@@ -1,0 +1,35 @@
+{
+  "folder": "doMCCKU9hFPLLbvv",
+  "name": "Scroll of Ages",
+  "type": "gear",
+  "_id": "LFaYax2XzTnIY2QL",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 276
+    },
+    "gearType": "other",
+    "quantity": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790264776136,
+    "modifiedTime": 1790264776136,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!LFaYax2XzTnIY2QL"
+}

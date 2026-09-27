@@ -16,7 +16,7 @@
       "aquatic": 0,
       "ground": 0
     },
-    "size": "common",
+    "botModeSize": "large",
     "altModeMovement": {
       "aerial": 60,
       "aquatic": 0,
@@ -24,7 +24,8 @@
     },
     "altModesize": "long",
     "altModeCrew": 2,
-    "altModeFirepoints": 0
+    "altModeFirepoints": 0,
+    "limitedArticulation": true
   },
   "effects": [],
   "flags": {

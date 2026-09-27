@@ -19,7 +19,8 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": ""
+    "prerequisite": "",
+    "linkedWeaponEffect": "Compendium.essence20.tf_crb.Item.nfp6qtqYp5WNFuOA"
   },
   "effects": [],
   "flags": {},

@@ -9,7 +9,7 @@
     "description": "",
     "source": {
       "book": "Operation Cold Iron",
-      "page": 26
+      "page": 49
     },
     "aimShiftBonus": 0,
     "armorBonus": {
@@ -19,7 +19,7 @@
     "availability": "restricted",
     "benefit": "",
     "traits": [],
-    "type": "armor",
+    "type": "vehicle",
     "prerequisite": null
   },
   "effects": [],

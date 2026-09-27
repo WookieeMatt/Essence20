@@ -181,7 +181,21 @@
       "levels": [],
       "specializedLevels": []
     },
-    "skills": [],
+    "skills": [
+      "alertness",
+      "finesse",
+      "infiltration",
+      "initiative",
+      "science",
+      "technology"
+    ],
+    "upgrades": {
+      "armors": {
+        "trained": [
+          "standard"
+        ]
+      }
+    },
     "version": "transformers",
     "weapons": {
       "qualified": [],

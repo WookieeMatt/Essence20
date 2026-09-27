@@ -13,7 +13,7 @@
     },
     "items": {
       "82e9": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.bxT99cXuxn9UPeNT",
+        "uuid": "Compendium.essence20.tf_crb.Item.13ERhGfqXsvQJL59",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Small Thrown Weapon Effect (Blunt)",
         "type": "weaponEffect",
@@ -29,13 +29,13 @@
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": 20,
-          "value": 10
+          "long": 40,
+          "value": 20
         },
         "shiftDown": 0
       },
       "eb0d": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.GqfmPxPjAP8Xoll9",
+        "uuid": "Compendium.essence20.tf_crb.Item.tdqu5H0TAri1BWdR",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Small Thrown Weapon Effect (Sharp)",
         "type": "weaponEffect",
@@ -51,8 +51,8 @@
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": 20,
-          "value": 10
+          "long": 40,
+          "value": 20
         },
         "shiftDown": 0
       }
@@ -65,9 +65,9 @@
     },
     "equipped": true,
     "requirements": {
-      "custom": "Huge",
-      "skill": "brawn",
-      "shift": "d4"
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
     },
     "traits": [
       "blunt",

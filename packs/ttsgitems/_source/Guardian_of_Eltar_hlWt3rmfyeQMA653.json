@@ -127,7 +127,7 @@
         "name": "Chief Guardian",
         "type": "perk",
         "subtype": "role",
-        "level": 12
+        "level": 13
       },
       "b15d": {
         "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
@@ -159,7 +159,11 @@
     },
     "armors": {
       "qualified": [],
-      "trained": []
+      "trained": [
+        "light",
+        "medium",
+        "heavy"
+      ]
     },
     "essenceLevels": {
       "smarts": [

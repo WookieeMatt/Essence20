@@ -4,148 +4,19 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "originalId": "",
-    "description": "<p>Ground bonus is activated by default but you can deactivate and activate a different movement type if that is your choice.&nbsp;</p>",
+    "description": "<p>Movement can now be chosen and increases automatically. </p>",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 124
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "general",
+    "hasChoice": true,
+    "choiceType": "movement",
+    "value": 10
   },
   "effects": [
-    {
-      "origin": "Item.Y55n77UqARhPugmy",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "_id": "QKwFodfIXRRqrA6r",
-      "changes": [
-        {
-          "key": "system.movement.ground.bonus",
-          "mode": 2,
-          "value": "10",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "Bonus Ground Movement",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!NU7KqcXvQbOFbU0C.QKwFodfIXRRqrA6r"
-    },
-    {
-      "origin": "Item.Y55n77UqARhPugmy",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "NpRY7BHmPB3gfQeG",
-      "changes": [
-        {
-          "key": "system.movement.aerial.bonus",
-          "mode": 2,
-          "value": "10",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "Bonus Aerial Movement",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!NU7KqcXvQbOFbU0C.NpRY7BHmPB3gfQeG"
-    },
-    {
-      "origin": "Item.Y55n77UqARhPugmy",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "KjnkWH6BzXFKnNXV",
-      "changes": [
-        {
-          "key": "system.movement.swim.bonus",
-          "mode": 2,
-          "value": "10",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "Bonus Swim Movement",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!NU7KqcXvQbOFbU0C.KjnkWH6BzXFKnNXV"
-    },
     {
       "origin": "Item.Y55n77UqARhPugmy",
       "duration": {

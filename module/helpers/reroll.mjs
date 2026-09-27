@@ -1,5 +1,6 @@
 import { E20 } from "./config.mjs";
 import { canSpendForActor, spendForActor } from "./story-points.mjs";
+import { hasActiveEnvironmentalExpertise } from "./environmental-expertise.mjs";
 
 /**
  * Reroll grant engine - normalizes reroll configs read off Perks/ActiveEffects (schema defined in
@@ -55,10 +56,10 @@ function normalizeRerollConfig(config) {
     recursive: normalized.recursive !== false,
     minDieFaces: Number.isFinite(Number(normalized.minDieFaces)) ? Number(normalized.minDieFaces) : 0,
     grantsCanCritD2: normalized.grantsCanCritD2 === true,
-    // Mending the Grid (Across the Stars, Phantom Ranger, 5th level, p.61) - see
-    // reroll-schema.mjs's own doc comment on this field for why a flat total bonus, not a real
-    // upshift, is what this engine can express here.
     bonus: Number.isFinite(Number(normalized.bonus)) ? Number(normalized.bonus) : 0,
+    // Mending the Grid (Across the Stars, Phantom Ranger, 5th level, p.61) - see
+    // reroll-schema.mjs's own doc comment on this field, and upshiftFormula below.
+    shiftUp: Number.isFinite(Number(normalized.shiftUp)) ? Number(normalized.shiftUp) : 0,
     // Backup Planner (Hawk's Personnel Files, General Perk, p.174) - see reroll-schema.mjs's own
     // doc comment on this field.
     keepBetter: normalized.keepBetter === true,
@@ -356,6 +357,35 @@ const REROLL_CONDITIONS = {
   // actual Size comparison lives) and threaded through onto the posted message's own context,
   // same "computed there, read here" shape as isPowerWeaponAttack/notSnagged above.
   smallerTarget: (actor, context) => !!context?.smallerTarget,
+  // Across the Stars "Destiny" - see E20.rerollConditions's own doc comment on
+  // belowSmallestSkillDie for the full RAW quote and design notes. The one numeric-threshold
+  // condition in this set, rather than a plain boolean read off context.
+  belowSmallestSkillDie: (actor, context) => {
+    if (context?.d20Result == null) {
+      return false;
+    }
+
+    const faces = Object.values(actor.system?.skills ?? {})
+      .map(skill => Number(/^d(\d+)$/.exec(skill.shift)?.[1]))
+      .filter(face => !isNaN(face));
+    if (!faces.length) {
+      return false;
+    }
+
+    return context.d20Result < Math.min(...faces);
+  },
+  // GI Joe CRB "Survivalist" (Focus: Predator, 17th level, p.94): "in your environment of
+  // expertise, reroll all skill dice results of 1..." Same player-toggled flag Environmental
+  // Armor/Prowl/Recon already read for their own in-environment bonuses (see
+  // helpers/environmental-expertise.mjs's own doc comment on why this is a manual toggle rather
+  // than an automatic scene/terrain check).
+  inEnvironmentOfExpertise: actor => hasActiveEnvironmentalExpertise(actor),
+  // A Jump Through Time "Focused Strike": "When you make an Unarmed Attack..." See
+  // E20.rerollConditions.unarmedAttack's own doc comment (helpers/config.mjs).
+  unarmedAttack: (actor, context) => !!context?.isUnarmedAttack,
+  // Decepticon Directive "Homing Shots": "...a ranged attack using a weapon with the Consumable
+  // or Wrecker trait." See E20.rerollConditions.consumableOrWreckerRangedAttack's own doc comment.
+  consumableOrWreckerRangedAttack: (actor, context) => !!context?.isConsumableOrWreckerRangedAttack,
 };
 
 export function canMeetRerollCondition(actor, config, context = {}) {
@@ -689,4 +719,61 @@ export async function applyReroll(roll, config) {
   return true;
 }
 
-export const rerollModeLabel = mode => E20.rerollModes[mode] ?? "E20.RerollModeAll";
+// A single-die operand ("1d6", "d6", "2d8") as its E20.skillRollableShifts spelling ("d6", "2d8"),
+// or null for anything else (a flat number, a d20 with modifiers, ...).
+function operandToShift(operand) {
+  const match = /^\s*(\d*)d(\d+)\s*$/.exec(operand);
+  if (!match) {
+    return null;
+  }
+
+  const count = Number(match[1] || 1);
+  return count == 1 ? `d${match[2]}` : `${count}d${match[2]}`;
+}
+
+/**
+ * Rewrites a Skill Test's formula (as dice.mjs#_getFormula built it) with its skill die raised
+ * `steps` shifts, for a reroll grant that upshifts the re-rolled test (Mending the Grid). The three
+ * shapes _getFormula produces are handled: a Specialization "{d2,d4,...}kh" pool gains the next
+ * dice up the staircase, a lone skill die is swapped for a bigger one, and an untrained roll (d20
+ * only) gains the die it shifts into. Shifts stop at the top of E20.skillRollableShifts.
+ * @param {String} formula   The original roll's formula.
+ * @param {Number} steps   How many upshifts to apply.
+ * @returns {String}
+ */
+export function upshiftFormula(formula, steps) {
+  const chain = E20.skillRollableShifts;
+  if (!(steps > 0)) {
+    return formula;
+  }
+
+  for (const match of formula.matchAll(/\{([^{}]*)\}kh/g)) {
+    const members = match[1].split(',').map(member => member.trim());
+    const indices = members.map(member => chain.indexOf(operandToShift(member)));
+    // A pool holding anything but skill dice is the d20 operand's own flat-value form, not a
+    // Specialization pool.
+    if (indices.some(index => index < 0)) {
+      continue;
+    }
+
+    const top = Math.max(...indices);
+    const pool = `{${[...members, ...chain.slice(top + 1, top + 1 + steps)].join(',')}}kh`;
+    return formula.slice(0, match.index) + pool + formula.slice(match.index + match[0].length);
+  }
+
+  for (const match of formula.matchAll(/(^|[\s+])(\d*d\d+)(?=[\s+]|$)/g)) {
+    const index = chain.indexOf(operandToShift(match[2]));
+    if (index < 0) {
+      continue;
+    }
+
+    const start = match.index + match[1].length;
+    const shifted = chain[Math.min(index + steps, chain.length - 1)];
+    return formula.slice(0, start) + shifted + formula.slice(start + match[2].length);
+  }
+
+  // Untrained: d20 is one shift below the bottom of the rollable chain.
+  return `${formula} + ${chain[Math.min(steps, chain.length) - 1]}`;
+}
+
+export const rerollModeLabel =mode => E20.rerollModes[mode] ?? "E20.RerollModeAll";

@@ -47,14 +47,14 @@
         "damageType": "element",
         "numHands": 1,
         "numTargets": 1,
-        "radius": 1,
+        "radius": 0,
         "range": {
           "min": null,
           "reachMultiplier": 0,
           "long": null,
           "value": 30
         },
-        "shiftDown": 0
+        "shiftDown": 1
       }
     },
     "availability": "limited",

@@ -40,10 +40,14 @@ import { prepareSystemActors,
 import { onActivatePowerInfusion, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { actorHasZordFeature } from "../helpers/zord-features.mjs";
 import { isWarriorModeActive, toggleWarriorMode, WARRIOR_MODE_ID } from "../helpers/warrior-mode.mjs";
+import { HIGH_GEAR_ID, isHighGearActive, toggleHighGear } from "../helpers/high-gear.mjs";
 import { getMegaWeaponAttacksRemaining, MEGA_WEAPON_ID, summonMegaWeapon } from "../helpers/zord-mega-weapon.mjs";
+import { onSummonZord } from "../helpers/zord-summon.mjs";
 import { onActivateSnortleAtTheSpooky } from "../helpers/snortle-at-the-spooky.mjs";
 import { onActivateConsummatePerformer } from "../helpers/consummate-performer.mjs";
-import { adjust, getSheetContext, isAiming, refund, spend, tradeStandardForFree } from "../helpers/action-economy.mjs";
+import {
+  adjust, getNamedActionType, getSheetContext, isAiming, refund, spend, tradeStandardForFree,
+} from "../helpers/action-economy.mjs";
 import { runNamedAction } from "../helpers/named-actions.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
@@ -110,6 +114,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       startSheetTour: this.#onStartSheetTour,
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
       summonMegaWeapon: this.#onSummonMegaWeapon,
+      summonZord: this.#onSummonZord,
       systemActorOpen: this.#onSystemActorOpen,
       systemActorsDelete: this.#onSystemActorsDelete,
       toggleAccordion: this.#toggleAccordion,
@@ -119,6 +124,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       traitSelector: this.#onManageSelectTrait,
       transform: this.#onTransform,
       warriorMode: this.#onWarriorMode,
+      highGear: this.#onHighGear,
     },
     classes: ["essence20", "sheet", "actor", "theme-wrapper", "e20-window"],
     tag: 'form',
@@ -574,6 +580,12 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     context.hasWarriorMode = this.document.type == 'zord' && actorHasZordFeature(this.document, WARRIOR_MODE_ID);
     context.isWarriorModeActive = isWarriorModeActive(this.document);
 
+    // High Gear (A Jump Through Time, Zord Feature, p.83) - see helpers/high-gear.mjs's own doc
+    // comment. Same "only show the toggle on a Zord that actually holds the Feature" shape as
+    // Warrior Mode above.
+    context.hasHighGear = this.document.type == 'zord' && actorHasZordFeature(this.document, HIGH_GEAR_ID);
+    context.isHighGearActive = isHighGearActive(this.document);
+
     // Zord Mega-Weapon System - see helpers/zord-mega-weapon.mjs. Same "only show the control on a
     // Zord that actually holds the Feature" shape as Warrior Mode above; the remaining-attacks
     // count doubles as the button's own summoned/not-summoned state.
@@ -714,8 +726,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     const upgrades = [];
     const traits = []; // Used by Vehicles
     const weapons = [];
-    let equippedArmorEvasion = 0;
-    let equippedArmorToughness = 0;
     let faction = null;
     const roles = [];
     const rolePointsList = [];
@@ -747,11 +757,8 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         altModes.push(i);
         break;
       case 'armor':
-        if (i.system.equipped) {
-          equippedArmorEvasion += parseInt(i.system.totalBonusEvasion);
-          equippedArmorToughness += parseInt(i.system.totalBonusToughness);
-        }
-
+        // Equipped Armor's contribution to Defenses is computed in derived data, not here -
+        // see Essence20Actor#_prepareDefenses's own itemArmor block.
         armors.push(i);
         break;
       case 'bond':
@@ -859,15 +866,9 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         traits.push(i);
         break;
       case 'upgrade':
-        // Unparented upgrades on an actor can only be alt-mode armor upgrades
-        if (!i.flags?.essence20?.parentId && this.actor.system.canTransform && i.system.type == "armor") {
-          if (i.system.armorBonus.defense == "evasion"){
-            equippedArmorEvasion += parseInt(i.system.armorBonus.value);
-          } else if (i.system.armorBonus.defense == "toughness") {
-            equippedArmorToughness += parseInt(i.system.armorBonus.value);
-          }
-        }
-
+        // Unparented upgrades on an actor can only be alt-mode armor upgrades - their
+        // contribution to Defenses is computed in derived data, not here - see
+        // Essence20Actor#_prepareDefenses's own itemArmor block.
         upgrades.push(i);
         break;
       case 'weapon':
@@ -938,16 +939,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       }
     }
 
-    // Actor types without a `defenses` schema (e.g. Party) still run through this shared
-    // _prepareItems - the `?.` keeps this vestigial reconciliation check (its body is
-    // commented out) from throwing for them.
-    if (context.system.defenses?.evasion.armor != equippedArmorEvasion || context.system.defenses?.toughness.armor != equippedArmorToughness) {
-
-    //   this.actor.update({
-    //     "system.defenses.evasion.armor": equippedArmorEvasion,
-    //     "system.defenses.toughness.armor": equippedArmorToughness,
-    //   }).then(this.render(false));
-    }
   }
 
   /**
@@ -1053,6 +1044,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     summonMegaWeapon(this.document);
   }
 
+  static #onSummonZord(event, target) {
+    onSummonZord(target, this.document);
+  }
+
   static #onSystemActorOpen(event, target) {
     onSystemActorOpen(target);
   }
@@ -1079,6 +1074,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onWarriorMode() {
     toggleWarriorMode(this.document);
+  }
+
+  static #onHighGear() {
+    toggleHighGear(this.document);
   }
 
   static #onInlineEdit(event) {
@@ -1140,6 +1139,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       return;
     }
 
+    // Dodgy (MLP CRB, General Perk, p.123) can turn Defend into a Free action - see
+    // helpers/action-economy.mjs#getNamedActionType's own doc comment.
+    const actionType = getNamedActionType(this.actor, key);
+
     /* One aim per shot. Aim is a Free action and a character may well have Free actions left,
        so this is not a budget refusal and must be checked separately - see
        helpers/action-economy.mjs#isAiming. The aim clears when the shot is taken. */
@@ -1150,7 +1153,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       return;
     }
 
-    const result = await spend(this.actor, action.type, { source: game.i18n.localize(action.label) });
+    const result = await spend(this.actor, actionType, { source: game.i18n.localize(action.label) });
     if (result.blocked && !result.cancelled) {
       ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
         name: this.actor.name,

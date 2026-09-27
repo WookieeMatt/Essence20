@@ -17,6 +17,24 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Popular Influence Perk",
         "type": "perk"
+      },
+      "hu1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.gT3jMGYcF8Gbi0O5",
+        "img": "icons/svg/hazard.svg",
+        "name": "Naive",
+        "type": "hangUp"
+      },
+      "hu2": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.xUPWiX24XTCx9GRd",
+        "img": "icons/svg/hazard.svg",
+        "name": "Loudmouth",
+        "type": "hangUp"
+      },
+      "hu3": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.R7DMglLJxy9d9und",
+        "img": "icons/svg/hazard.svg",
+        "name": "Show Off",
+        "type": "hangUp"
       }
     },
     "mandatoryHangUp": false,

@@ -261,4 +261,42 @@ describe("handleVehicleZeroHealthTransition", () => {
 
     expect(zord.unsetFlag).toHaveBeenCalledWith('essence20', 'warriorModeActive');
   });
+
+  describe("Heavy Water Coolant (Operation Cold Iron, Vehicle Upgrade, p.49)", () => {
+    const HEAVY_WATER_COOLANT_ID = "Compendium.essence20.operation_cold_iron.Item.e8WNnjzWGNWBd2UJ";
+
+    function withHeavyWaterCoolant(vehicle) {
+      vehicle.items = [{ type: 'upgrade', flags: { core: { sourceId: HEAVY_WATER_COOLANT_ID } } }];
+      return vehicle;
+    }
+
+    test("passes the Brawn Test at the lowered DIF 10, where the ordinary DIF 14 would have failed", async () => {
+      const vehicle = withHeavyWaterCoolant(makeVehicle());
+      rollQueue = [12]; // Fails DIF 14, but beats DIF 10
+
+      await handleVehicleZeroHealthTransition(vehicle);
+
+      expect(vehicle.system.crashed).toBe(true);
+    });
+
+    test("without the Upgrade, that same roll still fails the ordinary DIF 14", async () => {
+      const vehicle = makeVehicle();
+      rollQueue = [12];
+
+      await handleVehicleZeroHealthTransition(vehicle);
+
+      expect(vehicle.system.crashed).toBe(false);
+      expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: 'E20.VehicleExploded' }));
+    });
+
+    test("doesn't affect a Fragile vehicle - that branch never rolls a Brawn Test at all", async () => {
+      const vehicle = withHeavyWaterCoolant(makeVehicle());
+      vehicle.system.traits = { fragile: true };
+      rollQueue = [20];
+
+      await handleVehicleZeroHealthTransition(vehicle);
+
+      expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: 'E20.VehicleExploded' }));
+    });
+  });
 });

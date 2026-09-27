@@ -9,7 +9,7 @@
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
-      "page": 132
+      "page": 133
     },
     "armorBonus": {
       "defense": "toughness",
@@ -21,7 +21,7 @@
       "deflective"
     ],
     "type": "armor",
-    "prerequisite": ""
+    "prerequisite": "Might d6"
   },
   "effects": [],
   "flags": {},

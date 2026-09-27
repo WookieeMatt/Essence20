@@ -9,14 +9,19 @@
  * early) on whichever token is currently targeted, or the caster themselves - granting an
  * unconditional Edge on Deception/Infiltration while active. "When you pretend to be another
  * creature of your Origin" is the same unenforceable narrative qualifier Observer's own identical
- * clause already drops.
+ * clause already drops. The 1-scene duration is now tracked with the Scene Clock
+ * (helpers/scene-clock.mjs) so it clears once the GM calls the scene, rather than the one-way flag
+ * this used to be (RAW itself names no way to end it early, but "never" was still wrong for a
+ * duration that RAW does bound).
  */
+import { activateForWindow, isActiveForWindow } from "./scene-clock.mjs";
+
 const DSOE_DISGUISE_FLAG = 'dsoeDisguiseActive';
 
 export function isDsoeDisguiseActive(actor) {
-  return !!actor.getFlag?.('essence20', DSOE_DISGUISE_FLAG);
+  return isActiveForWindow(actor, DSOE_DISGUISE_FLAG, 'scene');
 }
 
 export async function applyDsoeDisguise(targetActor) {
-  await targetActor.setFlag('essence20', DSOE_DISGUISE_FLAG, true);
+  await activateForWindow(targetActor, DSOE_DISGUISE_FLAG, 'scene');
 }

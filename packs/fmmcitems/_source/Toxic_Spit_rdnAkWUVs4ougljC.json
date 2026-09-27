@@ -1,0 +1,74 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Toxic Spit",
+  "type": "weapon",
+  "_id": "rdnAkWUVs4ougljC",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "w0rd": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.8644uAJ6Izr6a9Hl",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Toxic Spit Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "poison",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 60,
+          "value": 20
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Path of Venom",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "poison"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790228101156,
+    "modifiedTime": 1790228101156,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!rdnAkWUVs4ougljC"
+}

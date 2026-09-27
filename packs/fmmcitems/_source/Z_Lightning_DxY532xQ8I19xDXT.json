@@ -1,0 +1,49 @@
+{
+  "folder": "wdtGE4Fp2TmnMPdb",
+  "name": "Z-Lightning",
+  "type": "weaponEffect",
+  "_id": "DxY532xQ8I19xDXT",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "electric",
+    "damageValue": 3,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 100,
+      "value": 25
+    },
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 277
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790264776139,
+    "modifiedTime": 1790264776139,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!DxY532xQ8I19xDXT"
+}

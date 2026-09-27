@@ -1,12 +1,14 @@
 import { jest } from '@jest/globals';
 import { legacyPoolParty } from '../jest.legacy-pool-party.js';
 import {
-  canUsePerk, consumeHardTarget, consumeMomentaryBlur, consumeResilience, consumeRollWithThePunches, onPerkUse,
+  canUsePerk, consumeBankedDefenseBonus, consumeHardTarget, consumeMomentaryBlur, consumeResilience,
+  consumeRollWithThePunches, onPerkUse,
 } from './banked-buffs.mjs';
 
 const THINK_ON_IT_ID = "Compendium.essence20.gi_joe_crb.Item.M7HNdhqViy0xbUkz";
 const BATTLE_COMMANDER_ID = "Compendium.essence20.gi_joe_crb.Item.PIWYZyWFw9EYZeom";
 const PLAN_OF_ACTION_ID = "Compendium.essence20.gi_joe_crb.Item.7wsu99k8v620IB2N";
+const BENEFITS_OF_COMMAND_ID = "Compendium.essence20.gi_joe_crb.Item.jSmMtJ0YFCEJcXYU";
 const INSPIRATION_ID = "Compendium.essence20.gi_joe_crb.Item.j05tN97KZNzl5jTF";
 const INSPIRATION_PR_ID = "Compendium.essence20.pr_crb.Item.FJSNzVRulj20M0B1";
 const ROLL_WITH_THE_PUNCHES_ID = "Compendium.essence20.gi_joe_crb.Item.5hBral7hiCPv3GqF";
@@ -117,6 +119,31 @@ describe("canUsePerk", () => {
       expect(canUsePerk(makePerkItem({ sourceId: BATTLE_COMMANDER_ID, actor: makeActor() }))).toBe(false);
     });
   });
+
+  describe("Benefits of Command (Officer base, 1st level, p.84)", () => {
+    beforeEach(() => {
+      game.users = [{ isGM: true, active: true }];
+      game.settings = { get: jest.fn(() => 1) };
+    });
+
+    afterEach(() => {
+      delete game.settings;
+    });
+
+    test("true with a GM connected and at least 1 Story Point available", () => {
+      expect(canUsePerk(makePerkItem({ sourceId: BENEFITS_OF_COMMAND_ID, actor: makeActor() }))).toBe(true);
+    });
+
+    test("false with no Story Points available", () => {
+      game.settings.get = jest.fn(() => 0);
+      expect(canUsePerk(makePerkItem({ sourceId: BENEFITS_OF_COMMAND_ID, actor: makeActor() }))).toBe(false);
+    });
+
+    test("false with no GM connected", () => {
+      game.users = [{ isGM: false, active: true }];
+      expect(canUsePerk(makePerkItem({ sourceId: BENEFITS_OF_COMMAND_ID, actor: makeActor() }))).toBe(false);
+    });
+  });
 });
 
 describe("onPerkUse", () => {
@@ -166,6 +193,27 @@ describe("onPerkUse", () => {
       'essence20', 'pendingPlanOfAction', expect.objectContaining({ shiftUp: 2 }),
     );
     expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+
+  test("Benefits of Command (ally) spends 1 Story Point and banks an Edge on the targeted ally", async () => {
+    game.users = [{ isGM: true, active: true }];
+    game.settings = { get: jest.fn(() => 1) };
+    game.socket.emit.mockReset();
+    const actor = makeActor({ id: 'officer' });
+    const ally = makeActor({ id: 'ally1', name: 'Duke' });
+    game.user.targets = new Set([{ actor: ally }]);
+    const item = makePerkItem({ sourceId: BENEFITS_OF_COMMAND_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
+      action: 'spendStoryPoints', amount: 1, actorName: actor.name,
+    });
+    expect(ally.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingBenefitsOfCommand', expect.objectContaining({ edge: true }),
+    );
+    expect(actor.setFlag).not.toHaveBeenCalled();
+    delete game.settings;
   });
 
   test("Plan of Action defaults to a shiftUp of 1 with no advance recorded yet", async () => {
@@ -866,6 +914,239 @@ describe("Remove & Rebuild (Transformers CRB, General Perk, p.111)", () => {
 
     expect(downedAlly.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
   });
+
+  test("also banks +1 Toughness/Evasion on the same revived ally", async () => {
+    const actor = makeActor({ id: 'gunner1' });
+    const downedAlly = makeAllyActor({ id: 'ally1', health: 0 });
+    game.user.targets = new Set([{ actor: downedAlly }]);
+    const item = makePerkItem({ sourceId: REMOVE_AND_REBUILD_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(downedAlly.setFlag).toHaveBeenCalledWith('essence20', 'pendingRemoveAndRebuildDefense', expect.objectContaining({
+      defenseAmounts: { toughness: 1, evasion: 1 },
+    }));
+  });
+});
+
+describe("consumeBankedDefenseBonus", () => {
+  function makeFlaggedActor(pending) {
+    return { ...makeActor(), getFlag: jest.fn((scope, key) => (scope == 'essence20' ? pending[key] : undefined)) };
+  }
+
+  test("returns and clears a matching specific-Defense amount", async () => {
+    const actor = makeFlaggedActor({ pendingTest: { defenseAmounts: { toughness: 2, evasion: 2 } } });
+
+    expect(await consumeBankedDefenseBonus(actor, 'pendingTest', 'toughness')).toBe(2);
+    expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'pendingTest');
+  });
+
+  test("returns 0 for a Defense the bank doesn't cover", async () => {
+    const actor = makeFlaggedActor({ pendingTest: { defenseAmounts: { toughness: 2 } } });
+
+    expect(await consumeBankedDefenseBonus(actor, 'pendingTest', 'willpower')).toBe(0);
+    expect(actor.unsetFlag).not.toHaveBeenCalled();
+  });
+
+  test("falls back to the 'all' amount when no specific Defense key matches", async () => {
+    const actor = makeFlaggedActor({ pendingTest: { defenseAmounts: { all: 1 } } });
+
+    expect(await consumeBankedDefenseBonus(actor, 'pendingTest', 'willpower')).toBe(1);
+  });
+
+  test("supports a negative 'all' amount (Stronger Together's own self-reduction)", async () => {
+    const actor = makeFlaggedActor({ pendingTest: { defenseAmounts: { all: -1 } } });
+
+    expect(await consumeBankedDefenseBonus(actor, 'pendingTest', 'evasion')).toBe(-1);
+  });
+
+  test("returns 0 with nothing banked", async () => {
+    expect(await consumeBankedDefenseBonus(makeActor(), 'pendingTest', 'toughness')).toBe(0);
+  });
+});
+
+describe("Force Field (Transformers CRB, Armor Upgrade, p.132)", () => {
+  const FORCE_FIELD_ID = "Compendium.essence20.tf_crb.Item.j3qkiawQATkksdaC";
+
+  function makeUpgradeItem({ sourceId, actor }) {
+    return {
+      type: 'upgrade', name: 'Force Field', parent: actor, flags: { core: { sourceId } },
+      system: { advances: { currentValue: null } },
+    };
+  }
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1' };
+  });
+
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  test("canUsePerk is true for an Upgrade item present in BANKABLE_PERKS", () => {
+    const actor = makeActor();
+    expect(canUsePerk(makeUpgradeItem({ sourceId: FORCE_FIELD_ID, actor }))).toBe(true);
+  });
+
+  test("canUsePerk stays false for an ordinary Upgrade not in BANKABLE_PERKS/IMMEDIATE_ALLY_PERKS", () => {
+    const actor = makeActor();
+    expect(canUsePerk(makeUpgradeItem({ sourceId: 'Compendium.essence20.tf_crb.Item.someOtherUpgrade', actor }))).toBe(false);
+  });
+
+  test("false once already used this scene", () => {
+    const actor = { ...makeActor(), getFlag: jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 })) };
+    expect(canUsePerk(makeUpgradeItem({ sourceId: FORCE_FIELD_ID, actor }))).toBe(false);
+  });
+
+  test("banks +2 Toughness/Evasion on the actor themselves", async () => {
+    const actor = makeActor();
+    const item = makeUpgradeItem({ sourceId: FORCE_FIELD_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingForceFieldDefense', expect.objectContaining({
+      defenseAmounts: { toughness: 2, evasion: 2 },
+    }));
+  });
+});
+
+describe("Stalwart Defense (Transformers CRB, Sentinel Focus, 1st level, p.90)", () => {
+  const STALWART_DEFENSE_ID = "Compendium.essence20.tf_crb.Item.uhp3JOTYZJfHrz7q";
+
+  beforeEach(() => {
+    foundry.applications.api.DialogV2.wait.mockReset();
+  });
+
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  test("banks the chosen allocation from the picker", async () => {
+    const actor = makeActor();
+    foundry.applications.api.DialogV2.wait.mockImplementation(() => '1'); // +2 Evasion option
+    const item = makePerkItem({ sourceId: STALWART_DEFENSE_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingStalwartDefense', expect.objectContaining({
+      defenseAmounts: { evasion: 2 },
+    }));
+  });
+
+  test("banks nothing if the picker is cancelled", async () => {
+    const actor = makeActor();
+    foundry.applications.api.DialogV2.wait.mockImplementation(() => 'cancel');
+    const item = makePerkItem({ sourceId: STALWART_DEFENSE_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+
+  test("false once already used this turn, regardless of any pending bank", () => {
+    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    const actor = { ...makeActor(), getFlag: jest.fn(() => ({ combatId: 'combat1', round: 1, turn: 0 })) };
+    expect(canUsePerk(makePerkItem({ sourceId: STALWART_DEFENSE_ID, actor }))).toBe(false);
+  });
+});
+
+describe("Stand Firm (Transformers CRB, Sentinel Focus, 10th level, p.91)", () => {
+  const STAND_FIRM_ID = "Compendium.essence20.tf_crb.Item.rAxKrR4ObFGeH5yP";
+
+  test("false with no active Stalwart Defense bank to double", () => {
+    const actor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: STAND_FIRM_ID, actor }))).toBe(false);
+  });
+
+  test("true with an active Stalwart Defense bank", () => {
+    const actor = { ...makeActor(), getFlag: jest.fn(() => ({ defenseAmounts: { evasion: 2 }, combatId: null, round: null })) };
+    expect(canUsePerk(makePerkItem({ sourceId: STAND_FIRM_ID, actor }))).toBe(true);
+  });
+
+  test("doubles the banked amounts in place", async () => {
+    const flagStore = { pendingStalwartDefense: { defenseAmounts: { toughness: 1, evasion: 1 }, combatId: null, round: null } };
+    const actor = {
+      ...makeActor(),
+      getFlag: jest.fn((scope, key) => flagStore[key]),
+      setFlag: jest.fn(async (scope, key, value) => {
+        flagStore[key] = value;
+      }),
+    };
+    const item = makePerkItem({ sourceId: STAND_FIRM_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingStalwartDefense', expect.objectContaining({
+      defenseAmounts: { toughness: 2, evasion: 2 },
+    }));
+  });
+
+  test("does nothing with no active bank", async () => {
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: STAND_FIRM_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+});
+
+describe("Sword And Board (Transformers CRB, Sentinel Focus, 17th level, p.91)", () => {
+  const SWORD_AND_BOARD_ID = "Compendium.essence20.tf_crb.Item.4ArjV6NInx6snUaZ";
+
+  beforeEach(() => {
+    foundry.applications.api.DialogV2.wait.mockReset();
+  });
+
+  test("banks the chosen allocation from the picker", async () => {
+    const actor = makeActor();
+    foundry.applications.api.DialogV2.wait.mockImplementation(() => '2'); // +2 Toughness, +1 Evasion option
+    const item = makePerkItem({ sourceId: SWORD_AND_BOARD_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingSwordAndBoard', expect.objectContaining({
+      defenseAmounts: { toughness: 2, evasion: 1 },
+    }));
+  });
+});
+
+describe("Stronger Together (Transformers CRB, Strategist Focus, 20th level, p.68) - Use button", () => {
+  const STRONGER_TOGETHER_ID = "Compendium.essence20.tf_crb.Item.ZeOj3mmjnXJ7iXj1";
+
+  function makeAllyActor({ id, name } = {}) {
+    return makeActor({ id, name });
+  }
+
+  beforeEach(() => {
+    game.user.targets = new Set();
+    canvas.tokens.placeables = [];
+  });
+
+  test("banks +1 to all Defenses on the chosen ally, and -1 to all Defenses on the granter", async () => {
+    const actor = makeActor({ id: 'commander1' });
+    const ally = makeAllyActor({ id: 'ally1' });
+    game.user.targets = new Set([{ actor: ally }]);
+    const item = makePerkItem({ sourceId: STRONGER_TOGETHER_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ally.setFlag).toHaveBeenCalledWith('essence20', 'pendingStrongerTogetherAllyDefense', expect.objectContaining({
+      defenseAmounts: { all: 1 },
+    }));
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingStrongerTogetherReduction', expect.objectContaining({
+      defenseAmounts: { all: -1 },
+    }));
+  });
+
+  test("banks nothing if there's no ally to pick", async () => {
+    const actor = makeActor({ id: 'commander1' });
+    const item = makePerkItem({ sourceId: STRONGER_TOGETHER_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).not.toHaveBeenCalled();
+  });
 });
 
 describe("Field Repair (Transformers CRB, General Perk, p.109)", () => {
@@ -909,6 +1190,60 @@ describe("Field Repair (Transformers CRB, General Perk, p.109)", () => {
     await onPerkUse(item);
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 6 });
+  });
+});
+
+describe("Intrafilum (Transformers CRB, Autobot Cybertronian Perk, p.78)", () => {
+  const INTRAFILUM_ID = "Compendium.essence20.tf_crb.Item.WafAMRknIe5AL40t";
+
+  function makeCybertronianActor({ id = 'autobot1', name = 'Autobot', energon = 1 } = {}) {
+    return {
+      ...makeActor({ id, name }),
+      system: { health: { value: 5, max: 10, bonus: 0 }, energon: { normal: { value: energon } } },
+      update: jest.fn(),
+    };
+  }
+
+  function makeAllyActor({ id, name, health = 5, healthMax = 10 } = {}) {
+    return {
+      ...makeActor({ id, name }),
+      type: 'playerCharacter',
+      system: { health: { value: health, max: healthMax, bonus: 0 } },
+      update: jest.fn(),
+    };
+  }
+
+  beforeEach(() => {
+    game.user.targets = new Set();
+    canvas.tokens.placeables = [];
+  });
+
+  test("canUsePerk is true with Energon to spend, false without", () => {
+    expect(canUsePerk(makePerkItem({ sourceId: INTRAFILUM_ID, actor: makeCybertronianActor({ energon: 1 }) }))).toBe(true);
+    expect(canUsePerk(makePerkItem({ sourceId: INTRAFILUM_ID, actor: makeCybertronianActor({ energon: 0 }) }))).toBe(false);
+  });
+
+  test("spends 1 Energon and restores 1 Health to the targeted adjacent ally", async () => {
+    const actor = makeCybertronianActor({ energon: 2 });
+    const ally = makeAllyActor({ id: 'ally1', health: 5 });
+    game.user.targets = new Set([{ actor: ally }]);
+    const item = makePerkItem({ sourceId: INTRAFILUM_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.update).toHaveBeenCalledWith({ 'system.energon.normal.value': 1 });
+    expect(ally.update).toHaveBeenCalledWith({ 'system.health.value': 6 });
+  });
+
+  test("warns and does nothing when out of Energon", async () => {
+    const actor = makeCybertronianActor({ energon: 0 });
+    const ally = makeAllyActor({ id: 'ally1', health: 5 });
+    game.user.targets = new Set([{ actor: ally }]);
+    const item = makePerkItem({ sourceId: INTRAFILUM_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ally.update).not.toHaveBeenCalled();
   });
 });
 
@@ -2045,6 +2380,220 @@ describe("Mark Target (Scout, 2nd level, p.84)", () => {
   });
 });
 
+describe("Primary Quarry (Decepticon Directive, Tracker Focus, 1st level, p.55)", () => {
+  const PRIMARY_QUARRY_ID = "Compendium.essence20.decepticon_directive.Item.myYcCOZdN1ViBeQH";
+
+  function makeTargetsSet(targetActor) {
+    const set = new Set([{ actor: targetActor }]);
+    set.first = () => (targetActor ? { actor: targetActor } : undefined);
+
+    return set;
+  }
+
+  beforeEach(() => {
+    game.user.targets = new Set();
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create?.mockReset();
+  });
+
+  describe("canUsePerk", () => {
+    test("always true, regardless of any pending state", () => {
+      const actor = makeActor();
+      const item = makePerkItem({ sourceId: PRIMARY_QUARRY_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+  });
+
+  test("designates the currently-targeted token's actor and notifies", async () => {
+    const actor = makeActor({ id: 'tracker' });
+    const targetActor = { uuid: 'Actor.target1' };
+    game.user.targets = makeTargetsSet(targetActor);
+    const item = makePerkItem({ sourceId: PRIMARY_QUARRY_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'primaryQuarryUuid', 'Actor.target1');
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and sets no flag when nothing is targeted", async () => {
+    const actor = makeActor({ id: 'tracker' });
+    game.user.targets = makeTargetsSet(undefined);
+    game.user.targets.first = () => undefined;
+    const item = makePerkItem({ sourceId: PRIMARY_QUARRY_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Mark Everybot (Transformers CRB, Scout, 18th level, p.85)", () => {
+  const MARK_EVERYBOT_ID = "Compendium.essence20.tf_crb.Item.KxmnKUYmQ56D02Jg";
+
+  beforeEach(() => {
+    global.ChatMessage.create?.mockReset();
+  });
+
+  describe("canUsePerk", () => {
+    test("true when not yet used this scene", () => {
+      const actor = makeActor();
+      expect(canUsePerk(makePerkItem({ sourceId: MARK_EVERYBOT_ID, actor }))).toBe(true);
+    });
+
+    test("false once already used this scene", () => {
+      const actor = makeActor();
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'markEverybotUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+      ));
+      expect(canUsePerk(makePerkItem({ sourceId: MARK_EVERYBOT_ID, actor }))).toBe(false);
+    });
+  });
+
+  test("marks the scene used and notifies", async () => {
+    const actor = makeActor({ id: 'scout' });
+    const item = makePerkItem({ sourceId: MARK_EVERYBOT_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'markEverybotUsedThisEncounter', expect.objectContaining({ window: 'encounter', count: 1 }),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+});
+
+describe("Nemesis (Specific Threat) (Across the Stars, General Perk, p.70)", () => {
+  const NEMESIS_ID = "Compendium.essence20.across_the_stars.Item.bxGgq6PpfxeSRr7Q";
+
+  function makeTargetsSet(targetActor) {
+    const token = { actor: targetActor };
+    const set = new Set([token]);
+    set.first = () => token;
+
+    return set;
+  }
+
+  beforeEach(() => {
+    game.user.targets = new Set();
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create?.mockReset();
+  });
+
+  describe("canUsePerk", () => {
+    test("always true, regardless of any pending state", () => {
+      const actor = makeActor();
+      const item = makePerkItem({ sourceId: NEMESIS_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+  });
+
+  test("declares the currently-targeted token's actor as Nemesis and notifies", async () => {
+    const actor = makeActor({ id: 'hunter' });
+    const targetActor = { uuid: 'Actor.target1' };
+    game.user.targets = makeTargetsSet(targetActor);
+    const item = makePerkItem({ sourceId: NEMESIS_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'nemesisUuid', 'Actor.target1');
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and sets no flag when nothing is targeted", async () => {
+    const actor = makeActor({ id: 'hunter' });
+    game.user.targets = makeTargetsSet(undefined);
+    game.user.targets.first = () => undefined;
+    const item = makePerkItem({ sourceId: NEMESIS_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Energon Parasite (Technorganic Secrets, General Perk, p.46)", () => {
+  const ENERGON_PARASITE_ID = "Compendium.essence20.technorganic_secrets.Item.6myBQHifgs2IHGsC";
+
+  function makeParasiteActor({ essences = 4, energonValue = 0, energonMax = 4 } = {}) {
+    return {
+      ...makeActor(),
+      system: {
+        essences: {
+          strength: { value: essences }, speed: { value: essences }, smarts: { value: essences }, social: { value: essences },
+        },
+        energon: { normal: { max: energonMax, value: energonValue } },
+      },
+      update: jest.fn(async function (data) {
+        this.system.energon.normal.value = data['system.energon.normal.value'];
+      }),
+    };
+  }
+
+  function makeTargetActor({ energonValue = 4, defeated = true } = {}) {
+    return {
+      statuses: defeated ? new Set(['defeated']) : new Set(),
+      system: { energon: { normal: { value: energonValue } } },
+      update: jest.fn(async function (data) {
+        this.system.energon.normal.value = data['system.energon.normal.value'];
+      }),
+    };
+  }
+
+  function makeTargetsSet(targetActor) {
+    const set = new Set([{ actor: targetActor }]);
+    set.first = () => (targetActor ? { actor: targetActor } : undefined);
+
+    return set;
+  }
+
+  beforeEach(() => {
+    ui.notifications.warn.mockReset();
+  });
+
+  describe("canUsePerk", () => {
+    test("true against a Defeated target with Energon to give and room to receive it", () => {
+      const actor = makeParasiteActor();
+      game.user.targets = makeTargetsSet(makeTargetActor());
+      const item = makePerkItem({ sourceId: ENERGON_PARASITE_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("false against a target that isn't Defeated", () => {
+      const actor = makeParasiteActor();
+      game.user.targets = makeTargetsSet(makeTargetActor({ defeated: false }));
+      const item = makePerkItem({ sourceId: ENERGON_PARASITE_ID, actor });
+      expect(canUsePerk(item)).toBe(false);
+    });
+  });
+
+  test("drains Energon from the target to the actor and notifies", async () => {
+    const actor = makeParasiteActor({ energonValue: 0 });
+    const target = makeTargetActor({ energonValue: 3 });
+    game.user.targets = makeTargetsSet(target);
+    const item = makePerkItem({ sourceId: ENERGON_PARASITE_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.system.energon.normal.value).toBe(3);
+    expect(target.system.energon.normal.value).toBe(0);
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and drains nothing without a Defeated target", async () => {
+    const actor = makeParasiteActor();
+    game.user.targets = makeTargetsSet(undefined);
+    const item = makePerkItem({ sourceId: ENERGON_PARASITE_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.update).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalledWith('E20.EnergonParasiteNoTarget');
+  });
+});
+
 describe("Relic Key (PR CRB, Zord Feature, p.140) - Edge on any one roll in the scene", () => {
   const RELIC_KEY_ID = "Compendium.essence20.pr_crb.Item.uSlClAv3oJjf54pa";
 
@@ -2323,6 +2872,62 @@ describe("Eye for Appraisal (Decepticon Directive Raider, 1st level, p.61)", () 
   });
 });
 
+describe("Wrestler (PR CRB, General Perk, p.99) - pin half", () => {
+  const WRESTLER_PIN_ID = "Compendium.essence20.pr_crb.Item.7QMuaLPZJWNPJHTz";
+
+  function makeTargetsSet(targetActor) {
+    const token = { actor: targetActor };
+    const set = new Set(targetActor ? [token] : []);
+    set.first = () => (targetActor ? token : undefined);
+
+    return set;
+  }
+
+  beforeEach(() => {
+    game.user.targets = new Set();
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create?.mockReset();
+  });
+
+  describe("canUsePerk", () => {
+    test("true only when the currently-targeted token is Grappled", () => {
+      const actor = makeActor();
+      const item = makePerkItem({ sourceId: WRESTLER_PIN_ID, actor });
+
+      game.user.targets = makeTargetsSet({ statuses: new Set(['grappled']) });
+      expect(canUsePerk(item)).toBe(true);
+
+      game.user.targets = makeTargetsSet({ statuses: new Set(['prone']) });
+      expect(canUsePerk(item)).toBe(false);
+
+      game.user.targets = makeTargetsSet(undefined);
+      expect(canUsePerk(item)).toBe(false);
+    });
+  });
+
+  test("Prones the Grappled target and notifies", async () => {
+    const actor = makeActor({ id: 'ranger1' });
+    const targetActor = { statuses: new Set(['grappled']), toggleStatusEffect: jest.fn() };
+    game.user.targets = makeTargetsSet(targetActor);
+    const item = makePerkItem({ sourceId: WRESTLER_PIN_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(targetActor.toggleStatusEffect).toHaveBeenCalledWith('prone', { active: true });
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and Prones nobody without a Grappled target", async () => {
+    const actor = makeActor({ id: 'ranger1' });
+    game.user.targets = makeTargetsSet(undefined);
+    const item = makePerkItem({ sourceId: WRESTLER_PIN_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
 describe("Weapon Conversion (Decepticon Directive Raider, Acquisitions Expert Focus, 10th level, p.63)", () => {
   function makeWeaponConversionActor({ hasEligibleWeapon = true } = {}) {
     const effect = {
@@ -2401,6 +3006,49 @@ describe("Dig In (Decepticon Directive Raider, Siegemaster Focus, 10th level, p.
     await onPerkUse(item);
 
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'digInActive', false);
+  });
+});
+
+describe("Rise Again (Through the Shattered Grid, General Perk, p.115) - Defense-bonus half", () => {
+  const RISE_AGAIN_ID = "Compendium.essence20.through_the_shattered_grid.Item.9DCNlVGfsEgUX6SC";
+
+  test("prompts for a Defense, banks the +5, marks the scene used, and notifies", async () => {
+    game.combat = { id: 'combat1', round: 1 };
+    const actor = makeActor({ id: 'ranger1', name: 'Astro' });
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('willpower');
+    const item = makePerkItem({ sourceId: RISE_AGAIN_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingRiseAgainDefense', expect.objectContaining({ defenseType: 'willpower', defenseBonus: 5 }),
+    );
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'riseAgainDefenseUsedThisEncounter', expect.anything(),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+    game.combat = null;
+  });
+
+  test("does nothing when the Defense picker is cancelled", async () => {
+    const actor = makeActor();
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
+    const item = makePerkItem({ sourceId: RISE_AGAIN_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+
+  test("canUsePerk is true with the Perk and not yet used this scene, false once used", () => {
+    game.combat = { id: 'combat1', round: 1 };
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: RISE_AGAIN_ID, actor });
+    expect(canUsePerk(item)).toBe(true);
+
+    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
+    expect(canUsePerk(item)).toBe(false);
+    game.combat = null;
   });
 });
 
@@ -2521,6 +3169,77 @@ describe("Box Shot (Quartermaster's Guide to Gear, General Perk, p.28)", () => {
     await onPerkUse(item);
 
     expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+});
+
+describe("Help Yourself (MLP CRB, Elementary Utility spell, p.136) - the clone's Lend Assistance", () => {
+  const HELP_YOURSELF_ID = "Compendium.essence20.mlp_crb.Item.EKCz40TU8BYtcSkN";
+
+  function makeSpellItem(actor) {
+    return {
+      type: 'spell',
+      name: 'Help Yourself',
+      parent: actor,
+      flags: { core: { sourceId: HELP_YOURSELF_ID } },
+      system: {},
+    };
+  }
+
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  test("no button before the spell has been cast - there is no clone yet", () => {
+    const actor = makeActor();
+    expect(canUsePerk(makeSpellItem(actor))).toBe(false);
+  });
+
+  test("a 'spell' item can offer the Use button at all - the type guard was widened for this", () => {
+    const actor = makeActor();
+    actor.getFlag = jest.fn((scope, key) => (key == 'helpYourselfClone' ? { sceneId: null } : undefined));
+    expect(canUsePerk(makeSpellItem(actor))).toBe(true);
+  });
+
+  test("unavailable once the clone has already helped this round", () => {
+    game.combat = { id: 'combat1', round: 2 };
+    const actor = makeActor();
+    actor.getFlag = jest.fn((scope, key) => {
+      if (key == 'helpYourselfClone') {
+        return { sceneId: null };
+      }
+
+      return key == 'helpYourselfCloneUsedThisRound' ? { combatId: 'combat1', round: 2 } : undefined;
+    });
+
+    expect(canUsePerk(makeSpellItem(actor))).toBe(false);
+  });
+
+  test("available again on the next round", () => {
+    game.combat = { id: 'combat1', round: 3 };
+    const actor = makeActor();
+    actor.getFlag = jest.fn((scope, key) => {
+      if (key == 'helpYourselfClone') {
+        return { sceneId: null };
+      }
+
+      return key == 'helpYourselfCloneUsedThisRound' ? { combatId: 'combat1', round: 2 } : undefined;
+    });
+
+    expect(canUsePerk(makeSpellItem(actor))).toBe(true);
+  });
+
+  test("an assist that finds nobody in reach neither marks the round nor posts a card", async () => {
+    game.combat = { id: 'combat1', round: 1 };
+    const actor = makeActor({ id: 'unicorn1', name: 'Twilight' });
+    actor.getFlag = jest.fn((scope, key) => (key == 'helpYourselfClone' ? { sceneId: null } : undefined));
+    canvas.tokens.placeables = [];
+
+    await onPerkUse(makeSpellItem(actor));
+
+    expect(actor.setFlag).not.toHaveBeenCalledWith(
+      'essence20', 'helpYourselfCloneUsedThisRound', expect.anything(),
+    );
+    expect(ui.notifications.warn).toHaveBeenCalled();
   });
 });
 
@@ -4714,6 +5433,98 @@ describe("Duty Of The Graphite (Beneath the Helmet, Graphite Ranger, 7th level, 
   });
 });
 
+describe("Duty of the Silver (Across the Stars, Silver Ranger, 7th level, p.59)", () => {
+  const DUTY_OF_THE_SILVER_ID = "Compendium.essence20.across_the_stars.Item.KhV5GeGIMJNWlWhr";
+
+  function makeSilverRangerActor({ power = 2, gridSurges = 1 } = {}) {
+    const rolePoints = { system: { resource: { value: gridSurges } }, update: jest.fn() };
+    return {
+      ...makeActor(),
+      system: { powers: { personal: { value: power } } },
+      update: jest.fn(),
+      _getBaseRolePoints: jest.fn(() => rolePoints),
+      __rolePoints: rolePoints,
+    };
+  }
+
+  beforeEach(() => {
+    ui.notifications.warn.mockReset();
+  });
+
+  describe("canUsePerk", () => {
+    test("true when affording both a Grid Surge and 2 Power", () => {
+      const actor = makeSilverRangerActor({ power: 2, gridSurges: 1 });
+      expect(canUsePerk(makePerkItem({ sourceId: DUTY_OF_THE_SILVER_ID, actor }))).toBe(true);
+    });
+
+    test("false with no Grid Surges left", () => {
+      const actor = makeSilverRangerActor({ power: 2, gridSurges: 0 });
+      expect(canUsePerk(makePerkItem({ sourceId: DUTY_OF_THE_SILVER_ID, actor }))).toBe(false);
+    });
+
+    test("false without enough Power", () => {
+      const actor = makeSilverRangerActor({ power: 1, gridSurges: 1 });
+      expect(canUsePerk(makePerkItem({ sourceId: DUTY_OF_THE_SILVER_ID, actor }))).toBe(false);
+    });
+  });
+
+  test("spends 1 Grid Surge and 2 Power and posts a notification", async () => {
+    const actor = makeSilverRangerActor({ power: 2, gridSurges: 1 });
+    const item = makePerkItem({ sourceId: DUTY_OF_THE_SILVER_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.__rolePoints.update).toHaveBeenCalledWith({ 'system.resource.value': 0 });
+    expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 0 });
+  });
+
+  test("warns and does nothing when unaffordable", async () => {
+    const actor = makeSilverRangerActor({ power: 0, gridSurges: 1 });
+    const item = makePerkItem({ sourceId: DUTY_OF_THE_SILVER_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ui.notifications.warn).toHaveBeenCalled();
+    expect(actor.update).not.toHaveBeenCalled();
+  });
+});
+
+describe("Ultimate Utility (Decepticon Directive, Mimic Focus, 20th level, p.49)", () => {
+  const ULTIMATE_UTILITY_ID = "Compendium.essence20.decepticon_directive.Item.LQkSWoIABnPUhecg";
+
+  function makeActorWithEnergon({ energon = 1 } = {}) {
+    return { ...makeActor(), system: { energon: { normal: { value: energon } } }, update: jest.fn() };
+  }
+
+  beforeEach(() => {
+    ui.notifications.warn.mockReset();
+  });
+
+  test("canUsePerk true with an Energon Point, false without", () => {
+    expect(canUsePerk(makePerkItem({ sourceId: ULTIMATE_UTILITY_ID, actor: makeActorWithEnergon({ energon: 1 }) }))).toBe(true);
+    expect(canUsePerk(makePerkItem({ sourceId: ULTIMATE_UTILITY_ID, actor: makeActorWithEnergon({ energon: 0 }) }))).toBe(false);
+  });
+
+  test("spends 1 Energon Point and posts a notification", async () => {
+    const actor = makeActorWithEnergon({ energon: 1 });
+    const item = makePerkItem({ sourceId: ULTIMATE_UTILITY_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.update).toHaveBeenCalledWith({ 'system.energon.normal.value': 0 });
+  });
+
+  test("warns and does nothing without an Energon Point", async () => {
+    const actor = makeActorWithEnergon({ energon: 0 });
+    const item = makePerkItem({ sourceId: ULTIMATE_UTILITY_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ui.notifications.warn).toHaveBeenCalled();
+    expect(actor.update).not.toHaveBeenCalled();
+  });
+});
+
 describe("Extra Rough Training (Sgt Slaughter Sourcebook, Drill Instructor Focus, Officer, 3rd level, p.10)", () => {
   const EXTRA_ROUGH_TRAINING_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Item.pqrUN5jaAbWJmgLf";
 
@@ -4812,6 +5623,28 @@ describe("Humanitarian (PR CRB, General Perk, p.96)", () => {
       expect.objectContaining({ skill: 'survival', essence: 'smarts', dif: '12', isHumanitarianAttempt: true }),
       actor,
     );
+  });
+});
+
+describe("Entropic Sponge (Finster's Monster-Matic Cookbook, Path of Frost, 13th level, p.291)", () => {
+  const ENTROPIC_SPONGE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.dpxjT9eTAKcZuRXs";
+
+  afterEach(() => {
+    global.game.combat = null;
+  });
+
+  test("usable only at round 1 of combat", () => {
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: ENTROPIC_SPONGE_ID, actor });
+
+    global.game.combat = { round: 1 };
+    expect(canUsePerk(item)).toBe(true);
+
+    global.game.combat = { round: 2 };
+    expect(canUsePerk(item)).toBe(false);
+
+    global.game.combat = null;
+    expect(canUsePerk(item)).toBe(false);
   });
 });
 
@@ -5161,6 +5994,52 @@ describe("Antagonistic (Cobra Codex, Renegade Troublemaker Focus, 17th level, p.
     const actor = { ...makeActor(), _dice: { rollSkill: jest.fn() } };
     game.user.targets = makeTargetsSet(null);
     const item = makePerkItem({ sourceId: ANTAGONISTIC_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ui.notifications.warn).toHaveBeenCalled();
+    expect(actor._dice.rollSkill).not.toHaveBeenCalled();
+  });
+});
+
+describe("Flying Nuisance (Cobra Codex, Renegade Troublemaker Focus, 10th level, p.66)", () => {
+  const FLYING_NUISANCE_ID = "Compendium.essence20.cobra_codex.Item.6PsZqPUijt60ISlq";
+
+  function makeTargetsSet(targetActor) {
+    const token = { actor: targetActor };
+    const set = new Set(targetActor ? [token] : []);
+    set.first = () => (targetActor ? token : undefined);
+    return set;
+  }
+
+  beforeEach(() => {
+    game.user.targets = new Set();
+    ui.notifications.warn.mockReset();
+    foundry.applications.api.DialogV2.wait.mockReset();
+  });
+
+  test("canUsePerk is always true", () => {
+    const item = makePerkItem({ sourceId: FLYING_NUISANCE_ID, actor: makeActor() });
+    expect(canUsePerk(item)).toBe(true);
+  });
+
+  test("triggers the roll against the currently-targeted actor once a Skill is chosen", async () => {
+    const actor = { ...makeActor(), _dice: { rollSkill: jest.fn() } };
+    game.user.targets = makeTargetsSet({ id: 'enemy1' });
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('driving');
+    const item = makePerkItem({ sourceId: FLYING_NUISANCE_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor._dice.rollSkill).toHaveBeenCalledWith(
+      expect.objectContaining({ skill: 'driving', defenseType: 'evasion', isFlyingNuisance: true }), actor,
+    );
+  });
+
+  test("warns and does nothing with no target selected", async () => {
+    const actor = { ...makeActor(), _dice: { rollSkill: jest.fn() } };
+    game.user.targets = makeTargetsSet(null);
+    const item = makePerkItem({ sourceId: FLYING_NUISANCE_ID, actor });
 
     await onPerkUse(item);
 
@@ -5728,6 +6607,70 @@ describe("Read The Land (Factions in Action Vol. 2, Ranger Focus, p.68)", () => 
 
     expect(game.socket.emit).not.toHaveBeenCalled();
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'environmentalExpertiseActive', false);
+  });
+});
+
+describe("Adaptation (GI Joe CRB, Ranger base, 2nd level, p.91)", () => {
+  const ADAPTATION_ID = "Compendium.essence20.gi_joe_crb.Item.PmY8jGTiemnSdsHi";
+
+  function makeAdaptationActor({ id = 'ranger1', name = 'Scout', points = 1 } = {}) {
+    const rolePointsItem = { system: { resource: { value: points } }, update: jest.fn() };
+    return {
+      ...makeActor({ id, name }),
+      _getBaseRolePoints: jest.fn(() => rolePointsItem),
+    };
+  }
+
+  describe("canUsePerk", () => {
+    test("true to switch ON with an Adaptation Point available", () => {
+      const actor = makeAdaptationActor({ points: 1 });
+      const item = makePerkItem({ sourceId: ADAPTATION_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("false to switch ON with no Adaptation Points left", () => {
+      const actor = makeAdaptationActor({ points: 0 });
+      const item = makePerkItem({ sourceId: ADAPTATION_ID, actor });
+      expect(canUsePerk(item)).toBe(false);
+    });
+
+    test("true to switch back OFF even with no Adaptation Points left - free either way", () => {
+      const actor = makeAdaptationActor({ points: 0 });
+      actor.getFlag = jest.fn(() => true);
+      const item = makePerkItem({ sourceId: ADAPTATION_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+  });
+
+  test("spends 1 Adaptation Point and toggles the flag on from inactive", async () => {
+    const actor = makeAdaptationActor({ points: 2 });
+    const item = makePerkItem({ sourceId: ADAPTATION_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor._getBaseRolePoints().update).toHaveBeenCalledWith({ 'system.resource.value': 1 });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'environmentalExpertiseActive', true);
+  });
+
+  test("toggles the flag off from active without spending anything", async () => {
+    const actor = makeAdaptationActor({ points: 2 });
+    actor.getFlag = jest.fn(() => true);
+    const item = makePerkItem({ sourceId: ADAPTATION_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor._getBaseRolePoints().update).not.toHaveBeenCalled();
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'environmentalExpertiseActive', false);
+  });
+
+  test("warns and does nothing when trying to switch ON with no Adaptation Points", async () => {
+    const actor = makeAdaptationActor({ points: 0 });
+    const item = makePerkItem({ sourceId: ADAPTATION_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ui.notifications.warn).toHaveBeenCalled();
+    expect(actor.setFlag).not.toHaveBeenCalled();
   });
 });
 
@@ -7987,6 +8930,215 @@ describe("Ageless Knowledge (Across the Stars, Phantom Ranger, 6th level, p.61)"
   });
 });
 
+describe("Can't Afford to Miss (Cobra Codex, Infantry Be Ruthless replacement Perk, p.53)", () => {
+  const CANT_AFFORD_TO_MISS_ID = "Compendium.essence20.cobra_codex.Item.nb4xPr4kA5ra12PL";
+
+  beforeEach(() => {
+    game.settings = { get: jest.fn(() => 1) };
+    game.users = [{ isGM: true, active: true }];
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create.mockReset();
+  });
+
+  test("spends a Story Point and banks a cumulative shiftUp", async () => {
+    const actor = makeActor();
+    actor.getFlag = jest.fn((scope, key) => (key == 'pendingCantAffordToMiss' ? { shiftUp: 1 } : undefined));
+    const item = makePerkItem({ sourceId: CANT_AFFORD_TO_MISS_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingCantAffordToMiss', expect.objectContaining({ shiftUp: 2 }),
+    );
+  });
+
+  test("warns and does nothing with no Story Points available", async () => {
+    game.users = [{ isGM: false, active: true }];
+    const actor = makeActor();
+    await onPerkUse(makePerkItem({ sourceId: CANT_AFFORD_TO_MISS_ID, actor }));
+
+    expect(actor.setFlag).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Impossible Expectations (Cobra Codex, Officer Be Ruthless replacement Perk, p.56)", () => {
+  const IMPOSSIBLE_EXPECTATIONS_ID = "Compendium.essence20.cobra_codex.Item.98rFJyzaoCWrLdbF";
+
+  beforeEach(() => {
+    game.settings = { get: jest.fn(() => 1) };
+    game.users = [{ isGM: true, active: true }];
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create.mockReset();
+    game.user.targets.first = jest.fn();
+  });
+
+  afterEach(() => {
+    delete game.settings;
+    delete game.user.targets.first;
+  });
+
+  test("gives the targeted, Defeated ally 1 Health and spends a Story Point", async () => {
+    const actor = makeActor();
+    const targetActor = { system: { health: { value: 0 } }, update: jest.fn() };
+    game.user.targets.first.mockReturnValue({ actor: targetActor });
+    const item = makePerkItem({ sourceId: IMPOSSIBLE_EXPECTATIONS_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(targetActor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
+  });
+
+  test("warns and does nothing without a Defeated target", async () => {
+    const actor = makeActor();
+    const targetActor = { system: { health: { value: 5 } }, update: jest.fn() };
+    game.user.targets.first.mockReturnValue({ actor: targetActor });
+    const item = makePerkItem({ sourceId: IMPOSSIBLE_EXPECTATIONS_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(targetActor.update).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Smashmouth Offense (Cobra Codex, Vanguard Be Ruthless replacement Perk, p.68)", () => {
+  const SMASHMOUTH_OFFENSE_ID = "Compendium.essence20.cobra_codex.Item.3OPswxxHjsYrQggY";
+
+  beforeEach(() => {
+    game.settings = { get: jest.fn(() => 1) };
+    game.combat = { id: 'combat1' };
+    game.users = [{ isGM: true, active: true }];
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create.mockReset();
+  });
+
+  afterEach(() => {
+    delete game.settings;
+    game.combat = null;
+  });
+
+  test("canUsePerk true when not yet used this encounter, false once it has been", () => {
+    const actor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: SMASHMOUTH_OFFENSE_ID, actor }))).toBe(true);
+
+    actor.getFlag = jest.fn((scope, key) => (
+      key == 'smashmouthOffenseUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+    expect(canUsePerk(makePerkItem({ sourceId: SMASHMOUTH_OFFENSE_ID, actor }))).toBe(false);
+  });
+
+  test("spends a Story Point, banks the bonus, and marks the encounter used", async () => {
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: SMASHMOUTH_OFFENSE_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingSmashmouthOffense', expect.anything());
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'smashmouthOffenseUsedThisEncounter', expect.anything());
+  });
+});
+
+describe("Study Weaknesses (Cobra Codex, Technician Be Ruthless replacement Perk, p.66)", () => {
+  const STUDY_WEAKNESSES_ID = "Compendium.essence20.cobra_codex.Item.AIkpuWVylCFyuLuX";
+
+  beforeEach(() => {
+    game.settings = { get: jest.fn(() => 1) };
+    game.users = [{ isGM: true, active: true }];
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create.mockReset();
+    game.user.targets.first = jest.fn();
+  });
+
+  afterEach(() => {
+    delete game.settings;
+    delete game.user.targets.first;
+  });
+
+  test("reveals the targeted actor's lowest Defense and spends a Story Point", async () => {
+    const actor = makeActor();
+    const targetActor = {
+      name: 'Cobra Trooper',
+      system: {
+        defenses: {
+          toughness: { total: 12 }, evasion: { total: 8 }, willpower: { total: 10 }, cleverness: { total: 14 },
+        },
+      },
+    };
+    game.user.targets.first.mockReturnValue({ actor: targetActor });
+    const item = makePerkItem({ sourceId: STUDY_WEAKNESSES_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and does nothing without a target", async () => {
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: STUDY_WEAKNESSES_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(global.ChatMessage.create).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Mind of No Mind (Factions in Action Vol 2: Intercontinental Adventures, Arashikage General Perk, p.30)", () => {
+  const MIND_OF_NO_MIND_ID = "Compendium.essence20.intercontinental_adventures.Item.edU8dyL3poLU6IuM";
+
+  beforeEach(() => {
+    global.ChatMessage.create.mockReset();
+  });
+
+  describe("canUsePerk", () => {
+    test("true when not yet used this encounter", () => {
+      const actor = makeActor();
+      const item = makePerkItem({ sourceId: MIND_OF_NO_MIND_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("false once already used this encounter", () => {
+      const actor = makeActor();
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'mindOfNoMindUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+      ));
+      game.combat = { id: 'combat1' };
+      const item = makePerkItem({ sourceId: MIND_OF_NO_MIND_ID, actor });
+      expect(canUsePerk(item)).toBe(false);
+      game.combat = null;
+    });
+  });
+
+  test("banks the pending Alertness shiftUp and marks the encounter used", async () => {
+    game.combat = { id: 'combat1' };
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: MIND_OF_NO_MIND_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingMindOfNoMind', expect.anything());
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'mindOfNoMindUsedThisEncounter', expect.anything());
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+    game.combat = null;
+  });
+
+  test("does nothing once already used this encounter", async () => {
+    const actor = makeActor();
+    actor.getFlag = jest.fn((scope, key) => (
+      key == 'mindOfNoMindUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+    game.combat = { id: 'combat1' };
+    const item = makePerkItem({ sourceId: MIND_OF_NO_MIND_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'pendingMindOfNoMind', expect.anything());
+    expect(global.ChatMessage.create).not.toHaveBeenCalled();
+    game.combat = null;
+  });
+});
+
 describe("Paradox (A Jump Through Time, Influence Perk, p.21)", () => {
   const PARADOX_ID = "Compendium.essence20.jump_through_time.Item.TYebczV8RvTTbWnL";
 
@@ -8128,6 +9280,379 @@ describe("Curb Your Enthusiasm (MLP Loyalty, 5th/15th level, p.90)", () => {
     expect(game.socket.emit).not.toHaveBeenCalled();
     expect(actor.setFlag).not.toHaveBeenCalled();
     expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Honorific Token (A Jump Through Time, Medieval Equipment, p.67)", () => {
+  const HONORIFIC_TOKEN_ID = "Compendium.essence20.jump_through_time.Item.z9NkwgoIx2JRrPBA";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1' };
+    game.users = [{ isGM: true, active: true }];
+    game.socket.emit.mockReset();
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create.mockReset();
+  });
+
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  describe("canUsePerk", () => {
+    test("true for the gear item when not yet used this encounter", () => {
+      const actor = makeActor();
+      const item = { type: 'gear', name: 'Honorific Token', parent: actor, flags: { core: { sourceId: HONORIFIC_TOKEN_ID } }, system: {} };
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("false once already used this encounter", () => {
+      const actor = makeActor();
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'honorificTokenUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+      ));
+      const item = { type: 'gear', name: 'Honorific Token', parent: actor, flags: { core: { sourceId: HONORIFIC_TOKEN_ID } }, system: {} };
+      expect(canUsePerk(item)).toBe(false);
+    });
+  });
+
+  test("requests a Story Point grant over the socket and marks the encounter used", async () => {
+    const actor = makeActor({ id: 'peasant1', name: 'Sir Reginald' });
+    const item = { type: 'gear', name: 'Honorific Token', parent: actor, flags: { core: { sourceId: HONORIFIC_TOKEN_ID } }, system: {} };
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
+      action: 'grantStoryPoints', amount: 1, actorName: 'Sir Reginald',
+    });
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'honorificTokenUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and does nothing when no GM is connected", async () => {
+    game.users = [{ isGM: false, active: true }];
+    const actor = makeActor({ id: 'peasant1' });
+    const item = { type: 'gear', name: 'Honorific Token', parent: actor, flags: { core: { sourceId: HONORIFIC_TOKEN_ID } }, system: {} };
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).not.toHaveBeenCalled();
+    expect(actor.setFlag).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Stargazer (Field Guide to Action & Adventure, Influence Perk, p.61)", () => {
+  const STARGAZER_ID = "Compendium.essence20.field_guide_action_adventure.Item.SnAIok2KD1f77DyV";
+
+  describe("canUsePerk", () => {
+    test("true with 0 uses this scene and no pending bank", () => {
+      const actor = makeActor();
+      const item = makePerkItem({ sourceId: STARGAZER_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("still true with 1 use this scene", () => {
+      const actor = makeActor();
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'stargazerUsedThisScene' ? { epoch: 1, window: 'scene', count: 1 } : undefined
+      ));
+      const item = makePerkItem({ sourceId: STARGAZER_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("false once used twice this scene", () => {
+      const actor = makeActor();
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'stargazerUsedThisScene' ? { epoch: 1, window: 'scene', count: 2 } : undefined
+      ));
+      const item = makePerkItem({ sourceId: STARGAZER_ID, actor });
+      expect(canUsePerk(item)).toBe(false);
+    });
+
+    test("false with an already-unspent pending bank, even under the scene cap", () => {
+      const actor = makeActor();
+      actor.getFlag = jest.fn((scope, key) => (key == 'pendingStargazer' ? {} : undefined));
+      const item = makePerkItem({ sourceId: STARGAZER_ID, actor });
+      expect(canUsePerk(item)).toBe(false);
+    });
+  });
+
+  test("banks the pending Edge and marks a scene use", async () => {
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: STARGAZER_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingStargazer', expect.any(Object));
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'stargazerUsedThisScene', expect.objectContaining({ window: 'scene', count: 1 }),
+    );
+  });
+});
+
+describe("Grid Gifted (Field Guide to Action & Adventure, Gridthropologist Origin Benefit, p.63)", () => {
+  const GRID_GIFTED_ID = "Compendium.essence20.field_guide_action_adventure.Item.MS8KLmY19EyKR1Ww";
+
+  beforeEach(() => {
+    foundry.applications.api.DialogV2.confirm = jest.fn();
+  });
+
+  describe("canUsePerk", () => {
+    test("true with 0 uses this scene and no pending bank", () => {
+      const actor = makeActor();
+      const item = makePerkItem({ sourceId: GRID_GIFTED_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("false once already used this scene", () => {
+      const actor = makeActor();
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'gridGiftedUsedThisScene' ? { epoch: 1, window: 'scene', count: 1 } : undefined
+      ));
+      const item = makePerkItem({ sourceId: GRID_GIFTED_ID, actor });
+      expect(canUsePerk(item)).toBe(false);
+    });
+
+    test("false with an already-unspent pending bank", () => {
+      const actor = makeActor();
+      actor.getFlag = jest.fn((scope, key) => (key == 'pendingGridGifted' ? {} : undefined));
+      const item = makePerkItem({ sourceId: GRID_GIFTED_ID, actor });
+      expect(canUsePerk(item)).toBe(false);
+    });
+  });
+
+  test("banks Edge mode when the prompt is declined", async () => {
+    global.foundry.applications.api.DialogV2.confirm.mockResolvedValue(false);
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: GRID_GIFTED_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingGridGifted', expect.objectContaining({ mode: 'edge' }),
+    );
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'gridGiftedUsedThisScene', expect.objectContaining({ window: 'scene', count: 1 }),
+    );
+  });
+
+  test("banks Specialized mode when the prompt is accepted", async () => {
+    global.foundry.applications.api.DialogV2.confirm.mockResolvedValue(true);
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: GRID_GIFTED_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingGridGifted', expect.objectContaining({ mode: 'specialized' }),
+    );
+  });
+});
+
+describe("\"[Element] Is Magic\" (MLP CRB, every Spirit's own 1st-level Role Perk)", () => {
+  const GENEROSITY_IS_MAGIC_ID = "Compendium.essence20.mlp_crb.Item.kcsCU7i1qaekbMrn";
+  const MAGIC_IS_FRIENDSHIP_ID = "Compendium.essence20.mlp_crb.Item.oZ8y7o3JjFM2Nevm";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1' };
+    game.users = [{ isGM: true, active: true }];
+    game.socket.emit.mockReset();
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create.mockReset();
+  });
+
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  describe("canUsePerk", () => {
+    test("true when not yet used this encounter, for any of the six", () => {
+      const actor = makeActor();
+      expect(canUsePerk(makePerkItem({ sourceId: GENEROSITY_IS_MAGIC_ID, actor }))).toBe(true);
+      expect(canUsePerk(makePerkItem({ sourceId: MAGIC_IS_FRIENDSHIP_ID, actor }))).toBe(true);
+    });
+
+    test("false once already used this encounter", () => {
+      const actor = makeActor();
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'elementIsMagicUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+      ));
+      expect(canUsePerk(makePerkItem({ sourceId: GENEROSITY_IS_MAGIC_ID, actor }))).toBe(false);
+    });
+  });
+
+  test("requests a Story Point grant over the socket and marks the encounter used", async () => {
+    const actor = makeActor({ id: 'pony7', name: 'Applejack' });
+    const item = makePerkItem({ sourceId: GENEROSITY_IS_MAGIC_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
+      action: 'grantStoryPoints', amount: 1, actorName: 'Applejack',
+    });
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'elementIsMagicUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and does nothing when no GM is connected", async () => {
+    game.users = [{ isGM: false, active: true }];
+    const actor = makeActor({ id: 'pony7' });
+    const item = makePerkItem({ sourceId: MAGIC_IS_FRIENDSHIP_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).not.toHaveBeenCalled();
+    expect(actor.setFlag).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Party Power (MLP CRB, Party Maestro Influence, p.56)", () => {
+  const PARTY_POWER_ID = "Compendium.essence20.mlp_crb.Item.GKez5xeu5ZllzGOI";
+
+  beforeEach(() => {
+    game.users = [{ isGM: true, active: true }];
+    game.socket.emit.mockReset();
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create.mockReset();
+  });
+
+  describe("canUsePerk", () => {
+    test("true with uses remaining, false once all 3 are used this scene", () => {
+      const freshActor = makeActor();
+      expect(canUsePerk(makePerkItem({ sourceId: PARTY_POWER_ID, actor: freshActor }))).toBe(true);
+
+      const usedActor = makeActor();
+      usedActor.getFlag = jest.fn((scope, key) => (
+        key == 'partyPowerUsedThisScene' ? { epoch: 1, window: 'scene', count: 3 } : undefined
+      ));
+      expect(canUsePerk(makePerkItem({ sourceId: PARTY_POWER_ID, actor: usedActor }))).toBe(false);
+    });
+  });
+
+  test("requests a Story Point grant over the socket and marks a use", async () => {
+    const actor = makeActor({ id: 'pony8', name: 'Cheese Sandwich' });
+    const item = makePerkItem({ sourceId: PARTY_POWER_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
+      action: 'grantStoryPoints', amount: 1, actorName: 'Cheese Sandwich',
+    });
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'partyPowerUsedThisScene', expect.objectContaining({ window: 'scene', count: 1 }),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and does nothing when no GM is connected", async () => {
+    game.users = [{ isGM: false, active: true }];
+    const actor = makeActor({ id: 'pony8' });
+    const item = makePerkItem({ sourceId: PARTY_POWER_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).not.toHaveBeenCalled();
+    expect(actor.setFlag).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+
+  describe("Fun Exhaustion interaction (MLP CRB, suggested Hang-Up, p.56)", () => {
+    const FUN_EXHAUSTION_ID = "Compendium.essence20.mlp_crb.Item.FDd42qmdJBx0eTbE";
+
+    function makeExhaustibleActor({ usedAlready = false } = {}) {
+      const actor = makeActor({ id: 'pony9', name: 'Pinkie Pie' });
+      actor.items = [{ type: 'hangUp', flags: { core: { sourceId: FUN_EXHAUSTION_ID } } }];
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'partyPowerUsedThisScene' && usedAlready ? { epoch: 1, window: 'scene', count: 1 } : undefined
+      ));
+      return actor;
+    }
+
+    test("doesn't block on the first use of the scene", async () => {
+      const actor = makeExhaustibleActor({ usedAlready: false });
+      const item = makePerkItem({ sourceId: PARTY_POWER_ID, actor });
+
+      await onPerkUse(item);
+
+      expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'funExhaustionBlocked', expect.anything());
+    });
+
+    test("blocks assisting/being assisted from the second use of the scene on", async () => {
+      const actor = makeExhaustibleActor({ usedAlready: true });
+      const item = makePerkItem({ sourceId: PARTY_POWER_ID, actor });
+
+      await onPerkUse(item);
+
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'funExhaustionBlocked', expect.any(Object));
+    });
+
+    test("doesn't block a repeat user without the Hang-Up", async () => {
+      const actor = makeActor({ id: 'pony10' });
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'partyPowerUsedThisScene' ? { epoch: 1, window: 'scene', count: 1 } : undefined
+      ));
+      const item = makePerkItem({ sourceId: PARTY_POWER_ID, actor });
+
+      await onPerkUse(item);
+
+      expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'funExhaustionBlocked', expect.anything());
+    });
+  });
+});
+
+describe("Public Television (WTNV Citizens' Guide, General Perk, p.51)", () => {
+  const PUBLIC_TELEVISION_ID = "Compendium.essence20.wtnv_citizens_guide.Item.ymtH7qBwRKqohlyF";
+
+  test("canUsePerk true until used this scene", () => {
+    const freshActor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: PUBLIC_TELEVISION_ID, actor: freshActor }))).toBe(true);
+
+    const usedActor = makeActor();
+    usedActor.getFlag = jest.fn((scope, key) => (
+      key == 'publicTelevisionUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+    expect(canUsePerk(makePerkItem({ sourceId: PUBLIC_TELEVISION_ID, actor: usedActor }))).toBe(false);
+  });
+
+  test("onPerkUse marks the scene used and notifies", async () => {
+    const actor = makeActor();
+    await onPerkUse(makePerkItem({ sourceId: PUBLIC_TELEVISION_ID, actor }));
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'publicTelevisionUsedThisEncounter', expect.objectContaining({ count: 1 }),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+});
+
+describe("Scientific Method (WTNV Citizens' Guide, University of What It Is Role Perk, p.44)", () => {
+  const SCIENTIFIC_METHOD_ID = "Compendium.essence20.wtnv_citizens_guide.Item.vnYDLY5Fe2pasHyF";
+
+  test("canUsePerk true until used this scene", () => {
+    const freshActor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: SCIENTIFIC_METHOD_ID, actor: freshActor }))).toBe(true);
+
+    const usedActor = makeActor();
+    usedActor.getFlag = jest.fn((scope, key) => (
+      key == 'scientificMethodUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+    expect(canUsePerk(makePerkItem({ sourceId: SCIENTIFIC_METHOD_ID, actor: usedActor }))).toBe(false);
+  });
+
+  test("onPerkUse banks the pending ↑1 and marks the scene used", async () => {
+    const actor = makeActor();
+    await onPerkUse(makePerkItem({ sourceId: SCIENTIFIC_METHOD_ID, actor }));
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingScientificMethod', expect.anything());
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'scientificMethodUsedThisEncounter', expect.objectContaining({ count: 1 }),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
   });
 });
 
@@ -8293,6 +9818,232 @@ describe("Heroic Intervention (PR CRB, General Perk, p.96) - Story Point grant h
   });
 });
 
+describe("Heroic Intervention (PR CRB, General Perk, p.96) - Power-spend move half", () => {
+  const HEROIC_INTERVENTION_ID = "Compendium.essence20.pr_crb.Item.T95n2lwh3F5OHjnB";
+
+  function makeUsedActor({ power = 1 } = {}) {
+    const actor = makeActor({ id: 'ranger1', name: 'Trini' });
+    actor.getFlag = jest.fn((scope, key) => (
+      key == 'heroicInterventionUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+    actor.system = { powers: { personal: { value: power } } };
+    actor.update = jest.fn();
+    return actor;
+  }
+
+  beforeEach(() => {
+    global.ChatMessage.create.mockReset();
+    ui.notifications.warn.mockReset();
+  });
+
+  describe("canUsePerk", () => {
+    test("true once the Story Point half is already spent, if 1 Power remains", () => {
+      const actor = makeUsedActor({ power: 1 });
+      const item = makePerkItem({ sourceId: HEROIC_INTERVENTION_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("false once the Story Point half is spent and there is no Power left", () => {
+      const actor = makeUsedActor({ power: 0 });
+      const item = makePerkItem({ sourceId: HEROIC_INTERVENTION_ID, actor });
+      expect(canUsePerk(item)).toBe(false);
+    });
+  });
+
+  test("spends 1 Power and posts a chat card instead of granting a Story Point", async () => {
+    const actor = makeUsedActor({ power: 1 });
+    const item = makePerkItem({ sourceId: HEROIC_INTERVENTION_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 0 });
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and does nothing when there is no Power left to spend", async () => {
+    const actor = makeUsedActor({ power: 0 });
+    const item = makePerkItem({ sourceId: HEROIC_INTERVENTION_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.update).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Horse Around (MLP CRB, Laugh Tactic, p.86)", () => {
+  const HORSE_AROUND_ID = "Compendium.essence20.mlp_crb.Item.6uhfHYeuUkFuGEEN";
+
+  function makeActorWithCheer({ cheer = 1 } = {}) {
+    const actor = makeActor({ id: 'pony1', name: 'Pinkie' });
+    const rolePoints = {
+      name: 'Cheer Points',
+      system: { resource: { value: cheer } },
+      update: jest.fn(async (data) => {
+        rolePoints.system.resource.value = data['system.resource.value'];
+      }),
+    };
+    actor.items = { documentsByType: { rolePoints: [rolePoints] } };
+    actor._rolePoints = rolePoints;
+    return actor;
+  }
+
+  beforeEach(() => {
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create.mockReset();
+  });
+
+  describe("canUsePerk", () => {
+    test("true with Cheer, false without", () => {
+      expect(canUsePerk(makePerkItem({ sourceId: HORSE_AROUND_ID, actor: makeActorWithCheer({ cheer: 1 }) }))).toBe(true);
+      expect(canUsePerk(makePerkItem({ sourceId: HORSE_AROUND_ID, actor: makeActorWithCheer({ cheer: 0 }) }))).toBe(false);
+    });
+  });
+
+  test("spends 1 Cheer and posts a chat card", async () => {
+    const actor = makeActorWithCheer({ cheer: 2 });
+    const item = makePerkItem({ sourceId: HORSE_AROUND_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor._rolePoints.system.resource.value).toBe(1);
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and does nothing with no Cheer", async () => {
+    const actor = makeActorWithCheer({ cheer: 0 });
+    const item = makePerkItem({ sourceId: HORSE_AROUND_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor._rolePoints.update).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Crack-Up The 4th Wall (MLP CRB, Laugh Tactic, p.86)", () => {
+  const CRACK_UP_THE_4TH_WALL_ID = "Compendium.essence20.mlp_crb.Item.km6HV50h6XWKTIm1";
+
+  function makeActorWithCheer({ cheer = 0, max = 5, usedThisEncounter = false } = {}) {
+    const actor = makeActor({ id: 'pony1', name: 'Pinkie' });
+    const rolePoints = {
+      name: 'Cheer Points',
+      system: { resource: { value: cheer, max } },
+      update: jest.fn(async (data) => {
+        rolePoints.system.resource.value = data['system.resource.value'];
+      }),
+    };
+    actor.items = { documentsByType: { rolePoints: [rolePoints] } };
+    actor._rolePoints = rolePoints;
+    if (usedThisEncounter) {
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'crackUpThe4thWallUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+      ));
+    }
+
+    return actor;
+  }
+
+  beforeEach(() => {
+    global.ChatMessage.create.mockReset();
+  });
+
+  describe("canUsePerk", () => {
+    test("true when not yet used this encounter, false once it has been", () => {
+      expect(canUsePerk(makePerkItem({ sourceId: CRACK_UP_THE_4TH_WALL_ID, actor: makeActorWithCheer() }))).toBe(true);
+      expect(canUsePerk(makePerkItem({
+        sourceId: CRACK_UP_THE_4TH_WALL_ID, actor: makeActorWithCheer({ usedThisEncounter: true }),
+      }))).toBe(false);
+    });
+  });
+
+  test("grants 1 Cheer Point, capped at the pool's own max, and marks the encounter used", async () => {
+    const actor = makeActorWithCheer({ cheer: 4, max: 5 });
+    const item = makePerkItem({ sourceId: CRACK_UP_THE_4TH_WALL_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor._rolePoints.system.resource.value).toBe(5);
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'crackUpThe4thWallUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("does not exceed the pool's own max", async () => {
+    const actor = makeActorWithCheer({ cheer: 5, max: 5 });
+    const item = makePerkItem({ sourceId: CRACK_UP_THE_4TH_WALL_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor._rolePoints.system.resource.value).toBe(5);
+  });
+});
+
+describe("To The Rescue (MLP CRB, Spirit of Loyalty, 6th level, p.90)", () => {
+  const TO_THE_RESCUE_ID = "Compendium.essence20.mlp_crb.Item.r8DtD9tdoJy5E4od";
+
+  beforeEach(() => {
+    game.users = [{ isGM: true, active: true }];
+    game.settings = { get: jest.fn(() => 1) };
+    game.combat = { id: 'combat1', round: 1 };
+    game.socket.emit.mockReset();
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create.mockReset();
+  });
+
+  afterEach(() => {
+    delete game.settings;
+    game.combat = null;
+  });
+
+  describe("canUsePerk", () => {
+    test("true with a GM connected, a Story Point available, and not yet used this round", () => {
+      const actor = makeActor();
+      const item = makePerkItem({ sourceId: TO_THE_RESCUE_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("false with no Story Points, no GM, or already used this round", () => {
+      const actor = makeActor();
+      const item = makePerkItem({ sourceId: TO_THE_RESCUE_ID, actor });
+
+      game.settings.get = jest.fn(() => 0);
+      expect(canUsePerk(item)).toBe(false);
+
+      game.settings.get = jest.fn(() => 1);
+      game.users = [{ isGM: false, active: true }];
+      expect(canUsePerk(item)).toBe(false);
+    });
+  });
+
+  test("spends 1 Story Point, marks the round used, and posts a chat card", async () => {
+    const actor = makeActor({ id: 'pony1', name: 'Rainbow Dash' });
+    const item = makePerkItem({ sourceId: TO_THE_RESCUE_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
+      action: 'spendStoryPoints', amount: 1, actorName: 'Rainbow Dash',
+    });
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'toTheRescueUsedThisRound', expect.any(Object),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and does nothing without a Story Point to spend", async () => {
+    game.settings.get = jest.fn(() => 0);
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: TO_THE_RESCUE_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ui.notifications.warn).toHaveBeenCalled();
+    expect(game.socket.emit).not.toHaveBeenCalled();
+  });
+});
+
 describe("Legacy (General Hawk's Personnel Files, Influence Perk, p.169) - Story Point grant half", () => {
   const LEGACY_ID = "Compendium.essence20.general_hawk_s_personel_files.Item.j8OsGvCyIstjGyKZ";
 
@@ -8334,6 +10085,53 @@ describe("Legacy (General Hawk's Personnel Files, Influence Perk, p.169) - Story
     game.users = [{ isGM: false, active: true }];
     const actor = makeActor();
     await onPerkUse(makePerkItem({ sourceId: LEGACY_ID, actor }));
+
+    expect(game.socket.emit).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Investigator (Field Guide to Action & Adventure, Influence Perk, p.56) - Story Point grant half", () => {
+  const INVESTIGATOR_ID = "Compendium.essence20.field_guide_action_adventure.Item.eI07csKf4P0lC2DS";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1' };
+    game.users = [{ isGM: true, active: true }];
+    game.socket.emit.mockReset();
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create.mockReset();
+  });
+
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  test("canUsePerk true when not yet used this encounter, false once it has been", () => {
+    const actor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: INVESTIGATOR_ID, actor }))).toBe(true);
+
+    actor.getFlag = jest.fn((scope, key) => (key == 'investigatorUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
+    expect(canUsePerk(makePerkItem({ sourceId: INVESTIGATOR_ID, actor }))).toBe(false);
+  });
+
+  test("requests a Story Point grant over the socket and marks the encounter used", async () => {
+    const actor = makeActor({ id: 'joe1', name: 'Billy' });
+    const item = makePerkItem({ sourceId: INVESTIGATOR_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
+      action: 'grantStoryPoints', amount: 1, actorName: 'Billy',
+    });
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'investigatorUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
+    );
+  });
+
+  test("warns and does nothing when no GM is connected", async () => {
+    game.users = [{ isGM: false, active: true }];
+    const actor = makeActor();
+    await onPerkUse(makePerkItem({ sourceId: INVESTIGATOR_ID, actor }));
 
     expect(game.socket.emit).not.toHaveBeenCalled();
     expect(ui.notifications.warn).toHaveBeenCalled();
@@ -8383,6 +10181,117 @@ describe("Done the Impossible (General Hawk's Personnel Files, General Perk, p.1
     game.users = [{ isGM: false, active: true }];
     const actor = makeActor();
     await onPerkUse(makePerkItem({ sourceId: DONE_THE_IMPOSSIBLE_ID, actor }));
+
+    expect(game.socket.emit).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Folklorist (Factions in Action Vol 1: Ferocious Fighters, Peacekeeper Focus, p.16)", () => {
+  const FOLKLORIST_ID = "Compendium.essence20.ferocious_fighters.Item.TU96vM4aq15QOfM4";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1' };
+    game.users = [{ isGM: true, active: true }];
+    game.socket.emit.mockReset();
+    ui.notifications.warn.mockReset();
+  });
+
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  test("canUsePerk true when not yet used this encounter, false once it has been", () => {
+    const actor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: FOLKLORIST_ID, actor }))).toBe(true);
+
+    actor.getFlag = jest.fn((scope, key) => (
+      key == 'folkloristUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+    expect(canUsePerk(makePerkItem({ sourceId: FOLKLORIST_ID, actor }))).toBe(false);
+  });
+
+  test("requests a 2-point Story Point grant over the socket and marks the encounter used", async () => {
+    const actor = makeActor({ id: 'joe1', name: 'Nunchuk' });
+    const item = makePerkItem({ sourceId: FOLKLORIST_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
+      action: 'grantStoryPoints', amount: 2, actorName: 'Nunchuk',
+    });
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'folkloristUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
+    );
+  });
+
+  test("warns and does nothing when no GM is connected", async () => {
+    game.users = [{ isGM: false, active: true }];
+    const actor = makeActor();
+    await onPerkUse(makePerkItem({ sourceId: FOLKLORIST_ID, actor }));
+
+    expect(game.socket.emit).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+  });
+});
+
+describe("Chivalrous / Puzzle Solver (Beneath the Helmet, p.50) - Story Point grant halves", () => {
+  const CHIVALROUS_ID = "Compendium.essence20.beneath_the_helmet.Item.E6bnHJFn2QHSru4p";
+  const PUZZLE_SOLVER_ID = "Compendium.essence20.beneath_the_helmet.Item.AS1G8dp4t09G1k6N";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1' };
+    game.users = [{ isGM: true, active: true }];
+    game.socket.emit.mockReset();
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create.mockReset();
+  });
+
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  test.each([
+    ['Chivalrous', CHIVALROUS_ID, 'chivalrousUsedThisEncounter'],
+    ['Puzzle Solver', PUZZLE_SOLVER_ID, 'puzzleSolverUsedThisEncounter'],
+  ])("%s: canUsePerk true until used this encounter", (_name, sourceId, flagKey) => {
+    const actor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId, actor }))).toBe(true);
+
+    actor.getFlag = jest.fn((scope, key) => (key == flagKey ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
+    expect(canUsePerk(makePerkItem({ sourceId, actor }))).toBe(false);
+  });
+
+  test.each([
+    ['Chivalrous', CHIVALROUS_ID, 'chivalrousUsedThisEncounter'],
+    ['Puzzle Solver', PUZZLE_SOLVER_ID, 'puzzleSolverUsedThisEncounter'],
+  ])("%s: requests a Story Point grant and marks its own encounter flag", async (_name, sourceId, flagKey) => {
+    const actor = makeActor({ id: 'knight1', name: 'Aurico' });
+
+    await onPerkUse(makePerkItem({ sourceId, actor }));
+
+    expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
+      action: 'grantStoryPoints', amount: 1, actorName: 'Aurico',
+    });
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', flagKey, expect.objectContaining({ epoch: 1, count: 1 }),
+    );
+  });
+
+  test("each Perk uses its own flag, so holding both allows both grants", () => {
+    const actor = makeActor();
+    actor.getFlag = jest.fn((scope, key) => (
+      key == 'chivalrousUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+
+    expect(canUsePerk(makePerkItem({ sourceId: CHIVALROUS_ID, actor }))).toBe(false);
+    expect(canUsePerk(makePerkItem({ sourceId: PUZZLE_SOLVER_ID, actor }))).toBe(true);
+  });
+
+  test("warns and does nothing when no GM is connected", async () => {
+    game.users = [{ isGM: false, active: true }];
+    const actor = makeActor();
+    await onPerkUse(makePerkItem({ sourceId: CHIVALROUS_ID, actor }));
 
     expect(game.socket.emit).not.toHaveBeenCalled();
     expect(ui.notifications.warn).toHaveBeenCalled();
@@ -8529,6 +10438,85 @@ describe("Bait and Switch (MLP Tricky Influence, p.63)", () => {
     });
     expect(actor.setFlag).toHaveBeenCalledWith(
       'essence20', 'pendingBaitAndSwitch', expect.objectContaining({ edge: true }),
+    );
+  });
+});
+
+describe("Brutish (Ferocious Fighters, Influence Perk, p.76)", () => {
+  const BRUTISH_ID = "Compendium.essence20.ferocious_fighters.Item.29GLZcbjQhJHdsg0";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1' };
+  });
+
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  test("canUsePerk true until used this scene, false afterwards", () => {
+    const actor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: BRUTISH_ID, actor }))).toBe(true);
+
+    actor.getFlag = jest.fn((scope, key) => (
+      key == 'brutishUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+    expect(canUsePerk(makePerkItem({ sourceId: BRUTISH_ID, actor }))).toBe(false);
+  });
+
+  test("banks a plain unscoped Edge on the actor and marks the scene used", async () => {
+    const actor = makeActor({ id: 'joe3', name: 'Beach Head' });
+
+    await onPerkUse(makePerkItem({ sourceId: BRUTISH_ID, actor }));
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingBrutish', expect.objectContaining({ edge: true }),
+    );
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'brutishUsedThisEncounter', expect.objectContaining({ epoch: 1, count: 1 }),
+    );
+  });
+
+  test("banks no shiftUp — RAW grants Edge only", async () => {
+    const actor = makeActor();
+
+    await onPerkUse(makePerkItem({ sourceId: BRUTISH_ID, actor }));
+
+    const banked = actor.setFlag.mock.calls.find(c => c[1] == 'pendingBrutish')[2];
+    expect(banked.shiftUp).toBeUndefined();
+  });
+});
+
+describe("Capable of Anything (WTNV Citizens' Guide, Influence Perk, p.27)", () => {
+  const CAPABLE_OF_ANYTHING_ID = "Compendium.essence20.wtnv_citizens_guide.Item.r9F7KVy6UqcB2x49";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1' };
+  });
+
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  test("canUsePerk true until used this scene, false afterwards", () => {
+    const actor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: CAPABLE_OF_ANYTHING_ID, actor }))).toBe(true);
+
+    actor.getFlag = jest.fn((scope, key) => (
+      key == 'capableOfAnythingUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+    expect(canUsePerk(makePerkItem({ sourceId: CAPABLE_OF_ANYTHING_ID, actor }))).toBe(false);
+  });
+
+  test("banks a plain unscoped Edge and marks the scene used", async () => {
+    const actor = makeActor();
+
+    await onPerkUse(makePerkItem({ sourceId: CAPABLE_OF_ANYTHING_ID, actor }));
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingCapableOfAnything', expect.objectContaining({ edge: true }),
+    );
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'capableOfAnythingUsedThisEncounter', expect.objectContaining({ count: 1 }),
     );
   });
 });
@@ -8688,6 +10676,67 @@ describe("Clued In (GI Joe CRB, Intelligence Origin Benefit, p.64)", () => {
     game.users = [{ isGM: false, active: true }];
     const actor = makeActor();
     const item = makePerkItem({ sourceId: CLUED_IN_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ui.notifications.warn).toHaveBeenCalled();
+    expect(game.socket.emit).not.toHaveBeenCalled();
+  });
+});
+
+describe("Always in Contact (GI Joe CRB, Covert Ops Origin Benefit, p.64)", () => {
+  const ALWAYS_IN_CONTACT_ID = "Compendium.essence20.gi_joe_crb.Item.1m1pdHboGB7gem34";
+
+  beforeEach(() => {
+    game.users = [{ isGM: true, active: true }];
+    game.settings = { get: jest.fn(() => 1) };
+    game.socket.emit.mockReset();
+    ui.notifications.warn.mockReset();
+    global.ChatMessage.create?.mockReset();
+  });
+
+  afterEach(() => {
+    delete game.settings;
+  });
+
+  describe("canUsePerk", () => {
+    test("true when a GM is connected and a Story Point is available", () => {
+      const actor = makeActor();
+      const item = makePerkItem({ sourceId: ALWAYS_IN_CONTACT_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("false with no Story Points available", () => {
+      game.settings.get = jest.fn(() => 0);
+      const actor = makeActor();
+      const item = makePerkItem({ sourceId: ALWAYS_IN_CONTACT_ID, actor });
+      expect(canUsePerk(item)).toBe(false);
+    });
+
+    test("false with no GM connected", () => {
+      game.users = [{ isGM: false, active: true }];
+      const actor = makeActor();
+      const item = makePerkItem({ sourceId: ALWAYS_IN_CONTACT_ID, actor });
+      expect(canUsePerk(item)).toBe(false);
+    });
+  });
+
+  test("spends 1 Story Point and announces on the sheet", async () => {
+    const actor = makeActor({ name: 'Scarlett' });
+    const item = makePerkItem({ sourceId: ALWAYS_IN_CONTACT_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
+      action: 'spendStoryPoints', amount: 1, actorName: 'Scarlett',
+    });
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("warns and does nothing when no GM is connected", async () => {
+    game.users = [{ isGM: false, active: true }];
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: ALWAYS_IN_CONTACT_ID, actor });
 
     await onPerkUse(item);
 
@@ -8904,67 +10953,116 @@ describe("Trick Shot (Knights of Canterlot, Archer, p.14)", () => {
   });
 });
 
-describe("Augment Power (Transformers CRB Scientist, 7th level, p.80)", () => {
+describe("Augment Power (Transformers CRB Scientist, 7th level, p.80) - 2-tier benefit picker", () => {
   beforeEach(() => {
     game.user.targets = new Set();
     canvas.tokens.placeables = [];
     foundry.applications.api.DialogV2.wait.mockReset();
     ui.notifications.warn.mockReset();
+    game.combat = { id: 'combat1', round: 1, turn: 0 };
+  });
+
+  afterEach(() => {
     game.combat = null;
   });
 
-  describe("canUsePerk - once-per-turn gate", () => {
-    test("true with the Perk, not yet used this turn", () => {
-      game.combat = { id: 'combat1', round: 1, turn: 0 };
+  describe("canUsePerk", () => {
+    test("true with neither gate used yet", () => {
       const actor = makeActor();
       const item = makePerkItem({ sourceId: AUGMENT_POWER_ID, actor });
       expect(canUsePerk(item)).toBe(true);
     });
 
-    test("false once already used this turn", () => {
-      game.combat = { id: 'combat1', round: 1, turn: 0 };
+    test("true with only the once-per-turn gate exhausted (once-per-combat still available)", () => {
       const actor = makeActor();
       actor.getFlag = jest.fn((scope, key) => (
         key == 'augmentPowerUsedThisTurn' ? { combatId: 'combat1', round: 1, turn: 0 } : undefined
       ));
+      const item = makePerkItem({ sourceId: AUGMENT_POWER_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("true with only the once-per-combat gate exhausted (once-per-turn still available)", () => {
+      const actor = makeActor();
+      actor.getFlag = jest.fn((scope, key) => (
+        key == 'augmentPowerUsedThisCombat' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+      ));
+      const item = makePerkItem({ sourceId: AUGMENT_POWER_ID, actor });
+      expect(canUsePerk(item)).toBe(true);
+    });
+
+    test("false once BOTH gates are exhausted", () => {
+      const actor = makeActor();
+      actor.getFlag = jest.fn((scope, key) => {
+        if (key == 'augmentPowerUsedThisTurn') return { combatId: 'combat1', round: 1, turn: 0 };
+        if (key == 'augmentPowerUsedThisCombat') return { epoch: 1, window: 'encounter', count: 1 };
+        return undefined;
+      });
       const item = makePerkItem({ sourceId: AUGMENT_POWER_ID, actor });
       expect(canUsePerk(item)).toBe(false);
     });
-
-    test("true again once it's a new turn", () => {
-      game.combat = { id: 'combat1', round: 1, turn: 1 };
-      const actor = makeActor();
-      actor.getFlag = jest.fn((scope, key) => (
-        key == 'augmentPowerUsedThisTurn' ? { combatId: 'combat1', round: 1, turn: 0 } : undefined
-      ));
-      const item = makePerkItem({ sourceId: AUGMENT_POWER_ID, actor });
-      expect(canUsePerk(item)).toBe(true);
-    });
-
-    test("true outside of combat entirely (the once-per-turn gate only applies mid-combat)", () => {
-      const actor = makeActor();
-      const item = makePerkItem({ sourceId: AUGMENT_POWER_ID, actor });
-      expect(canUsePerk(item)).toBe(true);
-    });
   });
 
-  test("banks a flat +1 shiftUp on the single already-targeted ally and marks the turn used", async () => {
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+  test("dispatches straight to the ↑2/once-per-combat grant when the turn gate is already used, no picker shown", async () => {
     const actor = makeActor({ id: 'scientist' });
+    actor.getFlag = jest.fn((scope, key) => (
+      key == 'augmentPowerUsedThisTurn' ? { combatId: 'combat1', round: 1, turn: 0 } : undefined
+    ));
     const ally = makeActor({ id: 'ally1', name: 'Wheeljack' });
     game.user.targets = new Set([{ actor: ally }]);
-    const item = makePerkItem({ sourceId: AUGMENT_POWER_ID, actor, currentValue: 99 });
+    const item = makePerkItem({ sourceId: AUGMENT_POWER_ID, actor });
 
     await onPerkUse(item);
 
-    // Fixed +1, ignoring the Perk item's own advances.currentValue (unlike Plan of Action/Heart
-    // of the Team, whose grantValue scales off it).
+    expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
+    expect(ally.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingAugmentPower', expect.objectContaining({ shiftUp: 2 }),
+    );
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'augmentPowerUsedThisCombat', expect.anything());
+  });
+
+  test("prompts for a benefit and banks ↑1/marks the turn used when the turn tier is chosen", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('1');
+    const actor = makeActor({ id: 'scientist' });
+    const ally = makeActor({ id: 'ally1', name: 'Wheeljack' });
+    game.user.targets = new Set([{ actor: ally }]);
+    const item = makePerkItem({ sourceId: AUGMENT_POWER_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(foundry.applications.api.DialogV2.wait).toHaveBeenCalled();
     expect(ally.setFlag).toHaveBeenCalledWith(
       'essence20', 'pendingAugmentPower', expect.objectContaining({ shiftUp: 1 }),
     );
-    expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'augmentPowerUsedThisTurn', expect.anything(),
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'augmentPowerUsedThisTurn', expect.anything());
+  });
+
+  test("prompts for a benefit and banks ↑2/marks the combat used when the combat tier is chosen", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('2');
+    const actor = makeActor({ id: 'scientist' });
+    const ally = makeActor({ id: 'ally1', name: 'Wheeljack' });
+    game.user.targets = new Set([{ actor: ally }]);
+    const item = makePerkItem({ sourceId: AUGMENT_POWER_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ally.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingAugmentPower', expect.objectContaining({ shiftUp: 2 }),
     );
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'augmentPowerUsedThisCombat', expect.anything());
+  });
+
+  test("banks nothing when the benefit picker is cancelled", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
+    const actor = makeActor({ id: 'scientist' });
+    const ally = makeActor({ id: 'ally1', name: 'Wheeljack' });
+    game.user.targets = new Set([{ actor: ally }]);
+    const item = makePerkItem({ sourceId: AUGMENT_POWER_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ally.setFlag).not.toHaveBeenCalled();
+    expect(actor.setFlag).not.toHaveBeenCalled();
   });
 });
 
@@ -8996,6 +11094,148 @@ describe("Vulnerability (MLP Kindness, 3rd level, p.82)", () => {
   });
 });
 
+describe("Street Smarts (MLP CRB, Shrewd Influence, p.59)", () => {
+  const STREET_SMARTS_ID = "Compendium.essence20.mlp_crb.Item.M9G2fSExDSG7DKSW";
+
+  test("true when not yet used this scene, false once already used", () => {
+    const freshActor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: STREET_SMARTS_ID, actor: freshActor }))).toBe(true);
+
+    const usedActor = makeActor();
+    usedActor.getFlag = jest.fn((scope, key) => (
+      key == 'streetSmartsUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+    expect(canUsePerk(makePerkItem({ sourceId: STREET_SMARTS_ID, actor: usedActor }))).toBe(false);
+  });
+
+  test("banks a self Edge and marks the scene used", async () => {
+    const actor = makeActor({ id: 'pony9', name: 'Trixie' });
+    await onPerkUse(makePerkItem({ sourceId: STREET_SMARTS_ID, actor }));
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingStreetSmarts', expect.objectContaining({ edge: true }));
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'streetSmartsUsedThisEncounter', expect.objectContaining({ count: 1 }),
+    );
+  });
+});
+
+describe("Resourceful (Transformers CRB, Scout, 12th level, p.85)", () => {
+  const RESOURCEFUL_ID = "Compendium.essence20.tf_crb.Item.aE2gaLPtMZYkeZ6D";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1', round: 1 };
+    foundry.applications.api.DialogV2.wait.mockReset();
+  });
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  test("canUsePerk true until used this scene", () => {
+    const freshActor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: RESOURCEFUL_ID, actor: freshActor }))).toBe(true);
+
+    const usedActor = makeActor();
+    usedActor.getFlag = jest.fn((scope, key) => (
+      key == 'resourcefulUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+    expect(canUsePerk(makePerkItem({ sourceId: RESOURCEFUL_ID, actor: usedActor }))).toBe(false);
+  });
+
+  test("onPerkUse banks the chosen benefit, marks the scene used, and posts a chat card", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('edge');
+    const actor = makeActor();
+
+    await onPerkUse(makePerkItem({ sourceId: RESOURCEFUL_ID, actor }));
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingResourcefulEdge', expect.anything());
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'resourcefulUsedThisEncounter', expect.objectContaining({ count: 1 }),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("posts no chat card and banks nothing when the picker is cancelled", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
+    const actor = makeActor();
+
+    await onPerkUse(makePerkItem({ sourceId: RESOURCEFUL_ID, actor }));
+
+    expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+});
+
+describe("Able To Adapt (Field Guide to Action & Adventure, Alien Ambassador Focus, 6th level, p.67)", () => {
+  const ABLE_TO_ADAPT_ID = "Compendium.essence20.field_guide_action_adventure.Item.Ta7SsJbPcCreAHge";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1', round: 1, turn: 0 };
+  });
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  test("true not yet used this turn, false once already used this turn", () => {
+    const actor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: ABLE_TO_ADAPT_ID, actor }))).toBe(true);
+
+    actor.getFlag = jest.fn((scope, key) => (
+      key == 'ableToAdaptUsedThisTurn' ? { combatId: 'combat1', round: 1, turn: 0 } : undefined
+    ));
+    expect(canUsePerk(makePerkItem({ sourceId: ABLE_TO_ADAPT_ID, actor }))).toBe(false);
+  });
+
+  test("banks a flat +1 shiftUp on the actor themselves and marks the turn used", async () => {
+    const actor = makeActor({ id: 'ranger1', name: 'Ambassador' });
+    await onPerkUse(makePerkItem({ sourceId: ABLE_TO_ADAPT_ID, actor }));
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingAbleToAdapt', expect.objectContaining({ shiftUp: 1 }),
+    );
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'ableToAdaptUsedThisTurn', expect.anything());
+  });
+});
+
+describe("Consult Memories (Field Guide to Action & Adventure, Grid Psychic Focus, 10th level, p.68)", () => {
+  const CONSULT_MEMORIES_ID = "Compendium.essence20.field_guide_action_adventure.Item.YzvU6WpADTfuGVLj";
+
+  beforeEach(() => {
+    foundry.applications.api.DialogV2.wait.mockReset();
+  });
+
+  test("canUsePerk true until used this scene", () => {
+    const freshActor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: CONSULT_MEMORIES_ID, actor: freshActor }))).toBe(true);
+
+    const usedActor = makeActor();
+    usedActor.getFlag = jest.fn((scope, key) => (
+      key == 'consultMemoriesUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+    ));
+    expect(canUsePerk(makePerkItem({ sourceId: CONSULT_MEMORIES_ID, actor: usedActor }))).toBe(false);
+  });
+
+  test("onPerkUse banks the chosen skill, marks the scene used, and posts a chat card", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('science');
+    const actor = makeActor();
+
+    await onPerkUse(makePerkItem({ sourceId: CONSULT_MEMORIES_ID, actor }));
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'consultMemoriesSkill', 'science');
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'consultMemoriesUsedThisEncounter', expect.objectContaining({ count: 1 }),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+  });
+
+  test("posts no chat card and banks nothing when the picker is cancelled", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
+    const actor = makeActor();
+
+    await onPerkUse(makePerkItem({ sourceId: CONSULT_MEMORIES_ID, actor }));
+
+    expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+});
+
 describe("Inner Magic (MLP Magic, 2nd level, p.94)", () => {
   test("true for the Perk with no pending bonus yet, no cost/gate", () => {
     const actor = makeActor();
@@ -9012,6 +11252,67 @@ describe("Inner Magic (MLP Magic, 2nd level, p.94)", () => {
     expect(actor.setFlag).toHaveBeenCalledWith(
       'essence20', 'pendingInnerMagic', expect.objectContaining({ shiftUp: 1 }),
     );
+  });
+});
+
+describe("Terrifying (GI Joe CRB, Armor Upgrade, p.156)", () => {
+  const TERRIFYING_ID = "Compendium.essence20.gi_joe_crb.Item.tXHd0LBkVCB2QPPO";
+
+  test("true for the Upgrade with no pending bonus yet, no cost/gate", () => {
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: TERRIFYING_ID, actor });
+    expect(canUsePerk(item)).toBe(true);
+  });
+
+  test("banks a flat +1 shiftUp on the actor themselves (self-target)", async () => {
+    const actor = makeActor({ id: 'joe1', name: 'Duke' });
+    const item = makePerkItem({ sourceId: TERRIFYING_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingTerrifying', expect.objectContaining({ shiftUp: 1 }),
+    );
+  });
+});
+
+describe("Mode Attachment (Transformers CRB, Hang-Up, p.43)", () => {
+  const MODE_ATTACHMENT_ID = "Compendium.essence20.tf_crb.Item.SgofEgBVvg4josSR";
+
+  function makeHangUpItem({ actor }) {
+    return {
+      type: 'hangUp',
+      name: 'Mode Attachment',
+      parent: actor,
+      flags: { core: { sourceId: MODE_ATTACHMENT_ID } },
+      system: { choice: null },
+      update: jest.fn(async (data) => Object.assign({}, data)),
+    };
+  }
+
+  test("always usable", () => {
+    const actor = makeActor();
+    expect(canUsePerk(makeHangUpItem({ actor }))).toBe(true);
+  });
+
+  test("stores the chosen mode on the Hang-Up item", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('botMode');
+    const actor = makeActor();
+    const item = makeHangUpItem({ actor });
+
+    await onPerkUse(item);
+
+    expect(item.update).toHaveBeenCalledWith({ 'system.choice': 'botMode' });
+  });
+
+  test("does nothing when the picker is cancelled", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
+    const actor = makeActor();
+    const item = makeHangUpItem({ actor });
+
+    await onPerkUse(item);
+
+    expect(item.update).not.toHaveBeenCalled();
   });
 });
 
@@ -9096,39 +11397,37 @@ describe("I Got You (Enigma of Combination, Team Leader Focus, 3rd level, p.30)"
     game.combat = null;
   });
 
-  test("true with 1+ Energon, not yet used this round", () => {
-    const actor = makeEnergonActor({ energon: 1 });
-    const item = makePerkItem({ sourceId: I_GOT_YOU_ID, actor });
+  // canUsePerk is unconditionally true for this Perk now - see helpers/lend-assistance.mjs's own
+  // I_GOT_YOU_ID comment: "you can always Lend Assistance" has no cost/round gate of its own, and
+  // the button now covers both that AND the Energon-spend grant below (chosen via a dialog inside
+  // onPerkUse), so the button itself can never be un-clickable - the Energon/round gates below only
+  // affect which choice actually does something once clicked.
+  test("always true, even with no Energon or already used this round", () => {
+    let actor = makeEnergonActor({ energon: 0 });
+    let item = makePerkItem({ sourceId: I_GOT_YOU_ID, actor });
     expect(canUsePerk(item)).toBe(true);
-  });
 
-  test("false with no Energon", () => {
-    const actor = makeEnergonActor({ energon: 0 });
-    const item = makePerkItem({ sourceId: I_GOT_YOU_ID, actor });
-    expect(canUsePerk(item)).toBe(false);
-  });
-
-  test("false once already used this round", () => {
     game.combat = { id: 'combat1', round: 1 };
-    const actor = makeEnergonActor({ energon: 1 });
+    actor = makeEnergonActor({ energon: 1 });
     actor.getFlag = jest.fn((scope, key) => (
       key == 'iGotYouUsedThisRound' ? { combatId: 'combat1', round: 1 } : undefined
     ));
-    const item = makePerkItem({ sourceId: I_GOT_YOU_ID, actor });
-    expect(canUsePerk(item)).toBe(false);
-  });
-
-  test("true again once it's a new round", () => {
-    game.combat = { id: 'combat1', round: 2 };
-    const actor = makeEnergonActor({ energon: 1 });
-    actor.getFlag = jest.fn((scope, key) => (
-      key == 'iGotYouUsedThisRound' ? { combatId: 'combat1', round: 1 } : undefined
-    ));
-    const item = makePerkItem({ sourceId: I_GOT_YOU_ID, actor });
+    item = makePerkItem({ sourceId: I_GOT_YOU_ID, actor });
     expect(canUsePerk(item)).toBe(true);
   });
 
-  test("banks a flat +1 shiftUp on the ally, spends 1 Energon, and marks the round used", async () => {
+  test("choosing Lend Assistance takes that action instead of the Energon spend", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValueOnce('assist');
+    const actor = makeEnergonActor({ id: 'leader1', energon: 2 });
+    const item = makePerkItem({ sourceId: I_GOT_YOU_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.update).not.toHaveBeenCalled();
+  });
+
+  test("choosing the Energon spend banks a flat +1 shiftUp on the ally, spends 1 Energon, and marks the round used", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValueOnce('energon');
     game.combat = { id: 'combat1', round: 1 };
     const actor = makeEnergonActor({ id: 'leader1', energon: 2 });
     const ally = makeActor({ id: 'ally1', name: 'Teammate' });
@@ -9142,6 +11441,16 @@ describe("I Got You (Enigma of Combination, Team Leader Focus, 3rd level, p.30)"
     );
     expect(actor.update).toHaveBeenCalledWith({ 'system.energon.normal.value': 1 });
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'iGotYouUsedThisRound', expect.anything());
+  });
+
+  test("cancelling the choice does nothing", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValueOnce('cancel');
+    const actor = makeEnergonActor({ id: 'leader1', energon: 2 });
+    const item = makePerkItem({ sourceId: I_GOT_YOU_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.update).not.toHaveBeenCalled();
   });
 });
 
@@ -9321,7 +11630,7 @@ describe("Therapeutic Nanotechnology (Technorganic Secrets, Technorganic Influen
   });
 });
 
-describe("Dig Deep (PR CRB, General Perk, p.94)", () => {
+describe("Dig Deep (PR CRB, General Perk, p.94) - unified 2-benefit picker", () => {
   const DIG_DEEP_PR_CRB_ID = "Compendium.essence20.pr_crb.Item.eC0iByyLbSHQKY2G";
 
   class FakeRoll {
@@ -9337,6 +11646,7 @@ describe("Dig Deep (PR CRB, General Perk, p.94)", () => {
   }
 
   let originalRoll;
+  let originalFoundry;
   beforeAll(() => {
     originalRoll = global.Roll;
     global.Roll = FakeRoll;
@@ -9345,60 +11655,147 @@ describe("Dig Deep (PR CRB, General Perk, p.94)", () => {
     global.Roll = originalRoll;
   });
 
-  function makeDigDeepActor({ id, name, health = 5, healthMax = 10 } = {}) {
+  function makeDigDeepActor({ id, name, health = 5, healthMax = 10, usedFlags = {} } = {}) {
     return {
       ...makeActor({ id, name }),
       system: { health: { value: health, max: healthMax } },
       update: jest.fn(),
       getRollData: jest.fn(() => ({})),
+      getFlag: jest.fn((scope, key) => (scope == 'essence20' ? usedFlags[key] : undefined)),
+      setFlag: jest.fn(async (scope, key, value) => {
+        usedFlags[key] = value;
+      }),
     };
   }
 
   beforeEach(() => {
     game.combat = { id: 'combat1' };
     FakeRoll.nextTotal = 2;
+    originalFoundry = global.foundry;
+    global.foundry = {
+      ...global.foundry,
+      applications: {
+        ...global.foundry.applications,
+        api: { ...global.foundry.applications.api, DialogV2: { wait: jest.fn() } },
+      },
+    };
+  });
+  afterEach(() => {
+    global.foundry = originalFoundry;
   });
 
-  test("canUsePerk is true with no cost, as long as it hasn't been used this scene", () => {
+  test("canUsePerk is true when either benefit is still available this scene", () => {
     const actor = makeDigDeepActor();
     const item = makePerkItem({ sourceId: DIG_DEEP_PR_CRB_ID, actor });
     expect(canUsePerk(item)).toBe(true);
   });
 
-  test("canUsePerk is false once already used this scene", () => {
-    const actor = makeDigDeepActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepPrCrbUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
+  test("canUsePerk is false once BOTH benefits are used this scene", () => {
+    const usedFlags = {
+      digDeepPrCrbDamageUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 },
+      digDeepPrCrbUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 },
+    };
+    const actor = makeDigDeepActor({ usedFlags });
     const item = makePerkItem({ sourceId: DIG_DEEP_PR_CRB_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
 
-  test("heals the actor themselves (no ally picker) by the rolled 1d2 amount and marks the scene used", async () => {
-    const actor = makeDigDeepActor({ id: 'ranger', health: 4 });
+  test("dispatches straight to Heal when Damage is already used, no benefit picker shown", async () => {
+    const usedFlags = { digDeepPrCrbDamageUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } };
+    const actor = makeDigDeepActor({ health: 4, usedFlags });
     const item = makePerkItem({ sourceId: DIG_DEEP_PR_CRB_ID, actor });
 
     await onPerkUse(item);
 
+    expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
     expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 6 }); // 4 + 2 (rolled)
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'digDeepPrCrbUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 
-  test("doesn't heal past the actor's own max Health", async () => {
-    const actor = makeDigDeepActor({ id: 'ranger', health: 9, healthMax: 10 });
+  test("prompts for a benefit and banks the damage-ignore+Snag pair when Damage is chosen", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('damage');
+    const actor = makeDigDeepActor();
+    const item = makePerkItem({ sourceId: DIG_DEEP_PR_CRB_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingDigDeep', expect.objectContaining({ amount: 1 }));
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingDigDeepSnag', expect.objectContaining({ snag: true }));
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'digDeepPrCrbDamageUsedThisEncounter', expect.objectContaining({ epoch: 1, count: 1 }));
+    expect(actor.update).not.toHaveBeenCalled();
+  });
+
+  test("heals by the rolled 1d2 amount, capped at max Health, when Heal is chosen", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('heal');
+    const actor = makeDigDeepActor({ health: 9, healthMax: 10 });
     const item = makePerkItem({ sourceId: DIG_DEEP_PR_CRB_ID, actor });
 
     await onPerkUse(item);
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 10 });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'digDeepPrCrbUsedThisEncounter', expect.objectContaining({ epoch: 1, count: 1 }));
   });
 
-  test("does nothing once already used this scene", async () => {
-    const actor = makeDigDeepActor({ id: 'ranger', health: 4 });
-    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepPrCrbUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
+  test("does nothing when the benefit picker is cancelled", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
+    const actor = makeDigDeepActor();
     const item = makePerkItem({ sourceId: DIG_DEEP_PR_CRB_ID, actor });
 
     await onPerkUse(item);
 
     expect(actor.update).not.toHaveBeenCalled();
+    expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+});
+
+describe("Bio-Energy Conversion (Across the Stars, Zord Feature, p.72) - Use button dispatch", () => {
+  const BIO_ENERGY_CONVERSION_ID = "Compendium.essence20.across_the_stars.Item.W1fwCDu7FOmg0yaQ";
+
+  test("canUsePerk is always true", () => {
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: BIO_ENERGY_CONVERSION_ID, actor });
+    expect(canUsePerk(item)).toBe(true);
+  });
+
+  test("onPerkUse banks the pending buff and posts a chat card", async () => {
+    game.combat = { id: 'combat1', round: 1 };
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: BIO_ENERGY_CONVERSION_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'bioEnergyConversionPending', expect.objectContaining({ combatId: 'combat1', round: 1 }),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
+    game.combat = null;
+  });
+});
+
+describe("Skill substitution Perks (Infiltrator, Chatter Flashback, Muscle Over Panache, Reverse Engineer) - Use button dispatch", () => {
+  const INFILTRATOR_ID = "Compendium.essence20.tf_crb.Item.CHkXJNjrvZUPxV7J";
+
+  test("canUsePerk is true with uses remaining, false once exhausted", () => {
+    const freshActor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: INFILTRATOR_ID, actor: freshActor }))).toBe(true);
+
+    const usedActor = makeActor();
+    usedActor.getFlag = jest.fn((scope, key) => (
+      key == 'infiltratorUsedThisScene' ? { epoch: 1, window: 'scene', count: 1 } : undefined
+    ));
+    expect(canUsePerk(makePerkItem({ sourceId: INFILTRATOR_ID, actor: usedActor }))).toBe(false);
+  });
+
+  test("onPerkUse marks a use and posts a chat card", async () => {
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: INFILTRATOR_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'infiltratorUsedThisScene', expect.objectContaining({ window: 'scene', count: 1 }),
+    );
+    expect(global.ChatMessage.create).toHaveBeenCalled();
   });
 });
 
@@ -9570,6 +11967,54 @@ describe("Dig Deep (Transformers CRB, General Perk, p.108)", () => {
   });
 });
 
+describe("Dig Deep (GI Joe CRB, General Perk, p.130)", () => {
+  const DIG_DEEP_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.QJkcVXT7K4yNWFoT";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1' };
+  });
+
+  test("shares the WTNV item's own damage-reduction-and-Snag dispatch", async () => {
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: DIG_DEEP_GIJ_ID, actor });
+
+    expect(canUsePerk(item)).toBe(true);
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingDigDeep', expect.objectContaining({ amount: 1 }),
+    );
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingDigDeepSnag', expect.objectContaining({ snag: true }),
+    );
+  });
+});
+
+describe("Dig Deep (MLP CRB, General Perk, p.123)", () => {
+  const DIG_DEEP_MLP_ID = "Compendium.essence20.mlp_crb.Item.geBN3DkixaCXvnSO";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1' };
+  });
+
+  test("shares the WTNV item's own damage-reduction-and-Snag dispatch", async () => {
+    const actor = makeActor();
+    const item = makePerkItem({ sourceId: DIG_DEEP_MLP_ID, actor });
+
+    expect(canUsePerk(item)).toBe(true);
+
+    await onPerkUse(item);
+
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingDigDeep', expect.objectContaining({ amount: 1 }),
+    );
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'pendingDigDeepSnag', expect.objectContaining({ snag: true }),
+    );
+  });
+});
+
 describe("Educated (Transformers CRB, General Perk, p.109)", () => {
   const EDUCATED_TF_ID = "Compendium.essence20.tf_crb.Item.hXBK58yrv1s8IdA4";
 
@@ -9596,6 +12041,36 @@ describe("Educated (Transformers CRB, General Perk, p.109)", () => {
     });
     expect(actor.setFlag).toHaveBeenCalledWith(
       'essence20', 'educatedUsedThisEncounter', expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }),
+    );
+  });
+});
+
+describe("Educated (MLP CRB, General Perk, p.123)", () => {
+  const EDUCATED_MLP_ID = "Compendium.essence20.mlp_crb.Item.bxJXeIC6xGtdQexn";
+
+  beforeEach(() => {
+    game.combat = { id: 'combat1' };
+    game.users = [{ isGM: true, active: true }];
+    game.socket.emit.mockReset();
+  });
+
+  afterEach(() => {
+    game.combat = null;
+  });
+
+  test("shares the PR CRB/GI Joe CRB/TF CRB Story Point grant dispatch", async () => {
+    const actor = makeActor({ id: 'student1', name: 'Twilight' });
+    const item = makePerkItem({ sourceId: EDUCATED_MLP_ID, actor });
+
+    expect(canUsePerk(item)).toBe(true);
+
+    await onPerkUse(item);
+
+    expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
+      action: 'grantStoryPoints', amount: 1, actorName: 'Twilight',
+    });
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'educatedUsedThisEncounter', expect.objectContaining({ epoch: 1, count: 1 }),
     );
   });
 });
@@ -10369,6 +12844,290 @@ describe("Spot Weld (Decepticon Directive, General Perk, p.67)", () => {
     expect(ui.notifications.warn).toHaveBeenCalled();
     expect(actor.update).not.toHaveBeenCalled();
     expect(actor._dice.rollSkill).not.toHaveBeenCalled();
+  });
+});
+
+describe("Disappear (Transformers CRB, Scout base, Cybertronian Perk, p.85)", () => {
+  const DISAPPEAR_ID = "Compendium.essence20.tf_crb.Item.aD6N6hTvFhsQFZnB";
+
+  function makeDisappearActor({ invisible = false, energon = 1 } = {}) {
+    const statuses = new Set(invisible ? ['invisible'] : []);
+    return {
+      ...makeActor(), statuses, system: { energon: { normal: { value: energon } } },
+      update: jest.fn(), toggleStatusEffect: jest.fn(),
+    };
+  }
+
+  beforeEach(() => {
+    ui.notifications.warn.mockReset();
+  });
+
+  test("canUsePerk true with an Energon Point, or while already invisible with none left", () => {
+    expect(canUsePerk(makePerkItem({ sourceId: DISAPPEAR_ID, actor: makeDisappearActor({ energon: 1 }) }))).toBe(true);
+    expect(canUsePerk(makePerkItem({ sourceId: DISAPPEAR_ID, actor: makeDisappearActor({ energon: 0, invisible: true } ) }))).toBe(true);
+    expect(canUsePerk(makePerkItem({ sourceId: DISAPPEAR_ID, actor: makeDisappearActor({ energon: 0 }) }))).toBe(false);
+  });
+
+  test("spends 1 Energon Point and turns Invisible", async () => {
+    const actor = makeDisappearActor({ energon: 1 });
+    const item = makePerkItem({ sourceId: DISAPPEAR_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.update).toHaveBeenCalledWith({ 'system.energon.normal.value': 0 });
+    expect(actor.toggleStatusEffect).toHaveBeenCalledWith('invisible', { active: true });
+  });
+
+  test("toggles back off for free", async () => {
+    const actor = makeDisappearActor({ invisible: true, energon: 0 });
+    const item = makePerkItem({ sourceId: DISAPPEAR_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(actor.update).not.toHaveBeenCalled();
+    expect(actor.toggleStatusEffect).toHaveBeenCalledWith('invisible', { active: false });
+  });
+
+  test("warns and does nothing without an Energon Point", async () => {
+    const actor = makeDisappearActor({ energon: 0 });
+    const item = makePerkItem({ sourceId: DISAPPEAR_ID, actor });
+
+    await onPerkUse(item);
+
+    expect(ui.notifications.warn).toHaveBeenCalled();
+    expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
+  });
+});
+
+describe("Vanish (Transformers CRB, Manipulator Focus, 20th level, p.63)", () => {
+  const VANISH_ID = "Compendium.essence20.tf_crb.Item.RESovNstSU5Sq3GM";
+
+  function makeVanishActor({ invisible = false } = {}) {
+    return { ...makeActor(), statuses: new Set(invisible ? ['invisible'] : []), toggleStatusEffect: jest.fn() };
+  }
+
+  test("canUsePerk is always true", () => {
+    expect(canUsePerk(makePerkItem({ sourceId: VANISH_ID, actor: makeVanishActor() }))).toBe(true);
+  });
+
+  test("toggles Invisible on, then back off, freely", async () => {
+    const actor = makeVanishActor();
+    await onPerkUse(makePerkItem({ sourceId: VANISH_ID, actor }));
+    expect(actor.toggleStatusEffect).toHaveBeenCalledWith('invisible', { active: true });
+
+    const activeActor = makeVanishActor({ invisible: true });
+    await onPerkUse(makePerkItem({ sourceId: VANISH_ID, actor: activeActor }));
+    expect(activeActor.toggleStatusEffect).toHaveBeenCalledWith('invisible', { active: false });
+  });
+});
+
+describe("Work the Numbers (Transformers CRB, Scout base, Cybertronian Perk, p.58)", () => {
+  const WORK_THE_NUMBERS_ID = "Compendium.essence20.tf_crb.Item.aFgXXk1gMMb4saVf";
+
+  function makeWorkTheNumbersActor({ energon = 1 } = {}) {
+    return { ...makeActor(), system: { energon: { normal: { value: energon } } }, update: jest.fn() };
+  }
+
+  beforeEach(() => {
+    ui.notifications.warn.mockReset();
+    game.combat = { round: 2, turns: [], combatants: [] };
+  });
+
+  afterEach(() => {
+    game.combat = null;
+    game.user.targets = new Set();
+  });
+
+  test("canUsePerk true from round 2 with Energon, false in round 1 or without Energon", () => {
+    expect(canUsePerk(makePerkItem({ sourceId: WORK_THE_NUMBERS_ID, actor: makeWorkTheNumbersActor({ energon: 1 }) }))).toBe(true);
+    expect(canUsePerk(makePerkItem({ sourceId: WORK_THE_NUMBERS_ID, actor: makeWorkTheNumbersActor({ energon: 0 }) }))).toBe(false);
+
+    game.combat.round = 1;
+    expect(canUsePerk(makePerkItem({ sourceId: WORK_THE_NUMBERS_ID, actor: makeWorkTheNumbersActor({ energon: 1 }) }))).toBe(false);
+  });
+
+  test("warns and spends nothing without an Energon Point", async () => {
+    const actor = makeWorkTheNumbersActor({ energon: 0 });
+    await onPerkUse(makePerkItem({ sourceId: WORK_THE_NUMBERS_ID, actor }));
+
+    expect(ui.notifications.warn).toHaveBeenCalled();
+    expect(actor.update).not.toHaveBeenCalled();
+  });
+
+  test("warns and spends nothing with no valid target to move", async () => {
+    const actor = makeWorkTheNumbersActor({ energon: 1 });
+    game.user.targets = { first: () => undefined };
+    await onPerkUse(makePerkItem({ sourceId: WORK_THE_NUMBERS_ID, actor }));
+
+    expect(ui.notifications.warn).toHaveBeenCalled();
+    expect(actor.update).not.toHaveBeenCalled();
+  });
+
+  test("spends 1 Energon Point once a valid move happens", async () => {
+    const first = { id: 'c1', actor: { id: 'a1' }, initiative: 20, update: jest.fn() };
+    const second = { id: 'c2', actor: { id: 'a2' }, initiative: 15, update: jest.fn() };
+    game.combat.turns = [first, second];
+    game.combat.combatants = [first, second];
+    game.user.targets = { first: () => ({ actor: { id: 'a2' } }) };
+    foundry.applications.api.DialogV2.wait.mockImplementation(() => 'up');
+
+    const actor = makeWorkTheNumbersActor({ energon: 1 });
+    await onPerkUse(makePerkItem({ sourceId: WORK_THE_NUMBERS_ID, actor }));
+
+    expect(second.update).toHaveBeenCalledWith({ initiative: 20.01 });
+    expect(actor.update).toHaveBeenCalledWith({ 'system.energon.normal.value': 0 });
+  });
+});
+
+describe("Energon Cube / Energon Snack (Decepticon Directive, Equipment, p.78-79)", () => {
+  const ENERGON_CUBE_ID = "Compendium.essence20.decepticon_directive.Item.5p3lMU4vT7kUodp5";
+  const ENERGON_SNACK_ID = "Compendium.essence20.decepticon_directive.Item.y72ZEiWUa3AYxcXl";
+
+  function makeGearItem({ sourceId, actor, quantity = 1 }) {
+    return {
+      type: 'gear', name: 'Test Gear', parent: actor, flags: { core: { sourceId } },
+      system: { quantity }, update: jest.fn(), delete: jest.fn(),
+    };
+  }
+
+  function makeEnergonActor({ energon = 0 } = {}) {
+    return { ...makeActor(), system: { energon: { normal: { value: energon } } }, update: jest.fn() };
+  }
+
+  test("canUsePerk true with quantity remaining, false at 0", () => {
+    const actor = makeEnergonActor();
+    expect(canUsePerk(makeGearItem({ sourceId: ENERGON_CUBE_ID, actor, quantity: 1 }))).toBe(true);
+    expect(canUsePerk(makeGearItem({ sourceId: ENERGON_CUBE_ID, actor, quantity: 0 }))).toBe(false);
+  });
+
+  test("Energon Cube grants 2 Energon Points and deletes the last cube", async () => {
+    const actor = makeEnergonActor({ energon: 0 });
+    const item = makeGearItem({ sourceId: ENERGON_CUBE_ID, actor, quantity: 1 });
+
+    await onPerkUse(item);
+
+    expect(actor.update).toHaveBeenCalledWith({ 'system.energon.normal.value': 2 });
+    expect(item.delete).toHaveBeenCalled();
+    expect(item.update).not.toHaveBeenCalled();
+  });
+
+  test("Energon Snack grants 1 Energon Point and decrements quantity when more than 1 remain", async () => {
+    const actor = makeEnergonActor({ energon: 3 });
+    const item = makeGearItem({ sourceId: ENERGON_SNACK_ID, actor, quantity: 2 });
+
+    await onPerkUse(item);
+
+    expect(actor.update).toHaveBeenCalledWith({ 'system.energon.normal.value': 4 });
+    expect(item.update).toHaveBeenCalledWith({ 'system.quantity': 1 });
+    expect(item.delete).not.toHaveBeenCalled();
+  });
+});
+
+describe("Archkey (A Jump Through Time, Equipment, p.66)", () => {
+  const ARCHKEY_ID = "Compendium.essence20.jump_through_time.Item.EEZUFQIGfeLhT2qX";
+
+  function makeArchkeyItem({ actor }) {
+    return { type: 'gear', name: 'Archkey', parent: actor, flags: { core: { sourceId: ARCHKEY_ID } }, system: {} };
+  }
+
+  function makeTechActor() {
+    return { ...makeActor(), _dice: { rollSkill: jest.fn() } };
+  }
+
+  test("canUsePerk is always true", () => {
+    expect(canUsePerk(makeArchkeyItem({ actor: makeTechActor() }))).toBe(true);
+  });
+
+  test("triggers a DIF 10 Technology roll", async () => {
+    const actor = makeTechActor();
+    await onPerkUse(makeArchkeyItem({ actor }));
+
+    expect(actor._dice.rollSkill).toHaveBeenCalledWith(
+      expect.objectContaining({ skill: 'technology', essence: 'smarts', dif: '10' }), actor,
+    );
+  });
+});
+
+describe("Engine Cells (A Jump Through Time, R.P.M. Sidearm Equipment, p.70)", () => {
+  const ENGINE_CELLS_ID = "Compendium.essence20.jump_through_time.Item.Q8TO2TJNncmy6Q6R";
+
+  class FakeRoll {
+    constructor() {
+      this._total = FakeRoll.nextTotal ?? 3;
+    }
+    async evaluate() {
+      return this;
+    }
+    get total() {
+      return this._total;
+    }
+  }
+
+  let originalRoll;
+  beforeAll(() => {
+    originalRoll = global.Roll;
+    global.Roll = FakeRoll;
+  });
+  afterAll(() => {
+    global.Roll = originalRoll;
+  });
+
+  function makeGearItem({ sourceId, actor, quantity = 1 }) {
+    return {
+      type: 'gear', name: 'Engine Cells', parent: actor, flags: { core: { sourceId } },
+      system: { quantity }, update: jest.fn(), delete: jest.fn(),
+    };
+  }
+
+  function makePowerActor({ power = 0 } = {}) {
+    return {
+      ...makeActor(), system: { powers: { personal: { value: power } } }, update: jest.fn(),
+      getRollData: jest.fn(() => ({})),
+    };
+  }
+
+  test("canUsePerk true with quantity remaining, false at 0", () => {
+    const actor = makePowerActor();
+    expect(canUsePerk(makeGearItem({ sourceId: ENGINE_CELLS_ID, actor, quantity: 1 }))).toBe(true);
+    expect(canUsePerk(makeGearItem({ sourceId: ENGINE_CELLS_ID, actor, quantity: 0 }))).toBe(false);
+  });
+
+  test("rolls 2d2, adds it to Personal Power, and consumes the cell", async () => {
+    FakeRoll.nextTotal = 3;
+    const actor = makePowerActor({ power: 1 });
+    const item = makeGearItem({ sourceId: ENGINE_CELLS_ID, actor, quantity: 1 });
+
+    await onPerkUse(item);
+
+    expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 4 });
+    expect(item.delete).toHaveBeenCalled();
+  });
+});
+
+describe("Teleportation (Technorganic Secrets, Mutant Beast Influence Perk, p.49)", () => {
+  const TELEPORTATION_ID = "Compendium.essence20.technorganic_secrets.Item.tGbqMWSRLdV1l4oo";
+
+  function makeTeleportActor({ usedThisEncounter = false } = {}) {
+    return {
+      ...makeActor(),
+      getFlag: jest.fn((scope, key) => (
+        key == 'teleportationUsedThisEncounter' && usedThisEncounter ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+      )),
+    };
+  }
+
+  test("canUsePerk true, false once already used this scene", () => {
+    expect(canUsePerk(makePerkItem({ sourceId: TELEPORTATION_ID, actor: makeTeleportActor() }))).toBe(true);
+    expect(canUsePerk(makePerkItem({
+      sourceId: TELEPORTATION_ID, actor: makeTeleportActor({ usedThisEncounter: true }),
+    }))).toBe(false);
+  });
+
+  test("marks the scene used and posts a notification", async () => {
+    const actor = makeTeleportActor();
+    await onPerkUse(makePerkItem({ sourceId: TELEPORTATION_ID, actor }));
+
+    expect(actor.setFlag).toHaveBeenCalled();
   });
 });
 

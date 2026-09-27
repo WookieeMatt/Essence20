@@ -22,11 +22,11 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "Ufb1hWwLjYloZW5H",
       "changes": [
         {
-          "key": "system.skills.finesse.shiftDown",
+          "key": "system.essenceShifts.speed.shiftDown",
           "mode": 2,
           "value": "1",
           "priority": null
@@ -35,7 +35,7 @@
       "tint": "#ffffff",
       "transfer": true,
       "flags": {},
-      "name": "Finesse Downshift",
+      "name": "Speed Downshift",
       "description": "",
       "statuses": [],
       "_stats": {

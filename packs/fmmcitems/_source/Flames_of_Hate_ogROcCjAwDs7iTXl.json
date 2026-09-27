@@ -24,7 +24,7 @@
         "damageValue": 2,
         "damageType": "psychic",
         "numHands": "1",
-        "numTargets": 6,
+        "numTargets": 1,
         "radius": 60,
         "range": {
           "min": null,
@@ -32,7 +32,8 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 0
+        "shiftDown": 0,
+        "hasArmorPiercing": true
       },
       "e002": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.C2A6ZgisRQBnlXMZ",
@@ -46,7 +47,7 @@
         "damageValue": 0,
         "damageType": "blindingBlast",
         "numHands": "1",
-        "numTargets": 6,
+        "numTargets": 1,
         "radius": 60,
         "range": {
           "min": null,

@@ -103,6 +103,50 @@
       "system": {},
       "sort": 0,
       "_key": "!items.effects!ZthvrKqsgXR3q8bm.q1GyXT1jghzlOCt2"
+    },
+    {
+      "name": "Aggressive Assault - Initiative",
+      "origin": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ZthvrKqsgXR3q8bm",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "8POVjNqjzoWUTBtg",
+      "changes": [
+        {
+          "key": "system.skills.initiative.essences.strength",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!ZthvrKqsgXR3q8bm.8POVjNqjzoWUTBtg"
     }
   ],
   "sort": 100000,

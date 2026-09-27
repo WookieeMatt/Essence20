@@ -11,6 +11,14 @@
       "book": "Beneath the Helmet",
       "page": 31
     },
+    "items": {
+      "vwlt": {
+        "uuid": "Compendium.essence20.pr_crb.Item.bZ4IqEVgHnTL0XV6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Vast Wealth",
+        "type": "perk"
+      }
+    },
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin"

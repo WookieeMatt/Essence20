@@ -14,16 +14,20 @@
 // distinct "escape a grapple" Skill Test classification to hook - the immunity half already
 // prevents becoming newly held while active, covering the common case) and "attempts to stop
 // suffer a Snag" (no "stopping" Skill Test classification either) - both flagged as gaps, not
-// forced into an inaccurate shape.
+// forced into an inaccurate shape. "For the duration" (an Elementary Enchantment spell, same
+// tier/duration family as Hot To Trot/Foolscarrot above) is now tracked with the Scene Clock
+// (helpers/scene-clock.mjs) so it clears once the GM calls the scene rather than lingering.
+
+import { activateForWindow, isActiveForWindow } from "./scene-clock.mjs";
 
 const GREASED_LIGHTNING_FLAG = 'greasedLightningActive';
 
 export function isGreasedLightningActive(actor) {
-  return !!actor?.getFlag?.('essence20', GREASED_LIGHTNING_FLAG);
+  return isActiveForWindow(actor, GREASED_LIGHTNING_FLAG, 'scene');
 }
 
 export async function applyGreasedLightning(actor) {
-  await actor.setFlag('essence20', GREASED_LIGHTNING_FLAG, true);
+  await activateForWindow(actor, GREASED_LIGHTNING_FLAG, 'scene');
 }
 
 export async function removeGreasedLightning(actor) {

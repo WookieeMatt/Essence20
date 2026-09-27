@@ -27,38 +27,6 @@
         "type": "perk",
         "subtype": "role",
         "level": 1
-      },
-      "tI5U": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.73liKWcAmV8UH6qA",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Time is Weird",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "nbR3": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.vnYDLY5Fe2pasHyF",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Scientific Method",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "nDEE": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.MTo42tKWWtZ15Ist",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "\"Pseudo\"-Science",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
-      },
-      "y9No": {
-        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.CiDQxCxgnnosvBDo",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "A Logical Explanation",
-        "type": "perk",
-        "subtype": "role",
-        "level": 4
       }
     },
     "adjustments": {

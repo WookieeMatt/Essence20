@@ -13,12 +13,12 @@
     },
     "items": {
       "e8f3": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.SP4uvhATIJanJQQE",
+        "uuid": "Compendium.essence20.pr_crb.Item.SP4uvhATIJanJQQE",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Close Combat Heavy Blade Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "finesse",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 1,
@@ -35,12 +35,12 @@
         "shiftDown": 0
       },
       "8a57": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.eJVQOt1PPGCzePPP",
+        "uuid": "Compendium.essence20.pr_crb.Item.eJVQOt1PPGCzePPP",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Close Combat Heavy Blade Alternate Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "finesse",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 2,

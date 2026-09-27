@@ -1,0 +1,75 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Laser Gauntlets",
+  "type": "weapon",
+  "_id": "chwBiu6rvDnE6WSe",
+  "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 87
+    },
+    "items": {
+      "mX42": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.7MzrbwyVipf9n3u2",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Laser Gauntlets Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "laser",
+        "numHands": "0",
+        "numTargets": 2,
+        "radius": 20,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "laser",
+      "energy"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265582019,
+    "modifiedTime": 1790265582019,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!chwBiu6rvDnE6WSe"
+}

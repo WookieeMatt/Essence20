@@ -16,7 +16,7 @@
     "altModeMovement": {
       "aerial": 0,
       "aquatic": 0,
-      "ground": 35
+      "ground": 50
     },
     "altModesize": "small",
     "tokenImage": ""

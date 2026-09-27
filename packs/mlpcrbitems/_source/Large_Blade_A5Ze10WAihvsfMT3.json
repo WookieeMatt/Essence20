@@ -18,7 +18,7 @@
         "name": "Large Blades Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "might",
+          "skill": "finesse",
           "style": "melee"
         },
         "damageValue": 2,

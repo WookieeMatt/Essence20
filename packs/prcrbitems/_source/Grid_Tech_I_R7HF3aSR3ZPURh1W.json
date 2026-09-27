@@ -28,14 +28,14 @@
       "f1a2": {
         "uuid": "Compendium.essence20.pr_crb.Item.WzigK03hIcczvFLK",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Blaster Focus",
+        "name": "Blaster Focusers",
         "type": "perk",
         "role": null
       },
       "8f6b": {
         "uuid": "Compendium.essence20.pr_crb.Item.fN6N13llWp5ChvIG",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Gridspeak Reciever",
+        "name": "Gridspeak Receivers",
         "type": "perk",
         "role": null
       },

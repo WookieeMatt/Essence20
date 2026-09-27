@@ -11,11 +11,27 @@ function makeActor() {
   };
 }
 
+beforeEach(() => {
+  global.game = {
+    user: { isGM: true },
+    settings: { get: jest.fn(() => undefined), set: jest.fn() },
+  };
+});
+
 describe("isDsoeDisguiseActive / applyDsoeDisguise", () => {
   test("false by default, true once activated", async () => {
     const actor = makeActor();
     expect(isDsoeDisguiseActive(actor)).toBe(false);
     await applyDsoeDisguise(actor);
     expect(isDsoeDisguiseActive(actor)).toBe(true);
+  });
+
+  test("clears once the scene ends", async () => {
+    const actor = makeActor();
+    await applyDsoeDisguise(actor);
+
+    global.game.settings.get = jest.fn((scope, key) => (key === 'sceneClockScene' ? 2 : undefined));
+
+    expect(isDsoeDisguiseActive(actor)).toBe(false);
   });
 });

@@ -24,6 +24,7 @@
       "speed",
       "smarts"
     ],
+    "allSkillsGranted": true,
     "languages": "",
     "skills": [
       "driving",

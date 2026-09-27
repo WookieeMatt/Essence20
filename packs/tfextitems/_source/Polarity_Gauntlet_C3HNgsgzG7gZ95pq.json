@@ -22,7 +22,7 @@
           "style": "melee"
         },
         "damageValue": 2,
-        "damageType": "element",
+        "damageType": "emp",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
@@ -55,6 +55,28 @@
           "value": 20
         },
         "shiftDown": 0
+      },
+      "92a2": {
+        "uuid": "Compendium.essence20.transformers_extras.Item.uUNeSMCbdXjf07bY",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Magnetic Surge Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "technology",
+          "style": "energy"
+        },
+        "damageValue": null,
+        "damageType": "maneuver",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 40,
+          "value": 20
+        },
+        "shiftDown": 3
       }
     },
     "classFeatureId": null,
@@ -71,8 +93,7 @@
     },
     "traits": [
       "electromagnetic",
-      "antiTank",
-      "maneuver"
+      "antiTank"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

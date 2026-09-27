@@ -66,15 +66,15 @@
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "finesse",
-      "shift": "d4"
+      "skill": "athletics",
+      "shift": "none"
     },
     "traits": [
       "energy",
       "martialArts",
+      "powerWeapon",
       "sharp",
-      "silent",
-      "sniper"
+      "silent"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

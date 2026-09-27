@@ -35,7 +35,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": true,
+      "disabled": false,
       "_id": "qlqysgFPxC52aRUR",
       "changes": [
         {
@@ -66,50 +66,6 @@
       "system": {},
       "sort": 0,
       "_key": "!items.effects!CDbaCheOK2rUsqli.qlqysgFPxC52aRUR"
-    },
-    {
-      "name": "Speed Boost Initiative Edge",
-      "origin": "Item.CDbaCheOK2rUsqli",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "CwGTXu0pjUcpxVv2",
-      "changes": [
-        {
-          "key": "system.skills.initiative.edge",
-          "mode": 5,
-          "value": "true",
-          "priority": null
-        }
-      ],
-      "description": "",
-      "transfer": true,
-      "statuses": [],
-      "flags": {},
-      "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!CDbaCheOK2rUsqli.CwGTXu0pjUcpxVv2"
     }
   ],
   "flags": {},

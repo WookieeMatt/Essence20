@@ -1,8 +1,10 @@
 import { jest } from '@jest/globals';
 import {
-  actorHasHangUp, actorHasPerk, bankPendingBonus, clearPendingBonus, findHangUp, findPerk, getPendingBonus,
-  getUsesThisEncounter, getUsesThisScene, hasUsedThisEncounter, hasUsedThisRound, hasUsedThisTurn,
-  markUsedThisEncounter, markUsedThisEncounterCount, markUsedThisRound, markUsedThisScene, markUsedThisTurn,
+  actorHasAlteration, actorHasHangUp, actorHasPerk, bankPendingBonus, clearPendingBonus, findAllPerks,
+  findAlteration, findHangUp, findPerk,
+  getPendingBonus, getUsesThisEncounter, getUsesThisScene, hasUsedThisEncounter, hasUsedThisRound,
+  hasUsedThisTurn, markUsedThisEncounter, markUsedThisEncounterCount, markUsedThisRound, markUsedThisScene,
+  markUsedThisTurn,
 } from './perks.mjs';
 
 global.game = { combat: null, scenes: { current: null } };
@@ -63,6 +65,36 @@ describe("findPerk", () => {
   });
 });
 
+/* findAllPerks */
+describe("findAllPerks", () => {
+  const PERK_ID = "Compendium.essence20.across_the_stars.Item.nVFdInysWe2qMqye";
+
+  function makeActor(items) {
+    return { items };
+  }
+
+  test("returns every copy of a Perk taken multiple times (e.g. Augment (Skill), selectionLimit 10)", () => {
+    const copy1 = { type: 'perk', flags: { core: { sourceId: PERK_ID } }, system: { choice: 'wealth' } };
+    const copy2 = { type: 'perk', flags: { core: { sourceId: PERK_ID } }, system: { choice: 'persuasion' } };
+    const other = { type: 'perk', flags: { core: { sourceId: "Compendium.essence20.gi_joe_crb.Item.other" } } };
+    const actor = makeActor([copy1, other, copy2]);
+
+    expect(findAllPerks(actor, PERK_ID)).toEqual([copy1, copy2]);
+  });
+
+  test("also matches via _stats.compendiumSource, same as findPerk", () => {
+    const perkItem = { type: 'perk', flags: {}, _stats: { compendiumSource: PERK_ID } };
+    const actor = makeActor([perkItem]);
+    expect(findAllPerks(actor, PERK_ID)).toEqual([perkItem]);
+  });
+
+  test("returns an empty array when there's no match, or no actor/items at all", () => {
+    expect(findAllPerks(makeActor([]), PERK_ID)).toEqual([]);
+    expect(findAllPerks(makeActor([{ type: 'perk', flags: {} }]), PERK_ID)).toEqual([]);
+    expect(findAllPerks(null, PERK_ID)).toEqual([]);
+  });
+});
+
 /* findHangUp / actorHasHangUp */
 describe("findHangUp", () => {
   const HANGUP_ID = "Compendium.essence20.field_guide_action_adventure.Item.gUrBCm0G8ntInUar";
@@ -101,6 +133,36 @@ describe("findHangUp", () => {
     const actor = makeActor([hangUpItem]);
     expect(findHangUp(actor, HANGUP_ID)).toBeUndefined();
     expect(actorHasHangUp(actor, HANGUP_ID)).toBe(false);
+  });
+});
+
+describe("findAlteration", () => {
+  const ALTERATION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.9zI6CRYRHf31r3yU";
+
+  function makeActor(items) {
+    return { items };
+  }
+
+  test("returns the matching Alteration item", () => {
+    const alterationItem = { type: 'alteration', flags: { core: { sourceId: ALTERATION_ID } } };
+    const actor = makeActor([alterationItem]);
+    expect(findAlteration(actor, ALTERATION_ID)).toBe(alterationItem);
+  });
+
+  test("returns undefined when there's no match", () => {
+    const actor = makeActor([{ type: 'alteration', flags: { core: { sourceId: "Compendium.essence20.quartermasters_guide_to_gear.Item.other" } } }]);
+    expect(findAlteration(actor, ALTERATION_ID)).toBeUndefined();
+  });
+
+  test("ignores a perk-type item that happens to share the sourceId", () => {
+    const actor = makeActor([{ type: 'perk', flags: { core: { sourceId: ALTERATION_ID } } }]);
+    expect(findAlteration(actor, ALTERATION_ID)).toBeUndefined();
+  });
+
+  test("actorHasAlteration is true exactly when findAlteration finds something", () => {
+    const alterationItem = { type: 'alteration', flags: { core: { sourceId: ALTERATION_ID } } };
+    expect(actorHasAlteration(makeActor([alterationItem]), ALTERATION_ID)).toBe(true);
+    expect(actorHasAlteration(makeActor([]), ALTERATION_ID)).toBe(false);
   });
 });
 

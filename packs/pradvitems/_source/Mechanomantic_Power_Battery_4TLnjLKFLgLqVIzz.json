@@ -1,0 +1,35 @@
+{
+  "folder": "UtK9ZRzmagn7x0CM",
+  "name": "Mechanomantic Power Battery",
+  "type": "gear",
+  "_id": "4TLnjLKFLgLqVIzz",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Adventures in Angel Grove",
+      "page": 90
+    },
+    "gearType": "other",
+    "quantity": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265613737,
+    "modifiedTime": 1790265613737,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!4TLnjLKFLgLqVIzz"
+}

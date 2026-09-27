@@ -1,0 +1,47 @@
+{
+  "folder": "Q1XbJO24SVjPlKrg",
+  "name": "Zeo Power Tonfas Alternate Effect 2",
+  "type": "weaponEffect",
+  "_id": "iIlwjA4RunXfQCkZ",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "damageType": "stun",
+    "damageValue": 1,
+    "shiftDown": 1,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790227280763,
+    "modifiedTime": 1790227280763,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!iIlwjA4RunXfQCkZ"
+}

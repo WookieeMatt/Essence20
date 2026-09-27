@@ -69,7 +69,7 @@
         "damageType": "sharp",
         "numHands": 1,
         "numTargets": 5,
-        "radius": 0,
+        "radius": 15,
         "range": {
           "min": 10,
           "reachMultiplier": 0,
@@ -92,8 +92,8 @@
     },
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "brawn",
+      "shift": "d6"
     },
     "traits": [
       "ballistic",

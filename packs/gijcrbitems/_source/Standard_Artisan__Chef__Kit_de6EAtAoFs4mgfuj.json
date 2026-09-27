@@ -1,0 +1,36 @@
+{
+  "folder": "CGY5yIMLAGHuNYZA",
+  "name": "Standard Artisan (Chef) Kit",
+  "type": "gear",
+  "_id": "de6EAtAoFs4mgfuj",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 158
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "kits"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790266289018,
+    "modifiedTime": 1790266289018,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!de6EAtAoFs4mgfuj"
+}

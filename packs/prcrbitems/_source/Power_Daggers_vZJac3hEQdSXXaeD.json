@@ -83,7 +83,7 @@
     "alternateEffects": "",
     "availability": "limited",
     "classification": {
-      "size": "sidearm"
+      "size": "light"
     },
     "equipped": true,
     "requirements": {
@@ -93,6 +93,7 @@
     },
     "traits": [
       "martialArts",
+      "powerWeapon",
       "sharp",
       "silent"
     ],

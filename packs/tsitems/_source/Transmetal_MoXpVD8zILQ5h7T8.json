@@ -1,0 +1,45 @@
+{
+  "folder": "gE6lEc3pTjUOLlPQ",
+  "name": "Transmetal",
+  "type": "perk",
+  "_id": "MoXpVD8zILQ5h7T8",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 31
+    },
+    "items": {},
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "movement",
+    "hasChoice": true,
+    "isRoleVariant": false,
+    "hasMorphedToughnessBonus": true,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence",
+    "version": "transformers",
+    "value": 40
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1790266682596,
+    "modifiedTime": 1790266682596,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!MoXpVD8zILQ5h7T8"
+}

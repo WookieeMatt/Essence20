@@ -2075,6 +2075,15 @@
   font-weight: 700;
 }
 
+/* Sorcerous Power's committed-vs-budget display (power-points.hbs / sidebars/character.hbs) - same
+   amber "needs attention" read as the Load Out chips above, for the same informational-only,
+   nothing-blocked warning shape (USER DECISION, 2026-09-24: committed can exceed the budget, the
+   GM just gets flagged). */
+.essence20 .two-digit-input.is-over {
+  color: #b46a00;
+  font-weight: 700;
+}
+
 /* Rendered on its own full-width line under the weapon label (weapon/container.hbs "item-subrow"),
    so it stays a single row - type, Reinforced, visibility, derived-mode label - instead of
    wrapping inside the cramped label row. Indented to line up under the weapon name (past the

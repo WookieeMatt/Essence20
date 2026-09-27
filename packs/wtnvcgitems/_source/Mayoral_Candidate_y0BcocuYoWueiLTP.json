@@ -1,0 +1,64 @@
+{
+  "folder": "WemOwkAMqyACTdl8",
+  "name": "Mayoral Candidate",
+  "type": "focus",
+  "_id": "y0BcocuYoWueiLTP",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 43
+    },
+    "items": {
+      "C7xq": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.ihphiMNUuj710MzH",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hidden Whispers",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "bIc7": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.td5xX3OaNFbaMtvG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mayoral Speeches",
+        "type": "perk",
+        "subtype": "role",
+        "level": 4
+      },
+      "Q0cF": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.S9a3ziek8lOF7yXi",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Politician",
+        "type": "role"
+      }
+    },
+    "essences": [],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787762210188,
+    "modifiedTime": 1787762210188,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!y0BcocuYoWueiLTP"
+}

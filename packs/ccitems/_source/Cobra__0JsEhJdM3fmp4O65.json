@@ -13,7 +13,125 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "faction"
+    "type": "faction",
+    "items": {
+      "div01": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.1sbeyxcjtgGlBwHu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Arctic Survival Training",
+        "type": "perk",
+        "role": null
+      },
+      "div02": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.c4mp6DRZRPdRRrRq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Armed and Knowledgeable",
+        "type": "perk",
+        "role": null
+      },
+      "div03": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.3ZW6OOOli170AwsW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Base Technological Advancement",
+        "type": "perk",
+        "role": null
+      },
+      "div04": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.DQavOoP6re12q8dt",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bog Body",
+        "type": "perk",
+        "role": null
+      },
+      "div05": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.cqOozFDOGiQoV0L7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cobra Battle Cry",
+        "type": "perk",
+        "role": null
+      },
+      "div06": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.3SiGvDR98s0FQtdf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cover Job",
+        "type": "perk",
+        "role": null
+      },
+      "div07": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.5SKezm0w5KQbdSJ4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Crash Survivor",
+        "type": "perk",
+        "role": null
+      },
+      "div08": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.3Jh0J7IxLr6eF1uA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hearty",
+        "type": "perk",
+        "role": null
+      },
+      "div09": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.53MP0FDGhpFqJ66L",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Martial Art Weapon Specialist",
+        "type": "perk",
+        "role": null
+      },
+      "div10": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.38e9TBYm8XB4pGoj",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Minimalists",
+        "type": "perk",
+        "role": null
+      },
+      "div11": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.05bNThwoKYW67fZB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pet Companion",
+        "type": "perk",
+        "role": null
+      },
+      "div12": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.57dHgTu193VWr5uy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Standing the Heat",
+        "type": "perk",
+        "role": null
+      },
+      "div13": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.6JxxtROhqL4RS3dF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stellar Experience",
+        "type": "perk",
+        "role": null
+      },
+      "div14": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.mxrB7i7SLaEcPk8z",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Street Smart",
+        "type": "perk",
+        "role": null
+      },
+      "div15": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.EQK0bAGpmYkGPcRi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Take the Wheel",
+        "type": "perk",
+        "role": null
+      },
+      "div16": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.aXKYIPwuvNNnGPUS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Test Subject",
+        "type": "perk",
+        "role": null
+      }
+    },
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 1,
+    "choice": null
   },
   "effects": [
     {

@@ -13,7 +13,7 @@
     },
     "items": {
       "a39c": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.3TUcZi1RplIBPQU2",
+        "uuid": "Compendium.essence20.pr_crb.Item.3TUcZi1RplIBPQU2",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Thrown Blade Effect",
         "type": "weaponEffect",

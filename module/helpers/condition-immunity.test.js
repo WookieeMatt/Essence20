@@ -10,6 +10,9 @@ const DIG_IN_ID = "Compendium.essence20.decepticon_directive.Item.9tIkV50YiO3xqx
 const RIGHTEOUS_HEART_ID = "Compendium.essence20.pr_crb.Item.mOgEBZIbiaT07eAq";
 const MIND_OF_NO_MIND_ID = "Compendium.essence20.intercontinental_adventures.Item.edU8dyL3poLU6IuM";
 const GET_LOW_ID = "Compendium.essence20.technorganic_secrets.Item.rEoZEFQR2puQxpIW";
+const TRUE_SELF_ID = "Compendium.essence20.mlp_crb.Item.LtUei3Rd9ygf2dQa";
+const POWER_FROM_LOSS_ID = "Compendium.essence20.through_the_shattered_grid.Item.AbKqzmAMQZsetwY0";
+const ALWAYS_ALERT_ID = "Compendium.essence20.tf_crb.Item.6r0sYiTEtGsge6cB";
 
 global.canvas = {
   tokens: { placeables: [] },
@@ -20,6 +23,28 @@ function makeActor(perkIds = []) {
   const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
   return { items };
 }
+
+describe("isImmuneToCondition (Stalk, GI Joe CRB Predator base, 1st level, p.93)", () => {
+  const STALK_ID = "Compendium.essence20.gi_joe_crb.Item.BOuJREcROMkMjbM1";
+
+  function makeActor(hasPerk = true) {
+    return { items: hasPerk ? [{ type: "perk", flags: { core: { sourceId: STALK_ID } } }] : [] };
+  }
+
+  // The first Perk in this project to key off the Surprised status, added the same day.
+  test("grants immunity to the Surprised Condition", () => {
+    expect(isImmuneToCondition(makeActor(), "surprised")).toBe(true);
+  });
+
+  test("grants nothing else - only Surprised", () => {
+    expect(isImmuneToCondition(makeActor(), "frightened")).toBe(false);
+    expect(isImmuneToCondition(makeActor(), "stunned")).toBe(false);
+  });
+
+  test("an actor without the Perk is not immune", () => {
+    expect(isImmuneToCondition(makeActor(false), "surprised")).toBe(false);
+  });
+});
 
 describe("isImmuneToCondition (Caution, Bodyguard Focus, 17th level)", () => {
   test.each(['blinded', 'deafened', 'frightened', 'immobilized', 'restrained', 'stunned'])(
@@ -127,6 +152,50 @@ describe("isImmuneToCondition (Mind of No Mind, Factions in Action Vol. 2 Arashi
   });
 });
 
+describe("isImmuneToCondition (True Self, MLP CRB Spirit of Honesty, 17th level, p.79)", () => {
+  test("true for frightened and mesmerized with the Perk", () => {
+    expect(isImmuneToCondition(makeActor([TRUE_SELF_ID]), 'frightened')).toBe(true);
+    expect(isImmuneToCondition(makeActor([TRUE_SELF_ID]), 'mesmerized')).toBe(true);
+  });
+
+  test("false for a Condition not related to behavior compulsion", () => {
+    expect(isImmuneToCondition(makeActor([TRUE_SELF_ID]), 'stunned')).toBe(false);
+  });
+
+  test("false without the Perk", () => {
+    expect(isImmuneToCondition(makeActor(), 'frightened')).toBe(false);
+    expect(isImmuneToCondition(makeActor(), 'mesmerized')).toBe(false);
+  });
+});
+
+describe("isImmuneToCondition (Power From Loss, Through the Shattered Grid, General Perk, p.115)", () => {
+  test("true for mesmerized with the Perk", () => {
+    expect(isImmuneToCondition(makeActor([POWER_FROM_LOSS_ID]), 'mesmerized')).toBe(true);
+  });
+
+  test("grants nothing else - only Mesmerized", () => {
+    expect(isImmuneToCondition(makeActor([POWER_FROM_LOSS_ID]), 'frightened')).toBe(false);
+  });
+
+  test("false without the Perk", () => {
+    expect(isImmuneToCondition(makeActor(), 'mesmerized')).toBe(false);
+  });
+});
+
+describe("isImmuneToCondition (Always Alert, Transformers CRB, General Perk, p.108)", () => {
+  test("true for surprised with the Perk", () => {
+    expect(isImmuneToCondition(makeActor([ALWAYS_ALERT_ID]), 'surprised')).toBe(true);
+  });
+
+  test("grants nothing else - only Surprised", () => {
+    expect(isImmuneToCondition(makeActor([ALWAYS_ALERT_ID]), 'frightened')).toBe(false);
+  });
+
+  test("false without the Perk", () => {
+    expect(isImmuneToCondition(makeActor(), 'surprised')).toBe(false);
+  });
+});
+
 describe("isImmuneToCondition (Dig In, Decepticon Directive Raider Siegemaster Focus, 10th level) - gated on the toggled stance", () => {
   function makeDigInActor({ perkIds = [], dugIn = false } = {}) {
     const actor = makeActor(perkIds);
@@ -206,7 +275,7 @@ describe("isImmuneToCondition (Bulwark, GI Joe CRB Tank Focus, 17th level) - gat
 describe("isImmuneToCondition (Greased Lightning, Knights of Canterlot spell, p.43) - checkFn, not a held Perk", () => {
   function makeGreasedLightningActor({ active = false } = {}) {
     const actor = makeActor();
-    const flagStore = { greasedLightningActive: active };
+    const flagStore = { greasedLightningActive: active ? { epoch: 1, window: 'scene', count: 1 } : undefined };
     actor.getFlag = jest.fn((scope, key) => flagStore[key]);
     return actor;
   }

@@ -13,6 +13,10 @@
     },
     "damageType": "sharp",
     "damageValue": 2,
+    "secondaryDamage": {
+      "type": "energy",
+      "value": 1
+    },
     "shiftDown": 1,
     "numHands": "2",
     "numTargets": 1,

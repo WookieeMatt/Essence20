@@ -1,0 +1,81 @@
+{
+  "folder": "1gGXPFnXXyQEdHbx",
+  "name": "Smartphone",
+  "type": "gear",
+  "_id": "xa6pPCOVQaxVVFbc",
+  "img": "systems/essence20/assets/icons/gear/smartphone.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 64
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "computers"
+  },
+  "effects": [
+    {
+      "name": "Smartphone",
+      "origin": "Item.xa6pPCOVQaxVVFbc",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "LZqjFgmjCHE4bYKm",
+      "changes": [
+        {
+          "key": "system.skills.alertness.snag",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!xa6pPCOVQaxVVFbc.LZqjFgmjCHE4bYKm"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790262353573,
+    "modifiedTime": 1790262353573,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!xa6pPCOVQaxVVFbc"
+}

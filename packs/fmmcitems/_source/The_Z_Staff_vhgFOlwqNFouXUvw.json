@@ -1,0 +1,142 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "The Z-Staff",
+  "type": "weapon",
+  "_id": "vhgFOlwqNFouXUvw",
+  "img": "systems/essence20/assets/icons/weapons/spear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 277
+    },
+    "items": {
+      "0w7V": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.DxY532xQ8I19xDXT",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Z-Lightning",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 3,
+        "damageType": "electric",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 25
+        },
+        "shiftDown": 0
+      },
+      "wYZa": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.r8GWnpyZ4ZGz5Vnt",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Z-Lightning Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 3,
+        "damageType": "electric",
+        "numHands": "1",
+        "numTargets": 6,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 25
+        },
+        "shiftDown": 2
+      },
+      "zlVA": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.8OgLOmdV7ELhahVX",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Z-Staff Strike",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "void",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "5P3A": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Zudv8tlKavjGiqce",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Z-Staff Strike Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 3,
+        "damageType": "void",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "unique",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "antiTank",
+      "sorcerous",
+      "void"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790264776141,
+    "modifiedTime": 1790264776141,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!vhgFOlwqNFouXUvw"
+}

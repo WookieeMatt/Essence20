@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "originalId": "",
-    "description": "<p>@UUID[Compendium.essence20.enigma_of_combination.Item.ilL3CyLQDydjxBHf]{Speaker (Common, Aerial)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.GPW2T5OEC0KtlJpX]{Speaker (Common, Ground)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.wwFXrMqJd0YJHqkX]{Speaker (Large, Aerial)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.48zFIrJCoULshGtm]{Speaker (Large, Ground)}</p>\n<p>&nbsp;</p>",
+    "description": "<p>@UUID[Compendium.essence20.enigma_of_combination.Item.ilL3CyLQDydjxBHf]{Speaker (Common, Aerial)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.GPW2T5OEC0KtlJpX]{Speaker (Common, Ground)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.wwFXrMqJd0YJHqkX]{Speaker (Long, Aerial)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.48zFIrJCoULshGtm]{Speaker (Long, Ground)}</p>\n<p>&nbsp;</p>",
     "source": {
       "book": "Enigma of Combination",
       "page": 28
@@ -33,13 +33,13 @@
       "aa0c": {
         "uuid": "Compendium.essence20.enigma_of_combination.Item.wwFXrMqJd0YJHqkX",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Speaker (Large, Aerial)",
+        "name": "Speaker (Long, Aerial)",
         "type": "altMode"
       },
       "9a61": {
         "uuid": "Compendium.essence20.enigma_of_combination.Item.48zFIrJCoULshGtm",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Speaker (Large, Ground)",
+        "name": "Speaker (Long, Ground)",
         "type": "altMode"
       }
     },

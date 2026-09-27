@@ -49,7 +49,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "version": "powerRangers"
+    "version": "transformers",
+    "hasChoice": true
   },
   "effects": [],
   "sort": 1400000,

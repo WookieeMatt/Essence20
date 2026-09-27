@@ -9,7 +9,7 @@
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
-      "page": null
+      "page": 47
     },
     "items": {
       "aYjB": {
@@ -18,12 +18,34 @@
         "name": "Flyby Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "might",
+          "skill": "driving",
           "style": "melee"
         },
-        "damageValue": 2,
+        "damageValue": 1,
         "damageType": "blunt",
         "isFlyby": true,
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "96aa": {
+        "uuid": "Compendium.essence20.tf_crb.Item.2sqHKvd9Nb9JGkcn",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Flyby Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "driving",
+          "style": "melee"
+        },
+        "damageValue": null,
+        "damageType": "knocProne",
         "numHands": "0",
         "numTargets": 1,
         "radius": 0,

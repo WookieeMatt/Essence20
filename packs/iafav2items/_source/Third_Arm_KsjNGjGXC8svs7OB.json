@@ -18,6 +18,9 @@
     "availability": "prototype",
     "benefit": "",
     "traits": [],
+    "removedTraits": [
+      "mounted"
+    ],
     "type": "armor",
     "prerequisite": "Ranged weapon with the Mounted trait and without the Vehicular trait"
   },

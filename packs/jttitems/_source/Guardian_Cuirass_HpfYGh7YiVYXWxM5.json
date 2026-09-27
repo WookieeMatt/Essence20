@@ -1,0 +1,44 @@
+{
+  "folder": "x4JUgE8VSKRsVuZB",
+  "name": "Guardian Cuirass",
+  "type": "armor",
+  "_id": "HpfYGh7YiVYXWxM5",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 66
+    },
+    "items": {},
+    "availability": "restricted",
+    "bonusEvasion": 0,
+    "bonusToughness": 2,
+    "classification": "medium",
+    "equipped": false,
+    "traits": [
+      "silent",
+      "deflective"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265594015,
+    "modifiedTime": 1790265594015,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!HpfYGh7YiVYXWxM5"
+}

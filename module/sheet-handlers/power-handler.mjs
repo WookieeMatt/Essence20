@@ -53,6 +53,17 @@ export async function powerCost(actor, power) {
     powerType = "threat";
   }
 
+  // Sorcerous Powers (Finster's Monster-Matic Cookbook, "Building Sorcerous Powers," p.274):
+  // powerCost is a ONE-TIME budget spent to BUILD the Power when the Sorcery Perk is taken (or a
+  // new level's points are gained) - "Once you have created a Power, you can use it as often as
+  // the Power dictates." It is never spent again on activation, unlike a Grid Power's Personal
+  // Power cost - see documents/actor.mjs#_prepareSorcerousPower's own committed-vs-available
+  // tracking of that same budget. Dispatches straight to the Power's own effect with nothing spent.
+  if (powerType == "sorcerous") {
+    await onPowerUse(actor, power, 0);
+    return;
+  }
+
   if (power.system.hasVariableCost && powerType != "threat") {
     if (power.system.maxPowerCost) {
       maxPower = power.system.maxPowerCost;

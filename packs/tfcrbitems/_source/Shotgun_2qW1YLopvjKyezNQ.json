@@ -13,7 +13,7 @@
     },
     "items": {
       "f637": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.fTJL51h5V8FYp5mp",
+        "uuid": "Compendium.essence20.tf_crb.Item.7F5cUMCXQssi1Gs7",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Shotgun Effect",
         "type": "weaponEffect",
@@ -22,7 +22,7 @@
           "style": "projectile"
         },
         "damageValue": 1,
-        "damageType": "blunt",
+        "damageType": "sharp",
         "numHands": "2",
         "numTargets": 2,
         "radius": 15,

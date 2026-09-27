@@ -241,7 +241,7 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
   }
 
   if (upgradableItems.length == 1) {
-    _attachItem(upgradableItems[0], dropFunc);
+    _attachItem(actor, upgradableItems[0], dropFunc);
   } else if (upgradableItems.length > 1) {
     const choices = {};
     for (const upgradableItem of upgradableItems) {
@@ -272,24 +272,55 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 export async function _attachSelectedItemOptionHandler(actor, itemId, dropFunc) {
   if (itemId) {
     const item = await fromUuid(itemId);
-    _attachItem(item, dropFunc);
+    _attachItem(actor, item, dropFunc);
   }
 }
 
 /**
  * Creates the attachment for the Actor and attaches it to the given Item
+ * @param {Actor} actor The Actor receiving the attachment
  * @param {Item} targetItem The item to attach to
  * @param {Function} dropFunc The function to call to complete the drop
- * @private
  */
-async function _attachItem(targetItem, dropFunc) {
+export async function _attachItem(actor, targetItem, dropFunc) {
   const newattachedItemList = await dropFunc();
   const newattachedItem = newattachedItemList[0];
   newattachedItem.setFlag('essence20', 'parentId', targetItem._id);
   if (targetItem) {
     const key = await setEntryAndAddItem(newattachedItem, targetItem);
     newattachedItem.setFlag('essence20', 'collectionId', key);
+
+    // Explosive Rounds / Manipulative (TF CRB, also GI Joe CRB) - an Upgrade whose own printed
+    // benefit is an ALTERNATE weaponEffect on the same weapon (a different attack profile you can
+    // choose to use instead of the base one), not a stat tweak to the existing effect. This is the
+    // only mechanical shape for "granted by an Upgrade" a weaponEffect otherwise has (every other
+    // weaponEffect on a weapon is granted directly by dropping the weapon itself, per
+    // onAttachableParentDrop above) - system.linkedWeaponEffect names the compendium weaponEffect
+    // this Upgrade grants, attached here exactly like a directly-dropped weaponEffect would be.
+    if (newattachedItem.type == 'upgrade' && newattachedItem.system.linkedWeaponEffect) {
+      await grantLinkedWeaponEffect(actor, newattachedItem, targetItem);
+    }
   }
+}
+
+/**
+ * Grants the weaponEffect an Upgrade's own system.linkedWeaponEffect names, attached to the same
+ * weapon the Upgrade itself was just attached to - see _attachItem's own doc comment above.
+ * @param {Actor} actor The Actor receiving the linked weaponEffect
+ * @param {Item} upgradeItem The just-attached Upgrade naming the linked weaponEffect
+ * @param {Item} targetItem The weapon both the Upgrade and its linked weaponEffect attach to
+ */
+export async function grantLinkedWeaponEffect(actor, upgradeItem, targetItem) {
+  const effectSource = await fromUuid(upgradeItem.system.linkedWeaponEffect);
+  if (!effectSource) {
+    return;
+  }
+
+  const newEffect = await Item.create(effectSource, { parent: actor });
+  newEffect.setFlag('essence20', 'parentId', targetItem._id);
+  newEffect.setFlag('core', 'sourceId', upgradeItem.system.linkedWeaponEffect);
+  const key = await setEntryAndAddItem(newEffect, targetItem);
+  newEffect.setFlag('essence20', 'collectionId', key);
 }
 
 /**
@@ -427,6 +458,9 @@ export function createEntry(droppedItem, targetItem) {
       entry['traits'] = droppedItem.system.traits;
       // See the armor branch above.
       entry['removedTraits'] = droppedItem.system.removedTraits;
+      // See _attachItem's own doc comment - the actual granting happens there, this is just the
+      // same read-only snapshot every other Upgrade field above gets.
+      entry['linkedWeaponEffect'] = droppedItem.system.linkedWeaponEffect;
       return entry;
     } else if (droppedItem.type == "weaponEffect") {
       entry['classification'] = droppedItem.system.classification;

@@ -1,0 +1,36 @@
+{
+  "folder": "iQVgg4KPfii32I5Y",
+  "name": "Contact: Phantom Ranger",
+  "type": "perk",
+  "_id": "yDyHt95CJEDOszey",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Phantom Gambit",
+      "page": 44
+    },
+    "prerequisite": "Maximum Personal Power 5 or higher",
+    "selectionLimit": 1,
+    "type": "contact"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265613741,
+    "modifiedTime": 1790265613741,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!yDyHt95CJEDOszey"
+}

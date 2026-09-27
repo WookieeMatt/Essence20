@@ -8,7 +8,7 @@
     "originalId": "",
     "actionType": "standard",
     "classification": {
-      "skill": "athletics",
+      "skill": "finesse",
       "style": "melee"
     },
     "damageType": "blunt",
@@ -19,7 +19,7 @@
     "radius": 0,
     "range": {
       "min": null,
-      "reachMultiplier": 0,
+      "reachMultiplier": 2,
       "long": null,
       "value": null
     }

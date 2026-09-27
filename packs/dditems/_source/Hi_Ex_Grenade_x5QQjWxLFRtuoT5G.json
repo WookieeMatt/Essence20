@@ -19,7 +19,7 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "athletics",
-          "style": "melee"
+          "style": "explosive"
         },
         "damageValue": 2,
         "damageType": "sharp",

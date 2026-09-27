@@ -18,20 +18,20 @@
         "name": "Dragon Yo-yo Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "finesse",
-          "style": "melee"
+          "skill": "targeting",
+          "style": "energy"
         },
         "damageValue": 2,
-        "damageType": "sharp",
+        "damageType": "element",
         "isSpecialized": false,
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
         "range": {
           "min": null,
-          "reachMultiplier": 1,
-          "long": null,
-          "value": null
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 40
         },
         "shiftDown": 0
       }
@@ -49,7 +49,7 @@
       "shift": "none"
     },
     "traits": [
-      "sharp"
+      "fire"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

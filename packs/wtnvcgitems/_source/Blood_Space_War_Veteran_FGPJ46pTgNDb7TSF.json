@@ -1,0 +1,64 @@
+{
+  "folder": "WemOwkAMqyACTdl8",
+  "name": "Blood Space War Veteran",
+  "type": "focus",
+  "_id": "FGPJ46pTgNDb7TSF",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 48
+    },
+    "items": {
+      "NC7j": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.F5mrzupd6TG2kj3x",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gravity Optional",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "L6mi": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.9w9TjZdznrBsYWHf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Moon's Haunted",
+        "type": "perk",
+        "subtype": "role",
+        "level": 4
+      },
+      "3Mu4": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.9jIUSvOv8g2YJPUN",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Soldier",
+        "type": "role"
+      }
+    },
+    "essences": [],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787762210188,
+    "modifiedTime": 1787762210188,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!FGPJ46pTgNDb7TSF"
+}

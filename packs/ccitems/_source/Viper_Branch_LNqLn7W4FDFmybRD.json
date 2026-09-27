@@ -75,7 +75,7 @@
             "type": "weaponEffect",
             "classification": {
               "skill": "targeting",
-              "style": "melee"
+              "style": "projectile"
             },
             "damageValue": 2,
             "damageType": "sharp",

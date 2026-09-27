@@ -45,7 +45,7 @@
     "requirements": {
       "custom": "",
       "skill": "athletics",
-      "shift": "none"
+      "shift": "d2"
     },
     "traits": [
       "amphibious",

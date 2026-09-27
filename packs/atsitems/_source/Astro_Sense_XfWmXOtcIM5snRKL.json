@@ -16,11 +16,11 @@
     "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
-    "powerCost": 1,
+    "powerCost": null,
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",
-    "usesPer": 1
+    "usesPer": null
   },
   "effects": [],
   "flags": {},

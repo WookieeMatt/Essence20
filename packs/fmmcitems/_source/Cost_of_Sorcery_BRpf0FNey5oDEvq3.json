@@ -1,0 +1,33 @@
+{
+  "folder": "E6DeUTYlh8aIeTMe",
+  "name": "Cost of Sorcery",
+  "type": "hangUp",
+  "_id": "BRpf0FNey5oDEvq3",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 271
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1790262811530,
+    "modifiedTime": 1790262811530,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!BRpf0FNey5oDEvq3"
+}

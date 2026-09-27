@@ -3,6 +3,9 @@ import { E20 } from "../../helpers/config.mjs";
 import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { aoeSchema } from "../aoe-schema.mjs";
+import { isExtendedAttackActive } from "../../helpers/extended-attack.mjs";
+import { isMassShiftReachActive } from "../../helpers/mass-shift.mjs";
+import { isAntlersReachActive } from "../../helpers/antlers.mjs";
 
 import { activation } from './templates/activation.mjs';
 import { item } from './templates/item.mjs';
@@ -35,6 +38,15 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       }),
       damageType: makeStrWithChoices(Object.keys(E20.damageTypes), 'blunt'),
       damageValue: makeInt(1),
+      // A second damage component dealt by the same hit, for the effects whose printed line is
+      // "X <type> and Y <type>" (e.g. a Bowling Ball's 1 Blunt and 1 Stun). A second weaponEffect
+      // can't express that - each effect is its own separate attack. Applied alongside the main
+      // damage by the same Apply Damage button (chat.mjs#onApplyDamage), scaled by the same
+      // Degrees of Success. A null type or a 0 value (the defaults) means there is none.
+      secondaryDamage: new fields.SchemaField({
+        type: makeStrWithChoices(Object.keys(E20.damageTypes), null),
+        value: makeInt(0),
+      }),
       // Which of the target's four Defenses (p.168-169) this attack's Skill Test is rolled
       // against.
       defenseType: makeStrWithChoices(Object.keys(E20.defenses), 'toughness'),
@@ -51,6 +63,18 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       isRam: makeBool(false),
       isFlyby: makeBool(false),
       isSpecialized: makeBool(false),
+      // Accurate/Armor Piercing (Weapon Effects and Traits, PR CRB p.106) - both were, until now,
+      // purely cosmetic entries in the parent Weapon item's own `traits` array (a config label
+      // with zero mechanical hook anywhere in this codebase). These two fields are the first real
+      // mechanical hooks for them, built for "Design your own Attack" (A Jump Through Time,
+      // Purple Ranger's Unique Strike/Enhance Strike, p.37-39, see helpers/unique-strike.mjs) -
+      // a freshly player-authored weaponEffect can now actually express either trait. Defaulting
+      // to 0/false leaves every existing compendium weaponEffect completely unaffected; this pass
+      // does NOT retroactively populate them onto the ~28 existing items whose own `traits` array
+      // already names "accurate"/"armorPiercing" decoratively - that's its own separate
+      // verification pass (each would need its own printed shift amount confirmed against RAW).
+      accurateShiftUp: makeInt(0),
+      hasArmorPiercing: makeBool(false),
       numHands: makeInt(1),
       numTargets: makeInt(1),
       // Area of Effect shape + radius (GitHub #824), shared with spells and Powers - see
@@ -73,6 +97,21 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       const actorReach = CONFIG.E20.actorReach[this.parent.parent.system.size];
       if (this.range.reachMultiplier > 1) {
         reachMultiplier = this.range.reachMultiplier;
+      }
+
+      // Extended Attack - see helpers/extended-attack.mjs's own doc comment. Melee only, and
+      // doesn't stack with an already-doubled (or better) permanent reachMultiplier.
+      if (this.classification?.style == 'melee'
+        && (isExtendedAttackActive(this.parent.parent) || isMassShiftReachActive(this.parent.parent))) {
+        reachMultiplier = Math.max(reachMultiplier, 2);
+      }
+
+      // Antlers - see helpers/antlers.mjs's own doc comment. Unarmed only (no parent weapon Item,
+      // the same "no parentId flag" proxy dice.mjs#_getParentWeapon already uses for "unarmed"
+      // everywhere else in this codebase), doesn't stack past a flat double.
+      const isUnarmed = !this.parent.flags?.essence20?.parentId;
+      if (this.classification?.style == 'melee' && isAntlersReachActive(this.parent.parent, isUnarmed)) {
+        reachMultiplier = Math.max(reachMultiplier, 2);
       }
 
       const totalReach = actorReach * reachMultiplier;

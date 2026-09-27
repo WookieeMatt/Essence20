@@ -1,6 +1,7 @@
 import TransformOptionSelector from "../apps/transform-option-selector.mjs";
 import { changeTokenImage, resizeTokens } from "../helpers/actor.mjs";
 import { warnMissingStateImage } from "../helpers/morph-state.mjs";
+import { triggerModeAttachmentCheck } from "../helpers/mode-attachment.mjs";
 
 
 /**
@@ -72,6 +73,8 @@ export async function onTransformUuid(actor, altModeUuid=null) {
  * @private
  */
 async function _transformBotMode(actor) {
+  await triggerModeAttachmentCheck(actor, true);
+
   const width = CONFIG.E20.tokenSizes[actor.system.size].width;
   const height = CONFIG.E20.tokenSizes[actor.system.size].height;
   resizeTokens(actor, width, height);
@@ -96,6 +99,7 @@ async function _transformBotMode(actor) {
  * @private
  */
 async function _transformAltMode(actor, altMode) {
+  await triggerModeAttachmentCheck(actor, false, altMode.id);
   warnMissingStateImage(actor, "altMode", altMode);
   const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
   const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;

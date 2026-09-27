@@ -154,39 +154,17 @@
       },
       "926f": {
         "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.WYVuwQwX2QCuWSD1",
-        "img": "systems/essence20/assets/icons/weapons/dagger.svg",
-        "name": "Small Thrown Weapon (Aerodynamics)",
+        "img": "systems/essence20/assets/icons/weapons/shuriken.svg",
+        "name": "Thrown Blade (Aerodynamics)",
         "type": "weapon",
         "items": {
-          "870a": {
-            "uuid": "Compendium.essence20.gi_joe_crb.Item.bxT99cXuxn9UPeNT",
+          "7766": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.3TUcZi1RplIBPQU2",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Small Thrown Weapon Effect (Blunt)",
+            "name": "Thrown Blade Effect",
             "type": "weaponEffect",
             "classification": {
-              "skill": "athletics",
-              "style": "projectile"
-            },
-            "damageValue": 1,
-            "damageType": "blunt",
-            "numHands": "1",
-            "numTargets": 1,
-            "radius": 0,
-            "range": {
-              "min": null,
-              "reachMultiplier": 0,
-              "long": 20,
-              "value": 10
-            },
-            "shiftDown": 0
-          },
-          "372b": {
-            "uuid": "Compendium.essence20.gi_joe_crb.Item.GqfmPxPjAP8Xoll9",
-            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Small Thrown Weapon Effect (Sharp)",
-            "type": "weaponEffect",
-            "classification": {
-              "skill": "athletics",
+              "skill": "targeting",
               "style": "projectile"
             },
             "damageValue": 1,
@@ -197,8 +175,8 @@
             "range": {
               "min": null,
               "reachMultiplier": 0,
-              "long": 20,
-              "value": 10
+              "long": 30,
+              "value": 20
             },
             "shiftDown": 0
           },

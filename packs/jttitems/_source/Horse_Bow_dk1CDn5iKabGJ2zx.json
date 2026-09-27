@@ -44,7 +44,7 @@
           "style": "projectile"
         },
         "damageValue": 1,
-        "damageType": "restrained",
+        "damageType": "sharp",
         "numHands": 2,
         "numTargets": 2,
         "radius": 0,

@@ -25,13 +25,21 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Manipulate",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "role",
         "level": 1
       },
       "a34c": {
         "uuid": "Compendium.essence20.field_guide_action_adventure.Item.Cfdtj0YtJoBGa1Yf",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Negotiate",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "fc01": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.Y9FmJITVz3nXJQCc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Factions",
         "type": "perk",
         "subtype": "role",
         "level": 1
@@ -63,7 +71,7 @@
       "73fc": {
         "uuid": "Compendium.essence20.field_guide_action_adventure.Item.oT0hLaktWodWlGTv",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Second Impresion",
+        "name": "Second Impression",
         "type": "perk",
         "subtype": "role",
         "level": 12

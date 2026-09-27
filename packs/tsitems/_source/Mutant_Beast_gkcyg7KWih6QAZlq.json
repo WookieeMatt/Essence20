@@ -23,6 +23,12 @@
         "img": "icons/svg/hazard.svg",
         "name": "Strange Reputation",
         "type": "hangUp"
+      },
+      "ls01": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.jDRfmpsy1ElT2Kkn",
+        "img": "icons/svg/hazard.svg",
+        "name": "Lingering Side Effects",
+        "type": "hangUp"
       }
     },
     "mandatoryHangUp": true,

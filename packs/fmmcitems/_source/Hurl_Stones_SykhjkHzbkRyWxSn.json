@@ -1,0 +1,96 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Hurl Stones",
+  "type": "weapon",
+  "_id": "SykhjkHzbkRyWxSn",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "w0Sy": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.pW8smq7cgX9NtTOE",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Hurl Stones Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "blunt",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 5,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 50
+        },
+        "shiftDown": 0
+      },
+      "w1Sy": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xAGn4ncr7aJdpXpl",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Hurl Stones Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 50
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Path of Stone",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "blunt"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790228101151,
+    "modifiedTime": 1790228101151,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!SykhjkHzbkRyWxSn"
+}

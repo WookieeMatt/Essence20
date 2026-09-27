@@ -12,10 +12,16 @@ import { hasUsedThisEncounter, markUsedThisEncounter } from "./perks.mjs";
  * accepted "grant, don't auto-revoke" gap every other timed status in this project already lives
  * with), but the "until you take the Attack action" half IS directly trackable - auto-cleared the
  * moment the actor makes any Attack roll (dice.mjs's own isAttack flag), matching RAW's own "the
- * attempt itself ends it" framing rather than requiring a successful hit. "Lend Assistance" and
- * "Use a Non-Combat Skill" have no generic action-type detection to hook the same auto-clear onto
- * - left as the player's own responsibility to toggle off, same as every other narrative-duration
- * approximation in this project.
+ * attempt itself ends it" framing rather than requiring a successful hit. "Lend Assistance" is now
+ * ALSO directly trackable, since helpers/named-actions.mjs's own Lend Assistance handler exists to
+ * hook onto (see deactivateInvisibilityOnLendAssistance below, called from there) - re-verified
+ * 2026-09-24, no longer the gap this doc comment used to describe. "Use a Non-Combat Skill" still
+ * has no generic action-type detection to hook the same auto-clear onto: named-actions.mjs's own
+ * useASkill action is deliberately left with no handler at all (see its own NOT_AUTOMATED entry -
+ * rolling the skill itself needs a real UI this system doesn't have), and giving it one JUST to
+ * clear this flag would falsely mark that action as automated in the Actions tab. Left as the
+ * player's own responsibility to toggle off, same as every other narrative-duration approximation
+ * in this project.
  */
 const INVISIBILITY_FLAG = 'invisibilityActive';
 const INVISIBILITY_ENCOUNTER_FLAG = 'invisibilityUsedThisEncounter';
@@ -66,6 +72,25 @@ export async function toggleInvisibility(actor) {
  * @param {Actor} actor
  */
 export async function deactivateInvisibilityOnAttack(actor) {
+  await clearInvisibility(actor);
+}
+
+/**
+ * Auto-clears Invisibility the moment the actor takes the Lend Assistance action - called from
+ * helpers/named-actions.mjs's own lendAssistance handler, the exact same shape as
+ * deactivateInvisibilityOnAttack above (both just call the shared clearInvisibility below), kept
+ * as its own named export so each call site reads as "why" rather than "what."
+ * @param {Actor} actor
+ */
+export async function deactivateInvisibilityOnLendAssistance(actor) {
+  await clearInvisibility(actor);
+}
+
+/**
+ * The shared no-op-if-already-off clear both auto-clear triggers above call.
+ * @param {Actor} actor
+ */
+async function clearInvisibility(actor) {
   if (!isInvisibilityActive(actor)) {
     return;
   }

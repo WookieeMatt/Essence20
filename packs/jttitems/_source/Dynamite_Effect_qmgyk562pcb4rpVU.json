@@ -17,7 +17,11 @@
       "style": "explosive"
     },
     "damageType": "stun",
-    "damageValue": 3,
+    "damageValue": 2,
+    "secondaryDamage": {
+      "type": "fire",
+      "value": 1
+    },
     "isSpecialized": false,
     "numHands": 1,
     "numTargets": 1,

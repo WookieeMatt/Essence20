@@ -1,0 +1,91 @@
+{
+  "folder": "wz3jDXHF9H1jTjUn",
+  "name": "Belter Rig",
+  "type": "armor",
+  "_id": "FpfRVppXkYtN7yyQ",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>Modular 3</p>",
+    "source": {
+      "book": "Across the Stars",
+      "page": 84
+    },
+    "items": {},
+    "availability": "limited",
+    "bonusEvasion": 0,
+    "bonusToughness": 2,
+    "classification": "medium",
+    "equipped": false,
+    "traits": [
+      "deflective",
+      "enhanceSkill",
+      "exoFrame",
+      "modular"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [
+    {
+      "name": "Blaster Rig",
+      "origin": "Item.FpfRVppXkYtN7yyQ",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ZTHBjpa3IsUR3N9X",
+      "changes": [
+        {
+          "key": "system.skills.brawn.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!FpfRVppXkYtN7yyQ.ZTHBjpa3IsUR3N9X"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1695745140006,
+    "modifiedTime": 1704127405116,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!FpfRVppXkYtN7yyQ"
+}

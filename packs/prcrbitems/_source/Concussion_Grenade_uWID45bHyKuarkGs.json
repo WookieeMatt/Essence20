@@ -13,12 +13,12 @@
     },
     "items": {
       "e660": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.biSzIazZJHL5DNGN",
+        "uuid": "Compendium.essence20.pr_crb.Item.biSzIazZJHL5DNGN",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Concussion Grenade Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "targeting",
+          "skill": "athletics",
           "style": "explosive"
         },
         "damageValue": 1,
@@ -48,7 +48,8 @@
       "shift": "none"
     },
     "traits": [
-      "consumable"
+      "consumable",
+      "stun"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

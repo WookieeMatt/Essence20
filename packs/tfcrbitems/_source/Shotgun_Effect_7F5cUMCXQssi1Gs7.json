@@ -1,0 +1,46 @@
+{
+  "folder": "bsdJ7Coa2z9hdtR0",
+  "name": "Shotgun Effect",
+  "type": "weaponEffect",
+  "_id": "7F5cUMCXQssi1Gs7",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 2,
+    "radius": 15,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 60,
+      "value": 20
+    },
+    "shape": "cone"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790227721116,
+    "modifiedTime": 1790227721116,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 600000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!7F5cUMCXQssi1Gs7"
+}

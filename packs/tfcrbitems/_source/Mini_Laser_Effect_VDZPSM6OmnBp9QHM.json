@@ -1,0 +1,50 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Mini-Laser Effect",
+  "type": "weaponEffect",
+  "_id": "VDZPSM6OmnBp9QHM",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 75
+    },
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "laser",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 50,
+      "value": 10
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790267200496,
+    "modifiedTime": 1790267200496,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!VDZPSM6OmnBp9QHM"
+}

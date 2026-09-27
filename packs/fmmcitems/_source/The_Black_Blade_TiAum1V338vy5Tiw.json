@@ -1,0 +1,76 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "The Black Blade",
+  "type": "weapon",
+  "_id": "TiAum1V338vy5Tiw",
+  "img": "systems/essence20/assets/icons/weapons/broadsword.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 275
+    },
+    "items": {
+      "DCPl": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.BxBn5Y1XUP9LRqCG",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "The Black Blade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "unique",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "Anyone without at least Brawn +d2 suffers Snag on melee attacks with it",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "sharp",
+      "silent",
+      "sorcerous"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790264776132,
+    "modifiedTime": 1790264776132,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!TiAum1V338vy5Tiw"
+}

@@ -54,14 +54,14 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 0
+        "shiftDown": 1
       }
     },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
     "classification": {
-      "size": "light"
+      "size": "medium"
     },
     "equipped": true,
     "requirements": {
@@ -71,6 +71,7 @@
     },
     "traits": [
       "energy",
+      "powerWeapon",
       "sharp"
     ],
     "upgradeTraits": [],

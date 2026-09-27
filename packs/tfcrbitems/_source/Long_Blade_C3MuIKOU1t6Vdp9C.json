@@ -55,6 +55,28 @@
           "value": null
         },
         "shiftDown": 0
+      },
+      "3a69": {
+        "uuid": "Compendium.essence20.tf_crb.Item.4rgKqfYX9WXvJEX2",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Blade Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 3,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 2
       }
     },
     "classFeatureId": null,

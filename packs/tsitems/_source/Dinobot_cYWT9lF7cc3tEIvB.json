@@ -24,6 +24,12 @@
         "name": "I Don't Get It",
         "type": "hangUp"
       },
+      "gr4a": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.PnVygbT6zVhEWnnG",
+        "img": "icons/svg/hazard.svg",
+        "name": "Grudging Ally",
+        "type": "hangUp"
+      },
       "d370": {
         "uuid": "Compendium.essence20.tf_crb.Item.V5GfafYii5GSMtzr",
         "img": "icons/svg/hazard.svg",

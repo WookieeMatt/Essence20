@@ -171,7 +171,12 @@
       "levels": [],
       "specializedLevels": []
     },
-    "skills": [],
+    "skills": [
+      "science",
+      "technology",
+      "driving",
+      "initiative"
+    ],
     "version": "giJoe",
     "weapons": {
       "qualified": [],

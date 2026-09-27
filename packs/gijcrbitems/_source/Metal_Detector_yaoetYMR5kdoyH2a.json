@@ -15,7 +15,52 @@
     "type": "",
     "gearType": "hazard"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Metal Detector",
+      "origin": "Item.yaoetYMR5kdoyH2a",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "mD3nSf0mgAlB2c5f",
+      "changes": [
+        {
+          "key": "system.skills.alertness.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!yaoetYMR5kdoyH2a.mD3nSf0mgAlB2c5f"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

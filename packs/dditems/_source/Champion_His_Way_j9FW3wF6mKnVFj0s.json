@@ -1,0 +1,36 @@
+{
+  "folder": "7HOrvd6hwScvddul",
+  "name": "Champion His Way",
+  "type": "perk",
+  "_id": "j9FW3wF6mKnVFj0s",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 111
+    },
+    "prerequisite": "Word of Unicron; Culture d10",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790266885700,
+    "modifiedTime": 1790266885700,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!j9FW3wF6mKnVFj0s"
+}

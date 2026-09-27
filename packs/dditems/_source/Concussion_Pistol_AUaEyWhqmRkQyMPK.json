@@ -33,6 +33,28 @@
           "value": 50
         },
         "shiftDown": 0
+      },
+      "cef9": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.j8CumGbUJGswZfwu",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Concussion Pistol Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": null,
+        "damageType": "knocProne",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
+        },
+        "shiftDown": 1
       }
     },
     "classFeatureId": null,

@@ -6,6 +6,7 @@ import { activateFasterRegeneration } from "./faster-regeneration.mjs";
 import { activateBoostInitiative } from "./boost-initiative.mjs";
 import { activateAugmentPowerWeapon } from "./augment-power-weapon.mjs";
 import { activatePenetratingStrikes } from "./penetrating-strikes.mjs";
+import { activateIlluminate } from "./illuminate.mjs";
 import { activateRepairZord } from "./repair-zord.mjs";
 import { activatePowerHeal } from "./power-heal.mjs";
 import { activateGridPowerStrike } from "./grid-power-strike.mjs";
@@ -24,16 +25,50 @@ import { activateMetallicArmor } from "./metallic-armor.mjs";
 import { activateGridEmpowered } from "./grid-empowered.mjs";
 import { applyShatteredMemoriesOption, pickShatteredMemoriesOption } from "./shattered-memories.mjs";
 import { toggleProtectionBoost } from "./protection.mjs";
+import { toggleReactiveBoost } from "./reactive.mjs";
 import { toggleAugmentedCombat } from "./augmented-combat.mjs";
 import { pickSwiftnessMovementType, toggleSwiftness } from "./swiftness.mjs";
 import { activateRepairMachine } from "./repair-machine.mjs";
 import { activateElectricDischarge } from "./electric-discharge.mjs";
 import { activateDisintegrate } from "./disintegrate.mjs";
-import { activateRegeneration } from "./regeneration.mjs";
+import { activateRegenerationChoice } from "./regeneration.mjs";
 import { activateBolsterDefense } from "./bolster-defense.mjs";
+import { activateChronomanticPulse } from "./chronomantic-pulse.mjs";
 import { activateMonsterGrow } from "./monster-grow.mjs";
 import { activateLuckyCharm } from "./lucky-charm.mjs";
 import { activateIllusoryDisguiseRoll } from "./illusory-disguise.mjs";
+import { activateCreateWeapon, CREATE_WEAPON_ID } from "./create-weapon.mjs";
+import { activateChargeItUp, CHARGE_IT_UP_ID } from "./charge-it-up.mjs";
+import { activateRapidMorph } from "./rapid-morph.mjs";
+
+/**
+ * The Power-side equivalent of helpers/banked-buffs.mjs#canUsePerk - whether the sheet should show
+ * a Power's own roll/activation button right now. Unlike canUsePerk (a whole separate "Use"
+ * control), a Power has no second icon - the roll-type=power click itself IS the activation
+ * (templates/actor/parts/items/power/container.hbs's own roll-button inline) - so this replaces
+ * that inline's previous bare `{{#if item.system.canActivate}}` check, folding the static
+ * per-item flag in here too rather than needing both checks written out in the template. Most
+ * Powers have no further dynamic gate beyond canActivate (this system has no generic once-per-
+ * scene enforcement for Powers the way BANKABLE_PERKS' own encounter flags give Perks) - only Zeo
+ * Crystal Boost currently needs one, via its own already-existing canUseZeoCrystalBoost. Any future
+ * Power needing a dynamic once-per-scene/affordability gate adds its own branch here, the same
+ * shape onPowerUse's own dispatch below already establishes.
+ * @param {Item} item
+ * @returns {Boolean}
+ */
+export function canUsePower(item) {
+  if (item?.type != 'power' || !item.system.canActivate) {
+    return false;
+  }
+
+  const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+
+  if (sourceId == ZEO_CRYSTAL_BOOST_ID) {
+    return canUseZeoCrystalBoost(item.parent);
+  }
+
+  return true;
+}
 
 /**
  * The Power-side equivalent of helpers/banked-buffs.mjs#onPerkUse - the single dispatch point every
@@ -74,8 +109,38 @@ export async function onPowerUse(actor, item, amountSpent = 0) {
 
   const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
 
+  // Create Weapon - see helpers/create-weapon.mjs's own doc comment.
+  if (sourceId == CREATE_WEAPON_ID) {
+    const form = await activateCreateWeapon(actor);
+    if (form) {
+      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
+    }
+
+    return;
+  }
+
+  // Charge It Up! - see helpers/charge-it-up.mjs's own doc comment.
+  if (sourceId == CHARGE_IT_UP_ID) {
+    const banked = await activateChargeItUp(actor);
+    if (banked) {
+      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
+    }
+
+    return;
+  }
+
+  // Rapid Morph - see helpers/rapid-morph.mjs's own doc comment.
+  if (sourceId == RAPID_MORPH_ID) {
+    const morphed = await activateRapidMorph(actor);
+    if (morphed) {
+      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
+    }
+
+    return;
+  }
+
   if (sourceId == SPEED_BOOST_ID) {
-    const changed = await applySpeedBoost(item);
+    const changed = await applySpeedBoost(actor, item);
     if (changed) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
@@ -117,6 +182,15 @@ export async function onPowerUse(actor, item, amountSpent = 0) {
 
   if (sourceId == PENETRATING_STRIKES_ID) {
     const changed = await activatePenetratingStrikes(actor);
+    if (changed) {
+      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
+    }
+
+    return;
+  }
+
+  if (sourceId == ILLUMINATE_ID) {
+    const changed = await activateIlluminate(actor);
     if (changed) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
@@ -270,6 +344,12 @@ export async function onPowerUse(actor, item, amountSpent = 0) {
     return;
   }
 
+  if (sourceId == REACTIVE_ID) {
+    await toggleReactiveBoost(actor);
+    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
+    return;
+  }
+
   if (sourceId == AUGMENTED_COMBAT_ID || sourceId == CODENAME_JOLT_ID) {
     await toggleAugmentedCombat(actor);
     postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
@@ -303,13 +383,21 @@ export async function onPowerUse(actor, item, amountSpent = 0) {
   }
 
   if (sourceId == REGENERATION_ID) {
-    await activateRegeneration(actor);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
+    const activated = await activateRegenerationChoice(actor);
+    if (activated) {
+      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
+    }
+
     return;
   }
 
   if (sourceId == BOLSTER_DEFENSE_ID) {
     await activateBolsterDefense(actor);
+    return;
+  }
+
+  if (sourceId == CHRONOMANTIC_PULSE_ID) {
+    await activateChronomanticPulse(actor);
     return;
   }
 
@@ -342,20 +430,12 @@ export async function onPowerUse(actor, item, amountSpent = 0) {
   }
 }
 
-// Speed Boost (Power Rangers Core Rulebook, Grid Power, p.101): "As a Free action, spend 1 Power
-// to gain +10 Ground Movement and Edge on Initiative Skill Tests for the rest of the scene." The
-// compendium item already carries both effects fully and correctly shaped (system.movement.ground.
-// morphed +10, system.skills.initiative.edge) - see helpers/speed-boost.mjs's own doc comment for
-// why this is a one-way activation (enable the item's own disabled effects) rather than a Power-
-// Boost-style toggle: the generic click flow above already spends the cost unconditionally on
-// every click (there's no "this click means turn it back off" concept anywhere in that flow, unlike
-// a Perk's own onPerkUse which has full control before anything is spent), so modeling this as an
-// on/off toggle would double-spend Power on a second click instead of switching off for free. RAW
-// itself never describes an explicit "spend to deactivate" step either, so this matches the same
-// "approximate duration, no hard enforcement" idiom already accepted project-wide (e.g. Dig In,
-// Got To Get Tough) - a GM manually disables the two effects on the item's own sheet once the scene
-// ends.
+// Speed Boost (Power Rangers Core Rulebook, Grid Power, p.101): "you can spend 1 Power to gain Edge
+// on an Initiative Skill Test." The +10 Ground Movement while Morphed is passive, not bought - see
+// helpers/speed-boost.mjs's own doc comment. Each activation (1 Power, already spent by the generic
+// click flow above) banks one Initiative Edge for dice.mjs#prepareInitiativeRoll to consume.
 const SPEED_BOOST_ID = "Compendium.essence20.pr_crb.Item.CDbaCheOK2rUsqli";
+const RAPID_MORPH_ID = "Compendium.essence20.jump_through_time.Item.NyO1qtj0dzZRPOSO";
 
 // The rest of the PR CRB's own Grid Power catalog (p.99-101) - see each helper file's own doc
 // comment for RAW text and mechanic shape. Wired 2026-09-10 alongside this file's own amountSpent
@@ -365,6 +445,7 @@ const FASTER_REGENERATION_ID = "Compendium.essence20.pr_crb.Item.UsZ8twgjWJO5B3R
 const BOOST_INITIATIVE_ID = "Compendium.essence20.pr_crb.Item.IuQ0tsM2G99fQlSz";
 const AUGMENT_POWER_WEAPON_ID = "Compendium.essence20.pr_crb.Item.n7kXeiPmmdg55K1X";
 const PENETRATING_STRIKES_ID = "Compendium.essence20.pr_crb.Item.fgufss1xeV96LDcu";
+const ILLUMINATE_ID = "Compendium.essence20.pr_crb.Item.c6Kh8WrtHYfsXZmK";
 const REPAIR_ZORD_ID = "Compendium.essence20.pr_crb.Item.9S0fkRqxjfiOJ8ip";
 const MNEMONIC_RECALL_ID = "Compendium.essence20.pr_crb.Item.jOYqRnHMYz6nETD0";
 const POWER_TRANSFER_ID = "Compendium.essence20.pr_crb.Item.QYluNF8M04MmP40d";
@@ -386,6 +467,7 @@ const METALLIC_ARMOR_ID = "Compendium.essence20.through_the_shattered_grid.Item.
 const GRID_EMPOWERED_ID = "Compendium.essence20.through_the_shattered_grid.Item.17iN2ZzSaTvqX0PL";
 const SHATTERED_MEMORIES_ID = "Compendium.essence20.through_the_shattered_grid.Item.faME3nQl9NjbafOG";
 const PROTECTION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.IF9v9C3tCJSQYRjd";
+const REACTIVE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.toDyl8zb0XVvqPuj";
 const AUGMENTED_COMBAT_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.6Ku40JiKZCMbGMtM";
 // Codename Jolt: Augmented Combat Nanomite Infusion (Operation Snakebit, p.24) - textually the
 // same "↑1 on all attacks" toggle as Augmented Combat above, just Cobra's own nanomite-flavored
@@ -398,6 +480,7 @@ const ELECTRIC_DISCHARGE_ID = "Compendium.essence20.quartermasters_guide_to_gear
 const DISINTEGRATE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.mVwWAgFyNUDfoUJQ";
 const REGENERATION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.312ubjCA7mCBDoea";
 const BOLSTER_DEFENSE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.HVOFIDBiXNckFaAP";
+const CHRONOMANTIC_PULSE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.YjPFCWa3KxDIJXGW";
 const MONSTER_GROW_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.KR4KuZlalNywMvSb";
 const LUCKY_CHARM_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Rv3Bhyeo4XBxHLpX";
 const ILLUSORY_DISGUISE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.7r9RSyoSvZxNx7El";

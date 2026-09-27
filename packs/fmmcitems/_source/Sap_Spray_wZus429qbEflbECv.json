@@ -1,0 +1,74 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Sap Spray",
+  "type": "weapon",
+  "_id": "wZus429qbEflbECv",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "w0wZ": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.TtzFPntWQhI8IcQZ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Sap Spray Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "acid",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 40,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Path of Thorns",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "acid"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790228101169,
+    "modifiedTime": 1790228101169,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!wZus429qbEflbECv"
+}

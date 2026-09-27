@@ -1,69 +1,59 @@
 /**
- * Like Water (Factions in Action Vol. 2: Intercontinental Adventures, General Perk, p.30): "You
- * gain the following benefits, each of which may be used only once per Combat: You may spend a
- * Standard action to gain a temporary +2 bonus to Toughness. This bonus lasts until the end of
- * Combat. You may spend a Standard action to gain a temporary +2 bonus to Evasion. This bonus
- * lasts until the end of Combat. If you succeed on an Attack against an opponent with a Martial
- * Arts weapon, you may choose to make it a Critical Success. If an enemy fails an Attack against
- * you, your next Attack targeting them gains an Edge."
+ * Like Water (Factions in Action Vol. 2: Intercontinental Adventures, Arashikage General Perk,
+ * p.32): "You gain the following benefits, each of which may be used only once per Combat: You
+ * may spend a Standard action to gain a temporary +2 bonus to Toughness. This bonus lasts until
+ * the end of Combat. You may spend a Standard action to gain a temporary +2 bonus to Evasion.
+ * This bonus lasts until the end of Combat."
  *
- * Only the two Defense-boost clauses are built here. The compendium item shipped with 2 disabled
- * placeholder Active Effects (+2 Toughness/+2 Evasion) - those are the WRONG shape for this RAW
- * text (a permanent, unconditional bonus would misrepresent "spend a Standard action, once per
- * Combat" as a free always-on grant) and are left disabled/unused rather than enabled outright;
- * this file replaces them with a proper activated-once-per-combat toggle instead, the same live,
- * non-consumed Defense-bonus shape Bolster Defense/Jury Rig's own Align Suspension already
- * establish, gated one-shot via a plain flag (no need to ever toggle back off - the bonus already
- * only ever gets granted once).
+ * Only these first two clauses are built here. "If you succeed on an Attack against an opponent
+ * with a Martial Arts weapon, you may choose to make it a Critical Success" and "if an enemy
+ * fails an Attack against you, your next Attack targeting them gains an Edge" are separate crit-
+ * upgrade/banked-Edge mechanics not attempted this pass.
  *
- * The Critical-Success-on-a-Martial-Arts-Attack clause and the reciprocal "gain an Edge after an
- * enemy misses you" clause are NOT built - the former needs a reactive post-hit chat-button choice
- * (buildable, but a genuinely separate feature from the other two, and not attempted this pass),
- * and the latter needs the still-missing "react to being attacked" hook this project has flagged
- * many times before (Fe-BURN!, Defender Step, Projectile Deflector, etc.).
- *
- * This system only ever gives one Perk item one "Use" button (see EMT Crash Course's own doc
- * comment), so the two built clauses share a single dynamic picker - whichever of the two hasn't
- * been used yet this Combat, the same "options list built from current state" idiom Eltarian
- * Mettle's own dynamic Condition picker already established, rather than two separate buttons.
+ * A Standard action, no roll and no other cost - the "Use" button banks which Defense was chosen
+ * directly, no dice involved, same shape as Bolster Defense's own banked bonus except with
+ * nothing to roll first. Can't touch `_prepareDefenses` (the user's own pending Health/Defense-
+ * math migration), so this is a live, non-consumed read in dice.mjs's own difficulty calculation,
+ * same shape as Bolster Defense/Jury Rig's own Defense bonuses. "Until end of Combat" has no
+ * active clearing hook (this codebase has no combat-end event) - left in place until manually
+ * cleared, the same "approximate an unenforceable duration, GM manages the edges" idiom Bolster
+ * Defense's own "until end of scene" clause already uses. The two benefits are independent (each
+ * its own once-per-Combat use, both obtainable in the same fight for 2 separate Standard actions)
+ * - the picker only offers whichever hasn't been used yet, and the "Use" button stays available
+ * as long as either one remains.
  */
+export const LIKE_WATER_ID = "Compendium.essence20.intercontinental_adventures.Item.HSjShnVmoDdzEDT1";
 
-const TOUGHNESS_FLAG = 'likeWaterToughnessActive';
-const EVASION_FLAG = 'likeWaterEvasionActive';
+const LIKE_WATER_OPTION_LABELS = {
+  toughness: 'E20.LikeWaterToughness',
+  evasion: 'E20.LikeWaterEvasion',
+};
+export const LIKE_WATER_OPTIONS = Object.keys(LIKE_WATER_OPTION_LABELS);
 
-/**
- * @param {Actor} actor
- * @returns {String[]}   Zero, one, or both of 'toughness'/'evasion' - whichever hasn't been
- *   activated yet this Combat.
- */
-export function getAvailableLikeWaterOptions(actor) {
-  const options = [];
-  if (!actor.getFlag?.('essence20', TOUGHNESS_FLAG)) {
-    options.push('toughness');
-  }
-
-  if (!actor.getFlag?.('essence20', EVASION_FLAG)) {
-    options.push('evasion');
-  }
-
-  return options;
+// One boolean flag per option, doing double duty as both "already used this Combat" (the
+// once-per-Combat cap) and "currently granting its +2" (read live by getLikeWaterDefenseBonus) -
+// setting it true both spends the once-per-Combat use AND turns the bonus on, since RAW's own
+// "lasts until the end of Combat" means those two facts never diverge for this Perk.
+function likeWaterActiveFlag(option) {
+  return `likeWater${option.charAt(0).toUpperCase()}${option.slice(1)}Active`;
 }
 
 /**
- * Prompts for which still-available Like Water bonus to activate.
+ * Which of Like Water's two benefits are still available this Combat.
  * @param {Actor} actor
- * @returns {Promise<String|null>}   'toughness' or 'evasion', or null if both are already used
- *   this Combat or the picker was cancelled.
+ * @returns {Array<String>}   A subset of LIKE_WATER_OPTIONS.
  */
-export async function pickLikeWaterOption(actor) {
-  const available = getAvailableLikeWaterOptions(actor);
-  if (!available.length) {
-    return null;
-  }
+export function getAvailableLikeWaterOptions(actor) {
+  return LIKE_WATER_OPTIONS.filter(option => !actor?.getFlag?.('essence20', likeWaterActiveFlag(option)));
+}
 
+/**
+ * @param {Array<String>} available   The still-available options, from getAvailableLikeWaterOptions.
+ * @returns {Promise<String|null>}   The chosen option, or null if cancelled.
+ */
+export async function pickLikeWaterOption(available) {
   const options = available
-    .map(key => `<option value="${key}">${game.i18n.localize(key == 'toughness' ? 'E20.LikeWaterToughness' : 'E20.LikeWaterEvasion')}</option>`)
-    .join('');
+    .map(key => `<option value="${key}">${game.i18n.localize(LIKE_WATER_OPTION_LABELS[key])}</option>`).join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.LikeWaterPickOptionTitle') },
     classes: ["window-app", "e20-window"],
@@ -85,44 +75,38 @@ export async function pickLikeWaterOption(actor) {
 }
 
 /**
+ * Prompts for whichever benefit(s) are still available and banks the choice directly (no roll to
+ * gate it on).
  * @param {Actor} actor
- * @param {String} option   'toughness' or 'evasion'.
- */
-export async function activateLikeWaterOption(actor, option) {
-  await actor.setFlag('essence20', option == 'toughness' ? TOUGHNESS_FLAG : EVASION_FLAG, true);
-}
-
-/**
- * Prompts for and activates one still-available Like Water bonus.
- * @param {Actor} actor
- * @returns {Promise<String|null>}   The option activated, or null if there was nothing left to
- *   activate or the picker was cancelled.
+ * @returns {Promise<String|null>}   The option activated, or null if there was nothing available
+ *   or the picker was cancelled.
  */
 export async function applyLikeWater(actor) {
-  const option = await pickLikeWaterOption(actor);
+  const available = getAvailableLikeWaterOptions(actor);
+  if (!available.length) {
+    return null;
+  }
+
+  const option = available.length > 1 ? await pickLikeWaterOption(available) : available[0];
   if (!option) {
     return null;
   }
 
-  await activateLikeWaterOption(actor, option);
+  await actor.setFlag('essence20', likeWaterActiveFlag(option), true);
   return option;
 }
 
 /**
- * The live, non-consumed Defense bonus either activated Like Water clause grants, for the given
- * Defense comparison - same shape as helpers/bolster-defense.mjs#getBolsterDefenseBonus.
+ * The live Defense bonus Like Water is currently granting - read directly in dice.mjs's own
+ * difficulty calculation (can't touch `_prepareDefenses`).
  * @param {Actor} actor
- * @param {String} defenseType
+ * @param {String} defenseType   e.g. 'toughness', 'evasion'.
  * @returns {Number}
  */
 export function getLikeWaterDefenseBonus(actor, defenseType) {
-  if (defenseType == 'toughness' && actor.getFlag?.('essence20', TOUGHNESS_FLAG)) {
-    return 2;
+  if (!LIKE_WATER_OPTIONS.includes(defenseType)) {
+    return 0;
   }
 
-  if (defenseType == 'evasion' && actor.getFlag?.('essence20', EVASION_FLAG)) {
-    return 2;
-  }
-
-  return 0;
+  return actor?.getFlag?.('essence20', likeWaterActiveFlag(defenseType)) ? 2 : 0;
 }

@@ -58,7 +58,52 @@
     "upgradeTraits": [],
     "usesPerScene": null
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Cloud Hatchet Aerial Movement",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.jump_through_time.Item.RNP5lNTQLostQKSB",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "wFq2Km9Dxh0PbtSj",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.aerial.bonus",
+          "mode": 2,
+          "value": "30",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.5.0",
+        "createdTime": 1733092749319,
+        "modifiedTime": 1733092803496,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!RNP5lNTQLostQKSB.wFq2Km9Dxh0PbtSj"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

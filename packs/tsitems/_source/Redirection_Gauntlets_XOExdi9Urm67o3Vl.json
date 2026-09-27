@@ -41,7 +41,7 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
-          "style": "melee"
+          "style": "energy"
         },
         "damageValue": 2,
         "damageType": "element",
@@ -69,9 +69,9 @@
       "inhaled": false
     },
     "requirements": {
-      "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "custom": "Targeting d4, Technology d4",
+      "skill": "might",
+      "shift": "d4"
     },
     "traits": [
       "computerized"

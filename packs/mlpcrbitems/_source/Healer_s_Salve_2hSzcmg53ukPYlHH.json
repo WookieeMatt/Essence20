@@ -1,0 +1,45 @@
+{
+  "folder": "nwRnrnIudtgtynzT",
+  "name": "Healer's Salve",
+  "type": "magicBauble",
+  "_id": "2hSzcmg53ukPYlHH",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 142
+    },
+    "actionType": "standard",
+    "contingencyTrigger": null,
+    "ignoresEconomy": false,
+    "actionCost": 1,
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
+    "quantity": 1,
+    "range": "Reach",
+    "spellcastingShift": "d4"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790264003951,
+    "modifiedTime": 1790264003951,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
+  },
+  "_key": "!items!2hSzcmg53ukPYlHH"
+}

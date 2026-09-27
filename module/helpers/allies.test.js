@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { getAllNearbyTokens, getNearbyAllyTokens } from './allies.mjs';
+import { getAllNearbyTokens, getNearbyAllyTokens, getColonyChangelingEvasionBonus } from './allies.mjs';
 
 global.canvas = {
   tokens: { placeables: [] },
@@ -91,6 +91,35 @@ describe("getNearbyAllyTokens", () => {
 
     expect(getNearbyAllyTokens(actor, 10)).toEqual([ally1, ally2]);
   });
+
+  // Frenemy (MLP CRB, General Perk, p.124) - see its own comment in allies.mjs above.
+  describe("with Frenemy", () => {
+    const FRENEMY_ID = "Compendium.essence20.mlp_crb.Item.N6Bs8to6G0QddMVK";
+
+    function makeFrenemyItem() {
+      return { type: 'perk', flags: { core: { sourceId: FRENEMY_ID } } };
+    }
+
+    test("includes a different-Disposition token too", () => {
+      const { actor, token } = makeActorWithToken(1);
+      actor.items = [makeFrenemyItem()];
+      const enemy = makeToken({ disposition: -1 });
+      canvas.tokens.placeables = [token, enemy];
+      canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+
+      expect(getNearbyAllyTokens(actor, 10)).toEqual([enemy]);
+    });
+
+    test("without the Perk, a different-Disposition token is still excluded", () => {
+      const { actor, token } = makeActorWithToken(1);
+      actor.items = [];
+      const enemy = makeToken({ disposition: -1 });
+      canvas.tokens.placeables = [token, enemy];
+      canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+
+      expect(getNearbyAllyTokens(actor, 10)).toEqual([]);
+    });
+  });
 });
 
 describe("getAllNearbyTokens", () => {
@@ -147,5 +176,52 @@ describe("getAllNearbyTokens", () => {
     global.canvas = undefined;
     expect(getAllNearbyTokens(actor, 10)).toEqual([]);
     global.canvas = originalCanvas;
+  });
+});
+
+describe("getColonyChangelingEvasionBonus", () => {
+  const COLONY_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.FRUWPAePJzm7Mlf0";
+
+  function makeColonyChangelingToken() {
+    return {
+      actor: { items: [{ type: 'perk', flags: { core: { sourceId: COLONY_CHANGELING_ID } } }] },
+      document: { disposition: 1 },
+      center: {},
+    };
+  }
+
+  function makeActorWithToken() {
+    const token = { actor: {}, document: { disposition: 1 }, center: {} };
+    const actor = { getActiveTokens: jest.fn(() => [token]) };
+    return { actor, token };
+  }
+
+  beforeEach(() => {
+    canvas.tokens.placeables = [];
+    canvas.grid.measurePath.mockReset();
+    canvas.grid.measurePath.mockReturnValue({ distance: 0 });
+  });
+
+  test("counts adjacent Colony Changelings, up to the +3 cap", () => {
+    const { actor, token } = makeActorWithToken();
+    canvas.tokens.placeables = [token, makeColonyChangelingToken(), makeColonyChangelingToken(),
+      makeColonyChangelingToken(), makeColonyChangelingToken()];
+    canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+
+    expect(getColonyChangelingEvasionBonus(actor)).toBe(3);
+  });
+
+  test("excludes Colony Changelings beyond 5ft, and non-Colony-Changeling tokens", () => {
+    const { actor, token } = makeActorWithToken();
+    const far = makeColonyChangelingToken();
+    canvas.tokens.placeables = [token, far];
+    canvas.grid.measurePath.mockReturnValue({ distance: 10 });
+
+    expect(getColonyChangelingEvasionBonus(actor)).toBe(0);
+  });
+
+  test("returns 0 without a token on the scene", () => {
+    const noTokenActor = { getActiveTokens: jest.fn(() => []) };
+    expect(getColonyChangelingEvasionBonus(noTokenActor)).toBe(0);
   });
 });

@@ -1,0 +1,36 @@
+{
+  "folder": "8pILPlRg2uDTxFNq",
+  "name": "HTB Access Pad",
+  "type": "gear",
+  "_id": "HTBAcc3ssP4dGear",
+  "img": "systems/essence20/assets/icons/gear/tablet.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 136
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "computers"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1695580066227,
+    "modifiedTime": 1704127409126,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!HTBAcc3ssP4dGear"
+}

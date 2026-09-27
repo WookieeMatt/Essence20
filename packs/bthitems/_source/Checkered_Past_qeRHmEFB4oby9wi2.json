@@ -13,9 +13,54 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "influence"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Checkered Past",
+      "origin": "Compendium.essence20.beneath_the_helmet.Item.qeRHmEFB4oby9wi2",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "2lvoBJcZ8JESLpml",
+      "changes": [
+        {
+          "key": "system.essenceShifts.smarts.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!qeRHmEFB4oby9wi2.2lvoBJcZ8JESLpml"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

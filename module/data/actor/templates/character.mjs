@@ -145,6 +145,17 @@ export const character = () => ({
     sorcerous: new fields.SchemaField({
       levelTaken: makeInt(0),
       max: makeInt(0),
+      // committed: the sum of powerCost across every owned Sorcerous-type Power - see
+      // documents/actor.mjs#_prepareSorcerousPower. USER DECISION (2026-09-24): Sorcerous points
+      // are a one-time BUILD budget (Finster's Monster-Matic Cookbook, "Building Sorcerous
+      // Powers," p.274), not a spendable-per-use pool, so this replaces `value` as what's shown
+      // against `max` on the sheet. Derived fresh every prepareData pass, same "never written by
+      // actor.update(), always recomputed" idiom as totalBonusToughness/etc.
+      committed: makeInt(0),
+      // value: legacy spendable-pool field from before this fix - no longer read or written by
+      // any code (Sorcerous Powers stopped spending it, see sheet-handlers/power-handler.mjs
+      // #powerCost). Left in the schema so old worlds' stored data doesn't get stripped/rejected;
+      // harmless to leave at whatever it was.
       value: makeInt(0),
     }),
   }),
@@ -153,6 +164,11 @@ export const character = () => ({
   qualified: new fields.SchemaField({
     armors: makeTrainingSchema(E20.armorTypes),
     poisons: makeTrainingSchema(E20.poisonTraining),
+    // Toxicologist (Cobra Codex, General Perk, p.81): "You're Qualified with toxins." Added
+    // 2026-09-15 - trained.toxins already existed (see _preparePoisonTraining), but qualified
+    // never got the same sibling field, leaving this Perk with nothing to grant. Same
+    // {all/standard/limited} shape as poisons above, populated the same way.
+    toxins: makeTrainingSchema(E20.poisonTraining),
     weapons: makeTrainingSchema(E20.weaponTypes),
   }),
   senses: new fields.SchemaField({

@@ -39,7 +39,7 @@
       "_id": "eOMma6hcfzzxbbtx",
       "changes": [
         {
-          "key": "system.defenses.toughness.bonus",
+          "key": "system.defenses.toughness.morphed",
           "mode": 2,
           "value": "2",
           "priority": null
@@ -83,7 +83,7 @@
       "_id": "lAYF7FUjs0mQ8aSb",
       "changes": [
         {
-          "key": "system.defenses.cleverness.bonus",
+          "key": "system.defenses.cleverness.morphed",
           "mode": 2,
           "value": "2",
           "priority": null
@@ -127,7 +127,7 @@
       "_id": "SKFJWyTaOzH13unp",
       "changes": [
         {
-          "key": "system.defenses.evasion.bonus",
+          "key": "system.defenses.evasion.morphed",
           "mode": 2,
           "value": "2",
           "priority": null
@@ -171,7 +171,7 @@
       "_id": "lsIfu1lj60iAbuNM",
       "changes": [
         {
-          "key": "system.defenses.willpower.bonus",
+          "key": "system.defenses.willpower.morphed",
           "mode": 2,
           "value": "2",
           "priority": null

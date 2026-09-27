@@ -1,0 +1,100 @@
+{
+  "folder": "Cp5ngUHeZZt7nlpL",
+  "name": "Power Crossbow",
+  "type": "weapon",
+  "_id": "bMF0bpeywVj9CYYz",
+  "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Pre Gen Characters",
+      "page": 2
+    },
+    "items": {
+      "Wc5j": {
+        "uuid": "Compendium.essence20.pr_crb.Item.EtQ5EsNbPspUJrU4",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Crossbow Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
+        },
+        "shiftDown": 0
+      },
+      "oLcK": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Nr1vOg4xCPApJ27G",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Crossbow Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 2,
+        "radius": 30,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "martialArts",
+      "energy",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265429898,
+    "modifiedTime": 1790265429898,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!bMF0bpeywVj9CYYz"
+}

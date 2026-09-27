@@ -1,0 +1,52 @@
+{
+  "folder": "tR73Y7ttVyQl75Jj",
+  "name": "Power Ranged Weapon Effect",
+  "type": "weaponEffect",
+  "_id": "BApgvx4dmUshW8rw",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 68
+    },
+    "classification": {
+      "skill": "targeting",
+      "style": "ranged"
+    },
+    "damageType": "element",
+    "damageValue": 2,
+    "isSpecialized": false,
+    "shiftDown": 0,
+    "numHands": 2,
+    "numTargets": 1,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 400,
+      "value": 100
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790262353573,
+    "modifiedTime": 1790262353573,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!BApgvx4dmUshW8rw"
+}

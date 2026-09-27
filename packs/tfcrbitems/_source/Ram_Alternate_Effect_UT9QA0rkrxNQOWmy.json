@@ -1,0 +1,52 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Ram Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "UT9QA0rkrxNQOWmy",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 47
+    },
+    "classification": {
+      "skill": "driving",
+      "style": "melee"
+    },
+    "damageType": "knocProne",
+    "damageValue": null,
+    "shiftDown": 0,
+    "numHands": "0",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790227721117,
+    "modifiedTime": 1790227721117,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!UT9QA0rkrxNQOWmy"
+}

@@ -75,14 +75,21 @@ export function feetToPixels(feet) {
  * classification at all, so it optional-chains away to a plain base radius. Factored out as pure
  * math specifically so it can be unit tested, unlike the rest of placeAoeTemplate's own
  * live-canvas body - same reasoning as feetToPixels/angleBetweenPoints.
+ *
+ * `radiusMultiplier` is Bring It All Down's own "double the blast area of effect radius"
+ * option (Decepticon Directive, Demolitionist Focus, 20th level, p.57 - see
+ * helpers/bring-it-all-down.mjs's own doc comment) - applied to the TOTAL radius (base + Bigger
+ * Booms), matching RAW's own plain "double the blast area of effect radius" wording rather than
+ * doubling only the base.
  * @param {Actor} actor
  * @param {Item} item   The weaponEffect, spell or Power being placed.
+ * @param {Number} [radiusMultiplier]   Defaults to 1 (no change).
  * @returns {Number}
  */
-export function getEffectiveRadiusFeet(actor, item) {
+export function getEffectiveRadiusFeet(actor, item, radiusMultiplier = 1) {
   const isExplosiveAttack = item.system.classification?.style == 'explosive';
   const biggerBoomsBonusFeet = isExplosiveAttack && actorHasPerk(actor, BIGGER_BOOMS_ID) ? 10 : 0;
-  return (item.system.radius || 0) + biggerBoomsBonusFeet;
+  return ((item.system.radius || 0) + biggerBoomsBonusFeet) * radiusMultiplier;
 }
 
 /**
@@ -324,15 +331,18 @@ export function getTokensInShape(shapeData) {
  * attacker token on the scene, or placement is cancelled.
  * @param {Actor} actor   The attacker.
  * @param {Item} item   The weaponEffect, spell or Power being rolled.
+ * @param {Object} [options]
+ * @param {Number} [options.radiusMultiplier]   Bring It All Down's own radius-doubling option -
+ *   see getEffectiveRadiusFeet's own doc comment. Defaults to 1 (no change).
  * @returns {Promise<Array<Token>>}   The tokens caught by the shape, or [] if none/cancelled.
  */
-export async function placeAoeTemplate(actor, item) {
+export async function placeAoeTemplate(actor, item, { radiusMultiplier = 1 } = {}) {
   const shape = item?.system.shape;
   if (!shape) {
     return [];
   }
 
-  const radiusPixels = feetToPixels(getEffectiveRadiusFeet(actor, item));
+  const radiusPixels = feetToPixels(getEffectiveRadiusFeet(actor, item, radiusMultiplier));
 
   // A weaponEffect has no duration field at all (an attack's damage is instantaneous by nature),
   // so it never lingers; a spell or Power lingers whenever its own duration isn't Instant.

@@ -45,7 +45,7 @@
         },
         "damageValue": 3,
         "damageType": "sharp",
-        "numHands": "1",
+        "numHands": "0",
         "numTargets": 2,
         "radius": 0,
         "range": {

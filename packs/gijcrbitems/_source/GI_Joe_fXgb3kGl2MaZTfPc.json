@@ -17,6 +17,12 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Yo Joe!",
         "type": "perk"
+      },
+      "3efd": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.d16CheHht5dlfjk8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Be A Hero",
+        "type": "perk"
       }
     }
   },

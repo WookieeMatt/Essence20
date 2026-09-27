@@ -39,7 +39,7 @@
     "alternateEffects": "",
     "availability": "limited",
     "classification": {
-      "size": "sidearm"
+      "size": "medium"
     },
     "equipped": true,
     "requirements": {
@@ -49,6 +49,7 @@
     },
     "traits": [
       "energy",
+      "powerWeapon",
       "silent"
     ],
     "upgradeTraits": [],

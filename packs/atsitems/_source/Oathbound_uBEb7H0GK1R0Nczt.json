@@ -11,7 +11,15 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "influence"
+    "type": "influence",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "skillDice",
+      "maxUses": 0,
+      "reset": "none",
+      "recursive": false
+    }
   },
   "effects": [],
   "flags": {

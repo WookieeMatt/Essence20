@@ -32,9 +32,24 @@ function makeBallisticShield(overrides = {}) {
 function makeActorSheet(shields) {
   const actor = {
     update: jest.fn(),
+    toggleStatusEffect: jest.fn(),
     items: { documentsByType: { shield: shields } },
   };
   return { actorSheet: { actor }, actor };
+}
+
+function makePortableWall(overrides = {}) {
+  return {
+    _id: 'shield1',
+    update: jest.fn(),
+    system: {
+      equipped: true,
+      active: false,
+      activeEffect: { type: 'other', other: 'Cover', option1: { defense: 'toughness', value: 0 }, option2: { defense: 'toughness', value: 0 } },
+      passiveEffect: { type: 'defenseBonus', option1: { defense: 'toughness', value: 1 }, option2: { defense: 'toughness', value: 0 } },
+      ...overrides,
+    },
+  };
 }
 
 describe('onShieldActivationToggle', () => {
@@ -78,6 +93,18 @@ describe('onShieldActivationToggle', () => {
     expect(shield.update).toHaveBeenCalledWith({ 'system.active': true });
   });
 
+  test('a two-bonus (defenseBonusCombo) active mode applies both of its bonuses', async () => {
+    const shield = makeBallisticShield({
+      activeEffect: { type: 'defenseBonusCombo', option1: { defense: 'evasion', value: 1 }, option2: { defense: 'toughness', value: 1 } },
+    });
+    const { actorSheet, actor } = makeActorSheet([shield]);
+
+    await onShieldActivationToggle({ dataset: { id: 'shield1' } }, actorSheet);
+
+    expect(actor.update).toHaveBeenCalledWith({ 'system.defenses.evasion.shield': 1 });
+    expect(actor.update).toHaveBeenCalledWith({ 'system.defenses.toughness.shield': 1 });
+  });
+
   test('switching from active back to passive applies the passiveEffect value and flips active off', async () => {
     const shield = makeBallisticShield({ active: true });
     const { actorSheet, actor } = makeActorSheet([shield]);
@@ -86,6 +113,48 @@ describe('onShieldActivationToggle', () => {
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.defenses.toughness.shield': 1 });
     expect(shield.update).toHaveBeenCalledWith({ 'system.active': false });
+  });
+
+  describe('Portable Wall (Cobra Codex, Restricted shield, p.98) - "other"-typed activeEffect', () => {
+    test('activating applies the Cover status', async () => {
+      const shield = makePortableWall(); // active: false
+      const { actorSheet, actor } = makeActorSheet([shield]);
+
+      await onShieldActivationToggle({ dataset: { id: 'shield1' } }, actorSheet);
+
+      expect(actor.toggleStatusEffect).toHaveBeenCalledWith('cover', { active: true });
+      expect(shield.update).toHaveBeenCalledWith({ 'system.active': true });
+    });
+
+    test('deactivating removes the Cover status', async () => {
+      const shield = makePortableWall({ active: true });
+      const { actorSheet, actor } = makeActorSheet([shield]);
+
+      await onShieldActivationToggle({ dataset: { id: 'shield1' } }, actorSheet);
+
+      expect(actor.toggleStatusEffect).toHaveBeenCalledWith('cover', { active: false });
+      expect(shield.update).toHaveBeenCalledWith({ 'system.active': false });
+    });
+
+    test('an ordinary defenseBonus shield never touches Cover', async () => {
+      const shield = makeBallisticShield();
+      const { actorSheet, actor } = makeActorSheet([shield]);
+
+      await onShieldActivationToggle({ dataset: { id: 'shield1' } }, actorSheet);
+
+      expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
+    });
+
+    test('an "other" effect whose text isn\'t Cover is left alone', async () => {
+      const shield = makePortableWall({
+        activeEffect: { type: 'other', other: 'Deflective', option1: { defense: 'toughness', value: 0 }, option2: { defense: 'toughness', value: 0 } },
+      });
+      const { actorSheet, actor } = makeActorSheet([shield]);
+
+      await onShieldActivationToggle({ dataset: { id: 'shield1' } }, actorSheet);
+
+      expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
+    });
   });
 });
 
@@ -111,6 +180,24 @@ describe('onShieldEquipToggle', () => {
     expect(actor.update).toHaveBeenCalledWith({ 'system.defenses.willpower.shield': 0 });
     expect(actor.update).toHaveBeenCalledWith({ 'system.defenses.cleverness.shield': 0 });
     expect(shield.update).toHaveBeenCalledWith({ 'system.active': false });
+  });
+
+  test('unchecking a Portable Wall while active also removes the Cover status it was granting', async () => {
+    const shield = makePortableWall({ active: true });
+    const { actorSheet, actor } = makeActorSheet([shield]);
+
+    await onShieldEquipToggle({ dataset: { id: 'shield1' }, checked: false }, actorSheet);
+
+    expect(actor.toggleStatusEffect).toHaveBeenCalledWith('cover', { active: false });
+  });
+
+  test('unchecking an inactive Portable Wall never touches Cover', async () => {
+    const shield = makePortableWall({ active: false });
+    const { actorSheet, actor } = makeActorSheet([shield]);
+
+    await onShieldEquipToggle({ dataset: { id: 'shield1' }, checked: false }, actorSheet);
+
+    expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
   });
 });
 

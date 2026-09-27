@@ -20,7 +20,7 @@
     "range": {
       "min": null,
       "reachMultiplier": 0,
-      "long": 100,
+      "long": 80,
       "value": 50
     },
     "source": {

@@ -1,0 +1,74 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Mini-Laser",
+  "type": "weapon",
+  "_id": "coD3p6GaxjpwaDpU",
+  "img": "systems/essence20/assets/icons/weapons/pistol.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 75
+    },
+    "items": {
+      "e001": {
+        "uuid": "Compendium.essence20.tf_crb.Item.VDZPSM6OmnBp9QHM",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Mini-Laser Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "laser",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 10
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Nil",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "laser"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790266465919,
+    "modifiedTime": 1790266465919,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!coD3p6GaxjpwaDpU"
+}

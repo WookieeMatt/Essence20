@@ -13,16 +13,16 @@
     },
     "items": {
       "e422": {
-        "uuid": "Compendium.essence20.mlp_crb.Item.RRAGX6D43FTYZNRp",
+        "uuid": "Compendium.essence20.mlp_crb.Item.BIK4n9d0QopI7DVc",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Small Blade Effect",
+        "name": "Small Hammer Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "finesse",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 1,
-        "damageType": "sharp",
+        "damageType": "blunt",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,

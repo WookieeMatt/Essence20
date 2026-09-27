@@ -15,6 +15,10 @@ export class GearItemData extends foundry.abstract.TypeDataModel {
       equipped: makeBool(true),
       gearType: makeStrWithChoices(Object.keys(E20.gearTypes), 'clothes'),
       quantity: makeInt(1),
+      blindsight: new fields.SchemaField({
+        enabled: makeBool(false),
+        range: makeInt(0),
+      }),
       visionGrant: new fields.SchemaField({
         enabled: makeBool(false),
         mode: makeStrWithChoices(Object.keys(E20.visionModes), 'darkvision'),

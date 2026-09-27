@@ -29,7 +29,14 @@
     "selectionLimit": 1,
     "type": "role",
     "value": 0,
-    "version": "powerRangers"
+    "version": "powerRangers",
+    "visionGrant": {
+      "enabled": true,
+      "mode": "darkvision",
+      "range": 30,
+      "whileMorphed": true,
+      "teamWide": true
+    }
   },
   "effects": [],
   "sort": 0,

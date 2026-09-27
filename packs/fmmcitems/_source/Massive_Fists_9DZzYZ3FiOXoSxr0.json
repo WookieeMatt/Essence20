@@ -1,0 +1,97 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Massive Fists",
+  "type": "weapon",
+  "_id": "9DZzYZ3FiOXoSxr0",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "w09D": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.LcorC9TLWvUqrk9o",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Massive Fists Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "blunt",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "w19D": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.KUnzP9WsgbYbeKM7",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Massive Fists Alternate Effects",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "blunt",
+        "numHands": "0",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Path of Stone",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "blunt",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790228101153,
+    "modifiedTime": 1790228101153,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!9DZzYZ3FiOXoSxr0"
+}

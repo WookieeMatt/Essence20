@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
 import {
+  BURN_RUBBER_ID,
   consumeForMovement,
   getMovementAllowance,
   isMovementTracked,
@@ -500,6 +501,30 @@ describe("getPushRules", () => {
       .toEqual({ feetPerFreeAction: 10, capMultiplier: 2, canPush: true });
   });
 
+  // Improve Aerodynamics (Jury Rig, Factions in Action Vol. 2, p.73) - same doubling as Sewer
+  // Tunneler, but banked on the vehicle via Jury Rig's own pending-benefit flag instead of a Perk.
+  test("Improve Aerodynamics doubles the distance each Free action buys", () => {
+    const vehicle = {
+      type: 'vehicle',
+      system: {},
+      items: [],
+      getFlag: jest.fn(() => ({ option: 'improveAerodynamics', expiresRound: Infinity })),
+    };
+
+    expect(getPushRules(vehicle)).toEqual({ feetPerFreeAction: 10, capMultiplier: 2, canPush: true });
+  });
+
+  test("doesn't double the distance for some other active Jury Rig benefit", () => {
+    const vehicle = {
+      type: 'vehicle',
+      system: {},
+      items: [],
+      getFlag: jest.fn(() => ({ option: 'hardenArmor', expiresRound: Infinity })),
+    };
+
+    expect(getPushRules(vehicle)).toEqual({ feetPerFreeAction: 5, capMultiplier: 2, canPush: true });
+  });
+
   // Earlier is Better Than Later (TF CRB p.108) - both halves, but only in Alt Mode.
   test("Earlier is Better Than Later doubles the step AND lifts the cap, while transformed", () => {
     expect(getPushRules(withPerk('Compendium.essence20.tf_crb.Item.uyeLgTc55ixz31j1', { isTransformed: true })))
@@ -542,6 +567,42 @@ describe("getPushRules", () => {
     };
 
     expect(getPushRules(zord).canPush).toBe(true);
+  });
+
+  // Burn Rubber (TF CRB p.86) - 10ft a Free action, only round 1, only when not Surprised.
+  describe("Burn Rubber", () => {
+    const withBurnRubber = (extra = {}) => ({
+      type: 'playerCharacter',
+      system: {},
+      statuses: new Set(),
+      items: [{ type: 'perk', flags: { core: { sourceId: BURN_RUBBER_ID } } }],
+      ...extra,
+    });
+
+    afterEach(() => {
+      global.game = {};
+    });
+
+    test("doubles the step on round 1", () => {
+      global.game = { combat: { round: 1 } };
+      expect(getPushRules(withBurnRubber()).feetPerFreeAction).toBe(10);
+    });
+
+    test("does nothing on round 2 or later", () => {
+      global.game = { combat: { round: 2 } };
+      expect(getPushRules(withBurnRubber()).feetPerFreeAction).toBe(5);
+    });
+
+    test("does nothing outside of Combat", () => {
+      global.game = {};
+      expect(getPushRules(withBurnRubber()).feetPerFreeAction).toBe(5);
+    });
+
+    test("falls back to the regular rate on round 1 if Surprised", () => {
+      global.game = { combat: { round: 1 } };
+      const actor = withBurnRubber({ statuses: new Set(['surprised']) });
+      expect(getPushRules(actor).feetPerFreeAction).toBe(5);
+    });
   });
 });
 

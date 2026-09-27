@@ -48,7 +48,9 @@
       "disabled": false,
       "_id": "QwJENjMXksvgeVR0",
       "type": "base",
-      "system": {},
+      "system": {
+        "whileMorphed": true
+      },
       "changes": [
         {
           "key": "system.skills.intimidation.shiftUp",

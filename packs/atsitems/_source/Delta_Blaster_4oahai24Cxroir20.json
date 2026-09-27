@@ -18,7 +18,7 @@
         "name": "Delta Blaster Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
+          "skill": "targeting",
           "style": "energy"
         },
         "damageValue": 2,

@@ -1,0 +1,36 @@
+{
+  "folder": null,
+  "name": "Cybernetic Signal Locator",
+  "type": "gear",
+  "_id": "4gGmwq9WELdaHeOl",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 260
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "support"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790267057101,
+    "modifiedTime": 1790267057101,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!4gGmwq9WELdaHeOl"
+}

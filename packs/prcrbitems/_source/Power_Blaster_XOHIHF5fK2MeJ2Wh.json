@@ -48,7 +48,8 @@
       "shift": "none"
     },
     "traits": [
-      "energy"
+      "energy",
+      "powerWeapon"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

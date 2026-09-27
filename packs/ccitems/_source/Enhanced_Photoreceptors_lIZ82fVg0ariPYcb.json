@@ -21,7 +21,12 @@
     "movementCost": {},
     "selectedEssence": "",
     "type": "other",
-    "bonus": null
+    "bonus": null,
+    "visionGrant": {
+      "enabled": true,
+      "mode": "darkvision",
+      "range": 30
+    }
   },
   "effects": [],
   "flags": {},

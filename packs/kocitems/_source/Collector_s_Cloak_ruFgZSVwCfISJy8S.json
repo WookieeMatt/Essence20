@@ -1,0 +1,76 @@
+{
+  "folder": "byVUSmcidykORLHn",
+  "name": "Collector's Cloak",
+  "type": "gear",
+  "_id": "ruFgZSVwCfISJy8S",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 56
+    },
+    "quantity": 1,
+    "type": "clothes",
+    "gearType": "clothes"
+  },
+  "effects": [
+    {
+      "name": "Turn Invisible (3/day)",
+      "origin": "Item.ruFgZSVwCfISJy8S",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "s7BIMVZBOOacQOhd",
+      "changes": [],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [
+        "invisible"
+      ],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!ruFgZSVwCfISJy8S.s7BIMVZBOOacQOhd"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790264082168,
+    "modifiedTime": 1790264082168,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
+  },
+  "_key": "!items!ruFgZSVwCfISJy8S"
+}

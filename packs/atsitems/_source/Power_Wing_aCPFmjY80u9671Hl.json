@@ -36,7 +36,7 @@
         "startTurn": null
       },
       "disabled": false,
-      "_id": "aCPFmjYAeffct0001",
+      "_id": "aCPFmjYAeffct000",
       "changes": [
         {
           "key": "system.movement.aerial.base",
@@ -65,7 +65,7 @@
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!aCPFmjY80u9671Hl.aCPFmjYAeffct0001"
+      "_key": "!items.effects!aCPFmjY80u9671Hl.aCPFmjYAeffct000"
     }
   ],
   "sort": 0,

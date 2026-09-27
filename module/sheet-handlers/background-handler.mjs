@@ -1,4 +1,5 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
+import { applyHangUpChoice } from "../helpers/hang-up-choice.mjs";
 import { getItemsOfTypeFromSystemItems, getShiftedSkill } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
@@ -110,6 +111,14 @@ export async function _showOriginSkillPrompt(actor, origin, selectedEssence, dro
     return;
   }
 
+  // Some Origins (e.g. the Power Rangers CRB's) grant every listed skill at d2/a Specialization
+  // rather than letting the player pick just one - the Essence choice above only affects the
+  // Ability Score increase. Skip the picker and carry the whole list through as-is.
+  if (origin.system.allSkillsGranted) {
+    await _checkForAltModes(actor, origin, selectedEssence, [...origin.system.skills], dropFunc);
+    return;
+  }
+
   const choices = {};
   for (const skill of origin.system.skills) {
     const essence = CONFIG.E20.skillToEssence[skill];
@@ -185,7 +194,8 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Origin} origin The Origin being dropped
  * @param {String} essence The essence selected in the _showOriginEssencePrompt()
- * @param {String} skill the skill selected in the _showOriginSkillEssencePrompt()
+ * @param {String|String[]} skill The skill selected in the _showOriginSkillEssencePrompt(), or -
+ *   for an origin.system.allSkillsGranted Origin - the full list of skills it grants
  * @param {Function} dropFunc The function to call to complete the Origin drop
  * @param {String} selectedAltMode The selected altMode resulting from _checkForAltModes()
  */
@@ -213,13 +223,25 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
   const essenceValue = actor.system.essences[essence].max + 1;
   const essenceString = `system.essences.${essence}.max`;
 
-  const [newShift, skillString] = getShiftedSkill(skill, 1, actor);
+  const grantsAllSkills = Array.isArray(skill);
+  const skillUpdates = {};
+  for (const skillToGrant of (grantsAllSkills ? skill : [skill])) {
+    const [newShift, skillString] = getShiftedSkill(skillToGrant, 1, actor);
+    skillUpdates[skillString] = newShift;
+  }
 
   const newOriginList = await dropFunc();
   await createItemCopies(origin.system.items, actor, "perk", newOriginList[0]);
 
+  // Bot Mode Size (TF CRB Ch.4 Origins, e.g. p.51 Champion: "Size: Large"): carried on whichever
+  // Alt Mode item was picked above (see alt-mode.mjs#botModeSize's own comment) rather than on
+  // the Origin itself, since an Origin with a Bot-Mode-size choice (Cutter/Outrider: "Common or
+  // Large") is modeled as one Alt Mode item per choice.
+  let botModeSize = null;
+
   if (altModeToCreate) {
     const itemToCreate = await fromUuid(altModeToCreate.uuid);
+    botModeSize = itemToCreate.system.botModeSize;
     const newItem = await Item.create(itemToCreate, { parent: actor });
     if (newItem.type == "altMode") {
       await actor.update({
@@ -232,15 +254,18 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
   }
 
   await actor.update({
+    ...skillUpdates,
     [essenceString]: essenceValue,
-    [skillString]: newShift,
     "system.health.max": origin.system.startingHealth,
     "system.health.value": origin.system.startingHealth,
     "system.movement.aerial.base": origin.system.baseAerialMovement,
     "system.movement.swim.base": origin.system.baseAquaticMovement,
     "system.movement.ground.base": origin.system.baseGroundMovement,
     "system.originEssencesIncrease": essence,
-    "system.originSkillsIncrease": skill,
+    // With allSkillsGranted there's no single "the" Origin skill for Menace/Distracting
+    // Offer/etc. (system.originSkillsIncrease consumers) to resolve dynamically - leave it unset.
+    "system.originSkillsIncrease": grantsAllSkills ? "" : skill,
+    ...(botModeSize ? { "system.size": botModeSize } : {}),
   });
 }
 
@@ -284,6 +309,10 @@ export async function _hangUpSelect(actor, uuid, parentItem) {
   const newItem = await Item.create(itemToCreate, { parent: actor });
   newItem.setFlag('core', 'sourceId', uuid);
   newItem.setFlag('essence20', 'parentId', parentItem._id);
+
+  // Some Hang-Ups record a player choice of their own (Augmented's damage type) - see
+  // helpers/hang-up-choice.mjs. A no-op for every Hang-Up that declares none.
+  await applyHangUpChoice(newItem);
 }
 
 /**

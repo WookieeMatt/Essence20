@@ -1,0 +1,36 @@
+{
+  "folder": "ecE1pnNBABjx3Z4Y",
+  "name": "Psycho Morpher",
+  "type": "gear",
+  "_id": "EkBMS8Ih24UYBQ4R",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 282
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "other"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1790262854851,
+    "modifiedTime": 1790262854851,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!EkBMS8Ih24UYBQ4R"
+}

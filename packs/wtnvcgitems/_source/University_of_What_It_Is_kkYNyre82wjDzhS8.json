@@ -1,0 +1,64 @@
+{
+  "folder": "WemOwkAMqyACTdl8",
+  "name": "University of What It Is",
+  "type": "focus",
+  "_id": "kkYNyre82wjDzhS8",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 46
+    },
+    "items": {
+      "QmiS": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.vnYDLY5Fe2pasHyF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Scientific Method",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "LHdL": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.CiDQxCxgnnosvBDo",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "A Logical Explanation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 4
+      },
+      "OHiO": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.qRbRG9GHI9vSuPHi",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Scientist",
+        "type": "role"
+      }
+    },
+    "essences": [],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787762210188,
+    "modifiedTime": 1787762210188,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!kkYNyre82wjDzhS8"
+}

@@ -1,5 +1,7 @@
 import { jest } from '@jest/globals';
-import { createEntry, createItemCopies, deleteAttachmentsForItem, onEquipmentPackageDrop } from './attachment-handler.mjs';
+import {
+  _attachItem, createEntry, createItemCopies, deleteAttachmentsForItem, onEquipmentPackageDrop,
+} from './attachment-handler.mjs';
 import ChoicesSelector from '../apps/choices-selector.mjs';
 
 // This project runs native ESM under Jest (jest.config.js has no Babel transform), so the
@@ -241,6 +243,98 @@ describe("createItemCopies", () => {
 
     expect(global.Item.create).not.toHaveBeenCalled();
     expect(capturedDialog).toBeNull();
+  });
+});
+
+describe("_attachItem", () => {
+  const LINKED_EFFECT_UUID = "Compendium.essence20.tf_crb.Item.manipulative-effect";
+
+  function makeTargetItem(overrides = {}) {
+    return {
+      _id: "weapon1",
+      type: "weapon",
+      system: { items: {} },
+      update: jest.fn(),
+      ...overrides,
+    };
+  }
+
+  function makeUpgrade(overrides = {}) {
+    return {
+      uuid: "Compendium.essence20.tf_crb.Item.explosive-rounds",
+      type: "upgrade",
+      img: "i.svg",
+      name: "Explosive Rounds",
+      system: { type: "weapon", linkedWeaponEffect: null },
+      setFlag: jest.fn(),
+      ...overrides,
+    };
+  }
+
+  beforeEach(() => {
+    global.fromUuid = jest.fn(async (uuid) => ({
+      uuid, type: "weaponEffect", img: "e.svg", name: "Manipulative Strike", system: { damageValue: 2, damageType: 'blunt' },
+    }));
+    global.Item.create = jest.fn(async (doc) => ({
+      type: doc.type,
+      system: doc.system,
+      uuid: doc.uuid,
+      name: doc.name,
+      img: doc.img,
+      setFlag: jest.fn(),
+    }));
+  });
+
+  test("attaches the dropped item to the target and stamps its own parentId/collectionId flags", async () => {
+    const targetItem = makeTargetItem();
+    const upgrade = makeUpgrade();
+    const dropFunc = jest.fn(async () => [upgrade]);
+
+    await _attachItem({}, targetItem, dropFunc);
+
+    expect(upgrade.setFlag).toHaveBeenCalledWith('essence20', 'parentId', 'weapon1');
+    expect(upgrade.setFlag).toHaveBeenCalledWith('essence20', 'collectionId', expect.any(String));
+    expect(targetItem.update).toHaveBeenCalledTimes(1);
+    expect(global.Item.create).not.toHaveBeenCalled();
+  });
+
+  test("also grants the linked weaponEffect, attached to the same target, when the Upgrade names one (Explosive Rounds / Manipulative)", async () => {
+    const targetItem = makeTargetItem();
+    const upgrade = makeUpgrade({ system: { type: "weapon", linkedWeaponEffect: LINKED_EFFECT_UUID } });
+    const dropFunc = jest.fn(async () => [upgrade]);
+    const actor = { name: "Ricochet" };
+
+    await _attachItem(actor, targetItem, dropFunc);
+
+    expect(global.fromUuid).toHaveBeenCalledWith(LINKED_EFFECT_UUID);
+    expect(global.Item.create).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "weaponEffect", uuid: LINKED_EFFECT_UUID }),
+      { parent: actor },
+    );
+    // Once for the Upgrade itself, once for its linked weaponEffect - both attached to the weapon.
+    expect(targetItem.update).toHaveBeenCalledTimes(2);
+  });
+
+  test("does nothing extra for an Upgrade type that isn't itself an upgrade, or has no linked effect", async () => {
+    const targetItem = makeTargetItem();
+    const weaponEffect = makeUpgrade({ type: "weaponEffect", system: {} });
+    const dropFunc = jest.fn(async () => [weaponEffect]);
+
+    await _attachItem({}, targetItem, dropFunc);
+
+    expect(global.Item.create).not.toHaveBeenCalled();
+  });
+
+  test("does nothing when the linked weaponEffect's uuid can't be resolved", async () => {
+    global.fromUuid = jest.fn(async () => null);
+    const targetItem = makeTargetItem();
+    const upgrade = makeUpgrade({ system: { type: "weapon", linkedWeaponEffect: LINKED_EFFECT_UUID } });
+    const dropFunc = jest.fn(async () => [upgrade]);
+
+    await _attachItem({}, targetItem, dropFunc);
+
+    expect(global.Item.create).not.toHaveBeenCalled();
+    expect(targetItem.update).toHaveBeenCalledTimes(1);
   });
 });
 

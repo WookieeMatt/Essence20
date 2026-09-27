@@ -42,8 +42,8 @@
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "brawn",
+      "shift": "d2"
     },
     "traits": [
       "ballistic",

@@ -16,8 +16,12 @@
       "skill": "athletics",
       "style": "explosive"
     },
-    "damageType": "element",
-    "damageValue": 2,
+    "damageType": "stun",
+    "damageValue": 3,
+    "secondaryDamage": {
+      "type": "fire",
+      "value": 2
+    },
     "isSpecialized": false,
     "numHands": 1,
     "numTargets": 1,

@@ -118,7 +118,9 @@
       },
       "img": "icons/svg/aura.svg",
       "type": "base",
-      "system": {},
+      "system": {
+        "whileMorphed": true
+      },
       "sort": 1,
       "_key": "!items.effects!EfkIx0B3AN0HipH8.PRPPsychicImmun1"
     }

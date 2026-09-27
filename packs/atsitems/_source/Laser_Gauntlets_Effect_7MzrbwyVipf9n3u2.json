@@ -1,0 +1,49 @@
+{
+  "folder": "qLwxdxY4Wh0qKsjL",
+  "name": "Laser Gauntlets Effect",
+  "type": "weaponEffect",
+  "_id": "7MzrbwyVipf9n3u2",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "laser",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "0",
+    "numTargets": 2,
+    "radius": 20,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": null
+    },
+    "source": {
+      "book": "Across the Stars",
+      "page": 87
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265582018,
+    "modifiedTime": 1790265582018,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!7MzrbwyVipf9n3u2"
+}

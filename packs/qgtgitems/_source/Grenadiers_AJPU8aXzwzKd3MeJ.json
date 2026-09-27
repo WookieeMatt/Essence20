@@ -81,7 +81,7 @@
               "style": "projectile"
             },
             "damageValue": 1,
-            "damageType": "blunt",
+            "damageType": "sharp",
             "numHands": "2",
             "numTargets": 2,
             "radius": 15,

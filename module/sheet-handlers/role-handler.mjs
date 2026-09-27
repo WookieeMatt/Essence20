@@ -285,11 +285,6 @@ export function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=nu
  * @returns
  */
 export async function onFocusDrop(actor, focus, dropFunc) {
-  if (!focus.system.essences.length) {
-    ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoEssenceError')));
-    return false;
-  }
-
   const hasFocus = actor.items.documentsByType.focus.length > 0;
   const role = actor.items.documentsByType.role;
   const attachedRole = [];
@@ -320,12 +315,23 @@ export async function onFocusDrop(actor, focus, dropFunc) {
 
   if (focus.system.essences.length > 1) {
     return await _showEssenceDialog(actor, focus, dropFunc);
-  } else {
+  } else if (focus.system.essences.length == 1) {
     const newFocusList = await dropFunc();
     const newFocus = newFocusList[0];
     await actor.update({
       "system.focusEssence": newFocus.system.essences[0],
     });
+    return await _setFocusValues(newFocus, actor);
+  } else {
+    // A Focus granting no Essence Increase at all - e.g. every WTNV Citizen's Guide Focus
+    // (Farmer, Journalist, Politician, Scientist, Soldier), whose own printed benefit is a pick-
+    // one Role Skill array with no Essence bump attached. This used to be unconditionally
+    // rejected with a FocusNoEssenceError, which was right for a genuinely malformed Focus item
+    // (system.essences left empty by mistake) but wrong for one that legitimately grants none -
+    // the two are indistinguishable by that field alone, so this now just completes the drop
+    // with no focusEssence set at all, rather than guessing which case it is.
+    const newFocusList = await dropFunc();
+    const newFocus = newFocusList[0];
     return await _setFocusValues(newFocus, actor);
   }
 }
@@ -376,20 +382,44 @@ export async function _focusStatUpdate(actor, selectedEssence, dropFunc) {
  * @param {Number} previousLevel (Optional) The last level processed for the Actor
  */
 export async function _setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
-  const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
-  const essenceMax = actor.system.essences[actor.system.focusEssence].max + totalChange;
-  const essenceValue = actor.system.essences[actor.system.focusEssence].value + totalChange;
-  const essenceMaxString = `system.essences.${actor.system.focusEssence}.max`;
-  const essenceValueString = `system.essences.${actor.system.focusEssence}.value`;
+  // A Focus granting no Essence Increase at all (e.g. every WTNV Citizen's Guide Focus - see
+  // onFocusDrop's own comment above) never sets system.focusEssence, so there's no Essence entry
+  // here to raise/lower at all.
+  if (actor.system.focusEssence) {
+    const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
+    const essenceMax = actor.system.essences[actor.system.focusEssence].max + totalChange;
+    const essenceValue = actor.system.essences[actor.system.focusEssence].value + totalChange;
+    const essenceMaxString = `system.essences.${actor.system.focusEssence}.max`;
+    const essenceValueString = `system.essences.${actor.system.focusEssence}.value`;
 
-  await actor.update({
-    [essenceMaxString]: essenceMax,
-    [essenceValueString]: essenceValue,
-  });
+    await actor.update({
+      [essenceMaxString]: essenceMax,
+      [essenceValueString]: essenceValue,
+    });
+  }
 
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
-    // Drop or level up
-    return await createItemCopies(focus.system.items, actor, "perk", focus, previousLevel);
+    // Drop or level up - grant every type of Item this Focus's own grant map lists (mirrors how
+    // a Role's own mixed grant map is handled in setRoleValues, which calls createItemCopies once
+    // per type it expects). "role" entries are excluded: a Focus always carries exactly one,
+    // recording which Role it attaches to (see onFocusDrop's own Role-mismatch check above) - it
+    // was never itself a grant, just a validation reference. Everything else (e.g. TF CRB
+    // Sharpshooter's Long Range Rifle, listed as a "weapon" entry) is a real grant that
+    // createItemCopies's own hardcoded "perk" type was silently skipping before this.
+    const grantTypes = new Set(
+      Object.values(focus.system.items)
+        .map(item => item.type)
+        .filter(type => type && type != "role"),
+    );
+
+    let copyWasCreated = false;
+    for (const type of grantTypes) {
+      if (await createItemCopies(focus.system.items, actor, type, focus, previousLevel)) {
+        copyWasCreated = true;
+      }
+    }
+
+    return copyWasCreated;
   } else {
     // Level down
     return await deleteAttachmentsForItem(focus, actor, previousLevel);
@@ -402,18 +432,22 @@ export async function _setFocusValues(focus, actor, newLevel=null, previousLevel
  * @param {Focus} focus The Focus that is being deleted from the Actor
  */
 export async function onFocusDelete(actor, focus) {
-  const previousLevel = actor.getFlag('essence20', 'previousLevel');
-  const totalDecrease = roleValueChange(0, focus.system.essenceLevels, previousLevel);
-  const essenceMax = Math.max(0, actor.system.essences[actor.system.focusEssence].max + totalDecrease);
-  const essenceValue = Math.max(0, actor.system.essences[actor.system.focusEssence].value + totalDecrease);
-  const essenceMaxString = `system.essences.${actor.system.focusEssence}.max`;
-  const essenceValueString = `system.essences.${actor.system.focusEssence}.value`;
+  // See _setFocusValues's own comment above - a Focus granting no Essence Increase at all never
+  // set system.focusEssence to begin with, so there's nothing to lower back down here either.
+  if (actor.system.focusEssence) {
+    const previousLevel = actor.getFlag('essence20', 'previousLevel');
+    const totalDecrease = roleValueChange(0, focus.system.essenceLevels, previousLevel);
+    const essenceMax = Math.max(0, actor.system.essences[actor.system.focusEssence].max + totalDecrease);
+    const essenceValue = Math.max(0, actor.system.essences[actor.system.focusEssence].value + totalDecrease);
+    const essenceMaxString = `system.essences.${actor.system.focusEssence}.max`;
+    const essenceValueString = `system.essences.${actor.system.focusEssence}.value`;
 
-  await actor.update({
-    [essenceMaxString]: essenceMax,
-    [essenceValueString]: essenceValue,
-    "system.focusEssence": null,
-  });
+    await actor.update({
+      [essenceMaxString]: essenceMax,
+      [essenceValueString]: essenceValue,
+      "system.focusEssence": null,
+    });
+  }
 
   deleteAttachmentsForItem(focus, actor);
 }
@@ -850,7 +884,7 @@ export async function _setEssenceProgression(actor, options, role, dropFunc, lev
  * @param {Object} role The role that actor has
  * @param {Boolean} useUpgradesAccessor Whether this is targeting Upgrades or not
  */
-async function _trainingUpdate(actor, itemType, trainingType, updateType, role, useUpgradesAccessor) {
+export async function _trainingUpdate(actor, itemType, trainingType, updateType, role, useUpgradesAccessor) {
   const profs = useUpgradesAccessor ? role.system.upgrades[itemType][trainingType] : role.system[itemType][trainingType];
   for (const prof of profs) {
     const profString = `system.${trainingType}.${useUpgradesAccessor ? 'upgrades.' : ''}${itemType}.${prof}`;

@@ -43,27 +43,6 @@
         "type": "perk",
         "role": null
       },
-      "5894": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.3dBqVu1I4dPeGJQs",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Big",
-        "type": "perk",
-        "role": null
-      },
-      "6036": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.zbrr3W30rFTDTayX",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Empty The Mag",
-        "type": "perk",
-        "role": null
-      },
-      "6920": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.kKPhxxl5NUo7eE8z",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Iron Heart",
-        "type": "perk",
-        "role": null
-      },
       "7560": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.3ahVUG1yKCGNyscK",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -92,20 +71,6 @@
         "type": "perk",
         "role": null
       },
-      "c823": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.fbbd1dLxBttDwJ1u",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Advanced Armor Training",
-        "type": "perk",
-        "role": null
-      },
-      "0081": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.2b51OQSju1kswWLj",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Agreeable",
-        "type": "perk",
-        "role": null
-      },
       "45ff": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.Vo5IeXooKE9OBoJH",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -113,52 +78,10 @@
         "type": "perk",
         "role": null
       },
-      "c0fc": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.cZesU3qDW4pzVrCS",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Animal Whisperer",
-        "type": "perk",
-        "role": null
-      },
-      "c226": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.YeGzq0XETdv7LeBn",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Animal",
-        "type": "perk",
-        "role": null
-      },
-      "6d1e": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.l6nLJeg8ev4mhNwE",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Assistant",
-        "type": "perk",
-        "role": null
-      },
-      "b7b2": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.VV2qGG2gqmjKYcPl",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Backup Master",
-        "type": "perk",
-        "role": null
-      },
-      "b1c7": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.pnZi1R2w6w78kNNn",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Basic Armor Training",
-        "type": "perk",
-        "role": null
-      },
       "82d9": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.fbmfn6iNGjlm3voE",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Battle Hardened",
-        "type": "perk",
-        "role": null
-      },
-      "90b4": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.9LRYrMrjOkLzwq1j",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Clever",
         "type": "perk",
         "role": null
       },
@@ -190,27 +113,6 @@
         "type": "perk",
         "role": null
       },
-      "e2f1": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.sFIWrZ2f7ejcNcJ0",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Environmental Exposure",
-        "type": "perk",
-        "role": null
-      },
-      "eec9": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.eaYIHKLGRUxj4QGv",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Environment Choice",
-        "type": "perk",
-        "role": null
-      },
-      "12f2": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.eGjVuADckmLRL7Um",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Equipment Training",
-        "type": "perk",
-        "role": null
-      },
       "ad80": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.tBXpROuVSuAxGZpR",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -218,31 +120,10 @@
         "type": "perk",
         "role": null
       },
-      "a5a9": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.uHtIg07hT78Tdd1G",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Evasive",
-        "type": "perk",
-        "role": null
-      },
       "c2e6": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.5IWpV61QlVwBkpTI",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Fast",
-        "type": "perk",
-        "role": null
-      },
-      "d5bf": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.ymF7fHkBglQ7pQRE",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Favorite Command",
-        "type": "perk",
-        "role": null
-      },
-      "a6df": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.UIMocxFcGeJUm3D4",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Gallantry",
         "type": "perk",
         "role": null
       },
@@ -316,24 +197,10 @@
         "type": "perk",
         "role": null
       },
-      "be35": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.cjAxzUXLHza3KGyu",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Psy Ops",
-        "type": "perk",
-        "role": null
-      },
       "d795": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.HdIE0t088L6PTfXn",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Razor Tongue",
-        "type": "perk",
-        "role": null
-      },
-      "11b2": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.xV4nnjMxlb4dmyxo",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Robot",
         "type": "perk",
         "role": null
       },
@@ -379,31 +246,10 @@
         "type": "perk",
         "role": null
       },
-      "9cd6": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.QpXNM4i2dPDlfxWE",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Tough",
-        "type": "perk",
-        "role": null
-      },
       "695e": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.rFnoQTbnYQX2tlMe",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Weapon Training",
-        "type": "perk",
-        "role": null
-      },
-      "2cc2": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.zfyTLiJDNKPHETlv",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Who Dares Wins",
-        "type": "perk",
-        "role": null
-      },
-      "16ad": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.EqMIJVlE8QpnPWVv",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Willful",
         "type": "perk",
         "role": null
       }

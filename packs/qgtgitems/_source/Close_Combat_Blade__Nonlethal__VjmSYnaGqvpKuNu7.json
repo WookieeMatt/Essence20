@@ -36,7 +36,7 @@
       "518e": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.QbfY2NGNmUmKa6uO",
         "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
-        "name": "Nonlathal",
+        "name": "Nonlethal",
         "type": "upgrade",
         "availability": "standard",
         "benefit": "",

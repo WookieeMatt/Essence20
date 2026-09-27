@@ -13,6 +13,7 @@ import {
   hasRerollCost,
   payRerollCost,
   rerollModeLabel,
+  upshiftFormula,
 } from './reroll.mjs';
 
 function makeActor({ flags = {}, system = {}, items = { documentsByType: { rolePoints: [] } } } = {}) {
@@ -395,6 +396,87 @@ describe("canMeetRerollCondition", () => {
     expect(canMeetRerollCondition(actor, { condition: "fumble" }, { isFumble: false })).toBe(false);
     expect(canMeetRerollCondition(actor, { condition: "fumble" })).toBe(false);
   });
+
+  test("'unarmedAttack' reads the triggering roll's own context (Focused Strike)", () => {
+    const actor = makeActor();
+    expect(canMeetRerollCondition(actor, { condition: "unarmedAttack" }, { isUnarmedAttack: true })).toBe(true);
+    expect(canMeetRerollCondition(actor, { condition: "unarmedAttack" }, { isUnarmedAttack: false })).toBe(false);
+    expect(canMeetRerollCondition(actor, { condition: "unarmedAttack" })).toBe(false);
+  });
+
+  test("'consumableOrWreckerRangedAttack' reads the triggering roll's own context (Homing Shots)", () => {
+    const actor = makeActor();
+    expect(canMeetRerollCondition(
+      actor, { condition: "consumableOrWreckerRangedAttack" }, { isConsumableOrWreckerRangedAttack: true },
+    )).toBe(true);
+    expect(canMeetRerollCondition(
+      actor, { condition: "consumableOrWreckerRangedAttack" }, { isConsumableOrWreckerRangedAttack: false },
+    )).toBe(false);
+    expect(canMeetRerollCondition(actor, { condition: "consumableOrWreckerRangedAttack" })).toBe(false);
+  });
+
+  describe("'belowSmallestSkillDie' (Across the Stars, Destiny Influence Perk, p.45)", () => {
+    function makeSkilledActor(shifts) {
+      const skills = {};
+      shifts.forEach((shift, i) => {
+        skills[`skill${i}`] = { shift };
+      });
+      return makeActor({ system: { skills } });
+    }
+
+    test("true when the d20 result is below the smallest trained Skill die's max face", () => {
+      const actor = makeSkilledActor(['d4', 'd8']);
+      expect(canMeetRerollCondition(actor, { condition: "belowSmallestSkillDie" }, { d20Result: 3 })).toBe(true);
+    });
+
+    test("false when the d20 result meets or exceeds the smallest Skill die's max face", () => {
+      const actor = makeSkilledActor(['d4', 'd8']);
+      expect(canMeetRerollCondition(actor, { condition: "belowSmallestSkillDie" }, { d20Result: 4 })).toBe(false);
+      expect(canMeetRerollCondition(actor, { condition: "belowSmallestSkillDie" }, { d20Result: 20 })).toBe(false);
+    });
+
+    test("an untrained d20 skill is never picked as the smallest (it has more faces than d12)", () => {
+      const actor = makeSkilledActor(['d20', 'd6']);
+      expect(canMeetRerollCondition(actor, { condition: "belowSmallestSkillDie" }, { d20Result: 5 })).toBe(true);
+      expect(canMeetRerollCondition(actor, { condition: "belowSmallestSkillDie" }, { d20Result: 6 })).toBe(false);
+    });
+
+    test("false with no d20Result in context, or no parseable Skill dice", () => {
+      const actor = makeSkilledActor(['d4']);
+      expect(canMeetRerollCondition(actor, { condition: "belowSmallestSkillDie" })).toBe(false);
+
+      const emptyActor = makeActor({ system: { skills: {} } });
+      expect(canMeetRerollCondition(emptyActor, { condition: "belowSmallestSkillDie" }, { d20Result: 1 })).toBe(false);
+    });
+  });
+
+  describe("'inEnvironmentOfExpertise' (GI Joe CRB, Survivalist, Predator Focus, p.94)", () => {
+    const ENVIRONMENTAL_EXPERTISE_ID = "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ";
+
+    function makeExpertiseActor({ hasPerk = true, active = true } = {}) {
+      const items = hasPerk
+        ? [{ type: 'perk', flags: { core: { sourceId: ENVIRONMENTAL_EXPERTISE_ID } } }] : [];
+      return makeActor({ items, flags: { environmentalExpertiseActive: active } });
+    }
+
+    test("met only with the Perk AND the toggle switched on", () => {
+      expect(canMeetRerollCondition(
+        makeExpertiseActor({ hasPerk: true, active: true }), { condition: "inEnvironmentOfExpertise" },
+      )).toBe(true);
+    });
+
+    test("not met with the Perk but the toggle off", () => {
+      expect(canMeetRerollCondition(
+        makeExpertiseActor({ hasPerk: true, active: false }), { condition: "inEnvironmentOfExpertise" },
+      )).toBe(false);
+    });
+
+    test("not met without the Perk at all, even with the toggle on", () => {
+      expect(canMeetRerollCondition(
+        makeExpertiseActor({ hasPerk: false, active: true }), { condition: "inEnvironmentOfExpertise" },
+      )).toBe(false);
+    });
+  });
 });
 
 /* canMeetRerollScope */
@@ -466,6 +548,36 @@ describe("hasEligibleRerollTarget", () => {
   });
 });
 
+/* upshiftFormula */
+describe("upshiftFormula (Across the Stars 'Mending the Grid' - the re-rolled test gains an upshift)", () => {
+  test("raises a lone skill die by the given number of shifts", () => {
+    expect(upshiftFormula('1d20 + 1d6 + 2', 2)).toBe('1d20 + d10 + 2');
+    expect(upshiftFormula('2d20kh + 1d4 + 0', 1)).toBe('2d20kh + d6 + 0');
+  });
+
+  test("climbs past d12 into the multi-die shifts and stops at the top", () => {
+    expect(upshiftFormula('1d20 + 1d12 + 0', 2)).toBe('1d20 + 3d6 + 0');
+    expect(upshiftFormula('1d20 + 3d6 + 0', 2)).toBe('1d20 + 3d6 + 0');
+  });
+
+  test("extends a Specialization pool with the next dice up the staircase", () => {
+    expect(upshiftFormula('1d20 + {1d2, 1d4, 1d6}kh + 1', 2)).toBe('1d20 + {1d2,1d4,1d6,d8,d10}kh + 1');
+  });
+
+  test("leaves a flat-d20 pool alone and treats the roll as untrained", () => {
+    expect(upshiftFormula('{10, 1d20}kh + 0', 2)).toBe('{10, 1d20}kh + 0 + d4');
+  });
+
+  test("gives an untrained (d20-only) roll the die it shifts into", () => {
+    expect(upshiftFormula('1d20min10 + 3', 1)).toBe('1d20min10 + 3 + d2');
+    expect(upshiftFormula('1d20 + 0', 2)).toBe('1d20 + 0 + d4');
+  });
+
+  test("no shift leaves the formula untouched", () => {
+    expect(upshiftFormula('1d20 + 1d6 + 2', 0)).toBe('1d20 + 1d6 + 2');
+  });
+});
+
 /* applyReroll */
 describe("applyReroll", () => {
   test("mode 'ones' delegates to Die#reroll with the 'r1' modifier, recursively", async () => {
@@ -479,7 +591,7 @@ describe("applyReroll", () => {
     expect(roll._evaluateTotal).toHaveBeenCalled();
   });
 
-  test("bonus (Across the Stars 'Mending the Grid') adds a flat amount on top of the refreshed total", async () => {
+  test("bonus adds a flat amount on top of the refreshed total", async () => {
     const die = makeDie(20, [{ result: 1, active: true }]);
     const roll = makeRoll([die]);
 

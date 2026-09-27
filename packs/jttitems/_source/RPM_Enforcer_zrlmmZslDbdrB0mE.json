@@ -64,11 +64,10 @@
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "technology",
+      "shift": "d4"
     },
     "traits": [
-      "accurate",
       "ballistic",
       "combined",
       "components",

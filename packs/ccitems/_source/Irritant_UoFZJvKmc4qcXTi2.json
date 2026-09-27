@@ -47,9 +47,9 @@
       "inhaled": false
     },
     "requirements": {
-      "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "custom": "Science d2",
+      "skill": "infiltration",
+      "shift": "d2"
     },
     "traits": [
       "consumable",

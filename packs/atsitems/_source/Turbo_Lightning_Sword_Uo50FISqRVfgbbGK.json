@@ -40,7 +40,7 @@
         "name": "Turbo Lightning Sword Energy Attack",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 3,

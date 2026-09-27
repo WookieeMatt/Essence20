@@ -29,6 +29,15 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+  {{!-- Bot Mode Size --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BotModeSize'}}
+  {{#*inline "item-field-inputs"}}
+    <select name="system.botModeSize">
+      {{selectOptions config.actorSizes selected=system.botModeSize}}
+    </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
   {{!-- Alt Mode Crew --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AltModeCrew'}}
   {{#*inline "item-field-inputs"}}

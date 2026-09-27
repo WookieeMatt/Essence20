@@ -17,6 +17,12 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Dagger Effect",
         "type": "weaponEffect"
+      },
+      "w0bu": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.EmmWL7UOIKZC9VXn",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Dagger Alternate Effect",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

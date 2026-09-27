@@ -28,7 +28,7 @@
         "startTurn": null
       },
       "disabled": false,
-      "_id": "PrinceKindness1",
+      "_id": "PrinceKindness10",
       "changes": [
         {
           "key": "system.health.bonus",
@@ -63,7 +63,7 @@
       "type": "base",
       "system": {},
       "sort": 0,
-      "_key": "!items.effects!nspTaeINRMztxFr5.PrinceKindness1"
+      "_key": "!items.effects!nspTaeINRMztxFr5.PrinceKindness10"
     }
   ],
   "ownership": {

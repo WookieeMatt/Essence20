@@ -33,6 +33,31 @@ const BRAWN_DIF = 14;
 const DISEMBARK_DIF = 13;
 const EXPLOSION_SAVE_DIF = 14;
 
+// Heavy Water Coolant (Operation Cold Iron, Vehicle Upgrade, p.49): "When this vehicle reaches 0
+// Health for any reason, the DIF of the Brawn Skill Test to avoid exploding is 10, rather than 14.
+// If the vehicle has ranks in the Brawn skill, it is considered specialized for this roll." Only
+// the DIF half is built - rollSkillTest() below is a flat total-vs-DIF background check with no
+// crit/fumble concept at all (see its own doc comment), so there's no "specialized" mechanic
+// (crit on a d2) for the "considered specialized" clause to actually change here.
+const HEAVY_WATER_COOLANT_ID = "Compendium.essence20.operation_cold_iron.Item.e8WNnjzWGNWBd2UJ";
+const HEAVY_WATER_COOLANT_BRAWN_DIF = 10;
+
+/**
+ * Whether the given Vehicle actor has the Heavy Water Coolant Upgrade embedded directly on it -
+ * see HEAVY_WATER_COOLANT_ID's own comment above. A Vehicle-type Upgrade attaches straight to the
+ * Vehicle actor (sheet-handlers/drop-handler.mjs#_onUpgradeDrop), unlike an armor/weapon Upgrade,
+ * which attaches to a piece of gear instead - so this can't reuse helpers/perks.mjs#actorHasPerk
+ * (strictly `type == 'perk'`) or the weapon/armor system.items snapshot lookups.
+ * @param {Actor} actor
+ * @returns {Boolean}
+ */
+function hasHeavyWaterCoolant(actor) {
+  return !!actor.items?.find(item =>
+    item.type == 'upgrade'
+    && (item.flags?.core?.sourceId == HEAVY_WATER_COOLANT_ID || item._stats?.compendiumSource == HEAVY_WATER_COOLANT_ID),
+  );
+}
+
 /**
  * Rolls a single actor's own Skill (shift + modifier, no Edge/Snag/Roll-Options-Dialog - this is
  * a background environmental consequence, not a player's own discretionary Skill Test) against a
@@ -228,7 +253,8 @@ export async function handleVehicleZeroHealthTransition(actor) {
     return;
   }
 
-  const brawnTest = await rollSkillTest(actor, 'brawn', BRAWN_DIF);
+  const brawnDif = hasHeavyWaterCoolant(actor) ? HEAVY_WATER_COOLANT_BRAWN_DIF : BRAWN_DIF;
+  const brawnTest = await rollSkillTest(actor, 'brawn', brawnDif);
   if (brawnTest.success) {
     await crashVehicle(actor);
   } else {

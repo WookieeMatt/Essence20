@@ -15,13 +15,6 @@
     "hasChoice": true,
     "choiceType": "perks",
     "items": {
-      "1001": {
-        "uuid": "Compendium.essence20.mlp_crb.Item.PvfRLoozxgtn4Q5t",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Acrobatic Reaction",
-        "type": "perk",
-        "role": null
-      },
       "1002": {
         "uuid": "Compendium.essence20.mlp_crb.Item.xhNYPiLSmYWov9CG",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -61,13 +54,6 @@
         "uuid": "Compendium.essence20.mlp_crb.Item.JGylk3gT2X5NGeGv",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Baker",
-        "type": "perk",
-        "role": null
-      },
-      "1008": {
-        "uuid": "Compendium.essence20.mlp_crb.Item.b7qT0W4L9Ito2EB2",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "BFF",
         "type": "perk",
         "role": null
       },
@@ -162,13 +148,6 @@
         "type": "perk",
         "role": null
       },
-      "1022": {
-        "uuid": "Compendium.essence20.mlp_crb.Item.z1KTeMR8qjo1J0Ql",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Focus",
-        "type": "perk",
-        "role": null
-      },
       "1023": {
         "uuid": "Compendium.essence20.mlp_crb.Item.N6Bs8to6G0QddMVK",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -256,28 +235,7 @@
       "1035": {
         "uuid": "Compendium.essence20.mlp_crb.Item.2CIUHerZRRQ5RKKo",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Sonic Rainbow",
-        "type": "perk",
-        "role": null
-      },
-      "1036": {
-        "uuid": "Compendium.essence20.mlp_crb.Item.LrcbTJQdNJVyu23f",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Stand By Me",
-        "type": "perk",
-        "role": null
-      },
-      "1037": {
-        "uuid": "Compendium.essence20.mlp_crb.Item.M9G2fSExDSG7DKSW",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Street Smarts",
-        "type": "perk",
-        "role": null
-      },
-      "1038": {
-        "uuid": "Compendium.essence20.mlp_crb.Item.kepGfqwF3OgkVgap",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Subtle Helper",
+        "name": "Sonic Rainboom",
         "type": "perk",
         "role": null
       },

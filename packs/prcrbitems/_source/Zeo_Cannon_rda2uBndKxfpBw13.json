@@ -59,7 +59,7 @@
     },
     "classFeatureId": null,
     "alternateEffects": "",
-    "availability": "standard",
+    "availability": "restricted",
     "classification": {
       "size": "heavy"
     },
@@ -71,6 +71,7 @@
     },
     "traits": [
       "antiTank",
+      "powerWeapon",
       "wrecker"
     ],
     "upgradeTraits": [],

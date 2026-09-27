@@ -1,0 +1,50 @@
+{
+  "folder": null,
+  "name": "Stagnation Grenade Effect",
+  "type": "weaponEffect",
+  "_id": "NngoXOxqal79GUAU",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 270
+    },
+    "classification": {
+      "skill": "targeting",
+      "style": "explosive"
+    },
+    "damageType": "special",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": 1,
+    "numTargets": 1,
+    "radius": 10,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 50,
+      "value": 20
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790267200493,
+    "modifiedTime": 1790267200493,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!NngoXOxqal79GUAU"
+}

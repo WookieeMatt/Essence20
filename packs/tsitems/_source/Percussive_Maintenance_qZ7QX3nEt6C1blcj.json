@@ -20,9 +20,54 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
-    "version": "powerRangers"
+    "version": "transformers"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.qZ7QX3nEt6C1blcj",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "PercMaintTechStr1",
+      "changes": [
+        {
+          "key": "system.skills.technology.essences.strength",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Technology as Strength",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!qZ7QX3nEt6C1blcj.PercMaintTechStr1"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

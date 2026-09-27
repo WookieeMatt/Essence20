@@ -13,9 +13,53 @@
     },
     "items": {
       "4231": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.2IRZcCJbUGFuEYMk",
+        "uuid": "Compendium.essence20.pr_crb.Item.2IRZcCJbUGFuEYMk",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Blade Alternate Effect",
+        "name": "Long Blade Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "6c5f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.uYAnV5vfucrRlJlr",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Blade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "d4a2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.4rgKqfYX9WXvJEX2",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Blade Alternate Effect 2",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -32,29 +76,7 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 1
-      },
-      "6c5f": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.uYAnV5vfucrRlJlr",
-        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Blade Effect",
-        "type": "weaponEffect",
-        "classification": {
-          "skill": "finesse",
-          "style": "melee"
-        },
-        "damageValue": 1,
-        "damageType": "sharp",
-        "numHands": "2",
-        "numTargets": 1,
-        "radius": 0,
-        "range": {
-          "min": null,
-          "reachMultiplier": 2,
-          "long": null,
-          "value": null
-        },
-        "shiftDown": 0
+        "shiftDown": 2
       }
     },
     "classFeatureId": null,

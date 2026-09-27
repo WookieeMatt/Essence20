@@ -75,7 +75,8 @@
     ],
     "transformerMode": "modeBotMode",
     "upgradeTraits": [],
-    "usesPerScene": null
+    "usesPerScene": null,
+    "inaccurateMagnitude": 2
   },
   "effects": [],
   "sort": 0,

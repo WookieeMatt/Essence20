@@ -15,7 +15,52 @@
     "type": "",
     "gearType": "security"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Battering Ram",
+      "origin": "Item.WwnLKXH0Q4s8fGtU",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "bR5nSf0mgAlB2c7h",
+      "changes": [
+        {
+          "key": "system.skills.brawn.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!WwnLKXH0Q4s8fGtU.bR5nSf0mgAlB2c7h"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

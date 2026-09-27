@@ -26,11 +26,12 @@ export const JURY_RIG_ENCOUNTER_FLAG = 'juryRigUsedThisSceneAsStandardAction';
  * end of the scene" - the same "approximate an unenforceable duration, GM manages the edges" idiom
  * Bolster Defense's own "until end of scene" clause already uses. The base "once per turn" cap on
  * the Free-action mode itself remains unenforced, as before this change - a pre-existing
- * simplification, not something this pass revisits. Improve Aerodynamics is
- * excluded from the picker entirely - the same "don't offer a choice with nothing behind it" idiom
- * Grid Surge's own 4th option already established - since no "Push Yourself" action exists
- * anywhere in this codebase to modify (the same gap already flagged for Sewer Tunneler). Jacket
- * Ammunition is simplified to "any of the vehicle's Attacks" rather than one specific weaponEffect
+ * simplification, not something this pass revisits. Improve Aerodynamics ("a 'Push Yourself' Free
+ * action moves 10ft instead of 5ft") is now built too - helpers/token-movement.mjs's own
+ * getPushRules already models Push Yourself (Sewer Tunneler's own identical +5ft-to-+10ft
+ * doubling), so this just reads isJuryRigBenefitActive() there the same way Sewer Tunneler reads
+ * actorHasPerk. Jacket Ammunition is simplified to "any of the vehicle's Attacks" rather than one
+ * specific weaponEffect
  * chosen up front - avoids building a whole weapon-item sub-picker for one of six options, the
  * same kind of narrowing-to-broadening simplification this project already accepts elsewhere
  * (e.g. Fear My Name/Bits To Spare dropping an unenforceable narrative qualifier).
@@ -57,14 +58,17 @@ export const JURY_RIG_ENCOUNTER_FLAG = 'juryRigUsedThisSceneAsStandardAction';
 
 const FLAG_KEY = 'pendingJuryRigBenefit';
 
-// The 6 buildable Table 4-2 options (Improve Aerodynamics excluded - see doc comment above),
-// mapped to their own flat lang.json key - this project's established convention (no nested
-// localize keys anywhere in lang.json), rather than a dot-built key.
+// All 7 Table 4-2 options, mapped to their own flat lang.json key - this project's established
+// convention (no nested localize keys anywhere in lang.json), rather than a dot-built key.
 const JURY_RIG_OPTION_LABELS = {
   alignSuspension: 'E20.JuryRigOptionAlignSuspension',
   cleanBarrels: 'E20.JuryRigOptionCleanBarrels',
   engineTurboBoost: 'E20.JuryRigOptionEngineTurboBoost',
   hardenArmor: 'E20.JuryRigOptionHardenArmor',
+  // Improve Aerodynamics - now buildable (see this file's own header doc comment, and
+  // helpers/token-movement.mjs#getPushRules, which reads isJuryRigBenefitActive the same way it
+  // already reads Sewer Tunneler's own identical +5ft-per-Free-action doubling).
+  improveAerodynamics: 'E20.JuryRigOptionImproveAerodynamics',
   jacketAmmunition: 'E20.JuryRigOptionJacketAmmunition',
   watertightSeals: 'E20.JuryRigOptionWatertightSeals',
 };

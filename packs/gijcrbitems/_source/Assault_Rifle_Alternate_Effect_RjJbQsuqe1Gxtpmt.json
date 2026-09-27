@@ -9,7 +9,7 @@
     "actionType": "standard",
     "classification": {
       "skill": "targeting",
-      "style": "melee"
+      "style": "projectile"
     },
     "damageType": "sharp",
     "damageValue": 2,

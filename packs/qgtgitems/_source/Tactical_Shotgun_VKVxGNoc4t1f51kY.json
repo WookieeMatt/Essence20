@@ -26,7 +26,10 @@
           "page": 150
         },
         "subtype": "weapon",
-        "traits": []
+        "traits": [],
+        "removedTraits": [
+          "reload"
+        ]
       },
       "0a21": {
         "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.0cgWEY00pB4zLD5z",
@@ -50,8 +53,8 @@
         "name": "Tactical Shotgun Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
-          "style": "melee"
+          "skill": "targeting",
+          "style": "projectile"
         },
         "damageValue": 1,
         "damageType": "sharp",

@@ -1,10 +1,17 @@
 import { jest } from '@jest/globals';
+import { getRemaining } from './action-economy.mjs';
 import {
   activateOmegaEnhancement, getChargedUpEssence, isMuscleModeActive, isPowerModeActive, pickOmegaEnhancementOption,
 } from './omega-enhancement.mjs';
 
-global.game = { i18n: { localize: (k) => k, format: (k) => k }, combat: null };
-global.foundry = { applications: { api: { DialogV2: { wait: jest.fn() } } } };
+global.game = {
+  i18n: { localize: (k) => k, format: (k) => k },
+  combat: null,
+};
+global.foundry = {
+  applications: { api: { DialogV2: { wait: jest.fn() } } },
+  utils: { randomID: jest.fn(() => 'gen1') },
+};
 global.canvas = {
   tokens: { placeables: [], setTargets: jest.fn() },
   grid: { measurePath: jest.fn(() => ({ distance: 5 })) },
@@ -149,6 +156,31 @@ describe("activateOmegaEnhancement", () => {
       }),
       actor,
     );
+  });
+
+  test("Hyper Mode spends 1 Power and grants an extra Move + two extra Free actions this turn", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue({ option: 'hyper', essence: null });
+    const actor = makeActor({ power: 1 });
+    actor.system.actions = {
+      enabled: true, shared: false,
+      standard: { base: 1, bonus: 0, max: 1 },
+      move: { base: 1, bonus: 0, max: 1 },
+      free: { base: 0, bonus: 0, max: 0 },
+    };
+    const combatant = { isOwner: true, getFlag: jest.fn(), setFlag: jest.fn(async () => {}) };
+    game.combat = { getCombatantsByActor: jest.fn(() => [combatant]) };
+    let storedLedger = null;
+    combatant.setFlag.mockImplementation(async (scope, key, value) => {
+      storedLedger = value;
+    });
+    combatant.getFlag.mockImplementation(() => storedLedger);
+
+    expect(await activateOmegaEnhancement(actor)).toBe(true);
+
+    expect(actor.system.powers.personal.value).toBe(0);
+    expect(getRemaining(actor).move).toBe(2);
+    expect(getRemaining(actor).free).toBe(2);
+    game.combat = null;
   });
 
   test("Electro Mode and Light Beam Mode roll without auto-targeting", async () => {

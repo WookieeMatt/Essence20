@@ -65,9 +65,9 @@
     },
     "equipped": true,
     "requirements": {
-      "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "custom": "Towering",
+      "skill": "brawn",
+      "shift": "d6"
     },
     "traits": [
       "antiTank",

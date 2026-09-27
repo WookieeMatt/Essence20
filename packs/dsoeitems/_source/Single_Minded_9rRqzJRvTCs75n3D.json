@@ -12,7 +12,52 @@
       "page": 18
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Infatuation Distraction",
+      "origin": "Item.9rRqzJRvTCs75n3D",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "Cjt39tbD64Lcsgx0",
+      "changes": [
+        {
+          "key": "system.skills.alertness.snag",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!9rRqzJRvTCs75n3D.Cjt39tbD64Lcsgx0"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

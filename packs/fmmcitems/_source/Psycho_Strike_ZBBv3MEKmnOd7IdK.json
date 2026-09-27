@@ -55,6 +55,28 @@
           "value": null
         },
         "shiftDown": 1
+      },
+      "9fc5": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Sq4EwIr6RIYmZ5K6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Psycho Strike Snag Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
       }
     },
     "classFeatureId": null,

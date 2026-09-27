@@ -61,7 +61,7 @@
     "alternateEffects": "",
     "availability": "restricted",
     "classification": {
-      "size": "long"
+      "size": "heavy"
     },
     "equipped": true,
     "requirements": {
@@ -69,7 +69,9 @@
       "skill": "targeting",
       "shift": "d4"
     },
-    "traits": [],
+    "traits": [
+      "powerWeapon"
+    ],
     "upgradeTraits": [],
     "usesPerScene": null
   },

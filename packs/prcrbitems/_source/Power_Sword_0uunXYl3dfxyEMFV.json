@@ -32,7 +32,7 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 0
+        "shiftDown": 1
       },
       "abbe": {
         "uuid": "Compendium.essence20.pr_crb.Item.wEhq1WPmoknaHjXf",
@@ -92,8 +92,10 @@
       "shift": "none"
     },
     "traits": [
+      "powerWeapon",
       "sharp",
-      "silent"
+      "silent",
+      "versatile"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

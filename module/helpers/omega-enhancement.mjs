@@ -1,4 +1,5 @@
 import { getNearbyEnemyTokens } from "./enemies.mjs";
+import { grantActionsThisTurn } from "./action-economy.mjs";
 import { E20 } from "./config.mjs";
 
 /**
@@ -9,12 +10,11 @@ import { E20 } from "./config.mjs";
  * benefits" - Table's own 7-option catalog (Blast/Charged-Up/Electro/Hyper/Light Beam/Muscle/
  * Power Mode).
  *
- * Built 6 of 7 (all but Hyper Mode - "gain one extra Move and two extra Free actions this turn"
- * needs the confirmed-absent action-economy/per-turn-budget tracking this project has flagged
- * project-wide - excluded from the picker entirely, the same "don't offer a choice with nothing
- * behind it" idiom Grid Surge's own 4th option/Jury Rig's own Improve Aerodynamics already
- * established). Muscle Mode's own "and carrying capacity" clause is dropped the same way - no
- * encumbrance/carrying-capacity system exists anywhere in this codebase.
+ * Built all 7, including Hyper Mode - "gain one extra Move and two extra Free actions this turn" -
+ * now that helpers/action-economy.mjs's per-turn ledger exists to grant it against
+ * (grantActionsThisTurn(), a one-turn-only sibling of tradeStandardForFree()'s own freeGranted).
+ * Muscle Mode's own "and carrying capacity" clause is still dropped - no encumbrance/carrying-
+ * capacity system exists anywhere in this codebase.
  *
  * The 3 Attack modes (Blast/Electro/Light Beam) share one Absolute-Menace-style shape (auto- or
  * manually-targeted, trigger a real interactive roll via actor._dice.rollSkill() with a synthetic
@@ -37,11 +37,12 @@ import { E20 } from "./config.mjs";
  * (which Essence/skill the bonus applies to) those two generic helpers have no room for.
  */
 
-export const OMEGA_ENHANCEMENT_OPTIONS = ['blast', 'chargedUp', 'electro', 'lightBeam', 'muscle', 'power'];
+export const OMEGA_ENHANCEMENT_OPTIONS = ['blast', 'chargedUp', 'electro', 'hyper', 'lightBeam', 'muscle', 'power'];
 const OMEGA_ENHANCEMENT_OPTION_LABELS = {
   blast: 'E20.OmegaEnhancementOptionBlast',
   chargedUp: 'E20.OmegaEnhancementOptionChargedUp',
   electro: 'E20.OmegaEnhancementOptionElectro',
+  hyper: 'E20.OmegaEnhancementOptionHyper',
   lightBeam: 'E20.OmegaEnhancementOptionLightBeam',
   muscle: 'E20.OmegaEnhancementOptionMuscle',
   power: 'E20.OmegaEnhancementOptionPower',
@@ -169,6 +170,11 @@ export async function activateOmegaEnhancement(actor) {
 
   if (choice.option == 'power') {
     await stampTurnFlag(actor, POWER_FLAG);
+    return true;
+  }
+
+  if (choice.option == 'hyper') {
+    await grantActionsThisTurn(actor, { move: 1, free: 2 }, game.i18n.localize('E20.OmegaEnhancementOptionHyper'));
     return true;
   }
 

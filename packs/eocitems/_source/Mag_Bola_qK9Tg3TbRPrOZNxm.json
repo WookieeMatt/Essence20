@@ -67,7 +67,7 @@
     "requirements": {
       "custom": "",
       "skill": "athletics",
-      "shift": "none"
+      "shift": "d4"
     },
     "traits": [
       "consumable",

@@ -188,10 +188,19 @@
       "alertness",
       "survival"
     ],
+    "upgrades": {
+      "armors": {
+        "trained": [
+          "limited"
+        ]
+      }
+    },
     "version": "transformers",
     "weapons": {
       "qualified": [],
-      "trained": []
+      "trained": [
+        "ballistic"
+      ]
     }
   },
   "effects": [],

@@ -11,8 +11,12 @@
       "skill": "targeting",
       "style": "energy"
     },
-    "damageType": "element",
-    "damageValue": 4,
+    "damageType": "energy",
+    "damageValue": 2,
+    "secondaryDamage": {
+      "type": "fire",
+      "value": 2
+    },
     "shiftDown": 0,
     "numHands": "2",
     "numTargets": 1,
