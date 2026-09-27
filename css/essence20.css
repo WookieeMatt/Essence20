@@ -1227,7 +1227,8 @@
    class means those old messages pick up the same fix live rather than
    staying stuck looking like a different, older feature. */
 .essence20 .e20-check-card button,
-.essence20 .e20-reroll-button {
+.essence20 .e20-reroll-button,
+.essence20 .e20-chat-action-button {
   position: relative;
   display: block;
   width: 100%;
@@ -1274,7 +1275,8 @@
      the fill's. */
 }
 .essence20 .e20-check-card button::before,
-.essence20 .e20-reroll-button::before {
+.essence20 .e20-reroll-button::before,
+.essence20 .e20-chat-action-button::before {
   content: "";
   pointer-events: none;
   position: absolute;
@@ -1291,12 +1293,15 @@
 }
 .essence20 .e20-check-card button:hover:not(:disabled), .essence20 .e20-check-card button:focus-visible:not(:disabled),
 .essence20 .e20-reroll-button:hover:not(:disabled),
-.essence20 .e20-reroll-button:focus-visible:not(:disabled) {
+.essence20 .e20-reroll-button:focus-visible:not(:disabled),
+.essence20 .e20-chat-action-button:hover:not(:disabled),
+.essence20 .e20-chat-action-button:focus-visible:not(:disabled) {
   background: var(--e20-system-color, var(--e20-theme-accent));
   color: var(--e20-theme-accent-contrast, #111);
 }
 .essence20 .e20-check-card button:disabled,
-.essence20 .e20-reroll-button:disabled {
+.essence20 .e20-reroll-button:disabled,
+.essence20 .e20-chat-action-button:disabled {
   background: var(--e20-theme-card-bg);
   color: var(--e20-theme-muted-text);
   cursor: default;
@@ -1320,7 +1325,8 @@
   margin-right: 4px;
 }
 
-.essence20 .e20-reroll-buttons {
+.essence20 .e20-reroll-buttons,
+.essence20 .e20-chat-action-buttons {
   display: flex;
   flex-direction: column;
   gap: 6px;
