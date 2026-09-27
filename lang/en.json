@@ -876,7 +876,9 @@
       }
     },
     "RoughTerrainWreckerRegionName": "Rough Terrain ({weapon})",
+    "RoughTerrainWreckerChat": "<b>Wrecker:</b> the {weapon} missed, and the space of {targets} is now Rough Terrain.",
     "RoughTerrainPiledriverPrompt": "Use the Piledriver to turn one space within your Reach into Rough Terrain? You'll place the space on the map next.",
+    "RoughTerrainPiledriverChat": "<b>{item}:</b> {name} drives it into the ground, and that space is now Rough Terrain.",
     "EquipmentPackageType": "Package Type",
     "EquipmentPackageTypeStandardIssue": "Standard Issue",
     "EquipmentPackageTypeQualified": "Qualified Equipment",

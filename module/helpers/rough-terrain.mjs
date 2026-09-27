@@ -257,6 +257,9 @@ export function makeEssence20TerrainData(TerrainData) {
   };
 }
 
+// CONST.REGION_VISIBILITY.GAMEMASTER (v14), for when CONST isn't loaded (unit tests).
+const GAMEMASTER_VISIBILITY = 1;
+
 /**
  * The Region data for a Rough Terrain area.
  * @param {Array<Object>} shapes   Region shape data.
@@ -267,6 +270,9 @@ export function buildRoughTerrainRegionData(shapes, name) {
   return {
     name,
     color: "#8b5a2b",
+    // Always shown to the GM, not only while the Regions layer is open - these appear on their own
+    // mid-fight (Wrecker, Piledriver), so the GM should see where they landed.
+    visibility: globalThis.CONST?.REGION_VISIBILITY?.GAMEMASTER ?? GAMEMASTER_VISIBILITY,
     shapes,
     behaviors: [{
       type: ENVIRONMENT_REGION_BEHAVIOR_TYPE,
@@ -351,7 +357,7 @@ export async function applyWreckerRoughTerrain(actor, results, checkContext) {
     return 0;
   }
 
-  let created = 0;
+  const targetNames = [];
   for (const result of results ?? []) {
     if (result.success || !result.targetUuid) {
       continue;
@@ -365,10 +371,18 @@ export async function applyWreckerRoughTerrain(actor, results, checkContext) {
 
     await createRoughTerrainRegion(tokenDoc.parent, [getTokenFootprintShape(tokenDoc)],
       game.i18n.format('E20.RoughTerrainWreckerRegionName', { weapon: weapon.name }));
-    created++;
+    targetNames.push(tokenDoc.name ?? target.name);
   }
 
-  return created;
+  // Say so in chat - otherwise the new Rough Terrain appears on the map with no explanation.
+  if (targetNames.length) {
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      content: game.i18n.format('E20.RoughTerrainWreckerChat', { weapon: weapon.name, targets: targetNames.join(', ') }),
+    });
+  }
+
+  return targetNames.length;
 }
 
 /**
@@ -433,5 +447,10 @@ export async function offerPiledriverRoughTerrain(actor, item) {
 
   const shapes = placed.shapes.map(shape => (shape.toObject ? shape.toObject() : shape));
   await createRoughTerrainRegion(canvas.scene, shapes, item.name);
+  // Same chat record Wrecker posts, so the new Rough Terrain is announced rather than just appearing.
+  await ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    content: game.i18n.format('E20.RoughTerrainPiledriverChat', { name: actor?.name ?? '', item: item.name }),
+  });
   return true;
 }

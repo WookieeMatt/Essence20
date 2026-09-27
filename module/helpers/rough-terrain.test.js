@@ -242,7 +242,8 @@ describe("Region building", () => {
 
   test("the Region carries an Environment Behavior with only Rough Terrain set", () => {
     const data = buildRoughTerrainRegionData([{ type: 'rectangle' }], 'Rubble');
-    expect(data).toMatchObject({ name: 'Rubble', shapes: [{ type: 'rectangle' }] });
+    // Always visible to the GM (CONST.REGION_VISIBILITY.GAMEMASTER).
+    expect(data).toMatchObject({ name: 'Rubble', shapes: [{ type: 'rectangle' }], visibility: 1 });
     expect(data.behaviors[0]).toMatchObject({
       type: ENVIRONMENT_REGION_BEHAVIOR_TYPE,
       system: { environment: '', terrain: '', roughTerrain: true },
@@ -308,6 +309,7 @@ describe("applyWreckerRoughTerrain", () => {
 
   beforeEach(() => {
     game.user = { isGM: true };
+    ChatMessage.create.mockClear();
   });
 
   afterEach(() => {
@@ -339,6 +341,7 @@ describe("applyWreckerRoughTerrain", () => {
     ], { isAttack: true, itemUuid: 'Item.e1' });
 
     expect(count).toBe(1);
+    expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: 'E20.RoughTerrainWreckerChat' }));
     expect(missed.parent.createEmbeddedDocuments).toHaveBeenCalledWith('Region', [
       expect.objectContaining({ shapes: [{ type: 'rectangle', x: 200, y: 300, width: 200, height: 100 }] }),
     ]);
@@ -355,6 +358,7 @@ describe("applyWreckerRoughTerrain", () => {
     expect(await applyWreckerRoughTerrain(makeAttacker(['wrecker']), miss, { isAttack: false, itemUuid: 'Item.e1' })).toBe(0);
     expect(await applyWreckerRoughTerrain(makeAttacker(['wrecker']), miss, null)).toBe(0);
     expect(alreadyRough.parent.createEmbeddedDocuments).not.toHaveBeenCalled();
+    expect(ChatMessage.create).not.toHaveBeenCalled();
   });
 
   // User ruling 2026-09-26: an automatic failure is a miss against every target.
@@ -403,6 +407,7 @@ describe("Piledriver", () => {
       global.canvas = { ready: true, scene, regions: { placeRegion: jest.fn(async () => placed) } };
       foundry.applications.api.DialogV2 = { confirm: jest.fn(async () => confirmed) };
       game.user = { isGM: true };
+      ChatMessage.create.mockClear();
       return scene;
     }
 
@@ -412,6 +417,7 @@ describe("Piledriver", () => {
       expect(scene.createEmbeddedDocuments).toHaveBeenCalledWith('Region', [
         expect.objectContaining({ shapes: [{ type: 'rectangle', x: 5 }] }),
       ]);
+      expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: 'E20.RoughTerrainPiledriverChat' }));
     });
 
     test("does nothing outside Alt Mode, when declined, or when placement is cancelled", async () => {
@@ -425,6 +431,7 @@ describe("Piledriver", () => {
       scene = setUp({ placed: null });
       expect(await offerPiledriverRoughTerrain({ system: { isTransformed: true } }, { name: 'Piledriver' })).toBe(false);
       expect(scene.createEmbeddedDocuments).not.toHaveBeenCalled();
+      expect(ChatMessage.create).not.toHaveBeenCalled();
     });
   });
 });
