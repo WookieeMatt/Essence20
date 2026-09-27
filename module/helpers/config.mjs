@@ -1967,9 +1967,8 @@ E20.statusEffects = [
     changes: [],
   },
   {
-    // No custom art yet (p.202) - reuses Foundry's own bundled shield.svg, same "generic core
-    // icon" fallback already used elsewhere in this system rather than hand-authoring new art.
-    img: 'icons/svg/shield.svg',
+    // Cover (p.202).
+    img: 'systems/essence20/assets/icons/status_effects/status_cover.svg',
     id: 'cover',
     name: 'E20.StatusCover',
     changes: [],
@@ -2005,7 +2004,7 @@ E20.statusEffects = [
        the same reuse cantTakeFreeActions makes of status_impaired. `changes` stays empty:
        the Snag lands on the ATTACKER's roll, not on any field of the defender, so there is
        nothing here for an Active Effect to change. */
-    img: 'systems/essence20/assets/icons/items/shield.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_defending.svg',
     id: 'defending',
     name: 'E20.StatusDefending',
     changes: [],
@@ -2110,7 +2109,7 @@ E20.statusEffects = [
     // needs two Free actions (instead of one) to reduce it by 5 feet; a second stack Immobilizes
     // the vessel until repaired (helpers/vessel-conditions.mjs). The +10 ft minimum drift and the
     // two-Free-action inertia cost have no Movement field to live in and stay table rules.
-    img: 'icons/svg/direction.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_spun_out.svg',
     id: 'spunOut',
     name: 'E20.StatusSpunOut',
     changes: [],
@@ -2147,10 +2146,7 @@ E20.statusEffects = [
     // gate against. The "cannot roll Skill Tests, except contested ones" half is still a marker
     // only - dice.mjs has no generic "which Skill Tests are contested" concept to hang a block on.
     // What the marker unlocks either way: immunity to it, and Perks that key off a target having it.
-    //
-    // No custom art - reuses Foundry's own bundled daze.svg, the same core-icon fallback cover
-    // above already uses.
-    img: 'icons/svg/daze.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_surprised.svg',
     id: 'surprised',
     name: 'E20.StatusSurprised',
     changes: [],
@@ -2162,8 +2158,8 @@ E20.statusEffects = [
     // half isn't enforced as a hard block (nothing else in this system's automatic combat
     // modifiers hard-blocks a roll, and the book itself treats it as overridable), so this status
     // gets the same automatic -2 as Cover instead - see dice.mjs#_getAutomaticCombatModifiers.
-    // Reuses Foundry's bundled castle.svg (a fully-walled-in visual) to read as stronger than the
-    // plain shield.svg used for Cover.
+    // Reuses Foundry's bundled castle.svg (a fully-walled-in visual) to read as stronger than
+    // Cover's own icon.
     img: 'icons/svg/castle.svg',
     id: 'totalCover',
     name: 'E20.StatusTotalCover',

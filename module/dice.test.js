@@ -36835,6 +36835,15 @@ describe("_getSkillRollLabel", () => {
 
 /* _getWeaponRollLabel */
 describe("_getWeaponRollLabel", () => {
+  test("shows a weaponEffect's second damage on the Effect line", () => {
+    const twoDamage = {
+      name: 'Acid Mace Effect',
+      system: { damageType: 'blunt', damageValue: 1, secondaryDamage: { type: 'acid', value: 1 } },
+    };
+    expect(dice._getWeaponRollLabel({ skill: 'athletics' }, { edge: false, snag: false }, twoDamage))
+      .toContain('<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt + 1 E20.DamageAcid<br>');
+  });
+
   const weaponEffect = {
     name: 'Zeo Power Clubs Effect',
     type: 'weaponEffect',

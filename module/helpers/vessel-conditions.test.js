@@ -2,7 +2,7 @@ import { jest } from "@jest/globals";
 import {
   areHardpointWeaponsInoperable, canTargetVesselSystem, changeVesselConditionStacks, CLEAR_ALL_STACKS,
   countRepairedConditions, decorateTokenHudVesselConditions, ensureRepairSpecialized, findVesselAboard,
-  getActiveVesselConditions, getEffectStacks, getRepairDifficulty, getUnstablePenalty, getVesselConditionStacks,
+  getActiveVesselConditions, getEffectStacks, getRepairCandidates, getRepairDifficulty, getUnstablePenalty, getVesselConditionStacks,
   handleVesselConditionStacksRequest, hasTechnologySpecialization, imposeVesselConditionOnCrit,
   isStackingVesselCondition, isVesselCondition, isVesselSystemTarget, isZordLike, nextStackCount,
   openVesselRepairDialog, resolveVesselRepair, shouldBlockZordVesselCondition, stackedName,
@@ -377,6 +377,36 @@ describe("Repairing a Space Vessel Condition (p.26)", () => {
       expect(await ensureRepairSpecialized(repairer)).toBe(false);
       expect(ui.notifications.warn).toHaveBeenCalled();
       game.settings.get.mockImplementation(() => 'roll');
+    });
+  });
+
+  describe("getRepairCandidates", () => {
+    const pc = (name, isOwner = true) => ({ name, type: 'playerCharacter', isOwner, _dice: {} });
+    let savedCanvas, savedUser;
+
+    beforeEach(() => {
+      savedCanvas = global.canvas;
+      savedUser = game.user;
+    });
+
+    afterEach(() => {
+      global.canvas = savedCanvas;
+      game.user = savedUser;
+    });
+
+    test("offers the actors of the user's selected tokens", () => {
+      const selected = pc('Selected');
+      global.canvas = { tokens: { controlled: [{ actor: selected }] }, scene: { tokens: [] } };
+      game.user = { isGM: false, character: null };
+      expect(getRepairCandidates(makeVessel({ system: { actors: {} } }))).toEqual([selected]);
+    });
+
+    test("offers a GM every player character on the scene, but never the vessel itself", () => {
+      const onScene = pc('On Scene');
+      const vessel = makeVessel({ system: { actors: {} } });
+      global.canvas = { tokens: { controlled: [] }, scene: { tokens: [{ actor: onScene }, { actor: { type: 'npc', isOwner: true, _dice: {} } }, { actor: vessel }] } };
+      game.user = { isGM: true, character: null };
+      expect(getRepairCandidates(vessel)).toEqual([onScene]);
     });
   });
 

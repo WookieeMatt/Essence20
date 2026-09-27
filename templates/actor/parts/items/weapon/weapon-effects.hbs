@@ -25,23 +25,10 @@
     <div class="e20-align-center chip weapon-effect-chip" data-tooltip="{{item.numHands}} {{localize "E20.WeaponHands"}}">
       {{item.numHands}} <i class="fas fa-hand"></i>
     </div>
-    {{#if item.damageValue}}
-    <div class="e20-align-center chip weapon-effect-chip" data-tooltip="{{item.damageValue}} {{localize (lookup @root.config.damageTypes item.damageType)}} {{localize "E20.Damage"}}">
-      {{item.damageValue}}
-      {{#if (eq item.damageType 'sharp')}}
-        <i class="fas fa-sword"></i>
-      {{else if (eq item.damageType 'blunt')}}
-        <i class="fas fa-hammer"></i>
-      {{else if (eq item.damageType 'element')}}
-        <i class="fas fa-droplet"></i>
-      {{else if (eq item.damageType 'maneuver')}}
-        <i class="fas fa-person-falling"></i>
-      {{else if (eq item.damageType 'stun')}}
-        <i class="fas fa-face-spiral-eyes"></i>
-      {{else if (eq item.damageType 'intimidate')}}
-        <i class="fas fa-person-harassing"></i>
-      {{/if}}
+    {{#each (weaponEffectDamages item) as |damage|}}
+    <div class="e20-align-center chip weapon-effect-chip" data-tooltip="{{damage.value}} {{localize (lookup @root.config.damageTypes damage.type)}} {{localize "E20.Damage"}}">
+      {{damage.value}} <i class="fas {{damage.icon}}"></i>
     </div>
-    {{/if}}
+    {{/each}}
   </div>
 </div>

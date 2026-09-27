@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 import { ENVIRONMENT_EFFECT_PREFIX, ENVIRONMENT_REGION_BEHAVIOR_TYPE, ROUGH_TERRAIN_EFFECT } from './environment.mjs';
 import {
   resolveEnvironmentEffect,
-  applyWreckerRoughTerrain, buildRoughTerrainRegionData, createRoughTerrainRegion, getTerrainCostMultiplier,
+  applyWreckerOnAutoFail, applyWreckerRoughTerrain, buildRoughTerrainRegionData, createRoughTerrainRegion, getTerrainCostMultiplier,
   getTokenFootprintShape, handleCreateRoughTerrainRequest, hasTakePointCover, ignoresRoughTerrain, isPiledriver,
   makeEssence20TerrainData, offerPiledriverRoughTerrain, paysRoughTerrainCost, PILEDRIVER_ID, TAKE_POINT_ID,
 } from './rough-terrain.mjs';
@@ -355,6 +355,29 @@ describe("applyWreckerRoughTerrain", () => {
     expect(await applyWreckerRoughTerrain(makeAttacker(['wrecker']), miss, { isAttack: false, itemUuid: 'Item.e1' })).toBe(0);
     expect(await applyWreckerRoughTerrain(makeAttacker(['wrecker']), miss, null)).toBe(0);
     expect(alreadyRough.parent.createEmbeddedDocuments).not.toHaveBeenCalled();
+  });
+
+  // User ruling 2026-09-26: an automatic failure is a miss against every target.
+  test("an automatic failure turns every target's space into Rough Terrain", async () => {
+    const first = makeTokenDoc();
+    const second = makeTokenDoc();
+    fromUuid.mockImplementation(async uuid => ({
+      'Item.e1': weaponEffect, 'Actor.a': { token: first }, 'Actor.b': { token: second },
+    })[uuid]);
+    const effect = { type: 'weaponEffect', uuid: 'Item.e1' };
+
+    const count = await applyWreckerOnAutoFail(makeAttacker(['wrecker']), effect,
+      [{ actor: { uuid: 'Actor.a' } }, { actor: { uuid: 'Actor.b' } }]);
+
+    expect(count).toBe(2);
+    expect(first.parent.createEmbeddedDocuments).toHaveBeenCalled();
+    expect(second.parent.createEmbeddedDocuments).toHaveBeenCalled();
+  });
+
+  test("an automatic failure does nothing for a non-attack or with no targets", async () => {
+    fromUuid.mockImplementation(async uuid => ({ 'Item.e1': weaponEffect })[uuid]);
+    expect(await applyWreckerOnAutoFail(makeAttacker(['wrecker']), { type: 'weapon', uuid: 'Item.e1' }, [])).toBe(0);
+    expect(await applyWreckerOnAutoFail(makeAttacker(['wrecker']), { type: 'weaponEffect', uuid: 'Item.e1' }, undefined)).toBe(0);
   });
 });
 

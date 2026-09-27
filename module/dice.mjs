@@ -314,7 +314,7 @@ import {
   ENVIRONMENTAL_EXPERTISE_ID, getEnvironmentOfExpertiseSourceLabel, hasActiveEnvironmentalExpertise,
   PENDING_GUIDANCE_FLAG_KEY,
 } from "./helpers/environmental-expertise.mjs";
-import { applyWreckerRoughTerrain, hasTakePointCover } from "./helpers/rough-terrain.mjs";
+import { applyWreckerOnAutoFail, applyWreckerRoughTerrain, hasTakePointCover } from "./helpers/rough-terrain.mjs";
 import {
   applyExplosiveAftershockEffects, EXPLOSIVE_AFTERSHOCK_PENALTY_FLAG, pickExplosiveAftershockEffects,
 } from "./helpers/explosive-aftershock.mjs";
@@ -10039,6 +10039,8 @@ export class Dice {
     }
 
     if (this._handleAutoFail(finalShift, label, actor)) {
+      // Wrecker - an automatic failure is still a miss against every target.
+      await applyWreckerOnAutoFail(actor, item, game.user?.targets);
       return;
     }
 
@@ -12714,6 +12716,7 @@ export class Dice {
       const fanningShot = fanningVolley[i] ?? null;
       if (fanningShot?.autoFail) {
         this._handleAutoFail(fanningShot.shift, label, actor);
+        await applyWreckerOnAutoFail(actor, item, game.user?.targets);
         break;
       }
 
@@ -19912,7 +19915,12 @@ export class Dice {
 
     let label = `<b>${attackRollStr}</b> - ${weaponEffect.name} (${rolledSkillStr})`;
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
-    label += `<b>${effectStr}</b> - ${weaponEffect.system.damageValue || noneStr} ${damageType}<br>`;
+    // A weaponEffect's second damage (weapon-effect.mjs secondaryDamage), e.g. "1 Blunt + 1 Acid".
+    const secondary = weaponEffect.system.secondaryDamage;
+    const secondaryStr = secondary?.value > 0
+      ? ` + ${secondary.value} ${this._localize(E20.damageTypes[secondary.type] ?? '')}`
+      : '';
+    label += `<b>${effectStr}</b> - ${weaponEffect.system.damageValue || noneStr} ${damageType}${secondaryStr}<br>`;
     label += `<b>${descStr}</b>:${weaponEffect.system.description || noneStr}<br>`;
 
     return label;

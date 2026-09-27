@@ -70,6 +70,9 @@ describe("Ongoing/Poison/Toxin (Cobra Codex, New Weapon Effects and Traits, p.93
     await applyOngoingEffectsAtTurnEnd(actor);
 
     expect(lastHealthUpdate).toEqual({ 'system.health.value': 9 });
+    expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({
+      content: expect.stringContaining('E20.OngoingDamageChat'),
+    }));
     expect(getOngoingEffects(actor)).toEqual([
       { damageValue: 1, damageType: 'poison', roundsRemaining: 1, sourceName: 'Deadly Touch' },
     ]);

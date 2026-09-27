@@ -395,7 +395,8 @@ export async function consumeForMovement(token, movement) {
   }
 
   if (isConfirming()) {
-    const confirm = foundry.applications?.api?.DialogV2?.confirm;
+    // Bound, not a bare reference: DialogV2.confirm calls this.wait internally.
+    const confirm = foundry.applications?.api?.DialogV2?.confirm?.bind(foundry.applications.api.DialogV2);
     const ok = confirm
       ? await confirm({
         window: { title: game.i18n.localize('E20.ActionEconomyMovementTitle') },
