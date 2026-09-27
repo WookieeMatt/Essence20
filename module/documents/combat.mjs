@@ -79,7 +79,9 @@ export class Essence20Combat extends Combat {
     await super._onEndTurn(combatant, context);
 
     if (combatant?.actor) {
-      await applyEnvironmentAtTurnEnd(combatant.actor, this);
+      // The combatant's own token, so the scene the fight is on decides - not the scene the GM
+      // client running this happens to be viewing.
+      await applyEnvironmentAtTurnEnd(combatant.actor, this, combatant.token ?? null);
     }
   }
 

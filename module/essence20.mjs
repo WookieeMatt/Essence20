@@ -80,6 +80,7 @@ import {
 } from "./helpers/environment.mjs";
 import { handleCreateRoughTerrainRequest, makeEssence20TerrainData } from "./helpers/rough-terrain.mjs";
 import { applyEnvironmentAtSceneEnd } from "./helpers/environment-hazards.mjs";
+import { wireEnvironmentLevelSelects } from "./helpers/environment-levels.mjs";
 import {
   decorateTokenHudVesselConditions, handleVesselConditionStacksRequest, isVesselCondition,
   shouldBlockZordVesselCondition, syncVesselConditionConsequences,
@@ -998,6 +999,7 @@ Hooks.on("renderActiveEffectConfig", (app, html) => {
 // Scene-default-environment picker - see helpers/environment.mjs's own doc comment.
 Hooks.on("renderSceneConfig", (app, html) => {
   injectEnvironmentSceneConfigField(app, html);
+  wireEnvironmentLevelSelects(html);
 });
 
 // Exo-Frame armor's Driving test prompt (Across the Stars p.85) - see helpers/exo-frame.mjs.
@@ -1018,6 +1020,12 @@ for (const hookName of ["createActiveEffect", "updateActiveEffect", "deleteActiv
 // Stack counts and the Zord override on the token HUD's vessel Conditions.
 Hooks.on("renderTokenHUD", (hud, html) => {
   decorateTokenHudVesselConditions(hud, html);
+});
+
+// The Environment Region Behavior's Severity list follows its chosen environment - see
+// helpers/environment-levels.mjs.
+Hooks.on("renderRegionBehaviorConfig", (app, html) => {
+  wireEnvironmentLevelSelects(html);
 });
 
 // Per-scene environmental damage (Irradiated, Harmful Toxic Atmosphere) when the GM starts a new

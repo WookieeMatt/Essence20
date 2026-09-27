@@ -198,6 +198,15 @@ describe("applyEnvironmentAtTurnEnd", () => {
     expect(actor.flags.essence20.environmentExposure).toMatchObject({ combatId: "c1", environment: "vacuum", turns: 1 });
   });
 
+  // Only the active GM runs this, and that GM's client may be viewing a different scene (or none) -
+  // resolving through the actor would then read the wrong scene. The combatant's token decides.
+  test("the combatant's own token decides the environment, not whatever scene the actor resolves to", async () => {
+    const actor = makeCreature({ scene: makeScene("normal") });
+    const fightToken = { documentName: "Token", regions: [], parent: makeScene("vacuum"), actor };
+    expect(await applyEnvironmentAtTurnEnd(actor, combat, fightToken)).toEqual({ damageType: null, essences: ["strength", "speed", "smarts"] });
+    expect(actor.flags.essence20.environmentExposure).toMatchObject({ environment: "vacuum", turns: 1 });
+  });
+
   test("a Strong Corrosive Atmosphere deals 1 Acid on the 5th turn of exposure", async () => {
     const actor = makeCreature({ scene: makeScene("corrosiveAtmosphere", "strong") });
     for (let turn = 1; turn <= 4; turn++) {

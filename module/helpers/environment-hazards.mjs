@@ -298,14 +298,17 @@ async function _applyTick(actor, environment, tick) {
  * Essence20Combat#_onEndTurn (active GM only).
  * @param {Actor} actor
  * @param {Combat} combat
+ * @param {?TokenDocument} [tokenDoc]   The combatant's own token. Read in preference to the actor:
+ *   only the active GM runs this, and resolving through the actor falls back to whatever scene
+ *   that GM's client is looking at, which need not be the scene the fight is on.
  * @returns {Promise<?{damageType: ?String, essences: Array<String>}>}   The tick applied, if any.
  */
-export async function applyEnvironmentAtTurnEnd(actor, combat) {
+export async function applyEnvironmentAtTurnEnd(actor, combat, tokenDoc = null) {
   if (!actor) {
     return null;
   }
 
-  const { environment, level } = getEnvironmentState(actor);
+  const { environment, level } = getEnvironmentState(tokenDoc ?? actor);
   const previous = actor.getFlag?.('essence20', EXPOSURE_FLAG) ?? null;
   if (environment == DEFAULT_ENVIRONMENT || !ENVIRONMENT_HAZARDS[environment]
     || getEnvironmentProtection(actor, environment)) {
