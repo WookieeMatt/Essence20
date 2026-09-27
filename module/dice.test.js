@@ -1434,6 +1434,31 @@ describe("rollSkill", () => {
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null, { skill: 'athletics', essence: 'strength', finalShift: 'd20', snag: false, isPowerWeaponAttack: false, isUnarmedAttack: false, isConsumableOrWreckerRangedAttack: false, consummatePerformer: false, isMelee: false, isAttack: false, isFlashyAttack: false, itemUuid: null, targetUuid: null, defenseType: null, smallerTarget: false }, false);
   });
 
+  // Enviro-Sealed (Across the Stars p.85): in a hostile environment the dialog's checkbox starts
+  // ticked and grants the Edge from there, instead of an Edge forced on ahead of the dialog that
+  // the (unticked) checkbox couldn't explain or take back.
+  test("Enviro-Sealed in a hostile environment starts its checkbox ticked, with no pre-set Edge", async () => {
+    const rollDialog = createMockRollDialog();
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+    });
+    dice._rollSkillHelper = jest.fn();
+    const items = [{ type: 'armor', system: { equipped: true, traits: ['enviroSealed'] } }];
+    items.documentsByType = { armor: items };
+    const vacuumToken = {
+      documentName: 'Token', regions: [],
+      parent: { getFlag: (scope, key) => (key == 'environment' ? 'vacuum' : undefined) },
+    };
+    const sealed = { ...mockActor, documentName: 'Actor', items, getActiveTokens: () => [vacuumToken] };
+    sealed.getRollData = jest.fn(() => ({ skills: { athletics: { modifier: '0', shift: 'd20' } } }));
+
+    await dice.rollSkill(dataset, sealed, null);
+    const [dialogDataset, skillDataset] = rollDialog.getSkillRollOptions.mock.calls[0];
+    expect(dialogDataset.enviroSealedAdverseSituationAvailable).toBe(true);
+    expect(dialogDataset.enviroSealedAdverseSituationChecked).toBe(true);
+    expect(skillDataset.edge).toBeFalsy();
+  });
+
   test("a specialization's own shiftUp/edge merge into the roll (see essence20-specialization-redesign)", async () => {
     mockActor.getRollData = jest.fn(() => ({
       skills: {
@@ -2498,6 +2523,7 @@ describe("rollSkill", () => {
       availableSkillEffects: [],
       combatModifierSources: [],
       enviroSealedAdverseSituationAvailable: false,
+      enviroSealedAdverseSituationChecked: false,
       fanningMaxShots: 0,
       retrogenAvailable: false,
     };
@@ -3121,6 +3147,7 @@ describe("rollSkill", () => {
         { id: 'impaired', label: 'E20.StatusImpaired', shiftUp: 0, shiftDown: 1, edge: false, snag: false },
       ],
       enviroSealedAdverseSituationAvailable: false,
+      enviroSealedAdverseSituationChecked: false,
       fanningMaxShots: 0,
       retrogenAvailable: false,
     };
@@ -3552,6 +3579,7 @@ describe("rollSkill", () => {
       availableSkillEffects: [],
       combatModifierSources: [],
       enviroSealedAdverseSituationAvailable: false,
+      enviroSealedAdverseSituationChecked: false,
       fanningMaxShots: 0,
       retrogenAvailable: false,
     };
@@ -3697,6 +3725,7 @@ describe("rollSkill", () => {
       availableSkillEffects: [],
       combatModifierSources: [],
       enviroSealedAdverseSituationAvailable: false,
+      enviroSealedAdverseSituationChecked: false,
       fanningMaxShots: 0,
       retrogenAvailable: false,
     };
@@ -3840,6 +3869,7 @@ describe("rollSkill", () => {
       availableSkillEffects: [],
       combatModifierSources: [],
       enviroSealedAdverseSituationAvailable: false,
+      enviroSealedAdverseSituationChecked: false,
       fanningMaxShots: 0,
       retrogenAvailable: false,
     };

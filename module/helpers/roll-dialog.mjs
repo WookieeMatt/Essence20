@@ -301,6 +301,7 @@ export class RollDialog {
       allAroundVisionAvailable: dataset.allAroundVisionAvailable,
       pressureCookerAvailable: dataset.pressureCookerAvailable,
       enviroSealedAdverseSituationAvailable: dataset.enviroSealedAdverseSituationAvailable,
+      enviroSealedAdverseSituationChecked: dataset.enviroSealedAdverseSituationChecked,
       pythonizedAvailable: dataset.pythonizedAvailable,
       tonguesAvailable: dataset.tonguesAvailable,
       doubleAgentAvailable: dataset.doubleAgentAvailable,

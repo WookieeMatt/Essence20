@@ -1,6 +1,7 @@
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import { linkEdgeToggle } from "../helpers/edge-toggle-link.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
@@ -65,6 +66,8 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
     super._onRender(context, options);
 
     applyThemeClass(this.element);
+    // Enviro-Sealed's switch moves the Snag/Normal/Edge radio with it - see helpers/edge-toggle-link.mjs.
+    linkEdgeToggle(this.element, "applyEnviroSealedAdverseSituation");
   }
 
   _onClose(options) {

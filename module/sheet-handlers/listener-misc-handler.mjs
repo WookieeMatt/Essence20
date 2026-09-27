@@ -53,7 +53,8 @@ export async function performRoll(event, actor, childRoller=None) {
     }
 
     if (rollType == 'power') {
-      return await powerCost(actor, item);
+      // A Zord or vehicle has no Power pool - the crew member chosen to roll pays instead.
+      return await powerCost(actor, item, childRoller?.system?.powers ? childRoller : actor);
     } else if (rollType == 'rolePoints') {
       await spendRolePoint(actor, item);
     }

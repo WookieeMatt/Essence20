@@ -1147,3 +1147,28 @@ export const applyChatMessageSystemColor = function (message, html) {
   html.style.setProperty('--e20-system-color', normalizedColor);
   html.style.setProperty('--e20-system-color-50', alphaColor);
 };
+
+/**
+ * Runs each renderChatMessageHTML decorator (crit highlighting, every post-roll button, the check
+ * card listeners...) on its own, so one that throws - or rejects, for an async one - is logged and
+ * the rest still run. Called in sequence they shared one fate: an error in, say, Spite's button
+ * stopped High-Density's and everything after it from ever being added to that card.
+ * @param {Array<Function>} decorators   Each called as decorator(message, html).
+ * @param {ChatMessage} message
+ * @param {HTMLElement} html
+ */
+export function runChatDecorators(decorators, message, html) {
+  for (const decorator of decorators) {
+    const report = (error) => console.error(
+      `Essence20 | ${decorator.name || 'chat decorator'} failed on chat message ${message?.id}`, error,
+    );
+    try {
+      const result = decorator(message, html);
+      if (typeof result?.then == 'function') {
+        result.catch(report);
+      }
+    } catch (error) {
+      report(error);
+    }
+  }
+}

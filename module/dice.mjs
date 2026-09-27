@@ -5470,12 +5470,11 @@ export class Dice {
     // environmental conditions and grants Edge on all Skill Tests made to resist adverse
     // situations." "Which Skill Tests actually resist an adverse situation" isn't a concept this
     // codebase can identify in general (the same "no hook to check a fictional qualifier against"
-    // gap Environmental Expertise's own doc comment already accepts), so this automatically grants
-    // Edge only for the one adverse-situation case this pass CAN check for free - the wearer's own
-    // physical environment (helpers/environment.mjs) currently being anything other than `normal` -
-    // and otherwise leaves it to the player's own judgment via a Roll Options Dialog checkbox (see
-    // updatedShiftDataset.enviroSealedAvailable below) for adverse situations unrelated to the
-    // physical environment (resisting poison, fear, disease, and the like). The immunity half
+    // gap Environmental Expertise's own doc comment already accepts), so the Edge comes from a Roll
+    // Options Dialog checkbox (updatedShiftDataset.enviroSealedAdverseSituationAvailable below). It
+    // starts ticked in the one adverse-situation case this CAN check for free - the wearer's own
+    // physical environment (helpers/environment.mjs) being anything other than `normal` - and is
+    // the player's call otherwise (resisting poison, fear, disease, and the like). The immunity half
     // ("most environmental conditions") isn't built - this system has no generic "environmental
     // condition" category to grant immunity from.
     const hasEnviroSealedEdge = isEnviroSealedEdgeActive(equippedArmor, getEnvironment(actor));
@@ -5969,7 +5968,7 @@ export class Dice {
       // Command's own banked Edge) rather than something this method derives itself.
       edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge || combatModifiers.edge
         || !!specialization?.edge || hasExtraRoughTrainingEdge || hasRelicKeyEdge || hasLinkedEdge
-        || hasWaitForAnOpeningEdge || !!dataset.isRegeneration || !!dataset.edge || hasEnviroSealedEdge,
+        || hasWaitForAnOpeningEdge || !!dataset.isRegeneration || !!dataset.edge,
       snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag || combatModifiers.snag
         || !!specialization?.snag,
     };
@@ -6322,6 +6321,11 @@ export class Dice {
     // this armor at all (not gated on environment - this is specifically the checkbox for adverse
     // situations OTHER than the physical environment, which is handled automatically instead).
     updatedShiftDataset.enviroSealedAdverseSituationAvailable = hasEquippedEnviroSealedArmor(equippedArmor);
+    // In a hostile physical environment the same checkbox starts ticked, rather than the Edge being
+    // forced on ahead of the dialog - so the dialog shows why there's an Edge, and the player or GM
+    // can untick it for a roll that isn't resisting anything. Ticking moves the dialog's own
+    // Snag/Normal/Edge radio with it (helpers/edge-toggle-link.mjs), which is what gets rolled.
+    updatedShiftDataset.enviroSealedAdverseSituationChecked = hasEnviroSealedEdge;
 
     // Pressure Cooker - see PRESSURE_COOKER_ID's own comment above. "If you only have 1 Health
     // left" - a genuinely enforceable precondition (unlike most fictional qualifiers this project
@@ -9873,14 +9877,8 @@ export class Dice {
       await eltarianTech.update({ 'system.resource.value': eltarianTech.system.resource.value - 1 });
     }
 
-    // Enviro-Sealed - see this armor trait's own comment above (near hasEnviroSealedEdge). The
-    // automatic half already covers "adverse situation = a non-normal physical environment"; this
-    // checkbox is the player's own declaration of an adverse situation unrelated to the physical
-    // environment (resisting poison, fear, disease...) - free (no resource spent, RAW doesn't
-    // charge for this armor's own passive Edge), same shape as Presence's untrained-Snag waiver.
-    if (skillRollOptions.applyEnviroSealedAdverseSituation && updatedShiftDataset.enviroSealedAdverseSituationAvailable) {
-      skillRollOptions.edge = true;
-    }
+    // Enviro-Sealed's checkbox needs nothing here: the dialog moves its Snag/Normal/Edge radio with
+    // the checkbox (helpers/edge-toggle-link.mjs), so skillRollOptions.edge/snag already carry it.
 
     // Mystical Understanding - Spellcialize - see MYSTICAL_UNDERSTANDING_ID's own comment above.
     // Grants isSpecialized directly (not an Edge/Snag change) and spends the actor's own base

@@ -187,9 +187,9 @@
 
   {{#if enviroSealedAdverseSituationAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogEnviroSealedAdverseSituation'}}</span>
+    <span>{{localize 'E20.RollDialogEnviroSealedAdverseSituation'}}{{#if enviroSealedAdverseSituationChecked}} {{localize 'E20.RollDialogEnviroSealedHostileEnvironment'}}{{/if}}</span>
     <label class="switch">
-      <input type="checkbox" name="applyEnviroSealedAdverseSituation" />
+      <input type="checkbox" name="applyEnviroSealedAdverseSituation" {{#if enviroSealedAdverseSituationChecked}}checked{{/if}} />
       <span class="switch-slider"></span>
     </label>
   </div>

@@ -41,7 +41,7 @@ import StartingEssences from "./apps/starting-essences.mjs";
 import StatBlockImporter from "./apps/stat-block-importer.mjs";
 import { canSwapTokenForm, swapTokenForm } from "./helpers/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
-import { addConsummatePerformerButton, addDefenseBoostButton, addExploitWeaknessButton, addFlashyButton, addFrenziedAttackButton, addHighDensityButton, addOneUppingButton, addRerollButtons, addSecretHelperButton, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { addConsummatePerformerButton, addDefenseBoostButton, addExploitWeaknessButton, addFlashyButton, addFrenziedAttackButton, addHighDensityButton, addOneUppingButton, addRerollButtons, addSecretHelperButton, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure, runChatDecorators } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
@@ -669,27 +669,32 @@ Hooks.on("renderTokenHUD", (hud, html) => {
   column.appendChild(button);
 });
 
-Hooks.on("renderChatMessageHTML", (app, html, data) => {
-  highlightCriticalSuccessFailure(app, html, data);
-  addRerollButtons(app, html);
-  addDefenseBoostButton(app, html);
-  addConsummatePerformerButton(app, html);
-  addSpiteButton(app, html);
-  addOneUppingButton(app, html);
-  addSecretHelperButton(app, html);
-  addSufferButton(app, html);
-  addFrenziedAttackButton(app, html);
-  addHighDensityButton(app, html);
-  addExploitWeaknessButton(app, html);
-  addFlashyButton(app, html);
-  attachCheckCardListeners(app, html);
-  hideDifficultyForNonGm(app, html);
-  applyChatMessageSystemColor(app, html);
-  activateWelcomeOfferListeners(app, html);
-  // Namespaces the message so _chat.scss can scope its envelope rules to our own cards
-  // rather than styling every message in a shared chat log.
-  html.classList.add("essence20");
-  applyThemeClass(html);
+Hooks.on("renderChatMessageHTML", (app, html) => {
+  // Each one runs on its own, so an error in one can't stop the rest - see chat.mjs#runChatDecorators.
+  runChatDecorators([
+    highlightCriticalSuccessFailure,
+    addRerollButtons,
+    addDefenseBoostButton,
+    addConsummatePerformerButton,
+    addSpiteButton,
+    addOneUppingButton,
+    addSecretHelperButton,
+    addSufferButton,
+    addFrenziedAttackButton,
+    addHighDensityButton,
+    addExploitWeaknessButton,
+    addFlashyButton,
+    attachCheckCardListeners,
+    hideDifficultyForNonGm,
+    applyChatMessageSystemColor,
+    activateWelcomeOfferListeners,
+    // Namespaces the message so _chat.scss can scope its envelope rules to our own cards
+    // rather than styling every message in a shared chat log.
+    function namespaceChatMessage(message, element) {
+      element.classList.add("essence20");
+      applyThemeClass(element);
+    },
+  ], app, html);
 });
 
 // @Check[...] links (module/helpers/enrichers.mjs) can appear in item/actor descriptions and

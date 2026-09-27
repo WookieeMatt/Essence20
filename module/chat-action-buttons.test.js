@@ -4,7 +4,7 @@
  * @jest-environment jsdom
  */
 import { jest } from '@jest/globals';
-import { addHighDensityButton } from "./chat.mjs";
+import { addHighDensityButton, runChatDecorators } from "./chat.mjs";
 
 // Foundry core's roll markup: the formula and total both live inside .dice-roll.
 function renderCard() {
@@ -58,5 +58,43 @@ describe("post-roll chat buttons", () => {
     addHighDensityButton(highDensityHit(), html);
     expect(html.querySelectorAll(".e20-chat-action-buttons")).toHaveLength(1);
     expect(html.querySelectorAll(".e20-chat-action-buttons button")).toHaveLength(2);
+  });
+});
+
+describe("runChatDecorators", () => {
+  let consoleError;
+  beforeEach(() => {
+    consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    ChatMessage.getSpeakerActor = jest.fn(() => ({ isOwner: true }));
+    fromUuidSync.mockReturnValue({ uuid: "Actor.a1.Item.e1" });
+  });
+
+  afterEach(() => {
+    consoleError.mockRestore();
+    fromUuidSync.mockReset();
+  });
+
+  test("an earlier decorator that throws doesn't stop the High-Density button", () => {
+    const html = renderCard();
+    function brokenSpiteButton() {
+      throw new Error("boom");
+    }
+
+    runChatDecorators([brokenSpiteButton, addHighDensityButton], highDensityHit(), html);
+    expect(html.querySelector(".e20-high-density-button")).not.toBeNull();
+    expect(consoleError).toHaveBeenCalledWith(expect.stringContaining("brokenSpiteButton"), expect.any(Error));
+  });
+
+  test("an async decorator that rejects is logged, not left unhandled, and the rest still run", async () => {
+    const after = jest.fn();
+    async function brokenAsync() {
+      throw new Error("later");
+    }
+
+    runChatDecorators([brokenAsync, after], { id: "m1" }, document.createElement("li"));
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(after).toHaveBeenCalled();
+    expect(consoleError).toHaveBeenCalledWith(expect.stringContaining("brokenAsync"), expect.any(Error));
   });
 });
