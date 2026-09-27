@@ -435,6 +435,7 @@ export function createEntry(droppedItem, targetItem) {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
       entry['damageType'] = droppedItem.system.damageType;
+      entry['secondaryDamage'] = droppedItem.system.secondaryDamage;
       entry['numHands'] = droppedItem.system.numHands;
       entry['numTargets'] = droppedItem.system.numTargets;
       entry['radius'] = droppedItem.system.radius;
@@ -466,6 +467,7 @@ export function createEntry(droppedItem, targetItem) {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
       entry['damageType'] = droppedItem.system.damageType;
+      entry['secondaryDamage'] = droppedItem.system.secondaryDamage;
       entry['numHands'] = droppedItem.system.numHands;
       entry['numTargets'] = droppedItem.system.numTargets;
       entry['radius'] = droppedItem.system.radius;

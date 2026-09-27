@@ -73,11 +73,22 @@ export async function applyOngoingEffectsAtTurnEnd(actor) {
 
   const remaining = [];
   for (const effect of effects) {
+    const roundsRemaining = effect.roundsRemaining - 1;
     if (effect.damageValue) {
       await applyDamage(actor, effect.damageValue, effect.damageType);
+      // Same one-line chat record the environment hazards post, so the Health loss isn't silent.
+      await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        content: game.i18n.format('E20.OngoingDamageChat', {
+          name: actor.name,
+          value: effect.damageValue,
+          type: game.i18n.localize(CONFIG.E20.damageTypes?.[effect.damageType] ?? effect.damageType),
+          source: effect.sourceName,
+          rounds: Math.max(roundsRemaining, 0),
+        }),
+      });
     }
 
-    const roundsRemaining = effect.roundsRemaining - 1;
     if (roundsRemaining > 0) {
       remaining.push({ ...effect, roundsRemaining });
     }

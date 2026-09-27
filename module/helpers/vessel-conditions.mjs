@@ -554,19 +554,33 @@ export async function openVesselRepairDialog(vessel) {
 }
 
 /**
- * Who this user can have attempt a repair: the vessel's own crew and passengers this user owns,
- * plus their assigned character.
+ * Who this user can have attempt a repair: the vessel's own crew and passengers this user owns, their
+ * assigned character, the actors of any tokens they have selected, and - for a GM, who has no
+ * assigned character - every player character with a token on the current scene.
  * @param {Actor} vessel
  * @returns {Array<Actor>}
- * @private
  */
-function getRepairCandidates(vessel) {
+export function getRepairCandidates(vessel) {
   const candidates = Object.values(vessel.system?.actors ?? {})
     .map(crew => fromUuidSync(crew.uuid))
     .filter(actor => actor?.isOwner);
-  const character = game.user?.character;
-  if (character && !candidates.includes(character)) {
-    candidates.push(character);
+  const add = (actor) => {
+    if (actor && actor !== vessel && actor.isOwner && !candidates.includes(actor)) {
+      candidates.push(actor);
+    }
+  };
+
+  add(game.user?.character);
+  for (const token of canvas?.tokens?.controlled ?? []) {
+    add(token.actor);
+  }
+
+  if (game.user?.isGM) {
+    for (const token of canvas?.scene?.tokens ?? []) {
+      if (token.actor?.type == 'playerCharacter') {
+        add(token.actor);
+      }
+    }
   }
 
   return candidates.filter(actor => actor?._dice);

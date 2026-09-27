@@ -153,6 +153,20 @@ describe('promptExoFrameTest', () => {
     expect(actor._dice.rollSkill).toHaveBeenCalled();
   });
 
+  // Core's DialogV2.confirm is `static confirm(config) { return this.wait(...) }` - calling a bare
+  // reference to it loses `this`, which the plain jest.fn mock above can't catch.
+  test('calls DialogV2.confirm with its class as `this`', async () => {
+    foundry.applications.api.DialogV2 = {
+      wait: jest.fn(async () => true),
+      confirm(config) {
+        return this.wait(config);
+      },
+    };
+    const actor = makeActor();
+    await promptExoFrameTest(actor);
+    expect(actor._dice.rollSkill).toHaveBeenCalled();
+  });
+
   test('declining stamps the turn without rolling', async () => {
     setGame({ confirm: false });
     const actor = makeActor();

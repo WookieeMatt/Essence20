@@ -172,7 +172,8 @@ export function isConfirming() {
  * @returns {Promise<Boolean>}
  */
 async function confirmOverspend(actor, check) {
-  const confirm = foundry.applications?.api?.DialogV2?.confirm;
+  // Bound, not a bare reference: DialogV2.confirm calls this.wait internally.
+  const confirm = foundry.applications?.api?.DialogV2?.confirm?.bind(foundry.applications.api.DialogV2);
   if (!confirm) {
     return true;
   }

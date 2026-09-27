@@ -372,6 +372,26 @@ export async function applyWreckerRoughTerrain(actor, results, checkContext) {
 }
 
 /**
+ * Wrecker on an automatic failure: an attack shifted down to auto-fail or Fumble never reaches the
+ * per-target roll, so it has no results - but it still misses every target (user ruling,
+ * 2026-09-26), so each target's space becomes Rough Terrain the same as an ordinary miss.
+ * @param {Actor} actor
+ * @param {Item} item                         The weaponEffect being rolled.
+ * @param {Iterable<Token>} targets           The attacker's current targets.
+ * @returns {Promise<Number>}                 How many Regions were created.
+ */
+export async function applyWreckerOnAutoFail(actor, item, targets) {
+  if (item?.type != 'weaponEffect') {
+    return 0;
+  }
+
+  const results = [...(targets ?? [])]
+    .map(token => ({ success: false, targetUuid: token.actor?.uuid ?? null }))
+    .filter(result => result.targetUuid);
+  return applyWreckerRoughTerrain(actor, results, { isAttack: true, itemUuid: item.uuid });
+}
+
+/**
  * Whether an Item is the Piledriver (see PILEDRIVER_ID).
  * @param {Item} item
  * @returns {Boolean}

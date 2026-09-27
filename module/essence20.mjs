@@ -49,6 +49,7 @@ import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { applyVisionToTokens, getNumActions, syncAutoBlindStatus, syncAutoImmobilizedStatus } from "./helpers/actor.mjs";
 import { canUsePerk } from "./helpers/banked-buffs.mjs";
 import { canUsePower } from "./helpers/power-use.mjs";
+import { getWeaponEffectDamages } from "./helpers/damage-display.mjs";
 import { getSummonReadyRound, isSummonReady } from "./helpers/zord-summon.mjs";
 import { healStunAtTurnStart } from "./helpers/combat.mjs";
 import { applyTimeToThinkEdge } from "./helpers/time-to-think.mjs";
@@ -389,6 +390,10 @@ Handlebars.registerHelper("canUsePower", canUsePower);
 // for every attached actor in prepareSystemActors.
 Handlebars.registerHelper("isZordSummonReady", isSummonReady);
 Handlebars.registerHelper("zordSummonReadyRound", getSummonReadyRound);
+
+// Both damages a weaponEffect deals (main + secondaryDamage) with an icon each - see
+// helpers/damage-display.mjs. Used by the weapon row chips and the weaponEffect details card.
+Handlebars.registerHelper("weaponEffectDamages", getWeaponEffectDamages);
 
 // system.items collections (Role/Focus's granted-item lists, among others) are a plain object
 // keyed by short random ids, not an array - {{#each}} over them iterates in insertion order, not

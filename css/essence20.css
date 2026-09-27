@@ -3042,9 +3042,25 @@
   margin: 2px;
 }
 
+/* The window sizes to its content, so a long trait list (weapons have dozens) grew it past the
+   bottom of the screen with nothing left to scroll. Cap the window at the viewport, and let only
+   the list scroll so the Save footer stays in view - the same flex-column/min-height 0 chain
+   choice-selector-long uses. */
 .essence20.trait-selector {
-  flex-grow: auto;
-  overflow: auto;
+  max-height: 90vh;
+}
+
+.essence20.trait-selector > .window-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.essence20.trait-selector > .window-content > .trait-selector {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .essence20 .action-economy {
