@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { _onUpgradeDrop, onDropActor, verifyDropSelection } from "./drop-handler.mjs";
+import { _onTransformerArmorUpgradeDrop, _onUpgradeDrop, onDropActor, verifyDropSelection } from "./drop-handler.mjs";
 import { DETACHED_THIS_SCENE_FLAG } from "./vehicle-handler.mjs";
 
 function makeVehicle(actors, numDrivers, numPassengers) {
@@ -68,6 +68,76 @@ describe("_onUpgradeDrop", () => {
     expect(dropFunc).not.toHaveBeenCalled();
     expect(global.ui.notifications.error).toHaveBeenCalledWith('E20.UpgradeDropError');
     expect(result).toBe(false);
+  });
+});
+
+describe("an armor Upgrade dropped on an actor that can transform", () => {
+  let originalFoundry;
+  const wait = jest.fn();
+  beforeEach(() => {
+    originalFoundry = global.foundry;
+    global.foundry = { ...originalFoundry, applications: { api: { DialogV2: { wait } } } };
+    wait.mockReset();
+  });
+  afterEach(() => {
+    global.foundry = originalFoundry;
+  });
+
+  const upgrade = { name: 'Reinforced Plating', system: { type: 'armor' } };
+  function makeBot(armors) {
+    return { name: 'Bumblebee', system: { canTransform: true }, items: { documentsByType: { armor: armors } } };
+  }
+
+  test("with no Armor, it installs in the body without asking", async () => {
+    const dropFunc = jest.fn(async () => [{}]);
+    await _onUpgradeDrop(upgrade, makeBot([]), dropFunc);
+    expect(wait).not.toHaveBeenCalled();
+    expect(dropFunc).toHaveBeenCalled();
+  });
+
+  test("Power Armor isn't offered as somewhere to put it", async () => {
+    const dropFunc = jest.fn(async () => [{}]);
+    await _onTransformerArmorUpgradeDrop(upgrade, makeBot([{ id: 'p', name: 'Ranger Suit', system: { isPowerArmor: true } }]), dropFunc);
+    expect(wait).not.toHaveBeenCalled();
+    expect(dropFunc).toHaveBeenCalled();
+  });
+
+  test("with Armor, it asks - offering the body and each Armor, worn ones marked", async () => {
+    wait.mockResolvedValue('body');
+    const dropFunc = jest.fn(async () => [{}]);
+    const bot = makeBot([
+      { id: 'a1', name: 'Vest', system: { equipped: true } },
+      { id: 'a2', name: 'Shield Plate', system: { equipped: false } },
+    ]);
+
+    await _onTransformerArmorUpgradeDrop(upgrade, bot, dropFunc);
+
+    const actions = wait.mock.calls[0][0].buttons.map(b => [b.action, b.label]);
+    expect(actions).toEqual([
+      ['body', 'E20.ArmorUpgradeInstallBody'],
+      ['a1', 'E20.ArmorUpgradeInstallOnArmorEquipped'],
+      ['a2', 'E20.ArmorUpgradeInstallOnArmor'],
+    ]);
+    expect(dropFunc).toHaveBeenCalled();
+  });
+
+  test("picking an Armor attaches the Upgrade to it", async () => {
+    wait.mockResolvedValue('a1');
+    const created = { name: 'Reinforced Plating', type: 'upgrade', uuid: 'Actor.x.Item.u', system: { type: 'armor' }, setFlag: jest.fn() };
+    const dropFunc = jest.fn(async () => [created]);
+    const armor = { _id: 'a1', id: 'a1', name: 'Vest', type: 'armor', system: { equipped: true, items: {} }, update: jest.fn() };
+
+    await _onTransformerArmorUpgradeDrop(upgrade, makeBot([armor]), dropFunc);
+
+    expect(created.setFlag).toHaveBeenCalledWith('essence20', 'parentId', 'a1');
+  });
+
+  test("closing the prompt drops nothing", async () => {
+    wait.mockResolvedValue(null);
+    const dropFunc = jest.fn();
+    const result = await _onTransformerArmorUpgradeDrop(upgrade, makeBot([{ id: 'a1', name: 'Vest', system: {} }]), dropFunc);
+    expect(result).toBe(false);
+    expect(dropFunc).not.toHaveBeenCalled();
   });
 });
 

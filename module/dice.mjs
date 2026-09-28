@@ -12844,6 +12844,9 @@ export class Dice {
       // Fanning - documents/item.mjs#roll flags the weapon for a reload after any Fanning Attack
       // ("After a Fanning Attack, the weapon gains the Reload trait").
       fanned: fanningShots > 0,
+      // Empty the Mag was used - it only fires on a hit (see _applyEmptyTheMag), and afterwards the
+      // weapon must be reloaded (documents/item.mjs#roll).
+      emptiedMag: !!skillRollOptions.emptyTheMag && outcomes.some(outcome => outcome.results.some(result => result.success)),
     };
   }
 

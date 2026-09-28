@@ -1,3 +1,6 @@
+import { actorHasPerk } from "./perks.mjs";
+import { getUses, markUsed } from "./scene-clock.mjs";
+
 /**
  * Reload (GI Joe CRB, Weapon Effects and Traits, p.147; the identical wording recurs in every
  * core rulebook's own Weapon Traits list, e.g. Transformers CRB, Power Rangers Across the Stars,
@@ -14,10 +17,9 @@
  * at all), spending a Move action itself to clear the flag, then calls markWeaponNeedsReload()
  * right after a shot actually goes out (hit or miss - "after firing", not "after hitting").
  *
- * Not modelled: the Ammo Belt weapon upgrade ("once per scene, reload this weapon as a Free action
- * instead of a Move action") and the Rapid Reload Focus Perk - both re-cost this same Move action
- * rather than introducing a new concept, and are left for a follow-up once Reload itself has
- * shipped.
+ * What the reload costs, and when one is needed at all, is decided by getReloadCost/requireReload at
+ * the end of this file: Rapid Reload and the Ammo Belt upgrade make it a Free action, Deep Magazines
+ * skips the first reload each combat, and Empty the Mag also calls for one.
  */
 
 /**
@@ -82,4 +84,73 @@ export async function markBurstFiredThisRound(weapon) {
   if (weapon && game.combat) {
     await weapon.setFlag('essence20', 'burstFiredThisRound', { combatId: game.combat.id, round: game.combat.round });
   }
+}
+
+const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
+// Rapid Reload (GI Joe CRB, Infantry base, 3rd level, p.79): "reloading weapons with the Reload
+// trait is a Free action for you."
+export const RAPID_RELOAD_ID = `${GI_JOE_CRB}c0woQ6aEyVd4DBvA`;
+// Deep Magazines (GI Joe CRB, Heavy Ordnance Focus, 10th level, p.111): "ignore the first time you
+// would need to reload per combat."
+export const DEEP_MAGAZINES_ID = `${GI_JOE_CRB}REVp8LHYJFOqQ597`;
+// Ammo Belt (GI Joe CRB and Transformers CRB, Weapon Upgrades): "Once per scene, reload this weapon
+// as a Free action instead of a Move action." The same _id in both books' packs.
+const AMMO_BELT_ITEM_ID = '92V9QrCXJYmY2p7O';
+const AMMO_BELT_USED_FLAG = 'ammoBeltUsedThisScene';
+const DEEP_MAGAZINES_USED_FLAG = 'deepMagazinesUsedThisCombat';
+
+/**
+ * Whether a weapon carries an Ammo Belt upgrade - attached by hand, or printed on a pre-upgraded
+ * weapon such as "Machine Gun (Ammo Belt)". Read off the weapon's own attachment entries.
+ * @param {Item} weapon
+ * @returns {Boolean}
+ */
+export function hasAmmoBelt(weapon) {
+  return Object.values(weapon?.system?.items ?? {}).some(entry => entry?.type == 'upgrade'
+    && (String(entry.uuid ?? '').endsWith(`.${AMMO_BELT_ITEM_ID}`) || entry.name == 'Ammo Belt'));
+}
+
+/**
+ * What reloading this weapon costs this actor right now: a Free action with Rapid Reload, or with
+ * the weapon's Ammo Belt if it hasn't been used this scene (which this then spends); otherwise the
+ * usual Move action.
+ * @param {Actor} actor
+ * @param {Item} weapon
+ * @returns {Promise<{action: String, source: ?String}>}   action is 'free' or 'move'; source names
+ *   what made it free, for the action-economy log.
+ */
+export async function getReloadCost(actor, weapon) {
+  if (actorHasPerk(actor, RAPID_RELOAD_ID)) {
+    return { action: 'free', source: 'Rapid Reload' };
+  }
+
+  if (hasAmmoBelt(weapon) && getUses(weapon, AMMO_BELT_USED_FLAG, 'scene') < 1) {
+    await markUsed(weapon, AMMO_BELT_USED_FLAG, { window: 'scene' });
+    return { action: 'free', source: 'Ammo Belt' };
+  }
+
+  return { action: 'move', source: null };
+}
+
+/**
+ * The weapon now needs a reload before it fires again - unless Deep Magazines hasn't been used yet
+ * this combat, in which case this one is ignored (and says so). Every "must reload" in the system
+ * goes through here: the Reload trait, a Fanning volley, Burst-Fire's second shot, Empty the Mag.
+ * @param {Actor} actor
+ * @param {Item} weapon
+ * @returns {Promise<Boolean>}   Whether the weapon was flagged (false when Deep Magazines skipped it).
+ */
+export async function requireReload(actor, weapon) {
+  if (!weapon) {
+    return false;
+  }
+
+  if (game.combat && actorHasPerk(actor, DEEP_MAGAZINES_ID) && getUses(actor, DEEP_MAGAZINES_USED_FLAG) < 1) {
+    await markUsed(actor, DEEP_MAGAZINES_USED_FLAG);
+    ui.notifications?.info(game.i18n.format('E20.DeepMagazinesSkippedReload', { name: actor?.name ?? '', weapon: weapon.name }));
+    return false;
+  }
+
+  await markWeaponNeedsReload(weapon);
+  return true;
 }

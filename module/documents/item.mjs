@@ -1,9 +1,7 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { consumeForItem, describeCost, refund, setAiming, spend } from "../helpers/action-economy.mjs";
-import {
-  clearWeaponReload, hasBurstFiredThisRound, markBurstFiredThisRound, markWeaponNeedsReload, weaponNeedsReload,
-} from "../helpers/reload.mjs";
+import { clearWeaponReload, getReloadCost, hasBurstFiredThisRound, markBurstFiredThisRound, requireReload, weaponNeedsReload } from "../helpers/reload.mjs";
 import { isMountedWeaponSetUp } from "../helpers/mounted.mjs";
 import { isInactiveMythicForm } from "../helpers/mythically-modular.mjs";
 import { checkVehicularEligibility } from "../helpers/vehicular.mjs";
@@ -714,11 +712,13 @@ export class Essence20Item extends Item {
         // Fanning weapons join in only once a Fanning Attack has flagged them (see the fanned check
         // below); a High-Density follow-up is the same shot as the Attack it follows, so it never
         // stops to reload (helpers/high-density.mjs).
-        if ((parentWeapon?.system.traits?.includes('reload') || parentWeapon?.system.itemAndUpgradeTraits?.includes('burstFire')
-          || parentWeapon?.system.traits?.includes('fanning'))
-          && !dataset.highDensityFollowUp && weaponNeedsReload(parentWeapon)) {
-          const reloadSpend = await spend(roller, 'move', {
-            source: parentWeapon.name, bypass: dataset.bypassEconomy,
+        // Any weapon a "must reload" rule flagged - Empty the Mag can flag one without the trait.
+        // Rapid Reload / the Ammo Belt make the reload a Free action (helpers/reload.mjs).
+        if (!dataset.highDensityFollowUp && weaponNeedsReload(parentWeapon)) {
+          const reloadCost = await getReloadCost(roller, parentWeapon);
+          const reloadSpend = await spend(roller, reloadCost.action, {
+            source: reloadCost.source ? `${parentWeapon.name} (${reloadCost.source})` : parentWeapon.name,
+            bypass: dataset.bypassEconomy,
           });
           if (reloadSpend.blocked) {
             if (!reloadSpend.cancelled) {
@@ -971,13 +971,19 @@ export class Essence20Item extends Item {
       // Reload - see helpers/reload.mjs's own doc comment. Flags the weapon for next time
       // regardless of whether this shot hit; "fired" is what matters, "landed" isn't.
       if (!weaponRollResult?.cancelled && parentWeapon?.system.traits?.includes('reload')) {
-        await markWeaponNeedsReload(parentWeapon);
+        await requireReload(roller, parentWeapon);
       }
 
       // Fanning (A Jump Through Time, p.74): "After a Fanning Attack, the weapon gains the Reload
       // trait" - see helpers/fanning.mjs. The gate above already honours the flag on a Fanning weapon.
       if (!weaponRollResult?.cancelled && weaponRollResult?.fanned) {
-        await markWeaponNeedsReload(parentWeapon);
+        await requireReload(roller, parentWeapon);
+      }
+
+      // Empty the Mag (GI Joe CRB, Vanguard, p.109): "After using this ability, you must reload your
+      // weapon before you can use it again" - whether or not the weapon has the Reload trait.
+      if (!weaponRollResult?.cancelled && weaponRollResult?.emptiedMag) {
+        await requireReload(roller, parentWeapon);
       }
 
       // Burst-Fire - see helpers/reload.mjs's own doc comment. A second shot in the same round
@@ -985,7 +991,7 @@ export class Essence20Item extends Item {
       // trait for the turn; either way, this shot itself stamps "fired this round" for next time.
       if (!weaponRollResult?.cancelled && parentWeapon?.system.itemAndUpgradeTraits?.includes('burstFire')) {
         if (hasBurstFiredThisRound(parentWeapon)) {
-          await markWeaponNeedsReload(parentWeapon);
+          await requireReload(roller, parentWeapon);
         }
 
         await markBurstFiredThisRound(parentWeapon);

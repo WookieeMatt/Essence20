@@ -1659,6 +1659,17 @@ describe("Reload / Consumable (weaponEffect roll() integration - see helpers/rel
     expect(weapon.setFlag).not.toHaveBeenCalled();
   });
 
+  // Empty the Mag (GI Joe CRB, Vanguard, p.109): "After using this ability, you must reload your
+  // weapon" - even one without the Reload trait.
+  test("Empty the Mag flags the weapon for a reload, trait or not", async () => {
+    const weapon = makeWeapon([]);
+    const item = makeWeaponEffectItem(weapon, { name: 'Duke' }, { emptiedMag: true });
+
+    await item.roll({});
+
+    expect(weapon.setFlag).toHaveBeenCalledWith('essence20', 'needsReload', true);
+  });
+
   /**
    * A real combatant/actor pair wired into global.game, same shape as _rollWithRefund's own
    * withCombat() above, needed here so canSpend()'s Move-action affordability check has a real
