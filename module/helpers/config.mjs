@@ -873,6 +873,8 @@ preLocalize("actionEconomyModes");
 
 // Options for Intervals
 E20.usesInterval = {
+  // Per day: given back by a Rest - see helpers/nanomite-uses.mjs.
+  perDay: "E20.UsesIntervalDay",
   perScene: "E20.UsesIntervalScene",
   perTurn: "E20.UsesIntervalTurn",
   special: "E20.UsesIntervalSpecial",
@@ -1295,6 +1297,9 @@ preLocalize("gearTypes");
 // Power types
 E20.powerTypes = {
   grid: "E20.PowerSourceGrid",
+  // G.I. Joe nanomite powers (Quartermaster's Guide to Gear p.92) - uses per day, no Power points.
+  // See helpers/nanomite-uses.mjs.
+  nanomite: "E20.PowerSourceNanomite",
   sorcerous: "E20.PowerSourceSorcerous",
   threat: "E20.PowerSourceThreat",
 };
@@ -1708,11 +1713,9 @@ E20.rerollConditions = {
   belowSmallestSkillDie: "E20.RerollConditionBelowSmallestSkillDie",
   // GI Joe CRB "Survivalist" (Focus: Predator, 17th level, p.94): "in your environment of
   // expertise, reroll all skill dice results of 1..." Checked against
-  // helpers/environmental-expertise.mjs#hasActiveEnvironmentalExpertise, the same player-toggled
-  // on/off flag Environmental Armor/Prowl/Recon already read for their own in-environment
-  // bonuses. NOTE: this pass could not add the matching lang/en.json label (out of scope for this
-  // code-only session) - the reroll-config editor's dropdown falls back to showing this raw key
-  // untranslated until that string lands.
+  // helpers/environmental-expertise.mjs#hasActiveEnvironmentalExpertise (the scene's terrain when
+  // set, else the manual toggle), the same check Environmental Armor/Prowl/Recon read for their
+  // own in-environment bonuses.
   inEnvironmentOfExpertise: "E20.RerollConditionInEnvironmentOfExpertise",
   // A Jump Through Time "Focused Strike" (Quantum Ranger, 9th level, p.46): "When you make an
   // Unarmed Attack, you can spend one Personal Power to re-roll..." Checked against the
@@ -1750,6 +1753,61 @@ E20.environments = {
   woodlands: "E20.EnvironmentWoodlands",
 };
 preLocalize("environments");
+
+/* Physical scene/region environment (Across the Stars, "Exploring Infinite Environments,"
+   p.24-25) - what the AIR/GRAVITY/WATER around a token's current position is actually like right
+   now, checked by helpers/environment.mjs#getEnvironment and read by weapon/armor traits like
+   Inertial, Aquatic/Amphibious and Enviro-Sealed (see dice.mjs's own "Environment" block in
+   _getAutomaticCombatModifiers).
+
+   Deliberately a SEPARATE key from E20.environments just above, even though "environment" is the
+   obvious name for both: that one is GI Joe CRB's own "Environment of Expertise" terrain-type enum
+   (arctic/desert/wetlands/...) for the Environmental Expertise Perk's `choiceType: "environments"`
+   picker (helpers/environmental-expertise.mjs) - a fictional biome the PLAYER declares their
+   character trained in, never read off a scene. This is a physically-simulated condition of the
+   current location instead (only one of these is ever true at a time, it changes when a token
+   moves, and it's set by the GM on the Scene or a Region, not chosen once at character creation) -
+   collapsing the two into one enum would make either "in your environment of expertise" or "in
+   zero-G" impossible to check independently of the other.
+
+   Every environment Across the Stars' "Exploring Infinite Environments" section (p.23-25)
+   defines is listed. Extreme Temperature is split into Heat and Cold because
+   the book deals "1 Fire or Cold damage" depending on which it is. Roll modifiers live in dice.mjs's
+   "Environment" block, Movement in helpers/rough-terrain.mjs (cost) and actor.mjs (Low Gravity/
+   Zero-G), and damage over time in helpers/environment-hazards.mjs. */
+E20.sceneEnvironments = {
+  normal: "E20.SceneEnvironmentNormal",
+  underwater: "E20.SceneEnvironmentUnderwater",
+  corrosiveAtmosphere: "E20.SceneEnvironmentCorrosiveAtmosphere",
+  extremeCold: "E20.SceneEnvironmentExtremeCold",
+  extremeHeat: "E20.SceneEnvironmentExtremeHeat",
+  highGravity: "E20.SceneEnvironmentHighGravity",
+  irradiated: "E20.SceneEnvironmentIrradiated",
+  lowGravity: "E20.SceneEnvironmentLowGravity",
+  thickAtmosphere: "E20.SceneEnvironmentThickAtmosphere",
+  thinAtmosphere: "E20.SceneEnvironmentThinAtmosphere",
+  toxicAtmosphere: "E20.SceneEnvironmentToxicAtmosphere",
+  vacuum: "E20.SceneEnvironmentVacuum",
+  zeroGravity: "E20.SceneEnvironmentZeroGravity",
+};
+preLocalize("sceneEnvironments");
+
+/* Severity of an environment that has one (ATS Tables 1-11 Corrosive Strength, 1-12 Extreme
+   Temperatures, 1-13 Toxic Atmospheres) - one flat list shared by the Scene Config and the
+   Environment Region Behavior's `environmentLevel`. Which levels apply to which environment, and
+   how often each deals its damage, is helpers/environment-hazards.mjs's ENVIRONMENT_HAZARDS table;
+   a level that doesn't belong to the current environment falls back to that environment's default. */
+E20.environmentLevels = {
+  intense: "E20.EnvironmentLevelIntense",
+  concentrated: "E20.EnvironmentLevelConcentrated",
+  strong: "E20.EnvironmentLevelStrong",
+  mild: "E20.EnvironmentLevelMild",
+  lethal: "E20.EnvironmentLevelLethal",
+  dangerous: "E20.EnvironmentLevelDangerous",
+  uncomfortable: "E20.EnvironmentLevelUncomfortable",
+  harmful: "E20.EnvironmentLevelHarmful",
+};
+preLocalize("environmentLevels");
 
 /************************************************
  * Vehicles                                     *
@@ -1863,10 +1921,9 @@ E20.statusEffects = [
     // Critical Success, the target loses all Defense bonuses provided by armor until the end of
     // their next turn." Unlike most Conditions here, this one IS mechanically enforced - see
     // getDefenseValue's own comment in helpers/combat.mjs for how it forces ignoreArmor on
-    // whichever Defense is being computed for a target carrying it. No custom art yet - reuses
-    // Foundry's own bundled shield-slash icon, same "generic core icon" fallback Cover/Blanked
-    // above already use.
-    img: 'icons/svg/downgrade.svg',
+    // whichever Defense is being computed for a target carrying it. Icon: Font Awesome Free
+    // "shield-halved" (CC BY 4.0, credit kept in the SVG).
+    img: 'systems/essence20/assets/icons/status_effects/status_armor_stripped.svg',
     id: 'armorStripped',
     name: 'E20.StatusArmorStripped',
     changes: [],
@@ -1885,12 +1942,12 @@ E20.statusEffects = [
   },
   {
     // Blanked (Across the Stars, Space Vessel Condition, p.25): a damaged/jammed sensor suite
-    // leaves the crew unable to see anything outside the ship except by physical eyesight. Space
-    // Vessel Conditions are marked here, bookkeeping-only, the same idiom as every actor Condition
-    // below whose effect this system doesn't (yet) mechanically enforce (see e.g. surprised's own
-    // doc comment) - repairing one is a Technology Skill Test (helpers don't model that either).
-    // No dedicated art - reuses Foundry's bundled blind.svg.
-    img: 'icons/svg/blind.svg',
+    // leaves the crew unable to see anything outside the ship except by physical eyesight. A marker -
+    // there's no sensor model to blind. Every Space Vessel Condition's stacking, effects, Zord block
+    // and Technology repair live in helpers/vessel-conditions.mjs.
+    // Icon: Font Awesome Free "satellite-dish" (CC BY 4.0, credit kept in the SVG), so it no
+    // longer looks like Blinded.
+    img: 'systems/essence20/assets/icons/status_effects/status_blanked.svg',
     id: 'blanked',
     name: 'E20.StatusBlanked',
     changes: [],
@@ -1900,26 +1957,23 @@ E20.statusEffects = [
     // round." Bookkeeping-only, like every other status here - this system has no enforced
     // action economy to gate against, so nothing else reads this status; see the Laughtracting/
     // Distraughter Perk items themselves (packs/mlpcrbitems/_source) for the ability text.
-    img: 'systems/essence20/assets/icons/status_effects/status_immobilized.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_cant_take_move_actions.svg',
     id: 'cantTakeMoveActions',
     name: 'E20.StatusCantTakeMoveActions',
     changes: [],
   },
   {
     // Compromised (Across the Stars, Space Vessel Condition, p.25): a weakened hull, stacking -
-    // each instance reduces the vessel's maximum Health by 1, and it's Defeated once that reaches
-    // 0. Marked here rather than wired into the Health formula: this system's Condition framework
-    // is a plain on/off toggle with no built-in stack counter, and inventing one is a bigger,
-    // separate piece than adding the marker itself. Same bookkeeping-only idiom as Blanked above.
-    img: 'icons/svg/downgrade.svg',
+    // each instance reduces the vessel's maximum Health by 1 (actor.mjs#_prepareHealth), and it's
+    // Defeated once that reaches 0 (helpers/vessel-conditions.mjs).
+    img: 'systems/essence20/assets/icons/status_effects/status_compromised.svg',
     id: 'compromised',
     name: 'E20.StatusCompromised',
     changes: [],
   },
   {
-    // No custom art yet (p.202) - reuses Foundry's own bundled shield.svg, same "generic core
-    // icon" fallback already used elsewhere in this system rather than hand-authoring new art.
-    img: 'icons/svg/shield.svg',
+    // Cover (p.202).
+    img: 'systems/essence20/assets/icons/status_effects/status_cover.svg',
     id: 'cover',
     name: 'E20.StatusCover',
     changes: [],
@@ -1933,8 +1987,8 @@ E20.statusEffects = [
   {
     // Decompressed (Across the Stars, Space Vessel Condition, p.25): a leaking hull turns the
     // vessel's interior into a Thin Atmosphere environment; a second stack of this same Condition
-    // escalates it to a full Vacuum or Void instead. Bookkeeping-only marker, same idiom as
-    // Blanked/Compromised above - the environment-effect escalation isn't separately modeled.
+    // escalates it to a full Vacuum or Void instead - applied to everyone aboard by
+    // helpers/environment.mjs#getVesselInteriorEnvironment.
     img: 'icons/svg/explosion.svg',
     id: 'decompressed',
     name: 'E20.StatusDecompressed',
@@ -1955,7 +2009,7 @@ E20.statusEffects = [
        the same reuse cantTakeFreeActions makes of status_impaired. `changes` stays empty:
        the Snag lands on the ATTACKER's roll, not on any field of the defender, so there is
        nothing here for an Active Effect to change. */
-    img: 'systems/essence20/assets/icons/items/shield.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_defending.svg',
     id: 'defending',
     name: 'E20.StatusDefending',
     changes: [],
@@ -1998,8 +2052,8 @@ E20.statusEffects = [
   },
   {
     // Jammed (Across the Stars, Space Vessel Condition, p.25): the ship's own communications are
-    // knocked out (personal communicators may still work). Bookkeeping-only marker, same idiom as
-    // the other Space Vessel Conditions above.
+    // knocked out (personal communicators may still work). A marker - there's no communications
+    // model to switch off.
     img: 'icons/svg/sound-off.svg',
     id: 'jammed',
     name: 'E20.StatusJammed',
@@ -2008,8 +2062,8 @@ E20.statusEffects = [
   {
     // Leaking (Across the Stars, Space Vessel Condition, p.25): lost containment on fuel,
     // lubricant, or other toxic fluids turns the vessel's interior into a Toxic Atmosphere
-    // (Harmful concentration, escalating by one level of toxicity each additional stack).
-    // Bookkeeping-only marker, same idiom as the other Space Vessel Conditions above.
+    // (Harmful concentration, escalating by one level of toxicity each additional stack) - see
+    // helpers/environment.mjs#getVesselInteriorEnvironment.
     img: 'icons/svg/poison.svg',
     id: 'leaking',
     name: 'E20.StatusLeaking',
@@ -2058,17 +2112,17 @@ E20.statusEffects = [
     // Spun-Out (Across the Stars, Space Vessel Condition, p.25): damaged maneuverability - a
     // vessel with a zero-G minimum Aerial Movement has that minimum increased by 10 feet and now
     // needs two Free actions (instead of one) to reduce it by 5 feet; a second stack Immobilizes
-    // the vessel until repaired. Bookkeeping-only marker, same idiom as the other Space Vessel
-    // Conditions above.
-    img: 'icons/svg/direction.svg',
+    // the vessel until repaired (helpers/vessel-conditions.mjs). The +10 ft minimum drift and the
+    // two-Free-action inertia cost have no Movement field to live in and stay table rules.
+    img: 'systems/essence20/assets/icons/status_effects/status_spun_out.svg',
     id: 'spunOut',
     name: 'E20.StatusSpunOut',
     changes: [],
   },
   {
     // Sputtering (Across the Stars, Space Vessel Condition, p.25): engine damage treats the
-    // vessel's non-Ground Movement as Rough Terrain; a second stack Immobilizes it until repaired.
-    // Bookkeeping-only marker, same idiom as the other Space Vessel Conditions above.
+    // vessel's non-Ground Movement as Rough Terrain (helpers/rough-terrain.mjs); a second stack
+    // Immobilizes it until repaired (helpers/vessel-conditions.mjs).
     img: 'icons/svg/down.svg',
     id: 'sputtering',
     name: 'E20.StatusSputtering',
@@ -2097,10 +2151,7 @@ E20.statusEffects = [
     // gate against. The "cannot roll Skill Tests, except contested ones" half is still a marker
     // only - dice.mjs has no generic "which Skill Tests are contested" concept to hang a block on.
     // What the marker unlocks either way: immunity to it, and Perks that key off a target having it.
-    //
-    // No custom art - reuses Foundry's own bundled daze.svg, the same core-icon fallback cover
-    // above already uses.
-    img: 'icons/svg/daze.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_surprised.svg',
     id: 'surprised',
     name: 'E20.StatusSurprised',
     changes: [],
@@ -2112,8 +2163,8 @@ E20.statusEffects = [
     // half isn't enforced as a hard block (nothing else in this system's automatic combat
     // modifiers hard-blocks a roll, and the book itself treats it as overridable), so this status
     // gets the same automatic -2 as Cover instead - see dice.mjs#_getAutomaticCombatModifiers.
-    // Reuses Foundry's bundled castle.svg (a fully-walled-in visual) to read as stronger than the
-    // plain shield.svg used for Cover.
+    // Reuses Foundry's bundled castle.svg (a fully-walled-in visual) to read as stronger than
+    // Cover's own icon.
     img: 'icons/svg/castle.svg',
     id: 'totalCover',
     name: 'E20.StatusTotalCover',
@@ -2122,8 +2173,8 @@ E20.statusEffects = [
   {
     // Unstable (Across the Stars, Space Vessel Condition, p.25): damaged energy/aiming suites
     // impose ↓1 on all the vessel's hardpoint weapons, ↓2 on a second stack, and a third stack
-    // renders the hardpoint weapons inoperable entirely until repaired. Bookkeeping-only marker,
-    // same idiom as the other Space Vessel Conditions above.
+    // renders the hardpoint weapons inoperable entirely until repaired - dice.mjs applies the
+    // penalty and refuses the attack.
     img: 'icons/svg/hazard.svg',
     id: 'unstable',
     name: 'E20.StatusUnstable',

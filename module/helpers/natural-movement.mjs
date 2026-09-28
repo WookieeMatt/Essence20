@@ -1,4 +1,5 @@
 import { E20 } from "./config.mjs";
+import { isKnownOutsideEnvironmentOfExpertise } from "./environmental-expertise.mjs";
 
 /**
  * Natural Movement (GI Joe CRB, Focus: Predator, 6th level, p.93): "when in your environment of
@@ -6,13 +7,11 @@ import { E20 } from "./config.mjs";
  * Standard action, you gain a Climb or Swim Movement equal to half your Ground Movement until the
  * end of your next turn."
  *
- * "In your environment of expertise" is the same unenforceable narrative precondition
- * `helpers/sneak-attack.mjs#checkPredatorSneakAttackEligibility`'s own doc comment already
- * documents this system has no hook to check automatically - dropped here too, but unlike
- * Environmental Armor/Prowl (passive, always-on effects with NOTHING else gating them, correctly
- * left as infra) this Perk is already an explicit player-declared Standard action - clicking the
- * "Use" button itself IS the player's own declaration that the fictional trigger applies, the
- * same "player self-polices" idiom this project already accepts for narrower narrative qualifiers.
+ * "In your environment of expertise": when the scene's terrain says the actor is outside every
+ * environment of expertise (and no Adaptation / Read The Land flag covers it - see
+ * helpers/environmental-expertise.mjs#isKnownOutsideEnvironmentOfExpertise), switching it ON is
+ * refused with a warning. On a scene with no terrain set, clicking the "Use" button stays the
+ * player's own declaration that the fictional trigger applies, as before.
  *
  * A plain on/off toggle (same shape as Dig In/Bulwark), letting the player choose Climb or Swim
  * up front via a picker. "Until the end of your next turn" isn't actively expired (no such hook
@@ -60,6 +59,11 @@ export async function toggleNaturalMovement(actor) {
   if (getNaturalMovementType(actor)) {
     await actor.unsetFlag('essence20', NATURAL_MOVEMENT_FLAG);
     return false;
+  }
+
+  if (isKnownOutsideEnvironmentOfExpertise(actor)) {
+    ui.notifications.warn(game.i18n.localize('E20.NotInEnvironmentOfExpertise'));
+    return null;
   }
 
   const type = await pickNaturalMovementType();

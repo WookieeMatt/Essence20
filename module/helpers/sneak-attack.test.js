@@ -477,8 +477,37 @@ describe("checkPredatorSneakAttackEligibility", () => {
     expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonAlreadyUsed' });
   });
 
-  test("never auto-eligible even when every checkable condition passes - environment/awareness can't be detected", () => {
+  test("not auto-eligible when every checkable condition passes but the environment/awareness can't be detected", () => {
     const result = checkPredatorSneakAttackEligibility(makeActor(), weaponEffect);
     expect(result).toEqual({ eligible: false, reason: 'E20.PredatorSneakAttackReasonManual' });
+  });
+
+  describe("environment of expertise from the scene's terrain", () => {
+    function onTerrain(terrain) {
+      const scene = { getFlag: (scope, key) => (key == 'terrain' ? terrain : undefined) };
+      return {
+        ...makeActor(),
+        documentName: 'Actor',
+        getActiveTokens: () => [{ regions: [], parent: scene }],
+        system: { environments: ['mountains'] },
+      };
+    }
+
+    test("not eligible outside every environment of expertise", () => {
+      const result = checkPredatorSneakAttackEligibility(onTerrain('sea'), weaponEffect);
+      expect(result).toEqual({ eligible: false, reason: 'E20.PredatorSneakAttackReasonOutsideEnvironment' });
+    });
+
+    test("auto-eligible in an environment of expertise against a Surprised target", () => {
+      game.user.targets.first.mockReturnValue({ actor: { items: [], statuses: new Set(['surprised']) } });
+      const result = checkPredatorSneakAttackEligibility(onTerrain('mountains'), weaponEffect);
+      expect(result).toEqual({ eligible: true, reason: 'E20.SneakAttackReasonEligible' });
+    });
+
+    test("still manual in an environment of expertise when the target isn't Surprised", () => {
+      game.user.targets.first.mockReturnValue({ actor: { items: [], statuses: new Set() } });
+      const result = checkPredatorSneakAttackEligibility(onTerrain('mountains'), weaponEffect);
+      expect(result).toEqual({ eligible: false, reason: 'E20.PredatorSneakAttackReasonManual' });
+    });
   });
 });

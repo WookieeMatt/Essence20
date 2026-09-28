@@ -57,6 +57,11 @@
   opacity: 0.75;
 }
 
+.essence20 .e20-power-daily-uses {
+  margin-left: 6px;
+  font-weight: normal;
+}
+
 .essence20 .collapsible {
   background-color: #eee;
   color: #444;
@@ -1227,7 +1232,8 @@
    class means those old messages pick up the same fix live rather than
    staying stuck looking like a different, older feature. */
 .essence20 .e20-check-card button,
-.essence20 .e20-reroll-button {
+.essence20 .e20-reroll-button,
+.essence20 .e20-chat-action-button {
   position: relative;
   display: block;
   width: 100%;
@@ -1274,7 +1280,8 @@
      the fill's. */
 }
 .essence20 .e20-check-card button::before,
-.essence20 .e20-reroll-button::before {
+.essence20 .e20-reroll-button::before,
+.essence20 .e20-chat-action-button::before {
   content: "";
   pointer-events: none;
   position: absolute;
@@ -1291,12 +1298,15 @@
 }
 .essence20 .e20-check-card button:hover:not(:disabled), .essence20 .e20-check-card button:focus-visible:not(:disabled),
 .essence20 .e20-reroll-button:hover:not(:disabled),
-.essence20 .e20-reroll-button:focus-visible:not(:disabled) {
+.essence20 .e20-reroll-button:focus-visible:not(:disabled),
+.essence20 .e20-chat-action-button:hover:not(:disabled),
+.essence20 .e20-chat-action-button:focus-visible:not(:disabled) {
   background: var(--e20-system-color, var(--e20-theme-accent));
   color: var(--e20-theme-accent-contrast, #111);
 }
 .essence20 .e20-check-card button:disabled,
-.essence20 .e20-reroll-button:disabled {
+.essence20 .e20-reroll-button:disabled,
+.essence20 .e20-chat-action-button:disabled {
   background: var(--e20-theme-card-bg);
   color: var(--e20-theme-muted-text);
   cursor: default;
@@ -1320,7 +1330,8 @@
   margin-right: 4px;
 }
 
-.essence20 .e20-reroll-buttons {
+.essence20 .e20-reroll-buttons,
+.essence20 .e20-chat-action-buttons {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -1865,6 +1876,15 @@
 
 .essence20 .e20-state-badge.--altmode {
   background: var(--e20-theme-card-bg);
+}
+
+/* Ongoing/Poison/Toxin (Cobra Codex p.93-94) - see helpers/ongoing-effects.mjs's own doc comment.
+   Clickable (treats the effect early), so it gets a pointer cursor unlike the other two badges. */
+.essence20 .e20-state-badge.--ongoing {
+  background: var(--e20-damage-color, #8b2f2f);
+  color: #fff;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
 }
 
 /* ITEMS */
@@ -3033,9 +3053,25 @@
   margin: 2px;
 }
 
+/* The window sizes to its content, so a long trait list (weapons have dozens) grew it past the
+   bottom of the screen with nothing left to scroll. Cap the window at the viewport, and let only
+   the list scroll so the Save footer stays in view - the same flex-column/min-height 0 chain
+   choice-selector-long uses. */
 .essence20.trait-selector {
-  flex-grow: auto;
-  overflow: auto;
+  max-height: 90vh;
+}
+
+.essence20.trait-selector > .window-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.essence20.trait-selector > .window-content > .trait-selector {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .essence20 .action-economy {
@@ -7256,44 +7292,21 @@
 .essence20 input[type=radio] {
   --checkbox-checked-color: var(--e20-theme-text-color);
   --checkbox-checkmark-color: var(--e20-theme-panel-bg);
+  /* The unchecked box is core's own solid square glyph in this colour - its default dark cool-grey
+     disappeared against this theme's panels. Drawn by the same glyph as the checked box, so the two
+     are always the same size and place. */
+  --checkbox-background-color: var(--e20-theme-border-color);
 }
 
-/* Foundry's own UNCHECKED-state glyph (the same appearance:none control the comment above
-   describes) renders with a 0-width border and a transparent fill in this theme - confirmed live
-   via getComputedStyle in both theme-dark and theme-light, so this isn't a dark-mode-only
-   regression, just one that happened to get reported from dark mode first. Every bare checkbox in
-   the system (20 templates, none of which wrap it in any extra markup) shares this same
-   invisible-unchecked-box problem, so the fix belongs on the same broad selector as the
-   color-variable rule right above rather than an opt-in class applied file by file.
-   The CHECKED state needs no such fix: its "box" is the filled swatch layer (::after, colored via
-   --checkbox-checked-color above), which already paints as a solid, clearly-bounded rounded
-   square on its own - confirmed live by comparing screenshots with and without an outline on it.
-
-   Several earlier attempts each drew a visible SECOND box instead of leaving the existing one
-   alone, before this shape became clear (each confirmed live via getComputedStyle/
-   getBoundingClientRect, including scaling the rendered control up 5-15x on-screen to see the
-   actual pixels):
-   - bordering the input itself left Foundry's own icon box floating inside it at its own
-     unchanged size - the input's own intrinsic box (17.5x21.7px, non-square) isn't even the same
-     shape as the icon (a clean 20x20px square), so a border traced on the input can never
-     coincide with the icon no matter its size;
-   - Foundry's "duotone" checkbox glyph turns out to be TWO Font Awesome layers that trade off by
-     STATE rather than always drawing together: unchecked, only ::before renders (an outline-
-     square glyph; ::after is `content: none`, i.e. not generated at all) - checked, ::before
-     switches to the small dark checkmark tick while ::after switches on and becomes the light
-     filled-swatch box;
-   - an outline added on ::after for the checked state (matching it to "whichever pseudo-element
-     is the box layer this state") looked right in isolation but was still visibly a second,
-     slightly offset frame around the swatch's own edge once checked - because ::before is
-     `position: absolute` (pinned exactly to the input's icon box) while ::after here is
-     `position: static` (placed by normal in-flow/line-height metrics instead), the two boxes
-     aren't pixel-coincident, so an outline on ::after doesn't quite trace the swatch it's meant
-     to frame. Since the swatch is already visibly a box without any help, the fix is simply to
-     leave the checked state alone rather than chase that misalignment. */
-.essence20 input[type=checkbox]:not(:checked)::before {
-  outline: 1px solid var(--e20-theme-text-color);
-  outline-offset: -1px;
-  border-radius: 3px;
+/* Foundry core sizes only the checkbox's icon (::before/::after, --checkbox-size square), not the
+   input itself - which then takes an uneven box from the surrounding form layout (17.5 x 22.5 in a
+   dialog form-group), so the control read as a tall rectangle. Size the input
+   to the same square as its icon, and keep it from being stretched or squeezed by a flex row. */
+.essence20 input[type=checkbox] {
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  flex: 0 0 var(--checkbox-size);
+  margin: 0;
 }
 
 .essence20 option {

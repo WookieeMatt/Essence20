@@ -66,3 +66,33 @@ describe("toggleAnimalGait", () => {
     expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'animalGaitMovementType');
   });
 });
+
+// An actor standing on a scene tagged with the given terrain, with the given environments of
+// expertise (see helpers/environment.mjs#getTerrain).
+function onTerrain(actor, terrain, environments = ['arctic']) {
+  const scene = { getFlag: (scope, key) => (key == 'terrain' ? terrain : undefined) };
+  return {
+    ...actor,
+    documentName: 'Actor',
+    getActiveTokens: () => [{ regions: [], parent: scene }],
+    system: { ...(actor.system ?? {}), environments },
+  };
+}
+
+describe("toggleAnimalGait - environment of expertise from the scene's terrain", () => {
+  beforeEach(() => {
+    ui.notifications.warn.mockClear();
+  });
+
+  test("refuses to switch on, with a warning, outside every environment of expertise", async () => {
+    const actor = onTerrain(makeActor(), 'urban');
+    expect(await toggleAnimalGait(actor)).toBeNull();
+    expect(ui.notifications.warn).toHaveBeenCalledWith('E20.NotInEnvironmentOfExpertise');
+    expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
+  });
+
+  test("switches on as normal in an environment of expertise", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('climb');
+    expect(await toggleAnimalGait(onTerrain(makeActor(), 'arctic'))).toBe(true);
+  });
+});

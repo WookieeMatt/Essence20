@@ -1,7 +1,11 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { consumeForItem, describeCost, refund, setAiming, spend } from "../helpers/action-economy.mjs";
-import { clearWeaponReload, markWeaponNeedsReload, weaponNeedsReload } from "../helpers/reload.mjs";
+import { clearWeaponReload, getReloadCost, hasBurstFiredThisRound, markBurstFiredThisRound, requireReload, weaponNeedsReload } from "../helpers/reload.mjs";
+import { isMountedWeaponSetUp } from "../helpers/mounted.mjs";
+import { isInactiveMythicForm } from "../helpers/mythically-modular.mjs";
+import { checkVehicularEligibility } from "../helpers/vehicular.mjs";
+import { addOngoingEffect } from "../helpers/ongoing-effects.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
 import { betterShift, updateRoleCache } from "../helpers/utils.mjs";
 import { placeAoeTemplate } from "../helpers/aoe-targeting.mjs";
@@ -19,6 +23,7 @@ import { pickMindBeamEffect } from "../helpers/mind-beam.mjs";
 import { pickGetToKnowSkill } from "../helpers/get-to-know.mjs";
 import { isBlockMagicActive } from "../helpers/block-magic.mjs";
 import { consumeMegaWeaponAttack } from "../helpers/zord-mega-weapon.mjs";
+import { isPiledriver, offerPiledriverRoughTerrain } from "../helpers/rough-terrain.mjs";
 import {
   canRollLimitedWeaponEffect, isLimitedWeaponEffect, markLimitedWeaponEffectUsed,
 } from "../helpers/limited-weapon-effects.mjs";
@@ -220,6 +225,19 @@ export class Essence20Item extends Item {
     ) {
       change.name = CONFIG.E20.megaformTraitTypes[change.system.type];
     }
+
+    // Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/vehicular.mjs's own
+    // doc comment. The "equip" half of "can only be mounted on a vehicle": strips the equip
+    // toggle back out of this update (rather than throwing, which would abort the whole submit)
+    // when checkVehicularEligibility refuses it - a no-op in 'off'/'track'/'warn' mode, where that
+    // check always returns true.
+    if (
+      this.type == 'weapon' && change.system?.equipped === true
+      && this.system.traits?.includes('vehicular') && this.actor
+      && !checkVehicularEligibility(this.actor, this.name)
+    ) {
+      delete change.system.equipped;
+    }
   }
 
   /** @override */
@@ -230,8 +248,11 @@ export class Essence20Item extends Item {
       await updateRoleCache();
     }
 
-    // Update the entry on the parent if this is a child Item
-    if (['weaponEffect', 'upgrade'].includes(this.type)) {
+    // Update the entry on the parent if this is a child Item. Only on the client that made the
+    // change: _onUpdate runs on every connected client, and a player whose client isn't allowed to
+    // edit the actor (an NPC's unlinked token) threw "lacks permission to update ActorDelta" once
+    // per child item - and even where allowed, every client wrote the same entry again.
+    if (userId == game.user?.id && ['weaponEffect', 'upgrade'].includes(this.type)) {
       const parentId = this.flags.essence20?.parentId;
       const parentItem = this.actor?.items?.get(parentId);
       const key = this.flags.essence20?.collectionId;
@@ -683,12 +704,21 @@ export class Essence20Item extends Item {
       if (this.type == 'weaponEffect' && roller) {
         parentWeapon = this._dice._getParentWeapon(roller, this);
 
-        // Reload (GI Joe CRB, Weapon Effects and Traits, p.147) - gated ahead of the ordinary
-        // action-economy spend below: an unreloaded weapon shouldn't cost its own Attack action
-        // at all. See helpers/reload.mjs's own doc comment for the full RAW quote.
-        if (parentWeapon?.system.traits?.includes('reload') && weaponNeedsReload(parentWeapon)) {
-          const reloadSpend = await spend(roller, 'move', {
-            source: parentWeapon.name, bypass: dataset.bypassEconomy,
+        // Reload (GI Joe CRB, Weapon Effects and Traits, p.147) / Burst-Fire (Quartermaster's
+        // Guide to Gear p.33, "counts as if it had the Reload trait for the turn" after a second
+        // shot in the same round - see helpers/reload.mjs's own doc comment) - gated ahead of the
+        // ordinary action-economy spend below: an unreloaded weapon shouldn't cost its own Attack
+        // action at all.
+        // Fanning weapons join in only once a Fanning Attack has flagged them (see the fanned check
+        // below); a High-Density follow-up is the same shot as the Attack it follows, so it never
+        // stops to reload (helpers/high-density.mjs).
+        // Any weapon a "must reload" rule flagged - Empty the Mag can flag one without the trait.
+        // Rapid Reload / the Ammo Belt make the reload a Free action (helpers/reload.mjs).
+        if (!dataset.highDensityFollowUp && weaponNeedsReload(parentWeapon)) {
+          const reloadCost = await getReloadCost(roller, parentWeapon);
+          const reloadSpend = await spend(roller, reloadCost.action, {
+            source: reloadCost.source ? `${parentWeapon.name} (${reloadCost.source})` : parentWeapon.name,
+            bypass: dataset.bypassEconomy,
           });
           if (reloadSpend.blocked) {
             if (!reloadSpend.cancelled) {
@@ -702,6 +732,28 @@ export class Essence20Item extends Item {
           }
 
           await clearWeaponReload(parentWeapon);
+        }
+
+        // Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/mounted.mjs's own
+        // doc comment. A hard block, not an action-economy spend of its own: setting the weapon up
+        // is its own separate Standard-action spend (the sheet's Set Up/Pick Up control), not
+        // something the Attack itself pays for.
+        if (parentWeapon?.system.traits?.includes('mounted') && !isMountedWeaponSetUp(parentWeapon)) {
+          ui.notifications.warn(game.i18n.format('E20.MountedNotSetUp', { name: parentWeapon.name }));
+          return;
+        }
+
+        // Mythically Modular (Through the Shattered Grid p.116) - see helpers/mythically-modular.mjs.
+        // Another form of this combined weapon is the one in use; switch first (a Free action).
+        if (isInactiveMythicForm(roller, parentWeapon)) {
+          ui.notifications.warn(game.i18n.format('E20.MythicallyModularInactive', { name: parentWeapon.name }));
+          return;
+        }
+
+        // Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/vehicular.mjs's
+        // own doc comment for the RAW quote and the strictness-mode shape.
+        if (parentWeapon?.system.traits?.includes('vehicular') && !checkVehicularEligibility(roller, parentWeapon.name)) {
+          return;
         }
       }
 
@@ -764,6 +816,12 @@ export class Essence20Item extends Item {
         flavor: label,
         content: await foundry.applications.handlebars.renderTemplate(template, templateData),
       });
+
+      // Piledriver - posting it is the gear's only sheet action; see
+      // helpers/rough-terrain.mjs#offerPiledriverRoughTerrain (Alt Mode only).
+      if (this.type == 'gear' && isPiledriver(this)) {
+        await offerPiledriverRoughTerrain(this.actor, this);
+      }
     } else if (this.type == 'perk') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
@@ -913,7 +971,54 @@ export class Essence20Item extends Item {
       // Reload - see helpers/reload.mjs's own doc comment. Flags the weapon for next time
       // regardless of whether this shot hit; "fired" is what matters, "landed" isn't.
       if (!weaponRollResult?.cancelled && parentWeapon?.system.traits?.includes('reload')) {
-        await markWeaponNeedsReload(parentWeapon);
+        await requireReload(roller, parentWeapon);
+      }
+
+      // Fanning (A Jump Through Time, p.74): "After a Fanning Attack, the weapon gains the Reload
+      // trait" - see helpers/fanning.mjs. The gate above already honours the flag on a Fanning weapon.
+      if (!weaponRollResult?.cancelled && weaponRollResult?.fanned) {
+        await requireReload(roller, parentWeapon);
+      }
+
+      // Empty the Mag (GI Joe CRB, Vanguard, p.109): "After using this ability, you must reload your
+      // weapon before you can use it again" - whether or not the weapon has the Reload trait.
+      if (!weaponRollResult?.cancelled && weaponRollResult?.emptiedMag) {
+        await requireReload(roller, parentWeapon);
+      }
+
+      // Burst-Fire - see helpers/reload.mjs's own doc comment. A second shot in the same round
+      // (the flag from a first shot already stamped this round) counts as if it had the Reload
+      // trait for the turn; either way, this shot itself stamps "fired this round" for next time.
+      if (!weaponRollResult?.cancelled && parentWeapon?.system.itemAndUpgradeTraits?.includes('burstFire')) {
+        if (hasBurstFiredThisRound(parentWeapon)) {
+          await requireReload(roller, parentWeapon);
+        }
+
+        await markBurstFiredThisRound(parentWeapon);
+      }
+
+      // Ongoing / Poison / Toxin (Cobra Codex, New Weapon Effects and Traits, p.93-94) - see
+      // helpers/ongoing-effects.mjs's own doc comment. Only the repeating-DAMAGE half; per
+      // explicit direction this project has no Poisoned status, so Poison/Toxin's own "causes the
+      // Poisoned Condition" clause stays narrative. Only a target the attack actually hit (and
+      // whose own damageValue for THIS entry is real) gets a pending effect - a pure-Condition
+      // Alternate Effect (e.g. Compound Z's own damageValue 0) has nothing to repeat.
+      const ongoingTraits = ['ongoing', 'poison', 'toxin'];
+      if (!weaponRollResult?.cancelled && parentWeapon?.system.traits?.some(trait => ongoingTraits.includes(trait))) {
+        // rollSkill returns one outcome per roll (several for Fanning / Multiple Targets), each
+        // holding its own per-target results.
+        const hitResults = (weaponRollResult.outcomes ?? []).flatMap(outcome => outcome.results ?? []);
+        for (const result of hitResults) {
+          if (result.success && result.targetUuid && result.damageValue > 0) {
+            const targetActor = await fromUuid(result.targetUuid);
+            await addOngoingEffect(targetActor, {
+              damageValue: result.damageValue,
+              damageType: result.damageType,
+              roundsRemaining: parentWeapon.system.ongoingDuration,
+              sourceName: parentWeapon.name,
+            });
+          }
+        }
       }
 
       // Consumable (GI Joe CRB, Weapon Effects and Traits, p.147): "Using this weapon destroys it,

@@ -120,6 +120,12 @@ describe("createEntry", () => {
     expect(entry.aimShiftBonus).toBe(1);
   });
 
+  test("a Perk can list a Power as well as a Perk (the Nano Infusion Perks' chosen nanomite power)", () => {
+    const power = { uuid: "Item.p", img: "p.svg", name: "Repair Machine", type: "power", system: { description: "" } };
+    expect(createEntry(power, { type: "perk" })).toMatchObject({ uuid: "Item.p", type: "power", role: null });
+    expect(createEntry({ type: "weapon", system: {} }, { type: "perk" })).toBeNull();
+  });
+
   test("weapon + weaponEffect carries over combat stats", () => {
     const dropped = {
       uuid: "Item.abc", img: "icon.svg", name: "Test", type: "weaponEffect",
@@ -127,6 +133,15 @@ describe("createEntry", () => {
     };
     const entry = createEntry(dropped, { type: "weapon" });
     expect(entry.damageValue).toBe(4);
+  });
+
+  test("a weaponEffect's second damage is carried over to both weapon and shield entries", () => {
+    const dropped = {
+      uuid: "Item.abc", img: "icon.svg", name: "Test", type: "weaponEffect",
+      system: { damageValue: 1, damageType: "blunt", secondaryDamage: { type: "acid", value: 1 }, range: {}, traits: [], description: "" },
+    };
+    expect(createEntry(dropped, { type: "weapon" }).secondaryDamage).toEqual({ type: "acid", value: 1 });
+    expect(createEntry(dropped, { type: "shield" }).secondaryDamage).toEqual({ type: "acid", value: 1 });
   });
 });
 

@@ -61,8 +61,9 @@ const PUSH_FEET_DOUBLED = 10;
 
 /* Sewer Tunneler (Hawk's Personnel Files p.177): "You also add 10 feet to your Movement instead of
    5 feet when you Push Yourself." Unconditional - the Perk's other clause ("In an urban
-   environment, you ignore Rough Terrain") is a separate sentence with its own condition, and is
-   terrain handling rather than anything this file does. */
+   environment, you ignore Rough Terrain") is a separate sentence with its own condition, handled
+   by helpers/rough-terrain.mjs - whose doubled Rough Terrain cost reaches this file through the
+   measured movementHistory cost like any other terrain. */
 const SEWER_TUNNELER_ID = "Compendium.essence20.general_hawk_s_personel_files.Item.gCbl6p64cEJjF2eJ";
 
 /* Earlier is Better Than Later (TF CRB p.108, and again for the Cycle Drones in Technorganic
@@ -394,7 +395,8 @@ export async function consumeForMovement(token, movement) {
   }
 
   if (isConfirming()) {
-    const confirm = foundry.applications?.api?.DialogV2?.confirm;
+    // Bound, not a bare reference: DialogV2.confirm calls this.wait internally.
+    const confirm = foundry.applications?.api?.DialogV2?.confirm?.bind(foundry.applications.api.DialogV2);
     const ok = confirm
       ? await confirm({
         window: { title: game.i18n.localize('E20.ActionEconomyMovementTitle') },

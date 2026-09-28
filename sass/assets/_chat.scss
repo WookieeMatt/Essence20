@@ -399,7 +399,8 @@
    staying stuck looking like a different, older feature. */
 
 .essence20 .e20-check-card button,
-.essence20 .e20-reroll-button {
+.essence20 .e20-reroll-button,
+.essence20 .e20-chat-action-button {
   position: relative;
   display: block;
   width: 100%;
@@ -498,7 +499,9 @@
   margin-right: 4px;
 }
 
-.essence20 .e20-reroll-buttons {
+// Post-roll buttons (chat.mjs#placeActionButton) share the reroll row's layout under the roll.
+.essence20 .e20-reroll-buttons,
+.essence20 .e20-chat-action-buttons {
   display: flex;
   flex-direction: column;
   gap: 6px;

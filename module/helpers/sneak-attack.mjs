@@ -1,6 +1,7 @@
 import { actorHasPerk, findPerk, hasUsedThisEncounter, hasUsedThisRound, markUsedThisRound } from "./perks.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
 import { canWriteStoryPoints, hasStoryPointsAvailable } from "./story-points.mjs";
+import { isKnownOutsideEnvironmentOfExpertise, meetsEnvironmentOfExpertise } from "./environmental-expertise.mjs";
 
 /**
  * GI Joe CRB p.72 - the Commando Role's Sneak Attack Perk:
@@ -309,12 +310,13 @@ export function getPredatorSneakAttackDamage(level) {
  * player can still override" role as checkSneakAttackEligibility() above, but this rule (p.93) is
  * meaningfully different, not just Commando's with different numbers:
  * - Silent weapon and once-per-round are both checkable the same way as Commando's version.
- * - "In your environment of expertise" and "the target isn't fully aware of you (surprised, or an
- *   earlier opposed Infiltration-vs-Alertness check beat them)" have no hook to check
- *   automatically at all - this system tracks neither a scene's/actor's "environment of
- *   expertise" nor a per-target "are they aware of me" flag from an earlier roll - so this never
- *   auto-checks itself even when the checkable conditions below all pass; the reason text says so
- *   explicitly rather than silently defaulting to eligible.
+ * - "In your environment of expertise" is read from the scene's terrain when the GM has set one
+ *   (helpers/environmental-expertise.mjs): known to be outside it -> not eligible; in it (or the
+ *   manual toggle / an Adaptation flag says so) AND the target has the Surprised Condition (the
+ *   one "isn't fully aware of you" case this system tracks) -> auto-eligible.
+ * - Otherwise "the target isn't fully aware of you" can't be detected (no per-target "are they
+ *   aware of me" flag from an earlier opposed Infiltration-vs-Alertness roll exists), so it's left
+ *   to the player; the reason text says so rather than silently defaulting to eligible.
  * @param {Actor} actor   The attacking actor.
  * @param {Item} weaponEffect   The weaponEffect Item being rolled.
  * @returns {{eligible: Boolean, reason: String}}
@@ -332,6 +334,14 @@ export function checkPredatorSneakAttackEligibility(actor, weaponEffect) {
 
   if (hasUsedThisRound(actor, PREDATOR_SNEAK_ATTACK_ROUND_FLAG)) {
     return { eligible: false, reason: game.i18n.localize('E20.SneakAttackReasonAlreadyUsed') };
+  }
+
+  if (isKnownOutsideEnvironmentOfExpertise(actor)) {
+    return { eligible: false, reason: game.i18n.localize('E20.PredatorSneakAttackReasonOutsideEnvironment') };
+  }
+
+  if (meetsEnvironmentOfExpertise(actor) && targetToken?.actor?.statuses?.has?.('surprised')) {
+    return { eligible: true, reason: game.i18n.localize('E20.SneakAttackReasonEligible') };
   }
 
   return { eligible: false, reason: game.i18n.localize('E20.PredatorSneakAttackReasonManual') };

@@ -7,6 +7,7 @@ const MIN_LEVEL = 1;
 const MAX_LEVEL = 20;
 
 import Essence20CompendiumBrowser from "../apps/compendium-browser.mjs";
+import { useGearNanomitePower } from "../helpers/nanomite-gear.mjs";
 import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
 import SheetOptions from "../apps/sheet-options.mjs";
 import SkillPicker from "../apps/skill-picker.mjs";
@@ -73,6 +74,9 @@ import {
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { deleteSpecialization } from "../sheet-handlers/specialization-handler.mjs";
+import { isMountedWeaponSetUp, pickUpMountedWeapon, setUpMountedWeapon } from "../helpers/mounted.mjs";
+import { switchMythicForm } from "../helpers/mythically-modular.mjs";
+import { treatOngoingEffect } from "../helpers/ongoing-effects.mjs";
 
 export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
@@ -110,6 +114,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       skillPicker: this.#onOpenSkillPicker,
       shieldActivationToggle: this.#onShieldActivationToggle,
       shieldEquipToggle: this.#onShieldEquipToggle,
+      mountedSetupToggle: this.#onMountedSetupToggle,
+      mythicSwitchForm: this.#onMythicSwitchForm,
+      useGearNanomite: this.#onUseGearNanomite,
+      treatOngoingEffect: this.#onTreatOngoingEffect,
       specializationDelete: this.#onSpecializationDelete,
       startSheetTour: this.#onStartSheetTour,
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
@@ -1223,6 +1231,56 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onShieldEquipToggle(event, target) {
     onShieldEquipToggle(target, this);
+  }
+
+  /**
+   * Mythically Modular (Through the Shattered Grid p.116) - see helpers/mythically-modular.mjs.
+   */
+  /**
+   * Nanomite equipment - uses the gear's linked nanomite Power. See helpers/nanomite-gear.mjs.
+   */
+  static async #onUseGearNanomite(event, target) {
+    const gear = this.actor.items.get(target.dataset.itemId);
+    if (gear) {
+      await useGearNanomitePower(this.actor, gear);
+    }
+  }
+
+  static async #onMythicSwitchForm(event, target) {
+    const weapon = this.actor.items.get(target.dataset.itemId);
+    if (weapon) {
+      await switchMythicForm(this.actor, weapon);
+    }
+  }
+
+  /**
+   * Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/mounted.mjs's own doc
+   * comment. One control toggling between the Standard-action Set Up and the Free-action Pick Up,
+   * depending on the weapon's own current state.
+   */
+  static async #onMountedSetupToggle(event, target) {
+    const weapon = this.actor.items.get(target.dataset.itemId);
+    if (!weapon) {
+      return;
+    }
+
+    if (isMountedWeaponSetUp(weapon)) {
+      await pickUpMountedWeapon(this.actor, weapon);
+    } else {
+      await setUpMountedWeapon(this.actor, weapon);
+    }
+
+    this.render();
+  }
+
+  /**
+   * Ongoing / Poison / Toxin (Cobra Codex p.93-94) - see helpers/ongoing-effects.mjs's own doc
+   * comment. "Until treated" - the header badge itself is the only control, clicking it clears
+   * that one pending effect early.
+   */
+  static async #onTreatOngoingEffect(event, target) {
+    await treatOngoingEffect(this.actor, Number(target.dataset.index));
+    this.render();
   }
 
   static #onLevelUp() {

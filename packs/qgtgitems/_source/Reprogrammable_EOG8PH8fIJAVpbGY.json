@@ -17,10 +17,12 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,
-    "selectionLimit": 1,
-    "type": "grid",
+    "selectionLimit": 10,
+    "type": "nanomite",
     "usesInterval": "special",
-    "usesPer": null
+    "usesPer": null,
+    "availability": "standard",
+    "usesSpent": 0
   },
   "effects": [],
   "sort": 1600000,

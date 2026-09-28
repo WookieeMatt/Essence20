@@ -272,6 +272,17 @@ const ULTRA_HEAVY_ARMOR_SHELL_ID = "Compendium.essence20.pr_crb.Item.xBeEe7X1MBo
 const NOBODY_LIKE_ME_ID = "Compendium.essence20.pr_crb.Item.9nvRKN0A8N0EEXUl";
 const ANY_GENERAL_PERK_IDS = new Set([NOBODY_LIKE_ME_ID]);
 
+// Basal / Intricate / Profound Nano Infusion (Quartermaster's Guide to Gear, General Perks): "Gain a
+// permanent Standard / Limited / Restricted nanomite power." The choice is built from every enabled
+// book's nanomite Powers of that Availability (see nanomitePowerChoices), rather than a list kept by
+// hand on each Perk.
+const QGTG_ITEM = "Compendium.essence20.quartermasters_guide_to_gear.Item.";
+const NANO_INFUSION_AVAILABILITY = {
+  [`${QGTG_ITEM}CUhsxOCugyHcEIRx`]: 'standard',
+  [`${QGTG_ITEM}bbA0ayzoaeW6G6R5`]: 'limited',
+  [`${QGTG_ITEM}su1NVWhDH3Zk7ma5`]: 'restricted',
+};
+
 /**
  * Whether this Perk offers any General Perk rather than a fixed list. Checked by source as well
  * as by uuid, so a copy already on an actor (Actor.x.Item.y) is recognised too.
@@ -282,6 +293,58 @@ const ANY_GENERAL_PERK_IDS = new Set([NOBODY_LIKE_ME_ID]);
 export function grantsAnyGeneralPerk(perk, perkUuid) {
   return [perkUuid, perk.flags?.core?.sourceId, perk._stats?.compendiumSource]
     .some(id => ANY_GENERAL_PERK_IDS.has(id));
+}
+
+/**
+ * The nanomite power Availability a Nano Infusion Perk grants, or null for any other Perk. Checked
+ * by source as well as by uuid, like grantsAnyGeneralPerk.
+ * @param {Item} perk
+ * @param {String} perkUuid
+ * @returns {?String}   An E20.availabilities key.
+ */
+export function nanoInfusionAvailability(perk, perkUuid) {
+  const id = [perkUuid, perk.flags?.core?.sourceId, perk._stats?.compendiumSource]
+    .find(candidate => NANO_INFUSION_AVAILABILITY[candidate]);
+  return id ? NANO_INFUSION_AVAILABILITY[id] : null;
+}
+
+/**
+ * Every nanomite Power of one Availability in every enabled book, as choices keyed by uuid - the
+ * same shape and the same books as anyGeneralPerkChoices. A Power the actor already has is left out
+ * once they hold as many copies as its selectionLimit allows (Reprogrammable may be taken again).
+ * @param {Actor} actor
+ * @param {String} availability   An E20.availabilities key.
+ * @returns {Promise<Object>}
+ */
+export async function nanomitePowerChoices(actor, availability) {
+  const heldCounts = new Map();
+  for (const item of actor.items) {
+    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+    heldCounts.set(sourceId, (heldCounts.get(sourceId) ?? 0) + 1);
+  }
+
+  const choices = {};
+  for (const pack of getVisibleItemPacks()) {
+    const index = await pack.getIndex({ fields: ["system.type", "system.availability", "system.selectionLimit", "system.source.book"] });
+    for (const entry of index) {
+      if (entry.type != 'power' || entry.system?.type != 'nanomite' || entry.system?.availability != availability) continue;
+
+      const uuid = `Compendium.${pack.metadata.id}.Item.${entry._id}`;
+      if ((heldCounts.get(uuid) ?? 0) >= (entry.system?.selectionLimit || 1)) continue;
+
+      choices[uuid] = {
+        chosen: false,
+        value: uuid,
+        label: entry.name,
+        uuid,
+        type: 'perks',
+        group: pack.folder?.name ?? pack.metadata.label,
+        detail: entry.system?.source?.book || pack.metadata.label,
+      };
+    }
+  }
+
+  return choices;
 }
 
 /**
@@ -1249,6 +1312,16 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
       if (grantsAnyGeneralPerk(perk, perkUuid)) {
         prompt = game.i18n.localize("E20.SelectGeneralPerk");
         Object.assign(choices, await anyGeneralPerkChoices(actor));
+        defaultGroup = gameLineOf(perkUuid);
+        break;
+      }
+
+      if (nanoInfusionAvailability(perk, perkUuid)) {
+        const availability = nanoInfusionAvailability(perk, perkUuid);
+        prompt = game.i18n.format("E20.SelectNanomitePower", {
+          availability: game.i18n.localize(E20.availabilities[availability]),
+        });
+        Object.assign(choices, await nanomitePowerChoices(actor, availability));
         defaultGroup = gameLineOf(perkUuid);
         break;
       }

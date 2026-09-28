@@ -117,6 +117,51 @@ describe("powerCost", () => {
     expect(ground.disabled).toBe(false);
   });
 
+  // G.I. Joe nanomite powers: no Power points, two uses a day (helpers/nanomite-uses.mjs).
+  test("a nanomite power spends a daily use, never Power points", async () => {
+    const actor = makeActor(5);
+    actor.items = [];
+    const power = {
+      name: 'Repair Machine',
+      flags: {},
+      effects: makeEffectsCollection([]),
+      system: { type: 'nanomite', usesPer: 2, usesInterval: 'perDay', usesSpent: 0, powerCost: null },
+      update: jest.fn(),
+    };
+
+    await powerCost(actor, power);
+
+    expect(power.update).toHaveBeenCalledWith({ 'system.usesSpent': 1 });
+    expect(actor.update).not.toHaveBeenCalled();
+  });
+
+  // A Zord or vehicle has no Power pool; used through a chosen crew member, the member pays.
+  test("a crew member pays for a Power on a Zord or vehicle", async () => {
+    const zord = { name: 'Zord', update: jest.fn(), getFlag: jest.fn(), setFlag: jest.fn(), system: {} };
+    const pilot = makeActor(3);
+    const power = {
+      name: 'Speed Boost',
+      flags: { core: { sourceId: SPEED_BOOST_ID } },
+      effects: makeEffectsCollection([makeEffect(true)]),
+      system: { type: 'grid', hasVariableCost: false, powerCost: 1 },
+    };
+
+    await powerCost(zord, power, pilot);
+
+    expect(pilot.update).toHaveBeenCalledWith({ "system.powers.personal.value": 2 });
+    expect(zord.update).not.toHaveBeenCalled();
+  });
+
+  test("warns instead of throwing when nobody in the roll has a Power pool", async () => {
+    global.ui.notifications.warn.mockClear();
+    const vehicle = { name: 'Glider', update: jest.fn(), system: {} };
+    const power = { name: 'Boost', effects: makeEffectsCollection([]), system: { type: 'grid', hasVariableCost: false, powerCost: 1 } };
+
+    await expect(powerCost(vehicle, power)).resolves.toBeUndefined();
+    expect(global.ui.notifications.warn).toHaveBeenCalled();
+    expect(vehicle.update).not.toHaveBeenCalled();
+  });
+
   test("fixed-cost path: neither spends nor dispatches when unaffordable", async () => {
     const actor = makeActor(0);
     const ground = makeEffect(true);

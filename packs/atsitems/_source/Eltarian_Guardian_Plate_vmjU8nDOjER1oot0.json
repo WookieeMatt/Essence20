@@ -22,7 +22,8 @@
       "deflective",
       "regal"
     ],
-    "upgradeTraits": []
+    "upgradeTraits": [],
+    "bulwarkHealthBonus": 1
   },
   "effects": [
     {

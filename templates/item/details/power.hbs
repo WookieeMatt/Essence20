@@ -8,6 +8,15 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+  {{!-- Availability - printed for every G.I. Joe nanomite power (Standard, Limited, Restricted) --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerAvailability'}}
+  {{#*inline "item-field-inputs"}}
+  <select name="system.availability">
+    {{selectOptions config.availabilities selected=system.availability localize=true blank=(localize 'E20.None')}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
   {{!-- Times Selected --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SelectionLimit'}}
   {{#*inline "item-field-inputs"}}

@@ -6,6 +6,7 @@ import { expireAoeRegions } from "../helpers/aoe-expiry.mjs";
 import { isTracking, resetTurn } from "../helpers/action-economy.mjs";
 import { DEFENDING_STATUS } from "../helpers/named-actions.mjs";
 import { applyVainglorious } from "../helpers/vainglorious.mjs";
+import { applyEnvironmentAtTurnEnd } from "../helpers/environment-hazards.mjs";
 
 export class Essence20Combat extends Combat {
   constructor(data, context) {
@@ -61,6 +62,26 @@ export class Essence20Combat extends Combat {
        never cleared would be worse than not applying it. */
     if (combatant?.actor?.statuses?.has(DEFENDING_STATUS)) {
       await combatant.actor.toggleStatusEffect(DEFENDING_STATUS, { active: false });
+    }
+  }
+
+  /**
+   * Environmental damage over time for whoever's turn just ended - Vacuum's Essence damage "at the
+   * end of each turn", and the round-counted damage of a Corrosive, Extreme Temperature or Toxic
+   * environment (see helpers/environment-hazards.mjs). v14 runs this once, on the active GM, after
+   * the turn change has committed - so exactly one tick per turn reaches the database.
+   *
+   * @param {Combatant} combatant             The Combatant whose turn just ended
+   * @param {CombatTurnEventContext} context  The context of the turn that just ended
+   * @override
+   */
+  async _onEndTurn(combatant, context) {
+    await super._onEndTurn(combatant, context);
+
+    if (combatant?.actor) {
+      // The combatant's own token, so the scene the fight is on decides - not the scene the GM
+      // client running this happens to be viewing.
+      await applyEnvironmentAtTurnEnd(combatant.actor, this, combatant.token ?? null);
     }
   }
 

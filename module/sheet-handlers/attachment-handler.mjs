@@ -407,7 +407,8 @@ export function createEntry(droppedItem, targetItem) {
 
     break;
   case "perk":
-    if (droppedItem.type == "perk") {
+    // A Perk can grant a Power as well as a Perk - the Nano Infusion Perks' chosen nanomite Power.
+    if (["perk", "power"].includes(droppedItem.type)) {
       entry['role'] = null;
       return entry;
     }
@@ -435,6 +436,7 @@ export function createEntry(droppedItem, targetItem) {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
       entry['damageType'] = droppedItem.system.damageType;
+      entry['secondaryDamage'] = droppedItem.system.secondaryDamage;
       entry['numHands'] = droppedItem.system.numHands;
       entry['numTargets'] = droppedItem.system.numTargets;
       entry['radius'] = droppedItem.system.radius;
@@ -466,6 +468,7 @@ export function createEntry(droppedItem, targetItem) {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
       entry['damageType'] = droppedItem.system.damageType;
+      entry['secondaryDamage'] = droppedItem.system.secondaryDamage;
       entry['numHands'] = droppedItem.system.numHands;
       entry['numTargets'] = droppedItem.system.numTargets;
       entry['radius'] = droppedItem.system.radius;

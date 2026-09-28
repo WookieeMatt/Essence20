@@ -23,7 +23,8 @@
       "exoFrame",
       "modular"
     ],
-    "upgradeTraits": []
+    "upgradeTraits": [],
+    "modularAllowance": 3
   },
   "effects": [
     {

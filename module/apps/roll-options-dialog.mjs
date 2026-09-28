@@ -1,6 +1,7 @@
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import { linkEdgeToggle } from "../helpers/edge-toggle-link.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
@@ -65,6 +66,8 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
     super._onRender(context, options);
 
     applyThemeClass(this.element);
+    // Enviro-Sealed's switch moves the Snag/Normal/Edge radio with it - see helpers/edge-toggle-link.mjs.
+    linkEdgeToggle(this.element, "applyEnviroSealedAdverseSituation");
   }
 
   _onClose(options) {
@@ -208,6 +211,7 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       applyExplosiveEngineerTechnology: form?.applyExplosiveEngineerTechnology?.checked,
       applyAlwaysReady: form?.applyAlwaysReady?.checked,
       applyDisarmingShot: form?.applyDisarmingShot?.checked,
+      applyTargetVesselSystem: form?.applyTargetVesselSystem?.checked,
       applyStreetSmarts: form?.applyStreetSmarts?.checked,
       applyPrimalFear: form?.applyPrimalFear?.checked,
       applyNaturalScienceToSurvival: form?.applyNaturalScienceToSurvival?.checked,
@@ -218,6 +222,31 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       applyCobraBattleCryDeception: form?.applyCobraBattleCryDeception?.checked,
       applyCobraBattleCryIntimidation: form?.applyCobraBattleCryIntimidation?.checked,
       applyAngry: form?.applyAngry?.checked,
+      applyRetrogen: form?.applyRetrogen?.checked,
+      // Toggles the dialog template already rendered but nothing read back until 2026-09-25.
+      applyAllAroundVision: form?.applyAllAroundVision?.checked,
+      applyPressureCooker: form?.applyPressureCooker?.checked,
+      applyEnviroSealedAdverseSituation: form?.applyEnviroSealedAdverseSituation?.checked,
+      applyRicochet: form?.applyRicochet?.checked,
+      applyPythonized: form?.applyPythonized?.checked,
+      applyFastDraw: form?.applyFastDraw?.checked,
+      applyDoubleAgent: form?.applyDoubleAgent?.checked,
+      applyCubePlayer: form?.applyCubePlayer?.checked,
+      applyWealth: form?.applyWealth?.checked,
+      applyBeastOfBurden: form?.applyBeastOfBurden?.checked,
+      applySpoofDeception: form?.applySpoofDeception?.checked,
+      applySpoofInfiltration: form?.applySpoofInfiltration?.checked,
+      applyBarrelThroughRam: form?.applyBarrelThroughRam?.checked,
+      applyTargetingSuite: form?.applyTargetingSuite?.checked,
+      applyGetAGrip: form?.applyGetAGrip?.checked,
+      applyInstillWeakness: form?.applyInstillWeakness?.checked,
+      applyDeconstructionist: form?.applyDeconstructionist?.checked,
+      spendMilitaryFormality: form?.spendMilitaryFormality ? parseInt(form.spendMilitaryFormality.value) || 0 : 0,
+      spendSizeMatters: form?.spendSizeMatters ? parseInt(form.spendSizeMatters.value) || 0 : 0,
+      spendCautionToTheWind: form?.spendCautionToTheWind ? parseInt(form.spendCautionToTheWind.value) || 0 : 0,
+      applyIntimidatingWeapon: form?.applyIntimidatingWeapon?.checked,
+      // Fanning - clamped again in dice.mjs (clampFanningShots), so a hand-typed value can't exceed X.
+      fanningShots: form?.fanningShots ? parseInt(form.fanningShots.value) || 0 : 0,
       drivingStrike: form?.drivingStrike?.value,
       hardpointMovePenalty: form?.hardpointMovePenalty ? parseInt(form.hardpointMovePenalty.value) : 0,
       defenseType: form.defenseType.value,

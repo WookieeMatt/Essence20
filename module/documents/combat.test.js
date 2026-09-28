@@ -7,6 +7,7 @@ import { jest } from '@jest/globals';
 global.Combat = class Combat {
   async _onStartTurn() {}
   async _onEndRound() {}
+  async _onEndTurn() {}
   _onDelete() {}
 };
 
@@ -233,4 +234,31 @@ test("leaves round-based areas alone when the context carries no round", async (
   await combat._onEndRound({});
 
   expect(scene.deleteEmbeddedDocuments).not.toHaveBeenCalled();
+});
+
+describe("_onEndTurn", () => {
+  // The ending combatant's environment decides; helpers/environment-hazards.test.js covers the rest.
+  test("deals Vacuum's Essence damage to whoever's turn just ended", async () => {
+    setGame();
+    global.game.user.isActiveGM = true;
+    const update = jest.fn();
+    const actor = {
+      type: 'playerCharacter', name: 'Rocky', documentName: 'Actor', items: [],
+      system: { essences: { strength: { value: 2 }, speed: { value: 2 }, smarts: { value: 2 } } },
+      getFlag: () => undefined, setFlag: jest.fn(), unsetFlag: jest.fn(), update,
+      getActiveTokens: () => [{ documentName: 'Token', regions: [], parent: { getFlag: (scope, key) => (key == 'environment' ? 'vacuum' : undefined) } }],
+    };
+    const combat = makeCombat();
+    combat.id = 'c1';
+
+    await combat._onEndTurn({ actor }, { round: 1, turn: 0 });
+    expect(update).toHaveBeenCalledWith({
+      'system.essences.strength.value': 1, 'system.essences.speed.value': 1, 'system.essences.smarts.value': 1,
+    });
+  });
+
+  test("does nothing for a combatant with no actor", async () => {
+    setGame();
+    await expect(makeCombat()._onEndTurn({ actor: null }, {})).resolves.toBeUndefined();
+  });
 });

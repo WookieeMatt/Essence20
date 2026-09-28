@@ -26,6 +26,46 @@ function makeItem(type, system, actor = null) {
   return item;
 }
 
+// A child Item's entry on its parent is re-synced after an update - but _onUpdate runs on every
+// connected client, and a player's client can't write an NPC's unlinked token ("lacks permission to
+// update ActorDelta"), so only the client that made the change does it.
+describe("_onUpdate - syncing a weaponEffect's entry on its parent weapon", () => {
+  // The test Item base class has no _onUpdate of its own; core's is a no-op for this purpose.
+  const Base = Object.getPrototypeOf(Essence20Item.prototype);
+  let originalUser, hadOnUpdate;
+  beforeEach(() => {
+    originalUser = game.user;
+    game.user = { id: 'me' };
+    hadOnUpdate = Object.hasOwn(Base, '_onUpdate');
+    if (!hadOnUpdate) Base._onUpdate = () => {};
+  });
+
+  afterEach(() => {
+    game.user = originalUser;
+    if (!hadOnUpdate) delete Base._onUpdate;
+  });
+
+  function makeChild() {
+    const parent = { type: 'weapon', update: jest.fn(async () => {}) };
+    const item = makeItem('weaponEffect', { damageValue: 1, damageType: 'blunt', range: {}, traits: [] }, { items: { get: () => parent } });
+    item.flags = { essence20: { parentId: 'w1', collectionId: 'k1' } };
+    item.uuid = 'Actor.a.Item.e1';
+    return { item, parent };
+  }
+
+  test("the client that made the change updates the parent's entry", async () => {
+    const { item, parent } = makeChild();
+    await item._onUpdate({}, {}, 'me');
+    expect(parent.update).toHaveBeenCalledWith({ 'system.items.k1': expect.objectContaining({ uuid: 'Actor.a.Item.e1' }) });
+  });
+
+  test("every other client leaves it alone", async () => {
+    const { item, parent } = makeChild();
+    await item._onUpdate({}, {}, 'someone-else');
+    expect(parent.update).not.toHaveBeenCalled();
+  });
+});
+
 describe("_preCreate", () => {
   function makeMegaformTraitItem(type = 'coreAbility') {
     const item = makeItem('megaformTrait', { type });
@@ -85,6 +125,52 @@ describe("_preUpdate", () => {
     const change = { system: { type: 'anything' } };
     await item._preUpdate(change, {}, 'user1');
     expect(change.name).toBeUndefined();
+  });
+
+  describe("Vehicular equip gate - see helpers/vehicular.mjs's own doc comment", () => {
+    const originalGame = global.game;
+
+    afterEach(() => {
+      global.game = originalGame;
+    });
+
+    test("strips the equip toggle for a non-vehicle actor in strict mode", async () => {
+      global.game = {
+        ...originalGame,
+        user: { isGM: false },
+        settings: { get: (scope, key) => (key == 'actionEconomyMode' ? 'strict' : undefined) },
+      };
+      global.ui = { notifications: { warn: jest.fn() } };
+      const item = makeItem('weapon', { traits: ['vehicular'] }, { type: 'playerCharacter' });
+      const change = { system: { equipped: true } };
+
+      await item._preUpdate(change, {}, 'user1');
+
+      expect(change.system.equipped).toBeUndefined();
+    });
+
+    test("leaves the equip toggle alone for a vehicle actor", async () => {
+      global.game = {
+        ...originalGame,
+        user: { isGM: false },
+        settings: { get: (scope, key) => (key == 'actionEconomyMode' ? 'strict' : undefined) },
+      };
+      const item = makeItem('weapon', { traits: ['vehicular'] }, { type: 'vehicle' });
+      const change = { system: { equipped: true } };
+
+      await item._preUpdate(change, {}, 'user1');
+
+      expect(change.system.equipped).toBe(true);
+    });
+
+    test("leaves the equip toggle alone without the trait", async () => {
+      const item = makeItem('weapon', { traits: [] }, { type: 'playerCharacter' });
+      const change = { system: { equipped: true } };
+
+      await item._preUpdate(change, {}, 'user1');
+
+      expect(change.system.equipped).toBe(true);
+    });
   });
 });
 
@@ -1474,7 +1560,7 @@ describe("Reload / Consumable (weaponEffect roll() integration - see helpers/rel
     return {
       name: 'Blaster',
       isEmbedded: true,
-      system: { traits, quantity },
+      system: { traits, itemAndUpgradeTraits: traits, quantity },
       getFlag: jest.fn((scope, key) => flags[key]),
       setFlag: jest.fn(async (scope, key, value) => {
         flags[key] = value; 
@@ -1573,6 +1659,17 @@ describe("Reload / Consumable (weaponEffect roll() integration - see helpers/rel
     expect(weapon.setFlag).not.toHaveBeenCalled();
   });
 
+  // Empty the Mag (GI Joe CRB, Vanguard, p.109): "After using this ability, you must reload your
+  // weapon" - even one without the Reload trait.
+  test("Empty the Mag flags the weapon for a reload, trait or not", async () => {
+    const weapon = makeWeapon([]);
+    const item = makeWeaponEffectItem(weapon, { name: 'Duke' }, { emptiedMag: true });
+
+    await item.roll({});
+
+    expect(weapon.setFlag).toHaveBeenCalledWith('essence20', 'needsReload', true);
+  });
+
   /**
    * A real combatant/actor pair wired into global.game, same shape as _rollWithRefund's own
    * withCombat() above, needed here so canSpend()'s Move-action affordability check has a real
@@ -1646,6 +1743,259 @@ describe("Reload / Consumable (weaponEffect roll() integration - see helpers/rel
     } finally {
       restore();
     }
+  });
+
+  describe("Fanning (A Jump Through Time, p.74) - see helpers/fanning.mjs", () => {
+    test("a Fanning Attack flags the weapon for a reload; an ordinary shot doesn't", async () => {
+      const fannedWeapon = makeWeapon(['fanning']);
+      await makeWeaponEffectItem(fannedWeapon, { name: 'Duke' }, { fanned: true }).roll({});
+      expect(fannedWeapon.setFlag).toHaveBeenCalledWith('essence20', 'needsReload', true);
+
+      const plainWeapon = makeWeapon(['fanning']);
+      await makeWeaponEffectItem(plainWeapon, { name: 'Duke' }, { fanned: false }).roll({});
+      expect(plainWeapon.setFlag).not.toHaveBeenCalled();
+    });
+
+    test("a Fanning weapon flagged by a Fanning Attack needs a Move action before it fires again", async () => {
+      const { actor, restore } = withCombat({ moveMax: 0 });
+      try {
+        const weapon = makeWeapon(['fanning']);
+        weapon.getFlag.mockImplementation((scope, key) => (key == 'needsReload' ? true : undefined));
+        const item = makeWeaponEffectItem(weapon, actor);
+
+        await item.roll({});
+
+        expect(item._dice.handleSkillItemRoll).not.toHaveBeenCalled();
+      } finally {
+        restore();
+      }
+    });
+  });
+
+  test("a High-Density follow-up skips the Reload gate - it is the same shot", async () => {
+    const { actor, restore } = withCombat({ moveMax: 0 });
+    try {
+      const weapon = makeWeapon(['reload', 'highDensity']);
+      weapon.getFlag.mockImplementation((scope, key) => (key == 'needsReload' ? true : undefined));
+      const item = makeWeaponEffectItem(weapon, actor);
+
+      await item.roll({ highDensityFollowUp: true, bypassEconomy: true });
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
+      expect(weapon.unsetFlag).not.toHaveBeenCalled();
+    } finally {
+      restore();
+    }
+  });
+
+  describe("Ongoing / Poison / Toxin (Cobra Codex p.93-94) - see helpers/ongoing-effects.mjs's own doc comment", () => {
+    const originalFromUuid = global.fromUuid;
+
+    afterEach(() => {
+      global.fromUuid = originalFromUuid;
+    });
+
+    function makeTargetActor() {
+      return {
+        getFlag: jest.fn(() => undefined),
+        setFlag: jest.fn(async () => undefined),
+      };
+    }
+
+    test("adds a pending Ongoing effect to a hit target", async () => {
+      const weapon = makeWeapon(['poison']);
+      weapon.system.ongoingDuration = 3;
+      const targetActor = makeTargetActor();
+      global.fromUuid = jest.fn(async () => targetActor);
+      const item = makeWeaponEffectItem(weapon, { name: 'Duke' }, {
+        outcomes: [{ results: [{ success: true, targetUuid: 'Actor.target1', damageValue: 1, damageType: 'poison' }] }],
+      });
+
+      await item.roll({});
+
+      expect(targetActor.setFlag).toHaveBeenCalledWith('essence20', 'pendingOngoingEffects', [
+        { damageValue: 1, damageType: 'poison', roundsRemaining: 3, sourceName: 'Blaster' },
+      ]);
+    });
+
+    test("doesn't add anything for a Condition-only hit, a miss, or without the trait", async () => {
+      const targetActor = makeTargetActor();
+      global.fromUuid = jest.fn(async () => targetActor);
+
+      const conditionOnlyWeapon = makeWeapon(['poison']);
+      let item = makeWeaponEffectItem(conditionOnlyWeapon, { name: 'Duke' }, {
+        outcomes: [{ results: [{ success: true, targetUuid: 'Actor.target1', damageValue: 0, damageType: 'special' }] }],
+      });
+      await item.roll({});
+      expect(targetActor.setFlag).not.toHaveBeenCalled();
+
+      const missWeapon = makeWeapon(['poison']);
+      item = makeWeaponEffectItem(missWeapon, { name: 'Duke' }, {
+        outcomes: [{ results: [{ success: false, targetUuid: 'Actor.target1', damageValue: null, damageType: 'poison' }] }],
+      });
+      await item.roll({});
+      expect(targetActor.setFlag).not.toHaveBeenCalled();
+
+      const plainWeapon = makeWeapon([]);
+      item = makeWeaponEffectItem(plainWeapon, { name: 'Duke' }, {
+        outcomes: [{ results: [{ success: true, targetUuid: 'Actor.target1', damageValue: 1, damageType: 'sharp' }] }],
+      });
+      await item.roll({});
+      expect(targetActor.setFlag).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/mounted.mjs's own doc comment", () => {
+    test("can't attack with a Mounted weapon that hasn't been set up yet", async () => {
+      const weapon = makeWeapon(['mounted']);
+      weapon.getFlag.mockImplementation(() => undefined);
+      const item = makeWeaponEffectItem(weapon, { name: 'Duke' });
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).not.toHaveBeenCalled();
+    });
+
+    test("fires normally once the weapon's own flag says it's set up", async () => {
+      const weapon = makeWeapon(['mounted']);
+      weapon.getFlag.mockImplementation((scope, key) => (key == 'mountedSetUp' ? true : undefined));
+      const item = makeWeaponEffectItem(weapon, { name: 'Duke' });
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
+    });
+  });
+
+  describe("Mythically Modular (Through the Shattered Grid p.116) - see helpers/mythically-modular.mjs", () => {
+    function mythicForms(activeEquipped) {
+      const active = { ...makeWeapon(['mythicallyModular']), id: 'axe', type: 'weapon' };
+      active.system.equipped = activeEquipped;
+      const other = { ...makeWeapon(['mythicallyModular']), id: 'shield', type: 'weapon' };
+      other.system.equipped = !activeEquipped;
+      const actor = { name: 'Ranger', items: Object.assign([active, other], { get: jest.fn(() => undefined) }) };
+      return { active, actor };
+    }
+
+    test("can't attack with a form that isn't the one in use", async () => {
+      const { active, actor } = mythicForms(false);
+      const item = makeWeaponEffectItem(active, actor);
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).not.toHaveBeenCalled();
+    });
+
+    test("attacks normally with the form in use", async () => {
+      const { active, actor } = mythicForms(true);
+      const item = makeWeaponEffectItem(active, actor);
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
+    });
+  });
+
+  describe("Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/vehicular.mjs's own doc comment", () => {
+    const originalGame = global.game;
+
+    afterEach(() => {
+      global.game = originalGame;
+    });
+
+    test("can't attack with a Vehicular weapon from a non-vehicle actor in strict mode", async () => {
+      global.game = {
+        ...originalGame,
+        user: { isGM: false },
+        settings: { get: (scope, key) => (key == 'actionEconomyMode' ? 'strict' : undefined) },
+      };
+      global.ui = { notifications: { warn: jest.fn() } };
+      const weapon = makeWeapon(['vehicular']);
+      const item = makeWeaponEffectItem(weapon, { name: 'Duke', type: 'playerCharacter' });
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).not.toHaveBeenCalled();
+    });
+
+    test("fires normally from a vehicle actor", async () => {
+      global.game = {
+        ...originalGame,
+        user: { isGM: false },
+        settings: { get: (scope, key) => (key == 'actionEconomyMode' ? 'strict' : undefined) },
+      };
+      const weapon = makeWeapon(['vehicular']);
+      const item = makeWeaponEffectItem(weapon, { name: 'Turbo Tank', type: 'vehicle' });
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
+    });
+  });
+
+  describe("Burst-Fire (Quartermaster's Guide to Gear p.33) - see helpers/reload.mjs's own doc comment", () => {
+    test("firing once this round doesn't flag needing reload", async () => {
+      const { actor, restore } = withCombat({ moveMax: 1 });
+      try {
+        const weapon = makeWeapon(['burstFire']);
+        const item = makeWeaponEffectItem(weapon, actor);
+
+        await item.roll({});
+
+        expect(weapon.setFlag).toHaveBeenCalledWith('essence20', 'burstFiredThisRound', expect.any(Object));
+        expect(weapon.setFlag).not.toHaveBeenCalledWith('essence20', 'needsReload', true);
+      } finally {
+        restore();
+      }
+    });
+
+    test("firing a second time in the same round counts as if it had Reload for the turn", async () => {
+      const { actor, restore } = withCombat({ moveMax: 1 });
+      try {
+        const weapon = makeWeapon(['burstFire']);
+        const item = makeWeaponEffectItem(weapon, actor);
+
+        await item.roll({});
+        weapon.setFlag.mockClear();
+        await item.roll({});
+
+        expect(weapon.setFlag).toHaveBeenCalledWith('essence20', 'needsReload', true);
+      } finally {
+        restore();
+      }
+    });
+
+    test("a weapon already flagged from a Burst-Fire second shot can't fire again without a Move action", async () => {
+      const { actor, restore } = withCombat({ moveMax: 0 });
+      try {
+        const weapon = makeWeapon(['burstFire']);
+        weapon.getFlag.mockImplementation((scope, key) => (key == 'needsReload' ? true : undefined));
+        const item = makeWeaponEffectItem(weapon, actor);
+
+        await item.roll({});
+
+        expect(item._dice.handleSkillItemRoll).not.toHaveBeenCalled();
+      } finally {
+        restore();
+      }
+    });
+
+    test("also applies when an attached Upgrade grants Burst-Fire rather than the weapon itself", async () => {
+      const { actor, restore } = withCombat({ moveMax: 1 });
+      try {
+        const weapon = makeWeapon([]);
+        weapon.system.itemAndUpgradeTraits = ['burstFire'];
+        const item = makeWeaponEffectItem(weapon, actor);
+
+        await item.roll({});
+        weapon.setFlag.mockClear();
+        await item.roll({});
+
+        expect(weapon.setFlag).toHaveBeenCalledWith('essence20', 'needsReload', true);
+      } finally {
+        restore();
+      }
+    });
   });
 });
 

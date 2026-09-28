@@ -38,6 +38,7 @@ import { activateExploitWeakness } from "./helpers/exploit-weakness.mjs";
 import { activateFlashy } from "./helpers/flashy.mjs";
 import { activateSuffer, hasSuffer } from "./helpers/suffer.mjs";
 import { activateFrenziedAttack, canActivateFrenziedAttack } from "./helpers/frenzied-attack.mjs";
+import { canOfferHighDensityFollowUp, hasDifferentTarget, rollHighDensityFollowUp } from "./helpers/high-density.mjs";
 import { consumeDamageRedirect, findEligibleProtector } from "./helpers/interpose.mjs";
 import { activateFeBurn, canUseFeBurn } from "./helpers/fe-burn.mjs";
 import { getTerrorAvailable } from "./helpers/terror.mjs";
@@ -278,6 +279,30 @@ export const addDefenseBoostButton = function (message, html) {
   }
 };
 
+/**
+ * Puts a post-roll button (Spite, High-Density, Frenzied Attack...) below the roll, the same spot
+ * addRerollButtons uses: appended INSIDE .dice-roll it landed above the formula and total, where
+ * it read as part of the roll rather than a button. Buttons from several add*Button calls share
+ * one .e20-chat-action-buttons row under the roll.
+ * @param {HTMLElement} html   The rendered chat message.
+ * @param {HTMLButtonElement} button
+ */
+function placeActionButton(html, button) {
+  let container = html.querySelector(".e20-chat-action-buttons");
+  if (!container) {
+    container = document.createElement("div");
+    container.className = "e20-chat-action-buttons";
+    const diceRoll = html.querySelector(".dice-roll");
+    if (diceRoll?.parentElement) {
+      diceRoll.parentElement.insertBefore(container, diceRoll.nextSibling);
+    } else {
+      (html.querySelector(".message-content") ?? html).appendChild(container);
+    }
+  }
+
+  container.appendChild(button);
+}
+
 // MLP CRB "Consummate Performer" (Laugh Tactic, p.86) - offers to regain 1 Cheer once a
 // Consummate Performer attempt (see helpers/consummate-performer.mjs#activateConsummatePerformer)
 // has actually posted and its outcome is known, same "only known once the message exists"
@@ -299,7 +324,7 @@ export const addConsummatePerformerButton = function (message, html) {
 
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "e20-consummate-performer-button";
+  button.className = "e20-chat-action-button e20-consummate-performer-button";
   button.textContent = game.i18n.localize("E20.ConsummatePerformerRegain");
   if (message.getFlag("essence20", "consummatePerformerClaimed")) {
     button.disabled = true;
@@ -316,7 +341,7 @@ export const addConsummatePerformerButton = function (message, html) {
     });
   }
 
-  target.appendChild(button);
+  placeActionButton(html, button);
 };
 
 // Spite (Beneath the Helmet, Dark Ranger, 2nd level, p.39) - see helpers/spite.mjs's own doc
@@ -348,7 +373,7 @@ export const addSpiteButton = function (message, html) {
 
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "e20-spite-button";
+  button.className = "e20-chat-action-button e20-spite-button";
   button.textContent = game.i18n.localize("E20.SpiteActivate");
   if (message.getFlag("essence20", "spiteClaimed")) {
     button.disabled = true;
@@ -362,7 +387,7 @@ export const addSpiteButton = function (message, html) {
     });
   }
 
-  target.appendChild(button);
+  placeActionButton(html, button);
 };
 
 // One-Upping (Across the Stars, Competitive Origin Benefit, p.38) - see helpers/one-upping.mjs's
@@ -395,7 +420,7 @@ export const addOneUppingButton = function (message, html) {
 
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "e20-one-upping-button";
+  button.className = "e20-chat-action-button e20-one-upping-button";
   button.textContent = game.i18n.localize("E20.OneUppingActivate");
   if ((message.getFlag("essence20", "oneUppingClaimedBy") ?? []).includes(claimant.id)) {
     button.disabled = true;
@@ -408,7 +433,7 @@ export const addOneUppingButton = function (message, html) {
     });
   }
 
-  target.appendChild(button);
+  placeActionButton(html, button);
 };
 
 // Secret Helper (MLP CRB, Spirit of Generosity, 3rd level, p.74) - see
@@ -439,7 +464,7 @@ export const addSecretHelperButton = function (message, html) {
 
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "e20-secret-helper-button";
+  button.className = "e20-chat-action-button e20-secret-helper-button";
   button.textContent = game.i18n.localize("E20.SecretHelperActivate");
   // Tracked per claimant, like One-Upping's own claim list: two different ponies each holding
   // Secret Helper may both pitch in on the same failed roll, but neither gets to do it twice.
@@ -476,7 +501,7 @@ export const addSecretHelperButton = function (message, html) {
     });
   }
 
-  target.appendChild(button);
+  placeActionButton(html, button);
 };
 
 // Suffer! (Finster's Monster-Matic Cookbook, Path of Thorns, 15th level, p.300) - see
@@ -507,7 +532,7 @@ export const addSufferButton = function (message, html) {
 
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "e20-suffer-button";
+  button.className = "e20-chat-action-button e20-suffer-button";
   button.textContent = game.i18n.localize("E20.SufferActivate");
   if (message.getFlag("essence20", "sufferClaimed")) {
     button.disabled = true;
@@ -523,7 +548,7 @@ export const addSufferButton = function (message, html) {
     });
   }
 
-  target.appendChild(button);
+  placeActionButton(html, button);
 };
 
 // Frenzied Attack (Decepticon Directive, Shredder Focus, 10th level, p.58) - see
@@ -555,7 +580,7 @@ export const addFrenziedAttackButton = function (message, html) {
 
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "e20-frenzied-attack-button";
+  button.className = "e20-chat-action-button e20-frenzied-attack-button";
   button.textContent = game.i18n.localize("E20.FrenziedAttackActivate");
   if (message.getFlag("essence20", "frenziedAttackClaimed")) {
     button.disabled = true;
@@ -567,7 +592,55 @@ export const addFrenziedAttackButton = function (message, html) {
     });
   }
 
-  target.appendChild(button);
+  placeActionButton(html, button);
+};
+
+// High-Density (Factions in Action Vol. 2, p.92) - see helpers/high-density.mjs's own doc comment.
+// Same reactive post-roll button shape as addFrenziedAttackButton just above, gated on an Attack
+// with a High-Density weapon that hit something. The player targets the second creature first;
+// clicking with only the original target still selected just warns, without claiming the button.
+export const addHighDensityButton = function (message, html) {
+  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
+    return;
+  }
+
+  const flags = message.flags?.essence20;
+  if (!canOfferHighDensityFollowUp(flags)) {
+    return;
+  }
+
+  const actor = ChatMessage.getSpeakerActor(message.speaker);
+  const item = fromUuidSync(flags.itemUuid);
+  // Only the attacker's own players get the button - the follow-up rolls on their behalf.
+  if (!actor?.isOwner || !item) {
+    return;
+  }
+
+  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
+  if (!target) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "e20-chat-action-button e20-high-density-button";
+  button.textContent = game.i18n.localize("E20.HighDensityFollowUp");
+  if (message.getFlag("essence20", "highDensityClaimed")) {
+    button.disabled = true;
+  } else {
+    button.addEventListener("click", async () => {
+      if (!hasDifferentTarget(game.user.targets, flags.targetUuid)) {
+        ui.notifications.warn(game.i18n.localize("E20.HighDensityNeedsNewTarget"));
+        return;
+      }
+
+      button.disabled = true;
+      await message.setFlag("essence20", "highDensityClaimed", true);
+      await rollHighDensityFollowUp(actor, item);
+    });
+  }
+
+  placeActionButton(html, button);
 };
 
 const EXPLOIT_WEAKNESS_ID = "Compendium.essence20.pr_crb.Item.BTSdvgvfKHWeV07C";
@@ -600,7 +673,7 @@ export const addExploitWeaknessButton = function (message, html) {
 
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "e20-exploit-weakness-button";
+  button.className = "e20-chat-action-button e20-exploit-weakness-button";
   button.textContent = game.i18n.localize("E20.ExploitWeaknessActivate");
   if (message.getFlag("essence20", "exploitWeaknessClaimed")) {
     button.disabled = true;
@@ -612,7 +685,7 @@ export const addExploitWeaknessButton = function (message, html) {
     });
   }
 
-  target.appendChild(button);
+  placeActionButton(html, button);
 };
 
 // Flashy (Transformers CRB, Scientist Role, 14th level, p.80) - see helpers/flashy.mjs's own doc
@@ -642,7 +715,7 @@ export const addFlashyButton = function (message, html) {
 
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "e20-flashy-button";
+  button.className = "e20-chat-action-button e20-flashy-button";
   button.textContent = game.i18n.localize("E20.FlashyActivate");
   if (message.getFlag("essence20", "flashyClaimed")) {
     button.disabled = true;
@@ -654,7 +727,7 @@ export const addFlashyButton = function (message, html) {
     });
   }
 
-  target.appendChild(button);
+  placeActionButton(html, button);
 };
 
 // Wires up the check-card.hbs "Apply Damage"/critical-effect buttons. Called on the
@@ -1074,3 +1147,28 @@ export const applyChatMessageSystemColor = function (message, html) {
   html.style.setProperty('--e20-system-color', normalizedColor);
   html.style.setProperty('--e20-system-color-50', alphaColor);
 };
+
+/**
+ * Runs each renderChatMessageHTML decorator (crit highlighting, every post-roll button, the check
+ * card listeners...) on its own, so one that throws - or rejects, for an async one - is logged and
+ * the rest still run. Called in sequence they shared one fate: an error in, say, Spite's button
+ * stopped High-Density's and everything after it from ever being added to that card.
+ * @param {Array<Function>} decorators   Each called as decorator(message, html).
+ * @param {ChatMessage} message
+ * @param {HTMLElement} html
+ */
+export function runChatDecorators(decorators, message, html) {
+  for (const decorator of decorators) {
+    const report = (error) => console.error(
+      `Essence20 | ${decorator.name || 'chat decorator'} failed on chat message ${message?.id}`, error,
+    );
+    try {
+      const result = decorator(message, html);
+      if (typeof result?.then == 'function') {
+        result.catch(report);
+      }
+    } catch (error) {
+      report(error);
+    }
+  }
+}

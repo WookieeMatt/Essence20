@@ -5,9 +5,11 @@ import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class PowerCostSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
-  constructor(actor, power, maxPower, powerType, title){
+  constructor(actor, power, maxPower, powerType, title, payer = actor){
     super();
     this._actor = actor;
+    // Who spends the points - see power-handler.mjs#powerCost's own payer.
+    this._payer = payer;
     this._power = power;
     this._maxPower = maxPower;
     this._powerType = powerType;
@@ -65,7 +67,7 @@ export default class PowerCostSelector extends serializeFormSubmits(HandlebarsAp
   static async myFormHandler(event, form, formData) {
     const newCost = getFormData(formData.object);
 
-    await _powerCountUpdate(this._actor, this._maxPower, this._powerType, newCost, this._power);
+    await _powerCountUpdate(this._actor, this._maxPower, this._powerType, newCost, this._power, this._payer);
     this.close();
   }
 }

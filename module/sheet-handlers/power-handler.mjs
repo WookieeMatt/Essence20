@@ -1,6 +1,7 @@
 import PowerCostSelector from "../apps/power-cost-selector.mjs";
 import { parseId } from "../helpers/utils.mjs";
 import { onPowerUse } from "../helpers/power-use.mjs";
+import { spendDailyUse } from "../helpers/nanomite-uses.mjs";
 
 /**
  * Handles dropping a Power on to an Actor
@@ -40,8 +41,10 @@ export async function onPowerDrop(actor, power, dropFunc) {
  * onPerkUse - see that file's own doc comment for why nothing analogous existed here before.
  * @param {Actor} actor The Actor activating the Power
  * @param {Power} power The Power being activated
+ * @param {Actor} [payer] Who spends the Power points. Defaults to `actor`; differs for a Power on a
+ *   Zord or vehicle - which has no Power pool of its own - rolled by a chosen crew member, who pays.
  */
-export async function powerCost(actor, power) {
+export async function powerCost(actor, power, payer = actor) {
   let maxPower = 0;
   let powerType = "";
 
@@ -64,20 +67,39 @@ export async function powerCost(actor, power) {
     return;
   }
 
+  // G.I. Joe nanomite powers cost no Power points - they're limited to uses per day instead. See
+  // helpers/nanomite-uses.mjs.
+  if (power.system.type == "nanomite") {
+    if (await spendDailyUse(actor, power)) {
+      await onPowerUse(actor, power, 0);
+    }
+
+    return;
+  }
+
+  // Only characters carry a Power pool. A costed Power used with no one able to pay would otherwise
+  // throw reading the pool - say so instead.
+  const pool = payer?.system?.powers?.[powerType];
+  const needsPool = powerType != "threat" && (power.system.hasVariableCost || power.system.powerCost);
+  if (needsPool && !pool) {
+    ui.notifications.warn(game.i18n.format('E20.PowerNoPool', { name: payer?.name ?? actor.name }));
+    return;
+  }
+
   if (power.system.hasVariableCost && powerType != "threat") {
     if (power.system.maxPowerCost) {
       maxPower = power.system.maxPowerCost;
     } else {
-      maxPower = actor.system.powers[powerType].value;
+      maxPower = pool.value;
     }
 
     const title = "E20.PowerCost";
-    new PowerCostSelector(actor, power, maxPower, powerType, title).render(true);
+    new PowerCostSelector(actor, power, maxPower, powerType, title, payer).render(true);
     // The variable-cost spend (and the onPowerUse dispatch that follows it) both happen later,
     // once the player actually confirms an amount - see _powerCountUpdate below.
-  } else if (powerType != "threat" && actor.system.powers[powerType].value >= power.system.powerCost) {
+  } else if (powerType != "threat" && pool && pool.value >= power.system.powerCost) {
     const updateString = `system.powers.${powerType}.value`;
-    await actor.update({ [updateString]: Math.max(0, actor.system.powers[powerType].value - power.system.powerCost) });
+    await payer.update({ [updateString]: Math.max(0, pool.value - power.system.powerCost) });
     await onPowerUse(actor, power, power.system.powerCost);
   } else if (!power.system.powerCost) {
     // Free-to-activate Powers (powerCost null/0) have nothing to spend, but still need their own
@@ -99,15 +121,16 @@ export async function powerCost(actor, power) {
  * @param {Power} [power] The Power being activated - optional only so this function's own existing
  *   unit tests (which exercise the cost-math in isolation) don't need to supply a real Item; a real
  *   call site always has one.
+ * @param {Actor} [payer] Who spends the points - see powerCost's own `payer`.
  */
-export async function _powerCountUpdate(actor, powerMax, powerType, powerCost, power) {
+export async function _powerCountUpdate(actor, powerMax, powerType, powerCost, power, payer = actor) {
   const updateString = `system.powers.${powerType}.value`;
 
   if ((powerCost > powerMax)
-    || (powerType !="threat" && powerCost > actor.system.powers[powerType].value)) {
+    || (powerType !="threat" && powerCost > payer.system.powers[powerType].value)) {
     ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
   } else if (powerType != "threat") {
-    await actor.update({ [updateString]: Math.max(0, actor.system.powers[powerType].value - powerCost) });
+    await payer.update({ [updateString]: Math.max(0, payer.system.powers[powerType].value - powerCost) });
     await onPowerUse(actor, power, powerCost);
   }
 }

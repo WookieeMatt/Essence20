@@ -7,7 +7,7 @@ import Essence20CompendiumBrowser from './compendium-browser.mjs';
  * `_index` is what _buildIndex would have produced: one flat row per compendium entry, carrying a
  * facet's value only for the types that facet covers.
  */
-function makeBrowser(index, { activeType = 'equipment', traits = [], gearType = [] } = {}) {
+function makeBrowser(index, { activeType = 'equipment', traits = [], gearType = [], availability = [] } = {}) {
   const browser = Object.create(Essence20CompendiumBrowser.prototype);
   browser._index = index;
   browser._visiblePackIds = new Set(index.map(e => e.bookId));
@@ -18,7 +18,7 @@ function makeBrowser(index, { activeType = 'equipment', traits = [], gearType = 
     booksExpanded: true,
     activeType,
     excludedSubtypes: {},
-    requiredFacets: { traits: new Set(traits), gearType: new Set(gearType) },
+    requiredFacets: { traits: new Set(traits), gearType: new Set(gearType), availability: new Set(availability) },
   };
 
   return browser;
@@ -28,7 +28,7 @@ function makeBrowser(index, { activeType = 'equipment', traits = [], gearType = 
  * One index row. `traits` is null for types the trait facet does not cover, `gearType` null for
  * everything but gear - exactly as _buildIndex writes them.
  */
-function entry(name, type, { traits = null, gearType = null } = {}) {
+function entry(name, type, { traits = null, gearType = null, availability = null } = {}) {
   return {
     uuid: `uuid.${name}`,
     name,
@@ -37,6 +37,7 @@ function entry(name, type, { traits = null, gearType = null } = {}) {
     subtype: null,
     traits,
     gearType,
+    availability,
     book: 'Book',
     bookId: 'essence20.book',
     page: null,
@@ -53,6 +54,9 @@ const BUCKLER = entry('Buckler', 'shield', { traits: ['deflective', 'bulky'] });
 const ROPE = entry('Rope', 'gear', { gearType: 'exploration' });
 const TOOLKIT = entry('Toolkit', 'gear', { gearType: 'tools' });
 const MEDKIT = entry('Medkit', 'gear', { gearType: 'medical' });
+const REPAIR_MACHINE = entry('Repair Machine', 'power', { availability: 'limited' });
+const SWIFTNESS = entry('Swiftness', 'power', { availability: 'restricted' });
+const MORPH = entry('Morph', 'power');
 
 beforeEach(() => {
   global.game = {
@@ -67,6 +71,7 @@ beforeEach(() => {
         ballistic: 'Ballistic', reload: 'Reload', silent: 'Silent', sniper: 'Sniper', unused: 'Unused',
       },
       armorTraits: { deflective: 'Deflective', bulky: 'Bulky' },
+      availabilities: { standard: 'Standard', limited: 'Limited', restricted: 'Restricted' },
       gearTypes: {
         tools: 'Tools', kits: 'Kits', medical: 'Medical', exploration: 'Exploration', other: 'Other',
       },
@@ -140,6 +145,21 @@ describe('the gear type facet', () => {
     const browser = makeBrowser([TOOLKIT, RIFLE], { gearType: ['tools'] });
 
     expect(browser._getFilteredResults().map(e => e.name)).toEqual(['Toolkit']);
+  });
+});
+
+// A nanomite power's printed Availability - single-valued, so several checked means "any of them".
+describe('the power availability facet', () => {
+  test('narrows Powers to the checked availabilities', () => {
+    const browser = makeBrowser([REPAIR_MACHINE, SWIFTNESS, MORPH], { activeType: 'power', availability: ['limited'] });
+
+    expect(browser._getFilteredResults().map(e => e.name)).toEqual(['Repair Machine']);
+  });
+
+  test('is offered on the Powers tab', () => {
+    const browser = makeBrowser([REPAIR_MACHINE, SWIFTNESS, MORPH], { activeType: 'power' });
+
+    expect(facet(browser, 'availability')).toBeTruthy();
   });
 });
 
@@ -247,7 +267,7 @@ describe('an unknown facet key', () => {
 
     browser._requiredFor('notAFacet');
 
-    expect(Object.keys(browser._filters.requiredFacets)).toEqual(['traits', 'gearType']);
+    expect(Object.keys(browser._filters.requiredFacets)).toEqual(['traits', 'gearType', 'availability']);
   });
 
   test('still returns the real facets their own sets', () => {

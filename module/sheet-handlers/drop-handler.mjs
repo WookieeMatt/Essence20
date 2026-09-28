@@ -1,7 +1,7 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
 import { createId, parseId } from "../helpers/utils.mjs";
 import { onAlterationDrop } from "./alteration-handler.mjs";
-import { onAttachmentDrop, onAttachableParentDrop, onEquipmentPackageDrop } from "./attachment-handler.mjs";
+import { _attachItem, onAttachmentDrop, onAttachableParentDrop, onEquipmentPackageDrop } from "./attachment-handler.mjs";
 import { onInfluenceDrop, onOriginDrop } from "./background-handler.mjs";
 import { onPowerDrop } from "./power-handler.mjs";
 import { setPerkValues } from "./perk-handler.mjs";
@@ -140,6 +140,49 @@ async function _onDropDefault(data, dropFunc, isNewItem=true) {
 }
 
 /**
+ * An armor Upgrade dropped on an actor that can transform. A Cybertronian installs Armor Upgrades
+ * in its own body (a loose Upgrade with no parentId, counted by actor.mjs#_prepareDefenses in
+ * either mode) - but if the actor also has Armor, ask whether it goes in the body or onto that
+ * Armor instead, rather than always picking the body.
+ * @param {Upgrade} upgrade The armor Upgrade being dropped
+ * @param {Actor} actor The transforming Actor receiving it
+ * @param {Function} dropFunc The function to call to complete the drop
+ * @returns {Promise<object|boolean>} The drop result, or false if the prompt was dismissed.
+ */
+export async function _onTransformerArmorUpgradeDrop(upgrade, actor, dropFunc) {
+  // Power Armor is the Ranger's Morphed form, not something an Upgrade bolts onto.
+  const armors = (actor.items.documentsByType?.armor ?? []).filter(armor => !armor.system.isPowerArmor);
+  if (!armors.length) {
+    return dropFunc();
+  }
+
+  const buttons = [{ label: game.i18n.localize('E20.ArmorUpgradeInstallBody'), action: 'body', default: true }];
+  for (const armor of armors) {
+    const label = armor.system.equipped
+      ? game.i18n.format('E20.ArmorUpgradeInstallOnArmorEquipped', { name: armor.name })
+      : game.i18n.format('E20.ArmorUpgradeInstallOnArmor', { name: armor.name });
+    buttons.push({ label, action: armor.id });
+  }
+
+  const choice = await foundry.applications.api.DialogV2.wait({
+    window: { title: game.i18n.localize('E20.ArmorUpgradeInstallTitle') },
+    classes: ["window-app", "e20-window"],
+    content: `<p>${game.i18n.format('E20.ArmorUpgradeInstallContent', { upgrade: upgrade.name, name: actor.name })}</p>`,
+    buttons,
+    rejectClose: false,
+  });
+
+  if (!choice) {
+    return false;
+  } else if (choice == 'body') {
+    return dropFunc();
+  }
+
+  const armor = armors.find(a => a.id == choice);
+  return armor ? _attachItem(actor, armor, dropFunc) : false;
+}
+
+/**
  * Handle dropping of an Upgrade onto an Actor sheet
  * @param {Upgrade} upgrade The Upgrade being dropped
  * @param {Actor} actor The Actor receiving the Upgrade
@@ -152,7 +195,7 @@ export async function _onUpgradeDrop(upgrade, actor, dropFunc) {
   if (actor.type == 'companion' && actor.system.type == 'drone' && upgrade.system.type == 'drone') {
     return dropFunc();
   } else if (actor.system.canTransform && upgrade.system.type == 'armor') {
-    return dropFunc();
+    return _onTransformerArmorUpgradeDrop(upgrade, actor, dropFunc);
   } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
     return onAttachmentDrop(actor, upgrade, dropFunc);
   } else if (actor.type == 'vehicle' && upgrade.system.type == 'vehicle') {

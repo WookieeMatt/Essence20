@@ -58,6 +58,52 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+  {{#inArray system.itemAndUpgradeTraits 'bulwark'}}
+    {{!-- Bulwark (X) Health - read by documents/actor.mjs#_prepareHealth --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBulwarkHealthBonus'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.bulwarkHealthBonus name="system.bulwarkHealthBonus" min=0 step=1}}
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/inArray}}
+
+  {{#inArray system.itemAndUpgradeTraits 'exoFrame'}}
+    {{#if @root.document.isEmbedded}}
+    {{!-- Exo-Frame - manual Driving test, see helpers/exo-frame.mjs --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTraitExoFrame'}}
+    {{#*inline "item-field-inputs"}}
+    <button type="button" class="item-field-inputs" data-action="rollExoFrameTest" data-tooltip="{{localize 'E20.ExoFrameTestHint'}}">
+      <i class="fas fa-dice-d20"></i> {{localize 'E20.ExoFrameTestButton'}}
+    </button>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/if}}
+  {{/inArray}}
+
+  {{#inArray system.itemAndUpgradeTraits 'modular'}}
+    {{!-- Modular (X) - see helpers/modular-armor.mjs --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorModularAllowance'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.modularAllowance name="system.modularAllowance" min=0 step=1}}
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorModularWeapons'}}
+    {{#*inline "item-field-inputs"}}
+    <div class="item-field-inputs" data-tooltip="{{localize 'E20.ArmorModularWeaponsHint'}}">
+      {{#each @root.modularCandidates as |candidate|}}
+      <label>
+        <input type="checkbox" name="system.modularWeaponIds" value="{{candidate.id}}" {{checked candidate.attached}} {{disabled candidate.disabled}} />
+        {{candidate.name}}
+      </label>
+      {{else}}
+      <span class="hint">{{localize 'E20.ArmorModularWeaponsNone'}}</span>
+      {{/each}}
+    </div>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/inArray}}
+
   {{!-- Armor Upgrades --}}
   {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.system.items type='upgrade'}}
 

@@ -28,6 +28,9 @@ export class PowerItemData extends foundry.abstract.TypeDataModel {
       // Spellcasting), but a Power does: Finster's Monster-Magic Cookbook prints both
       // "Targeting (Sorcery) attack" and "Culture (Arcane) attack". Null for a non-attack Power.
       attackSkill: makeStrWithChoices(Object.keys(E20.skills), null),
+      // Availability (Standard, Limited, Restricted...) - printed for every nanomite power, and what the
+      // Basal/Intricate Nano Infusion Perks choose by.
+      availability: makeStrWithChoices(Object.keys(E20.availabilities), null),
       canActivate: makeBool(false),
       // How long an activated Power lasts - see module/data/duration-schema.mjs. Powers had no
       // duration field at all before; an area Power needs one for the same reason a spell does.
@@ -44,6 +47,8 @@ export class PowerItemData extends foundry.abstract.TypeDataModel {
       type: makeStrWithChoices(Object.keys(E20.powerTypes), 'grid'),
       usesInterval: makeStrWithChoices(Object.keys(E20.usesInterval), 'perScene'),
       usesPer: makeInt(null),
+      // Uses spent since the last Rest, for a power with a per-day limit - see helpers/nanomite-uses.mjs.
+      usesSpent: makeInt(0),
     };
   }
 

@@ -1,4 +1,5 @@
 import { powerCost } from "./power-handler.mjs";
+import { resetDailyPowerUses } from "../helpers/nanomite-uses.mjs";
 import RollerSelector from "../apps/roller-selector.mjs";
 import DefenseModificationSelector from "../apps/defense-modification.mjs";
 
@@ -53,7 +54,8 @@ export async function performRoll(event, actor, childRoller=None) {
     }
 
     if (rollType == 'power') {
-      return await powerCost(actor, item);
+      // A Zord or vehicle has no Power pool - the crew member chosen to roll pays instead.
+      return await powerCost(actor, item, childRoller?.system?.powers ? childRoller : actor);
     } else if (rollType == 'rolePoints') {
       await spendRolePoint(actor, item);
     }
@@ -180,6 +182,11 @@ async function _applyRestBenefits(actor, completeMessageKey) {
   }
 
   ui.notifications.info(game.i18n.localize("E20.RestHealthStunReset"));
+  // A Rest is the new day that gives nanomite powers back their daily uses.
+  if (await resetDailyPowerUses(actor)) {
+    ui.notifications.info(game.i18n.localize("E20.RestPowerUsesReset"));
+  }
+
   ui.notifications.info(game.i18n.localize(completeMessageKey));
 
   await actor.update({

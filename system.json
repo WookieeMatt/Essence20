@@ -22,6 +22,9 @@
     "units": "ft"
   },
   "documentTypes": {
+    "RegionBehavior": {
+      "environment": {}
+    },
     "Actor": {
       "playerCharacter": {
         "htmlFields": ["notes"]
