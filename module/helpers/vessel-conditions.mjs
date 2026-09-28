@@ -499,6 +499,8 @@ export async function openVesselRepairDialog(vessel) {
   const choice = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.format("E20.VesselRepairTitle", { vessel: vessel.name }) },
     classes: ["window-app", "e20-window"],
+    // A fixed width, so the hint at the bottom wraps instead of stretching the dialog to its length.
+    position: { width: 480 },
     content: `
       <div class="form-group"><label>${game.i18n.localize("E20.VesselRepairRepairer")}</label>
         <select name="repairer">${repairerOptions}</select></div>
