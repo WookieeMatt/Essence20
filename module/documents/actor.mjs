@@ -48,6 +48,7 @@ import { getInnerMagicWillpowerReduction } from "../helpers/inner-magic.mjs";
 import { applyModularIntegration } from "../helpers/modular-armor.mjs";
 import { DEFAULT_ENVIRONMENT, getEnvironment } from "../helpers/environment.mjs";
 import { changeVesselConditionStacks, getVesselConditionStacks, isStackingVesselCondition } from "../helpers/vessel-conditions.mjs";
+import { needsGmRelay, relayToGm } from "../helpers/gm-relay.mjs";
 
 // GI Joe CRB Vanguard Perks that grant a flat, condition-gated Toughness/Evasion bonus - computed
 // fresh in _prepareDefenses() below (like rolePointsDefense already is) rather than written into
@@ -401,12 +402,48 @@ export class Essence20Actor extends Actor {
   }
 
   /**
+   * Writes to an actor this user can't modify - on-hit effects written to a player's NPC target -
+   * go to the active GM instead of failing with a permission error. See helpers/gm-relay.mjs.
+   * @override
+   */
+  async update(data = {}, operation = {}) {
+    if (needsGmRelay(this)) {
+      return relayToGm(this, 'update', [data, operation]);
+    }
+
+    return super.update(data, operation);
+  }
+
+  /** @override - see update() above. */
+  async setFlag(scope, key, value) {
+    if (needsGmRelay(this)) {
+      return relayToGm(this, 'setFlag', [scope, key, value]);
+    }
+
+    return super.setFlag(scope, key, value);
+  }
+
+  /** @override - see update() above. */
+  async unsetFlag(scope, key) {
+    if (needsGmRelay(this)) {
+      return relayToGm(this, 'unsetFlag', [scope, key]);
+    }
+
+    return super.unsetFlag(scope, key);
+  }
+
+  /**
    * Space Vessel Conditions that stack (Across the Stars p.25-26 - see helpers/vessel-conditions.mjs):
    * applying one the actor already has adds a stack rather than doing nothing. Every other status,
    * and every removal or plain toggle, is core's own behavior.
    * @override
    */
   async toggleStatusEffect(statusId, options = {}) {
+    // A target this user can't modify (a player hitting an NPC) - the GM applies it. See helpers/gm-relay.mjs.
+    if (needsGmRelay(this)) {
+      return relayToGm(this, 'toggleStatusEffect', [statusId, options]);
+    }
+
     if (options.active === true && isStackingVesselCondition(statusId) && this.statuses?.has(statusId)) {
       await changeVesselConditionStacks(this, statusId, 1);
       return true;

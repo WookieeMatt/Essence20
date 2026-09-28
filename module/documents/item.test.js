@@ -26,6 +26,46 @@ function makeItem(type, system, actor = null) {
   return item;
 }
 
+// A child Item's entry on its parent is re-synced after an update - but _onUpdate runs on every
+// connected client, and a player's client can't write an NPC's unlinked token ("lacks permission to
+// update ActorDelta"), so only the client that made the change does it.
+describe("_onUpdate - syncing a weaponEffect's entry on its parent weapon", () => {
+  // The test Item base class has no _onUpdate of its own; core's is a no-op for this purpose.
+  const Base = Object.getPrototypeOf(Essence20Item.prototype);
+  let originalUser, hadOnUpdate;
+  beforeEach(() => {
+    originalUser = game.user;
+    game.user = { id: 'me' };
+    hadOnUpdate = Object.hasOwn(Base, '_onUpdate');
+    if (!hadOnUpdate) Base._onUpdate = () => {};
+  });
+
+  afterEach(() => {
+    game.user = originalUser;
+    if (!hadOnUpdate) delete Base._onUpdate;
+  });
+
+  function makeChild() {
+    const parent = { type: 'weapon', update: jest.fn(async () => {}) };
+    const item = makeItem('weaponEffect', { damageValue: 1, damageType: 'blunt', range: {}, traits: [] }, { items: { get: () => parent } });
+    item.flags = { essence20: { parentId: 'w1', collectionId: 'k1' } };
+    item.uuid = 'Actor.a.Item.e1';
+    return { item, parent };
+  }
+
+  test("the client that made the change updates the parent's entry", async () => {
+    const { item, parent } = makeChild();
+    await item._onUpdate({}, {}, 'me');
+    expect(parent.update).toHaveBeenCalledWith({ 'system.items.k1': expect.objectContaining({ uuid: 'Actor.a.Item.e1' }) });
+  });
+
+  test("every other client leaves it alone", async () => {
+    const { item, parent } = makeChild();
+    await item._onUpdate({}, {}, 'someone-else');
+    expect(parent.update).not.toHaveBeenCalled();
+  });
+});
+
 describe("_preCreate", () => {
   function makeMegaformTraitItem(type = 'coreAbility') {
     const item = makeItem('megaformTrait', { type });

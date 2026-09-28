@@ -81,6 +81,7 @@ import {
 import { handleCreateRoughTerrainRequest, makeEssence20TerrainData } from "./helpers/rough-terrain.mjs";
 import { applyEnvironmentAtSceneEnd } from "./helpers/environment-hazards.mjs";
 import { wireEnvironmentLevelSelects } from "./helpers/environment-levels.mjs";
+import { handleGmRelayDone, handleGmRelayRequest } from "./helpers/gm-relay.mjs";
 import { formatDailyUses } from "./helpers/nanomite-uses.mjs";
 import { getGearNanomitePowerName, getGearNanomiteUsesLeft, isGearNanomiteInert } from "./helpers/nanomite-gear.mjs";
 import {
@@ -331,6 +332,11 @@ Hooks.once("init", async function () {
       handleCreateRoughTerrainRequest(data);
     } else if (data.action === "vesselConditionStacks") {
       handleVesselConditionStacksRequest(data);
+    } else if (data.action === "gmRelay") {
+      // Writes to a target the player doesn't own - see helpers/gm-relay.mjs.
+      handleGmRelayRequest(data);
+    } else if (data.action === "gmRelayDone") {
+      handleGmRelayDone(data);
     }
   });
 
@@ -778,7 +784,9 @@ Hooks.on("createActor", (actor, options, userId) => {
 Hooks.on("deleteActor", refreshStoryPointsTracker);
 
 for (const hookName of ["createItem", "updateItem", "deleteItem"]) {
-  Hooks.on(hookName, (item) => {
+  // userId is always the hook's last argument (createItem/updateItem carry an extra data/changes).
+  Hooks.on(hookName, (item, ...args) => {
+    const userId = args.at(-1);
     if (item.type == 'megaformTrait') {
       refreshMegaformsLinkedToActor(item.parent?.uuid);
     }
@@ -787,7 +795,9 @@ for (const hookName of ["createItem", "updateItem", "deleteItem"]) {
        added, changed, or removed, push the actor's freshly recomputed system.visionGrant
        (see Essence20Actor#_prepareVision()) onto its tokens so the token's actual Foundry
        vision updates to match. */
-    if (item.parent instanceof Actor && (item.type == 'gear' || item.type == 'perk')) {
+    // Only on the client that made the change - every client hears this hook, and a player's
+    // client can't write an NPC's tokens.
+    if (userId == game.user.id && item.parent instanceof Actor && (item.type == 'gear' || item.type == 'perk')) {
       applyVisionToTokens(item.parent);
     }
   });
@@ -963,6 +973,12 @@ Hooks.on("combatStart", (combat) => {
    of the scene" clause elsewhere in this project has so far just gone unenforced rather than
    needing this. */
 Hooks.on("deleteCombat", (combat) => {
+  // Every client hears the combat end; the active GM alone writes the results below, so no player
+  // client tries (and fails) to update an actor it doesn't own, and nothing is written twice.
+  if (!game.users.activeGM?.isSelf) {
+    return;
+  }
+
   applyHardCorpsDeferredDefeat(combat);
 
   /* No Fighting?! (Knights of Canterlot, Fighter Influence Hang-Up, p.16) - see

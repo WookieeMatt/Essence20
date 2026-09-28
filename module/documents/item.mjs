@@ -250,8 +250,11 @@ export class Essence20Item extends Item {
       await updateRoleCache();
     }
 
-    // Update the entry on the parent if this is a child Item
-    if (['weaponEffect', 'upgrade'].includes(this.type)) {
+    // Update the entry on the parent if this is a child Item. Only on the client that made the
+    // change: _onUpdate runs on every connected client, and a player whose client isn't allowed to
+    // edit the actor (an NPC's unlinked token) threw "lacks permission to update ActorDelta" once
+    // per child item - and even where allowed, every client wrote the same entry again.
+    if (userId == game.user?.id && ['weaponEffect', 'upgrade'].includes(this.type)) {
       const parentId = this.flags.essence20?.parentId;
       const parentItem = this.actor?.items?.get(parentId);
       const key = this.flags.essence20?.collectionId;
