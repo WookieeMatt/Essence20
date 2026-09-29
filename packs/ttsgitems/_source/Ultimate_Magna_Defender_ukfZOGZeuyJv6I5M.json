@@ -5,6 +5,10 @@
   "_id": "ukfZOGZeuyJv6I5M",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 to all Defenses and Edge on Strength tests while Morphed. Automatic: +1 damage on your melee attacks, including in Mega Defender form and the Defender Torozord's melee attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

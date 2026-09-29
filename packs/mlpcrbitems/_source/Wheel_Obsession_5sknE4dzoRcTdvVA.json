@@ -3,6 +3,10 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Wheel Excited Perk, plus the Wheel Struggle Hang-Up once this is one of two or more Influences. Its Influence Skill (Driving) is offered when your Origin asks which Essence to increase.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "qbXCM0YPtzmXKryu",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 damage at the listed range.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

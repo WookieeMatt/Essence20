@@ -5,6 +5,10 @@
   "_id": "BrrD3vMWtfym7HUn",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for the listed Laser damage and range, with an Armor-Piercing alternate effect at ↓1.</p>"
+    },
     "originalId": "",
     "description": "<p>Armor-Piercing (&darr;1)</p>",
     "source": {

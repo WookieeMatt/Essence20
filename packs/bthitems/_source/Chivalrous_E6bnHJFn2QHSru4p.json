@@ -5,6 +5,10 @@
   "_id": "E6bnHJFn2QHSru4p",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑2 on Persuasion rolls using a Diplomacy Specialization. Use button: add your extra Story Point to the pool. For the once-a-day Specialized Social test, tick Specialized in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

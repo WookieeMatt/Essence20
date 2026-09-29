@@ -5,6 +5,10 @@
   "_id": "Z1OIoelOdyUdtyl7",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when attached, pick a Standard shield. It's added as a linked shield that's equipped whenever the weapon is, and you're warned if you attack with the weapon while the shield is raised.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

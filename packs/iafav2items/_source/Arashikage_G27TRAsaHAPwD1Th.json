@@ -5,6 +5,10 @@
   "_id": "G27TRAsaHAPwD1Th",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Balance and Harmony, Into the Void and Shinobi of the 63rd Hexagram Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

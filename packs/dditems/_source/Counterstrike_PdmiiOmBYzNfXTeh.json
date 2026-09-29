@@ -5,6 +5,10 @@
   "_id": "PdmiiOmBYzNfXTeh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per round, when a melee attack misses you by 5 or more, you're offered an immediate counterattack against the attacker at ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

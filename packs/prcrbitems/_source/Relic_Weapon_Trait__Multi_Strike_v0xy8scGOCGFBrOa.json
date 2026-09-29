@@ -5,6 +5,10 @@
   "_id": "v0xy8scGOCGFBrOa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: attacking two adjacent targets at once, then not attacking with it the next round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "pqrUN5jaAbWJmgLf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (out of combat): a targeted teammate rolls a DIF 15 test in the Skill you pick. They bank Edge on their next test with it on a success, or ↑1 on a failure.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

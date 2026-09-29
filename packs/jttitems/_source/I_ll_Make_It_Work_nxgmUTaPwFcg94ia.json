@@ -5,6 +5,10 @@
   "_id": "nxgmUTaPwFcg94ia",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: no Snag for being Unskilled on any Skill test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

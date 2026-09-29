@@ -5,6 +5,10 @@
   "_id": "6hYof6SviGFda7RJ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Unarmed Strike's Maneuver: rolls Finesse at Reach with ↓1. Change its Skill to Might on the sheet if you prefer.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

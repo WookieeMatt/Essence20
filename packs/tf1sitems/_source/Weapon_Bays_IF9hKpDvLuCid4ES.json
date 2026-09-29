@@ -5,6 +5,10 @@
   "_id": "IF9hKpDvLuCid4ES",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: trading Alt Mode Crew capacity and Firepoints for extra weapon Integrated Hardpoints.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

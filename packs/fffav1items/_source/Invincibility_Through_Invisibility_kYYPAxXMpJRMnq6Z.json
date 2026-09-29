@@ -5,6 +5,10 @@
   "_id": "kYYPAxXMpJRMnq6Z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: if you aren't Surprised when combat starts, the first attack that hits you that combat has no effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "I4tkodAyDsVPSXCU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose Strength, Speed or Smarts. When your Role raises that Essence, the increase goes to Social instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

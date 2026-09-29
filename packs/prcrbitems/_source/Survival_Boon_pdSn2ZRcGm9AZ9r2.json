@@ -5,6 +5,10 @@
   "_id": "pdSn2ZRcGm9AZ9r2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick one of the five Survival Boons each time this is gained, three times in all.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

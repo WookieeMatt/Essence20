@@ -5,6 +5,10 @@
   "_id": "jw8ggFiT6xdr0uMc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while Morphed, air and temperature hazards in the scene's environment don't affect you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

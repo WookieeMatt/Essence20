@@ -5,6 +5,10 @@
   "_id": "hLWet58M7NV6c0Sn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: adds your free Limited medicine kit to your gear. The Smarts increases come with the Focus as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

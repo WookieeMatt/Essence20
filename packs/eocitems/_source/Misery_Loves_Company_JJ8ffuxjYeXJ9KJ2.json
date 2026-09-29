@@ -5,6 +5,10 @@
   "_id": "JJ8ffuxjYeXJ9KJ2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Free action for 1 Energon, move Frightened, Impaired, Mesmerized or Stunned from one ally to someone on your Data Bridge (you included).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

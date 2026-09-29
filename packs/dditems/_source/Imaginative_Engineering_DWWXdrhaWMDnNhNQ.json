@@ -5,6 +5,10 @@
   "_id": "DWWXdrhaWMDnNhNQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the first time each round you spend Energon for ↑1 on a test, you get ↑2 instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "ACEcaBK7pFHqq4RU",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when attached you choose an Element. Adjacent attackers against the vehicle take ↓2, or skip it and take 1 damage of that Element.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

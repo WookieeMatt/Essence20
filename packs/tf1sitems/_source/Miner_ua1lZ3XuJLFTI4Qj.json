@@ -5,6 +5,10 @@
   "_id": "ua1lZ3XuJLFTI4Qj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: regaining 2 Energon after fights with Cybertronians, the extra round when you spend Energon at 0 Health, and Tool weapon training.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

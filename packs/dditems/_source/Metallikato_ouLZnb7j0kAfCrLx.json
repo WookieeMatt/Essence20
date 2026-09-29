@@ -5,6 +5,10 @@
   "_id": "ouLZnb7j0kAfCrLx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: in Bot Mode, melee attacks can ignore armor up to your Smarts and can switch on Multiple (2) Targets at ↓1. Automatic: rerolls of 1s and knocking the target Prone on a Critical Success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

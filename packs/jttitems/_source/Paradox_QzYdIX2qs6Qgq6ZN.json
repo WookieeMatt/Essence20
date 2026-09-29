@@ -5,6 +5,10 @@
   "_id": "QzYdIX2qs6Qgq6ZN",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Paradox Perk and the Paradox Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

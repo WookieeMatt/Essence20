@@ -5,6 +5,10 @@
   "_id": "7758n3XWOzhSjdOk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: plant or unplant yourself. While planted your Movement is 0, you're immune to Frightened, and adjacent allies count as in cover against attacks.</p><p>Left to the table: ignoring pushes and other forced movement.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

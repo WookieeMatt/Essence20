@@ -5,6 +5,10 @@
   "_id": "lhUy6M5juoCvCVBd",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: sets how many Emotional Mastery options you know; you're asked to pick new ones as the value rises, and only known options can be activated.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

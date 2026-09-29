@@ -5,6 +5,10 @@
   "_id": "3ffyPZymw9X70YIx",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Finesse attack at Reach for 1 Sharp damage against 2 targets, at ↓1.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -211,6 +211,13 @@ export class Essence20Item extends Item {
       if (image) this.updateSource({ img: image });
     }
 
+    // A copy of a compendium item reads its automation notes from the original
+    // (_prepareAutomation), so it doesn't keep the snapshot the drop brought along.
+    const automation = this._source?.system?.automation;
+    if (this._stats?.compendiumSource && (automation?.status || automation?.notes)) {
+      this.updateSource({ 'system.automation': { status: '', notes: '' } });
+    }
+
     // A Megaform Trait (Core Body, Move, Core Ability, ...) is identified purely by its
     // system.type enum, which is what Essence20Actor#_prepareMegaformZordData/
     // _prepareMegaformCombinerData actually switches on - Name is separate flavor text a GM
@@ -315,6 +322,7 @@ export class Essence20Item extends Item {
   prepareDerivedData() {
     super.prepareDerivedData();
     this._prepareDescription();
+    this._prepareAutomation();
     this._prepareTraits();
 
     if (this.type == 'weapon' || this.type == 'armor') {
@@ -372,6 +380,28 @@ export class Essence20Item extends Item {
    * Only ever fills a blank. An item whose description was written by hand, or edited after
    * an import, keeps what it has.
    */
+  /**
+   * The automation notes (system.automation) a copy of a compendium item shows are its original's,
+   * read live from the compendium index (CONFIG.Item.compendiumIndexFields, essence20.mjs) - so a
+   * copy made before the notes were written, or before they were corrected, still shows the current
+   * ones. A copy only keeps notes of its own when a GM wrote them on it: _preCreate drops the ones a
+   * compendium drop brings along, so anything stored on a sourced copy is deliberate.
+   */
+  _prepareAutomation() {
+    const stored = this._source?.system?.automation;
+    if (!this.system.automation || this.pack || stored?.status || stored?.notes?.trim()) {
+      return;
+    }
+
+    const sourceUuid = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+    const original = sourceUuid ? globalThis.fromUuidSync?.(sourceUuid, { strict: false }) : null;
+    const automation = foundry.utils.getProperty(original ?? {}, 'system.automation');
+    if (automation) {
+      this.system.automation.status = automation.status ?? '';
+      this.system.automation.notes = automation.notes ?? '';
+    }
+  }
+
   _prepareDescription() {
     // Tested against the SOURCE, not the prepared value. description is a stored field rather
     // than a derived one, and Foundry does not roll a data model back to source between

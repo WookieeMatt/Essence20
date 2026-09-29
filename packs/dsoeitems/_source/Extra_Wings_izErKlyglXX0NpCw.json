@@ -5,6 +5,10 @@
   "_id": "izErKlyglXX0NpCw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +10 ft aerial movement. Take Wings first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

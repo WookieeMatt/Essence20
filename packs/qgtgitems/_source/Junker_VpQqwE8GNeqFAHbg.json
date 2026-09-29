@@ -5,6 +5,10 @@
   "_id": "VpQqwE8GNeqFAHbg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per mission, add one attempt to the Party's Requisition pool and get Edge on your next Requisition test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

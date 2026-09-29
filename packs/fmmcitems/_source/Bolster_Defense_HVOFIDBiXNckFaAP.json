@@ -5,6 +5,10 @@
   "_id": "HVOFIDBiXNckFaAP",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: choose +2 to one Defense or +1 to all Defenses, then roll the DIF 12 Culture test. On a success the targeted token (or you, if nothing is targeted) gets the bonus.</p><p>Left to the table: removing the bonus at the end of the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

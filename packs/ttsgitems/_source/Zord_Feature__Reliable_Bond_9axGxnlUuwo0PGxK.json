@@ -5,6 +5,10 @@
   "_id": "9axGxnlUuwo0PGxK",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: once per scene, spend 3 Personal Power to use one of the Zord's attacks without summoning it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

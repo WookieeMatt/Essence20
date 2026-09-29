@@ -5,6 +5,10 @@
   "_id": "nVOpdhr6aFnuY0ks",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +2 to all four Defenses while Morphed. Automatic: attacks against your Cleverness take a Snag, and in the first round of combat every attack against you while Morphed takes a Snag. Left to the table: making enemies attack you that round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

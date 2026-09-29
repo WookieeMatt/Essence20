@@ -5,6 +5,10 @@
   "_id": "bjR8V1BEc3CfrrDu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge and +1 damage on attacks dealing your Energy Affinity Element, and you're Immune to damage of that Element.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

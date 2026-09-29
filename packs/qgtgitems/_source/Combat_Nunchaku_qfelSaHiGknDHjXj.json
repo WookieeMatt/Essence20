@@ -5,6 +5,10 @@
   "_id": "qfelSaHiGknDHjXj",
   "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for Stun, with a Blunt alternate. While equipped it gives +1 Evasion; Use button: switch to shield mode (+1 Toughness instead, no attacks) as a Move action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

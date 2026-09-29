@@ -5,6 +5,10 @@
   "_id": "a1NtHI4CQiURTRJL",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks use its normal effect or its Blind, Spot and Stun alternate effects; its traits and upgrades apply, including Temperamental (a Fumble hits you) and Blinding.</p><p>Left to the table: the main effect's Size Class change and Essence damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

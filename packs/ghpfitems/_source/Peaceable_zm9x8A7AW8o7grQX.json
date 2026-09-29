@@ -5,6 +5,10 @@
   "_id": "zm9x8A7AW8o7grQX",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the penalty on damaging attacks from your Peaceable Perk becomes ↓2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

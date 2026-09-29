@@ -5,6 +5,10 @@
   "_id": "JQE2rcrT4GSEHJCD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Move action, roll Intimidation against a foe's Willpower; on a success that foe takes ↓2 on attacks against anyone but you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

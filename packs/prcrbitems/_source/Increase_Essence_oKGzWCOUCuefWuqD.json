@@ -5,6 +5,10 @@
   "_id": "oKGzWCOUCuefWuqD",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added to a Zord you pick Strength or Speed, and that Essence goes up by 2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

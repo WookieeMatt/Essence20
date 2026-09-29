@@ -5,6 +5,10 @@
   "_id": "wC7hyjoYTVRQo5LZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (first round of combat): rolls Intimidation against the Willpower of each enemy within 60 feet, and Surprises every enemy it beats.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

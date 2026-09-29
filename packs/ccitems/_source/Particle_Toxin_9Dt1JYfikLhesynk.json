@@ -5,6 +5,10 @@
   "_id": "9Dt1JYfikLhesynk",
   "img": "systems/essence20/assets/icons/weapons/poison.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attack with it directly or coat a weapon with it; a hit deals its damage and the Ongoing damage repeats on its own each round.</p><p>Left to the table: the Poisoned condition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

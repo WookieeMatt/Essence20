@@ -5,6 +5,10 @@
   "_id": "ByAzOJNUskj2ascR",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the vehicle's Flyby rolls with the listed damage and Reach against its targets.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

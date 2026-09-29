@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Social rolls that target you to goad you into action get an Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

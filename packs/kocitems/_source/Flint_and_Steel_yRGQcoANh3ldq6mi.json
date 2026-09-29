@@ -5,6 +5,10 @@
   "_id": "yRGQcoANh3ldq6mi",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: starting fires.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

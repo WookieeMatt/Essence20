@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: choose a Survival Specialization. Automatic: Edge on tests that use it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

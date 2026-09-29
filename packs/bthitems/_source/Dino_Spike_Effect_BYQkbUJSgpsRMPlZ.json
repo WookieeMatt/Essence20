@@ -5,6 +5,10 @@
   "_id": "BYQkbUJSgpsRMPlZ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might melee attack at Reach for 4 damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

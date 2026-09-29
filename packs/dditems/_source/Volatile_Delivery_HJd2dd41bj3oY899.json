@@ -5,6 +5,10 @@
   "_id": "HJd2dd41bj3oY899",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene as a Free action, add an Element grenade of your Energy Affinity's type; it goes inert at the end of the scene.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

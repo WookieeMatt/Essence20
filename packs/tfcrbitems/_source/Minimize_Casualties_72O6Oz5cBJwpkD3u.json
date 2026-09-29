@@ -5,6 +5,10 @@
   "_id": "72O6Oz5cBJwpkD3u",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Issue a Command in combat that harms no one, allies who meet its terms get double the benefit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

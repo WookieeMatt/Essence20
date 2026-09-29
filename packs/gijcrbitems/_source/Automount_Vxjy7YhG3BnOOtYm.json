@@ -5,6 +5,10 @@
   "_id": "Vxjy7YhG3BnOOtYm",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's attached to loses the Mounted trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

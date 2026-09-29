@@ -5,6 +5,10 @@
   "_id": "ePcilMg8FO6Acjbq",
   "img": "systems/essence20/assets/icons/weapons/bo.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for Sharp damage, with Maneuver and Stun alternate effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

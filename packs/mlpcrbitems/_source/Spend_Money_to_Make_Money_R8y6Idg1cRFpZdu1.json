@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: a Snag on Wealth tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

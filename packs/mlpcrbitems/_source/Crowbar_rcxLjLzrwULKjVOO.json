@@ -5,6 +5,10 @@
   "_id": "rcxLjLzrwULKjVOO",
   "img": "systems/essence20/assets/icons/gear/crowbar.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: add ↑2 in the Roll Options Dialog when forcing a door or item open.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

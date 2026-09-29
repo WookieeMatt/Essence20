@@ -5,6 +5,10 @@
   "_id": "ipbTrbEZCVBKEXUS",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Melee Weapon's one-handed attack, rolling Might for 1 Blunt damage in melee.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

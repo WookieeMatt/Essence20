@@ -5,6 +5,10 @@
   "_id": "NYwpiTjlKxTB2rGF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you attack with an explosive, everyone in the area takes 1 damage of the weapon's type before the attack is rolled.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

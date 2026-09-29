@@ -5,6 +5,10 @@
   "_id": "CJTtjWkUl7BhiaN4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you use up a kit, you roll its scrounging test; on a success the kit isn't used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

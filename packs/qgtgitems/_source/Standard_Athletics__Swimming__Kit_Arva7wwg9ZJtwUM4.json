@@ -5,6 +5,10 @@
   "_id": "Arva7wwg9ZJtwUM4",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Athletics (Swimming) tests that call for a kit, carrying it clears the Snag (↓1 for a Limited kit, ↓3 for Restricted).</p><p>Use button: use it up for a minute of Specialization (or ↑1), or scrounge a refill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "VuvBnBhXQTmr4Tro",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and traits; the alternate effect adds elemental damage. Chat card: a hit on a Combiner form gives each component a button for +1 Energy damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

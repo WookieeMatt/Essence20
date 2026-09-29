@@ -5,6 +5,10 @@
   "_id": "NyZxFpc8Aop7PDDa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Standard action, take 1 damage yourself to heal an adjacent creature 2 Health.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

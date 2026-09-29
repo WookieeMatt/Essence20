@@ -5,6 +5,10 @@
   "_id": "r1S0Sc4oq8axDL6C",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: at 0 Health the Zord goes Prone and Defeated instead of crashing or exploding.</p><p>Left to the table: recalling it to the Morphin Grid and how long its repairs take.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

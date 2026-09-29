@@ -5,6 +5,10 @@
   "_id": "X6ewMrWokIBswYyY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑2 on Performance, Edge on Performance and Persuasion, and ↓1 on Deception.</p><p>Left to the table: the Edge is meant only when you're on television and the ↓1 only when you pretend to be someone else, so switch the effect off otherwise.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

@@ -5,6 +5,10 @@
   "_id": "tNdghR5WZj4Rzy5w",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Throwing Star's throw: rolls Finesse at Short range for 1 Sharp damage. Change its Skill to Targeting on the sheet if you prefer.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

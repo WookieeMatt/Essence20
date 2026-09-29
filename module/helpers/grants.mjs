@@ -1245,7 +1245,8 @@ const HANDLERS = {
     }
 
     const got = await grantCopy(actor, ids[pick], { grantedBy: item, temporary: temporary('combat'), ...(['blowGun', 'star'].includes(pick) ? { system: { quantity: 5 } } : {}) });
-    await markUsed(actor, 'riotGear', { window: 'scene' });
+    // "Once per session" - the Scene Clock's mission window (grant-uses.mjs checks the same).
+    await markUsed(actor, 'riotGear', { window: 'mission' });
     return got ? done(actor, item, [got]) : null;
   },
 };

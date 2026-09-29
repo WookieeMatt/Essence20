@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: up to three of your unskilled rolls per combat skip the Snag.</p><p>Left to the table: tracking the three-per-day limit outside combat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "y91e1C5LXS2vviUQ",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: converting into this Alt Mode makes you Small with 50ft Ground Movement. Taking it adds the Natural Weapon, asking whether it rolls Finesse or Might and deals Blunt or Sharp.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

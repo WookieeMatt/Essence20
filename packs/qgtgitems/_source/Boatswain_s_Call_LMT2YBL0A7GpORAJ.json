@@ -5,6 +5,10 @@
   "_id": "LMT2YBL0A7GpORAJ",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics as a cone blast for Sonic damage, with a Stun alternate effect; its traits and upgrades apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

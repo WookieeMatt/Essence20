@@ -5,6 +5,10 @@
   "_id": "ADj30QljJZ7iNt52",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: target your quarry to have its maximum Health, Hang-Ups and Resistances posted to chat. The GM adds any weaknesses they choose to share.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

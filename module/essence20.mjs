@@ -160,6 +160,10 @@ function runMigrations() {
 /* -------------------------------------------- */
 
 Hooks.once("init", async function () {
+  // Item automation notes ride in the compendium index, so a copy on an actor can show its
+  // original's current notes without loading the compendium document (documents/item.mjs).
+  CONFIG.Item.compendiumIndexFields = [...new Set([...(CONFIG.Item.compendiumIndexFields ?? []), 'system.automation'])];
+
   // Blindsight needs its detection mode to exist before any token is drawn - see
   // helpers/blindsight.mjs's own doc comment.
   registerBlindsightDetectionMode();

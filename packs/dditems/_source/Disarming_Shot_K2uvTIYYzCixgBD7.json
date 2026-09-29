@@ -5,6 +5,10 @@
   "_id": "K2uvTIYYzCixgBD7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when a ranged attack deals damage, you're offered to spend one or two Free actions to make the target drop one or two hands' worth of gear.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

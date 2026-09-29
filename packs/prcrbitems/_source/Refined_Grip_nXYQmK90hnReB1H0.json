@@ -5,6 +5,10 @@
   "_id": "nXYQmK90hnReB1H0",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon rolls Finesse instead of its normal Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

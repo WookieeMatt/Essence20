@@ -47,6 +47,8 @@ export const KIT = {
   wristCommunicator: uuid('pr_crb', 'W7nXP8pOQaDJmZbT'),
   growthBoost: uuid('jump_through_time', 'BVrwQKqvOdyNW0KR'),
   competitiveStrength: uuid('jump_through_time', 'J0ljd1QnU9AgoWj6'),
+  packMuleGiJoe: uuid('gi_joe_crb', 'x8SbuymJTLYn1TdC'),
+  packMuleTf: uuid('tf_crb', 'b4zeeYax1vrzVGZx'),
   loader: uuid('tf_crb', 'OVTDUJRI81VCrFZg'),
   kittedPurpose: uuid('tf_crb', 'YO5STToLRPYVnWBT'),
   personnelMunitionsPack: uuid('enigma_of_combination', 'CXenUI5l8c3WZNSw'),
@@ -66,9 +68,57 @@ const KITBASHER = uuid('gi_joe_crb', 'az09yEPydnE1tBTj');
 const NOT_KITS = new Set([KIT.medKit, KIT.automatedRepairKit, KIT.personnelMunitionsPack, KIT.wristCommunicator]);
 
 export const TIERS = ['standard', 'limited', 'restricted'];
+// Prototype and Theoretical Kits (Quartermaster's Guide p.41) sit above Restricted: "Prerequisites:
+// d10 [d12] in the Specialization's parent Skill ... temporary Specialization in this kit's
+// Specialization for the duration of this mission, or Edge" - a Restricted kit's benefit, one or two
+// tiers up.
+const TIER_RANK = [...TIERS, 'prototype', 'theoretical'];
 const ESSENCE_KITS = { strength: 'strength', speed: 'speed', smarts: 'smarts', social: 'social' };
-// Prerequisites: Standard d4, Limited d6, Restricted d8 in the parent Skill; an Essence Kit d2.
-const PREREQUISITE = { standard: 'd4', limited: 'd6', restricted: 'd8', essence: 'd2' };
+// Prerequisites: Standard d4, Limited d6, Restricted d8, Prototype d10, Theoretical d12 in the parent
+// Skill; an Essence Kit d2.
+const PREREQUISITE = { standard: 'd4', limited: 'd6', restricted: 'd8', prototype: 'd10', theoretical: 'd12', essence: 'd2' };
+
+// Skill Kits (Quartermaster's Guide p.41): "Choose a Skill when you requisition this kit. You do not
+// suffer Snag for having no Ranks in this Skill". Basic: "No Ranks in [its] Skill", Standard;
+// Advanced: "No more than d2 Ranks", Limited, and can be used up for ↑1 for 1 minute.
+const BASIC_SKILL_KIT = uuid('quartermasters_guide_to_gear', 'gRxcVy1mS18jyWtx');
+const ADVANCED_SKILL_KIT = uuid('quartermasters_guide_to_gear', 'hSUVWDrRgUHcr5mm');
+const SKILL_KITS = {
+  [BASIC_SKILL_KIT]: { tier: 'standard', maxRank: 'd20' },
+  [ADVANCED_SKILL_KIT]: { tier: 'limited', maxRank: 'd2' },
+};
+
+// Kits tied to more than one Skill. Restricted Wild Animal Survival Kit (Operation Cold Iron p.39):
+// "Prerequisites: +d8 in Animal Handling or Survival", and it covers "a Restricted Kit related to
+// Animal Handling and Survival specialties".
+const WILD_ANIMAL_SURVIVAL_KIT = uuid('operation_cold_iron', 'EI7uvXnVEv0eK1C7');
+const MULTI_SKILL_KITS = {
+  [WILD_ANIMAL_SURVIVAL_KIT]: { tier: 'restricted', skills: ['animalHandling', 'survival'] },
+};
+
+// My Little Pony kits (MLP CRB, Kits optional rule): "If you have the right kit for what you want
+// to do, you are fine ... if you don't have the right kit you suffer Snag". No tiers, no
+// prerequisite, and nothing to use up - each only names its Skill.
+const MLP_KITS = Object.fromEntries(Object.entries({
+  RX3EOYSX1c9H1xcA: ['performance'], // Art
+  rwtVdKzYShQvE6AG: ['culture'], // Baking
+  WEpSxlVg5PNOER7T: ['infiltration'], // Burglary
+  l69ECABViS1WaFDQ: ['technology'], // Carpentry
+  tlhoSei7ErftyWwj: ['athletics'], // Climbing
+  weYxWOfqpYA29AMB: ['technology'], // Computer/Electronics
+  '90PF2Uvlv32sjgrZ': ['science', 'alertness'], // Forensic: "Science/Investigation"
+  aabFcrpJOkYpzr23: ['technology'], // Mechanic
+  eOOmCAxpwwDo6RzD: ['science'], // Medical ("Medicine" is a Science Specialization)
+  '1b2GkHHyiX4eJkMM': ['spellcasting'], // Potion
+  vJsHbLr4SydalsYf: ['science'], // Scientific Research
+  f2cklPXjsbiWx5TG: ['culture'], // Tailoring/Repair
+}).map(([id, skills]) => [uuid('mlp_crb', id), skills]));
+
+/** Every Skill a kit counts for. */
+export function kitSkills(kit) {
+  return kit?.skills?.length ? kit.skills : (kit?.skill ? [kit.skill] : []);
+}
+
 const BOOSTS_FLAG = 'kitBoosts';
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
@@ -126,7 +176,7 @@ export function kitInfo(item) {
     return null;
   }
 
-  const match = /^(standard|limited|restricted)\s+(.*?)\s*kit$/i.exec(name);
+  const match = /^(standard|limited|restricted|prototype|theoretical)\s+(.*?)\s*kit$/i.exec(name);
   const tier = stored?.tier ?? (match ? match[1].toLowerCase() : 'limited');
   const body = match ? match[2] : name.replace(/\s*kit$/i, '');
   let skill = null;
@@ -138,8 +188,9 @@ export function kitInfo(item) {
   if (essence) {
     // Nothing more to read.
   } else if (paren) {
-    skill = skillKey(paren[1]);
     spec = /,|\bor\b/i.test(paren[2]) ? null : paren[2].trim();
+    // "Limited Artisan (Chef) Kit" - Artisan isn't a Skill, so the Specialization names it.
+    skill = skillKey(paren[1]) ?? SPEC_SKILL[spec?.toLowerCase()] ?? null;
   } else {
     skill = skillKey(body);
     if (!skill) {
@@ -157,11 +208,27 @@ export function kitInfo(item) {
     [skill, spec] = ['streetwise', null];
   }
 
+  const source = sourceOf(item);
+  const skillKit = SKILL_KITS[source]
+    ?? (/^(basic|advanced)\s+skill\s+kit$/i.test(name) ? SKILL_KITS[/^basic/i.test(name) ? BASIC_SKILL_KIT : ADVANCED_SKILL_KIT] : null);
+  if (skillKit) {
+    // The Skill is chosen on the Use button; there's no Specialization.
+    return {
+      tier: skillKit.tier, skill: stored?.skill ?? null, spec: null, essence: null, skillKit: true, maxRank: skillKit.maxRank,
+      ignorePrerequisite: !!item.flags?.essence20?.ignorePrerequisite,
+    };
+  }
+
+  const multi = MULTI_SKILL_KITS[source];
+  const mlp = MLP_KITS[source];
+  const skills = stored?.skill ? null : (multi?.skills ?? mlp ?? null);
   return {
-    tier: stored?.tier ?? (essence ? 'limited' : tier),
-    skill: stored?.skill ?? skill,
-    spec: stored?.spec ?? spec,
+    tier: stored?.tier ?? multi?.tier ?? (essence ? 'limited' : tier),
+    skill: stored?.skill ?? skills?.[0] ?? skill,
+    ...(skills ? { skills } : {}),
+    spec: stored?.spec ?? (skills ? null : spec),
     essence: stored?.essence ?? essence,
+    ...(mlp ? { simple: true } : {}),
     ignorePrerequisite: !!item.flags?.essence20?.ignorePrerequisite,
   };
 }
@@ -172,22 +239,27 @@ function rankIndex(shift) {
 
 /** "Prerequisites: d6 in Infiltration" and the like. */
 export function meetsKitPrerequisite(actor, info) {
-  if (info.ignorePrerequisite || !info.skill || has(actor, KITBASHER)) {
+  if (info.simple || info.ignorePrerequisite || !info.skill || has(actor, KITBASHER)) {
     return true;
+  }
+
+  // A Skill Kit is for the untrained: "No Ranks" / "No more than d2 Ranks" in its Skill.
+  if (info.skillKit) {
+    const own = actor?.system?.skills?.[info.skill]?.shift;
+    return !own || rankIndex(own) < 0 || rankIndex(own) >= rankIndex(info.maxRank);
   }
 
   // Good To Go: "treat the Prerequisites as one Rank lower" (helpers/extensions/qualify1).
   const needOut = { need: PREREQUISITE[info.essence ? 'essence' : info.tier] ?? 'd4' };
   globalThis.Hooks?.call?.('essence20.kitPrerequisite', actor, info, needOut);
   const need = needOut.need;
-  const own = actor?.system?.skills?.[info.skill]?.shift;
   const list = CONFIG.E20?.skillShiftList ?? [];
-  if (!own || !list.length) {
-    return true;
-  }
-
-  // skillShiftList runs from the biggest die down, so a smaller index is a better die.
-  return rankIndex(own) <= rankIndex(need);
+  // Any one of a multi-Skill kit's Skills will do ("d8 in Animal Handling or Survival").
+  return kitSkills(info).some(skill => {
+    const own = actor?.system?.skills?.[skill]?.shift;
+    // skillShiftList runs from the biggest die down, so a smaller index is a better die.
+    return !own || !list.length || rankIndex(own) <= rankIndex(need);
+  });
 }
 
 /**
@@ -230,6 +302,35 @@ function kittedPurposeDocked(actor, virtual) {
 }
 
 /**
+ * A Skill Kit: "You do not suffer Snag for having no Ranks in this Skill when making Skill Tests."
+ * Read by roll-dialog.mjs#_isUntrainedSnag.
+ * @param {Actor} actor
+ * @param {String} skill
+ * @returns {Boolean}
+ */
+export function skillKitNoUntrainedSnag(actor, skill) {
+  return !!skill && activeKits(actor).some(kit => kit.skillKit && kit.skill == skill);
+}
+
+/**
+ * Restricted Wild Animal Survival Kit (Operation Cold Iron p.39): its holder may "use Animal
+ * Handling or Survival to make Persuasion Skill Tests against animals". Offered by dice.mjs as a
+ * Roll Options Dialog choice on a Persuasion roll whose target reads as an animal (or with no
+ * target, where the player says who they're persuading).
+ * @param {Actor} actor
+ * @param {String} skill   The Skill being rolled.
+ * @returns {?{kit: Item, skills: Array<String>}}   The carried kit and the Skills it may swap in.
+ */
+export function wildAnimalPersuasion(actor, skill) {
+  if (skill != 'persuasion') {
+    return null;
+  }
+
+  const kit = activeKits(actor).find(k => sourceOf(k.item) == WILD_ANIMAL_SURVIVAL_KIT);
+  return kit ? { kit: kit.item, skills: ['animalHandling', 'survival'] } : null;
+}
+
+/**
  * What a roll that calls for a kit costs this actor, with their best kit.
  * @param {Actor} actor
  * @param {String} skill   The Skill being rolled.
@@ -245,7 +346,7 @@ export function kitRequirement(actor, skill, spec, needed, { bump = 0 } = {}) {
   }
 
   const essence = CONFIG.E20?.skillToEssence?.[skill];
-  const want = TIERS.indexOf(needed);
+  const want = TIER_RANK.indexOf(needed);
   let best = { snag: true, shiftDown: 0, kit: null };
   const better = (option) => {
     if (best.snag || (!option.snag && option.shiftDown < best.shiftDown)) {
@@ -268,12 +369,20 @@ export function kitRequirement(actor, skill, spec, needed, { bump = 0 } = {}) {
       continue;
     }
 
-    // A generic kit waits for its Specialization to be chosen.
-    if (needed == 'essence' || !kit.skill || kit.skill != skill || (spec && kit.spec && kit.spec.toLowerCase() != String(spec).toLowerCase())) {
+    // A generic kit waits for its Specialization to be chosen; a Skill Kit is never "the kit" a test
+    // calls for.
+    if (kit.skillKit || needed == 'essence' || !kitSkills(kit).includes(skill)
+      || (spec && kit.spec && kit.spec.toLowerCase() != String(spec).toLowerCase())) {
       continue;
     }
 
-    const have = Math.min(TIERS.length - 1, TIERS.indexOf(kit.tier) + bump);
+    // A My Little Pony kit is simply the right kit or not.
+    if (kit.simple) {
+      better({ snag: false, shiftDown: 0, kit });
+      continue;
+    }
+
+    const have = Math.min(TIER_RANK.length - 1, TIER_RANK.indexOf(kit.tier) + bump);
     if (have >= want) {
       better({ snag: false, shiftDown: 0, kit });
     } else if (want == 1 && have == 0) {
@@ -337,12 +446,21 @@ export async function removeBoost(actor, id) {
  * @param {String} skill
  * @param {?String} spec
  * @param {Boolean} specialized   Whether the roll is already Specialized.
- * @returns {{sources: Array<Object>, specialize: Boolean, consumes: Array<String>}}
+ *
+ * Prototype and Theoretical Kits (Quartermaster's Guide p.41) add: "If you gain Snag from another
+ * source on this test that would negate its Edge, ignore the Snag" (ignoreSnagOnEdge, only when
+ * the kit is giving its Edge), and the Theoretical Kit's "any negative dice shifts are reduced to
+ * only one step" (maxShiftDown 1, whenever the kit is in use). dice.mjs applies both right before
+ * the shifts resolve.
+ * @returns {{sources: Array<Object>, specialize: Boolean, consumes: Array<String>,
+ *   ignoreSnagOnEdge: Boolean, maxShiftDown: ?Number}}
  */
 export function kitSources(actor, skill, spec, specialized) {
   const sources = [];
   const consumes = [];
   let specialize = false;
+  let ignoreSnagOnEdge = false;
+  let maxShiftDown = null;
   const essence = CONFIG.E20?.skillToEssence?.[skill];
   const matches = b => (b.skill ? b.skill == skill : (b.essence ? b.essence == essence : false))
     && (!spec || !b.spec || String(b.spec).toLowerCase() == String(spec).toLowerCase());
@@ -361,16 +479,23 @@ export function kitSources(actor, skill, spec, specialized) {
   }
 
   for (const kit of activeKits(actor)) {
-    if (kit.tier == 'restricted' && !kit.essence && kit.skill == skill && (!spec || !kit.spec || kit.spec.toLowerCase() == String(spec).toLowerCase())) {
+    if (TIER_RANK.indexOf(kit.tier) >= 2 && !kit.essence && !kit.simple && kitSkills(kit).includes(skill)
+      && (!spec || !kit.spec || kit.spec.toLowerCase() == String(spec).toLowerCase())) {
+      const aboveRestricted = TIER_RANK.indexOf(kit.tier) >= 3;
       if (specialized) {
         sources.push({ id: `kit-restricted-${kit.item.id}`, label: kit.item.name, shiftUp: 0, shiftDown: 0, edge: true, snag: false });
+        ignoreSnagOnEdge ||= aboveRestricted;
       } else {
         specialize = true;
+      }
+
+      if (kit.tier == 'theoretical') {
+        maxShiftDown = 1;
       }
     }
   }
 
-  return { sources, specialize, consumes };
+  return { sources, specialize, consumes, ignoreSnagOnEdge, maxShiftDown };
 }
 
 /* -------------------------------------------- */
@@ -419,6 +544,12 @@ export function scroungeDif(actor, tier) {
   return Math.max(0, base - (has(actor, KIT.handyScrounger) ? 5 : 0));
 }
 
+async function pickSkill(title) {
+  const skills = CONFIG.E20.skills ?? {};
+  const skill = await chooseSelect(title, T('E20.KitPickSkill'), Object.entries(skills).map(([value, label]) => ({ value, label: T(label) })));
+  return skill ? { skill, spec: null } : null;
+}
+
 async function pickSpecialization(title, skillHint = null) {
   const skills = CONFIG.E20.skills ?? {};
   const skill = skillHint ?? await chooseSelect(title, T('E20.KitPickSkill'), Object.entries(skills).map(([value, label]) => ({ value, label: T(label) })));
@@ -445,7 +576,7 @@ async function consumeKit(actor, item, info, pay, { virtual = false } = {}) {
   // Handy Scrounger (Quartermaster's Guide, p.30): "Whenever you use a Kit, attempt a Skill Test with the
   // same DIF as if you were scrounging refills for it ... On a success, treat the Kit as if it were one
   // degree better."
-  if (!info.essence && tier != 'restricted' && has(actor, KIT.handyScrounger)
+  if (!info.essence && !info.skillKit && TIER_RANK.indexOf(tier) < 2 && has(actor, KIT.handyScrounger)
     && (await rollTest(actor, info.skill ?? 'survival', scroungeDif(actor, tier))).success) {
     tier = TIERS[Math.min(2, TIERS.indexOf(tier) + 1)];
   }
@@ -456,7 +587,10 @@ async function consumeKit(actor, item, info, pay, { virtual = false } = {}) {
 
   const label = item.name;
   const target = { skill: info.skill, spec: info.spec, essence: info.essence };
-  if (info.essence) {
+  if (info.skillKit) {
+    // Advanced Skill Kit: "consume this kit to gain ↑1 for 1 minute on Skill Tests of this kit's Skill."
+    await addBoost(actor, { ...target, spec: null, mode: 'shiftUp', kind: 'rounds', rounds: 10, label });
+  } else if (info.essence) {
     // Essence Kit: "gain temporary Specialization in one Specialization associated with this kit's
     // Essence for 1 Skill Test, or gain ↑1 for 1 Skill Test if you are already Specialized".
     await addBoost(actor, { ...target, skill: null, mode: 'specialize', fallback: 'shiftUp', oneTest: true, kind: 'untilUsed', label });
@@ -504,7 +638,9 @@ export async function useKit(actor, item, pay) {
 
   const spent = !!item.flags?.essence20?.kitSpent;
   const choices = [];
-  if (!spent && info.tier != 'restricted') {
+  // Restricted and better kits aren't used up; of the Skill Kits only the Advanced one is, once its
+  // Skill is chosen.
+  if (!spent && TIER_RANK.indexOf(info.tier) < 2 && (!info.skillKit || (info.tier == 'limited' && info.skill))) {
     choices.push(['consume', T('E20.KitConsume')]);
   }
 
@@ -544,7 +680,7 @@ export async function useKit(actor, item, pay) {
     // Kitted Out (Cobra Codex p.51): "you can spend 1 minute customizing one of your kits, changing the
     // Specialization of the kit to another specialization of the same skill." The same choice sets up
     // a generic kit.
-    const picked = await pickSpecialization(item.name, info.skill);
+    const picked = info.skillKit ? await pickSkill(item.name) : await pickSpecialization(item.name, info.skill);
     if (!picked) {
       return null;
     }
@@ -855,6 +991,11 @@ export function canUseKit(item) {
     return !itemsOf(item.parent).some(i => i.flags?.essence20?.grantedBy == item.id);
   }
 
+  // A My Little Pony kit has nothing to use up or set.
+  if (kind == 'kit' && kitInfo(item)?.simple) {
+    return false;
+  }
+
   return true;
 }
 
@@ -1060,6 +1201,12 @@ export function carryPercent(actor) {
   const percent = [10, 25, 50, 75, 100, 150, 200];
   let rank = Math.max(0, ladder.indexOf(actor?.system?.skills?.brawn?.shift ?? 'd20'));
   if (has(actor, KIT.competitiveStrength)) {
+    rank += 2;
+  }
+
+  // Pack Mule (GI Joe CRB / TF CRB General Perk): "Your Brawn is considered two points higher for
+  // carrying capacity".
+  if ([KIT.packMuleGiJoe, KIT.packMuleTf].some(id => has(actor, id))) {
     rank += 2;
   }
 

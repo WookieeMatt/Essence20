@@ -5,6 +5,10 @@
   "_id": "m4iS0VQn9z8o6FWy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Resistance to Cold damage. Automatic: when your Cold attack hits a Stunned target, it becomes Immobilized.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

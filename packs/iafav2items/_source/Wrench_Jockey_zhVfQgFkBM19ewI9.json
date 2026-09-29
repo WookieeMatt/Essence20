@@ -5,6 +5,10 @@
   "_id": "zhVfQgFkBM19ewI9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Driving can be rolled with Smarts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

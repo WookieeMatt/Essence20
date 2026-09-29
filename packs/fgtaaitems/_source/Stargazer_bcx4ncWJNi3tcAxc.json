@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: a switchable Snag on Smarts-based tests. Turn it on when you can't see the stars.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "l2dioJyakPropGEx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: survey the current scene; there, you and allies within 60 ft keep your Move actions while Surprised. Left to the table: faster travel pace, since journeys aren't tracked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

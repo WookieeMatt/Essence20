@@ -5,6 +5,10 @@
   "_id": "HpfYGh7YiVYXWxM5",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +2 Toughness while equipped; its Silent and Deflective traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

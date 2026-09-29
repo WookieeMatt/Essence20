@@ -5,6 +5,10 @@
   "_id": "H8lhSMK5tFiU9gH6",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: spending the Story Point, the targets' Alertness tests in the nightmare and the Psychic damage from each failure.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

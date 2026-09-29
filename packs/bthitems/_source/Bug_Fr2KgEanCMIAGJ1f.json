@@ -5,6 +5,10 @@
   "_id": "Fr2KgEanCMIAGJ1f",
   "img": "systems/essence20/assets/icons/gear/audio_bug.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: roll Infiltration to plant it, and track the target yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

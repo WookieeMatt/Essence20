@@ -5,6 +5,10 @@
   "_id": "ojJN0h1E22cha1D5",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. It is handy for timing and trading.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

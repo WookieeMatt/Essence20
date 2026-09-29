@@ -5,6 +5,10 @@
   "_id": "gPCQJfgxx9ajEwC5",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, +1 Strength at 1st and 10th level, and its Focus Skills (Conditioning, Brawn and Might).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

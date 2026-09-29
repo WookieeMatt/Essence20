@@ -5,6 +5,10 @@
   "_id": "qMvUP1yEtsSo6KDh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +2 to Toughness and Evasion while Morphed. Automatic: at 0 Health you can drop out of your Morph at 1 Health instead of being Defeated, and you count as a Psycho Path character for Gang Up.</p><p>Left to the table: tripled jumping, summoning your Psycho Weapon, and adding the Psycho Strike attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "o1Umcg1uR3gnRtmV",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Tactical Armor (Energy Resistant [Fire]), a Limited Technology (Engineering) Kit and a Power Tool (Experimental).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "2FlXYjY1AFSFq8Jz",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on Driving tests while you drive your own Zord.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

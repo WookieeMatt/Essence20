@@ -5,6 +5,10 @@
   "_id": "35KMOMI1iPdBPhHl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your Technology Tests get ↑ equal to your Sneak Attack damage.</p><p>Left to the table: it's added to every Technology Test, so take it off when you aren't disabling a machine.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

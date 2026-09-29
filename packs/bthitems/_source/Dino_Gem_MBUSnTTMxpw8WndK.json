@@ -5,6 +5,10 @@
   "_id": "MBUSnTTMxpw8WndK",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: it links a Dino Thunder Ranger to the Morphin Grid; the story decides what happens if it is lost.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

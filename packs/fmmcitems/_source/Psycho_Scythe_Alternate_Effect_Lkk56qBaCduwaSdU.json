@@ -5,6 +5,10 @@
   "_id": "Lkk56qBaCduwaSdU",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Might at ↓1 against the Toughness of two targets within Reach x2 for 2 Void damage, ignoring armor bonuses to Toughness.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "WGRzOZoYSR1jhYlR",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might for Sharp damage, with an Energy damage alternate effect; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

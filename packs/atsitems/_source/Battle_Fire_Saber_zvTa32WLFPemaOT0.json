@@ -5,6 +5,10 @@
   "_id": "zvTa32WLFPemaOT0",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Might for 3 Fire damage at the listed range.</p><p>Left to the table: the once-per-scene limit and the 1 Fire damage Critical Effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

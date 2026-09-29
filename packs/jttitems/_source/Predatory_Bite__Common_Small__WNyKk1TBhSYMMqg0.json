@@ -5,6 +5,10 @@
   "_id": "WNyKk1TBhSYMMqg0",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks with its Sharp or Maneuver options; Silent and its other traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

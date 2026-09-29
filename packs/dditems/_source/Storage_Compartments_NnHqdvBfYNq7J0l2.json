@@ -5,6 +5,10 @@
   "_id": "NnHqdvBfYNq7J0l2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: anyone searching you for a hidden item gets a switch that gives their test a Snag. What you keep in the compartments is up to you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

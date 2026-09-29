@@ -5,6 +5,10 @@
   "_id": "FfKkjODcY5N1Rk7G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑ on Intimidation tests equal to the damage you currently have.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

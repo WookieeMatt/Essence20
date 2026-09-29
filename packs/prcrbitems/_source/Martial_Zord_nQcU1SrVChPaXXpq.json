@@ -5,6 +5,10 @@
   "_id": "nQcU1SrVChPaXXpq",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on the Zord's melee attacks while it has a driver.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

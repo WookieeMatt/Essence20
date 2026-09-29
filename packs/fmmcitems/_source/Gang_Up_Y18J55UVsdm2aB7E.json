@@ -5,6 +5,10 @@
   "_id": "Y18J55UVsdm2aB7E",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks against a target within 5ft of another Psycho Path character gain the listed upshift (↑1, rising at 6th, 11th and 16th level).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

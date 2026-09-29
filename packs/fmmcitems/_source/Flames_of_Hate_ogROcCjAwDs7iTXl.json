@@ -5,6 +5,10 @@
   "_id": "ogROcCjAwDs7iTXl",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting against Cleverness in a 60ft line for its listed damage, ignoring armor bonuses; its Alternate Effect blinds instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

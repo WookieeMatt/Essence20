@@ -5,6 +5,10 @@
   "_id": "JYo3Kzg7eEHHhxbm",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: driving your summoned Zord from up to 100 feet away.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

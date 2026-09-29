@@ -5,6 +5,10 @@
   "_id": "vU2UK40cwyMPJJ83",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when a smaller vehicle attacks your vehicle's Toughness, it gets no size ↑.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

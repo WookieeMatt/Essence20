@@ -5,6 +5,10 @@
   "_id": "OSVtPXBdRmZ2C4PD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll Intimidation against a target's Willpower; on a success you get ↑1 on attacks against them. Once per target per turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

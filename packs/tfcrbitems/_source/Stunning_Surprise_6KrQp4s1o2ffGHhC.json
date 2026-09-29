@@ -5,6 +5,10 @@
   "_id": "6KrQp4s1o2ffGHhC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your attacks add Stun 1 against a Surprised target, or while you're Invisible. Left to the table: other cases where the target doesn't know exactly where you are.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

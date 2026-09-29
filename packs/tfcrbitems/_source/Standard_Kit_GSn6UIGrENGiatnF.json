@@ -5,6 +5,10 @@
   "_id": "GSn6UIGrENGiatnF",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose this kit's Specialization first. Roll Options Dialog: when a roll calls for that kit, the best kit you carry sets the Snag or ↓. Use it up for a short burst of Specialization (or ↑1 if already Specialized), or scrounge a refill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

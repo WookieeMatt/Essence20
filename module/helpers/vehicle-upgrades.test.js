@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 import {
   applyToVehicle, applyToVehicleEffect, canUseDrivingForIntimidation, canUseVehicleUpgrade, crewSources, defenderSources,
-  driverDefenseBonus, getCrewedVehicle, isSealedAboard, reduceVehicleDamage, spendDefenderSources, tryRedundantBackups,
+  driverDefenseBonus, getCrewedVehicle, isSealedAboard, jammingRadiusFeet, reduceVehicleDamage, spendDefenderSources, tryRedundantBackups,
   useVehicleUpgrade, usesVehicleTargeting, vehicleWeaponTraits, VU,
 } from './vehicle-upgrades.mjs';
 import {
@@ -197,6 +197,15 @@ describe("Use buttons", () => {
   });
 });
 
+describe("jamming", () => {
+  test("a switched-on jammer reaches 50ft, Enhanced Radar Jamming a mile; off reaches nothing", () => {
+    expect(jammingRadiusFeet({ flags: { essence20: { jamming: 50 } } })).toBe(50);
+    expect(jammingRadiusFeet({ flags: { essence20: { jamming: 100 } } })).toBe(5280);
+    expect(jammingRadiusFeet({ flags: { essence20: { jamming: false } } })).toBe(0);
+    expect(jammingRadiusFeet(null)).toBe(0);
+  });
+});
+
 describe("weapon and armor traits", () => {
   const perkItem = uuid => ({ type: 'perk', flags: { core: { sourceId: uuid } } });
 
@@ -206,13 +215,19 @@ describe("weapon and armor traits", () => {
     expect(perkGrantedTraits(weapon, ['fire'])).toEqual(['wrecker', 'antiTank', 'temperamental']);
   });
 
-  test("noisy armor, computerized armor, MLP Light Armor", () => {
+  test("noisy armor, computerized armor, MLP Light and Heavy Armor", () => {
     const armor = (traits, t, e, source = '') => ({ type: 'armor', system: { equipped: true, traits, totalBonusToughness: t, totalBonusEvasion: e }, flags: { core: { sourceId: source } } });
     const actor = { items: [armor(['deflective'], 2, 0), armor(['silent', 'computerized'], 0, 1), armor([], 1, 0, TRAIT_PERK.mlpLightArmor)] };
-    expect(noisyArmorPenalty(actor)).toBe(3);
+    // MLP armor carries its own printed penalty instead of the noisy-battledress one.
+    expect(noisyArmorPenalty(actor)).toBe(2);
     expect(computerizedArmorEvasion(actor)).toBe(1);
     expect(lightArmorPenalty(actor, 'initiative')).toBe(1);
     expect(lightArmorPenalty(actor, 'might')).toBe(0);
+
+    const heavy = { items: [armor([], 3, 0, TRAIT_PERK.mlpHeavyArmor)] };
+    expect(noisyArmorPenalty(heavy)).toBe(0);
+    expect(lightArmorPenalty(heavy, 'infiltration')).toBe(2);
+    expect(lightArmorPenalty(heavy, 'acrobatics')).toBe(2);
   });
 
   test("Ram Cone, Ignores Defend and Grown targets", () => {
@@ -225,7 +240,9 @@ describe("weapon and armor traits", () => {
 
   test("hardpoint Perks add slots, Titan Hardpoint Upgrades cost one more, Gun Runner reinforces ballistic weapons", () => {
     const actor = { items: [perkItem(HARDPOINT_PERK.armament), perkItem(HARDPOINT_PERK.quickDraw), perkItem(HARDPOINT_PERK.gunRunner), perkItem(HARDPOINT_PERK.titanHardpointUpgrades)] };
-    expect(hardpointBonus(actor)).toEqual({ external: 2, integrated: 1 });
+    expect(hardpointBonus(actor)).toEqual({ external: 2, integrated: 1, nonWeapon: 0 });
+    // In Case of Emergency's two slots are Non-Weapon only - they don't let two more weapons in.
+    expect(hardpointBonus({ items: [perkItem(HARDPOINT_PERK.inCaseOfEmergency)] })).toEqual({ external: 0, integrated: 0, nonWeapon: 2 });
     expect(integratedHardpointsPerWeapon(actor)).toBe(1);
     expect(firesAsReinforced(actor, { system: { traits: ['ballistic'] } })).toBe(true);
     expect(firesAsReinforced({ items: [] }, { system: { traits: [] } })).toBe(false);

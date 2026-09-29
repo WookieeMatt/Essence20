@@ -5,6 +5,10 @@
   "_id": "nx3HyAPnwVWIKPVZ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: you pick a Limited weapon when you attach it, and that weapon's attacks are added to this one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

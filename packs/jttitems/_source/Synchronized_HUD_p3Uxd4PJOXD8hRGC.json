@@ -5,6 +5,10 @@
   "_id": "p3Uxd4PJOXD8hRGC",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: using Targeting instead of Driving for the Zord's ranged attacks, and applying your Alertness bonuses while piloting.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

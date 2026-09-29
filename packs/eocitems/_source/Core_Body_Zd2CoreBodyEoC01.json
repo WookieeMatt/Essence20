@@ -5,6 +5,10 @@
   "_id": "Zd2CoreBodyEoC01",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in a Gigantic or larger Combiner form, your base Health is doubled for your share of the form's Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

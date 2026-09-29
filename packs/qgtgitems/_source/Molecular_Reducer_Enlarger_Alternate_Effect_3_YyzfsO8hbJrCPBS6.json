@@ -5,6 +5,10 @@
   "_id": "YyzfsO8hbJrCPBS6",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Technology attack at 75ft with ↓1 that deals 1 Stun.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "DBNeGHS1WBi7CyuR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per turn you can make an extra attack as a Free action at the end of your movement.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

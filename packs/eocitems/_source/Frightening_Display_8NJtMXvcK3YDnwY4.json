@@ -5,6 +5,10 @@
   "_id": "8NJtMXvcK3YDnwY4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: targets every enemy within 100 ft and rolls Intimidation against their Willpower; each hit is Frightened. Left to the table: ending it after 1d4 rounds, and the two-handed Ballistic weapon requirement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

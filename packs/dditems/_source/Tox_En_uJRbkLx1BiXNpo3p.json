@@ -5,6 +5,10 @@
   "_id": "uJRbkLx1BiXNpo3p",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (GM): attacks the targeted Cybertronians at +d8 against Toughness, with Edge if they touch it; a hit deals 1 Strength and 1 Speed Essence damage and Impairs them, extending each time it hits.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "PS3XndcDXifia2cf",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might at Reach for 1 Electric damage, with a 1 Stun alternate and a Maneuver alternate at ↓1; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -14,14 +14,16 @@
  * directly, no dice involved, same shape as Bolster Defense's own banked bonus except with
  * nothing to roll first. Can't touch `_prepareDefenses` (the user's own pending Health/Defense-
  * math migration), so this is a live, non-consumed read in dice.mjs's own difficulty calculation,
- * same shape as Bolster Defense/Jury Rig's own Defense bonuses. "Until end of Combat" has no
- * active clearing hook (this codebase has no combat-end event) - left in place until manually
- * cleared, the same "approximate an unenforceable duration, GM manages the edges" idiom Bolster
- * Defense's own "until end of scene" clause already uses. The two benefits are independent (each
+ * same shape as Bolster Defense/Jury Rig's own Defense bonuses. "Until the end of Combat" is the
+ * Scene Clock's 'encounter' window (scene-clock.mjs#activateForWindow), which advances when a
+ * Combat ends and with every new scene - so the +2 and the once-per-Combat use both run out
+ * together, with nothing to sweep. The two benefits are independent (each
  * its own once-per-Combat use, both obtainable in the same fight for 2 separate Standard actions)
  * - the picker only offers whichever hasn't been used yet, and the "Use" button stays available
  * as long as either one remains.
  */
+import { activateForWindow, isActiveForWindow } from "./scene-clock.mjs";
+
 export const LIKE_WATER_ID = "Compendium.essence20.intercontinental_adventures.Item.HSjShnVmoDdzEDT1";
 
 const LIKE_WATER_OPTION_LABELS = {
@@ -30,12 +32,16 @@ const LIKE_WATER_OPTION_LABELS = {
 };
 export const LIKE_WATER_OPTIONS = Object.keys(LIKE_WATER_OPTION_LABELS);
 
-// One boolean flag per option, doing double duty as both "already used this Combat" (the
+// One encounter-window flag per option, doing double duty as both "already used this Combat" (the
 // once-per-Combat cap) and "currently granting its +2" (read live by getLikeWaterDefenseBonus) -
-// setting it true both spends the once-per-Combat use AND turns the bonus on, since RAW's own
+// activating it both spends the once-per-Combat use AND turns the bonus on, since RAW's own
 // "lasts until the end of Combat" means those two facts never diverge for this Perk.
 function likeWaterActiveFlag(option) {
   return `likeWater${option.charAt(0).toUpperCase()}${option.slice(1)}Active`;
+}
+
+function isLikeWaterOptionActive(actor, option) {
+  return !!actor?.getFlag && isActiveForWindow(actor, likeWaterActiveFlag(option), 'encounter');
 }
 
 /**
@@ -44,7 +50,7 @@ function likeWaterActiveFlag(option) {
  * @returns {Array<String>}   A subset of LIKE_WATER_OPTIONS.
  */
 export function getAvailableLikeWaterOptions(actor) {
-  return LIKE_WATER_OPTIONS.filter(option => !actor?.getFlag?.('essence20', likeWaterActiveFlag(option)));
+  return LIKE_WATER_OPTIONS.filter(option => !isLikeWaterOptionActive(actor, option));
 }
 
 /**
@@ -92,7 +98,7 @@ export async function applyLikeWater(actor) {
     return null;
   }
 
-  await actor.setFlag('essence20', likeWaterActiveFlag(option), true);
+  await activateForWindow(actor, likeWaterActiveFlag(option), 'encounter');
   return option;
 }
 
@@ -108,5 +114,5 @@ export function getLikeWaterDefenseBonus(actor, defenseType) {
     return 0;
   }
 
-  return actor?.getFlag?.('essence20', likeWaterActiveFlag(defenseType)) ? 2 : 0;
+  return isLikeWaterOptionActive(actor, defenseType) ? 2 : 0;
 }

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: give this Perk to your pet for +1 Cleverness. Each extra copy adds another +1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

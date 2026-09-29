@@ -5,6 +5,10 @@
   "_id": "YMC3WoSkJ11jrwUn",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll it from the sheet (uses its own Spellcasting die). On a success your size becomes Huge until the GM starts a new scene, then goes back to what it was. Your gear not growing with you is flavor.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

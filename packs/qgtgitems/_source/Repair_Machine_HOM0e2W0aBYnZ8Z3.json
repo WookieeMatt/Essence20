@@ -5,6 +5,10 @@
   "_id": "HOM0e2W0aBYnZ8Z3",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: your next Technology test gains Edge, for fixing the broken equipment. It uses one of its two daily uses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

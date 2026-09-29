@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on the Royal Wealth and Royal Persuasion effects while your royal status matters for Edge on Wealth and ↑1 on Persuasion, then switch them off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

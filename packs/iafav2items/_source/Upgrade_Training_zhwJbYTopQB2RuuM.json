@@ -5,6 +5,10 @@
   "_id": "zhwJbYTopQB2RuuM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick three Limited or one Restricted weapon upgrade. You're Qualified with them, and they don't raise a weapon's Availability when you Requisition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

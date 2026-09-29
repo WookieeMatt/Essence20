@@ -5,6 +5,10 @@
   "_id": "7ambAsWT3FRXnrge",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Violent Influence Perk and the Violent Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "SgYkXSFLiLT8hjMP",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: consume a dose or roll DIF 16 Science to stabilize it. Unstable Synth-En works like Red Energon; stable Synth-En gives ↑1 in the Roll Options Dialog, with a d6 check that may take standard Energon instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

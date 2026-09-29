@@ -5,6 +5,10 @@
   "_id": "TomU7e31oHoRsIrT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (while Morphed): spend 1 Personal Power and roll your Athletics die; the result is added to your Defenses against incoming attacks until your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

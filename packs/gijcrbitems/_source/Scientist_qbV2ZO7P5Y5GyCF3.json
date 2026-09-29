@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: on drop, the Smarts increase and a choice of Culture, Science or Technology, plus 1 starting Health, 30 ft Ground movement and the Expert Knowledge Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "wJlBHa3mMaETS2UQ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the staff's Might attack with the listed Stun damage, reach and penalty.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

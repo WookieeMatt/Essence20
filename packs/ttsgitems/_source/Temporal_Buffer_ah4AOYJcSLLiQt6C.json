@@ -5,6 +5,10 @@
   "_id": "ah4AOYJcSLLiQt6C",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Toughness and 45 ft Aerial Movement for the Zord.</p><p>Left to the table: the smaller die on Continuum Anomaly tests when it time travels.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

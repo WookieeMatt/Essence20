@@ -5,6 +5,10 @@
   "_id": "tv0pOgALa608pw8i",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while worn, +2 Toughness against desert heat and exposure, when the scene's region is desert or Extreme Heat. It doesn't count against attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

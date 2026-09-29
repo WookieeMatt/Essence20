@@ -5,6 +5,10 @@
   "_id": "NTy3KQc1Lcg4LlyX",
   "img": "icons/weapons/slings/slingshot-wood.webp",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting against up to 4 targets; Void damage ignores armor bonuses to Toughness, and only every second hit on the same target in a turn deals damage. The Alternate Effect Impairs instead. Granted from the Psycho Morpher's Use button.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

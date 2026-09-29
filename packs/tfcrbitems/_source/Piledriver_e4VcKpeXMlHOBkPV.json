@@ -5,6 +5,10 @@
   "_id": "e4VcKpeXMlHOBkPV",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: in Alt Mode, post it to chat to turn one space within Reach into Rough Terrain as a Free action.</p><p>Left to the table: using it in Bot Mode as a Close Combat Heavy Bludgeon, with its ↑1 and bonus against objects.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

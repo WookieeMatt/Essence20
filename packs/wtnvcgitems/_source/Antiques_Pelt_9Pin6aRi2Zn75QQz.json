@@ -5,6 +5,10 @@
   "_id": "9Pin6aRi2Zn75QQz",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: +2 Toughness while equipped. Active Effect while worn: ↑1 on Intimidation and Might, ↓1 on Animal Handling and Persuasion.</p><p>Left to the table: its Intimidating trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

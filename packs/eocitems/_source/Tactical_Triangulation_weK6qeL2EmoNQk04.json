@@ -5,6 +5,10 @@
   "_id": "weK6qeL2EmoNQk04",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ranged attacks by you or a Data Bridged ally get ↑1 per Data Bridged ally, up to ↑3.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

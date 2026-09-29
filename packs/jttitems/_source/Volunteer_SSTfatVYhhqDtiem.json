@@ -5,6 +5,10 @@
   "_id": "SSTfatVYhhqDtiem",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: The Line Of Duty, plus the Origin's starting Health, 35 ft Ground Movement and its Essence and Skill choices.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

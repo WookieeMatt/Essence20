@@ -5,6 +5,10 @@
   "_id": "bYx0fmWfkOTjr97q",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Social tests, a switch for Edge when dealing with the Apple family. Use button: a Free action for Edge on an agriculture test, once per mission.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

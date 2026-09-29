@@ -5,6 +5,10 @@
   "_id": "H20u6Vc7xoGrbryM",
   "img": "systems/essence20/assets/icons/gear/photo-camera.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative gear with no dice effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

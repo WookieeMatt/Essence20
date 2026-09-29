@@ -5,6 +5,10 @@
   "_id": "L5P54Ismw81Lhrbe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +20ft Ground Movement in Alt Mode. Use button (once per scene): double your Ground Movement for the round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

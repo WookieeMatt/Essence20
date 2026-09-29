@@ -10,7 +10,7 @@ import {
   getCost,
   getLedger,
   getMode,
-  getNamedActionType,
+  DODGY_IDS, getNamedActionType,
   getRemaining,
   getSheetContext,
   grantActionsThisTurn,
@@ -256,6 +256,17 @@ describe("getNamedActionType", () => {
   test("Dodgy turns Defend into a Free action", () => {
     const actor = makeActor({ items: [{ type: 'perk', flags: { core: { sourceId: DODGY_ID } } }] });
     expect(getNamedActionType(actor, 'defend')).toBe('free');
+  });
+
+  test("every printing of Dodgy does it, not just MLP's", () => {
+    for (const id of DODGY_IDS) {
+      const actor = makeActor({ items: [{ type: 'perk', flags: { core: { sourceId: id } } }] });
+      expect(getNamedActionType(actor, 'defend')).toBe('free');
+    }
+
+    expect(DODGY_IDS).toEqual(expect.arrayContaining([
+      "Compendium.essence20.gi_joe_crb.Item.GQwhr14X9yXkAuWH", "Compendium.essence20.wtnv_citizens_guide.Item.QAyXVlPBLs5yndGt",
+    ]));
   });
 
   test("Dodgy doesn't affect any other named action", () => {

@@ -5,6 +5,10 @@
   "_id": "2qjDEWrhBYFjkYDs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend a Free action for Edge on your next attack or Skill test, once per Combat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

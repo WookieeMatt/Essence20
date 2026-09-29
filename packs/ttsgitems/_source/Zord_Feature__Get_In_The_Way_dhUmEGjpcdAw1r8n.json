@@ -5,6 +5,10 @@
   "_id": "dhUmEGjpcdAw1r8n",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: swapping places to take an attack aimed at an adjacent Zord, or moving 1 damage to this Zord inside a Megaform.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

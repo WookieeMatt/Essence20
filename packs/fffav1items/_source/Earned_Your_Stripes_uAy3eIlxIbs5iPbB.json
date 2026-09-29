@@ -5,6 +5,10 @@
   "_id": "uAy3eIlxIbs5iPbB",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Earned Your Stripes Influence Perk, plus its Hang-Up when one applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

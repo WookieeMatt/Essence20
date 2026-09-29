@@ -5,6 +5,10 @@
   "_id": "G9dBppUoBQrJgXC4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when you gain it, you design your Unique Strike melee attack by picking its options, and the finished weapon is added to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

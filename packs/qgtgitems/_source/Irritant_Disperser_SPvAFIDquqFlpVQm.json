@@ -5,6 +5,10 @@
   "_id": "SPvAFIDquqFlpVQm",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 20/50 ft for a Blinding blast, with a Stun alternate; Marked and Temperamental apply, and it is used up when thrown.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

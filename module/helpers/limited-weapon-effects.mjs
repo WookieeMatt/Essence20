@@ -9,10 +9,15 @@ import { hasUsedThisEncounter, markUsedThisEncounter } from "./perks.mjs";
  * and a limited alternate one side by side (Turbo Thunder Cannon's base blast is unlimited; only
  * its Energy Attack alternate is capped). Wing Missile Salvo's own two profiles (Blast and
  * Multiple Targets) share a single flag, matching the book's single "once per scene" cap on the
- * whole Attack rather than one cap per profile.
+ * whole Attack rather than one cap per profile. Turbo Lightning Sword's Energy Attack carries the
+ * same "1/Encounter" line in the same table, and the Power Rangers Core Rulebook reprints both
+ * Turbo weapons with the same cap ("1x/ Encounter", Table 8-3.2), so each printing is listed.
  */
 const LIMITED_WEAPON_EFFECT_FLAGS = {
   "Compendium.essence20.across_the_stars.Item.Wl7L2wcydXAw9Xei": 'turboThunderCannonEnergyAttackUsedThisEncounter',
+  "Compendium.essence20.pr_crb.Item.GkobUXUpyU8l6gKw": 'turboThunderCannonEnergyAttackUsedThisEncounter',
+  "Compendium.essence20.across_the_stars.Item.3VBxXY5kXow9UGgX": 'turboLightningSwordEnergyAttackUsedThisEncounter',
+  "Compendium.essence20.pr_crb.Item.A2T4cCya4l1rlihY": 'turboLightningSwordEnergyAttackUsedThisEncounter',
   "Compendium.essence20.across_the_stars.Item.Z6cpZMj1nKTquCLF": 'wingMissileSalvoUsedThisEncounter',
   "Compendium.essence20.across_the_stars.Item.FRue0q6oL8aRWswk": 'wingMissileSalvoUsedThisEncounter',
 };

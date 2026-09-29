@@ -5,6 +5,10 @@
   "_id": "oejdA1Iw5UJB5tVT",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on attacks with the vehicle's weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

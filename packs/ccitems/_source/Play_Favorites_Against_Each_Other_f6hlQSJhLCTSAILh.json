@@ -5,6 +5,10 @@
   "_id": "f6hlQSJhLCTSAILh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Play Favorites costs a Move action, and you can give one Ruthless Point to two allies at once; when either spends it, both lose it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

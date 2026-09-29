@@ -5,6 +5,10 @@
   "_id": "sB4nx5FrQMZKdfaJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Put it on your pet. Active Effect: +1 Toughness for each copy.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

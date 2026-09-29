@@ -5,6 +5,10 @@
   "_id": "w1E74WXrvwQJlS1Q",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: imprison, focus on or release a prisoner. Holds up to your Crew rating in Alt Mode or one in Bot Mode; prisoners take ↓2 to escape, and a Snag after you focus on them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

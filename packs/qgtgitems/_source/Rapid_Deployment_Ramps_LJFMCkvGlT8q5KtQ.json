@@ -5,6 +5,10 @@
   "_id": "LJFMCkvGlT8q5KtQ",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: the vehicle gains the Rapid Deployment Ramps trait on its sheet.</p><p>Left to the table: once the ramps are opened, passengers disembark using only 5ft of Movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -809,8 +809,9 @@ export const ACTION_PERK_USES = {
   // Motivate (GI Joe CRB, Officer, 14th level, p.86): "as a Standard action, you may grant an ally an
   // immediate Standard action."
   [P.motivate]: { id: 'motivate', target: 'ally', cost: 'standard', now: { standard: 1 } },
-  // Mobilize (GI Joe CRB, Officer, p.85): grant an ally an immediate Move action.
-  [P.mobilize]: { id: 'mobilize', target: 'ally', cost: 'standard', now: { move: 1 } },
+  // Mobilize (GI Joe CRB, Officer, 5th level, p.85): "as a Move action, you may grant an ally within line
+  // of sight an immediate Move action."
+  [P.mobilize]: { id: 'mobilize', target: 'ally', cost: 'move', now: { move: 1 } },
   // Momentum (GI Joe CRB, Officer, 18th level, p.86): "as a Standard action, you may grant an ally an
   // immediate bonus turn."
   [P.momentum]: { id: 'momentum', target: 'ally', cost: 'standard', now: { fullTurn: true } },
@@ -855,8 +856,9 @@ export const ACTION_PERK_USES = {
     id: 'newPlan', target: 'self', choice: ['move', 'twoFree'], limit: { window: 'turn', max: 1 },
     available: actor => !!actor && lastTurnHadContingency(actor),
   },
-  // Harmony Unleashed (MLP CRB, spell, p.139) - see the cost rule above.
-  [P.harmonyUnleashed]: { id: 'harmonyUnleashed', target: 'self', switchOn: HARMONY_FLAG, rounds: 3 },
+  // Harmony Unleashed (MLP CRB, spell, p.139) - see the cost rule above. "You ignite the spark that's
+  // inside of a pony" within 30ft: the targeted pony, or the caster with nothing targeted.
+  [P.harmonyUnleashed]: { id: 'harmonyUnleashed', target: 'targetOrSelf', switchOn: HARMONY_FLAG, rounds: 3 },
   // Laughtracting (MLP CRB, Spirit of Laughter, 9th level, p.86): "as a Standard action, you roll a
   // Performance Skill Test against a creature's Willpower. On a success, they can't use any Free
   // actions on their next turn." Rolled here; dice.mjs applies it to each target it beat.
@@ -1102,6 +1104,10 @@ export async function useActionPerk(item) {
     }
   }
 
+  if (use.target == 'targetOrSelf') {
+    recipient = game.user?.targets?.first?.()?.actor ?? actor;
+  }
+
   const choice = use.choice ? await pickChoice(use, item) : null;
   if (use.choice && !choice) {
     return null;
@@ -1251,7 +1257,13 @@ export async function useActionPerk(item) {
     const stamp = use.rounds
       ? { combatId: combat.id, untilRound: combat.round + use.rounds - 1 }
       : { combatId: combat.id, round: combat.round, turn: combat.turn };
-    await actor.setFlag('essence20', use.switchOn, stamp);
+    const { needsGmRelay, relayToGm } = await import("./gm-relay.mjs");
+    if (needsGmRelay(recipient)) {
+      await relayToGm(recipient, 'setFlag', ['essence20', use.switchOn, stamp]);
+    } else {
+      await recipient.setFlag('essence20', use.switchOn, stamp);
+    }
+
     granted.push(game.i18n.localize(`E20.ActionPerkSwitchedOn.${use.id}`));
   }
 

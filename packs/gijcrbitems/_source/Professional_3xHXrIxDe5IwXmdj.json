@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for a Snag on Smarts and Social tests, for when putting the job ahead of people costs you. The GM decides when it applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Cfdtj0YtJoBGa1Yf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Deception, Intimidation and Persuasion tests roll as specialized.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

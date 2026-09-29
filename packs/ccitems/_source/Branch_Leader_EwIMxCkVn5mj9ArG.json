@@ -5,6 +5,10 @@
   "_id": "EwIMxCkVn5mj9ArG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose another G.I. JOE Role as your Branch. Your Branch Perks then pick from it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "PQ2msfDzjTGz8aXN",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for the listed damage, with an Armor-Piercing alternate effect at ↓1. Shadow Morph grants it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

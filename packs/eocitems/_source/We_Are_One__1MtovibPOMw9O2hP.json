@@ -5,6 +5,10 @@
   "_id": "1MtovibPOMw9O2hP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose team members (up to half your Social, rounded up) and two Skills from different Essences. You and each member get an Active Effect that rerolls 1s on those Skills.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

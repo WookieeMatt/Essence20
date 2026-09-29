@@ -5,6 +5,10 @@
   "_id": "OrK3XyNIyJcorMxp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: a teammate's Skill Test card within 60 ft gets a reroll button. On your next turn you're reminded to test that Skill, with a button to lose your Move action if you can't.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

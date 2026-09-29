@@ -5,6 +5,10 @@
   "_id": "SK4Yv7FRre5rFlOn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: while performing, switch on the audience effect for each size reached (10+, 100+, 1,000+); each gives ↑1 on Performance. Switch them off afterwards.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

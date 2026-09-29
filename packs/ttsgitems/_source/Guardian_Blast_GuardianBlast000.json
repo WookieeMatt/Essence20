@@ -5,6 +5,10 @@
   "_id": "GuardianBlast000",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick who joins in; each rolls Targeting against the target's Evasion from the chat card and spends their Standard action. Resolve deals 5 Energy damage if at least half of them hit.</p><p>Left to the table: everyone moving within 5 ft of two allies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

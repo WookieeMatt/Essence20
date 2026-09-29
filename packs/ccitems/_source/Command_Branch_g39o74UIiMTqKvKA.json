@@ -5,6 +5,10 @@
   "_id": "g39o74UIiMTqKvKA",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: Tactical Armor (Terrifying), Close Combat Bludgeoning (Manipulative) and Rifle (Laser Sight). Left to the table: who may take this package.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "tS6uhPUGCqGamB2z",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the bundle's blast leaves targets it hits Stunned for 2d2 rounds.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>Stun 3 and Fire 2</p>",

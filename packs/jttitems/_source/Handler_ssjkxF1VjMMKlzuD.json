@@ -5,6 +5,10 @@
   "_id": "ssjkxF1VjMMKlzuD",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): Snag on Social tests. Switch it on while the Hang-Up is in play.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "wAwyes3rFKXYb6Wg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑1 on Intimidation.</p><p>Left to the table: spending a Story Point to learn a visible enemy's weakness or Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

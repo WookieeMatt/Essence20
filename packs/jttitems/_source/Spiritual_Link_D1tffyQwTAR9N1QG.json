@@ -5,6 +5,10 @@
   "_id": "D1tffyQwTAR9N1QG",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in combat, ↑1 on your first Skill Test each turn while you drive the Zord that has this Feature, including as part of a Megaform.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

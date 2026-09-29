@@ -5,6 +5,10 @@
   "_id": "4ArjV6NInx6snUaZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per turn): choose +3 Toughness, +3 Evasion, +2/+1 or +1/+2. In combat it applies to every attack against those Defenses until your next turn; out of combat, to the next one.</p><p>Left to the table: ↑1 on offhand attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

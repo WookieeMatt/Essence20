@@ -5,6 +5,10 @@
   "_id": "DulMH7OAwrg3G85A",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your allies deal +1 Stun when they deal Stun damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

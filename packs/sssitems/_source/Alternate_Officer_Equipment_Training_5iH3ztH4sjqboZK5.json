@@ -5,6 +5,10 @@
   "_id": "5iH3ztH4sjqboZK5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: swaps your Officer training for Light Armor, melee weapons and explosives.</p><p>Left to the table: your Qualification with one Limited melee weapon of your choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "wKGrImiofaMrni0m",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (also offered when you gain it): choose any General Perk. Its prerequisites are shown for you to check, and the chosen Perk is added to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

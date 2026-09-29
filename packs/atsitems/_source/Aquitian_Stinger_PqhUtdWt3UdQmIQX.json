@@ -5,6 +5,10 @@
   "_id": "PqhUtdWt3UdQmIQX",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, plus its alternate effect. Inertial ignores low- and zero-gravity penalties; Xenotech gives a Snag until your first Critical Success with it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

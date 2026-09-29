@@ -5,6 +5,10 @@
   "_id": "kAR3cmrNFYvb8zp8",
   "img": "systems/essence20/assets/icons/weapons/bow.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its effect with the listed Skill, damage and range. Reload: it must be reloaded after firing, as a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

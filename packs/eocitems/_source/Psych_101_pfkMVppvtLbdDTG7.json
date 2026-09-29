@@ -5,6 +5,10 @@
   "_id": "pfkMVppvtLbdDTG7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑2 on Culture Skill Tests while you have any Science Specialization.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

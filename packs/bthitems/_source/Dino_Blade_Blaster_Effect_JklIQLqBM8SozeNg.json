@@ -5,6 +5,10 @@
   "_id": "JklIQLqBM8SozeNg",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack at 100ft/400ft for 2 Laser damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

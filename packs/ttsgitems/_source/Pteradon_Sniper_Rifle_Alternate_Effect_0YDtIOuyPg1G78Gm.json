@@ -5,6 +5,10 @@
   "_id": "0YDtIOuyPg1G78Gm",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack at 100ft/300ft range and ↓2 for 3 Energy damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

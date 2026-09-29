@@ -5,6 +5,10 @@
   "_id": "FDQFMkT2fUjxVxZY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Free action, spend a Quips &amp; Speeches use to give an ally within 30 ft temporary Health, rising at 7th, 12th and 17th level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

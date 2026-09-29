@@ -5,6 +5,10 @@
   "_id": "4rdWupth6TFqQFeP",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting against the Toughness of up to 4 targets, ignoring armor bonuses to Toughness. Hits are counted per target through the turn, and only every second hit on the same target gets the 1 Void damage button.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>1 Void per 2 hits on the same target; Multiple (4) Targets</p>",

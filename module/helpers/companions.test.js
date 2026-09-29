@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
-import { animalStats, commandDif, companionDefenseBonus, companionRollSources, droneStats, isDocked, linkedBonuses, miniConStats, ponyPetStats } from './companions.mjs';
-import { COMP } from './companion-uses.mjs';
+import { addNightValeAnimalPerk, animalStats, canCommand, commandDif, commandIsMove, runCompanionUse, companionDefenseBonus, companionRollSources, droneStats, isDocked, linkedBonuses, miniConStats, ponyPetStats } from './companions.mjs';
+import { COMP, isCompanionUse } from './companion-uses.mjs';
 import { companionsOf, isCompanionPair, ownerOf, worldActors } from './companion-link.mjs';
 import { buildCommand, commandDefenseBonus, commandSources, isLive, PRESETS } from './commands.mjs';
 import { bondBonuses, bondOf, bondRollSources, bondSpecializes, BOND, moduleEnergon } from './bonded.mjs';
@@ -213,6 +213,11 @@ describe('summons', () => {
   test('Battlizers, Edge while riding, Hard Target and Racer Abandon', () => {
     expect(isBattlizer(item(SUMMON.triassic, { type: 'armor' }))).toBe(true);
     expect(BATTLIZERS[SUMMON.triassic].cost).toBe(3);
+    // Quantum Mega Battle Armor (A Jump Through Time): 5 Personal Power, three attacks.
+    expect(SUMMON.quantumMega).toBe('Compendium.essence20.jump_through_time.Item.WiaxmqhCQSYpJIeK');
+    expect(isBattlizer(item(SUMMON.quantumMega, { type: 'armor' }))).toBe(true);
+    expect(BATTLIZERS[SUMMON.quantumMega].cost).toBe(5);
+    expect(BATTLIZERS[SUMMON.quantumMega].attacks.map(a => a.name)).toEqual(['Wing Blades', 'Wing Blaster', 'Energy Sword Time Strike']);
     const rider = actor({ uuid: 'Actor.r', items: [item(SUMMON.hardTarget), item(SUMMON.racerAbandon)] });
     const cycle = actor({ type: 'vehicle', flags: { personalVehicle: 'sharkCycle', companionOf: 'Actor.r' } });
     expect(personalVehicleEdge(rider, 'driving', cycle)).toBe(true);
@@ -239,3 +244,78 @@ describe('team Perks', () => {
 });
 
 void jest;
+
+describe('Night Vale Community Adoption Center', () => {
+  test('improving a pet adds one Animal Perk from the Citizens Guide, not an Availability tier', async () => {
+    const pet = actor({ uuid: 'Actor.pet', name: 'Khoshekh', type: 'companion', system: { type: 'pet', availability: 'standard' } });
+    pet.createEmbeddedDocuments = jest.fn(async (type, data) => data.map(d => ({ ...d, id: 'new' })));
+    const wtnvUuid = id => `Compendium.essence20.wtnv_citizens_guide.Item.${id}`;
+    const entries = [
+      { uuid: wtnvUuid('xNiPMhVMQQUzlRg8'), name: 'Animal', type: 'perk', folder: 'f1' },
+      { uuid: wtnvUuid('aaaa'), name: 'Quills', type: 'perk', folder: 'f1' },
+      { uuid: wtnvUuid('bbbb'), name: 'Hat', type: 'gear', folder: 'f2' },
+    ];
+    global.game.packs = { get: () => ({ folders: [{ id: 'f1', name: 'Animal Perks' }, { id: 'f2', name: 'Gear' }], getIndex: async () => new Map(entries.map(e => [e.uuid, e])) }) };
+    const offered = [];
+    global.foundry.applications = { api: { DialogV2: { wait: jest.fn() } } };
+    await addNightValeAnimalPerk([pet], { name: 'Night Vale Community Adoption Center' }, async (title, rows) => {
+      offered.push(...rows);
+      return null;
+    });
+    // Only Animal Perks other than the base Animal Perk are offered.
+    expect(offered.map(r => r.name)).toEqual(['Quills']);
+  });
+});
+
+describe('designated commanders and Favorite Command', () => {
+  function dialogAnswer(answer) {
+    global.foundry.applications = { api: { DialogV2: { wait: jest.fn(async ({ buttons }) => buttons[0].callback(null, { form: { elements: answer } })) } } };
+  }
+
+  function withSetFlag(it) {
+    it.setFlag = jest.fn(async (scope, key, value) => {
+      it.flags.essence20[key] = value;
+    });
+    return it;
+  }
+
+  test('Backup Master / Extra Friend: the Use button designates who else may command the pet', async () => {
+    const owner = actor({ uuid: 'Actor.owner', name: 'Owner' });
+    const friend = actor({ uuid: 'Actor.friend', name: 'Friend' });
+    for (const source of [COMP.backupMaster, COMP.extraFriend]) {
+      const perk = withSetFlag(item(source, { name: 'Backup Master' }));
+      const pet = actor({ uuid: 'Actor.pet', type: 'companion', system: { type: 'pet' }, flags: { companionOf: 'Actor.owner' }, items: [perk] });
+      perk.parent = pet;
+      actors.splice(0, actors.length, owner, friend, pet);
+      expect(isCompanionUse(perk)).toBe(true);
+      expect(canCommand(friend, pet)).toBe(false);
+      dialogAnswer({ designee: { value: 'Actor.friend' } });
+
+      await runCompanionUse(perk, null);
+
+      expect(perk.flags.essence20.designee).toBe('Actor.friend');
+      expect(canCommand(friend, pet)).toBe(true);
+      expect(canCommand(owner, pet)).toBe(true);
+    }
+  });
+
+  test('Favorite Command: the Skill picked on the Perk makes commanding the pet a Move action', async () => {
+    const owner = actor({ uuid: 'Actor.owner' });
+    const perk = withSetFlag(item(COMP.favoriteCommandMlp, { name: 'Favorite Command' }));
+    const pet = actor({ uuid: 'Actor.pet', type: 'companion', system: { type: 'pet' }, flags: { companionOf: 'Actor.owner' }, items: [perk] });
+    perk.parent = pet;
+    actors.push(owner, pet);
+    expect(commandIsMove(owner)).toBe(false);
+
+    // The Perk's own Skill picker (system.choice) counts...
+    perk.system.choice = 'alertness';
+    expect(commandIsMove(owner)).toBe(true);
+
+    // ...and so does the Use button's pick.
+    perk.system.choice = '';
+    dialogAnswer({ skill: { value: 'might' } });
+    await runCompanionUse(perk, null);
+    expect(perk.flags.essence20.favoriteSkill).toBe('might');
+    expect(commandIsMove(owner)).toBe(true);
+  });
+});

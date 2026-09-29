@@ -5,6 +5,10 @@
   "_id": "LccKe9ZdDPvS5YbD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button, once per encounter: spend a Story Point to mark your current target. You and your allies get ↑2 on attacks against it.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

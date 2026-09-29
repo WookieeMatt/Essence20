@@ -5,6 +5,10 @@
   "_id": "0Q21VhUK1PNu1pTM",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the explosive's blast radius is doubled.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

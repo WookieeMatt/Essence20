@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "icons/svg/sword.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage; its traits apply. The Surgical upgrade works as that upgrade describes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

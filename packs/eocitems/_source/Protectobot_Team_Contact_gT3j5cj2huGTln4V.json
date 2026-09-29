@@ -5,6 +5,10 @@
   "_id": "gT3j5cj2huGTln4V",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: this describes the Protectobots as a Contact. Set the team up as a Contact NPC with its Allegiance Points and Contact Perks; the GM resolves what those perks and the team's Hang-Up do.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

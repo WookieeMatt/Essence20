@@ -5,6 +5,10 @@
   "_id": "TPrNnDxBKHIajafY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 to all Defenses while Morphed. Automatic: +1 damage on a Critical Success, and in Monster Form you take 1 less damage from anything that isn't Energy damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

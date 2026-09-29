@@ -5,6 +5,10 @@
   "_id": "nba3ZJm712Z1qhaG",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, +1 Smarts at 1st and 10th level, and its Focus Skills (Alertness, Culture and Survival).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

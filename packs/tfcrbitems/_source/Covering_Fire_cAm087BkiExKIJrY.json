@@ -5,6 +5,10 @@
   "_id": "cAm087BkiExKIJrY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you miss with an attack, that target has a Snag on its attacks during its next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

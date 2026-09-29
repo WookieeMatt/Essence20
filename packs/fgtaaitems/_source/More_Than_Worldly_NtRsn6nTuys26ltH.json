@@ -5,6 +5,10 @@
   "_id": "NtRsn6nTuys26ltH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per turn, Free action): Edge for you or a targeted ally.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

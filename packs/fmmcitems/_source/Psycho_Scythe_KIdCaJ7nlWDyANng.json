@@ -5,6 +5,10 @@
   "_id": "KIdCaJ7nlWDyANng",
   "img": "icons/weapons/sickles/scythe-curved-steel.webp",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might with the listed damage and Void damage ignores armor bonuses to Toughness, and the Power Weapon trait counts for Power Weapon effects. Its Alternate Effect hits two targets at ↓1. Granted from the Psycho Morpher's Use button.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

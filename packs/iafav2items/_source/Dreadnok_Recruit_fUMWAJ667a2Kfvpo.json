@@ -5,6 +5,10 @@
   "_id": "fUMWAJ667a2Kfvpo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: you may join the Dreadnoks Faction, including in place of COBRA.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "sQLtABvFETkL3JQd",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, plus Zord Feature picks at 6th, 10th, 14th and 17th level and the Role's Essence and Skill increases.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

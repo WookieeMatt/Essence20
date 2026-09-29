@@ -5,6 +5,10 @@
   "_id": "Ce7k2HkiD2eUO0Sg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Alertness tests.</p><p>Left to the table: the book limits this to solving puzzles (or a GM clue instead), but the effect is always on, so switch it off for other Alertness tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

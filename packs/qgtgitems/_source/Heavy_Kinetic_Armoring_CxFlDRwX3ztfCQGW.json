@@ -5,6 +5,10 @@
   "_id": "CxFlDRwX3ztfCQGW",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the optional battledress rules - 3 armor Health, the Counter-Kinetic trait and 2 fewer hands of weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

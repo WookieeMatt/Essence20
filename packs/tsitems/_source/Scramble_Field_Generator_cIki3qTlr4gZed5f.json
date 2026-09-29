@@ -5,6 +5,10 @@
   "_id": "cIki3qTlr4gZed5f",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: with a target selected, attach it with an attack against their Evasion. They get ↓2 on Alertness; a DIF 16 Technology roll also hides your side from them, and DIF 20 shows them an illusion. Use it again to remove it; it's used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

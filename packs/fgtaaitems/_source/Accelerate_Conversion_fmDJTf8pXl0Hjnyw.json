@@ -5,6 +5,10 @@
   "_id": "fmDJTf8pXl0Hjnyw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene): spend 1 Personal Power or Energon to convert as a Free action. The Zord summon and Megaform timers also offer a once-per-scene option to arrive 2 rounds sooner.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

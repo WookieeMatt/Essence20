@@ -5,6 +5,10 @@
   "_id": "3P1H4fLiCHX6voEK",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: driving and gunning the vehicle from up to 100ft away with ↓2 on all tests, seeing from inside it, and the Snag on Alertness while doing so.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

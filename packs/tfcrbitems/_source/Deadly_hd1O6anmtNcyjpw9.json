@@ -5,6 +5,10 @@
   "_id": "hd1O6anmtNcyjpw9",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the weapon deals +1 damage on a hit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

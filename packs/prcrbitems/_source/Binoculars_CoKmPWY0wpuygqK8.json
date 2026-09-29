@@ -5,6 +5,10 @@
   "_id": "CoKmPWY0wpuygqK8",
   "img": "systems/essence20/assets/icons/gear/binoculars.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: seeing far with the binoculars and the blind spot close by.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

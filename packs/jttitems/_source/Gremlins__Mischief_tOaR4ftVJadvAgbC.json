@@ -5,6 +5,10 @@
   "_id": "tOaR4ftVJadvAgbC",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: your unarmed attacks deal Electromagnetic damage this turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

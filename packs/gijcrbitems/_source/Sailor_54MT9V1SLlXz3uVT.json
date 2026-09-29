@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: on drop, a choice of Strength or Smarts and one of its six Skills, plus 2 starting Health, 30 ft Ground and 30 ft Aquatic movement, and the Sea Legs Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

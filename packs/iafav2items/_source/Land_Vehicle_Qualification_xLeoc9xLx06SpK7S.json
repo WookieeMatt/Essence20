@@ -5,6 +5,10 @@
   "_id": "xLeoc9xLx06SpK7S",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: no Snag when driving Land vehicles, plus ↑1 if you have Ranks in Driving.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

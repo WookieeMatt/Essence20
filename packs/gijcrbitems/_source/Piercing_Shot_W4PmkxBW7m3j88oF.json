@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you attack with a Sniper weapon and have an Edge, a d2 result also counts as a critical hit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

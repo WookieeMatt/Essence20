@@ -5,6 +5,10 @@
   "_id": "9oVQjvw6FqVQyopW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Health. Granted: a Wrist Communicator.</p><p>Left to the table: its weapon Qualifications, the Power Weapon, and the Dual Powered Personal Power or Energon pool.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↓1 on Alertness tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

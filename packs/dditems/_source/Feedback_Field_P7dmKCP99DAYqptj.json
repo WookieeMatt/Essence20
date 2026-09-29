@@ -5,6 +5,10 @@
   "_id": "P7dmKCP99DAYqptj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (Move action, 1 Energon): the field is active for the scene, and the Technology DIF to get a message through (your Willpower) is posted.</p><p>Left to the table: calling for those tests from enemies who send messages.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks use its two-handed or one-handed effect; Burst-Fire is tracked.</p><p>Left to the table: the Retention Lanyard keeping it in your space when dropped or disarmed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

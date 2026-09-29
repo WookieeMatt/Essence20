@@ -5,6 +5,10 @@
   "_id": "TESyOcJFtd9Qn9Tk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Silent Martial Arts weapons gain a Maneuver alternate effect, and any Maneuver alternate they already have loses its penalty.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

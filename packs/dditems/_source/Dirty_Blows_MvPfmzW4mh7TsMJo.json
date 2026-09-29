@@ -5,6 +5,10 @@
   "_id": "MvPfmzW4mh7TsMJo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch on melee attacks for its alternate effect; a hit leaves the target Impaired until the end of its next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

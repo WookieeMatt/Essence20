@@ -1,0 +1,56 @@
+{
+  "folder": "VA3Mj2hAFyA59F9F",
+  "name": "Natural Weapon Effect",
+  "type": "weaponEffect",
+  "_id": "aFsgCl33DgwNeo2Y",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might attack at Reach for 1 Blunt damage (set to Sharp, or Finesse, when the Alt Mode grants it that way).</p>"
+    },
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 38
+    },
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "blunt",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "0",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790700000000,
+    "modifiedTime": 1790700000000,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!aFsgCl33DgwNeo2Y"
+}

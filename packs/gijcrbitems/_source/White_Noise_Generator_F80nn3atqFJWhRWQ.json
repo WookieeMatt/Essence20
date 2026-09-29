@@ -5,6 +5,10 @@
   "_id": "F80nn3atqFJWhRWQ",
   "img": "systems/essence20/assets/icons/gear/white_noise_generator.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switches the generator on or off. While it's on, Alertness and Technology tests within 30 ft of it suffer a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

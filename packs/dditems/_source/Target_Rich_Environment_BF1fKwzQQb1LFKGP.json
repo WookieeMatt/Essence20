@@ -5,6 +5,10 @@
   "_id": "BF1fKwzQQb1LFKGP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, spend a Story Point and your whole turn to attack every enemy within your favorite weapon's normal range with one roll.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

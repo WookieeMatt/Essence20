@@ -5,6 +5,10 @@
   "_id": "fN6N13llWp5ChvIG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: while Morphed, your team can understand and read any Morphin Grid language.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

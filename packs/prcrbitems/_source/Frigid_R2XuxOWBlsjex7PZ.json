@@ -5,6 +5,10 @@
   "_id": "R2XuxOWBlsjex7PZ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon gains the Cold trait, which adds a Stun 1 alternate effect (or +1 to its Stun).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

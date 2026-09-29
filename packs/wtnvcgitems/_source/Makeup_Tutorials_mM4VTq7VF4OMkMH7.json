@@ -5,6 +5,10 @@
   "_id": "mM4VTq7VF4OMkMH7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: an Edge on Deception and Infiltration tests.</p><p>Left to the table: the Edge is meant only while pretending to be someone else, so switch the effect off otherwise.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

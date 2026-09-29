@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick Land, Sea or Air. Roll Options Dialog: a switch for Edge on tests related to that type of vehicle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

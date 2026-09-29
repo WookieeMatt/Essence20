@@ -5,6 +5,10 @@
   "_id": "pmYFN0fUHFIg8u48",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Laser attacks against the vehicle's occupants take a Snag.</p><p>Left to the table: occupants ignoring light-based effects that would give ↓ on Driving.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "rEoZEFQR2puQxpIW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: in Alt Mode you can't be knocked Prone, ranged attacks against you get ↓2, and you get ↑1 on Infiltration. Left to the table: taking cover behind short obstacles.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

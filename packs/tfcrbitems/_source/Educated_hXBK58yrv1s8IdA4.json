@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene, adds one point to the team's Story Point pool.</p><p>Left to the table: your extra Language and the once-per-day roll as though Specialized in your chosen Smarts Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

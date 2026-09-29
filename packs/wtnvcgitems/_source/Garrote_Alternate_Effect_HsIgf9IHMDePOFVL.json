@@ -5,6 +5,10 @@
   "_id": "HsIgf9IHMDePOFVL",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a two-handed Finesse melee Grapple at Reach.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

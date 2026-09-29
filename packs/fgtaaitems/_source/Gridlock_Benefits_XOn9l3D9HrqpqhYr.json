@@ -5,6 +5,10 @@
   "_id": "XOn9l3D9HrqpqhYr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Personal Power. Granted: a Wrist Communicator and a Blade Blaster.</p><p>Left to the table: its weapon training and Qualifications, Power Weapons, and the ↑2 on Smarts tests about the Grid.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

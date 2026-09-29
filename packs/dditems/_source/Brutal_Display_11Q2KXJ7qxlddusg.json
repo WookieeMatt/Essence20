@@ -5,6 +5,10 @@
   "_id": "11Q2KXJ7qxlddusg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: after Defeating a foe unarmed, target it and spend an Energon Point. Intimidation is rolled against its allies within 100 ft, and those beaten become Frightened (longer on a Critical Success).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

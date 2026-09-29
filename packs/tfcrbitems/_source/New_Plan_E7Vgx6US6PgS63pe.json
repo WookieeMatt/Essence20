@@ -5,6 +5,10 @@
   "_id": "E7Vgx6US6PgS63pe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when a Contingency action's trigger never happens, you get an extra Move action or two Free actions on your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

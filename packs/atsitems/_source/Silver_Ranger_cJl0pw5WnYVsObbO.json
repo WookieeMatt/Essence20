@@ -5,6 +5,10 @@
   "_id": "cJl0pw5WnYVsObbO",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Silver Ranger's Role Perks at their listed levels and the Grid Surges track, plus its Essence increases and Personal Power. You choose General Perks, Grid Powers and Zord Features as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

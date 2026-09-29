@@ -5,6 +5,10 @@
   "_id": "qX7WEITdZUFw1uS7",
   "img": "systems/essence20/assets/icons/gear/bomb_sniffer.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑2 on Alertness when you're searching for explosives within range.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

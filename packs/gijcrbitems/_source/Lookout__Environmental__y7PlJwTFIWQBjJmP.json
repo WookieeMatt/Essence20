@@ -5,6 +5,10 @@
   "_id": "y7PlJwTFIWQBjJmP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button, once per encounter at the start of combat: take a free Move action.</p><p>Left to the table: always acting in the surprise round in your environment.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

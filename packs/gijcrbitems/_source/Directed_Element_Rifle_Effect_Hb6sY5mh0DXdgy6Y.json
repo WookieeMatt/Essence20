@@ -5,13 +5,17 @@
   "_id": "Hb6sY5mh0DXdgy6Y",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting for 1 damage of the element chosen on its weapon, at 75ft.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {
       "skill": "targeting",
       "style": "energy"
     },
-    "damageType": "laser",
+    "damageType": "element",
     "damageValue": 1,
     "shiftDown": 0,
     "numHands": "2",

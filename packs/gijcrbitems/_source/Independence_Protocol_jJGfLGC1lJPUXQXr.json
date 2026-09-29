@@ -5,6 +5,10 @@
   "_id": "jJGfLGC1lJPUXQXr",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: add the drone to combat so it rolls its own Initiative, and have it follow its pre-set Command when it acts before you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "qorLGnvHpgo4wGq8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: if you are Defeated, docked Mini-Cons deploy with 2 temporary Health each. A Defeated Mini-Con is pulled 30ft toward you each turn until it is within your Reach.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

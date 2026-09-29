@@ -5,6 +5,10 @@
   "_id": "DYPFsyQpIYGkJpgE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for attacking while hidden, which adds +2 damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

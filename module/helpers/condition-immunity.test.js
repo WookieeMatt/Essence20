@@ -222,6 +222,16 @@ describe("isImmuneToCondition (Always Alert, Transformers CRB, General Perk, p.1
   test("false without the Perk", () => {
     expect(isImmuneToCondition(makeActor(), 'surprised')).toBe(false);
   });
+
+  test.each([
+    ["GI Joe CRB", "Compendium.essence20.gi_joe_crb.Item.Vo5IeXooKE9OBoJH"],
+    ["PR CRB", "Compendium.essence20.pr_crb.Item.oXyaZOw6L1AXiyCj"],
+    ["MLP CRB", "Compendium.essence20.mlp_crb.Item.ZBOmQradsrZi9sc5"],
+    ["WTNV Citizens' Guide", "Compendium.essence20.wtnv_citizens_guide.Item.LXK3ATRjFLfPg4mb"],
+  ])("the %s printing grants the same Surprised immunity", (book, id) => {
+    expect(isImmuneToCondition(makeActor([id]), 'surprised')).toBe(true);
+    expect(isImmuneToCondition(makeActor([id]), 'frightened')).toBe(false);
+  });
 });
 
 describe("isImmuneToCondition (Dig In, Decepticon Directive Raider Siegemaster Focus, 10th level) - gated on the toggled stance", () => {

@@ -5,6 +5,10 @@
   "_id": "Q5YDt0r21QDmBuDC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you hit 0 Health or 0 Personal Power, a chat card lets each teammate give you 1 Health or d2 Power, paid from their own. Once per day (resets on Rest).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

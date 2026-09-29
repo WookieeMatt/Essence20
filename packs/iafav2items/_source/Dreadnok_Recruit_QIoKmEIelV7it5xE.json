@@ -5,6 +5,10 @@
   "_id": "QIoKmEIelV7it5xE",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: at the start of your turn, a Free action is spent if a Dreadnok NPC or Contact is in the scene. The Hang-Up's Use button marks one as present when it isn't on the map.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

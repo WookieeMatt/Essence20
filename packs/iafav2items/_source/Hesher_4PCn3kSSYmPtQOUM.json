@@ -5,6 +5,10 @@
   "_id": "4PCn3kSSYmPtQOUM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: choose Deception, Intimidation or Persuasion. Roll Options Dialog: when rolling that Skill, a switch to roll Performance instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

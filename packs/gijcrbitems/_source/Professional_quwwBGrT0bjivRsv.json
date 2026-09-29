@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for an Edge on Smarts and Social tests when your earlier career applies. The GM decides when it applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

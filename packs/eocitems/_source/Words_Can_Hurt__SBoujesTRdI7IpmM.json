@@ -5,6 +5,10 @@
   "_id": "SBoujesTRdI7IpmM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick Performance or Persuasion and the target's Willpower or Cleverness; on a success choose 1 Psychic or Frightened for 2d2 rounds. A target you succeed against is immune for the rest of the scene.</p><p>Left to the table: immunity after a Fumble.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

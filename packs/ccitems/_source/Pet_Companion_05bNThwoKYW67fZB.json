@@ -5,6 +5,10 @@
   "_id": "05bNThwoKYW67fZB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: the Animal Pet Perk when you gain this.</p><p>Left to the table: holding back the pet's benefits until your Animal Handling reaches d4.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

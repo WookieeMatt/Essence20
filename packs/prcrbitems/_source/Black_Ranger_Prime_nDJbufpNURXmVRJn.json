@@ -5,6 +5,10 @@
   "_id": "nDJbufpNURXmVRJn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (while Morphed): +2 to all Defenses and Edge on Social tests. Automatic: +1 damage with Martial Arts attacks while Morphed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

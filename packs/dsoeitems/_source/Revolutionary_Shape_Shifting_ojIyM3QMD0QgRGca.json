@@ -5,6 +5,10 @@
   "_id": "ojIyM3QMD0QgRGca",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button after casting: name the creature, optionally change size by one step (reverted at scene end), and get a ↑1 switch on tests that suit the creature for the scene. Left to the table: the creature's natural attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

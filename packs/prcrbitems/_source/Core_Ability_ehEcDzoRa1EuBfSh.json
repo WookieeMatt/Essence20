@@ -5,6 +5,10 @@
   "_id": "ehEcDzoRa1EuBfSh",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 to the Megaform's Strength or Speed, whichever is set on the trait. Take it again to stack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

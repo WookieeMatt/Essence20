@@ -5,6 +5,10 @@
   "_id": "mXStB2cImEYHeaxw",
   "img": "systems/essence20/assets/icons/gear/air_extraction.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: calling in the extraction and its timing.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Wsi0zbUrg0taIFXC",
   "img": "systems/essence20/assets/icons/weapons/plier.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its normal, Sharp or Maneuver effect; Anti-Tank and Wrecker apply, Reload is tracked, and it counts as a Tool weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

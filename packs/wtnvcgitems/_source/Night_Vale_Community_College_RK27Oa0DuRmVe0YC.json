@@ -5,6 +5,10 @@
   "_id": "RK27Oa0DuRmVe0YC",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Time is Weird at level 1 and \"Pseudo\"-Science at level 4. The character needs the Scientist Role first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

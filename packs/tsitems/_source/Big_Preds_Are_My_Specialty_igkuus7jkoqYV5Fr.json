@@ -5,6 +5,10 @@
   "_id": "igkuus7jkoqYV5Fr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Survival. Automatic: ↑1 on Infiltration for each Size Class your target is larger than you. Left to the table: the Survival Edge is meant only for tracking larger enemies, and the Infiltration bonus only for surprising them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

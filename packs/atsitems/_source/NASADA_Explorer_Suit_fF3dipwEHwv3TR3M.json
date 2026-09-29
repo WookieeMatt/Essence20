@@ -5,6 +5,10 @@
   "_id": "fF3dipwEHwv3TR3M",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +2 Toughness and ↑1 on Alertness. Roll Options Dialog: an Enviro-Sealed switch for hostile environments.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "SvByuJ6hUITwR5Q7",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, the Essence boosts from its level table, its armor and weapon training, and General Perk picks at the listed levels. You choose its Role skill ranks yourself in the Skill Picker.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

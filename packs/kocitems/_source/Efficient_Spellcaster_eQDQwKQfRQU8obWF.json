@@ -5,6 +5,10 @@
   "_id": "eQDQwKQfRQU8obWF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Elementary spells cost you 1 less to cast (minimum 1).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

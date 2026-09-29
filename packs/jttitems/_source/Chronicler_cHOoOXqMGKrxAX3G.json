@@ -5,6 +5,10 @@
   "_id": "cHOoOXqMGKrxAX3G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Culture tests. Chat card: a button to reroll the Skill dice on Culture tests.</p><p>Left to the table: both apply to every Culture test; untick the Edge when the test isn't about recalling history.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

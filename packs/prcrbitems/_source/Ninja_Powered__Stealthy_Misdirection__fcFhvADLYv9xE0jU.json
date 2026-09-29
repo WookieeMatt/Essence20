@@ -5,6 +5,10 @@
   "_id": "fcFhvADLYv9xE0jU",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after the Zord moves more than 20 feet, its Defend action costs no extra action (you are asked to confirm the long move).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

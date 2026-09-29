@@ -5,6 +5,10 @@
   "_id": "nhUWiy5pdqfut7JO",
   "img": "systems/essence20/assets/icons/weapons/brass-knuckles.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for 2 Electric damage, including the Electric ↑1; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

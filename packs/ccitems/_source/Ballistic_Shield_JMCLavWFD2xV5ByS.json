@@ -4,6 +4,10 @@
   "type": "shield",
   "img": "systems/essence20/assets/icons/items/shield.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: +1 Toughness while carried passively, or +2 Toughness while raised.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

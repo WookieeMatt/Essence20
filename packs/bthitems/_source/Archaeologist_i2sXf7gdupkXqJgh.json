@@ -5,6 +5,10 @@
   "_id": "i2sXf7gdupkXqJgh",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on Uninterested Audience for ↓1 on Social tests while dealing with someone who doesn't care about the past, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

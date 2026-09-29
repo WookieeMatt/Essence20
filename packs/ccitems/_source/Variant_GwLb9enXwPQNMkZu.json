@@ -5,6 +5,10 @@
   "_id": "GwLb9enXwPQNMkZu",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels (starting with Altered). It has no Essence or Skill increases of its own.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

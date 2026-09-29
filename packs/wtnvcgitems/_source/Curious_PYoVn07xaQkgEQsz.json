@@ -5,6 +5,10 @@
   "_id": "PYoVn07xaQkgEQsz",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Influence Perk, Keen Eye. If it's your second or later Influence, you also pick one of its Hang-Ups (Bookworm, Heretical or Obsessive).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

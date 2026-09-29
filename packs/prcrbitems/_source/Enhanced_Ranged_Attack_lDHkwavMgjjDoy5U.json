@@ -5,6 +5,10 @@
   "_id": "lDHkwavMgjjDoy5U",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Megaform gets an extra attack based on this Zord's strongest ranged attack, with triple damage and double range, usable once per scene (once more per extra copy).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

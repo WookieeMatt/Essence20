@@ -5,6 +5,10 @@
   "_id": "djq4kLhi5UQkgZgx",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the Obfuscated trait, hiding the weapon in its case.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

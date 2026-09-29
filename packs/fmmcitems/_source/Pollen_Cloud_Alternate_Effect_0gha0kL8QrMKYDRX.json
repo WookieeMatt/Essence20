@@ -5,6 +5,10 @@
   "_id": "0gha0kL8QrMKYDRX",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting against the Toughness of everyone in the 30ft area; a hit leaves the target Blinded.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

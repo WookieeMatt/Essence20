@@ -5,6 +5,10 @@
   "_id": "9u5BQU9Fkhlg3df0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Perk.</p><p>Left to the table: Edge on attacks against a target that flew last turn, when you've also flown this turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

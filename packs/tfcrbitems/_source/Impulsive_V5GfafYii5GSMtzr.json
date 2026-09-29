@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: ↓1 on your first Skill Test after you roll Initiative.</p><p>Left to the table: you never gain the benefits of Surprise.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

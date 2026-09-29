@@ -5,6 +5,10 @@
   "_id": "8PrVOAzb1zWVlANt",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, a Long Range Rifle, +1 Speed at 1st and 10th level, and its Focus Skills (Initiative and Infiltration).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

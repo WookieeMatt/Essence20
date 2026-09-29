@@ -5,6 +5,10 @@
   "_id": "2qW1YLopvjKyezNQ",
   "img": "systems/essence20/assets/icons/weapons/shotgun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, and its traits apply (Ballistic, Reload). Perks that call for a shotgun recognize this weapon.</p>"
+    },
     "originalId": "",
     "description": "<p>15 ft cone</p>",
     "source": {

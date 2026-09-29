@@ -5,6 +5,10 @@
   "_id": "4niBYqbR2fqBtP3V",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might with its Sharp, Maneuver or grapple options; Silent and its other traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

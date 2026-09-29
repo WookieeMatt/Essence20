@@ -5,6 +5,10 @@
   "_id": "0cGhuapOhkdwYC9G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button, twice per combat and once per turn: spend a Move action to give an ally 1 Temporary Health, remove one of their Conditions (not Defeated), or ↑2 on their next Skill Test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

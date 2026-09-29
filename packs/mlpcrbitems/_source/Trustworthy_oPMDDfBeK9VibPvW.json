@@ -5,6 +5,10 @@
   "_id": "oPMDDfBeK9VibPvW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Deception tests against a target always fail, and others' Deception against your Cleverness counts it as 4 higher. Move any Deception ranks to another Social Skill yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

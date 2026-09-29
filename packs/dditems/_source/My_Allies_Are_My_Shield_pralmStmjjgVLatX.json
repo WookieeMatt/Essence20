@@ -5,6 +5,10 @@
   "_id": "pralmStmjjgVLatX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 to your Defenses for each ally within 30 ft when you are attacked. Use button: trade 1 point of that bonus for +10 ft of Movement until your next turn.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "2sGx4CLaN68j49oh",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Gunner Perks at the levels in its table, plus its Essence increases.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

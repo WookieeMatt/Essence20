@@ -5,6 +5,10 @@
   "_id": "ThiC2GARmGJxSpDr",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the melee weapon it's attached to gains Electric, which gives ↑1 on its attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

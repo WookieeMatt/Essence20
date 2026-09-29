@@ -5,6 +5,10 @@
   "_id": "wyP8hFFMzHOOPbxu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Perk.</p><p>Left to the table: removing the upgrade from the item in reach and moving it onto yours by hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

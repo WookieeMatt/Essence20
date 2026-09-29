@@ -5,6 +5,10 @@
   "_id": "UiASUn7CGDbl0WU3",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a two-handed Finesse melee attack at Reach for 1 Blunt damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

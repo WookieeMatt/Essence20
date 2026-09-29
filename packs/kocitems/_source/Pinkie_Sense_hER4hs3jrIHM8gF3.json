@@ -5,6 +5,10 @@
   "_id": "hER4hs3jrIHM8gF3",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: on a success, the d8 Pinkie Sense table is rolled and posted to chat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

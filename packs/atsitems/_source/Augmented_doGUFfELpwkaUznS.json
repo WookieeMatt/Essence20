@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: pick +1 Health, +1 to one Defense, or ↑1 on one Skill, and add it yourself (for example with an Active Effect).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

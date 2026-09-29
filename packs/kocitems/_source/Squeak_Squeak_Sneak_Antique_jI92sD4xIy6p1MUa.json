@@ -5,6 +5,10 @@
   "_id": "jI92sD4xIy6p1MUa",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: its three daily uses of Don't-Notice-Me-Field and the whiskers that come with them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "NbqitpbDivHpKxcs",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: rolling it makes a Spellcasting test at your own rank or the potion's d2, whichever is better.</p><p>Left to the table: the adaptation it grants, its one-day duration, and removing the potion once it's drunk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

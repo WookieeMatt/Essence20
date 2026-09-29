@@ -5,6 +5,10 @@
   "_id": "8NfDRYoPVQJPGiVj",
   "img": "systems/essence20/assets/icons/weapons/whip.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse at Reach for a Maneuver, with an Intimidating alternate effect; Martial Arts and Silent apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

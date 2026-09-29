@@ -5,6 +5,10 @@
   "_id": "ORaGusBZ0BSQAmfs",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): switch it on while leading others for ↑1 on Alertness, Brawn and Survival tests, then switch it off again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

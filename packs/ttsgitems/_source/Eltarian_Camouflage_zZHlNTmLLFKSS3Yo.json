@@ -5,6 +5,10 @@
   "_id": "zZHlNTmLLFKSS3Yo",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switch the disguise on or off. While it's on, Alertness, Culture, Streetwise and Technology tests aimed at you show a ↓1 the roller can untick when the test isn't about your disguise.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

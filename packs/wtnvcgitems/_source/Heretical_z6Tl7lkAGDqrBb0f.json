@@ -5,6 +5,10 @@
   "_id": "z6Tl7lkAGDqrBb0f",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: your first action in each combat goes on a prayer.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

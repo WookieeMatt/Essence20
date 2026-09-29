@@ -232,6 +232,21 @@ describe('more', () => {
     expect(holder.system.defenses.toughness.total).toBe(14);
     expect(holder.system.defenses.evasion.total).toBe(13);
   });
+
+  test('the duplicate Decepticon Directive copies of the Rites work too', async () => {
+    const { findExtUse, registrySnapshot } = await import('../../extensions.mjs');
+    const DDX = id => `Compendium.essence20.decepticon_directive.Item.${id}`;
+    expect(findExtUse(item('perk', { source: DDX('QKJ19OgpdHNXUBQy') }))?.id).toBe('o1DistillHisEssence');
+    expect(findExtUse(item('perk', { source: DDX('hzCEZfTNDsQcOjUB') }))?.id).toBe('o1EatTheWeak');
+    const holder = actor([item('perk', { source: DDX('j9FW3wF6mKnVFj0s') })], {
+      energon: { dark: { value: 1 } }, defenses: { toughness: { total: 12, string: '' } }, essences: {}, movement: {},
+    });
+    for (const fn of registrySnapshot().derived) {
+      fn(holder);
+    }
+
+    expect(holder.system.defenses.toughness.total).toBe(14);
+  });
 });
 
 test('the slice index registers its Use buttons', async () => {

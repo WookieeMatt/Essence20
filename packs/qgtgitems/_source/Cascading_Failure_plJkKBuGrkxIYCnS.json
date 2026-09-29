@@ -5,6 +5,10 @@
   "_id": "plJkKBuGrkxIYCnS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: rig a device to fail later, on a timer or when you choose. Chat card: Disable and Explode buttons, with the explosion's damage rolled for you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

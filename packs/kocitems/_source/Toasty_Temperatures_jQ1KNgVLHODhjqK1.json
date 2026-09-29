@@ -5,6 +5,10 @@
   "_id": "jQ1KNgVLHODhjqK1",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Left to the table: the spell's effect, which is narrative (warming a target or melting ice).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

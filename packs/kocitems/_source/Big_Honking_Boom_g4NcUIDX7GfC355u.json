@@ -5,6 +5,10 @@
   "_id": "g4NcUIDX7GfC355u",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Chat card: on a success, everyone within 5 ft gets a DIF 12 Brawn save, and failing knocks them Prone for 1 round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

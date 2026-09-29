@@ -5,6 +5,10 @@
   "_id": "J9XS0xqlSQwkEwll",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on Skill tests against a target of lower level or Threat Level, ↓1 against a higher one. Listed in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

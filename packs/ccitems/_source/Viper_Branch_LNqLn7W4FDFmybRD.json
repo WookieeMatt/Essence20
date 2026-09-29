@@ -5,6 +5,10 @@
   "_id": "LNqLn7W4FDFmybRD",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Ballistic Armor (Anonymous) and an Assault Rifle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

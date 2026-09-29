@@ -5,6 +5,10 @@
   "_id": "Yn5DZE8cOS1by3Gh",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Conniving Perk and the Conniving Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

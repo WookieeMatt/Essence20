@@ -5,6 +5,10 @@
   "_id": "5wzTlk1Ygw0HvQhN",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the once-per-scene area finishing move, set up as an attack by hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

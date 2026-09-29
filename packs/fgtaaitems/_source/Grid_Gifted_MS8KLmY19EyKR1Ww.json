@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Personal Power. Use button (once per scene): bank an Edge or a Specialized roll for your next Smarts or Social test.</p><p>Left to the table: picking your starting Grid Power.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

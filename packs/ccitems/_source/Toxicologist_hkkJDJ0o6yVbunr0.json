@@ -5,6 +5,10 @@
   "_id": "hkkJDJ0o6yVbunr0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you're Qualified with toxins.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

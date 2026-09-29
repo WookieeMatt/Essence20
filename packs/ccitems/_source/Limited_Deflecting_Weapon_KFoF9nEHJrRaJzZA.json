@@ -5,6 +5,10 @@
   "_id": "KFoF9nEHJrRaJzZA",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick a Limited shield when attached; it is added as a shield equipped with the weapon, and you are warned when attacking while it is raised.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

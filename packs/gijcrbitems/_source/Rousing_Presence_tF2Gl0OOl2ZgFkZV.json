@@ -5,6 +5,10 @@
   "_id": "tF2Gl0OOl2ZgFkZV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: using Rouse costs a Move action instead of a Standard action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

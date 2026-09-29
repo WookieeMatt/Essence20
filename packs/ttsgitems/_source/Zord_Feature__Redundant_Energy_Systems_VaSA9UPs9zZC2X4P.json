@@ -5,6 +5,10 @@
   "_id": "VaSA9UPs9zZC2X4P",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: roll the DIF 15 Technology test from your sheet, then heal the Zord and apply its ↓1 by hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -8,4 +8,11 @@ export const itemDescription = () => ({
     book: makeStr(''),
     page: makeInt(null),
   }),
+  // What the system does for this item, in our own words - kept apart from `description` so the
+  // Book Description Importer (which only ever fills `description`) can never overwrite it. A copy
+  // on an actor reads its compendium original's notes live (Essence20Item#_prepareAutomation).
+  automation: new fields.SchemaField({
+    status: new fields.StringField({ initial: '', blank: true, choices: ['', 'full', 'partial', 'manual'] }),
+    notes: new fields.HTMLField(),
+  }),
 });

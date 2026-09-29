@@ -5,6 +5,10 @@
   "_id": "Lxmp3gfs8TmtUOI5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a non-physical damage type. While Morphed you get +3 Toughness against that damage type.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

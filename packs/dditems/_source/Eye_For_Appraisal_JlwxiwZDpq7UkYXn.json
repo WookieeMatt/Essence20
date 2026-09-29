@@ -5,6 +5,10 @@
   "_id": "JlwxiwZDpq7UkYXn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (Free): DIF 12 Alertness Test to mark your target; your next few ranged attacks against it get ↑1.</p><p>Left to the table: marking an area rather than one target, and spotting valuables.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

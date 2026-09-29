@@ -5,6 +5,10 @@
   "_id": "Boj0xRCCDi1dpoQe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: outside combat, roll Technology against a target's Willpower or Cleverness; on a success it becomes Mesmerized.</p><p>Left to the table: range, and when the Mesmerized condition ends.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

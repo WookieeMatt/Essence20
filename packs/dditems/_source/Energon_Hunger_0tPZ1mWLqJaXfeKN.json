@@ -5,6 +5,10 @@
   "_id": "0tPZ1mWLqJaXfeKN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic, when this is the Imperfection set on A Hint of Independence: each time you recover Energon by resting, a d4 is rolled and on a 4 you recover 1 less.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

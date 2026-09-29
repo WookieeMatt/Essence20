@@ -5,6 +5,10 @@
   "_id": "PFuzUrcYw14JRLf9",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Sharp damage, or 2 Sharp damage with the two-handed alternate effect; Sharp and Silent apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

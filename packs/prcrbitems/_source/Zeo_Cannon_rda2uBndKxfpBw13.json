@@ -5,6 +5,10 @@
   "_id": "rda2uBndKxfpBw13",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Targeting at 200/600 ft for heavy Stun, with an Energy damage alternate effect; its traits apply.</p><p>Left to the table: needing five Rangers to aim it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

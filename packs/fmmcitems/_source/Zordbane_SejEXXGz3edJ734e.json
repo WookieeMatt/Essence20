@@ -5,6 +5,10 @@
   "_id": "SejEXXGz3edJ734e",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 and +1 damage on attacks against a Zord.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

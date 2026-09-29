@@ -26,6 +26,7 @@ export const BOND = {
   bondedProficiency: uuid('ZMs9cLu6O89Lv7Oo'),
   hitSomeoneYourOwnSize: uuid('zDeWS4koDbfN98hB'),
   transtectorRig: uuid('bdgThhk7atm9XMet'),
+  rigReinforcement: uuid('Sof6OR5q1AnUaPDK'),
   linkLock: uuid('0Ub2QRx8AcakJj97'),
 };
 

@@ -5,6 +5,10 @@
   "_id": "uZ7WK6svxRFNKf6m",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Flux's Targeting attack with the listed Element damage and reach.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

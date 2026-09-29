@@ -5,6 +5,10 @@
   "_id": "iA8J97GmKb51oumg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: each time you spend a Story Point, a d4 is rolled; on a 4 the point returns to the pool.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

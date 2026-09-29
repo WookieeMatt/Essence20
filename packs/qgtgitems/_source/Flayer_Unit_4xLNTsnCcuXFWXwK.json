@@ -5,6 +5,10 @@
   "_id": "4xLNTsnCcuXFWXwK",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: once per scene, the ground the vehicle crosses becomes Rough Terrain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

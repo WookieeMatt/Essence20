@@ -5,6 +5,10 @@
   "_id": "aemIg2WSa3gsYMMO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: twice per day, opening a mental link with a creature you can see within 60ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

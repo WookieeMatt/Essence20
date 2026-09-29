@@ -5,6 +5,10 @@
   "_id": "LcK3NDqeow5xVFtg",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Nemesis Perk and the mandatory Nemesis Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

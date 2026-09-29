@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you ride in a vehicle you aren't driving, all your Skill Tests take a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

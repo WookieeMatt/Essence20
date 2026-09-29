@@ -5,6 +5,10 @@
   "_id": "NcyDl7iFkFVcje6c",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: the armor's extra 2 Health, the Counter-Ballistic trait, and carrying one hand fewer of weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

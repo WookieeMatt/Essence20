@@ -5,6 +5,10 @@
   "_id": "HMzPAgHtvu4KPM1c",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: spend a Move action to give a friend an extra Standard action next turn, or a Free action for an extra Move; once per round, twice at 14th level, and at will from 18th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "985JSL4ANRcKb1EX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: anyone who attacks or Intimidates you is remembered, and your next test with your Empathy Skill against them gets Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

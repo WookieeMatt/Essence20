@@ -5,6 +5,10 @@
   "_id": "IeOmY0keh5oD2n3l",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: three times a day, take a free ↑1 on a Skill one of your BFFs has at d4 or higher. You also get Edge after a BFF fails, and a Friendship Point for assisting.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

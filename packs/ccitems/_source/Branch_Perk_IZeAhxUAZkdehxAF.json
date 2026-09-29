@@ -5,6 +5,10 @@
   "_id": "IZeAhxUAZkdehxAF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick one Role Perk from your Branch that you have the level for; it is added to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

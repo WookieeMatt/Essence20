@@ -5,6 +5,10 @@
   "_id": "N8nkrj2hSrLv9NFP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 damage on attacks that use no weapon, such as Unarmed strikes and natural Alt Mode attacks like Ram.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

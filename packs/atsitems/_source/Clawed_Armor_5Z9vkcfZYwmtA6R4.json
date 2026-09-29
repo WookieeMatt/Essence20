@@ -5,6 +5,10 @@
   "_id": "5Z9vkcfZYwmtA6R4",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic while equipped: its Toughness bonus, Edge on Alertness, -5ft ground movement, and a Snag on attempts to grapple, shove or move you. Its attacks are separate weapons.</p><p>Left to the table: paying the 3 Personal Power summon cost.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

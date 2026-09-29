@@ -5,6 +5,10 @@
   "_id": "C68Tcs2iLJ6KBO83",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Energy damage at 30ft/60ft range, with a 2 Stun alternate effect; its Power Weapon and Spot traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "mNVPUeKWqlQo3QIB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Energon to add a Proximity Bomb upgrade to one of your non-Integrated weapons. The trap is used up when it goes off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

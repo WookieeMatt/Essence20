@@ -5,6 +5,10 @@
   "_id": "FJSNzVRulj20M0B1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: an ally adds the listed die to their next roll; the die grows as the Perk advances.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "TYebczV8RvTTbWnL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick a Skill; your next test with it is one Rank higher (up to d12).</p><p>Left to the table: keeping the bonus for the rest of the scene, and holding it to once per session (the system limits it per Combat).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

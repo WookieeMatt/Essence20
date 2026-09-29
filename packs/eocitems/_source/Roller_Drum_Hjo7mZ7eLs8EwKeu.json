@@ -5,6 +5,10 @@
   "_id": "Hjo7mZ7eLs8EwKeu",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 Blunt on your Alt Mode Ram against Prone targets and +1 Stun on your Bot Mode Unarmed hits. In a Combiner form you add +1 to its Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

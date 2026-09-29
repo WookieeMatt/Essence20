@@ -1,4 +1,5 @@
 import { runDerived } from "../helpers/extensions.mjs";
+import { COMMANDER_SKILLS_FLAG } from "../helpers/extensions/r2misc/commander.mjs";
 import { linkedBonuses } from "../helpers/companions.mjs";
 import { BOND, bondBonuses } from "../helpers/bonded.mjs";
 import { hardTargetBonus, vehicleHands } from "../helpers/summons.mjs";
@@ -17,7 +18,7 @@ import { Dice } from "../dice.mjs";
 import { isUnableToAct } from "../helpers/action-economy.mjs";
 import { E20 } from "../helpers/config.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { getNumActions, resizeTokens } from "../helpers/actor.mjs";
+import { getNumActions, resizeTokens, sceneResistancesOf } from "../helpers/actor.mjs";
 import { syncMorphState } from "../helpers/morph-state.mjs";
 import { actorHasPerk, findPerk } from "../helpers/perks.mjs";
 import { getBlindsightRange } from "../helpers/blindsight.mjs";
@@ -131,9 +132,9 @@ const ORGANIC_ENERGON_ID = "Compendium.essence20.field_guide_action_adventure.It
 // Personal Power Supply (Field Guide to Action and Adventure, General Perk, p.71): "You gain a
 // Personal Power Point pool, starting with 1 and growing by 1 every 5 levels (for instance, if
 // you choose this Perk at 6th level, you begin with a pool of 2). You regenerate 2 Personal Power
-// Points per day (up to your maximum)." Only the pool-grant half is built - "you can choose Grid
-// Powers as General Perks" depends on the still-unbuilt Grid Powers system (this project's own
-// repeatedly-flagged #1 infra gap), left unbuilt. The level-scaling formula (1 + floor(level/5))
+// Points per day (up to your maximum)." The pool and its +2 regeneration (read by the sheet's Rest)
+// are here; "you can choose Grid Powers as General Perks" is the Perk's own Use button
+// (helpers/grants.mjs#personalPowerSupply). The level-scaling formula (1 + floor(level/5))
 // matches RAW's own worked example exactly. `system.powers.personal.max` is otherwise a plain
 // Active-Effect-additive field (see Extra Grid Power's own compendium Active Effect, `mode: 2`
 // ADD, +1) with no existing derived-data computation of its own - this runs in
@@ -176,6 +177,12 @@ const FIREPROOF_ID = "Compendium.essence20.cobra_codex.Item.gaOLMFlImcLRmQV0";
 // above establishes.
 const TITANSPARK_ID = "Compendium.essence20.enigma_of_combination.Item.ldnUTXw5w21toLIy";
 
+// Armored Defense (Enigma of Combination, Combiner trait, p.42): "Increase the bonus to the
+// Combiner form's Toughness Defense from armor upgrades by 1." Authored as a coreDefenses trait,
+// but unlike Core Defenses it leaves Evasion alone.
+const ARMORED_DEFENSE_ID = "Compendium.essence20.enigma_of_combination.Item.GQHo1Tv5jIJ65GW3";
+const isArmoredDefense = item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == ARMORED_DEFENSE_ID;
+
 // Mind Palace (MLP CRB, Role Perk, p.94): "At 5th level, you gain +1 to Willpower. At 11th level,
 // this bonus increases to +2. At 17th level, this bonus increases to +3." Level-gated, so - unlike
 // a static compendium Active Effect - this needs a live level check; all 3 of the item's own
@@ -196,6 +203,7 @@ const MIND_PALACE_ID = "Compendium.essence20.mlp_crb.Item.UVFsgco1AMzgZ595";
 // Warrior Rush (Wrecker Focus, 1st level, p.92) - see its own check in _prepareMovement() below.
 const WARRIOR_RUSH_ID = `${TF_CRB}jTNi4jENlLEq8ruS`;
 const THUNDEROUS_ADVANCE_ID = "Compendium.essence20.gi_joe_crb.Item.B0yM8ewEoYJb1GBg";
+const OVERPROTECTIVE_UPGRADE_ID = "Compendium.essence20.jump_through_time.Item.oQL3yYlWvKQNZlJC";
 
 // Keep it Together! (Enigma of Combination, Component Ace Focus, 17th level, p.34) - see its own
 // check in _prepareMegaformCombinerData() below.
@@ -671,6 +679,8 @@ export class Essence20Actor extends Actor {
       this._prepareSelfPreservationResistance();
     }
 
+    this._prepareSceneResistances();
+
     if (this.type == 'vehicle') {
       this._prepareVehicleData();
     }
@@ -1091,6 +1101,20 @@ export class Essence20Actor extends Actor {
   }
 
   /**
+   * Resistances granted "for the rest of the scene" (Hardened Armor, Elemental Adaptation) - see
+   * helpers/actor.mjs#grantSceneResistance. Additive only, like Fireproof above.
+   */
+  _prepareSceneResistances() {
+    if (!this.system.resistances) {
+      return;
+    }
+
+    for (const damageType of sceneResistancesOf(this)) {
+      this.system.resistances[damageType] = true;
+    }
+  }
+
+  /**
    * Mind Palace - see MIND_PALACE_ID's own comment above. +1/+2/+3 Willpower Defense at 5th/11th/
    * 17th level respectively (not cumulative across tiers - the highest tier reached is the whole
    * bonus).
@@ -1389,7 +1413,8 @@ export class Essence20Actor extends Actor {
       {
         for (const upgrade of this.items.documentsByType?.upgrade ?? []) {
           if (upgrade.getFlag('essence20', 'parentId') || upgrade.system?.type != 'armor'
-            || !(system.canTransform || upgrade.getFlag('essence20', 'alterationWorn') || sourceOfItem(upgrade) == BOND.transtectorRig)) {
+            || !(system.canTransform || upgrade.getFlag('essence20', 'alterationWorn')
+              || [BOND.transtectorRig, BOND.rigReinforcement].includes(sourceOfItem(upgrade)))) {
             continue;
           }
 
@@ -1506,6 +1531,14 @@ export class Essence20Actor extends Actor {
       // Early-Warning Alarm / Focus Module: +1 Willpower / Cleverness while driving that vehicle.
       if (this.type == 'playerCharacter' || this.type == 'npc') {
         perkDefenseBonus += driverDefenseBonus(this)[defenseType] ?? 0;
+
+        // Upgraded Zord (Overprotective Upgrade), A Jump Through Time p.84: "the driver gains +2 to
+        // Willpower and Cleverness" - read off the Zord this actor is driving.
+        if (['willpower', 'cleverness'].includes(defenseType) && (game?.actors?.contents ?? []).some(zord => zord.type == 'zord'
+          && Object.values(zord.system?.actors ?? {}).some(crew => crew?.uuid == this.uuid && crew.vehicleRole == 'driver')
+          && zord.items.some(item => sourceOfItem(item) == OVERPROTECTIVE_UPGRADE_ID))) {
+          perkDefenseBonus += 2;
+        }
       }
 
       defense.total = base + essence + bonus + rolePointsDefense + perkDefenseBonus;
@@ -2244,7 +2277,10 @@ export class Essence20Actor extends Actor {
           break;
         case 'coreDefenses':
           toughnessTraitBonus += item.system.value;
-          evasionTraitBonus += item.system.value;
+          if (!isArmoredDefense(item)) {
+            evasionTraitBonus += item.system.value;
+          }
+
           break;
         case 'defender':
           // Across the Stars, p.104: "+1 bonus to the Megaform's adjusted Toughness Defense."
@@ -2530,6 +2566,7 @@ export class Essence20Actor extends Actor {
     let evasionTraitBonus = 0;
     let hasTenaciousBonds = false;
     let hasCommander = false;
+    let commanderSkills = null;
     let layeredSystemsBonus = 0;
     let hasEnhancedInitiative = false;
     let hasTitanHardpoint = false;
@@ -2547,11 +2584,17 @@ export class Essence20Actor extends Actor {
             );
           }
 
+          // Core Essence (Enigma of Combination, p.42): "increasing one associated Skill accordingly"
+          // - the Skill named on the feature gets the matching upshift, same shape as Skill Expertise.
+          if (item.system.skill && system.skills[item.system.skill]) {
+            system.skills[item.system.skill].shiftUp += item.system.value;
+          }
+
           break;
         case 'coreDefenses':
         case 'defender':
           toughnessTraitBonus += item.system.value;
-          if (item.system.type == 'coreDefenses') {
+          if (item.system.type == 'coreDefenses' && !isArmoredDefense(item)) {
             evasionTraitBonus += item.system.value;
           }
 
@@ -2595,7 +2638,10 @@ export class Essence20Actor extends Actor {
           // ever benefit from this Combiner feature once" - a flat, non-stacking flag (like
           // Tenacious Bonds above), applied once after every other Essence bonus is tallied so it
           // reads the Combiner's own final scores, not a snapshot from before this loop finishes.
+          // The holder's per-Essence Skill picks (the item's Use button, extensions/r2misc/
+          // commander.mjs) ride along - the first holder with picks wins, since it applies once.
           hasCommander = true;
+          commanderSkills ??= item.flags?.essence20?.[COMMANDER_SKILLS_FLAG] ?? null;
           break;
         }
       }
@@ -2612,16 +2658,21 @@ export class Essence20Actor extends Actor {
       // mid-computation player-choice hook, so ties fall back to a fixed Essence order
       // (Strength > Speed > Smarts > Social), the same "narrative choice left to a deterministic
       // default" simplification this codebase already accepts elsewhere. "Increasing two
-      // associated Skills accordingly" isn't built - unlike the skillExpertise case above (which
-      // names its own exact Skill per instance), an Essence Score maps to 3-4 Skills each in this
-      // system with no single canonical "the" Skill for a given Essence, so there is no
-      // unambiguous Skill to bump here.
+      // associated Skills accordingly": an Essence maps to 3-4 Skills, so the holder picks one
+      // Skill per Essence ahead of time (the Commander's Use button) and whichever two Essences
+      // are raised here give their picked Skill ↑1 - the same upshift Core Essence gives its one
+      // Skill above. An Essence with no pick (or a pick that isn't one of its Skills) raises none.
       const essenceOrder = ['strength', 'speed', 'smarts', 'social'];
       const topTwoEssences = [...essenceOrder]
         .sort((a, b) => system.essences[b].value - system.essences[a].value)
         .slice(0, 2);
       for (const essence of topTwoEssences) {
         system.essences[essence].value = Math.min(MAX_ESSENCE, system.essences[essence].value + 1);
+
+        const skill = commanderSkills?.[essence];
+        if (skill && (CONFIG.E20.skillsByEssence[essence] ?? []).includes(skill) && system.skills[skill]) {
+          system.skills[skill].shiftUp = (Number(system.skills[skill].shiftUp) || 0) + 1;
+        }
       }
     }
 

@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on Alertness Snag while a reminder of your ordeal is present, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

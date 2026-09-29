@@ -5,6 +5,10 @@
   "_id": "HqQ9xhyz6yhm2fZp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: once per scene, ask the GM one question about what happened nearby.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -2881,6 +2881,33 @@ describe("_prepareMegaformCombinerData", () => {
     expect(actor.system.movement.ground.base).toBe(0);
   });
 
+  test("Core Essence raises its Essence and gives ↑ to the Skill named on it", () => {
+    const component = makeComponent({ name: 'A', health: 5 });
+    component.items.push({ type: 'megaformTrait', system: { type: 'coreAbility', essence: 'strength', skill: 'athletics', value: 1 }, flags: {} });
+    const actor = makeCombinerActor([component]);
+    const before = actor.system.skills.athletics.shiftUp;
+
+    actor._prepareMegaformCombinerData();
+
+    expect(actor.system.skills.athletics.shiftUp).toBe(before + 1);
+  });
+
+  test("Armored Defense raises only Toughness; Core Defenses raises Toughness and Evasion", () => {
+    const ARMORED_DEFENSE_ID = "Compendium.essence20.enigma_of_combination.Item.GQHo1Tv5jIJ65GW3";
+    const armored = makeComponent({ name: 'A', health: 5 });
+    armored.items.push({ type: 'megaformTrait', system: { type: 'coreDefenses', value: 1 }, flags: { core: { sourceId: ARMORED_DEFENSE_ID } } });
+    const plain = makeComponent({ name: 'B', health: 5 });
+    plain.items.push({ type: 'megaformTrait', system: { type: 'coreDefenses', value: 1 }, flags: {} });
+
+    const withArmored = makeCombinerActor([armored]);
+    withArmored._prepareMegaformCombinerData();
+    const withCore = makeCombinerActor([plain]);
+    withCore._prepareMegaformCombinerData();
+
+    expect(withArmored.system.defenses.toughness.armor).toBe(withCore.system.defenses.toughness.armor);
+    expect(withArmored.system.defenses.evasion.armor).toBe(withCore.system.defenses.evasion.armor - 1);
+  });
+
   describe("Keep it Together! (Component Ace Focus, 17th level, p.34)", () => {
     test("keeps the form together with a majority defeated, as long as a holder still has Health", () => {
       const holder = makeComponent({ name: 'Holder', health: 5, perkIds: [KEEP_IT_TOGETHER_ID] });
@@ -3114,6 +3141,28 @@ describe("_prepareMegaformCombinerData", () => {
       expect(actor.system.essences.speed.value).toBe(4);
       expect(actor.system.essences.smarts.value).toBe(3);
       expect(actor.system.essences.social.value).toBe(1);
+    });
+
+    test("gives ↑1 to the holder's picked Skill of each raised Essence only", () => {
+      const holder = makeComponent({ name: 'A', health: 10, size: 'extended' });
+      holder.items = [...holder.items, {
+        type: 'megaformTrait', system: { type: 'commander' },
+        // Strength and Speed are raised (see the first test's defaults); the Smarts pick doesn't apply,
+        // and a Skill that isn't the Essence's own is ignored.
+        flags: { essence20: { commanderSkills: { strength: 'brawn', speed: 'athletics', smarts: 'alertness' } } },
+      }];
+      const actor = makeCombinerActor([holder]);
+      const before = {
+        brawn: actor.system.skills.brawn?.shiftUp ?? 0,
+        athletics: actor.system.skills.athletics?.shiftUp ?? 0,
+        alertness: actor.system.skills.alertness?.shiftUp ?? 0,
+      };
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.skills.brawn.shiftUp).toBe(before.brawn + 1);
+      expect(actor.system.skills.athletics.shiftUp).toBe(before.athletics);
+      expect(actor.system.skills.alertness?.shiftUp ?? 0).toBe(before.alertness);
     });
 
     test("doesn't apply to a Combiner form smaller than Gigantic", () => {

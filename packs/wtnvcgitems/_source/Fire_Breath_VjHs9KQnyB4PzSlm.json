@@ -5,6 +5,10 @@
   "_id": "VjHs9KQnyB4PzSlm",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: breath attacks roll Targeting for 1 Fire damage at Short range, with a two-target alternate at ↓1; its Intimidating and Reload traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

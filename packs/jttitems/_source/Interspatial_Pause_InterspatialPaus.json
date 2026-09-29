@@ -5,6 +5,10 @@
   "_id": "InterspatialPaus",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 3 Personal Power; you and allies within 5 feet vanish from the map and take no damage until your next turn starts. Use it again to return early.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "T0TFdu4HRK8Eh0u0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: Skill requirements shown for ranged weapons in your External Hardpoints drop two die sizes (to a minimum of d2). Left to the table: lowering size requirements by two Size Classes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

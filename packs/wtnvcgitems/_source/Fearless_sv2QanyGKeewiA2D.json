@@ -5,6 +5,10 @@
   "_id": "sv2QanyGKeewiA2D",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Influence Perk, Headfirst. If it's your second or later Influence, you also pick one of its Hang-Ups (Dazed, Faceless or Loudmouth).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

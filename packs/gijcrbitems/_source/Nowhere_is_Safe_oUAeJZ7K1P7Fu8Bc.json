@@ -5,6 +5,10 @@
   "_id": "oUAeJZ7K1P7Fu8Bc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Multiple Targets attacks treat each target's cover as one step lower, and deal +1 damage to targets left with no cover.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

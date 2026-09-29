@@ -5,6 +5,10 @@
   "_id": "EmL1IgnaX55NTMve",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: after a weaponless (Puissance) attack hits, a button repeats it at ↓1, then again at ↓3; at most two extra attacks per turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

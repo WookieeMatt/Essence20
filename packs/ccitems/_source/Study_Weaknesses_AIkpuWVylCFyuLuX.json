@@ -5,6 +5,10 @@
   "_id": "AIkpuWVylCFyuLuX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Free): spend a Story Point and a chat card names your target's lowest Defense.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

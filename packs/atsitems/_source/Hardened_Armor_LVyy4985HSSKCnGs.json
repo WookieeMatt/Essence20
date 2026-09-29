@@ -5,6 +5,10 @@
   "_id": "LVyy4985HSSKCnGs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after you take damage of any type other than Blunt or Sharp, you gain Resistance to that type until a new scene starts on the Scene Clock. The Toughness bonus comes from the Hardened Armor track.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

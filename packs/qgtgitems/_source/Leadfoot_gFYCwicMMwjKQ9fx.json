@@ -5,6 +5,10 @@
   "_id": "gFYCwicMMwjKQ9fx",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Snag on Alertness tests while you are not driving a vehicle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

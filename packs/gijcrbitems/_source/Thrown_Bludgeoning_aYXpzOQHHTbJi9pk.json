@@ -5,6 +5,10 @@
   "_id": "aYXpzOQHHTbJi9pk",
   "img": "systems/essence20/assets/icons/weapons/boomerang.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, with an alternate effect to choose from, and its traits apply (Blunt, Martial Arts, Silent).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "B0yM8ewEoYJb1GBg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a vehicle you're driving gets +15 ft Movement in combat, or +20% outside combat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "1qvmixV4VyiQVvsO",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Combiner form gains the movement type and speed set on this feature; set them to match your Alt Mode.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

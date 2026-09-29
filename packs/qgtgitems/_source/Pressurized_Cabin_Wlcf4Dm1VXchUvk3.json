@@ -5,6 +5,10 @@
   "_id": "Wlcf4Dm1VXchUvk3",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: everyone aboard ignores Poison damage.</p><p>Left to the table: immunity to disease, and whether the cabin is actually sealed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

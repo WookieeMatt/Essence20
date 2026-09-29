@@ -5,6 +5,10 @@
   "_id": "zCD2Vfs0JSDtngqE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: add another basic Mini-Con ally. It docks and deploys like your others, sharing Health and Defense as normal.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

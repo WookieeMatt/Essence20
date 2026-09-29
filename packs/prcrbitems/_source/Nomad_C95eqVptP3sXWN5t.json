@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect (starts off): Edge on Alertness. Switch it on when reading someone's motives or spotting lies.</p><p>Left to the table: Edge on knowledge tests about cities you have lived in.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -27,7 +31,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "QivA9JAwy0bApIRS",
       "type": "base",
       "system": {},

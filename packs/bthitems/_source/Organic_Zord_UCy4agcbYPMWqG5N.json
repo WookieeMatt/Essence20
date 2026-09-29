@@ -4,6 +4,10 @@
   "_id": "UCy4agcbYPMWqG5N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a Zord you own and choose an Upgraded Zord Feature to add to it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

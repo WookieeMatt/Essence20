@@ -5,6 +5,10 @@
   "_id": "YcqEl6Q6QkoXhuTH",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 to the Megaform's Toughness and Evasion. Take it again to stack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

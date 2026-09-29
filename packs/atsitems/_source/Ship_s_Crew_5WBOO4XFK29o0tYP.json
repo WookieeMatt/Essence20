@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: switch on Violated Orders for the rest of the scene after you disobey a superior, and switch it off afterwards.</p><p>Left to the table: the effect gives ↓1 on every test, so ignore it on combat rolls.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

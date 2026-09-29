@@ -5,6 +5,10 @@
   "_id": "WI0QTzlWkEusSQqY",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>On the sheet: its Use button counts its two uses a day, and a Rest restores them (with Nanoflage: one use each scene).</p><p>Left to the table: the change of appearance and voice, and the Deception test to copy someone's mannerisms.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

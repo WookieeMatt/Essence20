@@ -5,6 +5,10 @@
   "_id": "wSeQOPecAyUW5Dbh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: roll Performance in place of Intimidation, or Intimidation in place of Performance.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

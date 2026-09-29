@@ -5,6 +5,10 @@
   "_id": "VLdz7YvUq2AaUFNz",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: casting places a 15 ft circle, makes a Spellcasting attack against everyone inside and deals 1 Energy damage to each creature hit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

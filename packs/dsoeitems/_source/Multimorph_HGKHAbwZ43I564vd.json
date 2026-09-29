@@ -5,6 +5,10 @@
   "_id": "HGKHAbwZ43I564vd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: change shape and gain copies of two Origin Perks from two other Origins (or one, keeping your Natural Shape) for the scene; press again to change back.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

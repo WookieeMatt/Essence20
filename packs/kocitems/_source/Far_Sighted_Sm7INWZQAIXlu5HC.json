@@ -5,6 +5,10 @@
   "_id": "Sm7INWZQAIXlu5HC",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Alertness tests while you carry a ranged weapon, a Snag switch (ticked by default) for when the test is within 10 ft of you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

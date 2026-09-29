@@ -5,6 +5,10 @@
   "_id": "DswzIdQRa925KTV9",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the kusarigama's Finesse grapple attack; the target can't Defend against it.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

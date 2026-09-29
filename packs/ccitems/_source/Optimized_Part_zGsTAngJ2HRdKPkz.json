@@ -5,6 +5,10 @@
   "_id": "zGsTAngJ2HRdKPkz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when gained (or via the Use button), pick a Restricted Alteration you don't already have; it is added as a cybernetic part. Counts as computerized gear against Electromagnetic attacks and as an Alteration Perk for Additional Alteration.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

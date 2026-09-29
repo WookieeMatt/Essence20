@@ -5,6 +5,10 @@
   "_id": "Ze9reKJEEpzWYBxd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: target a Defeated creature to raise it as a Toxo-Zombie on your side, which lasts until the scene ends.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

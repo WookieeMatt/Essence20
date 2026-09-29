@@ -41,6 +41,19 @@ describe('armor rules', () => {
     expect(brawnRequirementSources(weak, { isAttack: true })).toEqual([]);
   });
 
+  test('Over Brawn, The Heavy and Pack Mule bend the armor Brawn requirement', async () => {
+    const { brawnShortfall, BRAWN_PERK } = await import('./armor-rules.mjs');
+    const armor = { id: 'a', name: 'Marauder Armor', type: 'armor', system: { equipped: true }, flags: { essence20: { brawnRequirement: 'd4' } } };
+    const perk = uuid => ({ id: uuid.slice(-4), type: 'perk', flags: { core: { sourceId: uuid } } });
+    const withPerks = (...uuids) => ({ system: { skills: { brawn: { shift: 'd20' } } }, items: items([armor, ...uuids.map(perk)]) });
+    expect(brawnShortfall(withPerks(BRAWN_PERK.overBrawn), armor)).toBe(0);
+    expect(brawnShortfall(withPerks(BRAWN_PERK.theHeavy), armor)).toBe(0);
+    expect(brawnShortfall(withPerks(BRAWN_PERK.packMule[1]), armor)).toBe(0);
+    armor.flags.essence20.brawnRequirement = 'd8';
+    expect(brawnShortfall(withPerks(BRAWN_PERK.packMule[0]), armor)).toBe(2);
+    expect(brawnShortfall(withPerks(BRAWN_PERK.theHeavy, BRAWN_PERK.packMule[0]), armor)).toBe(0);
+  });
+
   test('Reinforced Shell counts only in Alt Mode, and adds Stun in Bot Mode', async () => {
     const { applyShellMode, shellStunBonus, REINFORCED_SHELL } = await import('./armor-rules.mjs');
     const shell = { id: 's', name: 'Shell', type: 'upgrade', flags: { core: { sourceId: REINFORCED_SHELL } }, system: { armorBonus: { value: 2 } } };

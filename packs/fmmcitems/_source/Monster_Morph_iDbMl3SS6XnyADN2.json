@@ -5,6 +5,10 @@
   "_id": "iDbMl3SS6XnyADN2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spends 3 Personal Power to enter your Path's Monster Form - Large Size, its Toughness bonus, +2 Health and ↑1 on its Skills. Chat card: your Path's reaction (burst or follow-up attack) is offered when it triggers, and Path of Stone gets its Resistances.</p><p>Left to the table: swapping to your Monster Form attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "3pPM7y2KJYf44IAy",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: your equipment limit is one hand lower.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

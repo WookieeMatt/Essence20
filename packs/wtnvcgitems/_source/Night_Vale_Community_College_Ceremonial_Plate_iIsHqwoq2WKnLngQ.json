@@ -5,6 +5,10 @@
   "_id": "iIsHqwoq2WKnLngQ",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +3 Toughness and the Deflective trait while equipped. Active Effect: ↓2 on Athletics, Acrobatics, Infiltration and Initiative tests while equipped.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

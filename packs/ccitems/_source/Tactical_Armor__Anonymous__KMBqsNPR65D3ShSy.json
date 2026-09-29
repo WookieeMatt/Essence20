@@ -4,6 +4,10 @@
   "type": "armor",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while equipped, its armor bonus applies to your Defenses and its traits apply. Comes with the Anonymous upgrade attached, which works as on its own.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

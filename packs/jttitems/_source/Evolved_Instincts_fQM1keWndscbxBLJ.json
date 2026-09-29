@@ -5,6 +5,10 @@
   "_id": "fQM1keWndscbxBLJ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on melee attacks by the Zord or its driver against an enemy within two Sizes of the Zord.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

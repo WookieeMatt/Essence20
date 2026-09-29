@@ -5,6 +5,10 @@
   "_id": "dHQjQjelv5dlHN3g",
   "img": "systems/essence20/assets/icons/weapons/dual_cannon.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Targeting for 2 Laser damage, with the Power Blast as a second option; its traits apply.</p><p>Left to the table: the Power Blast's once-per-scene limit and needing a Dino Charge Morpher and Dino Saber to form it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

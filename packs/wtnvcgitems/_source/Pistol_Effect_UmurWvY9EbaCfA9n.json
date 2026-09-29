@@ -5,6 +5,10 @@
   "_id": "UmurWvY9EbaCfA9n",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Pistol's attack: rolls Targeting at Short range for 1 Sharp damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

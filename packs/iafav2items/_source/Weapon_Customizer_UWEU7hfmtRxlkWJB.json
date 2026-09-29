@@ -5,6 +5,10 @@
   "_id": "UWEU7hfmtRxlkWJB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: mark a weapon you fitted with an upgrade whose prerequisites you ignored. It gains the Temperamental trait automatically.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

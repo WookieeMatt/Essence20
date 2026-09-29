@@ -5,6 +5,10 @@
   "_id": "315k95OpUjfiu8zZ",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Faction Perks, Morphormer Benefits and Accelerate Conversion.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

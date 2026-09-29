@@ -5,6 +5,10 @@
   "_id": "ZnuLgh6jdUHi9F75",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on your chosen Skill, a switch to roll 1d20+1d4 whatever your shifts. Automatic: if a Story Point reroll on that Skill still fails, the Story Point is refunded.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

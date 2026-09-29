@@ -5,6 +5,10 @@
   "_id": "cZpeYK7VoLJKGKL6",
   "img": "systems/essence20/assets/icons/gear/scuba-mask.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while equipped, your Aquatic movement equals your Ground movement, and it counts as breathing gear against hazards. The +2 Toughness against cold water is an Active Effect you turn on in the Effects tab when it applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

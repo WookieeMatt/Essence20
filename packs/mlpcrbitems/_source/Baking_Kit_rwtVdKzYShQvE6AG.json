@@ -5,6 +5,10 @@
   "_id": "rwtVdKzYShQvE6AG",
   "img": "systems/essence20/assets/icons/gear/baking_kit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when the GM uses the kit rule and a Culture test needs a kit, carrying this one removes the Snag. No minimum Rank, and nothing to use up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

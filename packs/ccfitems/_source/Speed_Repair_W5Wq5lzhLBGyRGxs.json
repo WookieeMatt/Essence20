@@ -5,6 +5,10 @@
   "_id": "W5Wq5lzhLBGyRGxs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): switch it on for +1 maximum Energon while the Perk's benefit applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

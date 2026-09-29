@@ -5,6 +5,10 @@
   "_id": "43JigdrjcT8iuThC",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Biogenetic Perk, plus a choice of its Hang-Ups (Always Hungry, Impulsive or Mode Attachment).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

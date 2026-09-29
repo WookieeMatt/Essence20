@@ -5,6 +5,10 @@
   "_id": "hutkV1b5g7xjW2fN",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: letting the drone use its designated Smarts or Social Skill at up to 50ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "4yY2nOHsZuV0jT7M",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon's effect gains Multiple Targets (2), or one more target if it already has Multiple Targets.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

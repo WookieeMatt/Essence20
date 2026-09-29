@@ -5,6 +5,10 @@
   "_id": "OhaMmXqBPVFw4XxS",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: works as a Performance (Pop Up Gallery Art) kit. Rolls that call for this kit see it in the Roll Options Dialog and skip the Snag. Use button: spend it for temporary Specialization (or an Edge if already Specialized), or restock it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

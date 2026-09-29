@@ -5,6 +5,10 @@
   "_id": "mMT0yiFOtiiD32hI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks against a Surprised enemy with a weapon that isn't Silent add your Intimidation die to the roll, like a Specialization die.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

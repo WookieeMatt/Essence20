@@ -5,6 +5,10 @@
   "_id": "U5arLtyo8eEgl2Ck",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1, and Specialized in Animal Handling, when your target is a dog or coyote. Roll Options Dialog: a switch for the same when none is targeted.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

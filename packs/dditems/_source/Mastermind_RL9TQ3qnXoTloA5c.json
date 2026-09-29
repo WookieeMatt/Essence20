@@ -5,6 +5,10 @@
   "_id": "RL9TQ3qnXoTloA5c",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Field Command Role, plus the Mastermind Perks at their listed levels. Pick its Essence and Skill increases when you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

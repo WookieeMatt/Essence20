@@ -5,6 +5,10 @@
   "_id": "afYeCCAX0o2Cwf2I",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: before casting, pick a Skill; on a successful cast your target (or you, with no target) gets ↑1 on their next test with that Skill. Left to the table: keeping the ↑1 for the full 3 rounds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

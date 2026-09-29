@@ -5,6 +5,10 @@
   "_id": "pcavWqFi6FZ8QBAf",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: at the end of each round, every injured character riding in this Zord rolls a d2 and regains 1 Health on a 2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

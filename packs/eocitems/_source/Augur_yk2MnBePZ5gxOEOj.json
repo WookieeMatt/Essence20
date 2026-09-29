@@ -5,6 +5,10 @@
   "_id": "yk2MnBePZ5gxOEOj",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Alt Mode your Flyby, Ram and Bash attacks deal Sharp damage with Armor Piercing. Use button: adds the Bot Mode close combat blade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "8Hi76APCo9QRnbLE",
   "img": "systems/essence20/assets/icons/weapons/sniper_rifle.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Sharp damage at the listed range, and its traits apply. Alternate Effects: 2 damage at ↓1, or 3 damage at ↓3.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

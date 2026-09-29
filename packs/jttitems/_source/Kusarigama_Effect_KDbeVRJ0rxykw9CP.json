@@ -5,6 +5,10 @@
   "_id": "KDbeVRJ0rxykw9CP",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the kusarigama's Finesse attack with the listed Blunt damage; the target can't Defend against it.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>or 1 Sharp</p>",

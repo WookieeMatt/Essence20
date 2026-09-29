@@ -5,6 +5,10 @@
   "_id": "EJfk69zwUM28eFas",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: give the Mini-Con the Disappear Perk from the Transformers Core Rulebook.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

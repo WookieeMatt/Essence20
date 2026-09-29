@@ -5,6 +5,10 @@
   "_id": "0IvxkCCDhF2leTlp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Driving and Targeting also count as Smarts Skills, so Skill points from Smarts increases can go into them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

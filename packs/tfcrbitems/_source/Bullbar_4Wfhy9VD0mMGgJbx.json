@@ -5,6 +5,10 @@
   "_id": "4Wfhy9VD0mMGgJbx",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on Ram attacks in Alt Mode. In Bot Mode you are immune to being shoved.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

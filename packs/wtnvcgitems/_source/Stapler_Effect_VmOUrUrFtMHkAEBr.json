@@ -5,6 +5,10 @@
   "_id": "VmOUrUrFtMHkAEBr",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Stapler's attack: rolls Finesse at Reach for 1 Stun. Change its Skill to Might on the sheet if you prefer.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "8JrHJjPowijfAMCE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per turn, an attack dealing your Energy Affinity Element gives you a Free action back for an extra attack with the same weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

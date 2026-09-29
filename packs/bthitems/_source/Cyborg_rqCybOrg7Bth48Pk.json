@@ -5,6 +5,10 @@
   "_id": "rqCybOrg7Bth48Pk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you take damage the GM is asked whether to apply it as Essence damage instead. While you have Essence damage, your Health can't be healed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

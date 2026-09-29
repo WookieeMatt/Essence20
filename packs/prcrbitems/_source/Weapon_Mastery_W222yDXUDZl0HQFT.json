@@ -5,6 +5,10 @@
   "_id": "W222yDXUDZl0HQFT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when an attack with a Power Weapon rolls a 1 or 2 on a Skill die, a button rerolls that die once, and you keep the new result.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

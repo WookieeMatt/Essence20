@@ -5,6 +5,10 @@
   "_id": "qaTQqbLShvXZdKCp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added you pick one of the listed Standard Genetic Alterations. You also count as having Genetic Alterations for weapons that care about them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

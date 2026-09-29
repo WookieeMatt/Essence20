@@ -5,6 +5,10 @@
   "_id": "Rk6bnWX36kM7RMJy",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an Athletics throw dealing 1 Blunt damage to one target, range 20/50 ft.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>Sharp or Blunt Damage</p>",

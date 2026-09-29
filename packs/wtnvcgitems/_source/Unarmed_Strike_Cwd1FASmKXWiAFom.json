@@ -5,6 +5,10 @@
   "_id": "Cwd1FASmKXWiAFom",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: everyone has it. Attacks roll Finesse or Might, whichever is better, using its effects below; pick Stun, Blunt or Maneuver when you attack. Its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

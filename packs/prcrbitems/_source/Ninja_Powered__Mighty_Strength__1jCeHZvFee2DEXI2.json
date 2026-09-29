@@ -5,6 +5,10 @@
   "_id": "1jCeHZvFee2DEXI2",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 Strength and ↑2 on Might for the Zord.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "YQOy2Ha5fYlKtun3",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting blast at 20/50 ft that Blinds.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

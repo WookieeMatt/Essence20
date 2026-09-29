@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/heavy_machine_gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 100/400 ft for 2 Sharp damage, with a heavier alternate and a five-target spray; its traits apply, and Integrated Bipod keeps it braced until you move.</p>"
+    },
     "originalId": "",
     "description": "<p>Alternate Effect 2 is a 30 ft cone</p>",
     "source": {

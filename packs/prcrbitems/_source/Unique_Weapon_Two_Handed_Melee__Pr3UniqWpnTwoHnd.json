@@ -5,6 +5,10 @@
   "_id": "Pr3UniqWpnTwoHnd",
   "img": "systems/essence20/assets/icons/weapons/battle-axe.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might for 2 Energy damage, and all your movement is 10 ft slower while it is equipped.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

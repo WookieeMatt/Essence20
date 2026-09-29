@@ -5,6 +5,10 @@
   "_id": "FRiYjJcAHge0nj4f",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Thick Skulls and Dreadnoks Rule Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "eEUl7OA9yWAk0QD3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while your personal shield is up: you're immune to EMP damage and Resistant to all other damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

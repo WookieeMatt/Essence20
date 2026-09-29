@@ -5,6 +5,10 @@
   "_id": "VCpHBohKI9wbncjL",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: the time bubble and its time shades.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

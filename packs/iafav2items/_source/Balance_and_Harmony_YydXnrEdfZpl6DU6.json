@@ -5,6 +5,10 @@
   "_id": "YydXnrEdfZpl6DU6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Standard action): once per scene, remove one Condition from yourself (other than Defeated).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

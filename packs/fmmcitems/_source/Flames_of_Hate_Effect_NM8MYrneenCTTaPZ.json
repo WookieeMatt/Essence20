@@ -5,6 +5,10 @@
   "_id": "NM8MYrneenCTTaPZ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting against the Cleverness of everyone in a 60ft line for 2 Psychic damage, ignoring armor bonuses.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

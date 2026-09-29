@@ -5,6 +5,10 @@
   "_id": "E1ZaVoP0yjYfyj6F",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: when you change shape, copy an individual and pick a Skill they're known for to get ↑1 on it. Roll Options Dialog: a switch for Edge when passing yourself off as them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

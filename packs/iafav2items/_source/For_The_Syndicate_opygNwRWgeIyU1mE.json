@@ -5,6 +5,10 @@
   "_id": "opygNwRWgeIyU1mE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick the weapon and battledress you're Qualified with (two Limited items, or one Restricted weapon or battledress). Automatic: no Snag driving your chosen vehicle type, and the Mentor Perk is added for you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "c1gIi1A6MKHkOwdy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: adds a Story Point to the pool when the GM starts a new session, and once per scene when you fail a Skill Test.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

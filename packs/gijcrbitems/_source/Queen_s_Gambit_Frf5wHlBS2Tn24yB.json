@@ -5,6 +5,10 @@
   "_id": "Frf5wHlBS2Tn24yB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when an ally takes damage in combat, you get a card to move them in the Initiative order to act right after the current turn, once per encounter. The GM completes the move if you can't edit that combatant.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

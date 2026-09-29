@@ -5,6 +5,10 @@
   "_id": "gGqatrdFbt4VWML7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch to spend a Personal Power and roll your Cunning die in place of the Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

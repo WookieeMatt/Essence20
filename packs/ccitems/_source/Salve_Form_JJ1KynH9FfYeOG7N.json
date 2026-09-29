@@ -5,6 +5,10 @@
   "_id": "JJ1KynH9FfYeOG7N",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the poison it's attached to counts as a contact poison.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

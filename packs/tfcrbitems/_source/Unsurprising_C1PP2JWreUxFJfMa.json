@@ -5,6 +5,10 @@
   "_id": "C1PP2JWreUxFJfMa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when Surprised you still act, with your action budget worked out as if your Speed equalled your level (up to your real Speed).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

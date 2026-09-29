@@ -5,6 +5,10 @@
   "_id": "eoxMLeyMO4T2Dsaf",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect (off until you switch it on): ↑1 on Speed Skills and +1 Evasion.</p><p>Left to the table: needing all four shoes, the twice-per-day limit, and switching it off after the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

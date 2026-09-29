@@ -5,6 +5,10 @@
   "_id": "cMrM3qohf3piKARy",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: inhaled-poison attacks against the wearer take a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

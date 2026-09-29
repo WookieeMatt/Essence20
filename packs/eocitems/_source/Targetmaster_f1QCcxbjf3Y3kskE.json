@@ -5,6 +5,10 @@
   "_id": "f1QCcxbjf3Y3kskE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose your bonded partner, link or unlink, and pick which weapon is the partner's Special Attack. While linked, that weapon attacks with Edge and deals +1 damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "vEJQA3EkB0BqUaDi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: add the Pollen Cloud attack to use this; it handles its area, damage and Alternate Effect on its own.</p><p>Left to the table: the 1 Personal Power cost and the Monster Form requirement.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

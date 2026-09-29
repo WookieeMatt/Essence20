@@ -5,6 +5,10 @@
   "_id": "gOZtlnZubOZ01ZdF",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with either listed option; Versatile and its other traits apply. Solo Shot works with this weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

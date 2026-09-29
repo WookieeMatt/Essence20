@@ -5,6 +5,10 @@
   "_id": "qWaxxg2HDskKvD2k",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑1 when the test calls for formality and politeness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

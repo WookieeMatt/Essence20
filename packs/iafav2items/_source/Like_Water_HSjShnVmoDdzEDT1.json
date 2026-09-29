@@ -5,6 +5,10 @@
   "_id": "HSjShnVmoDdzEDT1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: take +2 Toughness or +2 Evasion, each once per Combat. The bonus lasts until the Combat ends (or the GM starts a new scene), and then that option is available again.</p><p>Left to the table: turning a successful Martial Arts attack into a Critical Success, and the Edge after an enemy misses you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "2nI6ckZdiIKwtRqr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spends 1 Personal Power. For the rest of your turn, each target you hit loses 1 Personal Power automatically.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

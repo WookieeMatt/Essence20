@@ -5,6 +5,10 @@
   "_id": "j05tN97KZNzl5jTF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Plan of Action reaches one more ally and gives ↑1 more than usual.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

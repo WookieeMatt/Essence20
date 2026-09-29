@@ -5,6 +5,10 @@
   "_id": "rUoirxlfrn2PBQwO",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: in Bot Mode your Science (Medicine) tests can't take ↓.</p><p>Left to the table: the Alt Mode Edge for passengers treating each other.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

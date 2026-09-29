@@ -5,6 +5,10 @@
   "_id": "a3CURNWBfbp03MNr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: two switchable effects, one moving 5 points from Evasion to Toughness and one the other way; turn one on as your Free action. Left to the table: shifting fewer than 5 points, and switching it off when you convert.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

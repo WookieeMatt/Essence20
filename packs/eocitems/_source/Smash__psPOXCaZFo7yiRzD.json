@@ -5,6 +5,10 @@
   "_id": "psPOXCaZFo7yiRzD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a weaponless attack on a smaller target deals +1 damage per Size Class you are larger and knocks it Prone.</p>"
+    },
     "originalId": "",
     "actionType": "standardAndMove",
     "description": "",

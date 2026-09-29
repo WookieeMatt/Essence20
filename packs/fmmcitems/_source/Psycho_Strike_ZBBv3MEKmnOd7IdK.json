@@ -5,6 +5,10 @@
   "_id": "ZBBv3MEKmnOd7IdK",
   "img": "systems/essence20/assets/icons/weapons/punch.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Finesse with its Reach for Stun 1; the Alternate Effect deals 1 Blunt at ↓1. Its traits apply.</p><p>Left to the table: the Snag the Alternate Effect imposes on the target's next test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

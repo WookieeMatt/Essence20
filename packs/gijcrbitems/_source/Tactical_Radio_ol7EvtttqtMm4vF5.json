@@ -5,6 +5,10 @@
   "_id": "ol7EvtttqtMm4vF5",
   "img": "systems/essence20/assets/icons/gear/tactical_radio.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: team radios that reach about 3 miles.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

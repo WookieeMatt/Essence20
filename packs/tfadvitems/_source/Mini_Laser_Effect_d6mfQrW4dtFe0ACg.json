@@ -5,6 +5,10 @@
   "_id": "d6mfQrW4dtFe0ACg",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting for 1 Laser damage against one target at 30ft/60ft.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

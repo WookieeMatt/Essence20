@@ -5,6 +5,10 @@
   "_id": "101HiYiWfoxoO1hL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your Electromagnetic attacks treat living targets as robots when that helps you.</p><p>Left to the table: other robot rules, such as using Technology to give first aid to a living creature.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

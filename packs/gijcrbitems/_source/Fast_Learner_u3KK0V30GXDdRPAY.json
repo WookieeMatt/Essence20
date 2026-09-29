@@ -5,6 +5,10 @@
   "_id": "u3KK0V30GXDdRPAY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spends your Standard action to move one rank from a skill to another skill (never down to untrained). It lasts until you use it again.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

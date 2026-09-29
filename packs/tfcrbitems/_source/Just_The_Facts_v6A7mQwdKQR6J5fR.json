@@ -5,6 +5,10 @@
   "_id": "v6A7mQwdKQR6J5fR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you are immune to Deception tests from creatures of your level or lower and Resistant to those from higher-level creatures.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

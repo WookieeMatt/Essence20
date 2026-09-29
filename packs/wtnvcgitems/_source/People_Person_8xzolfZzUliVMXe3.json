@@ -5,6 +5,10 @@
   "_id": "8xzolfZzUliVMXe3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is automated. Roll Deception or Persuasion instead of Alertness to spot a lie; the Host gives you the extra detail or question on a success.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

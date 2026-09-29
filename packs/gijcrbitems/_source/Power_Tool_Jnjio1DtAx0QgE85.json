@@ -5,6 +5,10 @@
   "_id": "Jnjio1DtAx0QgE85",
   "img": "systems/essence20/assets/icons/weapons/chainsaw.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, including the Blunt, Sharp and alternate effects, and its traits apply (Anti-Tank, Reload, Wrecker).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

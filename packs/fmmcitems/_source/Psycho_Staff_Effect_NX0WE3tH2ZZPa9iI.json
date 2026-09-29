@@ -5,6 +5,10 @@
   "_id": "NX0WE3tH2ZZPa9iI",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls the better of Finesse or Might against Toughness within Reach x2 for 1 Void damage, ignoring armor bonuses to Toughness.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

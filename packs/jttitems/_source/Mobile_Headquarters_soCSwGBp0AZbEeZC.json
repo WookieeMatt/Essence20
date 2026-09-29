@@ -5,6 +5,10 @@
   "_id": "soCSwGBp0AZbEeZC",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: everyone seated gets ↑1 on Culture, Science and Technology; allied Zords and vehicles on the scene get Edge on Initiative, and a Megaform uses its best component's Initiative with Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

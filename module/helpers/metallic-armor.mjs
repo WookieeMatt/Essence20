@@ -10,21 +10,17 @@
  * cannot pay the Personal Power to continue using it, you suffer a Critical Success on an Attack by
  * a non-minion Threat, or you are Defeated."
  *
- * Only the +3 temporary Health grant and the per-turn 1-Power maintenance drain (auto-deactivating
- * if unaffordable) are built - a genuinely large, multi-clause Power with several pieces this pass
- * deliberately left out:
+ * This file builds the +3 temporary Health grant and the per-turn 1-Power maintenance drain
+ * (auto-deactivating if unaffordable). The rest lives in helpers/extensions/other3/pr.mjs: the
+ * minion/foot-soldier damage reduction (minions read from creature tags, see creature-tags.mjs), the
+ * auto-end on a Critical Success from a non-minion Threat or on Defeat, and an "End Metallic Armor"
+ * Use button for choosing to end it.
+ *
+ * Still not built:
  * - The Multiple Targets (2)/+1 grant needs a NUMERIC target-count field this project's own
- *   isMultipleTargetsWeapon() doesn't expose (only a boolean "has the trait" today) - widening it
- *   to carry a count would affect every existing consumer (Trigger Happy, No Need to Aim, dice.mjs's
- *   own independent-roll dispatch), too large a change to bundle into this one Power's own build.
- * - The minion/foot-soldier damage reduction needs an NPC tier/rank classification that doesn't
- *   exist anywhere in this codebase (confirmed via grep) - a real, new gap.
+ *   isMultipleTargetsWeapon() doesn't expose (only a boolean "has the trait" today).
  * - "Cannot teleport" has nothing to block - no teleportation mechanism exists anywhere in this
- *   project (a separate, already-tracked gap) - the restriction is moot rather than unenforced.
- * - The "ends on a Critical Success taken from a non-minion Threat, or on Defeat" auto-clear
- *   conditions, and the player's own voluntary "choose to end it" - none are built. Powers have no
- *   established re-click-to-deactivate idiom (see Speed Boost's own doc comment on why), so this
- *   is left to the same "GM manages the toggle-off edges" idiom already accepted project-wide.
+ *   project - the restriction is moot rather than unenforced.
  */
 const METALLIC_ARMOR_FLAG = 'metallicArmorActive';
 const METALLIC_ARMOR_TEMP_HEALTH = 3;

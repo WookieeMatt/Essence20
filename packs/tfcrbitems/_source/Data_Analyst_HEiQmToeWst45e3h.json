@@ -5,6 +5,10 @@
   "_id": "HEiQmToeWst45e3h",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on while extracting or processing data for Edge on Science and Technology tests, then switch it off. Halving the time such work takes is up to the GM.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

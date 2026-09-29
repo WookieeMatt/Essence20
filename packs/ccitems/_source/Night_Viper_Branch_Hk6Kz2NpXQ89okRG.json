@@ -5,6 +5,10 @@
   "_id": "Hk6Kz2NpXQ89okRG",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Ballistic Armor (Radar Tempered Camo) and a Submachine Gun (Silencer).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "cGN2EMyfxlWYVmH7",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Role's Perks at the listed levels, the My Little Pony faction (Friendship Circle), +1 Health at 5th, 10th and 15th, and General Perks at 4th, 8th, 12th, 16th and 19th. Essence increases follow your Diamond, Gold, Silver and Bronze ranking.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

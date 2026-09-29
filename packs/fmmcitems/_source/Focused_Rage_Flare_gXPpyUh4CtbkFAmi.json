@@ -5,6 +5,10 @@
   "_id": "gXPpyUh4CtbkFAmi",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage, range and blast; its Void trait ignores armor bonuses to Toughness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

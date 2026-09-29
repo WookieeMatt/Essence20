@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene, ignore 1 damage from the next hit and take a Snag on your next Skill Test. Left to the table: the Snag lasting until the end of your next turn, and restoring 1d2 Health by giving up your turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

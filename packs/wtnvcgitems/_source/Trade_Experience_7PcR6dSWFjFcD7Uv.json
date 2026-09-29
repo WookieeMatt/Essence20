@@ -5,6 +5,10 @@
   "_id": "7PcR6dSWFjFcD7Uv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When you add it, you pick one Smarts or Speed Skill. Automatic: tests with that Skill ignore the first ↓1, and offer a reroll-1s button on its Skill dice.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

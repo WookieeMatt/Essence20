@@ -5,6 +5,10 @@
   "_id": "tByP34McuTkaTQWZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per turn, give an ally ↑1 on a Skill Test, or once per combat give them ↑2, as a Free action.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

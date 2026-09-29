@@ -5,6 +5,10 @@
   "_id": "Ee3GRqk0H7ph0vEs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Stay In Formation Perk, even if you don't meet its prerequisites.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

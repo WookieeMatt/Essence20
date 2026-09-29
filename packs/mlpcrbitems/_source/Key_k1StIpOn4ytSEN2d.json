@@ -5,6 +5,10 @@
   "_id": "k1StIpOn4ytSEN2d",
   "img": "systems/essence20/assets/icons/gear/key.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>No roll needed: the matching lock simply opens.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

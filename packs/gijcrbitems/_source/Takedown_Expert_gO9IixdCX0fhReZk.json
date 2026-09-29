@@ -5,6 +5,10 @@
   "_id": "gO9IixdCX0fhReZk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an Edge on Takedown attempts. When a Takedown fails against a target of your level or lower, you pick whether it's also Disarmed, Immobilized or Silenced, on top of being grappled.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

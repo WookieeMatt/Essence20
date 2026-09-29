@@ -5,6 +5,10 @@
   "_id": "fz4BlwusWNNNlo1P",
   "img": "systems/essence20/assets/icons/weapons/drill.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its normal or alternate effect; Armor Piercing applies, Reload is tracked, and it counts as a Tool weapon for Perks that care.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

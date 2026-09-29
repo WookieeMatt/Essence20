@@ -5,6 +5,10 @@
   "_id": "REVp8LHYJFOqQ597",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the first time you'd need to reload in each combat is skipped.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

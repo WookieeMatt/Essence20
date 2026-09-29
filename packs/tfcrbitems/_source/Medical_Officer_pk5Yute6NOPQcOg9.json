@@ -5,6 +5,10 @@
   "_id": "pk5Yute6NOPQcOg9",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Medical Officer Focus Perks at levels 1, 3, 6, 10, 17 and 20, plus its Essence and Skill options, which you pick when you add it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

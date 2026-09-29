@@ -5,6 +5,10 @@
   "_id": "Xvo979dG6lIWpHaS",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and Stun alternate effect. Use button: the Combined trait lets the team assemble it, and a chat card rolls everyone's attack together.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

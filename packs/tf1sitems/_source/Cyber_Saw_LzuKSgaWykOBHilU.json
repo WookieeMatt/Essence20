@@ -5,6 +5,10 @@
   "_id": "LzuKSgaWykOBHilU",
   "img": "systems/essence20/assets/icons/weapons/cyber-saw.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its cutting effect or its intimidating alternate effect; Anti-Tank and Wrecker apply, Reload is tracked, and it counts as a Tool weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "3SiGvDR98s0FQtdf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when gained, pick a Smarts or Social Skill and a profession; that Skill gets ↑1. Roll Options Dialog: outside combat, a switch makes profession-related tests Specialized.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

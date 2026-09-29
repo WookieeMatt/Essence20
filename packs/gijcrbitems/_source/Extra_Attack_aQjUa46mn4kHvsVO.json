@@ -5,6 +5,10 @@
   "_id": "aQjUa46mn4kHvsVO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: each Attack action lets you make more than one attack (two, rising to three and four as this Perk advances with your level).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

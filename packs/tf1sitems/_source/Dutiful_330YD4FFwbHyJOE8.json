@@ -5,6 +5,10 @@
   "_id": "330YD4FFwbHyJOE8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Persuasion tests against you take a Snag, and you get ↑1 on Social tests outside combat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

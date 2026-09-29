@@ -5,6 +5,10 @@
   "_id": "LyOKEFZd8vriKLOs",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the weapon's Stun and Cover effects last 1 turn longer.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

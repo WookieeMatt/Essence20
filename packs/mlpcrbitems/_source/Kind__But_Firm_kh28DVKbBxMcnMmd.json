@@ -5,6 +5,10 @@
   "_id": "kh28DVKbBxMcnMmd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Intimidation tests, a switch to roll with your Empathy Skill's rank instead, as long as no harm comes to the target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

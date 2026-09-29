@@ -5,6 +5,10 @@
   "_id": "dQXCL3OB9nGbk2YS",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: switch it on while wearing it to get ↑1 on Intimidation, then switch it off.</p><p>Left to the table: the daily damage outside the Dog Park, and control of the Plastic Bags.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

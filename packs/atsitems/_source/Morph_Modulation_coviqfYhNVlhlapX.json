@@ -5,6 +5,10 @@
   "_id": "coviqfYhNVlhlapX",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on the effect for the Defense you chose; it adds +2 to that Defense while Morphed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "GUcQm2RuUIEWzd4X",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while driving an air vehicle, no Snag on Driving tests even without Driving ranks, and ↑1 on them if you have ranks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

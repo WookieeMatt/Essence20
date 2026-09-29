@@ -5,6 +5,10 @@
   "_id": "jan0dYrle3SeP7Yx",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: storing up to 3 Personal Power in the cell and moving Power in or out of it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

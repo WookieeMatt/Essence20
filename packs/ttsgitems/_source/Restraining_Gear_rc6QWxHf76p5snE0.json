@@ -5,6 +5,10 @@
   "_id": "rc6QWxHf76p5snE0",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: after the Zord (or a Megaform it's part of) hits in melee, a button spends 1 Personal Power for an opposed Brawn or Might test; on a win the target is Restrained.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

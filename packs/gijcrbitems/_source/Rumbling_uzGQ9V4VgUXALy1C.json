@@ -5,6 +5,10 @@
   "_id": "uzGQ9V4VgUXALy1C",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the melee weapon it's attached to gains Sonic, which adds a copy of its main effect that targets Willpower at ↓2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

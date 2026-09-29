@@ -5,6 +5,10 @@
   "_id": "YoqLo1afBsAlZ8uX",
   "img": "systems/essence20/assets/icons/gear/clothes.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↓2 on Speed Skill Tests and -10 ft Ground Movement while you have it. Roll Options Dialog: a switch for an Edge on Infiltration in the environment it was made for.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

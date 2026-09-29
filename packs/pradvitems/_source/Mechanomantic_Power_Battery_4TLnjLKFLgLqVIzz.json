@@ -5,6 +5,10 @@
   "_id": "4TLnjLKFLgLqVIzz",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: storing up to 3 extra Power in it, and the d4 roll that makes it explode when you take Energy damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

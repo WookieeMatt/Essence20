@@ -5,6 +5,10 @@
   "_id": "SBRYtQKEy0EKsYBi",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Social tests, a switch adds ↓1 when you target members of your faction who know your past.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

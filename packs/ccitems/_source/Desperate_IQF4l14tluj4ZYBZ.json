@@ -5,6 +5,10 @@
   "_id": "IQF4l14tluj4ZYBZ",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Desperate Perk and the Desperate Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

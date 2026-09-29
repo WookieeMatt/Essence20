@@ -5,6 +5,10 @@
   "_id": "ziy71oRwfEjhXTxd",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Neutralizer Perks at their listed levels (Deconstructionist through Complete System Failure), plus its Smarts increases at 1st and 10th level. Technology is its Focus Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

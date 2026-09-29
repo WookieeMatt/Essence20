@@ -5,6 +5,10 @@
   "_id": "kgoWexP6xGnQKfqo",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: counts as a Limited Persuasion (Diplomacy) kit. When a roll calls for a kit, the Roll Options Dialog shows it and your best kit decides the Snag or ↓. Use button: use it up for a temporary Specialization (or an Edge), or scrounge a refill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

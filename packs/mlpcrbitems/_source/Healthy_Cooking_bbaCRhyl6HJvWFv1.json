@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: in scenes with no aggression, roll Culture or Performance instead of Science to heal damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

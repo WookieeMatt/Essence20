@@ -5,6 +5,10 @@
   "_id": "bEqDYxyIKdUrWZj6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Health and +2 to all Defenses. When you deploy a Mini-Con you can hand it +1 or +2 to its Defenses, and your own bonus drops by the same amount.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +19,76 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Reinforced Bond",
+      "origin": "Compendium.essence20.decepticon_directive.Item.bEqDYxyIKdUrWZj6",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "vYwhRkOvznPAm8v3",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!bEqDYxyIKdUrWZj6.vYwhRkOvznPAm8v3"
+    }
+  ],
   "sort": 225000,
   "ownership": {
     "default": 0,

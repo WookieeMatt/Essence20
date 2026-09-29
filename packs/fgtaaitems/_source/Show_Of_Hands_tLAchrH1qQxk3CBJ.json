@@ -5,6 +5,10 @@
   "_id": "tLAchrH1qQxk3CBJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on Deception, Intimidation and Persuasion while you hold no weapons and haven't made an Unarmed attack this scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

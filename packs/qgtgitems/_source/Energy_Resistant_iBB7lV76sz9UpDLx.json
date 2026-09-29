@@ -5,6 +5,10 @@
   "_id": "iBB7lV76sz9UpDLx",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when attached you choose an Element; the vehicle gains Resistance to it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

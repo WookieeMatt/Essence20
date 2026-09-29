@@ -5,6 +5,10 @@
   "_id": "gsSxDXrq0xdmkeJp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Threat using a projectile weapon takes a Snag the first time it targets you each scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

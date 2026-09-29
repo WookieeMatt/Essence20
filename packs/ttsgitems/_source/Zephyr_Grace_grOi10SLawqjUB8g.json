@@ -5,6 +5,10 @@
   "_id": "grOi10SLawqjUB8g",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: while Morphed you start each turn with 2 extra Free actions, meant only for buying extra movement.</p><p>Left to the table: keeping them to movement, and the +5 Evasion if you use no Free actions.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

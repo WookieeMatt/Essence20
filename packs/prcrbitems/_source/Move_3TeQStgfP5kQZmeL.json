@@ -5,6 +5,10 @@
   "_id": "3TeQStgfP5kQZmeL",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: +10 feet to the Megaform movement type set on the trait.</p><p>Left to the table: giving the Megaform the Zord's own special movement type instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

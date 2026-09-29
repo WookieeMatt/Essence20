@@ -5,6 +5,10 @@
   "_id": "Bw8DHuNjBHHUaKfo",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Role Perks at the listed levels (Intervene, Manipulate, Negotiate and Factions at 1st, through Talk Them Down), plus the Role's Essence increases and choices.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

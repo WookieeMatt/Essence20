@@ -5,6 +5,10 @@
   "_id": "lcUcWMZxVUdLkycD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after you damage a creature, you have Edge on Deception, Intimidation and Persuasion tests against it until the end of your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

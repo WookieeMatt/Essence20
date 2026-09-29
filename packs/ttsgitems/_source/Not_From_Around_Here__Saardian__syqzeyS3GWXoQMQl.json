@@ -5,6 +5,10 @@
   "_id": "syqzeyS3GWXoQMQl",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Saardian version of the Not From Around Here Perk and Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

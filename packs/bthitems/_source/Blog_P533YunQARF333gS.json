@@ -5,6 +5,10 @@
   "_id": "P533YunQARF333gS",
   "img": "systems/essence20/assets/icons/gear/tablet.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: roll the Technology test against the blogger yourself when you use it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

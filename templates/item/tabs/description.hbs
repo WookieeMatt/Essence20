@@ -8,10 +8,42 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+    {{!-- Automation - what the system does for this item. Never touched by the Book Description Importer. --}}
+    {{#if automation}}
+    <h3>{{localize 'E20.Automation'}}</h3>
+    <div class="e20-automation flexcol">
+      {{#if automation.editable}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AutomationStatus'}}
+        {{#*inline "item-field-inputs"}}
+        <select name="system.automation.status">
+          {{selectOptions config.automationStatuses selected=automation.storedStatus blank=(localize 'E20.AutomationUnset')}}
+        </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{else if automation.status}}
+        <span class="e20-automation-badge e20-automation-{{automation.status}}" data-tooltip="{{automation.tooltip}}"><i class="{{automation.icon}}" inert></i> {{automation.label}}</span>
+      {{/if}}
+      <div class="description e20-automation-notes flexcol active">
+        {{#if editingAutomationNotes}}
+          <prose-mirror name="system.automation.notes" value="{{ editingDescription.value }}" document-uuid="{{ document.uuid }}" class="sized" compact></prose-mirror>
+        {{else}}
+          {{#if automation.notes}}{{{automation.notes}}}{{else}}<p class="e20-muted">{{localize 'E20.AutomationNone'}}</p>{{/if}}
+          {{#if automation.editable}}
+          <button type="button" class="unbutton control-button always-interactive" data-action="editDescription" label="edit" data-target="system.automation.notes">
+            <i class="fas fa-edit" inert></i>
+          </button>
+          {{else}}
+          <p class="e20-muted e20-automation-inherited">{{localize 'E20.AutomationFromCompendium'}}</p>
+          {{/if}}
+        {{/if}}
+      </div>
+    </div>
+    {{/if}}
+
     {{!-- Description --}}
     <h3>{{localize 'E20.ItemDescription'}}</h3>
     <div class="description flexcol active">
-      {{#if editingDescription}}
+      {{#if editingMainDescription}}
         <prose-mirror name="system.description" value="{{ system.description }}" document-uuid="{{ document.uuid }}" class="sized" compact></prose-mirror>
       {{else}}
         {{{system.description}}}

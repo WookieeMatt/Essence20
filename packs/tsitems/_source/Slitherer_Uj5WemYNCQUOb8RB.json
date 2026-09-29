@@ -5,6 +5,10 @@
   "_id": "Uj5WemYNCQUOb8RB",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 3 starting Health, Ground Movement 30, the Get Low Perk, and your pick of the Common or Long Slitherer Alt Mode. You pick +1 Speed or Social and one Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

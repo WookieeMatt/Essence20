@@ -5,6 +5,10 @@
   "_id": "uUiZ23cbN47C64yC",
   "img": "systems/essence20/assets/icons/gear/computer_electronics_kit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): switch it on for ↑1 on Technology while the rig applies, and off again afterwards.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

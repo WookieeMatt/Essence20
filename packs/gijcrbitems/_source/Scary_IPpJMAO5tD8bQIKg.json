@@ -5,6 +5,10 @@
   "_id": "IPpJMAO5tD8bQIKg",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's attached to gains Intimidating, so while it's equipped your Intimidation tests can use that weapon's attack skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "b5WD6Y13Fvhl6ZTe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you wear no armor, you add your Acrobatics Ranks to Evasion, and you can use Evasion against Ballistic attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "Acrobatics +d6",

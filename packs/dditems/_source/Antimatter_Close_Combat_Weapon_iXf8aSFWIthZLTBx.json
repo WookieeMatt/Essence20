@@ -5,6 +5,10 @@
   "_id": "iXf8aSFWIthZLTBx",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, with the listed damage, range and targets, and its alternate effects to pick from; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

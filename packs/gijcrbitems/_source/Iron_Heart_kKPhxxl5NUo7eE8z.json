@@ -5,6 +5,10 @@
   "_id": "kKPhxxl5NUo7eE8z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Health, +1 Toughness and +1 Evasion.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

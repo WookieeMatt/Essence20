@@ -5,6 +5,10 @@
   "_id": "a7ch8kMSbxLSxbAB",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↓1 on attacks that don't target the foe in the scene with the most Conditions (ties count as the most).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

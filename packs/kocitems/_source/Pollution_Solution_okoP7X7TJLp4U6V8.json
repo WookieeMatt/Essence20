@@ -5,6 +5,10 @@
   "_id": "okoP7X7TJLp4U6V8",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. It places its 20 ft area. Left to the table: clearing the air or water inside it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

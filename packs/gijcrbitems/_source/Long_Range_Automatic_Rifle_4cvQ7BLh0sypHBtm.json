@@ -5,6 +5,10 @@
   "_id": "4cvQ7BLh0sypHBtm",
   "img": "systems/essence20/assets/icons/weapons/sniper_rifle.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 2 Sharp damage at the listed range, and its traits apply, including Mounted set-up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

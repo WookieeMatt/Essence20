@@ -5,6 +5,10 @@
   "_id": "lq8HzdKLE9KWn6IK",
   "img": "systems/essence20/assets/icons/gear/skis.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: move 30 ft on snow, ignoring snowy terrain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

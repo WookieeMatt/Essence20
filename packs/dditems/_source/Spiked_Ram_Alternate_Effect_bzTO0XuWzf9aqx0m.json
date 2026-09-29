@@ -1,0 +1,56 @@
+{
+  "folder": "oKWTunb7j09H7xpd",
+  "name": "Spiked Ram Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "bzTO0XuWzf9aqx0m",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Driving attack at Reach that performs a Maneuver on a hit.</p>"
+    },
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 38
+    },
+    "classification": {
+      "skill": "driving",
+      "style": "melee"
+    },
+    "damageType": "maneuver",
+    "damageValue": null,
+    "shiftDown": 0,
+    "numHands": "0",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790700000000,
+    "modifiedTime": 1790700000000,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!bzTO0XuWzf9aqx0m"
+}

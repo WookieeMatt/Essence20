@@ -5,6 +5,10 @@
   "_id": "MPAZdtX3Ob76h90Y",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you gain 1 temporary Health whenever you use Defender Step.</p><p>Left to the table: moving your token up to your full Ground Movement for Defender Step and Retribution.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

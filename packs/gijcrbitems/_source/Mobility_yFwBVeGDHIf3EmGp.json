@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic, once per turn: a Sprint or Hide costs you a Free action instead.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

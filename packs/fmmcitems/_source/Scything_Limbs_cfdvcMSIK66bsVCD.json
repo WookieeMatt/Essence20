@@ -5,6 +5,10 @@
   "_id": "cfdvcMSIK66bsVCD",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might within Reach x2 against up to 3 targets with the listed damage; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

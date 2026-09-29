@@ -5,6 +5,10 @@
   "_id": "YMG6nH32Y8yaYqZ9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Animal Handling tests aimed at this pet get ↑1, including commands.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

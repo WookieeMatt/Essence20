@@ -5,6 +5,10 @@
   "_id": "pyRy1dFwuiJpAKj2",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you cast it, pick a Skill; a success gives you Edge on that Skill against your target for the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

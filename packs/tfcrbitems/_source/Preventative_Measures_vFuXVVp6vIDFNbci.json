@@ -5,6 +5,10 @@
   "_id": "vFuXVVp6vIDFNbci",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll Science or Technology on an unhurt ally who has no Temporary Health; they gain Temporary Health equal to what the roll would have healed or repaired.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

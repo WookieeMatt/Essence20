@@ -5,6 +5,10 @@
   "_id": "S5upF0HEde0zL5oT",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: reading it sends everyone within 60 ft into the comic's story, with new powers until the issue is resolved.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

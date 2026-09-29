@@ -5,6 +5,10 @@
   "_id": "22T1Mw1SYLUIK1mw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑1 when the test is part of a contest with a clear winner and loser (not combat).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

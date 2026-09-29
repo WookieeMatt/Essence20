@@ -5,6 +5,10 @@
   "_id": "1RvM4pKCAdtQOU3Y",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Might with the listed Sharp damage at ↓1, plus 1 extra damage of the wielder's element.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

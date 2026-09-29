@@ -5,6 +5,10 @@
   "_id": "6Jf4hI8PmVctLex1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power to start the combined attack on your target. Teammates join from the chat card, then Fire rolls one ranged attack at ↑2 with long range, dealing 1 damage per member.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

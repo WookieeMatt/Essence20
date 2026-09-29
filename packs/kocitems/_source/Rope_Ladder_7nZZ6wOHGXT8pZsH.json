@@ -5,6 +5,10 @@
   "_id": "7nZZ6wOHGXT8pZsH",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off until you switch it on): ↑2 on Athletics while climbing once the ladder is in place.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

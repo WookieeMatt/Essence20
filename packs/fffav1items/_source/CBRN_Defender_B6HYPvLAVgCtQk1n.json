@@ -5,6 +5,10 @@
   "_id": "B6HYPvLAVgCtQk1n",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after you Defeat a living creature, your attacks take ↓1 for the rest of the combat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

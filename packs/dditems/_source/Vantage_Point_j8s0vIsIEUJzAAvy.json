@@ -5,6 +5,10 @@
   "_id": "j8s0vIsIEUJzAAvy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on ranged attacks from at least 30 ft above the target, or from the spot you picked on the canvas with Eye For Appraisal.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

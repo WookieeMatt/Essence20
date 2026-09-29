@@ -5,6 +5,10 @@
   "_id": "GPW2T5OEC0KtlJpX",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: sets your Alt Mode size and Movement, Limited Articulation blocks Athletics and Finesse tests while you're in it, and the Ram special attack is added to your sheet when you take this Alt Mode.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -26,7 +30,8 @@
     },
     "altModesize": "common",
     "altModeCrew": 2,
-    "altModeFirepoints": 2
+    "altModeFirepoints": 2,
+    "limitedArticulation": true
   },
   "effects": [],
   "sort": 500000,

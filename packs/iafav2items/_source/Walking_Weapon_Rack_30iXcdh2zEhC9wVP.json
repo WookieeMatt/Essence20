@@ -5,6 +5,10 @@
   "_id": "30iXcdh2zEhC9wVP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on melee attacks with Silent Martial Arts weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "9CF0mXhOO0QNFc5n",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: your Jet Pack's Aerial movement becomes 45 feet and it gains its machine guns.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

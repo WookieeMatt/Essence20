@@ -5,6 +5,10 @@
   "_id": "tLfFdpgynHWezZHT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Perk.</p><p>Left to the table: the Move-action Deception Test against a target's Willpower, and the Edge on your next attack against them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

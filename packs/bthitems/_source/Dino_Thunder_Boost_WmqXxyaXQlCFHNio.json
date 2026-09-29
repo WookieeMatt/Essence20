@@ -5,6 +5,10 @@
   "_id": "WmqXxyaXQlCFHNio",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: activate your Dino Thunder Form power from a pool of 3 Boost points (refilled when you Rest) before spending Personal Power.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

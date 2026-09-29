@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: ↑1 on attacks against Putties and Tengas.</p><p>Left to the table: they can't surprise you by teleporting in or ambushing.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

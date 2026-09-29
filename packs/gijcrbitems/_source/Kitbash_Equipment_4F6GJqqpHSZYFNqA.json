@@ -5,6 +5,10 @@
   "_id": "4F6GJqqpHSZYFNqA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spends your Standard action and rolls Technology against the item's availability. On a success you gain the equipment for a limited time.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

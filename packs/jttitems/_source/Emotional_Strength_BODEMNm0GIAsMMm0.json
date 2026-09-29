@@ -5,6 +5,10 @@
   "_id": "BODEMNm0GIAsMMm0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your active emotion's trigger happens, you regain 1d2 Personal Power, once per scene. Use button: for triggers you declare yourself, such as Interest.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "3PBRQFnjzOQGMVrC",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Incapacitating Agent attack, rolling Finesse for 1 Stun damage in melee.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

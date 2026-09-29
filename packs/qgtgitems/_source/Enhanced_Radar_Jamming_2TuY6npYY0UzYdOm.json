@@ -5,6 +5,10 @@
   "_id": "2TuY6npYY0UzYdOm",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: switch the jammer on or off. While on, Technology tests made within a mile of the vehicle get a Snag in the Roll Options Dialog.</p><p>Left to the table: signals that are blocked outright within 100ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

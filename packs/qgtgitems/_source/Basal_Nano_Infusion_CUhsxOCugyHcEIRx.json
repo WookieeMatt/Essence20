@@ -5,6 +5,10 @@
   "_id": "CUhsxOCugyHcEIRx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick a Standard nanomite power each time you take this Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

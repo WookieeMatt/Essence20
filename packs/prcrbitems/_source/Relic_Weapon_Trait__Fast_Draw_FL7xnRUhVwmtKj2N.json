@@ -5,6 +5,10 @@
   "_id": "FL7xnRUhVwmtKj2N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect (starts off): Edge on Initiative. Switch it on while the Relic is in your hand.</p><p>Left to the table: summoning the Relic as a Free action while Morphed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -28,13 +32,13 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "8FZj8v1En3C5u94U",
       "changes": [
         {
           "key": "system.skills.initiative.edge",
-          "mode": 2,
-          "value": "1",
+          "mode": 5,
+          "value": "true",
           "priority": null
         }
       ],

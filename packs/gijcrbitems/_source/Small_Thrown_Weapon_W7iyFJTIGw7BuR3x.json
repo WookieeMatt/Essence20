@@ -5,6 +5,10 @@
   "_id": "W7iyFJTIGw7BuR3x",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range. Pick the Blunt or Sharp effect to throw, and its traits apply (Silent).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

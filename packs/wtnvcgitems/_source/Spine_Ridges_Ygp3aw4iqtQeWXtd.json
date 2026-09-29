@@ -5,6 +5,10 @@
   "_id": "Ygp3aw4iqtQeWXtd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Put it on your pet. Active Effect: an Edge on Performance and Intimidation tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

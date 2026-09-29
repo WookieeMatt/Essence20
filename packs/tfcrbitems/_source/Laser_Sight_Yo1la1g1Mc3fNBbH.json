@@ -5,6 +5,10 @@
   "_id": "Yo1la1g1Mc3fNBbH",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: Aiming with this weapon gives an extra ↑1.</p>"
+    },
     "originalId": "",
     "description": "A targeting tool attachment.",
     "source": {

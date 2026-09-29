@@ -5,6 +5,10 @@
   "_id": "3I9h6aspI3Cg0Fd0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose an Essence. Chat card: your hits offer an alternate effect dealing 1 damage to that Essence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

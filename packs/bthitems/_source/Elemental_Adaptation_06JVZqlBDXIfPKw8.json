@@ -5,6 +5,10 @@
   "_id": "06JVZqlBDXIfPKw8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When you add it you pick an element and a team member; that character ignores the element's extra damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

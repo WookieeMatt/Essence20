@@ -5,6 +5,10 @@
   "_id": "19odrVUOsp4dCiOV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: all damage applied to you is reduced by 1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

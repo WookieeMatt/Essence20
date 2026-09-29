@@ -5,6 +5,10 @@
   "_id": "xNiPMhVMQQUzlRg8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted to pets made with Faithful Companion or the adoption Perk. Automatic: Persuasion and Deception tests against the animal take a Snag.</p><p>Left to the table: letting Animal Handling affect it.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

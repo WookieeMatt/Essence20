@@ -5,6 +5,10 @@
   "_id": "ItgDxIGNlVYzjiEe",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: ↑1 on every Science and Technology test while Morphed.</p><p>Left to the table: limiting it to helping, repairing or healing someone, once per turn as a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Hq0MO6KJaxmc0Cyd",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the forward camera recording while the vehicle runs.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

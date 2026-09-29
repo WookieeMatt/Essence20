@@ -5,6 +5,10 @@
   "_id": "92993RGDPLq08u1D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: commanding your pet costs a Free action once per turn, plus one more time per turn at 6th level and every 3 levels after.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

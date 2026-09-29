@@ -5,6 +5,10 @@
   "_id": "R6udrkWPBWSZc32U",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: an Assault Rifle (Folding Stock), Tactical Armor, a Smoke Canister and a Limited Driving Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

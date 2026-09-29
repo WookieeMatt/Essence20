@@ -5,6 +5,10 @@
   "_id": "j3qkiawQATkksdaC",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene, as a Free action, +2 Toughness and Evasion until your next turn starts.</p><p>Left to the table: extra uses from taking it more than once.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

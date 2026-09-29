@@ -5,6 +5,10 @@
   "_id": "TQaVcZQHYTmmTv6b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: once per scene, a switch treats a d20 as a 10 without rolling it; with Edge or Snag, only one d20 is set and the other is rolled.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "",

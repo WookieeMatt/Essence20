@@ -5,6 +5,10 @@
   "_id": "Qw2aKbgTU8Xh3ahV",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 Evasion for the vehicle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

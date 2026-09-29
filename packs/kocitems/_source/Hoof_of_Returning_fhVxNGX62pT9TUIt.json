@@ -5,6 +5,10 @@
   "_id": "fhVxNGX62pT9TUIt",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Left to the table: the spell's effect, which is narrative (fetching an object), including the DIF the GM sets.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "yDyHt95CJEDOszey",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: summoning the Phantom Ranger, spending its Allegiance Points and resolving what it does each round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "TUilm2lgtUvWyW65",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added to a Zord you pick one of its weapons. That weapon gains Anti-Tank and Wrecker, and its Critical Successes cut the target's armor by 2 for the rest of the scene (stacking).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "uXV4DoOaLhrZmIkz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: scrounging to refill a kit is 5 easier. Use button: when you use a kit, roll the scrounge test; on a success the kit counts as one tier better.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

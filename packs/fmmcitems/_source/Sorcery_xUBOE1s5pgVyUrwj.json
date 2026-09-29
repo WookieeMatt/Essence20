@@ -5,6 +5,10 @@
   "_id": "xUBOE1s5pgVyUrwj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: taking the Perk sets up your Sorcerous Power budget (4 points, +2 each level after) and adds the Cost of Sorcery Hang-Up. Use button: build a Sorcerous Power from the cost table; it's added to your sheet, and the sheet warns you if you go over budget.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

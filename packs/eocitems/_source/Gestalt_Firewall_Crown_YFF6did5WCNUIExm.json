@@ -5,6 +5,10 @@
   "_id": "YFF6did5WCNUIExm",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Resistance to Psychic damage. Left to the table: passing it on to a Combiner form you are part of.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

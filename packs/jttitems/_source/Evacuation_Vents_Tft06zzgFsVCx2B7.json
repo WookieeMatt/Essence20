@@ -5,6 +5,10 @@
   "_id": "Tft06zzgFsVCx2B7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: while Morphed in Combat, declare you're moving away from enemies this turn; your Free actions can then push your Move with no upper limit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

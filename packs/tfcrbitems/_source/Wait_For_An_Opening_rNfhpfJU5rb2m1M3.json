@@ -5,6 +5,10 @@
   "_id": "rNfhpfJU5rb2m1M3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on attacks you make during another creature's turn, such as a Contingency attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

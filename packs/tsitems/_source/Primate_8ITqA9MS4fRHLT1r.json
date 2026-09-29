@@ -5,6 +5,10 @@
   "_id": "8ITqA9MS4fRHLT1r",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 3 starting Health, Ground Movement 30, the Prehensile Feet Perk, and your pick of the Common or Large Primate Alt Mode. You pick +1 Smarts or Social and Survival or Persuasion as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "fiyZcC8KRK5TebTk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: tests with your Empathy Skill get ↑1 for each Size Class the target is larger than you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

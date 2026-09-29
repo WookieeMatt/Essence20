@@ -5,6 +5,10 @@
   "_id": "ku86uidqAswijlAd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you make a ranged attack against a target in Cover, the Cover penalty is 2 steps smaller, never below ↓0.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

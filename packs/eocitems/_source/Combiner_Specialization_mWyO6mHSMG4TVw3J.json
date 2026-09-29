@@ -5,6 +5,10 @@
   "_id": "mWyO6mHSMG4TVw3J",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick Gestalt Combiner or Matched Combiner; if you already have one, you get +1 Health instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

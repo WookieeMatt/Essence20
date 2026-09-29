@@ -5,6 +5,10 @@
   "_id": "DezsS1cuMwU8Qiwb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch on unarmed attacks that takes ↓2; on a hit the target's armor bonus to that Defense drops by 2 for the rest of the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

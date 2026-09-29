@@ -5,6 +5,10 @@
   "_id": "PHgWjT0syOOBOOK5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: +1 damage on unarmed attacks, and Edge on a Grid Power's own roll. Roll Options Dialog: a switch for Edge on other tests that use a Grid Power.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

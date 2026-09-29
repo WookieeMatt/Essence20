@@ -3,6 +3,10 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Professional Perk and the Professional Hang-Up when you add this Influence. Your former career is roleplay.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

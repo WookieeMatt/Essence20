@@ -5,6 +5,10 @@
   "_id": "ONXBoS6mnrOwGuPu",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's attached to gains Acid, alongside its other element, so it deals 1 extra damage to a target that defends with Toughness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

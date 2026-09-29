@@ -5,6 +5,10 @@
   "_id": "UT9QA0rkrxNQOWmy",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Driving attack at Reach that trips the target, knocking it Prone on a hit.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

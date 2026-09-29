@@ -5,6 +5,10 @@
   "_id": "JKn8mFG98ZzmiFSd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you're trained in Silent weapons. Automatic: ↑1 on attacks with Silent weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "eaYIHKLGRUxj4QGv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: pick two more environments of expertise. Your Environmental Expertise benefits then apply in them too.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

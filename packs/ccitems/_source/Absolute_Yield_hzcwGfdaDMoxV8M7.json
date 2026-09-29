@@ -5,6 +5,10 @@
   "_id": "hzcwGfdaDMoxV8M7",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when added, it raises Speed, lowers the Essence you choose, and applies its Skill shifts on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

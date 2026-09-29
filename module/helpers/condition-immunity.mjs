@@ -25,6 +25,7 @@ const DECEPTICON_DIRECTIVE = "Compendium.essence20.decepticon_directive.Item.";
 const PR_CRB = "Compendium.essence20.pr_crb.Item.";
 const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
 const THROUGH_THE_SHATTERED_GRID = "Compendium.essence20.through_the_shattered_grid.Item.";
+const WTNV_CITIZENS_GUIDE = "Compendium.essence20.wtnv_citizens_guide.Item.";
 
 // Perk -> the Conditions it grants immunity to, for the holder only. Each entry is a literal
 // transcription of a real "you are immune to the X, Y, and Z Conditions" grant - not a guess at
@@ -157,9 +158,18 @@ const CONDITION_IMMUNITY_PERKS = [
     // conscious" isn't its own isActive escape hatch: an unconscious actor is already covered by
     // the Unconscious Condition's own effects, so nothing extra is needed to make this immunity
     // stop applying then.
+    //
+    // The same General Perk is printed, same rule, in the GI Joe CRB, PR CRB, MLP CRB and
+    // WTNV Citizens' Guide - every printing gets the immunity, not just the Transformers one.
     id: `${TF_CRB}6r0sYiTEtGsge6cB`,
     conditions: ['surprised'],
   },
+  ...[
+    `${GI_JOE_CRB}Vo5IeXooKE9OBoJH`,
+    `${PR_CRB}oXyaZOw6L1AXiyCj`,
+    `${MLP_CRB}ZBOmQradsrZi9sc5`,
+    `${WTNV_CITIZENS_GUIDE}LXK3ATRjFLfPg4mb`,
+  ].map(id => ({ id, conditions: ['surprised'] })),
   {
     // True Self (MLP CRB, Spirit of Honesty, 17th level, p.79): "you become immune to effects
     // that try to affect your behavior, like the Mind Blast spell." Not a status-clearing effect

@@ -5,6 +5,10 @@
   "_id": "WgaIlUQYRCtdYQ83",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this upgrade. Left to the table: docking and charging your drone.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

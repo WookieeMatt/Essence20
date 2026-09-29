@@ -5,6 +5,10 @@
   "_id": "wloP0W3ll6T9JRbq",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the weapon gains an Alternate Effect dealing 1 damage in a 10 ft Blast. It's removed again if the upgrade comes off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

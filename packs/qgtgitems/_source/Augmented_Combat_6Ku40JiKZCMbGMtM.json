@@ -5,6 +5,10 @@
   "_id": "6Ku40JiKZCMbGMtM",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: activating the nanomite power toggles ↑1 on all your attacks.</p><p>Left to the table: ending it after 1 minute.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

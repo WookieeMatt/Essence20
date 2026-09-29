@@ -5,6 +5,10 @@
   "_id": "c63k73J4pISxWWRv",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the sword's alternate Might attack with the listed Element damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

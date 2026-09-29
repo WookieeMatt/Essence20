@@ -5,6 +5,10 @@
   "_id": "wDMGtOqx1jpltxG9",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, switch it on. For the scene the vehicle gains +2 Evasion, extra Movement (+20 feet Ground, +10 feet others) and +1 damage on its hardpoint weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

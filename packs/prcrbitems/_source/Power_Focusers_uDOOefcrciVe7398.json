@@ -5,6 +5,10 @@
   "_id": "uDOOefcrciVe7398",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on Power Weapon attacks for you and allies near you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

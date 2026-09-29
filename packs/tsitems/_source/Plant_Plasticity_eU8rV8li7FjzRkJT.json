@@ -5,6 +5,10 @@
   "_id": "eU8rV8li7FjzRkJT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: rolling a d4 the first time you drop to 0 Health each rest and regaining 1 Health after that many undamaged rounds, and the extra Essence recovered after a long rest.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

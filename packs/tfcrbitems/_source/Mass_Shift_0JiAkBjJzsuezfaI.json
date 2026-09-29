@@ -5,6 +5,10 @@
   "_id": "0JiAkBjJzsuezfaI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene, as a Move action, pick +1 to a Defense, ↑1 on a Skill, double Reach, or 1 Temporary Health.</p><p>Left to the table: extra Mass Shifts your daily count allows, and keeping the Defense or Skill bonus all scene (it is spent on your next matching roll or attack).</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

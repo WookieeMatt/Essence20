@@ -5,6 +5,10 @@
   "_id": "IJBeoPW2yUDWh2Wh",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the weapon gains a Maneuver alternate effect.</p>"
+    },
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.nfp6qtqYp5WNFuOA]{Manipulative Alternate Effect}</p>",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "UtMZ2GopSRkyEXTa",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Targeting at 15/30 ft for 1 Sharp damage; Reload and Temperamental apply.</p><p>Left to the table: Obfuscated, spotting the hidden weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

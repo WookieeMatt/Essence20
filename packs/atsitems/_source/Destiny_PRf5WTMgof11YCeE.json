@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: on one of your failed rolls the GM sees a button to spend 1 Story Point and turn it into a Fumble, once per scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

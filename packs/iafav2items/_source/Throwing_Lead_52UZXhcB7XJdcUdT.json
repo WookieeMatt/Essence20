@@ -5,6 +5,10 @@
   "_id": "52UZXhcB7XJdcUdT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Attack action makes two attacks with a Ballistic or Computerized weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

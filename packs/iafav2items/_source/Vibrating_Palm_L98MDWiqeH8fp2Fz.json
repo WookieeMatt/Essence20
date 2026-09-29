@@ -5,6 +5,10 @@
   "_id": "L98MDWiqeH8fp2Fz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a Critical Success with an unarmed attack earns a Story Point. Use button: spend a Story Point to Defeat your current target outright.</p><p>Left to the table: holding the Story Point gain to once per mission (the system limits it per Combat).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

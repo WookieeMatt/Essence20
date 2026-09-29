@@ -5,6 +5,10 @@
   "_id": "S9a3ziek8lOF7yXi",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Half-Truths and Leader in Crisis at level 1, plus the Essence increases and General Perk picks at the listed levels. Your Focus (City Council, Mayoral Candidate or Secret Police) adds the Focus Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

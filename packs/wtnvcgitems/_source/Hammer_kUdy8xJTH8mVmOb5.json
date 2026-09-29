@@ -5,6 +5,10 @@
   "_id": "kUdy8xJTH8mVmOb5",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Might attacks at Reach for 1 Blunt damage, with a two-handed alternate adding 1 Stun; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "coD3p6GaxjpwaDpU",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its Mini-Laser Effect, rolling Targeting for 1 Laser damage at 10ft/50ft; its Laser trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

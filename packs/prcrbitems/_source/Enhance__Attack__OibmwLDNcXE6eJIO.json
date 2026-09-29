@@ -5,6 +5,10 @@
   "_id": "OibmwLDNcXE6eJIO",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>When added to a Zord you pick one of its attacks and an upgrade (Accurate, +1 damage or a special effect), which is written onto that attack.</p><p>Left to the table: the ignore-armor and Speed-reduction options.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

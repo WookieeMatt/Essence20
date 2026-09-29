@@ -5,6 +5,10 @@
   "_id": "xh4CUgKtL28ux9vy",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: a Rifle (Piercing), Tactical Armor (Anonymous) and Close Combat Blade (Scary). Left to the table: who may take this package.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

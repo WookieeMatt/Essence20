@@ -5,6 +5,10 @@
   "_id": "sFIWrZ2f7ejcNcJ0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: at 2nd level and every four levels after, pick one Exposure ability from its list and it's added to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -116,7 +120,7 @@
         "role": null
       },
       "aeca": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.yWmWoIlyODrAPSXB",
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.rFnoQTbnYQX2tlMe",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Weapon Training",
         "type": "perk",

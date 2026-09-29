@@ -5,6 +5,10 @@
   "_id": "BOuJREcROMkMjbM1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in your environment of expertise (the scene's terrain, or the environment switch on your sheet) you can't be Surprised and get an Edge on Infiltration tests. The Speed increases come with the Focus.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

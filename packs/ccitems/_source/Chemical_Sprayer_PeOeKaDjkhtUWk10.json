@@ -5,6 +5,10 @@
   "_id": "PeOeKaDjkhtUWk10",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: changes the weapon's range and area to the sprayer's cone.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

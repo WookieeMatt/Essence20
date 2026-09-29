@@ -5,6 +5,10 @@
   "_id": "6i7QPo5pr3bEnW63",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: when you Defend and a single-target attack misses your Toughness, redirecting it at another target in range using the same attack total.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

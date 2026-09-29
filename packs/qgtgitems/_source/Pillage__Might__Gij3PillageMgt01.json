@@ -5,6 +5,10 @@
   "_id": "Gij3PillageMgt01",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might melee attack against Evasion that deals no damage; a hit disarms the target of an item it holds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

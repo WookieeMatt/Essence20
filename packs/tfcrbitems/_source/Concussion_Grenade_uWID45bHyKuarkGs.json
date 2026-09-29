@@ -5,6 +5,10 @@
   "_id": "uWID45bHyKuarkGs",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics for 1 Stun damage in a 10ft blast at 20ft/50ft range; the grenade is used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

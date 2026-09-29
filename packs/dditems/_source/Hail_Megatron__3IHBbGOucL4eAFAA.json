@@ -5,6 +5,10 @@
   "_id": "3IHBbGOucL4eAFAA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: ↑1 on Infiltration in Alt Mode, ↑1 on Intimidation in Bot Mode against smaller Cybertronians, and ↑1 on Initiative.</p><p>Left to the table: ↑2 Infiltration when your Alt Mode suits the setting, and choosing a first attack instead of Initiative.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

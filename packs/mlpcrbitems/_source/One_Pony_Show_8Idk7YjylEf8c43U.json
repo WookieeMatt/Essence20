@@ -5,6 +5,10 @@
   "_id": "8Idk7YjylEf8c43U",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you appear in your own list of creatures to Lend Assistance to. Left to the table: that self-assist costs a Move action, not a Standard one.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

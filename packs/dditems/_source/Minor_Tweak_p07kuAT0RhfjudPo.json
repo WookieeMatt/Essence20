@@ -5,6 +5,10 @@
   "_id": "p07kuAT0RhfjudPo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: target an ally (or none for yourself) and roll DIF 14 Technology; on a success pick a Strength or Speed Skill and they get an Active Effect for the temporary Skill Rank. Left to the table: removing it after a day.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

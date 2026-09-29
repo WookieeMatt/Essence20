@@ -5,6 +5,7 @@ import {
   hasUsedThisEncounter, hasUsedThisRound, hasUsedThisTurn, markUsedThisEncounter, markUsedThisEncounterCount,
   markUsedThisRound, markUsedThisScene, markUsedThisTurn, postPerkUseChatCard,
 } from "./perks.mjs";
+import { getUses, markUsed } from "./scene-clock.mjs";
 import { getNearbyAllyTokens } from "./allies.mjs";
 import { getNearbyEnemyTokens } from "./enemies.mjs";
 import { findRolePointsItem } from "./reroll.mjs";
@@ -483,6 +484,9 @@ const PARTY_POWER_MAX_USES = 3;
 // circular import into dice.mjs specifically, which nothing else in this codebase does yet.
 const PUBLIC_TELEVISION_ID = "Compendium.essence20.wtnv_citizens_guide.Item.ymtH7qBwRKqohlyF";
 const PUBLIC_TELEVISION_ENCOUNTER_FLAG = 'publicTelevisionUsedThisEncounter';
+// "Once per day": the Scene Clock's mission window is this system's stand-in for a day or a
+// session. The encounter flag above is the "for one scene" duration dice.mjs reads.
+const PUBLIC_TELEVISION_MISSION_FLAG = 'publicTelevisionUsedThisMission';
 
 // Scientific Method's own banned-tech ↑1 benefit (WTNV Citizens' Guide, University of What It Is
 // Scientist Role Perk, p.44) - see PENDING_SCIENTIFIC_METHOD_FLAG's own comment in dice.mjs for
@@ -490,7 +494,8 @@ const PUBLIC_TELEVISION_ENCOUNTER_FLAG = 'publicTelevisionUsedThisEncounter';
 // entirely in dice.mjs.
 const SCIENTIFIC_METHOD_ID = "Compendium.essence20.wtnv_citizens_guide.Item.vnYDLY5Fe2pasHyF";
 const PENDING_SCIENTIFIC_METHOD_FLAG = 'pendingScientificMethod';
-const SCIENTIFIC_METHOD_ENCOUNTER_FLAG = 'scientificMethodUsedThisEncounter';
+// "Once per session" - the Scene Clock's mission window.
+const SCIENTIFIC_METHOD_MISSION_FLAG = 'scientificMethodUsedThisMission';
 
 // Concentrate Fire (GI Joe CRB, Vanguard base, 15th level, p.109) - see
 // helpers/concentrate-fire.mjs's own doc comment. Once per encounter, spends 1 Story Point (same
@@ -1731,7 +1736,8 @@ const HIDDEN_WHISPERS_ENCOUNTER_FLAG = 'hiddenWhispersUsedThisEncounter';
 // and dice.mjs's own consumption comment (stacked alongside Inspiration's identical bonusDie
 // shape).
 const MORE_HEADS_ID = `${WTNV_CITIZENS_GUIDE}jsaByB9ui8k1VUfG`;
-const MORE_HEADS_ENCOUNTER_FLAG = 'moreHeadsUsedThisEncounter';
+// "Once per session" - the Scene Clock's mission window (onceMissionFlag).
+const MORE_HEADS_MISSION_FLAG = 'moreHeadsUsedThisMission';
 
 // Heart of the Team (Black Ranger, 1st level, p.33) - see its own BANKABLE_PERKS entry below.
 const HEART_OF_THE_TEAM_ID = `${PR_CRB}7EyU0Hf6T3YVels4`;
@@ -1975,7 +1981,7 @@ export const BANKABLE_PERKS = {
   // fixedBonusDie is a new, generic field (a non-rolled sibling to Hard Target/Resilience's own
   // rollsSkillDie and Inspiration's own scaling bonusDie) - reusable for any future flat-die grant.
   [MORE_HEADS_ID]: {
-    flagKey: 'pendingMoreHeads', target: 'self', fixedBonusDie: '2d2', onceEncounterFlag: MORE_HEADS_ENCOUNTER_FLAG,
+    flagKey: 'pendingMoreHeads', target: 'self', fixedBonusDie: '2d2', onceMissionFlag: MORE_HEADS_MISSION_FLAG,
   },
 
   // Hidden Whispers (Politician Role, Mayoral Candidate Focus, p.41) - see its own comment above.
@@ -2713,7 +2719,8 @@ export function canUsePerk(item) {
   // Stand Firm - see STAND_FIRM_ID's own comment above. Only usable while there's an active
   // Stalwart Defense bank this turn to double.
   if (sourceId == STAND_FIRM_ID) {
-    return !!getPendingBonus(actor, STALWART_DEFENSE_FLAG);
+    const pending = getPendingBonus(actor, STALWART_DEFENSE_FLAG);
+    return !!pending && !(game.combat && pending.round != null && pastStartOfNextTurn(actor, pending));
   }
 
   // Mode Attachment - see helpers/mode-attachment.mjs's own doc comment. Always configurable.
@@ -3477,11 +3484,11 @@ export function canUsePerk(item) {
   }
 
   if (sourceId == PUBLIC_TELEVISION_ID) {
-    return !hasUsedThisEncounter(actor, PUBLIC_TELEVISION_ENCOUNTER_FLAG);
+    return getUses(actor, PUBLIC_TELEVISION_MISSION_FLAG, 'mission') < 1;
   }
 
   if (sourceId == SCIENTIFIC_METHOD_ID) {
-    return !hasUsedThisEncounter(actor, SCIENTIFIC_METHOD_ENCOUNTER_FLAG);
+    return getUses(actor, SCIENTIFIC_METHOD_MISSION_FLAG, 'mission') < 1;
   }
 
   if (sourceId == THE_RETURNED_ID) {
@@ -3547,6 +3554,11 @@ export function canUsePerk(item) {
   }
 
   if (bankable.onceEncounterFlag && hasUsedThisEncounter(actor, bankable.onceEncounterFlag)) {
+    return false;
+  }
+
+  // "Once per session/day" - the Scene Clock's mission window.
+  if (bankable.onceMissionFlag && getUses(actor, bankable.onceMissionFlag, 'mission') >= 1) {
     return false;
   }
 
@@ -5746,13 +5758,14 @@ export async function onPerkUse(item) {
 
   if (sourceId == PUBLIC_TELEVISION_ID) {
     await markUsedThisEncounter(actor, PUBLIC_TELEVISION_ENCOUNTER_FLAG);
+    await markUsed(actor, PUBLIC_TELEVISION_MISSION_FLAG, { window: 'mission' });
     postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     return;
   }
 
   if (sourceId == SCIENTIFIC_METHOD_ID) {
     await bankPendingBonus(actor, PENDING_SCIENTIFIC_METHOD_FLAG, {});
-    await markUsedThisEncounter(actor, SCIENTIFIC_METHOD_ENCOUNTER_FLAG);
+    await markUsed(actor, SCIENTIFIC_METHOD_MISSION_FLAG, { window: 'mission' });
     postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     return;
   }
@@ -6757,6 +6770,10 @@ export async function onPerkUse(item) {
     await markUsedThisEncounter(actor, bankable.onceEncounterFlag);
   }
 
+  if (bankable.onceMissionFlag) {
+    await markUsed(actor, bankable.onceMissionFlag, { window: 'mission' });
+  }
+
   // Roll with the Punches (Slammer) - see SLAMMER_ROLL_WITH_THE_PUNCHES_ID's own comment above.
   if (bankable.perCombatCapFlag) {
     await markUsedThisEncounterCount(actor, bankable.perCombatCapFlag);
@@ -6850,6 +6867,23 @@ export async function consumeMomentaryBlur(targetActor, defenseType) {
   return pending.defenseBonus;
 }
 
+const UNTIL_NEXT_TURN_DEFENSE_FLAGS = [STALWART_DEFENSE_FLAG, SWORD_AND_BOARD_FLAG];
+
+/** Whether combat has reached the holder's next turn since the bonus was banked (on their own turn). */
+function pastStartOfNextTurn(actor, pending) {
+  const combat = game.combat;
+  if (pending.combatId != combat.id || combat.round <= pending.round) {
+    return false;
+  }
+
+  if (combat.round > pending.round + 1) {
+    return true;
+  }
+
+  const theirs = combat.turns.findIndex(c => c.actor?.id == actor?.id);
+  return theirs < 0 || combat.turn >= theirs;
+}
+
 /**
  * Shared "banked Defense bonus, granted to whichever actor is the beneficiary" primitive - Force
  * Field/Stalwart Defense/Sword And Board (self-targeted) and Remove & Rebuild/Stronger Together
@@ -6879,6 +6913,17 @@ export async function consumeBankedDefenseBonus(targetActor, flagKey, defenseTyp
   const pending = getPendingBonus(targetActor, flagKey);
   if (!pending?.defenseAmounts) {
     return 0;
+  }
+
+  // Stalwart Defense / Sword And Board last "until the beginning of your next turn" - every attack
+  // in between gets them, so they stay banked until the holder's next turn comes round.
+  if (UNTIL_NEXT_TURN_DEFENSE_FLAGS.includes(flagKey) && game?.combat && pending.round != null) {
+    if (pastStartOfNextTurn(targetActor, pending)) {
+      await clearPendingBonus(targetActor, flagKey);
+      return 0;
+    }
+
+    return pending.defenseAmounts[defenseType] ?? pending.defenseAmounts.all ?? 0;
   }
 
   const amount = pending.defenseAmounts[defenseType] ?? pending.defenseAmounts.all ?? 0;

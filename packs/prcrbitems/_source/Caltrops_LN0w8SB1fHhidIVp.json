@@ -5,6 +5,10 @@
   "_id": "LN0w8SB1fHhidIVp",
   "img": "systems/essence20/assets/icons/gear/caltrops.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: scatter the caltrops. The chat card has a button for anyone crossing them to roll a DIF 15 Acrobatics test; a failure deals 1 Speed Essence damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

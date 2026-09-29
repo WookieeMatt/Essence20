@@ -5,6 +5,10 @@
   "_id": "bf4nxa6WKKhuQcEH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick one of your Hang-Ups; the system ignores it from then on.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

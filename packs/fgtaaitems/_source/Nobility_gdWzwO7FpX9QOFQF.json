@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when the Party's Story Points reset for a new session, the pool is 1 lower for each member with this Hang-Up, with a note in chat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

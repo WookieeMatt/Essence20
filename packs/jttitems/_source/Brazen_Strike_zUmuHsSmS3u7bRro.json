@@ -5,6 +5,10 @@
   "_id": "zUmuHsSmS3u7bRro",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your unarmed attack deals damage, Frightened and Mesmerized are removed from you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "DC0cXGGBm4J8OXvL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick a Skill; your next test with it gets an Edge. The button can be used once per scene.</p><p>Left to the table: the once-per-session limit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

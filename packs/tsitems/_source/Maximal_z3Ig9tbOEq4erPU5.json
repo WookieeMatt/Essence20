@@ -5,6 +5,10 @@
   "_id": "z3Ig9tbOEq4erPU5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added, you pick a Persuasion, Science or Technology Specialization. Automatic: Edge on Skill Tests with that Specialization.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

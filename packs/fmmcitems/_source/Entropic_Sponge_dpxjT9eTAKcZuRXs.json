@@ -5,6 +5,10 @@
   "_id": "dpxjT9eTAKcZuRXs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Initiative. Use button (first round of combat): spend 1 Personal Power per enemy; your Initiative result goes up and each chosen enemy's goes down by 2 per Personal Power spent.</p><p>Left to the table: this score change stands in for the printed ↑1 and Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

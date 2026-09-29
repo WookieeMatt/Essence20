@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch that applies a Snag to the roll while you're distracted by unfamiliar technology. The GM calls when it applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

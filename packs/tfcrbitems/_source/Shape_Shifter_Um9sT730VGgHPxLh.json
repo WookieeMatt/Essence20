@@ -5,6 +5,10 @@
   "_id": "Um9sT730VGgHPxLh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you're immune to Maneuver attacks and can't be knocked Prone. Left to the table: Momentarily Acting Smaller not counting as rough terrain for you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

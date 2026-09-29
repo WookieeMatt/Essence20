@@ -5,6 +5,10 @@
   "_id": "89GCYHXO3chKVOAj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, when you act in the spirit of Kindness, the group gains a Friendship Point (a GM needs to be connected).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

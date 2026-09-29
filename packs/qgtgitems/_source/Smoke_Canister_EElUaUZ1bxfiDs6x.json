@@ -5,6 +5,10 @@
   "_id": "EElUaUZ1bxfiDs6x",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a thrown smoke attack that is used up when thrown (Consumable).</p><p>Left to the table: giving everyone inside the smoke Cover.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

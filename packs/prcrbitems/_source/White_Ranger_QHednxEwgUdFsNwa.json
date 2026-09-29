@@ -5,6 +5,10 @@
   "_id": "QHednxEwgUdFsNwa",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the White Ranger's Role Perks at their listed levels, plus its Essence increases, Personal Power, Zord and Grid Relic Weapon. You choose General Perks, Grid Powers and Zord Features as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

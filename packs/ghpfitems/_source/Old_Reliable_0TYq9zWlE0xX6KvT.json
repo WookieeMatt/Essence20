@@ -5,6 +5,10 @@
   "_id": "0TYq9zWlE0xX6KvT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch spends a Moxie Point to treat a d20 as a 10; with Edge or Snag, a second Moxie sets both d20s.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

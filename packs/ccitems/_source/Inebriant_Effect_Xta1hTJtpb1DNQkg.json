@@ -5,6 +5,10 @@
   "_id": "Xta1hTJtpb1DNQkg",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Inebriant attack, rolling Deception to apply Mesmerized.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

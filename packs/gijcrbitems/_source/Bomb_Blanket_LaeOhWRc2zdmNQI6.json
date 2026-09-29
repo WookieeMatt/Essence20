@@ -5,6 +5,10 @@
   "_id": "LaeOhWRc2zdmNQI6",
   "img": "systems/essence20/assets/icons/gear/bomb_blanket.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: reducing the blast's damage by 4, halving the reach of what's left, and removing the blanket after use.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

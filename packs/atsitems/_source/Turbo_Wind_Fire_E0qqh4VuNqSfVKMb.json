@@ -5,6 +5,10 @@
   "_id": "E0qqh4VuNqSfVKMb",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for the listed damage, with a two-target alternate effect; Sniper applies. Turbocharged can swap it in when you Morph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

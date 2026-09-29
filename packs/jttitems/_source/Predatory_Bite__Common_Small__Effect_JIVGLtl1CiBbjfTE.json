@@ -5,6 +5,10 @@
   "_id": "JIVGLtl1CiBbjfTE",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the bite's Finesse attack with the listed Sharp damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "AaI58jYka8MfhIbc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per combat): pick a Defense to get +1 for the rest of the combat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

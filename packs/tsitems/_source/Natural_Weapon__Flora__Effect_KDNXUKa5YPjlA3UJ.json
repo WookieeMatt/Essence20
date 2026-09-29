@@ -1,0 +1,56 @@
+{
+  "folder": "VA3Mj2hAFyA59F9F",
+  "name": "Natural Weapon (Flora) Effect",
+  "type": "weaponEffect",
+  "_id": "KDNXUKa5YPjlA3UJ",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an attack at double Reach for 1 Blunt damage.</p>"
+    },
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 39
+    },
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "blunt",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "0",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 2,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790700000000,
+    "modifiedTime": 1790700000000,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!KDNXUKa5YPjlA3UJ"
+}

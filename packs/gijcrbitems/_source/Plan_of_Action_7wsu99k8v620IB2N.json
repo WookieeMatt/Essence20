@@ -5,6 +5,10 @@
   "_id": "7wsu99k8v620IB2N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Move action): gives a chosen ally your current ↑ on their next Skill test. From 5th level, the chat card lets you split the total between two allies.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

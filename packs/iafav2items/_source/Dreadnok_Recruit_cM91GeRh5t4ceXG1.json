@@ -5,6 +5,10 @@
   "_id": "cM91GeRh5t4ceXG1",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Dreadnok Recruit Perk and the Dreadnok Recruit Hang-Up when you add this Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

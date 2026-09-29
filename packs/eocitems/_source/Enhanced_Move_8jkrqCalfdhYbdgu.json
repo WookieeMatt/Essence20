@@ -5,6 +5,10 @@
   "_id": "8jkrqCalfdhYbdgu",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +10 ft to the Combiner form's movement type set on this feature.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

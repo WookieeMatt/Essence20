@@ -96,6 +96,29 @@ describe('perks', () => {
     perks = await import('./perks.mjs');
   });
 
+  test('every Alteration-granting General Perk has a pick-an-Alteration Use, at its own tier', async () => {
+    const { findExtUse } = await import('../../extensions.mjs');
+    const tiers = {
+      wCL3rJOEDZVHVg6g: ['standard', 'cybernetic'], eT4g9EfrFtvjMqWu: ['limited', 'cybernetic'], zGsTAngJ2HRdKPkz: ['restricted', 'cybernetic'],
+      zuR9YJ2Wy956VGGy: ['standard', 'genetic'], '7cL4aUwJwqvbhYCz': ['limited', 'genetic'], RcGUjeMpsNDFjwmL: ['restricted', 'genetic'],
+    };
+    for (const [id, [availability, form]] of Object.entries(tiers)) {
+      expect(perks.ALTERATION_PERKS[CCX(id)]).toEqual({ availability, form });
+      const perk = item('perk', { source: CCX(id) });
+      actor([perk]);
+      const use = findExtUse(perk);
+      expect(use?.id).toBe(`gij1Setup-${id}`);
+      expect(use.canUse(perk)).toBe(true);
+      perk.flags.essence20.granted = true;
+      expect(use.canUse(perk)).toBe(false);
+    }
+
+    // Beast Mode's scene-long copies don't hand out a permanent Alteration.
+    const beast = item('perk', { source: CCX('zuR9YJ2Wy956VGGy'), flags: { beastMode: true } });
+    actor([beast]);
+    expect(findExtUse(beast).canUse(beast)).toBe(false);
+  });
+
   test('Chemist lists ↓1 on Persuasion; Cover Job ↑1 on its skill', () => {
     const a = actor([
       item('hangUp', { source: CCX('cHNytkkeP7iizzgK') }),

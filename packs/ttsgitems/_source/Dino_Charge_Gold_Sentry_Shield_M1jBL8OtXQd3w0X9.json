@@ -5,6 +5,10 @@
   "_id": "M1jBL8OtXQd3w0X9",
   "img": "systems/essence20/assets/icons/items/shield.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: equip it for +1 Evasion, or switch it to active for +1 Evasion and +1 Toughness. Automatic: shield bashes roll Might for 1 Blunt damage, with a Maneuver alternate effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

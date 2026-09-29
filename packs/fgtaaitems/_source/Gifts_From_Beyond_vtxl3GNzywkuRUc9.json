@@ -5,6 +5,10 @@
   "_id": "vtxl3GNzywkuRUc9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: you can ignore a Kit's Skill-rank prerequisites; the system doesn't check them anyway.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Social tests made to goad you into action get Edge against you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

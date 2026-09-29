@@ -5,6 +5,10 @@
   "_id": "nhqEDdJJN9ALZEtE",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Yellow Ranger's Role Perks at their listed levels, plus its Essence increases, Personal Power and Zord. You choose General Perks, Grid Powers and Zord Features as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

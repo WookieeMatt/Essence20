@@ -5,6 +5,10 @@
   "_id": "b1Ev6biHOHxXXQo4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when an ally on the scene with you attacks with a Stun or Maneuver effect, they gain Resistance against the next Blunt or Sharp attack that targets them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

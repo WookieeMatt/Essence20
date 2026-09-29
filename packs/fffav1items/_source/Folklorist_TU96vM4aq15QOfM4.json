@@ -5,6 +5,10 @@
   "_id": "TU96vM4aq15QOfM4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: at the start of a session, adds 2 Story Points to the group's pool.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Fs8eNUcXR1oZL7u7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic when picked as your imperfection with A Hint of Independence's Use button: converting Modes takes your whole turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

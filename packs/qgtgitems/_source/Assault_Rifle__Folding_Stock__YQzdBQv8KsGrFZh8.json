@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/assault_rifle.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 60/100 ft, with its heavier alternate effect and a one-handed alternate at ↓2 from the Folding Stock; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

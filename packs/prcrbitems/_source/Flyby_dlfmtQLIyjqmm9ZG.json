@@ -5,6 +5,10 @@
   "_id": "dlfmtQLIyjqmm9ZG",
   "img": "systems/essence20/assets/icons/gear/wingsuit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the vehicle's Flyby attack rolls with the listed damage; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

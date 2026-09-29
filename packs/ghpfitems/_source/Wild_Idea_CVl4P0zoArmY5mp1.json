@@ -5,6 +5,10 @@
   "_id": "CVl4P0zoArmY5mp1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch spends a Moxie Point to add your Do Or Die die as a bonus Skill Die, keeping the highest.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

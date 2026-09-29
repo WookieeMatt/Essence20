@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: add a Story Point to the team's pool. Active Effect: switch on the Smarts Specialization effect when you use it, then switch it off.</p><p>Left to the table: the extra Story Point is once per session, the Specialization once per day, and the language you pick.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

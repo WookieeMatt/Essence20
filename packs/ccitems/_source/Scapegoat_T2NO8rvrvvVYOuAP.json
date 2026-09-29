@@ -5,6 +5,10 @@
   "_id": "T2NO8rvrvvVYOuAP",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: if your Scapegoat swap was used and the attack still hits, you take 1 Smarts Essence damage and a chat line says so.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

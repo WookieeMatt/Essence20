@@ -363,6 +363,12 @@ describe("checkSneakAttackEligibility", () => {
       expect(result.eligible).toBe(true);
     });
 
+    test("marks viaSuddenStrike only when the ordinary checks would fail", () => {
+      const actor = makeActor({ traits: ['sharp'], hasToken: false, perkIds: [SUDDEN_STRIKE_ID] });
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), false);
+      expect(result.viaSuddenStrike).toBe(true);
+    });
+
     test("falls through to the ordinary checks once already used this combat", () => {
       const actor = makeActor({ traits: ['sharp'], hasToken: false, perkIds: [SUDDEN_STRIKE_ID] });
       actor.getFlag = jest.fn((scope, key) => (

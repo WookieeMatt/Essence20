@@ -5,6 +5,10 @@
   "_id": "nvyLaYW6EOcAdHDo",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Size drops one class when you gain it and returns when it's removed. Armor can only be put on if it carries a Limited or Restricted Alteration Accommodation upgrade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

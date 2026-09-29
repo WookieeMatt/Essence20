@@ -5,6 +5,10 @@
   "_id": "qkvDR7I1tBwOyStY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Standard action, turn a poison you carry into any other poison; or as a Move action, add a weapon upgrade to it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

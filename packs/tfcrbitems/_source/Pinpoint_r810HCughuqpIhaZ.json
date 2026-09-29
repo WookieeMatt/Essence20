@@ -5,6 +5,10 @@
   "_id": "r810HCughuqpIhaZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when you Aim, choose to ignore one of the target's Armor Upgrades per Free action spent Aiming instead of taking the ↑.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

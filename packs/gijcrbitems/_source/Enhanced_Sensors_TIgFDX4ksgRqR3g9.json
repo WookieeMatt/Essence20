@@ -5,6 +5,10 @@
   "_id": "TIgFDX4ksgRqR3g9",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the drone gets an Edge on Alertness. Roll Options Dialog: on other sense-based rolls, a switch for ↑1, as with Acute Senses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "MRoi8QxW568uiCir",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Free action, halve the vehicle's Movement so attacks against it must target Evasion until the driver's next turn. Press again to switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

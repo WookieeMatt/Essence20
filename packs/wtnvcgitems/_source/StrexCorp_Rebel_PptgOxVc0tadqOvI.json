@@ -5,6 +5,10 @@
   "_id": "PptgOxVc0tadqOvI",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Guerilla Tactics at level 1 and Immortal Rebel Soul at level 4. The character needs the Soldier Role first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

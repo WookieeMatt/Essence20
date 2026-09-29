@@ -5,6 +5,10 @@
   "_id": "BctKHzpCC1XXoJPg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: anyone rolling Intimidation or Persuasion against you takes a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

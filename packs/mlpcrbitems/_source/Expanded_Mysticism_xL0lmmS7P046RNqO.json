@@ -5,6 +5,10 @@
   "_id": "xL0lmmS7P046RNqO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend Mystical Points on Fortify (+1 Toughness or Evasion for the scene), Heal (1 Health per point) or Quicken (double one Movement until your turn ends). Each option works once per scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

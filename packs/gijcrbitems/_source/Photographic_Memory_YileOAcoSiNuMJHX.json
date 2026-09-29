@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: recalling fine details of what you've seen in the last six months.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

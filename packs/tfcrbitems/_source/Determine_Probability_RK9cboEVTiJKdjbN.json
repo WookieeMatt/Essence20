@@ -5,6 +5,10 @@
   "_id": "RK9cboEVTiJKdjbN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per turn, as a Free action, roll the simulated Skill Test.</p><p>Left to the table: using that result when you then take the Standard action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

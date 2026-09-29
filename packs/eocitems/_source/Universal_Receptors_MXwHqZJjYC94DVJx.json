@@ -5,6 +5,10 @@
   "_id": "MXwHqZJjYC94DVJx",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the merge Use button charges 1 fewer Story Point when anyone on the team has this feature.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

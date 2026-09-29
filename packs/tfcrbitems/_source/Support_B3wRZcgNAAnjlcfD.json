@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 4 starting Health, +1 Smarts, Ground Movement 30, the In Case of Emergency Perk and the Support Alt Mode. You pick Science or Technology as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.hr00Kzgshnz67400]{Support}</p>",
     "source": {

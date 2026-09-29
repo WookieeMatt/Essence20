@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on while you could be recognized as a local celebrity to count as specialized in Deception, Persuasion and Streetwise, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

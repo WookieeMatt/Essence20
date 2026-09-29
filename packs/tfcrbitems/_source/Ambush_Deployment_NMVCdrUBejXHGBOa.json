@@ -5,6 +5,10 @@
   "_id": "NMVCdrUBejXHGBOa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in the round you deploy your Mini-Con in combat, you and your Mini-Con get Edge on attacks against enemies adjacent to you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

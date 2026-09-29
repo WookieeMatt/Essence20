@@ -5,6 +5,10 @@
   "_id": "iDYuDGTq5FlyenOb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: adding a free Standard or Limited armor upgrade each time you take it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

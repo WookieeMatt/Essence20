@@ -5,6 +5,10 @@
   "_id": "9I21QKZ4Ch06zaqZ",
   "img": "systems/essence20/assets/icons/weapons/stiletto.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might for Sharp damage, with a 30/60 ft Energy blast alternate effect at ↓1; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

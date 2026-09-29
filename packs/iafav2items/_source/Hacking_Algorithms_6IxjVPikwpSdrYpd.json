@@ -5,6 +5,10 @@
   "_id": "6IxjVPikwpSdrYpd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Technology tests, a switch to spend a Story Point for Edge. Tick it when the test involves computers.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

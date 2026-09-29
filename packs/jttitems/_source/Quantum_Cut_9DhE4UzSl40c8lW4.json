@@ -5,6 +5,10 @@
   "_id": "9DhE4UzSl40c8lW4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when you attack with the Quantum Defender (Sword) and have Personal Power, a switch spends 1 Personal Power to make the target use its Toughness against this attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

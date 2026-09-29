@@ -5,6 +5,10 @@
   "_id": "e70Jm3uH5A3mKmSM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spends your Move action, then click a spot within 200 ft and your token is placed there. Whether you could really reach it is your call.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

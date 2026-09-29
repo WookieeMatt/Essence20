@@ -3,6 +3,22 @@ import { parseId } from "../helpers/utils.mjs";
 import { onPowerUse } from "../helpers/power-use.mjs";
 import { spendDailyUse } from "../helpers/nanomite-uses.mjs";
 
+// Zeo Crystal Wielder (Through the Shattered Grid, Zeo Rangers Team Perk, p.27): "It costs you 1
+// less Personal Power to activate the Zeo Crystal Boost Grid Power."
+const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
+const ZEO_CRYSTAL_WIELDER_ID = "Compendium.essence20.through_the_shattered_grid.Item.lNCrjjiiUhI6ROal";
+const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+
+/** A fixed-cost Power's Personal Power cost for this actor, after discounts. */
+export function fixedPowerCost(actor, power) {
+  const cost = parseInt(power.system.powerCost) || 0;
+  if (sourceOf(power) == ZEO_CRYSTAL_BOOST_ID && actor?.items?.some(item => sourceOf(item) == ZEO_CRYSTAL_WIELDER_ID)) {
+    return Math.max(0, cost - 1);
+  }
+
+  return cost;
+}
+
 /**
  * Handles dropping a Power on to an Actor
  * @param {Actor} actor The Actor receiving the Power
@@ -97,10 +113,11 @@ export async function powerCost(actor, power, payer = actor) {
     new PowerCostSelector(actor, power, maxPower, powerType, title, payer).render(true);
     // The variable-cost spend (and the onPowerUse dispatch that follows it) both happen later,
     // once the player actually confirms an amount - see _powerCountUpdate below.
-  } else if (powerType != "threat" && pool && pool.value >= power.system.powerCost) {
+  } else if (powerType != "threat" && pool && pool.value >= fixedPowerCost(actor, power)) {
+    const cost = fixedPowerCost(actor, power);
     const updateString = `system.powers.${powerType}.value`;
-    await payer.update({ [updateString]: Math.max(0, pool.value - power.system.powerCost) });
-    await onPowerUse(actor, power, power.system.powerCost);
+    await payer.update({ [updateString]: Math.max(0, pool.value - cost) });
+    await onPowerUse(actor, power, cost);
   } else if (!power.system.powerCost) {
     // Free-to-activate Powers (powerCost null/0) have nothing to spend, but still need their own
     // effect to actually run - this used to be a bare placeholder with no dispatch at all.

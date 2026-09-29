@@ -5,6 +5,10 @@
   "_id": "q9lciavy0Nfh0rR8",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added to a Zord you pick a ranged energy attack and your Spectrum colour; the attack's damage, type or range change to match and it gains ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

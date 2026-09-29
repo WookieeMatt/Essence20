@@ -250,6 +250,36 @@ function tierFor(owner, grantorUuid) {
   return TIERS[Math.min(3, Math.max(1, countSourced(owner, grantorUuid))) - 1];
 }
 
+/**
+ * Night Vale Community Adoption Center's "improving a single pet with a new Animal Perk": pick one of
+ * the owner's Adoption Center pets (if several) and one Animal Perk from the Citizens' Guide.
+ * @param {Array<Actor>} pets
+ * @param {Item} grantor
+ * @param {Function} [pick]   (title, rows) => a picked uuid; defaults to grants.mjs#pickOne.
+ * @returns {Promise<String|null>}
+ */
+export async function addNightValeAnimalPerk(pets, grantor, pick = null) {
+  let pet = pets[0];
+  if (pets.length > 1) {
+    const answer = await buildForm(grantor.name, [{ name: 'pet', label: T('E20.PetLabel'), options: pets.map(p => [p.uuid, p.name]) }]);
+    pet = pets.find(p => p.uuid == answer?.pet);
+  }
+
+  if (!pet) {
+    return null;
+  }
+
+  const pack = game.packs?.get?.('essence20.wtnv_citizens_guide');
+  const folder = (pack?.folders?.contents ?? [...(pack?.folders ?? [])]).find(f => /^animal perks?$/i.test(f.name));
+  const index = folder ? await pack.getIndex({ fields: ['folder', 'type'] }) : [];
+  const rows = [...index.values()].filter(entry => entry.type == 'perk' && entry.folder == folder.id && entry.uuid != ITEM.animalWtnv)
+    .map(entry => ({ uuid: entry.uuid, name: entry.name })).sort((a, b) => a.name.localeCompare(b.name));
+  const { grantCopy, pickOne } = await import("./grants.mjs");
+  const uuid = await (pick ?? pickOne)(grantor.name, rows);
+  const got = uuid ? await grantCopy(pet, uuid, { grantedBy: grantor }) : null;
+  return got ? T('E20.GrantGained', { name: pet.name, item: grantor.name, what: got.name }) : null;
+}
+
 function petsFrom(owner, grantor) {
   const source = sourceOf(grantor);
   return companionsOf(owner).filter(pet => pet.flags?.essence20?.grantedBy == source);
@@ -266,21 +296,30 @@ function petsFrom(owner, grantor) {
  * @returns {Promise<String|null>}
  */
 export async function grantPet(owner, grantor, { kind = 'animal', line = 'gij', maxPets = 1 } = {}) {
-  const availability = kind == 'pony' ? 'standard' : tierFor(owner, sourceOf(grantor));
+  // Night Vale pets have no Availability tiers: each extra pick of the Adoption Center is "either
+  // gaining a new pet or improving a single pet with a new Animal Perk" (Citizens' Guide p.47).
+  const nightVale = line == 'wtnv';
+  const availability = kind == 'pony' || nightVale ? 'standard' : tierFor(owner, sourceOf(grantor));
   const existing = petsFrom(owner, grantor);
   const pet = existing[0];
   const canAddAnother = kind == 'pony' || maxPets > existing.length;
   // Improve, or (MLP / Night Vale) gain another.
   if (pet) {
-    const improve = kind != 'pony' && TIERS.indexOf(pet.system?.availability) < TIERS.indexOf(availability);
+    const improve = nightVale || (kind != 'pony' && TIERS.indexOf(pet.system?.availability) < TIERS.indexOf(availability));
+    const improveLabel = nightVale ? T('E20.PetAddAnimalPerk', { name: pet.name })
+      : T('E20.PetImprove', { name: pet.name, availability: T(`E20.Availability${availability.capitalize()}`) });
     const { chooseButtons } = await import("./grants.mjs");
     const choice = improve && !canAddAnother ? 'improve' : (!improve && !canAddAnother ? null : await chooseButtons(grantor.name, T('E20.PetImproveOrNew'), [
-      ...(improve ? [['improve', T('E20.PetImprove', { name: pet.name, availability: T(`E20.Availability${availability.capitalize()}`) })]] : []),
+      ...(improve ? [['improve', improveLabel]] : []),
       ...(canAddAnother ? [['new', T('E20.PetNew')]] : []),
     ]));
     if (!choice) {
       ui.notifications.info(T('E20.PetAlreadyHave', { name: pet.name }));
       return null;
+    }
+
+    if (choice == 'improve' && nightVale) {
+      return addNightValeAnimalPerk(existing, grantor);
     }
 
     if (choice == 'improve') {
@@ -601,8 +640,49 @@ export function commandablePets(actor) {
   return [...own, ...others];
 }
 
+// Favorite Command: "Choose a Skill." Picked with the Perk's Use button (chooseFavoriteSkill) or, for
+// a copy dropped onto the pet's sheet, the Perk's own Skill picker (system.choice).
 function favoriteSkill(pet) {
-  return itemsOf(pet).find(item => [COMP.favoriteCommandGij, COMP.favoriteCommandMlp, COMP.favoriteCommandWtnv].includes(sourceOf(item)))?.flags?.essence20?.favoriteSkill ?? null;
+  const perk = itemsOf(pet).find(item => [COMP.favoriteCommandGij, COMP.favoriteCommandMlp, COMP.favoriteCommandWtnv].includes(sourceOf(item)));
+  const choice = perk?.flags?.essence20?.favoriteSkill || perk?.system?.choice;
+  return choice && choice != 'none' ? choice : null;
+}
+
+/**
+ * Backup Master (GI JOE CRB) / Extra Friend (MLP CRB): "Designate a specific character, such as
+ * another PC. That character can issue your animal pet Commands." The Use button stores the pick on
+ * the Perk, where canCommand reads it.
+ */
+async function designateCommander(pet, item) {
+  const owner = ownerOf(pet);
+  const options = worldActors().filter(a => a.type == 'playerCharacter' && a.uuid != owner?.uuid && a.uuid != pet.uuid)
+    .map(a => [a.uuid, a.name]);
+  if (!options.length) {
+    ui.notifications.warn(T('E20.GrantNothingToPick', { name: item.name }));
+    return null;
+  }
+
+  const answer = await buildForm(item.name, [{ name: 'designee', label: T('E20.GrantPickLabel'), options }]);
+  const picked = answer ? options.find(([uuid]) => uuid == answer.designee) : null;
+  if (!picked) {
+    return null;
+  }
+
+  await item.setFlag('essence20', 'designee', picked[0]);
+  return T('E20.G1ChoiceMade', { name: pet.name, perk: item.name, choice: picked[1] });
+}
+
+/** Favorite Command's "Choose a Skill", from its Use button. */
+async function chooseFavoriteSkill(pet, item) {
+  const options = Object.entries(CONFIG.E20.skills).map(([key, label]) => [key, T(label)]);
+  const answer = await buildForm(item.name, [{ name: 'skill', label: T('E20.PetCommandSkill'), options }]);
+  const picked = answer ? options.find(([key]) => key == answer.skill) : null;
+  if (!picked) {
+    return null;
+  }
+
+  await item.setFlag('essence20', 'favoriteSkill', picked[0]);
+  return T('E20.G1ChoiceMade', { name: pet.name, perk: item.name, choice: picked[1] });
 }
 
 /**
@@ -985,6 +1065,11 @@ const HANDLERS = {
   // Command to Lend Assistance." The pet lends it.
   assistantGij: (pet, item, pay) => petAssist(pet, pay),
   assistantMlp: (pet, item, pay) => petAssist(pet, pay),
+  backupMaster: (pet, item) => designateCommander(pet, item),
+  extraFriend: (pet, item) => designateCommander(pet, item),
+  favoriteCommandGij: (pet, item) => chooseFavoriteSkill(pet, item),
+  favoriteCommandMlp: (pet, item) => chooseFavoriteSkill(pet, item),
+  favoriteCommandWtnv: (pet, item) => chooseFavoriteSkill(pet, item),
 
   // Altered Pet (Cobra Codex p.103): "Your pet gains a Standard Alteration".
   async alteredPet(pet, item) {

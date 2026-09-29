@@ -5,6 +5,10 @@
   "_id": "oUqH3jWPyomBTa6a",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Put it on your pet. Active Effect: +1 Willpower for each copy.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

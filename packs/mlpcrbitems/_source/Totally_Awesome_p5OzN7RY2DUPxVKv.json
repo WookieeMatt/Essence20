@@ -5,6 +5,10 @@
   "_id": "p5OzN7RY2DUPxVKv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Health. Automatic: pick a different Social Skill when you gain it and get ↑1 on it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

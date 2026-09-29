@@ -5,6 +5,10 @@
   "_id": "a5HptfB7nYFLVHkc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a target hit by your explosive suffers a Snag on its next attack or Skill test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

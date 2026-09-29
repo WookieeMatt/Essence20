@@ -5,6 +5,10 @@
   "_id": "tS3P7BZqnH9GGLux",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added to a Zord you pick larger or smaller (later copies must match). Automatic: the Zord's size, Essence, Health or Movement change, and you pick the Skill that goes up a step.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

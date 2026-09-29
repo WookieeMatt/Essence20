@@ -5,6 +5,10 @@
   "_id": "XQrrJmvmWroALE59",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Impulse Armor (Handling), an Assault Rifle and a Limited Survival (Jungle) Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

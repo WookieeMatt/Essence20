@@ -5,6 +5,10 @@
   "_id": "iMAUhU8J2rQtLmgC",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: the vehicle's own Brawn and Might tests gain Edge, for pushing, pulling or towing.</p><p>Left to the table: the lower DIF for dragging extra weight.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

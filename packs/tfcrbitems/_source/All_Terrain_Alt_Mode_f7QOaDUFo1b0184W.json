@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on the one for the Movement type you chose (Ground, Aerial or Aquatic) to give your Alt Mode 20ft of it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "4M5y5ZcO5DNlnqwK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (while Morphed): Resistance to Blunt and Sharp damage and Edge on Speed tests. Automatic: +1 damage on Finesse attacks while Morphed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

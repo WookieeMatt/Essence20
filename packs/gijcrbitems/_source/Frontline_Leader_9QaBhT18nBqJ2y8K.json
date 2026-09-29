@@ -5,6 +5,10 @@
   "_id": "9QaBhT18nBqJ2y8K",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: attach it to an Officer to get its Perks at the listed levels, plus +1 Speed at levels 1 and 10 (you place those skill points on a Social skill).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

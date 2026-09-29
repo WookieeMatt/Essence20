@@ -5,6 +5,10 @@
   "_id": "ZdvE8MB35jg1A8wK",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick another Origin to copy; you take its Alt Mode, Bot Mode Movement and Size. Granted: A Hint of Independence and the Imperfection Perks it chooses between.</p>"
+    },
     "originalId": "",
     "description": "<p>For this Origin you should import and modify it with the appropriate movement. And then you can select any Alt Mode.&nbsp;</p>",
     "source": {

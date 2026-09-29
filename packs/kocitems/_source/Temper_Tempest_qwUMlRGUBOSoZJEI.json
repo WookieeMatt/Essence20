@@ -5,6 +5,10 @@
   "_id": "qwUMlRGUBOSoZJEI",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: a success starts the storm. Each of your turns a chat card offers Strike (up to 3 targets for 3 Energy), taking Stress, or a DIF 20 Alertness test to calm down. It ends when you are Defeated.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "PPP3Zm8cYiduQEC1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: ↑1 on Ram attacks. Left to the table: spending a Standard action to Ram several different targets during one move.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

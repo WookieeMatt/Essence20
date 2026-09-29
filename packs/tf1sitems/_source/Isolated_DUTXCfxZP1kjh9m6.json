@@ -5,6 +5,10 @@
   "_id": "DUTXCfxZP1kjh9m6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: once per scene, a switch for ↑1 when nobody is Lending Assistance on the test.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

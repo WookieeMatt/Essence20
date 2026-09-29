@@ -5,6 +5,10 @@
   "_id": "8RAAEl4HabYUaV4B",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: sets your maximum Terror, rising automatically at the listed levels.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

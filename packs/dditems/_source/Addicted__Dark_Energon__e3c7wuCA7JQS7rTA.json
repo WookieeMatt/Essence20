@@ -5,6 +5,10 @@
   "_id": "e3c7wuCA7JQS7rTA",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: New Day rolls the craving check against Willpower, Consumed records a feeding, Treatment rolls the Science cure. Automatic: while craving, Energon spends cost double; going unfed deals Smarts and Social Essence damage.</p><p>Left to the table: how you act once berserk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

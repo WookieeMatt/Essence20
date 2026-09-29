@@ -5,6 +5,10 @@
   "_id": "tGdWBibKFTYfXzVu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: activating your Personal Shield gives you +1 Temporary Health until it drops. Your protected target within 10 ft can't be critically hit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Oc8NpQa5ylK2Ix0B",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: on a success, the target's token gets darkvision for the scene. When casting you can pay 1 more for the version that also sees through fog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

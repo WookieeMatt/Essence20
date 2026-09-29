@@ -5,6 +5,10 @@
   "_id": "2hSzcmg53ukPYlHH",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: rolling it uses the better of your Spellcasting and the salve's own, then uses one up. Left to the table: healing the creature 2 Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

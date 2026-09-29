@@ -5,6 +5,10 @@
   "_id": "DgFY0ZmAtClAobiA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: choose your Element. Use button (Free, 1 Energon): for the rest of the scene, all your melee or ranged attacks (your pick) deal that Element's damage.</p><p>Left to the table: the Element trait those attacks also gain.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

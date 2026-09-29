@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Lighter Than Air, Air Born and Cutie Mark Perks, 2 Health, 15 ft ground and 45 ft aerial Movement. You choose Speed, or an Influence Skill's Essence, for the +1 increase.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

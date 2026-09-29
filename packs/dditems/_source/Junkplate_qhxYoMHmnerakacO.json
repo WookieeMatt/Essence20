@@ -5,6 +5,10 @@
   "_id": "qhxYoMHmnerakacO",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while worn, +1 Toughness, your unarmed hits deal Sharp damage, and anyone who Fumbles an unarmed attack against you takes 1 Sharp damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

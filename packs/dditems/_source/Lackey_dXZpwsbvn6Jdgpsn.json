@@ -5,6 +5,10 @@
   "_id": "dXZpwsbvn6Jdgpsn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: allies can Lend Assistance to you from any distance, not just nearby. Whether they can actually reach you with a command is the table's call.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "34WtMHugUN7Wp5bP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Cheer Point; the next attack against you is checked against your Cleverness instead of the Defense it targeted.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "8duLY5PjlpmbNkwK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (while Morphed): spend 3 Personal Power; each Morphed teammate regains d2 Personal Power. It can't be used twice in one scene.</p><p>Left to the table: the once-per-day limit.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "EftruPXLQe5NyJY5",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Toughness and +2 Health.</p><p>Left to the table: the Helmet Bash attack and the urge to protect others.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

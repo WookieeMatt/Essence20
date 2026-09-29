@@ -5,6 +5,10 @@
   "_id": "9avbGWUTKKUyM18T",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: a switch on attacks that adds the Solo Strike upshift, rising with your level.</p><p>Left to the table: checking the target is adjacent and alone, and that you make no other attacks that round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

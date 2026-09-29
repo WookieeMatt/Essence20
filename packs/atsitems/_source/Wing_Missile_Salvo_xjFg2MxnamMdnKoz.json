@@ -5,6 +5,10 @@
   "_id": "xjFg2MxnamMdnKoz",
   "img": "systems/essence20/assets/icons/weapons/missile-launcher.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: pick the blast or the four-target cone; either can be fired once per encounter.</p><p>Left to the table: the 1 Fire damage Critical Effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

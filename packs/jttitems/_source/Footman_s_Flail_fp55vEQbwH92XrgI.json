@@ -5,6 +5,10 @@
   "_id": "fp55vEQbwH92XrgI",
   "img": "icons/weapons/maces/flail-ball-grey.webp",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might with its Blunt or Maneuver options and ignore Defend; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: your animal pet is trained in Light armor.</p><p>Left to the table: treating the pet's armor as one step less available at requisition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

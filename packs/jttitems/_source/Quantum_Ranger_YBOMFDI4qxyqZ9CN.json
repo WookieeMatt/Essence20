@@ -5,6 +5,10 @@
   "_id": "YBOMFDI4qxyqZ9CN",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Role Perks at the listed levels (Spectrum Shifted, Quantum Morph, Quantasaurus Rex, Quantum Powers, Rex Features, Timeslide, Quantum Master and more), plus its Essence increases. Each Rex Feature lets you pick a Zord Feature for your Zord.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

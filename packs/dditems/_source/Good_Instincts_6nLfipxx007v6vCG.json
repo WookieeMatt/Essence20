@@ -5,6 +5,10 @@
   "_id": "6nLfipxx007v6vCG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per scene you're offered a reroll of Skill Die results of 1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

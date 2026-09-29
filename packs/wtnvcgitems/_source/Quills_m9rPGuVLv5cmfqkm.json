@@ -5,6 +5,10 @@
   "_id": "m9rPGuVLv5cmfqkm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Put it on your pet. Automatic: the pet gains a Quills attack at Short range for 1 Sharp damage; the Use button adds it if it is missing.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

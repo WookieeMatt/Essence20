@@ -5,6 +5,10 @@
   "_id": "uqGXmxShRuAWsJd1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per scene): posts in chat that you slip past an enemy's Contingency.</p><p>Left to the table: the Host skips that Contingency.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

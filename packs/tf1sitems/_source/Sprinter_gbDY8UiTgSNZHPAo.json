@@ -5,6 +5,10 @@
   "_id": "gbDY8UiTgSNZHPAo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Bot Mode, +5ft Ground Movement and ↑1 on Acrobatics and Athletics tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

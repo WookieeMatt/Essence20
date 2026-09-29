@@ -5,6 +5,10 @@
   "_id": "aHSy7Grf8NUoa7qJ",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Ballistic Armor (Experimental and Poison Resistance) and Deadly Touch (Chemical Sprayer).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

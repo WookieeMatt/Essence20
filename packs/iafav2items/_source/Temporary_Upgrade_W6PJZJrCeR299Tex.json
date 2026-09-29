@@ -5,6 +5,10 @@
   "_id": "W6PJZJrCeR299Tex",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: this Perk's benefit, as described; add any upgrade it grants by hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

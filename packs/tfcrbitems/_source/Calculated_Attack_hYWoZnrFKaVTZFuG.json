@@ -5,6 +5,10 @@
   "_id": "hYWoZnrFKaVTZFuG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll Science against the target's Evasion or Cleverness. On a success, your next Aim with your Long Range Rifle gives ↑2 instead of ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

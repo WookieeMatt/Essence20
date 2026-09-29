@@ -5,6 +5,10 @@
   "_id": "MMToVGBAkB79DZEW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on Skill Tests while you are below your maximum Health. Roll Options Dialog: at 1 Health, a switch spends a Moxie Point for Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

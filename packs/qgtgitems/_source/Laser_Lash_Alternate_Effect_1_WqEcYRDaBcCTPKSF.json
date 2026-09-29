@@ -5,6 +5,10 @@
   "_id": "WqEcYRDaBcCTPKSF",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Finesse melee attack for 1 Stun.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

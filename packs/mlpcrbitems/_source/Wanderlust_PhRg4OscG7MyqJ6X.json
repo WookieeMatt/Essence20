@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: outside combat, a switch for a Snag when you repeat the same test in the same place that day (every other time).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

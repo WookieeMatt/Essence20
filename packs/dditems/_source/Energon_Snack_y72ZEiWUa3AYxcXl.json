@@ -5,6 +5,10 @@
   "_id": "y72ZEiWUa3AYxcXl",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: gain 1 Energon Point; the snack is used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

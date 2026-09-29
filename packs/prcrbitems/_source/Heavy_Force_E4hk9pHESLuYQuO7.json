@@ -5,6 +5,10 @@
   "_id": "E4hk9pHESLuYQuO7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: while Morphed, spend 1 Personal Power for ↑2 on your first melee attack each turn.</p><p>Left to the table: using it on pushes and shoves, and not moving until your next turn afterwards.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

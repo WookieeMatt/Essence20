@@ -5,6 +5,10 @@
   "_id": "98rFJyzaoCWrLdbF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend a Story Point to give a targeted, Defeated Cobra ally 1 Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

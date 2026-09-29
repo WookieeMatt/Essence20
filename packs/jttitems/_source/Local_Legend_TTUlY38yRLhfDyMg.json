@@ -5,6 +5,10 @@
   "_id": "TTUlY38yRLhfDyMg",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Local Legend Perk and the Local Legend Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

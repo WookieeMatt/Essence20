@@ -5,6 +5,10 @@
   "_id": "OA6xYj6axivOD38i",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Edge on Infiltration and Persuasion while in Alt Mode, ↑1 on them in Bot Mode. Left to the table: it is meant only for hiding in a fitting environment or dealing with your own species, so skip it on other rolls.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

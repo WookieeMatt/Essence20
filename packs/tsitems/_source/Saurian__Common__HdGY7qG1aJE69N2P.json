@@ -5,6 +5,10 @@
   "_id": "HdGY7qG1aJE69N2P",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: converting into this Alt Mode makes you Common-sized with 50ft Ground Movement. Taking it adds the Natural Weapon (you pick Blunt or Sharp; Use button re-adds it).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

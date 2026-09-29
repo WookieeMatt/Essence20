@@ -5,6 +5,10 @@
   "_id": "7aKjiqEZ3LYuvwmu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after you move on your turn, you have Concealment (shown as Cover) until your next turn starts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

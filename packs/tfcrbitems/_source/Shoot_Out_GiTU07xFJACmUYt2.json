@@ -5,6 +5,10 @@
   "_id": "GiTU07xFJACmUYt2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per turn, when an enemy makes a ranged attack against you and you hold a Ballistic weapon, a button rolls your attack against theirs. Win and the attack misses; lose or tie and it hits.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

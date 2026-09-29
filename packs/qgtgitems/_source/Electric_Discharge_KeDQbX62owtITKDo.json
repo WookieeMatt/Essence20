@@ -5,6 +5,10 @@
   "_id": "KeDQbX62owtITKDo",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend a daily nanomite use for a Targeting attack at 10 ft for 1 Electric damage, with the Electric ↑1.</p><p>Left to the table: swapping in Finesse or Might against a target in reach.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

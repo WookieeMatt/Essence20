@@ -5,6 +5,10 @@
   "_id": "2R3saLtDCI1q2QBz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: explosive and area attacks against you have a Snag (which is also what the Infantry version's Resistance does to an attack roll). Roll Options Dialog: attackers get a switch to apply the Snag to a trap attack on you.</p><p>Left to the table: halving explosive or area damage that comes with no attack roll.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

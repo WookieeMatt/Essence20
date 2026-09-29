@@ -5,6 +5,10 @@
   "_id": "KPpSS47ovnxSW2Au",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: stowing one Long or smaller weapon and drawing another with a single Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

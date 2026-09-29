@@ -5,6 +5,10 @@
   "_id": "cw0SEELjyLOWaCy4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this: when an attack misses you by your Stalwart Defense bonus or less, the GM has the attacker lose that weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "dyjdCTOs83bLiCxC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an Edge on Skill tests made to resist or shake off effects. At the start of your turn, a card offers to end Conditions and marks that would otherwise last until the end of this turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

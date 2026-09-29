@@ -5,6 +5,10 @@
   "_id": "WACDOLg6uFWlr2lc",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Cast: on a success, attacks against you suffer ↓1 until the GM starts a new scene.</p><p>Left to the table: the -2 for trying to hide the sparkles, and the glowing trail.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "v5ZJXRVnMiRaI4AU",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: while Morphed you ignore breathing hazards (toxic air, vacuum, underwater) when the scene's environment is set.</p><p>Left to the table: other inhalation threats, such as gas attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

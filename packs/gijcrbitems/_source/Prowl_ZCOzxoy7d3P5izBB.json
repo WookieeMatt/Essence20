@@ -5,6 +5,10 @@
   "_id": "ZCOzxoy7d3P5izBB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Ground movement doubles in your environment of expertise. That's read from the scene's terrain, or from the environment switch on your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

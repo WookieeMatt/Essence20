@@ -5,6 +5,10 @@
   "_id": "vCBvQRJV2auFxy1a",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: the Fire Breath weapon.</p><p>Left to the table: choosing Fire damage for your unarmed melee attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {

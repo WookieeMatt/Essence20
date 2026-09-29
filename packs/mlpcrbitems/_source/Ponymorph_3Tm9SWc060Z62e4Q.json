@@ -5,6 +5,10 @@
   "_id": "3Tm9SWc060Z62e4Q",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: on a successful cast you take the new shape for the scene, with Edge on Deception and Infiltration tests to pass as that creature. Left to the table: casting it on another creature.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

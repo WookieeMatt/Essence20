@@ -5,6 +5,10 @@
   "_id": "JYrWES4zfCrAYGeE",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls the better of Finesse or Might at ↓1 against Toughness; a hit shoves the target 10ft away.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>Shove 10ft</p>",

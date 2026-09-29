@@ -5,6 +5,10 @@
   "_id": "tKonXkoNsZhajHp9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: melee attacks against a target a teammate already attacked this round get ↑1 (↑2 at 18th level).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

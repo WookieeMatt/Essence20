@@ -5,6 +5,10 @@
   "_id": "kLipkiHHSGmMlRAm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on Field Expertise for ↑1 on Culture and Science when your field of study matters, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

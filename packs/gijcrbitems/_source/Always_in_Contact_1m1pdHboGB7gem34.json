@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spends a Story Point and posts it to chat.</p><p>Left to the table: who the ally or old friend is, and the once-per-scene limit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

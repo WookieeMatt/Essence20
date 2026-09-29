@@ -5,6 +5,10 @@
   "_id": "EI7uvXnVEv0eK1C7",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: counts as a Restricted kit for Animal Handling and Survival tests that call for one, once you have d8 in either Skill. On Persuasion against an animal (or with no target), a choice to roll Animal Handling or Survival instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "j3YYnjIAWmKEm96Y",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might attack at Reach for 2 Blunt damage. In combat you're warned if the vehicle hasn't moved at least 15 ft this turn.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "B7pPkcsYGscY94W3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: longer range for your explosive attacks that use Targeting. The Smarts increases come with the Focus.</p><p>Left to the table: choosing Might, Finesse, Targeting or Science when throwing explosives.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

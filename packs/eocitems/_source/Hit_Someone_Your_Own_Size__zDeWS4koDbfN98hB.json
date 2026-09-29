@@ -5,6 +5,10 @@
   "_id": "zDeWS4koDbfN98hB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks on your bonded ally within your reach take ↓2, and within 5 ft they use your Toughness if it's higher.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Intimidation counts as a Social Skill. Automatic: ↑2 on Intimidation while Morphed (leave the switchable Morphed effect off).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "altMode",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: sets your Alt Mode size, Ground and Aerial Movement, no Crew and no Firepoints.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "YDOmBfuUnYFalIVY",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a weapon in this Integrated Hardpoint fires as if the Hardpoint were Reinforced.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "jPqr2DuJMSQgiILp",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: set it into a Power Weapon; that weapon's hits get a chat button for +1 Fire damage. Automatic: the first Perk or Power you pay Personal Power for each scene costs 1 less.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

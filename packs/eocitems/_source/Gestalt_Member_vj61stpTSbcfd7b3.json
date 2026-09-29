@@ -5,6 +5,10 @@
   "_id": "vj61stpTSbcfd7b3",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Gestalt Member Perk plus the Co-Dependent, Subordinate and Supporting Cast Hang-Ups.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

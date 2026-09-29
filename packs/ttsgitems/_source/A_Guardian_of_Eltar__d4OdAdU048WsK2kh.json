@@ -5,6 +5,10 @@
   "_id": "d4OdAdU048WsK2kh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted by the Guardian of Eltar Faction. Automatic: sets your Morphed Toughness bonus from your best armor training, applied whenever the Morphed toggle on your sheet is on.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

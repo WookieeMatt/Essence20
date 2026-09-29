@@ -5,6 +5,10 @@
   "_id": "rCpCrfzMYPupoYNI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: lets you link a Zord on your sheet, and you take no Snag on Driving while piloting it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

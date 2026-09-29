@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Performance tests, switches for 10+, 100+ and 1,000+ onlookers, each adding ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

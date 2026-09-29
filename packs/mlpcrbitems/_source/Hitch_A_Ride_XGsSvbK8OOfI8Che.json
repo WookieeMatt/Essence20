@@ -5,6 +5,10 @@
   "_id": "XGsSvbK8OOfI8Che",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: after a successful cast, brings out your magical ride beside you, a self-driving vehicle for you and nine passengers with 60 ft ground and aerial Movement and a d10 Specialized Driving Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

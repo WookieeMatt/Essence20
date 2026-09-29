@@ -5,6 +5,10 @@
   "_id": "fXgb3kGl2MaZTfPc",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Yo Joe! and Be A Hero Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

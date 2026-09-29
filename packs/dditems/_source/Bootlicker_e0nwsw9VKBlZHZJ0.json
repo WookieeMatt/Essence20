@@ -5,6 +5,10 @@
   "_id": "e0nwsw9VKBlZHZJ0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑1 when you're dealing with a superior officer.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

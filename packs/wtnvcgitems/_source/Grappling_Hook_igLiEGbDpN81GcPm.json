@@ -5,6 +5,10 @@
   "_id": "igLiEGbDpN81GcPm",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: two-handed Athletics throws at 100ft/200ft that Maneuver, with a 1 Sharp alternate at ↓1 against two targets within 30ft of each other; its traits apply.</p><p>Left to the table: throwing it with Finesse instead of Athletics.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

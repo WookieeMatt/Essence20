@@ -5,6 +5,10 @@
   "_id": "ZyvgYSfSZJDoauUC",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Technology attack at 75ft that spots the target; on a hit, the next attack against it gains Edge.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "uUNeSMCbdXjf07bY",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Technology attack at the listed range that makes a Maneuver at ↓3.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

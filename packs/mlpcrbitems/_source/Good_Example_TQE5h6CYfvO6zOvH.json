@@ -5,6 +5,10 @@
   "_id": "TQE5h6CYfvO6zOvH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Lend Assistance on a Persuasion test costs you only a Free action (you're asked which Skill it is).</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

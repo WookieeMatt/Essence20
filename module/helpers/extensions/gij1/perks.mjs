@@ -5,7 +5,7 @@ import { hasSourced } from "../../companion-link.mjs";
 import { hasUsedThisTurn, markUsedThisTurn } from "../../perks.mjs";
 import { getUses, markUsed } from "../../scene-clock.mjs";
 import {
-  G1, SIGNATURE_WEAPONS, T, askSkillAndText, findSourced, firstTarget, inCombat, isFrom, isStampActive, itemsOf,
+  CC, G1, SIGNATURE_WEAPONS, T, askSkillAndText, findSourced, firstTarget, inCombat, isFrom, isStampActive, itemsOf,
   post, skillsOf, sourceOf, turnStamp,
 } from "./shared.mjs";
 import { ONE_HANDED_FLAG } from "./gear.mjs";
@@ -181,15 +181,37 @@ async function setupMetier(item) {
 }
 
 // Cybernetic Part (General Perk, p.79): "Gain a permanent Standard Cybernetic Alteration. You may
-// select this Perk multiple times." Any Standard Alteration can be taken in cybernetic form (p.82),
-// so the picker offers every Standard Alteration the character doesn't already have ("You can't
-// gain the same Alteration twice", p.82). It goes through the Alteration drop handler, so its
-// Essence/skill/movement benefit and cost are applied exactly as a dragged-in one would be.
-async function grantCyberneticPart(item) {
+// select this Perk multiple times." Its siblings on p.79-81 work the same way at other tiers:
+// Enhanced Part (Limited Cybernetic), Optimized Part (Restricted Cybernetic), Engrafted Mutation
+// (Standard Genetic), Evolving Mutation (Limited Genetic) and Outright Mutation (Restricted
+// Genetic). Any Alteration can be taken in cybernetic or genetic form (p.82), so the picker offers
+// every Alteration of that tier the character doesn't already have ("You can't gain the same
+// Alteration twice", p.82). It goes through the Alteration drop handler, so its Essence/skill/
+// movement benefit and cost are applied exactly as a dragged-in one would be.
+export const ALTERATION_PERKS = {
+  [G1.cyberneticPart]: { availability: 'standard', form: 'cybernetic' },
+  [CC('eT4g9EfrFtvjMqWu')]: { availability: 'limited', form: 'cybernetic' }, // Enhanced Part
+  [CC('zGsTAngJ2HRdKPkz')]: { availability: 'restricted', form: 'cybernetic' }, // Optimized Part
+  [CC('zuR9YJ2Wy956VGGy')]: { availability: 'standard', form: 'genetic' }, // Engrafted Mutation
+  [CC('7cL4aUwJwqvbhYCz')]: { availability: 'limited', form: 'genetic' }, // Evolving Mutation
+  [CC('RcGUjeMpsNDFjwmL')]: { availability: 'restricted', form: 'genetic' }, // Outright Mutation
+};
+
+// Beast Mode's copies of the Mutation Perks last one scene (helpers/extensions/resource/beast-mode.mjs),
+// so they don't hand out a permanent Alteration.
+const isBeastModeCopy = item => !!item.flags?.essence20?.beastMode
+  || item.parent?.flags?.essence20?.beastModeGrantedItemId == item.id;
+
+async function grantAlterationPerk(item) {
   const actor = item.parent;
+  const spec = ALTERATION_PERKS[sourceOf(item)];
+  if (!spec) {
+    return null;
+  }
+
   const { findItems, pickOne } = await import("../../grants.mjs");
   const owned = new Set(itemsOf(actor).filter(i => i.type == 'alteration').map(i => i.system?.originalId ?? sourceOf(i)));
-  const rows = (await findItems({ type: 'alteration', availabilities: ['standard'] })).filter(row => !owned.has(row.uuid)
+  const rows = (await findItems({ type: 'alteration', availabilities: [spec.availability] })).filter(row => !owned.has(row.uuid)
     && !owned.has(row.uuid.split('.').pop()));
   const uuid = await pickOne(item.name, rows);
   const source = uuid ? await fromUuid(uuid) : null;
@@ -203,7 +225,7 @@ async function grantCyberneticPart(item) {
   delete data._id;
   foundry.utils.setProperty(data, 'flags.core.sourceId', uuid);
   foundry.utils.setProperty(data, 'flags.essence20.grantedBy', item.id);
-  foundry.utils.setProperty(data, 'flags.essence20.cyberneticAlteration', true);
+  foundry.utils.setProperty(data, `flags.essence20.${spec.form}Alteration`, true);
   await onAlterationDrop(actor, source, () => actor.createEmbeddedDocuments('Item', [data]));
   const created = itemsOf(actor).find(i => !before.has(i.id) && i.type == 'alteration');
   if (!created) {
@@ -211,7 +233,9 @@ async function grantCyberneticPart(item) {
   }
 
   await item.setFlag('essence20', 'granted', true);
-  return T('G1CyberneticGranted', { name: actor.name, alteration: created.name });
+  return spec.form == 'cybernetic'
+    ? T('G1CyberneticGranted', { name: actor.name, alteration: created.name })
+    : T('Pr3GrantedItem', { name: actor.name, item: created.name, source: item.name });
 }
 
 // Shielded (Citystriker Focus, 1st level, p.68): "You gain a Standard shield (see page 98) as
@@ -232,7 +256,9 @@ const SETUPS = [
   { uuid: G1.coverJob, needs: item => !choiceOf(item), run: setupCoverJob },
   { uuid: G1.doubleLife, needs: item => !choiceOf(item), run: setupDoubleLife },
   { uuid: G1.metier, needs: item => !choiceOf(item), run: setupMetier },
-  { uuid: G1.cyberneticPart, needs: item => !item.flags?.essence20?.granted, run: grantCyberneticPart },
+  ...Object.keys(ALTERATION_PERKS).map(uuid => ({
+    uuid, needs: item => !item.flags?.essence20?.granted && !isBeastModeCopy(item), run: grantAlterationPerk,
+  })),
   { uuid: G1.shielded, needs: item => !item.flags?.essence20?.granted, run: grantShield },
 ];
 

@@ -79,6 +79,8 @@ import "./qualify2/field-ops.mjs";
 import "./qualify2/old-hand.mjs";
 import "./qualify2/qualifications.mjs";
 import "./qualify2/session.mjs";
+import "./r2misc/commander.mjs";
+import "./r2misc/dominate.mjs";
 import "./react/auras.mjs";
 import "./react/core.mjs";
 import "./react/forms.mjs";

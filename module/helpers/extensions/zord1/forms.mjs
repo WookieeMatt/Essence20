@@ -2,7 +2,7 @@ import {
   registerAfterDamage, registerApplyDialog, registerConsumer, registerDamageModifier, registerDefenseAdjust, registerDerived,
   registerDialogToggles, registerHitRider, registerPostRoll, registerRollSources, registerUse,
 } from "../../extensions.mjs";
-import { getSceneEpoch } from "../../scene-clock.mjs";
+import { activateForRounds, getSceneEpoch, isActiveForRounds } from "../../scene-clock.mjs";
 import { worldActors } from "../../companion-link.mjs";
 import { FORM_FLAG, activeForm, isFormActive } from "./form-state.mjs";
 import {
@@ -36,6 +36,7 @@ export const FORM = {
   timeForce: jtt('DHTCWLVAKNmtm2iu'),
   beast: bth('8FGJyvGaCOd8hrSA'),
   dino: bth('uh73qYz8bwDobLFh'),
+  ninjaStorm: bth('Txv1ODlLKY91hPrA'),
 };
 
 const GEAR = {
@@ -107,12 +108,18 @@ export function formSpec(actor, uuid) {
     ], grants: [GEAR.chronoCommunicator, GEAR.timeBadge, GEAR.visualScanner] };
   case FORM.beast:
     return { key: 'beast', cost: 0, swaps: [] };
+  case FORM.ninjaStorm:
+    // Ninja Storm Wind Ranger (Beneath the Helmet p.57): "You can spend 1 Personal Power in
+    // conjunction with your 'It's Morphin Time!' Spectrum Role Feature to activate your Ninja Storm
+    // power." Its effects are in formDerived (movement, Duplication), formRollSources (Stealth),
+    // formToggles (the mind-control Snag) and the Use button (its element - see Ninja Storm below).
+    return { key: 'ninjaStorm', cost: 1, swaps: [] };
   default:
     return null;
   }
 }
 
-const MORPH_FORMS = [FORM.lightspeed, FORM.solar, FORM.supersonic, FORM.turbo, FORM.operator, FORM.timeForce, FORM.beast];
+const MORPH_FORMS = [FORM.lightspeed, FORM.solar, FORM.supersonic, FORM.turbo, FORM.operator, FORM.timeForce, FORM.beast, FORM.ninjaStorm];
 
 function isAdvancedRole(actor) {
   return !!itemsOf(actor).find(item => item.type == 'role')?.system?.isAdvanced;
@@ -237,6 +244,13 @@ export async function endForm(actor) {
     await setPerkEffects(perk, false);
   }
 
+  // Ninja Storm's element (and an Earth duplicate) go with the Morph.
+  for (const key of [NINJA_ACTIVE_FLAG, NINJA_DUPLICATE_FLAG]) {
+    if (flagOf(actor, key)) {
+      await actor.unsetFlag('essence20', key);
+    }
+  }
+
   await actor.unsetFlag('essence20', FORM_FLAG);
 }
 
@@ -320,6 +334,12 @@ export function formRollSources(actor, target, ctx = {}) {
     }
   }
 
+  // Ninja Storm Wind Ranger: "You gain ↑1 on Infiltration (Stealth) Skill Tests" - listed on every
+  // Infiltration roll; the player unticks it when the test isn't about stealth.
+  if (isFormActive(actor, FORM.ninjaStorm) && rolledSkill == 'infiltration') {
+    sources.push({ id: 'zord1NinjaStealth', label: findSourced(actor, FORM.ninjaStorm).name, shiftUp: 1 });
+  }
+
   // Jackrabbit's Hang-Up: "you have a Snag on all Skill Tests until you can use a Standard action to
   // consume carrots." Lasts until the Use button clears it.
   if (flagOf(actor, 'zord1Carrots')) {
@@ -367,6 +387,14 @@ export function formToggles(actor, { item, rolledSkill, dataset } = {}) {
     toggles.push({ name: 'zord1Jump', type: 'checkbox', label: T('Zord1ToggleJump') });
   }
 
+  // Ninja Storm Wind Ranger: "Any attempts to control your mind suffer Snag." It's the TARGET's Form, and
+  // only the roller knows the roll is a mind-control attempt, so it's a switch offered whenever a
+  // targeted creature has the Form active.
+  const ninja = targetedActors().find(target => target !== actor && isFormActive(target, FORM.ninjaStorm));
+  if (ninja) {
+    toggles.push({ name: 'zord1NinjaMind', type: 'checkbox', label: T('Zord1ToggleNinjaMind', { name: ninja.name }) });
+  }
+
   dinoToggles(actor, rolledSkill, toggles);
   return toggles;
 }
@@ -380,6 +408,10 @@ export async function formApplyDialog(actor, options, ctx = {}) {
   if (ext.zord1Jump) {
     giveEdge(options);
     options.isSpecialized = true;
+  }
+
+  if (ext.zord1NinjaMind) {
+    giveSnag(options);
   }
 
   if (ext.zord1SupersonicEnergy && actor?.uuid) {
@@ -491,6 +523,16 @@ export function formDerived(actor) {
     }
   }
 
+  // Ninja Storm Wind Ranger: "Your Ground Movement is doubled. This includes jumping."
+  if (isFormActive(actor, FORM.ninjaStorm) && system.movement?.ground) {
+    system.movement.ground.total = (Number(system.movement.ground.total) || 0) * 2;
+  }
+
+  // Earth's Duplication: "this reduces the Health of both you and your duplicate by 1" while split.
+  if (isNinjaDuplicated(actor) && system.health) {
+    system.health.max = Math.max(0, (Number(system.health.max) || 0) - 1);
+  }
+
   dinoDerived(actor);
 }
 
@@ -512,6 +554,140 @@ async function pickBeast(perk) {
   }
 
   return null;
+}
+
+/* -------------------------------------------- */
+/*  Ninja Storm Wind Ranger [Form]               */
+/* -------------------------------------------- */
+
+/**
+ * Ninja Storm Wind Ranger (Beneath the Helmet p.55): "When you first take this Perk, you must choose
+ * which element is connected to you" - kept on the Perk, asked when it lands on a character (or from its
+ * Use button). "Activating your element requires an extra 1 Personal Power and lasts for 3 rounds" - a
+ * Use button row while the Form is active, timed with the Scene Clock's round counter (the rest of the
+ * encounter out of combat). While it runs, the Use button offers what the element can do on the table:
+ * Air Blast and Water Blast roll their Targeting test against the target, Earth's Duplication splits off
+ * a duplicate (-1 Health while split). Aerial movement, Burrowing, Shape Earth/Water and Walk on Water
+ * are narrative and left to the table, as is the duplicate's own token.
+ */
+export const NINJA_ELEMENTS = ['air', 'earth', 'water'];
+const NINJA_ELEMENT_FLAG = 'zord1NinjaElement';
+const NINJA_ACTIVE_FLAG = 'zord1NinjaElementOn';
+const NINJA_DUPLICATE_FLAG = 'zord1NinjaDuplicate';
+// Air Blast / Water Blast: "Choose a creature within 30 feet".
+const NINJA_BLAST_RANGE = 30;
+
+const elementLabel = element => T(`Zord1NinjaElement${element.capitalize()}`);
+
+/** The element chosen for this actor's Ninja Storm Wind Ranger Perk, or null. */
+export function ninjaElement(actor) {
+  return flagOf(findSourced(actor, FORM.ninjaStorm), NINJA_ELEMENT_FLAG) ?? null;
+}
+
+/** Whether the Ninja Storm element is running: the Form is active and its 3 rounds haven't run out. */
+export function isNinjaElementActive(actor) {
+  return isFormActive(actor, FORM.ninjaStorm) && !!ninjaElement(actor) && isActiveForRounds(actor, NINJA_ACTIVE_FLAG);
+}
+
+/** Earth's Duplication is split off - it ends with the element. */
+export function isNinjaDuplicated(actor) {
+  return !!flagOf(actor, NINJA_DUPLICATE_FLAG) && ninjaElement(actor) == 'earth' && isNinjaElementActive(actor);
+}
+
+async function pickNinjaElement(perk) {
+  const picked = await choose(perk.name, T('Zord1NinjaElementPrompt'), NINJA_ELEMENTS.map(key => [key, elementLabel(key)]));
+  if (picked && NINJA_ELEMENTS.includes(picked)) {
+    await perk.setFlag('essence20', NINJA_ELEMENT_FLAG, picked);
+    return picked;
+  }
+
+  return null;
+}
+
+function targetedActors() {
+  const targets = globalThis.game?.user?.targets;
+  return targets ? [...targets].map(token => token?.actor).filter(Boolean) : [];
+}
+
+/** giveEdge's mirror: a Snag cancels an Edge first. */
+function giveSnag(options) {
+  if (options.edge) {
+    options.edge = false;
+  } else {
+    options.snag = true;
+  }
+}
+
+/** The Use button rows the Ninja Storm Form adds while it's active. */
+function ninjaRows(actor) {
+  const element = ninjaElement(actor);
+  if (!element) {
+    return [];
+  }
+
+  if (!isNinjaElementActive(actor)) {
+    return [['ninjaElement', T('Zord1NinjaElementStart', { element: elementLabel(element) })]];
+  }
+
+  if (element == 'air') {
+    return [['airBlast', T('Zord1NinjaAirBlast')]];
+  }
+
+  if (element == 'water') {
+    return [['waterBlast', T('Zord1NinjaWaterBlast')]];
+  }
+
+  return [flagOf(actor, NINJA_DUPLICATE_FLAG) ? ['ninjaMerge', T('Zord1NinjaMerge')] : ['ninjaDuplicate', T('Zord1NinjaDuplicate')]];
+}
+
+async function startNinjaElement(actor) {
+  if (!(await spendPower(actor, 1))) {
+    return null;
+  }
+
+  await activateForRounds(actor, NINJA_ACTIVE_FLAG, 3);
+  return T('Zord1NinjaElementStarted', { name: actor.name, element: elementLabel(ninjaElement(actor)) });
+}
+
+/**
+ * Air Blast: "As a Standard action... Choose a creature within 30 feet and make a Targeting (Energy)
+ * Skill Test against their Toughness. If you hit, the creature is knocked prone."
+ * Water Blast: "...make a Targeting (Energy) Skill Test against them. If you hit, you inflict 2 Stun."
+ * The book names no Defense for Water Blast; it's rolled against Evasion, the usual one for a ranged shot.
+ */
+async function ninjaBlast(actor, kind, pay) {
+  const target = targetedActors()[0];
+  if (!target) {
+    ui.notifications.warn(T('Zord1PickTarget'));
+    return null;
+  }
+
+  const distance = feetBetween(actor, target);
+  if (Number.isFinite(distance) && distance > NINJA_BLAST_RANGE + 0.5) {
+    ui.notifications.warn(T('Zord1DinoTooFar'));
+    return null;
+  }
+
+  if (!(await pay('standard'))) {
+    return null;
+  }
+
+  const defense = kind == 'air' ? 'toughness' : 'evasion';
+  const dif = Number(target.system?.defenses?.[defense]?.total) || 0;
+  const { rollTest } = await import("../../grants.mjs");
+  const { success } = await rollTest(actor, 'targeting', dif);
+  if (!success) {
+    return T('Zord1NinjaBlastMiss', { name: actor.name, target: target.name });
+  }
+
+  if (kind == 'air') {
+    await writeActor(target, 'toggleStatusEffect', ['prone', { active: true }]);
+    return T('Zord1NinjaAirBlastHit', { name: actor.name, target: target.name });
+  }
+
+  // Whoever owns the target (usually the GM) applies the Stun with the shared damage button.
+  const button = `<button type="button" data-e20-ext="o1ApplyDamage" data-target-uuid="${target.uuid}" data-amount="2" data-damage-type="stun">${T('O1ApplyDamageButton')}</button>`;
+  return `${T('Zord1NinjaWaterBlastHit', { name: actor.name, target: target.name })} ${button}`;
 }
 
 /* -------------------------------------------- */
@@ -829,6 +1005,11 @@ async function runFormUse(item, economy, pay) {
     return picked ? T('Zord1BeastChosen', { name: actor.name, beast: T(`Zord1Beast${picked.capitalize()}`) }) : null;
   }
 
+  if (uuid == FORM.ninjaStorm && !ninjaElement(actor)) {
+    const picked = await pickNinjaElement(item);
+    return picked ? T('Zord1NinjaElementChosen', { name: actor.name, element: elementLabel(picked) }) : null;
+  }
+
   if (actor.system?.isMorphed) {
     rows.push(active ? ['end', T('Zord1FormEnd')] : ['start', spec.cost ? T('Zord1FormStartCost', { cost: spec.cost }) : T('Zord1FormStart')]);
   }
@@ -853,6 +1034,10 @@ async function runFormUse(item, economy, pay) {
     if (beast == 'gorilla' && flagOf(actor, 'zord1Berserk')) {
       rows.push(['calm', T('Zord1GorillaCalm')]);
     }
+  }
+
+  if (active && uuid == FORM.ninjaStorm) {
+    rows.push(...ninjaRows(actor));
   }
 
   if (flagOf(actor, 'zord1Carrots')) {
@@ -913,6 +1098,19 @@ async function runFormUse(item, economy, pay) {
     return T('Zord1CheetahDogPass', { name: actor.name, total: roll.total });
   }
 
+  case 'ninjaElement':
+    return startNinjaElement(actor);
+  case 'airBlast':
+    return ninjaBlast(actor, 'air', pay);
+  case 'waterBlast':
+    return ninjaBlast(actor, 'water', pay);
+  case 'ninjaDuplicate':
+    // "You can split your body into two separate fighters" - the duplicate's own token is the table's.
+    await actor.setFlag('essence20', NINJA_DUPLICATE_FLAG, true);
+    return T('Zord1NinjaDuplicated', { name: actor.name });
+  case 'ninjaMerge':
+    await actor.unsetFlag('essence20', NINJA_DUPLICATE_FLAG);
+    return T('Zord1NinjaMerged', { name: actor.name });
   case 'calm':
     await actor.unsetFlag('essence20', 'zord1Berserk');
     return T('Zord1GorillaCalmed', { name: actor.name });
@@ -1019,7 +1217,8 @@ globalThis.Hooks?.on?.('updateActor', (actor, changes, options, userId) => {
   }
 });
 
-// Beast Morpher and Dino Thunder ask for their animal / power when they land on a character.
+// Beast Morpher, Ninja Storm and Dino Thunder ask for their animal / element / power when they land on a
+// character.
 globalThis.Hooks?.on?.('createItem', (item, options, userId) => {
   if (userId != globalThis.game?.user?.id || !item.parent) {
     return;
@@ -1027,6 +1226,8 @@ globalThis.Hooks?.on?.('createItem', (item, options, userId) => {
 
   if (sourceOf(item) == FORM.beast && !flagOf(item, 'zord1Beast')) {
     pickBeast(item);
+  } else if (sourceOf(item) == FORM.ninjaStorm && !flagOf(item, NINJA_ELEMENT_FLAG)) {
+    pickNinjaElement(item);
   } else if (sourceOf(item) == FORM.dino && !flagOf(item, 'zord1DinoPower')) {
     pickDinoPower(item);
   }

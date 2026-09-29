@@ -5,6 +5,10 @@
   "_id": "OujTPiQTSY2va4cG",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its Poison blast or its Sharp alternate in the same 10ft radius, and its traits apply. Needs Animal Handling +d6.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -16,6 +20,12 @@
         "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.mcL7vN77486lZogM",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Poisonous Serpents Effect",
+        "type": "weaponEffect"
+      },
+      "alt1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.6lUA01foiVK7Hsoo",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Poisonous Serpents Alternate Effect",
         "type": "weaponEffect"
       }
     },

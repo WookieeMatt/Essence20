@@ -5,6 +5,10 @@
   "_id": "pCRDLA7XZ3auR2ZO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on a Ram attack, take ↓1 to ↓3 to deal that much extra damage on a hit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

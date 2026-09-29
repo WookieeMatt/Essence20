@@ -5,6 +5,10 @@
   "_id": "8B2XZEUFpbqO9J8g",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed range and blast, and its traits apply; it is used up when thrown.</p><p>Left to the table: the Stagnate effect (lost Standard actions and the Defeat it can cause).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

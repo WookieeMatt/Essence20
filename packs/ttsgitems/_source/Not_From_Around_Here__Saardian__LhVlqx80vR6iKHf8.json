@@ -5,6 +5,10 @@
   "_id": "LhVlqx80vR6iKHf8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on while interacting with victims to get ↑1 on Social and Smarts tests, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

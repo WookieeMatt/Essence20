@@ -5,6 +5,10 @@
   "_id": "vy8VGcdoFiacJ3bT",
   "img": "systems/essence20/assets/icons/weapons/flamethrower.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Element damage in a 15ft cone. Alternate effects: the same cone that also shoves each target hit 5 ft away, or Intimidating. Its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -48,6 +52,28 @@
         "numHands": "2",
         "numTargets": 1,
         "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 15
+        },
+        "shiftDown": 0
+      },
+      "e7s2": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Ej7ShoveAltFx2Tf",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Element Jet Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 6,
+        "radius": 15,
         "range": {
           "min": null,
           "reachMultiplier": 0,

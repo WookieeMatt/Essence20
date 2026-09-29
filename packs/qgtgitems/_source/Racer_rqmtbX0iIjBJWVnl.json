@@ -5,6 +5,10 @@
   "_id": "rqmtbX0iIjBJWVnl",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 2 starting Health, 35ft Ground Movement, the Speed Essence and Driving Skill options, and the Petrolhead Perk (choose your vehicle type on it).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

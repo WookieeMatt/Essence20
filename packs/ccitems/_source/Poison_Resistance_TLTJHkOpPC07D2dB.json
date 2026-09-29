@@ -5,6 +5,10 @@
   "_id": "TLTJHkOpPC07D2dB",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while worn, you're Resistant to poison, so poison attacks against you take a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

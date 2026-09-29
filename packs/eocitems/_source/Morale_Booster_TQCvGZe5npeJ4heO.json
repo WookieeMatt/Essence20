@@ -5,6 +5,10 @@
   "_id": "TQCvGZe5npeJ4heO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Standard action, clear Frightened and Impaired from allies within 30 ft. Uses per day equal your Social and refresh on a Rest.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

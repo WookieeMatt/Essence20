@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on while you act against your oath for ↓1 on Smarts and Social tests, then switch it off. The enemies your oath brings are story material for the GM.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

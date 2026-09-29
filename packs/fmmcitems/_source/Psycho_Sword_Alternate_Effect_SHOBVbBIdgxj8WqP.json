@@ -5,6 +5,10 @@
   "_id": "SHOBVbBIdgxj8WqP",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Might against Toughness; a hit halves the target's Movement until the end of their next turn.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>Halve Movement until the end of the target's next turn</p>",

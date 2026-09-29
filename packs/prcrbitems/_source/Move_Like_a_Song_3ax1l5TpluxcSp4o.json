@@ -5,6 +5,10 @@
   "_id": "3ax1l5TpluxcSp4o",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the first attack against you each round has a Snag, or misses outright if it already had one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

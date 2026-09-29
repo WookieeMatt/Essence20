@@ -5,6 +5,10 @@
   "_id": "QXmBBtzFDk0ZE61I",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Throwing Star's Maneuver: rolls Finesse at Short range with ↓2. Change its Skill to Targeting on the sheet if you prefer.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "izA6rip6DcYsGxbq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: create your Mini-Con, then dock or deploy it. Docking shares Health and Defenses as the Mini-Con rules describe.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

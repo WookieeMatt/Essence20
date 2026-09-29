@@ -5,6 +5,10 @@
   "_id": "nmMTFyzNTa9MDbP2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: choose an Element damage type. Automatic: damage of that type against you is reduced by 1. Take it again for a second element.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

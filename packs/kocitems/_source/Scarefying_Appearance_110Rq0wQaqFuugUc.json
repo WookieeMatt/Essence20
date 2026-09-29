@@ -5,6 +5,10 @@
   "_id": "110Rq0wQaqFuugUc",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: on a success you step up one size and get +2 Intimidation. Chat card: nearby Threats your size or smaller get a DIF 14 Intimidation save or become Frightened, and you pick two benefits.</p><p>Automatic: after 10 rounds (or when the Combat or scene ends) your size goes back and the benefits end.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

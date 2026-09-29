@@ -5,6 +5,10 @@
   "_id": "lN2fxK3eWzesZ11r",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend a Story Point to add a temporary Contact you can call on once per mission.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

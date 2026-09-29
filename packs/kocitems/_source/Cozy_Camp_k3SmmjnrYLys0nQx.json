@@ -5,6 +5,10 @@
   "_id": "k3SmmjnrYLys0nQx",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: the campsite it conjures.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

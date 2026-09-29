@@ -5,6 +5,10 @@
   "_id": "tMnG6i5Y8FJefxhL",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. An adventure artifact; any bonus for finding it is awarded by the GM.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

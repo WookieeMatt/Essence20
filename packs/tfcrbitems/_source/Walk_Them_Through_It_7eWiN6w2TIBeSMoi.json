@@ -5,6 +5,10 @@
   "_id": "7eWiN6w2TIBeSMoi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: allies with no ranks in Science or Technology can still Lend Assistance to you on those Skill Tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

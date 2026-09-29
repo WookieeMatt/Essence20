@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effects (start off): Edge on Streetwise and ↑2 on Persuasion. Switch on the first at or after a performance, and the second when talking to fans of your band.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -25,7 +29,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "LUXly4HuCnwM5pDL",
       "changes": [
         {
@@ -69,7 +73,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "0EZFvABe6EgRX3t4",
       "changes": [
         {

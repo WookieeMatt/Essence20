@@ -5,6 +5,10 @@
   "_id": "p2Qk0B5PWp10ZaqN",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↓1 on all tests, Initiative included, when the scene is a library or a Librarian is involved. Roll Options Dialog: a switch for other library situations.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

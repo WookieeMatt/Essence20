@@ -5,6 +5,10 @@
   "_id": "LrcbTJQdNJVyu23f",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: friends standing next to you get +1 to all their Defenses. When a friend beside you is targeted and you aren't, you're offered the chance to spend a Friendship Point and take the effect instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

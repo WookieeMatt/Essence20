@@ -5,6 +5,10 @@
   "_id": "XeNgNZrYkWNWAXsA",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: dropping it on a character adds the Medium Blade, Tactical Armor (Silent), Standard Infiltration Kit, Short Bludgeoning and Thrown Blade (Aerodynamics), with their upgrades attached.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

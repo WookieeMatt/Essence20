@@ -5,6 +5,10 @@
   "_id": "ypRIRuDdxgCJRSPh",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (in combat): after spending the Power you get two extra Unarmed attacks this turn at no action cost.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

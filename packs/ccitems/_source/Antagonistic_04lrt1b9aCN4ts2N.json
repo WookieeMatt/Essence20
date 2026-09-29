@@ -5,6 +5,10 @@
   "_id": "04lrt1b9aCN4ts2N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll Intimidation against a target's Cleverness; on a success choose ↓1 on their tests or a Snag on their attacks against you.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ranged sniper attacks made with an Edge roll a third d20 and keep the highest. Chat card: reroll any one Targeting die and keep the result you want.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

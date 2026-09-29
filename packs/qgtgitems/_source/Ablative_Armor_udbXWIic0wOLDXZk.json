@@ -5,6 +5,10 @@
   "_id": "udbXWIic0wOLDXZk",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Blunt or Sharp attacks against the vehicle take ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

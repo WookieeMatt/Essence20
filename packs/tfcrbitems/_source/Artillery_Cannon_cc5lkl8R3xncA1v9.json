@@ -5,6 +5,10 @@
   "_id": "cc5lkl8R3xncA1v9",
   "img": "systems/essence20/assets/icons/weapons/mortar.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 2 Sharp damage at long range, with a 1-damage alternate effect; Mounted means you set it up before firing, and its other traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

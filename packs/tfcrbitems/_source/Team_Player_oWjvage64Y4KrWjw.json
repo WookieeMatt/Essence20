@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a successful Lend Assistance with the Standard action earns you a Story Point.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

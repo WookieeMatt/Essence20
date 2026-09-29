@@ -5,6 +5,10 @@
   "_id": "ddSnDksWfxPkekda",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when a combat ends, your first Social test afterwards has Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "DkBhXDqXkeR6SI7Y",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: this is story equipment that keeps time travel safe; it has no dice effects.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

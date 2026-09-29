@@ -5,6 +5,10 @@
   "_id": "yWsLaZOGVlaCXh1Y",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: while Morphed, pay 1 Personal Power once per scene to equip it and gain its Golden Sword and Battle Fire Saber attacks for the scene. The Saber can be rolled once per scene.</p><p>Left to the table: the swords' Anti-Tank and their Critical Effects.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

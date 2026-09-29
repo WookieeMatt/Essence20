@@ -5,6 +5,10 @@
   "_id": "69ijP0SuQ4demwd9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: on Social Essence Skill tests, a d20 roll of 9 or less counts as 10.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

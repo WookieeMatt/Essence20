@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: your Willpower is 9 + Smarts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

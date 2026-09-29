@@ -5,6 +5,10 @@
   "_id": "t5tbDZHpR76q1PPs",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Edge on all Smarts tests while you carry it. Luring Librarians with it is roleplay.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

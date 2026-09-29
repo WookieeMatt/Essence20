@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you can carry 3 more hands of weapons. Automatic: your Brawn counts two steps higher for carrying capacity and against armor's Brawn requirement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,52 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.b4zeeYax1vrzVGZx",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "pMuleTfHands3xQz",
+      "changes": [
+        {
+          "key": "system.loadout.handsMax",
+          "mode": 2,
+          "value": "3",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Bonuses",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!b4zeeYax1vrzVGZx.pMuleTfHands3xQz"
+    }
+  ],
   "flags": {
     "core": {}
   },

@@ -5,6 +5,10 @@
   "_id": "VkSI68BkpXLOC5ys",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch when trying to identify someone wearing it; it gives ↓1, plus ↓1 more for each ally in the scene also wearing a Uniform.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

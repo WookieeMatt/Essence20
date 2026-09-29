@@ -5,6 +5,10 @@
   "_id": "Ce5f5pQTNTSY6xgF",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 Toughness for the Zord. Roll Options Dialog: the pilot gets Edge on Intimidation and Persuasion through the Zord, and a Stun switch for ranged attacks. Enemies the Zord defeats are captured automatically, up to 6 per scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

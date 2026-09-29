@@ -5,6 +5,10 @@
   "_id": "k9vTsANvhJ6jWAC8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Analyze Target costs a Free action in the action tracker, and you can use it several times in one turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

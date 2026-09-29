@@ -5,6 +5,10 @@
   "_id": "57an1eB6FMmcpKlk",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (also offered when gained): pick three damage types for the Zord. Roll Options Dialog: on the Zord's area attacks, choose one of them (a Free action), and the hit gets a button to apply damage of that type.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

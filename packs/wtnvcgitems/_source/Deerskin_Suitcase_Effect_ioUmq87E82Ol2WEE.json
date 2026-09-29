@@ -5,6 +5,10 @@
   "_id": "ioUmq87E82Ol2WEE",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a two-handed Athletics attack at Short range for 1 Sharp damage plus 1 Stun in a 10 ft cone.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

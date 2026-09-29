@@ -5,6 +5,10 @@
   "_id": "PHzAgfYygOH67l1P",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: your targeted friend gets ↑1 on the risky test. Left to the table: you take the consequence of failure in their place.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

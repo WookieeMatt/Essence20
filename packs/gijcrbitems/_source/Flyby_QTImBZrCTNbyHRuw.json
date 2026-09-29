@@ -5,6 +5,10 @@
   "_id": "QTImBZrCTNbyHRuw",
   "img": "systems/essence20/assets/icons/gear/wingsuit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the vehicle attacks with Might at Reach for 2 Blunt damage, or trips the target with its alternate effect. In combat you're warned if it hasn't moved 15 ft first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -23,6 +27,29 @@
         },
         "damageValue": 2,
         "damageType": "blunt",
+        "isFlyby": true,
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "a7c3": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.oWwb0CkclmWqd7tY",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Flyby Alternate Effect (Trip)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
         "isFlyby": true,
         "numHands": "0",
         "numTargets": 1,

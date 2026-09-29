@@ -5,6 +5,10 @@
   "_id": "DyIbIDlzOJX5GiO2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a spell tier and circle. You get ↑1 when casting spells of that kind.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

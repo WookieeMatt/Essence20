@@ -5,6 +5,10 @@
   "_id": "gyDCPmqswCQJYN6e",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power; for the rest of the scene your unarmed and weapon attacks deal Void damage, and you can't regain Personal Power while it lasts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

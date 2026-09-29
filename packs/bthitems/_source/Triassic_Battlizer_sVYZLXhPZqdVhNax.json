@@ -5,6 +5,10 @@
   "_id": "sVYZLXhPZqdVhNax",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: while Morphed, pay its Personal Power cost to summon it, tripling your movement and granting its attacks. Active Effect: extra Ground movement while worn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

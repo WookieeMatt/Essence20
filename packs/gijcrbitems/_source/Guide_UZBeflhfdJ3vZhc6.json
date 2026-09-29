@@ -5,6 +5,10 @@
   "_id": "UZBeflhfdJ3vZhc6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: spend a Story Point and your Standard action, and your allies ignore Rough Terrain penalties in your environment for 1 minute.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

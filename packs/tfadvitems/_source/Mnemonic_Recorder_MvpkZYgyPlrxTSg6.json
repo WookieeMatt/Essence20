@@ -5,6 +5,10 @@
   "_id": "MvpkZYgyPlrxTSg6",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this recording device: switching it on and what it captures are up to the GM.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

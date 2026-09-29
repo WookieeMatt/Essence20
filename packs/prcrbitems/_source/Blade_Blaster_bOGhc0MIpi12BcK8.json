@@ -5,6 +5,10 @@
   "_id": "bOGhc0MIpi12BcK8",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll with its blade or blaster effect, each with its listed damage and range; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "dzYRdi2cSlZSHozs",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Weird General Perk can't be added to you. Roll Options Dialog: a switch for ↓1 on tests contested by someone's Weird Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

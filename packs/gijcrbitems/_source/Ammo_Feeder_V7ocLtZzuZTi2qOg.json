@@ -5,6 +5,10 @@
   "_id": "V7ocLtZzuZTi2qOg",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's attached to loses the Reload trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

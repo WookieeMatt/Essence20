@@ -5,6 +5,10 @@
   "_id": "Rdui5HyU7cwrNrmA",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Tactical Armor (Silent), a Limited Technology (Communications) Kit and a Limited Technology (Computers) Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

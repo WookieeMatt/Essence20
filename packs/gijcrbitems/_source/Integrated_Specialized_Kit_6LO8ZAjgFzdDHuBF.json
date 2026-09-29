@@ -5,6 +5,10 @@
   "_id": "6LO8ZAjgFzdDHuBF",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: give the drone a Restricted kit at Equipment Assignment and Requisition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

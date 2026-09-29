@@ -5,6 +5,10 @@
   "_id": "MaOcXBhyt1r4vayk",
   "img": "systems/essence20/assets/icons/weapons/brass-knuckles.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage; its traits apply.</p><p>Left to the table: losing d4 Personal Power when you roll a 1 with it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

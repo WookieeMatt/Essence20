@@ -5,6 +5,10 @@
   "_id": "tuQaie4eX4MLl1Wp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your merge Use button costs 1 Energon and a Free action instead of the usual Energon and Standard action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

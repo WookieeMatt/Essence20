@@ -138,6 +138,19 @@ describe("getRerollConfigs", () => {
     expect(configs[0].skills).toEqual([]);
   });
 
+  test("a Perk with a chosen Skill (Expertise, Trade Experience) scopes its reroll to that Skill", () => {
+    const actor = makeActor();
+    actor.items = [
+      { uuid: "Item.expertise", system: { choiceType: 'skills', choice: 'science', reroll: { enabled: true, mode: "ones", target: "skillDice" } } },
+      { uuid: "Item.unpicked", system: { choiceType: 'skills', choice: null, reroll: { enabled: true, mode: "ones", target: "skillDice" } } },
+    ];
+    actor.effects = [];
+
+    const configs = getRerollConfigs(actor);
+    expect(configs[0].skills).toEqual(['science']);
+    expect(configs[1].skills).toEqual([]);
+  });
+
   test("reads a reroll grant off an ActiveEffect", () => {
     const actor = makeActor();
     actor.items = [];

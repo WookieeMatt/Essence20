@@ -4,6 +4,10 @@
   "type": "armor",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>On the sheet: counts as Ultra-Heavy armor for training.</p><p>Left to the table: the optional battledress rules for its Health and Counter trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
 import {
+  activateForRounds,
   activateForWindow,
   advanceEncounter,
   advanceScene,
@@ -8,6 +9,7 @@ import {
   getSceneEpoch,
   getSceneLabel,
   getUses,
+  isActiveForRounds,
   isActiveForWindow,
   markUsed,
   setSceneLabel,
@@ -230,6 +232,61 @@ describe("isActiveForWindow / activateForWindow", () => {
     await activateForWindow(actor, 'foolscarrotActive', 'scene');
 
     expect(actor.store.foolscarrotActive.count).toBe(1);
+  });
+});
+
+describe("isActiveForRounds / activateForRounds", () => {
+  function withCombat(combat) {
+    global.game.combat = combat;
+    global.game.combats = { get: id => (combat?.id == id ? combat : undefined) };
+  }
+
+  test("inactive until activated", () => {
+    expect(isActiveForRounds(makeActor(), 'illuminateActive')).toBe(false);
+  });
+
+  test("out of combat it lasts the rest of the encounter", async () => {
+    const actor = makeActor();
+    await activateForRounds(actor, 'illuminateActive', 10);
+    expect(isActiveForRounds(actor, 'illuminateActive')).toBe(true);
+
+    await advanceEncounter();
+    expect(isActiveForRounds(actor, 'illuminateActive')).toBe(false);
+  });
+
+  test("in combat it runs out on the caster's turn the given number of rounds later", async () => {
+    const combat = { id: 'c1', round: 2, turn: 3 };
+    withCombat(combat);
+    const actor = makeActor();
+    await activateForRounds(actor, 'illuminateActive', 10);
+    expect(actor.store.illuminateActive).toMatchObject({ combatId: 'c1', untilRound: 12, untilTurn: 3 });
+
+    combat.round = 12;
+    combat.turn = 2;
+    expect(isActiveForRounds(actor, 'illuminateActive')).toBe(true);
+
+    combat.turn = 3;
+    expect(isActiveForRounds(actor, 'illuminateActive')).toBe(false);
+  });
+
+  test("a combat that hasn't started counts from round 1", async () => {
+    withCombat({ id: 'c1', round: 0, turn: 0 });
+    const actor = makeActor();
+    await activateForRounds(actor, 'x', 10);
+    expect(actor.store.x.untilRound).toBe(11);
+  });
+
+  test("ends when its combat ends, even if the encounter counter doesn't advance", async () => {
+    withCombat({ id: 'c1', round: 1, turn: 0 });
+    const actor = makeActor();
+    await activateForRounds(actor, 'x', 10);
+
+    withCombat(null);
+    expect(isActiveForRounds(actor, 'x')).toBe(false);
+  });
+
+  test("a legacy plain-true flag reads as expired", () => {
+    expect(isActiveForRounds(makeActor({ x: true }), 'x')).toBe(false);
   });
 });
 

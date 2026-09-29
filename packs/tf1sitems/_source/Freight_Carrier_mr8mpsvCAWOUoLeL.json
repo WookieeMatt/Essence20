@@ -5,6 +5,10 @@
   "_id": "mr8mpsvCAWOUoLeL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: trading your Alt Mode's Crew capacity for room to carry Cybertronians, by their size.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

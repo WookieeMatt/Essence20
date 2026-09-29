@@ -5,6 +5,10 @@
   "_id": "gA9RXtpzJmZ8gZRp",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the once-per-scene solo finishing move, set up as an attack by hand, and its aftermath for the Zord and you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

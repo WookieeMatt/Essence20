@@ -5,6 +5,10 @@
   "_id": "PaArqqdMbUJ31LWR",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its effects below, and its traits apply. Needs Animal Handling +d8 to use without penalty.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

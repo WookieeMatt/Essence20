@@ -5,6 +5,10 @@
   "_id": "GqxgLMadhmPYJgKq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic, once per turn: when damage is applied to an ally you could reach with a Sprint, the GM is offered to send it to you instead. Move your token next to them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

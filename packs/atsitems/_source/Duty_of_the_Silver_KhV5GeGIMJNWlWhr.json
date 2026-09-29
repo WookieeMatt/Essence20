@@ -5,6 +5,10 @@
   "_id": "KhV5GeGIMJNWlWhr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spends 1 Grid Surge and 2 Personal Power to teleport. Granted: Heavy Armor training, or Ultra-Heavy if you already have Heavy.</p><p>Left to the table: moving your token to the other Rangers.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

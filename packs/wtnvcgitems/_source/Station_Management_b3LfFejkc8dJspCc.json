@@ -5,6 +5,10 @@
   "_id": "b3LfFejkc8dJspCc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 Cleverness. Automatic: +1 damage on attacks that target Cleverness.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

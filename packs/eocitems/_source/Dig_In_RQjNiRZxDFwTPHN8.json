@@ -5,6 +5,10 @@
   "_id": "RQjNiRZxDFwTPHN8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: dig in; attackers take a bigger cover penalty and your Aim bonus rises to ↑2 while it lasts.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

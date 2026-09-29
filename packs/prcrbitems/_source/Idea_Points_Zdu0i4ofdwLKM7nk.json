@@ -5,6 +5,10 @@
   "_id": "Zdu0i4ofdwLKM7nk",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: tracks your Idea Points, which grow at the listed levels; Eureka! spends them.</p><p>Left to the table: refilling them each day.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "va1HF5CudO4WsguB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend a Story Point to double your Ground Movement until the end of your turn; your next melee attack that turn gains Edge.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

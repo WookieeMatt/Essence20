@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: +1 to all Defenses while an ally is adjacent (leave the switchable effect off). Use button: add a Story Point to the team's pool.</p><p>Left to the table: the extra Story Point is once per session, and spending Power for the 15-foot move.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

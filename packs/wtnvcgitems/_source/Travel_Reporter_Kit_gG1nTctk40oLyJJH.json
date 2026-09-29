@@ -5,6 +5,10 @@
   "_id": "gG1nTctk40oLyJJH",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: counts as a Streetwise kit for rolls that call for one, and adds a Recording Microphone when you get it. Use button: spend it for temporary Specialization (or an Edge if already Specialized), or restock it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

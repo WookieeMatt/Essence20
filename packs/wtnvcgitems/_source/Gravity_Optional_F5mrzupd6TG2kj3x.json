@@ -5,6 +5,10 @@
   "_id": "F5mrzupd6TG2kj3x",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Athletics tests, a Jump switch that posts the tripled result. Use button (once per scene): float, giving you Aerial Movement of 5 ft plus 5 ft per five levels until you switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

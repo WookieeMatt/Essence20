@@ -5,6 +5,10 @@
   "_id": "vrV3LXAqkl6upsRv",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the upgraded weapon deals +1 damage to a target that has any Condition, and gains the Intimidating alternate effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

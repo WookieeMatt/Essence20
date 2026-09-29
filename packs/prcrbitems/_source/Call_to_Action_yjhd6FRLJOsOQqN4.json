@@ -5,6 +5,10 @@
   "_id": "yjhd6FRLJOsOQqN4",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: every Zord gets this Feature. When it is summoned the arrival time is rolled and shown on the Zord's sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

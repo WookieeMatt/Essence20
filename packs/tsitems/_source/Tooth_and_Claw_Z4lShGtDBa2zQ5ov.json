@@ -5,6 +5,10 @@
   "_id": "Z4lShGtDBa2zQ5ov",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Alt Mode your unarmed attacks get Accurate (↑1) and deal Sharp or Blunt damage, whichever you picked when you took the Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

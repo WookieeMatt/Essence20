@@ -5,6 +5,10 @@
   "_id": "RH3AFV38EBAfTvW1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: no ↓ penalty on the alternate attacks of your Silent Martial Arts weapons. Switching weapons isn't charged as an action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

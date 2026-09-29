@@ -5,6 +5,10 @@
   "_id": "r4ZliGm8kWHuzT9S",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Influence Perk, Mind Like a Steel Trap. If it's your second or later Influence, you also pick one of its Hang-Ups (Bookworm, Gluten-Tolerant or Obsessive).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

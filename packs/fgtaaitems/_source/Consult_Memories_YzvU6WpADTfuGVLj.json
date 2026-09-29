@@ -5,6 +5,10 @@
   "_id": "YzvU6WpADTfuGVLj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick a Skill to gain ↑2 and Specialization in it for the scene.</p><p>Left to the table: spending Personal Power to extend it to more scenes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

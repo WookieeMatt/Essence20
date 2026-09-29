@@ -5,6 +5,10 @@
   "_id": "lhmvqRKAnfBs69H9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 maximum Personal Power. Automatic: ↑1 on Driving tests while piloting any Zord.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

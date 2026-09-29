@@ -5,6 +5,10 @@
   "_id": "QAMsrUdrnnMZrkVY",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: morphing uses your Role's It's Morphin Time! on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

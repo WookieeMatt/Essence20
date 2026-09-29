@@ -5,6 +5,10 @@
   "_id": "CTxXiSjkCjh9L1e1",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: adding it to your sheet raises Strength and lowers Speed as listed; removing it undoes both.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

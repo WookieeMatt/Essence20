@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on for Culture or Survival tests about places or peoples you may have met to get ↑1, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "U5xY4e0Wro9XyooS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power to heal a Morphed teammate within 60 feet 1 Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

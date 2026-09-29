@@ -5,6 +5,10 @@
   "_id": "QgOmAj0Y7nYw1ibW",
   "img": "systems/essence20/assets/icons/gear/portable_3d_printer.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: printing simple items, which takes about 30 minutes each.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

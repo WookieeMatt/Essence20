@@ -5,6 +5,10 @@
   "_id": "rIbVDjuM3dwnTgbD",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: City Council Candidate at level 1 and Soft Meat Crown at level 4, plus the Focus Essence increases. The character needs the Politician Role first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

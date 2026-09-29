@@ -676,6 +676,79 @@ describe("onApplyDamage", () => {
     });
   });
 
+  describe("Essence damage types (helpers/essence-attack.mjs)", () => {
+    function makeEssenceTarget() {
+      const target = makeTarget({ perkIds: [FORTITUDE_ID], health: 10 });
+      target.system.essences = {
+        strength: { max: 3, value: 3 }, speed: { max: 3, value: 3 },
+        smarts: { max: 3, value: 3 }, social: { max: 3, value: 3 },
+      };
+      return target;
+    }
+
+    afterEach(() => {
+      foundry.applications.api.DialogV2.wait.mockReset();
+    });
+
+    test("takes the points off the Essence, skipping Health and its reductions", async () => {
+      const target = makeEssenceTarget();
+      fromUuid.mockResolvedValue(target);
+      const message = makeMessage();
+      const button = makeButton({ damage: '2', damageType: 'essenceStrength' });
+
+      await onApplyDamage(message, button);
+
+      // Fortitude's -1 is a Health reduction - both points land.
+      expect(target.update).toHaveBeenCalledTimes(2);
+      expect(target.update).toHaveBeenCalledWith({ 'system.essences.strength.value': 2 });
+      expect(target.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.health.value': expect.anything() }));
+      expect(button.disabled).toBe(true);
+      expect(global.ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({
+        content: expect.stringContaining('E20.EssenceAttackApplied'),
+      }));
+    });
+
+    test("an attack rolled with Science lets the attacker pick the Essence", async () => {
+      const target = makeEssenceTarget();
+      fromUuid.mockResolvedValue(target);
+      foundry.applications.api.DialogV2.wait.mockResolvedValue('social');
+      const message = makeMessage();
+      message.flags = { essence20: { skill: 'science' } };
+
+      await onApplyDamage(message, makeButton({ damage: '1', damageType: 'essenceAny' }));
+
+      expect(foundry.applications.api.DialogV2.wait).toHaveBeenCalled();
+      expect(target.update).toHaveBeenCalledWith({ 'system.essences.social.value': 2 });
+    });
+
+    test("closing the attacker's choice leaves the button live", async () => {
+      const target = makeEssenceTarget();
+      fromUuid.mockResolvedValue(target);
+      foundry.applications.api.DialogV2.wait.mockResolvedValue(null);
+      const message = makeMessage();
+      message.flags = { essence20: { skill: 'science' } };
+      const button = makeButton({ damage: '1', damageType: 'essenceSwap' });
+
+      await onApplyDamage(message, button);
+
+      expect(target.update).not.toHaveBeenCalled();
+      expect(button.disabled).toBe(false);
+      expect(message.setFlag).not.toHaveBeenCalled();
+    });
+
+    test("a Health hit's second damage can be Essence damage, and doesn't count as Health lost", async () => {
+      const target = makeEssenceTarget();
+      fromUuid.mockResolvedValue(target);
+      const message = makeMessage();
+      message.flags = { essence20: { checkResults: [{ targetUuid: 'Actor.target1', secondaryDamage: { type: 'essenceSpeed', value: 1, base: 1 } }] } };
+
+      await onApplyDamage(message, makeButton({ damage: '3', damageType: 'blunt', key: 'Actor.target1:base' }));
+
+      expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 8 }); // 3 - Fortitude's 1
+      expect(target.update).toHaveBeenCalledWith({ 'system.essences.speed.value': 2 });
+    });
+  });
+
   describe("Sudden Death (Blitzer Focus, 20th level, p.98)", () => {
     beforeEach(() => {
       game.combat = { id: 'combat1', round: 1, turn: 0 };
@@ -1099,7 +1172,9 @@ describe("onApplyDamage", () => {
     });
   });
 
-  describe("Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99) - Resistance-after-hit dispatch", () => {
+  // Tough Enough: "you have resistance to the damage" of a non-attack effect against Toughness - that
+  // hit is halved, rounded up (helpers/combat.mjs#toughEnoughDamage), nothing is granted for later.
+  describe("Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99) - halves a non-attack effect against Toughness", () => {
     const TOUGH_ENOUGH_ID = "Compendium.essence20.gi_joe_crb.Item.RoIa80w6EAZR0uFP";
 
     function makeMessageWithFlags({ isAttack = false, defenseType = 'toughness' } = {}) {
@@ -1123,40 +1198,41 @@ describe("onApplyDamage", () => {
       };
     }
 
-    test("grants Resistance after a non-attack effect against Toughness lands", async () => {
+    test("halves the damage of a non-attack effect against Toughness (rounded up)", async () => {
       const target = makeTarget({ perkIds: [TOUGH_ENOUGH_ID] });
       fromUuid.mockResolvedValue(target);
 
       await onApplyDamage(makeMessageWithFlags(), makeButton({ damageType: 'fire' }));
 
-      expect(target.update).toHaveBeenCalledWith({ 'system.resistances.fire': true });
+      expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 7 });
+      expect(target.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.resistances.fire': expect.anything() }));
     });
 
-    test("doesn't grant Resistance for an ordinary Attack against Toughness", async () => {
+    test("takes full damage from an ordinary Attack against Toughness", async () => {
       const target = makeTarget({ perkIds: [TOUGH_ENOUGH_ID] });
       fromUuid.mockResolvedValue(target);
 
       await onApplyDamage(makeMessageWithFlags({ isAttack: true }), makeButton({ damageType: 'fire' }));
 
-      expect(target.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.resistances.fire': expect.anything() }));
+      expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
     });
 
-    test("doesn't grant Resistance for a non-attack effect against a different Defense", async () => {
+    test("takes full damage from a non-attack effect against a different Defense", async () => {
       const target = makeTarget({ perkIds: [TOUGH_ENOUGH_ID] });
       fromUuid.mockResolvedValue(target);
 
       await onApplyDamage(makeMessageWithFlags({ defenseType: 'evasion' }), makeButton({ damageType: 'fire' }));
 
-      expect(target.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.resistances.fire': expect.anything() }));
+      expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
     });
 
-    test("doesn't grant Resistance without the Perk", async () => {
+    test("takes full damage without the Perk", async () => {
       const target = makeTarget();
       fromUuid.mockResolvedValue(target);
 
       await onApplyDamage(makeMessageWithFlags(), makeButton({ damageType: 'fire' }));
 
-      expect(target.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.resistances.fire': expect.anything() }));
+      expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
     });
   });
 });

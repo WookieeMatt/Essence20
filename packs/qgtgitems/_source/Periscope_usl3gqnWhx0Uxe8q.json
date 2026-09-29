@@ -5,6 +5,10 @@
   "_id": "usl3gqnWhx0Uxe8q",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: one occupant looking out from 30ft above the vehicle, and the ↓2 others take to notice the periscope.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

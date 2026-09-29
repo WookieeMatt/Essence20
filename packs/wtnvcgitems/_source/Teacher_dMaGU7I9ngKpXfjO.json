@@ -5,6 +5,10 @@
   "_id": "dMaGU7I9ngKpXfjO",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Lesson Plan Origin Perk. When you add it, you pick the Essence increase (Social or Speed) and one Origin Skill (Acrobatics, Initiative, Performance or Persuasion).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

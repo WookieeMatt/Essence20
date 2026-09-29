@@ -5,6 +5,10 @@
   "_id": "DRHPP4jmrjNa53ZA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when a teammate on the scene would drop to 0 Health, the table is asked whether you spend 1 Personal Power. If you do, they stay at 1 Health with the Impaired Condition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

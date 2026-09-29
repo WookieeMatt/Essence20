@@ -5,6 +5,10 @@
   "_id": "egWuVVSAAb5Z8EZa",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick your second Dino Thunder power, then activate both for 1 Personal Power; both end when you Morph. GM approval is up to the table.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

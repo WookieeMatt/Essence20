@@ -5,6 +5,10 @@
   "_id": "N4OwC0gTkUtRwBKr",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a ↓2 switch for tests your era would leave you unfamiliar with. Use button: rolls the Continuum Anomaly risk die one size larger, hidden for the GM.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "9jIUSvOv8g2YJPUN",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Rugged Frame and Equipment Duty at level 1, plus the Essence increases and General Perk picks at the listed levels. Your Focus (Blood Space War Veteran or StrexCorp Rebel) adds the Focus Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Hy0XgUPiartF6ThR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic when picked as your imperfection with A Hint of Independence's Use button: when you Fumble, a random creature next to you takes 1 damage of your chosen type.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

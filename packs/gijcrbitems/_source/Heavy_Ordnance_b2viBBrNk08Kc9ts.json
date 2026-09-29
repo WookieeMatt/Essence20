@@ -5,6 +5,10 @@
   "_id": "b2viBBrNk08Kc9ts",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks with the weapons of a vehicle you're piloting get an Edge against vehicles and against enemies your size or bigger.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

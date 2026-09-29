@@ -5,6 +5,10 @@
   "_id": "lUpKkyjEbfCFEFzx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: using Postmortem Interrogation on Restrained or Defeated Cybertronians by taking a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

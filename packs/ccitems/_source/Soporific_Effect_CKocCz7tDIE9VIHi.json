@@ -5,6 +5,10 @@
   "_id": "CKocCz7tDIE9VIHi",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: rolled from its poison with the listed Skill. Chat card: on a hit, a button puts the target in the Unconscious condition for 3 rounds.</p><p>Left to the table: the Poisoned condition.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",
@@ -36,7 +40,14 @@
     "default": 0,
     "VEn5sPQRoWgUw9qd": 3
   },
-  "flags": {},
+  "flags": {
+    "essence20": {
+      "onHitStatus": {
+        "status": "unconscious",
+        "rounds": 3
+      }
+    }
+  },
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,

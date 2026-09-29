@@ -5,6 +5,10 @@
   "_id": "ynmWnTrRElBAPTxj",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Herbal Remedy Perk. The Instinctual Caster Hang-Up is added too if you have another Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

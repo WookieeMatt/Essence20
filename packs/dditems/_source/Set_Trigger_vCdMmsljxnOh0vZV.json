@@ -5,6 +5,10 @@
   "_id": "vCdMmsljxnOh0vZV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the DIF 14 test and the GM's call on long-lasting Contingency actions.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

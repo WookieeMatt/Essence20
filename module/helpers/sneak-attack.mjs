@@ -229,16 +229,23 @@ function _getWeaponQualifierAndRange(actor, weapon, weaponEffect) {
  *   isn't reflected here, the same timing limitation aimBonus/energonAvailable already have.
  * @returns {{eligible: Boolean, reason: String}}
  */
-export function checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack) {
+export function checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack, { ignoreSuddenStrike = false } = {}) {
   // Sudden Strike - see SUDDEN_STRIKE_ID's own comment above. Bypasses every other check below
   // ("regardless of the circumstances of your attack"), once per combat, while a Story Point is
   // actually available to spend - the resource itself is the throttle, same as every other
   // Story-Point-gated ability in this project. The actual spend + once-per-combat mark happens
   // where Sneak Attack Damage is actually applied (dice.mjs, alongside markSneakAttackUsed), not
   // here - this function only decides whether the Roll Options Dialog checkbox can be offered.
-  if (actorHasPerk(actor, SUDDEN_STRIKE_ID) && !hasUsedThisEncounter(actor, SUDDEN_STRIKE_ENCOUNTER_FLAG)
+  // viaSuddenStrike is set only when the ordinary checks would have failed, so dice.mjs spends the
+  // Story Point only when Sudden Strike was actually needed.
+  if (!ignoreSuddenStrike && actorHasPerk(actor, SUDDEN_STRIKE_ID) && !hasUsedThisEncounter(actor, SUDDEN_STRIKE_ENCOUNTER_FLAG)
     && canWriteStoryPoints() && hasStoryPointsAvailable(1)) {
-    return { eligible: true, reason: game.i18n.localize('E20.SneakAttackReasonEligible') };
+    const ordinary = checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack, { ignoreSuddenStrike: true });
+    if (ordinary.eligible) {
+      return ordinary;
+    }
+
+    return { eligible: true, reason: game.i18n.localize('E20.SneakAttackReasonEligible'), viaSuddenStrike: true };
   }
 
   // Perfect Disguise (GI Joe CRB, Spy, 10th level, p.76): "Your attacks against targets fooled by

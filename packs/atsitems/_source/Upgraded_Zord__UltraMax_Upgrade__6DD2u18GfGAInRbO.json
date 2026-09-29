@@ -5,6 +5,10 @@
   "_id": "6DD2u18GfGAInRbO",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Strength and +1 Speed for the Zord.</p><p>Left to the table: the matching Skill increases, +1 base damage on all its attacks, and keeping only one Upgraded Zord option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

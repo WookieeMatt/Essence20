@@ -5,6 +5,10 @@
   "_id": "9oKCarkTuzwK8BQu",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: this upgrade gives you the Combiner trait so you can join a Megaform; the sheet doesn't add the trait for you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "kow4o1ubo29p8b0D",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: adds its bonus to the drone's chosen Defense as though it wore battledress (the best bonus per Defense counts).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

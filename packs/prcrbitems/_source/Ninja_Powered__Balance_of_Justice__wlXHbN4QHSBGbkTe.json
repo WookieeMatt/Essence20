@@ -5,6 +5,10 @@
   "_id": "wlXHbN4QHSBGbkTe",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: allies get Edge on attacks against a target this Zord attacked earlier in the round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

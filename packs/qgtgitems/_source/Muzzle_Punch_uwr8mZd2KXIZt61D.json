@@ -5,6 +5,10 @@
   "_id": "uwr8mZd2KXIZt61D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: with a target in reach, roll Finesse or Might against its Toughness; on a success it is pushed 5ft away and its Movement drops by the same amount (10ft on a Critical Success).</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

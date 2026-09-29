@@ -5,6 +5,10 @@
   "_id": "XXx1QPWtDOQree4I",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Stretch Kick attack, rolling Might for 1 Blunt damage with reach.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

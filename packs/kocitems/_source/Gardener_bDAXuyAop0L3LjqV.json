@@ -5,6 +5,10 @@
   "_id": "bDAXuyAop0L3LjqV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑1 on Survival tests.</p><p>Left to the table: the book limits this to examining plants, but the effect is always on, so switch it off for other Survival tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

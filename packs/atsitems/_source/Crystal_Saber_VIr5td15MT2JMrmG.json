@@ -5,6 +5,10 @@
   "_id": "VIr5td15MT2JMrmG",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for 2 Sharp damage at Reach; the Accurate trait adds its ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

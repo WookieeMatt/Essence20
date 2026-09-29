@@ -5,6 +5,10 @@
   "_id": "n3jz96BTtOv01qjz",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Junker Perk. Its Hang-Up is added too when this is not your first Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

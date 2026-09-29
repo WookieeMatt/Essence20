@@ -5,6 +5,10 @@
   "_id": "km6HV50h6XWKTIm1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, when the GM laughs, regain 1 Cheer Point (up to your maximum).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

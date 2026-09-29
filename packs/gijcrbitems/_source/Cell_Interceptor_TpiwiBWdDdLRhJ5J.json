@@ -5,6 +5,10 @@
   "_id": "TpiwiBWdDdLRhJ5J",
   "img": "systems/essence20/assets/icons/gear/cell_interceptor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: roll Technology against the listed difficulty to single out a call.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

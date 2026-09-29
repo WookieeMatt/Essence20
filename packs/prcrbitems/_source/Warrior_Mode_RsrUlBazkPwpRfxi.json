@@ -5,6 +5,10 @@
   "_id": "RsrUlBazkPwpRfxi",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 3 of the pilot's Personal Power to switch Warrior Mode on. Automatic: the Zord becomes Towering, gets ↑2 on Initiative and +1 melee damage, and leaves Warrior Mode when it joins a Megaform or drops to 0 Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

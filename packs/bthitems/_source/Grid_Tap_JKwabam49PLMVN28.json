@@ -5,6 +5,10 @@
   "_id": "JKwabam49PLMVN28",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: whenever you gain a Grid Science or Grid Tech Perk while holding this, its picker offers one extra choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

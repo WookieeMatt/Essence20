@@ -5,6 +5,10 @@
   "_id": "bfBFQH3sxny3BfEK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per encounter, after a Might melee hit on a target whose Threat Level is at or below your level, a button defeats it instead of dealing damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

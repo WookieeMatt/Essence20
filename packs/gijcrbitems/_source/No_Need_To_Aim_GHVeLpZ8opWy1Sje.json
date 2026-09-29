@@ -5,6 +5,10 @@
   "_id": "GHVeLpZ8opWy1Sje",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: before a Multiple Targets attack is rolled, every target takes 1 damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

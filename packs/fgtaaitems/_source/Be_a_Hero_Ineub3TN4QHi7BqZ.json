@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: pick a G.I. JOE Role and add that Role's Be a Hero Perk to your sheet yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

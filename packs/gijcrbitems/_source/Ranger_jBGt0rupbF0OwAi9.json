@@ -5,6 +5,10 @@
   "_id": "jBGt0rupbF0OwAi9",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Adaptation Points, Environmental Expertise, Adaptation, Environmental Exposure and Forage at their listed levels, plus the GI Joe faction Perk. Essence increases, General Perk levels and armor and weapon training apply as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

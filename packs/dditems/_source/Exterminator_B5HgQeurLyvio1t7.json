@@ -5,6 +5,10 @@
   "_id": "B5HgQeurLyvio1t7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: against a Common or Small target smaller than you, ↑1 and you're offered rerolls of Skill Die 1s.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

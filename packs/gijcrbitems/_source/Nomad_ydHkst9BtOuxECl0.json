@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for an Edge on Alertness or Culture when reading someone's motives or recalling a city you've lived in.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

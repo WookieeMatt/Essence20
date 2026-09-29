@@ -5,6 +5,10 @@
   "_id": "0z3fmQc1oD2rBykU",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Targeting shots at Long range for 1 Sharp damage, or the heavier alternates (2 Sharp at ↓1, 3 Sharp at ↓3); its traits apply. Mounted needs setting up on the sheet before it fires, and Reload means reloading after each shot.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -16,6 +20,18 @@
         "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.XxwN1gz5gnjSpljc",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Sniper Rifle Effect",
+        "type": "weaponEffect"
+      },
+      "alt1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.yU7tMa62GuFliBzw",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Sniper Rifle Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "alt2": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.491Y0Dc6WHwBimSu",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Sniper Rifle Alternate Effect 2",
         "type": "weaponEffect"
       }
     },

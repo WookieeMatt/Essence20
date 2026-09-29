@@ -5,6 +5,10 @@
   "_id": "9YeMvZ7WkyfTxvfG",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Origin's Essence choice, its Skills, 1 starting Health, 30 ft ground movement and the Mirror-Mirror Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

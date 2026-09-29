@@ -5,6 +5,10 @@
   "_id": "DNUK9D7GiICn8VW2",
   "img": "systems/essence20/assets/icons/gear/wingsuit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a vehicle's fly-by ram rolls Might at Reach for 2 Blunt damage. Perks that improve fly-by attacks recognise it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "3oTdxkJmm74S559r",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: your Cheer Point pool, which grows at the levels in the Spirit of Laughter table and refills on a Rest. Cheer and the Laugh Tactics spend from it automatically.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

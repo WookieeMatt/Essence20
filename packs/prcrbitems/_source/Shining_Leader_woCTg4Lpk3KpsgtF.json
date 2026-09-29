@@ -5,6 +5,10 @@
   "_id": "woCTg4Lpk3KpsgtF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: while Morphed, spend 1 Personal Power, once per combat. Automatic: your allies get Edge on attacks for the rest of this round and the next.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

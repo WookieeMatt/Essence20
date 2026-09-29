@@ -5,6 +5,10 @@
   "_id": "tOugALzdjmKHD8Ck",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (also offered when you gain it): pick a Zord Feature to add to your Zord. If you have several Zords, it asks which one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

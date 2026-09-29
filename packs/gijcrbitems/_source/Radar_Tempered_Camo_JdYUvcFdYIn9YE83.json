@@ -5,6 +5,10 @@
   "_id": "JdYUvcFdYIn9YE83",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the wearer doesn't show up on radar.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

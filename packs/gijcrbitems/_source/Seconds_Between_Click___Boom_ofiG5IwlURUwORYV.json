@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks against your Evasion suffer a Snag. When such an attack misses you, its on-a-miss effects (like Frightened or knock-back riders) are skipped.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

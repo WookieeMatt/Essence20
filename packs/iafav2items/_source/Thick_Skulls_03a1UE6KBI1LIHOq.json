@@ -5,6 +5,10 @@
   "_id": "03a1UE6KBI1LIHOq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: set how many of your Smarts increases go to Toughness instead of Willpower; your Defenses update to match.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

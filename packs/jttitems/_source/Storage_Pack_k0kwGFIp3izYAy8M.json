@@ -5,6 +5,10 @@
   "_id": "k0kwGFIp3izYAy8M",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: tracking the up-to-20 lb Grid pocket that carries items between Morphs.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

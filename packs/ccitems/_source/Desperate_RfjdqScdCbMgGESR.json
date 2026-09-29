@@ -5,6 +5,10 @@
   "_id": "RfjdqScdCbMgGESR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on all Skill Tests while you are at exactly 1 Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

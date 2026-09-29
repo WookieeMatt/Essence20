@@ -5,6 +5,10 @@
   "_id": "j9xrYUKHvLkxdd9e",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: roll DIF 14 Technology (higher tiers with Major Augments or Extensive Enhancements) and pick a non-Consumable weapon of that Availability to graft onto the targeted ally. Left to the table: the once-per-mission limit (the system allows once per scene).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

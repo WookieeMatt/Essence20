@@ -5,6 +5,10 @@
   "_id": "Q5tpFNUI2wGn0Iot",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: pick a creature type and take ↑1 in the Roll Options Dialog when you pretend to be one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "snZJ8EnTe129an2X",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon gains the Amphibious trait, so it works on land and underwater without penalty.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

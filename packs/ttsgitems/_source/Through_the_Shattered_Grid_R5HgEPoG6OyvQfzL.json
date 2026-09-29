@@ -5,6 +5,10 @@
   "_id": "R5HgEPoG6OyvQfzL",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: take a Snag on Social tests when explaining alternate realities to someone who hasn't seen them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

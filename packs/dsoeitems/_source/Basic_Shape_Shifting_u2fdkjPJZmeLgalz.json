@@ -5,6 +5,10 @@
   "_id": "u2fdkjPJZmeLgalz",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a successful cast changes your shape for the scene, and while changed you get Edge on Deception and Infiltration tests to keep up the act.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

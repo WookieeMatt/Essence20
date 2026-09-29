@@ -5,6 +5,10 @@
   "_id": "OJcHMBA3QYgPp5w0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (combat, from round 2): reset your Initiative for two Free actions or a Move action. Roll Options Dialog: Initiative can be rolled with Deception or Infiltration instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

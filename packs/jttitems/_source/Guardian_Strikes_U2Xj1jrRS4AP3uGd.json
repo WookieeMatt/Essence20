@@ -5,6 +5,10 @@
   "_id": "U2Xj1jrRS4AP3uGd",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: with a two-handed melee weapon, a switch to deal no damage; on a hit you pick Impaired, Prone or Restrained for the target until your next turn. Use it only on targets of Large Size or smaller.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -4,6 +4,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per combat): spend a Story Point before attacking; your next damaging hit deals +1 damage.</p><p>Left to the table: only using it when the hit won't Defeat the creature.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

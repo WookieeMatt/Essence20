@@ -5,6 +5,10 @@
   "_id": "y7L0G2YpKN2de71A",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑1 on Brawn. Left to the table: counting your Brawn as 2 higher for lifting, carrying and dragging.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

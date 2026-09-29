@@ -5,6 +5,10 @@
   "_id": "Bpx14OMduPpenSMx",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +1 Toughness. Silent means it adds no stealth penalty; Xenotech gives ↓1 on Athletics and Acrobatics.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

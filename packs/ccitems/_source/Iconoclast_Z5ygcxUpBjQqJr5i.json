@@ -5,6 +5,10 @@
   "_id": "Z5ygcxUpBjQqJr5i",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Essence and Skill choices, movement and Health, plus the Disrupter Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

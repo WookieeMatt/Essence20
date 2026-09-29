@@ -128,7 +128,49 @@ describe("the effect's own numbers", () => {
   });
 });
 
+describe("Extended, Aerodynamics and Balanced Grip", () => {
+  test("Extended adds 1 to a Reach weapon's Reach modifier, and leaves a ranged-only effect alone", () => {
+    const melee = makeEffect('w1', { range: { value: null, long: null, reachMultiplier: 0 }, classification: { skill: 'might', style: 'melee' } });
+    makeActor([makeWeapon(), melee, upgrade(UPGRADE.extended, 'w1')]);
+    applyToEffect(melee.system, melee);
+    expect(melee.system.range.reachMultiplier).toBe(2);
+
+    const doubled = makeEffect('w1', { range: { value: null, long: null, reachMultiplier: 2 } });
+    makeActor([makeWeapon(), doubled, upgrade(UPGRADE.extended, 'w1')]);
+    applyToEffect(doubled.system, doubled);
+    expect(doubled.system.range.reachMultiplier).toBe(3);
+
+    const ranged = makeEffect();
+    makeActor([makeWeapon(), ranged, upgrade(UPGRADE.extended, 'w1')]);
+    applyToEffect(ranged.system, ranged);
+    expect(ranged.system.range.reachMultiplier).toBeUndefined();
+  });
+
+  test("Aerodynamics doubles both ranges", () => {
+    const effect = makeEffect('w1', { range: { value: 20, long: 50 } });
+    makeActor([makeWeapon(), effect, upgrade(UPGRADE.aerodynamics, 'w1')]);
+    applyToEffect(effect.system, effect);
+    expect(effect.system.range).toEqual({ value: 40, long: 100 });
+  });
+
+  test("Balanced Grip rolls Athletics", () => {
+    const effect = makeEffect('w1', { classification: { skill: 'might', style: 'melee' } });
+    makeActor([makeWeapon(), effect, upgrade(UPGRADE.balancedGrip, 'w1')]);
+    applyToEffect(effect.system, effect);
+    expect(effect.system.classification.skill).toBe('athletics');
+  });
+});
+
 describe("the weapon itself", () => {
+  test("Pill, Salve and Mist Form set how the poison is applied", () => {
+    for (const [id, form] of [[UPGRADE.pillForm, 'ingested'], [UPGRADE.salveForm, 'contact'], [UPGRADE.mistForm, 'inhaled']]) {
+      const poison = makeWeapon('w1', { isPoison: true, poisonApplication: { contact: true, ingested: false, inhaled: false } });
+      makeActor([poison, upgrade(id, 'w1')]);
+      applyToWeapon(poison);
+      expect(poison.system.poisonApplication).toEqual({ contact: form == 'contact', ingested: form == 'ingested', inhaled: form == 'inhaled' });
+    }
+  });
+
   test("Microtech steps the size down and the hands with it; the Harness wields two-handed in one", () => {
     const weapon = makeWeapon('w1', { effectiveSize: 'long', derivedHands: 2, hands: null });
     makeActor([weapon, upgrade(UPGRADE.microtech, 'w1'), upgrade(UPGRADE.microtech, 'w1')]);
@@ -158,6 +200,13 @@ describe("granted alternate effects", () => {
     makeActor([weapon, makeEffect(), upgrade('Banshee', 'w1', { traits: ['sonic'] })]);
     const sonic = desiredGeneratedEffects(weapon).find(w => w.key == 'sonic');
     expect(sonic.changes).toEqual({ defenseType: 'willpower', shiftDown: 2 });
+  });
+
+  test("Folding Stock copies the primary as a one-handed alternate at ↓2", () => {
+    const weapon = makeWeapon();
+    makeActor([weapon, makeEffect(), upgrade(UPGRADE.foldingStock, 'w1')]);
+    const folding = desiredGeneratedEffects(weapon).find(w => w.key == 'foldingStock');
+    expect(folding.changes).toEqual({ numHands: 1, shiftDown: 2 });
   });
 
   test("the sync creates what's missing and deletes what's no longer granted", async () => {

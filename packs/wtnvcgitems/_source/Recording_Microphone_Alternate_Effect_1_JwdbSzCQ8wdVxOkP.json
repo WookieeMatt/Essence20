@@ -5,6 +5,10 @@
   "_id": "JwdbSzCQ8wdVxOkP",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Recording Microphone's two-handed swing: rolls Might at Reach for 1 Blunt damage and 1 Stun.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

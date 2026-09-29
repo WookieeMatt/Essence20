@@ -5,6 +5,10 @@
   "_id": "5LaTMHTRv4kT9eJD",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its effects below, and its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

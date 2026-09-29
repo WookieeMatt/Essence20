@@ -5,6 +5,10 @@
   "_id": "sKQYpaavGqh9n2xO",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Recruiter Perk plus the Distressed, Show Respect and Vainglorious Hang-Ups.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "O2doIu12bOLdSjZz",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Power Melee Weapon's two-handed attack, rolling Might for 2 Element damage in melee.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

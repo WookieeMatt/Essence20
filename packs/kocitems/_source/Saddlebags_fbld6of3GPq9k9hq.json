@@ -5,6 +5,10 @@
   "_id": "fbld6of3GPq9k9hq",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. It is for carrying your gear.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

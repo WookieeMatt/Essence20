@@ -5,6 +5,10 @@
   "_id": "hSu10Kgj9g1LSmyv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (while Morphed): spend 1 Personal Power to pick an aura (Imposing, Protective or Resplendent). It lasts until you de-Morph or pick another.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

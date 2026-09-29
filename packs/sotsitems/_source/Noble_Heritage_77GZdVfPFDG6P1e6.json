@@ -5,6 +5,10 @@
   "_id": "77GZdVfPFDG6P1e6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on tests with the Skill you pick on the Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

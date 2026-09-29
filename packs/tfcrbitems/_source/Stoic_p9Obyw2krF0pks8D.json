@@ -5,6 +5,10 @@
   "_id": "p9Obyw2krF0pks8D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (in combat, Move action): pick an Evasion penalty of 1 to 3. Until your next turn attacks against your Toughness use Evasion instead, and each ally gets that many extra Free actions on their next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

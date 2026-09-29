@@ -5,6 +5,10 @@
   "_id": "Ec3PMcI8WsCu2ivp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per scene): makes you Invisible; it ends on its own when you attack or Lend Assistance, or use it again to end it. Left to the table: the 1-minute limit, ending it when you use a non-combat Skill, and the chosen Alt Mode.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

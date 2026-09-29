@@ -5,6 +5,10 @@
   "_id": "fZFtD54pW50FGGNz",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when a Culture (Chef) test calls for a kit, carrying this one clears the Snag up to Limited. Use button: use it up for Specialization or an Edge for a scene, scrounge a refill, or change its Specialization.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

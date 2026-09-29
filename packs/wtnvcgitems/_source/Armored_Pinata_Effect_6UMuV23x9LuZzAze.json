@@ -5,6 +5,10 @@
   "_id": "6UMuV23x9LuZzAze",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a thrown Athletics attack at Short range for 1 Sharp damage in a 10 ft radius blast.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

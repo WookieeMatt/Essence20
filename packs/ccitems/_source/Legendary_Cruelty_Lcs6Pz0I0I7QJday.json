@@ -5,6 +5,10 @@
   "_id": "Lcs6Pz0I0I7QJday",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when an attack against you misses, a button rolls Intimidation against the attacker's better of Willpower or Cleverness; on a success they take 1 Psychic damage. Once per turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "udE2az8F09jckUTv",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Shotgun's blast: rolls Targeting at Short range for 1 Sharp damage to up to 2 targets.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

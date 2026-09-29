@@ -3,6 +3,10 @@
   "type": "altMode",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: converting into this Alt Mode makes you Small with 45ft Ground Movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

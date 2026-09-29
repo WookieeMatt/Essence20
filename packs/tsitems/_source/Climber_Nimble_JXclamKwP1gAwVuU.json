@@ -5,6 +5,10 @@
   "_id": "JXclamKwP1gAwVuU",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 2 starting Health, Ground Movement 35, the Over the Candlestick Perk, and your pick of the Small or Common Alt Mode. You pick +1 Speed or Smarts and one Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "emaXxo2XzoHMoNCe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose an eligible two-handed Targeting weapon as your favorite. Automatic: ↑1 on every attack with it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

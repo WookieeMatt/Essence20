@@ -5,6 +5,10 @@
   "_id": "fiokYoWguE1eBVda",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your weapon or armor breaks, or your vehicle drops to 0 Health in combat, your next Skill Test takes a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

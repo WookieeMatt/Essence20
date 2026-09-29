@@ -5,6 +5,10 @@
   "_id": "IP0hnNhERC4OCc0k",
   "img": "systems/essence20/assets/icons/gear/defibrilate.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: target a Defeated character. In combat they get 1 Health back after 6 rounds; outside combat it's immediate. The Defibrillator is used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

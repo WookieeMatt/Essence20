@@ -5,6 +5,10 @@
   "_id": "edJdDqEZH7QA16wE",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: two-handed attacks roll Finesse or Might, whichever is better, at Reach for 1 Blunt plus 1 Stun, with a 1 Cover spray in a 20 ft radius as the alternate; Consumable and Silent apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

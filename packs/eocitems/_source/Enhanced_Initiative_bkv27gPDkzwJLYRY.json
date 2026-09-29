@@ -5,6 +5,10 @@
   "_id": "bkv27gPDkzwJLYRY",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Combiner form rolls Initiative with Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

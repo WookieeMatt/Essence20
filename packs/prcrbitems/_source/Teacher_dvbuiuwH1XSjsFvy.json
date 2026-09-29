@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: pushing in to do a non-combat task first when your Skill is higher than a teammate's.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

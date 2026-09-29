@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per combat, when an attack's damage is applied to you, you can ignore it until combat ends. If your Health is then below that damage, you're Defeated.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -32,6 +32,18 @@ describe("getToggleableSkillEffects", () => {
     expect(result[0].changes).toHaveLength(1);
   });
 
+  test("leaves out Recon's effect, which the Roll Options Dialog already offers as its own source", () => {
+    const RECON_ID = "Compendium.essence20.gi_joe_crb.Item.EDBn8zHJXkRFu2TT";
+    const changes = [{ key: "system.skills.alertness.edge", mode: 5, value: "true" }];
+    const onOwnedCopy = { ...makeEffect({ id: "r1", name: "Alone in Environment", disabled: true, changes }),
+      parent: { documentName: 'Item', flags: { core: { sourceId: RECON_ID } } } };
+    const byOrigin = { ...makeEffect({ id: "r2", name: "Alone in Environment", disabled: true, changes }), origin: RECON_ID };
+    const other = makeEffect({ id: "o1", name: "Other", disabled: true, changes });
+
+    const result = getToggleableSkillEffects(makeActor([onOwnedCopy, byOrigin, other]), "alertness");
+    expect(result.map(r => r.id)).toEqual(["o1"]);
+  });
+
   test("excludes an effect that isn't disabled", () => {
     const effect = makeEffect({
       id: "eff1",

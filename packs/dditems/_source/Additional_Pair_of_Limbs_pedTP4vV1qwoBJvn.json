@@ -5,6 +5,10 @@
   "_id": "pedTP4vV1qwoBJvn",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: in Alt Mode, pick +10 ft Ground Movement or a two-target unarmed attack at ↓1; in Bot Mode, stand up from Prone as a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

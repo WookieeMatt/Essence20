@@ -5,6 +5,10 @@
   "_id": "LM5pwZWroo1QKrSN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: after a successful Pop Out, buttons let you spend Free actions to roll Infiltration against enemies who missed you; each success Frightens them for one more round, up to 3.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "cPPFdtH4JADBpwoy",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Influence Perk when you add it. If it's your second or later Influence, you also pick one of its Hang-Ups (Dazed, Jittery or Naive) at that point.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

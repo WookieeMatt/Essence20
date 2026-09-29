@@ -5,6 +5,10 @@
   "_id": "XbRARjlk2LagmVfI",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Journalistic Excellence, Contraband Notebooks and Rallying Cry at level 1, plus the Essence increases and General Perk picks at the listed levels. Your Focus (Print, Radio or Television) adds the Focus Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

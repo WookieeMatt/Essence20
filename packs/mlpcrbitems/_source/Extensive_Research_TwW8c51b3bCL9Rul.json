@@ -5,6 +5,10 @@
   "_id": "TwW8c51b3bCL9Rul",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: research a spell your Spellcasting is high enough for; you Master it for a week of game time, and only one spell at a time this way.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

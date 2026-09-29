@@ -5,6 +5,10 @@
   "_id": "e200PVV1q6a0Us9n",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Zord counts as Shielded (2), +2 per extra copy up to 6: that many attacks against it each turn take a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

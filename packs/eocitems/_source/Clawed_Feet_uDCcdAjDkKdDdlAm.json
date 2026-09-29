@@ -5,6 +5,10 @@
   "_id": "uDCcdAjDkKdDdlAm",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: in Alt Mode you ignore Rough Terrain. Left to the table: Edge on climbing in Bot Mode, and the combined form's ↑1 on kicking or stomping attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

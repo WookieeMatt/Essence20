@@ -5,6 +5,10 @@
   "_id": "NQZyIHZEkb8PJt7t",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: rolls the DIF 12 Performance test; on a success a Shark Cycle appears beside you.</p><p>Left to the table: the 1-hour limit (it stays until the end of the scene).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

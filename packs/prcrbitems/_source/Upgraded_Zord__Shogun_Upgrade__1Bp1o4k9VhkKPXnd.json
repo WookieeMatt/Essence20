@@ -5,6 +5,10 @@
   "_id": "1Bp1o4k9VhkKPXnd",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Strength for the Zord. Automatic: its melee attacks get ↑1, and Defend costs it only a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

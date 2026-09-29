@@ -5,6 +5,10 @@
   "_id": "eiTUR08GXw03M21m",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (while Morphed): spend Power to heal an adjacent creature 1 Health per Power spent.</p><p>Left to the table: spending Power to remove a Condition instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

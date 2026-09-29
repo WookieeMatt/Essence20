@@ -5,6 +5,10 @@
   "_id": "j1z0ZYNlH3MOOTze",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the trap's Mind Beam, its Spellcasting boost from magic items, and how long its effects last.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

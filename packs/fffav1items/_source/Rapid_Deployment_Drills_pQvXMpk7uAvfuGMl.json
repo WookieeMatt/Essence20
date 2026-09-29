@@ -5,6 +5,10 @@
   "_id": "pQvXMpk7uAvfuGMl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you can roll Alertness or Infiltration for Initiative, and you can't be Surprised.</p><p>Left to the table: moving Skill ranks around as this Perk allows.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

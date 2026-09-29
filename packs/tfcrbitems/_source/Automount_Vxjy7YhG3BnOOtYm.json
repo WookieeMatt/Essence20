@@ -5,6 +5,10 @@
   "_id": "Vxjy7YhG3BnOOtYm",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the weapon loses the Mounted trait, so it can be fired without setting it up first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

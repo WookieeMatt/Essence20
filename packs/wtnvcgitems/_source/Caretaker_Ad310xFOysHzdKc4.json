@@ -5,6 +5,10 @@
   "_id": "Ad310xFOysHzdKc4",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: your pick of Strength or Smarts and one of its Origin Skills, 30 ft ground movement, and the First Aid Training Origin Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

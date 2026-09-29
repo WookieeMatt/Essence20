@@ -5,6 +5,10 @@
   "_id": "gDIWKiVdCNn5ViV0",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): switch it on while doing research in downtime for ↑1 on Science and Technology tests, then switch it off again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "ZprCM70VzEVjtCsW",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the blaster's Targeting attack with the listed Laser damage and range.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

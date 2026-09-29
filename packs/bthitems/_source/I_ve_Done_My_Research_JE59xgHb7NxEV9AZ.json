@@ -5,6 +5,10 @@
   "_id": "JE59xgHb7NxEV9AZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick the Smarts Skills it covers when you gain it; tests with those Skills get ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

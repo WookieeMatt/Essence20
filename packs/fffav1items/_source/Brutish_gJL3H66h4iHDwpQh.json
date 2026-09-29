@@ -5,6 +5,10 @@
   "_id": "gJL3H66h4iHDwpQh",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Brutish Influence Perk, plus its Hang-Up when one applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

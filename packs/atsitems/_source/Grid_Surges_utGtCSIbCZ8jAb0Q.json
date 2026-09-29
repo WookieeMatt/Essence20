@@ -5,6 +5,10 @@
   "_id": "utGtCSIbCZ8jAb0Q",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: tracks your daily Grid Surges, which rise with Silver Ranger level. Grid Surge and Duty of the Silver spend them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

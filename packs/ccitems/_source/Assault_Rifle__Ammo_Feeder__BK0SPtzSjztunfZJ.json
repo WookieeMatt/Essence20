@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/assault_rifle.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its normal or alternate effect with the listed Skill, damage and range. The Ammo Feeder upgrade removes the Reload trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

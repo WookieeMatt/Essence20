@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a ↓1 switch on Social tests with non-animals you have only just met.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "DJIbdCmGdKl0yut7",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Spoiled Influence Perk and the Spoiled Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

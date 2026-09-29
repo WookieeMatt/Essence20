@@ -5,6 +5,10 @@
   "_id": "1SGxuyt9B4hcB1qA",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: gives the weapon the Ongoing trait, so targets it hits keep taking its damage for the following rounds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

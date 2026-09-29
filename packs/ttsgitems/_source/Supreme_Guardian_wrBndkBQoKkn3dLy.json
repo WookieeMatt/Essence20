@@ -5,6 +5,10 @@
   "_id": "wrBndkBQoKkn3dLy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (when you Morph): Technology test against each enemy within 20 ft; those you beat are Blinded. Roll Options Dialog: spend Eltarian Tech Points for +1 Energy damage each on melee Power Weapon hits. Automatic: taking Energy damage rolls a d20 to regain a Tech Point on 10+.</p><p>Left to the table: removing Blinded after 1d6 rounds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

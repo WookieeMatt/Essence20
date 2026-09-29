@@ -5,6 +5,10 @@
   "_id": "psJCjvdROy5gEVGS",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, the vehicle gains Aerial Movement equal to its Ground or Aquatic Movement for 3 rounds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

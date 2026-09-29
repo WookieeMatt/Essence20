@@ -5,6 +5,10 @@
   "_id": "zNRAyM9Y8y13eLhU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend a Move action to add a makeshift one-handed melee weapon (Finesse or Might, 1 Blunt or Sharp, Silent). It disappears on a Fumble or at the end of the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "CXqodngbsuc9izIl",
   "img": "systems/essence20/assets/icons/gear/breach_charge.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: the damage to the surface it's attached to.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

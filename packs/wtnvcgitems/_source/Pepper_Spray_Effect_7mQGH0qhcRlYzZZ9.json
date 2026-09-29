@@ -5,6 +5,10 @@
   "_id": "7mQGH0qhcRlYzZZ9",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Pepper Spray's attack: rolls Athletics at Short range for 1 Acid damage to up to 2 targets. Change its Skill to Targeting on the sheet if you prefer.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

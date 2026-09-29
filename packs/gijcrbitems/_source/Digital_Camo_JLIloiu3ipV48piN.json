@@ -5,6 +5,10 @@
   "_id": "JLIloiu3ipV48piN",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically. With it, the wearer may roll Infiltration to hide even without cover; the GM allows the roll.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

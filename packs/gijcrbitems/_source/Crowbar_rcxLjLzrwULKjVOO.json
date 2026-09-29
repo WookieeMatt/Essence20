@@ -5,6 +5,10 @@
   "_id": "rcxLjLzrwULKjVOO",
   "img": "systems/essence20/assets/icons/gear/crowbar.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑2 on Brawn when you're forcing something open.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

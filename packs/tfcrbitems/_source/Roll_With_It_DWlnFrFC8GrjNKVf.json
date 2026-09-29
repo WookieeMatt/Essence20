@@ -5,6 +5,10 @@
   "_id": "DWlnFrFC8GrjNKVf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per turn when you take damage and stay up, a button moves your token 10ft directly away from the attacker.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

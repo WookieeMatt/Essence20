@@ -5,6 +5,10 @@
   "_id": "8FGJyvGaCOd8hrSA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Pick your animal when you add it; its benefits apply while Morphed in this Form. Cheetah speed and vortex, Gorilla Brawn and Health, the Jackrabbit jump switch, and each animal's Hang-Up are handled for you.</p><p>Left to the table: wall-running, jump distances and carrying capacity.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

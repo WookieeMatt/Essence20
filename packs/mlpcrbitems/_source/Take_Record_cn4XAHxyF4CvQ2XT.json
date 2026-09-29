@@ -5,6 +5,10 @@
   "_id": "cn4XAHxyF4CvQ2XT",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: casting rolls Spellcasting and applies its cost as a lingering Spellcasting downshift. The record you make is part of the story.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

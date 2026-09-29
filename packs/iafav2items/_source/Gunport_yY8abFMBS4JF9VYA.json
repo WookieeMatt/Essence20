@@ -5,6 +5,10 @@
   "_id": "yY8abFMBS4JF9VYA",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while the equipped shield it's fitted to is active, your sidearm ranged attacks are allowed and take ↓1, listed in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

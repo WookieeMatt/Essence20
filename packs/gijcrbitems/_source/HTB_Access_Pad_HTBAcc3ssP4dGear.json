@@ -5,6 +5,10 @@
   "_id": "HTBAcc3ssP4dGear",
   "img": "systems/essence20/assets/icons/gear/tablet.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative standard issue gear for communication and data, with no dice effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

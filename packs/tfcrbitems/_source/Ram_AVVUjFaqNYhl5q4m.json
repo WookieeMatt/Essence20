@@ -5,6 +5,10 @@
   "_id": "AVVUjFaqNYhl5q4m",
   "img": "systems/essence20/assets/icons/weapons/punch.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Driving attack at Reach for 1 Blunt damage, with a Trip alternate effect that knocks the target Prone. Alt Modes that print a Ram attack offer to add it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

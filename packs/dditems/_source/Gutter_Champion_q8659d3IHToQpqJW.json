@@ -5,6 +5,10 @@
   "_id": "q8659d3IHToQpqJW",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Gutter Champion Influence Perk and its Hang-Up options (Show Respect, Bad Temper, Violent).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

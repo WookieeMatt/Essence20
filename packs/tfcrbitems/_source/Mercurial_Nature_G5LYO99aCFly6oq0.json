@@ -5,6 +5,10 @@
   "_id": "G5LYO99aCFly6oq0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: one more Hybridization, which you pick. Automatic: your daily Mass Shift uses become unlimited.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

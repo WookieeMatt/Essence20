@@ -384,6 +384,13 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
     return;
   }
 
+  // Dominate - see helpers/extensions/r2misc/dominate.mjs's own doc comment.
+  if (sourceId == DOMINATE_ID) {
+    const { activateDominate } = await import("./extensions/r2misc/dominate.mjs");
+    await activateDominate(actor, item);
+    return;
+  }
+
   if (sourceId == REGENERATION_ID) {
     const activated = await activateRegenerationChoice(actor);
     if (activated) {
@@ -480,6 +487,7 @@ const SWIFTNESS_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.GBs
 const REPAIR_MACHINE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.HOM0e2W0aBYnZ8Z3";
 const ELECTRIC_DISCHARGE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.KeDQbX62owtITKDo";
 const DISINTEGRATE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.mVwWAgFyNUDfoUJQ";
+const DOMINATE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.HwREY90wo09Hkdt1";
 const REGENERATION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.312ubjCA7mCBDoea";
 const BOLSTER_DEFENSE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.HVOFIDBiXNckFaAP";
 const CHRONOMANTIC_PULSE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.YjPFCWa3KxDIJXGW";

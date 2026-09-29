@@ -5,6 +5,10 @@
   "_id": "J0l8BFeE9bbMa8zc",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Faction Perks, Life Finds A Way and Spared No Expense.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

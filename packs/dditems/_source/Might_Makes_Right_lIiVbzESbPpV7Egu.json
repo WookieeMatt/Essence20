@@ -5,6 +5,10 @@
   "_id": "lIiVbzESbPpV7Egu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Persuasion also counts as a Strength Skill for you. Chat card: a Critical Success on Persuasion offers to make the targets Frightened.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

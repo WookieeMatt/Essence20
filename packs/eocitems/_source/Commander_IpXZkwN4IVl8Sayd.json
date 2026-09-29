@@ -5,6 +5,10 @@
   "_id": "IpXZkwN4IVl8Sayd",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a Gigantic or larger Combiner form gets +1 to its two highest Essences. Use button: pick one Skill for each Essence; the Skills of the two raised Essences get ↑1.</p><p>Left to the table: choosing between tied Essences (ties go Strength, Speed, Smarts, Social).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

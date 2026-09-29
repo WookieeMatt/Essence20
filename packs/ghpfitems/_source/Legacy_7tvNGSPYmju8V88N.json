@@ -5,6 +5,10 @@
   "_id": "7tvNGSPYmju8V88N",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the ↓1 on Social tests with characters who know your family's legacy.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

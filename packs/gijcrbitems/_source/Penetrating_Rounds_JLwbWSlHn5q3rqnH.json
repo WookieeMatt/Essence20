@@ -5,6 +5,10 @@
   "_id": "JLwbWSlHn5q3rqnH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your shotgun and submachine gun attacks ignore the target's cover and any Deflective armor bonus to its Defense.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

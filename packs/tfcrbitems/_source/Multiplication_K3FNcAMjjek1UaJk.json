@@ -5,6 +5,10 @@
   "_id": "K3FNcAMjjek1UaJk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Augment Power can be used twice per turn for ↑2 and twice per combat for ↑4.</p><p>Left to the table: doubling the uses and bonuses of your other Scientist Role Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

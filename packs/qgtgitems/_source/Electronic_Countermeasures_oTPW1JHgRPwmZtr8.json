@@ -5,6 +5,10 @@
   "_id": "oTPW1JHgRPwmZtr8",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per combat, as a Move action, the vehicle gets +5 Toughness and Evasion until that crew member's next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

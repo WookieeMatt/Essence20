@@ -5,6 +5,10 @@
   "_id": "3JhsjRcuM0fgEIi1",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its normal or alternate effect with the listed Skill, damage and range; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

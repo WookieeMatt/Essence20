@@ -5,6 +5,10 @@
   "_id": "lANNEIryRCbTlr0h",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: while equipped it gives +2 Toughness. Its Deflective and Silent traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

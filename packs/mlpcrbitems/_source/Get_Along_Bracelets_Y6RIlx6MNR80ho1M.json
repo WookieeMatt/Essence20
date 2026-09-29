@@ -5,6 +5,10 @@
   "_id": "Y6RIlx6MNR80ho1M",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the two wearers can't move more than 10 ft apart without a DIF 15 Brawn test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

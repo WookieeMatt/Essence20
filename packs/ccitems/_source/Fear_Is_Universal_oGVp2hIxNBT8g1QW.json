@@ -5,6 +5,10 @@
   "_id": "oGVp2hIxNBT8g1QW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when you hit a creature immune to the Skill you used, you are asked whether to spend a Story Point to affect it anyway.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

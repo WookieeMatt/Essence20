@@ -25,6 +25,8 @@ export const TF2 = {
   scrambleModulator: C('enigma_of_combination', '5o2qpfqpwRPeUBPA'),
   speakerAerial: C('enigma_of_combination', 'ilL3CyLQDydjxBHf'),
   speakerGround: C('enigma_of_combination', 'GPW2T5OEC0KtlJpX'),
+  speakerLongAerial: C('enigma_of_combination', 'wwFXrMqJd0YJHqkX'),
+  speakerLongGround: C('enigma_of_combination', '48zFIrJCoULshGtm'),
   supportingCast: C('enigma_of_combination', 'GjHqKI3n7lLp3lVn'),
   sustainedBeam: C('enigma_of_combination', 'BIlS9uwDfZquX9hf'),
   weAreOne: C('enigma_of_combination', '1MtovibPOMw9O2hP'),
@@ -51,11 +53,47 @@ export const TF2 = {
   forTheAllspark: C('tf_crb', 'UMlH70vmM3kJzWvS'),
   ram: C('tf_crb', 'AVVUjFaqNYhl5q4m'),
   flyby: C('tf_crb', '3L0eAnm4GVoQi7Df'),
+  // Special-attack weapons the Decepticon Directive / Technorganic Secrets Alt Modes print.
+  spikedRam: C('decepticon_directive', 'leQVbl8vdpkwiCdw'),
+  miniVehicleRam: C('decepticon_directive', 'WrSVycvwI2mlmp2y'),
+  naturalWeapon: C('technorganic_secrets', 'uAW0sOmaPXl8DaX8'),
+  floraWeapon: C('technorganic_secrets', 'au05ekMECrDqVlkm'),
+  naturalFlyby: C('technorganic_secrets', 'IJTQr6XGgmfxDPoY'),
+  smash: C('technorganic_secrets', 'e2LbSl8llOCJ2I6o'),
   unarmedCombat: C('tf_crb', 'OU9rXvoKfXtcpvFy'),
   // The G.I. JOE printings of All Out Attack / Evasive Fighting, already wired in target-riders.mjs.
   gijAllOutAttack: C('gi_joe_crb', 'Rhz1k6gTl2XTs8Nk'),
   gijEvasiveFighting: C('gi_joe_crb', 'tBXpROuVSuAxGZpR'),
   gijAcuteSense: C('gi_joe_crb', 'WvjGJ5AcC0z07d0J'),
+};
+
+/** Alt Modes by chassis, as compendium uuids (the special-attack table and Bestial Articulation). */
+export const ALT_MODES = {
+  // Transformers Core Rulebook: every vehicle chassis prints Ram (the Monolith's hits for 2), the Seeker Flyby.
+  crbRam: ['IFssZkdjKb6vcYfk', '5sxhsXAHh97KTpwa', 'FlN4FCnbTP7RRz8K', 'ZS3kX8oKogmsH6OK', 'NaF9feAfujLYwDfO', 'WYlv5KoOv8WTUtKN',
+    'OlLBvRl06PVw9OQx', 'hr00Kzgshnz67400'].map(id => C('tf_crb', id)),
+  monolith: C('tf_crb', '62Su4NGv4ejOIvLv'),
+  seeker: C('tf_crb', 'RXTZuPJnnAlkgHX2'),
+  // The Decepticon Directive
+  salvaged: C('decepticon_directive', 'cGGEXSdCI170AaM4'),
+  miniVehicle: ['oSn5EyMwso8Z1Ohh', 'JVIOxmSpPwPQDY1z'].map(id => C('decepticon_directive', id)),
+  // Technorganic Secrets: the chassis whose Natural Weapon is Might, 1 Blunt or Sharp, Maneuver alternate.
+  natural: ['w8BzKEttZEoz5nz7', 'dEacdn0EEQJ2ZB2f', 'vgN6uRrRCJ7fKO1z', 'aTevGfLML1dlbErs', '2mSP6mVx0axvOlXf', 'RsTuLWH6FrWHcVeF',
+    'ycX3lh5ZqNkyFw0e', 'wCu6HyM9dWB1XpV4', 'P17ah6xfjqjqzcmU', 'hs2BII8uOIk7wgpJ', 'Kj8DtQoNrUf2dmI5', 'yeeGDdU2LDKyNhBd',
+    '5TrH7WOOUnEi6vDt', 'HdGY7qG1aJE69N2P', 'fO2tbcFJOmvlxOXh', 'hsY5k4vCyBw1Xs8W', 'wrG4V7yi5wHnQMbL', 'Y2WR7POqwxnoXzwh',
+    'LwiC3DmOCm1jNbmY', '696g72VgjR2kzwXO'].map(id => C('technorganic_secrets', id)),
+  climber: ['A1zJJJOvCKzxzdI0', 'y91e1C5LXS2vviUQ'].map(id => C('technorganic_secrets', id)),
+  flora: ['gah8pRWSMDvXsUax', 'TfIrQViYdkBkqR7q'].map(id => C('technorganic_secrets', id)),
+  flyer: ['z0DXIKiccQbcT7cQ', '8M5milnnYu2fyJnr'].map(id => C('technorganic_secrets', id)),
+  behemoth: ['hF2rJtS3SzcjqnLr', 'qZQyZDntWJdNeDQy'].map(id => C('technorganic_secrets', id)),
+  // Monstrosity, both printings (Decepticon Directive p.37, Technorganic Secrets p.41): Natural Weapon
+  // plus Bestial Articulation.
+  monstrosity: [
+    ...['IW0xRwpT2RU6Eyso', 'CeAcrZMp5T9ZhuzO', 'isx1XflgpBp18ND0', 'rz9Kdesd5C7RBhtm', 'rtQAraNbxCoIplbH', 'ula8VtBnEtz8y4jS']
+      .map(id => C('decepticon_directive', id)),
+    ...['8eySZa8oyATSLALr', 'hRTGCxvA7dI4dSAS', '7WsWk1gEk9q9Z29k', 'UriqxySzFuQBK01d', 'KL3FeHBqAIZ66BgQ', 'Rk3mT9vQx2LpW7nZ']
+      .map(id => C('technorganic_secrets', id)),
+  ],
 };
 
 export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));

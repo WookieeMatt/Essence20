@@ -5,6 +5,10 @@
   "_id": "0DcWZaKg0GVFV3ei",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Move action, spend any number of Cheer Points; your Toughness and Evasion each rise by that much for the rest of the scene.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

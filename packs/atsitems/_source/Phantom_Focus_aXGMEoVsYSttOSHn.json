@@ -5,6 +5,10 @@
   "_id": "aXGMEoVsYSttOSHn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Pick an ability when you add it. Boosted Vigor and Phase Defense apply on their own while Morphed; Healing Light and Ship Integration have Use buttons. Multiversal Pocket is storytelling.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

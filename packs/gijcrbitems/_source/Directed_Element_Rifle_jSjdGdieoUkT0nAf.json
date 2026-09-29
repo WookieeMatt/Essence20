@@ -5,6 +5,10 @@
   "_id": "jSjdGdieoUkT0nAf",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: pick the weapon's element. Automatic: attacks roll Targeting for 1 damage of that element at 75ft, and its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -22,7 +26,7 @@
           "style": "energy"
         },
         "damageValue": 1,
-        "damageType": "laser",
+        "damageType": "element",
         "numHands": "2",
         "numTargets": 1,
         "radius": 0,

@@ -5,6 +5,10 @@
   "_id": "wGkyb8d4fsgTNLD4",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while worn, +3 Toughness and the Plating trait. Below its d2 Brawn requirement, your physical rolls get ↓1 per missing die. As non-Silent armor, it also gives a ↓ on Infiltration equal to its bonus.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

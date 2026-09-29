@@ -5,6 +5,10 @@
   "_id": "NHhNnkBBM29NpGpL",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic, while worn: in the wild, ↑1 on Initiative, Targeting and Survival; in town, ↓1 on Alertness and Culture. On scenes without a terrain setting, the Roll Options Dialog asks which applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "hYwFDsC7azfYB5fO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Free action): a Toughness and Evasion bonus by level until your next turn, shared with allies in reach from 5th level. The permanent bonus from 7th level and the Resistance or immunity at 13th and 18th are applied too.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

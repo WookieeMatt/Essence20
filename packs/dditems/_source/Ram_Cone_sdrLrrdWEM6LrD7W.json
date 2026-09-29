@@ -5,6 +5,10 @@
   "_id": "sdrLrrdWEM6LrD7W",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Alt Mode your Flyby, Ram and Slam attacks gain Anti-Tank and Armor Piercing; in Bot Mode your Blunt unarmed attack loses its ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

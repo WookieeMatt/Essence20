@@ -5,6 +5,10 @@
   "_id": "LuQoEjHVOM8Yoc0Y",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you're not Defeated and within 10 ft of your Protected Target, dropping to 0 Health doesn't Defeat them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

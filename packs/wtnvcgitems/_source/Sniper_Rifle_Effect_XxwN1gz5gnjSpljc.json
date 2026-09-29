@@ -5,6 +5,10 @@
   "_id": "XxwN1gz5gnjSpljc",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Sniper Rifle's shot: rolls Targeting at Long range for 1 Sharp damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

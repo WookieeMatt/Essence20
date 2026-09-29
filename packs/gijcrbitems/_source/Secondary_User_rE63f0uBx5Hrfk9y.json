@@ -5,6 +5,10 @@
   "_id": "rE63f0uBx5Hrfk9y",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the named character can also Command your drone, and your Commands win if they clash.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

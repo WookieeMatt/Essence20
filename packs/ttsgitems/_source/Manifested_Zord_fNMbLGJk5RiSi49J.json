@@ -5,6 +5,10 @@
   "_id": "fNMbLGJk5RiSi49J",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you summon this Zord you're offered a faster arrival for 4 Personal Power, bringing it in after 1 round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

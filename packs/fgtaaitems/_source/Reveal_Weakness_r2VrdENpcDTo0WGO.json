@@ -5,6 +5,10 @@
   "_id": "r2VrdENpcDTo0WGO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a target; hits against it deal +1 damage for the rest of the combat.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

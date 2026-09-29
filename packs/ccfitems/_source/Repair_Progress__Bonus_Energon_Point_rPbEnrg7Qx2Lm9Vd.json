@@ -5,6 +5,10 @@
   "_id": "rPbEnrg7Qx2Lm9Vd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: raises your Energon cap by 1 until that bonus point is spent; a rest restores it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

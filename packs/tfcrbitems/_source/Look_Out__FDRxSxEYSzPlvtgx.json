@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 Evasion. Nothing else to track: you can always defend with Evasion, even when unaware of an attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

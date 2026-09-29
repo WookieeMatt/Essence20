@@ -5,6 +5,10 @@
   "_id": "HCIbetyFvjJGuDcV",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Essence and Skill choices, movement and Health, plus the Metier Perk. Active Effect: one step of training in poisons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

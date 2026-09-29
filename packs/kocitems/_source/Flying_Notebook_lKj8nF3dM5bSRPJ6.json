@@ -5,6 +5,10 @@
   "_id": "lKj8nF3dM5bSRPJ6",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: its magical notebook features.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

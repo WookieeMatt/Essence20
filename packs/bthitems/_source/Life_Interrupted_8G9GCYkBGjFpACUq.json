@@ -5,6 +5,10 @@
   "_id": "8G9GCYkBGjFpACUq",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): switch it on for ↓1 on all Skill Tests while the Hang-Up is affecting you, and off when it ends.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

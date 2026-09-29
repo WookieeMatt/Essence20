@@ -5,6 +5,10 @@
   "_id": "oWwb0CkclmWqd7tY",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might trip maneuver at Reach for a flying vehicle. In combat you're warned if the vehicle hasn't moved at least 15 ft this turn.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

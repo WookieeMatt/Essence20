@@ -5,6 +5,10 @@
   "_id": "mIz5Qusv9a0LMSr3",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the hatchet's Athletics attack with the listed Element damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>Choose Element</p>",

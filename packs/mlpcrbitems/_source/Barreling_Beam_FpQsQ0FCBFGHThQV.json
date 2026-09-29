@@ -5,6 +5,10 @@
   "_id": "FpQsQ0FCBFGHThQV",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: a Spellcasting attack against one target. A hit pushes them up to 15 ft away from you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

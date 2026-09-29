@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: while Morphed, spend 1 Personal Power at the start of your turn and pick a mode; attack modes roll and apply their effects, the others add their bonus for the turn.</p><p>Left to the table: Blast Mode's exact area, Muscle Mode's carrying capacity, and keeping to one Form.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

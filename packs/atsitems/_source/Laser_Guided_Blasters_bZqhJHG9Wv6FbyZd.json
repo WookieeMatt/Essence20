@@ -5,6 +5,10 @@
   "_id": "bZqhJHG9Wv6FbyZd",
   "img": "systems/essence20/assets/icons/weapons/dual_cannon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 2 damage against up to 2 targets; the Accurate trait adds its ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

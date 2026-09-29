@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Pay 1 Personal Power when you Morph to activate the Form: +10ft movement, a Roll Options Dialog switch for Edge on healing and repair, and the Lightspeed weapon swaps. Use button: 2 Personal Power heals an adjacent target 1 Health.</p><p>Left to the table: the once-per-scene limit per healed target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

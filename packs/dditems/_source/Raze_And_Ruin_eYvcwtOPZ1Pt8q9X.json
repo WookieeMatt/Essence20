@@ -5,6 +5,10 @@
   "_id": "eYvcwtOPZ1Pt8q9X",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your ranged attacks deal triple damage to Huge or larger vehicles and double damage to Huge or larger Immobilized creatures. Left to the table: other objects, and multiplying extra damage from Size Matters.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

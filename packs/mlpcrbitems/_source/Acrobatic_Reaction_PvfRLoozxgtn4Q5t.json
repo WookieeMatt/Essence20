@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: once per day, the Acrobatics test to shrug off an effect that hit your Evasion.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

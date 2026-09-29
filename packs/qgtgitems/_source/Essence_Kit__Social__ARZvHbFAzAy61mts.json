@@ -5,6 +5,10 @@
   "_id": "ARZvHbFAzAy61mts",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: tests calling for an Essence Kit take no Snag, and tests calling for a Social Specialization kit take ↓2 (↓4 for a Limited kit) instead. Use button: use it up for Specialization on one test (or ↑1 if already Specialized), or scrounge a refill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "2jQZKKTSWS3O7kBK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: roll the substitute Skill this Perk allows when reading someone's intent.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

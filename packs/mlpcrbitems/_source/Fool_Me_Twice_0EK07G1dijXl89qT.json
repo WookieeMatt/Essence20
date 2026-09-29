@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Deception tests against a creature you already targeted with Deception this scene take ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

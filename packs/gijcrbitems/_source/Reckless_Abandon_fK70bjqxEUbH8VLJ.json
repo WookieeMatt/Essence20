@@ -5,6 +5,10 @@
   "_id": "fK70bjqxEUbH8VLJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Reckless Abandon switches off after 10 rounds, when no enemy tokens remain on the scene, or when you're defeated. A kit's Use button is refused while it's on. Switch it off yourself on the sheet any time.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

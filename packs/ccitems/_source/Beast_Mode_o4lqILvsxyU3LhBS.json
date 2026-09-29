@@ -5,6 +5,10 @@
   "_id": "o4lqILvsxyU3LhBS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: enter Beast Mode. At 10th and 20th level it also offers the listed Mutations to pick; everything it grants ends with the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "d8wbGtJiWhQtplIG",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: the once-per-day stampede and everyone's Athletics test to avoid it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

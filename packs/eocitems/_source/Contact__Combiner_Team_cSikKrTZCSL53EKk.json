@@ -5,6 +5,10 @@
   "_id": "cSikKrTZCSL53EKk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: creates the Combiner team as a Contact, asking its name and Allegiance Points; it can be called once per mission for a Story Point. Left to the table: adding the team's Contact Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "EjrGEruXHcggMKoW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when you gain it, pick one of Energy Rebuttal, Guardian Blast or Tactical Meditation. The chosen Perk is added and works on its own.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

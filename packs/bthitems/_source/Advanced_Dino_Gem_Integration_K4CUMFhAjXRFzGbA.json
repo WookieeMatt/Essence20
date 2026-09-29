@@ -5,6 +5,10 @@
   "_id": "K4CUMFhAjXRFzGbA",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added to a Zord you pick its power: Snag on ranged attacks at it, ↑2 Alertness, Snag for +2 damage, +10ft and ↑2 Infiltration, or arriving 2 rounds sooner. Each then applies on its own.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

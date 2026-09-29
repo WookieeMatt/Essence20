@@ -5,6 +5,10 @@
   "_id": "oGUgCxpfjnP2mp7B",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect (starts off): ↑2 on Survival. Switch it on around your home area.</p><p>Left to the table: the Streetwise benefit there when the GM agrees.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},
@@ -45,7 +49,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "2MjsPwY0Sh8CPOL4",
       "type": "base",
       "system": {},

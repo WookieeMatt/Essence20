@@ -5,6 +5,10 @@
   "_id": "4HECqACQoTI5ikVH",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Transmetal II Perk, plus a choice of its Hang-Ups (Impulsive, Violent or Whimsical).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

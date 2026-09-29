@@ -5,6 +5,10 @@
   "_id": "vjPk6VVQEoTiRaus",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might melee attack at Reach for 2 Blunt damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

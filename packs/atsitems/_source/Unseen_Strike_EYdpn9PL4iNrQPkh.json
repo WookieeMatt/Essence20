@@ -5,6 +5,10 @@
   "_id": "EYdpn9PL4iNrQPkh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while your Phantom Suite is active, your first attack each turn is made against the target's Evasion halved (rounded up).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

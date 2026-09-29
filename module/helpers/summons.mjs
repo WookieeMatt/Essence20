@@ -40,6 +40,7 @@ export const SUMMON = {
   spdBattlizer: uuid('across_the_stars', 'qc82QDtZN3qVWqxV'),
   redFury: uuid('beneath_the_helmet', 'k7svIPp9YYkzjxwB'),
   triassic: uuid('beneath_the_helmet', 'sVYZLXhPZqdVhNax'),
+  quantumMega: uuid('jump_through_time', 'WiaxmqhCQSYpJIeK'),
   qRexPortal: uuid('jump_through_time', 'QRexPortalJTTxxx'),
   assistedSummoning: uuid('jump_through_time', 'atPA5nGheYDzzmaZ'),
   manifestedZord: uuid('through_the_shattered_grid', 'fNMbLGJk5RiSi49J'),
@@ -69,7 +70,9 @@ function itemsOf(actor) {
 /*  Vehicle stat blocks                          */
 /* -------------------------------------------- */
 
-const attack = (name, skill, damage, type, range = null) => ({ name, skill, damage, type, range });
+// extra: {usesPerScene} (a "1/scene" attack, see battlizerAttackUsedUp) and {critMultiplier} (a
+// "Critical Effect: Triples base damage instead of double", read by dice.mjs#_applyCritMultiplier).
+const attack = (name, skill, damage, type, range = null, traits = [], extra = {}) => ({ name, skill, damage, type, range, traits, ...extra });
 
 /**
  * The books' stat blocks. Defenses are 10 + Essence + armor, the way the vehicle sheet adds them.
@@ -121,11 +124,15 @@ function vehicleItems(spec) {
   return spec.attacks.flatMap(a => {
     const id = foundry.utils.randomID();
     return [
-      { _id: id, name: a.name, type: 'weapon', system: { classification: { size: 'sidearm' }, availability: 'standard', equipped: true, hardpoint: { type: 'integrated' } } },
+      { _id: id, name: a.name, type: 'weapon', system: {
+        classification: { size: 'sidearm' }, availability: 'standard', equipped: true, hardpoint: { type: 'integrated' },
+        ...(a.traits?.length ? { traits: a.traits } : {}),
+        ...(a.usesPerScene ? { usesPerScene: a.usesPerScene } : {}),
+      } },
       { name: a.name, type: 'weaponEffect', system: {
         classification: { skill: a.skill, style: a.range ? 'energy' : 'melee' }, damageType: a.type, damageValue: a.damage, numTargets: 1, numHands: '0',
         range: a.range ? { value: a.range[0], long: a.range[1] } : { reachMultiplier: 1 },
-      }, flags: { essence20: { parentId: id } } },
+      }, flags: { essence20: { parentId: id, ...(a.critMultiplier ? { critMultiplier: a.critMultiplier } : {}) } } },
     ];
   });
 }
@@ -294,7 +301,7 @@ export const BATTLIZERS = {
   // Battle Warrior (Across the Stars p.85): "Personal Power Cost to Summon: 1 ... Golden Sword (Might or
   // Finesse): Reach, 2 Sharp damage ... Battle Fire Saber (Might or Finesse): Range 5ft/10ft, 3 Fire
   // damage; usable only once per scene".
-  [SUMMON.battleWarrior]: { cost: 1, attacks: [attack('Golden Sword', 'might', 2, 'sharp'), attack('Battle Fire Saber', 'might', 3, 'fire', [5, 10])] },
+  [SUMMON.battleWarrior]: { cost: 1, attacks: [attack('Golden Sword', 'might', 2, 'sharp'), attack('Battle Fire Saber', 'might', 3, 'fire', [5, 10], [], { usesPerScene: 1 })] },
   // S.P.D. Battlizer: "Personal Power Cost to Summon: 1 ... Energy Sword (Finesse): Reach, 1 Energy damage".
   [SUMMON.spdBattlizer]: { cost: 1, attacks: [attack('Energy Sword', 'finesse', 1, 'energy')] },
   // Red Fury Mode (Beneath the Helmet p.68): "Personal Power Cost to Summon: 1 ... Cheetah Claws (Might):
@@ -306,10 +313,42 @@ export const BATTLIZERS = {
     attack('Dragon Yo-yo', 'targeting', 2, 'energy', [40, 100]), attack('Forearm Blaster', 'targeting', 1, 'energy', [40, 100]),
     attack('Shoulder Cannons', 'targeting', 3, 'energy', [30, 120]), attack('Stretch Kick', 'might', 1, 'blunt', [100, 100]),
   ] },
+  // Quantum Mega Battle Armor (A Jump Through Time p.69): "Personal Power Cost to Summon: 5 ... Wing
+  // Blades (Might): Reach, (2 Sharp damage) Wing Blaster (Targeting): Range 50ft/120ft, (2 Energy
+  // damage) Energy Sword Time Strike (Might, 1/scene): Reach, (5 Energy damage) Critical Effect:
+  // Triples base damage instead of double ... Inaccurate". Its armor, Ground and Aerial Movement are
+  // the armor item's own (equipped on summon). The Time Strike's "Anti-Armor" trait isn't defined in
+  // A Jump Through Time; the only printed Anti-Armor is Across the Stars' Zord Feature (Anti-Tank,
+  // Wrecker and an armor-shredding Critical Effect for a Zord attack), so it isn't mapped here.
+  [SUMMON.quantumMega]: { cost: 5, attacks: [
+    attack('Wing Blades', 'might', 2, 'sharp'), attack('Wing Blaster', 'targeting', 2, 'energy', [50, 120]),
+    attack('Energy Sword Time Strike', 'might', 5, 'energy', null, ['inaccurate'], { usesPerScene: 1, critMultiplier: 3 }),
+  ] },
 };
 
 export function isBattlizer(item) {
   return item?.type == 'armor' && !!BATTLIZERS[sourceOf(item)];
+}
+
+const battlizerAttackKey = weapon => `battlizerAttack.${weapon.id}`;
+
+/**
+ * A Battlizer attack marked "1/scene" (Energy Sword Time Strike, Battle Fire Saber) that has already
+ * been used this scene. Checked by dice.mjs before the attack is rolled.
+ * @param {Actor} actor
+ * @param {?Item} weapon   The attack's parent weapon.
+ * @returns {Boolean}
+ */
+export function battlizerAttackUsedUp(actor, weapon) {
+  const max = weapon?.system?.usesPerScene;
+  return !!weapon?.flags?.essence20?.battlizerOf && max > 0 && getUses(actor, battlizerAttackKey(weapon), 'scene') >= max;
+}
+
+/** Counts one use of a "1/scene" Battlizer attack, once it's actually rolled. */
+export async function markBattlizerAttack(actor, weapon) {
+  if (weapon?.flags?.essence20?.battlizerOf && weapon.system?.usesPerScene > 0) {
+    await markUsed(actor, battlizerAttackKey(weapon), { window: 'scene' });
+  }
 }
 
 /**

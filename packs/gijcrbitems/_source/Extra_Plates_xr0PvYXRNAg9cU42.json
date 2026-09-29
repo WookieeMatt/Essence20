@@ -5,6 +5,10 @@
   "_id": "xr0PvYXRNAg9cU42",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic, once per turn: damage applied to you is reduced by 1 while you wear heavy or super heavy armor.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

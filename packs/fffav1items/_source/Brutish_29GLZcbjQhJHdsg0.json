@@ -5,6 +5,10 @@
   "_id": "29GLZcbjQhJHdsg0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene): when the GM agrees you're acting on impulse, bank an Edge for your next Skill Test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

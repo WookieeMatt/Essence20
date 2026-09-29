@@ -5,6 +5,10 @@
   "_id": "0nTFK9GOpkQcjcHB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your attack on a vehicle is a Critical Success, its driver rolls DIF 20 Driving; on a failure the vehicle's Movement drops to 0. Chat card: the driver gets a button to restart the engines.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

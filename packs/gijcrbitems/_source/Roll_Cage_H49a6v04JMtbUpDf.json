@@ -5,6 +5,10 @@
   "_id": "H49a6v04JMtbUpDf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when the vehicle you drive is defeated, you and your passengers take no crash damage, and at most 1 damage if it explodes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

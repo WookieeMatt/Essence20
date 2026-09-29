@@ -5,6 +5,10 @@
   "_id": "Wc1FJ5YDeTQS6XoE",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: a button in the Zord's sidebar has the crew pay 5 Personal Power between them to call the Zord's mega-weapon for 1d2+1 attacks. Its 5-damage weapon and damage type are set up when you add the Feature.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "DOIFMbByvX3BxVmi",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, plus its Strength increases and a Skill from Athletics, Brawn or Intimidation.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

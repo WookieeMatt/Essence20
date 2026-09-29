@@ -5,6 +5,10 @@
   "_id": "vawHkPDQqtUDzn2M",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on while mining or taking apart crystal or mineral objects to get Edge, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

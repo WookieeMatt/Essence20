@@ -5,6 +5,10 @@
   "_id": "Uie11vx8RiWMoj4X",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while crewing the vehicle, Intimidation uses your Driving die when that is better.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

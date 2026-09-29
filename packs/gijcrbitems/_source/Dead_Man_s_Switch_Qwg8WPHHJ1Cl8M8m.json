@@ -5,6 +5,10 @@
   "_id": "Qwg8WPHHJ1Cl8M8m",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you attack with an explosive on your turn, you're asked whether to make it a Free action.</p><p>Left to the table: setting off explosives as part of a Contingency or when you're Defeated.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

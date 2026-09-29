@@ -5,6 +5,10 @@
   "_id": "KnNj4V0TKKIexqLV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic, when this is the Imperfection set on A Hint of Independence: -1 to your Toughness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "2sqHKvd9Nb9JGkcn",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Driving at Reach; a hit knocks the target Prone.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

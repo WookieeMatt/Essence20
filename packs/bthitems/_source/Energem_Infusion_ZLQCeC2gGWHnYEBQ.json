@@ -5,6 +5,10 @@
   "_id": "ZLQCeC2gGWHnYEBQ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added to a Zord you pick a ranged energy attack to gain +1 damage, with an optional Spectrum colour change. Automatic: Edge on energy attacks near another Energem Zord.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

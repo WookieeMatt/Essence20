@@ -5,6 +5,10 @@
   "_id": "MViU1s9KdZ1A51Qe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a melee weapon and pay Free actions by its Availability (1, 3 or 5); your unarmed attacks gain its effects until the end of your turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

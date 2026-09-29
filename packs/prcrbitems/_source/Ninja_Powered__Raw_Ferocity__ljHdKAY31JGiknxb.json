@@ -5,6 +5,10 @@
   "_id": "ljHdKAY31JGiknxb",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: choose a Snag on the Zord's melee attack and it deals 2 damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

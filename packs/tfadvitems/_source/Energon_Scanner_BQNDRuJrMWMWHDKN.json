@@ -5,6 +5,10 @@
   "_id": "BQNDRuJrMWMWHDKN",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this adventure device: the GM decides how much it helps the heroes find their way.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

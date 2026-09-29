@@ -5,6 +5,10 @@
   "_id": "PFsR3frg94yPmKiG",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added you pick the Essence, the Origin Skill and one of its four Alt Modes; you also get its Health, Movement and the 'Til All Are One Origin Benefit.</p>"
+    },
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.enigma_of_combination.Item.ilL3CyLQDydjxBHf]{Speaker (Common, Aerial)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.GPW2T5OEC0KtlJpX]{Speaker (Common, Ground)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.wwFXrMqJd0YJHqkX]{Speaker (Long, Aerial)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.48zFIrJCoULshGtm]{Speaker (Long, Ground)}</p>\n<p>&nbsp;</p>",
     "source": {

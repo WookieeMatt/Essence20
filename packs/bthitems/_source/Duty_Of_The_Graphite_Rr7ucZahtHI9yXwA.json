@@ -5,6 +5,10 @@
   "_id": "Rr7ucZahtHI9yXwA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend 1 Grid Surge and 2 Personal Power; on arrival you roll against a chosen enemy's Cleverness and Blind them to your allies on a success.</p><p>Left to the table: moving your token to the other Rangers.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

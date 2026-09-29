@@ -5,6 +5,10 @@
   "_id": "y0BcocuYoWueiLTP",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Hidden Whispers at level 1 and Mayoral Speeches at level 4. The character needs the Politician Role first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

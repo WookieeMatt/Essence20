@@ -5,6 +5,10 @@
   "_id": "jm0YQ8VEkHEH70AP",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Green Ranger's Perks at the listed levels, Essence increases, Personal Power, Solo Strike points and the Power Ranger faction. You make the listed choices as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

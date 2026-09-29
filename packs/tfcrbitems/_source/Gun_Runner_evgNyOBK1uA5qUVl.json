@@ -5,6 +5,10 @@
   "_id": "evgNyOBK1uA5qUVl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an Integrated Hardpoint counts as Reinforced when you fire a ballistic weapon from it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

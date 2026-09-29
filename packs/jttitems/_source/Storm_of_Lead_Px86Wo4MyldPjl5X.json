@@ -5,6 +5,10 @@
   "_id": "Px86Wo4MyldPjl5X",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: with a Fanning weapon you can fan one extra shot, and your first shot gets ↑1. Choose the number of shots in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

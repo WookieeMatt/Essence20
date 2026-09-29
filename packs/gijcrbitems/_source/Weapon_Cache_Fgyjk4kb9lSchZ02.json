@@ -5,6 +5,10 @@
   "_id": "Fgyjk4kb9lSchZ02",
   "img": "systems/essence20/assets/icons/gear/weapon_cache.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: a support drop of extra weapons arranged for the mission.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

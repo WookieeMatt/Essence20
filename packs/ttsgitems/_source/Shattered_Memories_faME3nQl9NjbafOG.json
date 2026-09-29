@@ -5,6 +5,10 @@
   "_id": "faME3nQl9NjbafOG",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (1 Personal Power): pick Edge on Social tests against your current target, or ↑1 on a Smarts test to recall timeline details.</p><p>Left to the table: gaining new Contacts through it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

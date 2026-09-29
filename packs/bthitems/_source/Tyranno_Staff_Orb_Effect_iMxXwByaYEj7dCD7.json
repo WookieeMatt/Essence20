@@ -5,6 +5,10 @@
   "_id": "iMxXwByaYEj7dCD7",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Tyranno Staff's orb attack, rolling Targeting for 3 Element damage at the listed range.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

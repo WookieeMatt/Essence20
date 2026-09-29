@@ -5,6 +5,10 @@
   "_id": "u1sgQ5v1zQ02fpMr",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Shoulder Cannons' attack, rolling Targeting for 3 Element damage at the listed range.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

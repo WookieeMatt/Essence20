@@ -5,6 +5,10 @@
   "_id": "gi8vv2ujGBQNLjIq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after you hit a Growled target with a melee weapon, Growl's ↑1 against them carries over to your next attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

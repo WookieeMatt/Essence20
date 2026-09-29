@@ -5,6 +5,10 @@
   "_id": "zey1cJ2IuWlTsjN2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Toughness. When added, pick Acidic Saliva, Razor-Sharp or Venomous; your natural weapon attacks deal +1 damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "y7hyuXOuARcKgahl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic, once per encounter: when damage is applied to you during Reckless Abandon, you're asked whether to reduce it to 0.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

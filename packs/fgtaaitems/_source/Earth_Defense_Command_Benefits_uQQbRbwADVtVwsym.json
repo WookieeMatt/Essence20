@@ -5,6 +5,10 @@
   "_id": "uQQbRbwADVtVwsym",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: its weapon Qualifications. Automatic: ↑2 on attacks in zero-G and on Driving an aerial vehicle. Use button: a Space Kit once per mission. The extra language is noted on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

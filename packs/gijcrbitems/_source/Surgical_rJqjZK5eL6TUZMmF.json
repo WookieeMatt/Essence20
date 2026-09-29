@@ -5,6 +5,10 @@
   "_id": "rJqjZK5eL6TUZMmF",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a critical success with the weapon it's attached to also deals 1 damage to the target's Strength. If Maiming is also attached, you choose which applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "OdHMLgny9aqCevAc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on Acrobatics while in Alt Mode. Using your feet to hold items and fire weapons is up to you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

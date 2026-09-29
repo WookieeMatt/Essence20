@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when a Skill die shows a natural 1, a Reroll button re-rolls it and the new result stands. Use it only while acting in line with your oath.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

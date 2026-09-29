@@ -5,6 +5,10 @@
   "_id": "rSP76BWjYaifJLIZ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's attached to gains Silent, which Perks like Sneak Attack and Silent Weapon Expertise look for.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -14,7 +14,8 @@ import { bankPendingBonus } from "./perks.mjs";
  * This file covers the triggered-roll half: resolves the currently-targeted actor and triggers a
  * real Persuasion-vs-Cleverness roll via actor._dice.rollSkill() (the same "trigger a real dialog
  * roll" shape Duty Of The Graphite/Absolute Menace already establish, single-target instead of an
- * AoE). On success, a 2-option picker (Snag or Edge) - unlike Menacing Glare's own 3-way picker,
+ * AoE). On success, a 2-option picker (↓1 or Edge - the ↓1 still banks under the old
+ * pendingMartialLeadershipSnag flag name) - unlike Menacing Glare's own 3-way picker,
  * BOTH options here apply to the TARGET's own next roll (a positive or negative choice for
  * someone else, matching this Perk's own "lead or dissuade" flavor), so both bank an unscoped
  * flag on the target rather than a self-scoped one - same shape as Through the Arches' Snag/

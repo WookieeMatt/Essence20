@@ -5,6 +5,10 @@
   "_id": "SYFScAH8lDshgLNM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: the first time in a scene that your Health, or an Essence drained by a hazardous environment, would drop to 0, it stays at 1 instead.</p><p>Left to the table: the once-per-investigation limit, and other Essence damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

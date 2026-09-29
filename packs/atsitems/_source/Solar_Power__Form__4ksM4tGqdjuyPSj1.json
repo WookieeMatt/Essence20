@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Pay 1 Personal Power when you Morph to activate the Form: Cold and Energy attacks on you take a Snag, your blaster adds 1 Fire damage, and your Power Weapon gets +1 damage in an Element you pick. Roll Options Dialog: Edge on Alertness against illusions.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

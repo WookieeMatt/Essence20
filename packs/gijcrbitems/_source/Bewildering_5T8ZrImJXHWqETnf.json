@@ -5,6 +5,10 @@
   "_id": "5T8ZrImJXHWqETnf",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached to a weapon: on a Critical Success, the critical-effect choice offers 1 damage to the target's Social. If Traumatic is also attached, you pick which one applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

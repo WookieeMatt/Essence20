@@ -5,6 +5,10 @@
   "_id": "K0PFYs7SR8iBzcXk",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: a Rifle (Flashlight and Scope), Tactical Armor (Acclimating) and a Limited Survival (Desert) Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "zvzta73A3ROyxv0J",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: enemies within 30 ft of you have a Snag on their attacks, unless they've attacked you this turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

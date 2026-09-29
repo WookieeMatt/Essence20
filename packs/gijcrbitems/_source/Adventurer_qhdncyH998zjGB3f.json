@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch applies the Snag to Smarts and Social tests when the Hang-Up applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

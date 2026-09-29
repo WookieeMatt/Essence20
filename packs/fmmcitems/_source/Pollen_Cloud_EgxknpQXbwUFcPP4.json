@@ -5,6 +5,10 @@
   "_id": "EgxknpQXbwUFcPP4",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting against Toughness across a 30ft area with the listed damage and range; the Alternate Effect blinds instead. Its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

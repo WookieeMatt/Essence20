@@ -5,6 +5,10 @@
   "_id": "EKCz40TU8BYtcSkN",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a successful cast summons your helper clone for the scene. Use button: once per round, the clone Lends Assistance to someone you pick within 15 ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

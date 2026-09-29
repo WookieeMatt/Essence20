@@ -5,6 +5,10 @@
   "_id": "3oE1L6Sf4KyVWgBb",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Recording Microphone's feedback: rolls Might for 1 Electric damage in a 5ft radius.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

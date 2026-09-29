@@ -5,6 +5,10 @@
   "_id": "jVRapLGSt8yVHL9n",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: Edge on Strength Skill Tests while Morphed.</p><p>Left to the table: +1 damage on Megaform attacks your Zord is part of.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

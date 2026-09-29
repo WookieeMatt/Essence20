@@ -5,6 +5,10 @@
   "_id": "pq2UFVm5BNszAk0f",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑3 on tests involving languages.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

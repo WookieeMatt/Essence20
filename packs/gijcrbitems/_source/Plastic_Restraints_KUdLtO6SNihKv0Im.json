@@ -5,6 +5,10 @@
   "_id": "KUdLtO6SNihKv0Im",
   "img": "systems/essence20/assets/icons/gear/plastic_restraints.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the Acrobatics test to escape, the Brawn test to break free, and cutting them off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

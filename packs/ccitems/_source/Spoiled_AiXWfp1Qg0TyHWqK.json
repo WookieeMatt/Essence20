@@ -5,6 +5,10 @@
   "_id": "AiXWfp1Qg0TyHWqK",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your first Requisition Test in a scene takes a Snag.</p><p>Left to the table: it resets each scene rather than each mission, so drop the Snag if you've already had it this mission.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

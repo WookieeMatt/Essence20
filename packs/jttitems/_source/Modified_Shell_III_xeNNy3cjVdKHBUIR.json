@@ -5,6 +5,10 @@
   "_id": "xeNNy3cjVdKHBUIR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: when gained, pick two options from Modified Shell I, II or III; each is added as its own Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

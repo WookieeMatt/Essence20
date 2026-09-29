@@ -5,6 +5,10 @@
   "_id": "MleI0VeS2nZpa47Z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you're offered rerolls of Skill Die results of 1.</p><p>Left to the table: it's offered on every test, so skip it when the situation the Perk covers doesn't apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

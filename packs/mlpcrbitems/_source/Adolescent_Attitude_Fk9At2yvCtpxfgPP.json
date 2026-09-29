@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Chat card: a reroll button for Skill-die 1s on Social tests.</p><p>Left to the table: once per scene, rolling an untrained Skill as if you had a d2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

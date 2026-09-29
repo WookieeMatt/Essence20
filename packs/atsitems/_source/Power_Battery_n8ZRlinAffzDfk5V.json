@@ -5,6 +5,10 @@
   "_id": "n8ZRlinAffzDfk5V",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 maximum Personal Power. Each copy adds another +2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

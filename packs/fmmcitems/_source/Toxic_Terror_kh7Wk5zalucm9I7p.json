@@ -5,6 +5,10 @@
   "_id": "kh7Wk5zalucm9I7p",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: switches it on; while it's on, each unarmed hit stacks another ↓1 on the target's Strength and Speed tests.</p><p>Left to the table: switching it off and clearing the penalties at the end of the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

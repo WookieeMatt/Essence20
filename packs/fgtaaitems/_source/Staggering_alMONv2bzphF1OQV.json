@@ -5,6 +5,10 @@
   "_id": "alMONv2bzphF1OQV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 Stun whenever you deal Stun damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

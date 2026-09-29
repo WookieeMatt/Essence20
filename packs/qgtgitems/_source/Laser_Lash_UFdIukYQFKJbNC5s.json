@@ -5,6 +5,10 @@
   "_id": "UFdIukYQFKJbNC5s",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for Laser damage, with Stun and Grapple alternate effects; its traits and its Arched and Extended upgrades apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

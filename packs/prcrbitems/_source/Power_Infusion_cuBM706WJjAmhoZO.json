@@ -5,6 +5,10 @@
   "_id": "cuBM706WJjAmhoZO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene, while Morphed): spend 1 Personal Power; you and Morphed teammates within 60 feet reroll 1s on your next successful attack (1s and 2s from 18th level).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

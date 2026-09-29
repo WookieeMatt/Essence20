@@ -5,6 +5,10 @@
   "_id": "7mL8hfusg9W62G3d",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: letting you Hide and Sneak with Infiltration even without cover to hide behind.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

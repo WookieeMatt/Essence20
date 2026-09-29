@@ -5,6 +5,10 @@
   "_id": "w6fjujYpg8DrnuMX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: gain another Faction's Faction Perks for the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

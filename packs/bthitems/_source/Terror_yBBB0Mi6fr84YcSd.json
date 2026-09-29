@@ -5,6 +5,10 @@
   "_id": "yBBB0Mi6fr84YcSd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you gain Terror when the listed triggers happen, up to your Terror Capacity. Chat card: spend Terror to add that much damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

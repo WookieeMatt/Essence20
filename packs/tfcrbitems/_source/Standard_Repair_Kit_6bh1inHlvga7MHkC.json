@@ -5,6 +5,10 @@
   "_id": "6bh1inHlvga7MHkC",
   "img": "systems/essence20/assets/icons/gear/mechanic_kit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when a repair roll calls for a kit, the best kit you carry sets the Snag or ↓. Use button: use it up for a short burst of Repair Specialization (or ↑1 if already Specialized), or scrounge a refill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "gFTHcdhnTZojAqPM",
   "img": "systems/essence20/assets/icons/gear/jammer.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switch the jammer on or off. While it's on, Technology rolls within 30 ft take a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

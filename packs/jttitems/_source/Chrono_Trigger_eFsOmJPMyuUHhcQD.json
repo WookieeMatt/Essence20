@@ -5,6 +5,10 @@
   "_id": "eFsOmJPMyuUHhcQD",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Attack action makes three attacks with this sidearm, each at ↓2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

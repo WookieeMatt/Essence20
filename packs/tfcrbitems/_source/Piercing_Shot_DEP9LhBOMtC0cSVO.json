@@ -5,6 +5,10 @@
   "_id": "DEP9LhBOMtC0cSVO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you attack with your Long Range Rifle while Specialized in it and have an Edge, you can Critically Succeed on the d2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

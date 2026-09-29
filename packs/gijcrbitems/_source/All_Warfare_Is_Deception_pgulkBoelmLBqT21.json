@@ -5,6 +5,10 @@
   "_id": "pgulkBoelmLBqT21",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per scene, a reroll button on your Deception and Infiltration tests rerolls all your Skill dice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Muscle Over Panache Perk, plus the Don't Know Your Own Strength Hang-Up once this is one of two or more Influences. Its Influence Skill (Brawn) is offered when your Origin asks which Essence to increase.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

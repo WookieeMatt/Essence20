@@ -5,6 +5,10 @@
   "_id": "IuQ0tsM2G99fQlSz",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (in combat): spend any amount of Power; your Initiative goes up 2 per Power spent.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

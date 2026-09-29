@@ -5,6 +5,10 @@
   "_id": "V11B4h7plsBAaq34",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑1 on Athletics. Group Skill Test card (Party sheet): everyone gets ↑1 when you lead.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

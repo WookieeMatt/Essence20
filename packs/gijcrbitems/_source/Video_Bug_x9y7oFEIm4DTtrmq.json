@@ -5,6 +5,10 @@
   "_id": "x9y7oFEIm4DTtrmq",
   "img": "systems/essence20/assets/icons/gear/video_bug.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: a hidden camera that needs line of sight.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

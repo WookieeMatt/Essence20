@@ -5,6 +5,10 @@
   "_id": "larsGRE5U4ZOVxzw",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per scene): pick the element the first time, then the Zord gets a one-roll ranged attack at double its strongest ranged damage, with that element's damage type and critical rider.</p><p>Left to the table: any Megaform restriction on using it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

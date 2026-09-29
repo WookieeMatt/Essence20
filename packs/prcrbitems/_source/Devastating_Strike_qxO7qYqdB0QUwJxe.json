@@ -5,6 +5,10 @@
   "_id": "qxO7qYqdB0QUwJxe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your melee attacks with a high degree of success deal triple damage instead of double.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

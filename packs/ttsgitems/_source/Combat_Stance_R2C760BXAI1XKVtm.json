@@ -5,6 +5,10 @@
   "_id": "R2C760BXAI1XKVtm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: target a foe to enter Combat Stance (once per scene). Automatic: ↑1 on attacks against that foe. Roll Options Dialog: a switch to spend 1 Personal Power for bonus damage on a hit.</p><p>Left to the table: ending the stance when the foe leaves, is Defeated or you unmorph.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

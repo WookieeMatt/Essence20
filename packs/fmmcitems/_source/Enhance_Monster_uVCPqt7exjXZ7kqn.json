@@ -5,6 +5,10 @@
   "_id": "uVCPqt7exjXZ7kqn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Granted: by each Psycho Path at 6th, 14th, 17th and 19th level.</p><p>Left to the table: picking an enhancement each time and adding it to your Monster Form by hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "MlEYEVW4YXT4P0sP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ranged attacks against you from higher ground take ↓1, in or out of a vehicle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

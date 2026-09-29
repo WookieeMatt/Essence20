@@ -5,6 +5,10 @@
   "_id": "IKtCNZtKHqs7DIQh",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: enemies get ↑1 on Intimidation Tests that target you; it shows in their Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "6p4hQ6Nghjne8INq",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: a Ballistic Shield and an Assault Rifle (Ammo Feeder). Left to the table: who may take this package.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

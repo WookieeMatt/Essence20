@@ -5,6 +5,10 @@
   "_id": "GKNjCEwhgEbBiKQn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: you regain 2 Personal Power when you hit a Frightened or Impaired target, and in Monster Form your Acid attacks can't be defended with Toughness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

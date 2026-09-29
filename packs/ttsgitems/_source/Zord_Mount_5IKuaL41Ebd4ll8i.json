@@ -5,6 +5,10 @@
   "_id": "5IKuaL41Ebd4ll8i",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: name the Zord riding this one. Automatic: the mount's first melee attack each turn prompts the rider's follow-up melee attack on the same target.</p><p>Left to the table: mounted movement and size rules.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

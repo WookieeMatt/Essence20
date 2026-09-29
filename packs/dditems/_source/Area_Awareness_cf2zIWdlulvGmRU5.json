@@ -5,6 +5,10 @@
   "_id": "cf2zIWdlulvGmRU5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Deception and Infiltration Tests against you take a Snag, and you get Edge on Initiative when Surprised.</p><p>Left to the table: the single action you may take in the first round while Surprised; drop the Snag if it isn't a surprise attempt.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

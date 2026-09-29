@@ -5,6 +5,10 @@
   "_id": "npFtRjCiJwrkmjyG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (while Morphed): Resistance to Blunt and Sharp damage and Edge on Strength tests. Automatic: +1 damage with Power Weapon attacks while Morphed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

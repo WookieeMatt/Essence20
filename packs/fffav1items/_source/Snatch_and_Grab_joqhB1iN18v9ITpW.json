@@ -5,6 +5,10 @@
   "_id": "joqhB1iN18v9ITpW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: after a successful Disarm, move the weapon to your sheet yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

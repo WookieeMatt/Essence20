@@ -5,6 +5,10 @@
   "_id": "joaLVuGzwLtdpIv5",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: apply ↓1 on the linked Skill until you first succeed with it, then ↑1 from then on.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

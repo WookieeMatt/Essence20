@@ -5,6 +5,10 @@
   "_id": "cNW4eInUry1g1CJF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Health.</p><p>Left to the table: the extra weapon, explosive and armor training and Qualifications, and driving Ramshackle vehicles without a Snag or the Streetwise test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

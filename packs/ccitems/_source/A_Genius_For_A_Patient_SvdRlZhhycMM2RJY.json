@@ -5,6 +5,10 @@
   "_id": "SvdRlZhhycMM2RJY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per turn, a Science test to heal yourself costs a Free action instead of a Standard action.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

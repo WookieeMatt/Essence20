@@ -5,6 +5,10 @@
   "_id": "I5pyGF8DENUqS1TU",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: its Defense bonus applies while equipped.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

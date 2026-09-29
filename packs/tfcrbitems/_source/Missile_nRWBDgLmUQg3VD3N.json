@@ -5,6 +5,10 @@
   "_id": "nRWBDgLmUQg3VD3N",
   "img": "systems/essence20/assets/icons/weapons/missile-launcher.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 damage of the chosen element in a 50ft blast at 500ft/1000ft, with its three alternate effects; Anti-Tank, Mounted, Wrecker and its other traits apply, and it is used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

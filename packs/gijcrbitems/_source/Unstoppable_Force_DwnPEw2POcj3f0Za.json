@@ -5,6 +5,10 @@
   "_id": "DwnPEw2POcj3f0Za",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in heavy or super heavy armor, when you defend an Evasion attack with Toughness, you skip the extra penalties like Conditions or bonus damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

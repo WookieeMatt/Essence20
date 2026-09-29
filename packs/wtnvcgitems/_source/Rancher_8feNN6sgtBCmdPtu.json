@@ -5,6 +5,10 @@
   "_id": "8feNN6sgtBCmdPtu",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Faithful Companion at level 1 and New Herd at level 4. The character needs the Farmer Role first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

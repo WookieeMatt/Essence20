@@ -5,6 +5,10 @@
   "_id": "wXbkcyQTziLjCYEC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: once per turn, when you act for your beloved, pick either ↑1 or removing the roll's Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "OBrVgnu3PCsHyfi0",
   "img": "systems/essence20/assets/icons/weapons/lightning-projector.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Targeting with the Dark Ray damage and range; the Alternate Effect Stuns instead. Its traits apply.</p><p>Left to the table: the ↑1 on Culture (Arcane) tests and ↑2 on tests to bend space and time.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

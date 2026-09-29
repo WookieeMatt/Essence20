@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for Edge on tests to repair or upgrade a Cybertronian or Cybertronian technology.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you can carry 3 more hands of weapons. Automatic: your Brawn counts two steps higher for carrying capacity and against armor's Brawn requirement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

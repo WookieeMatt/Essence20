@@ -5,6 +5,10 @@
   "_id": "Yg94gmXwM4LlLOsN",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: paying to activate it, the Snag on Energy and element attacks against you while it lasts, and it breaking on a Critical Success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

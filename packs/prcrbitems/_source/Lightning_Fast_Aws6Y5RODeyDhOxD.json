@@ -5,6 +5,10 @@
   "_id": "Aws6Y5RODeyDhOxD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (while Morphed): spend 1 Personal Power, then move your token up to 60 feet to a spot you can see.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

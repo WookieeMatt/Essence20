@@ -5,6 +5,10 @@
   "_id": "b4rCpGE6aJuxvoB5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑1 on Initiative. Use button: once per round, when you're not first, spend a Free action to reroll Initiative for the next round.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

@@ -174,6 +174,13 @@ export function getRerollConfigs(actor) {
       config.skills = [actor.system?.originSkillsIncrease].filter(Boolean);
     }
 
+    // A Perk whose Skill is picked when it's taken (choiceType 'skills': Expertise, Trade
+    // Experience, Aptitude Augmenter) and whose reroll names no skills of its own covers only that
+    // chosen Skill (system.choice, stamped by perk-handler.mjs#onPerkDrop).
+    if (config && !config.skills?.length && item.system?.choiceType == 'skills' && item.system?.choice) {
+      config.skills = [item.system.choice];
+    }
+
     if (config) {
       // `name` is the human-readable label (the Perk's own name) - kept separate from `source`
       // (an id/uuid used only as the per-grant usage-tracking key, see canUseReroll's sourceKey)

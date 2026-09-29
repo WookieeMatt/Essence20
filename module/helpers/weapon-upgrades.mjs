@@ -44,6 +44,7 @@ export const UPGRADE = {
   chronoTrigger: 'eFsOmJPMyuUHhcQD',
   nonlethal: 'QbfY2NGNmUmKa6uO',
   covering: 'UfDHKErREKIeojVl',
+  strobe: 'Bd7nMQQmv0MFrsjO',
   heavyHitting: '4yjmk8tENyBSPJrx',
   tracerRounds: 'uT2aZsKK307koPCu',
   surging: 'iDSVcsovl4V2uQmj',
@@ -59,8 +60,15 @@ export const UPGRADE = {
   biomechanical: '7qniIaOGp8Mqwt6O',
   pillForm: 'lYMLqH3adOzo8Nmd',
   salveForm: 'JJ1KynH9FfYeOG7N',
+  mistForm: 'UcdxOhIviGmJe3aJ',
+  // GI Joe / TF / PR CRB weapon upgrades, one id across all three packs.
+  extended: '2nAPVgXfIfUEnn33',
+  aerodynamics: 'NoENOcMYq0YkkhAk',
+  balancedGrip: '7xyCdYAorscGuwBT',
   // PR CRB p.117 / TF CRB - both packs carry it under this id.
   manipulative: 'IJBeoPW2yUDWh2Wh',
+  // Quartermaster's Guide to Gear p.34.
+  foldingStock: 'bChPSldjpYZgAnIh',
 };
 
 // Perks (by full uuid) that change weapons the same way.
@@ -81,7 +89,7 @@ const ELEMENT_TRAITS = Object.values(ELEMENTS);
 // Effects that don't deal damage - Deadly and Surging leave them alone.
 export const NON_DAMAGE_TYPES = [
   'stun', 'cover', 'spot', 'maneuver', 'grapple', 'intimidate', 'knocProne', 'blindingBlast', 'frightened',
-  'impaired', 'mesmerized', 'restrained', 'unconscious', 'modelock', 'special',
+  'impaired', 'mesmerized', 'restrained', 'unconscious', 'modelock', 'special', 'deafened',
 ];
 
 const SIZE_STEPS = ['integrated', 'sidearm', 'medium', 'long', 'heavy'];
@@ -269,11 +277,12 @@ export function applyToEffect(system, effect) {
   }
 
   // Scope (p.148): "Double the ranges of the weapon." Smart Scope (p.153): "Increase effective range
-  // by 1.5 and long range by 2."
+  // by 1.5 and long range by 2." Aerodynamics (TF CRB p.125) doubles a grenade's or thrown weapon's
+  // range the same way.
   if (system.range?.value) {
     let value = system.range.value;
     let long = system.range.long;
-    for (let i = 0; i < count(UPGRADE.scope); i++) {
+    for (let i = 0; i < count(UPGRADE.scope) + count(UPGRADE.aerodynamics); i++) {
       value *= 2;
       long = long ? long * 2 : long;
     }
@@ -311,6 +320,12 @@ export function applyToEffect(system, effect) {
     set('range.value', null);
     set('range.long', null);
     set('range.reachMultiplier', 1);
+  }
+
+  // Extended (GI Joe CRB p.148): "Add 1 to the weapon's Reach modifier (Reach becomes Reach x2...)".
+  // Only for an effect whose range is measured in Reach - no range, or an explicit Reach multiplier.
+  if (count(UPGRADE.extended) && (!system.range?.value || (system.range?.reachMultiplier ?? 0) >= 1)) {
+    set('range.reachMultiplier', Math.max(1, system.range?.reachMultiplier ?? 0) + count(UPGRADE.extended));
   }
 
   // Eruptive (p.149): "The blast radius of the explosive's effect doubles."
@@ -361,12 +376,14 @@ export function applyToEffect(system, effect) {
   }
 
   // Refined Grip / Reinforced Grip / Automated (p.150): "Use Finesse / Might / Technology instead of
-  // the weapon's normal skill." Biomechanical Weapon (Ferocious Fighters p.94) - its chosen skill.
+  // the weapon's normal skill." Balanced Grip (TF CRB p.127): "Use Athletics instead...".
+  // Biomechanical Weapon (Ferocious Fighters p.94) - its chosen skill.
   const biomech = findUpgrade(weapon, UPGRADE.biomechanical);
   const skill = biomech?.flags?.essence20?.skillChoice
     ?? (count(UPGRADE.automated) ? 'technology'
       : count(UPGRADE.reinforcedGrip) ? 'might'
-        : count(UPGRADE.refinedGrip) ? 'finesse' : null);
+        : count(UPGRADE.refinedGrip) ? 'finesse'
+          : count(UPGRADE.balancedGrip) ? 'athletics' : null);
   if (skill && system.classification?.skill != skill) {
     set('classification.skill', skill);
   }
@@ -453,11 +470,13 @@ export function applyToWeapon(weapon) {
     system.derivedHands = 1;
   }
 
-  // Pill Form / Salve Form (Cobra Codex p.97): "Treat the poison as an ingested poison" / "...as a
-  // contact poison."
-  const form = hasUpgrade(weapon, UPGRADE.pillForm) ? 'ingested' : hasUpgrade(weapon, UPGRADE.salveForm) ? 'contact' : null;
+  // Pill Form / Salve Form / Mist Form (Cobra Codex p.97): "Treat the poison as an ingested poison" /
+  // "...as a contact poison" / "...as an inhaled poison."
+  const form = hasUpgrade(weapon, UPGRADE.pillForm) ? 'ingested'
+    : hasUpgrade(weapon, UPGRADE.salveForm) ? 'contact'
+      : hasUpgrade(weapon, UPGRADE.mistForm) ? 'inhaled' : null;
   if (form && system.isPoison) {
-    system.poisonApplication = { contact: form == 'contact', ingested: form == 'ingested', inhaled: false };
+    system.poisonApplication = { contact: form == 'contact', ingested: form == 'ingested', inhaled: form == 'inhaled' };
     system.upgradeTouched = [...new Set([...(system.upgradeTouched ?? []),
       'poisonApplication.contact', 'poisonApplication.ingested', 'poisonApplication.inhaled'])];
   }
@@ -520,6 +539,12 @@ export function desiredGeneratedEffects(weapon) {
     add('nonlethal', i18n('E20.DamageStun'), { damageType: 'stun', damageValue: base.damageValue });
   }
 
+  // Strobe (Quartermaster's Guide p.34): "Weapon gains Blinding trait as an alternate effect." Only
+  // when the weapon doesn't already print one (Molecular Reducer/Enlarger does).
+  if (hasUpgrade(weapon, UPGRADE.strobe) && !existingTypes.includes('blindingBlast')) {
+    add('strobe', i18n('E20.DamageBlindingBlast'), { damageType: 'blindingBlast', damageValue: 1, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
+  }
+
   // Covering (Intercontinental Adventures p.92): "The weapon gains Cover 1 as an Alternate Effect."
   if (hasUpgrade(weapon, UPGRADE.covering)) {
     add('covering', i18n('E20.DamageCover'), { damageType: 'cover', damageValue: 1, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
@@ -528,6 +553,12 @@ export function desiredGeneratedEffects(weapon) {
   // Heavy Hitting (p.93): "This weapon gains Shove (↑1) as an Alternate Effect."
   if (hasUpgrade(weapon, UPGRADE.heavyHitting)) {
     add('heavyHitting', i18n('E20.WeaponAltShove'), { damageType: 'maneuver', damageValue: 1, accurateShiftUp: 1, shiftDown: 0, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
+  }
+
+  // Folding Stock (Quartermaster's Guide p.34): "allowing for fewer hands at the cost of accuracy" -
+  // printed on stat blocks (Hawk's Personnel Files) as the main effect again, "(1 hand, ↓2)".
+  if (hasUpgrade(weapon, UPGRADE.foldingStock)) {
+    add('foldingStock', `${primary.name} - ${i18n('E20.WeaponAltOneHand')}`, { numHands: 1, shiftDown: (base.shiftDown ?? 0) + 2 });
   }
 
   // Manipulative (PR CRB p.117): "Modified to reposition the target rather than harm them outright.

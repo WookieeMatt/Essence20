@@ -5,6 +5,10 @@
   "_id": "eOgtG24LKGR6OE0v",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick the Skill you are obsessed with. Automatic: other Skill Tests get ↓1, shown as a source in the Roll Options Dialog that you can untick when the test relates to your obsession.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

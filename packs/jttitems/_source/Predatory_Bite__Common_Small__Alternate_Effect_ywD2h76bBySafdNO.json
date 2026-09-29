@@ -5,6 +5,10 @@
   "_id": "ywD2h76bBySafdNO",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the bite's Maneuver attack with the listed penalty.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",
