@@ -1,5 +1,21 @@
 /* Party ("Squad") actor sheet - roster tab. */
 
+/* The roster header: the tab name on the left, the Group Skill Test link on the right. */
+.essence20 .party-roster-header {
+  gap: 8px;
+  padding: 4px 6px;
+}
+
+.essence20 .party-roster-title {
+  flex: 1 1 auto;
+  font-weight: 700;
+}
+
+.essence20 .party-group-test {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 .essence20 .party-roster-list {
   padding: 6px;
 }

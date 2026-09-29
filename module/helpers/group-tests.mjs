@@ -127,18 +127,18 @@ export function tally(test) {
 export function renderCard(test) {
   const { rows, done, success, successes } = tally(test);
   const skill = T(CONFIG.E20.skills[test.skill] ?? test.skill);
-  const list = rows.map(row => `<li class="flexrow">${foundry.utils.escapeHTML(row.name)} &mdash; ${
-    row.rolled ? T(row.chaos ? 'E20.GroupTestChaos' : (row.success ? 'E20.GroupTestSucceeded' : 'E20.GroupTestFailed'))
-      : `<button type="button" data-e20-social="groupRoll" data-actor="${row.id}">${T('E20.GroupTestRoll')}</button>`
+  const list = rows.map(row => `<li class="e20-group-test-row"><span class="e20-group-test-name">${foundry.utils.escapeHTML(row.name)}</span>${
+    row.rolled ? `<span class="e20-group-test-result">${T(row.chaos ? 'E20.GroupTestChaos' : (row.success ? 'E20.GroupTestSucceeded' : 'E20.GroupTestFailed'))}</span>`
+      : `<button type="button" class="e20-chat-action-button" data-e20-social="groupRoll" data-actor="${row.id}">${T('E20.GroupTestRoll')}</button>`
   }</li>`).join('');
   const extras = [
-    `<button type="button" data-e20-social="groupPerk" data-perk="communitySpirit">${T('E20.CommunitySpirit')}</button>`,
-    `<button type="button" data-e20-social="groupPerk" data-perk="createChaos">${T('E20.CreateChaos')}</button>`,
-    `<button type="button" data-e20-social="groupPerk" data-perk="priorExperience">${T('E20.PriorExperience')}</button>`,
+    `<button type="button" class="e20-chat-action-button" data-e20-social="groupPerk" data-perk="communitySpirit">${T('E20.CommunitySpirit')}</button>`,
+    `<button type="button" class="e20-chat-action-button" data-e20-social="groupPerk" data-perk="createChaos">${T('E20.CreateChaos')}</button>`,
+    `<button type="button" class="e20-chat-action-button" data-e20-social="groupPerk" data-perk="priorExperience">${T('E20.PriorExperience')}</button>`,
   ].join('');
   return `<div class="e20-group-test"><h3>${T('E20.GroupTestHeader', { skill, dif: test.dif })}</h3><ul>${list}</ul>
     <p>${done ? T(success ? 'E20.GroupTestGroupSucceeded' : 'E20.GroupTestGroupFailed', { successes, total: rows.length }) : T('E20.GroupTestPending', { successes, total: rows.length })}</p>
-    <div class="flexrow">${extras}</div></div>`;
+    <div class="e20-chat-action-buttons">${extras}</div></div>`;
 }
 
 async function refresh(message) {

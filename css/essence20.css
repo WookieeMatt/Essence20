@@ -1233,7 +1233,8 @@
    staying stuck looking like a different, older feature. */
 .essence20 .e20-check-card button,
 .essence20 .e20-reroll-button,
-.essence20 .e20-chat-action-button {
+.essence20 .e20-chat-action-button,
+.essence20 .message-content button:not([class]) {
   position: relative;
   display: block;
   width: 100%;
@@ -1281,7 +1282,8 @@
 }
 .essence20 .e20-check-card button::before,
 .essence20 .e20-reroll-button::before,
-.essence20 .e20-chat-action-button::before {
+.essence20 .e20-chat-action-button::before,
+.essence20 .message-content button:not([class])::before {
   content: "";
   pointer-events: none;
   position: absolute;
@@ -1300,13 +1302,16 @@
 .essence20 .e20-reroll-button:hover:not(:disabled),
 .essence20 .e20-reroll-button:focus-visible:not(:disabled),
 .essence20 .e20-chat-action-button:hover:not(:disabled),
-.essence20 .e20-chat-action-button:focus-visible:not(:disabled) {
+.essence20 .e20-chat-action-button:focus-visible:not(:disabled),
+.essence20 .message-content button:not([class]):hover:not(:disabled),
+.essence20 .message-content button:not([class]):focus-visible:not(:disabled) {
   background: var(--e20-system-color, var(--e20-theme-accent));
   color: var(--e20-theme-accent-contrast, #111);
 }
 .essence20 .e20-check-card button:disabled,
 .essence20 .e20-reroll-button:disabled,
-.essence20 .e20-chat-action-button:disabled {
+.essence20 .e20-chat-action-button:disabled,
+.essence20 .message-content button:not([class]):disabled {
   background: var(--e20-theme-card-bg);
   color: var(--e20-theme-muted-text);
   cursor: default;
@@ -1331,6 +1336,38 @@
 }
 
 .essence20 .e20-reroll-buttons,
+.essence20 .e20-group-test ul {
+  list-style: none;
+  margin: 6px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.essence20 .e20-group-test-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.essence20 .e20-group-test-name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.essence20 .e20-group-test-row .e20-chat-action-button {
+  flex: 0 0 auto;
+  width: auto;
+  margin: 0;
+  padding: 4px 14px;
+}
+
+.essence20 .e20-group-test-result {
+  flex: 0 0 auto;
+  font-weight: 600;
+}
+
 .essence20 .e20-chat-action-buttons {
   display: flex;
   flex-direction: column;
@@ -4122,6 +4159,22 @@
 }
 
 /* Party ("Squad") actor sheet - roster tab. */
+/* The roster header: the tab name on the left, the Group Skill Test link on the right. */
+.essence20 .party-roster-header {
+  gap: 8px;
+  padding: 4px 6px;
+}
+
+.essence20 .party-roster-title {
+  flex: 1 1 auto;
+  font-weight: 700;
+}
+
+.essence20 .party-group-test {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 .essence20 .party-roster-list {
   padding: 6px;
 }
@@ -7428,3 +7481,5 @@
   min-width: 500px;
   min-height: auto;
 }
+
+/*# sourceMappingURL=essence20.css.map */
