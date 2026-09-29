@@ -28,6 +28,8 @@ const FRENEMY_ID = "Compendium.essence20.mlp_crb.Item.N6Bs8to6G0QddMVK";
  * @param {Number} radiusFeet
  * @returns {Array<Token>}
  */
+const ALLY_AWARENESS_ID = "Compendium.essence20.tf_crb.Item.WzccenAOAQxiARf7";
+
 export function getNearbyAllyTokens(actor, radiusFeet) {
   const actorToken = actor?.getActiveTokens?.()?.[0];
   if (!actorToken || !canvas?.tokens || !canvas?.grid) {
@@ -36,10 +38,14 @@ export function getNearbyAllyTokens(actor, radiusFeet) {
 
   const anyDisposition = actorHasPerk(actor, FRENEMY_ID);
 
+  // Ally Awareness (TF CRB, General Perk, p.84): "If an ally has an ability that affects allies within
+  // a certain range, you gain the benefits of that ability as long as you are within 5 times the
+  // range of the ability."
   return canvas.tokens.placeables.filter(token =>
     token !== actorToken && token.actor
     && (anyDisposition || token.document.disposition === actorToken.document.disposition)
-    && canvas.grid.measurePath([token.center, actorToken.center]).distance <= radiusFeet,
+    && canvas.grid.measurePath([token.center, actorToken.center]).distance
+      <= radiusFeet * (actorHasPerk(token.actor, ALLY_AWARENESS_ID) ? 5 : 1),
   );
 }
 

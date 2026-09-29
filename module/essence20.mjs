@@ -1,3 +1,16 @@
+import { decorateSocialCard, onGroupResultChanged } from "./helpers/social-cards.mjs";
+import { endSceneTeamEffects, onMorphChanged } from "./helpers/team-actions.mjs";
+import { onInitiativeRolled } from "./helpers/commands.mjs";
+import { allegianceLeft, isContactAvailable } from "./helpers/contacts.mjs";
+import { dismissSceneSummons } from "./helpers/summons.mjs";
+import { startGroupTest } from "./helpers/group-tests.mjs";
+import { onKitCreated } from "./helpers/kits.mjs";
+import { sweepTemporary } from "./helpers/weapon-perk-uses.mjs";
+import { checkSuppressingEntry, decorateRiderCard, decorateSuppressCard, stampConditionSource } from "./helpers/target-riders.mjs";
+import { decorateSaveCard } from "./helpers/save-riders.mjs";
+import { decorateEngineCard } from "./helpers/undo-engine.mjs";
+import { decorateCombinedCard } from "./helpers/combined-weapons.mjs";
+import { checkProximityBombs, decorateBombCard } from "./helpers/planted-bombs.mjs";
 // Import data models
 import EffectWizard from "./apps/effect-wizard.mjs";
 import { addEffectKeyWarnings } from "./helpers/effect-key-warnings.mjs";
@@ -81,7 +94,7 @@ import {
 import { handleCreateRoughTerrainRequest, makeEssence20TerrainData } from "./helpers/rough-terrain.mjs";
 import { applyEnvironmentAtSceneEnd } from "./helpers/environment-hazards.mjs";
 import { wireEnvironmentLevelSelects } from "./helpers/environment-levels.mjs";
-import { handleGmRelayDone, handleGmRelayRequest } from "./helpers/gm-relay.mjs";
+import { handleGmCreateRequest, handleGmRelayDone, handleGmRelayRequest } from "./helpers/gm-relay.mjs";
 import { formatDailyUses } from "./helpers/nanomite-uses.mjs";
 import { getGearNanomitePowerName, getGearNanomiteUsesLeft, isGearNanomiteInert } from "./helpers/nanomite-gear.mjs";
 import {
@@ -151,6 +164,8 @@ Hooks.once("init", async function () {
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.essence20 = {
+    // A Group Skill Test for the selected tokens (or the given actors) - helpers/group-tests.mjs.
+    groupSkillTest: (actors = null) => startGroupTest(actors),
     Essence20Actor,
     Essence20Combat,
     Essence20Combatant,
@@ -335,6 +350,9 @@ Hooks.once("init", async function () {
     } else if (data.action === "gmRelay") {
       // Writes to a target the player doesn't own - see helpers/gm-relay.mjs.
       handleGmRelayRequest(data);
+    } else if (data.action === "gmCreate") {
+      // Companion actors and tokens a player may not make - see helpers/gm-relay.mjs.
+      handleGmCreateRequest(data);
     } else if (data.action === "gmRelayDone") {
       handleGmRelayDone(data);
     }
@@ -399,6 +417,8 @@ Handlebars.registerHelper("canUsePower", canUsePower);
 // for every attached actor in prepareSystemActors.
 Handlebars.registerHelper("isZordSummonReady", isSummonReady);
 Handlebars.registerHelper("zordSummonReadyRound", getSummonReadyRound);
+// A Contact's Allegiance Points left this mission - helpers/contacts.mjs.
+Handlebars.registerHelper("contactAllegiance", allegianceLeft);
 
 // Both damages a weaponEffect deals (main + secondaryDamage) with an icon each - see
 // helpers/damage-display.mjs. Used by the weapon row chips and the weaponEffect details card.
@@ -700,6 +720,14 @@ Hooks.on("renderChatMessageHTML", (app, html) => {
     addHighDensityButton,
     addExploitWeaknessButton,
     addFlashyButton,
+    decorateBombCard,
+    decorateCombinedCard,
+    decorateEngineCard,
+    decorateSaveCard,
+    decorateRiderCard,
+    // Group Skill Tests, Contacts, Issue Command, team cards - helpers/social-cards.mjs.
+    decorateSocialCard,
+    decorateSuppressCard,
     attachCheckCardListeners,
     hideDifficultyForNonGm,
     applyChatMessageSystemColor,
@@ -751,9 +779,37 @@ function refreshMegaformsLinkedToActor(actorUuid) {
   }
 }
 
-Hooks.on("updateActor", (actor) => {
+Hooks.on("updateActor", (actor, changed, options, userId) => {
   refreshMegaformsLinkedToActor(actor.uuid);
   refreshStoryPointsTracker(actor);
+  // A Group Skill Test result landed - redraw its card (helpers/social-cards.mjs).
+  onGroupResultChanged(changed);
+  // Team Player's lent Boons and Morphin Pet follow the Morph (helpers/team-actions.mjs).
+  if (userId == game.user.id && foundry.utils.hasProperty(changed ?? {}, 'system.isMorphed')) {
+    onMorphChanged(actor, !!actor.system?.isMorphed);
+  }
+});
+
+// The First Rule Of Soldiering: "when you roll for Initiative, you can Issue a Command for free"
+// (helpers/commands.mjs).
+Hooks.on("updateCombatant", (combatant, changed, options, userId) => {
+  if (userId == game.user.id && changed?.initiative != null && combatant.actor) {
+    onInitiativeRolled(combatant.actor);
+  }
+});
+
+// A new mission: Contacts' Allegiance Points are fresh (they read the mission), and temporary Contacts
+// leave (helpers/contacts.mjs).
+Hooks.on("essence20.missionAdvanced", async () => {
+  if (!game.users.activeGM?.isSelf) {
+    return;
+  }
+
+  for (const actor of game.actors ?? []) {
+    if (actor.flags?.essence20?.temporaryContact && !isContactAvailable(actor)) {
+      await actor.delete();
+    }
+  }
 });
 
 /**
@@ -800,6 +856,11 @@ for (const hookName of ["createItem", "updateItem", "deleteItem"]) {
     if (userId == game.user.id && item.parent instanceof Actor && (item.type == 'gear' || item.type == 'perk')) {
       applyVisionToTokens(item.parent);
     }
+
+    // What comes inside a kit, and who handed a consumable over (Take Mine) - helpers/kits.mjs.
+    if (hookName == 'createItem' && userId == game.user.id && item.parent instanceof Actor && item.type == 'gear') {
+      onKitCreated(item);
+    }
   });
 }
 
@@ -809,11 +870,15 @@ for (const hookName of ["createItem", "updateItem", "deleteItem"]) {
    hooks just below already rely on - preCreateActiveEffect fires before that document is actually
    created, and returning false here cancels it outright, so an immune actor's status never
    applies in the first place rather than being reactively stripped back off afterward. */
-Hooks.on("preCreateActiveEffect", (effect) => {
+Hooks.on("preCreateActiveEffect", (effect, data) => {
   const actor = effect.parent;
   if (!(actor instanceof Actor)) {
     return true;
   }
+
+  // Who caused a Frightened/Mesmerized - Worst Nightmare's "Frightened of you" and the mesmerizer's
+  // Social Edge (helpers/target-riders.mjs).
+  stampConditionSource(effect, data);
 
   // Zords can't be given Space Vessel Conditions (Across the Stars p.26) - see
   // helpers/vessel-conditions.mjs#shouldBlockZordVesselCondition for the GM's override.
@@ -979,6 +1044,13 @@ Hooks.on("deleteCombat", (combat) => {
     return;
   }
 
+  // Things that last "until the end of combat" (Manifest Melee Weapon, Riot Gear) go now.
+  for (const combatant of combat.combatants ?? []) {
+    if (combatant.actor) {
+      sweepTemporary(combatant.actor);
+    }
+  }
+
   applyHardCorpsDeferredDefeat(combat);
 
   /* No Fighting?! (Knights of Canterlot, Fighter Influence Hang-Up, p.16) - see
@@ -1062,12 +1134,36 @@ Hooks.on("renderRegionBehaviorConfig", (app, html) => {
 // Per-scene environmental damage (Irradiated, Harmful Toxic Atmosphere) when the GM starts a new
 // scene - see helpers/environment-hazards.mjs.
 Hooks.on("essence20.sceneAdvanced", () => {
+  // Scene-long summons: capsule vehicles, Battlizers, Toxo-Zombies and summoned allies
+  // (helpers/summons.mjs), and Renegade Commander's grant (helpers/team-actions.mjs).
+  if (game.users.activeGM?.isSelf) {
+    dismissSceneSummons();
+    for (const actor of game.actors ?? []) {
+      endSceneTeamEffects(actor);
+    }
+  }
+
+  // Scene-long made and borrowed items (Never Unarmed, Volatile Delivery, Faction Reservist).
+  if (game.users.activeGM?.isSelf) {
+    for (const actor of game.actors ?? []) {
+      if (actor.items?.some?.(item => item.flags?.essence20?.temporary)) {
+        sweepTemporary(actor);
+      }
+    }
+  }
+
   applyEnvironmentAtSceneEnd(canvas?.scene ?? game.scenes?.viewed ?? null);
 });
 
 // Terrain-dependent derived data (Prowl, Taking Point) - see refreshTerrainDependentActor.
 Hooks.on("updateToken", (tokenDoc, changes) => {
   refreshTerrainDependentActor(tokenDoc, changes);
+  // A Proximity Bomb goes off when someone moves into it (helpers/planted-bombs.mjs).
+  if (changes.x !== undefined || changes.y !== undefined) {
+    checkProximityBombs(tokenDoc);
+    // Moving into someone's Suppressing Fire (helpers/target-riders.mjs).
+    checkSuppressingEntry(tokenDoc);
+  }
 });
 
 /* Every DialogV2 (ours or Foundry core's own, e.g. the item-creation dialog) gets the same

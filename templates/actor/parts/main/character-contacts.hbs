@@ -1,3 +1,8 @@
 <section class="tab contacts {{tabs.contacts.cssClass}}" data-tab="contacts" data-group="primary">
+  {{#if @root.companionActors}}
+  <h3>{{localize 'E20.CompanionPlural'}}</h3>
+  {{> "systems/essence20/templates/actor/parts/misc/system-actors.hbs" actors=@root.companionActors}}
+  <h3>{{localize 'E20.TabContacts'}}</h3>
+  {{/if}}
   {{> "systems/essence20/templates/actor/parts/misc/system-actors.hbs" actors=@root.contactActors}}
 </section>

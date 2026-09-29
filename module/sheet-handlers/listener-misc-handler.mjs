@@ -1,3 +1,11 @@
+import { restBff } from "../helpers/bff.mjs";
+import { restBond } from "../helpers/bonded.mjs";
+import { restContact } from "../helpers/contacts.mjs";
+import { restKits } from "../helpers/kits.mjs";
+import { imperfectionOf } from "../helpers/grants.mjs";
+import { clearDefenseDamage } from "../helpers/essence-damage.mjs";
+import { getCrewedVehicle, resetDailyVehicleUses } from "../helpers/vehicle-upgrades.mjs";
+import { resetDailyActionPerkUses } from "../helpers/action-perks.mjs";
 import { powerCost } from "./power-handler.mjs";
 import { resetDailyPowerUses } from "../helpers/nanomite-uses.mjs";
 import RollerSelector from "../apps/roller-selector.mjs";
@@ -11,7 +19,7 @@ const PARENT_ROLLER_KEY = "parentActor";
  * @param {Actor} actor The Actor making the roll
  * @param {Actor} childRoller Optional attached Actor making the roll
  */
-export async function performRoll(event, actor, childRoller=None) {
+export async function performRoll(event, actor, childRoller=null) {
   event.preventDefault();
   // event.target is whatever was actually clicked - usually the <i> icon inside the rollable
   // <a>, not the <a> itself. Most roll buttons work around this by duplicating data-roll-type
@@ -122,7 +130,13 @@ export async function spendRolePoint(actor, item) {
  */
 async function _applyRestBenefits(actor, completeMessageKey) {
   const normalEnergon = actor.system.energon.normal;
-  const maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
+  let maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
+  // A Hint of Independence's Energon Hunger: "Anytime you regenerate Energon, roll 1d4; on a 4, you
+  // regenerate 1 less than the normal amount."
+  if (imperfectionOf(actor)?.n == 5 && maxEnergonRestore > 0 && (await new Roll('1d4').evaluate()).total == 4) {
+    maxEnergonRestore -= 1;
+  }
+
   const energonRestore = Math.min(normalEnergon.max, normalEnergon.value + maxEnergonRestore);
 
   // Notifications for resetting Energon types
@@ -185,6 +199,26 @@ async function _applyRestBenefits(actor, completeMessageKey) {
   // A Rest is the new day that gives nanomite powers back their daily uses.
   if (await resetDailyPowerUses(actor)) {
     ui.notifications.info(game.i18n.localize("E20.RestPowerUsesReset"));
+  }
+
+  // ...and Perks usable a number of times a day (Detail Oriented) - helpers/action-perks.mjs.
+  await resetDailyActionPerkUses(actor);
+
+  // ...and any Defense damage (helpers/essence-damage.mjs).
+  await clearDefenseDamage(actor);
+
+  // ...and what kits and gear recharge overnight (helpers/kits.mjs).
+  await restKits(actor);
+
+  // ...and About Twenty-Percent Cooler, a Powermaster's module, and daily Contacts.
+  await restBff(actor);
+  await restBond(actor);
+  await restContact(actor);
+
+  // ...and the vehicle they crew (Nameplate) - helpers/vehicle-upgrades.mjs.
+  const crewed = getCrewedVehicle(actor);
+  if (crewed) {
+    await resetDailyVehicleUses(crewed.vehicle);
   }
 
   ui.notifications.info(game.i18n.localize(completeMessageKey));

@@ -1,3 +1,4 @@
+import { essenceRedirect } from "../helpers/grants.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
@@ -143,8 +144,10 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   // deleting the Role still took its 1st-level Essences away: every drop-and-delete of a GI Joe
   // Commando cost the character a point of Speed and of Social for good.
   const currentEssenceLevel = essenceLevel ?? newLevel ?? actor.system.level;
-  for (const essence in role.system.essenceLevels) {
-    const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[essence], previousLevel);
+  for (const roleEssence in role.system.essenceLevels) {
+    const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[roleEssence], previousLevel);
+    // Cordial / Rough and Takes No Guff move an increase to another Essence (helpers/grants.mjs).
+    const essence = totalChange > 0 ? essenceRedirect(actor, role, roleEssence) : roleEssence;
     const essenceMax = actor.system.essences[essence].max + totalChange;
     const essenceMaxString = `system.essences.${essence}.max`;
     const essenceValue = actor.system.essences[essence].value+ totalChange;

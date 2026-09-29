@@ -1,3 +1,4 @@
+import { worldActors } from "./companion-link.mjs";
 /**
  * GM relay for writes to a target the current user doesn't own.
  *
@@ -66,7 +67,49 @@ export function relayToGm(doc, method, args) {
  * @returns {Boolean}
  */
 export function isRelayAllowed(doc, user) {
-  return [...(user?.targets ?? [])].some(token => token?.actor?.uuid == doc?.uuid || token?.document?.actor?.uuid == doc?.uuid);
+  // A write to an actor tied to one the user owns - their Contact, companion or summoned vehicle, a
+  // Combiner they're part of (Better As One), a commander or partner they act with.
+  if (isLinkedToOwnedActor(doc, user)) {
+    return true;
+  }
+
+  // The targeted token itself (a push moves it), or an Item carried by the targeted actor (a
+  // disarm drops it) - see helpers/forced-movement.mjs and helpers/target-riders.mjs.
+  const uuids = [doc?.uuid, doc?.parent?.documentName == 'Actor' ? doc.parent.uuid : null].filter(Boolean);
+  return [...(user?.targets ?? [])].some(token => uuids.some(uuid =>
+    token?.actor?.uuid == uuid || token?.document?.actor?.uuid == uuid || token?.document?.uuid == uuid));
+}
+
+/**
+ * Whether this document is an actor, or an item on an actor, linked to one the user owns.
+ * @param {Document} doc
+ * @param {User} user
+ * @returns {Boolean}
+ */
+function isLinkedToOwnedActor(doc, user) {
+  const actor = doc?.documentName == 'Actor' ? doc : null;
+  if (!actor || !user) {
+    return false;
+  }
+
+  const owns = uuid => {
+    try {
+      return !!uuid && !!fromUuidSync(uuid)?.testUserPermission?.(user, 'OWNER');
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const flags = actor.flags?.essence20 ?? {};
+  if (owns(flags.companionOf) || owns(flags.contactOf) || owns(flags.bond?.partner)) {
+    return true;
+  }
+
+  // Listed on an owned actor's sheet (a Contact, a Combiner component), or listing one.
+  const listedBy = worldActors().some(other => other.testUserPermission?.(user, 'OWNER')
+    && Object.values(other.system?.actors ?? {}).some(entry => entry?.uuid == actor.uuid));
+  const lists = Object.values(actor.system?.actors ?? {}).some(entry => owns(entry?.uuid));
+  return listedBy || lists;
 }
 
 /**
@@ -112,6 +155,142 @@ export function handleGmRelayDone(data) {
   const resolve = pending.get(data.requestId);
   if (resolve) {
     pending.delete(data.requestId);
-    resolve(!!data.ok);
+    // A create request answers with the new document's uuid; a write with true or false.
+    resolve(typeof data.ok == 'string' ? data.ok : !!data.ok);
   }
+}
+
+/* -------------------------------------------- */
+/*  Creating and removing companions            */
+/* -------------------------------------------- */
+
+/**
+ * A player gaining a pet, a Mini-Con or a Contact makes a new actor, and deploying one places a
+ * token - neither of which a player may do by default. These go to the GM the same way, guarded so
+ * the GM only makes or removes things that belong to an actor the player owns.
+ */
+const CREATE_KINDS = new Set(['actor', 'token', 'deleteActor', 'deleteToken']);
+
+function ownedBy(uuid, user) {
+  const owner = uuid ? fromUuidSync(uuid) : null;
+  return !!owner && !!user && (user.isGM || owner.testUserPermission?.(user, 'OWNER'));
+}
+
+/**
+ * Whether the GM should make or remove this for the user.
+ * @param {String} kind   actor, token, deleteActor or deleteToken.
+ * @param {Object} payload
+ * @param {User} user
+ * @returns {Boolean}
+ */
+export function isCreateAllowed(kind, payload, user) {
+  if (!CREATE_KINDS.has(kind) || !user) {
+    return false;
+  }
+
+  if (kind == 'actor') {
+    const flags = payload?.data?.flags?.essence20 ?? {};
+    return ['companion', 'vehicle', 'npc'].includes(payload?.data?.type) && ownedBy(flags.companionOf ?? flags.contactOf, user);
+  }
+
+  const actor = payload?.actorUuid ? fromUuidSync(payload.actorUuid) : null;
+  if (!actor) {
+    return false;
+  }
+
+  const owner = actor.flags?.essence20?.companionOf ?? actor.flags?.essence20?.contactOf;
+  return ownedBy(actor.uuid, user) || ownedBy(owner, user);
+}
+
+async function carryOut(kind, payload, user) {
+  if (kind == 'actor') {
+    const data = foundry.utils.deepClone(payload.data);
+    data.ownership = { ...(data.ownership ?? {}), [user.id]: 3 };
+    const actor = await Actor.create(data);
+    return actor?.uuid ?? null;
+  }
+
+  const actor = fromUuidSync(payload.actorUuid);
+  if (kind == 'deleteActor') {
+    await actor.delete();
+    return true;
+  }
+
+  const scene = game.scenes.get(payload.sceneId) ?? canvas?.scene;
+  if (!scene) {
+    return null;
+  }
+
+  if (kind == 'deleteToken') {
+    const ids = scene.tokens.filter(t => t.actorId == actor.id).map(t => t.id);
+    if (ids.length) {
+      await scene.deleteEmbeddedDocuments('Token', ids);
+    }
+
+    return true;
+  }
+
+  const tokenData = await actor.getTokenDocument({ x: payload.x, y: payload.y, hidden: false });
+  const [token] = await scene.createEmbeddedDocuments('Token', [tokenData.toObject()]);
+  return token?.uuid ?? null;
+}
+
+/**
+ * Make or remove a companion actor or token - directly when this user may, through the GM otherwise.
+ * @param {String} kind   actor, token, deleteActor or deleteToken.
+ * @param {Object} payload   {data} for an actor; {actorUuid, sceneId, x, y} for the rest.
+ * @returns {Promise<*>}   The new document's uuid, true for a removal, or null.
+ */
+export async function createViaGm(kind, payload) {
+  const user = game.user;
+  const may = {
+    actor: () => user.isGM || user.can?.('ACTOR_CREATE'),
+    token: () => user.isGM || user.can?.('TOKEN_CREATE'),
+    deleteActor: () => user.isGM || fromUuidSync(payload.actorUuid)?.isOwner,
+    deleteToken: () => user.isGM || user.can?.('TOKEN_DELETE'),
+  }[kind];
+  if (may?.()) {
+    return carryOut(kind, payload, user);
+  }
+
+  if (!game.users?.activeGM) {
+    ui.notifications.warn(game.i18n.localize('E20.CompanionNeedsGm'));
+    return null;
+  }
+
+  const requestId = foundry.utils.randomID();
+  const done = new Promise((resolve) => {
+    pending.set(requestId, resolve);
+    setTimeout(() => {
+      if (pending.delete(requestId)) {
+        resolve(null);
+      }
+    }, RELAY_TIMEOUT_MS);
+  });
+  game.socket.emit(SOCKET, { action: 'gmCreate', requestId, userId: user.id, kind, payload });
+  return done;
+}
+
+/**
+ * GM side of createViaGm.
+ * @param {Object} data   {requestId, userId, kind, payload}
+ */
+export async function handleGmCreateRequest(data) {
+  if (!game.users?.activeGM?.isSelf) {
+    return;
+  }
+
+  const user = game.users.get(data.userId);
+  let result = null;
+  if (isCreateAllowed(data.kind, data.payload, user)) {
+    try {
+      result = await carryOut(data.kind, data.payload, user);
+    } catch (error) {
+      console.error(`Essence20 | relayed ${data.kind} failed`, error);
+    }
+  } else {
+    console.warn(`Essence20 | refused a relayed ${data.kind} from ${user?.name ?? data.userId}`);
+  }
+
+  game.socket.emit(SOCKET, { action: 'gmRelayDone', requestId: data.requestId, userId: data.userId, ok: result });
 }

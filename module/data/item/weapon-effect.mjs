@@ -1,3 +1,4 @@
+import { applyToEffect as applyUpgradesToEffect } from "../../helpers/weapon-upgrades.mjs";
 import { E20 } from "../../helpers/config.mjs";
 
 import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
@@ -114,7 +115,12 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
         reachMultiplier = Math.max(reachMultiplier, 2);
       }
 
-      const totalReach = actorReach * reachMultiplier;
+      // Upgrades on the parent weapon - ranges, blasts, skill, targets, damage riders
+      // (helpers/weapon-upgrades.mjs). Derived only; the paths it changed are listed in
+      // this.upgradeTouched so the item sheet keeps editing the stored values.
+      applyUpgradesToEffect(this, this.parent);
+
+      const totalReach = actorReach * (this.range.reachMultiplier > 1 ? this.range.reachMultiplier : reachMultiplier);
       this.totalReach = totalReach;
     }
 

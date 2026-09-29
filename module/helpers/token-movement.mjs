@@ -1,3 +1,4 @@
+import { movementPenaltyFor } from "./forced-movement.mjs";
 import { E20 } from "./config.mjs";
 import { actorHasPerk } from "./perks.mjs";
 import { getRemaining, isBlocking, isConfirming, isSprinting, isTracking, spend } from "./action-economy.mjs";
@@ -236,7 +237,9 @@ export function getMovementAllowance(actor, movementType) {
      number, so a sprinting token draws green all the way to twice its rating and is charged
      accordingly. SPRINT_MULTIPLIER is named rather than inlined because getPushRules below has
      to undo exactly this much to keep the Push cap where the rules put it. */
-  return isSprinting(actor) ? rating * SPRINT_MULTIPLIER : rating;
+  // Muzzle Punch's "their Movement is reduced by 5 feet on their next turn" (helpers/forced-movement.mjs).
+  const reduced = Math.max(0, rating - movementPenaltyFor(actor));
+  return isSprinting(actor) ? reduced * SPRINT_MULTIPLIER : reduced;
 }
 
 /**

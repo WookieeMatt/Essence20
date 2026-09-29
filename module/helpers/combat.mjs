@@ -1,3 +1,9 @@
+import { renegadeHolderFor } from "./summons.mjs";
+import { isCarried } from "./team-actions.mjs";
+import { onOwnerDefeated } from "./companions.mjs";
+import { onBondedHit } from "./bonded.mjs";
+import { protomatterReduce } from "./kits.mjs";
+import { isSealedAboard } from "./vehicle-upgrades.mjs";
 import {
   actorHasPerk, bankPendingBonus, clearPendingBonus, findPerk, getPendingBonus, hasUsedThisEncounter, markUsedThisEncounter,
 } from "./perks.mjs";
@@ -470,7 +476,9 @@ const ENERGY_REBUTTAL_DAMAGE_BONUS = 2;
  */
 async function grantEnergyRebuttalBonus(actor, damageType, amount) {
   if (
-    amount <= 0 || !ENERGY_DAMAGE_TYPES.has(damageType) || !actorHasPerk(actor, ENERGY_REBUTTAL_ID)
+    // "Whenever you use the Defend action against an oncoming Attack that deals Energy damage and it
+    // fails" - the Defending Condition (helpers/named-actions.mjs) is what says a Defend was used.
+    amount <= 0 || !ENERGY_DAMAGE_TYPES.has(damageType) || !actorHasPerk(actor, ENERGY_REBUTTAL_ID) || !actor.statuses?.has?.('defending')
     || hasUsedThisEncounter(actor, ENERGY_REBUTTAL_ENCOUNTER_FLAG)
   ) {
     return;
@@ -877,7 +885,7 @@ export function getSkillRanks(actor, skill) {
  * @returns {Promise<Number>}   The amount actually applied (0 if Immune), clamped to how much
  *   Health the actor had left when damageType isn't 'stun'.
  */
-export async function applyDamage(actor, damageValue, damageType, isCrit = false) {
+export async function applyDamage(actor, damageValue, damageType, isCrit = false, { ignoreImmunity = false } = {}) {
   // Not On My Watch - see grantNotOnMyWatchReaction's own doc comment. Captured before any of
   // this function's own mutations, the same "read Defeated status once, up front" idiom
   // chat.mjs#onApplyDamage's own wasAlreadyDefeated already uses - both branches below only fire
@@ -886,6 +894,12 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   // check, in particular, would otherwise re-trigger on literally every later Stun dealt to an
   // already-Defeated actor, since 0 Health makes that comparison trivially true again).
   const wasAlreadyDefeated = !!actor.statuses?.has?.('defeated');
+
+  // Carrier (PR CRB, Zord Feature, p.136): "carried Zords may not be harmed until released"
+  // (helpers/team-actions.mjs).
+  if (isCarried(actor)) {
+    return 0;
+  }
 
   // Adapted Wavelength - see ADAPTED_WAVELENGTH_ID's own comment above. A permanent, always-on
   // reduction applied to the incoming value itself, ahead of Immunity/Elemental Shield below -
@@ -913,8 +927,13 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
 
   const isEmpImmuneViaShield = damageType == 'emp' && isPersonalShieldActive(actor)
     && actorHasPerk(actor, IMPENETRABLE_SHIELD_ID);
-  let amount = (actor.system.immunities?.[damageType] || isEmpImmuneViaShield || isEnergyMasteryImmune(actor, damageType)) ? 0 : damageValue;
+  // Pressurized Cabin / Submarine Mode: "The sealed compartment grants immunity to Poison and
+  // Disease" to everyone aboard (helpers/vehicle-upgrades.mjs).
+  const sealedFromPoison = damageType == 'poison' && isSealedAboard(actor);
+  let amount = (!ignoreImmunity && (actor.system.immunities?.[damageType] || isEmpImmuneViaShield || isEnergyMasteryImmune(actor, damageType) || sealedFromPoison)) ? 0 : damageValue;
   amount = (await consumeSelfPreservationImmunity(actor, damageType)) ? 0 : amount;
+  // Protomatter Injection Layer - helpers/kits.mjs.
+  amount = await protomatterReduce(actor, amount);
   amount = await consumeElementalShieldReduction(actor, damageType, amount);
   amount = await consumeDigDeepReduction(actor, amount);
 
@@ -1087,10 +1106,11 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   // approximated as "once per encounter" (this codebase's widest existing scope, and Reckless
   // Abandon is realistically activated at most once per fight anyway), gated on the toggle
   // actually being active via isRecklessAbandonActive.
-  if (newValue <= 0 && amount > 0 && actorHasPerk(actor, NOT_DONE_YET_ID) && isRecklessAbandonActive(actor)
-    && !hasUsedThisEncounter(actor, 'notDoneYetUsedThisEncounter')) {
+  const renegade = renegadeHolderFor(actor);
+  if (newValue <= 0 && amount > 0 && renegade && actorHasPerk(renegade, NOT_DONE_YET_ID) && isRecklessAbandonActive(renegade)
+    && !hasUsedThisEncounter(renegade, 'notDoneYetUsedThisEncounter')) {
     newValue = 1;
-    await markUsedThisEncounter(actor, 'notDoneYetUsedThisEncounter');
+    await markUsedThisEncounter(renegade, 'notDoneYetUsedThisEncounter');
   }
 
   // Aegis - see AEGIS_CLAMPED_FLAG's own doc comment in reckless-abandon.mjs.
@@ -1133,6 +1153,14 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
 
   if (newValue <= 0 && !wasAlreadyDefeated) {
     await grantNotOnMyWatchReaction(actor);
+    // Emergency Deployment and Docking - docked Mini-Cons deploy (helpers/companions.mjs).
+    await onOwnerDefeated(actor);
+  }
+
+  // Powermaster: "If you are hit by Energy or Laser damage, the module regains 1 Energon Point"
+  // (helpers/bonded.mjs).
+  if (amount > 0) {
+    await onBondedHit(actor, damageType);
   }
 
   await grantHardenedArmorResistance(actor, damageType, previousValue - newValue);

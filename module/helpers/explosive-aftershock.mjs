@@ -22,10 +22,14 @@ import { bankPendingBonus } from "./perks.mjs";
 
 export const EXPLOSIVE_AFTERSHOCK_PENALTY_FLAG = 'pendingExplosiveAftershockPenalty';
 
+// "You push them 10 feet" (GI Joe CRB p.81) - away from the blast's attacker, helpers/forced-movement.mjs.
 const OPTIONS = [
   { value: 'prone_deafened', label: 'E20.ExplosiveAftershockProneDeafened' },
   { value: 'prone_penalty', label: 'E20.ExplosiveAftershockPronePenalty' },
   { value: 'deafened_penalty', label: 'E20.ExplosiveAftershockDeafenedPenalty' },
+  { value: 'prone_push', label: 'E20.ExplosiveAftershockPronePush' },
+  { value: 'deafened_push', label: 'E20.ExplosiveAftershockDeafenedPush' },
+  { value: 'push_penalty', label: 'E20.ExplosiveAftershockPushPenalty' },
 ];
 
 /**
@@ -61,7 +65,12 @@ export async function pickExplosiveAftershockEffects() {
  * @param {Array<String>} effects   Two of 'prone'/'deafened'/'penalty', from
  *   pickExplosiveAftershockEffects().
  */
-export async function applyExplosiveAftershockEffects(targetActor, effects) {
+export async function applyExplosiveAftershockEffects(targetActor, effects, attacker = null) {
+  if (effects.includes('push') && attacker) {
+    const { pushActor } = await import("./forced-movement.mjs");
+    await pushActor(targetActor, attacker, 10);
+  }
+
   if (effects.includes('prone')) {
     await targetActor.toggleStatusEffect('prone', { active: true });
   }

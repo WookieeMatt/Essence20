@@ -1,4 +1,4 @@
-import { setAiming } from "../helpers/action-economy.mjs";
+import { isBraced, setAiming, setBraced } from "../helpers/action-economy.mjs";
 import { consumeForMovement } from "../helpers/token-movement.mjs";
 
 export class Essence20TokenDocument extends TokenDocument {
@@ -37,6 +37,11 @@ export class Essence20TokenDocument extends TokenDocument {
        to happen - a movement the economy just rejected never took place, so it must not cost
        the aim either. */
     await setAiming(this.actor, false);
+
+    // Moving ends a brace, bipod or not (Quartermaster's Guide p.34: "stays braced until moving").
+    if (this.actor && isBraced(this.actor) && !this.actor.statuses?.has?.('prone')) {
+      await setBraced(this.actor, false);
+    }
 
     return allowedAfterCost;
   }

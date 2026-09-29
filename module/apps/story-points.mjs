@@ -1,6 +1,6 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 import { applyThemeClass, getGameLine, setting } from "../settings.js";
-import { advanceScene, getSceneEpoch, getSceneLabel } from "../helpers/scene-clock.mjs";
+import { advanceMission, advanceScene, getMissionEpoch, getSceneEpoch, getSceneLabel } from "../helpers/scene-clock.mjs";
 import {
   canWriteCircle, circlesLeftThisScene, drawForActor, endCircle, formCircle, FRIENDSHIP_CIRCLE_ID, getCircle,
   isCirclePony, joinLiveCircle, POOLS,
@@ -72,6 +72,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       directSetStoryPoints: StoryPoints.directSetStoryPoints,
       rollMajorSceneGmPoints: StoryPoints.rollMajorSceneGmPoints,
       newScene: StoryPoints.newScene,
+      newMission: StoryPoints.newMission,
       newSession: StoryPoints.newSession,
       spendNarrative: StoryPoints.spendNarrative,
       gridPowerBloom: StoryPoints.gridPowerBloom,
@@ -265,6 +266,29 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
    * system puts on screen - a second floating window for one button would be worse. Prompts for an
    * optional name, and does nothing if the GM backs out, so a misclick costs nothing.
    */
+  /**
+   * Begin a new mission: a new scene too, and every "once per mission" ability and Contact's
+   * Allegiance Points refresh (helpers/scene-clock.mjs, helpers/contacts.mjs).
+   */
+  static async newMission() {
+    if (!game.user.isGM) {
+      return;
+    }
+
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize("E20.SceneClockNewMission") },
+      content: `<p>${game.i18n.localize("E20.SceneClockNewMissionPrompt")}</p>`,
+      rejectClose: false,
+    });
+    if (!confirmed) {
+      return;
+    }
+
+    await advanceMission();
+    ChatMessage.create({ content: game.i18n.format("E20.SceneClockMissionAdvanced", { number: getMissionEpoch() }) });
+    this.render();
+  }
+
   static async newScene() {
     if (!game.user.isGM) {
       return;

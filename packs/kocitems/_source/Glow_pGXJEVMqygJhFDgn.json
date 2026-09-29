@@ -22,8 +22,7 @@
     "isSpecialized": false,
     "range": "20 foot radius",
     "tier": "elementary",
-    "shape": "emanation",
-    "radius": 20
+    "radius": 0
   },
   "effects": [],
   "sort": 103125,

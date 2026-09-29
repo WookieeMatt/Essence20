@@ -45,10 +45,11 @@ describe("canUseUninterruptedBreak", () => {
     expect(canUseUninterruptedBreak(actor)).toBe(true);
   });
 
-  test("false once both benefits have been used this scene", () => {
+  test("false once all three benefits have been used this scene", () => {
     const actor = makeActor({
       flags: {
         uninterruptedBreakHealUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 },
+        uninterruptedBreakEssenceUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 },
         uninterruptedBreakStoryPointUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 },
       },
     });

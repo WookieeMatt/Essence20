@@ -108,6 +108,81 @@
   {{/if}}
 
   {{!-- Fanning (X) / Retrogen weapon traits - see helpers/fanning.mjs and helpers/retrogen.mjs. --}}
+  {{!-- All Out Attack / Evasive Fighting / Pinpoint / Make an Opening - see helpers/target-riders.mjs. --}}
+  {{#if allOutAttackMax}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogAllOutAttack'}}</span>
+    <input type="number" name="allOutAttackShifts" value="0" min="0" max="{{allOutAttackMax}}" step="1" />
+  </div>
+  {{/if}}
+
+  {{#if evasiveFightingMax}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogEvasiveFighting'}}</span>
+    <input type="number" name="evasiveFightingShifts" value="0" min="0" max="{{evasiveFightingMax}}" step="1" />
+  </div>
+  {{/if}}
+
+  {{#if pinpointMax}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogPinpoint'}}</span>
+    <input type="number" name="pinpointCount" value="0" min="0" max="{{pinpointMax}}" step="1" />
+  </div>
+  {{/if}}
+
+  {{#if kitRequiredAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogKitRequired'}}</span>
+    <select name="kitRequired">
+      <option value="none">{{localize 'E20.None'}}</option>
+      <option value="standard">{{localize 'E20.KitStandard'}}</option>
+      <option value="limited">{{localize 'E20.KitLimited'}}</option>
+      <option value="restricted">{{localize 'E20.KitRestricted'}}</option>
+      <option value="essence">{{localize 'E20.KitEssence'}}</option>
+    </select>
+  </div>
+  {{/if}}
+
+  {{#if synapticEdgeAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogSynapticEdge'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applySynapticEdge" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if twentyPercentCoolerAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogTwentyPercentCooler'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyTwentyPercentCooler" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if steadyHandAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogSteadyHand'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applySteadyHand" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if makeAnOpeningAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogMakeAnOpening'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyMakeAnOpening" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
   {{#if fanningMaxShots}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogFanningShots' max=fanningMaxShots}}</span>
@@ -881,6 +956,16 @@
     <span>{{localize 'E20.RollDialogMetallikatoIgnoreArmor'}}</span>
     <label class="switch">
       <input type="checkbox" name="applyMetallikatoIgnoreArmor" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if surgingAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogSurging'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applySurging" />
       <span class="switch-slider"></span>
     </label>
   </div>

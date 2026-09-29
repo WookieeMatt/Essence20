@@ -71,9 +71,13 @@ const GOOD_TO_GO_ID = "Compendium.essence20.intercontinental_adventures.Item.Yt3
 const FOR_THE_SYNDICATE_ID = "Compendium.essence20.intercontinental_adventures.Item.opygNwRWgeIyU1mE";
 const CHOICE_SCOPED_VEHICLE_QUALIFICATION_IDS = [GOOD_TO_GO_ID, FOR_THE_SYNDICATE_ID];
 
+// Take the Wheel (Cobra Codex, p.77): "You do not suffer a Snag when
+// driving Land vehicles, even if you are untrained."
+const TAKE_THE_WHEEL_ID = "Compendium.essence20.cobra_codex.Item.EQK0bAGpmYkGPcRi";
+
 const VEHICLE_QUALIFICATION_PERKS_BY_MOVEMENT_TYPE = {
   aerial: [AIR_VEHICLE_QUALIFICATION_ID, SKYWARD_ID, NU_POGODI_ID, THE_PROMISE_OF_RICHES_ID],
-  ground: [LAND_VEHICLE_QUALIFICATION_ID, NU_POGODI_ID, NOTHING_PERSONAL_ID, THE_PROMISE_OF_RICHES_ID],
+  ground: [LAND_VEHICLE_QUALIFICATION_ID, NU_POGODI_ID, NOTHING_PERSONAL_ID, THE_PROMISE_OF_RICHES_ID, TAKE_THE_WHEEL_ID],
   swim: [SEA_VEHICLE_QUALIFICATION_ID, THE_PROMISE_OF_RICHES_ID],
 };
 
@@ -280,6 +284,7 @@ export class RollDialog {
       savantSkillAvailable: dataset.savantSkillAvailable,
       metallikatoIgnoreArmorAvailable: dataset.metallikatoIgnoreArmorAvailable,
       analyzeTargetAvailable: dataset.analyzeTargetAvailable,
+      surgingAvailable: dataset.surgingAvailable,
       psychoanalystAvailable: dataset.psychoanalystAvailable,
       coaxSurrenderAvailable: dataset.coaxSurrenderAvailable,
       chargeAvailable: dataset.chargeAvailable,
@@ -403,6 +408,17 @@ export class RollDialog {
       // and fanningMaxShots comments.
       retrogenAvailable: dataset.retrogenAvailable,
       fanningMaxShots: dataset.fanningMaxShots || 0,
+      // All Out Attack / Evasive Fighting / Pinpoint / Make an Opening - helpers/target-riders.mjs.
+      allOutAttackMax: dataset.allOutAttackMax || 0,
+      evasiveFightingMax: dataset.evasiveFightingMax || 0,
+      pinpointMax: dataset.pinpointMax || 0,
+      makeAnOpeningAvailable: !!dataset.makeAnOpeningAvailable,
+      steadyHandAvailable: !!dataset.steadyHandAvailable,
+      // Kits - helpers/kits.mjs.
+      kitRequiredAvailable: !!dataset.kitRequiredAvailable,
+      // Synaptic Linkage / About Twenty-Percent Cooler - helpers/social-rolls.mjs.
+      synapticEdgeAvailable: !!dataset.synapticEdgeAvailable,
+      twentyPercentCoolerAvailable: !!dataset.twentyPercentCoolerAvailable,
       hardpointMovement: dataset.hardpointMovement,
       defenseType: dataset.defenseType || 'none',
       defenseTypes: { none: 'E20.None', ...E20.defenses },

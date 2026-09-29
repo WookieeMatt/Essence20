@@ -336,13 +336,14 @@ export function getTokensInShape(shapeData) {
  *   see getEffectiveRadiusFeet's own doc comment. Defaults to 1 (no change).
  * @returns {Promise<Array<Token>>}   The tokens caught by the shape, or [] if none/cancelled.
  */
-export async function placeAoeTemplate(actor, item, { radiusMultiplier = 1 } = {}) {
-  const shape = item?.system.shape;
+export async function placeAoeTemplate(actor, item, { radiusMultiplier = 1, radiusDeltaFeet = 0, shapeOverride = null } = {}) {
+  // Concentrated Explosion's "5 feet larger or smaller, or change its shape" (helpers/target-riders.mjs).
+  const shape = shapeOverride ?? item?.system.shape;
   if (!shape) {
     return [];
   }
 
-  const radiusPixels = feetToPixels(getEffectiveRadiusFeet(actor, item, radiusMultiplier));
+  const radiusPixels = feetToPixels(Math.max(5, getEffectiveRadiusFeet(actor, item, radiusMultiplier) + radiusDeltaFeet));
 
   // A weaponEffect has no duration field at all (an attack's damage is instantaneous by nature),
   // so it never lingers; a spell or Power lingers whenever its own duration isn't Instant.

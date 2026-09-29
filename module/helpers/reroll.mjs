@@ -382,6 +382,9 @@ const REROLL_CONDITIONS = {
   // A Jump Through Time "Focused Strike": "When you make an Unarmed Attack..." See
   // E20.rerollConditions.unarmedAttack's own doc comment (helpers/config.mjs).
   unarmedAttack: (actor, context) => !!context?.isUnarmedAttack,
+  // All Too Predictable (Decepticon Directive, Tracker, 20th level, p.56): "reroll any single die in a
+  // Skill Test involving or targeting your Primary Mark" - helpers/target-riders.mjs#isVsPrimaryQuarry.
+  vsPrimaryQuarry: (actor, context) => !!context?.vsPrimaryQuarry,
   // Decepticon Directive "Homing Shots": "...a ranged attack using a weapon with the Consumable
   // or Wrecker trait." See E20.rerollConditions.consumableOrWreckerRangedAttack's own doc comment.
   consumableOrWreckerRangedAttack: (actor, context) => !!context?.isConsumableOrWreckerRangedAttack,

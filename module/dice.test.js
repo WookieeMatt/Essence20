@@ -1400,6 +1400,8 @@ describe("rollSkill", () => {
     targetVulnerabilityAvailable: false,
     terrorAvailable: 0,
     supremeGuardianTechAvailable: 0,
+
+    surgingAvailable: false,
     combatStanceAvailable: 0,
     menacingGlareAvailable: false,
     rolePoints: null,

@@ -11,6 +11,11 @@
     data-tooltip="{{localize 'E20.LoadOutHandsHint'}}">
     {{localize 'E20.LoadOutHands'}}: {{@root.system.loadout.handsUsed}} / {{@root.system.loadout.handsMax}}
   </span>
+  {{#if @root.system.loadout.carryPercent}}
+  <span class="chip loadout-chip" data-tooltip="{{localize 'E20.LoadOutCarryHint'}}">
+    {{localize 'E20.LoadOutCarry'}}: {{@root.system.loadout.carryPercent}}%
+  </span>
+  {{/if}}
 
   {{#if @root.system.canTransform}}
     <span class="chip loadout-chip{{#if @root.system.hardpoints.integrated.over}} is-over{{/if}}"

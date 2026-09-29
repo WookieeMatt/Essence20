@@ -1,3 +1,4 @@
+import { grantActionsThisTurn } from "./action-economy.mjs";
 import { bankPendingBonus, hasUsedThisEncounter, markUsedThisEncounter, postPerkUseChatCard } from "./perks.mjs";
 import { getNearbyAllyTokens } from "./allies.mjs";
 import { hasStoryPointsAvailable, canWriteStoryPoints, requestStoryPointSpend } from "./story-points.mjs";
@@ -154,7 +155,7 @@ const TEAM_BUFF_PERKS = {
   },
   [HEART_OF_THE_TEAM_GIJ_ID]: {
     worldStoryPointCost: 1, onceEncounterFlag: HEART_OF_THE_TEAM_GIJ_ENCOUNTER_FLAG, effect: 'tempHealth',
-    tempHealthAmount: 1, radiusFeet: 30, requiresMorphed: false,
+    tempHealthAmount: 1, radiusFeet: 30, requiresMorphed: false, grantsMove: true,
   },
   [NANO_MED_MASTERY_ID]: {
     powerCost: 0, onceEncounterFlag: NANO_MED_MASTERY_ENCOUNTER_FLAG, effect: 'healAndEdge',
@@ -271,6 +272,14 @@ export async function onTeamBuffPerkUse(item, actor) {
         combatId: game.combat?.id ?? null,
         round: game.combat?.round ?? null,
       });
+    }
+  }
+
+  // "All allies within 30 feet of you may immediately move their full Movement" - a Move action
+  // each, usable now (helpers/action-economy.mjs#grantActionsThisTurn).
+  if (config.grantsMove) {
+    for (const target of targets) {
+      await grantActionsThisTurn(target, { move: 1 }, item.name);
     }
   }
 

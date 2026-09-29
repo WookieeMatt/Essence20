@@ -1,3 +1,4 @@
+import { actorHas, TRAIT_PERK } from "./weapon-traits.mjs";
 import { describeCost, spend } from "./action-economy.mjs";
 
 /**
@@ -19,6 +20,12 @@ import { describeCost, spend } from "./action-economy.mjs";
  * @returns {Boolean}
  */
 export function isMountedWeaponSetUp(weapon) {
+  // Snipe From The Hip (TF CRB, Sharpshooter, 17th level, p.70): "you ignore your Long Range Rifle's
+  // Mounted trait."
+  if (/long range rifle/i.test(weapon?.name ?? '') && actorHas(weapon?.parent, TRAIT_PERK.snipeFromTheHip)) {
+    return true;
+  }
+
   return !!weapon?.getFlag?.('essence20', 'mountedSetUp');
 }
 

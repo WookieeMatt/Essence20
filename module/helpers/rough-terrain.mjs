@@ -1,3 +1,4 @@
+import { hasVehicleUpgrade, VU } from "./vehicle-upgrades.mjs";
 import {
   ENVIRONMENT_EFFECT_PREFIX, ENVIRONMENT_REGION_BEHAVIOR_TYPE, getSceneEnvironment, getTerrain, isInRoughTerrain,
   ROUGH_TERRAIN_EFFECT,
@@ -110,6 +111,12 @@ const isUrban = actor => getTerrain(actor) == 'urban';
 // Aggressive / Wrecking Ball / Plow (ignore it only during one specific Story-Point / Sprint / Ram
 // move - no per-move hook to scope them to), and NPC-only stat-block perks with no compendium item.
 const ROUGH_TERRAIN_IGNORERS = [
+  // Wrecking Ball (GI Joe CRB, Juggernaut, 17th level, p.112): "You ignore Rough Terrain" for the
+  // Sprint it was bought for - helpers/target-riders.mjs.
+  { checkFn: actor => isWreckingBallFlagActive(actor) },
+  // All-Terrain Steel-Reinforced Wheels (Quartermaster's Guide p.57): "The vehicle ignores Rough
+  // Terrain."
+  { id: 'allTerrainWheels', checkFn: actor => hasVehicleUpgrade(actor, VU.allTerrainWheels) },
   { id: ENVIRONMENTAL_EXPERTISE_ID, checkFn: hasActiveEnvironmentalExpertise },
   { id: TAKE_POINT_ID },
   { id: OVER_THE_CANDLESTICK_ID },
@@ -129,6 +136,15 @@ const ROUGH_TERRAIN_IGNORERS = [
  * @param {Actor} actor
  * @returns {Boolean}
  */
+/**
+ * Wrecking Ball's flag, stamped for the turn it was used.
+ */
+function isWreckingBallFlagActive(actor) {
+  const stamp = actor?.flags?.essence20?.wreckingBall;
+  const combat = game?.combat;
+  return !!stamp && !!combat && stamp.combatId == combat.id && stamp.round == combat.round && stamp.turn == combat.turn;
+}
+
 export function ignoresRoughTerrain(actor) {
   if (!actor) {
     return false;

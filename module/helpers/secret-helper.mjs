@@ -18,12 +18,9 @@ import { actorHasPerk } from "./perks.mjs";
  * rather than the message speaker, and each viewer only ever sees the button if their own
  * character qualifies.
  *
- * "On your next turn, you can't take a Standard action" is NOT enforced: this system has no
- * action-economy budget anywhere to spend against (the same confirmed gap that blocks Extra Attack
- * and this Perk's own later upgrades - Subtle Helper at 11th and Stealth Helper at 18th do nothing
- * BUT reduce that cost, so both remain genuinely unbuildable until an action economy exists).
- * Here the cost is simply left to the table, the way every other unenforceable action cost in this
- * project already is.
+ * "On your next turn, you can't take a Standard action" is enforced on the helper's next turn,
+ * with Subtle Helper's and Stealth Helper's lighter prices - see action-perks.mjs#
+ * getSecretHelperPenalty and chat.mjs, which applies it when the button is used.
  */
 export const SECRET_HELPER_ID = "Compendium.essence20.mlp_crb.Item.Vb3CAaAj9d1a63p7";
 

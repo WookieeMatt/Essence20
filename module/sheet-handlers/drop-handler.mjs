@@ -1,3 +1,4 @@
+import { promptVehicleUpgradeChoice } from "../helpers/vehicle-upgrades.mjs";
 import { checkIsLocked } from "../helpers/actor.mjs";
 import { createId, parseId } from "../helpers/utils.mjs";
 import { onAlterationDrop } from "./alteration-handler.mjs";
@@ -194,6 +195,10 @@ export async function _onUpgradeDrop(upgrade, actor, dropFunc) {
   // Drones can only accept drone Upgrades
   if (actor.type == 'companion' && actor.system.type == 'drone' && upgrade.system.type == 'drone') {
     return dropFunc();
+  } else if (actor.type == 'vehicle' && upgrade.system.type == 'drone' && ['ridingRig', 'jetPack'].includes(actor.flags?.essence20?.personalVehicle)) {
+    // Riding Rig / Skybound (Cobra Codex p.60, 65): "you can requisition Drone Upgrades for it if it meets
+    // all other prerequisites of the Upgrade."
+    return dropFunc();
   } else if (actor.system.canTransform && upgrade.system.type == 'armor') {
     return _onTransformerArmorUpgradeDrop(upgrade, actor, dropFunc);
   } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
@@ -202,7 +207,14 @@ export async function _onUpgradeDrop(upgrade, actor, dropFunc) {
     // A Vehicle-type Upgrade (e.g. Heavy Water Coolant, Operation Cold Iron p.49) attaches
     // directly to the Vehicle actor itself, not to a sub-item on its sheet the way an
     // armor/weapon Upgrade attaches to a piece of gear - embedded plainly, same as a Perk.
-    return dropFunc();
+    // Energy Resistant, Energized Plating, Double-Barrel and Targeting System then ask their
+    // choice (helpers/vehicle-upgrades.mjs).
+    const created = await dropFunc();
+    if (created?.[0]) {
+      await promptVehicleUpgradeChoice(created[0]);
+    }
+
+    return created;
   } else {
     ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
     return false;
@@ -229,6 +241,12 @@ export async function onDropActor(data, actorSheet) {
   case 'playerCharacter':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'npc') {
       setEntryAndAddActor(droppedActor, targetActor);
+      dropIsValid = true;
+    } else if (['companion', 'vehicle'].includes(droppedActor.type)) {
+      // A pet, drone, Mini-Con or companion - or a personal vehicle - becomes this character's
+      // (helpers/companion-link.mjs).
+      const { linkCompanion } = await import("../helpers/companion-link.mjs");
+      await linkCompanion(targetActor, droppedActor);
       dropIsValid = true;
     }
 
@@ -282,6 +300,15 @@ export async function onDropActor(data, actorSheet) {
     if (["playerCharacter", "npc"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
       dropIsValid = true;
+    } else if (droppedActor.type == 'zord') {
+      // Carrier (PR CRB, Zord Feature, p.136): "holds up to five Vehicular Scale Zords and their Crew
+      // inside itself" (helpers/team-actions.mjs).
+      const { carrierCapacityLeft, TEAM } = await import("../helpers/team-actions.mjs");
+      const isCarrier = targetActor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == TEAM.carrier);
+      if (isCarrier && carrierCapacityLeft(targetActor) > 0) {
+        await setEntryAndAddActor(droppedActor, targetActor, 'passenger');
+        dropIsValid = true;
+      }
     }
 
     break;

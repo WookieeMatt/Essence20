@@ -1,3 +1,10 @@
+import { onCompanionTurnStart, onFirstCombatTurn } from "../helpers/companions.mjs";
+import { onSpiritsHostTurn } from "../helpers/team-actions.mjs";
+import { onRoundChange } from "../helpers/summons.mjs";
+import { onTurnStartZones } from "../helpers/target-riders.mjs";
+import { checkSelfDestruct } from "../helpers/vehicle-upgrades.mjs";
+import { sweepTemporary } from "../helpers/weapon-perk-uses.mjs";
+import { checkTimeBombs } from "../helpers/planted-bombs.mjs";
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { applyGotToGetTough } from "../helpers/got-to-get-tough.mjs";
@@ -62,6 +69,35 @@ export class Essence20Combat extends Combat {
        never cleared would be worse than not applying it. */
     if (combatant?.actor?.statuses?.has(DEFENDING_STATUS)) {
       await combatant.actor.toggleStatusEffect(DEFENDING_STATUS, { active: false });
+    }
+
+    // Temporary upgrades and effects whose time is up (Beatdown, Armament Upgrade, Knuckle Up...),
+    // and Time Bombs coming due - helpers/weapon-perk-uses.mjs, helpers/planted-bombs.mjs.
+    for (const other of this.combatants ?? []) {
+      if (other.actor) {
+        await sweepTemporary(other.actor);
+      }
+    }
+
+    await checkTimeBombs(this);
+    await checkSelfDestruct(this);
+
+    // Suppressing Fire areas: gone at their owner's next turn, and an enemy starting a turn in
+    // one is offered to its owner - helpers/target-riders.mjs.
+    if (combatant?.actor) {
+      await onTurnStartZones(combatant.actor);
+      // Companions (Artificial Intelligence, Constrictor, the tractor beam), Spirit's Host, and Perch on
+      // the first round - helpers/companions.mjs, helpers/team-actions.mjs.
+      await onCompanionTurnStart(combatant.actor, this);
+      await onSpiritsHostTurn(combatant.actor);
+      if ((context?.round ?? this.round) == 1) {
+        await onFirstCombatTurn(combatant.actor);
+      }
+    }
+
+    // A vehicle called "like a Zord" turns up on its round (helpers/summons.mjs).
+    if ((context?.turn ?? this.turn) == 0) {
+      await onRoundChange(this);
     }
   }
 

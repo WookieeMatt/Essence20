@@ -13,7 +13,29 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "reroll": {
+      "enabled": true,
+      "maxUses": 0,
+      "mode": "all",
+      "reset": "none",
+      "target": "allDice",
+      "cost": {
+        "resourcePath": "system.energon.normal.value",
+        "amount": 1,
+        "worldStoryPoints": 0,
+        "rolePointsName": ""
+      },
+      "condition": "rollFailed",
+      "skills": [
+        "deception"
+      ],
+      "essence": "any",
+      "recursive": false,
+      "minDieFaces": 0,
+      "grantsCanCritD2": false,
+      "bonus": 0
+    }
   },
   "effects": [],
   "sort": 100000,

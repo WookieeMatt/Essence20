@@ -17,6 +17,12 @@
         "img": "systems/essence20/assets/icons/weapons/broadsword.svg",
         "name": "Magna Sword",
         "type": "weapon"
+      },
+      "pSx2": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.cc26YT6ITjCx0UQV",
+        "img": "systems/essence20/assets/icons/items/weapon.svg",
+        "name": "Magna Blaster",
+        "type": "weapon"
       }
     },
     "prerequisite": "",

@@ -32,6 +32,7 @@ export function prepareSystemActors(actor, context) {
     const actors = {};
     const zordActors = {};
     const contactActors = {};
+    const companionActors = {};
 
     for (const [ key, embeddedActor] of Object.entries(actor.system.actors)) {
       const fullActor = fromUuidSync(embeddedActor.uuid);
@@ -39,6 +40,8 @@ export function prepareSystemActors(actor, context) {
 
       if (fullActor?.type == 'zord') {
         zordActors[key] = fullActor;
+      } else if (['companion', 'vehicle'].includes(fullActor?.type)) {
+        companionActors[key] = fullActor;
       } else {
         contactActors[key] = fullActor;
       }
@@ -47,6 +50,7 @@ export function prepareSystemActors(actor, context) {
     context.actors = actors;
     context.zordActors = zordActors;
     context.contactActors = contactActors;
+    context.companionActors = companionActors;
   }
 }
 
@@ -102,7 +106,12 @@ export async function onSystemActorsDelete(event, actorSheet) {
   }
 
   await actor.update({[updateString]: new foundry.data.operators.ForcedDeletion()});
-  li.slideUp(200, () => actorSheet.render(false));
+  // A companion taken off the list stops being this character's (helpers/companion-link.mjs).
+  if (removedActor?.flags?.essence20?.companionOf == actor.uuid) {
+    await removedActor.unsetFlag('essence20', 'companionOf');
+  }
+
+  actorSheet.render(false);
 }
 
 export async function onVehicleRoleUpdate(event, actorSheet) {

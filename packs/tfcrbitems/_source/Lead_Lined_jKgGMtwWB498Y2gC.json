@@ -19,7 +19,10 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Computerized"
+    "prerequisite": "Computerized",
+    "removedTraits": [
+      "computerized"
+    ]
   },
   "effects": [],
   "flags": {

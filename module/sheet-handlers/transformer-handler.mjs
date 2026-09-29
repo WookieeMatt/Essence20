@@ -1,3 +1,4 @@
+import { spend } from "../helpers/action-economy.mjs";
 import TransformOptionSelector from "../apps/transform-option-selector.mjs";
 import { changeTokenImage, resizeTokens } from "../helpers/actor.mjs";
 import { warnMissingStateImage } from "../helpers/morph-state.mjs";
@@ -35,6 +36,24 @@ export async function onTransform(actor) {
 
   const altModes = actor.items.documentsByType.altMode;
   const isTransformed = actor.system.isTransformed;
+
+  // Converting is a Standard action (TF CRB p.111: Quick Change makes "that sequence require a Free
+  // action to enact instead of a Standard action"). Charged only in combat; a player who backs out
+  // of the "how do you pay?" question hasn't converted.
+  if (altModes.length || isTransformed) {
+    const paid = await spend(actor, 'standard', {
+      source: game.i18n.localize('E20.ActionConvert'), context: { kind: 'conversion' },
+    });
+    if (paid.blocked) {
+      if (!paid.cancelled) {
+        ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
+          name: actor.name, action: game.i18n.localize('E20.ActionConvert'),
+        }));
+      }
+
+      return;
+    }
+  }
 
   if (!actor.system.isTransformed ) {
     await actor.update ({

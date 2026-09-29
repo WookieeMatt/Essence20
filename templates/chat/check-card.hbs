@@ -38,11 +38,26 @@
         <span class="e20-check-critical-label">{{localize 'E20.CheckCriticalHit'}}</span>
         {{#each criticalOptions}}
         <button type="button" class="e20-check-damage-button" data-action="apply-damage" data-key="{{../targetUuid}}:crit:{{key}}"
-          data-target-uuid="{{../targetUuid}}" data-damage="{{damageValue}}" data-damage-type="{{damageType}}">
+          data-target-uuid="{{../targetUuid}}" data-damage="{{damageValue}}" data-damage-type="{{damageType}}"{{#if essence}} data-essence="{{essence}}"{{/if}}{{#if status}} data-status="{{status}}"{{/if}}{{#if defense}} data-defense="{{defense}}"{{/if}}{{#if rider}} data-rider="{{rider}}"{{/if}}>
           {{label}} &mdash; {{damageValue}} {{damageTypeLabel}}
         </button>
         {{/each}}
       </div>
+      {{/if}}
+
+      {{#if riderOptions.length}}
+      <div class="e20-check-critical-options">
+        {{#each riderOptions}}
+        <button type="button" class="e20-check-damage-button" data-action="apply-damage" data-key="{{../targetUuid}}:rider:{{key}}"
+          data-target-uuid="{{../targetUuid}}" data-damage="{{damageValue}}" data-damage-type="{{damageType}}"{{#if ignoreImmunity}} data-ignore-immunity="true"{{/if}}>
+          {{label}} &mdash; {{damageValue}} {{damageTypeLabel}}
+        </button>
+        {{/each}}
+      </div>
+      {{/if}}
+
+      {{#if riderNote}}
+      <div class="e20-check-damage-bonus-note">{{riderNote}}</div>
       {{/if}}
     </li>
     {{/each}}
