@@ -5,6 +5,10 @@
   "_id": "hGZdtNfjTMg0og25",
   "img": "systems/essence20/assets/icons/weapons/wrench.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its effect; Anti-Tank and Wrecker apply, Reload is tracked, and it counts as a Tool weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

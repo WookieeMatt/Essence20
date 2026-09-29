@@ -5,6 +5,10 @@
   "_id": "sQ00MnGryA2GNzHF",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you fail an Alertness Test, a Snag is saved for your next Skill Test and shows in the Roll Options Dialog.</p><p>Left to the table: it fires on any failed Alertness Test, so clear the Snag if that test wasn't about judging someone's intentions.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

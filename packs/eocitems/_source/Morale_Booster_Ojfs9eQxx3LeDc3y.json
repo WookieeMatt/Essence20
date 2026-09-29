@@ -5,6 +5,10 @@
   "_id": "Ojfs9eQxx3LeDc3y",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Morale Booster Perk plus the Brutally Honest, Idolizer and Whimsical Hang-Ups.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

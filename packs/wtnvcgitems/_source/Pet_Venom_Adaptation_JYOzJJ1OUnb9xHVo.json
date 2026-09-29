@@ -5,6 +5,10 @@
   "_id": "JYOzJJ1OUnb9xHVo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Resistant to Poison. Automatic: an Edge on Brawn tests while you are Poisoned.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

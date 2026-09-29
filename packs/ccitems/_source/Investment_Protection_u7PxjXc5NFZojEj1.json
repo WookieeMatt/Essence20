@@ -5,6 +5,10 @@
   "_id": "u7PxjXc5NFZojEj1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Health. Two more +1 Health effects are off by default; switch them on when you reach 10th and 18th level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

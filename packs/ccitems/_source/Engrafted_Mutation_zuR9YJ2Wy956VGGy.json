@@ -5,6 +5,10 @@
   "_id": "zuR9YJ2Wy956VGGy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when gained (or via the Use button), pick a Standard Alteration you don't already have; it is added as a genetic Alteration. You count as having genetic Alterations for Retrogen weapons, and Beast Mode offers its extra picks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

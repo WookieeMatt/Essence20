@@ -5,6 +5,10 @@
   "_id": "1xJzvY2IBoFa9Hp3",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: adds its bonus to all four Defenses, starting at +1 at 2nd level and rising at 8th, 14th and 20th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

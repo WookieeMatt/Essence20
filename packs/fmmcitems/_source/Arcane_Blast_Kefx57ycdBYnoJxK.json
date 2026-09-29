@@ -5,6 +5,10 @@
   "_id": "Kefx57ycdBYnoJxK",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: place the 5ft blast, then it rolls Targeting against each target's Toughness for 1 Energy damage. Its cost counts toward your Sorcerous Power budget on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "oztKnxjbqDjJUL7m",
   "img": "systems/essence20/assets/icons/gear/burglary_kit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when a roll needs a kit, the best one you carry sets the Snag or ↓. Use button: spend it for Specialization or an Edge, or scrounge a refill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

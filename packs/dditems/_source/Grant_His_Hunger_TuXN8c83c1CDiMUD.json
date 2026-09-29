@@ -5,6 +5,10 @@
   "_id": "TuXN8c83c1CDiMUD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Standard action): touch a target and roll Culture against its Cleverness. On a success it loses 1d2 Energon, or takes that much damage to a random Essence if it has none.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

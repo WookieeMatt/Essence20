@@ -5,6 +5,10 @@
   "_id": "4GYOdopDcXS8lgGI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, spend 1 Energon and roll DIF 12 Technology to heal 1 Health to a target in reach (DIF 17 for 2 Health with Technology d6+). Using it on yourself adds a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

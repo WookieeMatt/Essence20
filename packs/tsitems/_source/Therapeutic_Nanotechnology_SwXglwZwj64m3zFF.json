@@ -5,6 +5,10 @@
   "_id": "SwXglwZwj64m3zFF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per scene, in Alt Mode): heal 1 Health. Left to the table: recovering 2 Essence damage after a long rest.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

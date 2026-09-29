@@ -5,6 +5,10 @@
   "_id": "S4mjad0y916Vo65K",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: add Medicine as a Survival Specialization and use it to treat damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "ihphiMNUuj710MzH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene): ↑3 on your next Skill Test.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

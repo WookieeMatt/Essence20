@@ -5,6 +5,10 @@
   "_id": "PEDHPJkoGvvJed5u",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend a Grid Surge and pick an option. Temporary Construct gives Edge on your next roll with a chosen Skill; Toughness Boost adds +1 Toughness (up to +3) against the next attack while Morphed.</p><p>Left to the table: the full durations, reshaping your Power Weapon, and speeding up Zords.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "qf1HjLgmRGil2N7i",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: once per combat, on a Blunt or Sharp attack against a targeted vehicle of your level or lower, a switch trades the damage for making it inoperable. A Critical Success Defeats it instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

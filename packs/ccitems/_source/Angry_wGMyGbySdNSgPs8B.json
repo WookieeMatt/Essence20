@@ -5,6 +5,10 @@
   "_id": "wGMyGbySdNSgPs8B",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you use the Angry Perk, pick a Smarts or Social Skill; it has a Snag for the rest of the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

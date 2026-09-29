@@ -5,6 +5,10 @@
   "_id": "Pr3UniqWpnVersat",
   "img": "systems/essence20/assets/icons/weapons/broadsword.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Might or Finesse for Sharp damage, with ↑2 against targets at least three sizes larger.</p><p>Left to the table: it does not Morph with you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

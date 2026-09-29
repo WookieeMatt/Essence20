@@ -5,6 +5,10 @@
   "_id": "X4xMiq8D3BVpUt2s",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): switch it on for ↑1 on Performance while playing this instrument.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

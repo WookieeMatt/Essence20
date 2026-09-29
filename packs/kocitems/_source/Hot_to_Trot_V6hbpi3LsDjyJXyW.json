@@ -5,6 +5,10 @@
   "_id": "V6hbpi3LsDjyJXyW",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: on a success, the targeted creature (or you, if no one is targeted) gets +15 ft Ground Movement until the GM advances the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

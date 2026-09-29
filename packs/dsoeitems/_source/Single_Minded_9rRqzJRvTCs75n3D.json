@@ -5,6 +5,10 @@
   "_id": "9rRqzJRvTCs75n3D",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: a switchable effect that gives Alertness tests a Snag; turn it on while the object of your infatuation is in the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

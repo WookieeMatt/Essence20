@@ -5,6 +5,10 @@
   "_id": "PFuzUrcYw14JRLf9",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Sharp damage at Reach, and its traits apply. Alternate Effect: 2 Sharp damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

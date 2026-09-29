@@ -5,6 +5,10 @@
   "_id": "sA8GbXKPcRuPHzNt",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: lowers the weapon's Availability by one step, and the weapon is destroyed if you fumble an attack with it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

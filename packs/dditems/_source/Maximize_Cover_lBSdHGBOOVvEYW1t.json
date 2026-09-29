@@ -5,6 +5,10 @@
   "_id": "lBSdHGBOOVvEYW1t",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you are in cover, attackers take ↓3 instead of the usual ↓2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

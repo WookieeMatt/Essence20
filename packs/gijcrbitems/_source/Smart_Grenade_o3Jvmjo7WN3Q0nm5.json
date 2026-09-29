@@ -5,6 +5,10 @@
   "_id": "o3Jvmjo7WN3Q0nm5",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and blast, and its traits apply (Computerized, Consumable, Energy).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "7NGQHft6V1wAfGPw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spends a Free action to grab the item and, if you want to do it unseen, rolls Infiltration for onlookers to contest with Alertness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

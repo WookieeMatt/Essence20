@@ -5,6 +5,10 @@
   "_id": "MYyJQL8ofR6zzDkj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: two extra Free actions each turn.</p><p>Left to the table: spending them only on doors or extra movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

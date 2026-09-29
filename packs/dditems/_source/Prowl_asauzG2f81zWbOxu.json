@@ -5,6 +5,10 @@
   "_id": "asauzG2f81zWbOxu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: this Mini-Con can Hide as a Free action instead of its usual cost.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

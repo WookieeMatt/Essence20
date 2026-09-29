@@ -5,6 +5,10 @@
   "_id": "IF9v9C3tCJSQYRjd",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Toughness, always on. Use button: spend one of its daily uses for another +1 Toughness for the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

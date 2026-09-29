@@ -5,6 +5,10 @@
   "_id": "qfu6F2W69JJaAH41",
   "img": "systems/essence20/assets/icons/weapons/spear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics at 10/20 ft for 1 Blunt or 1 Sharp damage, one effect for each; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

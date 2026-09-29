@@ -5,6 +5,10 @@
   "_id": "7k9DzU918tm8OK9V",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you and your pet (or two of your pets) attack the same target in a round, those attacks get an Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

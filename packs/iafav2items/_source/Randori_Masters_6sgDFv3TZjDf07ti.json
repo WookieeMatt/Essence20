@@ -5,6 +5,10 @@
   "_id": "6sgDFv3TZjDf07ti",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: ↑2 on unarmed attacks.</p><p>Left to the table: pushing or shoving an adjacent Threat that attacked you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

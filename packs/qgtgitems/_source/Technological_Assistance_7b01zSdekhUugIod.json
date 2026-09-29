@@ -5,6 +5,10 @@
   "_id": "7b01zSdekhUugIod",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your Lend Assistance can help allies' Driving, Targeting and Technology tests.</p><p>Left to the table: that it only costs you a Free action, and that it's limited to those three Skills.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

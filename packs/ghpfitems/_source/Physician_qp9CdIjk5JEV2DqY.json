@@ -5,6 +5,10 @@
   "_id": "qp9CdIjk5JEV2DqY",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Physician Perk and its Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

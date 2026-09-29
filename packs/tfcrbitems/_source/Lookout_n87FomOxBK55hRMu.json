@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Look Out! Perk and the Lookout Alt Mode, plus starting Health, 30ft Ground Movement, the Speed and Social Essence options and the Finesse, Infiltration, Deception and Streetwise Skill options.</p>"
+    },
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.ZS3kX8oKogmsH6OK]{Lookout}</p>",
     "source": {

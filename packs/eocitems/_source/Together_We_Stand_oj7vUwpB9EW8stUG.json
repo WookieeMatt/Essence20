@@ -5,6 +5,10 @@
   "_id": "oj7vUwpB9EW8stUG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in round 1 of combat, if two or more Party members are fighting, each gains 1d2 temporary Health and 1d2 Energon over their maximum. Both are removed when the scene ends.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

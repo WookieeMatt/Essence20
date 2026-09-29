@@ -5,6 +5,10 @@
   "_id": "WEF98Hlolkk0Te5P",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this: pick the key or requirement needed to use the weapon, and the GM enforces it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

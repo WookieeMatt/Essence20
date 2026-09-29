@@ -5,6 +5,10 @@
   "_id": "eKrqFE4vv1PInOZz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per combat when you roll Initiative, you can set up a Contingency action at no action cost (you confirm you weren't Surprised).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

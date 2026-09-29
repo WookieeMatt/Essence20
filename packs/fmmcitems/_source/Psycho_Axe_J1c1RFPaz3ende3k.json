@@ -5,6 +5,10 @@
   "_id": "J1c1RFPaz3ende3k",
   "img": "icons/weapons/axes/axe-battle-black.webp",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might with the listed damage and Void damage ignores armor bonuses to Toughness, and the Power Weapon trait counts for Power Weapon effects. Wielded two-handed it deals more damage, and the Alternate Effect shoves the target 10ft. Granted from the Psycho Morpher's Use button.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added you pick the Essence and Origin Skill; you also get its Health, Movement and the Grid Gifted Origin Benefit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

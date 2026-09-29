@@ -5,6 +5,10 @@
   "_id": "4aAdVztvcJLhZR8N",
   "img": "icons/svg/sword.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Sharp damage at Reach, with an alternate effect hitting 2 targets at ↓1; Martial Arts, Sharp and Silent apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↓1 on Skill Tests that aren't directly related to your mission.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

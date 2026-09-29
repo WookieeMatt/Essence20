@@ -5,6 +5,10 @@
   "_id": "ZIJnA0z3Mrp8pfbd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: merge into your Combiner form for 2 Energon and a Standard action, the same way as Gestalt Combiner. Pick your Combiner feature and add it to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

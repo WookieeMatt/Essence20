@@ -5,6 +5,10 @@
   "_id": "whz44n9XJNJQIVVt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Lend Assistance gives ↑2 instead of ↑1. Use button: gives the targeted foe ↓1 on their next Skill Test.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

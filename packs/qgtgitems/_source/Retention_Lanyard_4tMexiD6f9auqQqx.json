@@ -5,6 +5,10 @@
   "_id": "4tMexiD6f9auqQqx",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: a dropped or disarmed weapon stays in your space, and your Movement drops by 5ft until you pick it up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

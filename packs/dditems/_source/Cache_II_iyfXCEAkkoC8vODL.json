@@ -5,6 +5,10 @@
   "_id": "iyfXCEAkkoC8vODL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Cache I can be used twice.</p><p>Left to the table: the uses reset each encounter, so hold them to two per session.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

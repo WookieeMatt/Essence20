@@ -5,6 +5,10 @@
   "_id": "J3KQpBY6aI5qmQx9",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Technology attack at 75ft; a target it hits is Blinded until the end of its next turn.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

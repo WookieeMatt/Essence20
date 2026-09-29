@@ -5,6 +5,10 @@
   "_id": "333ORsj8gPYuicfb",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Left to the table: surviving the harsh environment, which the GM rules on.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

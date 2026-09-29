@@ -5,6 +5,10 @@
   "_id": "yNtX8ky7O8v50C5l",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Combat Stance shift and its bonus damage rise to 2, and you can designate a new foe with Combat Stance's Use button without waiting for the next scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

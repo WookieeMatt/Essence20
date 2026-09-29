@@ -5,6 +5,10 @@
   "_id": "K6aw0q3f7D5gDHco",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might melee attack at double Reach for 2 Sharp damage, with ↓1.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

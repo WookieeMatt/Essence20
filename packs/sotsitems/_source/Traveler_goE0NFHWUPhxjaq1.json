@@ -5,6 +5,10 @@
   "_id": "goE0NFHWUPhxjaq1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: record your chosen place. Roll Options Dialog: on Social tests, a switch for ↑1 when dealing with natives of that place.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

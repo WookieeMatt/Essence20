@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: marks one of your three substitutions; then roll Brawn in place of the Speed Skill. Left to the table: the limit is three per day, but the counter resets each scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

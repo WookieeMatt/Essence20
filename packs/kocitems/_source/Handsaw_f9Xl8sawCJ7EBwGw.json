@@ -5,6 +5,10 @@
   "_id": "f9Xl8sawCJ7EBwGw",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: an Edge switch while you carry it, for making clean cuts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

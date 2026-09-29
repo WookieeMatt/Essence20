@@ -5,6 +5,10 @@
   "_id": "OOD7gHzYFeKkrehD",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 3 starting Health, +1 Strength, Ground Movement 30, the Knock, Knock! Perk, and your pick of the Common or Large Carapaced Alt Mode. You pick Conditioning or Brawn as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

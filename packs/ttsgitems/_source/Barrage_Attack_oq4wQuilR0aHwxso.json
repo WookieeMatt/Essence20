@@ -5,6 +5,10 @@
   "_id": "oq4wQuilR0aHwxso",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per turn, spend 1 Personal Power when the Zord makes a ranged attack to get a free ranged attack with each of its other ranged weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

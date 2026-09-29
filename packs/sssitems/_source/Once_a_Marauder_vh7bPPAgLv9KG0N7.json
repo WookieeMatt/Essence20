@@ -5,6 +5,10 @@
   "_id": "vh7bPPAgLv9KG0N7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: you may take the Slaughter's Marauders faction instead of G.I. Joe at character creation.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

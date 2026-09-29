@@ -5,6 +5,10 @@
   "_id": "RrHOAhAuiosZFwVH",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Strength and ↑1 on Might for the Zord.</p><p>Left to the table: ↑1 on its ranged attacks, and keeping only one Upgraded Zord option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

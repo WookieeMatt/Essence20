@@ -5,6 +5,10 @@
   "_id": "7WzxxG6T7kF6daMY",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while your chosen Better Together ally has no token in the current scene, your Skill Tests take ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

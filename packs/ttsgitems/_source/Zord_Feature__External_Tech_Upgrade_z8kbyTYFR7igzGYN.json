@@ -5,6 +5,10 @@
   "_id": "z8kbyTYFR7igzGYN",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Toughness for the Zord.</p><p>Left to the table: the extra movement type, the basic ranged attack you design, and recovering only half Health from Recall for Repairs.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

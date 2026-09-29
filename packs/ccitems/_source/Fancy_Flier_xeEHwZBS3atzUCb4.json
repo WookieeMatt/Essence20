@@ -5,6 +5,10 @@
   "_id": "xeEHwZBS3atzUCb4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Acrobatics and Driving tests can score a Critical Success on the d2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

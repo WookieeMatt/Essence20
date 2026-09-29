@@ -5,6 +5,10 @@
   "_id": "NkHKAb5TFc7n7C8k",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per scene, when you spend 2 or more Personal Power, you're offered to pay only half (rounded up) and get the rest back.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

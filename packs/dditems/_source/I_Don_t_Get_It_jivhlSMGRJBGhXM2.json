@@ -5,6 +5,10 @@
   "_id": "jivhlSMGRJBGhXM2",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Deception and Persuasion Tests against you get Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "T7oYyl70KYmFT1lt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Health. Use button: pick a Limited weapon; you are trained and Qualified with it at Requisition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

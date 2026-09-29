@@ -5,6 +5,10 @@
   "_id": "aLdjHmWG171RCSpA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: with a target selected, spend Free actions equal to your Analyze Target uses on it and pick an ally; their next attack on that target gets that many ↑.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "AGW6WyoYjNCEPgPm",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: thrown Athletics attacks at Short range for 1 Blunt damage; its Silent trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

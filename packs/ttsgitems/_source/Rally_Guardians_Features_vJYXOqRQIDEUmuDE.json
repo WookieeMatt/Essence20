@@ -5,6 +5,10 @@
   "_id": "vJYXOqRQIDEUmuDE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: at 6th, 10th, 14th and 17th level, pick a Zord Feature for your Guardian company (Combiner and Mega Weapon options are left out); it is added to the company's sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

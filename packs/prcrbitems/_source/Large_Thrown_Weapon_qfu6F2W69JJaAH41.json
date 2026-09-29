@@ -5,6 +5,10 @@
   "_id": "qfu6F2W69JJaAH41",
   "img": "systems/essence20/assets/icons/weapons/spear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Brawn with either its Blunt or Sharp effect and the listed damage; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

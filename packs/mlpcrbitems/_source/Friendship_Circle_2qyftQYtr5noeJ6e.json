@@ -5,6 +5,10 @@
   "_id": "2qyftQYtr5noeJ6e",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: the Friendship Point tracker lets a pony form a Circle and others join, each paying a Friendship Point. It builds the shared ↑, healing and free Lend Assistance pools, limited to once per scene (twice with Best Friendship Circle). Left to the table: the forming Standard action and moving within 30 ft.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

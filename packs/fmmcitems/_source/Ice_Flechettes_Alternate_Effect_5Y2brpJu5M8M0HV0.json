@@ -5,6 +5,10 @@
   "_id": "5Y2brpJu5M8M0HV0",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: rolls Targeting at ↓1 against the Toughness of up to 5 targets for 2 Cold damage.</p><p>Left to the table: rolling for the printed number of targets, and removing armor Defense bonuses on a Critical Success.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

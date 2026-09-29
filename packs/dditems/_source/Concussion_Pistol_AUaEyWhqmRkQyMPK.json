@@ -5,6 +5,10 @@
   "_id": "AUaEyWhqmRkQyMPK",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets, with its alternate effect to pick from; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

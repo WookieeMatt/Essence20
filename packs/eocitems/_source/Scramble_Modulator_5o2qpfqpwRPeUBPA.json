@@ -5,6 +5,10 @@
   "_id": "5o2qpfqpwRPeUBPA",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when the upgraded weapon hits a Combiner form, the GM gets a button that deals 1 Sonic damage to the component with the most Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

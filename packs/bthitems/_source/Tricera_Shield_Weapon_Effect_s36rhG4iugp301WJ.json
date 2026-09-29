@@ -4,6 +4,10 @@
   "type": "weaponEffect",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Tricera Shield's attack, rolling Might for 1 Blunt damage in melee.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

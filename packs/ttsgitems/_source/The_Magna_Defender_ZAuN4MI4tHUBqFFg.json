@@ -5,6 +5,10 @@
   "_id": "ZAuN4MI4tHUBqFFg",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Role Perks at the listed levels (including the Magna Sword, Torozord and Torozord Feature picks), Essence increases, Personal Power, armor training, starting Skills, and General Perk and Grid Power picks at their levels.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

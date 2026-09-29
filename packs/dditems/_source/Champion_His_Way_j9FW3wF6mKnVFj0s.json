@@ -5,6 +5,10 @@
   "_id": "j9FW3wF6mKnVFj0s",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +2 to all Defenses while you hold at least one Dark Energon Point.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "pTHenJt0kG3umsUk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: converting between your two chosen Alt Modes is a Free action. Use button (out of combat): choose which two Alt Modes it covers.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

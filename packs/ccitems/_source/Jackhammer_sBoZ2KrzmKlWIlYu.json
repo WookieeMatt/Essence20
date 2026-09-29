@@ -5,6 +5,10 @@
   "_id": "sBoZ2KrzmKlWIlYu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you always have an integrated power tool on your sheet, even when unarmed or your hands are full.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

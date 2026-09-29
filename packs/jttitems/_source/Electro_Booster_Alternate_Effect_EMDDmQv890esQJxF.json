@@ -5,6 +5,10 @@
   "_id": "EMDDmQv890esQJxF",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Electro Booster's Targeting attack with the listed Stun damage and range.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

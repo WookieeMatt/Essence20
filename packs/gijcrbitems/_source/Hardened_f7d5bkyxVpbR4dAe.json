@@ -5,6 +5,10 @@
   "_id": "f7d5bkyxVpbR4dAe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you're trained in Medium armor. Automatic: you can use Reckless Abandon while wearing Medium armor.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

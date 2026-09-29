@@ -5,6 +5,10 @@
   "_id": "3XV6tQfl7WVvjEKe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on an Outwit roll, a switch to also deal 1 damage to the target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "0CpjDLEjrTXHdsyf",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: once per scene, spend 3 Personal Power; the Zord regains 3 Health and gets the chosen Defense and attack bonuses until it joins a Megaform or is recalled.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

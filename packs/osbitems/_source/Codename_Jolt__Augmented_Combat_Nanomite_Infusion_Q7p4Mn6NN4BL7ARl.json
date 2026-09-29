@@ -5,6 +5,10 @@
   "_id": "Q7p4Mn6NN4BL7ARl",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: activate it to get ↑1 on your attack rolls; press it again to switch it off.</p><p>Left to the table: ending it after one minute.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

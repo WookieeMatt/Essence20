@@ -5,6 +5,10 @@
   "_id": "OQpg0NmGRFKeKaSb",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Pitchfork's one-handed attack: rolls Might at Reach ×2 for 1 Sharp damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

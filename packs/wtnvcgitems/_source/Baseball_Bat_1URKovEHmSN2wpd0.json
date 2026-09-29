@@ -5,6 +5,10 @@
   "_id": "1URKovEHmSN2wpd0",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: two-handed attacks roll Finesse or Might, whichever is better, at Reach for 1 Blunt damage, with a 2 Blunt alternate and a Maneuver alternate; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "MRbKuQlNI2tOfpLM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Close Combat Blade and Close Combat Bludgeoning.</p><p>Use button (Free): spend a Personal Shield use to give those weapons an Element for a minute; their hits then offer the Element effect.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

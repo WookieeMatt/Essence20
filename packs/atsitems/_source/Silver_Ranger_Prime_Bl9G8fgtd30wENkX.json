@@ -5,6 +5,10 @@
   "_id": "Bl9G8fgtd30wENkX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: +1 damage on your attacks in the first round of combat, and enemies take a Snag when attacking your Willpower.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "tOoyMHVtV6wjvlxd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick your ally. Automatic: when either of you Lends Assistance to the other, you both get ↑1 and an Edge until the end of your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "dAoJG7ZwVEhOQZY0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per scene, when an ally makes a test, spend a Story Point to make it a Critical Success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

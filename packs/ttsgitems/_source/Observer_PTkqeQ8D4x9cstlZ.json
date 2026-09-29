@@ -5,6 +5,10 @@
   "_id": "PTkqeQ8D4x9cstlZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switch your disguise on (1 Personal Power) or off. While on: ↑2 on Deception, Technology tests to find you take a Snag, and the Roll Options Dialog lets you swap a Snag for ↓2 on Social tests about other species.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

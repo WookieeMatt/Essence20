@@ -5,6 +5,10 @@
   "_id": "XNFKj81lkp05O5fl",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

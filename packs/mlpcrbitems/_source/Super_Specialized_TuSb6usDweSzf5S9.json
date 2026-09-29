@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick a Skill when you gain it; you get ↑1 on that Skill whenever you roll it Specialized.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

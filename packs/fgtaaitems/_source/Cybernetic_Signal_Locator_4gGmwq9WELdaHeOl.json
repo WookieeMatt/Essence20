@@ -5,6 +5,10 @@
   "_id": "4gGmwq9WELdaHeOl",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: tracking signals and its limited charges are handled in play.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

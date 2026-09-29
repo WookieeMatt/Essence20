@@ -5,6 +5,10 @@
   "_id": "i8V2INHHrTUcAudp",
   "img": "systems/essence20/assets/icons/gear/auto_lock_gun.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: opening simple and average locks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

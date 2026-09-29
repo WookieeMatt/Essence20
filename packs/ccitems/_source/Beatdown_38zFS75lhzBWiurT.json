@@ -5,6 +5,10 @@
   "_id": "38zFS75lhzBWiurT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you always have an integrated close combat heavy bludgeon on your sheet, even when unarmed or your hands are full.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

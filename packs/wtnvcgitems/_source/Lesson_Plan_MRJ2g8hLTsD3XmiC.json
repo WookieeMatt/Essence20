@@ -5,6 +5,10 @@
   "_id": "MRJ2g8hLTsD3XmiC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Lend Assistance to an ally on a non-combat Skill Test, they get both ↑1 and an Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

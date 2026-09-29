@@ -5,6 +5,10 @@
   "_id": "BxkSLNoeqByCh23b",
   "img": "systems/essence20/assets/icons/weapons/gattling-gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Targeting attacks for 2 Sharp damage with the listed range and 10ft minimum range, plus its heavier and cone alternate effects; its Ballistic and Reload traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

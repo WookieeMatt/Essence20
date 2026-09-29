@@ -5,6 +5,10 @@
   "_id": "YhdTm7qhaPCoiDab",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when an area attack against your Evasion hits you, a Sidestep button spends 1 Personal Power and rolls your Acrobatics die to lower the attack result, possibly turning the hit into a miss.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

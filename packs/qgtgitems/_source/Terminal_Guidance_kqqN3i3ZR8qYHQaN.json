@@ -5,6 +5,10 @@
   "_id": "kqqN3i3ZR8qYHQaN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: your drone crashes into the targeted enemy, dealing damage equal to half its current Health (rounded up); the drone is destroyed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

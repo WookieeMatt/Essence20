@@ -5,6 +5,10 @@
   "_id": "Hsxp5YDBMuCOei17",
   "img": "systems/essence20/assets/icons/gear/burglary_kit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when a roll calls for a kit, the Roll Options Dialog shows it and your best carried kit decides the Snag or ↓. Use button: use it up for a temporary Specialization (or an Edge if you already have one), or scrounge a refill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

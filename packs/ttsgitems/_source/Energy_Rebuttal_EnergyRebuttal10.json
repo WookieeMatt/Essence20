@@ -5,6 +5,10 @@
   "_id": "EnergyRebuttal10",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per combat scene, when you Defend against an attack dealing Energy damage and it still hits, your next attack deals +2 Energy damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

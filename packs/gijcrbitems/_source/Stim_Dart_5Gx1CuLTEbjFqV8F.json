@@ -5,6 +5,10 @@
   "_id": "5Gx1CuLTEbjFqV8F",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: fire a dart at an ally within 20 ft (a Targeting attack beyond adjacent). It gives +2 Temporary Health to a conscious ally, or revives a Defeated one with your I've Got You and Up And At 'Em benefits. One dart per mission, plus any extra darts you carry.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

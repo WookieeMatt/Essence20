@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when an attack meets the sneak attack conditions, the bonus damage is ticked for you, once per turn. For a Predator Ranger it deals the Commando amount for your Ranger level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

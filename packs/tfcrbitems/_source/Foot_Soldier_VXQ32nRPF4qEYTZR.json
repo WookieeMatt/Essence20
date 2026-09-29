@@ -5,6 +5,10 @@
   "_id": "VXQ32nRPF4qEYTZR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Bot Mode your Speed counts as 2 higher when working out your Free actions each turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

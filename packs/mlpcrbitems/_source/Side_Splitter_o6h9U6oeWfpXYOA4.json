@@ -5,6 +5,10 @@
   "_id": "o6h9U6oeWfpXYOA4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Standard action, roll Performance against your target's Willpower or Cleverness; on a success they take 1 damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

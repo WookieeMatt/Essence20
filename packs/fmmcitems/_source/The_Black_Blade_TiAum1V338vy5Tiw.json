@@ -5,6 +5,10 @@
   "_id": "TiAum1V338vy5Tiw",
   "img": "systems/essence20/assets/icons/weapons/broadsword.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Might with the listed damage; its traits apply.</p><p>Left to the table: the Snag for wielders under Brawn +d2, and the Accurate bonus it gives Sorcerous ranged attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

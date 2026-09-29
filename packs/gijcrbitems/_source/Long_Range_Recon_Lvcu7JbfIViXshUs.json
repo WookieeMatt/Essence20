@@ -5,6 +5,10 @@
   "_id": "Lvcu7JbfIViXshUs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you get an extra Move action each turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

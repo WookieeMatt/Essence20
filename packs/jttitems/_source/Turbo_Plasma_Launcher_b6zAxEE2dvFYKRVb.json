@@ -5,6 +5,10 @@
   "_id": "b6zAxEE2dvFYKRVb",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its effects with the listed Skill, damage, range and targets, and its traits apply. Use button: combine it with teammates' Power Weapons (Combined). Components gives ↓1 until your first success with it, then ↑1 from then on.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

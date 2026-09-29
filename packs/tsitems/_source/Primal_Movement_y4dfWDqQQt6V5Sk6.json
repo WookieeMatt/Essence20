@@ -5,6 +5,10 @@
   "_id": "y4dfWDqQQt6V5Sk6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added, you pick a Movement type your Bot Mode doesn't have, and you gain it at 20ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

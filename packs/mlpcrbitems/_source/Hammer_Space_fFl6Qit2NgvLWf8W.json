@@ -5,6 +5,10 @@
   "_id": "fFl6Qit2NgvLWf8W",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: roll Performance against the item's Wealth DIF to produce it as a Free action; it vanishes at the end of the scene.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

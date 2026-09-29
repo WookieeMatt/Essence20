@@ -5,6 +5,10 @@
   "_id": "a5xcpj3rHW5EW354",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: allies within 60ft share your Lay of the Land benefits, including the smaller Cover penalty on their ranged attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "9p2a8H4RU9c6mGpu",
   "img": "systems/essence20/assets/icons/weapons/toxin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attack with it directly or coat a weapon with it; a hit offers its Essence damage on the chat card, and its traits apply.</p><p>Apply Damage takes the point from one Essence: the attacker picks it when the attack used Science, otherwise it is random.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -21,8 +25,8 @@
           "skill": "athletics",
           "style": "melee"
         },
-        "damageValue": 0,
-        "damageType": "special",
+        "damageValue": 1,
+        "damageType": "essenceAny",
         "numHands": 1,
         "numTargets": 1,
         "radius": 0,
@@ -52,6 +56,8 @@
       "shift": "d8"
     },
     "traits": [
+      "antiTank",
+      "armorPiercing",
       "consumable",
       "toxin"
     ],

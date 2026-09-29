@@ -5,6 +5,10 @@
   "_id": "cjST9YIuihCug1Gl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Minor Tweak and Weapon Implant can be used on yourself (Use button with no ally targeted). Left to the table: the Snag for working on yourself and the ↑1 when an ally helps.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

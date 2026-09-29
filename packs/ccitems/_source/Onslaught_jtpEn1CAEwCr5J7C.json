@@ -5,6 +5,10 @@
   "_id": "jtpEn1CAEwCr5J7C",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when your melee attack hits, the weapon's other effects (or a Maneuver) are offered as extra apply buttons alongside its main effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

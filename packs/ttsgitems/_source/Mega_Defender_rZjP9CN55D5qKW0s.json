@@ -5,6 +5,10 @@
   "_id": "rZjP9CN55D5qKW0s",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (3 Personal Power, Standard action): take the Mega Defender form's Strength, Speed, Health, Defenses and 40 ft movement until the scene ends, you press Use again, or the form hits 0 Health, which returns you to your earlier Health.</p><p>Left to the table: having the Torozord present and sharing actions with it.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

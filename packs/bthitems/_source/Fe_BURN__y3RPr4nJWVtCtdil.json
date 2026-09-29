@@ -5,6 +5,10 @@
   "_id": "y3RPr4nJWVtCtdil",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic prompt: while Morphed with Terror, when an attack damages you, you can spend all your Terror to halve the damage, burn an adjacent enemy for the other half, and un-Morph.</p><p>Left to the table: hitting extra adjacent enemies for each Terror beyond the first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

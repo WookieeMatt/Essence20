@@ -5,6 +5,10 @@
   "_id": "2qb5dV11qvWsN4xJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: a switch to mark a Technology test as a Deconstructionist attempt. Automatic: on a success, the targeted vehicle or equipment has a Snag for its next test.</p><p>Left to the table: setting up the contest or DIF, and the distraction clause.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

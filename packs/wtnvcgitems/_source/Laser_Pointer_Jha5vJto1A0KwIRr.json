@@ -5,6 +5,10 @@
   "_id": "Jha5vJto1A0KwIRr",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect (off by default): switch it on for an Edge on Animal Handling tests when dealing with cats.</p><p>Left to the table: shining it to blind an enemy.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

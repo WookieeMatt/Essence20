@@ -5,6 +5,10 @@
   "_id": "HUdL1MryICmRmWnP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend 2 Personal Power to summon the lance (Energy Resistance, and Dark Dimension foes take ↓2 against you). While it's out, the Use button spends a Standard action to deal 1 damage to a target within 10 feet.</p><p>Left to the table: dismissing it when the scene ends or you're Defeated.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: if someone you assist fails, you stop counting as an ally for the other PCs' Perks for the scene. Chat card: another PC can spend a Friendship Point to mend it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

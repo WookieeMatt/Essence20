@@ -5,6 +5,10 @@
   "_id": "LMtmIkjhQWc8KMNS",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: while the armor is equipped, +1 to all four Defenses and +2 Health.</p><p>Left to the table: the Sorcerous trait on Unarmed attacks and the ↑1 on Culture (Arcane) tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

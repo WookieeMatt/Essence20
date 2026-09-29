@@ -5,6 +5,10 @@
   "_id": "sn5jhTf8sJqRFhKS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: gives you a Zord, and while you pilot it you take no Snag on Animal Handling or Driving.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "F3L7eF2c07G2B12o",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: drawing a Medium weapon from the holster costs a Free action; you are asked when drawing.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "RhSRS4n3dG9TQ92L",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: casting makes a Spellcasting attack; on a hit you click an empty space within 60 ft and the target is moved there.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

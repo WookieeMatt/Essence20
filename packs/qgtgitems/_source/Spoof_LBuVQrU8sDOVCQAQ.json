@@ -5,6 +5,10 @@
   "_id": "LBuVQrU8sDOVCQAQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: on Initiative, switches to roll Deception or Infiltration instead, for when you're in disguise and unrecognised.</p><p>Left to the table: putting a Speed Essence increase from your Role into Social instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

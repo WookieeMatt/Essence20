@@ -5,6 +5,10 @@
   "_id": "fTd4M1jQyY3zyoMm",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 2 Energy damage. Chat card: on a Critical Success, a button grants an extra Chest Blast attack, up to 2 extra per turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

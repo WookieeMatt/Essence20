@@ -4,6 +4,10 @@
   "type": "shield",
   "img": "systems/essence20/assets/icons/items/shield.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: equipped, it gives +1 Toughness. Raise it to switch to its active effect, which puts you in Cover until you lower it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

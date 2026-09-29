@@ -5,6 +5,10 @@
   "_id": "3KaGPbEZp3ZDQrIF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: choose the Skill this Perk covers. Roll Options Dialog: a switch to use your Technology die instead when rolling that Skill, attacks included.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

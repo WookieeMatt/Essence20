@@ -5,6 +5,10 @@
   "_id": "89twbGGvy0Q698AL",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while a participant has it, melee attacks the Megaform makes with its participants' attacks deal +1 damage (shown on the chat card).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

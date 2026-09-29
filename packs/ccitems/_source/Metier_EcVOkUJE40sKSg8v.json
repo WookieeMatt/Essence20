@@ -5,6 +5,10 @@
   "_id": "EcVOkUJE40sKSg8v",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when gained, pick poisons, Silent, Sniper, Wrecker or a Weapon Training Perk. Poisons keep the Assassin's poison training; the others grant their training or Perk instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

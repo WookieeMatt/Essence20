@@ -5,6 +5,10 @@
   "_id": "H1ITRVeP9229PlfU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick Microtech Weapon or Microtech Battledress upgrades, up to half your Technician level in total.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

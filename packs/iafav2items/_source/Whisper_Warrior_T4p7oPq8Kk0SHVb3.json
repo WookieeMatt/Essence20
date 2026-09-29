@@ -5,6 +5,10 @@
   "_id": "T4p7oPq8Kk0SHVb3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: take a Silent Martial Arts weapon you're Qualified with. Automatic: Defend costs a Free action while you wield one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

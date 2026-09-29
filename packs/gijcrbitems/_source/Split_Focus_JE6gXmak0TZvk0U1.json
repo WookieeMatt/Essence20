@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a Perk from another Focus of your Role, up to half your level, and it's added to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

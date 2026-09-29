@@ -5,6 +5,10 @@
   "_id": "8s9HHpmk633e6PLM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: attacks against your Cleverness take a Snag. Use button: regain 2d2 Personal Power once per scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "sAlfUDoEI9wPjqG2",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: the Zord gets +2 Toughness and +2 Health. Automatic: its ranged attacks get ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

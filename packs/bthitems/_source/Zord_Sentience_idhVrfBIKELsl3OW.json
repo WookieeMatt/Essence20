@@ -5,6 +5,10 @@
   "_id": "idhVrfBIKELsl3OW",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while nobody is piloting it, the Zord uses a Smarts and Social of 2 for its Defenses and gets ↑1 on its own Driving tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

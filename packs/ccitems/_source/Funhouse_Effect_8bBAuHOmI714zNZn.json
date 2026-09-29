@@ -5,6 +5,10 @@
   "_id": "8bBAuHOmI714zNZn",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Funhouse attack, rolling Finesse in melee with its special effect.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

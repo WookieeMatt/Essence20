@@ -5,6 +5,10 @@
   "_id": "ollTb27SGzEhxtVl",
   "img": "systems/essence20/assets/icons/gear/backpack.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the survival supplies inside (rations, water, flashlight, binoculars and so on).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

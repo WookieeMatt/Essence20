@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: pick your modification. ↑1 on shoves and escaping grapples, Edge on Technology tests, or an extra Integrated Hardpoint apply automatically.</p><p>Left to the table: the carrying capacity option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

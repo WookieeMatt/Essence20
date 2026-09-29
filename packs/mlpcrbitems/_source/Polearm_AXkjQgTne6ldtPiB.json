@@ -5,6 +5,10 @@
   "_id": "AXkjQgTne6ldtPiB",
   "img": "systems/essence20/assets/icons/weapons/spear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll either of its weapon effects (the blade or the blunt end) with the listed Skill, damage, reach and targets.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

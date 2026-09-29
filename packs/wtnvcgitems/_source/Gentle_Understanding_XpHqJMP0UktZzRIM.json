@@ -5,6 +5,10 @@
   "_id": "XpHqJMP0UktZzRIM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Reroll: 1s on your Social Skill Dice are rerolled.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

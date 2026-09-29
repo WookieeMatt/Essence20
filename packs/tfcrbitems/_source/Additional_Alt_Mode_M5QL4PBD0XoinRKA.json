@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: add a second Alt Mode item and pick it when you Convert.</p><p>Left to the table: checking the chosen Chassis's Alt Mode Size against the Size Change rule.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

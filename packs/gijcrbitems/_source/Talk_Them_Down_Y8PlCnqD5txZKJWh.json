@@ -5,6 +5,10 @@
   "_id": "Y8PlCnqD5txZKJWh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: roll Persuasion against the targeted enemy's Willpower, with the chat card noting whether either side is outnumbered. A success makes the target Frightened.</p><p>Left to the table: rolling Intimidation instead, needing an Edge on the attack, and the target dropping its weapons and surrendering.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

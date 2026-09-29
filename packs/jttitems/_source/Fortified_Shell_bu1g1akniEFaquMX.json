@@ -5,6 +5,10 @@
   "_id": "bu1g1akniEFaquMX",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 Toughness while Morphed. A second Active Effect (off by default) gives ↑1 on Social; switch it on when dealing with low-tech locals.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

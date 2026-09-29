@@ -5,6 +5,10 @@
   "_id": "mvhjFDP17V6Z3Rwn",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +6 Toughness, +2 Health from Bulwark, ↑1 on Brawn and Might. Exo-Frame prompts a Driving test when you move and act in one turn; Modular gives 2 upgrade slots.</p>"
+    },
     "originalId": "",
     "description": "<p>Modular 2</p>",
     "source": {

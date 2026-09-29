@@ -5,6 +5,10 @@
   "_id": "109i9gRF2TZOtj9o",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: spend a Friendship Point on a Kindness-themed benefit from your fame, as the GM approves.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

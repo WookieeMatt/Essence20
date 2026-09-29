@@ -5,6 +5,10 @@
   "_id": "IaxNOucyCcF6QDU1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (in combat): target the creature whose turn it is, or one whose turn is coming, and spend the Story Point. Its movement that turn costs as if it were in Rough Terrain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

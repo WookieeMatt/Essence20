@@ -5,6 +5,10 @@
   "_id": "ht26M90320SgdhMK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a vehicle you drive in one of your environments of expertise gets your Environmental Expertise benefits - Edge on non-attack tests, Specialized attacks and ignoring Rough Terrain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

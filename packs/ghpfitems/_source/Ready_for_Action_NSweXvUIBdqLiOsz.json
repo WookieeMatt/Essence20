@@ -5,6 +5,10 @@
   "_id": "NSweXvUIBdqLiOsz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: if you are first in the Initiative order, make one attack as a Free action in the first round.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "nO9aJONDslWpuCuC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: grants the Perks it gives at the listed levels. The non-Essence costs of the covered number of Alterations are waived, offered when you add them or via Use.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

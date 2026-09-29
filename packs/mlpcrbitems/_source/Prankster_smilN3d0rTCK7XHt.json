@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you get Edge on Social tests against a Surprised creature.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

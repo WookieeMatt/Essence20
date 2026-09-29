@@ -5,6 +5,10 @@
   "_id": "FhS6s16xxoPCTRs4",
   "img": "icons/svg/padlock.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the DIF 15 test to pick or hack the lock without its key or code.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

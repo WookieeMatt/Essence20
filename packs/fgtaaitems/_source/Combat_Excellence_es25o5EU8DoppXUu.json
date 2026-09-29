@@ -5,6 +5,10 @@
   "_id": "es25o5EU8DoppXUu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Health and +1 to all four Defenses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "nkqk7AfXUJkigqbq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: each Deception or Persuasion test you make against the same creature in a scene adds a stacking ↑1 to the next one, shown in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

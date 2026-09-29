@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Strength and Speed tests, a switch to take the Hang-Up's Snag, up to three times per mission. The GM decides when it applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

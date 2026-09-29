@@ -5,6 +5,10 @@
   "_id": "vZjp9ncpzhgLIzSm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on Driving while you drive a vessel with Aquatic Movement, and on Athletics while you're in the water. Roll Options Dialog: a switch gives the Athletics Edge when you're swimming somewhere the system can't tell is water.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

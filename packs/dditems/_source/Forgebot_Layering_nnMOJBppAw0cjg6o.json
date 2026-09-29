@@ -5,6 +5,10 @@
   "_id": "nnMOJBppAw0cjg6o",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Toughness and Resistance to Fire damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "jMGjEpYNVTVwyAJx",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Mightier Than the Sword at level 1 and Viral News Bloggers at level 4. The character needs the Journalist Role first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

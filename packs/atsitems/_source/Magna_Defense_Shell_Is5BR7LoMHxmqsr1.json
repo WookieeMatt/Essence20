@@ -5,6 +5,10 @@
   "_id": "Is5BR7LoMHxmqsr1",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +4 Toughness, +1 Health, ↑1 on Athletics, and Regal's ↑1 on Persuasion or Intimidation. Roll Options Dialog: an Enviro-Sealed switch for hostile environments.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

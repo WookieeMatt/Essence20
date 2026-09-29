@@ -5,6 +5,10 @@
   "_id": "PnVygbT6zVhEWnnG",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: ↓1 on Skill Tests that don't involve aggression while following an Autobot's or Maximal's plan.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

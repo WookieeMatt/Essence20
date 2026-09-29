@@ -5,6 +5,10 @@
   "_id": "ezTiHQgfD1LTassj",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Focus Perks at the listed levels and the +1 Social increases at 1st and 10th level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

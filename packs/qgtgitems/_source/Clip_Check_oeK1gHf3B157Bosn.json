@@ -5,6 +5,10 @@
   "_id": "oeK1gHf3B157Bosn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per combat, a button rerolls a Fumble on one of your attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

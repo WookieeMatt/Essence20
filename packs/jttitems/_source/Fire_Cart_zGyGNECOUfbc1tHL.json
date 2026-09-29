@@ -5,6 +5,10 @@
   "_id": "zGyGNECOUfbc1tHL",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with its Sharp or Fire options at the listed range; Reload and its other traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

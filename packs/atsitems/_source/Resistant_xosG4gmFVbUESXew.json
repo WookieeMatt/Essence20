@@ -5,6 +5,10 @@
   "_id": "xosG4gmFVbUESXew",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the damage Resistance chosen on the trait is given to the whole Megaform.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

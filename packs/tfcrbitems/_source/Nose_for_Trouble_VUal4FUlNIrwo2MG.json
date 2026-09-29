@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: switches to roll Streetwise for searching or finding traps, and for Edge on setting or disarming traps. Automatic: Streetwise for Initiative when sneaking. Use button: spend a Story Point to tweak a detail of your location.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

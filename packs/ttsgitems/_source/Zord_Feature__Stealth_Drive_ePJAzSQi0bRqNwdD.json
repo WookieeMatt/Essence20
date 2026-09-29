@@ -5,6 +5,10 @@
   "_id": "ePJAzSQi0bRqNwdD",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on to give the Zord Edge on Infiltration, then switch it off. Hiding from radar is roleplay.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

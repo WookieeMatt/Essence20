@@ -5,6 +5,10 @@
   "_id": "zuSWknWcww1CjgB7",
   "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, and its traits apply (Martial Arts, Silent, Sniper).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

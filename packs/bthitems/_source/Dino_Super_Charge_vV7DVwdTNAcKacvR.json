@@ -5,6 +5,10 @@
   "_id": "vV7DVwdTNAcKacvR",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic while equipped: +3 Toughness and ↑1 on Athletics and Might.</p><p>Left to the table: summoning it with a Dino Charger, +1 Blunt damage on unarmed strikes, and its T-Rex blaster attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

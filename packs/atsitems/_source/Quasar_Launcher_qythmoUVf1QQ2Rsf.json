@@ -5,6 +5,10 @@
   "_id": "qythmoUVf1QQ2Rsf",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick the Staff or Cannon Mode effect when you attack; each rolls its own Skill, damage and alternate effect. Defend, Versatile and Inertial apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "ZLu5MLnY13um7PJM",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Chat card: on a success, everyone caught takes 1 Sharp and gets a DIF 12 Acrobatics save or is Restrained, plus a DIF 10 Brawn card to climb out.</p><p>Left to the table: further thorn damage for anyone who brushes the plant later.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "RuDOcoROpeO5UOHL",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Evasive, Silent Weapon Specialist and Without a Word Faction Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

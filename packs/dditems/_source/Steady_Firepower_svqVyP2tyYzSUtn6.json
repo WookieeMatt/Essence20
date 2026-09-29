@@ -5,6 +5,10 @@
   "_id": "svqVyP2tyYzSUtn6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: each further attack with your favorite weapon against the same target treats its Defenses as 1 lower per earlier attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

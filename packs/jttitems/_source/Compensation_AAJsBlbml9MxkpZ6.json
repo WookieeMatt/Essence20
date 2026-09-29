@@ -5,6 +5,10 @@
   "_id": "AAJsBlbml9MxkpZ6",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when damage is split across the Megaform's participants, the holder is asked whether to take the other participants' share.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

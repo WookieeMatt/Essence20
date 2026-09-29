@@ -5,6 +5,10 @@
   "_id": "LfD69L4kQKXEyD1K",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: works as a Science kit for the Theoretical Specialization, skipping the Snag on rolls that call for it and spending for temporary Specialization or an Edge. Use button: pick a different Skill or Specialization if your table reads it differently.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -19,7 +23,16 @@
   "ownership": {
     "default": 0
   },
-  "flags": {},
+  "flags": {
+    "essence20": {
+      "kit": {
+        "tier": "limited",
+        "skill": "science",
+        "spec": "Theoretical",
+        "essence": null
+      }
+    }
+  },
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,

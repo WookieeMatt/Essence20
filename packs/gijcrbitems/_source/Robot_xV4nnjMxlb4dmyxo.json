@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: immune to poison. Automatic: the drone refuses Frightened and Mesmerized unless it has the Empathetic upgrade, and Electromagnetic attacks against it get ↑3 instead of ↓3.</p><p>Left to the table: other effects that only affect the living, and Technology repairs.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "yaoetYMR5kdoyH2a",
   "img": "systems/essence20/assets/icons/gear/metal-detector.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑2 on Alertness when you're searching for metal within range.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

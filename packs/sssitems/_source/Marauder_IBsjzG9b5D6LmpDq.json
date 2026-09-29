@@ -5,6 +5,10 @@
   "_id": "IBsjzG9b5D6LmpDq",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Marauder Perks at their listed levels (Aggressive Assault through Out of the Jungle), plus its Speed increases at 1st and 10th level. Initiative, Driving and Infiltration are its Focus Skills.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

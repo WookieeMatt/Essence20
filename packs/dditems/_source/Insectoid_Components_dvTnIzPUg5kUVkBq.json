@@ -5,6 +5,10 @@
   "_id": "dvTnIzPUg5kUVkBq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 Toughness. Automatic: ↑2 on Brawn while in Alt Mode.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

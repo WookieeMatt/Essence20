@@ -5,6 +5,10 @@
   "_id": "4p7TV8HDFk1jCsrW",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Eltarian Observer Perk and the Eltarian Observer Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

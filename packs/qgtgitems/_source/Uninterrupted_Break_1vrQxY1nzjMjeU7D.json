@@ -5,6 +5,10 @@
   "_id": "1vrQxY1nzjMjeU7D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: after the 10-minute break, pick a benefit: everyone heals 2 Health, everyone heals 1 Essence damage, or the team gains a Story Point.</p><p>Left to the table: each benefit is once a day; the button offers them again each scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

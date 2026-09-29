@@ -5,6 +5,10 @@
   "_id": "Jlfb8iPvT7JFvcxv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per turn, spend an Energon Point and roll to Repair a Cybertronian or vehicle, or Heal an organic, as a Free action.</p><p>Left to the table: counting as carrying Standard Medicine and Repair Kits.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

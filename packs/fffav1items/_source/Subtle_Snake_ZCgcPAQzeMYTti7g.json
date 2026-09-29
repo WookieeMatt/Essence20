@@ -5,6 +5,10 @@
   "_id": "ZCgcPAQzeMYTti7g",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Social tests, pick who you're dealing with; Cobra outside Python Patrol gives ↓1, non-Cobra gives a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

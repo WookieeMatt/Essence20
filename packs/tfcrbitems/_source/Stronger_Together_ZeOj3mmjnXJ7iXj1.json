@@ -5,6 +5,10 @@
   "_id": "ZeOj3mmjnXJ7iXj1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 to your Defenses for every ally within 60ft. Use button: give an ally +1 to all Defenses and lower your own bonus by 1.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

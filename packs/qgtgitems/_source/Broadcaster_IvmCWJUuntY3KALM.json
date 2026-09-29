@@ -5,6 +5,10 @@
   "_id": "IvmCWJUuntY3KALM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on Technology (Communications) tests outside combat. Roll Options Dialog: on Social tests, a switch for Edge when you talk through a device.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

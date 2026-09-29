@@ -5,6 +5,10 @@
   "_id": "Foow2rilePmztBFk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per combat, your drone gets Edge on a test against a target you also rolled against this round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

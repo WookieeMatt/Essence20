@@ -5,6 +5,10 @@
   "_id": "aLLCFlr4CqA7Q1aS",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: it lets a Dino Charge Ranger morph and power their gear; Dino Charged lets you skip its Essence cost while you hold it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

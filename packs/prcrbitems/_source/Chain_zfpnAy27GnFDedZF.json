@@ -5,6 +5,10 @@
   "_id": "zfpnAy27GnFDedZF",
   "img": "systems/essence20/assets/icons/gear/crossed-chains.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the chain's length and its Toughness 20 when someone tries to break it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

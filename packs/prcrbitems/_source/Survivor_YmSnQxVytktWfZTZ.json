@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Edge on Survival tests. Automatic: when your Smarts would drop to 0, a d20 is rolled and on 10 or more it stays at 1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

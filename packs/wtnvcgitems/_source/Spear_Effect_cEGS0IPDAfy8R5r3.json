@@ -5,6 +5,10 @@
   "_id": "cEGS0IPDAfy8R5r3",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Spear's one-handed attack: rolls Finesse at Reach ×2 for 1 Sharp damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

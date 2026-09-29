@@ -5,6 +5,10 @@
   "_id": "Pr3UniqWpnRanged",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 60/100 ft for Energy damage. Use button: store up to 3 of your Personal Power in it or draw one back out. A natural 1 to hit costs you 1d4 Personal Power.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

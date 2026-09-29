@@ -5,6 +5,10 @@
   "_id": "rNESO3bo1apEjd6p",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you drive, Fortitude, Didn't Even Feel It and Not Done Yet protect your vehicle instead of you, and Reckless Abandon's ↑2 goes to Driving.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

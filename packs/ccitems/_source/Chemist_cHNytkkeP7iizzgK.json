@@ -5,6 +5,10 @@
   "_id": "cHNytkkeP7iizzgK",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↓1 on every Persuasion test. Roll Options Dialog: untick it when the test involves science.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "hfRaGuJGmOh9Jb3j",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a hit's Apply Damage button takes 1 Essence damage from one Essence instead of Health. The attacker picks the Essence when the attack used Science; otherwise it is random.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",
@@ -16,8 +20,8 @@
       "skill": "athletics",
       "style": "melee"
     },
-    "damageType": "special",
-    "damageValue": 0,
+    "damageType": "essenceAny",
+    "damageValue": 1,
     "isSpecialized": false,
     "numHands": 1,
     "numTargets": 1,

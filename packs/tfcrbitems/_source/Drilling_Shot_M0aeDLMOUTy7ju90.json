@@ -5,6 +5,10 @@
   "_id": "M0aeDLMOUTy7ju90",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks with your Long Range Rifle target only the basic Defense, ignoring armor and other bonuses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

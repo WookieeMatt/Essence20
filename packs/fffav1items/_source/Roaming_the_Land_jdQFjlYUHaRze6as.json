@@ -5,6 +5,10 @@
   "_id": "jdQFjlYUHaRze6as",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Toughness, +1 Evasion and ↑1 Intimidation. Automatic: your chosen melee bonus against smaller or larger foes, plus the Requisition Qualifications and training it lists.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

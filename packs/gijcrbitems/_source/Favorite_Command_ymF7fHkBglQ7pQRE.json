@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (on the pet), or the Skill picker on the sheet: choose its favourite Skill. Commanding the pet can then cost a Move action instead of a Standard action.</p>"
+    },
     "originalId": "",
     "actionType": "none",
     "description": "",

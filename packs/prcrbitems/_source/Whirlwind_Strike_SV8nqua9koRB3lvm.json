@@ -5,6 +5,10 @@
   "_id": "SV8nqua9koRB3lvm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: while Morphed, spend 1 Personal Power. Automatic: adjacent enemies are targeted, and your one melee attack roll is compared against each of them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

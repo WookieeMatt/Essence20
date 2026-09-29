@@ -5,6 +5,10 @@
   "_id": "Gwhns0NfDQYhCVPK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: melee attacks reach at least as far as a Large creature's, whatever Size the token shows.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

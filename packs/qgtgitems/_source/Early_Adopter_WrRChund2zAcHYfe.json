@@ -5,6 +5,10 @@
   "_id": "WrRChund2zAcHYfe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Requisition tests for Prototypical or Theoretical gear are 5 easier. Use button: once per mission, each ally gets a button to pick a free Standard upgrade or kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

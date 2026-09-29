@@ -5,6 +5,10 @@
   "_id": "mCSx51Kfna2dBBAo",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might melee attack at Reach for 1 Electric damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "VnYjQtJmU2ZIYQ9y",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: after a failed Performance test, a reroll button appears that spends 1 Cheer Point.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

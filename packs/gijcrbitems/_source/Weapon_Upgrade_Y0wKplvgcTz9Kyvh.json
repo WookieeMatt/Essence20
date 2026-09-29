@@ -5,6 +5,10 @@
   "_id": "Y0wKplvgcTz9Kyvh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: attach a free Standard or Limited weapon upgrade. The sheet still counts it toward the weapon's availability, so ignore that for requisition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

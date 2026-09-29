@@ -5,6 +5,10 @@
   "_id": "jX5IHpydHimdjbGb",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +3 Health, +3 Strength and Edge on Initiative. Automatic: the Zord becomes Titanic and its Might and Finesse attacks deal +1 damage. A chat reminder notes the Story Point cost when it combines.</p><p>Left to the table: the Skill increases that come with the +3 Strength.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

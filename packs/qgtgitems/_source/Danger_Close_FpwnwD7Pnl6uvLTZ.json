@@ -5,6 +5,10 @@
   "_id": "FpwnwD7Pnl6uvLTZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you use Ground Suppression, tokens you have targeted (up to your Smarts) are left out of it.</p><p>Left to the table: sparing targets from your explosive weapons' blasts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

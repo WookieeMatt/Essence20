@@ -5,6 +5,10 @@
   "_id": "XvqqYOHHpjRzb8T4",
   "img": "systems/essence20/assets/icons/gear/night_vision_googles.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↓2 on Alertness and Initiative while you have them.</p><p>Left to the table: seeing 60 ft in the dark (set your token's vision), and turning the effect off when they're not worn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

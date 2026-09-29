@@ -5,6 +5,10 @@
   "_id": "OmoH5AtiMTb5BRS4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Reroll: once per day, reroll a Skill Die that comes up 1 and gain ↑1.</p><p>Left to the table: keeping it to once per session.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

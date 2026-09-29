@@ -5,6 +5,10 @@
   "_id": "icm4N4qPjspNKYKy",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its two-handed effect or its one-handed alternate effect (at ↓2) with the listed damage and range; Burst-Fire is tracked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

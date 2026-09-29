@@ -5,6 +5,10 @@
   "_id": "jiVDyJi9LzjzpAwn",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its Poison blast or one of its three alternates, and its traits apply; Consumable means it is used up after the attack. Needs Science +d6.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -16,6 +20,24 @@
         "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.BXDM7LElVsaI7jPD",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Yellowcake Effect",
+        "type": "weaponEffect"
+      },
+      "alt1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.2uUPh3olwNyEeTF6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Yellowcake Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "alt2": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.vxInu3F2aXyYPEvZ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Yellowcake Alternate Effect 2",
+        "type": "weaponEffect"
+      },
+      "alt3": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.4BhYCMthIRwtT5YF",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Yellowcake Alternate Effect 3",
         "type": "weaponEffect"
       }
     },

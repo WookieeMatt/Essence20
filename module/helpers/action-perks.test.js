@@ -7,7 +7,7 @@ import {
   ACTION_PERK_IDS as P, attackMatchesFilter, canUseActionPerk, describeAttack, getAttacksPerAction, getCostOptions,
   getLaughtractingBlock, getLendAssistanceGrantModes, getSecretHelperPenalty, getTurnStartGrants, onPowerUsed,
   resetDailyActionPerkUses,
-  useActionPerk,
+  isHarmonyUnleashedActive, useActionPerk,
 } from './action-perks.mjs';
 
 let idCounter = 0;
@@ -362,6 +362,41 @@ describe("Use buttons", () => {
     expect(message).toBe('E20.ActionPerkUsedAlly');
     expect(getRemaining(officer).standard).toBe(0);
     expect(getRemaining(ally).standard).toBe(2);
+  });
+
+  test("Mobilize spends a Move action, not a Standard, and gives the ally a Move now", async () => {
+    const perk = sourced(P.mobilize, 'Mobilize');
+    const officer = makeActor({ name: 'Hawk', items: [perk] });
+    perk.parent = officer;
+    const ally = makeActor({ name: 'Duke' });
+    setGame([officer, ally], { targets: [{ actor: ally }] });
+    const before = getRemaining(officer);
+    const allyBefore = getRemaining(ally);
+
+    await useActionPerk(perk);
+
+    expect(getRemaining(officer).standard).toBe(before.standard);
+    expect(getRemaining(officer).move).toBe(before.move - 1);
+    expect(getRemaining(ally).move).toBe(allyBefore.move + 1);
+  });
+
+  test("Harmony Unleashed lands on the targeted pony, or the caster with nothing targeted", async () => {
+    const perk = sourced(P.harmonyUnleashed, 'Harmony Unleashed', 'spell');
+    const caster = makeActor({ name: 'Twilight', items: [perk] });
+    perk.parent = caster;
+    const pony = makeActor({ name: 'Applejack' });
+    setGame([caster, pony], { targets: [{ actor: pony }] });
+
+    await useActionPerk(perk);
+    expect(isHarmonyUnleashedActive(pony)).toBe(true);
+    expect(isHarmonyUnleashedActive(caster)).toBe(false);
+
+    const solo = sourced(P.harmonyUnleashed, 'Harmony Unleashed', 'spell');
+    const self = makeActor({ name: 'Rarity', items: [solo] });
+    solo.parent = self;
+    setGame([self]);
+    await useActionPerk(solo);
+    expect(isHarmonyUnleashedActive(self)).toBe(true);
   });
 
   test("an ally Perk needs an ally targeted", async () => {

@@ -5,6 +5,10 @@
   "_id": "DCgAR3QpfjUspsGU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Free action, lend one of your Alterations' benefits to a target until your next turn; or as a Move action, attack to force an Alteration's cost on a target until the end of their next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

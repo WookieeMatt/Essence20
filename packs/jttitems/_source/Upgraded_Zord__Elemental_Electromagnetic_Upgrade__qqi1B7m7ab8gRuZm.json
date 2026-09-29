@@ -5,6 +5,10 @@
   "_id": "qqi1B7m7ab8gRuZm",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: the Zord gets +1 Speed and resists Electromagnetic damage.</p><p>Left to the table: the driver's Edge on Initiative and switching the Zord's base damage to Electromagnetic.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "ixNXVuXWjNf8fZHY",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you fail to cast a spell, your next Spellcasting test gets ↓1.</p><p>Left to the table: the book makes this an extra point of casting cost that lingers, not a one-roll penalty.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

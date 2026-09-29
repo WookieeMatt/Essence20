@@ -5,6 +5,10 @@
   "_id": "kwkUWzNVdSKDx0jt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: manifest claws or teeth; your unarmed attacks get ↑1 and deal Sharp damage until the combat ends.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

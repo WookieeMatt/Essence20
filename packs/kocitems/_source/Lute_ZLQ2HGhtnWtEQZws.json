@@ -5,6 +5,10 @@
   "_id": "ZLQ2HGhtnWtEQZws",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. It is a musical instrument for your Performance.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

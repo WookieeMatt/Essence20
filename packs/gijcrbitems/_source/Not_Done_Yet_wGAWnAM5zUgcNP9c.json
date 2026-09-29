@@ -5,6 +5,10 @@
   "_id": "wGAWnAM5zUgcNP9c",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while your Reckless Abandon is active, damage that would defeat you leaves you at 1 Health instead, once per encounter.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

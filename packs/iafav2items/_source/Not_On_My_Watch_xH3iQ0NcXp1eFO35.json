@@ -5,6 +5,10 @@
   "_id": "xH3iQ0NcXp1eFO35",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 Toughness and Evasion while a Defeated teammate is within your reach. Chat card: when an ally is Defeated, you get a button that grants you an extra Move.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

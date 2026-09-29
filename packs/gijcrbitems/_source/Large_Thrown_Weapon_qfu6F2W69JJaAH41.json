@@ -5,6 +5,10 @@
   "_id": "qfu6F2W69JJaAH41",
   "img": "systems/essence20/assets/icons/weapons/spear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: thrown Athletics attacks at the listed range for 1 Sharp or 1 Blunt damage (two effects to choose from), and its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

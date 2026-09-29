@@ -5,6 +5,10 @@
   "_id": "NQULhy8KargPMUTX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Might weapon attacks score a critical hit on a 2 as well.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

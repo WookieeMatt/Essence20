@@ -5,6 +5,10 @@
   "_id": "W0C7U2GimuTwHom5",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: ↑2 on Intimidation while in Bot Mode. Left to the table: the Alt Mode Persuasion test to move nearby vehicles.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

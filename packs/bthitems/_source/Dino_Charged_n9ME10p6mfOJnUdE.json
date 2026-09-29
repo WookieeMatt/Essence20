@@ -5,6 +5,10 @@
   "_id": "n9ME10p6mfOJnUdE",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while Morphed, each Personal Power you spend asks you to choose an Essence to take 1 damage, or skip it when you are using your Energem or a Dino Charger.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

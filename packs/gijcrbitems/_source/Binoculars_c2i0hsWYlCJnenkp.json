@@ -5,6 +5,10 @@
   "_id": "c2i0hsWYlCJnenkp",
   "img": "systems/essence20/assets/icons/gear/binoculars.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑2 on Alertness when you're examining something far away.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

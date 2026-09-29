@@ -5,6 +5,10 @@
   "_id": "TmWyhhRJVL6yud29",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Snag on your Deception tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

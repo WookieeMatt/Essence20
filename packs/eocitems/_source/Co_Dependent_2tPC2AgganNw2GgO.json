@@ -5,6 +5,10 @@
   "_id": "2tPC2AgganNw2GgO",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick your bonded person. Automatic: ↓1 on your tests while they have a Condition and are in the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -8,10 +8,7 @@
  * EITHER Personal Power or an Eltarian Tech Point depending on the option (`costType` below),
  * where Power Adaptation's own 5 options all cost Power.
  *
- * All 6 named options are offered in the choice picker (even Ferocious Strikes, whose "extra
- * melee Attack per Attack action" has no mechanical effect here) - the same "the Perk still
- * exists and the resource still gets spent even when the effect itself isn't automated" idiom
- * Power Adaptation's own Fast Trigger already established.
+ * All 6 named options are offered in the choice picker.
  *
  * Five options toggle an ongoing effect on/off (spending the cost only to switch ON, free to
  * switch back OFF - approximating "for 1d4/1d6 rounds/minutes/hours" as "until switched back
@@ -29,9 +26,9 @@
  *   read in helpers/combat.mjs#applyDamage. "1 damage per turn" (RAW's own wording) is
  *   approximated as "per hit while the toggle is on" - this codebase has no per-turn-reset bucket
  *   to track a once-per-turn use separately from the toggle itself.
- * - **Ferocious Strikes** (3 Power): "one additional melee Attack per Attack action" - Not
- *   automatable, same action-economy gap as Extra Attack itself; the toggle still exists purely
- *   to track and pay the cost for the GM to adjudicate narratively.
+ * - **Ferocious Strikes** (3 Power): "one additional melee Attack per Attack action" - while on,
+ *   helpers/action-perks.mjs adds one melee attack to each Attack action (alongside Extra Attack and
+ *   Power Adaptation's Fast Trigger).
  *
  * The sixth, **Teleportation** (1 Eltarian Tech Point), is an instant effect, not a toggle - see
  * activateWisdomOfTheEldersTeleportation's own doc comment below.

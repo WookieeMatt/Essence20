@@ -5,6 +5,10 @@
   "_id": "CXenUI5l8c3WZNSw",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: reloads a targeted ally's weapon as a Free action. A natural 1 on the d20 uses the pack up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "WwnLKXH0Q4s8fGtU",
   "img": "systems/essence20/assets/icons/gear/battering_ram.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: a switch gives Edge on Brawn tests to break through doors or barriers.</p><p>Left to the table: the 3 damage to objects and the two-hand and Brawn requirements.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

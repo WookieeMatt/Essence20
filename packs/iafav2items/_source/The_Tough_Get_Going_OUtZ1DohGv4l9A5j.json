@@ -5,6 +5,10 @@
   "_id": "OUtZ1DohGv4l9A5j",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per round, when an attack against your Toughness misses, your Ground Movement doubles for the rest of the round so you can move.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

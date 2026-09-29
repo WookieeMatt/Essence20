@@ -5,6 +5,10 @@
   "_id": "JtRCN6ppDatZVmav",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Willpower. Automatic: Edge on Science tests to treat poisons, plus the Requisition and driving Qualifications it lists.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

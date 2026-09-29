@@ -5,6 +5,10 @@
   "_id": "JlZzjP1R64AFEjFl",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Slingshot's attack: rolls Athletics at Short range for 1 Blunt damage. Change its Skill to Targeting on the sheet if you prefer.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

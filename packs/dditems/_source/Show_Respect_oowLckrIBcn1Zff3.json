@@ -5,6 +5,10 @@
   "_id": "oowLckrIBcn1Zff3",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Chat card: when a foe scores a Critical Success on an attack, a salute reminder posts, and on your next turn you get a warning if you attack that foe while others are around. Left to the table: actually holding the attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

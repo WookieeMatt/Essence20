@@ -5,6 +5,10 @@
   "_id": "wJ6HSlIzydTRQQzz",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a two-handed Targeting attack at 20ft/60ft for 1 Sharp damage against up to 2 targets in a 15ft area.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>15 ft cone</p>",

@@ -5,6 +5,10 @@
   "_id": "ghDqcV8e7NRJLvUP",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the sword's Might attack with the listed Stun damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

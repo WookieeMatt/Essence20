@@ -5,6 +5,10 @@
   "_id": "c7e7enVe96wOikd9",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: while piloting a Zord, your next Driving test gets ↑2.</p><p>Left to the table: the reroll on the Megazord's Driving Group Test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

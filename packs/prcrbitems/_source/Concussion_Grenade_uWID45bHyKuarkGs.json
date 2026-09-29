@@ -5,6 +5,10 @@
   "_id": "uWID45bHyKuarkGs",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed Stun effect and blast; as a consumable it is used up when thrown.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

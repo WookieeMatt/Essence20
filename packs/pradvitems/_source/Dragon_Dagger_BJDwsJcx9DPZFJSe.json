@@ -5,6 +5,10 @@
   "_id": "BJDwsJcx9DPZFJSe",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and traits.</p><p>Use button (while equipped): make a DIF 16 Performance test; on a success you get Machine Merge for the rest of the scene if you don't already have it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

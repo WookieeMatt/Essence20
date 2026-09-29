@@ -5,6 +5,10 @@
   "_id": "q2YLQLdssomYU4Za",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene, while your Perfect Disguise is on, roll Persuasion against the targeted enemy's Willpower.</p><p>Left to the table: rolling Intimidation instead, and what the enemy does on a success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "qZiv0m6kc4G9HYEn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on Alertness and Infiltration outside combat. Faster searching is narrative.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

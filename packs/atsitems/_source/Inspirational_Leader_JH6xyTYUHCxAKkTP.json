@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in combat, when you succeed on a Skill Test, allies get ↑1 on that same Skill until the round ends. Out of combat you can Lend Assistance even without ranks in the Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

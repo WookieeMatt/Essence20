@@ -5,6 +5,10 @@
   "_id": "1L27bzNjcjy5kAi9",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: after a minute of work, swap the missile for a Rocket Launcher with the Consumable trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

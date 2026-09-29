@@ -6,6 +6,7 @@ const CONNIVING_PERK_ID = "Compendium.essence20.cobra_codex.Item.dJoVvMG3wjowbWJ
 import { getLendAssistanceGrantModes } from "./action-perks.mjs";
 import { describeGrant, setNextTurn } from "./action-economy.mjs";
 import { E20 } from "./config.mjs";
+import { registerUse } from "./extensions.mjs";
 import { actorHasHangUp, actorHasPerk, bankPendingBonus, getUsesThisScene, markUsedThisScene } from "./perks.mjs";
 import { getNearbyAllyTokens } from "./allies.mjs";
 import { getSkillRanks } from "./combat.mjs";
@@ -288,9 +289,40 @@ const LACKEY_ID = "Compendium.essence20.decepticon_directive.Item.dXZpwsbvn6Jdgp
 const ONE_PONY_SHOW_ID = "Compendium.essence20.mlp_crb.Item.8Idk7YjylEf8c43U";
 
 // Armchair General (Field Guide to Action and Adventure, Envoy Origin benefit, p.65) - see
-// getAssistShiftUp's own comment below. The Perk's other clause ("qualified in a weapon type of
-// your choice") is unrelated to Lend Assistance and lives with pack data instead.
+// getAssistShiftUp's own comment below. Its other clause, "You are qualified in a weapon type of
+// your choice", is the Perk's Use button (pickArmchairGeneralWeapon below).
 const ARMCHAIR_GENERAL_ID = "Compendium.essence20.field_guide_action_adventure.Item.YPzpjKFz1yrwPHN6";
+const ARMCHAIR_WEAPON_FLAG = 'armchairGeneralWeapon';
+
+/**
+ * Armchair General's weapon-type pick: marks the actor Qualified in one weapon type they aren't
+ * already Qualified in, and remembers the pick on the Perk.
+ * @param {Item} item   The Armchair General Perk.
+ * @param {Function} [choose]   (title, prompt, [{value, label}]) => picked key; defaults to grants.mjs#chooseSelect.
+ * @returns {Promise<String|null>}   The chat line, or null if nothing was picked.
+ */
+export async function pickArmchairGeneralWeapon(item, choose = null) {
+  const actor = item.parent;
+  const qualified = actor?.system?.qualified?.weapons ?? {};
+  const options = Object.entries(E20.weaponTypes ?? {}).filter(([key]) => !qualified[key])
+    .map(([value, label]) => ({ value, label: game.i18n.localize(label) }));
+  const chooser = choose ?? (await import("./grants.mjs")).chooseSelect;
+  const picked = await chooser(item.name, game.i18n.localize('E20.GrantPickLabel'), options);
+  if (!picked || !(picked in (E20.weaponTypes ?? {}))) {
+    return null;
+  }
+
+  await actor.update({ [`system.qualified.weapons.${picked}`]: true });
+  await item.setFlag('essence20', ARMCHAIR_WEAPON_FLAG, picked);
+  return game.i18n.format('E20.Pr3GrantedItem', { name: actor.name, item: game.i18n.localize(E20.weaponTypes[picked]), source: item.name });
+}
+
+registerUse({
+  id: 'armchairGeneralWeapon',
+  matches: item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == ARMCHAIR_GENERAL_ID,
+  canUse: item => !item.flags?.essence20?.[ARMCHAIR_WEAPON_FLAG],
+  run: item => pickArmchairGeneralWeapon(item),
+});
 
 // Technological Assistance (Quartermaster's Guide to Gear, Tech Officer Focus, 17th level, p.22):
 // "you can Lend Assistance as a Free action. However, allies can only take advantage of this for

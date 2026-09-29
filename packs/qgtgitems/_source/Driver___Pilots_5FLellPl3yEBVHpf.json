@@ -5,6 +5,10 @@
   "_id": "5FLellPl3yEBVHpf",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Ballistic Armor (Radar Tempered Camo), an Assault Rifle (Folding Stock) and a Limited Driving Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "myYcCOZdN1ViBeQH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: target a creature to make it your Primary Quarry; your rolls against it get ↑1, stacking with Mark Target. Left to the table: the hour of study, and limiting the ↑1 to tracking and finding them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

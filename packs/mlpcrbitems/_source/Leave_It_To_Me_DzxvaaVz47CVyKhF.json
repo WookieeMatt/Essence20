@@ -5,6 +5,10 @@
   "_id": "DzxvaaVz47CVyKhF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when one of your BFFs failed a Skill Test on their turn, your next test with that same Skill this round or next gets Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

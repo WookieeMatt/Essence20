@@ -5,6 +5,10 @@
   "_id": "EsrgWvqnXE3Oiea7",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↓1 on Initiative tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

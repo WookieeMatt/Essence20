@@ -5,6 +5,10 @@
   "_id": "a4BfJxhUC7hAhgdZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: merge into your Gestalt for 3 Energon and a Standard action; in combat it completes at the end of the round if everyone is in reach, outside combat at once. Pick your Combiner feature and add it to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

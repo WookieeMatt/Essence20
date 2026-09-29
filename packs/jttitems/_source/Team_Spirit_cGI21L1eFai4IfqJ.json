@@ -5,6 +5,10 @@
   "_id": "cGI21L1eFai4IfqJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: with an ally targeted, spend 1 Personal Power to share one of your active Emotional Mastery options with them. It ends when your own option does, and an ally holds only one at a time.</p><p>Left to the table: the 30 ft range.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

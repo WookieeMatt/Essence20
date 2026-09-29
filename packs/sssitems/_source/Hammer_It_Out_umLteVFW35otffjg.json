@@ -5,6 +5,10 @@
   "_id": "umLteVFW35otffjg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Knuckle Up's Use button gains an option to spend a Reckless Abandon use so the borrowed weapon lasts the whole scene.</p><p>Left to the table: adding weapon upgrades to your unarmed attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

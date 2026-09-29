@@ -5,6 +5,10 @@
   "_id": "qDsWwo5ipmzMMuO4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: all of a spell's casting costs are applied after your Spellcasting test instead of before it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "ucG89Hiw8OLIoVQf",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage; Anti-Tank and Wrecker apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "9w9TjZdznrBsYWHf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑2 on Weird tests.</p><p>Left to the table: the bonus is meant only in combat scenes, so switch the effect off outside them.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

@@ -5,6 +5,10 @@
   "_id": "MOOrbfVEyGTDExfv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Standard action): switch a poison you carry between contact, ingested and inhaled. Active Effect: +1 poison training.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

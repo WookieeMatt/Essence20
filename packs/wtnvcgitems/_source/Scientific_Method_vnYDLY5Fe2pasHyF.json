@@ -5,6 +5,10 @@
   "_id": "vnYDLY5Fe2pasHyF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you count as Specialized on every Science test. Use button (once per session; a new mission on the Scene Clock resets it): ↑1 on your next Skill Test from your banned tech.</p><p>Left to the table: Specialization is meant only for studying Weird phenomena.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

@@ -5,6 +5,10 @@
   "_id": "XUgwIL0KM2Z1zUL4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: allowing the Infantry's Medic Focus for any Role when you pick a Focus.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "",

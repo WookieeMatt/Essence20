@@ -5,6 +5,10 @@
   "_id": "MrDZK2ifJWpiH24D",
   "img": "systems/essence20/assets/icons/gear/artillery_support.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose Flare, High Explosive, HEAT, Shrapnel or Smoke and a point (or targeted vehicle). It takes your full turn and lands at the start of your next turn, rolling against each token in the area with damage buttons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

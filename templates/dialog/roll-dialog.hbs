@@ -138,6 +138,8 @@
       <option value="standard">{{localize 'E20.KitStandard'}}</option>
       <option value="limited">{{localize 'E20.KitLimited'}}</option>
       <option value="restricted">{{localize 'E20.KitRestricted'}}</option>
+      <option value="prototype">{{localize 'E20.KitPrototype'}}</option>
+      <option value="theoretical">{{localize 'E20.KitTheoretical'}}</option>
       <option value="essence">{{localize 'E20.KitEssence'}}</option>
     </select>
   </div>
@@ -462,10 +464,11 @@
   {{#if belovedAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogBeloved'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyBeloved" />
-      <span class="switch-slider"></span>
-    </label>
+    <select name="beloved">
+      <option value="none">{{localize 'E20.None'}}</option>
+      <option value="upshift">{{localize 'E20.BelovedUpshift'}}</option>
+      <option value="removeSnag">{{localize 'E20.BelovedRemoveSnag'}}</option>
+    </select>
   </div>
   {{/if}}
 
@@ -1397,6 +1400,18 @@
       <input type="checkbox" name="applyStreetSmarts" />
       <span class="switch-slider"></span>
     </label>
+  </div>
+  {{/if}}
+
+  {{#if wildAnimalKit}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{wildAnimalKit.name}}</span>
+    <select name="wildAnimalKitSkill">
+      <option value="">{{localize 'E20.SkillPersuasion'}}</option>
+      {{#each wildAnimalKit.skills}}
+      <option value="{{value}}">{{label}}</option>
+      {{/each}}
+    </select>
   </div>
   {{/if}}
 

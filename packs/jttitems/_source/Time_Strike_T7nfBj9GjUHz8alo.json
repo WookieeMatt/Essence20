@@ -5,6 +5,10 @@
   "_id": "T7nfBj9GjUHz8alo",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on a Chrono Saber attack while Morphed, a switch that pays 1 Personal Power. On a hit it adds your second saber's base damage, and chat buttons offer the other saber effects as extra riders.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

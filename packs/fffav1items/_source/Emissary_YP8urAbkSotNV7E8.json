@@ -5,6 +5,10 @@
   "_id": "YP8urAbkSotNV7E8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: makes the test to gain a Contact, with Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

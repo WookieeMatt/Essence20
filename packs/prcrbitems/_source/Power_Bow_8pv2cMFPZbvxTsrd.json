@@ -5,6 +5,10 @@
   "_id": "8pv2cMFPZbvxTsrd",
   "img": "systems/essence20/assets/icons/weapons/heavy-arrow.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, plus its alternate effect; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

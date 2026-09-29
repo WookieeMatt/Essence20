@@ -5,6 +5,10 @@
   "_id": "hnprJWLpFWqgL9sD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: swap one Focus Perk for a General Perk by hand when building the character.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

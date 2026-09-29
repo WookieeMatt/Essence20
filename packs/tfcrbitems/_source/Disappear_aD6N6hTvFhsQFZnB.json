@@ -5,6 +5,10 @@
   "_id": "aD6N6hTvFhsQFZnB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend 1 Energon to turn Invisible; press it again to switch Invisible off.</p><p>Left to the table: ending it at the end of your turn.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

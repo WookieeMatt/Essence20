@@ -5,6 +5,10 @@
   "_id": "vuGQYh5DtaYvZdtN",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse with the listed damage and alternate effect; Defend and Versatile apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

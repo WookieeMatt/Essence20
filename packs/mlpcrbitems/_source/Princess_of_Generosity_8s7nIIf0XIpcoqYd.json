@@ -5,6 +5,10 @@
   "_id": "8s7nIIf0XIpcoqYd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +3 Health and Large size. Granted: the six pony Origin Perks you don't already have; if you were already Magical, you also get ↑1 on Spellcasting.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

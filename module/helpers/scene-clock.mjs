@@ -267,3 +267,57 @@ export async function activateForWindow(actor, flagKey, window = 'scene') {
   const epoch = epochFor(window);
   await actor.setFlag('essence20', flagKey, { epoch, window, count: 1 });
 }
+
+/**
+ * Turns on a duration flag that lasts a number of combat rounds ("10 rounds", "1 minute" - ten
+ * 6-second rounds). Stored in the same shape activateForWindow writes, stamped with the encounter
+ * epoch, plus - when a Combat is running - which Combat and the round/turn it runs out on.
+ *
+ * In a Combat it ends on the caster's own turn `rounds` rounds later, or when that Combat ends.
+ * Out of Combat there are no rounds to count, so it falls back to the rest of the encounter
+ * (which also ends with the scene) - never "forever".
+ * @param {Actor} actor
+ * @param {String} flagKey
+ * @param {Number} rounds
+ * @returns {Promise<void>}
+ */
+export async function activateForRounds(actor, flagKey, rounds) {
+  const record = { epoch: getEncounterEpoch(), window: 'encounter', count: 1 };
+  const combat = globalThis.game?.combat;
+  if (combat?.id && rounds > 0) {
+    record.combatId = combat.id;
+    record.untilRound = Math.max(Number(combat.round) || 0, 1) + rounds;
+    record.untilTurn = Number(combat.turn) || 0;
+  }
+
+  await actor.setFlag('essence20', flagKey, record);
+}
+
+/**
+ * Whether a flag set with activateForRounds is still running.
+ * @param {Actor} actor
+ * @param {String} flagKey
+ * @returns {Boolean}
+ */
+export function isActiveForRounds(actor, flagKey) {
+  if (!isActiveForWindow(actor, flagKey, 'encounter')) {
+    return false;
+  }
+
+  const record = actor.getFlag('essence20', flagKey);
+  if (!record.combatId) {
+    return true;
+  }
+
+  // The Combat it was counting rounds in has ended (or isn't this world's any more).
+  const combats = globalThis.game?.combats;
+  const combat = combats?.get?.(record.combatId)
+    ?? (globalThis.game?.combat?.id == record.combatId ? globalThis.game.combat : null);
+  if (!combat) {
+    return false;
+  }
+
+  const round = Number(combat.round) || 0;
+  const turn = Number(combat.turn) || 0;
+  return round < record.untilRound || (round == record.untilRound && turn < record.untilTurn);
+}

@@ -5,6 +5,10 @@
   "_id": "LtUei3Rd9ygf2dQa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you can't be Frightened or Mesmerized. Left to the table: other effects that try to change your behavior, such as Mind Beam's Calm or Confused.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "KsjNGjGXC8svs7OB",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: the mounted weapon this upgrade supports and how it's used.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

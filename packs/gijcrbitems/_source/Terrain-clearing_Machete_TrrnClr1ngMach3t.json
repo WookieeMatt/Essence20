@@ -5,6 +5,10 @@
   "_id": "TrrnClr1ngMach3t",
   "img": "icons/svg/sword.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, and its traits apply (Martial Arts, Sharp, Silent). Active Effect: while you carry it, an Edge on Survival tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "s3rsoMHOjWY9WfLF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Willpower and Cleverness are 2 lower against your Deception and Persuasion tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

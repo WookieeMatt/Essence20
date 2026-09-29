@@ -5,6 +5,10 @@
   "_id": "ZthvrKqsgXR3q8bm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on the effect for your chosen Skill (Driving, Infiltration or Initiative) so it also counts as a Strength Skill. The Speed increases come from the Marauder Focus.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

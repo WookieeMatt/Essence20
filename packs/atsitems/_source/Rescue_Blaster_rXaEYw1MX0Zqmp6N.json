@@ -5,6 +5,10 @@
   "_id": "rXaEYw1MX0Zqmp6N",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick Baton Mode (Might) or Blaster Mode (Targeting) when you attack, each with its own damage and alternate effect. Lightspeed Response can swap it in when you Morph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

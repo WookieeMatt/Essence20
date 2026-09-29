@@ -5,6 +5,10 @@
   "_id": "QSH8oFXlVKxq2iKJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per scene, in the first round of combat, a successful weaponless attack against a target who hasn't acted yet becomes a Critical Success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "PmY8jGTiemnSdsHi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Free action): spend an Adaptation Point to use your Environmental Expertise outside your environments of expertise for the scene.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

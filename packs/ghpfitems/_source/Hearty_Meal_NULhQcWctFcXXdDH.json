@@ -5,6 +5,10 @@
   "_id": "NULhQcWctFcXXdDH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button and Heal action: once per mission outside combat, you can heal with Culture or Performance in place of Science.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "Culture (Cuisine) or Performance (Cooking) Specialization",

@@ -5,6 +5,10 @@
   "_id": "7jAU5Eg1uy9Hl1d4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: take up to -3 on all your Defenses to gain the same ↑ on the roll. The Defense penalty applies to the next attack against you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

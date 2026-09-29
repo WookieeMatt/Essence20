@@ -5,6 +5,10 @@
   "_id": "P0fIqJFPvFEDFssd",
   "img": "systems/essence20/assets/icons/weapons/winged-scepter.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Culture with the Wicked Hex damage and range; the Alternate Effect Impairs instead. Its traits apply.</p><p>Left to the table: how long the Impaired lasts, using Monster... Grow! at any range, and the Story Point interrupt.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

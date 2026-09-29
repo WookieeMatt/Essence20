@@ -5,6 +5,10 @@
   "_id": "XTtt41mgTtU4rhUc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: a reroll button on your Deception tests, three times per mission; you keep whichever result you prefer.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "",

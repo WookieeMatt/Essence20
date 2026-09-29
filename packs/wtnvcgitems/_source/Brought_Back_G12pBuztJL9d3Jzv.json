@@ -5,6 +5,10 @@
   "_id": "G12pBuztJL9d3Jzv",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: your pick of Speed or Social and one of its Origin Skills, 30 ft ground movement, and the I've Done this Before? Origin Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

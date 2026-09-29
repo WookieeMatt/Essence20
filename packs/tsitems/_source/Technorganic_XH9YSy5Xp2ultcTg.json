@@ -5,6 +5,10 @@
   "_id": "XH9YSy5Xp2ultcTg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>When added, you pick Telepathy or Therapeutic Nanotechnology and it is granted. Left to the table: Resistance to Fire and being invisible to standard scanners while in Beast Mode.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "GTUn1LOxb3D4FgHF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick one of your weapons. From then on it counts as Ballistic, so every Perk and rule for Ballistic weapons applies to it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

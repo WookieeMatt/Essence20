@@ -5,6 +5,10 @@
   "_id": "ARtFFscnVBo183hV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick an Alt Mode from a different Origin, within two Size Classes of your original. You get two picks (four with Alt Mode Mastery).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

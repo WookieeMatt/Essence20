@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: ↑1 on Infiltration in Alt Mode. Roll Options Dialog: a switch for another ↑1 when your Alt Mode fits the surroundings. Rolling Initiative offers a free Convert.</p><p>Left to the table: the immunity to carbon-based diseases.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

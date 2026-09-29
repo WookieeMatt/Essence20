@@ -5,6 +5,10 @@
   "_id": "G3yWRRVkAH26dHFI",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: fires along a 100 ft line - choose the Impaired effect or the Blinded or Deafened alternate. Its traits apply (Computerized, Condition, Reload, Vehicular).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -25,7 +29,51 @@
         "damageType": "impaired",
         "numHands": 2,
         "numTargets": 1,
-        "radius": 0,
+        "radius": 100,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 100
+        },
+        "shiftDown": 0
+      },
+      "e002": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.YbtTr8wIaDwhrh7a",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Crowd Dispersal Energy Cannon Alternate Effect (Blinded)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "blindingBlast",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 100,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 100
+        },
+        "shiftDown": 0
+      },
+      "e003": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.5lpA5tcrwDUwwCYM",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Crowd Dispersal Energy Cannon Alternate Effect (Deafened)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 0,
+        "damageType": "deafened",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 100,
         "range": {
           "min": null,
           "reachMultiplier": 0,
@@ -47,6 +95,7 @@
     },
     "traits": [
       "computerized",
+      "condition",
       "reload",
       "vehicular"
     ],

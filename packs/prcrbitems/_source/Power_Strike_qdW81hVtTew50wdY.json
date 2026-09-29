@@ -5,6 +5,10 @@
   "_id": "qdW81hVtTew50wdY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: works through the Power Strike tracker the Red Ranger role grants; activate it, then tick it in the Roll Options Dialog on an attack for the listed bonus damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

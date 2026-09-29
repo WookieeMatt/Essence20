@@ -5,6 +5,10 @@
   "_id": "rge5LP0rJvsqgqzz",
   "img": "systems/essence20/assets/icons/gear/parachute.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: no falling damage when opened high enough, and Acrobatics tests to steer.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

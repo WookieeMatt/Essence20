@@ -5,6 +5,10 @@
   "_id": "MB1UsageEvasion1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power for +3 Evasion until your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

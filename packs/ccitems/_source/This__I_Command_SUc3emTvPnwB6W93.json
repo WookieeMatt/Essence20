@@ -5,6 +5,10 @@
   "_id": "SUc3emTvPnwB6W93",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you give an ally a Ruthless Point, you can deal them 1 Psychic damage to give two instead.</p><p>Left to the table: doubling the ↑ or extra actions your other Perks grant.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

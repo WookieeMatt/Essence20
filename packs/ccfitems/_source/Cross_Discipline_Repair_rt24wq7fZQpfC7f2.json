@@ -5,6 +5,10 @@
   "_id": "rt24wq7fZQpfC7f2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing for this Perk. Left to the table: its repair benefit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

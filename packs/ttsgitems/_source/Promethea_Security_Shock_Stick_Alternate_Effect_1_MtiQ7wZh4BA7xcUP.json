@@ -5,6 +5,10 @@
   "_id": "MtiQ7wZh4BA7xcUP",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might melee attack at Reach that deals 1 Stun.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "ReeqwVjlTrE1VeJv",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the boot's Blunt attack, rolling whichever of Finesse or Might is better, with the listed damage and reach.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>Blunt</p>",

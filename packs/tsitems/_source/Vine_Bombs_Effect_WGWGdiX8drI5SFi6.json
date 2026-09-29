@@ -5,6 +5,10 @@
   "_id": "WGWGdiX8drI5SFi6",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a thrown attack for 1 Stun; on a hit the target is grappled and gets a chat button to try escaping against Toughness 16.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "AJPU8aXzwzKd3MeJ",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Hard Body Armor, an Artillery Lobber (Eruptive) and a Shotgun.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

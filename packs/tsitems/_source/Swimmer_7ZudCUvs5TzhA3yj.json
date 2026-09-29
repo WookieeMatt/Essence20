@@ -5,6 +5,10 @@
   "_id": "7ZudCUvs5TzhA3yj",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 3 starting Health, 30ft Ground and 25ft Aquatic Movement, the Visionless Sight Perk, and your pick of the Common or Large Swimmer Alt Mode. You pick +1 Strength or Smarts and Athletics or Survival as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

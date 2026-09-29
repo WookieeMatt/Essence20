@@ -5,6 +5,10 @@
   "_id": "tLsCk8n8tqhQ6XQf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Move action): give an ally you can see an immediate Move action.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

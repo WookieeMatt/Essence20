@@ -5,6 +5,10 @@
   "_id": "K6taaZgeGFxX4lA3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: forage a melee weapon, and it's added to your sheet set to attack with Survival.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "GUppwd5R2bSVaKVO",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while equipped, its Defense bonus and Deflective apply, plus +1 on Persuasion tests using Leadership.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

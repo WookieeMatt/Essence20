@@ -2330,3 +2330,63 @@ describe("_prepareDescription", () => {
     expect(item.system.description).toBe("");
   });
 });
+
+describe("_prepareAutomation", () => {
+  const UUID = "Compendium.essence20.gi_joe_crb.Item.abc123";
+  const ORIGINAL = { status: "full", notes: "<p>Use button: pick the spell.</p>" };
+
+  function makeCopy({ stored = { status: "", notes: "" }, pack = null, sourceId = UUID } = {}) {
+    const item = makeItem("perk", { automation: { ...stored } });
+    item._source = { system: { automation: stored } };
+    item.pack = pack;
+    item.flags = { core: sourceId ? { sourceId } : {} };
+    item._stats = {};
+    return item;
+  }
+
+  beforeEach(() => {
+    global.game = { i18n: { localize: key => key } };
+    global.fromUuidSync = jest.fn(uuid => (uuid == UUID ? { system: { automation: ORIGINAL } } : null));
+  });
+
+  afterEach(() => {
+    delete global.fromUuidSync;
+    delete global.game;
+  });
+
+  test("a copy shows its compendium original's notes", () => {
+    const item = makeCopy();
+
+    item._prepareAutomation();
+
+    expect(item.system.automation).toEqual(ORIGINAL);
+  });
+
+  test("notes a GM wrote on the copy win", () => {
+    const item = makeCopy({ stored: { status: "manual", notes: "<p>House rule.</p>" } });
+
+    item._prepareAutomation();
+
+    expect(item.system.automation).toEqual({ status: "manual", notes: "<p>House rule.</p>" });
+  });
+
+  test("a compendium item and an unsourced item keep their own", () => {
+    const inPack = makeCopy({ pack: "essence20.gi_joe_crb" });
+    const unsourced = makeCopy({ sourceId: null });
+
+    inPack._prepareAutomation();
+    unsourced._prepareAutomation();
+
+    expect(inPack.system.automation.status).toBe("");
+    expect(unsourced.system.automation.status).toBe("");
+  });
+
+  test("no index entry (or no fromUuidSync, as in tests) leaves it blank", () => {
+    delete global.fromUuidSync;
+    const item = makeCopy();
+
+    item._prepareAutomation();
+
+    expect(item.system.automation.status).toBe("");
+  });
+});

@@ -5,6 +5,10 @@
   "_id": "pJGxl6rV8Csgapvi",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: For The Allspark! and a Cybertronian Perk choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

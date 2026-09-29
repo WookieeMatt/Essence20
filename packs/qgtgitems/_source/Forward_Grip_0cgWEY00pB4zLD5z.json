@@ -5,6 +5,10 @@
   "_id": "0cgWEY00pB4zLD5z",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: bracing the weapon costs a Free action instead of a Move action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "5gPWxUEkFKDQf6lM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power; you and Rangers within 60ft deal +1 damage until the start of your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "GjHqKI3n7lLp3lVn",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch on non-attack Skill Tests for ↓1 when a large audience is watching.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

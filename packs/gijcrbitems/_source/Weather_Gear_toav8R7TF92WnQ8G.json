@@ -5,6 +5,10 @@
   "_id": "toav8R7TF92WnQ8G",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick Extreme Cold or Extreme Heat. While you wear the armor it's attached to, you're protected from that environment's hazards.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

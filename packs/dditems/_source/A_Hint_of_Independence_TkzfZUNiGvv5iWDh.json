@@ -5,6 +5,10 @@
   "_id": "TkzfZUNiGvv5iWDh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a General Perk you qualify for, then roll or choose your Imperfection (1-8). The chosen Imperfection's effect then applies automatically.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

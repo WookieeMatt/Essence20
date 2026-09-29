@@ -5,6 +5,10 @@
   "_id": "jDRfmpsy1ElT2Kkn",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you get a warning if a third Alt Mode is added to your character.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

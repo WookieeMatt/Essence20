@@ -5,6 +5,10 @@
   "_id": "Lbof7aHGVsCFsadq",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: what the tools let you do, as described.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

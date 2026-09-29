@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Alt Mode you count as in Cover even in the open. Roll Options Dialog: a Hide action switch adds 5 to your Infiltration result in Alt Mode.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "o3nKtfsopZLqbhZW",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its effect; Reload is tracked, and it counts as a Tool weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

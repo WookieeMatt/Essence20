@@ -5,6 +5,10 @@
   "_id": "vanN7kRYUhgHew7q",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: vehicles you pilot get +2 to their Defenses, and damage aimed at you while piloting can be sent to the vehicle instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

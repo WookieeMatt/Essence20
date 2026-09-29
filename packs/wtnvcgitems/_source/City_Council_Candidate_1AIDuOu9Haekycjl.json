@@ -5,6 +5,10 @@
   "_id": "1AIDuOu9Haekycjl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: the Weird General Perk.</p><p>Left to the table: mark the Weird Skill's Blend Specialization on your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {

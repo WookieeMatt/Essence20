@@ -5,6 +5,10 @@
   "_id": "cZtUjIzieAFxTwH2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: after you use Defender Step, your next melee attack gets a switch to spend 1 Personal Power for +1 damage (if the enemy still hit your ally) or an Edge (if your step made it miss).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

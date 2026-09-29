@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 import {
   activeKits, applyDialogKits, canUseKit, carryPercent, extraCarriedHands, KIT, kitDialogFlags, kitInfo, kitRequirement, kitSources,
   kitUseKind, loaderShieldToughness, loaderShoveBonus, meetsKitPrerequisite, protomatterReduce, restKits, runKitUse, scroungeDif,
-  takeMineMultiplier,
+  skillKitNoUntrainedSnag, takeMineMultiplier, wildAnimalPersuasion,
 } from './kits.mjs';
 
 function flagged(obj) {
@@ -149,6 +149,81 @@ describe('prerequisites and requirements', () => {
   });
 });
 
+describe('kits beyond the three tiers', () => {
+  const mlp = id => `Compendium.essence20.mlp_crb.Item.${id}`;
+
+  test('a parenthetical Specialization names the Skill when the word before it is not one', () => {
+    CONFIG.E20.skills.culture = 'Culture';
+    expect(kitInfo(gear('Limited Artisan (Chef) Kit'))).toMatchObject({ tier: 'limited', skill: 'culture', spec: 'Chef' });
+  });
+
+  test('My Little Pony kits name their Skill, need no Rank, and are simply the right kit', () => {
+    const carpentry = gear('Carpentry Kit', { source: mlp('l69ECABViS1WaFDQ') });
+    const forensic = gear('Forensic Kit', { source: mlp('90PF2Uvlv32sjgrZ') });
+    expect(kitInfo(carpentry)).toMatchObject({ skill: 'technology', simple: true });
+    const actor = makeActor([carpentry, forensic], { skills: { technology: { shift: 'd20' } } });
+    expect(kitRequirement(actor, 'technology', null, 'restricted')).toMatchObject({ snag: false, shiftDown: 0 });
+    expect(kitRequirement(actor, 'alertness', 'Investigation', 'standard')).toMatchObject({ snag: false, shiftDown: 0 });
+    expect(kitSources(actor, 'technology', null, false).specialize).toBe(false);
+    expect(canUseKit(carpentry)).toBe(false);
+  });
+
+  test('the Wild Animal Survival Kit covers Animal Handling or Survival', () => {
+    const kit = gear('Restricted Wild Animal Survival Kit', { source: 'Compendium.essence20.operation_cold_iron.Item.EI7uvXnVEv0eK1C7' });
+    const actor = makeActor([kit], { skills: { animalHandling: { shift: 'd20' }, survival: { shift: 'd8' } } });
+    expect(kitInfo(kit)).toMatchObject({ tier: 'restricted', skills: ['animalHandling', 'survival'] });
+    expect(kitRequirement(actor, 'animalHandling', null, 'restricted')).toMatchObject({ snag: false, shiftDown: 0 });
+    expect(kitRequirement(actor, 'survival', 'Arctic', 'restricted')).toMatchObject({ snag: false, shiftDown: 0 });
+    expect(meetsKitPrerequisite(makeActor([], { skills: { survival: { shift: 'd4' }, animalHandling: { shift: 'd4' } } }), kitInfo(kit))).toBe(false);
+  });
+
+  test('the Wild Animal Survival Kit offers Animal Handling or Survival for Persuasion only', () => {
+    const kit = gear('Restricted Wild Animal Survival Kit', { source: 'Compendium.essence20.operation_cold_iron.Item.EI7uvXnVEv0eK1C7' });
+    const actor = makeActor([kit], { skills: { animalHandling: { shift: 'd8' }, survival: { shift: 'd4' } } });
+    expect(wildAnimalPersuasion(actor, 'persuasion')).toEqual({ kit, skills: ['animalHandling', 'survival'] });
+    expect(wildAnimalPersuasion(actor, 'deception')).toBeNull();
+    expect(wildAnimalPersuasion(makeActor([], {}), 'persuasion')).toBeNull();
+    // Below the d8 prerequisite in both Skills: the kit can't be used.
+    const weak = makeActor([gear('Restricted Wild Animal Survival Kit', { source: 'Compendium.essence20.operation_cold_iron.Item.EI7uvXnVEv0eK1C7' })],
+      { skills: { animalHandling: { shift: 'd4' }, survival: { shift: 'd4' } } });
+    expect(wildAnimalPersuasion(weak, 'persuasion')).toBeNull();
+  });
+
+  test('Prototype and Theoretical kits rank above Restricted', () => {
+    const kit = gear('Prototype Kit', { flags: { kit: { tier: 'prototype', skill: 'technology', spec: 'Explosives' } } });
+    const actor = makeActor([kit], { skills: { technology: { shift: 'd10' } } });
+    expect(kitRequirement(actor, 'technology', 'Explosives', 'restricted')).toMatchObject({ snag: false, shiftDown: 0 });
+    expect(kitSources(actor, 'technology', 'Explosives', false).specialize).toBe(true);
+    expect(meetsKitPrerequisite(makeActor([], { skills: { technology: { shift: 'd8' } } }), kitInfo(kit))).toBe(false);
+    expect(kitInfo(gear('Prototype Kit'))).toMatchObject({ tier: 'prototype', skill: null });
+  });
+
+  test('Prototype and Theoretical kits ignore a Snag against their Edge; Theoretical caps downshifts at one step', () => {
+    const proto = gear('Prototype Kit', { flags: { kit: { tier: 'prototype', skill: 'technology', spec: 'Explosives' } } });
+    const theory = gear('Theoretical Kit', { flags: { kit: { tier: 'theoretical', skill: 'science', spec: null } } });
+    const restricted = gear('Restricted Kit', { flags: { kit: { tier: 'restricted', skill: 'athletics', spec: null } } });
+    const actor = makeActor([proto, theory, restricted], { skills: { technology: { shift: 'd10' }, science: { shift: 'd12' }, athletics: { shift: 'd8' } } });
+    // Already Specialized: the kit gives its Edge, and protects it.
+    expect(kitSources(actor, 'technology', 'Explosives', true)).toMatchObject({ ignoreSnagOnEdge: true, maxShiftDown: null });
+    // Not yet Specialized: the kit gives Specialization instead, so there's no Edge to protect.
+    expect(kitSources(actor, 'technology', 'Explosives', false)).toMatchObject({ specialize: true, ignoreSnagOnEdge: false });
+    expect(kitSources(actor, 'science', null, false)).toMatchObject({ ignoreSnagOnEdge: false, maxShiftDown: 1 });
+    expect(kitSources(actor, 'science', null, true)).toMatchObject({ ignoreSnagOnEdge: true, maxShiftDown: 1 });
+    expect(kitSources(actor, 'athletics', null, true)).toMatchObject({ ignoreSnagOnEdge: false, maxShiftDown: null });
+  });
+
+  test('a Skill Kit clears the untrained Snag for its chosen Skill only, and is never the kit a test calls for', () => {
+    const basic = gear('Basic Skill Kit', { source: 'Compendium.essence20.quartermasters_guide_to_gear.Item.gRxcVy1mS18jyWtx', flags: { kit: { tier: 'standard', skill: 'science', spec: null } } });
+    expect(kitInfo(basic)).toMatchObject({ skillKit: true, skill: 'science', spec: null });
+    const actor = makeActor([basic], { skills: { science: { shift: 'd20' } } });
+    expect(skillKitNoUntrainedSnag(actor, 'science')).toBe(true);
+    expect(skillKitNoUntrainedSnag(actor, 'technology')).toBe(false);
+    expect(kitRequirement(actor, 'science', null, 'standard').snag).toBe(true);
+    // Basic: "No Ranks" in its Skill.
+    expect(skillKitNoUntrainedSnag(makeActor([basic], { skills: { science: { shift: 'd2' } } }), 'science')).toBe(false);
+  });
+});
+
 describe('boosts', () => {
   test('a carried Restricted kit specializes, or gives an Edge', () => {
     const actor = makeActor([gear('Restricted Athletics (Climbing) Kit')], { skills: { athletics: { shift: 'd8' } } });
@@ -244,6 +319,7 @@ describe('gear and Perks', () => {
   test('carrying capacity', () => {
     expect(carryPercent(makeActor([], { skills: { brawn: { shift: 'd20' } } }))).toBe(10);
     expect(carryPercent(makeActor([], { skills: { brawn: { shift: 'd8' } } }))).toBe(100);
+    expect(carryPercent(makeActor([perk(KIT.packMuleTf)], { skills: { brawn: { shift: 'd8' } } }))).toBe(200);
     expect(carryPercent(makeActor([perk(KIT.competitiveStrength)], { skills: { brawn: { shift: 'd6' } } }))).toBe(150);
     expect(carryPercent(makeActor([perk(KIT.growthBoost)], { isMorphed: true, skills: { brawn: { shift: 'd8' } } }))).toBe(200);
   });

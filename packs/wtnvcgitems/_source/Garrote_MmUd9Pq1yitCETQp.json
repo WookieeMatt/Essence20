@@ -5,6 +5,10 @@
   "_id": "MmUd9Pq1yitCETQp",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: two-handed Finesse attacks at Reach for 2 Sharp damage, with a Grapple alternate; its Intimidating and Silent traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "MKY5YMMkqtQ9sVac",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this: you can use language-based Skills like Persuasion and Deception without a shared language.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

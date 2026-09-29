@@ -5,6 +5,10 @@
   "_id": "E6GWRHzP9tOAxQP6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: your next Spellcasting test gets ↑1. Left to the table: lowering your Willpower by 1 until the scene ends each time you use it.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

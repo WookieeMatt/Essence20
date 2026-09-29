@@ -5,6 +5,10 @@
   "_id": "XfLsm5inPHekj6rY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene): every Morphed teammate regains d2 Personal Power (d4 from 15th level).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

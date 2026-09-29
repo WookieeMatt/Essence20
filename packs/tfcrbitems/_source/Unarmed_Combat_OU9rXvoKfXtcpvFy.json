@@ -5,6 +5,10 @@
   "_id": "OU9rXvoKfXtcpvFy",
   "img": "systems/essence20/assets/icons/weapons/punch.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, at Reach for 1 Stun, with alternate effects for 1 Blunt damage or a Maneuver at ↓1; Blunt, Martial Arts and Silent apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

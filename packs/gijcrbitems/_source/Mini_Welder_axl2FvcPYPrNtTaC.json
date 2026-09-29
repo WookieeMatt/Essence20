@@ -5,6 +5,10 @@
   "_id": "axl2FvcPYPrNtTaC",
   "img": "systems/essence20/assets/icons/gear/mini_welder.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: the damage it deals to metal objects. It can't be used as a weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "WEF98Hlolkk0Te5P",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative upgrade: the weapon needs a key, code or other requirement you choose before it works. The GM enforces it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

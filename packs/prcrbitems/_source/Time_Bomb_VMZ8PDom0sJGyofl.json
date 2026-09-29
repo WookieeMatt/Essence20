@@ -5,6 +5,10 @@
   "_id": "VMZ8PDom0sJGyofl",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the grenade's range becomes Reach, and rolling it plants the bomb with a timer instead of attacking. Chat card: when it goes off, your Technology test is rolled against everyone in the blast.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

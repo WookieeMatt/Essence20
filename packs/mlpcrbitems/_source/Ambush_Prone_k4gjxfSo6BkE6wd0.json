@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks against you get Edge while you're Surprised.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

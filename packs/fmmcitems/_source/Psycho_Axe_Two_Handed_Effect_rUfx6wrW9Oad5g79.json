@@ -5,6 +5,10 @@
   "_id": "rUfx6wrW9Oad5g79",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Might against Toughness for 2 Void damage, ignoring armor bonuses to Toughness.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>Versatile: wielded two-handed</p>",

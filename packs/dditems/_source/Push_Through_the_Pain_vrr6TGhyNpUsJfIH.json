@@ -5,6 +5,10 @@
   "_id": "vrr6TGhyNpUsJfIH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: when you spend Energon to keep going at 0 Health, roll 2d2 instead of 1d2 for the rounds you stay up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

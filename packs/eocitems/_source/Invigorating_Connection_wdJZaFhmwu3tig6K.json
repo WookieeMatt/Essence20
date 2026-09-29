@@ -5,6 +5,10 @@
   "_id": "wdJZaFhmwu3tig6K",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when a merge succeeds, every component of the Combiner form regains 1 Health (only once, however many hold this Perk).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

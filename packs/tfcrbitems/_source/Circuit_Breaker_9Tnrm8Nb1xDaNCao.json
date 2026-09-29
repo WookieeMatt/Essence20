@@ -5,6 +5,10 @@
   "_id": "9Tnrm8Nb1xDaNCao",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks with Electric weapons roll Technology instead when your Technology is better.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

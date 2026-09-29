@@ -5,6 +5,10 @@
   "_id": "XfWmXOtcIM5snRKL",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on Survival rolls using a Space Specialization and Technology rolls using an Astro-Nav Specialization.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

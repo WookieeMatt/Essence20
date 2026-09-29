@@ -5,6 +5,10 @@
   "_id": "vnjELp3JE04liHSa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted with Beastmaster, which handles the +1 Social.</p><p>Left to the table: creating your Limited animal pet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

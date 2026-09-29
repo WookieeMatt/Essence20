@@ -5,6 +5,10 @@
   "_id": "S7Qs6bJOVkVFxlFu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Pick an adaptation when you add it. Use button: pay its Personal Power to switch it on (speed, Athletics and Brawn, unarmed attacks, an extra ranged attack, or regeneration); switch it off when its time runs out.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

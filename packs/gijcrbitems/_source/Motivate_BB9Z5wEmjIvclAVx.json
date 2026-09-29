@@ -5,6 +5,10 @@
   "_id": "BB9Z5wEmjIvclAVx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend your Standard action to give an ally an immediate Standard action.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

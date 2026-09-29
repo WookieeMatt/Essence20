@@ -5,6 +5,10 @@
   "_id": "bVIALTs8IyF6p9RH",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage and alternate effect; Anti-Tank applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "x4PS0cKR25og3lC0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacking with an explosive asks which bonus to use: ↑2, +2 damage, Armor-Piercing, or double blast radius (pick that one only for a Contingency attack).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

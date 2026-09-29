@@ -5,6 +5,10 @@
   "_id": "llLxndbUKCtKIUMW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: set your Syndicate's four Means Skills, one per Essence. Roll Options Dialog: on those Skills, a switch for ↑1 when the test serves the Syndicate's goals.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

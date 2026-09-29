@@ -5,6 +5,10 @@
   "_id": "566NsnD5dccg9uVo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you're immune to Frightened, and Intimidation tests against you take a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

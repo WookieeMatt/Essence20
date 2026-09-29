@@ -5,6 +5,10 @@
   "_id": "IIGUmCKw8O8QogvE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the first attack or contested test against you each scene takes a Snag, as long as you are aware of the attacker.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

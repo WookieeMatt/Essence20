@@ -5,6 +5,10 @@
   "_id": "LDi9BUkXFtaCSoTe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll Deception, Intimidation or Persuasion against a target's Willpower or Cleverness. On a success, until the end of the next round it has a Snag attacking you, and allies get Edge against it unless it attacked you.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

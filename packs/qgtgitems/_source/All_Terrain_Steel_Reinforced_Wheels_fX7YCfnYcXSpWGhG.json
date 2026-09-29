@@ -5,6 +5,10 @@
   "_id": "fX7YCfnYcXSpWGhG",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the vehicle ignores Rough Terrain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

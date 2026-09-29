@@ -5,6 +5,10 @@
   "_id": "j7AbWh0Kh5RCfLfL",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Angry Perk and the Angry Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

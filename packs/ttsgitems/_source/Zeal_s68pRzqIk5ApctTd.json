@@ -5,6 +5,10 @@
   "_id": "s68pRzqIk5ApctTd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks dealing Psychic damage against your Willpower take a Snag.</p><p>Left to the table: other mind-affecting attacks that don't deal Psychic damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "miuRrc67vwvbmt5B",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off until you switch it on): ↑1 on Alertness and Science while examining something small.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

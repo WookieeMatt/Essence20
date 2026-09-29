@@ -5,6 +5,10 @@
   "_id": "Zd2EnhAttackEoC1",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you merge, your chosen attack appears on the Combiner form at double damage, plus 1 if used as one of its basic attacks. The Combiner's basic strike and blast are made too.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

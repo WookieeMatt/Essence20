@@ -5,6 +5,10 @@
   "_id": "P2OtSph3doSlM7Vw",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick its Essence and Skill, plus its starting Health, Movement and the Augmented benefit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

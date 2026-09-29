@@ -5,6 +5,10 @@
   "_id": "MISHalgVSJ8TBI5R",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: -5 ft Ground Movement.</p><p>Left to the table: the hidden sidearm and the Snag to find it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

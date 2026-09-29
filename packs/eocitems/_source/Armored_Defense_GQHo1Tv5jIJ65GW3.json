@@ -5,6 +5,10 @@
   "_id": "GQHo1Tv5jIJ65GW3",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: raises your Combiner form's armor bonus to Toughness by 1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

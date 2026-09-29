@@ -5,6 +5,10 @@
   "_id": "Qk4sCuz3hvzUyxtu",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: hooking and towing vehicles or heavy equipment on the 100ft cable.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

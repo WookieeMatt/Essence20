@@ -5,6 +5,10 @@
   "_id": "W1fwCDu7FOmg0yaQ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Standard action): on the Zord's next turn its attacks gain ↑2 and deal +2 damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

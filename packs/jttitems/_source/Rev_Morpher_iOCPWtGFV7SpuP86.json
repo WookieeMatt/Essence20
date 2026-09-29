@@ -5,6 +5,10 @@
   "_id": "iOCPWtGFV7SpuP86",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: Morphing as a Move action and calling R.P.M. Zord Attack Vehicles.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

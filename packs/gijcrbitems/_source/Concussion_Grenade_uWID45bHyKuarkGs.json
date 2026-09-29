@@ -5,6 +5,10 @@
   "_id": "uWID45bHyKuarkGs",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a thrown Targeting attack that places a 10 ft radius area and deals Stun 1. Its traits apply, including using up the grenade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

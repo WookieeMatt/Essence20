@@ -5,6 +5,10 @@
   "_id": "EEGQqqgqZEJkJDHB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: posts a chat card saying you've pulled something useful from your cache.</p><p>Left to the table: the GM decides what gear turns up and adds it; the button resets each encounter, so hold it to once per session.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

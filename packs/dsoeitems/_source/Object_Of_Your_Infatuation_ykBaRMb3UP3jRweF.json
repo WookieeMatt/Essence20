@@ -5,6 +5,10 @@
   "_id": "ykBaRMb3UP3jRweF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: a switchable effect that gives Alertness tests Edge; turn it on for tests about the object of your infatuation.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

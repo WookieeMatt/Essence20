@@ -5,6 +5,10 @@
   "_id": "vmjU8nDOjER1oot0",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +4 Toughness, +1 Health from Bulwark, and Regal's ↑1 on Persuasion toward a targeted ally or Intimidation toward a targeted enemy.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

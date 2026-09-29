@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for Edge, and to ignore up to ↓1, when you use technology you created.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

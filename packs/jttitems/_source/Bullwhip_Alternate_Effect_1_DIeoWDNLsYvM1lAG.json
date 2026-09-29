@@ -5,6 +5,10 @@
   "_id": "DIeoWDNLsYvM1lAG",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the whip's Finesse grapple attack at the listed reach.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

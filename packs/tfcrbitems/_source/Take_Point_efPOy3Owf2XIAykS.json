@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Rough Terrain doesn't slow you, and while you stand in Rough Terrain you count as being in Cover.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

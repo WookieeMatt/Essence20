@@ -5,6 +5,10 @@
   "_id": "GcMPz5MICXwTzKOq",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Lend Assistance doesn't help your attacks with weapons of your chosen type (set by the Perk's Use button).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

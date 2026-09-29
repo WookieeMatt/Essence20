@@ -5,6 +5,10 @@
   "_id": "DLiiH5iGFHUS4JuY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Chat card: a failed Deception test gets a reroll button that costs 1 Energon. Left to the table: turning a Fumble into a plain failure, and ruling out a Critical Success on the reroll.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

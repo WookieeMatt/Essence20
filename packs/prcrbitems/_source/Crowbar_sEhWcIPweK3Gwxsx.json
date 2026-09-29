@@ -5,6 +5,10 @@
   "_id": "sEhWcIPweK3Gwxsx",
   "img": "systems/essence20/assets/icons/gear/crowbar.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on Leverage for Edge on Brawn tests where the crowbar helps, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

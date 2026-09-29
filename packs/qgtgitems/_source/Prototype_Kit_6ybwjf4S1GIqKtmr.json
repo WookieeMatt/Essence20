@@ -5,6 +5,10 @@
   "_id": "6ybwjf4S1GIqKtmr",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose its Skill and Specialization. With d10 in that Skill, it clears the Snag on kit tests for it and gives Specialization, or an Edge if already Specialized. Never used up.</p><p>Automatic: while that Edge stands, a Snag from anywhere else is ignored instead of cancelling it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

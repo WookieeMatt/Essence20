@@ -5,6 +5,10 @@
   "_id": "ZyWXJTkPqv8S6K3b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per combat, posts a challenge to enemies within 20ft; the GM accepts for each one, and you roll contested unarmed tests.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

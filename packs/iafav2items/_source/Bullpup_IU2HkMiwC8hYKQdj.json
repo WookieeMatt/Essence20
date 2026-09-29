@@ -5,6 +5,10 @@
   "_id": "IU2HkMiwC8hYKQdj",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's attached to is one size smaller, and once per scene you can reload it as a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

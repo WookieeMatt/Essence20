@@ -5,6 +5,10 @@
   "_id": "qc82QDtZN3qVWqxV",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: while Morphed, pay 1 Personal Power once per scene to equip it (+2 Toughness and Evasion) and gain its Energy Sword attack for the scene.</p><p>Left to the table: the sword's Anti-Tank and its Snag Critical Effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

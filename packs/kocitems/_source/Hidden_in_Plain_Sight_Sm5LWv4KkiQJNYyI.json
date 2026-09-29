@@ -5,6 +5,10 @@
   "_id": "Sm5LWv4KkiQJNYyI",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a Snag switch for tests to get someone to notice you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

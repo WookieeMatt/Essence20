@@ -5,6 +5,10 @@
   "_id": "xsIHUoZaFoadsmma",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll Intimidation; until the end of your next turn your allies add the result, rounded down to 5ft, to their Ground Movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

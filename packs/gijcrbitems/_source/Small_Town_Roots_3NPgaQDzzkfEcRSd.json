@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for a Snag on your first Social test with someone new who doesn't share an Influence with you. The GM decides when it applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

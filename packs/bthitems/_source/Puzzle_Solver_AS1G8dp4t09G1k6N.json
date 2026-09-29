@@ -5,6 +5,10 @@
   "_id": "AS1G8dp4t09G1k6N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on Alertness tests using the Investigation Specialization. Use button: adds a Story Point to the team pool (once per scene).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "SQzr6PhXZQ338BBh",
   "img": "systems/essence20/assets/icons/gear/clothes.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while worn: +2 Toughness against the environment in desert terrain or Extreme Heat. It doesn't help against attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

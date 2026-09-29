@@ -4,6 +4,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Speed Essence, starting Health, 30 ft aerial movement, the Frame Efficacy Perk and the Mini-Con Alt Mode choices.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

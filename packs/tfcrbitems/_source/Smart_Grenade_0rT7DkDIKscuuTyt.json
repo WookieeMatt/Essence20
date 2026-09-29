@@ -5,6 +5,10 @@
   "_id": "0rT7DkDIKscuuTyt",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a thrown Athletics attack at ↑3 for 1 damage of the chosen Element; it's used up when thrown, and its Computerized trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

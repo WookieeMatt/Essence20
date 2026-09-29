@@ -1,6 +1,7 @@
 import { hasUsedThisEncounter, markUsedThisEncounter } from "./perks.mjs";
 import { ENERGY_DAMAGE_TYPES } from "./combat.mjs";
 import { actorHasPower } from "./powers.mjs";
+import { grantSceneResistance } from "./actor.mjs";
 
 const GRID_ELEMENTAL_ADAPTATION_ID = "Compendium.essence20.across_the_stars.Item.5HNnSeIg4JKXiv2F";
 
@@ -39,9 +40,8 @@ export async function grantGridElementalAdaptationResistance(actor, damageType, 
     return;
   }
 
-  await actor.update({
-    [`system.resistances.${damageType}`]: true,
-    'system.powers.personal.value': actor.system.powers.personal.value - 1,
-  });
+  await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
+  // "Resistance ... to your Morphed form until the end of the scene" - helpers/actor.mjs#grantSceneResistance.
+  await grantSceneResistance(actor, damageType, { morphedOnly: true });
   await markUsedThisEncounter(actor, ELEMENTAL_ADAPTATION_ENCOUNTER_FLAG);
 }

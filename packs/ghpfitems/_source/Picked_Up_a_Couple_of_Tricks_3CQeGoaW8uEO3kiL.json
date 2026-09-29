@@ -5,6 +5,10 @@
   "_id": "3CQeGoaW8uEO3kiL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: adding the 2 Essence Points and matching Skill Ranks when you take it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

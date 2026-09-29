@@ -5,6 +5,10 @@
   "_id": "ggsVevfXdHhZwlAm",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: anyone rolling Deception against you gets Edge. Left to the table: limiting it to appeals that reinforce how you feel about Cobra.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

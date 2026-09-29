@@ -5,6 +5,10 @@
   "_id": "7pyoXIRJrk1nkyw6",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Left to the table: the spell's effect, which is narrative (magical paint), including the extra cost for an unwilling target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

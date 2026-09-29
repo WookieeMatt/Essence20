@@ -5,6 +5,10 @@
   "_id": "tVQaFIqRqxzatKkQ",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Ballistic Armor (Softshell), a Frag Grenade (Time Bomb), a Frag Grenade (Deadly) and a Limited Technology (Explosives) Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

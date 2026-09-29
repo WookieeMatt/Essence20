@@ -5,6 +5,10 @@
   "_id": "JPcfpND1LOVLDKIZ",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 Size Class while you have it. Armor can't be equipped unless it has a Restricted Alteration Accommodation upgrade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

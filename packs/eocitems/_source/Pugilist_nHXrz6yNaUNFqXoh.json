@@ -5,6 +5,10 @@
   "_id": "nHXrz6yNaUNFqXoh",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Focus Perks at the listed levels (Puissance through Smash!), plus its Strength increases and Focus Skill choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

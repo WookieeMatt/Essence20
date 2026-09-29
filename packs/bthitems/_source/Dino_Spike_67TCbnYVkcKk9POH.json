@@ -5,6 +5,10 @@
   "_id": "67TCbnYVkcKk9POH",
   "img": "systems/essence20/assets/icons/weapons/spear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attack in melee with Might or throw it with Athletics, each for the listed damage. Use button: the Combined trait lets the team assemble it and fire together from a chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

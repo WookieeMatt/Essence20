@@ -5,6 +5,10 @@
   "_id": "7qniIaOGp8Mqwt6O",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: changes the Skill the upgraded weapon attacks with, and counts toward Cobra-La's Qualification rules at Requisition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

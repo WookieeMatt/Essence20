@@ -26,3 +26,24 @@ describe("isGlittermaneActive / applyGlittermane / removeGlittermane", () => {
     expect(isGlittermaneActive(actor)).toBe(false);
   });
 });
+
+describe("Glittermane's 1-scene duration", () => {
+  afterEach(() => {
+    delete global.game;
+  });
+
+  test("expires when the GM starts a new scene", async () => {
+    const settings = { sceneClockScene: 1 };
+    global.game = { settings: { get: (scope, key) => settings[key] } };
+    const actor = makeActor();
+    await applyGlittermane(actor);
+    expect(isGlittermaneActive(actor)).toBe(true);
+
+    settings.sceneClockScene = 2;
+    expect(isGlittermaneActive(actor)).toBe(false);
+  });
+
+  test("a leftover plain-true flag from before it had a duration reads as expired", () => {
+    expect(isGlittermaneActive(makeActor({ active: true }))).toBe(false);
+  });
+});

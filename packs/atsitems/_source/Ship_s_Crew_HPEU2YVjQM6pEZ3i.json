@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on Driving and Technology while you crew a vehicle, and you can Lend Assistance aboard even without ranks in the Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

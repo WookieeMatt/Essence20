@@ -5,6 +5,10 @@
   "_id": "qobQdIhhRw9gEpcF",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the If I Recall Correctly Perk. The But I Should Know That Hang-Up is added too if you have another Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

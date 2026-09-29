@@ -5,6 +5,10 @@
   "_id": "C3dsyh98mb4TDW9o",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: rolls Athletics against the Toughness of creatures within 30ft for Stun 2.</p><p>Left to the table: knocking the target Prone on a Critical Success.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

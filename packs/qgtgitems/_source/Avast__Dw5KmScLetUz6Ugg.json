@@ -5,6 +5,10 @@
   "_id": "Dw5KmScLetUz6Ugg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per combat, as a Move action, roll Intimidation against a target's Willpower. On a success it rerolls Initiative and keeps the lower result.</p><p>Left to the table: using Performance instead of Intimidation.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

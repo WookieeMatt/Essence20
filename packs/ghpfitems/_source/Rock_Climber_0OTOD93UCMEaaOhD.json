@@ -5,6 +5,10 @@
   "_id": "0OTOD93UCMEaaOhD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +20ft Climb Movement.</p><p>Left to the table: the free Athletics (Climbing) kit and only having the bonus while you carry it.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "Athletics (Climbing) Specialization",

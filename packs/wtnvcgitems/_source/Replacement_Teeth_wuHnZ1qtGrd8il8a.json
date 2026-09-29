@@ -5,6 +5,10 @@
   "_id": "wuHnZ1qtGrd8il8a",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Put it on your pet. Use button (Standard action): the pet clamps onto its target, which is Immobilized until the end of its next turn.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

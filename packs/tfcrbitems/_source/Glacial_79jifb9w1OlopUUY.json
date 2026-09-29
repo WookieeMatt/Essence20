@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on for ↓1 on Persuasion tests; switch it off when you roll with the Truth Specialization.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

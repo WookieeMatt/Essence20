@@ -5,6 +5,10 @@
   "_id": "EOG8PH8fIJAVpbGY",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: each copy you have gives every one of your nanomite powers 2 more uses a day.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

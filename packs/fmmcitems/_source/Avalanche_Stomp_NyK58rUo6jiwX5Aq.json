@@ -5,6 +5,10 @@
   "_id": "NyK58rUo6jiwX5Aq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spends 1 Personal Power, targets every creature within 30ft and rolls Athletics against their Toughness. A hit applies Stunned; a Critical Success adds Prone.</p><p>Left to the table: leaving out creatures that aren't on the ground.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

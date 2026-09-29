@@ -5,6 +5,10 @@
   "_id": "vf9rJxOwuxDzrPKp",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): switch it on for ↑1 on Persuasion when the ceremonial armor is on display.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

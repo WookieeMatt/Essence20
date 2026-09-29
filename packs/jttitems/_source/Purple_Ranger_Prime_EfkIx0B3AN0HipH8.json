@@ -5,6 +5,10 @@
   "_id": "EfkIx0B3AN0HipH8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effects: +2 to all Defenses while Morphed, and immunity to Psychic damage. Use button: a Free action to remove Frightened, Mesmerized and Stunned from yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

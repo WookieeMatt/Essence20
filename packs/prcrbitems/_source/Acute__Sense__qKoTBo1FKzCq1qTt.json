@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on Alertness. Active Effect: switch on the chosen-sense effect for ↑1 on other tests where your sense clearly helps, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

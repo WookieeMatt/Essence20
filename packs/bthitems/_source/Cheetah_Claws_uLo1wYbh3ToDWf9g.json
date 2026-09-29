@@ -5,6 +5,10 @@
   "_id": "uLo1wYbh3ToDWf9g",
   "img": "systems/essence20/assets/icons/weapons/assault_claw.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Might for 2 Sharp damage at Reach.</p><p>Left to the table: the Stun 2 Critical Effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

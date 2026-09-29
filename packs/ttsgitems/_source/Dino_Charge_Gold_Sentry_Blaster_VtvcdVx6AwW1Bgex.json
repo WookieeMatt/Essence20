@@ -5,6 +5,10 @@
   "_id": "VtvcdVx6AwW1Bgex",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Energy damage at 45ft/70ft range, with a 2 Stun alternate effect at ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

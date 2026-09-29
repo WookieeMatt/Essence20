@@ -5,6 +5,10 @@
   "_id": "h9646p1jwreQl4K3",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power and a Standard action to summon your Sharkcycle vehicle next to you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

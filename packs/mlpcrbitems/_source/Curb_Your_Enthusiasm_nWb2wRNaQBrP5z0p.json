@@ -5,6 +5,10 @@
   "_id": "nWb2wRNaQBrP5z0p",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, gain a Friendship Point for the group (a GM needs to be connected).</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

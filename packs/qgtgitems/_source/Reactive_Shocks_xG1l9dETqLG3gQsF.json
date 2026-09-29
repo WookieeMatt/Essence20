@@ -5,6 +5,10 @@
   "_id": "xG1l9dETqLG3gQsF",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Chat card: when the vehicle takes damage, a reminder that it can move 10ft away from the attack.</p><p>Left to the table: moving the vehicle and the once-per-turn limit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

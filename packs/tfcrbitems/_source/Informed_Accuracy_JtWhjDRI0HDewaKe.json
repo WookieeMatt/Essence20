@@ -5,6 +5,10 @@
   "_id": "JtWhjDRI0HDewaKe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks against a creature you used Analyze Target on this combat get ↑ equal to the times you analyzed it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

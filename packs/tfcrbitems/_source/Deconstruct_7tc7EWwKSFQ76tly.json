@@ -5,6 +5,10 @@
   "_id": "7tc7EWwKSFQ76tly",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend 1 Energon and roll Technology against the Requisition Difficulty of an adjacent enemy's Kit, Gear or Weapon. A Kit is destroyed; a Weapon gets a Snag on its attacks until repaired, with a repair button.</p><p>Left to the table: keeping damaged Gear from being used.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

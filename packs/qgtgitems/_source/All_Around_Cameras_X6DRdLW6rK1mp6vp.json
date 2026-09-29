@@ -5,6 +5,10 @@
   "_id": "X6DRdLW6rK1mp6vp",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the vehicle records video in every direction.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

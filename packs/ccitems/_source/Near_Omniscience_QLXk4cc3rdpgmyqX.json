@@ -5,6 +5,10 @@
   "_id": "QLXk4cc3rdpgmyqX",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: adding it to your sheet raises Smarts and asks which other Essence pays the cost, then lowers that one. Removing it undoes both.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

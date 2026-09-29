@@ -5,6 +5,10 @@
   "_id": "PuMnUtkl1eZ0HmY7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on your Infiltration tests.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "gqNiUXFoLUAyPi80",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: a switchable +2 to all Defenses; turn it on when you summon your Power Weapon.</p><p>Left to the table: the +1 damage with your Power Weapon and the Edge on Social tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "yPlhCYUnZ4VtUMsx",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: replaying what the glasses recorded.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

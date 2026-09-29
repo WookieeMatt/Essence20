@@ -5,6 +5,10 @@
   "_id": "CHkXJNjrvZUPxV7J",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene outside combat, you may roll Infiltration in place of another Skill Test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

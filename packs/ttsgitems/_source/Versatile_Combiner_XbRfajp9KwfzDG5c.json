@@ -5,6 +5,10 @@
   "_id": "XbRfajp9KwfzDG5c",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when added, the Zord gets the Megaform Trait for its Ranger's colour (or you pick one), and each copy lets one Zord without Combiner join its Megaform.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

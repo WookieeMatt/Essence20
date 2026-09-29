@@ -5,6 +5,10 @@
   "_id": "NP8cnqzge9yazSE7",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack for 1 Sharp damage against up to 5 targets in a 15ft cone, at ↓1.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>15 ft cone</p>",

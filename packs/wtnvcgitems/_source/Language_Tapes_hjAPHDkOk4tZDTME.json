@@ -5,6 +5,10 @@
   "_id": "hjAPHDkOk4tZDTME",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system has no language tracking. Note your two chosen languages on the sheet; the table handles what they let you understand.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

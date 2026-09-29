@@ -5,6 +5,10 @@
   "_id": "erZl8Udy03P7vHTe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +10ft Aquatic Movement. Automatic: ↑1 on Alertness in underwater scenes. Use button (once per mission): adds the free Athletics (Swimming) kit and scuba gear.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "Athletics (Swimming) Specialization",

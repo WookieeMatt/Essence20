@@ -5,6 +5,10 @@
   "_id": "TJbnp3pwIucso9fs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on Wealth Upshift for ↑1 while you work out what something is worth, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

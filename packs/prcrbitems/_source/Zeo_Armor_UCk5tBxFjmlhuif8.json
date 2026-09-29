@@ -5,6 +5,10 @@
   "_id": "UCk5tBxFjmlhuif8",
   "img": "icons/svg/shield.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +2 Toughness; Deflective applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "A2gJlm0YEFlpVNLg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your ranged attacks take 1 less ↓ from Cover, and a ranged hit removes the target's Cover Condition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -1,5 +1,6 @@
 import { pr2NoUntrainedSnag } from "./extensions/pr2/team.mjs";
 import { zord2NoUntrainedSnag } from "./extensions/zord2/snag.mjs";
+import { skillKitNoUntrainedSnag } from "./kits.mjs";
 import { E20 } from "./config.mjs";
 import {
   actorHasPerk, findPerk, getUsesThisEncounter, getUsesThisScene, markUsedThisEncounterCount, markUsedThisScene,
@@ -180,6 +181,11 @@ export class RollDialog {
 
     // Instructor's taught Skill - helpers/extensions/pr2/team.mjs.
     if (pr2NoUntrainedSnag(actor, skill)) {
+      return false;
+    }
+
+    // Basic / Advanced Skill Kit (Quartermaster's Guide p.41) - helpers/kits.mjs.
+    if (skillKitNoUntrainedSnag(actor, skill)) {
       return false;
     }
 
@@ -399,6 +405,7 @@ export class RollDialog {
       disarmingShotAvailable: dataset.disarmingShotAvailable,
       targetVesselSystemAvailable: dataset.targetVesselSystemAvailable,
       streetSmartsAvailable: dataset.streetSmartsAvailable,
+      wildAnimalKit: dataset.wildAnimalKit,
       // Intimidating (GI Joe CRB/TF CRB p.148 etc) - see dice.mjs's own
       // updatedShiftDataset.intimidatingAvailable comment. Localized here (rather than in the
       // template, which has no `config` in its own context) since the substitute skill is

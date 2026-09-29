@@ -5,6 +5,10 @@
   "_id": "2qW1YLopvjKyezNQ",
   "img": "systems/essence20/assets/icons/weapons/shotgun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Sharp damage against up to 2 targets in a 15ft cone, with the listed range; its Ballistic and Reload traits apply.</p>"
+    },
     "originalId": "",
     "description": "<p>15 ft cone</p>",
     "source": {

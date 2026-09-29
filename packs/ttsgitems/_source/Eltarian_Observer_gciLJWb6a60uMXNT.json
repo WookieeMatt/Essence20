@@ -5,6 +5,10 @@
   "_id": "gciLJWb6a60uMXNT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: pick a Skill when you gain it; you get an Edge on that Skill.</p><p>Left to the table: keep the pick to Culture, Survival or Technology, only use the Edge on alien worlds, and note your extra language.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

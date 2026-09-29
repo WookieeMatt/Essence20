@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on Misapplied Expertise for a Snag on Smarts tests when you lean on your studies for something outside them, then switch it off.</p><p>The GM may also use your focus to mislead you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

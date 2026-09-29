@@ -5,6 +5,10 @@
   "_id": "aE2gaLPtMZYkeZ6D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per combat): choose Edge on your Initiative roll or 1 Temporary Health. Left to the table: the other three options (+10ft Movement, acting normally when surprised, sharing your Mark Target with an ally).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -4,6 +4,10 @@
   "type": "armor",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while equipped, its armor bonus applies to your Defenses and its traits apply.</p><p>Use button (Ceremonial upgrade, Free action): ↑1 on Persuasion Tests until the end of your turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "0awsmcVOsNfpLPUU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: switch on Old-School Equipment for Edge on Smarts and Social tests about old-fashioned gear, then switch it off.</p><p>Left to the table: requisitioned gear losing the Computerized trait, and ignoring upgrades' Computerized requirement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

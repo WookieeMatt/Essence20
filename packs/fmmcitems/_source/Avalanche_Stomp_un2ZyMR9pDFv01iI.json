@@ -5,6 +5,10 @@
   "_id": "un2ZyMR9pDFv01iI",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Athletics with its listed damage and area; its traits apply.</p><p>Left to the table: knocking the target Prone on a Critical Success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

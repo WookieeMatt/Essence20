@@ -5,6 +5,10 @@
   "_id": "2SHHZs1qVMFBB2kW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switches your Officer Speed Essence increases to go into Strength instead (press again to switch back).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

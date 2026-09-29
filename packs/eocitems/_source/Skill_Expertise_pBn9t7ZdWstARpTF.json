@@ -5,6 +5,10 @@
   "_id": "pBn9t7ZdWstARpTF",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Combiner form gets ↑1 on the Skill set on this feature. Add a second copy for the second Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "PwTnDjPfb8dKplIU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect (while Morphed): +2 to all Defenses and Edge on Smarts tests.</p><p>Left to the table: +1 damage on attacks made with Powers.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

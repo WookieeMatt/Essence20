@@ -5,6 +5,10 @@
   "_id": "Uo50FISqRVfgbbGK",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might for the listed damage, with its Energy Attack as a second option. The Energy Attack can be used once per encounter; after that it won't roll until the next encounter.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

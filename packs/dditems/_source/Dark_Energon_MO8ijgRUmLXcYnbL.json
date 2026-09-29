@@ -5,6 +5,10 @@
   "_id": "MO8ijgRUmLXcYnbL",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: consume it for Dark Energon. Automatic: while you hold it, +1 Toughness and Evasion, ↑1 on Strength and Speed tests, a switch to spend it for Edge, and a growing addiction check that can give you Addicted.</p><p>Left to the table: its reroll option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑1 on Wealth. Roll Options Dialog: a switch for Edge on Social tests where you can flaunt your wealth. Left to the table: once per session, automatically passing a test that money could buy.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

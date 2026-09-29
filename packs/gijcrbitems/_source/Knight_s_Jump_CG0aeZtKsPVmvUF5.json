@@ -5,6 +5,10 @@
   "_id": "CG0aeZtKsPVmvUF5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button, once per turn: spend a Move action to swap two targeted allies' places in the Initiative order.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

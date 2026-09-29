@@ -5,6 +5,10 @@
   "_id": "P7dDEKgR8WtRY0G6",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: once per combat, spending a Standard action to repair 1 of the armor's Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

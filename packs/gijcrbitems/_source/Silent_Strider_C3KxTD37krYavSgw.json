@@ -5,6 +5,10 @@
   "_id": "C3KxTD37krYavSgw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while your Infiltrating switch is on, anyone rolling Alertness to detect you suffers a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

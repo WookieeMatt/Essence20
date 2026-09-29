@@ -5,6 +5,10 @@
   "_id": "k10zy7W2VPDGzDwo",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a two-handed Finesse spray that deals 1 Cover in a 20 ft radius.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

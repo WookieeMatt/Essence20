@@ -5,6 +5,10 @@
   "_id": "ssOS1qPYioLBIwBd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Personal Power. Mind-to-mind messages are narrative; social tests through telepathy roll as normal.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

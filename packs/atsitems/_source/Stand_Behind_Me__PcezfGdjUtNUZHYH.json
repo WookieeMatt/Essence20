@@ -5,6 +5,10 @@
   "_id": "PcezfGdjUtNUZHYH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: while Morphed, spend 1 Personal Power at the start of the round. Enemies within 60ft get a DIF 14 Alertness button on their turn; those who fail can only attack you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

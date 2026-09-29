@@ -5,6 +5,10 @@
   "_id": "q8K1UguQAQUhrduN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Golden Guardian can intercept any number of attacks on adjacent allies as long as you have Personal Power, and Counterstrike targets each attacker in turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

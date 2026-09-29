@@ -5,6 +5,10 @@
   "_id": "zzEmLhFcExVXhT5g",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: while you're driving, a switch to roll Driving in place of Intimidation.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

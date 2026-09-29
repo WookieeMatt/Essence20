@@ -5,6 +5,10 @@
   "_id": "o07KNibdWLzwu15Z",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 30/60 ft for 1 Sharp damage; Amphibious, Grapple and Reload apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

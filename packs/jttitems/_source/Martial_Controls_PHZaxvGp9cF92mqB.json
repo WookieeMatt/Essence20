@@ -5,6 +5,10 @@
   "_id": "PHZaxvGp9cF92mqB",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: this Zord Feature's benefit, as described.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

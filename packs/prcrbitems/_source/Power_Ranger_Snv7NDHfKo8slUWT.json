@@ -5,6 +5,10 @@
   "_id": "Snv7NDHfKo8slUWT",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the It's Morphin Time! Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

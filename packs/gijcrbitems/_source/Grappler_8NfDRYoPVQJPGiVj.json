@@ -5,6 +5,10 @@
   "_id": "8NfDRYoPVQJPGiVj",
   "img": "systems/essence20/assets/icons/weapons/whip.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Finesse grapple maneuver at Reach, and its traits apply. Alternate Effect: an Intimidate attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

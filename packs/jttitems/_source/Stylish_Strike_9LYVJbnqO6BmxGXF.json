@@ -5,6 +5,10 @@
   "_id": "9LYVJbnqO6BmxGXF",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when one of your melee attacks is a Critical Success, Frightened, Impaired and Mesmerized are removed from all your allies in the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

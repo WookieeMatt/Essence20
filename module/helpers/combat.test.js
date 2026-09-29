@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 import {
   getDefenseValue, getVehicleDriver, getOwnedZord, computeMultiplier, getEffectiveLevel, applyDamage,
-  healStunAtTurnStart, _isCritIsFumble, grantToughEnoughResistance, getSecondaryDamage,
+  healStunAtTurnStart, _isCritIsFumble, getSecondaryDamage, rechargeLifeSupporting, toughEnoughDamage,
   getSecondaryDamageForButton,
 } from './combat.mjs';
 
@@ -434,6 +434,18 @@ describe("applyDamage", () => {
     expect(applied).toBe(0);
   });
 
+  test("an Essence damage type takes from that Essence, not Health (helpers/essence-attack.mjs)", async () => {
+    const actor = {
+      name: 'Target', items: [], getFlag: jest.fn(),
+      system: { health: { value: 10 }, immunities: {}, essences: { strength: { max: 3, value: 3 } } },
+      update: jest.fn(),
+    };
+    const applied = await applyDamage(actor, 1, 'essenceStrength');
+    expect(applied).toBe(1);
+    expect(actor.update).toHaveBeenCalledWith({ 'system.essences.strength.value': 2 });
+    expect(actor.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.health.value': expect.anything() }));
+  });
+
   describe("Stun (damage type) - auto-Defeat when total Stun reaches remaining Health", () => {
     function makeActor({ health = 10, stun = 0, immunities = {} } = {}) {
       return {
@@ -698,88 +710,70 @@ describe("applyDamage", () => {
     });
   });
 
-  describe("Hardened Armor (Across the Stars, Gold Ranger, 1st level) - Resistance after a hit", () => {
+  describe("Hardened Armor (Across the Stars, Gold Ranger, 1st level) - Resistance for the rest of the scene after a hit", () => {
     const HARDENED_ARMOR_ID = "Compendium.essence20.across_the_stars.Item.LVyy4985HSSKCnGs";
 
     function makeActor({ perkIds = [], resistances = {} } = {}) {
       const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
 
       return {
-        system: { health: { value: 10 }, immunities: {}, resistances }, update: jest.fn(), items,
+        system: { health: { value: 10 }, immunities: {}, resistances }, update: jest.fn(), setFlag: jest.fn(), items,
       };
     }
 
     test("grants Resistance to a damage type once real damage of that type lands", async () => {
       const actor = makeActor({ perkIds: [HARDENED_ARMOR_ID] });
       await applyDamage(actor, 3, 'fire');
-      expect(actor.update).toHaveBeenCalledWith({ 'system.resistances.fire': true });
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'sceneResistances.fire', expect.objectContaining({ window: 'scene', morphedOnly: false }));
+      expect(actor.update).not.toHaveBeenCalledWith({ 'system.resistances.fire': true });
     });
 
     test("also applies to Stun-type damage", async () => {
       const actor = { ...makeActor({ perkIds: [HARDENED_ARMOR_ID] }), toggleStatusEffect: jest.fn() };
       actor.system.stun = { value: 0 };
       await applyDamage(actor, 2, 'stun');
-      expect(actor.update).toHaveBeenCalledWith({ 'system.resistances.stun': true });
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'sceneResistances.stun', expect.objectContaining({ window: 'scene', morphedOnly: false }));
+      expect(actor.update).not.toHaveBeenCalledWith({ 'system.resistances.stun': true });
     });
 
     test("doesn't grant Resistance to Blunt or Sharp damage", async () => {
       for (const damageType of ['blunt', 'sharp']) {
         const actor = makeActor({ perkIds: [HARDENED_ARMOR_ID] });
         await applyDamage(actor, 3, damageType);
-        expect(actor.update).not.toHaveBeenCalledWith({ [`system.resistances.${damageType}`]: true });
+        expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', `sceneResistances.${damageType}`, expect.anything());
       }
     });
 
     test("doesn't grant Resistance without the Perk", async () => {
       const actor = makeActor();
       await applyDamage(actor, 3, 'fire');
-      expect(actor.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.resistances.fire': expect.anything() }));
+      expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'sceneResistances.fire', expect.anything());
     });
 
     test("doesn't re-grant Resistance the actor already has", async () => {
       const actor = makeActor({ perkIds: [HARDENED_ARMOR_ID], resistances: { fire: true } });
       await applyDamage(actor, 3, 'fire');
-      expect(actor.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.resistances.fire': expect.anything() }));
+      expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'sceneResistances.fire', expect.anything());
     });
 
     test("doesn't grant Resistance when no damage actually landed (Immune)", async () => {
       const actor = makeActor({ perkIds: [HARDENED_ARMOR_ID] });
       actor.system.immunities = { fire: true };
       await applyDamage(actor, 3, 'fire');
-      expect(actor.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.resistances.fire': expect.anything() }));
+      expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'sceneResistances.fire', expect.anything());
     });
   });
 
-  describe("Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99) - Resistance-after-hit half", () => {
+  describe("Tough Enough - the effect's own damage is halved", () => {
     const TOUGH_ENOUGH_ID = "Compendium.essence20.gi_joe_crb.Item.RoIa80w6EAZR0uFP";
+    const holder = { items: [{ type: 'perk', flags: { core: { sourceId: TOUGH_ENOUGH_ID } } }] };
 
-    function makeActor({ perkIds = [], resistances = {} } = {}) {
-      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
-      return { system: { resistances }, update: jest.fn(), items };
-    }
-
-    test("grants Resistance to a damage type once real damage of that type lands", async () => {
-      const actor = makeActor({ perkIds: [TOUGH_ENOUGH_ID] });
-      await grantToughEnoughResistance(actor, 'fire', 3);
-      expect(actor.update).toHaveBeenCalledWith({ 'system.resistances.fire': true });
-    });
-
-    test("doesn't grant Resistance without the Perk", async () => {
-      const actor = makeActor();
-      await grantToughEnoughResistance(actor, 'fire', 3);
-      expect(actor.update).not.toHaveBeenCalled();
-    });
-
-    test("doesn't re-grant Resistance the actor already has", async () => {
-      const actor = makeActor({ perkIds: [TOUGH_ENOUGH_ID], resistances: { fire: true } });
-      await grantToughEnoughResistance(actor, 'fire', 3);
-      expect(actor.update).not.toHaveBeenCalled();
-    });
-
-    test("doesn't grant Resistance when no damage actually landed", async () => {
-      const actor = makeActor({ perkIds: [TOUGH_ENOUGH_ID] });
-      await grantToughEnoughResistance(actor, 'fire', 0);
-      expect(actor.update).not.toHaveBeenCalled();
+    test("halves, rounding up, for a holder only", () => {
+      expect(toughEnoughDamage(holder, 5)).toBe(3);
+      expect(toughEnoughDamage(holder, 4)).toBe(2);
+      expect(toughEnoughDamage(holder, 1)).toBe(1);
+      expect(toughEnoughDamage(holder, 0)).toBe(0);
+      expect(toughEnoughDamage({ items: [] }, 5)).toBe(5);
     });
   });
 
@@ -817,9 +811,9 @@ describe("applyDamage", () => {
 
       await applyDamage(actor, 3, 'fire');
 
-      expect(actor.update).toHaveBeenCalledWith(expect.objectContaining({
-        'system.resistances.fire': true, 'system.powers.personal.value': 1,
-      }));
+      // The Resistance is scene-long and for the Morphed form only (helpers/actor.mjs#grantSceneResistance).
+      expect(actor.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.powers.personal.value': 1 }));
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'sceneResistances.fire', expect.objectContaining({ window: 'scene', morphedOnly: true }));
       expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'gridElementalAdaptationUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
     });
 
@@ -1522,10 +1516,10 @@ describe("applyDamage", () => {
   describe("Renegade Commander (Sgt Slaughter Sourcebook, Alternate Renegade Role Perk, 5th level, p.12)", () => {
     const RENEGADE_COMMANDER_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Item.JgJRqxXzTPBOlOBz";
 
-    function makeActor({ health = 3, usedFlag = undefined, hasPerk = true } = {}) {
-      const flags = usedFlag !== undefined ? { renegadeCommanderUsedThisEncounter: usedFlag } : {};
+    function makeActor({ health = 3, usedFlag = undefined, hasPerk = true, level = 5 } = {}) {
+      const flags = usedFlag !== undefined ? { renegadeCommanderUsedThisScene: usedFlag } : {};
       return {
-        system: { health: { value: health }, immunities: {} },
+        system: { health: { value: health }, immunities: {}, level },
         items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: RENEGADE_COMMANDER_ID } } }] : [],
         update: jest.fn(),
         getFlag: jest.fn((scope, key) => flags[key]),
@@ -1546,11 +1540,19 @@ describe("applyDamage", () => {
 
       expect(applied).toBe(2); // 3 -> 1, not the full 5
       expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
-      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'renegadeCommanderUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'renegadeCommanderUsedThisScene', { epoch: 1, window: 'scene', count: 1 });
+    });
+
+    test("waits for 5th level", async () => {
+      const actor = makeActor({ health: 3, level: 4 });
+      const applied = await applyDamage(actor, 5, 'sharp');
+
+      expect(applied).toBe(3);
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
     });
 
     test("doesn't apply a second time in the same scene", async () => {
-      const actor = makeActor({ health: 3, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
+      const actor = makeActor({ health: 3, usedFlag: { epoch: 1, window: 'scene', count: 1 } });
       const applied = await applyDamage(actor, 5, 'sharp');
 
       expect(applied).toBe(3);
@@ -1572,58 +1574,76 @@ describe("applyDamage", () => {
   describe("Life Supporting (Cobra Codex, Restricted Battledress Upgrade, p.101)", () => {
     const LIFE_SUPPORTING_ID = "Compendium.essence20.cobra_codex.Item.VokHpoLjUYTzA3Xk";
 
-    function makeActor({ health = 3, usedFlag = undefined, hasUpgrade = true, parentId = undefined } = {}) {
-      const flags = usedFlag !== undefined ? { lifeSupportingUsedThisEncounter: usedFlag } : {};
+    function makeActor({ health = 3, spent = false, hasUpgrade = true, parentId = undefined } = {}) {
       const upgrade = {
         type: 'upgrade',
+        name: 'Life Supporting',
         system: { type: 'armor' },
-        flags: { core: { sourceId: LIFE_SUPPORTING_ID } },
+        flags: { core: { sourceId: LIFE_SUPPORTING_ID }, essence20: spent ? { lifeSupportingSpent: true } : {} },
         getFlag: jest.fn((scope, key) => (key == 'parentId' ? parentId : undefined)),
+        setFlag: jest.fn(async function (scope, key, value) {
+          this.flags.essence20[key] = value;
+        }),
+        unsetFlag: jest.fn(async function (scope, key) {
+          delete this.flags.essence20[key];
+        }),
       };
-      return {
+      const actor = {
+        name: 'Tester',
         system: { health: { value: health }, immunities: {} },
         items: hasUpgrade ? [upgrade] : [],
         update: jest.fn(),
-        getFlag: jest.fn((scope, key) => flags[key]),
-        setFlag: jest.fn(async (scope, key, value) => {
-          flags[key] = value;
-        }),
+        getFlag: jest.fn(),
+        setFlag: jest.fn(),
         unsetFlag: jest.fn(),
       };
+      upgrade.parent = actor;
+      return { actor, upgrade };
     }
 
     beforeEach(() => {
-      global.game = { combat: { id: 'combat1' } };
+      global.game = { combat: { id: 'combat1' }, i18n: { format: (key) => key } };
     });
 
-    test("floors Health at 1 instead of 0, and marks the scene used", async () => {
-      const actor = makeActor({ health: 3 });
+    test("floors Health at 1 instead of 0, and marks the Upgrade spent", async () => {
+      const { actor, upgrade } = makeActor({ health: 3 });
       const applied = await applyDamage(actor, 5, 'sharp');
 
       expect(applied).toBe(2); // 3 -> 1, not the full 5
       expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
-      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'lifeSupportingUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
+      expect(upgrade.setFlag).toHaveBeenCalledWith('essence20', 'lifeSupportingSpent', true);
     });
 
-    test("doesn't apply a second time in the same scene", async () => {
-      const actor = makeActor({ health: 3, usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
+    test("doesn't apply again until recharged, whatever the scene", async () => {
+      const { actor } = makeActor({ health: 3, spent: true });
       const applied = await applyDamage(actor, 5, 'sharp');
 
       expect(applied).toBe(3);
       expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
     });
 
+    test("the DIF 20 Technology test recharges it on a success only", async () => {
+      const { upgrade } = makeActor({ spent: true });
+      const fail = jest.fn(async () => ({ success: false }));
+      await rechargeLifeSupporting(upgrade, fail);
+      expect(fail).toHaveBeenCalledWith(upgrade.parent, 'technology', 20);
+      expect(upgrade.flags.essence20.lifeSupportingSpent).toBe(true);
+
+      await rechargeLifeSupporting(upgrade, async () => ({ success: true }));
+      expect(upgrade.flags.essence20.lifeSupportingSpent).toBeUndefined();
+    });
+
     test("doesn't apply without the Upgrade, when Health doesn't reach 0, or for an attached (child) upgrade copy", async () => {
-      const noUpgradeActor = makeActor({ health: 3, hasUpgrade: false });
+      const { actor: noUpgradeActor } = makeActor({ health: 3, hasUpgrade: false });
       await applyDamage(noUpgradeActor, 5, 'sharp');
       expect(noUpgradeActor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
 
-      const healthyActor = makeActor({ health: 10 });
+      const { actor: healthyActor, upgrade } = makeActor({ health: 10 });
       await applyDamage(healthyActor, 5, 'sharp');
       expect(healthyActor.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-      expect(healthyActor.setFlag).not.toHaveBeenCalled();
+      expect(upgrade.setFlag).not.toHaveBeenCalled();
 
-      const attachedActor = makeActor({ health: 3, parentId: 'someArmor1' });
+      const { actor: attachedActor } = makeActor({ health: 3, parentId: 'someArmor1' });
       await applyDamage(attachedActor, 5, 'sharp');
       expect(attachedActor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
     });
@@ -2232,12 +2252,31 @@ describe("applyDamage", () => {
       // This is the one entry in applyDamage's Defeat-prevention chain that announces itself, so
       // it needs i18n/notifications the other entries' tests never touch.
       originalGame = global.game;
-      global.game = { ...global.game, i18n: { format: jest.fn(() => 'msg') } };
+      global.game = { ...global.game, i18n: { format: jest.fn(() => 'msg'), localize: jest.fn(k => k) } };
       global.ui = { ...global.ui, notifications: { info: jest.fn(), warn: jest.fn() } };
+      // "You may": the table is asked, and here says yes with the first teammate offered.
+      originalFoundry = global.foundry;
+      global.foundry = { ...(global.foundry ?? {}), applications: { api: { DialogV2: { wait: jest.fn(async () => 'rescuer0') } } } };
     });
+
+    let originalFoundry;
 
     afterEach(() => {
       global.game = originalGame;
+      global.foundry = originalFoundry;
+    });
+
+    test("asks first - declining leaves the actor Defeated and the Power unspent", async () => {
+      const actor = makeActor({ health: 3 });
+      const teammateToken = makeTeammateToken({ power: 2 });
+      canvas.tokens.placeables = [teammateToken];
+      foundry.applications.api.DialogV2.wait.mockResolvedValueOnce('decline');
+
+      await applyDamage(actor, 5, 'sharp');
+
+      expect(foundry.applications.api.DialogV2.wait).toHaveBeenCalled();
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
+      expect(teammateToken.actor.update).not.toHaveBeenCalled();
     });
 
     test("a teammate spends 1 Power to return the actor at 1 Health, Impaired", async () => {

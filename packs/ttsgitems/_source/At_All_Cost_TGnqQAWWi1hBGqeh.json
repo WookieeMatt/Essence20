@@ -5,6 +5,10 @@
   "_id": "TGnqQAWWi1hBGqeh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (while Morphed): switch it on and hits against you drain Personal Power instead of Health. At 0 Personal Power you drop to 0 Health, Unconscious and Defeated.</p><p>Left to the table: the once-per-day limit (the system only stops a second use in the same scene).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

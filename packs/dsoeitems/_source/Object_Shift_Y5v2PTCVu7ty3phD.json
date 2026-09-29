@@ -5,6 +5,10 @@
   "_id": "Y5v2PTCVu7ty3phD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: turning into an object, how tough it is, and what you can't do while in that shape.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

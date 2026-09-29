@@ -5,6 +5,10 @@
   "_id": "mUX5yrrvE6ppbAAm",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: the Zord gets +1 Strength, +1 Speed, +20 ft to every movement type and +1 Toughness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

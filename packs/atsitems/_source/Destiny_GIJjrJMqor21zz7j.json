@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when your d20 comes up lower than the highest face of your smallest Skill die, a Reroll button lets you re-roll the d20; the new result stands.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

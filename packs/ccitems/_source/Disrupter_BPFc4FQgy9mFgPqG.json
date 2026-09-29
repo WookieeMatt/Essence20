@@ -5,6 +5,10 @@
   "_id": "BPFc4FQgy9mFgPqG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on Initiative when any enemy's Threat Level is higher than your level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

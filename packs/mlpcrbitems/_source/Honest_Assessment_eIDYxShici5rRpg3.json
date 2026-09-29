@@ -5,6 +5,10 @@
   "_id": "eIDYxShici5rRpg3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick a Skill when you gain it. Use button: switches it on for ↑2 on that Skill and ↓2 on Deception and Persuasion; switch it off when the scene ends.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

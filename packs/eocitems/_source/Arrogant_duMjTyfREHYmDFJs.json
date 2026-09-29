@@ -5,6 +5,10 @@
   "_id": "duMjTyfREHYmDFJs",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: on your first turn of a combat, attacking only foes below your level shows a warning before the roll (area attacks that include an equal or higher foe are fine). Left to the table: actually holding the attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

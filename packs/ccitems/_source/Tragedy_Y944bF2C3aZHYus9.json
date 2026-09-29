@@ -5,6 +5,10 @@
   "_id": "Y944bF2C3aZHYus9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: one +1 bonus per Defense, all switched off to start.</p><p>Left to the table: switching on the one for the Defense you chose.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

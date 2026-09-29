@@ -5,6 +5,10 @@
   "_id": "jpu756uKYfydTu16",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when a nearby ally rolls the same Skill you used on your last turn, they get an Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

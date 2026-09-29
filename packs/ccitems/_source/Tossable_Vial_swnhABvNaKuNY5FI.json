@@ -5,6 +5,10 @@
   "_id": "swnhABvNaKuNY5FI",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the poison gains a 20/50 ft thrown range on top of Reach.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

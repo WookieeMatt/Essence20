@@ -5,6 +5,10 @@
   "_id": "74X6WTVVP1cfnOpI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: after an unarmed attack deals damage, a button lets you spend an Energon Point and a Free action to attack again; it keeps going while each attack connects.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

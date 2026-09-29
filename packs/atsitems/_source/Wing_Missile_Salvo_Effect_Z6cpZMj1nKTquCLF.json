@@ -5,6 +5,10 @@
   "_id": "Z6cpZMj1nKTquCLF",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack at 60ft/150ft for 2 damage in a 15ft blast. It shares the Salvo's once-per-encounter limit.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

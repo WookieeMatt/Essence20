@@ -5,6 +5,10 @@
   "_id": "Y1sMUqI3JOYb0QiD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on a ranged attack, a switch for ↑2 and +2 damage; use it in place of Bang Bang's extra attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

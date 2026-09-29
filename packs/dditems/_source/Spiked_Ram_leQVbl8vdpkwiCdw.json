@@ -1,0 +1,102 @@
+{
+  "folder": "Vp6v1H3MnV842PdP",
+  "name": "Spiked Ram",
+  "type": "weapon",
+  "_id": "leQVbl8vdpkwiCdw",
+  "img": "systems/essence20/assets/icons/weapons/punch.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Driving attack at Reach for 1 Sharp, with a Maneuver alternate effect; it counts as a Ram. Granted by the Salvaged Alt Mode.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 38
+    },
+    "items": {
+      "a1s1": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.q0RtH6G6ezbpaJQx",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Spiked Ram Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "driving",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "isRam": true,
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "a1s2": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.bzTO0XuWzf9aqx0m",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Spiked Ram Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "driving",
+          "style": "melee"
+        },
+        "damageValue": null,
+        "damageType": "maneuver",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "automatic",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "sharp",
+      "vehicular"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790700000000,
+    "modifiedTime": 1790700000000,
+    "lastModifiedBy": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!leQVbl8vdpkwiCdw"
+}

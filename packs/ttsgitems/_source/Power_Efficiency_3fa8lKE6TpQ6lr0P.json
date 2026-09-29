@@ -5,6 +5,10 @@
   "_id": "3fa8lKE6TpQ6lr0P",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: whenever you spend Personal Power, a d4 is rolled and a 4 gives 1 back. Power lost to an enemy's attack or ability doesn't count.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

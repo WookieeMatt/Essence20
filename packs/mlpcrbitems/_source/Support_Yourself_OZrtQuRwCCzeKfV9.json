@@ -5,6 +5,10 @@
   "_id": "OZrtQuRwCCzeKfV9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when your Supportive Friend bonus goes out to nearby friends, you get it too. Left to the table: sharing in the benefit of your other abilities that help friends.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

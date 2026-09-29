@@ -4,6 +4,10 @@
   "type": "armor",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: +1 Toughness while worn. Comes with the Acclimating upgrade attached, which applies its own rule.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

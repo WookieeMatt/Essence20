@@ -5,6 +5,10 @@
   "_id": "LbLlwQfLeWVl3jPz",
   "img": "icons/weapons/guns/rifle-brown.webp",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its effects with the listed Skill, damage, range and targets, and its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

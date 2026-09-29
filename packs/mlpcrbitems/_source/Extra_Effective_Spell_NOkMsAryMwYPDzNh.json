@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you cast, a prompt offers to pay double the spell's cost, and the chat card notes the doubled effect. Left to the table: actually doubling the spell's effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

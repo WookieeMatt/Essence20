@@ -5,6 +5,10 @@
   "_id": "XOExdi9Urm67o3Vl",
   "img": "systems/essence20/assets/icons/weapons/redirection-gauntlets.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Targeting attacks for 2 Energy damage, with a blast alternate effect; its Computerized trait applies. Left to the table: the Energon to activate it each scene, the two Hardpoints it fills, and charging it while Defending to raise a 15ft cover barrier.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

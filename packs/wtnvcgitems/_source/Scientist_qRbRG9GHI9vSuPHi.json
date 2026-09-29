@@ -5,6 +5,10 @@
   "_id": "qRbRG9GHI9vSuPHi",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Doctoral Thesis and How Strange! at level 1, plus the Essence increases and General Perk picks at the listed levels. Your Focus (Night Vale Community College or University of What It Is) adds the Focus Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

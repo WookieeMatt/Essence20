@@ -5,6 +5,10 @@
   "_id": "bjQbwWClo9Vh2cQg",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. An adventure artifact that points toward the other artifacts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

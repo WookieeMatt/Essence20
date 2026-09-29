@@ -5,6 +5,10 @@
   "_id": "pByfeAj3iyANNR68",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a once-per-turn switch for ↑1 when you're breaking local laws.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

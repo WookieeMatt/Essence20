@@ -5,6 +5,10 @@
   "_id": "nJ4hF4Oa2m8SvMJX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on grapple attacks, and ↑1 on Brawn tests while in Bot Mode.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

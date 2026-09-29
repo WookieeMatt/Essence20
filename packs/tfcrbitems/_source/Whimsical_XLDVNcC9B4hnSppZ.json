@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: ↓1 on Infiltration, on by default. Untick it when the test is just for fun.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

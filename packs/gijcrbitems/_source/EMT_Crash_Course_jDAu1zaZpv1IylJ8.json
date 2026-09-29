@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (with a medicine kit on you): choose to heal 1 on yourself or an ally once per scene, or restore 1 Essence to an ally. Automatic: Edge on Science rolls with a Medicine Specialization.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

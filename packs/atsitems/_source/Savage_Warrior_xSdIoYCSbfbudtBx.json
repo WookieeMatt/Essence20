@@ -5,6 +5,10 @@
   "_id": "xSdIoYCSbfbudtBx",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic while equipped: +2 Toughness and Evasion and 45ft Aerial movement. Its Crystal Saber and Chest Blast are separate weapons.</p><p>Left to the table: the 4 Personal Power summon cost and turning the wings into a shield.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

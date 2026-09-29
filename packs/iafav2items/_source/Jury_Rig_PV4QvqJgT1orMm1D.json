@@ -5,6 +5,10 @@
   "_id": "PV4QvqJgT1orMm1D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick a vehicle in reach and a benefit, choose Free or Standard action, and roll Technology; on a success the benefit applies to the vehicle.</p><p>Left to the table: the once-per-turn limit, and ending a scene-long benefit when the scene ends.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "sHBEBigG2y63MSWL",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the upgraded weapon gains the Silent trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "pmA5wQDbc5oQk5Ak",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you or a nearby teammate summons a Zord, its arrival time is 1 round shorter (minimum 1).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

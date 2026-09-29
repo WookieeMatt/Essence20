@@ -5,6 +5,10 @@
   "_id": "5z1V3CpuMF9YANCH",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 4 starting Health, Ground Movement 30, the Plant Plasticity Perk, and your pick of the Common or Large Flora Alt Mode. You pick +1 Smarts or Social and Science or Persuasion as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

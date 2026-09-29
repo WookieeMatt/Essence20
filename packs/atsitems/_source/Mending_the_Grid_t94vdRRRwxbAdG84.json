@@ -5,6 +5,10 @@
   "_id": "t94vdRRRwxbAdG84",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: after any failed Skill Test, a Reroll button spends 1 Story Point to re-roll it with ↑2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

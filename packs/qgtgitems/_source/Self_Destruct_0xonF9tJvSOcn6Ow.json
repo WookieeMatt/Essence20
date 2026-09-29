@@ -5,6 +5,10 @@
   "_id": "0xonF9tJvSOcn6Ow",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: a crew member arms it as a Free action; on that crew member's next turn the vehicle is Defeated and explodes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

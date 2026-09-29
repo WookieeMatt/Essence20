@@ -5,6 +5,10 @@
   "_id": "YDv7PPjj6qgqKI9e",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on attacks against air vehicles, and Point-Defense Reflexes carries no close-range Snag for you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

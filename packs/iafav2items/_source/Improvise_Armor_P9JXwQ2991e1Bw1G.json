@@ -5,6 +5,10 @@
   "_id": "P9JXwQ2991e1Bw1G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick a vehicle in reach and roll Technology; the vehicle gains temporary Health based on your total, once per scene.</p><p>Left to the table: removing any leftover temporary Health when the scene ends.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

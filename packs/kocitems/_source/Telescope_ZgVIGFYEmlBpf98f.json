@@ -5,6 +5,10 @@
   "_id": "ZgVIGFYEmlBpf98f",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off until you switch it on): ↑2 on Alertness and Survival when looking at things 500 ft or more away.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

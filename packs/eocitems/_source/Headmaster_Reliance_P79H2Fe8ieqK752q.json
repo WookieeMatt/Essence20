@@ -5,6 +5,10 @@
   "_id": "P79H2Fe8ieqK752q",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: you can only convert to Bot Mode with your partner adjacent, and it costs an extra Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "jRD6G5Z6eblTvxeO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added, you pick an Intimidation Specialization. Automatic: Edge on Skill Tests with it, and in combat a successful Intimidate leaves the target Frightened until the end of their next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -60,6 +60,15 @@ const safeEpoch = () => {
 
 const essenceOf = skill =>CONFIG.E20?.skillToEssence?.[skill];
 
+// The Roll Options Dialog switch the roller ticks when a Social test is conning Something Is Off's holder.
+export const CONNING_TOGGLE = 'somethingIsOffConning';
+
+/** The actors of the tokens the current user has targeted. */
+function targetedActors() {
+  const targets = game?.user?.targets;
+  return targets ? [...targets].map(t => t?.actor).filter(Boolean) : [];
+}
+
 function mysticalPoints(actor) {
   return actor?._getBaseRolePoints?.() ?? null;
 }
@@ -146,6 +155,14 @@ export function mlp2Toggles(actor, { rolledSkill } = {}) {
   // Competitor (Story of the Seasons p.131): "↑1 in formal non-combat contests".
   if (hasSourced(actor, MLP2.competitor)) {
     add('competitor', label(MLP2.competitor, 'E20.Mlp2ToggleContest'));
+  }
+
+  // Something Is Off (Story of the Seasons p.131) is the DEFENDER's Perk, but only the roller knows whether
+  // this Social test is "actively conning" the target in a deal rather than a "simple lie" - so the roller
+  // says so here, and somethingIsOffDefense reads the answer. Offered only when a targeted actor has it.
+  const conned = (essence == 'social' || rolledSkill == 'deception') ? targetedActors().find(a => hasSourced(a, MLP2.somethingIsOff)) : null;
+  if (conned) {
+    add(CONNING_TOGGLE, T('E20.Mlp2ToggleConning', { perk: itemOf(conned, MLP2.somethingIsOff)?.name ?? '', name: conned.name }));
   }
 
   // Traveler (Story of the Seasons p.121): ↑1 on Social tests with natives of the chosen place.
@@ -262,9 +279,13 @@ export async function mlp2PostRoll(actor, results, checkContext, { hits = [] } =
   }
 }
 
-/** Something Is Off (Story of the Seasons p.131): +1 Cleverness per pick (up to 4) when being conned. */
-export function somethingIsOffDefense(attacker, defender, defenseType) {
-  return defenseType == 'cleverness' ? Math.min(4, countOf(defender, MLP2.somethingIsOff)) : 0;
+/**
+ * Something Is Off (Story of the Seasons p.131): +1 Cleverness per pick (up to 4) "when somepony is trying
+ * to cheat you in a deal" - never against "simple lies or deception". Only when the roller ticked the
+ * conning switch in their Roll Options Dialog (mlp2Toggles), which reaches here as ctx.ext.
+ */
+export function somethingIsOffDefense(attacker, defender, defenseType, ctx = {}) {
+  return defenseType == 'cleverness' && ctx?.ext?.[CONNING_TOGGLE] ? Math.min(4, countOf(defender, MLP2.somethingIsOff)) : 0;
 }
 
 /* -------------------------------------------- */
@@ -295,12 +316,30 @@ const USES = [
     // Mystical Understanding - Refocus ("Your Current Spellcasting Rank ... returns to your Total
     // Spellcasting Rank. Refocus is a Standard action and costs 2 Mystical Points") and Essential
     // Research ("temporarily increase an Essence score ... spending a Mystical Point ... for the rest of
-    // the day ... only 3 times per day").
+    // the day ... only 3 times per day"). This Use claims the item's Use button, so the Magically Fit
+    // In benefit (helpers/magically-fit-in.mjs, which the older banked-buffs dispatch would otherwise
+    // reach) is offered here as a third choice rather than going unreachable.
     id: 'mlp2Mystical', matches: item => sourceOf(item) == MLP2.mysticalUnderstanding,
     async run(item, economy, pay) {
       const actor = item.parent;
       const { chooseButtons } = await import("../../grants.mjs");
-      const choice = await chooseButtons(item.name, T('E20.Mlp2MysticalPrompt'), [['refocus', T('E20.Mlp2Refocus')], ['research', T('E20.Mlp2Research')]]);
+      const choice = await chooseButtons(item.name, T('E20.Mlp2MysticalPrompt'), [
+        ['refocus', T('E20.Mlp2Refocus')], ['research', T('E20.Mlp2Research')], ['fitIn', T('E20.MagicallyFitInPickTitle')],
+      ]);
+      if (choice == 'fitIn') {
+        const { activateMagicallyFitIn, canUseMagicallyFitIn } = await import("../../magically-fit-in.mjs");
+        if (!canUseMagicallyFitIn(actor)) {
+          ui.notifications.warn(T('E20.Mlp2NoMystical', { name: actor.name }));
+          return null;
+        }
+
+        // It runs its own Skill / Mystical Point picker; only report it if points were actually spent.
+        const before = Number(mysticalPoints(actor)?.system?.resource?.value) || 0;
+        await activateMagicallyFitIn(actor);
+        const after = Number(mysticalPoints(actor)?.system?.resource?.value) || 0;
+        return after < before ? T('E20.PerkUsedNotification', { perk: T('E20.MagicallyFitInPickTitle'), actor: actor.name }) : null;
+      }
+
       if (choice == 'refocus') {
         if (!(await pay('standard')) || !(await spendMystical(actor, 2))) {
           return null;
@@ -355,7 +394,8 @@ const USES = [
           return null;
         }
 
-        await write({ 'flags.essence20.magicallyFitInBonus': { skill, amount: 1 } });
+        const { magicallyFitInValue } = await import("../../magically-fit-in.mjs");
+        await write({ 'flags.essence20.magicallyFitInBonus': magicallyFitInValue(skill, 1) });
         return T('E20.Mlp2FriendFitIn', { name: actor.name, friend: friend.name });
       }
 

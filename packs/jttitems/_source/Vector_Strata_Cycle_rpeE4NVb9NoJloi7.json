@@ -5,6 +5,10 @@
   "_id": "rpeE4NVb9NoJloi7",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pay its Personal Power to summon your Vector or Strata Cycle beside you (made from its stat block the first time). You get Edge on Driving tests while riding it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

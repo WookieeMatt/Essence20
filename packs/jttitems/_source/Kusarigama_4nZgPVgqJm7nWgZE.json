@@ -5,6 +5,10 @@
   "_id": "4nZgPVgqJm7nWgZE",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse with its Blunt, grapple and Maneuver options and ignore Defend; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

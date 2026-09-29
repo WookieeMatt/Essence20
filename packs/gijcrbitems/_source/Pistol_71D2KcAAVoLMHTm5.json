@@ -5,6 +5,10 @@
   "_id": "71D2KcAAVoLMHTm5",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, and its Ballistic trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

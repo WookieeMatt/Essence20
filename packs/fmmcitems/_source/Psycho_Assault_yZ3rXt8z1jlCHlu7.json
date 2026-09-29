@@ -5,6 +5,10 @@
   "_id": "yZ3rXt8z1jlCHlu7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spends 1 Personal Power; for the rest of your turn your attacks get ↑1 and +1 damage.</p><p>Left to the table: only using it while Morphed and out of Monster Form.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

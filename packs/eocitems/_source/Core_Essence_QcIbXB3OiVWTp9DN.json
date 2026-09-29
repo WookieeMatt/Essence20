@@ -5,6 +5,10 @@
   "_id": "QcIbXB3OiVWTp9DN",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Combiner form gets +1 to the Essence and ↑1 to the Skill set on this feature.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

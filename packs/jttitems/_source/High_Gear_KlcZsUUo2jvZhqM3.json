@@ -5,6 +5,10 @@
   "_id": "KlcZsUUo2jvZhqM3",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene while piloting, spend 1 Personal Power to double the Zord's Ground Movement; ranged attacks against it take a Snag while it's on.</p><p>Left to the table: rolling the 2d2 turns and switching it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

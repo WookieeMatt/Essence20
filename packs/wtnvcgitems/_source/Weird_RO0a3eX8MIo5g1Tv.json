@@ -5,6 +5,10 @@
   "_id": "RO0a3eX8MIo5g1Tv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: once per scene, a reroll button appears on a failed Skill Test, and using it costs 1 Health.</p><p>Left to the table: taking the damage to an Essence instead, and needing this Perk before investing in Weird.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

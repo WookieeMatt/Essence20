@@ -5,6 +5,10 @@
   "_id": "AAvHOuAYqrRu2IKh",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: a Close Combat Blade (Blazing), Tactical Armor (Weather Gear, Cold), an Element Grenade and a Limited Survival (Arctic) Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

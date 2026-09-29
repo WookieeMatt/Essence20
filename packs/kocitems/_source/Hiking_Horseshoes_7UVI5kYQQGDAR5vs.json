@@ -5,6 +5,10 @@
   "_id": "7UVI5kYQQGDAR5vs",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: ignoring terrain penalties on rocky or steep ground.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

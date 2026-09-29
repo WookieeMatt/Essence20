@@ -5,6 +5,10 @@
   "_id": "mbY2W9jiPWsDvyMt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Free action, change a ranged weapon's damage type, add Anti-Tank, Armor Piercing or Wrecker, or make it deal Stun; the change lasts until you change it again or Fumble with it.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

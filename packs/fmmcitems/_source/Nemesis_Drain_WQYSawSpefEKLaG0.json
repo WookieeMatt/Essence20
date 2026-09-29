@@ -5,6 +5,10 @@
   "_id": "WQYSawSpefEKLaG0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per scene): spends 2 Personal Power and rolls Intimidation against the Willpower of every enemy within 30ft. Each hit loses 1 Personal Power and takes -1 Toughness while Morphed until the GM advances the scene.</p><p>Left to the table: only targeting Power Rangers.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

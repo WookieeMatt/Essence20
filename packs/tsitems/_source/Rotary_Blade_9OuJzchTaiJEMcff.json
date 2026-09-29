@@ -5,6 +5,10 @@
   "_id": "9OuJzchTaiJEMcff",
   "img": "systems/essence20/assets/icons/weapons/spinning-blades.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Finesse attacks at Reach for 1 Sharp, with an alternate effect hitting 2 targets at ↓1; its traits apply. Use button (Move action): switch to Cyber Shield Mode, which equips the shield and stops the blade attacking.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

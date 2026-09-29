@@ -5,6 +5,10 @@
   "_id": "j9UxxlSMLRUcwGVk",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks with the weapon it's attached to ignore concealment and the penalties for shooting through smoke or darkness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "cRtPjBG1OoXwKJ0b",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you add it, pick one of the Zord's melee attacks; that attack gains Multi-Weapon (3).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

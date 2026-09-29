@@ -5,6 +5,10 @@
   "_id": "NXxiyoOB60ems444",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +10 ft Ground Movement, and the first ↓1 on your Finesse tests is ignored.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

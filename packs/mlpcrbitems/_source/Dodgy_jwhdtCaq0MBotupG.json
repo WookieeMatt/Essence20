@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +2 Evasion. Automatic: Defend costs you a Free action. Left to the table: only Defending that way on rounds when you move 5 ft or less.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

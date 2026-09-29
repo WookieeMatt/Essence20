@@ -5,6 +5,10 @@
   "_id": "5L1T0qYkeHvks81r",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 3 starting Health, Ground Movement 30, the Twofer Perk, and your pick of the Common, Large or Long Fuzor Alt Mode. You pick +1 to any Essence and an Origin Skill tied to it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

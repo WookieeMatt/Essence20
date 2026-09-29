@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>On the sheet: add the extra Languages you learn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

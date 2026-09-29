@@ -5,6 +5,10 @@
   "_id": "obnYrLRYghukJnVj",
   "img": "systems/essence20/assets/icons/weapons/excalibur.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Might for 2 Sharp damage at Reach; Anti-Tank applies.</p><p>Left to the table: the 1 Fire damage Critical Effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

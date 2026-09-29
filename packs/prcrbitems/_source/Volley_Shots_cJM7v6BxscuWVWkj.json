@@ -5,6 +5,10 @@
   "_id": "cJM7v6BxscuWVWkj",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: your Volley Shots count, rising at the listed levels. Volley uses it.</p><p>Left to the table: holding the number of Volley targets to this count.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

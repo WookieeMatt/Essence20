@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Persuasion and Deception tests against this pet take a Snag.</p><p>Left to the table: the pet's equipment limits.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

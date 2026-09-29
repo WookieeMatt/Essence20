@@ -5,6 +5,10 @@
   "_id": "UIMocxFcGeJUm3D4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: known Frightening attacks and tests aimed at you (such as Trigger Happy) roll with a Snag.</p><p>Left to the table: other Frightening effects, and halving the duration if it still works.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

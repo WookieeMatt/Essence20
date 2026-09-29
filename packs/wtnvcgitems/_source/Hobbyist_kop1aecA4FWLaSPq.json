@@ -5,6 +5,10 @@
   "_id": "kop1aecA4FWLaSPq",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: your pick of Smarts or Social and one of its Origin Skills, 30 ft ground movement, and the Everything is Inspiration Origin Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

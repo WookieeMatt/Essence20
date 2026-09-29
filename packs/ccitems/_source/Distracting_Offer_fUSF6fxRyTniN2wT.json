@@ -5,6 +5,10 @@
   "_id": "fUSF6fxRyTniN2wT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll your Origin Skill against a target's Cleverness; on a success they take a ↓ on their tests. The once-per-scene and same-target limits are tracked.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

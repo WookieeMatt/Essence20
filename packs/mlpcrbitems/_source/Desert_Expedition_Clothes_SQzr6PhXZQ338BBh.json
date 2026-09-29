@@ -5,6 +5,10 @@
   "_id": "SQzr6PhXZQ338BBh",
   "img": "systems/essence20/assets/icons/gear/clothes.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you're in desert terrain or an Extreme Heat environment, +2 Toughness is added. Active Effect (off by default): switch it on only when the scene has no terrain or environment set.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

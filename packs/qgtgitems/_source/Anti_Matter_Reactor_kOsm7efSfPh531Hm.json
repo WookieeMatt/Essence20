@@ -5,6 +5,10 @@
   "_id": "kOsm7efSfPh531Hm",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: triples every Movement rate of the vehicle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

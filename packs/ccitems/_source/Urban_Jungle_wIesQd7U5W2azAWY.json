@@ -5,6 +5,10 @@
   "_id": "wIesQd7U5W2azAWY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch to roll Streetwise in place of Survival.</p><p>Automatic: on a scene or region the GM marks as Urban, Edge on non-attack tests, your attacks count as Specialized, and you ignore Rough Terrain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

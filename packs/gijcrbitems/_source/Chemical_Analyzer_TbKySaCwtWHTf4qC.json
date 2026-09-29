@@ -5,6 +5,10 @@
   "_id": "TbKySaCwtWHTf4qC",
   "img": "systems/essence20/assets/icons/gear/chemical_analyzer.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑2 on Alertness when you're checking for toxins or harmful gases within range.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "BHum6Sd6Zz7cra5b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on healing tests and on attacks that only deal Stun, and ↓1 on attacks that deal damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "",

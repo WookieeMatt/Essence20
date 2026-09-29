@@ -5,6 +5,10 @@
   "_id": "iPZYo3Uly7aA15dP",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: an Artillery Lobber and Ballistic Armor (Weather Gear [Cold]).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

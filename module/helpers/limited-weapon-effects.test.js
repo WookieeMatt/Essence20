@@ -69,3 +69,23 @@ describe("markLimitedWeaponEffectUsed", () => {
     expect(actor.setFlag).not.toHaveBeenCalled();
   });
 });
+
+describe("Turbo Lightning Sword and the Power Rangers Core Rulebook printings", () => {
+  const ATS_SWORD = "Compendium.essence20.across_the_stars.Item.3VBxXY5kXow9UGgX";
+  const CRB_SWORD = "Compendium.essence20.pr_crb.Item.A2T4cCya4l1rlihY";
+  const CRB_CANNON = "Compendium.essence20.pr_crb.Item.GkobUXUpyU8l6gKw";
+
+  test("both Turbo Lightning Sword Energy Attacks share one cap, separate from the Cannon's", async () => {
+    const actor = makeActor();
+    expect(isLimitedWeaponEffect(ATS_SWORD)).toBe(true);
+    await markLimitedWeaponEffectUsed(actor, CRB_SWORD);
+    expect(canRollLimitedWeaponEffect(actor, ATS_SWORD)).toBe(false);
+    expect(canRollLimitedWeaponEffect(actor, TURBO_THUNDER_CANNON_ENERGY_ATTACK_ID)).toBe(true);
+  });
+
+  test("the Core Rulebook Turbo Thunder Cannon shares the Across the Stars cap", async () => {
+    const actor = makeActor();
+    await markLimitedWeaponEffectUsed(actor, CRB_CANNON);
+    expect(canRollLimitedWeaponEffect(actor, TURBO_THUNDER_CANNON_ENERGY_ATTACK_ID)).toBe(false);
+  });
+});

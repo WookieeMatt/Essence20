@@ -4,6 +4,10 @@
   "type": "altMode",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: in this Alt Mode you gain 40ft Ground Movement, with room for 1 Crew and 1 Firepoint. Automatic: Limited Articulation blocks Athletics and Finesse tests while you're in it. Taking the Alt Mode adds the Mini-Vehicle Ram attack (Use button re-adds it).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -25,7 +29,8 @@
     },
     "altModesize": "common",
     "altModeCrew": 1,
-    "altModeFirepoints": 1
+    "altModeFirepoints": 1,
+    "limitedArticulation": true
   },
   "effects": [],
   "flags": {},

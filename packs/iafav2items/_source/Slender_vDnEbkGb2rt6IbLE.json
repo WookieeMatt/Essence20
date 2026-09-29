@@ -5,6 +5,10 @@
   "_id": "vDnEbkGb2rt6IbLE",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: gives the weapon the Armor Piercing trait, which applies on its attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

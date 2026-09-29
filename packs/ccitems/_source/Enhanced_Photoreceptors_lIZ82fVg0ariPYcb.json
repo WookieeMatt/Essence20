@@ -5,6 +5,10 @@
   "_id": "lIZ82fVg0ariPYcb",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your token sees in darkness out to 30 feet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

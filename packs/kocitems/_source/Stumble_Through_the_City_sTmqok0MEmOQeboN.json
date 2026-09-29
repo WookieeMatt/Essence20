@@ -5,6 +5,10 @@
   "_id": "sTmqok0MEmOQeboN",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Snag on Persuasion and Deception when the scene or region is tagged as urban. On untagged scenes, the Roll Options Dialog gives a switch instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "QRexPortalJTTxxx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: summoning your Zord offers a faster option that costs 1 Personal Power and arrives in one round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

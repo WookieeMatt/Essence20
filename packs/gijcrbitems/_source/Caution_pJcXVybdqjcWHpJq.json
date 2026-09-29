@@ -5,6 +5,10 @@
   "_id": "pJcXVybdqjcWHpJq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you can't gain the Blinded, Deafened, Frightened, Immobilized, Restrained or Stunned Conditions.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

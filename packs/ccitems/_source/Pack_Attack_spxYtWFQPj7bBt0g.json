@@ -5,6 +5,10 @@
   "_id": "spxYtWFQPj7bBt0g",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: while your Growl is active on a target, nearby allies also get its ↑ against that target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

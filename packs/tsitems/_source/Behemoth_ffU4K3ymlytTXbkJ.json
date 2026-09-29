@@ -5,6 +5,10 @@
   "_id": "ffU4K3ymlytTXbkJ",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 4 starting Health, +1 Strength, Ground Movement 40, the Smash! Perk, and your pick of the Large or Huge Behemoth Alt Mode. You pick Brawn or Might as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

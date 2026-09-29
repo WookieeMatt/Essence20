@@ -5,6 +5,10 @@
   "_id": "al63naTxTR6DSVxj",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Fire Cart's Targeting attack with the listed Sharp damage and range.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

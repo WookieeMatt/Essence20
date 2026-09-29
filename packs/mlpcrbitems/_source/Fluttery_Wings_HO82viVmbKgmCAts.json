@@ -5,6 +5,10 @@
   "_id": "HO82viVmbKgmCAts",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: on a successful cast, your target (or you, with no target) gains 15 ft Aerial Movement. Left to the table: it should last a day, but it ends with the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

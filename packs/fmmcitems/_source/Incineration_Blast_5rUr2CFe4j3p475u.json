@@ -5,6 +5,10 @@
   "_id": "5rUr2CFe4j3p475u",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: add the Incineration Blast attack to use this; it handles its area, damage and Critical Success burn on its own.</p><p>Left to the table: the 1 Personal Power cost and the Monster Form requirement.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

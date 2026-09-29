@@ -5,6 +5,10 @@
   "_id": "X827dxMuNTPXGbfg",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage; Inaccurate applies. Use button: the Combined trait lets the team assemble it and fire together from a chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

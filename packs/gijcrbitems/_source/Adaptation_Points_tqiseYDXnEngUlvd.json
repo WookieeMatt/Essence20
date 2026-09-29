@@ -5,6 +5,10 @@
   "_id": "tqiseYDXnEngUlvd",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: your Adaptation Points pool, growing with your Ranger level and unlimited at 20th. Adaptation and Guidance spend it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

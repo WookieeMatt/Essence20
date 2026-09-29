@@ -5,6 +5,10 @@
   "_id": "wloP0W3ll6T9JRbq",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the weapon gains a Sharp 1 alternate effect with a 10ft blast.</p>"
+    },
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.LSYeY1O3oce9krh9]{Explosive Rounds Alternate Effect}</p>",
     "source": {

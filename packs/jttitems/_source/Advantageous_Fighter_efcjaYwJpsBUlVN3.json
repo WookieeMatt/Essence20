@@ -5,6 +5,10 @@
   "_id": "efcjaYwJpsBUlVN3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: melee attacks you make with Edge take no more than ↓2 in total.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

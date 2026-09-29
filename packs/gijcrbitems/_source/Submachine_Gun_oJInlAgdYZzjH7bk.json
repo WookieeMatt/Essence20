@@ -5,6 +5,10 @@
   "_id": "oJInlAgdYZzjH7bk",
   "img": "systems/essence20/assets/icons/weapons/submachine_gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, with two alternate effects to choose from, and its traits apply (Ballistic, Reload). Perks that call for a submachine gun recognize this weapon.</p>"
+    },
     "originalId": "",
     "description": "<p>Alternate Effect 2 is a 15 ft cone</p>",
     "source": {

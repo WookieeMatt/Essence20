@@ -5,6 +5,10 @@
   "_id": "EC7Xzefmh7AEHBrr",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a Snag switch for tests to teach anyone about magic.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

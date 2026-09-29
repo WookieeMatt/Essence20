@@ -5,6 +5,10 @@
   "_id": "JxTGMCJPHgWPQWbJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: for the rest of this turn, your attacks are Free actions.</p><p>Left to the table: it's once per mission, but the button only blocks reuse within the same encounter.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

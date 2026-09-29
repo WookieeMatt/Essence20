@@ -5,6 +5,10 @@
   "_id": "4Fu6hbtroBTzfMmI",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Resistance to Fire damage. Remove the upgrade once the coating fails.</p><p>Left to the table: immunity to Critical Success alternate effects, and the GM's 2d6 roll after each hit to see if the coating fails.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -22,7 +26,52 @@
     "type": "armor",
     "prerequisite": null
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Impervious Alloy",
+      "origin": "Compendium.essence20.transformers_extras.Item.4Fu6hbtroBTzfMmI",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "LCVtxEDintp11Pfp",
+      "changes": [
+        {
+          "key": "system.resistances.fire",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!4Fu6hbtroBTzfMmI.LCVtxEDintp11Pfp"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

@@ -5,6 +5,10 @@
   "_id": "gPeFzjAOjD7GgM3u",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: give the Mini-Con the Terrifying Presence Perk, working only against targets no more than two Size Classes bigger.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

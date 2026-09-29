@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the first time you make a Social test against a creature, you get ↑1 on Social tests involving them for the rest of that scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

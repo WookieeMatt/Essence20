@@ -5,6 +5,10 @@
   "_id": "ZhO6S4YDOR5nyZJa",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the optional battledress rules - 1 armor Health and the Counter-Ballistic trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

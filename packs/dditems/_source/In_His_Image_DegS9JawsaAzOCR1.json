@@ -5,6 +5,10 @@
   "_id": "DegS9JawsaAzOCR1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: target a Defeated creature and roll Culture against its Toughness (without armor). On a success you swap its Hang-Ups for ones you pick. Works once per target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

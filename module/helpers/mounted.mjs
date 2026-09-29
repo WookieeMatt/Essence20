@@ -1,6 +1,9 @@
 import { actorHas, TRAIT_PERK } from "./weapon-traits.mjs";
 import { describeCost, spend } from "./action-economy.mjs";
 
+// Ordnance Expert (GI Joe CRB Focus Perk): "You ignore the mounted trait on weapons."
+export const ORDNANCE_EXPERT = "Compendium.essence20.gi_joe_crb.Item.bB7Fiuu6BjIUlAgt";
+
 /**
  * Mounted (GI Joe CRB, Weapon Effects and Traits, p.148; identical wording recurs in every core
  * rulebook's own Weapon Traits list): "Requires a mount, such as a tripod or shooting rest, that
@@ -23,6 +26,10 @@ export function isMountedWeaponSetUp(weapon) {
   // Snipe From The Hip (TF CRB, Sharpshooter, 17th level, p.70): "you ignore your Long Range Rifle's
   // Mounted trait."
   if (/long range rifle/i.test(weapon?.name ?? '') && actorHas(weapon?.parent, TRAIT_PERK.snipeFromTheHip)) {
+    return true;
+  }
+
+  if (actorHas(weapon?.parent, ORDNANCE_EXPERT)) {
     return true;
   }
 

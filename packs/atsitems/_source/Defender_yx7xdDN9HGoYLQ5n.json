@@ -5,6 +5,10 @@
   "_id": "yx7xdDN9HGoYLQ5n",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 to the Megaform's Toughness. When an attack hits the Megaform, this Zord's pilot is offered a prompt to pay 1 Personal Power and add a Snag to that attack, which can turn it into a miss.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

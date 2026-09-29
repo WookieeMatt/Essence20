@@ -5,6 +5,10 @@
   "_id": "hSUVWDrRgUHcr5mm",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose its Skill, then use the kit up for ↑1 on that Skill for 1 minute. While you have d2 or less in that Skill, your tests with it take no Snag for being untrained.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

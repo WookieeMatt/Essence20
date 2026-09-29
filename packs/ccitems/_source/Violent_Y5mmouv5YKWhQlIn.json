@@ -5,6 +5,10 @@
   "_id": "Y5mmouv5YKWhQlIn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: with a weapon whose main effect deals no damage, its damaging alternate effect loses its printed ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

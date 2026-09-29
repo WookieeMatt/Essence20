@@ -5,6 +5,10 @@
   "_id": "uX9x7VEUy4LCdVIg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Long Range Rifle can fire without being set up first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

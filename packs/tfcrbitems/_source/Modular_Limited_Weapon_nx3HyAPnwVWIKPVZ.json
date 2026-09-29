@@ -5,6 +5,10 @@
   "_id": "nx3HyAPnwVWIKPVZ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When you attach it, choose a Limited weapon; its attacks are added to this weapon as alternate effects.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

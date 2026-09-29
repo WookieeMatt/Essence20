@@ -5,6 +5,10 @@
   "_id": "BcFM3JhWdk5XHIZL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: target someone, click the spot to move them to, and it spends your Standard action and rolls Persuasion against their Willpower. On a success their token moves there.</p><p>Left to the table: the Sprint-distance limit and the ↑3 when the move crosses a hazard.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "BPHwAfGvLPZuJ1m1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per turn, as a Free action, roll Technology; until your turn ends your Movements rise by the result (rounded up to 5ft) and ignore Rough Terrain.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

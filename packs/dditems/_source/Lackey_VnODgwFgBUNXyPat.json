@@ -5,6 +5,10 @@
   "_id": "VnODgwFgBUNXyPat",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Lackey Perk plus the Something To Prove, Mode Attachment and Subordinate Hang-Ups.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

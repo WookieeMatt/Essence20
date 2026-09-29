@@ -5,6 +5,10 @@
   "_id": "pKArYQ259zpdsR7o",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Standard action, 1 Energon): Technology attack against every enemy within 100 ft, using Toughness without armor. Each hit gets a button for 1 Electromagnetic damage and is Stunned for a round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

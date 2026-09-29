@@ -5,6 +5,10 @@
   "_id": "WOY0sYAEFzKIhCkb",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when added, you gain Climb movement and lose some Ground movement, with an optional dialog to trade the cost.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

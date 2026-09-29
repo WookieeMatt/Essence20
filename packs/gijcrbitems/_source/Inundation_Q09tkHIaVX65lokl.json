@@ -5,6 +5,10 @@
   "_id": "Q09tkHIaVX65lokl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Outwit gets an Edge against an enemy your Outwit has already affected.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

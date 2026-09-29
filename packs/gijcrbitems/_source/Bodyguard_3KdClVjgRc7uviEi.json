@@ -5,6 +5,10 @@
   "_id": "3KdClVjgRc7uviEi",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: attach it to a Vanguard to get its Perks at the listed levels, plus +1 Smarts at levels 1 and 10 (you place those skill points on Alertness).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

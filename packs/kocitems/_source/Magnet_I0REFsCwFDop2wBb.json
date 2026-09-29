@@ -5,6 +5,10 @@
   "_id": "I0REFsCwFDop2wBb",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: whatever you pick up with it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

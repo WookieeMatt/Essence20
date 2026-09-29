@@ -5,6 +5,10 @@
   "_id": "63uRW0mcregiw0Uy",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits apply.</p><p>The Strength Essence damage alternate effect is its own attack option, and a Critical Success offers it too. Its Apply Damage button takes the points off the target's Strength instead of Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -23,6 +27,28 @@
         },
         "damageValue": 2,
         "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 60,
+          "value": 30
+        },
+        "shiftDown": 0
+      },
+      "a1e5": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.EkseZuZCiHTiieEI",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Antimatter Pistol Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "essenceStrength",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,

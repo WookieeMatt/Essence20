@@ -5,6 +5,10 @@
   "_id": "XO6cDYxxe9FVe6UL",
   "img": "systems/essence20/assets/icons/gear/handcuffs.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: the rolls to escape, break or pick the cuffs, and their Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

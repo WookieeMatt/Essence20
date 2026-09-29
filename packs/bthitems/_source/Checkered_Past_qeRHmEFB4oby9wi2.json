@@ -5,6 +5,10 @@
   "_id": "qeRHmEFB4oby9wi2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on for Edge on Smarts tests to find weaknesses, security flaws or hidden items, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

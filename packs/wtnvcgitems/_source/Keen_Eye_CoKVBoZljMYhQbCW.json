@@ -5,6 +5,10 @@
   "_id": "CoKVBoZljMYhQbCW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: ↑1 on every Smarts and Social Skill Test.</p><p>Left to the table: the bonus is only meant while solving a puzzle, so take it off other rolls.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

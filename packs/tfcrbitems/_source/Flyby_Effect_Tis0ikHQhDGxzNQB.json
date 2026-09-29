@@ -5,6 +5,10 @@
   "_id": "Tis0ikHQhDGxzNQB",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Driving for 1 Blunt damage at Reach.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

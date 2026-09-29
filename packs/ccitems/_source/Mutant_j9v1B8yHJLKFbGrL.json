@@ -5,6 +5,10 @@
   "_id": "j9v1B8yHJLKFbGrL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: counts as one of your Genetic Alterations for Perks and effects that care about them.</p><p>Left to the table: its effects on Deception, Persuasion, identifying you and Animal Handling, and access to Animal Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

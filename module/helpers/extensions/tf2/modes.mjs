@@ -6,7 +6,16 @@
  *   Flyby (Driving) or Ram (Driving): Driving Skill, Reach (2 Blunt damage), Trip alternate effect"
  *   (Charger), "Special Attack: Ram (Driving): Driving Skill, Reach (1 Blunt damage), Trip alternate
  *   effect" (Pillar, Speaker). The Core Rulebook's Ram / Flyby weapon (TF CRB p.47) is given with the
- *   Alt Mode; the Charger's hits for 2.
+ *   Alt Mode; the Charger's hits for 2. The same goes for the other printed special attacks:
+ *   - the Core Rulebook's vehicle chassis (p.49-54), "Special Attack: Ram (Driving): Driving Skill,
+ *     Range Reach (1 Blunt Damage, Trip)" - 2 Blunt for the Monolith, Flyby for the Seeker;
+ *   - Salvaged (Decepticon Directive, p.38), "Spiked Ram: Driving skill, Reach (1 Sharp damage);
+ *     Maneuver alternate effect", and the Mini-Con's Mini-Vehicle (p.36), "Ram: Driving skill, Reach
+ *     (1 Blunt damage); Maneuver";
+ *   - the Technorganic Secrets chassis (p.36-44) and both Monstrosity printings: "Natural Weapon
+ *     (Might): Might Skill, Reach (1 Blunt or Sharp damage) Alternate Effect: Maneuver" (Finesse or
+ *     Might for the Climber/Nimble), the Flora's Reach x2 one, the Flyer's Natural Weapon Flyby and
+ *     the Behemoth's SMASH!. "Blunt or Sharp" and "Finesse or Might" are asked when the weapon arrives.
  * - Mode Lock (Enigma of Combination, p.49): "the character can remove the Condition by performing an
  *   Energon flush, which requires spending 1 Energon and succeeding at a DIF 12 Technology Skill Test
  *   as a Standard action." Conversion itself is already refused (sheet-handlers/transformer-handler.mjs);
@@ -46,7 +55,7 @@ import {
 } from "../../extensions.mjs";
 import { hasUsedThisRound, markUsedThisRound } from "../../perks.mjs";
 import {
-  T, TF2, feetBetween, has, isOwnTurn, isResponsible, itemsOf, nameOf, say, sourceOf, upgradesOn, worldActors,
+  ALT_MODES, T, TF2, feetBetween, has, isOwnTurn, isResponsible, itemsOf, nameOf, say, sourceOf, upgradesOn, worldActors,
 } from "./common.mjs";
 import { MARK, SUSTAINED_BEAM_EDGE, addMarkTo, marksOf } from "./rolls.mjs";
 import { WE_ARE_ONE_FLAG } from "./uses.mjs";
@@ -155,12 +164,30 @@ export function tf2Derived(actor) {
 /*  Alt Modes: special attacks                   */
 /* -------------------------------------------- */
 
+// damage: the Blunt hit's value when the chassis prints more than the weapon's own; types / skills: the
+// chassis prints a choice ("1 Blunt or Sharp", "Finesse or Might"), asked when the weapon arrives.
+const BLUNT_OR_SHARP = ['blunt', 'sharp'];
+const FINESSE_OR_MIGHT = ['finesse', 'might'];
+const each = (uuids, spec) => Object.fromEntries(uuids.map(uuid => [uuid, spec]));
+
 export const SPECIAL_ATTACKS = {
   [TF2.charger]: { attacks: [TF2.ram, TF2.flyby], damage: 2 },
   [TF2.pillarExtended]: { attacks: [TF2.ram], damage: 1 },
   [TF2.pillarLong]: { attacks: [TF2.ram], damage: 1 },
   [TF2.speakerAerial]: { attacks: [TF2.ram], damage: 1 },
   [TF2.speakerGround]: { attacks: [TF2.ram], damage: 1 },
+  [TF2.speakerLongAerial]: { attacks: [TF2.ram], damage: 1 },
+  [TF2.speakerLongGround]: { attacks: [TF2.ram], damage: 1 },
+  ...each(ALT_MODES.crbRam, { attacks: [TF2.ram], damage: 1 }),
+  [ALT_MODES.monolith]: { attacks: [TF2.ram], damage: 2 },
+  [ALT_MODES.seeker]: { attacks: [TF2.flyby], damage: 1 },
+  [ALT_MODES.salvaged]: { attacks: [TF2.spikedRam] },
+  ...each(ALT_MODES.miniVehicle, { attacks: [TF2.miniVehicleRam] }),
+  ...each([...ALT_MODES.natural, ...ALT_MODES.monstrosity], { attacks: [TF2.naturalWeapon], types: BLUNT_OR_SHARP }),
+  ...each(ALT_MODES.climber, { attacks: [TF2.naturalWeapon], types: BLUNT_OR_SHARP, skills: FINESSE_OR_MIGHT }),
+  ...each(ALT_MODES.flora, { attacks: [TF2.floraWeapon], skills: FINESSE_OR_MIGHT }),
+  ...each(ALT_MODES.flyer, { attacks: [TF2.naturalFlyby], types: BLUNT_OR_SHARP }),
+  ...each(ALT_MODES.behemoth, { attacks: [TF2.smash] }),
 };
 
 /** The special attacks this Alt Mode brings that the actor doesn't have yet. */
@@ -172,6 +199,63 @@ export function missingSpecialAttacks(actor, altMode) {
 
   const held = new Set(itemsOf(actor).map(sourceOf));
   return spec.attacks.filter(uuid => !held.has(uuid));
+}
+
+/**
+ * The updates that fit a freshly granted special-attack weapon to its chassis: the Blunt hit's
+ * damage and type (the alternate effects are left alone) and the rolled Skill of every effect using
+ * one of the offered Skills. `effects` are the weapon's embedded weaponEffect items.
+ */
+export function specialAttackUpdates(weapon, effects, { damage = null, type = null, skill = null, skills = [] } = {}) {
+  const patch = system => {
+    const out = {};
+    if (system?.damageType == 'blunt') {
+      if (damage != null && damage != system.damageValue) {
+        out.damageValue = damage;
+      }
+
+      if (type && type != 'blunt') {
+        out.damageType = type;
+      }
+    }
+
+    if (skill && skills.includes(system?.classification?.skill) && system.classification.skill != skill) {
+      out['classification.skill'] = skill;
+    }
+
+    return out;
+  };
+
+  const effectUpdates = effects.map(effect => ({ _id: effect.id, ...Object.fromEntries(Object.entries(patch(effect.system)).map(([k, v]) => [`system.${k}`, v])) }))
+    .filter(update => Object.keys(update).length > 1);
+  const weaponUpdate = {};
+  for (const [key, entry] of Object.entries(weapon?.system?.items ?? {})) {
+    if (entry?.type == 'weaponEffect') {
+      for (const [path, value] of Object.entries(patch(entry))) {
+        weaponUpdate[`system.items.${key}.${path}`] = value;
+      }
+    }
+  }
+
+  const traits = weapon?.system?.traits;
+  if (type && type != 'blunt' && Array.isArray(traits) && traits.includes('blunt')) {
+    weaponUpdate['system.traits'] = [...new Set(traits.map(trait => (trait == 'blunt' ? type : trait)))];
+  }
+
+  return { effectUpdates, weaponUpdate };
+}
+
+const LABELS = { blunt: 'E20.DamageBlunt', sharp: 'E20.DamageSharp', finesse: 'E20.SkillFinesse', might: 'E20.SkillMight' };
+
+async function askChoice(altMode, weapon, key, values) {
+  if (!values?.length) {
+    return null;
+  }
+
+  const { chooseButtons } = await import("../../grants.mjs");
+  const choice = await chooseButtons(altMode.name, T(key, { mode: altMode.name, weapon: weapon.name }),
+    values.map(value => [value, globalThis.game.i18n.localize(LABELS[value] ?? value)]));
+  return values.includes(choice) ? choice : null;
 }
 
 export async function grantSpecialAttacks(actor, altMode) {
@@ -190,16 +274,16 @@ export async function grantSpecialAttacks(actor, altMode) {
     }
 
     granted.push(weapon.name);
-    if (spec.damage != 1) {
-      const effects = itemsOf(actor).filter(item => item.type == 'weaponEffect' && item.flags?.essence20?.parentId == weapon.id && item.system?.damageType == 'blunt');
-      if (effects.length) {
-        await actor.updateEmbeddedDocuments('Item', effects.map(effect => ({ _id: effect.id, 'system.damageValue': spec.damage })));
-      }
+    const type = await askChoice(altMode, weapon, 'Tf2SpecialAttackType', spec.types);
+    const skill = await askChoice(altMode, weapon, 'Tf2SpecialAttackSkill', spec.skills);
+    const effects = itemsOf(actor).filter(item => item.type == 'weaponEffect' && item.flags?.essence20?.parentId == weapon.id);
+    const { effectUpdates, weaponUpdate } = specialAttackUpdates(weapon, effects, { damage: spec.damage ?? null, type, skill, skills: spec.skills ?? [] });
+    if (effectUpdates.length) {
+      await actor.updateEmbeddedDocuments('Item', effectUpdates);
+    }
 
-      const entries = Object.entries(weapon.system?.items ?? {}).filter(([, entry]) => entry?.type == 'weaponEffect' && entry.damageType == 'blunt');
-      if (entries.length) {
-        await weapon.update(Object.fromEntries(entries.map(([key]) => [`system.items.${key}.damageValue`, spec.damage])));
-      }
+    if (Object.keys(weaponUpdate).length) {
+      await weapon.update(weaponUpdate);
     }
   }
 

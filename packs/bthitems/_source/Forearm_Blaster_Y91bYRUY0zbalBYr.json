@@ -5,6 +5,10 @@
   "_id": "Y91bYRUY0zbalBYr",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 damage at 40ft/100ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

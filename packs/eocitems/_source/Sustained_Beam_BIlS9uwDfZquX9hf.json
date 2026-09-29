@@ -5,6 +5,10 @@
   "_id": "BIlS9uwDfZquX9hf",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: after a hit with the upgraded weapon, a button (once per round, 1 Energon, Free action) attacks a new target with Edge. The follow-up attack can't chain again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

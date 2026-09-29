@@ -5,6 +5,10 @@
   "_id": "cyiPxpwROFcBZZkm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: at the start of your turn, if you're at half your Health or less (bonus Health included) and not Defeated, you heal 1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

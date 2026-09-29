@@ -5,6 +5,10 @@
   "_id": "CZJlfyDUzfHVvUVT",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse with the listed Sharp damage, or its two-target option; its traits apply. Granted to Time Force Rangers when they Morph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

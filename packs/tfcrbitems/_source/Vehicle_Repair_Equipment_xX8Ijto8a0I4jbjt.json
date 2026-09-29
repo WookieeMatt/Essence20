@@ -5,6 +5,10 @@
   "_id": "xX8Ijto8a0I4jbjt",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your Technology (Repair) Skill Tests can't suffer a ↓. Left to the table: Edge for passengers repairing wounded Cybertronian passengers in Alt Mode.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

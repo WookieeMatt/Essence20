@@ -5,6 +5,10 @@
   "_id": "eCTmc2BbsrCLrjkw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: once per round, spend 1 Personal Power for the Strike Bonus upshift on your first melee attack. The upshift grows with the number of Strike Bonus picks you have.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

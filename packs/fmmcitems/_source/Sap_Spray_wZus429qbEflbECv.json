@@ -5,6 +5,10 @@
   "_id": "wZus429qbEflbECv",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting along a 40ft line with the listed damage; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

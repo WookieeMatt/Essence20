@@ -5,6 +5,10 @@
   "_id": "j8wVLLK4XvVEuP6F",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend a Story Point to switch on your Environmental Expertise benefits for the scene.</p><p>Left to the table: which environment was chosen, and switching it off when the scene ends.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

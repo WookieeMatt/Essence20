@@ -5,6 +5,10 @@
   "_id": "4qibn7JQ1lHTe9gT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you and your allies gain Edge on Initiative tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

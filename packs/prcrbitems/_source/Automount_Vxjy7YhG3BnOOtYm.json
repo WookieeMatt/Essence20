@@ -5,6 +5,10 @@
   "_id": "Vxjy7YhG3BnOOtYm",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: removing the weapon's Mounted trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

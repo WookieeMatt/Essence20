@@ -5,6 +5,10 @@
   "_id": "2bezfu8LM6aTSWN4",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: on drop, a choice of Strength, Speed or Smarts and one of its Skills, plus 2 starting Health, 35 ft Ground movement and The Nine Hand Seals Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "58OZMB7WbAgqgpkX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: you lose Heavy armor training. Automatic: a Silencer and a Suppressor are added to your equipped weapon when you gain it.</p><p>Left to the table: the Silent trait on requisitioned battledress, and choosing two of the same upgrade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "jYDO6XBRWvUDHHNr",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a thrown Targeting attack dealing 2 Electric damage in a 50ft-radius blast.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

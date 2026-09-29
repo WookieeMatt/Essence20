@@ -5,6 +5,10 @@
   "_id": "llnU5dWqYlfgLA5V",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per encounter, name your targeted ally as your protected target. They gain +1 Temporary Health, which moves with the designation, and your other Bodyguard Perks read who it is.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

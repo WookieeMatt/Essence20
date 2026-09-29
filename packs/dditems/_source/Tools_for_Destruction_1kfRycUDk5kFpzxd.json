@@ -5,6 +5,10 @@
   "_id": "1kfRycUDk5kFpzxd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: spending Energon to turn a piece of equipment into one of the listed weapons for one attack (add the weapon by hand).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

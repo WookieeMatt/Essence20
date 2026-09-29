@@ -5,6 +5,10 @@
   "_id": "QCuxONjk27SKggQw",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a Limited weapon and it's built into the drone.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

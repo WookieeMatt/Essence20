@@ -5,6 +5,10 @@
   "_id": "pTaF0TVS3ZiWerzs",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: after you Fumble, ↓1 on all Skill Tests through the next round.</p><p>Left to the table: not taking Free actions during that time.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

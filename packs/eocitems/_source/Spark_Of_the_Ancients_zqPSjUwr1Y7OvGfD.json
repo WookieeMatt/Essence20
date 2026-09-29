@@ -5,6 +5,10 @@
   "_id": "zqPSjUwr1Y7OvGfD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: raises your Energon maximum. Automatic: you regain 1 Energon (up to your maximum) each time the GM starts a new scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

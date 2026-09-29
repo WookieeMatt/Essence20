@@ -5,6 +5,10 @@
   "_id": "MfY06VfqmSVlhZlw",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: its light. Give the token a 25 ft bright and 50 ft dim light yourself if you want it on the map.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

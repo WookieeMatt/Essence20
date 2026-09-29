@@ -5,6 +5,10 @@
   "_id": "aXKYIPwuvNNnGPUS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Perk.</p><p>Left to the table: picking one of its benefits each mission and adding that item or effect to the sheet by hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

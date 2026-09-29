@@ -5,6 +5,10 @@
   "_id": "v3tBCzRQx5pqNSHo",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: activate it (1 Personal Power), then tick Power Strike in the Roll Options Dialog on an attack for the bonus damage, which rises at 6th, 11th and 16th level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

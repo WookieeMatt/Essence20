@@ -5,6 +5,10 @@
   "_id": "7JNvIGhT0awimmtY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spends your Standard action and rolls Technology against the upgrade's availability. On a success the equipment gains that upgrade for a limited time.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

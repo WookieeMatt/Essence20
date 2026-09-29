@@ -5,6 +5,10 @@
   "_id": "RJO2C2SVuj6RriJx",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Plastic Bags' swarm attack: rolls Targeting at Short range with ↓1 for 1 Sharp damage to up to 2 targets.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

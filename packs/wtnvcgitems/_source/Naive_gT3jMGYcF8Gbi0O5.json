@@ -5,6 +5,10 @@
   "_id": "gT3jMGYcF8Gbi0O5",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Willpower Defense becomes 9 + your Smarts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

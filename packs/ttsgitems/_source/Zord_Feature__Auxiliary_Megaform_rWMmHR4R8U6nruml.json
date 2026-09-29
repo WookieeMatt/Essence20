@@ -5,6 +5,10 @@
   "_id": "rWMmHR4R8U6nruml",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: pick the two extra Megaform Traits, and add the +1 Toughness, +1 Evasion and +1 damage to the Megaform yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

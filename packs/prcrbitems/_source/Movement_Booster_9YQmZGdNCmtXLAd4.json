@@ -5,6 +5,10 @@
   "_id": "9YQmZGdNCmtXLAd4",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added to a Zord you pick a movement type: +30 feet to one it has, or a new one at 45 feet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

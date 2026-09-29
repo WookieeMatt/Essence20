@@ -5,6 +5,10 @@
   "_id": "01HEVBUD36gmDnrN",
   "img": "systems/essence20/assets/icons/gear/key_copier.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative gear for copying keycards, with no dice effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

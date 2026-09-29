@@ -21,22 +21,41 @@ import { actorHasPerk } from "./perks.mjs";
  * into damageBonusValue before the roll; the Frightened/Stunned options are applied post-hit, the
  * same "checkContext flag read in the post-hit results loop" shape Absolute Menace/Frightening
  * Display's own isXAttempt flags already use.
+ *
+ * The Transformers CRB prints the same Perk with the same trigger, but its three options read
+ * "Deal 1 Damage / Inflict the Frightened Condition for one turn / Deal 1 Stun" - the last is 1
+ * point of Stun damage, not the Stunned Condition. Holders of that printing are offered
+ * 'stunDamage' in place of 'stun'; dice.mjs folds it into the same synthetic-damage slot as the
+ * 'damage' option, typed Stun.
  */
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
+const TF_CRB = "Compendium.essence20.tf_crb.Item.";
 export const TERRIFYING_PRESENCE_ID = `${GI_JOE_CRB}Uw1jdm5GzW7Nk5Wi`;
+export const TF_TERRIFYING_PRESENCE_ID = `${TF_CRB}P4qrmsy7AVSuahwx`;
 
 /**
  * @param {Actor} actor
  * @param {String} rolledSkill
  * @param {String} defenseType   The dataset's own pre-dialog defenseType (Growl/Frightening
  *   Display both set it explicitly; a manual Attack sets it via its own dropdown/dataset).
- * @returns {Promise<String|null>}   One of 'damage'/'frightened'/'stun', or null if this roll
- *   doesn't qualify, the player declined, or the dialog was cancelled.
+ * @returns {Promise<String|null>}   One of 'damage'/'frightened'/'stun' (GI Joe) or
+ *   'damage'/'frightened'/'stunDamage' (Transformers), or null if this roll doesn't qualify, the
+ *   player declined, or the dialog was cancelled.
  */
 export async function pickTerrifyingPresenceRider(actor, rolledSkill, defenseType) {
-  if (rolledSkill != 'intimidation' || defenseType != 'willpower' || !actorHasPerk(actor, TERRIFYING_PRESENCE_ID)) {
+  if (rolledSkill != 'intimidation' || defenseType != 'willpower') {
     return null;
   }
+
+  const gijoe = actorHasPerk(actor, TERRIFYING_PRESENCE_ID);
+  if (!gijoe && !actorHasPerk(actor, TF_TERRIFYING_PRESENCE_ID)) {
+    return null;
+  }
+
+  // Someone holding both printings gets the GI Joe one's Stunned option; only one rider applies.
+  const stunOption = gijoe
+    ? `<option value="stun">${game.i18n.localize('E20.TerrifyingPresenceOptionStun')}</option>`
+    : `<option value="stunDamage">${game.i18n.localize('E20.TerrifyingPresenceOptionStunDamage')}</option>`;
 
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize('E20.TerrifyingPresencePickTitle') },
@@ -47,7 +66,7 @@ export async function pickTerrifyingPresenceRider(actor, rolledSkill, defenseTyp
       <option value="none">${game.i18n.localize('E20.BringItAllDownOptionNone')}</option>
       <option value="damage">${game.i18n.localize('E20.TerrifyingPresenceOptionDamage')}</option>
       <option value="frightened">${game.i18n.localize('E20.TerrifyingPresenceOptionFrightened')}</option>
-      <option value="stun">${game.i18n.localize('E20.TerrifyingPresenceOptionStun')}</option>
+      ${stunOption}
     </select></div>`,
     modal: true,
     buttons: [

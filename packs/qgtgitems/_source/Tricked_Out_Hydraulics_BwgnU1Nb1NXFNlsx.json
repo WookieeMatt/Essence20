@@ -5,6 +5,10 @@
   "_id": "BwgnU1Nb1NXFNlsx",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per combat, the first Ballistic weapon attack against the vehicle takes a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

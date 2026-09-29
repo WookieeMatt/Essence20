@@ -5,6 +5,10 @@
   "_id": "c9VPGmGTxQuilsYh",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Zord holds a 3 Personal Power reserve per copy (up to three copies), refilled when the pilot rests. Use button: move reserve Power to the driver to pay for Zord Features.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

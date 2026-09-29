@@ -5,6 +5,10 @@
   "_id": "3HAcPZoO23DsOOTG",
   "img": "systems/essence20/assets/icons/gear/syringe.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the resistance to poison or disease and delaying treatment.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

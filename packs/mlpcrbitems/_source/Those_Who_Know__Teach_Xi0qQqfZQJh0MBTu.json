@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: up to three times, when you Lend Assistance the skill bonus lasts for the rest of the scene instead of one test. Left to the table: the limit is three per day, but the counter resets each scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

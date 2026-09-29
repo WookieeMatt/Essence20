@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Take Point Perk and a choice of the Outrider (Common) or Outrider (Long) Alt Mode, plus starting Health, 30ft Ground Movement, the Smarts Essence increase and the Alertness and Survival Skills.</p>"
+    },
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.NaF9feAfujLYwDfO]{Outrider (Common)}@UUID[Compendium.essence20.tf_crb.Item.WYlv5KoOv8WTUtKN]{Outrider (Long)}</p>",
     "source": {

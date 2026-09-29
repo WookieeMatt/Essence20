@@ -5,6 +5,10 @@
   "_id": "GQt4IlyXGHCbLxNP",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +2 Toughness while you are in Alt Mode (or when attached to worn armor), and your Unarmed Combat deals 1 more Stun in Bot Mode.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

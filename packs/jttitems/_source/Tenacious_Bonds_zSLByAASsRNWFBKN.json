@@ -5,6 +5,10 @@
   "_id": "zSLByAASsRNWFBKN",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while this Zord is part of a combined Megaform, every component Zord gets +1 Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

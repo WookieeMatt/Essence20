@@ -5,6 +5,10 @@
   "_id": "8GZvVml7C7CQLFMz",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Rolled from its toxin with the listed Skill against the target.</p><p>Left to the table: which Alteration it forces. On a hit, the GM drags that Alteration onto the target's sheet.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

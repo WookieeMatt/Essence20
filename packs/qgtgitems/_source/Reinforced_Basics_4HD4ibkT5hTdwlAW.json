@@ -5,6 +5,10 @@
   "_id": "4HD4ibkT5hTdwlAW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on attacks with Standard Availability weapons (after upgrades), and Standard kits last three uses instead of one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

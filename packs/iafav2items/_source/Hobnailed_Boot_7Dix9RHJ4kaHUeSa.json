@@ -5,6 +5,10 @@
   "_id": "7Dix9RHJ4kaHUeSa",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll whichever of Finesse or Might is better, with Blunt, Sharp and Maneuver options and the listed reach; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

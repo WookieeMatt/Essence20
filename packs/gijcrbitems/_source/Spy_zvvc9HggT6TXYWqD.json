@@ -5,6 +5,10 @@
   "_id": "zvvc9HggT6TXYWqD",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Presence, Jack Of All Trades, I'll Take That, Silver Tongue, Perfect Disguise, Surface Read, Talk Them Down and Suggestion at their listed levels, plus +1 Social at 1st and 10th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

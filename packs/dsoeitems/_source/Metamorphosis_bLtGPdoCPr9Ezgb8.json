@@ -5,6 +5,10 @@
   "_id": "bLtGPdoCPr9Ezgb8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: taking it removes Colony Changeling and asks you to pick two Metamorphosed Changeling benefits.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

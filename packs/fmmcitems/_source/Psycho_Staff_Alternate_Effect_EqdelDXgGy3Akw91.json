@@ -5,6 +5,10 @@
   "_id": "EqdelDXgGy3Akw91",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls the better of Finesse or Might against Toughness within Reach x2; a hit knocks the target Prone.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>Trip</p>",

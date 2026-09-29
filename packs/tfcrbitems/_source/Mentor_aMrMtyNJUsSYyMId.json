@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose the Skill your mentor taught you; it can also be rolled with the extra Essence you pick.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

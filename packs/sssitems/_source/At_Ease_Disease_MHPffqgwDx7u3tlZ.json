@@ -5,6 +5,10 @@
   "_id": "MHPffqgwDx7u3tlZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (in combat): heal a targeted living creature with an Intimidation test instead of Science, with no Medicine kit needed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

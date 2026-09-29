@@ -5,6 +5,10 @@
   "_id": "y7VBydpKD8O63C3b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Ram, your Ram can hit up to three targets in Reach and your movement that turn ignores Rough Terrain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

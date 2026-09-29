@@ -5,6 +5,10 @@
   "_id": "ylHQ0ptWH7iJ7EMm",
   "img": "icons/svg/book.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: this is a prop; what it contains is up to the GM.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

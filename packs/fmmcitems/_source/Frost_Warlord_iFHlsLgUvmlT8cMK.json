@@ -5,6 +5,10 @@
   "_id": "iFHlsLgUvmlT8cMK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 to all Defenses while Morphed. Automatic: +1 damage on attacks with your natural Reach, and in Monster Form you take 2 less Energy damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

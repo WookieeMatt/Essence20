@@ -5,6 +5,10 @@
   "_id": "mnLXHQ2TwR3A42fS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Field Skill Tests get an Edge. If you'd already have an Edge from somewhere else, you get ↑3 instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

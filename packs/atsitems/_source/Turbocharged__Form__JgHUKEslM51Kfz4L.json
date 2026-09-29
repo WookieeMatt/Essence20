@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>When you Morph you can pay 1 Personal Power to activate the Form: Edge on Driving, and your blaster and Power Weapon are swapped for the Auto Blaster, Turbo Blade and a Turbo weapon you pick. Use button: pay 1 Personal Power to call a Turbo Cart.</p><p>Left to the table: placing the Turbo Cart.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

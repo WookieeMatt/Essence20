@@ -5,6 +5,10 @@
   "_id": "F6mPryRgK7wLM0Yu",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Cast: on a success, Waterrunning is on for the scene, and your Acrobatics tests get a ↓1 switch for sharp turns and sudden stops on water.</p><p>Left to the table: standing on or sinking through water.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

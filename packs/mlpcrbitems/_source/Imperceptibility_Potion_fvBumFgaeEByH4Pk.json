@@ -5,6 +5,10 @@
   "_id": "fvBumFgaeEByH4Pk",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: rolling it uses the better of your Spellcasting and the potion's own, then uses one up. Left to the table: giving the drinker the Don't-Notice-Me-Field effects for the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

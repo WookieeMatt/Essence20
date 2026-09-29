@@ -5,6 +5,10 @@
   "_id": "PhK5KSV4IXpOcTYP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: readies it. The next time an ally rolls a Fumble, their chat card gets a re-roll button; once per mission.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

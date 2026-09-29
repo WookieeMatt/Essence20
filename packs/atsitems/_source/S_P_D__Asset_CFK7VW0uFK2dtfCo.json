@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: choose five Delta Blasters, the DeltaMax Striker, an R.I.C., or a Limited weapon as Xenotech, and it is added to your sheet.</p><p>Left to the table: the Delta Patrol Cycle (add the vehicle yourself) and GM approval for Xenotech.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

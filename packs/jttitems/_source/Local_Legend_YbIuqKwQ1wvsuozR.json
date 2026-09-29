@@ -5,6 +5,10 @@
   "_id": "YbIuqKwQ1wvsuozR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): ↑1 on Intimidation, Persuasion and Streetwise. Switch it on where your legend is known.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

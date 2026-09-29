@@ -5,6 +5,10 @@
   "_id": "EmLDSPnpmvPjdA4w",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic, when this is the Imperfection set on A Hint of Independence: allies' Lend Assistance doesn't give you its ↑.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

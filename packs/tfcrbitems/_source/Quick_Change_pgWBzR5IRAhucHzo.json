@@ -5,6 +5,10 @@
   "_id": "pgWBzR5IRAhucHzo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you convert, the action tracker offers to charge it as a Free action. Confirm when it's the conversion sequence you picked for this copy of the Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

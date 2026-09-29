@@ -5,6 +5,10 @@
   "_id": "ZNokHTRBa5aindap",
   "img": "systems/essence20/assets/icons/weapons/baseball-bat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, plus its alternate effect; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

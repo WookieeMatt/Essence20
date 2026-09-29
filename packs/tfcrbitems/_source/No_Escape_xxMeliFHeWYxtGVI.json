@@ -5,6 +5,10 @@
   "_id": "xxMeliFHeWYxtGVI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when an enemy moves into your melee Reach, a button lets you attack it right away.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

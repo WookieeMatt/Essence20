@@ -5,6 +5,10 @@
   "_id": "7EyU0Hf6T3YVels4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend a Quips &amp; Speeches point to give an ally the listed ↑ on their next roll; the bonus grows as the Perk advances.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

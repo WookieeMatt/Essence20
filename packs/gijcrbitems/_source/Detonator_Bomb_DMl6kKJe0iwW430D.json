@@ -5,6 +5,10 @@
   "_id": "DMl6kKJe0iwW430D",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the grenade's range becomes Reach, and using it plants the bomb. Its chat card has a Detonate button, which rolls your Technology against everyone in the blast, you included.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "cH1Fqs8sLR43fR7q",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Illusion Casting Perk. The Hard Habit to Break Hang-Up is added too if you have another Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

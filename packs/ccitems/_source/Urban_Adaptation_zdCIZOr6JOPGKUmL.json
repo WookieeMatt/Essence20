@@ -5,6 +5,10 @@
   "_id": "zdCIZOr6JOPGKUmL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Free): outside a city, spend a point from its pool to use one Urban Jungle benefit for the scene. The pool refills when you Rest.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

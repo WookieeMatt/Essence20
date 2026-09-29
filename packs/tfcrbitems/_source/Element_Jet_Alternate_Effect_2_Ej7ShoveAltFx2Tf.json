@@ -1,0 +1,50 @@
+{
+  "folder": "bsdJ7Coa2z9hdtR0",
+  "name": "Element Jet Alternate Effect 2",
+  "type": "weaponEffect",
+  "_id": "Ej7ShoveAltFx2Tf",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "element",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 6,
+    "radius": 15,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": 15
+    },
+    "shape": "cone"
+  },
+  "effects": [],
+  "flags": {
+    "essence20": {
+      "d21Shove": 5
+    }
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790700856939,
+    "modifiedTime": 1790700856939,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 3200001,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Ej7ShoveAltFx2Tf"
+}

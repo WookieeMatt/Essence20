@@ -5,6 +5,10 @@
   "_id": "6fbZckwORkjlrds7",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing to automate: taking pictures is roleplay, and what it can't capture is up to the Host.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

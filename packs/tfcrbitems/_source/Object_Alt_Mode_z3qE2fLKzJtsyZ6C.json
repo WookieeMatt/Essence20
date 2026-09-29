@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while in this Alt Mode you have no Movement and get Edge on Infiltration and Alertness tests to hide, blend in or eavesdrop.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

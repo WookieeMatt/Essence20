@@ -5,6 +5,10 @@
   "_id": "3bgUuCYYabsjAIpU",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on non-attack tests, a switch for ↓1 when you're tackling a problem that a fight could have solved.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

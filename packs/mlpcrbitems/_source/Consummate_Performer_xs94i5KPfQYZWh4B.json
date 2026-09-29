@@ -5,6 +5,10 @@
   "_id": "xs94i5KPfQYZWh4B",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: rolls Performance against DIF 5, rising by 5 with each further use that day. Chat card: on a success, a button regains 1 Cheer Point.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Persuasion and Alertness. Use button: roll DIF 12 Survival to heal the targeted person 1 Health.</p><p>Left to the table: limiting these to humans, and the Edge on getting supplies from people (a switchable effect).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

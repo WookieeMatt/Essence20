@@ -5,6 +5,10 @@
   "_id": "20lv1ecNs4ORVwWu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Fire weapons gain the Anti-Tank trait, and Ignite checks against targets you set burning have Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

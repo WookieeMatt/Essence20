@@ -5,6 +5,10 @@
   "_id": "I89SxiBQZ4RrIXmN",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a two-handed thrown Athletics Maneuver at 100ft/200ft range.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",
@@ -16,7 +20,7 @@
       "skill": "athletics",
       "style": "projectile"
     },
-    "damageType": "grapple",
+    "damageType": "maneuver",
     "damageValue": 0,
     "isSpecialized": false,
     "shiftDown": 0,

@@ -5,6 +5,10 @@
   "_id": "2wCkS7YifvRb0wE5",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: holding a prisoner in the tube.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

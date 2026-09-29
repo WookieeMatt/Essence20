@@ -5,6 +5,10 @@
   "_id": "TLI74oM0tbDtQ298",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend your Standard action to gain Climb or Swim Movement equal to half your Ground Movement.</p><p>Left to the table: switching it off at the end of your next turn.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

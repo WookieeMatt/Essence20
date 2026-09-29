@@ -5,6 +5,10 @@
   "_id": "VAhtHpKlv4gsR0OY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: its weapon, armor and upgrade Qualifications, a Snag on attacks with non-Biomechanical weapons and on Driving, and a Snag on effects that try to Frighten you.</p><p>Left to the table: the battledress Snag and Biomechanical vehicle Qualification.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

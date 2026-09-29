@@ -5,6 +5,10 @@
   "_id": "7Rba9ZTL1Ee3C7hC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick one General Perk when you gain it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

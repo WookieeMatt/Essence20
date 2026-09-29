@@ -5,6 +5,10 @@
   "_id": "Fj0jB6bDkqDWPQvU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: when you Aim and give up the ↑1, treat a target in total cover as in normal cover (pick normal cover in the Roll Options Dialog).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "f0GAXS72eKNLB6x1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: gain a Restricted Technology kit, or change the Specialization of any kit within its Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

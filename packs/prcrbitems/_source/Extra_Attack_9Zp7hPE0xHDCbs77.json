@@ -5,6 +5,10 @@
   "_id": "9Zp7hPE0xHDCbs77",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Zord can make two melee attacks when it takes the Attack action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

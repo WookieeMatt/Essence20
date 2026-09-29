@@ -5,6 +5,10 @@
   "_id": "FWN6697ESy9ua6VI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you get the Commando's Sneak Attack against targets within 30ft, once per combat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

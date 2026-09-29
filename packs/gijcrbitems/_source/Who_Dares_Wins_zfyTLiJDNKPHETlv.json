@@ -5,6 +5,10 @@
   "_id": "zfyTLiJDNKPHETlv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: an Edge on every roll during the first round of combat.</p><p>Left to the table: attacks only get it with a shotgun or submachine gun, so set the roll back to normal for other weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

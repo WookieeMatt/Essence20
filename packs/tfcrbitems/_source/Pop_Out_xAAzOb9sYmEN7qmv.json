@@ -5,6 +5,10 @@
   "_id": "xAAzOb9sYmEN7qmv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacking while Hidden ends your Hide. Chat card: a Pop Out button rolls Infiltration against each target's higher Willpower or Cleverness, and you stay Hidden on a success.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "ALq37Ch25nKvZ454",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (in combat, before you roll Initiative): teammates click Follow on the card. When your Initiative lands, you get +1 per follower and each follower is set d4 below you (minimum 1).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

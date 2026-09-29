@@ -5,6 +5,10 @@
   "_id": "eQlnWNMwcd6yDvHZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: a reroll button for one Skill-die 1 on your tests (you keep the new result). Use it when you are acting on a superior's orders.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -214,6 +214,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     }
 
     context.system.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(itemData.system.description);
+    context.automation = await prepareAutomationContext(itemData);
     context.flags = itemData.flags;
 
     if (this.document.type == 'perk') {
@@ -255,6 +256,8 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
         target: this.editingDescriptionTarget,
         value: foundry.utils.getProperty(this.document._source, this.editingDescriptionTarget),
       };
+      context.editingAutomationNotes = this.editingDescriptionTarget == 'system.automation.notes';
+      context.editingMainDescription = !context.editingAutomationNotes;
     }
 
     return context;
@@ -455,4 +458,33 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     await this.minimize();
     return tour.start();
   }
+}
+
+/**
+ * The Automation block and header badge: what the system does for this item (system.automation).
+ * A copy of a compendium item shows its original's notes (Essence20Item#_prepareAutomation) and
+ * isn't edited here - the notes are system documentation, kept in the compendium.
+ * @param {Item} item
+ * @returns {Promise<Object>}
+ */
+export async function prepareAutomationContext(item) {
+  const automation = item.system.automation;
+  if (!automation) {
+    return null;
+  }
+
+  const stored = item._source?.system?.automation ?? {};
+  const sourced = !item.pack && !!(item.flags?.core?.sourceId ?? item._stats?.compendiumSource);
+  const inherited = sourced && !stored.status && !stored.notes?.trim();
+  const status = automation.status || '';
+  return {
+    status,
+    label: status ? game.i18n.localize(CONFIG.E20.automationStatuses[status]) : '',
+    icon: CONFIG.E20.automationIcons[status] ?? '',
+    tooltip: status ? game.i18n.localize(`E20.AutomationHint.${status}`) : '',
+    notes: automation.notes ? await foundry.applications.ux.TextEditor.implementation.enrichHTML(automation.notes) : '',
+    storedStatus: stored.status ?? '',
+    inherited,
+    editable: !inherited,
+  };
 }

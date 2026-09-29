@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on the Discovery effect while you are working toward a discovery to get ↑1 on your Skill Tests, and switch it off afterwards.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

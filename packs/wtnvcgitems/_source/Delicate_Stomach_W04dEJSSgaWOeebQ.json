@@ -5,6 +5,10 @@
   "_id": "W04dEJSSgaWOeebQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the pet gains a Hairball attack at Short range for 1 Acid damage (the Use button adds it if it's missing).</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

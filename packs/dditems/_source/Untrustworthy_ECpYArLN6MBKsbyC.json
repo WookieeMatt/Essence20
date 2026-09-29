@@ -5,6 +5,10 @@
   "_id": "ECpYArLN6MBKsbyC",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↓1 on your Social tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

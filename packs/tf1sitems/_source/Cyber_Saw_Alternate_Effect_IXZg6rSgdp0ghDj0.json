@@ -5,6 +5,10 @@
   "_id": "IXZg6rSgdp0ghDj0",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a Might roll against a target in Reach, standing in for an Intimidation test.</p><p>Left to the table: what the intimidation achieves.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

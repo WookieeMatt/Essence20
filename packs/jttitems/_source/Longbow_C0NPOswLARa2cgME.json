@@ -5,6 +5,10 @@
   "_id": "C0NPOswLARa2cgME",
   "img": "icons/weapons/bows/longbow-leather-green.webp",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage and range; Armor Piercing and its other traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "vbySX4nIsHsIhIzJ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: note three Megaform Traits. Use button: swap which one the Zord brings into the Megaform.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

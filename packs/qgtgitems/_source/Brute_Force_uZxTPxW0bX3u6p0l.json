@@ -5,6 +5,10 @@
   "_id": "uZxTPxW0bX3u6p0l",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: a Thrown Bludgeoning weapon, a Close Combat Heavy Bludgeoning weapon and Ballistic Armor (Spiked).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "oM0B3tDWA2BSOcC2",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: the artifact's powers, as the GM runs them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

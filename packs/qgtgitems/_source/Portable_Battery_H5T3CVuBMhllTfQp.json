@@ -5,6 +5,10 @@
   "_id": "H5T3CVuBMhllTfQp",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>On the sheet: its Use button counts its two uses a day; a Rest restores them.</p><p>Left to the table: powering a device for about an hour.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

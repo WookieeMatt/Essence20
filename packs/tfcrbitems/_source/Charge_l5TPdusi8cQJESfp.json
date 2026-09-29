@@ -5,6 +5,10 @@
   "_id": "l5TPdusi8cQJESfp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑1 on a Might attack when you moved at least 10ft just before it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

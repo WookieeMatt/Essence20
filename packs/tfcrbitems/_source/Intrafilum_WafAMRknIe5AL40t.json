@@ -5,6 +5,10 @@
   "_id": "WafAMRknIe5AL40t",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: when treating an adjacent Cybertronian, spend an Energon Point as a Free action to restore 1 Health.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "6Drlcw6qu216sTuN",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: the vehicle's crew gets ↑2 on Infiltration tests, plus another ↑2 you untick in the Roll Options Dialog when the vehicle is moving.</p><p>Left to the table: its silent running and being invisible to radar.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

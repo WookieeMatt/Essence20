@@ -5,6 +5,10 @@
   "_id": "7CrDN77ITR9IV2nB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a consumable you hand to a friend is marked, and if they use it that round, its automatic healing or boost is doubled. Left to the table: doubling the effect of consumables the system doesn't resolve itself, such as Magic Baubles.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

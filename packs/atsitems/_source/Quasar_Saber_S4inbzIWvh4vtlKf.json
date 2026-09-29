@@ -5,6 +5,10 @@
   "_id": "S4inbzIWvh4vtlKf",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse with the listed damage, plus its alternate effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

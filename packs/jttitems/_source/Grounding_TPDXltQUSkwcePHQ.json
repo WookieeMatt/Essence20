@@ -5,6 +5,10 @@
   "_id": "TPDXltQUSkwcePHQ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Megaform is immune to Electromagnetic damage, and Electric damage to it is reduced by 1 (minimum 1).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

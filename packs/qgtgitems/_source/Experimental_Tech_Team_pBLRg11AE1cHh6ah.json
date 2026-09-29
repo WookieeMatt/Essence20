@@ -5,6 +5,10 @@
   "_id": "pBLRg11AE1cHh6ah",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: a Directed Element Rifle (Experimental and Strobe), Ballistic Armor (Experimental and Energized) and a Close Combat Blade (Experimental).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

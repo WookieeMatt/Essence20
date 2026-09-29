@@ -5,6 +5,10 @@
   "_id": "kQ7xVON9MGZ151BD",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon gains the Grapple trait, so targets it hits are Grappled.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

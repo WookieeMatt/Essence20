@@ -5,6 +5,10 @@
   "_id": "DVBrtxa9iiXXhDoS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick Deception or Intimidation and roll against the targeted enemy; a hit applies Stunned or Frightened.</p><p>Left to the table: the one-round duration and multiplying it on a critical success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

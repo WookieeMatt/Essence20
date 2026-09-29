@@ -5,6 +5,10 @@
   "_id": "VFlDkjQlY4QPjmy5",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Special Program Perk, plus the Origin's Essence, Skill, Health and movement choices when it's added.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "UcdxOhIviGmJe3aJ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the poison counts as inhaled instead of contact or ingested, so protection against inhaled poisons (such as Air Supply) applies to it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "EEZUFQIGfeLhT2qX",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: rolls the DIF 10 Technology test to open an archway.</p><p>Left to the table: the Personal Power regained while in a scene with an open Master Arch.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

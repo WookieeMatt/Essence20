@@ -5,6 +5,10 @@
   "_id": "OGIfZabiFlcjwCaz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: claim your free Disguise Kits for your level, trading two Standard for a Limited at 3rd level and two Limited for a Restricted at 6th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

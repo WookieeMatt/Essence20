@@ -5,6 +5,10 @@
   "_id": "7vwrFKj2UAxG4ocf",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Strength and +2 Toughness for the Zord. Automatic: +1 Toughness for any Megaform it joins.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

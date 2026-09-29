@@ -5,6 +5,10 @@
   "_id": "2Sme8RRSg6roQAOA",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Compound Z attack, rolling Athletics in melee with its special effect.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "BUqXOt90M4yAsA7b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Standard action): pick a bomb or grenade and roll Technology against its availability; on a success you gain one (two on a Critical Success).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

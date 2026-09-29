@@ -5,6 +5,10 @@
   "_id": "zKngKkwDyNv2nnH5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑1 on Acrobatics and Infiltration. Automatic: Rough Terrain doesn't slow you. When added, pick Agile Reflexes (once per scene an attack on your Toughness uses your Evasion instead) or Innate Climber (40ft Climb in Alt Mode).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

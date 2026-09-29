@@ -5,6 +5,10 @@
   "_id": "s56rG7h3is1WNpz2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: mark a poison as a hacker poison. It then only affects robots and computerized targets.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

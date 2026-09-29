@@ -150,19 +150,31 @@ const GRID_SCIENCE_TECH_IDS = new Set([
 // the chosen Battlizer's Power Cost to summon and use it." The actual grant half needed no new
 // infrastructure at all - grantIntegratedWeapon() below already generalizes cleanly to any Item
 // type (renamed grantIntegratedItem), so this just supplies 'armor' + the real Battlizer's own
-// compendium id. Only one real Battlizer item exists in each book right now (S.P.D. Battlizer /
-// Triassic Battlizer), so there's no real "choice" to offer yet - "select a Battlizer" collapses
-// to granting the sole option, the same way it would for any single-candidate pick elsewhere in
-// this project; a real choice dialog can be added if/when a second Battlizer is ever added to
-// either book. "GM Approval" is the same unenforceable narrative gate already accepted everywhere
-// else in this project. The "spend the Battlizer's own Power Cost to summon and use it while
-// Morphed" activation clause is a separate, still-unbuilt toggle/resource mechanic layered on top
-// of actually owning the item - flagged, not attempted this pass.
+// compendium id. Each book has several Battlizers (Across the Stars p.85-87: Battle Warrior,
+// Clawed Armor, Power Wing, Falcon Armor, Savage Warrior, Trans-Armor Cycle, S.P.D. Battlizer;
+// Beneath the Helmet: Red Fury Mode, Dino Super Charge, Triassic Battlizer), so the player picks
+// one from that book's list (pickBattlizer). "GM Approval" is the same unenforceable narrative
+// gate already accepted everywhere else in this project. Summoning it while Morphed is the
+// Battlizer's own Use button (helpers/summons.mjs).
 const BATTLIZER_ACCESS_ATS_ID = "Compendium.essence20.across_the_stars.Item.JGAOozVnu9Nou5Xj";
-
-const SPD_BATTLIZER_ID = "Compendium.essence20.across_the_stars.Item.qc82QDtZN3qVWqxV";
 const BATTLIZER_ACCESS_BTH_ID = "Compendium.essence20.beneath_the_helmet.Item.oJAdvdKs1XLmsH0z";
-const TRIASSIC_BATTLIZER_ID = "Compendium.essence20.beneath_the_helmet.Item.sVYZLXhPZqdVhNax";
+
+export const BATTLIZER_ACCESS_OPTIONS = {
+  [BATTLIZER_ACCESS_ATS_ID]: [
+    "Compendium.essence20.across_the_stars.Item.yWsLaZOGVlaCXh1Y", // Battle Warrior
+    "Compendium.essence20.across_the_stars.Item.5Z9vkcfZYwmtA6R4", // Clawed Armor
+    "Compendium.essence20.across_the_stars.Item.aCPFmjY80u9671Hl", // Power Wing
+    "Compendium.essence20.across_the_stars.Item.uUFaA9XsLcvFiKky", // Falcon Armor
+    "Compendium.essence20.across_the_stars.Item.xSdIoYCSbfbudtBx", // Savage Warrior
+    "Compendium.essence20.across_the_stars.Item.Q3Yn4CzFxkuDiPnZ", // Trans-Armor Cycle
+    "Compendium.essence20.across_the_stars.Item.qc82QDtZN3qVWqxV", // S.P.D. Battlizer
+  ],
+  [BATTLIZER_ACCESS_BTH_ID]: [
+    "Compendium.essence20.beneath_the_helmet.Item.k7svIPp9YYkzjxwB", // Red Fury Mode
+    "Compendium.essence20.beneath_the_helmet.Item.vV7DVwdTNAcKacvR", // Dino Super Charge
+    "Compendium.essence20.beneath_the_helmet.Item.sVYZLXhPZqdVhNax", // Triassic Battlizer
+  ],
+};
 
 // Ferocious Fighters (Factions in Action Vol 1) - 3 Faction Perks that should each grant a fixed
 // General Perk outright but ship with an empty items map (a real wiring gap the categorization
@@ -216,9 +228,7 @@ const STAY_IN_FORMATION_ID = "Compendium.essence20.quartermasters_guide_to_gear.
 
 // Nanoflage (Quartermaster's Guide to Gear, Chameleonite Focus, p.22): "you gain the Mimic
 // Nanomite Power." (The same paragraph's "not limited to two uses per day, instead regenerating
-// one use per scene" has nothing to override yet - Powers have no generic per-day usage cap in
-// this codebase at all, see helpers/power-use.mjs's own doc comment, so there's no cap left to
-// widen.) Same fixed-grant gap as Synchronization above, just granting a Power instead of a Perk -
+// one use per scene" is helpers/nanomite-uses.mjs#isNanoflageMimic.) Same fixed-grant gap as Synchronization above, just granting a Power instead of a Perk -
 // grantIntegratedItem already generalizes to any Item type.
 const NANOFLAGE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.22p3l2vFsFZqfOET";
 const MIMIC_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.WI0QTzlWkEusSQqY";
@@ -605,6 +615,31 @@ export async function grantPerkEquipmentMap(actor, perk) {
  */
 export async function grantBattlizerAccess(actor, battlizerId) {
   await grantIntegratedItem(actor, 'armor', battlizerId);
+}
+
+/**
+ * Battlizer Access's "select a Battlizer": asks which of the book's Battlizers to take. A single
+ * available option is returned without asking.
+ * @param {Item} perk   The Battlizer Access Perk being granted.
+ * @param {String[]} options   Compendium UUIDs of the Battlizers on offer.
+ * @param {Function} [choose]   (title, prompt, [{value, label}]) => the picked value; defaults to grants.mjs#chooseSelect.
+ * @returns {Promise<String|null>} The picked Battlizer's UUID, or null if the dialog was closed.
+ */
+export async function pickBattlizer(perk, options, choose = null) {
+  const rows = [];
+  for (const uuid of options) {
+    const battlizer = await fromUuid(uuid);
+    if (battlizer) {
+      rows.push({ value: uuid, label: battlizer.name });
+    }
+  }
+
+  if (rows.length <= 1) {
+    return rows[0]?.value ?? null;
+  }
+
+  const chooser = choose ?? (await import("../helpers/grants.mjs")).chooseSelect;
+  return chooser(perk?.name ?? '', game.i18n.localize('E20.GrantPickLabel'), rows);
 }
 
 /**
@@ -1126,10 +1161,11 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
     await grantJackhammerWeapon(actor);
   } else if (perkUuid == SHADOW_MORPH_ID) {
     await grantShadowSaber(actor);
-  } else if (perkUuid == BATTLIZER_ACCESS_ATS_ID) {
-    await grantBattlizerAccess(actor, SPD_BATTLIZER_ID);
-  } else if (perkUuid == BATTLIZER_ACCESS_BTH_ID) {
-    await grantBattlizerAccess(actor, TRIASSIC_BATTLIZER_ID);
+  } else if (BATTLIZER_ACCESS_OPTIONS[perkUuid]) {
+    const battlizerId = await pickBattlizer(perk, BATTLIZER_ACCESS_OPTIONS[perkUuid]);
+    if (battlizerId) {
+      await grantBattlizerAccess(actor, battlizerId);
+    }
   } else if (perkUuid == CHANGE_ITS_STRIPES_ID) {
     await grantBlendIn(actor);
   } else if (perkUuid == BLEND_IN_ID) {

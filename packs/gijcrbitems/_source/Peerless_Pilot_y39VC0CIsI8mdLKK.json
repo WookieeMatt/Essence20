@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while driving a vehicle you get Edge on Initiative and ↑2 on Driving tests (needs a Driving Specialization), and you pass the emergency disembark test from a vehicle you pilot.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

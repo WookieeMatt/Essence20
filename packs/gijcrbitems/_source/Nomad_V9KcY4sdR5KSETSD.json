@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch that applies a Snag to your Social roll when you're dealing with someone you don't trust yet. The GM calls when it applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

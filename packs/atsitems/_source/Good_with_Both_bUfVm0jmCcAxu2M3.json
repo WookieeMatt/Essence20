@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for an off-hand attack with a one-handed weapon, which then takes only ↓1. Your main-hand attack takes no penalty.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

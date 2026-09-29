@@ -5,6 +5,10 @@
   "_id": "B53THKLMNqpkVRuU",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits apply, including Mounted set-up and Reload. The alternate effect is its own attack option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

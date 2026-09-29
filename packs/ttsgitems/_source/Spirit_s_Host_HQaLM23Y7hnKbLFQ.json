@@ -5,6 +5,10 @@
   "_id": "HQaLM23Y7hnKbLFQ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: sets the Zord's Smarts to 3 and Social to 1. Automatic: at the start of the pilot's turn they roll DIF 10 Persuasion; on a failure a d4 picks what the spirit makes the Zord do.</p><p>Left to the table: the spirit's bonus Zord Feature and Essence swap.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

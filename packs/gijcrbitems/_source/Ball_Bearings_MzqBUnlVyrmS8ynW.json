@@ -5,6 +5,10 @@
   "_id": "MzqBUnlVyrmS8ynW",
   "img": "systems/essence20/assets/icons/gear/ball_bearings.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the DIF 10 Acrobatics test to avoid falling Prone in the area.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "XO4fAxbNrliKvyf1",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: giving up the benefits of earlier form Influences, and not taking a Fuzor Origin.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

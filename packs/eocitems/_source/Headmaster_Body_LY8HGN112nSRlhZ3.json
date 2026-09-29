@@ -5,6 +5,10 @@
   "_id": "LY8HGN112nSRlhZ3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: name your Headmaster partner, then link or unlink. Automatic: in Bot Mode while linked, ↑1 on Skills your partner has at your rank or better. Left to the table: the Headmaster Reliance Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

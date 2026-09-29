@@ -5,6 +5,10 @@
   "_id": "c35WriTqVjqHHtt1",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the firearm gains the Acid trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

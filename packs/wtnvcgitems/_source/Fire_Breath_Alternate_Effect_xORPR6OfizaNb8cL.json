@@ -5,6 +5,10 @@
   "_id": "xORPR6OfizaNb8cL",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting breath attack at Short range and ↓1 against up to 2 targets for 1 Fire damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

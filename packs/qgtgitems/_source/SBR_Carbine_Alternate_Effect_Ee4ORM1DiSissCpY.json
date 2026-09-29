@@ -5,6 +5,10 @@
   "_id": "Ee4ORM1DiSissCpY",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a one-handed Targeting attack at 50ft/80ft for 1 Sharp damage, with ↓2.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

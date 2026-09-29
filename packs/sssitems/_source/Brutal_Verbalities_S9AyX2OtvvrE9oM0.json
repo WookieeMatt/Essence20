@@ -5,6 +5,10 @@
   "_id": "S9AyX2OtvvrE9oM0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Intimidation also counts as a Social Skill. Automatic: Rouse can roll your Intimidation in place of Persuasion.</p><p>Left to the table: using Intimidation for other Officer Perks, and spending a Story Point to Intimidate something normally immune.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

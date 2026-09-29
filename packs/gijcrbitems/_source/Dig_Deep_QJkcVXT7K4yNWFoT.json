@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: the next damage you take is reduced by 1, and you take a Snag on your Skill Tests.</p><p>Left to the table: healing 1d2 by giving up your whole turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

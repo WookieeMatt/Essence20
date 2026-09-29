@@ -5,6 +5,10 @@
   "_id": "fBWkmr53JPO0hI7K",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Add it to a Contact made with Contact: Combiner Team so it shows on that Contact's Summon card. Left to the table: choosing and resolving the team's individual Contact Perks and their Allegiance costs.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

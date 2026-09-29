@@ -5,6 +5,10 @@
   "_id": "TC0gPslv8hCMy7Ye",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 20/60 ft for 1 damage in a 5ft blast; the Impaired alternate effect uses the same range and blast. Its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -40,19 +44,19 @@
         "name": "Psycho Blast Alternate Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
-          "style": "melee"
+          "skill": "targeting",
+          "style": "projectile"
         },
         "damageValue": 0,
         "damageType": "impaired",
         "numHands": "1",
         "numTargets": 1,
-        "radius": 0,
+        "radius": 5,
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": null,
-          "value": null
+          "long": 60,
+          "value": 20
         },
         "shiftDown": 0
       }

@@ -5,6 +5,10 @@
   "_id": "WfsF1kGzDwldrXCA",
   "img": "systems/essence20/assets/icons/weapons/toxin.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a hit offers its +1/-1 Essence change on the chat card. Apply Damage raises one Essence score by 1 and lowers a different one by 1; the attacker picks them when the attack used Science, otherwise they are random.</p><p>Left to the table: the Alteration variety (the GM drags the chosen Alteration onto the target).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -21,8 +25,8 @@
           "skill": "deception",
           "style": "melee"
         },
-        "damageValue": 0,
-        "damageType": "special",
+        "damageValue": 1,
+        "damageType": "essenceSwap",
         "numHands": 1,
         "numTargets": 1,
         "radius": 0,

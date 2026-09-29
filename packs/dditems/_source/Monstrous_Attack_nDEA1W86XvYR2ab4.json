@@ -5,6 +5,10 @@
   "_id": "nDEA1W86XvYR2ab4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: adds a new unarmed attack with double reach that deals 2 Blunt or Sharp damage. Take the Perk again for another one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

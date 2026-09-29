@@ -5,6 +5,10 @@
   "_id": "LOdnsSS9L7akHdnn",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its normal or alternate effect; Burst-Fire and Reload are tracked, and its attached upgrades apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

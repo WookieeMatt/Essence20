@@ -5,6 +5,10 @@
   "_id": "9SQBAaFWugZXDVte",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: spend the Energon yourself and share the ally's senses in play. The system doesn't track what each character can perceive.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "gF8otV8Ag9axRp2Z",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: before casting, pick Calm, Confused, Frightened, Impaired or Stunned; your first pick becomes your default and any other effect costs 1 more. A hit applies that Condition for 3 rounds (Calm gives ↑2 on Social tests against them and breaks on damage).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "yMihdpSe5ntjRN3R",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per scene, when something targets your Willpower or Cleverness, the higher of the two is used instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

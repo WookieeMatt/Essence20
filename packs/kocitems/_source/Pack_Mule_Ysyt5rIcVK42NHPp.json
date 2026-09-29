@@ -5,6 +5,10 @@
   "_id": "Ysyt5rIcVK42NHPp",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: a Spellcasting attack against one target. On a hit, they take ↓2 on Strength and Speed tests for 3 rounds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

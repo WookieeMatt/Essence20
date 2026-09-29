@@ -5,6 +5,10 @@
   "_id": "rT04k3umqXPAlsA3",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Explosive Engineer Skill swap isn't offered on grenade attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

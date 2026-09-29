@@ -5,6 +5,10 @@
   "_id": "786NTb2bQyHZ7qfg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an Intimidation test against a targeted creature's Willpower or Cleverness Frightens it for 1 turn on a success.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

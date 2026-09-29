@@ -5,6 +5,10 @@
   "_id": "cZg52I6J5dLP6PjV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: in Combat, +1 to all your Defenses against an enemy while any of its side is Frightened, Mesmerized or Surprised.</p><p>Left to the table: the listed Qualifications when you Requisition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "ViOa6zwhdPxdEj37",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Nu, Pogodi! and Bogatyr Faction Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

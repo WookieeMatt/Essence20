@@ -5,6 +5,10 @@
   "_id": "5GiZOJwamRzLti5A",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might melee Maneuver at Reach with ↓1.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

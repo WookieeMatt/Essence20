@@ -5,6 +5,10 @@
   "_id": "wVwKahPEmYAABGcv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑2 on Alertness tests. The Smarts increases come from the Focus.</p><p>Left to the table: limiting the ↑2 to searching for enemies, traps or ambushes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

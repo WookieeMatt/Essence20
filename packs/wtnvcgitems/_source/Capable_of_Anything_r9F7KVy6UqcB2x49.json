@@ -5,6 +5,10 @@
   "_id": "r9F7KVy6UqcB2x49",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene): your next Skill Test gets an Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

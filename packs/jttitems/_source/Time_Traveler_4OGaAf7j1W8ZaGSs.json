@@ -5,6 +5,10 @@
   "_id": "4OGaAf7j1W8ZaGSs",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your final skill die for a test is d4 or smaller, a natural 2 on the d20 also counts as a Fumble.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

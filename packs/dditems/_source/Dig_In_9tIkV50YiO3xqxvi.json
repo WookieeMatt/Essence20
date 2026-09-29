@@ -5,6 +5,10 @@
   "_id": "9tIkV50YiO3xqxvi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Move action): dig in or stop. While dug in, grapple, shove and trip (Maneuver) attacks against you take a Snag, and you can't be knocked Prone.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

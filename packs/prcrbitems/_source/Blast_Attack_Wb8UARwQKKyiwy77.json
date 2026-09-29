@@ -5,6 +5,10 @@
   "_id": "Wb8UARwQKKyiwy77",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added to a Zord you pick one of its ranged attacks; that attack hits everything in a 10-foot radius.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

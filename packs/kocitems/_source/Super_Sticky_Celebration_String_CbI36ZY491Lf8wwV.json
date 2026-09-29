@@ -5,6 +5,10 @@
   "_id": "CbI36ZY491Lf8wwV",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Cast: a Spellcasting attack against one target. A hit leaves them Grappled, Immobilized and Impaired for 4 rounds.</p><p>Left to the table: the DIF 30 Brawn test to break free early.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

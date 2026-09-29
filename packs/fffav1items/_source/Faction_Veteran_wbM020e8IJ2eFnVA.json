@@ -5,6 +5,10 @@
   "_id": "wbM020e8IJ2eFnVA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: pick which Faction you use at each mission's Requisition and swap its items on your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

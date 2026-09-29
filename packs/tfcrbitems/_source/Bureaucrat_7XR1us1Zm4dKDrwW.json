@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Lend Assistance, the ally gets both an Edge and ↑1 on their Skill Test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

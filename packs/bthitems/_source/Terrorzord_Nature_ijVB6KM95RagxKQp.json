@@ -5,6 +5,10 @@
   "_id": "ijVB6KM95RagxKQp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: sets the Zord's Smarts and Social, prompts a Driving control test each turn, and costs the pilot 1 Personal Power on a natural 1. Roll Options Dialog: spend Terror for ↑1 each on the Terrorzord's tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

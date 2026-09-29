@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: pick your sharp sense. Active Effect: Edge on Alertness. Roll Options Dialog: a ↑1 switch on other tests your sense helps with.</p><p>Left to the table: the Alertness Edge applies to every Alertness test, even when your chosen sense doesn't.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

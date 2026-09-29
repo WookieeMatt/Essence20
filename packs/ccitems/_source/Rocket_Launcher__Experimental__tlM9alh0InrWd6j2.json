@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/rocket_launcher.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits (including Mounted set-up and Reload) apply. Comes with the Experimental upgrade attached.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

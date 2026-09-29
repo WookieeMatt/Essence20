@@ -5,6 +5,10 @@
   "_id": "wddBU7QaDgEe9FhR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per turn, as a Free action, Lend Assistance to yourself for Edge on your next test.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

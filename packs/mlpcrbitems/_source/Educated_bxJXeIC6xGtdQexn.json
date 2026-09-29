@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene, add a Friendship Point to the group's pool (a GM needs to be connected). Left to the table: once per day, tick Specialized yourself on a Smarts Skill test, and the per-session limit on the Friendship Point.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

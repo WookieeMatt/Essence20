@@ -5,6 +5,10 @@
   "_id": "ahWxUG3w6KkfgUDw",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you're on land, poison and illness attacks against you gain Edge and your saves against poison take a Snag. Roll Options Dialog: a switch adds the Snag to other Conditioning, Athletics or Brawn tests made to resist them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

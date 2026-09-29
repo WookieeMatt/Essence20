@@ -5,6 +5,10 @@
   "_id": "XVkvBb3PvFOGFOVE",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, plus its Speed increases and a Skill from Acrobatics, Finesse or Infiltration.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

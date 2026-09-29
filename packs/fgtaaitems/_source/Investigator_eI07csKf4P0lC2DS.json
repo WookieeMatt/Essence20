@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you never take a Snag on Alertness. Use button (once per scene): gain a Story Point when you uncover a significant clue.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

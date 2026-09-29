@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when your d20 comes up 1 on an attack or Skill test, a Reroll button rolls it again and the new result stands.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "hvcOnHqXtPeuPEAE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: double the area of your Multiple Targets attacks when you place their template.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

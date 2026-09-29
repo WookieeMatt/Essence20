@@ -5,6 +5,10 @@
   "_id": "bCNp9CxhKmIGifyY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per combat, a Fumble with a Temperamental weapon is just a failure instead of hitting you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

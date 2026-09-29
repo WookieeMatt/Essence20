@@ -5,6 +5,10 @@
   "_id": "MQtCbMSdQByuoZe2",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Traitor Perk and the mandatory Traitor Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

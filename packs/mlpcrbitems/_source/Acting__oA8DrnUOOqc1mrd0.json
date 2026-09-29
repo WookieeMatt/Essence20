@@ -5,6 +5,10 @@
   "_id": "oA8DrnUOOqc1mrd0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: spend 1 Cheer to roll Performance in place of Persuasion, Deception or Infiltration when a disguise is involved.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

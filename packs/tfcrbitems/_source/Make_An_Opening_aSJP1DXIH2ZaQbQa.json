@@ -5,6 +5,10 @@
   "_id": "aSJP1DXIH2ZaQbQa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per turn you can take a Contingency action to Attack as a Free action.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

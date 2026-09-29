@@ -5,6 +5,10 @@
   "_id": "U3NTi35bk2qI8oB6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic, once per encounter: when you make a Multiple Targets attack, your allies get ↑1 on their next roll, and a chat card lists who may Sprint right away.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

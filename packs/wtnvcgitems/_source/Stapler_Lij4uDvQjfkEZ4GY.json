@@ -5,6 +5,10 @@
   "_id": "Lij4uDvQjfkEZ4GY",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, using its effects below, and its traits apply. Pick the Stun, Blunt or Maneuver effect when you attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

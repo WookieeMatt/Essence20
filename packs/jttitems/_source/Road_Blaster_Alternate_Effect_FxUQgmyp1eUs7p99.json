@@ -5,6 +5,10 @@
   "_id": "FxUQgmyp1eUs7p99",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack dealing 2 Energy damage to everything in a 15 ft radius, range 60/150 ft.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "uCvk20c4PzwoP3Ta",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attached to worn armor, it adds the Computerized trait, which other upgrades require. Electromagnetic attacks ignore that armor's Evasion bonus.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

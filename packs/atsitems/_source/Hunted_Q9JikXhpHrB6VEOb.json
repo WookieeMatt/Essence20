@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: starting Health, the Essence and Skill options, movement, and the Can't Catch Me Perk. You pick your Essence increase and Skills when you add it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

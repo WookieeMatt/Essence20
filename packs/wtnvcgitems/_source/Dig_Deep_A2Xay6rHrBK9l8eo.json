@@ -5,6 +5,10 @@
   "_id": "A2Xay6rHrBK9l8eo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene): ignore 1 damage from the next hit, but take a Snag on all tests until the end of your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

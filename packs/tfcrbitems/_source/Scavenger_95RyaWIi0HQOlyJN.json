@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added, you pick a Streetwise Specialization. Automatic: Edge on Skill Tests that use that Specialization.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

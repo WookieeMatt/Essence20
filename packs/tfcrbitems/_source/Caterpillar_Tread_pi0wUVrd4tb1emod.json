@@ -5,6 +5,10 @@
   "_id": "pi0wUVrd4tb1emod",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: in Alt Mode, a switch for Edge on Driving through Rough Terrain. In Bot Mode, shoves count you as one Size Class larger and as having moved 20ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

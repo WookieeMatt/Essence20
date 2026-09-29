@@ -5,6 +5,10 @@
   "_id": "roLZwRL1z7YLarSf",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: applying the patch and restoring 1 Health to the recipient at the end of the turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

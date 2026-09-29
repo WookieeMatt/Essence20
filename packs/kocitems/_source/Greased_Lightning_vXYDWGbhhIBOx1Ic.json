@@ -5,6 +5,10 @@
   "_id": "vXYDWGbhhIBOx1Ic",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Cast: on a success, the targeted creature (or you) can't be Restrained or Grappled and gets ↑1 on Speed tests to go fast, until the GM advances the scene.</p><p>Left to the table: Edge to escape a hold that is in place, and Snag on attempts to stop.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "liMchvrumE1wB8Rc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Deception and Persuasion tests against you take ↓2 unless the roller also follows Unicron, and Dark Energon addiction checks against you get a Snag. The Rites of the All-Consuming are on their own items.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

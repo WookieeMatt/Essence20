@@ -5,6 +5,10 @@
   "_id": "PlNtZjYRW262Jh4n",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Issue a Command, you confirm whether you meet its terms; if so it costs a Free action instead of a Move action.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

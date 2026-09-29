@@ -5,6 +5,10 @@
   "_id": "1Dsom5S1ByB6Egbk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you attack with an explosive area, you are asked before placing it whether to make it 5 feet bigger or smaller, or change its shape.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

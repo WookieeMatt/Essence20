@@ -5,6 +5,10 @@
   "_id": "3IbTYGc8LOp1IAHc",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon gains the Computerized trait, normal range ×1.5 and long range ×2. Roll Options Dialog: it cancels the Cover penalty from smoke or darkness; untick it when the Cover is solid.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

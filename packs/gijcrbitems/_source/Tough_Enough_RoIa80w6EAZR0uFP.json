@@ -5,6 +5,10 @@
   "_id": "RoIa80w6EAZR0uFP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: non-attack effects against your Toughness suffer a Snag, and if one still hits, the damage it deals you is halved (rounded up) when it's applied.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

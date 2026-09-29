@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: no Snag for attacking past a weapon's normal range, and ↑2 on ranged attacks against targets more than 30ft away.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

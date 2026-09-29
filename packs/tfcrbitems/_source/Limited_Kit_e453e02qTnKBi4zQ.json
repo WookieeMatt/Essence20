@@ -5,6 +5,10 @@
   "_id": "e453e02qTnKBi4zQ",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose its Specialization. Automatic: rolls that call for that kit use it, and you can spend it for Specialization or an Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

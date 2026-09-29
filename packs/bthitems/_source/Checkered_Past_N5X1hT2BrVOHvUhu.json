@@ -5,6 +5,10 @@
   "_id": "N5X1hT2BrVOHvUhu",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Checkered Past Perk and Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Ksv6Zqg1Km3Gx4iu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Sprint, you're asked whether a teammate is ahead of you; if so the Sprint is a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

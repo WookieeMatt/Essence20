@@ -5,6 +5,10 @@
   "_id": "c6R1pi799qETp6Sl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you gain a 25ft Underground Movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

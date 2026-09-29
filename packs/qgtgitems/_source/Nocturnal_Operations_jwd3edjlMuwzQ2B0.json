@@ -5,6 +5,10 @@
   "_id": "jwd3edjlMuwzQ2B0",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: dropping it on a character adds the Impulse Armor (Silent), Limited Infiltration (Burglary) Kit and Rifle (Tritium Sight).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

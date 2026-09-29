@@ -5,6 +5,10 @@
   "_id": "EDBn8zHJXkRFu2TT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Edge on Alertness, Initiative and Survival tests in your environment of expertise (the scene's terrain, or the environment switch on your sheet). The Smarts increases come with the Focus.</p><p>Left to the table: only counting it when you can't see your allies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

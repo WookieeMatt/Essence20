@@ -4,6 +4,10 @@
   "_id": "DT0TOaHfuJzkgUeO",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 to 3 Power; your next Power Weapon attack deals +1 Energy damage per Power spent if it hits. The Power is gone either way.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

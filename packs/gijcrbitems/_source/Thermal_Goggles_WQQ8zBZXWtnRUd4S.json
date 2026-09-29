@@ -5,6 +5,10 @@
   "_id": "WQQ8zBZXWtnRUd4S",
   "img": "systems/essence20/assets/icons/gear/thermal_googles.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while equipped, your token sees 60 ft in monochrome thermal vision.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

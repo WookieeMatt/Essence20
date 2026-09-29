@@ -5,6 +5,10 @@
   "_id": "73liKWcAmV8UH6qA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is automated. When a temporal anomaly affects you, roll a DIF 15 Science test yourself (or choose to fail); the Host applies the result.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

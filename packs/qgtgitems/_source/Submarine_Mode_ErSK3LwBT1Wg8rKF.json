@@ -5,6 +5,10 @@
   "_id": "ErSK3LwBT1Wg8rKF",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: the vehicle gains Aquatic Movement (equal to its Ground Movement, or half its Aerial), and everyone aboard ignores Poison damage.</p><p>Left to the table: disease immunity and how long the air supply lasts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

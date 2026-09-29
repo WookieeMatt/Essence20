@@ -5,6 +5,10 @@
   "_id": "U8hcTqLqPyMGyz22",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: pick one Relic Weapon Trait for your Grid Relic (add that trait's Perk); more at 7th, 12th and 17th level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "E3q9wyy7DlbxU63l",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the For The Syndicate and Means To An End Faction Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

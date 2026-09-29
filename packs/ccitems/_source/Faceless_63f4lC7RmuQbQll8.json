@@ -5,6 +5,10 @@
   "_id": "63f4lC7RmuQbQll8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Deception and Infiltration. Automatic: others take a Snag on Alertness tests against you. Left to the table: limiting the Edge to hiding your identity.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "3X0MqAV7JsYEiv5A",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: gives the weapon the Retrogen trait, which the system applies on hits.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

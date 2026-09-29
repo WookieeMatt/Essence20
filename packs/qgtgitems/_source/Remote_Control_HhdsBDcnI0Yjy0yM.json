@@ -5,6 +5,10 @@
   "_id": "HhdsBDcnI0Yjy0yM",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>On the sheet: its Use button counts its two uses a day; a Rest restores them.</p><p>Left to the table: taking over a machine or vehicle within 200ft, including any Technology contest against its current operator.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

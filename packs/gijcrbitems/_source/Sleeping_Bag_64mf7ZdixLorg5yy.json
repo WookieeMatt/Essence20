@@ -5,6 +5,10 @@
   "_id": "64mf7ZdixLorg5yy",
   "img": "systems/essence20/assets/icons/gear/sleeping-bag.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: camping gear with no rules of its own.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

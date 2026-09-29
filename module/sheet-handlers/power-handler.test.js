@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { _powerCountUpdate, powerCost } from "./power-handler.mjs";
+import { _powerCountUpdate, fixedPowerCost, powerCost } from "./power-handler.mjs";
 
 const SPEED_BOOST_ID = "Compendium.essence20.pr_crb.Item.CDbaCheOK2rUsqli";
 
@@ -270,5 +270,18 @@ describe("powerCost", () => {
       expect(actor.update).not.toHaveBeenCalled();
       expect(ground.disabled).toBe(false);
     });
+  });
+});
+
+describe("fixedPowerCost", () => {
+  const BOOST = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
+  const WIELDER = "Compendium.essence20.through_the_shattered_grid.Item.lNCrjjiiUhI6ROal";
+  const power = (sourceId, powerCost = 2) => ({ flags: { core: { sourceId } }, system: { powerCost } });
+
+  test("Zeo Crystal Wielder makes Zeo Crystal Boost cost 1 less", () => {
+    const actor = { items: [{ flags: { core: { sourceId: WIELDER } } }] };
+    expect(fixedPowerCost(actor, power(BOOST))).toBe(1);
+    expect(fixedPowerCost({ items: [] }, power(BOOST))).toBe(2);
+    expect(fixedPowerCost(actor, power("Compendium.essence20.pr_crb.Item.other"))).toBe(2);
   });
 });

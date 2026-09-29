@@ -5,6 +5,10 @@
   "_id": "nCjrhYaUuN4omhDm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: as a Standard action, pick Toughness or Evasion and roll Driving against everyone, friend or foe, in the strafing area. Those hit have -5 Toughness and Evasion until your next turn.</p><p>Left to the table: the strip's exact shape (a circle is used) and the vehicle being in motion.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

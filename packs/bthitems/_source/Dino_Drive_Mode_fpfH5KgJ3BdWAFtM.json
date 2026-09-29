@@ -5,6 +5,10 @@
   "_id": "fpfH5KgJ3BdWAFtM",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Standard action): the Zord takes -3 Speed until its next turn, then for the scene gains +1 plating, +10ft to a chosen movement, once-per-round Energy damage reduction, and Edge on energy attacks near another Energem Zord.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

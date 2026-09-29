@@ -5,6 +5,10 @@
   "_id": "xvd1sVIqu0sNEI1c",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: each time you gain it, pick a Zord Feature; it is added to your linked Torozord.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

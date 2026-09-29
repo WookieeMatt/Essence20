@@ -5,6 +5,10 @@
   "_id": "Lyb8wPzI0XUuwF3o",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a vehicle and a vehicle upgrade within its budget of 3 points per mission, then roll Driving or Technology against the upgrade's Availability DIF; on a success the upgrade is added to the vehicle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

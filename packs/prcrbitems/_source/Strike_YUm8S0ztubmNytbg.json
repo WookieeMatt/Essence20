@@ -5,6 +5,10 @@
   "_id": "YUm8S0ztubmNytbg",
   "img": "systems/essence20/assets/icons/weapons/foot.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: unarmed Finesse attacks deal Stun, with a Blunt damage alternate and a Maneuver alternate; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

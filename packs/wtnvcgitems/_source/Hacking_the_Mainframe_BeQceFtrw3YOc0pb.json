@@ -5,6 +5,10 @@
   "_id": "BeQceFtrw3YOc0pb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑1 on Technology.</p><p>Left to the table: once per investigation, conjuring a handy device.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

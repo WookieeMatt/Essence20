@@ -5,6 +5,10 @@
   "_id": "sFaIgcUVRL14vdIi",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: dropping it on a character adds the Ballistic Armor (Sentry System), SBR Carbine, Close Combat Heavy Bludgeoning and Limited Alertness (Situational Awareness) Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

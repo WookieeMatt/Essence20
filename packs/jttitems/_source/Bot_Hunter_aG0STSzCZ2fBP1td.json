@@ -5,6 +5,10 @@
   "_id": "aG0STSzCZ2fBP1td",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on attacks against mechanical Threats, and +1 to all your Defenses against robotic Threats.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

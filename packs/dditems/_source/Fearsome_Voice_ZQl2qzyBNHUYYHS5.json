@@ -5,6 +5,10 @@
   "_id": "ZQl2qzyBNHUYYHS5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: adds the Fearsome Voice attack (Intimidation against Willpower, 20/60 ft, Stun 1). A Critical Success leaves the target Frightened.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

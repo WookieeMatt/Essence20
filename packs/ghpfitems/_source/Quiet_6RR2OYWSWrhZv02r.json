@@ -5,6 +5,10 @@
   "_id": "6RR2OYWSWrhZv02r",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Snag on your Intimidation tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

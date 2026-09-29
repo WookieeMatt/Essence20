@@ -5,6 +5,10 @@
   "_id": "I4Sy2sJIudLAeUlN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: once per turn, a switch for ↑1 when you attack with a Ballistic weapon that already carries a ↓.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

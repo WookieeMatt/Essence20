@@ -5,6 +5,10 @@
   "_id": "W6ZrWSY6ux3ki9D1",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: -1 maximum Health.</p><p>Use button: pick an integrated weapon of the matching tier; it's added to your sheet as part of you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

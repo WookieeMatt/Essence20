@@ -5,6 +5,10 @@
   "_id": "EbbSUA2vSHyv3MjQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: pick your environment of expertise. Automatic: when the scene's terrain matches, or you switch it on with the Use button, you ignore Rough Terrain, get an Edge on non-combat Skill Tests, and your attacks count as Specialized.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

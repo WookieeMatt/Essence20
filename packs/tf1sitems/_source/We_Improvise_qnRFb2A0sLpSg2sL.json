@@ -5,6 +5,10 @@
   "_id": "qnRFb2A0sLpSg2sL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your first Initiative roll in each combat adds a Story Point to the team's pool; any of those left unspent are removed when combat ends.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

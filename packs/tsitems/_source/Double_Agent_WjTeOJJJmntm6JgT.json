@@ -5,6 +5,10 @@
   "_id": "WjTeOJJJmntm6JgT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for when you are dealing with the group you infiltrated. It gives ↑1 on Smarts and Social Skill Tests, and -1 to their Defenses against your attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "bXZxSlaNJv41xlyv",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Strength, ↑1 on Athletics and Cold Resistance for the Zord. Remove any other Upgraded Zord option when you take this one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "GNT0qv91JUTXfS0n",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Free action, in combat): the Zord loses 1d2 Health and gets an Edge on all its attacks this turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

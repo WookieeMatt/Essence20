@@ -5,6 +5,10 @@
   "_id": "VKVxGNoc4t1f51kY",
   "img": "systems/essence20/assets/icons/weapons/shotgun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage, range and targets; its attached upgrades apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

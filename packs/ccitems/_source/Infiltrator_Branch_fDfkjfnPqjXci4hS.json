@@ -5,6 +5,10 @@
   "_id": "fDfkjfnPqjXci4hS",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: a Projectile Launcher, Tactical Armor (Anonymous) and a Limited Infiltration (Burglary) Kit. Left to the table: who may take this package.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "bLBiNpqobnTDH769",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: posts a chat card where a helper rolls Deception, Intimidation or Persuasion against your Willpower. Left to the table: stopping ally benefits that the roll fails to earn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -92,6 +92,22 @@ beforeEach(() => {
   global.ChatMessage = { create: jest.fn(), getSpeaker: jest.fn(() => ({})) };
 });
 
+describe("a vehicle's switched-on Radar Jammer", () => {
+  test("gives Technology tests within its radius a Snag", () => {
+    const roller = makeActor([], { id: 'r' });
+    const own = { center: { x: 0 }, actor: roller };
+    roller.getActiveTokens = () => [own];
+    const vehicle = { name: 'Jammer Truck', items: [], flags: { essence20: { jamming: 50 } } };
+    canvas.grid = { measurePath: ([a, b]) => ({ distance: Math.abs(a.x - b.x) }) };
+    canvas.tokens.placeables = [own, { center: { x: 40 }, actor: vehicle }];
+
+    expect(rollRiderSources(roller, null, { rolledSkill: 'technology' }).sources.some(s => s.id == 'rider-jammer' && s.snag)).toBe(true);
+    expect(rollRiderSources(roller, null, { rolledSkill: 'alertness' }).sources.some(s => s.id == 'rider-jammer')).toBe(false);
+    canvas.tokens.placeables[1].center.x = 60;
+    expect(rollRiderSources(roller, null, { rolledSkill: 'technology' }).sources.some(s => s.id == 'rider-jammer')).toBe(false);
+  });
+});
+
 describe("creature tags", () => {
   test("typed tags, and what an actor's type implies", () => {
     expect([...creatureTagsOf({ system: { creatureTags: 'Robot, Machine Empire' } })]).toEqual(['robot', 'machine empire']);

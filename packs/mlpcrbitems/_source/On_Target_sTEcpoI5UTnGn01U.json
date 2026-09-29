@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per round, spend a Free action to roll Targeting for a simple task up to 60 ft away.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

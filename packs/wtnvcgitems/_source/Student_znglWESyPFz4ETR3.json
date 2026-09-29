@@ -5,6 +5,10 @@
   "_id": "znglWESyPFz4ETR3",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Academic Studies Origin Perk. When you add it, you pick the Essence increase (Smarts or Speed) and one Origin Skill (Driving, Culture, Finesse or Science).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

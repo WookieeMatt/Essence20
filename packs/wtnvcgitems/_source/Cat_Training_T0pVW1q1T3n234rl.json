@@ -5,6 +5,10 @@
   "_id": "T0pVW1q1T3n234rl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the first ↓1 on your Speed tests is ignored.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

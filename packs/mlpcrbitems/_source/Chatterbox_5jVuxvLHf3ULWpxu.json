@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): switch it on for a Snag on Infiltration while you're trying to be stealthy, and off again afterwards.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

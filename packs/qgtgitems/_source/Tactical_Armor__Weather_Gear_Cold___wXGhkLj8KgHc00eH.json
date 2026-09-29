@@ -4,6 +4,10 @@
   "type": "armor",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: +1 Toughness while worn. Comes with the Weather Gear upgrade attached; use its button to set it to Extreme Cold.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

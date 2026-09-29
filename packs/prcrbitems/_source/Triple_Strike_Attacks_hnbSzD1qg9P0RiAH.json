@@ -5,6 +5,10 @@
   "_id": "hnbSzD1qg9P0RiAH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: after a Finesse attack, spend 1 Personal Power for two more attacks with no action cost, once per turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

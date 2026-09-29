@@ -5,6 +5,10 @@
   "_id": "WfrRHdgPpZiOLT8V",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your maximum Energon equals your second-lowest Essence instead of your lowest.</p><p>Left to the table: the extra Energon Point each time you gain Energon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

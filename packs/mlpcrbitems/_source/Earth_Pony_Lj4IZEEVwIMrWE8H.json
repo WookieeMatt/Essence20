@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Grounded, Adaptable and Cutie Mark Perks, 3 Health and 45 ft ground Movement. You choose Strength, Social, or an Influence Skill's Essence for the +1 increase.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

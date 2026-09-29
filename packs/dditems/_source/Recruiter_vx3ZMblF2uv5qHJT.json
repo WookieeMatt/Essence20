@@ -5,6 +5,10 @@
   "_id": "vx3ZMblF2uv5qHJT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on Deception and Persuasion tests (it assumes you have something to barter).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

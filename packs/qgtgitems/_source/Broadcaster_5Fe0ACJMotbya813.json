@@ -5,6 +5,10 @@
   "_id": "5Fe0ACJMotbya813",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Social tests, a switch for a Snag when you deal with someone you have not met before.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Aplhnh1cUIz4tqDm",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Technology (Explosives) tests that call for a kit, carrying it clears the Snag (↓2 if a Restricted kit is called for).</p><p>Use button: use it up for Specialization (or Edge) for the scene, or scrounge a refill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

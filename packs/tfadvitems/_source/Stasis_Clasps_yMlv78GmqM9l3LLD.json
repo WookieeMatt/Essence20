@@ -5,6 +5,10 @@
   "_id": "yMlv78GmqM9l3LLD",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles these binding rings: the GM decides who is held in stasis and for how long.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

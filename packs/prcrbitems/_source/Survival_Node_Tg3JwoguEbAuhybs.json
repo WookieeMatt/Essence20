@@ -5,6 +5,10 @@
   "_id": "Tg3JwoguEbAuhybs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: pick a Skill you have no ranks in and set it to d2 on the sheet yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

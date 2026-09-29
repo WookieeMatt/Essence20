@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: reroll a natural 1 on any Skill die of d4 or higher, keeping the new result.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

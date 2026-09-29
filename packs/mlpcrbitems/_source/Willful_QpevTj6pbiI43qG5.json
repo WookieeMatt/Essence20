@@ -5,6 +5,10 @@
   "_id": "QpevTj6pbiI43qG5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Willpower for the pet that has it. Take it again to stack another +1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "zvRA6z0hTJPURhg2",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: when you use improvised ammo instead of reloading, take the Snag and halve the ranges yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

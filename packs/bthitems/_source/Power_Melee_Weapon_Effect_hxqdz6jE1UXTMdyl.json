@@ -5,6 +5,10 @@
   "_id": "hxqdz6jE1UXTMdyl",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Power Melee Weapon's one-handed attack, rolling Might for 1 Element damage in melee.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

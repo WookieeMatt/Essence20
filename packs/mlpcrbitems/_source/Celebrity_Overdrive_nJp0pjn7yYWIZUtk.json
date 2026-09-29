@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): switch it on for ↓1 on Infiltration while you're trying to slip away at a social event, and off again afterwards.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

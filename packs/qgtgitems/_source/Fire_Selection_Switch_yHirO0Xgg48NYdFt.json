@@ -5,6 +5,10 @@
   "_id": "yHirO0Xgg48NYdFt",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: gives the weapon the Burst-Fire trait.</p><p>Left to the table: skipping Reload when you fire only once in a round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

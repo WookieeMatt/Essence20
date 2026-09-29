@@ -963,6 +963,32 @@ describe("consumeBankedDefenseBonus", () => {
   test("returns 0 with nothing banked", async () => {
     expect(await consumeBankedDefenseBonus(makeActor(), 'pendingTest', 'toughness')).toBe(0);
   });
+
+  test("Stalwart Defense / Sword And Board last for every attack until the holder's next turn", async () => {
+    const savedCombat = global.game.combat;
+    const holder = { id: 'holder' };
+    const other = { id: 'other' };
+    global.game.combat = { id: 'c1', round: 2, turn: 1, turns: [{ actor: other }, { actor: holder }] };
+    for (const flagKey of ['pendingStalwartDefense', 'pendingSwordAndBoard']) {
+      const actor = { ...makeFlaggedActor({ [flagKey]: { defenseAmounts: { toughness: 2 }, combatId: 'c1', round: 2 } }), id: 'holder' };
+
+      // Later in the same round, and early next round before the holder's turn: still there.
+      global.game.combat.round = 2;
+      global.game.combat.turn = 1;
+      expect(await consumeBankedDefenseBonus(actor, flagKey, 'toughness')).toBe(2);
+      global.game.combat.round = 3;
+      global.game.combat.turn = 0;
+      expect(await consumeBankedDefenseBonus(actor, flagKey, 'toughness')).toBe(2);
+      expect(actor.unsetFlag).not.toHaveBeenCalled();
+
+      // The holder's next turn has come round: gone.
+      global.game.combat.turn = 1;
+      expect(await consumeBankedDefenseBonus(actor, flagKey, 'toughness')).toBe(0);
+      expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', flagKey);
+    }
+
+    global.game.combat = savedCombat;
+  });
 });
 
 describe("Force Field (Transformers CRB, Armor Upgrade, p.132)", () => {
@@ -5949,14 +5975,14 @@ describe("Harass (Cobra Codex, Renegade Troublemaker Focus, 10th level, p.63)", 
     });
   });
 
-  test("marks the turn used and banks an Edge", async () => {
+  test("marks the turn used and starts the Edge until the start of the next turn", async () => {
     const actor = makeActor();
     const item = makePerkItem({ sourceId: HARASS_ID, actor });
 
     await onPerkUse(item);
 
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'harassUsedThisTurn', expect.any(Object));
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingHarassEdge', expect.objectContaining({ edge: true }));
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'harassActive', expect.objectContaining({ combatId: 'combat1' }));
   });
 });
 
@@ -6898,7 +6924,7 @@ describe("\"Pseudo\"-Science (WTNV Citizen's Guide, Scientist Role, Night Vale C
 
   test("canUsePerk is false once already activated", () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'pseudoScienceActive' ? true : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'pseudoScienceActive' ? { epoch: 1, window: 'mission', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: PSEUDO_SCIENCE_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -6909,12 +6935,12 @@ describe("\"Pseudo\"-Science (WTNV Citizen's Guide, Scientist Role, Night Vale C
 
     await onPerkUse(item);
 
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pseudoScienceActive', true);
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pseudoScienceActive', { epoch: 1, window: 'mission', count: 1 });
   });
 
   test("does nothing once already activated", async () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'pseudoScienceActive' ? true : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'pseudoScienceActive' ? { epoch: 1, window: 'mission', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: PSEUDO_SCIENCE_ID, actor });
 
     await onPerkUse(item);
@@ -7690,7 +7716,7 @@ describe("Like Water (Factions in Action Vol. 2, General Perk, p.30)", () => {
 
   test("canUsePerk is false once both options are used", () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn(() => true);
+    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
     const item = makePerkItem({ sourceId: LIKE_WATER_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -7702,7 +7728,7 @@ describe("Like Water (Factions in Action Vol. 2, General Perk, p.30)", () => {
 
     await onPerkUse(item);
 
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'likeWaterToughnessActive', true);
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'likeWaterToughnessActive', { epoch: 1, window: 'encounter', count: 1 });
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
 
@@ -9608,23 +9634,26 @@ describe("Party Power (MLP CRB, Party Maestro Influence, p.56)", () => {
 describe("Public Television (WTNV Citizens' Guide, General Perk, p.51)", () => {
   const PUBLIC_TELEVISION_ID = "Compendium.essence20.wtnv_citizens_guide.Item.ymtH7qBwRKqohlyF";
 
-  test("canUsePerk true until used this scene", () => {
+  test("canUsePerk true until used this mission (its once-per-day stand-in)", () => {
     const freshActor = makeActor();
     expect(canUsePerk(makePerkItem({ sourceId: PUBLIC_TELEVISION_ID, actor: freshActor }))).toBe(true);
 
     const usedActor = makeActor();
     usedActor.getFlag = jest.fn((scope, key) => (
-      key == 'publicTelevisionUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+      key == 'publicTelevisionUsedThisMission' ? { epoch: 1, window: 'mission', count: 1 } : undefined
     ));
     expect(canUsePerk(makePerkItem({ sourceId: PUBLIC_TELEVISION_ID, actor: usedActor }))).toBe(false);
   });
 
-  test("onPerkUse marks the scene used and notifies", async () => {
+  test("onPerkUse starts the scene-long Specialization, marks the mission used and notifies", async () => {
     const actor = makeActor();
     await onPerkUse(makePerkItem({ sourceId: PUBLIC_TELEVISION_ID, actor }));
 
     expect(actor.setFlag).toHaveBeenCalledWith(
       'essence20', 'publicTelevisionUsedThisEncounter', expect.objectContaining({ count: 1 }),
+    );
+    expect(actor.setFlag).toHaveBeenCalledWith(
+      'essence20', 'publicTelevisionUsedThisMission', expect.objectContaining({ window: 'mission', count: 1 }),
     );
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
@@ -9633,24 +9662,24 @@ describe("Public Television (WTNV Citizens' Guide, General Perk, p.51)", () => {
 describe("Scientific Method (WTNV Citizens' Guide, University of What It Is Role Perk, p.44)", () => {
   const SCIENTIFIC_METHOD_ID = "Compendium.essence20.wtnv_citizens_guide.Item.vnYDLY5Fe2pasHyF";
 
-  test("canUsePerk true until used this scene", () => {
+  test("canUsePerk true until used this mission (its once-per-session stand-in)", () => {
     const freshActor = makeActor();
     expect(canUsePerk(makePerkItem({ sourceId: SCIENTIFIC_METHOD_ID, actor: freshActor }))).toBe(true);
 
     const usedActor = makeActor();
     usedActor.getFlag = jest.fn((scope, key) => (
-      key == 'scientificMethodUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+      key == 'scientificMethodUsedThisMission' ? { epoch: 1, window: 'mission', count: 1 } : undefined
     ));
     expect(canUsePerk(makePerkItem({ sourceId: SCIENTIFIC_METHOD_ID, actor: usedActor }))).toBe(false);
   });
 
-  test("onPerkUse banks the pending ↑1 and marks the scene used", async () => {
+  test("onPerkUse banks the pending ↑1 and marks the mission used", async () => {
     const actor = makeActor();
     await onPerkUse(makePerkItem({ sourceId: SCIENTIFIC_METHOD_ID, actor }));
 
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingScientificMethod', expect.anything());
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'scientificMethodUsedThisEncounter', expect.objectContaining({ count: 1 }),
+      'essence20', 'scientificMethodUsedThisMission', expect.objectContaining({ window: 'mission', count: 1 }),
     );
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
@@ -13354,5 +13383,20 @@ describe("Two Heads Are Better Than One (Technorganic Secrets, General Perk, p.4
 
     expect(actor.setFlag).not.toHaveBeenCalled();
     expect(global.ChatMessage.create).not.toHaveBeenCalled();
+  });
+});
+
+describe("More Heads are Better than One (WTNV Citizens' Guide, Dragon Origin, p.30)", () => {
+  const MORE_HEADS_ID = "Compendium.essence20.wtnv_citizens_guide.Item.jsaByB9ui8k1VUfG";
+
+  test("once per session: the mission window, not the scene", async () => {
+    const actor = makeActor();
+    expect(canUsePerk(makePerkItem({ sourceId: MORE_HEADS_ID, actor }))).toBe(true);
+    await onPerkUse(makePerkItem({ sourceId: MORE_HEADS_ID, actor }));
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'moreHeadsUsedThisMission', expect.objectContaining({ window: 'mission', count: 1 }));
+
+    const usedActor = makeActor();
+    usedActor.getFlag = jest.fn((scope, key) => (key == 'moreHeadsUsedThisMission' ? { epoch: 1, window: 'mission', count: 1 } : undefined));
+    expect(canUsePerk(makePerkItem({ sourceId: MORE_HEADS_ID, actor: usedActor }))).toBe(false);
   });
 });

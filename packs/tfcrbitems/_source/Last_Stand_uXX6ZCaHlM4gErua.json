@@ -5,6 +5,10 @@
   "_id": "uXX6ZCaHlM4gErua",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when you are Defeated in combat, a button lets you take one full turn first, aimed at the creature that Defeated you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

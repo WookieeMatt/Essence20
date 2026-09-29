@@ -5,6 +5,10 @@
   "_id": "hPnGNRonUBqJ5hwa",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Nose for News Origin Perk. When you add it, you pick the Essence increase (Smarts or Speed) and one Origin Skill (Alertness, Culture, Driving or Infiltration).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

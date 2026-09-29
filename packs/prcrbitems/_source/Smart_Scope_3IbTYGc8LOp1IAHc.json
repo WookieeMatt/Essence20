@@ -5,6 +5,10 @@
   "_id": "3IbTYGc8LOp1IAHc",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon's normal range is multiplied by 1.5 and its long range doubled. Roll Options Dialog: Cover from smoke or darkness is cancelled for this weapon (untick it for solid cover).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

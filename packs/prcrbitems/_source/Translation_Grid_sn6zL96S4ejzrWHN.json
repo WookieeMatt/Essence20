@@ -5,6 +5,10 @@
   "_id": "sn6zL96S4ejzrWHN",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: while Morphed, understanding any language and being understood by all.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

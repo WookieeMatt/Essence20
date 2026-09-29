@@ -5,6 +5,10 @@
   "_id": "Sa7fFCDKf6hMwmBx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: a switch for Edge on Deception tests to convince someone who knows the voice you imitate.</p><p>Left to the table: opening voice-print locks and fooling listeners who only know the voice in passing.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

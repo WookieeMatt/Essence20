@@ -5,6 +5,10 @@
   "_id": "9S0fkRqxjfiOJ8ip",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (while driving your Zord): spend Power; the Zord heals d2 for every 2 Power spent.</p><p>Left to the table: the extra cost and dividing the healing when repairing a combined Megaform.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

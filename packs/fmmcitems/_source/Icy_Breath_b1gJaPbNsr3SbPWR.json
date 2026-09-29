@@ -5,6 +5,10 @@
   "_id": "b1gJaPbNsr3SbPWR",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: place the 20ft cone, then it rolls Targeting against each target's Toughness for 2 Cold damage. Its cost counts toward your Sorcerous Power budget on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

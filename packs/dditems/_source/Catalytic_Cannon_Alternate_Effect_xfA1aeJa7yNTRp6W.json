@@ -1,0 +1,52 @@
+{
+  "folder": "oKWTunb7j09H7xpd",
+  "name": "Catalytic Cannon Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "xfA1aeJa7yNTRp6W",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a hit's Apply Damage button takes 2 points each from the target's Strength and Speed Essences (more with extra successes) instead of Health. A Rest restores them; the chat card notes any that hit 0.</p>"
+    },
+    "originalId": "",
+    "actionType": "standard",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "essenceStrengthSpeed",
+    "damageValue": 2,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 10,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 350,
+      "value": 150
+    },
+    "shape": "circle"
+  },
+  "effects": [],
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1696131342819,
+    "modifiedTime": 1704127407125,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!xfA1aeJa7yNTRp6W"
+}

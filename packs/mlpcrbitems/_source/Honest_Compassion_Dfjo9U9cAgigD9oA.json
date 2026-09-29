@@ -5,6 +5,10 @@
   "_id": "Dfjo9U9cAgigD9oA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Standard action, heal 1 Stress on your target (or yourself) with no roll. Once per day, three times from 11th level; uses come back on a Rest.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "fn3h4tMbawfwpIbk",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: a Blaster, Close Combat Blade, Rifle, Frag Grenade and Concussion Grenade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

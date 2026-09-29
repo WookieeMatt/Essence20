@@ -5,6 +5,10 @@
   "_id": "nqunVQB7C5ldA7SK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you succeed at a test with your Empathy Skill, nearby friends get ↑2 on a Skill Test this turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

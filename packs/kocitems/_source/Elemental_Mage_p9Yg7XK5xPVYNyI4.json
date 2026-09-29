@@ -5,6 +5,10 @@
   "_id": "p9Yg7XK5xPVYNyI4",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the More Bang for your Buck Perk. The Eager to Explode Hang-Up is added too if you have another Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

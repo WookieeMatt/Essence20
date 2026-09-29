@@ -5,6 +5,10 @@
   "_id": "CMJxBkfPAsDD99eY",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Refinery Laborer Perk plus the Always Hungry, I Don't Get It and Subordinate Hang-Ups. Pick your refinery job (and its Skill) yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

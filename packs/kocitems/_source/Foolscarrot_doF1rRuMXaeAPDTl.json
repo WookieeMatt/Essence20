@@ -5,6 +5,10 @@
   "_id": "doF1rRuMXaeAPDTl",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Cast: on a success, the targeted creature (or you, if no one is targeted) takes ↓3 on all Skill Tests until the GM advances the scene.</p><p>Left to the table: exempting tests to grab the illusion, and the test to shake it off early.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

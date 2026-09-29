@@ -5,6 +5,10 @@
   "_id": "e5Z5XBRXh7CzcYWd",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing to automate: recording is roleplay; playing a tape in combat takes a Standard action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

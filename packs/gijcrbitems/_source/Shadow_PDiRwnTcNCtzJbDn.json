@@ -5,6 +5,10 @@
   "_id": "PDiRwnTcNCtzJbDn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switches Infiltrating on or off. While it's on, anyone rolling to detect you takes ↓2. The Speed increases come with the Focus as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

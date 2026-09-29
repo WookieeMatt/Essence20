@@ -5,6 +5,10 @@
   "_id": "8oSKsx3gCJhV42uG",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the bite's Might grapple attack.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

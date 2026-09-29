@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: ↑2 on Infiltration tests, listed as its own source - untick it when you aren't dealing with a trap, safe, hidden door or other concealed device.</p><p>Left to the table: noticing hidden things automatically and leaving no trace.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

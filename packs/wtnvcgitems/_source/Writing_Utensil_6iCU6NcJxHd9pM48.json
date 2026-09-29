@@ -5,6 +5,10 @@
   "_id": "6iCU6NcJxHd9pM48",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic, while carried: Science and Technology tests ignore the first ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

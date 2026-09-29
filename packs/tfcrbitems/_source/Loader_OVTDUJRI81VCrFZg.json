@@ -5,6 +5,10 @@
   "_id": "OVTDUJRI81VCrFZg",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Alt Mode, ↑2 on Might tests to shove and to carrying capacity. Use button: in Bot Mode, switch to using it as a shield for +1 Toughness instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

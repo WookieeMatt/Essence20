@@ -5,6 +5,10 @@
   "_id": "c6sc0sltE5dWMpUZ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a Might attack for 1 Sharp damage against targets within Reach.</p><p>Left to the table: the Dino Charger requirement and once-per-scene limit.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

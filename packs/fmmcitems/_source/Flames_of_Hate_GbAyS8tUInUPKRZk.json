@@ -5,6 +5,10 @@
   "_id": "GbAyS8tUInUPKRZk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: add the Flames of Hate attack to use this; the attack handles its line, damage and armor-ignoring on its own.</p><p>Left to the table: the 1 Personal Power cost and the Monster Form requirement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

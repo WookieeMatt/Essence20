@@ -5,6 +5,10 @@
   "_id": "47v7KeNqF1eg5aNx",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Social and Smarts tests, a switch for the Snag when the test is about your past, your return or your future.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

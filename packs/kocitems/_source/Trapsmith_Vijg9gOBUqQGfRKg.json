@@ -5,6 +5,10 @@
   "_id": "Vijg9gOBUqQGfRKg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑1 on Alertness and ↑2 on Survival.</p><p>Left to the table: the book limits these to spotting and making traps, but the effect is always on, so switch it off for other tests. Escaping your traps is a GM-set test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

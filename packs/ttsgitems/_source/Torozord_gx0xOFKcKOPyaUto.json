@@ -5,6 +5,10 @@
   "_id": "gx0xOFKcKOPyaUto",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: unlocks a Zord for you on the sheet, to link your Torozord, and you never take a Snag on Driving tests while driving it.</p><p>Left to the table: the Torozord's stats and starting Features.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

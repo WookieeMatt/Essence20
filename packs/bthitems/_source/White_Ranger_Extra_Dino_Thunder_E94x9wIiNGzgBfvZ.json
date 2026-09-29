@@ -5,6 +5,10 @@
   "_id": "E94x9wIiNGzgBfvZ",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power to activate any Dino Thunder power you or a teammate has. The GM decides any Snag or ↓1 for using someone else's power.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "r3slLsGwSfXUiD94",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick Soothe (Psychic Resistance and immunity to Frightened and Mesmerized) or Cure (1 Energon, removes those Conditions), then roll Persuasion against the chosen Defense. Left to the table: ending Soothe after 24 hours.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

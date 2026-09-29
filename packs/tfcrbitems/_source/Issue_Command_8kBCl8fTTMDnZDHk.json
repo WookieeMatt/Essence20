@@ -5,6 +5,10 @@
   "_id": "8kBCl8fTTMDnZDHk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: Issue a Command from a preset or your own terms; allies who meet it get the ↑ or Defense bonus.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

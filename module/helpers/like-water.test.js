@@ -3,6 +3,9 @@ import {
   applyLikeWater, getAvailableLikeWaterOptions, getLikeWaterDefenseBonus, pickLikeWaterOption,
 } from './like-water.mjs';
 
+// Used/active this Combat: stamped with the current (default 1) encounter on the Scene Clock.
+const USED = { epoch: 1, window: 'encounter', count: 1 };
+
 function makeActor(flags = {}) {
   return {
     getFlag: jest.fn((scope, key) => flags[key]),
@@ -18,13 +21,13 @@ describe("getAvailableLikeWaterOptions", () => {
   });
 
   test("excludes an option once it's been activated this Combat", () => {
-    expect(getAvailableLikeWaterOptions(makeActor({ likeWaterToughnessActive: true }))).toEqual(['evasion']);
-    expect(getAvailableLikeWaterOptions(makeActor({ likeWaterEvasionActive: true }))).toEqual(['toughness']);
+    expect(getAvailableLikeWaterOptions(makeActor({ likeWaterToughnessActive: USED }))).toEqual(['evasion']);
+    expect(getAvailableLikeWaterOptions(makeActor({ likeWaterEvasionActive: USED }))).toEqual(['toughness']);
   });
 
   test("empty once both have been activated", () => {
     expect(getAvailableLikeWaterOptions(
-      makeActor({ likeWaterToughnessActive: true, likeWaterEvasionActive: true }),
+      makeActor({ likeWaterToughnessActive: USED, likeWaterEvasionActive: USED }),
     )).toEqual([]);
   });
 });
@@ -55,12 +58,12 @@ describe("applyLikeWater", () => {
   });
 
   test("skips the picker and activates the sole remaining option directly", async () => {
-    const actor = makeActor({ likeWaterToughnessActive: true });
+    const actor = makeActor({ likeWaterToughnessActive: USED });
 
     const result = await applyLikeWater(actor);
 
     expect(result).toBe('evasion');
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'likeWaterEvasionActive', true);
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'likeWaterEvasionActive', USED);
   });
 
   test("prompts when both options are available and activates the chosen one", async () => {
@@ -70,11 +73,11 @@ describe("applyLikeWater", () => {
     const result = await applyLikeWater(actor);
 
     expect(result).toBe('toughness');
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'likeWaterToughnessActive', true);
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'likeWaterToughnessActive', USED);
   });
 
   test("returns null with nothing left to activate", async () => {
-    const actor = makeActor({ likeWaterToughnessActive: true, likeWaterEvasionActive: true });
+    const actor = makeActor({ likeWaterToughnessActive: USED, likeWaterEvasionActive: USED });
     expect(await applyLikeWater(actor)).toBeNull();
     expect(actor.setFlag).not.toHaveBeenCalled();
   });
@@ -90,14 +93,28 @@ describe("applyLikeWater", () => {
 
 describe("getLikeWaterDefenseBonus", () => {
   test("+2 for an active Defense, 0 otherwise", () => {
-    const actor = makeActor({ likeWaterToughnessActive: true });
+    const actor = makeActor({ likeWaterToughnessActive: USED });
     expect(getLikeWaterDefenseBonus(actor, 'toughness')).toBe(2);
     expect(getLikeWaterDefenseBonus(actor, 'evasion')).toBe(0);
   });
 
   test("0 for a Defense Like Water doesn't cover, with nothing active, or with no actor", () => {
-    expect(getLikeWaterDefenseBonus(makeActor({ likeWaterToughnessActive: true }), 'willpower')).toBe(0);
+    expect(getLikeWaterDefenseBonus(makeActor({ likeWaterToughnessActive: USED }), 'willpower')).toBe(0);
     expect(getLikeWaterDefenseBonus(makeActor(), 'toughness')).toBe(0);
     expect(getLikeWaterDefenseBonus(null, 'toughness')).toBe(0);
+  });
+});
+
+describe("Like Water's until-end-of-Combat duration", () => {
+  test("a use from an earlier encounter neither grants the +2 nor blocks a new use", () => {
+    const actor = makeActor({ likeWaterToughnessActive: { ...USED, epoch: 0 } });
+    expect(getLikeWaterDefenseBonus(actor, 'toughness')).toBe(0);
+    expect(getAvailableLikeWaterOptions(actor)).toEqual(['toughness', 'evasion']);
+  });
+
+  test("a leftover plain-true flag from before it had a duration reads as expired", () => {
+    const actor = makeActor({ likeWaterEvasionActive: true });
+    expect(getLikeWaterDefenseBonus(actor, 'evasion')).toBe(0);
+    expect(getAvailableLikeWaterOptions(actor)).toEqual(['toughness', 'evasion']);
   });
 });

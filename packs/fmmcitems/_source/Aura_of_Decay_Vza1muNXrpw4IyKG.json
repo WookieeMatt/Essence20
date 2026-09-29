@@ -5,6 +5,10 @@
   "_id": "Vza1muNXrpw4IyKG",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: rolls Culture against the Toughness of everyone in the 20ft area for 2 Void damage, which ignores armor bonuses to Toughness. The 1 Health cost is taken automatically when you roll.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

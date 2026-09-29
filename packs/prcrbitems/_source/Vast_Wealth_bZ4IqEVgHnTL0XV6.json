@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Edge on Wealth tests. Use button: once per mission, buy your way past a test. Roll Options Dialog: on Social tests, a switch for Edge when you can flaunt your wealth.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

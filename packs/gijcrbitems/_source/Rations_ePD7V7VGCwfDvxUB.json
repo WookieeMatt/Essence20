@@ -5,6 +5,10 @@
   "_id": "ePD7V7VGCwfDvxUB",
   "img": "systems/essence20/assets/icons/gear/rations.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: food for the mission.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

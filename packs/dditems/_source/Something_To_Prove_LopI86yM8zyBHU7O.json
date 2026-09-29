@@ -5,6 +5,10 @@
   "_id": "LopI86yM8zyBHU7O",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: after you Fumble, your tests take ↓1 on your following turn. Left to the table: whether your commander actually saw the Fumble.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

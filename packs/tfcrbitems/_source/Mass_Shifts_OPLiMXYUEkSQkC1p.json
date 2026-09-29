@@ -5,6 +5,10 @@
   "_id": "OPLiMXYUEkSQkC1p",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: your daily Mass Shift uses rise with your level as in the Modemaster table; Hybridizations that need a Mass Shift spend from it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

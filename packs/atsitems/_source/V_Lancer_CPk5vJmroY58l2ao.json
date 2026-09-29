@@ -5,6 +5,10 @@
   "_id": "CPk5vJmroY58l2ao",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick Blast Mode (Targeting) or Lance Mode (Might) when you attack, each with its own damage and range; Inertial and Silent apply. Lightspeed Response swaps it in when you Morph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

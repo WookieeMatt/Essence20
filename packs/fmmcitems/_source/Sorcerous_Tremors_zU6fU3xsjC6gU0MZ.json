@@ -5,6 +5,10 @@
   "_id": "zU6fU3xsjC6gU0MZ",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick the tremor's strength, then it takes your Standard action and rolls the DIF 12 Culture test. On a success, everyone within 15ft gets a save card: Athletics or Acrobatics against the listed DIF or be knocked Prone.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

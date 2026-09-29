@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Surface Invasion Perk and a choice of the Cutter (Common) or Cutter (Long) Alt Mode, plus starting Health, 30ft Ground and Aquatic Movement, the Strength Essence increase and the Athletics and Might Skills.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

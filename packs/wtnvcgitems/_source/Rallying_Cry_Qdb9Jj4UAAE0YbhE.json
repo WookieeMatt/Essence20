@@ -5,6 +5,10 @@
   "_id": "Qdb9Jj4UAAE0YbhE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: in the first round of combat, a DIF 10 Performance test Surprises one targeted enemy on a success, or up to three on a Critical Success.</p><p>Left to the table: checking the enemies are within your reach.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

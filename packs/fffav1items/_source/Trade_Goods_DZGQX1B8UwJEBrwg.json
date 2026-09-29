@@ -5,6 +5,10 @@
   "_id": "DZGQX1B8UwJEBrwg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a Limited or Restricted weapon; you are Qualified with it at Requisition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

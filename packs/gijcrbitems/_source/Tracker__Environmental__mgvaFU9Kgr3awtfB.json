@@ -5,6 +5,10 @@
   "_id": "mgvaFU9Kgr3awtfB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: ↑2 on Survival tests in your environment of expertise, listed in the Roll Options Dialog so you can untick it.</p><p>Left to the table: untick it when you aren't tracking a target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

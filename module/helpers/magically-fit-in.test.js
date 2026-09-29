@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { activateMagicallyFitIn, canUseMagicallyFitIn, getMagicallyFitInBonus } from './magically-fit-in.mjs';
+import { activateMagicallyFitIn, canUseMagicallyFitIn, getMagicallyFitInBonus, magicallyFitInValue } from './magically-fit-in.mjs';
 
 global.game = { i18n: { localize: (k) => k } };
 global.foundry = { applications: { api: { DialogV2: { wait: jest.fn() } } } };
@@ -73,5 +73,36 @@ describe("activateMagicallyFitIn / getMagicallyFitInBonus", () => {
 
   test("getMagicallyFitInBonus returns 0 with nothing banked", () => {
     expect(getMagicallyFitInBonus(makeActor(), 'athletics')).toBe(0);
+  });
+});
+
+describe("Magically Fit In lasts for the rest of the scene", () => {
+  const settings = { sceneClockScene: 4 };
+  beforeEach(() => {
+    foundry.applications.api.DialogV2.wait.mockReset();
+    settings.sceneClockScene = 4;
+    global.game.settings = { get: jest.fn((scope, key) => settings[key]) };
+  });
+  afterAll(() => delete global.game.settings);
+
+  test("stamps the current scene and expires when the GM starts a new scene", async () => {
+    foundry.applications.api.DialogV2.wait.mockResolvedValue({ skill: 'athletics', amount: 2 });
+    const actor = makeActor({ mysticalPoints: 3 });
+
+    await activateMagicallyFitIn(actor);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'magicallyFitInBonus', { skill: 'athletics', amount: 2, epoch: 4 });
+    expect(getMagicallyFitInBonus(actor, 'athletics')).toBe(2);
+
+    settings.sceneClockScene = 5;
+    expect(getMagicallyFitInBonus(actor, 'athletics')).toBe(0);
+  });
+
+  test("a flag with no scene stamp reads as expired", () => {
+    expect(getMagicallyFitInBonus(makeActor({ flagValue: { skill: 'athletics', amount: 2 } }), 'athletics')).toBe(0);
+  });
+
+  test("magicallyFitInValue stamps the current scene", () => {
+    expect(magicallyFitInValue('brawn', 1)).toEqual({ skill: 'brawn', amount: 1, epoch: 4 });
   });
 });

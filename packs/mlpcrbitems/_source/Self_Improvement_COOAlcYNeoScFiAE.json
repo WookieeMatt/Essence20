@@ -5,6 +5,10 @@
   "_id": "COOAlcYNeoScFiAE",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: after a successful cast, with a creature targeted (or yourself), raise one Essence by 1 for the scene, with its Defense, and give ↑1 on a Skill of that Essence. Use it again for a different Essence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "QSHsA1peMncG196r",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you can't be critically hit, and whenever something would push or move you, you're asked whether to stay put.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

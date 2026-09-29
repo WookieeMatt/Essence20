@@ -5,6 +5,10 @@
   "_id": "QRGflsYQcDN16l10",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a target and whether you urge them toward greatness or failure. Greatness turns their next success into a Critical Success; failure gives them ↓3 on Skill Tests until they roll a Critical Success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

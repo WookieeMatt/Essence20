@@ -5,6 +5,10 @@
   "_id": "deIolACU0X6qDyj0",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: casting rolls Spellcasting and applies its cost as a lingering Spellcasting downshift. Then move your token to the empty space you picked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

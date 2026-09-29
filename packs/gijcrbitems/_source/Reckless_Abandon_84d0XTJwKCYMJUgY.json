@@ -5,6 +5,10 @@
   "_id": "84d0XTJwKCYMJUgY",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: Activate spends a daily use. While it's on and you're in light armor or none, you get ↑2 on Strength tests and bonus Health for your level. Uses and bonus Health grow as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

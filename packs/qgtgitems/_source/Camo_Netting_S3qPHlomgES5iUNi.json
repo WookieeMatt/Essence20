@@ -5,6 +5,10 @@
   "_id": "S3qPHlomgES5iUNi",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switch the netting on or off. On, the vehicle gets Edge to hide while stationary, but moves 10 ft slower and takes ↓2 on Speed tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

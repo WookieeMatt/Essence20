@@ -158,7 +158,8 @@ export function canUseGrant(item) {
   case 'volatileDelivery':
     return getUses(actor, 'volatileDelivery', 'scene') < 1;
   case 'riotGear':
-    return !!game.combat && getUses(actor, 'riotGear', 'scene') < 1;
+    // "Once per session" - the Scene Clock's mission window (grants.mjs#riotGear marks the same).
+    return !!game.combat && getUses(actor, 'riotGear', 'mission') < 1;
   case 'personalPowerSupply':
     return (actor.items?.contents ?? [...(actor.items ?? [])]).filter(i => i.type == 'power' && i.system?.type == 'grid').length
         < (Number(actor.system?.powers?.personal?.max) || 0);

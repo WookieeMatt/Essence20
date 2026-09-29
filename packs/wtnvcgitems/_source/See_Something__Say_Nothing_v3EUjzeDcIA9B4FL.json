@@ -5,6 +5,10 @@
   "_id": "v3EUjzeDcIA9B4FL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an Edge on Streetwise tests, and anyone rolling Persuasion or Deception against you takes ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

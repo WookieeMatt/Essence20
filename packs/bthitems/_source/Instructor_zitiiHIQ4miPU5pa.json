@@ -5,6 +5,10 @@
   "_id": "zitiiHIQ4miPU5pa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick a Smarts Skill when gained and get ↑1 on it. Use button: teach that Skill to a teammate, who then rolls it without the untrained Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "7CuDik9Vtpou9iDJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Toughness and Willpower. Automatic: Edge on Infiltration, +1 damage against Surprised targets, and Qualified with Standard weapons, the Silent battledress upgrade and land vehicles (Driving them never takes a Snag).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

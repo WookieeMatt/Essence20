@@ -5,6 +5,10 @@
   "_id": "gvpgK9oegrloYHcO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on attacks with Fire-trait weapons and ↓1 with any other weapon, growing to ↑2/↓2 at 10th level and ↑3/↓3 at 20th. Both show in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

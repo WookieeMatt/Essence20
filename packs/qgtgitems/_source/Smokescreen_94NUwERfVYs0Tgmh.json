@@ -5,6 +5,10 @@
   "_id": "94NUwERfVYs0Tgmh",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per combat, as a Standard action, fills a 30ft radius around the vehicle with smoke, giving everyone inside Cover for a round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

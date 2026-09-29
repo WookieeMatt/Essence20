@@ -5,6 +5,10 @@
   "_id": "P3t8JOiCH5bR0N5r",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Bot Mode it adds +2 Toughness. Use button: in Alt Mode, clear one square of Rough Terrain you move through as a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

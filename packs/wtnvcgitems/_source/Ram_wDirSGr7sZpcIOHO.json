@@ -5,6 +5,10 @@
   "_id": "wDirSGr7sZpcIOHO",
   "img": "systems/essence20/assets/icons/weapons/punch.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its effects below, and its traits apply. A vehicle's built-in ramming attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

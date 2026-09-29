@@ -5,6 +5,10 @@
   "_id": "Z5CosOV7kYJjKtqy",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Essence choices, Skills, starting Health, 30ft Ground and 30ft Aquatic Movement, and the Always Ready Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Fv2fYJxjgGyqAbq6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on attacks for each different Adept Armament you have attacked with this turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

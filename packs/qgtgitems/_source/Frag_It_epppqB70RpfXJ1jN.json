@@ -5,6 +5,10 @@
   "_id": "epppqB70RpfXJ1jN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: area attacks against you take a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

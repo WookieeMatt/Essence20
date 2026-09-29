@@ -5,6 +5,10 @@
   "_id": "ifF6KRO65Yguf7K1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +10 ft to all your Movements while you have a Fire-trait weapon equipped.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

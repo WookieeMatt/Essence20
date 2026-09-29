@@ -5,6 +5,10 @@
   "_id": "599vxnR8xFBdLyPo",
   "img": "systems/essence20/assets/icons/gear/clothes.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): switch it on for ↑1 on Performance and Persuasion while you are showing it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

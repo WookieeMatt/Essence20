@@ -5,6 +5,10 @@
   "_id": "DzzgWT7OGa7bYB42",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: upgrade your drone to a Limited or Restricted drone, with its free upgrades.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

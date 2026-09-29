@@ -5,6 +5,10 @@
   "_id": "M16LS5mP1EGpePdD",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a two-handed Might melee attack at double Reach for 1 Electric damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

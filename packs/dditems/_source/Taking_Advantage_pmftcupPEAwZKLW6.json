@@ -5,6 +5,10 @@
   "_id": "pmftcupPEAwZKLW6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: spending Energon at the start of a round to move your Initiative right after an enemy who failed a test (drag your place in the Combat Tracker).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

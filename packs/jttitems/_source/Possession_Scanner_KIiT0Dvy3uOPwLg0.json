@@ -5,6 +5,10 @@
   "_id": "KIiT0Dvy3uOPwLg0",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): ↑2 on Alertness and Technology. Switch it on while scanning for possession.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "i7MMFqDK31Tq8Cgd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when you gain it, pick one Grid Power from the list. The chosen Power is added to your sheet and works on its own.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

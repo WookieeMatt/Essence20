@@ -5,6 +5,10 @@
   "_id": "UfDHKErREKIeojVl",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the area weapon it's attached to gets a Cover 1 alternate effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

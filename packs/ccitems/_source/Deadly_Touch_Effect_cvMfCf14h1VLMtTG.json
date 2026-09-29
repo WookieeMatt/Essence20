@@ -5,6 +5,10 @@
   "_id": "cvMfCf14h1VLMtTG",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Deadly Touch attack, rolling Athletics for 1 Poison damage in melee.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

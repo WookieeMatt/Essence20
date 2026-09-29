@@ -5,6 +5,10 @@
   "_id": "Y2cKjlgydMz2fjRs",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↓1 on Intimidation, Performance and Persuasion.</p><p>Left to the table: the penalty is meant only when you try to be the centre of attention, so switch the effect off otherwise.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

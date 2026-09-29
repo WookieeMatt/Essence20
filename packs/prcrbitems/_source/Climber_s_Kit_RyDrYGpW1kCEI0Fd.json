@@ -5,6 +5,10 @@
   "_id": "RyDrYGpW1kCEI0Fd",
   "img": "systems/essence20/assets/icons/gear/mountain-climbing.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the DIF 10 climbing tests and the 20-foot fall limit while you use it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

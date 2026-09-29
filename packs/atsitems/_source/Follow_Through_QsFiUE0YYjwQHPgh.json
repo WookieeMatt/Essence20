@@ -5,6 +5,10 @@
   "_id": "QsFiUE0YYjwQHPgh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: while Morphed, once per turn, grants a free extra Might or Finesse attack after you Defeat a foe.</p><p>Left to the table: checking the Defeat and moving up to your Burst Speed first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

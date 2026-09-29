@@ -5,6 +5,10 @@
   "_id": "R85uJNpYbXd9C9Eh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added, you pick one Technorganic Influence Perk (Electromagnetic Disruption, Frictionless Movement, Invisibility, Telekinesis, Telepathy, Teleportation or Therapeutic Nanotechnology) and it is granted.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

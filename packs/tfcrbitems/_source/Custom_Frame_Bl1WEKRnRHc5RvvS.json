@@ -5,6 +5,10 @@
   "_id": "Bl1WEKRnRHc5RvvS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: at 1st level you rank Strength, Speed, Smarts and Social as First to Fourth priority, and your Essence increases follow that order as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "gaOLMFlImcLRmQV0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Fire Resistance from 3rd level, becoming Fire Immunity at 10th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "cQwRkKPB8u6vXkv1",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for 2 Electricity damage at Reach. Turbocharged can swap them in when you Morph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "YsoS30FKigTm19CH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: at the start of your turn, spend 2 Personal Power to roll Intimidation against every enemy within 10ft; each one you beat is Frightened until the end of your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

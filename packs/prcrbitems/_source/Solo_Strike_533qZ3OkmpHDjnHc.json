@@ -5,6 +5,10 @@
   "_id": "533qZ3OkmpHDjnHc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: the Solo Strike track. Roll Options Dialog: a switch on melee attacks for the Solo Strike upshift when you attack one adjacent target that has none of your allies next to it.</p><p>Left to the table: making no other attacks that round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

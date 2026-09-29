@@ -5,6 +5,10 @@
   "_id": "PDOUlIOgO7YoPVvm",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend the Power and target a creature; a chat card shows its highest Defense, its attacks and its Hang-Ups.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

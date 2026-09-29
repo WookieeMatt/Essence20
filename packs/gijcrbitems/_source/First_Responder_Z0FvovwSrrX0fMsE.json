@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added, you pick Strength or Smarts to raise and a matching skill from its list. It sets your starting Health and 35 ft Ground Movement and gives you the Skilled Under Pressure Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

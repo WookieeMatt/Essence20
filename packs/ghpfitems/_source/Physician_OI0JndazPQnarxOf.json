@@ -5,6 +5,10 @@
   "_id": "OI0JndazPQnarxOf",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the Medic Focus gives a Standard Science (Medicine) kit at requisition instead of a Limited one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "nLT8HSCCGWEBiRlq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: trained in all armor and Qualified in Computerized armor. Automatic: Requisition and driving Qualifications, ↑1 with vehicle and hardpoint weapons, and a Snag on attempts to Grapple, Shove or Trip you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "qZQyZDntWJdNeDQy",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: converting into this Alt Mode makes you Large with 60ft Ground Movement. Taking it adds SMASH!, a Might attack at double Reach for 2 Blunt with Stun and Maneuver alternate effects (Use button re-adds it).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

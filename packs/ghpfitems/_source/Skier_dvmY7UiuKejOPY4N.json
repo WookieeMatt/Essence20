@@ -5,6 +5,10 @@
   "_id": "dvmY7UiuKejOPY4N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: switches skiing on or off; while on, +10ft Ground Movement and +1 Evasion.</p><p>Left to the table: the free kits and skis at requisition.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "Athletics (Skiing) or Survival (Arctic) Specialization",

@@ -5,6 +5,10 @@
   "_id": "FtXEUdgVr6mz4jq1",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on when persuading the Sheriff's Secret Police (or any Night Vale authority once every hole is punched) to get ↑2 on Persuasion, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

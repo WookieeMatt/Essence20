@@ -5,6 +5,10 @@
   "_id": "wWwI0ngCDCGWN0uB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: adds a Story Point to the team pool (once per encounter).</p><p>Left to the table: rerolling any die, not just 1s, when you spend a Story Point to reroll.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "At least 3 successful missions",

@@ -5,6 +5,10 @@
   "_id": "EMyMhKEToExQEraH",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: shows your Burst Speed distance, which rises with your Phantom Ranger level. Follow Through grants the extra attack after a Defeat.</p><p>Left to the table: moving your token that distance, ignoring obstacles and terrain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

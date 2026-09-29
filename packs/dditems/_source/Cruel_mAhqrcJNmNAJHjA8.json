@@ -5,6 +5,10 @@
   "_id": "mAhqrcJNmNAJHjA8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on attacks against a target with any Condition, and +1 damage if it's Immobilized or Restrained.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

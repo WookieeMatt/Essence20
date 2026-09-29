@@ -5,6 +5,10 @@
   "_id": "fLbfGuauxTBykvZp",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when this Zord is removed from a Megaform during combat, it can't be added back to a Megaform for the rest of the scene.</p><p>Left to the table: rolling its Initiative as a separate combatant, and the Core Body restriction.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

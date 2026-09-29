@@ -5,6 +5,10 @@
   "_id": "OHmPLHe2Joula6Fu",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the T-Rex Blaster's attack, rolling Targeting for 2 Element damage at the listed range.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

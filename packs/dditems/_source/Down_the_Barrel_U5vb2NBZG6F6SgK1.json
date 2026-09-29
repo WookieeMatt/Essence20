@@ -5,6 +5,10 @@
   "_id": "U5vb2NBZG6F6SgK1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Edge on Intimidation and Persuasion Tests while your Favorite Weapon is equipped.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

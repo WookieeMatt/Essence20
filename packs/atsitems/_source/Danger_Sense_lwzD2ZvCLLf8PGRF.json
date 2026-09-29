@@ -5,6 +5,10 @@
   "_id": "lwzD2ZvCLLf8PGRF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑2 on Alertness. Automatic: Initiative rolls re-roll 1s and 2s. Roll Options Dialog: a switch for Edge when avoiding traps or ambushes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

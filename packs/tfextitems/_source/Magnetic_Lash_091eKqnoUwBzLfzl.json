@@ -5,6 +5,10 @@
   "_id": "091eKqnoUwBzLfzl",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a Technology attack out to 15ft for 2 Electromagnetic damage. Left to the table: throwing the target 2d4 × 5ft and knocking it Prone.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

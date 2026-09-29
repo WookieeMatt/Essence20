@@ -5,6 +5,10 @@
   "_id": "Sjx8BBENyDUTRJvs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Edge on Initiative. Automatic: when you spend a Story Point for a tool or piece of equipment on the Story Point tracker, a d6 is rolled and a 5 or 6 gives the point back.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

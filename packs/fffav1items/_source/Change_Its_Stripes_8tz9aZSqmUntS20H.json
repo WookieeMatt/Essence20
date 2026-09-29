@@ -5,6 +5,10 @@
   "_id": "8tz9aZSqmUntS20H",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: grants the Blend In Perk, and gives Edge on the Brawn test to keep a Defeated vehicle from exploding.</p><p>Left to the table: adding the Tiger Stripes trait to your assigned vehicles.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

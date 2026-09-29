@@ -5,6 +5,10 @@
   "_id": "rge5LP0rJvsqgqzz",
   "img": "systems/essence20/assets/icons/gear/parachute.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: no falling damage while you use it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

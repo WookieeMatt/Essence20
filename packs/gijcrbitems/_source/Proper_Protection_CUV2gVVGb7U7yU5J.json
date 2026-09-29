@@ -5,6 +5,10 @@
   "_id": "CUV2gVVGb7U7yU5J",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you carry a medicine kit you are immune to poison and disease, and the Poisoned Condition won't land on you. When you use the Heal action to cure poison, a success counts as a critical success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "34O7Y77lZpuhng3G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 Evasion and ↑1 on Alertness. Automatic: ↑1 on attacks against more than one target, and your melee Power Weapons gain Multiple Targets (2) when they lack that trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

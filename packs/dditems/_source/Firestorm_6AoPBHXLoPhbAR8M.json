@@ -5,6 +5,10 @@
   "_id": "6AoPBHXLoPhbAR8M",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Free, 1 Energon): a weapon already changed by Explosive Ammo triples its blast radius on its next attack.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

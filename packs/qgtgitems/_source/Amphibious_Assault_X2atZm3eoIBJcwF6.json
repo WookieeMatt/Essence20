@@ -5,6 +5,10 @@
   "_id": "X2atZm3eoIBJcwF6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you gain Aquatic Movement (or +15 ft to it), and ↑1 on Initiative when combat starts while you are swimming or underwater.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

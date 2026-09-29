@@ -5,6 +5,10 @@
   "_id": "j0CJWQ858tbQvVUs",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: sets your Alt Mode size and Movement and adds the Ram attack (1 Blunt, Trip alternate) when you take this Alt Mode; a Use button re-adds it. Limited Articulation blocks Athletics and Finesse tests while you're in it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -26,7 +30,8 @@
     },
     "altModesize": "extended",
     "altModeCrew": 2,
-    "altModeFirepoints": 4
+    "altModeFirepoints": 4,
+    "limitedArticulation": true
   },
   "effects": [],
   "sort": 400000,

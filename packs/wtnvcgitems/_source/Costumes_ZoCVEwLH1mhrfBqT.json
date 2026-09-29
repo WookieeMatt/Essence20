@@ -5,6 +5,10 @@
   "_id": "ZoCVEwLH1mhrfBqT",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on while in costume to get ↑1 on Deception, Infiltration and Performance, then switch it off. It doesn't work against angels or the City Council.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "OU9rXvoKfXtcpvFy",
   "img": "systems/essence20/assets/icons/weapons/punch.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your built-in unarmed attack rolls its Skill with the listed damage, with two alternate effects to choose from, and its traits apply (Blunt, Martial Arts, Silent).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

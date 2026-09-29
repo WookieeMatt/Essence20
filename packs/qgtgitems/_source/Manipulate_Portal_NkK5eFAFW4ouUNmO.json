@@ -5,6 +5,10 @@
   "_id": "NkK5eFAFW4ouUNmO",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>On the sheet: its Use button counts its two uses a day; a Rest restores them.</p><p>Left to the table: forcing the door or window open or holding it shut, and its sturdier Toughness while held.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

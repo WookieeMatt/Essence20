@@ -5,6 +5,10 @@
   "_id": "m1718I7tK9uSXyKQ",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: the GM feeds the occupants updates on Threats within a mile, and the vehicle's camera and location data are saved.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

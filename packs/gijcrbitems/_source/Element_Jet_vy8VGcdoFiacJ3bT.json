@@ -5,6 +5,10 @@
   "_id": "vy8VGcdoFiacJ3bT",
   "img": "systems/essence20/assets/icons/weapons/flamethrower.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: pick the weapon's element. Automatic: attacks roll Targeting for 1 damage of that element across a 15 ft area, and its traits apply. Alternate Effect: an Intimidate attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

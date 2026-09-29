@@ -5,6 +5,10 @@
   "_id": "DlT1o8FXnyYKlHQs",
   "img": "systems/essence20/assets/icons/items/shield.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: while the shield is equipped, +2 to Toughness and Evasion.</p><p>Left to the table: doubling the bonus against one attacker, and the extra Free action to use it as a focus.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

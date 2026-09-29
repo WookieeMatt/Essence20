@@ -5,6 +5,10 @@
   "_id": "efCC0ouJPWIbECio",
   "img": "systems/essence20/assets/icons/weapons/slingshot.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 50/100 ft for Stun, with two Energy damage alternate effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

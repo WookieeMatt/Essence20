@@ -5,6 +5,10 @@
   "_id": "9CNW8MXt30aEWkCX",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, burst and range; its traits apply.</p><p>The Strength and Speed Essence damage alternate effect is its own attack option, and a Critical Success offers it too. Its Apply Damage button takes the points off both Essences instead of Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -23,6 +27,28 @@
         },
         "damageValue": 2,
         "damageType": "acid",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 10,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 350,
+          "value": 150
+        },
+        "shiftDown": 0
+      },
+      "c7a2": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.xfA1aeJa7yNTRp6W",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Catalytic Cannon Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "essenceStrengthSpeed",
         "numHands": "2",
         "numTargets": 1,
         "radius": 10,

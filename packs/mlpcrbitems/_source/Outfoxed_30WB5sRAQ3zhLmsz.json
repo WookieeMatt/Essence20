@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you fail an Infiltration test against a creature, that creature gets Edge on its next test against you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

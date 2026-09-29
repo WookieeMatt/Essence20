@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: note your subject of study. Roll Options Dialog: a switch for Edge on any Skill Test about that subject.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "rouaWvDWhwCB5XEO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Move action): the vehicle you're piloting or have targeted gets +15 ft Movement until your next turn.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

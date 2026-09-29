@@ -5,6 +5,10 @@
   "_id": "hufRaDWtFbAszTmq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: give a targeted friend ↑1 on their next Skill Test; your own next Skill Test takes ↓1, and you can't use it again until you've taken that penalty.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

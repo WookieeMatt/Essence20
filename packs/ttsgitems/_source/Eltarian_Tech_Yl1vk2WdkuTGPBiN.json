@@ -5,6 +5,10 @@
   "_id": "Yl1vk2WdkuTGPBiN",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: tracks your Eltarian Tech Points, rising with your level. Perks such as Eltarian Tech and Wisdom of the Elders spend them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

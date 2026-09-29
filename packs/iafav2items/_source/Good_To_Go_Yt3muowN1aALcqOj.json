@@ -5,6 +5,10 @@
   "_id": "Yt3muowN1aALcqOj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick the weapon and battledress you're Qualified with (two Limited items, or one Restricted weapon or battledress). Automatic: no Snag driving your chosen vehicle type, and Kit prerequisites count as one Rank lower when you Requisition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

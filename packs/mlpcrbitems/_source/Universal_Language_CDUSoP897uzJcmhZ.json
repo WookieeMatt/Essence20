@@ -5,6 +5,10 @@
   "_id": "CDUSoP897uzJcmhZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: your Laugh Tactics work on creatures that don't understand your language.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "az09yEPydnE1tBTj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Forage lets you pick any kit, ignoring its prerequisite.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

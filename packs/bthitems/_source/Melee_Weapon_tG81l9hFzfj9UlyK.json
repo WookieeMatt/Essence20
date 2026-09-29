@@ -5,6 +5,10 @@
   "_id": "tG81l9hFzfj9UlyK",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its one-handed or two-handed effect with the listed Skill and damage; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "sjTaAtlasorkFzPU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on Smarts tests that aren't attacks while you are in combat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

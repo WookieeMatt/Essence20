@@ -5,6 +5,10 @@
   "_id": "L974PVqFZO7yuueB",
   "img": "systems/essence20/assets/icons/weapons/assault_claw.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might for 2 Sharp damage. Chat card: on a Critical Success, a button applies the Stun 2 Critical Effect to the target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

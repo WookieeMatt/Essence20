@@ -5,6 +5,10 @@
   "_id": "fxH2GPkDGvJEpI8s",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: heal 1 Health on you or an ally, no roll. Automatic: an Edge on Science tests using the Medicine Specialization.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

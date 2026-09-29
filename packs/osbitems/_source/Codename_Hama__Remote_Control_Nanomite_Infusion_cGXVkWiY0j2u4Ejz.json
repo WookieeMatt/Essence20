@@ -5,6 +5,10 @@
   "_id": "cGXVkWiY0j2u4Ejz",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: spending the Power, taking control of the HOUND drone, and any Technology contests against another operator.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

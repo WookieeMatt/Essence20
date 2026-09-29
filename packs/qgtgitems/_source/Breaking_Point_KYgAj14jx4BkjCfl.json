@@ -5,6 +5,10 @@
   "_id": "KYgAj14jx4BkjCfl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: when you attack equipment or a vehicle with a blade or bludgeon, roll Technology against 10 + its Threat Level and pick the detail you learn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

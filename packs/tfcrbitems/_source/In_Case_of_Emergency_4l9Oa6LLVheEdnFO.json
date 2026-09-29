@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Nothing automatic: the sheet's hardpoint count only tracks weapons, so these two non-weapon hardpoints don't let you fit more weapons.</p><p>Left to the table: fitting Support Equipment in them, and your two starting Support Equipment options.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

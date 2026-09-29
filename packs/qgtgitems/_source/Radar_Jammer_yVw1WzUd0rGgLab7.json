@@ -5,6 +5,10 @@
   "_id": "yVw1WzUd0rGgLab7",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switch the jammer on or off (a Free action). While on, Technology tests made within 50ft of the vehicle get a Snag in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

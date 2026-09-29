@@ -5,6 +5,10 @@
   "_id": "W7iyFJTIGw7BuR3x",
   "img": "systems/essence20/assets/icons/weapons/small_thrown_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: thrown attacks roll Athletics at 10/20 ft, with a Blunt or Sharp version; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

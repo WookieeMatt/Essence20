@@ -5,6 +5,10 @@
   "_id": "nb4xPr4kA5ra12PL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: after a miss, spend a Story Point for ↑1 on your next attack. Each further use before that attack adds another ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

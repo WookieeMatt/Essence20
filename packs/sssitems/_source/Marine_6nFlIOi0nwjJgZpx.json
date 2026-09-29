@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 2 starting Health, 30ft Ground and 30ft Aquatic Movement, the Strength and Speed Essence and Skill options, and the Hard Corps Perk. You pick your Essence increase and Skills when you add it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

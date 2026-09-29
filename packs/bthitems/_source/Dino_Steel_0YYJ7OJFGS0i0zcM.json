@@ -4,6 +4,10 @@
   "type": "shield",
   "img": "systems/essence20/assets/icons/items/shield.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 Evasion while carried, and +1 Toughness while actively used as a shield.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

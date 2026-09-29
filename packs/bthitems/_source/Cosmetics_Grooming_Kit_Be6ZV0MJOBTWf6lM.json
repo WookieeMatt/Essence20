@@ -5,6 +5,10 @@
   "_id": "Be6ZV0MJOBTWf6lM",
   "img": "systems/essence20/assets/icons/gear/art_kit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on for ↑1 on Deception when covering an alter ego or bluffing, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

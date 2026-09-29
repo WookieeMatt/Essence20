@@ -5,6 +5,10 @@
   "_id": "YGr6vNEv9MKoVlyS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: drawing an Adept Armament costs one step less (you're asked which weapon you're drawing). Use button: pick one more Adept Armament.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

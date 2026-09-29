@@ -5,6 +5,10 @@
   "_id": "8rW1ectZidZLA6WV",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 300/1200 ft for 2 Sharp damage; its traits and upgrades (Integrated Bipod, Piercing, Plate Piercing, Scope) apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

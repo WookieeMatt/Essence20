@@ -5,6 +5,10 @@
   "_id": "zsuQoBsso5SddTAs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑2 on Weird. Roll Options Dialog: on Weird tests, an option to roll your Science Skill instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

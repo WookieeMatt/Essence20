@@ -5,6 +5,10 @@
   "_id": "7w5Ew3YCiJ68Nf88",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Perk.</p><p>Left to the table: spending the Energon Point, rolling Intimidation against the target's Willpower, and the GM playing out the order.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

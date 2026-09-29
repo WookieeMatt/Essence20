@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene, your next Skill Test gets Edge for cheating or working it underhandedly. Left to the table: GM approval, the once-per-day limit, and losing Friendship Points for the scene if the test fails.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

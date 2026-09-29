@@ -3,6 +3,10 @@
   "type": "altMode",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: converting into this Alt Mode makes you Long with 45ft Aquatic Movement; Limited Articulation blocks Athletics and Finesse tests while you're in it. Its Ram attack is added when you take the Alt Mode (Use button re-adds it). Crew and Firepoints show on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

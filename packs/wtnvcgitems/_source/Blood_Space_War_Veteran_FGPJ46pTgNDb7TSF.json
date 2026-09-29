@@ -5,6 +5,10 @@
   "_id": "FGPJ46pTgNDb7TSF",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Gravity Optional at level 1 and Moon's Haunted at level 4, plus the Focus Essence increases. The character needs the Soldier Role first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

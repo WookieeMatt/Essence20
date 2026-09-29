@@ -5,6 +5,10 @@
   "_id": "0fal8jy083wWSy7W",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per combat, when an attack scores a Critical Hit on you, a button rolls Brawn against 10 + the damage. On a success the attack is ignored.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

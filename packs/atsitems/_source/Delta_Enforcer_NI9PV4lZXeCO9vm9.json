@@ -5,6 +5,10 @@
   "_id": "NI9PV4lZXeCO9vm9",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: roll the Targeting test to capture a Defeated target in a loaded Containment Card, and track the capture.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

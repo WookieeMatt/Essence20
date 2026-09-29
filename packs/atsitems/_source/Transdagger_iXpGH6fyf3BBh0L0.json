@@ -5,6 +5,10 @@
   "_id": "iXpGH6fyf3BBh0L0",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for 1 Sharp damage at Reach, with an Energy alternate effect; Versatile applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

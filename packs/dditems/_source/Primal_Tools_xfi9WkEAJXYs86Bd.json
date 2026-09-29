@@ -5,6 +5,10 @@
   "_id": "xfi9WkEAJXYs86Bd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: an integrated unarmed weapon with a Stun 1 effect and a 1 Sharp effect, both able to hit Multiple (2) Targets at ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

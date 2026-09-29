@@ -5,6 +5,10 @@
   "_id": "aRBWUHeBjdevKh4Q",
   "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, with a second alternate effect to choose from, and its traits apply (Blunt, Martial Arts, Silent).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

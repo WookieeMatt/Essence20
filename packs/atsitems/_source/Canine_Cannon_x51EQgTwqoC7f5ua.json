@@ -5,6 +5,10 @@
   "_id": "x51EQgTwqoC7f5ua",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and Stun alternate effect. An R.I.C. companion created by the system comes with this weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

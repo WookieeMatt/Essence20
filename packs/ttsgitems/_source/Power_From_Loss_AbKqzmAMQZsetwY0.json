@@ -5,6 +5,10 @@
   "_id": "AbKqzmAMQZsetwY0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +2 Willpower. Automatic: immune to Mesmerized. Reroll: once per scene, reroll a Skill Test and keep the better result.</p><p>Left to the table: only reroll in scenes with an enemy who Defeated a Ranger or ally.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

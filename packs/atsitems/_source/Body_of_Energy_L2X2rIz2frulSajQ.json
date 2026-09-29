@@ -5,6 +5,10 @@
   "_id": "L2X2rIz2frulSajQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while Morphed: damage beyond your Health comes out of Personal Power. Use button: move Health into Personal Power. When you unmorph, both are reset to half the shared pool.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

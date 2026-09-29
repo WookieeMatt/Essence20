@@ -5,6 +5,10 @@
   "_id": "U4bVJU5BpT3BTfSx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Grapple, Shove and Trip attempts against you take ↓1. Chat card: if one Fumbles, a button sets up your counter-maneuver against the attacker at ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

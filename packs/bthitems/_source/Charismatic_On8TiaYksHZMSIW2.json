@@ -5,6 +5,10 @@
   "_id": "On8TiaYksHZMSIW2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on while you're trying to win someone's trust for ↑2 on Deception and Persuasion, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

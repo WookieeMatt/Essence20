@@ -5,6 +5,10 @@
   "_id": "jUROXHqur5Sta05C",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Group Skill Test card (Party sheet): pick an ally to get an Edge; if they succeed, you get ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

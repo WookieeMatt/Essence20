@@ -5,6 +5,10 @@
   "_id": "hXtchClOmMDDeWB9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when a hit would Defeat you, you're offered to spend a Story Point and roll Brawn against DIF 15. On a success the damage is ignored.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

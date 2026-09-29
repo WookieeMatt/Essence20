@@ -5,6 +5,10 @@
   "_id": "m4DwJmV39IELuT84",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you are immune to Poison. It is always on and uses none of your daily nanomite uses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "KR4KuZlalNywMvSb",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: target an allied Threat. It swaps to its linked Grown form if the GM has made one, or otherwise changes to Gigantic Size; using it again reverts it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

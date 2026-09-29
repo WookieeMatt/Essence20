@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: 2 starting Health, +1 Social, Ground Movement 30, the Lifelike Perk, and your pick of the six Pretender Alt Modes. You pick Deception, Persuasion or Streetwise as your Origin Skill. Left to the table: Hands of Steel (no ↓1 on Blunt Unarmed Combat).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

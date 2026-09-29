@@ -5,6 +5,10 @@
   "_id": "zMtDS7NhRXcL6Epm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on a Persuasion test, a switch makes it Coax Surrender against the target's Willpower or Cleverness; a success offers 1 Stun damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

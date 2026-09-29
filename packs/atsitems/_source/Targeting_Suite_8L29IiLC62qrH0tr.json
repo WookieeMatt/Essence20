@@ -5,6 +5,10 @@
   "_id": "8L29IiLC62qrH0tr",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on the Zord's ranged attacks, a switch for +1 damage at ↓1. For the range option, pick Normal instead of Snag in the dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

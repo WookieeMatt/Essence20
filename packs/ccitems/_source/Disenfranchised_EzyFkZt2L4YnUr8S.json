@@ -5,6 +5,10 @@
   "_id": "EzyFkZt2L4YnUr8S",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Disenfranchised Perk and the Disenfranchised Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

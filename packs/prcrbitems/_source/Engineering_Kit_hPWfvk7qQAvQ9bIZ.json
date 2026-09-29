@@ -5,6 +5,10 @@
   "_id": "hPWfvk7qQAvQ9bIZ",
   "img": "systems/essence20/assets/icons/gear/tinker.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: counts as an Engineering kit for Technology tests that call for a kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

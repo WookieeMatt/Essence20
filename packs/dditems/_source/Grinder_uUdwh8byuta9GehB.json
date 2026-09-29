@@ -5,6 +5,10 @@
   "_id": "uUdwh8byuta9GehB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: a switch on Brawn Tests while Grappling to attack for 2 Blunt damage; a Critical Success also leaves the target Impaired.</p><p>Left to the table: the attack's Anti-Tank trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

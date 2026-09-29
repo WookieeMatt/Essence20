@@ -5,6 +5,10 @@
   "_id": "CwsHTrQION565onG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you roll Initiative with Deception or Infiltration through Spoof, your first attack in that combat gains Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

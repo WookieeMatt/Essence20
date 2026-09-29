@@ -5,6 +5,10 @@
   "_id": "WbNlBeMsgNLwbwUL",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Through the Shattered Grid Perk and Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "medt2A5ndPfu8SIy",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: during combat, ↓1 on any test that doesn't deal damage; it shows in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

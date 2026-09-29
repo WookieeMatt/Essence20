@@ -5,6 +5,10 @@
   "_id": "2P2i605rHgNhm2FJ",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: a Cybertronian spends a Standard action to heal 2 Health with no Skill Test, and one kit is used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

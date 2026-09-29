@@ -5,6 +5,10 @@
   "_id": "9MPGrZArOwjpbsel",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +2 Toughness; Deflective applies. Modular gives 1 upgrade slot.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

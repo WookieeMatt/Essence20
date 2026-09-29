@@ -5,6 +5,10 @@
   "_id": "ZUssqLjGWcG0YROg",
   "img": "systems/essence20/assets/icons/gear/entrenching_tool.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Brawn for 1 Blunt damage at Reach, and its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "pD2ecM1AiGdX8M0T",
   "img": "systems/essence20/assets/icons/gear/flashlight.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the light the flashlight gives.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

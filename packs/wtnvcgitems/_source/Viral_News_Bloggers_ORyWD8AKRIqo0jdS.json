@@ -5,6 +5,10 @@
   "_id": "ORyWD8AKRIqo0jdS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: an Edge and +1 damage on attacks against vehicles.</p><p>Left to the table: the same bonus against other machines and non-organic enemies.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

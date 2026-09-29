@@ -5,6 +5,10 @@
   "_id": "3L0eAnm4GVoQi7Df",
   "img": "systems/essence20/assets/icons/gear/wingsuit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its Flyby Effect, rolling Driving for 1 Blunt damage at Reach, with a knock-Prone alternate effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

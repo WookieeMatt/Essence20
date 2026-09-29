@@ -5,6 +5,10 @@
   "_id": "2JZSo4C7xDUMlPG2",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (on the Zord): the seated Ranger spends 1 Personal Power for one of +1 Energy damage, +20 feet of Movement, ↑1 on a ranged attack, or ↑2 on the pilot's Group Test; up to three different ones per turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "YKWOuXvBnImqtiLF",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 30/80 ft for Energy damage; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

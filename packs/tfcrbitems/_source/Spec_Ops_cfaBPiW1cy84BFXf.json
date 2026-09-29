@@ -5,6 +5,10 @@
   "_id": "cfaBPiW1cy84BFXf",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, +1 Social at 1st and 10th level, and its Focus Skills (Deception, Persuasion and Streetwise).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

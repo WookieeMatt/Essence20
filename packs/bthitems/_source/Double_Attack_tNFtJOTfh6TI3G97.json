@@ -5,6 +5,10 @@
   "_id": "tNFtJOTfh6TI3G97",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: attacking with a light weapon in each hand without penalty, one off-hand strike per Attack action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

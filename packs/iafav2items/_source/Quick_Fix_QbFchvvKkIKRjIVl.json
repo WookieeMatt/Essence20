@@ -5,6 +5,10 @@
   "_id": "QbFchvvKkIKRjIVl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: repairing a vehicle costs a Free action, once per turn.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

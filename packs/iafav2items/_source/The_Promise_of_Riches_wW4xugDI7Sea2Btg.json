@@ -5,6 +5,10 @@
   "_id": "wW4xugDI7Sea2Btg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Health. Automatic: trained with Limited weapons and battledress, and no Snag driving Land, Sea or Air vehicles.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

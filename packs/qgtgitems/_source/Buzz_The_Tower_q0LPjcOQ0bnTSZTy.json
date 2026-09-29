@@ -5,6 +5,10 @@
   "_id": "q0LPjcOQ0bnTSZTy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, your drone rolls Acrobatics, Deception or Driving against a target's Willpower or Cleverness; on a success the target has a Snag on tests until the end of its next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

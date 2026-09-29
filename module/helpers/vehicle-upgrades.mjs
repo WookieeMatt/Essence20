@@ -658,8 +658,8 @@ export async function spendDefenderSources(target, sources) {
  * Reduce damage the vehicle is about to take: Active Protection System ("Once per mission, reduce
  * damage the vehicle takes from an Explosive weapon to 0"), Slat Armor ("Once per encounter,
  * reduce damage ... from an Explosive weapon by 1"), Reactive Armor ("Once per combat, reduce
- * damage ... from a non-Element weapon by 1"). "Once per mission" has no clock; the encounter is
- * the narrowest safe window.
+ * damage ... from a non-Element weapon by 1"). "Once per mission" uses the Scene Clock's mission
+ * window, which refreshes when the GM starts a new mission.
  * @param {Actor} vehicle
  * @param {Number} amount
  * @param {Object} attack   {style, traits, damageType} from the attack's chat card.
@@ -675,8 +675,8 @@ export async function reduceVehicleDamage(vehicle, amount, attack = {}) {
   const explosive = attack.style == 'explosive';
   const element = ELEMENTS.includes(attack.damageType) || (attack.traits ?? []).some(t => ['acid', 'cold', 'electric', 'electromagnetic', 'fire', 'laser', 'sonic', 'element', 'energy'].includes(t));
 
-  if (explosive && upgrades.has(VU.activeProtection) && getUses(vehicle, 'vehicleAps') < 1) {
-    await markUsed(vehicle, 'vehicleAps');
+  if (explosive && upgrades.has(VU.activeProtection) && getUses(vehicle, 'vehicleAps', 'mission') < 1) {
+    await markUsed(vehicle, 'vehicleAps', { window: 'mission' });
     notes.push(upgrades.get(VU.activeProtection).name);
     return { amount: 0, notes };
   }
@@ -702,11 +702,11 @@ export async function reduceVehicleDamage(vehicle, amount, attack = {}) {
  * @returns {Promise<Boolean>}   Whether it saved the vehicle.
  */
 export async function tryRedundantBackups(vehicle) {
-  if (!hasVehicleUpgrade(vehicle, VU.redundantBackups) || getUses(vehicle, 'vehicleBackups') > 0) {
+  if (!hasVehicleUpgrade(vehicle, VU.redundantBackups) || getUses(vehicle, 'vehicleBackups', 'mission') > 0) {
     return false;
   }
 
-  await markUsed(vehicle, 'vehicleBackups');
+  await markUsed(vehicle, 'vehicleBackups', { window: 'mission' });
   await vehicle.update({ 'system.health.value': 1 });
   return true;
 }
@@ -737,6 +737,23 @@ export const VEHICLE_UPGRADE_USES = {
   [VU.enhancedRadarJamming]: {},
   [VU.biotechEnhancer]: { limit: 'scene' },
 };
+
+/**
+ * How far a vehicle's switched-on jammer reaches, in feet: Radar Jammer (Quartermaster's Guide p.58)
+ * "wireless and radio operations within 50ft of the vehicle suffer Snag"; Enhanced Radar Jamming
+ * (p.60) "automatically blocks all signals within 100ft, and imposes Snag on signals within 1 mile".
+ * target-riders.mjs gives a Technology test inside it a Snag, the same as a carried Jammer.
+ * @param {Actor} vehicle
+ * @returns {Number}   0 while off.
+ */
+export function jammingRadiusFeet(vehicle) {
+  const jamming = vehicle?.flags?.essence20?.jamming;
+  if (!jamming) {
+    return 0;
+  }
+
+  return jamming >= 100 ? 5280 : Number(jamming) || 0;
+}
 
 export function vehicleUpgradeUse(item) {
   return item?.type == 'upgrade' && item.system?.type == 'vehicle' && item.parent?.type == 'vehicle'

@@ -5,6 +5,10 @@
   "_id": "VkXcy9vJCxGqyxhw",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: keep your highest Essence no more than 5 above your lowest when building the character; the sheet doesn't check it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

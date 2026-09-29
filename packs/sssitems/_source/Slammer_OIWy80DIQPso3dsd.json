@@ -5,6 +5,10 @@
   "_id": "OIWy80DIQPso3dsd",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Slammer Perks at their listed levels (Tough As Nails through Knock Down, Drag Out), plus its Strength increases at 1st and 10th level and its Focus Skill options.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

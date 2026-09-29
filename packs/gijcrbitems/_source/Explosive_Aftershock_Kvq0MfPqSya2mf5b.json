@@ -5,6 +5,10 @@
   "_id": "Kvq0MfPqSya2mf5b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after an explosive attack, your roll is also checked against each target's Toughness. On a success you pick two: knock Prone, Deafen, push 10 ft, or ↓1 on their actions.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

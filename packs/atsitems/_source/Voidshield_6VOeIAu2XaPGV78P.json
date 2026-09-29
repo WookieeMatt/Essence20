@@ -5,6 +5,10 @@
   "_id": "6VOeIAu2XaPGV78P",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: the Zord gains Resistance to Void damage. Automatic: attacks with the Void trait no longer ignore the Zord's armor bonus to Toughness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

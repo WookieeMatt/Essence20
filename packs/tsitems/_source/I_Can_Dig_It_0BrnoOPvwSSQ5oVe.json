@@ -5,6 +5,10 @@
   "_id": "0BrnoOPvwSSQ5oVe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Alt Mode you gain a 25ft Underground Movement, or +15ft if you already have one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

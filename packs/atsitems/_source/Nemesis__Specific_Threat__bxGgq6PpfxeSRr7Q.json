@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: name your Nemesis. Automatic: ↑2 on Skill Tests against them. Chat card: once per scene with them, a Reroll button lets you keep either result.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

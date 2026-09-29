@@ -5,6 +5,10 @@
   "_id": "1Yho7fqBC8IfqHfN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Group Skill Test card (Party sheet): a button lets you fail the group test on purpose and roll a Skill of your choice instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

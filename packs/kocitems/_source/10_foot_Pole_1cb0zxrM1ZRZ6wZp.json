@@ -5,6 +5,10 @@
   "_id": "1cb0zxrM1ZRZ6wZp",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: the ↑1 when the GM agrees the pole helps (add it in the Roll Options Dialog).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

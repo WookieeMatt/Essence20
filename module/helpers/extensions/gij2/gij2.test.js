@@ -142,6 +142,28 @@ test('Reckless Abandon: no kits, and the minute', () => {
   expect(reckless.kitsBlockedFor(renegade)).toBe(false);
 });
 
+test('The Beat Goes On: Reckless Abandon survives no enemies left and being Defeated', async () => {
+  const { registrySnapshot } = await import('../../extensions.mjs');
+  const rp = item(G2.recklessAbandon, { type: 'rolePoints', system: { isActive: true } });
+  const renegade = actor([rp, item(reckless.BEAT_GOES_ON)], { flags: { [reckless.START_FLAG]: { combatId: 'c', round: 1 } } });
+  renegade.isOwner = true;
+  const mine = { document: { disposition: 1, hidden: false }, actor: renegade };
+  renegade.getActiveTokens = () => [mine];
+  global.canvas = { tokens: { placeables: [mine] } };
+  expect(reckless.enemiesRemain(renegade)).toBe(false);
+
+  for (const fn of registrySnapshot().turnStart) {
+    await fn(renegade, { id: 'c', round: 3 });
+  }
+
+  for (const fn of registrySnapshot().afterDamage) {
+    await fn(renegade, 5, 'blunt', { newValue: 0 });
+  }
+
+  expect(rp.update).not.toHaveBeenCalled();
+  global.canvas = undefined;
+});
+
 test('Roll Cage and Peerless Pilot', () => {
   const pilot = actor([item(G2.rollCage), item(G2.peerlessPilot)], { uuid: 'Actor.p' });
   global.fromUuidSync = uuid => (uuid == 'Actor.p' ? pilot : null);

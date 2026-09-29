@@ -5,6 +5,10 @@
   "_id": "9UK1Q2wnZ9yZadbM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on when the target can see your hologram for Edge on Deception, then switch it off.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

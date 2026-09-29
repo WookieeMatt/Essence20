@@ -5,6 +5,10 @@
   "_id": "R5SobOsimfa7mvdy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: each copy picks one Hybridization. Ones that need Mass Shift spend a use from your daily Mass Shift count, which resets on a rest.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

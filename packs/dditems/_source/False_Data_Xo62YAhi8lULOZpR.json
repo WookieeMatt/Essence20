@@ -5,6 +5,10 @@
   "_id": "Xo62YAhi8lULOZpR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (after a successful Comms Probe this scene): roll Deception to alter the data; the result is posted as the DIF for anyone checking whether it's false.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

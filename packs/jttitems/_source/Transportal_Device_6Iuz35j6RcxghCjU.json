@@ -5,6 +5,10 @@
   "_id": "6Iuz35j6RcxghCjU",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: the 2 Personal Power cost, the Technology test and the Continuum Anomaly roll to open a portal.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

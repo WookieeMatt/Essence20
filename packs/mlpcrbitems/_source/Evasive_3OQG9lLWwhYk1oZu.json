@@ -5,6 +5,10 @@
   "_id": "3OQG9lLWwhYk1oZu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Evasion for the pet that has it. Take it again to stack another +1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

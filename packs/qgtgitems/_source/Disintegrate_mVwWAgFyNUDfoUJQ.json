@@ -5,6 +5,10 @@
   "_id": "mVwWAgFyNUDfoUJQ",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend a daily nanomite use for a Targeting attack on a vehicle within 60 ft, dealing 1 Acid damage.</p><p>Left to the table: the nanomites' repeat attacks each round afterwards, and use against structures.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

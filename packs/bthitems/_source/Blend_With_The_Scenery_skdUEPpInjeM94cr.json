@@ -5,6 +5,10 @@
   "_id": "skdUEPpInjeM94cr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on for ↑1 on Deception and Infiltration where you don't normally belong, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

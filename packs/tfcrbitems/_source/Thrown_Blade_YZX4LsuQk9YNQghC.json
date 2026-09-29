@@ -5,6 +5,10 @@
   "_id": "YZX4LsuQk9YNQghC",
   "img": "systems/essence20/assets/icons/weapons/shuriken.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: thrown Targeting attacks for 1 Sharp at the listed range, with alternate effects for a Maneuver or several targets at ↓2; its Martial Arts, Sharp and Silent traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

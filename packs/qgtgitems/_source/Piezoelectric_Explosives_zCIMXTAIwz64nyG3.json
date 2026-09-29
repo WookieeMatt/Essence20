@@ -5,6 +5,10 @@
   "_id": "zCIMXTAIwz64nyG3",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its normal or alternate blast; it's used up when thrown (Consumable), and its traits and upgrades apply, including Temperamental (a Fumble hits you), Wrecker and Proximity Bomb.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you can't be Surprised, hidden or invisible attackers get no Edge against you, and you don't take Sneak Attack damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "ejKqajv48zvXn3BZ",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: you and the GM define the minor power and how it works.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

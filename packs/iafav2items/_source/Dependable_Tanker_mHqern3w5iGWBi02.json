@@ -5,6 +5,10 @@
   "_id": "mHqern3w5iGWBi02",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Driving and Technology tests, spend a Story Point for an Edge. Use it on tests involving vehicles.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

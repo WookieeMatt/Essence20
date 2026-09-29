@@ -5,6 +5,10 @@
   "_id": "361M08IGiGRkPrsO",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: playing out the Hang-Up and any reward for it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

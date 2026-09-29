@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on your own turn, pick how many ↓ to take on a Might, Finesse or Targeting attack. Each adds +1 damage to one target hit, and enemies get the same number of ↑ against you until your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

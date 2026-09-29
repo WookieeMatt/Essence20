@@ -5,6 +5,10 @@
   "_id": "vg2y5It0z7mWHWRs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Mini-Con Perk.</p><p>Left to the table: the Mini-Con's Element Resistance and changing its main weapon to that Element.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

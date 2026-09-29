@@ -69,7 +69,7 @@ export function hasAccommodation(actor, armor, level) {
     ...itemsOf(actor).filter(item => item.type == 'upgrade' && flagOf(item, 'parentId') == armor.id).map(item => item.name),
     ...Object.values(armor.system?.items ?? {}).map(entry => entry?.name),
   ].filter(Boolean);
-  return upgrades.some(name => /accommodation/i.test(name) && tiers.test(name));
+  return upgrades.some(name => /accomm?odation/i.test(name) && tiers.test(name));
 }
 
 /** @returns {Boolean} false to refuse putting the armor on. */

@@ -5,6 +5,10 @@
   "_id": "Czabb7MnyglRRo2P",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend your Standard action to give an ally an immediate bonus turn.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

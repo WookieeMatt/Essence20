@@ -5,6 +5,10 @@
   "_id": "LpEBTuXVSEviSyoh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: when added you pick one of the listed Genetic Alterations (including Enlarged).</p><p>Left to the table: taking the Monstro-Vipers as a Contact instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

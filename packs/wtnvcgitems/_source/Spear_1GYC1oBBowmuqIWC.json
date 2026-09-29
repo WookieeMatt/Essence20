@@ -5,6 +5,10 @@
   "_id": "1GYC1oBBowmuqIWC",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its effects below, and its traits apply. Pick the one-handed, two-handed, multiple-target or thrown effect when you attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

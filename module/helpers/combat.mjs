@@ -1,4 +1,4 @@
-import { runAfterDamage, runDamageModifiers } from "./extensions.mjs";
+import { registerUse, runAfterDamage, runDamageModifiers } from "./extensions.mjs";
 import { renegadeHolderFor } from "./summons.mjs";
 import { isCarried } from "./team-actions.mjs";
 import { onOwnerDefeated } from "./companions.mjs";
@@ -8,6 +8,7 @@ import { isSealedAboard } from "./vehicle-upgrades.mjs";
 import {
   actorHasPerk, bankPendingBonus, clearPendingBonus, findPerk, getPendingBonus, hasUsedThisEncounter, markUsedThisEncounter,
 } from "./perks.mjs";
+import { getUses, markUsed } from "./scene-clock.mjs";
 import { isPersonalShieldActive } from "./personal-shield.mjs";
 import { PENDING_ELEMENTAL_SHIELD_FLAG_KEY } from "./team-buffs.mjs";
 import { isWisdomOfTheEldersActive } from "./wisdom-of-the-elders.mjs";
@@ -16,6 +17,7 @@ import { grantGridElementalAdaptationResistance } from "./grid-elemental-adaptat
 import { isProtectedTarget } from "./protected-target.mjs";
 import { AEGIS_CLAMPED_FLAG, isRecklessAbandonActive } from "./reckless-abandon.mjs";
 import { E20 } from "./config.mjs";
+import { applyEssenceAttack, isEssenceDamageType } from "./essence-attack.mjs";
 import { isMonsterFormActive } from "./monster-morph.mjs";
 import { grantNotOnMyWatchReaction } from "./not-on-my-watch.mjs";
 import { actorHasZordFeature } from "./zord-features.mjs";
@@ -24,6 +26,7 @@ import { canRiseAgainPreventDefeat, RISE_AGAIN_DEFEAT_ENCOUNTER_FLAG } from "./r
 import { checkEmotionalStrengthAngerTrigger, deactivateShynessOnDamage } from "./emotional-mastery.mjs";
 import { deactivatePhantomOnDamage } from "./phantom.mjs";
 import { consumeSelfPreservationImmunity } from "./self-preservation.mjs";
+import { grantSceneResistance } from "./actor.mjs";
 
 // Relic Key (PR CRB p.140, prerequisite Auxiliary Zord) - see getDefenseValue's own doc comment
 // below for the Willpower/Cleverness default this grants while unpiloted.
@@ -191,7 +194,7 @@ function findWeAllGoHomeHolder(actor) {
 }
 
 // We are the Coinless (Through the Shattered Grid, Coinless Resistance Origin Benefit, p.20) - see
-// findCoinlessRescuer's own doc comment below.
+// findCoinlessRescuers's own doc comment below.
 const WE_ARE_THE_COINLESS_ID = "Compendium.essence20.through_the_shattered_grid.Item.DRHPP4jmrjNa53ZA";
 
 /**
@@ -212,26 +215,50 @@ const WE_ARE_THE_COINLESS_ID = "Compendium.essence20.through_the_shattered_grid.
  * "Can see"/range is not a factor here either - RAW scopes it to the team, not a distance - so this
  * matches on disposition alone, the same team proxy helpers/allies.mjs already uses.
  * @param {Actor} actor   The actor about to be reduced to 0 Health.
- * @returns {Actor|null}   A teammate who holds the Perk and can afford the 1 Power, or null.
+ * @returns {Array<Actor>}   Teammates who hold the Perk and can afford the 1 Power.
  */
-function findCoinlessRescuer(actor) {
+function findCoinlessRescuers(actor) {
   const actorToken = actor.getActiveTokens?.()?.[0];
   if (!actorToken || !canvas?.tokens) {
-    return null;
+    return [];
   }
 
+  const rescuers = [];
   for (const token of canvas.tokens.placeables) {
     if (token === actorToken || !token.actor || token.document.disposition !== actorToken.document.disposition) {
       continue;
     }
 
     if (actorHasPerk(token.actor, WE_ARE_THE_COINLESS_ID)
-      && (token.actor.system?.powers?.personal?.value ?? 0) >= 1) {
-      return token.actor;
+      && (token.actor.system?.powers?.personal?.value ?? 0) >= 1 && !rescuers.includes(token.actor)) {
+      rescuers.push(token.actor);
     }
   }
 
-  return null;
+  return rescuers;
+}
+
+/**
+ * "You MAY instead spend 1 Personal Power": asks whether one of the eligible teammates spends it
+ * (and which), rather than draining a holder's Power unasked.
+ * @param {Actor} actor   The actor about to be Defeated.
+ * @param {Array<Actor>} rescuers
+ * @returns {Promise<Actor|null>}   The teammate who spends it, or null if nobody does.
+ */
+async function askCoinlessRescuer(actor, rescuers) {
+  const choice = await foundry.applications.api.DialogV2.wait({
+    window: { title: findPerk(rescuers[0], WE_ARE_THE_COINLESS_ID)?.name ?? 'We are the Coinless' },
+    classes: ["window-app", "e20-window"],
+    buttons: [
+      ...rescuers.map((rescuer, i) => ({
+        action: `rescuer${i}`, label: game.i18n.format('E20.WeAreTheCoinlessRescue', { rescuer: rescuer.name, actor: actor.name }),
+      })),
+      { action: 'decline', label: game.i18n.localize('E20.DialogCancelButton') },
+    ],
+    rejectClose: false,
+  });
+  const index = String(choice ?? '').startsWith('rescuer') ? Number(String(choice).slice('rescuer'.length)) : -1;
+  return rescuers[index] ?? null;
 }
 
 // Immortal Rebel Soul (WTNV Citizen's Guide, Soldier Role, StrexCorp Rebel Focus, p.46) - see its
@@ -239,8 +266,9 @@ function findCoinlessRescuer(actor) {
 const IMMORTAL_REBEL_SOUL_ID = "Compendium.essence20.wtnv_citizens_guide.Item.SYFScAH8lDshgLNM";
 
 // Renegade Commander (Sgt Slaughter Sourcebook, Alternate Renegade Role Perk, 5th level, p.12):
-// "once per scene, if you would be Defeated, you may choose to drop to 1 Health instead." Same
-// self-clamp-once-per-scene shape as Immortal Rebel Soul just above - "may choose to" is granted
+// "At 5th level, once per scene, if you would be Defeated, you may choose to drop to 1 Health
+// instead." The Perk is taken at 1st level, so the save waits for 5th. Same self-clamp-once-per-
+// scene shape as Immortal Rebel Soul just above - "may choose to" is granted
 // unconditionally rather than built as an opt-out prompt, the same "player self-polices whether
 // they'd rather just go down" idiom this project already accepts for similar always-beneficial
 // once-per-scene saves.
@@ -253,23 +281,51 @@ const RENEGADE_COMMANDER_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Ite
 // Health instead" land on the same actor state from 0), but this is a worn armor Upgrade Item, not
 // a Perk - actorHasPerk can't see it, so this checks for the real Upgrade Item directly (the same
 // "unattached armor-type Upgrade, by sourceId" gate Static Slide Inhibitor's own check in dice.mjs
-// already establishes). The DIF 20 Technology recharge test is dropped in favor of the same
-// once-per-scene approximation this project already uses for every other unenforceable frequency
-// cap (Immortal Rebel Soul/Avoid The Inevitable's own "once per investigation"/"once per combat"
-// above) - there's no in-fiction downtime-Skill-Test infrastructure anywhere in this codebase to
-// actually gate a recharge on.
+// already establishes). Once it has fired, the Upgrade stays spent (LIFE_SUPPORTING_SPENT_FLAG on
+// the Upgrade) until its Use button's DIF 20 Technology Skill Test succeeds.
 const LIFE_SUPPORTING_ID = "Compendium.essence20.cobra_codex.Item.VokHpoLjUYTzA3Xk";
+export const LIFE_SUPPORTING_SPENT_FLAG = 'lifeSupportingSpent';
+const LIFE_SUPPORTING_RECHARGE_DIF = 20;
+
+const isLifeSupporting = item => item?.type == 'upgrade'
+  && (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == LIFE_SUPPORTING_ID;
 
 /**
- * Whether the actor is wearing Life Supporting - see LIFE_SUPPORTING_ID's own comment above.
+ * The worn Life Supporting Upgrade that is ready to fire, if any - see LIFE_SUPPORTING_ID's own
+ * comment above.
  * @param {Actor} actor
- * @returns {Boolean}
+ * @returns {Item|undefined}
  */
-function hasLifeSupporting(actor) {
-  return !!actor.items?.some(item => item.type == 'upgrade' && item.system?.type == 'armor'
-    && !item.getFlag?.('essence20', 'parentId')
-    && (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == LIFE_SUPPORTING_ID);
+function readyLifeSupporting(actor) {
+  return actor.items?.find?.(item => isLifeSupporting(item) && item.system?.type == 'armor'
+    && !item.getFlag?.('essence20', 'parentId') && !item.flags?.essence20?.[LIFE_SUPPORTING_SPENT_FLAG]);
 }
+
+/**
+ * Life Supporting's recharge: "You can't use Life Support again until you succeed at a DIF 20
+ * Technology Skill Test that takes 10 minutes."
+ * @param {Item} item   The spent Life Supporting Upgrade.
+ * @param {Function} [rollTest]   (actor, skill, dif) => {success}; defaults to grants.mjs#rollTest.
+ * @returns {Promise<String>}   The chat line.
+ */
+export async function rechargeLifeSupporting(item, rollTest = null) {
+  const actor = item.parent;
+  const roll = rollTest ?? (await import("./grants.mjs")).rollTest;
+  const { success } = await roll(actor, 'technology', LIFE_SUPPORTING_RECHARGE_DIF);
+  if (!success) {
+    return game.i18n.format('E20.O1EmulatorNotRecharged', { name: actor.name, item: item.name });
+  }
+
+  await item.unsetFlag('essence20', LIFE_SUPPORTING_SPENT_FLAG);
+  return game.i18n.format('E20.O1EmulatorRecharged', { name: actor.name, item: item.name });
+}
+
+registerUse({
+  id: 'lifeSupportingRecharge',
+  matches: isLifeSupporting,
+  canUse: item => !!item.flags?.essence20?.[LIFE_SUPPORTING_SPENT_FLAG],
+  run: item => rechargeLifeSupporting(item),
+});
 
 const DO_NOT_GO_QUIETLY_ID = "Compendium.essence20.jump_through_time.Item.llL4HUNxVJDNIaej";
 
@@ -433,12 +489,10 @@ const HARDENED_ARMOR_EXCLUDED_TYPES = ['blunt', 'sharp'];
 
 /**
  * Hardened Armor's own Resistance-after-hit clause (see HARDENED_ARMOR_ID's own comment above):
- * once this actor actually suffers real damage of a given type, they become permanently Resistant
- * to that type going forward (system.resistances is a plain per-type boolean, read by dice.mjs's
- * own target-status Snag check) - a no-op if they already are. "For the remainder of the scene"
- * isn't actively cleared at scene end (no such hook exists in this codebase) - the same
- * "approximate, don't hard-enforce a duration" idiom this project already accepts elsewhere (e.g.
- * Dig In's own manual toggle-off) - a GM can clear it back off by hand between scenes if desired.
+ * once this actor actually suffers real damage of a given type, they become Resistant to that
+ * type for the rest of the scene (helpers/actor.mjs#grantSceneResistance - folded into
+ * system.resistances, read by dice.mjs's own target-status Snag check, until the Scene Clock
+ * starts a new scene) - a no-op if they already are.
  * @param {Actor} actor
  * @param {String} damageType
  * @param {Number} amount   The amount actually applied (0 means Immune/no-op - see applyDamage).
@@ -446,7 +500,7 @@ const HARDENED_ARMOR_EXCLUDED_TYPES = ['blunt', 'sharp'];
 async function grantHardenedArmorResistance(actor, damageType, amount) {
   if (amount > 0 && !HARDENED_ARMOR_EXCLUDED_TYPES.includes(damageType)
     && actorHasPerk(actor, HARDENED_ARMOR_ID) && !actor.system.resistances?.[damageType]) {
-    await actor.update({ [`system.resistances.${damageType}`]: true });
+    await grantSceneResistance(actor, damageType);
   }
 }
 
@@ -491,30 +545,23 @@ async function grantEnergyRebuttalBonus(actor, damageType, amount) {
 
 // Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99): "when you are subjected to a non-attack
 // effect against your Toughness, the effect suffers a Snag. If the effect still meets or exceeds
-// your Toughness defense, you have resistance to the damage." The Snag half hits the same
-// defenseType-not-yet-known-at-modifier-check-time architectural gap already documented for
-// Silver/Graphite/Orange Ranger Prime's own reciprocal Defense-Snag bullets
-// (_getAutomaticCombatModifiers runs before the Roll Options Dialog resolves
-// skillRollOptions.defenseType) - only the Resistance-after-hit half is built, see
-// grantToughEnoughResistance's own comment below.
+// your Toughness defense, you have resistance to the damage." The Snag is a roll source in
+// helpers/target-riders.mjs#rollRiderSources; the resistance halves that effect's own damage, see
+// toughEnoughDamage below.
 const TOUGH_ENOUGH_ID = "Compendium.essence20.gi_joe_crb.Item.RoIa80w6EAZR0uFP";
 
 /**
- * Tough Enough's own Resistance-after-hit half (see TOUGH_ENOUGH_ID's own comment above) - the
- * same "grant permanent Resistance once real damage actually lands" shape
- * grantHardenedArmorResistance establishes above, but additionally scoped to "a non-attack effect
- * against your Toughness" specifically (an ordinary weapon Attack against Toughness does NOT
- * trigger this, per RAW) - called from chat.mjs's own Apply Damage button handler, which is the
- * one place with access to the posted roll's own recorded isAttack/defenseType flags (see the
- * rollContext widening in dice.mjs#rollSkill) - applyDamage() itself has no such context.
- * @param {Actor} actor
- * @param {String} damageType
- * @param {Number} amount   The amount actually applied (0 means Immune/no-op - see applyDamage).
+ * Tough Enough's "you have resistance to the damage" for the effect that just met the holder's
+ * Toughness: that effect's own damage, not every later hit of its type. Its roll is already made,
+ * so Resistance's no-roll form applies - "the damage is automatically halved (round up)" (GI JOE
+ * CRB p.170). Called by chat.mjs's Apply Damage handler on a non-attack effect against Toughness,
+ * before the damage is applied.
+ * @param {Actor} actor   The target.
+ * @param {Number} damage
+ * @returns {Number}   The damage to apply.
  */
-export async function grantToughEnoughResistance(actor, damageType, amount) {
-  if (amount > 0 && actorHasPerk(actor, TOUGH_ENOUGH_ID) && !actor.system.resistances?.[damageType]) {
-    await actor.update({ [`system.resistances.${damageType}`]: true });
-  }
+export function toughEnoughDamage(actor, damage) {
+  return damage > 0 && actorHasPerk(actor, TOUGH_ENOUGH_ID) ? Math.ceil(damage / 2) : damage;
 }
 
 // Sensitive (MLP Precise Hang-Up, p.60): "When you take Damage, you also suffer Snag on Skill
@@ -902,6 +949,13 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     return 0;
   }
 
+  // Essence damage types take from an Essence score, not Health - none of the Health reductions
+  // below apply (helpers/essence-attack.mjs). The Essence is random for 'any'/'swap' here; the
+  // chat card's own button (chat.mjs#onApplyDamage) lets a Science attacker choose instead.
+  if (isEssenceDamageType(damageType)) {
+    return (await applyEssenceAttack(actor, damageValue, damageType, { ignoreImmunity })).applied;
+  }
+
   // Adapted Wavelength - see ADAPTED_WAVELENGTH_ID's own comment above. A permanent, always-on
   // reduction applied to the incoming value itself, ahead of Immunity/Elemental Shield below -
   // order doesn't matter for an already-Immune actor (still zeroed either way).
@@ -1003,10 +1057,8 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   // Immortal Rebel Soul (WTNV Citizen's Guide, Soldier Role, StrexCorp Rebel Focus, p.46): "Once
   // per investigation, when you would be Defeated due to your Health... dropping to 0, it stays
   // at 1 instead." Approximated as once per scene (this project's usual idiom for a
-  // session/investigation-scoped resource). The "...or an Essence Score dropping to 0" half is
-  // blocked on the same missing "Essence damage" resource pool flagged elsewhere in this project
-  // (see Headache's own comment in dice.mjs) - no code anywhere reduces an Essence Score as a
-  // damage effect to intercept.
+  // session/investigation-scoped resource). The "...or an Essence Score dropping to 0" half lives
+  // with the Essence point itself, environment-hazards.mjs#applyEssenceDamage, sharing this use.
   if (newValue <= 0 && amount > 0 && actorHasPerk(actor, IMMORTAL_REBEL_SOUL_ID)
     && !hasUsedThisEncounter(actor, 'immortalRebelSoulUsedThisEncounter')) {
     newValue = 1;
@@ -1015,18 +1067,18 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
 
   // Renegade Commander - see RENEGADE_COMMANDER_ID's own comment above. Same shape as Immortal
   // Rebel Soul just above.
-  if (newValue <= 0 && amount > 0 && actorHasPerk(actor, RENEGADE_COMMANDER_ID)
-    && !hasUsedThisEncounter(actor, 'renegadeCommanderUsedThisEncounter')) {
+  if (newValue <= 0 && amount > 0 && actorHasPerk(actor, RENEGADE_COMMANDER_ID) && (Number(actor.system?.level) || 0) >= 5
+    && getUses(actor, 'renegadeCommanderUsedThisScene', 'scene') < 1) {
     newValue = 1;
-    await markUsedThisEncounter(actor, 'renegadeCommanderUsedThisEncounter');
+    await markUsed(actor, 'renegadeCommanderUsedThisScene', { window: 'scene' });
   }
 
   // Life Supporting - see LIFE_SUPPORTING_ID's own comment above. Same shape as Renegade
-  // Commander just above.
-  if (newValue <= 0 && amount > 0 && hasLifeSupporting(actor)
-    && !hasUsedThisEncounter(actor, 'lifeSupportingUsedThisEncounter')) {
+  // Commander just above, but spent until its recharge test succeeds rather than per scene.
+  const lifeSupporting = newValue <= 0 && amount > 0 ? readyLifeSupporting(actor) : null;
+  if (lifeSupporting) {
     newValue = 1;
-    await markUsedThisEncounter(actor, 'lifeSupportingUsedThisEncounter');
+    await lifeSupporting.setFlag('essence20', LIFE_SUPPORTING_SPENT_FLAG, true);
   }
 
   // Avoid The Inevitable - see AVOID_THE_INEVITABLE_ID's own comment above. Same shape as
@@ -1131,20 +1183,19 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     }
   }
 
-  // We are the Coinless - see findCoinlessRescuer's own doc comment above. Checked LAST in this
+  // We are the Coinless - see findCoinlessRescuers's own doc comment above. Checked LAST in this
   // whole chain deliberately: every other entry above either costs nothing or spends the victim's
   // OWN resource, so a teammate's Personal Power is only ever spent once the victim has no
-  // self-rescue of their own left. The spend is automatic rather than prompted, the same "player
-  // self-polices whether they'd have used it" idiom Renegade Commander's identical "you may choose
-  // to" already accepts - but since this is the one entry that spends a DIFFERENT player's
-  // resource, it announces itself so the table can see whose Power paid for it.
-  if (newValue <= 0 && amount > 0) {
-    const coinlessRescuer = findCoinlessRescuer(actor);
+  // self-rescue of their own left. Since this spends a DIFFERENT player's resource and RAW says
+  // "you may", it asks first (askCoinlessRescuer) and announces whose Power paid for it.
+  const coinlessRescuers = newValue <= 0 && amount > 0 ? findCoinlessRescuers(actor) : [];
+  if (coinlessRescuers.length) {
+    const coinlessRescuer = await askCoinlessRescuer(actor, coinlessRescuers);
     if (coinlessRescuer) {
       newValue = 1;
-      await coinlessRescuer.update({
-        'system.powers.personal.value': coinlessRescuer.system.powers.personal.value - 1,
-      });
+      const { needsGmRelay, relayToGm } = await import("./gm-relay.mjs");
+      const spend = { 'system.powers.personal.value': coinlessRescuer.system.powers.personal.value - 1 };
+      await (needsGmRelay(coinlessRescuer) ? relayToGm(coinlessRescuer, 'update', [spend]) : coinlessRescuer.update(spend));
       await actor.toggleStatusEffect('impaired', { active: true });
       ui.notifications.info(game.i18n.format('E20.WeAreTheCoinlessRescue', {
         rescuer: coinlessRescuer.name, actor: actor.name,

@@ -5,6 +5,10 @@
   "_id": "ZWH6YAc64tAVgtve",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: switch on Dino Power Surge for +2 Strength and Speed on the Zord, and switch it off when it ends.</p><p>Left to the table: the 3 Personal Power cost, once per scene, the 2d2-round duration and the free Attack or Defend action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "mxrB7i7SLaEcPk8z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Culture can also use Social, and Streetwise can also use Smarts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "BXDM7LElVsaI7jPD",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Yellowcake's attack: rolls Athletics at Short range for 1 Poison damage in a 25ft radius.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "3J1qb2gaDMWxkBOF",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Power Weapon's Energy damage becomes your Ranger color's element (Black Psychic, Blue Cold, Green Poison, Pink double Energy, Red Fire, Yellow Stun).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

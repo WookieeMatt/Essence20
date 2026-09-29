@@ -5,6 +5,10 @@
   "_id": "kvGkqTvE66u4fGhY",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your screech attack; it rolls Targeting for 1 Blunt damage against one target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

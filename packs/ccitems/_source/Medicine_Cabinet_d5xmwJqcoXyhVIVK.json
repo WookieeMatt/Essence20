@@ -5,6 +5,10 @@
   "_id": "d5xmwJqcoXyhVIVK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: up to six poison doses are carried without taking up your hands.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

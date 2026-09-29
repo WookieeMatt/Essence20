@@ -5,6 +5,10 @@
   "_id": "POCbEpC4PanqdQ5X",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might melee attack dealing 1 Energy plus 1 Sharp damage to one target.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

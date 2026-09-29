@@ -5,6 +5,10 @@
   "_id": "vQJbFtZMiJNEeyC3",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Energy damage at the listed range. Turbocharged can swap it in when you Morph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

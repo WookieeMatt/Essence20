@@ -5,6 +5,10 @@
   "_id": "g8IpStvApoftBiNq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: choose the function you served. Roll Options Dialog: once per scene, a switch gives Edge on either of that function's two Skills.</p><p>Left to the table: limiting it to once per mission outside aquatic scenes.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "Coast Guard Origin",

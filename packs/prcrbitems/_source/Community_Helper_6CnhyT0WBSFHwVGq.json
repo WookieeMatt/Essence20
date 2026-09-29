@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added you choose your service. Automatic: Edge on its Skill (Brawn only outside attacks, Initiative for the military option).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

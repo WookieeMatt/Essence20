@@ -5,6 +5,10 @@
   "_id": "LjibCLhbxNxaQnrU",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the first three hits of 2 or more damage each lose 1 damage. Use button: replenish it with a DIF 12 Technology test and 2 Energon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

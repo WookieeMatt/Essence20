@@ -5,6 +5,10 @@
   "_id": "WwU4Ebk3IY6Yr2jy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Put it on your pet. Automatic: the pet gains a Pincers attack for 1 Blunt damage; the Use button adds it if it is missing.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

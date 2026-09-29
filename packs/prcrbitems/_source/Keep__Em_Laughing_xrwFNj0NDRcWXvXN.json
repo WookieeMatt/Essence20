@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: add a Story Point to the pool whenever you make people laugh.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

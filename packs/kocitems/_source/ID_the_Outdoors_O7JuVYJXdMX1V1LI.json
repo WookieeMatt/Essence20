@@ -5,6 +5,10 @@
   "_id": "O7JuVYJXdMX1V1LI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Edge on Science, Persuasion and Deception tests, listed as its own source - set the roll back to normal unless you're identifying an animal or plant, or talking about one in the wilderness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

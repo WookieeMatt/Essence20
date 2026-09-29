@@ -5,6 +5,10 @@
   "_id": "6IoMpj8pWmP8IpH4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, spend 1 Personal Power and pick Blinded, Deafened or Prone; you roll Survival against each enemy's Toughness and those you beat are affected until the end of their next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "F3TRKmoaUOtHrlzq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: you regain 2 Personal Power when you Fumble or take Psychic damage, and your attacks deal +1 damage in Monster Form.</p><p>Left to the table: the 30ft range limit on the extra damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

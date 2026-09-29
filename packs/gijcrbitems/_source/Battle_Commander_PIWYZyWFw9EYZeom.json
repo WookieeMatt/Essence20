@@ -5,6 +5,10 @@
   "_id": "PIWYZyWFw9EYZeom",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (first round of combat): give an ally Edge on their next roll.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

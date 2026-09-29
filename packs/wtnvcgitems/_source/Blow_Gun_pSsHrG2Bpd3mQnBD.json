@@ -5,6 +5,10 @@
   "_id": "pSsHrG2Bpd3mQnBD",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Sharp damage at Short range; its Reload and Silent traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

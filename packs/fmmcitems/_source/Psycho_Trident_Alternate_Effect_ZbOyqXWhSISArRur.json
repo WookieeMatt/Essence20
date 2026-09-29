@@ -5,6 +5,10 @@
   "_id": "ZbOyqXWhSISArRur",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Might at ↓1 against Toughness within Reach x2; a hit disarms one weapon the target is holding.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>Disarm 1 wielded weapon</p>",

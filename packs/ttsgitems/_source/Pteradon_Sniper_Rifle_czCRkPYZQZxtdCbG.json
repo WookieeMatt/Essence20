@@ -5,6 +5,10 @@
   "_id": "czCRkPYZQZxtdCbG",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 2 Energy damage at 100ft/300ft range, with a 3 Energy alternate at ↓2; its Anti-Tank, Ballistic and Sniper traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

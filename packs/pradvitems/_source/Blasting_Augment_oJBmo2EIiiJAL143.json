@@ -5,6 +5,10 @@
   "_id": "oJBmo2EIiiJAL143",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: the weapon gains the Inaccurate trait while attached.</p><p>Left to the table: halving its range, the extra d2 Energy damage, and the meltdown on a Critical Failure.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

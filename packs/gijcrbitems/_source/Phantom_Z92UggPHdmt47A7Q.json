@@ -5,6 +5,10 @@
   "_id": "Z92UggPHdmt47A7Q",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (Free action): makes you Invisible until the start of your next turn. It ends early if you make a non-Takedown attack or take damage.</p><p>Left to the table: needing dim light or darkness, and ending it in bright light.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

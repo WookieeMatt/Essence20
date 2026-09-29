@@ -5,6 +5,10 @@
   "_id": "Q3Yn4CzFxkuDiPnZ",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic while equipped: cycle mode's +2 Toughness and +2 Evasion, with the Deflective trait. Its Tire Strike and Laser Gauntlets are separate weapons.</p><p>Left to the table: the summon cost, cycle mode's 50 ft movement, and armor mode (+4 Toughness instead, plus two extra Free actions each turn).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,12 +17,12 @@
     },
     "items": {},
     "availability": "prototype",
-    "bonusEvasion": 0,
+    "bonusEvasion": 2,
     "bonusToughness": 2,
     "classification": "medium",
     "equipped": false,
     "traits": [
-      "exoFrame"
+      "deflective"
     ],
     "upgradeTraits": []
   },

@@ -5,6 +5,10 @@
   "_id": "egEiyeTZrazBsC2P",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: gaining the animal pet (the Animal Pet Perk's Use button can build one), or improving an existing pet's availability.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

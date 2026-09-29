@@ -5,6 +5,10 @@
   "_id": "I2nS9xXN8ioV5jJ5",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the grenade's range becomes Reach and it is planted as a bomb. Once set, it detonates when a creature enters its area.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "q7cGH5BLxZh5u79J",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: wearing the drone, and giving the wearer its Defense upgrade bonuses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

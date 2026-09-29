@@ -5,6 +5,10 @@
   "_id": "tXHd0LBkVCB2QPPO",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on your Intimidation tests while the armor it's attached to is worn, listed as its own source in the Roll Options Dialog. The Use button (Free action) banks the same ↑1 instead; the two never stack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

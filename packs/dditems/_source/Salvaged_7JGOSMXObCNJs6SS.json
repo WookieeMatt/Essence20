@@ -5,6 +5,10 @@
   "_id": "7JGOSMXObCNJs6SS",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Origin's Essence, Skills, Health and movement, the Welds, Rivets, and Ideas Perk and the Salvaged Alt Mode.</p>"
+    },
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.decepticon_directive.Item.cGGEXSdCI170AaM4]{Salvaged}</p>",
     "source": {

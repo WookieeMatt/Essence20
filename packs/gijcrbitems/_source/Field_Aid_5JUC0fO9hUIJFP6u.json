@@ -5,6 +5,10 @@
   "_id": "5JUC0fO9hUIJFP6u",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +10 ft Ground Movement while an ally is Defeated, for heading to them. Dragging a Defeated ally costs you nothing extra.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

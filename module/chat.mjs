@@ -3,9 +3,10 @@ import { handleRiderButton, onDamageDealt } from "./helpers/target-riders.mjs";
 import { hasVehicleUpgrade, reduceVehicleDamage, VU } from "./helpers/vehicle-upgrades.mjs";
 import { applyTimedCondition } from "./helpers/timed-status.mjs";
 import { applyEssenceDamage } from "./helpers/environment-hazards.mjs";
+import { applyEssenceAttack, describeEssenceAttack, isEssenceDamageType } from "./helpers/essence-attack.mjs";
 import { E20 } from "./helpers/config.mjs";
 import {
-  _isCritIsFumble, applyDamage, buildCheckChatData, getSecondaryDamageForButton, grantToughEnoughResistance,
+  _isCritIsFumble, applyDamage, buildCheckChatData, getSecondaryDamageForButton, toughEnoughDamage,
 } from "./helpers/combat.mjs";
 import { computeSystemColorVars } from "./helpers/actor.mjs";
 import {
@@ -775,6 +776,41 @@ export const attachCheckCardListeners = function (message, html) {
   }
 };
 
+/**
+ * An Apply Damage button whose type is an Essence damage type. Sludge/V.E.N.O.M.: "If Science is
+ * used for the Skill Test, the attacker chooses" - read off the posted roll's own skill; the GM
+ * clicking the button makes the pick for them. The effect's second damage, if any, still lands.
+ * @param {ChatMessage} message
+ * @param {HTMLElement} button
+ * @param {Actor} target
+ * @param {Number} damage
+ */
+async function applyEssenceDamageButton(message, button, target, damage) {
+  const result = await applyEssenceAttack(target, damage, button.dataset.damageType, {
+    attackerChooses: message.flags?.essence20?.skill == 'science',
+    ignoreImmunity: button.dataset.ignoreImmunity == 'true',
+  });
+  if (result.cancelled) {
+    return;
+  }
+
+  const lines = [describeEssenceAttack(target, result)];
+  const secondary = getSecondaryDamageForButton(message.flags?.essence20, button.dataset.key, button.dataset.targetUuid);
+  if (secondary?.value > 0) {
+    const [isCrit] = _isCritIsFumble(message.rolls?.[0]?.dice ?? [], message.flags?.essence20?.canCritD2);
+    const amount = await applyDamage(target, secondary.value, secondary.type, isCrit);
+    lines.push(`${target.name}: ${amount} ${game.i18n.localize('E20.CheckDamageApplied')}`);
+  }
+
+  button.disabled = true;
+  const appliedKeys = message.getFlag('essence20', 'damageAppliedKeys') || [];
+  await message.setFlag('essence20', 'damageAppliedKeys', [...appliedKeys, button.dataset.key]);
+  ChatMessage.create({
+    content: lines.join('<br>'),
+    speaker: ChatMessage.getSpeaker({ actor: target }),
+  });
+}
+
 // Cross-actor Health changes stay GM-gated, since there's no existing precedent anywhere in this
 // codebase for a player mutating another actor's document.
 // Exported (only) for unit testing - attachCheckCardListeners above is this function's real
@@ -825,6 +861,13 @@ export async function onApplyDamage(message, button) {
   }
 
   let damage = parseInt(button.dataset.damage);
+
+  // Essence damage (helpers/essence-attack.mjs) - it comes off an Essence score, not Health, so
+  // none of the Health-side reductions and reactions below apply.
+  if (isEssenceDamageType(button.dataset.damageType)) {
+    await applyEssenceDamageButton(message, button, target, damage);
+    return;
+  }
 
   // Active Protection System / Slat Armor / Reactive Armor (helpers/vehicle-upgrades.mjs).
   if (target.type == 'vehicle') {
@@ -1094,16 +1137,28 @@ export async function onApplyDamage(message, button) {
     await breakMachineMantleIfPresent(target);
   }
 
+  // Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99): a non-attack effect against Toughness
+  // that still hit deals its holder half damage (helpers/combat.mjs#toughEnoughDamage). Read off the
+  // posted roll's own isAttack/defenseType flags (dice.mjs#rollSkill's rollContext).
+  if (message.getFlag('essence20', 'isAttack') === false && message.getFlag('essence20', 'defenseType') == 'toughness') {
+    damage = toughEnoughDamage(target, damage);
+    if (secondary?.value > 0) {
+      secondary = { ...secondary, value: toughEnoughDamage(target, secondary.value) };
+    }
+  }
+
   // Concentrated Fire "treats Fire Immunity as Fire Resistance" (helpers/target-riders.mjs) - its
   // button carries data-ignore-immunity.
   const amount = await applyDamage(target, damage, button.dataset.damageType, isCrit, { ignoreImmunity: button.dataset.ignoreImmunity == 'true' });
   // Shots Fired - "when you deal damage to a creature" (helpers/target-riders.mjs).
   await onDamageDealt(game.actors.get(message.speaker?.actor), target, amount);
   const secondaryAmount = secondary?.value > 0 ? await applyDamage(target, secondary.value, secondary.type, isCrit) : 0;
-  // Health actually lost to this hit - Stun never reduces Health (see applyDamage).
+  // Health actually lost to this hit - Stun never reduces Health (see applyDamage), and nor does a
+  // second damage that is Essence damage.
+  const secondaryHitsHealth = !!secondary && secondary.type != 'stun' && !isEssenceDamageType(secondary.type);
   const healthLost = (button.dataset.damageType != 'stun' ? amount : 0)
-    + (secondary && secondary.type != 'stun' ? secondaryAmount : 0);
-  const hitsHealth = button.dataset.damageType != 'stun' || (secondaryAmount > 0 && secondary.type != 'stun');
+    + (secondaryHitsHealth ? secondaryAmount : 0);
+  const hitsHealth = button.dataset.damageType != 'stun' || (secondaryAmount > 0 && secondaryHitsHealth);
 
   // CBRN Defender's own Hang-Up - see helpers/cbrn-defender.mjs's own doc comment. "Defeats a
   // living creature through damage" - either the target's own Health reaching 0 from this hit (an
@@ -1147,18 +1202,6 @@ export async function onApplyDamage(message, button) {
     if (confirmation == 'confirm') {
       requestStoryPointSpend(target, 1);
       await activateIronHide(target, healthLost);
-    }
-  }
-
-  // Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99) - see
-  // helpers/combat.mjs#grantToughEnoughResistance's own doc comment. Scoped to "a non-attack
-  // effect against your Toughness" specifically, via the posted roll's own isAttack/defenseType
-  // flags (dice.mjs#rollSkill's own rollContext) - an ordinary weapon Attack against Toughness
-  // does NOT trigger this.
-  if (message.getFlag('essence20', 'isAttack') === false && message.getFlag('essence20', 'defenseType') == 'toughness') {
-    await grantToughEnoughResistance(target, button.dataset.damageType, amount);
-    if (secondaryAmount > 0) {
-      await grantToughEnoughResistance(target, secondary.type, secondaryAmount);
     }
   }
 

@@ -5,6 +5,10 @@
   "_id": "a4gWSl5fufpIYU4C",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: uses the Path of Venom's Hard Hitter Role Points - a switch on an attack gives it Edge plus the listed bonus damage.</p><p>Left to the table: spending the 1 Personal Power, and only using it before you have attacked this turn against a single target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "cOVq7EH6HPrXmhBC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Defeating a Cybertronian with your attack heals you 1d2 Health. Use button: heal 1d2 after destroying an object that holds Energon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

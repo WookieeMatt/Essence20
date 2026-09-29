@@ -5,6 +5,10 @@
   "_id": "GNuActe2QRVyWH3o",
   "img": "systems/essence20/assets/icons/weapons/excalibur.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for 2 Sharp damage, with a three-target sweep; its traits and upgrades apply. While equipped it gives +1 Toughness; Use button: switch to riot-shield mode (+2 Evasion, no attacks) as a Move action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
