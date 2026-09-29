@@ -207,6 +207,50 @@
         "lastModifiedBy": "j6WWLUdptyfr6qBb"
       },
       "_key": "!items.effects!JFfMXY6aMxhDbKa6.8MfkzK2YdqbBnhLP"
+    },
+    {
+      "name": "Martial Arts Training",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.intercontinental_adventures.Item.JFfMXY6aMxhDbKa6",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Zd2ShinobiMartA1",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.trained.weapons.martialArts",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": 1748796847051,
+        "modifiedTime": 1748796885292,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb"
+      },
+      "_key": "!items.effects!JFfMXY6aMxhDbKa6.Zd2ShinobiMartA1"
     }
   ],
   "sort": 0,

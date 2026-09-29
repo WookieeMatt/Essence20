@@ -414,8 +414,22 @@ export function canAssistWithSkill(actor, ally, skill) {
     return true;
   }
 
+  // Extension rank-gate bypasses, fn(actor, ally, skill) => Boolean (Inspirational Leader -
+  // helpers/extensions/react).
+  if (ASSIST_RANK_BYPASSES.some(fn => {
+    try {
+      return !!fn(actor, ally, skill);
+    } catch (error) {
+      return false;
+    }
+  })) {
+    return true;
+  }
+
   return actorHasPerk(actor, SHIPS_CREW_ID) && isAboardVehicle(actor);
 }
+
+export const ASSIST_RANK_BYPASSES = [];
 
 function isCommandAndControlPair(actor, ally) {
   const owner = actor?.type == 'companion' ? ownerOf(actor) : actor;

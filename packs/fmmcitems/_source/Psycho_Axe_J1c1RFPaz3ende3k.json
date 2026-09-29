@@ -1,0 +1,121 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Psycho Axe",
+  "type": "weapon",
+  "_id": "J1c1RFPaz3ende3k",
+  "img": "icons/weapons/axes/axe-battle-black.webp",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "d210": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.S4r2E86kuwLIliEI",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Psycho Axe Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "void",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "d211": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.rUfx6wrW9Oad5g79",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Psycho Axe Two-Handed Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "void",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "d212": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.UNpu1L16GouAogAr",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Psycho Axe Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Psycho Rangers only",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "versatile",
+      "void"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790658899327,
+    "modifiedTime": 1790658899327,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!J1c1RFPaz3ende3k"
+}

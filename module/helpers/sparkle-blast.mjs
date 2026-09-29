@@ -12,7 +12,15 @@ import { getNearbyEnemyTokens } from "./enemies.mjs";
 // without their own per-target roll.
 
 export async function applySparkleBlast(actor) {
-  for (const enemyToken of getNearbyEnemyTokens(actor, 30)) {
-    await enemyToken.actor?.toggleStatusEffect('blinded', { active: true });
+  // Now a placed area (the spell's system.shape - a 15ft-radius circle standing in for the 30ft cube,
+  // the nearest shape the AoE placer draws): whoever it caught is targeted, allies included - "(except
+  // the caster but not their allies)". Blinded for the spell's 3 rounds. With nothing placed, the old
+  // nearby-enemies reading stands.
+  const targets = game.user?.targets;
+  const caught = [...(typeof targets?.[Symbol.iterator] == 'function' ? targets : [])].map(token => token.actor).filter(a => a && a.uuid != actor.uuid);
+  const victims = caught.length ? caught : getNearbyEnemyTokens(actor, 30).map(token => token.actor).filter(Boolean);
+  const { applyTimedCondition } = await import("./timed-status.mjs");
+  for (const victim of victims) {
+    await applyTimedCondition(victim, 'blinded', 3);
   }
 }

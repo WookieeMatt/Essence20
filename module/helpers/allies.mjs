@@ -1,3 +1,4 @@
+import { betrayalSplits } from "./extensions/other3/mlp.mjs";
 import { actorHasPerk } from "./perks.mjs";
 
 /**
@@ -44,6 +45,7 @@ export function getNearbyAllyTokens(actor, radiusFeet) {
   return canvas.tokens.placeables.filter(token =>
     token !== actorToken && token.actor
     && (anyDisposition || token.document.disposition === actorToken.document.disposition)
+    && !betrayalSplits(actor, token.actor)
     && canvas.grid.measurePath([token.center, actorToken.center]).distance
       <= radiusFeet * (actorHasPerk(token.actor, ALLY_AWARENESS_ID) ? 5 : 1),
   );

@@ -1,3 +1,4 @@
+import { runDerived } from "../helpers/extensions.mjs";
 import { linkedBonuses } from "../helpers/companions.mjs";
 import { BOND, bondBonuses } from "../helpers/bonded.mjs";
 import { hardTargetBonus, vehicleHands } from "../helpers/summons.mjs";
@@ -695,6 +696,9 @@ export class Essence20Actor extends Actor {
     // budgets are their own small, self-contained pass with no dependency on the Defenses/Health/
     // Movement math.
     this._prepareActions();
+
+    // Extensions' derived data - Health, Defenses and Movement adjustments (helpers/extensions.mjs).
+    runDerived(this);
   }
 
   /**

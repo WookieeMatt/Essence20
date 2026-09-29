@@ -143,6 +143,25 @@
   </div>
   {{/if}}
 
+  {{!-- Extension controls (helpers/extensions.mjs#registerDialogToggles), read back as options.ext. --}}
+  {{#each extToggles as |toggle|}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{toggle.label}}</span>
+    {{#if (eq toggle.type "number")}}
+      <input type="number" name="ext_{{toggle.name}}" value="{{toggle.value}}" min="0" max="{{toggle.max}}" step="1" />
+    {{else if (eq toggle.type "select")}}
+      <select name="ext_{{toggle.name}}">
+        {{#each toggle.options as |option|}}<option value="{{option.value}}">{{option.label}}</option>{{/each}}
+      </select>
+    {{else}}
+      <label class="switch">
+        <input type="checkbox" name="ext_{{toggle.name}}" {{#if toggle.value}}checked{{/if}} />
+        <span class="switch-slider"></span>
+      </label>
+    {{/if}}
+  </div>
+  {{/each}}
+
   {{#if synapticEdgeAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogSynapticEdge'}}</span>

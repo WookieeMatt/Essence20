@@ -15,7 +15,52 @@
     "hasChoice": true,
     "choiceType": "senses"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Compendium.essence20.pr_crb.Item.qKoTBo1FKzCq1qTt",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "h5g8K6QL7IltA3oY",
+      "changes": [
+        {
+          "key": "system.essenceShifts.any.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Chosen Sense (non-Alertness)",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!qKoTBo1FKzCq1qTt.h5g8K6QL7IltA3oY"
+    }
+  ],
   "flags": {
     "core": {}
   },

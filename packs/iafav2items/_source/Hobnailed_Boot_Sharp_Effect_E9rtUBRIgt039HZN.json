@@ -1,0 +1,51 @@
+{
+  "folder": "Y7VLx3wOOmK72HRd",
+  "name": "Hobnailed Boot Sharp Effect",
+  "type": "weaponEffect",
+  "_id": "E9rtUBRIgt039HZN",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 29
+    },
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": 0,
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1790658591677,
+    "modifiedTime": 1790658591677,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "exportSource": null
+  },
+  "_key": "!items!E9rtUBRIgt039HZN"
+}

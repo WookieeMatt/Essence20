@@ -1,0 +1,37 @@
+{
+  "folder": "pJQaDoDjUnTGyksC",
+  "name": "Larger Than Life",
+  "type": "perk",
+  "_id": "Gwhns0NfDQYhCVPK",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 7
+    },
+    "prerequisite": "Threat",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790659196166,
+    "modifiedTime": 1790659196166,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "iCCZI3EVfOIO2b8O": 3
+  },
+  "_key": "!items!Gwhns0NfDQYhCVPK"
+}

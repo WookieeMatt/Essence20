@@ -1,3 +1,4 @@
+import { runAfterDamage, runDamageModifiers } from "./extensions.mjs";
 import { renegadeHolderFor } from "./summons.mjs";
 import { isCarried } from "./team-actions.mjs";
 import { onOwnerDefeated } from "./companions.mjs";
@@ -934,6 +935,8 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   amount = (await consumeSelfPreservationImmunity(actor, damageType)) ? 0 : amount;
   // Protomatter Injection Layer - helpers/kits.mjs.
   amount = await protomatterReduce(actor, amount);
+  // Extensions (helpers/extensions.mjs).
+  amount = await runDamageModifiers(actor, amount, damageType, { isCrit, ignoreImmunity });
   amount = await consumeElementalShieldReduction(actor, damageType, amount);
   amount = await consumeDigDeepReduction(actor, amount);
 
@@ -1162,6 +1165,8 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   if (amount > 0) {
     await onBondedHit(actor, damageType);
   }
+
+  await runAfterDamage(actor, previousValue - newValue, damageType, { newValue, previousValue, wasAlreadyDefeated });
 
   await grantHardenedArmorResistance(actor, damageType, previousValue - newValue);
   await grantGridElementalAdaptationResistance(actor, damageType, previousValue - newValue);

@@ -1,0 +1,75 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Unique Weapon (Two-Handed Melee)",
+  "type": "weapon",
+  "_id": "Pr3UniqWpnTwoHnd",
+  "img": "systems/essence20/assets/icons/weapons/battle-axe.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 44
+    },
+    "items": {
+      "u0nd": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Pr3UniqEffTwoHnd",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Unique Weapon (Two-Handed Melee) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageType": "element",
+        "damageValue": 2,
+        "shiftDown": 0,
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        }
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "powerWeapon"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790640000000,
+    "modifiedTime": 1790640000000,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Pr3UniqWpnTwoHnd"
+}

@@ -17,6 +17,12 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Grappling Hook Effect",
         "type": "weaponEffect"
+      },
+      "kHj0": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.QwQb0oB71H00mdth",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Grappling Hook Alternate Effect",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

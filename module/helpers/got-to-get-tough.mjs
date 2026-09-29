@@ -1,3 +1,4 @@
+import { recordTempHealth } from "./extensions/resource/temp-resources.mjs";
 import { actorHasPerk } from "./perks.mjs";
 import { getNearbyAllyTokens } from "./allies.mjs";
 
@@ -44,5 +45,7 @@ export async function applyGotToGetTough(actor) {
       "system.health.bonus": ally.system.health.bonus + 1,
       "system.health.value": ally.system.health.value + 1,
     });
+    // "lasts for the entire scene, until they take damage, or until you are Defeated."
+    await recordTempHealth(ally, 1, { source: 'gotToGetTough', by: actor.uuid, untilDamage: true });
   }
 }

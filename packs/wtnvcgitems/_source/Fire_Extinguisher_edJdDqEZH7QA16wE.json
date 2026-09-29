@@ -17,6 +17,12 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Fire Extinguisher Effect",
         "type": "weaponEffect"
+      },
+      "5mxx": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.k10zy7W2VPDGzDwo",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Fire Extinguisher Alternate Effect",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

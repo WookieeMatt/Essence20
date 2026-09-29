@@ -33,6 +33,28 @@
           "value": 25
         },
         "shiftDown": 0
+      },
+      "d21a": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.aCFBEUiKyV415Lk6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Dynamite Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "explosive"
+        },
+        "damageValue": 0,
+        "damageType": "special",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 20,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 40,
+          "value": 25
+        },
+        "shiftDown": 0
       }
     },
     "availability": "restricted",

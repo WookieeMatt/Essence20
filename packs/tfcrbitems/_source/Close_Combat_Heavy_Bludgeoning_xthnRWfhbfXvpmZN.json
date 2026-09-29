@@ -13,7 +13,7 @@
     },
     "items": {
       "931d": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.JWm06vX4u4QSDf4D",
+        "uuid": "Compendium.essence20.tf_crb.Item.JWm06vX4u4QSDf4D",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Close Combat Heavy Bludgeoning Effect",
         "type": "weaponEffect",
@@ -32,10 +32,14 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 0
+        "shiftDown": 0,
+        "secondaryDamage": {
+          "type": "stun",
+          "value": 1
+        }
       },
       "e2e4": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.SdBelSCDxdO7XM0j",
+        "uuid": "Compendium.essence20.tf_crb.Item.SdBelSCDxdO7XM0j",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Close Combat Heavy Bludgeoning Alternate Effect",
         "type": "weaponEffect",

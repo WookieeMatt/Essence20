@@ -13,5 +13,10 @@
  */
 export async function applyPanaceaHeal(targetActor) {
   await targetActor.update({ 'system.health.value': targetActor.system.health.max });
+  // "Clear all conditions" - every status the target carries, Defeated included.
+  for (const status of [...(targetActor.statuses ?? [])]) {
+    await targetActor.toggleStatusEffect(status, { active: false });
+  }
+
   await targetActor.toggleStatusEffect('defeated', { active: false });
 }

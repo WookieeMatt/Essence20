@@ -14,7 +14,21 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "items": {
+      "sf01": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.8lNIijY5XompKHH7",
+        "img": "icons/svg/sword.svg",
+        "name": "Close Combat Blade",
+        "type": "weapon"
+      },
+      "sf02": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ZNokHTRBa5aindap",
+        "img": "icons/svg/sword.svg",
+        "name": "Close Combat Bludgeoning",
+        "type": "weapon"
+      }
+    }
   },
   "effects": [],
   "sort": 200000,

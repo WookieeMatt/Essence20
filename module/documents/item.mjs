@@ -1,3 +1,4 @@
+import { runSpellCost } from "../helpers/extensions.mjs";
 import { endOnFumble } from "../helpers/grants.mjs";
 import { ablativeLossOf, pickConcentratedArea, weaponUnusable } from "../helpers/target-riders.mjs";
 import { wipeCoating } from "../helpers/poison-coating.mjs";
@@ -1217,6 +1218,12 @@ export class Essence20Item extends Item {
       // real cost increase, not something those Perks should shrink away).
       if (isBlockMagicActive(this.actor)) {
         castingCost += 1;
+      }
+
+      // Extensions - Illusion Casting, Reach Out, Sharpcaster's free second roll (helpers/extensions.mjs).
+      castingCost = await runSpellCost(this, castingCost, dataset);
+      if (castingCost === null) {
+        return;
       }
 
       // Power Conservationist / Power Mastery (Knights of Canterlot, General Perks, p.38) - see

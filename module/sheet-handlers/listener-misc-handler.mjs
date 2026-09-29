@@ -1,3 +1,4 @@
+import { runRest } from "../helpers/extensions.mjs";
 import { restBff } from "../helpers/bff.mjs";
 import { restBond } from "../helpers/bonded.mjs";
 import { restContact } from "../helpers/contacts.mjs";
@@ -214,6 +215,7 @@ async function _applyRestBenefits(actor, completeMessageKey) {
   await restBff(actor);
   await restBond(actor);
   await restContact(actor);
+  await runRest(actor);
 
   // ...and the vehicle they crew (Nameplate) - helpers/vehicle-upgrades.mjs.
   const crewed = getCrewedVehicle(actor);

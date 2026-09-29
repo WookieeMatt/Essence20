@@ -380,6 +380,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     const who = game.user.character ?? { name: game.user.name };
     await requestStoryPointSpend(who, 1, { announce: false });
     this.sendMessage(game.i18n.format(keys[kind], { name: who.name }));
+    Hooks.callAll("essence20.storyPointNarrative", who, kind);
   }
 
   /**

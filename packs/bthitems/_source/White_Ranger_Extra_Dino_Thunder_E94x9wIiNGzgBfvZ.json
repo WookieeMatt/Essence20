@@ -12,7 +12,7 @@
       "page": 57
     },
     "actionType": "free",
-    "canActivate": true,
+    "canActivate": false,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,

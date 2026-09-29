@@ -114,7 +114,11 @@ async function emergencyDisembarkCrew(vehicleActor, vehicleCrashDamage) {
     }
 
     // Roll Cage: "Crew members roll their Emergency Disembark Skill Tests with Edge."
-    let { success } = await rollBetterOfAthleticsOrAcrobatics(crewMember, DISEMBARK_DIF);
+    // Peerless Pilot - helpers/extensions/pr3/pr-crb.mjs.
+    const { autoPassesDisembark: pr3AutoPasses } = await import("./extensions/pr3/pr-crb.mjs");
+    let { success } = pr3AutoPasses(crewMember, entry) ? { success: true } : await rollBetterOfAthleticsOrAcrobatics(crewMember, DISEMBARK_DIF);
+    const { autoPassesDisembark } = await import("./extensions/gij2/vehicles.mjs");
+    success ||= autoPassesDisembark(crewMember, vehicleActor);
     if (!success && (vehicleActor.system.traits?.rollCage || hasVehicleUpgrade(vehicleActor, VU.rollCage))) {
       ({ success } = await rollBetterOfAthleticsOrAcrobatics(crewMember, DISEMBARK_DIF));
     }

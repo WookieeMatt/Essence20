@@ -54,6 +54,16 @@ async function moveTokenTo(token, center) {
  * @returns {Promise<Boolean>}
  */
 export async function resistsForcedMovement(actor) {
+  // Bullbar (TF CRB p.134): "Bot Mode: You're immune to effects that would shove you." Derived by
+  // helpers/extensions/tf2/modes.mjs.
+  if (actor?.system?.tf2ShoveImmune) {
+    ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      content: game.i18n.format('E20.Tf2ShoveImmune', { name: actor.name }),
+    });
+    return true;
+  }
+
   if (!actorHasPerk(actor, IMMOVABLE_OBJECT_ID)) {
     return false;
   }

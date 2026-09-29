@@ -1,0 +1,164 @@
+import { jest } from '@jest/globals';
+
+const item = (uuid, extra = {}) => ({
+  id: extra.id ?? uuid.slice(-6), name: extra.name ?? 'Item', type: extra.type ?? 'perk',
+  system: extra.system ?? {}, flags: { core: { sourceId: uuid }, essence20: extra.flags ?? {} },
+  update: jest.fn(), setFlag: jest.fn(),
+});
+const actor = (items = [], extra = {}) => ({
+  uuid: extra.uuid ?? 'Actor.a', name: extra.name ?? 'A', system: extra.system ?? {}, flags: { essence20: extra.flags ?? {} },
+  items: { contents: items, get: id => items.find(i => i.id == id) }, statuses: new Set(), setFlag: jest.fn(), unsetFlag: jest.fn(),
+});
+
+let senses, perks, shield, reckless, vehicles, artillery, G2;
+
+beforeAll(async () => {
+  global.game = { i18n: { localize: k => k, format: k => k }, user: { id: 'u', targets: new Set() }, actors: { get: () => null }, combat: null };
+  global.CONFIG = {
+    E20: {
+      senses: { sight: 'Sight' },
+      skillToEssence: { alertness: 'smarts', streetwise: 'social', science: 'smarts', technology: 'smarts', might: 'strength', targeting: 'speed' },
+      skillShiftList: ['d12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd20'],
+      skills: {}, essences: {}, damageTypes: { fire: 'Fire' },
+    },
+    statusEffects: [],
+  };
+  global.ui = { notifications: { warn: jest.fn(), info: jest.fn() } };
+  global.Hooks = { on: jest.fn(), once: jest.fn(), callAll: jest.fn() };
+  global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
+  ({ G2 } = await import('./shared.mjs'));
+  senses = await import('./senses.mjs');
+  perks = await import('./perks.mjs');
+  shield = await import('./shield.mjs');
+  reckless = await import('./reckless.mjs');
+  vehicles = await import('./vehicles.mjs');
+  artillery = await import('./artillery.mjs');
+});
+
+beforeEach(() => {
+  global.game.combat = null;
+  global.game.user.targets = new Set();
+  global.ChatMessage.create.mockClear();
+  global.ui.notifications.warn.mockClear();
+});
+
+test('Acute Sense: ↑1 checkbox off Alertness, Enhanced Sensors Edge on Alertness', () => {
+  const holder = actor([item(G2.acuteSense, { system: { choice: 'sight' }, name: 'Acute Sense' })]);
+  expect(senses.acuteSenseToggles(holder, { rolledSkill: 'alertness' })).toEqual([]);
+  expect(senses.acuteSenseToggles(holder, { rolledSkill: 'might' })[0].name).toBe(senses.ACUTE_TOGGLE);
+  const options = { shiftUp: 0, ext: { [senses.ACUTE_TOGGLE]: true } };
+  senses.acuteSenseApply(holder, options);
+  expect(options.shiftUp).toBe(1);
+
+  const drone = actor([item(G2.enhancedSensors, { type: 'upgrade', name: 'Enhanced Sensors' })]);
+  expect(senses.acuteSenseSources(drone, null, { rolledSkill: 'alertness' }).sources[0].edge).toBe(true);
+  expect(senses.acuteSenseSources(holder, null, { rolledSkill: 'alertness' })).toBeNull();
+});
+
+test('Empathetic lifts a robot drone\'s Social Condition immunity', () => {
+  const robot = actor([item(G2.robot)]);
+  expect(senses.robotRefusesCondition(robot, 'frightened')).toBe(true);
+  expect(senses.robotRefusesCondition(robot, 'prone')).toBe(false);
+  expect(senses.robotRefusesCondition(actor([item(G2.robot), item(G2.empathetic)]), 'mesmerized')).toBe(false);
+});
+
+test('Mentor adds an Essence to a Skill; Energy Resistant makes worn armor Resistant', () => {
+  const armor = item('Compendium.x.Item.armor', { id: 'arm', type: 'armor', system: { equipped: true } });
+  const holder = actor([
+    item(G2.mentor, { flags: { [perks.MENTOR_FLAG]: { skill: 'might', essence: 'social' } } }),
+    item(G2.energyResistant, { type: 'upgrade', flags: { [perks.ELEMENT_FLAG]: 'fire', parentId: 'arm' } }),
+    armor,
+  ], { system: { skills: { might: { essences: { strength: true } } }, resistances: {} } });
+  perks.perkDerived(holder);
+  expect(holder.system.skills.might.essences.social).toBe(true);
+  expect(holder.system.resistances.fire).toBe(true);
+  armor.system.equipped = false;
+  holder.system.resistances = {};
+  perks.perkDerived(holder);
+  expect(holder.system.resistances.fire).toBeUndefined();
+});
+
+test('Expert Knowledge posts one or two extra benefits', async () => {
+  const holder = actor([item(G2.expertKnowledge, { flags: { [perks.EXPERT_FLAG]: 'science' } })]);
+  await perks.expertKnowledgePostRoll(holder, [{ success: true, multiplier: 1 }], { riderContext: { skill: 'science' } }, {});
+  await perks.expertKnowledgePostRoll(holder, [{ success: true }], { riderContext: { skill: 'technology' } }, {});
+  await perks.expertKnowledgePostRoll(holder, [{ success: false }], { riderContext: { skill: 'science' } }, {});
+  expect(global.ChatMessage.create).toHaveBeenCalledTimes(1);
+});
+
+test('Nose For Trouble and Duck & Cover dialog choices', () => {
+  const nose = actor([item(G2.noseForTrouble)], { system: { skills: { streetwise: { shift: 'd6' }, alertness: { shift: 'd20' } } } });
+  expect(perks.streetwiseIsBetter(nose)).toBe(true);
+  expect(perks.perkToggles(nose, { rolledSkill: 'might' }).map(t => t.name)).toContain(perks.NOSE_TRAPS);
+  const options = { snag: false, edge: false, ext: { [perks.NOSE_TRAPS]: true } };
+  perks.perkApplyDialog(nose, options);
+  expect(options.edge).toBe(true);
+
+  const duck = actor([item(G2.duckAndCover)]);
+  global.game.user.targets = new Set([{ actor: duck }]);
+  expect(perks.perkToggles(actor(), { rolledSkill: 'targeting', item: { system: {} } }).map(t => t.name)).toContain(perks.DUCK_TRAP);
+  const trap = { edge: false, snag: false, ext: { [perks.DUCK_TRAP]: true } };
+  perks.perkApplyDialog(actor(), trap);
+  expect(trap.snag).toBe(true);
+});
+
+test('Machinesmith turns the Electromagnetic ↓3 into ↑3 against the living', () => {
+  const smith = actor([item(G2.machinesmith)]);
+  const effect = { type: 'weaponEffect', system: { damageType: 'emp' }, flags: {} };
+  expect(perks.machinesmithSources(smith, actor(), { item: effect }).sources[0].shiftUp).toBe(6);
+  expect(perks.machinesmithSources(smith, actor([], { system: { traits: { computerized: true } } }), { item: effect })).toBeNull();
+});
+
+test('Queen\'s Gambit slots an ally right after the current turn', () => {
+  expect(perks.initiativeAfterCurrent({ turn: 0, turns: [{ initiative: 20 }, { initiative: 10 }] })).toBe(15);
+  expect(perks.initiativeAfterCurrent({ turn: 1, turns: [{ initiative: 20 }, { initiative: 10 }] })).toBe(9);
+});
+
+test('Personal Shield gates, spends and expires', async () => {
+  const rp = item(G2.personalShield, { type: 'rolePoints', system: { isActive: false, resource: { value: 1, max: 2 } } });
+  const vanguard = actor([rp], { system: { level: 5 } });
+  expect(shield.canActivatePersonalShield(vanguard, rp)).toBe(true);
+  rp.system.resource.value = 0;
+  expect(shield.canActivatePersonalShield(vanguard, rp)).toBe(false);
+  rp.system.resource.value = 2;
+  vanguard.flags.essence20[shield.BROKEN_FLAG] = true;
+  expect(shield.canActivatePersonalShield(vanguard, rp)).toBe(false);
+  expect(shield.repairDif(vanguard)).toBe(14);
+  vanguard.flags.essence20[shield.ON_FLAG] = { combatId: 'c', round: 2 };
+  expect(shield.shieldExpired(vanguard, { id: 'c', round: 11 })).toBe(false);
+  expect(shield.shieldExpired(vanguard, { id: 'c', round: 12 })).toBe(true);
+  vanguard.flags.essence20 = {};
+  await shield.onShieldActivated(vanguard, rp);
+  expect(rp.update).toHaveBeenCalledWith({ 'system.resource.value': 1 });
+});
+
+test('Reckless Abandon: no kits, and the minute', () => {
+  const rp = item(G2.recklessAbandon, { type: 'rolePoints', system: { isActive: true } });
+  const renegade = actor([rp], { flags: { [reckless.START_FLAG]: { combatId: 'c', round: 1 } } });
+  expect(reckless.kitsBlockedFor(renegade)).toBe(true);
+  expect(reckless.minuteIsUp(renegade, { id: 'c', round: 11 })).toBe(true);
+  expect(reckless.minuteIsUp(renegade, { id: 'c', round: 5 })).toBe(false);
+  rp.system.isActive = false;
+  expect(reckless.kitsBlockedFor(renegade)).toBe(false);
+});
+
+test('Roll Cage and Peerless Pilot', () => {
+  const pilot = actor([item(G2.rollCage), item(G2.peerlessPilot)], { uuid: 'Actor.p' });
+  global.fromUuidSync = uuid => (uuid == 'Actor.p' ? pilot : null);
+  const vehicle = { uuid: 'Actor.v', id: 'v', system: { actors: { a: { uuid: 'Actor.p', vehicleRole: 'driver' } } } };
+  expect(vehicles.rollCageProtects(vehicle)).toBe(true);
+  expect(vehicles.autoPassesDisembark(pilot, vehicle)).toBe(true);
+  vehicles.RESOLVING.set('Actor.v', { crew: new Set(['Actor.p']), mode: 'defeat', until: Date.now() + 5000, vehicle });
+  expect(vehicles.rollCageDamage(pilot, 4, 'fire')).toBe(1);
+  vehicles.RESOLVING.get('Actor.v').mode = 'crash';
+  expect(vehicles.rollCageDamage(pilot, 3, 'blunt')).toBe(0);
+  expect(vehicles.rollCageDamage(actor([], { uuid: 'Actor.z' }), 3, 'blunt')).toBe(3);
+  vehicles.RESOLVING.clear();
+});
+
+test('Artillery rows list the damage each token takes', () => {
+  const token = { id: 't', name: 'Viper', document: { uuid: 'Scene.s.Token.t' } };
+  const html = artillery.strikeRows([token], { t: false }, artillery.STRIKES.he);
+  expect(html).toContain('data-amount="1"');
+  expect(artillery.strikeRows([token], { t: true }, artillery.STRIKES.shrapnel)).toContain('data-amount="4"');
+});

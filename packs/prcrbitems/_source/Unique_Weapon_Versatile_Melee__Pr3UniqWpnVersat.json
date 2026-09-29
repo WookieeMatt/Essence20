@@ -1,0 +1,98 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Unique Weapon (Versatile Melee)",
+  "type": "weapon",
+  "_id": "Pr3UniqWpnVersat",
+  "img": "systems/essence20/assets/icons/weapons/broadsword.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 44
+    },
+    "items": {
+      "u0at": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Pr3UniqEffVersMt",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Unique Weapon (Versatile Melee, Might) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "shiftDown": 0,
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        }
+      },
+      "u1at": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Pr3UniqEffVersFn",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Unique Weapon (Versatile Melee, Finesse) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "shiftDown": 0,
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        }
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "sharp",
+      "versatile"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790640000000,
+    "modifiedTime": 1790640000000,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Pr3UniqWpnVersat"
+}

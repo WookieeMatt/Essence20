@@ -55,6 +55,9 @@ export const ENVIRONMENT_HAZARDS = {
 };
 
 const EXPOSURE_FLAG = 'environmentExposure';
+// Extension-added protections, fn(actor, environment, hazard) => label or null
+// (helpers/extensions/situational1 - Weather Gear, Acclimating). Read by getEnvironmentProtection.
+export const ENVIRONMENT_PROTECTORS = [];
 // Actor types that are machines, not "living creatures" - only a Corrosive Atmosphere harms them.
 const OBJECT_ACTOR_TYPES = ['vehicle', 'zord', 'megaform', 'party'];
 
@@ -135,6 +138,17 @@ export function getEnvironmentProtection(actor, environment) {
   const hazard = ENVIRONMENT_HAZARDS[environment];
   if (!hazard || !actor) {
     return null;
+  }
+
+  for (const protector of ENVIRONMENT_PROTECTORS) {
+    try {
+      const label = protector(actor, environment, hazard);
+      if (label) {
+        return label;
+      }
+    } catch (error) {
+      console.error('Essence20 | environment protector failed', error);
+    }
   }
 
   if (OBJECT_ACTOR_TYPES.includes(actor.type) && !hazard.affectsObjects) {

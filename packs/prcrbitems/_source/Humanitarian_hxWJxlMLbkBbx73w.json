@@ -63,6 +63,50 @@
       "system": {},
       "sort": 0,
       "_key": "!items.effects!hxWJxlMLbkBbx73w.DvPijSKCxKDhGJcm"
+    },
+    {
+      "origin": "Compendium.essence20.pr_crb.Item.hxWJxlMLbkBbx73w",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "QwlFw1o6whP7Jblq",
+      "changes": [
+        {
+          "key": "system.essenceShifts.any.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Supplies From Humans",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!hxWJxlMLbkBbx73w.QwlFw1o6whP7Jblq"
     }
   ],
   "flags": {

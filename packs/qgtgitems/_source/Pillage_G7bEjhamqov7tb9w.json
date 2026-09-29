@@ -13,7 +13,15 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "items": {
+      "gP00": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Gij3PillageWpn01",
+        "img": "systems/essence20/assets/icons/weapons/brass-knuckles.svg",
+        "name": "Pillage",
+        "type": "weapon"
+      }
+    }
   },
   "effects": [],
   "sort": 150000,

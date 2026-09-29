@@ -27,6 +27,16 @@
 export async function activateRepairZord(actor, amountSpent) {
   const numDice = Math.floor((amountSpent || 0) / 2);
   const zord = numDice > 0 ? actor._dice?._getPilotedVehicle(actor, 'driver') : null;
+  // "If healing a combined Megaform, the cost of this Grid Power increases by 1, but the amount
+  // healed is divided evenly amongst all combined parts" - helpers/extensions/zord2/zord-features2.mjs.
+  if (zord) {
+    const { repairCombinedMegaform } = await import("./extensions/zord2/zord-features2.mjs");
+    const combined = await repairCombinedMegaform(zord, amountSpent);
+    if (combined !== null) {
+      return combined;
+    }
+  }
+
   if (!zord || numDice <= 0) {
     return 0;
   }

@@ -1,6 +1,6 @@
 {
   "folder": "zBSg0VF3XHJzKerC",
-  "name": "Many-Armed (Large)",
+  "name": "Many-Armed (Large, Aquatic)",
   "type": "altMode",
   "_id": "hs2BII8uOIk7wgpJ",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
@@ -15,7 +15,7 @@
     "altModeFirepoints": 0,
     "altModeMovement": {
       "aerial": 0,
-      "aquatic": 0,
+      "aquatic": 40,
       "ground": 30
     },
     "altModesize": "large",

@@ -1,3 +1,4 @@
+import { runRoundStart, runTurnEnd, runTurnStart } from "../helpers/extensions.mjs";
 import { onCompanionTurnStart, onFirstCombatTurn } from "../helpers/companions.mjs";
 import { onSpiritsHostTurn } from "../helpers/team-actions.mjs";
 import { onRoundChange } from "../helpers/summons.mjs";
@@ -98,6 +99,12 @@ export class Essence20Combat extends Combat {
     // A vehicle called "like a Zord" turns up on its round (helpers/summons.mjs).
     if ((context?.turn ?? this.turn) == 0) {
       await onRoundChange(this);
+      await runRoundStart(this);
+    }
+
+    // Extensions (helpers/extensions.mjs).
+    if (combatant?.actor) {
+      await runTurnStart(combatant.actor, this, context);
     }
   }
 
@@ -118,6 +125,7 @@ export class Essence20Combat extends Combat {
       // The combatant's own token, so the scene the fight is on decides - not the scene the GM
       // client running this happens to be viewing.
       await applyEnvironmentAtTurnEnd(combatant.actor, this, combatant.token ?? null);
+      await runTurnEnd(combatant.actor, this, context);
     }
   }
 

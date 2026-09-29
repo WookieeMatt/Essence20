@@ -47,12 +47,18 @@
       "skill": "athletics",
       "shift": "none"
     },
-    "traits": [],
+    "traits": [
+      "reload"
+    ],
     "upgradeTraits": [],
     "usesPerScene": null
   },
   "effects": [],
-  "flags": {},
+  "flags": {
+    "essence20": {
+      "reloadAction": "free"
+    }
+  },
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",

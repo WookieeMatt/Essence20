@@ -59,6 +59,8 @@ export const UPGRADE = {
   biomechanical: '7qniIaOGp8Mqwt6O',
   pillForm: 'lYMLqH3adOzo8Nmd',
   salveForm: 'JJ1KynH9FfYeOG7N',
+  // PR CRB p.117 / TF CRB - both packs carry it under this id.
+  manipulative: 'IJBeoPW2yUDWh2Wh',
 };
 
 // Perks (by full uuid) that change weapons the same way.
@@ -526,6 +528,12 @@ export function desiredGeneratedEffects(weapon) {
   // Heavy Hitting (p.93): "This weapon gains Shove (↑1) as an Alternate Effect."
   if (hasUpgrade(weapon, UPGRADE.heavyHitting)) {
     add('heavyHitting', i18n('E20.WeaponAltShove'), { damageType: 'maneuver', damageValue: 1, accurateShiftUp: 1, shiftDown: 0, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
+  }
+
+  // Manipulative (PR CRB p.117): "Modified to reposition the target rather than harm them outright.
+  // ... The weapon gains Maneuver as an alternate effect."
+  if (hasUpgrade(weapon, UPGRADE.manipulative) && !existingTypes.includes('maneuver')) {
+    add('manipulative', i18n('E20.DamageManeuver'), { damageType: 'maneuver', damageValue: 1, shiftDown: 0, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
   }
 
   // Tracer Rounds (p.94): "The weapon gains Spot as an Alternate Effect." Laser (p.207): "Laser

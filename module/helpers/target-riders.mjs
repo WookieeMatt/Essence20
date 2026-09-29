@@ -1,3 +1,5 @@
+import { zord2WeaponUnusable } from "./extensions/zord2/unusable.mjs";
+import { extDefenseAdjust, extRollSources, runConsumer, runHitRiders, runPostRoll } from "./extensions.mjs";
 import { acidSacsDamage, consumeSocial, socialDamageBonus, socialDefenseAdjust, socialRollSources } from "./social-rolls.mjs";
 import { noteRolledAgainst } from "./companions.mjs";
 import { noteFailure } from "./bff.mjs";
@@ -410,6 +412,11 @@ export function rollRiderSources(actor, target, ctx = {}) {
   sources.push(...social.sources);
   consumes.push(...social.consumes);
 
+  // Extensions (helpers/extensions.mjs).
+  const extended = extRollSources(actor, target, ctx);
+  sources.push(...extended.sources);
+  consumes.push(...extended.consumes);
+
   if (!target) {
     return { sources, consumes };
   }
@@ -627,7 +634,7 @@ export function imperfectionOf(actor) {
  */
 export function riderDefenseAdjust(actor, target, defenseType, ctx = {}) {
   // Shield Companion, Issue Command, Hit Someone Your Own Size! - helpers/social-rolls.mjs.
-  let adjust = target ? socialDefenseAdjust(actor, target, defenseType) : 0;
+  let adjust = target ? socialDefenseAdjust(actor, target, defenseType) + extDefenseAdjust(actor, target, defenseType, ctx) : 0;
   const { item, isAttack } = ctx;
 
   // On My Mark! (Decepticon Directive, Demolitionist, 10th level, p.54): "any Contingency action you
@@ -848,6 +855,11 @@ export async function applyRollRiders(actor, results, checkContext, { isCrit = f
       continue;
     }
 
+    if (consume.ext) {
+      await runConsumer(consume);
+      continue;
+    }
+
     const holder = await fromUuid(consume.actorUuid);
     if (holder) {
       await removeMark(holder, consume.kind, consume.by ?? null);
@@ -907,6 +919,7 @@ export async function applyRollRiders(actor, results, checkContext, { isCrit = f
   }
 
   await spellRiders(actor, hits, checkContext);
+  await runPostRoll(actor, results, checkContext, { isCrit, isFumble, hits, rider });
 }
 
 async function resolveSpec(actor, spec, results, { isCrit, isFumble }) {
@@ -1048,6 +1061,9 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
       if (partnerDamage) {
         damageBonusNote(result, partnerDamage, localize('E20.Targetmaster'));
       }
+
+      // Extensions (helpers/extensions.mjs).
+      await runHitRiders(actor, target, result, rider, { damageBonusNote, addRiderOption, isCrit, entry, checkContext });
 
       // Acid Sacs (WTNV, Animal Perk): "Your pet's attacks deal 1 Acid damage in addition to their main
       // weapon."
@@ -1389,6 +1405,12 @@ export function weaponUnusable(weapon) {
 
   if (flags.disarmed && weapon.system?.equipped === false) {
     return game.i18n.format('E20.WeaponDisarmed', { name: weapon.name });
+  }
+
+  // Shield modes and once-per-scene Megaform attacks - helpers/extensions/zord2/unusable.mjs.
+  const zord2Reason = zord2WeaponUnusable(weapon);
+  if (zord2Reason) {
+    return zord2Reason;
   }
 
   return null;

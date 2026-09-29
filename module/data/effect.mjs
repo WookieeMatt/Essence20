@@ -1,3 +1,4 @@
+import { isSuppressedWhileUnequipped } from "../helpers/extensions/data1/equip-gate.mjs";
 import { isSuppressedWhileUnmorphed } from "../helpers/morph-gated-effects.mjs";
 import { isSuppressedOutOfEnvironment } from "../helpers/environment-gated-effects.mjs";
 import { makeBool } from "./generic-makers.mjs";
@@ -21,7 +22,7 @@ export class RerollEffectData extends foundry.data.ActiveEffectTypeDataModel {
   // overrides the other when both are unset (both return undefined, falling through to Foundry's
   // own default duration-expiry check).
   get isSuppressed() {
-    return isSuppressedWhileUnmorphed(this) || isSuppressedOutOfEnvironment(this);
+    return isSuppressedWhileUnmorphed(this) || isSuppressedOutOfEnvironment(this) || isSuppressedWhileUnequipped(this);
   }
 }
 

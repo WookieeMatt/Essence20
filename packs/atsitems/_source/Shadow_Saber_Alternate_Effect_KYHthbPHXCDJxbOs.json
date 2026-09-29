@@ -1,19 +1,19 @@
 {
   "folder": "Z2xK8nOrVV5BbzH4",
-  "name": "Delta  Max Striker",
+  "name": "Shadow Saber Alternate Effect",
   "type": "weaponEffect",
-  "_id": "g2mXpc9ldyB2SaWE",
+  "_id": "KYHthbPHXCDJxbOs",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
     "actionType": "standard",
     "classification": {
-      "skill": "might",
+      "skill": "finesse",
       "style": "melee"
     },
-    "damageType": "stun",
-    "damageValue": 1,
-    "shiftDown": 0,
+    "damageType": "element",
+    "damageValue": 2,
+    "shiftDown": 1,
     "numHands": "1",
     "numTargets": 1,
     "radius": 0,
@@ -22,16 +22,19 @@
       "reachMultiplier": 1,
       "long": null,
       "value": null
-    }
+    },
+    "hasArmorPiercing": true
   },
   "effects": [],
-  "flags": {},
+  "flags": {
+    "essence20": {}
+  },
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
     "coreVersion": "13.344",
-    "createdTime": 1695762269021,
-    "modifiedTime": 1704127399141,
+    "createdTime": 1790657680433,
+    "modifiedTime": 1790657680433,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG",
     "compendiumSource": null,
     "duplicateSource": null,
@@ -41,5 +44,5 @@
   "ownership": {
     "default": 0
   },
-  "_key": "!items!g2mXpc9ldyB2SaWE"
+  "_key": "!items!KYHthbPHXCDJxbOs"
 }

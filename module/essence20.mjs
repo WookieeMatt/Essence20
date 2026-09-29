@@ -1,3 +1,6 @@
+import { runChatDecorators as runExtChatDecorators, runMissionAdvanced, runSceneAdvanced } from "./helpers/extensions.mjs";
+// Every extension module registers itself on import (helpers/extensions/index.mjs).
+import "./helpers/extensions/index.mjs";
 import { decorateSocialCard, onGroupResultChanged } from "./helpers/social-cards.mjs";
 import { endSceneTeamEffects, onMorphChanged } from "./helpers/team-actions.mjs";
 import { onInitiativeRolled } from "./helpers/commands.mjs";
@@ -727,6 +730,8 @@ Hooks.on("renderChatMessageHTML", (app, html) => {
     decorateRiderCard,
     // Group Skill Tests, Contacts, Issue Command, team cards - helpers/social-cards.mjs.
     decorateSocialCard,
+    // Extension chat decorators and data-e20-ext buttons (helpers/extensions.mjs).
+    runExtChatDecorators,
     decorateSuppressCard,
     attachCheckCardListeners,
     hideDifficultyForNonGm,
@@ -800,10 +805,12 @@ Hooks.on("updateCombatant", (combatant, changed, options, userId) => {
 
 // A new mission: Contacts' Allegiance Points are fresh (they read the mission), and temporary Contacts
 // leave (helpers/contacts.mjs).
-Hooks.on("essence20.missionAdvanced", async () => {
+Hooks.on("essence20.missionAdvanced", async (epoch) => {
   if (!game.users.activeGM?.isSelf) {
     return;
   }
+
+  await runMissionAdvanced(epoch);
 
   for (const actor of game.actors ?? []) {
     if (actor.flags?.essence20?.temporaryContact && !isContactAvailable(actor)) {
@@ -1141,6 +1148,10 @@ Hooks.on("essence20.sceneAdvanced", () => {
     for (const actor of game.actors ?? []) {
       endSceneTeamEffects(actor);
     }
+  }
+
+  if (game.users.activeGM?.isSelf) {
+    runSceneAdvanced();
   }
 
   // Scene-long made and borrowed items (Never Unarmed, Volatile Delivery, Faction Reservist).

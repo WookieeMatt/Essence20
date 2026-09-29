@@ -1,3 +1,4 @@
+import { ensureKnownEmotions } from "./extensions/zord1/emotions.mjs";
 import { actorHasPerk, findPerk, hasUsedThisEncounter, markUsedThisEncounter } from "./perks.mjs";
 import { E20 } from "./config.mjs";
 import { getNearbyEnemyTokens } from "./enemies.mjs";
@@ -121,8 +122,9 @@ export function isEmotionalMasteryOptionActive(actor, option) {
  * pickHobbleCondition/pickAgelessKnowledgeSkill.
  * @returns {Promise<String|null>}
  */
-async function pickEmotionalMasteryOption() {
+async function pickEmotionalMasteryOption(allowed = null) {
   const options = EMOTIONAL_MASTERY_OPTIONS
+    .filter(key => !allowed || allowed.includes(key))
     .map(key => `<option value="${key}">${game.i18n.localize(`E20.EmotionalMastery${key.capitalize()}`)}</option>`)
     .join('');
   const chosen = await foundry.applications.api.DialogV2.wait({
@@ -243,7 +245,7 @@ async function applyShynessStatusToggle(actor, activeOptions) {
  * @returns {Promise<Boolean>}   Whether an option was actually activated.
  */
 export async function activateEmotionalMastery(actor) {
-  const option = await pickEmotionalMasteryOption();
+  const option = await pickEmotionalMasteryOption(await ensureKnownEmotions(actor));
   if (!option) {
     return false;
   }
@@ -351,7 +353,7 @@ export async function clearEmotionalMasteryOnMorphOff(actor) {
  * @param {Actor} actor
  */
 export async function pickHeartsCallingOption(actor) {
-  const option = await pickEmotionalMasteryOption();
+  const option = await pickEmotionalMasteryOption(await ensureKnownEmotions(actor));
   if (option) {
     await actor.setFlag('essence20', HEARTS_CALLING_FLAG, option);
   }

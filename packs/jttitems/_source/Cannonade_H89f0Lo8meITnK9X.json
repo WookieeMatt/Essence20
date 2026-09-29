@@ -62,7 +62,11 @@
     "default": 0,
     "VEn5sPQRoWgUw9qd": 3
   },
-  "flags": {},
+  "flags": {
+    "essence20": {
+      "reloadCount": 2
+    }
+  },
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,

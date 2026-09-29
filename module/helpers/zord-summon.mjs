@@ -66,7 +66,9 @@ export async function rollSummonTimer(pilotActor, zordActor) {
 
   const roll = await new Roll('3d2').evaluate();
   const reduction = hasEnhancedSummoner(pilotActor) ? 1 : 0;
-  const rounds = Math.max(1, roll.total - reduction);
+  // Unique Weapon (Small Melee) halves it - helpers/extensions/pr3/pr-crb.mjs.
+  const { halveSummonRounds } = await import("./extensions/pr3/pr-crb.mjs");
+  const rounds = halveSummonRounds(pilotActor, Math.max(1, roll.total - reduction));
   const readyRound = game.combat.round + rounds;
   await zordActor.setFlag('essence20', SUMMON_READY_ROUND_FLAG, readyRound);
 

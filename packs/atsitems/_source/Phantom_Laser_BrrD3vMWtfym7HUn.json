@@ -33,6 +33,29 @@
           "value": 80
         },
         "shiftDown": 0
+      },
+      "gUXq": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.Q0dT9PTSEos94DS1",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Phantom Laser Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "laser",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 200,
+          "value": 80
+        },
+        "shiftDown": 1,
+        "hasArmorPiercing": true
       }
     },
     "classFeatureId": null,

@@ -18,6 +18,7 @@
     "classification": "light",
     "equipped": false,
     "traits": [
+      "deflective",
       "silent"
     ],
     "totalBonusEvasion": 0,

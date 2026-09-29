@@ -54,7 +54,11 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 1
+        "shiftDown": 1,
+        "secondaryDamage": {
+          "type": "element",
+          "value": 1
+        }
       }
     },
     "classFeatureId": null,

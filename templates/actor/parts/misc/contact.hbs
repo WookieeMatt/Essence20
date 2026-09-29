@@ -15,6 +15,10 @@
     <label class="flexcol" data-tooltip="{{localize 'E20.ContactHometownHint'}}">{{localize "E20.ContactHometown"}}</label>
     <input type="checkbox" name="flags.essence20.hometown" {{checked document.flags.essence20.hometown}} />
   </div>
+  <div class="flexrow">
+    <label class="flexcol" data-tooltip="{{localize 'E20.ContactGovernmentHint'}}">{{localize "E20.ContactGovernment"}}</label>
+    <input type="checkbox" name="flags.essence20.government" {{checked document.flags.essence20.government}} />
+  </div>
 </div>
 <div>
   {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="contact" perks=@root.perks.contact title="E20.ItemTypePerkPlural" alwaysShow="true"}}

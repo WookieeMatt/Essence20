@@ -1,3 +1,5 @@
+import { pr2NoUntrainedSnag } from "./extensions/pr2/team.mjs";
+import { zord2NoUntrainedSnag } from "./extensions/zord2/snag.mjs";
 import { E20 } from "./config.mjs";
 import {
   actorHasPerk, findPerk, getUsesThisEncounter, getUsesThisScene, markUsedThisEncounterCount, markUsedThisScene,
@@ -168,6 +170,16 @@ export class RollDialog {
   async _isUntrainedSnag(skillDataset, actor, skill=null) {
     const isUntrainedShift = E20.skillShiftList.indexOf('d20') == E20.skillShiftList.indexOf(skillDataset.shift);
     if (!isUntrainedShift || UNTRAINED_SNAG_IMMUNITY_PERKS.some(perkId => actorHasPerk(actor, perkId))) {
+      return false;
+    }
+
+    // Shinobi of the 63rd Hexagram / Steady Hands - helpers/extensions/zord2/snag.mjs.
+    if (zord2NoUntrainedSnag(actor, skill)) {
+      return false;
+    }
+
+    // Instructor's taught Skill - helpers/extensions/pr2/team.mjs.
+    if (pr2NoUntrainedSnag(actor, skill)) {
       return false;
     }
 
@@ -418,6 +430,8 @@ export class RollDialog {
       kitRequiredAvailable: !!dataset.kitRequiredAvailable,
       // Synaptic Linkage / About Twenty-Percent Cooler - helpers/social-rolls.mjs.
       synapticEdgeAvailable: !!dataset.synapticEdgeAvailable,
+      // Extension controls - helpers/extensions.mjs.
+      extToggles: dataset.extToggles || [],
       twentyPercentCoolerAvailable: !!dataset.twentyPercentCoolerAvailable,
       hardpointMovement: dataset.hardpointMovement,
       defenseType: dataset.defenseType || 'none',

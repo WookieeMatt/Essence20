@@ -1,3 +1,4 @@
+import { extNamedAction } from "./extensions.mjs";
 import { E20 } from "./config.mjs";
 import { setAiming, setBraced, setSprinting } from "./action-economy.mjs";
 import { ACTION_PERK_IDS, hasSourced } from "./action-perks.mjs";
@@ -260,7 +261,7 @@ const HANDLERS = {
  * @returns {Boolean}
  */
 export function isAutomated(key) {
-  return Object.hasOwn(HANDLERS, key);
+  return Object.hasOwn(HANDLERS, key) || !!extNamedAction(key);
 }
 
 /**
@@ -274,7 +275,7 @@ export function isAutomated(key) {
  * @returns {Promise<Object|null>}   {message} to post, or null when the action has no effect.
  */
 export async function runNamedAction(actor, key) {
-  const handler = HANDLERS[key];
+  const handler = HANDLERS[key] ?? extNamedAction(key);
   if (!handler) {
     return null;
   }

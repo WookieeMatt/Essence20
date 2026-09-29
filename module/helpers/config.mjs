@@ -1452,6 +1452,7 @@ E20.megaformTraitTypes = {
   coreDefenses: "E20.MegaformTraitCoreDefenses",
   defender: "E20.MegaformTraitDefender",
   detachable: "E20.MegaformTraitDetachable",
+  enhancedAttack: "E20.MegaformTraitEnhancedAttack",
   enhancedInitiative: "E20.MegaformTraitEnhancedInitiative",
   enhancedMeleeAttack: "E20.MegaformTraitEnhancedMeleeAttack",
   enhancedRangedAttack: "E20.MegaformTraitEnhancedRangedAttack",

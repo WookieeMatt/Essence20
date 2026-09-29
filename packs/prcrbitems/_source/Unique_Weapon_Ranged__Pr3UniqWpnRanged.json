@@ -1,0 +1,75 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Unique Weapon (Ranged)",
+  "type": "weapon",
+  "_id": "Pr3UniqWpnRanged",
+  "img": "systems/essence20/assets/icons/weapons/pistol.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 44
+    },
+    "items": {
+      "u0ed": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Pr3UniqEffRanged",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Unique Weapon (Ranged) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageType": "element",
+        "damageValue": 1,
+        "shiftDown": 0,
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 60
+        }
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "powerWeapon"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790640000000,
+    "modifiedTime": 1790640000000,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Pr3UniqWpnRanged"
+}

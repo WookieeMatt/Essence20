@@ -33,13 +33,36 @@
           "value": null
         },
         "shiftDown": 0
+      },
+      "RaYJ": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.KYHthbPHXCDJxbOs",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Shadow Saber Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1,
+        "hasArmorPiercing": true
       }
     },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "restricted",
     "classification": {
-      "size": "integrated"
+      "size": "medium"
     },
     "equipped": true,
     "requirements": {

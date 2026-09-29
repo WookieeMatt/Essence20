@@ -176,7 +176,10 @@ export function meetsKitPrerequisite(actor, info) {
     return true;
   }
 
-  const need = PREREQUISITE[info.essence ? 'essence' : info.tier] ?? 'd4';
+  // Good To Go: "treat the Prerequisites as one Rank lower" (helpers/extensions/qualify1).
+  const needOut = { need: PREREQUISITE[info.essence ? 'essence' : info.tier] ?? 'd4' };
+  globalThis.Hooks?.call?.('essence20.kitPrerequisite', actor, info, needOut);
+  const need = needOut.need;
   const own = actor?.system?.skills?.[info.skill]?.shift;
   const list = CONFIG.E20?.skillShiftList ?? [];
   if (!own || !list.length) {
@@ -865,6 +868,11 @@ export async function runKitUse(item, economy) {
   const kind = kitUseKind(item);
   const actor = item?.parent;
   if (!kind || !actor) {
+    return null;
+  }
+
+  const { kitsBlockedFor } = await import("./extensions/gij2/reckless.mjs");
+  if (kitsBlockedFor(actor)) {
     return null;
   }
 

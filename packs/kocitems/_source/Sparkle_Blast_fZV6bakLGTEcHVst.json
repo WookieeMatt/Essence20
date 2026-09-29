@@ -21,7 +21,9 @@
     },
     "isSpecialized": false,
     "range": "Line of Sight",
-    "tier": "superior"
+    "tier": "superior",
+    "shape": "circle",
+    "radius": 15
   },
   "effects": [],
   "sort": 0,

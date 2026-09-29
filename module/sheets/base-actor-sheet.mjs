@@ -426,6 +426,12 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         const itemId = event.currentTarget.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
         const activating = !item.system.isActive;
+        if (activating) {
+          const { canActivatePersonalShield } = await import("../helpers/extensions/gij2/shield.mjs");
+          if (!canActivatePersonalShield(this.actor, item)) {
+            return;
+          }
+        }
 
         // Shield Modulation (Vanguard base, 13th level) - "when you activate your shield, choose
         // one damage type." See helpers/shield-modulation.mjs's own doc comment for why this has

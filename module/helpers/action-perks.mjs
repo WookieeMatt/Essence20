@@ -1,3 +1,4 @@
+import { extCostRules, findExtUse } from "./extensions.mjs";
 import { canUseCompanion, COMP, isCompanionUse } from "./companion-uses.mjs";
 import { commandIsMove } from "./companions.mjs";
 import { contactKindOf } from "./contacts.mjs";
@@ -518,7 +519,7 @@ function limitOf(actor, rule) {
 export function getCostOptions(actor, actionType, ctx, ledger) {
   const options = [];
   const asking = promptsEnabled();
-  for (const rule of COST_RULES) {
+  for (const rule of [...COST_RULES, ...extCostRules()]) {
     if (!rule.has(actor) || !rule.matches(ctx)) {
       continue;
     }
@@ -562,6 +563,10 @@ function promptsEnabled() {
 }
 
 function labelFor(actor, rule) {
+  if (rule.label) {
+    return rule.label;
+  }
+
   const uuid = P[rule.id];
   return findSourced(actor, uuid)?.name ?? game.i18n.localize(`E20.ActionPerk.${rule.id}`);
 }
@@ -970,6 +975,8 @@ const TEAM_USE = { id: 'team', target: 'self', custom: 'team', outOfCombat: true
 const BOND_USE = { id: 'bond', target: 'self', custom: 'bond', outOfCombat: true };
 const BFF_USE = { id: 'bff', target: 'self', custom: 'bff', outOfCombat: true };
 const COMMAND_USE = { id: 'issueCommand', target: 'self', custom: 'issueCommand', outOfCombat: true };
+// Extension Use buttons (helpers/extensions.mjs#registerUse).
+const EXT_USE = { id: 'ext', target: 'self', custom: 'ext', outOfCombat: true };
 
 function useFor(item) {
   return ACTION_PERK_USES[sourceOf(item)] ?? (isCombinedWeapon(item) ? COMBINE_USE : null)
@@ -983,7 +990,8 @@ function useFor(item) {
     ?? (teamKindOf(item) ? TEAM_USE : null)
     ?? (isBondUse(item) ? BOND_USE : null)
     ?? (isBffUse(item) ? BFF_USE : null)
-    ?? (isCommandUse(item) ? COMMAND_USE : null);
+    ?? (isCommandUse(item) ? COMMAND_USE : null)
+    ?? (findExtUse(item) ? EXT_USE : null);
 }
 
 export function isActionPerkUse(item) {
@@ -1040,6 +1048,11 @@ export function canUseActionPerk(item) {
 
   if (use.custom == 'companion') {
     return canUseCompanion(item);
+  }
+
+  if (use.custom == 'ext') {
+    const ext = findExtUse(item);
+    return !ext?.canUse || !!ext.canUse(item);
   }
 
   return !use.limit || useCount(actor, use) < use.limit.max;
@@ -1169,6 +1182,12 @@ export async function useActionPerk(item) {
   if (use.custom == 'bff') {
     const { chooseBffs } = await import("./bff.mjs");
     return chooseBffs(actor);
+  }
+
+  if (use.custom == 'ext') {
+    const ext = findExtUse(item);
+    const pay = async (cost) => !cost || !game.combat || !(await economy.spend(actor, cost, { source: item.name })).blocked;
+    return ext ? ext.run(item, economy, pay) : null;
   }
 
   if (use.custom == 'issueCommand') {

@@ -1,3 +1,4 @@
+import { afterSpectrumShifted, spectrumShiftedRetains } from "../helpers/extensions/pr1/spectrum.mjs";
 import { essenceRedirect } from "../helpers/grants.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
@@ -37,13 +38,16 @@ export async function performSpectrumShift(actor, newRole) {
   }
 
   const newRoleItem = await Item.create(newRole, { parent: actor });
+  const roleSkillDieBefore = foundry.utils.deepClone(actor.system.skills?.roleSkillDie ?? {});
 
   for (const item of [...actor.items]) {
     if (item.getFlag('essence20', 'parentId') == oldRole.id) {
-      if (newRole.system.hasSpectrumShifted && item.type == 'perk') {
+      // Spectrum Shifted (A Jump Through Time p.42, Table 2-16) - see
+      // helpers/extensions/pr1/spectrum.mjs for which Perks and pools each old Role keeps.
+      if (newRole.system.hasSpectrumShifted && ['perk', 'rolePoints'].includes(item.type)) {
         const sourceId = item.flags.core?.sourceId ?? item._stats?.compendiumSource;
         const oldAttachment = Object.values(oldRole.system.items).find(entry => entry.uuid == sourceId);
-        if (oldAttachment?.level && oldAttachment.level <= 3) {
+        if (await spectrumShiftedRetains(actor, oldRole, item, oldAttachment)) {
           await item.setFlag('essence20', 'parentId', newRoleItem._id);
           continue;
         }
@@ -100,6 +104,10 @@ export async function performSpectrumShift(actor, newRole) {
       "system.skills.roleSkillDie.shift": shiftList[finalShiftIndex],
       "system.skills.roleSkillDie.isSpecialized": isSpecialized,
     });
+  }
+
+  if (newRole.system.hasSpectrumShifted) {
+    await afterSpectrumShifted(actor, oldRole, roleSkillDieBefore);
   }
 
   // The old Role item itself is no longer needed - newRoleItem (created above, before the Perk

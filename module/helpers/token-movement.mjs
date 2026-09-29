@@ -143,6 +143,17 @@ export function getPushRules(actor) {
     rules.capMultiplier = Infinity;
   }
 
+  // Evacuation Vents (A Jump Through Time p.32): "there is no limit to how high your value can go
+  // as long as you are moving away from all visible enemies" - declared for this turn with the
+  // Perk's Use button (helpers/extensions/other1/jtt.mjs).
+  {
+    const combat = game?.combat;
+    const evacuating = actor?.flags?.essence20?.o1Evacuating?.key;
+    if (combat && evacuating && evacuating == `${combat.id}.${combat.round}.${combat.turn}`) {
+      rules.capMultiplier = Infinity;
+    }
+  }
+
   // Burn Rubber - see BURN_RUBBER_ID's own comment above.
   if (game?.combat?.round === 1 && !actor?.statuses?.has?.('surprised') && actorHasPerk(actor, BURN_RUBBER_ID)) {
     rules.feetPerFreeAction = Math.max(rules.feetPerFreeAction, PUSH_FEET_DOUBLED);
@@ -345,9 +356,14 @@ export async function consumeForMovement(token, movement) {
      `passed` is the one that matters and the one an earlier version of this code missed: it added
      only history and pending, and pending is empty for an ordinary move, so the distance actually
      being travelled was never counted at all. */
-  const used = (movement.history?.cost ?? 0)
-    + (movement.passed?.cost ?? 0)
-    + (movement.pending?.cost ?? 0);
+  const usedOut = {
+    used: (movement.history?.cost ?? 0)
+      + (movement.passed?.cost ?? 0)
+      + (movement.pending?.cost ?? 0),
+  };
+  // Third Dimension (TF CRB p.76) - helpers/extensions/tf3/reactions.mjs#onMovementUsed.
+  globalThis.Hooks?.callAll?.('essence20.movementUsed', actor, movement, usedOut);
+  const used = usedOut.used;
   if (allowance === null || !Number.isFinite(used)) {
     return true;
   }

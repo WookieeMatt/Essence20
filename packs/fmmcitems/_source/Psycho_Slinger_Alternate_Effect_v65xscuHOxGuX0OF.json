@@ -1,0 +1,52 @@
+{
+  "folder": "30GXNE3sV9TGGgkd",
+  "name": "Psycho Slinger Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "v65xscuHOxGuX0OF",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "impaired",
+    "damageValue": 0,
+    "defenseType": "toughness",
+    "shiftDown": 0,
+    "numHands": 2,
+    "numTargets": 4,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 80,
+      "value": 30
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790658899327,
+    "modifiedTime": 1790658899327,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!v65xscuHOxGuX0OF"
+}

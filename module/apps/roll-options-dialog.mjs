@@ -2,6 +2,25 @@ import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 import { linkEdgeToggle } from "../helpers/edge-toggle-link.mjs";
+/**
+ * The extension controls (helpers/extensions.mjs#registerDialogToggles): every ext_* field, by name -
+ * a checkbox as true/false, anything else as its value.
+ * @param {HTMLFormElement} form
+ * @returns {Object}
+ */
+function readExtensionControls(form) {
+  const ext = {};
+  for (const element of form?.elements ?? []) {
+    if (!element.name?.startsWith?.('ext_')) {
+      continue;
+    }
+
+    ext[element.name.slice(4)] = element.type == 'checkbox' ? element.checked : element.value;
+  }
+
+  return ext;
+}
+
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
@@ -255,6 +274,8 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       applySteadyHand: form?.applySteadyHand?.checked,
       kitRequired: form?.kitRequired?.value || 'none',
       applySynapticEdge: form?.applySynapticEdge?.checked,
+      // Extension controls (extToggles) - every ext_* field, by its own name.
+      ext: readExtensionControls(form),
       applyTwentyPercentCooler: form?.applyTwentyPercentCooler?.checked,
       drivingStrike: form?.drivingStrike?.value,
       hardpointMovePenalty: form?.hardpointMovePenalty ? parseInt(form.hardpointMovePenalty.value) : 0,

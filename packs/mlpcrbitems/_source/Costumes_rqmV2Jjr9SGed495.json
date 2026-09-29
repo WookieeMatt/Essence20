@@ -1,0 +1,169 @@
+{
+  "folder": "6BKwMp735fBmaDBb",
+  "name": "Costumes",
+  "type": "gear",
+  "_id": "rqmV2Jjr9SGed495",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 153
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "clothes"
+  },
+  "effects": [
+    {
+      "name": "Costume (Deception)",
+      "origin": "Item.rqmV2Jjr9SGed495",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "IHHrX99oQSCJShhr",
+      "changes": [
+        {
+          "key": "system.skills.deception.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!rqmV2Jjr9SGed495.IHHrX99oQSCJShhr"
+    },
+    {
+      "name": "Costume (Infiltration)",
+      "origin": "Item.rqmV2Jjr9SGed495",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "ng7Ym9sYcHwXiJtA",
+      "changes": [
+        {
+          "key": "system.skills.infiltration.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!rqmV2Jjr9SGed495.ng7Ym9sYcHwXiJtA"
+    },
+    {
+      "name": "Costume (Performance)",
+      "origin": "Item.rqmV2Jjr9SGed495",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "ovTHbeTt1OzXUBoH",
+      "changes": [
+        {
+          "key": "system.skills.performance.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!rqmV2Jjr9SGed495.ovTHbeTt1OzXUBoH"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790659196166,
+    "modifiedTime": 1790659196166,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!rqmV2Jjr9SGed495"
+}
