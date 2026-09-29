@@ -12,10 +12,55 @@
       "page": 81
     },
     "prerequisite": "",
-    "selectionLimit": 1,
+    "selectionLimit": 7,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Financial Situation (one step better)",
+      "origin": "Compendium.essence20.cobra_codex.Item.dcwQ9rAAXGlsQ8p1",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "prftDrctrWlthUp1",
+      "changes": [
+        {
+          "key": "system.skills.wealth.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!dcwQ9rAAXGlsQ8p1.prftDrctrWlthUp1"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

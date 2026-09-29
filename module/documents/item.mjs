@@ -1,7 +1,18 @@
+import { runSpellCost } from "../helpers/extensions.mjs";
+import { endOnFumble } from "../helpers/grants.mjs";
+import { ablativeLossOf, pickConcentratedArea, weaponUnusable } from "../helpers/target-riders.mjs";
+import { wipeCoating } from "../helpers/poison-coating.mjs";
+import { usesVehicleTargeting, vehicleWeaponTraits } from "../helpers/vehicle-upgrades.mjs";
+import { applyAugur, perkGrantedTraits, TRAIT_UPGRADE, weaponHasUpgrade } from "../helpers/weapon-traits.mjs";
+import { bombKind, plantBomb } from "../helpers/planted-bombs.mjs";
+import { resolveWeaponChangesAfterAttack } from "../helpers/weapon-perk-uses.mjs";
+import { affectsGeneratedEffects, applyToWeapon as applyUpgradesToWeapon, chosenElement, ELEMENTS, syncGeneratedEffects } from "../helpers/weapon-upgrades.mjs";
+import { applyDamage } from "../helpers/combat.mjs";
+import { onPowerUsed } from "../helpers/action-perks.mjs";
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { consumeForItem, describeCost, refund, setAiming, spend } from "../helpers/action-economy.mjs";
-import { clearWeaponReload, getReloadCost, hasBurstFiredThisRound, markBurstFiredThisRound, requireReload, weaponNeedsReload } from "../helpers/reload.mjs";
+import { clearWeaponReload, reloadsNeeded, getReloadCost, hasBurstFiredThisRound, markBurstFiredThisRound, requireReload, weaponNeedsReload } from "../helpers/reload.mjs";
 import { isMountedWeaponSetUp } from "../helpers/mounted.mjs";
 import { isInactiveMythicForm } from "../helpers/mythically-modular.mjs";
 import { checkVehicularEligibility } from "../helpers/vehicular.mjs";
@@ -176,6 +187,12 @@ export class Essence20Item extends Item {
   async _onCreate(data, options, userId) {
     super._onCreate(data, options, userId);
 
+    // An upgrade, element or Perk that grants alternate effects arrived - see
+    // helpers/weapon-upgrades.mjs#syncGeneratedEffects. The client that made the change does it.
+    if (userId == game.user?.id && this.actor && affectsGeneratedEffects(this)) {
+      syncGeneratedEffects(this.actor);
+    }
+
     if (this.type == 'role'&& this.pack) {
       await updateRoleCache();
     }
@@ -241,8 +258,23 @@ export class Essence20Item extends Item {
   }
 
   /** @override */
+  /**
+   * An upgrade leaving a weapon takes the alternate effects it granted with it - see
+   * helpers/weapon-upgrades.mjs#syncGeneratedEffects.
+   */
+  _onDelete(options, userId) {
+    super._onDelete(options, userId);
+    if (userId == game.user?.id && this.actor && affectsGeneratedEffects(this)) {
+      syncGeneratedEffects(this.actor);
+    }
+  }
+
   async _onUpdate(change, options, userId) {
     super._onUpdate(change, options, userId);
+
+    if (userId == game.user?.id && this.actor && affectsGeneratedEffects(this, change)) {
+      syncGeneratedEffects(this.actor);
+    }
 
     if (this.type == 'role') {
       await updateRoleCache();
@@ -289,12 +321,17 @@ export class Essence20Item extends Item {
       this._prepareTotalAvailability();
     }
 
+    // Augur's Sharp Flyby/Ram/Bash (helpers/weapon-traits.mjs).
+    applyAugur(this);
+
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
     } else if (this.type == 'weapon') {
       this._prepareAimShiftBonus();
       this._prepareWeaponHands();
       this._prepareHardpointDerived();
+      // Size steps and one-handed wielding from upgrades and Perks (helpers/weapon-upgrades.mjs).
+      applyUpgradesToWeapon(this);
     } else if (this.type == 'rolePoints') {
       this._prepareRolePoints();
     }
@@ -391,6 +428,37 @@ export class Essence20Item extends Item {
       }
     }
 
+    // The element an Element weapon was set to deals that element - so it has that element's trait,
+    // which is what the Acid/Fire/Electromagnetic rules read (helpers/weapon-upgrades.mjs).
+    if (this.type == 'weapon') {
+      const element = chosenElement(this);
+      if (element && !combined.includes(ELEMENTS[element])) {
+        combined.push(ELEMENTS[element]);
+      }
+
+      // Double-Barrel / Targeting System vehicle upgrades on the weapon they were set to.
+      for (const trait of vehicleWeaponTraits(this)) {
+        if (!combined.includes(trait)) {
+          combined.push(trait);
+        }
+      }
+
+      // Traits a Perk gives the wielder's weapons - Demolisher, Big Lobber, Fireball, Weapon
+      // Customizer (helpers/weapon-traits.mjs).
+      for (const trait of perkGrantedTraits(this, combined)) {
+        if (!combined.includes(trait)) {
+          combined.push(trait);
+        }
+      }
+
+      // Utility Loaders' added trait, while it lasts (helpers/weapon-perk-uses.mjs).
+      for (const trait of this.flags?.essence20?.mutation?.addTraits ?? []) {
+        if (!combined.includes(trait)) {
+          combined.push(trait);
+        }
+      }
+    }
+
     const effective = removed.size ? combined.filter(trait => !removed.has(trait)) : combined;
 
     // In place, so anything already holding this array sees the same list - see the note above.
@@ -416,17 +484,19 @@ export class Essence20Item extends Item {
     const obscuringMatrixNegated = wearerStatuses?.has
       && ['grappled', 'immobilized', 'prone', 'restrained'].some(status => wearerStatuses.has(status));
 
-    for (const [, item] of Object.entries(this.system.items)) {
+    for (const [key, item] of Object.entries(this.system.items)) {
       if (item.type == 'upgrade' && item.subtype == 'armor'){
         if (obscuringMatrixNegated
           && (item.uuid == OBSCURING_MATRIX_BASIC_ID || item.uuid == OBSCURING_MATRIX_ADVANCED_ID)) {
           continue;
         }
 
+        // Ablative Matrix loses a point to every Critical Success that hits (helpers/target-riders.mjs).
+        const value = Math.max(0, (item.armorBonus.value ?? 0) - ablativeLossOf(this.actor?.items?.get?.(key)));
         if (item.armorBonus.defense == 'toughness') {
-          armorBonusToughness += item.armorBonus.value;
+          armorBonusToughness += value;
         } else if (item.armorBonus.defense == 'evasion') {
-          armorBonusEvasion += item.armorBonus.value;
+          armorBonusEvasion += value;
         }
       }
     }
@@ -731,7 +801,30 @@ export class Essence20Item extends Item {
             return;
           }
 
+          const reloadsLeft = reloadsNeeded(parentWeapon) - 1;
           await clearWeaponReload(parentWeapon);
+
+          // Reload ×2 (A Jump Through Time p.78) - one reload done, one still to go.
+          if (reloadsLeft > 0) {
+            ui.notifications.info(game.i18n.format('E20.ReloadOneMore', { weapon: parentWeapon.name }));
+            return;
+          }
+        }
+
+        // Salvaged (Ferocious Fighters p.36): "The weapon is immediately and permanently destroyed if
+        // you fumble an attack." Marked destroyed rather than deleted, so nothing is lost by accident;
+        // it can no longer attack.
+        if (parentWeapon?.flags?.essence20?.destroyed) {
+          ui.notifications.warn(game.i18n.format('E20.WeaponDestroyed', { name: parentWeapon.name }));
+          return;
+        }
+
+        // Knocked away (Snatch, Disarming Shot) or pulled apart (Dismantle Firearm) - see
+        // helpers/target-riders.mjs#weaponUnusable.
+        const unusable = weaponUnusable(parentWeapon);
+        if (unusable) {
+          ui.notifications.warn(unusable);
+          return;
         }
 
         // Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/mounted.mjs's own
@@ -839,6 +932,9 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'power') {
+      // Relentless Blows and the like - a Power that grants attacks (helpers/action-perks.mjs).
+      await onPowerUsed(childRoller || this.actor, this);
+
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
       const rollMode = game.settings.get('core', 'rollMode');
@@ -864,6 +960,18 @@ export class Essence20Item extends Item {
       // whenever only childRoller, not this.actor, was actually valid.
       const roller = childRoller || this.actor;
 
+      // Time / Proximity / Detonator Bomb - rolling it plants it rather than attacking; it attacks
+      // when it goes off (helpers/planted-bombs.mjs). The Standard action was the one paid above.
+      const bombWeapon = this._dice._getParentWeapon(roller, this);
+      if (!dataset.bombDetonation && bombKind(bombWeapon)) {
+        const planted = await plantBomb(roller, this, bombWeapon);
+        if (!planted && spent?.spendId) {
+          await refund(roller, spent.spendId);
+        }
+
+        return;
+      }
+
       // Once-per-encounter weapon effects (Turbo Thunder Cannon's Energy Attack, Wing Missile
       // Salvo) - see helpers/limited-weapon-effects.mjs's own doc comment. Checked before any of
       // the pre-roll work below, refunding the action economy spend just like a cancelled roll,
@@ -888,9 +996,19 @@ export class Essence20Item extends Item {
       // Area of Effect (GitHub #824) - see helpers/aoe-targeting.mjs's own doc comment. Only
       // Blast/AoE-shaped attacks (system.shape set) trigger this; an ordinary single-target or
       // Multiple-Targets attack rolls exactly as it always has, targets chosen by hand as usual.
-      if (this.system.shape) {
+      // Concentrated Explosion / Concentrated Fire - helpers/target-riders.mjs#pickConcentratedArea.
+      const concentrated = await pickConcentratedArea(roller, this);
+      if (concentrated?.single) {
+        dataset = { ...dataset, concentratedFire: true };
+        const first = game.user.targets.first();
+        canvas.tokens?.setTargets?.(first ? [first.id] : []);
+      }
+
+      if (this.system.shape && !concentrated?.single) {
         let aoeTokens = await placeAoeTemplate(roller, this, {
           radiusMultiplier: bringItAllDownEffect == 'radius' ? 2 : 1,
+          radiusDeltaFeet: concentrated?.radiusDeltaFeet ?? 0,
+          shapeOverride: concentrated?.shape ?? null,
         });
 
         // Shaped Charges (Artillery Focus, 7th level, p.81) - see its own doc comment. Runs
@@ -915,11 +1033,16 @@ export class Essence20Item extends Item {
       await applyNoNeedToAim(roller, this);
 
       let weaponDataset = {};
-      const baseSkill = this.system.classification.skill;
+      // A detonated bomb rolls its planter's Technology (helpers/planted-bombs.mjs).
+      const baseSkill = dataset.skillOverride ?? parentWeapon?.flags?.essence20?.attackSkill ?? this.system.classification.skill;
       // Brutal Might - see BRUTAL_MIGHT_ID's own comment above.
       const skill = baseSkill == 'might' && actorHasPerk(roller, BRUTAL_MIGHT_ID) ? 'brawn' : baseSkill;
-      const shift = roller.system.skills[skill].shift;
-      const shiftUp = roller.system.skills[skill].shiftUp;
+      // Targeting System (GI Joe CRB p.172): the driver fires it "using the vehicle's Targeting for
+      // the Skill Test".
+      const skillSource = childRoller && usesVehicleTargeting(this.actor, this._dice._getParentWeapon(this.actor, this))
+        && this.actor.system.skills?.[skill] ? this.actor : roller;
+      const shift = skillSource.system.skills[skill].shift;
+      const shiftUp = skillSource.system.skills[skill].shiftUp;
       // Beastly / its own Hang-Up - see BEASTLY_PERK_ID's own comment above.
       const itemSourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
       let itemShiftDown = this.system.shiftDown;
@@ -968,6 +1091,33 @@ export class Essence20Item extends Item {
       // miss)" - counted here, as the attack is rolled, precisely because a miss still spends one.
       await consumeMegaWeaponAttack(roller, this);
 
+      // Salvaged - a Fumble (natural 1 and a failed test) destroys the weapon.
+      if (parentWeapon && weaponRollResult && !weaponRollResult.cancelled && weaponHasUpgrade(parentWeapon, TRAIT_UPGRADE.salvaged)
+        && (weaponRollResult.outcomes ?? []).some(outcome => outcome?.isFumble)) {
+        await parentWeapon.update({ 'system.equipped': false, 'flags.essence20.destroyed': true });
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor: roller }),
+          content: game.i18n.format('E20.WeaponSalvagedDestroyed', { name: roller.name, weapon: parentWeapon.name }),
+        });
+      }
+
+      // Weapons changed for a while (helpers/weapon-perk-uses.mjs): Backblast's 1 Fire to everyone
+      // within 5 feet (or the attacker, on a Fumble), Airburst's Prone/Impaired, one-use traps, and
+      // a Fumble ending Explosive Ammo / Utility Loaders.
+      if (parentWeapon && weaponRollResult && !weaponRollResult.cancelled) {
+        await resolveWeaponChangesAfterAttack(roller, parentWeapon, weaponRollResult);
+        // A poison on the weapon is used up by the attack, hit or miss (helpers/poison-coating.mjs).
+        await wipeCoating(parentWeapon);
+        // Never Unarmed / Brainstorm items fall apart on a Fumble (helpers/grants.mjs).
+        await endOnFumble(roller, parentWeapon, weaponRollResult);
+      }
+
+      // Shoot, You Fools! (Cobra Codex p.57) - "Any ally who attacks and fails suffers 1 Psychic
+      // Damage." Carried on the bonus attack it granted (helpers/action-perks.mjs).
+      if (spent?.psychicOnMiss && weaponRollResult && !weaponRollResult.cancelled && !weaponRollResult.success) {
+        await applyDamage(roller, spent.psychicOnMiss, 'psychic');
+      }
+
       // Reload - see helpers/reload.mjs's own doc comment. Flags the weapon for next time
       // regardless of whether this shot hit; "fired" is what matters, "landed" isn't.
       if (!weaponRollResult?.cancelled && parentWeapon?.system.traits?.includes('reload')) {
@@ -1014,7 +1164,9 @@ export class Essence20Item extends Item {
             await addOngoingEffect(targetActor, {
               damageValue: result.damageValue,
               damageType: result.damageType,
-              roundsRemaining: parentWeapon.system.ongoingDuration,
+              // Potent Poison (Cobra Codex p.97): "Increase the duration of the poison's Ongoing effect
+              // by 1 round."
+              roundsRemaining: parentWeapon.system.ongoingDuration + (weaponHasUpgrade(parentWeapon, TRAIT_UPGRADE.potentPoison) ? 1 : 0),
               sourceName: parentWeapon.name,
             });
           }
@@ -1066,6 +1218,12 @@ export class Essence20Item extends Item {
       // real cost increase, not something those Perks should shrink away).
       if (isBlockMagicActive(this.actor)) {
         castingCost += 1;
+      }
+
+      // Extensions - Illusion Casting, Reach Out, Sharpcaster's free second roll (helpers/extensions.mjs).
+      castingCost = await runSpellCost(this, castingCost, dataset);
+      if (castingCost === null) {
+        return;
       }
 
       // Power Conservationist / Power Mastery (Knights of Canterlot, General Perks, p.38) - see

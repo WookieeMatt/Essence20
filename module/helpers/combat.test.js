@@ -958,9 +958,11 @@ describe("applyDamage", () => {
       global.game = originalGame;
     });
 
-    function makeActor({ hasPerk = true, usedFlag = undefined } = {}) {
+    function makeActor({ hasPerk = true, usedFlag = undefined, defending = true } = {}) {
       const flags = usedFlag !== undefined ? { energyRebuttalUsedThisEncounter: usedFlag } : {};
       return {
+        // "use the Defend action ... and it fails" - the Defending Condition says a Defend was used.
+        statuses: new Set(defending ? ['defending'] : []),
         system: { health: { value: 10 }, immunities: {}, resistances: {} },
         items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: ENERGY_REBUTTAL_ID } } }] : [],
         update: jest.fn(),
@@ -987,6 +989,14 @@ describe("applyDamage", () => {
 
     test("doesn't bank a second time in the same encounter", async () => {
       const actor = makeActor({ usedFlag: { epoch: 1, window: 'encounter', count: 1 } });
+
+      await applyDamage(actor, 3, 'fire');
+
+      expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'pendingEnergyRebuttal', expect.anything());
+    });
+
+    test("doesn't bank when the target wasn't Defending", async () => {
+      const actor = makeActor({ defending: false });
 
       await applyDamage(actor, 3, 'fire');
 

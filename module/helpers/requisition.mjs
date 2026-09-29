@@ -63,6 +63,14 @@ export function requisitionSkill(item) {
  * @returns {'qualified'|'trained'|'none'|'unknown'}
  */
 export function requisitionAccess(actor, item) {
+  // Perk Qualifications/Training that a weapon's Availability, traits or a chosen item can decide
+  // (helpers/extensions/qualify1/qualification.mjs) - may only widen what the Role grants.
+  const out = { access: baseRequisitionAccess(actor, item) };
+  globalThis.Hooks?.call?.('essence20.requisitionAccess', actor, item, out);
+  return out.access;
+}
+
+function baseRequisitionAccess(actor, item) {
   if (item.type != 'armor') {
     return 'unknown';
   }
@@ -90,7 +98,14 @@ export function requisitionAccess(actor, item) {
  * @returns {Number}
  */
 export function requisitionDif(item, actor = null) {
-  const availability = item.system.totalAvailability ?? item.system.availability ?? 'standard';
+  // An upgrade the actor is Qualified in no longer raises the combined Availability
+  // (helpers/extensions/qualify1/qualification.mjs).
+  const availabilityOut = { availability: item.system.totalAvailability ?? item.system.availability ?? 'standard' };
+  if (actor) {
+    globalThis.Hooks?.call?.('essence20.requisitionAvailability', actor, item, availabilityOut);
+  }
+
+  const availability = availabilityOut.availability;
   let dif = E20.availabilityDifficulties[availability] ?? 0;
 
   if (actor && ['prototype', 'theoretical'].includes(availability) && actorHasPerk(actor, EARLY_ADOPTER_ID)) {

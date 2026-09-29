@@ -1,0 +1,43 @@
+{
+  "folder": null,
+  "name": "Target Master",
+  "type": "upgrade",
+  "_id": "Zord1TargetMastr",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 280
+    },
+    "aimShiftBonus": 0,
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "unique",
+    "benefit": "Grants the Combiner trait; a Megaform you join can attack with your weapons.",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": "Medium or heavier armor"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790658446146,
+    "modifiedTime": 1790658446146,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Zord1TargetMastr"
+}

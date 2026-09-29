@@ -31,6 +31,9 @@ const SCENE_KEY = 'sceneClockScene';
 const ENCOUNTER_KEY = 'sceneClockEncounter';
 const LABEL_KEY = 'sceneClockLabel';
 const AUTO_KEY = 'sceneClockAdvanceOnCombatEnd';
+// MISSION advances when the GM starts a new mission (a G.I. JOE mission, a Power Rangers episode,
+// an adventure) - what "once per mission" and a Contact's Allegiance Points refresh on.
+const MISSION_KEY = 'sceneClockMission';
 
 /**
  * Read a scene-clock setting without throwing when it isn't registered yet - these are read from
@@ -87,6 +90,44 @@ export function getSceneEpoch() {
  */
 export function getEncounterEpoch() {
   return counter(ENCOUNTER_KEY);
+}
+
+/**
+ * The current mission counter. Advances only on an explicit "new mission".
+ * @returns {Number}
+ */
+export function getMissionEpoch() {
+  return counter(MISSION_KEY);
+}
+
+/**
+ * The counter behind a window: 'mission', 'scene' or 'encounter'.
+ * @param {String} window
+ * @returns {Number}
+ */
+export function epochFor(window) {
+  if (window === 'mission') {
+    return getMissionEpoch();
+  }
+
+  return window === 'scene' ? getSceneEpoch() : getEncounterEpoch();
+}
+
+/**
+ * Begin a new mission, which is also a new scene. GM-only.
+ * @param {String} [label]
+ * @returns {Promise<Number>}   The new mission epoch.
+ */
+export async function advanceMission(label = '') {
+  if (!game.user?.isGM) {
+    return getMissionEpoch();
+  }
+
+  const next = getMissionEpoch() + 1;
+  await game.settings.set('essence20', MISSION_KEY, next);
+  await advanceScene(label);
+  globalThis.Hooks?.callAll?.('essence20.missionAdvanced', next);
+  return next;
 }
 
 /**
@@ -170,7 +211,7 @@ export function getUses(actor, flagKey, window = 'encounter') {
     return 0;
   }
 
-  const current = window === 'scene' ? getSceneEpoch() : getEncounterEpoch();
+  const current = epochFor(window);
   return record.epoch === current ? (record.count ?? 0) : 0;
 }
 
@@ -185,7 +226,7 @@ export function getUses(actor, flagKey, window = 'encounter') {
  * @returns {Promise<void>}
  */
 export async function markUsed(actor, flagKey, { window = 'encounter', count = 1 } = {}) {
-  const epoch = window === 'scene' ? getSceneEpoch() : getEncounterEpoch();
+  const epoch = epochFor(window);
   await actor.setFlag('essence20', flagKey, {
     epoch,
     window,
@@ -223,6 +264,6 @@ export function isActiveForWindow(actor, flagKey, window = 'scene') {
  * @returns {Promise<void>}
  */
 export async function activateForWindow(actor, flagKey, window = 'scene') {
-  const epoch = window === 'scene' ? getSceneEpoch() : getEncounterEpoch();
+  const epoch = epochFor(window);
   await actor.setFlag('essence20', flagKey, { epoch, window, count: 1 });
 }

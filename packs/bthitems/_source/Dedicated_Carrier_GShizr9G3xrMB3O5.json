@@ -8,11 +8,62 @@
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Across the Stars",
+      "book": "Beneath the Helmet",
       "page": 73
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Compendium.essence20.beneath_the_helmet.Item.GShizr9G3xrMB3O5",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "PxnQGtRIx0f6joat",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.armor",
+          "mode": 2,
+          "value": "3",
+          "priority": null
+        },
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Dedicated Carrier",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!GShizr9G3xrMB3O5.PxnQGtRIx0f6joat"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

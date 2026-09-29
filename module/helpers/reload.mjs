@@ -1,3 +1,5 @@
+import { RELOAD_TWICE, TRAIT_UPGRADE, weaponHasUpgrade } from "./weapon-traits.mjs";
+import { hasUpgrade, UPGRADE } from "./weapon-upgrades.mjs";
 import { actorHasPerk } from "./perks.mjs";
 import { getUses, markUsed } from "./scene-clock.mjs";
 
@@ -32,11 +34,19 @@ export function weaponNeedsReload(weapon) {
 }
 
 /**
+ * How many reloads the weapon still needs - 1 normally, 2 for a Reload ×2 weapon.
+ */
+export function reloadsNeeded(weapon) {
+  const value = weapon?.getFlag?.('essence20', 'needsReload');
+  return value === true ? 1 : Number(value) || 0;
+}
+
+/**
  * Flags a weapon as needing a Move action spent before it can fire again.
  * @param {Item} weapon
  */
-export async function markWeaponNeedsReload(weapon) {
-  await weapon?.setFlag('essence20', 'needsReload', true);
+export async function markWeaponNeedsReload(weapon, count = 1) {
+  await weapon?.setFlag('essence20', 'needsReload', count > 1 ? count : true);
 }
 
 /**
@@ -44,6 +54,12 @@ export async function markWeaponNeedsReload(weapon) {
  * @param {Item} weapon
  */
 export async function clearWeaponReload(weapon) {
+  const left = reloadsNeeded(weapon) - 1;
+  if (left > 0) {
+    await weapon.setFlag('essence20', 'needsReload', left > 1 ? left : true);
+    return;
+  }
+
   await weapon?.unsetFlag('essence20', 'needsReload');
 }
 
@@ -92,6 +108,8 @@ const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 export const RAPID_RELOAD_ID = `${GI_JOE_CRB}c0woQ6aEyVd4DBvA`;
 // Deep Magazines (GI Joe CRB, Heavy Ordnance Focus, 10th level, p.111): "ignore the first time you
 // would need to reload per combat."
+// The Transformers CRB's own Rapid Reload (Gunner, p.68) - the same rule under its own id.
+export const RAPID_RELOAD_TF_ID = "Compendium.essence20.tf_crb.Item.Vj0RpJmj7XNKXphR";
 export const DEEP_MAGAZINES_ID = `${GI_JOE_CRB}REVp8LHYJFOqQ597`;
 // Ammo Belt (GI Joe CRB and Transformers CRB, Weapon Upgrades): "Once per scene, reload this weapon
 // as a Free action instead of a Move action." The same _id in both books' packs.
@@ -107,7 +125,10 @@ const DEEP_MAGAZINES_USED_FLAG = 'deepMagazinesUsedThisCombat';
  */
 export function hasAmmoBelt(weapon) {
   return Object.values(weapon?.system?.items ?? {}).some(entry => entry?.type == 'upgrade'
-    && (String(entry.uuid ?? '').endsWith(`.${AMMO_BELT_ITEM_ID}`) || entry.name == 'Ammo Belt'));
+    && (String(entry.uuid ?? '').endsWith(`.${AMMO_BELT_ITEM_ID}`) || entry.name == 'Ammo Belt'))
+    // Bullpup (Intercontinental Adventures p.92): "You can reload this weapon once per scene as a
+    // Free action instead of a Move action" - the Ammo Belt's own benefit.
+    || hasUpgrade(weapon, UPGRADE.bullpup);
 }
 
 /**
@@ -120,13 +141,18 @@ export function hasAmmoBelt(weapon) {
  *   what made it free, for the action-economy log.
  */
 export async function getReloadCost(actor, weapon) {
-  if (actorHasPerk(actor, RAPID_RELOAD_ID)) {
+  if (actorHasPerk(actor, RAPID_RELOAD_ID) || actorHasPerk(actor, RAPID_RELOAD_TF_ID)) {
     return { action: 'free', source: 'Rapid Reload' };
   }
 
   if (hasAmmoBelt(weapon) && getUses(weapon, AMMO_BELT_USED_FLAG, 'scene') < 1) {
     await markUsed(weapon, AMMO_BELT_USED_FLAG, { window: 'scene' });
     return { action: 'free', source: 'Ammo Belt' };
+  }
+
+  // A weapon whose own reload is a Free action (the MLP Bow, MLP CRB p.151).
+  if (weapon?.flags?.essence20?.reloadAction == 'free') {
+    return { action: 'free', source: game.i18n.localize('E20.WeaponTraitReload') };
   }
 
   return { action: 'move', source: null };
@@ -151,6 +177,17 @@ export async function requireReload(actor, weapon) {
     return false;
   }
 
-  await markWeaponNeedsReload(weapon);
+  // Extended Mag (Quartermaster's Guide p.34): "Once per scene, ignore the Reload trait."
+  if (weaponHasUpgrade(weapon, TRAIT_UPGRADE.extendedMag) && getUses(weapon, 'extendedMagUsed', 'scene') < 1) {
+    await markUsed(weapon, 'extendedMagUsed', { window: 'scene' });
+    ui.notifications?.info(game.i18n.format('E20.ExtendedMagSkippedReload', { weapon: weapon.name }));
+    return false;
+  }
+
+  // Reload ×2 (A Jump Through Time p.78): two reloads before it fires again.
+  const sourceId = String(weapon.flags?.core?.sourceId ?? weapon._stats?.compendiumSource ?? '').split('.').pop();
+  // Reload xN printed on the weapon itself (Cannonade x2, Catapult x4) - flags.essence20.reloadCount.
+  const printedCount = Number(weapon.flags?.essence20?.reloadCount) || 1;
+  await markWeaponNeedsReload(weapon, RELOAD_TWICE.includes(sourceId) ? 2 : printedCount);
   return true;
 }

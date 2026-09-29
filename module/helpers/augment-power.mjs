@@ -1,4 +1,4 @@
-import { bankPendingBonus, hasUsedThisEncounter, hasUsedThisTurn, markUsedThisEncounter, markUsedThisTurn, postPerkUseChatCard } from "./perks.mjs";
+import { actorHasPerk, bankPendingBonus, hasUsedThisEncounter, hasUsedThisTurn, markUsedThisEncounter, markUsedThisTurn, postPerkUseChatCard } from "./perks.mjs";
 import { getNearbyAllyTokens } from "./allies.mjs";
 import { pickAllyTargets } from "./banked-buffs.mjs";
 
@@ -16,12 +16,22 @@ const AUGMENT_POWER_TURN_FLAG = 'augmentPowerUsedThisTurn';
 const AUGMENT_POWER_COMBAT_FLAG = 'augmentPowerUsedThisCombat';
 const PENDING_FLAG = 'pendingAugmentPower';
 
+// Multiplication (TF CRB, Scientist, 18th level, p.80): "you can use Augment Power twice per turn to give
+// an ally ↑2 on a Skill Test as a Free action, and twice per combat to give an ally ↑4". A second use in
+// each window is tracked under the same flag with a "2" suffix.
+const MULTIPLICATION_ID = "Compendium.essence20.tf_crb.Item.K3FNcAMjjek1UaJk";
+const multiplied = actor => actorHasPerk(actor, MULTIPLICATION_ID);
+const usedTurn = actor => hasUsedThisTurn(actor, AUGMENT_POWER_TURN_FLAG)
+  && (!multiplied(actor) || hasUsedThisTurn(actor, `${AUGMENT_POWER_TURN_FLAG}2`));
+const usedCombat = actor => hasUsedThisEncounter(actor, AUGMENT_POWER_COMBAT_FLAG)
+  && (!multiplied(actor) || hasUsedThisEncounter(actor, `${AUGMENT_POWER_COMBAT_FLAG}2`));
+
 /**
  * @param {Actor} actor
  * @returns {Boolean}
  */
 export function canUseAugmentPower(actor) {
-  return !hasUsedThisTurn(actor, AUGMENT_POWER_TURN_FLAG) || !hasUsedThisEncounter(actor, AUGMENT_POWER_COMBAT_FLAG);
+  return !usedTurn(actor) || !usedCombat(actor);
 }
 
 /**
@@ -32,11 +42,11 @@ export function canUseAugmentPower(actor) {
  */
 async function pickAugmentPowerShiftUp(actor) {
   const options = [];
-  if (!hasUsedThisTurn(actor, AUGMENT_POWER_TURN_FLAG)) {
+  if (!usedTurn(actor)) {
     options.push([1, game.i18n.localize('E20.AugmentPowerBenefitTurn')]);
   }
 
-  if (!hasUsedThisEncounter(actor, AUGMENT_POWER_COMBAT_FLAG)) {
+  if (!usedCombat(actor)) {
     options.push([2, game.i18n.localize('E20.AugmentPowerBenefitCombat')]);
   }
 
@@ -82,13 +92,13 @@ export async function activateAugmentPower(actor, item) {
   }
 
   for (const targetActor of targetActors) {
-    await bankPendingBonus(targetActor, PENDING_FLAG, { shiftUp });
+    await bankPendingBonus(targetActor, PENDING_FLAG, { shiftUp: multiplied(actor) ? shiftUp * 2 : shiftUp });
   }
 
   if (shiftUp == 1) {
-    await markUsedThisTurn(actor, AUGMENT_POWER_TURN_FLAG);
+    await markUsedThisTurn(actor, hasUsedThisTurn(actor, AUGMENT_POWER_TURN_FLAG) ? `${AUGMENT_POWER_TURN_FLAG}2` : AUGMENT_POWER_TURN_FLAG);
   } else {
-    await markUsedThisEncounter(actor, AUGMENT_POWER_COMBAT_FLAG);
+    await markUsedThisEncounter(actor, hasUsedThisEncounter(actor, AUGMENT_POWER_COMBAT_FLAG) ? `${AUGMENT_POWER_COMBAT_FLAG}2` : AUGMENT_POWER_COMBAT_FLAG);
   }
 
   const names = targetActors.map(a => a.name).join(', ');

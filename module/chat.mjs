@@ -1,3 +1,8 @@
+import { renegadeHolderFor } from "./helpers/summons.mjs";
+import { handleRiderButton, onDamageDealt } from "./helpers/target-riders.mjs";
+import { hasVehicleUpgrade, reduceVehicleDamage, VU } from "./helpers/vehicle-upgrades.mjs";
+import { applyTimedCondition } from "./helpers/timed-status.mjs";
+import { applyEssenceDamage } from "./helpers/environment-hazards.mjs";
 import { E20 } from "./helpers/config.mjs";
 import {
   _isCritIsFumble, applyDamage, buildCheckChatData, getSecondaryDamageForButton, grantToughEnoughResistance,
@@ -33,6 +38,8 @@ import { activateIronHide, IRON_HIDE_ID } from "./helpers/iron-hide.mjs";
 import { claimConsummatePerformer } from "./helpers/consummate-performer.mjs";
 import { activateOneUpping, findOneUppingClaimant } from "./helpers/one-upping.mjs";
 import { findSecretHelperClaimant, rollSecretHelperAssist } from "./helpers/secret-helper.mjs";
+import { getSecretHelperPenalty } from "./helpers/action-perks.mjs";
+import { setNextTurn } from "./helpers/action-economy.mjs";
 import { activateSpite, hasSpite } from "./helpers/spite.mjs";
 import { activateExploitWeakness } from "./helpers/exploit-weakness.mjs";
 import { activateFlashy } from "./helpers/flashy.mjs";
@@ -82,6 +89,7 @@ function getRerollContext(message) {
     isPowerWeaponAttack: message.flags?.essence20?.isPowerWeaponAttack,
     rollFailed: message.flags?.essence20?.rollFailed,
     canCritD2: message.flags?.essence20?.canCritD2,
+    vsPrimaryQuarry: message.flags?.essence20?.vsPrimaryQuarry,
     // Destiny's own belowSmallestSkillDie condition - the base d20 term's own already-rolled
     // total (not read from flags, since it's the roll itself, not a computed context field).
     d20Result: message.rolls?.[0]?.dice?.find(die => die.faces == 20)?.total,
@@ -495,6 +503,11 @@ export const addSecretHelperButton = function (message, html) {
       });
       await ChatMessage.create(chatData);
 
+      // "On your next turn, you can't take a Standard action" - or Subtle/Stealth Helper's lighter
+      // price. Lands on the helper's next turn (helpers/action-economy.mjs#setNextTurn).
+      const penalty = getSecretHelperPenalty(claimant);
+      await setNextTurn(claimant, penalty, game.i18n.localize("E20.SecretHelperActivate"));
+
       const claimedBy = message.getFlag("essence20", "secretHelperClaimedBy") ?? [];
       await message.setFlag("essence20", "secretHelperClaimedBy", [...claimedBy, claimant.id]);
       button.disabled = true;
@@ -777,7 +790,67 @@ export async function onApplyDamage(message, button) {
     return;
   }
 
+  // A crit option that applies a Condition instead - Scramble Wave's Stunned "until the end of their
+  // next turn" (helpers/timed-status.mjs counts that one round).
+  if (button.dataset.status) {
+    await applyTimedCondition(target, button.dataset.status, 1);
+    button.disabled = true;
+    const appliedKeys = message.getFlag('essence20', 'damageAppliedKeys') || [];
+    await message.setFlag('essence20', 'damageAppliedKeys', [...appliedKeys, button.dataset.key]);
+    return;
+  }
+
+  // A crit option that damages an Essence instead (Bewildering, Traumatic, Maiming, Surgical).
+  if (button.dataset.essence) {
+    const damaged = await applyEssenceDamage(target, [button.dataset.essence]);
+    button.disabled = true;
+    const appliedKeys = message.getFlag('essence20', 'damageAppliedKeys') || [];
+    await message.setFlag('essence20', 'damageAppliedKeys', [...appliedKeys, button.dataset.key]);
+    ChatMessage.create({
+      content: game.i18n.format(damaged.length ? 'E20.CheckEssenceDamageApplied' : 'E20.CheckEssenceDamageNone', {
+        name: target.name, essence: game.i18n.localize(CONFIG.E20.essences?.[button.dataset.essence] ?? button.dataset.essence),
+      }),
+      speaker: ChatMessage.getSpeaker({ actor: target }),
+    });
+    return;
+  }
+
+  // Defense damage, marks and bonus attacks from a Critical Effect - helpers/target-riders.mjs.
+  if (button.dataset.defense || button.dataset.rider) {
+    await handleRiderButton(message, button, target);
+    button.disabled = true;
+    const appliedKeys = message.getFlag('essence20', 'damageAppliedKeys') || [];
+    await message.setFlag('essence20', 'damageAppliedKeys', [...appliedKeys, button.dataset.key]);
+    return;
+  }
+
   let damage = parseInt(button.dataset.damage);
+
+  // Active Protection System / Slat Armor / Reactive Armor (helpers/vehicle-upgrades.mjs).
+  if (target.type == 'vehicle') {
+    const cut = await reduceVehicleDamage(target, damage, {
+      style: message.flags?.essence20?.attackStyle, traits: message.flags?.essence20?.attackTraits,
+      damageType: button.dataset.damageType,
+    });
+    if (cut.notes.length) {
+      ChatMessage.create({
+        content: game.i18n.format('E20.VehicleDamageReduced', { name: target.name, from: damage, to: cut.amount, sources: cut.notes.join(', ') }),
+        speaker: ChatMessage.getSpeaker({ actor: target }),
+      });
+    }
+
+    damage = cut.amount;
+
+    // Reactive Shocks: "Once per turn, when the vehicle takes damage it can immediately move 10ft away
+    // from the attack's source."
+    if (damage > 0 && hasVehicleUpgrade(target, VU.reactiveShocks)) {
+      ChatMessage.create({
+        content: game.i18n.format('E20.VehicleReactiveShocks', { name: target.name }),
+        speaker: ChatMessage.getSpeaker({ actor: target }),
+      });
+    }
+  }
+
   // The weaponEffect's own second damage component on this same hit, if it has one - see
   // combat.mjs#getSecondaryDamageForButton. Dropped only when the whole attack is negated
   // (Didn't Even Feel It, Hard Corps); the flat per-hit reductions below trim the main damage.
@@ -897,7 +970,9 @@ export async function onApplyDamage(message, button) {
   // source by 1." Unconditional and passive (no once-per-round gate, no GM confirm needed) -
   // applied before Just a Graze's own reduce-to-1 choice below so Just a Graze always sees
   // whatever damage is left after this flat reduction.
-  if (actorHasPerk(target, FORTITUDE_ID)) {
+  // Racer Abandon (Cobra Codex p.61) moves these onto the driven vehicle - helpers/summons.mjs.
+  const renegade = renegadeHolderFor(target);
+  if (actorHasPerk(renegade, FORTITUDE_ID)) {
     damage = Math.max(0, damage - 1);
   }
 
@@ -923,8 +998,8 @@ export async function onApplyDamage(message, button) {
   // 0, which makes Just a Graze's own "> 1" eligibility check below moot for this hit rather than
   // prompting twice.
   if (
-    damage > 0 && isRecklessAbandonActive(target) && actorHasPerk(target, DIDNT_EVEN_FEEL_IT_ID)
-    && !hasUsedThisEncounter(target, DIDNT_EVEN_FEEL_IT_ENCOUNTER_FLAG)
+    damage > 0 && renegade && isRecklessAbandonActive(renegade) && actorHasPerk(renegade, DIDNT_EVEN_FEEL_IT_ID)
+    && !hasUsedThisEncounter(renegade, DIDNT_EVEN_FEEL_IT_ENCOUNTER_FLAG)
   ) {
     const confirmation = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize('E20.DidntEvenFeelItConfirmTitle') },
@@ -1019,7 +1094,11 @@ export async function onApplyDamage(message, button) {
     await breakMachineMantleIfPresent(target);
   }
 
-  const amount = await applyDamage(target, damage, button.dataset.damageType, isCrit);
+  // Concentrated Fire "treats Fire Immunity as Fire Resistance" (helpers/target-riders.mjs) - its
+  // button carries data-ignore-immunity.
+  const amount = await applyDamage(target, damage, button.dataset.damageType, isCrit, { ignoreImmunity: button.dataset.ignoreImmunity == 'true' });
+  // Shots Fired - "when you deal damage to a creature" (helpers/target-riders.mjs).
+  await onDamageDealt(game.actors.get(message.speaker?.actor), target, amount);
   const secondaryAmount = secondary?.value > 0 ? await applyDamage(target, secondary.value, secondary.type, isCrit) : 0;
   // Health actually lost to this hit - Stun never reduces Health (see applyDamage).
   const healthLost = (button.dataset.damageType != 'stun' ? amount : 0)

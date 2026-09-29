@@ -1,3 +1,4 @@
+import { spend } from "../helpers/action-economy.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { checkIsLocked } from "../helpers/actor.mjs";
 import { onPerkUse } from "../helpers/banked-buffs.mjs";
@@ -306,6 +307,13 @@ export async function onShieldActivationToggle(target, actorSheet) {
     await actor.update({
       [shieldString] : 0,
     });
+  }
+
+  // "You must spend a Move action to raise your shield ... another Move action to lower your shield"
+  // (Cobra Codex p.98). Hold The Line makes either one a Free action (helpers/action-perks.mjs).
+  const paid = await spend(actor, 'move', { source: currentShield.name, context: { kind: 'shieldToggle' } });
+  if (paid.blocked) {
+    return;
   }
 
   const stateString = currentShield.system.active ?  'passiveEffect' : 'activeEffect';

@@ -1,27 +1,49 @@
 {
   "folder": "MHkJRqa9JFTMYVqF",
-  "name": "Close Combat Blade (Experimental)",
+  "name": "Energized Close Combat Blade (Experimental)",
   "type": "weapon",
-  "img": "icons/svg/sword.svg",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
     "originalId": "",
     "description": "",
     "source": {
-      "book": "GI Joe Core Rulebook",
-      "page": 141
+      "book": "Quartermaster's Guide to Gear",
+      "page": 46
     },
     "items": {
-      "bd64": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.hb5fKPK5GNTSlKvY",
+      "a3b7": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.RwpDWPgoIEejm7Fz",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Close Combat Blade Effect",
+        "name": "Energized Close Combat Weapon Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
-          "style": "melee"
+          "style": "energy"
         },
         "damageValue": 1,
-        "damageType": "sharp",
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "b9ba": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.mCD4bCkChXbq6NzO",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Energized Close Combat Weapon Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "energy"
+        },
+        "damageValue": null,
+        "damageType": "intimidate",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
@@ -52,7 +74,7 @@
         ]
       }
     },
-    "availability": "standard",
+    "availability": "restricted",
     "classification": {
       "size": "sidearm"
     },
@@ -63,9 +85,9 @@
       "shift": "none"
     },
     "traits": [
-      "martialArts",
-      "sharp",
-      "silent"
+      "computerized",
+      "energy",
+      "reload"
     ],
     "upgradeTraits": [],
     "usesPerScene": null,

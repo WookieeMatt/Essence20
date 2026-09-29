@@ -163,6 +163,17 @@ E20.weaponSizeHands = {
 // which a GM/player can raise for Perks like Pack Mule.
 E20.LOADOUT_BASE_HANDS = 6;
 
+// The Elements an Element weapon can be set to deal (GI Joe CRB p.207) - damage type keys.
+E20.weaponElements = {
+  acid: "E20.DamageAcid",
+  cold: "E20.DamageCold",
+  electric: "E20.DamageElectric",
+  emp: "E20.DamageEmp",
+  fire: "E20.DamageFire",
+  laser: "E20.DamageLaser",
+  sonic: "E20.DamageSonic",
+};
+
 // Options for Weapon style
 E20.weaponStyles = {
   melee: "E20.WeaponStyleMelee",
@@ -784,6 +795,7 @@ E20.actionTypes = {
   contingency: "E20.ActionTypeContingency",
   standard: "E20.ActionTypeStandard",
   standardAndMove: "E20.ActionTypeStandardAndMove",
+  twoFree: "E20.ActionTypeTwoFree",
   wholeTurn: "E20.ActionTypeWholeTurn",
   tenMinutes: "E20.ActionTypeTenMinutes",
   oneHour: "E20.ActionTypeOneHour",
@@ -821,6 +833,8 @@ E20.actionTypeCosts = {
   contingency: { standard: 1 },
   standard: { standard: 1 },
   standardAndMove: { standard: 1, move: 1 },
+  // Two Free actions in place of one bigger one - Canny Combatant's Defend, Snap Shots' extra Attack.
+  twoFree: { free: 2 },
   wholeTurn: { standard: 1, move: 1 },
   tenMinutes: {},
   oneHour: {},
@@ -852,6 +866,15 @@ E20.namedActions = {
   searchTheArea: { label: 'E20.ActionSearchTheArea', type: 'standard' },
   useASkill: { label: 'E20.ActionUseASkill', type: 'standard' },
   sprint: { label: 'E20.ActionSprint', type: 'standard' },
+  // Push/Shove (GI Joe CRB p.118, PR CRB p.110): "they must spend a Standard action to do so when they
+  // are adjacent" - helpers/target-riders.mjs#rollShove.
+  shove: { label: 'E20.ActionShove', type: 'standard' },
+  // Bracing (GI Joe CRB p.194): "You can brace yourself for an automatic weapon's kickback as a Move
+  // action. Bracing grants a ↑1 shift when attacking multiple targets with a ranged weapon."
+  brace: { label: 'E20.ActionBrace', type: 'move' },
+  // Drawing or stowing a weapon. "the usual Move action" (Cobra Codex, Heavy Holster, p.100) - the
+  // cost Heavy Holster, Sling and Quick Draw each make cheaper.
+  drawWeapon: { label: 'E20.ActionDrawWeapon', type: 'move' },
   commandPet: { label: 'E20.ActionCommandPet', type: 'standard' },
   move: { label: 'E20.ActionMove', type: 'move' },
   freeAction: { label: 'E20.ActionFree', type: 'free' },
@@ -1429,6 +1452,7 @@ E20.megaformTraitTypes = {
   coreDefenses: "E20.MegaformTraitCoreDefenses",
   defender: "E20.MegaformTraitDefender",
   detachable: "E20.MegaformTraitDetachable",
+  enhancedAttack: "E20.MegaformTraitEnhancedAttack",
   enhancedInitiative: "E20.MegaformTraitEnhancedInitiative",
   enhancedMeleeAttack: "E20.MegaformTraitEnhancedMeleeAttack",
   enhancedRangedAttack: "E20.MegaformTraitEnhancedRangedAttack",
@@ -1672,6 +1696,9 @@ preLocalize("rerollResets");
 // logic - see dice.mjs's own dozens of Perk checks for the established idiom this follows).
 E20.rerollConditions = {
   none: "E20.RerollConditionNone",
+  // Decepticon Directive "All Too Predictable" (Tracker, 20th level, p.56): "...a Skill Test
+  // involving or targeting your Primary Mark."
+  vsPrimaryQuarry: "E20.RerollConditionVsPrimaryQuarry",
   // Power Rangers CRB p.41 "Power Infusion": "...while Morphed..."
   morphed: "E20.RerollConditionMorphed",
   // GI Joe/Transformers CRB "Veteran" (General Perk): "...as long as you aren't suffering a
@@ -1854,11 +1881,13 @@ E20.vehicleTraits = {
   exoskeleton: "E20.VehicleTraitExoskeleton",
   flyBy: "E20.VehicleTraitFlyBy",
   flyingPodium: "E20.VehicleTraitFlyingPodium",
+  gridjump: "E20.VehicleTraitGridjump",
   fragile: "E20.VehicleTraitFragile",
   heavyWinch: "E20.VehicleTraitHeavyWinch",
   heavyWheels: "E20.VehicleTraitHeavyWheels",
   hissColumn: "E20.VehicleTraitHISSColumn",
   hover: "E20.VehicleTraitHover",
+  instrumentArray: "E20.VehicleTraitInstrumentArray",
   land: "E20.VehicleTraitLand",
   largeObstacle: "E20.VehicleTraitLargeObstacle",
   linked: "E20.VehicleTraitLinked",
@@ -1873,8 +1902,10 @@ E20.vehicleTraits = {
   rollCage: "E20.VehicleTraitRollCage",
   sea: "E20.VehicleTraitSea",
   sensors: "E20.VehicleTraitSensors",
+  shielded: "E20.VehicleTraitShielded",
   sidecar: "E20.VehicleTraitSidecar",
   SixWheelDrive: "E20.VehicleTraitSixWheelDrive",
+  superstructure: "E20.VehicleTraitSuperstructure",
   takeOff: "E20.VehicleTraitTakeOff",
   tank: "E20.VehicleTraitTank",
   targetingSystem: "E20.VehicleTraitTargetingSystem",
@@ -2095,6 +2126,13 @@ E20.statusEffects = [
     id: 'altMode',
     name: 'E20.StatusAltMode',
     changes: [],
+  },
+  // Poisoned (WTNV Citizen's Guide - Pet Venom Adaptation, p.47: "gain an Edge on Brawn Skill Tests
+  // to overcome the Poisoned Condition"). A marker the Host applies and removes.
+  {
+    img: 'icons/svg/poison.svg',
+    id: 'poisoned',
+    name: 'E20.StatusPoisoned',
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_prone.svg',

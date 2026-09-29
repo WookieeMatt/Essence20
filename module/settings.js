@@ -356,6 +356,19 @@ export const registerSettings = function () {
     type: Boolean,
   });
 
+  /* Whether the "how do you pay for this?" question appears for Perks whose discount depends on
+     the fiction - A Talent for Kindness, Vigilance, Quick Change. Per client: a player with a Talent
+     Perk may prefer to track it by hand rather than be asked on every action. Discounts the system
+     can verify on its own (Mobility, Here To Help...) apply either way. See helpers/action-perks.mjs. */
+  game.settings.register(systemName, "actionPerkPrompts", {
+    name: game.i18n.localize("E20.ActionPerkOptionPrompts"),
+    hint: game.i18n.localize("E20.ActionPerkOptionPromptsHint"),
+    scope: "client",
+    config: true,
+    default: true,
+    type: Boolean,
+  });
+
   /* -- Scene Clock ----------------------------- */
   /* Whether a combat ending refreshes once-per-encounter abilities. On by default, because that
      is exactly what they did before the Scene Clock existed - they were stamped with the combat's
@@ -436,6 +449,10 @@ export const registerSettings = function () {
   });
 
   game.settings.register(systemName, "sceneClockEncounter", {
+    scope: "world", config: false, default: 1, type: Number,
+  });
+
+  game.settings.register(systemName, "sceneClockMission", {
     scope: "world", config: false, default: 1, type: Number,
   });
 

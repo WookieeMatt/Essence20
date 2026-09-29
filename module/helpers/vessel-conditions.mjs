@@ -544,6 +544,13 @@ export async function openVesselRepairDialog(vessel) {
     return;
   }
 
+  // Repairing is a Standard action; Quick Fix makes it a Free one (helpers/action-perks.mjs).
+  const { spend } = await import("./action-economy.mjs");
+  const paid = await spend(repairer, 'standard', { source: game.i18n.localize('E20.VesselRepair'), context: { kind: 'vehicleRepair' } });
+  if (paid.blocked) {
+    return;
+  }
+
   await repairer._dice.rollSkill({
     skill: "technology",
     shiftUp: 0,

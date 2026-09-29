@@ -18,6 +18,7 @@
  */
 
 const EYE_FOR_APPRAISAL_FLAG = 'eyeForAppraisalMark';
+const VANTAGE_POINT_ID = "Compendium.essence20.decepticon_directive.Item.j8s0vIsIEUJzAAvy";
 
 /**
  * Marks the actor's currently-targeted token with a 2-use Eye for Appraisal bonus against the
@@ -32,6 +33,35 @@ export async function markEyeForAppraisal(actor) {
     return false;
   }
 
-  await targetActor.setFlag('essence20', EYE_FOR_APPRAISAL_FLAG, { attackerId: actor.id, usesRemaining: 2 });
+  // "know the best 20x20ft area from which to fire on a specific target" - the spot is picked on the
+  // canvas when it matters to something: Vantage Point's "from within an area defined by the Eye
+  // For Appraisal Role Perk gain Edge" (Decepticon Directive p.64).
+  let area = null;
+  if (actor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == VANTAGE_POINT_ID)) {
+    const { pickCanvasPoint } = await import("./forced-movement.mjs");
+    const point = await pickCanvasPoint(game.i18n.localize('E20.EyeForAppraisalPickArea'));
+    area = point ? { x: point.x, y: point.y, sceneId: canvas?.scene?.id ?? null } : null;
+  }
+
+  await targetActor.setFlag('essence20', EYE_FOR_APPRAISAL_FLAG, { attackerId: actor.id, usesRemaining: 2, ...(area ? { area } : {}) });
   return true;
+}
+
+/**
+ * Whether the attacker is standing in the 20x20ft area its Eye for Appraisal picked against this
+ * target.
+ * @param {Actor} attacker
+ * @param {Actor} target
+ * @param {Token} attackerToken
+ * @returns {Boolean}
+ */
+export function isInAppraisedArea(attacker, target, attackerToken) {
+  const mark = target?.getFlag?.('essence20', EYE_FOR_APPRAISAL_FLAG);
+  const area = mark?.area;
+  if (!area || mark.attackerId != attacker?.id || !attackerToken || area.sceneId != canvas?.scene?.id) {
+    return false;
+  }
+
+  const half = 10 * (canvas.dimensions?.distancePixels ?? 1);
+  return Math.abs(attackerToken.center.x - area.x) <= half && Math.abs(attackerToken.center.y - area.y) <= half;
 }

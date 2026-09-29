@@ -43,6 +43,13 @@
           {{#if attachedActor.system.background.role}}
             <div class="e20-nowrap">{{localize 'E20.ActorRole'}}: {{attachedActor.system.background.role}}</div>
           {{/if}}
+          {{#if attachedActor.system.isContact}}
+            {{#if (eq @root.document.type "playerCharacter")}}
+              <a class="e20-nowrap" data-action="summonContact" data-system-Actors-uuid="{{attachedActor.uuid}}" data-tooltip="{{localize 'E20.ContactSummonTooltip'}}">
+                <i class="fas fa-bullhorn"></i> {{localize 'E20.ContactSummon'}} ({{contactAllegiance attachedActor}})
+              </a>
+            {{/if}}
+          {{/if}}
           {{#if attachedActor.system.gainingTheContact}}
             <div class="e20-nowrap" data-tooltip="{{attachedActor.system.gainingTheContact}}">{{localize 'E20.ContactGainedVia'}}: {{attachedActor.system.gainingTheContact}}</div>
           {{/if}}

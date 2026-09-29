@@ -34,6 +34,11 @@ Math.toRadians ??= function toRadians(degrees) {
   return degrees * (Math.PI / 180);
 };
 
+// Extension modules (helpers/extensions/*) register their own Foundry hooks at load, and core
+// helpers import some of them - a no-op Hooks keeps those imports safe. Tests that care about
+// hooks still replace it with their own mock.
+global.Hooks ??= { on: () => 0, once: () => 0, off: () => {}, call: () => true, callAll: () => true };
+
 global.Actor = class Actor {
   constructor() {}
   async _preCreate() {}

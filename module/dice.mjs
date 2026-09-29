@@ -1,3 +1,27 @@
+import { betterThanTheBestMultiplier, ignoresMissEffects, takedownExpertChoice } from "./helpers/extensions/gij3/dice-hooks.mjs";
+import { isFormActive } from "./helpers/extensions/zord1/form-state.mjs";
+import { zord2IgnoresLimitedArticulation } from "./helpers/extensions/zord2/snag.mjs";
+import { extDialogToggles, extSpecializes, runApplyDialog, runPreRoll } from "./helpers/extensions.mjs";
+import { racerRecklessShifts } from "./helpers/summons.mjs";
+import { applySocialDialog, socialDialogFlags, socialSpecializes } from "./helpers/social-rolls.mjs";
+import { betterAsOneDonor, payBetterAsOne } from "./helpers/better-as-one.mjs";
+import { applyDialogKits, brawnCritsOnD2, kitDialogFlags, kitSources } from "./helpers/kits.mjs";
+import { pushActor } from "./helpers/forced-movement.mjs";
+import { isInAppraisedArea } from "./helpers/eye-for-appraisal.mjs";
+import {
+  applyDialogRiders, applyRollRiders, askConsistent, disarm, imperfectionOf, buildRiderContext, fanaticCap, isGremlinsMischiefActive, isVsPrimaryQuarry,
+  noteRoller, RIDER, riderDefenseAdjust, riderDialogFlags, rollRiderSources, scarefyingSources,
+} from "./helpers/target-riders.mjs";
+import { canUseDrivingForIntimidation, crewSources, defenderSources, getCrewedVehicle, spendDefenderSources } from "./helpers/vehicle-upgrades.mjs";
+import { isInRoughTerrain } from "./helpers/environment.mjs";
+const ANTI_AIR_COMBAT_TRAINING = "Compendium.essence20.quartermasters_guide_to_gear.Item.dTlLdrlWAZeZHJ7B";
+import { getUses, markUsed } from "./helpers/scene-clock.mjs";
+import {
+  actorHas as actorHasTrait, computerizedArmorEvasion, firesAsReinforced, hasBoarder, ignoresDefend, isBallisticLongRange, isGrownThreat, lightArmorPenalty,
+  noisyArmorPenalty, ramConeAltAttack, ramConeBotUnarmed, TRAIT_PERK,
+} from "./helpers/weapon-traits.mjs";
+import { canSurge, getCritEssenceOptions, hasChronoTrigger, hasUpgrade, UPGRADE, WEAPON_PERK } from "./helpers/weapon-upgrades.mjs";
+import { getHudSkill } from "./helpers/weapon-perk-uses.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { getEnvironment, getTerrain, hasEquippedEnviroSealedArmor, isEnviroSealedEdgeActive } from "./helpers/environment.mjs";
 import { isImpairedByEnvironment } from "./helpers/environment-hazards.mjs";
@@ -5,7 +29,8 @@ import {
   areHardpointWeaponsInoperable, canTargetVesselSystem, getUnstablePenalty, imposeVesselConditionOnCrit,
   resolveVesselRepair, TARGET_VESSEL_SYSTEM_SHIFT_DOWN,
 } from "./helpers/vessel-conditions.mjs";
-import { isAiming, ACT_WHILE_DEFEATED_FLAG, grantActionsThisTurn } from "./helpers/action-economy.mjs";
+import { isAiming, isBraced, ACT_WHILE_DEFEATED_FLAG, getLedger, grantActionsThisTurn, setNextTurn, spend } from "./helpers/action-economy.mjs";
+import { ACTION_PERK_IDS, findSourced, getLaughtractingBlock, isGroundAndPoundActive } from "./helpers/action-perks.mjs";
 import { pickTerrifyingPresenceRider } from "./helpers/terrifying-presence.mjs";
 import { DEFENDING_STATUS } from "./helpers/named-actions.mjs";
 import {
@@ -77,7 +102,7 @@ import { getAllNearbyTokens, getNearbyAllyTokens } from "./helpers/allies.mjs";
 import { getNearbyEnemyTokens } from "./helpers/enemies.mjs";
 import { getShieldUpgradeBonus, isPersonalShieldActive } from "./helpers/personal-shield.mjs";
 import { SHIELD_MODULATION_ID, isProtectedByShieldModulation } from "./helpers/shield-modulation.mjs";
-import { getRecklessAbandonStrengthShiftUp } from "./helpers/reckless-abandon.mjs";
+import { getRecklessAbandonStrengthShiftUp, isRecklessAbandonActive } from "./helpers/reckless-abandon.mjs";
 import {
   canSpendForActor, canWriteStoryPoints, hasStoryPointsAvailable, poolFor, requestStoryPointGrant,
   requestStoryPointSpend, spendForActor,
@@ -1742,6 +1767,10 @@ const SIGNATURE_WEAPON_IDS = [
 const CAUTION_TO_THE_WIND_ID = `${TF_CRB}7jAU5Eg1uy9Hl1d4`;
 export const CAUTION_TO_THE_WIND_FLAG = 'pendingCautionToTheWindDefense';
 
+// Extension vetoes of the Fumble Story Point grant, fn(actor, skill) => Boolean (Agency -
+// helpers/extensions/react).
+export const FUMBLE_STORY_POINT_SUPPRESSORS = [];
+
 // Superior Athlete - see its own comment near updatedShiftDataset.shiftUp below.
 const SUPERIOR_ATHLETE_ID = `${GI_JOE_CRB}C9HN9cz5Yxxb3jBj`;
 // Safecracker - see its own comment near updatedShiftDataset.shiftUp below.
@@ -1875,6 +1904,8 @@ const COVERING_FIRE_ID = "Compendium.essence20.tf_crb.Item.cAm087BkiExKIJrY";
 // piece of this Perk that unlocks INSIDE combat, where that same tracking mechanism works fine.
 const WORTH_A_SHOT_ID = "Compendium.essence20.tf_crb.Item.vy2UDq5CABjOouZm";
 const WORTH_A_SHOT_COMBAT_FLAG = 'worthAShotCombatUsedThisEncounter';
+// Outside combat: "once per scene" (Worth A Shot), "twice per scene" (Worth Another Shot) - Scene Clock.
+const WORTH_A_SHOT_SCENE_FLAG = 'worthAShotUsesThisScene';
 
 // All-Around Vision (Quartermaster's Guide to Gear, Nanomite power, p.92; Availability: Standard):
 // "You have ↑2 on Alertness tests when an opponent is trying to surprise you." A live checkbox
@@ -2025,6 +2056,7 @@ const EXPERIMENT_ID = "Compendium.essence20.tf_crb.Item.EcSOADOOb3PZMolz";
 // name - RAW grants the Edge to the holder's ANIMAL PET, not themselves, so it's blocked by the
 // separate companion-actor linkage gap rather than being another reprint.
 const ACUTE_SENSE_IDS = [
+  "Compendium.essence20.mlp_crb.Item.xhNYPiLSmYWov9CG",
   "Compendium.essence20.tf_crb.Item.rl8hs6ezb6VSDahM",
   "Compendium.essence20.pr_crb.Item.qKoTBo1FKzCq1qTt",
   "Compendium.essence20.gi_joe_crb.Item.WvjGJ5AcC0z07d0J",
@@ -2559,12 +2591,8 @@ const RAZOR_TONGUE_ID = "Compendium.essence20.tf_crb.Item.jwREkh7fN4FLjDmz";
 // below to also cover this reprint.
 const RAZOR_TONGUE_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.HdIE0t088L6PTfXn";
 
-// Fuel Efficient (Transformers CRB, General Perk, p.109): "Prereq Level 12. When you spend an
-// Energon Point, roll a d4; on a 4, regain it." The only confirmed Energon-Point deduction site in
-// this codebase is rollSkill()'s own Converting cost (system.energon.normal.value - 1) - layered
-// a post-spend d4 regain check directly onto that site. If Energon is spent anywhere else in a
-// future pass, that site would need the identical hook added.
-const FUEL_EFFICIENT_ID = "Compendium.essence20.tf_crb.Item.hW6ESJ1p7GvIGzBe";
+// Fuel Efficient (Transformers CRB, General Perk, p.109) rolls on every Energon spend, from the
+// actor update hooks - helpers/extensions/resource/energon.mjs.
 
 // Energon Efficiency (Decepticon Directive, Cybertronian Perk, p.62): "When you spend your last
 // Energon Point, roll 1d6. On a 5 or higher, you regain 1 Energon Point." Same spend-site hook as
@@ -2793,6 +2821,10 @@ const SADISTIC_HANGUP_ID = "Compendium.essence20.decepticon_directive.Item.a7ch8
 // survivable, and RAW's own surprise rules deny actions entirely, which this system also does not
 // enforce. So the two ends cancel out at the table rather than leaving a hole.
 const AREA_AWARENESS_ID = `${DECEPTICON_DIRECTIVE}cf2zIWdlulvGmRU5`;
+
+// Extension Initiative rules, async fn(actor, skillRollOptions) - mutate the dialog's options
+// (helpers/extensions/situational2/initiative.mjs).
+export const INITIATIVE_EXTENSIONS = [];
 
 // Eltarian Observer (Through the Shattered Grid, Influence Perk, p.69): "Choose a Skill among
 // Culture, Survival, and Technology. You gain an Edge on Skill Tests with the chosen Skill while
@@ -3717,11 +3749,9 @@ const ICONOCLAST_ID = `${COBRA_CODEX}BPFc4FQgy9mFgPqG`;
 
 // Silver Medal Syndrome Origin's Consistent benefit (Cobra Codex, p.46): "When you roll a
 // Critical Success on a Skill Test with a benefit for Critical Successes, you can choose to treat
-// it as a regular success and gain [shiftUp] 1 on your next Skill Test." Reversing an
-// already-resolved Critical Success (undoing whatever bonus it triggered) isn't supported by this
-// engine - only the consolation "gain shiftUp 1 on your next Skill Test" half is built, granted
-// automatically whenever the actor's own roll crits (no interactive choice, since there's nothing
-// to actually downgrade) - see its own check in the results.map() below.
+// it as a regular success and gain [shiftUp] 1 on your next Skill Test." Asked as soon as the dice
+// show a Critical Success (helpers/target-riders.mjs#askConsistent); saying yes drops the roll to a
+// plain success before anything is built from it and banks the ↑1.
 const SILVER_MEDAL_SYNDROME_ID = `${COBRA_CODEX}vaAhMXXlzNWHIikR`;
 
 // Bully Origin's Menace benefit (Cobra Codex, p.41): "Once per scene as a Standard action, you can
@@ -4953,6 +4983,14 @@ export class Dice {
       return false;
     }
 
+    for (const initiativeExtension of INITIATIVE_EXTENSIONS) {
+      try {
+        await initiativeExtension(actor, skillRollOptions);
+      } catch (error) {
+        console.error('Essence20 | initiative extension failed', error);
+      }
+    }
+
     // Roadside Assistant - see ROADSIDE_ASSISTANT_ID's own comment above. Not gated on the roll's
     // own outcome (RAW: "when you roll," not "on a success") - just on actually being seated in a
     // vehicle and not having already granted it this combat.
@@ -5187,6 +5225,14 @@ export class Dice {
         || !!item?.system?.isSpecialized,
       canCritD2: rawDataset.canCritD2 && rawDataset.canCritD2 != 'false',
     };
+    // Extensions that change the roll itself - a Skill substitution, a forced Specialization
+    // (helpers/extensions.mjs).
+    await runPreRoll(actor, dataset, item);
+    // An extension refused the roll (a jammed weapon, an untargetable crew...) and said why.
+    if (dataset.cancelRoll) {
+      return;
+    }
+
     const rolledSkill = dataset.skill;
     let rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
 
@@ -5207,7 +5253,7 @@ export class Dice {
     // Limited Articulation - see LIMITED_ARTICULATION_SKILLS' own comment above.
     if (LIMITED_ARTICULATION_SKILLS.includes(rolledSkill) && actor.system.altModeId) {
       const activeAltMode = actor.items?.get(actor.system.altModeId);
-      if (activeAltMode?.system.limitedArticulation) {
+      if (activeAltMode?.system.limitedArticulation && !zord2IgnoresLimitedArticulation(actor)) {
         ui.notifications.error(this._localize('E20.LimitedArticulationError', { skill: this._localize(E20.skills[rolledSkill]) }));
         return;
       }
@@ -5262,7 +5308,7 @@ export class Dice {
     const specialization = dataset.specializationKey
       ? actor.system.skills[rolledSkill]?.specializations?.[dataset.specializationKey]
       : null;
-    const combatModifiers = this._getAutomaticCombatModifiers(actor, item, rolledEssence, rolledSkill);
+    const combatModifiers = this._getAutomaticCombatModifiers(actor, item, rolledEssence, rolledSkill, dataset);
     if (combatModifiers.debilitatedConsumed) {
       await actor.unsetFlag('essence20', 'debilitated');
     }
@@ -5275,6 +5321,28 @@ export class Dice {
         id: 'highDensityFollowUp', label: this._localize('E20.WeaponTraitHighDensity'),
         shiftUp: 0, shiftDown: HIGH_DENSITY_FOLLOW_UP_SHIFT_DOWN, edge: false, snag: false,
       });
+    }
+
+    // Kits - helpers/kits.mjs. What a kit used up still gives, and a carried Restricted kit's
+    // Specialization or Edge. Competitive Strength's Brawn crits on the d2.
+    // Bonded Proficiency - a linked partner's Specializations are shared (helpers/bonded.mjs).
+    if (!dataset.isSpecialized && (socialSpecializes(actor, rolledSkill) || extSpecializes(actor, rolledSkill, item, dataset))) {
+      dataset.isSpecialized = true;
+    }
+
+    const kitBoosts = kitSources(actor, rolledSkill, specialization?.name ?? null, dataset.isSpecialized);
+    for (const source of kitBoosts.sources) {
+      combatModifiers.shiftUp += source.shiftUp;
+      combatModifiers.edge ||= source.edge;
+      combatModifiers.sources.push(source);
+    }
+
+    if (kitBoosts.specialize) {
+      dataset.isSpecialized = true;
+    }
+
+    if (brawnCritsOnD2(actor, rolledSkill)) {
+      dataset.canCritD2 = true;
     }
 
     // Iron Bravado - see IRON_BRAVADO_ID's own comment above. Stamped on any Attack, hit or miss.
@@ -5518,7 +5586,7 @@ export class Dice {
     // assister's own uuid, banked alongside the shift by lend-assistance.mjs) so the post-roll
     // processing below can check it on a failure, without re-deriving who assisted.
     let lendAssistanceAssisterUuid = null;
-    if (pendingLendAssistanceShift?.skill == rolledSkill) {
+    if (pendingLendAssistanceShift?.skill == rolledSkill && imperfectionOf(actor)?.n != 7) {
       // Defaulted so a flag banked before the Perk upgrades existed still applies its ↑1.
       calculatedShiftUp += pendingLendAssistanceShift.shiftUp ?? 1;
       lendAssistanceEdge = !!pendingLendAssistanceShift.edge;
@@ -5762,6 +5830,17 @@ export class Dice {
           initialShift = altShift;
           bestIndex = altIndex;
         }
+      }
+    }
+
+    // Kill Counter (Quartermaster's Guide p.56): "Crew can use Driving in place of Intimidation against
+    // intelligent creatures who can see the vehicle" - the better of the two.
+    if (rolledSkill == 'intimidation' && canUseDrivingForIntimidation(actor)) {
+      const drivingShift = actor.getRollData().skills.driving?.shift;
+      const currentIndex = E20.skillShiftList.indexOf(initialShift);
+      const drivingIndex = E20.skillShiftList.indexOf(drivingShift);
+      if (drivingShift && drivingIndex >= 0 && (currentIndex < 0 || drivingIndex < currentIndex)) {
+        initialShift = drivingShift;
       }
     }
 
@@ -6112,8 +6191,15 @@ export class Dice {
     // see helpers/reckless-abandon.mjs for why only this half of the Perk needed new code.
     // Unlike Silent Weapon Expertise above, this isn't gated on item?.type - it's any Strength
     // Skill Test, not just weapon attacks.
-    if (rolledEssence == 'strength') {
+    // Racer Abandon (Cobra Codex p.61): "You gain ↑2 on Driving Skill Tests instead of Strength Skill
+    // Tests" while driving; Rigged Rider keeps both (helpers/summons.mjs).
+    const racer = racerRecklessShifts(actor);
+    if (rolledEssence == 'strength' && racer.strength) {
       updatedShiftDataset.shiftUp += getRecklessAbandonStrengthShiftUp(actor);
+    }
+
+    if (rolledSkill == 'driving' && racer.driving && isRecklessAbandonActive(actor)) {
+      updatedShiftDataset.shiftUp += 2;
     }
 
     // Piercing Shot (Sniper Focus, 6th level): "when making a ranged attack with a weapon with
@@ -7111,7 +7197,7 @@ export class Dice {
 
     // Ranger Operator [Form] - see RANGER_OPERATOR_ID's own comment above.
     if (['driving', 'survival'].includes(rolledSkill) && actor.system.isMorphed
-      && actorHasPerk(actor, RANGER_OPERATOR_ID)) {
+      && actorHasPerk(actor, RANGER_OPERATOR_ID) && isFormActive(actor, RANGER_OPERATOR_ID)) {
       updatedShiftDataset.shiftUp += 1;
     }
 
@@ -7126,6 +7212,12 @@ export class Dice {
     // Precision Aim's own checkbox), and a successful roll increments the counter in
     // _rollSkillHelper's own per-target results (see checkContext.isAnalyzeTarget below).
     updatedShiftDataset.analyzeTargetAvailable = rolledSkill == 'alertness' && actorHasPerk(actor, ANALYZE_TARGET_ID);
+
+    // Surging (Cobra Codex, Weapon Upgrade, p.97): "As a Free Action before Attacking with this
+    // weapon, you can double the element damage of its effect. However, if you attack and you roll a
+    // 1 on your d20, you suffer the attack's effect." See helpers/weapon-upgrades.mjs.
+    updatedShiftDataset.surgingAvailable = item?.type == 'weaponEffect'
+      && canSurge(this._getParentWeapon(actor, item), item);
 
     // Psychoanalyst (Analyst, 14th level, p.62): "As a Standard action, roll a Science or
     // Technology Skill Test against the Willpower or Cleverness of a target... On a success, the
@@ -7337,7 +7429,7 @@ export class Dice {
       : 0;
 
     // Heavy Force - see HEAVY_FORCE_ID's own comment above.
-    updatedShiftDataset.heavyForceAvailable = isMeleeWeaponEffect
+    updatedShiftDataset.heavyForceAvailable = (isMeleeWeaponEffect || !!updatedShiftDataset.isShove)
       && actor.system.isMorphed
       && actorHasPerk(actor, HEAVY_FORCE_ID)
       && actor.system.powers?.personal?.value > 0
@@ -7393,8 +7485,8 @@ export class Dice {
 
     // Worth A Shot / Worth Another Shot - see WORTH_A_SHOT_ID's own comment above.
     updatedShiftDataset.worthAShotAvailable = actorHasPerk(actor, WORTH_A_SHOT_ID)
-      && (!game.combat
-        || (actorHasPerk(actor, WORTH_ANOTHER_SHOT_ID) && !hasUsedThisEncounter(actor, WORTH_A_SHOT_COMBAT_FLAG)))
+      && ((!game.combat && getUsesThisScene(actor, WORTH_A_SHOT_SCENE_FLAG) < (actorHasPerk(actor, WORTH_ANOTHER_SHOT_ID) ? 2 : 1))
+        || (!!game.combat && actorHasPerk(actor, WORTH_ANOTHER_SHOT_ID) && !hasUsedThisEncounter(actor, WORTH_A_SHOT_COMBAT_FLAG)))
       && actor.items?.some(i => i.type == 'weapon' && i.system.traits?.includes('ballistic'));
 
     // All-Around Vision - see ALL_AROUND_VISION_ID's own comment above.
@@ -7717,6 +7809,19 @@ export class Dice {
     // apply automatically) - the roll's own existing success/Critical Success chat display already
     // conveys which outcome happened, so nothing further is built beyond the downshift itself.
     updatedShiftDataset.disarmingShotAvailable = isRangedWeaponEffect && actorHasPerk(actor, DISARMING_SHOT_ID);
+
+    // All Out Attack, Evasive Fighting, Pinpoint, Make an Opening - helpers/target-riders.mjs.
+    Object.assign(updatedShiftDataset, riderDialogFlags(actor, item, dataset));
+
+    // "Kit required" - helpers/kits.mjs.
+    Object.assign(updatedShiftDataset, kitDialogFlags(actor));
+    // Synaptic Linkage, About Twenty-Percent Cooler - helpers/social-rolls.mjs.
+    Object.assign(updatedShiftDataset, socialDialogFlags(actor, rolledSkill));
+    // Extension controls, drawn by the dialog's generic extToggles block (helpers/extensions.mjs).
+    const extToggles = extDialogToggles(actor, { item, rolledSkill, rolledEssence, dataset });
+    if (extToggles.length) {
+      updatedShiftDataset.extToggles = extToggles;
+    }
 
     // Attacking Space Vessel Systems (Across the Stars p.25): "the attacker can choose to take a ↓2
     // penalty to add the following possible Critical Effect... Impose Space Vessel Condition of
@@ -8761,7 +8866,8 @@ export class Dice {
     // Boolean(...) rather than plain && - actor.system.canTransform is undefined for actor
     // types that don't define it at all (e.g. some test/mock actors), and `undefined && x`
     // evaluates to undefined rather than false, leaking a non-boolean into the dataset.
-    updatedShiftDataset.energonAvailable = Boolean(actor.system.canTransform && actor.system.energon.normal.value > 0);
+    updatedShiftDataset.energonAvailable = Boolean(actor.system.canTransform && actor.system.energon.normal.value > 0)
+      || !!betterAsOneDonor(actor);
 
     // "Roll a Skill Test as if Specialized" for a Story Point (GI Joe CRB p.127; every line has
     // it). Same Roll Options Dialog shape as Energon just above - a toggle the player checks,
@@ -8823,7 +8929,7 @@ export class Dice {
     if (item?.type == 'weaponEffect') {
       const parentWeapon = actor.items?.get?.(item.flags?.essence20?.parentId);
       if (parentWeapon?.system.hardpoint?.type == 'integrated') {
-        updatedShiftDataset.hardpointMovement = { reinforced: !!parentWeapon.system.hardpoint.reinforced };
+        updatedShiftDataset.hardpointMovement = { reinforced: firesAsReinforced(actor, parentWeapon) };
       }
     }
 
@@ -8835,6 +8941,26 @@ export class Dice {
       // and returned nothing", and refund accordingly (documents/item.mjs#_rollWithRefund). Every
       // other early return in this method is a real outcome, not a cancellation, and stays bare.
       return { cancelled: true };
+    }
+
+    // Surging - a Free action, then the element damage doubles for this attack.
+    if (skillRollOptions.applySurging) {
+      const paid = await spend(actor, 'free', { source: this._getParentWeapon(actor, item)?.name ?? item?.name });
+      if (paid.blocked) {
+        return { cancelled: true };
+      }
+    }
+
+    // Analyze Target is "a Standard action" (TF CRB, Analyst, p.59) - Quick Study makes it a Move
+    // action and Swift Study a Free one (helpers/action-perks.mjs). The checkbox is the only place
+    // the roll says it's an Analyze Target attempt, so this is where it's charged.
+    if (skillRollOptions.applyAnalyzeTarget) {
+      const paid = await spend(actor, 'standard', {
+        source: this._localize('E20.ActionAnalyzeTarget'), context: { kind: 'analyzeTarget' },
+      });
+      if (paid.blocked) {
+        return { cancelled: true };
+      }
     }
 
     for (const skillEffect of updatedShiftDataset.availableSkillEffects) {
@@ -8854,6 +8980,16 @@ export class Dice {
       if (skillRollOptions.disabledModifierSourceIds?.includes(source.id)) {
         skillRollOptions.shiftUp -= source.shiftUp;
         skillRollOptions.shiftDown -= source.shiftDown;
+
+        // Spiked / Energized Plating: "must suffer -1 [-2] on the attack or take 1 damage" - the
+        // penalty turned down, so the damage is taken.
+        if (source.declinedDamage) {
+          await applyDamage(actor, source.declinedDamage.value, source.declinedDamage.type);
+          this._chatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor }),
+            content: this._localize('E20.VehicleDeclinedPenalty', { name: actor.name, source: source.label, damage: source.declinedDamage.value }),
+          });
+        }
       }
     }
 
@@ -8878,6 +9014,12 @@ export class Dice {
       skillRollOptions.shiftUp += firstFanningShot.shiftUp;
       skillRollOptions.shiftDown += firstFanningShot.shiftDown;
     }
+
+    // All Out Attack / Evasive Fighting / Make an Opening downshifts - helpers/target-riders.mjs.
+    await applyDialogRiders(actor, skillRollOptions);
+    await applyDialogKits(actor, skillRollOptions, { skill: rolledSkill, spec: specialization?.name ?? null, consumes: kitBoosts.consumes });
+    await applySocialDialog(actor, skillRollOptions);
+    await runApplyDialog(actor, skillRollOptions, { item, rolledSkill, rolledEssence, dataset });
 
     // In My Sights - see updatedShiftDataset.inMySightsAimEdgeAvailable's own comment above.
     // "Instead of the normal benefits of Aim" - suppresses the ordinary Aim shiftUp just below
@@ -9005,14 +9147,6 @@ export class Dice {
 
       let newEnergonValue = actor.system.energon.normal.value - 1;
 
-      // Fuel Efficient - see FUEL_EFFICIENT_ID's own comment above.
-      if (actorHasPerk(actor, FUEL_EFFICIENT_ID)) {
-        const fuelEfficientRoll = await new Roll('1d4').evaluate();
-        if (fuelEfficientRoll.total == 4) {
-          newEnergonValue += 1;
-        }
-      }
-
       // Energon Efficiency - see ENERGON_EFFICIENCY_ID's own comment above.
       if (actorHasPerk(actor, ENERGON_EFFICIENCY_ID) && actor.system.energon.normal.value == 1) {
         const energonEfficiencyRoll = await new Roll('1d6').evaluate();
@@ -9021,7 +9155,15 @@ export class Dice {
         }
       }
 
-      await actor.update({ 'system.energon.normal.value': newEnergonValue });
+      // Better As One (Enigma of Combination p.34): "you may spend 1 Energon Point from your personal
+      // Energon pool to give a combined form you are a component of the normal ↑1 bonus to a Skill Test
+      // (instead of spending from the combined form's Energon pool, if any)."
+      const donor = !(actor.system.energon?.normal?.value > 0) ? betterAsOneDonor(actor) : null;
+      if (donor) {
+        await payBetterAsOne(donor);
+      } else {
+        await actor.update({ 'system.energon.normal.value': newEnergonValue });
+      }
     }
 
     if (skillRollOptions.akimbo) {
@@ -9123,6 +9265,8 @@ export class Dice {
 
       if (game.combat) {
         await markUsedThisEncounter(actor, WORTH_A_SHOT_COMBAT_FLAG);
+      } else {
+        await markUsedThisScene(actor, WORTH_A_SHOT_SCENE_FLAG);
       }
     }
 
@@ -10088,9 +10232,15 @@ export class Dice {
     // parent-weapon-trait check Piercing Shot's identical sniper-trait clause already establishes,
     // gated on the actor's own already-resolved Edge (skillRollOptions.edge, not just the
     // automatic combatModifiers.edge) so it also picks up Edge from skill training/Essence shifts.
-    const rollsThreeD20 = item?.type == 'weaponEffect' && item.system.classification.style != 'melee'
+    const rollsThreeD20 = (item?.type == 'weaponEffect' && item.system.classification.style != 'melee'
       && skillRollOptions.edge && actorHasPerk(actor, KILL_SHOT_ID)
-      && this._getParentWeapon(actor, item)?.system.traits.includes('sniper');
+      && this._getParentWeapon(actor, item)?.system.traits.includes('sniper'))
+      // Precision is Perfection (Intercontinental Adventures, Martial Artist, 17th level, p.13):
+      // "when making a melee Attack with a Silent Martial Arts weapon when you have an Edge, you may
+      // roll a third d20 and choose the highest among them."
+      || (item?.type == 'weaponEffect' && item.system.classification.style == 'melee' && skillRollOptions.edge
+        && actorHasPerk(actor, RIDER.precisionIsPerfection)
+        && ['silent', 'martialArts'].every(trait => this._getParentWeapon(actor, item)?.system.traits?.includes(trait)));
 
     // Dependable/Old Reliable/Legendary Dependability - see DEPENDABLE_ID's/OLD_RELIABLE_ID's own
     // comments above. Edge/Snag is finally resolved by this point (skillRollOptions.edge/snag,
@@ -10139,10 +10289,13 @@ export class Dice {
     // itself is the actor's own current Intimidation shift, resolved here. An untrained
     // Intimidation (d20) contributes nothing - a d20 isn't a Skill Die.
     const rumbleIntimidationShift = actor.getRollData().skills.intimidation?.shift;
-    const rumbleBonusDie = combatModifiers.rumbleInTheJungleEligible
+    const rumbleBonusDie = (combatModifiers.rumbleInTheJungleEligible
       && rumbleIntimidationShift && rumbleIntimidationShift != 'd20'
       ? rumbleIntimidationShift
-      : null;
+      : null)
+      // Or a bonus Skill Die an extension added from the dialog (Wild Idea -
+      // helpers/extensions/qualify2/old-hand.mjs).
+      ?? skillRollOptions.extBonusPoolDie ?? null;
 
     let formula = this._getFormula(
       isSpecialized, skillRollOptions, finalShift, Number(modifier), floorD20At10, rollsThreeD20, flatD20Value, flatBothD20s,
@@ -10255,10 +10408,23 @@ export class Dice {
         const { storyPointBoost } = defenseChoice;
         let resolvedDefenseType = defenseChoice.defenseType;
 
+        // Ballistic at long range, and the Grapple trait ("always target Evasion") - weapon-traits.mjs.
+        // Before Fly In The Future and Scramble below, which a Perk-dictated Defense beats.
+        const traitWeapon = item?.type == 'weaponEffect' ? this._getParentWeapon(actor, item) : null;
+        if (isBallisticLongRange(actor, item, traitWeapon, token)) {
+          resolvedDefenseType = 'toughness';
+        }
+
+        if (traitWeapon?.system?.traits?.includes('grapple')) {
+          resolvedDefenseType = 'evasion';
+        }
+
         // Fly In The Future - see helpers/evasive-maneuvers.mjs's own doc comment. RAW forces
         // Evasion "instead of Toughness" specifically, so it overrides the defender's own choice
         // only when that choice was Toughness - any other Defense they pick stands.
-        if (resolvedDefenseType == 'toughness' && isEvasiveManeuversActive(token.actor)) {
+        // Anti-Air Combat Training (Quartermaster's Guide p.28): "When targeting an air vehicle that has
+        // Evasive Maneuvers, you can ignore this power."
+        if (resolvedDefenseType == 'toughness' && isEvasiveManeuversActive(token.actor) && !actorHasTrait(actor, ANTI_AIR_COMBAT_TRAINING)) {
           resolvedDefenseType = 'evasion';
         }
 
@@ -10277,9 +10443,25 @@ export class Dice {
           resolvedDefenseType = 'toughness';
         }
 
-        const deflectiveReduction = isPenetratingRoundsAttack && resolvedDefenseType == 'toughness'
+        // Superstructure (Across the Stars p.87): "All Attacks target its Toughness Defense, regardless of
+        // source."
+        if (token.actor?.system?.traits?.superstructure) {
+          resolvedDefenseType = 'toughness';
+        }
+
+        // Armor Piercing (the weapon trait): "Attacks ignore deflective bonuses to Toughness" - the same
+        // reduction Penetrating Rounds already makes. Ram Cone grants it to Alt Mode rams.
+        const traitArmorPiercing = !!traitWeapon?.system?.traits?.includes('armorPiercing') || ramConeAltAttack(actor, item);
+        const deflectiveReduction = (isPenetratingRoundsAttack || traitArmorPiercing) && resolvedDefenseType == 'toughness'
           ? this._getDeflectiveArmorToughness(token.actor)
           : 0;
+        // Void (Across the Stars p.79): "always ignores any armor bonuses to Toughness".
+        const voidIgnoresArmor = resolvedDefenseType == 'toughness'
+          && (item?.system?.damageType == 'void' || !!traitWeapon?.system?.traits?.includes('void'));
+        // Computerized battledress: "Electromagnetic weapons ignore this battledress' bonus to Evasion."
+        const computerizedArmorReduction = resolvedDefenseType == 'evasion'
+          && (item?.system?.damageType == 'emp' || !!traitWeapon?.system?.traits?.includes('electromagnetic'))
+          ? computerizedArmorEvasion(token.actor) : 0;
 
         // Anti-Tank (Weapon Effects and Traits, p.106) - a CORE WEAPON TRAIT, not a Perk: "attacks
         // ignore plating bonuses to Toughness." The exact sibling of Armor Piercing ("ignore
@@ -10294,7 +10476,7 @@ export class Dice {
         // Read off the PARENT WEAPON rather than the weaponEffect: this is a weapon trait, and
         // Armor Piercing is only different because it has its own dedicated schema field.
         const antiTankReduction = resolvedDefenseType == 'toughness'
-          && this._getParentWeapon(actor, item)?.system?.traits?.includes('antiTank')
+          && (this._getParentWeapon(actor, item)?.system?.traits?.includes('antiTank') || ramConeAltAttack(actor, item))
           ? this._getPlatingArmorToughness(token.actor)
           : 0;
 
@@ -10370,12 +10552,13 @@ export class Dice {
           ? 1 : 0;
 
         let difficulty = getDefenseValue(token.actor, resolvedDefenseType, {
-          ignoreArmor: drivingStrikeIgnoreArmor,
+          ignoreArmor: drivingStrikeIgnoreArmor || voidIgnoresArmor,
           ignoreArmorPoints: penetratingAimIgnorePoints + metallikatoIgnorePoints,
           ignoreShield: hasBypassingWeapon,
         })
           + getShieldUpgradeBonus(token.actor, resolvedDefenseType)
           - deflectiveReduction
+          - computerizedArmorReduction
           - antiTankReduction
           - titanClassReduction
           + defendBonus
@@ -10429,15 +10612,23 @@ export class Dice {
         // Scapegoat - see SCAPEGOAT_ID's own comment above. Swaps between Willpower and Cleverness
         // rather than substituting Evasion in from outside, but otherwise the same shape as
         // Psychological Warfare just above.
+        let scapegoatSwapped = false;
         if (
           ['willpower', 'cleverness'].includes(resolvedDefenseType)
           && actorHasPerk(token.actor, SCAPEGOAT_ID)
+          && getUses(token.actor, 'scapegoatSwap', 'scene') < 1
         ) {
           const swappedDefense = resolvedDefenseType == 'willpower' ? 'cleverness' : 'willpower';
           const swappedDifficulty = getDefenseValue(token.actor, swappedDefense, {
             ignoreArmor: drivingStrikeIgnoreArmor,
           }) + getShieldUpgradeBonus(token.actor, swappedDefense);
-          difficulty = Math.max(difficulty, swappedDifficulty);
+          if (swappedDifficulty > difficulty) {
+            difficulty = swappedDifficulty;
+            scapegoatSwapped = true;
+            if (typeof token.actor.setFlag == 'function') {
+              await markUsed(token.actor, 'scapegoatSwap', { window: 'scene' });
+            }
+          }
         }
 
         // Evasive (Red Ninja Faction Perk, p.10) - see its own EVASIVE_IAF2_ID comment above. Same
@@ -10829,7 +11020,10 @@ export class Dice {
           // and Evasion (approximating "any Defenses that gained a bonus from It's Morphin Time!
           // armor") for a previously-hit target, same live, non-consumed shape as Grow's own bonus
           // just above (negative instead of positive).
-          difficulty += getNemesisDrainPenalty(token.actor);
+          // Only a Defense the Morphin armor actually raised (its per-Defense Morphed bonus).
+          if ((token.actor.system?.defenses?.[resolvedDefenseType]?.morphed ?? 1) > 0) {
+            difficulty += getNemesisDrainPenalty(token.actor);
+          }
 
           // Meat Shield - see helpers/meat-shield.mjs's own doc comment. +to BOTH Toughness and
           // Evasion (whichever of the temp/permanent halves is larger), same live, non-consumed
@@ -10912,6 +11106,12 @@ export class Dice {
           difficulty += 1;
         }
 
+        // On My Mark!, Suppressing Fire, Make an Opening, Pinpoint, Energic Shields, Bot-Hunter -
+        // helpers/target-riders.mjs#riderDefenseAdjust.
+        difficulty += riderDefenseAdjust(actor, token.actor, resolvedDefenseType, {
+          item, isAttack: item?.type == 'weaponEffect', pinpoint: Number(skillRollOptions.pinpointCount) || 0, difficulty,
+        });
+
         // Unseen Strike - see UNSEEN_STRIKE_ID's own comment above. Applied last, against the
         // fully-computed difficulty (including the target's own Phantom Suite bonus just above,
         // Shield Upgrade, banked bonuses, etc.) - "the target's Evasion Defense is halved" reads
@@ -10954,6 +11154,8 @@ export class Dice {
           // No Factor - see helpers/no-factor.mjs's own doc comment. Read per-target here, same
           // shape as targetUnconscious just above, for the multiplier 1->2 bump below.
           targetNoFactorFooled: isNoFactorFooled(actor, token.actor),
+          // Scapegoat's Hang-Up - helpers/target-riders.mjs#applyRollRiders.
+          ...(scapegoatSwapped ? { scapegoatSwapped } : {}),
         };
       }));
     } else if (dataset.dif) {
@@ -11890,8 +12092,15 @@ export class Dice {
       overriddenDamageType = 'void';
     } else if (isUnarmedAttack && isBlazingStrikesActive(actor)) {
       overriddenDamageType = 'fire';
+    } else if (isUnarmedAttack && isGremlinsMischiefActive(actor)) {
+      // Gremlins' Mischief - helpers/target-riders.mjs.
+      overriddenDamageType = 'emp';
     } else if (isUnarmedAttack && actorHasPower(actor, CRYOGENIC_TOUCH_ID)) {
       overriddenDamageType = 'cold';
+    } else if (isUnarmedAttack && isPointyActive(actor)) {
+      // Pointy (Dark Skies over Equestria, General Perk, p.21): "The weapon grants you ↑1 on attacks,
+      // and does Sharp damage."
+      overriddenDamageType = 'sharp';
     } else if (isUnarmedAttack && rolledSkill == 'finesse' && actor.system.isMorphed
       && isNinjaPowerActive(actor) && actorHasPerk(actor, NINJA_POWER_ID)) {
       // Ninja Power (PR CRB, General Perk, p.97) - see helpers/ninja-power.mjs's own doc comment.
@@ -12104,6 +12313,8 @@ export class Dice {
           ? (guardianStrikesForgoDamage || stickInTheSpokesForgoDamage || interdictionForgoDamage
             ? 0
             : (hasTitanBodyDamageFloor ? Math.max(item.system.damageValue, 3) : item.system.damageValue)
+              // Surging doubles the element damage (see surgingAvailable above).
+              * (skillRollOptions.applySurging ? 2 : 1)
               + damageBonusValue)
           : (authoredSpellDamage?.value ?? psychoanalystDamage?.value ?? coaxSurrenderDamage?.value ?? grinderDamage?.value ?? deceptiveWarfareDamage?.value ?? terrifyingPresenceDamage?.value ?? explosiveMorphDamage?.value ?? omegaEnhancementDamage?.value ?? menaceDamage?.value ?? humanBulletDamage?.value ?? electricDischargeDamage?.value ?? disintegrateDamage?.value ?? beamSpellDamage?.value ?? beamVolleyDamage?.value ?? kocFireballDamage?.value ?? powerBlastDamage?.value ?? morphblastDamage?.value ?? null),
         // Read by _rollSkillHelper to build each result's own damageBonusLabel - kept as the raw
@@ -12563,6 +12774,19 @@ export class Dice {
         // Rouse (GI Joe CRB, Officer base, 1st level, p.85) - see helpers/rouse.mjs's own doc
         // comment. Same synthetic-dataset-flag shape as Exploit Weakness above.
         isRouseAttempt: !!dataset.isRouseAttempt,
+        // The weapon's traits, for the on-hit trait riders (_applyTraitRiders).
+        weaponTraits: item?.type == 'weaponEffect' ? [...(this._getParentWeapon(actor, item)?.system?.traits ?? [])] : [],
+        attackStyle: item?.type == 'weaponEffect' ? item.system.classification?.style ?? null : null,
+        // Bewildering and friends - see the criticalOptions block in _rollSkillHelper.
+        critEssenceOptions: item?.type == 'weaponEffect' ? getCritEssenceOptions(this._getParentWeapon(actor, item)) : [],
+        // What helpers/target-riders.mjs#applyRollRiders needs once the dice land.
+        riderContext: buildRiderContext(actor, item, dataset, skillRollOptions, combatModifiers.riderConsumes),
+        // The Defense the attack itself names - Unstoppable Force.
+        suggestedDefenseType: item?.system?.defenseType ?? null,
+        // Surging (Cobra Codex p.97) - the doubled element damage's self-hit on a natural 1.
+        surging: !!skillRollOptions.applySurging,
+        // Laughtracting (MLP CRB, Spirit of Laughter, p.86) - see helpers/action-perks.mjs.
+        isLaughtractingAttempt: !!dataset.isLaughtracting,
         // Rousing Comeback (GI Joe CRB, Officer base, 11th level, p.86) - see
         // helpers/rousing-comeback.mjs's own doc comment. Same synthetic-dataset-flag shape as
         // Rouse just above.
@@ -12769,6 +12993,8 @@ export class Dice {
         // can read it back off the posted message's flags, the same "computed once, read from
         // context" shape notSnagged/isPowerWeaponAttack/rollFailed already establish.
         smallerTarget: !!combatModifiers.exterminatorEligible,
+        // All Too Predictable - helpers/reroll.mjs's REROLL_CONDITIONS.vsPrimaryQuarry.
+        ...(isVsPrimaryQuarry(actor, game.user.targets.first()?.actor) ? { vsPrimaryQuarry: true } : {}),
         // Spite (Beneath the Helmet, Dark Ranger, 2nd level, p.39) - see helpers/spite.mjs's own
         // doc comment and chat.mjs#addSpiteButton for why this needs to be recognized from the
         // posted message itself (a reactive, post-miss trigger, not a pre-roll checkbox). Only
@@ -12903,7 +13129,7 @@ export class Dice {
    *     function }
    * @private
    */
-  _getAutomaticCombatModifiers(actor, item, rolledEssence, rolledSkill) {
+  _getAutomaticCombatModifiers(actor, item, rolledEssence, rolledSkill, rollDataset = {}) {
     let shiftUp = 0;
     let shiftDown = 0;
     let edge = false;
@@ -12955,6 +13181,92 @@ export class Dice {
     };
 
     const selfStatuses = actor.statuses;
+
+    // What the vehicle the roller is crewing (or is) adds - Racing Stripes, LIDAR, Onboard GPS, NOD
+    // Viewscreens, Stealthy... (helpers/vehicle-upgrades.mjs). A Nameplate bonus is spent here.
+    const crewedVehicleToken = (getCrewedVehicle(actor)?.vehicle ?? (actor.type == 'vehicle' ? actor : null))?.getActiveTokens?.()?.[0];
+    for (const source of crewSources(actor, rolledSkill, item, { inRoughTerrain: !!crewedVehicleToken && isInRoughTerrain(crewedVehicleToken.document) })) {
+      shiftUp += source.shiftUp;
+      shiftDown += source.shiftDown;
+      edge ||= source.edge;
+      snag ||= source.snag;
+      addSource(`vehicle-${source.id}`, source.label, source);
+      if (source.consume) {
+        const vehicle = getCrewedVehicle(actor)?.vehicle ?? actor;
+        vehicle.unsetFlag?.('essence20', source.consume);
+      }
+    }
+
+    // Ramshackle (Intercontinental Adventures p.62): "If the driver is not Qualified to drive
+    // Ramshackle vehicles, they suffer a Snag on Driving Skill Tests unless they succeed at a DIF 5
+    // Streetwise Skill Test first." Qualification isn't tracked, so it's offered - set the radio back
+    // to Normal when qualified or after the Streetwise test.
+    if (rolledSkill == 'driving' && getCrewedVehicle(actor)?.vehicle?.system?.traits?.ramshackle) {
+      snag = true;
+      addSource('ramshackle', this._localize('E20.VehicleTraitRamshackle'), { snag: true });
+    }
+
+    // Boarder (weapon-traits.mjs) - boarding a vehicle.
+    if ((rolledSkill == 'athletics' || rolledSkill == 'acrobatics') && hasBoarder(actor)) {
+      edge = true;
+      addSource('boarder', this._localize('E20.UpgradeBoarder'), { edge: true });
+    }
+
+    // Battledress without the Silent trait, and My Little Pony's Light Armor (weapon-traits.mjs).
+    if (rolledSkill == 'infiltration') {
+      const noisy = noisyArmorPenalty(actor);
+      if (noisy) {
+        shiftDown += noisy;
+        addSource('noisyArmor', this._localize('E20.ArmorNotSilent'), { shiftDown: noisy });
+      }
+    }
+
+    const lightArmor = lightArmorPenalty(actor, rolledSkill);
+    if (lightArmor) {
+      shiftDown += lightArmor;
+      addSource('mlpLightArmor', this._localize('E20.ArmorLightPenalty'), { shiftDown: lightArmor });
+    }
+
+    // Ram Cone - the Bot Mode unarmed Blunt attack loses its ↓1.
+    if (ramConeBotUnarmed(actor, item, item?.type == 'weaponEffect' ? this._getParentWeapon(actor, item) : null)) {
+      shiftUp += 1;
+      addSource('ramCone', this._localize('E20.GearRamCone'), { shiftUp: 1 });
+    }
+
+    // HUD (Cobra Codex, armor upgrade, p.101): ↑1 to the chosen skill until the end of the turn it was
+    // switched on (helpers/weapon-perk-uses.mjs).
+    if (rolledSkill && getHudSkill(actor) == rolledSkill) {
+      shiftUp += 1;
+      addSource('hud', this._localize('E20.UpgradeHud'), { shiftUp: 1 });
+    }
+
+    // Chrono-Trigger (A Jump Through Time p.69): "Multiple Attacks (3, ↓2)" - three attacks per
+    // Attack action (helpers/action-perks.mjs), each at ↓2. Its own source, so a single ordinary shot
+    // can switch it off in the Roll Options Dialog.
+    if (item?.type == 'weaponEffect' && hasChronoTrigger(this._getParentWeapon(actor, item))) {
+      shiftDown += 2;
+      addSource('chronoTrigger', this._localize('E20.UpgradeChronoTrigger'), { shiftDown: 2 });
+    }
+
+    // Ground and Pound (Hawk's Personnel Files, p.174): "each Attack Skill Test suffers a Downshift for
+    // each attack that came before it in this turn." The ledger counts the Free-action attacks it
+    // paid for, this one included.
+    if (item?.type == 'weaponEffect' && isGroundAndPoundActive(actor) && !this._getParentWeapon(actor, item)) {
+      const earlier = Math.max(0, (getLedger(actor).perkUses?.groundAndPound ?? 0) - 1);
+      if (earlier) {
+        shiftDown += earlier;
+        addSource('groundAndPound', findSourced(actor, ACTION_PERK_IDS.groundAndPound)?.name ?? 'Ground and Pound', { shiftDown: earlier });
+      }
+    }
+
+    // Bracing (GI Joe CRB p.194): "Bracing grants a ↑1 shift when attacking multiple targets with a
+    // ranged weapon." Braced by the Brace action, a bipod, or being Prone.
+    if (item?.type == 'weaponEffect' && item.system.classification?.style != 'melee'
+      && isMultipleTargetsWeapon(actor, item) && isBraced(actor)) {
+      shiftUp += 1;
+      addSource('braced', this._localize('E20.ActionBrace'), { shiftUp: 1 });
+    }
+
     if (selfStatuses.has('impaired')) {
       shiftDown += 1;
       addSource('impaired', this._localize('E20.StatusImpaired'), { shiftDown: 1 });
@@ -14155,9 +14467,36 @@ export class Dice {
          wrong about darkness, cover and every Perk that grants awareness. The Snag annotates
          the Roll Options Dialog with its own name, so a GM ruling the defender never saw this
          one coming just puts the radio back to Normal. */
-      if (isAttack && target.statuses?.has(DEFENDING_STATUS)) {
+      // Vehicle Upgrades and traits against the attacker - Ablative Armor, Spiked, JAFF, Shielded, a
+      // Tinted Canopy over an occupant (helpers/vehicle-upgrades.mjs).
+      if (isAttack) {
+        const attackerToken = actor.getActiveTokens?.()?.[0];
+        const adjacent = !!attackerToken && !!targetToken && !!canvas?.grid
+          && canvas.grid.measurePath([attackerToken.center, targetToken.center]).distance <= 5;
+        const defenderMods = defenderSources(actor, item, target, {
+          weaponTraits: this._getParentWeapon(actor, item)?.system?.traits ?? [],
+          melee: item.system.classification?.style == 'melee',
+          adjacent,
+        });
+        for (const source of defenderMods) {
+          shiftDown += source.shiftDown ?? 0;
+          snag ||= !!source.snag;
+          sources.push({ id: `vehicle-${source.id}`, label: source.label, shiftUp: 0, shiftDown: source.shiftDown ?? 0, edge: false, snag: !!source.snag, declinedDamage: source.declinedDamage ?? null });
+        }
+
+        spendDefenderSources(target, defenderMods);
+      }
+
+      if (isAttack && target.statuses?.has(DEFENDING_STATUS) && !ignoresDefend(this._getParentWeapon(actor, item))) {
         snag = true;
         addSource('defending', this._localize('E20.StatusDefending'), { snag: true });
+      }
+
+      // Energy (PR CRB): "Energy weapons gain ↑1 on attacks against all Threats in their grown form."
+      if (item?.type == 'weaponEffect' && this._getParentWeapon(actor, item)?.system?.traits?.includes('energy')
+        && isGrownThreat(target)) {
+        shiftUp += 1;
+        addSource('energyVsGrown', this._localize('E20.WeaponTraitEnergy'), { shiftUp: 1 });
       }
 
       // Retrogen - see helpers/retrogen.mjs's own doc comment. Automatic only when the target
@@ -15448,6 +15787,15 @@ export class Dice {
 
         shiftDown += coverShiftDown;
         addSource('cover', this._localize('E20.StatusCover'), { shiftDown: coverShiftDown });
+
+        // Thermal Scope / Smart Scope (p.131/153): the weapon "ignores concealment and other
+        // penalties for firing through smoke or darkness". Smoke and a wall are both Cover here, so
+        // the scope hands the penalty back as its own source - untick it when the Cover is solid.
+        const scopedWeapon = this._getParentWeapon(actor, item);
+        if (coverShiftDown && (hasUpgrade(scopedWeapon, UPGRADE.thermalScope) || hasUpgrade(scopedWeapon, UPGRADE.smartScope))) {
+          shiftUp += coverShiftDown;
+          addSource('scopeThroughSmoke', this._localize('E20.UpgradeScopeSmoke'), { shiftUp: coverShiftDown });
+        }
       }
 
       // Dig In (Decepticon Directive Raider, Siegemaster Focus, 10th level, p.64): "while dug in,
@@ -15643,7 +15991,9 @@ export class Dice {
         if (actorHasPerk(actor, VANTAGE_POINT_ID)) {
           const attackerElevation = attackerToken.document?.elevation ?? 0;
           const targetElevation = targetToken.document?.elevation ?? 0;
-          if (attackerElevation - targetElevation >= 30) {
+          // "...or from within an area defined by the Eye For Appraisal Role Perk" - the spot picked
+          // when the target was appraised (helpers/eye-for-appraisal.mjs).
+          if (attackerElevation - targetElevation >= 30 || isInAppraisedArea(actor, target, attackerToken)) {
             edge = true;
             addSource('vantagePoint', findPerk(actor, VANTAGE_POINT_ID)?.name ?? 'Vantage Point', { edge: true });
           }
@@ -15798,7 +16148,10 @@ export class Dice {
       // Trait's own clause, not built - no Active Effect anywhere in this codebase currently
       // grants a Computerized Vehicle a bonus to Evasion for this to strip, so there's nothing to
       // ignore yet.
-      if (item.system.damageType == 'emp') {
+      // An upgrade (Galvanized, Disruptor, Electromagnetic Pulse Generator) makes the weapon
+      // Electromagnetic through its trait, with its own damage type left alone.
+      if (item.system.damageType == 'emp'
+        || this._getParentWeapon(actor, item)?.system.traits?.includes('electromagnetic')) {
         if (target.system.traits?.computerized) {
           shiftUp += 3;
           addSource('electromagneticVsComputerized', this._localize('E20.DamageEmp'), { shiftUp: 3 });
@@ -16054,7 +16407,28 @@ export class Dice {
       }
     }
 
+    // Per-target modifiers, stances, marks and nearby devices - helpers/target-riders.mjs.
+    const riders = rollRiderSources(actor, target, {
+      item, rolledSkill, rolledEssence, isAttack, isMelee, isShove: !!rollDataset?.isShove, pendingShiftDown: shiftDown - shiftUp,
+      concentratedFire: !!rollDataset?.concentratedFire, dataset: rollDataset,
+    });
+    for (const source of [...riders.sources, ...scarefyingSources(actor, rolledSkill)]) {
+      shiftUp += source.shiftUp;
+      shiftDown += source.shiftDown;
+      edge ||= source.edge;
+      snag ||= source.snag;
+      addSource(source.id, source.label, source);
+    }
+
+    // Fanatic - checked last, against everything above.
+    const fanatic = fanaticCap(actor, shiftUp, shiftDown);
+    if (fanatic) {
+      shiftUp += fanatic.shiftUp;
+      addSource(fanatic.id, fanatic.label, fanatic);
+    }
+
     return {
+      ...(riders.consumes.length ? { riderConsumes: riders.consumes } : {}),
       shiftUp, shiftDown, edge, snag, debilitatedConsumed, enemyNumberOneTankId, tooCloseForMinimumRange,
       pendingBonusesToClear, bonusDie, forcedMiss, moveLikeASongTriggered, spottedTarget, eyeForAppraisalTarget,
       projectileDancerTargetToMark, sources, zordbaneDamageBonus, breakerBarDamageBonus, negavatorBeamDamageBonus, oorahDamageBonus, goinHeelsDamageBonus, isCatchOffGuardAttempt, rumbleInTheJungleEligible,
@@ -16744,6 +17118,86 @@ export class Dice {
    * @param {Object} checkContext   Its own damageType field, set by rollSkill() above.
    * @private
    */
+  async _applyTraitRiders(actor, results, checkContext) {
+    const hits = [];
+    for (const result of results ?? []) {
+      if (result.success && result.targetUuid) {
+        const target = await fromUuid(result.targetUuid);
+        if (target) {
+          hits.push(target);
+        }
+      }
+    }
+
+    if (!hits.length) {
+      return;
+    }
+
+    const traits = checkContext.weaponTraits ?? [];
+    // Grapple (Quartermaster's Guide p.33): "On a successful attack, the target gains the Grappled
+    // condition." A Grapple effect does the same.
+    if (traits.includes('grapple') || checkContext.damageType == 'grapple') {
+      for (const target of hits) {
+        await target.toggleStatusEffect('grappled', { active: true });
+      }
+    }
+
+    // Blinding (Quartermaster's Guide p.33): "A target hit with this effect is blind until the end
+    // of their next turn."
+    if (traits.includes('blinding') && checkContext.damageType != 'blindingBlast') {
+      for (const target of hits) {
+        await applyTimedCondition(target, 'blinded', 1);
+      }
+    }
+
+    // Maneuver (GI Joe CRB p.148): "This weapon can be used equally well to grapple, shove, or trip a
+    // target." Asked once the attack has hit.
+    if (checkContext.damageType == 'maneuver') {
+      // Snatch (Ferocious Fighters, General Perk, p.37): "When using an attack's Maneuver effect, add
+      // disarm to your list of Maneuver options... If you succeed at disarming a weapon, it lands in
+      // a random space within your target's reach."
+      const canDisarm = actorHasPerk(actor, RIDER.snatch);
+      const choice = await foundry.applications.api.DialogV2.wait({
+        window: { title: this._localize('E20.DamageManeuver') },
+        classes: ["window-app", "e20-window"],
+        content: `<p>${this._localize('E20.ManeuverPrompt', { names: hits.map(t => t.name).join(', ') })}</p>`,
+        buttons: [
+          { action: 'grapple', label: this._localize('E20.ManeuverGrapple') },
+          { action: 'shove', label: this._localize('E20.ManeuverShove') },
+          { action: 'trip', label: this._localize('E20.ManeuverTrip') },
+          ...(canDisarm ? [{ action: 'disarm', label: this._localize('E20.ManeuverDisarm') }] : []),
+        ],
+        rejectClose: false,
+      });
+      if (choice == 'grapple' || choice == 'trip') {
+        for (const target of hits) {
+          await target.toggleStatusEffect(choice == 'grapple' ? 'grappled' : 'prone', { active: true });
+        }
+      }
+
+      // A shove moves the target "directly away from you a distance equal to your natural Reach"
+      // (GI Joe CRB p.118) - helpers/forced-movement.mjs.
+      if (choice == 'shove') {
+        for (const target of hits) {
+          await pushActor(target, actor, 5);
+        }
+      }
+
+      if (choice == 'disarm') {
+        for (const target of hits) {
+          await disarm(actor, target, { maxHands: 2, source: findPerk(actor, RIDER.snatch)?.name ?? 'Snatch' });
+        }
+      }
+
+      if (choice) {
+        this._chatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor }),
+          content: this._localize(`E20.ManeuverDone.${choice}`, { name: actor.name, names: hits.map(t => t.name).join(', ') }),
+        });
+      }
+    }
+  }
+
   async _applyTripKnockdown(results, checkContext) {
     if (checkContext.damageType != 'knocProne') {
       return;
@@ -17064,11 +17518,24 @@ export class Dice {
 
     let [isCrit, isFumble] = _isCritIsFumble(roll.dice, canCritD2);
 
+    // Conditions applied from here on came from this roller - helpers/target-riders.mjs#noteRoller.
+    noteRoller(actor);
+
     // Jack Of All Trades (GI Joe CRB, Undercover Agent Focus, p.76) - see
     // updatedShiftDataset.jackOfAllTradesAvailable's own comment above. "You cannot crit on this
     // d4" overrides an otherwise-genuine Critical Success, the same "mutate isCrit after the fact"
     // idiom Time Traveler's own Hang-Up just below already uses for the opposite (widening Fumble).
     if (checkContext.suppressCrit) {
+      isCrit = false;
+    }
+
+    // Consistent - see SILVER_MEDAL_SYNDROME_ID's own comment above. Asked before anything is
+    // built from the Critical Success, so giving it up really does take it away.
+    let consistentDowngrade = false;
+    if (actorHasPerk(actor, SILVER_MEDAL_SYNDROME_ID)
+      && (isCrit || (checkContext.entries ?? []).some(entry => entry.difficulty && computeMultiplier(roll.total, entry.difficulty) >= 2))
+      && await askConsistent(actor)) {
+      consistentDowngrade = true;
       isCrit = false;
     }
 
@@ -17087,6 +17554,15 @@ export class Dice {
       if (d20Pool?.values.some(value => value === 1 || value === 2)) {
         isFumble = true;
       }
+    }
+
+    // Surging - "if you attack and you roll a 1 on your d20, you suffer the attack's effect."
+    if (checkContext.surging && roll.dice.find(pool => pool.faces === 20)?.values.includes(1) && checkContext.damageValue) {
+      await applyDamage(actor, checkContext.damageValue, checkContext.damageType);
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        content: this._localize('E20.SurgingBackfire', { name: actor.name, damage: checkContext.damageValue }),
+      });
     }
 
     // Cruel Warlord (Finster's Monster-Matic Cookbook, 20th level, p.284): "Whenever you Fumble a
@@ -17130,7 +17606,15 @@ export class Dice {
     // applyDamage's own Immunity handling already zeroes an immune attacker's own self-hit, which
     // is the closest this codebase gets. See checkContext.temperamentalWeaponName's own comment
     // (rollSkill above) for why the weapon/upgrade-trait lookup itself happens there, not here.
-    if (isFumble && checkContext.temperamentalWeaponName) {
+    // Field Test Expert (Cobra Codex p.80): once per combat, that Temperamental Fumble is only a failure.
+    const fieldTested = isFumble && checkContext.temperamentalWeaponName && actorHasTrait(actor, TRAIT_PERK.fieldTestExpert)
+      && getUses(actor, 'fieldTestExpert', 'encounter') < 1;
+    if (fieldTested) {
+      await markUsed(actor, 'fieldTestExpert', { window: 'encounter' });
+      this._chatMessage.create({ speaker, content: this._localize('E20.FieldTestExpertSaved', { name: actor.name }) });
+    }
+
+    if (isFumble && checkContext.temperamentalWeaponName && !fieldTested) {
       await applyDamage(actor, checkContext.damageValue || 0, checkContext.damageType);
       this._chatMessage.create({
         speaker,
@@ -17171,6 +17655,37 @@ export class Dice {
           damageValue: altEffect.system.damageValue,
           damageType: altEffect.system.damageType,
           damageTypeLabel: this._localize(E20.damageTypes[altEffect.system.damageType]),
+        });
+      }
+
+      // Bewildering / Traumatic / Maiming / Surgical: "On a Critical Success, the weapon deals 1
+      // damage to the target's <Essence>" - offered alongside the usual choices, since "if this
+      // weapon has both ... the attacker chooses" (helpers/weapon-upgrades.mjs).
+      for (const option of checkContext.critEssenceOptions ?? []) {
+        criticalOptions.push({
+          key: `essence-${option.essence ?? option.defense}`,
+          label: option.source,
+          damageValue: 1,
+          damageType: 'special',
+          essence: option.essence ?? null,
+          // The Transformers versions damage a Defense instead (helpers/essence-damage.mjs).
+          defense: option.defense ?? null,
+          damageTypeLabel: option.defense
+            ? this._localize(E20.defenses?.[option.defense] ?? option.defense)
+            : this._localize(E20.essences?.[option.essence] ?? option.essence),
+        });
+      }
+
+      // Scramble Wave (Decepticon Directive, Inquisitor, 20th level, p.40): "Critical Effect: Target
+      // is Stunned until the end of their next turn" on all your attacks.
+      if (actor.items?.some?.(i => (i.flags?.core?.sourceId ?? i._stats?.compendiumSource) == WEAPON_PERK.scrambleWave)) {
+        criticalOptions.push({
+          key: 'scrambleWave',
+          label: findSourced(actor, WEAPON_PERK.scrambleWave)?.name ?? 'Scramble Wave',
+          damageValue: 1,
+          damageType: 'special',
+          status: 'stunned',
+          damageTypeLabel: this._localize('E20.StatusStunned'),
         });
       }
     }
@@ -17241,7 +17756,7 @@ export class Dice {
       // it's granted automatically whenever the actor's own roll crits (multiplier >= 2, this
       // system's own Degrees-of-Success definition of "Critical Success" - see Powerful
       // Suggestions' own comment above for why that's the right check here, not isCrit).
-      if (multiplier >= 2 && actorHasPerk(actor, SILVER_MEDAL_SYNDROME_ID)) {
+      if (consistentDowngrade) {
         silverMedalSyndromeTriggered = true;
       }
 
@@ -17261,6 +17776,15 @@ export class Dice {
         noFactorDisguiseBroken = true;
       }
 
+      // Better than the Best - helpers/extensions/gij3/dice-hooks.mjs. Before Consistent, so a
+      // Critical Success the player gave up stays given up.
+      multiplier = betterThanTheBestMultiplier(actor, roll, multiplier);
+
+      // Consistent - "treat it as a regular success".
+      if (consistentDowngrade) {
+        multiplier = Math.min(multiplier, 1);
+      }
+
       const success = multiplier > 0;
 
       // Retribution - see this function's own comment above for why the actual banking is
@@ -17274,12 +17798,15 @@ export class Dice {
       const canApplyDamage = success && entry.targetUuid && checkContext.damageValue;
       // Trigger Happy - an independent compare against the same roll total, not gated on
       // `success` above (RAW: "...in addition to their Toughness or Evasion").
+      // Seconds Between Click & Boom - a miss against the holder's Evasion has no effect at all
+      // (helpers/extensions/gij3/dice-hooks.mjs).
+      const missHasNoEffect = !success && !!entry.targetUuid && ignoresMissEffects(entry.targetUuid, entry.defenseType);
       const frightened = checkContext.triggerHappy && entry.targetUuid && entry.willpowerDifficulty != null
-        && computeMultiplier(roll.total, entry.willpowerDifficulty) > 0;
+        && !missHasNoEffect && computeMultiplier(roll.total, entry.willpowerDifficulty) > 0;
       // Explosive Aftershock - see isExplosiveAftershockAttack's own comment in rollSkill() above.
       // Same independent-compare shape as Trigger Happy's frightened just above.
       const explosiveAftershock = checkContext.isExplosiveAftershockAttack && entry.targetUuid
-        && entry.toughnessDifficulty != null && computeMultiplier(roll.total, entry.toughnessDifficulty) > 0;
+        && !missHasNoEffect && entry.toughnessDifficulty != null && computeMultiplier(roll.total, entry.toughnessDifficulty) > 0;
 
       return {
         name: entry.name,
@@ -17355,6 +17882,7 @@ export class Dice {
     await this._applyRazeAndRuinDamage(actor, results, checkContext);
     await this._applySmashDamage(actor, results, checkContext);
     await this._applyTripKnockdown(results, checkContext);
+    await this._applyTraitRiders(actor, results, checkContext);
     // Wrecker - see helpers/rough-terrain.mjs#applyWreckerRoughTerrain.
     await applyWreckerRoughTerrain(actor, results, checkContext);
     await this._applyBlindingBlast(results, checkContext);
@@ -17955,7 +18483,7 @@ export class Dice {
     // themselves" shape as Fluttery Wings/Lightning Speed just above.
     if ((checkContext.spellSourceId == SUMMON_ARMOR_ID || checkContext.spellSourceId == SUMMON_SHIELD_ID) && results[0]?.success) {
       const summonArmorTarget = game.user.targets.first()?.actor ?? actor;
-      await applySummonArmor(summonArmorTarget);
+      await applySummonArmor(summonArmorTarget, { rounds: checkContext.spellSourceId == SUMMON_SHIELD_ID ? 2 : null });
     }
 
     // Don't-Notice-Me-Field (MLP CRB, Superior Enchantment spell, p.137) - see
@@ -19026,8 +19554,9 @@ export class Dice {
           // narrating Disarmed/Silenced instead is free to do so by hand, the same "the fictional
           // framing is the player's own choice" idiom this project already applies to narrower
           // unenforceable qualifiers elsewhere.
+          // The choice itself - helpers/extensions/gij3/dice-hooks.mjs#takedownExpertChoice.
           if (actorHasPerk(actor, TAKEDOWN_EXPERT_ID)) {
-            await targetActor.toggleStatusEffect('immobilized', { active: true });
+            await takedownExpertChoice(actor, targetActor);
           }
         } else {
           await targetActor.toggleStatusEffect('grappled', { active: true });
@@ -19172,6 +19701,22 @@ export class Dice {
     // on this flat DIF 15 Persuasion Skill Test grants the Story Point.
     if (checkContext.isRouseAttempt && results.some(result => result.success) && canWriteStoryPoints()) {
       requestStoryPointGrant(actor);
+    }
+
+    // Laughtracting - see helpers/action-perks.mjs's own entry. Each creature it beat loses its Free
+    // actions (and, with Distraughter, its Move action) on its next turn.
+    if (checkContext.isLaughtractingAttempt) {
+      const block = getLaughtractingBlock(actor);
+      for (const result of results) {
+        if (!result.success || !result.targetUuid) {
+          continue;
+        }
+
+        const targetActor = await fromUuid(result.targetUuid);
+        if (targetActor) {
+          await setNextTurn(targetActor, { block }, findSourced(actor, ACTION_PERK_IDS.laughtracting)?.name ?? 'Laughtracting');
+        }
+      }
     }
 
     // Rousing Comeback (GI Joe CRB, Officer base, 11th level, p.86) - see
@@ -19417,7 +19962,7 @@ export class Dice {
           if (result.explosiveAftershock && result.targetUuid) {
             const targetActor = await fromUuid(result.targetUuid);
             if (targetActor) {
-              await applyExplosiveAftershockEffects(targetActor, effects);
+              await applyExplosiveAftershockEffects(targetActor, effects, actor);
             }
           }
         }
@@ -19778,6 +20323,9 @@ export class Dice {
     // be recognized from the posted message itself, same as rollFailed/Spite above - "successfully
     // inflicting damage" means at least one hit entry actually carries a nonzero damageValue, not
     // just a bare success (a pure-status Alternate Effect with damageValue 0 shouldn't qualify).
+    // Per-target riders, spells, saves and Use-button rolls - helpers/target-riders.mjs.
+    await applyRollRiders(actor, results, checkContext, { isCrit, isFumble });
+
     const dealtDamage = results.some(entry => entry.success && entry.damageValue > 0);
 
     // Xenotech Components (Across the Stars, Tools of the Trade, p.79): "Each Xenotech Component
@@ -19804,6 +20352,10 @@ export class Dice {
       // What each target was compared against, for chat.mjs#addDefenseBoostButton - "+1 to a
       // Defense after dice are rolled" only ever matters on a hit by exactly nothing, and that
       // is a fact about each target's own difficulty, which the card otherwise only prints.
+      // What kind of attack this was, for chat.mjs#onApplyDamage - the vehicle damage cuts that only
+      // count against Explosive or non-Element weapons (helpers/vehicle-upgrades.mjs).
+      attackStyle: checkContext.attackStyle ?? null,
+      attackTraits: checkContext.weaponTraits ?? [],
       checkResults: results.map(entry => ({
         targetUuid: entry.targetUuid, difficulty: entry.difficulty, success: entry.success,
         // Read by chat.mjs#onApplyDamage - check-card.hbs has no slot for a second damage type, so
@@ -19824,11 +20376,22 @@ export class Dice {
     // Gated on canWriteStoryPoints(): with nobody able to write the pool - no owner here, no GM
     // connected - a relayed grant would go nowhere, and a point that was never recorded is
     // worse than one the GM adds by hand later.
-    if (isFumble && results.length && fullRollContext.rollFailed && poolFor(actor) === 'story' && canWriteStoryPoints()) {
+    if (isFumble && results.length && fullRollContext.rollFailed && poolFor(actor) === 'story' && canWriteStoryPoints()
+      && !FUMBLE_STORY_POINT_SUPPRESSORS.some(fn => {
+        try {
+          return !!fn(actor, rollContext.skill);
+        } catch (error) {
+          return false;
+        }
+      })) {
       // It's Right There (WTNV Citizens' Guide, Outsider Origin Perk, p.30/32): "When you Fumble
       // during a Skill Test, you add 2 Story Points to the player pool instead of 1." A holder's
       // own bump to the base grant just above, rather than a second grant call.
-      await requestStoryPointGrant(actor, actorHasPerk(actor, ITS_RIGHT_THERE_ID) ? 2 : 1);
+      // Academic Studies (WTNV, Student Origin, p.30): "When you Fumble with that Skill, you add 2 Story
+      // Points to the player pool instead of 1."
+      const academic = findPerk(actor, ACADEMIC_STUDIES_ID)?.system?.choice;
+      const doubled = actorHasPerk(actor, ITS_RIGHT_THERE_ID) || (!!academic && academic == checkContext?.riderContext?.skill);
+      await requestStoryPointGrant(actor, doubled ? 2 : 1);
     }
 
     // The GM-side twin: "The GM's Story Point pool grows... If an NPC Critically Succeeds on a

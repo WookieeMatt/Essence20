@@ -400,7 +400,10 @@
 
 .essence20 .e20-check-card button,
 .essence20 .e20-reroll-button,
-.essence20 .e20-chat-action-button {
+.essence20 .e20-chat-action-button,
+/* Any other button a system chat card posts without a class of its own (many Perk and reaction
+   cards do) - left bare, it takes the host's button colours and its label only shows on hover. */
+.essence20 .message-content button:not([class]) {
   position: relative;
   display: block;
   width: 100%;
@@ -501,6 +504,39 @@
 
 // Post-roll buttons (chat.mjs#placeActionButton) share the reroll row's layout under the roll.
 .essence20 .e20-reroll-buttons,
+/* Group Skill Test card (helpers/group-tests.mjs): one row per participant, then the Perk buttons. */
+.essence20 .e20-group-test ul {
+  list-style: none;
+  margin: 6px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.essence20 .e20-group-test-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.essence20 .e20-group-test-name {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.essence20 .e20-group-test-row .e20-chat-action-button {
+  flex: 0 0 auto;
+  width: auto;
+  margin: 0;
+  padding: 4px 14px;
+}
+
+.essence20 .e20-group-test-result {
+  flex: 0 0 auto;
+  font-weight: 600;
+}
+
 .essence20 .e20-chat-action-buttons {
   display: flex;
   flex-direction: column;

@@ -1,6 +1,6 @@
 {
   "folder": "zBSg0VF3XHJzKerC",
-  "name": "Many-Armed (Common)",
+  "name": "Many-Armed (Common, Aquatic)",
   "type": "altMode",
   "_id": "wCu6HyM9dWB1XpV4",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
@@ -15,7 +15,7 @@
     "altModeFirepoints": 0,
     "altModeMovement": {
       "aerial": 0,
-      "aquatic": 0,
+      "aquatic": 40,
       "ground": 30
     },
     "altModesize": "common",

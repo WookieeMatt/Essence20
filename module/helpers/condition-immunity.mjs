@@ -33,6 +33,7 @@ const CONDITION_IMMUNITY_PERKS = [
   {
     // Stalk (GI Joe CRB, Predator base, 1st level, p.93): "any time you are in your environment
     // of expertise, you can not be surprised, and gain an Edge on Infiltration Skill Tests."
+    // (Its Infiltration Edge is helpers/extensions/gij3's, gated on the same environment check.)
     // The first Perk to key off the Surprised status, added the same day (helpers/config.mjs) -
     // before it there was no Condition for this clause to name.
     //

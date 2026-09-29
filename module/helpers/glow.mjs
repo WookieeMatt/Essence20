@@ -13,10 +13,25 @@ export function isGlowActive(actor) {
   return !!actor?.getFlag?.('essence20', GLOW_FLAG);
 }
 
+// "the equivalent light of a lantern (light for about 20ft all around)" - on the caster's token, and
+// put back the way it was when the spell ends.
+const GLOW_LIGHT = { bright: 20, dim: 20 };
+
 export async function applyGlow(actor) {
-  await actor.setFlag('essence20', GLOW_FLAG, true);
+  const token = actor?.getActiveTokens?.()?.[0]?.document;
+  const previous = token ? { bright: token.light?.bright ?? 0, dim: token.light?.dim ?? 0 } : null;
+  await actor.setFlag('essence20', GLOW_FLAG, previous ?? true);
+  if (token) {
+    await token.update({ 'light.bright': GLOW_LIGHT.bright, 'light.dim': GLOW_LIGHT.dim });
+  }
 }
 
 export async function removeGlow(actor) {
+  const previous = actor?.getFlag?.('essence20', GLOW_FLAG);
+  const token = actor?.getActiveTokens?.()?.[0]?.document;
+  if (token && typeof previous == 'object') {
+    await token.update({ 'light.bright': previous.bright ?? 0, 'light.dim': previous.dim ?? 0 });
+  }
+
   await actor.unsetFlag('essence20', GLOW_FLAG);
 }

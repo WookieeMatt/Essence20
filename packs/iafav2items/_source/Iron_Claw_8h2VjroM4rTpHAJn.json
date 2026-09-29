@@ -28,7 +28,7 @@
         "radius": 0,
         "range": {
           "min": null,
-          "reachMultiplier": 0,
+          "reachMultiplier": 1,
           "long": null,
           "value": null
         },
@@ -50,11 +50,33 @@
         "radius": 0,
         "range": {
           "min": null,
-          "reachMultiplier": 0,
+          "reachMultiplier": 1,
           "long": null,
           "value": null
         },
         "shiftDown": 1
+      },
+      "d21c": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.BCYK3w1QYgeyiz2r",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Iron Claw Maneuver Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
       }
     },
     "availability": "limited",

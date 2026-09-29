@@ -57,7 +57,10 @@ export async function applyBestowExpertise(targetActor, skill, name) {
   const existing = targetActor.system.skills[skill]?.specializations || {};
   const key = slugifySpecializationName(displayName, existing);
 
+  // It lasts the scene - helpers/extensions/mlp2 removes it when the GM starts a new one.
+  const bestowed = targetActor.flags?.essence20?.bestowedExpertise ?? [];
   await targetActor.update({
+    'flags.essence20.bestowedExpertise': [...bestowed, { skill, key }],
     [`system.skills.${skill}.specializations.${key}`]: {
       name: displayName,
       shift: targetActor.system.skills[skill].shift,

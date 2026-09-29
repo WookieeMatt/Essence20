@@ -1,4 +1,4 @@
-import { hasUsedThisTurn, markUsedThisTurn } from "./perks.mjs";
+import { actorHasPerk, hasUsedThisTurn, markUsedThisTurn } from "./perks.mjs";
 import { computeRestoreHealthDif, pickHealSkillTestAmount } from "./heal-skill-test.mjs";
 
 /**
@@ -20,6 +20,9 @@ import { computeRestoreHealthDif, pickHealSkillTestAmount } from "./heal-skill-t
  */
 export const PATCH_UP_ID = "Compendium.essence20.tf_crb.Item.Jlfb8iPvT7JFvcxv";
 const PATCH_UP_TURN_FLAG = 'patchUpUsedThisTurn';
+// Intensive (Medic, 17th level, p.81): "you are no longer limited in the number of times you can use
+// Patch Up on your turn."
+const INTENSIVE_ID = "Compendium.essence20.tf_crb.Item.lupxm8SNDLvbjoDt";
 const MAX_AMOUNT = 6;
 
 /**
@@ -57,7 +60,7 @@ async function pickPatchUpSkill() {
  * @returns {Boolean}
  */
 export function canUsePatchUp(actor) {
-  return !hasUsedThisTurn(actor, PATCH_UP_TURN_FLAG) && actor.system.energon?.normal?.value >= 1;
+  return (!hasUsedThisTurn(actor, PATCH_UP_TURN_FLAG) || actorHasPerk(actor, INTENSIVE_ID)) && actor.system.energon?.normal?.value >= 1;
 }
 
 /**

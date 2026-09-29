@@ -14,17 +14,62 @@
     "items": {},
     "canActivate": false,
     "choice": null,
-    "choiceType": "movement",
+    "choiceType": "altModeMovement",
     "hasChoice": true,
     "isRoleVariant": false,
-    "hasMorphedToughnessBonus": true,
+    "hasMorphedToughnessBonus": false,
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "influence",
     "version": "transformers",
     "value": 40
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.MoXpVD8zILQ5h7T8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "TrnsmtlTghD22aa1",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Transmetal Toughness",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "essence20",
+        "systemVersion": "6.0.0",
+        "createdTime": 1790658703429,
+        "modifiedTime": 1790658703429,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!MoXpVD8zILQ5h7T8.TrnsmtlTghD22aa1"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

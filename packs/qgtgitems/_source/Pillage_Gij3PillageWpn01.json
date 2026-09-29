@@ -1,0 +1,96 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Pillage",
+  "type": "weapon",
+  "_id": "Gij3PillageWpn01",
+  "img": "systems/essence20/assets/icons/weapons/brass-knuckles.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 25
+    },
+    "items": {
+      "gP01": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Gij3PillageFin01",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Pillage (Finesse)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "blunt",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "gP02": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Gij3PillageMgt01",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Pillage (Might)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "blunt",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "automatic",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Freebooter Focus, Pillage Perk",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "integrated"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "14.364",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790640000000,
+    "modifiedTime": 1790640000000,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!Gij3PillageWpn01"
+}

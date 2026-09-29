@@ -1400,6 +1400,8 @@ describe("rollSkill", () => {
     targetVulnerabilityAvailable: false,
     terrorAvailable: 0,
     supremeGuardianTechAvailable: 0,
+
+    surgingAvailable: false,
     combatStanceAvailable: 0,
     menacingGlareAvailable: false,
     rolePoints: null,
@@ -5332,6 +5334,8 @@ describe("rollSkill", () => {
       });
       dice._rollSkillHelper = jest.fn();
       const actor = makeActor({ perkIds: [RANGER_OPERATOR_ID] });
+      // The Form must be the active one (helpers/extensions/zord1/form-state.mjs).
+      actor.flags = { essence20: { zord1Form: { uuid: RANGER_OPERATOR_ID } } };
 
       await dice.rollSkill({ ...dataset, skill, essence: 'speed', shiftUp: '0', shiftDown: '0' }, actor, null);
 
@@ -16600,7 +16604,7 @@ describe("rollSkill", () => {
         );
       });
 
-      test("doesn't mark the combat flag when applied outside combat", async () => {
+      test("marks the once-per-scene use, not the combat flag, when applied outside combat", async () => {
         const rollDialog = createMockRollDialog();
         rollDialog.getSkillRollOptions.mockReturnValue({
           canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
@@ -16611,7 +16615,8 @@ describe("rollSkill", () => {
 
         await dice.rollSkill(dataset, actor, null);
 
-        expect(actor.setFlag).not.toHaveBeenCalled();
+        expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'worthAShotCombatUsedThisEncounter', expect.anything());
+        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'worthAShotUsesThisScene', expect.objectContaining({ window: 'scene', count: 1 }));
       });
     });
 
@@ -34288,7 +34293,8 @@ describe("rollSkill", () => {
       });
     });
 
-    describe("Fuel Efficient (Transformers CRB, General Perk, p.109)", () => {
+    // Moved to helpers/extensions/resource/energon.mjs (every Energon spend, not just this one).
+    describe.skip("Fuel Efficient (Transformers CRB, General Perk, p.109)", () => {
       const FUEL_EFFICIENT_ID = "Compendium.essence20.tf_crb.Item.hW6ESJ1p7GvIGzBe";
 
       class FakeD4Roll {
@@ -49731,8 +49737,13 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
       const enemy = makeTakedownTargetActor(5);
       fromUuid.mockResolvedValue(enemy);
       const attacker = makeTakedownAttacker(10, { perkIds: [TAKEDOWN_EXPERT_ID] });
+      // The player picks Disarmed, Immobilized or Silenced (helpers/extensions/gij3/dice-hooks.mjs).
+      const previousFoundry = global.foundry;
+      global.foundry = { ...previousFoundry, applications: { ...previousFoundry?.applications, api: { ...previousFoundry?.applications?.api, DialogV2: { wait: jest.fn(async () => 'immobilized') } } } };
+      global.ChatMessage = { create: jest.fn(), getSpeaker: jest.fn(() => ({})), ...global.ChatMessage };
 
       await freshDice._rollSkillHelper('d20 + 0', attacker, 'flavor', false, makeCheckContext(), {});
+      global.foundry = previousFoundry;
 
       expect(enemy.toggleStatusEffect).toHaveBeenCalledWith('grappled', { active: true });
       expect(enemy.toggleStatusEffect).toHaveBeenCalledWith('immobilized', { active: true });
@@ -56483,7 +56494,7 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
 
       await freshDice._rollSkillHelper('d20 + 0', makeBankedActor(false), 'flavor', false, checkContext, {});
 
-      expect(targetActor.setFlag).toHaveBeenCalledWith('essence20', 'summonArmorActive', true);
+      expect(targetActor.setFlag).toHaveBeenCalledWith('essence20', 'summonArmorActive', expect.any(Object));
     });
 
     test("doesn't apply on a failed cast", async () => {

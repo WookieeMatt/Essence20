@@ -28,7 +28,51 @@
         "radius": 0,
         "range": {
           "min": null,
-          "reachMultiplier": 0,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "d21a": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.E9rtUBRIgt039HZN",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Hobnailed Boot Sharp Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "d21b": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.4KC2IK7KNiyrWmQg",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Hobnailed Boot Maneuver Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
           "long": null,
           "value": null
         },

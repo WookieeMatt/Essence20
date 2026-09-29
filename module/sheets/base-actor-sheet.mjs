@@ -123,6 +123,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
       summonMegaWeapon: this.#onSummonMegaWeapon,
       summonZord: this.#onSummonZord,
+      summonContact: this.#onSummonContact,
       systemActorOpen: this.#onSystemActorOpen,
       systemActorsDelete: this.#onSystemActorsDelete,
       toggleAccordion: this.#toggleAccordion,
@@ -425,6 +426,12 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         const itemId = event.currentTarget.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
         const activating = !item.system.isActive;
+        if (activating) {
+          const { canActivatePersonalShield } = await import("../helpers/extensions/gij2/shield.mjs");
+          if (!canActivatePersonalShield(this.actor, item)) {
+            return;
+          }
+        }
 
         // Shield Modulation (Vanguard base, 13th level) - "when you activate your shield, choose
         // one damage type." See helpers/shield-modulation.mjs's own doc comment for why this has
@@ -444,6 +451,15 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         // just above. Only fires for the actor's own Personal Shield item specifically, not every
         // activatable rolePoints item.
         if (isPersonalShieldItem(item)) {
+          // "activating the shield requires a Standard action" (GI Joe CRB, Vanguard, p.108) - Quick
+          // Shield makes it a Free action (helpers/action-perks.mjs).
+          if (activating) {
+            const paid = await spend(this.actor, 'standard', { source: item.name, context: { kind: 'personalShield' } });
+            if (paid.blocked) {
+              return;
+            }
+          }
+
           await applyProtectorsShieldHealthBonus(this.actor, activating);
         }
 
@@ -1056,6 +1072,12 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     onSummonZord(target, this.document);
   }
 
+  /** Summon a Contact from the Contacts tab - helpers/contacts.mjs. */
+  static async #onSummonContact(event, target) {
+    const { onSummonContact } = await import("../helpers/contacts.mjs");
+    await onSummonContact(target, this.document);
+  }
+
   static #onSystemActorOpen(event, target) {
     onSystemActorOpen(target);
   }
@@ -1161,7 +1183,8 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       return;
     }
 
-    const result = await spend(this.actor, actionType, { source: game.i18n.localize(action.label) });
+    // The key lets a Perk make this action cheaper - see helpers/action-perks.mjs.
+    const result = await spend(this.actor, actionType, { source: game.i18n.localize(action.label), context: { key } });
     if (result.blocked && !result.cancelled) {
       ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
         name: this.actor.name,

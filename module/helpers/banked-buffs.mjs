@@ -1,3 +1,5 @@
+import { canUseActionPerk, isActionPerkUse, useActionPerk } from "./action-perks.mjs";
+import { spend } from "./action-economy.mjs";
 import {
   actorHasPerk, bankPendingBonus, clearPendingBonus, getPendingBonus, getUsesThisEncounter, getUsesThisScene,
   hasUsedThisEncounter, hasUsedThisRound, hasUsedThisTurn, markUsedThisEncounter, markUsedThisEncounterCount,
@@ -2388,6 +2390,10 @@ const IMMEDIATE_ALLY_PERKS = {
  */
 export function canUsePerk(item) {
   const actor = item?.parent;
+  if (isActionPerkUse(item)) {
+    return canUseActionPerk(item);
+  }
+
   // Despite the name, this (and onPerkUse below) also covers Relic Key - a `feature`-type Zord
   // Feature (helpers/relic-key.mjs), not a `perk` item, but the same "Use" control/button this
   // whole registry already renders generically for any item (collapsible-item-container-label-
@@ -3964,6 +3970,17 @@ export async function onPerkUse(item) {
     return;
   }
 
+  // Perks that hand out actions - Motivate, Adrenaline Surge, Ready for Action... See
+  // helpers/action-perks.mjs#ACTION_PERK_USES.
+  if (isActionPerkUse(item)) {
+    const message = await useActionPerk(item);
+    if (message) {
+      postPerkUseChatCard(actor, message);
+    }
+
+    return;
+  }
+
   if (isTeamBuffPerk(item)) {
     return onTeamBuffPerkUse(item, actor);
   }
@@ -4342,6 +4359,12 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == ROUSE_ID) {
+    // "As a Standard action" - Rousing Presence makes it a Move action (helpers/action-perks.mjs).
+    const paid = await spend(actor, 'standard', { source: item.name, context: { kind: 'rouse' } });
+    if (paid.blocked) {
+      return;
+    }
+
     await activateRouse(actor);
     return;
   }

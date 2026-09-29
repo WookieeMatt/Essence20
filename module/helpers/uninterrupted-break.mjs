@@ -1,3 +1,4 @@
+import { healEssenceDamage } from "./essence-damage.mjs";
 import { getNearbyAllyTokens } from "./allies.mjs";
 import { hasUsedThisEncounter, markUsedThisEncounter } from "./perks.mjs";
 import { requestStoryPointGrant } from "./story-points.mjs";
@@ -16,20 +17,19 @@ import { requestStoryPointGrant } from "./story-points.mjs";
  * than one shared gate that would wrongly block picking a still-unused benefit after another one
  * was already spent this scene.
  *
- * Only 2 of the 3 benefits are offered: "heal 1 point of Essence damage" is confirmed infra-
- * blocked - this codebase has no Essence-score damage application anywhere at all (the same gap
- * already found blocking Survivor's (PR CRB Influence Perk) identical "restore Essence" clause and
- * Plant Plasticity's (Technorganic Secrets) own rest-recovery clause) - matching this project's
- * own "don't offer a choice with nothing behind it" idiom (Grid Surge's own 4th option, etc.).
+ * Essence damage is how far an Essence sits below its max (helpers/essence-damage.mjs), so the
+ * third benefit heals one point of it for everyone.
  * "Yourself and your team" includes the granter (unlike One For All/Power Burst/Shining Leader's
  * own "your teammates" wording), so the heal broadcast uses includeSelf.
  */
 const UNINTERRUPTED_BREAK_HEAL_FLAG = 'uninterruptedBreakHealUsedThisEncounter';
 const UNINTERRUPTED_BREAK_STORY_POINT_FLAG = 'uninterruptedBreakStoryPointUsedThisEncounter';
+const UNINTERRUPTED_BREAK_ESSENCE_FLAG = 'uninterruptedBreakEssenceUsedThisEncounter';
 
 export function canUseUninterruptedBreak(actor) {
   return !hasUsedThisEncounter(actor, UNINTERRUPTED_BREAK_HEAL_FLAG)
-    || !hasUsedThisEncounter(actor, UNINTERRUPTED_BREAK_STORY_POINT_FLAG);
+    || !hasUsedThisEncounter(actor, UNINTERRUPTED_BREAK_STORY_POINT_FLAG)
+    || !hasUsedThisEncounter(actor, UNINTERRUPTED_BREAK_ESSENCE_FLAG);
 }
 
 /**
@@ -42,6 +42,10 @@ export async function pickUninterruptedBreakBenefit(actor) {
   const options = [];
   if (!hasUsedThisEncounter(actor, UNINTERRUPTED_BREAK_HEAL_FLAG)) {
     options.push(`<option value="heal">${game.i18n.localize('E20.UninterruptedBreakHealOption')}</option>`);
+  }
+
+  if (!hasUsedThisEncounter(actor, UNINTERRUPTED_BREAK_ESSENCE_FLAG)) {
+    options.push(`<option value="essence">${game.i18n.localize('E20.UninterruptedBreakEssenceOption')}</option>`);
   }
 
   if (!hasUsedThisEncounter(actor, UNINTERRUPTED_BREAK_STORY_POINT_FLAG)) {
@@ -86,6 +90,13 @@ export async function applyUninterruptedBreakBenefit(actor, benefit) {
     }
 
     await markUsedThisEncounter(actor, UNINTERRUPTED_BREAK_HEAL_FLAG);
+  } else if (benefit == 'essence') {
+    const targets = [actor, ...getNearbyAllyTokens(actor, Infinity).map(token => token.actor)];
+    for (const target of targets) {
+      await healEssenceDamage(target, 1);
+    }
+
+    await markUsedThisEncounter(actor, UNINTERRUPTED_BREAK_ESSENCE_FLAG);
   } else if (benefit == 'storyPoint') {
     requestStoryPointGrant(actor);
     await markUsedThisEncounter(actor, UNINTERRUPTED_BREAK_STORY_POINT_FLAG);

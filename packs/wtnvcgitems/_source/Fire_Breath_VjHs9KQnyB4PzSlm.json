@@ -17,6 +17,12 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Fire Breath Effect",
         "type": "weaponEffect"
+      },
+      "GG4n": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.xORPR6OfizaNb8cL",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Fire Breath Alternate Effect",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,
@@ -32,7 +38,7 @@
       "shift": "none"
     },
     "traits": [
-      "element",
+      "energy",
       "fire",
       "intimidating",
       "multipleTargets",

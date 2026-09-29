@@ -20,6 +20,7 @@ export class Essence20PartyActorSheet extends Essence20BaseActorSheet {
     actions: {
       openMember: Essence20PartyActorSheet.#onOpenMember,
       requisitionReset: Essence20PartyActorSheet.#onRequisitionReset,
+      groupSkillTest: Essence20PartyActorSheet.#onGroupSkillTest,
     },
     position: {
       width: 760,
@@ -198,6 +199,12 @@ export class Essence20PartyActorSheet extends Essence20BaseActorSheet {
    * Resets the shared Requisition attempt pool to its derived maximum (3 x roster size, or the
    * current value when autoFromRoster is off).
    */
+  /** A Group Skill Test for the Party's members - helpers/group-tests.mjs. */
+  static async #onGroupSkillTest() {
+    const { startGroupTest } = await import("../helpers/group-tests.mjs");
+    await startGroupTest(this.document.members ?? []);
+  }
+
   static #onRequisitionReset() {
     if (!this.document.isOwner) {
       return;

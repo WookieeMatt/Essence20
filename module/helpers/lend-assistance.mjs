@@ -1,8 +1,15 @@
+import { isCompanionPair, ownerOf } from "./companion-link.mjs";
+import { isBff, onAssistedBff } from "./bff.mjs";
+// Command & Control (Decepticon Directive p.50) and Conniving (Cobra Codex p.28) - see their uses below.
+const COMMAND_AND_CONTROL_ID = "Compendium.essence20.decepticon_directive.Item.oPtLbnCPYyCSZIVU";
+const CONNIVING_PERK_ID = "Compendium.essence20.cobra_codex.Item.dJoVvMG3wjowbWJ8";
+import { getLendAssistanceGrantModes } from "./action-perks.mjs";
+import { describeGrant, setNextTurn } from "./action-economy.mjs";
 import { E20 } from "./config.mjs";
 import { actorHasHangUp, actorHasPerk, bankPendingBonus, getUsesThisScene, markUsedThisScene } from "./perks.mjs";
 import { getNearbyAllyTokens } from "./allies.mjs";
 import { getSkillRanks } from "./combat.mjs";
-import { requestStoryPointGrant } from "./story-points.mjs";
+import { canSpendForActor, requestStoryPointGrant, spendForActor } from "./story-points.mjs";
 import { clearVoiceOfPrimusAssistReady, hasVoiceOfPrimusAssistReady } from "./voice-of-primus.mjs";
 import { hasRemoteOperationsReady } from "./remote-operations.mjs";
 import { PSYCHOLOGICAL_SWAY_ID } from "./psychological-sway.mjs";
@@ -399,7 +406,38 @@ export function canAssistWithSkill(actor, ally, skill) {
     return true;
   }
 
+  // Command & Control (Decepticon Directive, Mini-Con Focus, 6th level, p.50): "you and your Mini-Cons
+  // can Lend Assistance to each other as long as both parties involved are within 100 feet of each
+  // other and regardless of whether the one Lending Assistance is trained in the skill being
+  // attempted."
+  if (isCommandAndControlPair(actor, ally)) {
+    return true;
+  }
+
+  // Extension rank-gate bypasses, fn(actor, ally, skill) => Boolean (Inspirational Leader -
+  // helpers/extensions/react).
+  if (ASSIST_RANK_BYPASSES.some(fn => {
+    try {
+      return !!fn(actor, ally, skill);
+    } catch (error) {
+      return false;
+    }
+  })) {
+    return true;
+  }
+
   return actorHasPerk(actor, SHIPS_CREW_ID) && isAboardVehicle(actor);
+}
+
+export const ASSIST_RANK_BYPASSES = [];
+
+function isCommandAndControlPair(actor, ally) {
+  const owner = actor?.type == 'companion' ? ownerOf(actor) : actor;
+  if (!owner || !actorHasPerk(owner, COMMAND_AND_CONTROL_ID) || !isCompanionPair(actor, ally)) {
+    return false;
+  }
+
+  return [actor, ally].some(a => a?.type == 'companion' && a.system?.type == 'miniCon');
 }
 
 /**
@@ -467,6 +505,24 @@ async function bankSkillAssist(actor, ally, skill) {
   /* The one hard prerequisite in the action (plus the Perks that move it). Refused rather than
      warned-and-allowed, because unlike the duration and range clauses this one decides whether
      the grant exists at all. */
+  // BFF (MLP CRB, Spirit of Loyalty, 3rd level): "If you aren't qualified to Lend Assistance, such as
+  // if you don't have any ranks in the skill being tested, you can spend a Friendship Point to Lend
+  // Assistance anyway."
+  if (!canAssistWithSkill(actor, ally, skill) && isBff(actor, ally) && canSpendForActor(actor)) {
+    const spend = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize('E20.LendAssistanceTitle') },
+      content: `<p>${game.i18n.format('E20.BffSpendToAssist', { ally: ally.name })}</p>`,
+      rejectClose: false,
+    });
+    if (spend) {
+      await spendForActor(actor, 1, { announce: false });
+      await bankPendingBonus(ally, LEND_ASSISTANCE_SHIFT_FLAG, {
+        skill, shiftUp: getAssistShiftUp(actor, ally, skill), edge: getAssistEdge(actor), persistent: false, assisterUuid: actor.uuid ?? null,
+      });
+      return true;
+    }
+  }
+
   if (!canAssistWithSkill(actor, ally, skill)) {
     ui.notifications.warn(game.i18n.format('E20.LendAssistanceUnskilled', {
       name: actor.name,
@@ -551,7 +607,7 @@ function distanceFeet(actor, token) {
  * @param {String|null} targetName   The currently targeted enemy, or null if there is none.
  * @returns {Promise<Object|null>}   {allyId, mode, skill}, or null if cancelled.
  */
-async function pickAssistance(allies, targetName) {
+async function pickAssistance(allies, targetName, grantModes = []) {
   const allyOptions = allies
     .map(a => `<option value="${a.id}">${foundry.utils.escapeHTML(a.name)}</option>`).join('');
   const skillOptions = Object.keys(E20.skills)
@@ -564,6 +620,8 @@ async function pickAssistance(allies, targetName) {
       ? `<option value="attack">${game.i18n.format('E20.LendAssistanceModeAttack', { target: targetName })}</option>`
       : '',
     `<option value="skill">${game.i18n.localize('E20.LendAssistanceModeSkill')}</option>`,
+    // Here, Let Me / No, I Insist - "instead of the normal effect" (helpers/action-perks.mjs).
+    ...grantModes.map(mode => `<option value="${mode.mode}">${mode.label}</option>`),
   ].join('');
 
   const result = await foundry.applications.api.DialogV2.wait({
@@ -648,7 +706,15 @@ export async function activateLendAssistance(actor) {
     }));
   }
 
-  const choice = await pickAssistance(allies, targetInRange ? targetToken.name : null);
+  const grantModes = getLendAssistanceGrantModes(actor);
+  // Conniving (Cobra Codex, Influence Perk, p.28): "Once per scene, when an ally offers to Lend
+  // Assistance to you, they can roll the Skill Test for you with your assistance ... Your ally suffers
+  // any negative consequence of failing the Skill Test." Offered when an ally holds it.
+  if (allies.some(ally => actorHasPerk(ally, CONNIVING_PERK_ID))) {
+    grantModes.push({ mode: 'conniving', label: game.i18n.localize('E20.ConnivingMode') });
+  }
+
+  const choice = await pickAssistance(allies, targetInRange ? targetToken.name : null, grantModes);
   if (!choice) {
     return { cancelled: true };
   }
@@ -656,6 +722,21 @@ export async function activateLendAssistance(actor) {
   const ally = allies.find(a => a.id == choice.allyId);
   if (!ally) {
     return { cancelled: true };
+  }
+
+  if (choice.mode == 'conniving') {
+    return rollForConniving(actor, ally, choice.skill);
+  }
+
+  // An extra action on the friend's next turn instead of the usual bonus.
+  const grantMode = grantModes.find(mode => mode.mode == choice.mode);
+  if (grantMode) {
+    await setNextTurn(ally, { grant: grantMode.grant }, actor.name);
+    return {
+      message: game.i18n.format('E20.LendAssistanceNextTurnGranted', {
+        name: actor.name, ally: ally.name, grant: describeGrant(grantMode.grant),
+      }),
+    };
   }
 
   if (choice.mode == 'attack') {
@@ -687,6 +768,9 @@ export async function activateLendAssistance(actor) {
   }
 
   grantTeamPlayerStoryPoint(actor);
+  // That's What Best Friends Are For - a Friendship Point for a Standard-action assist to a BFF
+  // (helpers/bff.mjs). BFF's own Free-action assist doesn't count.
+  await onAssistedBff(actor, ally, await wasFreeBffAssist(actor));
 
   return {
     message: game.i18n.format('E20.LendAssistanceSkillActivated', {
@@ -695,6 +779,27 @@ export async function activateLendAssistance(actor) {
       skill: game.i18n.localize(E20.skills[choice.skill] ?? choice.skill),
     }),
   };
+}
+
+/**
+ * Conniving: the ally (the one offering help) rolls the Conniving holder's test, with the holder's
+ * assistance. Once per scene for the holder.
+ */
+async function rollForConniving(actor, holder, skill) {
+  if (!actorHasPerk(holder, CONNIVING_PERK_ID) || getUsesThisScene(actor, `conniving.${holder.id}`) >= 1) {
+    ui.notifications.warn(game.i18n.localize('E20.OncePerScene'));
+    return { cancelled: true };
+  }
+
+  await markUsedThisScene(actor, `conniving.${holder.id}`);
+  const essence = E20.skillToEssence[skill] ?? 'smarts';
+  await actor._dice?.rollSkill({ skill, essence, shiftUp: getAssistShiftUp(holder, actor, skill), shiftDown: 0 }, actor);
+  return { message: game.i18n.format('E20.ConnivingRolled', { name: actor.name, holder: holder.name, skill: game.i18n.localize(E20.skills[skill] ?? skill) }) };
+}
+
+async function wasFreeBffAssist(actor) {
+  const { getLedger } = await import("./action-economy.mjs");
+  return (getLedger?.(actor)?.perkUses?.bffAssist ?? 0) > 0;
 }
 
 /**

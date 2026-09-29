@@ -25,7 +25,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "LRMorphedMove001",
       "changes": [
         {

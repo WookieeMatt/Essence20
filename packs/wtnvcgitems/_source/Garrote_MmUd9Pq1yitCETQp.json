@@ -17,6 +17,12 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Garrote Effect",
         "type": "weaponEffect"
+      },
+      "Ha1h": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.HsIgf9IHMDePOFVL",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Garrote Alternate Effect",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

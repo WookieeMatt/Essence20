@@ -1,3 +1,17 @@
+import { runDerived } from "../helpers/extensions.mjs";
+import { linkedBonuses } from "../helpers/companions.mjs";
+import { BOND, bondBonuses } from "../helpers/bonded.mjs";
+import { hardTargetBonus, vehicleHands } from "../helpers/summons.mjs";
+import { socialStandingDefense } from "../helpers/social-rolls.mjs";
+import { carryPercent, extraCarriedHands, loaderShieldToughness } from "../helpers/kits.mjs";
+import { imperfectionOf, thickSkullsShift } from "../helpers/grants.mjs";
+import { GRANT } from "../helpers/grant-uses.mjs";
+import { ablativeLossOf, RIDER, riderChoiceOf, sourceOf as sourceOfItem } from "../helpers/target-riders.mjs";
+import { defenseDamageOf } from "../helpers/essence-damage.mjs";
+import { hardpointBonus, integratedHardpointsPerWeapon } from "../helpers/weapon-traits.mjs";
+import { applyToVehicle as applyVehicleUpgrades, driverDefenseBonus, getCrewedVehicle } from "../helpers/vehicle-upgrades.mjs";
+import { isUndoEngineMovementDisabled } from "../helpers/undo-engine.mjs";
+import { isGridShellActive, WEAPON_USE_IDS } from "../helpers/weapon-perk-uses.mjs";
 import { handlePartyDeleted, preventLastPartyDelete, preventPrimaryDeleteByPlayer } from "../helpers/party.mjs";
 import { Dice } from "../dice.mjs";
 import { isUnableToAct } from "../helpers/action-economy.mjs";
@@ -682,6 +696,9 @@ export class Essence20Actor extends Actor {
     // budgets are their own small, self-contained pass with no dependency on the Defenses/Health/
     // Movement math.
     this._prepareActions();
+
+    // Extensions' derived data - Health, Defenses and Movement adjustments (helpers/extensions.mjs).
+    runDerived(this);
   }
 
   /**
@@ -829,11 +846,29 @@ export class Essence20Actor extends Actor {
     // qualified drivers the same as an understaffed-but-present crew (halved, not zeroed), which
     // is exactly that guarantee; nothing currently makes a 0-driver Vehicle fully immobile for
     // Advanced Autopilot to be an exception to.
+    // Undo Engine (Intercontinental Adventures p.71): "the vehicle's Movement is reduced to 0 until
+    // the driver uses their Standard action to restart the engines" (helpers/undo-engine.mjs).
+    if (isUndoEngineMovementDisabled(this)) {
+      for (const movementType of Object.keys(this.system.movement)) {
+        this.system.movement[movementType].total = 0;
+      }
+
+      return;
+    }
+
     const hasAutopilot = this.system.traits?.autopilot;
     if (qualifiedDrivers < this.system.crew.numDrivers && !(hasAutopilot && qualifiedDrivers >= 1)) {
       for (const movementType of Object.keys(this.system.movement)) {
         this.system.movement[movementType].total = Math.floor(this.system.movement[movementType].total / 2);
       }
+    }
+
+    // Vehicle Upgrades and switched-on effects - Defenses, Movement, traits (vehicle-upgrades.mjs).
+    applyVehicleUpgrades(this);
+
+    // Superstructure (Across the Stars p.87): "It possesses three times the normal amount of Health."
+    if (this.system.traits?.superstructure && this.system.health) {
+      this.system.health.max *= 3;
     }
 
   }
@@ -859,6 +894,13 @@ export class Essence20Actor extends Actor {
     system.requisitionMax = system.requisition.autoFromRoster
       ? 3 * system.memberCount
       : system.requisition.attempts;
+
+    // Base Technological Advancements (Cobra Codex, Division Resource, p.75): "your group gains an
+    // additional Requisition point per character that can be spent on a Standard upgrade."
+    if (system.requisition.autoFromRoster && this.members.some(member => member.items?.some?.(item =>
+      (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == GRANT.baseTechAdvancement))) {
+      system.requisitionMax += system.memberCount;
+    }
   }
 
   /**
@@ -937,6 +979,7 @@ export class Essence20Actor extends Actor {
     let handsUsed = 0;
     let externalUsed = 0;
     let integratedUsed = 0;
+    const carried = [];
 
     for (const item of this.items) {
       if (item.type != 'weapon' || !item.system.equipped) {
@@ -947,21 +990,31 @@ export class Essence20Actor extends Actor {
       const hardpointType = item.system.hardpoint?.type ?? 'external';
 
       if (hardpointType == 'integrated') {
-        integratedUsed += Math.max(1, hands);
+        integratedUsed += Math.max(1, hands) + integratedHardpointsPerWeapon(this);
       } else if (hardpointType == 'external') {
         externalUsed += Math.max(1, hands);
         handsUsed += hands;
+        carried.push({ item, hands });
       } else { // 'none' - carried but not in a Hardpoint; still counts against the six-hand limit
         handsUsed += hands;
+        carried.push({ item, hands });
       }
     }
 
+    // Bomber / Medicine Cabinet: explosives and poisons carried on top of the six hands.
+    handsUsed = Math.max(0, handsUsed - extraCarriedHands(this, carried));
+    // Skybound: "your Jet Pack counts as 2 hands of equipment."
+    handsUsed += vehicleHands(this);
+    // Carrying capacity as a share of body weight (PR CRB Table 6-1) - helpers/kits.mjs.
+    system.loadout.carryPercent = carryPercent(this);
     system.loadout.handsUsed = handsUsed;
     system.loadout.handsOver = handsUsed > handsMax;
 
+    // Hardpoints Perks add (helpers/weapon-traits.mjs#hardpointBonus).
+    const perkHardpoints = hardpointBonus(this);
     for (const [key, used] of [['external', externalUsed], ['integrated', integratedUsed]]) {
       const slot = system.hardpoints[key];
-      slot.max = (slot.base ?? 0) + (slot.bonus ?? 0);
+      slot.max = (slot.base ?? 0) + (slot.bonus ?? 0) + (perkHardpoints[key] ?? 0);
       slot.used = used;
       slot.over = used > slot.max;
     }
@@ -1124,12 +1177,29 @@ export class Essence20Actor extends Actor {
     } else {
       this.system.energon.normal.max = lowest;
     }
+
+    // Mini-Con Master (Decepticon Directive p.50): "Power Conduit: ... the maximum number of Energon
+    // Points you can store is increased by 1" per two docked.
+    this.system.energon.normal.max += linkedBonuses(this).energonMax;
+
+    // A Hint of Independence's Poor Energon Circulation: "Your maximum Energon Points is equal to your
+    // lowest Essence Score -1".
+    if (imperfectionOf(this)?.n == 1) {
+      this.system.energon.normal.max = Math.max(0, this.system.energon.normal.max - 1);
+    }
   }
 
   /**
    * Personal Power Supply - see PERSONAL_POWER_SUPPLY_ID's own comment above.
    */
   _preparePersonalPowerSupply() {
+    // Grid Connection (Field Guide p.67): "you gain 1 Personal Power per day, which can be spent to
+    // use Grid Powers."
+    if (this.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == WEAPON_USE_IDS.gridConnection)
+      && this.system.powers?.personal) {
+      this.system.powers.personal.max += 1;
+    }
+
     if (!actorHasPerk(this, PERSONAL_POWER_SUPPLY_ID)) {
       return;
     }
@@ -1244,9 +1314,13 @@ export class Essence20Actor extends Actor {
     // helpers/vessel-conditions.mjs#syncVesselConditionConsequences.
     const compromised = getVesselConditionStacks(this, 'compromised');
 
-    health.max = Math.max(0, originStartingHealth + rolePointsBonusHealth + conditioning + bonus + bulwarkBonusHealth - compromised);
+    // Tough Together, a Mini-Con's Linked Health, Advanced/Perfect Link, Hard Target - the
+    // companion and bond Perks (helpers/companions.mjs, bonded.mjs, summons.mjs).
+    const linkedHealth = linkedBonuses(this).health + bondBonuses(this).health + hardTargetBonus(this, getCrewedVehicle(this)?.vehicle).health;
+    health.max = Math.max(0, originStartingHealth + rolePointsBonusHealth + conditioning + bonus + bulwarkBonusHealth - compromised + linkedHealth);
     health.string = `${originStartingHealth} (${originName}) + ${rolePointsBonusHealth} (${rolePointsName}) + ${conditioning} (${conditionName}) + ${bonus} (${bonusName})`
       + (bulwarkBonusHealth ? ` + ${bulwarkBonusHealth} (${game.i18n.localize('E20.ArmorTraitBulwark')})` : '')
+      + (linkedHealth ? ` + ${linkedHealth} (${game.i18n.localize('E20.CompanionBonds')})` : '')
       + (compromised ? ` - ${compromised} (${game.i18n.localize('E20.StatusCompromised')})` : '');
   }
 
@@ -1276,6 +1350,17 @@ export class Essence20Actor extends Actor {
     // code is now gone; ADDED here on top of the stored .armor value below rather than replacing
     // it, so a world that already has a hand-typed PC .armor value (a GM workaround for this bug)
     // doesn't lose it - it simply becomes redundant with the equipped item and should be zeroed.
+    // Energy Resistor (TF CRB, armor upgrade, p.132): "Choose an energy type. Weapons that deal
+    // damage of that energy type do not affect you." Worn armor's upgrade, or a loose (alt mode) one.
+    for (const upgrade of this.items.documentsByType.upgrade ?? []) {
+      const parentId = upgrade.getFlag('essence20', 'parentId');
+      const worn = !parentId || this.items.get(parentId)?.system?.equipped;
+      const energy = riderChoiceOf(upgrade);
+      if (worn && energy && sourceOfItem(upgrade) == RIDER.energyResistor && system.immunities) {
+        system.immunities[energy] = true;
+      }
+    }
+
     let itemArmorBonus = null;
     if (this.type == 'playerCharacter') {
       itemArmorBonus = { toughness: 0, evasion: 0 };
@@ -1292,16 +1377,27 @@ export class Essence20Actor extends Actor {
         itemArmorBonus.evasion += parseInt(armorItem.system.totalBonusEvasion) || 0;
       }
 
-      if (system.canTransform) {
-        for (const upgrade of this.items.documentsByType.upgrade) {
-          if (upgrade.getFlag('essence20', 'parentId') || upgrade.system.type != 'armor') {
+      // Grid Connection (Field Guide p.67): "you gain a light armor shell from the Grid, granting
+      // a +1 bonus to Toughness" while the summoned Power Weapon lasts (weapon-perk-uses.mjs).
+      if (isGridShellActive(this)) {
+        itemArmorBonus.toughness += 1;
+      }
+
+      // A loose armor upgrade counts when the actor can transform (an alt-mode upgrade), or when an
+      // Alteration grants its benefit "whether you're wearing armor or not" (Skin Tempering,
+      // helpers/grants.mjs).
+      {
+        for (const upgrade of this.items.documentsByType?.upgrade ?? []) {
+          if (upgrade.getFlag('essence20', 'parentId') || upgrade.system?.type != 'armor'
+            || !(system.canTransform || upgrade.getFlag('essence20', 'alterationWorn') || sourceOfItem(upgrade) == BOND.transtectorRig)) {
             continue;
           }
 
+          const value = Math.max(0, (parseInt(upgrade.system.armorBonus.value) || 0) - ablativeLossOf(upgrade));
           if (upgrade.system.armorBonus.defense == 'toughness') {
-            itemArmorBonus.toughness += parseInt(upgrade.system.armorBonus.value) || 0;
+            itemArmorBonus.toughness += value;
           } else if (upgrade.system.armorBonus.defense == 'evasion') {
-            itemArmorBonus.evasion += parseInt(upgrade.system.armorBonus.value) || 0;
+            itemArmorBonus.evasion += value;
           }
         }
       }
@@ -1346,6 +1442,11 @@ export class Essence20Actor extends Actor {
             rolePointsDefense = rolePoints.system.bonus.level20Value;
           } else {
             rolePointsDefense = rolePoints.system.bonus.startingValue + roleValueChange(this.system.level, rolePoints.system.bonus.increaseLevels);
+          }
+
+          // Aerial Interface extends this to the air vehicle being driven (vehicle-upgrades.mjs).
+          if (rolePoints.system.isActivatable && rolePoints.system.isActive) {
+            system.activeShieldDefense = { ...(system.activeShieldDefense ?? {}), [defenseType]: rolePointsDefense };
           }
         }
       }
@@ -1402,6 +1503,11 @@ export class Essence20Actor extends Actor {
         perkDefenseBonus += getColonyChangelingEvasionBonus(this);
       }
 
+      // Early-Warning Alarm / Focus Module: +1 Willpower / Cleverness while driving that vehicle.
+      if (this.type == 'playerCharacter' || this.type == 'npc') {
+        perkDefenseBonus += driverDefenseBonus(this)[defenseType] ?? 0;
+      }
+
       defense.total = base + essence + bonus + rolePointsDefense + perkDefenseBonus;
       defense.total += system.isMorphed ? morphed : armor;
       defense.total += shield;
@@ -1421,6 +1527,44 @@ export class Essence20Actor extends Actor {
           defense.total += machineMantleBonus;
           defense.string += ` + ${machineMantleBonus} (${game.i18n.localize('E20.DefenseMachineMantle')})`;
         }
+      }
+
+      // Thick Skulls (Intercontinental Adventures p.36): Smarts increases that raised Toughness
+      // instead of Willpower (helpers/grants.mjs#thickSkullsShift).
+      const thickSkulls = thickSkullsShift(this);
+      if (thickSkulls && ['toughness', 'willpower'].includes(defenseType)) {
+        const shift = defenseType == 'toughness' ? thickSkulls : -thickSkulls;
+        defense.total += shift;
+        defense.string += ` ${shift < 0 ? '-' : '+'} ${Math.abs(shift)} (Thick Skulls)`;
+      }
+
+      // Companion, bond and team Perks: Reinforced Bond, Mini-Con Master, Armored Connection, Hard
+      // Target, In The Right Hands' Body Armor Segment.
+      const linkedDefense = (linkedBonuses(this).defenses[defenseType] ?? 0) + (bondBonuses(this).defenses[defenseType] ?? 0)
+        + (hardTargetBonus(this, getCrewedVehicle(this)?.vehicle).defenses[defenseType] ?? 0) + socialStandingDefense(this, defenseType);
+      if (linkedDefense) {
+        defense.total += linkedDefense;
+        defense.string += ` ${linkedDefense < 0 ? '-' : '+'} ${Math.abs(linkedDefense)} (${game.i18n.localize('E20.CompanionBonds')})`;
+      }
+
+      // Loader used as a shield in Bot Mode: "+1 Deflection to Toughness" (TF CRB p.134).
+      if (defenseType == 'toughness' && loaderShieldToughness(this)) {
+        defense.total += 1;
+        defense.string += ` + 1 (${game.i18n.localize('E20.KitLoader')})`;
+      }
+
+      // A Hint of Independence's Fragile Chassis: "You have a -1 penalty to your Toughness Defense".
+      if (defenseType == 'toughness' && imperfectionOf(this)?.n == 2) {
+        defense.total -= 1;
+        defense.string += ` - 1 (${game.i18n.localize('E20.Imperfection.2')})`;
+      }
+
+      // Defense damage - the Transformers Bewildering/Maiming/Surgical/Traumatic Critical Effects
+      // (helpers/essence-damage.mjs), until a rest.
+      const defenseDamage = defenseDamageOf(this)[defenseType] ?? 0;
+      if (defenseDamage) {
+        defense.total -= defenseDamage;
+        defense.string += ` - ${defenseDamage} (${game.i18n.localize('E20.DefenseDamage')})`;
       }
     }
   }

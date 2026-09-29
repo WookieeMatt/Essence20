@@ -1,3 +1,5 @@
+import { ignoresMissEffects } from "./extensions/gij3/dice-hooks.mjs";
+import { hasVehicleUpgrade, VU } from "./vehicle-upgrades.mjs";
 import {
   ENVIRONMENT_EFFECT_PREFIX, ENVIRONMENT_REGION_BEHAVIOR_TYPE, getSceneEnvironment, getTerrain, isInRoughTerrain,
   ROUGH_TERRAIN_EFFECT,
@@ -109,7 +111,17 @@ const isUrban = actor => getTerrain(actor) == 'urban';
 // or `{checkFn}` - the same table shape helpers/condition-immunity.mjs uses. Deliberately NOT here:
 // Aggressive / Wrecking Ball / Plow (ignore it only during one specific Story-Point / Sprint / Ram
 // move - no per-move hook to scope them to), and NPC-only stat-block perks with no compendium item.
-const ROUGH_TERRAIN_IGNORERS = [
+// Extension-added "moves as though through Rough Terrain" checks, fn(tokenDoc, action) => Boolean
+// (Misguide - helpers/extensions/situational1). Still skipped by anyone who ignores Rough Terrain.
+export const ROUGH_TERRAIN_IMPOSERS = [];
+
+export const ROUGH_TERRAIN_IGNORERS = [
+  // Wrecking Ball (GI Joe CRB, Juggernaut, 17th level, p.112): "You ignore Rough Terrain" for the
+  // Sprint it was bought for - helpers/target-riders.mjs.
+  { checkFn: actor => isWreckingBallFlagActive(actor) },
+  // All-Terrain Steel-Reinforced Wheels (Quartermaster's Guide p.57): "The vehicle ignores Rough
+  // Terrain."
+  { id: 'allTerrainWheels', checkFn: actor => hasVehicleUpgrade(actor, VU.allTerrainWheels) },
   { id: ENVIRONMENTAL_EXPERTISE_ID, checkFn: hasActiveEnvironmentalExpertise },
   { id: TAKE_POINT_ID },
   { id: OVER_THE_CANDLESTICK_ID },
@@ -129,6 +141,15 @@ const ROUGH_TERRAIN_IGNORERS = [
  * @param {Actor} actor
  * @returns {Boolean}
  */
+/**
+ * Wrecking Ball's flag, stamped for the turn it was used.
+ */
+function isWreckingBallFlagActive(actor) {
+  const stamp = actor?.flags?.essence20?.wreckingBall;
+  const combat = game?.combat;
+  return !!stamp && !!combat && stamp.combatId == combat.id && stamp.round == combat.round && stamp.turn == combat.turn;
+}
+
 export function ignoresRoughTerrain(actor) {
   if (!actor) {
     return false;
@@ -174,7 +195,14 @@ export function getTerrainCostMultiplier(terrain, tokenDoc, action) {
   const environmentCost = teleport ? 1 : (ENVIRONMENT_MOVEMENT_COST[environment] ?? 1);
   const rough = (terrain?.roughTerrain && paysRoughTerrainCost(tokenDoc, action))
     || (!teleport && ROUGH_ENVIRONMENTS.includes(environment) && !ignoresRoughTerrain(tokenDoc?.actor))
-    || (NON_GROUND_MOVEMENT_ACTIONS.includes(action) && !!tokenDoc?.actor?.statuses?.has?.('sputtering'));
+    || (NON_GROUND_MOVEMENT_ACTIONS.includes(action) && !!tokenDoc?.actor?.statuses?.has?.('sputtering'))
+    || (!teleport && ROUGH_TERRAIN_IMPOSERS.some(fn => {
+      try {
+        return !!fn(tokenDoc, action);
+      } catch (error) {
+        return false;
+      }
+    }) && paysRoughTerrainCost(tokenDoc, action));
   return difficulty * environmentCost * (rough ? ROUGH_TERRAIN_COST_MULTIPLIER : 1);
 }
 
@@ -364,6 +392,11 @@ export async function applyWreckerRoughTerrain(actor, results, checkContext) {
     }
 
     const target = await fromUuid(result.targetUuid);
+    // Seconds Between Click & Boom - helpers/extensions/gij3/dice-hooks.mjs.
+    if (ignoresMissEffects(target, weaponEffect.system?.defenseType)) {
+      continue;
+    }
+
     const tokenDoc = target?.token ?? target?.getActiveTokens?.(false, true)?.[0];
     if (!tokenDoc?.parent || isInRoughTerrain(tokenDoc)) {
       continue;

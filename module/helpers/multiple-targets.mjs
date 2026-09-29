@@ -28,6 +28,10 @@ const METALLIKATO_ID = "Compendium.essence20.decepticon_directive.Item.ouLZnb7j0
 // banked-buffs.mjs.
 const BOX_SHOT_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.N8E3QTLUKX6DOoEc";
 
+// Extension grants of the Multiple Targets trait, fn(actor, item) => Boolean (Plow -
+// helpers/extensions/situational2).
+export const MULTIPLE_TARGETS_GRANTS = [];
+
 /**
  * Whether the given weaponEffect's own parent weapon carries the real 'multipleTargets'
  * E20.weaponTraits entry - a fact about the WEAPON, independent of how many targets happen to be
@@ -63,6 +67,16 @@ export function isMultipleTargetsWeapon(actor, item) {
   // Box Shot (Quartermaster's Guide to Gear, General Perk, p.28) - see helpers/box-shot.mjs's own
   // doc comment. Any weaponEffect (RAW names no style restriction), while the toggle is active.
   if (actorHasPerk(actor, BOX_SHOT_ID) && isBoxShotActive(actor)) {
+    return true;
+  }
+
+  if (MULTIPLE_TARGETS_GRANTS.some(fn => {
+    try {
+      return !!fn(actor, item);
+    } catch (error) {
+      return false;
+    }
+  })) {
     return true;
   }
 

@@ -5,8 +5,11 @@
 --}}
 <section class="tab roster party-roster {{tabs.roster.cssClass}}" data-tab="roster" data-group="primary">
   <div class="collapsible-item-container e20-border-accent">
-    <div class="flexrow e20-flex-group-center e20-mb-5">
-      {{localize 'E20.TabRoster'}}
+    <div class="flexrow e20-align-center e20-mb-5 party-roster-header">
+      <span class="party-roster-title">{{localize 'E20.TabRoster'}}</span>
+      <a class="party-group-test" data-action="groupSkillTest" data-tooltip="{{localize 'E20.GroupTestTitle'}}">
+        <i class="fas fa-people-group"></i> {{localize 'E20.GroupTestTitle'}}
+      </a>
     </div>
 
     {{#if members.length}}

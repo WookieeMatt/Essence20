@@ -1,3 +1,4 @@
+import { hasVehicleUpgrade, tryRedundantBackups, VU } from "./vehicle-upgrades.mjs";
 import { applyDamage } from "./combat.mjs";
 import { getAllNearbyTokens } from "./allies.mjs";
 import { E20 } from "./config.mjs";
@@ -112,7 +113,16 @@ async function emergencyDisembarkCrew(vehicleActor, vehicleCrashDamage) {
       continue;
     }
 
-    const { success } = await rollBetterOfAthleticsOrAcrobatics(crewMember, DISEMBARK_DIF);
+    // Roll Cage: "Crew members roll their Emergency Disembark Skill Tests with Edge."
+    // Peerless Pilot - helpers/extensions/pr3/pr-crb.mjs.
+    const { autoPassesDisembark: pr3AutoPasses } = await import("./extensions/pr3/pr-crb.mjs");
+    let { success } = pr3AutoPasses(crewMember, entry) ? { success: true } : await rollBetterOfAthleticsOrAcrobatics(crewMember, DISEMBARK_DIF);
+    const { autoPassesDisembark } = await import("./extensions/gij2/vehicles.mjs");
+    success ||= autoPassesDisembark(crewMember, vehicleActor);
+    if (!success && (vehicleActor.system.traits?.rollCage || hasVehicleUpgrade(vehicleActor, VU.rollCage))) {
+      ({ success } = await rollBetterOfAthleticsOrAcrobatics(crewMember, DISEMBARK_DIF));
+    }
+
     if (success) {
       await crewMember.toggleStatusEffect('prone', { active: true });
       const fallDamage = await new Roll('1d2').evaluate();
@@ -132,7 +142,20 @@ async function emergencyDisembarkCrew(vehicleActor, vehicleCrashDamage) {
  * @param {Actor} actor
  * @returns {{radius: Number, formula: String}}
  */
+// Anti-Matter Reactor (Quartermaster's Guide p.61): "if the vehicle is ever Defeated, its explosion
+// damage increases by one die step."
+const DIE_STEPS = ['2d2', '2d4', '2d6', '2d8', '2d10', '2d12'];
+
 function getExplosionProfile(actor) {
+  const profile = baseExplosionProfile(actor);
+  if (hasVehicleUpgrade(actor, VU.antiMatterReactor)) {
+    profile.formula = DIE_STEPS[Math.min(DIE_STEPS.length - 1, DIE_STEPS.indexOf(profile.formula) + 1)] ?? profile.formula;
+  }
+
+  return profile;
+}
+
+function baseExplosionProfile(actor) {
   const sizeOrder = Object.keys(E20.actorSizes);
   const sizeIndex = sizeOrder.indexOf(actor.system.size);
 
@@ -238,6 +261,16 @@ async function handleZordZeroHealthTransition(actor) {
  * @param {Actor} actor
  */
 export async function handleVehicleZeroHealthTransition(actor) {
+  // Redundant Backups: "Once per mission, if the vehicle would be Defeated, it drops to 1 Health
+  // instead." (helpers/vehicle-upgrades.mjs)
+  if (await tryRedundantBackups(actor)) {
+    ChatMessage.create({
+      content: game.i18n.format('E20.VehicleRedundantBackups', { name: actor.name }),
+      speaker: ChatMessage.getSpeaker({ actor }),
+    });
+    return;
+  }
+
   await actor.toggleStatusEffect('defeated', { active: true });
 
   if (actor.type == 'zord') {
@@ -254,10 +287,28 @@ export async function handleVehicleZeroHealthTransition(actor) {
   }
 
   const brawnDif = hasHeavyWaterCoolant(actor) ? HEAVY_WATER_COOLANT_BRAWN_DIF : BRAWN_DIF;
-  const brawnTest = await rollSkillTest(actor, 'brawn', brawnDif);
+  // Tiger Stripes (Ferocious Fighters p.30): "When a vehicle with Tiger Stripes reaches 0 Health, it
+  // gains Edge on the Brawn Skill Test to avoid exploding." A crew member with Change Its Stripes
+  // (p.12) makes any vehicle their unit is assigned count.
+  const tigerStripes = actor.system.traits?.tigerStripes || crewHasChangeItsStripes(actor);
+  let brawnTest = await rollSkillTest(actor, 'brawn', brawnDif);
+  if (tigerStripes) {
+    const second = await rollSkillTest(actor, 'brawn', brawnDif);
+    brawnTest = second.total > brawnTest.total ? second : brawnTest;
+  }
+
   if (brawnTest.success) {
     await crashVehicle(actor);
   } else {
     await explodeVehicle(actor);
   }
+}
+
+const CHANGE_ITS_STRIPES = "Compendium.essence20.ferocious_fighters.Item.8tz9aZSqmUntS20H";
+
+function crewHasChangeItsStripes(vehicle) {
+  return Object.values(vehicle.system?.actors ?? {}).some(entry => {
+    const crew = globalThis.fromUuidSync?.(entry?.uuid);
+    return !!crew?.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == CHANGE_ITS_STRIPES);
+  });
 }

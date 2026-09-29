@@ -1,0 +1,53 @@
+{
+  "folder": "ZTp6EuBaSUEjnMhq",
+  "name": "Pillage (Finesse)",
+  "type": "weaponEffect",
+  "_id": "Gij3PillageFin01",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 25
+    },
+    "actionType": "standard",
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "defenseType": "evasion",
+    "damageType": "blunt",
+    "damageValue": 0,
+    "shiftDown": 0,
+    "numHands": "0",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "14.364",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790640000000,
+    "modifiedTime": 1790640000000,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!Gij3PillageFin01"
+}

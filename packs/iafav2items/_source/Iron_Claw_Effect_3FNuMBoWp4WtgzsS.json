@@ -7,7 +7,7 @@
   "system": {
     "originalId": "",
     "actionType": "standard",
-    "description": "<p>Maneuver</p>",
+    "description": "",
     "source": {
       "book": "Factions in Action Vol 2: Intercontinental Adventures",
       "page": 29
@@ -24,7 +24,7 @@
     "radius": 0,
     "range": {
       "min": null,
-      "reachMultiplier": 0,
+      "reachMultiplier": 1,
       "long": null,
       "value": null
     }

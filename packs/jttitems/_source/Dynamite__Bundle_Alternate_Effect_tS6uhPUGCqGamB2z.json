@@ -1,0 +1,64 @@
+{
+  "folder": "lFyKfSNCyy9EA02B",
+  "name": "Dynamite, Bundle Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "tS6uhPUGCqGamB2z",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "description": "<p>Stun 3 and Fire 2</p>",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 78
+    },
+    "classification": {
+      "skill": "athletics",
+      "style": "explosive"
+    },
+    "damageType": "special",
+    "damageValue": 0,
+    "secondaryDamage": {
+      "type": null,
+      "value": 0
+    },
+    "isSpecialized": false,
+    "numHands": 1,
+    "numTargets": 1,
+    "radius": 35,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 30,
+      "value": 10
+    },
+    "shiftDown": 0,
+    "shape": "circle"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {
+    "essence20": {
+      "onHitStatus": {
+        "status": "stunned",
+        "rounds": "2d2"
+      }
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790657680448,
+    "modifiedTime": 1790657680448,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "exportSource": null
+  },
+  "_key": "!items!tS6uhPUGCqGamB2z"
+}

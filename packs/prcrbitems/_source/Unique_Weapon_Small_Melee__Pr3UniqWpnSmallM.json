@@ -1,0 +1,75 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Unique Weapon (Small Melee)",
+  "type": "weapon",
+  "_id": "Pr3UniqWpnSmallM",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 44
+    },
+    "items": {
+      "u0lm": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Pr3UniqEffSmallM",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Unique Weapon (Small Melee) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "shiftDown": 0,
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        }
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "light"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "sharp"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790640000000,
+    "modifiedTime": 1790640000000,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Pr3UniqWpnSmallM"
+}

@@ -59,7 +59,9 @@ async function rollParticipantTime(zord) {
   }
 
   const roll = await new Roll(`1${die}+1`).evaluate();
-  return roll.total;
+  // Megaform Expeditor - helpers/extensions/pr3/pr-crb.mjs.
+  const { expediteJoinTime } = await import("./extensions/pr3/pr-crb.mjs");
+  return expediteJoinTime(zord, roll.total);
 }
 
 /**

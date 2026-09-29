@@ -13,13 +13,13 @@
     },
     "armorBonus": {
       "defense": "toughness",
-      "value": 0
+      "value": 2
     },
     "availability": "limited",
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": ""
+    "prerequisite": "Carapaced, Monstrous, or Fuzor (Twofer)"
   },
   "effects": [],
   "sort": 0,

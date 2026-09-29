@@ -15,13 +15,25 @@
       "c937": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.wCu6HyM9dWB1XpV4",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Many-Armed (Common)",
+        "name": "Many-Armed (Common, Aquatic)",
+        "type": "altMode"
+      },
+      "edf8": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.ycX3lh5ZqNkyFw0e",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Many-Armed (Common, Ground)",
         "type": "altMode"
       },
       "49a8": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.hs2BII8uOIk7wgpJ",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Many-Armed (Large)",
+        "name": "Many-Armed (Large, Aquatic)",
+        "type": "altMode"
+      },
+      "a652": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.P17ah6xfjqjqzcmU",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Many-Armed (Large, Ground)",
         "type": "altMode"
       },
       "8b50": {

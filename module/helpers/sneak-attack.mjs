@@ -1,3 +1,5 @@
+import { isPerfectDisguiseActive } from "./perfect-disguise.mjs";
+const PERFECT_DISGUISE_ID = "Compendium.essence20.gi_joe_crb.Item.ELktMVNYsiBPTX2c";
 import { actorHasPerk, findPerk, hasUsedThisEncounter, hasUsedThisRound, markUsedThisRound } from "./perks.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
 import { canWriteStoryPoints, hasStoryPointsAvailable } from "./story-points.mjs";
@@ -237,6 +239,15 @@ export function checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack) {
   if (actorHasPerk(actor, SUDDEN_STRIKE_ID) && !hasUsedThisEncounter(actor, SUDDEN_STRIKE_ENCOUNTER_FLAG)
     && canWriteStoryPoints() && hasStoryPointsAvailable(1)) {
     return { eligible: true, reason: game.i18n.localize('E20.SneakAttackReasonEligible') };
+  }
+
+  // Perfect Disguise (GI Joe CRB, Spy, 10th level, p.76): "Your attacks against targets fooled by
+  // your imitation gain an Edge and are sneak attacks." Still once a round, and never against a
+  // target that can't take sneak attack damage at all.
+  const fooledTarget = game.user?.targets?.first?.()?.actor;
+  if (isPerfectDisguiseActive(actor) && actorHasPerk(actor, PERFECT_DISGUISE_ID)
+    && !(fooledTarget && actorHasPerk(fooledTarget, EVERY_TRICK_IN_THE_BOOK_ID)) && !hasUsedThisRound(actor, SNEAK_ATTACK_ROUND_FLAG)) {
+    return { eligible: true, reason: game.i18n.localize('E20.SneakAttackReasonDisguise') };
   }
 
   const weapon = _getParentWeapon(actor, weaponEffect);

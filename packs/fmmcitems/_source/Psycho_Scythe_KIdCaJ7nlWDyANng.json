@@ -1,0 +1,98 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Psycho Scythe",
+  "type": "weapon",
+  "_id": "KIdCaJ7nlWDyANng",
+  "img": "icons/weapons/sickles/scythe-curved-steel.webp",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "d210": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.fapldRB23dop9YqN",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Psycho Scythe Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "void",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "d211": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Lkk56qBaCduwaSdU",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Psycho Scythe Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "void",
+        "numHands": 2,
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Psycho Rangers only",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "void"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790658899327,
+    "modifiedTime": 1790658899327,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!KIdCaJ7nlWDyANng"
+}

@@ -1,3 +1,4 @@
+import { personalStoryPoints, spendPersonalStoryPoint } from "./extensions/resource/personal-points.mjs";
 /**
  * The world's shared Story Point pool, and the GM's own points.
  *
@@ -126,6 +127,11 @@ function announce(key, actorName) {
  *   messages for one spend. Carried through the relay so the GM's client keeps quiet too.
  */
 export async function requestStoryPointSpend(actor, amount = 1, { pool = "story", announce: say = true } = {}) {
+  // A Ruthless Point is "a Story Point that only the character it was assigned to can use."
+  if (personalStoryPoints(actor) >= amount && (await spendPersonalStoryPoint(actor, amount, say))) {
+    return;
+  }
+
   // The GM's own pool is the GM's to spend: no relay, no ownership question, and nothing to
   // do at all on a client that is not the GM. See poolFor() for which actors draw on it.
   if (pool === "gm") {
@@ -379,6 +385,10 @@ export function poolFor(actor) {
  * @returns {boolean}
  */
 export function canSpendForActor(actor, amount = 1) {
+  if (personalStoryPoints(actor) >= amount) {
+    return true;
+  }
+
   if (poolFor(actor) === "gm") {
     return !!game.user?.isGM && hasGmPool(getGameLine()) && getGmPoints() >= amount;
   }

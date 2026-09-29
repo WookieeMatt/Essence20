@@ -1,0 +1,59 @@
+{
+  "folder": "LDeXI1F2S2dJSdxo",
+  "name": "Psycho Staff Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "EqdelDXgGy3Akw91",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "description": "<p>Trip</p>",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "damageType": "special",
+    "damageValue": 0,
+    "defenseType": "toughness",
+    "shiftDown": 0,
+    "numHands": 2,
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 2,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {
+    "essence20": {
+      "onHitStatus": {
+        "status": "prone",
+        "rounds": ""
+      }
+    }
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790658899327,
+    "modifiedTime": 1790658899327,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!EqdelDXgGy3Akw91"
+}

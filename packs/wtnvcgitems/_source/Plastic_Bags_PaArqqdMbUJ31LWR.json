@@ -17,6 +17,12 @@
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Plastic Bags Effect",
         "type": "weaponEffect"
+      },
+      "QnHw": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.RJO2C2SVuj6RriJx",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Plastic Bags Alternate Effect",
+        "type": "weaponEffect"
       }
     },
     "classFeatureId": null,

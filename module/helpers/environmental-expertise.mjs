@@ -1,3 +1,4 @@
+import { ownerOf } from "./companion-link.mjs";
 /**
  * Environmental Expertise (GI Joe CRB, Ranger base, 1st/9th/18th level, p.90): "When subject to
  * the conditions of your environment of expertise, you gain several benefits: You ignore the
@@ -86,7 +87,23 @@ export async function toggleEnvironmentalExpertise(actor) {
  * @returns {Array<String>}
  */
 export function getExpertiseEnvironments(actor) {
-  return actor?.system?.environments ?? [];
+  const own = actor?.system?.environments ?? [];
+  const owner = inTheirElementOwner(actor);
+  return owner ? [...new Set([...own, ...(owner.system?.environments ?? [])])] : own;
+}
+
+// In Their Element (GI Joe CRB, Beastmaster, 6th level, p.92): "your pet gains the benefits of your
+// Environment Expertise and Environment Exposure in all of your environment of expertise."
+const IN_THEIR_ELEMENT_ID = `${GI_JOE_CRB}UkAgppAPli6yrImr`;
+
+/** The owner whose Environmental Expertise this pet shares, if any. */
+function inTheirElementOwner(actor) {
+  if (actor?.type != 'companion') {
+    return null;
+  }
+
+  const owner = ownerOf(actor);
+  return owner && actorHasPerk(owner, IN_THEIR_ELEMENT_ID) ? owner : null;
 }
 
 /**
@@ -137,6 +154,11 @@ export function isKnownOutsideEnvironmentOfExpertise(actor) {
  * @returns {Boolean}
  */
 export function hasActiveEnvironmentalExpertise(actor) {
+  const owner = inTheirElementOwner(actor);
+  if (owner) {
+    return actorHasPerk(owner, ENVIRONMENTAL_EXPERTISE_ID) && (isInEnvironmentOfExpertise(actor) === true || isEnvironmentalExpertiseActive(owner));
+  }
+
   return (actorHasPerk(actor, ENVIRONMENTAL_EXPERTISE_ID) || actorHasPerk(actor, READ_THE_LAND_ID))
     && meetsEnvironmentOfExpertise(actor);
 }

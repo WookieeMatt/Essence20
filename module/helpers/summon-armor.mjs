@@ -1,3 +1,4 @@
+import { getSceneEpoch } from "./scene-clock.mjs";
 /**
  * Summon Armor (MLP CRB, Superior Aid spell, p.138) / Summon Shield (MLP CRB, Elementary Aid
  * spell, p.136): "You encase a creature in a magical form fitting, protective shell... Target
@@ -19,12 +20,30 @@
 const SUMMON_ARMOR_FLAG = 'summonArmorActive';
 const SUMMON_ARMOR_BONUS = 2;
 
+// Summon Armor lasts the scene; Summon Shield "for 2 rounds". A bare `true` from before this was
+// tracked still reads as active until the scene changes it.
 export function isSummonArmorActive(actor) {
-  return !!actor.getFlag?.('essence20', SUMMON_ARMOR_FLAG);
+  const state = actor?.getFlag?.('essence20', SUMMON_ARMOR_FLAG);
+  if (!state) {
+    return false;
+  }
+
+  if (state === true) {
+    return true;
+  }
+
+  const combat = globalThis.game?.combat;
+  if (state.untilRound != null) {
+    return !!combat && combat.id == state.combatId && combat.round <= state.untilRound;
+  }
+
+  return state.scene == getSceneEpoch();
 }
 
-export async function applySummonArmor(targetActor) {
-  await targetActor.setFlag('essence20', SUMMON_ARMOR_FLAG, true);
+export async function applySummonArmor(targetActor, { rounds = null } = {}) {
+  const combat = globalThis.game?.combat;
+  const state = rounds && combat ? { combatId: combat.id, untilRound: combat.round + rounds - 1 } : { scene: getSceneEpoch() };
+  await targetActor.setFlag('essence20', SUMMON_ARMOR_FLAG, state);
 }
 
 export function getSummonArmorDefenseBonus(actor, defenseType) {

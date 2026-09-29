@@ -19,6 +19,7 @@
  */
 
 const PRIMARY_QUARRY_FLAG = 'primaryQuarryUuid';
+const SECONDARY_MARK_ID = "Compendium.essence20.decepticon_directive.Item.GS8YX7V6rYJLnkfQ";
 
 /**
  * Designates the actor's currently-targeted token as their Primary Quarry.
@@ -43,5 +44,15 @@ export async function designatePrimaryQuarry(actor) {
  * @returns {Boolean}
  */
 export function checkPrimaryQuarry(actor, target) {
-  return !!target?.uuid && actor?.getFlag?.('essence20', PRIMARY_QUARRY_FLAG) == target.uuid;
+  if (!target?.uuid) {
+    return false;
+  }
+
+  // Secondary Mark (Decepticon Directive, Tracker, 10th level, p.56): "you can choose two creatures
+  // to be your Primary Quarry with the same hour of research. Both creatures count as your Primary
+  // Quarry for your Tracker Focus Perks." The second is set with that Perk's Use button
+  // (helpers/target-riders.mjs).
+  return actor?.getFlag?.('essence20', PRIMARY_QUARRY_FLAG) == target.uuid
+    || (actor?.getFlag?.('essence20', 'secondaryQuarryUuid') == target.uuid
+      && !!actor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == SECONDARY_MARK_ID));
 }

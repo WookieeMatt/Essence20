@@ -31,6 +31,8 @@ export async function pickMindBeamEffect() {
       <option value="frightened">${game.i18n.localize('E20.StatusFrightened')}</option>
       <option value="impaired">${game.i18n.localize('E20.StatusImpaired')}</option>
       <option value="stunned">${game.i18n.localize('E20.StatusStunned')}</option>
+      <option value="calm">${game.i18n.localize('E20.ReactStatus_calm')}</option>
+      <option value="confused">${game.i18n.localize('E20.ReactStatus_confused')}</option>
     </select></div>`,
     modal: true,
     buttons: [

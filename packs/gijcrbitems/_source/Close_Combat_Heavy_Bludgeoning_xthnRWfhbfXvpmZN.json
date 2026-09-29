@@ -32,7 +32,11 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 0
+        "shiftDown": 0,
+        "secondaryDamage": {
+          "type": "stun",
+          "value": 1
+        }
       },
       "a47f": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.SdBelSCDxdO7XM0j",

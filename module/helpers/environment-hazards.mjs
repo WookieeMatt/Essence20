@@ -1,5 +1,8 @@
+import { actorHasPerk, hasUsedThisEncounter, markUsedThisEncounter } from "./perks.mjs";
 import { applyDamage } from "./combat.mjs";
 import { DEFAULT_ENVIRONMENT, getEnvironmentState, hasEquippedEnviroSealedArmor } from "./environment.mjs";
+
+const IMMORTAL_REBEL_SOUL_ID = "Compendium.essence20.wtnv_citizens_guide.Item.SYFScAH8lDshgLNM";
 
 /**
  * Environmental damage over time and the protection against it (Across the Stars, "Exploring
@@ -52,6 +55,9 @@ export const ENVIRONMENT_HAZARDS = {
 };
 
 const EXPOSURE_FLAG = 'environmentExposure';
+// Extension-added protections, fn(actor, environment, hazard) => label or null
+// (helpers/extensions/situational1 - Weather Gear, Acclimating). Read by getEnvironmentProtection.
+export const ENVIRONMENT_PROTECTORS = [];
 // Actor types that are machines, not "living creatures" - only a Corrosive Atmosphere harms them.
 const OBJECT_ACTOR_TYPES = ['vehicle', 'zord', 'megaform', 'party'];
 
@@ -132,6 +138,17 @@ export function getEnvironmentProtection(actor, environment) {
   const hazard = ENVIRONMENT_HAZARDS[environment];
   if (!hazard || !actor) {
     return null;
+  }
+
+  for (const protector of ENVIRONMENT_PROTECTORS) {
+    try {
+      const label = protector(actor, environment, hazard);
+      if (label) {
+        return label;
+      }
+    } catch (error) {
+      console.error('Essence20 | environment protector failed', error);
+    }
   }
 
   if (OBJECT_ACTOR_TYPES.includes(actor.type) && !hazard.affectsObjects) {
@@ -241,6 +258,14 @@ export async function applyEssenceDamage(actor, essences) {
   for (const essence of essences) {
     const value = actor.system?.essences?.[essence]?.value;
     if (typeof value == 'number' && value > 0) {
+      // Immortal Rebel Soul (WTNV Citizen's Guide, StrexCorp Rebel, p.37): "Once per investigation,
+      // when you would be Defeated due to your Health or an Essence Score dropping to 0, it stays at
+      // 1 instead." Shares the Health half's once-per-scene use (helpers/combat.mjs).
+      if (value == 1 && actorHasPerk(actor, IMMORTAL_REBEL_SOUL_ID) && !hasUsedThisEncounter(actor, 'immortalRebelSoulUsedThisEncounter')) {
+        await markUsedThisEncounter(actor, 'immortalRebelSoulUsedThisEncounter');
+        continue;
+      }
+
       update[`system.essences.${essence}.value`] = value - 1;
       damaged.push(essence);
     }

@@ -2,6 +2,10 @@ import { E20 } from "./config.mjs";
 import { isAutomated } from "./named-actions.mjs";
 import { canUsePerk } from "./banked-buffs.mjs";
 import { actorHasPerk, hasUsedThisTurn } from "./perks.mjs";
+import {
+  attackMatchesFilter, bindEconomy, describeAttack, getAttacksPerAction, getTurnStartGrants, recordRuleUse,
+  resolveCost,
+} from "./action-perks.mjs";
 
 // The turn a Defeated actor has bought with a Story Point to "momentarily act as though it has not
 // been Defeated" (GI Joe CRB p.209) - see dice.mjs#rollSkill's own prompt, which sets it, and
@@ -99,6 +103,26 @@ export function emptyLedger() {
        it belongs here rather than on the actor, and it is read by helpers/token-movement.mjs
        to raise the allowance both the ruler and the enforcement measure against. */
     sprinting: false,
+    // Braced for the rest of this turn - see setBraced().
+    braced: false,
+    /* Per-turn use counts for the Perks that bend an action's cost (helpers/action-perks.mjs) -
+       "once per turn" lives here so it resets with everything else. */
+    perkUses: {},
+    /* The Attack action's remaining free attacks - "you can attack twice, instead of once, when
+       you take the Attack action" (Extra Attack and friends). {remaining, source, filter}. */
+    attackChain: null,
+    /* Free attacks granted by a Perk (Ready for Action, The Hits Keep Coming...). Each is
+       {source, cost, filter}; the next matching attack uses one instead of the Attack action. */
+    bonusAttacks: [],
+    /* Categories this turn can't use at all - Secret Helper's "On your next turn, you can't take a
+       Standard action", Laughtracting's lost Free actions. {standard: true, ...}. */
+    blocked: {},
+    /* What the NEXT turn starts with, set by someone else during this one: {grant: {free, move,
+       standard}, block: {category: true}, prespend: {category: n}, sources: []}. resetTurn()
+       applies it and clears it. */
+    next: null,
+    // Whether the turn before this one set a Contingency - New Plan reads it.
+    lastTurnContingency: false,
     log: [],
   };
 }
@@ -305,6 +329,11 @@ export function getRemaining(actor) {
       continue;
     }
 
+    if (ledger.blocked?.[category]) {
+      remaining[category] = 0;
+      continue;
+    }
+
     if (sharedSpent && (category == 'standard' || category == 'move')) {
       remaining[category] = 0;
       continue;
@@ -411,6 +440,43 @@ export async function setAiming(actor, aiming = true) {
 
   ledger.aimed = !!aiming;
   await writeLedger(document, ledger);
+}
+
+const BRACED_FLAG = 'bracedUntilMoved';
+
+/**
+ * Whether the actor is braced: this turn's Brace action, a bipod brace that lasts until they move,
+ * or being Prone - "While prone ... you are considered braced" (GI Joe CRB p.194).
+ * @param {Actor} actor
+ * @returns {Boolean}
+ */
+export function isBraced(actor) {
+  return !!getLedger(actor)?.braced || !!actor?.getFlag?.(FLAG_SCOPE, BRACED_FLAG) || !!actor?.statuses?.has?.('prone');
+}
+
+/**
+ * Brace, or stop bracing. `untilMoved` makes it outlast the turn (Integrated Bipod).
+ * @param {Actor} actor
+ * @param {Boolean} braced
+ * @param {Object} [options]
+ * @param {Boolean} [options.untilMoved]
+ * @returns {Promise<void>}
+ */
+export async function setBraced(actor, braced = true, { untilMoved = false } = {}) {
+  const document = getCombatant(actor);
+  if (document) {
+    const ledger = getLedger(actor);
+    if (!!ledger.braced != !!braced) {
+      ledger.braced = !!braced;
+      await writeLedger(document, ledger);
+    }
+  }
+
+  if (braced && untilMoved) {
+    await actor.setFlag?.(FLAG_SCOPE, BRACED_FLAG, true);
+  } else if (!braced && actor?.getFlag?.(FLAG_SCOPE, BRACED_FLAG)) {
+    await actor.unsetFlag?.(FLAG_SCOPE, BRACED_FLAG);
+  }
 }
 
 export async function tradeStandardForFree(actor) {
@@ -554,10 +620,35 @@ export function canSpend(actor, actionType) {
  * @param {Boolean} [options.bypass]  Spend nothing and report ok - the "Don't spend" escape hatch.
  * @returns {Promise<Object>}   {ok, spendId, cost, shortfall, blocked}
  */
-export async function spend(actor, actionType, { source = null, bypass = false } = {}) {
+export async function spend(actor, actionType, { source = null, bypass = false, context = null, logExtra = null } = {}) {
+  /* A Perk may make this action cheaper - helpers/action-perks.mjs. Only asked when the spend is
+     real: tracking on, in combat, not bypassed. A player who closes the "how do you pay?" dialog
+     has not taken the action. */
+  let option = null;
+  if (context && !bypass && isTracking() && actor?.system?.actions?.enabled && getCombatant(actor)) {
+    const resolved = await resolveCost(actor, actionType, context, getLedger(actor));
+    if (!resolved) {
+      return { ok: false, cost: getCost(actionType), shortfall: [], remaining: null, spendId: null, blocked: true, cancelled: true };
+    }
+
+    actionType = resolved.actionType;
+    option = resolved.option;
+    if (option?.label) {
+      source = source ? `${source} (${option.label})` : option.label;
+    }
+  }
+
   const check = canSpend(actor, actionType);
   if (bypass || !Object.keys(check.cost).length) {
-    return { ...check, ok: true, spendId: null, blocked: false };
+    // A discount all the way down to nothing still used up the Perk's once-per-turn.
+    if (option?.counts && getCombatant(actor)) {
+      const ledger = getLedger(actor);
+      await recordRuleUse(actor, option, ledger);
+      ledger.log.push({ id: foundry.utils.randomID(), actionType, cost: {}, source, namedKey: context?.key ?? null, ...logExtra });
+      await writeLedger(getCombatant(actor), ledger);
+    }
+
+    return { ...check, ok: true, spendId: null, blocked: false, actionType };
   }
 
   if (!check.ok) {
@@ -586,16 +677,17 @@ export async function spend(actor, actionType, { source = null, bypass = false }
     ledger[category] = (ledger[category] ?? 0) + amount;
   }
 
-  ledger.log.push({ id: spendId, actionType, cost: check.cost, source });
+  ledger.log.push({ id: spendId, actionType, cost: check.cost, source, namedKey: context?.key ?? null, ...logExtra });
   if (E20.actionTypesConsumingNextTurn.includes(actionType)) {
     ledger.turnConsumed = true;
   }
 
+  await recordRuleUse(actor, option, ledger);
   await writeLedger(document, ledger);
   // For anything reacting to an action being taken (e.g. helpers/exo-frame.mjs's Driving test
   // prompt). Optional-chained so unit tests without a Hooks global are unaffected.
   globalThis.Hooks?.callAll?.('essence20.actionSpent', actor, actionType, check.cost);
-  return { ...check, ok: true, spendId, blocked: false };
+  return { ...check, ok: true, spendId, blocked: false, actionType };
 }
 
 /**
@@ -683,6 +775,35 @@ export async function resetTurn(document) {
   const stored = document.getFlag(FLAG_SCOPE, FLAG_KEY);
   const ledger = emptyLedger();
   ledger.turnSkipped = !!stored?.turnConsumed;
+  ledger.lastTurnContingency = (stored?.log ?? []).some(entry => entry.namedKey == 'contingency');
+
+  // Handed over during the last round by someone else (or by this actor's own Secret Helper).
+  const next = stored?.next;
+  if (next) {
+    ledger.freeGranted += next.grant?.free ?? 0;
+    ledger.moveGranted += next.grant?.move ?? 0;
+    ledger.standardGranted += next.grant?.standard ?? 0;
+    ledger.blocked = { ...(next.block ?? {}) };
+    for (const [category, amount] of Object.entries(next.prespend ?? {})) {
+      ledger[category] = (ledger[category] ?? 0) + amount;
+    }
+
+    for (const source of next.sources ?? []) {
+      ledger.log.push({ id: foundry.utils.randomID(), actionType: 'grant', cost: {}, source });
+    }
+  }
+
+  // Granted every turn by something the actor has - Zephyr Grace.
+  const turnStart = getTurnStartGrants(document.actor);
+  if (turnStart.free || turnStart.move || turnStart.standard) {
+    ledger.freeGranted += turnStart.free;
+    ledger.moveGranted += turnStart.move;
+    ledger.standardGranted += turnStart.standard;
+    for (const source of turnStart.sources) {
+      ledger.log.push({ id: foundry.utils.randomID(), actionType: 'grant', cost: {}, source });
+    }
+  }
+
   await writeLedger(document, ledger);
 }
 
@@ -712,8 +833,138 @@ export async function consumeForItem(item, { actor = null, bypass = false } = {}
     return { ok: true, actionType, spendId: null, cost: {}, shortfall: [], blocked: false };
   }
 
-  const result = await spend(roller, actionType, { source: item?.name ?? null, bypass });
-  return { ...result, actionType };
+  const isAttack = item.type == 'weaponEffect';
+  const attack = isAttack ? describeAttack(item.actor ?? roller, item) : null;
+  const context = { kind: isAttack ? 'attack' : 'item', item, attack };
+  const document = getCombatant(roller);
+
+  /* An attack that rides on an Attack action already taken (Extra Attack), or on a free attack a
+     Perk granted, costs nothing further. Only in combat with tracking on - outside that there is
+     no ledger to ride on. */
+  if (isAttack && !bypass && document && isTracking() && roller.system?.actions?.enabled && getCost(actionType).standard) {
+    const ledger = getLedger(roller);
+    const chain = ledger.attackChain;
+    if (chain?.remaining > 0 && attackMatchesFilter(chain.filter, attack)) {
+      ledger.attackChain = { ...chain, remaining: chain.remaining - 1 };
+      ledger.log.push({ id: foundry.utils.randomID(), actionType: 'none', cost: {}, source: `${item.name} (${chain.source})` });
+      await writeLedger(document, ledger);
+      return { ok: true, actionType, spendId: null, cost: {}, shortfall: [], blocked: false, chained: true };
+    }
+
+    const bonusIndex = (ledger.bonusAttacks ?? []).findIndex(bonus => attackMatchesFilter(bonus.filter, attack));
+    if (bonusIndex >= 0) {
+      const [bonus] = ledger.bonusAttacks.splice(bonusIndex, 1);
+      await writeLedger(document, ledger);
+      const paid = await spend(roller, bonus.cost ?? 'none', { source: `${item.name} (${bonus.source})` });
+      if (paid.blocked) {
+        // Hand the unused bonus back rather than losing it to a refused Free action.
+        const restored = getLedger(roller);
+        restored.bonusAttacks = [...(restored.bonusAttacks ?? []), bonus];
+        await writeLedger(document, restored);
+        return { ...paid, actionType };
+      }
+
+      return { ...paid, actionType, bonusAttack: true, psychicOnMiss: bonus.psychicOnMiss ?? 0 };
+    }
+  }
+
+  const snapShotWeapon = !!attack && (attack.size == 'sidearm' || (attack.traits.includes('thrown') && attack.skill == 'finesse'));
+  const result = await spend(roller, actionType, {
+    source: item?.name ?? null, bypass, context, logExtra: snapShotWeapon ? { snapShotWeapon: true } : null,
+  });
+
+  // This attack took the Attack action: set up the rest of it.
+  if (isAttack && result.spendId && getCost(actionType).standard) {
+    const { count, source, filter } = getAttacksPerAction(roller, item, attack);
+    if (count > 1) {
+      const ledger = getLedger(roller);
+      ledger.attackChain = { remaining: count - 1, source, filter };
+      await writeLedger(document, ledger);
+    }
+  }
+
+  return { ...result, actionType: result.actionType ?? actionType };
+}
+
+/**
+ * A free attack for the current turn, from a Perk - Ready for Action, The Hits Keep Coming, Mayhem
+ * Attack. The next attack that matches the filter uses it instead of the Attack action, paying
+ * its cost (usually a Free action, sometimes nothing).
+ * @param {Actor} actor
+ * @param {Object} bonus   {source, cost, filter}
+ * @returns {Promise<Boolean>}
+ */
+export async function grantBonusAttack(actor, { source = null, cost = 'free', filter = null, psychicOnMiss = 0 } = {}) {
+  const document = getCombatant(actor);
+  if (!document) {
+    return false;
+  }
+
+  const ledger = getLedger(actor);
+  ledger.bonusAttacks = [...(ledger.bonusAttacks ?? []), { source, cost, filter, psychicOnMiss }];
+  await writeLedger(document, ledger);
+  return true;
+}
+
+/**
+ * Hand an actor actions on their NEXT turn, or take some away from it. Written onto that actor's
+ * current ledger and applied by resetTurn() when their next turn starts.
+ * @param {Actor} actor
+ * @param {Object} changes   {grant: {free, move, standard}, block: [category], prespend: {category: n}}
+ * @param {String} [source]
+ * @returns {Promise<Boolean>}
+ */
+export async function setNextTurn(actor, { grant = {}, block = [], prespend = {} } = {}, source = null) {
+  const document = getCombatant(actor);
+  if (!document) {
+    return false;
+  }
+
+  const ledger = getLedger(actor);
+  const next = ledger.next ?? { grant: {}, block: {}, prespend: {}, sources: [] };
+  for (const [category, amount] of Object.entries(grant)) {
+    next.grant[category] = (next.grant[category] ?? 0) + amount;
+  }
+
+  for (const category of block) {
+    next.block[category] = true;
+  }
+
+  for (const [category, amount] of Object.entries(prespend)) {
+    next.prespend[category] = (next.prespend[category] ?? 0) + amount;
+  }
+
+  if (source) {
+    next.sources.push(source);
+  }
+
+  ledger.next = next;
+  await writeLedger(document, ledger);
+  return true;
+}
+
+/**
+ * Count one use of a once-per-turn Use button (helpers/action-perks.mjs) on the ledger.
+ */
+export async function markTurnUse(actor, key) {
+  const document = getCombatant(actor);
+  if (!document) {
+    return;
+  }
+
+  const ledger = getLedger(actor);
+  ledger.perkUses = { ...(ledger.perkUses ?? {}), [key]: (ledger.perkUses?.[key] ?? 0) + 1 };
+  await writeLedger(document, ledger);
+}
+
+/**
+ * "1 Standard, 1 Move" - a grant spelled out for a chat line.
+ */
+export function describeGrant(grants = {}) {
+  return Object.entries(E20.actionCategories)
+    .filter(([key]) => grants[key])
+    .map(([key, label]) => `${grants[key]} ${game.i18n.localize(label)}`)
+    .join(', ');
 }
 
 /**
@@ -737,7 +988,8 @@ export function getSheetContext(actor) {
   const remaining = getRemaining(actor);
   const categories = Object.entries(E20.actionCategories).map(([key, label]) => {
     const spent = ledger[key] ?? 0;
-    const max = (budget[key] ?? 0) + (key == 'free' ? (ledger.freeGranted ?? 0) : 0);
+    const grantedKey = { free: 'freeGranted', move: 'moveGranted', standard: 'standardGranted' }[key];
+    const max = ledger.blocked?.[key] ? 0 : (budget[key] ?? 0) + (ledger[grantedKey] ?? 0);
     // One pip per point of budget, plus one extra for each point already overspent - 'track' mode
     // lets a spend go through even when nothing is left, and an overdraft the sheet doesn't draw
     // is an overdraft nobody notices.
@@ -761,6 +1013,8 @@ export function getSheetContext(actor) {
     categories,
     spent,
     turnSkipped: !!ledger.turnSkipped,
+    // Free attacks still to come this turn - the rest of an Extra Attack, or a Perk's bonus attack.
+    freeAttacks: (ledger.attackChain?.remaining ?? 0) + (ledger.bonusAttacks?.length ?? 0),
     // Speed 1 - worth saying on the sheet, because two full pips that both vanish when either is
     // spent looks like a bug unless the player knows why.
     shared: !!actor.system.actions.shared,
@@ -1013,3 +1267,8 @@ export async function handleSetActionLedger(data) {
   const document = await fromUuid(data.uuid);
   await document?.setFlag(FLAG_SCOPE, FLAG_KEY, data.ledger);
 }
+
+// helpers/action-perks.mjs needs these, and importing them from there would be circular.
+bindEconomy({
+  spend, getLedger, getCombatant, grantActionsThisTurn, grantBonusAttack, setNextTurn, markTurnUse, describeGrant,
+});

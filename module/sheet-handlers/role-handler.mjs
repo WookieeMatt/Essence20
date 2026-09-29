@@ -1,3 +1,5 @@
+import { afterSpectrumShifted, spectrumShiftedRetains } from "../helpers/extensions/pr1/spectrum.mjs";
+import { essenceRedirect } from "../helpers/grants.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
@@ -36,13 +38,16 @@ export async function performSpectrumShift(actor, newRole) {
   }
 
   const newRoleItem = await Item.create(newRole, { parent: actor });
+  const roleSkillDieBefore = foundry.utils.deepClone(actor.system.skills?.roleSkillDie ?? {});
 
   for (const item of [...actor.items]) {
     if (item.getFlag('essence20', 'parentId') == oldRole.id) {
-      if (newRole.system.hasSpectrumShifted && item.type == 'perk') {
+      // Spectrum Shifted (A Jump Through Time p.42, Table 2-16) - see
+      // helpers/extensions/pr1/spectrum.mjs for which Perks and pools each old Role keeps.
+      if (newRole.system.hasSpectrumShifted && ['perk', 'rolePoints'].includes(item.type)) {
         const sourceId = item.flags.core?.sourceId ?? item._stats?.compendiumSource;
         const oldAttachment = Object.values(oldRole.system.items).find(entry => entry.uuid == sourceId);
-        if (oldAttachment?.level && oldAttachment.level <= 3) {
+        if (await spectrumShiftedRetains(actor, oldRole, item, oldAttachment)) {
           await item.setFlag('essence20', 'parentId', newRoleItem._id);
           continue;
         }
@@ -101,6 +106,10 @@ export async function performSpectrumShift(actor, newRole) {
     });
   }
 
+  if (newRole.system.hasSpectrumShifted) {
+    await afterSpectrumShifted(actor, oldRole, roleSkillDieBefore);
+  }
+
   // The old Role item itself is no longer needed - newRoleItem (created above, before the Perk
   // cleanup loop) already stands in for it as the parent of every retained/newly granted Perk.
   await oldRole.delete();
@@ -143,8 +152,10 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   // deleting the Role still took its 1st-level Essences away: every drop-and-delete of a GI Joe
   // Commando cost the character a point of Speed and of Social for good.
   const currentEssenceLevel = essenceLevel ?? newLevel ?? actor.system.level;
-  for (const essence in role.system.essenceLevels) {
-    const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[essence], previousLevel);
+  for (const roleEssence in role.system.essenceLevels) {
+    const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[roleEssence], previousLevel);
+    // Cordial / Rough and Takes No Guff move an increase to another Essence (helpers/grants.mjs).
+    const essence = totalChange > 0 ? essenceRedirect(actor, role, roleEssence) : roleEssence;
     const essenceMax = actor.system.essences[essence].max + totalChange;
     const essenceMaxString = `system.essences.${essence}.max`;
     const essenceValue = actor.system.essences[essence].value+ totalChange;

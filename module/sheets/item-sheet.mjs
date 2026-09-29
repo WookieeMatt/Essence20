@@ -200,11 +200,33 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
 
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
+    // A weapon effect's range, skill, damage or targets may be changed by upgrades on its weapon
+    // (helpers/weapon-upgrades.mjs) - in derived data only. The form edits the STORED values, or
+    // saving any other field would write the upgraded number back as the base one.
+    const touched = itemData.system.upgradeTouched ?? [];
+    if (touched.length) {
+      context.system = itemData.system.toObject(false);
+      for (const path of touched) {
+        foundry.utils.setProperty(context.system, path, foundry.utils.getProperty(itemData._source.system, path));
+      }
+
+      context.upgradedSystem = itemData.system;
+    }
+
     context.system.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(itemData.system.description);
     context.flags = itemData.flags;
 
     if (this.document.type == 'perk') {
       context.roles = await _getVersionRoles(itemData);
+    }
+
+    // An Element weapon's element is chosen on its sheet (GI Joe CRB p.207) - any weapon whose own
+    // effects are printed as "Element" damage (helpers/weapon-upgrades.mjs).
+    if (this.document.type == 'weapon') {
+      const own = this.document.parent?.items?.filter(i => i.type == 'weaponEffect' && i.flags?.essence20?.parentId == this.document.id) ?? [];
+      context.dealsElementDamage = own.some(e => e._source?.system?.damageType == 'element')
+        || Object.values(this.document.system.items ?? {}).some(e => e?.type == 'weaponEffect' && e.damageType == 'element')
+        || !!this.document.system.elementChoice;
     }
 
     // Modular armor (Across the Stars p.85) - the wearer's weapons that can be socketed into it.

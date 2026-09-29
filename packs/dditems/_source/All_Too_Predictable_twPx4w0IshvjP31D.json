@@ -13,7 +13,27 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "reroll": {
+      "enabled": true,
+      "maxUses": 1,
+      "mode": "all",
+      "reset": "turn",
+      "target": "anyDie",
+      "cost": {
+        "resourcePath": "",
+        "amount": 0,
+        "worldStoryPoints": 0,
+        "rolePointsName": ""
+      },
+      "condition": "vsPrimaryQuarry",
+      "skills": [],
+      "essence": "any",
+      "recursive": false,
+      "minDieFaces": 0,
+      "grantsCanCritD2": false,
+      "bonus": 0
+    }
   },
   "effects": [],
   "sort": 262500,

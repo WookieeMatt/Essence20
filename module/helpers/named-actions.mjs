@@ -1,5 +1,7 @@
+import { extNamedAction } from "./extensions.mjs";
 import { E20 } from "./config.mjs";
-import { setAiming, setSprinting } from "./action-economy.mjs";
+import { setAiming, setBraced, setSprinting } from "./action-economy.mjs";
+import { ACTION_PERK_IDS, hasSourced } from "./action-perks.mjs";
 import { activateLendAssistance } from "./lend-assistance.mjs";
 import { deactivateInvisibilityOnLendAssistance } from "./invisibility.mjs";
 
@@ -38,9 +40,10 @@ import { deactivateInvisibilityOnLendAssistance } from "./invisibility.mjs";
  *                 (opening a door, stowing a weapon), none of which the system models.
  * - commandPet    A Handle Animal Skill Test, but against a Difficulty the GM sets for the
  *                 specific command. Rolling it blind would invite the wrong comparison.
+ * - drawWeapon    Nothing to do beyond the cost: which weapon is in hand isn't modelled.
  */
 const NOT_AUTOMATED = [
-  'attack', 'contingency', 'useASkill', 'move', 'freeAction', 'commandPet',
+  'attack', 'contingency', 'useASkill', 'move', 'freeAction', 'drawWeapon',
 ];
 
 /**
@@ -201,8 +204,46 @@ async function lendAssistance(actor) {
   return result;
 }
 
+/**
+ * Brace for an automatic weapon's kickback (GI Joe CRB p.194). Lasts until the start of the next
+ * turn - or, with an Integrated Bipod (Quartermaster's Guide p.34, "stays braced until moving"),
+ * until the actor moves. Either way moving ends it: documents/token.mjs clears it.
+ * @param {Actor} actor
+ * @returns {Promise<Object>}
+ */
+async function brace(actor) {
+  const untilMoved = hasSourced(actor, ACTION_PERK_IDS.integratedBipod);
+  await setBraced(actor, true, { untilMoved });
+  return {
+    message: game.i18n.format(untilMoved ? 'E20.ActionBraceBipodMessage' : 'E20.ActionBraceMessage', { name: actor.name }),
+  };
+}
+
+/**
+ * Push or Shove an adjacent creature - see helpers/target-riders.mjs#rollShove.
+ * @param {Actor} actor
+ * @returns {Promise<Object>}
+ */
+async function shove(actor) {
+  const { rollShove } = await import("./target-riders.mjs");
+  return rollShove(actor);
+}
+
+/**
+ * Command a pet or drone - helpers/companions.mjs#commandPet.
+ * @param {Actor} actor
+ * @returns {Promise<Object>}
+ */
+async function commandPet(actor) {
+  const { commandPet: command } = await import("./companions.mjs");
+  return command(actor);
+}
+
 const HANDLERS = {
   aim,
+  commandPet,
+  brace,
+  shove,
   defend,
   hide,
   lendAssistance,
@@ -220,7 +261,7 @@ const HANDLERS = {
  * @returns {Boolean}
  */
 export function isAutomated(key) {
-  return Object.hasOwn(HANDLERS, key);
+  return Object.hasOwn(HANDLERS, key) || !!extNamedAction(key);
 }
 
 /**
@@ -234,7 +275,7 @@ export function isAutomated(key) {
  * @returns {Promise<Object|null>}   {message} to post, or null when the action has no effect.
  */
 export async function runNamedAction(actor, key) {
-  const handler = HANDLERS[key];
+  const handler = HANDLERS[key] ?? extNamedAction(key);
   if (!handler) {
     return null;
   }

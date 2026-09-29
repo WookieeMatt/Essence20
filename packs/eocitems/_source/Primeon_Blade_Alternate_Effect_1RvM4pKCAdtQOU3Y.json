@@ -14,7 +14,7 @@
     "damageType": "sharp",
     "damageValue": 2,
     "secondaryDamage": {
-      "type": "energy",
+      "type": "element",
       "value": 1
     },
     "shiftDown": 1,

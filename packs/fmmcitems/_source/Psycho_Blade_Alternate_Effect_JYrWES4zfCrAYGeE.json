@@ -1,0 +1,56 @@
+{
+  "folder": "XErHsvRQMRAJquva",
+  "name": "Psycho Blade Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "JYrWES4zfCrAYGeE",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "actionType": "standard",
+    "description": "<p>Shove 10ft</p>",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "damageType": "maneuver",
+    "damageValue": 0,
+    "defenseType": "toughness",
+    "shiftDown": 1,
+    "numHands": 1,
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {
+    "essence20": {
+      "d21Shove": 10
+    }
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790658899327,
+    "modifiedTime": 1790658899327,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!JYrWES4zfCrAYGeE"
+}

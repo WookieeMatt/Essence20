@@ -2,6 +2,25 @@ import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 import { linkEdgeToggle } from "../helpers/edge-toggle-link.mjs";
+/**
+ * The extension controls (helpers/extensions.mjs#registerDialogToggles): every ext_* field, by name -
+ * a checkbox as true/false, anything else as its value.
+ * @param {HTMLFormElement} form
+ * @returns {Object}
+ */
+function readExtensionControls(form) {
+  const ext = {};
+  for (const element of form?.elements ?? []) {
+    if (!element.name?.startsWith?.('ext_')) {
+      continue;
+    }
+
+    ext[element.name.slice(4)] = element.type == 'checkbox' ? element.checked : element.value;
+  }
+
+  return ext;
+}
+
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
@@ -138,6 +157,7 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       applySavantSkill: form?.applySavantSkill?.checked,
       applyMetallikatoIgnoreArmor: form?.applyMetallikatoIgnoreArmor?.checked,
       applyAnalyzeTarget: form?.applyAnalyzeTarget?.checked,
+      applySurging: form?.applySurging?.checked,
       applyPsychoanalyst: form?.applyPsychoanalyst?.checked,
       applyCoaxSurrender: form?.applyCoaxSurrender?.checked,
       applyCharge: form?.applyCharge?.checked,
@@ -247,6 +267,16 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       applyIntimidatingWeapon: form?.applyIntimidatingWeapon?.checked,
       // Fanning - clamped again in dice.mjs (clampFanningShots), so a hand-typed value can't exceed X.
       fanningShots: form?.fanningShots ? parseInt(form.fanningShots.value) || 0 : 0,
+      allOutAttackShifts: form?.allOutAttackShifts ? parseInt(form.allOutAttackShifts.value) || 0 : 0,
+      evasiveFightingShifts: form?.evasiveFightingShifts ? parseInt(form.evasiveFightingShifts.value) || 0 : 0,
+      pinpointCount: form?.pinpointCount ? parseInt(form.pinpointCount.value) || 0 : 0,
+      applyMakeAnOpening: form?.applyMakeAnOpening?.checked,
+      applySteadyHand: form?.applySteadyHand?.checked,
+      kitRequired: form?.kitRequired?.value || 'none',
+      applySynapticEdge: form?.applySynapticEdge?.checked,
+      // Extension controls (extToggles) - every ext_* field, by its own name.
+      ext: readExtensionControls(form),
+      applyTwentyPercentCooler: form?.applyTwentyPercentCooler?.checked,
       drivingStrike: form?.drivingStrike?.value,
       hardpointMovePenalty: form?.hardpointMovePenalty ? parseInt(form.hardpointMovePenalty.value) : 0,
       defenseType: form.defenseType.value,

@@ -26,6 +26,10 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
       classification: new fields.SchemaField({
         size: makeStrWithChoices(Object.keys(E20.weaponSizes), 'integrated'),
       }),
+      // "When receiving an Element weapon for a mission, you must first choose the type of element
+      // the weapon uses" (GI Joe CRB p.207). A damage type key of helpers/weapon-upgrades.mjs#ELEMENTS;
+      // an effect printed as "Element" damage deals it (weapon-upgrades.mjs#applyToEffect).
+      elementChoice: makeStrWithChoices(['acid', 'cold', 'electric', 'emp', 'fire', 'laser', 'sonic'], null),
       equipped: makeBool(true),
       hands: makeInt(null),
       hardpoint: new fields.SchemaField({

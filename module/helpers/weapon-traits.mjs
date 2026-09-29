@@ -1,0 +1,262 @@
+import { isMonsterGrown } from "./monster-grow.mjs";
+
+/**
+ * Weapon and armor trait rules that used to be labels only, and the Perks and gear that bend them.
+ * dice.mjs asks these questions at the points where it builds an attack; nothing here rolls or
+ * writes anything.
+ */
+
+const ID = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
+export const TRAIT_PERK = {
+  demolisher: ID('cobra_codex', 'hn7emvM7M9GoSLAI'),
+  bigLobber: ID('quartermasters_guide_to_gear', 'WlpUVVxAAOyeJxC3'),
+  fireball: ID('cobra_codex', '20lv1ecNs4ORVwWu'),
+  fieldTestExpert: ID('cobra_codex', 'bCNp9CxhKmIGifyY'),
+  snipeFromTheHip: ID('tf_crb', 'uX9x7VEUy4LCdVIg'),
+  ramCone: ID('decepticon_directive', 'sdrLrrdWEM6LrD7W'),
+  weaponCustomizer: ID('intercontinental_adventures', 'UWEU7hfmtRxlkWJB'),
+  mlpLightArmor: ID('mlp_crb', '4M1CnapdbRIBl3It'),
+};
+
+// Items printed with "Ignores Defend" (A Jump Through Time, p.76-78).
+const IGNORES_DEFEND = ['fp55vEQbwH92XrgI', '4nZgPVgqJm7nWgZE'];
+// Items printed with "Reload ×2" (A Jump Through Time, p.78).
+export const RELOAD_TWICE = ['UvWORzyYZ6kXfySK', 'kThg2spvAa9rTepi'];
+// Upgrades: Extended Mag (Quartermaster's Guide p.34), Potent Poison (Cobra Codex p.97), Salvaged
+// (Ferocious Fighters p.36 and its copies).
+export const TRAIT_UPGRADE = {
+  extendedMag: 'hPUmdnAN0FjRaal3',
+  potentPoison: 'CrxBz7IEuI92WfTB',
+  salvaged: ['sA8GbXKPcRuPHzNt', '7JGOSMXObCNJs6SS', 'cGGEXSdCI170AaM4'],
+};
+
+function sourceOf(item) {
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? '';
+}
+
+const idOf = uuid => String(uuid ?? '').split('.').pop();
+
+export function actorHas(actor, uuid) {
+  return !!actor?.items?.find?.(item => sourceOf(item) == uuid);
+}
+
+export function weaponHasUpgrade(weapon, ids) {
+  const list = [].concat(ids);
+  return !!weapon?.parent?.items?.find?.(item => item.type == 'upgrade' && item.flags?.essence20?.parentId == weapon.id
+    && list.includes(idOf(sourceOf(item))));
+}
+
+/**
+ * The traits a Perk adds to a weapon: Demolisher (Cobra Codex p.68, "all weapons gain Wrecker"), Big
+ * Lobber (Quartermaster's Guide p.28, thrown grenades gain Indirect), Fireball (Cobra Codex p.59,
+ * "weapons you use with the Fire trait gain the Antitank trait"), and a weapon Weapon Customizer
+ * was used on (Intercontinental Adventures p.64, "this gives your upgraded weapon the Temperamental
+ * trait").
+ * @param {Item} weapon
+ * @param {String[]} traits   Its traits so far.
+ * @returns {String[]}   Traits to add.
+ */
+export function perkGrantedTraits(weapon, traits) {
+  const actor = weapon?.parent;
+  const add = [];
+  if (!actor) {
+    return add;
+  }
+
+  if (actorHas(actor, TRAIT_PERK.demolisher)) {
+    add.push('wrecker');
+  }
+
+  if (actorHas(actor, TRAIT_PERK.bigLobber) && (traits.includes('thrown') || /grenade/i.test(weapon.name ?? ''))) {
+    add.push('indirect');
+  }
+
+  if (actorHas(actor, TRAIT_PERK.fireball) && traits.includes('fire')) {
+    add.push('antiTank');
+  }
+
+  if (weapon.flags?.essence20?.customized) {
+    add.push('temperamental');
+  }
+
+  return add;
+}
+
+/**
+ * Ram Cone (Decepticon Directive, gear, p.76): in Alt Mode the Flyby, Ram and Slam attacks gain
+ * Anti-Tank and Armor Piercing; in Bot Mode the unarmed Blunt attack loses its ↓1.
+ */
+export function ramConeAltAttack(actor, item) {
+  return (actorHas(actor, TRAIT_PERK.ramCone) || actorHas(actor, AUGUR_ID)) && !!actor?.system?.isTransformed
+    && (item?.system?.isRam || item?.system?.isFlyby || /slam|bash/i.test(item?.name ?? ''));
+}
+
+// Augur (Enigma of Combination, p.56): "Alt Mode: Your Flyby/Ram/Bash attacks inflict Sharp damage, no
+// longer need Movement to use, and gain the Armor Piercing Trait." The Armor Piercing half shares Ram
+// Cone's path above; the Sharp damage is set on the effect as it's prepared (documents/item.mjs).
+const AUGUR_ID = "Compendium.essence20.enigma_of_combination.Item.yk2MnBePZ5gxOEOj";
+
+export function applyAugur(effect) {
+  const actor = effect?.parent;
+  if (effect?.type != 'weaponEffect' || !actor?.system?.isTransformed || !actorHas(actor, AUGUR_ID)) {
+    return;
+  }
+
+  if (effect.system?.isRam || effect.system?.isFlyby || /bash/i.test(effect.name ?? '')) {
+    effect.system.damageType = 'sharp';
+  }
+}
+
+export function ramConeBotUnarmed(actor, item, parentWeapon) {
+  return actorHas(actor, TRAIT_PERK.ramCone) && !actor?.system?.isTransformed && item?.type == 'weaponEffect'
+    && !parentWeapon && item.system?.damageType == 'blunt' && (item.system?.shiftDown ?? 0) > 0;
+}
+
+/**
+ * "Ignores Defend" - the printed rule on the Footman's Flail and Kusarigama.
+ */
+export function ignoresDefend(parentWeapon) {
+  return IGNORES_DEFEND.includes(idOf(sourceOf(parentWeapon)));
+}
+
+/**
+ * Energy (PR CRB, Weapon Traits): "Energy weapons gain ↑1 on attacks against all Threats in their
+ * grown form."
+ */
+export function isGrownThreat(target) {
+  return isMonsterGrown(target) || !!target?.getFlag?.('essence20', 'normalFormId');
+}
+
+/**
+ * Ballistic (GI Joe CRB p.147): "Ballistic weapons automatically affect Toughness against targets
+ * at long range, unless the target is behind cover or has a Perk that dictates its Defense."
+ * Long range is past the effect's first (effective) range.
+ * @returns {Boolean}
+ */
+export function isBallisticLongRange(actor, item, parentWeapon, targetToken) {
+  const range = item?.system?.range?.value;
+  if (!parentWeapon?.system?.traits?.includes('ballistic') || !range || !targetToken?.center || !canvas?.grid) {
+    return false;
+  }
+
+  const statuses = targetToken.actor?.statuses;
+  if (statuses?.has?.('cover') || statuses?.has?.('totalCover')) {
+    return false;
+  }
+
+  const attacker = actor?.getActiveTokens?.()?.[0];
+  if (!attacker?.center) {
+    return false;
+  }
+
+  return canvas.grid.measurePath([attacker.center, targetToken.center]).distance > range;
+}
+
+/**
+ * Silent (GI Joe CRB, Battledress Traits): "Anyone making an Infiltration Skill Test while wearing
+ * battledress without the Silent trait does so with a penalty equal to its total bonus."
+ * @returns {Number}   The shift down.
+ */
+export function noisyArmorPenalty(actor) {
+  return (actor?.items ?? []).filter(item => item.type == 'armor' && item.system?.equipped
+    && !item.system?.isPowerArmor && !(item.system?.traits ?? []).includes('silent'))
+    .reduce((sum, armor) => sum + (Number(armor.system.totalBonusToughness) || 0) + (Number(armor.system.totalBonusEvasion) || 0), 0);
+}
+
+/**
+ * Computerized (battledress): "Electromagnetic weapons ignore this battledress' bonus to Evasion."
+ */
+export function computerizedArmorEvasion(target) {
+  return (target?.items ?? []).filter(item => item.type == 'armor' && item.system?.equipped
+    && (item.system?.traits ?? []).includes('computerized'))
+    .reduce((sum, armor) => sum + (Number(armor.system.totalBonusEvasion) || 0), 0);
+}
+
+/**
+ * My Little Pony's Light Armor (MLP CRB p.152): "↓1 on Athletics, Acrobatics, Infiltration and
+ * Initiative" while worn.
+ */
+export function lightArmorPenalty(actor, skill) {
+  return ['athletics', 'acrobatics', 'infiltration', 'initiative'].includes(skill)
+    && (actor?.items ?? []).some(item => item.type == 'armor' && item.system?.equipped && sourceOf(item) == TRAIT_PERK.mlpLightArmor)
+    ? 1 : 0;
+}
+
+const TF = id => `Compendium.essence20.tf_crb.Item.${id}`;
+export const HARDPOINT_PERK = {
+  armament: TF('t5EC1a4cbtfwewd6'),
+  experiment: TF('EcSOADOOb3PZMolz'),
+  inCaseOfEmergency: TF('4l9Oa6LLVheEdnFO'),
+  fiercestAmongYou: TF('LZirSocExL40Ljya'),
+  quickDraw: TF('p8DTLro2sc2kPYQl'),
+  gunRunner: TF('evgNyOBK1uA5qUVl'),
+  titanHardpointUpgrades: ID('enigma_of_combination', 'v8nLHZhmFTtsJ1zs'),
+};
+const REINFORCED_HARDPOINT_UPGRADE = 'YDOmBfuUnYFalIVY';
+
+/**
+ * Extra Hardpoints from Perks (TF CRB p.114 slots):
+ * - Armament (Gunner, p.68): "You gain an additional Integrated Weapon Hardpoint."
+ * - Experiment (Influence, p.32): the "additional Integrated Hardpoint" option.
+ * - In Case of Emergency (Support, p.54): "two additional Internal Hardpoints (Non-Weapon)".
+ * - The Fiercest Among You (Rainmaker, p.52): "an additional Reinforced Integrated Weapon Hardpoint."
+ * - Quick Draw (Gunslinger, p.70): "a pair of holsters as special External Weapon Hardpoints."
+ * @param {Actor} actor
+ * @returns {{external: Number, integrated: Number}}
+ */
+export function hardpointBonus(actor) {
+  const bonus = { external: 0, integrated: 0 };
+  if (actorHas(actor, HARDPOINT_PERK.armament)) {
+    bonus.integrated += 1;
+  }
+
+  const experiment = actor?.items?.find?.(item => sourceOf(item) == HARDPOINT_PERK.experiment);
+  if (experiment?.system?.choice == 'hardpoint') {
+    bonus.integrated += 1;
+  }
+
+  if (actorHas(actor, HARDPOINT_PERK.inCaseOfEmergency)) {
+    bonus.integrated += 2;
+  }
+
+  if (actorHas(actor, HARDPOINT_PERK.fiercestAmongYou)) {
+    bonus.integrated += 1;
+  }
+
+  if (actorHas(actor, HARDPOINT_PERK.quickDraw)) {
+    bonus.external += 2;
+  }
+
+  return bonus;
+}
+
+/**
+ * Titan Hardpoint Upgrades (Enigma of Combination p.41): "You ignore the Size-based requirements of
+ * any weapon installed into your Integrated Hardpoints, but each weapon requires an additional
+ * Hardpoint."
+ */
+export function integratedHardpointsPerWeapon(actor) {
+  return actorHas(actor, HARDPOINT_PERK.titanHardpointUpgrades) ? 1 : 0;
+}
+
+/**
+ * Whether an Integrated Hardpoint weapon fires as if Reinforced: the Reinforced Hardpoint upgrade
+ * (TF CRB p.128), The Fiercest Among You's Reinforced Hardpoint, or Gun Runner (Gunslinger, p.70:
+ * "treat an Integrated Hardpoint as Reinforced when you use it to fire ballistic weapons").
+ */
+export function firesAsReinforced(actor, weapon) {
+  return !!weapon?.system?.hardpoint?.reinforced
+    || weaponHasUpgrade(weapon, REINFORCED_HARDPOINT_UPGRADE)
+    || actorHas(actor, HARDPOINT_PERK.fiercestAmongYou)
+    || (actorHas(actor, HARDPOINT_PERK.gunRunner) && (weapon?.system?.traits ?? []).includes('ballistic'));
+}
+
+const BOARDER = 'BJpJWK7oDfw51Dxl';
+
+/**
+ * Boarder (Intercontinental Adventures, battledress upgrade, p.63): Edge on the test to board a
+ * vehicle. Offered on Athletics and Acrobatics - set the radio back when it isn't a boarding test.
+ */
+export function hasBoarder(actor) {
+  return !!actor?.items?.some?.(item => item.type == 'upgrade' && idOf(sourceOf(item)) == BOARDER);
+}

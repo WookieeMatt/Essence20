@@ -20,6 +20,17 @@
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
   {{/if}}
 
+  {{#if @root.dealsElementDamage}}
+    {{!-- Element choice (GI Joe CRB p.207) --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponElementChoice'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.elementChoice">
+      {{selectOptions config.weaponElements selected=system.elementChoice blank=(localize 'E20.WeaponElementNone') localize=true}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
   {{!-- Is Poison? --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponIsPoison'}}
   {{#*inline "item-field-inputs"}}

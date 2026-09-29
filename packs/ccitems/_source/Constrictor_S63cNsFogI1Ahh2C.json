@@ -15,7 +15,58 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.S63cNsFogI1Ahh2C",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "6EpTXMTy51xjSQ3a",
+      "changes": [
+        {
+          "key": "system.skills.might.specializations.grappling.name",
+          "mode": 5,
+          "value": "Grappling",
+          "priority": null
+        },
+        {
+          "key": "system.skills.might.specializations.grappling.granted",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Constrictor",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!S63cNsFogI1Ahh2C.6EpTXMTy51xjSQ3a"
+    }
+  ],
   "flags": {},
   "_stats": {
     "compendiumSource": null,
