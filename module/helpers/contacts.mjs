@@ -72,6 +72,28 @@ export function isContact(actor) {
   return actor?.type == 'npc' && !!actor.system?.isContact;
 }
 
+/**
+ * The NPC sheet's header buttons: an NPC is used as an NPC, a Contact, or both (both on). Flipping
+ * one returns the update to make, or null when it would switch the last one off - it has to be
+ * used as something.
+ * @param {Object} system The NPC's system data
+ * @param {'isNPC'|'isContact'} field The button clicked
+ * @returns {Object|null}
+ */
+export function npcUseToggle(system, field) {
+  const other = { isNPC: 'isContact', isContact: 'isNPC' }[field];
+  if (!other) {
+    return null;
+  }
+
+  const next = !system?.[field];
+  if (!next && !system?.[other]) {
+    return null;
+  }
+
+  return { [`system.${field}`]: next };
+}
+
 /** The Contacts listed on a PC's sheet. */
 export function contactsOf(actor) {
   return Object.values(actor?.system?.actors ?? {}).map(entry => {

@@ -1,7 +1,29 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 import { getActionsTabContext } from "../helpers/action-economy.mjs";
+import { npcUseToggle } from "../helpers/contacts.mjs";
 
 export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
+  static DEFAULT_OPTIONS = {
+    actions: {
+      toggleNpcUse: this.#onToggleNpcUse,
+    },
+  };
+
+  /**
+   * The header's NPC / Contact checkboxes (headers/npc.hbs). Both ticked is both; unticking the
+   * last one is refused - preventDefault on the click puts the tick back.
+   */
+  static async #onToggleNpcUse(event, target) {
+    const update = npcUseToggle(this.actor.system, target.dataset.field);
+    if (!update) {
+      event.preventDefault();
+      ui.notifications.info(game.i18n.localize('E20.NpcUseKeepOne'));
+      return;
+    }
+
+    await this.actor.update(update);
+  }
+
   static TABS = {
     primary: {
       tabs: [
@@ -83,7 +105,8 @@ export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
 
     const activeTab = this.tabGroups?.primary;
     if (activeTab && !visibility[activeTab]) {
-      const firstVisible = Object.keys(visibility).find((tabId) => visibility[tabId]);
+      // Switching NPC off lands on Contact (and back), not whatever tab happens to come next.
+      const firstVisible = ['npc', 'contact', ...Object.keys(visibility)].find((tabId) => visibility[tabId]);
       if (firstVisible) this.changeTab(firstVisible, 'primary');
     }
   }

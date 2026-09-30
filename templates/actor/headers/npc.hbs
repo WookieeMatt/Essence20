@@ -1,4 +1,22 @@
 {{#>"systems/essence20/templates/actor/headers/common.hbs"}}
+{{!-- Used as an NPC, a Contact, or both (both ticked) - each box shows or hides its own tab.
+     No name attribute: the click action saves it, so it can refuse to untick the last one
+     (helpers/contacts.mjs#npcUseToggle). --}}
+{{#*inline "topRowFields"}}
+<div class="sliced-border e20-npc-use">
+  <label class="sliced-border__label">{{localize 'E20.NpcUsedAs'}}</label>
+  <div class="e20-npc-use__options">
+    <label class="e20-npc-use__option" data-tooltip="E20.NpcUseNpcHint">
+      <input type="checkbox" data-action="toggleNpcUse" data-field="isNPC" {{checked system.isNPC}} {{disabled (not @root.editable)}} />
+      {{localize 'E20.TabNPC'}}
+    </label>
+    <label class="e20-npc-use__option" data-tooltip="E20.NpcUseContactHint">
+      <input type="checkbox" data-action="toggleNpcUse" data-field="isContact" {{checked system.isContact}} {{disabled (not @root.editable)}} />
+      {{localize 'E20.TabContact'}}
+    </label>
+  </div>
+</div>
+{{/inline}}
 {{#*inline "secondary-fields"}}
 <div class="sliced-border">
   <label class="sliced-border__label">{{localize 'E20.NpcThreatLevel'}}</label>
