@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you roll Initiative while Surprised, you also roll Alertness against the sneakiest hostile creature's Infiltration; on a success you're no longer Surprised.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

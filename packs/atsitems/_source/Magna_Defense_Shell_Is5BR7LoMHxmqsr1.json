@@ -5,6 +5,10 @@
   "_id": "Is5BR7LoMHxmqsr1",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +4 Toughness, +1 Health and ↑1 on Athletics. Regal: with a token targeted, Persuasion toward an ally or Intimidation toward an enemy gets ↑1, counted in the Roll Options Dialog's Shift Up box. Roll Options Dialog: an Enviro-Sealed switch for hostile environments.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

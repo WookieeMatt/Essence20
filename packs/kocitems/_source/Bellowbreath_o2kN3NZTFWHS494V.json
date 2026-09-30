@@ -5,6 +5,10 @@
   "_id": "o2kN3NZTFWHS494V",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Chat card: on a success, each target gets a DIF 15 Brawn save button, and failing knocks them Prone.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

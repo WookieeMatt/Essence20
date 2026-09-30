@@ -5,6 +5,10 @@
   "_id": "5p3lMU4vT7kUodp5",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: gain its 2 Energon Points at once; the cube is used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

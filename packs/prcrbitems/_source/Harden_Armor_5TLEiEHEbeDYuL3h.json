@@ -4,6 +4,10 @@
   "_id": "5TLEiEHEbeDYuL3h",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Toughness while Morphed. You can take it up to three times.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

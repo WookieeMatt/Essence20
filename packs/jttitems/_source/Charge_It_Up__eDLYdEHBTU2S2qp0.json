@@ -5,6 +5,10 @@
   "_id": "eDLYdEHBTU2S2qp0",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend 1 Personal Power while Morphed; your next melee Power Weapon attack ignores the target's armor.</p><p>Left to the table: also ignoring the target's Resistances, immunities and other damage reduction.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

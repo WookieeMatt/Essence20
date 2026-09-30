@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for a Snag on Deception or Persuasion against someone you hadn't met before this scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

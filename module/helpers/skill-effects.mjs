@@ -12,6 +12,23 @@ import { readChanges, resolveRollScopedChange, summarize } from "./effect-catalo
 // ones (edge/snag/shiftUp/shiftDown/untrainedBonus), which is exactly what
 // applySkillEffectBonus below knows how to fold into one roll.
 
+// Items whose disabled Active Effect is already offered in the Roll Options Dialog by the system's
+// own source for it, so the effect isn't listed a second time. Recon (GI JOE CRB, Scout Focus,
+// p.94): dice.mjs's 'recon' source gives the same Edge in the environment of expertise.
+// Ceremonial (Cobra Codex, armor upgrade, p.101): its Use button's ↑1 on Persuasion is listed as
+// its own source (helpers/extensions/gij1/gear.mjs), so its old disabled "Persuasion Upshift"
+// effect would let a player stack a second ↑1.
+const CODE_OFFERED_EFFECT_SOURCES = new Set([
+  "Compendium.essence20.gi_joe_crb.Item.EDBn8zHJXkRFu2TT",
+  "Compendium.essence20.cobra_codex.Item.vf9rJxOwuxDzrPKp",
+]);
+
+function isCodeOffered(effect) {
+  const item = effect.parent?.documentName == 'Item' ? effect.parent : null;
+  const source = item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return CODE_OFFERED_EFFECT_SOURCES.has(source) || CODE_OFFERED_EFFECT_SOURCES.has(effect.origin);
+}
+
 /**
  * Every currently-disabled effect on the actor (its own, or transferred from an owned Item like a
  * Perk - see Actor#allApplicableEffects) that would change something about the given skill, or
@@ -38,7 +55,7 @@ export function getToggleableSkillEffects(actor, skillKey, essence) {
   const effects = actor.allApplicableEffects ? [...actor.allApplicableEffects()] : (actor.effects ?? []);
   const results = [];
   for (const effect of effects) {
-    if (!effect.disabled) {
+    if (!effect.disabled || isCodeOffered(effect)) {
       continue;
     }
 

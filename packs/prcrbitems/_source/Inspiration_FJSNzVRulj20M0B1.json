@@ -5,6 +5,10 @@
   "_id": "FJSNzVRulj20M0B1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick an ally. A d4 (d6 once you've taken this Perk again, d8 at the third) is added to their next roll, shown in the dice on their chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

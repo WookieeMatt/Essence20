@@ -5,6 +5,10 @@
   "_id": "MMckFVXAl7ZD6jlU",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: the vehicle can blast music or announcements of the driver's choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

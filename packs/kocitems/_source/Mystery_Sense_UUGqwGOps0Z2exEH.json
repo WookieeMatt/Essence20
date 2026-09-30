@@ -5,6 +5,10 @@
   "_id": "UUGqwGOps0Z2exEH",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Cast: on a success you get ↑3 on Alertness, Infiltration and Streetwise tests until the GM advances the scene, already counted in the Upshift number of your Roll Options Dialog.</p><p>Left to the table: telling you whether an important clue is nearby.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

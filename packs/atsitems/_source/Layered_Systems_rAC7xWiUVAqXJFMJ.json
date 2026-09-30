@@ -5,6 +5,10 @@
   "_id": "rAC7xWiUVAqXJFMJ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: adds 3 Health to this Zord's section of the Megaform. Each copy (up to three) adds another 3.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

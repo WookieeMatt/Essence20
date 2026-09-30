@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when an ally fails or Fumbles a Skill Test, you see a One-Upping button. It gives your next roll of that same Skill ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

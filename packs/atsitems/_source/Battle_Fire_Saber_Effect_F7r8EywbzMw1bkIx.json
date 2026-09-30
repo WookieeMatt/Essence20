@@ -5,6 +5,10 @@
   "_id": "F7r8EywbzMw1bkIx",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might attack at 5ft/10ft range for 3 Fire damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

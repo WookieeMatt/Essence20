@@ -5,6 +5,10 @@
   "_id": "6XYgRBQGPm7gF41b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you disarm someone of a gun, you can dismantle it. It can't be used until someone reassembles it with a DIF 20 Technology test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

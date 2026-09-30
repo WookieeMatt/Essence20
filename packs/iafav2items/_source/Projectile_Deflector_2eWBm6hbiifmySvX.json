@@ -5,6 +5,10 @@
   "_id": "2eWBm6hbiifmySvX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when a Threat's projectile attack hits you, a button rolls Finesse against its attack total, once per Combat. Success negates the hit; a Critical Success sends its damage back at the Threat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

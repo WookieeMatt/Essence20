@@ -5,6 +5,10 @@
   "_id": "sAY8uesn2NTTcDqi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you requisition gear, you're offered a Wealth Test in place of the normal Requisition Test, using your Wealth Skill and its own shifts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

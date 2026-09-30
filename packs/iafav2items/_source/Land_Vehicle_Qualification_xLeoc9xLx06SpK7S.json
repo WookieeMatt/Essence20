@@ -5,6 +5,10 @@
   "_id": "xLeoc9xLx06SpK7S",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you drive a vehicle with Ground movement, rolling Driving without ranks doesn't add the untrained Snag, and with Driving ranks you get ↑1, already added to the shift in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "1tLnQT580DafhUV4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when someone targets you with a Social test, they get a switch for conning you in a deal. Ticked, your Cleverness gets +1 for each copy you have (up to +4); simple lies leave it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

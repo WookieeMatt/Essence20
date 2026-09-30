@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "icons/svg/sword.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for 1 Sharp damage; the Blazing upgrade gives it the Fire trait, and its other traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

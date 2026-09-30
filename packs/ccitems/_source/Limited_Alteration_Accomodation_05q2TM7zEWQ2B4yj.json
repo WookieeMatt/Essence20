@@ -5,6 +5,10 @@
   "_id": "05q2TM7zEWQ2B4yj",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: this upgrade lifts an Alteration's armor restriction, which the system doesn't track at this availability.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

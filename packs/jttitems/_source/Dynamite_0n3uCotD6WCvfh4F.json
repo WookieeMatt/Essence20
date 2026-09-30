@@ -5,6 +5,10 @@
   "_id": "0n3uCotD6WCvfh4F",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: thrown with Athletics for the listed Stun and Fire damage in its blast area, or to leave targets Stunned; used up when thrown.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

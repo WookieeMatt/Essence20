@@ -5,6 +5,10 @@
   "_id": "xthnRWfhbfXvpmZN",
   "img": "systems/essence20/assets/icons/weapons/hammer.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Blunt plus 1 Stun damage, or 2 Blunt damage with the two-handed alternate effect. Blunt and Silent apply.</p>"
+    },
     "originalId": "",
     "description": "<p>The Effect also does 1 Stun.&nbsp;</p>",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "3CyKdsMYYq0lGj06",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: if you are Defeated in combat, a chat card says so, and for the rest of that combat your allies' Skill Tests get Edge, labelled with your name in their Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

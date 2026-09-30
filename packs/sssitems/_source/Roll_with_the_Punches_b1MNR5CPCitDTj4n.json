@@ -5,6 +5,10 @@
   "_id": "b1MNR5CPCitDTj4n",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per combat (twice from 6th level), pick Toughness, Willpower or Evasion. The next attack against you that targets that Defense faces double its value, shown as the doubled difficulty on the attacker's chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

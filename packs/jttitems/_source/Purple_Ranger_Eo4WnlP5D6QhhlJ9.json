@@ -5,6 +5,10 @@
   "_id": "Eo4WnlP5D6QhhlJ9",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, including Emotional Mastery and Emotional Range, plus the Role's Essence and Skill increases.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

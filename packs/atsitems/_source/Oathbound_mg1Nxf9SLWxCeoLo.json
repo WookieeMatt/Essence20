@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Smarts and Social rolls show an Oathbound (Acting Against Oath) switch. Turn it on while you act against your oath to add ↓1 to that roll. The enemies your oath brings are story material for the GM.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

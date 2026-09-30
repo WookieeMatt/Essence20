@@ -5,6 +5,10 @@
   "_id": "fsy9G9z8cKe3kObg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Resistance to your Energy Affinity element. Use button: spend 1 Energon for Immunity to it, which stops the next hit of that type. Left to the table: further hits before your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

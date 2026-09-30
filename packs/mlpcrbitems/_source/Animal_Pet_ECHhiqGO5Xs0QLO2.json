@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: builds your pet from the book's table (function, size and movement) and adds it as a companion. Taking it again improves the pet a tier.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

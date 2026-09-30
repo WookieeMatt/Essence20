@@ -5,6 +5,10 @@
   "_id": "HowgU7x1BzAT2kGp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: after converting as a Standard action, make your one attack as part of it (roll it normally).</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

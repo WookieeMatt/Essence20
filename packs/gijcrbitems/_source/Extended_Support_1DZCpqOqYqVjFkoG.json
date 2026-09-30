@@ -5,6 +5,10 @@
   "_id": "1DZCpqOqYqVjFkoG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you use Support or Tech Support, you're offered to spend a Move action instead so the benefit lasts the whole scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

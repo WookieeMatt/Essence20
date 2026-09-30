@@ -5,6 +5,10 @@
   "_id": "A6qKsyoSRgY0MN9M",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Finesse attack at ↓1 against up to 3 targets within 45 ft for 1 Energy damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

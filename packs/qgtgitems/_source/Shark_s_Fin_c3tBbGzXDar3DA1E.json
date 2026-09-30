@@ -5,6 +5,10 @@
   "_id": "c3tBbGzXDar3DA1E",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in a sea or wetlands scene region your Ground and Aquatic Movement double. When you roll Initiative there, you aren't Surprised and chat reminds you that you can move your full Movement before combat starts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

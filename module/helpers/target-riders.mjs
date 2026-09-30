@@ -22,6 +22,7 @@ import { RIDER, riderUseFor } from "./rider-uses.mjs";
 import { GRANT } from "./grant-uses.mjs";
 import { isPerfectDisguiseActive } from "./perfect-disguise.mjs";
 import { isScarefyingAppearanceActive } from "./scarefying-appearance.mjs";
+import { jammingRadiusFeet } from "./vehicle-upgrades.mjs";
 
 /**
  * Per-target modifiers, on-hit riders and the Conditions that go with them - the Perks, weapons and
@@ -598,6 +599,13 @@ function activeDevicesNear(actor) {
 
   const found = [];
   for (const token of canvas.tokens.placeables) {
+    // A vehicle's switched-on Radar Jammer (50ft) or Enhanced Radar Jamming (1 mile) - helpers/
+    // vehicle-upgrades.mjs#jammingRadiusFeet. Same Technology Snag as a carried Jammer.
+    const jamming = jammingRadiusFeet(token.actor);
+    if (jamming && distanceFeet(token.center, own.center) <= jamming) {
+      found.push({ kind: 'jammer', name: token.actor.name });
+    }
+
     for (const item of token.actor?.items ?? []) {
       const kind = sourceOf(item) == RIDER.jammer ? 'jammer' : sourceOf(item) == RIDER.whiteNoise ? 'whiteNoise' : null;
       if (kind && item.flags?.essence20?.[DEVICE_FLAG] && distanceFeet(token.center, own.center) <= DEVICE_RADIUS_FEET) {
@@ -1079,9 +1087,10 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
       }
 
       // Headache (WTNV Citizen's Guide, p.47): "you may deal additional Psychic damage equal to your
-      // current Essence damage with your unarmed melee attacks."
+      // current Essence damage with your unarmed melee attacks." Its own Psychic damage (not the
+      // punch's type), so a separate apply button like Acid Sacs' - "may" leaves it to the player.
       if (headache) {
-        damageBonusNote(result, headache, nameOf(actor, RIDER.headache, 'Headache'));
+        addRiderOption(result, { key: 'headache', label: nameOf(actor, RIDER.headache, 'Headache'), damageValue: headache, damageType: 'psychic' });
       }
 
       // Shaped Charges (GI Joe CRB, Artillery, 7th level, p.81): "your explosives deal double damage

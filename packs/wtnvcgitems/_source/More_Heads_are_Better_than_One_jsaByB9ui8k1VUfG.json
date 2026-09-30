@@ -5,6 +5,10 @@
   "_id": "jsaByB9ui8k1VUfG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Fangs attack. Use button (once per session; a new mission on the Scene Clock resets it): your next Skill Test adds 2d2 to the roll.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {

@@ -5,6 +5,10 @@
   "_id": "va2vPiwiqV7v7Whx",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when a test needs a kit, your best carried kit sets the Snag or ↓. Use button: use it up for its bonus, scrounge a refill, or choose its Specialization.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

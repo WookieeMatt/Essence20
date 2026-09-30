@@ -5,6 +5,10 @@
   "_id": "U2bqSgKFdNs9FLPU",
   "img": "systems/essence20/assets/icons/weapons/wrench.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Driving for 2 Blunt damage at Reach, and a Critical Success knocks the target Prone.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

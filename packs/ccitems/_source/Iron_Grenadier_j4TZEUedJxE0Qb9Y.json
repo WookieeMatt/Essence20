@@ -5,6 +5,10 @@
   "_id": "j4TZEUedJxE0Qb9Y",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: Momentum Armor (Ceremonial), a Medium Blade (Ceremonial) and a Directed Element Rifle (Microtech, Experimental). Left to the table: who may take this package.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "aUxtcuKUb40JYoqx",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: when the crystal takes damage, roll the explosion check (with damage buttons for everyone in the blast), or roll DIF 14 Science to refine it into usable Energon. Either way the crystal is used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

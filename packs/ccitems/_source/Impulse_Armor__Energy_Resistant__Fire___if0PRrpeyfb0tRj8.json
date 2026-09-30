@@ -4,6 +4,10 @@
   "type": "armor",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: adds its Defense bonus while worn. Its Energy Resistant upgrade applies as that upgrade describes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "RaBFCLogTlDLzux9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: once per scene with an ally within 20 ft, give an attack against you a Snag; if it still damages you, take Edge on your next attack against that attacker.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

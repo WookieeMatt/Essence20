@@ -5,6 +5,10 @@
   "_id": "0OA0R7F3JejAQpkf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: adds the Screech attack to your sheet: a Targeting attack against one target for 1 Blunt damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

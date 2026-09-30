@@ -1,4 +1,5 @@
 import { E20 } from "./config.mjs";
+import { getSceneEpoch } from "./scene-clock.mjs";
 
 /**
  * Mystical Understanding - Magically Fit In (MLP CRB, Spirit of Magic, 1st level, p.93): "You
@@ -19,11 +20,24 @@ import { E20 } from "./config.mjs";
  * Only the MOST RECENT activation is tracked (a single {skill, amount} flag, overwritten by a
  * later use) rather than stacking multiple simultaneously-boosted skills - the same "closest
  * deterministic approximation, not a full ledger" idiom Fortify's own single-Defense-choice flag
- * already established, and "for the rest of the scene" has no active clear hook, the same
- * accepted gap Fortify/Hardened Armor's own scene-long grants already live with.
+ * already established. "For the rest of the scene" is the Scene Clock's scene window: the flag
+ * carries the scene epoch it was set in, and the bonus reads as zero once the GM starts a new
+ * scene (a flag with no epoch reads as expired, the same way scene-clock.mjs's isActiveForWindow
+ * treats one).
  */
 export const MYSTICAL_UNDERSTANDING_ID = "Compendium.essence20.mlp_crb.Item.23NeoRDRxlo0LpyQ";
 const MAGICALLY_FIT_IN_FLAG = 'magicallyFitInBonus';
+
+/**
+ * The flag value that banks `amount` ranks on `skill` for the rest of the current scene. Shared
+ * with Friendship Is Mystical (extensions/mlp2), which writes it onto a friend.
+ * @param {String} skill
+ * @param {Number} amount
+ * @returns {{skill: String, amount: Number, epoch: Number}}
+ */
+export function magicallyFitInValue(skill, amount) {
+  return { skill, amount, epoch: getSceneEpoch() };
+}
 
 /**
  * @param {Actor} actor
@@ -85,17 +99,17 @@ export async function activateMagicallyFitIn(actor) {
   }
 
   await mysticalPoints.update({ 'system.resource.value': mysticalPoints.system.resource.value - chosen.amount });
-  await actor.setFlag('essence20', MAGICALLY_FIT_IN_FLAG, chosen);
+  await actor.setFlag('essence20', MAGICALLY_FIT_IN_FLAG, magicallyFitInValue(chosen.skill, chosen.amount));
 }
 
 /**
- * Live, non-consumed read for dice.mjs's own self-status shiftUp computation - see this file's
- * own doc comment for why this has no active end-of-scene clear.
+ * Live, non-consumed read for dice.mjs's own self-status shiftUp computation. Zero once the scene
+ * the ranks were gained in has ended.
  * @param {Actor} actor
  * @param {String} rolledSkill
  * @returns {Number}
  */
 export function getMagicallyFitInBonus(actor, rolledSkill) {
   const bonus = actor?.getFlag?.('essence20', MAGICALLY_FIT_IN_FLAG);
-  return bonus?.skill == rolledSkill ? bonus.amount : 0;
+  return bonus?.skill == rolledSkill && bonus.epoch === getSceneEpoch() ? bonus.amount : 0;
 }

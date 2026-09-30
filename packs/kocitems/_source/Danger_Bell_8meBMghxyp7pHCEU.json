@@ -5,6 +5,10 @@
   "_id": "8meBMghxyp7pHCEU",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Left to the table: the spell's effect, which is narrative (the GM rings the bell when traps or hostiles come near).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

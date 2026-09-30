@@ -5,6 +5,10 @@
   "_id": "Gvh0iaxbcohFtYGe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: each turn, the action tracker charges setting a Contingency as a Free action instead of a Standard action, up to your Smarts score in Contingencies.</p><p>Left to the table: making each one trigger on a different condition, with no more than one of them an Attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

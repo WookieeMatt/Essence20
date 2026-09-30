@@ -5,6 +5,10 @@
   "_id": "0ZTjZ36gN74889am",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while Reckless Abandon is on, dropping to 0 Health doesn't Defeat you (you stay at 1). If you are still at that point when Reckless Abandon ends, the Defeat lands then.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

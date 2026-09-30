@@ -5,6 +5,10 @@
   "_id": "k7svIPp9YYkzjxwB",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: while Morphed, pay its Personal Power cost to summon it (you lose 1 Smarts each time) and gain its attacks. Active Effect: ↑1 on Might and Finesse while worn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

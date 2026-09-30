@@ -5,6 +5,10 @@
   "_id": "PrQVSgFWjjtZgCH1",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Alertness and Initiative tests by anyone crewing the vehicle take ↓2, listed as a NOD Viewscreens switch under Automatic Modifiers in the Roll Options Dialog.</p><p>Left to the table: the crew seeing up to 60 ft in the dark.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

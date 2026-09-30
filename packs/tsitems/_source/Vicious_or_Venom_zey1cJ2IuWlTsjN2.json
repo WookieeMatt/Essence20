@@ -5,6 +5,10 @@
   "_id": "zey1cJ2IuWlTsjN2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Toughness. On the sheet: pick Acidic Saliva, Razor-Sharp or Venomous. Automatic: once picked, attacks with a Natural Weapon item (or an attack not tied to any weapon) deal +1 damage, listed on the attack's chat card.</p><p>Left to the table: the extra 1 uses the attack's own damage type, so treat it as Acid, Sharp or Poison yourself when that matters.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

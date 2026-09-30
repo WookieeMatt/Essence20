@@ -5,6 +5,10 @@
   "_id": "1zreGdgegCeRjJPT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when an Adept Armament attack would take a Snag, spend a Free action to drop it. Use button: pick one more Adept Armament.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

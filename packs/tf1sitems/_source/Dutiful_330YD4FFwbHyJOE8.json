@@ -5,6 +5,10 @@
   "_id": "330YD4FFwbHyJOE8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Persuasion tests targeting you take a Snag, shown as Dutiful next to Snag in the roller's Roll Options Dialog. Outside combat, your Social Skill tests get ↑1, already counted in the Shift Up box of the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

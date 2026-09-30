@@ -5,6 +5,10 @@
   "_id": "WlJKvvOXczVPzUaD",
   "img": "systems/essence20/assets/icons/weapons/bo.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Stun damage, with alternate effects of 1 Blunt damage (↓1) or a Maneuver; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

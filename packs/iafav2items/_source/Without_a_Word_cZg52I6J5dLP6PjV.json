@@ -5,6 +5,10 @@
   "_id": "cZg52I6J5dLP6PjV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: in Combat, while any enemy on the scene is Frightened, Mesmerized or Surprised, attacks against you must beat your Defense +1 when the hit is checked.</p><p>Left to the table: your extra Qualifications (Cover Grenades, Standard and Limited upgrades for melee weapons, the Stealth battledress upgrade and Limited Athletics (Climbing) Kits).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

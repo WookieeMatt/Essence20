@@ -5,6 +5,10 @@
   "_id": "uh73qYz8bwDobLFh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Pick your Dino Thunder power when you add it. Use button: spend 1 Personal Power to activate it; its bonuses, conditions or movement apply and end on their own.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

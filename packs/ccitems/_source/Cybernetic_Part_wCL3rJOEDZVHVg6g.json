@@ -5,6 +5,10 @@
   "_id": "wCL3rJOEDZVHVg6g",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when gained (or via the Use button), pick a Standard Alteration you don't already have; it is added as a cybernetic part.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

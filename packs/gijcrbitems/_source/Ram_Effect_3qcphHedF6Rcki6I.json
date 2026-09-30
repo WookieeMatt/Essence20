@@ -5,6 +5,10 @@
   "_id": "3qcphHedF6Rcki6I",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Might as a melee attack for 2 Blunt. In combat it first asks you to confirm the vehicle has moved at least 15 ft this turn.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

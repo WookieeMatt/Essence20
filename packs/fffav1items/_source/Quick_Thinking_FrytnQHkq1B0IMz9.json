@@ -5,6 +5,10 @@
   "_id": "FrytnQHkq1B0IMz9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Alertness can use Speed and Infiltration can use Smarts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

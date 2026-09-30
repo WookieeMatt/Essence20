@@ -5,6 +5,10 @@
   "_id": "7BZXi4zvS6GAhGOY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: outside combat, with at least one Science Specialization, every Science test opens with the Specialized switch on. Tests outside your Specializations also get a Broad Understanding ↓2 switch under Automatic Modifiers in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

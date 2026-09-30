@@ -5,6 +5,10 @@
   "_id": "HB7e3uW1ggYNJVql",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you have Resistance to Stun, adding Psychic at 6th level, Blunt at 12th and Energy at 18th. Attacks of those types against you take a Snag, labelled Resistance in the attacker's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

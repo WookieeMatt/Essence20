@@ -5,6 +5,10 @@
   "_id": "FpfRVppXkYtN7yyQ",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +2 Toughness and ↑1 on Brawn. Exo-Frame prompts a Driving test when you move and take a Standard action in one turn; Modular gives 3 upgrade slots.</p>"
+    },
     "originalId": "",
     "description": "<p>Modular 3</p>",
     "source": {
@@ -28,7 +32,7 @@
   },
   "effects": [
     {
-      "name": "Blaster Rig",
+      "name": "Belter Rig",
       "origin": "Item.FpfRVppXkYtN7yyQ",
       "duration": {
         "startTime": null,

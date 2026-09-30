@@ -222,6 +222,25 @@ describe("isImmuneToCondition (Always Alert, Transformers CRB, General Perk, p.1
   test("false without the Perk", () => {
     expect(isImmuneToCondition(makeActor(), 'surprised')).toBe(false);
   });
+
+  test.each([
+    ["GI Joe CRB", "Compendium.essence20.gi_joe_crb.Item.Vo5IeXooKE9OBoJH"],
+    ["PR CRB", "Compendium.essence20.pr_crb.Item.oXyaZOw6L1AXiyCj"],
+    ["MLP CRB", "Compendium.essence20.mlp_crb.Item.ZBOmQradsrZi9sc5"],
+    ["WTNV Citizens' Guide", "Compendium.essence20.wtnv_citizens_guide.Item.LXK3ATRjFLfPg4mb"],
+  ])("the %s printing grants the same Surprised immunity", (book, id) => {
+    expect(isImmuneToCondition(makeActor([id]), 'surprised')).toBe(true);
+    expect(isImmuneToCondition(makeActor([id]), 'frightened')).toBe(false);
+  });
+});
+
+describe("isImmuneToCondition (Rapid Deployment Drills, Ferocious Fighters Force Recon Focus, 3rd level)", () => {
+  const RAPID_DEPLOYMENT_DRILLS_ID = "Compendium.essence20.ferocious_fighters.Item.pQvXMpk7uAvfuGMl";
+
+  test("true for surprised with the Perk, nothing else", () => {
+    expect(isImmuneToCondition(makeActor([RAPID_DEPLOYMENT_DRILLS_ID]), 'surprised')).toBe(true);
+    expect(isImmuneToCondition(makeActor([RAPID_DEPLOYMENT_DRILLS_ID]), 'frightened')).toBe(false);
+  });
 });
 
 describe("isImmuneToCondition (Dig In, Decepticon Directive Raider Siegemaster Focus, 10th level) - gated on the toggled stance", () => {

@@ -5,6 +5,10 @@
   "_id": "t0QDESiNz7GEDYHL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, roll your Origin Skill against a targeted character's Willpower; on a success it deals 1 Stun.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

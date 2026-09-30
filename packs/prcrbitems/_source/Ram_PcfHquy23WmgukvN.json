@@ -5,6 +5,10 @@
   "_id": "PcfHquy23WmgukvN",
   "img": "systems/essence20/assets/icons/weapons/punch.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the vehicle's Ram attack rolls with the listed damage; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

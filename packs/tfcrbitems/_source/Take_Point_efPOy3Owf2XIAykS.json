@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Rough Terrain doesn't slow your movement, and while your token stands in Rough Terrain, ranged attacks against you take the Cover ↓, shown as Cover in the attacker's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

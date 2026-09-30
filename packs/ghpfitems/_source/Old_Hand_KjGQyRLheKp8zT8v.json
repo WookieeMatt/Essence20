@@ -5,6 +5,10 @@
   "_id": "KjGQyRLheKp8zT8v",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: an Old Hand Role added on top of your base Role, with its Moxie Points and its Perks at Old Hand levels. Your base Role keeps granting its Perks at the slower effective level, and General Perks come at the listed levels.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

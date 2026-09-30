@@ -5,6 +5,10 @@
   "_id": "a5xcpj3rHW5EW354",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: allies within 60ft of you get Edge on Infiltration and Survival tests (already selected in their Roll Options Dialog), and their ranged attacks against a target in Cover take ↓1 instead of ↓2, shown in the Cover entry of their Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "WzccenAOAQxiARf7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ally abilities that reach allies within a range reach you at five times that range. Use button: once per scene, gain Lend Assistance from an ally's remembered advice.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

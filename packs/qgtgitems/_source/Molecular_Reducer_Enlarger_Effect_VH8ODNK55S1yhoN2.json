@@ -5,6 +5,10 @@
   "_id": "VH8ODNK55S1yhoN2",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a Technology attack at 75ft for 1 damage.</p><p>Left to the table: growing or shrinking the target one Size Class and the matching Speed or Strength Essence damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

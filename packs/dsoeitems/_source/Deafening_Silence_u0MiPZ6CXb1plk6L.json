@@ -5,6 +5,10 @@
   "_id": "u0MiPZ6CXb1plk6L",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when no ally is within 50 ft, your Smarts and Social Skill Tests take ↓1. It's already counted in the Roll Options Dialog's starting ↓ total, but isn't listed under its own name.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

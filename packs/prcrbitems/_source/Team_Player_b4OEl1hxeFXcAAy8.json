@@ -5,6 +5,10 @@
   "_id": "b4OEl1hxeFXcAAy8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: while Morphed, spend 1 Personal Power to pass one of your Survival Boons to a teammate. Chat card: they take it, and it returns to you when you next Morph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

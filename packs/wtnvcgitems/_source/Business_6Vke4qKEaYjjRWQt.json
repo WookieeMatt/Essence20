@@ -5,6 +5,10 @@
   "_id": "6Vke4qKEaYjjRWQt",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while worn, an attacker whose name or creature tags include \"Strex\" rolls against your Cleverness +2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

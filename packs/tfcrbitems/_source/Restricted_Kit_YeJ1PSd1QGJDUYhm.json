@@ -5,6 +5,10 @@
   "_id": "YeJ1PSd1QGJDUYhm",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose this kit's Specialization first. Roll Options Dialog: when a roll calls for that kit, it removes the Snag. Use it to gain Specialization (or an Edge) for the Mission; it isn't used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

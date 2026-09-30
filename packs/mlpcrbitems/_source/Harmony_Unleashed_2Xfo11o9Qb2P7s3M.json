@@ -5,6 +5,10 @@
   "_id": "2Xfo11o9Qb2P7s3M",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: target the pony (or target no one to cast it on yourself). For 3 rounds that pony's Cutie Mark actions cost Free actions; they're asked if each action is related.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "nQcU1SrVChPaXXpq",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while the Zord has a driver, its melee attacks get ↑1, already counted in the upshift its Roll Options Dialog opens with.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

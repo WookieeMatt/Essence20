@@ -5,6 +5,10 @@
   "_id": "ZLvRtMySr9GPe4oD",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, at Reach for 1 Sharp damage, with a two-target alternate at ↓1; Martial Arts and Silent apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

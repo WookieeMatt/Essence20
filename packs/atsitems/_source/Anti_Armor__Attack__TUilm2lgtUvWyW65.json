@@ -5,6 +5,10 @@
   "_id": "TUilm2lgtUvWyW65",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted on drop: pick one of the Zord's weapons, which gains the Anti-Tank and Wrecker traits. Automatic: each Critical Success with that weapon lowers the target's armor bonus to Toughness by 2 for the rest of the scene (stacking), noted on the attack's chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

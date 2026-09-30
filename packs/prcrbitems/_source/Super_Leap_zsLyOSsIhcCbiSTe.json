@@ -5,6 +5,10 @@
   "_id": "zsLyOSsIhcCbiSTe",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: while Morphed, jumping anywhere within 90 ft as a Move action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "YBkaSsqfbS4ip7Qq",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Dangerous Digestive attack, rolling Deception for 1 Poison damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

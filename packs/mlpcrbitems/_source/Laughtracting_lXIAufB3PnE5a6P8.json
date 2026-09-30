@@ -5,6 +5,10 @@
   "_id": "lXIAufB3PnE5a6P8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Standard action, roll Performance against your target's Willpower; each creature you beat can't use Free actions on its next turn.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

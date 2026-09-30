@@ -5,6 +5,10 @@
   "_id": "3ZrBd6FhV6Fep1zq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: trained in medium and heavy armor. Automatic: driving Qualification for Large/Long and smaller land vehicles.</p><p>Left to the table: training with the silent battledress upgrade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

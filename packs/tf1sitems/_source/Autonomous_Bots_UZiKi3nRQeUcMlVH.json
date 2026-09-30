@@ -5,6 +5,10 @@
   "_id": "UZiKi3nRQeUcMlVH",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Stand Together and We Improvise Faction Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

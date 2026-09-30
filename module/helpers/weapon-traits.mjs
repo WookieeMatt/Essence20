@@ -16,18 +16,24 @@ export const TRAIT_PERK = {
   ramCone: ID('decepticon_directive', 'sdrLrrdWEM6LrD7W'),
   weaponCustomizer: ID('intercontinental_adventures', 'UWEU7hfmtRxlkWJB'),
   mlpLightArmor: ID('mlp_crb', '4M1CnapdbRIBl3It'),
+  mlpHeavyArmor: ID('mlp_crb', 'B8RcQxof4JmlbEHE'),
 };
+
+// My Little Pony's armor prints its own downshift (MLP CRB p.152) in place of G.I. Joe's "not
+// Silent" Infiltration penalty - see lightArmorPenalty.
+const MLP_ARMOR_PENALTY = { [TRAIT_PERK.mlpLightArmor]: 1, [TRAIT_PERK.mlpHeavyArmor]: 2 };
 
 // Items printed with "Ignores Defend" (A Jump Through Time, p.76-78).
 const IGNORES_DEFEND = ['fp55vEQbwH92XrgI', '4nZgPVgqJm7nWgZE'];
 // Items printed with "Reload ×2" (A Jump Through Time, p.78).
 export const RELOAD_TWICE = ['UvWORzyYZ6kXfySK', 'kThg2spvAa9rTepi'];
 // Upgrades: Extended Mag (Quartermaster's Guide p.34), Potent Poison (Cobra Codex p.97), Salvaged
-// (Ferocious Fighters p.36 and its copies).
+// (Ferocious Fighters p.36 - the only printing; Decepticon Directive's "Salvaged" Origin and Alt
+// Mode share the name only).
 export const TRAIT_UPGRADE = {
   extendedMag: 'hPUmdnAN0FjRaal3',
   potentPoison: 'CrxBz7IEuI92WfTB',
-  salvaged: ['sA8GbXKPcRuPHzNt', '7JGOSMXObCNJs6SS', 'cGGEXSdCI170AaM4'],
+  salvaged: ['sA8GbXKPcRuPHzNt'],
 };
 
 function sourceOf(item) {
@@ -159,7 +165,8 @@ export function isBallisticLongRange(actor, item, parentWeapon, targetToken) {
  */
 export function noisyArmorPenalty(actor) {
   return (actor?.items ?? []).filter(item => item.type == 'armor' && item.system?.equipped
-    && !item.system?.isPowerArmor && !(item.system?.traits ?? []).includes('silent'))
+    && !item.system?.isPowerArmor && !(item.system?.traits ?? []).includes('silent')
+    && !MLP_ARMOR_PENALTY[sourceOf(item)])
     .reduce((sum, armor) => sum + (Number(armor.system.totalBonusToughness) || 0) + (Number(armor.system.totalBonusEvasion) || 0), 0);
 }
 
@@ -173,13 +180,16 @@ export function computerizedArmorEvasion(target) {
 }
 
 /**
- * My Little Pony's Light Armor (MLP CRB p.152): "↓1 on Athletics, Acrobatics, Infiltration and
- * Initiative" while worn.
+ * My Little Pony's Light and Heavy Armor (MLP CRB p.152): a downshift of 1 (Light) or 2 (Heavy) on
+ * "all Athletics, Acrobatics, Infiltration and Initiative Skill Tests" while worn.
  */
 export function lightArmorPenalty(actor, skill) {
-  return ['athletics', 'acrobatics', 'infiltration', 'initiative'].includes(skill)
-    && (actor?.items ?? []).some(item => item.type == 'armor' && item.system?.equipped && sourceOf(item) == TRAIT_PERK.mlpLightArmor)
-    ? 1 : 0;
+  if (!['athletics', 'acrobatics', 'infiltration', 'initiative'].includes(skill)) {
+    return 0;
+  }
+
+  return Math.max(0, ...(actor?.items ?? []).filter(item => item.type == 'armor' && item.system?.equipped)
+    .map(item => MLP_ARMOR_PENALTY[sourceOf(item)] ?? 0));
 }
 
 const TF = id => `Compendium.essence20.tf_crb.Item.${id}`;
@@ -198,14 +208,16 @@ const REINFORCED_HARDPOINT_UPGRADE = 'YDOmBfuUnYFalIVY';
  * Extra Hardpoints from Perks (TF CRB p.114 slots):
  * - Armament (Gunner, p.68): "You gain an additional Integrated Weapon Hardpoint."
  * - Experiment (Influence, p.32): the "additional Integrated Hardpoint" option.
- * - In Case of Emergency (Support, p.54): "two additional Internal Hardpoints (Non-Weapon)".
+ * - In Case of Emergency (Support, p.54): "two additional Internal Hardpoints (Non-Weapon)". Only
+ *   weapons are counted against the Integrated slots, so these two go in their own nonWeapon count
+ *   instead of letting two more weapons in.
  * - The Fiercest Among You (Rainmaker, p.52): "an additional Reinforced Integrated Weapon Hardpoint."
  * - Quick Draw (Gunslinger, p.70): "a pair of holsters as special External Weapon Hardpoints."
  * @param {Actor} actor
- * @returns {{external: Number, integrated: Number}}
+ * @returns {{external: Number, integrated: Number, nonWeapon: Number}}
  */
 export function hardpointBonus(actor) {
-  const bonus = { external: 0, integrated: 0 };
+  const bonus = { external: 0, integrated: 0, nonWeapon: 0 };
   if (actorHas(actor, HARDPOINT_PERK.armament)) {
     bonus.integrated += 1;
   }
@@ -216,7 +228,7 @@ export function hardpointBonus(actor) {
   }
 
   if (actorHas(actor, HARDPOINT_PERK.inCaseOfEmergency)) {
-    bonus.integrated += 2;
+    bonus.nonWeapon += 2;
   }
 
   if (actorHas(actor, HARDPOINT_PERK.fiercestAmongYou)) {

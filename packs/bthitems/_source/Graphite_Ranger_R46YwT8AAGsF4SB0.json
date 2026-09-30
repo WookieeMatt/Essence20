@@ -5,6 +5,10 @@
   "_id": "R46YwT8AAGsF4SB0",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Role's Perks, Grid Surges and Extra Attacks at the listed levels, plus its Essence increases and Skills. Choice Perks ask you to pick when they are gained.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

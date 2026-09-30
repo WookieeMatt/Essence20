@@ -5,6 +5,10 @@
   "_id": "Lij4uDvQjfkEZ4GY",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, at Reach. Pick 1 Stun, 1 Blunt at ↓1, or a Maneuver when you attack; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

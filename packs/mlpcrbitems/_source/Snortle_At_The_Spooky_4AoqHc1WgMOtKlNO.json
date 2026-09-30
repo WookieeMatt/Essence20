@@ -5,6 +5,10 @@
   "_id": "4AoqHc1WgMOtKlNO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Standard action, spend 1 Cheer Point to end Frightened or Mesmerized on your targeted friend.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

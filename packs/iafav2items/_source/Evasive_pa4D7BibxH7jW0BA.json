@@ -5,6 +5,10 @@
   "_id": "pa4D7BibxH7jW0BA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks against you use your Evasion whenever it's higher than the Defense they target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

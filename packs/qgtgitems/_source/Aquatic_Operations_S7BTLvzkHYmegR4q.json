@@ -5,6 +5,10 @@
   "_id": "S7BTLvzkHYmegR4q",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Tactical Armor, a Float Bomb, a Harpoon Gun and a Standard Athletics (Swimming) Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

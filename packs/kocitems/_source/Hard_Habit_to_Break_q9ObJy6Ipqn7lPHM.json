@@ -5,6 +5,10 @@
   "_id": "q9ObJy6Ipqn7lPHM",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a ↓1 switch for tests where you could have used Deception instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

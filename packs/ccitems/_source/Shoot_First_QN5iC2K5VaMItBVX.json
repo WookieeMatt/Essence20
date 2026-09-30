@@ -5,6 +5,10 @@
   "_id": "QN5iC2K5VaMItBVX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per encounter, when you roll Initiative): spend a Story Point to make an attack right away without spending an action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

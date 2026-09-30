@@ -5,6 +5,10 @@
   "_id": "B5HgQeurLyvio1t7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls against a targeted Common or Small creature smaller than you get ↑1, labelled Exterminator in the Roll Options Dialog, and the roll's chat card gets a Reroll button for Skill Die results of 1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

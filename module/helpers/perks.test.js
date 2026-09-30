@@ -468,6 +468,24 @@ describe("bankPendingBonus / getPendingBonus / clearPendingBonus", () => {
     expect(getPendingBonus(actor, 'pendingThinkOnIt')).toEqual({ edge: true, combatId: null, round: null });
   });
 
+  test("getPendingBonus honours an untilRound/untilTurn expiry stamp", () => {
+    const actor = { getFlag: jest.fn(() => ({ shiftUp: 1, combatId: 'combat1', round: 2, untilRound: 3, untilTurn: 1 })) };
+    game.combat = { id: 'combat1', round: 3, turn: 1 };
+    expect(getPendingBonus(actor, 'pendingYouCanDoItToo')).not.toBeNull();
+    game.combat = { id: 'combat1', round: 3, turn: 2 };
+    expect(getPendingBonus(actor, 'pendingYouCanDoItToo')).toBeNull();
+    game.combat = { id: 'combat1', round: 4, turn: 0 };
+    expect(getPendingBonus(actor, 'pendingYouCanDoItToo')).toBeNull();
+  });
+
+  test("bankPendingBonus keeps an expiry stamp passed in the data", async () => {
+    game.combat = { id: 'combat1', round: 2 };
+    const actor = { setFlag: jest.fn() };
+    await bankPendingBonus(actor, 'pendingYouCanDoItToo', { shiftUp: 1, untilRound: 3, untilTurn: 0 });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingYouCanDoItToo',
+      { shiftUp: 1, untilRound: 3, untilTurn: 0, combatId: 'combat1', round: 2 });
+  });
+
   test("clearPendingBonus unsets the flag", async () => {
     const actor = { unsetFlag: jest.fn() };
     await clearPendingBonus(actor, 'pendingThinkOnIt');

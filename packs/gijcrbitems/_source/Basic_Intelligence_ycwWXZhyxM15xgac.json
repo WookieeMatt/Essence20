@@ -5,6 +5,10 @@
   "_id": "ycwWXZhyxM15xgac",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you roll a Skill you are untrained in, it rolls as if you had a d2 in that Skill instead of the d20 alone; the chat card shows the d2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

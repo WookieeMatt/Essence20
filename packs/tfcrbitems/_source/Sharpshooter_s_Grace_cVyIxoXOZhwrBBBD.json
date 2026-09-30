@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your ranged attacks past a weapon's normal range (but within long range) don't take the usual Snag, and ranged attacks against targets more than 30ft away get ↑2, labelled Sharpshooter's Grace in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

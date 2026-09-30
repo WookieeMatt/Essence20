@@ -5,6 +5,10 @@
   "_id": "HNgu1rhXK46RG0bW",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its main effect (Might, 1 Energy + 1 Sharp) or the alternate that strikes up to 3 targets at ↓2. Its traits apply, and Quantum Powers like Quantum Cut recognise it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -21,7 +25,7 @@
           "skill": "might",
           "style": "melee"
         },
-        "damageValue": 2,
+        "damageValue": 1,
         "damageType": "element",
         "numHands": 1,
         "numTargets": 1,
@@ -32,7 +36,11 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 0
+        "shiftDown": 0,
+        "secondaryDamage": {
+          "type": "sharp",
+          "value": 1
+        }
       },
       "3f4c": {
         "uuid": "Compendium.essence20.jump_through_time.Item.c63k73J4pISxWWRv",
@@ -54,7 +62,11 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 2
+        "shiftDown": 2,
+        "secondaryDamage": {
+          "type": "sharp",
+          "value": 1
+        }
       }
     },
     "availability": "restricted",

@@ -5,6 +5,10 @@
   "_id": "aYXpzOQHHTbJi9pk",
   "img": "systems/essence20/assets/icons/weapons/boomerang.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for Stun 1 at 20 ft (long range 30 ft), or 1 Blunt damage at ↓1 with the alternate effect. Its Blunt, Martial Arts and Silent traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

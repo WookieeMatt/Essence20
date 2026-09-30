@@ -5,6 +5,10 @@
   "_id": "lF7H3cjgl4XtvSKY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: choose Enhanced Part or Evolving Mutation when you gain it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

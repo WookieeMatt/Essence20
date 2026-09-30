@@ -5,6 +5,10 @@
   "_id": "3ZJ8Pqbfhc0JqBPt",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the vehicle's Movement rates are doubled.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

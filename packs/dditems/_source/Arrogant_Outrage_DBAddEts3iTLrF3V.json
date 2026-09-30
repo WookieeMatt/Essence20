@@ -5,6 +5,10 @@
   "_id": "DBAddEts3iTLrF3V",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks against your Willpower or Cleverness take a Snag, labelled Arrogant Outrage in the attacker's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

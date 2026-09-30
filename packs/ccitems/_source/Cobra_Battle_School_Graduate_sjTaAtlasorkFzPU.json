@@ -5,6 +5,10 @@
   "_id": "sjTaAtlasorkFzPU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while a combat is running, your Smarts rolls that aren't attacks get ↑1, labelled Cobra Battle School Graduate in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

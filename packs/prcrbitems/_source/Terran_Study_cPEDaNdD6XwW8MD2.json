@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Culture, Deception, Alertness and Persuasion tests.</p><p>Left to the table: only using the Edge on tests about or aimed at humans, and learning an Earth language.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

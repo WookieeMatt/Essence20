@@ -5,6 +5,10 @@
   "_id": "2sc7lw4eezHrT94D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Galaxy Glider Grid Power and the Spacewalker General Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

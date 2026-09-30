@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: marks one of your three substitutions; then roll Technology in place of the Skill. Left to the table: only outside a conflict, taking twice as long, and the limit is per day, but the counter resets each scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

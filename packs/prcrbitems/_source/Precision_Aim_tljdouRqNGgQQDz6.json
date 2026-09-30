@@ -5,6 +5,10 @@
   "_id": "tljdouRqNGgQQDz6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on a turn you haven't moved, tick Precision Aim for +1 damage on ranged attacks (+2 after the second pick).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

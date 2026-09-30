@@ -5,6 +5,10 @@
   "_id": "4NG56r746V7BLt8W",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: a Do Or Die button on your own tests spends Moxie (a second use in the same scene costs more), rolls your Do Or Die die, re-scores each target and offers any extra damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

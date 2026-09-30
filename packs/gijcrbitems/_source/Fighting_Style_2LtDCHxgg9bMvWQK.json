@@ -5,6 +5,10 @@
   "_id": "2LtDCHxgg9bMvWQK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: choose your style (you can change it later). Akimbo is a Roll Options Dialog switch; Careful, Close Quarters Battle, Defense, Long Shot and Trigger Happy apply on their own.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

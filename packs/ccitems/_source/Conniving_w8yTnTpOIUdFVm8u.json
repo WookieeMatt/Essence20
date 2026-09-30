@@ -5,6 +5,10 @@
   "_id": "w8yTnTpOIUdFVm8u",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: allies cannot Lend Assistance to you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

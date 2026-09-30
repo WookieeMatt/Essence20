@@ -5,6 +5,10 @@
   "_id": "0Zd1oSVp98kuGQ9E",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per scene, a reroll button appears on a failed Skill Test. The new result stands.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

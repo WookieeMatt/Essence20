@@ -5,6 +5,10 @@
   "_id": "7aKjiqEZ3LYuvwmu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the first time your token moves on your own turn in combat, you get the Cover condition (standing in for Concealment, shown as its token icon) until your next turn starts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

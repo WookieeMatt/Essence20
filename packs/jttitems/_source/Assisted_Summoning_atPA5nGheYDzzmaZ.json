@@ -5,6 +5,10 @@
   "_id": "atPA5nGheYDzzmaZ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: summoning this Zord offers a faster option that costs a Standard action and arrives in one round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

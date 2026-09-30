@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Contacts marked as from your hometown gain +1 Allegiance Point when you summon them. Help from locals is narrative.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

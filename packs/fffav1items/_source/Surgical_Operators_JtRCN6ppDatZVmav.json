@@ -5,6 +5,10 @@
   "_id": "JtRCN6ppDatZVmav",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Willpower. Roll Options Dialog: on Science tests, tick the Surgical Operators switch when you're treating a poison or toxin to get Edge. Automatic: the Requisition and driving Qualifications it lists.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

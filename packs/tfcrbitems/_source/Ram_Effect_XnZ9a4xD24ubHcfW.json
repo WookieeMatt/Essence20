@@ -5,6 +5,10 @@
   "_id": "XnZ9a4xD24ubHcfW",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Driving attack at Reach for 1 Blunt damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

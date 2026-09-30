@@ -5,6 +5,10 @@
   "_id": "4Kjn9FVissqtvwQy",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when the Zord takes Energy damage or dodges it with Toughness, its pilot regains 1 Personal Power.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

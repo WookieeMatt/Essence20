@@ -7,15 +7,21 @@
 // weapons," i.e. Attacks only). "Trying to cover up or hide the sparkles is at -2" (a self-penalty
 // on a Stealth-style Skill Test to conceal the glow) and the "glowing path"/illumination clauses
 // are narrative flavor with no fixed numeric target, not built.
+//
+// "1 scene" duration: the flag is a Scene Clock window (scene-clock.mjs#activateForWindow), so it
+// reads as expired once the GM starts a new scene - no sweep needed, and the spell can simply be
+// cast again next scene.
+
+import { activateForWindow, isActiveForWindow } from "./scene-clock.mjs";
 
 const GLITTERMANE_FLAG = 'glittermaneActive';
 
 export function isGlittermaneActive(actor) {
-  return !!actor?.getFlag?.('essence20', GLITTERMANE_FLAG);
+  return !!actor?.getFlag && isActiveForWindow(actor, GLITTERMANE_FLAG, 'scene');
 }
 
 export async function applyGlittermane(actor) {
-  await actor.setFlag('essence20', GLITTERMANE_FLAG, true);
+  await activateForWindow(actor, GLITTERMANE_FLAG, 'scene');
 }
 
 export async function removeGlittermane(actor) {

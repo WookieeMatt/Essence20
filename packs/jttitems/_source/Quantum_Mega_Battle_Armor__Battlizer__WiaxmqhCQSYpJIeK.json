@@ -5,6 +5,10 @@
   "_id": "WiaxmqhCQSYpJIeK",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: while Morphed, pay 5 Personal Power once per scene to equip it (+4 Toughness, faster Ground and Aerial Movement) and gain Wing Blades, Wing Blaster and Energy Sword Time Strike. The Time Strike can be rolled once per scene, and a Critical Success triples its damage.</p><p>Left to the table: the Time Strike's Anti-Armor trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

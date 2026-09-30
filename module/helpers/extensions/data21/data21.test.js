@@ -39,6 +39,20 @@ test('Finesse or Might rolls the better Skill', () => {
   expect(other.skill).toBe('finesse');
 });
 
+test('Core-book and Night Vale "Finesse or Might" melee weapons roll the better Skill', () => {
+  const pc = actor([], { system: { skills: { finesse: { shift: 'd4' }, might: { shift: 'd8' } } } });
+  for (const uuid of [
+    'Compendium.essence20.gi_joe_crb.Item.hb5fKPK5GNTSlKvY', // Close Combat Blade (TF CRB reuses it)
+    'Compendium.essence20.tf_crb.Item.JWm06vX4u4QSDf4D', // Close Combat Heavy Bludgeon
+    'Compendium.essence20.wtnv_citizens_guide.Item.UiASUn7CGDbl0WU3', // Baseball Bat
+    'Compendium.essence20.transformers_one_sourcebook.Item.FtKYfRmtLtRynYo9', // Turbo-Pliers
+    'Compendium.essence20.decepticon_directive.Item.D21ckSdkrSJQHu0U', // Antimatter Close Combat Weapon
+  ]) {
+    const dataset = { skill: 'finesse', essence: 'speed', shift: 'd4' };
+    expect(finesseOrMight(pc, dataset, sourced(uuid, { type: 'weaponEffect' }))).toBe('might');
+  }
+});
+
 test('Psycho alternate riders read their flags', () => {
   expect(psychoRiderOf({ flags: { essence20: { d21Shove: 10 } } })).toEqual({ kind: 'shove', feet: 10 });
   expect(psychoRiderOf({ flags: { essence20: { d21HalveMovement: true } } }).kind).toBe('halve');

@@ -5,6 +5,10 @@
   "_id": "Q4npyOz8iYHHy2LV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: ↑1 on Smarts and Social Skill Tests when your Culture is at least as good as the Skill you roll. It's already counted in the Roll Options Dialog's starting ↑ total, but isn't listed under its own name.</p><p>Left to the table: lower it when you aren't dealing with another culture.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

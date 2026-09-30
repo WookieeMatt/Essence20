@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: halve your aerial vehicle's speed so attacks against it target Evasion instead of Toughness until its next turn.</p><p>Left to the table: boarding or leaving a vehicle only costs you 5 ft of movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

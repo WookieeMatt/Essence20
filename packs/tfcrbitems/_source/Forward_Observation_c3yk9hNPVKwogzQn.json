@@ -5,6 +5,10 @@
   "_id": "c3yk9hNPVKwogzQn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Alertness counts as both a Smarts and a Social Skill. Automatic: Alertness tests against a Surprised target can Critically Succeed on the d2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

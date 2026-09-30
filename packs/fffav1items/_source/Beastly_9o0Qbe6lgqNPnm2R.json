@@ -5,6 +5,10 @@
   "_id": "9o0Qbe6lgqNPnm2R",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks with the Unarmed Combat Stun effect take ↓1, already counted in the Downshift number of your Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

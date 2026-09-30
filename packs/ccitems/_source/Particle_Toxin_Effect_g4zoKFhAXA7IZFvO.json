@@ -5,6 +5,10 @@
   "_id": "g4zoKFhAXA7IZFvO",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: rolled from its poison with the listed Skill and damage; on a hit the Ongoing damage repeats each round.</p><p>Left to the table: the Poisoned condition.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "2PWhz49B168yOdU6",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spends 1 Personal Power and posts a chat card. The benefit itself is narrative.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -15,6 +15,13 @@ test('a changed shape gives Face-Shift and Master Morph their Skills', () => {
   expect(mlp1RollSources(holder, null, { rolledSkill: 'deception' }).sources[0]).toMatchObject({ id: 'basicShapeShifting', edge: true });
 });
 
+test('a Ponymorph shape labels its Edge Ponymorph, not Basic Shape-Shifting', () => {
+  const holder = actor([], { flags: { mlpShape: { scene: 1, spell: MLP1.ponymorph } } });
+  expect(mlp1RollSources(holder, null, { rolledSkill: 'infiltration' }).sources[0]).toMatchObject({ id: 'basicShapeShifting', label: 'Ponymorph', edge: true });
+  const basic = actor([], { flags: { mlpShape: { scene: 1, spell: MLP1.basicShapeShifting } } });
+  expect(mlp1RollSources(basic, null, { rolledSkill: 'deception' }).sources[0].label).toBe('Basic Shape-Shifting');
+});
+
 test('Mastery Power boosts its circle and tier', () => {
   const holder = actor([perk(MLP1.masteryPower, { flags: { mastery: { circle: 'beam', tier: 'elementary' } } })]);
   const spell = { type: 'spell', system: { circle: 'beam', tier: 'elementary' } };

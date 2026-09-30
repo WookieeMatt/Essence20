@@ -5,6 +5,10 @@
   "_id": "9z9OydCCaslBGboC",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the High Guard Initiate Perk, plus one Hang-Up you choose from its list.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

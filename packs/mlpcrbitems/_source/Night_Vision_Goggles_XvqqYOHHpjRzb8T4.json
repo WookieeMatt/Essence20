@@ -5,6 +5,10 @@
   "_id": "XvqqYOHHpjRzb8T4",
   "img": "systems/essence20/assets/icons/gear/night_vision_googles.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you have them, your token gets 60 ft darkvision.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

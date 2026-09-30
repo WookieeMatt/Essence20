@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Targeting at 75 ft for Energy damage; its traits apply, and the Experimental upgrade adds Temperamental.</p><p>Left to the table: the Strobe upgrade's blinding alternate effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

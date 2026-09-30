@@ -5,6 +5,10 @@
   "_id": "MFHZwvBUZGpH2EGV",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Origin's Essences, Skills, starting Health, 30 ft ground movement, the When Push Comes To Shove Perk and the Charger Alt Mode.</p>"
+    },
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.enigma_of_combination.Item.QNhq3rRVOu1EfeyD]{Charger}</p>",
     "source": {

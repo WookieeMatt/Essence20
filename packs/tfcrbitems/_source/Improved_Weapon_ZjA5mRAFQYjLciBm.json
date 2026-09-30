@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this: swap one of your Mini-Con's weapons for one of the same availability or one step higher.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

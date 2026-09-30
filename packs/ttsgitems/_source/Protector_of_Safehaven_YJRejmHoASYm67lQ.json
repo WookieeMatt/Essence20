@@ -5,6 +5,10 @@
   "_id": "YJRejmHoASYm67lQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per mission): pick a benefit: a Limited weapon, 1 temporary Health, or a Roll Options Dialog switch for Edge on weapon upgrades or ↑1 on Social tests with Safehaven residents.</p><p>Left to the table: the +11 Wealth option, which is only announced in chat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "o3Jvmjo7WN3Q0nm5",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a thrown Targeting attack at ↓3 for 1 damage at 20 ft (long range 50 ft), and its Computerized, Consumable and Energy traits apply, including using up the grenade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

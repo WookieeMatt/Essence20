@@ -5,6 +5,10 @@
   "_id": "4eA2ktw0cfdYV6Fs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑1 when you moved 15 ft first; a Critical Success Stuns the target. Automatic: if your token hasn't moved 10 ft from that spot by the end of your turn, you are Impaired.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

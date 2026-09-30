@@ -5,6 +5,10 @@
   "_id": "W9Uo10pN99IuMPuR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: when rolling Initiative in sea or wetlands, your allies share your Shark's Fin benefits until the end of the first regular turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

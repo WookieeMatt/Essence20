@@ -5,6 +5,10 @@
   "_id": "RK9cboEVTiJKdjbN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per turn in combat, as a Free action, pick any Skill and the system rolls it for you as the simulated test, with the result on a chat card.</p><p>Left to the table: using that result when you then take the Standard action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

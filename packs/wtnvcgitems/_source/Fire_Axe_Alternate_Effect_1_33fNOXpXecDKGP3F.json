@@ -5,6 +5,10 @@
   "_id": "33fNOXpXecDKGP3F",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a two-handed Finesse melee attack at Reach for 2 Sharp damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

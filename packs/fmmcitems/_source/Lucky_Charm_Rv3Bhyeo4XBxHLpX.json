@@ -5,6 +5,10 @@
   "_id": "Rv3Bhyeo4XBxHLpX",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: rolls the DIF 12 Performance test; on a success you get the Luck Perk's reroll of 1s on Skill dice.</p><p>Left to the table: switching the reroll off again at the end of the day.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

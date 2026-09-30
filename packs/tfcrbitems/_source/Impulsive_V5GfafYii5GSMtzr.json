@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you roll Initiative, your next Skill Test takes ↓1, labelled Impulsive in its Roll Options Dialog.</p><p>Left to the table: you never gain the benefits of Surprise.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "i6aVVKs2UMFYUjmo",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: a Blaster, a Close Combat Blade, a Laser Rifle, a Frag Grenade and a Hi-Ex Grenade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "f9DCAkwMJ60kgYL6",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Ptera Grips attack, rolling Finesse for 2 Sharp damage in melee.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "Mrmbqza0XxVpKj6U",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: your sneak attack bonus damage (1, rising with Commando level to 6) is a box that's ticked for you when the attack qualifies (see the Sneak Attack Perk), and it's added to the damage on a hit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

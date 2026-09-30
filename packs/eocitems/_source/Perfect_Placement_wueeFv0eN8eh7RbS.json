@@ -5,6 +5,10 @@
   "_id": "wueeFv0eN8eh7RbS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: click the canvas to place the 25ft square for the scene. While wholly inside it you get +2 Evasion and ↑1 on your first Skill Test each combat round, your ranged attacks cancel the Cover of targets in it (↑2), and ranged attacks against you take ↓2 as if you had Cover. Each is labelled Perfect Placement in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

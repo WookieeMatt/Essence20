@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/mortar.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 100/200 ft with Eruptive; Indirect, Reload and Wrecker apply (Wrecker leaves Rough Terrain behind).</p>"
+    },
     "originalId": "",
     "description": "<p>Effect also has Trip</p>",
     "source": {

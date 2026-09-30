@@ -5,6 +5,10 @@
   "_id": "WzigK03hIcczvFLK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks with a Blade Blaster get ↑1, labelled Blaster Focusers in the Roll Options Dialog, for you and every ally in the scene while you hold this Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

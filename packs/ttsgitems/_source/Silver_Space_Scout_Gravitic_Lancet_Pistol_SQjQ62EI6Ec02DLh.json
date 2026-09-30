@@ -5,6 +5,10 @@
   "_id": "SQjQ62EI6Ec02DLh",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Laser damage at 20ft/40ft range, with a two-target alternate at ↓1.</p><p>Left to the table: its tripled range in low or zero gravity.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

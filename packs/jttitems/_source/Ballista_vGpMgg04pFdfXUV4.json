@@ -5,6 +5,10 @@
   "_id": "vGpMgg04pFdfXUV4",
   "img": "icons/weapons/artillery/ballista-wood-green.webp",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage and range, or knock the target Prone; Armor Piercing, Reload and Sharp apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

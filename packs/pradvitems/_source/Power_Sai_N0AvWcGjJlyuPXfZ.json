@@ -5,6 +5,10 @@
   "_id": "N0AvWcGjJlyuPXfZ",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

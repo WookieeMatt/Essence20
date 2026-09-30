@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your Sneak Attack hits, the target's next roll of any kind (attack or Skill Test) takes a Snag, labelled Debilitating Strike in its Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

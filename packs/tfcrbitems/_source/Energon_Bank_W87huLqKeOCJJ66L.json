@@ -5,6 +5,10 @@
   "_id": "W87huLqKeOCJJ66L",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: give a targeted ally within 30ft one of your Energon Points to spend.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "MIghwIOKR1AqeQiY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick Intimidation or Persuasion and roll against DIF 10 as a Free action; on a success your Mini-Cons get ↑1 on their rolls for the rest of the round. Left to the table: which of their tests relate to your orders.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

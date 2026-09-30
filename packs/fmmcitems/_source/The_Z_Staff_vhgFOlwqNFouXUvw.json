@@ -5,6 +5,10 @@
   "_id": "vhgFOlwqNFouXUvw",
   "img": "systems/essence20/assets/icons/weapons/spear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: its Z-Lightning and Z-Staff Strike attacks roll with the listed damage, range and targets; the traits apply.</p><p>Left to the table: using Monster... Grow! at any range and the staff's serpent form.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

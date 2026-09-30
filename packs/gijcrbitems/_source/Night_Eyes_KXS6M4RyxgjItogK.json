@@ -5,6 +5,10 @@
   "_id": "KXS6M4RyxgjItogK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your token sees 90 ft in darkness.</p><p>Left to the table: the Alertness roll the book asks for, and treating dim light as bright.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

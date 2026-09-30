@@ -5,6 +5,10 @@
   "_id": "9TWvo72Gsx3GpFCX",
   "img": "systems/essence20/assets/icons/weapons/missile-launcher.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: pick the missile's element. Automatic: attacks roll Targeting for 1 damage in a 50 ft Blast at the listed range, and its traits apply. Alternate Effects: 2 damage to one target, or 2 damage in a 20 ft Blast.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

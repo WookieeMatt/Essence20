@@ -5,6 +5,10 @@
   "_id": "3b3GBTixZORshVzf",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Zord becomes Towering. When you add it, pick three Megaform Traits; they apply to the Zord at all times.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

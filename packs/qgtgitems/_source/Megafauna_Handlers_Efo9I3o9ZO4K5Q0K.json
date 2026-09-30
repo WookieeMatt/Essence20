@@ -5,6 +5,10 @@
   "_id": "Efo9I3o9ZO4K5Q0K",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: dropping it on a character adds the Rocket Launcher and Hard Body Armor (Handling).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

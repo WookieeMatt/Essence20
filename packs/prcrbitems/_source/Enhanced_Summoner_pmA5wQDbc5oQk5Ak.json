@@ -5,6 +5,10 @@
   "_id": "pmA5wQDbc5oQk5Ak",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you, or anyone on your side with a token in the scene, summons a Zord while you hold this Perk, its arrival time is 1 round shorter (minimum 1).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

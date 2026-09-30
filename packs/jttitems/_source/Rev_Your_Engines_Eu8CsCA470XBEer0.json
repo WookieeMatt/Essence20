@@ -5,6 +5,10 @@
   "_id": "Eu8CsCA470XBEer0",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend 1 to 3 Personal Power to bank that many ↑ on your next Driving test.</p><p>Left to the table: the limit of 3 Power per turn across several uses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

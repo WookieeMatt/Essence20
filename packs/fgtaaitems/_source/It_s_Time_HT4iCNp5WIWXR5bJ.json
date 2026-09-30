@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: Morph or unmorph.</p><p>Left to the table: turning it off when the scene ends.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

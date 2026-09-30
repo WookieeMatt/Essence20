@@ -5,6 +5,10 @@
   "_id": "UNe8N1eZWjWxDTIz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the system remembers which of your Alt Modes each enemy has seen. Converting into one an enemy hasn't seen gives your Skill Tests against it Edge until the end of your next turn, labelled Unexpected Alternative in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "2AhMvXGxH2Vfpz3b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: Social rolls show a First Meeting switch that gives Edge. Turn it on during a first meeting.</p><p>Left to the table: the technology and language clauses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

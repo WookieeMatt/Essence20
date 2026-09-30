@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Culture rolls open the Roll Options Dialog with Edge already selected. Roll Options Dialog: Animal Handling, Deception, Persuasion and Survival rolls show an In the chosen location or with its people switch for Edge. The language is storytelling.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

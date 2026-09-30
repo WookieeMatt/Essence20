@@ -5,6 +5,10 @@
   "_id": "twuW9Li2MqwfBFpm",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Speed, ↑1 on Initiative and +15ft ground movement for the Zord.</p><p>Left to the table: +15ft to its other movement types, and keeping only one Upgraded Zord option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

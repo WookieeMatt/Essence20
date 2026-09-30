@@ -5,6 +5,10 @@
   "_id": "17iN2ZzSaTvqX0PL",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power to deal 1 Electric damage to your current target, no roll needed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

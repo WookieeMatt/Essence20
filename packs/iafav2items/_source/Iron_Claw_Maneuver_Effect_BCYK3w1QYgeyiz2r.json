@@ -5,6 +5,10 @@
   "_id": "BCYK3w1QYgeyiz2r",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the claw's Maneuver attack, rolling whichever of Finesse or Might is better, with the listed reach.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

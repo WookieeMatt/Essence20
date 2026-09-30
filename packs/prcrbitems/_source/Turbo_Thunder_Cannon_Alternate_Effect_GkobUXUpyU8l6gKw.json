@@ -5,6 +5,10 @@
   "_id": "GkobUXUpyU8l6gKw",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Energy Attack rolls Targeting for 4 damage at ↓2. Once per encounter: after one use it won't roll again until the next encounter.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

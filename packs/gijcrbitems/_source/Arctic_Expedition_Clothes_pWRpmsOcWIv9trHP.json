@@ -5,6 +5,10 @@
   "_id": "pWRpmsOcWIv9trHP",
   "img": "systems/essence20/assets/icons/gear/clothes.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while worn in cold or arctic scenes, +2 Toughness against the cold environment (not against creatures' attacks).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

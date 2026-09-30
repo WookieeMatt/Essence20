@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off until you switch it on): Edge on Smarts tests while researching or searching for a book.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

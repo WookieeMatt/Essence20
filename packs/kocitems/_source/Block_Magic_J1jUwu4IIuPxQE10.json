@@ -5,6 +5,10 @@
   "_id": "J1jUwu4IIuPxQE10",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Cast: a Spellcasting attack against one target's Willpower. On a hit, their spells cost 1 more until the GM advances the scene.</p><p>Left to the table: letting them take Snag on the casting test instead of paying the extra cost.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

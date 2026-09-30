@@ -5,6 +5,10 @@
   "_id": "ZfwG2Plmejc0u1OU",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pay its Personal Power to summon the Time Jet beside you (made from its stat block the first time). You get Edge on Driving tests while piloting it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

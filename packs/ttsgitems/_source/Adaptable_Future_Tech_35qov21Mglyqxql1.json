@@ -5,6 +5,10 @@
   "_id": "35qov21Mglyqxql1",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Zord gains the Combiner Feature and may join a Megaform with Zords that lack it. With 3 or more of these Zords in the Megaform, any other Zord or vehicle can join too.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

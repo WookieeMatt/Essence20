@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per mission): your Wealth test counts as a 25. Active Effect: a switchable ↑1 on Social tests with those who recognize your rank. Your servant is narrative.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

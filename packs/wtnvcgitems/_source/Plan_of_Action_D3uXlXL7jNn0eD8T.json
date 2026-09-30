@@ -5,6 +5,10 @@
   "_id": "D3uXlXL7jNn0eD8T",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Move action): an ally gets ↑1 on their next Skill Test.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

@@ -5,6 +5,10 @@
   "_id": "qOQprOVxN5tTwas0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Standard action): a targeted ally gains the benefit and cost of an Alteration you choose (availability by your level) until your next turn, or for the scene at 14th level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

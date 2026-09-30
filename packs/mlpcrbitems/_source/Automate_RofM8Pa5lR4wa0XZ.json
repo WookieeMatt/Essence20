@@ -5,6 +5,10 @@
   "_id": "RofM8Pa5lR4wa0XZ",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Left to the table: the tool you bring to life, including the extra cost for more objects.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

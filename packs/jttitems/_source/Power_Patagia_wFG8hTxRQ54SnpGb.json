@@ -5,6 +5,10 @@
   "_id": "wFG8hTxRQ54SnpGb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +45 feet Aerial Movement while Morphed.</p><p>Left to the table: the altitude limit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

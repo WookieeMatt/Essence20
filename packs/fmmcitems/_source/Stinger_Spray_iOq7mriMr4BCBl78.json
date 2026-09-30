@@ -5,6 +5,10 @@
   "_id": "iOq7mriMr4BCBl78",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting against up to 3 targets with the listed damage and range; its traits apply. Each attack spends 1 Personal Power and warns you outside Monster Form.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

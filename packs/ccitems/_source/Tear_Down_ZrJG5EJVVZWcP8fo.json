@@ -5,6 +5,10 @@
   "_id": "ZrJG5EJVVZWcP8fo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (Free, before attacking): Intimidation Test against your target. If it and your next attack on that target both succeed, the attack deals +1 damage.</p><p>Left to the table: the extra point is added as the attack's own damage type rather than Psychic.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

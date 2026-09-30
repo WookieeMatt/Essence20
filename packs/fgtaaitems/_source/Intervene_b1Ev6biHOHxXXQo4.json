@@ -5,6 +5,10 @@
   "_id": "b1Ev6biHOHxXXQo4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when an ally on your side of the scene makes a Stun or Maneuver attack, the next Blunt or Sharp attack against that ally takes a Snag for their Resistance, labelled Intervene in the attacker's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

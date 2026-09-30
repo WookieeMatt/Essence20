@@ -5,6 +5,10 @@
   "_id": "5S6mBxDCU08xGK6o",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: 40 ft aerial movement while worn. Left to the table: it only works in Bot Mode.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

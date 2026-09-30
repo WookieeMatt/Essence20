@@ -5,6 +5,10 @@
   "_id": "anD2xly3g2CS45et",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: optionally roll DIF 16 Survival; you get a d8 (or a d4) bonus die on your next Wealth test.</p><p>Left to the table: holding it to once per week (the system allows it once per mission).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

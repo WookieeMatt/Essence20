@@ -5,6 +5,10 @@
   "_id": "yJHMDPMtfSsVLzDJ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Ballista's Targeting attack that knocks the target Prone instead of dealing damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "PwTnDjPfb8dKplIU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect (only while Morphed): +2 to all four Defenses, and Smarts Skill tests open the Roll Options Dialog with Edge selected. Left to the table: +1 damage on attacks made with Powers.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

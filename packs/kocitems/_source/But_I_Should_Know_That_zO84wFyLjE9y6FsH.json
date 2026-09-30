@@ -5,6 +5,10 @@
   "_id": "zO84wFyLjE9y6FsH",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you fail a Spellcasting test, your next Skill Test takes a Snag, listed as But I Should Know That next to Snag in its Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

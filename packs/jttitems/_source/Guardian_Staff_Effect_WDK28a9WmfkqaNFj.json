@@ -5,6 +5,10 @@
   "_id": "WDK28a9WmfkqaNFj",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the staff's Might attack with the listed Blunt damage and reach.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "GOuwK871AB8ay8Mz",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Essence and Skill choices, movement and Health, plus the Money Is No Object Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "vEpzQLrS1vqlpi8a",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the flute's effect on everyone who hears it play.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

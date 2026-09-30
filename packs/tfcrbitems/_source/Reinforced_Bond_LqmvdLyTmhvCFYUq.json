@@ -5,6 +5,10 @@
   "_id": "LqmvdLyTmhvCFYUq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Health and +2 to all Defenses. When you deploy a Mini-Con you can hand it +1 or +2 to its Defenses, and your own bonus drops by the same amount.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

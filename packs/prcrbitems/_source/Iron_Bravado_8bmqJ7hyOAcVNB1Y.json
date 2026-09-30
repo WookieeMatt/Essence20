@@ -5,6 +5,10 @@
   "_id": "8bmqJ7hyOAcVNB1Y",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after you attack, you can't be given the Frightened condition until your next turn. Use button: spend 1 Personal Power to share your current Condition immunities with allies within 30 ft until your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

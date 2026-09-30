@@ -62,32 +62,35 @@ describe("markTarget", () => {
 });
 
 /* checkMarkTarget */
+// A single mark made this scene (the scene clock reads 1 with no world settings).
+const marked = uuid => jest.fn((scope, key) => ({ markedTargetUuid: uuid, markedTargetScene: 1 })[key]);
+
 describe("checkMarkTarget", () => {
   test("true when the target's uuid matches the actor's marked target", () => {
-    const actor = { getFlag: jest.fn(() => 'Actor.target1') };
+    const actor = { getFlag: marked('Actor.target1') };
     const target = { uuid: 'Actor.target1' };
     expect(checkMarkTarget(actor, target)).toBe(true);
   });
 
   test("false when the target's uuid doesn't match", () => {
-    const actor = { getFlag: jest.fn(() => 'Actor.target1') };
+    const actor = { getFlag: marked('Actor.target1') };
     const target = { uuid: 'Actor.someoneElse' };
     expect(checkMarkTarget(actor, target)).toBe(false);
   });
 
   test("false when the actor has no marked target at all", () => {
-    const actor = { getFlag: jest.fn(() => undefined) };
+    const actor = { getFlag: marked(undefined) };
     const target = { uuid: 'Actor.target1' };
     expect(checkMarkTarget(actor, target)).toBe(false);
   });
 
   test("false when there's no target", () => {
-    const actor = { getFlag: jest.fn(() => 'Actor.target1') };
+    const actor = { getFlag: marked('Actor.target1') };
     expect(checkMarkTarget(actor, null)).toBe(false);
   });
 
   test("false when both the marked flag and the target's uuid are undefined (loose-equality regression guard)", () => {
-    const actor = { getFlag: jest.fn(() => undefined) };
+    const actor = { getFlag: marked(undefined) };
     const target = { uuid: undefined };
     expect(checkMarkTarget(actor, target)).toBe(false);
   });
@@ -135,7 +138,7 @@ describe("Mark Everybot (Transformers CRB, Scout, 18th level, p.85)", () => {
     });
 
     test("an ordinary single Mark Target still works without Mark Everybot", () => {
-      const actor = makeActor({ markedTargetUuid: 'Actor.target1' });
+      const actor = makeActor({ markedTargetUuid: 'Actor.target1', markedTargetScene: 1 });
       expect(checkMarkTarget(actor, { uuid: 'Actor.target1' })).toBe(true);
       expect(checkMarkTarget(actor, { uuid: 'Actor.someoneElse' })).toBe(false);
     });
@@ -188,5 +191,57 @@ describe("Additional Marks (Transformers CRB, Scout, 14th level, p.85)", () => {
 
     const list = actor.getFlag('essence20', 'additionalMarkedTargetUuids');
     expect(list).toEqual(['Actor.target1']);
+  });
+});
+
+describe("Mark Target lasts until the end of the scene", () => {
+  function makeActor(flagStore = {}, items = []) {
+    return {
+      items,
+      getFlag: jest.fn((scope, key) => (scope == 'essence20' ? flagStore[key] : undefined)),
+      setFlag: jest.fn(async (scope, key, value) => {
+        flagStore[key] = value;
+      }),
+    };
+  }
+
+  afterEach(() => {
+    delete game.settings;
+  });
+
+  test("stamps the mark with the current scene", async () => {
+    const actor = makeActor();
+    game.user.targets.first.mockReturnValue({ actor: { uuid: 'Actor.target1' } });
+    await markTarget(actor);
+
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'markedTargetScene', 1);
+    expect(checkMarkTarget(actor, { uuid: 'Actor.target1' })).toBe(true);
+  });
+
+  test("a mark from an earlier scene no longer counts", () => {
+    game.settings = { get: jest.fn(() => 2) };
+    const actor = makeActor({ markedTargetUuid: 'Actor.target1', markedTargetScene: 1 });
+
+    expect(checkMarkTarget(actor, { uuid: 'Actor.target1' })).toBe(false);
+  });
+
+  test("a mark with no scene stamp (made before the fix) no longer counts", () => {
+    const actor = makeActor({ markedTargetUuid: 'Actor.target1' });
+
+    expect(checkMarkTarget(actor, { uuid: 'Actor.target1' })).toBe(false);
+  });
+
+  test("Additional Marks from an earlier scene are dropped when a new mark is made", async () => {
+    const actor = makeActor(
+      { additionalMarkedTargetUuids: ['Actor.old'], markedTargetScene: 1 },
+      [{ type: 'perk', flags: { core: { sourceId: ADDITIONAL_MARKS_ID } } }],
+    );
+    game.settings = { get: jest.fn(() => 2) };
+    game.user.targets.first.mockReturnValue({ actor: { uuid: 'Actor.new' } });
+    await markTarget(actor);
+
+    expect(actor.getFlag('essence20', 'additionalMarkedTargetUuids')).toEqual(['Actor.new']);
+    expect(checkMarkTarget(actor, { uuid: 'Actor.old' })).toBe(false);
+    expect(checkMarkTarget(actor, { uuid: 'Actor.new' })).toBe(true);
   });
 });

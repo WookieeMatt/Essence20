@@ -1,6 +1,6 @@
 import { E20 } from "./config.mjs";
 import { isAutomated } from "./named-actions.mjs";
-import { canUsePerk } from "./banked-buffs.mjs";
+import { canUsePerk, hasItemUse } from "./banked-buffs.mjs";
 import { actorHasPerk, hasUsedThisTurn } from "./perks.mjs";
 import {
   attackMatchesFilter, bindEconomy, describeAttack, getAttacksPerAction, getTurnStartGrants, recordRuleUse,
@@ -543,8 +543,15 @@ export function getCost(actionType) {
 // codebase to check the 5ft qualifier against (this file's own ledger tracks an ALLOWANCE
 // consumed, not a queryable "how far did I move this round"), so - same "grant the upside, skip
 // the unenforceable qualifier" idiom this project already accepts elsewhere (e.g. Something To
-// Prove) - Defend is simply Free for any Dodgy holder.
-const DODGY_ID = "Compendium.essence20.mlp_crb.Item.jwhdtCaq0MBotupG";
+// Prove) - Defend is simply Free for any Dodgy holder. Every printing carries the same clause
+// (GI JOE CRB, Transformers CRB, Power Rangers CRB, WTNV Citizen's Guide).
+export const DODGY_IDS = [
+  "Compendium.essence20.mlp_crb.Item.jwhdtCaq0MBotupG",
+  "Compendium.essence20.gi_joe_crb.Item.GQwhr14X9yXkAuWH",
+  "Compendium.essence20.tf_crb.Item.smkYh73IkfzNuQUl",
+  "Compendium.essence20.pr_crb.Item.HdgGywFzuxezzVGy",
+  "Compendium.essence20.wtnv_citizens_guide.Item.QAyXVlPBLs5yndGt",
+];
 
 /**
  * The actual action-cost type to spend for one of the rules' own named actions (Defend, Aim,
@@ -560,7 +567,7 @@ export function getNamedActionType(actor, key) {
     return null;
   }
 
-  if (key == 'defend' && actorHasPerk(actor, DODGY_ID)) {
+  if (key == 'defend' && DODGY_IDS.some(id => actorHasPerk(actor, id))) {
     return 'free';
   }
 
@@ -1172,6 +1179,8 @@ export function getActionsTabContext(actor) {
       item,
       parentName,
       activatable,
+      // A Power with a Use of its own is used through it alone (templates/actor/tabs/actions.hbs).
+      hasOwnUse: item.type == 'power' && hasItemUse(item),
       costLabel: costs ? describeCost(cost) : null,
       affordable: !live || (costs ? canSpend(actor, actionType).ok : true),
       // The trigger is the whole point of a Contingency - "waiting for what?" - and is the one

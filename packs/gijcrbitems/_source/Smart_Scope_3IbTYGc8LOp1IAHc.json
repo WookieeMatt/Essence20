@@ -5,6 +5,10 @@
   "_id": "3IbTYGc8LOp1IAHc",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's attached to gains Computerized, its normal range is multiplied by 1.5 and its long range is doubled.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

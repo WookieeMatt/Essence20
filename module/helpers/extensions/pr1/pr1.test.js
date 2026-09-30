@@ -104,6 +104,25 @@ test('Mobile Headquarters: ↑1 for the crew, Megaform initiative', () => {
   expect(mega.system.skills.initiative).toMatchObject({ shift: 'd8', edge: true });
 });
 
+// The rest of the scene is read at Initiative, never in derived data (reading other tokens' actors
+// there builds their synthetic actors mid-preparation and loops on world load).
+test('Mobile Headquarters gives allied vehicles and Zords in the scene Edge at Initiative', async () => {
+  const hq = actor('zord', [item('feature', common.PR1.mobileHeadquarters)], { skills: { initiative: {} } });
+  const ally = actor('vehicle', [], { skills: { initiative: { edge: false } }, initiative: { skill: 'initiative' } });
+  global.canvas = { tokens: { placeables: [{ actor: hq }, { actor: ally }] } };
+
+  jtt.mobileHqDerived(ally);
+  expect(ally.system.skills.initiative.edge).toBe(false);
+
+  const options = { edge: false };
+  await jtt.mobileHqInitiative(ally, options);
+  expect(options.edge).toBe(true);
+
+  const onFoot = { edge: false };
+  await jtt.mobileHqInitiative(actor('playerCharacter'), onFoot);
+  expect(onFoot.edge).toBe(false);
+});
+
 test('Overdrive tracks its options per turn and adds Movement', () => {
   global.game.combat = { id: 'c1', round: 2, turn: 1, turns: [] };
   const zord = actor('zord', [], { movement: { ground: { total: 40 }, aerial: { total: 0 } } },

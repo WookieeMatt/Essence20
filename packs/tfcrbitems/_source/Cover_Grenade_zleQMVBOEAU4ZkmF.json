@@ -5,6 +5,10 @@
   "_id": "zleQMVBOEAU4ZkmF",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse; the main effect posts a card that gives Cover to tokens in its 20ft blast, and the alternate effect deals 1 Stun damage (↓2). The grenade is used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

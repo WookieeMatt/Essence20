@@ -5,6 +5,10 @@
   "_id": "k4GQu67Gsrv4fRYE",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Aqua Ranger's Role Perks at their listed levels and the Idea Points track. You choose your Grid Science options, General Perks and Zord Features as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

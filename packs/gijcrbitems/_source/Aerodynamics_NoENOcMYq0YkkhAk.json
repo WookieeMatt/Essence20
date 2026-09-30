@@ -5,6 +5,10 @@
   "_id": "NoENOcMYq0YkkhAk",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached to a grenade or thrown weapon: both of its ranges are doubled.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

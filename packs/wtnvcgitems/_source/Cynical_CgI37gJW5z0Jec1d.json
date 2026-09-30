@@ -5,6 +5,10 @@
   "_id": "CgI37gJW5z0Jec1d",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Influence Perk, Nerves of Steel. If it's your second or later Influence, you also pick one of its Hang-Ups (Bookworm, Jittery or Stubborn).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

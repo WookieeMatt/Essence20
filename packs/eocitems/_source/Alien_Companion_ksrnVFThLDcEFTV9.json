@@ -5,6 +5,10 @@
   "_id": "ksrnVFThLDcEFTV9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: creates your alien companion with its two chosen Essences set from your level. Buy its Skills on its own sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

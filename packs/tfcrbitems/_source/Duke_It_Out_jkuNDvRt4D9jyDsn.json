@@ -5,6 +5,10 @@
   "_id": "jkuNDvRt4D9jyDsn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per combat, before you use your Standard action, target a creature of your level or higher and choose whether it accepts. If it refuses, your tests against it get Edge until your next turn starts, labelled Duke It Out in your Roll Options Dialog. If it accepts, a card walks you through the melee exchange.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

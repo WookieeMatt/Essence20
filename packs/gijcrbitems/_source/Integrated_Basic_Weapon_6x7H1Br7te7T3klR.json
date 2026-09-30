@@ -5,6 +5,10 @@
   "_id": "6x7H1Br7te7T3klR",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a Standard weapon and it's built into the drone.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

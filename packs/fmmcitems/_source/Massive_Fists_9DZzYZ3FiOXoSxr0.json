@@ -5,6 +5,10 @@
   "_id": "9DZzYZ3FiOXoSxr0",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might with its Reach and listed damage; the Alternate Effect hits two targets at ↓1. Its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

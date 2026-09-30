@@ -5,6 +5,10 @@
   "_id": "N8E3QTLUKX6DOoEc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per combat, your next attack rolls against two targets.</p><p>Left to the table: keeping the two targets within 10 ft of each other.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "A6QkTlG2DQYYwNOb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you make a ranged attack against a target with Cover, you take 1 less ↓ from it, shown on the Cover entry in your Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

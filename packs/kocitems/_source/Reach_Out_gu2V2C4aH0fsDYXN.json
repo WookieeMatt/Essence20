@@ -5,6 +5,10 @@
   "_id": "gu2V2C4aH0fsDYXN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when casting, a switch to double the spell's range for 1 more casting cost.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

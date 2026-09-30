@@ -5,6 +5,10 @@
   "_id": "K0D7OmztA4TnPfke",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Focus Perks at the listed levels (First Contact through More Than Worldly), plus its Social increases and Focus Skill choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

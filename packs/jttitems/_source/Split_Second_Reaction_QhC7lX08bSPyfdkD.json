@@ -5,6 +5,10 @@
   "_id": "QhC7lX08bSPyfdkD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Evasion. Automatic: when a Ballistic weapon's attack is checked against you, your Evasion is used instead if it's higher than the Defense it targeted.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

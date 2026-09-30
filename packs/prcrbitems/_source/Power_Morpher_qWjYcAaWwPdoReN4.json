@@ -5,6 +5,10 @@
   "_id": "qWjYcAaWwPdoReN4",
   "img": "icons/svg/lightning.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: this is the device you Morph with; Morphing itself is handled by It's Morphin Time!.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

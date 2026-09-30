@@ -5,6 +5,10 @@
   "_id": "b7qT0W4L9Ito2EB2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose your BFFs (up to your Social score). Automatic: once per round you can Lend Assistance to a BFF as a Free action, and a Friendship Point lets you assist when you aren't qualified.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

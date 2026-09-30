@@ -5,6 +5,10 @@
   "_id": "QXpG3NuwaFgbdc0x",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll Survival against a kit's difficulty to gain it (Standard, then Limited and Restricted at higher levels). A new forage replaces the last kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "eFvhWuMOR37bKSDu",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack at 120ft/200ft for 1 Sharp damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

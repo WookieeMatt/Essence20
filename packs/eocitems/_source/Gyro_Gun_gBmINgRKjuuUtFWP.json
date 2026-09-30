@@ -5,6 +5,10 @@
   "_id": "gBmINgRKjuuUtFWP",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits apply. The alternate effect leaves the target Impaired for 1d2 turns.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

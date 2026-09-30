@@ -5,6 +5,10 @@
   "_id": "jGa15CyuKXhq3IV2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spends 1 Personal Power and locks onto your target. For the rest of your turn your attacks on it skip the Snag its Resistance would give, or, if it has no Resistance to that damage, get Edge labelled Maximize Flaws in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

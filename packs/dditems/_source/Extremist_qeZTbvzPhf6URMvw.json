@@ -5,6 +5,10 @@
   "_id": "qeZTbvzPhf6URMvw",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Extremist Influence Perk and its Hang-Up options (Sadistic, Skeptical, Untrustworthy).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -33,7 +37,7 @@
       "a22d": {
         "uuid": "Compendium.essence20.decepticon_directive.Item.ECpYArLN6MBKsbyC",
         "img": "icons/svg/hazard.svg",
-        "name": "Untrustowrthy",
+        "name": "Untrustworthy",
         "type": "hangUp"
       }
     },

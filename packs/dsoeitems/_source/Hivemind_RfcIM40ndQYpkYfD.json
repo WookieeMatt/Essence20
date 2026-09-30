@@ -5,6 +5,10 @@
   "_id": "RfcIM40ndQYpkYfD",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Many Minds Make Light Work Perk and the Deafening Silence Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

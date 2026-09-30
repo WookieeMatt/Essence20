@@ -813,6 +813,19 @@ describe("roll", () => {
       );
     });
 
+    test("also covers the Transformers CRB printing of the Blunt Alternate Effect", async () => {
+      const actor = makeBeastlyActor([BEASTLY_PERK_ID]);
+      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
+      item.flags = { core: { sourceId: "Compendium.essence20.tf_crb.Item.gA0rOFD3lmwzkZq4" } };
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftDown: 0 }), actor, item,
+      );
+    });
+
     test("leaves the Blunt Alternate Effect's -1 in place without the Perk", async () => {
       const actor = makeBeastlyActor();
       const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
@@ -2328,5 +2341,92 @@ describe("_prepareDescription", () => {
     item._prepareDescription();
 
     expect(item.system.description).toBe("");
+  });
+});
+
+describe("_prepareAutomation", () => {
+  const UUID = "Compendium.essence20.gi_joe_crb.Item.abc123";
+  const ORIGINAL = { status: "full", notes: "<p>Use button: pick the spell.</p>" };
+
+  function makeCopy({ stored = { status: "", notes: "" }, pack = null, sourceId = UUID } = {}) {
+    const item = makeItem("perk", { automation: { ...stored } });
+    item._source = { system: { automation: stored } };
+    item.pack = pack;
+    item.flags = { core: sourceId ? { sourceId } : {} };
+    item._stats = {};
+    return item;
+  }
+
+  beforeEach(() => {
+    global.game = { i18n: { localize: key => key } };
+    global.fromUuidSync = jest.fn(uuid => (uuid == UUID ? { system: { automation: ORIGINAL } } : null));
+  });
+
+  afterEach(() => {
+    delete global.fromUuidSync;
+    delete global.game;
+  });
+
+  test("a copy shows its compendium original's notes", () => {
+    const item = makeCopy();
+
+    item._prepareAutomation();
+
+    expect(item.system.automation).toEqual(ORIGINAL);
+  });
+
+  test("notes a GM wrote on the copy win", () => {
+    const item = makeCopy({ stored: { status: "manual", notes: "<p>House rule.</p>" } });
+
+    item._prepareAutomation();
+
+    expect(item.system.automation).toEqual({ status: "manual", notes: "<p>House rule.</p>" });
+  });
+
+  test("a compendium item and an unsourced item keep their own", () => {
+    const inPack = makeCopy({ pack: "essence20.gi_joe_crb" });
+    const unsourced = makeCopy({ sourceId: null });
+
+    inPack._prepareAutomation();
+    unsourced._prepareAutomation();
+
+    expect(inPack.system.automation.status).toBe("");
+    expect(unsourced.system.automation.status).toBe("");
+  });
+
+  test("loadAutomationNotes loads the source pack's full index first (v14 omits system fields)", async () => {
+    let indexed = false;
+    const pack = { metadata: {}, get indexed() {
+      return indexed; 
+    }, getIndex: jest.fn(async () => {
+      indexed = true; 
+    }) };
+    global.fromUuidSync = jest.fn(() => (indexed ? { system: { automation: ORIGINAL } } : { name: "x" }));
+    const saved = global.foundry.utils.parseUuid;
+    global.foundry.utils.parseUuid = () => ({ collection: pack });
+    try {
+      const item = makeCopy();
+      await item.loadAutomationNotes();
+      expect(pack.getIndex).toHaveBeenCalledTimes(1);
+      expect(item.system.automation).toEqual(ORIGINAL);
+
+      await item.loadAutomationNotes();
+      expect(pack.getIndex).toHaveBeenCalledTimes(1);
+
+      const own = makeCopy({ stored: { status: "manual", notes: "<p>Mine.</p>" } });
+      await own.loadAutomationNotes();
+      expect(own.system.automation.status).toBe("manual");
+    } finally {
+      global.foundry.utils.parseUuid = saved;
+    }
+  });
+
+  test("no index entry (or no fromUuidSync, as in tests) leaves it blank", () => {
+    delete global.fromUuidSync;
+    const item = makeCopy();
+
+    item._prepareAutomation();
+
+    expect(item.system.automation.status).toBe("");
   });
 });

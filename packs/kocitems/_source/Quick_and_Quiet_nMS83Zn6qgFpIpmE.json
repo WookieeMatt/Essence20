@@ -5,6 +5,10 @@
   "_id": "nMS83Zn6qgFpIpmE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: in the first round of combat, the targeted creature becomes Surprised with no test needed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

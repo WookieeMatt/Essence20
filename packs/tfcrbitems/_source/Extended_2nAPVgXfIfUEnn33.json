@@ -5,6 +5,10 @@
   "_id": "2nAPVgXfIfUEnn33",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the weapon's Reach attacks reach one step further (Reach becomes Reach x2, and so on).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

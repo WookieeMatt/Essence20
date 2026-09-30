@@ -5,6 +5,10 @@
   "_id": "m8aBk9JpuUAaQjkY",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 3 starting Health, Ground Movement 30, the Vicious or Venom Perk, and your pick of the Common, Large or Long Saurian Alt Mode. You pick +1 Strength or Speed and Athletics or Acrobatics as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

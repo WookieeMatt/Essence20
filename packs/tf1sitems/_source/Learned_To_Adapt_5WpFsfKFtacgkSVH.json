@@ -5,6 +5,10 @@
   "_id": "5WpFsfKFtacgkSVH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick any General Perk you meet the prerequisites for.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

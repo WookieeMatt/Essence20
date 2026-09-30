@@ -5,6 +5,10 @@
   "_id": "udbXWIic0wOLDXZk",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks dealing Blunt or Sharp damage to the vehicle take ↓1, listed as an Ablative Armor switch under Automatic Modifiers in the attacker's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

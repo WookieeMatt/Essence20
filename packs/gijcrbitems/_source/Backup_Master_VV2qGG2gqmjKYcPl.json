@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (on the pet): pick another character. They can then Command your pet with the Command a Pet action too.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "KiDQM6Sgsm1jsjcS",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative gear for communication and data, with no dice effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

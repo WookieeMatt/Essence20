@@ -5,6 +5,10 @@
   "_id": "jCh9Z1Nhb6SeiapO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: with a friend targeted, spend your Mystical Points to give them Magically Fit In ranks (until the scene ends), Fortify or Heal. Left to the table: your other Mystical Understanding and Expanded Mysticism options, and the 50 ft range.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

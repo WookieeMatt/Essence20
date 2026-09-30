@@ -5,6 +5,10 @@
   "_id": "o7Yn4EXPvYywe5AZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you roll a Critical Success, every ally on the scene gets ↑1 on their next roll, listed as You Can Do It, Too! in their Roll Options Dialog. In combat it disappears at the start of your next turn if they haven't rolled by then.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

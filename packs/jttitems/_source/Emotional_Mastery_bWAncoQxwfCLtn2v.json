@@ -5,6 +5,10 @@
   "_id": "bWAncoQxwfCLtn2v",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend the cost to make one of your known emotions active for the scene, or switch to another. Each emotion's effect applies automatically while it's active.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

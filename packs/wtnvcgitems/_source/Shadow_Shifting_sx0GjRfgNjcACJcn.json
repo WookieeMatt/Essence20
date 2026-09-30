@@ -5,6 +5,10 @@
   "_id": "sx0GjRfgNjcACJcn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is automated. Left to the table: letting your pet move through enemies' spaces and end its turn in an ally's space.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

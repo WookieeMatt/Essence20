@@ -5,6 +5,10 @@
   "_id": "0iNy4lpiaVTjbTVH",
   "img": "systems/essence20/assets/icons/gear/flare_gun.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative gear: it lights a large area for a few minutes. Light levels are up to the GM.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

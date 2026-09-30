@@ -5,6 +5,10 @@
   "_id": "kyqh747vyQnwSWu2",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: sets how much Health Their Loss, My Gain restores - 1, rising at 6th, 11th and 16th level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

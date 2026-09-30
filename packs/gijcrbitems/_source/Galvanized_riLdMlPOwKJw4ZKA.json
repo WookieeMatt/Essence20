@@ -5,6 +5,10 @@
   "_id": "riLdMlPOwKJw4ZKA",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the melee weapon gains the Electromagnetic trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

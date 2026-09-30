@@ -5,6 +5,10 @@
   "_id": "dBhdlekgbVy3ogSj",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Finesse sweep for 2 Sharp damage against up to three targets, at ↓1.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

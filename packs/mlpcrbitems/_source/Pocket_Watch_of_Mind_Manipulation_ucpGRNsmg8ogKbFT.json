@@ -5,6 +5,10 @@
   "_id": "ucpGRNsmg8ogKbFT",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: rolling it uses the better of your Spellcasting and the watch's own, then uses one up. Left to the table: making the target Confused for 1 round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

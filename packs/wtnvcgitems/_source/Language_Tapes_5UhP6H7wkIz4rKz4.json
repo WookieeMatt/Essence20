@@ -5,6 +5,10 @@
   "_id": "5UhP6H7wkIz4rKz4",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing to automate: pregenerated character gear with no rules of its own. Languages are tracked by the table.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

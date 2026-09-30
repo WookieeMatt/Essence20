@@ -5,6 +5,10 @@
   "_id": "EkBMS8Ih24UYBQ4R",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once): pick the Psycho Weapon your Path allows and it's added to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per scene): heal 1 Health on yourself or an ally. Automatic: Science tests with a Medicine Specialization open the Roll Options Dialog with Edge already selected. Left to the table: needing a medical kit on you, and restoring an Essence point to an ally.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

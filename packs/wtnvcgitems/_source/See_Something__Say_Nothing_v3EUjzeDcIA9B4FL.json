@@ -5,6 +5,10 @@
   "_id": "v3EUjzeDcIA9B4FL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Streetwise tests open the Roll Options Dialog set to Edge. Persuasion and Deception tests that target you take ↓1, labelled See Something, Say Nothing in the roller's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

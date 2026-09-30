@@ -5,6 +5,10 @@
   "_id": "KyqWYbVVxuECXXmv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on attacks with Ballistic weapons against a target within normal range, labelled Ballistics Precision in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

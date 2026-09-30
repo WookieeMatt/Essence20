@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick Land, Sea or Air. Roll Options Dialog: every Skill Test then shows a switch for that vehicle type; tick it for Edge when the test is about driving, fixing or otherwise dealing with that kind of vehicle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

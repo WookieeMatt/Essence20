@@ -5,6 +5,10 @@
   "_id": "uyhMkYlTF9tfoVGC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Maneuver attacks get ↑1, already counted in the Shift Up box of the Roll Options Dialog. Roll Options Dialog: on Ram attacks, a switch for when you moved at least 20 ft first, adding +1 damage on a hit (Trip included).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

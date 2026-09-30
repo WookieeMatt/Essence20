@@ -5,6 +5,10 @@
   "_id": "vZNQBGwiv1hREbyr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick a skill, and your targeted ally gets ↑1 on it for their turn.</p><p>Left to the table: checking that the ally started their turn adjacent to you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

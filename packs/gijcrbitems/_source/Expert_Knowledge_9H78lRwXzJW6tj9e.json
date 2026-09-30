@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick your Smarts area of study. Chat card: when you succeed on that skill, it notes one extra critical-style benefit (two on a Critical Success). The GM decides what the benefit is.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

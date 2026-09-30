@@ -5,6 +5,10 @@
   "_id": "YEvGNwsxSNGoHY3S",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: cuff your target; they are Impaired and can't convert or spend Energon. Chat card: buttons to try the DIF 19 Brawn break-free or release them, and the tether's Health regrowth is tracked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

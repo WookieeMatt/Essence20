@@ -5,6 +5,10 @@
   "_id": "SejEXXGz3edJ734e",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your attacks against a Zord get ↑1, labelled Zordbane in the Roll Options Dialog, and +1 damage, shown on the chat card as \"Includes +1 from Zordbane\".</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

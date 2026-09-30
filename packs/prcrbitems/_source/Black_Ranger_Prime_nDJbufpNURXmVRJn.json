@@ -5,6 +5,10 @@
   "_id": "nDJbufpNURXmVRJn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (only while Morphed): +2 to all four Defenses, and Social Skill tests open the Roll Options Dialog with Edge selected. Automatic: while Morphed, attacks with Martial Arts weapons deal +1 damage, listed on the chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

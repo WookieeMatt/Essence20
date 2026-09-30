@@ -5,6 +5,10 @@
   "_id": "45WHjwO125zTvuGR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: while Morphed, spend up to 4 Personal Power for that much extra Toughness until you unmorph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

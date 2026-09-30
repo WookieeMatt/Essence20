@@ -5,6 +5,10 @@
   "_id": "Cnv01qtQwEdrUh8I",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when a spell attack is cast successfully but misses, a button makes one more attack at no extra cost.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

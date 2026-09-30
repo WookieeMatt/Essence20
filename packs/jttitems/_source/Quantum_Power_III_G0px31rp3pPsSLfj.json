@@ -5,6 +5,10 @@
   "_id": "G0px31rp3pPsSLfj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when you gain it, pick one Quantum Power from the list (Explosive Morph, Focused Strike, Solo Shot and the rest). The chosen Perk is added and works on its own.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

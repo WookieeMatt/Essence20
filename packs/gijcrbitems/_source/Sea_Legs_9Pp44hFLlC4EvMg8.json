@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Edge on Athletics tests, listed as its own source - set the roll back to normal when you aren't keeping your balance.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

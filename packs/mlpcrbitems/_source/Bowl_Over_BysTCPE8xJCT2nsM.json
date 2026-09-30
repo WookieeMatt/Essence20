@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your shove attempts get Edge. A Grapple attack opens the Roll Options Dialog with Edge selected, and a Shove lists Bowl-Over next to Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

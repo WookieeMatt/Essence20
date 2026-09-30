@@ -5,6 +5,10 @@
   "_id": "e26WbtPYfNCm12LO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend a Personal Power to copy a General Perk or Grid Power from a teammate on the scene until the end of your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

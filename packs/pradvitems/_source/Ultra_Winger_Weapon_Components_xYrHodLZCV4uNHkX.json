@@ -5,6 +5,10 @@
   "_id": "xYrHodLZCV4uNHkX",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the +2 Energy damage on one of the Zord's attacks, and on one Megaform attack when it combines.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

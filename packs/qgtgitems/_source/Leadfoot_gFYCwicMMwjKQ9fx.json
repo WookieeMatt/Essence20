@@ -5,6 +5,10 @@
   "_id": "gFYCwicMMwjKQ9fx",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you are not driving a vehicle, your Alertness tests open the Roll Options Dialog with Snag already selected.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

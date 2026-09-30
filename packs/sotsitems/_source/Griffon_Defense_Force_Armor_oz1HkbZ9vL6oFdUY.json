@@ -5,6 +5,10 @@
   "_id": "oz1HkbZ9vL6oFdUY",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: +3 Toughness while worn. It doesn't hinder flying.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

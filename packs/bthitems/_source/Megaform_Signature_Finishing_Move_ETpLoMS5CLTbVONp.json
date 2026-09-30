@@ -5,6 +5,10 @@
   "_id": "ETpLoMS5CLTbVONp",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Choose melee or ranged and a damage type when it is granted. Roll Options Dialog: once per scene, a switch on the Megaform's matching attack for four times damage of that type.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "gkcyg7KWih6QAZlq",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: the Mutant Beast Perk plus its Hang-Ups. Use button: add a second Alt Mode taken from another non-Fuzor Origin. Left to the table: having no Bot Mode, and the Origin pairing and size limits.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "tdFzQ0IOtoHQ0vmy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Flashy rolls the better of your Science or Technology. Left to the table: swapping in Technology on other Scientist Perks that only use Science.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

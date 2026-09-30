@@ -5,6 +5,10 @@
   "_id": "u2wePwe5kCwYPZtF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Health.</p><p>Left to the table: adding the Limited or Restricted weapon you pick as personal gear.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

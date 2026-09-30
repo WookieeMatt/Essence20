@@ -5,6 +5,10 @@
   "_id": "kEC5vHsjYOKmbMKO",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: scouting with it, and the noise it makes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

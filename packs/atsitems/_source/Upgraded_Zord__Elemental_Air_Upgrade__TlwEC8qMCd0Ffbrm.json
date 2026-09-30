@@ -5,6 +5,10 @@
   "_id": "TlwEC8qMCd0Ffbrm",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Speed and ↑1 on Targeting for the Zord.</p><p>Left to the table: +50ft to its attacks' maximum ranges, and keeping only one Upgraded Zord option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

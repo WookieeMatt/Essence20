@@ -5,6 +5,10 @@
   "_id": "jiVDyJi9LzjzpAwn",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics at Short range for 1 Poison damage in a 25 ft radius, or one of three alternates (1 Poison to one target at ↑1, 2 Element to one target, or 2 Element in a 10 ft radius at ↓1). It's Consumable, so it's used up after the attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -16,6 +20,24 @@
         "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.BXDM7LElVsaI7jPD",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Yellowcake Effect",
+        "type": "weaponEffect"
+      },
+      "alt1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.2uUPh3olwNyEeTF6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Yellowcake Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "alt2": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.vxInu3F2aXyYPEvZ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Yellowcake Alternate Effect 2",
+        "type": "weaponEffect"
+      },
+      "alt3": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.4BhYCMthIRwtT5YF",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Yellowcake Alternate Effect 3",
         "type": "weaponEffect"
       }
     },

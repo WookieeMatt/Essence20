@@ -5,6 +5,10 @@
   "_id": "q9lciavy0Nfh0rR8",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted on drop: pick one of the Zord's ranged energy attacks and your Spectrum colour; the attack's damage, type or range change to match. That attack gets ↑1, labelled Dino Gem Integration in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "SB6FAYA0qIqV9F3G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: pick one of the six improvements when you gain it. Use button: pay its Personal Power or Eltarian Tech cost to switch it on (free to switch off); Teleportation just spends its cost.</p><p>Left to the table: moving your token when you teleport, and ending effects when their duration runs out.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: other characters can't Lend you Assistance unless they also have the Greenshirt Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

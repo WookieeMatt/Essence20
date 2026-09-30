@@ -5,6 +5,10 @@
   "_id": "KlBjsk6QBMl8J90j",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: creates your Jet Pack vehicle (two hands), gaining its guns and more speed at 10th level. Automatic: +2 Health and +2 Toughness while you're in it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

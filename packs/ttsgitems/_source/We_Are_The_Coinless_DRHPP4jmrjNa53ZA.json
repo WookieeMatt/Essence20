@@ -5,6 +5,10 @@
   "_id": "DRHPP4jmrjNa53ZA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when an ally's token on the scene would drop to 0 Health, a pop-up asks whether you spend 1 Personal Power (you need at least 1). If you do, they stay at 1 Health with the Impaired condition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

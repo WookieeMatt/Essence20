@@ -5,6 +5,10 @@
   "_id": "TfkbGe9bsMThgNUj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: creates your Contact with its Allegiance Points, Contact Perks and how often it can be called.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

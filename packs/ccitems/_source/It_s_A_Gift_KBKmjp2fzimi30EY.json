@@ -5,6 +5,10 @@
   "_id": "KBKmjp2fzimi30EY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per scene, when a roll of your Origin Skill (the Skill your Origin raised) fails, a Reroll button re-rolls all its dice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

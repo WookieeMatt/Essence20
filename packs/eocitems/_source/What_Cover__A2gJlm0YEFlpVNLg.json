@@ -5,6 +5,10 @@
   "_id": "A2gJlm0YEFlpVNLg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your ranged attacks against a target in Cover take ↓1 instead of ↓2, shown in the Cover entry of your Roll Options Dialog. When a ranged attack hits a target with the Cover condition, the condition is removed and a chat line says its Cover was destroyed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

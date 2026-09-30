@@ -5,6 +5,10 @@
   "_id": "Bl9G8fgtd30wENkX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 to all four Defenses while Morphed. Automatic: your attacks in the first round of combat deal +1 damage, named on the chat card. Attacks against your Willpower get a Snag, added after the attacker's Roll Options Dialog closes and shown in their rolled dice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

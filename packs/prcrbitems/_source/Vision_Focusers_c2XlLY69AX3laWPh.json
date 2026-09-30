@@ -5,6 +5,10 @@
   "_id": "c2XlLY69AX3laWPh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you're Morphed, your token and the tokens of every ally in the scene can see in darkness out to 30 ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

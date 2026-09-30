@@ -5,6 +5,10 @@
   "_id": "xDoJhX0WmrbFdKhm",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Group Skill Test card (Party sheet): a button spends 1 Personal Power to pick a teammate who failed the group test, applying the Perk's benefit to them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

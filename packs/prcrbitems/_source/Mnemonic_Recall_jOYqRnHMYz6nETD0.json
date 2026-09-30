@@ -5,6 +5,10 @@
   "_id": "jOYqRnHMYz6nETD0",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Power; a chat card notes the recall and the GM gives you the detail.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

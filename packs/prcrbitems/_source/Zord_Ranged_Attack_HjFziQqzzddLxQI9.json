@@ -5,6 +5,10 @@
   "_id": "HjFziQqzzddLxQI9",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Zord's basic ranged attack, rolling Targeting at 50/120 ft for 2 Energy damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: pick two skills when you gain it, and you get ↑2 on them. Commando gives a second copy at 7th level for two more (you can't repeat a skill).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

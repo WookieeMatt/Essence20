@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick your starting Movement split (15 ft Ground and 45 ft Aerial, 30 and 30, or 45 and 15). It replaces your base Movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

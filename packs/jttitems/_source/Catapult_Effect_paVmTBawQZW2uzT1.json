@@ -5,6 +5,10 @@
   "_id": "paVmTBawQZW2uzT1",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Catapult's Targeting attack with the listed Blunt damage and range.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

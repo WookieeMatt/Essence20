@@ -5,6 +5,10 @@
   "_id": "hPUmdnAN0FjRaal3",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per scene, the weapon skips a reload.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

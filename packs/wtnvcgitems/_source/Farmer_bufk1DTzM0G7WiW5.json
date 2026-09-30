@@ -5,6 +5,10 @@
   "_id": "bufk1DTzM0G7WiW5",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: You Know, the Farmer? and Mercantile Store at level 1, plus the Essence increases and General Perk picks at the listed levels. Your Focus (Rancher or Tiller) adds the Focus Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "RcdgiHSkGWDOI8gW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically. After a Takedown, swapping clothes and hiding the body are Free actions the table narrates.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

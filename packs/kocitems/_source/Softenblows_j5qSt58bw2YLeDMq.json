@@ -5,6 +5,10 @@
   "_id": "j5qSt58bw2YLeDMq",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: on a success, the target deals no damage until the end of its next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

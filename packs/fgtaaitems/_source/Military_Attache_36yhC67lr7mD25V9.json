@@ -5,6 +5,10 @@
   "_id": "36yhC67lr7mD25V9",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Focus Perks at the listed levels (Service through Combat Excellence), plus its Essence increases and Focus Skill choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

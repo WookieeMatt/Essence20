@@ -5,6 +5,10 @@
   "_id": "xsFS0pGQFx1w2qTd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you and allies within 10ft are immune to Mesmerized and Frightened.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

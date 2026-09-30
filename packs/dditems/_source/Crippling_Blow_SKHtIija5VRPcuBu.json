@@ -5,6 +5,10 @@
   "_id": "SKHtIija5VRPcuBu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch on melee attacks to take ↓1; on a hit you pick Blinded, Deafened or Prone for the target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

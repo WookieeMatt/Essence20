@@ -5,6 +5,10 @@
   "_id": "9EWv3qQJgj7WFQ9A",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: on a Might attack or a shotgun or submachine gun attack, a switch gives Edge; for the rest of the round, attacks against you also have Edge.</p><p>Left to the table: checking the target is within Reach or 20ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

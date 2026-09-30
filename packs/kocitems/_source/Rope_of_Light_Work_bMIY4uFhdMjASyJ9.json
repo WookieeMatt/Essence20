@@ -5,6 +5,10 @@
   "_id": "bMIY4uFhdMjASyJ9",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: once per day, binding something so it is Immobilized and light as a feather.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

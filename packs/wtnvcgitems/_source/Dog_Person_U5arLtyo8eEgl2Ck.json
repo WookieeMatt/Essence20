@@ -5,6 +5,10 @@
   "_id": "U5arLtyo8eEgl2Ck",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your target's name or creature tags say dog, coyote or canine, your tests get ↑1, labelled Dog Person in the Roll Options Dialog, and Animal Handling counts as Specialized. Roll Options Dialog: with no such target, a Dog Person switch gives the same.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

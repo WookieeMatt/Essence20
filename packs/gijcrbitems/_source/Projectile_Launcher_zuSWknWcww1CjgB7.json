@@ -5,6 +5,10 @@
   "_id": "zuSWknWcww1CjgB7",
   "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Sharp damage at 50 ft (long range 100 ft), and its Martial Arts, Silent and Sniper traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "oz8pPCrRn018FUkg",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Stapler's Maneuver: rolls Finesse at Reach. Change its Skill to Might on the sheet if you prefer.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

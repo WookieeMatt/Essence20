@@ -5,6 +5,10 @@
   "_id": "FGrl4swULa62vet8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per turn, make a Might melee attack for a Free action.</p><p>Left to the table: checking you just defeated an enemy, and the free move up to your Movement before the attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

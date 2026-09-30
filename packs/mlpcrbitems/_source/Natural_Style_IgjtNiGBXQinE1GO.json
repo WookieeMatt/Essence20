@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Social Skill tests targeting a creature you first met this scene get ↑1, labelled Natural Style in your Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

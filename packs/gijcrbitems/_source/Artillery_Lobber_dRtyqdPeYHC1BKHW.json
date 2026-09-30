@@ -5,6 +5,10 @@
   "_id": "dRtyqdPeYHC1BKHW",
   "img": "systems/essence20/assets/icons/weapons/mortar.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll with the listed damage, range and blast; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "<p>Effect also has Trip</p>",
     "source": {

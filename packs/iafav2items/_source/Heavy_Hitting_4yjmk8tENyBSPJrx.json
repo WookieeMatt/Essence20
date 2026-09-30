@@ -5,6 +5,10 @@
   "_id": "4yjmk8tENyBSPJrx",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's fitted to gains a Shove alternate attack in its attack list.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

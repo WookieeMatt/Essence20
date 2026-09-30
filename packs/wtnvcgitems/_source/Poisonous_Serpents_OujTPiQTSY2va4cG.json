@@ -5,6 +5,10 @@
   "_id": "OujTPiQTSY2va4cG",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics at Short range for 1 Poison damage in a 10 ft radius, or 1 Sharp damage in the same radius as the alternate; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -16,6 +20,12 @@
         "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.mcL7vN77486lZogM",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Poisonous Serpents Effect",
+        "type": "weaponEffect"
+      },
+      "alt1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.6lUA01foiVK7Hsoo",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Poisonous Serpents Alternate Effect",
         "type": "weaponEffect"
       }
     },

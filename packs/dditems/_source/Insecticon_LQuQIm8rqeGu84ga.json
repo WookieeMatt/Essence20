@@ -5,6 +5,10 @@
   "_id": "LQuQIm8rqeGu84ga",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: converting to this Alt Mode uses its listed Size and Movement (30 ft Ground, 40 ft Aerial).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

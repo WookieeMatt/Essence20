@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Wealth rolls show a Royal Wealth switch (Edge) and Persuasion rolls show a Royal Persuasion switch (↑1). Turn them on for that roll when your royal status matters.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

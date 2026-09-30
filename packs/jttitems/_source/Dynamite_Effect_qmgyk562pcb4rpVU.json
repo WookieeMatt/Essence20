@@ -5,6 +5,10 @@
   "_id": "qmgyk562pcb4rpVU",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the stick's Athletics throw, dealing the listed Stun and Fire damage in its blast area.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>Stun 2 and Fire 1</p>",

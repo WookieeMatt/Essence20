@@ -5,6 +5,10 @@
   "_id": "X6BPzpHr2cBq3jbt",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Megaform gets an extra attack based on this Zord's strongest melee attack, with triple damage and double Reach, usable once per scene (once more per extra copy).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

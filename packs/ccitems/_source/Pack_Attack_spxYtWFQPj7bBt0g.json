@@ -5,6 +5,10 @@
   "_id": "spxYtWFQPj7bBt0g",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (after a successful Growl, while its ↑1 is still unspent): every ally within 60 ft gets ↑1 on all their attacks against the Growled target until the start of your next turn (out of combat, until the scene ends), labelled Pack Attack in their Roll Options Dialog.</p><p>Left to the table: the Move action it costs.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

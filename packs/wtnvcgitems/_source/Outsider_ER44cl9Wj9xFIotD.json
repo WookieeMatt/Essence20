@@ -5,6 +5,10 @@
   "_id": "ER44cl9Wj9xFIotD",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the It's Right There Origin Perk. When you add it, you pick the Essence increase (Strength or Smarts) and one Origin Skill (Alertness, Athletics, Might or Survival).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

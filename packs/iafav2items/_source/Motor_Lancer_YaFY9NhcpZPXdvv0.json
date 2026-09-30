@@ -5,6 +5,10 @@
   "_id": "YaFY9NhcpZPXdvv0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your melee attacks while you're driving or riding in a vehicle get ↑1, already added to the shift in the Roll Options Dialog. Use button: spend a Free action to wield a two-handed melee weapon in one hand until the end of your turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

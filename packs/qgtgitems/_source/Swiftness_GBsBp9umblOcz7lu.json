@@ -5,6 +5,10 @@
   "_id": "GBsBp9umblOcz7lu",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick +20ft Ground Movement or 20ft of Aerial Movement for the scene. It uses one of its two daily uses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

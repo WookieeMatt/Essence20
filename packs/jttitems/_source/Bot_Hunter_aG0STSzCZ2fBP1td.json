@@ -5,6 +5,10 @@
   "_id": "aG0STSzCZ2fBP1td",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls against a targeted mechanical non-player creature get ↑1, listed as Bot-Hunter in your Roll Options Dialog, and attacks against you from robotic non-player creatures must beat your Defense +1 when the hit is checked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

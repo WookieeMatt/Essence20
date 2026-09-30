@@ -5,6 +5,10 @@
   "_id": "eRznGZhE6MGvef2x",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might for 1 Sharp damage at Reach, with a Maneuver alternate effect; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "sQrBuYeydNDZwMx8",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: calling for repairs when the Zord drops to 0 Health, and bringing it back after the repair time.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

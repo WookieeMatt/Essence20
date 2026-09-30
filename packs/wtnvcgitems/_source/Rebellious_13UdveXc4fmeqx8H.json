@@ -5,6 +5,10 @@
   "_id": "13UdveXc4fmeqx8H",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Influence Perk when you add it. If it's your second or later Influence, you also pick one of its Hang-Ups (Gluten-Tolerant, Heretical or Interloper) at that point.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

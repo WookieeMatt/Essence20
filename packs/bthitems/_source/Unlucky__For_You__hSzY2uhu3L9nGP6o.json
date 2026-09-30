@@ -5,6 +5,10 @@
   "_id": "hSzY2uhu3L9nGP6o",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after you succeed against a target, their next Skill Test is watched; if it fails before your next turn starts, you gain 1 Terror.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

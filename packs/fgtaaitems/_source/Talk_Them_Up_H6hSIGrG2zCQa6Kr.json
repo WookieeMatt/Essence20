@@ -5,6 +5,10 @@
   "_id": "H6hSIGrG2zCQa6Kr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: a DIF 10 Persuasion test that removes one Condition (not Defeated) from the targeted ally.</p><p>Left to the table: rolling Deception or Intimidation instead.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "312ubjCA7mCBDoea",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: either heal 1 Health at once, or make a Science healing test with Edge on yourself or a targeted ally. It uses one of its two daily uses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

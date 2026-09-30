@@ -5,6 +5,10 @@
   "_id": "dXCi2IGJnV47wzqe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you ride in a vehicle with Aerial Movement, your attacks against targets without Aerial Movement get Edge, shown as Rifle Tally next to Edge in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

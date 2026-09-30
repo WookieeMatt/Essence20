@@ -5,6 +5,10 @@
   "_id": "tn3WTWH4n1Gel5sO",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: on a Critical Success hit with the upgraded weapon, the target loses 1 Energon and you gain 1. Left to the table: the Strength Essence damage when the target has no Energon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

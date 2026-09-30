@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When you Morph you can pay 1 Personal Power to Go Supersonic: ↑1 on Athletics and Acrobatics, a switch for Energy damage on unarmed attacks, Sonic damage from your Blade Blaster, no Xenotech penalties, and a Gridwide Communicator.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

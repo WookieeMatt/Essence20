@@ -5,6 +5,10 @@
   "_id": "kh7Wk5zalucm9I7p",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (1 Personal Power): switches it on for the rest of the scene; click again to end it early. While it is on, each of your Unarmed hits stacks another ↓1 on the target's Strength and Speed Skill Tests, already counted in the Downshift number of its Roll Options Dialog. Both end on their own when the GM starts a new scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

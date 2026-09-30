@@ -5,6 +5,10 @@
   "_id": "wN5rjEQIJH68rWCd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Power to switch Ninja Power on (free to switch off). While Morphed: +1 Unarmed damage, Edge on Speed tests and your chosen element on Finesse Unarmed attacks. The jump option gives attacks against you ↓1 for the round; move your token yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

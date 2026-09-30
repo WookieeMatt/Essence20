@@ -5,6 +5,10 @@
   "_id": "4wCGBUae2VvEDVs9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Chat card: after you hit and deal damage, a Suffer! button lets you spend any amount of Personal Power to make the target Impaired.</p><p>Left to the table: ending the Impaired after that many turns.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

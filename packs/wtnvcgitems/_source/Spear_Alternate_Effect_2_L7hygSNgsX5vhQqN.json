@@ -5,6 +5,10 @@
   "_id": "L7hygSNgsX5vhQqN",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Spear's sweep: rolls Finesse at Reach ×2 with ↓1 for 1 Sharp damage to up to 2 targets.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

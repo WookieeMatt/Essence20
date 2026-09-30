@@ -5,6 +5,10 @@
   "_id": "mAhqrcJNmNAJHjA8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks against a target with any Condition get Edge, marked Cruel in the Roll Options Dialog. If the target is Immobilized or Restrained, a hit also deals +1 damage, noted on the chat card (\"Includes +1 from Cruel\").</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "tXFkcJfvuZ1LEUAX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑1 on Alertness. Use button (once per scene, in Alt Mode): give an ally ↑2 on their next roll. Left to the table: the Alertness bonus is meant only for sight-based tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

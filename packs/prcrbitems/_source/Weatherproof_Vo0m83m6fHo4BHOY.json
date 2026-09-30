@@ -5,6 +5,10 @@
   "_id": "Vo0m83m6fHo4BHOY",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose the environment the weapon is modified for (underwater, low gravity, zero gravity, vacuum or normal). Automatic: when the GM sets the scene to that environment, its attacks get an Edge or ↑ that cancels the environment's Snag or ↓, labelled Weatherproof in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

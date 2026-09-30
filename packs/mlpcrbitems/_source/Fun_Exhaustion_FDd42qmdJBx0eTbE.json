@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your second and later Party Power uses in a scene still give the Friendship Point, but for the rest of that scene you can't Lend Assistance and nobody can Lend Assistance to you. Left to the table: counting uses across the whole day.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

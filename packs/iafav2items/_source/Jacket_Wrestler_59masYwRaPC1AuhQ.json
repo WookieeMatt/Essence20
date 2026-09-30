@@ -5,6 +5,10 @@
   "_id": "59masYwRaPC1AuhQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: grapple and shove attacks can roll Finesse, and you ignore the ↓ for grappling a larger target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

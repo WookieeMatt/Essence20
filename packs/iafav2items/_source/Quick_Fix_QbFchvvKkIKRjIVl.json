@@ -5,6 +5,10 @@
   "_id": "QbFchvvKkIKRjIVl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: in Combat, repairing a Space Vessel Condition with the vehicle sheet's Repair button costs you a Free action instead of a Standard action, once per turn, on your Actions panel.</p><p>Left to the table: the Free-action cost for any other kind of vehicle repair.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

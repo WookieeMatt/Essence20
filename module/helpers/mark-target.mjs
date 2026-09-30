@@ -1,4 +1,5 @@
 import { actorHasPerk, hasUsedThisEncounter, markUsedThisEncounter } from "./perks.mjs";
+import { getSceneEpoch } from "./scene-clock.mjs";
 
 /**
  * Mark Target (Scout, 2nd level, p.84): "At the beginning of a scene (including Combat),
@@ -13,6 +14,13 @@ import { actorHasPerk, hasUsedThisEncounter, markUsedThisEncounter } from "./per
  */
 
 const MARK_TARGET_FLAG = 'markedTargetUuid';
+// "until the end of the scene": the scene each mark was made in. A mark (single or Additional
+// Marks list) from any other scene - or from before this stamp existed - no longer counts.
+const MARK_TARGET_SCENE_FLAG = 'markedTargetScene';
+
+function isMarkSceneCurrent(actor) {
+  return actor.getFlag?.('essence20', MARK_TARGET_SCENE_FLAG) === getSceneEpoch();
+}
 
 // Mark Everybot (Transformers CRB, Scout, 18th level, p.85): "once per day, you can use Mark
 // Target on every creature in a scene, even those who enter the scene later." Unlike Additional
@@ -49,8 +57,11 @@ export async function markTarget(actor) {
     return false;
   }
 
+  const sameScene = isMarkSceneCurrent(actor);
+  await actor.setFlag('essence20', MARK_TARGET_SCENE_FLAG, getSceneEpoch());
+
   if (actorHasPerk(actor, ADDITIONAL_MARKS_ID)) {
-    const existing = (actor.getFlag?.('essence20', ADDITIONAL_MARKS_FLAG) ?? [])
+    const existing = ((sameScene ? actor.getFlag?.('essence20', ADDITIONAL_MARKS_FLAG) : null) ?? [])
       .filter((uuid) => uuid != targetActor.uuid);
     existing.push(targetActor.uuid);
     while (existing.length > ADDITIONAL_MARKS_LIMIT) {
@@ -80,6 +91,10 @@ export function checkMarkTarget(actor, target) {
 
   if (hasUsedThisEncounter(actor, MARK_EVERYBOT_ENCOUNTER_FLAG)) {
     return true;
+  }
+
+  if (!isMarkSceneCurrent(actor)) {
+    return false;
   }
 
   const markedUuid = actor.getFlag?.('essence20', MARK_TARGET_FLAG);

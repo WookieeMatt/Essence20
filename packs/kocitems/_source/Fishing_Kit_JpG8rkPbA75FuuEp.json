@@ -5,6 +5,10 @@
   "_id": "JpG8rkPbA75FuuEp",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off until you switch it on): ↑1 on Survival while you're fishing.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

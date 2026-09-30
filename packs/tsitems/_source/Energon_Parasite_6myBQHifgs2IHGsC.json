@@ -5,6 +5,10 @@
   "_id": "6myBQHifgs2IHGsC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: target a Defeated Cybertronian to drain their Energon, up to your lowest Essence and your own maximum. Whether the target qualifies is the GM's call.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

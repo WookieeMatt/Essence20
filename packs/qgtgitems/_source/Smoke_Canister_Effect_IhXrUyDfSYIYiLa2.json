@@ -5,6 +5,10 @@
   "_id": "IhXrUyDfSYIYiLa2",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a thrown Targeting attack at 20ft/50ft covering a 10ft radius. Chat card: a button gives Cover for 1 round to the tokens you target or select.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

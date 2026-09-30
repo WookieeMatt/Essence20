@@ -5,6 +5,10 @@
   "_id": "GQ5aQWbjmaO9y00w",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels (Let's Go Psycho! comes with the Psycho Ranger faction), the Static Modifier Role Points, Personal Power, Essence increases, Skills and Psycho Armor training.</p><p>Choices: General Perks and Grid Powers at their levels, and a Psycho Weapon from the Psycho Morpher's Use button.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

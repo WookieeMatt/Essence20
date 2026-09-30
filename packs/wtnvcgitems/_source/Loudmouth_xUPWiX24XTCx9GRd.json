@@ -5,6 +5,10 @@
   "_id": "xUPWiX24XTCx9GRd",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↓1 on Infiltration tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

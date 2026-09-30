@@ -5,6 +5,10 @@
   "_id": "OdHMLgny9aqCevAc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: in Alt Mode your Acrobatics tests get ↑1, already applied when the Roll Options Dialog opens.</p><p>Left to the table: using your feet to hold items and fire weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

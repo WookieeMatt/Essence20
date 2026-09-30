@@ -5,6 +5,10 @@
   "_id": "srCQjZFTPhm2bK3D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when an attack's damage is applied to an adjacent ally, the GM is offered to send the hit to you instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

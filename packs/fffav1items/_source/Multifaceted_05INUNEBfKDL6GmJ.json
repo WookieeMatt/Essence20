@@ -5,6 +5,10 @@
   "_id": "05INUNEBfKDL6GmJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: set aside one Faction benefit and gain another Faction's.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

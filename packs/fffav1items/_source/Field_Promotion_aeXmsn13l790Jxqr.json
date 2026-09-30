@@ -5,6 +5,10 @@
   "_id": "aeXmsn13l790Jxqr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend a Story Point to give an ally your Faction Perks for the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

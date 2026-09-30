@@ -5,6 +5,10 @@
   "_id": "rPnaWCU06W8c0Zua",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (on the pet): choose its favourite Skill. Commanding the pet can then cost a Move action instead of a Standard action. A Utility pet comes with this Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

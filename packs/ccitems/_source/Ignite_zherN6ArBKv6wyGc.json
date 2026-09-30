@@ -5,6 +5,10 @@
   "_id": "zherN6ArBKv6wyGc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Fire hit sets the target burning. At the end of its turn you roll Science against its Evasion to deal 1 Fire or let it go out. Chat card: buttons to fight the flames or drop and roll.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

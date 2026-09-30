@@ -5,6 +5,10 @@
   "_id": "PgKUtsaXswKJdngo",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: the vehicle can't be found by radar.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

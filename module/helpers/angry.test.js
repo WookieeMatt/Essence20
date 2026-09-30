@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { applyAngryHangUp, pickAngryHangUpSkill } from './angry.mjs';
+import { angrySnagSkill, applyAngryHangUp, pickAngryHangUpSkill } from './angry.mjs';
 
 global.game = { i18n: { localize: (k) => k } };
 global.foundry = { applications: { api: { DialogV2: { wait: jest.fn() } } } };
@@ -61,13 +61,26 @@ describe("applyAngryHangUp", () => {
     expect(actor.setFlag).not.toHaveBeenCalled();
   });
 
-  test("banks the Snag on the chosen skill", async () => {
+  test("puts the Snag on the chosen skill for the rest of the scene", async () => {
     foundry.applications.api.DialogV2.wait.mockResolvedValue('deception');
     const actor = makeActor({ skills: { deception: { shift: 'd6' } } });
 
     await applyAngryHangUp(actor, HANGUP_ID);
 
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingAngrySnag',
-      expect.objectContaining({ skill: 'deception' }));
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'angryHangUpSnag',
+      { epoch: 1, window: 'scene', count: 1, skill: 'deception' });
+  });
+});
+
+describe("angrySnagSkill", () => {
+  const withFlag = record => ({ getFlag: jest.fn((scope, key) => (key == 'angryHangUpSnag' ? record : undefined)) });
+
+  test("reads the skill while the scene it was set in is still running", () => {
+    expect(angrySnagSkill(withFlag({ epoch: 1, window: 'scene', count: 1, skill: 'deception' }))).toBe('deception');
+  });
+
+  test("is null once the GM has started a new scene, or before it was ever set", () => {
+    expect(angrySnagSkill(withFlag({ epoch: 0, window: 'scene', count: 1, skill: 'deception' }))).toBeNull();
+    expect(angrySnagSkill(withFlag(undefined))).toBeNull();
   });
 });

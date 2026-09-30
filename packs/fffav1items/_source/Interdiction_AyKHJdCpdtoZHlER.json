@@ -5,6 +5,10 @@
   "_id": "AyKHJdCpdtoZHlER",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: once per combat, a switch to Defeat a hit target whose Threat Level is below your level instead of dealing damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Dy6jy1SL7s5dFqLR",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Stapler's strike: rolls Finesse at Reach with ↓1 for 1 Blunt damage. Change its Skill to Might on the sheet if you prefer.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

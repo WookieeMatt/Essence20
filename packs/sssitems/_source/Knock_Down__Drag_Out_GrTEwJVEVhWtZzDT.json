@@ -5,6 +5,10 @@
   "_id": "GrTEwJVEVhWtZzDT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: using Try Me and This Is For Me as Free actions (spend the Free action instead when the button asks for another).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

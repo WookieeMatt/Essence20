@@ -5,6 +5,10 @@
   "_id": "ZNokHTRBa5aindap",
   "img": "systems/essence20/assets/icons/weapons/baseball-bat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Blunt damage at Reach, and its traits apply. Alternate Effect: Stun 1 at ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

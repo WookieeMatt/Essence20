@@ -5,6 +5,10 @@
   "_id": "71D2KcAAVoLMHTm5",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Sharp damage at 25 ft (long range 80 ft), and its Ballistic trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -1,6 +1,7 @@
 import { jest } from '@jest/globals';
 import {
-  anyGeneralPerkChoices, gameLineOf, getAlreadyChosenExpertiseSkills, grantBattlizerAccess,
+  anyGeneralPerkChoices, BATTLIZER_ACCESS_OPTIONS, gameLineOf, getAlreadyChosenExpertiseSkills, grantBattlizerAccess,
+  pickBattlizer,
   grantBeatdownWeapon, grantBlendIn, grantColonyChangelingInfatuated,
   grantDutyOfTheSilverArmorTraining, grantEmtCrashCourse, grantForTheSyndicateMentor,
   grantIntoTheVoidDigDeep, grantJackhammerWeapon, grantMetamorphosis, grantNanoflageMimic,
@@ -417,6 +418,47 @@ describe("grantBattlizerAccess (Across the Stars, General Perk, p.68 / Beneath t
     await grantBattlizerAccess(actor, SPD_BATTLIZER_ID);
 
     expect(global.Item.create).not.toHaveBeenCalled();
+  });
+});
+
+describe("pickBattlizer (Battlizer Access's 'select a Battlizer')", () => {
+  const ATS_ACCESS = "Compendium.essence20.across_the_stars.Item.JGAOozVnu9Nou5Xj";
+  const BTH_ACCESS = "Compendium.essence20.beneath_the_helmet.Item.oJAdvdKs1XLmsH0z";
+
+  beforeEach(() => {
+    global.fromUuid = jest.fn(async (uuid) => ({ uuid, name: `Battlizer ${uuid.split('.').pop()}` }));
+    global.game = { ...(global.game ?? {}), i18n: { localize: key => key } };
+  });
+
+  test("offers every Battlizer from each book, not just one", () => {
+    expect(BATTLIZER_ACCESS_OPTIONS[ATS_ACCESS]).toHaveLength(7);
+    expect(BATTLIZER_ACCESS_OPTIONS[BTH_ACCESS]).toHaveLength(3);
+  });
+
+  test("asks the player and returns the picked Battlizer", async () => {
+    const choose = jest.fn(async (title, prompt, rows) => rows[1].value);
+
+    const picked = await pickBattlizer({ name: 'Battlizer Access' }, BATTLIZER_ACCESS_OPTIONS[BTH_ACCESS], choose);
+
+    expect(choose).toHaveBeenCalledWith('Battlizer Access', 'E20.GrantPickLabel', expect.any(Array));
+    expect(choose.mock.calls[0][2]).toHaveLength(3);
+    expect(picked).toBe(BATTLIZER_ACCESS_OPTIONS[BTH_ACCESS][1]);
+  });
+
+  test("returns null when the dialog is closed", async () => {
+    const picked = await pickBattlizer({ name: 'x' }, BATTLIZER_ACCESS_OPTIONS[ATS_ACCESS], async () => null);
+
+    expect(picked).toBeNull();
+  });
+
+  test("skips the dialog when only one Battlizer is available", async () => {
+    global.fromUuid = jest.fn(async (uuid) => (uuid.endsWith('sVYZLXhPZqdVhNax') ? { uuid, name: 'Triassic' } : null));
+    const choose = jest.fn();
+
+    const picked = await pickBattlizer({ name: 'x' }, BATTLIZER_ACCESS_OPTIONS[BTH_ACCESS], choose);
+
+    expect(choose).not.toHaveBeenCalled();
+    expect(picked).toBe("Compendium.essence20.beneath_the_helmet.Item.sVYZLXhPZqdVhNax");
   });
 });
 

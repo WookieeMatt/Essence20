@@ -5,6 +5,10 @@
   "_id": "L5B7d8mw0xeOHVkw",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: eat a cup (restore all Essence, Edge for the scene), bake it into pastries (each restores 1 Essence and gives a turn of Edge), or barter it for an automatic Wealth success. Automatic: leftover jam spoils after the next mission.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "MR1ltodbf0bqAVkr",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the first time the vehicle would be Defeated in a mission, it drops to 1 Health instead. It is ready again once the GM starts a new mission.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

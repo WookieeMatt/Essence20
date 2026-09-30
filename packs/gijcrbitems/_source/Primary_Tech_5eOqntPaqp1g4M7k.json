@@ -5,6 +5,10 @@
   "_id": "5eOqntPaqp1g4M7k",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick Armor, Drone, Gear or Weapon (or improve your pick at higher levels) and it adds the matching equipment, pet or free upgrades to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "LQGOwXCGvKlL4pzl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: designate your Heirloom. If it's a weapon, its attacks get the bonus automatically; if it's other equipment, the Roll Options Dialog has a switch for tests that use it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

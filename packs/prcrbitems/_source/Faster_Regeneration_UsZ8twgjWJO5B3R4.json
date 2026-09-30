@@ -4,6 +4,10 @@
   "_id": "UsZ8twgjWJO5B3R4",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene): spend 1 Power to heal d2 Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "bIoMrn9aP9x6QYVL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you roll Initiative, allies gain 1 Temporary Health. It goes away when they take damage, when you're Defeated, or when the scene ends.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

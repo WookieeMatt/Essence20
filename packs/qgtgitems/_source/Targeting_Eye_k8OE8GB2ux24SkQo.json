@@ -5,6 +5,10 @@
   "_id": "k8OE8GB2ux24SkQo",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Free action): until the end of your next turn, your projectile weapons count as Scoped (doubled range unless already Scoped), you take ↓1 on melee attacks, and melee attacks against you get ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

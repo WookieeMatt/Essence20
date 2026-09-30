@@ -5,6 +5,10 @@
   "_id": "IPQJoQFKdLPJmKNX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: Edge on non-combat tests that use many hands, and the Multi-Weapon trait on your melee attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

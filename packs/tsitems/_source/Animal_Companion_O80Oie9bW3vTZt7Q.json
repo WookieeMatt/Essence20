@@ -5,6 +5,10 @@
   "_id": "O80Oie9bW3vTZt7Q",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: building the companion (a Companion actor works well), setting its Essences from your level, and the DIF 10 Animal Handling roll to command it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "UFwnD2CsWCWXlUyf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (while Morphed): switch it on. While it is on, hits cost you Personal Power instead of Health, and at 0 Personal Power you drop Unconscious and Defeated. It can't be switched on twice in one scene.</p><p>Left to the table: the once-per-day limit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "3Y0ETFpJUwdUqgUQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks with the Unarmed Combat weapon's Blunt alternate effect (G.I. JOE or Transformers printing) no longer take its ↓1; the Downshift number in your Roll Options Dialog already reflects it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

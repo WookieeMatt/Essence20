@@ -5,6 +5,10 @@
   "_id": "SUphZH7U2CfQw5kg",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting against the Toughness of everyone in the 30ft area for 2 Acid damage; Evasion can't be used against it.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

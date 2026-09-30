@@ -5,6 +5,10 @@
   "_id": "YDv7PPjj6qgqKI9e",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Targeting attacks against a vehicle with Aerial Movement get Edge, shown as Advanced Anti-Air Training next to Edge in the Roll Options Dialog. Chat card: Point-Defense Reflexes doesn't ask about range, so it never takes its close-range Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

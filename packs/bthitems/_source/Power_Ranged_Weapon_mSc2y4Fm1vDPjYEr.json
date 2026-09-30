@@ -5,6 +5,10 @@
   "_id": "mSc2y4Fm1vDPjYEr",
   "img": "systems/essence20/assets/icons/weapons/rifle.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "qPYov7nAiPjYrD4Q",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the drone gets +3 to Toughness or Evasion (set on the upgrade). The drone uses its best bonus for each Defense.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

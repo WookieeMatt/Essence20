@@ -5,6 +5,10 @@
   "_id": "iOmrgWu6h9qvP89n",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: gives the vehicle the Autopilot trait, so its computer can Lend Assistance as a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

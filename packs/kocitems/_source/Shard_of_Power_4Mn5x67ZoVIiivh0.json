@@ -5,6 +5,10 @@
   "_id": "4Mn5x67ZoVIiivh0",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: crushing it (a Free action) to recover ↑3 of spent Spellcasting, then removing it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

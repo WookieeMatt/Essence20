@@ -5,6 +5,10 @@
   "_id": "bP55ciUhiMJzyTGC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on a melee attack, choose to ignore the target's armor bonuses or to reroll your Skill dice. Choosing either spends 1 Personal Power automatically.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: the Augmented Perk and its mandatory Hang-Up. You can add this Influence more than once with a different choice each time.</p><p>Left to the table: the Perk's bonus is added by hand (see the Perk).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

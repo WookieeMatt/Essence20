@@ -5,6 +5,10 @@
   "_id": "fUSF6fxRyTniN2wT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: with a target selected, roll your Origin Skill against its Cleverness. On a success its next Skill Test gets ↓1 (↓2 on a Critical Success), labelled Distracting Offer in its Roll Options Dialog. Its once-per-scene and same-target limits are tracked.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

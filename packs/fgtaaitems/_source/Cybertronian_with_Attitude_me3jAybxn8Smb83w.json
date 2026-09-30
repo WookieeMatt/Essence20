@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a Power Rangers Origin (one whose benefit isn't a General Perk) and gain its Origin Benefit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

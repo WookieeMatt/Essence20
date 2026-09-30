@@ -5,6 +5,10 @@
   "_id": "63f4lC7RmuQbQll8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on every Deception and Infiltration roll. Automatic: anyone targeting you with an Alertness roll takes a Snag, labelled Faceless in their Roll Options Dialog.</p><p>Left to the table: limiting the Edge to hiding your identity.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

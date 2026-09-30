@@ -5,6 +5,10 @@
   "_id": "aCFBEUiKyV415Lk6",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the stick's blast leaves targets it hits Stunned for 1 round.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

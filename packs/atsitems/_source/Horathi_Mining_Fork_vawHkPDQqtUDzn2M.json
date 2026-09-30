@@ -5,6 +5,10 @@
   "_id": "vawHkPDQqtUDzn2M",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: every Skill Test shows a Horathi Mining Fork switch. Turn it on while mining or taking apart crystal or mineral objects to give that roll Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

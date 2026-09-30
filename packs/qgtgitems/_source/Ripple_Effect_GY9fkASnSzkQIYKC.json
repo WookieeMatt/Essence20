@@ -5,6 +5,10 @@
   "_id": "GY9fkASnSzkQIYKC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your Blunt or Sharp attack targets a vehicle, the Roll Options Dialog opens with its \"Can critically succeed on a d2\" switch on.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

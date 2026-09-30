@@ -5,6 +5,10 @@
   "_id": "LQvGJShBxiMAVcf8",
   "img": "systems/essence20/assets/icons/weapons/broadsword.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick an effect when you attack: a Might sword strike at Reach for 1 Sharp damage, a two-handed strike for 2 Sharp at ↓1, or the Magna Blaster, a Targeting shot at 60ft/100ft for 1 Energy damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

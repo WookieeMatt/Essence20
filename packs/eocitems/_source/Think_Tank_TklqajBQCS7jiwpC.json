@@ -5,6 +5,10 @@
   "_id": "TklqajBQCS7jiwpC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Data Bridge lets you borrow all of one ally's Specializations at once, with no cap on linked allies. Languages are handled in play.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "t8OnOh6dQ0FoWBsG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend a Story Point to Sprint ignoring Rough Terrain. Press it again, targeting the enemies you moved through, to roll a Might attack with an Edge that knocks them Prone and deals 2 damage.</p><p>Left to the table: moving through enemies and walls, and flattening the terrain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

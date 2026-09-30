@@ -5,6 +5,10 @@
   "_id": "aoqbVibH10pj8rn7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when combat starts and you're last in Initiative, your next Skill Test gets Edge, labelled Time To Think in your Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

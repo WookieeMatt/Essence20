@@ -5,6 +5,10 @@
   "_id": "dMEFcqcain5oS2mJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (at half Health or more): sets up camp for the scene. Your team gets ↑1 on tests while camping, and each heals 1 Health or 2 Essence Stress. Roll Options Dialog: Edge on Survival at half Health or more, listed as its own source - set the roll back to normal when it isn't about making camp.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

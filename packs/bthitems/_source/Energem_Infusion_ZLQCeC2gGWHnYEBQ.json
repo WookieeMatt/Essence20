@@ -5,6 +5,10 @@
   "_id": "ZLQCeC2gGWHnYEBQ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted on drop: pick one of the Zord's ranged energy attacks to gain +1 damage, with an optional Spectrum colour change. Automatic: another Zord in Dino Drive Mode within 30ft of this one gets Edge on its energy attacks, labelled Amplified Dino Strength.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "sM2Uk6ZzOS3CPzoW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your Initiative rolls get Edge, already selected when the Roll Options Dialog opens.</p><p>Left to the table: turning that Edge off when you are Surprised.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

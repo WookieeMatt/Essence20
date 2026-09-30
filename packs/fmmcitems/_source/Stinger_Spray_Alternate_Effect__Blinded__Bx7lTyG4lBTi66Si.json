@@ -5,6 +5,10 @@
   "_id": "Bx7lTyG4lBTi66Si",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting against the Toughness of up to 3 targets; a hit leaves the target Blinded. The 1 Personal Power is spent as you roll.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

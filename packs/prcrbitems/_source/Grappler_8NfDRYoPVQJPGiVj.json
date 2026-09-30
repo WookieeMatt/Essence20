@@ -5,6 +5,10 @@
   "_id": "8NfDRYoPVQJPGiVj",
   "img": "systems/essence20/assets/icons/weapons/whip.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed effect, plus its alternate effect; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "R6dTWFgDG319xBgr",
   "img": "icons/svg/acid.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage and range; as a consumable it is used up when thrown.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

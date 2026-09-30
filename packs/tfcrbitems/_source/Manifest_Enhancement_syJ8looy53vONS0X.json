@@ -5,6 +5,10 @@
   "_id": "syJ8looy53vONS0X",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per round, add a temporary Weapon Upgrade to a Melee weapon until the end of your turn, within the availability you can manifest.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

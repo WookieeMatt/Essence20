@@ -5,6 +5,10 @@
   "_id": "B6b8dRybHodMv8aC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per combat, Standard action): roll Brawn to Repair your own damage, at the same DIF as a Technology repair.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

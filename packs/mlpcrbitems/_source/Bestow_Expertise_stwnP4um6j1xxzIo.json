@@ -5,6 +5,10 @@
   "_id": "stwnP4um6j1xxzIo",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: pick a target and a Skill. They gain a Specialization in it, removed when the GM advances the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "mnLXHQ2TwR3A42fS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: on Skill Tests with the Skill chosen on your Field Perk, the Roll Options Dialog opens with Edge selected. If the roll already had an Edge from something else, you get ↑3 added to the dialog's shift instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

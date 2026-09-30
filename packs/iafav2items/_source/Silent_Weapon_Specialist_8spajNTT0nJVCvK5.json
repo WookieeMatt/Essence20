@@ -5,6 +5,10 @@
   "_id": "8spajNTT0nJVCvK5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you attack a targeted Surprised creature with a Silent weapon, the Specialized box in your Roll Options Dialog comes already ticked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

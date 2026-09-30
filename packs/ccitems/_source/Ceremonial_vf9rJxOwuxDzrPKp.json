@@ -5,6 +5,10 @@
   "_id": "vf9rJxOwuxDzrPKp",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Free action): while you wear the armor, your Persuasion rolls get ↑1 until the end of your turn (out of combat, your next Persuasion roll this scene), labelled Ceremonial in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

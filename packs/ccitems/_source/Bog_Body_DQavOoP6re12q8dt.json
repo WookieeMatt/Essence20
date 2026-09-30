@@ -5,6 +5,10 @@
   "_id": "DQavOoP6re12q8dt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Acid Resistance. Left to the table: disease resistance and the longer breath-holding.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

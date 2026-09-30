@@ -5,6 +5,10 @@
   "_id": "FgiCtgLoTRxFXCeU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on a Deception roll in combat, a switch makes it the No Factor contest against your targets' Alertness. Enemies you beat are fooled; your next hit on one is a Critical Success, then every enemy sees through you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

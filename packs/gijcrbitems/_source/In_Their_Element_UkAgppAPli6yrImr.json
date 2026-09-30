@@ -5,6 +5,10 @@
   "_id": "UkAgppAPli6yrImr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your pet shares your environments of expertise and gets your Environmental Expertise benefits in them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

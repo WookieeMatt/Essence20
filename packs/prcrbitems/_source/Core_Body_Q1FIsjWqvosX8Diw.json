@@ -5,6 +5,10 @@
   "_id": "Q1FIsjWqvosX8Diw",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: this Zord's Health counts double toward the Megaform's Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

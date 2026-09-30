@@ -5,6 +5,10 @@
   "_id": "aUJcKZZqQbEi2fT4",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: ignoring the Mounted trait, the better Brawn against shoves, and the combined-form benefit are all applied by hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

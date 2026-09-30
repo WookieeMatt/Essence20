@@ -5,6 +5,10 @@
   "_id": "6uhfHYeuUkFuGEEN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Cheer Point, then move your token up to your Movement as a Free action.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

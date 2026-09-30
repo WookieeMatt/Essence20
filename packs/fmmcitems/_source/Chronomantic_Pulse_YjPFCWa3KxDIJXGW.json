@@ -5,6 +5,10 @@
   "_id": "YjPFCWa3KxDIJXGW",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: enter the Initiative value you want for the targeted token, then roll the DIF 12 Culture test; allies succeed automatically. On a success their place in the Initiative order changes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

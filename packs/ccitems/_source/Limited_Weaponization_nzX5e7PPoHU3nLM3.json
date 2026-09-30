@@ -5,6 +5,10 @@
   "_id": "nzX5e7PPoHU3nLM3",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick an integrated weapon that fits the Alteration; it is added to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

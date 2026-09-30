@@ -5,6 +5,10 @@
   "_id": "kTW30JZ4vWKYB6oD",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: firing the line and anchor out to the weapon's maximum range and using it as a bridge or zipline.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

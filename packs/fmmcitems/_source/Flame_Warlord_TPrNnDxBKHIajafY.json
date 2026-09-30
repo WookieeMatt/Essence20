@@ -5,6 +5,10 @@
   "_id": "TPrNnDxBKHIajafY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 to all Defenses while Morphed. Automatic: your Critical Successes deal +1 damage, already added to the damage on the chat card, and in Monster Form damage applied to you that isn't Energy-type is reduced by 1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

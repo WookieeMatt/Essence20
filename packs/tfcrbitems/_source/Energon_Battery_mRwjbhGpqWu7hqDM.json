@@ -5,6 +5,10 @@
   "_id": "mRwjbhGpqWu7hqDM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your personal Energon Points equal your highest Essence score instead of your lowest.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "CDbaCheOK2rUsqli",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +10 ft Ground Movement while Morphed. Use button: spend 1 Personal Power so your next Initiative roll opens the Roll Options Dialog with Edge already selected.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

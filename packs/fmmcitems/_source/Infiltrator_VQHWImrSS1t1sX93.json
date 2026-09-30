@@ -5,6 +5,10 @@
   "_id": "VQHWImrSS1t1sX93",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the bonus the infiltrated group gets against you once your cover is blown.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

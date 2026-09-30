@@ -5,6 +5,10 @@
   "_id": "HzbJFluxv3lbg9nx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per turn, spend a Story Point to move your full Movement on top of your Move action.</p><p>Left to the table: ignoring Rough Terrain and Contingency attacks during that move.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

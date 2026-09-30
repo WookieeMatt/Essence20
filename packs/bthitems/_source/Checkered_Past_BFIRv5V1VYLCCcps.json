@@ -5,6 +5,10 @@
   "_id": "BFIRv5V1VYLCCcps",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Social rolls show a Checkered Past switch that adds a Snag. Turn it on with authority figures or people who know your past.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

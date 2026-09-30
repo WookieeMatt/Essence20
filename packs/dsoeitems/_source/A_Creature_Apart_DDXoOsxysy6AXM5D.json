@@ -5,6 +5,10 @@
   "_id": "DDXoOsxysy6AXM5D",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: a switchable effect that gives Culture tests a Snag; turn it on for tests about your own kind of creature.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

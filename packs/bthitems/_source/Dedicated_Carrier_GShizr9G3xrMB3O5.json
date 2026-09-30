@@ -5,6 +5,10 @@
   "_id": "GShizr9G3xrMB3O5",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +3 Toughness plating and +2 Health. When added, the Zord's Combiner feature is removed and it gains Carrier.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "l3PjztNqfgYgLtVg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Analyze Target costs a Move action in the action tracker.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

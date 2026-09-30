@@ -5,6 +5,10 @@
   "_id": "K1unZpd5j419Qwka",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 Toughness. Automatic: in Alt Mode your Brawn tests get ↑2, already applied when the Roll Options Dialog opens.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

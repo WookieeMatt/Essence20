@@ -5,6 +5,10 @@
   "_id": "1EaX4srMcUjZIauZ",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: while active, the GM lets you spot invisible or magically hidden things, and true forms, with Alertness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

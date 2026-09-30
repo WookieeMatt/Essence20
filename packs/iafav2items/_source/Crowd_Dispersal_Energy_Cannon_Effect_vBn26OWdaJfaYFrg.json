@@ -5,6 +5,10 @@
   "_id": "vBn26OWdaJfaYFrg",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting along a 100 ft line; each target hit is Impaired until the end of their next turn.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",
@@ -21,7 +25,8 @@
     "shiftDown": 0,
     "numHands": 2,
     "numTargets": 1,
-    "radius": 0,
+    "radius": 100,
+    "shape": "line",
     "range": {
       "min": null,
       "reachMultiplier": 0,

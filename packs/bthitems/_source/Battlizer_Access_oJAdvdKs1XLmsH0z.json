@@ -5,6 +5,10 @@
   "_id": "oJAdvdKs1XLmsH0z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when you take this Perk you pick one of Beneath the Helmet's Battlizers (Red Fury Mode, Dino Super Charge or the Triassic Battlizer). It lands on your sheet ready to summon while Morphed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "TIgFDX4ksgRqR3g9",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the drone's Alertness tests get an Edge, labelled Enhanced Sensors in its Roll Options Dialog. On its other Skill Tests, the dialog has a switch for ↑1 to tick when its enhanced sense helps with the test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

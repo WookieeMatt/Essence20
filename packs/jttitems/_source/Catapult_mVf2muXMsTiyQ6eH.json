@@ -5,6 +5,10 @@
   "_id": "mVf2muXMsTiyQ6eH",
   "img": "icons/weapons/artillery/catapult-simple.webp",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with its Blunt or Fire options at the listed range; Inaccurate applies, and it takes four Reloads before it can fire again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

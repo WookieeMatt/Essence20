@@ -5,6 +5,10 @@
   "_id": "kQLhk6itd7g4wTW1",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the lance's Might attack with the listed Sharp damage and reach.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "696g72VgjR2kzwXO",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: converting into this Alt Mode makes you Large with 15ft Ground and 50ft Aquatic Movement. Taking it adds the Natural Weapon (you pick Blunt or Sharp; Use button re-adds it).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

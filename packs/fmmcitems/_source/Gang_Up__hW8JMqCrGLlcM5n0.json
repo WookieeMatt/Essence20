@@ -5,6 +5,10 @@
   "_id": "hW8JMqCrGLlcM5n0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the bonus comes from the Gang Up Role Points the Path of Cruelty grants alongside this Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

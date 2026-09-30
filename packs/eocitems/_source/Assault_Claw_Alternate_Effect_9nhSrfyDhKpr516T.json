@@ -5,6 +5,10 @@
   "_id": "9nhSrfyDhKpr516T",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a hit gives the target the Grappled condition. For the rest of the scene, while it stays Grappled, every roll it makes (escape attempts included) opens with the \"Grappled by an Assault Claw: Snag\" switch already on in its Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

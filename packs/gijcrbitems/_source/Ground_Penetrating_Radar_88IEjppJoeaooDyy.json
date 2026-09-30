@@ -5,6 +5,10 @@
   "_id": "88IEjppJoeaooDyy",
   "img": "systems/essence20/assets/icons/gear/ground_penerating_radar.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative gear: it shows what's buried underground. The GM describes what you find.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

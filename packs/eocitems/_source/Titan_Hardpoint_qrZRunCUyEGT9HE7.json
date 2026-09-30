@@ -5,6 +5,10 @@
   "_id": "qrZRunCUyEGT9HE7",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a Titan-class weapon. While you are merged, a Gigantic or larger Combiner form gets a copy of it on an External Hardpoint.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

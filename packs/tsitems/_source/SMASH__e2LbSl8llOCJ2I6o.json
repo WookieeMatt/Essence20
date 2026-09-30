@@ -1,0 +1,123 @@
+{
+  "folder": "AUUJvPPWOpWKtwA1",
+  "name": "SMASH!",
+  "type": "weapon",
+  "_id": "e2LbSl8llOCJ2I6o",
+  "img": "systems/essence20/assets/icons/weapons/punch.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might attack at double Reach for 2 Blunt, with alternate effects of Stun 2 at ↓1 or a Maneuver. The Behemoth Alt Mode grants it.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 37
+    },
+    "items": {
+      "s5h1": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.MLT8NLzYVHNcAcnP",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "SMASH! Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "blunt",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "s5h2": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.AlZRbbwM959q0aCn",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "SMASH! Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "stun",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "s5h3": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.tBLnpwkwBoLNgQwa",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "SMASH! Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": null,
+        "damageType": "maneuver",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "automatic",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "blunt",
+      "integrated"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790700000000,
+    "modifiedTime": 1790700000000,
+    "lastModifiedBy": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!e2LbSl8llOCJ2I6o"
+}

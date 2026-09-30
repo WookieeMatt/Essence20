@@ -5,6 +5,10 @@
   "_id": "S3t5zNlhPp7evXbh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: your allies each get Edge on their next Skill Test.</p><p>Left to the table: the once-per-day limit, as the button resets each encounter.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

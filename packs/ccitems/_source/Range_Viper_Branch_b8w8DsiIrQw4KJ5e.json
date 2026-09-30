@@ -5,6 +5,10 @@
   "_id": "b8w8DsiIrQw4KJ5e",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Tactical Armor (Terrifying), an Artillery Lobber and a Limited Survival Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

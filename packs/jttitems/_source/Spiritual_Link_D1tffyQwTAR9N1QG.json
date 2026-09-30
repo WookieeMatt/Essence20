@@ -5,6 +5,10 @@
   "_id": "D1tffyQwTAR9N1QG",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Combat, while you drive the Zord that has this Feature (including inside a Megaform), your first Skill Test each turn gets ↑1, already counted in the Upshift number of your Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

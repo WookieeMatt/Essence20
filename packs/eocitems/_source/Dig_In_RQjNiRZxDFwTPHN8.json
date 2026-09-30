@@ -5,6 +5,10 @@
   "_id": "RQjNiRZxDFwTPHN8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: dig in or stop. While dug in, attacks against you while you're in Cover take one more ↓ (shown on the Cover line of the attacker's Roll Options Dialog), and your Aim on ranged attacks gives ↑2 instead of ↑1.</p><p>Left to the table: switching it off when you move or are moved.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

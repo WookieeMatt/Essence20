@@ -5,6 +5,10 @@
   "_id": "NiEaLWcx8N48fvvN",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, spend 2 Personal Power and choose Morpher, Power Weapon or Zord; that option's bonus lasts for the scene (the Zord damage option is a single +2).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

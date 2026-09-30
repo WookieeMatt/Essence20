@@ -5,6 +5,10 @@
   "_id": "cjLsZGJhMeGoy1uO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: attackers targeting you get a switch for ↓2 when their attack would drain your Personal Power or stop you spending it.</p><p>Left to the table: deciding which attacks count, since none are marked as draining.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

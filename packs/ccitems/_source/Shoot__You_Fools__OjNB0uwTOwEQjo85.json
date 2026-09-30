@@ -5,6 +5,10 @@
   "_id": "OjNB0uwTOwEQjo85",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (Standard action): every ally in the combat gets an immediate attack at no action cost; any ally who misses takes 1 Psychic damage.</p><p>Left to the table: leaving out allies who can't hear you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: restore 1 Health to a friendly vehicle.</p><p>Left to the table: repairing other equipment, and fixing or jamming a machine for a scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

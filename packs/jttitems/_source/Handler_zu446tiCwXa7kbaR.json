@@ -5,6 +5,10 @@
   "_id": "zu446tiCwXa7kbaR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effects (off by default): ↑1 on Animal Handling for suggestions or commands, or ↑2 for an animal in your frequent care. Switch on the one that fits.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

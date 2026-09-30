@@ -5,6 +5,10 @@
   "_id": "6Ov5odRU8tGhQJzu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you count as Qualified with Restricted two-handed Ballistic weapons when requisitioning. Use button: take one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

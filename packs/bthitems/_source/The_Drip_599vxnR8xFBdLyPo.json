@@ -5,6 +5,10 @@
   "_id": "599vxnR8xFBdLyPo",
   "img": "systems/essence20/assets/icons/gear/clothes.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Performance and Persuasion rolls show a The Drip switch that adds ↑1. Turn it on while you are showing it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

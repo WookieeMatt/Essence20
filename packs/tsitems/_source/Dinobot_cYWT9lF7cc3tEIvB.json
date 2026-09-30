@@ -5,6 +5,10 @@
   "_id": "cYWT9lF7cc3tEIvB",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Dinobot Perk, plus a choice of its Hang-Ups (I Don't Get It, Grudging Ally, Impulsive or Violent).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

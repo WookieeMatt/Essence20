@@ -5,6 +5,10 @@
   "_id": "WZA3q9BRESFVx6SS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Initiative rolls get Edge and ↑1, already applied when the Roll Options Dialog opens.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

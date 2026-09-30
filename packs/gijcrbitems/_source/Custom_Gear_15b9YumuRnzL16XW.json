@@ -5,6 +5,10 @@
   "_id": "15b9YumuRnzL16XW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a light or medium armor, a Limited armor upgrade and a Limited weapon upgrade, and they're added to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

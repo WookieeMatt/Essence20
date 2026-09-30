@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>On the sheet: tick the three new Limited weapon types (or one Restricted type) this Perk makes you Qualified in.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

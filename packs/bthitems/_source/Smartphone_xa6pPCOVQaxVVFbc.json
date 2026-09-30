@@ -5,6 +5,10 @@
   "_id": "xa6pPCOVQaxVVFbc",
   "img": "systems/essence20/assets/icons/gear/smartphone.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Alertness rolls show a Smartphone switch that adds a Snag. Turn it on while you are absorbed in the phone.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "nFIkZdRSmg9h5BLQ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: the Zord gets +2 Toughness and +1 Health.</p><p>Left to the table: +1 damage on the Zord's bash, fly-by and ram attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

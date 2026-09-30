@@ -5,6 +5,10 @@
   "_id": "sKnJnT4e2Y4LSKKM",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. A faction for your character's story.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

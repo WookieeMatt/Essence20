@@ -5,6 +5,10 @@
   "_id": "69ijP0SuQ4demwd9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: on any Skill Test with a Social skill, a d20 that rolls 9 or less counts as a 10, as shown on the roll's chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

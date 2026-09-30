@@ -5,6 +5,10 @@
   "_id": "GGu11SYwOALYkJ61",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: creates your R.I.C. as a companion drone armed with the Canine Cannon, then lets you pick 2 kits to build into it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

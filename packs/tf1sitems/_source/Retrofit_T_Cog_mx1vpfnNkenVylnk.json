@@ -5,6 +5,10 @@
   "_id": "mx1vpfnNkenVylnk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: gaining the chosen Origin's Alt Mode and Origin Perk (and drawbacks), and the Movement and size changes for a Bot.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "g0bRGmWtApyqBhpU",
   "img": "systems/essence20/assets/icons/weapons/rifle.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage and range; its Ballistic and Sniper traits apply, including Ballistic hitting Toughness at long range.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

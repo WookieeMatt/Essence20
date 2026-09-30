@@ -5,6 +5,10 @@
   "_id": "6N3p0bzq8dOK3p6L",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for the listed damage and range, with a three-target alternate effect at ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

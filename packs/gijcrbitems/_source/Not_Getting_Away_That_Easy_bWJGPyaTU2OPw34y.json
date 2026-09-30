@@ -5,6 +5,10 @@
   "_id": "bWJGPyaTU2OPw34y",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Contingency action costs a Free action instead of a Standard action. The tracker asks you to confirm it's an attack on an enemy entering your range or reach.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

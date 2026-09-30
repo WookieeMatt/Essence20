@@ -5,6 +5,10 @@
   "_id": "JsgKy9KBBeMPIMrG",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack at 30ft for 1 Blunt damage against a single target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

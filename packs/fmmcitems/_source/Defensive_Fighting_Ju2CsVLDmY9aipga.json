@@ -5,6 +5,10 @@
   "_id": "Ju2CsVLDmY9aipga",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Defense bonus comes from the Path of Flame's Defense Bonus Role Points, which the Role grants alongside this Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

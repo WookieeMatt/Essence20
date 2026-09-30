@@ -5,6 +5,10 @@
   "_id": "tzKA5DMuhAKPnjoU",
   "img": "systems/essence20/assets/icons/gear/tablet.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on while hacking with the tablet for Edge on Technology, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

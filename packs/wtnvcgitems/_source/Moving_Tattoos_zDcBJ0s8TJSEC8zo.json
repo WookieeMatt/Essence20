@@ -5,6 +5,10 @@
   "_id": "zDcBJ0s8TJSEC8zo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is automated. Left to the table: using a tattoo as an extra limb outside combat, and the Absorb Specialization for hiding what it holds.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

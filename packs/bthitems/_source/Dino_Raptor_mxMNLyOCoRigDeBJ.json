@@ -5,6 +5,10 @@
   "_id": "mxMNLyOCoRigDeBJ",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power to call your Dino Raptor vehicle; in combat it arrives after 3d2 rounds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

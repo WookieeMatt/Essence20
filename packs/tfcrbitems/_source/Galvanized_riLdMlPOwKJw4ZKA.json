@@ -5,6 +5,10 @@
   "_id": "riLdMlPOwKJw4ZKA",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the weapon gains the Electromagnetic trait, and that trait's rules apply to its attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

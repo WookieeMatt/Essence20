@@ -5,6 +5,10 @@
   "_id": "VFZcLJgmQjP4kLVt",
   "img": "systems/essence20/assets/icons/weapons/heavy_machine_gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 2 Sharp damage at the listed range, and its traits apply. Alternate Effects: 3 damage at ↓3, or 1 damage to several targets in a 30 ft area at ↓3.</p>"
+    },
     "originalId": "",
     "description": "<p>Alternate Effect 2 is a 30 ft cone</p>",
     "source": {

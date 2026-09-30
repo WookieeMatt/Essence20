@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: after watching a fighter for a minute, the GM tells you how their Threat Level, Toughness and Evasion compare to yours.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

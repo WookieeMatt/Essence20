@@ -5,6 +5,10 @@
   "_id": "uZugE36PfcdcQyil",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a hit's Apply Damage button raises one of the target's Essence scores by 1 and lowers a different one by 1. The attacker picks both when the attack used Science; otherwise they are random. The change lasts.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",
@@ -16,8 +20,8 @@
       "skill": "deception",
       "style": "melee"
     },
-    "damageType": "special",
-    "damageValue": 0,
+    "damageType": "essenceSwap",
+    "damageValue": 1,
     "isSpecialized": false,
     "numHands": 1,
     "numTargets": 1,

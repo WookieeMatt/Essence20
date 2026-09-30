@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when someone makes a Social Skill test with you targeted, they see a Martial Artist switch (off by default). Ticking it because they're goading you into action gives their roll Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

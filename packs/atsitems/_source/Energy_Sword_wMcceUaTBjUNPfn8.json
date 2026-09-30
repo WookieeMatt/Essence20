@@ -5,6 +5,10 @@
   "_id": "wMcceUaTBjUNPfn8",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Finesse for 1 damage at Reach; Anti-Tank applies.</p><p>Left to the table: the Critical Effect that gives the target a Snag on attacks against you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

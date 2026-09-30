@@ -5,6 +5,10 @@
   "_id": "6PvVKDMMi5Pq1tIN",
   "img": "systems/essence20/assets/icons/gear/radio_scanner.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: listening in on private radio traffic.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

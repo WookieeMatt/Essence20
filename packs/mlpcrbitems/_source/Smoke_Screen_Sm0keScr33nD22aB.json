@@ -5,6 +5,10 @@
   "_id": "Sm0keScr33nD22aB",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Standard action, pick a point; every creature within 20 ft is Blinded for 1 round, and one smoke bomb is used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

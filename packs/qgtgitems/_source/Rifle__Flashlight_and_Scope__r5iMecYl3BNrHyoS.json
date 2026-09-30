@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/rifle.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage and range; the Scope extends its range. The flashlight is a light source for the table to use.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

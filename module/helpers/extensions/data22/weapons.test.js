@@ -40,15 +40,13 @@ test('a miss marks nothing', async () => {
   expect(target.setFlag).not.toHaveBeenCalled();
 });
 
-test('Assault Claw grapple: Snag on the escape', async () => {
+// The Snag itself is the Grappled switch (extensions/rules/grappled.test.js); the Claw only marks.
+test('Assault Claw grapple marks the target', async () => {
   const target = makeActor({ id: 't', statuses: ['grappled'] });
   await weaponHitRider(makeActor(), target, { success: true }, { weaponSource: WEAPON22.assaultClaw, damageType: 'sharp' });
   expect(target.setFlag).not.toHaveBeenCalled();
   await weaponHitRider(makeActor(), target, { success: true }, { weaponSource: WEAPON22.assaultClaw, damageType: 'grapple' });
-  expect(weaponRollSources(target, null, { rolledSkill: 'athletics', isAttack: false }).sources[0]).toMatchObject({ snag: true });
-  expect(weaponRollSources(target, null, { rolledSkill: 'targeting', isAttack: false }).sources).toEqual([]);
-  expect(weaponRollSources(target, null, { rolledSkill: 'might', isAttack: true }).sources).toEqual([]);
-  target.statuses.clear();
+  expect(target.setFlag).toHaveBeenCalledWith('essence20', 'd22AssaultClawGrapple', expect.objectContaining({ scene: expect.anything() }));
   expect(weaponRollSources(target, null, { rolledSkill: 'athletics', isAttack: false }).sources).toEqual([]);
 });
 

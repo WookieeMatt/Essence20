@@ -5,6 +5,10 @@
   "_id": "h8P0O7blDXIvP3JV",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the kit's contents are used as the story needs.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

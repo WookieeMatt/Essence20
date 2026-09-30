@@ -5,6 +5,10 @@
   "_id": "8BXIvBamlet1BQ2l",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Critical Success on a Might-based attack makes every enemy within 20 ft Frightened until the end of their next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

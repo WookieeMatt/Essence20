@@ -5,6 +5,10 @@
   "_id": "rkAvOCaF0RxnawZe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: during combat, rolls you make off your own turn (Contingency actions) against your current Mark Target treat its Defenses as 5 lower. The chat card shows the lowered Defense.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

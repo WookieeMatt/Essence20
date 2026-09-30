@@ -5,6 +5,10 @@
   "_id": "4D98PWVya8KJ9Pna",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: once per turn with your favorite weapon, a switch takes ↓1 to hit a foe you can't see; a hit deals +1 damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

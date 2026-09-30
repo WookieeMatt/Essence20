@@ -5,6 +5,10 @@
   "_id": "9px5wpituMa36FqQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your base Role keeps granting its Role Perks at the effective base Role level while you advance as an Old Hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "fovlMg3Gznhg0OgC",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Chemist Perk and the Chemist Hang-Up. Active Effect: one step of training in poisons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

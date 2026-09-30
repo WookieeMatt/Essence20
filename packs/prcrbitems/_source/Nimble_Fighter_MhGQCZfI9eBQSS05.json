@@ -5,6 +5,10 @@
   "_id": "MhGQCZfI9eBQSS05",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the free 5-foot move after each successful melee attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

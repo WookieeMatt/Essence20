@@ -5,6 +5,10 @@
   "_id": "VAhtHpKlv4gsR0OY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: its weapon, armor and upgrade Qualifications at Requisition. Your attacks with non-Biomechanical weapons and your Driving tests in non-Biomechanical vehicles take a Snag, and Intimidation tests against you take a Snag; each is labelled The Glory of Cobra-La in the Roll Options Dialog.</p><p>Left to the table: the battledress Snag and the Biomechanical vehicle Qualification.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "S3qPHlomgES5iUNi",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switch the netting on or off. While on, crew Infiltration tests get Edge and the vehicle's Speed tests take ↓2, both shown as Camo Netting in the Roll Options Dialog, and the vehicle's Movement drops by 10 ft on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

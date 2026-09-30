@@ -5,6 +5,10 @@
   "_id": "chwBiu6rvDnE6WSe",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Targeting for Laser damage against multiple targets in the listed cone.</p><p>Left to the table: the Critical Effect that Blinds the target until the end of your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

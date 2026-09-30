@@ -5,6 +5,10 @@
   "_id": "XUH3dRYEt81ujvWd",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Crop Rotation at level 1 and Bumper Crop at level 4. The character needs the Farmer Role first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

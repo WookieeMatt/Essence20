@@ -5,6 +5,10 @@
   "_id": "CjJGz1LLzFoveqZK",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: in Alt Mode, extend or stow the ladder as a Free action; allies your size or smaller then get a ↑2 switch on Athletics and Acrobatics. In Bot Mode your unarmed Reach doubles.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

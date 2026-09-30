@@ -5,6 +5,10 @@
   "_id": "R4s4PzhsPvPqihTF",
   "img": "systems/essence20/assets/icons/gear/satellite_phone.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: calls from places with no other signal.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

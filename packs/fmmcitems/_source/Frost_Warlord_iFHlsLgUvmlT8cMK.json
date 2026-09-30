@@ -5,6 +5,10 @@
   "_id": "iFHlsLgUvmlT8cMK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 to all Defenses while Morphed. Automatic: attacks with your natural Reach deal +1 damage, shown on the chat card as \"Includes +1 from Frost Warlord\", and in Monster Form Energy-type damage applied to you is reduced by 2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

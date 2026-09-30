@@ -5,6 +5,10 @@
   "_id": "jpu756uKYfydTu16",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the system remembers the last Skill you rolled. When an ally on the scene rolls that same Skill, their Roll Options Dialog opens with Edge already selected.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

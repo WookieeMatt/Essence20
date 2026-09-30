@@ -5,6 +5,10 @@
   "_id": "aD130X44xDxZ6o2U",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick two of the six Metamorphosed benefits (Antlers, Enchanted Horn, Extra Wings, Hardy, Long Legs, Wings) when you take it.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

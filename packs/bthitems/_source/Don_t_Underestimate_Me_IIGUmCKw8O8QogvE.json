@@ -5,6 +5,10 @@
   "_id": "IIGUmCKw8O8QogvE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the first roll each scene that targets you, attack or contested test, takes a Snag, labelled Don't Underestimate Me in the roller's Roll Options Dialog. It doesn't apply if you are unaware of that roller.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

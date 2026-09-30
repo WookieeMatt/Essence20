@@ -5,6 +5,10 @@
   "_id": "W7iyFJTIGw7BuR3x",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics for 1 Blunt or 1 Sharp damage (pick the effect) at the listed range; its Silent trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

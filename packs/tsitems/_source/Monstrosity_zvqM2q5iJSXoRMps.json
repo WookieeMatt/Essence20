@@ -5,6 +5,10 @@
   "_id": "zvqM2q5iJSXoRMps",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 4 starting Health, +1 Strength, Ground Movement 35, the Tooth and Claw Perk, and your pick of the six Monstrosity Alt Modes (Huge or Extended, with 40ft Ground, Aerial or Aquatic Movement). You pick Brawn or Might as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -21,13 +25,37 @@
       "9bd4": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.hRTGCxvA7dI4dSAS",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Monstrosity (Huge)",
+        "name": "Monstrosity (Huge, Ground)",
         "type": "altMode"
       },
       "da7e": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.8eySZa8oyATSLALr",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Monstrosity (Extended)",
+        "name": "Monstrosity (Extended, Ground)",
+        "type": "altMode"
+      },
+      "7wsw": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.7WsWk1gEk9q9Z29k",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Monstrosity (Extended, Aerial)",
+        "type": "altMode"
+      },
+      "uriq": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.UriqxySzFuQBK01d",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Monstrosity (Extended, Aquatic)",
+        "type": "altMode"
+      },
+      "kl3f": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.KL3FeHBqAIZ66BgQ",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Monstrosity (Huge, Aerial)",
+        "type": "altMode"
+      },
+      "rk3m": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.Rk3mT9vQx2LpW7nZ",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Monstrosity (Huge, Aquatic)",
         "type": "altMode"
       }
     },

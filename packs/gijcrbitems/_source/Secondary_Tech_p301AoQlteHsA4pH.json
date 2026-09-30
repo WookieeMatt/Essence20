@@ -5,6 +5,10 @@
   "_id": "p301AoQlteHsA4pH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a second Primary Tech option, or improve the one you have, and it adds the matching equipment, pet or free upgrades to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

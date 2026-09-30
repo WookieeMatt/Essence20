@@ -5,6 +5,10 @@
   "_id": "n5dNCOPVTsqLAapp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Health. Use button: pick one Limited melee and one Limited projectile weapon, or one Restricted weapon, to be Qualified with when requisitioning.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

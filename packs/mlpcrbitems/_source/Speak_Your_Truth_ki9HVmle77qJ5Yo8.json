@@ -5,6 +5,10 @@
   "_id": "ki9HVmle77qJ5Yo8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick Strength, Speed or Smarts when you gain it; Persuasion then also counts as a Skill of that Essence when you spend its Skill Points.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

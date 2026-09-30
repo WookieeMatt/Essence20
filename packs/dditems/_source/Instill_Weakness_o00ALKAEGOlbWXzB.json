@@ -5,6 +5,10 @@
   "_id": "o00ALKAEGOlbWXzB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: on a Technology test against a target's Evasion, a switch spends 1 Energon on a success and lets you pick a damage type; attacks of that type against the target get Edge for the scene. Left to the table: the special tool itself.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

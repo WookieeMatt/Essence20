@@ -5,6 +5,10 @@
   "_id": "cmj6zfGfpK9YWWfq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑1 on Alertness, Initiative and Survival. It rises to ↑2 in your environment of expertise (the scene's terrain, or the environment switch on your sheet).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "A2T4cCya4l1rlihY",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Energy Attack rolls Might for 3 damage at ↓1. Once per encounter: after one use it won't roll again until the next encounter.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

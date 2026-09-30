@@ -5,6 +5,10 @@
   "_id": "8vqJPYvK1G2ejk3p",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Chat card: on a success, everyone within 60 ft gets a DIF 15 Alertness save, and failing leaves them Asleep for 4 rounds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

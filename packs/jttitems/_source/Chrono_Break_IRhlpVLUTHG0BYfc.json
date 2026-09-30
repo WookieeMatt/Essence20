@@ -5,6 +5,10 @@
   "_id": "IRhlpVLUTHG0BYfc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: on a Critical Success with a Chrono Blaster, Chrono Saber or Quantum Defender attack, you may pick an extra Critical Effect: regain 1d2 Personal Power, remove one of your Conditions, or heal 1d2 Health or 1 lost Essence point. Apply it by hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

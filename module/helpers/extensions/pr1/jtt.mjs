@@ -141,13 +141,30 @@ export function mobileHqDerived(actor) {
     return;
   }
 
-  // "Adds Edge to the Initiative rolls of all allied vehicles and Zords within the scene."
-  const hq = has(actor, PR1.mobileHeadquarters)
-    || sceneActors().some(other => other?.type == 'zord' && other.id != actor.id && has(other, PR1.mobileHeadquarters) && isAllyOf(other, actor));
-  if (hq) {
+  // "Adds Edge to the Initiative rolls of all allied vehicles and Zords within the scene." The
+  // holder's own Edge is derived data; the rest of the scene is checked when Initiative is rolled
+  // (mobileHqInitiative), because reading other tokens' actors while this one is being prepared
+  // builds their synthetic actors, which prepare in turn - an unbounded loop on world load.
+  if (has(actor, PR1.mobileHeadquarters)) {
     skill.edge = true;
   }
 }
+
+/** Mobile Headquarters for the other allied vehicles and Zords in the scene, at Initiative. */
+export async function mobileHqInitiative(actor, options) {
+  if (!['zord', 'vehicle'].includes(actor?.type) || has(actor, PR1.mobileHeadquarters)) {
+    return;
+  }
+
+  if (sceneActors().some(other => other?.type == 'zord' && other.id != actor.id && has(other, PR1.mobileHeadquarters) && isAllyOf(other, actor))) {
+    options.edge = true;
+  }
+}
+
+globalThis.Hooks?.once?.('init', async () => {
+  const dice = await import("../../../dice.mjs");
+  dice.INITIATIVE_EXTENSIONS?.push(mobileHqInitiative);
+});
 
 /* -------------------------------------------- */
 /*  Overdrive                                    */

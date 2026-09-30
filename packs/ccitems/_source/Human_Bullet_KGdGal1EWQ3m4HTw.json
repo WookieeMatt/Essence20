@@ -5,6 +5,10 @@
   "_id": "KGdGal1EWQ3m4HTw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick the radius and damage, target everyone in the area, and roll the Fire damage. Left to the table: that you are flying with your Jet Pack.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

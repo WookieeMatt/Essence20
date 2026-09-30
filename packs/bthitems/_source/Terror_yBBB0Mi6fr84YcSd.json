@@ -5,6 +5,10 @@
   "_id": "yBBB0Mi6fr84YcSd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you gain 1 Terror (tracked on your sheet, up to your Terror Capacity) when a roll you made with Edge deals attack damage, or Frightens a target through Menacing Glare or Absolute Menace, unless the target can't be Frightened. Roll Options Dialog: a Spend Terror box on your attacks adds that much damage.</p><p>Left to the table: losing all Terror when a new day starts.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

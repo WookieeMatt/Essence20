@@ -5,6 +5,10 @@
   "_id": "OGr26370hhjO7nwN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the temporary Contact this reward grants.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

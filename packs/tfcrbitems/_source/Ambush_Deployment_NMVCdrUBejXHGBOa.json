@@ -5,6 +5,10 @@
   "_id": "NMVCdrUBejXHGBOa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in the round you deploy your Mini-Con in combat, attacks by you and the Mini-Con against enemies adjacent to you get Edge, shown as Ambush Deployment next to Edge in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "N8kMxo82Rot2xMMU",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a successful cast disguises your target (or you, if no one is targeted). While disguised, their Deception and Infiltration Tests open the Roll Options Dialog with Edge already selected.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

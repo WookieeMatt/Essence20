@@ -5,6 +5,10 @@
   "_id": "TG2rarEjGgDeOsc5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick one of the four Unique Weapons or roll for one, and it is added to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

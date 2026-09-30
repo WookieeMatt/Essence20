@@ -5,6 +5,10 @@
   "_id": "Jnjio1DtAx0QgE85",
   "img": "systems/essence20/assets/icons/weapons/chainsaw.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse at ↓2 for 2 Blunt or 2 Sharp damage at Reach x2, or use the Intimidate alternate effect. Its Anti-Tank, Reload and Wrecker traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

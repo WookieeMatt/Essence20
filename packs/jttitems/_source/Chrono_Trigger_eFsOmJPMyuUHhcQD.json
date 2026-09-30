@@ -5,6 +5,10 @@
   "_id": "eFsOmJPMyuUHhcQD",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Combat, one Attack action with this sidearm covers three attacks, counted on your Actions panel, and each takes ↓2, listed as Chrono-Trigger (Multiple Attacks) in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "CBYxhwjNBSf2ONZk",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Finesse Grapple attack at ↓1.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "Ta7SsJbPcCreAHge",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per turn, Free action): bank ↑1 for your next Skill Test.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

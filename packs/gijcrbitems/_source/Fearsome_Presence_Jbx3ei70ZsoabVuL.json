@@ -5,6 +5,10 @@
   "_id": "Jbx3ei70ZsoabVuL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (during Reckless Abandon): target up to three characters within 20 ft and roll Intimidation against their Willpower. Those you beat are Frightened until the start of your next turn, and a chat card reminds them to move away.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

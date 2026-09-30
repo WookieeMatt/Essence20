@@ -5,6 +5,10 @@
   "_id": "xX8Ijto8a0I4jbjt",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: in Bot Mode, when you roll Technology with the Repair Specialization, any ↓ picked in the Roll Options Dialog is dropped before the dice are rolled.</p><p>Left to the table: the Alt Mode Edge for passengers repairing wounded Cybertronian passengers.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

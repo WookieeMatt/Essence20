@@ -5,6 +5,10 @@
   "_id": "smvGDC2LdShGs0UK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose two Limited or one Restricted armor upgrade, and they're added to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

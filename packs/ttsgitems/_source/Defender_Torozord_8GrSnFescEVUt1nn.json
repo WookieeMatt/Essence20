@@ -5,6 +5,10 @@
   "_id": "8GrSnFescEVUt1nn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (in Mega Defender form, with your Torozord linked): combine into the Defender Torozord Megaform, or separate again. Creating the Megaform actor needs a GM online.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

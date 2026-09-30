@@ -5,6 +5,10 @@
   "_id": "XpHqJMP0UktZzRIM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: on your Social tests, a Gentle Understanding reroll button rerolls every Skill Die that came up 1. No limit on uses.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

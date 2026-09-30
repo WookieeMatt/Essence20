@@ -5,6 +5,10 @@
   "_id": "gsSxDXrq0xdmkeJp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the first time each scene that someone attacks you with a projectile weapon, their roll takes a Snag, listed as Projectile Dancer next to Snag in their Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

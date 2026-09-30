@@ -5,6 +5,10 @@
   "_id": "trZUXoSl2mFHkW6g",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage and range. Inertial ignores low- and zero-gravity penalties.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

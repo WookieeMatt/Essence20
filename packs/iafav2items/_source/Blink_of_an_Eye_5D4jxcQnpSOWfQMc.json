@@ -5,6 +5,10 @@
   "_id": "5D4jxcQnpSOWfQMc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Attack action gives you two attacks when you use a Silent Martial Arts weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

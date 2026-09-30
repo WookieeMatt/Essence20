@@ -5,6 +5,10 @@
   "_id": "n7kXeiPmmdg55K1X",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Power for ↑1 on attacks with Power Weapons for 10 rounds, already counted in the upshift your Roll Options Dialog opens with. It ends on its own (or when the Combat ends; out of Combat, at the end of the encounter), and can then be used again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

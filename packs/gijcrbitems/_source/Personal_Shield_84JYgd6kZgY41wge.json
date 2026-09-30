@@ -5,6 +5,10 @@
   "_id": "84JYgd6kZgY41wge",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: Activate spends a use (once per encounter) and adds the shield's Defense bonus for your level. It switches off after 10 rounds or on Electromagnetic damage. A recharge button rolls the Technology test to restore uses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

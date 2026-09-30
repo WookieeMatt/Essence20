@@ -5,6 +5,10 @@
   "_id": "ZNokHTRBa5aindap",
   "img": "systems/essence20/assets/icons/weapons/baseball-bat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Stun damage, with alternate effects of 1 Blunt damage (↓1) or a Maneuver; Blunt and Silent apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

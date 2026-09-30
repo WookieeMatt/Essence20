@@ -5,6 +5,10 @@
   "_id": "uT2aZsKK307koPCu",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon gains a Spot alternate attack in its attack list.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

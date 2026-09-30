@@ -5,6 +5,10 @@
   "_id": "52Q7B4u8CT1iyhnn",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: this upgrade lifts an Alteration's weapon restriction, which the system doesn't track.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

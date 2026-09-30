@@ -5,6 +5,10 @@
   "_id": "JdKtZxmCIWqZ2s0T",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added, you pick Telekinesis, Telepathy or Therapeutic Nanotechnology and it is granted.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

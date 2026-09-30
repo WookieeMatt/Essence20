@@ -5,6 +5,10 @@
   "_id": "bWTX6PXIYHLIIFJO",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the kusarigama's Finesse Maneuver attack; the target can't Defend against it.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "NyyhHvAPkKY9edHY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off until you switch it on): Edge on Spellcasting while you're making a potion.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

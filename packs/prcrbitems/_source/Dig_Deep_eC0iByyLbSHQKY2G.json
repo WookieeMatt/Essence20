@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene each): ignore 1 damage and take a Snag on your tests until the end of your next turn, or give up your turn to heal d2 Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "PTkqeQ8D4x9cstlZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switch your disguise on (1 Personal Power) or off. While it's on: ↑2 on your Deception tests; Technology tests that target you take a Snag, labelled Observer in the roller's Roll Options Dialog; and when one of your Social tests has a Snag, the Roll Options Dialog offers a switch to trade it for ↓2. Tick it when the test is about understanding another species.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

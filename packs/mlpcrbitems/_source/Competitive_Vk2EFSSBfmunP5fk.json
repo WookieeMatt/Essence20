@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when an ally rolls the same Skill within 5 minutes of you and beats your result, a chat line says so and your next Skill Test this scene takes a Snag, listed as Competitive next to Snag in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

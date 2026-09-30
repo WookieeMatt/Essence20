@@ -5,6 +5,10 @@
   "_id": "nJ8DU9UsKUscRJPc",
   "img": "systems/essence20/assets/icons/weapons/magic-trident.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll with its lance or sai blade effect and the listed damage, plus its alternate effect; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

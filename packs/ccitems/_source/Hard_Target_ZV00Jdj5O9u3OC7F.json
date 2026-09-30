@@ -5,6 +5,10 @@
   "_id": "ZV00Jdj5O9u3OC7F",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +2 Health and +2 Toughness while you are in your Jet Pack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

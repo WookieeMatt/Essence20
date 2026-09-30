@@ -5,6 +5,10 @@
   "_id": "QYluNF8M04MmP40d",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend the Power you want to give; a chat card records it.</p><p>Left to the table: adding that Power (or charge) to the creature or object you touch.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

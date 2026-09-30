@@ -5,6 +5,10 @@
   "_id": "rraj81QR8KEg6nfC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after you attack with a two-handed ballistic weapon, an explosive or an air vehicle's weapon, a prompt lets you pick allies; each costs you a Free action and gets your Lend Assistance against that target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

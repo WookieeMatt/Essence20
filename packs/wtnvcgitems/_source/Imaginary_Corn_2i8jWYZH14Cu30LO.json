@@ -5,6 +5,10 @@
   "_id": "2i8jWYZH14Cu30LO",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: eat it for ↑1 on Strength tests for the rest of the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

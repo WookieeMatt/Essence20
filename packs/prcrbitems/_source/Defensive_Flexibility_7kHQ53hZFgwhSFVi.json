@@ -5,6 +5,10 @@
   "_id": "7kHQ53hZFgwhSFVi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added you pick one option: +2 to one Defense while Morphed, or Resistance to one element. Add it again every 5 levels for another pick.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

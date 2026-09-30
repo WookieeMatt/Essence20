@@ -5,6 +5,10 @@
   "_id": "RWgIeFdT0c1vIcS1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in a woodland scene region (or with its Use button switched on where the scene isn't tagged), you ignore Rough Terrain, non-attack tests get Edge (shown as Jungle Fighter next to Edge in the Roll Options Dialog), attacks open with the Specialized switch on, and Light Armor counts as Silent for Infiltration.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

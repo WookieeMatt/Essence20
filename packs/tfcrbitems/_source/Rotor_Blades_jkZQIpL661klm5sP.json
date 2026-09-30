@@ -5,6 +5,10 @@
   "_id": "jkZQIpL661klm5sP",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Alt Mode you gain Aerial Movement equal to half your Ground Movement. Use button: adds the blades as a Heavy Blade for Bot Mode, with ↑1 if you're trained with Heavy Blades and +1 damage against organic targets.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

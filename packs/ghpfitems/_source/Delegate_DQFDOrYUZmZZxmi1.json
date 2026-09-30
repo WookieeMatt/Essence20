@@ -5,6 +5,10 @@
   "_id": "DQFDOrYUZmZZxmi1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend a Moxie Point and pick one of an ally's already-used Perk uses to give back to them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

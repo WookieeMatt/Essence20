@@ -5,6 +5,10 @@
   "_id": "rbgupnDh25Pij5Gp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you make an unarmed attack you're asked whether it's This Is For Me's follow-up; if so it costs a Move action.</p><p>Left to the table: checking you beat the Defense by 5 (or landed a grapple, shove or trip), and the Move-action grapple, shove or trip itself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

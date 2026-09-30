@@ -5,6 +5,10 @@
   "_id": "iJPzTlcS5A9pjy25",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after you use Secret Helper, your next turn keeps its Standard and Move actions but loses one Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

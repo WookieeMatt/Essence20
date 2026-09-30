@@ -5,6 +5,10 @@
   "_id": "HGUYvOwReKIxcYA6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: give the pet a claw attack dealing 1 Sharp damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

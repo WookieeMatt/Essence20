@@ -5,6 +5,10 @@
   "_id": "pGXJEVMqygJhFDgn",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: on a success, your token lights up. Its Use button switches the light off again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

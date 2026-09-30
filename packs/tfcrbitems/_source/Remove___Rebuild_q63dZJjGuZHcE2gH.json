@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: target a Defeated ally to bring them back to 1 Health, with +1 Toughness and Evasion until the end of their next turn. Left to the table: spending the Standard action and the Repair Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

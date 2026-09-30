@@ -5,6 +5,10 @@
   "_id": "7jwgzzygZymRkndW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (first round of combat): target an ally; it spends 1 Personal Power and moves your Initiative to just after theirs.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

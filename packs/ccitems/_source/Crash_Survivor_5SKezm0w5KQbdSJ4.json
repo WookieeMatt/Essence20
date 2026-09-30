@@ -5,6 +5,10 @@
   "_id": "5SKezm0w5KQbdSJ4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: gain a fresh Limited Driving (Air) kit each mission, with no prerequisite.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

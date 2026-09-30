@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 3 starting Health, +1 Speed, Ground and Aerial Movement 30, the Hover Perk and the Seeker Alt Mode. You pick Acrobatics or Driving as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.RXTZuPJnnAlkgHX2]{Seeker}</p>",
     "source": {

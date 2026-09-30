@@ -5,6 +5,10 @@
   "_id": "Dbko09pArTsf9ehD",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the vehicle's Ram rolls with the listed damage and Reach.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

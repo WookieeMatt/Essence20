@@ -5,6 +5,10 @@
   "_id": "CR3VUiu7vaK9maLF",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: dropping it on a character adds the Tactical Armor (Acclimating), SBR Carbine (Retention Lanyard) and Limited Athletics (Climbing) Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

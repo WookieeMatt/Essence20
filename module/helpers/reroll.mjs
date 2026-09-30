@@ -174,6 +174,13 @@ export function getRerollConfigs(actor) {
       config.skills = [actor.system?.originSkillsIncrease].filter(Boolean);
     }
 
+    // A Perk whose Skill is picked when it's taken (choiceType 'skills': Expertise, Trade
+    // Experience, Aptitude Augmenter) and whose reroll names no skills of its own covers only that
+    // chosen Skill (system.choice, stamped by perk-handler.mjs#onPerkDrop).
+    if (config && !config.skills?.length && item.system?.choiceType == 'skills' && item.system?.choice) {
+      config.skills = [item.system.choice];
+    }
+
     if (config) {
       // `name` is the human-readable label (the Perk's own name) - kept separate from `source`
       // (an id/uuid used only as the per-grant usage-tracking key, see canUseReroll's sourceKey)
@@ -388,6 +395,9 @@ const REROLL_CONDITIONS = {
   // Decepticon Directive "Homing Shots": "...a ranged attack using a weapon with the Consumable
   // or Wrecker trait." See E20.rerollConditions.consumableOrWreckerRangedAttack's own doc comment.
   consumableOrWreckerRangedAttack: (actor, context) => !!context?.isConsumableOrWreckerRangedAttack,
+  // Decepticon Directive "Metallikato" (General Perk, p.66): "When in Bot Mode ... melee attacks you
+  // make". The roll's own melee flag (context.isMeleeAttack, dice.mjs) and the actor still in Bot Mode.
+  botModeMelee: (actor, context) => !!context?.isMeleeAttack && actor?.system?.isTransformed !== true,
 };
 
 export function canMeetRerollCondition(actor, config, context = {}) {

@@ -5,6 +5,10 @@
   "_id": "JlJrEfRcrupprYMC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you drive a vehicle with the Movement type chosen on the Perk, your Driving tests open with the Specialized switch on in the Roll Options Dialog. Roll Options Dialog: a switch makes a Technology test Specialized when repairing or improving that type of vehicle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

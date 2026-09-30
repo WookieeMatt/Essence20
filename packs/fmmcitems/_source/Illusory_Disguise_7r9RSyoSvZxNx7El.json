@@ -5,6 +5,10 @@
   "_id": "7r9RSyoSvZxNx7El",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: rolls the DIF 12 Culture test; on a success you have Edge on Infiltration and Deception.</p><p>Left to the table: limiting the Edge to tests about the disguise, and ending it when the illusion drops.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

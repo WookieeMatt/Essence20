@@ -5,6 +5,10 @@
   "_id": "o4HgDxoKWVtieWZJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene, while Defeated): spend a Story Point and roll 1d6. If it's no higher than your Conditioning, you regain that much Health and are no longer Defeated.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

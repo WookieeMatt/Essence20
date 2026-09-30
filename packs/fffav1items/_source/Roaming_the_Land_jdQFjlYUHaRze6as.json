@@ -5,6 +5,10 @@
   "_id": "jdQFjlYUHaRze6as",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Toughness, +1 Evasion and ↑1 Intimidation. Granted: choose +1 damage on melee attacks against smaller creatures or +1 Stun on melee hits against larger ones; the bonus is added to the damage on the chat card. Automatic: the Requisition Qualifications and training it lists.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

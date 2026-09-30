@@ -5,6 +5,10 @@
   "_id": "hufRaDWtFbAszTmq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: your targeted friend gets ↑1 on their next Skill Test and your own next Skill Test takes ↓1, both labelled Generosity of Spirit in the Roll Options Dialog. You can't use it again until you've taken that penalty.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

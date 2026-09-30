@@ -5,6 +5,10 @@
   "_id": "oCYovZheSrNIvrti",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted to pets made with Animal Pet. Automatic: Persuasion and Deception tests that target the animal take a Snag, listed as Animal next to Snag in the roller's Roll Options Dialog.</p><p>Left to the table: its Intimidation counting as both Strength and Social.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

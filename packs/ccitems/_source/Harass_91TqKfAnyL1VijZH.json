@@ -5,6 +5,10 @@
   "_id": "91TqKfAnyL1VijZH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Free action, once per turn): Edge on every attack you make until the start of your next turn, listed in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

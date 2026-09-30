@@ -5,6 +5,10 @@
   "_id": "ht6w4P3AsRze8S68",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Infiltration tests, a switch rolls your Survival die instead. Turn it on when you're in a natural environment (or have spent the Free action elsewhere).</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

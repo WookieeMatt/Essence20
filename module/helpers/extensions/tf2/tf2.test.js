@@ -1,10 +1,10 @@
 import { jest } from '@jest/globals';
-import { TF2 } from './common.mjs';
+import { ALT_MODES, TF2 } from './common.mjs';
 import {
-  MARK, arrogantForbids, broadUnderstandingApplies, marksOf, tf2ApplyDialog, tf2HitRider, tf2PreRoll, tf2RollSources, tf2Specializes, tf2Toggles,
+  MARK, TOGGLE, arrogantForbids, bestialAltMode, broadUnderstandingApplies, marksOf, tf2ApplyDialog, tf2HitRider, tf2PreRoll, tf2RollSources, tf2Specializes, tf2Toggles,
 } from './rolls.mjs';
 import { cageCapacity, deconstructKind, differentEssences, requisitionDifOf, weAreOneSize } from './uses.mjs';
-import { SPECIAL_ATTACKS, missingSpecialAttacks, negatedObscuringMatrix, scrambleVictims, tf2Derived, weAreOneEffect } from './modes.mjs';
+import { SPECIAL_ATTACKS, missingSpecialAttacks, specialAttackUpdates, negatedObscuringMatrix, scrambleVictims, tf2Derived, weAreOneEffect } from './modes.mjs';
 
 const item = (uuid, extra = {}) => ({ id: extra.id ?? uuid.slice(-6), name: extra.name ?? 'Thing', type: extra.type ?? 'perk', system: extra.system ?? {}, flags: { core: { sourceId: uuid }, essence20: extra.flags ?? {} } });
 const actor = (items = [], extra = {}) => ({
@@ -113,6 +113,69 @@ test('Alt Mode special attacks', () => {
   expect(SPECIAL_ATTACKS[TF2.charger].damage).toBe(2);
   expect(missingSpecialAttacks(actor([altMode]), altMode)).toEqual([TF2.ram, TF2.flyby]);
   expect(missingSpecialAttacks(actor([altMode, item(TF2.ram, { type: 'weapon' })]), altMode)).toEqual([TF2.flyby]);
+});
+
+test('printed special attacks for the Core Rulebook, Decepticon Directive and Technorganic Secrets chassis', () => {
+  expect(SPECIAL_ATTACKS[ALT_MODES.monolith]).toMatchObject({ attacks: [TF2.ram], damage: 2 });
+  expect(SPECIAL_ATTACKS[ALT_MODES.seeker].attacks).toEqual([TF2.flyby]);
+  expect(ALT_MODES.crbRam.every(uuid => SPECIAL_ATTACKS[uuid].attacks[0] == TF2.ram)).toBe(true);
+  expect(SPECIAL_ATTACKS[ALT_MODES.salvaged].attacks).toEqual([TF2.spikedRam]);
+  expect(ALT_MODES.miniVehicle.every(uuid => SPECIAL_ATTACKS[uuid].attacks[0] == TF2.miniVehicleRam)).toBe(true);
+  expect([...ALT_MODES.natural, ...ALT_MODES.monstrosity].every(uuid => SPECIAL_ATTACKS[uuid].attacks[0] == TF2.naturalWeapon
+    && SPECIAL_ATTACKS[uuid].types.join() == 'blunt,sharp' && !SPECIAL_ATTACKS[uuid].skills)).toBe(true);
+  expect(SPECIAL_ATTACKS[ALT_MODES.climber[0]]).toMatchObject({ attacks: [TF2.naturalWeapon], skills: ['finesse', 'might'] });
+  expect(SPECIAL_ATTACKS[ALT_MODES.flora[1]]).toMatchObject({ attacks: [TF2.floraWeapon], skills: ['finesse', 'might'] });
+  expect(SPECIAL_ATTACKS[ALT_MODES.flora[1]].types).toBeUndefined();
+  expect(SPECIAL_ATTACKS[ALT_MODES.flyer[0]].attacks).toEqual([TF2.naturalFlyby]);
+  expect(SPECIAL_ATTACKS[ALT_MODES.behemoth[0]].attacks).toEqual([TF2.smash]);
+  // A chassis weapon the actor already holds from another Alt Mode isn't granted twice.
+  const fuzor = item(ALT_MODES.natural[0], { type: 'altMode' });
+  expect(missingSpecialAttacks(actor([fuzor, item(TF2.naturalWeapon, { type: 'weapon' })]), fuzor)).toEqual([]);
+});
+
+test('special-attack weapons are fitted to the chassis: damage, Blunt or Sharp, Finesse or Might', () => {
+  const effect = (id, system) => ({ id, system });
+  const weapon = {
+    system: {
+      traits: ['blunt', 'integrated'],
+      items: {
+        a: { type: 'weaponEffect', damageType: 'blunt', damageValue: 1, classification: { skill: 'might' } },
+        b: { type: 'weaponEffect', damageType: 'maneuver', damageValue: null, classification: { skill: 'might' } },
+      },
+    },
+  };
+  const effects = [effect('e1', { damageType: 'blunt', damageValue: 1, classification: { skill: 'might' } }),
+    effect('e2', { damageType: 'maneuver', damageValue: null, classification: { skill: 'might' } })];
+
+  const sharp = specialAttackUpdates(weapon, effects, { type: 'sharp', skill: 'finesse', skills: ['finesse', 'might'] });
+  expect(sharp.effectUpdates).toEqual([
+    { _id: 'e1', 'system.damageType': 'sharp', 'system.classification.skill': 'finesse' },
+    { _id: 'e2', 'system.classification.skill': 'finesse' },
+  ]);
+  expect(sharp.weaponUpdate).toEqual({
+    'system.items.a.damageType': 'sharp', 'system.items.a.classification.skill': 'finesse', 'system.items.b.classification.skill': 'finesse',
+    'system.traits': ['sharp', 'integrated'],
+  });
+
+  // The Charger's Ram: only the Blunt hit's damage changes; picking Blunt / Might changes nothing.
+  expect(specialAttackUpdates(weapon, effects, { damage: 2 }).effectUpdates).toEqual([{ _id: 'e1', 'system.damageValue': 2 }]);
+  expect(specialAttackUpdates(weapon, effects, { type: 'blunt', skill: 'might', skills: ['finesse', 'might'] }))
+    .toEqual({ effectUpdates: [], weaponUpdate: {} });
+});
+
+test('Bestial Articulation: a ↓1 switch while converted into a Monstrosity Alt Mode', async () => {
+  const mode = item(ALT_MODES.monstrosity[7], { id: 'mon', type: 'altMode', name: 'Monstrosity (Huge)' });
+  const beast = actor([mode], { system: { isTransformed: true, altModeId: 'mon' } });
+  expect(bestialAltMode(beast)).toBe(mode);
+  expect(tf2Toggles(beast, { rolledSkill: 'finesse' }).map(t => t.name)).toContain(TOGGLE.bestial);
+  const options = { shiftDown: 0, ext: { [TOGGLE.bestial]: true } };
+  await tf2ApplyDialog(beast, options);
+  expect(options.shiftDown).toBe(1);
+
+  beast.system.isTransformed = false;
+  expect(tf2Toggles(beast, { rolledSkill: 'finesse' }).map(t => t.name)).not.toContain(TOGGLE.bestial);
+  const car = actor([item(ALT_MODES.salvaged, { id: 'car', type: 'altMode' })], { system: { isTransformed: true, altModeId: 'car' } });
+  expect(bestialAltMode(car)).toBeNull();
 });
 
 test('We Are One! sizes, skills and effect', () => {

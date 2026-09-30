@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: in Bot Mode your Deception tests get Edge, already selected when the Roll Options Dialog opens.</p><p>Left to the table: turning it off when you aren't passing as organic, Alt Mode hiding bonuses applying to your Bot Mode, and keeping your Integrated Hardpoints hidden.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

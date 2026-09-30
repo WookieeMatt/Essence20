@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: while Morphed, once per scene, spend 1 Personal Power and a Standard action to convert; your own Zord Feature Active Effects turn on until the scene ends or you're Defeated. Add Zord Features to yourself with the Add a Zord Feature picker.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "ahWxUG3w6KkfgUDw",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you're on land (not in water, not in a sea scene region, not aboard a vessel), poison and illness attacks against you get Edge, shown as Seafarer in the attacker's Roll Options Dialog, and your poison saves take a Snag shown the same way. Roll Options Dialog: a switch adds that Snag to other Conditioning, Athletics or Brawn tests to resist them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

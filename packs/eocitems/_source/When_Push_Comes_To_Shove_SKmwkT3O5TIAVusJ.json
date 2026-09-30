@@ -5,6 +5,10 @@
   "_id": "SKmwkT3O5TIAVusJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: on Grapple attacks (the system's push and shove) you count as one Size Class larger, which raises the Size entry in your Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

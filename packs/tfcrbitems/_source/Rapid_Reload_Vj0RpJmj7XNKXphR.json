@@ -5,6 +5,10 @@
   "_id": "Vj0RpJmj7XNKXphR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: reloading a weapon with the Reload trait costs a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

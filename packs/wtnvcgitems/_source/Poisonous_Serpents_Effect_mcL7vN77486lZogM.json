@@ -5,6 +5,10 @@
   "_id": "mcL7vN77486lZogM",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Poisonous Serpents' attack: rolls Athletics at Short range for 1 Poison damage in a 10ft radius.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

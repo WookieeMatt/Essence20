@@ -5,6 +5,10 @@
   "_id": "5uoo6N8dKvDtRns8",
   "img": "systems/essence20/assets/icons/weapons/sirian_bite.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might for 1 Sharp damage, with a Stun alternate effect at ↓1; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

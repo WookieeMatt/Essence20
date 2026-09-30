@@ -5,6 +5,10 @@
   "_id": "mDG1CXQA04xKfONn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switch a blast weapon to half range. While on, each attack deals 1 Fire damage to creatures within 5 ft of you, or to you on a Fumble. Use again to switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

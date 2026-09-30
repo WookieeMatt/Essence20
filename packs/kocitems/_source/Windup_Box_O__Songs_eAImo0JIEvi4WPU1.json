@@ -5,6 +5,10 @@
   "_id": "eAImo0JIEvi4WPU1",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: the mood music and its harmless effects.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "awEvTH8rrDeqL2Oo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: whenever you fail a Persuasion test, the group gains a Friendship Point.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "PCwgQWKmTOl8va3I",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: counts toward how many prisoners your Cage can hold.</p><p>Left to the table: the +4 Crew rating in Alt Mode and Crew 1 in Bot Mode everywhere else.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

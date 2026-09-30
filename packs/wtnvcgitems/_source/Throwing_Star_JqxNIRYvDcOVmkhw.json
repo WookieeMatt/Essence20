@@ -5,6 +5,10 @@
   "_id": "JqxNIRYvDcOVmkhw",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse at Short range. Pick a throw (1 Sharp), a Maneuver at ↓2, or a spread at ↓2 (1 Sharp to up to 3 targets) when you attack; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

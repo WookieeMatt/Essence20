@@ -5,6 +5,10 @@
   "_id": "V9bFd6ybmbWzdOkT",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits apply, including Reload.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

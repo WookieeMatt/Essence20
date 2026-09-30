@@ -5,6 +5,10 @@
   "_id": "rQWwlhVbpv3po8nT",
   "img": "icons/weapons/polearms/spear-flared-blue.webp",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might with the listed damage and reach; Inaccurate and its other traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

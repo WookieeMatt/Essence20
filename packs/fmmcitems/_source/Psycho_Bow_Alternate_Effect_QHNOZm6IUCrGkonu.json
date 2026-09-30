@@ -5,6 +5,10 @@
   "_id": "QHNOZm6IUCrGkonu",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting at ↓1 against the Toughness of two targets for 1 Void damage, ignoring armor bonuses to Toughness.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

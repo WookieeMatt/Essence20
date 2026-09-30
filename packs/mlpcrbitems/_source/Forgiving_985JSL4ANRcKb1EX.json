@@ -5,6 +5,10 @@
   "_id": "985JSL4ANRcKb1EX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: anyone who attacks or Intimidates you is remembered. Your next test with your Empathy Skill targeting them gets Edge, labelled Forgiving in your Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

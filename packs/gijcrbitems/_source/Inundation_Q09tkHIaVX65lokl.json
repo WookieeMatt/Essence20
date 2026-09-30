@@ -5,6 +5,10 @@
   "_id": "Q09tkHIaVX65lokl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once your Outwit has succeeded against an enemy, your later Deception and Intimidation rolls against that enemy get an Edge, labelled Inundation in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

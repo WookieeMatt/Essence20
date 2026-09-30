@@ -5,6 +5,10 @@
   "_id": "aRBWUHeBjdevKh4Q",
   "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, at Reach for 1 Stun, with alternate effects for 1 Blunt damage at ↓1 or a Maneuver; Blunt, Martial Arts and Silent apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

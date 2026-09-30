@@ -5,6 +5,10 @@
   "_id": "2qdpoSqrOeBhWF1C",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: takes your Standard action to box in a Prone target. Automatic: you count as Prone, and your Unarmed attacks against them cost a Free action, each one at an extra ↓1 per earlier attack that turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "Might +d6",

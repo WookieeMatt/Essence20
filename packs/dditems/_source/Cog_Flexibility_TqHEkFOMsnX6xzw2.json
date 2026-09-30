@@ -5,6 +5,10 @@
   "_id": "TqHEkFOMsnX6xzw2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Perk.</p><p>Left to the table: the extra Free action each turn, usable only to convert Modes or deal with Mini-Cons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

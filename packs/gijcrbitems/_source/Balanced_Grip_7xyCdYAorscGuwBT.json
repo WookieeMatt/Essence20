@@ -5,6 +5,10 @@
   "_id": "7xyCdYAorscGuwBT",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached to a Might or Finesse weapon: its attacks roll Athletics instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

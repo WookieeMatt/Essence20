@@ -5,6 +5,10 @@
   "_id": "g6bxWMq3UDSstUfp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: set aside one Faction benefit and gain another Faction's, as this Hang-Up requires.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

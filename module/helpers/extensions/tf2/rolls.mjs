@@ -41,6 +41,10 @@
  * - Roller Drum (Enigma of Combination, p.56): "Alt Mode: Your Ram attacks inflict 1 additional Blunt
  *   damage against Prone targets... Bot Mode: Your Unarmed Combat attack deals Stun 2 (instead of
  *   Stun 1)."
+ * - Bestial Articulation (Monstrosity Alt Mode, Decepticon Directive p.37, Technorganic Secrets p.41):
+ *   "You must use body parts not designed for articulation or precision, such as mouths, claws, or
+ *   hooves, to perform certain tasks. Whenever this applies, you suffer a penalty of ↓ 1." Which tasks
+ *   is a table call, so it's a switch while converted into a Monstrosity Alt Mode.
  * - Arrogant (Enigma of Combination, Hang-Up, p.25): "On your first turn of a combat, after you test
  *   Initiative, you can't attack enemies whose Threat Level is lower than your level, though you can
  *   make an area of effect attack that includes such enemies if it also includes at least one enemy
@@ -52,7 +56,7 @@ import {
 } from "../../extensions.mjs";
 import { getSceneEpoch } from "../../scene-clock.mjs";
 import {
-  T, TF2, has, isOwnTurn, nameOf, parentWeaponOf, targetedActors,
+  ALT_MODES, T, TF2, has, isOwnTurn, itemsOf, nameOf, parentWeaponOf, sourceOf, targetedActors,
 } from "./common.mjs";
 
 export const MARK = {
@@ -285,7 +289,15 @@ export const TOGGLE = {
   distressed: 'tf2Distressed',
   earthspoiled: 'tf2Earthspoiled',
   allspark: 'tf2AllsparkFits',
+  bestial: 'tf2BestialArticulation',
 };
+
+/** The Alt Mode the actor is converted into, if it has Bestial Articulation. */
+export function bestialAltMode(actor) {
+  const id = actor?.system?.isTransformed ? actor.system.altModeId : null;
+  const mode = id ? itemsOf(actor).find(item => item.id == id) : null;
+  return mode && ALT_MODES.monstrosity.includes(sourceOf(mode)) ? mode : null;
+}
 
 export function tf2Toggles(actor, { item, rolledSkill } = {}) {
   const toggles = [];
@@ -330,6 +342,12 @@ export function tf2Toggles(actor, { item, rolledSkill } = {}) {
     add(TOGGLE.earthspoiled, T('Tf2EarthspoiledToggle', { name: nameOf(actor, TF2.earthspoiled, 'Earthspoiled') }));
   }
 
+  // Bestial Articulation: a task done with mouth, claws or hooves instead of hands.
+  const bestial = rolledSkill ? bestialAltMode(actor) : null;
+  if (bestial) {
+    add(TOGGLE.bestial, T('Tf2BestialArticulationToggle', { name: bestial.name }));
+  }
+
   // For The Allspark!: the extra ↑1 when the Alt Mode fits the environment.
   if (rolledSkill == 'infiltration' && system.isTransformed && has(actor, TF2.forTheAllspark)) {
     add(TOGGLE.allspark, T('Tf2AllsparkToggle', { name: nameOf(actor, TF2.forTheAllspark, 'For The Allspark!') }));
@@ -362,6 +380,7 @@ export async function tf2ApplyDialog(actor, options) {
   if (ext[TOGGLE.distressed]) down(1);
   if (ext[TOGGLE.earthspoiled]) down(1);
   if (ext[TOGGLE.allspark]) up(1);
+  if (ext[TOGGLE.bestial]) down(1);
 
   const allOut = Math.max(0, Math.min(5, Number(ext[TOGGLE.allOut]) || 0));
   const evasive = Math.max(0, Math.min(5, Number(ext[TOGGLE.evasive]) || 0));

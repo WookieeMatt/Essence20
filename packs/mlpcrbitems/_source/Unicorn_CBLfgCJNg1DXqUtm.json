@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Telekinesis, Magical and Cutie Mark Perks, 2 Health and 30 ft ground Movement. You choose Smarts, or an Influence Skill's Essence, for the +1 increase.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

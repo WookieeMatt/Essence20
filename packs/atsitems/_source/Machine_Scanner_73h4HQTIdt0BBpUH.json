@@ -5,6 +5,10 @@
   "_id": "73h4HQTIdt0BBpUH",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Alertness rolls show a Machine Scanner switch. Turn it on while locating or tracking Machine Empire Threats to give that roll Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

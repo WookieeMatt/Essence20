@@ -5,6 +5,10 @@
   "_id": "Ux2eueBLxKgzD2Kd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: removes Frightened and Impaired from the targeted ally.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

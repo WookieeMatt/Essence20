@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: with a creature targeted, you and the GM are told whether its Threat Level, Toughness and Evasion are above, equal to or below yours.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: the first use adds your chosen sniper weapon and upgrade (up to Restricted). After that, it moves your token to a spot you click and makes you Prone and hidden.</p><p>Left to the table: ignoring the Ghillie Suit's penalties (turn its penalty effect off).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

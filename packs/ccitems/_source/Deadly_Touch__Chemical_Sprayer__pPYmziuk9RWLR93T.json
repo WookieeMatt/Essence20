@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/poison.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its effect with the Chemical Sprayer's range and cone; its ongoing damage and consumable use are tracked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

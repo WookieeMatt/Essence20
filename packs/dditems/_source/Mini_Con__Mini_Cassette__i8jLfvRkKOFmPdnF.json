@@ -4,6 +4,10 @@
   "type": "altMode",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: in this Alt Mode you are Small with no movement of your own; its special benefit comes from the Frame Efficacy Perk. Automatic: Limited Articulation blocks Athletics and Finesse tests while you're in it.</p><p>Left to the table: the short move while converting.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -25,7 +29,8 @@
     },
     "altModesize": "small",
     "altModeCrew": 0,
-    "altModeFirepoints": 0
+    "altModeFirepoints": 0,
+    "limitedArticulation": true
   },
   "effects": [],
   "flags": {},

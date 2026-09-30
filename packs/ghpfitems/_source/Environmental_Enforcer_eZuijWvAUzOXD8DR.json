@@ -5,6 +5,10 @@
   "_id": "eZuijWvAUzOXD8DR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick environments, up to your Survival Ranks. Automatic: Edge on Maneuver attacks in a scene tagged with one of them; in untagged scenes the Roll Options Dialog offers a switch instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "Survival +d2",

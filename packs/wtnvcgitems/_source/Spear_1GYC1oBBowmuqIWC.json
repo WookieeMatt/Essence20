@@ -5,6 +5,10 @@
   "_id": "1GYC1oBBowmuqIWC",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick when you attack: Finesse at double Reach one-handed (1 Sharp) or two-handed (2 Sharp), a sweep at ↓1 (1 Sharp to up to 2 targets), or an Athletics throw at Short range (1 Sharp). Its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

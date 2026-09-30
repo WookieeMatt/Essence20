@@ -5,6 +5,10 @@
   "_id": "kkYNyre82wjDzhS8",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Scientific Method at level 1 and A Logical Explanation at level 4. The character needs the Scientist Role first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

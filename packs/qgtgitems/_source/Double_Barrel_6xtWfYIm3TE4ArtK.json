@@ -5,6 +5,10 @@
   "_id": "6xtWfYIm3TE4ArtK",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when attached you pick one of the vehicle's weapons; it gains the Linked trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "dDHjUwjLlGJhiQvI",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your unarmed attacks deal Cold damage. Roll Options Dialog: a switch to spend 1 Personal Power so a hit leaves the target Impaired.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

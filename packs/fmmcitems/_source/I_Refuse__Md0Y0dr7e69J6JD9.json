@@ -5,6 +5,10 @@
   "_id": "Md0Y0dr7e69J6JD9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 to Willpower and Cleverness.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "98UpgxgT8GkrE207",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a second Megaform Trait; it is added to the Zord and counts for any Megaform it joins.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

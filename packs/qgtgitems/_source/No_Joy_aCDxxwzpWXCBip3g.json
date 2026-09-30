@@ -5,6 +5,10 @@
   "_id": "aCDxxwzpWXCBip3g",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when a Deception roll shows a 1 on a Skill die, a No Joy reroll button appears under it that rerolls those 1s. There's no limit on uses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

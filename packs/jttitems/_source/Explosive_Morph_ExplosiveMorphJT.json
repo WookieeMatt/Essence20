@@ -5,6 +5,10 @@
   "_id": "ExplosiveMorphJT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: while Morphed, spend 1 Personal Power to roll a Technology attack against everyone within 20 feet for 1 Energy damage. Use it as you Quantum Morph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

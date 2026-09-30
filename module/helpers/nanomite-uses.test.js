@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals";
 import {
-  formatDailyUses, getDailyUsesLeft, getDailyUsesMax, REPROGRAMMABLE_ID, resetDailyPowerUses, spendDailyUse,
+  formatDailyUses, getDailyUsesLeft, getDailyUsesMax, MIMIC_ID, NANOFLAGE_ID, REPROGRAMMABLE_ID, resetDailyPowerUses, spendDailyUse,
   tracksDailyUses,
 } from "./nanomite-uses.mjs";
 
@@ -116,5 +116,27 @@ describe("formatDailyUses", () => {
     makeActor([power]);
     expect(formatDailyUses(power)).toBe('E20.PowerUsesToday');
     expect(formatDailyUses(makePower({ usesPer: null }))).toBe('');
+  });
+});
+
+describe("Nanoflage's Mimic", () => {
+  test("one use a scene on the Scene Clock instead of two a day", async () => {
+    const mimic = makePower({ sourceId: MIMIC_ID, name: 'Mimic' });
+    const nanoflage = { id: 'n', type: 'perk', flags: { core: { sourceId: NANOFLAGE_ID } }, system: {} };
+    const flags = {};
+    const actor = makeActor([mimic, nanoflage], flags);
+    actor.setFlag = jest.fn(async (scope, key, value) => {
+      flags[key] = value;
+    });
+    expect(getDailyUsesMax(actor, mimic)).toBe(1);
+    expect(await spendDailyUse(actor, mimic)).toBe(true);
+    expect(mimic.update).not.toHaveBeenCalled();
+    expect(getDailyUsesLeft(actor, mimic)).toBe(0);
+    expect(await spendDailyUse(actor, mimic)).toBe(false);
+  });
+
+  test("without Nanoflage, Mimic keeps its two a day", () => {
+    const mimic = makePower({ sourceId: MIMIC_ID, name: 'Mimic' });
+    expect(getDailyUsesMax(makeActor([mimic]), mimic)).toBe(2);
   });
 });

@@ -5,6 +5,10 @@
   "_id": "XxIMOIXK6QOKlD8b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene, heal 1 Health when the group puts you in charge and follows your plan.</p><p>Left to the table: the once-per-session limit, and healing Stress instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

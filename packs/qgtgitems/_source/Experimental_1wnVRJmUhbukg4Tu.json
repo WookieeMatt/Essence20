@@ -5,6 +5,10 @@
   "_id": "1wnVRJmUhbukg4Tu",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: gives the weapon the Temperamental trait.</p><p>Left to the table: lowering its Availability by one step.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

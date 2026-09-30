@@ -5,6 +5,10 @@
   "_id": "Ii4gXQePcG8xg0hB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll Technology against the targeted enemy's highest Defense. On a success a chat card shows its Defenses and Hang-Ups, and you and your allies get ↑1 on attacks against it until the end of your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

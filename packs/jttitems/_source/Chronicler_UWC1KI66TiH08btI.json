@@ -5,6 +5,10 @@
   "_id": "UWC1KI66TiH08btI",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Chronicler Perk and the Chronicler Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

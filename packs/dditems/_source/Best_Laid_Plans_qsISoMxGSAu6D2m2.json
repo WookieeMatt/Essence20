@@ -5,6 +5,10 @@
   "_id": "qsISoMxGSAu6D2m2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll the planning test. Each success builds a pool of d20 rerolls for the scene, shared with your Party; members get a reroll button on their roll cards.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

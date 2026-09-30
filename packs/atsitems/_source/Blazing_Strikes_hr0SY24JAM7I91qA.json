@@ -5,6 +5,10 @@
   "_id": "hr0SY24JAM7I91qA",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power; for the scene your unarmed strikes deal Fire damage. Chat card: on a Critical Success, a button marks the foe so the next ally to attack it gets ↑2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

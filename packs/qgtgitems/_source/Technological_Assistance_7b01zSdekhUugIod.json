@@ -5,6 +5,10 @@
   "_id": "7b01zSdekhUugIod",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Actions panel: when you pay for Lend Assistance, you're asked whether the assist is for a Driving, Targeting or Technology test; answering yes makes it a Free action. The usual Lend Assistance rules (including having as many ranks as your ally) still apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

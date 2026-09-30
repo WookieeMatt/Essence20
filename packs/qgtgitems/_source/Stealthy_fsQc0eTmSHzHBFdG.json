@@ -5,6 +5,10 @@
   "_id": "fsQc0eTmSHzHBFdG",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Infiltration tests by anyone crewing the vehicle get two ↑1 switches under Automatic Modifiers in the Roll Options Dialog: Stealthy, and Stealthy (stationary), which you switch off while the vehicle is moving.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

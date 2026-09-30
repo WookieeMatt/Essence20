@@ -5,6 +5,10 @@
   "_id": "11M1vRsyBVpcZdtQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Cybertronian Perk that matches your current Role is added for you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

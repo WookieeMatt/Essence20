@@ -5,6 +5,10 @@
   "_id": "zCOrbOjtfagynf8Q",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: takes your Standard action, rolls 3d4 for the Threat Level budget, then lets you pick NPCs from the world up to that total. They appear beside you as allies and leave at the end of the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

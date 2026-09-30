@@ -5,6 +5,10 @@
   "_id": "3kcNR23zhInxqKQp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene while Morphed, spend 1 Personal Power; you and Morphed teammates within 60ft ignore 1 Energy damage (2 at 18th level) from the next energy attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

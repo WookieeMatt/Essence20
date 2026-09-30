@@ -5,6 +5,10 @@
   "_id": "zhfG2gH4IgIjMAzT",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when the GM starts a new scene, the pilot and crew of this Zord (if it has a token) each regain up to 6 Personal Power.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

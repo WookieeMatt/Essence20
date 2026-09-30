@@ -5,6 +5,10 @@
   "_id": "FZqIQe8UdKXCfmYj",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the flail's Might Maneuver attack; the target can't Defend against it.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

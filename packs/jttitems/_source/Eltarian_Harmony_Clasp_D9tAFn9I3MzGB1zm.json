@@ -5,6 +5,10 @@
   "_id": "D9tAFn9I3MzGB1zm",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: it works as a translator, so every spacefaring species can understand your speech.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

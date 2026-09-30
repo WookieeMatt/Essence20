@@ -5,6 +5,10 @@
   "_id": "2D0zhPIAbsriPQ4O",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the weapon gains the Silent trait, and anything that checks for Silent weapons sees it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

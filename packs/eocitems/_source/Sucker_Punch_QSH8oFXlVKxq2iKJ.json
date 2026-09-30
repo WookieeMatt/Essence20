@@ -5,6 +5,10 @@
   "_id": "QSH8oFXlVKxq2iKJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per scene, in the first round of combat, a successful attack that uses no weapon (Unarmed or natural) against a target who hasn't acted yet is turned into a Critical Success on the chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

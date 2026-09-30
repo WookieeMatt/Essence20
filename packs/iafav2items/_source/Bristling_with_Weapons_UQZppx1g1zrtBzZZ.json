@@ -5,6 +5,10 @@
   "_id": "UQZppx1g1zrtBzZZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you can carry 2 more hands of weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

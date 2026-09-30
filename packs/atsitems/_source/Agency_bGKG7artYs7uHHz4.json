@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls of the Skill you chose on this Perk open the Roll Options Dialog with Edge already selected. Wealth tests roll that Skill's die instead of your Wealth die whenever it is the bigger one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

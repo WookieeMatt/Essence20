@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: pick your modification. Shove: your Shove attempts get ↑1, labelled Experiment in the Roll Options Dialog, and while you are Grappled a dialog switch gives ↑1 to breaking free (on by default for the Skills you can escape with). Technology: Edge on Technology tests, already applied when the dialog opens. Hardpoint: one extra Integrated Hardpoint.</p><p>Left to the table: the carrying capacity option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

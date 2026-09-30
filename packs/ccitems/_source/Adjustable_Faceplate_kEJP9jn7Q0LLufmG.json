@@ -5,6 +5,10 @@
   "_id": "kEJP9jn7Q0LLufmG",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switch the faceplate open or closed. While closed and the armor is worn (not Morphed), you get +1 Toughness and Evasion.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

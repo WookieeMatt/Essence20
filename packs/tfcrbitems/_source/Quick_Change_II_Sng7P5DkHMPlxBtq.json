@@ -5,6 +5,10 @@
   "_id": "Sng7P5DkHMPlxBtq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you convert, the action tracker offers to charge it as a Free action. Confirm when it's one of the conversion sequences you picked for Quick Change.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

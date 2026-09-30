@@ -5,6 +5,10 @@
   "_id": "KihkWHZ1lwLfcwk0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Toughness. Automatic: incoming Sharp damage is reduced by 1 (to a minimum of 0).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

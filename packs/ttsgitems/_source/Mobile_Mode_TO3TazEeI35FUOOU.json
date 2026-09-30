@@ -5,6 +5,10 @@
   "_id": "TO3TazEeI35FUOOU",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (1 Personal Power, while Morphed): pick a movement type and gain it at 30 ft until the end of the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

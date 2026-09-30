@@ -5,6 +5,10 @@
   "_id": "q02Yuz0TvTJPRTdQ",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: sets up the Contact as this Hang-Up limits it (Allegiance Points, Contact Perks and how often it can be called).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

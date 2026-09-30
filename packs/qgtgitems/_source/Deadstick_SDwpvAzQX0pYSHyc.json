@@ -5,6 +5,10 @@
   "_id": "SDwpvAzQX0pYSHyc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: as a Standard action, roll Technology against your target's Willpower or Cleverness; on a success it is Stunned for 1 round.</p><p>Left to the table: only using it on robots.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

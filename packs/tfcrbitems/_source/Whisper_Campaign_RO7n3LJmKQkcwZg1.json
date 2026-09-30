@@ -5,6 +5,10 @@
   "_id": "RO7n3LJmKQkcwZg1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: after failing a Social test, pick an adjacent creature to take the blame. You roll Deception with Edge against their Persuasion and the result is posted.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

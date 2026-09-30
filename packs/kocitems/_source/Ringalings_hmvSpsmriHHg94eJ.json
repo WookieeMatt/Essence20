@@ -5,6 +5,10 @@
   "_id": "hmvSpsmriHHg94eJ",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: calls between the paired rings.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

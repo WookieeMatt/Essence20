@@ -5,6 +5,10 @@
   "_id": "GAWOYpBZm6dLsaSq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: after an unarmed attack, a button to spend 1 Personal Power and reroll the Skill dice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

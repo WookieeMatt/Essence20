@@ -5,6 +5,10 @@
   "_id": "Ftsdy2PlEScf4Vv6",
   "img": "systems/essence20/assets/icons/gear/bluejack.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative gear with no dice effect; the GM decides what you copy.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

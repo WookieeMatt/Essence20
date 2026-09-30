@@ -4,6 +4,10 @@
   "type": "armor",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: adds its Defense bonus while worn. Automatic: poison attacks against the wearer take a Snag, labelled Poison Resistance in the attacker's Roll Options Dialog, and the Experimental upgrade's Temperamental trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

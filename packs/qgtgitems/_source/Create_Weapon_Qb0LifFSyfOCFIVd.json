@@ -5,6 +5,10 @@
   "_id": "Qb0LifFSyfOCFIVd",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend a daily nanomite use to grow a Close Combat Blade or Bludgeoning weapon from your arm.</p><p>Left to the table: removing it at the end of the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

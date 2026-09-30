@@ -5,6 +5,10 @@
   "_id": "eqNlaOfQ39WMGP18",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks with the upgraded weapon against targets smaller than you get ↑1, labelled Front-Weighted in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

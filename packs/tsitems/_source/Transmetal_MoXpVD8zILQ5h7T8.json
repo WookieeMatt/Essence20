@@ -5,6 +5,10 @@
   "_id": "MoXpVD8zILQ5h7T8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Toughness. When added, you pick Ground, Aerial or Aquatic; in Alt Mode that Movement becomes 40ft, or gets +20ft if your Alt Mode already moves more than one way.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

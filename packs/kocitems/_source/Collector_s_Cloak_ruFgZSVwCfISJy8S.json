@@ -5,6 +5,10 @@
   "_id": "ruFgZSVwCfISJy8S",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect (off until you switch it on): makes you Invisible.</p><p>Left to the table: the three uses per day and storing items in the cloak.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

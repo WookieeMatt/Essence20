@@ -63,7 +63,7 @@ import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { applyVisionToTokens, getNumActions, syncAutoBlindStatus, syncAutoImmobilizedStatus } from "./helpers/actor.mjs";
-import { canUsePerk } from "./helpers/banked-buffs.mjs";
+import { canUsePerk, hasItemUse } from "./helpers/banked-buffs.mjs";
 import { canUsePower } from "./helpers/power-use.mjs";
 import { getWeaponEffectDamages } from "./helpers/damage-display.mjs";
 import { getSummonReadyRound, isSummonReady } from "./helpers/zord-summon.mjs";
@@ -160,6 +160,10 @@ function runMigrations() {
 /* -------------------------------------------- */
 
 Hooks.once("init", async function () {
+  // Item automation notes ride in the compendium index, so a copy on an actor can show its
+  // original's current notes without loading the compendium document (documents/item.mjs).
+  CONFIG.Item.compendiumIndexFields = [...new Set([...(CONFIG.Item.compendiumIndexFields ?? []), 'system.automation'])];
+
   // Blindsight needs its detection mode to exist before any token is drawn - see
   // helpers/blindsight.mjs's own doc comment.
   registerBlindsightDetectionMode();
@@ -412,6 +416,7 @@ Handlebars.registerHelper("inArray", function (array, value, options) {
 // actually banks for each. A template-level check, the same idiom {{eq item.type "shield"}}
 // already uses for the shield-activate icon right next to where this one renders.
 Handlebars.registerHelper("canUsePerk", canUsePerk);
+Handlebars.registerHelper("hasItemUse", hasItemUse);
 Handlebars.registerHelper("canUsePower", canUsePower);
 
 // Call to Action (PR CRB, Zord Feature, p.136-137) - see helpers/zord-summon.mjs's own doc

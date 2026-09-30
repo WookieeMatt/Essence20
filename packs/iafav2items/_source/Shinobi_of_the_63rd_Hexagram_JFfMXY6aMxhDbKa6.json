@@ -5,6 +5,10 @@
   "_id": "JFfMXY6aMxhDbKa6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: when added (or via the Use button), pick Toughness or Evasion and Willpower or Cleverness for +1 each. Active Effect: trained with Martial Arts weapons. Automatic: no untrained Snag driving motorcycles.</p><p>Left to the table: the two Limited Martial Arts weapons you're Qualified with.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

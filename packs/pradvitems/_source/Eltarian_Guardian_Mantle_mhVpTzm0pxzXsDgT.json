@@ -5,6 +5,10 @@
   "_id": "mhVpTzm0pxzXsDgT",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic while equipped: +2 Toughness. Active Effect: +3 maximum Health.</p><p>Left to the table: spending the Personal Power to activate it, +1 damage on Unarmed attacks, and Edge on Social tests with Eltarians.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

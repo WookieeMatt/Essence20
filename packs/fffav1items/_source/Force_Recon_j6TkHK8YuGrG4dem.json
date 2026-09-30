@@ -5,6 +5,10 @@
   "_id": "j6TkHK8YuGrG4dem",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Focus Perks at the listed levels (Quick Thinking through Interdiction), plus its Speed increases and Focus Skill choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

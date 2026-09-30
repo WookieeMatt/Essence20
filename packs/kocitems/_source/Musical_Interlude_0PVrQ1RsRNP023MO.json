@@ -5,6 +5,10 @@
   "_id": "0PVrQ1RsRNP023MO",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: at the start of your first turn in a conflict, pick whether you sang a song or take 1 Stress (Health or Essence); the choice is applied when you click.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

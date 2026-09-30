@@ -5,6 +5,10 @@
   "_id": "34CRvsE7ncW4kmE8",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Zord's melee attacks gain a 2 Energy damage alternate; when melee damage is applied to it, a chat button deals 1 Energy damage back to the attacker; at 0 Health it returns to the Grid as with Recall for Repairs.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

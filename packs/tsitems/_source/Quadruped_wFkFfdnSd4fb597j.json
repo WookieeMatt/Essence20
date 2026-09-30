@@ -5,6 +5,10 @@
   "_id": "wFkFfdnSd4fb597j",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 3 starting Health, Ground Movement 30, the Hunter's Prowess Perk and the Quadruped Alt Mode. You pick +1 Strength or Speed and Brawn or Infiltration as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

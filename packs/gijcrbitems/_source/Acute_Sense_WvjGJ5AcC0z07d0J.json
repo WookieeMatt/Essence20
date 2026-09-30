@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: choose your sense. Automatic: your Alertness tests have Edge already selected in the Roll Options Dialog. Roll Options Dialog: on other tests, an Acute Sense switch gives ↑1 when your sense applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "dHbON19nTAhT1vfg",
   "img": "systems/essence20/assets/icons/gear/sequencer.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: cracking a code lock one character every few minutes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

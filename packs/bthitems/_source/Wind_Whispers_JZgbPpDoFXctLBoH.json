@@ -5,6 +5,10 @@
   "_id": "JZgbPpDoFXctLBoH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when gained, pick yourself or a teammate; that character gains +2 Evasion.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

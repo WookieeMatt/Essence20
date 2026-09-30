@@ -5,6 +5,10 @@
   "_id": "DwnPEw2POcj3f0Za",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic, in heavy or super heavy armor: when an attack aimed at your Evasion is resolved against your Toughness instead and hits, only its damage lands. Its extra Conditions and bonus damage are dropped, with a note on the attack's chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

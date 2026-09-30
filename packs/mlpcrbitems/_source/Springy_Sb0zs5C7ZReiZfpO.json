@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: your Initiative tests are always rolled as Specialized. Left to the table: it should only apply to your first Initiative test in each conflict.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

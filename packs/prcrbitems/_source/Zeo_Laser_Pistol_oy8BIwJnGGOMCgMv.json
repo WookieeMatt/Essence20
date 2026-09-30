@@ -5,6 +5,10 @@
   "_id": "oy8BIwJnGGOMCgMv",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 40/75 ft for Energy damage, with a version for each Zeo colour (Psychic, Cold, Poison, Fire, heavier Energy or Stun).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

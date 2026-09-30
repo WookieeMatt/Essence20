@@ -5,6 +5,10 @@
   "_id": "tLAchrH1qQxk3CBJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you have no weapon equipped and haven't made an Unarmed attack this scene, your Deception, Intimidation and Persuasion tests have Edge already selected in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

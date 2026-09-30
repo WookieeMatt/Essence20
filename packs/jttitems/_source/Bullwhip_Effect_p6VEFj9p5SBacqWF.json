@@ -5,6 +5,10 @@
   "_id": "p6VEFj9p5SBacqWF",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the whip's Finesse attack with the listed Sharp damage and reach.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>or 1 stun damage</p>",

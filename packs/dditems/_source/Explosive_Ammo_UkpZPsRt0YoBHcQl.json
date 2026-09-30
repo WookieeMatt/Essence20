@@ -5,6 +5,10 @@
   "_id": "UkpZPsRt0YoBHcQl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Free, 1 Energon): give a ranged weapon a 10 ft blast, or +5 ft to an existing blast, until you Fumble with it. With Tooled Munitions you can also switch its damage to an Element.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

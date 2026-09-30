@@ -5,6 +5,10 @@
   "_id": "0Ccg4ncsXsy4EdgB",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: which boosted weapon effects it unlocks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

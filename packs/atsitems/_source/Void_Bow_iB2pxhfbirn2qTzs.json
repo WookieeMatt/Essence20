@@ -5,6 +5,10 @@
   "_id": "iB2pxhfbirn2qTzs",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for Void damage with the listed range and multi-target alternate effect; Void and Silent apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "G1yDcOArg2EonV9a",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: pets made with Animal Pet get a natural attack with damage by tier.</p><p>Left to the table: the extra attack or extra damage when this Perk is taken again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

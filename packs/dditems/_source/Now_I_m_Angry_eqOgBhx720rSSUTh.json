@@ -5,6 +5,10 @@
   "_id": "eqOgBhx720rSSUTh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when a Critical Success damages you, your next attack deals +1 damage, noted on its chat card (\"Includes +1 from Now I'm Angry\").</p><p>Left to the table: the bonus on further attacks before the end of your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

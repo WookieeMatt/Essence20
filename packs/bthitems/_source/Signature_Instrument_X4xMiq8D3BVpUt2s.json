@@ -5,6 +5,10 @@
   "_id": "X4xMiq8D3BVpUt2s",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Performance rolls show a Signature Instrument switch that adds ↑1. Turn it on while playing this instrument.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

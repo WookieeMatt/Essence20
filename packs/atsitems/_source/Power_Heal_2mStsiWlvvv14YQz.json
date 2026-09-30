@@ -5,6 +5,10 @@
   "_id": "2mStsiWlvvv14YQz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power to heal yourself 1 Health (2 at 7th level, 4 at 13th). Click again for each extra point you spend.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

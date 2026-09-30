@@ -5,6 +5,10 @@
   "_id": "BYVxcL7hWHPDsIJL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an ally you revive with I've Got You (including through the Heal action or a Stim Dart) gets 1 more Health and a banked Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

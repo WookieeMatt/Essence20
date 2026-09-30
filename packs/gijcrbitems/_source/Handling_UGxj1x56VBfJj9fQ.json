@@ -5,6 +5,10 @@
   "_id": "UGxj1x56VBfJj9fQ",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: natural attacks (bites, claws and the like) against the wearer take a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

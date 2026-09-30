@@ -5,6 +5,10 @@
   "_id": "GPdhYq7n573SR4T2",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Technician Perks at their listed levels (Primary Tech, Support, Think On It, Tech Support, Secondary Tech and more), plus the GI Joe faction Perk. Essence increases, General Perk levels and armor and weapon training apply as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

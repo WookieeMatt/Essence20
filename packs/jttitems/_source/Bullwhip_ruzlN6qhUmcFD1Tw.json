@@ -5,6 +5,10 @@
   "_id": "ruzlN6qhUmcFD1Tw",
   "img": "systems/essence20/assets/icons/weapons/whip.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse with its Sharp, grapple and Maneuver options at the listed reach; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

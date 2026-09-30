@@ -5,6 +5,10 @@
   "_id": "b2viBBrNk08Kc9ts",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when a vehicle you're driving attacks another vehicle, or a creature your size or bigger, the attack gets an Edge, labelled Heavy Ordnance in the vehicle's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Jiap1rwBSt9AvCt7",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 to 3 Power. The chat card lets everyone within 15 feet roll Athletics or Acrobatics at DIF 12 + 3 per Power spent; anyone who fails is knocked Prone.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

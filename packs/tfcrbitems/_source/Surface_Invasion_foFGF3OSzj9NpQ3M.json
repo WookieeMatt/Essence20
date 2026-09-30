@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per scene): make an extra attack as a Free action. Left to the table: the extra 10ft of movement and the attack's Surprise benefits.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

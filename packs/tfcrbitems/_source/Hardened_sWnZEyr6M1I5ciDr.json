@@ -5,6 +5,10 @@
   "_id": "sWnZEyr6M1I5ciDr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Health, and you count as trained in Restricted Armor Upgrades.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "a9rsM3e8i54VoEPI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (out of combat): roll Technology to take apart a piece of equipment on a targeted character. It stops working until someone passes a Reboot test against your result.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

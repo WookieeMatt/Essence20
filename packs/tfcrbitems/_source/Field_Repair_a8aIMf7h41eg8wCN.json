@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene, as a Standard action, repair 1 Health on yourself or an ally with no Technology test.</p><p>Left to the table: needing a Repair Kit, and the Edge on Technology tests for clues from offline Cybertronians.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

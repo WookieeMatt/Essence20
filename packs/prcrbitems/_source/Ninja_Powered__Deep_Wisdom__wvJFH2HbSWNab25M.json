@@ -5,6 +5,10 @@
   "_id": "wvJFH2HbSWNab25M",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Zord gets Edge on attacks against targets with Resistance or Immunity to the attack's damage type, labelled Deep Wisdom in its Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

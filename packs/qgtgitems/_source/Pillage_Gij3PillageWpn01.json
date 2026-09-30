@@ -5,6 +5,10 @@
   "_id": "Gij3PillageWpn01",
   "img": "systems/essence20/assets/icons/weapons/brass-knuckles.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an unarmed melee attack using Finesse or Might against Evasion; a hit disarms the target (see the Pillage Perk).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

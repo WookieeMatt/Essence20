@@ -5,6 +5,10 @@
   "_id": "6rdroOEnIMoN8gsv",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacking with it rolls Athletics at Short range for 1 Acid damage against up to 2 targets. It's Consumable, so it's used up after the attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "j3DAw3tY7iLQfZ3R",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics for 1 Sharp damage plus 1 Stun in a 10 ft cone at Short range; its Multiple Targets and Reload traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

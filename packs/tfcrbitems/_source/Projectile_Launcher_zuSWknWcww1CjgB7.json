@@ -5,6 +5,10 @@
   "_id": "zuSWknWcww1CjgB7",
   "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Sharp damage at 50/100 ft, with a 2-target alternate effect at ↓1; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -41,7 +45,7 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
-          "style": "melee"
+          "style": "projectile"
         },
         "damageValue": 1,
         "damageType": "sharp",

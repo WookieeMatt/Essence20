@@ -5,6 +5,10 @@
   "_id": "9YCdQjHa6Kyc1h8G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: in your environment of expertise, a Reroll button rerolls every skill die that shows 1 on your Alertness, Initiative and Survival tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

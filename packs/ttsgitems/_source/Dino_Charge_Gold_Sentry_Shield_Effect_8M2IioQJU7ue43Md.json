@@ -5,6 +5,10 @@
   "_id": "8M2IioQJU7ue43Md",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might melee shield bash at Reach for 1 Blunt damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

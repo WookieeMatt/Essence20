@@ -5,6 +5,10 @@
   "_id": "zoqWcKlfaQYblvcE",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Technology attack at the listed range for 1 Energy damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

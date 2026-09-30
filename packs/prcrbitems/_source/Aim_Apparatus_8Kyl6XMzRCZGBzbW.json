@@ -5,6 +5,10 @@
   "_id": "8Kyl6XMzRCZGBzbW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added you pick yourself or a teammate; their Targeting goes up one rank. Removing the Perk takes the rank back.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

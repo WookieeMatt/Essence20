@@ -5,6 +5,10 @@
   "_id": "R7HF3aSR3ZPURh1W",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added you pick two Grid Tech options from its list; they are added to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

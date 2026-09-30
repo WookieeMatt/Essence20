@@ -5,6 +5,10 @@
   "_id": "3JCZlRjXovAMXmko",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: once per scene, Edge on a Skill Test where you and your bonded partner both have at least d2. Use button: once per scene, pass one of your Conditions to your partner.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

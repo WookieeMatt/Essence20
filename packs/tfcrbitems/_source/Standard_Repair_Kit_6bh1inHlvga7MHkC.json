@@ -5,6 +5,10 @@
   "_id": "6bh1inHlvga7MHkC",
   "img": "systems/essence20/assets/icons/gear/mechanic_kit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when a roll calls for a Repair kit, the Roll Options Dialog says so; with this kit, Standard kit rolls take no Snag, Limited ones ↓1 and Restricted ones ↓3. Use button: use it up for 1 minute of Repair Specialization (or ↑1 if already Specialized), shown as a labelled source when you roll, or scrounge a refill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

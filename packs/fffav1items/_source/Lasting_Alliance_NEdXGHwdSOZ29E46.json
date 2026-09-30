@@ -5,6 +5,10 @@
   "_id": "NEdXGHwdSOZ29E46",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: after a scene where you summoned a Contact, roll a DIF 15 Culture test. On a success that Contact regains 2 Allegiance Points and can be called once more this mission.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: choose the mode you are uncomfortable in. Automatic: converting into it rolls Technology against 10 + half your level.</p><p>Left to the table: on a failure, you don't change forms and lose the action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

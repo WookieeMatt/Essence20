@@ -5,6 +5,10 @@
   "_id": "KxmnKUYmQ56D02Jg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, Mark Target counts every creature in the scene as marked, including ones that arrive later.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "a5HptfB7nYFLVHkc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your explosive attack hits, the target's next roll of any kind takes a Snag, labelled Shock and Awe in its Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

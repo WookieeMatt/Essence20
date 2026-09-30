@@ -5,6 +5,10 @@
   "_id": "Zl8FNYY10wzNH048",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might with its Element or Stun options; Versatile and its other traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

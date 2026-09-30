@@ -5,6 +5,10 @@
   "_id": "ZBhsKnZBy9SmjGvO",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: your Wealth is one step worse (↓1).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

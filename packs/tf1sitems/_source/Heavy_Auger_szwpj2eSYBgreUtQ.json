@@ -5,6 +5,10 @@
   "_id": "szwpj2eSYBgreUtQ",
   "img": "systems/essence20/assets/icons/weapons/heavy_auger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its effect; Anti-Tank and Wrecker apply, Reload is tracked, and it counts as a Tool weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

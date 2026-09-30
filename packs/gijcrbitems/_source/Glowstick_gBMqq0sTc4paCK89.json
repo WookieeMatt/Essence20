@@ -5,6 +5,10 @@
   "_id": "gBMqq0sTc4paCK89",
   "img": "systems/essence20/assets/icons/gear/glowstick.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative gear: 20 ft of light for an hour. Set your token's light yourself if you want it on the map.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

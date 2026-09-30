@@ -5,6 +5,10 @@
   "_id": "jSjdGdieoUkT0nAf",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 damage of the element chosen on the weapon at 75ft; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

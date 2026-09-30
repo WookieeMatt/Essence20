@@ -5,6 +5,10 @@
   "_id": "6AULE5uInvbfPlU9",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: while you carry it, your Culture tests get Edge, already selected when the Roll Options Dialog opens.</p><p>Left to the table: limiting that to Vok technology, and the DIF 20 Culture roll to use it without study (with a Snag for the scene on failure).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

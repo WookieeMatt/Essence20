@@ -5,6 +5,10 @@
   "_id": "EZheFZbpfNvIFM5P",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: thrown Athletics attacks at Short range for 1 Sharp damage in a 10 ft radius blast; its Consumable and Wrecker traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

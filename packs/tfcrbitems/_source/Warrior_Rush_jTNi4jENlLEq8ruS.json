@@ -5,6 +5,10 @@
   "_id": "jTNi4jENlLEq8ruS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Movement is doubled during the first round of combat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

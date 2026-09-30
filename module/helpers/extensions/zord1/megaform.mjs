@@ -13,6 +13,8 @@ import { T, ats, bth, fgaa, findSourced, flagOf, giveEdge, itemsOf, jtt, parentW
  *   so documents/actor.mjs#_prepareMegaformZordData counts it).
  * - Accurate Combiner (Across the Stars, Megaform Trait, p.104): "Whenever the Megaform calls upon one
  *   of this Combiner participant's attack types, the associated Skill Test gains ↑1."
+ * - Assault Weapon (A Jump Through Time, Megaform Trait, p.84): +1 damage on the Megaform's participant
+ *   melee attacks.
  * - Megaform (Advanced) Signature Finishing Move (Beneath the Helmet, Zord Features, p.72-73).
  * - Power Master / Target Master (Field Guide to Action & Adventure, Battledress Upgrades, p.280):
  *   "You gain the Combiner trait. Your Perks and Powers apply to Megaforms you join." / "...Your
@@ -90,6 +92,33 @@ export function accurateCombinerSources(actor, target, { item, isAttack, isMelee
   const trait = itemsOf(owner).find(i => i.type == 'megaformTrait' && i.system?.type == 'accurateCombiner'
     && (i.system?.attackType ?? 'melee') == attackType);
   return trait ? { sources: [{ id: 'zord1AccurateCombiner', label: `${trait.name} (${owner.name})`, shiftUp: 1 }] } : { sources: [] };
+}
+
+/* -------------------------------------------- */
+/*  Assault Weapon                               */
+/* -------------------------------------------- */
+
+/**
+ * Assault Weapon (A Jump Through Time, Megaform Trait, p.84): "Increase the Megaform's Participant Melee
+ * Attack's base damage by 1." documents/actor.mjs sets system.hasAssaultWeapon when any participant holds
+ * it; this adds the +1 to a landed melee attack the Megaform makes with one of its participants' attacks
+ * (attackOwner above). Once, however many participants hold it. The trait-generated attacks
+ * (extensions/zord2/megaform-attacks.mjs - Enhanced Melee Attack and the like) are left alone: they're
+ * already scaled from a participant attack rather than being one.
+ */
+export async function assaultWeaponHitRider(actor, target, result, rider, tools) {
+  if (actor?.type != 'megaform' || !actor.system?.hasAssaultWeapon || rider?.style != 'melee' || !result?.damageValue) {
+    return;
+  }
+
+  const effectId = String(rider.itemUuid ?? '').split('.').pop();
+  const item = actor.items?.get?.(effectId) ?? itemsOf(actor).find(i => i.id == effectId);
+  if (!item || flagOf(item, 'zord2Gen') || flagOf(parentWeaponOf(actor, item), 'zord2Gen') || !attackOwner(actor, item)) {
+    return;
+  }
+
+  const trait = rosterOf(actor).flatMap(itemsOf).find(i => i.type == 'megaformTrait' && i.system?.type == 'assaultWeapon');
+  tools.damageBonusNote(result, 1, trait?.name ?? T('MegaformTraitAssaultWeapon'));
 }
 
 /* -------------------------------------------- */
@@ -375,6 +404,7 @@ registerRollSources(accurateCombinerSources);
 registerDialogToggles(finisherToggles);
 registerApplyDialog(finisherApplyDialog);
 registerHitRider(finisherHitRider);
+registerHitRider(assaultWeaponHitRider);
 registerPostRoll(finisherPostRoll);
 
 registerUse({ id: 'zord1Multi', matches: item => sourceOf(item) == MF.multiMegaform, run: applyMultiTrait });

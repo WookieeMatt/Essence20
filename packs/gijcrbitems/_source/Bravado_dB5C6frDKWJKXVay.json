@@ -5,6 +5,10 @@
   "_id": "dB5C6frDKWJKXVay",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when combat starts, if you have no Reckless Abandon uses left, you get one back.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

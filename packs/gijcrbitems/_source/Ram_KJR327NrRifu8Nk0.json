@@ -5,6 +5,10 @@
   "_id": "KJR327NrRifu8Nk0",
   "img": "systems/essence20/assets/icons/weapons/punch.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the vehicle's built-in Ram attack uses its Ram effect, and its Blunt and Vehicular traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

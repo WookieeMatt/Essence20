@@ -5,6 +5,10 @@
   "_id": "JgpCHMJAR8lNt5a5",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, blast and range; its traits apply, and throwing it uses it up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

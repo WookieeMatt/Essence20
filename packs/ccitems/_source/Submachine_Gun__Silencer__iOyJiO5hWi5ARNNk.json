@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/submachine_gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets, with its alternate effects to pick from; its traits apply. Comes with the Silencer upgrade attached.</p>"
+    },
     "originalId": "",
     "description": "<p>Alternate Effect 2 is a 15 ft cone</p>",
     "source": {

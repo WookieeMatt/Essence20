@@ -5,6 +5,10 @@
   "_id": "vWK0nmeks2SLUEze",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Convert, you confirm whether it is one of your Quick Change sequences; if so it costs a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

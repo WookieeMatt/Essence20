@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: once per turn after attacking with an Integrated Hardpoint weapon, spend 2 Free actions and roll that attack again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

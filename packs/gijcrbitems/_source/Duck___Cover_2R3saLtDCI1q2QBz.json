@@ -5,6 +5,10 @@
   "_id": "2R3saLtDCI1q2QBz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: explosive attacks and attacks with Area weapons made against you take a Snag, labelled Duck &amp; Cover in the attacker's Roll Options Dialog. For other attacks on you, the attacker's dialog has a switch to add that Snag when the attack is a trap.</p><p>Left to the table: halving explosive or area damage that comes with no attack roll.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

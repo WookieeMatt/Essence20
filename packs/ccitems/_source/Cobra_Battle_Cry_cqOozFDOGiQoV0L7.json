@@ -5,6 +5,10 @@
   "_id": "cqOozFDOGiQoV0L7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: your Initiative rolls show switches to roll Deception or Intimidation instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

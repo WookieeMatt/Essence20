@@ -5,6 +5,10 @@
   "_id": "sHJakOYf1rgVP6Pv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your heavy Anti-Tank or Ballistic weapons gain the extra alternate effect this Perk grants, shown as its own attack option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

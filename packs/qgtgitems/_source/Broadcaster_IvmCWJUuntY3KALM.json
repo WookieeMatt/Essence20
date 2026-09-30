@@ -5,6 +5,10 @@
   "_id": "IvmCWJUuntY3KALM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: outside combat, Technology tests using your Communications Specialization open the Roll Options Dialog with Edge already selected. Roll Options Dialog: on Social tests, a switch for Edge when you talk through a device.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, pick Smarts or Social. Your next test with a Skill of that Essence gets Edge, labelled Wild Tales in your Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

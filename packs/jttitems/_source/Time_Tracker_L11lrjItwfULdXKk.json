@@ -5,6 +5,10 @@
   "_id": "L11lrjItwfULdXKk",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: Edge on tests to home in on a place in spacetime within 30 ft of the tracker (tick Edge in the Roll Options Dialog).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

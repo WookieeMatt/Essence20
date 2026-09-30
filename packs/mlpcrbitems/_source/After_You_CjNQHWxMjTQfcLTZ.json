@@ -5,6 +5,10 @@
   "_id": "CjNQHWxMjTQfcLTZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: after Initiative is rolled, swap places in the order with a targeted friend who rolled lower than you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

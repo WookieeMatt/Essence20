@@ -5,6 +5,10 @@
   "_id": "51cQm1tYS1bK622R",
   "img": "systems/essence20/assets/icons/weapons/broadsword.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Might for 1 Sharp damage at Reach, with the charged all-around strike as a second option.</p><p>Left to the table: the charged strike needs a Dino Charger and is once per scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

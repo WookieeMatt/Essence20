@@ -5,6 +5,10 @@
   "_id": "M1OMp9HJJ6f7RqSl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you can roll Driving with Strength.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

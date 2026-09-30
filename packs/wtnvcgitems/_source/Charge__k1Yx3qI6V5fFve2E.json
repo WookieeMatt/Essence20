@@ -5,6 +5,10 @@
   "_id": "k1Yx3qI6V5fFve2E",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: once per turn, spend 1 Story Point to move your full Movement as a Free action, ignoring Rough Terrain and Contingency triggers.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

@@ -5,6 +5,10 @@
   "_id": "rqmV2Jjr9SGed495",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effects (off by default): one each for Edge on Deception, Infiltration or Performance. Switch on the one that fits the costume and setting, and off again afterwards.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "MO8ijgRUmLXcYnbL",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: consume it for Dark Energon. Automatic: while you hold at least 1 Dark Energon, +1 Toughness and Evasion on the sheet and ↑1 on Strength and Speed Skill Tests, labelled Dark Energon (held) in the Roll Options Dialog. A switch there spends it for Edge, and each use adds to an addiction check that can give you Addicted.</p><p>Left to the table: its reroll option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

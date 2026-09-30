@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added, raises Smarts and you pick a skill from its list. It sets your starting Health and 30 ft Ground Movement and gives you the Clued In Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

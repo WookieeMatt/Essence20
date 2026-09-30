@@ -5,6 +5,10 @@
   "_id": "Q8TO2TJNncmy6Q6R",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: drain a cell to regain 2d2 Personal Power; one is used up.</p><p>Left to the table: growing miniature Zords and powering combined sidearms.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

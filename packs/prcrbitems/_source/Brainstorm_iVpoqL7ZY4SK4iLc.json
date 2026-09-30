@@ -5,6 +5,10 @@
   "_id": "iVpoqL7ZY4SK4iLc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: pick a weapon or gear and roll Technology for its availability (Unique items cost a Story Point). You keep up to three; one breaks on a Fumble.</p><p>Left to the table: the hour of work and 1 Personal Power to switch an item on each scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

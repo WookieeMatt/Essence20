@@ -5,6 +5,10 @@
   "_id": "kYYPAxXMpJRMnq6Z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per combat, while you don't have the Surprised condition, the first attack damage applied to you from a chat card is reduced to 0, along with any extra effect it carried.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

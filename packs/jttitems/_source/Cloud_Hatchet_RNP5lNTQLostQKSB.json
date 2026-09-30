@@ -5,6 +5,10 @@
   "_id": "RNP5lNTQLostQKSB",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics with the listed damage; its traits apply. While equipped, your Aerial Movement is at least 30 feet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

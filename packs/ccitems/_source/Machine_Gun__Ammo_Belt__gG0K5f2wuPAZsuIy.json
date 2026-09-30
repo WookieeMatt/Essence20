@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/machine_gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its normal or alternate effects with the listed Skill, damage and range. Reload is tracked, and the Ammo Belt upgrade applies.</p>"
+    },
     "originalId": "",
     "description": "<p>Alternate Effect 2 is a 30 ft cone</p>\n<p> </p>",
     "source": {

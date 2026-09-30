@@ -5,6 +5,10 @@
   "_id": "HU9eLTJr0aFxiqnd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: once per scene, a switch rolls your Technology die in place of the Skill being tested.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

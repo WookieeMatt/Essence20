@@ -4,6 +4,10 @@
   "type": "armor",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +1 Evasion; Computerized applies, plus its Handling upgrade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

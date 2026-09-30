@@ -5,6 +5,10 @@
   "_id": "tDuSm78HrB37tryx",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power to summon your Galaxy Glider vehicle beside you.</p><p>Automatic: while you are crewing it, your Acrobatics tests get Edge, labelled Galaxy Glider in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

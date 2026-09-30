@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Alt Mode, ranged attacks against you take the Cover ↓ even when you are in the open, shown as Cover in the attacker's Roll Options Dialog. Roll Options Dialog: in Alt Mode, a Hide switch adds 5 to your Infiltration result.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

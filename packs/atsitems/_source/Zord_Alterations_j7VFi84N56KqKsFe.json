@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>When you add it you pick an alteration and it is applied to your Zord: Essence, size, movement or an Element Resistance.</p><p>Left to the table: the matching Skill increases and the extra-damage Critical Effect option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "I5K6llsM8oAvOtO5",
   "img": "systems/essence20/assets/icons/weapons/punch.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Zord's basic melee attack, rolling Might at Reach for 2 Blunt damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

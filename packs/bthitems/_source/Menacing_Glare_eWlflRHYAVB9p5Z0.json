@@ -5,6 +5,10 @@
   "_id": "eWlflRHYAVB9p5Z0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on an Intimidation test, a switch spends 1 Personal Power. On a success against Willpower, pick one: a Snag on the target's next test, Edge on your next test against them, or Frightened.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

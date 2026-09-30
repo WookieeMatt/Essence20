@@ -5,6 +5,10 @@
   "_id": "p8phQNmgCBNU3Qo3",
   "img": "icons/svg/shield.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +1 Toughness; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

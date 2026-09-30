@@ -5,6 +5,10 @@
   "_id": "7gtjaQX1JpcBry3q",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack at the listed range for 2 Energy damage in a 20ft blast, at ↓3.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

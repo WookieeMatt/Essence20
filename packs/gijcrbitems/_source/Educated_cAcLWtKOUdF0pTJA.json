@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: adds a Story Point to the team pool for the session. Roll Options Dialog: once per day, a switch to count as Specialized on a Smarts skill. The extra language is noted on your sheet by you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

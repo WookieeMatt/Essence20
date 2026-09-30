@@ -5,6 +5,10 @@
   "_id": "UDs3dGehEYL5dgbr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: summon your Power Weapon with a temporary weapon upgrade of the Availability your level allows. While it lasts you also get +1 Toughness.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

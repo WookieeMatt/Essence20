@@ -5,6 +5,10 @@
   "_id": "7SU3UY5WzOnlOsHM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Chat card: once per scene, an ally's failed Skill Test card gets a button to reroll all its dice while you are in the scene. Left to the table: whether the test was made on your orders.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

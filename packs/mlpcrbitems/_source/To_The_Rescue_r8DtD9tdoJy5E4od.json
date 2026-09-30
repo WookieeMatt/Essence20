@@ -5,6 +5,10 @@
   "_id": "r8DtD9tdoJy5E4od",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per round, spend a Friendship Point to take an extra Move action on someone else's turn; move your token yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

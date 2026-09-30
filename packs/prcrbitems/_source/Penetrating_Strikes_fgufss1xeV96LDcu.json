@@ -5,6 +5,10 @@
   "_id": "fgufss1xeV96LDcu",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Power; for 10 rounds your Martial Arts attacks ignore armor bonuses to Toughness. It ends on its own (or when the Combat ends), and can then be used again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

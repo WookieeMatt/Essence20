@@ -5,6 +5,10 @@
   "_id": "57dHgTu193VWr5uy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you're Resistant to Fire damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "6uGU6ck2lJiqNdgc",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a thrown Athletics attack at 20ft/50ft range for 1 Energy damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

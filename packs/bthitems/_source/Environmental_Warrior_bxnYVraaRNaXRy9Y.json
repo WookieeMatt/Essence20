@@ -5,6 +5,10 @@
   "_id": "bxnYVraaRNaXRy9Y",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when one of your Survival Specializations matches the scene's environment, your attacks get ↑1, labelled Environmental Warrior in the Roll Options Dialog. If the scene has no environment set, the dialog shows a switch for it instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

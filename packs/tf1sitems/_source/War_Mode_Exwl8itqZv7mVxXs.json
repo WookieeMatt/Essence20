@@ -5,6 +5,10 @@
   "_id": "Exwl8itqZv7mVxXs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: in your chosen Mode, spending a Move action to make your Integrated Hardpoints Reinforced for the scene or until you convert.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

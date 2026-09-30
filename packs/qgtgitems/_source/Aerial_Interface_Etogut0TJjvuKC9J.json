@@ -5,6 +5,10 @@
   "_id": "Etogut0TJjvuKC9J",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: while you drive a vehicle with Aerial Movement, your Driving tests get ↑2, already counted in the Shift Up box of the Roll Options Dialog. Your personal shield bonuses also apply to the vehicle you drive.</p><p>Left to the table: using the Long Shot and Trigger Happy fighting styles from the vehicle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "j2lcI8kG34egHKgj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: the Strength increases at 1st and 10th level come from the Slammer Focus.</p><p>Left to the table: spending those Skill points only on Athletics, Brawn, Conditioning, Intimidation or Might.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

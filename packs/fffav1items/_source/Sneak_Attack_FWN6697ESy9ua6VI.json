@@ -5,6 +5,10 @@
   "_id": "FWN6697ESy9ua6VI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on attacks, a Sneak Attack switch adds bonus damage equal to a Commando's Sneak Attack at your level. It checks the target is within 30ft and that you have a use left this combat (one per combat); turn it on only when the target isn't fully aware of you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

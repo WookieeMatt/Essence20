@@ -5,6 +5,10 @@
   "_id": "pCncxHtzpST2EN9Z",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a ↑1 switch while you carry it, for capturing a creature once the trap is set.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "wg1oOeqVvPIEckZe",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. It feeds animal companions for a day.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

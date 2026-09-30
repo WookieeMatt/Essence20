@@ -5,6 +5,10 @@
   "_id": "eVRb1Fp43QMdxV1N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: rolls Alertness against DIF 15. On a success you get one free attack to make right away, interrupting the enemy's turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

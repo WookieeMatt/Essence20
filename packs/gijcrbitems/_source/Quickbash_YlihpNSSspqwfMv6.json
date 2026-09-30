@@ -5,6 +5,10 @@
   "_id": "YlihpNSSspqwfMv6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Free action): roll Technology against the availability of the equipment or upgrade you want. On a success you get it temporarily.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

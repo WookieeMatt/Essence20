@@ -5,6 +5,10 @@
   "_id": "tld8Z6kTlMYdcWqy",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Hang-Up.</p><p>Left to the table: the Snag on your Deception, Intimidation and Persuasion Tests against especially empathetic or ethical targets.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

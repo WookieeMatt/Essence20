@@ -5,6 +5,10 @@
   "_id": "BctKHzpCC1XXoJPg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: anyone targeting you with an Intimidation or Persuasion roll takes a Snag, labelled Indoctrinated in their Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

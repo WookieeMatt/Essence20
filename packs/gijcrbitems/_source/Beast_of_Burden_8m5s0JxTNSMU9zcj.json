@@ -5,6 +5,10 @@
   "_id": "8m5s0JxTNSMU9zcj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Might tests, a switch gives ↑2 when you push, drag or lift.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

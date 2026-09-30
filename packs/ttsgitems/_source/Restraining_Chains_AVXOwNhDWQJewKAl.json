@@ -5,6 +5,10 @@
   "_id": "AVXOwNhDWQJewKAl",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you add it, the Zord gains a ranged attack at 30ft/65ft that Grapples the target on a hit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

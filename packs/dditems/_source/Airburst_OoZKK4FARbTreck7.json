@@ -5,6 +5,10 @@
   "_id": "OoZKK4FARbTreck7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend an Energon Point and pick a blast weapon. Its next attack gets +10 ft radius; creatures it hits are knocked Prone and the rest become Impaired.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

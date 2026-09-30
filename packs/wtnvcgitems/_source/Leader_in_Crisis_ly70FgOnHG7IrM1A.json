@@ -5,6 +5,10 @@
   "_id": "ly70FgOnHG7IrM1A",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: setting up a Contingency costs a Free action instead of its usual cost, up to your Social score each turn.</p><p>Left to the table: each Contingency needing a different trigger, and only one of them being an attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

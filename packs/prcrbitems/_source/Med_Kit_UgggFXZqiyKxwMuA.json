@@ -5,6 +5,10 @@
   "_id": "UgggFXZqiyKxwMuA",
   "img": "systems/essence20/assets/icons/gear/medical-pack.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend one of its ten uses to heal 1 Health (2 with a Medicine Specialization). When it runs out, the button restocks it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

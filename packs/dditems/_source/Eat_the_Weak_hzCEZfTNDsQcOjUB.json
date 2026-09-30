@@ -5,6 +5,10 @@
   "_id": "hzCEZfTNDsQcOjUB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: target someone addicted to Dark Energon and roll Culture against their Willpower; on a success their Addicted Hang-Up is removed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

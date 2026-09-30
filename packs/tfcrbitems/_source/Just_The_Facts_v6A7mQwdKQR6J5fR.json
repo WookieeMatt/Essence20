@@ -5,6 +5,10 @@
   "_id": "v6A7mQwdKQR6J5fR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Deception test aimed at you by a creature of your level or lower fails automatically on its chat card. One from a higher-level creature takes a Snag, labelled Just the Facts in its Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

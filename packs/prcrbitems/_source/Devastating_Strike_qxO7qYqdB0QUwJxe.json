@@ -5,6 +5,10 @@
   "_id": "qxO7qYqdB0QUwJxe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Critical Success on a melee attack deals triple damage instead of double; the chat card's damage already uses the tripled amount.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "ki6d30m9O5ij5ggm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: if you also have Beast of Burden, attacks with your Signature Weapon get ↑2. It's already counted in the ↑ total when the Roll Options Dialog opens, but isn't listed under its own name.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

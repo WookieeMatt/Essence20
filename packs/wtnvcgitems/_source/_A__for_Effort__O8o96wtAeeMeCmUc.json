@@ -5,6 +5,10 @@
   "_id": "O8o96wtAeeMeCmUc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per session (reset when the GM presses New Session in the Story Points app), your first untrained Skill Test rolls a d2 Skill Die instead of a plain d20, with no untrained Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

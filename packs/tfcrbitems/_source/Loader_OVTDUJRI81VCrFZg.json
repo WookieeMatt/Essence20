@@ -5,6 +5,10 @@
   "_id": "OVTDUJRI81VCrFZg",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Alt Mode, or in Bot Mode when not used as a shield, your shoves get ↑2, labelled Loader in the Roll Options Dialog, and your carrying capacity counts your Brawn 2 steps higher. Use button: in Bot Mode, switch it to shield use for +1 Toughness instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "RfYYmA2bDBVZsMl3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per combat, damage that would Defeat you leaves you at 1 Health instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

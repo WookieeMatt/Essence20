@@ -5,6 +5,10 @@
   "_id": "lS37ZA9hlAhpRAZM",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: spend it to add 1 Personal Power by hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

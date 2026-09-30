@@ -5,6 +5,10 @@
   "_id": "23NeoRDRxlo0LpyQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: Refocus (Standard action, 2 Mystical Points, clears your Spellcasting downshift), Essential Research (1 point, +1 to an Essence until your next Rest, three a day), or Magically Fit In (spend points for that many ranks in a Skill you pick, until the GM starts a new scene). Spellcosting appears when you cast; Spellcialize is a Roll Options Dialog switch.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

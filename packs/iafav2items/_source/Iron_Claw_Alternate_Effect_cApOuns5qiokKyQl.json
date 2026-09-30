@@ -5,6 +5,10 @@
   "_id": "cApOuns5qiokKyQl",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the claw's two-target Sharp attack at ↓1, rolling whichever of Finesse or Might is better.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

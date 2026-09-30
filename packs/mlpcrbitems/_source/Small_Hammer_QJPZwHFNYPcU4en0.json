@@ -5,6 +5,10 @@
   "_id": "QJPZwHFNYPcU4en0",
   "img": "systems/essence20/assets/icons/weapons/hammer.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its weapon effect with the listed Skill, damage, reach and targets.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

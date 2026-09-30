@@ -5,6 +5,10 @@
   "_id": "R6XROOkbI2dKmn5R",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: while shifted or disguised, a switch gives Edge against creatures who believe your disguise.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

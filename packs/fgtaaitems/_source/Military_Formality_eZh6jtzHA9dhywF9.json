@@ -5,6 +5,10 @@
   "_id": "eZh6jtzHA9dhywF9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Deception, Intimidation and Persuasion, add up to ↑3 depending on how much the target values formality. Roll those Skills in place of Performance when it fits.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

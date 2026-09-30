@@ -5,6 +5,10 @@
   "_id": "lQzZxlQrsbsGLMwr",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might with its Blunt or Stun options at the listed reach; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

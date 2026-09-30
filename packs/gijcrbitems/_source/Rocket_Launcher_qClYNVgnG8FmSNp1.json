@@ -5,6 +5,10 @@
   "_id": "qClYNVgnG8FmSNp1",
   "img": "systems/essence20/assets/icons/weapons/rocket_launcher.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 2 Sharp damage in a 20 ft radius at 100 ft (long range 200 ft, nothing closer than 30 ft). Anti-Tank and Wrecker apply on hits, Reload needs a reload after each shot, and Mounted needs setting up on the sheet before it can fire.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

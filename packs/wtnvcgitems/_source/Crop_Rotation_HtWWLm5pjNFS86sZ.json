@@ -5,6 +5,10 @@
   "_id": "HtWWLm5pjNFS86sZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: the Imaginary Corn contraband.</p><p>Left to the table: ↑1 on tests to move an object.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {

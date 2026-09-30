@@ -5,6 +5,10 @@
   "_id": "5Wal4tSdl7lPTxAQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: choose one of Diver, EOD, Forward Observation, Rock Climber or Skier when you take it.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "",

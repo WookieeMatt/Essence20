@@ -5,6 +5,10 @@
   "_id": "llIvl84IhJQwMzRU",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Influence Perk, Always Training. If it's your second or later Influence, you also pick one of its Hang-Ups (Faceless, Loudmouth or Show Off).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

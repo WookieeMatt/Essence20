@@ -5,6 +5,10 @@
   "_id": "eLO9NJ7akWmoPHEK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: heal an ally by rolling Intimidation or Persuasion instead of Science. Moving any Science (Medicine) ranks is up to you in the Skill Picker.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

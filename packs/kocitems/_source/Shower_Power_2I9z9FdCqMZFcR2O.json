@@ -5,6 +5,10 @@
   "_id": "2I9z9FdCqMZFcR2O",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: a Spellcasting attack with a jet of water. A hit knocks the target Prone.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

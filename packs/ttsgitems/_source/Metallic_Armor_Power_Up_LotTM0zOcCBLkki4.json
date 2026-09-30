@@ -5,6 +5,10 @@
   "_id": "LotTM0zOcCBLkki4",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (2 Personal Power, while Morphed): +3 temporary Health, 1 less damage from minions and Putties, and 1 Personal Power drained each turn to keep it up. It ends when you can't pay, take a critical hit from a non-minion, are Defeated or press Use again.</p><p>Left to the table: the Multiple Targets boost to your attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

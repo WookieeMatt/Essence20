@@ -5,6 +5,10 @@
   "_id": "AVhNGB1h4e4eeNPD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Standard action, in combat): rolls a DIF 15 Persuasion test. On a success, a Story Point is added to the team pool.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

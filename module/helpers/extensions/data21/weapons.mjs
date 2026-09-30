@@ -14,9 +14,56 @@ import { D21, T, escape, postLine, sourceOf, writeDoc } from "./common.mjs";
  *   data1's generic onHitStatus flag; the Slinger's Impaired is the Impaired damage type.)
  */
 
+const cb = (pack, ids) => ids.map(id => `Compendium.essence20.${pack}.Item.${id}`);
+
+// The core-book melee weapons printed "Finesse or Might" (GI Joe CRB Table 8-3; TF CRB weapon
+// entries: Unarmed Combat, Short/Medium/Long Blade, Close Combat Blade and Heavy Blade, Short/Long
+// and Close Combat (Heavy) Bludgeon, Energized Close Combat Weapon). The Transformers and Power
+// Rangers packs reuse the G.I. Joe effect Items, so these ids cover every printing.
+const CORE_BOOK_MELEE_EFFECTS = [
+  ...cb('gi_joe_crb', [
+    'eDjovjfygGq8dlQy', 'gA0rOFD3lmwzkZq4', 'BSh9BDy2b17XOzYm', // Unarmed Combat
+    'hb5fKPK5GNTSlKvY', // Close Combat Blade
+    'Ty7ZBubtYM7BIwbT', '2X1w4UM04U6LliE0', // Close Combat Bludgeon
+    'SP4uvhATIJanJQQE', 'eJVQOt1PPGCzePPP', // Close Combat Heavy Blade
+    'RwpDWPgoIEejm7Fz', 'mCD4bCkChXbq6NzO', // Energized Close Combat Weapon
+    'O6FfE5SvgKn7M2ej', // Short Blade
+    '7ah23fiimnJq6HIL', 'rMg6ZhYEEHTeZ8Db', // Short Bludgeon
+    'pbfLfPqG58y5bu7z', 'qJ2FDEwfZF9R8fQX', // Medium Blade
+    '2IRZcCJbUGFuEYMk', 'uYAnV5vfucrRlJlr', // Long Blade
+    'Jt5FmeFqopWQkHbb', '91alKZovkgruZU9i', // Long Bludgeon
+  ]),
+  ...cb('tf_crb', [
+    'YODFm2APSGLPdnw0', 'JWm06vX4u4QSDf4D', 'SdBelSCDxdO7XM0j', 'LxYWKuuMrjNjzfkS', '4rgKqfYX9WXvJEX2',
+    '4LCgqoy5wE2yHWdx', 'pLatOjUTLhYOup6N', 'm2Wl4D5TxL8vD3BO',
+  ]),
+  ...cb('pr_crb', ['lX2ckG2qnzekOFXE']),
+];
+
+// Welcome to Night Vale Citizens' Guide melee weapons printed "Finesse or Might" (Chapter Three):
+// Baseball Bat, Dagger, Fangs, Fire Axe, Fire Extinguisher, Stapler, Unarmed Strike.
+const WTNV_MELEE_EFFECTS = cb('wtnv_citizens_guide', [
+  'UiASUn7CGDbl0WU3', 'howOD7H4ZmRorW3Z', 'HblDM0jUqE2hBWew', // Baseball Bat
+  'fqUy6h0IfAVddBSo', 'EmmWL7UOIKZC9VXn', // Dagger
+  'qJqt4NXBSE4bPkQ9', 'NAY1u15P5iIBzuzB', // Fangs
+  'Y8GWAUgEnbE0D8dW', '33fNOXpXecDKGP3F', 'QxfydUTy5uSqkSPi', // Fire Axe
+  '76HrWvYvaCos5XEM', 'k10zy7W2VPDGzDwo', // Fire Extinguisher
+  'VmOUrUrFtMHkAEBr', 'Dy6jy1SL7s5dFqLR', 'oz8pPCrRn018FUkg', // Stapler
+  'YNf3WpouTPTQ3HO2', 'Hjszzpi43KrSXRlM', '6hYof6SviGFda7RJ', // Unarmed Strike
+]);
+
+// Transformers One Sourcebook tools printed "Finesse or Might" (p.19): Reticulated Sprotchet and
+// Turbo-Pliers (main effect and both alternates). Decepticon Directive's Antimatter Close Combat
+// Weapon (p.72) is printed "Finesse or Might" too.
+const TF_EXTRA_MELEE_EFFECTS = [
+  ...cb('transformers_one_sourcebook', ['jNjDCZ972iAt9N8Z', 'FtKYfRmtLtRynYo9', 'bZzV5pWZ7s8hXLbC', 'S2VhBxz48sjDasDZ']),
+  ...cb('decepticon_directive', ['D21ckSdkrSJQHu0U', 'k0lZatEqcocJihVz', 'pEQJrNkjutaASGNh']),
+];
+
 export const FINESSE_OR_MIGHT = new Set([
   ...D21.hobnailedBootEffects, ...D21.ironClawEffects, ...D21.meleeWeaponEffects,
-  ...D21.psychoBladeEffects, ...D21.psychoStaffEffects,
+  ...D21.psychoBladeEffects, ...D21.psychoStaffEffects, ...CORE_BOOK_MELEE_EFFECTS, ...WTNV_MELEE_EFFECTS,
+  ...TF_EXTRA_MELEE_EFFECTS,
 ]);
 
 const PAIR = ['finesse', 'might'];

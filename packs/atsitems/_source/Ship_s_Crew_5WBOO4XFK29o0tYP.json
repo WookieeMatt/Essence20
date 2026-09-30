@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: every Skill Test shows a Ship's Crew (Violated Orders) switch that adds ↓1. Turn it on for non-combat tests for the rest of the scene after you disobey a superior.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

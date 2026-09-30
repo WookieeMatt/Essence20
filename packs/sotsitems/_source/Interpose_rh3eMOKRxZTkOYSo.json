@@ -5,6 +5,10 @@
   "_id": "rh3eMOKRxZTkOYSo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: when an adjacent ally is about to take Health damage from a physical attack, you're offered the chance to take all of it instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "8tz9aZSqmUntS20H",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: grants the Blend In Perk. When a vehicle you crew is Defeated, its automatic Brawn test to keep from exploding rolls twice and keeps the better result.</p><p>Left to the table: adding the Tiger Stripes trait to your assigned vehicles.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

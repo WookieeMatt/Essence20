@@ -5,6 +5,10 @@
   "_id": "8t6bdhzNWHZaCUmy",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: gives the armor the Temperamental trait, which the system applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

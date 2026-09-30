@@ -5,6 +5,10 @@
   "_id": "c6Kh8WrtHYfsXZmK",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (while Morphed): spend 1 Power; for 10 rounds your Martial Arts attacks deal Energy damage. It ends on its own, or when the Combat ends.</p><p>Left to the table: the light itself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

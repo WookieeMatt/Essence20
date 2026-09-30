@@ -5,6 +5,10 @@
   "_id": "wRLU6hs8sAl2TAZj",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting blast at 20/50 ft for 1 Stun.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

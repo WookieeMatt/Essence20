@@ -5,6 +5,10 @@
   "_id": "PZn60K1vHR1rudre",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: a Machine Gun (Ammo Belt) and Hard Body Armor.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

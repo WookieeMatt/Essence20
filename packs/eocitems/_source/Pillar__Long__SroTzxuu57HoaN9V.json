@@ -5,6 +5,10 @@
   "_id": "SroTzxuu57HoaN9V",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: taking this Alt Mode sets your size and Movement and adds the Ram attack (1 Blunt, Trip alternate) to your sheet; a Use button re-adds it. While you are in it, Limited Articulation stops Athletics and Finesse rolls with an error message instead of rolling them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -26,7 +30,8 @@
     },
     "altModesize": "long",
     "altModeCrew": 2,
-    "altModeFirepoints": 4
+    "altModeFirepoints": 4,
+    "limitedArticulation": true
   },
   "effects": [],
   "sort": 300000,

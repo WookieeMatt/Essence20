@@ -5,6 +5,10 @@
   "_id": "fQM1keWndscbxBLJ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: the Zord gets +1 Evasion on its sheet. Automatic: melee attacks by the Zord, or by its driver, against a creature within two Sizes of the Zord get ↑1, listed as Evolved Instincts in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,7 +16,52 @@
       "page": 83
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Evolved Instincts",
+      "origin": "Compendium.essence20.jump_through_time.Item.fQM1keWndscbxBLJ",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "evIn5tEvasn0Fx3p",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!fQM1keWndscbxBLJ.evIn5tEvasn0Fx3p"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

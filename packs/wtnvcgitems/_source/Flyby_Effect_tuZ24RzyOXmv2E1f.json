@@ -5,6 +5,10 @@
   "_id": "tuZ24RzyOXmv2E1f",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a fly-by Might attack at Reach for 2 Blunt damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

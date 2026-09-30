@@ -5,6 +5,10 @@
   "_id": "nLT8HSCCGWEBiRlq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: trained in all armor and Qualified in Computerized armor. Automatic: its Requisition and driving Qualifications; ↑1 on attacks with vehicle and hardpoint weapons; and attempts to Grapple, Shove or Trip you (Maneuver, Grapple and Knock Prone attacks, or a Shove) take a Snag. Both are labelled Mega Training Regimen in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

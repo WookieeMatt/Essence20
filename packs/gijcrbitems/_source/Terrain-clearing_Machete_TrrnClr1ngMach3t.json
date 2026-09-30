@@ -5,6 +5,10 @@
   "_id": "TrrnClr1ngMach3t",
   "img": "icons/svg/sword.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for 1 Sharp damage at Reach, and its Martial Arts, Sharp and Silent traits apply. Active Effect: while you carry it, your Survival tests have an Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

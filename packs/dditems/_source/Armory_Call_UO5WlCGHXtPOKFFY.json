@@ -5,6 +5,10 @@
   "_id": "UO5WlCGHXtPOKFFY",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: converting to this Alt Mode uses its listed Size, Movement and Crew, and Limited Articulation blocks Athletics and Finesse tests while you're in it.</p><p>Left to the table: the wearer or wielder's special attack for your chosen form.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -26,7 +30,8 @@
     },
     "altModesize": "small",
     "altModeCrew": 1,
-    "altModeFirepoints": 0
+    "altModeFirepoints": 0,
+    "limitedArticulation": true
   },
   "effects": [],
   "flags": {},

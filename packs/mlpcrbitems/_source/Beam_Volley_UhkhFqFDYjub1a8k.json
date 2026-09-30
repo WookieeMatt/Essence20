@@ -5,6 +5,10 @@
   "_id": "UhkhFqFDYjub1a8k",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Cast: automatically targets the three nearest enemies and makes one Spellcasting attack against them. Each hit takes 2 Energy damage.</p><p>Left to the table: choosing three different targets in range.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

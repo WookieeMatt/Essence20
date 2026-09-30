@@ -5,6 +5,10 @@
   "_id": "bdgThhk7atm9XMet",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +4 Toughness while worn, even for a character who can't transform. It pairs with the bonded-partner Perks for Headmaster teams; the environmental protection is narrative.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

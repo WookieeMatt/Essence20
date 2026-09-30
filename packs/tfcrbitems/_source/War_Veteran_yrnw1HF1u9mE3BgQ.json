@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Alertness Skill Tests. Left to the table: it's meant only for reading the battlefield, so switch the effect off for other Alertness tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

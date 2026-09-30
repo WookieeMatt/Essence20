@@ -5,6 +5,10 @@
   "_id": "1j4QRs7qeIBBszxf",
   "img": "systems/essence20/assets/icons/weapons/poison.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attack with it directly or coat a weapon with it. A direct hit offers a chat button that Restrains the target for 2 rounds.</p><p>Left to the table: the Restrained condition from a coated weapon, and the Poisoned condition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

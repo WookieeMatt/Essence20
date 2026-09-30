@@ -5,6 +5,10 @@
   "_id": "Wl7L2wcydXAw9Xei",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting for 4 Energy damage at ↓2. Once per encounter: after one use it won't roll again until the next encounter.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

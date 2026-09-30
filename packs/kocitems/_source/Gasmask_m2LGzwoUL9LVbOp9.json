@@ -5,6 +5,10 @@
   "_id": "m2LGzwoUL9LVbOp9",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off until you switch it on): ↑2 on Survival when the air is bad. Automatic: counts as a gas mask against gas hazards.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

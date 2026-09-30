@@ -72,6 +72,7 @@ const USE_KINDS = new Set([
   'assistantGij', 'assistantMlp', 'alteredPet', 'directControl', 'masterControlProgram', 'telemetryData', 'terminalGuidance',
   'buzzTheTower', 'ric', 'miniConAlly', 'multiPurpose', 'enhancedSensors', 'additionalMiniCon', 'miniConAffinity', 'miniConHub',
   'miniConMaster', 'loyalMinions', 'humanCompanion', 'alienCompanion',
+  'backupMaster', 'extraFriend', 'favoriteCommandGij', 'favoriteCommandMlp', 'favoriteCommandWtnv',
 ]);
 
 const BY_SOURCE = Object.fromEntries(Object.entries(COMP).filter(([kind]) => USE_KINDS.has(kind)).map(([kind, id]) => [id, kind]));

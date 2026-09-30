@@ -5,6 +5,10 @@
   "_id": "od6Yw5ordlxFpJRm",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Fanatic Influence Perk and its Hang-Up options (Idolizer, Something To Prove, Subordinate).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

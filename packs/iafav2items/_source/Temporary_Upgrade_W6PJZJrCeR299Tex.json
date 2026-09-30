@@ -5,6 +5,10 @@
   "_id": "W6PJZJrCeR299Tex",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: once per turn when you hit, spend a Story Point to give that weapon one weapon upgrade's benefit for the attack (Availability no higher than the weapon's), and apply that upgrade's effect by hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "uUFaA9XsLcvFiKky",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic while equipped: +3 Toughness and 60ft Aerial movement. Its Wing Missile Salvo attack is limited to once per scene.</p><p>Left to the table: the 3 Personal Power summon cost and the force field that raises the bonus to +6.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

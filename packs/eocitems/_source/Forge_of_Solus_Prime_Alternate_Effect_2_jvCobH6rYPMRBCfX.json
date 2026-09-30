@@ -5,6 +5,10 @@
   "_id": "jvCobH6rYPMRBCfX",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: rolls the Forge's Might melee attack. Left to the table: making the target Stunned for 2d2 turns on a hit.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

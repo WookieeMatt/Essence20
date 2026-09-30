@@ -5,6 +5,10 @@
   "_id": "JuwiEXHoZxlbT7G7",
   "img": "systems/essence20/assets/icons/weapons/toxin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its effect; its traits apply, and its ongoing damage and consumable use are tracked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

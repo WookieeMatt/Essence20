@@ -5,6 +5,10 @@
   "_id": "wdNtC91ob61BEvwB",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Technology attack dealing 1 Blunt damage to one target, range 30/60 ft.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

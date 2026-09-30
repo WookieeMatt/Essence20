@@ -5,6 +5,10 @@
   "_id": "pfP58nZasclFYAVk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Smarts and Social tests against a targeted non-human get Edge, labelled Earth Defenders in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

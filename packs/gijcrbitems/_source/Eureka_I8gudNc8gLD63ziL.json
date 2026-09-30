@@ -5,6 +5,10 @@
   "_id": "I8gudNc8gLD63ziL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: on Skill Tests with the Skill chosen on your Field Perk, the Roll Options Dialog opens with \"Can critically succeed on a d2\" already ticked, so a 2 on the d2 counts as a critical success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "fasskDJBsW8eY6tb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: pick Headmaster Body, Powermaster or Targetmaster when you take it. Left to the table: if you already have one, +1 Health for you and your bonded ally instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

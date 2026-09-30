@@ -5,6 +5,10 @@
   "_id": "rVW7mvnV4MbGuxoq",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Speed for the Zord. When added you pick a movement type, which goes up 10 feet. Automatic: ↑1 on Initiative for any Megaform it joins.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

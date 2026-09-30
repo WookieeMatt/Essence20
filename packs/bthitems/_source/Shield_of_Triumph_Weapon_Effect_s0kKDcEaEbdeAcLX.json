@@ -4,6 +4,10 @@
   "type": "weaponEffect",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Shield of Triumph's attack, rolling Finesse for 1 Sharp damage in melee.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

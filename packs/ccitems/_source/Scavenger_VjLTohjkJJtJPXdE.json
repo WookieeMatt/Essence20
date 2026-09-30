@@ -5,6 +5,10 @@
   "_id": "VjLTohjkJJtJPXdE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (out of combat, once per encounter): pick a weapon, armor, shield or gear, then roll its Requisition Test one Availability step harder. On a success you get it with the Temperamental trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

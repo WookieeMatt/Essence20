@@ -5,6 +5,10 @@
   "_id": "UdDiUmxKQxuhyb5H",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Irritant attack, rolling Athletics to apply Impaired.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "pcBbvGPdjOoeUnnj",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: pick the grenade's element. Automatic: a thrown Targeting attack for 1 damage of that element in a 10 ft radius, and its traits apply, including using up the grenade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

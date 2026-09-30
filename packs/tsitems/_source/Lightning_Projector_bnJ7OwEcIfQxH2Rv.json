@@ -5,6 +5,10 @@
   "_id": "bnJ7OwEcIfQxH2Rv",
   "img": "systems/essence20/assets/icons/weapons/lightning-projector.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Technology attacks with its listed effects and range; its Anti-Tank, Armor Piercing, Computerized, Electric and Electromagnetic traits apply. Left to the table: the Energon to activate it each scene, the two Hardpoints it fills, and the once-per-scene chain lightning attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

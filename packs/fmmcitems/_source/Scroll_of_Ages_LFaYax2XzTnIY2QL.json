@@ -5,6 +5,10 @@
   "_id": "LFaYax2XzTnIY2QL",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: using the scroll as a one-use focus, including its bonus to the Sorcerous Power's Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

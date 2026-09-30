@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: a switchable ↓1 on Social tests. Turn it on when this Hang-Up applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

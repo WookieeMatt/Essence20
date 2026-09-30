@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per combat. The next damage you take is reduced by 1, and all your Skill Tests take a Snag until the end of your next turn, labelled Dig Deep in the Roll Options Dialog. Out of combat the Snag goes on your next Skill Test only.</p><p>Left to the table: repairing 1d2 Health by giving up your whole turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

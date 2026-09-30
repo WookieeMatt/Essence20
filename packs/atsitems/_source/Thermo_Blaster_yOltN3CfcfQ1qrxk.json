@@ -5,6 +5,10 @@
   "_id": "yOltN3CfcfQ1qrxk",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick Blaster Mode or Rifle Mode when you attack, each with its own damage, range and alternate effect. Lightspeed Response can swap it in when you Morph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

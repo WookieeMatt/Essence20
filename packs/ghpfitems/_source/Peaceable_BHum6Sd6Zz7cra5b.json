@@ -5,6 +5,10 @@
   "_id": "BHum6Sd6Zz7cra5b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks that deal only Stun get ↑1 and attacks that deal any other damage get ↓1, already counted in the Upshift and Downshift numbers of your Roll Options Dialog. Healing tests get ↑1, labelled Peaceable there.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "",

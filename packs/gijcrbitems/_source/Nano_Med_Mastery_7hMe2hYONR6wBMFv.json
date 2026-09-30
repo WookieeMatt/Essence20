@@ -5,6 +5,10 @@
   "_id": "7hMe2hYONR6wBMFv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button, once per encounter: spend your Standard action to heal allies within 60 ft (you included) by 2, bringing back the Defeated, and give them an Edge until the end of your next turn.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "TBpflYvZ0lWQ65Cp",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (Free action): roll DIF 20 Infiltration. On a success you're Invisible until the start of your next turn, or until you take damage.</p><p>Left to the table: needing dim light.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "oZVphHSTTBENUaFk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when your Blunt or Sharp attack hits a vehicle, that vehicle's next test takes a Snag and ↓1, shown as Brute Force Works Best in its Roll Options Dialog.</p><p>Left to the table: the same penalty on a piece of equipment that isn't a vehicle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

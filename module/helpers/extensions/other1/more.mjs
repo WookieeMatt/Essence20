@@ -1,5 +1,4 @@
 import { registerChatButton, registerDerived, registerRest, registerUse } from "../../extensions.mjs";
-import { hasSourced } from "../../companion-link.mjs";
 import { DD, DSOE, T, addToDefense, firstTarget, isFrom, itemsOf, post, sourceOf } from "./shared.mjs";
 
 /**
@@ -10,12 +9,22 @@ export const O1_MORE = {
   armorMatrixLight: DD('z3Nb6mrcAZ1c8R3q'),
   armorMatrixMedium: DD('COIQnaWsN7JorDuv'),
   armorMatrixHeavy: DD('Gha7PEUJKSOmLnIx'),
-  championHisWay: DD('0SqZMH14YFCxrnGa'),
-  distillHisEssence: DD('VT906hPZfbHx7vYK'),
-  eatTheWeak: DD('kIeIcRQVWg4v9CZL'),
+  championHisWay: DD('j9FW3wF6mKnVFj0s'),
+  distillHisEssence: DD('QKJ19OgpdHNXUBQy'),
+  eatTheWeak: DD('hzCEZfTNDsQcOjUB'),
   addictedDarkEnergon: DD('e3c7wuCA7JQS7rTA'),
   multimorph: DSOE('HGKHAbwZ43I564vd'),
 };
+
+// A second copy of each Rite was briefly in the compendium (since removed); a character who took
+// one of those still matches.
+const RITE_COPIES = {
+  championHisWay: [O1_MORE.championHisWay, DD('0SqZMH14YFCxrnGa')],
+  distillHisEssence: [O1_MORE.distillHisEssence, DD('VT906hPZfbHx7vYK')],
+  eatTheWeak: [O1_MORE.eatTheWeak, DD('kIeIcRQVWg4v9CZL')],
+};
+const isRite = key => item => RITE_COPIES[key].includes(sourceOf(item));
+const hasRite = (actor, key) => itemsOf(actor).some(isRite(key));
 
 /* -------------------------------------------- */
 /*  Armor Matrix                                 */
@@ -79,7 +88,7 @@ registerDerived((actor) => {
     addToDefense(defenses.toughness, -extra, T('O1ArmorMatrixLabel'));
   }
 
-  if (underDarkEnergon(actor) && hasSourced(actor, O1_MORE.championHisWay)) {
+  if (underDarkEnergon(actor) && hasRite(actor, 'championHisWay')) {
     for (const defense of Object.values(defenses)) {
       addToDefense(defense, CHAMPION_BONUS, T('O1ChampionHisWay'));
     }
@@ -90,7 +99,7 @@ registerDerived((actor) => {
 // standard Energon Points into 1 Dark Energon Point." The day ends with the sheet's Rest.
 registerUse({
   id: 'o1DistillHisEssence',
-  matches: isFrom(O1_MORE.distillHisEssence),
+  matches: isRite('distillHisEssence'),
   canUse: item => !item.flags?.essence20?.o1UsedToday && (Number(item.parent?.system?.energon?.normal?.value) || 0) >= 2,
   run: async (item) => {
     const actor = item.parent;
@@ -106,7 +115,7 @@ registerUse({
 
 registerRest(async (actor) => {
   for (const item of itemsOf(actor)) {
-    if (sourceOf(item) == O1_MORE.distillHisEssence && item.flags?.essence20?.o1UsedToday) {
+    if (isRite('distillHisEssence')(item) && item.flags?.essence20?.o1UsedToday) {
       await item.unsetFlag('essence20', 'o1UsedToday');
     }
   }
@@ -119,7 +128,7 @@ const addictionOf = actor => itemsOf(actor).find(item => item.type == 'hangUp'
 
 registerUse({
   id: 'o1EatTheWeak',
-  matches: isFrom(O1_MORE.eatTheWeak),
+  matches: isRite('eatTheWeak'),
   run: async (item) => {
     const actor = item.parent;
     const target = firstTarget() ?? actor;

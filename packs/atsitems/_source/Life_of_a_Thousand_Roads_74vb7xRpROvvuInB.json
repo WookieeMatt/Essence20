@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Culture and Survival rolls show a Life of a Thousand Roads switch. Turn it on for tests about places or peoples you may have met to add ↑1 to that roll.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

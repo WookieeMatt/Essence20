@@ -5,6 +5,10 @@
   "_id": "5hBral7hiCPv3GqF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per combat, pick Toughness, Willpower or Evasion. That Defense is doubled against the next attack or effect that targets it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "U0ZrZsHjhyheJx6W",
   "img": "systems/essence20/assets/icons/weapons/rifle.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets, and its traits apply. As a Mounted weapon it must be set up before it fires. Its alternate effect is a separate attack option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

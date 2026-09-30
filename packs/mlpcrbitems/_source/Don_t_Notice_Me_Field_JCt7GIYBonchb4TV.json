@@ -5,6 +5,10 @@
   "_id": "JCt7GIYBonchb4TV",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Cast: on a success (DIF 20), your target, or you, becomes Invisible for the scene. Its Infiltration tests get Edge, and Alertness tests aimed at it take a Snag, both listed as Don't-Notice-Me-Field in the Roll Options Dialog.</p><p>Left to the table: silence, and ending it early if they harm someone.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

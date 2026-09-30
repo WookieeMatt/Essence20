@@ -5,6 +5,10 @@
   "_id": "VwNVX4lVMpp4FRHX",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Strafer Perks at their listed levels (Aerial Interface through Rifle Tally), plus the Focus's Essence and Skill increases.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

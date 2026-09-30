@@ -5,10 +5,14 @@
   "_id": "svTp7ghetepVVpIg",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attached to equipped armor, it adds +2 Toughness and the Plating trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "GI Joe Core Rulebook",
+      "book": "Transformers Core Rulebook",
       "page": 133
     },
     "armorBonus": {

@@ -5,6 +5,10 @@
   "_id": "72YKBI0t7W3DsaY3",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 3 starting Health, Ground Movement 30, the Too Many Arms! Perk, and your pick of the Many-Armed Alt Modes (Common or Large, Ground or Aquatic). You pick +1 Speed or Smarts and Acrobatics or Alertness as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

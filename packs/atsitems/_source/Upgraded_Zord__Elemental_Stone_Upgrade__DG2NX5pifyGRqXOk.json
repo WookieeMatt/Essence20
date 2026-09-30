@@ -5,6 +5,10 @@
   "_id": "DG2NX5pifyGRqXOk",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +2 Toughness and +2 Health for the Zord.</p><p>Left to the table: +1 damage on its Blunt melee attacks, and keeping only one Upgraded Zord option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

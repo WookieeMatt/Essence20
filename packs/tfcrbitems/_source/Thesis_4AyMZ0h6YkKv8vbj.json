@@ -5,6 +5,10 @@
   "_id": "4AyMZ0h6YkKv8vbj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per scene): roll Science in place of another Smarts Skill. Left to the table: keeping it outside of combat and the extra time the test takes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

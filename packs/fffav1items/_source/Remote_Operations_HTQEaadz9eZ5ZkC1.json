@@ -5,6 +5,10 @@
   "_id": "HTQEaadz9eZ5ZkC1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: makes the DIF 10 Alertness test; on a success you can Lend Assistance to allies for the rest of the turn.</p><p>Left to the table: the Free-action timing and the once-per-ally limit.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

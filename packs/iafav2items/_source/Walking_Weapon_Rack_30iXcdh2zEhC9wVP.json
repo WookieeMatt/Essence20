@@ -5,6 +5,10 @@
   "_id": "30iXcdh2zEhC9wVP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: melee attacks with a weapon that has both the Silent and Martial Arts traits open the Roll Options Dialog with Edge already selected.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

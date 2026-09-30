@@ -5,6 +5,10 @@
   "_id": "WJNadltM5sDG4fOt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

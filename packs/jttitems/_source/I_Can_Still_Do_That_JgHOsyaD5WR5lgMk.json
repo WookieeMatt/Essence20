@@ -5,6 +5,10 @@
   "_id": "JgHOsyaD5WR5lgMk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend a Personal Power to copy again a Perk or Power you copied with I Can Do That this scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

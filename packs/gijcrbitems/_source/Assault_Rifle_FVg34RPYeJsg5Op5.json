@@ -5,6 +5,10 @@
   "_id": "FVg34RPYeJsg5Op5",
   "img": "systems/essence20/assets/icons/weapons/assault_rifle.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll with the listed damage, range and effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

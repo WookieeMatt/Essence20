@@ -5,6 +5,10 @@
   "_id": "xiZ0WPA8yxpht9KE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: each time the Role gives you a Laugh Tactic, pick one from the list and it's added as its own Perk. Comedy is Hard can be picked up to three times.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "0JsEhJdM3fmp4O65",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Evasion. Granted: pick your Division Perk from its list.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "IeOmY0keh5oD2n3l",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when one of your BFFs has the Skill you're rolling at d4 or better, an About Twenty-Percent Cooler (↑1) switch appears. Ticking it spends one of your three uses, and a Rest gives them back.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

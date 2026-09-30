@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: on drop, the Speed increase and a choice of Initiative, Driving or Targeting, plus 2 starting Health, 35 ft Ground movement and the Fly In The Future Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

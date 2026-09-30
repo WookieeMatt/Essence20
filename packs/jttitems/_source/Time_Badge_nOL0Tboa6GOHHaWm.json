@@ -5,6 +5,10 @@
   "_id": "nOL0Tboa6GOHHaWm",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Granted by the Time Force Form while Morphed. Left to the table: shrinking a Defeated enemy into cryostasis and calling Time Force reinforcements.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

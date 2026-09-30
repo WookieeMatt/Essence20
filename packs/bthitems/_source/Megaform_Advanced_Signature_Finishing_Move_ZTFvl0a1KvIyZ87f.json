@@ -5,6 +5,10 @@
   "_id": "ZTFvl0a1KvIyZ87f",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (on the Zord): once per mission, every pilot rolls the required test; if they all succeed, the Megaform's next attack deals five times damage and ignores the target's Resistance Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

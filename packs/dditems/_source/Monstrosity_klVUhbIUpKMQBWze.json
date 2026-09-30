@@ -5,6 +5,10 @@
   "_id": "klVUhbIUpKMQBWze",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Strength Essence, Brawn and Might, starting Health, 35 ft ground movement and the Tooth and Claw Perk; pick one of the six Monstrosity Alt Modes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

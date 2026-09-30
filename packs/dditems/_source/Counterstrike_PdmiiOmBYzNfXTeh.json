@@ -5,6 +5,10 @@
   "_id": "PdmiiOmBYzNfXTeh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per round, when a melee attack misses you by 5 or more, its card gets a Counterstrike button for you. It targets the attacker and gives you a free extra attack; your next melee attack against them takes ↓1, labelled Counterstrike in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

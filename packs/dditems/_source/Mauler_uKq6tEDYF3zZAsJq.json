@@ -5,6 +5,10 @@
   "_id": "uKq6tEDYF3zZAsJq",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits apply. Chat card: on a Critical Success, 1 Strength Essence damage is offered as a critical option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

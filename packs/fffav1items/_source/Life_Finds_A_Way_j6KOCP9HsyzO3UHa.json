@@ -5,6 +5,10 @@
   "_id": "j6KOCP9HsyzO3UHa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: grants the Dodgy Perk, ignoring its prerequisites.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

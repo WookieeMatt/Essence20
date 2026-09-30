@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑2 on Initiative. When added you pick a movement type you have, which goes up 10 feet.</p>"
+    },
     "originalId": "",
     "description": "<p>Movement can now be chosen and increases automatically. </p>",
     "source": {

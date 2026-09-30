@@ -5,6 +5,10 @@
   "_id": "hoVKqmKJmwDm4L7i",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: using it and rewinding the most recent round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

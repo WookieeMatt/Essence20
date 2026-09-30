@@ -3,6 +3,10 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Small Town Roots Perk and the Small Town Roots Hang-Up when you add this Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

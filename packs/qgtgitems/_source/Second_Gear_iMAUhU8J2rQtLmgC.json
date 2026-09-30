@@ -5,6 +5,10 @@
   "_id": "iMAUhU8J2rQtLmgC",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: the vehicle's own Brawn and Might tests get Edge, shown as Second Gear next to Edge in the Roll Options Dialog. Set it back to Normal when the test isn't pushing, pulling or towing.</p><p>Left to the table: the lower DIF for dragging extra weight.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

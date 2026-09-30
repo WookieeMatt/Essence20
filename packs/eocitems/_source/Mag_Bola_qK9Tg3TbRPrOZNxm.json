@@ -5,6 +5,10 @@
   "_id": "qK9Tg3TbRPrOZNxm",
   "img": "systems/essence20/assets/icons/weapons/hunting-bolas.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits apply, including Mode Lock and Consumable. The alternate effect is its own attack option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

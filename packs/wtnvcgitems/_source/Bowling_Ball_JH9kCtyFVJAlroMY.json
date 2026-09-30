@@ -5,6 +5,10 @@
   "_id": "JH9kCtyFVJAlroMY",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: thrown Athletics attacks at Short range for 1 Blunt damage plus 1 Stun, or a Maneuver as its alternate; its Trip and Wrecker traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -16,6 +20,12 @@
         "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.50KtCD4be0zdX2VT",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Bowling Ball Effect",
+        "type": "weaponEffect"
+      },
+      "alt1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.ndkN8ZbXqXR4xQVB",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Bowling Ball Alternate Effect",
         "type": "weaponEffect"
       }
     },

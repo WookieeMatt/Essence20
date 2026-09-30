@@ -5,6 +5,10 @@
   "_id": "57KqLyhUgAHpCskm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Lend Assistance and the helped test succeeds, a Story Point is added to the team pool.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your unarmed attacks deal +1 damage, listed as an Iron Hooves bonus on the attack's chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

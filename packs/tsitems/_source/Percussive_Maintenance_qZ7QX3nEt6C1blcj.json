@@ -5,6 +5,10 @@
   "_id": "qZ7QX3nEt6C1blcj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Technology also counts as a Strength Skill for you. Automatic: after a Critical Success on a Technology roll, your next Technology roll gets Edge, already selected when its Roll Options Dialog opens.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

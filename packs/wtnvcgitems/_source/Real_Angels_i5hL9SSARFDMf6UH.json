@@ -5,6 +5,10 @@
   "_id": "i5hL9SSARFDMf6UH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (Standard action, once per session): gives you the Cover status.</p><p>Left to the table: removing Cover at the start of your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

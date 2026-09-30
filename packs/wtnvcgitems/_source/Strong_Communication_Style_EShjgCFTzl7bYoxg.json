@@ -5,6 +5,10 @@
   "_id": "EShjgCFTzl7bYoxg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system has no language tracking. Left to the table: ignoring language penalties, and the Edge when you communicate without a shared language.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

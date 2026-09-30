@@ -5,6 +5,10 @@
   "_id": "O5vyi2mvtWAtkE92",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Burly bonus also applies while you're in a vehicle, with an extra ↑1 for each Size Class you or your vehicle are larger than the target, all counted in the Shift Up box of the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

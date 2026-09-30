@@ -5,6 +5,10 @@
   "_id": "vaAhMXXlzNWHIikR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: on a Critical Success you are asked whether to take a normal success instead for ↑1 on your next test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

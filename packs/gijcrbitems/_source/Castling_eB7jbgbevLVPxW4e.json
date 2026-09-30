@@ -5,6 +5,10 @@
   "_id": "eB7jbgbevLVPxW4e",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spends your Standard action; pick two allies and each gains 1 Temporary Health. The chat card reminds them they may move up to their full Movement right away.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

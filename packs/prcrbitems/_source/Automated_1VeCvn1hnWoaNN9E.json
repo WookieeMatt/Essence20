@@ -5,6 +5,10 @@
   "_id": "1VeCvn1hnWoaNN9E",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon rolls Technology instead of its normal Skill and gains the Computerized trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

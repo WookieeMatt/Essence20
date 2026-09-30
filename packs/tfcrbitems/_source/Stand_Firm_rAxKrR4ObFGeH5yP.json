@@ -5,6 +5,10 @@
   "_id": "rAxKrR4ObFGeH5yP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: doubles the Stalwart Defense bonus you chose this turn. Only available once Stalwart Defense has been used.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

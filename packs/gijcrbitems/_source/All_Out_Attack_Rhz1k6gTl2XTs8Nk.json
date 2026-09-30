@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on a Might, Finesse or Targeting attack, take downshifts for +1 damage each; enemies get the same upshifts against you until your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

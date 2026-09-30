@@ -5,6 +5,10 @@
   "_id": "bDgQ7jyTgisY42kt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power to remove one Condition you have (other than Defeated), picked from a list.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

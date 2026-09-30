@@ -5,6 +5,10 @@
   "_id": "A7eEbdF3e9aaXj7S",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a battledress upgrade of the matching tier; its benefit works on you without wearing armor.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

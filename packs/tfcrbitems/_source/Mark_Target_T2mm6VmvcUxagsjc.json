@@ -5,6 +5,10 @@
   "_id": "T2mm6VmvcUxagsjc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: marks the creature you have targeted. Until the GM starts a new scene, your rolls with that creature targeted get ↑1, labelled Mark Target in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

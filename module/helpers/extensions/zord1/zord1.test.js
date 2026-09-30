@@ -188,6 +188,133 @@ describe('Forms', () => {
     expect(sources).toEqual([expect.objectContaining({ shiftUp: 2 })]);
   });
 
+  test('Ninja Storm Wind Ranger: a 1 Personal Power Morph Form that doubles Ground movement and adds ↑1 to Stealth', () => {
+    const ninja = makeActor({
+      items: [{ type: 'perk', name: 'Ninja Storm Wind Ranger', flags: src(forms.FORM.ninjaStorm) }],
+      system: { isMorphed: true, defenses: {}, movement: { ground: { total: 30 } } },
+      flags: { essence20: { zord1Form: { uuid: forms.FORM.ninjaStorm } } },
+    });
+    expect(forms.heldForms(ninja)).toEqual([forms.FORM.ninjaStorm]);
+    expect(forms.formSpec(ninja, forms.FORM.ninjaStorm).cost).toBe(1);
+    forms.formDerived(ninja);
+    expect(ninja.system.movement.ground.total).toBe(60);
+    expect(forms.formRollSources(ninja, null, { rolledSkill: 'infiltration' }).sources)
+      .toEqual([expect.objectContaining({ id: 'zord1NinjaStealth', shiftUp: 1 })]);
+    expect(forms.formRollSources(ninja, null, { rolledSkill: 'athletics' }).sources).toHaveLength(0);
+
+    const inactive = makeActor({
+      items: [{ type: 'perk', flags: src(forms.FORM.ninjaStorm) }],
+      system: { isMorphed: true, defenses: {}, movement: { ground: { total: 30 } } },
+    });
+    forms.formDerived(inactive);
+    expect(inactive.system.movement.ground.total).toBe(30);
+  });
+
+  describe('Ninja Storm Wind Ranger element', () => {
+    const use = () => ext.registrySnapshot().uses.find(u => u.id == 'zord1Form');
+    const ninjaActor = (element, extraFlags = {}) => makeActor({
+      items: [{ type: 'perk', name: 'Ninja Storm Wind Ranger', flags: { ...src(forms.FORM.ninjaStorm), essence20: element ? { zord1NinjaElement: element } : {} } }],
+      system: { isMorphed: true, defenses: {}, health: { max: 5 }, powers: { personal: { value: 3 } }, movement: { ground: { total: 30 } } },
+      flags: { essence20: { zord1Form: { uuid: forms.FORM.ninjaStorm }, ...extraFlags } },
+    });
+    const answer = value => {
+      global.foundry.applications.api.DialogV2 = { wait: jest.fn(async () => value) };
+    };
+
+    const rolls = (actor, success) => {
+      actor._dice = { rollSkill: jest.fn(async () => ({ success })) };
+      return actor._dice.rollSkill;
+    };
+
+    afterAll(() => {
+      global.foundry.applications.api = {};
+    });
+
+    test('the element is picked on the Perk from the Use button when none is set', async () => {
+      const actor = ninjaActor(null);
+      const perk = actor.items.contents[0];
+      answer('water');
+      await use().run(perk, null, async () => true);
+      expect(perk.flags.essence20.zord1NinjaElement).toBe('water');
+      expect(forms.ninjaElement(actor)).toBe('water');
+    });
+
+    test('activating the element costs 1 Personal Power and runs for 3 rounds', async () => {
+      const actor = ninjaActor('earth');
+      const perk = actor.items.contents[0];
+      global.game.combat = { id: 'c', round: 2, turn: 0 };
+      global.game.combats = { get: id => (id == 'c' ? global.game.combat : null) };
+      answer('ninjaElement');
+      await use().run(perk, null, async () => true);
+      expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 2 });
+      expect(forms.isNinjaElementActive(actor)).toBe(true);
+      global.game.combat.round = 5;
+      expect(forms.isNinjaElementActive(actor)).toBe(false);
+      global.game.combat = null;
+      delete global.game.combats;
+    });
+
+    test('Earth Duplication takes 1 Health off while split, and only while the element runs', async () => {
+      const actor = ninjaActor('earth', { zord1NinjaElementOn: { epoch: 1, window: 'encounter', count: 1 } });
+      const perk = actor.items.contents[0];
+      answer('ninjaDuplicate');
+      await use().run(perk, null, async () => true);
+      forms.formDerived(actor);
+      expect(actor.system.health.max).toBe(4);
+
+      const lapsed = ninjaActor('earth', { zord1NinjaDuplicate: true });
+      forms.formDerived(lapsed);
+      expect(lapsed.system.health.max).toBe(5);
+    });
+
+    test('Air Blast rolls Targeting against Toughness and knocks the target Prone on a hit', async () => {
+      const actor = ninjaActor('air', { zord1NinjaElementOn: { epoch: 1, window: 'encounter', count: 1 } });
+      const perk = actor.items.contents[0];
+      const target = makeActor({ name: 'Putty', system: { defenses: { toughness: { total: 14 }, evasion: { total: 11 } } } });
+      target.toggleStatusEffect = jest.fn();
+      global.game.user.targets = new Set([{ actor: target }]);
+      answer('airBlast');
+      const roll = rolls(actor, true);
+      const pay = jest.fn(async () => true);
+      await use().run(perk, null, pay);
+      expect(pay).toHaveBeenCalledWith('standard');
+      expect(roll).toHaveBeenCalledWith(expect.objectContaining({ skill: 'targeting', dif: '14' }), actor);
+      expect(target.toggleStatusEffect).toHaveBeenCalledWith('prone', { active: true });
+    });
+
+    test('Water Blast rolls against Evasion and offers 2 Stun on a hit', async () => {
+      const actor = ninjaActor('water', { zord1NinjaElementOn: { epoch: 1, window: 'encounter', count: 1 } });
+      const perk = actor.items.contents[0];
+      const target = makeActor({ uuid: 'Actor.putty', system: { defenses: { toughness: { total: 14 }, evasion: { total: 11 } } } });
+      global.game.user.targets = new Set([{ actor: target }]);
+      answer('waterBlast');
+      const roll = rolls(actor, true);
+      const message = await use().run(perk, null, async () => true);
+      expect(roll).toHaveBeenCalledWith(expect.objectContaining({ skill: 'targeting', dif: '11' }), actor);
+      expect(message).toContain('data-e20-ext="o1ApplyDamage"');
+      expect(message).toContain('data-target-uuid="Actor.putty"');
+      expect(message).toContain('data-amount="2"');
+    });
+
+    test('rolls against a Ranger with the Form active offer the mind-control Snag', async () => {
+      const ninja = ninjaActor('air');
+      const roller = makeActor();
+      expect(forms.formToggles(roller, { rolledSkill: 'persuasion' }).map(t => t.name)).not.toContain('zord1NinjaMind');
+      global.game.user.targets = new Set([{ actor: ninja }]);
+      expect(forms.formToggles(roller, { rolledSkill: 'persuasion' }).map(t => t.name)).toContain('zord1NinjaMind');
+      const options = { ext: { zord1NinjaMind: true } };
+      await forms.formApplyDialog(roller, options, {});
+      expect(options.snag).toBe(true);
+    });
+
+    test('ending the Form clears the element', async () => {
+      const actor = ninjaActor('earth', { zord1NinjaElementOn: { epoch: 1, count: 1 }, zord1NinjaDuplicate: true });
+      await forms.endForm(actor);
+      expect(actor.flags.essence20.zord1NinjaElementOn).toBeUndefined();
+      expect(actor.flags.essence20.zord1NinjaDuplicate).toBeUndefined();
+    });
+  });
+
   test('Solar Power resists Cold and Energy attacks as a Snag', () => {
     const target = makeActor({ items: [{ type: 'perk', flags: src(forms.FORM.solar) }], system: { isMorphed: true }, flags: { essence20: { zord1Form: { uuid: forms.FORM.solar } } } });
     const attacker = makeActor();
@@ -359,6 +486,32 @@ describe('Megaforms', () => {
     expect(megaform.attackOwner(mega, effect)).toBe(part);
     expect(megaform.accurateCombinerSources(mega, null, { item: effect, isAttack: true, isMelee: false }).sources).toHaveLength(1);
     expect(megaform.accurateCombinerSources(mega, null, { item: effect, isAttack: true, isMelee: true }).sources).toHaveLength(0);
+  });
+
+  test('Assault Weapon adds 1 damage to the Megaform\'s participant melee attacks only', async () => {
+    const zord = makeActor({
+      uuid: 'Actor.zord', type: 'zord',
+      items: [{ type: 'megaformTrait', name: 'Assault Weapon', system: { type: 'assaultWeapon' } }, { type: 'weapon', name: 'Saber' }],
+    });
+    worldList.push(zord);
+    const mega = makeActor({ type: 'megaform', system: { hasAssaultWeapon: true, actors: { z: { uuid: 'Actor.zord' } } } });
+    mega.items.contents.push(
+      makeItem({ id: 'mw', type: 'weapon', name: 'Saber' }),
+      makeItem({ id: 'me', type: 'weaponEffect', flags: { essence20: { parentId: 'mw' } } }),
+      makeItem({ id: 'gen', type: 'weaponEffect', name: 'Enhanced', flags: { essence20: { zord2Gen: 'pr-Melee-z' } } }),
+    );
+    const tools = { damageBonusNote: jest.fn() };
+    const hit = (itemId, style = 'melee', system = mega.system) => megaform.assaultWeaponHitRider(
+      { ...mega, system }, null, { damageValue: 3 }, { style, itemUuid: `Actor.m.Item.${itemId}` }, tools,
+    );
+
+    await hit('me');
+    expect(tools.damageBonusNote).toHaveBeenCalledWith(expect.anything(), 1, 'Assault Weapon');
+    tools.damageBonusNote.mockClear();
+    await hit('me', 'projectile');
+    await hit('gen');
+    await hit('me', 'melee', { ...mega.system, hasAssaultWeapon: false });
+    expect(tools.damageBonusNote).not.toHaveBeenCalled();
   });
 
   test('Power/Target Master mirror perks, powers and weapons', () => {

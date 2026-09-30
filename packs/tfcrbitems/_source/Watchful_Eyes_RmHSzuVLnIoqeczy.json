@@ -5,6 +5,10 @@
   "_id": "RmHSzuVLnIoqeczy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you roll Alertness against a DIF of 10 and succeed, each enemy you have targeted takes a Snag on its first Skill Test on its next turn, labelled Watchful Eyes in that enemy's Roll Options Dialog.</p><p>Left to the table: how many enemies you may pick (one, plus one per 5 over the DIF, doubled on a Critical Success).</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

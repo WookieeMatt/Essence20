@@ -5,6 +5,10 @@
   "_id": "cESVjk0j8XacNkNo",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an Athletics thrown attack at 30ft/90ft for 4 damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

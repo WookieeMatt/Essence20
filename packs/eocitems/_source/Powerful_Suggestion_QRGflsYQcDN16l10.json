@@ -5,6 +5,10 @@
   "_id": "QRGflsYQcDN16l10",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: with a creature targeted, pick one of its Skills and whether it will excel or fail. Excel: its next success with that Skill becomes a Critical Success. Fail: its tests with that Skill take ↓3, already counted in the Downshift number of its Roll Options Dialog, until it rolls a Critical Success with that Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "RVm0zqWyWIFEHsmL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the GM sets the test and decides what materials you find.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

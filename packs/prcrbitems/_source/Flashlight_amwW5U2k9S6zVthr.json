@@ -5,6 +5,10 @@
   "_id": "amwW5U2k9S6zVthr",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the light the mounted flashlight gives.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

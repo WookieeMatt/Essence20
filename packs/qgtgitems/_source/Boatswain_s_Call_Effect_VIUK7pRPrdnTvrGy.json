@@ -5,6 +5,10 @@
   "_id": "VIUK7pRPrdnTvrGy",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an Athletics cone blast for 1 Sonic damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "<p>15 ft cone</p>",

@@ -5,6 +5,10 @@
   "_id": "YpAUZi2V9cOOqCn9",
   "img": "systems/essence20/assets/icons/weapons/dual_cannon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range; its traits apply. Its once-per-scene limit is shown on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

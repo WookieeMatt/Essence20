@@ -5,6 +5,10 @@
   "_id": "EcDhRb1hKTMrfwVW",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a Targeting attack for 3 damage over an area.</p><p>Left to the table: its once-per-scene limit.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "SK4Yv7FRre5rFlOn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Performance rolls show three switches, Audience of 10+, 100+ and 1,000+, each adding ↑1. Turn on every one your audience has reached.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

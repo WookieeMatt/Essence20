@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Persuasion and Deception tests made against this pet (with it targeted) take a Snag, labelled Animal in the roller's Roll Options Dialog.</p><p>Left to the table: the pet's equipment limits.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

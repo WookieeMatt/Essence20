@@ -5,6 +5,10 @@
   "_id": "wuqJ3Bjv5eqqZzum",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: you communicate without human languages, so Social tests may need a translator.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

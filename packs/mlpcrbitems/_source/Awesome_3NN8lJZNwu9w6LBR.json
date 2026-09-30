@@ -5,6 +5,10 @@
   "_id": "3NN8lJZNwu9w6LBR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick a Social Skill when you gain it. Tests with that Skill always get ↑1, already counted in the Upshift number of your Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

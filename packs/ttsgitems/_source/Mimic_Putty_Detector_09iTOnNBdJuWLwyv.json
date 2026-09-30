@@ -5,6 +5,10 @@
   "_id": "09iTOnNBdJuWLwyv",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: roll the Technology test from your sheet; the GM reveals any disguised monster.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "ieng7vOsUiz5fVBP",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a ↓1 switch when you use a mundane test instead of a spell you have mastered that would do the job.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

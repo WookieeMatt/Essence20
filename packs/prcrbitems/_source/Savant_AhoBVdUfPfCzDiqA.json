@@ -5,6 +5,10 @@
   "_id": "AhoBVdUfPfCzDiqA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Skills you have no ranks in roll a d2 with no untrained Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

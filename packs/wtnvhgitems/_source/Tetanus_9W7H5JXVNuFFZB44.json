@@ -5,6 +5,10 @@
   "_id": "9W7H5JXVNuFFZB44",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is automated. Left to the table: the Speed Essence damage every 8 hours, the Brawn tests and Paralyzed when moving fast, and curing it in Healing downtime.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: pick an Essence. Automatic: once per scene, your first test with a Skill from that Essence opens its Roll Options Dialog with the Specialized box ticked.</p><p>Left to the table: saving it for a better roll, as it's spent on the first matching test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

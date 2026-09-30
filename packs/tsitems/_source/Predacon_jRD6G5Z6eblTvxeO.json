@@ -5,6 +5,10 @@
   "_id": "jRD6G5Z6eblTvxeO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: pick Intimidation as the Perk's Skill. Roll Options Dialog: Intimidation tests show a Predacon switch for Edge, on by default when you roll a Specialization. Automatic: in combat, a successful Intimidation test gives each target it beat the Frightened condition, removed at the end of that target's next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

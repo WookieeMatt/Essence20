@@ -5,6 +5,10 @@
   "_id": "DMl6kKJe0iwW430D",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the grenade's range becomes Reach and it is planted as a bomb. A Detonate button sets it off when you trigger the detonator.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

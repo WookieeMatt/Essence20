@@ -5,6 +5,10 @@
   "_id": "PaArqqdMbUJ31LWR",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at Short range for 1 Sharp damage, or a swarm at ↓1 for 1 Sharp to up to 2 targets; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

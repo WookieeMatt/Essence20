@@ -5,6 +5,10 @@
   "_id": "BWtmIdj7rUkmfw4r",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this: the weapon has a built-in flashlight.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

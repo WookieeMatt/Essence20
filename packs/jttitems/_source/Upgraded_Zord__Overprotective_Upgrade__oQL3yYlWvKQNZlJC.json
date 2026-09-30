@@ -5,6 +5,10 @@
   "_id": "oQL3yYlWvKQNZlJC",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: the Zord gets +1 Strength. Automatic: its driver gets +2 Willpower and Cleverness.</p><p>Left to the table: the driver's ↑1 when an ally took damage that turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -32,18 +36,6 @@
           "key": "system.essences.strength.value",
           "mode": 2,
           "value": "1",
-          "priority": null
-        },
-        {
-          "key": "system.defenses.willpower.bonus",
-          "mode": 2,
-          "value": "2",
-          "priority": null
-        },
-        {
-          "key": "system.defenses.cleverness.bonus",
-          "mode": 2,
-          "value": "2",
           "priority": null
         }
       ],

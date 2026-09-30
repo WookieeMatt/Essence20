@@ -5,6 +5,10 @@
   "_id": "nRL1FJLtAEIbXozX",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: if you do not command your drone during a combat turn, you get +1 Evasion until your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

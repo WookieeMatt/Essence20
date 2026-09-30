@@ -5,6 +5,10 @@
   "_id": "Be6ZV0MJOBTWf6lM",
   "img": "systems/essence20/assets/icons/gear/art_kit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Deception rolls show a Cosmetics/Grooming Kit switch that adds ↑1. Turn it on when covering an alter ego or bluffing.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

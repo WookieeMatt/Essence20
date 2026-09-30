@@ -5,6 +5,10 @@
   "_id": "C3HNgsgzG7gZ95pq",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: its Magnetic Lash and Magnetic Surge attacks roll Technology, with Anti-Tank applied. Left to the table: the Energon or Story Point to activate it, and its active benefits (weight, Brawn ↑3, magnetic Aerial Movement, +2 Toughness).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

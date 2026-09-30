@@ -5,6 +5,10 @@
   "_id": "2VsUQk8wHUJbtJRY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Animal Perk for your pet: put it on the pet and its Active Effect gives the pet +1 Health. It can be taken more than once, up to the limit for the pet's availability.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

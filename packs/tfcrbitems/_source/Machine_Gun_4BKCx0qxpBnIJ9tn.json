@@ -5,6 +5,10 @@
   "_id": "4BKCx0qxpBnIJ9tn",
   "img": "systems/essence20/assets/icons/weapons/rifle.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Sharp damage at 40ft/160ft, with alternate effects of 2 Sharp (↓1) or 1 Sharp to 2 targets (↓1). Reload applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

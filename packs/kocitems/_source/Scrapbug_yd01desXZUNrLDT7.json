@@ -5,6 +5,10 @@
   "_id": "yd01desXZUNrLDT7",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: the small metal objects it pulls in.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

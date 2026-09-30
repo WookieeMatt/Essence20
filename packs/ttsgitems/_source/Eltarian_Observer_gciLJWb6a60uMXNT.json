@@ -5,6 +5,10 @@
   "_id": "gciLJWb6a60uMXNT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: pick a Skill when you gain it. Automatic: your tests with that Skill get Edge, already selected when the Roll Options Dialog opens.</p><p>Left to the table: keeping the pick to Culture, Survival or Technology, using the Edge only on alien worlds, and noting your extra language.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

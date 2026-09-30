@@ -5,6 +5,10 @@
   "_id": "faME3nQl9NjbafOG",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (1 Personal Power): pick an Edge on your next Social test against the creature you have targeted, or ↑1 on your next Smarts test. Either shows as Shattered Memories in that roll's Roll Options Dialog and is used up by it.</p><p>Left to the table: gaining new Contacts through it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

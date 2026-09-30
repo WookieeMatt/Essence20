@@ -5,6 +5,10 @@
   "_id": "xNXlgRyE6Jpc4lnm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick one of your spells. Casting it gets Edge, listed as Spell Focus next to Edge in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

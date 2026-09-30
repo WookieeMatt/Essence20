@@ -5,6 +5,10 @@
   "_id": "IXJYw6NYiVv32krl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene): roll Persuasion against DIF 15. On a success every nearby ally repairs 1 Health, multiplied on a Critical Success or high degree of success.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

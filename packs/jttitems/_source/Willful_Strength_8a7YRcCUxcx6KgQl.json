@@ -5,6 +5,10 @@
   "_id": "8a7YRcCUxcx6KgQl",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene, spend 1 Personal Power for bonus Health based on your Survival rank.</p><p>Left to the table: removing that bonus Health when the scene ends.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

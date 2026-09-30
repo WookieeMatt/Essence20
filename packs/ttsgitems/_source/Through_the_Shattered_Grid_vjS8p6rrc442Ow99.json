@@ -5,6 +5,10 @@
   "_id": "vjS8p6rrc442Ow99",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on when identifying something from outside your dimension to get Edge on Smarts tests, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

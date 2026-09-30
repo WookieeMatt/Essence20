@@ -5,6 +5,10 @@
   "_id": "L5KOGeqX43EdO3b3",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: creates a 10 ft cloud. Creatures inside take ↓1 on Alertness for the scene.</p><p>Left to the table: cover from the smoke, if you use the optional cover rule.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

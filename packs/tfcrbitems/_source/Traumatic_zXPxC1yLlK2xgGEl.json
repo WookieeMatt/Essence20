@@ -5,6 +5,10 @@
   "_id": "zXPxC1yLlK2xgGEl",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: on a critical hit with this weapon, a button deals 1 damage to the target's Willpower. If the weapon also has Bewildering, you pick which one applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

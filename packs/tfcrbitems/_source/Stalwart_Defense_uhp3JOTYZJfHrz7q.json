@@ -5,6 +5,10 @@
   "_id": "uhp3JOTYZJfHrz7q",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per turn): choose +2 Toughness, +2 Evasion, or +1 to both. In combat it applies to every attack against that Defense until your next turn; out of combat, to the next one.</p><p>Left to the table: the parrying-weapon option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "SKviFM3gryyTrJV5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per round, when you take an action you're asked whether it relates to Kindness. If it does, a Standard action costs a Move and a Move costs a Free; Free actions related to it cost nothing.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

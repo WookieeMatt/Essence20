@@ -5,6 +5,10 @@
   "_id": "RfjdqScdCbMgGESR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you have exactly 1 Health, every Skill Test opens the Roll Options Dialog with Edge already selected.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

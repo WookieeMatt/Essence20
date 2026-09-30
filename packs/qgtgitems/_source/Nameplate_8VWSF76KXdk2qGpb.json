@@ -5,6 +5,10 @@
   "_id": "8VWSF76KXdk2qGpb",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once a day, readies the Nameplate; the next test a crew member makes aboard gets ↑1. A Rest makes it available again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

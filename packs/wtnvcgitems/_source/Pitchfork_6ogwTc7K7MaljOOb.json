@@ -5,6 +5,10 @@
   "_id": "6ogwTc7K7MaljOOb",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might at double Reach. Pick one-handed (1 Sharp), two-handed (2 Sharp) or a sweep at ↓1 (1 Sharp to up to 2 targets) when you attack; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

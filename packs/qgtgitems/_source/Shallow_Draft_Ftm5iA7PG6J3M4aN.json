@@ -5,6 +5,10 @@
   "_id": "Ftm5iA7PG6J3M4aN",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the vessel gains the Amphibious trait and Ground Movement equal to its Aquatic Movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

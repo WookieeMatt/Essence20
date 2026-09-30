@@ -5,6 +5,10 @@
   "_id": "5sNSNj8AZXauiG5m",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: its communicator, ID and judgment functions. Morphing itself uses your Role's It's Morphin Time! on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

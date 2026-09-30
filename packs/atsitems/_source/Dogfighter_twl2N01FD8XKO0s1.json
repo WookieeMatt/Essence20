@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you drive a flying vehicle of Extended II size or smaller, your Driving and Targeting rolls against a targeted flying vehicle get Edge, labelled Dogfighter in the Roll Options Dialog. Your vehicle also gets +2 Evasion.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

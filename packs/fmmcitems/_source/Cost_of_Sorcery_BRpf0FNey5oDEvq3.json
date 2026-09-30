@@ -5,6 +5,10 @@
   "_id": "BRpf0FNey5oDEvq3",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: added automatically with the Sorcery Perk. Automatic: when you Fumble a test with a Sorcerous Power or a Sorcerous-trait attack, you lose 1 Health that nothing can prevent.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

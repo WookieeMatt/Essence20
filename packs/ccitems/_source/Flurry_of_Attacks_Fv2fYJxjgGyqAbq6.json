@@ -5,6 +5,10 @@
   "_id": "Fv2fYJxjgGyqAbq6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in combat, each different Adept Armament you have already attacked with this turn gives your next attack with another one ↑1, labelled Flurry of Attacks in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

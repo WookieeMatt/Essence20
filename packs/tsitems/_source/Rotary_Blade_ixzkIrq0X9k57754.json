@@ -5,6 +5,10 @@
   "_id": "ixzkIrq0X9k57754",
   "img": "systems/essence20/assets/icons/items/shield.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 Toughness and Evasion while the Cyber Shield is active. Use button: a controlled descent while falling (Standard action), or switch back to the blade (Move action).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

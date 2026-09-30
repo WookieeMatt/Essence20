@@ -5,6 +5,10 @@
   "_id": "GJCOxtuot74Jnfs4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you gain Terror without needing Edge.</p><p>Left to the table: the Morphed form's other benefits, such as flight and ignoring Sharp and Energy Resistance.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

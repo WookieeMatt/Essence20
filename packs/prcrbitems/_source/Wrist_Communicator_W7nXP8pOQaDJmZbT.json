@@ -5,6 +5,10 @@
   "_id": "W7nXP8pOQaDJmZbT",
   "img": "systems/essence20/assets/icons/gear/watch.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: teleport to a point you click, three times, with the charges coming back on a rest.</p><p>Left to the table: calling and talking to the team.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

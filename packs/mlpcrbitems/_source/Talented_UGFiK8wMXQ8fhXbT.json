@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: once per scene, you're asked if an action relates to your Talent; if so it costs one step less (Standard to Move, Move to Free, Free to nothing). Left to the table: extra uses per scene for each extra time you've taken it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

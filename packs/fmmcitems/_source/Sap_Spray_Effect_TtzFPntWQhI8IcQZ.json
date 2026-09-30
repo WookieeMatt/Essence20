@@ -5,6 +5,10 @@
   "_id": "TtzFPntWQhI8IcQZ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting against Toughness along a 40ft line for 2 Acid damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

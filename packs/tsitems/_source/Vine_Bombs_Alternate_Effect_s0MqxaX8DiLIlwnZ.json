@@ -5,6 +5,10 @@
   "_id": "s0MqxaX8DiLIlwnZ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a thrown attack for 2 Stun at ↓2.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

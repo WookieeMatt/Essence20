@@ -160,7 +160,7 @@ describe('onPowerUse', () => {
 
     await onPowerUse(actor, item);
 
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'augmentPowerWeaponActive', true);
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'augmentPowerWeaponActive', expect.objectContaining({ count: 1 }));
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
 
@@ -171,7 +171,7 @@ describe('onPowerUse', () => {
 
     await onPowerUse(actor, item);
 
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'penetratingStrikesActive', true);
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'penetratingStrikesActive', expect.objectContaining({ count: 1 }));
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
 

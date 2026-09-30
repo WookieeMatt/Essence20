@@ -5,6 +5,10 @@
   "_id": "2EDR4Je2m2dsIPXV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: readies it for the encounter so you can Lend Assistance back to a friend as a Free action. Left to the table: returning any other kind of benefit a friend gave you.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

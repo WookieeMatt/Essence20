@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the grenade is planted with a timer instead of thrown. Chat card: when it goes off, your Technology test is rolled against everyone in the blast; Wrecker leaves Rough Terrain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

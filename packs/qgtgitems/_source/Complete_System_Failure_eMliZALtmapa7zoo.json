@@ -5,6 +5,10 @@
   "_id": "eMliZALtmapa7zoo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: gear you disrupt with Technical Glitch or Some Assembly Required also gives a Snag and ↓2 on every test to use or repair it, shown as Complete System Failure in the Roll Options Dialog. It lasts until you press Repair (disruptor only) on the chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

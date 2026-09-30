@@ -5,6 +5,10 @@
   "_id": "Q3gc1907NrLurvD1",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: casting rolls Spellcasting and applies its cost as a lingering Spellcasting downshift. The GM sets the DIF by how familiar the target is, and the route is revealed in the story.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

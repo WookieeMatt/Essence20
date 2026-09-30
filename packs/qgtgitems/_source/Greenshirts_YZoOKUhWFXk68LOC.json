@@ -5,6 +5,10 @@
   "_id": "YZoOKUhWFXk68LOC",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: Ballistic Armor and an Assault Rifle (Extended Mag).</p><p>Left to the table: adding the Limited Kit of your choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

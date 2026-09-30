@@ -5,6 +5,10 @@
   "_id": "qjDBmRlTNvuJxyum",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene in combat, lets you use Broad Understanding and Thesis despite being in combat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

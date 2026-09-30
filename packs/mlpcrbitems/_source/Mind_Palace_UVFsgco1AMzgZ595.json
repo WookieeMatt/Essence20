@@ -5,6 +5,10 @@
   "_id": "UVFsgco1AMzgZ595",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 Willpower from 5th level, +2 from 11th and +3 from 17th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

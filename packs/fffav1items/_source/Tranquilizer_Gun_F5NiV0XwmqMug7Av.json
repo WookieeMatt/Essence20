@@ -5,6 +5,10 @@
   "_id": "F5NiV0XwmqMug7Av",
   "img": "systems/essence20/assets/icons/gear/syringe.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets, and its Injection trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

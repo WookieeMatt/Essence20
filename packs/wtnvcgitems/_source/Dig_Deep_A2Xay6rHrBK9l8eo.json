@@ -5,6 +5,10 @@
   "_id": "A2Xay6rHrBK9l8eo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button, once per scene: the next damage applied to you is reduced by 1, and your Skill Tests take a Snag until the end of your next turn, labelled Dig Deep in the Roll Options Dialog. Out of combat the Snag goes on your next Skill Test only.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

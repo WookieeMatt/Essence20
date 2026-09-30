@@ -5,6 +5,10 @@
   "_id": "h3ImRNpQ5w6JKsEC",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Subtle Snake Influence Perk, plus its Hang-Up when one applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

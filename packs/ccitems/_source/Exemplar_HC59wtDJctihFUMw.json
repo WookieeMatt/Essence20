@@ -5,6 +5,10 @@
   "_id": "HC59wtDJctihFUMw",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Branch Leader at 1st level and a Branch Perk at each listed level, plus its Essence increases and Skills. Use the Branch Perks' Use buttons to pick from your Branch.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

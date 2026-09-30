@@ -5,6 +5,10 @@
   "_id": "pwpCtdsf8l7T6Sii",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose your weapon type (and optionally take a Limited weapon of it). You count as Qualified with Limited weapons of that type when requisitioning.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

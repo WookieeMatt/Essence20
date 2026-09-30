@@ -5,6 +5,10 @@
   "_id": "ct0eW3BmVFX9iYTx",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the driver gets +1 Willpower while driving.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

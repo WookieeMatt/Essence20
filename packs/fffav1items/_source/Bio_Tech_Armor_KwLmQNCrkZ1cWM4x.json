@@ -5,6 +5,10 @@
   "_id": "KwLmQNCrkZ1cWM4x",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: you can equip two sets of battledress and both count. Equipping a second set warns you unless one has the Organic upgrade and the other is Computerized.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

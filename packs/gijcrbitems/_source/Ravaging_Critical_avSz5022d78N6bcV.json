@@ -5,6 +5,10 @@
   "_id": "avSz5022d78N6bcV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: on a critical success with a Might melee attack, or any attack within 30 ft, your critical effect is one step bigger.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

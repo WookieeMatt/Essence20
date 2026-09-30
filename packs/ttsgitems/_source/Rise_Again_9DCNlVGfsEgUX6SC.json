@@ -5,6 +5,10 @@
   "_id": "9DCNlVGfsEgUX6SC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per scene): +5 to a Defense you pick until your next turn. Automatic: once per scene, if you drop to 0 Health while Morphed from anything but a critical hit, you heal 1 Health.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

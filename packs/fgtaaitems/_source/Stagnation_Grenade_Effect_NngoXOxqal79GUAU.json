@@ -5,6 +5,10 @@
   "_id": "NngoXOxqal79GUAU",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: rolls Targeting at the listed range with a 10ft blast.</p><p>Left to the table: Stagnate 1 on each creature hit (they lose Standard actions, and it can Defeat them).</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

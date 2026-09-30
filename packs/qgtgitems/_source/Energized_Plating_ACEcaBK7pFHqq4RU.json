@@ -5,6 +5,10 @@
   "_id": "ACEcaBK7pFHqq4RU",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when attached you choose an Element. Attackers adjacent to the vehicle get an Energized Plating ↓2 switch under Automatic Modifiers in their Roll Options Dialog; switching it off skips the ↓2 and they take 1 damage of that Element instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

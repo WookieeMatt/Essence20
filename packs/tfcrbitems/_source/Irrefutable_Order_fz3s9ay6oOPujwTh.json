@@ -5,6 +5,10 @@
   "_id": "fz3s9ay6oOPujwTh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll Persuasion against a target of your level or lower and give a one-word order. On a success its Move action is spent on the order at the start of its next turn, with a reminder.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

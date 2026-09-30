@@ -5,6 +5,10 @@
   "_id": "D35QyZUJvAsl8FLC",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the larger Megaform bonuses it gives when inserted.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

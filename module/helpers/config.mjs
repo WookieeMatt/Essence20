@@ -201,6 +201,10 @@ E20.weaponTraits = {
   combined: "E20.WeaponTraitCombined",
   components: "E20.WeaponTraitComponents",
   computerized: "E20.WeaponTraitComputerized",
+  // Condition (Intercontinental Adventures, e.g. the Crowd Dispersal Energy Cannon, p.92): marks a
+  // weapon whose effects inflict Conditions rather than damage. A label - the Conditions themselves
+  // come from each effect's own damage type (Impaired/Blinded/Deafened).
+  condition: "E20.WeaponTraitCondition",
   consumable: "E20.WeaponTraitConsumable",
   cover: "E20.WeaponTraitCover",
   defend: "E20.WeaponTraitDefend",
@@ -909,6 +913,20 @@ preLocalize("usesInterval");
  ***********************************************/
 
 // Default item Icons
+// Item automation status (system.automation.status) - the badge on the item sheet.
+E20.automationStatuses = {
+  full: "E20.AutomationFull",
+  partial: "E20.AutomationPartial",
+  manual: "E20.AutomationManual",
+};
+preLocalize("automationStatuses");
+
+E20.automationIcons = {
+  full: "fa-solid fa-gears",
+  partial: "fa-solid fa-circle-half-stroke",
+  manual: "fa-solid fa-hand",
+};
+
 E20.defaultIcon = {
   alteration: "systems/essence20/assets/icons/items/alteration.svg",
   altMode: "systems/essence20/assets/icons/items/altmode.svg",
@@ -1069,6 +1087,9 @@ E20.damageTypes = {
   blunt: "E20.DamageBlunt",
   cold: "E20.DamageCold",
   cover: "E20.DamageCover",
+  // Deafened until the end of the target's next turn (dice.mjs#_applyDeafeningEffect) - the
+  // Crowd Dispersal Energy Cannon's "Deafened 1" alternate effect.
+  deafened: "E20.DamageDeafened",
   electric: "E20.DamageElectric",
   element: "E20.DamageElement",
   // Electromagnetic (p.170-ish, Damage Types): "energy that disrupts machinery." This is the same
@@ -1077,6 +1098,17 @@ E20.damageTypes = {
   // actually match those existing checks against a real schema choice for the first time, rather
   // than leaving 'emp' a value no weaponEffect's damageType field could ever actually be set to.
   emp: "E20.DamageEmp",
+  // Essence damage (GI Joe CRB p.207, TF CRB p.161): "Some attacks and effects don't damage your
+  // Health, they reduce your Essence Scores." Each key names which Essence it takes from - see
+  // E20.essenceDamageTypes below and helpers/essence-attack.mjs, which the Apply Damage button
+  // routes these to instead of Health.
+  essenceStrength: "E20.DamageEssenceStrength",
+  essenceSpeed: "E20.DamageEssenceSpeed",
+  essenceSmarts: "E20.DamageEssenceSmarts",
+  essenceSocial: "E20.DamageEssenceSocial",
+  essenceStrengthSpeed: "E20.DamageEssenceStrengthSpeed",
+  essenceAny: "E20.DamageEssenceAny",
+  essenceSwap: "E20.DamageEssenceSwap",
   fire: "E20.DamageFire",
   frightened: "E20.DamageFrightened",
   grapple: "E20.DamageGrapple",
@@ -1106,6 +1138,20 @@ E20.damageTypes = {
   void: "E20.DamageVoid",
 };
 preLocalize("damageTypes");
+
+// The Essence damage types above, and which Essences each one damages. 'any' is one Essence the
+// attacker picks when the attack used Science, otherwise a random one (Sludge, Cobra Codex p.94);
+// 'swap' is V.E.N.O.M.'s "+1 to one Essence, and -1 to one Essence" (same page), two different
+// Essences picked the same way. helpers/essence-attack.mjs applies them.
+E20.essenceDamageTypes = {
+  essenceStrength: ['strength'],
+  essenceSpeed: ['speed'],
+  essenceSmarts: ['smarts'],
+  essenceSocial: ['social'],
+  essenceStrengthSpeed: ['strength', 'speed'],
+  essenceAny: 'any',
+  essenceSwap: 'swap',
+};
 
 // The concrete, choosable sub-types of the Element damage-type family (Weapon Effects and Traits:
 // "you must first choose the type of element the weapon uses") - the same 7 keys
@@ -1757,6 +1803,9 @@ E20.rerollConditions = {
   // .isConsumableOrWreckerRangedAttack, dice.mjs), the same "computed there, read here" shape as
   // isPowerWeaponAttack/isUnarmedAttack above.
   consumableOrWreckerRangedAttack: "E20.RerollConditionConsumableOrWreckerRangedAttack",
+  // Decepticon Directive "Metallikato" (General Perk, p.66): "When in Bot Mode ... melee attacks you
+  // make in the same turn." A melee attack (rollContext.isMeleeAttack) while not Transformed.
+  botModeMelee: "E20.RerollConditionBotModeMelee",
 };
 preLocalize("rerollConditions");
 

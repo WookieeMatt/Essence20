@@ -5,6 +5,10 @@
   "_id": "cAm087BkiExKIJrY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your attack misses a target, that target's attacks during its next turn take a Snag, labelled Covering Fire in its Roll Options Dialog. Out of combat it applies to the target's next attack instead.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

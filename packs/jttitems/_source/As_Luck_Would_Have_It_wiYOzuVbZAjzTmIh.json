@@ -5,6 +5,10 @@
   "_id": "wiYOzuVbZAjzTmIh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per scene, a button to reroll one die from your Skill test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

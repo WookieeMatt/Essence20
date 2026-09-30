@@ -5,6 +5,10 @@
   "_id": "1mTrbliJVJvIl1qk",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: consume a dose for 2 Primal Energon, or spend 1 for the scene. While active, ↑1 on Strength Skills, Alertness, Animal Handling and Survival, and ↓1 on other Smarts and Social Skill Tests, labelled Primal Energon (this scene) in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

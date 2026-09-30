@@ -5,6 +5,10 @@
   "_id": "7u3xCPPjxJlI7c61",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in a sea scene region or aboard a vessel with Aquatic Movement, you ignore Rough Terrain, your non-attack tests get Edge (shown as Feet Wet next to Edge in the Roll Options Dialog) and your attacks open with the Specialized switch on.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

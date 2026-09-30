@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Lend Assistance while a combat is running, your ally gets an extra ↑1, added to the Upshift number of their next roll with that Skill. Use button: pick the weapon type you become Qualified in.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

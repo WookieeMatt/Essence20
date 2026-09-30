@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 4 starting Health, +1 Speed, Ground Movement 30, The Fiercest Among You Perk and the Rainmaker Alt Mode. You pick Initiative or Targeting as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.OlLBvRl06PVw9OQx]{Rainmaker}</p>",
     "source": {

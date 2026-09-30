@@ -5,6 +5,10 @@
   "_id": "cZesU3qDW4pzVrCS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Animal Handling counts as both a Smarts and a Social Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

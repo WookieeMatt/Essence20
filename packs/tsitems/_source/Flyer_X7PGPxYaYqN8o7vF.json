@@ -5,6 +5,10 @@
   "_id": "X7PGPxYaYqN8o7vF",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 3 starting Health, 30ft Ground and 25ft Aerial Movement, the Bird's Eye View Perk, and your pick of the Small or Common Flyer Alt Mode. You pick +1 Speed or Smarts and Driving or Alertness as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "f9xhmkzadalepNA8",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Red Ranger's Perks at the listed levels, Essence increases, Personal Power, the Power Strike tracker and the Power Ranger faction. You make the listed choices as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

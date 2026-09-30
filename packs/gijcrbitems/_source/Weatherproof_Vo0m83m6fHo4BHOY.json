@@ -5,6 +5,10 @@
   "_id": "Vo0m83m6fHo4BHOY",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick an environment. In that environment (the scene's terrain), the weapon it's attached to ignores that environment's penalties.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

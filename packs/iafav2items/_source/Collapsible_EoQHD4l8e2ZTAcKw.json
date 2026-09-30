@@ -5,6 +5,10 @@
   "_id": "EoQHD4l8e2ZTAcKw",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: ↑2 on Infiltration tests to hide the weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

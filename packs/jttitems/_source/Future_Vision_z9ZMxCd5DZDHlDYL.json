@@ -5,6 +5,10 @@
   "_id": "z9ZMxCd5DZDHlDYL",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend up to 3 Personal Power; each gives one Skill test reroll this scene, offered as a chat card button.</p><p>Left to the table: turning a failed reroll into a Fumble.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

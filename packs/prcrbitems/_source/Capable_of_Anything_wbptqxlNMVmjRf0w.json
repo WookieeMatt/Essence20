@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per scene, a reroll button lets you reroll the dice that came up 1, keeping the new results.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

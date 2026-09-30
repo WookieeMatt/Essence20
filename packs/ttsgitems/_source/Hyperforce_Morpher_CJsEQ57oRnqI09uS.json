@@ -5,6 +5,10 @@
   "_id": "CJsEQ57oRnqI09uS",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: its pocket-dimension storage and communicator. Morphing itself uses your Role's morphing Perk and the Morphed toggle on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

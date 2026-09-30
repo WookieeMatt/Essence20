@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: letting your pet use kits of the chosen Skill, and treating those kits as one step less Available when requisitioning.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

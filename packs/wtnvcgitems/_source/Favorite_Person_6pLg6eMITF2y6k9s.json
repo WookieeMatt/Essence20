@@ -5,6 +5,10 @@
   "_id": "6pLg6eMITF2y6k9s",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the pet Lends Assistance to you as a Free action.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

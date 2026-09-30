@@ -551,12 +551,20 @@ registerAfterDamage(async (actor, dealt, damageType, { newValue } = {}) => {
   }
 });
 
+// The Power's one Use button: switches it on (its activation - power-handler.mjs#powerCost ->
+// helpers/metallic-armor.mjs) or, while it's on, ends it.
 registerUse({
   id: 'o3MetallicArmorEnd',
   matches: item => isItem(item, O3.metallicArmor),
-  canUse: item => !!item.parent?.flags?.essence20?.[METALLIC_FLAG],
+  canUse: item => !!item.parent?.flags?.essence20?.[METALLIC_FLAG] || !!item.system?.canActivate,
   run: async (item) => {
-    await endMetallicArmor(item.parent);
+    if (item.parent?.flags?.essence20?.[METALLIC_FLAG]) {
+      await endMetallicArmor(item.parent);
+      return null;
+    }
+
+    const { powerCost } = await import("../../../sheet-handlers/power-handler.mjs");
+    await powerCost(item.parent, item);
     return null;
   },
 });

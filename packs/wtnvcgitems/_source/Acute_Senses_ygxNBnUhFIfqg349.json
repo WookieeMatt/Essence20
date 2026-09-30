@@ -5,6 +5,10 @@
   "_id": "ygxNBnUhFIfqg349",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on the pet's tests, a switch for when its chosen sense helps: an Edge on Alertness or Weird, or ↑1 on any other Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

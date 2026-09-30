@@ -5,6 +5,10 @@
   "_id": "Foow2rilePmztBFk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once per combat, when your drone rolls against a target you have also rolled against, it gets Edge, shown as Automatic Harmonics next to Edge in the drone's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

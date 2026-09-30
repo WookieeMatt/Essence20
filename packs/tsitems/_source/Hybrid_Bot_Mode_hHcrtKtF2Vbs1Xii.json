@@ -5,6 +5,10 @@
   "_id": "hHcrtKtF2Vbs1Xii",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>On the sheet: add the new Movement type (Aquatic, Climb, Aerial or Underground) at your normal speed for Bot Mode yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

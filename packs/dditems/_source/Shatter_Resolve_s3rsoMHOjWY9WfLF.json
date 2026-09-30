@@ -5,6 +5,10 @@
   "_id": "s3rsoMHOjWY9WfLF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your Deception or Persuasion Test targets Willpower or Cleverness, that Defense counts as 2 lower; the chat card shows the lowered value.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

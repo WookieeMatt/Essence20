@@ -5,6 +5,10 @@
   "_id": "q0LPjcOQ0bnTSZTy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, your drone rolls Acrobatics, Deception or Driving against the targeted creature's Willpower or Cleverness. On a success, the target's tests take a Snag until the end of its next turn, shown as Buzz The Tower next to Snag in its Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

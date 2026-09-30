@@ -5,6 +5,10 @@
   "_id": "y9F6PkCIw7g6tiqL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls against a targeted enemy whose level or Threat Level is 3 or more below yours get ↑1, listed as Grid Soldier in the Roll Options Dialog. Use button: spend 1 Personal Power to remove Impaired from you or a targeted nearby ally.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "iDSVcsovl4V2uQmj",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch (Free action) that doubles the weapon's Element damage for that attack; if the d20 shows a 1, you suffer the attack's effect yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

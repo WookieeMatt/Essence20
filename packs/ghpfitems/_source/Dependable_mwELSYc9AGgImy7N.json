@@ -5,6 +5,10 @@
   "_id": "mwELSYc9AGgImy7N",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Dependable Perk only takes effect on tests where you have an Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "2ZOf7dqzjCDDmhvV",
   "img": "systems/essence20/assets/icons/weapons/hammer.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and traits. Each alternate effect is its own attack option. Left to the table: using the Forge as a tool for creation.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

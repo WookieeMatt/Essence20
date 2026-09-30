@@ -5,6 +5,10 @@
   "_id": "DU5oZEhhd45VDmRg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on a Smarts test, spend an Idea Point for Edge.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

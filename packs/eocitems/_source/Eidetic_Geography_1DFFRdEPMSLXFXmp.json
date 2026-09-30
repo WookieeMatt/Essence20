@@ -5,6 +5,10 @@
   "_id": "1DFFRdEPMSLXFXmp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: your Cartography Suite survey needs only 5 minutes. The survey Use button has no time cost, so nothing changes on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

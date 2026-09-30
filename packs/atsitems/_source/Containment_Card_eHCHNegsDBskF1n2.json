@@ -5,6 +5,10 @@
   "_id": "eHCHNegsDBskF1n2",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the GM calls for any test to open or break a card, and tracks who is held inside.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

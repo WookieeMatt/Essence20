@@ -5,6 +5,10 @@
   "_id": "90SyDlTrCxmblUQs",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack at 40ft/100ft range for 2 damage against up to 2 targets.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

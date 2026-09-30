@@ -5,6 +5,10 @@
   "_id": "4AW8oWr1MuFRoj0X",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed Element damage and reach, or its alternate that hits every target in a small area; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

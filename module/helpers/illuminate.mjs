@@ -1,3 +1,5 @@
+import { activateForRounds, isActiveForRounds } from "./scene-clock.mjs";
+
 /**
  * Illuminate (Power Rangers Core Rulebook, Grid Power, p.100): "You can shine with the light of
  * righteousness. While Morphed, you may spend 1 Power to emanate bright light in a 30 foot radius
@@ -17,9 +19,11 @@
  * Power's own sheet to narrate by hand.
  */
 const ILLUMINATE_FLAG = 'illuminateActive';
+// "For 1 minute" - ten 6-second rounds, on the Scene Clock (see augment-power-weapon.mjs).
+const ILLUMINATE_ROUNDS = 10;
 
 export function isIlluminateActive(actor) {
-  return !!actor.getFlag?.('essence20', ILLUMINATE_FLAG);
+  return !!actor?.getFlag && isActiveForRounds(actor, ILLUMINATE_FLAG);
 }
 
 /**
@@ -33,6 +37,6 @@ export async function activateIlluminate(actor) {
     return false;
   }
 
-  await actor.setFlag('essence20', ILLUMINATE_FLAG, true);
+  await activateForRounds(actor, ILLUMINATE_FLAG, ILLUMINATE_ROUNDS);
   return true;
 }

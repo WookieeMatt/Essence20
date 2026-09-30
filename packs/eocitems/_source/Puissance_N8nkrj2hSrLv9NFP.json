@@ -5,6 +5,10 @@
   "_id": "N8nkrj2hSrLv9NFP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks that use no weapon (Unarmed strikes and natural attacks like an Alt Mode Ram) deal +1 damage, shown on the chat card as \"Includes +1 from Puissance\".</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

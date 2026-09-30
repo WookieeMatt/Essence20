@@ -5,6 +5,10 @@
   "_id": "q415Hdvrl2rrCu9y",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting against everyone in a 30ft area for 2 Fire damage. On a Critical Success the target is marked, and if it moves on its next turn it takes 1 Fire damage automatically.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

@@ -5,6 +5,10 @@
   "_id": "VdIde3LTwr99JOw4",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: when you earn a Friendship Point for your necklace's Element, roll the spark test at the DIF for your level and apply the Pillar (or Princess) benefit it grants for the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

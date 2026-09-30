@@ -5,6 +5,10 @@
   "_id": "8Oicjt2r9oW1aycj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: name your partner, then link or unlink. Automatic: while linked to them in Bot Mode, attacks targeting you take ↓2, labelled Headmaster Head in the attacker's Roll Options Dialog.</p><p>Left to the table: using their statistics while linked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

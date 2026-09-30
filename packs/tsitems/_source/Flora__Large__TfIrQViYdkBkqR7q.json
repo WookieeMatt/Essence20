@@ -5,6 +5,10 @@
   "_id": "TfIrQViYdkBkqR7q",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: converting into this Alt Mode makes you Large with 40ft Ground Movement. Taking it adds a double-Reach Natural Weapon for 1 Blunt with a Maneuver (↑2) alternate, asking whether it rolls Finesse or Might.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

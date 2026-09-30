@@ -5,6 +5,10 @@
   "_id": "p2Qk0B5PWp10ZaqN",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when the scene's name includes \"library\" or your target is a Librarian, every Skill Test (Initiative too) takes ↓1, labelled Bookworm in the Roll Options Dialog. Roll Options Dialog: otherwise, a Bookworm switch adds the ↓1 for other library situations.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

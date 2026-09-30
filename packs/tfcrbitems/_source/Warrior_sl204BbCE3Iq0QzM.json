@@ -5,6 +5,10 @@
   "_id": "sl204BbCE3Iq0QzM",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, the Essence increases from its level table, its weapon training and Qualification, Limited and Restricted Armor Upgrade training, and General Perk picks at the listed levels.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

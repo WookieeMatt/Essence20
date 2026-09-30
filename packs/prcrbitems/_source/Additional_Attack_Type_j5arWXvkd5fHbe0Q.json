@@ -5,6 +5,10 @@
   "_id": "j5arWXvkd5fHbe0Q",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added to a Zord you pick melee or ranged, and the Zord gets a basic attack of that type.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

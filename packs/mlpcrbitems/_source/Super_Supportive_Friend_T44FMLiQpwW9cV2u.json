@@ -5,6 +5,10 @@
   "_id": "T44FMLiQpwW9cV2u",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you succeed at a test with your Empathy Skill, every friendly token within 60 ft gets Edge on its next Skill Test, labelled Supportive Friend in its Roll Options Dialog. Left to the table: dropping the Edge if it isn't used this round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

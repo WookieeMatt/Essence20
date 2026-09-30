@@ -5,6 +5,10 @@
   "_id": "wzSFWbER1HgckIIt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: once per scene in a vehicle, roll Driving or Technology against a Limited upgrade's Availability DIF; on a success add that upgrade to the vehicle for the scene, then remove it.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

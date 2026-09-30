@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: the group gains a Friendship Point (a GM needs to be connected), up to three times. Left to the table: the limit is three per day, but the counter resets each scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "uLtZ0zbfx0K4jcSK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per turn as a Free action, borrow an ally's Specialization for your next matching roll and share it over the bridge. Left to the table: borrowing Languages.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

@@ -154,10 +154,24 @@ export async function markSneakAttackUsed(actor) {
  * Snag on their first Skill Test or attack on their next turn." Called from
  * dice.mjs#_rollSkillHelper once a Sneak-Attack-boosted hit actually lands; consumed (checked and
  * cleared) from dice.mjs#_getAutomaticCombatModifiers the next time that target rolls anything.
+ * Other Perks that give the same next-roll Snag (Shock and Awe, Watchful Eyes) pass their own name
+ * as `label`, which is stored as the flag's value so the target's Roll Options Dialog can name the
+ * right source (see debilitatedLabel below); with no label the flag stays a bare `true`.
  * @param {Actor} target
+ * @param {String} [label]
  */
-export async function markDebilitated(target) {
-  await target.setFlag('essence20', 'debilitated', true);
+export async function markDebilitated(target, label = null) {
+  await target.setFlag('essence20', 'debilitated', label || true);
+}
+
+/**
+ * The label a 'debilitated' flag asks for, or the given fallback when it's a bare `true`.
+ * @param {*} flag       The flag's value.
+ * @param {String} fallback
+ * @returns {String}
+ */
+export function debilitatedLabel(flag, fallback) {
+  return typeof flag == 'string' && flag ? flag : fallback;
 }
 
 /**
@@ -229,16 +243,23 @@ function _getWeaponQualifierAndRange(actor, weapon, weaponEffect) {
  *   isn't reflected here, the same timing limitation aimBonus/energonAvailable already have.
  * @returns {{eligible: Boolean, reason: String}}
  */
-export function checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack) {
+export function checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack, { ignoreSuddenStrike = false } = {}) {
   // Sudden Strike - see SUDDEN_STRIKE_ID's own comment above. Bypasses every other check below
   // ("regardless of the circumstances of your attack"), once per combat, while a Story Point is
   // actually available to spend - the resource itself is the throttle, same as every other
   // Story-Point-gated ability in this project. The actual spend + once-per-combat mark happens
   // where Sneak Attack Damage is actually applied (dice.mjs, alongside markSneakAttackUsed), not
   // here - this function only decides whether the Roll Options Dialog checkbox can be offered.
-  if (actorHasPerk(actor, SUDDEN_STRIKE_ID) && !hasUsedThisEncounter(actor, SUDDEN_STRIKE_ENCOUNTER_FLAG)
+  // viaSuddenStrike is set only when the ordinary checks would have failed, so dice.mjs spends the
+  // Story Point only when Sudden Strike was actually needed.
+  if (!ignoreSuddenStrike && actorHasPerk(actor, SUDDEN_STRIKE_ID) && !hasUsedThisEncounter(actor, SUDDEN_STRIKE_ENCOUNTER_FLAG)
     && canWriteStoryPoints() && hasStoryPointsAvailable(1)) {
-    return { eligible: true, reason: game.i18n.localize('E20.SneakAttackReasonEligible') };
+    const ordinary = checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack, { ignoreSuddenStrike: true });
+    if (ordinary.eligible) {
+      return ordinary;
+    }
+
+    return { eligible: true, reason: game.i18n.localize('E20.SneakAttackReasonEligible'), viaSuddenStrike: true };
   }
 
   // Perfect Disguise (GI Joe CRB, Spy, 10th level, p.76): "Your attacks against targets fooled by

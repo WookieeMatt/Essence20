@@ -5,6 +5,10 @@
   "_id": "362Yyjs1INvYufPN",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick an animal Perk to gain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

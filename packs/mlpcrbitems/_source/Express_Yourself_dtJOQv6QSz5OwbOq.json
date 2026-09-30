@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (off by default): switch it on for Edge on Smarts and Social tests where your art style applies, and off again afterwards.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

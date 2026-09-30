@@ -3,6 +3,10 @@
   "type": "altMode",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: converting into this Alt Mode keeps you Common-sized with 30ft Ground and 20ft Aerial Movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

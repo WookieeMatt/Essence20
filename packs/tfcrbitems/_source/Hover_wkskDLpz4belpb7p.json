@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this: in Bot Mode you can fly without moving forward, so you don't fall for staying still.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

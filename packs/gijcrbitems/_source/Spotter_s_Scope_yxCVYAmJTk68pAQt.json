@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Alertness counts as a Speed skill for you. Use button: adds your free Limited sniper weapon and upgrade. The Speed increases come with the Focus.</p><p>Left to the table: your Qualification in Sniper weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

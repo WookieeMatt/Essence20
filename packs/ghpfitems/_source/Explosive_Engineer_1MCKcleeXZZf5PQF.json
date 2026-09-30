@@ -5,6 +5,10 @@
   "_id": "1MCKcleeXZZf5PQF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on an attack with explosives, a switch rolls Science or Technology in place of the attack Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "prerequisite": "",

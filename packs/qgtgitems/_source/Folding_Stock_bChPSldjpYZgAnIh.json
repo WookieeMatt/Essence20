@@ -5,6 +5,10 @@
   "_id": "bChPSldjpYZgAnIh",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's attached to gains a one-handed copy of its main effect as an alternate, rolled at an extra ↓2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

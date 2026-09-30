@@ -5,6 +5,10 @@
   "_id": "de6EAtAoFs4mgfuj",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when a roll calls for a kit, your best carried kit sets the Snag or ↓. Use button: use it up for temporary Chef Specialization (↑1 if you have it) for a minute, or refill it by scrounging.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

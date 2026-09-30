@@ -5,6 +5,10 @@
   "_id": "IKPWMfs5ZSp6ijiv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: target an ally and roll DIF 20 Technology; on a success they lose 2 maximum Health (Active Effect) and gain a General Perk you pick. A reverse option removes both.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

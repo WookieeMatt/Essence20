@@ -1,3 +1,5 @@
+import { activateForRounds, isActiveForRounds } from "./scene-clock.mjs";
+
 /**
  * Augment Power Weapon (Power Rangers Core Rulebook, Grid Power, p.99): "Your summoned Power
  * Weapon is a stronger conduit of your Morphin Grid energy. You may spend 1 Power to enhance the
@@ -7,17 +9,20 @@
  * helpers/speed-boost.mjs's own doc comment already spells out for exactly this situation
  * (there's no "this click means turn it back off" concept in the generic Power click flow, so a
  * second click while already active correctly does nothing rather than re-spending or erroring).
- * "For 1 minute" is approximated as "until a GM manually clears it" - this project's usual
- * duration idiom for anything longer than a single roll with no expiry hook to attach to.
+ * "For 1 minute" is ten rounds on the Scene Clock (scene-clock.mjs#activateForRounds): in a Combat
+ * it runs out on your own turn ten rounds later or when the Combat ends; out of Combat it lasts the
+ * rest of the encounter. Once it has run out, the Power can be used again.
  *
  * The upshift itself is read directly in dice.mjs's shift-computation block, gated on the attack's
  * parent weapon carrying the `powerWeapon` trait - the same trait check Power Boost/Red Ranger
  * Prime's identical clauses already use.
  */
 const AUGMENT_POWER_WEAPON_FLAG = 'augmentPowerWeaponActive';
+// "For 1 minute" - ten 6-second rounds.
+const AUGMENT_POWER_WEAPON_ROUNDS = 10;
 
 export function isAugmentPowerWeaponActive(actor) {
-  return !!actor.getFlag?.('essence20', AUGMENT_POWER_WEAPON_FLAG);
+  return !!actor?.getFlag && isActiveForRounds(actor, AUGMENT_POWER_WEAPON_FLAG);
 }
 
 /**
@@ -31,6 +36,6 @@ export async function activateAugmentPowerWeapon(actor) {
     return false;
   }
 
-  await actor.setFlag('essence20', AUGMENT_POWER_WEAPON_FLAG, true);
+  await activateForRounds(actor, AUGMENT_POWER_WEAPON_FLAG, AUGMENT_POWER_WEAPON_ROUNDS);
   return true;
 }

@@ -5,6 +5,10 @@
   "_id": "jNjDCZ972iAt9N8Z",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a melee attack at Reach for 1 Blunt damage, rolling Finesse or Might, whichever is better.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

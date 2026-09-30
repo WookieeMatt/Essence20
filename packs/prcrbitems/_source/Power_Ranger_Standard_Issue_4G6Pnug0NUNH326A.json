@@ -5,6 +5,10 @@
   "_id": "4G6Pnug0NUNH326A",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: a Power Morpher, Wrist Communicator and Blade Blaster. When it lands you also pick a Power Suit and a second Power Weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

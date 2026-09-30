@@ -5,6 +5,10 @@
   "_id": "iJrM76BVzyQTb01b",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: this is the Strato Rangers' morpher; Morphing itself is handled by It's Morphin' Time!.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "NJjEn45d7QTm6Iia",
   "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its weapon effect with the listed Skill, damage, range and targets.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

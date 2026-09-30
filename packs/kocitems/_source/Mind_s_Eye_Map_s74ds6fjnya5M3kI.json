@@ -5,6 +5,10 @@
   "_id": "s74ds6fjnya5M3kI",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: the map that draws itself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

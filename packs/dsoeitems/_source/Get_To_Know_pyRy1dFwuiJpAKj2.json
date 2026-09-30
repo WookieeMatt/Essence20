@@ -5,6 +5,10 @@
   "_id": "pyRy1dFwuiJpAKj2",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you cast it you pick a Skill. On a success, your next roll of that Skill with the target targeted gets Edge, labelled Get To Know in the Roll Options Dialog. An unused Edge is dropped when the GM starts a new scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

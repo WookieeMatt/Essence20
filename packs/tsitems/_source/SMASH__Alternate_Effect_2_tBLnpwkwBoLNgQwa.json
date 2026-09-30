@@ -1,0 +1,56 @@
+{
+  "folder": "VA3Mj2hAFyA59F9F",
+  "name": "SMASH! Alternate Effect 2",
+  "type": "weaponEffect",
+  "_id": "tBLnpwkwBoLNgQwa",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might attack at double Reach that performs a Maneuver on a hit.</p>"
+    },
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 37
+    },
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "maneuver",
+    "damageValue": null,
+    "shiftDown": 0,
+    "numHands": "0",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 2,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790700000000,
+    "modifiedTime": 1790700000000,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!tBLnpwkwBoLNgQwa"
+}

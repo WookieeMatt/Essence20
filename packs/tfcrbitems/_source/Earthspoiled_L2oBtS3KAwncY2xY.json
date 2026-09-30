@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↓1 while you are exposed to Earth art or culture.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

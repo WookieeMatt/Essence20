@@ -5,6 +5,10 @@
   "_id": "MhKwWyukMEdzsfRC",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switches a floating light on your token on and off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

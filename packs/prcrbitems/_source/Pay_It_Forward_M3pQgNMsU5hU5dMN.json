@@ -5,6 +5,10 @@
   "_id": "M3pQgNMsU5hU5dMN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: while you're Morphed, allies within 10 ft of you get +1 to whichever Defense is attacked, added to the DIF on the attacker's chat card. Your rolls from a Group Test card get ↑1 too. Left to the table: the stronger Lend Assistance.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "vXYDWGbhhIBOx1Ic",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Cast: on a success, the targeted creature (or you) can't be given Restrained or Grappled, and its Speed Skill Tests get ↑1, already counted in the Upshift number of its Roll Options Dialog, until the GM advances the scene.</p><p>Left to the table: Edge to escape a hold already in place, Snag on attempts to stop, and removing the ↑1 from Speed tests that aren't about going fast.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

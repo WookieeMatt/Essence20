@@ -5,6 +5,10 @@
   "_id": "uUiZ23cbN47C64yC",
   "img": "systems/essence20/assets/icons/gear/computer_electronics_kit.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Technology rolls show a Hacker Rig switch that adds ↑1. Turn it on while the rig applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

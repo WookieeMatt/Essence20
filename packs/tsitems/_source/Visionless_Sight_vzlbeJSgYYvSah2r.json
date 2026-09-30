@@ -5,6 +5,10 @@
   "_id": "vzlbeJSgYYvSah2r",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your token still senses creatures and objects within 10ft while you are Blinded.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

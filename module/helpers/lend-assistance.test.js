@@ -1,8 +1,9 @@
 import { jest } from '@jest/globals';
 import {
   activateLendAssistance, canAssistWithSkill, getAssistEdge, getAssistShiftUp, LEND_ASSISTANCE_EDGE_FLAG,
-  LEND_ASSISTANCE_RANGE_FEET, LEND_ASSISTANCE_SHIFT_FLAG, lendAssistanceSkill,
+  LEND_ASSISTANCE_RANGE_FEET, LEND_ASSISTANCE_SHIFT_FLAG, lendAssistanceSkill, pickArmchairGeneralWeapon,
 } from './lend-assistance.mjs';
+import { extCostRules, findExtUse } from './extensions.mjs';
 
 /**
  * An actor with a token on the canvas, since both the ally scan and the range check measure from
@@ -396,25 +397,32 @@ describe('canAssistWithSkill', () => {
     expect(canAssistWithSkill(actor, ally, 'might')).toBe(false);
   });
 
-  test("Technological Assistance lifts the rank gate on Driving/Targeting/Technology for the assister who holds it, only", () => {
+  test("Technological Assistance does NOT lift the rank gate - it only makes the assist a Free action", () => {
     const TECHNOLOGICAL_ASSISTANCE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7b01zSdekhUugIod";
     const { actor } = withItems(makeActor({ shift: 'd20' }), perk(TECHNOLOGICAL_ASSISTANCE_ID)); // untrained in everything
     const { actor: ally } = makeActor({ id: 'al', shift: 'd4' });
-    // Give the ally a real outranking rank in each of the 3 skills (an untrained-vs-untrained tie
-    // would already pass the ordinary rank gate and not actually exercise the bypass).
     ally.system.skills.targeting = { shift: 'd6', isSpecialized: false };
     ally.system.skills.driving = { shift: 'd6', isSpecialized: false };
     ally.system.skills.technology = { shift: 'd6', isSpecialized: false };
 
-    expect(canAssistWithSkill(actor, ally, 'targeting')).toBe(true);
-    expect(canAssistWithSkill(actor, ally, 'driving')).toBe(true);
-    expect(canAssistWithSkill(actor, ally, 'technology')).toBe(true);
-    // The rank gate still applies on any other skill - the bypass is Driving/Targeting/Technology only.
-    expect(canAssistWithSkill(actor, ally, 'might')).toBe(false);
+    expect(canAssistWithSkill(actor, ally, 'targeting')).toBe(false);
+    expect(canAssistWithSkill(actor, ally, 'driving')).toBe(false);
+    expect(canAssistWithSkill(actor, ally, 'technology')).toBe(false);
+  });
 
-    // Without the Perk, the ordinary rank gate applies even on those 3 skills.
+  test("Technological Assistance registers an asked Free-action discount on Lend Assistance, for its holder only", () => {
+    const TECHNOLOGICAL_ASSISTANCE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7b01zSdekhUugIod";
+    const rule = extCostRules().find(r => r.id == 'technologicalAssistance');
+    const { actor } = withItems(makeActor({ shift: 'd20' }), perk(TECHNOLOGICAL_ASSISTANCE_ID));
     const { actor: noPerk } = makeActor({ shift: 'd20' });
-    expect(canAssistWithSkill(noPerk, ally, 'targeting')).toBe(false);
+
+    expect(rule).toBeDefined();
+    expect(rule.has(actor)).toBe(true);
+    expect(rule.has(noPerk)).toBe(false);
+    expect(rule.matches({ key: 'lendAssistance' })).toBe(true);
+    expect(rule.matches({ key: 'hide' })).toBe(false);
+    expect(rule.to('standard')).toBe('free');
+    expect(rule.ask).toBe('E20.ActionPerkAskTechnologicalAssistance');
   });
 
   test("Ship's Crew lifts the rank gate only while aboard a vehicle", () => {
@@ -602,5 +610,50 @@ describe("Those Who Know, Teach (MLP CRB, Mentor Influence, p.53)", () => {
     expect(ally.actor.getFlag('essence20', LEND_ASSISTANCE_SHIFT_FLAG)).toEqual(
       expect.objectContaining({ persistent: false }),
     );
+  });
+});
+
+describe("Armchair General's weapon-type Qualification", () => {
+  const ARMCHAIR_GENERAL_ID = "Compendium.essence20.field_guide_action_adventure.Item.YPzpjKFz1yrwPHN6";
+
+  function makePerk(qualified = {}) {
+    const actor = { name: 'Envoy', system: { qualified: { weapons: qualified } }, update: jest.fn() };
+    const flags = { core: { sourceId: ARMCHAIR_GENERAL_ID }, essence20: {} };
+    return {
+      name: 'Armchair General', parent: actor, flags,
+      setFlag: jest.fn(async (scope, key, value) => {
+        flags.essence20[key] = value;
+      }),
+    };
+  }
+
+  beforeEach(() => {
+    global.game = { ...(global.game ?? {}), i18n: { localize: k => k, format: k => k } };
+  });
+
+  test("has a Use button until the pick is made", () => {
+    const perk = makePerk();
+    const use = findExtUse(perk);
+    expect(use?.id).toBe('armchairGeneralWeapon');
+    expect(use.canUse(perk)).toBe(true);
+    perk.flags.essence20.armchairGeneralWeapon = 'blunt';
+    expect(use.canUse(perk)).toBe(false);
+  });
+
+  test("offers only weapon types not already Qualified, and Qualifies the pick", async () => {
+    const perk = makePerk({ blunt: true });
+    const choose = jest.fn(async (title, prompt, rows) => rows.find(r => r.value == 'shotguns').value);
+
+    await pickArmchairGeneralWeapon(perk, choose);
+
+    expect(choose.mock.calls[0][2].some(r => r.value == 'blunt')).toBe(false);
+    expect(perk.parent.update).toHaveBeenCalledWith({ 'system.qualified.weapons.shotguns': true });
+    expect(perk.flags.essence20.armchairGeneralWeapon).toBe('shotguns');
+  });
+
+  test("does nothing when the dialog is closed", async () => {
+    const perk = makePerk();
+    expect(await pickArmchairGeneralWeapon(perk, async () => null)).toBeNull();
+    expect(perk.parent.update).not.toHaveBeenCalled();
   });
 });

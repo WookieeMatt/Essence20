@@ -5,6 +5,10 @@
   "_id": "jh4FiaiLPb40jqkv",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ↑1 on Flyby, Ram and Slam attacks in Alt Mode, and ↑1 on Intimidation Tests in Bot Mode, labelled Fearsome Additions in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

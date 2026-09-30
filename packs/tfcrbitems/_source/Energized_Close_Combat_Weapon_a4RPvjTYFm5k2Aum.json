@@ -5,6 +5,10 @@
   "_id": "a4RPvjTYFm5k2Aum",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 damage of the element chosen on the weapon, with Intimidating and Maneuver alternate effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

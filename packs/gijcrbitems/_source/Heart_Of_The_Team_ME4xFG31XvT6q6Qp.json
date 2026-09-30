@@ -5,6 +5,10 @@
   "_id": "ME4xFG31XvT6q6Qp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button, once per encounter: spend a Story Point, and allies within 30 ft gain 1 Temporary Health.</p><p>Left to the table: letting them move right away, and an ally choosing to end one Condition instead of the Temporary Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

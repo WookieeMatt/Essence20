@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Social rolls show a Royalty (Public Scandal) switch that adds ↓1. Turn it on after you Fumble in public, until you next roll a Critical Success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

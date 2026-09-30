@@ -4,6 +4,10 @@
   "type": "altMode",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: converting into this Alt Mode makes you Huge with 40ft Aerial Movement. Taking it adds the Natural Weapon (you pick Blunt or Sharp). Roll Options Dialog: a Bestial Articulation switch (↓1) for tasks done with mouth, claws or hooves.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

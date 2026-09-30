@@ -5,6 +5,10 @@
   "_id": "aVQzWhD1oKDTcApQ",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: communication and translation. Supersonic Rangers get one automatically when they Go Supersonic.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

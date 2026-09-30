@@ -5,6 +5,10 @@
   "_id": "1JiWfGVVLpYsNuTM",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↓1 on Intimidation. Automatic: Infiltration tests that target you (such as sneaking up on you) get an Edge, labelled Jittery in the roller's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

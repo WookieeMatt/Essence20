@@ -5,6 +5,10 @@
   "_id": "ab9XMJpujnX7aRSS",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might. Pick a one-handed hit at Reach (1 Stun), a two-handed swing at Reach (1 Blunt plus 1 Stun) or feedback (1 Electric in a 5 ft radius) when you attack; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

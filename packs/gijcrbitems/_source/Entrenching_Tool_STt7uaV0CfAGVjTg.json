@@ -5,6 +5,10 @@
   "_id": "STt7uaV0CfAGVjTg",
   "img": "systems/essence20/assets/icons/gear/entrenching_tool.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative gear for digging and chopping. To fight with it, use the Entrenching Tool (Melee) weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

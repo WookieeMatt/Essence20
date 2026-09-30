@@ -5,6 +5,10 @@
   "_id": "2BYtrKD35dJ6jlV5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you make a melee attack with a weapon that has both the Silent and Martial Arts traits and the roll goes ahead with Edge, a third d20 is rolled and the best one is kept; all three show on the chat card.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

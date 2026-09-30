@@ -85,8 +85,17 @@ const OBSCURING_MATRIX_ADVANCED_ID = "Compendium.essence20.enigma_of_combination
 // item.update() (the Weapon Conversion/grant idiom) since the actor may add Unarmed Combat to
 // their sheet AFTER taking either the Perk or the Hang-Up - a live check catches that
 // automatically, a one-time mutation at grant time would not.
-const UNARMED_COMBAT_ALTERNATE_EFFECT_1_ID = `${GI_JOE_CRB}gA0rOFD3lmwzkZq4`;
-const UNARMED_COMBAT_EFFECT_ID = `${GI_JOE_CRB}eDjovjfygGq8dlQy`;
+// GI Joe CRB and TF CRB ship both effects under the same ids in two packs, so both printings are
+// listed. This is the ONLY place Beastly's waiver is applied - dice.mjs used to add a second
+// cancelling ↑1 on top, which netted the GI Joe copy ↑1 instead of 0.
+const UNARMED_COMBAT_ALTERNATE_EFFECT_1_IDS = [
+  `${GI_JOE_CRB}gA0rOFD3lmwzkZq4`,
+  "Compendium.essence20.tf_crb.Item.gA0rOFD3lmwzkZq4",
+];
+const UNARMED_COMBAT_EFFECT_IDS = [
+  `${GI_JOE_CRB}eDjovjfygGq8dlQy`,
+  "Compendium.essence20.tf_crb.Item.eDjovjfygGq8dlQy",
+];
 const BEASTLY_PERK_ID = "Compendium.essence20.ferocious_fighters.Item.3Y0ETFpJUwdUqgUQ";
 const BEASTLY_HANG_UP_ID = "Compendium.essence20.ferocious_fighters.Item.9o0Qbe6lgqNPnm2R";
 
@@ -211,6 +220,13 @@ export class Essence20Item extends Item {
       if (image) this.updateSource({ img: image });
     }
 
+    // A copy of a compendium item reads its automation notes from the original
+    // (_prepareAutomation), so it doesn't keep the snapshot the drop brought along.
+    const automation = this._source?.system?.automation;
+    if (this._stats?.compendiumSource && (automation?.status || automation?.notes)) {
+      this.updateSource({ 'system.automation': { status: '', notes: '' } });
+    }
+
     // A Megaform Trait (Core Body, Move, Core Ability, ...) is identified purely by its
     // system.type enum, which is what Essence20Actor#_prepareMegaformZordData/
     // _prepareMegaformCombinerData actually switches on - Name is separate flavor text a GM
@@ -315,6 +331,7 @@ export class Essence20Item extends Item {
   prepareDerivedData() {
     super.prepareDerivedData();
     this._prepareDescription();
+    this._prepareAutomation();
     this._prepareTraits();
 
     if (this.type == 'weapon' || this.type == 'armor') {
@@ -372,6 +389,49 @@ export class Essence20Item extends Item {
    * Only ever fills a blank. An item whose description was written by hand, or edited after
    * an import, keeps what it has.
    */
+  /**
+   * The automation notes (system.automation) a copy of a compendium item shows are its original's,
+   * read live from the compendium index (CONFIG.Item.compendiumIndexFields, essence20.mjs) - so a
+   * copy made before the notes were written, or before they were corrected, still shows the current
+   * ones. A copy only keeps notes of its own when a GM wrote them on it: _preCreate drops the ones a
+   * compendium drop brings along, so anything stored on a sourced copy is deliberate.
+   */
+  _prepareAutomation() {
+    const stored = this._source?.system?.automation;
+    if (!this.system.automation || this.pack || stored?.status || stored?.notes?.trim()) {
+      return;
+    }
+
+    const sourceUuid = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+    const original = sourceUuid ? globalThis.fromUuidSync?.(sourceUuid, { strict: false }) : null;
+    const automation = foundry.utils.getProperty(original ?? {}, 'system.automation');
+    if (automation) {
+      this.system.automation.status = automation.status ?? '';
+      this.system.automation.notes = automation.notes ?? '';
+    }
+  }
+
+  /**
+   * v14 only sends each pack's core index fields at world load - CONFIG.Item.compendiumIndexFields
+   * (system.automation) arrive only once something calls pack.getIndex(). So before showing a copy's
+   * inherited notes, load its source pack's full index, then read them again.
+   */
+  async loadAutomationNotes() {
+    const stored = this._source?.system?.automation;
+    const sourceUuid = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+    if (!this.system.automation || this.pack || !sourceUuid || stored?.status || stored?.notes?.trim()) {
+      return;
+    }
+
+    const collection = foundry.utils.parseUuid?.(sourceUuid)?.collection;
+    const pack = collection?.metadata ? collection : null;
+    if (pack && !pack.indexed) {
+      await pack.getIndex();
+    }
+
+    this._prepareAutomation();
+  }
+
   _prepareDescription() {
     // Tested against the SOURCE, not the prepared value. description is a stored field rather
     // than a derived one, and Foundry does not roll a data model back to source between
@@ -1046,9 +1106,9 @@ export class Essence20Item extends Item {
       // Beastly / its own Hang-Up - see BEASTLY_PERK_ID's own comment above.
       const itemSourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
       let itemShiftDown = this.system.shiftDown;
-      if (itemSourceId == UNARMED_COMBAT_ALTERNATE_EFFECT_1_ID && actorHasPerk(roller, BEASTLY_PERK_ID)) {
+      if (UNARMED_COMBAT_ALTERNATE_EFFECT_1_IDS.includes(itemSourceId) && actorHasPerk(roller, BEASTLY_PERK_ID)) {
         itemShiftDown = 0;
-      } else if (itemSourceId == UNARMED_COMBAT_EFFECT_ID && actorHasPerk(roller, BEASTLY_HANG_UP_ID)) {
+      } else if (UNARMED_COMBAT_EFFECT_IDS.includes(itemSourceId) && actorHasPerk(roller, BEASTLY_HANG_UP_ID)) {
         itemShiftDown = this.system.shiftDown + 1;
       } else if (
         this.system.damageType == 'maneuver' && this.system.classification.style == 'melee'

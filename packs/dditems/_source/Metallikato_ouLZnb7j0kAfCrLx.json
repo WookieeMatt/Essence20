@@ -5,6 +5,10 @@
   "_id": "ouLZnb7j0kAfCrLx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: on Bot Mode melee attacks, a switch ignores armor bonuses up to your Smarts. Use button: turn on Multiple (2) Targets, which adds ↓1 to those attacks. Automatic: a Bot Mode melee Critical Success knocks the target Prone. Chat card: a Reroll button for Skill Die 1s, which only works on a melee attack made in Bot Mode.</p><p>Left to the table: paying the Free action for each benefit, and shoving instead of tripping on a Critical Success.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,6 +19,7 @@
     "selectionLimit": 1,
     "type": "general",
     "reroll": {
+      "condition": "botModeMelee",
       "enabled": true,
       "maxUses": 0,
       "mode": "ones",

@@ -16,6 +16,11 @@ import { G2, T, hasItem, itemsOf, post, roundStamp, sourceOf } from "./shared.mj
 export const START_FLAG = 'gij2RecklessStart';
 export const ROUNDS = 10;
 
+// The Beat Goes On (GI JOE CRB, Renegade Focus, 13th level, p.97): "your Reckless Abandon
+// lasts until the end of its duration or until you choose to end it" - so neither running out of
+// enemies nor being Defeated ends it for its holder.
+export const BEAT_GOES_ON = "Compendium.essence20.gi_joe_crb.Item.yNHekVUMoKALrAWH";
+
 export function recklessItem(actor) {
   return itemsOf(actor).find(item => item.type == 'rolePoints' && sourceOf(item) == G2.recklessAbandon) ?? null;
 }
@@ -84,13 +89,13 @@ registerTurnStart(async (actor, combat) => {
 
   if (minuteIsUp(actor, combat)) {
     await endReckless(actor, 'E20.Gij2RecklessMinute');
-  } else if (!enemiesRemain(actor)) {
+  } else if (!hasItem(actor, BEAT_GOES_ON) && !enemiesRemain(actor)) {
     await endReckless(actor, 'E20.Gij2RecklessNoEnemies');
   }
 });
 
 registerAfterDamage(async (actor, dealt, damageType, ctx) => {
-  if (isReckless(actor) && (ctx?.newValue ?? 1) <= 0 && !hasItem(actor, G2.aegis) && actor.isOwner) {
+  if (isReckless(actor) && (ctx?.newValue ?? 1) <= 0 && !hasItem(actor, G2.aegis) && !hasItem(actor, BEAT_GOES_ON) && actor.isOwner) {
     await endReckless(actor, 'E20.Gij2RecklessDefeated');
   }
 });

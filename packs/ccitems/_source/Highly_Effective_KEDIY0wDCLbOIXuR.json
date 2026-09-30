@@ -5,6 +5,10 @@
   "_id": "KEDIY0wDCLbOIXuR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks with an Adept Armament's alternate effect get ↑1, labelled Highly Effective in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

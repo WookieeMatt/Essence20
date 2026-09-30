@@ -5,6 +5,10 @@
   "_id": "RzQ4LahiaHPl6ZzU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Terror to regain 1 Personal Power as a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

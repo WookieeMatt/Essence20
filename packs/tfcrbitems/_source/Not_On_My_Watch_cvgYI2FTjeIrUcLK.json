@@ -5,6 +5,10 @@
   "_id": "cvgYI2FTjeIrUcLK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per combat, after an enemy succeeds without Edge, roll Deception, Intimidation or Persuasion against them; on a success they roll with a Snag, and hits that now miss are cancelled.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

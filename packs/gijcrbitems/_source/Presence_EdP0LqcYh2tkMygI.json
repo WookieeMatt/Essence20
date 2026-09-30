@@ -5,6 +5,10 @@
   "_id": "EdP0LqcYh2tkMygI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Intimidation counts as a Social skill for you. Automatic: no Snag for rolling a skill you haven't put points into. The Social increases come with the Focus as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

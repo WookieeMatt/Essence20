@@ -5,6 +5,10 @@
   "_id": "HZiYXNZOeFExJa4K",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks with Martial Arts weapons get ↑1 and attacks with other weapons get ↓1, already added to the shift in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "5j8Hkpq4ThzglXPM",
   "img": "systems/essence20/assets/icons/gear/thermite_breach.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the Engineering test to apply it, and burning through metal over a few rounds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

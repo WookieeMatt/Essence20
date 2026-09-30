@@ -5,6 +5,10 @@
   "_id": "VBfEDhV3uP1PMWKz",
   "img": "systems/essence20/assets/icons/weapons/slingshot.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting at 50/100 ft for Energy damage, with two stronger alternate effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

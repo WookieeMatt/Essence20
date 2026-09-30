@@ -5,6 +5,10 @@
   "_id": "6wbY17kDGkxeGBPp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you treat a Defeated ally with Science (Medicine), they come back with 1 extra Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "UpZjnv99mGdT4lLL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button, once per turn after a successful Sneak Attack: choose a free extra attack or a free move.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

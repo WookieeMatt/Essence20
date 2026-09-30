@@ -5,6 +5,10 @@
   "_id": "fpfH5KgJ3BdWAFtM",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Standard action): the Zord takes -3 Speed until its next turn, then for the scene gains +1 plating, +10ft to a chosen movement and once-per-round Energy damage reduction. Its energy attacks within 30ft of a Zord with Energem Infusion get Edge, labelled Amplified Dino Strength in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

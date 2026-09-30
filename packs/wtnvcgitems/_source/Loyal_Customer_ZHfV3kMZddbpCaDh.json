@@ -5,6 +5,10 @@
   "_id": "ZHfV3kMZddbpCaDh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑1 on Wealth tests.</p><p>Left to the table: choosing your favorite store; the bonus is meant only when shopping there.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

@@ -5,6 +5,10 @@
   "_id": "I8yAnOEoaut76wlf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: after you take damage, roll a DIF 20 Brawn test. On a success, a Story Point is added to the team pool.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

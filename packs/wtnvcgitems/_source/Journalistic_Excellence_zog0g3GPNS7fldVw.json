@@ -5,6 +5,10 @@
   "_id": "zog0g3GPNS7fldVw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: comes with the Journalist Role at level 1, and the Role adds the +1 Smarts and +1 Social Essence increases on its own.</p><p>Left to the table: picking and adding the one Smarts and one Social Skill Rank from the listed Skills.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

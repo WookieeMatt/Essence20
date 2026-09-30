@@ -5,6 +5,10 @@
   "_id": "XmFMrfsM3PH4GQBG",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a Battledress armor upgrade; it works while you wear no armor.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

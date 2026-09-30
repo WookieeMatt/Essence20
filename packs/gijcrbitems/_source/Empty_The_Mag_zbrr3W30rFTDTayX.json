@@ -5,6 +5,10 @@
   "_id": "zbrr3W30rFTDTayX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on a ranged Ballistic attack, a switch to apply the damage twice on a hit. The weapon then has to be reloaded before it can fire again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "8kBCl8fTTMDnZDHk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: as a Move action, pick one of the book's common commands (Fire, Hold Your Fire, Hold The Line, What Is That?, It's a Trick) or your own: a Skill to boost or a Defense. Until your next turn starts, allies' matching rolls get ↑1, labelled with the command in their Roll Options Dialog, or the chosen Defense gets +1 when they are attacked.</p>"
+    },
     "originalId": "",
     "actionType": "move",
     "description": "",

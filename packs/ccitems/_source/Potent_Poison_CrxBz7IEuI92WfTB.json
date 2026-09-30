@@ -5,6 +5,10 @@
   "_id": "CrxBz7IEuI92WfTB",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the poison's Ongoing damage lasts one extra round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

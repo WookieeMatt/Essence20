@@ -5,6 +5,10 @@
   "_id": "yyg2pmTVJmxCiYFF",
   "img": "icons/weapons/polearms/trident-jeweled-purple.webp",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might with the listed damage and Void damage ignores armor bonuses to Toughness, and the Power Weapon trait counts for Power Weapon effects. Its Alternate Effect disarms the target. Granted from the Psycho Morpher's Use button.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "f372LpDqqiO2XoEi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend 2 Personal Power. Targeted companions who travel with you and lack this Perk take a Snag on their next Skill Test.</p><p>Left to the table: moving the tokens, and each companion's own Personal Power cost.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "CkeKNYNaotNlxWxd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch on unarmed attacks. On a hit against a target no more than one Size Class larger, two Free actions are spent and the target is Grappled.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -1,5 +1,6 @@
 import { isProtectionBoostActive } from "./protection.mjs";
 import { isReactiveBoostActive } from "./reactive.mjs";
+import { getUses, markUsed } from "./scene-clock.mjs";
 
 /**
  * Nanomite powers (G.I. Joe, Quartermaster's Guide to Gear, "Nanomite Powers," p.92-94): "Unless
@@ -15,6 +16,9 @@ import { isReactiveBoostActive } from "./reactive.mjs";
  * Reprogrammable: "Each time you take this power, the number of times that you can use nanomite powers
  * per day increases by 2" - read, under the per-power ruling, as +2 daily uses on each of the
  * character's nanomite powers, per copy of Reprogrammable.
+ *
+ * Nanoflage (Chameleonite Focus): its Mimic power is "not limited to two uses of this Nanomite Power
+ * per day, instead regenerating one use per scene" - one use a scene on the Scene Clock instead.
  */
 
 const QGTG = "Compendium.essence20.quartermasters_guide_to_gear.Item.";
@@ -22,8 +26,21 @@ export const REPROGRAMMABLE_ID = `${QGTG}EOG8PH8fIJAVpbGY`;
 const PROTECTION_ID = `${QGTG}IF9v9C3tCJSQYRjd`;
 const REACTIVE_ID = `${QGTG}toDyl8zb0XVvqPuj`;
 const REPROGRAMMABLE_BONUS = 2;
+export const NANOFLAGE_ID = `${QGTG}22p3l2vFsFZqfOET`;
+export const MIMIC_ID = `${QGTG}WI0QTzlWkEusSQqY`;
+const NANOFLAGE_MIMIC_FLAG = 'nanoflageMimicUsed';
 
 const sourceIdOf = (item) => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+
+/**
+ * A Nanoflage holder's Mimic: one use a scene instead of two a day.
+ * @param {Actor} actor
+ * @param {Item} power
+ * @returns {Boolean}
+ */
+export function isNanoflageMimic(actor, power) {
+  return sourceIdOf(power) == MIMIC_ID && !!actor?.items?.some?.(item => sourceIdOf(item) == NANOFLAGE_ID);
+}
 
 /**
  * @param {Item} power
@@ -45,6 +62,10 @@ export function getDailyUsesMax(actor, power) {
     return 0;
   }
 
+  if (isNanoflageMimic(actor, power)) {
+    return 1;
+  }
+
   const reprogrammable = power.system.type == 'nanomite'
     ? (actor?.items?.filter?.(item => item.type == 'power' && sourceIdOf(item) == REPROGRAMMABLE_ID) ?? []).length
     : 0;
@@ -57,6 +78,10 @@ export function getDailyUsesMax(actor, power) {
  * @returns {Number}   Uses left today (never below 0).
  */
 export function getDailyUsesLeft(actor, power) {
+  if (tracksDailyUses(power) && isNanoflageMimic(actor, power)) {
+    return Math.max(0, 1 - getUses(actor, NANOFLAGE_MIMIC_FLAG, 'scene'));
+  }
+
   return Math.max(0, getDailyUsesMax(actor, power) - (power.system.usesSpent ?? 0));
 }
 
@@ -90,6 +115,11 @@ export async function spendDailyUse(actor, power) {
     return false;
   }
 
+  if (isNanoflageMimic(actor, power)) {
+    await markUsed(actor, NANOFLAGE_MIMIC_FLAG, { window: 'scene' });
+    return true;
+  }
+
   await power.update({ 'system.usesSpent': (power.system.usesSpent ?? 0) + 1 });
   return true;
 }
@@ -121,7 +151,8 @@ export function formatDailyUses(power) {
   }
 
   const actor = power.parent ?? power.actor;
-  return game.i18n.format('E20.PowerUsesToday', {
+  const key = isNanoflageMimic(actor, power) && game.i18n.has?.('E20.PowerUsesThisScene') ? 'E20.PowerUsesThisScene' : 'E20.PowerUsesToday';
+  return game.i18n.format(key, {
     left: getDailyUsesLeft(actor, power),
     max: getDailyUsesMax(actor, power),
   });

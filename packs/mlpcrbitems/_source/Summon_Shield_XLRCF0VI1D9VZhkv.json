@@ -5,6 +5,10 @@
   "_id": "XLRCF0VI1D9VZhkv",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: on a successful cast, your target (or you, with no target) gets +2 Toughness and Evasion for 2 rounds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

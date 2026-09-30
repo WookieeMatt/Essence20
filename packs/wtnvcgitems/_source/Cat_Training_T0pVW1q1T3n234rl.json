@@ -5,6 +5,10 @@
   "_id": "T0pVW1q1T3n234rl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: on your Speed tests (Acrobatics, Driving, Finesse, Infiltration, Initiative, Targeting), the Roll Options Dialog's Downshift box starts 1 lower, cancelling the first ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

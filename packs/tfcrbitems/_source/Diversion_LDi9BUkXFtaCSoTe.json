@@ -5,6 +5,10 @@
   "_id": "LDi9BUkXFtaCSoTe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: target a creature, pick Deception, Intimidation or Persuasion and its Willpower or Cleverness, and roll. On a success, until the end of the next round its attacks against you take a Snag, and your allies' attacks against it get Edge until it attacks you. Both show as labelled Diversion sources in the attacker's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

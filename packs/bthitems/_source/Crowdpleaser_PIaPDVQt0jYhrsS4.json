@@ -5,6 +5,10 @@
   "_id": "PIaPDVQt0jYhrsS4",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Crowdpleaser Perk and Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "OSo99fF1Lfd3Pwgw",
   "img": "systems/essence20/assets/icons/gear/smartphone.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative gear with no dice effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "LGdwtqgyy1EXkKva",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: a pool of 3 Moxie Points, rising at Old Hand levels 5, 8, 11, 14 and 16. Old Hand Perks spend it through their own buttons and switches.</p><p>Left to the table: spending Moxie for an extra use of your own Perks, and refilling it after a long rest.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

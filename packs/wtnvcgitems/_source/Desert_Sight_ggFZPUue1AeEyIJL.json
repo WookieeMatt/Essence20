@@ -5,6 +5,10 @@
   "_id": "ggFZPUue1AeEyIJL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑1 on Alertness.</p>"
+    },
     "originalId": "",
     "description": "",
     "items": {},

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: Edge on tests outside combat where your unusual background helps, and the extra language.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

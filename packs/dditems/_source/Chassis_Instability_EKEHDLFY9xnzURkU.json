@@ -5,6 +5,10 @@
   "_id": "EKEHDLFY9xnzURkU",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing for this Hang-Up.</p><p>Left to the table: the extra Free action each copy adds to converting Modes, and what happens when you can't pay it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

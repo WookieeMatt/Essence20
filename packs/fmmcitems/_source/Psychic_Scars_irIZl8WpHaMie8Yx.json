@@ -5,6 +5,10 @@
   "_id": "irIZl8WpHaMie8Yx",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: rolling 1d6 when you Fumble and applying the Condition it calls for.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

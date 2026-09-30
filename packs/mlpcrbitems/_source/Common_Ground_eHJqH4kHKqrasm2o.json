@@ -5,6 +5,10 @@
   "_id": "eHJqH4kHKqrasm2o",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: casting rolls Spellcasting and applies its cost as a lingering Spellcasting downshift. The communication it opens up is played out in the story.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

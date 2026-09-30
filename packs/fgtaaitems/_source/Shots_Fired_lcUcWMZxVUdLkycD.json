@@ -5,6 +5,10 @@
   "_id": "lcUcWMZxVUdLkycD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after you deal damage to a creature, your Deception, Intimidation and Persuasion tests against it (with it targeted) get Edge until the end of your next turn, labelled Shots Fired in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

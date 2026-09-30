@@ -5,6 +5,10 @@
   "_id": "z38SPXkEqeuxuypj",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a Role Perk from a standard Power Rangers Role at least 3 levels below yours (not Extra Attack, General Perk, Grid Power or Zord) and add it to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

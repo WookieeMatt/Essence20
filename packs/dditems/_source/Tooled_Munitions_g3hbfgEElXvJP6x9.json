@@ -5,6 +5,10 @@
   "_id": "g3hbfgEElXvJP6x9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: when you use Explosive Ammo, also switch the weapon's damage to any Element; the change lasts until you Fumble with it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

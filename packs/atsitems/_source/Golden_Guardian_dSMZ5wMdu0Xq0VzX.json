@@ -5,6 +5,10 @@
   "_id": "dSMZ5wMdu0Xq0VzX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic prompt: when an attack hits an adjacent ally, you can pay 1 Personal Power to take the hit and all its effects yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

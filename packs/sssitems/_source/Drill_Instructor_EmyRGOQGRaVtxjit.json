@@ -5,6 +5,10 @@
   "_id": "EmyRGOQGRaVtxjit",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Drill Instructor Perks at their listed levels (Brutal Verbalities through That's Right, Perfect), plus its Strength increases at 1st and 10th level. Brawn, Intimidation and Might are its Focus Skills.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

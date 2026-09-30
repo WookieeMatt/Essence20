@@ -5,6 +5,10 @@
   "_id": "1DphEJt2hPswKDzI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: spend a Quips &amp; Speeches use on the NPC you have targeted. Your next Alertness, Deception or Persuasion test against them gets Edge, labelled Whatever We Need in your Roll Options Dialog. Left to the table: the Edge covers only that one test, not a full 5 minutes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

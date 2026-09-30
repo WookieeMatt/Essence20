@@ -5,6 +5,10 @@
   "_id": "rzALUHpTq12OLZ6B",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you take no penalty for using a shotgun or submachine gun within an enemy's reach.</p><p>Left to the table: your free Standard or Limited upgrade for that weapon at Requisition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

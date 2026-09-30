@@ -5,6 +5,10 @@
   "_id": "dI5xvrclQC5P2Qz1",
   "img": "systems/essence20/assets/icons/gear/wingsuit.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: while you carry it, 40 ft Aerial movement.</p><p>Left to the table: dropping 30 ft at the end of each turn, and Acrobatics tests to steer.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "U4Ug6iUQC4Ehzs5l",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: gives your drone companion Night Vision Goggles, plus a Laser Designator from 15th level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

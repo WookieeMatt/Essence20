@@ -5,6 +5,10 @@
   "_id": "aLdjHmWG171RCSpA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: with a target selected, spend one Free action per time you used Analyze Target on it and pick an ally. That ally's next attack on that target gets that many ↑, labelled Target Breakdown in their Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

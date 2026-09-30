@@ -5,6 +5,10 @@
   "_id": "Fc9DBgnZffr8VKDU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: target an adjacent Cybertronian and roll Technology against its Toughness or Evasion. On a success it takes 1 damage and you gain 1 Energon.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

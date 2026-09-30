@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Deception tests made against you (with you targeted) get Edge, labelled Escapist in the roller's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

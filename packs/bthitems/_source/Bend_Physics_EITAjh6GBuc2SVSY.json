@@ -5,6 +5,10 @@
   "_id": "EITAjh6GBuc2SVSY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while Morphed, you and your team have doubled Movement on the sheet and +2 Evasion against ranged attacks, added to the Defense the attack's chat card checks against.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

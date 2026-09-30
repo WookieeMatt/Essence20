@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a Transformers Role and gain its Cybertronian Perk, including any cost it has.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

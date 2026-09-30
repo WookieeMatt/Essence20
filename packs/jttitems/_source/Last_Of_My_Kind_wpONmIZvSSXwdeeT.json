@@ -5,6 +5,10 @@
   "_id": "wpONmIZvSSXwdeeT",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Do Not Go Quietly Perk, plus the Origin's Essence, Skill, Health and movement choices when it's added.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

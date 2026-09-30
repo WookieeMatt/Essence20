@@ -5,6 +5,10 @@
   "_id": "Uzs2Ms6MgPsxV8uU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once): adds your base Role's top-level Role Perk to your sheet (Momentum only for an Officer).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "Lo0GW0XGQ7caNb4P",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: switch Scramble on, and attacks against you target Evasion whatever Defense they would normally use. Switch it off yourself when it ends. Left to the table: reducing a hit's numeric effect by 1.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

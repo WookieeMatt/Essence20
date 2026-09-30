@@ -5,6 +5,10 @@
   "_id": "YgNdjEFOmwV409Rr",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the Free-action Lend Assistance near it, the free Combiner Perk while holding it, and its other effects.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

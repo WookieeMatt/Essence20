@@ -5,6 +5,10 @@
   "_id": "5LaTMHTRv4kT9eJD",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacking with it rolls Targeting at Short range for 1 Sharp damage; its Ballistic trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

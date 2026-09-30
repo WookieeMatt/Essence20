@@ -5,6 +5,10 @@
   "_id": "TA3vXG0Z1HyB4PD4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: every Skill Test shows a Life Interrupted (Sustained Effort) switch that adds ↑1. Turn it on while the Perk's condition holds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

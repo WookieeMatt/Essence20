@@ -5,6 +5,10 @@
   "_id": "sxqOocGC7KwHc3kb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: outside combat, tests of the Skill chosen on the Perk (Science or Technology) open the Roll Options Dialog with Edge already selected.</p><p>Left to the table: the once-per-scene limit, and that it only covers rocket-related work.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

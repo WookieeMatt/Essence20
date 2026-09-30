@@ -33,7 +33,8 @@ describe("grantGridElementalAdaptationResistance", () => {
 
     await grantGridElementalAdaptationResistance(actor, 'cold', 3);
 
-    expect(actor.update).toHaveBeenCalledWith({ 'system.resistances.cold': true, 'system.powers.personal.value': 1 });
+    expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 1 });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'sceneResistances.cold', expect.objectContaining({ window: 'scene', morphedOnly: true }));
     expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'gridElementalAdaptationUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
   });
 

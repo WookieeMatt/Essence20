@@ -5,6 +5,10 @@
   "_id": "yFikSROr3NzaEoaL",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a Snag, labelled with this upgrade in the roller's Roll Options Dialog, on Deception or Intimidation rolls from someone with Inundation who has already outwitted the wearer, and on attacks from someone with Informed Accuracy who has already analyzed the wearer twice.</p><p>Left to the table: any other repeated ability used against the wearer.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

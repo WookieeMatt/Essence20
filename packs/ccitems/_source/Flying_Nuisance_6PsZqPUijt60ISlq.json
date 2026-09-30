@@ -5,6 +5,10 @@
   "_id": "6PsZqPUijt60ISlq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: roll Acrobatics or Driving against a target's Evasion as a Free action; on a success they take a Snag on their next test. Left to the table: that you flew past them.</p>"
+    },
     "originalId": "",
     "actionType": "free",
     "description": "",

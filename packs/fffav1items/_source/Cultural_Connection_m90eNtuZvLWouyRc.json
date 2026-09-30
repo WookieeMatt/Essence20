@@ -5,6 +5,10 @@
   "_id": "m90eNtuZvLWouyRc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: on Deception and Persuasion tests, if you're trained in that Skill and your Culture die is better, the roll uses your Culture die instead. From Role level 10 it also rolls as Specialized.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

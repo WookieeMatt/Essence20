@@ -5,6 +5,10 @@
   "_id": "xR4z6mV7Ab72TyVs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: rolls your Empathy Skill against your target's Willpower. On a success their next Skill Test takes ↓1, labelled Tender in their Roll Options Dialog. Left to the table: keeping it on all their aggressive actions until someone is aggressive toward them or the scene ends.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

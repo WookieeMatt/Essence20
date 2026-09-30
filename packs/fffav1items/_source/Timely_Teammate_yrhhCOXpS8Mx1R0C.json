@@ -5,6 +5,10 @@
   "_id": "yrhhCOXpS8Mx1R0C",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: after Initiative is rolled, trade places in the order with a willing ally.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

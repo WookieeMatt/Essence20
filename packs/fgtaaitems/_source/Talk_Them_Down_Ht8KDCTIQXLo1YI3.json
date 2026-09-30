@@ -5,6 +5,10 @@
   "_id": "Ht8KDCTIQXLo1YI3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: checks the target is at half Health or lower with a Threat Level below your level, then rolls Persuasion against it; on a success it is Defeated.</p><p>Left to the table: rolling Deception or Intimidation instead.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

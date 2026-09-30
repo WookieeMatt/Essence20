@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you get one extra Reinforced Integrated Weapon Hardpoint on the sheet, and all your Infiltration tests take a Snag, labelled The Fiercest Among You in the Roll Options Dialog.</p><p>Left to the table: the weapon training it grants at 1st, 7th and 14th level, and dropping the Snag on Infiltration tests that aren't about blending in.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

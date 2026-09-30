@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick a Skill when you gain it. On tests with that Skill the first ↓1 from any source is cancelled before your Roll Options Dialog opens, and the chat card shows a reroll button for any 1s on the Skill dice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

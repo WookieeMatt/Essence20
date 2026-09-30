@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Lend Assistance on a Skill, the bonus banked for your ally's next roll of that Skill includes an Edge as well as the usual ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

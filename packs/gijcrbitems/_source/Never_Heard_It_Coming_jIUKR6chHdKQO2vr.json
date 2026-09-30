@@ -5,6 +5,10 @@
   "_id": "jIUKR6chHdKQO2vr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Sneak Attack reaches out to 60 ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

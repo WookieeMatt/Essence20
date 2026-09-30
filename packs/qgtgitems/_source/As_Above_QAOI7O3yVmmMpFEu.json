@@ -5,6 +5,10 @@
   "_id": "QAOI7O3yVmmMpFEu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when your token's elevation is higher than your target's, your ranged attacks get Edge, shown as As Above next to Edge in the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

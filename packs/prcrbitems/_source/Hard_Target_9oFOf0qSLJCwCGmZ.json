@@ -5,6 +5,10 @@
   "_id": "9oFOf0qSLJCwCGmZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: roll your Acrobatics die and add it to your Evasion against the next attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

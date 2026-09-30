@@ -5,6 +5,10 @@
   "_id": "OcSCFt40z5d9FPmi",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Spear's two-handed attack: rolls Finesse at Reach ×2 for 2 Sharp damage.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

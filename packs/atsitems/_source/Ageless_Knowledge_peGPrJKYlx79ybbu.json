@@ -5,6 +5,10 @@
   "_id": "peGPrJKYlx79ybbu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power (Morphed or not) and pick a Skill; your next roll with it ignores the unskilled penalty.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

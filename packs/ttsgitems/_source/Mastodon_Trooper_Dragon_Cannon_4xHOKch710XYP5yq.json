@@ -5,6 +5,10 @@
   "_id": "4xHOKch710XYP5yq",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 3 Energy damage at 80ft/200ft range; its Mounted and Reload traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "OU9rXvoKfXtcpvFy",
   "img": "systems/essence20/assets/icons/weapons/punch.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your built-in unarmed attack rolls Finesse or Might, whichever is better, for Stun 1 at Reach. Alternate effects: 1 Blunt damage at ↓1, or a Maneuver at ↓1. Its Blunt, Martial Arts and Silent traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

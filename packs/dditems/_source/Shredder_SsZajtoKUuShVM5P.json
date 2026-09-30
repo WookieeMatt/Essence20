@@ -5,6 +5,10 @@
   "_id": "SsZajtoKUuShVM5P",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Warrior Role, plus the Shredder Perks at their listed levels. Pick its Essence and Skill increases when you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

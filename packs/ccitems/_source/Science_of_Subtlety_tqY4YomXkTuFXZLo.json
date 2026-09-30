@@ -5,6 +5,10 @@
   "_id": "tqY4YomXkTuFXZLo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: a Takedown attempt offers Science alongside Might and Finesse.</p><p>Left to the table: using Science in place of Deception or Infiltration when poisoning someone outside combat.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

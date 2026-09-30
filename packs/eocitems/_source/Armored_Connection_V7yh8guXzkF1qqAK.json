@@ -5,6 +5,10 @@
   "_id": "V7yh8guXzkF1qqAK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you and your bonded ally each get +2 Toughness while linked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

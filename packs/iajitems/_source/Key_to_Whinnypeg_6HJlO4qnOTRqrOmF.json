@@ -5,6 +5,10 @@
   "_id": "6HJlO4qnOTRqrOmF",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: while you carry it, Social tests get a choice of ↑2 with Whinnypeg's important ponies or ↑1 with others.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

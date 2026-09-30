@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button on the pet: it Lends Assistance with its Favorite Command as a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

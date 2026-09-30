@@ -5,6 +5,10 @@
   "_id": "uMdYpJ2WNPesQQwL",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might attack dealing 2 Energy damage to one target up to 30 ft away, at ↓1.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

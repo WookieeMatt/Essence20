@@ -5,6 +5,10 @@
   "_id": "dD0We78dzfsH98Bw",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: once braced, the weapon stays braced until you move.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

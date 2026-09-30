@@ -5,6 +5,10 @@
   "_id": "BhN9kQXMAqP1FGut",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: casting the imprinted spell without paying its cost, then removing the scroll.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

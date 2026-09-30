@@ -40,6 +40,31 @@ function ladderIndex(shift) {
   return index < 0 ? 0 : index;
 }
 
+// Perks that bend Brawn for equipment requirements. Over Brawn (GI Joe CRB):
+// "Ignore the Strength-based skill requirements of equipment you use." The Heavy (GI Joe CRB):
+// Brawn "↑2 for armor and weapon requirements". Pack Mule (GI Joe CRB; TF CRB
+// reprint): "Your Brawn is considered two points higher for ... satisfying equipment requirements."
+// Ordnance Expert's "↑4" is for weapon requirements only, so it doesn't reach armor.
+export const BRAWN_PERK = {
+  overBrawn: "Compendium.essence20.gi_joe_crb.Item.ToNsubTwuej5GAV0",
+  theHeavy: "Compendium.essence20.gi_joe_crb.Item.rlD6YJSr2fgROKHo",
+  packMule: ["Compendium.essence20.gi_joe_crb.Item.x8SbuymJTLYn1TdC", "Compendium.essence20.tf_crb.Item.b4zeeYax1vrzVGZx"],
+};
+
+function hasPerk(actor, uuids) {
+  const list = [].concat(uuids);
+  return itemsOf(actor).some(item => list.includes(sourceOf(item)));
+}
+
+/** Die sizes the actor's Brawn counts as higher for an armor requirement - Infinity to ignore it. */
+export function brawnRequirementBonus(actor) {
+  if (hasPerk(actor, BRAWN_PERK.overBrawn)) {
+    return Infinity;
+  }
+
+  return (hasPerk(actor, BRAWN_PERK.theHeavy) ? 2 : 0) + (hasPerk(actor, BRAWN_PERK.packMule) ? 2 : 0);
+}
+
 /**
  * How many die sizes of Brawn the actor lacks for this armor's printed Brawn requirement - GI Joe
  * CRB, Brawn (p.117): "If you don't meet the equipment's Brawn requirement, you suffer a ↓1 shift
@@ -57,7 +82,7 @@ export function brawnShortfall(actor, armor) {
   }
 
   const has = actor?.system?.skills?.brawn?.shift ?? 'd20';
-  return Math.max(0, ladderIndex(required) - ladderIndex(has));
+  return Math.max(0, ladderIndex(required) - ladderIndex(has) - brawnRequirementBonus(actor));
 }
 
 /**

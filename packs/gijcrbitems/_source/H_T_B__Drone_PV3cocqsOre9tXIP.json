@@ -5,6 +5,10 @@
   "_id": "PV3cocqsOre9tXIP",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative upgrade: your H.T.B. Access Pad is built into the drone. No dice effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

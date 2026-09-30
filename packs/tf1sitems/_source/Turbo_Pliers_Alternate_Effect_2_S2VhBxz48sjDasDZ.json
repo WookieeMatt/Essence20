@@ -5,6 +5,10 @@
   "_id": "S2VhBxz48sjDasDZ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a melee Maneuver at Reach, rolling Finesse or Might, whichever is better; on a hit you choose to grapple, shove or trip the target.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "description": "",

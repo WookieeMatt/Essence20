@@ -5,6 +5,10 @@
   "_id": "0Ub2QRx8AcakJj97",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: any attempt to dislodge the merged Headmaster head always takes a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

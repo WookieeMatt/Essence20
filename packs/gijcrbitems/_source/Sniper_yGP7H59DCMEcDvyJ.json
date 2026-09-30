@@ -3,6 +3,10 @@
   "type": "focus",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Spotter's Scope, In My Sights, Piercing Shot, Ghillie Suit Sniping, Kentucky Windage, Ballistic Advantage and Kill Shot at their listed levels, plus +1 Speed at 1st and 10th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
