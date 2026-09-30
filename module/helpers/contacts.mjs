@@ -94,6 +94,36 @@ export function npcUseToggle(system, field) {
   return { [`system.${field}`]: next };
 }
 
+/**
+ * Only a Contact can be added to a character. An NPC dropped on one that isn't a Contact yet asks
+ * whether to make it one; No or closing the prompt calls the drop off, and a user who can't edit the
+ * NPC is told the GM has to tick its Contact box.
+ * @param {Actor} npc The dropped NPC
+ * @returns {Promise<boolean>} true when the NPC is (now) a Contact and the drop goes ahead
+ */
+export async function offerMakeContact(npc) {
+  if (npc?.type != 'npc' || npc.system?.isContact) {
+    return true;
+  }
+
+  if (!npc.isOwner) {
+    ui.notifications.warn(game.i18n.format('E20.ContactDropNotContact', { name: npc.name }));
+    return false;
+  }
+
+  const confirmed = await foundry.applications.api.DialogV2.confirm({
+    window: { title: game.i18n.localize('E20.ContactDropPromptTitle') },
+    content: `<p>${game.i18n.format('E20.ContactDropPrompt', { name: foundry.utils.escapeHTML(npc.name) })}</p>`,
+    rejectClose: false,
+  });
+  if (!confirmed) {
+    return false;
+  }
+
+  await npc.update({ 'system.isContact': true });
+  return true;
+}
+
 /** The Contacts listed on a PC's sheet. */
 export function contactsOf(actor) {
   return Object.values(actor?.system?.actors ?? {}).map(entry => {
