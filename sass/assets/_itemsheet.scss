@@ -65,6 +65,7 @@
 }
 
 .essence20.item .e20-item-badges .item-type-badge {
+  flex: 0 0 auto; // .flexrow grows every child; the pill hugs its label
   margin-bottom: 0;
 }
 
