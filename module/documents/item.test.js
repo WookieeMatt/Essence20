@@ -2394,6 +2394,33 @@ describe("_prepareAutomation", () => {
     expect(unsourced.system.automation.status).toBe("");
   });
 
+  test("loadAutomationNotes loads the source pack's full index first (v14 omits system fields)", async () => {
+    let indexed = false;
+    const pack = { metadata: {}, get indexed() {
+      return indexed; 
+    }, getIndex: jest.fn(async () => {
+      indexed = true; 
+    }) };
+    global.fromUuidSync = jest.fn(() => (indexed ? { system: { automation: ORIGINAL } } : { name: "x" }));
+    const saved = global.foundry.utils.parseUuid;
+    global.foundry.utils.parseUuid = () => ({ collection: pack });
+    try {
+      const item = makeCopy();
+      await item.loadAutomationNotes();
+      expect(pack.getIndex).toHaveBeenCalledTimes(1);
+      expect(item.system.automation).toEqual(ORIGINAL);
+
+      await item.loadAutomationNotes();
+      expect(pack.getIndex).toHaveBeenCalledTimes(1);
+
+      const own = makeCopy({ stored: { status: "manual", notes: "<p>Mine.</p>" } });
+      await own.loadAutomationNotes();
+      expect(own.system.automation.status).toBe("manual");
+    } finally {
+      global.foundry.utils.parseUuid = saved;
+    }
+  });
+
   test("no index entry (or no fromUuidSync, as in tests) leaves it blank", () => {
     delete global.fromUuidSync;
     const item = makeCopy();

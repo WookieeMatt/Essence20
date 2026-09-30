@@ -411,6 +411,27 @@ export class Essence20Item extends Item {
     }
   }
 
+  /**
+   * v14 only sends each pack's core index fields at world load - CONFIG.Item.compendiumIndexFields
+   * (system.automation) arrive only once something calls pack.getIndex(). So before showing a copy's
+   * inherited notes, load its source pack's full index, then read them again.
+   */
+  async loadAutomationNotes() {
+    const stored = this._source?.system?.automation;
+    const sourceUuid = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+    if (!this.system.automation || this.pack || !sourceUuid || stored?.status || stored?.notes?.trim()) {
+      return;
+    }
+
+    const collection = foundry.utils.parseUuid?.(sourceUuid)?.collection;
+    const pack = collection?.metadata ? collection : null;
+    if (pack && !pack.indexed) {
+      await pack.getIndex();
+    }
+
+    this._prepareAutomation();
+  }
+
   _prepareDescription() {
     // Tested against the SOURCE, not the prepared value. description is a stored field rather
     // than a derived one, and Foundry does not roll a data model back to source between

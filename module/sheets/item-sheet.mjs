@@ -468,6 +468,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
  * @returns {Promise<Object>}
  */
 export async function prepareAutomationContext(item) {
+  await item.loadAutomationNotes?.();
   const automation = item.system.automation;
   if (!automation) {
     return null;
