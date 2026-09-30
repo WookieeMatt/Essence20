@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Outwit gets an Edge against an enemy your Outwit has already affected.</p>"
+      "notes": "<p>Automatic: once your Outwit has succeeded against an enemy, your later Deception and Intimidation rolls against that enemy get an Edge, labelled Inundation in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

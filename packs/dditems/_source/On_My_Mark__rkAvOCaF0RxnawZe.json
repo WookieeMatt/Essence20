@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: rolls you make off your own turn (Contingency actions) against your current Mark Target treat its Defenses as 5 lower.</p>"
+      "notes": "<p>Automatic: during combat, rolls you make off your own turn (Contingency actions) against your current Mark Target treat its Defenses as 5 lower. The chat card shows the lowered Defense.</p>"
     },
     "originalId": "",
     "description": "",

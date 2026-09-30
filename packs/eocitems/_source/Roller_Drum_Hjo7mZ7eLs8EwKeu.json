@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: +1 Blunt on your Alt Mode Ram against Prone targets and +1 Stun on your Bot Mode Unarmed hits. In a Combiner form you add +1 to its Health.</p>"
+      "notes": "<p>Automatic: in Alt Mode your Ram deals +1 Blunt to a Prone target, and in Bot Mode your Unarmed Stun hits deal +1 Stun; both show on the chat card as \"Includes +1 from Roller Drum\". In a Combiner form you add +1 to its Health.</p>"
     },
     "originalId": "",
     "description": "",

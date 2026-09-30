@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: with a target selected, spend Free actions equal to your Analyze Target uses on it and pick an ally; their next attack on that target gets that many ↑.</p>"
+      "notes": "<p>Use button: with a target selected, spend one Free action per time you used Analyze Target on it and pick an ally. That ally's next attack on that target gets that many ↑, labelled Target Breakdown in their Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

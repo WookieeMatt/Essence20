@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: ↑1 on every Science and Technology test while Morphed.</p><p>Left to the table: limiting it to helping, repairing or healing someone, once per turn as a Free action.</p>"
+      "notes": "<p>Automatic: while Morphed, every Science and Technology roll gets ↑1, already counted in the Roll Options Dialog's Shift Up box.</p><p>Left to the table: limiting it to helping, repairing or healing someone, once per turn as a Free action (lower Shift Up by 1 on other rolls).</p>"
     },
     "originalId": "",
     "description": "",

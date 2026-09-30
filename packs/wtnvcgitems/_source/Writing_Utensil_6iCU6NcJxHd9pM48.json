@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic, while carried: Science and Technology tests ignore the first ↓1.</p>"
+      "notes": "<p>Automatic, while carried: Science and Technology tests open the Roll Options Dialog with the Downshift box 1 lower, cancelling the first ↓1.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and traits. Its Grapple alternate effect marks the target, whose escape tests then take a Snag.</p>"
+      "notes": "<p>Automatic: the main attack rolls Might for 1 Sharp damage. Hitting with the Grapple alternate effect gives the target the Grappled condition. For the rest of the scene, while it stays Grappled, its Acrobatics, Athletics, Brawn and Finesse tests (the Skills it can escape with) take a Snag, labelled Assault Claw in its Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

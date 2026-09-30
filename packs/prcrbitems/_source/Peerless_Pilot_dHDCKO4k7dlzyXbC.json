@@ -4,8 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: Edge on Initiative, and Edge on Driving while you have a Driving Specialization at d6 or higher (leave the switchable effect off).</p><p>Left to the table: automatically passing emergency disembark tests.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: while you're driving a vehicle and have a Driving Specialization at d6 or higher, your Initiative and Driving tests open the Roll Options Dialog with Edge selected (leave the switchable effect off). If the vehicle is wrecked, you pass the emergency disembark test automatically as its driver.</p>"
     },
     "originalId": "",
     "description": "",

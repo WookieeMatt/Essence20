@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>On the sheet: equip it for +2 Toughness, or switch it to active for +3 Toughness. Automatic: while active, ranged attacks against you take ↓2 for cover. Shield bashes roll Might for 1 Blunt damage.</p>"
+      "notes": "<p>On the sheet: equip it for +2 Toughness, or switch it to active for +3 Toughness. Automatic: while it is active, ranged attacks against you take ↓2 for cover, labelled with the shield in the attacker's Roll Options Dialog. Shield bashes roll Might for 1 Blunt damage.</p>"
     },
     "originalId": "",
     "description": "",

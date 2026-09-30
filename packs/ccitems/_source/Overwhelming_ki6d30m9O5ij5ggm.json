@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: if you also have Beast of Burden, its bonus applies to attacks made with your Signature Weapon.</p>"
+      "notes": "<p>Automatic: if you also have Beast of Burden, attacks with your Signature Weapon get ↑2. It's already counted in the ↑ total when the Roll Options Dialog opens, but isn't listed under its own name.</p>"
     },
     "originalId": "",
     "description": "",

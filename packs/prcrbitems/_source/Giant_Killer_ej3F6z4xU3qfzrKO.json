@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on attacks against targets two or more sizes larger than you, and Edge against targets more than five sizes larger.</p>"
+      "notes": "<p>Automatic: your attacks get ↑1 against targets two or more sizes larger than you, and Edge against targets more than five sizes larger, both labelled Giant-Killer in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

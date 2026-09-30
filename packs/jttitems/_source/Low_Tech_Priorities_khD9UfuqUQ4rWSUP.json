@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>On the sheet: pick two Skills. Automatic: once per turn, a test with one of them ignores one point of ↓.</p>"
+      "notes": "<p>On the sheet: when added you pick two Skills. Automatic: once per turn, a test with one of them drops one point of ↓, so the Downshift number in its Roll Options Dialog starts one lower.</p>"
     },
     "originalId": "",
     "description": "",

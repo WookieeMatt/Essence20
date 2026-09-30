@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a vehicle you drive in one of your environments of expertise gets your Environmental Expertise benefits - Edge on non-attack tests, Specialized attacks and ignoring Rough Terrain.</p>"
+      "notes": "<p>Automatic: while you drive a vehicle in one of your environments of expertise, the vehicle gets your Environmental Expertise benefits: Edge on its non-attack tests (labelled Adapted Vehicle in its Roll Options Dialog), Specialized attacks, and ignoring Rough Terrain.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: your next Spellcasting test gets ↑1. Left to the table: lowering your Willpower by 1 until the scene ends each time you use it.</p>"
+      "notes": "<p>Use button: your next Spellcasting test gets ↑1, labelled Inner Magic in your Roll Options Dialog. Left to the table: lowering your Willpower by 1 until the scene ends each time you use it.</p>"
     },
     "originalId": "",
     "actionType": "standard",

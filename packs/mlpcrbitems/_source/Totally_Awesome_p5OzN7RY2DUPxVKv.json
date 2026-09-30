@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +1 Health. Automatic: pick a different Social Skill when you gain it and get ↑1 on it.</p>"
+      "notes": "<p>Active Effect: +1 Health. Automatic: pick a Social Skill when you gain it; tests with that Skill get ↑1, already counted in the upshift your Roll Options Dialog opens with.</p>"
     },
     "originalId": "",
     "description": "",

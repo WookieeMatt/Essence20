@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: switch on Public Scandal after you Fumble in public for ↓1 on Social tests, and switch it off when you next roll a Critical Success.</p>"
+      "notes": "<p>Roll Options Dialog: Social rolls show a Royalty (Public Scandal) switch that adds ↓1. Turn it on after you Fumble in public, until you next roll a Critical Success.</p>"
     },
     "originalId": "",
     "description": "",

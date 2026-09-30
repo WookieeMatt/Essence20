@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: switch it on for Edge on Smarts tests to find weaknesses, security flaws or hidden items, then switch it off.</p>"
+      "notes": "<p>Roll Options Dialog: Smarts rolls show a Checkered Past switch that gives Edge. Turn it on for tests to find weaknesses, security flaws or hidden items.</p>"
     },
     "originalId": "",
     "description": "",

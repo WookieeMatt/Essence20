@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your first non-Performance Skill Test each day takes a Snag, in or out of combat. A new day starts when the GM starts a new mission on the Scene Clock.</p>"
+      "notes": "<p>Automatic: your first Skill Test other than Performance each day opens the Roll Options Dialog with Snag selected, in or out of combat. A new day starts when the GM starts a new mission on the Scene Clock.</p>"
     },
     "originalId": "",
     "description": "",

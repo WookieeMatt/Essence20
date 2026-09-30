@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks use its Poison blast or its Sharp alternate in the same 10ft radius, and its traits apply. Needs Animal Handling +d6.</p>"
+      "notes": "<p>Automatic: attacks roll Athletics at Short range for 1 Poison damage in a 10 ft radius, or 1 Sharp damage in the same radius as the alternate; its traits apply.</p>"
     },
     "originalId": "",
     "description": "",

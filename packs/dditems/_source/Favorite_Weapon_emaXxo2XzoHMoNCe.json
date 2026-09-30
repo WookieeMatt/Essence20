@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: choose an eligible two-handed Targeting weapon as your favorite. Automatic: ↑1 on every attack with it.</p>"
+      "notes": "<p>Use button: choose an eligible two-handed Targeting weapon as your favorite. Automatic: every attack with it gets ↑1, already counted in the Roll Options Dialog's starting ↑ total but not listed under its own name.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +2 Willpower and +1 Health. Automatic: +1 damage on attacks that hit Willpower.</p>"
+      "notes": "<p>Active Effect: +2 Willpower and +1 Health. Automatic: attacks you roll against a target's Willpower deal +1 damage, shown on the hit's chat card as \"Includes +1 from The Weather\".</p>"
     },
     "originalId": "",
     "description": "",

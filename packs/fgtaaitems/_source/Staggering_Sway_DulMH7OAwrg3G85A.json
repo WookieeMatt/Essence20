@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your allies deal +1 Stun when they deal Stun damage.</p>"
+      "notes": "<p>Automatic: when an ally (a character on your side) hits with Stun damage, it deals +1 Stun, shown on their chat card as \"Includes +1 from Staggering Sway\".</p>"
     },
     "originalId": "",
     "description": "",

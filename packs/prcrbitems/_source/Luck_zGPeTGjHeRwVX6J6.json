@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: reroll a natural 1 on any Skill die of d4 or higher, keeping the new result.</p>"
+      "notes": "<p>Chat card: a reroll button lets you reroll any natural 1 on Skill dice of d4 or larger, keeping the new result.</p>"
     },
     "originalId": "",
     "description": "",

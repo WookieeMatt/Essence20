@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: changes the Skill the upgraded weapon attacks with, and counts toward Cobra-La's Qualification rules at Requisition.</p>"
+      "notes": "<p>Automatic: when you attach it, pick Animal Handling, Science or Survival; the upgraded weapon's attacks roll that Skill. It also counts toward Cobra-La's Qualification rules at Requisition.</p>"
     },
     "originalId": "",
     "description": "",

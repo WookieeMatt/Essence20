@@ -4,8 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Automatic: while in this Alt Mode you have no Movement and get Edge on Infiltration and Alertness tests to hide, blend in or eavesdrop.</p>"
+      "status": "partial",
+      "notes": "<p>Automatic: while you are in Alt Mode, all your Infiltration and Alertness tests get Edge, already selected when the Roll Options Dialog opens.</p><p>Left to the table: having no Movement in this Alt Mode, and dropping the Edge on tests that aren't about hiding, blending in or eavesdropping.</p>"
     },
     "originalId": "",
     "description": "",

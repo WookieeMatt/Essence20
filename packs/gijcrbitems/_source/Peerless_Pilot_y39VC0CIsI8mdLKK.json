@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while driving a vehicle you get Edge on Initiative and ↑2 on Driving tests (needs a Driving Specialization), and you pass the emergency disembark test from a vehicle you pilot.</p>"
+      "notes": "<p>Automatic, while you drive a vehicle and have at least one Driving Specialization: your Initiative roll opens with Edge selected, and your Driving tests get ↑2, already added in the Roll Options Dialog. You also pass the emergency disembark test from a vehicle you pilot.</p>"
     },
     "originalId": "",
     "description": "",

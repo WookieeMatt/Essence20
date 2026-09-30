@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect (off by default): switch it on for ↑1 on Technology while the rig applies, and off again afterwards.</p>"
+      "notes": "<p>Roll Options Dialog: Technology rolls show a Hacker Rig switch that adds ↑1. Turn it on while the rig applies.</p>"
     },
     "originalId": "",
     "description": "",

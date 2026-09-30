@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Culture. Roll Options Dialog: a switch for Edge on Animal Handling, Deception, Persuasion and Survival in or about your chosen location. The language is storytelling.</p>"
+      "notes": "<p>Automatic: Culture rolls open the Roll Options Dialog with Edge already selected. Roll Options Dialog: Animal Handling, Deception, Persuasion and Survival rolls show an In the chosen location or with its people switch for Edge. The language is storytelling.</p>"
     },
     "originalId": "",
     "description": "",

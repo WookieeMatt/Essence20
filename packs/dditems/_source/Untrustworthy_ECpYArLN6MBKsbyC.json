@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: ↓1 on your Social tests.</p>"
+      "notes": "<p>Active Effect: ↓1 on every Skill Test rolled with your Social Essence, already counted in the Roll Options Dialog's starting ↓ total.</p>"
     },
     "originalId": "",
     "description": "",

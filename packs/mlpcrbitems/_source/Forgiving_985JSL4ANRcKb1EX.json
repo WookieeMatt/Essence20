@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: anyone who attacks or Intimidates you is remembered, and your next test with your Empathy Skill against them gets Edge.</p>"
+      "notes": "<p>Automatic: anyone who attacks or Intimidates you is remembered. Your next test with your Empathy Skill targeting them gets Edge, labelled Forgiving in your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

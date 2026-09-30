@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: +1 Toughness, and Energy and Laser attacks against you take ↓1.</p>"
+      "notes": "<p>Automatic: +1 Toughness while worn, and attacks against you that deal Energy-type damage (Acid, Cold, Electric, EMP, Fire, Laser, Sonic or elemental) take ↓1, labelled Static Slide Inhibitor in the attacker's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: heal 1 Health on you or an ally, no roll. Automatic: an Edge on Science tests using the Medicine Specialization.</p>"
+      "notes": "<p>Use button: heal 1 Health on you or an ally, no roll. Automatic: Science tests rolled with the Medicine Specialization open the Roll Options Dialog set to Edge.</p>"
     },
     "originalId": "",
     "description": "",

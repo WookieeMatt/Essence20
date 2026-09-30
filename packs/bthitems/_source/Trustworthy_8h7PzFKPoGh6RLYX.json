@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +2 Cleverness, and the Bluffing Specialization with Edge on Deception.</p>"
+      "notes": "<p>Active Effect: +2 Cleverness on the sheet, and a Bluffing Specialization on Deception. Deception rolls made with that Specialization open the Roll Options Dialog with Edge already selected.</p>"
     },
     "originalId": "",
     "description": "",

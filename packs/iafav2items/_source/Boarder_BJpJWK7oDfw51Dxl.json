@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: an Edge on Athletics and Acrobatics tests while you carry it. Set the roll back to normal when it isn't a boarding attempt.</p><p>Left to the table: the Snag on attempts to throw you off a vehicle.</p>"
+      "notes": "<p>Automatic: while it's on your sheet, your Athletics and Acrobatics tests get an Edge, listed as a source in the Roll Options Dialog. Set the roll back to normal when it isn't a boarding attempt.</p><p>Left to the table: the Snag on attempts to throw you off a vehicle.</p>"
     },
     "originalId": "",
     "description": "",

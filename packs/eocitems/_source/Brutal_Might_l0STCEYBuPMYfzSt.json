@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Might attacks roll Brawn instead, with Edge when you are at least one Size Class larger than the target.</p>"
+      "notes": "<p>Automatic: your Might attacks roll Brawn instead. When you're at least one Size Class larger than the target, they get Edge, labelled Brutal Might in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

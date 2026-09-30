@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: each further attack with your favorite weapon against the same target treats its Defenses as 1 lower per earlier attack.</p>"
+      "notes": "<p>Automatic: in a scene, each further attack with your Favorite Weapon against the same target treats its Defense as 1 lower per earlier attack; the chat card shows the lowered value.</p>"
     },
     "originalId": "",
     "description": "",

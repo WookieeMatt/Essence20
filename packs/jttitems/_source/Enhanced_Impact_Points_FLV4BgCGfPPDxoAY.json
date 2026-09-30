@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while Morphed, your unarmed Blunt and Sharp alternate attacks lose their ↓ penalty.</p>"
+      "notes": "<p>Automatic: while Morphed, your unarmed Blunt and Sharp alternate attacks get an upshift equal to their own ↓ penalty, listed as Enhanced Impact Points in the Roll Options Dialog, so the penalty cancels out.</p>"
     },
     "originalId": "",
     "description": "",

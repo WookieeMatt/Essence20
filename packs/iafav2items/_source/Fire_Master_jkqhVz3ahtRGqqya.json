@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: Resistance to Fire. Automatic: ↑1 on attacks that deal Fire damage.</p>"
+      "notes": "<p>Active Effect: Resistance to Fire. Automatic: your attacks that deal Fire damage get ↑1, already added to the shift in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: everyone seated gets ↑1 on Culture, Science and Technology; allied Zords and vehicles on the scene get Edge on Initiative, and a Megaform uses its best component's Initiative with Edge.</p>"
+      "notes": "<p>Automatic: everyone seated in the Zord gets ↑1 on Culture, Science and Technology, listed as Mobile Headquarters in the Roll Options Dialog. Allied Zords and vehicles on the scene roll Initiative with Edge, and a Megaform with this Zord uses its best component's Initiative, with Edge.</p>"
     },
     "originalId": "",
     "description": "",

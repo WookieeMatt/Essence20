@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when gained, pick a Smarts or Social Skill and a profession; that Skill gets ↑1. Roll Options Dialog: outside combat, a switch makes profession-related tests Specialized.</p>"
+      "notes": "<p>Automatic: when gained, pick a Smarts or Social Skill and a profession; rolls with that Skill get ↑1, labelled Cover Job in the Roll Options Dialog. Roll Options Dialog: outside combat, a Cover Job: relates to your profession switch makes the roll Specialized.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Survival rolls using a Space Specialization and Technology rolls using an Astro-Nav Specialization.</p>"
+      "notes": "<p>Automatic: Survival rolls made with a Specialization named Space, and Technology rolls made with one named Astro-Nav, open the Roll Options Dialog with Edge already selected.</p>"
     },
     "originalId": "",
     "description": "",

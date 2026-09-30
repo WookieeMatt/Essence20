@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: pick this Form when you Morph. Chrono Blaster and Chrono Sabers replace your weapons, you get the Chrono Communicator, Time Badge and Visual Scanner, and Edge on time-travel Specialization tests. Use button: 1 Personal Power for an Electro Booster or a Vector Weapon for the scene.</p>"
+      "notes": "<p>Automatic: pick this Form when you Morph: the Chrono Blaster and Chrono Sabers replace your weapons, and you get the Chrono-Communicator, Time Badge and Visual Scanner. Roll Options Dialog: a Time-travel Specialization (Time Force Edge) switch, already ticked when the Specialization's name mentions time, chrono or temporal. Use button: 1 Personal Power for an Electro Booster, or a Vector Weapon for the scene.</p>"
     },
     "originalId": "",
     "description": "",

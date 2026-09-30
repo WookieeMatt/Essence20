@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and blast, and its traits apply (Computerized, Consumable, Energy).</p>"
+      "notes": "<p>Automatic: a thrown Targeting attack at ↓3 for 1 damage at 20 ft (long range 50 ft), and its Computerized, Consumable and Energy traits apply, including using up the grenade.</p>"
     },
     "originalId": "",
     "description": "",

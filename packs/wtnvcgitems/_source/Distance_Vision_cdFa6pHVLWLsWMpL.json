@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the first time you Aim each turn, your ranged attack gets ↑2 instead of ↑1.</p>"
+      "notes": "<p>Automatic: the first time each turn you tick Aim in the Roll Options Dialog for a ranged attack, it gives ↑2 instead of ↑1.</p>"
     },
     "originalId": "",
     "description": "",

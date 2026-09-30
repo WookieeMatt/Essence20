@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the vehicle gains the Treads trait and Edge on Driving tests in Rough Terrain.</p>"
+      "notes": "<p>Automatic: the vehicle gains the Treads trait. While its token is in Rough Terrain, the driver's Driving tests get Edge, shown as Treads next to Edge in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

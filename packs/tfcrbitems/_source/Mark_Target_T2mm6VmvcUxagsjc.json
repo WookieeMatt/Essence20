@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Use button: mark the targeted creature. Automatic: ↑1 on Skill Tests related to it until the scene ends.</p>"
+      "status": "partial",
+      "notes": "<p>Use button: marks the creature you have targeted. Your rolls with that creature targeted get ↑1, labelled Mark Target in the Roll Options Dialog.</p><p>Left to the table: ending the mark when the scene ends (it lasts until you mark someone else).</p>"
     },
     "originalId": "",
     "description": "",

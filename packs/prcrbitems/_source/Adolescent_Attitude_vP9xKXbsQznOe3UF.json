@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: reroll 1s on Social Skill dice. Active Effect: switch on the untrained effect to roll an unranked Skill as d2, then switch it off.</p><p>Left to the table: once per scene for the d2 use.</p>"
+      "notes": "<p>Chat card: on Social Skill tests, a reroll button lets you reroll any 1s on the Skill dice. Active Effect (off by default): switch on the untrained effect to roll an unranked Skill as d2, then switch it off. Left to the table: once per scene for the d2 use.</p>"
     },
     "originalId": "",
     "description": "",

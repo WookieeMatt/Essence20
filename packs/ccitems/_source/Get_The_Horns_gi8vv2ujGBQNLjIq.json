@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: after you hit a Growled target with a melee weapon, Growl's ↑1 against them carries over to your next attack.</p>"
+      "notes": "<p>Automatic: when a melee attack that used Growl's bonus hits, Growl's ↑1 against that target is banked again for your next attack on them, labelled Growl in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

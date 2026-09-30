@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when combat starts and you're last in Initiative, your next Skill Test gets Edge.</p>"
+      "notes": "<p>Automatic: when combat starts and you're last in Initiative, your next Skill Test gets Edge, labelled Time To Think in your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

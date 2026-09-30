@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect (off by default): switch it on for ↑1 on all Skill Tests while the Perk's condition holds, and off when it ends.</p>"
+      "notes": "<p>Roll Options Dialog: every Skill Test shows a Life Interrupted (Sustained Effort) switch that adds ↑1. Turn it on while the Perk's condition holds.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, including the Blunt, Sharp and alternate effects, and its traits apply (Anti-Tank, Reload, Wrecker).</p>"
+      "notes": "<p>Automatic: attacks roll Finesse at ↓2 for 2 Blunt or 2 Sharp damage at Reach x2, or use the Intimidate alternate effect. Its Anti-Tank, Reload and Wrecker traits apply.</p>"
     },
     "originalId": "",
     "description": "",

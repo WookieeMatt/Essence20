@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: once per turn you're offered a reroll on a roll against your Primary Quarry.</p>"
+      "notes": "<p>Chat card: once per turn, when you roll against your Primary Quarry, the roll's chat card gets a Reroll button to reroll one die of your choice.</p>"
     },
     "originalId": "",
     "description": "",

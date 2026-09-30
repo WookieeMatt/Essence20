@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Deception tests against a target always fail, and others' Deception against your Cleverness counts it as 4 higher. Move any Deception ranks to another Social Skill yourself.</p>"
+      "notes": "<p>Automatic: your own Deception tests against a target always come up as failures on the chat card. When anyone rolls Deception against your Cleverness, their chat card's DIF is 4 higher. Moving any Deception ranks to another Social Skill is up to you.</p>"
     },
     "originalId": "",
     "description": "",

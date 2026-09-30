@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: an Edge and +1 damage on attacks against vehicles.</p><p>Left to the table: the same bonus against other machines and non-organic enemies.</p>"
+      "notes": "<p>Automatic: attacks against a vehicle get an Edge, labelled Viral News Bloggers in the Roll Options Dialog, and +1 damage, shown on the hit's chat card.</p><p>Left to the table: the same bonus against other machines and non-organic enemies.</p>"
     },
     "originalId": "",
     "description": "",

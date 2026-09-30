@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: +1 damage on melee attacks against a target of a smaller Size.</p>"
+      "notes": "<p>Automatic: melee attacks against a targeted creature of a smaller Size than you deal +1 damage, included in the damage on the chat card.</p>"
     },
     "originalId": "",
     "description": "",

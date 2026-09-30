@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on attacks with Standard Availability weapons (after upgrades), and Standard kits last three uses instead of one.</p>"
+      "notes": "<p>Automatic: attacks with a weapon of Standard Availability (after upgrades) get ↑1, already counted in the Shift Up box of the Roll Options Dialog. Your Standard kits last three uses instead of one.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while your Phantom Suite is active, your first attack each turn is made against the target's Evasion halved (rounded up).</p>"
+      "notes": "<p>Automatic: while your Phantom Suite is active, your first attack each turn against Evasion is checked against the target's Evasion halved (rounded up), the number shown on the attack's chat card.</p>"
     },
     "originalId": "",
     "description": "",

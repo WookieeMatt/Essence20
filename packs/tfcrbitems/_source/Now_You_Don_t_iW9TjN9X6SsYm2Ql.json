@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: in Alt Mode you count as in Cover even in the open. Roll Options Dialog: a Hide action switch adds 5 to your Infiltration result in Alt Mode.</p>"
+      "notes": "<p>Automatic: in Alt Mode, ranged attacks against you take the Cover ↓ even when you are in the open, shown as Cover in the attacker's Roll Options Dialog. Roll Options Dialog: in Alt Mode, a Hide switch adds 5 to your Infiltration result.</p>"
     },
     "originalId": "",
     "description": "",

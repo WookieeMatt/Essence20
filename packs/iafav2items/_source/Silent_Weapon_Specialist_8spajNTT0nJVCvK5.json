@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks with a Silent weapon against a Surprised target count as Specialized.</p>"
+      "notes": "<p>Automatic: when you attack a targeted Surprised creature with a Silent weapon, the Specialized box in your Roll Options Dialog comes already ticked.</p>"
     },
     "originalId": "",
     "description": "",

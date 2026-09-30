@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Automatic: when you roll a Critical Success, each ally gets ↑1 on their first Skill Test before the start of your next turn.</p>"
+      "status": "partial",
+      "notes": "<p>Automatic: when you roll a Critical Success, every ally on the scene gets ↑1 on their next roll, listed as You Can Do It, Too! in their Roll Options Dialog.</p><p>Left to the table: dropping it if they haven't rolled by the start of your next turn (the system keeps it until they roll or the Combat ends).</p>"
     },
     "originalId": "",
     "description": "",

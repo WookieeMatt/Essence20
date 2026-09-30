@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>On the sheet: works through the Power Strike tracker the Red Ranger role grants; activate it, then tick it in the Roll Options Dialog on an attack for the listed bonus damage.</p>"
+      "notes": "<p>On the sheet: works through the Red Ranger's Power Strike tracker. Activate it (1 Personal Power), then tick Power Strike in the Roll Options Dialog on an attack for +1 damage (+2 from 6th level, +3 from 11th, +4 from 16th).</p>"
     },
     "originalId": "",
     "description": "",

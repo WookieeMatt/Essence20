@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge when attempting to shove another creature.</p>"
+      "notes": "<p>Automatic: your shove attempts get Edge. A Grapple attack opens the Roll Options Dialog with Edge selected, and a Shove lists Bowl-Over next to Edge.</p>"
     },
     "originalId": "",
     "description": "",

@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Active Effect: +1 Toughness. When added, pick Acidic Saliva, Razor-Sharp or Venomous; your natural weapon attacks deal +1 damage.</p>"
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Toughness. On the sheet: pick Acidic Saliva, Razor-Sharp or Venomous. Automatic: attacks made with an attack effect that isn't part of a weapon item deal +1 damage, listed on the attack's chat card.</p><p>Left to the table: adding the +1 to your Natural Weapon attacks.</p>"
     },
     "originalId": "",
     "description": "",

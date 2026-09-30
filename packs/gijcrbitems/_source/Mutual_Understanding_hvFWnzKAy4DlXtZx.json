@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: skill dice that roll a 1 on your Animal Handling tests are rerolled.</p>"
+      "notes": "<p>Chat card: on your Animal Handling tests, a Reroll button rerolls every skill die that came up 1.</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Alertness. Active Effect: switch on the chosen-sense effect for ↑1 on other tests where your sense clearly helps, then switch it off.</p>"
+      "notes": "<p>Automatic: your Alertness tests open the Roll Options Dialog with Edge already selected. Active Effect (off by default): switch on the chosen-sense effect for ↑1 on other tests where your sense clearly helps, then switch it off.</p>"
     },
     "originalId": "",
     "description": "",

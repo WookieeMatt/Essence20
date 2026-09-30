@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while equipped, its Defense bonus and Deflective apply, plus +1 on Persuasion tests using Leadership.</p>"
+      "notes": "<p>Automatic: while equipped, its Defense bonus and Deflective apply, and a Persuasion test rolled from a Leadership Specialization gets +1 added to its total on the chat card.</p>"
     },
     "originalId": "",
     "description": "",

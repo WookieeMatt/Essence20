@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: target a creature and spend 1 Energon to mark it; your rolls against it get ↑1. Left to the table: confirming it is an ally of your Primary Quarry, and ending the mark after the scene (it lasts until you mark someone else).</p>"
+      "notes": "<p>Use button: target a creature and spend 1 Energon to mark it. Your rolls against it get ↑1, labelled Known Accomplices in the Roll Options Dialog.</p><p>Left to the table: confirming it's an ally of your Primary Quarry, and ending the mark after the scene (it lasts until you mark someone else).</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Roll Options Dialog: a switch to roll Survival instead of Infiltration on stealth tests. Tick it when you're in a natural environment (or spend the Free action elsewhere).</p>"
+      "notes": "<p>Roll Options Dialog: on Infiltration tests, a switch rolls your Survival die instead. Turn it on when you're in a natural environment (or have spent the Free action elsewhere).</p>"
     },
     "originalId": "",
     "actionType": "free",

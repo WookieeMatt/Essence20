@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>When added to a Zord you pick a ranged energy attack to gain +1 damage, with an optional Spectrum colour change. Automatic: Edge on energy attacks near another Energem Zord.</p>"
+      "notes": "<p>Granted on drop: pick one of the Zord's ranged energy attacks to gain +1 damage, with an optional Spectrum colour change. Automatic: another Zord in Dino Drive Mode within 30ft of this one gets Edge on its energy attacks, labelled Amplified Dino Strength.</p>"
     },
     "originalId": "",
     "description": "",

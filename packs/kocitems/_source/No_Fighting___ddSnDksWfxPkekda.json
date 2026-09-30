@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when a combat ends, your first Social test afterwards has Snag.</p>"
+      "notes": "<p>Automatic: when a Combat you're in ends, your next Social Skill Test takes a Snag, listed as No Fighting?! next to Snag in its Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

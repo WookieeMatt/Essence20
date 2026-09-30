@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: no long-range penalty with sniper weapons, and your Sneak Attack works at any range with them.</p>"
+      "notes": "<p>Automatic: attacks with Sniper-trait weapons never get the Long Range Snag in the Roll Options Dialog, and your Sneak Attack works at any range with them.</p>"
     },
     "originalId": "",
     "description": "",

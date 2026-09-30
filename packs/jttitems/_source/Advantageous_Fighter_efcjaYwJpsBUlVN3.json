@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: melee attacks you make with Edge take no more than ↓2 in total.</p>"
+      "notes": "<p>Automatic: on a melee attack that goes ahead with Edge, any Downshift above ↓2 is cut to ↓2 as the roll is made, so the chat card never shows more than ↓2.</p>"
     },
     "originalId": "",
     "description": "",

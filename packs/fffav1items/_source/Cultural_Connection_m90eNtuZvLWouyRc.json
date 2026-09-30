@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Roll Options Dialog: roll Culture in place of Deception or Persuasion when you're trained in the Skill you replace. From Role level 10 it rolls as specialized.</p>"
+      "notes": "<p>Automatic: on Deception and Persuasion tests, if you're trained in that Skill and your Culture die is better, the roll uses your Culture die instead. From Role level 10 it also rolls as Specialized.</p>"
     },
     "originalId": "",
     "description": "",

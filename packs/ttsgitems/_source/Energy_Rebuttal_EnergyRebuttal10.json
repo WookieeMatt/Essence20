@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: once per combat scene, when you Defend against an attack dealing Energy damage and it still hits, your next attack deals +2 Energy damage.</p>"
+      "notes": "<p>Automatic: once per combat, when you have the Defending status and an Energy attack still damages you, your next attack deals +2 damage, listed as Energy Rebuttal on its chat card.</p>"
     },
     "originalId": "",
     "description": "",

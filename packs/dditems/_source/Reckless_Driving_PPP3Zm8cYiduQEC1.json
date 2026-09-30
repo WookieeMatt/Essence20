@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: ↑1 on Ram attacks. Left to the table: spending a Standard action to Ram several different targets during one move.</p>"
+      "notes": "<p>Automatic: ↑1 on Ram attacks, already counted in the Roll Options Dialog's starting ↑ total but not listed under its own name.</p><p>Left to the table: spending a Standard action to Ram several different targets during one move.</p>"
     },
     "originalId": "",
     "description": "",

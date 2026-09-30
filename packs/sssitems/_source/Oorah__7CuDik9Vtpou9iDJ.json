@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +1 Toughness and Willpower. Automatic: Edge on Infiltration, +1 damage against Surprised targets, and Qualified with Standard weapons, the Silent battledress upgrade and land vehicles (Driving them never takes a Snag).</p>"
+      "notes": "<p>Active Effect: +1 Toughness and Willpower. Automatic: Infiltration tests open the Roll Options Dialog with Edge selected; hits on Surprised targets deal +1 damage, shown on the chat card as \"Includes +1 from Oorah!\"; and you count as Qualified with Standard weapons, the Silent battledress upgrade and land vehicles, so Driving them never takes the untrained Snag.</p>"
     },
     "originalId": "",
     "description": "",

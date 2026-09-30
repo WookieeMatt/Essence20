@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on Animal Handling, Intimidation and Persuasion while you're out of a vehicle and wearing Light Armor or none.</p>"
+      "notes": "<p>Automatic: while you're out of a vehicle and wearing Light Armor or none, Animal Handling, Intimidation and Persuasion tests get ↑1, already counted in the Shift Up box of the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

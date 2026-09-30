@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: known Frightening attacks and tests aimed at you (such as Trigger Happy) roll with a Snag.</p><p>Left to the table: other Frightening effects, and halving the duration if it still works.</p>"
+      "notes": "<p>Automatic: the Frightening rolls the system knows about take a Snag against you, labelled Gallantry in the attacker's Roll Options Dialog: Trigger Happy attacks, Snarl and Predacon Intimidation, and Might Makes Right Persuasion.</p><p>Left to the table: other Frightening effects, and halving the duration if it still works.</p>"
     },
     "originalId": "",
     "description": "",

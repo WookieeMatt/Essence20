@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: you can use Sneak Attack twice per combat.</p>"
+      "notes": "<p>Automatic: the Sneak Attack switch in your Roll Options Dialog can be used twice per combat instead of once.</p>"
     },
     "originalId": "",
     "description": "",

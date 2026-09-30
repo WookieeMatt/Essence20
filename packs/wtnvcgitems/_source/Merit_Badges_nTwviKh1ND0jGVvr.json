@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>When you add it, you pick one Smarts Skill. Automatic: tests with that Skill never suffer a Snag.</p>"
+      "notes": "<p>Granted: you pick one Smarts Skill when you add it. Automatic: tests with that Skill can't take a Snag from any source; the Roll Options Dialog opens on Normal instead.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Alertness Tests to find you take a Snag, and when you use Disappear in combat you stay invisible until the start of your next turn.</p>"
+      "notes": "<p>Automatic: Alertness Tests made against you (with you targeted) take a Snag, labelled Easy In, Easy Out in the roller's Roll Options Dialog. When you use Disappear in combat, you stay invisible until the start of your next turn.</p>"
     },
     "originalId": "",
     "description": "",

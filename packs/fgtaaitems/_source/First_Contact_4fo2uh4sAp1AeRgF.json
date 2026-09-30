@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: you never take a Snag on Deception, Intimidation or Persuasion.</p><p>Left to the table: using these Skills without penalty on creatures that normally resist them.</p>"
+      "notes": "<p>Automatic: your Deception, Intimidation and Persuasion tests never take a Snag; the roll drops it even if Snag is selected in the Roll Options Dialog.</p><p>Left to the table: using these Skills without penalty on creatures that normally resist them.</p>"
     },
     "originalId": "",
     "description": "",

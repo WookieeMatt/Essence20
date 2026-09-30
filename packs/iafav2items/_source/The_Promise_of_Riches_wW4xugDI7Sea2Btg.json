@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +1 Health. Automatic: trained with Limited weapons and battledress, and no Snag driving Land, Sea or Air vehicles.</p>"
+      "notes": "<p>Active Effect: +1 Health. Automatic: you're trained with Limited weapons and battledress, and driving a Land, Sea or Air vehicle has no untrained Snag on Driving; with Ranks in Driving you also get ↑1, already counted in the Upshift number of your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

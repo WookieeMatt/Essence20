@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: no Snag for attacking past a weapon's normal range, and ↑2 on ranged attacks against targets more than 30ft away.</p>"
+      "notes": "<p>Automatic: your ranged attacks past a weapon's normal range (but within long range) don't take the usual Snag, and ranged attacks against targets more than 30ft away get ↑2, labelled Sharpshooter's Grace in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

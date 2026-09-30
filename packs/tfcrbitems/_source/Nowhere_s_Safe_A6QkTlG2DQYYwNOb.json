@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you make a ranged attack against a target in Cover, the Cover penalty is 1 step smaller.</p>"
+      "notes": "<p>Automatic: when you make a ranged attack against a target with Cover, you take 1 less ↓ from it, shown on the Cover entry in your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

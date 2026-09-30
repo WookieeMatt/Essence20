@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: its weapon Qualifications. Automatic: ↑2 on attacks in zero-G and on Driving an aerial vehicle. Use button: a Space Kit once per mission. The extra language is noted on the sheet.</p>"
+      "notes": "<p>Active Effect: its weapon Qualifications. Automatic: ↑2 on attacks in scenes set to zero gravity and on Driving tests while piloting a vehicle with Aerial Movement, labelled Earth Defense Command Benefits in the Roll Options Dialog. Use button: a Space Kit once per mission. The extra language is noted on the sheet.</p>"
     },
     "originalId": "",
     "description": "",

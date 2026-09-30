@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: +1 to your Defenses for every ally within 60ft. Use button: give an ally +1 to all Defenses and lower your own bonus by 1.</p>"
+      "notes": "<p>Automatic: when you are attacked, the Defense the attack is checked against gets +1 for every ally within 60ft of you. It is added at attack time, so it doesn't show on your sheet. Use button: as a Free action, give an ally +1 to all Defenses against the next attack on them, and your own bonus drops by 1 against the next one on you.</p>"
     },
     "originalId": "",
     "actionType": "free",

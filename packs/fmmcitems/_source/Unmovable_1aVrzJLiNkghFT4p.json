@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: switches it on; while it's on, Maneuvers against you take ↓3.</p><p>Left to the table: switching it off when you move.</p>"
+      "notes": "<p>Use button: switches it on; while it is on, Maneuver attacks against you take ↓3, labelled Unmovable in the attacker's Roll Options Dialog.</p><p>Left to the table: switching it off when you move.</p>"
     },
     "originalId": "",
     "actionType": "free",

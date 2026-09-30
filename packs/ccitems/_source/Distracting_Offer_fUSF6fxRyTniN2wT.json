@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: roll your Origin Skill against a target's Cleverness; on a success they take a ↓ on their tests. The once-per-scene and same-target limits are tracked.</p>"
+      "notes": "<p>Use button: with a target selected, roll your Origin Skill against its Cleverness. On a success its next Skill Test gets ↓1 (↓2 on a Critical Success), labelled Distracting Offer in its Roll Options Dialog. Its once-per-scene and same-target limits are tracked.</p>"
     },
     "originalId": "",
     "actionType": "standard",

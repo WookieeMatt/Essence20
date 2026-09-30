@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Snag on your Intimidation tests.</p>"
+      "notes": "<p>Automatic: your Intimidation tests always take a Snag; the roll applies it even if you pick Normal in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

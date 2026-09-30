@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑2 on Technology tests to repair or adjust the vehicle.</p>"
+      "notes": "<p>Roll Options Dialog: Technology tests made by anyone crewing the vehicle get ↑2, listed as an Interchangeable Parts switch under Automatic Modifiers. Switch it off when the test isn't repairing or adjusting the vehicle.</p>"
     },
     "originalId": "",
     "description": "",

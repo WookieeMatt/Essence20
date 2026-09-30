@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: switch on Field Expertise for ↑1 on Culture and Science when your field of study matters, then switch it off.</p>"
+      "notes": "<p>Roll Options Dialog: Culture and Science rolls show an Archaeologist (Field Expertise) switch that adds ↑1. Turn it on when your field of study matters.</p>"
     },
     "originalId": "",
     "description": "",

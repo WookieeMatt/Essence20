@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic against a targeted Machine Empire creature: Edge on Alertness and Streetwise, ↑1 on Smarts and Social tests. Chat card: on a Critical Success against one, a button Stuns it.</p>"
+      "notes": "<p>Automatic with a Machine Empire creature targeted: Edge on Alertness and Streetwise, and ↑1 on Smarts and Social rolls, each labelled Machinist Revolutionary in the Roll Options Dialog. Chat card: on a Critical Success against one, a button Stuns it.</p>"
     },
     "originalId": "",
     "description": "",

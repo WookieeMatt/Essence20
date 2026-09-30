@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Automatic: no ↓ penalty on the alternate attacks of your Silent Martial Arts weapons. Switching weapons isn't charged as an action.</p>"
+      "status": "partial",
+      "notes": "<p>Automatic: when you attack with an alternate effect of a weapon that has both the Silent and Martial Arts traits, that effect's own ↓ is dropped, so it never appears in the Downshift count of your Roll Options Dialog.</p><p>Left to the table: switching between those weapons as a Free action.</p>"
     },
     "originalId": "",
     "description": "",

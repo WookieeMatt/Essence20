@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: choose a damage type on the Hang-Up. Attacks against you that deal that damage type face your Defense halved (rounded up).</p>"
+      "notes": "<p>Automatic: choose a damage type on the Hang-Up. When an attack of that damage type targets you, the Defense it has to beat is halved (rounded up), and the halved number is what the attack's chat card checks against.</p>"
     },
     "originalId": "",
     "description": "",

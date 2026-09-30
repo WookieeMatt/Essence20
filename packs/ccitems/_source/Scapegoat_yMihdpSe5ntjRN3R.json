@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: once per scene, when something targets your Willpower or Cleverness, the higher of the two is used instead.</p>"
+      "notes": "<p>Automatic: once per scene, when an attack targets your Willpower or Cleverness and the other one is higher, the higher Defense is used instead. The attack's chat card shows the swapped Defense value.</p>"
     },
     "originalId": "",
     "description": "",

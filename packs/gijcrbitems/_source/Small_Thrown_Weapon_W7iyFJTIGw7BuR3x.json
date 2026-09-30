@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range. Pick the Blunt or Sharp effect to throw, and its traits apply (Silent).</p>"
+      "notes": "<p>Automatic: attacks roll Athletics for 1 Blunt or 1 Sharp damage (pick the effect to throw) at 10 ft (long range 20 ft), and its Silent trait applies.</p>"
     },
     "originalId": "",
     "description": "",

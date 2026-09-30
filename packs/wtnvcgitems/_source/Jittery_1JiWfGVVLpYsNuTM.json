@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: ↓1 on Intimidation. Automatic: Infiltration tests made against you, such as attempts to surprise you, get an Edge.</p>"
+      "notes": "<p>Active Effect: ↓1 on Intimidation. Automatic: Infiltration tests that target you (such as sneaking up on you) get an Edge, labelled Jittery in the roller's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

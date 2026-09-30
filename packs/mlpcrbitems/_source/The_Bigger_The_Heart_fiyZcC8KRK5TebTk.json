@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: tests with your Empathy Skill get ↑1 for each Size Class the target is larger than you.</p>"
+      "notes": "<p>Automatic: tests with your Empathy Skill get ↑1 for each Size Class the target is larger than you, labelled The Bigger The Heart in your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

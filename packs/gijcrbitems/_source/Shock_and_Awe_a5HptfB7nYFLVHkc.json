@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a target hit by your explosive suffers a Snag on its next attack or Skill test.</p>"
+      "notes": "<p>Automatic: when your explosive attack hits, the target's next roll of any kind takes a Snag in its Roll Options Dialog (the label shown there reads Debilitating Strike).</p>"
     },
     "originalId": "",
     "description": "",

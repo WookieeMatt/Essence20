@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: activating the nanomite power toggles ↑1 on all your attacks.</p><p>Left to the table: ending it after 1 minute.</p>"
+      "notes": "<p>Use button: activating the nanomite power (one daily use) switches it on; press again to switch it off. While on, every attack you make gets ↑1, already counted in the Shift Up box of the Roll Options Dialog.</p><p>Left to the table: ending it after 1 minute.</p>"
     },
     "originalId": "",
     "description": "",

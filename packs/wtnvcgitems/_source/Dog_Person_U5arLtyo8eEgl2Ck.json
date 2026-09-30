@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1, and Specialized in Animal Handling, when your target is a dog or coyote. Roll Options Dialog: a switch for the same when none is targeted.</p>"
+      "notes": "<p>Automatic: when your target's name or creature tags say dog, coyote or canine, your tests get ↑1, labelled Dog Person in the Roll Options Dialog, and Animal Handling counts as Specialized. Roll Options Dialog: with no such target, a Dog Person switch gives the same.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, and its traits apply (Martial Arts, Sharp, Silent). Active Effect: while you carry it, an Edge on Survival tests.</p>"
+      "notes": "<p>Automatic: attacks roll Finesse for 1 Sharp damage at Reach, and its Martial Arts, Sharp and Silent traits apply. Active Effect: while you carry it, your Survival tests have an Edge.</p>"
     },
     "originalId": "",
     "description": "",

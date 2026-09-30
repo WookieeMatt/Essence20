@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Active Effect (while Morphed): +2 to all Defenses and Edge on Speed tests. Automatic: +1 damage with Targeting attacks while Morphed.</p>"
+      "status": "partial",
+      "notes": "<p>Active Effect: +2 to all Defenses while Morphed, and Edge on Speed Skill tests (the Roll Options Dialog opens with Edge selected). Automatic: while Morphed, Targeting attacks deal +1 damage, listed on the chat card. Left to the table: the Speed Edge also applies while you aren't Morphed, so set it back to Normal then.</p>"
     },
     "originalId": "",
     "description": "",

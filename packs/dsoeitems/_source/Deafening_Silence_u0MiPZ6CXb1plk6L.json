@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↓1 on Smarts and Social tests when no ally is within 50 ft.</p>"
+      "notes": "<p>Automatic: when no ally is within 50 ft, your Smarts and Social Skill Tests take ↓1. It's already counted in the Roll Options Dialog's starting ↓ total, but isn't listed under its own name.</p>"
     },
     "originalId": "",
     "description": "",

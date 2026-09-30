@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>When added, you pick a Driving Specialization. Automatic: Edge on Skill Tests that use that Specialization.</p>"
+      "notes": "<p>On the sheet: when you add the Perk, choose a Driving Specialization. Automatic: rolls using that Specialization get Edge, already selected when the Roll Options Dialog opens.</p>"
     },
     "originalId": "",
     "description": "",

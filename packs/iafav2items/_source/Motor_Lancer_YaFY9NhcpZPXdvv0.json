@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on melee attacks while you're driving or riding in a vehicle. Use button: spend a Free action to wield a two-handed melee weapon in one hand until the end of your turn.</p>"
+      "notes": "<p>Automatic: your melee attacks while you're driving or riding in a vehicle get ↑1, already added to the shift in the Roll Options Dialog. Use button: spend a Free action to wield a two-handed melee weapon in one hand until the end of your turn.</p>"
     },
     "originalId": "",
     "description": "",

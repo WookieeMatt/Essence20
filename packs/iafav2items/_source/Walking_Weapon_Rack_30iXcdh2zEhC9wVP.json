@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on melee attacks with Silent Martial Arts weapons.</p>"
+      "notes": "<p>Automatic: melee attacks with a weapon that has both the Silent and Martial Arts traits open the Roll Options Dialog with Edge already selected.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Alertness and Infiltration outside combat. Faster searching is narrative.</p>"
+      "notes": "<p>Automatic: while no combat is running, your Alertness and Infiltration tests have Edge already selected in the Roll Options Dialog. Faster searching is narrative.</p>"
     },
     "originalId": "",
     "description": "",

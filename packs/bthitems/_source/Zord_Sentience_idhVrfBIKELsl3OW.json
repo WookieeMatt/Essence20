@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while nobody is piloting it, the Zord uses a Smarts and Social of 2 for its Defenses and gets ↑1 on its own Driving tests.</p>"
+      "notes": "<p>Automatic: while nobody is piloting it, the Zord uses a Smarts and Social of 2 for its Defenses on the sheet, and its own Driving rolls get ↑1, already counted in the Roll Options Dialog's Shift Up box.</p>"
     },
     "originalId": "",
     "description": "",

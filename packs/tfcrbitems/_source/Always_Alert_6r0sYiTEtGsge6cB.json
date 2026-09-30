@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Initiative, and you can't be Surprised while conscious.</p>"
+      "notes": "<p>Active Effect: Edge on Initiative tests. Automatic: while you're conscious, the Surprised condition can't be put on you.</p>"
     },
     "originalId": "",
     "description": "",

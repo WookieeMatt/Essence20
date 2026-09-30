@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: +1 damage on attacks that use no weapon, such as Unarmed strikes and natural Alt Mode attacks like Ram.</p>"
+      "notes": "<p>Automatic: attacks that use no weapon (Unarmed strikes and natural attacks like an Alt Mode Ram) deal +1 damage, shown on the chat card as \"Includes +1 from Puissance\".</p>"
     },
     "originalId": "",
     "description": "",

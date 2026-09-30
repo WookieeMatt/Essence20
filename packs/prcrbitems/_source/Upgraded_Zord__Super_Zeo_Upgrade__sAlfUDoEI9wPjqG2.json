@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: the Zord gets +2 Toughness and +2 Health. Automatic: its ranged attacks get ↑1.</p>"
+      "notes": "<p>Active Effect: the Zord gets +2 Toughness and +2 Health. Automatic: its ranged attacks get ↑1, already counted in the upshift its Roll Options Dialog opens with.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on attacks with Martial Arts weapons and ↓1 on attacks with other weapons.</p>"
+      "notes": "<p>Automatic: attacks with Martial Arts weapons get ↑1 and attacks with other weapons get ↓1, already added to the shift in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

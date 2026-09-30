@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: consume a dose, or spend 1 in combat for ↑1 on Strength and Speed tests this turn. Roll Options Dialog: a switch to spend 1 for Edge on one Strength or Speed test. Left to the table: the explosion when a container is damaged.</p>"
+      "notes": "<p>Use button: consume a dose, or spend 1 in combat for ↑1 on Strength and Speed Skill Tests this turn, labelled Red Energon (this turn) in the Roll Options Dialog. Roll Options Dialog: a switch to spend 1 for Edge on one Strength or Speed test.</p><p>Left to the table: the explosion when a container is damaged.</p>"
     },
     "originalId": "",
     "description": "",

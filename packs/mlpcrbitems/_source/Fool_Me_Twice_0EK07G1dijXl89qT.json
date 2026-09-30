@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Deception tests against a creature you already targeted with Deception this scene take ↓1.</p>"
+      "notes": "<p>Automatic: once your Deception test has hit a creature this scene, your later Deception tests targeting that same creature take ↓1, labelled Fool Me Twice in your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

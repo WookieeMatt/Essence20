@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on attacks to Grapple. Use button: once you make the DIF 12 Might test, it makes the targeted Grappled creature Prone.</p>"
+      "notes": "<p>Automatic: when you attack with a Grapple effect, the Roll Options Dialog opens with Edge already selected. Use button: once you make the DIF 12 Might test, it makes the targeted Grappled creature Prone.</p>"
     },
     "originalId": "",
     "actionType": "free",

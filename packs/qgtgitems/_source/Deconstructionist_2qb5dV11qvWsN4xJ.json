@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Roll Options Dialog: a switch to mark a Technology test as a Deconstructionist attempt. Automatic: on a success, the targeted vehicle or equipment has a Snag for its next test.</p><p>Left to the table: setting up the contest or DIF, and the distraction clause.</p>"
+      "notes": "<p>Roll Options Dialog: on Technology tests, tick the Deconstructionist switch. Automatic: on a success against a targeted vehicle, its next test takes a Snag, shown as Deconstructionist next to Snag in its Roll Options Dialog.</p><p>Left to the table: setting up the contest or DIF, the Snag on equipment that isn't a vehicle, and skipping distraction ↓ when you disrupt equipment.</p>"
     },
     "originalId": "",
     "actionType": "standard",

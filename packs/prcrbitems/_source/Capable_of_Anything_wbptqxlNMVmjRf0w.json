@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: once per scene you can reroll a die that came up 1, keeping the new result.</p>"
+      "notes": "<p>Chat card: once per scene, a reroll button lets you reroll the dice that came up 1, keeping the new results.</p>"
     },
     "originalId": "",
     "description": "",

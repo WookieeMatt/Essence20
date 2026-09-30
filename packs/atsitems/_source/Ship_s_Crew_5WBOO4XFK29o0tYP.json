@@ -4,8 +4,8 @@
   "img": "icons/svg/hazard.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Active Effect: switch on Violated Orders for the rest of the scene after you disobey a superior, and switch it off afterwards.</p><p>Left to the table: the effect gives ↓1 on every test, so ignore it on combat rolls.</p>"
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: every Skill Test shows a Ship's Crew (Violated Orders) switch that adds ↓1. Turn it on for non-combat tests for the rest of the scene after you disobey a superior.</p>"
     },
     "originalId": "",
     "description": "",

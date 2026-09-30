@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the first attack or contested test against you each scene takes a Snag, as long as you are aware of the attacker.</p>"
+      "notes": "<p>Automatic: the first roll each scene that targets you, attack or contested test, takes a Snag, labelled Don't Underestimate Me in the roller's Roll Options Dialog. It doesn't apply if you are unaware of that roller.</p>"
     },
     "originalId": "",
     "description": "",

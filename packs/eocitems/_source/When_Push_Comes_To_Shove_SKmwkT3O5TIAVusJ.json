@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: you count as one Size Class larger on grapple and shove attacks.</p>"
+      "notes": "<p>Automatic: on Grapple attacks (the system's push and shove) you count as one Size Class larger, which raises the Size entry in your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: sets your Alt Mode size and Movement and adds the Ram attack (1 Blunt, Trip alternate) when you take this Alt Mode; a Use button re-adds it. Limited Articulation blocks Athletics and Finesse tests while you're in it.</p>"
+      "notes": "<p>Automatic: taking this Alt Mode sets your size and Movement and adds the Ram attack (1 Blunt, Trip alternate) to your sheet; a Use button re-adds it. While you are in it, Limited Articulation stops Athletics and Finesse rolls with an error message instead of rolling them.</p>"
     },
     "originalId": "",
     "description": "",

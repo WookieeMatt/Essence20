@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the first attack against you each round has a Snag, or misses outright if it already had one.</p>"
+      "notes": "<p>Automatic: the first attack against you each round has a Snag, labelled Move Like a Song in the attacker's Roll Options Dialog, or misses outright if it already had one.</p>"
     },
     "originalId": "",
     "description": "",

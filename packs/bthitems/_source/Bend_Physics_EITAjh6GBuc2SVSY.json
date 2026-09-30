@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while Morphed, you and your team double your Movement and get +2 Evasion against ranged attacks.</p>"
+      "notes": "<p>Automatic: while Morphed, you and your team have doubled Movement on the sheet and +2 Evasion against ranged attacks, added to the Defense the attack's chat card checks against.</p>"
     },
     "originalId": "",
     "description": "",

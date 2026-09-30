@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: pick a Skill when you gain it; you get ↑1 on that Skill whenever you roll it Specialized.</p>"
+      "notes": "<p>Automatic: pick a Skill when you gain it. When you roll that Skill with Specialized ticked, the die is shifted up one more step after the Roll Options Dialog closes, so it shows in the die on the chat card.</p>"
     },
     "originalId": "",
     "description": "",

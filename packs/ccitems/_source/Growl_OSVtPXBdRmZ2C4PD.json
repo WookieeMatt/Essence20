@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: roll Intimidation against a target's Willpower; on a success you get ↑1 on attacks against them. Once per target per turn.</p>"
+      "notes": "<p>Use button: with a target selected, roll Intimidation against its Willpower. On a success your next attack against it gets ↑1, labelled Growl in the Roll Options Dialog. Once per target per turn.</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: your second and later Party Power uses in a scene stop you assisting or being assisted for the rest of the scene. Left to the table: counting uses across the whole day.</p>"
+      "notes": "<p>Automatic: your second and later Party Power uses in a scene still give the Friendship Point, but for the rest of that scene you can't Lend Assistance and nobody can Lend Assistance to you. Left to the table: counting uses across the whole day.</p>"
     },
     "originalId": "",
     "description": "",

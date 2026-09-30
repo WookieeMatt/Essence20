@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: while your nemesis has a token in the scene, your tests take ↓1 unless you are targeting them. Left to the table: their agents, and actions that hinder them without targeting them.</p>"
+      "notes": "<p>Automatic: while your nemesis has a token in the scene, your Skill Tests take ↓1 unless you're targeting them. It's already counted in the Roll Options Dialog's starting ↓ total, but isn't listed under its own name.</p><p>Left to the table: their agents, and actions that hinder them without targeting them.</p>"
     },
     "originalId": "",
     "description": "",

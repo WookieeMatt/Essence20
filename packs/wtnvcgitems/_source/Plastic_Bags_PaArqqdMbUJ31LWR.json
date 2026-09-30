@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks use its effects below, and its traits apply. Needs Animal Handling +d8 to use without penalty.</p>"
+      "notes": "<p>Automatic: attacks roll Targeting at Short range for 1 Sharp damage, or a swarm at ↓1 for 1 Sharp to up to 2 targets; its traits apply.</p>"
     },
     "originalId": "",
     "description": "",

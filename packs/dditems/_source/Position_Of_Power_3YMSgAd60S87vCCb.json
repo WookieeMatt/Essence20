@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: +1 damage when your melee attack hits a target that has any Condition.</p>"
+      "notes": "<p>Automatic: when your melee attack hits a target that has any Condition, it deals +1 damage, noted on the chat card (\"Includes +1 from Position of Power\").</p>"
     },
     "originalId": "",
     "description": "",

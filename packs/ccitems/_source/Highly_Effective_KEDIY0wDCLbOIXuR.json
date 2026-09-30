@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 when you attack with an Adept Armament's alternate effect.</p>"
+      "notes": "<p>Automatic: attacks with an Adept Armament's alternate effect get ↑1, labelled Highly Effective in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

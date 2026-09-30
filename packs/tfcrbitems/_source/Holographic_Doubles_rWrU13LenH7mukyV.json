@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: a Standard action makes the first double and a Free action each extra one. Attacks against you take ↓1 per double; one vanishes each time you are missed and each time you roll.</p>"
+      "notes": "<p>Use button: a Standard action makes the first double and a Free action each extra one. Attacks against you take ↓1 per double, labelled Holographic Doubles in the attacker's Roll Options Dialog; one double vanishes each time you are missed and each time you roll.</p>"
     },
     "originalId": "",
     "actionType": "standard",

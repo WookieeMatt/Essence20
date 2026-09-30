@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks use its effects below, and its traits apply.</p>"
+      "notes": "<p>Automatic: attacking with it rolls Targeting at Short range for 1 Sharp damage; its Ballistic trait applies.</p>"
     },
     "originalId": "",
     "description": "",

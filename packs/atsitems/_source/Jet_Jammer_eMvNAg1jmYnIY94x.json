@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Use button: spend 1 Personal Power to summon your Jet Jammer vehicle beside you. Automatic: Edge on Driving while piloting it.</p>"
+      "status": "partial",
+      "notes": "<p>Use button: spend 1 Personal Power to summon your Jet Jammer vehicle beside you.</p><p>Left to the table: Edge on Driving while piloting it (select Edge in the Roll Options Dialog).</p>"
     },
     "originalId": "",
     "description": "",

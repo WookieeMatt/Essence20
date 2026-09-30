@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: as a Move action, roll Intimidation against a foe's Willpower; on a success that foe takes ↓2 on attacks against anyone but you.</p>"
+      "notes": "<p>Use button (Move action): roll Intimidation against a targeted foe's Willpower. On a success, that foe's next attack takes ↓2 if it targets anyone but you, labelled Face Me! in its Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

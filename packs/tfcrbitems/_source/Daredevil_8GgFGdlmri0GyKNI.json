@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while in Alt Mode, Edge on Initiative and ↑2 on Driving tests.</p>"
+      "notes": "<p>Automatic: while you are in Alt Mode, your Initiative rolls get Edge and your Driving tests get ↑2. Both are already applied when the Roll Options Dialog opens.</p>"
     },
     "originalId": "",
     "description": "",

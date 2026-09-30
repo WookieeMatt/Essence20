@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: pick a spell tier and circle. You get ↑1 when casting spells of that kind.</p>"
+      "notes": "<p>Use button: pick a spell tier and circle. Casting a spell of that kind gets ↑1, listed as Mastery Power in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

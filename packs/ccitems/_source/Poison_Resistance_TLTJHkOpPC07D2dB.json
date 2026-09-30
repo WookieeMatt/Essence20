@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while worn, you're Resistant to poison, so poison attacks against you take a Snag.</p>"
+      "notes": "<p>Automatic: while you wear it, attacks against you with a poison weapon or poison damage take a Snag, labelled Poison Resistance in the attacker's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

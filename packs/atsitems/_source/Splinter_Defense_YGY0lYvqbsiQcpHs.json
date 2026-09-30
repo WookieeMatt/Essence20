@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a foe that hits you with a melee attack takes an Initiative penalty equal to your Hardened Armor bonus, once per foe each combat.</p>"
+      "notes": "<p>Automatic: when a foe hits you with a melee attack in combat, its Initiative in the Combat Tracker drops by your Hardened Armor bonus, once per foe each combat.</p>"
     },
     "originalId": "",
     "description": "",

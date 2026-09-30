@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your unarmed attacks deal +1 damage.</p>"
+      "notes": "<p>Automatic: your unarmed attacks deal +1 damage, listed as an Iron Hooves bonus on the attack's chat card.</p>"
     },
     "originalId": "",
     "description": "",

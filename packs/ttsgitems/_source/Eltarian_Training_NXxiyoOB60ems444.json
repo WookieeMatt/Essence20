@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: +10 ft Ground Movement, and the first ↓1 on your Finesse tests is ignored.</p>"
+      "notes": "<p>Automatic: +10ft Ground Movement on the sheet, and one ↓ is taken off your Finesse tests before the Roll Options Dialog opens.</p>"
     },
     "originalId": "",
     "description": "",

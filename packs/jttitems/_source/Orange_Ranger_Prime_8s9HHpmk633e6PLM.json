@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: attacks against your Cleverness take a Snag. Use button: regain 2d2 Personal Power once per scene.</p>"
+      "notes": "<p>Active Effect: +2 to all four Defenses while Morphed. Automatic: an attack against your Cleverness gets a Snag added once its Roll Options Dialog closes, so it shows on the chat card. Use button: regain 2d2 Personal Power, once per scene.</p>"
     },
     "originalId": "",
     "description": "",

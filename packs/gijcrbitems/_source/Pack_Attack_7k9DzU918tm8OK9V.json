@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you and your pet (or two of your pets) attack the same target in a round, those attacks get an Edge.</p>"
+      "notes": "<p>Automatic: when you or your pet attacks a target the other has already attacked, that attack gets an Edge, labelled Pack Attack in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

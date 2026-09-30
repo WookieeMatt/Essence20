@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: choose its Specialization. Automatic: rolls that call for that kit use it, and you can spend it for Specialization or an Edge.</p>"
+      "notes": "<p>Use button: choose its Skill and Specialization. Automatic: when a roll calls for that kit, the Roll Options Dialog says so, and Standard and Limited kit rolls take no Snag while Restricted ones take ↓2. Use button: use it up for 1 hour of that Specialization or an Edge, shown as a labelled source when you roll.</p>"
     },
     "originalId": "",
     "description": "",

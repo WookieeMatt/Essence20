@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: after you attack, you are immune to Frightened until your next turn. Use button: spend 1 Personal Power to share your current Condition immunities with nearby allies until your next turn.</p>"
+      "notes": "<p>Automatic: after you attack, you can't be given the Frightened condition until your next turn. Use button: spend 1 Personal Power to share your current Condition immunities with allies within 30 ft until your next turn.</p>"
     },
     "originalId": "",
     "description": "",

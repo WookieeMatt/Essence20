@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: whenever you spend Personal Power, a d4 is rolled and a 4 gives 1 back. Power lost to an enemy's attack or ability doesn't count.</p>"
+      "notes": "<p>Automatic: every time you spend Personal Power, a d4 is rolled to chat; on a 4 you get 1 Personal Power back and a chat line says so. Power drained by an enemy's attack or ability doesn't trigger it.</p>"
     },
     "originalId": "",
     "description": "",

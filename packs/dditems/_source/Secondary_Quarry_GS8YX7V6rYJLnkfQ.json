@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: target a second creature to make it a Quarry too; your rolls against it get ↑1. Left to the table: limiting the ↑1 to tracking and finding them.</p>"
+      "notes": "<p>Use button: target a second creature to make it a Quarry too. Your rolls against it get ↑1, labelled Primary Quarry in the Roll Options Dialog, and your other Tracker Perks treat it as your Primary Quarry.</p><p>Left to the table: limiting the ↑1 to tracking and finding them.</p>"
     },
     "originalId": "",
     "description": "",

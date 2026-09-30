@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: +1 Stun whenever you deal Stun damage.</p>"
+      "notes": "<p>Automatic: your attacks that deal Stun damage deal +1 Stun, shown on the chat card as \"Includes +1 from Staggering\".</p>"
     },
     "originalId": "",
     "description": "",

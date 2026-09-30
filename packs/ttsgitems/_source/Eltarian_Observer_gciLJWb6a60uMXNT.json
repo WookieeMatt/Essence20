@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Granted: pick a Skill when you gain it; you get an Edge on that Skill.</p><p>Left to the table: keep the pick to Culture, Survival or Technology, only use the Edge on alien worlds, and note your extra language.</p>"
+      "notes": "<p>On the sheet: pick a Skill when you gain it. Automatic: your tests with that Skill get Edge, already selected when the Roll Options Dialog opens.</p><p>Left to the table: keeping the pick to Culture, Survival or Technology, using the Edge only on alien worlds, and noting your extra language.</p>"
     },
     "originalId": "",
     "description": "",

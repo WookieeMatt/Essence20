@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Active Effect (while Morphed): +2 to all Defenses and Edge on Social tests.</p><p>Left to the table: +1 damage with your Unique Weapon attacks.</p>"
+      "notes": "<p>Active Effect: +2 to all Defenses while Morphed, and Edge on Social Skill tests (the Roll Options Dialog opens with Edge selected). Left to the table: +1 damage with your Unique Weapon attacks, and setting the Social Edge back to Normal while you aren't Morphed.</p>"
     },
     "originalId": "",
     "description": "",

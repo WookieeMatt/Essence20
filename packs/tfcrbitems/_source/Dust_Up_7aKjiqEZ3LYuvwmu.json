@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: after you move on your turn, you have Concealment (shown as Cover) until your next turn starts.</p>"
+      "notes": "<p>Automatic: the first time your token moves on your own turn in combat, you get the Cover condition (standing in for Concealment, shown as its token icon) until your next turn starts.</p>"
     },
     "originalId": "",
     "description": "",

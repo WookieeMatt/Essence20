@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you roll Initiative with Deception or Infiltration through Spoof, your first attack in that combat gains Edge.</p>"
+      "notes": "<p>Automatic: when you roll Initiative with Deception or Infiltration through Spoof, your first attack in that combat opens the Roll Options Dialog with Edge already selected.</p>"
     },
     "originalId": "",
     "description": "",

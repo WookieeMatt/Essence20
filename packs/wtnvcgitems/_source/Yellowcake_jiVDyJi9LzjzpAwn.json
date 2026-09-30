@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks use its Poison blast or one of its three alternates, and its traits apply; Consumable means it is used up after the attack. Needs Science +d6.</p>"
+      "notes": "<p>Automatic: attacks roll Athletics at Short range for 1 Poison damage in a 25 ft radius, or one of three alternates (1 Poison to one target at ↑1, 2 Element to one target, or 2 Element in a 10 ft radius at ↓1). It's Consumable, so it's used up after the attack.</p>"
     },
     "originalId": "",
     "description": "",

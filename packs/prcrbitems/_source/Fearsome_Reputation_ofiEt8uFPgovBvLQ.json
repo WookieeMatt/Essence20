@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: Intimidation counts as a Social Skill. Automatic: ↑2 on Intimidation while Morphed (leave the switchable Morphed effect off).</p>"
+      "notes": "<p>Active Effect: Intimidation counts as a Social Skill. Automatic: while Morphed, your Intimidation tests get ↑2, already counted in the upshift your Roll Options Dialog opens with (leave the switchable Morphed effect off).</p>"
     },
     "originalId": "",
     "description": "",

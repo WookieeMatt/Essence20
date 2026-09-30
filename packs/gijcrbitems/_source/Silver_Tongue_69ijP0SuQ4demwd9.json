@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: on Social Essence Skill tests, a d20 roll of 9 or less counts as 10.</p>"
+      "notes": "<p>Automatic: on any Skill Test with a Social skill, a d20 that rolls 9 or less counts as a 10, as shown on the roll's chat card.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>When added to a Zord you pick one of its weapons. That weapon gains Anti-Tank and Wrecker, and its Critical Successes cut the target's armor by 2 for the rest of the scene (stacking).</p>"
+      "notes": "<p>Granted on drop: pick one of the Zord's weapons, which gains the Anti-Tank and Wrecker traits. Automatic: each Critical Success with that weapon lowers the target's armor bonus to Toughness by 2 for the rest of the scene (stacking), noted on the attack's chat card.</p>"
     },
     "originalId": "",
     "description": "",

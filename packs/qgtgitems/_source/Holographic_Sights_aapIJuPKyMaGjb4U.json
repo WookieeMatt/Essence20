@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: multi-target Targeting attacks with this weapon ignore their printed ↓.</p>"
+      "notes": "<p>Automatic: multi-target Targeting effects of this weapon get ↑ equal to their printed ↓, listed as a Holographic Sights switch under Automatic Modifiers in the Roll Options Dialog, so the two cancel out.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: after you Defeat a living creature, your attacks take ↓1 for the rest of the combat.</p>"
+      "notes": "<p>Automatic: after damage you apply from a chat card drops a creature to 0 Health, your attacks take ↓1 for the rest of that combat, labelled CBRN Defender in your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

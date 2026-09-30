@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks against a creature you used Analyze Target on this combat get ↑ equal to the times you analyzed it.</p>"
+      "notes": "<p>Automatic: your attacks against a creature get ↑1 for each time you used Analyze Target on it this combat, labelled Informed Accuracy in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

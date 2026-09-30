@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 and +1 damage on attacks against a Zord.</p>"
+      "notes": "<p>Automatic: your attacks against a Zord get ↑1, labelled Zordbane in the Roll Options Dialog, and +1 damage, shown on the chat card as \"Includes +1 from Zordbane\".</p>"
     },
     "originalId": "",
     "description": "",

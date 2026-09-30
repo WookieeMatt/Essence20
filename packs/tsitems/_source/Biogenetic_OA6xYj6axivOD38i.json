@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: Edge on Infiltration and Persuasion while in Alt Mode, ↑1 on them in Bot Mode. Left to the table: it is meant only for hiding in a fitting environment or dealing with your own species, so skip it on other rolls.</p>"
+      "notes": "<p>Automatic: your Infiltration and Persuasion tests get Edge while you are in Alt Mode, or ↑1 in Bot Mode, already applied when the Roll Options Dialog opens.</p><p>Left to the table: it is meant only for hiding in a fitting environment or dealing with your own species, so turn it off on other rolls.</p>"
     },
     "originalId": "",
     "description": "",

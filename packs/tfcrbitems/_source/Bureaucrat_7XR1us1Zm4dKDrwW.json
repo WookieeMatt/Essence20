@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you Lend Assistance, the ally gets both an Edge and ↑1 on their Skill Test.</p>"
+      "notes": "<p>Automatic: when you Lend Assistance on a Skill Test, the ally's bonus is both Edge and ↑1 instead of just the ↑1; both are already set when their Roll Options Dialog opens for that Skill.</p>"
     },
     "originalId": "",
     "description": "",

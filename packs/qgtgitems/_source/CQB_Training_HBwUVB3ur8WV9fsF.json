@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your ranged attacks take no penalty while you are in an enemy's reach.</p>"
+      "notes": "<p>Automatic: your ranged attacks against a target whose reach you are inside don't take the usual ↓1, so no Reach entry appears in your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

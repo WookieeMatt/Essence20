@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: in Combat, +1 to all your Defenses against an enemy while any of its side is Frightened, Mesmerized or Surprised.</p><p>Left to the table: the listed Qualifications when you Requisition.</p>"
+      "notes": "<p>Automatic: in Combat, while any enemy on the scene is Frightened, Mesmerized or Surprised, attacks against you must beat your Defense +1 when the hit is checked.</p><p>Left to the table: your extra Qualifications (Cover Grenades, Standard and Limited upgrades for melee weapons, the Stealth battledress upgrade and Limited Athletics (Climbing) Kits).</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +1 Cleverness. Automatic: Persuasion tests made against you take a Snag.</p>"
+      "notes": "<p>Active Effect: +1 Cleverness. Automatic: Persuasion tests made against you (with you targeted) take a Snag, labelled Escapist in the roller's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you Lend Assistance during combat, your ally gets an extra ↑1. Use button: pick the weapon type you become Qualified in.</p>"
+      "notes": "<p>Automatic: when you Lend Assistance while a combat is running, your ally gets an extra ↑1, added to the Upshift number of their next roll with that Skill. Use button: pick the weapon type you become Qualified in.</p>"
     },
     "originalId": "",
     "description": "",

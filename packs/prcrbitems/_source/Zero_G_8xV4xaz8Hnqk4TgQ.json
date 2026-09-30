@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: the Zord gains 60 ft Aerial Movement. Automatic: its ranged attacks get ↑1.</p>"
+      "notes": "<p>Active Effect: the Zord gains 60 ft Aerial Movement. Automatic: while someone is driving it, the Zord's ranged attacks get ↑1, already counted in the Shift Up box of the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

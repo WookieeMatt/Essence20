@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: pick a Social Skill when you gain it. You always have ↑1 on that Skill.</p>"
+      "notes": "<p>Granted: pick a Social Skill when you gain it. Tests with that Skill always get ↑1, already counted in the Upshift number of your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

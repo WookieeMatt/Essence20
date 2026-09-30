@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Roll Options Dialog: a switch for Edge while protecting a threatened non-combatant. Use button: if a non-combatant is Defeated, you get Edge on all Skill Tests for the rest of the combat.</p>"
+      "notes": "<p>Roll Options Dialog: in combat, a switch for Edge while protecting a threatened non-combatant. Use button: if a non-combatant is Defeated, your Skill Tests get Edge for the rest of that combat, labelled The Right Of All Sentient Beings in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

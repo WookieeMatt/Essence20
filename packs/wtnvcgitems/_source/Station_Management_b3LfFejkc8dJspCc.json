@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +2 Cleverness. Automatic: +1 damage on attacks that target Cleverness.</p>"
+      "notes": "<p>Active Effect: +2 Cleverness. Automatic: attacks you roll against a target's Cleverness deal +1 damage, shown on the hit's chat card as \"Includes +1 from Station Management\".</p>"
     },
     "originalId": "",
     "description": "",

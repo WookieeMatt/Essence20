@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: in Alt Mode, ↑2 on Might tests to shove and to carrying capacity. Use button: in Bot Mode, switch to using it as a shield for +1 Toughness instead.</p>"
+      "notes": "<p>Automatic: in Alt Mode, or in Bot Mode when not used as a shield, your shoves get ↑2, labelled Loader in the Roll Options Dialog, and your carrying capacity counts your Brawn 2 steps higher. Use button: in Bot Mode, switch it to shield use for +1 Toughness instead.</p>"
     },
     "originalId": "",
     "description": "",

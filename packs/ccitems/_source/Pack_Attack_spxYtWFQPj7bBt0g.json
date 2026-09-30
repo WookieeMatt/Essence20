@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Use button: while your Growl is active on a target, nearby allies also get its ↑ against that target.</p>"
+      "status": "partial",
+      "notes": "<p>Use button (after a successful Growl, before its ↑1 is spent): every ally within 60 ft gets the same ↑1 on their next attack against the Growled target, labelled Growl in their Roll Options Dialog.</p><p>Left to the table: further attacks by the same ally before the start of your next turn.</p>"
     },
     "originalId": "",
     "description": "",

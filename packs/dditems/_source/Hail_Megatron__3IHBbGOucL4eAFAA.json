@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: ↑1 on Infiltration in Alt Mode, ↑1 on Intimidation in Bot Mode against smaller Cybertronians, and ↑1 on Initiative.</p><p>Left to the table: ↑2 Infiltration when your Alt Mode suits the setting, and choosing a first attack instead of Initiative.</p>"
+      "notes": "<p>Automatic: ↑1 on Infiltration in Alt Mode, ↑1 on Intimidation in Bot Mode against a targeted smaller Cybertronian, and ↑1 on Initiative rolled in the first round. The Skill Test ↑ is already in the Roll Options Dialog's starting total, not listed by name.</p><p>Left to the table: ↑2 Infiltration when your Alt Mode suits the setting, and taking a first attack instead of Initiative.</p>"
     },
     "originalId": "",
     "description": "",

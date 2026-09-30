@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: pick a skill on the Perk, and you get an Edge on it whenever you roll it outside combat.</p><p>Left to the table: the once-per-encounter limit, and choosing a skill you're Specialized in.</p>"
+      "notes": "<p>Automatic: pick a Skill on the Perk. Outside combat, your rolls with that Skill open the Roll Options Dialog with Edge selected.</p><p>Left to the table: the once-per-encounter limit, and choosing a skill you're Specialized in.</p>"
     },
     "originalId": "",
     "description": "",

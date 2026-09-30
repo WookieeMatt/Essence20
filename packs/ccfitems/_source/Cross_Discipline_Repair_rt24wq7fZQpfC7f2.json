@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "manual",
-      "notes": "<p>The system applies nothing for this Perk. Left to the table: its repair benefit.</p>"
+      "notes": "<p>Manual: the system never adds a penalty for repairing another faction's technology, so there is nothing to lift. Left to the table: letting you repair that technology as if it were your own.</p>"
     },
     "originalId": "",
     "description": "",

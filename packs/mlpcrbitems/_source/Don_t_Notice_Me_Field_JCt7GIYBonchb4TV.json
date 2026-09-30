@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: a successful cast (DIF 20) on your target, or yourself, makes them Invisible for the scene with Edge on Infiltration, and Alertness tests to find them take a Snag. Left to the table: silence, and ending it early if they harm someone.</p>"
+      "notes": "<p>Cast: on a success (DIF 20), your target, or you, becomes Invisible for the scene. Its Infiltration tests get Edge, and Alertness tests aimed at it take a Snag, both listed as Don't-Notice-Me-Field in the Roll Options Dialog.</p><p>Left to the table: silence, and ending it early if they harm someone.</p>"
     },
     "originalId": "",
     "description": "",

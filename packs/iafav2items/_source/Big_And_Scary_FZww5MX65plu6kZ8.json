@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: ↑1 on Intimidation tests for each Size Class you're larger than the target, counting yourself one size larger.</p><p>Left to the table: counting as one size larger in other situations where it helps.</p>"
+      "notes": "<p>Automatic: your Intimidation tests get ↑1 for each Size Class you're larger than the target, counting yourself one size larger, labelled Big And Scary in the Roll Options Dialog.</p><p>Left to the table: counting as one size larger in other situations where it helps.</p>"
     },
     "originalId": "",
     "description": "",

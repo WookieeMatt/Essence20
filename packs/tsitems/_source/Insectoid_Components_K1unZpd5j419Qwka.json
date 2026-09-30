@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +2 Toughness. Automatic: ↑2 on Brawn while in Alt Mode.</p>"
+      "notes": "<p>Active Effect: +2 Toughness. Automatic: in Alt Mode your Brawn tests get ↑2, already applied when the Roll Options Dialog opens.</p>"
     },
     "originalId": "",
     "description": "",

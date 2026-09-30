@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: while Morphed, spend 1 Personal Power, once per combat. Automatic: your allies get Edge on attacks for the rest of this round and the next.</p>"
+      "notes": "<p>Use button: while Morphed, spend 1 Personal Power, once per combat. Your allies' attacks then get Edge for the rest of this round and the next, labelled Shining Leader in their Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

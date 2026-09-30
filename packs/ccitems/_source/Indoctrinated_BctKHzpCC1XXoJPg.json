@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: anyone rolling Intimidation or Persuasion against you takes a Snag.</p>"
+      "notes": "<p>Automatic: anyone targeting you with an Intimidation or Persuasion roll takes a Snag, labelled Indoctrinated in their Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

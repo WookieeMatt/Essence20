@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on attacks with Ballistic weapons at normal range.</p>"
+      "notes": "<p>Automatic: ↑1 on attacks with Ballistic weapons against a target within normal range, labelled Ballistics Precision in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

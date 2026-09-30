@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you miss with an attack, that target has a Snag on its attacks during its next turn.</p>"
+      "notes": "<p>Automatic: when your attack misses a target, that target's next attack takes a Snag, shown as Covering Fire next to Snag in its Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

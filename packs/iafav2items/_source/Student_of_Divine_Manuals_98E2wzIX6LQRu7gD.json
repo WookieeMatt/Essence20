@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your first Skill test each scene counts as Specialized.</p>"
+      "notes": "<p>Automatic: your first Skill Test each scene opens its Roll Options Dialog with the Specialized box already ticked.</p>"
     },
     "originalId": "",
     "description": "",

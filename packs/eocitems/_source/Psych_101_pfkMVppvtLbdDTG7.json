@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑2 on Culture Skill Tests while you have any Science Specialization.</p>"
+      "notes": "<p>Automatic: while you have at least one Science Specialization, your Culture tests get ↑2, already counted in the Upshift number of your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: once per scene, a reroll is offered when you fail a test with your Origin Skill.</p>"
+      "notes": "<p>Chat card: once per scene, when a roll of your Origin Skill (the Skill your Origin raised) fails, a Reroll button re-rolls all its dice.</p>"
     },
     "originalId": "",
     "description": "",

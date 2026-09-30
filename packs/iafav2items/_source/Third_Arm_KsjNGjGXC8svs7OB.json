@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "manual",
-      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: the mounted weapon this upgrade supports and how it's used.</p>"
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: the Mounted ranged weapon it carries drops one size step (Heavy to Long, Long to Medium) and loses the Mounted trait; edit that weapon by hand.</p>"
     },
     "originalId": "",
     "description": "",

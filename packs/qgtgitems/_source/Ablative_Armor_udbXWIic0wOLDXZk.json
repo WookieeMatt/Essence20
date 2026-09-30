@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Blunt or Sharp attacks against the vehicle take ↓1.</p>"
+      "notes": "<p>Automatic: attacks dealing Blunt or Sharp damage to the vehicle take ↓1, listed as an Ablative Armor switch under Automatic Modifiers in the attacker's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

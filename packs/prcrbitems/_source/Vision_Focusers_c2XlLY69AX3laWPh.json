@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while Morphed, you and your nearby teammates see in darkness out to 30 ft.</p>"
+      "notes": "<p>Automatic: while you're Morphed, your token and the tokens of every ally in the scene can see in darkness out to 30 ft.</p>"
     },
     "originalId": "",
     "description": "",

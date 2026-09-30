@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Deception and Persuasion tests against you take ↓2 unless the roller also follows Unicron, and Dark Energon addiction checks against you get a Snag. The Rites of the All-Consuming are on their own items.</p>"
+      "notes": "<p>Automatic: Deception and Persuasion Tests against you take ↓2 unless the roller also has Word of Unicron, labelled Word of Unicron in their Roll Options Dialog. Dark Energon addiction checks against you get a Snag. The Rites of the All-Consuming are separate items.</p>"
     },
     "originalId": "",
     "description": "",

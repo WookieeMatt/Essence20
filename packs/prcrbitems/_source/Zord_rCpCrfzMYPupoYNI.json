@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: lets you link a Zord on your sheet, and you take no Snag on Driving while piloting it.</p>"
+      "notes": "<p>On the sheet: lets you link a Zord to your character. Automatic: while you drive a Zord, your Driving tests don't take the Snag for being untrained, so the Roll Options Dialog opens on Normal.</p>"
     },
     "originalId": "",
     "description": "",

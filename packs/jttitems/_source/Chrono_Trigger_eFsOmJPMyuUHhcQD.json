@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the Attack action makes three attacks with this sidearm, each at ↓2.</p>"
+      "notes": "<p>Automatic: in Combat, one Attack action with this sidearm covers three attacks, counted on your Actions panel, and each takes ↓2, listed as Chrono-Trigger (Multiple Attacks) in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

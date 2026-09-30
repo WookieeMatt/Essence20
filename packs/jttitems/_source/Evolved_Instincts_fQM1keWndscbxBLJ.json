@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Automatic: ↑1 on melee attacks by the Zord or its driver against an enemy within two Sizes of the Zord.</p>"
+      "status": "partial",
+      "notes": "<p>Automatic: melee attacks by the Zord, or by its driver, against a creature within two Sizes of the Zord get ↑1, listed as Evolved Instincts in the Roll Options Dialog.</p><p>Left to the table: the Zord's +1 Evasion; add it to the Zord by hand.</p>"
     },
     "originalId": "",
     "description": "",

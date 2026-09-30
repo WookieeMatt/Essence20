@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Active Effect (while Morphed): Resistance to Blunt and Sharp damage and Edge on Strength tests. Automatic: +1 damage with Power Weapon attacks while Morphed.</p>"
+      "status": "partial",
+      "notes": "<p>Active Effect: Resistance to Blunt and Sharp damage, and Edge on Strength Skill tests (the Roll Options Dialog opens with Edge selected). Automatic: while Morphed, Power Weapon attacks deal +1 damage, listed on the chat card. Left to the table: the Resistances and Strength Edge also apply while you aren't Morphed.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect (off by default): switch it on for ↑1 on Performance and Persuasion while you are showing it off.</p>"
+      "notes": "<p>Roll Options Dialog: Performance and Persuasion rolls show a The Drip switch that adds ↑1. Turn it on while you are showing it off.</p>"
     },
     "originalId": "",
     "description": "",

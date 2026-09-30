@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you fail an Infiltration test against a creature, that creature gets Edge on its next test against you.</p>"
+      "notes": "<p>Automatic: when you fail an Infiltration test against a creature, its next test targeting you gets Edge, labelled Outfoxed in its Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

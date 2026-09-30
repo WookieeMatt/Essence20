@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Alertness Skill Tests. Roll Options Dialog: a switch for ↑1 on other Skill Tests where your sharp sense helps.</p>"
+      "notes": "<p>Automatic: Alertness tests open the Roll Options Dialog with Edge already selected. Roll Options Dialog: on other Skill Tests, a switch for ↑1 when your sharp sense helps.</p>"
     },
     "originalId": "",
     "description": "",

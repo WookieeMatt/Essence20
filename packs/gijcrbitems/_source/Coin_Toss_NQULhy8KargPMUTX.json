@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Might weapon attacks score a critical hit on a 2 as well.</p>"
+      "notes": "<p>Automatic: when you attack with a Might weapon, the Roll Options Dialog opens with \"Can critically succeed on a d2\" already ticked, so a 2 on the d2 counts as a critical hit.</p>"
     },
     "originalId": "",
     "description": "",

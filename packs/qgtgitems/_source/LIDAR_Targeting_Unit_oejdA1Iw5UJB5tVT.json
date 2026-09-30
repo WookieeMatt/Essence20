@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on attacks with the vehicle's weapons.</p>"
+      "notes": "<p>Automatic: attacks with the vehicle's own weapons get ↑1, listed as a LIDAR Targeting Unit switch under Automatic Modifiers in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: anyone rolling Deception against you gets Edge. Left to the table: limiting it to appeals that reinforce how you feel about Cobra.</p>"
+      "notes": "<p>Automatic: anyone targeting you with a Deception roll gets Edge, labelled Indoctrinated in their Roll Options Dialog.</p><p>Left to the table: limiting it to appeals that reinforce how you feel about Cobra.</p>"
     },
     "originalId": "",
     "description": "",

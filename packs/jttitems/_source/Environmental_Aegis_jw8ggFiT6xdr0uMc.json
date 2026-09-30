@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while Morphed, air and temperature hazards in the scene's environment don't affect you.</p>"
+      "notes": "<p>Automatic: while Morphed, the Extreme Cold, Extreme Heat, Thick, Thin and Toxic Atmosphere and Vacuum hazards the GM sets on a scene skip you, so they cost you no Health or Essence and don't leave you Impaired.</p>"
     },
     "originalId": "",
     "description": "",

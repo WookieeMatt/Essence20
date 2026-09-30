@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on tests with the Skill you pick on the Perk.</p>"
+      "notes": "<p>Automatic: tests of the Skill you pick on the Perk get ↑1, already counted in the Shift Up box of the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

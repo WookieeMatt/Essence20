@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: Laser attacks against the vehicle's occupants take a Snag.</p><p>Left to the table: occupants ignoring light-based effects that would give ↓ on Driving.</p>"
+      "notes": "<p>Automatic: Laser attacks against anyone aboard the vehicle take a Snag, shown as Tinted Canopy next to Snag in the attacker's Roll Options Dialog.</p><p>Left to the table: occupants ignoring light-based effects that would give ↓ on Driving.</p>"
     },
     "originalId": "",
     "description": "",

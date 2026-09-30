@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: name your Nemesis. Automatic: ↑2 on Skill Tests against them. Chat card: once per scene with them, a Reroll button lets you keep either result.</p>"
+      "notes": "<p>Use button: name your Nemesis. Automatic: every roll that targets them gets ↑2, labelled Nemesis (Specific Threat) in the Roll Options Dialog. Chat card: once per scene with them, a Reroll button lets you keep either result.</p>"
     },
     "originalId": "",
     "description": "",

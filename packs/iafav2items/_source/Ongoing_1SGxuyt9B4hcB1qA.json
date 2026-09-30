@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: gives the weapon the Ongoing trait, so targets it hits keep taking its damage for the following rounds.</p>"
+      "notes": "<p>Automatic: gives the weapon the Ongoing trait. When an attack with it hits and deals damage, the target takes that damage again at the end of each of its turns for the weapon's Ongoing duration (1 round unless the weapon sets more), with a chat line each time.</p>"
     },
     "originalId": "",
     "description": "",

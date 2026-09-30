@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: in Alt Mode your unarmed attacks get Accurate (↑1) and deal Sharp or Blunt damage, whichever you picked when you took the Perk.</p>"
+      "notes": "<p>Automatic: in Alt Mode your unarmed attacks get ↑1 (counted in the Roll Options Dialog's starting ↑ total, not listed by name) and deal Sharp or Blunt damage, whichever you picked when you took the Perk.</p>"
     },
     "originalId": "",
     "description": "",

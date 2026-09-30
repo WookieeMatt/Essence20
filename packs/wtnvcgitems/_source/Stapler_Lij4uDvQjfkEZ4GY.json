@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, using its effects below, and its traits apply. Pick the Stun, Blunt or Maneuver effect when you attack.</p>"
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, at Reach. Pick 1 Stun, 1 Blunt at ↓1, or a Maneuver when you attack; its traits apply.</p>"
     },
     "originalId": "",
     "description": "",

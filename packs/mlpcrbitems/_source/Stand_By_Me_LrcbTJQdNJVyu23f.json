@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: friends standing next to you get +1 to all their Defenses. When a friend beside you is targeted and you aren't, you're offered the chance to spend a Friendship Point and take the effect instead.</p>"
+      "notes": "<p>Automatic: a friend within 5 ft of you gets +1 to whichever Defense is attacked, added to the DIF on the attacker's chat card rather than to their sheet. When a friend beside you is targeted and you aren't, you're offered the chance to spend a Friendship Point and take the effect instead.</p>"
     },
     "originalId": "",
     "description": "",

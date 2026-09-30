@@ -6,8 +6,8 @@
   "img": "icons/svg/hazard.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Automatic: when you use the Angry Perk, pick a Smarts or Social Skill; it has a Snag for the rest of the scene.</p>"
+      "status": "partial",
+      "notes": "<p>Automatic: when you use the Angry Perk, you pick one of your trained Smarts or Social Skills; your next roll with it takes a Snag, labelled Angry in the Roll Options Dialog.</p><p>Left to the table: the Snag on later rolls of that Skill for the rest of the scene.</p>"
     },
     "originalId": "",
     "description": "",

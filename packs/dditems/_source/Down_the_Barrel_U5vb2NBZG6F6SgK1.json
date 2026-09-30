@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Intimidation and Persuasion Tests while your Favorite Weapon is equipped.</p>"
+      "notes": "<p>Automatic: while your Favorite Weapon is equipped, your Intimidation and Persuasion Tests open the Roll Options Dialog with Edge already selected.</p>"
     },
     "originalId": "",
     "description": "",

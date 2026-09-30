@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +1 Evasion. Automatic: Ballistic attacks against you use your Evasion when it is higher than the Toughness they would target.</p>"
+      "notes": "<p>Active Effect: +1 Evasion. Automatic: when a Ballistic weapon's attack is checked against you, your Evasion is used instead if it's higher than the Defense it targeted.</p>"
     },
     "originalId": "",
     "description": "",

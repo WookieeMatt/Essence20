@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on Alertness tests using the Investigation Specialization. Use button: adds a Story Point to the team pool (once per scene).</p>"
+      "notes": "<p>Automatic: Alertness rolls made with a Specialization named Investigation get ↑1, already counted in the Roll Options Dialog's Shift Up box. Use button: adds a Story Point to the team pool (once per scene).</p>"
     },
     "originalId": "",
     "description": "",

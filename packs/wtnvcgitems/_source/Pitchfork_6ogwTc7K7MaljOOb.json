@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks use its effects below, and its traits apply. Pick the one-handed, two-handed or multiple-target effect when you attack.</p>"
+      "notes": "<p>Automatic: attacks roll Might at double Reach. Pick one-handed (1 Sharp), two-handed (2 Sharp) or a sweep at ↓1 (1 Sharp to up to 2 targets) when you attack; its traits apply.</p>"
     },
     "originalId": "",
     "description": "",

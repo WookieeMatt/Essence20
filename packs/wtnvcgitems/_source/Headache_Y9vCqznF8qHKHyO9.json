@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: once you've taken Essence damage, your unarmed melee hits deal extra Psychic damage equal to it.</p>"
+      "notes": "<p>Automatic: once you've taken Essence damage, your unarmed melee hits deal extra damage equal to it, shown on the hit's chat card as \"Includes +N from Headache\".</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on ranged attacks from at least 30 ft above the target, or from the spot you picked on the canvas with Eye For Appraisal.</p>"
+      "notes": "<p>Automatic: Edge on ranged attacks from at least 30 ft above the target, or from the spot you picked on the map with Eye For Appraisal, labelled Vantage Point in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

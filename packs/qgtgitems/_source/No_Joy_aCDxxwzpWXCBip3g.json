@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: on Deception tests, any Skill die that rolls a 1 is rerolled.</p>"
+      "notes": "<p>Chat card: when a Deception roll shows a 1 on a Skill die, a No Joy reroll button appears under it that rerolls those 1s. There's no limit on uses.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: spend a Story Point to switch on your Environmental Expertise benefits for the scene.</p><p>Left to the table: which environment was chosen, and switching it off when the scene ends.</p>"
+      "notes": "<p>Use button: spend a Story Point to switch on your Environmental Expertise benefits for the scene wherever you are: non-combat Skill Tests get Edge (listed as Environmental Expertise in the Roll Options Dialog), attacks count as Specialized, and Rough Terrain doesn't slow you. Press it again to switch off.</p><p>Left to the table: which environment was chosen, and switching it off when the scene ends.</p>"
     },
     "originalId": "",
     "description": "",

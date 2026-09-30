@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Alertness tests while you have at least 1 Dark Energon.</p>"
+      "notes": "<p>Automatic: while you hold at least 1 Dark Energon, your Alertness Tests get Edge, labelled See Through Him in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "manual",
-      "notes": "<p>The system applies nothing specific for this Perk. Left to the table: its benefit.</p>"
+      "notes": "<p>Manual: nothing is automated. Left to the table: once per scene, select Edge in the Roll Options Dialog for a Skill Test that directly harms something tied to your old view of the world, such as local authorities or your former job.</p>"
     },
     "originalId": "",
     "description": "",

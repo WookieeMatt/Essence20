@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +1 to all Defenses while Morphed. Automatic: +1 damage on a Critical Success, and in Monster Form you take 1 less damage from anything that isn't Energy damage.</p>"
+      "notes": "<p>Active Effect: +1 to all Defenses while Morphed. Automatic: your Critical Successes deal +1 damage, already added to the damage on the chat card, and in Monster Form damage applied to you that isn't Energy-type is reduced by 1.</p>"
     },
     "originalId": "",
     "description": "",

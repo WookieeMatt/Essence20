@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when one of your BFFs failed a Skill Test on their turn, your next test with that same Skill this round or next gets Edge.</p>"
+      "notes": "<p>Automatic: when one of your BFFs fails a Skill Test, your next test with that same Skill this round or next gets Edge, labelled Leave It To Me in your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: activate it to get ↑1 on your attack rolls; press it again to switch it off.</p><p>Left to the table: ending it after one minute.</p>"
+      "notes": "<p>Use button: switches it on, and while it's on every weapon attack you roll gets ↑1, already counted in the upshift your Roll Options Dialog opens with. Press it again to switch it off. Left to the table: ending it after one minute.</p>"
     },
     "originalId": "",
     "description": "",

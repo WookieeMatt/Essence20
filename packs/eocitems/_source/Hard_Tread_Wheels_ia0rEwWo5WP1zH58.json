@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: in Alt Mode you ignore Rough Terrain and get ↑1 on Ram attacks; in Bot Mode you get ↑1 on Athletics tests.</p>"
+      "notes": "<p>Automatic: in Alt Mode you ignore Rough Terrain and get ↑1 on Ram attacks; in Bot Mode you get ↑1 on Athletics Tests. The ↑1 is already counted in the Roll Options Dialog's starting ↑ total, not listed by name.</p>"
     },
     "originalId": "",
     "description": "",

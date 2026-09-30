@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: if you aren't Surprised when combat starts, the first attack that hits you that combat has no effect.</p>"
+      "notes": "<p>Automatic: once per combat, while you don't have the Surprised condition, the first attack damage applied to you from a chat card is reduced to 0, along with any extra effect it carried.</p>"
     },
     "originalId": "",
     "description": "",

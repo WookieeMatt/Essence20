@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: ↑1 on attacks against Putties and Tengas.</p><p>Left to the table: they can't surprise you by teleporting in or ambushing.</p>"
+      "notes": "<p>Automatic: your attacks against Putties and Tengas get ↑1, labelled Grid Champion in the Roll Options Dialog. Left to the table: they can't surprise you by teleporting in or ambushing.</p>"
     },
     "originalId": "",
     "description": "",

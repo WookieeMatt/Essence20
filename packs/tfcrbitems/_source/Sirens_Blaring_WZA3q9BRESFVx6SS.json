@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge and ↑1 on your Initiative rolls.</p>"
+      "notes": "<p>Automatic: your Initiative rolls get Edge and ↑1, already applied when the Roll Options Dialog opens.</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: in combat, when you succeed on a Skill Test, allies get ↑1 on that same Skill until the round ends. Out of combat you can Lend Assistance even without ranks in the Skill.</p>"
+      "notes": "<p>Automatic: in combat, when you succeed on a Skill Test, your allies get ↑1 on that same Skill until the round ends, listed as Inspirational Leader (with your name) in their Roll Options Dialog. Out of combat you can Lend Assistance even without ranks in the Skill.</p>"
     },
     "originalId": "",
     "description": "",

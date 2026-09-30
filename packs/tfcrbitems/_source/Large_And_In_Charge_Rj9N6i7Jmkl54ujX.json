@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>On the sheet: choose a Social Skill. Automatic: ↑1 on tests with it against a smaller target.</p>"
+      "notes": "<p>On the sheet: choose a Social Skill. Automatic: your tests with that Skill against a smaller target get ↑1, labelled Large And In Charge in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

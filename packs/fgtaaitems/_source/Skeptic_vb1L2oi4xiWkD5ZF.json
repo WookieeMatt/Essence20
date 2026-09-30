@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +1 Willpower. Automatic: Deception tests made against you take a Snag.</p>"
+      "notes": "<p>Active Effect: +1 Willpower. Automatic: Deception tests made against you (with you targeted) take a Snag, labelled Skeptic in the roller's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

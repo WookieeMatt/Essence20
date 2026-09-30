@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Active Effect: the Zord becomes Towering with +2 Health, +1 Strength and -2 Speed. Automatic: its melee attacks deal at least 3 damage.</p><p>Left to the table: removing the Zord Features it cannot be combined with.</p>"
+      "notes": "<p>Active Effect: the Zord becomes Towering with +2 Health, +1 Strength and -2 Speed. Automatic: its melee attacks deal at least 3 damage, already used on the chat card's damage. Left to the table: removing the Zord Features it cannot be combined with.</p>"
     },
     "originalId": "",
     "description": "",

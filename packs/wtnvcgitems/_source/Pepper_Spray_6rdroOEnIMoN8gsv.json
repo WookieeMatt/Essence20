@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks use its effects below, and its traits apply. Consumable: it is used up after the attack.</p>"
+      "notes": "<p>Automatic: attacking with it rolls Athletics at Short range for 1 Acid damage against up to 2 targets. It's Consumable, so it's used up after the attack.</p>"
     },
     "originalId": "",
     "description": "",

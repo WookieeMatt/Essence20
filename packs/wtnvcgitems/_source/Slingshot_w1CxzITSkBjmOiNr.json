@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks use its effects below, and its traits apply.</p>"
+      "notes": "<p>Automatic: attacking with it rolls Athletics at Short range for 1 Blunt damage; its Silent trait applies.</p>"
     },
     "originalId": "",
     "description": "",

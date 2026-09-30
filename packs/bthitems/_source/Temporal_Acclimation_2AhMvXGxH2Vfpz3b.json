@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Active Effect (off by default): switch it on for Edge on Social tests during a first meeting. Left to the table: the technology and language clauses.</p>"
+      "notes": "<p>Roll Options Dialog: Social rolls show a First Meeting switch that gives Edge. Turn it on during a first meeting.</p><p>Left to the table: the technology and language clauses.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the Zord arrives in Megafauna Form with Smarts and Social 3, +3 Evasion and ↑1 on melee attacks, and its pilot drives with Animal Handling. Use button: switch forms. You are warned if it tries to join a Megaform in this form.</p>"
+      "notes": "<p>Automatic: the Zord arrives in Megafauna Form with Smarts and Social 3, +3 Evasion and ↑1 on its melee attacks (labelled Megafauna in the Roll Options Dialog), and its pilot drives with Animal Handling. Use button: switch forms. You are warned if it tries to join a Megaform in this form.</p>"
     },
     "originalId": "",
     "description": "",

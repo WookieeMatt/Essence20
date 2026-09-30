@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Cast: on a success, the targeted creature (or you, if no one is targeted) takes ↓3 on all Skill Tests until the GM advances the scene.</p><p>Left to the table: exempting tests to grab the illusion, and the test to shake it off early.</p>"
+      "notes": "<p>Cast: on a success, the targeted creature (or you, if no one is targeted) takes ↓3 on every Skill Test until the GM advances the scene, already counted in the Downshift number of its Roll Options Dialog.</p><p>Left to the table: exempting tests to grab the illusion, and the test to shake it off early.</p>"
     },
     "originalId": "",
     "description": "",

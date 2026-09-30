@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: you can roll Brawn or Might for Initiative. Automatic: Edge on Initiative. If your Reckless Abandon is on when you roll Initiative, you act normally in a surprise round.</p>"
+      "notes": "<p>Active Effect: you can roll Brawn or Might for Initiative. Automatic: your Initiative roll opens the Roll Options Dialog with Edge selected, and if your Reckless Abandon is on when you roll Initiative, you act normally in a surprise round.</p>"
     },
     "originalId": "",
     "description": "",

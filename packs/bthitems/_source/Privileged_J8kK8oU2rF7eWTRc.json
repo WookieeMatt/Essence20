@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Active Effect (off by default): switch it on for Edge on Social tests when your status matters. Use button: spend a Story Point for the temporary ally. Left to the table: where your status opens or bars access.</p>"
+      "notes": "<p>Roll Options Dialog: Social rolls show a Status Pressure switch that gives Edge; turn it on when your status matters. Use button: spend a Story Point for the temporary ally.</p><p>Left to the table: where your status opens or bars access.</p>"
     },
     "originalId": "",
     "description": "",

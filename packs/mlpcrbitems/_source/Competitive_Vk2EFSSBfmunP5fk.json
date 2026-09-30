@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when an ally beats your result on the same Skill a few moments after you (or you roll just after them), your next Skill Test this scene takes a Snag.</p>"
+      "notes": "<p>Automatic: when an ally rolls the same Skill within 5 minutes of you and beats your result, a chat line says so and your next Skill Test this scene takes a Snag, listed as Competitive next to Snag in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

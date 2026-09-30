@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Roll Options Dialog: on your own turn, pick how many ↓ to take on a Might, Finesse or Targeting attack; enemies attacking you take the same ↓ until your next turn.</p>"
+      "notes": "<p>Roll Options Dialog: on your own turn, a number box on Might, Finesse and Targeting attacks sets how many ↓ you take. Until your next turn starts, attacks against you take the same ↓, labelled Evasive Fighting in the attacker's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

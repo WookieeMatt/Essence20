@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a successful cast disguises your target (or you, if no one is targeted), giving Edge on Deception and Infiltration tests to pass as another creature.</p>"
+      "notes": "<p>Automatic: a successful cast disguises your target (or you, if no one is targeted). While disguised, their Deception and Infiltration Tests open the Roll Options Dialog with Edge already selected.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: pick a target and whether you urge them toward greatness or failure. Greatness turns their next success into a Critical Success; failure gives them ↓3 on Skill Tests until they roll a Critical Success.</p>"
+      "notes": "<p>Use button: with a creature targeted, pick one of its Skills and whether it will excel or fail. Excel: its next success with that Skill becomes a Critical Success. Fail: its tests with that Skill take ↓3, already counted in the Downshift number of its Roll Options Dialog, until it rolls a Critical Success with that Skill.</p>"
     },
     "originalId": "",
     "description": "",

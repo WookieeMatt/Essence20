@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: +1 damage on your unarmed attacks, including the Unarmed Strike weapon.</p>"
+      "notes": "<p>Automatic: +1 damage on your unarmed attacks (the Unarmed Strike included), shown on the hit's chat card as \"Includes +1 from Strex Strikes\".</p>"
     },
     "originalId": "",
     "description": "",

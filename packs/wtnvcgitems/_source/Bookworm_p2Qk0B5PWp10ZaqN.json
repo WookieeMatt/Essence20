@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↓1 on all tests, Initiative included, when the scene is a library or a Librarian is involved. Roll Options Dialog: a switch for other library situations.</p>"
+      "notes": "<p>Automatic: when the scene's name includes \"library\" or your target is a Librarian, every Skill Test (Initiative too) takes ↓1, labelled Bookworm in the Roll Options Dialog. Roll Options Dialog: otherwise, a Bookworm switch adds the ↓1 for other library situations.</p>"
     },
     "originalId": "",
     "description": "",

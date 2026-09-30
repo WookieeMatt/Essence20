@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: switch on Uninterested Audience for ↓1 on Social tests while dealing with someone who doesn't care about the past, then switch it off.</p>"
+      "notes": "<p>Roll Options Dialog: Social rolls show an Archaeologist (Uninterested Audience) switch that adds ↓1. Turn it on while dealing with someone who doesn't care about the past.</p>"
     },
     "originalId": "",
     "description": "",

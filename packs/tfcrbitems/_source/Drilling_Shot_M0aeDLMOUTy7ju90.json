@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks with your Long Range Rifle target only the basic Defense, ignoring armor and other bonuses.</p>"
+      "notes": "<p>Automatic: when you attack with a Long Range Rifle, the target's Defense is worked out without its armor bonus, so the hit or miss on the chat card is judged against that lower number.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the penalty on damaging attacks from your Peaceable Perk becomes ↓2.</p>"
+      "notes": "<p>Automatic: the Peaceable Perk's penalty on attacks that deal damage becomes ↓2, already counted in the Downshift number of your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: after you use Force, your next Strength-based test takes ↓1. Left to the table: applying the ↓1 to every Strength-based test until the end of your next turn.</p>"
+      "notes": "<p>Automatic: when Force adds its +1 damage, your next Strength Skill test (Athletics, Brawn, Intimidation or Might) takes ↓1, already counted in the downshift your Roll Options Dialog opens with. Left to the table: the ↓1 on any further Strength tests until the end of your next turn.</p>"
     },
     "originalId": "",
     "description": "",

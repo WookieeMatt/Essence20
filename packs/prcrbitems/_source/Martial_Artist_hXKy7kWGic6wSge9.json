@@ -4,8 +4,8 @@
   "img": "icons/svg/hazard.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Automatic: Social tests made to goad you into action get Edge against you.</p>"
+      "status": "partial",
+      "notes": "<p>Automatic: every Social Skill test that targets you gets Edge, labelled Martial Artist in the roller's Roll Options Dialog. Left to the table: setting it back to Normal when the test isn't trying to goad you into action.</p>"
     },
     "originalId": "",
     "description": "",

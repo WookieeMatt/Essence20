@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: once per scene, after you fail a Skill test, your next Skill test takes ↓1.</p>"
+      "notes": "<p>Automatic, once per scene: after you fail a Skill Test, your next Skill Test has ↓1 already added to the shift in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

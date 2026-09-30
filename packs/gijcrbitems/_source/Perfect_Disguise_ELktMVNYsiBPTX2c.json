@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: switches the disguise on (once per encounter). While on, you get Edge on Social Skill tests and your attacks count as sneak attacks; your first attack ends it.</p><p>Left to the table: the once-per-Mission limit and whether the person can be copied.</p>"
+      "notes": "<p>Use button: switches the disguise on (once per encounter). While on, your Deception, Persuasion, Intimidation and Streetwise rolls open with Edge selected, and your attacks count as sneak attacks. Your first attack ends it.</p><p>Left to the table: the once-per-Mission limit and whether the person can be copied.</p>"
     },
     "originalId": "",
     "description": "",

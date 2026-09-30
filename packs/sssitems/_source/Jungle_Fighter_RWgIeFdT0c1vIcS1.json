@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: in a woodland scene region (or with its Use button switched on where the scene isn't tagged), Edge on non-attack tests, Specialized attacks, no Rough Terrain penalties, and Light Armor counts as Silent for Infiltration.</p>"
+      "notes": "<p>Automatic: in a woodland scene region (or with its Use button switched on where the scene isn't tagged), you ignore Rough Terrain, non-attack tests get Edge (shown as Jungle Fighter next to Edge in the Roll Options Dialog), attacks open with the Specialized switch on, and Light Armor counts as Silent for Infiltration.</p>"
     },
     "originalId": "",
     "description": "",

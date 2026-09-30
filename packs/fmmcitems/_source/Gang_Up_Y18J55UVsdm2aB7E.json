@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks against a target within 5ft of another Psycho Path character gain the listed upshift (↑1, rising at 6th, 11th and 16th level).</p>"
+      "notes": "<p>Automatic: your attacks against a target within 5ft of another Psycho Path character get the listed upshift (↑1, rising at 6th, 11th and 16th level), labelled Gang Up in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

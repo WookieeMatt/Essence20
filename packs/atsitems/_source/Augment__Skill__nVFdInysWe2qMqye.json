@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on the Skill you choose. Take the Perk again for another Skill; each copy counts.</p>"
+      "notes": "<p>Automatic: rolls of the Skill you chose on this Perk get ↑1, already counted in the Roll Options Dialog's Shift Up box. Take the Perk again for another Skill; each copy counts.</p>"
     },
     "originalId": "",
     "description": "",

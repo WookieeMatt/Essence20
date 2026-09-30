@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you Lend Assistance to an ally outside combat, they get Edge as well as the usual ↑1.</p>"
+      "notes": "<p>Automatic: when you Lend Assistance to an ally outside combat, they get Edge as well as the usual ↑1 on their next test with that Skill, shown in their Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

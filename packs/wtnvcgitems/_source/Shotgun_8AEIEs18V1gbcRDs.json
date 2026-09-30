@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks use its effects below, and its traits apply. Hits up to 2 targets, and Reload means reloading after each shot.</p>"
+      "notes": "<p>Automatic: attacking with it rolls Targeting at Short range for 1 Sharp damage against up to 2 targets; its traits apply, and Reload means reloading after each shot.</p>"
     },
     "originalId": "",
     "description": "",

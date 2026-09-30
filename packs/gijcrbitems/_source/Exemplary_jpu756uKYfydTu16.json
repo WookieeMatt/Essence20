@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when a nearby ally rolls the same Skill you used on your last turn, they get an Edge.</p>"
+      "notes": "<p>Automatic: the system remembers the last Skill you rolled. When an ally on the scene rolls that same Skill, their Roll Options Dialog opens with Edge already selected.</p>"
     },
     "originalId": "",
     "description": "",

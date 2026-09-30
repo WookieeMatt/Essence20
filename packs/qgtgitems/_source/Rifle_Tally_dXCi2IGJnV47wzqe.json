@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while you're in an air vehicle, your attacks against targets without Aerial Movement gain Edge.</p>"
+      "notes": "<p>Automatic: while you ride in a vehicle with Aerial Movement, your attacks against targets without Aerial Movement get Edge, shown as Rifle Tally next to Edge in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

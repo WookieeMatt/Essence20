@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the vehicle's crew gets ↑1 on Infiltration tests, plus another ↑1 you untick in the Roll Options Dialog when the vehicle is moving.</p>"
+      "notes": "<p>Automatic: Infiltration tests by anyone crewing the vehicle get two ↑1 switches under Automatic Modifiers in the Roll Options Dialog: Stealthy, and Stealthy (stationary), which you switch off while the vehicle is moving.</p>"
     },
     "originalId": "",
     "description": "",

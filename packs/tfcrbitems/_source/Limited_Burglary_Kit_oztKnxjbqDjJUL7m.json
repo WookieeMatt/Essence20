@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when a roll needs a kit, the best one you carry sets the Snag or ↓. Use button: spend it for Specialization or an Edge, or scrounge a refill.</p>"
+      "notes": "<p>Automatic: when a roll calls for a Burglary kit, the Roll Options Dialog says so, and with this kit Standard and Limited kit rolls take no Snag while Restricted ones take ↓2 instead. Use button: use it up for 1 hour of Burglary Specialization or an Edge, shown as a labelled source when you roll, or scrounge a refill.</p>"
     },
     "originalId": "",
     "description": "",

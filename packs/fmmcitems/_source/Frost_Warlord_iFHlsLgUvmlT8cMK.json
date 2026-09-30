@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +1 to all Defenses while Morphed. Automatic: +1 damage on attacks with your natural Reach, and in Monster Form you take 2 less Energy damage.</p>"
+      "notes": "<p>Active Effect: +1 to all Defenses while Morphed. Automatic: attacks with your natural Reach deal +1 damage, shown on the chat card as \"Includes +1 from Frost Warlord\", and in Monster Form Energy-type damage applied to you is reduced by 2.</p>"
     },
     "originalId": "",
     "description": "",

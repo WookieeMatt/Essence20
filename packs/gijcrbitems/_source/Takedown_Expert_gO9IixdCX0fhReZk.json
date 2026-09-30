@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: an Edge on Takedown attempts. When a Takedown fails against a target of your level or lower, you pick whether it's also Disarmed, Immobilized or Silenced, on top of being grappled.</p>"
+      "notes": "<p>Automatic: your Takedown rolls open the Roll Options Dialog with Edge selected. When a Takedown fails against a target of your level or lower, a prompt lets you make it Disarmed, Immobilized or Silenced as well as grappled.</p>"
     },
     "originalId": "",
     "description": "",

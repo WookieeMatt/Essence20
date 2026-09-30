@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect (off by default): switch it on for ↑1 on Persuasion when the ceremonial armor is on display.</p>"
+      "notes": "<p>Use button (Free action): while you wear the armor, your Persuasion rolls get ↑1 until the end of your turn (out of combat, your next Persuasion roll this scene), labelled Ceremonial in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

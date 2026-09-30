@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when a teammate on the scene would drop to 0 Health, the table is asked whether you spend 1 Personal Power. If you do, they stay at 1 Health with the Impaired Condition.</p>"
+      "notes": "<p>Automatic: when an ally's token on the scene would drop to 0 Health, a pop-up asks whether you spend 1 Personal Power (you need at least 1). If you do, they stay at 1 Health with the Impaired condition.</p>"
     },
     "originalId": "",
     "description": "",

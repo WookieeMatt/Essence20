@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Roll Options Dialog: a switch to roll Survival in place of Intimidation. Use button (Free, once per turn): Survival Test against a target; on a success, ↑1 on tests against it for the rest of your turn.</p><p>Left to the table: moving your Skill ranks when you take it.</p>"
+      "notes": "<p>Use button (Free, once per turn): roll Survival against a targeted creature's Willpower or Cleverness. On a success, your rolls against it get ↑1 for the rest of your turn, labelled Primal Fear in the Roll Options Dialog. Roll Options Dialog: a switch to roll Survival in place of Intimidation.</p><p>Left to the table: moving your Skill ranks when you take it.</p>"
     },
     "originalId": "",
     "description": "",

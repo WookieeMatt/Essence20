@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: non-attack effects against your Toughness suffer a Snag, and if one still hits, the damage it deals you is halved (rounded up) when it's applied.</p>"
+      "notes": "<p>Automatic: a roll against your Toughness that isn't an attack takes a Snag, labelled Tough Enough in the roller's Roll Options Dialog. If it still succeeds and deals damage, Apply Damage halves that damage (rounded up).</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +1 maximum Personal Power. Automatic: ↑1 on Driving tests while piloting any Zord.</p>"
+      "notes": "<p>Active Effect: +1 maximum Personal Power. Automatic: while you're in the driver's seat of a Zord, your Driving tests start with ↑1 already added to the Roll Options Dialog's Upshift box.</p>"
     },
     "originalId": "",
     "description": "",

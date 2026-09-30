@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks against a Surprised enemy with a weapon that isn't Silent add your Intimidation die to the roll, like a Specialization die.</p>"
+      "notes": "<p>Automatic: when you attack a Surprised enemy with a weapon that isn't Silent, your Intimidation Skill die is added to the roll like a Specialization die, so it shows in the attack's dice on the chat card.</p>"
     },
     "originalId": "",
     "description": "",

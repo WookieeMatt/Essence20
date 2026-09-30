@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +2 Evasion and ↑1 on Alertness. Automatic: ↑1 on attacks against more than one target, and your melee Power Weapons gain Multiple Targets (2) when they lack that trait.</p>"
+      "notes": "<p>Active Effect: +2 Evasion and ↑1 on Alertness. Automatic: your melee Power Weapons gain Multiple Targets (2) when they lack it, and attacks with a Multiple Targets weapon get ↑1, already applied when the Roll Options Dialog opens.</p>"
     },
     "originalId": "",
     "description": "",

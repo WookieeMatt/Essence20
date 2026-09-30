@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: target a creature to set it as your nemesis. Automatic: your non-attack tests targeting them get ↑1. Left to the table: related tests that don't target them directly.</p>"
+      "notes": "<p>Use button: target a creature to set it as your nemesis. Automatic: your non-attack Skill Tests with your nemesis targeted get ↑1, already counted in the Roll Options Dialog's starting ↑ total but not listed by name.</p><p>Left to the table: related tests that don't target them directly.</p>"
     },
     "originalId": "",
     "description": "",

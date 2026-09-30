@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on your rolls while no ally is within 10ft of you.</p>"
+      "notes": "<p>Automatic: while no ally is within 10ft of you, your Skill Tests get ↑1, already counted in the Upshift number of your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

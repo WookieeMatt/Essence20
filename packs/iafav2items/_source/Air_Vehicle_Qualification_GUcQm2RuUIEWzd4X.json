@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while driving an air vehicle, no Snag on Driving tests even without Driving ranks, and ↑1 on them if you have ranks.</p>"
+      "notes": "<p>Automatic: while you drive a vehicle with Aerial movement, rolling Driving without ranks doesn't add the untrained Snag, and with Driving ranks you get ↑1, already added to the shift in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

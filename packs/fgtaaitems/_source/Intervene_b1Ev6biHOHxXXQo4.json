@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when an ally on the scene with you attacks with a Stun or Maneuver effect, they gain Resistance against the next Blunt or Sharp attack that targets them.</p>"
+      "notes": "<p>Automatic: when an ally on your side of the scene makes a Stun or Maneuver attack, the next Blunt or Sharp attack against that ally takes a Snag for their Resistance, labelled Intervene in the attacker's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

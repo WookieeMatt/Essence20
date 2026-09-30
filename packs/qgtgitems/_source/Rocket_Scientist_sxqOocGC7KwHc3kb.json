@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: Edge on tests of your chosen Skill (Science or Technology, set on the Perk) outside combat.</p><p>Left to the table: the once-per-scene limit, and that it only covers rocket-related work.</p>"
+      "notes": "<p>Automatic: outside combat, tests of the Skill chosen on the Perk (Science or Technology) open the Roll Options Dialog with Edge already selected.</p><p>Left to the table: the once-per-scene limit, and that it only covers rocket-related work.</p>"
     },
     "originalId": "",
     "description": "",

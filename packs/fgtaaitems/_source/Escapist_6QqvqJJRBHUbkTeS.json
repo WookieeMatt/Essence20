@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Deception tests made against you gain an Edge.</p>"
+      "notes": "<p>Automatic: Deception tests made against you (with you targeted) get Edge, labelled Escapist in the roller's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

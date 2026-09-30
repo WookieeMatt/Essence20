@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: switch it on while mining or taking apart crystal or mineral objects to get Edge, then switch it off.</p>"
+      "notes": "<p>Roll Options Dialog: every Skill Test shows a Horathi Mining Fork switch. Turn it on while mining or taking apart crystal or mineral objects to give that roll Edge.</p>"
     },
     "originalId": "",
     "description": "",

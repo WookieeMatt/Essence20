@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you attack with a Sniper weapon and have an Edge, a d2 result also counts as a critical hit.</p>"
+      "notes": "<p>Automatic: when you attack with a Sniper weapon and the roll already has an Edge, the Roll Options Dialog opens with \"Can critically succeed on a d2\" ticked, so a 2 on the d2 counts as a critical hit.</p>"
     },
     "originalId": "",
     "description": "",

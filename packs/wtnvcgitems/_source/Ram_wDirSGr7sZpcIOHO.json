@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks use its effects below, and its traits apply. A vehicle's built-in ramming attack.</p>"
+      "notes": "<p>Automatic: a vehicle's built-in ram. Attacking with it rolls Might at Reach for 2 Blunt damage; its traits apply.</p>"
     },
     "originalId": "",
     "description": "",

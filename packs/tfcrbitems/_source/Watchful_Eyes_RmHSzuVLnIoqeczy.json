@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: a successful DIF 10 Alertness roll gives each enemy you have targeted a Snag on their next Skill Test. Left to the table: how many enemies you may pick (one, plus one per 5 over the DIF, doubled on a Critical Success).</p>"
+      "notes": "<p>Automatic: when you roll Alertness against a DIF of 10 and succeed, each enemy you have targeted gets a Snag on its next Skill Test (it shows as Debilitating Strike in that enemy's Roll Options Dialog).</p><p>Left to the table: how many enemies you may pick (one, plus one per 5 over the DIF, doubled on a Critical Success).</p>"
     },
     "originalId": "",
     "actionType": "standard",

@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>On the sheet: pick your modification. ↑1 on shoves and escaping grapples, Edge on Technology tests, or an extra Integrated Hardpoint apply automatically.</p><p>Left to the table: the carrying capacity option.</p>"
+      "notes": "<p>On the sheet: pick your modification. Shove: ↑1 when you attack with a Grapple effect. Technology: Edge on Technology tests. Hardpoint: one extra Integrated Hardpoint. The ↑1 and Edge are already applied when the Roll Options Dialog opens.</p><p>Left to the table: the carrying capacity option, and the ↑1 on breaking free of a grapple.</p>"
     },
     "originalId": "",
     "description": "",

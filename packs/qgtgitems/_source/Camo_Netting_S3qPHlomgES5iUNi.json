@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: switch the netting on or off. On, the vehicle gets Edge to hide while stationary, but moves 10 ft slower and takes ↓2 on Speed tests.</p>"
+      "notes": "<p>Use button: switch the netting on or off. While on, crew Infiltration tests get Edge and the vehicle's Speed tests take ↓2, both shown as Camo Netting in the Roll Options Dialog, and the vehicle's Movement drops by 10 ft on the sheet.</p>"
     },
     "originalId": "",
     "description": "",

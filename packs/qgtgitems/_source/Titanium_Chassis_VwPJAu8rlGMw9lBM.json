@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: the vehicle's own Might tests get ↑2, for shoving.</p><p>Left to the table: its Brawn counting 2 higher for Carrying Capacity.</p>"
+      "notes": "<p>Roll Options Dialog: the vehicle's own Might tests get ↑2, listed as a Titanium Chassis switch under Automatic Modifiers. Switch it off when the test isn't a shove.</p><p>Left to the table: its Brawn counting 2 higher for Carrying Capacity.</p>"
     },
     "originalId": "",
     "description": "",

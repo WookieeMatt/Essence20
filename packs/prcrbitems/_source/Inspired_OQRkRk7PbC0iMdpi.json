@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: once per day you can reroll any one die.</p>"
+      "notes": "<p>Chat card: once per day, a reroll button lets you reroll any one die.</p>"
     },
     "originalId": "",
     "description": "",

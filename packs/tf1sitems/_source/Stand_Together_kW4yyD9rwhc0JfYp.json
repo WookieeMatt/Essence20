@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: ↑1 on tests of the Skill you pick on the Perk, outside combat.</p><p>Left to the table: Qualification with Standard equipment, Tool weapon training, and the disease immunity.</p>"
+      "notes": "<p>Automatic: outside combat, tests of the Skill you pick on the Perk get ↑1, already counted in the Shift Up box of the Roll Options Dialog.</p><p>Left to the table: Qualification with Standard equipment, Tool weapon training, and the disease immunity.</p>"
     },
     "originalId": "",
     "description": "",

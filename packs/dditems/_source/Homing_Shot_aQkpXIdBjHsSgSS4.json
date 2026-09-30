@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: on ranged attacks with a Consumable or Wrecker weapon, you're offered a reroll of a die.</p>"
+      "notes": "<p>Chat card: ranged attacks with a Consumable or Wrecker weapon get a Reroll button on their chat card to reroll one die of your choice.</p>"
     },
     "originalId": "",
     "description": "",

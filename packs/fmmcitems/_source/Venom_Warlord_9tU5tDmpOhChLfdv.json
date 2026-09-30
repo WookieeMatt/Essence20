@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: +1 damage on attacks with your natural Reach. Use button: spend 1 Personal Power to remove a Condition from yourself.</p>"
+      "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: attacks with your natural Reach deal +1 damage, shown on the chat card as \"Includes +1 from Venom Warlord\". Use button: spend 1 Personal Power to remove a Condition from yourself.</p>"
     },
     "originalId": "",
     "description": "",

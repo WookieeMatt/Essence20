@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: choose your bonded partner, link or unlink, and pick which weapon is the partner's Special Attack. While linked, that weapon attacks with Edge and deals +1 damage.</p>"
+      "notes": "<p>Use button: choose your bonded partner, link or unlink, and pick which weapon is the partner's Special Attack. While linked, that weapon's attacks get Edge, labelled Targetmaster in the Roll Options Dialog, and +1 damage, shown on the chat card as \"Includes +1 from Targetmaster\".</p>"
     },
     "originalId": "",
     "description": "",

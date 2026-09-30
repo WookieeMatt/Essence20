@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on attacks and Skill Tests against anyone who hasn't acted yet this combat.</p>"
+      "notes": "<p>Automatic, in combat: your attacks and Skill Tests against a target that comes later in the Initiative order this round get an Edge, labelled First Strike in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -6,8 +6,8 @@
   "img": "icons/svg/hazard.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Automatic: when your weapon or armor breaks, or your vehicle drops to 0 Health in combat, your next Skill Test takes a Snag.</p>"
+      "status": "partial",
+      "notes": "<p>Automatic: in combat, whenever any weapon, armor or shield breaks, or any vehicle or Zord drops to 0 Health, your next Skill Test takes a Snag, shown as Junker next to Snag in the Roll Options Dialog.</p><p>Left to the table: ignoring it when the broken gear or vehicle isn't yours.</p>"
     },
     "originalId": "",
     "description": "",

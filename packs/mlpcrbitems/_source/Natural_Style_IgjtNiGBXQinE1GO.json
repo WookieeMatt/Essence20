@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the first time you make a Social test against a creature, you get ↑1 on Social tests involving them for the rest of that scene.</p>"
+      "notes": "<p>Automatic: your Social Skill tests targeting a creature you first met this scene get ↑1, labelled Natural Style in your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

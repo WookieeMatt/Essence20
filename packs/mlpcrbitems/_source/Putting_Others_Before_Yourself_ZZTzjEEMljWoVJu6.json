@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you Lend Assistance to a friend, they get ↑2 instead of ↑1.</p>"
+      "notes": "<p>Automatic: when you Lend Assistance, your friend's next test with that Skill gets ↑2 instead of ↑1, already counted in the upshift their Roll Options Dialog opens with.</p>"
     },
     "originalId": "",
     "description": "",

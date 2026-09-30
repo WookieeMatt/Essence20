@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on attacks against a target with any Condition, and +1 damage if it's Immobilized or Restrained.</p>"
+      "notes": "<p>Automatic: attacks against a target with any Condition get Edge, marked Cruel in the Roll Options Dialog. If the target is Immobilized or Restrained, a hit also deals +1 damage, noted on the chat card (\"Includes +1 from Cruel\").</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: switch it on for ↑1 on Deception and Infiltration where you don't normally belong, then switch it off.</p>"
+      "notes": "<p>Roll Options Dialog: Deception and Infiltration rolls show a switch from this Perk that adds ↑1. Turn it on where you don't normally belong.</p>"
     },
     "originalId": "",
     "description": "",

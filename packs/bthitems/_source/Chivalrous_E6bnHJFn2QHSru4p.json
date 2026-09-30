@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑2 on Persuasion rolls using a Diplomacy Specialization. Use button: add your extra Story Point to the pool. For the once-a-day Specialized Social test, tick Specialized in the Roll Options Dialog.</p>"
+      "notes": "<p>Automatic: Persuasion rolls made with a Specialization named Diplomacy get ↑2, already counted in the Roll Options Dialog's Shift Up box. Use button: add your extra Story Point to the pool. For the once-a-day Specialized Social test, tick Specialized in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>When added to a Zord you pick its power: Snag on ranged attacks at it, ↑2 Alertness, Snag for +2 damage, +10ft and ↑2 Infiltration, or arriving 2 rounds sooner. Each then applies on its own.</p>"
+      "notes": "<p>Granted on drop: pick the Zord's power. Shield: ranged attacks at it take a Snag; Sense: ↑2 on Alertness; Stealth: +10ft movement and ↑2 on Infiltration, each labelled with this feature in the Roll Options Dialog. Primordial: a dialog switch on melee attacks trades a Snag for +2 damage. Resonance: it arrives 2 rounds sooner.</p>"
     },
     "originalId": "",
     "description": "",

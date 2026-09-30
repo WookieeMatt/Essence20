@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: on a successful cast you take the new shape for the scene, with Edge on Deception and Infiltration tests to pass as that creature. Left to the table: casting it on another creature.</p>"
+      "notes": "<p>Automatic: a successful cast marks you as changed shape for the rest of the scene. Until then your Deception and Infiltration tests get Edge, shown in your Roll Options Dialog (labelled Basic Shape-Shifting). Left to the table: casting it on another creature, and what the new shape looks like.</p>"
     },
     "originalId": "",
     "description": "",

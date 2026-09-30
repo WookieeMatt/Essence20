@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Skill Tests with your Role skills count as Specialized.</p>"
+      "notes": "<p>Automatic: when you roll one of your Role's skills, the Roll Options Dialog opens with Specialized already ticked.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks with the weapons of a vehicle you're piloting get an Edge against vehicles and against enemies your size or bigger.</p>"
+      "notes": "<p>Automatic: when a vehicle you're driving attacks another vehicle, or a creature your size or bigger, the attack gets an Edge, labelled Heavy Ordnance in the vehicle's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

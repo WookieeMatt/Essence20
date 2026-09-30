@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: if you are Defeated in combat, your allies get Edge on Skill Tests for the rest of that combat.</p>"
+      "notes": "<p>Automatic: if you are Defeated in combat, a chat card says so, and for the rest of that combat your allies' Skill Tests get Edge, labelled with your name in their Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

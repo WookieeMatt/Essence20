@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Granted: the Solo Strike track. Roll Options Dialog: a switch on melee attacks for the Solo Strike upshift when you attack one adjacent target that has none of your allies next to it.</p><p>Left to the table: making no other attacks that round.</p>"
+      "notes": "<p>Granted: the Solo Strike track. Roll Options Dialog: on melee attacks, a switch adds ↑1 (↑2 from 6th level, ↑3 from 11th, ↑4 from 16th) when you attack one adjacent target that has none of your allies next to it. Left to the table: making no other attacks that round.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Wealth tests. Your two inherited assets are yours to note on the sheet.</p>"
+      "notes": "<p>Automatic: Wealth tests open the Roll Options Dialog with Edge already selected. Your two inherited assets are yours to note on the sheet.</p>"
     },
     "originalId": "",
     "description": "",

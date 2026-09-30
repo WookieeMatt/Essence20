@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: you get Edge on Social tests against a Surprised creature.</p>"
+      "notes": "<p>Automatic: your Social Skill tests targeting a creature with the Surprised condition get Edge, labelled Prankster in your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

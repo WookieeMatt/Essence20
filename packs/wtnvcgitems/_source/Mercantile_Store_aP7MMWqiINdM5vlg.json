@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: the first ↓1 on Wealth tests is ignored. Active Effect: an Edge on Wealth tests.</p><p>Left to the table: both are meant only for shopping in Night Vale and buying food or animal goods.</p>"
+      "notes": "<p>Automatic: on Wealth tests the Roll Options Dialog's Downshift box starts 1 lower, cancelling the first ↓1. Active Effect: an Edge on Wealth tests.</p><p>Left to the table: both are meant only for shopping in Night Vale and buying food or animal goods.</p>"
     },
     "originalId": "",
     "description": "",

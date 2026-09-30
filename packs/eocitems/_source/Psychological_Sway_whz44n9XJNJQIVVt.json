@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Lend Assistance gives ↑2 instead of ↑1. Use button: gives the targeted foe ↓1 on their next Skill Test.</p>"
+      "notes": "<p>Automatic: when you Lend Assistance, the ally gets ↑2 instead of ↑1, added to the Upshift number of their next roll with that Skill. Use button: the targeted foe takes ↓1 on its next Skill Test, labelled Psychological Sway in its Roll Options Dialog.</p>"
     },
     "originalId": "",
     "actionType": "standard",

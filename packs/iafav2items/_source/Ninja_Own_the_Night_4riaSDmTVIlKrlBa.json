@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "manual",
-      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: this Perk's benefit, as described.</p>"
+      "status": "partial",
+      "notes": "<p>Automatic: your token sees 30 ft in darkness.</p><p>Left to the table: treating dim light within that range as bright light, and doubling the range when you can already see in darkness (such as with Friend of Darkness).</p>"
     },
     "originalId": "",
     "description": "",

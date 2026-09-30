@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: an Edge on Streetwise tests, and anyone rolling Persuasion or Deception against you takes ↓1.</p>"
+      "notes": "<p>Automatic: your Streetwise tests open the Roll Options Dialog set to Edge. Persuasion and Deception tests that target you take ↓1, labelled See Something, Say Nothing in the roller's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

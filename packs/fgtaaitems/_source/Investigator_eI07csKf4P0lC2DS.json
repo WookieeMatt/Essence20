@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: you never take a Snag on Alertness. Use button (once per scene): gain a Story Point when you uncover a significant clue.</p>"
+      "notes": "<p>Automatic: your Alertness tests never take a Snag; the roll drops it even if Snag is selected in the Roll Options Dialog. Use button (once per scene): gain a Story Point when you uncover a significant clue.</p>"
     },
     "originalId": "",
     "description": "",

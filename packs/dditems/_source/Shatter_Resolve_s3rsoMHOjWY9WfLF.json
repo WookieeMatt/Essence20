@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Willpower and Cleverness are 2 lower against your Deception and Persuasion tests.</p>"
+      "notes": "<p>Automatic: when your Deception or Persuasion Test targets Willpower or Cleverness, that Defense counts as 2 lower; the chat card shows the lowered value.</p>"
     },
     "originalId": "",
     "description": "",

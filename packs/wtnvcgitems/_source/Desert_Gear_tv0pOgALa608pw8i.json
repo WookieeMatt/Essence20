@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while worn, +2 Toughness against desert heat and exposure, when the scene's region is desert or Extreme Heat. It doesn't count against attacks.</p>"
+      "notes": "<p>Automatic: while worn and the scene's terrain is set to desert (or its environment to Extreme Heat), your Toughness on the sheet shows +2 (Desert Gear). The +2 is taken back off against attacks.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: after an attack damages you, your attacks against that attacker get ↑1 until the end of your next turn, and Defeating them with one gives your team a Story Point.</p>"
+      "notes": "<p>Automatic: after an attack damages you, your attacks against that attacker get ↑1 until the end of your next turn, labelled Revengeful in the Roll Options Dialog. Defeating them with one of those attacks gives your team a Story Point.</p>"
     },
     "originalId": "",
     "description": "",

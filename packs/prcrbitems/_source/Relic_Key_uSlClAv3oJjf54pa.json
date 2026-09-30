@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: declare Edge on the Zord's next roll. Automatic: while no one is driving, the Zord counts as Smarts and Social 3 for its Defenses.</p>"
+      "notes": "<p>Use button (once per scene): the Zord's next roll opens the Roll Options Dialog with Edge already selected. Automatic: while no one is driving, the Zord counts as Smarts and Social 3 for its Defenses.</p>"
     },
     "originalId": "",
     "description": "",

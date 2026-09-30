@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Survival rolls against a targeted non-humanoid. Chat card: on a Critical Success against one, a button gives it a Snag on its next attack.</p>"
+      "notes": "<p>Automatic: Survival rolls against a targeted non-humanoid get Edge, labelled Monster Hunter in the Roll Options Dialog. Chat card: on a Critical Success against one, a button gives it a Snag on its next attack.</p>"
     },
     "originalId": "",
     "description": "",

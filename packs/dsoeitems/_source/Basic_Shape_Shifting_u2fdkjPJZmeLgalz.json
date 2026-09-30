@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a successful cast changes your shape for the scene, and while changed you get Edge on Deception and Infiltration tests to keep up the act.</p>"
+      "notes": "<p>Automatic: a successful cast changes your shape for the scene. While changed, your Deception and Infiltration Tests get Edge, labelled Basic Shape-Shifting in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

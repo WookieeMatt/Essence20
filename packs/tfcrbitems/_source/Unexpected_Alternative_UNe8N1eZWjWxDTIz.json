@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the system remembers which of your Alt Modes each enemy has seen. Converting into one they haven't seen gives you Edge on Skill Tests targeting them until the end of your next turn.</p>"
+      "notes": "<p>Automatic: the system remembers which of your Alt Modes each enemy has seen. Converting into one an enemy hasn't seen gives your Skill Tests against it Edge until the end of your next turn, labelled Unexpected Alternative in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

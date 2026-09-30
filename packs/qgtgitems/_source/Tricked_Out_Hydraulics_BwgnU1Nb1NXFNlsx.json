@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: once per combat, the first Ballistic weapon attack against the vehicle takes a Snag.</p>"
+      "notes": "<p>Automatic: once per combat, the first attack on the vehicle with a Ballistic weapon takes a Snag, shown as Tricked-Out Hydraulics next to Snag in the attacker's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

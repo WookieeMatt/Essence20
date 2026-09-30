@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: Edge on Strength Skill Tests while Morphed.</p><p>Left to the table: +1 damage on Megaform attacks your Zord is part of.</p>"
+      "notes": "<p>Active Effect: +2 to all four Defenses while Morphed. Automatic: while Morphed, Skill Tests rolled with Strength (such as Athletics, Brawn, Intimidation and Might) open the Roll Options Dialog with Edge already selected.</p><p>Left to the table: +1 damage on Megaform attacks your Zord is part of.</p>"
     },
     "originalId": "",
     "description": "",

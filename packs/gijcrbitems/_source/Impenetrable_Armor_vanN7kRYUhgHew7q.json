@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: vehicles you pilot get +2 to their Defenses, and damage aimed at you while piloting can be sent to the vehicle instead.</p>"
+      "notes": "<p>Automatic: attacks against a vehicle you're driving are checked against its Defense +2. When damage is applied to you while you pilot, the GM is offered to send it to the vehicle instead.</p>"
     },
     "originalId": "",
     "description": "",

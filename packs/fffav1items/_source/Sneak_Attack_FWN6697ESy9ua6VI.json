@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: you get the Commando's Sneak Attack against targets within 30ft, once per combat.</p>"
+      "notes": "<p>Roll Options Dialog: on attacks, a Sneak Attack switch adds bonus damage equal to a Commando's Sneak Attack at your level. It checks the target is within 30ft and that you have a use left this combat (one per combat); turn it on only when the target isn't fully aware of you.</p>"
     },
     "originalId": "",
     "description": "",

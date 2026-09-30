@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on attacks against mechanical Threats, and +1 to all your Defenses against robotic Threats.</p>"
+      "notes": "<p>Automatic: rolls against a targeted mechanical non-player creature get ↑1, listed as Bot-Hunter in your Roll Options Dialog, and attacks against you from robotic non-player creatures must beat your Defense +1 when the hit is checked.</p>"
     },
     "originalId": "",
     "description": "",

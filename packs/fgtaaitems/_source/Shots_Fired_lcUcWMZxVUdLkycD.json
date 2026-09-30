@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: after you damage a creature, you have Edge on Deception, Intimidation and Persuasion tests against it until the end of your next turn.</p>"
+      "notes": "<p>Automatic: after you deal damage to a creature, your Deception, Intimidation and Persuasion tests against it (with it targeted) get Edge until the end of your next turn, labelled Shots Fired in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

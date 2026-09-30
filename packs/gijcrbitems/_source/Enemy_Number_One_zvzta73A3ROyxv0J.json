@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: enemies within 30 ft of you have a Snag on their attacks, unless they've attacked you this turn.</p>"
+      "notes": "<p>Automatic, in combat: an enemy within 30 ft of you takes a Snag on attacks against anyone but you, unless it has already attacked you this turn. The Snag is labelled Enemy Number One in its Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

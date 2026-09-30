@@ -5,6 +5,10 @@
   "_id": "9nhSrfyDhKpr516T",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a hit gives the target the Grappled condition, and for the rest of the scene its Acrobatics, Athletics, Brawn and Finesse tests (its escape attempts) take a Snag while it stays Grappled.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

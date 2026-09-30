@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Active Effect: ↑2 on Initiative. Automatic: Snags are ignored while you have exactly 1 Health.</p><p>Left to the table: Edge on your next Skill Test after a Fumble deals you damage.</p>"
+      "notes": "<p>Active Effect: ↑2 on Initiative. Automatic: while you have exactly 1 Health, any Snag on your Skill rolls is dropped, so the Roll Options Dialog opens without Snag selected.</p><p>Left to the table: Edge on your next Skill Test after a Fumble deals you damage.</p>"
     },
     "originalId": "",
     "description": "",

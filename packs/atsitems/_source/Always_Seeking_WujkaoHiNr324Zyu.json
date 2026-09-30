@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: switch on the Discovery effect while you are working toward a discovery to get ↑1 on your Skill Tests, and switch it off afterwards.</p>"
+      "notes": "<p>Roll Options Dialog: every Skill Test shows an Always Seeking (Discovery) switch. Turn it on when you are working toward a discovery to add ↑1 to that roll.</p>"
     },
     "originalId": "",
     "description": "",

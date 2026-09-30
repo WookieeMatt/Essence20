@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: allies get Edge on attacks against a target this Zord attacked earlier in the round.</p>"
+      "notes": "<p>Automatic: allies get Edge on attacks against a target this Zord attacked earlier in the round, labelled Balance of Justice in their Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

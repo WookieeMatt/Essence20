@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Ram attacks in Alt Mode. In Bot Mode you are immune to being shoved.</p>"
+      "notes": "<p>Automatic: in Alt Mode, your Ram attacks get Edge, shown as Bullbar next to Edge in the Roll Options Dialog. In Bot Mode you can't be shoved.</p>"
     },
     "originalId": "",
     "description": "",

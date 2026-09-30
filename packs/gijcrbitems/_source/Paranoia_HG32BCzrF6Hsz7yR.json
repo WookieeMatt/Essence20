@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: every attack made against you suffers a Snag.</p>"
+      "notes": "<p>Automatic: every attack made against you takes a Snag, labelled Paranoia in the attacker's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

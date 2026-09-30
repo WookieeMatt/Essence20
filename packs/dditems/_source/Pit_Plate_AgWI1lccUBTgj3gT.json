@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while worn, +2 Toughness, ↑1 on Intimidation tests, and your unarmed hits deal Sharp damage.</p>"
+      "notes": "<p>Automatic: while worn, +2 Toughness on the sheet, ↑1 on Intimidation Tests (labelled Pit Plates in the Roll Options Dialog), and your unarmed hits deal Sharp damage.</p>"
     },
     "originalId": "",
     "description": "",

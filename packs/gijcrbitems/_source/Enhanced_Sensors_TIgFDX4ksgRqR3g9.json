@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the drone gets an Edge on Alertness. Roll Options Dialog: on other sense-based rolls, a switch for ↑1, as with Acute Senses.</p>"
+      "notes": "<p>Automatic: the drone's Alertness tests get an Edge, labelled Enhanced Sensors in its Roll Options Dialog. On its other Skill Tests, the dialog has a switch for ↑1 to tick when its enhanced sense helps with the test.</p>"
     },
     "originalId": "",
     "description": "",

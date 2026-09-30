@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Alertness tests using a Perception Specialization. Active Effect: switch on the sight effect for ↑1 on sight-based tests. Use button: roll DIF 12 Alertness to recall a visual detail.</p>"
+      "notes": "<p>Automatic: Alertness tests using a Perception Specialization open the Roll Options Dialog with Edge already selected. Active Effect (off by default): switch on the sight effect for ↑1 on sight-based tests. Use button: roll DIF 12 Alertness to recall a visual detail.</p>"
     },
     "originalId": "",
     "description": "",

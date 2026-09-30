@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you are in Cover, attacks against you take ↓3 from it instead of ↓2.</p>"
+      "notes": "<p>Automatic: while you have the Cover condition, attacks against you take ↓3 from it instead of ↓2, shown on the Cover entry in the attacker's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

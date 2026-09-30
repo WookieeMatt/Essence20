@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: pick a Skill when you gain it and get ↑1 on that Skill. Left to the table: a Specialization or abstract talent area instead of a Skill.</p>"
+      "notes": "<p>Automatic: pick a Skill when you gain it; tests with it get ↑1, already counted in the Upshift number of your Roll Options Dialog.</p><p>Left to the table: a Specialization or abstract talent area instead of a Skill.</p>"
     },
     "originalId": "",
     "description": "",

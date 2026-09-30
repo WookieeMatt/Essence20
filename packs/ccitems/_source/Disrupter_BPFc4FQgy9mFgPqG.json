@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Initiative when any enemy's Threat Level is higher than your level.</p>"
+      "notes": "<p>Automatic: in combat, when any combatant on the other side has a higher level or Threat Level than your level, your Initiative roll opens the Roll Options Dialog with Edge already selected.</p>"
     },
     "originalId": "",
     "description": "",

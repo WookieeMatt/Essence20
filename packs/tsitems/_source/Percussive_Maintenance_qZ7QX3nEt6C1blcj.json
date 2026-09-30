@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: Technology also counts as a Strength Skill for you. Automatic: after a Critical Success on a Technology roll, your next Technology roll gets an Edge.</p>"
+      "notes": "<p>Active Effect: Technology also counts as a Strength Skill for you. Automatic: after a Critical Success on a Technology roll, your next Technology roll gets Edge, already selected when its Roll Options Dialog opens.</p>"
     },
     "originalId": "",
     "description": "",

@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Automatic: in combat, your unarmed attacks get an Edge while you're wielding no weapons.</p>"
+      "status": "partial",
+      "notes": "<p>Automatic: an unarmed attack that isn't part of a weapon on your sheet opens the Roll Options Dialog with Edge selected. Attacks from the Unarmed Combat weapon don't get it yet.</p><p>Left to the table: selecting Edge yourself for unarmed attacks while you wield no weapons.</p>"
     },
     "originalId": "",
     "description": "",

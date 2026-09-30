@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: Edge on your Initiative tests.</p><p>Left to the table: skipping that Edge when you are Surprised.</p>"
+      "notes": "<p>Automatic: your Initiative rolls get Edge, already selected when the Roll Options Dialog opens.</p><p>Left to the table: turning that Edge off when you are Surprised.</p>"
     },
     "originalId": "",
     "description": "",

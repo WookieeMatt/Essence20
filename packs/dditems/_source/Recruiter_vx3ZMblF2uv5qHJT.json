@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>Automatic: Edge on Deception and Persuasion tests (it assumes you have something to barter).</p>"
+      "status": "partial",
+      "notes": "<p>Automatic: your Deception and Persuasion Tests open the Roll Options Dialog with Edge already selected.</p><p>Left to the table: switch it back to Normal when you have nothing to barter.</p>"
     },
     "originalId": "",
     "description": "",

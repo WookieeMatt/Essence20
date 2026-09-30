@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: spend a Quips &amp; Speeches point to give an ally the listed ↑ on their next roll; the bonus grows as the Perk advances.</p>"
+      "notes": "<p>Use button: spend a Quips &amp; Speeches point and pick an ally. Their next Skill Test gets ↑1 (↑2 once you've taken this Perk twice, ↑3 at three), labelled Heart of the Team in their Roll Options Dialog.</p>"
     },
     "originalId": "",
     "actionType": "free",

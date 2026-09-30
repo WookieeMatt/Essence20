@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: switch the jammer on or off. While it's on, Technology rolls within 30 ft take a Snag.</p>"
+      "notes": "<p>Use button: switches the jammer on or off. While it's on, anyone within 30 ft of it (you included) rolling Technology takes a Snag, labelled Jammer in their Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

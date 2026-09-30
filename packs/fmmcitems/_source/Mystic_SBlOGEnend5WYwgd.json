@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: your attacks ignore armor bonuses to Toughness and get ↑1 against Non-Mystical targets. A GM can mark any actor as Mystical or not.</p><p>Left to the table: leaving out attacks the stat block doesn't call Mystical.</p>"
+      "notes": "<p>Automatic: your attacks ignore armor bonuses to Toughness and get ↑1 against targets that aren't Mystical, labelled Mystic in the Roll Options Dialog. A GM can mark any actor as Mystical or not.</p><p>Left to the table: leaving out attacks the stat block doesn't call Mystical.</p>"
     },
     "originalId": "",
     "description": "",

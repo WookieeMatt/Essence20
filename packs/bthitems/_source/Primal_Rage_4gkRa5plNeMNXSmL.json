@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on unarmed attacks for you and every member of your team.</p>"
+      "notes": "<p>Automatic: unarmed attacks by you and every member of your team get ↑1, labelled Primal Rage in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: melee attacks against a target a teammate already attacked this round get ↑1 (↑2 at 18th level).</p>"
+      "notes": "<p>Automatic: melee attacks against a target a teammate already attacked this round get ↑1 (↑2 at 18th level), labelled Team Focus in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Reroll: 1s on your Social Skill Dice are rerolled.</p>"
+      "notes": "<p>Chat card: on your Social tests, a Gentle Understanding reroll button rerolls every Skill Die that came up 1. No limit on uses.</p>"
     },
     "originalId": "",
     "description": "",

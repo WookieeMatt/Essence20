@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks with the weapon it's attached to ignore concealment and the penalties for shooting through smoke or darkness.</p>"
+      "notes": "<p>Automatic: when the target has Cover, the Roll Options Dialog adds a matching ↑ labelled \"Scope: firing through smoke or darkness\" that cancels the Cover penalty; untick it when the cover is solid. Against an Invisible target, an Edge labelled Thermal Scope cancels the Invisible Snag.</p>"
     },
     "originalId": "",
     "description": "",

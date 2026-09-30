@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: area attacks against you take a Snag.</p>"
+      "notes": "<p>Automatic: attacks against you with an area (a blast, cone or radius) take a Snag, shown as Frag It next to Snag in the attacker's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: on Intimidation or Persuasion tests against a target of a different Size Class, you get ↑ equal to the size difference.</p>"
+      "notes": "<p>Automatic: on Intimidation or Persuasion tests against a target of a different Size Class, you get ↑ equal to the size difference, listed as a Bend A Knee Or Stand Tall switch under Automatic Modifiers in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

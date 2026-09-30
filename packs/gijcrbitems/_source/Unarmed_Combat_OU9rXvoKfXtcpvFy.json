@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your built-in unarmed attack rolls its Skill with the listed damage, with two alternate effects to choose from, and its traits apply (Blunt, Martial Arts, Silent).</p>"
+      "notes": "<p>Automatic: your built-in unarmed attack rolls Finesse or Might, whichever is better, for Stun 1 at Reach. Alternate effects: 1 Blunt damage at ↓1, or a Maneuver at ↓1. Its Blunt, Martial Arts and Silent traits apply.</p>"
     },
     "originalId": "",
     "description": "",

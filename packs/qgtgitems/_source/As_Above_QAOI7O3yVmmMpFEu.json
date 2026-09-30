@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on ranged attacks when your token is higher than your target.</p>"
+      "notes": "<p>Automatic: when your token's elevation is higher than your target's, your ranged attacks get Edge, shown as As Above next to Edge in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

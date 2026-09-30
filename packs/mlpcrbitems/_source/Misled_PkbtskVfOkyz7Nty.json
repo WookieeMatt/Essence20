@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you Lend Assistance and your friend still fails, their next Skill Test takes ↓1.</p>"
+      "notes": "<p>Automatic: when you Lend Assistance and your friend still fails, their next Skill Test takes ↓1, labelled Misled in their Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

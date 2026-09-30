@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: no Snag when driving Sea vehicles, plus ↑1 if you have Ranks in Driving.</p>"
+      "notes": "<p>Automatic: when you roll Driving while driving a vehicle with Aquatic Movement, there's no untrained Snag; if you have Ranks in Driving you also get ↑1, already counted in the Upshift number of your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

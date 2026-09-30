@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Unarmed Blunt alternate effect no longer takes its ↓1.</p>"
+      "notes": "<p>Automatic: attacks with the Unarmed Combat Blunt alternate effect no longer take its ↓1; the Downshift and Upshift numbers in your Roll Options Dialog already reflect it.</p>"
     },
     "originalId": "",
     "description": "",

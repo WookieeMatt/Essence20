@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect (while Morphed): Resistance to Blunt and Sharp damage and Edge on Speed tests. Automatic: +1 damage on Finesse attacks while Morphed.</p>"
+      "notes": "<p>Active Effect (while Morphed): Resistance to Blunt and Sharp damage and Edge on Speed tests. Automatic: while Morphed, your Finesse attacks deal +1 damage, shown on the attack's chat card as \"Includes +1 from Yellow Ranger Prime\".</p>"
     },
     "originalId": "",
     "description": "",

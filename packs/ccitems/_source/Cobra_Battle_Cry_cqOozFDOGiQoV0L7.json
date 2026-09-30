@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: you may roll Initiative with Deception or Intimidation instead.</p>"
+      "notes": "<p>Roll Options Dialog: your Initiative rolls show switches to roll Deception or Intimidation instead.</p>"
     },
     "originalId": "",
     "description": "",

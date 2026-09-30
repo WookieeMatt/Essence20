@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button (with a medicine kit on you): choose to heal 1 on yourself or an ally once per scene, or restore 1 Essence to an ally. Automatic: Edge on Science rolls with a Medicine Specialization.</p>"
+      "notes": "<p>Use button (with a medicine kit on you): heal 1 on yourself or an ally once per scene, or restore 1 Essence to an ally. Automatic: when you roll Science with your Medicine Specialization, the Roll Options Dialog opens with Edge already selected.</p>"
     },
     "originalId": "",
     "description": "",

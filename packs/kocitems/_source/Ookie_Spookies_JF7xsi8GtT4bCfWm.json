@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Cast: on a success you get Edge on Infiltration tests to sneak until the GM advances the scene.</p><p>Left to the table: walking through walls and floating through ceilings, and bringing up to three willing ponies along.</p>"
+      "notes": "<p>Cast: on a success, your Infiltration tests open the Roll Options Dialog with Edge selected until the GM advances the scene.</p><p>Left to the table: walking through walls and floating through ceilings, and bringing up to three willing ponies along.</p>"
     },
     "originalId": "",
     "description": "",

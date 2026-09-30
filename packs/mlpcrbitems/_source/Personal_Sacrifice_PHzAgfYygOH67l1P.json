@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: your targeted friend gets ↑1 on the risky test. Left to the table: you take the consequence of failure in their place.</p>"
+      "notes": "<p>Use button: your targeted friend gets ↑1 on their next Skill Test, labelled Personal Sacrifice in their Roll Options Dialog. Left to the table: you take the consequence of failure in their place.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: you never suffer a Snag on Infiltration tests.</p>"
+      "notes": "<p>Automatic: your Infiltration tests never take a Snag; the roll drops it even if Snag is selected in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

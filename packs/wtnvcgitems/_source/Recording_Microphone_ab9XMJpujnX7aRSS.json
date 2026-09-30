@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks use its effects below, and its traits apply. Pick the one-handed, two-handed or Electric effect when you attack.</p>"
+      "notes": "<p>Automatic: attacks roll Might. Pick a one-handed hit at Reach (1 Stun), a two-handed swing at Reach (1 Blunt plus 1 Stun) or feedback (1 Electric in a 5 ft radius) when you attack; its traits apply.</p>"
     },
     "originalId": "",
     "description": "",

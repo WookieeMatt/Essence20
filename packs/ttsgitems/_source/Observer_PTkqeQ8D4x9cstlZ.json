@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: switch your disguise on (1 Personal Power) or off. While on: ↑2 on Deception, Technology tests to find you take a Snag, and the Roll Options Dialog lets you swap a Snag for ↓2 on Social tests about other species.</p>"
+      "notes": "<p>Use button: switch your disguise on (1 Personal Power) or off. While it's on: ↑2 on your Deception tests; Technology tests that target you take a Snag, labelled Observer in the roller's Roll Options Dialog; and when one of your Social tests has a Snag, the Roll Options Dialog offers a switch to trade it for ↓2.</p>"
     },
     "originalId": "",
     "actionType": "free",

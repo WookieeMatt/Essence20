@@ -177,6 +177,7 @@
     "ActionMove": "Move",
     "ActionSearchTheArea": "Search the Area",
     "ActionSprint": "Sprint",
+    "GrappledSnag": "Grappled (not an escape attempt)",
     "Automation": "Automation",
     "AutomationStatus": "Status",
     "AutomationUnset": "Not documented",

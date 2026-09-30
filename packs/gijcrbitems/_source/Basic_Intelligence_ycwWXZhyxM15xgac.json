@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: untrained Skill Tests roll without a Snag.</p>"
+      "notes": "<p>Automatic: when you roll a Skill you are untrained in, it rolls as if you had a d2 in that Skill instead of the d20 alone; the chat card shows the d2.</p>"
     },
     "originalId": "",
     "description": "",

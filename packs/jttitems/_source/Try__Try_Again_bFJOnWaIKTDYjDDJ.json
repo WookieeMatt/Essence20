@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when you fail a Skill Test, your next test with that same Skill gets ↑1.</p>"
+      "notes": "<p>Automatic: when you fail a Skill Test, your next test with that same Skill gets ↑1, already counted in the Upshift number of its Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

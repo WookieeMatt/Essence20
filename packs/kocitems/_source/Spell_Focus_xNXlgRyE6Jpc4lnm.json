@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: pick one of your spells. You get Edge whenever you cast it.</p>"
+      "notes": "<p>Use button: pick one of your spells. Casting it gets Edge, listed as Spell Focus next to Edge in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

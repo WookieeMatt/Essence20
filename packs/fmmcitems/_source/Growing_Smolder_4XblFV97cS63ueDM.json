@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button (once per turn): banks a cumulative ↑1 (up to ↑3) and +1 damage, applied to your next attack.</p><p>Left to the table: only using it on a turn when you made no attacks.</p>"
+      "notes": "<p>Use button (once per turn): banks a cumulative ↑1 (up to ↑3) and +1 damage for your next attack. That attack's Upshift number in the Roll Options Dialog already includes it, and the chat card shows the damage as \"Includes +N from Growing Smolder\".</p><p>Left to the table: only using it on a turn when you made no attacks.</p>"
     },
     "originalId": "",
     "description": "",

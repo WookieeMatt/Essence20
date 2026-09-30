@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +1 Strength for the Zord. Automatic: its melee attacks get ↑1, and Defend costs it only a Free action.</p>"
+      "notes": "<p>Active Effect: +1 Strength for the Zord. Automatic: its melee attacks get ↑1, already counted in the upshift its Roll Options Dialog opens with, and Defend costs it only a Free action.</p>"
     },
     "originalId": "",
     "description": "",

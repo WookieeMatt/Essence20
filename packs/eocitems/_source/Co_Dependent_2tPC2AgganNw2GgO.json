@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: pick your bonded person. Automatic: ↓1 on your tests while they have a Condition and are in the scene.</p>"
+      "notes": "<p>Use button: pick your bonded person. Automatic: while they have a token in the scene and any Condition, your Skill Tests take ↓1, labelled Co-Dependent in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

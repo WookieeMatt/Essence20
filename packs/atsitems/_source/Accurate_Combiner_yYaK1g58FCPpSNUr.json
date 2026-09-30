@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when a Megaform attacks with this Zord's melee or ranged attacks (whichever the trait is set to), the Skill roll gains ↑1. Take the trait a second time to cover the other attack type.</p>"
+      "notes": "<p>Automatic: when a Megaform attacks with this Zord's melee or ranged attacks (whichever the trait is set to), the attack gets ↑1, listed as Accurate Combiner (with the Zord's name) in the Roll Options Dialog. Take the trait a second time to cover the other attack type.</p>"
     },
     "originalId": "",
     "description": "",

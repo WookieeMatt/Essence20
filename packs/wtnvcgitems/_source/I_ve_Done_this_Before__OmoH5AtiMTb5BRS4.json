@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Reroll: once per day, reroll a Skill Die that comes up 1 and gain ↑1.</p><p>Left to the table: keeping it to once per session.</p>"
+      "notes": "<p>Chat card: once per day, a reroll button on your Skill Test rerolls Skill Dice that came up 1 and adds +1 to the new total.</p><p>Left to the table: keeping it to once per session.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: no Snag when driving Land vehicles, plus ↑1 if you have Ranks in Driving.</p>"
+      "notes": "<p>Automatic: while you drive a vehicle with Ground movement, rolling Driving without ranks doesn't add the untrained Snag, and with Driving ranks you get ↑1, already added to the shift in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

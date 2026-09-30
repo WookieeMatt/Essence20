@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: you and your teammates get ↑1 on attacks with Blade Blasters and Power Weapons.</p><p>Left to the table: the team choosing just one of the two.</p>"
+      "notes": "<p>Automatic: while you or any ally in the scene has this Perk, attacks with a Blade Blaster or a Power Weapon get ↑1, listed as a Zeo Tech Augment switch under Automatic Modifiers in the Roll Options Dialog.</p><p>Left to the table: the team choosing just one of the two weapon kinds.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Technology tests can score a Critical Success on the d2, including for allies using your Trade School. Allies attacking a target of your Tech Specs also gain Edge.</p>"
+      "notes": "<p>Automatic: your Technology tests, and allies' tests using your Trade School, open the Roll Options Dialog with \"Can critically succeed on a d2\" switched on. Allies attacking a target of your Tech Specs also get Edge, shown as Technical Mastery next to Edge.</p>"
     },
     "originalId": "",
     "description": "",

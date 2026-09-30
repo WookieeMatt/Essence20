@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Cast: a Spellcasting attack against one target. On a hit, they take ↓2 on Strength and Speed tests for 3 rounds.</p>"
+      "notes": "<p>Cast: a Spellcasting attack against one target. On a hit in Combat, its Strength and Speed Skill Tests take ↓2 for 3 rounds, already counted in the Downshift number of its Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

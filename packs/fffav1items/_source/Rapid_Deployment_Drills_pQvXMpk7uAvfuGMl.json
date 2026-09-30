@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: you can roll Alertness or Infiltration for Initiative, and you can't be Surprised.</p><p>Left to the table: moving Skill ranks around as this Perk allows.</p>"
+      "notes": "<p>Roll Options Dialog: when you roll Initiative, two switches let you roll your Alertness or your Infiltration die instead.</p><p>Left to the table: not being Surprised at the start of combat, and moving Skill ranks around as this Perk allows.</p>"
     },
     "originalId": "",
     "description": "",

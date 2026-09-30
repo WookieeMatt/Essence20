@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>When added, you pick a Brawn or Survival Specialization. Automatic: Edge on Skill Tests with that Specialization.</p>"
+      "status": "partial",
+      "notes": "<p>On the sheet: pick Brawn or Survival as the Perk's Skill. Automatic: all your tests with that Skill get Edge, already selected when the Roll Options Dialog opens.</p><p>Left to the table: limiting the Edge to one Specialization of that Skill.</p>"
     },
     "originalId": "",
     "description": "",

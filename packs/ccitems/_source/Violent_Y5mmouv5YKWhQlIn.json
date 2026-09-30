@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: with a weapon whose main effect deals no damage, its damaging alternate effect loses its printed ↓1.</p>"
+      "notes": "<p>Automatic: when a weapon's main effect deals no damage, attacking with its damaging alternate effect gets ↑1 to cancel that effect's printed ↓1. It's already counted in the Roll Options Dialog's starting ↑ total, but isn't listed under its own name.</p>"
     },
     "originalId": "",
     "description": "",

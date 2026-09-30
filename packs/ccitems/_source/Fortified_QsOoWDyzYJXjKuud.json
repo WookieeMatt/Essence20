@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "manual",
-      "notes": "<p>The system applies nothing specific for this Perk. Left to the table: all of its benefits.</p>"
+      "notes": "<p>Manual: nothing is automated. Left to the table: from 20th level, while you wear your shield you keep both its passive and active Defense bonuses and can still attack; add the extra bonus yourself, for example with an Active Effect.</p>"
     },
     "originalId": "",
     "description": "",

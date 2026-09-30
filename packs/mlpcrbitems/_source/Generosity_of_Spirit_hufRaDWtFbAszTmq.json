@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: give a targeted friend ↑1 on their next Skill Test; your own next Skill Test takes ↓1, and you can't use it again until you've taken that penalty.</p>"
+      "notes": "<p>Use button: your targeted friend gets ↑1 on their next Skill Test and your own next Skill Test takes ↓1, both labelled Generosity of Spirit in the Roll Options Dialog. You can't use it again until you've taken that penalty.</p>"
     },
     "originalId": "",
     "description": "",

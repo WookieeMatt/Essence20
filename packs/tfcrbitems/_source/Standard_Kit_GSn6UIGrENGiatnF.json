@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: choose this kit's Specialization first. Roll Options Dialog: when a roll calls for that kit, the best kit you carry sets the Snag or ↓. Use it up for a short burst of Specialization (or ↑1 if already Specialized), or scrounge a refill.</p>"
+      "notes": "<p>Use button: choose this kit's Skill and Specialization first. Automatic: when a roll calls for that kit, the Roll Options Dialog says so; with it, Standard kit rolls take no Snag, Limited ones ↓1 and Restricted ones ↓3. Use button: use it up for 1 minute of that Specialization (or ↑1 if already Specialized), shown as a labelled source when you roll, or scrounge a refill.</p>"
     },
     "originalId": "",
     "description": "",

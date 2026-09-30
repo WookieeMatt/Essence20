@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: against a Common or Small target smaller than you, ↑1 and you're offered rerolls of Skill Die 1s.</p>"
+      "notes": "<p>Automatic: rolls against a targeted Common or Small creature smaller than you get ↑1, labelled Exterminator in the Roll Options Dialog, and the roll's chat card gets a Reroll button for Skill Die results of 1.</p>"
     },
     "originalId": "",
     "description": "",

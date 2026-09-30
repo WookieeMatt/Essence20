@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: nearby allies get ↑1 on Skill Tests with your Field.</p>"
+      "notes": "<p>Automatic: allies within 30 ft of you get ↑1 on any Skill Test with the Skill chosen on your Field Perk, already added to the shift in their Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: an ally adds the listed die to their next roll; the die grows as the Perk advances.</p>"
+      "notes": "<p>Use button: pick an ally. A d4 (d6 once you've taken this Perk again, d8 at the third) is added to their next roll, shown in the dice on their chat card.</p>"
     },
     "originalId": "",
     "description": "",

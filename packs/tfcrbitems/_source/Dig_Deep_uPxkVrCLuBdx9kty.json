@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: once per combat, ignore 1 Damage and take a Snag on all Skill Tests until the end of your next turn.</p><p>Left to the table: repairing 1d2 Health by giving up your whole turn.</p>"
+      "notes": "<p>Use button: once per combat. The next damage you take is reduced by 1, and your next Skill Test takes a Snag, labelled Dig Deep in its Roll Options Dialog.</p><p>Left to the table: the Snag on any further tests until the end of your next turn, and repairing 1d2 Health by giving up your whole turn.</p>"
     },
     "originalId": "",
     "description": "",

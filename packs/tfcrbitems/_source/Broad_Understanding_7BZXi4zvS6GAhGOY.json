@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: outside combat, with at least one Science Specialization, every Science test rolls as Specialized, with ↓2 when it falls outside your Specializations.</p>"
+      "notes": "<p>Automatic: outside combat, with at least one Science Specialization, every Science test opens with the Specialized switch on. Tests outside your Specializations also get a Broad Understanding ↓2 switch under Automatic Modifiers in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

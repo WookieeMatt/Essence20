@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: your Technology Tests get ↑ equal to your Sneak Attack damage.</p><p>Left to the table: it's added to every Technology Test, so take it off when you aren't disabling a machine.</p>"
+      "notes": "<p>Automatic: every Technology Test gets ↑ equal to your Sneak Attack damage. It's already counted in the ↑ total when the Roll Options Dialog opens, but isn't listed under its own name.</p><p>Left to the table: lower the ↑ in the dialog when the test isn't about disabling a machine.</p>"
     },
     "originalId": "",
     "description": "",

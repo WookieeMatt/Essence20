@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic in low or zero gravity when you are not crewing a vehicle: Edge on Athletics and Acrobatics, ↑1 on other tests in zero gravity, and +5 Evasion.</p>"
+      "notes": "<p>Automatic when the scene's environment is Low or Zero Gravity and you are not crewing a vehicle: Edge on Athletics and Acrobatics, and ↑1 on other rolls in Zero Gravity, labelled Spacewalker in the Roll Options Dialog. You also get +5 Evasion there, shown on the sheet.</p>"
     },
     "originalId": "",
     "description": "",

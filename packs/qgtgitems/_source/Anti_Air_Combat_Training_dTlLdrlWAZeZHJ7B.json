@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your attacks ignore an air vehicle's Evasive Maneuvers.</p>"
+      "notes": "<p>Automatic: when an air vehicle's pilot has Evasive Maneuvers switched on, your attacks against it still go against its Toughness instead of being moved to Evasion. The chat card shows the Defense used.</p>"
     },
     "originalId": "",
     "description": "",

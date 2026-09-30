@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a Snag on Alertness tests while you are not driving a vehicle.</p>"
+      "notes": "<p>Automatic: while you are not driving a vehicle, your Alertness tests open the Roll Options Dialog with Snag already selected.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on Smarts tests that aren't attacks while you are in combat.</p>"
+      "notes": "<p>Automatic: while a combat is running, your Smarts rolls that aren't attacks get ↑1, labelled Cobra Battle School Graduate in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

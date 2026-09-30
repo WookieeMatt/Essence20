@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: an Edge on every roll during the first round of combat.</p><p>Left to the table: attacks only get it with a shotgun or submachine gun, so set the roll back to normal for other weapons.</p>"
+      "notes": "<p>Automatic: during the first round of combat, every roll you make gets an Edge, labelled Who Dares, Wins in the Roll Options Dialog.</p><p>Left to the table: attacks only get it with a shotgun or submachine gun, so set the roll back to normal for other weapons.</p>"
     },
     "originalId": "",
     "description": "",

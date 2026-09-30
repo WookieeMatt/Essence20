@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on attacks when one of your Survival Specializations matches the scene's environment. Roll Options Dialog: a switch for scenes with no environment set.</p>"
+      "notes": "<p>Automatic: when one of your Survival Specializations matches the scene's environment, your attacks get ↑1, labelled Environmental Warrior in the Roll Options Dialog. If the scene has no environment set, the dialog shows a switch for it instead.</p>"
     },
     "originalId": "",
     "description": "",

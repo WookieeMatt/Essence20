@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: ↓1 on attacks with Prototype or Theoretical weapons.</p><p>Left to the table: the ↓1 on other rolls using Prototype or Theoretical gear.</p>"
+      "notes": "<p>Automatic: attacks with Prototype or Theoretical weapons take ↓1, already counted in the Shift Down box of the Roll Options Dialog.</p><p>Left to the table: the ↓1 on other rolls using Prototype or Theoretical gear.</p>"
     },
     "originalId": "",
     "description": "",

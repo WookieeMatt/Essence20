@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "manual",
-      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: this Perk's benefit, as described; add any upgrade it grants by hand.</p>"
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: once per turn when you hit, spend a Story Point to give that weapon one weapon upgrade's benefit for the attack (Availability no higher than the weapon's), and apply that upgrade's effect by hand.</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: whenever you take damage, your next Skill Test takes a Snag. Use button: spend one of your daily Detail Oriented uses to shake it off and ignore it for the round.</p>"
+      "notes": "<p>Automatic: whenever you take damage, your next Skill Test takes a Snag, labelled Sensitive in your Roll Options Dialog. Use button: spend one of your daily Detail Oriented uses to shake it off and ignore it for the round.</p>"
     },
     "originalId": "",
     "description": "",

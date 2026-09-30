@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: inhaled-poison attacks against the wearer take a Snag.</p>"
+      "notes": "<p>Automatic: attacks with an inhaled poison against the wearer take a Snag, labelled Air Supply in the attacker's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

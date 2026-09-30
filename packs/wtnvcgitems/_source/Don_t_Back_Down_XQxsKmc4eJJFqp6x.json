@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Reroll: once per scene, reroll any one die from a Skill Test.</p>"
+      "notes": "<p>Chat card: once per scene, a Don't Back Down reroll button on your Skill Test lets you reroll any one die of your choice.</p>"
     },
     "originalId": "",
     "description": "",

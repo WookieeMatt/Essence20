@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your attacks count as a high degree of success when they beat the target's Defense by 10 or more.</p>"
+      "notes": "<p>Automatic: your attacks count as a Critical Success (double effect) whenever they beat the target's Defense by 10 or more, shown in the result on the attack's chat card.</p>"
     },
     "originalId": "",
     "description": "",

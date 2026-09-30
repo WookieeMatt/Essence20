@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic while equipped: +2 Toughness. Silent means it adds no stealth penalty; Xenotech gives ↓1 on Athletics and Acrobatics.</p>"
+      "notes": "<p>Automatic while equipped: +2 Toughness on the sheet. Its Xenotech trait adds ↓1 to your Athletics and Acrobatics rolls, already counted in the Roll Options Dialog's Shift Down box. Silent means it adds no stealth penalty.</p>"
     },
     "originalId": "",
     "description": "",

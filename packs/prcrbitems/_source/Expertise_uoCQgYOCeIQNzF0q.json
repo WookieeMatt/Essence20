@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>When added you pick a Skill. Automatic: on that Skill you reroll 1s and ignore the first ↓1. Take it again for another Skill.</p>"
+      "notes": "<p>When added you pick a Skill. Automatic: on tests with that Skill the first ↓1 is cancelled before the Roll Options Dialog opens, and the chat card shows a reroll button for any 1s on the Skill dice. Take it again for another Skill.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on attacks you make during another creature's turn, such as a Contingency attack.</p>"
+      "notes": "<p>Automatic: your attacks made during another creature's turn in combat, such as a Contingency attack, get Edge, already selected when the Roll Options Dialog opens.</p>"
     },
     "originalId": "",
     "description": "",

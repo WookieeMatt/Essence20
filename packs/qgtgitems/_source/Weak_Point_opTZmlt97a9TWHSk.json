@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Blunt and Sharp attacks deal +1 damage, and your melee attacks count as Armor Piercing and Anti-Tank (they ignore deflective and plating armor bonuses to Toughness).</p>"
+      "notes": "<p>Automatic: your Blunt and Sharp attacks deal +1 damage, already included in the damage on the attack's chat card. Your melee attacks also count as Armor Piercing and Anti-Tank, so the target's deflective and plating armor bonuses to Toughness are ignored.</p>"
     },
     "originalId": "",
     "description": "",

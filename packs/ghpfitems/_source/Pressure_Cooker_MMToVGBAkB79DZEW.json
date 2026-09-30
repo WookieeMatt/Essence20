@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: ↑1 on Skill Tests while you are below your maximum Health. Roll Options Dialog: at 1 Health, a switch spends a Moxie Point for Edge.</p>"
+      "notes": "<p>Automatic: ↑1 on every Skill Test while you are below your maximum Health, labelled Pressure Cooker in the Roll Options Dialog. Roll Options Dialog: at 1 Health, a switch spends a Moxie Point for Edge.</p>"
     },
     "originalId": "",
     "description": "",

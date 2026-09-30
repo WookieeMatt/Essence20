@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: target a creature to make it your Primary Quarry; your rolls against it get ↑1, stacking with Mark Target. Left to the table: the hour of study, and limiting the ↑1 to tracking and finding them.</p>"
+      "notes": "<p>Use button: target a creature to make it your Primary Quarry. Your rolls against it get ↑1, labelled Primary Quarry in the Roll Options Dialog, stacking with Mark Target.</p><p>Left to the table: the hour of study, and limiting the ↑1 to tracking and finding them.</p>"
     },
     "originalId": "",
     "description": "",

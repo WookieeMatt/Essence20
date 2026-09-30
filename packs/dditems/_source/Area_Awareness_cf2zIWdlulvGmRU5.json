@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: Deception and Infiltration Tests against you take a Snag, and you get Edge on Initiative when Surprised.</p><p>Left to the table: the single action you may take in the first round while Surprised; drop the Snag if it isn't a surprise attempt.</p>"
+      "notes": "<p>Automatic: Deception and Infiltration Tests made against you take a Snag, labelled Area Awareness in the roller's Roll Options Dialog. While you're Surprised, your Initiative roll gets Edge.</p><p>Left to the table: the one action you may take in the first round while Surprised, and switching the Snag off when the test isn't a surprise attempt.</p>"
     },
     "originalId": "",
     "description": "",

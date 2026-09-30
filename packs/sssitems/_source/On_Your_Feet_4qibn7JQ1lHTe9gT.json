@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: you and your allies gain Edge on Initiative tests.</p>"
+      "notes": "<p>Automatic: while you or any ally in the scene has this Perk, Initiative tests open the Roll Options Dialog with Edge already selected.</p>"
     },
     "originalId": "",
     "description": "",

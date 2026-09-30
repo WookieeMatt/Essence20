@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: in a sea environment or aboard an aquatic vessel you ignore Rough Terrain, get Edge on non-combat tests, and attack as if Specialized.</p>"
+      "notes": "<p>Automatic: in a sea scene region or aboard a vessel with Aquatic Movement, you ignore Rough Terrain, your non-attack tests get Edge (shown as Feet Wet next to Edge in the Roll Options Dialog) and your attacks open with the Specialized switch on.</p>"
     },
     "originalId": "",
     "description": "",

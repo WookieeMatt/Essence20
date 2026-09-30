@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, with an alternate effect to choose from, and its traits apply (Blunt, Martial Arts, Silent).</p>"
+      "notes": "<p>Automatic: attacks roll Targeting for Stun 1 at 20 ft (long range 30 ft), or 1 Blunt damage at ↓1 with the alternate effect. Its Blunt, Martial Arts and Silent traits apply.</p>"
     },
     "originalId": "",
     "description": "",

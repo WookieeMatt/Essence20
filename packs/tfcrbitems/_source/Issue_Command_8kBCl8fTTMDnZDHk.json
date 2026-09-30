@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: Issue a Command from a preset or your own terms; allies who meet it get the ↑ or Defense bonus.</p>"
+      "notes": "<p>Use button: as a Move action, pick one of the book's common commands (Fire, Hold Your Fire, Hold The Line, What Is That?, It's a Trick) or your own: a Skill to boost or a Defense. Until your next turn starts, allies' matching rolls get ↑1, labelled with the command in their Roll Options Dialog, or the chosen Defense gets +1 when they are attacked.</p>"
     },
     "originalId": "",
     "actionType": "move",

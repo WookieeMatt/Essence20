@@ -99,6 +99,7 @@ import "./resource/power-spend.mjs";
 import "./resource/story-spend.mjs";
 import "./resource/temp-resources.mjs";
 import "./resource/wealth.mjs";
+import "./rules/grappled.mjs";
 import "./situational1/situational1.mjs";
 import "./situational2/common.mjs";
 import "./situational2/initiative.mjs";

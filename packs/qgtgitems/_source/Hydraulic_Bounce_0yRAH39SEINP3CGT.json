@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Edge on Driving tests in Rough Terrain.</p>"
+      "notes": "<p>Automatic: while the vehicle's token is in Rough Terrain, the driver's Driving tests get Edge, shown as Hydraulic Bounce next to Edge in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

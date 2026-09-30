@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: once per scene you're offered a reroll of Skill Die results of 1.</p>"
+      "notes": "<p>Chat card: once per scene, a Skill Test's chat card gets a Reroll button for Skill Die results of 1.</p>"
     },
     "originalId": "",
     "description": "",

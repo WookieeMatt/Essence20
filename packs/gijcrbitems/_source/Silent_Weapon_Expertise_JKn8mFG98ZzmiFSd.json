@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: you're trained in Silent weapons. Automatic: ↑1 on attacks with Silent weapons.</p>"
+      "notes": "<p>Active Effect: you're trained in Silent weapons. Automatic: attacks with Silent weapons get ↑1, already added to the shift in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

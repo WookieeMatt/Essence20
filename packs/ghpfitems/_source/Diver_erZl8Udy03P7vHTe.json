@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +10ft Aquatic Movement. Automatic: ↑1 on Alertness in underwater scenes. Use button (once per mission): adds the free Athletics (Swimming) kit and scuba gear.</p>"
+      "notes": "<p>Active Effect: +10ft Aquatic Movement. Automatic: ↑1 on Alertness in scenes set to underwater, labelled Diver in the Roll Options Dialog. Use button (once per mission): adds the free Athletics (Swimming) kit and scuba gear.</p>"
     },
     "originalId": "",
     "description": "",

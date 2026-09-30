@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Deception, Intimidation and Persuasion tests roll as specialized.</p>"
+      "notes": "<p>Automatic: your Deception, Intimidation and Persuasion tests roll as Specialized; the Specialized switch is already on in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a hit against a Surprised target also deals 1 Stun.</p>"
+      "notes": "<p>Automatic: when your attack hits a target with the Surprised condition, the target also takes 1 Stun, applied as soon as the hit is rolled.</p>"
     },
     "originalId": "",
     "description": "",

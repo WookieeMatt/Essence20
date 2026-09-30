@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: the first ↓1 on your Shoves and Trips is cancelled.</p><p>Left to the table: ignoring weather penalties to visibility.</p>"
+      "notes": "<p>Automatic: when a Shove, Trip or Maneuver has a ↓ on it, ↑1 cancels the first ↓1, labelled In the Rain in the Roll Options Dialog.</p><p>Left to the table: ignoring weather penalties to visibility.</p>"
     },
     "originalId": "",
     "description": "",

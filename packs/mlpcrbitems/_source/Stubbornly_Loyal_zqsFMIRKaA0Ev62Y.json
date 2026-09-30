@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: Deception tests against you take a Snag. Roll Options Dialog: for other tests trying to turn you against a BFF, a switch adds the Snag. Left to the table: drop the Deception Snag when the lie isn't about one of your BFFs.</p>"
+      "notes": "<p>Automatic: Deception tests targeting you take a Snag, labelled Stubbornly Loyal in the deceiver's Roll Options Dialog. Roll Options Dialog: for other tests trying to turn you against a BFF, a switch adds the Snag. Left to the table: dropping the Deception Snag when the lie isn't about one of your BFFs.</p>"
     },
     "originalId": "",
     "description": "",

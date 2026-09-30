@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: three times a day, take a free ↑1 on a Skill one of your BFFs has at d4 or higher. You also get Edge after a BFF fails, and a Friendship Point for assisting.</p>"
+      "notes": "<p>Roll Options Dialog: when one of your BFFs has the Skill you're rolling at d4 or better, an About Twenty-Percent Cooler (↑1) switch appears. Ticking it spends one of your three uses, and a Rest gives them back.</p>"
     },
     "originalId": "",
     "description": "",

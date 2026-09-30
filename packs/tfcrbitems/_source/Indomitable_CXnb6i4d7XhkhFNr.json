@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: you are immune to Frightened, and attempts to Intimidate you take a Snag.</p>"
+      "notes": "<p>Automatic: you can't be given the Frightened condition, and Intimidation tests against you take a Snag, labelled Indomitable in the roller's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

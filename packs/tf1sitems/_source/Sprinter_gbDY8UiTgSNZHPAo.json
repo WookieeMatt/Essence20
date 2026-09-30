@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: in Bot Mode, +5ft Ground Movement and ↑1 on Acrobatics and Athletics tests.</p>"
+      "notes": "<p>Automatic: in Bot Mode, your Ground Movement is +5 ft on the sheet, and Acrobatics and Athletics tests get ↑1, already counted in the Shift Up box of the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

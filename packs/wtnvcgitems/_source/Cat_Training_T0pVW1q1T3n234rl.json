@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the first ↓1 on your Speed tests is ignored.</p>"
+      "notes": "<p>Automatic: on your Speed tests (Acrobatics, Driving, Finesse, Infiltration, Initiative, Targeting), the Roll Options Dialog's Downshift box starts 1 lower, cancelling the first ↓1.</p>"
     },
     "originalId": "",
     "description": "",

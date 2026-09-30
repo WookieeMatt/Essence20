@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Roll Options Dialog: a switch for ↑1 on Skill Tests related to Cube.</p>"
+      "notes": "<p>Roll Options Dialog: every Skill Test has a switch labelled \"Related to Cube (Cube Player)\"; switch it on for ↑1 when the test involves Cube.</p>"
     },
     "originalId": "",
     "description": "",

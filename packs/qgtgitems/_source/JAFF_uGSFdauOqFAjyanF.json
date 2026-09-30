@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: once per combat, an attack on the vehicle with a Computerized weapon takes a Snag.</p>"
+      "notes": "<p>Automatic: once per combat, the first attack on the vehicle with a Computerized weapon takes a Snag, shown as JAFF next to Snag in the attacker's Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

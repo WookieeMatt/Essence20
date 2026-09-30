@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "manual",
-      "notes": "<p>The system applies nothing specific for this Perk. Left to the table: all of its benefits.</p>"
+      "notes": "<p>Manual: nothing is automated. Left to the table: treat you as Resistant to mind-affecting effects and effects that only work on living things, such as poison; let machine-affecting effects such as Electromagnetic work on you; and let Science or Technology tests restore your Health.</p>"
     },
     "originalId": "",
     "description": "",

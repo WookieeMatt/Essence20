@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and traits; a hit marks the target for the scene, giving Sharp attacks against it Edge.</p>"
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and traits. A hit marks the target for the scene, and Sharp attacks against it get Edge, labelled Demolecularized in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

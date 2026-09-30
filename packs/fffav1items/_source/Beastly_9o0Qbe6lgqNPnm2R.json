@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the Stun effect of your Unarmed attacks takes ↓1.</p>"
+      "notes": "<p>Automatic: attacks with the Unarmed Combat Stun effect take ↓1, already counted in the Downshift number of your Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: switch it on for Culture or Survival tests about places or peoples you may have met to get ↑1, then switch it off.</p>"
+      "notes": "<p>Roll Options Dialog: Culture and Survival rolls show a Life of a Thousand Roads switch. Turn it on for tests about places or peoples you may have met to add ↑1 to that roll.</p>"
     },
     "originalId": "",
     "description": "",

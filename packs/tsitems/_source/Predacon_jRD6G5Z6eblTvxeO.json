@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "full",
-      "notes": "<p>When added, you pick an Intimidation Specialization. Automatic: Edge on Skill Tests with it, and in combat a successful Intimidate leaves the target Frightened until the end of their next turn.</p>"
+      "status": "partial",
+      "notes": "<p>On the sheet: pick Intimidation as the Perk's Skill. Automatic: your Intimidation tests get Edge, already selected when the Roll Options Dialog opens, and in combat a successful Intimidation test gives each target it beat the Frightened condition.</p><p>Left to the table: limiting the Edge to one Intimidation Specialization, and removing Frightened at the end of the target's next turn.</p>"
     },
     "originalId": "",
     "description": "",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a weaponless attack on a smaller target deals +1 damage per Size Class you are larger and knocks it Prone.</p>"
+      "notes": "<p>Automatic: when an attack that uses no weapon (Unarmed or a natural attack) hits a smaller target, the damage on the chat card already includes +1 per Size Class you are larger, and the target gets the Prone condition.</p>"
     },
     "originalId": "",
     "actionType": "standardAndMove",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while a commander or Word of Unicron holder is nearby, your tests never take worse than ↓2 overall.</p>"
+      "notes": "<p>Automatic: while a friendly token on the scene is tagged commander or has Word of Unicron, your rolls never end up worse than ↓2 overall. The Roll Options Dialog adds a Fanatic ↑ to cancel anything beyond that.</p>"
     },
     "originalId": "",
     "description": "",

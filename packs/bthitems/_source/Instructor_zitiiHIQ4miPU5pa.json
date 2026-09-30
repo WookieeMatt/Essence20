@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: pick a Smarts Skill when gained and get ↑1 on it. Use button: teach that Skill to a teammate, who then rolls it without the untrained Snag.</p>"
+      "notes": "<p>Automatic: pick a Smarts Skill when gained; your rolls with it get ↑1, labelled Instructor in the Roll Options Dialog. Use button: teach that Skill to a teammate, who then rolls it without the untrained Snag.</p>"
     },
     "originalId": "",
     "description": "",

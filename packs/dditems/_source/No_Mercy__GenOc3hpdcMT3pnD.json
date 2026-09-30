@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: Edge on tests that target a Frightened, Impaired or Stunned creature. Left to the table: rerolling one die instead when you already had Edge.</p>"
+      "notes": "<p>Automatic: Edge on rolls that target a Frightened, Impaired or Stunned creature, labelled No Mercy! in the Roll Options Dialog.</p><p>Left to the table: rerolling one die instead when you already had Edge.</p>"
     },
     "originalId": "",
     "description": "",
