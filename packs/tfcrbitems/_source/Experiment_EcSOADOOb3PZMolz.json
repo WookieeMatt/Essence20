@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>On the sheet: pick your modification. Shove: ↑1 when you attack with a Grapple effect. Technology: Edge on Technology tests. Hardpoint: one extra Integrated Hardpoint. The ↑1 and Edge are already applied when the Roll Options Dialog opens.</p><p>Left to the table: the carrying capacity option, and the ↑1 on breaking free of a grapple.</p>"
+      "notes": "<p>On the sheet: pick your modification. Shove: your Shove attempts get ↑1, labelled Experiment in the Roll Options Dialog, and while you are Grappled a dialog switch gives ↑1 to breaking free (on by default for the Skills you can escape with). Technology: Edge on Technology tests, already applied when the dialog opens. Hardpoint: one extra Integrated Hardpoint.</p><p>Left to the table: the carrying capacity option.</p>"
     },
     "originalId": "",
     "description": "",

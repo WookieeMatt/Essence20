@@ -2,12 +2,30 @@ import { jest } from '@jest/globals';
 import {
   checkPredatorSneakAttackEligibility,
   checkSneakAttackEligibility,
+  debilitatedLabel,
   getPredatorSneakAttackDamage,
   getSneakAttackDamage,
   hasPredatorSneakAttack,
   isSneakAttackDamageItem,
+  markDebilitated,
   markSneakAttackUsed,
 } from './sneak-attack.mjs';
+
+describe("markDebilitated / debilitatedLabel", () => {
+  test("a bare mark stays `true` and reads as the fallback label", async () => {
+    const target = { setFlag: jest.fn() };
+    await markDebilitated(target);
+    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'debilitated', true);
+    expect(debilitatedLabel(true, 'Debilitating Strike')).toBe('Debilitating Strike');
+  });
+
+  test("a mark made with a label (Shock and Awe) carries that label to the target's dialog", async () => {
+    const target = { setFlag: jest.fn() };
+    await markDebilitated(target, 'Shock and Awe');
+    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'debilitated', 'Shock and Awe');
+    expect(debilitatedLabel('Shock and Awe', 'Debilitating Strike')).toBe('Shock and Awe');
+  });
+});
 
 const SNEAK_ATTACK_DAMAGE_ID = "Compendium.essence20.gi_joe_crb.Item.Mrmbqza0XxVpKj6U";
 const SNEAK_ATTACK_PERK_ID = "Compendium.essence20.gi_joe_crb.Item.vyOjiJFMtryduiFO";

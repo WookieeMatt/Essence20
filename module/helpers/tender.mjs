@@ -30,7 +30,7 @@ export function hasTender(actor) {
  */
 export function getEmpathyChoice(actor) {
   return actor.items?.find(
-    i => i.type == 'perk' && i.flags?.core?.sourceId == EMPATHY_MLP_ID,
+    i => i.type == 'perk' && (i.flags?.core?.sourceId ?? i._stats?.compendiumSource) == EMPATHY_MLP_ID,
   )?.system.choice ?? null;
 }
 

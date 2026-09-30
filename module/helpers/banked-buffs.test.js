@@ -2865,14 +2865,22 @@ describe("Eye for Appraisal (Decepticon Directive Raider, 1st level, p.61)", () 
   });
 
   describe("canUsePerk", () => {
-    test("always true, regardless of any pending state", () => {
+    test("true until it has been used this scene", () => {
       const actor = makeActor();
       const item = makePerkItem({ sourceId: EYE_FOR_APPRAISAL_ID, actor });
       expect(canUsePerk(item)).toBe(true);
+      actor.getFlag = jest.fn((scope, key) => (key == 'eyeForAppraisalUsedThisScene' ? { epoch: 1, window: 'scene', count: 1 } : undefined));
+      expect(canUsePerk(item)).toBe(false);
     });
   });
 
-  test("marks the currently-targeted token with a 2-use flag and notifies", async () => {
+  test("marks the currently-targeted token with a 2d2-use flag and notifies", async () => {
+    const originalRoll = global.Roll;
+    const originalSpeaker = global.ChatMessage.getSpeaker;
+    global.Roll = jest.fn(() => ({ total: 4, evaluate: async function () {
+      return this; 
+    }, toMessage: jest.fn() }));
+    global.ChatMessage.getSpeaker = jest.fn(() => ({}));
     const actor = makeActor({ id: 'raider1' });
     const targetActor = makeActor({ id: 'target1' });
     game.user.targets = makeTargetsSet(targetActor);
@@ -2881,9 +2889,12 @@ describe("Eye for Appraisal (Decepticon Directive Raider, 1st level, p.61)", () 
     await onPerkUse(item);
 
     expect(targetActor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'eyeForAppraisalMark', { attackerId: 'raider1', usesRemaining: 2 },
+      'essence20', 'eyeForAppraisalMark', { attackerId: 'raider1', usesRemaining: 4 },
     );
+    expect(global.Roll).toHaveBeenCalledWith('2d2');
     expect(global.ChatMessage.create).toHaveBeenCalled();
+    global.Roll = originalRoll;
+    global.ChatMessage.getSpeaker = originalSpeaker;
   });
 
   test("warns and sets no flag when nothing is targeted", async () => {
@@ -4638,7 +4649,7 @@ describe("Toxic Terror (Finster's Monster-Matic Cookbook, Path of Venom, 13th le
   const TOXIC_TERROR_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.kh7Wk5zalucm9I7p";
 
   function makeVenomActor({ power = 1, active = false } = {}) {
-    const flagStore = { toxicTerrorActive: active };
+    const flagStore = { toxicTerrorActive: active ? { epoch: 1, window: 'scene', count: 1 } : false };
     return {
       ...makeActor(),
       system: { powers: { personal: { value: power } } },
@@ -4682,7 +4693,7 @@ describe("Toxic Terror (Finster's Monster-Matic Cookbook, Path of Venom, 13th le
     await onPerkUse(item);
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 0 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'toxicTerrorActive', true);
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'toxicTerrorActive', { epoch: 1, window: 'scene', count: 1 });
   });
 
   test("deactivates for free", async () => {
@@ -10615,7 +10626,8 @@ describe("Concentrate Fire (GI Joe CRB, Vanguard base, 15th level, p.109)", () =
 
     await onPerkUse(item);
 
-    expect(targetActor.setFlag).toHaveBeenCalledWith('essence20', 'concentrateFireTargetMark', true);
+    expect(targetActor.setFlag).toHaveBeenCalledWith('essence20', 'concentrateFireTargetMark',
+      expect.objectContaining({ epoch: 1, window: 'encounter', count: 1 }));
     expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', {
       action: 'spendStoryPoints', amount: 1, actorName: 'Roadblock',
     });
@@ -11941,7 +11953,7 @@ describe("Dig Deep (Welcome to Night Vale: Citizens' Guide, General Perk, p.47)"
 
   test("canUsePerk is false once already used this scene", () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepUsedThisEncounter' ? { epoch: 1, window: 'scene', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: DIG_DEEP_ID, actor });
     expect(canUsePerk(item)).toBe(false);
   });
@@ -11956,14 +11968,14 @@ describe("Dig Deep (Welcome to Night Vale: Citizens' Guide, General Perk, p.47)"
       'essence20', 'pendingDigDeep', expect.objectContaining({ amount: 1 }),
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'pendingDigDeepSnag', expect.objectContaining({ snag: true }),
+      'essence20', 'riderMarks', [expect.objectContaining({ kind: 'fix3DigDeep' })],
     );
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'digDeepUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'digDeepUsedThisEncounter', { epoch: 1, window: 'scene', count: 1 });
   });
 
   test("does nothing once already used this scene", async () => {
     const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
+    actor.getFlag = jest.fn((scope, key) => (key == 'digDeepUsedThisEncounter' ? { epoch: 1, window: 'scene', count: 1 } : undefined));
     const item = makePerkItem({ sourceId: DIG_DEEP_ID, actor });
 
     await onPerkUse(item);
@@ -11991,7 +12003,7 @@ describe("Dig Deep (Transformers CRB, General Perk, p.108)", () => {
       'essence20', 'pendingDigDeep', expect.objectContaining({ amount: 1 }),
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'pendingDigDeepSnag', expect.objectContaining({ snag: true }),
+      'essence20', 'riderMarks', [expect.objectContaining({ kind: 'fix3DigDeep' })],
     );
   });
 });
@@ -12015,7 +12027,7 @@ describe("Dig Deep (GI Joe CRB, General Perk, p.130)", () => {
       'essence20', 'pendingDigDeep', expect.objectContaining({ amount: 1 }),
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'pendingDigDeepSnag', expect.objectContaining({ snag: true }),
+      'essence20', 'riderMarks', [expect.objectContaining({ kind: 'fix3DigDeep' })],
     );
   });
 });
@@ -12039,7 +12051,7 @@ describe("Dig Deep (MLP CRB, General Perk, p.123)", () => {
       'essence20', 'pendingDigDeep', expect.objectContaining({ amount: 1 }),
     );
     expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', 'pendingDigDeepSnag', expect.objectContaining({ snag: true }),
+      'essence20', 'riderMarks', [expect.objectContaining({ kind: 'fix3DigDeep' })],
     );
   });
 });

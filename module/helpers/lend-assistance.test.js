@@ -3,7 +3,7 @@ import {
   activateLendAssistance, canAssistWithSkill, getAssistEdge, getAssistShiftUp, LEND_ASSISTANCE_EDGE_FLAG,
   LEND_ASSISTANCE_RANGE_FEET, LEND_ASSISTANCE_SHIFT_FLAG, lendAssistanceSkill, pickArmchairGeneralWeapon,
 } from './lend-assistance.mjs';
-import { findExtUse } from './extensions.mjs';
+import { extCostRules, findExtUse } from './extensions.mjs';
 
 /**
  * An actor with a token on the canvas, since both the ally scan and the range check measure from
@@ -397,25 +397,32 @@ describe('canAssistWithSkill', () => {
     expect(canAssistWithSkill(actor, ally, 'might')).toBe(false);
   });
 
-  test("Technological Assistance lifts the rank gate on Driving/Targeting/Technology for the assister who holds it, only", () => {
+  test("Technological Assistance does NOT lift the rank gate - it only makes the assist a Free action", () => {
     const TECHNOLOGICAL_ASSISTANCE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7b01zSdekhUugIod";
     const { actor } = withItems(makeActor({ shift: 'd20' }), perk(TECHNOLOGICAL_ASSISTANCE_ID)); // untrained in everything
     const { actor: ally } = makeActor({ id: 'al', shift: 'd4' });
-    // Give the ally a real outranking rank in each of the 3 skills (an untrained-vs-untrained tie
-    // would already pass the ordinary rank gate and not actually exercise the bypass).
     ally.system.skills.targeting = { shift: 'd6', isSpecialized: false };
     ally.system.skills.driving = { shift: 'd6', isSpecialized: false };
     ally.system.skills.technology = { shift: 'd6', isSpecialized: false };
 
-    expect(canAssistWithSkill(actor, ally, 'targeting')).toBe(true);
-    expect(canAssistWithSkill(actor, ally, 'driving')).toBe(true);
-    expect(canAssistWithSkill(actor, ally, 'technology')).toBe(true);
-    // The rank gate still applies on any other skill - the bypass is Driving/Targeting/Technology only.
-    expect(canAssistWithSkill(actor, ally, 'might')).toBe(false);
+    expect(canAssistWithSkill(actor, ally, 'targeting')).toBe(false);
+    expect(canAssistWithSkill(actor, ally, 'driving')).toBe(false);
+    expect(canAssistWithSkill(actor, ally, 'technology')).toBe(false);
+  });
 
-    // Without the Perk, the ordinary rank gate applies even on those 3 skills.
+  test("Technological Assistance registers an asked Free-action discount on Lend Assistance, for its holder only", () => {
+    const TECHNOLOGICAL_ASSISTANCE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7b01zSdekhUugIod";
+    const rule = extCostRules().find(r => r.id == 'technologicalAssistance');
+    const { actor } = withItems(makeActor({ shift: 'd20' }), perk(TECHNOLOGICAL_ASSISTANCE_ID));
     const { actor: noPerk } = makeActor({ shift: 'd20' });
-    expect(canAssistWithSkill(noPerk, ally, 'targeting')).toBe(false);
+
+    expect(rule).toBeDefined();
+    expect(rule.has(actor)).toBe(true);
+    expect(rule.has(noPerk)).toBe(false);
+    expect(rule.matches({ key: 'lendAssistance' })).toBe(true);
+    expect(rule.matches({ key: 'hide' })).toBe(false);
+    expect(rule.to('standard')).toBe('free');
+    expect(rule.ask).toBe('E20.ActionPerkAskTechnologicalAssistance');
   });
 
   test("Ship's Crew lifts the rank gate only while aboard a vehicle", () => {

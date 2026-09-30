@@ -34,6 +34,11 @@ describe("getEmpathyChoice", () => {
     expect(getEmpathyChoice(makeActor({ empathyChoice: 'science' }))).toBe('science');
   });
 
+  test("matches an Empathy Perk that only carries _stats.compendiumSource (v14)", () => {
+    const actor = { items: [{ type: 'perk', _stats: { compendiumSource: EMPATHY_MLP_ID }, system: { choice: 'insight' } }] };
+    expect(getEmpathyChoice(actor)).toBe('insight');
+  });
+
   test("returns null without an Empathy choice", () => {
     expect(getEmpathyChoice(makeActor({ empathyChoice: null }))).toBeNull();
   });

@@ -145,7 +145,12 @@ export function mlp1RollSources(actor, target, { item, rolledSkill } = {}) {
   // Basic Shape-Shifting (DSoE p.22): "You gain Edge on Deception and Infiltration Skill Tests to maintain
   // your deception".
   if (shape?.spell && ['deception', 'infiltration'].includes(rolledSkill)) {
-    sources.push({ id: 'basicShapeShifting', label: nameOf(actor, MLP1.basicShapeShifting, 'Basic Shape-Shifting'), edge: true });
+    // shape.spell holds which spell set the shape (true on shapes saved before Ponymorph was told apart).
+    const ponymorph = shape.spell == MLP1.ponymorph;
+    sources.push({
+      id: 'basicShapeShifting', edge: true,
+      label: ponymorph ? nameOf(actor, MLP1.ponymorph, 'Ponymorph') : nameOf(actor, MLP1.basicShapeShifting, 'Basic Shape-Shifting'),
+    });
   }
 
   if (shape?.faceSkill && shape.faceSkill == rolledSkill) {
@@ -413,7 +418,7 @@ export async function mlp1PostRoll(actor, results, checkContext) {
 
   // Basic Shape-Shifting / Ponymorph: the caster changes shape.
   if ((source == MLP1.basicShapeShifting || source == MLP1.ponymorph) && succeeded) {
-    await setShape(actor, { ...(shapeOf(actor) ?? {}), spell: true });
+    await setShape(actor, { ...(shapeOf(actor) ?? {}), spell: source });
   }
 
   // Brilliant Sight (KoC p.42): "The target of this spell can see perfectly well in darkness, even

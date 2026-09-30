@@ -85,8 +85,17 @@ const OBSCURING_MATRIX_ADVANCED_ID = "Compendium.essence20.enigma_of_combination
 // item.update() (the Weapon Conversion/grant idiom) since the actor may add Unarmed Combat to
 // their sheet AFTER taking either the Perk or the Hang-Up - a live check catches that
 // automatically, a one-time mutation at grant time would not.
-const UNARMED_COMBAT_ALTERNATE_EFFECT_1_ID = `${GI_JOE_CRB}gA0rOFD3lmwzkZq4`;
-const UNARMED_COMBAT_EFFECT_ID = `${GI_JOE_CRB}eDjovjfygGq8dlQy`;
+// GI Joe CRB and TF CRB ship both effects under the same ids in two packs, so both printings are
+// listed. This is the ONLY place Beastly's waiver is applied - dice.mjs used to add a second
+// cancelling ↑1 on top, which netted the GI Joe copy ↑1 instead of 0.
+const UNARMED_COMBAT_ALTERNATE_EFFECT_1_IDS = [
+  `${GI_JOE_CRB}gA0rOFD3lmwzkZq4`,
+  "Compendium.essence20.tf_crb.Item.gA0rOFD3lmwzkZq4",
+];
+const UNARMED_COMBAT_EFFECT_IDS = [
+  `${GI_JOE_CRB}eDjovjfygGq8dlQy`,
+  "Compendium.essence20.tf_crb.Item.eDjovjfygGq8dlQy",
+];
 const BEASTLY_PERK_ID = "Compendium.essence20.ferocious_fighters.Item.3Y0ETFpJUwdUqgUQ";
 const BEASTLY_HANG_UP_ID = "Compendium.essence20.ferocious_fighters.Item.9o0Qbe6lgqNPnm2R";
 
@@ -1076,9 +1085,9 @@ export class Essence20Item extends Item {
       // Beastly / its own Hang-Up - see BEASTLY_PERK_ID's own comment above.
       const itemSourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
       let itemShiftDown = this.system.shiftDown;
-      if (itemSourceId == UNARMED_COMBAT_ALTERNATE_EFFECT_1_ID && actorHasPerk(roller, BEASTLY_PERK_ID)) {
+      if (UNARMED_COMBAT_ALTERNATE_EFFECT_1_IDS.includes(itemSourceId) && actorHasPerk(roller, BEASTLY_PERK_ID)) {
         itemShiftDown = 0;
-      } else if (itemSourceId == UNARMED_COMBAT_EFFECT_ID && actorHasPerk(roller, BEASTLY_HANG_UP_ID)) {
+      } else if (UNARMED_COMBAT_EFFECT_IDS.includes(itemSourceId) && actorHasPerk(roller, BEASTLY_HANG_UP_ID)) {
         itemShiftDown = this.system.shiftDown + 1;
       } else if (
         this.system.damageType == 'maneuver' && this.system.classification.style == 'melee'

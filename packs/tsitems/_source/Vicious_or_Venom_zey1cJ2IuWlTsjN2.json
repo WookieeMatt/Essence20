@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Active Effect: +1 Toughness. On the sheet: pick Acidic Saliva, Razor-Sharp or Venomous. Automatic: attacks made with an attack effect that isn't part of a weapon item deal +1 damage, listed on the attack's chat card.</p><p>Left to the table: adding the +1 to your Natural Weapon attacks.</p>"
+      "notes": "<p>Active Effect: +1 Toughness. On the sheet: pick Acidic Saliva, Razor-Sharp or Venomous. Automatic: once picked, attacks with a Natural Weapon item (or an attack not tied to any weapon) deal +1 damage, listed on the attack's chat card.</p><p>Left to the table: the extra 1 uses the attack's own damage type, so treat it as Acid, Sharp or Poison yourself when that matters.</p>"
     },
     "originalId": "",
     "description": "",

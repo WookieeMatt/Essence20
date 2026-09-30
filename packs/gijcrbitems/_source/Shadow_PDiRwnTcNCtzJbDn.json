@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button: switches Infiltrating on or off. While it's on, any roll that targets you takes ↓2, labelled Shadow in the roller's Roll Options Dialog. The Speed increases come with the Focus as you level.</p><p>Left to the table: unticking it for rolls that aren't trying to detect you.</p>"
+      "status": "full",
+      "notes": "<p>Use button: switches Infiltrating on or off. While it's on, anyone targeting you gets a Shadow switch in their Roll Options Dialog that gives their roll ↓2. It starts ticked for Alertness tests and unticked for everything else; tick it for any other roll trying to detect you. The Speed increases come with the Focus as you level.</p>"
     },
     "originalId": "",
     "description": "",

@@ -44,6 +44,15 @@ describe("getToggleableSkillEffects", () => {
     expect(result.map(r => r.id)).toEqual(["o1"]);
   });
 
+  test("leaves out Ceremonial's Persuasion effect, whose Use button already gives the ↑1", () => {
+    const CEREMONIAL_ID = "Compendium.essence20.cobra_codex.Item.vf9rJxOwuxDzrPKp";
+    const changes = [{ key: "system.skills.persuasion.shiftUp", mode: 2, value: "1" }];
+    const upgrade = { ...makeEffect({ id: "c1", name: "Persuasion Upshift", disabled: true, changes }),
+      parent: { documentName: 'Item', _stats: { compendiumSource: CEREMONIAL_ID } } };
+
+    expect(getToggleableSkillEffects(makeActor([upgrade]), "persuasion")).toEqual([]);
+  });
+
   test("excludes an effect that isn't disabled", () => {
     const effect = makeEffect({
       id: "eff1",

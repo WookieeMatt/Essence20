@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button, once per encounter: the next damage applied to you is reduced by 1, and your next roll takes a Snag, labelled Dig Deep in the Roll Options Dialog.</p><p>Left to the table: healing 1d2 by giving up your whole turn.</p>"
+      "notes": "<p>Use button, once per scene: the next damage applied to you is reduced by 1, and your Skill Tests take a Snag until the end of your next turn, labelled Dig Deep in the Roll Options Dialog. Out of combat the Snag goes on your next Skill Test only.</p><p>Left to the table: healing 1d2 by giving up your whole turn.</p>"
     },
     "originalId": "",
     "description": "",

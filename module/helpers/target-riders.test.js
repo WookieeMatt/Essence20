@@ -281,6 +281,16 @@ describe("after the roll", () => {
     expect(ablativeLossOf(ablative)).toBe(1);
   });
 
+  test("Headache offers its own Psychic damage button instead of adding to the punch", async () => {
+    const attacker = makeActor([perk(RIDER.headache)], { system: { essences: { strength: { max: 4, value: 2 } } } });
+    const target = makeActor([], { uuid: 'Actor.t' });
+    fromUuid.mockImplementation(async uuid => (uuid == 'Actor.t' ? target : uuid == 'Item.fx' ? { type: 'weaponEffect' } : null));
+    const results = [{ targetUuid: 'Actor.t', success: true, damageValue: 2, damageType: 'blunt', multiplier: 1, criticalOptions: [] }];
+    await applyRollRiders(attacker, results, { entries: [{}], riderContext: { itemUuid: 'Item.fx', consumes: [], isUnarmed: true } });
+    expect(results[0].damageValue).toBe(2);
+    expect(results[0].riderOptions).toEqual([expect.objectContaining({ key: 'headache', damageValue: 2, damageType: 'psychic' })]);
+  });
+
   test("the rider context reads the dataset", () => {
     const context = buildRiderContext(makeActor(), null, { riderSpec: '{"kind":"save"}', skill: 'brawn' }, { applyDisarmingShot: true });
     expect(context.spec).toEqual({ kind: 'save' });

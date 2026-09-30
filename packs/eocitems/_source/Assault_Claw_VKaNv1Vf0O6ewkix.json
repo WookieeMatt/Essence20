@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the main attack rolls Might for 1 Sharp damage. Hitting with the Grapple alternate effect gives the target the Grappled condition. For the rest of the scene, while it stays Grappled, its Acrobatics, Athletics, Brawn and Finesse tests (the Skills it can escape with) take a Snag, labelled Assault Claw in its Roll Options Dialog.</p>"
+      "notes": "<p>Automatic: the main attack rolls Might for 1 Sharp damage. Hitting with the Grapple alternate effect gives the target the Grappled condition. For the rest of the scene, while it stays Grappled, every roll it makes, escape attempts included, opens with the \"Grappled by an Assault Claw: Snag\" switch already on in its Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

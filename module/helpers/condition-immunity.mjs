@@ -171,6 +171,14 @@ const CONDITION_IMMUNITY_PERKS = [
     `${WTNV_CITIZENS_GUIDE}LXK3ATRjFLfPg4mb`,
   ].map(id => ({ id, conditions: ['surprised'] })),
   {
+    // Rapid Deployment Drills (Ferocious Fighters, Force Recon Focus, 3rd level, p.47): "you
+    // cannot be surprised at the start of combat." Surprise only ever lands at the start of
+    // combat, so a plain always-on immunity is the whole clause. (Its Initiative swap is
+    // dice.mjs's own RAPID_DEPLOYMENT_DRILLS_ID pair of Roll Options Dialog switches.)
+    id: "Compendium.essence20.ferocious_fighters.Item.pQvXMpk7uAvfuGMl",
+    conditions: ['surprised'],
+  },
+  {
     // True Self (MLP CRB, Spirit of Honesty, 17th level, p.79): "you become immune to effects
     // that try to affect your behavior, like the Mind Blast spell." Not a status-clearing effect
     // (this entry was previously miscategorized against a "clear every active status" gap that

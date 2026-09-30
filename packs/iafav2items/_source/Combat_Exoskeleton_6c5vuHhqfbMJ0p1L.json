@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: while this upgrade sits on your sheet on its own (not attached to a piece of armor), your Brawn tests and melee attacks get ↑1, already added to the shift in the Roll Options Dialog.</p>"
+      "notes": "<p>Automatic: while this upgrade is on your sheet on its own, or attached to the armor you have equipped, your Brawn tests and melee attacks get ↑1, already added to the shift in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

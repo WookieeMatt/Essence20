@@ -154,10 +154,24 @@ export async function markSneakAttackUsed(actor) {
  * Snag on their first Skill Test or attack on their next turn." Called from
  * dice.mjs#_rollSkillHelper once a Sneak-Attack-boosted hit actually lands; consumed (checked and
  * cleared) from dice.mjs#_getAutomaticCombatModifiers the next time that target rolls anything.
+ * Other Perks that give the same next-roll Snag (Shock and Awe, Watchful Eyes) pass their own name
+ * as `label`, which is stored as the flag's value so the target's Roll Options Dialog can name the
+ * right source (see debilitatedLabel below); with no label the flag stays a bare `true`.
  * @param {Actor} target
+ * @param {String} [label]
  */
-export async function markDebilitated(target) {
-  await target.setFlag('essence20', 'debilitated', true);
+export async function markDebilitated(target, label = null) {
+  await target.setFlag('essence20', 'debilitated', label || true);
+}
+
+/**
+ * The label a 'debilitated' flag asks for, or the given fallback when it's a bare `true`.
+ * @param {*} flag       The flag's value.
+ * @param {String} fallback
+ * @returns {String}
+ */
+export function debilitatedLabel(flag, fallback) {
+  return typeof flag == 'string' && flag ? flag : fallback;
 }
 
 /**

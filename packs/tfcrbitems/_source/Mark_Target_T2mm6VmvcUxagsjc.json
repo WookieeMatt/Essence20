@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button: marks the creature you have targeted. Your rolls with that creature targeted get ↑1, labelled Mark Target in the Roll Options Dialog.</p><p>Left to the table: ending the mark when the scene ends (it lasts until you mark someone else).</p>"
+      "status": "full",
+      "notes": "<p>Use button: marks the creature you have targeted. Until the GM starts a new scene, your rolls with that creature targeted get ↑1, labelled Mark Target in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

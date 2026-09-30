@@ -1803,6 +1803,9 @@ E20.rerollConditions = {
   // .isConsumableOrWreckerRangedAttack, dice.mjs), the same "computed there, read here" shape as
   // isPowerWeaponAttack/isUnarmedAttack above.
   consumableOrWreckerRangedAttack: "E20.RerollConditionConsumableOrWreckerRangedAttack",
+  // Decepticon Directive "Metallikato" (General Perk, p.66): "When in Bot Mode ... melee attacks you
+  // make in the same turn." A melee attack (rollContext.isMeleeAttack) while not Transformed.
+  botModeMelee: "E20.RerollConditionBotModeMelee",
 };
 preLocalize("rerollConditions");
 

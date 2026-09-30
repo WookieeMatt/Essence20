@@ -1087,9 +1087,10 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
       }
 
       // Headache (WTNV Citizen's Guide, p.47): "you may deal additional Psychic damage equal to your
-      // current Essence damage with your unarmed melee attacks."
+      // current Essence damage with your unarmed melee attacks." Its own Psychic damage (not the
+      // punch's type), so a separate apply button like Acid Sacs' - "may" leaves it to the player.
       if (headache) {
-        damageBonusNote(result, headache, nameOf(actor, RIDER.headache, 'Headache'));
+        addRiderOption(result, { key: 'headache', label: nameOf(actor, RIDER.headache, 'Headache'), damageValue: headache, damageType: 'psychic' });
       }
 
       // Shaped Charges (GI Joe CRB, Artillery, 7th level, p.81): "your explosives deal double damage

@@ -1,5 +1,6 @@
 import { E20 } from "./config.mjs";
-import { bankPendingBonus, findHangUp } from "./perks.mjs";
+import { findHangUp } from "./perks.mjs";
+import { epochFor, isActiveForWindow } from "./scene-clock.mjs";
 
 /**
  * Angry Influence (Cobra Codex, p.26) Hang-Up: "When you use your Angry Influence Perk, you
@@ -8,7 +9,14 @@ import { bankPendingBonus, findHangUp } from "./perks.mjs";
  * comment in dice.mjs for why the GM's own choice is offered to the player as a picker instead.
  * "Invested at least 1 Skill Point" is approximated as the skill's own shift not being the
  * untrained default (d20) - the closest stat this system tracks for "have I put a point here."
+ *
+ * "For the rest of the scene": the chosen skill is stored as a scene-clock window record (see
+ * helpers/scene-clock.mjs#isActiveForWindow), read back as a Roll Options Dialog source by
+ * helpers/extensions/fix3-gij/gij-fixes.mjs, and it expires on its own when the GM starts a new
+ * scene. (It used to be a one-shot pending bonus that the very next roll of that skill cleared.)
  */
+
+export const ANGRY_SNAG_FLAG = 'angryHangUpSnag';
 
 const SMARTS_SOCIAL_SKILLS = Object.keys(E20.skillToEssence)
   .filter(skill => ['smarts', 'social'].includes(E20.skillToEssence[skill]));
@@ -67,5 +75,18 @@ export async function applyAngryHangUp(actor, hangUpId) {
     return;
   }
 
-  await bankPendingBonus(actor, 'pendingAngrySnag', { skill });
+  await actor.setFlag('essence20', ANGRY_SNAG_FLAG, { epoch: epochFor('scene'), window: 'scene', count: 1, skill });
+}
+
+/**
+ * The skill the actor's Angry Hang-Up Snag sits on for the rest of this scene, or null.
+ * @param {Actor} actor
+ * @returns {String|null}
+ */
+export function angrySnagSkill(actor) {
+  if (!isActiveForWindow(actor, ANGRY_SNAG_FLAG, 'scene')) {
+    return null;
+  }
+
+  return actor.getFlag('essence20', ANGRY_SNAG_FLAG)?.skill ?? null;
 }

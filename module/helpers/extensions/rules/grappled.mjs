@@ -1,13 +1,15 @@
-import { registerRollSources } from "../../extensions.mjs";
+import { registerApplyDialog, registerDialogToggles } from "../../extensions.mjs";
+import { getSceneEpoch } from "../../scene-clock.mjs";
 
 /**
  * The Grappled condition's own penalty. Every core rulebook gives a Grappled target a Snag on all
  * Skill Tests except its attempts to escape (GI JOE CRB, Power Rangers CRB, Transformers CRB, My Little
- * Pony CRB, Night Vale Host Guide: "Suffers a Snag on all other Skill Tests"). The books differ only in
- * which Skills can escape, so that list follows the world's game line, then the character's Role.
- * An escape attempt is a non-attack test with one of those Skills.
+ * Pony CRB, Night Vale Host Guide: "Suffers a Snag on all other Skill Tests"). Only the player knows
+ * whether a roll is an escape attempt, so it's a Roll Options Dialog switch that starts on and is turned
+ * off for one.
  */
 
+// Which Skills can escape differs by book - used by Perks that help an escape attempt (Experiment).
 const ACROBATICS_LINE = ['acrobatics', 'athletics', 'brawn', 'finesse'];
 const MIGHT_LINE = ['athletics', 'might', 'finesse'];
 
@@ -34,23 +36,47 @@ function gameLineOf(actor) {
   return setting || items.find(item => item.type == 'role')?.system?.version || '';
 }
 
-/** The Skills this actor can escape a grapple with. */
+/** The Skills this actor can escape a grapple with: the world's game line, then the character's Role. */
 export function grappleEscapeSkills(actor) {
   return GRAPPLE_ESCAPE_SKILLS[gameLineOf(actor)] ?? ANY_ESCAPE_SKILL;
 }
 
-export function grappledSources(actor, target, { rolledSkill, isAttack } = {}) {
-  const none = { sources: [], consumes: [] };
-  if (!rolledSkill || !actor?.statuses?.has?.('grappled')) {
-    return none;
+const T = key => globalThis.game?.i18n?.localize?.(key) ?? key;
+const isGrappled = actor => !!actor?.statuses?.has?.('grappled');
+
+export function grappledToggles(actor, { rolledSkill } = {}) {
+  if (!rolledSkill || !isGrappled(actor)) {
+    return [];
   }
 
-  if (!isAttack && grappleEscapeSkills(actor).includes(rolledSkill)) {
-    return none;
-  }
-
-  const label = globalThis.game?.i18n?.localize?.('E20.GrappledSnag') ?? 'Grappled';
-  return { sources: [{ id: 'grappled', label, snag: true }], consumes: [] };
+  const label = T(clawGrappled(actor) ? 'E20.GrappledClawSnagToggle' : 'E20.GrappledSnagToggle');
+  return [{ name: 'grappledSnag', type: 'checkbox', label, value: true }];
 }
 
-registerRollSources(grappledSources);
+// Assault Claw (Enigma of Combination p.49): "Targets Grappled by this weapon suffer Snag to escape" -
+// so its grapple is a Snag on every roll, escape attempts included; the switch says so. The Claw's
+// Grapple hit marks the target for the scene (extensions/data22/weapons.mjs).
+export function clawGrappled(actor) {
+  const mark = actor?.flags?.essence20?.d22AssaultClawGrapple;
+  let epoch = null;
+  try {
+    epoch = getSceneEpoch();
+  } catch {
+    epoch = null;
+  }
+
+  return !!mark && mark.scene == epoch;
+}
+
+export function grappledApplyDialog(actor, options) {
+  if (options.ext?.grappledSnag) {
+    if (options.edge) {
+      options.edge = false;
+    } else {
+      options.snag = true;
+    }
+  }
+}
+
+registerDialogToggles(grappledToggles);
+registerApplyDialog(grappledApplyDialog);

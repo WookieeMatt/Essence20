@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: when you roll Intimidation with a creature targeted, a success gives it the Frightened condition.</p><p>Left to the table: removing Frightened after 1 turn.</p>"
+      "notes": "<p>Automatic: when you roll Intimidation with a creature targeted, a success gives it the Frightened condition. In combat it lasts 1 round and the combat tracker removes it.</p><p>Left to the table: removing Frightened out of combat.</p>"
     },
     "originalId": "",
     "actionType": "standard",

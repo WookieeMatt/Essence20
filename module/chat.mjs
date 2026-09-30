@@ -82,7 +82,7 @@ const INVINCIBILITY_THROUGH_INVISIBILITY_ENCOUNTER_FLAG = 'invincibilityThroughI
 // {skill, essence, snag, isPowerWeaponAttack, rollFailed, canCritD2} stashed on the message by
 // dice.mjs#rollSkill/combat.mjs#buildCheckChatData - see
 // helpers/reroll.mjs#canMeetRerollScope/canMeetRerollCondition's own doc comments.
-function getRerollContext(message) {
+export function getRerollContext(message) {
   return {
     skill: message.flags?.essence20?.skill,
     essence: message.flags?.essence20?.essence,
@@ -91,10 +91,54 @@ function getRerollContext(message) {
     rollFailed: message.flags?.essence20?.rollFailed,
     canCritD2: message.flags?.essence20?.canCritD2,
     vsPrimaryQuarry: message.flags?.essence20?.vsPrimaryQuarry,
+    isMeleeAttack: message.flags?.essence20?.isMeleeAttack,
+    // Focused Strike, Homing Shots and Exterminator's conditions - stamped by dice.mjs's rollContext,
+    // but never passed on here, so those rerolls could never be offered.
+    isUnarmedAttack: message.flags?.essence20?.isUnarmedAttack,
+    isConsumableOrWreckerRangedAttack: message.flags?.essence20?.isConsumableOrWreckerRangedAttack,
+    smallerTarget: message.flags?.essence20?.smallerTarget,
+    // Clip Check's - read from the roll itself, like isCrit/isFumble everywhere else in this file.
+    isFumble: _isCritIsFumble(message.rolls?.[0]?.dice ?? [], message.flags?.essence20?.canCritD2)[1],
     // Destiny's own belowSmallestSkillDie condition - the base d20 term's own already-rolled
     // total (not read from flags, since it's the roll itself, not a computed context field).
     d20Result: message.rolls?.[0]?.dice?.find(die => die.faces == 20)?.total,
   };
+}
+
+const MATCH_VALUES = { ones: [1], onesAndTwos: [1, 2] };
+
+/**
+ * Whether a roll has a Skill Die (any non-d20 die) showing a face the reroll mode matches. Modes
+ * without a face rule ('all', 'single') always match.
+ * @param {Roll} roll
+ * @param {String} mode   E20.rerollModes key.
+ * @returns {Boolean}
+ */
+export function hasMatchingSkillDie(roll, mode) {
+  const values = MATCH_VALUES[mode];
+  if (!values) {
+    return true;
+  }
+
+  return (roll?.dice ?? []).some(die => die.faces != 20
+    && (die.results ?? []).some(result => result.active !== false && values.includes(result.result)));
+}
+
+/**
+ * Copies the original roll's d20 results onto a re-rolled test so only its Skill Dice change, then
+ * recomputes the total.
+ * @param {Roll} original
+ * @param {Roll} rerolled   Already evaluated.
+ */
+export function keepOriginalD20(original, rerolled) {
+  const from = original?.dice?.find(die => die.faces == 20);
+  const to = rerolled?.dice?.find(die => die.faces == 20);
+  if (!from || !to || from.number != to.number) {
+    return;
+  }
+
+  to.results = from.results.map(result => ({ ...result }));
+  rerolled._total = rerolled._evaluateTotal();
 }
 
 async function rerollMessage(message, config) {
@@ -140,10 +184,23 @@ async function rerollMessage(message, config) {
   // A grant that upshifts the re-rolled test (Mending the Grid) can't be done in place - the skill
   // die's own size changes - so it re-rolls the whole test from its formula instead, with the
   // shift applied. See helpers/reroll.mjs#upshiftFormula.
+  //
+  // A skill-dice-only upshift grant (I've Done this Before?: "when you roll a 1 on a Skill Die you
+  // may reroll the Skill Die and gain ↑1") needs a matching Skill Die first, and keeps the original
+  // d20 - only the Skill Die is re-rolled, one size up.
   let rerolled;
   if (config.shiftUp > 0) {
     const original = message.rolls[0];
+    const skillDiceOnly = config.target == 'skillDice';
+    if (skillDiceOnly && !hasMatchingSkillDie(original, config.mode)) {
+      ui.notifications.warn(game.i18n.localize("E20.RerollScopeNotMet"));
+      return;
+    }
+
     rerolled = await new Roll(upshiftFormula(original.formula, config.shiftUp), original.data).evaluate();
+    if (skillDiceOnly) {
+      keepOriginalD20(original, rerolled);
+    }
   } else {
     rerolled = Roll.fromData(message.rolls[0].toJSON());
     if (!(await applyReroll(rerolled, config))) {

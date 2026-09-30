@@ -4,8 +4,8 @@
   "img": "icons/svg/hazard.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: any Social Skill Test that targets you gets an Edge, labelled Martial Artist in the roller's Roll Options Dialog.</p><p>Left to the table: setting that roll back to normal when it isn't trying to goad you into action.</p>"
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when someone makes a Social Skill Test while targeting you, their dialog shows a Martial Artist switch. Ticking it, for a roll trying to goad you into action, gives them an Edge.</p>"
     },
     "originalId": "",
     "description": "",

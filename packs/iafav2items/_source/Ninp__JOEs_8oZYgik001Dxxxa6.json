@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +1 Willpower. Automatic: your first Culture test each encounter opens the Roll Options Dialog with Edge selected. Use button: pick your Qualified Limited melee and projectile weapons (one must be Martial Arts).</p>"
+      "notes": "<p>Active Effect: +1 Willpower. Automatic: your first Culture test each scene opens the Roll Options Dialog with Edge selected. Use button: pick your Qualified Limited melee and projectile weapons (one must be Martial Arts).</p>"
     },
     "originalId": "",
     "description": "",

@@ -15,8 +15,12 @@ import { readChanges, resolveRollScopedChange, summarize } from "./effect-catalo
 // Items whose disabled Active Effect is already offered in the Roll Options Dialog by the system's
 // own source for it, so the effect isn't listed a second time. Recon (GI JOE CRB, Scout Focus,
 // p.94): dice.mjs's 'recon' source gives the same Edge in the environment of expertise.
+// Ceremonial (Cobra Codex, armor upgrade, p.101): its Use button's ↑1 on Persuasion is listed as
+// its own source (helpers/extensions/gij1/gear.mjs), so its old disabled "Persuasion Upshift"
+// effect would let a player stack a second ↑1.
 const CODE_OFFERED_EFFECT_SOURCES = new Set([
   "Compendium.essence20.gi_joe_crb.Item.EDBn8zHJXkRFu2TT",
+  "Compendium.essence20.cobra_codex.Item.vf9rJxOwuxDzrPKp",
 ]);
 
 function isCodeOffered(effect) {

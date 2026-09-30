@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button, once per encounter: spends a Story Point and marks your targeted enemy. Every attack against it, yours or anyone else's, gets ↑2, labelled Concentrate Fire in the Roll Options Dialog.</p><p>Left to the table: ending the mark. It stays on that enemy until someone removes it, so untick it in the dialog once it no longer applies.</p>"
+      "status": "full",
+      "notes": "<p>Use button, once per encounter: spends a Story Point and marks your targeted enemy for the rest of the encounter. Every attack against it, yours or anyone else's, gets ↑2, labelled Concentrate Fire in the Roll Options Dialog. The mark ends with the encounter, or when you mark a new enemy.</p>"
     },
     "originalId": "",
     "actionType": "free",

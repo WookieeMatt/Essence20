@@ -298,6 +298,10 @@ export async function bankPendingBonus(actor, flagKey, data = {}) {
  * "combatId, not round, is what makes a flag stale" reasoning as hasUsedThisEncounter above).
  * Banked outside of combat (combatId/round both null) never goes stale this way, matching every
  * other flag helper's own "no combat, no round to gate on" precedent.
+ *
+ * A bonus banked with an optional { untilRound, untilTurn } expiry (e.g. the spread of
+ * target-riders.mjs#untilStartOfNextTurn(holder)) also goes stale once combat moves past that
+ * turn - same comparison as target-riders.mjs's own mark expiry.
  * @param {Actor} actor
  * @param {String} flagKey
  * @returns {Object|null}
@@ -309,6 +313,12 @@ export function getPendingBonus(actor, flagKey) {
   }
 
   if (pending.combatId && (!game.combat || pending.combatId != game.combat.id)) {
+    return null;
+  }
+
+  const combat = game.combat;
+  if (pending.untilRound != null && combat && (combat.round > pending.untilRound
+    || (combat.round == pending.untilRound && combat.turn > pending.untilTurn))) {
     return null;
   }
 

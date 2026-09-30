@@ -1,33 +1,41 @@
-import { grappledSources, grappleEscapeSkills } from './grappled.mjs';
+import { grappledApplyDialog, grappledToggles, grappleEscapeSkills } from './grappled.mjs';
+import { getSceneEpoch } from '../../scene-clock.mjs';
 
 const actor = ({ grappled = true, version = null } = {}) => ({
   statuses: new Set(grappled ? ['grappled'] : []),
   items: { contents: version ? [{ type: 'role', system: { version } }] : [] },
+  flags: { essence20: {} },
 });
 const withLine = line => {
   global.game = { settings: { get: () => line }, i18n: { localize: key => key } };
 };
 
+const toggle = (a, ctx) => grappledToggles(a, ctx)[0];
+
+beforeEach(() => withLine(''));
+
 afterEach(() => {
   delete global.game;
 });
 
-test('a Grappled creature takes a Snag on anything but an escape test', () => {
-  withLine('transformers');
+test('a Grappled creature gets a Snag switch that starts on, for every roll', () => {
   const grappled = actor();
-  expect(grappledSources(grappled, null, { rolledSkill: 'might' }).sources).toEqual([{ id: 'grappled', label: 'E20.GrappledSnag', snag: true }]);
-  expect(grappledSources(grappled, null, { rolledSkill: 'alertness' }).sources).toHaveLength(1);
-  expect(grappledSources(grappled, null, { rolledSkill: 'acrobatics' }).sources).toEqual([]);
+  expect(toggle(grappled, { rolledSkill: 'athletics' })).toEqual({ name: 'grappledSnag', type: 'checkbox', label: 'E20.GrappledSnagToggle', value: true });
+  expect(toggle(grappled, { rolledSkill: 'alertness' }).value).toBe(true);
+  expect(toggle(grappled, { rolledSkill: 'might', item: { type: 'weaponEffect' } }).value).toBe(true);
 });
 
-test('attacks are never escape attempts', () => {
-  withLine('transformers');
-  expect(grappledSources(actor(), null, { rolledSkill: 'brawn', isAttack: true }).sources).toHaveLength(1);
+test('no switch when not Grappled', () => {
+  expect(grappledToggles(actor({ grappled: false }), { rolledSkill: 'might' })).toEqual([]);
 });
 
-test('no Snag when not Grappled', () => {
-  withLine('giJoe');
-  expect(grappledSources(actor({ grappled: false }), null, { rolledSkill: 'might' }).sources).toEqual([]);
+test('an Assault Claw grapple labels the switch for the Claw', () => {
+  const clawed = actor();
+  clawed.flags.essence20.d22AssaultClawGrapple = { scene: getSceneEpoch() };
+  expect(toggle(clawed, { rolledSkill: 'athletics' })).toMatchObject({ label: 'E20.GrappledClawSnagToggle', value: true });
+
+  clawed.flags.essence20.d22AssaultClawGrapple.scene = -1;
+  expect(toggle(clawed, { rolledSkill: 'athletics' }).label).toBe('E20.GrappledSnagToggle');
 });
 
 test('escape Skills follow the game line, then the Role', () => {
@@ -36,4 +44,18 @@ test('escape Skills follow the game line, then the Role', () => {
   withLine('');
   expect(grappleEscapeSkills(actor({ version: 'powerRangers' }))).toEqual(['athletics', 'brawn', 'finesse']);
   expect(grappleEscapeSkills(actor())).toEqual(expect.arrayContaining(['acrobatics', 'might', 'brawn']));
+});
+
+test('the switch adds a Snag, or cancels an Edge', () => {
+  const off = { ext: {} };
+  grappledApplyDialog(actor(), off);
+  expect(off.snag).toBeUndefined();
+
+  const on = { ext: { grappledSnag: true } };
+  grappledApplyDialog(actor(), on);
+  expect(on.snag).toBe(true);
+
+  const withEdge = { edge: true, ext: { grappledSnag: true } };
+  grappledApplyDialog(actor(), withEdge);
+  expect(withEdge).toMatchObject({ edge: false });
 });

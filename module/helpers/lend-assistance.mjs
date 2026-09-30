@@ -6,7 +6,7 @@ const CONNIVING_PERK_ID = "Compendium.essence20.cobra_codex.Item.dJoVvMG3wjowbWJ
 import { getLendAssistanceGrantModes } from "./action-perks.mjs";
 import { describeGrant, setNextTurn } from "./action-economy.mjs";
 import { E20 } from "./config.mjs";
-import { registerUse } from "./extensions.mjs";
+import { registerCostRule, registerUse } from "./extensions.mjs";
 import { actorHasHangUp, actorHasPerk, bankPendingBonus, getUsesThisScene, markUsedThisScene } from "./perks.mjs";
 import { getNearbyAllyTokens } from "./allies.mjs";
 import { getSkillRanks } from "./combat.mjs";
@@ -326,15 +326,22 @@ registerUse({
 
 // Technological Assistance (Quartermaster's Guide to Gear, Tech Officer Focus, 17th level, p.22):
 // "you can Lend Assistance as a Free action. However, allies can only take advantage of this for
-// Driving, Targeting, or Technology Skill Tests." The Free-action cost change is the same
-// unenforced "action-cost changes aren't modeled" gap Team Player/Partnered/To The Rescue's own
-// identical Free-action grants already accept - this file has no per-Perk action-cost lookup to
-// change. The skill restriction IS buildable though: rather than the normal "at least as many
-// ranks as your ally" gate, this holder can assist with Driving/Targeting/Technology regardless of
-// rank - the same assister-side rank-bypass shape Walk Them Through It already establishes from
-// the ALLY's side.
+// Driving, Targeting, or Technology Skill Tests." Read as: the Free-action Lend Assistance only
+// helps with those three Skills - an assist with anything else still costs its usual Standard
+// action. So it is an action-economy discount (registerCostRule below), offered when Lend
+// Assistance is paid for and asked, since only the player knows which Skill the ally is about to
+// roll. The ordinary "at least as many ranks as your ally" gate still applies. (It used to be
+// built as a lift of that rank gate on those three Skills, which the book doesn't say.)
 const TECHNOLOGICAL_ASSISTANCE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7b01zSdekhUugIod";
-const TECHNOLOGICAL_ASSISTANCE_SKILLS = ['driving', 'targeting', 'technology'];
+
+registerCostRule({
+  id: 'technologicalAssistance',
+  label: 'Technological Assistance',
+  has: actor => actorHasPerk(actor, TECHNOLOGICAL_ASSISTANCE_ID),
+  matches: ctx => ctx?.key == 'lendAssistance',
+  to: () => 'free',
+  ask: 'E20.ActionPerkAskTechnologicalAssistance',
+});
 
 /**
  * Whether an actor has any real rank in a skill - i.e. its shift is an actually-trained die rather
@@ -411,11 +418,6 @@ export function canAssistWithSkill(actor, ally, skill) {
   }
 
   if (['technology', 'science'].includes(skill) && actorHasPerk(ally, WALK_THEM_THROUGH_IT_ID)) {
-    return true;
-  }
-
-  // Technological Assistance - see its own comment above.
-  if (TECHNOLOGICAL_ASSISTANCE_SKILLS.includes(skill) && actorHasPerk(actor, TECHNOLOGICAL_ASSISTANCE_ID)) {
     return true;
   }
 

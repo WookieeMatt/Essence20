@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Active Effect: +2 to all Defenses while Morphed, and Edge on Smarts Skill tests (the Roll Options Dialog opens with Edge selected). Left to the table: +1 damage on attacks made with Powers, and setting the Smarts Edge back to Normal while you aren't Morphed.</p>"
+      "notes": "<p>Active Effect (only while Morphed): +2 to all four Defenses, and Smarts Skill tests open the Roll Options Dialog with Edge selected. Left to the table: +1 damage on attacks made with Powers.</p>"
     },
     "originalId": "",
     "description": "",

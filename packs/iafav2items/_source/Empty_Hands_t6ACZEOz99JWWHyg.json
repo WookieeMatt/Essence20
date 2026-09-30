@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: an unarmed attack that isn't part of a weapon on your sheet opens the Roll Options Dialog with Edge selected. Attacks from the Unarmed Combat weapon don't get it yet.</p><p>Left to the table: selecting Edge yourself for unarmed attacks while you wield no weapons.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: while no weapon other than Unarmed Combat is marked equipped on your sheet, your unarmed attacks (the Unarmed Combat weapon, or an attack not tied to any weapon) open the Roll Options Dialog with Edge selected. Unequip your other weapons when you fight empty-handed.</p>"
     },
     "originalId": "",
     "description": "",

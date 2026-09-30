@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Use button (once per scene): ignore 1 damage from the next hit, but take a Snag on all tests until the end of your next turn.</p>"
+      "notes": "<p>Use button, once per scene: the next damage applied to you is reduced by 1, and your Skill Tests take a Snag until the end of your next turn, labelled Dig Deep in the Roll Options Dialog. Out of combat the Snag goes on your next Skill Test only.</p>"
     },
     "originalId": "",
     "description": "",

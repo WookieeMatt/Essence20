@@ -21,7 +21,7 @@
   },
   "effects": [
     {
-      "name": "New Effect",
+      "name": "Charismatic",
       "origin": "Compendium.essence20.beneath_the_helmet.Item.On8TiaYksHZMSIW2",
       "duration": {
         "startTime": null,

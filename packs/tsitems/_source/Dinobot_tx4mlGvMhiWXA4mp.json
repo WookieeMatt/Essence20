@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>On the sheet: pick Brawn or Survival as the Perk's Skill. Automatic: all your tests with that Skill get Edge, already selected when the Roll Options Dialog opens.</p><p>Left to the table: limiting the Edge to one Specialization of that Skill.</p>"
+      "status": "full",
+      "notes": "<p>On the sheet: pick Brawn or Survival as the Perk's Skill. Roll Options Dialog: tests with that Skill show a Dinobot switch for Edge, on by default when you roll a Specialization; tick it when your chosen Specialization comes into play.</p>"
     },
     "originalId": "",
     "description": "",

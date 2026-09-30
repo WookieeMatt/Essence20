@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks with the Unarmed Combat Blunt alternate effect no longer take its ↓1; the Downshift and Upshift numbers in your Roll Options Dialog already reflect it.</p>"
+      "notes": "<p>Automatic: attacks with the Unarmed Combat weapon's Blunt alternate effect (G.I. JOE or Transformers printing) no longer take its ↓1; the Downshift number in your Roll Options Dialog already reflects it.</p>"
     },
     "originalId": "",
     "description": "",

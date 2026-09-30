@@ -395,6 +395,9 @@ const REROLL_CONDITIONS = {
   // Decepticon Directive "Homing Shots": "...a ranged attack using a weapon with the Consumable
   // or Wrecker trait." See E20.rerollConditions.consumableOrWreckerRangedAttack's own doc comment.
   consumableOrWreckerRangedAttack: (actor, context) => !!context?.isConsumableOrWreckerRangedAttack,
+  // Decepticon Directive "Metallikato" (General Perk, p.66): "When in Bot Mode ... melee attacks you
+  // make". The roll's own melee flag (context.isMeleeAttack, dice.mjs) and the actor still in Bot Mode.
+  botModeMelee: (actor, context) => !!context?.isMeleeAttack && actor?.system?.isTransformed !== true,
 };
 
 export function canMeetRerollCondition(actor, config, context = {}) {

@@ -146,7 +146,7 @@ import { activateRouse } from "./rouse.mjs";
 import { activateRousingComeback } from "./rousing-comeback.mjs";
 import { activateKnightsJump } from "./knights-jump.mjs";
 import { activateDirtyTrick } from "./dirty-trick.mjs";
-import { markEyeForAppraisal } from "./eye-for-appraisal.mjs";
+import { canUseEyeForAppraisal, markEyeForAppraisal } from "./eye-for-appraisal.mjs";
 import { canUseWrestlerPin, activateWrestlerPin } from "./wrestler-pin.mjs";
 import { activateElementalStorm } from "./elemental-storm.mjs";
 import { PENDING_WILD_TALES_FLAG_KEY, pickWildTalesEssence } from "./wild-tales.mjs";
@@ -817,8 +817,8 @@ const REAL_ANGELS_ENCOUNTER_FLAG = 'realAngelsUsedThisEncounter';
 // Dig Deep (Welcome to Night Vale: Citizens' Guide, General Perk, p.47): "Once per scene, you can
 // ignore 1 damage, but you suffer a Snag on all Skill Tests until the end of your next turn." A
 // one-shot self bank of TWO independent flags from the same click (the damage-reduction half
-// consumed in helpers/combat.mjs#applyDamage, the Snag half consumed as an unscoped Snag in
-// dice.mjs's own self-status section) - doesn't fit BANKABLE_PERKS' single-flagKey shape, so it
+// consumed in helpers/combat.mjs#applyDamage, the Snag half a timed mark on the holder read by
+// extensions/fix3-tf/tf-fixes.mjs until the end of their next turn) - doesn't fit BANKABLE_PERKS' single-flagKey shape, so it
 // gets its own dedicated dispatch here, same as Real Angels/Dig In above.
 const DIG_DEEP_ID = "Compendium.essence20.wtnv_citizens_guide.Item.A2Xay6rHrBK9l8eo";
 const DIG_DEEP_ENCOUNTER_FLAG = 'digDeepUsedThisEncounter';
@@ -845,6 +845,8 @@ const DIG_DEEP_TF_ID = "Compendium.essence20.tf_crb.Item.uPxkVrCLuBdx9kty";
 // rewrite of PR CRB's own already-working, already-tested heal dispatch in the same pass.
 const DIG_DEEP_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.QJkcVXT7K4yNWFoT";
 const DIG_DEEP_MLP_ID = "Compendium.essence20.mlp_crb.Item.geBN3DkixaCXvnSO";
+// The Transformers printing is "once per combat"; the GI JOE, MLP and Night Vale ones "once per scene".
+const digDeepWindow = sourceId => (sourceId == DIG_DEEP_TF_ID ? 'encounter' : 'scene');
 
 // Timeline Anomaly (Welcome to Night Vale: Citizens' Guide, General Perk, p.47, Weird +d8) - see
 // helpers/timeline-anomaly.mjs's own doc comment. Once per scene (approximating "once per
@@ -2971,7 +2973,7 @@ export function canUsePerk(item) {
   }
 
   if (sourceId == DIG_DEEP_ID || sourceId == DIG_DEEP_TF_ID || sourceId == DIG_DEEP_GIJ_ID || sourceId == DIG_DEEP_MLP_ID) {
-    return !hasUsedThisEncounter(actor, DIG_DEEP_ENCOUNTER_FLAG);
+    return getUses(actor, DIG_DEEP_ENCOUNTER_FLAG, digDeepWindow(sourceId)) < 1;
   }
 
   if (sourceId == TIMELINE_ANOMALY_ID) {
@@ -3007,7 +3009,7 @@ export function canUsePerk(item) {
   }
 
   if (sourceId == EYE_FOR_APPRAISAL_ID) {
-    return true;
+    return canUseEyeForAppraisal(actor);
   }
 
   if (sourceId == WRESTLER_PIN_ID) {
@@ -5000,13 +5002,15 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == DIG_DEEP_ID || sourceId == DIG_DEEP_TF_ID || sourceId == DIG_DEEP_GIJ_ID || sourceId == DIG_DEEP_MLP_ID) {
-    if (hasUsedThisEncounter(actor, DIG_DEEP_ENCOUNTER_FLAG)) {
+    if (getUses(actor, DIG_DEEP_ENCOUNTER_FLAG, digDeepWindow(sourceId)) >= 1) {
       return;
     }
 
     await bankPendingBonus(actor, PENDING_DIG_DEEP_FLAG_KEY, { amount: 1 });
-    await bankPendingBonus(actor, 'pendingDigDeepSnag', { snag: true });
-    await markUsedThisEncounter(actor, DIG_DEEP_ENCOUNTER_FLAG);
+    // "a Snag on all Skill Tests until the end of your next turn" - a timed mark, not one banked Snag.
+    const { markDigDeepSnag } = await import("./extensions/fix3-tf/tf-fixes.mjs");
+    await markDigDeepSnag(actor, item);
+    await markUsed(actor, DIG_DEEP_ENCOUNTER_FLAG, { window: digDeepWindow(sourceId) });
     postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     return;
   }
@@ -5139,7 +5143,7 @@ export async function onPerkUse(item) {
   }
 
   if (sourceId == EYE_FOR_APPRAISAL_ID) {
-    const marked = await markEyeForAppraisal(actor);
+    const marked = await markEyeForAppraisal(actor, item);
     if (marked) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }

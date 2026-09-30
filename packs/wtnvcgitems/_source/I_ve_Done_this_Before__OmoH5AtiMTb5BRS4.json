@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Chat card: once per day, a reroll button on your Skill Test rerolls Skill Dice that came up 1 and adds +1 to the new total.</p><p>Left to the table: keeping it to once per session.</p>"
+      "notes": "<p>Chat card: once per day, when a Skill Die on your Skill Test came up 1, a reroll button rerolls your Skill Die one size bigger (↑1), keeping your d20.</p><p>Left to the table: keeping it to once per session.</p>"
     },
     "originalId": "",
     "description": "",
@@ -40,7 +40,8 @@
       "target": "skillDice",
       "maxUses": 1,
       "reset": "day",
-      "bonus": 1
+      "bonus": 0,
+      "shiftUp": 1
     }
   },
   "effects": [],

@@ -21,7 +21,7 @@
   },
   "effects": [
     {
-      "name": "New Effect",
+      "name": "Blend With The Scenery",
       "origin": "Compendium.essence20.beneath_the_helmet.Item.skdUEPpInjeM94cr",
       "duration": {
         "startTime": null,

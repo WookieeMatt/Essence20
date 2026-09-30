@@ -227,10 +227,10 @@ registerReaction({
 
 // Steady Footing (Factions in Action Vol. 2 p.95): "If the attempt [to Grapple, Shove, or Trip you]
 // Fumbles, you can immediately attempt to Grapple, Shove, or Trip your attacker with a ↑1." The
-// ↓1 half is dice.mjs; a Maneuver-damage attack is the Grapple/Shove/Trip proxy it uses too.
+// ↓1 half is dice.mjs; a Maneuver- or Grapple-damage attack is the Grapple/Shove/Trip proxy it uses too.
 registerReaction({
   id: 'steadyFooting',
-  reactors: (info, row) => (info.isAttack && info.isFumble && info.damageType == 'maneuver' && info.attacker
+  reactors: (info, row) => (info.isAttack && info.isFumble && ['maneuver', 'grapple'].includes(info.damageType) && info.attacker
     ? selfHolder(row, REACT.steadyFooting) : []),
   label: actor => nameOf(actor, REACT.steadyFooting, 'Steady Footing'),
   run: async (actor, info) => {

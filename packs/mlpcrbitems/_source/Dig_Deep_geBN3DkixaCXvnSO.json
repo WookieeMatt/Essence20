@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: once per scene, ignore 1 damage from the next hit and take a Snag on your next Skill Test. Left to the table: the Snag lasting until the end of your next turn, and restoring 1d2 Health by giving up your turn.</p>"
+      "notes": "<p>Use button, once per scene: the next damage applied to you is reduced by 1, and your Skill Tests take a Snag until the end of your next turn, labelled Dig Deep in the Roll Options Dialog. Out of combat the Snag goes on your next Skill Test only.</p><p>Left to the table: restoring 1d2 Health by giving up your turn.</p>"
     },
     "originalId": "",
     "description": "",

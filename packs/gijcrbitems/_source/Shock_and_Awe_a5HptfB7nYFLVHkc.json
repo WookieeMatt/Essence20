@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when your explosive attack hits, the target's next roll of any kind takes a Snag in its Roll Options Dialog (the label shown there reads Debilitating Strike).</p>"
+      "notes": "<p>Automatic: when your explosive attack hits, the target's next roll of any kind takes a Snag, labelled Shock and Awe in its Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

@@ -813,6 +813,19 @@ describe("roll", () => {
       );
     });
 
+    test("also covers the Transformers CRB printing of the Blunt Alternate Effect", async () => {
+      const actor = makeBeastlyActor([BEASTLY_PERK_ID]);
+      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
+      item.flags = { core: { sourceId: "Compendium.essence20.tf_crb.Item.gA0rOFD3lmwzkZq4" } };
+      item._dice.handleSkillItemRoll = jest.fn();
+
+      await item.roll({});
+
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftDown: 0 }), actor, item,
+      );
+    });
+
     test("leaves the Blunt Alternate Effect's -1 in place without the Perk", async () => {
       const actor = makeBeastlyActor();
       const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);

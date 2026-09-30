@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { _isCritIsFumble, onApplyDamage } from "./chat.mjs";
+import { _isCritIsFumble, getRerollContext, hasMatchingSkillDie, keepOriginalD20, onApplyDamage } from "./chat.mjs";
 
 const JUST_A_GRAZE_ID = "Compendium.essence20.gi_joe_crb.Item.YXL5dCiLZvzDgZzJ";
 const FORTITUDE_ID = "Compendium.essence20.gi_joe_crb.Item.19odrVUOsp4dCiOV";
@@ -1300,5 +1300,39 @@ describe("_isCritIsFumble", () => {
   test("no dice", () => {
     const dice = [];
     expect(_isCritIsFumble(dice)).toEqual([false, false]);
+  });
+});
+
+/* I've Done this Before? - skill-dice-only upshift reroll */
+describe("hasMatchingSkillDie / keepOriginalD20", () => {
+  const die = (faces, results, number = 1) => ({ faces, number, results: results.map(r => ({ result: r, active: true })) });
+
+  test("ones mode needs a Skill Die (not the d20) showing a 1", () => {
+    expect(hasMatchingSkillDie({ dice: [die(20, [1]), die(6, [4])] }, 'ones')).toBe(false);
+    expect(hasMatchingSkillDie({ dice: [die(20, [12]), die(6, [1])] }, 'ones')).toBe(true);
+    expect(hasMatchingSkillDie({ dice: [die(20, [12]), die(6, [2])] }, 'onesAndTwos')).toBe(true);
+    expect(hasMatchingSkillDie({ dice: [die(20, [12])] }, 'all')).toBe(true);
+  });
+
+  test("keeps the original d20 results and recomputes the total", () => {
+    const original = { dice: [die(20, [17]), die(6, [1])] };
+    const d20 = die(20, [3]);
+    const d8 = die(8, [5]);
+    const rerolled = { dice: [d20, d8], _total: 8, _evaluateTotal: () => d20.results[0].result + d8.results[0].result };
+    keepOriginalD20(original, rerolled);
+    expect(d20.results[0].result).toBe(17);
+    expect(rerolled._total).toBe(22);
+  });
+});
+
+// Focused Strike, Homing Shots, Exterminator and Clip Check read these; the card never passed them on.
+describe("getRerollContext", () => {
+  const message = (flags, d20) => ({ flags: { essence20: flags }, rolls: [{ dice: [{ faces: 20, values: [d20], total: d20 }] }] });
+
+  test("passes on the stamped attack flags and whether the roll fumbled", () => {
+    const context = getRerollContext(message({ isUnarmedAttack: true, isConsumableOrWreckerRangedAttack: true, smallerTarget: true }, 1));
+
+    expect(context).toMatchObject({ isUnarmedAttack: true, isConsumableOrWreckerRangedAttack: true, smallerTarget: true, isFumble: true });
+    expect(getRerollContext(message({}, 12)).isFumble).toBe(false);
   });
 });

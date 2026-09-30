@@ -16,9 +16,7 @@ export const WEAPON22 = {
 };
 
 const DEMOLEC_FLAG = 'd22Demolecularized';
-const CLAW_FLAG = 'd22AssaultClawGrapple';
-// "try to escape with an Acrobatics, Athletics, Brawn, or Finesse Skill Test" (TF CRB, Grappled).
-const ESCAPE_SKILLS = ['acrobatics', 'athletics', 'brawn', 'finesse'];
+export const CLAW_FLAG = 'd22AssaultClawGrapple';
 
 const dealsSharp = item => item?.system?.damageType == 'sharp' || item?.system?.secondaryDamage?.type == 'sharp';
 
@@ -26,7 +24,7 @@ const dealsSharp = item => item?.system?.damageType == 'sharp' || item?.system?.
 /*  Roll sources                                 */
 /* -------------------------------------------- */
 
-export function weaponRollSources(actor, target, { item, rolledSkill, isAttack } = {}) {
+export function weaponRollSources(actor, target, { item, isAttack } = {}) {
   const sources = [];
   const epoch = getSceneEpoch();
 
@@ -37,13 +35,9 @@ export function weaponRollSources(actor, target, { item, rolledSkill, isAttack }
     sources.push({ id: 'd22Demolecularized', label: T('D22Demolecularized'), edge: true });
   }
 
-  // Assault Claw (p.49): "Targets Grappled by this weapon suffer Snag to escape." The escape is the
-  // grappled creature's own Acrobatics/Athletics/Brawn/Finesse test that isn't an attack.
-  const claw = actor?.flags?.essence20?.[CLAW_FLAG];
-  if (!isAttack && claw?.scene == epoch && actor.statuses?.has?.('grappled') && ESCAPE_SKILLS.includes(rolledSkill)) {
-    sources.push({ id: 'd22AssaultClaw', label: T('D22AssaultClawEscape'), snag: true });
-  }
-
+  // Assault Claw (p.49): "Targets Grappled by this weapon suffer Snag to escape." Its escape Snag is
+  // the Grappled switch (extensions/rules/grappled.mjs#clawGrappled), which a Claw grapple turns on
+  // for every roll, escape attempts included.
   return { sources, consumes: [] };
 }
 

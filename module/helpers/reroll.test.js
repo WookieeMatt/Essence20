@@ -428,6 +428,16 @@ describe("canMeetRerollCondition", () => {
     expect(canMeetRerollCondition(actor, { condition: "consumableOrWreckerRangedAttack" })).toBe(false);
   });
 
+  test("'botModeMelee' needs a melee attack made out of Alt Mode (Metallikato)", () => {
+    const botMode = { system: { isTransformed: false } };
+    const altMode = { system: { isTransformed: true } };
+    const config = { condition: "botModeMelee" };
+    expect(canMeetRerollCondition(botMode, config, { isMeleeAttack: true })).toBe(true);
+    expect(canMeetRerollCondition(altMode, config, { isMeleeAttack: true })).toBe(false);
+    expect(canMeetRerollCondition(botMode, config, { isMeleeAttack: false })).toBe(false);
+    expect(canMeetRerollCondition(botMode, config)).toBe(false);
+  });
+
   describe("'belowSmallestSkillDie' (Across the Stars, Destiny Influence Perk, p.45)", () => {
     function makeSkilledActor(shifts) {
       const skills = {};

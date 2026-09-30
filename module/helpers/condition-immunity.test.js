@@ -234,6 +234,15 @@ describe("isImmuneToCondition (Always Alert, Transformers CRB, General Perk, p.1
   });
 });
 
+describe("isImmuneToCondition (Rapid Deployment Drills, Ferocious Fighters Force Recon Focus, 3rd level)", () => {
+  const RAPID_DEPLOYMENT_DRILLS_ID = "Compendium.essence20.ferocious_fighters.Item.pQvXMpk7uAvfuGMl";
+
+  test("true for surprised with the Perk, nothing else", () => {
+    expect(isImmuneToCondition(makeActor([RAPID_DEPLOYMENT_DRILLS_ID]), 'surprised')).toBe(true);
+    expect(isImmuneToCondition(makeActor([RAPID_DEPLOYMENT_DRILLS_ID]), 'frightened')).toBe(false);
+  });
+});
+
 describe("isImmuneToCondition (Dig In, Decepticon Directive Raider Siegemaster Focus, 10th level) - gated on the toggled stance", () => {
   function makeDigInActor({ perkIds = [], dugIn = false } = {}) {
     const actor = makeActor(perkIds);

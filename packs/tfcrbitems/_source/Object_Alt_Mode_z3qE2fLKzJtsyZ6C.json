@@ -5,7 +5,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: while you are in Alt Mode, all your Infiltration and Alertness tests get Edge, already selected when the Roll Options Dialog opens.</p><p>Left to the table: having no Movement in this Alt Mode, and dropping the Edge on tests that aren't about hiding, blending in or eavesdropping.</p>"
+      "notes": "<p>Roll Options Dialog: while you are in Alt Mode, Infiltration and Alertness tests show an Object Alt Mode switch for Edge. It starts on for Infiltration and off for Alertness; tick it when the test is about hiding, blending in or eavesdropping.</p><p>Left to the table: giving this Alt Mode 0 Movement on its Alt Mode item.</p>"
     },
     "originalId": "",
     "description": "",

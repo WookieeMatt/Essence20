@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button (Free): marks your targeted creature; your next 2 ranged attacks against it get ↑1, labelled Eye for Appraisal in the Roll Options Dialog. With Vantage Point you also pick the firing spot on the map.</p><p>Left to the table: rolling the DIF 12 Alertness Test first (the button doesn't), the once-per-scene limit, and spotting valuables.</p>"
+      "notes": "<p>Use button (Free, once per scene): marks your targeted creature and rolls 2d2 in chat. That many of your next ranged attacks against it get ↑1, labelled Eye for Appraisal in the Roll Options Dialog. With Vantage Point you also pick the firing spot on the map.</p><p>Left to the table: rolling the DIF 12 Alertness Test before using the button, and the spotting-valuables option.</p>"
     },
     "originalId": "",
     "actionType": "free",

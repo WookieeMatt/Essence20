@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Roll Options Dialog: when you roll Initiative, two switches let you roll your Alertness or your Infiltration die instead.</p><p>Left to the table: not being Surprised at the start of combat, and moving Skill ranks around as this Perk allows.</p>"
+      "notes": "<p>Roll Options Dialog: when you roll Initiative, two switches let you roll your Alertness or your Infiltration die instead.</p><p>Automatic: you can't be given the Surprised condition; trying to add it shows a warning instead.</p><p>Left to the table: moving your Initiative Skill ranks to other Speed Skills.</p>"
     },
     "originalId": "",
     "description": "",
