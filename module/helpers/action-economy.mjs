@@ -1,6 +1,6 @@
 import { E20 } from "./config.mjs";
 import { isAutomated } from "./named-actions.mjs";
-import { canUsePerk } from "./banked-buffs.mjs";
+import { canUsePerk, hasItemUse } from "./banked-buffs.mjs";
 import { actorHasPerk, hasUsedThisTurn } from "./perks.mjs";
 import {
   attackMatchesFilter, bindEconomy, describeAttack, getAttacksPerAction, getTurnStartGrants, recordRuleUse,
@@ -1179,6 +1179,8 @@ export function getActionsTabContext(actor) {
       item,
       parentName,
       activatable,
+      // A Power with a Use of its own is used through it alone (templates/actor/tabs/actions.hbs).
+      hasOwnUse: item.type == 'power' && hasItemUse(item),
       costLabel: costs ? describeCost(cost) : null,
       affordable: !live || (costs ? canSpend(actor, actionType).ok : true),
       // The trigger is the whole point of a Contingency - "waiting for what?" - and is the one

@@ -1,7 +1,13 @@
 {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.powers title='E20.ItemTypePowerPlural' dataType='power'}}
   {{#*inline "roll-button" item}}
-    {{#if (canUsePower item)}}
-      <a class="rollable" data-action="rollable" data-roll-type={{item.type}} data-tooltip="{{localize 'E20.PowerRollTitle'}}"><i class="fas fa-battery-bolt" data-roll-type={{item.type}}></i></a>
+    {{!-- One Use button: the Power's own Use when it has one (it pays its own cost), otherwise the
+         activation, which spends the Power's cost and runs its effect (power-handler.mjs#powerCost). --}}
+    {{#if (hasItemUse item)}}
+      {{#if (canUsePerk item)}}
+        <a class="perk-use" data-action="perkUse" data-id="{{item._id}}" data-tooltip="{{localize 'E20.PerkUse'}}"><i class="fas fa-bolt"></i></a>
+      {{/if}}
+    {{else if (canUsePower item)}}
+      <a class="rollable" data-action="rollable" data-roll-type={{item.type}} data-tooltip="{{localize 'E20.PerkUse'}}"><i class="fas fa-bolt" data-roll-type={{item.type}}></i></a>
     {{/if}}
   {{/inline}}
 

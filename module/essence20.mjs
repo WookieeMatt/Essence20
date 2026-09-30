@@ -63,7 +63,7 @@ import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { applyVisionToTokens, getNumActions, syncAutoBlindStatus, syncAutoImmobilizedStatus } from "./helpers/actor.mjs";
-import { canUsePerk } from "./helpers/banked-buffs.mjs";
+import { canUsePerk, hasItemUse } from "./helpers/banked-buffs.mjs";
 import { canUsePower } from "./helpers/power-use.mjs";
 import { getWeaponEffectDamages } from "./helpers/damage-display.mjs";
 import { getSummonReadyRound, isSummonReady } from "./helpers/zord-summon.mjs";
@@ -416,6 +416,7 @@ Handlebars.registerHelper("inArray", function (array, value, options) {
 // actually banks for each. A template-level check, the same idiom {{eq item.type "shield"}}
 // already uses for the shield-activate icon right next to where this one renders.
 Handlebars.registerHelper("canUsePerk", canUsePerk);
+Handlebars.registerHelper("hasItemUse", hasItemUse);
 Handlebars.registerHelper("canUsePower", canUsePower);
 
 // Call to Action (PR CRB, Zord Feature, p.136-137) - see helpers/zord-summon.mjs's own doc

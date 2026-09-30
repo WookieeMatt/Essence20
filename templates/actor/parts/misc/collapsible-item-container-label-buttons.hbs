@@ -9,7 +9,7 @@
       {{/roll-button}}
     </div>
   </div>
-  {{#if (canUsePerk item)}}
+  {{#if (and (canUsePerk item) (ne item.type "power"))}}
     <div class="item-image e20-flex-grow-0">
       <div class="flexrow e20-nowrap e20-gap-5">
         <a class="perk-use e20-flex-grow-0" data-action="perkUse" data-id="{{item._id}}"

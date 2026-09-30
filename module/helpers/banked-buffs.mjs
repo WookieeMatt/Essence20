@@ -2396,6 +2396,17 @@ const IMMEDIATE_ALLY_PERKS = {
  * @param {Item} item
  * @returns {Boolean}
  */
+/**
+ * Whether the item has a Use of its own (an action-cost, extension or other registered Use), whether or
+ * not it can be used right now. A Power with one is used through it alone - its plain activation would
+ * only spend Personal Power, since the Use pays its own cost.
+ * @param {Item} item
+ * @returns {Boolean}
+ */
+export function hasItemUse(item) {
+  return isActionPerkUse(item);
+}
+
 export function canUsePerk(item) {
   const actor = item?.parent;
   if (isActionPerkUse(item)) {

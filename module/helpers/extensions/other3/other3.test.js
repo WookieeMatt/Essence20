@@ -305,3 +305,22 @@ describe('tf', () => {
     expect(out.sources.some(s => s.id == 'ext-o3ScrambleAlertness' && s.shiftDown == 2)).toBe(true);
   });
 });
+
+// Metallic Armor Power Up's one Use button: switches the Power on, or ends it while it's on.
+test('Metallic Armor Power Up: one Use that switches it on or ends it', async () => {
+  const { findExtUse } = await import('../../extensions.mjs');
+  const { O3 } = await import('./shared.mjs');
+  await import('./pr.mjs');
+  const actor = { flags: { essence20: {} } };
+  const power = { type: 'power', system: { canActivate: true }, flags: { core: { sourceId: O3.metallicArmor } }, parent: actor };
+  const use = findExtUse(power);
+  expect(use?.id).toBe('o3MetallicArmorEnd');
+  expect(use.canUse(power)).toBe(true);
+
+  actor.flags.essence20.metallicArmorActive = true;
+  power.system.canActivate = false;
+  expect(use.canUse(power)).toBe(true);
+
+  actor.flags.essence20.metallicArmorActive = false;
+  expect(use.canUse(power)).toBe(false);
+});

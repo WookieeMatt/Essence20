@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>On the sheet: activating it (a daily use) with a creature targeted rolls Targeting against its Evasion to infect it. Chat card: Command rolls Persuasion with Edge against Willpower or Cleverness (↓1 per earlier command) and applies Restrained or Mesmerized; Recall deals 1 damage to each of you.</p><p>Left to the table: breaking the hold and egregious-command Snags.</p>"
+      "notes": "<p>Use button (a daily use), with a creature targeted: rolls Targeting against its Evasion to infect it. Chat card: Command rolls Persuasion with Edge against Willpower or Cleverness (↓1 per earlier command) and applies Restrained or Mesmerized; Recall deals 1 damage to each of you.</p><p>Left to the table: breaking the hold and egregious-command Snags.</p>"
     },
     "originalId": "",
     "description": "",

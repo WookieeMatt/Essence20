@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button (while Morphed): spend Power to heal an adjacent creature 1 Health per Power spent.</p><p>Left to the table: spending Power to remove a Condition instead.</p>"
+      "status": "full",
+      "notes": "<p>Use button (while Morphed): choose Heal or Remove a Condition. Heal spends Power to restore 1 Health per Power spent to an adjacent creature. Remove a Condition spends 1 Power to clear one negative Condition from you or a creature within 5 ft.</p>"
     },
     "originalId": "",
     "description": "",

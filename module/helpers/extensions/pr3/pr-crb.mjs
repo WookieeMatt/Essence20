@@ -145,8 +145,9 @@ export function autoPassesDisembark(crewMember, entry) {
 
 // Power Heal (PR CRB, Grid Power, p.100): "While Morphed, you can spend Power while touching an
 // injured living creature. Each Power spent heals 1 damage or removes one negative condition." The
-// healing half is the Power's own roll button (helpers/power-heal.mjs); this Use button is the
-// other half - 1 Power, a creature within 5 feet (or yourself), one of its negative Conditions.
+// Power's one Use button asks which: healing is its activation (power-handler.mjs#powerCost ->
+// helpers/power-heal.mjs); removing a Condition is 1 Power, a creature within 5 feet (or yourself),
+// one of its negative Conditions.
 const NOT_NEGATIVE = new Set(['morphed', 'altMode', 'defending', 'cover', 'totalCover', 'invisible', 'defeated']);
 
 export function negativeStatuses(actor) {
@@ -164,6 +165,18 @@ registerUse({
   canUse: item => !!item.parent?.system?.isMorphed && personalPower(item.parent) >= 1,
   run: async (item) => {
     const actor = item.parent;
+    const { chooseButtons } = await import("../../grants.mjs");
+    const mode = await chooseButtons(item.name, T('Pr3PowerHealPrompt'), [['heal', T('Pr3PowerHealHeal')], ['condition', T('Pr3PowerHealCondition')]]);
+    if (mode == 'heal') {
+      const { powerCost } = await import("../../../sheet-handlers/power-handler.mjs");
+      await powerCost(actor, item);
+      return null;
+    }
+
+    if (mode != 'condition') {
+      return null;
+    }
+
     const { getNearbyAllyTokens } = await import("../../allies.mjs");
     const { chooseSelect } = await import("../../grants.mjs");
     const candidates = [actor, ...getNearbyAllyTokens(actor, 5).map(token => token.actor).filter(Boolean)]
