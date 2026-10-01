@@ -1,18 +1,5 @@
 <div class="trait-selector flexcol">
-  {{#if (eq actor.type "npc")}}
-    {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.IsNPC'}}
-    {{#*inline "field-inputs"}}
-      <input type="checkbox" id="isNPC" name="system.isNPC" {{checked system.isNPC}} />
-    {{/inline}}
-    {{/"systems/essence20/templates/app/parts/field.hbs"}}
-
-    {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.IsContact'}}
-    {{#*inline "field-inputs"}}
-      <input type="checkbox" id="isContact" name="system.isContact" {{checked system.isContact}} />
-    {{/inline}}
-    {{/"systems/essence20/templates/app/parts/field.hbs"}}
-  {{/if}}
-
+  {{!-- NPC / Contact moved to the NPC sheet header's buttons (headers/npc.hbs). --}}
   {{#if (ne role.system.version 'powerRanger')}}
     {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.CanMorph'}}
     {{#*inline "field-inputs"}}

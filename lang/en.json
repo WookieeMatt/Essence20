@@ -3199,6 +3199,12 @@
     "ConsummatePerformerActivate": "Consummate Performer",
     "ConsummatePerformerRegain": "Regain 1 Cheer",
     "ContactAllegiancePoints": "Allegiance Points",
+    "ContactDropPromptTitle": "Make a Contact?",
+    "ContactUntickTitle": "Stop Being a Contact?",
+    "ContactUntickPrompt": "<strong>{name}</strong> is a Contact of {holders}. Unticking Contact removes it from their Contacts tabs. Continue?",
+    "ContactUntickBlocked": "{name} is a Contact of {holders}. Remove it from their Contacts tabs first.",
+    "ContactDropPrompt": "Only Contacts can be added to a character, and <strong>{name}</strong> isn’t one yet. Make it a Contact?",
+    "ContactDropNotContact": "{name} isn’t a Contact, so it can’t be added to a character. The GM can tick Contact in its sheet header.",
     "ContactGainedVia": "Gained via",
     "ContactGainingTheContact": "Gaining {name} as a Contact",
     "ContactPerks": "Perks",
@@ -3654,8 +3660,6 @@
     "InfluencePerk": "Influence Perk",
     "InfluenceSkill": "Influence Skill",
     "IsAdditiveRole": "Stacks on Base Role? (Advanced Role, e.g. Old Hand)",
-    "IsContact": "Character is a Contact",
-    "IsNPC": "Character is an NPC",
     "ItemControlAdd": "Add",
     "ItemControlDelete": "Delete",
     "ItemControlEdit": "Edit",
@@ -3851,6 +3855,10 @@
     "NotOnMyWatchReactionPrompt": "{reactor} has Not On My Watch - {ally} was just Defeated nearby, so {reactor} may immediately Move their Ground Movement towards them.",
     "NpcSkillListEmpty": "No skills chosen yet - use the gear icon above to pick some.",
     "NpcThreatLevel": "Threat Level",
+    "NpcUsedAs": "Used As",
+    "NpcUseNpcHint": "Use as an NPC: shows the NPC tab. Tick both to use it as an NPC and a Contact.",
+    "NpcUseContactHint": "Use as a Contact: shows the Contact tab, and it can be added to a character’s Contacts. Tick both to use it as an NPC and a Contact.",
+    "NpcUseKeepOne": "You must have at least one selected.",
     "OldHandNoBaseRoleError": "You must have a base Role before taking an Advanced Role that stacks on top of one",
     "OmegaEnhancementPickOptionTitle": "Adjust the Omega Morpher",
     "OmegaEnhancementPickOptionLabel": "Mode",
@@ -5868,7 +5876,7 @@
         },
         "ThreatSheet": {
           "Title": "The Threat Sheet",
-          "Content": "There is no Threat type to create: a threat is an <strong>NPC/Contact</strong>, and one sheet covers both. The <em>Character is a Contact</em> checkbox under <strong>Sheet Options</strong>, in this window’s <i class=\"fa-solid fa-ellipsis-vertical\"></i> menu, is what tells the two apart.\nIt is a lighter sheet than a player character’s — the same Essences and skills underneath, without the advancement machinery."
+          "Content": "There is no Threat type to create: a threat is an <strong>NPC/Contact</strong>, and one sheet covers both. The <strong>Used As</strong> checkboxes in its header tell the two apart: <em>NPC</em>, <em>Contact</em>, or both ticked for both.\nIt is a lighter sheet than a player character’s — the same Essences and skills underneath, without the advancement machinery."
         },
         "ThreatSidebar": {
           "Title": "What a Threat Tracks",

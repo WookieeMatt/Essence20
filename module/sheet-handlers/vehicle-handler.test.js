@@ -34,6 +34,13 @@ describe("prepareSystemActors", () => {
     expect(context.actors).toBeUndefined();
   });
 
+  test("hasCompanions only when a companion or vehicle is attached", () => {
+    global.fromUuidSync.mockReturnValueOnce({ type: 'npc' }).mockReturnValueOnce({ type: 'companion' });
+    const context = {};
+    prepareSystemActors({ system: { actors: { a: { uuid: 'Actor.npc' }, b: { uuid: 'Actor.pet' } } } }, context);
+    expect(context.hasCompanions).toBe(true);
+  });
+
   test("resolves each embedded actor's uuid and attaches them to context.actors", () => {
     const driver = { name: "Driver" };
     const passenger = { name: "Passenger" };
@@ -53,6 +60,7 @@ describe("prepareSystemActors", () => {
     prepareSystemActors(actor, context);
 
     expect(context.actors).toEqual({ a: driver, b: passenger });
+    expect(context.hasCompanions).toBe(false);
     expect(global.fromUuidSync).toHaveBeenCalledWith("Actor.driverUuid");
     expect(global.fromUuidSync).toHaveBeenCalledWith("Actor.passengerUuid");
   });

@@ -203,7 +203,9 @@
    .item-label-checkbox, _collapsible.scss) - !important is the only way to win that. Doesn't
    affect the color picker's own swatch (input.picker[type="color"] below) since the native
    swatch always paints over any background here regardless. */
-.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border input:not(.skill-shift-select),
+/* Not the NPC sheet's Used As checkboxes (headers/npc.hbs) - they're real checkboxes and keep
+   Foundry's own look. */
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border:not(.e20-npc-use) input:not(.skill-shift-select),
 .essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border select:not(.skill-shift-select) {
   background: transparent !important;
   background-color: transparent !important;
@@ -487,4 +489,37 @@
    the rest of the box. */
 .essence20 .sheet-header .sliced-border li.item .chip {
   flex: 0 0 auto;
+}
+
+/* NPC sheet: Used As - NPC / Contact checkboxes (headers/npc.hbs). Both ticked is both. Sized
+   to its content (never squeezed by the nowrap row) and given the same 32px content height as
+   Size/Color beside it, so the box matches their height. */
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.e20-npc-use {
+  flex: 0 0 auto;
+  min-width: max-content;
+}
+
+.essence20 .e20-npc-use__options {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: var(--input-height, 32px);
+  box-sizing: border-box;
+  // Same baseline nudge as the other custom header fields (the Level/Faction wrappers above) -
+  // centred text sits a few px above a <select>'s own, like Size's beside it.
+  padding-top: 3px;
+}
+
+.essence20 .e20-npc-use__option {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    flex: 0 0 auto;
+    margin: 0;
+  }
 }

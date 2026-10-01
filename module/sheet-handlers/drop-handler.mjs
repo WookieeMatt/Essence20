@@ -240,6 +240,12 @@ export async function onDropActor(data, actorSheet) {
   switch (targetActor.type) {
   case 'playerCharacter':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'npc') {
+      // Only a Contact can be added: an NPC that isn't one yet is offered the switch, or refused.
+      const { offerMakeContact } = await import("../helpers/contacts.mjs");
+      if (!(await offerMakeContact(droppedActor))) {
+        return false;
+      }
+
       setEntryAndAddActor(droppedActor, targetActor);
       dropIsValid = true;
     } else if (['companion', 'vehicle'].includes(droppedActor.type)) {

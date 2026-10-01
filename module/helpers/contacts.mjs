@@ -72,6 +72,116 @@ export function isContact(actor) {
   return actor?.type == 'npc' && !!actor.system?.isContact;
 }
 
+/**
+ * The NPC sheet's header buttons: an NPC is used as an NPC, a Contact, or both (both on). Flipping
+ * one returns the update to make, or null when it would switch the last one off - it has to be
+ * used as something.
+ * @param {Object} system The NPC's system data
+ * @param {'isNPC'|'isContact'} field The button clicked
+ * @returns {Object|null}
+ */
+export function npcUseToggle(system, field) {
+  const other = { isNPC: 'isContact', isContact: 'isNPC' }[field];
+  if (!other) {
+    return null;
+  }
+
+  const next = !system?.[field];
+  if (!next && !system?.[other]) {
+    return null;
+  }
+
+  return { [`system.${field}`]: next };
+}
+
+/**
+ * Only a Contact can be added to a character. An NPC dropped on one that isn't a Contact yet asks
+ * whether to make it one; No or closing the prompt calls the drop off, and a user who can't edit the
+ * NPC is told the GM has to tick its Contact box.
+ * @param {Actor} npc The dropped NPC
+ * @returns {Promise<boolean>} true when the NPC is (now) a Contact and the drop goes ahead
+ */
+export async function offerMakeContact(npc) {
+  if (npc?.type != 'npc' || npc.system?.isContact) {
+    return true;
+  }
+
+  if (!npc.isOwner) {
+    ui.notifications.warn(game.i18n.format('E20.ContactDropNotContact', { name: npc.name }));
+    return false;
+  }
+
+  const confirmed = await foundry.applications.api.DialogV2.confirm({
+    window: { title: game.i18n.localize('E20.ContactDropPromptTitle') },
+    content: `<p>${game.i18n.format('E20.ContactDropPrompt', { name: foundry.utils.escapeHTML(npc.name) })}</p>`,
+    rejectClose: false,
+  });
+  if (!confirmed) {
+    return false;
+  }
+
+  await npc.update({ 'system.isContact': true });
+  return true;
+}
+
+/**
+ * The characters that list this NPC on their Contacts tab, with the system.actors key it sits under.
+ * @param {Actor} npc
+ * @returns {{actor: Actor, key: string}[]}
+ */
+export function contactHolders(npc) {
+  const holders = [];
+  for (const actor of globalThis.game?.actors ?? []) {
+    if (actor.type != 'playerCharacter') {
+      continue;
+    }
+
+    for (const [key, entry] of Object.entries(actor.system?.actors ?? {})) {
+      if (entry?.uuid == npc?.uuid) {
+        holders.push({ actor, key });
+      }
+    }
+  }
+
+  return holders;
+}
+
+/**
+ * Unticking Contact on an NPC that characters list as a Contact: confirm, then take it off their
+ * Contacts tabs, so only Contacts are ever on one (the drop side is offerMakeContact). Refused
+ * outright when the user can't edit one of those characters.
+ * @param {Actor} npc
+ * @returns {Promise<boolean>} true when the untick can go ahead
+ */
+export async function confirmStopBeingContact(npc) {
+  const holders = contactHolders(npc);
+  if (!holders.length) {
+    return true;
+  }
+
+  const names = holders.map(holder => holder.actor.name).join(', ');
+  if (holders.some(holder => !holder.actor.isOwner)) {
+    ui.notifications.error(game.i18n.format('E20.ContactUntickBlocked', { name: npc.name, holders: names }));
+    return false;
+  }
+
+  const escape = foundry.utils.escapeHTML;
+  const confirmed = await foundry.applications.api.DialogV2.confirm({
+    window: { title: game.i18n.localize('E20.ContactUntickTitle') },
+    content: `<p>${game.i18n.format('E20.ContactUntickPrompt', { name: escape(npc.name), holders: escape(names) })}</p>`,
+    rejectClose: false,
+  });
+  if (!confirmed) {
+    return false;
+  }
+
+  for (const { actor, key } of holders) {
+    await actor.update({ [`system.actors.${key}`]: new foundry.data.operators.ForcedDeletion() });
+  }
+
+  return true;
+}
+
 /** The Contacts listed on a PC's sheet. */
 export function contactsOf(actor) {
   return Object.values(actor?.system?.actors ?? {}).map(entry => {

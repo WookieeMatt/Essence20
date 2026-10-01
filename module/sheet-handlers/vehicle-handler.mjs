@@ -51,6 +51,8 @@ export function prepareSystemActors(actor, context) {
     context.zordActors = zordActors;
     context.contactActors = contactActors;
     context.companionActors = companionActors;
+    // An empty object still counts as true in a template's {{#if}}, so the Contacts tab tests this.
+    context.hasCompanions = Object.keys(companionActors).length > 0;
   }
 }
 
