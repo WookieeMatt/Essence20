@@ -1,10 +1,12 @@
 import { jest } from '@jest/globals';
 import {
   BURN_RUBBER_ID,
+  configureMovementActions,
   consumeForMovement,
   getMovementAllowance,
   isMovementTracked,
   getPushRules,
+  hasMovementType,
   movementTypeFor,
   planPush,
 } from './token-movement.mjs';
@@ -128,8 +130,59 @@ describe("getMovementAllowance", () => {
   });
 
   test("is null for a movement type the actor doesn't have", () => {
-    expect(getMovementAllowance(makeActor(), 'swim')).toBeNull();
+    expect(getMovementAllowance(makeActor(), 'burrow')).toBeNull();
     expect(getMovementAllowance(undefined, 'ground')).toBeNull();
+  });
+
+  // GI Joe CRB p.220: climbing or swimming without that Movement type halves your Movement.
+  test("Swim and Climb fall back to half Ground without a rating of their own", () => {
+    const actor = makeActor({ ground: 35 });
+    expect(getMovementAllowance(actor, 'swim')).toBe(17);
+    actor.system.movement.climb = { total: 0 };
+    expect(getMovementAllowance(actor, 'climb')).toBe(17);
+  });
+
+  test("a Swim or Climb rating is used in full", () => {
+    const actor = makeActor({ ground: 30 });
+    actor.system.movement.swim = { total: 30 };
+    actor.system.movement.climb = { total: 20 };
+    expect(getMovementAllowance(actor, 'swim')).toBe(30);
+    expect(getMovementAllowance(actor, 'climb')).toBe(20);
+  });
+
+  test("Fly gets no Ground fallback", () => {
+    expect(getMovementAllowance(makeActor({ aerial: 0 }), 'aerial')).toBe(0);
+  });
+});
+
+describe("configureMovementActions", () => {
+  const coreActions = () => ({
+    walk: {}, crawl: { costMultiplier: 2 }, climb: { costMultiplier: 2 }, jump: { costMultiplier: 2 },
+    fly: {}, burrow: {}, swim: {},
+  });
+
+  test("Climb and Jump cost a foot per foot; Crawl stays doubled", () => {
+    const actions = coreActions();
+    configureMovementActions(actions);
+    expect(actions.climb.costMultiplier).toBe(1);
+    expect(actions.jump.costMultiplier).toBe(1);
+    expect(actions.crawl.costMultiplier).toBe(2);
+  });
+
+  test("Fly and Burrow are only offered to an actor with that Movement", () => {
+    const actions = coreActions();
+    configureMovementActions(actions);
+    const flier = makeActor({ aerial: 30 });
+    const walker = makeActor({ aerial: 0 });
+    expect(actions.fly.canSelect({ actor: flier })).toBe(true);
+    expect(actions.fly.canSelect({ actor: walker })).toBe(false);
+    expect(actions.burrow.canSelect({ actor: walker })).toBe(false);
+    expect(actions.walk.canSelect).toBeUndefined();
+  });
+
+  test("a token with no actor, or an actor without movement, isn't restricted", () => {
+    expect(hasMovementType(undefined, 'aerial')).toBe(true);
+    expect(hasMovementType({ system: {} }, 'aerial')).toBe(true);
   });
 });
 
@@ -282,7 +335,14 @@ describe("consumeForMovement", () => {
     const actor = makeActor({ ground: 30 });
     setGame({ actor, mode: 'strict' });
 
-    expect(await consumeForMovement(makeToken(actor), makeMovement({ cost: 999, action: 'swim' }))).toBe(true);
+    expect(await consumeForMovement(makeToken(actor), makeMovement({ cost: 999, action: 'burrow' }))).toBe(true);
+  });
+
+  test("measures a swim with no Swim rating against half Ground", async () => {
+    const actor = makeActor({ ground: 30 });
+    setGame({ actor, mode: 'strict' });
+
+    expect(await consumeForMovement(makeToken(actor), makeMovement({ cost: 999, action: 'swim' }))).toBe(false);
   });
 
   test("is inert with the movement setting off", async () => {
@@ -708,7 +768,9 @@ describe("Sprint", () => {
     setGame({ actor });
     await setSprinting(actor, true);
 
-    expect(getMovementAllowance(actor, 'swim')).toBeNull();
+    expect(getMovementAllowance(actor, 'burrow')).toBeNull();
+    // Swim with no rating is half Ground (15), doubled by Sprint.
+    expect(getMovementAllowance(actor, 'swim')).toBe(30);
   });
 
   /* "A character cannot spend Free actions on buying additional Movement that would double one

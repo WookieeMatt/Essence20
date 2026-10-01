@@ -291,6 +291,6 @@ describe('misc', () => {
       { actor: { type: 'playerCharacter', system: { level: 4 } } },
       { actor: { type: 'npc', system: { threatLevel: 5 } } },
     ] } };
-    expect(combatThreatSummary(combat)).toMatchObject({ tl: 5, players: 1, partyLevel: 4 });
+    expect(combatThreatSummary(combat)).toMatchObject({ tl: 5, players: 1, partyLevel: 4, appropriate: 1 });
   });
 });

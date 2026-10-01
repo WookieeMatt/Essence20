@@ -55,6 +55,7 @@ import "./helpers/defense-choice.mjs";
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 import StartingEssences from "./apps/starting-essences.mjs";
 import StatBlockImporter from "./apps/stat-block-importer.mjs";
+import ThreatBuilder from "./apps/threat-builder.mjs";
 import { canSwapTokenForm, swapTokenForm } from "./helpers/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
 import { addConsummatePerformerButton, addDefenseBoostButton, addExploitWeaknessButton, addFlashyButton, addFrenziedAttackButton, addHighDensityButton, addOneUppingButton, addRerollButtons, addSecretHelperButton, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure, runChatDecorators } from "./chat.mjs";
@@ -95,6 +96,7 @@ import {
   refreshTerrainDependentActor,
 } from "./helpers/environment.mjs";
 import { handleCreateRoughTerrainRequest, makeEssence20TerrainData } from "./helpers/rough-terrain.mjs";
+import { configureMovementActions } from "./helpers/token-movement.mjs";
 import { applyEnvironmentAtSceneEnd } from "./helpers/environment-hazards.mjs";
 import { wireEnvironmentLevelSelects } from "./helpers/environment-levels.mjs";
 import { handleGmCreateRequest, handleGmRelayDone, handleGmRelayRequest } from "./helpers/gm-relay.mjs";
@@ -250,6 +252,8 @@ Hooks.once("init", async function () {
   CONFIG.RegionBehavior.typeIcons[ENVIRONMENT_REGION_BEHAVIOR_TYPE] = "fa-solid fa-water";
   // Rough Terrain's doubled Movement cost - see helpers/rough-terrain.mjs's own doc comment.
   CONFIG.Token.movement.TerrainData = makeEssence20TerrainData(CONFIG.Token.movement.TerrainData);
+  // Climb/Jump costs and which actors can pick Fly/Burrow - see helpers/token-movement.mjs.
+  configureMovementActions(CONFIG.Token.movement.actions);
   // Stack counts on status icons (Space Vessel Conditions) - see canvas/token.mjs.
   CONFIG.Token.objectClass = makeEssence20Token(CONFIG.Token.objectClass);
 
@@ -677,6 +681,14 @@ function addStatBlockImporterFooterButton(app, html) {
   });
 
   footer.appendChild(button);
+
+  // The Threat Builder beside it - the books' threat creation rules as a step-by-step window.
+  const builder = document.createElement("button");
+  builder.type = "button";
+  builder.classList.add("essence20-open-threat-builder");
+  builder.innerHTML = `<i class="fa-solid fa-dragon" inert></i><span>${game.i18n.localize("E20.ThreatBuilderOpen")}</span>`;
+  builder.addEventListener("click", () => ThreatBuilder.open());
+  footer.appendChild(builder);
 }
 
 Hooks.on("renderActorDirectory", addStatBlockImporterFooterButton);
