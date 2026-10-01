@@ -24,6 +24,34 @@
       "step summary";
   }
 
+  // One typeface throughout: Foundry's heading font on h3-h5 sat oddly beside the body text.
+  h3,
+  h4,
+  h5 {
+    font-family: inherit;
+    border: none;
+    text-shadow: none;
+  }
+
+  h3 {
+    font-size: 1.3em;
+    font-weight: 700;
+  }
+
+  h4 {
+    font-size: 1.1em;
+    font-weight: 700;
+  }
+
+  // A section label inside the summary, the size of the rows around it.
+  h5 {
+    font-size: 0.8em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
   .hint {
     margin: 0;
     font-size: 0.9em;
@@ -404,5 +432,16 @@
   button {
     flex: 0 0 auto;
     min-width: 8em;
+  }
+}
+
+/* Magnifying glass beside a list's title or drop hint: opens the Compendium Browser on that item type. */
+.essence20 .threat-builder-browse {
+  margin-left: 4px;
+  font-weight: 400;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--e20-theme-accent);
   }
 }

@@ -1,6 +1,6 @@
 {{!-- Threat Builder: a drop zone for compendium or world Items, added through the sheet's own drop handling on Create. --}}
 <div class="threat-builder-drop" data-zone="{{zone}}">
-  <p class="hint"><i class="fa-solid fa-hand-pointer" inert></i> {{hint}}</p>
+  <p class="hint"><i class="fa-solid fa-hand-pointer" inert></i> {{hint}}{{#if type}} <a class="threat-builder-browse" data-action="openCompendium" data-type="{{type}}" data-tooltip="{{localize 'E20.CompendiumBrowserOpenFor'}}" aria-label="{{localize 'E20.CompendiumBrowserOpenFor'}}"><i class="fa-solid fa-magnifying-glass" inert></i></a>{{/if}}</p>
   <ul class="threat-builder-list">
     {{#each rows as |row|}}
       {{#if (eq row.zone ../zone)}}

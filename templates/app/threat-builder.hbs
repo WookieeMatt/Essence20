@@ -68,8 +68,8 @@
     {{else if (eq step "level")}}
       <h3>{{localize 'E20.ThreatStep.level'}}</h3>
       <p class="hint">
-        {{#if party.count}}{{localize 'E20.ThreatBuilderParty' count=party.count average=party.average appropriate=party.appropriate}}
-        {{else}}{{localize 'E20.ThreatBuilderNoParty'}}{{/if}}
+        {{#if party.count}}{{localize 'E20.ThreatBuilderParty' party=party.name count=party.count average=party.average appropriate=party.appropriate}}
+        {{else}}{{localize 'E20.ThreatBuilderNoParty' party=party.name}}{{/if}}
       </p>
       <div class="threat-builder-roles">
         {{#each roles as |r|}}
@@ -155,9 +155,9 @@
       {{/if}}
       {{/if}}
 
-      {{> "systems/essence20/templates/app/parts/threat-builder-rows.hbs" list="customPerks" rows=state.customPerks label=(localize 'E20.ThreatBuilderNewPerk')}}
-      {{> "systems/essence20/templates/app/parts/threat-builder-rows.hbs" list="customPowers" rows=state.customPowers label=(localize 'E20.ThreatBuilderNewPower') power=true actionChoices=actionChoices}}
-      {{> "systems/essence20/templates/app/parts/threat-builder-rows.hbs" list="customHangUps" rows=state.customHangUps label=(localize 'E20.ThreatBuilderNewHangUp')}}
+      {{> "systems/essence20/templates/app/parts/threat-builder-rows.hbs" list="customPerks" rows=state.customPerks label=(localize 'E20.ThreatBuilderNewPerk') type="perk"}}
+      {{> "systems/essence20/templates/app/parts/threat-builder-rows.hbs" list="customPowers" rows=state.customPowers label=(localize 'E20.ThreatBuilderNewPower') type="power" power=true actionChoices=actionChoices}}
+      {{> "systems/essence20/templates/app/parts/threat-builder-rows.hbs" list="customHangUps" rows=state.customHangUps label=(localize 'E20.ThreatBuilderNewHangUp') type="hangUp"}}
       {{> "systems/essence20/templates/app/parts/threat-builder-drop.hbs" zone="perks" rows=droppedRows hint=(localize 'E20.ThreatBuilderDropPerks')}}
 
     {{else if (eq step "attacks")}}
@@ -179,12 +179,12 @@
         </div>
       {{/each}}
       <button type="button" data-action="addRow" data-list="attacks"><i class="fa-solid fa-plus" inert></i> {{localize 'E20.ThreatBuilderNewAttack'}}</button>
-      {{> "systems/essence20/templates/app/parts/threat-builder-drop.hbs" zone="attacks" rows=droppedRows hint=(localize 'E20.ThreatBuilderDropWeapons')}}
+      {{> "systems/essence20/templates/app/parts/threat-builder-drop.hbs" zone="attacks" rows=droppedRows hint=(localize 'E20.ThreatBuilderDropWeapons') type="weapon"}}
 
     {{else if (eq step "equipment")}}
       <h3>{{localize 'E20.ThreatStep.equipment'}}</h3>
       <p class="hint">{{localize 'E20.ThreatHint.equipment'}}</p>
-      {{> "systems/essence20/templates/app/parts/threat-builder-drop.hbs" zone="equipment" rows=droppedRows hint=(localize 'E20.ThreatBuilderDropEquipment')}}
+      {{> "systems/essence20/templates/app/parts/threat-builder-drop.hbs" zone="equipment" rows=droppedRows hint=(localize 'E20.ThreatBuilderDropEquipment') type="armor"}}
 
     {{else if (eq step "grow")}}
       <h3>{{localize 'E20.ThreatStep.grow'}}</h3>
@@ -230,7 +230,7 @@
       {{#each defenseRows as |row|}}<dt>{{row.label}}</dt><dd>{{row.value}}</dd>{{/each}}
     </dl>
     {{#unless (or audit (eq step "review"))}}
-      {{#if warnCount}}<p class="warn"><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize 'E20.ThreatBuilderWarnCount' count=warnCount}}</p>{{/if}}
+      {{#if warnCount}}<p class="warn"><i class="fa-solid fa-triangle-exclamation" inert></i> {{#if (eq warnCount 1)}}{{localize 'E20.ThreatBuilderWarnCountOne'}}{{else}}{{localize 'E20.ThreatBuilderWarnCount' count=warnCount}}{{/if}}</p>{{/if}}
     {{/unless}}
   </aside>
 

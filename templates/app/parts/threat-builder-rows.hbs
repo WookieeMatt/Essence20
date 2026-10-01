@@ -1,6 +1,6 @@
 {{!-- Threat Builder: a list of new Perks, Powers or Hang-Ups typed in by hand (apps/threat-builder.mjs). --}}
 <fieldset class="threat-builder-rows">
-  <legend>{{label}}</legend>
+  <legend>{{label}}{{#if type}} <a class="threat-builder-browse" data-action="openCompendium" data-type="{{type}}" data-tooltip="{{localize 'E20.CompendiumBrowserOpenFor'}}" aria-label="{{localize 'E20.CompendiumBrowserOpenFor'}}"><i class="fa-solid fa-magnifying-glass" inert></i></a>{{/if}}</legend>
   {{#each rows as |row i|}}
     <div class="threat-builder-newitem">
       <input type="text" name="{{../list}}.{{i}}.name" value="{{row.name}}" placeholder="{{localize 'E20.ThreatBuilderItemName'}}">

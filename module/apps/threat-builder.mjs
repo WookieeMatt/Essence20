@@ -1,5 +1,6 @@
 import { applyThemeClass, getGameLine } from "../settings.js";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import Essence20CompendiumBrowser from "./compendium-browser.mjs";
 import {
   allowedSizes, appropriateThreatLevel, auditThreat, buildThreatIr, defaultRulesetFor, essenceBudget, essencesFromSkills,
   ESSENCES, extraMovementRate, maxDamagePerks, MOVEMENT_TYPES, perkBudget, QUICK_PERKS, RANKED_SHIFTS, ROLE_PRESETS, RULESETS,
@@ -94,17 +95,15 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
     };
   }
 
-  /** The party's levels: the primary Party's members, else every player-owned character. */
+  /**
+   * The primary Party's levels. A world always has a Party (documents/actors.mjs), so an empty one
+   * just means nobody has been added to it yet - the presets then assume level 1.
+   */
   static partyLevels() {
     const party = game.actors?.party;
-    let members = party?.members ?? [];
-    if (!members.length) {
-      members = game.actors?.filter(actor => actor.type == 'playerCharacter' && actor.hasPlayerOwner) ?? [];
-    }
-
-    const levels = members.map(actor => Number(actor.system?.level) || 1);
+    const levels = (party?.members ?? []).map(actor => Number(actor.system?.level) || 1);
     const average = levels.length ? Math.round(levels.reduce((a, b) => a + b, 0) / levels.length) : 1;
-    return { levels, average, count: levels.length, appropriate: levels.length ? appropriateThreatLevel(levels) : null };
+    return { name: party?.name ?? '', levels, average, count: levels.length, appropriate: levels.length ? appropriateThreatLevel(levels) : null };
   }
 
   static DEFAULT_OPTIONS = {
@@ -120,6 +119,7 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
       create: ThreatBuilder.#onCreate,
       remember: ThreatBuilder.#onRemember,
       openSkillPicker: ThreatBuilder.#onOpenSkillPicker,
+      openCompendium: ThreatBuilder.#onOpenCompendium,
     },
     classes: ["essence20", "theme-wrapper", "e20-window", "threat-builder"],
     tag: "form",
@@ -532,6 +532,11 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
       },
     });
     ui.notifications.info(T('E20.ThreatAuditRemembered', { name: this._actor.name }));
+  }
+
+  /** The magnifying glasses: the Compendium Browser on the tab for that kind of item, to drag from. */
+  static #onOpenCompendium(event, target) {
+    return Essence20CompendiumBrowser.openTo(target.dataset.type);
   }
 
   static async #onOpenSkillPicker() {
