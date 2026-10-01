@@ -124,6 +124,64 @@ export async function offerMakeContact(npc) {
   return true;
 }
 
+/**
+ * The characters that list this NPC on their Contacts tab, with the system.actors key it sits under.
+ * @param {Actor} npc
+ * @returns {{actor: Actor, key: string}[]}
+ */
+export function contactHolders(npc) {
+  const holders = [];
+  for (const actor of globalThis.game?.actors ?? []) {
+    if (actor.type != 'playerCharacter') {
+      continue;
+    }
+
+    for (const [key, entry] of Object.entries(actor.system?.actors ?? {})) {
+      if (entry?.uuid == npc?.uuid) {
+        holders.push({ actor, key });
+      }
+    }
+  }
+
+  return holders;
+}
+
+/**
+ * Unticking Contact on an NPC that characters list as a Contact: confirm, then take it off their
+ * Contacts tabs, so only Contacts are ever on one (the drop side is offerMakeContact). Refused
+ * outright when the user can't edit one of those characters.
+ * @param {Actor} npc
+ * @returns {Promise<boolean>} true when the untick can go ahead
+ */
+export async function confirmStopBeingContact(npc) {
+  const holders = contactHolders(npc);
+  if (!holders.length) {
+    return true;
+  }
+
+  const names = holders.map(holder => holder.actor.name).join(', ');
+  if (holders.some(holder => !holder.actor.isOwner)) {
+    ui.notifications.error(game.i18n.format('E20.ContactUntickBlocked', { name: npc.name, holders: names }));
+    return false;
+  }
+
+  const escape = foundry.utils.escapeHTML;
+  const confirmed = await foundry.applications.api.DialogV2.confirm({
+    window: { title: game.i18n.localize('E20.ContactUntickTitle') },
+    content: `<p>${game.i18n.format('E20.ContactUntickPrompt', { name: escape(npc.name), holders: escape(names) })}</p>`,
+    rejectClose: false,
+  });
+  if (!confirmed) {
+    return false;
+  }
+
+  for (const { actor, key } of holders) {
+    await actor.update({ [`system.actors.${key}`]: new foundry.data.operators.ForcedDeletion() });
+  }
+
+  return true;
+}
+
 /** The Contacts listed on a PC's sheet. */
 export function contactsOf(actor) {
   return Object.values(actor?.system?.actors ?? {}).map(entry => {

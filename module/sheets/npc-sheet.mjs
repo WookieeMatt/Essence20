@@ -1,6 +1,6 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 import { getActionsTabContext } from "../helpers/action-economy.mjs";
-import { npcUseToggle } from "../helpers/contacts.mjs";
+import { confirmStopBeingContact, npcUseToggle } from "../helpers/contacts.mjs";
 
 export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
   static DEFAULT_OPTIONS = {
@@ -17,8 +17,17 @@ export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
     const update = npcUseToggle(this.actor.system, target.dataset.field);
     if (!update) {
       event.preventDefault();
-      ui.notifications.info(game.i18n.localize('E20.NpcUseKeepOne'));
+      ui.notifications.error(game.i18n.localize('E20.NpcUseKeepOne'));
       return;
+    }
+
+    // No longer a Contact: characters listing it lose it first, once confirmed. The tick stays until
+    // then - the re-render after the update clears it.
+    if (update['system.isContact'] === false) {
+      event.preventDefault();
+      if (!(await confirmStopBeingContact(this.actor))) {
+        return;
+      }
     }
 
     await this.actor.update(update);

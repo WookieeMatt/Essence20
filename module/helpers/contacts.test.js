@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { npcUseToggle, offerMakeContact } from './contacts.mjs';
+import { confirmStopBeingContact, contactHolders, npcUseToggle, offerMakeContact } from './contacts.mjs';
 
 describe('npcUseToggle (NPC sheet header buttons)', () => {
   test('each button flips its own flag, so both on is both', () => {
@@ -64,5 +64,75 @@ describe('offerMakeContact (NPC dropped on a character)', () => {
     expect(confirm).not.toHaveBeenCalled();
     expect(ui.notifications.warn).toHaveBeenCalled();
     expect(notMine.update).not.toHaveBeenCalled();
+  });
+});
+
+describe('confirmStopBeingContact (unticking Contact)', () => {
+  const NPC = { uuid: 'Actor.rook', name: 'Rook' };
+  const pc = (name, actors, isOwner = true) => ({
+    type: 'playerCharacter', name, isOwner, system: { actors }, update: jest.fn(async () => {}),
+  });
+  let confirm;
+  let savedApplications;
+  let savedData;
+
+  beforeEach(() => {
+    confirm = jest.fn();
+    savedApplications = global.foundry.applications;
+    savedData = global.foundry.data;
+    global.foundry.applications = { api: { DialogV2: { confirm } } };
+    global.foundry.data = { operators: { ForcedDeletion: class ForcedDeletion {} } };
+    global.foundry.utils.escapeHTML = value => value;
+    global.ui = { notifications: { error: jest.fn() } };
+  });
+
+  afterEach(() => {
+    global.foundry.applications = savedApplications;
+    global.foundry.data = savedData;
+    delete global.game;
+    delete global.ui;
+  });
+
+  const world = actors => {
+    global.game = { actors, i18n: { localize: k => k, format: k => k } };
+  };
+
+  test('finds the characters that list the NPC, and only those', () => {
+    const alice = pc('Alice', { k1: { uuid: 'Actor.rook' }, k2: { uuid: 'Actor.other' } });
+    const vehicle = { type: 'vehicle', system: { actors: { k: { uuid: 'Actor.rook' } } } };
+    world([alice, pc('Bob', {}), vehicle]);
+    expect(contactHolders(NPC)).toEqual([{ actor: alice, key: 'k1' }]);
+  });
+
+  test('nobody lists it: goes straight through', async () => {
+    world([pc('Bob', {})]);
+    expect(await confirmStopBeingContact(NPC)).toBe(true);
+    expect(confirm).not.toHaveBeenCalled();
+  });
+
+  test('confirmed: removes it from each character, then lets the untick through', async () => {
+    const alice = pc('Alice', { k1: { uuid: 'Actor.rook' } });
+    world([alice]);
+    confirm.mockResolvedValue(true);
+    expect(await confirmStopBeingContact(NPC)).toBe(true);
+    expect(alice.update).toHaveBeenCalledWith({ 'system.actors.k1': expect.any(global.foundry.data.operators.ForcedDeletion) });
+  });
+
+  test('declined or closed: nothing changes', async () => {
+    const alice = pc('Alice', { k1: { uuid: 'Actor.rook' } });
+    world([alice]);
+    confirm.mockResolvedValue(false);
+    expect(await confirmStopBeingContact(NPC)).toBe(false);
+    confirm.mockResolvedValue(null);
+    expect(await confirmStopBeingContact(NPC)).toBe(false);
+    expect(alice.update).not.toHaveBeenCalled();
+  });
+
+  test('a character the user cannot edit blocks it', async () => {
+    const alice = pc('Alice', { k1: { uuid: 'Actor.rook' } }, false);
+    world([alice]);
+    expect(await confirmStopBeingContact(NPC)).toBe(false);
+    expect(ui.notifications.error).toHaveBeenCalled();
+    expect(confirm).not.toHaveBeenCalled();
   });
 });
