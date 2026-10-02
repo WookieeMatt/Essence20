@@ -40,7 +40,6 @@ export const G3 = {
   personOfCulture: U('general_hawk_s_personel_files', 'UASxRYtsWV1CnE8y'),
   oldHand: U('general_hawk_s_personel_files', 'KjGQyRLheKp8zT8v'),
   onceAMarauder: U('sgt_slaughter_sourcebook', 'Prmh2Lie5CEOp71i'),
-  broadcasterHangUp: U('quartermasters_guide_to_gear', '5Fe0ACJMotbya813'),
   broadcaster: U('quartermasters_guide_to_gear', 'IvmCWJUuntY3KALM'),
   earlyAdopter: U('quartermasters_guide_to_gear', 'WrRChund2zAcHYfe'),
   fieldTrials: U('quartermasters_guide_to_gear', 'HBSVeVpRVBXiPgSW'),
@@ -118,8 +117,6 @@ export const deps = {
  *   interviews, or military tribunals."
  * - Once a Marauder Hang-Up (Sgt Slaughter Sourcebook p.7): "You suffer ↓1 on Social Skill Tests
  *   dealing with figures whom society believes should have authority over you."
- * - Broadcaster Hang-Up (Quartermaster's Guide p.8): "You suffer Snag on Social Skill Tests
- *   involving people you haven't met before."
  * - Broadcaster Influence Perk (p.8): "You gain Edge on Social Skill Tests involving people you're
  *   communicating with using technological devices" (the Technology (Communications) half is in
  *   dice.mjs).
@@ -153,13 +150,6 @@ const SWITCHES = [
     shows: (actor, ctx) => isSocial(ctx),
     apply: options => {
       options.shiftDown = (Number(options.shiftDown) || 0) + 1; 
-    },
-  },
-  {
-    name: 'gij3BroadcasterHangUp', id: G3.broadcasterHangUp, label: 'Gij3BroadcasterHangUpToggle',
-    shows: (actor, ctx) => isSocial(ctx),
-    apply: options => {
-      options.snag = true; 
     },
   },
   {

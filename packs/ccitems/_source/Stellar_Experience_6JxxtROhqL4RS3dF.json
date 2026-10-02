@@ -5,6 +5,9 @@
   "_id": "6JxxtROhqL4RS3dF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Space, geography, engineering or philosophy (Stellar Experience: Edge)","when":["essence:smarts","not:attack"],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: a switch for Edge on Smarts tests about space, geography, engineering or philosophy.</p><p>Left to the table: doubling how long you can hold your breath.</p>"

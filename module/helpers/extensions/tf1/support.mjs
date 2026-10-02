@@ -70,12 +70,6 @@ export function tf1SupportToggles(actor, { rolledSkill } = {}) {
   const essence = essenceOf(rolledSkill);
   const add = (name, label) => toggles.push({ name, label, type: 'checkbox' });
 
-  // Traitor (Decepticon Directive, Influence, Mandatory Hang-Up, p.31): "This imposes ↓1 to all Social
-  // Skill Tests that target members of your own faction who know of your past allegiance."
-  if (essence == 'social' && has(actor, TF1.traitor)) {
-    add('tf1Traitor', T('Tf1ToggleTraitor', { hangUp: nameOf(actor, TF1.traitor, 'Traitor') }));
-  }
-
   // Collection of Secrets (Inquisitor, 20th level, p.41): "when you spend a Story Point to receive a
   // clue, you gain Edge on all Smarts- and Social-based Skill Tests to act on that information. This
   // bonus lasts until the end of the session."
@@ -95,10 +89,6 @@ export function tf1SupportToggles(actor, { rolledSkill } = {}) {
 
 export async function tf1SupportApplyDialog(actor, options) {
   const ext = options.ext ?? {};
-  if (ext.tf1Traitor) {
-    options.shiftDown = (options.shiftDown ?? 0) + 1;
-  }
-
   if (ext.tf1Secrets) {
     if (options.snag) {
       options.snag = false;

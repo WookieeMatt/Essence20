@@ -80,12 +80,6 @@ describe('roll sources', () => {
     expect(tf3RollSources(bot, null, { rolledSkill: 'intimidation' }).sources).toEqual([]);
   });
 
-  test('Whimsical ↓1 on Infiltration', () => {
-    const holder = actor([item(TF3.whimsical, { type: 'hangUp' })]);
-    expect(tf3RollSources(holder, null, { rolledSkill: 'infiltration' }).sources[0].shiftDown).toBe(1);
-    expect(tf3RollSources(holder, null, { rolledSkill: 'deception' }).sources).toEqual([]);
-  });
-
   test('Martyr gives allies Edge for the rest of the combat', () => {
     const martyr = actor([item(TF3.martyr)], { id: 'm', flags: { [MARTYR_FLAG]: 'c1' } });
     const ally = actor([], { id: 'b' });

@@ -1,0 +1,78 @@
+<section class="tab rules {{tabs.rules.cssClass}}" data-tab="rules" data-group="primary">
+  <div class="e20-rules">
+    <p class="e20-rules-intro">{{localize "E20.Rules.Intro"}}</p>
+    {{#if rulesInherited}}<p class="e20-rules-intro">{{localize "E20.Rules.Inherited"}}</p>{{/if}}
+
+    {{#if rules.length}}
+      <ol class="e20-rules-list">
+        {{#each rules as |entry|}}
+          <li class="e20-rule{{#if entry.errors.length}} has-errors{{/if}}{{#if entry.rule.disabled}} is-disabled{{/if}}">
+            <div class="e20-rule-line">
+              <span class="e20-rule-type">{{entry.rule.type}}</span>
+              <span class="e20-rule-summary">{{entry.summary}}</span>
+              {{#if @root.editable}}
+                <a class="e20-rule-control" data-action="rulesDelete" data-index="{{entry.index}}" data-tooltip="E20.Rules.Delete">
+                  <i class="fas fa-trash"></i>
+                </a>
+              {{/if}}
+            </div>
+
+            {{#if entry.toggle}}
+              <label class="e20-rule-state">
+                <input type="checkbox" data-action="rulesToggle" data-key="{{entry.rule.key}}" {{checked entry.toggle.value}} {{#unless @root.rulesOwned}}disabled{{/unless}}>
+                {{localize "E20.Rules.ToggleOn"}}
+              </label>
+            {{/if}}
+
+            {{#if entry.pool}}
+              <div class="e20-rule-state">
+                {{#if @root.rulesOwned}}
+                  <a class="e20-rule-control" data-action="rulesPool" data-key="{{entry.rule.key}}" data-delta="-1"><i class="fas fa-minus"></i></a>
+                {{/if}}
+                <span class="e20-rule-pool">{{entry.pool.value}} / {{entry.pool.max}}</span>
+                {{#if @root.rulesOwned}}
+                  <a class="e20-rule-control" data-action="rulesPool" data-key="{{entry.rule.key}}" data-delta="1"><i class="fas fa-plus"></i></a>
+                {{/if}}
+              </div>
+            {{/if}}
+
+            {{#if entry.choice}}
+              <div class="e20-rule-state">
+                <span>{{#if entry.choice.label}}{{entry.choice.label}}{{else}}{{localize "E20.Rules.ChoiceUnset"}}{{/if}}</span>
+                {{#if @root.rulesOwned}}
+                  <a class="e20-rule-control" data-action="rulesChoose" data-index="{{entry.index}}">{{localize "E20.Rules.ChoiceChange"}}</a>
+                {{/if}}
+              </div>
+            {{/if}}
+
+            {{#if entry.errors.length}}
+              <ul class="e20-rule-errors">
+                {{#each entry.errors}}<li>{{this}}</li>{{/each}}
+              </ul>
+            {{/if}}
+          </li>
+        {{/each}}
+      </ol>
+    {{else}}
+      <p class="e20-rules-empty">{{localize "E20.Rules.None"}}</p>
+    {{/if}}
+
+    {{#if editable}}
+      <div class="e20-rules-add">
+        <select data-rules-add-type>
+          {{#each ruleTypes}}<option value="{{this}}">{{this}}</option>{{/each}}
+        </select>
+        <button type="button" data-action="rulesAdd"><i class="fas fa-plus"></i> {{localize "E20.Rules.Add"}}</button>
+      </div>
+
+      <details class="e20-rules-json"{{#if rulesJsonOpen}} open{{/if}}>
+        <summary>{{localize "E20.Rules.Json"}}</summary>
+        <textarea data-rules-json rows="12" spellcheck="false">{{rulesJson}}</textarea>
+        <div class="e20-rules-json-actions">
+          <span class="e20-rules-json-error" data-rules-json-error></span>
+          <button type="button" data-action="rulesSaveJson"><i class="fas fa-save"></i> {{localize "E20.Rules.SaveJson"}}</button>
+        </div>
+      </details>
+    {{/if}}
+  </div>
+</section>

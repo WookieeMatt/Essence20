@@ -5,9 +5,12 @@
   "_id": "K1unZpd5j419Qwka",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Insectoid Components (Alt Mode)","when":["skill:brawn","self:transformed"],"upshift":2}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +2 Toughness. Automatic: in Alt Mode your Brawn tests get ↑2, already applied when the Roll Options Dialog opens.</p>"
+      "notes": "<p>Active Effect: +2 Toughness. Automatic: in Alt Mode your Brawn tests get ↑2, listed as Insectoid Components in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

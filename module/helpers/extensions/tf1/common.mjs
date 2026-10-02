@@ -34,7 +34,6 @@ export const TF1 = {
   targetRichEnvironment: dd('BF1fKwzQQb1LFKGP'),
   theyCalledItAGlitch: dd('IKPWMfs5ZSp6ijiv'),
   toxEn: dd('uJRbkLx1BiXNpo3p'),
-  traitor: dd('SBRYtQKEy0EKsYBi'),
   favoriteWeapon: dd('emaXxo2XzoHMoNCe'),
   // Transformers CRB: Disappear (Scout Cybertronian Perk) and Alt Mode Mastery (Modemaster, 10th).
   disappear: 'Compendium.essence20.tf_crb.Item.aD6N6hTvFhsQFZnB',

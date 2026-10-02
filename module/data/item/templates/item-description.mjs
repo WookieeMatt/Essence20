@@ -15,4 +15,8 @@ export const itemDescription = () => ({
     status: new fields.StringField({ initial: '', blank: true, choices: ['', 'full', 'partial', 'manual'] }),
     notes: new fields.HTMLField(),
   }),
+  // The item's behaviour as data - typed rule objects run by module/rules/ (docs/RULES_ENGINE_PLAN.md).
+  // Deliberately a list of plain objects, not a typed schema: the engine validates them
+  // (rules/types.mjs#validateRule), so a rule this version doesn't know is kept, not stripped.
+  rules: new fields.ArrayField(new fields.ObjectField()),
 });

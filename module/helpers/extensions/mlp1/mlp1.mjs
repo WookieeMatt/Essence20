@@ -28,7 +28,6 @@ export const MLP1 = {
   honoraryApple: pack('in_a_jam', 'bYx0fmWfkOTjr97q'),
   keyToWhinnypeg: pack('in_a_jam', '6HJlO4qnOTRqrOmF'),
   brilliantSight: koc('Oc8NpQa5ylK2Ix0B'),
-  eagerToExplode: koc('ieng7vOsUiz5fVBP'),
   farSighted: koc('Sm7INWZQAIXlu5HC'),
   handAxe: koc('7crNgIuylYGHUES8'),
   handsaw: koc('f9Xl8sawCJ7EBwGw'),
@@ -266,10 +265,6 @@ export function mlp1Toggles(actor, { item, rolledSkill } = {}) {
   }
 
   // Hang-Ups.
-  if (item?.type != 'spell' && rolledSkill != 'spellcasting' && hasSourced(actor, MLP1.eagerToExplode)) {
-    add('eagerToExplode', T('E20.Mlp1ToggleEager'));
-  }
-
   if (rolledSkill == 'alertness' && hasSourced(actor, MLP1.farSighted) && hasRangedWeapon(actor)) {
     add('farSighted', T('E20.Mlp1ToggleFarSighted'), { value: true });
   }
@@ -318,13 +313,9 @@ export async function mlp1ApplyDialog(actor, options) {
     up(1);
   }
 
-  // Eager to Explode: "the Skill Test suffers ↓1". Hard Habit to Break: "you suffer ↓1 to your Skill
+  // Hard Habit to Break: "you suffer ↓1 to your Skill
   // Test". Far-Sighted: "Snag on any Alertness Skill Tests within 10 feet of you if you're currently using
   // a ranged weapon". Hidden in Plain Sight / Mired in Academia: a Snag.
-  if (ext.eagerToExplode) {
-    down(1);
-  }
-
   if (ext.hardHabit) {
     down(1);
   }

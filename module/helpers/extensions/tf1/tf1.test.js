@@ -6,7 +6,7 @@ import {
 } from './combat.mjs';
 import {
   FLEXIBLE_SWITCH_RULE, PARTNERED_RULE, SUPPORT_USES, mimicrySizeOk, sizeClass, tf1SupportApplyDialog, tf1SupportPostRoll,
-  tf1SupportSources, tf1SupportToggles,
+  tf1SupportSources,
 } from './support.mjs';
 import { registrySnapshot } from '../../extensions.mjs';
 
@@ -133,13 +133,11 @@ test('Loaded Questions: cumulative ↑1 per earlier test on the same target this
   expect(tf1SupportSources(holder, foe, { rolledSkill: 'alertness' }).sources).toEqual([]);
 });
 
-test('Traitor and Storage Compartments toggles', async () => {
-  const traitor = makeActor([owned(TF1.traitor, { type: 'hangUp' })]);
-  expect(tf1SupportToggles(traitor, { rolledSkill: 'persuasion' }).map(t => t.name)).toContain('tf1Traitor');
-  expect(tf1SupportToggles(traitor, { rolledSkill: 'alertness' }).map(t => t.name)).not.toContain('tf1Traitor');
-  const options = { shiftDown: 0, edge: true, ext: { tf1Traitor: true, tf1Storage: true } };
+test('Storage Compartments toggle', async () => {
+  const traitor = makeActor([]);
+  const options = { shiftDown: 0, edge: true, ext: { tf1Storage: true } };
   await tf1SupportApplyDialog(traitor, options);
-  expect(options).toMatchObject({ shiftDown: 1, edge: false });
+  expect(options).toMatchObject({ shiftDown: 0, edge: false });
   const secrets = { edge: false, snag: false, ext: { tf1Secrets: true } };
   await tf1SupportApplyDialog(traitor, secrets);
   expect(secrets.edge).toBe(true);

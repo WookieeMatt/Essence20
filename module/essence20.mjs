@@ -1,6 +1,11 @@
 import { runChatDecorators as runExtChatDecorators, runMissionAdvanced, runSceneAdvanced } from "./helpers/extensions.mjs";
 // Every extension module registers itself on import (helpers/extensions/index.mjs).
 import "./helpers/extensions/index.mjs";
+// Item rules (system.rules) - one more extension, plus their add/remove lifecycle (docs/RULES_ENGINE_PLAN.md).
+import "./rules/adapter.mjs";
+import "./rules/lifecycle.mjs";
+import { linkExistingCopies, loadSourceIndexes } from "./rules/inherit.mjs";
+import { registerRuleHelper } from "./rules/code.mjs";
 import { decorateSocialCard, onGroupResultChanged } from "./helpers/social-cards.mjs";
 import { endSceneTeamEffects, onMorphChanged } from "./helpers/team-actions.mjs";
 import { onInitiativeRolled } from "./helpers/commands.mjs";
@@ -115,6 +120,15 @@ function registerSystemSettings() {
     type: String,
     default: "",
   });
+
+  // Which compendium items carried rules the last time existing copies were linked to them
+  // (rules/inherit.mjs#linkExistingCopies) - the pass re-runs only when that set changes.
+  game.settings.register("essence20", "rulesLinkSignature", {
+    config: false,
+    scope: "world",
+    type: String,
+    default: "",
+  });
 }
 
 /**
@@ -164,7 +178,7 @@ function runMigrations() {
 Hooks.once("init", async function () {
   // Item automation notes ride in the compendium index, so a copy on an actor can show its
   // original's current notes without loading the compendium document (documents/item.mjs).
-  CONFIG.Item.compendiumIndexFields = [...new Set([...(CONFIG.Item.compendiumIndexFields ?? []), 'system.automation'])];
+  CONFIG.Item.compendiumIndexFields = [...new Set([...(CONFIG.Item.compendiumIndexFields ?? []), 'system.automation', 'system.rules'])];
 
   // Blindsight needs its detection mode to exist before any token is drawn - see
   // helpers/blindsight.mjs's own doc comment.
@@ -173,6 +187,8 @@ Hooks.once("init", async function () {
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.essence20 = {
+    // Item rules' Code helpers - any module or world script can add one (rules/code.mjs).
+    registerRuleHelper,
     // A Group Skill Test for the selected tokens (or the given actors) - helpers/group-tests.mjs.
     groupSkillTest: (actors = null) => startGroupTest(actors),
     Essence20Actor,
@@ -535,6 +551,14 @@ Hooks.on("clientSettingChanged", (key) => {
 });
 
 Hooks.once("ready", async function () {
+  // Compendium copies inherit their original's rules - load the indexes that carry them (rules/inherit.mjs).
+  try {
+    await loadSourceIndexes();
+    await linkExistingCopies();
+  } catch (error) {
+    console.error("Essence20 | Loading compendium rules failed", error);
+  }
+
   runMigrations();
 
   /* Client-scoped, so it cannot ride along with runMigrations() (which is the world-data pass a

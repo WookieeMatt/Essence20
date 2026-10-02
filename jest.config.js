@@ -9,6 +9,7 @@ export default {
     'module/helpers/**/*.mjs',
     'module/data/**/*.mjs',
     'module/sheet-handlers/**/*.mjs',
+    'module/rules/**/*.mjs',
     'module/dice.mjs',
     'module/chat.mjs',
   ],

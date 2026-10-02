@@ -17,6 +17,7 @@ import {
   onEditActiveEffect,
   onToggleActiveEffect,
 } from "../helpers/effects.mjs";
+import { addRule, changeChoice, deleteRule, rulesContext, saveRulesJson, setToggle, stepPool } from "../rules/sheet.mjs";
 
 /**
  * Handles retrieving all existing roles of the system version selected.
@@ -97,6 +98,12 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       deleteEffect: this.#deleteActiveEffect,
       editEffect: this.#editActiveEffect,
       toggleEffect: this.#toggleActiveEffect,
+      rulesSaveJson: this.#rulesSaveJson,
+      rulesAdd: this.#rulesAdd,
+      rulesDelete: this.#rulesDelete,
+      rulesToggle: this.#rulesToggle,
+      rulesPool: this.#rulesPool,
+      rulesChoose: this.#rulesChoose,
     },
     classes: ["essence20", "sheet", "item", "window-app", "theme-wrapper", "e20-window"],
     form: {
@@ -138,6 +145,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
         { id: "description", group: 'primary', label: "Description"},
         { id: "details", group: 'primary', label: "Details"},
         { id: "effects", group: 'primary', label: "Effects"},
+        { id: "rules", group: 'primary', label: "E20.Rules.Tab"},
       ],
       initial: "description",
     },
@@ -167,6 +175,10 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       template: "systems/essence20/templates/item/tabs/effects.hbs",
       scrollable: [""],
     },
+    rules: {
+      template: "systems/essence20/templates/item/tabs/rules.hbs",
+      scrollable: [""],
+    },
   };
 
 
@@ -193,6 +205,11 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     if (options.isFirstRender) {
       context.activeTab = "description";
       context.tabs.description.active = true;
+    }
+
+    // The Rules tab is for item types that carry system.rules (data/item/templates/item-description.mjs).
+    if (!Array.isArray(itemData.system?.rules)) {
+      delete context.tabs.rules;
     }
 
     // Prepare active effects
@@ -245,6 +262,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     case "description": context = await this._prepareDescriptionContext(context); break;
     case "details": context = await this._prepareDetailsContext(context); break;
     case "effects": context = await this._prepareEffectsContext(context); break;
+    case "rules": Object.assign(context, rulesContext(this.document)); break;
     }
 
     return context;
@@ -445,6 +463,33 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
 
   static #toggleActiveEffect(event, target){
     onToggleActiveEffect(event, target);
+  }
+
+  /* Rules tab (module/rules/sheet.mjs) */
+
+  static async #rulesSaveJson() {
+    await saveRulesJson(this.document, this.element);
+  }
+
+  static async #rulesAdd() {
+    const type = this.element.querySelector('[data-rules-add-type]')?.value;
+    await addRule(this.document, type);
+  }
+
+  static async #rulesDelete(event, target) {
+    await deleteRule(this.document, Number(target.dataset.index));
+  }
+
+  static async #rulesToggle(event, target) {
+    await setToggle(this.document, target.dataset.key, target.checked);
+  }
+
+  static async #rulesPool(event, target) {
+    await stepPool(this.document, target.dataset.key, Number(target.dataset.delta) || 0);
+  }
+
+  static async #rulesChoose(event, target) {
+    await changeChoice(this.document, Number(target.dataset.index));
   }
 
   /**

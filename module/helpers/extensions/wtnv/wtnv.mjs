@@ -29,7 +29,6 @@ export const WTNV = {
   replacementTeeth: wtnv('wuHnZ1qtGrd8il8a'),
   nobility: fgaa('5ZUcDuVx1pJ1R1RG'),
   staggeringSway: fgaa('DulMH7OAwrg3G85A'),
-  universalTranslator: fgaa('pq2UFVm5BNszAk0f'),
   moreThanWorldly: fgaa('NtRsn6nTuys26ltH'),
   gridlockAuthority: fgaa('EiS24nGsgSsroa16'),
 };
@@ -145,11 +144,6 @@ export function wtnvToggles(actor, { rolledSkill } = {}) {
     add('nobility', T('E20.WtnvToggleNobility', { perk: itemOf(actor, WTNV.nobility).name }));
   }
 
-  // Universal Translator (Field Guide p.67): "↑3 on Skill Tests related to language."
-  if (hasSourced(actor, WTNV.universalTranslator)) {
-    add('universalTranslator', T('E20.WtnvToggleLanguage', { perk: itemOf(actor, WTNV.universalTranslator).name }));
-  }
-
   // Gridlock Authority (Field Guide p.70): "an Edge on Intimidate and Social Skill Tests with NPC
   // civilians and other government organizations regarding your work."
   if ((essence == 'social' || rolledSkill == 'intimidation') && hasSourced(actor, WTNV.gridlockAuthority)) {
@@ -202,10 +196,6 @@ export async function wtnvApplyDialog(actor, options, { rolledSkill } = {}) {
 
   if (ext.nobility) {
     up(1);
-  }
-
-  if (ext.universalTranslator) {
-    up(3);
   }
 
   if (ext.gridlockAuthority) {

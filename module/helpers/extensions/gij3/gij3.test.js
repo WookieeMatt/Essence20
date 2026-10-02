@@ -56,8 +56,8 @@ beforeEach(() => {
 const names = out => out.map(t => t.name);
 
 test('social Hang-Up switches show on Social tests and apply their penalty', () => {
-  const holder = actor([item(G3.brutish, { type: 'hangUp' }), item(G3.onceAMarauder, { type: 'hangUp' }), item(G3.broadcasterHangUp, { type: 'hangUp' }), item(G3.subtleSnake, { type: 'hangUp' })]);
-  expect(names(gij3Toggles(holder, { rolledSkill: 'persuasion' }))).toEqual(['gij3Brutish', 'gij3OnceAMarauder', 'gij3BroadcasterHangUp', 'gij3SubtleSnake']);
+  const holder = actor([item(G3.brutish, { type: 'hangUp' }), item(G3.onceAMarauder, { type: 'hangUp' }), item(G3.subtleSnake, { type: 'hangUp' })]);
+  expect(names(gij3Toggles(holder, { rolledSkill: 'persuasion' }))).toEqual(['gij3Brutish', 'gij3OnceAMarauder', 'gij3SubtleSnake']);
   expect(gij3Toggles(holder, { rolledSkill: 'science' })).toEqual([]);
 
   const options = { shiftDown: 0, ext: { gij3Brutish: true, gij3OnceAMarauder: true, gij3SubtleSnake: 'cobra' } };

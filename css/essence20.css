@@ -7803,6 +7803,115 @@
   margin-top: 0;
 }
 
+.essence20 .e20-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  color: var(--e20-theme-text-color);
+}
+.essence20 .e20-rules .e20-rules-intro,
+.essence20 .e20-rules .e20-rules-empty {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+.essence20 .e20-rules .e20-rules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.essence20 .e20-rules .e20-rule {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 4px;
+  background: var(--e20-theme-panel-bg);
+}
+.essence20 .e20-rules .e20-rule.is-disabled {
+  opacity: 0.55;
+}
+.essence20 .e20-rules .e20-rule.has-errors {
+  border-color: var(--color-level-error, #c0392b);
+}
+.essence20 .e20-rules .e20-rule-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.essence20 .e20-rules .e20-rule-type {
+  flex: none;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+.essence20 .e20-rules .e20-rule-summary {
+  flex: 1;
+}
+.essence20 .e20-rules .e20-rule-control {
+  flex: none;
+  cursor: pointer;
+}
+.essence20 .e20-rules .e20-rule-state {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+.essence20 .e20-rules .e20-rule-pool {
+  font-variant-numeric: tabular-nums;
+}
+.essence20 .e20-rules .e20-rule-errors {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+  color: var(--color-level-error, #c0392b);
+}
+.essence20 .e20-rules .e20-rules-add {
+  display: flex;
+  gap: 0.4rem;
+}
+.essence20 .e20-rules .e20-rules-add select {
+  flex: 1;
+}
+.essence20 .e20-rules .e20-rules-add button {
+  flex: none;
+  width: auto;
+}
+.essence20 .e20-rules .e20-rules-json summary {
+  cursor: pointer;
+  font-weight: bold;
+}
+.essence20 .e20-rules .e20-rules-json textarea {
+  width: 100%;
+  margin-top: 0.35rem;
+  font-family: var(--font-monospace, monospace);
+  font-size: 0.8rem;
+  resize: vertical;
+}
+.essence20 .e20-rules .e20-rules-json-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+.essence20 .e20-rules .e20-rules-json-actions button {
+  flex: none;
+  width: auto;
+}
+.essence20 .e20-rules .e20-rules-json-error {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--color-level-error, #c0392b);
+}
+
 .essence20 select {
   color: var(--e20-theme-text-color);
 }

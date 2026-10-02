@@ -79,7 +79,6 @@ export const RIDER = {
   scarefyingAppearance: uuid('knights_of_canterlot', '110Rq0wQaqFuugUc'),
   headache: uuid('wtnv_citizens_guide', 'Y9vCqznF8qHKHyO9'),
   inTheRain: uuid('wtnv_citizens_guide', 'grV4J3aS09yzGqW7'),
-  petVenomAdaptation: uuid('wtnv_citizens_guide', 'JYOzJJ1OUnb9xHVo'),
   chunky: uuid('wtnv_citizens_guide', '2NDSnADDffC4SyyZ'),
   intervene: uuid('field_guide_action_adventure', 'b1Ev6biHOHxXXQo4'),
   shotsFired: uuid('field_guide_action_adventure', 'lcUcWMZxVUdLkycD'),

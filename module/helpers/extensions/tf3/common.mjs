@@ -33,7 +33,6 @@ export const TF3 = {
   unassuming: tf('uTYoRiuxClI5V9aV'),
   unexpectedAlternative: tf('UNe8N1eZWjWxDTIz'),
   waterCannon: tf('FUOOqATSqU6habEt'),
-  whimsical: tf('XLDVNcC9B4hnSppZ'),
   whisperCampaign: tf('RO7n3LJmKQkcwZg1'),
   deceptiveWarfare: tf1s('OJcHMBA3QYgPp5w0'),
   oneBotOverAnother: tf1s('n5dNCOPVTsqLAapp'),

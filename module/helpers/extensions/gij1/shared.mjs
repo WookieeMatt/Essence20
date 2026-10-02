@@ -24,7 +24,6 @@ export const G1 = {
   seaLegs: CC('mKsSa2HBOimHqS7i'),
   // Division Perks.
   coverJob: CC('3SiGvDR98s0FQtdf'),
-  stellarExperience: CC('6JxxtROhqL4RS3dF'),
   // Role / Focus Perks.
   demolitionArtist: CC('QzcZLhyVvdbn09Es'),
   improviseBomb: CC('BUqXOt90M4yAsA7b'),

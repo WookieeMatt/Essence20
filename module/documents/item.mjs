@@ -10,6 +10,7 @@ import { affectsGeneratedEffects, applyToWeapon as applyUpgradesToWeapon, chosen
 import { applyDamage } from "../helpers/combat.mjs";
 import { onPowerUsed } from "../helpers/action-perks.mjs";
 import { Dice } from "../dice.mjs";
+import { ensureSourceIndex, inheritedRules, rulesSnapshotToStrip } from "../rules/inherit.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { consumeForItem, describeCost, refund, setAiming, spend } from "../helpers/action-economy.mjs";
 import { clearWeaponReload, reloadsNeeded, getReloadCost, hasBurstFiredThisRound, markBurstFiredThisRound, requireReload, weaponNeedsReload } from "../helpers/reload.mjs";
@@ -227,6 +228,14 @@ export class Essence20Item extends Item {
       this.updateSource({ 'system.automation': { status: '', notes: '' } });
     }
 
+    // Its rules too (rules/inherit.mjs) - and the source pack's index is loaded first, so the copy
+    // already has them when its add-time rules (choices, grants) run.
+    if (rulesSnapshotToStrip(this)) {
+      this.updateSource({ 'system.rules': [] });
+    }
+
+    await ensureSourceIndex(this._stats?.compendiumSource);
+
     // A Megaform Trait (Core Body, Move, Core Ability, ...) is identified purely by its
     // system.type enum, which is what Essence20Actor#_prepareMegaformZordData/
     // _prepareMegaformCombinerData actually switches on - Name is separate flavor text a GM
@@ -332,6 +341,11 @@ export class Essence20Item extends Item {
     super.prepareDerivedData();
     this._prepareDescription();
     this._prepareAutomation();
+    // A compendium copy with no rules of its own runs its original's (rules/inherit.mjs).
+    if (Array.isArray(this.system.rules)) {
+      this.system.rules = inheritedRules(this);
+    }
+
     this._prepareTraits();
 
     if (this.type == 'weapon' || this.type == 'armor') {

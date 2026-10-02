@@ -13,7 +13,7 @@ import { ONE_HANDED_FLAG } from "./gear.mjs";
 /**
  * Cobra Codex Perks and Hang-Ups: Bootlicker, Chemist, Cover Job, Cybernetic Part, Double Life,
  * Demolition Artist / Improvise Bomb, Extract Poison, Primal Fear / Feed On Fear, Let It Rip,
- * Metier, Scavenger, Sea Legs, Shielded and Stellar Experience.
+ * Metier, Scavenger, Sea Legs and Shielded.
  */
 
 // A Perk's own pick (Cover Job's skill + profession, Double Life's skill + Specialization, Metier's
@@ -27,9 +27,7 @@ const allSourced = (actor, uuid) => itemsOf(actor).filter(item => sourceOf(item)
 /* -------------------------------------------- */
 
 // Bootlicker (General Perk, p.79): "Gain ↑1 on Skill Tests when interacting with superior
-// officers." Stellar Experience (Space Division Perk, p.76): "You gain Edge on Smarts-based Skill
-// Tests that relate to space, geography, engineering, and philosophy, including using the stars
-// to navigate." (Its "hold your breath for twice as long" half has no breath clock to change.)
+// officers."
 // Cover Job (Crimson Guard Division Perk, p.72): "outside of combat, you are considered Specialized
 // in Skill Tests that relate to your chosen profession." Double Life (General Perk, p.79): "When
 // you have time before making a Skill Test related to that Specialization to reach out to someone
@@ -42,11 +40,6 @@ export function gij1Toggles(actor, ctx = {}) {
   const bootlicker = findSourced(actor, G1.bootlicker);
   if (bootlicker && !isAttack) {
     toggles.push({ name: 'gij1Bootlicker', type: 'checkbox', label: T('G1BootlickerToggle', { perk: bootlicker.name }) });
-  }
-
-  const stellar = findSourced(actor, G1.stellarExperience);
-  if (stellar && ctx.rolledEssence == 'smarts' && !isAttack) {
-    toggles.push({ name: 'gij1Stellar', type: 'checkbox', label: T('G1StellarToggle', { perk: stellar.name }) });
   }
 
   if (!inCombat(actor)) {
@@ -72,10 +65,6 @@ export function applyGij1Toggles(actor, options) {
   const ext = options.ext ?? {};
   if (ext.gij1Bootlicker) {
     options.shiftUp = (options.shiftUp ?? 0) + 1;
-  }
-
-  if (ext.gij1Stellar) {
-    options.edge = true;
   }
 
   for (const [name, on] of Object.entries(ext)) {

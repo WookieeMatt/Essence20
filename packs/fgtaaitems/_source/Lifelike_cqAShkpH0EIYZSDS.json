@@ -3,9 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Passing in Bot Mode (Lifelike: Edge)","default":true,"when":["skill:deception","not:self:transformed"],"edge":true}
+    ],
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: while you are in Bot Mode, your Deception tests have Edge already selected in the Roll Options Dialog, for passing as an organic being.</p><p>Left to the table: applying Alt Mode hiding benefits to your Bot Mode, and limiting yourself to hidden Integrated Hardpoints.</p>"
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: in Bot Mode, a switch for Edge on Deception tests to pass as an organic being. It starts on, and remembers how you last left it.</p><p>Left to the table: applying Alt Mode hiding benefits to your Bot Mode, and limiting yourself to hidden Integrated Hardpoints.</p>"
     },
     "originalId": "",
     "description": "",

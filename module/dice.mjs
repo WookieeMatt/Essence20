@@ -1598,7 +1598,7 @@ const SIRENS_BLARING_ID = `${TF_CRB}WZA3q9BRESFVx6SS`;
 
 // Hail Megatron! (Decepticon Directive, Replacement Faction Perk, p.38-39) - every Decepticon
 // character's own replacement for the TF CRB's For the Allspark! (itself still unbuilt anywhere in
-// this codebase - see the Lifelike doc comment above). Three of its clauses are buildable:
+// this codebase). Three of its clauses are buildable:
 //   - "↑1 to Infiltration Skill Tests when in Alt Mode, or ↑2 if the Alt Mode is appropriate to
 //     the environment" - only the flat ↑1 half is built, same Get Low/Object Alt Mode Alt-Mode-
 //     gated shiftUp shape used throughout this file; "appropriate to the environment" has no
@@ -2420,17 +2420,6 @@ const GET_LOW_ID = "Compendium.essence20.technorganic_secrets.Item.rEoZEFQR2puQx
 // clause/Daredevil's Driving clause).
 const PREHENSILE_FEET_ID = "Compendium.essence20.technorganic_secrets.Item.OdHMLgny9aqCevAc";
 
-// Insectoid Components (Technorganic Secrets, Insecticon Origin Perk, p.42): "you have natural
-// armor that grants a +2 deflective bonus to your Toughness Defense [built as this item's own
-// compendium Active Effect]. Additionally, you gain ↑2 on Brawn Skill Tests in your Alt Mode."
-// The Toughness bonus is a flat, unconditional AE (correct as-is); the Alt-Mode-gated Brawn
-// shiftUp is the live check below, same shape as Prehensile Feet's own Acrobatics clause above.
-// Decepticon Directive reprints the same Perk (its own Insecticon Origin), so both printings count.
-const INSECTOID_COMPONENTS_IDS = [
-  "Compendium.essence20.technorganic_secrets.Item.K1unZpd5j419Qwka",
-  "Compendium.essence20.decepticon_directive.Item.dvTnIzPUg5kUVkBq",
-];
-
 // Tooth And Claw - see its own comment below, near the live Accurate shiftUp check.
 const TOOTH_AND_CLAW_ID = "Compendium.essence20.technorganic_secrets.Item.Z4lShGtDBa2zQ5ov";
 
@@ -2908,31 +2897,6 @@ const SEARCH_AND_SEIZURE_ID = "Compendium.essence20.ferocious_fighters.Item.qZiv
 
 // Surgical Operators (Ferocious Fighters, Anti-Venom Task Force Faction Perk, p.72) - a Roll
 // Options Dialog switch in helpers/extensions/fix3-gij/gij-fixes.mjs.
-
-// Lifelike (Field Guide to Action and Adventure, Pretender Origin, p.64): "When in Bot Mode, you
-// gain an Edge on Skill Tests to pass as an organic life-form." RAW pulled fresh from the actual
-// PDF (no cached extraction existed for this book). Deception is the natural single-skill reading
-// of "passing as" something you're not - a judgment call, same as this project's own established
-// idiom for narrower narrative-triggered Edges (Bits To Spare/Truthseeker), but the skill choice
-// itself isn't explicitly named in RAW. "Bot Mode" reads directly off the existing
-// `actor.system.isTransformed` flag (false = Bot Mode, true = Alt Mode) - already a real,
-// long-established field (sheet-handlers/transformer-handler.mjs), not a new concept. This Origin
-// Benefit's OTHER clause ("abilities that give benefits for hiding while in Alt Mode... apply to
-// your Bot Mode instead," e.g. "For the Allspark!'s Infiltration bonus") isn't built - the
-// specific ability it names ("For the Allspark!") isn't itself built anywhere in this codebase
-// yet, and the general form ("any Alt-Mode-hiding ability") has no generic redirect mechanism to
-// hook - nothing concrete to override without the base ability existing first, the same class of
-// gap this project already accepted for Quick Study/Swift Study earlier this session.
-// Widened 2026-09-11: byte-identical RAW confirmed as Technorganic Secrets' own Pretender Origin
-// Benefit (p.45), a second printing of the same Perk - same "one mechanic, several compendium
-// printings" shape GIANT_KILLER_IDS already establishes. Caught before duplicating this whole
-// check under a second, divergent implementation (a self-declared any-skill checkbox had already
-// been drafted, less precise than this existing Deception-specific reading - reverted in favor of
-// widening the existing check instead).
-const LIFELIKE_IDS = [
-  "Compendium.essence20.field_guide_action_adventure.Item.cqAShkpH0EIYZSDS",
-  "Compendium.essence20.technorganic_secrets.Item.XnXghb8MMa8Vm4e1",
-];
 
 // Percussive Maintenance (Technorganic Secrets, General Perk, p.46): "Technology is a Strength
 // Essence Skill for you in addition to a Smarts Essence Skill" (already a plain compendium Active
@@ -6682,11 +6646,6 @@ export class Dice {
       skillDataset.edge = true;
     }
 
-    // Lifelike - see LIFELIKE_IDS' own comment above.
-    if (rolledSkill == 'deception' && !actor.system.isTransformed && LIFELIKE_IDS.some(id => actorHasPerk(actor, id))) {
-      skillDataset.edge = true;
-    }
-
     // See Something, Say Nothing - see SEE_SOMETHING_SAY_NOTHING_ID's own comment above. Same
     // unconditional-Edge idiom as Bits To Spare/Truthseeker.
     if (rolledSkill == 'streetwise' && actorHasPerk(actor, SEE_SOMETHING_SAY_NOTHING_ID)) {
@@ -8631,12 +8590,6 @@ export class Dice {
     // Prehensile Feet - see PREHENSILE_FEET_ID's own comment above. ↑1 Acrobatics while in Alt Mode.
     if (rolledSkill == 'acrobatics' && actorHasPerk(actor, PREHENSILE_FEET_ID) && actor.system?.isTransformed) {
       updatedShiftDataset.shiftUp += 1;
-    }
-
-    // Insectoid Components - see INSECTOID_COMPONENTS_IDS's own comment above. ↑2 Brawn while in
-    // Alt Mode.
-    if (rolledSkill == 'brawn' && INSECTOID_COMPONENTS_IDS.some(id => actorHasPerk(actor, id)) && actor.system?.isTransformed) {
-      updatedShiftDataset.shiftUp += 2;
     }
 
     // Tooth And Claw (Technorganic Secrets, Monstrosity Origin Perk, p.43, and the Decepticon

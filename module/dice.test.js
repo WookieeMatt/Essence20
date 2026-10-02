@@ -7026,74 +7026,6 @@ describe("rollSkill", () => {
     });
   });
 
-  describe("Insectoid Components (Technorganic Secrets, Insecticon Origin Perk, p.42)", () => {
-    const INSECTOID_COMPONENTS_ID = "Compendium.essence20.technorganic_secrets.Item.K1unZpd5j419Qwka";
-
-    function makeInsectoidComponentsActor({ hasPerk = true, isTransformed = true, sourceId = INSECTOID_COMPONENTS_ID } = {}) {
-      return {
-        ...mockActor,
-        items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId } } }] : [],
-        system: {
-          ...mockActor.system,
-          isTransformed,
-          essenceShifts: {
-            any: { shiftUp: 0, shiftDown: 0 },
-            strength: { shiftUp: 0, shiftDown: 0 },
-            speed: { shiftUp: 0, shiftDown: 0 },
-            smarts: { shiftUp: 0, shiftDown: 0 },
-            social: { shiftUp: 0, shiftDown: 0 },
-          },
-        },
-        getRollData: jest.fn(() => ({
-          skills: { brawn: { modifier: '0', shift: 'd20' }, athletics: { modifier: '0', shift: 'd20' } },
-        })),
-      };
-    }
-
-    test("adds +2 shiftUp on a Brawn Skill Test while in Alt Mode", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-
-      await dice.rollSkill({ ...dataset, skill: 'brawn' }, makeInsectoidComponentsActor(), null);
-
-      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftUp).toBe(2);
-    });
-
-    test("the Decepticon Directive printing counts too", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-
-      await dice.rollSkill({ ...dataset, skill: 'brawn' }, makeInsectoidComponentsActor({
-        sourceId: "Compendium.essence20.decepticon_directive.Item.dvTnIzPUg5kUVkBq",
-      }), null);
-
-      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftUp).toBe(2);
-    });
-
-    test("doesn't apply in Bot Mode, without the Perk, or on a different skill", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-
-      await dice.rollSkill({ ...dataset, skill: 'brawn' }, makeInsectoidComponentsActor({ isTransformed: false }), null);
-      expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftUp).toBe(0);
-
-      await dice.rollSkill({ ...dataset, skill: 'brawn' }, makeInsectoidComponentsActor({ hasPerk: false }), null);
-      expect(rollDialog.getSkillRollOptions.mock.calls[1][0].shiftUp).toBe(0);
-
-      await dice.rollSkill({ ...dataset, skill: 'athletics' }, makeInsectoidComponentsActor(), null);
-      expect(rollDialog.getSkillRollOptions.mock.calls[2][0].shiftUp).toBe(0);
-    });
-  });
-
   describe("Tooth And Claw (Technorganic Secrets, Monstrosity Origin Perk, p.43) - Accurate half", () => {
     const TOOTH_AND_CLAW_ID = "Compendium.essence20.technorganic_secrets.Item.Z4lShGtDBa2zQ5ov";
 
@@ -26855,63 +26787,6 @@ describe("rollSkill", () => {
 
           expect((await shiftFor('intimidation', 'social', actor)).shiftUp).toBe(0);
         });
-      });
-    });
-
-    describe("Lifelike (Field Guide to Action and Adventure, Pretender Origin, p.64)", () => {
-      const LIFELIKE_ID = "Compendium.essence20.field_guide_action_adventure.Item.cqAShkpH0EIYZSDS";
-
-      function makeLifelikeActor({ perkIds = [], isTransformed = false } = {}) {
-        const actor = makeActor({ perkIds });
-        actor.system = { ...actor.system, isTransformed };
-        return actor;
-      }
-
-      test("grants Edge on Deception while in Bot Mode, with the Perk", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-        });
-        dice._rollSkillHelper = jest.fn();
-        const actor = makeLifelikeActor({ perkIds: [LIFELIKE_ID], isTransformed: false });
-
-        await dice.rollSkill({ ...dataset, skill: 'deception', essence: 'social' }, actor, null);
-
-        expect(rollDialog.getSkillRollOptions.mock.calls[0][1].edge).toBe(true);
-      });
-
-      test("doesn't apply while in Alt Mode, without the Perk, or on a different skill", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-        });
-        dice._rollSkillHelper = jest.fn();
-
-        const transformedActor = makeLifelikeActor({ perkIds: [LIFELIKE_ID], isTransformed: true });
-        await dice.rollSkill({ ...dataset, skill: 'deception', essence: 'social' }, transformedActor, null);
-        expect(rollDialog.getSkillRollOptions.mock.calls[0][1].edge).toBe(false);
-
-        const noPerkActor = makeLifelikeActor();
-        await dice.rollSkill({ ...dataset, skill: 'deception', essence: 'social' }, noPerkActor, null);
-        expect(rollDialog.getSkillRollOptions.mock.calls[1][1].edge).toBe(false);
-
-        const wrongSkillActor = makeLifelikeActor({ perkIds: [LIFELIKE_ID] });
-        await dice.rollSkill({ ...dataset, skill: 'persuasion', essence: 'social' }, wrongSkillActor, null);
-        expect(rollDialog.getSkillRollOptions.mock.calls[2][1].edge).toBe(false);
-      });
-
-      test("also triggers from the Technorganic Secrets reprint (Pretender Origin Benefit, p.45)", async () => {
-        const TECHNORGANIC_SECRETS_LIFELIKE_ID = "Compendium.essence20.technorganic_secrets.Item.XnXghb8MMa8Vm4e1";
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-        });
-        dice._rollSkillHelper = jest.fn();
-        const actor = makeLifelikeActor({ perkIds: [TECHNORGANIC_SECRETS_LIFELIKE_ID], isTransformed: false });
-
-        await dice.rollSkill({ ...dataset, skill: 'deception', essence: 'social' }, actor, null);
-
-        expect(rollDialog.getSkillRollOptions.mock.calls[0][1].edge).toBe(true);
       });
     });
 

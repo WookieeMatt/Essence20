@@ -25,12 +25,12 @@ test('Dog Person with a dog targeted', () => {
 });
 
 test('dialog toggles and what they do', async () => {
-  const holder = actor([perk(WTNV.communityMartialArts), perk(WTNV.universalTranslator), perk(WTNV.thirdEye)]);
+  const holder = actor([perk(WTNV.communityMartialArts), perk(WTNV.thirdEye)]);
   const names = wtnvToggles(holder, { rolledSkill: 'persuasion' }).map(t => t.name);
-  expect(names).toEqual(expect.arrayContaining(['communityMartialArts', 'universalTranslator', 'thirdEye']));
-  const options = { shiftUp: 0, shiftDown: 1, ext: { communityMartialArts: true, universalTranslator: true, thirdEye: true } };
+  expect(names).toEqual(expect.arrayContaining(['communityMartialArts', 'thirdEye']));
+  const options = { shiftUp: 0, shiftDown: 1, ext: { communityMartialArts: true, thirdEye: true } };
   await wtnvApplyDialog(holder, options, { rolledSkill: 'persuasion' });
-  expect(options).toMatchObject({ shiftUp: 4, shiftDown: 0 });
+  expect(options).toMatchObject({ shiftUp: 1, shiftDown: 0 });
 });
 
 test('More Than Worldly Edge is a consumed source', () => {

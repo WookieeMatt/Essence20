@@ -339,12 +339,6 @@ export function rollRiderSources(actor, target, ctx = {}) {
     add('coDependent', nameOf(actor, RIDER.coDependent, 'Co-Dependent'), { shiftDown: 1 });
   }
 
-  // Pet Venom Adaptation (WTNV Citizen's Guide, General Perk, p.47): "gain an Edge on Brawn Skill
-  // Tests to overcome the Poisoned Condition."
-  if (rolledSkill == 'brawn' && actor.statuses?.has?.('poisoned') && actorHasPerk(actor, RIDER.petVenomAdaptation)) {
-    add('petVenom', nameOf(actor, RIDER.petVenomAdaptation, 'Pet Venom Adaptation'), { edge: true });
-  }
-
   // Monster Hunter's Critical Effect landed on this roller: "Target suffers Snag on their next
   // Attack Skill Test."
   if (isAttack && findMark(actor, 'nextAttackSnag')) {

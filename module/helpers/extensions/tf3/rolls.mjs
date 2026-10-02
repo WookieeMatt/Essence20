@@ -9,7 +9,7 @@ import {
 
 /**
  * Transformers CRB / Transformers One Sourcebook - everything the Roll Options Dialog and derived data
- * need for the tf3 slice: automatic sources (Holographic Doubles, Siren, Whimsical, Martyr, The Right Of
+ * need for the tf3 slice: automatic sources (Holographic Doubles, Siren, Martyr, The Right Of
  * All Sentient Beings, Unexpected Alternative, Target Breakdown, Rotor Blades), self-declared toggles
  * (Hindsight, Mimicry Vocoder, Nose for Trouble, Subordinate, Ladder, Tow Cable & Hook, Water Cannon),
  * Stoic's Defenses, and the Alt Mode Gear's movement/reach/hardpoint changes.
@@ -91,12 +91,6 @@ export function tf3RollSources(actor, target, ctx = {}) {
   // Siren (TF CRB p.135): "Bot Mode: You gain ↑2 on Intimidation Skill Tests."
   if (rolledSkill == 'intimidation' && holds(actor, TF3.siren) && actor.system?.canTransform && inBotMode(actor)) {
     sources.push({ id: 'tf3Siren', label: nameOf(actor, TF3.siren), shiftUp: 2 });
-  }
-
-  // Whimsical (Hang-Up, p.43): "Whenever you make an Infiltration Skill Test that is not 'just for fun'
-  // you take a ↓1." On by default; untick it in the dialog when the test IS just for fun.
-  if (rolledSkill == 'infiltration' && holds(actor, TF3.whimsical)) {
-    sources.push({ id: 'tf3Whimsical', label: T('Tf3WhimsicalSource', { name: nameOf(actor, TF3.whimsical) }), shiftDown: 1 });
   }
 
   // Martyr (Commander, 20th level, p.66): "if you are Defeated in combat, your allies gain an Edge on
