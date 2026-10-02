@@ -1,0 +1,447 @@
+@use "../variables" as v;
+
+/* Threat Builder (apps/threat-builder.mjs): step list on the left, the current step in the middle,
+   a running summary on the right. Audit mode drops the step list and the footer. */
+.essence20.threat-builder .window-content {
+  padding: 0;
+}
+
+.essence20 .threat-builder-body {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr) 230px;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "head head head"
+    "steps step summary"
+    "foot foot foot";
+
+  &.is-audit {
+    grid-template-columns: minmax(0, 1fr) 230px;
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas:
+      "head head"
+      "step summary";
+  }
+
+  // One typeface throughout: Foundry's heading font on h3-h5 sat oddly beside the body text.
+  h3,
+  h4,
+  h5 {
+    font-family: inherit;
+    border: none;
+    text-shadow: none;
+  }
+
+  h3 {
+    font-size: 1.3em;
+    font-weight: 700;
+  }
+
+  h4 {
+    font-size: 1.1em;
+    font-weight: 700;
+  }
+
+  // A section label inside the summary, the size of the rows around it.
+  h5 {
+    font-size: 0.8em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  .hint {
+    margin: 0;
+    font-size: 0.9em;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  .warn {
+    color: var(--e20-theme-failure, #b83a30);
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-weight: 600;
+
+    &.checkbox {
+      flex-direction: row;
+      align-items: center;
+      gap: v.$gap-sm;
+      font-weight: 400;
+    }
+  }
+
+  fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: v.$gap-sm;
+    border: 1px solid var(--e20-theme-border-color);
+    border-radius: 4px;
+    padding: v.$gap-sm v.$gap-md;
+  }
+
+  button.icon {
+    flex: 0 0 auto;
+    width: 2em;
+    padding: 0;
+  }
+}
+
+.essence20 .threat-builder-head {
+  grid-area: head;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: v.$gap-sm v.$gap-md;
+  padding: v.$gap-sm v.$gap-md;
+  border-bottom: 1px solid var(--e20-theme-border-color);
+
+  .threat-builder-ruleset {
+    flex-direction: row;
+    align-items: center;
+    gap: v.$gap-sm;
+  }
+
+  .threat-builder-source {
+    font-size: 0.85em;
+    font-style: italic;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  .threat-builder-mode {
+    margin-left: auto;
+    font-weight: 600;
+  }
+}
+
+.essence20 .threat-builder-steps {
+  grid-area: steps;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: v.$gap-sm;
+  border-right: 1px solid var(--e20-theme-border-color);
+  overflow-y: auto;
+
+  .threat-builder-steplink {
+    display: flex;
+    align-items: center;
+    gap: v.$gap-sm;
+    justify-content: flex-start;
+    text-align: left;
+    height: auto;
+    min-height: 2em;
+    line-height: 1.2;
+    padding: 4px 8px;
+
+    .num {
+      flex: 0 0 auto;
+      width: 1.6em;
+      height: 1.6em;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid currentColor;
+      font-size: 0.8em;
+      font-weight: 700;
+    }
+
+    &.active {
+      background: var(--e20-theme-accent);
+      color: var(--e20-theme-accent-contrast, var(--e20-theme-bg-color));
+    }
+  }
+}
+
+.essence20 .threat-builder-step {
+  grid-area: step;
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-md;
+  padding: v.$gap-md;
+  overflow-y: auto;
+  min-width: 0;
+
+  // Steps size to their content; without this a fieldset stretched and left a gap above what followed it.
+  > * {
+    flex: 0 0 auto;
+  }
+
+  h3 {
+    margin: 0;
+  }
+}
+
+.essence20 .threat-builder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: v.$gap-sm v.$gap-md;
+  align-items: end;
+}
+
+.essence20 .threat-builder-types .threat-builder-type {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 v.$gap-sm;
+  font-weight: 400;
+  padding: 4px 6px;
+  border-radius: 4px;
+
+  input {
+    grid-row: span 2;
+  }
+
+  .t {
+    font-weight: 700;
+  }
+
+  .h {
+    font-size: 0.85em;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  &.checked {
+    outline: 1px solid var(--e20-theme-accent);
+  }
+}
+
+.essence20 .threat-builder-roles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: v.$gap-sm;
+
+  button {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    padding: 6px;
+
+    .h {
+      font-size: 0.85em;
+      opacity: 0.8;
+    }
+
+    &.active {
+      background: var(--e20-theme-accent);
+      color: var(--e20-theme-accent-contrast, var(--e20-theme-bg-color));
+    }
+  }
+}
+
+.essence20 .threat-builder-essences {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: v.$gap-md;
+
+  .threat-builder-essence {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border: 1px solid var(--e20-theme-border-color);
+    border-radius: 4px;
+    padding: v.$gap-sm;
+
+    .head {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+
+      input {
+        width: 4em;
+        flex: 0 0 auto;
+      }
+    }
+
+    .spent {
+      font-size: 0.85em;
+      color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+    }
+
+    &.over .spent {
+      color: var(--e20-theme-failure, #b83a30);
+      font-weight: 700;
+    }
+
+    .skill {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 5em minmax(0, 1fr);
+      gap: 4px;
+      align-items: center;
+      font-size: 0.9em;
+    }
+  }
+}
+
+.essence20 .threat-builder-row,
+.essence20 .threat-builder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: v.$gap-sm;
+  align-items: center;
+
+  select {
+    flex: 1 1 200px;
+  }
+}
+
+.essence20 .threat-builder-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: v.$gap-sm;
+
+    span:first-of-type {
+      flex: 1 1 auto;
+    }
+
+    .type {
+      font-size: 0.85em;
+      color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+    }
+
+    img {
+      border: none;
+    }
+  }
+}
+
+.essence20 .threat-builder-newitem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 4px;
+
+  textarea {
+    grid-column: 1 / -1;
+  }
+}
+
+.essence20 .threat-builder-attack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+
+  input[type="text"] {
+    flex: 2 1 140px;
+  }
+
+  input[type="number"] {
+    flex: 0 0 4.5em;
+  }
+
+  select {
+    flex: 1 1 100px;
+  }
+}
+
+.essence20 .threat-builder-drop {
+  border: 2px dashed var(--e20-theme-border-color);
+  border-radius: 6px;
+  padding: v.$gap-sm v.$gap-md;
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-sm;
+}
+
+.essence20 .threat-builder-findings {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  li {
+    display: flex;
+    gap: v.$gap-sm;
+    align-items: baseline;
+  }
+
+  .warn i {
+    color: var(--e20-theme-failure, #b83a30);
+  }
+
+  .info i {
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  .ok i {
+    color: var(--e20-theme-success, #2e7d4f);
+  }
+}
+
+.essence20 .threat-builder-summary {
+  grid-area: summary;
+  padding: v.$gap-md;
+  border-left: 1px solid var(--e20-theme-border-color);
+  overflow-y: auto;
+
+  h4,
+  h5 {
+    margin: 0 0 v.$gap-sm;
+  }
+
+  h5 {
+    margin-top: v.$gap-md;
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2px v.$gap-sm;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  dt {
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 700;
+    text-align: right;
+
+    &.over {
+      color: var(--e20-theme-failure, #b83a30);
+    }
+  }
+}
+
+.essence20 .threat-builder-footer {
+  grid-area: foot;
+  display: flex;
+  justify-content: space-between;
+  gap: v.$gap-md;
+  padding: v.$gap-sm v.$gap-md;
+  border-top: 1px solid var(--e20-theme-border-color);
+
+  button {
+    flex: 0 0 auto;
+    min-width: 8em;
+  }
+}
+
+/* Magnifying glass beside a list's title or drop hint: opens the Compendium Browser on that item type. */
+.essence20 .threat-builder-browse {
+  margin-left: 4px;
+  font-weight: 400;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--e20-theme-accent);
+  }
+}

@@ -143,6 +143,8 @@ export const preloadHandlebarsTemplates = async function () {
 
     //App Partials
     "systems/essence20/templates/app/parts/field.hbs",
+    "systems/essence20/templates/app/parts/threat-builder-rows.hbs",
+    "systems/essence20/templates/app/parts/threat-builder-drop.hbs",
 
     //Item Tabs
     "systems/essence20/templates/item/tabs/effects.hbs",

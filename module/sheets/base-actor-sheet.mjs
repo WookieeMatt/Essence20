@@ -9,6 +9,7 @@ const MAX_LEVEL = 20;
 import Essence20CompendiumBrowser from "../apps/compendium-browser.mjs";
 import { useGearNanomitePower } from "../helpers/nanomite-gear.mjs";
 import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
+import ThreatBuilder from "../apps/threat-builder.mjs";
 import SheetOptions from "../apps/sheet-options.mjs";
 import SkillPicker from "../apps/skill-picker.mjs";
 import StartingEssences from "../apps/starting-essences.mjs";
@@ -110,6 +111,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       rest: this.#onRest,
       rollable: this.#onRoll,
       growMonster: this.#onGrowMonster,
+      threatAudit: this.#onThreatAudit,
       sheetOptions: this.#onSheetOptions,
       skillPicker: this.#onOpenSkillPicker,
       shieldActivationToggle: this.#onShieldActivationToggle,
@@ -177,6 +179,15 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
           action: "growMonster",
           visible: function () {
             return game.user.isGM && this.actor.type === "npc";
+          },
+        },
+        {
+          // The Threat Builder's audit mode: how this Threat compares to its book's creation rules.
+          icon: "fa-solid fa-dragon",
+          label: "E20.ThreatAuditOpen",
+          action: "threatAudit",
+          visible: function () {
+            return game.user.isGM && ["npc", "vehicle"].includes(this.actor.type);
           },
         },
       ],
@@ -1338,5 +1349,9 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onGrowMonster() {
     new MonsterGrowDialog(this.actor).render(true);
+  }
+
+  static #onThreatAudit() {
+    ThreatBuilder.open(this.actor);
   }
 }

@@ -44,6 +44,63 @@ const MOVEMENT_TYPE_BY_ACTION = {
   climb: 'climb',
 };
 
+/* "While climbing, swimming, or crawling, your character's Movement is halved" (GI Joe CRB p.220)
+   - unless they have that Movement type, in which case they move up to its rating "without
+   penalty" (Special Types of Movement, p.219). Crawl has no Movement type of its own, so it is
+   always halved: core's crawl costMultiplier of 2 already does that against Ground. Swim and Climb
+   fall back to half Ground when the actor has no rating of their own (getMovementAllowance). */
+const HALF_GROUND_FALLBACK = ['swim', 'climb'];
+
+/* Movement types an actor either has or doesn't - no ground fallback in the rules, so the token's
+   movement menu only offers them to an actor with a rating (configureMovementActions). */
+const RATING_ONLY_ACTIONS = { fly: 'aerial', burrow: 'burrow' };
+
+/**
+ * Bring v14's movement actions (CONFIG.Token.movement.actions) in line with Essence20. Called once
+ * at init, before core normalises the entries.
+ *
+ * - Climb: core doubles its cost (costMultiplier 2). A Climb Movement is used "without penalty",
+ *   and without one the halving is already applied by the half-Ground allowance - doubling the cost
+ *   as well would count it twice.
+ * - Jump: core doubles its cost too, but "each foot you clear on a long jump costs a foot of
+ *   Movement" (GI Joe CRB p.220).
+ * - Fly and Burrow: only selectable for an actor with that Movement type.
+ * @param {Object} actions   CONFIG.Token.movement.actions
+ */
+export function configureMovementActions(actions) {
+  if (!actions) {
+    return;
+  }
+
+  for (const action of ['climb', 'jump']) {
+    if (actions[action]) {
+      actions[action].costMultiplier = 1;
+    }
+  }
+
+  for (const [action, movementType] of Object.entries(RATING_ONLY_ACTIONS)) {
+    if (actions[action]) {
+      actions[action].canSelect = token => hasMovementType(token?.actor, movementType);
+    }
+  }
+}
+
+/**
+ * Whether an actor has a Movement type at all. An actor type without movement (a Party) or a token
+ * with no actor isn't restricted.
+ * @param {Actor} actor
+ * @param {String} movementType
+ * @returns {Boolean}
+ */
+export function hasMovementType(actor, movementType) {
+  const movement = actor?.system?.movement;
+  if (!movement) {
+    return true;
+  }
+
+  return (movement[movementType]?.total ?? 0) > 0;
+}
+
 // Movement a person drove by hand, as opposed to a script, a correction, or a GM repositioning.
 const PLAYER_DRIVEN_METHODS = ['dragging', 'keyboard'];
 
@@ -237,7 +294,14 @@ export function movementTypeFor(action) {
  * @returns {Number|null}   The rating in feet, or null if the actor has no such movement.
  */
 export function getMovementAllowance(actor, movementType) {
-  const rating = actor?.system?.movement?.[movementType]?.total;
+  let rating = actor?.system?.movement?.[movementType]?.total;
+
+  // No Swim or Climb Movement of their own: half their Ground Movement (see HALF_GROUND_FALLBACK).
+  if (HALF_GROUND_FALLBACK.includes(movementType) && !(rating > 0)) {
+    const ground = actor?.system?.movement?.ground?.total;
+    rating = Number.isFinite(ground) ? Math.floor(ground / 2) : null;
+  }
+
   if (!Number.isFinite(rating)) {
     return null;
   }

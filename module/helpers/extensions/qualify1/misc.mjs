@@ -366,9 +366,12 @@ export function combatThreatSummary(combat) {
   const players = actors.filter(actor => actor.type == 'playerCharacter');
   const threats = actors.filter(actor => actor.type == 'npc' || (actor.type == 'vehicle' && actor.system?.threatLevel));
   const levels = threats.map(actor => actor.system?.threatLevel ?? 0);
-  const partyLevel = players.length
-    ? Math.round(players.reduce((sum, actor) => sum + (Number(actor.system?.level) || 0), 0) / players.length) : 0;
-  return { tl: effectiveThreatLevel(levels, players.length), threats: threats.length, players: players.length, partyLevel };
+  const totalLevels = players.reduce((sum, actor) => sum + (Number(actor.system?.level) || 0), 0);
+  const partyLevel = players.length ? Math.round(totalLevels / players.length) : 0;
+  // The Threat Level that suits a party of any size: their total levels / 4, rounded down (Field
+  // Guide to Action & Adventure p.145) - helpers/threat-rules.mjs#appropriateThreatLevel.
+  const appropriate = Math.floor(totalLevels / 4);
+  return { tl: effectiveThreatLevel(levels, players.length), threats: threats.length, players: players.length, partyLevel, appropriate };
 }
 
 export function onRenderCombatTracker(app, html) {

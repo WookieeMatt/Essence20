@@ -1,0 +1,247 @@
+<div class="threat-builder-body{{#if audit}} is-audit{{/if}}">
+  <header class="threat-builder-head">
+    <label class="threat-builder-ruleset">
+      <span>{{localize 'E20.ThreatBuilderRuleset'}}</span>
+      <select name="ruleset">{{selectOptions rulesetChoices selected=state.ruleset}}</select>
+    </label>
+    <span class="threat-builder-source">{{rulesetSource}}</span>
+    {{#if audit}}
+      <span class="threat-builder-mode"><i class="fa-solid fa-magnifying-glass" inert></i> {{localize 'E20.ThreatBuilderAuditMode'}}</span>
+    {{/if}}
+  </header>
+
+  {{#unless audit}}
+  <nav class="threat-builder-steps" aria-label="{{localize 'E20.ThreatBuilderSteps'}}">
+    {{#each steps as |s|}}
+      <button type="button" class="threat-builder-steplink {{#if s.active}}active{{/if}}" data-action="step" data-step="{{s.key}}" {{#if s.active}}aria-current="step"{{/if}}>
+        <span class="num">{{s.number}}</span> {{s.label}}
+      </button>
+    {{/each}}
+  </nav>
+  {{/unless}}
+
+  <section class="threat-builder-step">
+    {{#if audit}}
+      <h3>{{localize 'E20.ThreatAuditHeading' name=actor.name}}</h3>
+      <p class="hint">{{localize 'E20.ThreatAuditIntro'}}</p>
+      <div class="threat-builder-grid">
+        <label>{{localize 'E20.ThreatBuilderType'}}
+          <select name="type">
+            {{#each types as |t|}}<option value="{{t.key}}" {{#if t.checked}}selected{{/if}}>{{t.label}}</option>{{/each}}
+          </select>
+        </label>
+        {{#if state.typeInferred}}<p class="hint">{{localize 'E20.ThreatAuditTypeInferred'}}</p>{{/if}}
+        {{#if rulesFlags.socialBonus}}
+          <label class="checkbox"><input type="checkbox" name="social" {{checked state.social}}> {{localize 'E20.ThreatBuilderSocial'}}</label>
+        {{/if}}
+        {{#if rulesFlags.advancedEssence}}
+          <label>{{localize 'E20.ThreatBuilderAdvanced' max=derived.budget.advancedMax}}
+            <input type="number" name="advanced" value="{{state.advanced}}" min="0" max="{{derived.budget.advancedMax}}"></label>
+        {{/if}}
+        <label class="checkbox"><input type="checkbox" name="animal" {{checked state.animal}}> {{localize 'E20.ThreatBuilderAnimal'}}</label>
+      </div>
+      <div class="threat-builder-actions">
+        <button type="button" data-action="remember"><i class="fa-solid fa-floppy-disk" inert></i> {{localize 'E20.ThreatAuditRemember'}}</button>
+        <button type="button" data-action="openSkillPicker"><i class="fa-solid fa-list-check" inert></i> {{localize 'E20.ThreatAuditSkillPicker'}}</button>
+      </div>
+
+    {{else if (eq step "concept")}}
+      <h3>{{localize 'E20.ThreatStep.concept'}}</h3>
+      <p class="hint">{{localize 'E20.ThreatHint.concept'}}</p>
+      <label>{{localize 'E20.ThreatBuilderName'}} <input type="text" name="name" value="{{state.name}}" required></label>
+      <label>{{localize 'E20.ThreatBuilderConcept'}} <textarea name="concept" rows="3">{{state.concept}}</textarea></label>
+      <fieldset class="threat-builder-types">
+        <legend>{{localize 'E20.ThreatBuilderType'}}</legend>
+        {{#each types as |t|}}
+          <label class="threat-builder-type {{#if t.checked}}checked{{/if}}">
+            <input type="radio" name="type" value="{{t.key}}" {{checked t.checked}}>
+            <span class="t">{{t.label}}</span>
+            <span class="h">{{t.hint}}</span>
+          </label>
+        {{/each}}
+      </fieldset>
+      <label class="checkbox"><input type="checkbox" name="animal" {{checked state.animal}}> {{localize 'E20.ThreatBuilderAnimal'}}</label>
+      {{#if isVehicle}}
+        <label class="checkbox"><input type="checkbox" name="vehicleAi" {{checked state.vehicleAi}}> {{localize 'E20.ThreatBuilderVehicleAi'}}</label>
+      {{/if}}
+
+    {{else if (eq step "level")}}
+      <h3>{{localize 'E20.ThreatStep.level'}}</h3>
+      <p class="hint">
+        {{#if party.count}}{{localize 'E20.ThreatBuilderParty' party=party.name count=party.count average=party.average appropriate=party.appropriate}}
+        {{else}}{{localize 'E20.ThreatBuilderNoParty' party=party.name}}{{/if}}
+      </p>
+      <div class="threat-builder-roles">
+        {{#each roles as |r|}}
+          <button type="button" class="{{#if r.active}}active{{/if}}" data-action="role" data-role="{{r.key}}">
+            <span class="t">{{r.label}}</span><span class="h">{{r.offset}} · TL {{r.tl}}</span>
+          </button>
+        {{/each}}
+      </div>
+      <label>{{localize 'E20.NpcThreatLevel'}} <input type="number" name="tl" value="{{derived.tl}}" min="0" max="30"></label>
+
+    {{else if (eq step "body")}}
+      <h3>{{localize 'E20.ThreatStep.body'}}</h3>
+      <div class="threat-builder-grid">
+        <label>{{localize 'E20.ActorHealth'}}
+          <input type="number" name="healthOverride" value="{{state.healthOverride}}" placeholder="{{derived.health}}" min="0">
+        </label>
+        <p class="hint">{{#if rulesFlags.healthRule}}{{localize 'E20.ThreatHint.health'}}{{else}}{{localize 'E20.ThreatHint.healthNone'}}{{/if}}</p>
+        <label>{{localize 'E20.ActorSize'}} <select name="size">{{selectOptions sizeChoices selected=state.size}}</select></label>
+        <label>{{localize 'E20.MovementTypeGround'}}
+          <input type="number" name="groundOverride" value="{{state.groundOverride}}" placeholder="{{derived.ground}}" min="0" step="5">
+        </label>
+      </div>
+      <fieldset>
+        <legend>{{localize 'E20.ThreatBuilderMoreMovement'}}</legend>
+        {{#each movementRows as |m|}}
+          <label class="checkbox"><input type="checkbox" name="movementTypes.{{m.key}}" {{checked m.checked}}> {{m.label}} ({{m.rate}} ft)</label>
+        {{/each}}
+        <p class="hint">{{localize 'E20.ThreatHint.movement'}}</p>
+      </fieldset>
+
+    {{else if (eq step "essence")}}
+      <h3>{{localize 'E20.ThreatStep.essence'}}</h3>
+      <p class="hint">{{localize 'E20.ThreatHint.essence' typical=derived.guide.typical max=derived.guide.max}}</p>
+      <div class="threat-builder-grid">
+        {{#if rulesFlags.socialBonus}}
+          <label class="checkbox"><input type="checkbox" name="social" {{checked state.social}}> {{localize 'E20.ThreatBuilderSocial'}}</label>
+        {{/if}}
+        {{#if rulesFlags.advancedEssence}}
+          <label>{{localize 'E20.ThreatBuilderAdvanced' max=derived.budget.advancedMax}}
+            <input type="number" name="advanced" value="{{state.advanced}}" min="0" max="{{derived.budget.advancedMax}}"></label>
+        {{/if}}
+        <label>{{localize 'E20.ActorConditioning'}} <input type="number" name="conditioning" value="{{state.conditioning}}" min="0"></label>
+        <button type="button" data-action="essencesFromSkills" data-tooltip="{{localize 'E20.ThreatBuilderFromSkillsHint'}}">
+          <i class="fa-solid fa-calculator" inert></i> {{localize 'E20.ThreatBuilderFromSkills'}}
+        </button>
+      </div>
+      <div class="threat-builder-essences">
+        {{#each essenceRows as |e|}}
+          <div class="threat-builder-essence {{#if e.over}}over{{/if}}">
+            <label class="head"><span>{{e.label}}</span>
+              <input type="number" name="essences.{{e.key}}" value="{{e.value}}" min="0"></label>
+            <span class="spent">{{localize 'E20.ThreatBuilderSpent' spent=e.spent max=e.value}}</span>
+            {{#each e.skills as |k|}}
+              <div class="skill">
+                <span>{{k.label}}</span>
+                <select name="skills.{{k.key}}.shift">{{selectOptions @root.shiftChoices selected=k.shift}}</select>
+                <input type="text" name="skills.{{k.key}}.specialization" value="{{k.specialization}}" placeholder="{{localize 'E20.ThreatBuilderSpecialization'}}">
+              </div>
+            {{/each}}
+          </div>
+        {{/each}}
+      </div>
+
+    {{else if (eq step "perks")}}
+      <h3>{{localize 'E20.ThreatStep.perks'}}</h3>
+      <p class="hint">{{#if derived.perkAllowance.includesPowers}}{{localize 'E20.ThreatHint.perksBuyPowers'}}{{else}}{{localize 'E20.ThreatHint.perks'}}{{/if}}</p>
+      {{#if rulesFlags.perkCadence}}
+      <div class="threat-builder-row">
+        <select data-quick-perk-select aria-label="{{localize 'E20.ThreatBuilderQuickPerk'}}">
+          {{#each quickPerkChoices as |q|}}<option value="{{q.key}}">{{q.label}}</option>{{/each}}
+        </select>
+        <button type="button" data-action="addQuickPerk"><i class="fa-solid fa-plus" inert></i> {{localize 'E20.ThreatBuilderQuickPerk'}}</button>
+      </div>
+      {{#if quickPerkRows.length}}
+        <ul class="threat-builder-list">
+          {{#each quickPerkRows as |q|}}
+            <li><span>{{q.label}}</span>
+              {{#if q.isDamage}}<select name="quickPerks.{{q.index}}.attack">{{selectOptions @root.attackChoices selected=q.attack}}</select>{{/if}}
+              <button type="button" class="icon" data-action="removeRow" data-list="quickPerks" data-index="{{q.index}}" aria-label="{{localize 'Remove'}}"><i class="fa-solid fa-xmark" inert></i></button></li>
+          {{/each}}
+        </ul>
+        {{#if (gt damagePerks maxDamagePerks)}}<p class="warn">{{localize 'E20.ThreatBuilderDamageCap' max=maxDamagePerks}}</p>{{/if}}
+      {{/if}}
+      {{/if}}
+
+      {{> "systems/essence20/templates/app/parts/threat-builder-rows.hbs" list="customPerks" rows=state.customPerks label=(localize 'E20.ThreatBuilderNewPerk') type="perk"}}
+      {{> "systems/essence20/templates/app/parts/threat-builder-rows.hbs" list="customPowers" rows=state.customPowers label=(localize 'E20.ThreatBuilderNewPower') type="power" power=true actionChoices=actionChoices}}
+      {{> "systems/essence20/templates/app/parts/threat-builder-rows.hbs" list="customHangUps" rows=state.customHangUps label=(localize 'E20.ThreatBuilderNewHangUp') type="hangUp"}}
+      {{> "systems/essence20/templates/app/parts/threat-builder-drop.hbs" zone="perks" rows=droppedRows hint=(localize 'E20.ThreatBuilderDropPerks')}}
+
+    {{else if (eq step "attacks")}}
+      <h3>{{localize 'E20.ThreatStep.attacks'}}</h3>
+      <p class="hint">{{localize 'E20.ThreatHint.attacks'}}</p>
+      {{#each state.attacks as |a i|}}
+        <div class="threat-builder-attack">
+          <input type="text" name="attacks.{{i}}.name" value="{{a.name}}" placeholder="{{localize 'E20.ThreatBuilderAttackName'}}">
+          <select name="attacks.{{i}}.melee">
+            <option value="true" {{#if a.melee}}selected{{/if}}>{{localize 'E20.ThreatBuilderMelee'}}</option>
+            <option value="false" {{#unless a.melee}}selected{{/unless}}>{{localize 'E20.ThreatBuilderRanged'}}</option>
+          </select>
+          <select name="attacks.{{i}}.skill">{{selectOptions @root.skillChoices selected=a.skill}}</select>
+          <input type="number" name="attacks.{{i}}.damageValue" value="{{a.damageValue}}" min="0" aria-label="{{localize 'E20.ThreatBuilderDamage'}}">
+          <select name="attacks.{{i}}.damageType">{{selectOptions @root.damageChoices selected=a.damageType}}</select>
+          <select name="attacks.{{i}}.defenseType">{{selectOptions @root.defenseChoices selected=a.defenseType}}</select>
+          {{#unless a.melee}}<input type="number" name="attacks.{{i}}.range" value="{{a.range}}" min="0" step="5" aria-label="{{localize 'E20.ThreatBuilderRange'}}">{{/unless}}
+          <button type="button" class="icon" data-action="removeRow" data-list="attacks" data-index="{{i}}" aria-label="{{localize 'Remove'}}"><i class="fa-solid fa-xmark" inert></i></button>
+        </div>
+      {{/each}}
+      <button type="button" data-action="addRow" data-list="attacks"><i class="fa-solid fa-plus" inert></i> {{localize 'E20.ThreatBuilderNewAttack'}}</button>
+      {{> "systems/essence20/templates/app/parts/threat-builder-drop.hbs" zone="attacks" rows=droppedRows hint=(localize 'E20.ThreatBuilderDropWeapons') type="weapon"}}
+
+    {{else if (eq step "equipment")}}
+      <h3>{{localize 'E20.ThreatStep.equipment'}}</h3>
+      <p class="hint">{{localize 'E20.ThreatHint.equipment'}}</p>
+      {{> "systems/essence20/templates/app/parts/threat-builder-drop.hbs" zone="equipment" rows=droppedRows hint=(localize 'E20.ThreatBuilderDropEquipment') type="armor"}}
+
+    {{else if (eq step "grow")}}
+      <h3>{{localize 'E20.ThreatStep.grow'}}</h3>
+      <p class="hint">{{localize 'E20.ThreatHint.grow'}}</p>
+      <label class="checkbox"><input type="checkbox" name="grow" {{checked state.grow}}> {{localize 'E20.ThreatBuilderGrow'}}</label>
+
+    {{else}}
+      <h3>{{localize 'E20.ThreatStep.review'}}</h3>
+      <p class="hint">{{localize 'E20.ThreatHint.review'}}</p>
+    {{/if}}
+
+    {{#if (or audit (eq step "review"))}}
+      <ul class="threat-builder-findings">
+        {{#each findings as |f|}}
+          <li class="{{f.level}}"><i class="fa-solid {{#if (eq f.level 'warn')}}fa-triangle-exclamation{{else}}fa-circle-info{{/if}}" inert></i> {{f.text}}</li>
+        {{else}}
+          <li class="ok"><i class="fa-solid fa-check" inert></i> {{localize 'E20.ThreatAuditClean'}}</li>
+        {{/each}}
+      </ul>
+    {{/if}}
+  </section>
+
+  <aside class="threat-builder-summary" aria-label="{{localize 'E20.ThreatBuilderSummary'}}">
+    <h4>{{#if audit}}{{actor.name}}{{else if state.name}}{{state.name}}{{else}}{{localize 'E20.ThreatBuilderUnnamed'}}{{/if}}</h4>
+    <dl>
+      <dt>{{localize 'E20.NpcThreatLevel'}}</dt><dd>{{derived.tl}}</dd>
+      <dt>{{localize 'E20.ThreatBuilderType'}}</dt><dd>{{localize (concat 'E20.ThreatType.' state.type)}}</dd>
+      <dt>{{localize 'E20.ActorHealth'}}</dt><dd>{{#if audit}}{{state.health}}{{else}}{{derived.health}}{{/if}}</dd>
+      {{#unless audit}}
+        <dt>{{localize 'E20.ActorSize'}}</dt><dd>{{sizeLabel}}</dd>
+        <dt>{{localize 'E20.MovementTypeGround'}}</dt><dd>{{derived.ground}} ft</dd>
+      {{/unless}}
+      <dt>{{localize 'E20.ThreatBuilderEssencePoints'}}</dt>
+      <dd class="{{#if (gt essenceTotal derived.budget.total)}}over{{/if}}">{{essenceTotal}} / {{derived.budget.total}}</dd>
+      <dt>{{#if derived.perkAllowance.includesPowers}}{{localize 'E20.ThreatBuilderPerksAndPowers'}}{{else}}{{localize 'E20.ThreatBuilderPerks'}}{{/if}}</dt>
+      <dd>{{perksSpent}} /
+        {{#if derived.perkAllowance.max}}1–{{derived.perkAllowance.max}}{{else}}{{derived.perkAllowance.perks}}{{/if}}</dd>
+      <dt>{{localize 'E20.ThreatBuilderHangUps'}}</dt><dd>{{derived.hangUps}}</dd>
+      <dt>{{localize 'E20.ThreatBuilderAttacks'}}</dt><dd>{{derived.attacks.length}}</dd>
+    </dl>
+    <h5>{{localize 'E20.ThreatBuilderDefenses'}}</h5>
+    <dl class="defenses">
+      {{#each defenseRows as |row|}}<dt>{{row.label}}</dt><dd>{{row.value}}</dd>{{/each}}
+    </dl>
+    {{#unless (or audit (eq step "review"))}}
+      {{#if warnCount}}<p class="warn"><i class="fa-solid fa-triangle-exclamation" inert></i> {{#if (eq warnCount 1)}}{{localize 'E20.ThreatBuilderWarnCountOne'}}{{else}}{{localize 'E20.ThreatBuilderWarnCount' count=warnCount}}{{/if}}</p>{{/if}}
+    {{/unless}}
+  </aside>
+
+  {{#unless audit}}
+  <footer class="threat-builder-footer">
+    <button type="button" data-action="back" {{#if isFirst}}disabled{{/if}}><i class="fa-solid fa-arrow-left" inert></i> {{localize 'E20.ThreatBuilderBack'}}</button>
+    {{#if isLast}}
+      <button type="button" class="bright" data-action="create"><i class="fa-solid fa-check" inert></i> {{localize 'E20.ThreatBuilderCreate'}}</button>
+    {{else}}
+      <button type="button" data-action="next">{{localize 'E20.ThreatBuilderNext'}} <i class="fa-solid fa-arrow-right" inert></i></button>
+    {{/if}}
+  </footer>
+  {{/unless}}
+</div>
