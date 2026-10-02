@@ -65,6 +65,8 @@ const RATING_ONLY_ACTIONS = { fly: 'aerial', burrow: 'burrow' };
  * - Jump: core doubles its cost too, but "each foot you clear on a long jump costs a foot of
  *   Movement" (GI Joe CRB p.220).
  * - Fly and Burrow: only selectable for an actor with that Movement type.
+ * - Blink (teleport): not selectable while Metallic Armor Power Up! is active - "While Metallic
+ *   Armor is active, you cannot teleport" (Through the Shattered Grid, p.26).
  * @param {Object} actions   CONFIG.Token.movement.actions
  */
 export function configureMovementActions(actions) {
@@ -82,6 +84,10 @@ export function configureMovementActions(actions) {
     if (actions[action]) {
       actions[action].canSelect = token => hasMovementType(token?.actor, movementType);
     }
+  }
+
+  if (actions.blink) {
+    actions.blink.canSelect = token => !token?.actor?.flags?.essence20?.metallicArmorActive;
   }
 }
 

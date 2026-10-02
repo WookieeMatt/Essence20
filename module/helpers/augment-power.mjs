@@ -92,7 +92,7 @@ export async function activateAugmentPower(actor, item) {
   }
 
   for (const targetActor of targetActors) {
-    await bankPendingBonus(targetActor, PENDING_FLAG, { shiftUp: multiplied(actor) ? shiftUp * 2 : shiftUp });
+    await bankPendingBonus(targetActor, PENDING_FLAG, { shiftUp: multiplied(actor) ? shiftUp * 2 : shiftUp }, { granter: actor });
   }
 
   if (shiftUp == 1) {

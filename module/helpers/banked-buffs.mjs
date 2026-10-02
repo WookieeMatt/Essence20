@@ -4629,7 +4629,7 @@ export async function onPerkUse(item) {
 
       await targetActor.toggleStatusEffect(condition, { active: false });
     } else if (effect == 'shiftUp') {
-      await bankPendingBonus(targetActor, 'pendingInspiringWords', { shiftUp: 2 });
+      await bankPendingBonus(targetActor, 'pendingInspiringWords', { shiftUp: 2 }, { granter: actor });
     }
 
     await markInspiringWordsUsed(actor);
@@ -6765,7 +6765,7 @@ export async function onPerkUse(item) {
   }
 
   for (const targetActor of targetActors) {
-    await bankPendingBonus(targetActor, bankable.flagKey, data);
+    await bankPendingBonus(targetActor, bankable.flagKey, data, { granter: actor });
   }
 
   // Generosity of Spirit (see its own comment above): the self downshift is banked on the

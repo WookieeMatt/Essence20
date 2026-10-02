@@ -88,6 +88,20 @@ describe("canUseSkillSubstitutionPerk / activateSkillSubstitutionPerk", () => {
 
     expect(canUseSkillSubstitutionPerk(actor, THESIS_ID)).toBe(false);
   });
+
+  test("Multiplication doubles Thesis: 2/scene, or 6/scene with Technobabble", async () => {
+    const MULTIPLICATION_ID = "Compendium.essence20.tf_crb.Item.K3FNcAMjjek1UaJk";
+    for (const [perks, uses] of [[[MULTIPLICATION_ID], 2], [[MULTIPLICATION_ID, TECHNOBABBLE_ID], 6]]) {
+      const actor = makeActor();
+      actor.items = perks.map(sourceId => ({ type: 'perk', flags: { core: { sourceId } } }));
+      for (let i = 0; i < uses; i++) {
+        expect(canUseSkillSubstitutionPerk(actor, THESIS_ID)).toBe(true);
+        await activateSkillSubstitutionPerk(actor, THESIS_ID);
+      }
+
+      expect(canUseSkillSubstitutionPerk(actor, THESIS_ID)).toBe(false);
+    }
+  });
 });
 
 describe("Laypony Terms hook on Reverse Engineer", () => {

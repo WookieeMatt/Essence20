@@ -2,6 +2,7 @@ import { actorHasPerk } from "./perks.mjs";
 import { isVolleyActive } from "./volley.mjs";
 import { isMetallikatoMultipleTargetsActive } from "./metallikato.mjs";
 import { isBoxShotActive } from "./box-shot.mjs";
+import { isMetallicArmorActive } from "./metallic-armor.mjs";
 
 /**
  * Multiple Targets (X, range/area) (p.198) - see dice.mjs#rollSkill's own doc comment (near its
@@ -67,6 +68,13 @@ export function isMultipleTargetsWeapon(actor, item) {
   // Box Shot (Quartermaster's Guide to Gear, General Perk, p.28) - see helpers/box-shot.mjs's own
   // doc comment. Any weaponEffect (RAW names no style restriction), while the toggle is active.
   if (actorHasPerk(actor, BOX_SHOT_ID) && isBoxShotActive(actor)) {
+    return true;
+  }
+
+  // Metallic Armor Power Up! (Through the Shattered Grid, p.26): "Your Attacks gain the Multiple
+  // Targets (2) trait" while it's active - every attack, any style. The "+1 target" for attacks
+  // that already have the trait has nothing to raise: no target count is enforced anywhere.
+  if (isMetallicArmorActive(actor)) {
     return true;
   }
 

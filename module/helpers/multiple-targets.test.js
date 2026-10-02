@@ -36,6 +36,14 @@ describe("isMultipleTargetsWeapon", () => {
     expect(isMultipleTargetsWeapon(actor, weaponEffect())).toBe(false);
   });
 
+  test("Metallic Armor Power Up! grants it to every attack while active (Through the Shattered Grid p.26)", () => {
+    const actor = makeActor();
+    actor.getFlag = jest.fn((scope, key) => key == 'metallicArmorActive');
+    expect(isMultipleTargetsWeapon(actor, weaponEffect({ style: 'projectile' }))).toBe(true);
+    actor.getFlag = jest.fn(() => false);
+    expect(isMultipleTargetsWeapon(actor, weaponEffect({ style: 'projectile' }))).toBe(false);
+  });
+
   describe("Charge Into Battle (Through the Shattered Grid, Guardian of Eltar, 2nd level, p.72)", () => {
     test("grants it for a melee Power Weapon lacking the trait, with the Perk", () => {
       const actor = makeActor({ perkIds: [CHARGE_INTO_BATTLE_ID], weaponTraits: ['powerWeapon'] });
@@ -128,13 +136,13 @@ describe("isMultipleTargetsWeapon", () => {
   describe("Volley (PR CRB, Pink Ranger, 1st level, p.48)", () => {
     test("grants it for a ranged weapon while active", () => {
       const actor = makeActor();
-      actor.getFlag = jest.fn(() => true);
+      actor.getFlag = jest.fn((scope, key) => key == 'volleyActive');
       expect(isMultipleTargetsWeapon(actor, weaponEffect({ style: 'projectile' }))).toBe(true);
     });
 
     test("doesn't apply to a melee weapon, or while inactive", () => {
       const actor = makeActor();
-      actor.getFlag = jest.fn(() => true);
+      actor.getFlag = jest.fn((scope, key) => key == 'volleyActive');
       expect(isMultipleTargetsWeapon(actor, weaponEffect({ style: 'melee' }))).toBe(false);
 
       const inactiveActor = makeActor();

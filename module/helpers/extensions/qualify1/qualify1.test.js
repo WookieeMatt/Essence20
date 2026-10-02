@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 import { Q1, Q1_UPGRADE, handleQ1Relay, itemsFrom } from './common.mjs';
 import {
   effectiveAvailability, isQualifiedUpgrade, onKitPrerequisite, onRequisitionAccess, onRequisitionAvailability, perkAccess,
-  qualificationApplyDialog, qualificationSources, vehicleQualifier,
+  isBiomechanicalArmor, isBiomechanicalVehicle, qualificationApplyDialog, qualificationSources, vehicleQualifier,
 } from './qualification.mjs';
 import { dangerSenseApply, dangerSenseDerived, dangerSenseToggles, lastChanceHolderFor, planPoolSize, withInitiativeRerolls } from './rerolls.mjs';
 import { burningOf, igniteHitRider } from './ignite.mjs';
@@ -186,6 +186,32 @@ describe('qualification', () => {
     expect(sources).toContain('q1CobraLaWeapon');
     const vehicleEffect = { type: 'weaponEffect', parent: { type: 'vehicle', items: { get: () => null } }, flags: {} };
     expect(qualificationSources(actor, null, { isAttack: true, item: vehicleEffect }).sources.map(s => s.id)).toContain('q1MegaVehicleWeapon');
+  });
+});
+
+describe('The Glory of Cobra-La (Ferocious Fighters p.73)', () => {
+  test('battledress without Organic Armor gives a Snag on every Skill Test while worn', () => {
+    const vest = { id: 'v1', type: 'armor', name: 'Protective Vest', system: { equipped: true } };
+    const actor = makeActor([perk(Q1.gloryOfCobraLa), vest]);
+    expect(qualificationSources(actor, null, { rolledSkill: 'alertness' }).sources.map(s => s.id)).toContain('q1CobraLaArmor');
+
+    const organic = { type: 'upgrade', name: 'Organic Armor', flags: { core: { sourceId: `Compendium.essence20.gi_joe_crb.Item.${Q1_UPGRADE.organicArmor}` }, essence20: { parentId: 'v1' } } };
+    const covered = makeActor([perk(Q1.gloryOfCobraLa), { ...vest }, organic]);
+    expect(isBiomechanicalArmor(covered.items.get('v1'))).toBe(true);
+    expect(qualificationSources(covered, null, { rolledSkill: 'alertness' }).sources.map(s => s.id)).not.toContain('q1CobraLaArmor');
+
+    const unworn = makeActor([perk(Q1.gloryOfCobraLa), { ...vest, system: { equipped: false } }]);
+    expect(qualificationSources(unworn, null, { rolledSkill: 'alertness' }).sources.map(s => s.id)).not.toContain('q1CobraLaArmor');
+  });
+
+  test('Biomechanical vehicles are a Qualification', () => {
+    const actor = makeActor([perk(Q1.gloryOfCobraLa)]);
+    const bio = { name: 'Insectoid Flyer', system: { traits: { biomechanical: true } } };
+    const truck = { name: 'Supply Truck', system: { traits: {} } };
+    expect(isBiomechanicalVehicle(bio)).toBe(true);
+    expect(isBiomechanicalVehicle({ name: 'Cobra-La Mount', system: { traits: {} } })).toBe(true);
+    expect(vehicleQualifier(actor, bio)).toBe(Q1.gloryOfCobraLa);
+    expect(vehicleQualifier(actor, truck)).toBeNull();
   });
 });
 

@@ -279,7 +279,7 @@ export async function onTeamBuffPerkUse(item, actor) {
   // each, usable now (helpers/action-economy.mjs#grantActionsThisTurn).
   if (config.grantsMove) {
     for (const target of targets) {
-      await grantActionsThisTurn(target, { move: 1 }, item.name);
+      await grantActionsThisTurn(target, { move: 1 }, item.name, { granter: actor });
     }
   }
 

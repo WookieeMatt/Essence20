@@ -36,6 +36,7 @@ export const O3 = {
   hiddenInPlainSight: `${C('tf_crb')}tKpYLu7ml5czsMqq`,
   nowYouDont: `${C('tf_crb')}iW9TjN9X6SsYm2Ql`,
   overchargeEngines: `${C('tf_crb')}BPHwAfGvLPZuJ1m1`,
+  multiplication: `${C('tf_crb')}K3FNcAMjjek1UaJk`,
   pistolWhip: `${C('tf_crb')}fiSowblyLmO9dN8F`,
   popOut: `${C('tf_crb')}xAAzOb9sYmEN7qmv`,
   samePrinciple: `${C('tf_crb')}GTUn1LOxb3D4FgHF`,

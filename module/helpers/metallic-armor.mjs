@@ -17,10 +17,10 @@
  * Use button for choosing to end it.
  *
  * Still not built:
- * - The Multiple Targets (2)/+1 grant needs a NUMERIC target-count field this project's own
- *   isMultipleTargetsWeapon() doesn't expose (only a boolean "has the trait" today).
- * - "Cannot teleport" has nothing to block - no teleportation mechanism exists anywhere in this
- *   project - the restriction is moot rather than unenforced.
+ * - The "+1 target" for attacks that already have Multiple Targets: no target count is enforced
+ *   anywhere, so there is nothing to raise. The trait itself is granted (multiple-targets.mjs).
+ * "Cannot teleport" is enforced on the token: the Blink movement action isn't offered while it's
+ * active (helpers/token-movement.mjs#configureMovementActions).
  */
 const METALLIC_ARMOR_FLAG = 'metallicArmorActive';
 const METALLIC_ARMOR_TEMP_HEALTH = 3;

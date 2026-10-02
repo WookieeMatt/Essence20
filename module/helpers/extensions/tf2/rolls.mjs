@@ -408,16 +408,33 @@ async function setStance(actor, changes) {
 /*  Arrogant                                     */
 /* -------------------------------------------- */
 
-/** Whether an attack right now breaks Arrogant: every target's Threat Level is below the attacker's level. */
-export function arrogantForbids(actor, targets) {
+/**
+ * Whether an attack right now breaks Arrogant (Enigma of Combination p.25): on your first turn of a
+ * combat "you can't attack enemies whose Threat Level is lower than your level, though you can make
+ * an area of effect attack that includes such enemies if it also includes at least one enemy whose
+ * Threat Level is equal to or higher than your level." Only Threats count - a target with no Threat
+ * Level (a character) is never "lower"; a TL 0 one is.
+ * @param {Actor} actor
+ * @param {Actor[]} targets
+ * @param {Object} [options]
+ * @param {Boolean} [options.isArea]   The attack is an area of effect.
+ * @returns {Boolean}
+ */
+export function arrogantForbids(actor, targets, { isArea = false } = {}) {
   const combat = globalThis.game?.combat;
   if (!combat || combat.round != 1 || !isOwnTurn(actor) || !has(actor, TF2.arrogant)) {
     return false;
   }
 
   const level = Number(actor?.system?.level) || 0;
-  const rated = targets.filter(target => Number.isFinite(Number(target?.system?.threatLevel)) && Number(target.system.threatLevel) > 0);
-  return rated.length > 0 && rated.length == targets.length && rated.every(target => Number(target.system.threatLevel) < level);
+  const tlOf = target => Number(target?.system?.threatLevel);
+  const rated = targets.filter(target => target?.system?.threatLevel !== undefined && target?.system?.threatLevel !== null && Number.isFinite(tlOf(target)));
+  const lower = rated.filter(target => tlOf(target) < level);
+  if (!lower.length) {
+    return false;
+  }
+
+  return !(isArea && rated.some(target => tlOf(target) >= level));
 }
 
 /** What the roll about to be made says about itself, for the roll sources (keyed by actor uuid). */
@@ -432,8 +449,11 @@ export async function tf2PreRoll(actor, dataset, item) {
     return;
   }
 
-  if (arrogantForbids(actor, targetedActors())) {
+  // The attack is held, not just flagged: the roll is cancelled with the reason shown.
+  const isArea = Number(item.system?.radius) > 0 || !!item.system?.shape;
+  if (arrogantForbids(actor, targetedActors(), { isArea })) {
     ui.notifications?.warn?.(T('Tf2ArrogantWarn', { name: nameOf(actor, TF2.arrogant, 'Arrogant') }));
+    dataset.cancelRoll = true;
   }
 }
 

@@ -34,6 +34,8 @@ export const TF2 = {
   acuteSense: C('tf_crb', 'rl8hs6ezb6VSDahM'),
   allOutAttack: C('tf_crb', 'OCQ8ZuC793JHQ4YU'),
   appliedScience: C('tf_crb', 'qjDBmRlTNvuJxyum'),
+  // Doubles the Scientist Role Perks' listed uses (TF CRB p.80).
+  multiplication: C('tf_crb', 'K3FNcAMjjek1UaJk'),
   broadUnderstanding: C('tf_crb', '7BZXi4zvS6GAhGOY'),
   bullbar: C('tf_crb', '4Wfhy9VD0mMGgJbx'),
   cage: C('tf_crb', 'w1E74WXrvwQJlS1Q'),

@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: when you give an ally a Ruthless Point, you can deal them 1 Psychic damage to give two instead.</p><p>Left to the table: doubling the ↑ or extra actions your other Perks grant.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: when you give an ally a Ruthless Point, an upshift, or extra actions, you're asked whether to deal them 1 Psychic damage to double it (two Ruthless Points, twice the ↑, twice the actions).</p><p>This covers the Perks and abilities that grant those through the system's shared grant paths, such as Use buttons that hand an ally actions or bank them an upshift.</p>"
     },
     "originalId": "",
     "description": "",

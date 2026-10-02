@@ -193,6 +193,34 @@ describe('pr', () => {
     expect(p.guardianTally([{ success: true }, { success: false }, null], 3).success).toBe(false);
   });
 
+  test('Mega Defender needs the Torozord on the scene, and pairs it with the Ranger', () => {
+    const toro = { id: 'z1', uuid: 'Actor.z1', type: 'zord', name: 'Torozord', system: { actions: { free: { max: 3 } } } };
+    const ranger = actor([], { actors: { k: { uuid: 'Actor.z1' } }, actions: { free: { max: 1 } } }, { uuid: 'Actor.r1' });
+    global.fromUuidSync = uuid => (uuid == 'Actor.z1' ? toro : null);
+    global.canvas = { scene: { tokens: [] } };
+    expect(p.presentTorozord(ranger)).toBeNull();
+    global.canvas.scene.tokens = [{ actorId: 'z1' }];
+    expect(p.presentTorozord(ranger)).toBe(toro);
+
+    // The form is active this scene (the scene counter falls back to 1 when unset).
+    ranger.flags.essence20.o3MegaDefender = { epoch: 1, prevHealth: 5, torozordUuid: 'Actor.z1' };
+    global.game.actors = [ranger, toro];
+    expect(p.megaDefenderPartner(ranger)).toBe(toro);
+    expect(p.megaDefenderPartner(toro)).toBe(ranger);
+    // The pair has the higher Free count: the Ranger is topped up by 2, the Torozord by nothing.
+    expect(p.sharedFreeTopUp(ranger, toro)).toBe(2);
+    expect(p.sharedFreeTopUp(toro, ranger)).toBe(0);
+    delete global.fromUuidSync;
+    delete global.canvas;
+  });
+
+  test('a shared spend lands on the partner only if their turn is still to come this round', () => {
+    const combat = { turn: 1, turns: [{ actor: { id: 'a' } }, { actor: { id: 'b' } }, { actor: { id: 'c' } }] };
+    expect(p.turnStillToCome({ id: 'c' }, combat)).toBe(true);
+    expect(p.turnStillToCome({ id: 'a' }, combat)).toBe(false);
+    expect(p.turnStillToCome({ id: 'x' }, combat)).toBe(false);
+  });
+
   test('Mega Defender replaces Strength, Speed, Health, Defenses and Movement', () => {
     const a = actor([], {
       essences: { strength: { max: 3, value: 3 }, speed: { max: 2, value: 2 } },
@@ -279,6 +307,18 @@ describe('tf', () => {
   test('Again and Again shifts ↓1 then ↓3', () => {
     expect(t.againShift(1)).toBe(1);
     expect(t.againShift(2)).toBe(3);
+  });
+
+  test('Overcharge Engines: once per turn, twice with Multiplication (TF CRB p.80)', async () => {
+    const { O3 } = await import('./shared.mjs');
+    global.game.combat = { id: 'c1', round: 2, turn: 0 };
+    const stamp = { combatId: 'c1', round: 2, turn: 0 };
+    const plain = actor([], {}, { flags: { o3Overcharge: { stamp, feet: 15, uses: 1 } } });
+    expect(t.overchargeUsesLeft(plain)).toBe(0);
+    const multiplied = actor([item('perk', { source: O3.multiplication })], {}, { flags: { o3Overcharge: { stamp, feet: 15, uses: 1 } } });
+    expect(t.overchargeUsesLeft(multiplied)).toBe(1);
+    expect(t.overchargeUsesLeft(actor([item('perk', { source: O3.multiplication })]))).toBe(2);
+    delete global.game.combat;
   });
 
   test('Overcharge rounds up to 5 feet', () => {

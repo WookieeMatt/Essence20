@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { activateFlashy, applyFlashyBlinded } from './flashy.mjs';
+import { activateFlashy, applyFlashyBlinded, flashyBlindedRounds } from './flashy.mjs';
 
 global.game = {
   i18n: { localize: (key) => key },
@@ -79,5 +79,20 @@ describe("applyFlashyBlinded", () => {
     await applyFlashyBlinded(target);
 
     expect(target.toggleStatusEffect).toHaveBeenCalledWith('blinded', { active: true });
+  });
+
+  test("Blinded 2: two rounds, four with Multiplication", () => {
+    expect(flashyBlindedRounds(null)).toBe(2);
+    expect(flashyBlindedRounds({ items: [] })).toBe(2);
+    expect(flashyBlindedRounds({ items: [{ type: 'perk', flags: { core: { sourceId: "Compendium.essence20.tf_crb.Item.K3FNcAMjjek1UaJk" } } }] })).toBe(4);
+  });
+
+  test("in combat the condition counts down", async () => {
+    const effect = { statuses: new Set(['blinded']), update: jest.fn() };
+    const target = { toggleStatusEffect: jest.fn(), effects: [effect] };
+    global.game.combat = { round: 3, turn: 1 };
+    await applyFlashyBlinded(target, null);
+    expect(effect.update).toHaveBeenCalledWith({ 'duration.rounds': 2, 'duration.startRound': 3, 'duration.startTurn': 1 });
+    delete global.game.combat;
   });
 });

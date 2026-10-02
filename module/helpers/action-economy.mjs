@@ -1,7 +1,7 @@
 import { E20 } from "./config.mjs";
 import { isAutomated } from "./named-actions.mjs";
 import { canUsePerk, hasItemUse } from "./banked-buffs.mjs";
-import { actorHasPerk, hasUsedThisTurn } from "./perks.mjs";
+import { actorHasPerk, hasUsedThisTurn, offerThisICommand } from "./perks.mjs";
 import {
   attackMatchesFilter, bindEconomy, describeAttack, getAttacksPerAction, getTurnStartGrants, recordRuleUse,
   resolveCost,
@@ -510,10 +510,17 @@ export async function tradeStandardForFree(actor) {
  * @param {String} [source] Logged the same way spend()/tradeStandardForFree() log their source.
  * @returns {Promise<Boolean>}   False when the actor isn't in the active encounter.
  */
-export async function grantActionsThisTurn(actor, { free = 0, move = 0, standard = 0 } = {}, source = null) {
+export async function grantActionsThisTurn(actor, { free = 0, move = 0, standard = 0 } = {}, source = null, { granter = null } = {}) {
   const document = getCombatant(actor);
   if (!document) {
     return false;
+  }
+
+  // This, I Command (perks.mjs#offerThisICommand): 1 Psychic to the ally doubles the actions granted.
+  if (granter && await offerThisICommand(granter, actor, describeGrant({ free, move, standard }))) {
+    free *= 2;
+    move *= 2;
+    standard *= 2;
   }
 
   const ledger = getLedger(actor);

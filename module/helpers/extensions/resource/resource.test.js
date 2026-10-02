@@ -7,7 +7,7 @@ import { toWealthTest } from './wealth.mjs';
 import { budgetLeft, upgradeCost } from './motor-pool.mjs';
 import { bodyOfEnergySplit, bodyOfEnergyUnmorph, innerConservationRefund } from './power-spend.mjs';
 import {
-  addictionDie, applyDarkEnergonDefenses, isRestUpdate, pointsPerDose, repairBonusHeld, strainOf, strainSources, synthEnPayer,
+  addictionDie, applyDarkEnergonDefenses, darkEnergonRerolls, feedDarkEnergonCraving, isRestUpdate, pointsPerDose, repairBonusHeld, strainOf, strainSources, synthEnPayer,
 } from './energon.mjs';
 import { beastModePackages } from './beast-mode.mjs';
 import { anomalyBand, smallerDie, weImproviseForfeit } from './story-spend.mjs';
@@ -15,6 +15,7 @@ import {
   camperFit, canResearch, cupsLeft, essenceDamage, healStress, honestCompassionMax, pastriesLeft, spellsToShare,
 } from './mlp.mjs';
 import './index.mjs';
+import { getRerollConfigs } from "../../reroll.mjs";
 
 function flagged(obj) {
   obj.flags ??= {};
@@ -193,6 +194,32 @@ describe('Energon strains', () => {
     expect(addictionDie(6)).toBe('auto');
     expect(strainOf(item(IDS.redEnergon))).toBe('red');
     expect(isRestUpdate({ system: { energon: { dark: { value: 0 }, red: { value: 0 }, normal: { value: 2 } } } })).toBe(true);
+  });
+});
+
+describe('Dark Energon (Decepticon Directive p.80)', () => {
+  test('a reroll for Strength and Speed tests costing 1 Dark Energon, offered only while holding one', () => {
+    expect(darkEnergonRerolls({ system: { energon: { dark: { value: 0 } } } })).toEqual([]);
+    const [grant] = darkEnergonRerolls({ system: { energon: { dark: { value: 2 } } } });
+    expect(grant).toMatchObject({ target: 'allDice', maxUses: 0, cost: { resourcePath: 'system.energon.dark.value', amount: 1 } });
+    expect(grant.skills).toEqual(expect.arrayContaining(['might', 'targeting']));
+    expect(grant.skills).not.toContain('alertness');
+  });
+
+  test('the reroll engine offers it through its code-side grants', () => {
+    const actor = { items: [], effects: [], system: { energon: { dark: { value: 1 } } } };
+    const config = getRerollConfigs(actor).find(c => c.source == 'darkEnergonReroll');
+    expect(config).toMatchObject({ sourceType: 'code', mode: 'all' });
+    expect(typeof config.onPaid).toBe('function');
+  });
+
+  test('consuming or using it feeds a craving', async () => {
+    const addict = flagged({ flags: { essence20: { q1Addiction: { day: 3, craving: true, cravingDay: 3 } } } });
+    await feedDarkEnergonCraving(addict);
+    expect(addict.flags.essence20.q1Addiction).toMatchObject({ day: 3, craving: false, cravingDay: null });
+    const fine = flagged({ flags: { essence20: { q1Addiction: { craving: false } } } });
+    await feedDarkEnergonCraving(fine);
+    expect(fine.setFlag).not.toHaveBeenCalled();
   });
 });
 

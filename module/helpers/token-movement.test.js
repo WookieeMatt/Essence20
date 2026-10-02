@@ -180,6 +180,13 @@ describe("configureMovementActions", () => {
     expect(actions.walk.canSelect).toBeUndefined();
   });
 
+  test("no teleporting while Metallic Armor is active", () => {
+    const actions = { ...coreActions(), blink: {} };
+    configureMovementActions(actions);
+    expect(actions.blink.canSelect({ actor: makeActor() })).toBe(true);
+    expect(actions.blink.canSelect({ actor: { flags: { essence20: { metallicArmorActive: true } } } })).toBe(false);
+  });
+
   test("a token with no actor, or an actor without movement, isn't restricted", () => {
     expect(hasMovementType(undefined, 'aerial')).toBe(true);
     expect(hasMovementType({ system: {} }, 'aerial')).toBe(true);

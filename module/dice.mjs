@@ -4791,6 +4791,34 @@ const MOVE_LIKE_A_SONG_ROUND_FLAG = 'moveLikeASongUsedThisRound';
 // block in _getAutomaticCombatModifiers. Negative is a penalty.
 const GRAVITY_ATHLETICS_BRAWN_SHIFTS = { highGravity: -2, lowGravity: 1, zeroGravity: 2 };
 
+/**
+ * Pistol Whip (Transformers CRB p.66): a Ballistic weapon in an External Hardpoint "also counts as a
+ * Close Combat Bludgeon. You do not add any benefits you normally gain from attacks with a Ballistic
+ * weapon when you use it as a Close Combat Bludgeon." Its Bludgeon attacks are generated effects
+ * (helpers/extensions/other3/tf.mjs, flagged o3GeneratedKey ...:pistolWhip...), so every Ballistic
+ * check that goes through _getParentWeapon sees the weapon without its Ballistic trait.
+ * @param {Item} weaponEffect
+ * @returns {Boolean}
+ */
+export function isPistolWhipEffect(weaponEffect) {
+  return String(weaponEffect?.flags?.essence20?.o3GeneratedKey ?? '').includes(':pistolWhip');
+}
+
+/** The weapon as a Pistol Whip Bludgeon sees it: everything the same except no Ballistic trait. */
+export function withoutBallistic(weapon) {
+  if (!weapon) {
+    return weapon;
+  }
+
+  const system = Object.create(weapon.system);
+  const strip = traits => (traits ?? []).filter(trait => trait != 'ballistic');
+  system.traits = strip(weapon.system?.traits);
+  system.itemAndUpgradeTraits = strip(weapon.system?.itemAndUpgradeTraits);
+  const view = Object.create(weapon);
+  Object.defineProperty(view, 'system', { value: system });
+  return view;
+}
+
 export class Dice {
   /**
    * Dice constructor.
@@ -16798,7 +16826,8 @@ export class Dice {
    */
   _getParentWeapon(actor, weaponEffect) {
     const parentId = weaponEffect?.flags?.essence20?.parentId;
-    return parentId ? actor.items.get(parentId) : null;
+    const weapon = parentId ? actor.items.get(parentId) : null;
+    return isPistolWhipEffect(weaponEffect) ? withoutBallistic(weapon) : weapon;
   }
 
   /**
@@ -19712,7 +19741,7 @@ export class Dice {
 
         const flashyTarget = await fromUuid(result.targetUuid);
         if (flashyTarget) {
-          await applyFlashyBlinded(flashyTarget);
+          await applyFlashyBlinded(flashyTarget, actor);
         }
       }
     }
@@ -20120,7 +20149,7 @@ export class Dice {
       }
 
       for (const allyActor of allies) {
-        await bankPendingBonus(allyActor, 'pendingSupportiveFriend', bonus);
+        await bankPendingBonus(allyActor, 'pendingSupportiveFriend', bonus, { granter: actor });
       }
     }
 

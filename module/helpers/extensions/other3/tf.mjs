@@ -521,9 +521,15 @@ registerChatButton('o3CoverBlast', async (message, button) => {
  * Overcharge Engines (TF CRB, Scientist, 13th level, p.79): "Once per turn, make a Technology Skill
  * Test as a Free action. Until the end of your turn, increase your Movements a number of feet equal to
  * your Skill Test results, rounded up to the nearest 5. This movement ignores Rough Terrain
- * penalties."
+ * penalties." Multiplication (p.80) doubles that to twice per turn; each use adds its own feet.
  */
 const OVERCHARGE_FLAG = 'o3Overcharge';
+
+export function overchargeUsesLeft(actor) {
+  const record = actor?.flags?.essence20?.[OVERCHARGE_FLAG];
+  const used = record && sameTurn(record.stamp, turnStamp()) ? num(record.uses ?? 1) : 0;
+  return (has(actor, O3.multiplication) ? 2 : 1) - used;
+}
 
 export function overchargeFeet(total) {
   return Math.ceil(Math.max(0, num(total)) / 5) * 5;
@@ -537,7 +543,7 @@ export function overchargeBonus(actor) {
 registerUse({
   id: 'o3Overcharge',
   matches: item => isItem(item, O3.overchargeEngines),
-  canUse: item => !!game.combat && !overchargeBonus(item.parent),
+  canUse: item => !!game.combat && overchargeUsesLeft(item.parent) > 0,
   run: async (item, economy, pay) => {
     const actor = item.parent;
     if (!(await pay('free'))) {
@@ -550,7 +556,10 @@ registerUse({
     }
 
     const feet = overchargeFeet(roll.total);
-    await actor.setFlag('essence20', OVERCHARGE_FLAG, { stamp: turnStamp(), feet });
+    const earlier = overchargeBonus(actor);
+    const record = actor.flags?.essence20?.[OVERCHARGE_FLAG];
+    const uses = earlier && sameTurn(record?.stamp, turnStamp()) ? num(record.uses ?? 1) + 1 : 1;
+    await actor.setFlag('essence20', OVERCHARGE_FLAG, { stamp: turnStamp(), feet: earlier + feet, uses });
     return T('O3OverchargeLine', { name: escape(actor.name), feet });
   },
 });

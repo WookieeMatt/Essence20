@@ -85,9 +85,38 @@ test('Arrogant forbids first-turn attacks on lower Threat Levels only', () => {
   const holder = actor([item(TF2.arrogant, { type: 'hangUp' })], { id: 'h', system: { level: 5 } });
   global.game.combat = { round: 1, combatant: { actor: { id: 'h' } } };
   expect(arrogantForbids(holder, [{ system: { threatLevel: 2 } }])).toBe(true);
-  expect(arrogantForbids(holder, [{ system: { threatLevel: 2 } }, { system: { threatLevel: 6 } }])).toBe(false);
+  // A single attack can't include a lower foe; an area attack can, alongside an equal-or-higher one.
+  expect(arrogantForbids(holder, [{ system: { threatLevel: 2 } }, { system: { threatLevel: 6 } }])).toBe(true);
+  expect(arrogantForbids(holder, [{ system: { threatLevel: 2 } }, { system: { threatLevel: 6 } }], { isArea: true })).toBe(false);
+  expect(arrogantForbids(holder, [{ system: { threatLevel: 2 } }], { isArea: true })).toBe(true);
+  // TL 0 lackeys are lower too; a character without a Threat Level never is.
+  expect(arrogantForbids(holder, [{ system: { threatLevel: 0 } }])).toBe(true);
+  expect(arrogantForbids(holder, [{ system: { level: 1 } }])).toBe(false);
   global.game.combat.round = 2;
   expect(arrogantForbids(holder, [{ system: { threatLevel: 2 } }])).toBe(false);
+});
+
+test('Applied Science: once per scene, twice with Multiplication', async () => {
+  const { registrySnapshot } = await import('../../extensions.mjs');
+  const use = registrySnapshot().uses.find(entry => entry.id == 'tf2AppliedScience');
+  // Used once this scene (the scene counter falls back to 1 when unset).
+  const usedOnce = { tf2AppliedScience: { epoch: 1, count: 1 } };
+  const withFlags = a => Object.assign(a, { getFlag: (scope, key) => a.flags[scope]?.[key] });
+  const plain = withFlags(actor([item(TF2.appliedScience)], { flags: { ...usedOnce } }));
+  const multiplied = withFlags(actor([item(TF2.appliedScience), item(TF2.multiplication)], { flags: { ...usedOnce } }));
+  expect(use.canUse({ parent: plain })).toBe(false);
+  expect(use.canUse({ parent: multiplied })).toBe(true);
+});
+
+test('Arrogant holds the attack: the roll is cancelled', async () => {
+  const holder = actor([item(TF2.arrogant, { type: 'hangUp' })], { id: 'h', system: { level: 5 } });
+  global.game.combat = { round: 1, combatant: { actor: { id: 'h' } } };
+  global.game.user.targets = new Set([{ actor: { system: { threatLevel: 2 } } }]);
+  global.ui = { notifications: { warn: jest.fn() } };
+  const dataset = {};
+  await tf2PreRoll(holder, dataset, { type: 'weaponEffect', system: {} });
+  expect(dataset.cancelRoll).toBe(true);
+  expect(ui.notifications.warn).toHaveBeenCalled();
 });
 
 test('Roller Drum: Stun 2 unarmed in Bot Mode', async () => {

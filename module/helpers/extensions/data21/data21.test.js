@@ -8,7 +8,7 @@ const { kitWeaponsFor, KIT_WEAPONS, ALL_PSYCHO_WEAPONS } = await import('./psych
 const { droneDefenseBonus, applyDroneDefenses, skyMorpherSources } = await import('./gear.mjs');
 const { compassionateToggles, compassionateApply, healOne } = await import('./compassionate.mjs');
 const { largerThanLifeReach, isNonMystical, mysticSources, mysticDefense } = await import('./threats.mjs');
-const { officerTrainingUpdate } = await import('./officer.mjs');
+const { isMeleeWeaponEntry, isOfficerWeapon, officerTrainingUpdate, onOfficerRequisitionAccess } = await import('./officer.mjs');
 
 const sourced = (uuid, extra = {}) => ({ id: extra.id ?? uuid.slice(-5), name: extra.name ?? 'Item', type: extra.type ?? 'perk', system: extra.system ?? {}, flags: { core: { sourceId: uuid }, essence20: extra.flags ?? {} } });
 const actor = (items = [], extra = {}) => ({
@@ -167,3 +167,22 @@ test('Psycho Sword alternate halves the target', async () => {
   await psychoAlternatePostRoll(actor(), [], {}, { hits: [{ target, hit: true }], rider: { itemUuid: 'Item.x' } });
   expect(target.setFlag).toHaveBeenCalledWith('essence20', 'riderMarks', [expect.objectContaining({ kind: HALVE_KIND })]);
 });
+
+test('Alternate Officer: the chosen Limited melee weapon counts as Qualified at Requisition', () => {
+  const officer = { type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.sgt_slaughter_sourcebook.Item.5iH3ztH4sjqboZK5' }, essence20: { d21OfficerWeapon: { uuid: 'Compendium.essence20.gi_joe_crb.Item.knife', name: 'Combat Knife' } } } };
+  const holder = { items: [officer] };
+  const knife = { type: 'weapon', name: 'Combat Knife', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.knife' } } };
+  const sword = { type: 'weapon', name: 'Sword', flags: {} };
+  expect(isOfficerWeapon(holder, knife)).toBe(true);
+  expect(isOfficerWeapon(holder, sword)).toBe(false);
+  const out = { access: 'trained' };
+  onOfficerRequisitionAccess(holder, knife, out);
+  expect(out.access).toBe('qualified');
+  expect(isOfficerWeapon({ items: [] }, knife)).toBe(false);
+});
+
+test('Alternate Officer offers only melee weapons', () => {
+  expect(isMeleeWeaponEntry({ system: { items: { a: { type: 'weaponEffect', classification: { style: 'melee' } } } } })).toBe(true);
+  expect(isMeleeWeaponEntry({ system: { items: { a: { type: 'weaponEffect', classification: { style: 'projectile' } } } } })).toBe(false);
+});
+
