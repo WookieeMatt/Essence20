@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button: consume it for Dark Energon. Automatic: while you hold at least 1 Dark Energon, +1 Toughness and Evasion on the sheet and ↑1 on Strength and Speed Skill Tests, labelled Dark Energon (held) in the Roll Options Dialog. A switch there spends it for Edge, and each use adds to an addiction check that can give you Addicted.</p><p>Left to the table: its reroll option.</p>"
+      "status": "full",
+      "notes": "<p>Use button: consume it for Dark Energon. Automatic: while you hold at least 1 Dark Energon, +1 Toughness and Evasion on the sheet and ↑1 on Strength and Speed Skill Tests, labelled Dark Energon (held) in the Roll Options Dialog. A switch there spends it for Edge.</p><p>Chat card: after a Strength or Speed Skill Test, a Dark Energon reroll button spends 1 point to reroll the dice.</p><p>Every use (consuming, the Edge, the reroll) adds to an addiction check that can give you Addicted, and feeds an addict's craving for the day.</p>"
     },
     "originalId": "",
     "description": "",

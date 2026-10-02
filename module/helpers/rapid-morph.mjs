@@ -22,6 +22,7 @@ export async function activateRapidMorph(actor) {
     return false;
   }
 
-  await onMorph(actor);
+  // Its own Free action, not the usual Standard.
+  await onMorph(actor, { free: true });
   return true;
 }

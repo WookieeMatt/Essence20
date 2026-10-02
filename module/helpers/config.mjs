@@ -320,6 +320,10 @@ E20.armorTraits = {
   enhanceSkill: "E20.ArmorTraitEnhanceSkill",
   enviroSealed: "E20.ArmorTraitEnviroSealed",
   exoFrame: "E20.ArmorTraitExoFrame",
+  // Antiques Pelt (Welcome to Night Vale: Citizens' Guide p.69) "has the Intimidating trait". The
+  // trait is only defined for weapons (Intimidation out to the weapon's range, with its attack Skill
+  // standing in) and armor has neither, so on armor it is shown but changes nothing further.
+  intimidating: "E20.ArmorTraitIntimidating",
   modular: "E20.ArmorTraitModular",
   plating: "E20.ArmorTraitPlating",
   regal: "E20.ArmorTraitRegal",
@@ -1920,6 +1924,9 @@ E20.vehicleTraits = {
   battleShield: "E20.VehicleTraitBattleShield",
   battleStation: "E20.VehicleTraitBattleStation",
   beastOfBurden: "E20.VehicleTraitBeastOfBurden",
+  // Cobra-La's living vehicles (Ferocious Fighters p.73): The Glory of Cobra-La is Qualified with them
+  // and takes a Snag driving anything else (helpers/extensions/qualify1/qualification.mjs).
+  biomechanical: "E20.VehicleTraitBiomechanical",
   bomber: "E20.VehicleTraitBomber",
   computerized: "E20.VehicleTraitComputerized",
   convertible: "E20.VehicleTraitConvertible",

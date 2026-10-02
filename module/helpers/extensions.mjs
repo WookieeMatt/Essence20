@@ -33,6 +33,7 @@ const REGISTRY = {
   costRules: [],
   namedActions: {},
   spellCost: [],
+  rerollGrants: [],
 };
 
 function warn(where, error) {
@@ -175,6 +176,13 @@ export const registerCostRule = rule => REGISTRY.costRules.push(rule);
  * cancel the cast. documents/item.mjs (the spell branch of roll()).
  */
 export const registerSpellCost = fn => REGISTRY.spellCost.push(fn);
+
+/**
+ * Reroll options added from code, for things whose item type carries no system.reroll (Dark Energon
+ * is gear). fn(actor) => configs; helpers/reroll.mjs#getRerollConfigs reads them.
+ */
+export const registerRerollGrant = fn => REGISTRY.rerollGrants.push(fn);
+export const rerollGrants = () => REGISTRY.rerollGrants;
 
 /** A named action's effect: fn(actor) => {message} | {cancelled: true}. helpers/named-actions.mjs. */
 export const registerNamedAction = (key, fn) => {

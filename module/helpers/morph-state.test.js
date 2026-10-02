@@ -160,3 +160,13 @@ describe("warnMissingStateImage", () => {
     expect(warnMissingStateImage(makeActor(), 'altMode', altMode)).toBe(false);
   });
 });
+
+describe('the action Morphing takes', () => {
+  const revMorpher = { type: 'gear', flags: { core: { sourceId: 'Compendium.essence20.jump_through_time.Item.iOCPWtGFV7SpuP86' } } };
+
+  test('a Standard action, or a Move with a Rev Morpher (A Jump Through Time p.68)', async () => {
+    const { morphActionType } = await import('./morph-state.mjs');
+    expect(morphActionType({ items: [] })).toBe('standard');
+    expect(morphActionType({ items: [revMorpher] })).toBe('move');
+  });
+});

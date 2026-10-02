@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button: swaps your Officer training for Light Armor, melee weapons and explosives.</p><p>Left to the table: your Qualification with one Limited melee weapon of your choice.</p>"
+      "status": "full",
+      "notes": "<p>Use button: swaps your Officer training for Light Armor, melee weapons and explosives, then asks for one Limited melee weapon. You get a copy of it, and Requisition counts it as Qualified.</p>"
     },
     "originalId": "",
     "description": "",

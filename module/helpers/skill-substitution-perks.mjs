@@ -70,6 +70,10 @@ const SKILL_SUBSTITUTION_PERKS = {
 const TECHNOBABBLE_ID = "Compendium.essence20.tf_crb.Item.efrhpDsdXPUKVEWt";
 const TECHNOBABBLE_THESIS_MAX_USES = 3;
 
+// Multiplication (Transformers CRB, Scientist, 18th level, p.80): "double the listed number of uses
+// and all numeric benefits of your Scientist Role Perks" - Thesis is one.
+const MULTIPLICATION_ID = "Compendium.essence20.tf_crb.Item.K3FNcAMjjek1UaJk";
+
 // Laypony Terms (MLP CRB, Futurist Influence Hang-Up, p.50): "Other ponies find you hard to
 // understand. When you use Technology instead of a Social Essence Skill, you suffer Snag." A
 // Hang-Up riding on Reverse Engineer above rather than a Perk of its own - RAW's substitution is
@@ -116,9 +120,13 @@ export function canUseSkillSubstitutionPerk(actor, sourceId) {
   }
 
   // Technobabble - see TECHNOBABBLE_ID's own comment above.
-  const maxUses = sourceId == THESIS_ID && actorHasPerk(actor, TECHNOBABBLE_ID)
+  let maxUses = sourceId == THESIS_ID && actorHasPerk(actor, TECHNOBABBLE_ID)
     ? TECHNOBABBLE_THESIS_MAX_USES
     : config.maxUses;
+  if (sourceId == THESIS_ID && actorHasPerk(actor, MULTIPLICATION_ID)) {
+    maxUses *= 2;
+  }
+
   return getUsesThisScene(actor, config.flagKey) < maxUses;
 }
 

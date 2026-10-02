@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: Augment Power can be used twice per turn for ↑2 and twice per combat for ↑4.</p><p>Left to the table: doubling the uses and bonuses of your other Scientist Role Perks.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: your Scientist Role Perks' listed uses and numbers double. Augment Power: twice per turn for ↑2 and twice per combat for ↑4. Thesis: twice per scene (six with Technobabble). Applied Science: twice per scene. Overcharge Engines: twice per turn. Flashy: Blinded for 4 rounds.</p><p>Penalties, like Broad Understanding's ↓2, aren't doubled, and neither are benefits with no listed number, such as Energon Battery's.</p>"
     },
     "originalId": "",
     "description": "",

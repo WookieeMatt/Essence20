@@ -5,7 +5,7 @@
  */
 import {
   registerAfterDamage, registerApplyDialog, registerChatButton, registerDerived, registerDialogToggles,
-  registerHitRider, registerPostRoll, registerRollSources, registerSceneAdvanced, registerUse,
+  registerHitRider, registerPostRoll, registerRollSources, registerSceneAdvanced, registerTurnStart, registerUse,
 } from "../../extensions.mjs";
 import { getSceneEpoch, getUses, markUsed } from "../../scene-clock.mjs";
 import {
@@ -390,6 +390,14 @@ registerChatButton('o3GuardianDamage', async (message, button) => {
  * to 0 Health, you automatically return to your Morphed form with the same Health and Conditions you
  * had before." Stat block (p.38): Health 8, 40ft Ground, Strength 8, Speed 4, Toughness 18,
  * Evasion 14. Might/Targeting stay the Ranger's own ranks, which is how the actor already rolls.
+ *
+ * "Once the Torozord has answered your call and arrived at the conflict" - the form needs the
+ * Ranger's Torozord (a Zord on their sheet) on the scene, and remembers which one. "While in this form,
+ * you and the Torozord share actions. This means only one of you can Move and only one can take a
+ * Standard action each turn. You may divide your Free actions as you see fit, using the highest
+ * number of Free actions between you." They keep separate turns, so what one spends is pre-spent on
+ * the partner's turn if it is still to come this round, and the one with fewer Free actions is topped
+ * up to the other's at the start of their turn.
  */
 const MEGA_FLAG = 'o3MegaDefender';
 export const MEGA_FORM = { health: 8, strength: 8, speed: 4, toughness: 18, evasion: 14, ground: 40 };
@@ -397,6 +405,74 @@ export const MEGA_FORM = { health: 8, strength: 8, speed: 4, toughness: 18, evas
 export function megaDefenderActive(actor) {
   const record = actor?.flags?.essence20?.[MEGA_FLAG];
   return !!record && record.epoch == getSceneEpoch();
+}
+
+/** The Ranger's Torozord: a Zord on their sheet that has a token on the current scene. */
+export function presentTorozord(actor) {
+  const zords = Object.values(actor?.system?.actors ?? {})
+    .map(entry => globalThis.fromUuidSync?.(entry?.uuid))
+    .filter(zord => zord?.type == 'zord');
+  const scene = globalThis.canvas?.scene ?? globalThis.game?.scenes?.current;
+  const onScene = zords.filter(zord => scene?.tokens?.some?.(token => token.actorId == zord.id || token.actor?.id == zord.id));
+  return onScene.find(zord => /toro/i.test(zord.name ?? '')) ?? onScene[0] ?? null;
+}
+
+/** The other half of an active Mega Defender pair, from either side. */
+export function megaDefenderPartner(actor) {
+  if (megaDefenderActive(actor)) {
+    const uuid = actor.flags.essence20[MEGA_FLAG].torozordUuid;
+    return uuid ? globalThis.fromUuidSync?.(uuid) ?? null : null;
+  }
+
+  if (actor?.type != 'zord') {
+    return null;
+  }
+
+  return worldActors().find(ranger => megaDefenderActive(ranger) && ranger.flags.essence20[MEGA_FLAG].torozordUuid == actor.uuid) ?? null;
+}
+
+/** Whether this actor's turn is still to come in the current round. */
+export function turnStillToCome(actor, combat = globalThis.game?.combat) {
+  if (!combat?.turns?.length) {
+    return false;
+  }
+
+  const index = combat.turns.findIndex(combatant => combatant.actor?.id == actor?.id);
+  return index > (combat.turn ?? 0);
+}
+
+/** One partner spent actions: pre-spend them on the other's turn, if that is still to come. */
+export async function shareMegaDefenderSpend(actor, cost = {}) {
+  const partner = megaDefenderPartner(actor);
+  const shared = Object.fromEntries(Object.entries(cost).filter(([category, amount]) => ['move', 'standard', 'free'].includes(category) && amount > 0));
+  if (!partner || !Object.keys(shared).length || !turnStillToCome(partner)) {
+    return false;
+  }
+
+  const economy = await import("../../action-economy.mjs");
+  return economy.setNextTurn(partner, { prespend: shared }, T('O3MegaDefenderShared', { name: actor.name }));
+}
+
+/** The Free actions the pair has: the higher of the two. */
+export function sharedFreeTopUp(actor, partner) {
+  const own = num(actor?.system?.actions?.free?.max);
+  const theirs = num(partner?.system?.actions?.free?.max);
+  return Math.max(0, theirs - own);
+}
+
+registerTurnStart(async (actor) => {
+  const partner = megaDefenderPartner(actor);
+  const topUp = partner ? sharedFreeTopUp(actor, partner) : 0;
+  if (topUp > 0) {
+    const economy = await import("../../action-economy.mjs");
+    await economy.grantActionsThisTurn(actor, { free: topUp }, T('O3MegaDefenderFree'));
+  }
+});
+
+if (globalThis.Hooks?.on) {
+  Hooks.on('essence20.actionSpent', (actor, actionType, cost) => {
+    shareMegaDefenderSpend(actor, cost).catch(error => console.warn('essence20 | Mega Defender share failed', error));
+  });
 }
 
 export function applyMegaDefender(actor) {
@@ -463,6 +539,12 @@ registerUse({
       return null;
     }
 
+    const torozord = presentTorozord(actor);
+    if (!torozord) {
+      ui.notifications.warn(T('O3MegaDefenderNoTorozord', { name: escape(actor.name) }));
+      return null;
+    }
+
     if (!(await pay('standard'))) {
       return null;
     }
@@ -470,7 +552,7 @@ registerUse({
     await actor.update({
       'system.powers.personal.value': power - 3,
       'system.health.value': MEGA_FORM.health,
-      [`flags.essence20.${MEGA_FLAG}`]: { epoch: getSceneEpoch(), prevHealth: num(actor.system?.health?.value) },
+      [`flags.essence20.${MEGA_FLAG}`]: { epoch: getSceneEpoch(), prevHealth: num(actor.system?.health?.value), torozordUuid: torozord.uuid },
     });
     return T('O3MegaDefenderLine', { name: escape(actor.name) });
   },

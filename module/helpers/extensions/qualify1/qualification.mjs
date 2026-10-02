@@ -290,6 +290,8 @@ export function vehicleQualifier(actor, vehicle) {
     [Q1.sparedNoExpense, () => isLand(vehicle) && size >= 0 && size <= SIZES.indexOf('long')],
     [Q1.surgicalOperators, () => (vehicle.system?.crew?.numPassengers ?? 0) > 0],
     [Q1.ultraSecretStrikeForce, () => !!vehicle.system?.traits?.pythonPaint || /python/i.test(vehicle.name ?? '')],
+    // The Glory of Cobra-La: "You are Qualified with vehicles with the Biomechanical trait."
+    [Q1.gloryOfCobraLa, () => isBiomechanicalVehicle(vehicle)],
   ];
   return rules.find(([uuid, test]) => has(actor, uuid) && test())?.[0] ?? null;
 }
@@ -317,6 +319,28 @@ function isVehicleOrHardpointWeapon(effect) {
 /* -------------------------------------------- */
 
 const BIOMECHANICAL_NAME = /bio-?mech|cobra-la/i;
+
+/** A Biomechanical vehicle: the trait ticked on it, or a Cobra-La name. */
+export function isBiomechanicalVehicle(vehicle) {
+  return !!vehicle?.system?.traits?.biomechanical || BIOMECHANICAL_NAME.test(vehicle?.name ?? '');
+}
+
+/**
+ * Biomechanical battledress: the Organic Armor upgrade attached ("the Organic Armor battledress
+ * upgrade" is Cobra-La's Biomechanical battledress), or a Cobra-La name.
+ */
+export function isBiomechanicalArmor(armor) {
+  const owner = armor?.parent;
+  const upgrades = owner?.items?.filter?.(item => item.type == 'upgrade' && item.flags?.essence20?.parentId == armor.id) ?? [];
+  return BIOMECHANICAL_NAME.test(armor?.name ?? '')
+    || upgrades.some(upgrade => idOf(sourceOf(upgrade)) == Q1_UPGRADE.organicArmor || /organic armor/i.test(upgrade.name ?? ''));
+}
+
+/** Equipped battledress that isn't Biomechanical. */
+export function nonBiomechanicalArmorWorn(actor) {
+  const items = actor?.items?.contents ?? [...(actor?.items ?? [])];
+  return items.find(item => item.type == 'armor' && item.system?.equipped && !isBiomechanicalArmor(item)) ?? null;
+}
 
 function isBiomechanicalWeapon(effect) {
   const parent = effect?.parent;
@@ -347,7 +371,7 @@ export function qualificationSources(actor, target, ctx = {}) {
 
     // The Glory of Cobra-La: "You suffer Snag when you use ... vehicles ... that do not have the
     // Biomechanical trait."
-    if (vehicle && has(actor, Q1.gloryOfCobraLa) && !BIOMECHANICAL_NAME.test(vehicle.name ?? '')) {
+    if (vehicle && has(actor, Q1.gloryOfCobraLa) && !isBiomechanicalVehicle(vehicle)) {
       sources.push({ id: 'q1CobraLaVehicle', label: perkName(Q1.gloryOfCobraLa), snag: true });
     }
   }
@@ -364,6 +388,15 @@ export function qualificationSources(actor, target, ctx = {}) {
     }
   }
 
+  // The Glory of Cobra-La: "You suffer Snag when you use battledress ... that do not have the
+  // Biomechanical trait" - read as every Skill Test made while wearing it.
+  if (has(actor, Q1.gloryOfCobraLa)) {
+    const worn = nonBiomechanicalArmorWorn(actor);
+    if (worn) {
+      sources.push({ id: 'q1CobraLaArmor', label: `${perkName(Q1.gloryOfCobraLa)} (${worn.name})`, snag: true });
+    }
+  }
+
   return { sources, consumes: [] };
 }
 
@@ -376,7 +409,9 @@ export function qualificationApplyDialog(actor, options, ctx = {}) {
     return;
   }
 
-  if (vehicleQualifier(actor, drivenVehicle(actor)) && !has(actor, Q1.gloryOfCobraLa)) {
+  // Never lifts The Glory of Cobra-La's own Snag for a vehicle that isn't Biomechanical.
+  const vehicle = drivenVehicle(actor);
+  if (vehicleQualifier(actor, vehicle) && !(has(actor, Q1.gloryOfCobraLa) && !isBiomechanicalVehicle(vehicle))) {
     options.snag = false;
   }
 }

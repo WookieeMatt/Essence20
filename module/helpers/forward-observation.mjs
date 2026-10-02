@@ -36,6 +36,6 @@ export async function activateForwardObservation(actor) {
 export async function broadcastForwardObservation(actor) {
   const nearbyAllies = getNearbyAllyTokens(actor, 30).map(token => token.actor).filter(Boolean);
   for (const target of [actor, ...nearbyAllies]) {
-    await bankPendingBonus(target, 'pendingForwardObservation', { shiftUp: 1 });
+    await bankPendingBonus(target, 'pendingForwardObservation', { shiftUp: 1 }, { granter: actor });
   }
 }

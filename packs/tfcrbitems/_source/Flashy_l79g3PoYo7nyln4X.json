@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Chat card: after a hit with an Electric weapon, a button rolls Science against the target's Toughness; on a success the target becomes Blinded.</p>"
+      "notes": "<p>Chat card: after a hit with an Electric weapon, a button rolls Science against the target's Toughness; on a success the target is Blinded for 2 rounds (4 with Multiplication), counted down in combat.</p>"
     },
     "originalId": "",
     "description": "",

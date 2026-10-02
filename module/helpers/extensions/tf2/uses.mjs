@@ -497,7 +497,7 @@ export const USES = [
   },
   {
     id: 'tf2AppliedScience', matches: isFrom(TF2.appliedScience),
-    canUse: item => getUses(item.parent, 'tf2AppliedScience', 'scene') < 1,
+    canUse: item => getUses(item.parent, 'tf2AppliedScience', 'scene') < (has(item.parent, TF2.multiplication) ? 2 : 1),
     async run(item) {
       const actor = item.parent;
       await markUsed(actor, 'tf2AppliedScience', { window: 'scene' });

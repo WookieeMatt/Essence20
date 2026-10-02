@@ -820,6 +820,18 @@ describe("grantActionsThisTurn (Omega Enhancement's Hyper Mode, Across the Stars
     expect(getRemaining(actor).standard).toBe(1);
   });
 
+  test("This, I Command doubles actions granted to an ally (Cobra Codex p.57)", async () => {
+    setGame({ combatant: makeCombatant() });
+    const actor = makeActor();
+    const officer = { uuid: 'Actor.officer', name: 'Baroness', items: [{ type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.cobra_codex.Item.SUc3emTvPnwB6W93' } } }] };
+    // Declined, so the damage step never runs; only the prompt is under test here.
+    global.foundry.applications = { api: { DialogV2: { confirm: jest.fn(async () => false) } } };
+    await grantActionsThisTurn(actor, { move: 1 }, 'Rally', { granter: officer });
+    expect(global.foundry.applications.api.DialogV2.confirm).toHaveBeenCalled();
+    expect(getRemaining(actor).move).toBe(2);
+    delete global.foundry.applications;
+  });
+
   test("the granted actions are spendable like any other", async () => {
     setGame({ combatant: makeCombatant() });
     const actor = makeActor();

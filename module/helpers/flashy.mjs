@@ -1,5 +1,6 @@
 import { actorHasPerk } from "./perks.mjs";
 import { E20 } from "./config.mjs";
+import { applyTimedCondition } from "./timed-status.mjs";
 
 // Technologist (Transformers CRB, Gadgeteer Focus, 1st level, p.81): "When a Scientist Role Perk
 // only uses the Science Skill, you can use Science or Technology." Flashy is exactly such a
@@ -22,11 +23,8 @@ const TECHNOLOGIST_ID = "Compendium.essence20.tf_crb.Item.tdFzQ0IOtoHQ0vmy";
  * activateSiphon already relies on, since RAW's own follow-up Test needs the target's actual
  * Toughness Defense, not a flat DIF like Exploit Weakness's.
  *
- * This system has no numeric Condition-severity tracking anywhere (Blinded is a plain boolean
- * status - confirmed via helpers/config.mjs's own statusEffects entry), so "Blinded 2" collapses
- * to the same boolean toggleStatusEffect('blinded') every other Blinded-inflicting effect in this
- * codebase already uses (Smoke Beam, etc.) - the same "no numeric Condition levels" approximation
- * this project already accepts elsewhere.
+ * "Blinded 2" is 2 rounds of Blinded (helpers/timed-status.mjs counts it down in combat), or 4
+ * with Multiplication.
  */
 export const FLASHY_ID = "Compendium.essence20.tf_crb.Item.l79g3PoYo7nyln4X";
 
@@ -58,10 +56,20 @@ export async function activateFlashy(actor) {
   }, actor);
 }
 
+// Multiplication (TF CRB, Scientist, 18th level, p.80) doubles Scientist Role Perks' numeric
+// benefits: Blinded 2 becomes Blinded 4.
+const MULTIPLICATION_ID = "Compendium.essence20.tf_crb.Item.K3FNcAMjjek1UaJk";
+
+/** The rounds of Blinded a Flashy success inflicts: 2, or 4 with Multiplication. */
+export function flashyBlindedRounds(attacker) {
+  return attacker && actorHasPerk(attacker, MULTIPLICATION_ID) ? 4 : 2;
+}
+
 /**
- * Applies Blinded to the target on a successful Flashy Skill Test.
+ * Applies Blinded to the target on a successful Flashy Skill Test, for its 2 rounds (or 4).
  * @param {Actor} targetActor
+ * @param {Actor} [attacker]   The Flashy user, for Multiplication.
  */
-export async function applyFlashyBlinded(targetActor) {
-  await targetActor.toggleStatusEffect('blinded', { active: true });
+export async function applyFlashyBlinded(targetActor, attacker = null) {
+  await applyTimedCondition(targetActor, 'blinded', flashyBlindedRounds(attacker));
 }

@@ -1,5 +1,5 @@
 import { changeTokenImage } from "../helpers/actor.mjs";
-import { warnMissingStateImage } from "../helpers/morph-state.mjs";
+import { payForMorph, warnMissingStateImage } from "../helpers/morph-state.mjs";
 import { activatePowerInfusion } from "../helpers/power-infusion.mjs";
 import { applyBoostedVigor } from "../helpers/phantom-focus.mjs";
 import { clearPoweredPlating } from "../helpers/powered-plating.mjs";
@@ -24,8 +24,15 @@ export async function onActivatePowerInfusion(event) {
 /**
  * Handle morphing an Actor
  * @param {Actor} actor The Actor being Morphed
+ * @param {Object} [options]
+ * @param {Boolean} [options.free]   Already paid for by whatever triggered it (Rapid Morph's Free action).
  */
-export async function onMorph(actor) {
+export async function onMorph(actor, { free = false } = {}) {
+  // Morphing in takes a Standard action (a Move with a Rev Morpher) - see morph-state.mjs.
+  if (!actor.system.isMorphed && !free && !(await payForMorph(actor))) {
+    return;
+  }
+
   let newImage = null;
   if (actor.system.isMorphed) {
     newImage = actor.system.image.unmorphed;

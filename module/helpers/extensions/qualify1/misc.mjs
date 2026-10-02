@@ -290,16 +290,26 @@ async function newDay(actor, state) {
     return T(low ? 'E20.Q1AddictionBerserk' : 'E20.Q1AddictionWithdrawal', { name: actor.name });
   }
 
-  const { chooseSelect } = await import("../../grants.mjs");
-  const shift = await chooseSelect(actor.name, T('E20.Q1AddictionLevel'), SHIFTS.map(value => ({ value, label: value })));
+  // "At the same skill level that caused the Hang-Up" - recorded when the addiction took hold
+  // (resource/energon.mjs, darkEnergonAddictionDie); asked for only when that's unknown, e.g. a
+  // Hang-Up added by hand. Past the top of the ladder the attack always succeeds.
+  let shift = actor.flags?.essence20?.darkEnergonAddictionDie;
   if (!shift) {
-    return null;
+    const { chooseSelect } = await import("../../grants.mjs");
+    shift = await chooseSelect(actor.name, T('E20.Q1AddictionLevel'), SHIFTS.map(value => ({ value, label: value })));
+    if (!shift) {
+      return null;
+    }
   }
 
-  const roll = await new Roll(`d20 + ${shift}`).evaluate();
-  await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: T('E20.Q1AddictionAttack') });
-  const willpower = actor.system?.defenses?.willpower?.total ?? 10;
-  const hit = roll.total >= willpower;
+  let hit = true;
+  if (shift != 'auto') {
+    const roll = await new Roll(`d20 + ${shift}`).evaluate();
+    await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: T('E20.Q1AddictionAttack') });
+    const willpower = actor.system?.defenses?.willpower?.total ?? 10;
+    hit = roll.total >= willpower;
+  }
+
   await actor.setFlag('essence20', ADDICTION_FLAG, { ...state, day, craving: hit, cravingDay: hit ? day : null });
   return T(hit ? 'E20.Q1AddictionHungry' : 'E20.Q1AddictionStaved', { name: actor.name });
 }

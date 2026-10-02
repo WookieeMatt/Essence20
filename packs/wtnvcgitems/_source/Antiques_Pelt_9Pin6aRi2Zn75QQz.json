@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: +2 Toughness while equipped. Active Effect while worn: ↑1 on Intimidation and Might, ↓1 on Animal Handling and Persuasion.</p><p>Left to the table: its Intimidating trait.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: +2 Toughness while equipped. Active Effect while worn: ↑1 on Intimidation and Might, ↓1 on Animal Handling and Persuasion.</p><p>Its Intimidating trait shows on the armor. The trait only does something on weapons (Intimidation out to the weapon's range, with its attack Skill), so on armor it adds nothing more.</p>"
     },
     "originalId": "",
     "description": "",
@@ -20,7 +20,9 @@
     "bonusToughness": 2,
     "classification": "medium",
     "equipped": false,
-    "traits": [],
+    "traits": [
+      "intimidating"
+    ],
     "totalBonusEvasion": 0,
     "totalBonusToughness": 2,
     "upgradeTraits": []

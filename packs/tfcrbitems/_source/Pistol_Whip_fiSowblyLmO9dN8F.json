@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: ballistic weapons in External Hardpoints gain Close Combat Bludgeon alternate effects (1 Stun, 1 Blunt ↓1, Maneuver).</p><p>Left to the table: dropping the usual ballistic bonuses when you attack with them that way.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: ballistic weapons in External Hardpoints gain Close Combat Bludgeon alternate effects (1 Stun, 1 Blunt ↓1, Maneuver). Attacks made with those alternates don't count as Ballistic, so no Ballistic bonus applies to them.</p>"
     },
     "originalId": "",
     "description": "",

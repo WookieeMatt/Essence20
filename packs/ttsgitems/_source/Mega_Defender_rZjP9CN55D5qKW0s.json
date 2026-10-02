@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button (3 Personal Power, Standard action): take the Mega Defender form's Strength, Speed, Health, Defenses and 40 ft movement until the scene ends, you press Use again, or the form hits 0 Health, which returns you to your earlier Health.</p><p>Left to the table: having the Torozord present and sharing actions with it.</p>"
+      "status": "full",
+      "notes": "<p>Use button (3 Personal Power, Standard action): needs your Torozord (a Zord on your sheet) on the scene. Take the Mega Defender form's Strength, Speed, Health, Defenses and 40 ft movement until the scene ends, you press Use again, or the form hits 0 Health, which returns you to your earlier Health.</p><p>Automatic while in the form: you and the Torozord share actions. A Move, Standard or Free action one of you spends is already spent on the other's turn if it's still to come this round, and whichever of you has fewer Free actions gets topped up to the other's.</p>"
     },
     "originalId": "",
     "actionType": "standard",

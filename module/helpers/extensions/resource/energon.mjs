@@ -21,7 +21,7 @@
  */
 import {
   registerApplyDialog, registerDerived, registerDialogToggles, registerRollSources,
-  registerSceneAdvanced, registerUse,
+  registerRerollGrant, registerSceneAdvanced, registerUse,
 } from "../../extensions.mjs";
 import { activateForWindow, isActiveForWindow } from "../../scene-clock.mjs";
 import { ENERGON_CAP_EXTRAS } from "./temp-resources.mjs";
@@ -285,6 +285,7 @@ registerApplyDialog(async (actor, options) => {
   }
 
   if (spent.includes('dark')) {
+    await feedDarkEnergonCraving(actor);
     await darkEnergonAddiction(actor);
   }
 });
@@ -325,10 +326,49 @@ export async function darkEnergonAddiction(actor) {
 
   await say(actor, T(hit ? 'ResDarkAddictionHit' : 'ResDarkAddictionMiss', { name: actor.name, die, total, willpower }));
   if (hit) {
+    // "At the same skill level that caused the Hang-Up" - the daily attack (qualify1/misc.mjs#newDay)
+    // reads this instead of asking.
+    await actor.setFlag('essence20', ADDICTION_DIE_FLAG, die);
     const { grantCopy } = await import("../../grants.mjs");
     await grantCopy(actor, IDS.addictedDarkEnergon);
   }
 }
+
+/** The die the addiction hit at, for the Hang-Up's daily attack ('auto' always succeeds). */
+export const ADDICTION_DIE_FLAG = 'darkEnergonAddictionDie';
+
+// Consuming or using Dark Energon feeds an addict's craving for the day - the Hang-Up's state
+// (qualify1/misc.mjs, flag q1Addiction) goes back to not craving, as its own "Consumed" button does.
+export async function feedDarkEnergonCraving(actor) {
+  const state = actor?.flags?.essence20?.q1Addiction;
+  if (state?.craving) {
+    await actor.setFlag('essence20', 'q1Addiction', { ...state, craving: false, cravingDay: null });
+  }
+}
+
+// "A user can spend 1 Dark Energon Point ... to reroll as many dice as they choose after they roll a
+// Strength- or Speed-based Skill Test" (Decepticon Directive p.80). Offered on the roll's chat card
+// like any other reroll while the actor holds a Dark Energon Point; spending it is a use, so the
+// addiction attack follows.
+const STRENGTH_SPEED_SKILLS = ['athletics', 'brawn', 'intimidation', 'might', 'acrobatics', 'driving', 'finesse', 'infiltration', 'initiative', 'targeting'];
+
+export function darkEnergonRerolls(actor) {
+  if (num(actor?.system?.energon?.dark?.value) < 1) {
+    return [];
+  }
+
+  return [{
+    mode: 'all', target: 'allDice', reset: 'none', maxUses: 0, skills: STRENGTH_SPEED_SKILLS,
+    cost: { resourcePath: 'system.energon.dark.value', amount: 1 },
+    source: 'darkEnergonReroll', name: T('ResDarkEnergonReroll'),
+    onPaid: async payer => {
+      await feedDarkEnergonCraving(payer);
+      await darkEnergonAddiction(payer);
+    },
+  }];
+}
+
+registerRerollGrant(darkEnergonRerolls);
 
 /* -------------------------------------------- */
 /*  The strain items' Use buttons                */
@@ -367,6 +407,7 @@ async function consume(actor, item, strain) {
   await item.update({ 'system.quantity': quantity - 1 });
   await actor.update({ [`system.energon.${strain}.value`]: num(actor.system.energon?.[strain]?.value) + gained });
   if (strain == 'dark') {
+    await feedDarkEnergonCraving(actor);
     await darkEnergonAddiction(actor);
   }
 

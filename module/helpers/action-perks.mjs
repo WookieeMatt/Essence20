@@ -1227,15 +1227,15 @@ export async function useActionPerk(item) {
   if (use.now || (choice == 'move' && use.nowIfMove)) {
     const now = choice == 'move' && use.nowIfMove ? use.nowIfMove : use.now;
     const grants = now.fullTurn ? fullTurnFor(recipient) : now;
-    await economy.grantActionsThisTurn(recipient, grants, item.name);
+    await economy.grantActionsThisTurn(recipient, grants, item.name, { granter: actor });
     granted.push(economy.describeGrant(grants));
   }
 
   if (choice == 'twoFree') {
-    await economy.grantActionsThisTurn(recipient, { free: 2 }, item.name);
+    await economy.grantActionsThisTurn(recipient, { free: 2 }, item.name, { granter: actor });
     granted.push(economy.describeGrant({ free: 2 }));
   } else if (choice == 'move' && !use.nowIfMove) {
-    await economy.grantActionsThisTurn(recipient, { move: 1 }, item.name);
+    await economy.grantActionsThisTurn(recipient, { move: 1 }, item.name, { granter: actor });
     granted.push(economy.describeGrant({ move: 1 }));
   }
 

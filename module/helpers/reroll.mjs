@@ -1,6 +1,7 @@
 import { E20 } from "./config.mjs";
 import { canSpendForActor, spendForActor } from "./story-points.mjs";
 import { hasActiveEnvironmentalExpertise } from "./environmental-expertise.mjs";
+import { rerollGrants } from "./extensions.mjs";
 
 /**
  * Reroll grant engine - normalizes reroll configs read off Perks/ActiveEffects (schema defined in
@@ -137,6 +138,20 @@ export function getRerollConfigs(actor) {
   }
 
   const configs = [];
+  // Reroll options added from code (extensions.mjs#registerRerollGrant): each returns configs with
+  // their own source/name, and an optional onPaid(actor) that runs after payRerollCost.
+  for (const grant of rerollGrants()) {
+    try {
+      for (const config of grant(actor) ?? []) {
+        const normalized = normalizeRerollConfig(config);
+        if (normalized) {
+          configs.push({ ...normalized, source: config.source, sourceType: 'code', name: config.name, onPaid: config.onPaid });
+        }
+      }
+    } catch (error) {
+      console.warn('essence20 | A reroll grant failed', error);
+    }
+  }
 
   for (const item of actor.items) {
     let config = normalizeRerollConfig(item.system?.reroll);
@@ -333,6 +348,7 @@ export async function payRerollCost(actor, config) {
 
   const current = Number(foundry.utils.getProperty(actor, resourcePath)) || 0;
   await actor.update({ [resourcePath]: current - amount });
+  await config.onPaid?.(actor);
 }
 
 // A small, explicit set of named preconditions a reroll grant can require beyond simple
