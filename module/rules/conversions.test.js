@@ -5966,3 +5966,116 @@ test("Hail Megatron!: ↑1 Intimidation in Bot Mode against a smaller Cybertroni
   actor.system.isTransformed = true;
   expect(up(target('common'))).toBe(0);
 });
+
+// regB (dice.mjs rollSkill, per-target Defense): the target's own +N Defense Perks moved onto Defense rules,
+// read per attack by rules/adapter.mjs#ruleDefenseAdjust (a `defense:` tag keeps them off the sheet).
+describe('regB: per-attack Defense rules', () => {
+  const ATTACKER = { type: 'npc', statuses: new Set(), flags: {}, system: {} };
+  const DEFENSES = ['toughness', 'evasion', 'willpower', 'cleverness'];
+  const sheet = () => ({ defenses: Object.fromEntries(DEFENSES.map(key => [key, { total: 10 }])) });
+  const adjust = (actor, defense = 'toughness') => ruleDefenseAdjust(ATTACKER, actor, defense, { item: null });
+
+  // A token for each actor at x feet, allies counted the system's way (helpers/allies.mjs#getNearbyAllyTokens).
+  async function onCanvas(actor, allyFeet) {
+    const { getNearbyAllyTokens } = await import('../helpers/allies.mjs');
+    const { setWorldLookups } = await import('./predicate.mjs');
+    const place = (who, x) => {
+      const token = { actor: who, center: { x, y: 0 }, document: { disposition: 1 } };
+      who.getActiveTokens = () => [token];
+      who.items.find ??= fn => who.items.contents.find(fn);
+      return token;
+    };
+
+    const tokens = [place(actor, 0), ...allyFeet.map(x => place(holder([]), x))];
+    global.canvas = { grid: { measurePath: ([a, b]) => ({ distance: Math.abs(a.x - b.x) }) }, tokens: { placeables: tokens } };
+    setWorldLookups({ alliesWithin: (who, feet) => getNearbyAllyTokens(who, feet).map(token => token.actor) });
+  }
+
+  afterEach(async () => {
+    const { setWorldLookups } = await import('./predicate.mjs');
+    setWorldLookups({ alliesWithin: null });
+    delete global.canvas;
+  });
+
+  test('Skier: +1 Evasion against an attack while skiing, not on the sheet', async () => {
+    const { registerCheck } = await import('./predicate.mjs');
+    const { isSkiing } = await import('../helpers/skier.mjs');
+    registerCheck('skiing', isSkiing);
+    const actor = misc7Holder(['ghpfitems/_source/Skier_dvmY7UiuKejOPY4N.json'], { system: sheet() });
+    actor.flags.essence20.isSkiingActive = true;
+    expect(adjust(actor, 'evasion')).toBe(1);
+    expect(adjust(actor, 'toughness')).toBe(0);
+    ruleDerived(actor);
+    expect(actor.system.defenses.evasion.total).toBe(10);
+    actor.flags.essence20.isSkiingActive = false;
+    expect(adjust(actor, 'evasion')).toBe(0);
+  });
+
+  test('Stronger Together: +1 to the attacked Defense per ally within 60 ft', async () => {
+    const actor = holder(['tfcrbitems/_source/Stronger_Together_ZeOj3mmjnXJ7iXj1.json'], { system: sheet() });
+    await onCanvas(actor, [5]);
+    expect(adjust(actor)).toBe(1);
+    expect(adjust(actor, 'willpower')).toBe(1);
+    await onCanvas(actor, [5, 60, 61]);
+    expect(adjust(actor)).toBe(2);
+    await onCanvas(actor, []);
+    expect(adjust(actor)).toBe(0);
+    const without = holder([], { system: sheet() });
+    await onCanvas(without, [5]);
+    expect(adjust(without)).toBe(0);
+  });
+
+  test('Heroic Intervention: +1 to every Defense with an ally within 5 ft', async () => {
+    const actor = holder(['prcrbitems/_source/Heroic_Intervention_T95n2lwh3F5OHjnB.json'], { system: sheet() });
+    await onCanvas(actor, [5]);
+    expect(DEFENSES.map(defense => adjust(actor, defense))).toEqual([1, 1, 1, 1]);
+    await onCanvas(actor, [5, 5]);
+    expect(adjust(actor)).toBe(1);
+    await onCanvas(actor, [10]);
+    expect(adjust(actor)).toBe(0);
+    await onCanvas(actor, []);
+    expect(adjust(actor)).toBe(0);
+  });
+
+  test('Environmental Armor: +1 to every Defense in the environment of expertise', async () => {
+    const { registerCheck } = await import('./predicate.mjs');
+    const { hasActiveEnvironmentalExpertise } = await import('../helpers/environmental-expertise.mjs');
+    registerCheck('environmentalExpertise', hasActiveEnvironmentalExpertise);
+    global.canvas = undefined;
+    const expertise = { type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ' } } };
+    const actor = misc7Holder(['gijcrbitems/_source/Environmental_Armor_Vo5AfbJNfVGf24E0.json'], { system: sheet() }, [expertise]);
+    actor.flags.essence20.environmentalExpertiseActive = true;
+    expect(DEFENSES.map(defense => adjust(actor, defense))).toEqual([1, 1, 1, 1]);
+    ruleDerived(actor);
+    expect(actor.system.defenses.toughness.total).toBe(10);
+    actor.flags.essence20.environmentalExpertiseActive = false;
+    expect(adjust(actor)).toBe(0);
+    const noExpertise = misc7Holder(['gijcrbitems/_source/Environmental_Armor_Vo5AfbJNfVGf24E0.json'], { system: sheet() });
+    noExpertise.flags.essence20.environmentalExpertiseActive = true;
+    expect(adjust(noExpertise)).toBe(0);
+  });
+
+  test('Impenetrable Armor: +2 to every Defense of the vehicle its holder is driving', async () => {
+    const { LINK_HOLDERS } = await import('./index.mjs');
+    const driver = holder(['gijcrbitems/_source/Impenetrable_Armor_vanN7kRYUhgHew7q.json'], { system: sheet() });
+    driver.uuid = `Actor.${driver.id}`;
+    const vehicle = (type = 'vehicle', vehicleRole = 'driver') => ({
+      id: `v${nextId++}`, uuid: `Actor.v${nextId}`, type, statuses: new Set(), flags: {},
+      items: { contents: [] }, system: { ...sheet(), actors: { a: { uuid: driver.uuid, vehicleRole } } },
+    });
+    const previous = global.fromUuidSync;
+    global.fromUuidSync = uuid => (uuid == driver.uuid ? driver : null);
+    try {
+      expect(DEFENSES.map(defense => adjust(vehicle(), defense))).toEqual([2, 2, 2, 2]);
+      expect(adjust(vehicle('vehicle', 'passenger'))).toBe(0);
+      expect(adjust(vehicle('zord'))).toBe(0);
+      expect(adjust(driver)).toBe(0);
+      const noPerk = holder([]);
+      global.fromUuidSync = uuid => (uuid == driver.uuid ? noPerk : null);
+      expect(adjust(vehicle())).toBe(0);
+    } finally {
+      global.fromUuidSync = previous;
+      LINK_HOLDERS.delete(driver.id);
+    }
+  });
+});
