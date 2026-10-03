@@ -219,6 +219,38 @@ describe('party and aura scopes', () => {
     expect(ruleRollSources(giver, null, { rolledSkill: 'athletics' }).sources).toEqual([]);
   });
 
+  test('ally auras use the system ally lookup when set; stacks:false counts one book item once', async () => {
+    const { useAllyLookup, linkedEntries } = await import('./links.mjs');
+    const { setWorldLookups } = await import('./predicate.mjs');
+    const rule = { type: 'Defense', defense: 'evasion', amount: 1, scope: 'aura', radius: 10, stacks: false };
+    const source = { flags: { core: { sourceId: 'Compendium.e.p.Item.payItForward' } } };
+    const token = x => ({ center: { x, y: 0 }, document: { disposition: 1 } });
+    const holders = [0, 1].map(x => {
+      const t = token(x);
+      const actor = makeActor([], { token: t });
+      actor.items.contents.push({ id: `pif${x}`, name: 'Pay It Forward', type: 'perk', ...source, system: { rules: [rule] }, parent: actor });
+      rebuildIndex(actor);
+      t.actor = actor;
+      return actor;
+    });
+    const frenemyToken = token(50);
+    const receiver = makeActor([], { token: frenemyToken });
+    frenemyToken.actor = receiver;
+    global.canvas = { grid: { measurePath: ([a, b]) => ({ distance: Math.abs(a.x - b.x) }) }, tokens: { placeables: [...holders.map(h => h.getActiveTokens()[0]), frenemyToken] } };
+    // The system's lookup says both holders are allies in reach (Ally Awareness, say), whatever the distance.
+    setWorldLookups({ alliesWithin: () => holders });
+    useAllyLookup(true);
+    try {
+      expect(auraReaches(rule, holders[0], receiver)).toBe(true);
+      expect(linkedEntries(receiver, 'Defense')).toHaveLength(1);
+    } finally {
+      useAllyLookup(false);
+      setWorldLookups({ alliesWithin: null });
+    }
+
+    expect(auraReaches(rule, holders[0], receiver)).toBe(false);
+  });
+
   test('an aura reaches allies in range only', () => {
     const rule = { type: 'Defense', defense: 'evasion', amount: 1, scope: 'aura', radius: 10 };
     const holderToken = { center: { x: 0, y: 0 }, document: { disposition: 1 } };
@@ -1213,6 +1245,188 @@ describe('round 35: scaled damage', () => {
     const options = { ext: { [box.name]: '2' } };
     await applyRuleSwitches(actor, options);
     expect(options).toMatchObject({ shiftDown: 2, ruleDamage: 2 });
+  });
+
+  test('outcomes read the results themselves: x2, anyFailed, allFailed, fumbled', async () => {
+    const { runPostRoll } = await import('../helpers/extensions.mjs');
+    const mark = (key, outcome) => ({ type: 'Trigger', event: 'afterRoll', outcome, steps: [{ do: 'mark', key }] });
+    const roll = async (results, extra = {}) => {
+      const actor = makeActor([mark('x2', 'x2'), mark('any', 'anyFailed'), mark('all', 'allFailed'), mark('fum', 'fumbled'), mark('double', 'double')]);
+      await runPostRoll(actor, results, {}, { rider: {}, hits: [], ...extra });
+      return ['x2', 'any', 'all', 'fum', 'double'].filter(key => markOf(actor, key));
+    };
+
+    // A natural crit at x1: `double` (crit counts) but not x2 (Degrees of Success only).
+    expect(await roll([{ success: true, multiplier: 1 }], { isCrit: true })).toEqual(['double']);
+    expect(await roll([{ success: true, multiplier: 2 }])).toEqual(['x2', 'double']);
+    expect(await roll([{ success: true, multiplier: 1 }, { success: false }])).toEqual(['any']);
+    expect(await roll([{ success: false }, { success: false }])).toEqual(['any', 'all']);
+    // A crit that also fumbled, and failed.
+    expect(await roll([{ success: false }], { isCrit: true, isFumble: true })).toEqual(['any', 'all', 'fum', 'double']);
+    expect(validateRule({ type: 'Trigger', event: 'afterRoll', outcome: 'allFailed', steps: [] })).toEqual([]);
+  });
+
+  test('turn order and level: notActed, aheadOfTarget, highestInitiative, levelDiff', () => {
+    const me = makeActor([], { name: 'Me' });
+    const foe = makeActor([], { name: 'Foe' });
+    const npc = makeActor([], { name: 'Npc' });
+    me.system.level = 5;
+    foe.system.level = 2;
+    npc.system.level = undefined;
+    npc.system.threatLevel = 7;
+    const cMe = { actor: me, initiative: 18 };
+    const cFoe = { actor: foe, initiative: 12 };
+    const cNpc = { actor: npc, initiative: null };
+    const combat = { started: true, turn: 0, turns: [cMe, cFoe, cNpc], combatants: [cMe, cFoe, cNpc] };
+    const ctx = contextFor({ self: me, other: foe, combat });
+    expect(evaluateTag('target:notActed', ctx)).toBe(true);
+    expect(evaluateTag('self:notActed', ctx)).toBe(false);
+    expect(evaluateTag('combat:aheadOfTarget', ctx)).toBe(true);
+    expect(evaluateTag('combat:aheadOfTarget', contextFor({ self: me, other: npc, combat }))).toBe(false);
+    expect(evaluateTag('combat:highestInitiative', ctx)).toBe(true);
+    expect(evaluateTag('combat:highestInitiative', contextFor({ self: foe, other: me, combat }))).toBe(false);
+    cFoe.initiative = 18;
+    expect(evaluateTag('combat:highestInitiative', contextFor({ self: foe, other: me, combat }))).toBe(true);
+    expect(evaluateTag('self:levelDiff>=3', ctx)).toBe(true);
+    expect(evaluateTag('target:levelDiff<0', ctx)).toBe(true);
+    expect(evaluateTag('self:levelDiff<0', contextFor({ self: me, other: npc, combat }))).toBe(true);
+    expect(evaluateTag('target:notActed', contextFor({ self: me, other: foe, combat: null }))).toBe(false);
+  });
+
+  test('DieSubstitution: use / best / floor change the starting die; specialize and clearSnag only when it applies', async () => {
+    const { ruleDieSubstitution } = await import('./adapter.mjs');
+    global.CONFIG = { ...(global.CONFIG ?? {}), E20: { ...(global.CONFIG?.E20 ?? {}), skillShiftList: ['3d6', '2d8', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd20'] } };
+    const actor = makeActor([
+      { type: 'DieSubstitution', mode: 'best', skills: ['technology', 'choice'], specialize: true, when: ['skill:persuasion'] },
+      { type: 'DieSubstitution', mode: 'use', skills: ['finesse'], when: ['skill:might'] },
+      { type: 'DieSubstitution', mode: 'floor', die: 'd2', clearSnag: true, limit: { per: 'rest' }, when: ['skill:wealth'] },
+    ], {});
+    actor.items.contents[0].system.choice = 'culture';
+    actor.system.skills = { technology: { shift: 'd6' }, culture: { shift: 'd10' }, finesse: { shift: 'd4' } };
+    actor.getFlag = (scope, key) => foundry.utils.getProperty(actor.flags, `${scope}.${key}`);
+    actor.setFlag = async (scope, key, value) => foundry.utils.setProperty(actor.flags, `${scope}.${key}`, value);
+    expect(ruleDieSubstitution(actor, null, { rolledSkill: 'persuasion' }, 'd8')).toMatchObject({ shift: 'd10', specialize: true, clearSnag: false });
+    expect(ruleDieSubstitution(actor, null, { rolledSkill: 'persuasion' }, 'd12')).toMatchObject({ shift: 'd12', specialize: false });
+    expect(ruleDieSubstitution(actor, null, { rolledSkill: 'might' }, 'd10').shift).toBe('d4');
+    const floor = ruleDieSubstitution(actor, null, { rolledSkill: 'wealth' }, 'd20');
+    expect(floor).toMatchObject({ shift: 'd2', clearSnag: true });
+    await floor.spend();
+    expect(ruleDieSubstitution(actor, null, { rolledSkill: 'wealth' }, 'd20')).toMatchObject({ shift: 'd20', clearSnag: false });
+    expect(validateRule({ type: 'DieSubstitution', mode: 'floor' })).toContain('floor needs a die');
+    expect(summarizeRule({ type: 'DieSubstitution', mode: 'floor', die: 'd2', clearSnag: true })).toBe('At least a d2 die, no Snag');
+  });
+
+  test('Defense modes per attack: best / halve / fail, outgoing rules on the attacker, limits', async () => {
+    const { ruleDefenseAdjust } = await import('./adapter.mjs');
+    const attacker = makeActor([
+      { type: 'Defense', defense: 'willpower', amount: -2, outgoing: true, when: ['skill:deception'] },
+    ], { name: 'Liar' });
+    const defender = makeActor([
+      { type: 'Defense', defense: 'evasion', mode: 'best', from: ['willpower'], when: ['attack'] },
+      { type: 'Defense', defense: 'toughness', mode: 'halve', when: ['target:status:prone'] },
+      { type: 'Defense', defense: 'cleverness', mode: 'fail', limit: { per: 'rest' }, when: ['skill:persuasion'] },
+      { type: 'Defense', defense: 'toughness', amount: 1 },
+    ], { name: 'Mark' });
+    defender.getFlag = (scope, key) => foundry.utils.getProperty(defender.flags, `${scope}.${key}`);
+    defender.setFlag = async (scope, key, value) => foundry.utils.setProperty(defender.flags, `${scope}.${key}`, value);
+    defender.system.defenses = { willpower: { total: 16 }, evasion: { total: 12 }, toughness: { total: 10 } };
+    const weapon = { type: 'weaponEffect', system: { classification: {} } };
+    expect(ruleDefenseAdjust(attacker, defender, 'evasion', { item: weapon, difficulty: 12 })).toBe(4);
+    expect(ruleDefenseAdjust(attacker, defender, 'evasion', { difficulty: 12 })).toBe(0);
+    expect(ruleDefenseAdjust(attacker, defender, 'willpower', { rolledSkill: 'deception', difficulty: 16 })).toBe(-2);
+    attacker.statuses = new Set(['prone']);
+    expect(ruleDefenseAdjust(attacker, defender, 'toughness', { difficulty: 11 })).toBe(-5);
+    expect(ruleDefenseAdjust(attacker, defender, 'cleverness', { rolledSkill: 'persuasion', difficulty: 14 })).toBe(Infinity);
+    await new Promise(resolve => setTimeout(resolve, 0));
+    expect(ruleDefenseAdjust(attacker, defender, 'cleverness', { rolledSkill: 'persuasion', difficulty: 14 })).toBe(0);
+    expect(summarizeRule({ type: 'Defense', defense: 'toughness', mode: 'halve', outgoing: true })).toBe("Target's Toughness halved");
+    expect(validateRule({ type: 'Defense', defense: 'evasion', mode: 'best' })).toContain('best needs from (the Defenses to compare)');
+  });
+
+  test('late RollModifiers: not a source or switch before the dialog; applied after it against the settled Defense', async () => {
+    const { applyRuleImmunity } = await import('./adapter.mjs');
+    const holder = makeActor([{ type: 'RollModifier', label: 'Prime', snag: true, scope: 'incoming', late: true, when: ['defense:willpower'] }], { name: 'Prime' });
+    const attacker = makeActor([], { name: 'Attacker' });
+    expect(ruleRollSources(attacker, holder, { defenseType: 'willpower' }).sources).toEqual([]);
+    global.game.user = { targets: new Set([{ actor: holder }]) };
+    expect(ruleDialogSwitches(attacker, {})).toEqual([]);
+    const toughness = { defenseType: 'toughness' };
+    applyRuleImmunity(attacker, toughness, {});
+    expect(toughness.snag).toBeFalsy();
+    const willpower = { defenseType: 'willpower' };
+    applyRuleImmunity(attacker, willpower, {});
+    expect(willpower.snag).toBe(true);
+  });
+
+  test('RollDice: third d20 with an Edge, d20 floor, the tightest cap, steps up when Specialized', async () => {
+    const { ruleRollDice } = await import('./adapter.mjs');
+    global.CONFIG = { ...(global.CONFIG ?? {}), E20: { ...(global.CONFIG?.E20 ?? {}), skillShiftList: ['3d6', '2d8', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd20'] } };
+    const actor = makeActor([
+      { type: 'RollDice', thirdD20: true, when: ['roll:edge'] },
+      { type: 'RollDice', d20Floor: 10, when: ['essence:social'] },
+      { type: 'RollDice', maxDie: 'd12' },
+      { type: 'RollDice', maxDie: 'd10', when: ['skill:wealth'] },
+      { type: 'RollDice', stepUp: 1, when: ['roll:specialized'] },
+    ]);
+    expect(ruleRollDice(actor, null, { edge: false, dataset: {} })).toEqual({ d20Floor: 0, thirdD20: false, maxDie: 'd12', stepUp: 0 });
+    expect(ruleRollDice(actor, null, { edge: true, rolledEssence: 'social', rolledSkill: 'wealth', dataset: { isSpecialized: true } }))
+      .toEqual({ d20Floor: 10, thirdD20: true, maxDie: 'd10', stepUp: 1 });
+    expect(validateRule({ type: 'RollDice', d20Floor: 5 })).toContain('d20Floor can only be 10');
+    expect(validateRule({ type: 'RollDice' })).toContain('changes nothing');
+  });
+
+  test('DialogSwitch key travels with the roll for hit Triggers; its steps run when ticked', async () => {
+    const { runPostRoll } = await import('../helpers/extensions.mjs');
+    const foe = makeActor([], { name: 'Foe' });
+    const actor = makeActor([
+      { type: 'DialogSwitch', label: 'Hobble', downshift: 2, key: 'hobble', forget: true, steps: [{ do: 'mark', key: 'declared' }] },
+      { type: 'Trigger', event: 'hit', when: ['roll:switch:hobble'], steps: [{ do: 'mark', key: 'hobbled', to: 'target' }] },
+    ]);
+    global.game.user = { targets: new Set() };
+    const [hobble] = ruleDialogSwitches(actor);
+    const options = { ext: { [hobble.name]: true } };
+    await applyRuleSwitches(actor, options);
+    expect(options).toMatchObject({ shiftDown: 2, ruleKeys: ['hobble'] });
+    expect(markOf(actor, 'declared')).toBe(true);
+    await runPostRoll(actor, [], {}, { rider: { switches: [] }, hits: [{ target: foe, hit: true }] });
+    expect(markOf(foe, 'hobbled')).toBe(false);
+    await runPostRoll(actor, [], {}, { rider: { switches: options.ruleKeys }, hits: [{ target: foe, hit: true }] });
+    expect(markOf(foe, 'hobbled')).toBe(true);
+    expect(evaluateTag('roll:switch:hobble', contextFor({}))).toBeNull();
+    expect(validateRule({ type: 'DialogSwitch', clearSnag: true })).toEqual([]);
+  });
+
+  test('DamageType: the first matching rule, "choice" reads the item; switch keys gate it', async () => {
+    const { ruleDamageType } = await import('./adapter.mjs');
+    const actor = makeActor([
+      { type: 'DamageType', to: 'sharp', when: ['attack:unarmed', 'roll:switch:saber'] },
+      { type: 'DamageType', to: 'choice', when: ['self:transformed'] },
+    ]);
+    actor.items.contents[0].system.choice = 'blunt';
+    const punch = { type: 'weaponEffect', flags: {}, system: { classification: {} } };
+    expect(ruleDamageType(actor, null, { item: punch, switches: [] })).toBeNull();
+    expect(ruleDamageType(actor, null, { item: punch, switches: ['saber'] })).toBe('sharp');
+    actor.system.isTransformed = true;
+    expect(ruleDamageType(actor, null, { item: punch, switches: [] })).toBe('blunt');
+    expect(summarizeRule({ type: 'DamageType', to: 'choice' })).toBe('Deals the chosen damage');
+  });
+
+  test('scaled damage with a limit and steps; loseHealth takes Health directly', async () => {
+    const actor = makeActor([{ type: 'DamageModifier', direction: 'dealt', scaled: true, amount: 2, limit: { per: 'rest' }, steps: [{ do: 'mark', key: 'forced' }] }]);
+    actor.getFlag = (scope, key) => foundry.utils.getProperty(actor.flags, `${scope}.${key}`);
+    actor.setFlag = async (scope, key, value) => foundry.utils.setProperty(actor.flags, `${scope}.${key}`, value);
+    const hit = { type: 'weaponEffect', system: { classification: {} } };
+    const first = ruleScaledDamage(actor, null, { item: hit });
+    expect(first.amount).toBe(2);
+    await first.spend();
+    expect(markOf(actor, 'forced')).toBe(true);
+    expect(ruleScaledDamage(actor, null, { item: hit }).amount).toBe(0);
+    expect(validateRule({ type: 'DamageModifier', direction: 'dealt', amount: 1, limit: { per: 'rest' } })).toContain('limit and steps need scaled');
+    const ctx = stepContext({ actor, item: null, targets: [] });
+    await runSteps([{ do: 'loseHealth', amount: 3 }], ctx);
+    expect(actor.system.health.value).toBe(2);
+    await runSteps([{ do: 'loseHealth', amount: 9 }], ctx);
+    expect(actor.system.health.value).toBe(0);
   });
 
   test('roll:dataset:, roll:specialization~ and combat:first', () => {

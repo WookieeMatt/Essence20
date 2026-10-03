@@ -7848,6 +7848,12 @@
   margin-top: 0;
 }
 
+.essence20.item .window-content > section.tab.rules {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
 .essence20 .e20-rules {
   display: flex;
   flex-direction: column;
@@ -8000,6 +8006,26 @@
   opacity: 0.85;
 }
 
+.essence20.e20-rules-add-dialog {
+  max-height: 90vh;
+}
+.essence20.e20-rules-add-dialog .window-content {
+  min-height: 0;
+}
+.essence20.e20-rules-add-dialog .window-content > form.dialog-form {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.essence20.e20-rules-add-dialog .dialog-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+.essence20.e20-rules-add-dialog .form-footer {
+  flex: none;
+}
 .essence20.e20-rules-add-dialog .e20-rules-add-choices {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -8036,6 +8062,8 @@
 }
 
 .essence20.e20-rule-editor .window-content {
+  flex: 1;
+  min-height: 0;
   max-height: 80vh;
   overflow-y: auto;
   padding: 0.5rem 0.75rem;

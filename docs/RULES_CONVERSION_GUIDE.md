@@ -388,3 +388,51 @@ Also: some pack sources are LF (e.g. packs/iafav2items) - match each file's own 
 ## Round 16 (2026-10-03) - dice.mjs region sweep
 Batches applied so far: dmgA/B/C, init, subst, cover, move, misc6, misc7. Their proposals files hold every skip reason -
 check them before re-deciding an item. ~250 actorHasPerk/findPerk checks remain in dice.mjs.
+
+## Engine features added 2026-10-03 (after the regA/regB/regC cloud round)
+
+Built for the skip lists in `docs/rules-batches/reg*.md` - re-check those skips against these first.
+
+- **Trigger outcomes that read the results themselves** (`afterRoll` / `hit`): `x2` (some result succeeded by
+  double the DIF - Degrees of Success only, a crit or not), `anyFailed`, `allFailed` (whatever the dice
+  showed), `fumbled` (a Fumble even if it also crit). The old six (`success`, `failure`, `double`, `crit`,
+  `fumble`, `any`) are unchanged.
+- **Turn order and level tags:** `self:notActed` / `target:notActed` (that actor's turn comes later this round
+  than the current one - First Strike's / Oorah!'s check, in any combat); `combat:aheadOfTarget` (my
+  Initiative is higher than the target's, both rolled); `combat:highestInitiative` (no combatant rolled
+  higher - ties count, unstarted combats too - Goin' Heels); `self:levelDiff>=N` / `target:levelDiff>=N`
+  (Level, or Threat Level for an NPC, minus the other party's).
+- **`DieSubstitution`** {mode: use|best|floor, skills, die, specialize, clearSnag, limit}: the die the roll
+  STARTS from (dice.mjs initialShift, before the dialog), the rolled Skill unchanged. `use` that Skill's die
+  (Jacket Wrestler); `best` of the current and these Skills' dice (Aerial Acrobat, Circuit Breaker, Cultural
+  Connection, Brutal Verbalities, Agency with skills ["choice"]); `floor` at least this die ("A" for Effort!,
+  Basic Intelligence - with clearSnag). It applies when it changes the die (a floor: when the die is at or
+  below it); only then do specialize / clearSnag / the limit happen. Runs after the hand-written substitutions.
+- **`RollDice`** {d20Floor: 10, thirdD20, maxDie, stepUp}: once the final die is known - Silver Tongue,
+  Kill Shot / Precision is Perfection (with `roll:edge`), a die cap, Super Specialized's step (with
+  `roll:specialized`). Its `when` sees the settled Edge/Snag and `dataset.isSpecialized`.
+- **Defense modes (per attack):** `mode: best` with `from: ["willpower"]` (use the better of the current
+  Defense and those - Psychological Warfare, Evasive, Split-Second Reaction...), `halve` (Unseen Strike,
+  Augmented), `fail` (the roll can't succeed - Just the Facts, Trustworthy). `outgoing: true` puts the rule on
+  the ATTACKER and changes the target's Defense (Shatter Resolve). `limit` works (Scapegoat once per scene).
+  A Defense rule with any of these is decided per attack, never added to the sheet. best runs before halve.
+- **`late: true` on a RollModifier:** decided after the Roll Options Dialog, with `defense:` reading the Defense
+  the dialog settled on (Silver / Graphite / Orange Ranger Prime's Snag, scope incoming). Not a dialog
+  source or switch.
+- **Ally auras** (`scope: aura`, affects allies) count allies the system way (getNearbyAllyTokens: Frenemy,
+  Betrayal, Ally Awareness); `stacks: false` makes one book item's aura count once however many allies in
+  reach hold it (Pay It Forward). **Cover** rules take the `aura` scope too (Two Steps to the Right, Bulwark).
+- **DialogSwitch `key` and `steps`:** ticked, the roll carries the key - hit / miss / afterRoll Triggers ask
+  `roll:switch:<key>` (Hobble, Crippling Blow, Get A Grip, Cryogenic Touch, Guardian Strikes... "declare it,
+  then something happens on a hit"); `steps` run as the roll is made (Angry's Hang-Up, Caution To The Wind's
+  bank). A switch with only `clearSnag` is valid (Solo Shot).
+- **`DamageType`** {to: "sharp" | "choice"}: the attack deals this damage type instead (after the hand-written
+  overrides in dice.mjs); `when` sees switch keys (Saber-Toothed), `self:transformed` (Tooth And Claw)...
+- **Scaled DamageModifier `limit` and `steps`** (Force: once per encounter, banks a ↓1 when applied).
+- **Step `loseHealth`** {amount, to}: Health lost outright - no resistance, no Defeat-save chain (Cost of
+  Sorcery).
+- **More `check:` names:** `defeatedAllyInReach` (Not On My Watch), `decepticonNemesis` (against the other
+  party), `nemesisInScene`, `multipleTargetsWeapon`, `favoriteWeaponEquipped`, `favoriteWeaponRolled`
+  (Down the Barrel, Ricochet), `zordHasDriver` (Martial Zord, Zero-G, Zord Sentience), `personalShield`
+  (Impenetrable Shield).
+- **`roll:specialization=<name>`** - exact name (ignoring case); `~` is "contains". Prefer `=`.

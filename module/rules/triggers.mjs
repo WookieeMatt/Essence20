@@ -172,7 +172,7 @@ async function post(actor, lines) {
  * @param {Object} [extra]   {roll: tag context, outcome, damage: {amount}, ask, prompt}
  * @returns {Promise<Object|null>}   The damage object, for wouldBeDefeated.
  */
-export async function fireTriggers(actor, event, { roll = {}, outcome = null, damage = null, targets = [], ask = null, prompt = confirm } = {}) {
+export async function fireTriggers(actor, event, { roll = {}, outcome = null, facts = null, damage = null, targets = [], ask = null, prompt = confirm } = {}) {
   // An aura / party / vehicle Trigger fires for the actor it reaches, never for its holder; its
   // limit is the holder's ("once per encounter" for whoever holds the Perk).
   const own = rulesOfType(actor, 'Trigger').filter(entry => !LINK_SCOPES.includes(entry.rule.scope)).map(entry => ({ ...entry, holder: actor }));
@@ -182,7 +182,7 @@ export async function fireTriggers(actor, event, { roll = {}, outcome = null, da
       continue;
     }
 
-    if (['afterRoll', 'hit'].includes(event) && !outcomeMatches(rule.outcome, outcome)) {
+    if (['afterRoll', 'hit'].includes(event) && !outcomeMatches(rule.outcome, outcome, facts)) {
       continue;
     }
 
@@ -233,9 +233,24 @@ export async function wouldBeDefeated(actor, amount, damageType, { isCrit = fals
 }
 
 /** A Trigger's `outcome`: "success" takes a Critical Success too, "failure" a Fumble too. */
-function outcomeMatches(wanted, outcome) {
+/**
+ * Whether a roll's result is the outcome a Trigger asks for. The first six read the summary
+ * outcome (a crit counts before anything else); the rest read the results themselves (facts):
+ *  - x2: some result succeeded by double the DIF (Degrees of Success x2+), a crit or not;
+ *  - anyFailed / allFailed: some / every result failed, whatever the dice showed;
+ *  - fumbled: a Fumble, even on a roll that also crit.
+ */
+function outcomeMatches(wanted, outcome, facts = null) {
   if (!wanted || wanted == 'any') {
     return true;
+  }
+
+  const results = Array.isArray(facts?.results) ? facts.results : [];
+  switch (wanted) {
+  case 'x2': return results.some(result => result?.success && Number(result.multiplier) >= 2);
+  case 'anyFailed': return results.some(result => result && !result.success);
+  case 'allFailed': return results.length > 0 && results.every(result => result && !result.success);
+  case 'fumbled': return !!facts?.isFumble;
   }
 
   // double: a success by at least double the DIF (Degrees of Success x2 or more) - a crit counts too.
@@ -343,15 +358,19 @@ registerAfterDamage(async (actor, dealt, damageType, { newValue, wasAlreadyDefea
 registerPostRoll(async (actor, results, checkContext, extra = {}) => {
   const rider = extra.rider ?? checkContext?.riderContext ?? {};
   const item = rider.itemUuid ? globalThis.fromUuidSync?.(rider.itemUuid) ?? null : null;
-  const roll = { item, rolledSkill: rider.skill, isAttack: item?.type == 'weaponEffect', isMelee: rider.style == 'melee' };
-  await fireTriggers(actor, 'afterRoll', { roll, outcome: rollOutcome(results, extra) });
+  const roll = { item, rolledSkill: rider.skill, isAttack: item?.type == 'weaponEffect', isMelee: rider.style == 'melee', switches: rider.switches ?? [] };
+  const facts = { results: Array.isArray(results) ? results : [], isCrit: !!extra.isCrit, isFumble: !!extra.isFumble };
+  await fireTriggers(actor, 'afterRoll', { roll, outcome: rollOutcome(results, extra), facts });
 
   // Each target rolled against, hit or missed - its steps land on that target with `to: "target"`.
   // Any roll against a target's Defense counts: an attack, a spell, an Intimidation test...
   // (`attack` tags stay weapon-only; `item:own` / `skill:` narrow it down).
   for (const { target, hit, result } of extra.hits ?? []) {
     if (target) {
-      await fireTriggers(actor, hit ? 'hit' : 'miss', { roll, outcome: hitOutcome(hit, result, extra.isCrit), targets: [target] });
+      await fireTriggers(actor, hit ? 'hit' : 'miss', {
+        roll, outcome: hitOutcome(hit, result, extra.isCrit), targets: [target],
+        facts: { results: [result ?? { success: !!hit }], isCrit: !!extra.isCrit, isFumble: !!extra.isFumble },
+      });
     }
   }
 });

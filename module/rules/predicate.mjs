@@ -194,6 +194,8 @@ export const CHECK_NAMES = [
   'environmentalExpertise', 'cannoneerDugIn', 'bulwark', 'rushTheLine', 'sprinterBoost', 'skiing', 'nearbyDefeatedAlly',
   'frictionlessMovement', 'gravityOptional', 'wisdomOfTheElders', 'monsterForm', 'warriorMode', 'powerAdaptation',
   'highGear', 'theToughGetGoing', 'energyAffinityAttack', 'equippedFireWeapon',
+  'defeatedAllyInReach', 'decepticonNemesis', 'nemesisInScene', 'multipleTargetsWeapon', 'favoriteWeaponEquipped',
+  'favoriteWeaponRolled', 'zordHasDriver', 'personalShield',
 ];
 const CHECKS = new Map();
 export function registerCheck(name, fn) {
@@ -290,6 +292,32 @@ export const SIZES = ['small', 'common', 'large', 'long', 'huge', 'extended', 'g
  * sizeDiff<op>N: how many places one actor's size sits above another's in SIZES (the same index
  * compare the hand-written size Perks use). Undefined when the tag isn't one; null when either size is unknown.
  */
+/** An actor's combatant in a combat. */
+function combatantOf(combat, actor) {
+  const list = combat?.combatants?.contents ?? (combat?.combatants ? [...combat.combatants] : []);
+  return actor ? list.find(c => c.actor === actor || (!!actor.uuid && c.actor?.uuid == actor.uuid)) ?? null : null;
+}
+
+/**
+ * Turn order and level, between this actor and the other party (undefined when the tag isn't one):
+ *   notActed           this actor's turn comes later this round than the current one (in any combat)
+ *   levelDiff>=N       this actor's level (Threat Level for an NPC) minus the other party's
+ */
+function versusTag(rest, actor, other, combat) {
+  if (rest == 'notActed') {
+    const mine = combatantOf(combat, actor);
+    return !!combat && !!mine && (combat.turns ?? []).indexOf(mine) > Number(combat.turn ?? -1);
+  }
+
+  const level = /^levelDiff(>=|<=|>|<|=)(-?\d+)$/.exec(rest);
+  if (level) {
+    const levelOf = who => Number(who?.system?.level ?? who?.system?.threatLevel ?? 0) || 0;
+    return actor && other ? compare(levelOf(actor) - levelOf(other), level[1], level[2]) : null;
+  }
+
+  return undefined;
+}
+
 function sizeDiff(rest, actor, other) {
   const match = /^sizeDiff(>=|<=|>|<|=)(-?\d+)$/.exec(rest);
   if (!match) {
@@ -540,6 +568,11 @@ export function evaluateTag(tag, ctx) {
     }
 
     // specialization~<name> - rolled with a Specialization whose name contains that text.
+    // switch:<key> - a rule switch with that key was ticked for this roll (DialogSwitch key).
+    if (rest.startsWith('switch:')) {
+      return Array.isArray(ctx.switches) ? ctx.switches.includes(rest.slice(7)) : null;
+    }
+
     // specialization=<name> - exactly that name (ignoring case).
     const specialized = /^specialization(~|=)(.+)$/.exec(rest);
     if (specialized) {
@@ -672,6 +705,11 @@ export function evaluateTag(tag, ctx) {
       return runCheck(rest.slice(6), ctx.self, ctx);
     }
 
+    const versus = versusTag(rest, ctx.self, ctx.other, ctx.combat);
+    if (versus !== undefined) {
+      return versus;
+    }
+
     // sizeDiff>=N - this actor's size is at least N places above the other party's (SIZES order).
     const bigger = sizeDiff(rest, ctx.self, ctx.other);
     if (bigger !== undefined) {
@@ -711,6 +749,11 @@ export function evaluateTag(tag, ctx) {
       return runCheck(rest.slice(6), ctx.other, { ...ctx, self: ctx.other, other: ctx.self });
     }
 
+    const versus = versusTag(rest, ctx.other, ctx.self, ctx.combat);
+    if (versus !== undefined) {
+      return versus;
+    }
+
     // sizeDiff>=N - the target's size is at least N places above this actor's (SIZES order).
     const bigger = sizeDiff(rest, ctx.other, ctx.self);
     if (bigger !== undefined) {
@@ -728,6 +771,20 @@ export function evaluateTag(tag, ctx) {
 
     if (rest.startsWith('round:')) {
       return Number(ctx.combat?.round) == Number(rest.slice(6));
+    }
+
+    // aheadOfTarget - this actor's Initiative is higher than the other party's (both rolled), in any combat.
+    if (rest == 'aheadOfTarget') {
+      const mine = combatantOf(ctx.combat, ctx.self)?.initiative;
+      const theirs = combatantOf(ctx.combat, ctx.other)?.initiative;
+      return mine != null && theirs != null && mine > theirs;
+    }
+
+    // highestInitiative - no other combatant has rolled a higher Initiative (ties count), in any combat.
+    if (rest == 'highestInitiative') {
+      const mine = combatantOf(ctx.combat, ctx.self);
+      const list = ctx.combat?.combatants?.contents ?? (ctx.combat?.combatants ? [...ctx.combat.combatants] : []);
+      return mine?.initiative != null && list.every(c => c === mine || c.initiative == null || c.initiative <= mine.initiative);
     }
 
     // first - this actor is first in the Initiative order.

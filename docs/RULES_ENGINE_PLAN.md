@@ -385,6 +385,12 @@ and the numeric dialog input.
     cover, move (all Movement Perks, Wildfire included), misc6 (combat / item / chat), misc7 (newly unblocked).
     Each batch's `why` lines in its proposals file record the small behaviour differences.
   - Total: **1205 rules on 880 pack items**. Packs rebuilt 2026-10-03 00:19.
+- **2026-10-03, cloud round + engine pieces:** regA/regB/regC ran as cloud sessions (docs/RULES_CONVERSION_GUIDE.md,
+  per-batch notes in docs/rules-batches/) - 1254 rules on 912 items. Then, for their skip lists: Trigger outcomes
+  x2/anyFailed/allFailed/fumbled; notActed / aheadOfTarget / highestInitiative / levelDiff tags; DieSubstitution and
+  RollDice types; Defense modes best/halve/fail, outgoing and limit; late RollModifiers; ally auras counted the
+  getNearbyAllyTokens way with non-stacking stacks:false; Cover aura scope; DialogSwitch key (roll:switch:) and steps;
+  DamageType; scaled-damage limit/steps; loseHealth; eight more check: names; roll:specialization=. The guide lists them.
 - **Known issues, noted for later:**
   - Two Steps to the Right: its allies-within-60 ft Cover/Edge share needs an aura that counts allies the
     getNearbyAllyTokens way (Frenemy, Betrayal, Ally Awareness).

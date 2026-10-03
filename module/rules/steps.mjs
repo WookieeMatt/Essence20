@@ -16,7 +16,7 @@ import { contextFor, evaluate, interpolate, sideActorsWithin, unknownTags as unk
  */
 
 export const STEP_TYPES = [
-  'chat', 'spend', 'gainResource', 'heal', 'damage', 'applyCondition', 'removeCondition', 'roll', 'grant', 'bank',
+  'chat', 'spend', 'gainResource', 'heal', 'loseHealth', 'damage', 'applyCondition', 'removeCondition', 'roll', 'grant', 'bank',
   'grantActions', 'setToggle', 'choose', 'target', 'negateDamage', 'leaveAt', 'mark', 'unmark', 'askNumber', 'pickGrant', 'bonusAttack', 'setForm', 'save', 'pickAlly', 'pickPerk', 'fitAttack',
 ];
 
@@ -264,6 +264,19 @@ const HANDLERS = {
   async gainResource(step, ctx) {
     // False (stop the run) when it couldn't be given - Story Points with no GM to receive them.
     return changeResource(step.resource, amountOf(step.amount ?? 1, ctx, 1), ctx);
+  },
+
+  async loseHealth(step, ctx) {
+    const amount = Math.max(0, amountOf(step.amount ?? 1, ctx, 1));
+    for (const actor of recipients(step, ctx)) {
+      const value = Number(actor.system?.health?.value);
+      if (!Number.isFinite(value) || !amount) {
+        continue;
+      }
+
+      await write(actor, 'update', [{ 'system.health.value': Math.max(0, value - amount) }]);
+      ctx.chat.push(T('LostHealth', { name: escape(actor.name), amount }));
+    }
   },
 
   async heal(step, ctx) {

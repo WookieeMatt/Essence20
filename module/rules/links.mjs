@@ -1,6 +1,6 @@
 import { companionsOf, ownerOf, worldActors } from "../helpers/companion-link.mjs";
 import { LINK_HOLDERS, rulesOfType } from "./index.mjs";
-import { feetBetween, setCrewLookup } from "./predicate.mjs";
+import { feetBetween, setCrewLookup, sideActorsWithin } from "./predicate.mjs";
 import { resolveValue } from "./formula.mjs";
 
 /**
@@ -101,13 +101,36 @@ export function auraReaches(rule, holder, actor, item = null) {
   }
 
   const affects = rule.affects ?? 'allies';
+  const radius = resolveValue(rule.radius ?? 0, { actor: holder, item }, 0);
+  // Allies the way the rest of the system counts them (Frenemy, Betrayal, Ally Awareness) - the same
+  // lookup ally:within uses - when the system has handed it in.
+  if (affects == 'allies' && hasAllyLookup()) {
+    return sideActorsWithin(actor, radius, 'ally').includes(holder);
+  }
+
   const same = (own.document?.disposition ?? 0) == (theirs.document?.disposition ?? 0);
   if ((affects == 'allies' && !same) || (affects == 'enemies' && (same || (theirs.document?.disposition ?? 0) == 0))) {
     return false;
   }
 
   const distance = feetBetween(holder, actor);
-  return distance !== null && distance <= resolveValue(rule.radius ?? 0, { actor: holder, item }, 0);
+  return distance !== null && distance <= radius;
+}
+
+let allyLookup = false;
+/** Whether ally auras should count allies through the system's own lookup (set from essence20.mjs). */
+export function useAllyLookup(on = true) {
+  allyLookup = on;
+}
+
+function hasAllyLookup() {
+  return allyLookup;
+}
+
+/** The book item a rule's item is (its source), so one Perk held by two allies is one aura. */
+function sourceKey(item, index) {
+  const source = item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? item?.name ?? item?.id;
+  return `${source}#${index}`;
 }
 
 /** The actors on the canvas holding an aura rule (cheap: LINK_HOLDERS says who might). */
@@ -175,15 +198,28 @@ export function linkedEntries(actor, type) {
     add(mate, 'party');
   }
 
+  // stacks: false - the same book item's aura counts once, however many allies in reach hold it.
+  const once = new Set();
   for (const holder of auraHolders()) {
     if (holder === actor) {
       continue;
     }
 
     for (const entry of rulesOfType(holder, type, 'aura')) {
-      if (auraReaches(entry.rule, holder, actor, entry.item)) {
-        out.push({ ...entry, holder });
+      if (!auraReaches(entry.rule, holder, actor, entry.item)) {
+        continue;
       }
+
+      if (entry.rule.stacks === false) {
+        const key = sourceKey(entry.item, entry.index);
+        if (once.has(key)) {
+          continue;
+        }
+
+        once.add(key);
+      }
+
+      out.push({ ...entry, holder });
     }
   }
 

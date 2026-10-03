@@ -757,6 +757,8 @@ export function buildRiderContext(actor, item, dataset, options, consumes = []) 
     allOutAttack: Number(options?.allOutAttackShifts) || 0,
     makeAnOpening: !!options?.applyMakeAnOpening,
     consumes,
+    // Rule switches ticked for this roll (DialogSwitch key) - the roll:switch: tag.
+    switches: options?.ruleKeys ?? [],
   };
 }
 

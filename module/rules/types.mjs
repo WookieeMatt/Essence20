@@ -91,7 +91,8 @@ export const SCOPES = ['self', 'incoming', 'host', 'crew', 'pilot', 'vehicle', '
 /** Every type's own params; label, when, scope, priority and disabled are common to all. */
 export const RULE_TYPES = {
   RollModifier: {
-    params: { ...SHIFT_PARAMS, immune: { kind: 'strings' }, ignoreDownshift: { kind: 'formula' }, limit: { kind: 'object' }, default: { kind: 'bool' } },
+    // late: decided after the Roll Options Dialog, when the attacked Defense is settled (defense: tags).
+    params: { ...SHIFT_PARAMS, immune: { kind: 'strings' }, ignoreDownshift: { kind: 'formula' }, limit: { kind: 'object' }, default: { kind: 'bool' }, late: { kind: 'bool' } },
     scopes: ['self', 'incoming', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
     validate: rule => [
       ...(['upshift', 'downshift', 'edge', 'snag', 'specialize', 'immune', 'ignoreDownshift'].some(key => rule[key]?.length ?? rule[key]) ? [] : ['changes nothing']),
@@ -104,12 +105,13 @@ export const RULE_TYPES = {
   DialogSwitch: {
     // damage: added to the attack's own damage bonus when ticked (multiplied by Degrees of Success).
     // useSkill: roll that Skill's die instead (the shift difference, like "roll Deception instead of Initiative").
-    params: { ...SHIFT_PARAMS, default: { kind: 'bool' }, replacesAim: { kind: 'bool' }, cost: { kind: 'object' }, damage: { kind: 'formula' }, useSkill: { kind: 'string' }, forget: { kind: 'bool' }, spend: { kind: 'object' }, clearSnag: { kind: 'bool' }, limit: { kind: 'object' } },
+    params: { ...SHIFT_PARAMS, default: { kind: 'bool' }, replacesAim: { kind: 'bool' }, cost: { kind: 'object' }, damage: { kind: 'formula' }, useSkill: { kind: 'string' }, forget: { kind: 'bool' }, spend: { kind: 'object' }, clearSnag: { kind: 'bool' }, key: { kind: 'string' }, steps: { kind: 'object' }, limit: { kind: 'object' } },
     scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
     validate: rule => [
-      ...(['upshift', 'downshift', 'edge', 'snag', 'specialize', 'damage', 'replacesAim', 'useSkill'].some(key => rule[key]) ? [] : ['changes nothing']),
+      ...(['upshift', 'downshift', 'edge', 'snag', 'specialize', 'damage', 'replacesAim', 'useSkill', 'key', 'steps', 'clearSnag'].some(key => rule[key]) ? [] : ['changes nothing']),
       ...(rule.spend !== undefined && !rule.spend?.resource && rule.spend?.max === undefined ? ['spend needs a resource or a max'] : []),
       ...(rule.spend !== undefined && rule.cost !== undefined ? ['spend and cost can\'t both be set'] : []),
+      ...(rule.steps !== undefined ? stepErrors(rule.steps) : []),
       ...(rule.cost !== undefined && !rule.cost?.resource ? ['cost needs a resource'] : []),
       ...(rule.cost !== undefined ? costErrors(rule.cost) : []),
       ...limitErrors(rule.limit),
@@ -131,13 +133,26 @@ export const RULE_TYPES = {
     },
     scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
   },
+  // A Defense. Static (no roll condition): added to the sheet's total. Otherwise decided per attack
+  // (dice.mjs, the target's difficulty), where mode can also be: best (use the better of the current
+  // value and the `from` Defenses' totals), halve (rounded up) or fail (the roll can't succeed).
+  // outgoing: the rule sits on the ATTACKER and changes the Defense of whoever it rolls against.
   Defense: {
     params: {
       defense: { kind: 'enum', required: true, options: ['toughness', 'evasion', 'willpower', 'cleverness', 'any'] },
-      amount: { kind: 'formula', required: true },
+      amount: { kind: 'formula' },
       stack: { kind: 'string' },
+      mode: { kind: 'enum', options: ['add', 'best', 'halve', 'fail'] },
+      from: { kind: 'strings' },
+      outgoing: { kind: 'bool' },
+      limit: { kind: 'object' },
     },
     scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    validate: rule => [
+      ...((rule.mode ?? 'add') == 'add' && (rule.amount === undefined || rule.amount === '') ? ['amount is required'] : []),
+      ...(rule.mode == 'best' && !(Array.isArray(rule.from) && rule.from.length) ? ['best needs from (the Defenses to compare)'] : []),
+      ...(rule.limit !== undefined ? limitErrors(rule.limit) : []),
+    ],
   },
   DerivedStat: {
     params: {
@@ -156,11 +171,17 @@ export const RULE_TYPES = {
       immune: { kind: 'bool' },
       // dealt only: part of the attack's own damage bonus, so Degrees of Success multiply it.
       scaled: { kind: 'bool' },
+      // scaled only: once per X, and steps that run when it's applied.
+      limit: { kind: 'object' },
+      steps: { kind: 'object' },
     },
     scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
     validate: rule => [
       ...(rule.amount || rule.immune ? [] : ['changes nothing']),
       ...(rule.scaled && rule.direction != 'dealt' ? ['scaled only applies to damage dealt'] : []),
+      ...((rule.limit !== undefined || rule.steps !== undefined) && !rule.scaled ? ['limit and steps need scaled'] : []),
+      ...(rule.limit !== undefined ? limitErrors(rule.limit) : []),
+      ...(rule.steps !== undefined ? stepErrors(rule.steps) : []),
     ],
   },
   Grant: {
@@ -256,6 +277,49 @@ export const RULE_TYPES = {
     },
     scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
   },
+  // The damage type this attack deals instead (dice.mjs overriddenDamageType) - "choice" is the rule
+  // item's chosen type. `when` sees the roll, after the dialog (roll:switch:, roll:edge...).
+  DamageType: {
+    params: { to: { kind: 'string', required: true } },
+    scopes: ['self', 'host'],
+  },
+  // The dice themselves, once the final die is known (after the dialog): d20Floor (a d20 never shows
+  // less than 10), thirdD20 (roll a third d20 - with an Edge, keep the best), maxDie (the Skill Die is at
+  // most this one), stepUp (one or more steps up after everything else). `when` sees roll:edge /
+  // roll:snag / roll:specialized as they stand then.
+  RollDice: {
+    params: {
+      d20Floor: { kind: 'formula' },
+      thirdD20: { kind: 'bool' },
+      maxDie: { kind: 'string' },
+      stepUp: { kind: 'formula' },
+    },
+    scopes: ['self', 'host'],
+    validate: rule => [
+      ...(rule.d20Floor !== undefined && Number(rule.d20Floor) != 10 ? ['d20Floor can only be 10'] : []),
+      ...(['d20Floor', 'thirdD20', 'maxDie', 'stepUp'].some(key => rule[key]) ? [] : ['changes nothing']),
+    ],
+  },
+  // The die a roll starts from, before the dialog (dice.mjs initialShift) - the rolled Skill stays the
+  // same. use: that Skill's die; best: the best of the current die and these Skills' dice; floor: at
+  // least this die. "choice" in skills means the rule item's chosen Skill. When it applies: specialize
+  // makes the roll Specialized, clearSnag removes any Snag, and a limit is used up.
+  DieSubstitution: {
+    params: {
+      mode: { kind: 'enum', required: true, options: ['use', 'best', 'floor'] },
+      skills: { kind: 'strings' },
+      die: { kind: 'string' },
+      specialize: { kind: 'bool' },
+      clearSnag: { kind: 'bool' },
+      limit: { kind: 'object' },
+    },
+    scopes: ['self', 'host'],
+    validate: rule => [
+      ...(['use', 'best'].includes(rule.mode) && !(Array.isArray(rule.skills) && rule.skills.length) ? [`${rule.mode} needs skills`] : []),
+      ...(rule.mode == 'floor' && !rule.die ? ['floor needs a die'] : []),
+      ...(rule.limit !== undefined ? limitErrors(rule.limit) : []),
+    ],
+  },
   // Cover on ranged attacks (dice.mjs, normally ↓2). The holder's own attacks: ignore it, or reduce it
   // (the biggest reduction counts, never below ↓0). Attacks against the holder (against: true): count
   // as in Cover (grant), a bigger base (base: 3 = "↓3 instead of ↓2"), or add on top.
@@ -265,7 +329,7 @@ export const RULE_TYPES = {
       amount: { kind: 'formula' },
       against: { kind: 'bool' },
     },
-    scopes: ['self', 'host'],
+    scopes: ['self', 'host', 'aura'],
     validate: rule => [
       ...(['reduce', 'base', 'add'].includes(rule.mode) && !rule.amount ? ['needs an amount'] : []),
       ...(['grant', 'base', 'add'].includes(rule.mode) && !rule.against ? [`${rule.mode} only applies to attacks against the holder (against: true)`] : []),
@@ -398,7 +462,7 @@ export const RULE_TYPES = {
   Trigger: {
     params: {
       event: { kind: 'enum', required: true, options: TRIGGER_EVENTS },
-      outcome: { kind: 'enum', options: ['any', 'success', 'failure', 'double', 'crit', 'fumble'] },
+      outcome: { kind: 'enum', options: ['any', 'success', 'failure', 'double', 'crit', 'fumble', 'x2', 'anyFailed', 'allFailed', 'fumbled'] },
       prompt: { kind: 'bool' },
       limit: { kind: 'object' },
       steps: { kind: 'object', required: true },
@@ -609,7 +673,18 @@ export function summarizeRule(rule) {
   case 'DialogSwitch': return `Roll option "${rule.label ?? ''}": ${shiftPhrase(rule)}${tail}${limitPhrase(rule.limit)}`;
   case 'Reroll': return `Reroll (${rule.mode ?? 'all'})${rule.skills?.length ? ` on ${rule.skills.map(skillName).join(', ')}` : ''}${rule.reset && rule.reset != 'none' ? `, once per ${rule.reset}` : ''}`;
   case 'SkillSubstitution': return `${who}${rule.mode == 'bestOf' ? 'Better of' : 'Use'} ${skillName(rule.to)} ${rule.mode == 'bestOf' ? 'and' : 'for'} ${skillName(rule.from)}${tail}`;
-  case 'Defense': return `${who}${signed(rule.amount)} ${rule.defense == 'any' ? 'every Defense' : word(`E20.Defense${capital(rule.defense)}`, capital(rule.defense))}${tail}`;
+  case 'Defense': {
+    const name = rule.defense == 'any' ? 'every Defense' : word(`E20.Defense${capital(rule.defense)}`, capital(rule.defense));
+    const lead = rule.outgoing ? "Target's " : who;
+    switch (rule.mode ?? 'add') {
+    case 'best': return `${lead}${name}: the better of it and ${(rule.from ?? []).join(' / ')}${tail}`;
+    case 'halve': return `${lead}${name} halved${tail}`;
+    case 'fail': return `${lead}${name} can't be beaten${tail}`;
+    }
+
+    return `${lead}${signed(rule.amount)} ${name}${tail}`;
+  }
+
   case 'DerivedStat': return `${who}${rule.op ?? 'add'} ${rule.value} → ${rule.path}${tail}`;
   case 'DamageModifier': return `${who}${rule.immune ? 'Immune to' : `${signed(rule.amount)}`} ${rule.damageType ? `${rule.damageType} ` : ''}damage ${rule.direction == 'dealt' ? 'dealt' : 'taken'}${tail}`;
   case 'Grant': return `Grants ${rule.label ?? rule.uuid}`;
@@ -631,6 +706,18 @@ export function summarizeRule(rule) {
   case 'Movement': return `${who}${rule.movement == 'all' ? 'Every Movement' : `${capital(rule.movement ?? '')} Movement`} ${{
     set: '=', multiply: '×', add: '+', max: 'at least', min: 'at most',
   }[rule.op] ?? rule.op} ${rule.value}${rule.stage && rule.stage != 'final' ? ` (${rule.stage})` : ''}${tail}`;
+  case 'DamageType': return `${who}Deals ${rule.to == 'choice' ? 'the chosen' : rule.to} damage${tail}`;
+  case 'RollDice': return `${who}${[
+    rule.d20Floor && `d20s show at least ${rule.d20Floor}`,
+    rule.thirdD20 && 'a third d20',
+    rule.maxDie && `Skill Die at most ${rule.maxDie}`,
+    rule.stepUp && `one step up (${rule.stepUp})`,
+  ].filter(Boolean).join(', ')}${tail}`;
+  case 'DieSubstitution': return `${who}${{
+    use: `Roll the ${(rule.skills ?? []).join('/')} die`,
+    best: `Best die of ${['rolled', ...(rule.skills ?? [])].join(' / ')}`,
+    floor: `At least a ${rule.die} die`,
+  }[rule.mode] ?? 'Die'}${rule.specialize ? ', Specialized' : ''}${rule.clearSnag ? ', no Snag' : ''}${tail}`;
   case 'Cover': return `${who}${{
     ignore: 'Ignores Cover',
     reduce: `Cover ↓${rule.amount} less on its attacks`,

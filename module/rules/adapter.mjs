@@ -176,7 +176,7 @@ const shiftStrength = ({ rule, owner, item, other }) => {
 /** Automatic modifiers, listed with their source in the Roll Options Dialog. */
 export function ruleRollSources(actor, target, ctx = {}) {
   const sources = [];
-  const live = rollRules(actor, target, ctx).filter(entry => entry.answer === true);
+  const live = rollRules(actor, target, ctx).filter(entry => entry.answer === true && !entry.rule.late);
   const consumes = [];
   for (const { rule, item, index, owner } of strongestPerGroup(live.map(entry => ({ ...entry, other: target })), shiftStrength)) {
     if (rule.limit?.per) {
@@ -206,9 +206,28 @@ export function ruleRollSources(actor, target, ctx = {}) {
  * holds clears the Snag or the downshifts from the roll - after everything else has added them.
  */
 export function applyRuleImmunity(actor, options, ctx = {}) {
+  // Late RollModifiers first: decided now, against the Defense the dialog settled on.
+  const target = firstTarget();
+  const late = { ...ctx, defenseType: options?.defenseType ?? ctx.dataset?.defenseType ?? ctx.defenseType };
+  for (const { rule, answer, owner, item, index } of rollRules(actor, target, late)) {
+    if (!rule.late || answer !== true) {
+      continue;
+    }
+
+    const shifts = shiftsOf(rule, owner, item, undefined, target);
+    options.shiftUp = (Number(options.shiftUp) || 0) + shifts.shiftUp;
+    options.shiftDown = (Number(options.shiftDown) || 0) + shifts.shiftDown;
+    options.edge ||= shifts.edge;
+    options.snag ||= shifts.snag;
+    options.isSpecialized ||= shifts.specialize;
+    if (rule.limit?.per) {
+      recordUse(owner, rule, item, index);
+    }
+  }
+
   const kinds = new Set();
   let ignore = 0;
-  for (const { rule, answer, owner, item } of rollRules(actor, firstTarget(), ctx)) {
+  for (const { rule, answer, owner, item } of rollRules(actor, target, late)) {
     if (answer === true) {
       ignore += Math.max(0, Math.round(resolveValue(rule.ignoreDownshift ?? 0, { actor: owner, item })));
       for (const kind of rule.immune ?? []) {
@@ -281,7 +300,7 @@ export function ruleDialogSwitches(actor, ctx = {}) {
   const switches = [];
   for (const entry of rollRules(actor, firstTarget(), ctx, ['DialogSwitch', 'RollModifier'])) {
     const { rule, item, index, answer, owner } = entry;
-    if (answer === false || (rule.type == 'RollModifier' && answer === true)) {
+    if (answer === false || (rule.type == 'RollModifier' && (answer === true || rule.late))) {
       continue;
     }
 
@@ -382,6 +401,14 @@ export async function applyRuleSwitches(actor, options, ctx = {}) {
     }
   }
 
+  // A ticked switch's key travels with the roll (riderContext.switches) for hit / miss / afterRoll
+  // Triggers to ask about: roll:switch:<key> - the "declare it, then something happens on a hit" checkboxes.
+  for (const entry of on) {
+    if (entry.rule.key) {
+      options.ruleKeys = [...new Set([...(options.ruleKeys ?? []), entry.rule.key])];
+    }
+  }
+
   // Ticked switches' damage joins the attack's own damage bonus (dice.mjs damageBonusValue).
   for (const entry of on) {
     const damage = entry.rule.type == 'DialogSwitch' && entry.rule.damage
@@ -407,6 +434,17 @@ export async function applyRuleSwitches(actor, options, ctx = {}) {
   for (const entry of on.filter(e => e.spent && e.rule.spend.resource)) {
     const { changeResource } = await import("./steps.mjs");
     await changeResource(entry.rule.spend.resource, -entry.spent, { actor: entry.owner ?? actor, item: entry.item, chat: [] });
+  }
+
+  // Ticked switches' own steps run now, as the roll is made (a Hang-Up triggered, a bank...).
+  for (const entry of on.filter(e => e.rule.steps?.length)) {
+    const { runSteps, stepContext } = await import("./steps.mjs");
+    const targets = [...(globalThis.game?.user?.targets ?? [])].map(token => token.actor).filter(Boolean);
+    const stepCtx = stepContext({ actor: entry.owner ?? actor, item: entry.item, rule: entry.rule, targets });
+    await runSteps(entry.rule.steps, stepCtx);
+    if (stepCtx.chat.length) {
+      await globalThis.ChatMessage?.create?.({ speaker: globalThis.ChatMessage.getSpeaker?.({ actor: entry.owner ?? actor }), content: stepCtx.chat.join('<br>') });
+    }
   }
 
   // Ticked switches that cost something are paid now.
@@ -483,16 +521,42 @@ function addToDefense(defense, amount, label) {
 }
 
 /** A conditional Defense rule on the defender: what it adds against this roll. */
+/** Whether a Defense rule is decided per attack rather than added to the sheet. */
+export function isRollTimeDefense(rule) {
+  return !isStatic(rule.when) || (rule.mode ?? 'add') != 'add' || !!rule.outgoing || !!rule.limit;
+}
+
 export function ruleDefenseAdjust(attacker, defender, defenseType, ctx = {}) {
   let total = 0;
-  for (const { rule, item, holder } of affecting(defender, 'Defense')) {
-    if (isStatic(rule.when) || (rule.defense != 'any' && rule.defense != defenseType)) {
+  const current = Number(ctx.difficulty) || 0;
+  const reshape = [];
+  // The defender's own rules, then the attacker's outgoing ones (self = the attacker, other = the target).
+  const entries = [
+    ...affecting(defender, 'Defense').filter(({ rule }) => !rule.outgoing).map(entry => ({ ...entry, self: defender, other: attacker })),
+    ...(attacker ? affecting(attacker, 'Defense').filter(({ rule }) => rule.outgoing).map(entry => ({ ...entry, self: attacker, other: defender })) : []),
+  ];
+  for (const { rule, item, holder, index, self, other } of entries) {
+    if (!isRollTimeDefense(rule) || (rule.defense != 'any' && rule.defense != defenseType)) {
       continue;
     }
 
-    const answer = evaluate(rule.when, contextFor({ ...ctx, ...rollFacts(ctx.item, ctx), defenseType, self: defender, ruleItem: item, other: attacker }));
-    if (answer === true) {
-      total += Math.round(resolveValue(rule.amount, { actor: holder, item }));
+    if (rule.limit?.per && usesLeft(holder, rule, item, index) <= 0) {
+      continue;
+    }
+
+    const answer = evaluate(rule.when, contextFor({ ...ctx, ...rollFacts(ctx.item, ctx), defenseType, self, ruleItem: item, other }));
+    if (answer !== true) {
+      continue;
+    }
+
+    if (rule.limit?.per) {
+      recordUse(holder, rule, item, index);
+    }
+
+    if ((rule.mode ?? 'add') == 'add') {
+      total += Math.round(resolveValue(rule.amount, { actor: holder, item, other }));
+    } else {
+      reshape.push(rule);
     }
   }
 
@@ -500,7 +564,23 @@ export function ruleDefenseAdjust(attacker, defender, defenseType, ctx = {}) {
     total += Number(value) || 0;
   }
 
-  return total;
+  // best / halve / fail act on the Defense as it stands with the additions: best first, then halve, then fail.
+  let value = current + total;
+  for (const rule of reshape.filter(r => r.mode == 'best')) {
+    for (const key of rule.from) {
+      value = Math.max(value, Number(defender?.system?.defenses?.[key]?.total) || 0);
+    }
+  }
+
+  if (reshape.some(r => r.mode == 'halve')) {
+    value = Math.ceil(value / 2);
+  }
+
+  if (reshape.some(r => r.mode == 'fail')) {
+    return Infinity;
+  }
+
+  return value - current;
 }
 
 function applyOp(current, op, value) {
@@ -648,6 +728,119 @@ export function ruleAttackCounts(actor, item) {
 export function ruleCritD2(actor, target, roll = {}) {
   return affecting(actor, 'CritOnD2', ['self', 'host']).some(({ rule, item }) => ((rule.scope ?? 'self') != 'host' || hostMatches(item, roll.item))
     && evaluate(rule.when, contextFor({ ...roll, ...rollFacts(roll.item, roll), self: actor, other: target, ruleItem: item })) === true);
+}
+
+/** A DamageType rule's damage type for this attack (the first whose condition holds), or null. */
+export function ruleDamageType(actor, target, roll = {}) {
+  for (const { rule, item } of affecting(actor, 'DamageType', ['self', 'host'])) {
+    if ((rule.scope ?? 'self') == 'host' && !hostMatches(item, roll.item)) {
+      continue;
+    }
+
+    if (evaluate(rule.when, contextFor({ ...roll, ...rollFacts(roll.item, roll), self: actor, other: target, ruleItem: item })) === true) {
+      const type = rule.to == 'choice' ? item?.system?.choice : rule.to;
+      if (type) {
+        return type;
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * RollDice rules, once the final die is known: a d20 floor, a third d20, a die cap and steps up.
+ * @returns {{d20Floor: Number, thirdD20: Boolean, maxDie: ?String, stepUp: Number}}
+ */
+export function ruleRollDice(actor, target, roll = {}) {
+  const list = globalThis.CONFIG?.E20?.skillShiftList ?? [];
+  const out = { d20Floor: 0, thirdD20: false, maxDie: null, stepUp: 0 };
+  for (const { rule, item, holder } of affecting(actor, 'RollDice', ['self', 'host'])) {
+    if ((rule.scope ?? 'self') == 'host' && !hostMatches(item, roll.item)) {
+      continue;
+    }
+
+    if (evaluate(rule.when, contextFor({ ...roll, ...rollFacts(roll.item, roll), self: actor, other: target, ruleItem: item })) !== true) {
+      continue;
+    }
+
+    out.d20Floor = Math.max(out.d20Floor, Number(rule.d20Floor) || 0);
+    out.thirdD20 ||= !!rule.thirdD20;
+    // The tightest cap wins (a worse die sits further down the list).
+    if (rule.maxDie && list.indexOf(rule.maxDie) >= 0 && (!out.maxDie || list.indexOf(rule.maxDie) > list.indexOf(out.maxDie))) {
+      out.maxDie = rule.maxDie;
+    }
+
+    out.stepUp += Math.max(0, Math.round(resolveValue(rule.stepUp ?? 0, { actor: holder, item }, 0)));
+  }
+
+  return out;
+}
+
+/**
+ * DieSubstitution rules: the die this roll starts from (dice.mjs initialShift), applied in item order
+ * after the hand-written substitutions. A rule applies when it changes the die - or, for a floor,
+ * when the die is at or below it. Returns the die, whether to Specialize / clear the Snag, and
+ * `spend` to record limits once the roll is made.
+ */
+export function ruleDieSubstitution(actor, target, roll = {}, startShift) {
+  const list = globalThis.CONFIG?.E20?.skillShiftList ?? [];
+  const skills = actor?.getRollData?.()?.skills ?? actor?.system?.skills ?? {};
+  const rank = shift => list.indexOf(shift);
+  let shift = startShift;
+  let specialize = false;
+  let clearSnag = false;
+  const used = [];
+  for (const entry of affecting(actor, 'DieSubstitution', ['self', 'host'])) {
+    const { rule, item, index, holder } = entry;
+    if ((rule.scope ?? 'self') == 'host' && !hostMatches(item, roll.item)) {
+      continue;
+    }
+
+    if (usesLeft(holder, rule, item, index) <= 0
+      || evaluate(rule.when, contextFor({ ...roll, ...rollFacts(roll.item, roll), self: actor, other: target, ruleItem: item })) !== true) {
+      continue;
+    }
+
+    const dieOf = name => skills[name == 'choice' ? item?.system?.choice : name]?.shift;
+    let next = shift;
+    let applies = false;
+    if (rule.mode == 'use') {
+      next = dieOf(rule.skills[0]) ?? shift;
+      applies = next != shift;
+    } else if (rule.mode == 'best') {
+      for (const name of rule.skills) {
+        const die = dieOf(name);
+        if (die && rank(die) >= 0 && (rank(next) < 0 || rank(die) < rank(next))) {
+          next = die;
+        }
+      }
+
+      applies = next != shift;
+    } else if (rule.mode == 'floor' && rank(rule.die) >= 0) {
+      applies = rank(shift) < 0 || rank(shift) >= rank(rule.die);
+      next = applies ? rule.die : shift;
+    }
+
+    if (!applies) {
+      continue;
+    }
+
+    shift = next;
+    specialize ||= !!rule.specialize;
+    clearSnag ||= !!rule.clearSnag;
+    used.push(entry);
+  }
+
+  const spend = async () => {
+    for (const { rule, item, index, holder } of used) {
+      if (rule.limit?.per) {
+        await recordUse(holder, rule, item, index);
+      }
+    }
+  };
+
+  return { shift, specialize, clearSnag, spend };
 }
 
 /**
@@ -917,7 +1110,7 @@ export function ruleDerived(actor) {
   rebuildIndex(actor);
   const staticCtx = item => contextFor({ self: actor, ruleItem: item });
 
-  const defenses = affecting(actor, 'Defense').filter(({ rule, item }) => isStatic(rule.when) && evaluate(rule.when, staticCtx(item)) === true);
+  const defenses = affecting(actor, 'Defense').filter(({ rule, item }) => !isRollTimeDefense(rule) && evaluate(rule.when, staticCtx(item)) === true);
   for (const { rule, item, holder } of strongestPerGroup(defenses, e => resolveValue(e.rule.amount, { actor: e.holder, item: e.item }))) {
     const amount = Math.round(resolveValue(rule.amount, { actor: holder, item }));
     for (const key of rule.defense == 'any' ? DEFENSES : [rule.defense]) {
@@ -1034,8 +1227,14 @@ export function ruleScaledDamage(actor, target, roll = {}) {
   let amount = 0;
   const sources = [];
   const damageType = roll.item?.system?.damageType ?? null;
-  for (const { rule, item: ruleItem, holder } of affecting(actor, 'DamageModifier', ['self', 'host'])) {
+  const used = [];
+  for (const entry of affecting(actor, 'DamageModifier', ['self', 'host'])) {
+    const { rule, item: ruleItem, holder, index } = entry;
     if (rule.direction != 'dealt' || !rule.scaled || (rule.damageType && rule.damageType != damageType)) {
+      continue;
+    }
+
+    if (rule.limit?.per && usesLeft(holder, rule, ruleItem, index) <= 0) {
       continue;
     }
 
@@ -1051,10 +1250,25 @@ export function ruleScaledDamage(actor, target, roll = {}) {
     if (value) {
       amount += value;
       sources.push(ruleLabel(rule, ruleItem));
+      used.push(entry);
     }
   }
 
-  return { amount, sources };
+  // Limits are used up, and side-effect steps run (Force's banked ↓1), once the bonus is applied.
+  const spend = async () => {
+    for (const { rule, item, holder, index } of used) {
+      if (rule.limit?.per) {
+        await recordUse(holder, rule, item, index);
+      }
+
+      if (rule.steps?.length) {
+        const { runSteps, stepContext } = await import("./steps.mjs");
+        await runSteps(rule.steps, stepContext({ actor: holder, item, rule, targets: target ? [target] : [] }));
+      }
+    }
+  };
+
+  return { amount, sources, spend };
 }
 
 /* -------------------------------------------- */

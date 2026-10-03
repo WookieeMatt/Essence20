@@ -4444,7 +4444,7 @@ const dmgB = (actor, item, target = null) => ruleScaledDamage(actor, target, { i
 
 test('Iron Hands: +1 on a Might unarmed attack', () => {
   const actor = holder(['prcrbitems/_source/Iron_Hands_uKGtcgg5cgVibGQ7.json']);
-  expect(dmgB(actor, dmgBAttack({ skill: 'might' }))).toEqual({ amount: 1, sources: ['Iron Hands'] });
+  expect(dmgB(actor, dmgBAttack({ skill: 'might' }))).toMatchObject({ amount: 1, sources: ['Iron Hands'] });
   expect(dmgB(actor, dmgBAttack({ skill: 'athletics' })).amount).toBe(0);
   expect(dmgB(actor, dmgBAttack({ weapon: dmgBWeapon('Compendium.essence20.pr_crb.Item.someSword') })).amount).toBe(0);
   expect(dmgB(holder([]), dmgBAttack()).amount).toBe(0);
@@ -4453,7 +4453,7 @@ test('Iron Hands: +1 on a Might unarmed attack', () => {
 test("Iron Hooves / Strex Strikes: +1 on any unarmed attack, the printed Unarmed Strike weapons included", () => {
   for (const [file, label] of [['mlpcrbitems/_source/Iron_Hooves_weDVcCpSyZCH5V4M.json', 'Iron Hooves'], ['wtnvcgitems/_source/Strex_Strikes_4aYIkhmBO77Irq5l.json', 'Strex Strikes']]) {
     const actor = holder([file]);
-    expect(dmgB(actor, dmgBAttack({ skill: 'finesse' }))).toEqual({ amount: 1, sources: [label] });
+    expect(dmgB(actor, dmgBAttack({ skill: 'finesse' }))).toMatchObject({ amount: 1, sources: [label] });
     expect(dmgB(actor, dmgBAttack({ weapon: dmgBWeapon('Compendium.essence20.wtnv_citizens_guide.Item.Cwd1FASmKXWiAFom') })).amount).toBe(1);
     expect(dmgB(actor, dmgBAttack({ weapon: dmgBWeapon('Compendium.essence20.gi_joe_crb.Item.OU9rXvoKfXtcpvFy') })).amount).toBe(1);
     expect(dmgB(actor, dmgBAttack({ weapon: dmgBWeapon('Compendium.essence20.wtnv_citizens_guide.Item.someKnife') })).amount).toBe(0);
@@ -4468,7 +4468,7 @@ test('Puissance / Frost Warlord / Venom Warlord: +1 on an attack with no weapon 
     ['fmmcitems/_source/Venom_Warlord_9tU5tDmpOhChLfdv.json', 'Venom Warlord'],
   ]) {
     const actor = holder([file]);
-    expect(dmgB(actor, dmgBAttack({ skill: 'finesse', style: 'ranged' }))).toEqual({ amount: 1, sources: [label] });
+    expect(dmgB(actor, dmgBAttack({ skill: 'finesse', style: 'ranged' }))).toMatchObject({ amount: 1, sources: [label] });
     expect(dmgB(actor, dmgBAttack({ weapon: dmgBWeapon('Compendium.essence20.wtnv_citizens_guide.Item.Cwd1FASmKXWiAFom') })).amount).toBe(0);
   }
 
@@ -4479,63 +4479,63 @@ test('Cruel Warlord: +1 on attacks in Monster Form; Grow!: +1 on anything while 
   const cruel = holder(['fmmcitems/_source/Cruel_Warlord_F3TRKmoaUOtHrlzq.json']);
   expect(dmgB(cruel, dmgBAttack()).amount).toBe(0);
   cruel.flags = { essence20: { monsterFormActive: true } };
-  expect(dmgB(cruel, dmgBAttack())).toEqual({ amount: 1, sources: ['Cruel Warlord'] });
+  expect(dmgB(cruel, dmgBAttack())).toMatchObject({ amount: 1, sources: ['Cruel Warlord'] });
 
   const grow = holder(['fmmcitems/_source/Grow__ZqE7kDEMylFQK6Oa.json']);
   grow.flags = { essence20: { monsterFormActive: true } };
   expect(dmgB(grow, dmgBAttack()).amount).toBe(0);
   grow.flags.essence20.monsterGrowSelfActive = true;
-  expect(dmgB(grow, dmgBAttack({ style: 'ranged' }))).toEqual({ amount: 1, sources: ['Grow!'] });
+  expect(dmgB(grow, dmgBAttack({ style: 'ranged' }))).toMatchObject({ amount: 1, sources: ['Grow!'] });
   grow.flags.essence20.monsterFormActive = false;
   expect(dmgB(grow, dmgBAttack()).amount).toBe(0);
 });
 
 test('Weak Point: +1 with a Blunt or Sharp attack, any target; Staggering: +1 dealing Stun', () => {
   const weak = holder(['qgtgitems/_source/Weak_Point_opTZmlt97a9TWHSk.json']);
-  expect(dmgB(weak, dmgBAttack({ damageType: 'blunt' }), dmgBTarget({ type: 'vehicle' }))).toEqual({ amount: 1, sources: ['Weak Point'] });
-  expect(dmgB(weak, dmgBAttack({ damageType: 'sharp' }), dmgBTarget())).toEqual({ amount: 1, sources: ['Weak Point'] });
+  expect(dmgB(weak, dmgBAttack({ damageType: 'blunt' }), dmgBTarget({ type: 'vehicle' }))).toMatchObject({ amount: 1, sources: ['Weak Point'] });
+  expect(dmgB(weak, dmgBAttack({ damageType: 'sharp' }), dmgBTarget())).toMatchObject({ amount: 1, sources: ['Weak Point'] });
   expect(dmgB(weak, dmgBAttack({ damageType: 'ballistic' })).amount).toBe(0);
 
   const staggering = holder(['fgtaaitems/_source/Staggering_alMONv2bzphF1OQV.json']);
-  expect(dmgB(staggering, dmgBAttack({ damageType: 'stun' }))).toEqual({ amount: 1, sources: ['Staggering'] });
+  expect(dmgB(staggering, dmgBAttack({ damageType: 'stun' }))).toMatchObject({ amount: 1, sources: ['Staggering'] });
   expect(dmgB(staggering, dmgBAttack({ damageType: 'sharp' })).amount).toBe(0);
 });
 
 test('Viral News Bloggers: +1 against a vehicle; Zordbane: +1 against a Zord', () => {
   const viral = holder(['wtnvcgitems/_source/Viral_News_Bloggers_ORyWD8AKRIqo0jdS.json']);
-  expect(dmgB(viral, dmgBAttack({ style: 'ranged' }), dmgBTarget({ type: 'vehicle' }))).toEqual({ amount: 1, sources: ['Viral News Bloggers'] });
+  expect(dmgB(viral, dmgBAttack({ style: 'ranged' }), dmgBTarget({ type: 'vehicle' }))).toMatchObject({ amount: 1, sources: ['Viral News Bloggers'] });
   expect(dmgB(viral, dmgBAttack(), dmgBTarget({ type: 'playerCharacter' })).amount).toBe(0);
   expect(dmgB(viral, dmgBAttack()).amount).toBe(0);
 
   const zordbane = holder(['fmmcitems/_source/Zordbane_SejEXXGz3edJ734e.json']);
-  expect(dmgB(zordbane, dmgBAttack(), dmgBTarget({ type: 'zord' }))).toEqual({ amount: 1, sources: ['Zordbane'] });
+  expect(dmgB(zordbane, dmgBAttack(), dmgBTarget({ type: 'zord' }))).toMatchObject({ amount: 1, sources: ['Zordbane'] });
   expect(dmgB(zordbane, dmgBAttack(), dmgBTarget({ type: 'npc' })).amount).toBe(0);
 });
 
 test("Zord Features: Auxiliary Zord (+1 melee), Thunder Upgrade (+1 any attack), Warrior Mode (+1 melee while active)", () => {
   const aux = holder(['prcrbitems/_source/Auxiliary_Zord_QO0kY1y359tSnPTS.json']);
   aux.type = 'zord';
-  expect(dmgB(aux, dmgBAttack())).toEqual({ amount: 1, sources: ['Auxiliary Zord'] });
+  expect(dmgB(aux, dmgBAttack())).toMatchObject({ amount: 1, sources: ['Auxiliary Zord'] });
   expect(dmgB(aux, dmgBAttack({ style: 'energy' })).amount).toBe(0);
   aux.type = 'playerCharacter';
   expect(dmgB(aux, dmgBAttack()).amount).toBe(0);
 
   const thunder = holder(['prcrbitems/_source/Upgraded_Zord__Thunder_Upgrade__TrahRuyqZz8UAQ6K.json']);
   thunder.type = 'zord';
-  expect(dmgB(thunder, dmgBAttack())).toEqual({ amount: 1, sources: ['Thunder Upgrade'] });
+  expect(dmgB(thunder, dmgBAttack())).toMatchObject({ amount: 1, sources: ['Thunder Upgrade'] });
   expect(dmgB(thunder, dmgBAttack({ style: 'energy' })).amount).toBe(1);
 
   const warrior = holder(['prcrbitems/_source/Warrior_Mode_RsrUlBazkPwpRfxi.json']);
   warrior.type = 'zord';
   expect(dmgB(warrior, dmgBAttack()).amount).toBe(0);
   warrior.flags = { essence20: { warriorModeActive: true } };
-  expect(dmgB(warrior, dmgBAttack())).toEqual({ amount: 1, sources: ['Warrior Mode'] });
+  expect(dmgB(warrior, dmgBAttack())).toMatchObject({ amount: 1, sources: ['Warrior Mode'] });
   expect(dmgB(warrior, dmgBAttack({ style: 'energy' })).amount).toBe(0);
 });
 
 test("Ultimate Magna Defender: +1 on the holder's own melee attacks", () => {
   const actor = holder(['ttsgitems/_source/Ultimate_Magna_Defender_ukfZOGZeuyJv6I5M.json']);
-  expect(dmgB(actor, dmgBAttack({ skill: 'athletics' }))).toEqual({ amount: 1, sources: ['Ultimate Magna Defender'] });
+  expect(dmgB(actor, dmgBAttack({ skill: 'athletics' }))).toMatchObject({ amount: 1, sources: ['Ultimate Magna Defender'] });
   expect(dmgB(actor, dmgBAttack({ style: 'ranged', skill: 'targeting' })).amount).toBe(0);
 });
 
@@ -4543,7 +4543,7 @@ test('Breaker-Bar (both profiles): +1 against a Combiner form; Negavator Beam: +
   for (const file of ['eocitems/_source/Breaker_Bar_qIgfv11HMWSlnos8.json', 'eocitems/_source/Breaker_Bar_Alternate_Effect_lmDkIe8a49fF7bHS.json']) {
     const actor = holder([file]);
     const own = actor.items.contents[0];
-    expect(dmgB(actor, own, dmgBTarget({ type: 'megaform' }))).toEqual({ amount: 1, sources: ['Breaker-Bar'] });
+    expect(dmgB(actor, own, dmgBTarget({ type: 'megaform' }))).toMatchObject({ amount: 1, sources: ['Breaker-Bar'] });
     expect(dmgB(actor, own, dmgBTarget({ type: 'npc' })).amount).toBe(0);
     expect(dmgB(actor, dmgBAttack(), dmgBTarget({ type: 'megaform' })).amount).toBe(0);
   }
@@ -4561,17 +4561,17 @@ test('Breaker-Bar (both profiles): +1 against a Combiner form; Negavator Beam: +
 
 test('Cruel (+1 vs Immobilized/Restrained), Position of Power (+1 melee vs any Condition), Rip and Tear (+1 unarmed melee vs Grappled)', () => {
   const cruel = holder(['dditems/_source/Cruel_mAhqrcJNmNAJHjA8.json']);
-  expect(dmgB(cruel, dmgBAttack({ style: 'ranged' }), dmgBTarget({ statuses: ['immobilized'] }))).toEqual({ amount: 1, sources: ['Cruel'] });
+  expect(dmgB(cruel, dmgBAttack({ style: 'ranged' }), dmgBTarget({ statuses: ['immobilized'] }))).toMatchObject({ amount: 1, sources: ['Cruel'] });
   expect(dmgB(cruel, dmgBAttack(), dmgBTarget({ statuses: ['restrained'] })).amount).toBe(1);
   expect(dmgB(cruel, dmgBAttack(), dmgBTarget({ statuses: ['blinded'] })).amount).toBe(0);
 
   const power = holder(['dditems/_source/Position_Of_Power_3YMSgAd60S87vCCb.json']);
-  expect(dmgB(power, dmgBAttack(), dmgBTarget({ statuses: ['frightened'] }))).toEqual({ amount: 1, sources: ['Position of Power'] });
+  expect(dmgB(power, dmgBAttack(), dmgBTarget({ statuses: ['frightened'] }))).toMatchObject({ amount: 1, sources: ['Position of Power'] });
   expect(dmgB(power, dmgBAttack(), dmgBTarget()).amount).toBe(0);
   expect(dmgB(power, dmgBAttack({ style: 'ranged' }), dmgBTarget({ statuses: ['frightened'] })).amount).toBe(0);
 
   const rip = holder(['dditems/_source/Rip_And_Tear_KUDYPOsQ3atdRZPs.json']);
-  expect(dmgB(rip, dmgBAttack(), dmgBTarget({ statuses: ['grappled'] }))).toEqual({ amount: 1, sources: ['Rip and Tear'] });
+  expect(dmgB(rip, dmgBAttack(), dmgBTarget({ statuses: ['grappled'] }))).toMatchObject({ amount: 1, sources: ['Rip and Tear'] });
   expect(dmgB(rip, dmgBAttack(), dmgBTarget()).amount).toBe(0);
   expect(dmgB(rip, dmgBAttack({ style: 'ranged' }), dmgBTarget({ statuses: ['grappled'] })).amount).toBe(0);
   expect(dmgB(rip, dmgBAttack({ weapon: dmgBWeapon('Compendium.essence20.x.Item.blade') }), dmgBTarget({ statuses: ['grappled'] })).amount).toBe(0);
@@ -4586,7 +4586,7 @@ test('Vicious Edges: +1 on a melee attack with the weapon it is attached to, aga
   rebuildIndex(actor);
   const attack = style => ({ type: 'weaponEffect', flags: { essence20: { parentId: 'w1' } }, system: { classification: { style } }, parent: actor });
 
-  expect(dmgB(actor, attack('melee'), dmgBTarget({ statuses: ['frightened'] }))).toEqual({ amount: 1, sources: ['Vicious Edges'] });
+  expect(dmgB(actor, attack('melee'), dmgBTarget({ statuses: ['frightened'] }))).toMatchObject({ amount: 1, sources: ['Vicious Edges'] });
   expect(dmgB(actor, attack('melee'), dmgBTarget()).amount).toBe(0);
   expect(dmgB(actor, attack('ranged'), dmgBTarget({ statuses: ['frightened'] })).amount).toBe(0);
   expect(dmgB(actor, dmgBAttack(), dmgBTarget({ statuses: ['frightened'] })).amount).toBe(0);
@@ -4630,7 +4630,7 @@ const dmgAScaled = (actor, item, target = null) => ruleScaledDamage(actor, targe
 
 test('Warfighter: +2 damage on Targeting weapon attacks', () => {
   const actor = holder(['gijcrbitems/_source/Warfighter_P0ZTAlcenVw2p4P1.json']);
-  expect(dmgAScaled(actor, dmgAEffect(actor, { skill: 'targeting', style: 'projectile' }))).toEqual({ amount: 2, sources: ['Warfighter'] });
+  expect(dmgAScaled(actor, dmgAEffect(actor, { skill: 'targeting', style: 'projectile' }))).toMatchObject({ amount: 2, sources: ['Warfighter'] });
   expect(dmgAScaled(actor, dmgAEffect(actor, { skill: 'finesse' })).amount).toBe(0);
   expect(dmgAScaled(actor, null).amount).toBe(0);
   const none = holder([]);
@@ -4639,7 +4639,7 @@ test('Warfighter: +2 damage on Targeting weapon attacks', () => {
 
 test('Bear Hug: +1 damage on a Grapple attack only', () => {
   const actor = holder(['iafav2items/_source/Bear_Hug_id5IVoPuSC03mKfZ.json']);
-  expect(dmgAScaled(actor, dmgAEffect(actor, { damageType: 'grapple' }))).toEqual({ amount: 1, sources: ['Bear Hug'] });
+  expect(dmgAScaled(actor, dmgAEffect(actor, { damageType: 'grapple' }))).toMatchObject({ amount: 1, sources: ['Bear Hug'] });
   expect(dmgAScaled(actor, dmgAEffect(actor, { damageType: 'blunt' })).amount).toBe(0);
 });
 
@@ -4668,7 +4668,7 @@ test('Silver Ranger Prime: +1 damage in the first round of combat', () => {
   const actor = holder(['atsitems/_source/Silver_Ranger_Prime_Bl9G8fgtd30wENkX.json']);
   try {
     game.combat = { round: 1, started: true };
-    expect(dmgAScaled(actor, dmgAEffect(actor))).toEqual({ amount: 1, sources: ['Silver Ranger Prime'] });
+    expect(dmgAScaled(actor, dmgAEffect(actor))).toMatchObject({ amount: 1, sources: ['Silver Ranger Prime'] });
     game.combat = { round: 2, started: true };
     expect(dmgAScaled(actor, dmgAEffect(actor)).amount).toBe(0);
     game.combat = null;
@@ -4714,7 +4714,7 @@ test('Power Boost / Brute Force: the advance value as damage with a Power Weapon
     actor.flags = { essence20: { powerBoostActive: true } };
     const perk = actor.items.contents[0];
     perk.system.advances = { ...perk.system.advances, currentValue: 3 };
-    expect(dmgAScaled(actor, dmgAEffect(actor, { weapon: { traits: ['powerWeapon'] } }))).toEqual({ amount: 3, sources: [perk.name] });
+    expect(dmgAScaled(actor, dmgAEffect(actor, { weapon: { traits: ['powerWeapon'] } }))).toMatchObject({ amount: 3, sources: [perk.name] });
     perk.system.advances.currentValue = 0;
     expect(dmgAScaled(actor, dmgAEffect(actor, { weapon: { traits: ['powerWeapon'] } })).amount).toBe(1);
     expect(dmgAScaled(actor, dmgAEffect(actor, { weapon: { traits: [] } })).amount).toBe(0);
@@ -4726,7 +4726,7 @@ test('Power Boost / Brute Force: the advance value as damage with a Power Weapon
 test('Zeo Crystal Boost: +1 damage with a Power Weapon while the Power Weapon option is chosen', () => {
   const actor = holder(['atsitems/_source/Zeo_Crystal_Boost_NiEaLWcx8N48fvvN.json']);
   actor.flags = { essence20: { zeoCrystalBoostOption: 'weapon' } };
-  expect(dmgAScaled(actor, dmgAEffect(actor, { weapon: { traits: ['powerWeapon'] } }))).toEqual({ amount: 1, sources: ['Zeo Crystal Boost'] });
+  expect(dmgAScaled(actor, dmgAEffect(actor, { weapon: { traits: ['powerWeapon'] } }))).toMatchObject({ amount: 1, sources: ['Zeo Crystal Boost'] });
   expect(dmgAScaled(actor, dmgAEffect(actor, { weapon: { traits: [] } })).amount).toBe(0);
   actor.flags.essence20.zeoCrystalBoostOption = 'morpher';
   expect(dmgAScaled(actor, dmgAEffect(actor, { weapon: { traits: ['powerWeapon'] } })).amount).toBe(0);
@@ -4740,7 +4740,7 @@ test('Exploit Trust: Edge and +1 damage outside combat or against a Surprised ta
     game.combat = null;
     const item = dmgAEffect(actor);
     expect(ruleRollSources(actor, alert, { item }).sources[0]).toMatchObject({ edge: true });
-    expect(ruleScaledDamage(actor, alert, { item })).toEqual({ amount: 1, sources: ['Exploit Trust'] });
+    expect(ruleScaledDamage(actor, alert, { item })).toMatchObject({ amount: 1, sources: ['Exploit Trust'] });
     game.combat = { round: 1, started: true };
     expect(ruleRollSources(actor, alert, { item }).sources).toEqual([]);
     expect(ruleScaledDamage(actor, alert, { item }).amount).toBe(0);
@@ -5687,7 +5687,7 @@ const dmgCSized = size => ({ type: 'npc', statuses: new Set(), system: { size },
 
 test('Throw Your Weight Around: +1 on a melee attack against a smaller target', () => {
   const actor = holder(['iafav2items/_source/Throw_Your_Weight_Around_sXiptCDHSjN0V9W8.json'], { system: { size: 'large' } });
-  expect(dmgC(actor, dmgCAttack(), dmgCSized('common'))).toEqual({ amount: 1, sources: ['Throw Your Weight Around'] });
+  expect(dmgC(actor, dmgCAttack(), dmgCSized('common'))).toMatchObject({ amount: 1, sources: ['Throw Your Weight Around'] });
   expect(dmgC(actor, dmgCAttack(), dmgCSized('large')).amount).toBe(0);
   expect(dmgC(actor, dmgCAttack({ style: 'ranged', skill: 'targeting' }), dmgCSized('common')).amount).toBe(0);
   expect(dmgC(actor, dmgCAttack()).amount).toBe(0);
@@ -5698,7 +5698,7 @@ test('Roaming the Land: +1 on a melee attack against a smaller target, with the 
   const actor = holder(['fffav1items/_source/Roaming_the_Land_jdQFjlYUHaRze6as.json'], { system: { size: 'large' } });
   const perk = actor.items.contents[0];
   perk.system.choice = 'smallerDamage';
-  expect(dmgC(actor, dmgCAttack(), dmgCSized('common'))).toEqual({ amount: 1, sources: ['Roaming the Land'] });
+  expect(dmgC(actor, dmgCAttack(), dmgCSized('common'))).toMatchObject({ amount: 1, sources: ['Roaming the Land'] });
   expect(dmgC(actor, dmgCAttack(), dmgCSized('large')).amount).toBe(0);
   perk.system.choice = 'largerStun';
   expect(dmgC(actor, dmgCAttack(), dmgCSized('common')).amount).toBe(0);
@@ -5716,7 +5716,7 @@ test("White Ranger Prime: +1 on the Zord's own attacks while its driver holds th
   global.fromUuidSync = uuid => (uuid == pilot.uuid ? pilot : null);
   game.actors = { contents: [pilot, zord] };
   try {
-    expect(dmgC(zord, dmgCAttack())).toEqual({ amount: 1, sources: ['White Ranger Prime'] });
+    expect(dmgC(zord, dmgCAttack())).toMatchObject({ amount: 1, sources: ['White Ranger Prime'] });
     pilot.system.isMorphed = false;
     expect(dmgC(zord, dmgCAttack()).amount).toBe(0);
     pilot.system.isMorphed = true;
@@ -5738,7 +5738,7 @@ test('Mass Reactive Rounds: +1 on a Sharp attack against Toughness with the weap
   upgrade.flags = { essence20: { parentId: 'w1' } };
   rebuildIndex(actor);
   const shot = (damageType = 'sharp', parentId = 'w1') => dmgCAttack({ style: 'ranged', skill: 'targeting', damageType, parentId, parent: actor });
-  expect(dmgC(actor, shot(), null, { defenseType: 'toughness' })).toEqual({ amount: 1, sources: ['Mass Reactive Rounds'] });
+  expect(dmgC(actor, shot(), null, { defenseType: 'toughness' })).toMatchObject({ amount: 1, sources: ['Mass Reactive Rounds'] });
   expect(dmgC(actor, shot(), null, { defenseType: 'evasion' }).amount).toBe(0);
   expect(dmgC(actor, shot('blunt'), null, { defenseType: 'toughness' }).amount).toBe(0);
   expect(dmgC(actor, shot('sharp', 'w2'), null, { defenseType: 'toughness' }).amount).toBe(0);
@@ -5752,12 +5752,12 @@ test('Station Management, Razor Tongue (TF, GI Joe): +1 against Cleverness; The 
   ]) {
     const actor = holder([file]);
     const name = actor.items.contents[0].name;
-    expect(dmgC(actor, dmgCAttack({ skill: 'finesse' }), null, { defenseType: 'cleverness' })).toEqual({ amount: 1, sources: [name] });
+    expect(dmgC(actor, dmgCAttack({ skill: 'finesse' }), null, { defenseType: 'cleverness' })).toMatchObject({ amount: 1, sources: [name] });
     expect(dmgC(actor, dmgCAttack({ skill: 'finesse' }), null, { defenseType: 'toughness' }).amount).toBe(0);
   }
 
   const weather = holder(['wtnvcgitems/_source/The_Weather_RdxkmVbHZXN5zGa9.json']);
-  expect(dmgC(weather, dmgCAttack(), null, { defenseType: 'willpower' })).toEqual({ amount: 1, sources: ['The Weather'] });
+  expect(dmgC(weather, dmgCAttack(), null, { defenseType: 'willpower' })).toMatchObject({ amount: 1, sources: ['The Weather'] });
   expect(dmgC(weather, dmgCAttack(), null, { defenseType: 'cleverness' }).amount).toBe(0);
   expect(dmgC(weather, { type: 'spell', system: {} }, null, { defenseType: 'willpower' }).amount).toBe(0);
 });
@@ -5765,7 +5765,7 @@ test('Station Management, Razor Tongue (TF, GI Joe): +1 against Cleverness; The 
 test('Ninja Powered (Raw Ferocity): +2 on a Zord melee attack rolled with a Snag', () => {
   const zord = holder(['prcrbitems/_source/Ninja_Powered__Raw_Ferocity__ljHdKAY31JGiknxb.json']);
   zord.type = 'zord';
-  expect(dmgC(zord, dmgCAttack(), null, { snag: true })).toEqual({ amount: 2, sources: ['Ninja Powered (Raw Ferocity)'] });
+  expect(dmgC(zord, dmgCAttack(), null, { snag: true })).toMatchObject({ amount: 2, sources: ['Ninja Powered (Raw Ferocity)'] });
   expect(dmgC(zord, dmgCAttack(), null, { snag: false }).amount).toBe(0);
   expect(dmgC(zord, dmgCAttack({ style: 'energy' }), null, { snag: true }).amount).toBe(0);
   zord.type = 'playerCharacter';
@@ -5951,7 +5951,7 @@ test('Energy Mastery: Edge and +1 damage on an Energy Affinity attack', async ()
   const actor = await misc7Affinity('dditems/_source/Energy_Mastery_bjR8V1BEc3CfrrDu.json');
   expect(ruleRollSources(actor, null, { item: misc7Attack('fire'), isAttack: true }).sources).toEqual([expect.objectContaining({ edge: true })]);
   expect(ruleRollSources(actor, null, { item: misc7Attack('cold'), isAttack: true }).sources).toEqual([]);
-  expect(ruleScaledDamage(actor, null, { item: misc7Attack('fire') })).toEqual({ amount: 1, sources: ['Energy Mastery'] });
+  expect(ruleScaledDamage(actor, null, { item: misc7Attack('fire') })).toMatchObject({ amount: 1, sources: ['Energy Mastery'] });
   expect(ruleScaledDamage(actor, null, { item: misc7Attack('cold') }).amount).toBe(0);
 });
 

@@ -9,6 +9,7 @@ import "./rules/actions.mjs";
 import { linkExistingCopies, loadSourceIndexes } from "./rules/inherit.mjs";
 import { registerRuleHelper } from "./rules/code.mjs";
 import { registerCheck, setWorldLookups } from "./rules/predicate.mjs";
+import { useAllyLookup } from "./rules/links.mjs";
 import { hasActiveEnvironmentalExpertise } from "./helpers/environmental-expertise.mjs";
 import { isCannoneerDugIn } from "./helpers/cannoneer-dig-in.mjs";
 import { isBulwarkActive } from "./helpers/bulwark.mjs";
@@ -21,6 +22,11 @@ import { isWarriorModeActive } from "./helpers/warrior-mode.mjs";
 import { isHighGearActive } from "./helpers/high-gear.mjs";
 import { isTheToughGetGoingActive } from "./helpers/the-tough-get-going.mjs";
 import { isEnergyAffinityElementAttack } from "./helpers/energy-affinity.mjs";
+import { hasDefeatedAllyInReach } from "./helpers/not-on-my-watch.mjs";
+import { isDecepticonNemesis, isNemesisInScene } from "./helpers/nemesis-decepticon.mjs";
+import { isMultipleTargetsWeapon } from "./helpers/multiple-targets.mjs";
+import { favoriteWeaponOf } from "./helpers/extensions/tf1/common.mjs";
+import { isPersonalShieldActive } from "./helpers/personal-shield.mjs";
 import "./rules/prerequisites.mjs";
 import { isRecklessAbandonActive } from "./helpers/reckless-abandon.mjs";
 import { setStoryPointHelpers } from "./rules/steps.mjs";
@@ -36,6 +42,7 @@ setWorldLookups({
   isAiming: actor => isAiming(actor),
   alliesWithin: (actor, feet) => getNearbyAllyTokens(actor, feet).map(token => token.actor),
 });
+useAllyLookup();
 
 // The rules engine's `check:<name>` tags - state the system's own helpers keep (rules/predicate.mjs#CHECK_NAMES).
 for (const [name, fn] of Object.entries({
@@ -57,6 +64,20 @@ for (const [name, fn] of Object.entries({
   energyAffinityAttack: (actor, option, ctx) => isEnergyAffinityElementAttack(actor, ctx?.item),
   // An equipped weapon with the Fire trait ("wielding" - Wildfire).
   equippedFireWeapon: actor => !!actor?.items?.find(item => item.type == 'weapon' && item.system.equipped && item.system.traits?.includes('fire')),
+  defeatedAllyInReach: actor => hasDefeatedAllyInReach(actor),
+  // The other party is this actor's Decepticon Nemesis (Nemesis Perk / Hang-Up).
+  decepticonNemesis: (actor, option, ctx) => (ctx?.other ? isDecepticonNemesis(actor, ctx.other) : null),
+  nemesisInScene: actor => isNemesisInScene(actor),
+  multipleTargetsWeapon: (actor, option, ctx) => (ctx?.item ? isMultipleTargetsWeapon(actor, ctx.item) : null),
+  // The Favorite Weapon (Transformers One): equipped, or the weapon this roll's effect belongs to.
+  favoriteWeaponEquipped: actor => !!favoriteWeaponOf(actor)?.system?.equipped,
+  favoriteWeaponRolled: (actor, option, ctx) => {
+    const weapon = favoriteWeaponOf(actor);
+    return !!weapon && !!ctx?.item && (ctx.item.id == weapon.id || ctx.item.flags?.essence20?.parentId == weapon.id);
+  },
+  // A Zord / vehicle with someone in the driver's seat.
+  zordHasDriver: actor => !!getVehicleDriver(actor),
+  personalShield: actor => isPersonalShieldActive(actor),
 })) {
   registerCheck(name, fn);
 }
@@ -130,7 +151,7 @@ import { canUsePerk, hasItemUse } from "./helpers/banked-buffs.mjs";
 import { canUsePower } from "./helpers/power-use.mjs";
 import { getWeaponEffectDamages } from "./helpers/damage-display.mjs";
 import { getSummonReadyRound, isSummonReady } from "./helpers/zord-summon.mjs";
-import { healStunAtTurnStart } from "./helpers/combat.mjs";
+import { getVehicleDriver, healStunAtTurnStart } from "./helpers/combat.mjs";
 import { applyTimeToThinkEdge } from "./helpers/time-to-think.mjs";
 import { healRegeneratingShellAtTurnEnd, isPowerAdaptationActive } from "./helpers/power-adaptation.mjs";
 import { healRapidRescueResponseAtRoundEnd } from "./helpers/rapid-rescue-response.mjs";

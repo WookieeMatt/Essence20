@@ -1,4 +1,13 @@
 // The item sheet's Rules tab (templates/item/tabs/rules.hbs, module/rules/sheet.mjs).
+// The tab is a direct PART of .window-content, which Foundry keeps `overflow: hidden` - the PART's
+// `scrollable` option only remembers the scroll position, it doesn't make anything scroll. A long
+// list of rules (or the JSON editor) scrolls inside the tab rather than being cut off.
+.essence20.item .window-content > section.tab.rules {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
 .essence20 .e20-rules {
   display: flex;
   flex-direction: column;
@@ -177,6 +186,32 @@
 
 // "Add to this item" - one button per kind, in game words, with a one-line hint.
 .essence20.e20-rules-add-dialog {
+  // The list of choices outgrew the screen: the window stops at 90% of its height and the choices
+  // scroll inside it, with Cancel kept in view below them. (DialogV2's .window-content is
+  // overflow: hidden, so its form has to be a column whose list may shrink - min-height: 0.)
+  max-height: 90vh;
+
+  .window-content {
+    min-height: 0;
+  }
+
+  .window-content > form.dialog-form {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dialog-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .form-footer {
+    flex: none;
+  }
+
   // Two columns, so all thirteen fit on a laptop screen; the Active Effect choice spans both.
   .e20-rules-add-choices {
     display: grid;
@@ -222,7 +257,11 @@
 // The guided rule editor (apps/rule-editor.mjs).
 .essence20.e20-rule-editor {
   // A long rule (nested steps) scrolls inside the window rather than running off the screen.
+  // min-height: 0 lets it shrink with the window once it's resized (a flex child otherwise keeps its
+  // content's height and runs off the bottom instead of scrolling).
   .window-content {
+    flex: 1;
+    min-height: 0;
     max-height: 80vh;
     overflow-y: auto;
     padding: 0.5rem 0.75rem;

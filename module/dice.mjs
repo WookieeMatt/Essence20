@@ -81,7 +81,7 @@ import {
 import { consumeRiseAgainDefense } from "./helpers/rise-again.mjs";
 import { bankedDefense } from "./rules/bank.mjs";
 import { ruleId } from "./rules/index.mjs";
-import { ruleAimBonus, ruleCover, ruleCritD2, ruleNoLongRangeSnag, ruleRollSources, ruleScaledDamage } from "./rules/adapter.mjs";
+import { ruleAimBonus, ruleCover, ruleCritD2, ruleDamageType, ruleDieSubstitution, ruleRollDice, ruleNoLongRangeSnag, ruleRollSources, ruleScaledDamage } from "./rules/adapter.mjs";
 import { getStandByMeDefenseBonus } from "./helpers/stand-by-me.mjs";
 import { checkMarkTarget } from "./helpers/mark-target.mjs";
 import { checkPrimaryQuarry } from "./helpers/primary-quarry.mjs";
@@ -3435,6 +3435,14 @@ export class Dice {
       }
     }
 
+    // Item rules' DieSubstitution (rules/adapter.mjs#ruleDieSubstitution): another Skill's die, the best
+    // of several, or a floor - after the hand-written substitutions above.
+    const dieRules = ruleDieSubstitution(actor, game.user?.targets?.first?.()?.actor ?? null, { item, rolledSkill, rolledEssence, dataset }, initialShift);
+    initialShift = dieRules.shift;
+    if (dieRules.specialize) {
+      updatedShiftDataset.isSpecialized = true;
+    }
+
     // "A" for Effort! (Intern Origin, p.30): "Once per session, when you attempt an untrained
     // Skill Test, you still roll a d2 Skill Die and don't suffer a Snag." Auto-applied and
     // auto-consumed (no dialog, no "Use" button) the first time it actually matters in the scene -
@@ -3575,6 +3583,13 @@ export class Dice {
     if (usesBasicIntelligence) {
       skillDataset.snag = false;
     }
+
+    // A DieSubstitution rule that clears the Snag (a floor like "A" for Effort!'s), and its limits.
+    if (dieRules.clearSnag) {
+      skillDataset.snag = false;
+    }
+
+    await dieRules.spend();
 
     // Spot Weld (Decepticon Directive, General Perk, p.67) - see helpers/spot-weld.mjs's own doc
     // comment. Stamped via the synthetic dataset itself (not a Perk-lookup) since only
@@ -5726,14 +5741,34 @@ export class Dice {
     // treat a d20 roll of 9 or less as a 10" - floors the d20 term(s) at 10 via Foundry's own
     // `min` dice modifier, applied before Edge/Snag's keep-highest/keep-lowest selection so that
     // selection sees the already-floored values.
-    const floorD20At10 = rolledEssence == 'social' && actorHasPerk(actor, SILVER_TONGUE_ID);
+    // Item rules' RollDice (rules/adapter.mjs#ruleRollDice): a cap, steps up, a d20 floor, a third d20.
+    const diceRules = ruleRollDice(actor, game.user?.targets?.first?.()?.actor ?? null, {
+      item, rolledSkill, rolledEssence, edge: !!skillRollOptions.edge, snag: !!skillRollOptions.snag,
+      dataset: { ...dataset, isSpecialized },
+    });
+    if (diceRules.maxDie) {
+      const capIndex = E20.skillShiftList.indexOf(diceRules.maxDie);
+      if (capIndex >= 0 && E20.skillShiftList.indexOf(finalShift) < capIndex) {
+        finalShift = diceRules.maxDie;
+      }
+    }
+
+    if (diceRules.stepUp) {
+      const shiftIndex = E20.skillShiftList.indexOf(finalShift);
+      const rollable = E20.skillShiftList.indexOf(E20.skillRollableShifts[E20.skillRollableShifts.length - 1]);
+      if (shiftIndex > 0) {
+        finalShift = E20.skillShiftList[Math.max(rollable >= 0 ? rollable : 0, shiftIndex - diceRules.stepUp)];
+      }
+    }
+
+    const floorD20At10 = (rolledEssence == 'social' && actorHasPerk(actor, SILVER_TONGUE_ID)) || diceRules.d20Floor >= 10;
 
     // Kill Shot (Sniper Focus, 20th level, p.75) - see _getd20Operand's own comment for the
     // 3d20kh mechanics. "A ranged attack with a sniper weapon" - the same weaponEffect/style/
     // parent-weapon-trait check Piercing Shot's identical sniper-trait clause already establishes,
     // gated on the actor's own already-resolved Edge (skillRollOptions.edge, not just the
     // automatic combatModifiers.edge) so it also picks up Edge from skill training/Essence shifts.
-    const rollsThreeD20 = (item?.type == 'weaponEffect' && item.system.classification.style != 'melee'
+    const rollsThreeD20 = diceRules.thirdD20 || (item?.type == 'weaponEffect' && item.system.classification.style != 'melee'
       && skillRollOptions.edge && actorHasPerk(actor, KILL_SHOT_ID)
       && this._getParentWeapon(actor, item)?.system.traits.includes('sniper'))
       // Precision is Perfection (Intercontinental Adventures, Martial Artist, 17th level, p.13):
@@ -6919,7 +6954,8 @@ export class Dice {
       item, rolledSkill, rolledEssence, edge: !!skillRollOptions.edge, snag: !!skillRollOptions.snag, dataset,
       // The Defense the dialog settled on (`defense:` tags).
       defenseType: skillRollOptions.defenseType ?? item?.system?.defenseType,
-    }) : { amount: 0, sources: [] };
+    }) : { amount: 0, sources: [], spend: async () => {} };
+    await scaledRules.spend();
     // ...and ticked DialogSwitches with a damage amount (adapter#applyRuleSwitches).
     for (const source of [...scaledRules.sources, ...(skillRollOptions.ruleDamageSources ?? [])]) {
       damageBonusSources.add(source);
@@ -7092,6 +7128,12 @@ export class Dice {
       // Arts gate already uses just above (broader than the "no parent weapon" Unarmed-only proxy
       // several other entries in this chain use).
       overriddenDamageType = 'energy';
+    } else if (item?.type == 'weaponEffect') {
+      // Item rules' DamageType (rules/adapter.mjs#ruleDamageType) - after every hand-written one.
+      overriddenDamageType = ruleDamageType(actor, game.user?.targets?.first?.()?.actor ?? null, {
+        item, rolledSkill, rolledEssence, edge: !!skillRollOptions.edge, snag: !!skillRollOptions.snag,
+        switches: skillRollOptions.ruleKeys ?? [], dataset,
+      });
     }
 
     // Shock and Awe (Artillery Focus, 10th level): "targets of your explosive suffer a Snag on
