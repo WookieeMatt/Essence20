@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Heroic Intervention (ally within 5 ft: +1 Defenses)","defense":"any","amount":1,"when":["ally:within:5",{"any":["defense:toughness","defense:evasion","defense:willpower","defense:cleverness"]}]}
+    ],
     "prerequisites": {"when":["self:level>=8"]},
     "automation": {
       "status": "partial",

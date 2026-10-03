@@ -6063,84 +6063,6 @@ describe("rollSkill", () => {
     });
   });
 
-  describe("Skier (General Hawk's Personnel Files, General Perk, p.175)", () => {
-    const SKIER_ID = "Compendium.essence20.general_hawk_s_personel_files.Item.dvmY7UiuKejOPY4N";
-
-    function makeActor() {
-      return { ...mockActor, items: [], getRollData: jest.fn(() => ({ skills: { might: { modifier: '0', shift: 'd20' } } })) };
-    }
-
-    function makeTargetActor({ hasPerk = true, skiing = true, defenseType = 'evasion' } = {}) {
-      return {
-        name: 'Target',
-        uuid: 'Actor.target1',
-        system: { defenses: { [defenseType]: { total: 10 } }, immunities: {}, size: 'common', isMorphed: false },
-        statuses: new Set(),
-        items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: SKIER_ID } } }] : [],
-        getFlag: jest.fn((scope, key) => (key == 'isSkiingActive' ? skiing : undefined)),
-        setFlag: jest.fn(),
-        unsetFlag: jest.fn(),
-      };
-    }
-
-    function makeTargetsSet(targetActor) {
-      const token = { actor: targetActor, center: { x: 0, y: 0 } };
-      const set = new Set([token]);
-      set.first = () => token;
-      return set;
-    }
-
-    const meleeWeaponEffect = {
-      type: 'weaponEffect',
-      flags: {},
-      system: { classification: { skill: 'might', style: 'melee' }, damageType: 'blunt', damageValue: 1 },
-    };
-
-    let originalTargets;
-    beforeEach(() => {
-      originalTargets = game.user.targets;
-    });
-    afterEach(() => {
-      game.user.targets = originalTargets;
-    });
-
-    test("adds +1 to Evasion difficulty while skiing, with the Perk", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'evasion',
-      });
-      dice._rollSkillHelper = jest.fn();
-      game.user.targets = makeTargetsSet(makeTargetActor());
-
-      await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength' }, makeActor(), meleeWeaponEffect);
-
-      expect(dice._rollSkillHelper.mock.calls[0][4].entries[0].difficulty).toBe(11); // 10 + 1
-    });
-
-    test("doesn't apply without the Perk, without skiing, or against a different Defense", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'evasion',
-      });
-      dice._rollSkillHelper = jest.fn();
-
-      game.user.targets = makeTargetsSet(makeTargetActor({ hasPerk: false }));
-      await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength' }, makeActor(), meleeWeaponEffect);
-      expect(dice._rollSkillHelper.mock.calls[0][4].entries[0].difficulty).toBe(10);
-
-      game.user.targets = makeTargetsSet(makeTargetActor({ skiing: false }));
-      await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength' }, makeActor(), meleeWeaponEffect);
-      expect(dice._rollSkillHelper.mock.calls[1][4].entries[0].difficulty).toBe(10);
-
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-      });
-      game.user.targets = makeTargetsSet(makeTargetActor({ defenseType: 'toughness' }));
-      await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength' }, makeActor(), meleeWeaponEffect);
-      expect(dice._rollSkillHelper.mock.calls[2][4].entries[0].difficulty).toBe(10);
-    });
-  });
-
   describe("Elemental Adaptation (Beneath the Helmet, Aqua Ranger, p.42) - Acid/Fire suppression", () => {
     function makeActor() {
       return {
@@ -13149,7 +13071,6 @@ describe("rollSkill", () => {
     const PSYCHOANALYST_ID = "Compendium.essence20.tf_crb.Item.5X4NOluWwc7fv497";
     const DRILLING_SHOT_ID = "Compendium.essence20.tf_crb.Item.M0aeDLMOUTy7ju90";
     const LONG_RANGE_RIFLE_ID = "Compendium.essence20.tf_crb.Item.8Hi76APCo9QRnbLE";
-    const STRONGER_TOGETHER_ID = "Compendium.essence20.tf_crb.Item.ZeOj3mmjnXJ7iXj1";
 
     function makeActor({ perkIds = [], health = null } = {}) {
       const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
@@ -15184,14 +15105,15 @@ describe("rollSkill", () => {
         return { ...mockActor, items, getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20' } } })) };
       }
 
-      function makeTargetActor({ hasPerk = true, disposition = -1 } = {}) {
-        const items = hasPerk ? [{ type: 'perk', flags: { core: { sourceId: STRONGER_TOGETHER_ID } } }] : [];
-        const token = { document: { disposition }, center: { x: 0, y: 0 } };
+      // The per-ally bonus is a Defense rule on the Perk now (rules/conversions.test.js); this checks the
+      // banked self-reduction its Use leaves behind.
+      function makeTargetActor() {
+        const token = { document: { disposition: -1 }, center: { x: 0, y: 0 } };
 
         return {
           name: 'Target', uuid: 'Actor.target1',
           system: { defenses: { toughness: { total: 10 } }, immunities: {}, size: 'common' },
-          statuses: new Set(), items,
+          statuses: new Set(), items: [],
           getActiveTokens: jest.fn(() => [token]),
         };
       }
@@ -15215,76 +15137,22 @@ describe("rollSkill", () => {
         canvas.tokens.placeables = [];
       });
 
-      test("adds 1 to the target's Defense per nearby ally, with the Perk", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = makeTargetActor({ hasPerk: true });
-        const targetToken = targetActor.getActiveTokens()[0];
-        const allyToken = { actor: {}, document: { disposition: -1 }, center: { x: 5, y: 0 } };
-        canvas.tokens.placeables = [targetToken, allyToken];
-        game.user.targets = makeTargetsSet(targetActor);
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(11); // 10 base + 1 ally within 60ft
-      });
-
-      test("doesn't apply without the Perk", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = makeTargetActor({ hasPerk: false });
-        const targetToken = targetActor.getActiveTokens()[0];
-        const allyToken = { actor: {}, document: { disposition: -1 }, center: { x: 5, y: 0 } };
-        canvas.tokens.placeables = [targetToken, allyToken];
-        game.user.targets = makeTargetsSet(targetActor);
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-      });
-
-      test("adds nothing with no allies nearby, even with the Perk", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = makeTargetActor({ hasPerk: true });
-        canvas.tokens.placeables = [targetActor.getActiveTokens()[0]];
-        game.user.targets = makeTargetsSet(targetActor);
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-      });
-
       test("subtracts a banked -1 self-reduction from the Free-action ally transfer", async () => {
         const rollDialog = createMockRollDialog();
         rollDialog.getSkillRollOptions.mockReturnValue({
           canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
         });
         dice._rollSkillHelper = jest.fn();
-        const targetActor = makeTargetActor({ hasPerk: true });
+        const targetActor = makeTargetActor();
         targetActor.flags = { essence20: { ruleBank: [{ id: 'b1', label: 'Stronger Together', defense: 'any', defenseBonus: -1, persist: false, when: [], uses: 1 }] } };
         targetActor.update = jest.fn();
-        const targetToken = targetActor.getActiveTokens()[0];
-        const allyToken = { actor: {}, document: { disposition: -1 }, center: { x: 5, y: 0 } };
-        canvas.tokens.placeables = [targetToken, allyToken];
+        canvas.tokens.placeables = [targetActor.getActiveTokens()[0]];
         game.user.targets = makeTargetsSet(targetActor);
 
         await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
 
         const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10); // 10 base + 1 ally - 1 banked reduction
+        expect(checkContext.entries[0].difficulty).toBe(9); // 10 base - 1 banked reduction
         expect(targetActor.update).toHaveBeenCalledWith({ 'flags.essence20.ruleBank': [] });
       });
     });
@@ -15477,212 +15345,6 @@ describe("rollSkill", () => {
       });
     });
 
-    describe("Impenetrable Armor (GI Joe CRB, Focus: Mechanized Infantry, 10th level, p.79)", () => {
-      const IMPENETRABLE_ARMOR_ID = "Compendium.essence20.gi_joe_crb.Item.vanN7kRYUhgHew7q";
-      const targetingDataset = { ...dataset, skill: 'targeting', essence: 'speed', defenseType: 'toughness' };
-      const rangedWeaponEffect = {
-        type: 'weaponEffect', flags: {},
-        system: { classification: { skill: 'targeting', style: 'ranged' }, damageType: 'ballistic', damageValue: 3 },
-      };
-
-      function makeAttackerActor() {
-        const items = [];
-        items.get = jest.fn(() => null);
-
-        return { ...mockActor, items, getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20' } } })) };
-      }
-
-      function makeVehicleTargetActor({ crew = { crew1: { vehicleRole: 'driver', uuid: 'Actor.driver1' } } } = {}) {
-        return {
-          name: 'Vehicle', uuid: 'Actor.vehicle1', type: 'vehicle',
-          system: {
-            defenses: { toughness: { total: 10 } }, immunities: {}, size: 'huge', actors: crew,
-            movement: { aerial: { base: 0 } },
-          },
-          statuses: new Set(), items: [],
-        };
-      }
-
-      function makeDriverActor({ hasPerk = true } = {}) {
-        const items = hasPerk ? [{ type: 'perk', flags: { core: { sourceId: IMPENETRABLE_ARMOR_ID } } }] : [];
-        return { uuid: 'Actor.driver1', type: 'playerCharacter', items, statuses: new Set() };
-      }
-
-      function makeTargetsSet(targetActor) {
-        const token = { actor: targetActor, center: { x: 0, y: 0 } };
-        const set = new Set([token]);
-        set.first = () => token;
-
-        return set;
-      }
-
-      let originalTargets;
-      beforeEach(() => {
-        originalTargets = game.user.targets;
-      });
-      afterEach(() => {
-        game.user.targets = originalTargets;
-        global.fromUuidSync.mockReset();
-      });
-
-      test("adds +2 to the vehicle's Defense when its driver holds the Perk", async () => {
-        global.fromUuidSync.mockReturnValue(makeDriverActor());
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        game.user.targets = makeTargetsSet(makeVehicleTargetActor());
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(12); // 10 base + 2
-      });
-
-      test("doesn't apply without the driver holding the Perk", async () => {
-        global.fromUuidSync.mockReturnValue(makeDriverActor({ hasPerk: false }));
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        game.user.targets = makeTargetsSet(makeVehicleTargetActor());
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-      });
-
-      test("doesn't apply to a non-vehicle target, even with a Perk-holding driver assigned elsewhere", async () => {
-        global.fromUuidSync.mockReturnValue(makeDriverActor());
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const nonVehicleTarget = {
-          name: 'Target', uuid: 'Actor.target1', type: 'playerCharacter',
-          system: { defenses: { toughness: { total: 10 } }, immunities: {}, size: 'common' },
-          statuses: new Set(), items: [],
-        };
-        game.user.targets = makeTargetsSet(nonVehicleTarget);
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-      });
-
-      test("doesn't apply to a vehicle with no assigned driver", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        game.user.targets = makeTargetsSet(makeVehicleTargetActor({ crew: {} }));
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-      });
-    });
-
-    describe("Environmental Armor (GI Joe CRB, Focus: Predator, 10th level, p.94)", () => {
-      const ENVIRONMENTAL_ARMOR_ID = "Compendium.essence20.gi_joe_crb.Item.Vo5AfbJNfVGf24E0";
-      const ENVIRONMENTAL_EXPERTISE_ID = "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ";
-      const targetingDataset = { ...dataset, skill: 'targeting', essence: 'speed', defenseType: 'toughness' };
-      const rangedWeaponEffect = {
-        type: 'weaponEffect', flags: {},
-        system: { classification: { skill: 'targeting', style: 'ranged' }, damageType: 'ballistic', damageValue: 3 },
-      };
-
-      function makeAttackerActor() {
-        const items = [];
-        items.get = jest.fn(() => null);
-
-        return { ...mockActor, items, getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20' } } })) };
-      }
-
-      function makeTargetActor({ hasPerk = true, expertiseActive = true } = {}) {
-        const items = hasPerk
-          ? [
-            { type: 'perk', flags: { core: { sourceId: ENVIRONMENTAL_ARMOR_ID } } },
-            { type: 'perk', flags: { core: { sourceId: ENVIRONMENTAL_EXPERTISE_ID } } },
-          ]
-          : [];
-
-        return {
-          name: 'Target', uuid: 'Actor.target1',
-          system: { defenses: { toughness: { total: 10 } }, immunities: {}, size: 'common' },
-          statuses: new Set(), items,
-          getFlag: jest.fn((scope, key) => (key == 'environmentalExpertiseActive' ? expertiseActive : undefined)),
-        };
-      }
-
-      function makeTargetsSet(targetActor) {
-        const token = { actor: targetActor, center: { x: 0, y: 0 } };
-        const set = new Set([token]);
-        set.first = () => token;
-
-        return set;
-      }
-
-      let originalTargets;
-      beforeEach(() => {
-        originalTargets = game.user.targets;
-        canvas.tokens.placeables = [];
-      });
-      afterEach(() => {
-        game.user.targets = originalTargets;
-        canvas.tokens.placeables = [];
-      });
-
-      test("adds +1 to the target's Defense with the Perk and expertise active", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        game.user.targets = makeTargetsSet(makeTargetActor());
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(11);
-      });
-
-      test("doesn't apply without the Perk", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        game.user.targets = makeTargetsSet(makeTargetActor({ hasPerk: false }));
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-      });
-
-      test("doesn't apply when the expertise toggle is off, even with the Perk", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        game.user.targets = makeTargetsSet(makeTargetActor({ expertiseActive: false }));
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-      });
-    });
-
     describe("Without a Word (Factions in Action Vol. 2, Red Ninja Origin Benefit, p.10)", () => {
       const WITHOUT_A_WORD_ID = "Compendium.essence20.intercontinental_adventures.Item.cZg52I6J5dLP6PjV";
       const targetingDataset = { ...dataset, skill: 'targeting', essence: 'speed', defenseType: 'toughness' };
@@ -15781,124 +15443,6 @@ describe("rollSkill", () => {
         game.user.targets = makeTargetsSet(targetActor2);
         await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
         expect(dice._rollSkillHelper.mock.calls[2][4].entries[0].difficulty).toBe(10);
-      });
-    });
-
-    describe("Heroic Intervention (PR CRB, General Perk, p.96)", () => {
-      const HEROIC_INTERVENTION_ID = "Compendium.essence20.pr_crb.Item.T95n2lwh3F5OHjnB";
-      const targetingDataset = { ...dataset, skill: 'targeting', essence: 'speed', defenseType: 'toughness' };
-      const rangedWeaponEffect = {
-        type: 'weaponEffect', flags: {},
-        system: { classification: { skill: 'targeting', style: 'ranged' }, damageType: 'ballistic', damageValue: 3 },
-      };
-
-      function makeAttackerActor() {
-        const items = [];
-        items.get = jest.fn(() => null);
-
-        return { ...mockActor, items, getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20' } } })) };
-      }
-
-      function makeTargetActor({ hasPerk = true, disposition = -1 } = {}) {
-        const items = hasPerk ? [{ type: 'perk', flags: { core: { sourceId: HEROIC_INTERVENTION_ID } } }] : [];
-        const token = { document: { disposition }, center: { x: 0, y: 0 } };
-
-        return {
-          name: 'Target', uuid: 'Actor.target1',
-          system: { defenses: { toughness: { total: 10 } }, immunities: {}, size: 'common' },
-          statuses: new Set(), items,
-          getActiveTokens: jest.fn(() => [token]),
-        };
-      }
-
-      function makeTargetsSet(targetActor) {
-        const token = { actor: targetActor, center: { x: 0, y: 0 } };
-        const set = new Set([token]);
-        set.first = () => token;
-
-        return set;
-      }
-
-      let originalTargets;
-      beforeEach(() => {
-        originalTargets = game.user.targets;
-        canvas.tokens.placeables = [];
-        canvas.grid.measurePath.mockReturnValue({ distance: 0 });
-      });
-      afterEach(() => {
-        game.user.targets = originalTargets;
-        canvas.tokens.placeables = [];
-      });
-
-      test("adds +1 to the target's Defense while adjacent to an ally, with the Perk", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = makeTargetActor({ hasPerk: true });
-        const targetToken = targetActor.getActiveTokens()[0];
-        const allyToken = { actor: {}, document: { disposition: -1 }, center: { x: 5, y: 0 } };
-        canvas.tokens.placeables = [targetToken, allyToken];
-        game.user.targets = makeTargetsSet(targetActor);
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(11); // 10 base + 1 adjacent ally
-      });
-
-      test("doesn't apply without the Perk", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = makeTargetActor({ hasPerk: false });
-        const targetToken = targetActor.getActiveTokens()[0];
-        const allyToken = { actor: {}, document: { disposition: -1 }, center: { x: 5, y: 0 } };
-        canvas.tokens.placeables = [targetToken, allyToken];
-        game.user.targets = makeTargetsSet(targetActor);
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-      });
-
-      test("doesn't apply without an ally adjacent, even with the Perk", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = makeTargetActor({ hasPerk: true });
-        canvas.tokens.placeables = [targetActor.getActiveTokens()[0]];
-        game.user.targets = makeTargetsSet(targetActor);
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-      });
-
-      test("doesn't apply when the nearest ally is beyond 5ft", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = makeTargetActor({ hasPerk: true });
-        const targetToken = targetActor.getActiveTokens()[0];
-        const farAllyToken = { actor: {}, document: { disposition: -1 }, center: { x: 60, y: 0 } };
-        canvas.tokens.placeables = [targetToken, farAllyToken];
-        canvas.grid.measurePath.mockReturnValue({ distance: 60 });
-        game.user.targets = makeTargetsSet(targetActor);
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
       });
     });
 

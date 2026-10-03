@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"+1 Defenses for an ally, -1 for you, next attack each","when":["not:rule:banked"],"steps":[{"do":"pickAlly"},{"do":"bank","to":"target","label":"Stronger Together","defense":"any","defenseBonus":1},{"do":"bank","label":"Stronger Together","defense":"any","defenseBonus":-1}]}
+      {"type":"Use","label":"+1 Defenses for an ally, -1 for you, next attack each","when":["not:rule:banked"],"steps":[{"do":"pickAlly"},{"do":"bank","to":"target","label":"Stronger Together","defense":"any","defenseBonus":1},{"do":"bank","label":"Stronger Together","defense":"any","defenseBonus":-1}]},
+      {"type":"Defense","label":"Stronger Together (+1 Defenses per ally within 60 ft)","defense":"any","amount":"@count.allies.60","when":[{"any":["defense:toughness","defense:evasion","defense:willpower","defense:cleverness"]}]}
     ],
     "automation": {
       "status": "full",

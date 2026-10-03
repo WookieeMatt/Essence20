@@ -112,7 +112,6 @@ import { PAINMONGER_ID } from "./helpers/painmonger.mjs";
 import { applySiphonEffect } from "./helpers/siphon.mjs";
 import { applyFlashyBlinded, FLASHY_ID } from "./helpers/flashy.mjs";
 import { hasPendingChargeItUp, consumeChargeItUp } from "./helpers/charge-it-up.mjs";
-import { isSkiing } from "./helpers/skier.mjs";
 import { isPointyActive } from "./helpers/pointy.mjs";
 import { checkAndMarkSplinterDefense, getHardenedArmorBonus } from "./helpers/splinter-defense.mjs";
 import { consumeGridSurgeToughness, GRID_SURGE_CONSTRUCT_FLAG } from "./helpers/grid-surge.mjs";
@@ -375,12 +374,6 @@ import { creatureTagsOf, isRobotic } from "./helpers/creature-tags.mjs";
 // live in helpers/sneak-attack.mjs instead) - all under GI Joe CRB's own compendium pack.
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 const GENERAL_HAWKS_PERSONNEL_FILES = "Compendium.essence20.general_hawk_s_personel_files.Item.";
-
-// Skier (General Hawk's Personnel Files, General Perk, p.175) - see helpers/skier.mjs's own doc
-// comment. "+1 Evasion... while skiing" - a live, non-consumed read in the per-target checkEntries
-// construction below, the same shape Phantom Suite's own Evasion bonus already established (this
-// system's `_prepareDefenses` is off-limits, the user's own pending Health/Defense-math migration).
-const SKIER_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}dvmY7UiuKejOPY4N`;
 
 // Spoof (Quartermaster's Guide to Gear, Role Perk, p.19/21): "When you are in disguise and an
 // enemy isn't aware of your true identity, you can use Deception or Infiltration instead of
@@ -1039,11 +1032,6 @@ const LONG_RANGE_RIFLE_ID = `${TF_CRB}8Hi76APCo9QRnbLE`;
 const JUST_THE_FACTS_ID = `${TF_CRB}v6A7mQwdKQR6J5fR`;
 
 const DRILLING_SHOT_ID = `${TF_CRB}M0aeDLMOUTy7ju90`;
-const STRONGER_TOGETHER_ID = `${TF_CRB}ZeOj3mmjnXJ7iXj1`;
-// Impenetrable Armor - see its own comment below, in the checkEntries construction.
-const IMPENETRABLE_ARMOR_ID = `${GI_JOE_CRB}vanN7kRYUhgHew7q`;
-// Environmental Armor - see its own comment below, in the checkEntries construction.
-const ENVIRONMENTAL_ARMOR_ID = `${GI_JOE_CRB}Vo5AfbJNfVGf24E0`;
 const ANALYZE_TARGET_ID = `${TF_CRB}UjzBPz4iUBoi8Kyk`;
 const INFORMED_ACCURACY_ID = `${TF_CRB}JtWhjDRI0HDewaKe`;
 const PSYCHOANALYST_ID = `${TF_CRB}5X4NOluWwc7fv497`;
@@ -2316,19 +2304,6 @@ const ELTARIAN_TRAINING_ID = "Compendium.essence20.through_the_shattered_grid.It
 // was actually pulled (p.93-99, General Perks; p.66-76, Influence Perks), to be genuinely clean
 // builds reusing already-established patterns - see each one's own check for its citation.
 
-// Heroic Intervention (PR CRB, General Perk, p.96, Level 8+): "As long as you are adjacent to an
-// ally, you gain +1 on all Defenses." The compendium item's own "Adjacent Ally" effect already has
-// the right numbers (+1 to all 4 Defenses) but the wrong SCOPE - it's an unconditional Active
-// Effect, not gated on adjacency - so it correctly stays disabled (same "leave the over-broad
-// effect off, build the real gate in code" idiom as Keen Eye/Peerless Pilot) while the real
-// conditional bonus is applied live in the per-target checkEntries construction below, the same
-// touch-point Stronger Together's identical "per-target Defense bonus" shape already uses (can't
-// touch _prepareDefenses directly). "Adjacent" is read as within 5ft, the same threshold Whirlwind
-// Strike's own RANGE_FEET constant already establishes. The Story Point grant clause is dispatched
-// separately in banked-buffs.mjs (same shape as Educated's identical clause); the Power-spend 15ft
-// move is a narrative positioning action, not a roll modifier, and isn't built.
-const HEROIC_INTERVENTION_ID = `${PR_CRB}T95n2lwh3F5OHjnB`;
-
 // General/Origin/Influence Perk pass, GI Joe CRB batch (2026-09-10) - a further handful of
 // "buildable now, low confidence" items RAW text (p.44-134) confirmed are genuinely clean builds.
 // Sharpshooter's Grace here is a DISTINCT compendium item from PR CRB's own printing, and the two
@@ -2635,7 +2610,7 @@ const IRON_BRAVADO_ID = `${PR_CRB}8bmqJ7hyOAcVNB1Y`;
 // "Lend Assistance offers +2 instead of +1" clause needs the still-unbuilt general Lend Assistance
 // action, and "+1 on Skill Tests that are part of a Group Test" has no Group Test concept anywhere
 // in this codebase (checked directly, not assumed). See its own check in the per-target
-// checkEntries construction (dice.mjs's own Stronger Together/Environmental Armor neighborhood).
+// checkEntries construction.
 const PAY_IT_FORWARD_ID = `${PR_CRB}M3pQgNMsU5hU5dMN`;
 
 // Defensive Flexibility (Blue Spectrum Modification, replaces Grid Tech, p.45) - see
@@ -6379,20 +6354,11 @@ export class Dice {
           difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true });
         }
 
-        // Stronger Together (Strategist Focus, 20th level, p.68): "you gain +1 to your Defenses
-        // for every ally within 60ft." The target's own passive bonus, added the same way Shield
-        // Upgrade's own per-target Defense bonus already is. The Free-action "reduce this bonus by
-        // 1 to grant an ally +1 to all of their Defenses" half is a Use rule on the Perk: both its
-        // banked +1 (the ally's) and -1 (the granter's) are rules/bank.mjs#bankedDefense entries.
-        if (actorHasPerk(token.actor, STRONGER_TOGETHER_ID)) {
-          difficulty += getNearbyAllyTokens(token.actor, 60).length;
-        }
-
         // Emotional Mastery: Fear/Sadness (A Jump Through Time, Purple Ranger, p.37) - see
         // helpers/emotional-mastery.mjs's own doc comment. "Fear: your Willpower and Cleverness
         // Defenses increase by 3" / "Sadness: your Morphin shell Armor bonus increases by 2
         // Toughness and 2 Evasion" - both the target's own passive bonus while active, same
-        // "add to the fully-computed difficulty" shape Stronger Together just above uses (can't
+        // "add to the fully-computed difficulty" shape as the per-target bonuses here (can't
         // touch _prepareDefenses directly, the user's own pending migration).
         if ((resolvedDefenseType == 'willpower' || resolvedDefenseType == 'cleverness')
           && isEmotionalMasteryOptionActive(token.actor, 'fear')) {
@@ -6414,7 +6380,7 @@ export class Dice {
         }
 
         // Defensive Flexibility - see helpers/defensive-flexibility.mjs's own doc comment. Same
-        // "add to the fully-computed difficulty" shape as Stronger Together/Pay It Forward above.
+        // "add to the fully-computed difficulty" shape as Pay It Forward above.
         difficulty += getDefensiveFlexibilityDefenseBonus(token.actor, resolvedDefenseType);
 
         // Mysterious Aura - see helpers/mysterious-aura.mjs's own doc comment. Imposing (a
@@ -6423,45 +6389,11 @@ export class Dice {
         difficulty += getMysteriousAuraImposingPenalty(token.actor, resolvedDefenseType);
         difficulty += getMysteriousAuraProtectiveBonus(token.actor, resolvedDefenseType);
 
-        // Impenetrable Armor (Focus: Mechanized Infantry, 10th level, p.79): "increase the
-        // Defenses of all vehicles you pilot by +2." The target's own passive bonus, same
-        // "add to the fully-computed difficulty" shape Stronger Together's identical per-ally
-        // bonus just above already uses (can't touch _prepareDefenses directly - the user's own
-        // pending Health/Defense-math migration). "While piloting a vehicle, you may redirect
-        // attacks targeting you to your vehicle" isn't built - this system has no established way
-        // to retarget an already-resolved roll from one actor to another mid-flight.
-        if (token.actor.type == 'vehicle') {
-          const driver = this._getVehicleDriver(token.actor);
-          if (driver && actorHasPerk(driver, IMPENETRABLE_ARMOR_ID)) {
-            difficulty += 2;
-          }
-        }
-
-        // Environmental Armor (Focus: Predator, 10th level, p.94): "in your environment of
-        // expertise, you gain a +1 bonus to all of your Defenses." The target's own passive
-        // bonus, same "add to the fully-computed difficulty" shape Stronger Together/Impenetrable
-        // Armor just above already use, now that hasActiveEnvironmentalExpertise(actor) exists as
-        // real infrastructure (see helpers/environmental-expertise.mjs's own doc comment) instead
-        // of the disabled compendium Active Effect this Perk previously shipped with - a static AE
-        // can't be conditioned on the scene's terrain / the toggle, so it stays disabled and this
-        // live check (terrain-driven when the GM has set one) is the real mechanism. "Whenever you spend an Adaptation Point to gain an environmental benefit
-        // outside of your environment of expertise, you gain this bonus until the beginning of
-        // your next turn" isn't built - a narrower edge-case clause layered on top of Guidance's
-        // own Adaptation Point spend, not the base case this pass covers.
-        if (actorHasPerk(token.actor, ENVIRONMENTAL_ARMOR_ID) && hasActiveEnvironmentalExpertise(token.actor)) {
-          difficulty += 1;
-        }
-
         // Without a Word - see WITHOUT_A_WORD_ID's own comment above. "In Combat" maps onto
         // game.combat existing, the same idiom this project already uses for "combat" elsewhere.
         if (!!game.combat && actorHasPerk(token.actor, WITHOUT_A_WORD_ID)
           && getNearbyEnemyTokens(token.actor, Infinity).some(enemyToken =>
             ['frightened', 'mesmerized', 'surprised'].some(status => enemyToken.actor?.statuses?.has(status)))) {
-          difficulty += 1;
-        }
-
-        // Heroic Intervention - see HEROIC_INTERVENTION_ID's own doc comment above.
-        if (actorHasPerk(token.actor, HEROIC_INTERVENTION_ID) && getNearbyAllyTokens(token.actor, 5).length > 0) {
           difficulty += 1;
         }
 
@@ -6589,12 +6521,6 @@ export class Dice {
           // Evasion (whichever of the temp/permanent halves is larger), same live, non-consumed
           // shape as Grow's own bonus above.
           difficulty += getMeatShieldBonus(token.actor);
-        }
-
-        // Skier - see SKIER_ID's own comment above. Same "flag alone isn't enough" defense-in-depth
-        // check documents/actor.mjs's own Ground Movement half already uses.
-        if (resolvedDefenseType == 'evasion' && actorHasPerk(token.actor, SKIER_ID) && isSkiing(token.actor)) {
-          difficulty += 1;
         }
 
         // Lightshield Armor (Through the Shattered Grid, Guardian of Eltar, Wisdom of the Elders
