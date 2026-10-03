@@ -650,35 +650,11 @@ const TACTICAL_TRIANGULATION_ID = "Compendium.essence20.enigma_of_combination.It
 // E20.roamingTheLandOptions' own doc comment for the RAW text and the choice mechanism.
 const ROAMING_THE_LAND_ID = "Compendium.essence20.ferocious_fighters.Item.jdQFjlYUHaRze6as";
 
-// Big And Scary (Factions in Action Vol. 2, General Perk, p.63): "You count as 1 Size Class larger
-// when it is to your advantage. Additionally, you gain ↑1 on Intimidation Skill Tests per Size
-// Class you are larger than the target of your Skill Test." Folded into one check: since being
-// counted as 1 Size Class larger is always beneficial for THIS specific clause (RAW's own "when
-// advantageous" qualifier), the actor's own size index is read as one step up the moment this
-// specific Intimidation size-difference is computed - see its own check next to Giant-Killer's
-// identical size-difference math in _getAutomaticCombatModifiers.
-const BIG_AND_SCARY_ID = "Compendium.essence20.intercontinental_adventures.Item.FZww5MX65plu6kZ8";
-
-// Bend A Knee Or Stand Tall (Transformers CRB, Officer Role, 1st level, p.65): "When in discussion
-// with a creature of a different Size Class, you gain ↑ on Intimidation or Persuasion Skill Tests
-// equal to the number of Size Class differences between you." Same size-difference math as Big And
-// Scary/Giant-Killer just below, but a plain Math.abs difference rather than either of those two's
-// one-directional (always-beneficial-when-larger, or always-beneficial-when-smaller) shape - RAW's
-// own worked example has the SMALLER creature (Bumblebee) benefiting against the larger one.
-const BEND_A_KNEE_OR_STAND_TALL_ID = "Compendium.essence20.tf_crb.Item.JjCRN28P9CDBibVg";
-
 // Empathy (MLP CRB, Spirit of Kindness, 1st level, p.82): a choiceType:'skills' pick - "your
 // Empathy skill" in every other Kindness Perk's own RAW text (Counselor, Tender, The Bigger The
 // Heart, Supportive Friend, Kind But Firm) means "whichever skill you chose here," not a literal
 // new skill type (confirmed: no 'empathy' key exists in E20.skills).
 const EMPATHY_MLP_ID = "Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ";
-
-// The Bigger The Heart (MLP CRB, Spirit of Kindness, 9th level, p.85): "when making an Empathy
-// Skill Test against a larger creature, you get ↑1 for each Size Class the creature is larger
-// than you." Same per-target Size-difference math as Big And Scary/Giant-Killer just below, but
-// unscoped from Intimidation to whichever skill the actor's own Empathy choice names, and with no
-// "count as 1 larger" twist (a plain difference, not Big And Scary's own always-beneficial +1).
-const BIGGER_THE_HEART_ID = "Compendium.essence20.mlp_crb.Item.fiyZcC8KRK5TebTk";
 
 // Supportive Friend (MLP CRB, Spirit of Kindness, 7th/13th/18th level, p.85-86): 3 separate
 // compendium items for the same escalating "when you succeed at an Empathy Skill Test, your
@@ -774,7 +750,6 @@ const SPLIT_SECOND_REACTION_ID = "Compendium.essence20.jump_through_time.Item.Qh
 const ROADSIDE_ASSISTANT_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}AAacA8jm6dyG0WEH`;
 const ROADSIDE_ASSISTANT_ENCOUNTER_FLAG = 'roadsideAssistantUsedThisEncounter';
 const FIRST_STRIKE_ID = `${GI_JOE_CRB}qxqtfBobduwSkfRM`;
-const SECONDS_BETWEEN_CLICK_AND_BOOM_ID = `${GI_JOE_CRB}ofiG5IwlURUwORYV`;
 // Kill Shot (Sniper Focus, 20th level, p.75) - see _getd20Operand's own comment for its own
 // 3d20kh half. The reroll-any-Targeting-skill-die half is pure compendium JSON (system.reroll,
 // target:"skillDice", mode:"single", skills:["targeting"]) - the generic reroll engine already
@@ -839,10 +814,6 @@ const QUIET_AS_THE_GRAVE_ROUND_FLAG = 'quietAsTheGraveLastRound';
 const FIELD_ID = `${GI_JOE_CRB}qHLeKSMin2F19O3C`;
 const EXPERT_IN_YOUR_FIELD_ID = `${GI_JOE_CRB}mnLXHQ2TwR3A42fS`;
 const PENETRATING_ROUNDS_ID = `${GI_JOE_CRB}JLwbWSlHn5q3rqnH`;
-// Contingency Shot (A Jump Through Time, Pink Spectrum Modification, p.47) - ranged attacks made
-// as part of a Contingency, read as in combat on another combatant's turn. The Edge-vs-Toughness
-// half is the item's own rule; the cover-ignore half is _isContingencyShotAttack below.
-const CONTINGENCY_SHOT_ID = "Compendium.essence20.pr_crb.Item.DAqOZsEq03rJWWQo";
 
 // Trajectory (Artillery Focus, 1st level, p.80) - see its own range-widening comment below. "A
 // targeting explosive launched weapon" is read as an explosive-style weaponEffect (the same
@@ -1355,17 +1326,6 @@ const EVOLVED_INSTINCTS_ID = "Compendium.essence20.jump_through_time.Item.fQM1ke
 // Two Heads Are Better Than One (Technorganic Secrets, General Perk, p.46) - see
 // helpers/two-heads-are-better-than-one.mjs's own doc comment for the self-Lend-Assistance half
 // (the ↑1 Alertness half is a plain compendium ActiveEffect, no code needed).
-
-// Big Preds Are My Specialty (Technorganic Secrets, General Perk, p.45): "Gain an Edge to Survival
-// Skill Tests to track down an enemy larger than yourself... When attempting to catch a larger
-// target by surprise in combat, gain ↑1 to Infiltration Skill Tests for each size category bigger
-// the target is than you." The Survival Edge half is a plain compendium ActiveEffect ("to track
-// down an enemy larger than yourself" dropped, same narrative-qualifier-flattening idiom Bits To
-// Spare/Truthseeker already establish). The Infiltration half is the live check below - "by
-// surprise" is similarly dropped (no Surprised status anywhere in this system); the size-scaling
-// math is the plain (unmodified) ladder difference, NOT Big And Scary's own "count the actor as 1
-// larger" twist - RAW states no such bonus step here.
-const BIG_PREDS_ARE_MY_SPECIALTY_ID = "Compendium.essence20.technorganic_secrets.Item.igkuus7jkoqYV5Fr";
 
 // Tooth And Claw - the Accurate ↑1 is a RollModifier on both printings; the damage-type half is the
 // unarmed damage-type override chain below.
@@ -9406,86 +9366,8 @@ export class Dice {
         addSource('gridSoldier', findPerk(actor, GRID_SOLDIER_ID)?.name ?? 'Grid Soldier', { shiftUp: 1 });
       }
 
-      // Big And Scary - see BIG_AND_SCARY_ID's own comment above. Not gated on isAttack - RAW says
-      // "Skill Tests," not "Attacks." "You count as 1 Size Class larger" is folded directly into
-      // this Intimidation-only size-difference math (always beneficial for this specific clause),
-      // rather than actually mutating actor.system.size.
-      if (rolledSkill == 'intimidation' && actorHasPerk(actor, BIG_AND_SCARY_ID)) {
-        const sizeOrder = Object.keys(E20.actorSizes);
-        const actorIndex = sizeOrder.indexOf(actor.system.size);
-        const targetIndex = sizeOrder.indexOf(target.system.size);
-        const bigAndScaryDifference = actorIndex != -1 && targetIndex != -1
-          ? Math.max(0, (actorIndex + 1) - targetIndex)
-          : 0;
-        if (bigAndScaryDifference > 0) {
-          shiftUp += bigAndScaryDifference;
-          addSource(
-            'bigAndScary', findPerk(actor, BIG_AND_SCARY_ID)?.name ?? 'Big And Scary', { shiftUp: bigAndScaryDifference },
-          );
-        }
-      }
-
-      // Bend A Knee Or Stand Tall - see BEND_A_KNEE_OR_STAND_TALL_ID's own comment above. Not
-      // gated on isAttack ("in discussion," not combat-only), and a plain absolute difference
-      // rather than Big And Scary's one-directional math just above.
-      if (
-        ['intimidation', 'persuasion'].includes(rolledSkill)
-        && actorHasPerk(actor, BEND_A_KNEE_OR_STAND_TALL_ID)
-      ) {
-        const sizeOrder = Object.keys(E20.actorSizes);
-        const actorIndex = sizeOrder.indexOf(actor.system.size);
-        const targetIndex = sizeOrder.indexOf(target.system.size);
-        const sizeDifference = actorIndex != -1 && targetIndex != -1 ? Math.abs(actorIndex - targetIndex) : 0;
-        if (sizeDifference > 0) {
-          shiftUp += sizeDifference;
-          addSource(
-            'bendAKneeOrStandTall',
-            findPerk(actor, BEND_A_KNEE_OR_STAND_TALL_ID)?.name ?? 'Bend A Knee Or Stand Tall',
-            { shiftUp: sizeDifference },
-          );
-        }
-      }
-
-      // Big Preds Are My Specialty - see BIG_PREDS_ARE_MY_SPECIALTY_ID's own comment above. Not
-      // gated on isAttack - RAW says "Infiltration Skill Tests," not "Attacks."
-      if (rolledSkill == 'infiltration' && actorHasPerk(actor, BIG_PREDS_ARE_MY_SPECIALTY_ID)) {
-        const sizeOrder = Object.keys(E20.actorSizes);
-        const actorIndex = sizeOrder.indexOf(actor.system.size);
-        const targetIndex = sizeOrder.indexOf(target.system.size);
-        const bigPredsDifference = actorIndex != -1 && targetIndex != -1
-          ? Math.max(0, targetIndex - actorIndex)
-          : 0;
-        if (bigPredsDifference > 0) {
-          shiftUp += bigPredsDifference;
-          addSource(
-            'bigPredsAreMySpecialty',
-            findPerk(actor, BIG_PREDS_ARE_MY_SPECIALTY_ID)?.name ?? 'Big Preds Are My Specialty',
-            { shiftUp: bigPredsDifference },
-          );
-        }
-      }
-
-      // The Bigger The Heart - see BIGGER_THE_HEART_ID's own comment above. Same per-target
-      // Size-difference shape as Big And Scary just above, but scoped to the actor's own chosen
-      // Empathy skill instead of a hardcoded Intimidation, and a plain difference (no "count as 1
-      // larger" beneficial twist - RAW states none here).
-      const bigTenderPerk = findPerk(actor, EMPATHY_MLP_ID);
-      if (bigTenderPerk?.system.choice && rolledSkill == bigTenderPerk.system.choice
-        && actorHasPerk(actor, BIGGER_THE_HEART_ID)) {
-        const sizeOrder = Object.keys(E20.actorSizes);
-        const actorIndex = sizeOrder.indexOf(actor.system.size);
-        const targetIndex = sizeOrder.indexOf(target.system.size);
-        const biggerHeartDifference = actorIndex != -1 && targetIndex != -1
-          ? Math.max(0, targetIndex - actorIndex)
-          : 0;
-        if (biggerHeartDifference > 0) {
-          shiftUp += biggerHeartDifference;
-          addSource(
-            'biggerTheHeart', findPerk(actor, BIGGER_THE_HEART_ID)?.name ?? 'The Bigger The Heart',
-            { shiftUp: biggerHeartDifference },
-          );
-        }
-      }
+      // Big And Scary, Bend A Knee Or Stand Tall, Big Preds Are My Specialty and The Bigger The
+      // Heart (size-difference upshifts against the target) are item rules on each Perk.
 
       // Dogfighter (Across the Stars, General Perk, p.68): "While the primary pilot of any
       // vehicle of Extended II size or smaller that uses an Aerial Movement type: Edge on
@@ -9786,7 +9668,8 @@ export class Dice {
       // "smaller than you" are two separate conditions RAW states together - both checked, not
       // just the size-order comparison alone (a Common-sized actor attacking a Small target is
       // eligible; a Small actor attacking a same-Small target is not, despite matching the size
-      // category, since they aren't actually smaller).
+      // category, since they aren't actually smaller). The ↑1 is an item rule on the Perk; this only
+      // marks the roll for the Reroll condition (rollContext.smallerTarget).
       if (actorHasPerk(actor, EXTERMINATOR_ID)
         && (target.system.size == 'common' || target.system.size == 'small')) {
         const sizeOrder = Object.keys(E20.actorSizes);
@@ -9794,8 +9677,6 @@ export class Dice {
         const targetIndex = sizeOrder.indexOf(target.system.size);
         if (actorIndex != -1 && targetIndex != -1 && targetIndex < actorIndex) {
           exterminatorEligible = true;
-          shiftUp += 1;
-          addSource('exterminator', findPerk(actor, EXTERMINATOR_ID)?.name ?? 'Exterminator', { shiftUp: 1 });
         }
       }
 
@@ -9918,9 +9799,9 @@ export class Dice {
       // own; "only the highest level of cover applies" per the book anyway, so the two never
       // stack.
       //
-      // Penetrating Rounds, Kentucky Windage, What Cover?, Lay of the Land, Nowhere's Safe x2,
-      // Maximize Cover, Hard Target (TF), Dig In (Cannoneer) and Now You Don't are item Cover
-      // rules (coverRules below).
+      // Penetrating Rounds, Kentucky Windage, Contingency Shot, What Cover?, Lay of the Land,
+      // Nowhere's Safe x2, Maximize Cover, Hard Target (TF), Dig In (Cannoneer) and Now You Don't are
+      // item Cover rules (coverRules below).
       // Bulwark (Tank Focus, 17th level, p.99): "provide cover to allies adjacent to you" - a
       // live reciprocal check (the target counts as having Cover whenever a planted Bulwark
       // holder is within 5ft), rather than toggling a real 'cover' status on every nearby ally as
@@ -9931,7 +9812,7 @@ export class Dice {
       // Take Point - see helpers/rough-terrain.mjs#hasTakePointCover. Same "counts as Cover".
       const hasTakePointCoverGrant = hasTakePointCover(target, targetToken);
       // Indirect - see _isIndirectAttack's own doc comment. Unlike the Perk-based bypasses (Cover
-      // rules, Contingency Shot), this one does NOT beat total cover: RAW exempts a target with total cover
+      // rules), this one does NOT beat total cover: RAW exempts a target with total cover
       // overhead, and totalCover is exactly that case.
       const indirectIgnoresCover = this._isIndirectAttack(actor, item)
         && !targetStatuses.has('totalCover');
@@ -9939,7 +9820,7 @@ export class Dice {
       // counts-as-Cover / base / add on the target's.
       const coverRules = ruleCover(isMelee ? null : actor, isMelee ? null : target, { item, rolledSkill, rolledEssence, isAttack, isMelee, dataset: rollDataset });
       if (!isMelee && (targetStatuses.has('cover') || targetStatuses.has('totalCover') || hasBulwarkCover || hasTakePointCoverGrant || coverRules.grant)
-        && !indirectIgnoresCover && !coverRules.ignore && !this._isContingencyShotAttack(actor, item)) {
+        && !indirectIgnoresCover && !coverRules.ignore) {
         // Two Steps to the Right (Enigma of Combination, Surveyor Focus, 10th level, p.36) shares
         // Lay of the Land's -1 (that item's own Cover rule) with allies within 60ft - "open
         // communication" dropped as unenforceable. Only the biggest reduction counts (they don't
@@ -10355,17 +10236,8 @@ export class Dice {
         }
       }
 
-      // Seconds Between Click & Boom (9th level): "attacks against your Evasion Defense suffer a
-      // Snag." (The "if your attacker misses, you suffer no effects" half has no hook to apply
-      // automatically - not implemented, a known gap.)
-      if (item.system.defenseType == 'evasion' && actorHasPerk(target, SECONDS_BETWEEN_CLICK_AND_BOOM_ID)) {
-        snag = true;
-        addSource(
-          'secondsBetweenClickAndBoom',
-          findPerk(target, SECONDS_BETWEEN_CLICK_AND_BOOM_ID)?.name ?? 'Seconds Between Click & Boom',
-          { snag: true },
-        );
-      }
+      // Seconds Between Click & Boom's Snag on attacks against the holder's Evasion is an incoming
+      // item rule on the Perk.
 
       // enemyDownshift Role Points (e.g. "Interfering Static"/Static Modifier, Power Rangers'
       // Finster's Monster-Matic Cookbook p.289: "imposes... a penalty to Power Weapons or Zord
@@ -10680,22 +10552,6 @@ export class Dice {
     const weapon = this._getParentWeapon(actor, item);
     const weaponSourceId = weapon?.flags?.core?.sourceId ?? weapon?._stats?.compendiumSource ?? weapon?.flags?.essence20?.rulesSource;
     return weaponSourceId == SHOTGUN_ID || weaponSourceId == SUBMACHINE_GUN_ID;
-  }
-
-  /**
-   * Contingency Shot - see CONTINGENCY_SHOT_ID's own comment above (the Edge half is an item rule).
-   * The cover-ignore half of the same Perk; no weapon-trait gate, unlike Kentucky Windage - RAW
-   * scopes this one to "ranged Attack Skill Tests" in general, not a specific weapon quality - but
-   * only as part of a Contingency, read as "in combat, on another combatant's turn".
-   * @param {Actor} actor
-   * @param {Item} item   The weaponEffect being rolled, if any.
-   * @returns {Boolean}
-   * @private
-   */
-  _isContingencyShotAttack(actor, item) {
-    return item?.type == 'weaponEffect' && item.system.classification.style != 'melee'
-      && !!game.combat?.combatant && game.combat.combatant.actor?.id != actor.id
-      && actorHasPerk(actor, CONTINGENCY_SHOT_ID);
   }
 
   /**
