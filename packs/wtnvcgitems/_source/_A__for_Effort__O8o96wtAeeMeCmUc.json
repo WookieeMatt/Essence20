@@ -5,6 +5,9 @@
   "_id": "O8o96wtAeeMeCmUc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DieSubstitution","label":"Untrained: a d2 and no Snag, once per session (\"A\" for Effort!)","mode":"floor","die":"d2","clearSnag":true,"limit":{"per":"session"},"when":["roll:dataset:shift=d20"]}
+    ],
     "prerequisites": {"when":["self:hasType:origin:Intern"]},
     "automation": {
       "status": "full",

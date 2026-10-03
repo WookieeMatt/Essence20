@@ -5164,7 +5164,6 @@
     "CripplingBlowPickConditionTitle": "Crippling Blow",
     "CripplingBlowPickConditionLabel": "Inflict which Condition?",
     "RollDialogDirtyBlows": "Dirty Blows, Impair on a hit instead of damage",
-    "RollDialogCryogenicTouch": "Cryogenic Touch, spend 1 Power to Impair on a hit",
     "RollDialogGuardianStrikes": "Guardian Strikes, forgo damage to impose a Condition on a hit",
     "RollDialogStickInTheSpokes": "Stick In The Spokes, forgo damage to disable/destroy on a hit (once/combat)",
     "RollDialogInterdiction": "Interdiction, forgo damage to Defeat on a hit (once/scene)",

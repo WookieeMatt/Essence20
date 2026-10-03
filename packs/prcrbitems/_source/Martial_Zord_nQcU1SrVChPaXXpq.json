@@ -5,6 +5,9 @@
   "_id": "nQcU1SrVChPaXXpq",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Melee attack with a driver (Martial Zord: ↑1)","upshift":1,"when":["self:type:zord","attack:melee","check:zordHasDriver"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while the Zord has a driver, its melee attacks get ↑1, already counted in the upshift its Roll Options Dialog opens with.</p>"

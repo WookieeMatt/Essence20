@@ -2,7 +2,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { rebuildIndex } from './index.mjs';
-import { applyRuleImmunity, applyRuleSwitches, consumeLimited, requisitionTier, ruleCover, ruleDamageDealt, ruleDamageTaken, ruleDefenseAdjust, ruleDerived, ruleDialogSwitches, ruleMovement, ruleNoLongRangeSnag, ruleNoUntrainedSnag, ruleQualifiedUpgrade, ruleRequisitionAccess, ruleRollSources, ruleScaledDamage, ruleSpecializes } from './adapter.mjs';
+import { applyRuleImmunity, applyRuleSwitches, consumeLimited, requisitionTier, ruleCover, ruleDamageDealt, ruleDamageTaken, ruleDefenseAdjust, ruleDerived, ruleDialogSwitches, ruleDieSubstitution, ruleMovement, ruleNoLongRangeSnag, ruleNoUntrainedSnag, ruleQualifiedUpgrade, ruleRequisitionAccess, ruleRollSources, ruleScaledDamage, ruleSpecializes } from './adapter.mjs';
 
 /**
  * Items converted from hand-written code to item rules (docs/RULES_ENGINE_PLAN.md §10). Each test
@@ -6523,4 +6523,256 @@ test("Contingency Shot: a ranged attack on someone else's turn ignores Cover", (
   expect(ruleCover(actor, regCTarget('common'), { item: melee, combat: turn('someoneElse') }).ignore).toBe(false);
   // Without the Perk, nothing.
   expect(ruleCover(holder([]), regCTarget('common'), { item: ranged, combat: turn('someoneElse') }).ignore).toBe(false);
+});
+
+// regA2 (dice.mjs rollSkill, before the Roll Options Dialog, second pass with the 2026-10-03 engine pieces):
+// best-of die substitutions (DieSubstitution), check: RollModifiers, Two Steps to the Right's ally aura and
+// Cryogenic Touch's declared Impaired-on-hit switch.
+
+describe('regA2', () => {
+  /** The die a roll starts from once the item rules' DieSubstitutions ran (dice.mjs initialShift). */
+  const die = (actor, ctx, start) => ruleDieSubstitution(actor, null, { dataset: {}, ...ctx }, start);
+  const attack = (system = {}, flags = {}) => ({ type: 'weaponEffect', flags, system: { classification: { skill: 'targeting', style: 'projectile' }, damageType: 'ballistic', ...system } });
+
+  test('Aerial Acrobat: attacks use the best of the rolled, Acrobatics and Driving dice', () => {
+    const file = 'ccitems/_source/Aerial_Acrobat_sHtvGtD2PuXzpuxC.json';
+    const skills = (acrobatics, driving) => ({ system: { skills: { targeting: { shift: 'd10' }, acrobatics: { shift: acrobatics }, driving: { shift: driving } } } });
+    expect(die(holder([file], skills('d12', 'd6')), { item: attack() }, 'd10')).toMatchObject({ shift: 'd12', specialize: false, clearSnag: false });
+    expect(die(holder([file], skills('d6', 'd12')), { item: attack() }, 'd10').shift).toBe('d12');
+    // Without the Perk, on a non-attack roll, or when the attack Skill is already the best.
+    expect(die(holder([], skills('d12', 'd6')), { item: attack() }, 'd10').shift).toBe('d10');
+    expect(die(holder([file], skills('d12', 'd6')), { rolledSkill: 'targeting' }, 'd10').shift).toBe('d10');
+    expect(die(holder([file], skills('d2', 'd4')), { item: attack() }, 'd10').shift).toBe('d10');
+  });
+
+  test('Circuit Breaker: Electric attacks (damage type or weapon trait) use the Technology die when it is better', () => {
+    const file = 'tfcrbitems/_source/Circuit_Breaker_9Tnrm8Nb1xDaNCao.json';
+    const make = (technology = 'd12', files = [file]) => misc7Holder(files, { system: { skills: { targeting: { shift: 'd10' }, technology: { shift: technology } } } },
+      [{ id: 'w1', type: 'weapon', name: 'Shock Rifle', system: { traits: ['electric'] } }, { id: 'w2', type: 'weapon', name: 'Rifle', system: { traits: [] } }]);
+    const actor = make();
+    expect(die(actor, { item: attack({ damageType: 'electric' }) }, 'd10').shift).toBe('d12');
+    expect(die(actor, { item: { ...attack(), parent: actor, flags: { essence20: { parentId: 'w1' } } } }, 'd10').shift).toBe('d12');
+    // Without the Perk, on a non-Electric weapon, or when Technology isn't better.
+    expect(die(make('d12', []), { item: attack({ damageType: 'electric' }) }, 'd10').shift).toBe('d10');
+    expect(die(actor, { item: attack() }, 'd10').shift).toBe('d10');
+    expect(die(actor, { item: { ...attack(), parent: actor, flags: { essence20: { parentId: 'w2' } } } }, 'd10').shift).toBe('d10');
+    expect(die(make('d20'), { item: attack({ damageType: 'electric' }) }, 'd10').shift).toBe('d10');
+  });
+
+  test('Cultural Connection: a trained Deception / Persuasion roll uses a better Culture die, Specialized from level 10', () => {
+    const file = 'fffav1items/_source/Cultural_Connection_m90eNtuZvLWouyRc.json';
+    const make = ({ culture = 'd10', deception = 'd6', level = 1, files = [file] } = {}) => holder(files, { system: { level, skills: { deception: { shift: deception }, culture: { shift: culture } } } });
+    const deception = (dataset = {}) => ({ rolledSkill: 'deception', dataset: { shift: null, ...dataset } });
+    expect(die(make(), deception(), 'd6')).toMatchObject({ shift: 'd10', specialize: false });
+    expect(die(make({ level: 10 }), deception(), 'd6')).toMatchObject({ shift: 'd10', specialize: true });
+    expect(die(make({ level: 10 }), { ...deception({ shift: 'd6' }), rolledSkill: 'persuasion' }, 'd6')).toMatchObject({ shift: 'd10', specialize: true });
+    // Without the Perk, on an untrained Skill (the sheet's d20, or the actor's own when the roll has none), when
+    // Culture isn't better, or on an unrelated Skill. Specialized only when the Culture die is used.
+    expect(die(make({ files: [] }), deception(), 'd6').shift).toBe('d6');
+    expect(die(make({ culture: 'd2', deception: 'd20' }), deception(), 'd20').shift).toBe('d20');
+    expect(die(make({ deception: 'd8' }), deception({ shift: 'd20' }), 'd20').shift).toBe('d20');
+    expect(die(make({ deception: 'd20' }), deception({ shift: 'd6' }), 'd6').shift).toBe('d10');
+    expect(die(make({ culture: 'd6', deception: 'd8', level: 10 }), deception(), 'd8')).toMatchObject({ shift: 'd8', specialize: false });
+    expect(die(make(), { ...deception(), rolledSkill: 'alertness' }, 'd6').shift).toBe('d6');
+  });
+
+  test('Brutal Verbalities: a Rouse attempt uses a better Intimidation die', () => {
+    const file = 'sssitems/_source/Brutal_Verbalities_S9AyX2OtvvrE9oM0.json';
+    const make = (intimidation = 'd10', persuasion = 'd6', files = [file]) => holder(files, { system: { skills: { persuasion: { shift: persuasion }, intimidation: { shift: intimidation } } } });
+    const rouse = isRouseAttempt => ({ rolledSkill: 'persuasion', dataset: { isRouseAttempt } });
+    expect(die(make(), rouse(true), 'd6').shift).toBe('d10');
+    // Without the Perk, off a Rouse attempt, or when Intimidation isn't better.
+    expect(die(make('d10', 'd6', []), rouse(true), 'd6').shift).toBe('d6');
+    expect(die(make(), rouse(false), 'd6').shift).toBe('d6');
+    expect(die(make('d6', 'd10'), rouse(true), 'd10').shift).toBe('d10');
+  });
+
+  test("Agency: Wealth rolls never use a die worse than the chosen Skill's", () => {
+    const file = 'atsitems/_source/Agency_bGKG7artYs7uHHz4.json';
+    const make = (wealth = 'd20', files = [file]) => {
+      const actor = holder(files, { system: { skills: { wealth: { shift: wealth }, technology: { shift: 'd6' }, alertness: { shift: 'd20' } } } });
+      for (const item of actor.items.contents) {
+        item.system.choice = 'technology';
+      }
+
+      return actor;
+    };
+
+    expect(die(make(), { rolledSkill: 'wealth' }, 'd20').shift).toBe('d6');
+    // An already-better Wealth die stays; nothing without the Perk or on another Skill; nothing with no choice made.
+    expect(die(make('d8'), { rolledSkill: 'wealth' }, 'd8').shift).toBe('d8');
+    expect(die(make('d20', []), { rolledSkill: 'wealth' }, 'd20').shift).toBe('d20');
+    expect(die(make(), { rolledSkill: 'alertness' }, 'd20').shift).toBe('d20');
+    const unchosen = make();
+    unchosen.items.contents[0].system.choice = '';
+    expect(die(unchosen, { rolledSkill: 'wealth' }, 'd20').shift).toBe('d20');
+  });
+
+  test('Charge Into Battle: ↑1 on an attack with a Multiple Targets weapon', async () => {
+    const { registerCheck } = await import('./predicate.mjs');
+    const { isMultipleTargetsWeapon } = await import('../helpers/multiple-targets.mjs');
+    registerCheck('multipleTargetsWeapon', (actor, option, ctx) => (ctx?.item ? isMultipleTargetsWeapon(actor, ctx.item) : null));
+    const make = (traits, files = ['ttsgitems/_source/Charge_Into_Battle_34O7Y77lZpuhng3G.json']) => misc7Holder(files, {},
+      [{ id: 'weapon1', type: 'weapon', name: 'Sword', system: { traits: [], itemAndUpgradeTraits: traits } }]);
+    const swing = { type: 'weaponEffect', flags: { essence20: { parentId: 'weapon1' } }, system: { classification: { skill: 'might', style: 'melee' }, damageType: 'blunt' } };
+    expect(regASources(make(['multipleTargets']), { item: swing })).toEqual([expect.objectContaining({ shiftUp: 1, label: expect.stringContaining('Charge Into Battle') })]);
+    expect(regAUp(make(['multipleTargets'], []), { item: swing })).toBe(0);
+    expect(regAUp(make([]), { item: swing })).toBe(0);
+    expect(regAUp(make(['multipleTargets']), { rolledSkill: 'might' })).toBe(0);
+  });
+
+  test('Down the Barrel: Edge on Intimidation / Persuasion while the Favorite Weapon is equipped', async () => {
+    const { registerCheck } = await import('./predicate.mjs');
+    const { favoriteWeaponOf } = await import('../helpers/extensions/tf1/common.mjs');
+    registerCheck('favoriteWeaponEquipped', actor => !!favoriteWeaponOf(actor)?.system?.equipped);
+    const make = ({ equipped = true, barrel = true } = {}) => {
+      const files = ['dditems/_source/Favorite_Weapon_emaXxo2XzoHMoNCe.json', ...(barrel ? ['dditems/_source/Down_the_Barrel_U5vb2NBZG6F6SgK1.json'] : [])];
+      const actor = misc7Holder(files, {}, [{ id: 'w1', type: 'weapon', name: 'Blaster', system: { equipped } }]);
+      actor.items.contents[0].flags = { core: { sourceId: 'Compendium.essence20.decepticon_directive.Item.emaXxo2XzoHMoNCe' } };
+      actor.items.contents[0].system.choice = 'w1';
+      return actor;
+    };
+
+    expect(regAEdge(make(), { rolledSkill: 'intimidation' })).toBe(true);
+    expect(regAEdge(make(), { rolledSkill: 'persuasion' })).toBe(true);
+    // An unrelated Skill, the weapon unequipped, without the Perk - or its Skill as the Initiative Skill.
+    expect(regAEdge(make(), { rolledSkill: 'science' })).toBe(false);
+    expect(regAEdge(make({ equipped: false }), { rolledSkill: 'intimidation' })).toBe(false);
+    expect(regAEdge(make({ barrel: false }), { rolledSkill: 'intimidation' })).toBe(false);
+    expect(regAEdge(make(), regAInitiative('intimidation'))).toBe(false);
+  });
+
+  describe('Zord Features: Martial Zord, Zero-G and Zord Sentience read whether the Zord has a driver', () => {
+    const FILES = {
+      martial: 'prcrbitems/_source/Martial_Zord_nQcU1SrVChPaXXpq.json',
+      zeroG: 'prcrbitems/_source/Zero_G_8xV4xaz8Hnqk4TgQ.json',
+      sentience: 'bthitems/_source/Zord_Sentience_idhVrfBIKELsl3OW.json',
+    };
+    const pilot = { uuid: 'Actor.pilot1', type: 'playerCharacter', items: [], system: {} };
+    const zord = (file, { driver = true, type = 'zord' } = {}) => {
+      const actor = holder(file ? [file] : [], { system: { actors: driver ? { crew1: { vehicleRole: 'driver', uuid: pilot.uuid } } : {} } });
+      actor.type = type;
+      return actor;
+    };
+
+    const swing = style => ({ item: { type: 'weaponEffect', flags: {}, system: { classification: { skill: 'might', style }, damageType: 'blunt' } } });
+
+    beforeAll(async () => {
+      const { registerCheck } = await import('./predicate.mjs');
+      const { getVehicleDriver } = await import('../helpers/combat.mjs');
+      registerCheck('zordHasDriver', actor => !!getVehicleDriver(actor));
+      global.fromUuidSync = uuid => (uuid == pilot.uuid ? pilot : null);
+    });
+
+    afterAll(() => {
+      delete global.fromUuidSync;
+    });
+
+    test("Martial Zord: ↑1 on the Zord's own melee attack while it has a driver", () => {
+      expect(regAUp(zord(FILES.martial), swing('melee'))).toBe(1);
+      expect(regAUp(zord(null), swing('melee'))).toBe(0);
+      expect(regAUp(zord(FILES.martial, { driver: false }), swing('melee'))).toBe(0);
+      expect(regAUp(zord(FILES.martial), swing('energy'))).toBe(0);
+      expect(regAUp(zord(FILES.martial, { type: 'vehicle' }), swing('melee'))).toBe(0);
+    });
+
+    test("Zero-G: ↑1 on the Zord's own ranged attack while it has a driver", () => {
+      expect(regAUp(zord(FILES.zeroG), swing('energy'))).toBe(1);
+      expect(regAUp(zord(FILES.zeroG), swing('melee'))).toBe(0);
+      expect(regAUp(zord(FILES.zeroG, { driver: false }), swing('energy'))).toBe(0);
+    });
+
+    test("Zord Sentience: ↑1 on the Zord's own Driving while unpiloted", () => {
+      expect(regAUp(zord(FILES.sentience, { driver: false }), { rolledSkill: 'driving' })).toBe(1);
+      expect(regAUp(zord(null, { driver: false }), { rolledSkill: 'driving' })).toBe(0);
+      expect(regAUp(zord(FILES.sentience), { rolledSkill: 'driving' })).toBe(0);
+      expect(regAUp(zord(FILES.sentience, { driver: false }), { rolledSkill: 'might' })).toBe(0);
+      expect(regAUp(zord(FILES.sentience, { driver: false }), regAInitiative('driving'))).toBe(0);
+    });
+  });
+
+  test('Two Steps to the Right: Edge on Infiltration / Survival for an ally within 60 ft of a holder, once however many', async () => {
+    const { useAllyLookup } = await import('./links.mjs');
+    const { setWorldLookups } = await import('./predicate.mjs');
+    const file = 'eocitems/_source/Two_Steps_to_the_Right_a5xcpj3rHW5EW354.json';
+    const roller = holder([]);
+    const surveyor = holder([file]);
+    const other = holder([file]);
+    const place = actor => {
+      const token = { actor, center: { x: 0, y: 0 }, document: { disposition: 1 } };
+      actor.getActiveTokens = () => [token];
+      return token;
+    };
+
+    global.canvas = { tokens: { placeables: [place(roller), place(surveyor), place(other)] } };
+    let near = [surveyor, other];
+    const asked = [];
+    setWorldLookups({ alliesWithin: (actor, feet) => (asked.push(feet), near) });
+    useAllyLookup(true);
+    try {
+      expect(regASources(roller, { rolledSkill: 'infiltration' })).toEqual([expect.objectContaining({ edge: true, label: expect.stringContaining('Two Steps to the Right') })]);
+      expect(regAEdge(roller, { rolledSkill: 'survival' })).toBe(true);
+      expect(asked).toContain(60);
+      // An unrelated Skill, the Initiative roll, no ally holding it in reach - and never the holder's own roll.
+      expect(regAEdge(roller, { rolledSkill: 'wealth' })).toBe(false);
+      expect(regAEdge(roller, regAInitiative('survival'))).toBe(false);
+      near = [];
+      expect(regAEdge(roller, { rolledSkill: 'infiltration' })).toBe(false);
+      near = [roller];
+      expect(regASources(surveyor, { rolledSkill: 'infiltration' }).filter(source => source.label.includes('Two Steps'))).toEqual([]);
+    } finally {
+      useAllyLookup(false);
+      setWorldLookups({ alliesWithin: null });
+      delete global.canvas;
+    }
+  });
+
+  test('Cryogenic Touch: an unarmed-attack switch costing 1 Personal Power, then Impaired on each target hit', async () => {
+    const { fireTriggers } = await import('./triggers.mjs');
+    const actor = regAWritable(misc7Holder(['jttitems/_source/Cryogenic_Touch_dDHjUwjLlGJhiQvI.json'], { system: { powers: { personal: { value: 1 } } } }));
+    const unarmed = { item: { type: 'weaponEffect', flags: {}, system: { classification: { skill: 'brawn', style: 'melee' }, damageType: 'blunt' } } };
+    const armed = { item: { type: 'weaponEffect', flags: { essence20: { parentId: 'w1' } }, system: { classification: { skill: 'brawn', style: 'melee' }, damageType: 'blunt' } } };
+    expect(regASwitches(actor, unarmed)).toEqual([expect.objectContaining({ type: 'checkbox', value: false })]);
+    expect(regASwitches(actor, armed)).toEqual([]);
+    expect(regASwitches(actor, { rolledSkill: 'brawn' })).toEqual([]);
+    const options = await regATick(actor, unarmed);
+    expect(options.ruleKeys).toEqual(['cryogenicTouch']);
+    expect(actor.system.powers.personal.value).toBe(0);
+    // Not offered once the Power can't be paid.
+    expect(regASwitches(actor, unarmed)).toEqual([]);
+
+    global.ChatMessage = { create: async () => {}, getSpeaker: () => ({}) };
+    const toggled = [];
+    const foe = { name: 'Foe', isOwner: true, statuses: new Set(), toggleStatusEffect: async (...args) => toggled.push(args) };
+    await fireTriggers(actor, 'hit', { roll: { ...unarmed, isAttack: true, isMelee: true, switches: [] }, outcome: 'success', targets: [foe] });
+    expect(toggled).toEqual([]);
+    await fireTriggers(actor, 'miss', { roll: { ...unarmed, isAttack: true, isMelee: true, switches: ['cryogenicTouch'] }, outcome: 'failure', targets: [foe] });
+    expect(toggled).toEqual([]);
+    await fireTriggers(actor, 'hit', { roll: { ...unarmed, isAttack: true, isMelee: true, switches: ['cryogenicTouch'] }, outcome: 'success', targets: [foe] });
+    expect(toggled).toEqual([['impaired', { active: true }]]);
+  });
+
+  test('"A" for Effort!: an untrained roll starts at a d2 with no Snag, once per session', async () => {
+    const file = 'wtnvcgitems/_source/_A__for_Effort__O8o96wtAeeMeCmUc.json';
+    const actor = misc7Holder([file], { system: { skills: { science: { shift: 'd20' } } } });
+    const untrained = { rolledSkill: 'science', dataset: { shift: 'd20' } };
+    const first = die(actor, untrained, 'd20');
+    expect(first).toMatchObject({ shift: 'd2', clearSnag: true });
+    // A d2 already (an Essence's untrained bonus) still counts as untrained.
+    expect(die(actor, untrained, 'd2')).toMatchObject({ shift: 'd2', clearSnag: true });
+    await first.spend();
+    expect(die(actor, untrained, 'd20')).toMatchObject({ shift: 'd20', clearSnag: false });
+    // A trained roll, or no Perk: nothing.
+    const fresh = misc7Holder([file]);
+    expect(die(fresh, { rolledSkill: 'science', dataset: { shift: 'd8' } }, 'd8')).toMatchObject({ shift: 'd8', clearSnag: false });
+    expect(die(misc7Holder([]), untrained, 'd20')).toMatchObject({ shift: 'd20', clearSnag: false });
+    // A new session frees it again.
+    const settings = game.settings;
+    game.settings = { get: () => 2 };
+    try {
+      expect(die(actor, untrained, 'd20')).toMatchObject({ shift: 'd2', clearSnag: true });
+    } finally {
+      game.settings = settings;
+    }
+  });
 });
