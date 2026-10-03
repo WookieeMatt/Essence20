@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Calm Beast (Calming)","when":["skill:animalHandling","roll:specialization~calming"],"upshift":1}
+      {"type":"RollModifier","label":"Calm Beast (Calming)","when":["skill:animalHandling","roll:specialization=calming"],"upshift":1}
     ],
     "automation": {
       "status": "full",

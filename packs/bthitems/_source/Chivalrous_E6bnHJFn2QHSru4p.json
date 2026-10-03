@@ -7,7 +7,7 @@
   "system": {
     "rules": [
       {"type":"Use","label":"Add a Story Point to the pool","limit":{"per":"encounter"},"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} adds a Story Point to the team's pool."}]},
-      {"type":"RollModifier","label":"Chivalrous (Diplomacy)","when":["skill:persuasion","roll:specialization~diplomacy"],"upshift":2}
+      {"type":"RollModifier","label":"Chivalrous (Diplomacy)","when":["skill:persuasion","roll:specialization=diplomacy"],"upshift":2}
     ],
     "automation": {
       "status": "full",

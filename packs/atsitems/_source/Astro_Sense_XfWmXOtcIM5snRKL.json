@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Astro-Sense (Space)","when":["skill:survival","roll:specialization~space"],"edge":true},
-      {"type":"RollModifier","label":"Astro-Sense (Astro-Nav)","when":["skill:technology","roll:specialization~astro-nav"],"edge":true}
+      {"type":"RollModifier","label":"Astro-Sense (Space)","when":["skill:survival","roll:specialization=space"],"edge":true},
+      {"type":"RollModifier","label":"Astro-Sense (Astro-Nav)","when":["skill:technology","roll:specialization=astro-nav"],"edge":true}
     ],
     "automation": {
       "status": "full",

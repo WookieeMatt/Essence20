@@ -4,7 +4,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"EMT Crash Course (Medicine)","when":["skill:science","roll:specialization~medicine"],"edge":true}
+      {"type":"RollModifier","label":"EMT Crash Course (Medicine)","when":["skill:science","roll:specialization=medicine"],"edge":true}
     ],
     "automation": {
       "status": "partial",

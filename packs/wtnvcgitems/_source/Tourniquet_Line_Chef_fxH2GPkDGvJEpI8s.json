@@ -7,7 +7,7 @@
   "system": {
     "rules": [
       {"type":"Use","label":"Heal 1 Health on yourself or an ally","steps":[{"do":"pickAlly","includeSelf":true},{"do":"heal","to":"target","amount":1}]},
-      {"type":"RollModifier","label":"Tourniquet Line Chef (Medicine)","when":["skill:science","roll:specialization~medicine"],"edge":true}
+      {"type":"RollModifier","label":"Tourniquet Line Chef (Medicine)","when":["skill:science","roll:specialization=medicine"],"edge":true}
     ],
     "automation": {
       "status": "full",

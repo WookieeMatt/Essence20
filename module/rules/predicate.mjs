@@ -540,12 +540,17 @@ export function evaluateTag(tag, ctx) {
     }
 
     // specialization~<name> - rolled with a Specialization whose name contains that text.
-    const specialized = /^specialization~(.+)$/.exec(rest);
+    // specialization=<name> - exactly that name (ignoring case).
+    const specialized = /^specialization(~|=)(.+)$/.exec(rest);
     if (specialized) {
       const key = ctx.dataset?.specializationKey;
       const name = ctx.dataset?.specializationName ?? ctx.dataset?.specialization
         ?? (key ? ctx.self?.system?.skills?.[ctx.rolledSkill]?.specializations?.[key]?.name : null);
-      return ctx.dataset ? !!name && lower(name).includes(lower(specialized[1])) : null;
+      if (!ctx.dataset) {
+        return null;
+      }
+
+      return !!name && (specialized[1] == '=' ? lower(name).trim() == lower(specialized[2]).trim() : lower(name).includes(lower(specialized[2])));
     }
 
     switch (rest) {

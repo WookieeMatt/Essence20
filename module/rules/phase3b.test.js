@@ -1225,6 +1225,8 @@ describe('round 35: scaled damage', () => {
     expect(evaluateTag('roll:dataset:kind', contextFor({ self: me }))).toBeNull();
     expect(evaluateTag('roll:specialization~chem', roll({ specializationKey: 's1' }))).toBe(true);
     expect(evaluateTag('roll:specialization~chem', roll({}))).toBe(false);
+    expect(evaluateTag('roll:specialization=chemistry', roll({ specializationKey: 's1' }))).toBe(true);
+    expect(evaluateTag('roll:specialization=chem', roll({ specializationKey: 's1' }))).toBe(false);
     const other = makeActor([], { name: 'Other' });
     const combat = { started: true, turns: [{ actor: me }, { actor: other }] };
     expect(evaluateTag('combat:first', contextFor({ self: me, combat }))).toBe(true);
