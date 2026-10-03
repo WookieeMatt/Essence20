@@ -1,6 +1,7 @@
 import { registerCostRule, registerDerived, registerPreRoll, registerPostRoll, registerSpecializes, registerUse } from "../../extensions.mjs";
 import { getMissionEpoch, getSceneEpoch } from "../../scene-clock.mjs";
 import { worldActors } from "../../companion-link.mjs";
+import { ruleQualifiedUpgrade } from "../../../rules/adapter.mjs";
 import { effectsOf, has, itemOf, itemsOf, parentWeapon, Q2, SILENT_BATTLEDRESS, sourceOf, T, traitsOf } from "./common.mjs";
 
 /**
@@ -124,11 +125,6 @@ export function perkAccess(actor, item) {
   }
 
   if (item.type == 'weapon') {
-    // Oorah! (Sgt Slaughter Sourcebook p.15): "you are Qualified in all Standard weapons".
-    if (has(actor, Q2.oorah) && atMost(availability, 'standard')) {
-      return 'qualified';
-    }
-
     if (has(actor, Q2.whisperWarrior) && isSilentMartialArts(item)) {
       return 'qualified';
     }
@@ -152,12 +148,6 @@ export function perkAccess(actor, item) {
     }
   }
 
-  // The Promise of Riches (Intercontinental Adventures p.103): "you are Trained with Limited
-  // weapons and Limited battledress."
-  if (has(actor, Q2.promiseOfRiches) && atMost(availability, 'limited')) {
-    return 'trained';
-  }
-
   return null;
 }
 
@@ -171,18 +161,12 @@ export function onRequisitionAccess(actor, item, out) {
 }
 
 /**
- * Upgrades this actor is Qualified in: Oorah!'s "silent battledress upgrade", Upgrade Training's
- * (Intercontinental Adventures p.95) "three new Limited weapon upgrades or one Restricted weapon
- * upgrade".
+ * Upgrades this actor is Qualified in: Upgrade Training's (Intercontinental Adventures p.95) picks,
+ * and any Qualification rule's `upgrades` (Oorah!'s Silent battledress upgrade among them).
  */
 export function isQualifiedUpgrade(actor, upgrade) {
-  const source = sourceOf(upgrade) ?? upgrade?.uuid;
-  if (has(actor, Q2.oorah) && (source == SILENT_BATTLEDRESS || (upgrade?.type == 'upgrade' && norm(upgrade?.name) == 'silent' && upgrade?.system?.type == 'armor'))) {
-    return true;
-  }
-
   const training = itemOf(actor, Q2.upgradeTraining);
-  return !!training && chosenOn(training).some(chosen => matchesChosen(upgrade, chosen));
+  return (!!training && chosenOn(training).some(chosen => matchesChosen(upgrade, chosen))) || ruleQualifiedUpgrade(actor, upgrade);
 }
 
 function attachedUpgrades(item) {

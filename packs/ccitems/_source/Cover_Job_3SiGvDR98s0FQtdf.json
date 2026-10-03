@@ -5,6 +5,12 @@
   "_id": "3SiGvDR98s0FQtdf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Cover job Skill (Smarts or Social)","from":"list","options":[{"value":"alertness","label":"Alertness"},{"value":"culture","label":"Culture"},{"value":"science","label":"Science"},{"value":"survival","label":"Survival"},{"value":"technology","label":"Technology"},{"value":"animalHandling","label":"Animal Handling"},{"value":"deception","label":"Deception"},{"value":"performance","label":"Performance"},{"value":"persuasion","label":"Persuasion"},{"value":"streetwise","label":"Streetwise"}]},
+      {"type":"ChoiceSet","key":"profession","label":"Cover job profession","from":"text"},
+      {"type":"RollModifier","label":"Cover Job ({choice.profession}: ↑1)","when":["skill:{choice.skill}"],"upshift":1},
+      {"type":"DialogSwitch","label":"Relates to your profession, {choice.profession} (Cover Job: Specialized)","when":["not:self:data:inCombat","ask:relates to {choice.profession}"],"specialize":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when gained, pick a Smarts or Social Skill and a profession; rolls with that Skill get ↑1, labelled Cover Job in the Roll Options Dialog. Roll Options Dialog: outside combat, a Cover Job: relates to your profession switch makes the roll Specialized.</p>"

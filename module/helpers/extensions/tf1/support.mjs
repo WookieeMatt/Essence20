@@ -1,5 +1,5 @@
 import {
-  registerApplyDialog, registerCostRule, registerDialogToggles, registerPostRoll, registerRollSources, registerUse,
+  registerCostRule, registerPostRoll, registerRollSources, registerUse,
 } from "../../extensions.mjs";
 import { getNearbyAllyTokens } from "../../allies.mjs";
 import { activateForWindow, getSceneEpoch, isActiveForWindow } from "../../scene-clock.mjs";
@@ -16,7 +16,6 @@ import {
  * Solid-State Energon hazards.
  */
 
-const essenceOf = skill => CONFIG.E20?.skillToEssence?.[skill];
 const target = () => firstTarget()?.actor ?? null;
 
 /* -------------------------------------------- */
@@ -57,51 +56,6 @@ export async function tf1SupportPostRoll(actor, results, checkContext, { hits = 
       }
 
       await actor.setFlag('essence20', LOADED_FLAG, { scene, counts });
-    }
-  }
-}
-
-/* -------------------------------------------- */
-/*  Dialog choices                               */
-/* -------------------------------------------- */
-
-export function tf1SupportToggles(actor, { rolledSkill } = {}) {
-  const toggles = [];
-  const essence = essenceOf(rolledSkill);
-  const add = (name, label) => toggles.push({ name, label, type: 'checkbox' });
-
-  // Collection of Secrets (Inquisitor, 20th level, p.41): "when you spend a Story Point to receive a
-  // clue, you gain Edge on all Smarts- and Social-based Skill Tests to act on that information. This
-  // bonus lasts until the end of the session."
-  if (['smarts', 'social'].includes(essence) && isActiveForWindow(actor, 'tf1Secrets', 'mission')) {
-    add('tf1Secrets', T('Tf1ToggleSecrets', { perk: nameOf(actor, TF1.collectionOfSecrets, 'Collection of Secrets') }));
-  }
-
-  // Storage Compartments (Raider, 1st level, p.61): "Anyone searching you for an object hidden in a
-  // compartment suffers Snag on their Skill Test." Offered to the searcher when their target holds it.
-  const searched = target();
-  if (searched && searched.id != actor?.id && has(searched, TF1.storageCompartments)) {
-    add('tf1Storage', T('Tf1ToggleStorage', { name: searched.name }));
-  }
-
-  return toggles;
-}
-
-export async function tf1SupportApplyDialog(actor, options) {
-  const ext = options.ext ?? {};
-  if (ext.tf1Secrets) {
-    if (options.snag) {
-      options.snag = false;
-    } else {
-      options.edge = true;
-    }
-  }
-
-  if (ext.tf1Storage) {
-    if (options.edge) {
-      options.edge = false;
-    } else {
-      options.snag = true;
     }
   }
 }
@@ -160,22 +114,6 @@ function originalAltMode(actor) {
 const GLITCH_FLAG = 'tf1Glitch';
 
 export const SUPPORT_USES = [
-  {
-    // Collection of Secrets: the Story Point for the clue, then Edge for the session (the mission).
-    id: 'tf1Secrets', matches: item => sourceOf(item) == TF1.collectionOfSecrets,
-    async run(item) {
-      const actor = item.parent;
-      const { canSpendForActor, spendForActor } = await import("../../story-points.mjs");
-      if (!canSpendForActor(actor, 1)) {
-        ui.notifications.warn(T('Tf1NoStoryPoint'));
-        return null;
-      }
-
-      await spendForActor(actor, 1);
-      await activateForWindow(actor, 'tf1Secrets', 'mission');
-      return T('Tf1SecretsOn', { name: actor.name, perk: item.name });
-    },
-  },
   {
     // Comms Probe (Infiltrator Analyst, 1st level, p.40): "If you are within 10 feet of an electronic
     // device that is sending or receiving messages, you can spend a Free action and attempt a DIF 12
@@ -615,8 +553,6 @@ export const FLEXIBLE_SWITCH_RULE = {
 
 registerRollSources(tf1SupportSources);
 registerPostRoll(tf1SupportPostRoll);
-registerDialogToggles(tf1SupportToggles);
-registerApplyDialog(tf1SupportApplyDialog);
 registerCostRule(PARTNERED_RULE);
 registerCostRule(FLEXIBLE_SWITCH_RULE);
 SUPPORT_USES.forEach(registerUse);

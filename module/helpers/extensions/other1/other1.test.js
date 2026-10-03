@@ -66,12 +66,6 @@ describe('jtt', () => {
     expect(jtt.rerollStillFails(12, [])).toBe(false);
   });
 
-  test('Dark Dimension ties read from tags or names', () => {
-    expect(jtt.isDarkDimension({ name: 'Darkonda', system: {} })).toBe(true);
-    expect(jtt.isDarkDimension({ name: 'Blob', system: { creatureTags: 'Dark Dimension' } })).toBe(true);
-    expect(jtt.isDarkDimension({ name: 'Putty', system: {} })).toBe(false);
-  });
-
   test('plainDataset keeps only plain values', () => {
     expect(jtt.plainDataset({ skill: 'might', shiftUp: 1, obj: {}, fn: () => 1, flag: true })).toEqual({ skill: 'might', shiftUp: 1, flag: true });
   });
@@ -177,11 +171,11 @@ describe('cobra gear', () => {
 
   test('an upgrade on unequipped armor is not worn', () => {
     const armor = item('armor', { id: 'arm2', system: { equipped: false } });
-    const up = item('upgrade', { source: gear.O1_CC.poisonResistance, flags: { parentId: 'arm2' } });
+    const up = item('upgrade', { source: gear.O1_CC.dielectric, flags: { parentId: 'arm2' } });
     const t = actor([armor, up]);
-    expect(gear.wears(t, gear.O1_CC.poisonResistance)).toBe(false);
+    expect(gear.wears(t, gear.O1_CC.dielectric)).toBe(false);
     armor.system.equipped = true;
-    expect(gear.wears(t, gear.O1_CC.poisonResistance)).toBe(true);
+    expect(gear.wears(t, gear.O1_CC.dielectric)).toBe(true);
   });
 
   test('Onslaught offers the other effects, or a Maneuver', () => {
@@ -217,35 +211,11 @@ describe('more', () => {
     expect(more.otherOrigins(rows, holder).map(r => r.name)).toEqual(['Pegasus']);
   });
 
-  test('Champion His Way adds +2 to every Defense under Dark Energon', async () => {
-    const { registrySnapshot } = await import('../../extensions.mjs');
-    const holder = actor([item('perk', { source: more.O1_MORE.championHisWay })], {
-      energon: { dark: { value: 1 } },
-      defenses: { toughness: { total: 12, string: '' }, evasion: { total: 11, string: '' } },
-      essences: {},
-      movement: {},
-    });
-    for (const fn of registrySnapshot().derived) {
-      fn(holder);
-    }
-
-    expect(holder.system.defenses.toughness.total).toBe(14);
-    expect(holder.system.defenses.evasion.total).toBe(13);
-  });
-
-  test('the duplicate Decepticon Directive copies of the Rites work too', async () => {
-    const { findExtUse, registrySnapshot } = await import('../../extensions.mjs');
+  test('the duplicate Decepticon Directive copy of Eat the Weak works too', async () => {
+    const { findExtUse } = await import('../../extensions.mjs');
     const DDX = id => `Compendium.essence20.decepticon_directive.Item.${id}`;
-    expect(findExtUse(item('perk', { source: DDX('QKJ19OgpdHNXUBQy') }))?.id).toBe('o1DistillHisEssence');
     expect(findExtUse(item('perk', { source: DDX('hzCEZfTNDsQcOjUB') }))?.id).toBe('o1EatTheWeak');
-    const holder = actor([item('perk', { source: DDX('j9FW3wF6mKnVFj0s') })], {
-      energon: { dark: { value: 1 } }, defenses: { toughness: { total: 12, string: '' } }, essences: {}, movement: {},
-    });
-    for (const fn of registrySnapshot().derived) {
-      fn(holder);
-    }
-
-    expect(holder.system.defenses.toughness.total).toBe(14);
+    expect(findExtUse(item('perk', { source: DDX('kIeIcRQVWg4v9CZL') }))?.id).toBe('o1EatTheWeak');
   });
 });
 

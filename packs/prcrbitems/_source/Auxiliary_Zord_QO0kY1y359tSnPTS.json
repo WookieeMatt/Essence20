@@ -5,6 +5,9 @@
   "_id": "QO0kY1y359tSnPTS",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Auxiliary Zord","when":["attack:melee","self:type:zord"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 Strength and +2 Health for the Zord. Automatic: the Zord's melee attacks deal +1 damage, listed as an Auxiliary Zord bonus on the attack's chat card.</p>"

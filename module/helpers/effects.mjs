@@ -49,9 +49,12 @@ export function onManageActiveEffect(event, owner) {
  * @param {HTMLElement} target The element carrying data-action (see this function's own doc
  *   comment on onEditActiveEffect below for why this - not event.target - is what carries the
  *   dataset this needs).
+ * @param {Object} [options]
+ * @param {String} [options.behavior]   Overrides the setting - "wizard", "blank" or "ask". The item
+ *   sheet's Add (rules/sheet.mjs) passes one, since its author has already said what they want.
  * @returns {Promise<ActiveEffect[]>|void}
  */
-export async function onCreateActiveEffect(event, owner, target) {
+export async function onCreateActiveEffect(event, owner, target, { behavior: forced } = {}) {
   event.preventDefault();
   const data = target.dataset;
 
@@ -59,7 +62,7 @@ export async function onCreateActiveEffect(event, owner, target) {
     return;
   }
 
-  const behavior = game.settings.get("essence20", "effectAddBehavior");
+  const behavior = forced ?? game.settings.get("essence20", "effectAddBehavior");
   let useWizard = behavior === "wizard";
 
   if (behavior === "ask") {

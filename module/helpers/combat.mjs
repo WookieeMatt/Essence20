@@ -8,13 +8,11 @@ import { isSealedAboard } from "./vehicle-upgrades.mjs";
 import {
   actorHasPerk, bankPendingBonus, clearPendingBonus, findPerk, getPendingBonus, hasUsedThisEncounter, markUsedThisEncounter,
 } from "./perks.mjs";
-import { getUses, markUsed } from "./scene-clock.mjs";
 import { isPersonalShieldActive } from "./personal-shield.mjs";
 import { PENDING_ELEMENTAL_SHIELD_FLAG_KEY } from "./team-buffs.mjs";
 import { isWisdomOfTheEldersActive } from "./wisdom-of-the-elders.mjs";
 import { applyAtAllCostDamage, isAtAllCostActive } from "./at-all-cost.mjs";
 import { grantGridElementalAdaptationResistance } from "./grid-elemental-adaptation.mjs";
-import { isProtectedTarget } from "./protected-target.mjs";
 import { AEGIS_CLAMPED_FLAG, isRecklessAbandonActive } from "./reckless-abandon.mjs";
 import { E20 } from "./config.mjs";
 import { applyEssenceAttack, isEssenceDamageType } from "./essence-attack.mjs";
@@ -22,7 +20,6 @@ import { isMonsterFormActive } from "./monster-morph.mjs";
 import { grantNotOnMyWatchReaction } from "./not-on-my-watch.mjs";
 import { actorHasZordFeature } from "./zord-features.mjs";
 import { getMegaformParticipants } from "./megaform-participants.mjs";
-import { canRiseAgainPreventDefeat, RISE_AGAIN_DEFEAT_ENCOUNTER_FLAG } from "./rise-again.mjs";
 import { checkEmotionalStrengthAngerTrigger, deactivateShynessOnDamage } from "./emotional-mastery.mjs";
 import { deactivatePhantomOnDamage } from "./phantom.mjs";
 import { consumeSelfPreservationImmunity } from "./self-preservation.mjs";
@@ -41,27 +38,18 @@ const RELIC_KEY_ID = `${PR_CRB}uSlClAv3oJjf54pa`;
 const BENEATH_THE_HELMET = "Compendium.essence20.beneath_the_helmet.Item.";
 const ZORD_SENTIENCE_ID = `${BENEATH_THE_HELMET}idhVrfBIKELsl3OW`;
 
-// Dogfighter (Across the Stars, General Perk, p.68) - see getDefenseValue's own doc comment below
-// for the +2 Evasion Defense half. dice.mjs's own Edge-on-Driving/Targeting half uses this exact
-// same ID and qualification shape independently, since the two halves are read from opposite
-// sides (the pilot's own roll vs. the piloted vehicle's own Defense).
-const DOGFIGHTER_ID = "Compendium.essence20.across_the_stars.Item.twl2N01FD8XKO0s1";
-
-// The 3 Finster's Monster-Matic Cookbook Warlord capstones (20th level) whose own "while in
-// Monster Form, reduce incoming damage" clause is built here - see getWarlordDamageReduction's
-// own doc comment below. (The other 3 Warlords - Cruel/Thorn/Venom - have no damage-reduction
-// clause of their own; their own built pieces live in dice.mjs instead.)
+// Flame Warlord (Finster's Monster-Matic Cookbook, 20th level) - its own "while in Monster Form,
+// reduce incoming damage" clause is built here, see getWarlordDamageReduction's own doc comment
+// below. (Frost and Stone Warlord's reductions are their items' own DamageModifier rules; the other
+// 3 Warlords - Cruel/Thorn/Venom - have no damage-reduction clause of their own, their own built
+// pieces live in dice.mjs instead.)
 const FMMC = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.";
 const FLAME_WARLORD_ID = `${FMMC}TPrNnDxBKHIajafY`;
-const FROST_WARLORD_ID = `${FMMC}iFHlsLgUvmlT8cMK`;
-const STONE_WARLORD_ID = `${FMMC}QlFNI9fQZXqO5N2J`;
 
 /**
- * Flame/Frost/Stone Warlord (Finster's Monster-Matic Cookbook, all 20th level, p.288/291/294):
- * each grants a flat incoming-damage reduction while in Monster Form - Flame reduces non-Element
- * damage by 1, Frost reduces Energy damage by 2, Stone reduces ALL damage by 1. Same "subtract
- * from the incoming value before Immunity/Resistance processing" shape Adapted Wavelength's own
- * reduction already establishes.
+ * Flame Warlord (Finster's Monster-Matic Cookbook, 20th level, p.288): a flat incoming-damage
+ * reduction while in Monster Form - non-Element damage is reduced by 1, subtracted from the
+ * incoming value before Immunity/Resistance processing.
  * @param {Actor} actor
  * @param {String} damageType
  * @returns {Number}
@@ -69,14 +57,6 @@ const STONE_WARLORD_ID = `${FMMC}QlFNI9fQZXqO5N2J`;
 function getWarlordDamageReduction(actor, damageType) {
   if (!isMonsterFormActive(actor)) {
     return 0;
-  }
-
-  if (actorHasPerk(actor, STONE_WARLORD_ID)) {
-    return 1;
-  }
-
-  if (actorHasPerk(actor, FROST_WARLORD_ID) && ENERGY_DAMAGE_TYPES.has(damageType)) {
-    return 2;
   }
 
   if (actorHasPerk(actor, FLAME_WARLORD_ID) && !ENERGY_DAMAGE_TYPES.has(damageType)) {
@@ -93,105 +73,7 @@ const AEGIS_ID = "Compendium.essence20.gi_joe_crb.Item.0ZTjZ36gN74889am";
 // Not Done Yet - see its own check near AEGIS_ID's identical-shaped clamp below.
 const NOT_DONE_YET_ID = "Compendium.essence20.gi_joe_crb.Item.wGAWnAM5zUgcNP9c";
 
-// It's Morphin Time! (PR CRB, p.33) - see its own check near Rise Again's identical isMorphed
-// gate below. Widened to an array: Let's Go Psycho! (Finster's Monster-Matic Cookbook, every
-// Psycho Path Role, 1st level, p.284/288/291/294/298/300) grants the exact same "when reduced to 0
-// Health, you may choose to avoid Defeat by automatically returning to your natural form,
-// unconscious, and at 1 Health" clause verbatim, off a distinct compendium Item - same "same
-// clause, different book" dispatch idiom as Dig Deep/Perimeter Defender's own widened arrays.
-const MORPHIN_TIME_PERK_IDS = [
-  "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso",
-  "Compendium.essence20.finster_s_monster_matic_cookbook.Item.qMvUP1yEtsSo6KDh",
-];
-
 const IMPENETRABLE_SHIELD_ID = "Compendium.essence20.gi_joe_crb.Item.eEUl7OA9yWAk0QD3";
-
-// Defender's Oath (GI Joe CRB, Bodyguard Focus, 20th level, p.110) - see
-// hasNearbyDefendersOathProtection's own doc comment below.
-const DEFENDERS_OATH_ID = "Compendium.essence20.gi_joe_crb.Item.LuQoEjHVOM8Yoc0Y";
-
-/**
- * Defender's Oath (GI Joe CRB, Bodyguard Focus, 20th level, p.110): "your protected target can't
- * be Defeated, even if they have 0 Health, as long as they are within 10 feet of you and you
- * aren't Defeated." Scans for a nearby Bodyguard who holds Defender's Oath, has designated the
- * damaged actor as their own Protected Target (helpers/protected-target.mjs), isn't Defeated
- * themselves, and is within 10ft - the same "scan canvas.tokens.placeables for a qualifying
- * granter" shape getShieldUpgradeBonus already establishes, just checking a specific protected-
- * target relationship instead of disposition/range alone. No frequency cap in RAW, unlike We All
- * Go Home/Aegis's own once-per-encounter Defeat-prevention grants - a standing protection for as
- * long as the conditions hold.
- * @param {Actor} actor   The actor about to be reduced to 0 Health.
- * @returns {Boolean}
- */
-function hasNearbyDefendersOathProtection(actor) {
-  const actorToken = actor.getActiveTokens?.()?.[0];
-  if (!actorToken || !canvas?.tokens) {
-    return false;
-  }
-
-  for (const token of canvas.tokens.placeables) {
-    if (token === actorToken || !token.actor) {
-      continue;
-    }
-
-    if (!actorHasPerk(token.actor, DEFENDERS_OATH_ID) || !isProtectedTarget(token.actor, actor)) {
-      continue;
-    }
-
-    if (token.actor.statuses?.has('defeated')) {
-      continue;
-    }
-
-    if (canvas.grid.measurePath([token.center, actorToken.center]).distance <= 10) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-// We All Go Home Or Nobody's Going Home (GI Joe CRB, Focus: Frontline Leader, 20th level, p.87) -
-// see findWeAllGoHomeHolder's own doc comment below.
-const WE_ALL_GO_HOME_ID = "Compendium.essence20.gi_joe_crb.Item.3NS825G6UdbdW7ZY";
-const WE_ALL_GO_HOME_ENCOUNTER_FLAG = 'weAllGoHomeUsedThisEncounter';
-
-/**
- * We All Go Home Or Nobody's Going Home (GI Joe CRB, Focus: Frontline Leader, 20th level, p.87):
- * "once per encounter, when you or an ally you can see would be Defeated, you or they instead
- * have 1 Health." Unlike Defender's Oath (a standing protection scoped to one designated target)
- * this covers BOTH the holder themselves and any nearby ally, gated once per encounter per
- * HOLDER (not per actor saved) - "can see" is approximated as "anywhere on the scene," the same
- * "drop the unenforceable narrative precondition" idiom this project already applies elsewhere.
- * Checks the actor's own Perk first (the self case), then scans for a nearby ally holding it with
- * their own use still available (the same disposition-based "nearby ally" scan
- * helpers/allies.mjs#getNearbyAllyTokens establishes, done inline here since this needs the
- * qualifying token itself, not just a boolean).
- * @param {Actor} actor   The actor about to be reduced to 0 Health.
- * @returns {Actor|null}   The Perk-holding actor whose own once-per-encounter use should be
- *   marked (either `actor` itself, or a nearby ally), or null if no one can save them.
- */
-function findWeAllGoHomeHolder(actor) {
-  if (actorHasPerk(actor, WE_ALL_GO_HOME_ID) && !hasUsedThisEncounter(actor, WE_ALL_GO_HOME_ENCOUNTER_FLAG)) {
-    return actor;
-  }
-
-  const actorToken = actor.getActiveTokens?.()?.[0];
-  if (!actorToken || !canvas?.tokens) {
-    return null;
-  }
-
-  for (const token of canvas.tokens.placeables) {
-    if (token === actorToken || !token.actor || token.document.disposition !== actorToken.document.disposition) {
-      continue;
-    }
-
-    if (actorHasPerk(token.actor, WE_ALL_GO_HOME_ID) && !hasUsedThisEncounter(token.actor, WE_ALL_GO_HOME_ENCOUNTER_FLAG)) {
-      return token.actor;
-    }
-  }
-
-  return null;
-}
 
 // We are the Coinless (Through the Shattered Grid, Coinless Resistance Origin Benefit, p.20) - see
 // findCoinlessRescuers's own doc comment below.
@@ -265,14 +147,6 @@ async function askCoinlessRescuer(actor, rescuers) {
 // own check below.
 const IMMORTAL_REBEL_SOUL_ID = "Compendium.essence20.wtnv_citizens_guide.Item.SYFScAH8lDshgLNM";
 
-// Renegade Commander (Sgt Slaughter Sourcebook, Alternate Renegade Role Perk, 5th level, p.12):
-// "At 5th level, once per scene, if you would be Defeated, you may choose to drop to 1 Health
-// instead." The Perk is taken at 1st level, so the save waits for 5th. Same self-clamp-once-per-
-// scene shape as Immortal Rebel Soul just above - "may choose to" is granted
-// unconditionally rather than built as an opt-out prompt, the same "player self-polices whether
-// they'd rather just go down" idiom this project already accepts for similar always-beneficial
-// once-per-scene saves.
-const RENEGADE_COMMANDER_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Item.JgJRqxXzTPBOlOBz";
 
 // Life Supporting (Cobra Codex, Restricted Battledress Upgrade, p.101): "If you would be Defeated
 // after being reduced to 0 Health, you immediately regain 1 Health. You can't use Life Support
@@ -288,7 +162,7 @@ export const LIFE_SUPPORTING_SPENT_FLAG = 'lifeSupportingSpent';
 const LIFE_SUPPORTING_RECHARGE_DIF = 20;
 
 const isLifeSupporting = item => item?.type == 'upgrade'
-  && (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == LIFE_SUPPORTING_ID;
+  && (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == LIFE_SUPPORTING_ID;
 
 /**
  * The worn Life Supporting Upgrade that is ready to fire, if any - see LIFE_SUPPORTING_ID's own
@@ -327,18 +201,6 @@ registerUse({
   run: item => rechargeLifeSupporting(item),
 });
 
-const DO_NOT_GO_QUIETLY_ID = "Compendium.essence20.jump_through_time.Item.llL4HUNxVJDNIaej";
-
-// Avoid The Inevitable (Factions in Action Vol 1: Ferocious Fighters, Cobra-La Origin Benefit,
-// p.78): "Once per combat, when you would be Defeated, you gain 1 temporary Health. This Health
-// lasts until removed or at the end of the scene." This project has no separate temporary-Health
-// pool anywhere (grepped, zero hits) - the same "drop to 1 Health instead of a real second pool"
-// approximation Renegade Commander/Immortal Rebel Soul/Do Not Go Quietly just above already use
-// for an identical "would-be-Defeated becomes survivable" clause is used here too, since the
-// practical effect (1 Health standing between the actor and Defeat, right now) is the same either
-// way.
-const AVOID_THE_INEVITABLE_ID = "Compendium.essence20.ferocious_fighters.Item.RfYYmA2bDBVZsMl3";
-const BABY_HOLD_TOGETHER_ID = "Compendium.essence20.gi_joe_crb.Item.ybthZ8mmCSe3ZO84";
 
 // Elemental Shield (Beneath the Helmet, Aqua Ranger, 9th/18th level, p.42) - see
 // team-buffs.mjs's own doc comment on PENDING_ELEMENTAL_SHIELD_FLAG_KEY. "Energy weapon" is this
@@ -403,45 +265,6 @@ async function consumeDigDeepReduction(actor, amount) {
   return Math.max(0, amount - pending.amount);
 }
 
-// Adapted Wavelength (A Jump Through Time, Orange Ranger, Modified Shell III option, p.33):
-// "Choose a single type of Element damage. You always reduce sources that inflict that type of
-// damage by 1 to a minimum of 0. You can choose this up to two times but must choose a different
-// element each time." selectionLimit: 2 means an actor can hold up to 2 separate instances of
-// this Perk item, sharing this one compendium sourceId but each with its own system.choice (the
-// same "no numeric field of its own, read directly off system.choice" shape
-// helpers/phantom-focus.mjs#hasPhantomFocusOption already established) - "a different element
-// each time" means at most one instance ever matches a given damageType, so a plain some() is
-// enough (no need to sum multiple matches for the same type).
-const ADAPTED_WAVELENGTH_ID = "Compendium.essence20.jump_through_time.Item.nmMTFyzNTa9MDbP2";
-
-/**
- * Adapted Wavelength's flat -1 (floored at 0) reduction against the actor's own chosen Element
- * sub-type - see ADAPTED_WAVELENGTH_ID's own comment above.
- * @param {Actor} actor
- * @param {String} damageType
- * @returns {Number}   1 if a matching instance is held, 0 otherwise.
- */
-function getAdaptedWavelengthReduction(actor, damageType) {
-  if (!ENERGY_DAMAGE_TYPES.has(damageType)) {
-    return 0;
-  }
-
-  const hasMatch = actor?.items?.some?.(item => {
-    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
-    return sourceId == ADAPTED_WAVELENGTH_ID && item.system.choice == damageType;
-  });
-
-  return hasMatch ? 1 : 0;
-}
-
-// Knock, Knock! (Technorganic Secrets, Carapaced Origin, p.39): "You gain 1 Toughness and reduce
-// incoming Sharp damage by 1 (to a minimum of 0)." The Toughness half is already a plain
-// compendium Active Effect on this Item; this constant/function only cover the flat, always-on
-// Sharp-damage reduction, same "subtract from the incoming value before Immunity/Resistance
-// processing" shape Adapted Wavelength's own reduction already establishes just below - unlike
-// Adapted Wavelength, this isn't a player choice, so a plain actorHasPerk() check is enough.
-const KNOCK_KNOCK_ID = "Compendium.essence20.technorganic_secrets.Item.KihkWHZ1lwLfcwk0";
-
 // Energy Mastery (Decepticon Directive, Elementalist Focus, 20th level, p.54): "you gain Edge on
 // attack Skill Tests with any weapon that deals damage of any of your chosen Elements and those
 // attacks inflict +1 damage. In addition, you gain Immunity to damage of the type you originally
@@ -465,17 +288,6 @@ const ENERGY_MASTERY_ID = "Compendium.essence20.decepticon_directive.Item.bjR8V1
 function isEnergyMasteryImmune(actor, damageType) {
   return actorHasPerk(actor, ENERGY_MASTERY_ID) && !!damageType
     && findPerk(actor, ENERGY_AFFINITY_ID)?.system.choice == damageType;
-}
-
-/**
- * Knock, Knock!'s flat -1 (floored at 0) reduction against incoming Sharp damage - see
- * KNOCK_KNOCK_ID's own comment above.
- * @param {Actor} actor
- * @param {String} damageType
- * @returns {Number}   1 if the actor holds the Perk, 0 otherwise.
- */
-function getKnockKnockReduction(actor, damageType) {
-  return damageType == 'sharp' && actorHasPerk(actor, KNOCK_KNOCK_ID) ? 1 : 0;
 }
 
 // Hardened Armor (Across the Stars, Gold Ranger, 1st level, p.52) - this is the `perk`-type item
@@ -504,50 +316,11 @@ async function grantHardenedArmorResistance(actor, damageType, amount) {
   }
 }
 
-// Energy Rebuttal (Through the Shattered Grid, Guardian of Eltar, Chief Guardian choice, 13th
-// level, p.73): "Whenever you use the Defend action against an oncoming Attack that deals Energy
-// damage and it fails, you absorb some of the residual energy to deal an extra 2 Energy damage on
-// your next Attack. This Role Perk can only be used once per combat scene." RE-CATEGORIZED - this
-// was repeatedly cited alongside Golden Guardian/Fe-BURN! as needing a "counter-attack triggered
-// by being hit" shape this project doesn't have, but "you absorb... to deal extra damage on your
-// NEXT Attack" is exactly the already-established banked-bonus shape (bank now, consume on the
-// next matching roll) - no "you may" in the text either, so it's automatic, not a player choice,
-// same passive-grant idiom as Hardened Armor/Supreme Guardian's own reactive checks just above.
-// "Whenever you use the Defend action... and it fails" is approximated as "whenever you take
-// Energy damage" (the same unenforceable-precondition drop this project already accepts
-// elsewhere - no Defend-action state is tracked anywhere in this codebase). Consumption lives in
-// dice.mjs's own damageBonusValue sum, the same shape Environmental Assist's own banked bonus
-// already established, gated to any weaponEffect Attack (RAW names no damage-type restriction on
-// the NEXT Attack itself).
-const ENERGY_REBUTTAL_ID = "Compendium.essence20.through_the_shattered_grid.Item.EnergyRebuttal10";
-export const PENDING_ENERGY_REBUTTAL_FLAG_KEY = 'pendingEnergyRebuttal';
-const ENERGY_REBUTTAL_ENCOUNTER_FLAG = 'energyRebuttalUsedThisEncounter';
-const ENERGY_REBUTTAL_DAMAGE_BONUS = 2;
-
-/**
- * @param {Actor} actor
- * @param {String} damageType
- * @param {Number} amount   The amount actually applied (0 means Immune/no-op - see applyDamage).
- */
-async function grantEnergyRebuttalBonus(actor, damageType, amount) {
-  if (
-    // "Whenever you use the Defend action against an oncoming Attack that deals Energy damage and it
-    // fails" - the Defending Condition (helpers/named-actions.mjs) is what says a Defend was used.
-    amount <= 0 || !ENERGY_DAMAGE_TYPES.has(damageType) || !actorHasPerk(actor, ENERGY_REBUTTAL_ID) || !actor.statuses?.has?.('defending')
-    || hasUsedThisEncounter(actor, ENERGY_REBUTTAL_ENCOUNTER_FLAG)
-  ) {
-    return;
-  }
-
-  await bankPendingBonus(actor, PENDING_ENERGY_REBUTTAL_FLAG_KEY, { amount: ENERGY_REBUTTAL_DAMAGE_BONUS });
-  await markUsedThisEncounter(actor, ENERGY_REBUTTAL_ENCOUNTER_FLAG);
-}
-
 // Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99): "when you are subjected to a non-attack
 // effect against your Toughness, the effect suffers a Snag. If the effect still meets or exceeds
-// your Toughness defense, you have resistance to the damage." The Snag is a roll source in
-// helpers/target-riders.mjs#rollRiderSources; the resistance halves that effect's own damage, see
-// toughEnoughDamage below.
+// your Toughness defense, you have resistance to the damage." The Snag is the item's own incoming
+// rule (system.rules); the resistance halves that effect's own damage, see toughEnoughDamage
+// below.
 const TOUGH_ENOUGH_ID = "Compendium.essence20.gi_joe_crb.Item.RoIa80w6EAZR0uFP";
 
 /**
@@ -586,26 +359,6 @@ async function grantSensitiveSnag(actor, amount) {
   }
 }
 
-// Push Through Pain (Finster's Monster-Matic Cookbook, Path of Cruelty, 2nd level, p.285):
-// "Anytime you suffer 2 or more damage in a single attack, you regain 1 Personal Power." Same
-// applyDamage()-hook shape as Sensitive/Hardened Armor/Supreme Guardian above - "a single attack"
-// is read as "this one applyDamage() call" (the natural per-hit granularity this function already
-// operates at), capped at the actor's own Personal Power max.
-const PUSH_THROUGH_PAIN_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.HhdIEMBVmXF8UsXu";
-
-/**
- * Push Through Pain's own reactive Personal Power regen - see PUSH_THROUGH_PAIN_ID's own comment
- * above.
- * @param {Actor} actor
- * @param {Number} amount   The amount actually applied (0 means Immune/no-op - see applyDamage).
- */
-async function grantPushThroughPainRegen(actor, amount) {
-  if (amount >= 2 && actorHasPerk(actor, PUSH_THROUGH_PAIN_ID) && actor.system.powers?.personal) {
-    const newValue = Math.min(actor.system.powers.personal.max, actor.system.powers.personal.value + 1);
-    await actor.update({ 'system.powers.personal.value': newValue });
-  }
-}
-
 // Cruel Warlord (Finster's Monster-Matic Cookbook, 20th level, p.284): "Whenever you... suffer
 // Psychic damage, you regain 2 Personal Power." (The "Fumble a Skill Test" half lives in
 // dice.mjs's own _rollSkillHelper instead, right where isFumble is already computed.)
@@ -613,7 +366,7 @@ const CRUEL_WARLORD_ID = `${FMMC}F3TRKmoaUOtHrlzq`;
 
 /**
  * Cruel Warlord's own reactive Personal Power regen on taking Psychic damage - see
- * CRUEL_WARLORD_ID's own comment above. Same applyDamage()-hook shape as Push Through Pain.
+ * CRUEL_WARLORD_ID's own comment above. Same applyDamage()-hook shape as Sensitive.
  * @param {Actor} actor
  * @param {String} damageType
  * @param {Number} amount   The amount actually applied (0 means Immune/no-op - see applyDamage).
@@ -809,21 +562,6 @@ export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignor
     value -= defense.shield ?? 0;
   }
 
-  // Dogfighter (Across the Stars, General Perk, p.68) - see DOGFIGHTER_ID's own comment above. The
-  // Perk's own qualifier ("any vehicle of Extended II size or smaller that uses an Aerial Movement
-  // type") is checked against THIS vehicle, mirroring the size/movement check dice.mjs's own
-  // Edge half already performs on the pilot's side.
-  if (defenseType == 'evasion' && actor.type == 'vehicle' && actor.system.movement?.aerial?.base > 0) {
-    const sizeOrder = Object.keys(E20.actorSizes);
-    const sizeIndex = sizeOrder.indexOf(actor.system.size);
-    if (sizeIndex != -1 && sizeIndex <= sizeOrder.indexOf('extended2')) {
-      const driver = getVehicleDriver(actor);
-      if (driver && actorHasPerk(driver, DOGFIGHTER_ID)) {
-        value += 2;
-      }
-    }
-  }
-
   return value;
 }
 
@@ -908,9 +646,6 @@ export function getSkillRanks(actor, skill) {
  * Hardened Armor (Across the Stars, Gold Ranger, 1st level, p.52): once real damage of a given
  * type actually lands here, see grantHardenedArmorResistance's own doc comment above for the
  * Resistance-after-hit grant this function calls on the way out.
- * Energy Rebuttal (Through the Shattered Grid, Guardian of Eltar, Chief Guardian choice, 13th
- * level, p.73): once real Energy damage actually lands here, see grantEnergyRebuttalBonus's own
- * doc comment above for the banked "extra 2 damage on your next Attack" grant this calls.
  * Elemental Shield (Beneath the Helmet, Aqua Ranger, 9th/18th level, p.42): a banked "ignore N
  * Energy damage" grant is consumed against the incoming amount right after Immunity has already
  * zeroed it if applicable - see consumeElementalShieldReduction's own doc comment above.
@@ -924,8 +659,8 @@ export function getSkillRanks(actor, skill) {
  * Dig Deep (WTNV Citizen's Guide, General Perk, p.47): a banked "ignore 1 damage" grant (any
  * damage type) is consumed right after Elemental Shield's own reduction - see
  * consumeDigDeepReduction's own doc comment above.
- * Flame/Frost/Stone Warlord (Finster's Monster-Matic Cookbook, all 20th level): a flat, type-
- * scoped or type-agnostic reduction while in Monster Form - see getWarlordDamageReduction's own
+ * Flame Warlord (Finster's Monster-Matic Cookbook, 20th level): a flat non-Element reduction
+ * while in Monster Form - see getWarlordDamageReduction's own
  * doc comment above.
  * @param {Actor} actor
  * @param {Number} damageValue
@@ -956,19 +691,9 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     return (await applyEssenceAttack(actor, damageValue, damageType, { ignoreImmunity })).applied;
   }
 
-  // Adapted Wavelength - see ADAPTED_WAVELENGTH_ID's own comment above. A permanent, always-on
-  // reduction applied to the incoming value itself, ahead of Immunity/Elemental Shield below -
-  // order doesn't matter for an already-Immune actor (still zeroed either way).
-  damageValue = Math.max(0, damageValue - getAdaptedWavelengthReduction(actor, damageType));
-
-  // Knock, Knock! - see KNOCK_KNOCK_ID's own comment above. Same always-on, ahead-of-
-  // Immunity/Elemental Shield placement as Adapted Wavelength just above.
-  damageValue = Math.max(0, damageValue - getKnockKnockReduction(actor, damageType));
-
   // Wisdom of the Elders - Resilient Armor (Through the Shattered Grid, Guardian of Eltar,
-  // 9th/18th level, p.72): "Ignore 1 damage per turn" while active - unlike Adapted Wavelength
-  // above (scoped to one specific Energy sub-type), this applies to ANY incoming damage type, and
-  // unlike Elemental Shield's own one-shot "next attack" bank, it's a live toggle applying to
+  // 9th/18th level, p.72): "Ignore 1 damage per turn" while active - this applies to ANY incoming
+  // damage type, and unlike Elemental Shield's own one-shot "next attack" bank, it's a live toggle applying to
   // every hit for as long as it's switched on (RAW's own "per turn" phrasing is approximated as
   // "per hit while active" - this codebase has no per-turn-reset bucket to track a once-per-turn
   // use separately from the toggle itself, the same "closest existing mechanism" idiom already
@@ -977,7 +702,7 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     damageValue = Math.max(0, damageValue - 1);
   }
 
-  // Flame/Frost/Stone Warlord - see getWarlordDamageReduction's own doc comment above.
+  // Flame Warlord - see getWarlordDamageReduction's own doc comment above.
   damageValue = Math.max(0, damageValue - getWarlordDamageReduction(actor, damageType));
 
   const isEmpImmuneViaShield = damageType == 'emp' && isPersonalShieldActive(actor)
@@ -997,6 +722,12 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   if (damageType == 'stun') {
     const newStunValue = actor.system.stun.value + amount;
     await actor.update({ 'system.stun.value': newStunValue });
+
+    // Item rules' takesDamage Triggers see Stun hits too (the after-damage hooks below are Health only).
+    if (amount > 0) {
+      const { fireTriggers } = await import("../rules/triggers.mjs");
+      await fireTriggers(actor, 'takesDamage', { damage: { amount, damageType }, roll: { damageType, damageAmount: amount } });
+    }
 
     // Stun (damage type): "the target is denied a Move action for the listed number of turns" -
     // unlike the Defeated toggle below, this one IS accurately turned back off once it should be
@@ -1029,9 +760,7 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     await grantHardenedArmorResistance(actor, damageType, amount);
     await grantGridElementalAdaptationResistance(actor, damageType, amount);
     await grantSupremeGuardianTechRegen(actor, damageType, amount);
-    await grantEnergyRebuttalBonus(actor, damageType, amount);
     await grantSensitiveSnag(actor, amount);
-    await grantPushThroughPainRegen(actor, amount);
     await grantCruelWarlordPsychicRegen(actor, damageType, amount);
     if (amount > 0) {
       await checkEmotionalStrengthAngerTrigger(actor);
@@ -1054,6 +783,13 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   const previousValue = actor.system.health.value;
   let newValue = Math.max(0, previousValue - amount);
 
+  // Item rules' wouldBeDefeated Triggers (rules/triggers.mjs) - first in the Defeat-save chain, once
+  // every reduction above has landed.
+  if (newValue <= 0 && amount > 0) {
+    const { wouldBeDefeated } = await import("../rules/triggers.mjs");
+    newValue = Math.max(0, previousValue - await wouldBeDefeated(actor, amount, damageType, { isCrit }));
+  }
+
   // Immortal Rebel Soul (WTNV Citizen's Guide, Soldier Role, StrexCorp Rebel Focus, p.46): "Once
   // per investigation, when you would be Defeated due to your Health... dropping to 0, it stays
   // at 1 instead." Approximated as once per scene (this project's usual idiom for a
@@ -1065,93 +801,12 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     await markUsedThisEncounter(actor, 'immortalRebelSoulUsedThisEncounter');
   }
 
-  // Renegade Commander - see RENEGADE_COMMANDER_ID's own comment above. Same shape as Immortal
-  // Rebel Soul just above.
-  if (newValue <= 0 && amount > 0 && actorHasPerk(actor, RENEGADE_COMMANDER_ID) && (Number(actor.system?.level) || 0) >= 5
-    && getUses(actor, 'renegadeCommanderUsedThisScene', 'scene') < 1) {
-    newValue = 1;
-    await markUsed(actor, 'renegadeCommanderUsedThisScene', { window: 'scene' });
-  }
-
-  // Life Supporting - see LIFE_SUPPORTING_ID's own comment above. Same shape as Renegade
-  // Commander just above, but spent until its recharge test succeeds rather than per scene.
+  // Life Supporting - see LIFE_SUPPORTING_ID's own comment above. A once-per-scene Defeat save,
+  // but spent until its recharge test succeeds rather than per scene.
   const lifeSupporting = newValue <= 0 && amount > 0 ? readyLifeSupporting(actor) : null;
   if (lifeSupporting) {
     newValue = 1;
     await lifeSupporting.setFlag('essence20', LIFE_SUPPORTING_SPENT_FLAG, true);
-  }
-
-  // Avoid The Inevitable - see AVOID_THE_INEVITABLE_ID's own comment above. Same shape as
-  // Renegade Commander just above.
-  if (newValue <= 0 && amount > 0 && actorHasPerk(actor, AVOID_THE_INEVITABLE_ID)
-    && !hasUsedThisEncounter(actor, 'avoidTheInevitableUsedThisEncounter')) {
-    newValue = 1;
-    await markUsedThisEncounter(actor, 'avoidTheInevitableUsedThisEncounter');
-  }
-
-  // Do Not Go Quietly (A Jump Through Time, Last of my Kind Origin Benefit, p.26, built
-  // 2026-09-12): "The first time you face defeat in a scene, you instead drop to 1 Health and
-  // gain the Impaired Condition for the rest of the scene." Same once-per-encounter Health clamp
-  // shape as Immortal Rebel Soul/Renegade Commander just above, plus applying Impaired
-  // (toggleStatusEffect, the same idiom every other Condition-application Perk in this project
-  // already uses) - "for the rest of the scene" isn't actively cleared, the same "approximate an
-  // unenforceable duration, GM manages the edges" idiom this project already accepts broadly.
-  if (newValue <= 0 && amount > 0 && actorHasPerk(actor, DO_NOT_GO_QUIETLY_ID)
-    && !hasUsedThisEncounter(actor, 'doNotGoQuietlyUsedThisEncounter')) {
-    newValue = 1;
-    await markUsedThisEncounter(actor, 'doNotGoQuietlyUsedThisEncounter');
-    await actor.toggleStatusEffect('impaired', { active: true });
-  }
-
-  // Defender's Oath - see hasNearbyDefendersOathProtection's own doc comment above.
-  if (newValue <= 0 && amount > 0 && hasNearbyDefendersOathProtection(actor)) {
-    newValue = 1;
-  }
-
-  // Rise Again (Through the Shattered Grid, General Perk, p.115) - see
-  // helpers/rise-again.mjs's own doc comment. Same "once per scene, would-be-Defeated becomes 1
-  // Health instead" shape as Immortal Rebel Soul/Renegade Commander/Do Not Go Quietly above, plus
-  // an isMorphed gate and an "unless a Critical Success" exception (isCrit, threaded in from this
-  // function's one real caller, chat.mjs#onApplyDamage).
-  if (newValue <= 0 && amount > 0 && canRiseAgainPreventDefeat(actor, isCrit)) {
-    newValue = 1;
-    await markUsedThisEncounter(actor, RISE_AGAIN_DEFEAT_ENCOUNTER_FLAG);
-  }
-
-  // It's Morphin Time! (PR CRB, p.33): "When reduced to 0 Health, you may choose to avoid Defeat
-  // by automatically returning to your natural form, unconscious, and at 1 Health." Same "would-be-
-  // Defeated becomes 1 Health instead" clamp shape as Immortal Rebel Soul/Renegade Commander above,
-  // gated on isMorphed like Rise Again just above, but with no once-per-scene limit (RAW states
-  // none) and two extra effects of its own: reverting Morph (system.isMorphed) and applying
-  // Unconscious. Deliberately NOT routed through sheet-handlers/power-ranger-handler.mjs#onMorph
-  // (the sheet's own "Morph" button handler) - that function also swaps the token's image and
-  // clears several other Morph-tied Perk toggles (Boosted Vigor, Powered Plating, etc.), which is
-  // correct for a deliberate, player-driven de-Morph but overreaches for this involuntary one
-  // happening mid-damage-resolution; only the two RAW-stated mechanical effects are applied here.
-  // "You may choose to" is treated as automatic, the same "player self-polices whether they'd have
-  // used it" idiom Renegade Commander's identically-worded clause already accepts just above.
-  if (newValue <= 0 && amount > 0 && actor.system?.isMorphed
-    && MORPHIN_TIME_PERK_IDS.some(id => actorHasPerk(actor, id))) {
-    newValue = 1;
-    await actor.update({ 'system.isMorphed': false });
-    await actor.toggleStatusEffect('unconscious', { active: true });
-  }
-
-  // Baby Hold Together (GI Joe CRB, Mechanized Infantry Focus, 18th level, p.82, built
-  // 2026-09-12): "When your vehicle would be Defeated for the first time in an encounter, it is
-  // reduced to 2 Health instead." Held by the DRIVER, applied to the VEHICLE - the same
-  // driver-holds-it/vehicle-benefits-from-it split Heavy Ordnance's own check already establishes,
-  // but in the opposite direction (vehicle-to-driver lookup rather than driver-to-vehicle), so it
-  // reads the vehicle's own crew map directly rather than reusing dice.mjs's private
-  // _getPilotedVehicle (a Dice-class-only method not reachable from this file).
-  if (newValue <= 0 && amount > 0 && actor.type == 'vehicle'
-    && !hasUsedThisEncounter(actor, 'babyHoldTogetherUsedThisEncounter')) {
-    const driverEntry = Object.values(actor.system?.actors ?? {}).find(crew => crew.vehicleRole == 'driver');
-    const driver = driverEntry ? await fromUuid(driverEntry.uuid) : null;
-    if (driver && actorHasPerk(driver, BABY_HOLD_TOGETHER_ID)) {
-      newValue = 2;
-      await markUsedThisEncounter(actor, 'babyHoldTogetherUsedThisEncounter');
-    }
   }
 
   // Not Done Yet (GI Joe CRB, Renegade base, 5th level, p.97, built 2026-09-12): "While in
@@ -1172,15 +827,6 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   if (newValue <= 0 && amount > 0 && actorHasPerk(actor, AEGIS_ID) && isRecklessAbandonActive(actor)) {
     newValue = 1;
     await actor.setFlag('essence20', AEGIS_CLAMPED_FLAG, true);
-  }
-
-  // We All Go Home Or Nobody's Going Home - see findWeAllGoHomeHolder's own doc comment above.
-  if (newValue <= 0 && amount > 0) {
-    const weAllGoHomeHolder = findWeAllGoHomeHolder(actor);
-    if (weAllGoHomeHolder) {
-      newValue = 1;
-      await markUsedThisEncounter(weAllGoHomeHolder, WE_ALL_GO_HOME_ENCOUNTER_FLAG);
-    }
   }
 
   // We are the Coinless - see findCoinlessRescuers's own doc comment above. Checked LAST in this
@@ -1222,9 +868,7 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   await grantHardenedArmorResistance(actor, damageType, previousValue - newValue);
   await grantGridElementalAdaptationResistance(actor, damageType, previousValue - newValue);
   await grantSupremeGuardianTechRegen(actor, damageType, previousValue - newValue);
-  await grantEnergyRebuttalBonus(actor, damageType, previousValue - newValue);
   await grantSensitiveSnag(actor, previousValue - newValue);
-  await grantPushThroughPainRegen(actor, previousValue - newValue);
   await grantCruelWarlordPsychicRegen(actor, damageType, previousValue - newValue);
   if (previousValue - newValue > 0) {
     await checkEmotionalStrengthAngerTrigger(actor);

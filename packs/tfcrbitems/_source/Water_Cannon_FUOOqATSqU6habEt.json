@@ -5,6 +5,9 @@
   "_id": "FUOOqATSqU6habEt",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Involves fire (Water Cannon: Edge)","when":["self:transformed"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: adds a Directed Element Rifle (Cold) for Bot Mode that needs only one Hardpoint and no Technology requirement. Roll Options Dialog: Edge on Skill Tests involving fire in Alt Mode.</p>"

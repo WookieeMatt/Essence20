@@ -7,15 +7,11 @@ export const GIJ = id => `Compendium.essence20.gi_joe_crb.Item.${id}`;
 
 export const G2 = {
   acuteSense: GIJ('WvjGJ5AcC0z07d0J'),
-  acuteSenseTf: 'Compendium.essence20.tf_crb.Item.rl8hs6ezb6VSDahM',
-  acuteSensePr: 'Compendium.essence20.pr_crb.Item.qKoTBo1FKzCq1qTt',
-  enhancedSensors: GIJ('TIgFDX4ksgRqR3g9'),
   empathetic: GIJ('SQgxzDgyhIjuOMaa'),
   robot: GIJ('xV4nnjMxlb4dmyxo'),
   artillerySupport: GIJ('MrDZK2ifJWpiH24D'),
   brrrt: GIJ('U3NTi35bk2qI8oB6'),
   castling: GIJ('eB7jbgbevLVPxW4e'),
-  duckAndCover: GIJ('2R3saLtDCI1q2QBz'),
   enPassant: GIJ('eVRb1Fp43QMdxV1N'),
   energyResistant: GIJ('lKnjgN4TdHHNktpF'),
   expertKnowledge: GIJ('9H78lRwXzJW6tj9e'),
@@ -39,7 +35,7 @@ export const G2 = {
 export const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 export function itemsOf(actor) {

@@ -5,6 +5,9 @@
   "_id": "cjLsZGJhMeGoy1uO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Drains their Personal Power (Dr. K's Modified Morpher: ↓2)","when":[{"any":["item:type:weaponEffect","item:type:power","item:type:spell"]},"ask:the attack drains the target's Personal Power"],"downshift":2}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: attackers targeting you get a switch for ↓2 when their attack would drain your Personal Power or stop you spending it.</p><p>Left to the table: deciding which attacks count, since none are marked as draining.</p>"

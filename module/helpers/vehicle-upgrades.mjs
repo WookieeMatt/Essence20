@@ -8,106 +8,65 @@
  * - applyToVehicle(): the vehicle's own derived numbers - Defenses, Movement, passengers, granted
  *   traits. Derived only; the trait selector edits the stored traits (apps/trait-selector.mjs
  *   reads _source), so a granted trait is never saved as a chosen one.
- * - crewSources(): the ↑/↓/Edge a crew member (or the vehicle itself) gets on a roll - Racing
- *   Stripes, LIDAR, Onboard GPS, NOD Viewscreens...
- * - defenderSources(): what an attacker suffers against the vehicle or its occupants - Ablative
- *   Armor, Spiked, JAFF, Shielded...
+ * - crewSources(): the ↑/↓/Edge a crew member (or the vehicle itself) gets on a roll - Hydraulic
+ *   Bounce and Treads in Rough Terrain, Nameplate...
+ * - defenderSources(): what an attacker suffers against the vehicle or its occupants - Spiked,
+ *   Shielded...
  * - reduceVehicleDamage(): the once-per damage cuts (Active Protection System, Slat and Reactive
  *   Armor), read by chat.mjs#onApplyDamage.
  *
  * Upgrades that are switched on (Afterburners, Electronic Countermeasures, Smokescreen...) are Use
  * buttons - helpers/action-perks.mjs dispatches them to useVehicleUpgrade() below.
+ *
+ * Many upgrades are item rules instead (system.rules - granted traits, Armor Plating, Racing Stripes,
+ * Stealthy, Ablative Armor, JAFF, Tricked-Out Hydraulics, Camo Netting's switch...), run by module/rules/.
  */
 
-import { getSceneEpoch, getUses, markUsed } from "./scene-clock.mjs";
+import { getUses, markUsed } from "./scene-clock.mjs";
+import { toggleOf } from "../rules/predicate.mjs";
 
 export const VU = {
-  ablativeArmor: 'udbXWIic0wOLDXZk',
   activeProtection: 'EGDb07CgIhbgdQHY',
-  advancedAutopilot: 'cpoT15OyAncmJzEz',
   afterburners: 'ICqafFtaZbexsl5e',
-  allTerrainWheels: 'fX7YCfnYcXSpWGhG',
   antiMatterReactor: 'kOsm7efSfPh531Hm',
-  armorPlating: 'zgetOeeka0vBkImO',
-  artificialIntelligence: '0E1i8G35dacjogud',
-  autopilot: 'iOmrgWu6h9qvP89n',
   camoNetting: 'S3qPHlomgES5iUNi',
-  cowcatcher: 'QrrpYF2M89jDng82',
   digitalCamouflage: 'cBMvfhRA1YV3RF4S',
   doubleBarrel: '6xtWfYIm3TE4ArtK',
-  earlyWarningAlarm: 'ct0eW3BmVFX9iYTx',
   ecm: 'oTPW1JHgRPwmZtr8',
-  emergencySupplies: '7Tn4DVpFisYkXERO',
   energizedPlating: 'ACEcaBK7pFHqq4RU',
   energyResistant: 'iBB7lV76sz9UpDLx',
   enhancedRadarJamming: '2TuY6npYY0UzYdOm',
-  enhancedShocks: 'Qw2aKbgTU8Xh3ahV',
   environmentalInsulation: 'SoEnxu66xHXgCJ3y',
   evasiveHandling: 'MRoi8QxW568uiCir',
   flightConversion: 'psJCjvdROy5gEVGS',
-  focusModule: '6tjR3T26seuNkDLi',
   hydraulicBounce: '0yRAH39SEINP3CGT',
-  integratedComputer: '7XGaJUtxW3NCe8c7',
-  interchangeableParts: '1j1vpae13QKgPZGp',
-  jaff: 'uGSFdauOqFAjyanF',
   killCounter: 'Uie11vx8RiWMoj4X',
-  leadLining: '2twrOiG1nytIYdoj',
-  lidar: 'oejdA1Iw5UJB5tVT',
-  mhdDrive: '6Drlcw6qu216sTuN',
   nameplate: '8VWSF76KXdk2qGpb',
   nitroFuel: '3ZJ8Pqbfhc0JqBPt',
-  nodViewscreens: 'PrQVSgFWjjtZgCH1',
-  onboardGps: '2JsjyEOtWTNHpxDl',
   optimizedSeating: '5LrQ4TGjgWKsomL7',
-  pressurizedCabin: 'Wlcf4Dm1VXchUvk3',
-  racingStripes: 'fFWlwBeGb6aYYtGP',
   radarJammer: 'yVw1WzUd0rGgLab7',
-  rapidDeploymentRamps: 'LJFMCkvGlT8q5KtQ',
   reactiveArmor: 'LPjz7QL1SVYYFaT1',
-  reactiveShocks: 'xG1l9dETqLG3gQsF',
-  redundantBackups: 'MR1ltodbf0bqAVkr',
   reinforcedFirepoints: '4UX6jvtiroLJefr9',
   robustRam: 'c3vKS59Bynt41oTk',
-  rollCage: 'XfqPvQDlP1eD3Cmh',
-  secondGear: 'iMAUhU8J2rQtLmgC',
   selfDestruct: '0xonF9tJvSOcn6Ow',
-  sensorSuite: 'YJfkZpXX5dtsEFKE',
   shallowDraft: 'Ftm5iA7PG6J3M4aN',
   slashingWings: 'nAiUe1uZs6VzqtQY',
   slatArmor: 'oNhv37mjkiWdKhu2',
   smokescreen: '94NUwERfVYs0Tgmh',
   spiked: 'KVwQulJAxVwEcpBw',
-  stealthy: 'fsQc0eTmSHzHBFdG',
   submarineMode: 'ErSK3LwBT1Wg8rKF',
   targetingSystem: 'TMNBoHPbIxrqzBfG',
-  thrustVectoring: 'KbBCyzCUqPeZUkJJ',
   tintedCanopy: 'pmYFN0fUHFIg8u48',
-  titaniumChassis: 'VwPJAu8rlGMw9lBM',
   treads: 'dXx85BLf1RKjn8xg',
-  trickedOutHydraulics: 'BwgnU1Nb1NXFNlsx',
   universalComponents: 'tbjQne2zURN6eOtb',
   biotechEnhancer: 'wDMGtOqx1jpltxG9',
-};
-
-// Upgrades that grant vehicle traits outright.
-const TRAIT_GRANTS = {
-  [VU.advancedAutopilot]: ['autopilotAdvanced'],
-  [VU.artificialIntelligence]: ['ai', 'computerized'],
-  [VU.autopilot]: ['autopilot'],
-  [VU.integratedComputer]: ['computerized'],
-  [VU.sensorSuite]: ['sensors'],
-  [VU.thrustVectoring]: ['vtol'],
-  [VU.shallowDraft]: ['amphibious'],
-  [VU.rapidDeploymentRamps]: ['rapidDeploymentRamps'],
-  [VU.rollCage]: ['rollCage'],
-  [VU.treads]: ['treads'],
 };
 
 const MOVEMENT_TYPES = ['ground', 'aerial', 'swim'];
 const ELEMENTS = ['acid', 'cold', 'electric', 'emp', 'fire', 'laser', 'sonic'];
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? '';
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? '';
 }
 
 const idOf = uuid => String(uuid ?? '').split('.').pop();
@@ -191,10 +150,6 @@ export function applyToVehicle(vehicle) {
     }
   };
 
-  // Armor Plating: "+1 Toughness." Enhanced Shocks: "+1 to the vehicle's Evasion."
-  defense('toughness', has(VU.armorPlating) ? 1 : 0);
-  defense('evasion', has(VU.enhancedShocks) ? 1 : 0);
-
   // Aerial Interface (Quartermaster's Guide p.27): "You can connect your personal shield generator
   // to an air vehicle you drive. While driving, your personal shield provides its benefits to the
   // entire vehicle."
@@ -208,36 +163,14 @@ export function applyToVehicle(vehicle) {
     defense('evasion', 5);
   }
 
-  // Biotech Performance Enhancer (A Jump Through Time p.73): "+2 Evasion Defense" for the scene.
+  // Biotech Performance Enhancer (A Jump Through Time p.73), switched on for the scene by its Use
+  // rule - its "+2 Evasion Defense" is a rule too; the Movement stays below.
   const biotech = isBiotechActive(vehicle);
-  if (biotech) {
-    defense('evasion', 2);
-  }
 
-  // Granted traits; Lead Lining takes Computerized away ("can no longer be targeted as if it were
-  // Computerized").
-  if (system.traits) {
-    for (const [id, traits] of Object.entries(TRAIT_GRANTS)) {
-      if (has(id)) {
-        for (const trait of traits) {
-          if (trait in system.traits) {
-            system.traits[trait] = true;
-          }
-        }
-      }
-    }
-
-    if (has(VU.submarineMode) || has(VU.pressurizedCabin)) {
-      system.pressurized = true;
-    }
-
-    if (isFlightConverted(vehicle) && 'vtol' in system.traits) {
-      system.traits.vtol = true;
-    }
-
-    if (has(VU.leadLining)) {
-      system.traits.computerized = false;
-    }
+  // Flight Conversion grants VTOL while it lasts. Upgrades that grant or take away traits outright,
+  // and the sealed cabin (system.pressurized), are item rules.
+  if (system.traits && isFlightConverted(vehicle) && 'vtol' in system.traits) {
+    system.traits.vtol = true;
   }
 
   // Energy Resistant: "Choose an Element; the vehicle gains Resistance to that damage type."
@@ -293,16 +226,13 @@ export function applyToVehicle(vehicle) {
     each((total, type) => (total > 0 ? total + (type == 'ground' ? 20 : 10) : total));
   }
 
-  // Optimized Seating: "Doubles the vehicle's non-driver, non-gunner passenger capacity, but
-  // decreases every Movement type by 10ft." Camo Netting left on: "-10ft Movement".
+  // Optimized Seating: "decreases every Movement type by 10ft" (the doubled passengers are an item
+  // rule). Camo Netting left on (its rule toggle): "-10ft Movement".
   if (has(VU.optimizedSeating)) {
     each(total => (total > 0 ? total - 10 : total));
-    if (system.crew) {
-      system.crew.numPassengers = (system.crew.numPassengers ?? 0) * 2;
-    }
   }
 
-  if (vehicle.getFlag?.('essence20', 'camoNetting')) {
+  if (toggleOf(upgrades.get(VU.camoNetting), 'camo')) {
     each(total => (total > 0 ? total - 10 : total));
   }
 
@@ -340,8 +270,8 @@ function isFlightConverted(vehicle) {
 }
 
 function isBiotechActive(vehicle) {
-  const biotech = vehicle?.getFlag?.('essence20', 'biotechEnhancer');
-  return !!biotech && biotech.scene == getSceneEpoch();
+  // Switched on for the scene by its Use rule (setToggle "boost" until the scene ends).
+  return !!toggleOf(vehicleUpgrades(vehicle).get(VU.biotechEnhancer), 'boost');
 }
 
 /**
@@ -431,84 +361,15 @@ export function crewSources(actor, skill, item, context = {}) {
     return sources;
   }
 
-  const { vehicle, role } = crewed;
+  const { vehicle } = crewed;
   const upgrades = vehicleUpgrades(vehicle);
   const label = id => upgrades.get(id)?.name ?? id;
   const add = (id, mods) => upgrades.has(id) && sources.push({ id, label: label(id), shiftUp: 0, shiftDown: 0, edge: false, snag: false, ...mods });
-  const driving = role == 'driver' || role == 'self';
-
-  // Racing Stripes: "+2 to Initiative Skill Tests."
-  if (skill == 'initiative' && driving) {
-    add(VU.racingStripes, { shiftUp: 2 });
-  }
-
-  // LIDAR Targeting Unit: "+1 to every vehicle weapon system and hardpoint weapon attack."
-  if (item?.type == 'weaponEffect' && item.parent?.id == vehicle.id) {
-    add(VU.lidar, { shiftUp: 1 });
-  }
-
-  // Cowcatcher: "Edge on Ram attacks."
-  if (item?.system?.isRam) {
-    add(VU.cowcatcher, { edge: true });
-  }
 
   // Hydraulic Bounce / Treads: "Edge on Driving Skill Tests ... in Rough Terrain."
   if (skill == 'driving' && context.inRoughTerrain) {
     add(VU.hydraulicBounce, { edge: true });
     add(VU.treads, { edge: true });
-  }
-
-  // Onboard GPS: "Edge on Survival Skill Tests to navigate while the vehicle is moving." Emergency
-  // Supplies: "Edge on Science (Medicine) Skill Tests to treat wounds." Both offered on their skill;
-  // untick when the test isn't navigation / treating wounds.
-  if (skill == 'survival') {
-    add(VU.onboardGps, { edge: true });
-  }
-
-  if (skill == 'science' || skill == 'medicine') {
-    add(VU.emergencySupplies, { edge: true });
-  }
-
-  // Interchangeable Parts: "+2 on Skill Tests made to repair or adjust the vehicle."
-  if (skill == 'technology') {
-    add(VU.interchangeableParts, { shiftUp: 2 });
-  }
-
-  // NOD Viewscreens: "-2 on Alertness and -2 on Initiative Skill Tests from the limited field of view."
-  if (skill == 'alertness' || skill == 'initiative') {
-    add(VU.nodViewscreens, { shiftDown: 2 });
-  }
-
-  // Stealthy: ↑1 on Infiltration while moving, ↑2 stationary - the ↑1 always, the second one to
-  // untick when moving. The Magnetohydrodynamic Drive doubles both.
-  if (skill == 'infiltration') {
-    const mhd = upgrades.has(VU.mhdDrive);
-    if (upgrades.has(VU.stealthy) || mhd) {
-      const factor = mhd ? 2 : 1;
-      const id = mhd ? VU.mhdDrive : VU.stealthy;
-      sources.push({ id, label: label(id), shiftUp: factor, shiftDown: 0, edge: false, snag: false });
-      sources.push({ id: `${id}-stationary`, label: `${label(id)} (${game.i18n.localize('E20.VehicleStationary')})`, shiftUp: factor, shiftDown: 0, edge: false, snag: false });
-    }
-
-    // Camo Netting: "Edge on Infiltration Skill Tests to hide the stationary vehicle."
-    if (vehicle.getFlag?.('essence20', 'camoNetting')) {
-      add(VU.camoNetting, { edge: true });
-    }
-  }
-
-  // Camo Netting left on while driving: "-2 on Speed Skill Tests".
-  if (vehicle.getFlag?.('essence20', 'camoNetting') && CONFIG?.E20?.skillToEssence?.[skill] == 'speed') {
-    add(VU.camoNetting, { shiftDown: 2 });
-  }
-
-  // Titanium Chassis: "+2 on Might Skill Tests to shove." Second Gear: "Edge on Skill Tests to
-  // push, pull, or tow." The vehicle's own tests.
-  if (role == 'self' && skill == 'might') {
-    add(VU.titaniumChassis, { shiftUp: 2 });
-  }
-
-  if (role == 'self' && (skill == 'brawn' || skill == 'might')) {
-    add(VU.secondGear, { edge: true });
   }
 
   // Nameplate: "Once per day, crew members gain +1 on a single Skill Test made while aboard" - once
@@ -534,23 +395,6 @@ export function crewSources(actor, skill, item, context = {}) {
 export function canUseDrivingForIntimidation(actor) {
   const crewed = getCrewedVehicle(actor);
   return !!crewed && hasVehicleUpgrade(crewed.vehicle, VU.killCounter);
-}
-
-/**
- * Early-Warning Alarm / Focus Module: "+1 to the driver's Willpower [Cleverness] while operating the
- * vehicle." Called from the driver's own Defenses.
- * @returns {{willpower: Number, cleverness: Number}}
- */
-export function driverDefenseBonus(actor) {
-  const crewed = getCrewedVehicle(actor);
-  if (!crewed || crewed.role != 'driver') {
-    return { willpower: 0, cleverness: 0 };
-  }
-
-  return {
-    willpower: hasVehicleUpgrade(crewed.vehicle, VU.earlyWarningAlarm) ? 1 : 0,
-    cleverness: hasVehicleUpgrade(crewed.vehicle, VU.focusModule) ? 1 : 0,
-  };
 }
 
 /**
@@ -583,11 +427,6 @@ export function defenderSources(attacker, item, target, context = {}) {
   const upgrades = vehicleUpgrades(target);
   const label = id => upgrades.get(id)?.name ?? id;
 
-  // Ablative Armor: "An attacker dealing Blunt or Sharp damage to the vehicle suffers -1."
-  if (upgrades.has(VU.ablativeArmor) && ['blunt', 'sharp'].includes(damageType)) {
-    sources.push({ id: 'ablativeArmor', label: label(VU.ablativeArmor), shiftDown: 1 });
-  }
-
   // Spiked: "A melee attacker using Might or Finesse against the vehicle must suffer -1 on the
   // attack or take 1 Sharp damage." The ↓1 is offered; unticked, the attacker takes the Sharp.
   if (upgrades.has(VU.spiked) && context.melee && ['might', 'finesse'].includes(item.system?.classification?.skill)) {
@@ -599,16 +438,6 @@ export function defenderSources(attacker, item, target, context = {}) {
   const plating = upgrades.get(VU.energizedPlating);
   if (plating && context.adjacent) {
     sources.push({ id: 'energizedPlating', label: plating.name, shiftDown: 2, declinedDamage: { value: 1, type: plating.flags?.essence20?.elementChoice ?? 'electric' } });
-  }
-
-  // JAFF: "Once per combat, an incoming attack with a Computerized weapon suffers Snag." Tricked-Out
-  // Hydraulics: the same, for a Ballistic weapon.
-  if (upgrades.has(VU.jaff) && traits.includes('computerized') && getUses(target, 'vehicleJaff') < 1) {
-    sources.push({ id: 'jaff', label: label(VU.jaff), snag: true, once: 'vehicleJaff' });
-  }
-
-  if (upgrades.has(VU.trickedOutHydraulics) && traits.includes('ballistic') && getUses(target, 'vehicleHydraulics') < 1) {
-    sources.push({ id: 'trickedOutHydraulics', label: label(VU.trickedOutHydraulics), snag: true, once: 'vehicleHydraulics' });
   }
 
   // Shielded (Across the Stars p.87): "Each turn, the first listed number of Attacks or damaging
@@ -697,27 +526,12 @@ export async function reduceVehicleDamage(vehicle, amount, attack = {}) {
 }
 
 /**
- * Redundant Backups: "Once per mission, if the vehicle would be Defeated, it drops to 1 Health
- * instead." Called before a vehicle's Defeat is resolved (vehicle-defeat.mjs).
- * @returns {Promise<Boolean>}   Whether it saved the vehicle.
- */
-export async function tryRedundantBackups(vehicle) {
-  if (!hasVehicleUpgrade(vehicle, VU.redundantBackups) || getUses(vehicle, 'vehicleBackups', 'mission') > 0) {
-    return false;
-  }
-
-  await markUsed(vehicle, 'vehicleBackups', { window: 'mission' });
-  await vehicle.update({ 'system.health.value': 1 });
-  return true;
-}
-
-/**
  * Pressurized Cabin (and Submarine Mode): "The sealed compartment grants immunity to Poison and
- * Disease" - to everyone aboard.
+ * Disease" - to everyone aboard. Their item rules seal the cabin (system.pressurized).
  */
 export function isSealedAboard(actor) {
   const crewed = getCrewedVehicle(actor);
-  return !!crewed && (hasVehicleUpgrade(crewed.vehicle, VU.pressurizedCabin) || hasVehicleUpgrade(crewed.vehicle, VU.submarineMode));
+  return !!crewed && !!crewed.vehicle.system?.pressurized;
 }
 
 /* -------------------------------------------- */
@@ -732,10 +546,8 @@ export const VEHICLE_UPGRADE_USES = {
   [VU.flightConversion]: { limit: 'scene' },
   [VU.selfDestruct]: { cost: 'free' },
   [VU.nameplate]: { limit: 'day' },
-  [VU.camoNetting]: {},
   [VU.radarJammer]: { cost: 'free' },
   [VU.enhancedRadarJamming]: {},
-  [VU.biotechEnhancer]: { limit: 'scene' },
 };
 
 /**
@@ -862,13 +674,6 @@ export async function useVehicleUpgrade(item, economy) {
     message = i18n('E20.VehicleUseNameplate');
     break;
 
-  case VU.camoNetting: {
-    const on = !vehicle.getFlag('essence20', 'camoNetting');
-    await vehicle.setFlag('essence20', 'camoNetting', on);
-    message = i18n(on ? 'E20.VehicleUseCamoOn' : 'E20.VehicleUseCamoOff');
-    break;
-  }
-
   case VU.radarJammer:
   case VU.enhancedRadarJamming: {
     const on = !vehicle.getFlag('essence20', 'jamming');
@@ -876,11 +681,6 @@ export async function useVehicleUpgrade(item, economy) {
     message = i18n(on ? 'E20.VehicleUseJammingOn' : 'E20.VehicleUseJammingOff');
     break;
   }
-
-  case VU.biotechEnhancer:
-    await vehicle.setFlag('essence20', 'biotechEnhancer', { scene: getSceneEpoch() });
-    message = i18n('E20.VehicleUseBiotech');
-    break;
 
   default:
     return null;

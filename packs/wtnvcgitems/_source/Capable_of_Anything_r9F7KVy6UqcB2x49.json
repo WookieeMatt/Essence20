@@ -5,6 +5,10 @@
   "_id": "r9F7KVy6UqcB2x49",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:influence:Tragic"]},
+    "rules": [
+      {"type":"Use","label":"Edge on your next Skill Test","limit":{"per":"encounter","max":1},"steps":[{"do":"bank","label":"Capable of Anything","edge":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene): your next Skill Test gets an Edge.</p>"

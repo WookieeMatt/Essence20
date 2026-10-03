@@ -4,14 +4,14 @@ import {
 import { getSceneEpoch } from "../../scene-clock.mjs";
 import { worldActors } from "../../companion-link.mjs";
 import {
-  areAllies, flagOf, gearOfWeapon, held, holds, inAltMode, inBotMode, itemsOf, nameOf, parentWeapon, SCOPE, stampOpen, substitutionShifts, T, TF3,
+  areAllies, flagOf, gearOfWeapon, held, holds, inAltMode, inBotMode, itemsOf, nameOf, parentWeapon, SCOPE, stampOpen, T, TF3,
 } from "./common.mjs";
 
 /**
  * Transformers CRB / Transformers One Sourcebook - everything the Roll Options Dialog and derived data
- * need for the tf3 slice: automatic sources (Holographic Doubles, Siren, Martyr, The Right Of
+ * need for the tf3 slice: automatic sources (Holographic Doubles, Martyr, The Right Of
  * All Sentient Beings, Unexpected Alternative, Target Breakdown, Rotor Blades), self-declared toggles
- * (Hindsight, Mimicry Vocoder, Nose for Trouble, Subordinate, Ladder, Tow Cable & Hook, Water Cannon),
+ * (Hindsight, Mimicry Vocoder, Subordinate, Ladder, Tow Cable & Hook, Water Cannon),
  * Stoic's Defenses, and the Alt Mode Gear's movement/reach/hardpoint changes.
  */
 
@@ -53,7 +53,7 @@ function gearKind(actor, effect) {
 
 function gearOfWeaponUuid(actor, weapon) {
   const gear = gearOfWeapon(actor, weapon);
-  const uuid = gear?.flags?.core?.sourceId ?? gear?._stats?.compendiumSource ?? null;
+  const uuid = gear?.flags?.core?.sourceId ?? gear?._stats?.compendiumSource ?? gear?.flags?.essence20?.rulesSource ?? null;
   return [TF3.rotorBlades, TF3.towCable, TF3.waterCannon].includes(uuid) ? uuid : null;
 }
 
@@ -86,11 +86,6 @@ export function tf3RollSources(actor, target, ctx = {}) {
   const doubles = target ? holoDoubles(target) : 0;
   if (isAttack && doubles) {
     sources.push({ id: 'tf3Holo', label: nameOf(target, TF3.holographicDoubles, 'Holographic Doubles'), shiftDown: doubles });
-  }
-
-  // Siren (TF CRB p.135): "Bot Mode: You gain ↑2 on Intimidation Skill Tests."
-  if (rolledSkill == 'intimidation' && holds(actor, TF3.siren) && actor.system?.canTransform && inBotMode(actor)) {
-    sources.push({ id: 'tf3Siren', label: nameOf(actor, TF3.siren), shiftUp: 2 });
   }
 
   // Martyr (Commander, 20th level, p.66): "if you are Defeated in combat, your allies gain an Edge on
@@ -158,34 +153,6 @@ export function tf3Toggles(actor, { item, rolledSkill } = {}) {
   const toggles = [];
   const add = (name, label) => toggles.push({ name, label, type: 'checkbox' });
 
-  // Hindsight (Scout, 7th level, p.85): "when discussing a previous scene, you can make new Alertness
-  // Skill Tests about it as though you were still there. You gain an Edge on these Skill Tests."
-  if (rolledSkill == 'alertness' && holds(actor, TF3.hindsight)) {
-    add('tf3Hindsight', T('Tf3ToggleHindsight', { perk: nameOf(actor, TF3.hindsight) }));
-  }
-
-  // Mimicry Vocoder (Scout, 9th level, p.85): "You gain an Edge on Deception Skill Tests to convince
-  // creatures more familiar with the individual you're imitating."
-  if (rolledSkill == 'deception' && holds(actor, TF3.mimicryVocoder)) {
-    add('tf3Mimicry', T('Tf3ToggleMimicry', { perk: nameOf(actor, TF3.mimicryVocoder) }));
-  }
-
-  // Nose for Trouble (General Perk, p.110): "You can use Streetwise in place of Alertness to search for
-  // clues or looking for traps; You gain an Edge when setting or disarming traps".
-  if (holds(actor, TF3.noseForTrouble)) {
-    if (rolledSkill == 'alertness') {
-      add('tf3NoseSearch', T('Tf3ToggleNoseSearch', { perk: nameOf(actor, TF3.noseForTrouble) }));
-    }
-
-    add('tf3NoseTrap', T('Tf3ToggleNoseTrap', { perk: nameOf(actor, TF3.noseForTrouble) }));
-  }
-
-  // Subordinate (Hang-Up, p.43): "Take a ↓1 on any Skill Test that is not directly related to your
-  // mission as stated."
-  if (holds(actor, TF3.subordinate)) {
-    add('tf3Subordinate', T('Tf3ToggleSubordinate', { name: nameOf(actor, TF3.subordinate) }));
-  }
-
   // The Right Of All Sentient Beings: "if the safety of a non-combatant is threatened during a Combat,
   // you gain an Edge on Skill Tests to protect them until they are out of harm's way."
   if (game.combat && holds(actor, TF3.rightOfAll) && flagOf(actor, RIGHT_OF_ALL_FLAG) != game.combat.id) {
@@ -207,15 +174,6 @@ export function tf3Toggles(actor, { item, rolledSkill } = {}) {
       add('tf3TowTrained', T('Tf3ToggleTowTrained', { gear: nameOf(actor, TF3.towCable) }));
     }
 
-    if (rolledSkill == 'brawn' && inAltMode(actor)) {
-      add('tf3TowPull', T('Tf3ToggleTowPull', { gear: nameOf(actor, TF3.towCable) }));
-    }
-  }
-
-  // Water Cannon (TF CRB p.135), Alt Mode: "You can use Targeting to put out fires, and you gain an Edge
-  // on Skill Tests involving fire."
-  if (holds(actor, TF3.waterCannon) && inAltMode(actor)) {
-    add('tf3WaterFire', T('Tf3ToggleWaterFire', { gear: nameOf(actor, TF3.waterCannon) }));
   }
 
   return toggles;
@@ -227,14 +185,8 @@ export async function tf3ApplyDialog(actor, options) {
   options.shiftUp = options.shiftUp ?? 0;
   options.shiftDown = options.shiftDown ?? 0;
 
-  for (const key of ['tf3Hindsight', 'tf3Mimicry', 'tf3NoseTrap', 'tf3Protect', 'tf3TowPull', 'tf3WaterFire']) {
-    if (ext[key]) {
-      edge();
-    }
-  }
-
-  if (ext.tf3Subordinate) {
-    options.shiftDown += 1;
+  if (ext.tf3Protect) {
+    edge();
   }
 
   if (ext.tf3Ladder) {
@@ -243,13 +195,6 @@ export async function tf3ApplyDialog(actor, options) {
 
   if (ext.tf3TowTrained) {
     options.shiftUp += 1;
-  }
-
-  // Streetwise's die in place of Alertness's - the same shift-position delta Worth A Shot uses.
-  if (ext.tf3NoseSearch) {
-    const { shiftUp, shiftDown } = substitutionShifts(actor, 'alertness', 'streetwise');
-    options.shiftUp += shiftUp;
-    options.shiftDown += shiftDown;
   }
 }
 

@@ -1,30 +1,27 @@
-import { registerChatButton, registerDerived, registerRest, registerUse } from "../../extensions.mjs";
+import { registerChatButton, registerDerived, registerUse } from "../../extensions.mjs";
 import { DD, DSOE, T, addToDefense, firstTarget, isFrom, itemsOf, post, sourceOf } from "./shared.mjs";
 
 /**
- * Decepticon Directive (Armor Matrix's one-matrix limit; the Champion His Way, Distill His Essence
- * and Eat the Weak Rites of the All-Consuming) and Dark Skies over Equestria (Multimorph).
+ * Decepticon Directive (Armor Matrix's one-matrix limit; the Eat the Weak Rite of the All-Consuming)
+ * and Dark Skies over Equestria (Multimorph). Distill His Essence is a Use rule on its pack item, and
+ * Champion His Way a Defense rule on its.
  */
 export const O1_MORE = {
   armorMatrixLight: DD('z3Nb6mrcAZ1c8R3q'),
   armorMatrixMedium: DD('COIQnaWsN7JorDuv'),
   armorMatrixHeavy: DD('Gha7PEUJKSOmLnIx'),
-  championHisWay: DD('j9FW3wF6mKnVFj0s'),
-  distillHisEssence: DD('QKJ19OgpdHNXUBQy'),
   eatTheWeak: DD('hzCEZfTNDsQcOjUB'),
   addictedDarkEnergon: DD('e3c7wuCA7JQS7rTA'),
   multimorph: DSOE('HGKHAbwZ43I564vd'),
 };
 
-// A second copy of each Rite was briefly in the compendium (since removed); a character who took
-// one of those still matches.
+// A second copy of the Rite was briefly in the compendium (since removed); a character who took
+// that one still matches. (A leftover copy of Champion His Way is linked to the pack item's rules
+// by name - rules/inherit.mjs#linkExistingCopies.)
 const RITE_COPIES = {
-  championHisWay: [O1_MORE.championHisWay, DD('0SqZMH14YFCxrnGa')],
-  distillHisEssence: [O1_MORE.distillHisEssence, DD('VT906hPZfbHx7vYK')],
   eatTheWeak: [O1_MORE.eatTheWeak, DD('kIeIcRQVWg4v9CZL')],
 };
 const isRite = key => item => RITE_COPIES[key].includes(sourceOf(item));
-const hasRite = (actor, key) => itemsOf(actor).some(isRite(key));
 
 /* -------------------------------------------- */
 /*  Armor Matrix                                 */
@@ -70,12 +67,8 @@ export function extraMatrixToughness(actor) {
 // Rites of the All-Consuming (Decepticon Directive, p.111): "For every Skill Rank in the Culture
 // skill, a Follower with the Word of Unicron General Perk... gains the Rite associated with the die
 // of that Skill Rank." Each Rite is its own Perk (prerequisite: Word of Unicron and the Culture die).
-const underDarkEnergon = actor => (Number(actor?.system?.energon?.dark?.value) || 0) > 0;
-
-// Champion His Way (+d10): "The Follower gains a +2 bonus to all Defenses while under the influence
-// of Dark Energon." Under the influence = holding at least one Dark Energon Point (p.80: "Having at
-// least one Dark Energon Point grants...").
-export const CHAMPION_BONUS = 2;
+// Champion His Way (+d10, +2 to all Defenses while holding Dark Energon) is a Defense rule on its
+// pack item. The derived pass below is the Armor Matrix limit.
 
 registerDerived((actor) => {
   const defenses = actor?.system?.defenses;
@@ -86,38 +79,6 @@ registerDerived((actor) => {
   const extra = extraMatrixToughness(actor);
   if (extra && defenses.toughness) {
     addToDefense(defenses.toughness, -extra, T('O1ArmorMatrixLabel'));
-  }
-
-  if (underDarkEnergon(actor) && hasRite(actor, 'championHisWay')) {
-    for (const defense of Object.values(defenses)) {
-      addToDefense(defense, CHAMPION_BONUS, T('O1ChampionHisWay'));
-    }
-  }
-});
-
-// Distill His Essence (+d4): "Once per day in a ritual that takes 10 minutes, the Follower can turn 2
-// standard Energon Points into 1 Dark Energon Point." The day ends with the sheet's Rest.
-registerUse({
-  id: 'o1DistillHisEssence',
-  matches: isRite('distillHisEssence'),
-  canUse: item => !item.flags?.essence20?.o1UsedToday && (Number(item.parent?.system?.energon?.normal?.value) || 0) >= 2,
-  run: async (item) => {
-    const actor = item.parent;
-    const energon = actor.system.energon;
-    await actor.update({
-      'system.energon.normal.value': energon.normal.value - 2,
-      'system.energon.dark.value': (Number(energon.dark?.value) || 0) + 1,
-    });
-    await item.setFlag('essence20', 'o1UsedToday', true);
-    return T('O1DistillHisEssence', { name: actor.name });
-  },
-});
-
-registerRest(async (actor) => {
-  for (const item of itemsOf(actor)) {
-    if (isRite('distillHisEssence')(item) && item.flags?.essence20?.o1UsedToday) {
-      await item.unsetFlag('essence20', 'o1UsedToday');
-    }
   }
 });
 

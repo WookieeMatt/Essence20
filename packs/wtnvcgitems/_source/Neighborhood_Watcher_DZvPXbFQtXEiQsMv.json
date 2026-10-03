@@ -5,6 +5,7 @@
   "_id": "DZvPXbFQtXEiQsMv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:focus:Secret Police"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: an Edge on Alertness and Streetwise tests.</p><p>Left to the table: the Edge is meant only in residential areas, so switch the effect off elsewhere.</p>"

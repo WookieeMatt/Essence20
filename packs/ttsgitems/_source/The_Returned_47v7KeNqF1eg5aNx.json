@@ -5,6 +5,9 @@
   "_id": "47v7KeNqF1eg5aNx",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"About your past or your return (The Returned: Snag)","when":[{"any":["essence:social","essence:smarts"]}],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on Social and Smarts tests, a switch for the Snag when the test is about your past, your return or your future.</p>"

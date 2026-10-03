@@ -5,6 +5,9 @@
   "_id": "7crNgIuylYGHUES8",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Chopping (Hand Axe: ↑1)","upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a ↑1 switch while you carry it, for chopping something down.</p>"

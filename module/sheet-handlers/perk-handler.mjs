@@ -8,7 +8,6 @@ import { performSpectrumShift } from "./role-handler.mjs";
 import { isPrincessPerk, removeSpellcastingUpshift } from "../helpers/princess-perks.mjs";
 import { grantBlendInUpgrades } from "../helpers/blend-in.mjs";
 import { grantSilentRunningUpgrades } from "../helpers/silent-running.mjs";
-import { grantSpeakYourTruthEssence, SPEAK_YOUR_TRUTH_ID } from "../helpers/speak-your-truth.mjs";
 import { grantTorozordFeature } from "../helpers/torozord-feature.mjs";
 import { HEARTS_CALLING_ID, pickHeartsCallingOption } from "../helpers/emotional-mastery.mjs";
 import {
@@ -20,17 +19,7 @@ import { grantSurvivalTrainingHealth, SURVIVAL_TRAINING_ID } from "../helpers/su
 import { grantPrimalMovement, PRIMAL_MOVEMENT_ID } from "../helpers/primal-movement.mjs";
 import { grantPrimalTools, PRIMAL_TOOLS_ID } from "../helpers/primal-tools.mjs";
 import { AQUA_ELEMENTAL_ADAPTATION_ID, grantAquaElementalAdaptation } from "../helpers/aqua-elemental-adaptation.mjs";
-import { grantChosenSpecialization } from "../helpers/chosen-specialization.mjs";
 import { activateWhyDoIKnowThat, WHY_DO_I_KNOW_THAT_ID } from "../helpers/why-do-i-know-that.mjs";
-
-// TF CRB Influence Perks (p.33-38) - see helpers/chosen-specialization.mjs's own doc comment.
-// "Choose a [Skill] Specialization, whether or not you invested in that Specialization. You gain
-// an Edge on Skill Tests when that Specialization comes into play."
-const FORMER_SENATOR_ID = "Compendium.essence20.tf_crb.Item.gcqyJw1sXxi2wy8e";
-const GLADIATOR_ID = "Compendium.essence20.tf_crb.Item.tDge4xSE9urfxwHP";
-const HUNTER_ID = "Compendium.essence20.tf_crb.Item.5Z0xtNOeSCD2YoRc";
-const RACER_ID = "Compendium.essence20.tf_crb.Item.KjcoQiDoT7WEVsZX";
-const SCAVENGER_ID = "Compendium.essence20.tf_crb.Item.95RyaWIi0HQOlyJN";
 
 // Combiner Specialization (Enigma of Combination, Component Ace Focus, 1st level, p.34): "You gain
 // the Gestalt Combiner or Matched Combiner General Perk. If you already have either of these
@@ -45,11 +34,10 @@ const GESTALT_COMBINER_ID = "Compendium.essence20.enigma_of_combination.Item.a4B
 const MATCHED_COMBINER_ID = "Compendium.essence20.enigma_of_combination.Item.ZIJnA0z3Mrp8pfbd";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
-// Cost of Sorcery (Finster's Monster-Matic Cookbook, p.271): "You gain the following Hang-Up when
-// you take the Sorcery Perk" - a mandatory companion grant, the same "auto-add a specific
-// compendium Item alongside this Perk" shape grantMetamorphosedChangeling above already
-// establishes for its own Origin Benefit, applied here to Sorcery instead. The Fumble effect
-// itself lives in dice.mjs (see COST_OF_SORCERY_ID's own doc comment there).
+// Cost of Sorcery (Finster's Monster-Matic Cookbook, p.271): the Hang-Up that comes with Sorcery.
+// Sorcery's own Grant rule adds it (and takes it away with the Perk); onPerkDelete still removes a
+// copy given before that rule existed (one with no grantedBy flag). The Fumble effect itself lives
+// in dice.mjs (see COST_OF_SORCERY_ID's own doc comment there).
 const COST_OF_SORCERY_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.BRpf0FNey5oDEvq3";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
 const SPECTRUM_SHIFT_PERK_ID = "Compendium.essence20.pr_crb.Item.HxbEBJ3gXkTQqvxt";
@@ -89,43 +77,6 @@ const TOROZORD_FEATURE_ID = "Compendium.essence20.through_the_shattered_grid.Ite
 // end-to-end.
 const DUTY_OF_THE_SILVER_ID = "Compendium.essence20.across_the_stars.Item.KhV5GeGIMJNWlWhr";
 
-// Natural Science (Cobra Codex, Ranger Firestarter Focus, 1st level, p.58) - see dice.mjs's own
-// NATURAL_SCIENCE_ID comment for the Science/Survival substitution half. "You are Qualified with
-// Element Jets and Trained in weapons with the Element trait" is a fixed, unconditional grant (no
-// player choice), the same shape _trainingUpdate() already writes for a whole Role's weapon list
-// (sheet-handlers/role-handler.mjs) - just a single weaponType key ('element') written directly
-// on Perk drop instead. "You must choose Fire as the type of element your Element weapons use"
-// and "one of your weapons without an Element trait gains Blazing or Broiler as a free Weapon
-// Upgrade" both need a picker over the actor's OWN already-owned items (not a compendium choices
-// map ChoicesSelector already handles) - a different, unbuilt mechanism, left for a dedicated
-// pass.
-const NATURAL_SCIENCE_ID = "Compendium.essence20.cobra_codex.Item.AXmmcHK2tSzRZLqB";
-
-// Beatdown (Cobra Codex, Vanguard Warthog Focus, 3rd level, p.69): "You are always considered
-// armed with an integrated close combat heavy bludgeon, even if you're unarmed or your hands are
-// full." "Integrated weapon" has no dedicated concept anywhere in this schema - the closest real
-// equivalent is simply always HAVING the weapon Item on the sheet, so it's never actually
-// "unarmed" in the sense every other unarmed-attack proxy in this project checks (no parent
-// weapon Item at all). See grantBeatdownWeapon() below.
-const BEATDOWN_ID = "Compendium.essence20.cobra_codex.Item.38zFS75lhzBWiurT";
-const CLOSE_COMBAT_HEAVY_BLUDGEONING_ID = "Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN";
-
-// Jackhammer (Cobra Codex, Vanguard Warthog Focus, 20th level, p.69): "you are considered armed
-// with an integrated power tool, even if you're unarmed or your hands are full. This works in all
-// other ways like Beatdown." Identical mechanic to Beatdown, just a different granted weapon - see
-// grantIntegratedWeapon() below, the generalized form of grantBeatdownWeapon's own logic.
-const JACKHAMMER_ID = "Compendium.essence20.cobra_codex.Item.sBoZ2KrzmKlWIlYu";
-const POWER_TOOL_ID = "Compendium.essence20.gi_joe_crb.Item.Jnjio1DtAx0QgE85";
-
-// Shadow Morph [Form] (Across the Stars, General Perk, p.70): "When Morphed, you gain... you may
-// summon a Shadow Saber as a Free action." The Toughness/Evasion/Infiltration-Edge half is already
-// a plain, already whileMorphed-gated compendium Active Effect. "Summon as a Free action" has no
-// dismiss/re-summon concept to model any differently from Beatdown/Jackhammer's own identically-
-// worded "always considered armed with" grants just above - same grantIntegratedWeapon() shape,
-// granted once when the Perk is taken rather than gated behind an actual per-use toggle.
-const SHADOW_MORPH_ID = "Compendium.essence20.across_the_stars.Item.UNgNYpUADVTaNrWt";
-const SHADOW_SABER_ID = "Compendium.essence20.across_the_stars.Item.PQ2msfDzjTGz8aXN";
-
 // Grid Tap (Beneath the Helmet, Grid Power, p.57) - see its own check next to the `hasChoice`
 // switch above. The 8 known Grid Science/Grid Tech pickers (PR CRB's own Blue Ranger Grid Tech
 // I-IV, Beneath the Helmet's Aqua Ranger Grid Science I-IV) - a fixed id list rather than a name
@@ -143,39 +94,6 @@ const GRID_SCIENCE_TECH_IDS = new Set([
   "Compendium.essence20.beneath_the_helmet.Item.sZacBgzLZjYd6ypy", // Grid Science IV
 ]);
 
-// Battlizer Access (Specific Battlizer) (Across the Stars, General Perk, p.68 / Beneath the
-// Helmet, General Perk, p.52 - RE-CATEGORIZED 2026-09-15, the first item pulled off the
-// "Item-grant / equipment-mutation mechanism" gap's own blocked list): "When you choose this
-// Perk, select a Battlizer from the section beginning on page 85/87. While Morphed, you may spend
-// the chosen Battlizer's Power Cost to summon and use it." The actual grant half needed no new
-// infrastructure at all - grantIntegratedWeapon() below already generalizes cleanly to any Item
-// type (renamed grantIntegratedItem), so this just supplies 'armor' + the real Battlizer's own
-// compendium id. Each book has several Battlizers (Across the Stars p.85-87: Battle Warrior,
-// Clawed Armor, Power Wing, Falcon Armor, Savage Warrior, Trans-Armor Cycle, S.P.D. Battlizer;
-// Beneath the Helmet: Red Fury Mode, Dino Super Charge, Triassic Battlizer), so the player picks
-// one from that book's list (pickBattlizer). "GM Approval" is the same unenforceable narrative
-// gate already accepted everywhere else in this project. Summoning it while Morphed is the
-// Battlizer's own Use button (helpers/summons.mjs).
-const BATTLIZER_ACCESS_ATS_ID = "Compendium.essence20.across_the_stars.Item.JGAOozVnu9Nou5Xj";
-const BATTLIZER_ACCESS_BTH_ID = "Compendium.essence20.beneath_the_helmet.Item.oJAdvdKs1XLmsH0z";
-
-export const BATTLIZER_ACCESS_OPTIONS = {
-  [BATTLIZER_ACCESS_ATS_ID]: [
-    "Compendium.essence20.across_the_stars.Item.yWsLaZOGVlaCXh1Y", // Battle Warrior
-    "Compendium.essence20.across_the_stars.Item.5Z9vkcfZYwmtA6R4", // Clawed Armor
-    "Compendium.essence20.across_the_stars.Item.aCPFmjY80u9671Hl", // Power Wing
-    "Compendium.essence20.across_the_stars.Item.uUFaA9XsLcvFiKky", // Falcon Armor
-    "Compendium.essence20.across_the_stars.Item.xSdIoYCSbfbudtBx", // Savage Warrior
-    "Compendium.essence20.across_the_stars.Item.Q3Yn4CzFxkuDiPnZ", // Trans-Armor Cycle
-    "Compendium.essence20.across_the_stars.Item.qc82QDtZN3qVWqxV", // S.P.D. Battlizer
-  ],
-  [BATTLIZER_ACCESS_BTH_ID]: [
-    "Compendium.essence20.beneath_the_helmet.Item.k7svIPp9YYkzjxwB", // Red Fury Mode
-    "Compendium.essence20.beneath_the_helmet.Item.vV7DVwdTNAcKacvR", // Dino Super Charge
-    "Compendium.essence20.beneath_the_helmet.Item.sVYZLXhPZqdVhNax", // Triassic Battlizer
-  ],
-};
-
 // Ferocious Fighters (Factions in Action Vol 1) - 3 Faction Perks that should each grant a fixed
 // General Perk outright but ship with an empty items map (a real wiring gap the categorization
 // pass found, not a missing mechanism - the SAME grant-a-Perk-outright pattern this file already
@@ -188,17 +106,6 @@ const BLEND_IN_ID = "Compendium.essence20.ferocious_fighters.Item.mnze6jJ6eSYbS8
 
 // Silent Running - see helpers/silent-running.mjs's own doc comment.
 const SILENT_RUNNING_ID = "Compendium.essence20.ferocious_fighters.Item.58OZMB7WbAgqgpkX";
-const COMBAT_LIFESAVER_ID = "Compendium.essence20.ferocious_fighters.Item.e48e4SaTGt7rOOUj";
-const EMT_CRASH_COURSE_ID = "Compendium.essence20.gi_joe_crb.Item.jDAu1zaZpv1IylJ8";
-const LIFE_FINDS_A_WAY_ID = "Compendium.essence20.ferocious_fighters.Item.j6KOCP9HsyzO3UHa";
-const DODGY_ID = "Compendium.essence20.gi_joe_crb.Item.GQwhr14X9yXkAuWH";
-
-// For The Syndicate (Factions in Action Vol. 2, International Syndicate Faction Perk, p.102):
-// "You gain Mentor (see The G.I. JOE Roleplaying Game Core Rulebook pg. 132) as a bonus General
-// Perk." Same grant-a-Perk-outright pattern as Change Its Stripes/Combat Lifesaver/Life Finds A
-// Way just above.
-const FOR_THE_SYNDICATE_ID = "Compendium.essence20.intercontinental_adventures.Item.opygNwRWgeIyU1mE";
-const MENTOR_ID = "Compendium.essence20.gi_joe_crb.Item.jUZrNJbPzSd1zVLa";
 
 // Expertise (GI Joe CRB, Commando base, 1st/7th level, p.72): "Choose two skills... You choose
 // two more skills at 7th level" - granted 4 separate times across Commando's own progression
@@ -206,42 +113,6 @@ const MENTOR_ID = "Compendium.essence20.gi_joe_crb.Item.jUZrNJbPzSd1zVLa";
 // 'skills' choice case below for why picking the SAME skill across two of those instances is
 // now blocked specifically for this Perk.
 const EXPERTISE_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.F9kOLys1Iu4UOg22";
-
-// Young But Experienced (General Hawk's Personnel Files, Old Hand Advanced Role Perk): "You gain
-// the Veteran General Perk, even if you do not meet the prerequisites." Same grant-a-Perk-outright
-// pattern as Change Its Stripes/For The Syndicate above.
-const YOUNG_BUT_EXPERIENCED_ID = "Compendium.essence20.general_hawk_s_personel_files.Item.o5O65BE6dtdlxsfM";
-const VETERAN_ID = "Compendium.essence20.gi_joe_crb.Item.3ahVUG1yKCGNyscK";
-
-// Into the Void (Factions in Action Vol 2, Arashikage Faction Perk): "You gain the Dig Deep
-// General Perk." Same grant-a-Perk-outright pattern as Into the Void's sibling Faction Perks
-// above (For The Syndicate's Mentor grant, Change Its Stripes' Blend In grant).
-const INTO_THE_VOID_ID = "Compendium.essence20.intercontinental_adventures.Item.OuLsQGETgtRNJ0RQ";
-const DIG_DEEP_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.QJkcVXT7K4yNWFoT";
-
-// Synchronization (Quartermaster's Guide to Gear, Tech Officer Focus, p.22): "You gain the Stay
-// in Formation General Perk (page 31), even if you do not meet its prerequisites." A grant-a-
-// Perk-outright ship-time gap (the Perk item exists bare, with an empty items map) - same pattern
-// as Change Its Stripes/For The Syndicate/Into the Void above.
-const SYNCHRONIZATION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.Ee3GRqk0H7ph0vEs";
-const STAY_IN_FORMATION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.pU3dKGNWYAhgRY6B";
-
-// Nanoflage (Quartermaster's Guide to Gear, Chameleonite Focus, p.22): "you gain the Mimic
-// Nanomite Power." (The same paragraph's "not limited to two uses per day, instead regenerating
-// one use per scene" is helpers/nanomite-uses.mjs#isNanoflageMimic.) Same fixed-grant gap as Synchronization above, just granting a Power instead of a Perk -
-// grantIntegratedItem already generalizes to any Item type.
-const NANOFLAGE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.22p3l2vFsFZqfOET";
-const MIMIC_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.WI0QTzlWkEusSQqY";
-
-// Pet Companion (Cobra Codex, Wildlife Division Perk, p.78): "You gain the Animal Pet General
-// Perk. Unlike most General Perks gained from other options, you must meet the prerequisite to
-// gain the benefits of Animal Pet. You do not gain an Animal Pet until you reach Animal Handling
-// +d4." The grant itself is unconditional (same fixed-grant gap as Synchronization above) - the
-// prerequisite clause gates the Animal Pet Perk's OWN benefit, which is the same unenforced
-// narrative prerequisite text every other Perk in this project already carries (Animal Pet's own
-// system.prerequisite is untouched), not something this grant needs to check itself.
-const PET_COMPANION_ID = "Compendium.essence20.cobra_codex.Item.05bNThwoKYW67fZB";
-const ANIMAL_PET_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.6oF71x58kaB302bH";
 
 // Metamorphosis (Dark Skies Over Equestria, General Perk, p.20; prerequisite: Colony Changeling):
 // "You lose the Colony Changeling benefits of Natural Shape and can choose two Metamorphosed
@@ -257,12 +128,6 @@ const ANIMAL_PET_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.6oF71x58kaB302bH
 const METAMORPHOSIS_ID = "Compendium.essence20.dark_skies_over_equestria.Item.bLtGPdoCPr9Ezgb8";
 const COLONY_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.FRUWPAePJzm7Mlf0";
 const METAMORPHOSED_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.aD130X44xDxZ6o2U";
-
-// Colony Changeling (Dark Skies Over Equestria, Natural Shape choice, p.17): "Colony Changelings
-// get Infatuated as a mandatory Influence." Infatuated is an Influence, not a Perk, so this can't
-// reuse grantPerkOutright below (hardcoded to type 'perk') - see grantColonyChangelingInfatuated's
-// own comment.
-const INFATUATED_ID = "Compendium.essence20.dark_skies_over_equestria.Item.2Kw4msw0l4j6fTOm";
 
 // Heavy/Medium/Ultra-Heavy Armor Shell (PR CRB, General Perks, p.95/97/98): each raises the
 // holder's own Armor Training (system.trained.armors.*) via a plain compendium Active Effect, not
@@ -301,7 +166,7 @@ const NANO_INFUSION_AVAILABILITY = {
  * @returns {Boolean}
  */
 export function grantsAnyGeneralPerk(perk, perkUuid) {
-  return [perkUuid, perk.flags?.core?.sourceId, perk._stats?.compendiumSource]
+  return [perkUuid, perk.flags?.core?.sourceId, perk._stats?.compendiumSource, perk.flags?.essence20?.rulesSource]
     .some(id => ANY_GENERAL_PERK_IDS.has(id));
 }
 
@@ -313,7 +178,7 @@ export function grantsAnyGeneralPerk(perk, perkUuid) {
  * @returns {?String}   An E20.availabilities key.
  */
 export function nanoInfusionAvailability(perk, perkUuid) {
-  const id = [perkUuid, perk.flags?.core?.sourceId, perk._stats?.compendiumSource]
+  const id = [perkUuid, perk.flags?.core?.sourceId, perk._stats?.compendiumSource, perk.flags?.essence20?.rulesSource]
     .find(candidate => NANO_INFUSION_AVAILABILITY[candidate]);
   return id ? NANO_INFUSION_AVAILABILITY[id] : null;
 }
@@ -329,7 +194,7 @@ export function nanoInfusionAvailability(perk, perkUuid) {
 export async function nanomitePowerChoices(actor, availability) {
   const heldCounts = new Map();
   for (const item of actor.items) {
-    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
     heldCounts.set(sourceId, (heldCounts.get(sourceId) ?? 0) + 1);
   }
 
@@ -376,7 +241,7 @@ export function gameLineOf(uuid) {
  * @returns {Promise<Object>}
  */
 export async function anyGeneralPerkChoices(actor) {
-  const taken = new Set(actor.items.map(item => item.flags?.core?.sourceId ?? item._stats?.compendiumSource));
+  const taken = new Set(actor.items.map(item => item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource));
   const choices = {};
 
   for (const pack of getVisibleItemPacks()) {
@@ -420,13 +285,13 @@ export function getAlreadyChosenExpertiseSkills(actor, perk) {
   // onPerkDrop's own duplicate-skill guard, which calls this at the exact moment
   // grantItemEntry() has created the Item but hasn't yet called setFlag('core', 'sourceId', ...)
   // on it, so flags.core.sourceId can genuinely still be unset at that point.
-  const perkSourceId = perk.flags?.core?.sourceId ?? perk._stats?.compendiumSource ?? perk.uuid;
+  const perkSourceId = perk.flags?.core?.sourceId ?? perk._stats?.compendiumSource ?? perk?.flags?.essence20?.rulesSource ?? perk.uuid;
   if (perkSourceId != EXPERTISE_GIJ_ID) {
     return [];
   }
 
   return actor.items
-    .filter(item => (item.flags.core?.sourceId ?? item._stats.compendiumSource) == EXPERTISE_GIJ_ID)
+    .filter(item => (item.flags.core?.sourceId ?? item._stats.compendiumSource ?? item?.flags?.essence20?.rulesSource) == EXPERTISE_GIJ_ID)
     .map(item => item.system.choice)
     .filter(Boolean);
 }
@@ -476,7 +341,7 @@ export async function onMultiSkillPerkDrop(actor, perk, skills, dropFunc=null, p
 
   // Every skill past the first gets its own freshly-created copy of the same source Perk, so each
   // ends up as an ordinary one-item-one-skill instance (see this function's own doc comment).
-  const perkSourceId = perk.flags?.core?.sourceId ?? perk._stats?.compendiumSource ?? perk.uuid;
+  const perkSourceId = perk.flags?.core?.sourceId ?? perk._stats?.compendiumSource ?? perk?.flags?.essence20?.rulesSource ?? perk.uuid;
   const perkSource = await fromUuid(perkSourceId);
 
   // Each extra copy has to carry the SAME granting link as the instance it is paired with, or it
@@ -518,7 +383,7 @@ export async function grantDutyOfTheSilverArmorTraining(actor) {
 /**
  * Grants a permanent copy of the given Item, unless the actor already has one of the same type
  * sourced from the same compendium id - the shared logic behind Beatdown/Jackhammer's "always
- * considered armed with an integrated X" weapon grants, and Battlizer Access's own armor grant.
+ * considered armed with an integrated X" weapon grants, and grantPerkEquipmentMap's own entries.
  * @param {Actor} actor
  * @param {String} itemType   The granted Item's own `type` (e.g. "weapon", "armor").
  * @param {String} itemId     A full compendium UUID for an Item of that type.
@@ -526,7 +391,7 @@ export async function grantDutyOfTheSilverArmorTraining(actor) {
 async function grantIntegratedItem(actor, itemType, itemId) {
   const alreadyHasItem = actor.items.some(item =>
     item.type == itemType
-    && (item.flags?.core?.sourceId == itemId || item._stats?.compendiumSource == itemId));
+    && (item.flags?.core?.sourceId == itemId || item._stats?.compendiumSource == itemId || item?.flags?.essence20?.rulesSource == itemId));
   if (alreadyHasItem) {
     return;
   }
@@ -576,9 +441,8 @@ export async function grantIntegratedWeapon(actor, weaponId) {
  * what to grant and with which type, so reading it is both less code and more faithful than
  * restating it. Any future Perk authored this way now works with no code change at all.
  *
- * Weapon/gear/power/armor entries are always granted (power/armor both reuse grantIntegratedItem
- * the same way Nanoflage's Mimic grant and Battlizer Access's own armor grant do - see
- * grantNanoflageMimic's/grantBattlizerAccess's own comments). Perk-type entries are granted too,
+ * Weapon/gear/power/armor entries are always granted (through grantIntegratedItem, which also
+ * brings a weapon's or armor's own attachments). Perk-type entries are granted too,
  * UNLESS this Perk is itself one of the two idioms that already resolve their own `perk` map some
  * other way, and would double-grant if this function also swept them:
  *   - `system.hasChoice` Perks (e.g. Mutant Beast, Hunter's Prowess): the map IS the picker's
@@ -608,157 +472,22 @@ export async function grantPerkEquipmentMap(actor, perk) {
 }
 
 /**
- * Battlizer Access - see BATTLIZER_ACCESS_ATS_ID's own comment above. Grants a permanent copy of
- * the chosen Battlizer (an ordinary armor-type Item), unless the actor already has one.
- * @param {Actor} actor
- * @param {String} battlizerId   A full compendium UUID for the granted Battlizer armor Item.
- */
-export async function grantBattlizerAccess(actor, battlizerId) {
-  await grantIntegratedItem(actor, 'armor', battlizerId);
-}
-
-/**
- * Battlizer Access's "select a Battlizer": asks which of the book's Battlizers to take. A single
- * available option is returned without asking.
- * @param {Item} perk   The Battlizer Access Perk being granted.
- * @param {String[]} options   Compendium UUIDs of the Battlizers on offer.
- * @param {Function} [choose]   (title, prompt, [{value, label}]) => the picked value; defaults to grants.mjs#chooseSelect.
- * @returns {Promise<String|null>} The picked Battlizer's UUID, or null if the dialog was closed.
- */
-export async function pickBattlizer(perk, options, choose = null) {
-  const rows = [];
-  for (const uuid of options) {
-    const battlizer = await fromUuid(uuid);
-    if (battlizer) {
-      rows.push({ value: uuid, label: battlizer.name });
-    }
-  }
-
-  if (rows.length <= 1) {
-    return rows[0]?.value ?? null;
-  }
-
-  const chooser = choose ?? (await import("../helpers/grants.mjs")).chooseSelect;
-  return chooser(perk?.name ?? '', game.i18n.localize('E20.GrantPickLabel'), rows);
-}
-
-/**
- * Beatdown - see BEATDOWN_ID's own comment above. Grants a permanent copy of Close Combat Heavy
- * Bludgeoning, the same base GI Joe CRB weapon Signature Weapon can also grant - a no-op if the
- * actor somehow already has one (e.g. from Signature Weapon, or re-triggering this same grant).
- * @param {Actor} actor
- */
-export async function grantBeatdownWeapon(actor) {
-  await grantIntegratedWeapon(actor, CLOSE_COMBAT_HEAVY_BLUDGEONING_ID);
-}
-
-/**
- * Jackhammer - see JACKHAMMER_ID's own comment above.
- * @param {Actor} actor
- */
-export async function grantJackhammerWeapon(actor) {
-  await grantIntegratedWeapon(actor, POWER_TOOL_ID);
-}
-
-/**
- * Shadow Morph [Form] - see SHADOW_MORPH_ID's own comment above.
- * @param {Actor} actor
- */
-export async function grantShadowSaber(actor) {
-  await grantIntegratedWeapon(actor, SHADOW_SABER_ID);
-}
-
-/**
- * Grants a permanent copy of the given Perk Item, unless the actor already has one - the shared
- * logic behind Change Its Stripes/Combat Lifesaver/Life Finds A Way's own "gain the X General
- * Perk" grants (see CHANGE_ITS_STRIPES_ID's own comment above).
+ * Grants a permanent copy of the given Perk Item, unless the actor already has one - the perk
+ * entries of grantPerkEquipmentMap below. (Fixed "gain the X Perk" grants are Grant rules on the
+ * granting item now - Change Its Stripes, Combat Lifesaver, For The Syndicate...)
  * @param {Actor} actor
  * @param {String} perkId   A full compendium UUID for a perk-type Item.
  */
 export async function grantPerkOutright(actor, perkId) {
   const alreadyHasPerk = actor.items.some(item =>
     item.type == 'perk'
-    && (item.flags?.core?.sourceId == perkId || item._stats?.compendiumSource == perkId));
+    && (item.flags?.core?.sourceId == perkId || item._stats?.compendiumSource == perkId || item?.flags?.essence20?.rulesSource == perkId));
   if (alreadyHasPerk) {
     return;
   }
 
   const perk = await fromUuid(perkId);
   await Item.create(perk, { parent: actor });
-}
-
-/**
- * Change Its Stripes - see CHANGE_ITS_STRIPES_ID's own comment above.
- * @param {Actor} actor
- */
-export async function grantBlendIn(actor) {
-  await grantPerkOutright(actor, BLEND_IN_ID);
-  await grantBlendInUpgrades(actor);
-}
-
-/**
- * Combat Lifesaver - see CHANGE_ITS_STRIPES_ID's own comment above.
- * @param {Actor} actor
- */
-export async function grantEmtCrashCourse(actor) {
-  await grantPerkOutright(actor, EMT_CRASH_COURSE_ID);
-}
-
-/**
- * Life Finds A Way - see CHANGE_ITS_STRIPES_ID's own comment above.
- * @param {Actor} actor
- */
-export async function grantDodgy(actor) {
-  await grantPerkOutright(actor, DODGY_ID);
-}
-
-/**
- * For The Syndicate - see FOR_THE_SYNDICATE_ID's own comment above.
- * @param {Actor} actor
- */
-export async function grantForTheSyndicateMentor(actor) {
-  await grantPerkOutright(actor, MENTOR_ID);
-}
-
-/**
- * Young But Experienced - see YOUNG_BUT_EXPERIENCED_ID's own comment above.
- * @param {Actor} actor
- */
-export async function grantYoungButExperiencedVeteran(actor) {
-  await grantPerkOutright(actor, VETERAN_ID);
-}
-
-/**
- * Into the Void - see INTO_THE_VOID_ID's own comment above.
- * @param {Actor} actor
- */
-export async function grantIntoTheVoidDigDeep(actor) {
-  await grantPerkOutright(actor, DIG_DEEP_GIJ_ID);
-}
-
-/**
- * Synchronization - see SYNCHRONIZATION_ID's own comment above.
- * @param {Actor} actor
- */
-export async function grantSynchronizationStayInFormation(actor) {
-  await grantPerkOutright(actor, STAY_IN_FORMATION_ID);
-}
-
-/**
- * Nanoflage - see NANOFLAGE_ID's own comment above. Mimic is a Power, not a Perk, so this reuses
- * grantIntegratedItem (already generic across Item types) rather than grantPerkOutright.
- * @param {Actor} actor
- */
-export async function grantNanoflageMimic(actor) {
-  await grantIntegratedItem(actor, 'power', MIMIC_ID);
-}
-
-/**
- * Pet Companion - see PET_COMPANION_ID's own comment above.
- * @param {Actor} actor
- */
-export async function grantPetCompanionAnimalPet(actor) {
-  await grantPerkOutright(actor, ANIMAL_PET_GIJ_ID);
 }
 
 /**
@@ -773,15 +502,23 @@ export async function grantPetCompanionAnimalPet(actor) {
 export async function grantMetamorphosis(actor) {
   const colonyChangeling = actor.items.find(item =>
     item.type == 'perk'
-    && (item.flags?.core?.sourceId == COLONY_CHANGELING_ID || item._stats?.compendiumSource == COLONY_CHANGELING_ID));
+    && (item.flags?.core?.sourceId == COLONY_CHANGELING_ID || item._stats?.compendiumSource == COLONY_CHANGELING_ID || item?.flags?.essence20?.rulesSource == COLONY_CHANGELING_ID));
   if (colonyChangeling) {
+    // Colony Changeling's Grant rule gave Infatuated; unlink it first so it stays when this goes
+    // (removing a granting item takes its grants with it - rules/lifecycle.mjs).
+    const grantedBy = colonyChangeling.id;
+    for (const granted of grantedBy ? actor.items.filter(item => item.flags?.essence20?.grantedBy == grantedBy) : []) {
+      await granted.unsetFlag('essence20', 'grantedBy');
+    }
+
     await colonyChangeling.delete();
   }
 
   const alreadyMetamorphosed = actor.items.some(item =>
     item.type == 'perk'
     && (item.flags?.core?.sourceId == METAMORPHOSED_CHANGELING_ID
-      || item._stats?.compendiumSource == METAMORPHOSED_CHANGELING_ID));
+      || item._stats?.compendiumSource == METAMORPHOSED_CHANGELING_ID
+      || item.flags?.essence20?.rulesSource == METAMORPHOSED_CHANGELING_ID));
   if (alreadyMetamorphosed) {
     return;
   }
@@ -789,38 +526,6 @@ export async function grantMetamorphosis(actor) {
   const metamorphosedChangeling = await fromUuid(METAMORPHOSED_CHANGELING_ID);
   const created = await Item.create(metamorphosedChangeling, { parent: actor });
   await setPerkValues(actor, created, null, null, METAMORPHOSED_CHANGELING_ID);
-}
-
-/**
- * Colony Changeling - see COLONY_CHANGELING_ID's own comment above. Grants a permanent copy of the
- * Infatuated Influence, unless the actor already has one - the same "grant unless already held"
- * shape grantPerkOutright uses, just checking type 'influence' instead of 'perk' (grantPerkOutright
- * itself is hardcoded to 'perk', so this doesn't reuse it directly).
- * @param {Actor} actor
- */
-export async function grantColonyChangelingInfatuated(actor) {
-  const alreadyInfatuated = actor.items.some(item =>
-    item.type == 'influence'
-    && (item.flags?.core?.sourceId == INFATUATED_ID || item._stats?.compendiumSource == INFATUATED_ID));
-  if (alreadyInfatuated) {
-    return;
-  }
-
-  const infatuated = await fromUuid(INFATUATED_ID);
-  await Item.create(infatuated, { parent: actor });
-}
-
-/**
- * Natural Science - see NATURAL_SCIENCE_ID's own comment above. Grants Element Jet weapon
- * qualification/training directly, the same fields _trainingUpdate() writes for a Role's own
- * weapon list.
- * @param {Actor} actor
- */
-export async function grantNaturalScienceQualification(actor) {
-  await actor.update({
-    "system.qualified.weapons.element": true,
-    "system.trained.weapons.element": true,
-  });
 }
 
 /**
@@ -924,7 +629,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     // stamped instead of _stats.compendiumSource (see attachment-handler.mjs#grantItemEntry) -
     // counting only the latter would undercount timesTaken for a Perk obtainable both ways.
     const ownerItem = actor.items.get(actorItem._id);
-    const itemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats.compendiumSource;
+    const itemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats.compendiumSource ?? ownerItem?.flags?.essence20?.rulesSource;
     if (actorItem.type == 'perk' && itemSourceId == perk.uuid) {
       timesTaken++;
       const numberOfAdvances = actorItem.system.advances.currentValue/actorItem.system.advances.increaseValue;
@@ -977,7 +682,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     // specific dialog), catches it correctly: by the time a second dialog is confirmed, the
     // first one's own choice has already been persisted via the update() below.
     if (selectionType == 'skills') {
-      const perkSourceId = newPerk.flags?.core?.sourceId ?? newPerk._stats?.compendiumSource;
+      const perkSourceId = newPerk.flags?.core?.sourceId ?? newPerk._stats?.compendiumSource ?? newPerk?.flags?.essence20?.rulesSource;
       if (perkSourceId == EXPERTISE_GIJ_ID && getAlreadyChosenExpertiseSkills(actor, newPerk).includes(selection)) {
         ui.notifications.error(game.i18n.localize('E20.ExpertiseDuplicateSkillError'));
         return;
@@ -1083,7 +788,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
   // list there is this Perk's own documented fallback, not an error.
   if (perkUuid == COMBINER_SPECIALIZATION_ID) {
     const alreadyHasEither = actor.items.some(item => {
-      const sourceId = item.flags.core?.sourceId ?? item._stats?.compendiumSource;
+      const sourceId = item.flags.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
       return sourceId == GESTALT_COMBINER_ID || sourceId == MATCHED_COMBINER_ID;
     });
 
@@ -1105,33 +810,9 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
   await grantPerkEquipmentMap(actor, perk);
 
   if (perkUuid == SORCERY_PERK_ID) {
+    // Cost of Sorcery itself comes from Sorcery's own Grant rule.
     await actor.update ({
       "system.powers.sorcerous.levelTaken": actor.system.level,
-    });
-
-    const alreadyHasCostOfSorcery = actor.items.some(item => {
-      const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
-      return sourceId == COST_OF_SORCERY_ID;
-    });
-    if (!alreadyHasCostOfSorcery) {
-      const costOfSorcery = await fromUuid(COST_OF_SORCERY_ID);
-      await Item.create(costOfSorcery, { parent: actor });
-    }
-  } else if (perkUuid == ZORD_PERK_ID) {
-    await actor.update ({
-      "system.canHaveZord": true,
-    });
-  } else if (perkUuid == QUANTASAURUS_REX_ID) {
-    await actor.update ({
-      "system.canHaveZord": true,
-    });
-  } else if (perkUuid == TOROZORD_ID) {
-    await actor.update ({
-      "system.canHaveZord": true,
-    });
-  } else if (perkUuid == PHANTOM_SHIP_ID) {
-    await actor.update ({
-      "system.canHaveZord": true,
     });
   } else if (perkUuid == TOROZORD_FEATURE_ID) {
     await grantTorozordFeature(actor, perk);
@@ -1143,59 +824,15 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
     await grantSurvivalTrainingHealth(actor);
   } else if (perkUuid == AQUA_ELEMENTAL_ADAPTATION_ID) {
     await grantAquaElementalAdaptation(actor);
-  } else if (perkUuid == FORMER_SENATOR_ID) {
-    await grantChosenSpecialization(perk, ['deception', 'persuasion']);
-  } else if (perkUuid == GLADIATOR_ID) {
-    await grantChosenSpecialization(perk, ['intimidation']);
-  } else if (perkUuid == HUNTER_ID) {
-    await grantChosenSpecialization(perk, ['survival']);
-  } else if (perkUuid == RACER_ID) {
-    await grantChosenSpecialization(perk, ['driving']);
-  } else if (perkUuid == SCAVENGER_ID) {
-    await grantChosenSpecialization(perk, ['streetwise']);
   } else if (perkUuid == DUTY_OF_THE_SILVER_ID) {
     await grantDutyOfTheSilverArmorTraining(actor);
-  } else if (perkUuid == BEATDOWN_ID) {
-    await grantBeatdownWeapon(actor);
-  } else if (perkUuid == JACKHAMMER_ID) {
-    await grantJackhammerWeapon(actor);
-  } else if (perkUuid == SHADOW_MORPH_ID) {
-    await grantShadowSaber(actor);
-  } else if (BATTLIZER_ACCESS_OPTIONS[perkUuid]) {
-    const battlizerId = await pickBattlizer(perk, BATTLIZER_ACCESS_OPTIONS[perkUuid]);
-    if (battlizerId) {
-      await grantBattlizerAccess(actor, battlizerId);
-    }
-  } else if (perkUuid == CHANGE_ITS_STRIPES_ID) {
-    await grantBlendIn(actor);
-  } else if (perkUuid == BLEND_IN_ID) {
+  } else if (perkUuid == CHANGE_ITS_STRIPES_ID || perkUuid == BLEND_IN_ID) {
+    // Change Its Stripes' Blend In Perk itself is a Grant rule; the armor upgrades stay here.
     await grantBlendInUpgrades(actor);
   } else if (perkUuid == SILENT_RUNNING_ID) {
     await grantSilentRunningUpgrades(actor);
-  } else if (perkUuid == COMBAT_LIFESAVER_ID) {
-    await grantEmtCrashCourse(actor);
-  } else if (perkUuid == LIFE_FINDS_A_WAY_ID) {
-    await grantDodgy(actor);
-  } else if (perkUuid == FOR_THE_SYNDICATE_ID) {
-    await grantForTheSyndicateMentor(actor);
-  } else if (perkUuid == YOUNG_BUT_EXPERIENCED_ID) {
-    await grantYoungButExperiencedVeteran(actor);
-  } else if (perkUuid == INTO_THE_VOID_ID) {
-    await grantIntoTheVoidDigDeep(actor);
-  } else if (perkUuid == SYNCHRONIZATION_ID) {
-    await grantSynchronizationStayInFormation(actor);
-  } else if (perkUuid == NANOFLAGE_ID) {
-    await grantNanoflageMimic(actor);
-  } else if (perkUuid == PET_COMPANION_ID) {
-    await grantPetCompanionAnimalPet(actor);
   } else if (perkUuid == METAMORPHOSIS_ID) {
     await grantMetamorphosis(actor);
-  } else if (perkUuid == COLONY_CHANGELING_ID) {
-    await grantColonyChangelingInfatuated(actor);
-  } else if (perkUuid == NATURAL_SCIENCE_ID) {
-    await grantNaturalScienceQualification(actor);
-  } else if (perkUuid == SPEAK_YOUR_TRUTH_ID) {
-    await grantSpeakYourTruthEssence(perk);
   } else if (perkUuid == PRIMAL_MOVEMENT_ID) {
     await grantPrimalMovement(actor);
   } else if (perkUuid == PRIMAL_TOOLS_ID) {
@@ -1369,7 +1006,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
           // flags.core.sourceId stamped instead of _stats.compendiumSource (see attachment-
           // handler.mjs#grantItemEntry) - checking only the latter would let a player re-pick
           // an already-Role-granted candidate from this choice list.
-          const attachedItemSourceId = attachedItem.flags.core?.sourceId ?? attachedItem._stats.compendiumSource;
+          const attachedItemSourceId = attachedItem.flags.core?.sourceId ?? attachedItem._stats.compendiumSource ?? attachedItem?.flags?.essence20?.rulesSource;
           if (item.uuid == attachedItemSourceId) {
             taken = true;
             break;
@@ -1894,48 +1531,50 @@ async function _showSpectrumShiftDialog(actor, perk, dropFunc) {
  * @param {Perk} perk The perk
  */
 export async function onPerkDelete(actor, perk) {
-  if (perk.flags.core?.sourceId == SORCERY_PERK_ID || perk._stats.compendiumSource == SORCERY_PERK_ID ) {
+  if (perk.flags.core?.sourceId == SORCERY_PERK_ID || perk._stats.compendiumSource == SORCERY_PERK_ID || perk?.flags?.essence20?.rulesSource == SORCERY_PERK_ID ) {
     await actor.update ({
       "system.powers.sorcerous.levelTaken": 0,
     });
 
+    // Only a copy from before Sorcery's Grant rule - a granted one (grantedBy) goes with the Perk
+    // through the rule itself (rules/lifecycle.mjs).
     const costOfSorcery = actor.items.find(item => {
-      const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
-      return sourceId == COST_OF_SORCERY_ID;
+      const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
+      return sourceId == COST_OF_SORCERY_ID && !item.flags?.essence20?.grantedBy;
     });
     if (costOfSorcery) {
       await costOfSorcery.delete();
     }
   }
 
-  if (perk.flags.core?.sourceId == ZORD_PERK_ID || perk._stats.compendiumSource == ZORD_PERK_ID ) {
+  if (perk.flags.core?.sourceId == ZORD_PERK_ID || perk._stats.compendiumSource == ZORD_PERK_ID || perk?.flags?.essence20?.rulesSource == ZORD_PERK_ID ) {
     await actor.update ({
       "system.canHaveZord": false,
     });
   }
 
-  if (perk.flags.core?.sourceId == QUANTASAURUS_REX_ID || perk._stats.compendiumSource == QUANTASAURUS_REX_ID ) {
+  if (perk.flags.core?.sourceId == QUANTASAURUS_REX_ID || perk._stats.compendiumSource == QUANTASAURUS_REX_ID || perk?.flags?.essence20?.rulesSource == QUANTASAURUS_REX_ID ) {
     await actor.update ({
       "system.canHaveZord": false,
     });
   }
 
-  if (perk.flags.core?.sourceId == TOROZORD_ID || perk._stats.compendiumSource == TOROZORD_ID ) {
+  if (perk.flags.core?.sourceId == TOROZORD_ID || perk._stats.compendiumSource == TOROZORD_ID || perk?.flags?.essence20?.rulesSource == TOROZORD_ID ) {
     await actor.update ({
       "system.canHaveZord": false,
     });
   }
 
-  if (perk.flags.core?.sourceId == PHANTOM_SHIP_ID || perk._stats.compendiumSource == PHANTOM_SHIP_ID ) {
+  if (perk.flags.core?.sourceId == PHANTOM_SHIP_ID || perk._stats.compendiumSource == PHANTOM_SHIP_ID || perk?.flags?.essence20?.rulesSource == PHANTOM_SHIP_ID ) {
     await actor.update ({
       "system.canHaveZord": false,
     });
   }
 
   if (
-    perk.flags.core?.sourceId == HEAVY_ARMOR_SHELL_ID || perk._stats.compendiumSource == HEAVY_ARMOR_SHELL_ID
-    || perk.flags.core?.sourceId == MEDIUM_ARMOR_SHELL_ID || perk._stats.compendiumSource == MEDIUM_ARMOR_SHELL_ID
-    || perk.flags.core?.sourceId == ULTRA_HEAVY_ARMOR_SHELL_ID || perk._stats.compendiumSource == ULTRA_HEAVY_ARMOR_SHELL_ID
+    perk.flags.core?.sourceId == HEAVY_ARMOR_SHELL_ID || perk._stats.compendiumSource == HEAVY_ARMOR_SHELL_ID || perk?.flags?.essence20?.rulesSource == HEAVY_ARMOR_SHELL_ID
+    || perk.flags.core?.sourceId == MEDIUM_ARMOR_SHELL_ID || perk._stats.compendiumSource == MEDIUM_ARMOR_SHELL_ID || perk?.flags?.essence20?.rulesSource == MEDIUM_ARMOR_SHELL_ID
+    || perk.flags.core?.sourceId == ULTRA_HEAVY_ARMOR_SHELL_ID || perk._stats.compendiumSource == ULTRA_HEAVY_ARMOR_SHELL_ID || perk?.flags?.essence20?.rulesSource == ULTRA_HEAVY_ARMOR_SHELL_ID
   ) {
     // Re-derive from whatever Armor Training remains (e.g. dropping down from Heavy to the
     // Role's own base Medium Training) rather than the hasMorphedToughnessBonus branch's own flat

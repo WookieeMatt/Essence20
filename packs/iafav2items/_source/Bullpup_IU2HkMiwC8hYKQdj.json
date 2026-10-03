@@ -5,6 +5,7 @@
   "_id": "IU2HkMiwC8hYKQdj",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["host:data:system.classification.size=medium","host:data:system.classification.size=long","host:data:system.classification.size=heavy"]},"ask:Ranged weapon","host:trait:reload"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon it's attached to is one size smaller, and once per scene you can reload it as a Free action.</p>"

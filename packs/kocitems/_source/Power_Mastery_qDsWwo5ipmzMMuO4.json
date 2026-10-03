@@ -5,6 +5,7 @@
   "_id": "qDsWwo5ipmzMMuO4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Power Conservationist","self:skill:spellcasting>=d10"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: all of a spell's casting costs are applied after your Spellcasting test instead of before it.</p>"

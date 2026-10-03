@@ -212,22 +212,6 @@ describe('onPowerUse', () => {
     delete global.game.user;
   });
 
-  test('recognizes Willful Strength and grants bonus Health', async () => {
-    const WILLFUL_STRENGTH_ID = "Compendium.essence20.jump_through_time.Item.8a7YRcCUxcx6KgQl";
-    const actor = {
-      ...makeActor(),
-      system: { skills: { survival: { shift: 'd6' } }, health: { bonus: 0 } },
-      getFlag: jest.fn(() => undefined),
-      setFlag: jest.fn(),
-      update: jest.fn(),
-    };
-    const item = { name: 'Willful Strength', flags: { core: { sourceId: WILLFUL_STRENGTH_ID } } };
-
-    await onPowerUse(actor, item);
-
-    expect(actor.update).toHaveBeenCalledWith({ 'system.health.bonus': 2 }); // d6's own rank index
-  });
-
   test('recognizes Blazing Strikes, activates it, and posts a chat card', async () => {
     const BLAZING_STRIKES_ID = "Compendium.essence20.across_the_stars.Item.hr0SY24JAM7I91qA";
     const actor = { ...makeActor(), getFlag: jest.fn(() => false), setFlag: jest.fn() };
@@ -250,16 +234,6 @@ describe('onPowerUse', () => {
     expect(global.ChatMessage.create).toHaveBeenCalled();
   });
 
-  test('recognizes Rev Your Engines! and banks a shiftUp scaled by the spent amount', async () => {
-    const REV_YOUR_ENGINES_ID = "Compendium.essence20.jump_through_time.Item.Eu8CsCA470XBEer0";
-    const actor = { ...makeActor(), setFlag: jest.fn(), getFlag: jest.fn() };
-    const item = { name: 'Rev Your Engines!', flags: { core: { sourceId: REV_YOUR_ENGINES_ID } } };
-
-    await onPowerUse(actor, item, 2);
-
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingRevYourEnginesShiftUp', expect.objectContaining({ shiftUp: 2 }));
-  });
-
   test('recognizes Morphblast and triggers a real roll', async () => {
     const MORPHBLAST_ID = "Compendium.essence20.jump_through_time.Item.jPTF96WV19T37AqG";
     global.canvas = { tokens: { placeables: [], setTargets: jest.fn() }, grid: { measurePath: jest.fn(() => ({ distance: 0 })) } };
@@ -271,16 +245,6 @@ describe('onPowerUse', () => {
     expect(actor._dice.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ isMorphblast: true }), actor);
   });
 
-  test('recognizes Megazord Link and banks a fixed +2 Driving shiftUp', async () => {
-    const MEGAZORD_LINK_ID = "Compendium.essence20.jump_through_time.Item.c7e7enVe96wOikd9";
-    const actor = { ...makeActor(), setFlag: jest.fn(), getFlag: jest.fn() };
-    const item = { name: 'Megazord Link', flags: { core: { sourceId: MEGAZORD_LINK_ID } } };
-
-    await onPowerUse(actor, item);
-
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingMegazordLinkShiftUp', expect.objectContaining({ shiftUp: 2 }));
-  });
-
   test('recognizes Future Vision and writes the spent amount as the item\'s own reroll.maxUses', async () => {
     const FUTURE_VISION_ID = "Compendium.essence20.jump_through_time.Item.z9ZMxCd5DZDHlDYL";
     const actor = makeActor();
@@ -289,19 +253,6 @@ describe('onPowerUse', () => {
     await onPowerUse(actor, item, 3);
 
     expect(item.update).toHaveBeenCalledWith({ 'system.reroll.enabled': true, 'system.reroll.maxUses': 3 });
-  });
-
-  test.each([
-    ['Mnemonic Recall', "Compendium.essence20.pr_crb.Item.jOYqRnHMYz6nETD0"],
-    ['Power Transfer', "Compendium.essence20.pr_crb.Item.QYluNF8M04MmP40d"],
-    ['Longevity', "Compendium.essence20.beneath_the_helmet.Item.2PWhz49B168yOdU6"],
-  ])('recognizes %s and posts a narrative chat card, with nothing further to compute', async (name, sourceId) => {
-    const actor = makeActor();
-    const item = { name, flags: { core: { sourceId } } };
-
-    await onPowerUse(actor, item);
-
-    expect(global.ChatMessage.create).toHaveBeenCalled();
   });
 
   test('recognizes Power Heal, heals whichever ally was targeted, and posts a chat card', async () => {
@@ -318,17 +269,6 @@ describe('onPowerUse', () => {
     expect(ally.update).toHaveBeenCalledWith({ 'system.health.value': 8 });
     expect(global.ChatMessage.create).toHaveBeenCalled();
     delete global.game.user;
-  });
-
-  test('recognizes (Grid) Power Strike and banks a pending damage bonus, with no chat card of its own', async () => {
-    const GRID_POWER_STRIKE_ID = "Compendium.essence20.pr_crb.Item.DT0TOaHfuJzkgUeO";
-    const actor = { ...makeActor(), setFlag: jest.fn(), getFlag: jest.fn() };
-    const item = { name: 'Power Strike', flags: { core: { sourceId: GRID_POWER_STRIKE_ID } } };
-
-    await onPowerUse(actor, item, 3);
-
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingGridPowerStrikeDamage', expect.objectContaining({ damageBonus: 3 }));
-    expect(global.ChatMessage.create).not.toHaveBeenCalled();
   });
 
   test('recognizes Power Blast and triggers a real roll, with no chat card of its own', async () => {
@@ -424,56 +364,6 @@ describe('onPowerUse', () => {
 
     expect(actor.setFlag).not.toHaveBeenCalled();
     expect(actor.update).not.toHaveBeenCalled();
-    expect(global.ChatMessage.create).not.toHaveBeenCalled();
-  });
-
-  test('recognizes Grid Empowered, deals 1 Electric damage to the target, and posts a chat card', async () => {
-    const GRID_EMPOWERED_ID = "Compendium.essence20.through_the_shattered_grid.Item.17iN2ZzSaTvqX0PL";
-    const actor = makeActor();
-    const targetActor = { system: { health: { value: 5 }, stun: { value: 0 } }, update: jest.fn(), toggleStatusEffect: jest.fn() };
-    global.game.user = { targets: { first: () => ({ actor: targetActor }) } };
-    const item = { name: 'Grid Empowered', flags: { core: { sourceId: GRID_EMPOWERED_ID } } };
-
-    await onPowerUse(actor, item);
-
-    expect(targetActor.update).toHaveBeenCalledWith({ 'system.health.value': 4 });
-    expect(global.ChatMessage.create).toHaveBeenCalled();
-    delete global.game.user;
-  });
-
-  test('recognizes Grid Empowered but does nothing without a target', async () => {
-    const GRID_EMPOWERED_ID = "Compendium.essence20.through_the_shattered_grid.Item.17iN2ZzSaTvqX0PL";
-    const actor = makeActor();
-    global.game.user = { targets: { first: () => undefined } };
-    const item = { name: 'Grid Empowered', flags: { core: { sourceId: GRID_EMPOWERED_ID } } };
-
-    await onPowerUse(actor, item);
-
-    expect(global.ChatMessage.create).not.toHaveBeenCalled();
-    delete global.game.user;
-  });
-
-  test('recognizes Shattered Memories, prompts, banks the Smarts shiftUp option, and posts a chat card', async () => {
-    const SHATTERED_MEMORIES_ID = "Compendium.essence20.through_the_shattered_grid.Item.faME3nQl9NjbafOG";
-    const actor = { ...makeActor(), getFlag: jest.fn(() => undefined), setFlag: jest.fn() };
-    global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('recallTimeline') };
-    const item = { name: 'Shattered Memories', flags: { core: { sourceId: SHATTERED_MEMORIES_ID } } };
-
-    await onPowerUse(actor, item);
-
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingShatteredMemoriesSmarts', expect.objectContaining({}));
-    expect(global.ChatMessage.create).toHaveBeenCalled();
-  });
-
-  test('recognizes Shattered Memories but does nothing when the picker is cancelled', async () => {
-    const SHATTERED_MEMORIES_ID = "Compendium.essence20.through_the_shattered_grid.Item.faME3nQl9NjbafOG";
-    const actor = { ...makeActor(), getFlag: jest.fn(() => undefined), setFlag: jest.fn() };
-    global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('cancel') };
-    const item = { name: 'Shattered Memories', flags: { core: { sourceId: SHATTERED_MEMORIES_ID } } };
-
-    await onPowerUse(actor, item);
-
-    expect(actor.setFlag).not.toHaveBeenCalled();
     expect(global.ChatMessage.create).not.toHaveBeenCalled();
   });
 
@@ -648,16 +538,6 @@ describe('onPowerUse', () => {
     await onPowerUse(actor, item);
 
     expect(actor._dice.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ isLuckyCharmAttempt: true }), actor);
-  });
-
-  test('recognizes Illusory Disguise and triggers a real roll', async () => {
-    const ILLUSORY_DISGUISE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.7r9RSyoSvZxNx7El";
-    const actor = { ...makeActor(), _dice: { rollSkill: jest.fn() } };
-    const item = { name: 'Illusory Disguise', flags: { core: { sourceId: ILLUSORY_DISGUISE_ID } } };
-
-    await onPowerUse(actor, item);
-
-    expect(actor._dice.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ isIllusoryDisguiseAttempt: true }), actor);
   });
 });
 

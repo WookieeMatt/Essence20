@@ -5,6 +5,9 @@
   "_id": "O7JuVYJXdMX1V1LI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"ID the Outdoors","when":[{"any":["skill:science","skill:persuasion","skill:deception"]}],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: Edge on Science, Persuasion and Deception tests, listed as its own source - set the roll back to normal unless you're identifying an animal or plant, or talking about one in the wilderness.</p>"

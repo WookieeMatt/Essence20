@@ -5,6 +5,7 @@
   "_id": "88RyrxLTpBliugqQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:influence:Mutant Beast","self:hasType:influence:Transmetal II"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: once per scene, Shoving a creature or object up to your size 10ft from as far as 60ft away with Brawn or Technology.</p>"

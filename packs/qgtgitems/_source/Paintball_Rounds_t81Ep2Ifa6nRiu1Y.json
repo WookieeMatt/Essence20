@@ -5,6 +5,7 @@
   "_id": "t81Ep2Ifa6nRiu1Y",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Targeting weapon"]},
     "automation": {
       "status": "manual",
       "notes": "<p>On the sheet: the weapon shows the Marked trait.</p><p>Left to the table: firing paint rounds as a separate marking option, and the paint making the target easy to identify.</p>"

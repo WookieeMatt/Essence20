@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Caretaker","when":["skill:science"],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your Science tests open the Roll Options Dialog with Edge already selected, and your rolls from a Group Test card get Edge too. Left to the table: keeping the Science Edge to medical tasks.</p>"

@@ -5,6 +5,9 @@
   "_id": "6x7H1Br7te7T3klR",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a Standard weapon to build into the drone","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","from":{"type":"weapon","availabilities":["standard"]},"integrated":true,"flags":{"droneWeapon":true}},{"do":"setToggle","key":"granted","value":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a Standard weapon and it's built into the drone.</p>"

@@ -62,7 +62,7 @@ export async function setGearNanomitePower(gear, power) {
     return false;
   }
 
-  const powerUuid = power.flags?.core?.sourceId ?? power._stats?.compendiumSource ?? power.uuid;
+  const powerUuid = power.flags?.core?.sourceId ?? power._stats?.compendiumSource ?? power?.flags?.essence20?.rulesSource ?? power.uuid;
   await gear.update({ 'system.nanomite.powerUuid': powerUuid, 'system.nanomite.spent': 0 });
   return true;
 }

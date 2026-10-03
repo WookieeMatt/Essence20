@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:count:role>=1","not:self:hasType:perk:It's Morphin Time!"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: Morph or unmorph.</p><p>Left to the table: turning it off when the scene ends.</p>"

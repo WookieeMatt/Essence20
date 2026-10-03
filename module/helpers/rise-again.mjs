@@ -1,6 +1,6 @@
 import { E20 } from "./config.mjs";
 import {
-  actorHasPerk, bankPendingBonus, clearPendingBonus, getPendingBonus,
+  bankPendingBonus, clearPendingBonus, getPendingBonus,
   hasUsedThisEncounter, markUsedThisEncounter,
 } from "./perks.mjs";
 
@@ -24,7 +24,8 @@ import {
  * Roll With The Punches' own narrower RAW text - Rise Again's "a Defense of your choice" is
  * unrestricted, so this needs its own picker offering all four).
  *
- * The Defeat-prevention half is built directly into combat.mjs#applyDamage's own existing chain of
+ * The Defeat-prevention half is the item's own rule now (a wouldBeDefeated Trigger: self:morphed,
+ * not:damage:crit, once per scene). It was first built directly into combat.mjs#applyDamage's chain of
  * "would this reduce Health to 0? substitute 1 instead" checks (Immortal Rebel Soul/Renegade
  * Commander/Do Not Go Quietly already established that exact shape) - the two new wrinkles here
  * are the isMorphed gate and the "unless a Critical Success" exception, the latter needing
@@ -36,7 +37,6 @@ import {
  */
 export const PENDING_RISE_AGAIN_DEFENSE_FLAG_KEY = 'pendingRiseAgainDefense';
 const RISE_AGAIN_DEFENSE_ENCOUNTER_FLAG = 'riseAgainDefenseUsedThisEncounter';
-export const RISE_AGAIN_DEFEAT_ENCOUNTER_FLAG = 'riseAgainDefeatUsedThisEncounter';
 export const RISE_AGAIN_ID = "Compendium.essence20.through_the_shattered_grid.Item.9DCNlVGfsEgUX6SC";
 
 /**
@@ -114,16 +114,4 @@ export async function consumeRiseAgainDefense(targetActor, defenseType) {
 
   await clearPendingBonus(targetActor, PENDING_RISE_AGAIN_DEFENSE_FLAG_KEY);
   return pending.defenseBonus;
-}
-
-/**
- * Whether the Defeat-prevention half should fire right now: the actor holds the Perk, is Morphed,
- * hasn't already used this half this scene, and the incoming hit wasn't a Critical Success.
- * @param {Actor} actor
- * @param {Boolean} isCrit
- * @returns {Boolean}
- */
-export function canRiseAgainPreventDefeat(actor, isCrit) {
-  return !isCrit && !!actor.system?.isMorphed && actorHasPerk(actor, RISE_AGAIN_ID)
-    && !hasUsedThisEncounter(actor, RISE_AGAIN_DEFEAT_ENCOUNTER_FLAG);
 }

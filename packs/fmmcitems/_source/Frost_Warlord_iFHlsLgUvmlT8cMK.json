@@ -5,6 +5,17 @@
   "_id": "iFHlsLgUvmlT8cMK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","label":"Frost Warlord","direction":"taken","damageType":"element","amount":-2,"when":["self:data:flags.essence20.monsterFormActive"]},
+      {"type":"DamageModifier","label":"Frost Warlord","direction":"taken","damageType":"acid","amount":-2,"when":["self:data:flags.essence20.monsterFormActive"]},
+      {"type":"DamageModifier","label":"Frost Warlord","direction":"taken","damageType":"cold","amount":-2,"when":["self:data:flags.essence20.monsterFormActive"]},
+      {"type":"DamageModifier","label":"Frost Warlord","direction":"taken","damageType":"electric","amount":-2,"when":["self:data:flags.essence20.monsterFormActive"]},
+      {"type":"DamageModifier","label":"Frost Warlord","direction":"taken","damageType":"emp","amount":-2,"when":["self:data:flags.essence20.monsterFormActive"]},
+      {"type":"DamageModifier","label":"Frost Warlord","direction":"taken","damageType":"fire","amount":-2,"when":["self:data:flags.essence20.monsterFormActive"]},
+      {"type":"DamageModifier","label":"Frost Warlord","direction":"taken","damageType":"laser","amount":-2,"when":["self:data:flags.essence20.monsterFormActive"]},
+      {"type":"DamageModifier","label":"Frost Warlord","direction":"taken","damageType":"sonic","amount":-2,"when":["self:data:flags.essence20.monsterFormActive"]},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Frost Warlord","when":["attack:unarmed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 to all Defenses while Morphed. Automatic: attacks with your natural Reach deal +1 damage, shown on the chat card as \"Includes +1 from Frost Warlord\", and in Monster Form Energy-type damage applied to you is reduced by 2.</p>"

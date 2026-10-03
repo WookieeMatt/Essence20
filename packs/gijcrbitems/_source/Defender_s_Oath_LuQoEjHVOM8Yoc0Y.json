@@ -5,6 +5,9 @@
   "_id": "LuQoEjHVOM8Yoc0Y",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"wouldBeDefeated","label":"Defender's Oath: your Protected Target stays at 1 Health","scope":"aura","radius":10,"affects":"all","when":["holder:protects","not:holder:status:defeated"],"steps":[{"do":"leaveAt","value":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you're not Defeated and within 10 ft of your Protected Target, dropping to 0 Health doesn't Defeat them.</p>"

@@ -5,6 +5,7 @@
   "_id": "whI0JF2OHjjVF3QY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:animalHandling>=d4"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: builds your pet (form, size and function) and links it to you. Taking the Perk again lets you add another pet or give one of yours a new Animal Perk.</p><p>Left to the table: picking the pet's starting Animal Perks.</p>"

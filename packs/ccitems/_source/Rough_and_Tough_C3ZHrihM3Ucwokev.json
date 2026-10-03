@@ -5,6 +5,9 @@
   "_id": "C3ZHrihM3Ucwokev",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"AttackCount","label":"Rough and Tough","count":"2 + floor(min(@level, 20) / 20)"}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: an Attack action lets you attack twice (three times at 20th level). Active Effect: +1 Health and +1 to every Defense.</p><p>Left to the table: switching on the second Active Effect when you reach 20th level.</p>"

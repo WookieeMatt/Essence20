@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Sizing up danger to others (Distressed: ↓1)","when":["skill:alertness"],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch for ↓1 on Alertness tests while others are in danger.</p>"

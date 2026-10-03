@@ -40,10 +40,19 @@
     {
       "id": "effects",
       "app": "item",
-      "tab": "effects",
-      "selector": "section[data-tab=\"effects\"]",
+      "tab": "rules",
+      "selector": "section[data-tab=\"rules\"]",
       "title": "E20.Tours.Items.Effects.Title",
       "content": "E20.Tours.Items.Effects.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "requires",
+      "app": "item",
+      "tab": "rules",
+      "selector": ".e20-prerequisites",
+      "title": "E20.Tours.Items.Requires.Title",
+      "content": "E20.Tours.Items.Requires.Content",
       "tooltipDirection": "LEFT"
     },
     {

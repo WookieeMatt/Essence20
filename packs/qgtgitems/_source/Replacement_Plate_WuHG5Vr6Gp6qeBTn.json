@@ -5,6 +5,7 @@
   "_id": "WuHG5Vr6Gp6qeBTn",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["ask:Counter-Ballistic/Element/Kinetic or Reinforced"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing applies automatically.</p><p>Left to the table: once per mission, repairing all damage to the armor, even if it was destroyed.</p>"

@@ -55,38 +55,17 @@ beforeEach(() => {
 
 const names = out => out.map(t => t.name);
 
-test('social Hang-Up switches show on Social tests and apply their penalty', () => {
-  const holder = actor([item(G3.brutish, { type: 'hangUp' }), item(G3.onceAMarauder, { type: 'hangUp' }), item(G3.subtleSnake, { type: 'hangUp' })]);
-  expect(names(gij3Toggles(holder, { rolledSkill: 'persuasion' }))).toEqual(['gij3Brutish', 'gij3OnceAMarauder', 'gij3SubtleSnake']);
+test('Subtle Snake: a Social switch and what each choice does', () => {
+  const holder = actor([item(G3.subtleSnake, { type: 'hangUp' })]);
+  expect(names(gij3Toggles(holder, { rolledSkill: 'persuasion' }))).toEqual(['gij3SubtleSnake']);
   expect(gij3Toggles(holder, { rolledSkill: 'science' })).toEqual([]);
 
-  const options = { shiftDown: 0, ext: { gij3Brutish: true, gij3OnceAMarauder: true, gij3SubtleSnake: 'cobra' } };
+  const options = { shiftDown: 0, ext: { gij3SubtleSnake: 'cobra' } };
   gij3ApplyDialog(holder, options);
-  expect(options).toMatchObject({ snag: true, shiftDown: 2 });
+  expect(options).toMatchObject({ shiftDown: 1 });
   const outsider = { shiftDown: 0, ext: { gij3SubtleSnake: 'outsider' } };
   gij3ApplyDialog(holder, outsider);
   expect(outsider).toMatchObject({ snag: true, shiftDown: 0 });
-});
-
-test('Broadcaster Edge, Second Skin Edge, Petrolhead Specialized', () => {
-  const holder = actor([item(G3.broadcaster), item(G3.secondSkin), item(G3.petrolhead, { system: { choice: 'ground' } })]);
-  expect(names(gij3Toggles(holder, { rolledSkill: 'deception' }))).toEqual(['gij3SecondSkin', 'gij3Broadcaster']);
-  expect(names(gij3Toggles(holder, { rolledSkill: 'technology' }))).toEqual(['gij3SecondSkin', 'gij3Petrolhead']);
-  expect(names(gij3Toggles(holder, { rolledSkill: 'targeting', item: { type: 'weaponEffect' } }))).toEqual([]);
-  const options = { ext: { gij3Broadcaster: true, gij3Petrolhead: true } };
-  gij3ApplyDialog(holder, options);
-  expect(options).toMatchObject({ edge: true, isSpecialized: true });
-});
-
-test('Means To An End only on the chosen Means skills once set', () => {
-  const perk = item(G3.meansToAnEnd);
-  const holder = actor([perk]);
-  expect(names(gij3Toggles(holder, { rolledSkill: 'science' }))).toEqual(['gij3MeansToAnEnd']);
-  perk.flags.essence20.gij3MeansSkills = ['might', 'finesse', 'technology', 'deception'];
-  expect(gij3Toggles(holder, { rolledSkill: 'science' })).toEqual([]);
-  const options = { shiftUp: 1, ext: { gij3MeansToAnEnd: true } };
-  gij3ApplyDialog(holder, options);
-  expect(options.shiftUp).toBe(2);
 });
 
 test('Stalk: Edge on Infiltration unless known to be outside the environment', () => {

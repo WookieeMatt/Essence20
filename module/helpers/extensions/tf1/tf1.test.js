@@ -5,7 +5,7 @@ import {
   tf1CombatPostRoll, tf1CombatSources, tf1CombatToggles, tf1DefenseAdjust, tf1Derived,
 } from './combat.mjs';
 import {
-  FLEXIBLE_SWITCH_RULE, PARTNERED_RULE, SUPPORT_USES, mimicrySizeOk, sizeClass, tf1SupportApplyDialog, tf1SupportPostRoll,
+  FLEXIBLE_SWITCH_RULE, PARTNERED_RULE, SUPPORT_USES, mimicrySizeOk, sizeClass, tf1SupportPostRoll,
   tf1SupportSources,
 } from './support.mjs';
 import { registrySnapshot } from '../../extensions.mjs';
@@ -131,16 +131,6 @@ test('Loaded Questions: cumulative ↑1 per earlier test on the same target this
   await tf1SupportPostRoll(holder, [], {}, { hits: [{ target: foe }], rider: { skill: 'persuasion' } });
   expect(tf1SupportSources(holder, foe, { rolledSkill: 'persuasion' }).sources[0].shiftUp).toBe(2);
   expect(tf1SupportSources(holder, foe, { rolledSkill: 'alertness' }).sources).toEqual([]);
-});
-
-test('Storage Compartments toggle', async () => {
-  const traitor = makeActor([]);
-  const options = { shiftDown: 0, edge: true, ext: { tf1Storage: true } };
-  await tf1SupportApplyDialog(traitor, options);
-  expect(options).toMatchObject({ shiftDown: 0, edge: false });
-  const secrets = { edge: false, snag: false, ext: { tf1Secrets: true } };
-  await tf1SupportApplyDialog(traitor, secrets);
-  expect(secrets.edge).toBe(true);
 });
 
 test('Alt Mode Mimicry size limit', () => {

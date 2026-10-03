@@ -1,12 +1,9 @@
 /**
  * Weapons and gear that change what they do with a mode switch, plus two Beast Mode chassis.
  *
- * - Deflecting Weapon (Quartermaster's Guide to Gear, p.36). Combat Nunchaku: "counts as both a
- *   Short Bludgeon and an Arm Guard. When used as a weapon, it grants the wielder Evasion +1. When
- *   used as a shield, it instead grants Toughness +1. It cannot attack when used as a shield.
- *   Switching between using it as a weapon and a shield is a Move action." Excalibur: "counts as
- *   both a Medium Blade and a Riot Shield. When used as a weapon, it grants the wielder Toughness
- *   +1. When used as a shield, it instead grants Evasion +2."
+ * - Deflecting Weapons (Quartermaster's Guide to Gear, p.36: Combat Nunchaku, Excalibur) are item rules
+ *   now - two Defense rules and a Use that flips their shieldMode toggle; ./unusable.mjs still refuses
+ *   an attack while it's on.
  * - Rotary Blade (Technorganic Secrets, p.48-49). Slasher Mode: "Spend a Move action to switch
  *   Rotary Blade to its Cyber Shield Mode". Cyber Shield Mode: "When active, gain +1 to Toughness
  *   and Evasion. You may also spend a Standard action while falling to spin the shield into a
@@ -14,7 +11,7 @@
  *   Slasher Mode."
  * - Dozer Blade (TF CRB, p.134): "Alt Mode: You can clear one square of Rough Terrain you Move
  *   through as a Free action. Bot Mode: Your dozer blade acts as a shield, providing +2 Deflection
- *   bonus to Toughness."
+ *   bonus to Toughness." The Bot Mode +2 is an item rule now (system.rules); the Alt Mode Use stays here.
  * - Carapaced (Technorganic Secrets, p.37): "Alt Mode Movement: 40 feet Ground. Choose either to add
  *   20 feet to your Ground speed or gain a 25 feet Underground speed." Primate (p.42): "Alt Mode
  *   Movement: 50 feet Ground, 30 feet Climb." The Alt Mode item only stores ground/aerial/aquatic,
@@ -32,35 +29,10 @@ const flagOf = (doc, key) => doc?.flags?.essence20?.[key];
 export const SHIELD_MODE = 'zord2ShieldMode';
 export const CARAPACED_FLAG = 'zord2CarapacedChoice';
 
-function addDefense(system, type, amount, label) {
-  const defense = system?.defenses?.[type];
-  if (!defense || !amount) return;
-  defense.total = (defense.total ?? 0) + amount;
-  if (typeof defense.string == 'string') {
-    defense.string += ` + ${amount} (${label})`;
-  }
-}
-
-/** What each Deflecting Weapon grants: [weapon mode, shield mode]. */
-export const DEFLECTING = {
-  [ZORD2.combatNunchaku]: [{ evasion: 1 }, { toughness: 1 }],
-  [ZORD2.excalibur]: [{ toughness: 1 }, { evasion: 2 }],
-};
-
 export function gearDerived(actor) {
   const system = actor?.system;
   if (!system?.defenses) return;
   const items = itemsOf(actor);
-
-  for (const weapon of items.filter(i => i.type == 'weapon' && DEFLECTING[sourceOf(i)] && i.system?.equipped !== false)) {
-    const bonus = DEFLECTING[sourceOf(weapon)][flagOf(weapon, SHIELD_MODE) ? 1 : 0];
-    for (const [defense, amount] of Object.entries(bonus)) addDefense(system, defense, amount, weapon.name);
-  }
-
-  const dozer = sourced(actor, ZORD2.dozerBlade)[0];
-  if (dozer && system.canTransform && !system.isTransformed) {
-    addDefense(system, 'toughness', 2, dozer.name);
-  }
 
   if (system.isTransformed && system.altModeId && system.movement) {
     const altMode = items.find(i => i.id == system.altModeId);
@@ -82,13 +54,6 @@ registerDerived(gearDerived);
 /* -------------------------------------------- */
 /*  Use buttons                                  */
 /* -------------------------------------------- */
-
-async function toggleDeflecting(weapon, pay) {
-  if (!(await pay('move'))) return null;
-  const shield = !flagOf(weapon, SHIELD_MODE);
-  await weapon.setFlag('essence20', SHIELD_MODE, shield);
-  return T(shield ? 'Zord2ShieldModeOn' : 'Zord2WeaponModeOn', { name: weapon.name });
-}
 
 async function rotaryShield(actor, weapon) {
   let shield = sourced(actor, ZORD2.rotaryBladeShield)[0];
@@ -226,13 +191,12 @@ registerUse({
   id: 'zord2-gear-modes',
   matches: item => {
     const source = sourceOf(item);
-    return !!DEFLECTING[source] || [ZORD2.rotaryBladeWeapon, ZORD2.rotaryBladeShield, ZORD2.carapacedCommon, ZORD2.carapacedLarge, ZORD2.shinobi].includes(source)
+    return [ZORD2.rotaryBladeWeapon, ZORD2.rotaryBladeShield, ZORD2.carapacedCommon, ZORD2.carapacedLarge, ZORD2.shinobi].includes(source)
       || (source == ZORD2.dozerBlade && !!item.parent?.system?.isTransformed);
   },
   canUse: item => sourceOf(item) != ZORD2.rotaryBladeWeapon || !flagOf(item, SHIELD_MODE),
   run: async (item, economy, pay) => {
     const source = sourceOf(item);
-    if (DEFLECTING[source]) return toggleDeflecting(item, pay);
     if (source == ZORD2.rotaryBladeWeapon) return rotaryToShield(item.parent, pay);
     if (source == ZORD2.rotaryBladeShield) return useRotaryShield(item, pay);
     if (source == ZORD2.dozerBlade) return useDozerBlade(item, pay);

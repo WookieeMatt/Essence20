@@ -5,6 +5,7 @@
   "_id": "suledVW2e8W5oqhZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:role:Scientist","self:level>=1"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted by the Scientist Role at level 1; its Essence increases come with the Role. You pick the two Role Skill Ranks when building the character.</p>"

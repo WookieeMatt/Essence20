@@ -75,26 +75,6 @@ describe('wtnv', () => {
     w = await import('./wtnv.mjs');
   });
 
-  test('Dazed sets Evasion to 9 + Speed on top of other bonuses', () => {
-    const a = actor([item('hangUp', { source: C('wtnv_citizens_guide', 'byRfPI0ud1wj43Qv') })], {
-      essences: { speed: { max: 3 }, smarts: { max: 2 } },
-      defenses: { evasion: { base: 10, essence: 'speed', total: 15, string: 'x' }, willpower: { base: 10, essence: 'smarts', total: 12, string: 'y' } },
-    });
-    w.applyDefenseOverrides(a);
-    expect(a.system.defenses.evasion.total).toBe(14);
-    expect(a.system.defenses.evasion.string).toContain('- 1 (Dazed)');
-    expect(a.system.defenses.willpower.total).toBe(12);
-  });
-
-  test('Naive sets Willpower to 9 + Smarts', () => {
-    const a = actor([item('hangUp', { source: C('wtnv_citizens_guide', 'gT3jMGYcF8Gbi0O5') })], {
-      essences: { smarts: { max: 2 } },
-      defenses: { willpower: { base: 10, essence: 'smarts', total: 12, string: '' } },
-    });
-    w.applyDefenseOverrides(a);
-    expect(a.system.defenses.willpower.total).toBe(11);
-  });
-
   test('Gluten-Tolerant refuses the Weird Perk', () => {
     const a = actor([item('hangUp', { source: C('wtnv_citizens_guide', 'dzYRdi2cSlZSHozs') })]);
     expect(w.blocksWeird(a, { flags: { core: { sourceId: C('wtnv_citizens_guide', 'RO0a3eX8MIo5g1Tv') } } })).toBe(true);
@@ -292,16 +272,6 @@ describe('tf', () => {
     expect(t.lowerRequirement('d8')).toBe('d4');
     expect(t.lowerRequirement('d4')).toBe('d2');
     expect(t.lowerRequirement('none')).toBe('none');
-  });
-
-  test('Pistol Whip and Specialty Flexibility generate their alternates', () => {
-    const gun = item('weapon', { id: 'g', name: 'Blaster', system: { traits: ['ballistic'], hardpoint: { type: 'external' } } });
-    const lrr = item('weapon', { id: 'l', name: 'Long Range Rifle', system: { traits: ['ballistic'], hardpoint: { type: 'integrated' } } });
-    const a = actor([gun, lrr,
-      item('perk', { source: C('tf_crb', 'fiSowblyLmO9dN8F') }), item('perk', { source: C('tf_crb', '2XuM8xyiRhMdNBMg') })]);
-    const keys = t.desiredO3Effects(a).map(w => w.key);
-    expect(keys).toEqual(expect.arrayContaining(['g:pistolWhipStun', 'g:pistolWhipBlunt', 'g:pistolWhipManeuver', 'l:sfStun', 'l:sfIntimidate', 'l:sfManeuver']));
-    expect(keys).not.toContain('l:pistolWhipStun');
   });
 
   test('Again and Again shifts ↓1 then ↓3', () => {

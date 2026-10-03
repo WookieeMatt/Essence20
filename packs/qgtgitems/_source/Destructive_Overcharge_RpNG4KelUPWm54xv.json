@@ -5,6 +5,7 @@
   "_id": "RpNG4KelUPWm54xv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:technology>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: as a Standard action, overcharge a Computerized or Element item. Chat card: at the end of your next turn it explodes, burning its holder and rolling your Technology against everyone within 20 ft.</p>"

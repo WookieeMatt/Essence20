@@ -42,8 +42,6 @@ export const S1 = {
   dangerSense: uuid('gi_joe_crb', '2hwFRZ67xIGt1XTm'),
   everyTrick: uuid('gi_joe_crb', 'HKv38GCtVdSV2qMH'),
   ghost: uuid('gi_joe_crb', 'MKK6kj54yVmCliPd'),
-  swerve: uuid('gi_joe_crb', 'vUMLQZvhOovTQYrH'),
-  thermalScope: uuid('gi_joe_crb', 'j9UxxlSMLRUcwGVk'),
   weatherGear: uuid('gi_joe_crb', 'toav8R7TF92WnQ8G'),
   weatherproof: uuid('gi_joe_crb', 'Vo0m83m6fHo4BHOY'),
   environmentalExpertise: uuid('gi_joe_crb', 'EbbSUA2vSHyv3MjQ'),
@@ -85,7 +83,7 @@ const cap = key => String(key).charAt(0).toUpperCase() + String(key).slice(1);
 const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function listOf(collection) {
@@ -444,14 +442,9 @@ export function situationalRollSources(actor, target, ctx = {}) {
     add('urbanAdaptation', S1.urbanAdaptation, { edge: true });
   }
 
-  // Earth Defense Command Benefits (Field Guide to Action and Adventure, p.69), Space Force: "You
-  // gain ↑2 to attacks in zero gravity environments, and on Driving Skill Tests piloting vehicles
-  // with an Aerial Movement."
+  // Earth Defense Command Benefits (Field Guide to Action and Adventure, p.69), Space Force: ↑2 on
+  // Driving tests piloting a vehicle with Aerial Movement. (The zero-G attack ↑2 is an item rule.)
   if (has(actor, S1.earthDefenseCommand)) {
-    if (isAttack && environment == 'zeroGravity') {
-      add('spaceForce', S1.earthDefenseCommand, { shiftUp: 2 });
-    }
-
     const crewed = rolledSkill == 'driving' ? crewedVehicleOf(actor) : null;
     const piloting = actor.type == 'vehicle' ? actor : (crewed?.role == 'driver' ? crewed.vehicle : null);
     const aerial = piloting?.system?.movement?.aerial;
@@ -463,12 +456,6 @@ export function situationalRollSources(actor, target, ctx = {}) {
   // Adapted Vehicles: the vehicle gets Environmental Expertise's "Edge on non-combat Skill Tests".
   if (!isAttack && actor.type == 'vehicle' && isAdaptedVehicleActive(actor)) {
     sources.push({ id: 's1-adaptedVehicle', label: findSourced(adaptedVehicleDriver(actor), S1.adaptedVehicle)?.name ?? 'Adapted Vehicles', edge: true });
-  }
-
-  // Diver (Hawk's Personnel Files, General Perk, p.174): "↑1 on Alertness Skill Tests while
-  // underwater." (The +10 ft Aquatic Movement is the item's own Active Effect.)
-  if (rolledSkill == 'alertness' && environment == 'underwater' && has(actor, S1.diver)) {
-    add('diver', S1.diver, { shiftUp: 1 });
   }
 
   // Jungle Fighter / Out of the Jungle - Edge on non-Attack tests; light armor counts as Silent.
@@ -497,24 +484,6 @@ export function situationalRollSources(actor, target, ctx = {}) {
     const chosen = enforcer.flags?.essence20?.[FLAG.environments] ?? [];
     if (terrain && chosen.includes(terrain)) {
       add('environmentalEnforcer', S1.environmentalEnforcer, { edge: true });
-    }
-  }
-
-  if (target && isAttack) {
-    // Every Trick in the Book (GI Joe CRB, Commando, 12th level, p.73): "Enemies who are hidden or
-    // invisible gain no benefits when attacking you." The Invisible Edge (dice.mjs, core rule) is
-    // cancelled by a Snag of its own.
-    if (actor.statuses?.has?.('invisible') && has(target, S1.everyTrick)) {
-      sources.push({ id: 's1-everyTrick', label: findSourced(target, S1.everyTrick)?.name ?? 'Every Trick in the Book', snag: true });
-    }
-
-    // Thermal Scope (GI Joe CRB, weapon upgrade, p.152): "Weapon ignores concealment and other
-    // penalties for firing through smoke or darkness." The smoke-as-Cover half is dice.mjs's own
-    // scopeThroughSmoke source; this is the concealment half - a target that is Invisible to
-    // natural sight still shows up on a thermal sight, so its Snag is cancelled.
-    const scoped = upgradesOn(actor, parentWeaponOf(actor, item), S1.thermalScope)[0];
-    if (scoped && target.statuses?.has?.('invisible')) {
-      sources.push({ id: 's1-thermalScope', label: scoped.name, edge: true });
     }
   }
 
@@ -564,12 +533,6 @@ export function situationalToggles(actor, ctx = {}) {
     toggles.push({ name: 's1EnvironmentalEnforcer', label: T('S1EnvironmentalEnforcerToggle'), type: 'checkbox' });
   }
 
-  // Swerve! (GI Joe CRB, Mech. Infantry, 3rd level, p.81): "In a chase scene, you gain an Edge on
-  // opposed Driving Skill Tests." There is no chase state, so the driver says so.
-  if (rolledSkill == 'driving' && has(actor, S1.swerve)) {
-    toggles.push({ name: 's1Swerve', label: T('S1SwerveToggle'), type: 'checkbox' });
-  }
-
   // City Slicker (Intercontinental Adventures, General Perk, p.94): "In an urban environment, you
   // use Streetwise instead of Infiltration for Skill Tests related to Stealth." Pre-ticked when the
   // scene's terrain is urban; offered on an untagged scene too.
@@ -592,7 +555,7 @@ export function skillSwapDelta(actor, fromSkill, toSkill) {
 export async function situationalApplyDialog(actor, options, ctx = {}) {
   const ext = options.ext ?? {};
   const { rolledSkill, dataset } = ctx;
-  if (ext.s1FastTracking || ext.s1Swerve || ext.s1EnvironmentalEnforcer) {
+  if (ext.s1FastTracking || ext.s1EnvironmentalEnforcer) {
     options.edge = true;
   }
 

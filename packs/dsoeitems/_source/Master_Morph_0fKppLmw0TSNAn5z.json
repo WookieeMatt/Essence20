@@ -5,6 +5,7 @@
   "_id": "0fKppLmw0TSNAn5z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Ability to change shape"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: when you change shape, pick a Skill the creature is known for to get ↑2 on it while in that shape.</p>"

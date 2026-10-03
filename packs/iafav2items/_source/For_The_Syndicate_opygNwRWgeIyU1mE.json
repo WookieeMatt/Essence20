@@ -5,6 +5,10 @@
   "_id": "opygNwRWgeIyU1mE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Grant","label":"Mentor","uuid":"Compendium.essence20.gi_joe_crb.Item.jUZrNJbPzSd1zVLa","skipIfOwned":true},
+      {"type":"RollModifier","label":"For The Syndicate (no untrained Snag, chosen vehicles)","when":["skill:driving","vehicle:driving","vehicle:moves:{item.choice}"],"immune":["untrainedSnag"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick the weapon and battledress you're Qualified with (two Limited items, or one Restricted weapon or battledress). Automatic: no Snag driving your chosen vehicle type, and the Mentor Perk is added for you.</p>"

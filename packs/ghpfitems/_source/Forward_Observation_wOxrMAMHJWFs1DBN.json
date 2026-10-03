@@ -5,6 +5,7 @@
   "_id": "wOxrMAMHJWFs1DBN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Alertness (Perception) Specialization"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: rolls the DIF 15 Alertness test; on a success you and allies within 30ft of you get ↑1 on your first attack of the next combat.</p><p>Left to the table: the free binoculars, and checking who is nearby when Initiative is actually rolled.</p>"

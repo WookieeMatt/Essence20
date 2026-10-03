@@ -5,6 +5,9 @@
   "_id": "DAqOZsEq03rJWWQo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Contingency Shot","when":["attack:ranged","defense:toughness","combat","not:ownTurn"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a ranged attack you make on another combatant's turn (when your Contingency goes off) ignores Cover and gains Edge against Toughness; the Edge is listed in the Roll Options Dialog.</p>"

@@ -5,6 +5,9 @@
   "_id": "qZiv0m6kc4G9HYEn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Search and Seizure","when":[{"any":["skill:alertness","skill:infiltration"]},"not:combat"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while no combat is running, your Alertness and Infiltration tests have Edge already selected in the Roll Options Dialog. Faster searching is narrative.</p>"

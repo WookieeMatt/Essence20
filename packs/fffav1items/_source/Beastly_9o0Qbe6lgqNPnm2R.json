@@ -5,6 +5,9 @@
   "_id": "9o0Qbe6lgqNPnm2R",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Beastly Hang-Up (Unarmed Stun ↓1)","items":["item:type:weaponEffect","item:id:eDjovjfygGq8dlQy"],"path":"system.shiftDown","op":"add","value":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks with the Unarmed Combat Stun effect take ↓1, already counted in the Downshift number of your Roll Options Dialog.</p>"

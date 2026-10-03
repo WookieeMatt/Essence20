@@ -5,6 +5,11 @@
   "_id": "UIMocxFcGeJUm3D4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","when":["skill:intimidation","target:hasItem:Compendium.essence20.ferocious_fighters.Item.786NTb2bQyHZ7qfg"],"snag":true,"stack":"gallantry"},
+      {"type":"RollModifier","scope":"incoming","when":["skill:intimidation","combat","target:hasItem:Compendium.essence20.technorganic_secrets.Item.jRD6G5Z6eblTvxeO"],"snag":true,"stack":"gallantry"},
+      {"type":"RollModifier","scope":"incoming","when":["skill:persuasion","target:hasItem:Compendium.essence20.decepticon_directive.Item.lIiVbzESbPpV7Egu"],"snag":true,"stack":"gallantry"}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: the Frightening rolls the system knows about take a Snag against you, labelled Gallantry in the attacker's Roll Options Dialog: Trigger Happy attacks, Snarl and Predacon Intimidation, and Might Makes Right Persuasion.</p><p>Left to the table: other Frightening effects, and halving the duration if it still works.</p>"

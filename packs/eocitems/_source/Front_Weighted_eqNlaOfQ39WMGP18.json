@@ -5,6 +5,10 @@
   "_id": "eqNlaOfQ39WMGP18",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"host","label":"Smaller target (Front-Weighted)","when":["attack","target:sizeDiff<=-1"],"upshift":1}
+    ],
+    "prerequisites": {"when":["ask:Close Combat Blade or Bludgeon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks with the upgraded weapon against targets smaller than you get ↑1, labelled Front-Weighted in the Roll Options Dialog.</p>"

@@ -5,6 +5,10 @@
   "_id": "gah8pRWSMDvXsUax",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Its special attack arrives with it","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.au05ekMECrDqVlkm"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.au05ekMECrDqVlkm"},{"do":"fitAttack","skills":["finesse","might"]}]},
+      {"type":"Use","label":"Get its special attack back","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.au05ekMECrDqVlkm"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.au05ekMECrDqVlkm"},{"do":"fitAttack","skills":["finesse","might"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: converting into this Alt Mode makes you Common-sized with 40ft Ground Movement. Taking it adds a double-Reach Natural Weapon for 1 Blunt with a Maneuver (↑2) alternate, asking whether it rolls Finesse or Might.</p>"

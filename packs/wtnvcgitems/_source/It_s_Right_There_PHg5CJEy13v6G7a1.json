@@ -5,6 +5,7 @@
   "_id": "PHg5CJEy13v6G7a1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:origin:Outsider"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you Fumble a Skill Test, 2 Story Points go to the pool instead of 1.</p>"

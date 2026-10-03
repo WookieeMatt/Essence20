@@ -5,6 +5,10 @@
   "_id": "ErSK3LwBT1Wg8rKF",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Submarine Mode (sealed)","path":"system.pressurized","op":"set","value":1,"when":["self:type:vehicle"]}
+    ],
+    "prerequisites": {"when":[{"any":["self:data:system.traits.air","self:data:system.traits.land"]}]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: the vehicle gains Aquatic Movement (equal to its Ground Movement, or half its Aerial), and everyone aboard ignores Poison damage.</p><p>Left to the table: disease immunity and how long the air supply lasts.</p>"

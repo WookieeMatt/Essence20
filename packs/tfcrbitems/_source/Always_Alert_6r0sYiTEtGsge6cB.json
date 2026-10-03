@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ConditionImmunity","label":"Immune to surprised","conditions":["surprised"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Edge on Initiative tests. Automatic: while you're conscious, the Surprised condition can't be put on you.</p>"

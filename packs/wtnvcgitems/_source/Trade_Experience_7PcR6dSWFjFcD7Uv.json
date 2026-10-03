@@ -5,6 +5,10 @@
   "_id": "7PcR6dSWFjFcD7Uv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:origin:Engineer"]},
+    "rules": [
+      {"type":"RollModifier","label":"Trade Experience ({item.choice}: ignores the first ↓1)","when":["skill:{item.choice}"],"ignoreDownshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: you pick one Smarts or Speed Skill when you add it. Automatic: tests with that Skill open the Roll Options Dialog with the Downshift box 1 lower (the first ↓1 is cancelled). Chat card: those tests get a reroll button for Skill Dice that came up 1.</p>"

@@ -5,6 +5,9 @@
   "_id": "1bpnjPqatLJWMezp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Explosives Expert","when":["attack","item:data:system.classification.style=explosive"],"upshift":1}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: attacks with explosive weapons get ↑1. It's already counted in the Roll Options Dialog's starting ↑ total, but isn't listed under its own name.</p><p>Left to the table: the ↑1 on tests to make, set or defuse explosives.</p>"

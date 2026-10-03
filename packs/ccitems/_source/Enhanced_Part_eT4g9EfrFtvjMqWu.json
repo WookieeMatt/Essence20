@@ -5,6 +5,7 @@
   "_id": "eT4g9EfrFtvjMqWu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:has:Cybernetic Part","self:level>=8"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when gained (or via the Use button), pick a Limited Alteration you don't already have; it is added as a cybernetic part. You also count as having computerized gear against Electromagnetic attacks.</p>"

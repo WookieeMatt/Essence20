@@ -5,6 +5,9 @@
   "_id": "QsFiUE0YYjwQHPgh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Follow-up Might or Finesse attack","when":["self:morphed",{"any":["combat","combat:round:0"]}],"limit":{"per":"turn"},"steps":[{"do":"bonusAttack","cost":"none","when":[{"any":["item:data:system.classification.skill=might","item:data:system.classification.skill=finesse"]}]},{"do":"chat","text":"{name} can make a Might or Finesse attack at no action cost."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: while Morphed, once per turn, grants a free extra Might or Finesse attack after you Defeat a foe.</p><p>Left to the table: checking the Defeat and moving up to your Burst Speed first.</p>"

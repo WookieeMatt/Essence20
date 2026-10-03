@@ -5,6 +5,7 @@
   "_id": "vzTeGdjO3v2oeR19",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:animalHandling>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: rolls Animal Handling against an animal's Willpower; a success leaves it Mesmerized until the start of your next turn.</p>"

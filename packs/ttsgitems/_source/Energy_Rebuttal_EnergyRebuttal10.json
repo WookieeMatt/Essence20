@@ -5,6 +5,9 @@
   "_id": "EnergyRebuttal10",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"takesDamage","label":"Energy damage while Defending: +2 damage on your next attack","when":[{"any":["damage:element","damage:acid","damage:cold","damage:electric","damage:emp","damage:fire","damage:laser","damage:sonic"]},"self:status:defending"],"limit":{"per":"encounter"},"steps":[{"do":"bank","label":"Energy Rebuttal","damage":2,"appliesWhen":["attack"],"until":"encounter"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per combat, when you have the Defending status and an Energy attack still damages you, your next attack deals +2 damage, listed as Energy Rebuttal on its chat card.</p>"

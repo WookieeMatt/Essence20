@@ -5,6 +5,7 @@
   "_id": "saOB2B0VyYv6B3xP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:culture>=d2","self:skill:technology>=d2"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: creates the Contact with 3 Allegiance Points and its three Contact Perks as Summon card buttons; calling it costs a Story Point, once per mission. Left to the table: what each Contact Perk does.</p>"

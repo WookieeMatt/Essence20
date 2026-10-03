@@ -5,6 +5,7 @@
   "_id": "t6ACZEOz99JWWHyg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:skill:finesse>=d10","self:skill:might>=d10"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while no weapon other than Unarmed Combat is marked equipped on your sheet, your unarmed attacks (the Unarmed Combat weapon, or an attack not tied to any weapon) open the Roll Options Dialog with Edge selected. Unequip your other weapons when you fight empty-handed.</p>"

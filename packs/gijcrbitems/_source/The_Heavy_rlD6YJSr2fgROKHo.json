@@ -5,6 +5,9 @@
   "_id": "rlD6YJSr2fgROKHo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"The Heavy: +2 Toughness in heavy armor","defense":"toughness","amount":2,"when":["self:wearing>=heavy"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +2 Toughness while you wear heavy or super heavy armor, and your Brawn counts two steps higher against armor's Brawn requirement. Weapon Brawn requirements are only shown on the sheet.</p>"

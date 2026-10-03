@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"\"Oh, What Now?\"","scope":"incoming","when":["attack","item:damageType:psychic"],"snag":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: Psychic attacks against you take a Snag, shown as \"Oh, What Now?\" next to Snag in the attacker's Roll Options Dialog. Active Effect: switch on Overcome Emotional Distress for Edge on your tests while you shake off emotional distress, then switch it off.</p><p>Left to the table: emotional effects that aren't Psychic attacks.</p>"

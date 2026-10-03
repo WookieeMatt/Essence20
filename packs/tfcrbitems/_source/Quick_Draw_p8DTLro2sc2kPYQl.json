@@ -5,6 +5,10 @@
   "_id": "p8DTLro2sc2kPYQl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Quick Draw","action":"drawWeapon","to":"free"},
+      {"type":"Hardpoints","label":"Quick Draw holsters","external":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you get 2 extra External Hardpoints for holstered weapons, and drawing or switching weapons costs a Free action instead of a Move action.</p>"

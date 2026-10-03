@@ -5,6 +5,9 @@
   "_id": "F3TRKmoaUOtHrlzq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Cruel Warlord","when":["attack","self:data:flags.essence20.monsterFormActive"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: you regain 2 Personal Power when you Fumble or take Psychic damage, and in Monster Form your attacks deal +1 damage, shown on the chat card as \"Includes +1 from Cruel Warlord\".</p><p>Left to the table: the 30ft range limit on the extra damage.</p>"

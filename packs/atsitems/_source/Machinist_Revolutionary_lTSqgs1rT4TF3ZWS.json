@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Machinist Revolutionary","when":[{"any":["target:tag:machine empire","target:tag:machineempire"]},{"any":["skill:alertness","skill:streetwise"]}],"edge":true},
+      {"type":"RollModifier","label":"Machinist Revolutionary","when":[{"any":["target:tag:machine empire","target:tag:machineempire"]},{"any":["essence:smarts","essence:social","skill:animalHandling","skill:deception","skill:intimidation","skill:performance","skill:persuasion","skill:streetwise","skill:culture"]}],"upshift":1},
+      {"type":"CriticalOption","label":"Machinist Revolutionary","status":"stunned","when":[{"any":["target:tag:machine empire","target:tag:machineempire"]}]}
+    ],
+    "prerequisites": {"when":["self:skill:culture>=d4","ask:Machine Empire Specialization"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic with a Machine Empire creature targeted: Edge on Alertness and Streetwise, and ↑1 on Smarts and Social rolls, each labelled Machinist Revolutionary in the Roll Options Dialog. Chat card: on a Critical Success against one, a button Stuns it.</p>"

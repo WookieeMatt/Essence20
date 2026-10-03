@@ -64,7 +64,6 @@ const GEAR = {
 
 const GRANT_FLAG = 'zord1FormGrant';
 const ELEMENTS = ['acid', 'cold', 'electric', 'emp', 'fire', 'laser', 'sonic'];
-const ENERGY = new Set(['element', 'acid', 'cold', 'electric', 'emp', 'fire', 'laser', 'sonic']);
 
 /**
  * What each Morph-time Form does on activation. cost: Personal Power. swaps: {replaces: 'blaster' |
@@ -111,7 +110,7 @@ export function formSpec(actor, uuid) {
   case FORM.ninjaStorm:
     // Ninja Storm Wind Ranger (Beneath the Helmet p.57): "You can spend 1 Personal Power in
     // conjunction with your 'It's Morphin Time!' Spectrum Role Feature to activate your Ninja Storm
-    // power." Its effects are in formDerived (movement, Duplication), formRollSources (Stealth),
+    // power." Its effects are in formDerived (movement, Duplication), a rule on the pack item (Stealth),
     // formToggles (the mind-control Snag) and the Use button (its element - see Ninja Storm below).
     return { key: 'ninjaStorm', cost: 1, swaps: [] };
   default:
@@ -300,13 +299,8 @@ export function formRollSources(actor, target, ctx = {}) {
   const sources = [];
   const consumes = [];
   const { item, rolledSkill } = ctx;
-  const damageType = item?.system?.damageType;
-
-  // Solar Power: "You gain Resistance to Cold and Energy damage" - and Resistance is a Snag on the
-  // attack roll (PR CRB p.170).
-  if (target && isFormActive(target, FORM.solar) && item?.type == 'weaponEffect' && (damageType == 'cold' || ENERGY.has(damageType))) {
-    sources.push({ id: 'zord1SolarResist', label: T('Zord1SolarResistance', { name: target.name }), snag: true });
-  }
+  // Solar Power's Resistance to Cold and Energy (a Snag on the attack) and Ninja Storm's ↑1 on
+  // Infiltration are rules on their pack items, gated on the active Form (flags.essence20.zord1Form).
 
   // Supersonic: "You suffer no penalties for using Xenotech of any kind." Cancels the Xenotech weapon
   // Snag with an Edge, and gives back the Xenotech armor ↓1 on Athletics/Acrobatics.
@@ -334,12 +328,6 @@ export function formRollSources(actor, target, ctx = {}) {
     }
   }
 
-  // Ninja Storm Wind Ranger: "You gain ↑1 on Infiltration (Stealth) Skill Tests" - listed on every
-  // Infiltration roll; the player unticks it when the test isn't about stealth.
-  if (isFormActive(actor, FORM.ninjaStorm) && rolledSkill == 'infiltration') {
-    sources.push({ id: 'zord1NinjaStealth', label: findSourced(actor, FORM.ninjaStorm).name, shiftUp: 1 });
-  }
-
   // Jackrabbit's Hang-Up: "you have a Snag on all Skill Tests until you can use a Standard action to
   // consume carrots." Lasts until the Use button clears it.
   if (flagOf(actor, 'zord1Carrots')) {
@@ -357,18 +345,8 @@ export function formRollSources(actor, target, ctx = {}) {
 
 export function formToggles(actor, { item, rolledSkill, dataset } = {}) {
   const toggles = [];
-  // Lightspeed Response: "You gain Edge on any Skill Tests to perform first aid, repair damage, cure
-  // illnesses, and attempt other healing efforts." Which Skill that is varies (Science, Technology...),
-  // so it's a declared checkbox, pre-ticked for Science/Technology.
-  if (isFormActive(actor, FORM.lightspeed) && item?.type != 'weaponEffect') {
-    toggles.push({ name: 'zord1Lightspeed', type: 'checkbox', label: T('Zord1ToggleLightspeed'), value: ['science', 'technology'].includes(rolledSkill) });
-  }
-
-  // Solar Power: "Edge on Alertness Skill Tests to see through illusions and trickery and to notice
-  // signs of creatures from the Void."
-  if (isFormActive(actor, FORM.solar) && rolledSkill == 'alertness') {
-    toggles.push({ name: 'zord1Solar', type: 'checkbox', label: T('Zord1ToggleSolar') });
-  }
+  // Lightspeed Response's healing Edge (pre-ticked on Science/Technology) and Solar Power's Alertness
+  // Edge are DialogSwitch rules on their pack items.
 
   // Time Force: "You have Edge on all Skill Tests with a Specialization concerning time travel."
   if (isFormActive(actor, FORM.timeForce) && item?.type != 'weaponEffect') {
@@ -401,7 +379,7 @@ export function formToggles(actor, { item, rolledSkill, dataset } = {}) {
 
 export async function formApplyDialog(actor, options, ctx = {}) {
   const ext = options.ext ?? {};
-  if (ext.zord1Lightspeed || ext.zord1Solar || ext.zord1TimeForce) {
+  if (ext.zord1TimeForce) {
     giveEdge(options);
   }
 
@@ -493,20 +471,14 @@ export function formDerived(actor) {
   }
 
   // Ranger Operator: "Instead of gaining a Toughness armor bonus based on your armor proficiency, you
-  // gain a +2 Armor bonus to Toughness and Evasion."
+  // gain a +2 Armor bonus to Toughness and Evasion." The Evasion +2 is a Defense rule on the pack item.
   if (isFormActive(actor, FORM.operator)) {
     const name = findSourced(actor, FORM.operator).name;
     const toughness = system.defenses.toughness;
-    const evasion = system.defenses.evasion;
     if (toughness) {
       const delta = 2 - (Number(toughness.morphed) || 0);
       toughness.total = (Number(toughness.total) || 0) + delta;
       toughness.string = `${toughness.string ?? ''} + ${delta} (${name})`;
-    }
-
-    if (evasion) {
-      evasion.total = (Number(evasion.total) || 0) + 2;
-      evasion.string = `${evasion.string ?? ''} + 2 (${name})`;
     }
   }
 

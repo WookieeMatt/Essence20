@@ -23,8 +23,6 @@ import { grappleEscapeSkills } from "../rules/grappled.mjs";
  *   turn" - dice.mjs applies Frightened; nothing ever took it off.
  * - Dinobot / Maximal / Predacon: "Choose a ... Specialization ... You gain an Edge on Skill Tests
  *   when that Specialization comes into play" - was an automatic Edge on every test of the Skill.
- * - Object Alt Mode (TF CRB p.110): "Edge to all skill tests involving hiding, blending in, or
- *   eavesdropping" - was an automatic Edge on every Infiltration and Alertness test in Alt Mode.
  * - Experiment (TF CRB, Shove option): "Gain ↑1 when Shoving or attempting to break from a Grapple" -
  *   was ↑1 on Grapple-type attacks, which are neither.
  * - Get To Know (Dark Skies Over Equestria): the spell's Edge lasts "1 Scene" - an unspent Edge now
@@ -36,7 +34,6 @@ const TS = 'Compendium.essence20.technorganic_secrets.Item.';
 export const FIX3_TF = {
   coveringFire: `${TF_CRB}cAm087BkiExKIJrY`,
   watchfulEyes: `${TF_CRB}RmHSzuVLnIoqeczy`,
-  objectAltMode: `${TF_CRB}z3qE2fLKzJtsyZ6C`,
   experiment: `${TF_CRB}EcSOADOOb3PZMolz`,
   dinobot: `${TS}tx4mlGvMhiWXA4mp`,
   maximal: `${TS}z3Ig9tbOEq4erPU5`,
@@ -63,7 +60,7 @@ const INFLUENCE_EDGE = [
 /*  Small helpers                                */
 /* -------------------------------------------- */
 
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 
 function itemsOf(actor) {
   const items = actor?.items;
@@ -366,16 +363,6 @@ export function tfFixToggles(actor, { rolledSkill, item, dataset } = {}) {
     }
   }
 
-  // Object Alt Mode: hiding and blending in are Infiltration, eavesdropping is Alertness - but both
-  // Skills do more than that, so the player says.
-  const objectAltMode = findSourced(actor, FIX3_TF.objectAltMode);
-  if (objectAltMode && actor.system?.isTransformed && ['infiltration', 'alertness'].includes(rolledSkill) && !isAttack) {
-    toggles.push({
-      name: 'fix3ObjectAltMode', type: 'checkbox', value: rolledSkill == 'infiltration',
-      label: label('Fix3TfObjectAltModeEdge', { name: objectAltMode.name }, `${objectAltMode.name}: Edge (hiding, blending in or eavesdropping)`),
-    });
-  }
-
   // Experiment, Shove option: "attempting to break from a Grapple" - a non-attack test with an escape
   // Skill while Grappled, on by default the same way the Grappled switch assumes an escape.
   const experiment = findSourced(actor, FIX3_TF.experiment);
@@ -401,7 +388,7 @@ function giveEdge(options) {
 export function tfFixApplyDialog(actor, options) {
   const ext = options.ext ?? {};
   const influence = INFLUENCE_EDGE.some(({ key }) => ext[`fix3Influence-${key}`]);
-  if (influence || ext.fix3ObjectAltMode) {
+  if (influence) {
     giveEdge(options);
   }
 

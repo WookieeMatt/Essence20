@@ -24,6 +24,7 @@
  *   least 3 Zords with this feature, it may include an ineligible vehicle or Zord."
  *   Both combine-eligibility rules feed one roster check that warns when a Zord without Combiner
  *   joins a Megaform nothing lets it into (PR CRB: Zords combine through the Combiner Feature).
+ *   The Combiner Feature itself comes from Adaptable Future Tech's own Grant rule (system.rules).
  * - Zord Feature (PR CRB Ranger Roles, 6th/10th/14th/17th level, e.g. Black Ranger p.32): the
  *   Ranger's Zord gains a Zord Feature of their choice - the same picker Torozord Feature uses
  *   (helpers/torozord-feature.mjs), onto the Ranger's own Zord (or onto themselves with Zord Ultra
@@ -229,13 +230,6 @@ async function grantVersatileTrait(feature) {
   if (!uuid || holds(zord, uuid)) return;
   const { grantCopy } = await import("../../grants.mjs");
   await grantCopy(zord, uuid, { grantedBy: feature });
-}
-
-async function grantCombinerFeature(feature) {
-  const zord = feature.parent;
-  if (holds(zord, ZORD2.combiner)) return;
-  const { grantCopy } = await import("../../grants.mjs");
-  await grantCopy(zord, ZORD2.combiner, { grantedBy: feature });
 }
 
 /**
@@ -461,8 +455,6 @@ export async function onCreateItem(item, options, userId) {
     if (line) await chat(actor, line);
   } else if (source == ZORD2.versatileCombiner && actor.type == 'zord') {
     await grantVersatileTrait(item);
-  } else if (source == ZORD2.adaptableFutureTech && actor.type == 'zord') {
-    await grantCombinerFeature(item);
   } else if (item.type == 'feature' && holds(actor, ZORD2.zordUltraMode)) {
     await syncUltraEffects(actor);
   } else if (source == ZORD2.zordUltraMode) {

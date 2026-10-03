@@ -22,7 +22,6 @@ import "./data22/shared.mjs";
 import "./data22/weapons.mjs";
 import "./fix3-dice/shadow.mjs";
 import "./fix3-gij/gij-fixes.mjs";
-import "./fix3-prmlp/martial-artist.mjs";
 import "./fix3-tf/tf-fixes.mjs";
 import "./gij1/conditions.mjs";
 import "./gij1/gear.mjs";

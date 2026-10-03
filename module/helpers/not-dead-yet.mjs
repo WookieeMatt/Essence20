@@ -42,7 +42,7 @@ function _hasNearbyCstoPersonnel(actor) {
   return getNearbyAllyTokens(actor, ALLY_RADIUS_FEET).some(token => {
     const ally = token.actor;
     return !!ally?.items?.some?.(item => {
-      const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+      const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
       return item.type == 'origin' && sourceId == CSTO_PERSONNEL_ID;
     });
   });

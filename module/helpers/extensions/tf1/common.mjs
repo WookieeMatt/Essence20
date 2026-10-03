@@ -9,7 +9,6 @@ const dd = id => `Compendium.essence20.decepticon_directive.Item.${id}`;
 export const TF1 = {
   altModeMimicry: dd('ARtFFscnVBo183hV'),
   brutalDisplay: dd('11Q2KXJ7qxlddusg'),
-  collectionOfSecrets: dd('61XIiQPoIhycqgA2'),
   commsAssault: dd('pKArYQ259zpdsR7o'),
   commsProbe: dd('kcU17jzso2caxVJ1'),
   drone: dd('ZdvE8MB35jg1A8wK'),
@@ -30,7 +29,6 @@ export const TF1 = {
   showRespect: dd('oowLckrIBcn1Zff3'),
   solidStateEnergon: dd('aUxtcuKUb40JYoqx'),
   steadyFirepower: dd('svqVyP2tyYzSUtn6'),
-  storageCompartments: dd('NnHqdvBfYNq7J0l2'),
   targetRichEnvironment: dd('BF1fKwzQQb1LFKGP'),
   theyCalledItAGlitch: dd('IKPWMfs5ZSp6ijiv'),
   toxEn: dd('uJRbkLx1BiXNpo3p'),
@@ -42,7 +40,7 @@ export const TF1 = {
 export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 export function itemsOf(actor) {

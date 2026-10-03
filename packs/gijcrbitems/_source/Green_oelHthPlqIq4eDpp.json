@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:level<=4"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: on an untrained Skill Test, a switch to skip the Snag, three times.</p><p>Left to the table: the count resets each scene, so keep the three-per-mission total yourself.</p>"

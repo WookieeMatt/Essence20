@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Spend your Move action too: an Edge instead of the Aim bonus (In My Sights)","edge":true,"replacesAim":true,"when":["roll:aimed"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: Sneak Attack works with sniper weapons out to their normal range. Roll Options Dialog: while Aiming, a switch to take an Edge instead of the usual Aim bonus.</p><p>Left to the table: spending your Move action for that Edge.</p>"

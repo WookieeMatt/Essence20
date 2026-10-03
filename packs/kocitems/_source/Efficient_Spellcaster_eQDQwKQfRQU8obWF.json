@@ -5,6 +5,11 @@
   "_id": "eQDQwKQfRQU8obWF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Efficient Spellcaster (Elementary cost -1)","items":["item:type:spell","item:data:system.tier=elementary"],"path":"system.cost","op":"add","value":-1},
+      {"type":"ItemModifier","label":"Efficient Spellcaster (cost at least 1)","items":["item:type:spell","item:data:system.tier=elementary"],"path":"system.cost","op":"max","value":1}
+    ],
+    "prerequisites": {"when":["self:skill:spellcasting>=d8"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Elementary spells cost you 1 less to cast (minimum 1).</p>"

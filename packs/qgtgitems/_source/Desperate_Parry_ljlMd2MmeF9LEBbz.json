@@ -5,6 +5,7 @@
   "_id": "ljlMd2MmeF9LEBbz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:essence:speed>=4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: ready a parry as a Free action, once per turn. Chat card: when a melee attack hits you, a button rolls Acrobatics or Finesse against it; a win cancels the hit, but your weapon breaks.</p>"

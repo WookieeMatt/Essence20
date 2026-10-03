@@ -51,6 +51,368 @@ Built on `Rules-Engine-Phase-1`, branched from `30-remaining-still-open-items`. 
   - Granting a condition or Active Effect while the item is active. Grant adds items only.
 - **Pools reset** on the existing scene, mission and rest hooks. Until Use arrives in Phase 2, they can only be spent from the Rules tab.
 
+### Overnight build, 2026-10-01/02 (Phases 2–3 and the editor)
+
+**Phase 2: buttons and triggers**
+- **Use** (`rules/triggers.mjs`): an item's Use button. It checks a condition, a limit and a cost (an
+  action, then a resource), then runs steps. It plugs into the same `registerUse` path the
+  hand-written buttons use; an item with several Uses asks which.
+- **Trigger** events: turnStart, turnEnd, roundStart, rest, sceneStart, missionStart, takesDamage,
+  wouldBeDefeated (its steps can change the damage), defeated, morph/unmorph,
+  transform/untransform, afterRoll, hit, miss, added (the item joins an actor) and conditionGained.
+  `prompt` asks first.
+- **Steps** (`rules/steps.mjs`):
+
+  | Group | Steps |
+  |---|---|
+  | Messages and resources | chat, spend (onFail), gainResource |
+  | Health and conditions | heal, damage, applyCondition, removeCondition |
+  | Rolls and choices | roll (onSuccess / onFail / onCrit), choose, target |
+  | Items, bonuses and actions | grant, bank, grantActions, setToggle |
+  | Damage, inside damage events | negateDamage, leaveAt |
+
+  Each step can carry `to: self | target | targets` and its own condition. Writes to actors the user
+  doesn't own go through the GM relay.
+- **Banked bonuses** (`rules/bank.mjs`) are spent at roll time, next to `clearPendingBonus` in
+  dice.mjs, so plain rolls with no target spend them too.
+- **Limits** (`rules/limits.mjs`): per turn, round, scene, encounter, mission or rest; a shared `key`
+  lets items share one limit.
+
+**The guided editor** (`apps/rule-editor.mjs`, `rules/editor-spec.mjs`, `rules/editor-render.mjs`)
+- One form per rule type in game words, with dropdowns, a condition picker (with suggestions), and
+  step lists you can nest, reorder and remove.
+- Drop an item onto it to fill an item field. The live summary updates as you type.
+- Save validates first and only writes when the rule is clean.
+- Add and the pencil on each rule both open it; JSON is now the "advanced" option.
+
+**Phase 3: the rest of the language**
+- **Scopes** (`rules/links.mjs`): `crew`, `pilot`, `vehicle`, `companion`, `owner`. They work for
+  roll modifiers and switches, skill swaps, Defense, numbers and damage.
+  - The lookup is skipped entirely unless some actor holds a linked rule.
+  - The Party scope is not built yet; nothing in the sample needs it.
+- **Durations** (`rules/expiry.mjs`): `until: endOfTurn | endOfRound | scene` on `setToggle`, `grant`
+  and `bank`. Granted items are swept when they expire.
+- **New tags:**
+  - `vehicle:crew` and `vehicle:driving`
+  - `ally:within:N` and `enemy:within:N`
+  - `scene:name~text`, `terrain:<biome>`, `terrain:wild`, `environment:<env>`
+  - `item:element`, `item:damageType`, `attack:unarmed`
+  - `roll:shove`, `roll:downshifted`
+  - `self:` / `target:name~text`
+- **RollModifier `immune`** (snag, downshift) applies after the dialog.
+- **Stacking groups** (`stack`): only the strongest in a group counts. They work for roll modifiers
+  and Defense.
+- **ActionCost** (`rules/actions.mjs`): "Sprint costs a Free action once per turn". It comes through
+  a new `registerCostRuleProvider`, so the action economy offers, limits and logs it like its own
+  cost rules.
+- **Not yet built:** the Party scope; ItemModifier, Sense, SurpriseExemption, Aura, MovementAction
+  and Qualification; `@count` / `@spent` formulas; Lend Assistance and marked-target events.
+
+**Conversion batches 2–4**
+- **Batch 2, Use buttons:** Calm Hearted, Able To Adapt, Capable of Anything, The Nine Hand Seals,
+  Rightful Place. Able To Adapt and The Nine Hand Seals now charge the Free action their own notes
+  say they cost.
+- **Batch 3, Night Vale roll switches:** Community Martial Arts, Vehicle Whisperer, Acute Senses,
+  Nobility, Gridlock Authority. Only the switch half of each converted; Community Martial Arts'
+  dice code, Gridlock Authority's Contacts part and Nobility's Use stay code for now.
+- **Batch 4, Night Vale riders:** Chunky, In the Rain.
+
+**Conversion batches 5–9** (Phase 4, overnight)
+- **Batch 5:** Scientific Method, Animal (×3), Mind Like a Steel Trap, The Road Calls, Public Television.
+- **Batch 6, My Little Pony:** Honorary Apple, Hand Axe, Handsaw, Net, Snare Trap, Hard Habit to Break,
+  Hidden in Plain Sight, Mired in Academia, Acute Sense, Bad with People, Jarring, Wanderlust, Competitor.
+- **Batch 7, Transformers and GI Joe:** Second Skin, Brutish, Once a Marauder, Broadcaster (Perk),
+  Petrolhead, Bootlicker, Collection of Secrets, Storage Compartments, Hindsight, Mimicry Vocoder,
+  Nose for Trouble (TF), Subordinate, Tow Cable & Hook, Water Cannon. Also Chemist (Hang-Up).
+- **Batch 8, Transformers 2:** Acute Sense, Caterpillar Tread (new tag `self:canTransform`),
+  Supporting Cast, Distressed, Earthspoiled, For The Allspark!
+- **Batch 9, GI Joe 2:** Acute Sense (a switch), Enhanced Sensors, Nose For Trouble, Swerve!, Diver,
+  Earth Defense Command (its zero-G half), Every Trick in the Book, Thermal Scope.
+- **Batch 10, Power Rangers:** Can't Catch Me, Clawed Armor, Lightspeed Rescue Injector, Phantom
+  Ranger Prime, Power Wing, S.W.A.T. Upgrade, Warzord, Xeno-Location Study, Cloud Hatchet, Mobile
+  Headquarters, Time Displaced, Privileged, Keen Eye, Graphite Ranger Prime, Vast Wealth, Eltarian
+  Camouflage, Morphin Navigator. Packs rebuilt after this batch: 104 rules on 89 items.
+- **Engine changes found along the way:**
+  - A `session` limit window, counted against the Story Points app's New Session.
+  - Story Point costs in steps now check `canSpendForActor` first and then spend; the old path
+    always failed because `requestStoryPointSpend` returns nothing. Gains go to the actor's own pool.
+  - Step formulas are validated; `heal` never lowers Health; dice passes `rolledEssence` so
+    `essence:` tags work in Specialization rules.
+### Rest of Phase 3, 2026-10-02
+
+Everything Phase 3 listed as not built yet is now built, except the optional skill swap as a switch
+and the numeric dialog input.
+
+- **New rule types:**
+
+  | Type | What it does |
+  |---|---|
+  | SurpriseExemption | Act normally while Surprised, keep a Move action, or act with Speed equal to level. |
+  | Sense | Darkvision to a range (a formula), offered alongside items' own vision. |
+  | MovementAction | Ignore Rough Terrain; Push Yourself further per Free action, or with no limit. |
+  | ItemModifier | A number on the actor's other items, picked by `item:` tags. |
+  | Qualification | Trained or Qualified for Requisition, picked by `item:` tags. Only widens access. |
+
+- **New scopes:**
+  - `party`: everyone else on a Party roster with the holder.
+  - `aura`: needs `radius` (feet) and `affects` (allies / enemies / all). A token moving re-prepares
+    its scene's actors, so sheet numbers follow, but only while someone there holds a linked rule.
+- **New tags:**
+  - `self:data:<path><op><value>`, `target:data:...` and `item:data:...` read any stored value.
+  - `item:name~`, `attack:ram`, `self:marked:` / `target:marked:`, `self:recklessAbandon`.
+  - `assist:skill` / `assist:attack`.
+  - `{item.choice}` reads the item's own `system.choice`.
+- **New steps:** `mark` / `unmark`. A `spend` may let the player pick the amount (`amount: {min, max}`),
+  which sets `@spent`.
+- **New formula references:** `@skill.<key>.rank`, `@spent`, `@var.<key>`, and
+  `@count.allies.<ft>` / `@count.enemies.<ft>`.
+- **New events:** `lendAssistance` (on the helper) and `assisted` (on the ally).
+- **Other changes:**
+  - Switches in one `stack` group are alternatives: only the biggest ticked one applies.
+  - `limit.onlyOnSuccess` uses up a limit only when the run's last roll succeeds.
+  - ChoiceSet can take typed text (`from: 'text'`), and labels can fill in `{choice.x}`.
+  - A Hang-Up ignored through Matured has no rules.
+- **Items converted with these:**
+  - Security, Unsurprising and Ready For Anything (SurpriseExemption). Their ids are gone from
+    `actor.mjs`.
+  - The movement halves of Over the Candlestick, Sewer Tunneler, Urban Jungle, Hard Tread Wheels,
+    Clawed Feet, Earlier is Better Than Later and Burn Rubber (MovementAction).
+- **Batches 11–16:**
+  - other1: Distill His Essence.
+  - other2: Pit Plate.
+  - other3: Dazed, Naive, Dr. K's Modified Morpher, Gluten-Tolerant, What Cover?
+  - zord: Plated Carapace, Titan Frame, Dozer Blade, Adaptable Future Tech.
+  - react / fix3: Martial Artist ×2, Object Alt Mode, Surgical Operators, Mega Training Regimen,
+    One With Your Weapon. `fix3-prmlp` is gone.
+  - sit2: Stumble Through the City, Bookworm, Tracking Outfit, Stubbornly Loyal.
+
+### Second conversion pass and Phase 5, 2026-10-02
+
+- **Second pass over the skipped items** with the new features: 3 + 8 + 10 + 11 more items, including:
+  - Bullbar, Dragon Dagger, Student, Not From Around Here (Hartunian), The Returned and Siren;
+  - Champion His Way, See Through Him and Path of Stone;
+  - Mastery Power, Spell Focus, Fool Me Twice, Traveler, Return In Kind, Trade Experience, Means To
+    An End, Cover Job and Double Life.
+
+  Total: **189 rules on 146 pack items**.
+- **More tags:** `weapon:` (the weapon a rolled effect belongs to), `$path` comparisons in data tags,
+  and `default: true` on a RollModifier switch that has to ask.
+- **Picks kept** (`rules/legacy-choices.mjs`): six items that stored their own picks now use
+  ChoiceSets. The GM's linking pass copies the old picks into the rule choices, without overwriting
+  any choice already made.
+- **Name-linking made safer:** a copy whose own compendium original still exists is no longer linked
+  to a same-named item. Only homebrew, world-made items and copies of a removed duplicate are.
+- **Phase 5:**
+  - Every id lookup in the hard-coded code accepts `flags.essence20.rulesSource` as a last fallback.
+    That is 186 lookups in 105 files, changed by a codemod, so an item with no source of its own still
+    works.
+  - The Rules tab has an **Acts as** box on such items. Drop a compendium item on it, and the item
+    runs that book item's rules and everything hard-coded for it. A real copy is its book item
+    already, so it isn't offered there.
+  - Multi-line lookups the codemod's patterns didn't match still only know the real source.
+
+### dice.mjs conversions, 2026-10-02
+
+- **Batches:** dice1 to dice4, plus dice2b and dice4b. That is about 95 more items whose code lived in `dice.mjs`, with their ids, blocks and tests removed.
+  Total: **316 rules on 256 pack items**.
+- **Engine fix:** `_getAutomaticCombatModifiers` used to return early for a non-attack roll with a target. That return came before the per-target riders, so item rules, incoming rules, banked bonuses and limits never applied to such rolls. Earlier conversions such as Animal were affected too.
+  The riders, Fanatic and the result are now a `finish()` closure called from both returns. A regression test is at the end of `dice.test.js`.
+- **Done after that:**
+  - **Dialog-checkbox pass:** Machinist, Bootlicker, Good Society, Tongues, Hunter's Prowess, Cube Player, Wealth, Beast of Burden and Charge.
+  - **All-Around Vision:** the user approved switching it on. It never showed before, because it's a nanomite power and the check only looked for Perks.
+  - **actor.mjs pass:** Personal Power Supply, Fireproof, Mind Palace and Overprotective Upgrade. Movement and Energon items stay code, because the order they're computed in matters.
+  - **Wheel Struggle:** now a rule (`vehicle:crew` + `not:vehicle:driving`). The old code looked up a Hang-Up with the Perk-only helper, so it never fired.
+  - **New tags:** `self:wearing:<class>`, `self:wearing>=<class>` (equipped armor) and `rule:data:<path>` (the rule's own item).
+- **Afternoon, 2026-10-02:**
+  - **target-riders / combat batch:** Grid Champion, Bot-Hunter, Frag It, Earth Defenders, Air Supply and Knock, Knock! in full; Machinist Revolutionary, Monster Hunter, Tough Enough, Stone Warlord and Frost Warlord in part.
+  - **New rule type: ConditionImmunity**, with aura support. The Condition-immunity table moved onto 17 items, including Battlefield Titan as a 10 ft aura. The ones that read a stance or buff state stay code.
+  - **Engine features from the code survey:**
+    - Upgrades that change their host weapon's effects (`item:isHost`, `item:onHost`).
+    - `@actor.` and `@item.` formula references.
+    - Role Points as a resource.
+    - A roll step against the target's Defense (`difDefense`).
+    - Allies or enemies within range as recipients.
+    - `{choice.x}` item ids for Grants.
+    - The events `combatStart`, `combatEnd`, `initiativeRolled` and `storyPointSpent`.
+    - An `askNumber` step.
+    - `roll:untrained`, `vehicle:moves:` and `immune: ["untrainedSnag"]`.
+  - Total at that point: **372 rules on 296 pack items**.
+- **Later the same afternoon:**
+  - **Banked-bonus Use buttons:** 12 items.
+  - **Action costs** (`action-perks.mjs`): 36 items.
+  - **Perk grants** (`perk-handler` / `lend-assistance` / `team-buffs`): 23 items. `chosen-specialization.mjs` was removed as dead code.
+  - **Vehicle upgrades:** 35 items, covering traits, Defenses, crew and incoming modifiers, Redundant Backups and All-Terrain Wheels.
+  - **Engine:**
+    - `pickGrant` step.
+    - Story Point gains refuse when no GM is connected.
+    - Incoming roll modifiers now honour their use limits.
+    - `findSourced` no longer matches every unsourced item when an id is missing. That fixes Balance Your Enthusiasm, which made Curb Your Enthusiasm a Move action for everyone.
+- **Evening, 2026-10-02:**
+  - **Powers / Princess Perks / Monster Form:** 21 items. 12 helper modules became dead and were removed.
+  - **Weapon upgrades:** only Fluid Motion converts. ItemModifier now records what it changes in `system.upgradeTouched`, so saving the item sheet doesn't write the derived number back. The rest are blocked because an upgrade's rules switch off when its weapon is unequipped, and by the order the overlay applies its changes.
+  - **Once-ever grants:** Spotter's Scope, Customized Armor and Y-Series Weaponization. They use a never-expiring toggle, and also read the old `granted` flag.
+  - **Unblocked items:**
+    - 18 Story Point grant Uses.
+    - JAFF and Tricked-Out Hydraulics.
+    - 12 untrained-Snag immunities.
+  - **Engine:** a Use that stops with nothing to say posts no chat card.
+  - **Lint:** the project lints with `--ext .js,.mjs`. Earlier runs without it had skipped every `.mjs` file; 27 leftovers were fixed.
+  - Total at that point: **576 rules on 456 pack items**.
+- **Late evening, 2026-10-02:**
+  - **New rule type: AttackCount** (attacks per Attack action, whose condition also filters the chained attacks).
+    Converted: Extra Attack ×2, Rough and Tough, Bang Bang, Bang Bang Bang, Throwing Lead, Blink of an Eye and the Zord Extra Attack.
+  - **New step: `bonusAttack`.**
+    Converted: Shoot First, Fight or Flight, The Hits Keep Coming, Ambush Predator, Mayhem Attack, Surface Invasion, Follow Through and Triple Strike Attacks.
+  - **New tag: `vehicle:type:<zord|vehicle>`.** Zord, Phantom Ship and Quantasaurus Rex get untrained-Snag immunity while driving a Zord; Torozord gets Snag immunity.
+  - Total at that point: 596 rules on 472 pack items.
+  - **New rule types: WeaponTrait** (traits on the actor's matching weapons) **and Hardpoints** (extra slots, slots per weapon, Reinforced fire).
+    Converted: Demolisher, Big Lobber, Fireball, Armament, Experiment (its hardpoint option), In Case of Emergency, The Fiercest Among You, Quick Draw, Gun Runner and Titan Hardpoint Upgrades.
+  - Total at that point: 606 rules on 479 pack items.
+  - **New rule type: CriticalOption**, which either adds a Critical Effect option or improves the damage ones by a step.
+    - New tags: `item:own` (attacks with the rule's own weapon) and `target:within:N`.
+    - Converted: Mauler, Arm Claws, Chest Blast, Blazing Strikes, Machinist Revolutionary's and Monster Hunter's critical halves, and Ravaging Critical (two improve rules in one stack group).
+  - Total: **614 rules on 484 pack items**.
+  - **Code survey of the helper files:** in the session scratchpad (`rules/hsurvey/out-*.tsv`).
+    - 1,102 ids across 197 files.
+    - The biggest remaining gaps: a pick-and-grant step (~30 items), Critical Effect options (~8), weapon-alteration overlays (~11), a save-card step (~7), damage redirect (~7) and assist eligibility (~15).
+- **Afternoon, 2026-10-02 (round 12 and the Defeat saves):**
+  - Round 12 batch applied: Armor Expert, Poison Resistance, Push Through Pain, Spark of the Ancients, Who Dares Wins,
+    Student of Divine Manuals, Projectile Dancer, Static Slide Inhibitor, How I Got These Dents, and Pressure Cooker (in part).
+  - **`wouldBeDefeated` moved:** it now fires inside `combat.mjs#applyDamage`, first in the Defeat-save chain,
+    after immunity and every reduction (it used to be a damage modifier, so it ran before Elemental Shield / Dig Deep).
+  - **New tag `damage:crit`; new step `setForm`** (Morph / Alt Mode on or off).
+  - Converted Defeat saves: Avoid The Inevitable, Do Not Go Quietly, Renegade Commander, Rise Again (its Defeat half),
+    It's Morphin Time! and Let's Go Psycho!.
+  - **New step `save`** (a save card, `helpers/save-riders.mjs`), new recipients `all:<ft>` and `targetOrSelf`.
+    Converted: Power Quake and Sorcerous Tremors.
+  - **Trigger outcomes:** `outcome: success` now takes a Critical Success too, and `failure` takes a Fumble.
+  - **Linked Triggers:** a Trigger with a linked scope (aura, party, vehicle, crew, pilot, companion, owner and the new
+    `driven`) fires for the actor it reaches, never for its holder. Its limit counts on the holder.
+    - The new `driven` scope is a rule on a vehicle's driver that changes the vehicle.
+    - Converted: We All Go Home Or Nobody's Going Home and Baby Hold Together.
+  - **New rule type `Assist`** {side: give|receive, effect: refuse|anyRank}, read by `lend-assistance.mjs#canAssistWithSkill`.
+    - Converted: Conniving, Skeptical, Show Off, Greenshirt and Acrobatic Outlook (Hang-Ups), Walk Them Through It,
+      and the eligibility halves of Many Minds Make Light Work and Ship's Crew.
+    - Ship's Crew now counts aboard a Zord too, since it reads `vehicle:crew`.
+  - Total at that point: 643 rules on 512 pack items.
+  - **Spells:**
+    - afterRoll Triggers on the spell's own item (`item:own`, `outcome: success`) converted Healing Bandages,
+      Bellowbreath, Big Honking Boom, Lullaby and Flower Power.
+    - `hit` / `miss` Triggers now fire for a spell cast against a Defense too (each target, as `target`).
+      That converted Smoke Beam, The Stare, Rope Trick, Shower Power and Super Sticky Celebration String.
+  - **Assist**, in more detail:
+    - effects `boost` {atLeast, extra, edge}, `anyRange` and `self`, plus the tag `roll:outranks`;
+    - converted Putting Others Before Yourself, Psychological Sway, Better Together, Armchair General, Bureaucrat,
+      Greenshirt, Teacher, Lesson Plan, Treacherous, Lackey and One Pony Show.
+  - **New tag family `holder:`** (the actor whose item a linked rule is on) and `holder:protects`. Converted Defender's Oath (an aura Trigger).
+  - **New rule type `AlternateEffect`** feeds `weapon-upgrades.mjs#desiredGeneratedEffects`. It also adds the formula ref `@base.<path>`.
+    - Converted: Nonlethal, Strobe, Covering, Heavy Hitting, Folding Stock, Manipulative, Tracer Rounds, Big Swing,
+      Pistol Whip and Specialty Flexibility.
+    - The other3 sync is gone. Its old effects (`o3GeneratedKey`) are adopted under the same keys rather than made again.
+  - Team Player no longer pays out for a Help Yourself clone's assist.
+  - Total at that point: 681 rules on 544 pack items.
+- **Evening, 2026-10-02:**
+  - **Batches applied:**
+    - qualify (If It Shoots..., plus 6 partials);
+    - grants2 (Grid Power, Altered Pet, Bowl-Over MLP, Prowl, Perch, Agreeable in part);
+    - perkadd (Battlizer Access ×2, Speak Your Truth, Natural Science and Sorcery in part; `helpers/speak-your-truth.mjs` deleted);
+    - banked2 (Think On It, Auxiliary Brain, Street Smarts, Brutish, If I Recall Correctly, Trick Shot, Hidden Whispers,
+      Mind of No Mind, Can't Afford to Miss, Grid Gifted).
+  - **New engine pieces:**
+    - **Steps:** `pickAlly` (the targeted ally, else a picker over `getNearbyAllyTokens`; `pickAllyTargets` moved to
+      `helpers/allies.mjs`) and `pickPerk` (`grants.mjs#pickPerkFrom`, a Perk from another Role / Focus / the Branch).
+    - **`bank` Defense bonuses:** `defense` / `defenseBonus` / `persist`, read by `rules/bank.mjs#bankedDefense` in `dice.mjs` beside
+      `riderDefenseAdjust`.
+    - **Tags:** `rule:banked` (an unspent bonus this item banked); `item:availability<=tier`, read against the effective tier via
+      `adapter.mjs#requisitionTier`; `item:id:<_id>`.
+    - **Qualification `upgrades`:** read by `adapter.mjs#ruleQualifiedUpgrade`, which both qualify slices' `isQualifiedUpgrade` ask.
+    - **Use costs** may be paid in Role Points.
+  - Total at that point: 716 rules on 567 pack items.
+- **Night, 2026-10-02 (Phase 4 continued, overnight):**
+  - **Batches applied:**
+    - grants3: Cross-Training ×2, Split Focus, Branch Perk, Grid Spectrum Echo, Prismatic Boon.
+    - qualify2: Standard Weapon Training, Minimalists, and the upgrade halves of six more.
+    - banked3 and banked4: ally banks, ally heals, Defense banks, Bait and Switch, Menacing Laugh, Wild Tales, Heart of the
+      Team, You Got This!, Sword And Board, and others. `helpers/wild-tales.mjs` is deleted.
+    - tf2 and zord2: Electro-Disruptor, Dominant Thought, Combat Nunchaku, Excalibur; Obscuring Matrix and Roller Drum in part.
+    - Bestial Articulation, as a switch on each Monstrosity Alt Mode.
+  - **Aiming:**
+    - The Aim double-count is fixed. Taking the Aim action now pre-ticks the dialog's Aiming switch; the separate automatic ↑1 is gone.
+    - `roll:aimed`, the `AimBonus` type, and DialogSwitch `replacesAim` / `cost`.
+    - Converted: Distance Vision, Dig In (its Aim half), Calculated Attack (`calculated-attack.mjs` deleted), In My Sights (GI Joe;
+      its old switch was never rendered), Unshakeable Aim, Long Shot, Sharpshooter's Grace ×3 (`immune: ["longRangeSnag"]`).
+  - **Crit on the d2:** the `CritOnD2` type and `roll:edge` tag, used by Piercing Shot ×2, Assault Precision, Coin Toss, Ripple Effect,
+    Forward Observation (TF), Let Cool Heads Prevail, Miracle Worker, Technical Mastery (direct half), Perimeter Defender ×2,
+    Fancy Flier, Eureka (`skill:choiceOf:<uuid>`) and Competitive Strength (Brawn).
+  - **Other engine pieces:**
+    - **Steps:** `pickAlly` (`includeSelf`, `all`, and it runs before the cost is paid); `heal` with `temporary`; `roll` with `edge` / `edgeWhen`.
+    - **Durations:** `until: nextTurn` / `endOfNextRound`.
+    - **Banks:** a list of Defenses for one bank.
+    - **Resources:** Role Points by name.
+    - **Tags:** `rule:altMode`, `markedBy:` / `markedByMe:`, `specializedIn:`.
+    - **Grants:** they now bring a weapon's or armor's attached items, and `grant` / `pickGrant` take `flags` / `system` overrides.
+    - **pickPerk:** `notAdvanced`.
+  - **Fixes:**
+    - Prismatic Boon no longer offers Advanced Roles.
+    - I Got You's ↑1 now lands; it banks through the rules bank, where before nothing consumed it.
+    - Battlizer Access and Natural Science automation notes reworded.
+    - Firefox's solid-panel sheet bug: the `mask-border` fallback.
+  - Total: **809 rules on 641 pack items**. Packs rebuilt 22:33.
+- **Night, 2026-10-02/03 (Phase 4 engine pieces, Phase 5 gaps):**
+  - **Engine:**
+    - DamageModifier `scaled` (dealt): joins the attack's own damage bonus, so Degrees of Success multiply it
+      (`adapter#ruleScaledDamage`, summed into `damageBonusValue`).
+    - DialogSwitch `damage` (ticked: added to that bonus) and `useSkill` (ticked: roll that Skill's die instead, as the
+      shift difference - the optional die-substitution checkboxes).
+    - Initiative reads item rules: `roll:initiative` RollModifiers, DialogSwitches, limits and banks.
+    - Trigger hit / miss fire for any roll against a target, not only attacks; a Use's `roll` step carries its item.
+    - Trigger outcome `double`: a success by double the DIF (or a crit).
+    - `Cover` rule type: ignore / reduce on the holder's attacks; counts-as-Cover / base / add against the holder.
+    - Tags `self:` / `target:sizeDiff>=N`; formula `@size`.
+    - `ally:within` (and pickAlly, `@count.allies`) count allies the system way: Frenemy, Betrayal, Ally Awareness.
+    - `fitAttack` step (Alt Mode special attacks: damage, Blunt/Sharp, Finesse/Might), `helpers/weapon-fit.mjs`.
+  - **Fixes:**
+    - Exploit Trust and Hard Hitter's Edge never applied: it was set after the dice were picked. Now set before.
+    - Phase 5: ten id lookups that missed the "Acts as" fallback now have it (Quantum Defender, Drilling Shot,
+      Augmented Hang-Up, Avalanche Stomp, Expertise, the any-General-Perk and Nano Infusion grants, Metamorphosed
+      Changeling, Morphin Time, and a homebrew Role's Focus check).
+  - **More engine, later that night:** DialogSwitch `forget`, `spend` (a number box, `@spent`), and its `limit` is
+    now used up when ticked; bank `damage`; `check:<name>` tags answered by the system's own helpers
+    (`CHECK_NAMES` in rules/predicate.mjs, registered in essence20.mjs); `@target.size` / `@target.<path>`;
+    `roll:snag`, `roll:dataset:`, `roll:specialization~`, `combat:first`; Initiative reads `specialize`;
+    `gainResource` on a `.value` path stops at its `.max`.
+  - **Batches applied:** dmgA, dmgB, dmgC (damage-bonus terms), init (Initiative), subst (die substitution),
+    cover, move (all Movement Perks, Wildfire included), misc6 (combat / item / chat), misc7 (newly unblocked).
+    Each batch's `why` lines in its proposals file record the small behaviour differences.
+  - Total: **1205 rules on 880 pack items**. Packs rebuilt 2026-10-03 00:19.
+- **Known issues, noted for later:**
+  - Two Steps to the Right: its allies-within-60 ft Cover/Edge share needs an aura that counts allies the
+    getNearbyAllyTokens way (Frenemy, Betrayal, Ally Awareness).
+  - Pressure Cooker's Moxie Edge forces Edge over a Snag; a DialogSwitch Edge cancels against it instead.
+  - Flux Additives' free action now comes after the roll (an afterRoll Trigger), not while the dialog opens.
+  - Two "roll X instead" switches ticked together: only the first counts (Explosive Engineer, Cobra Battle Cry,
+    Spoof, Rapid Deployment Drills used to add both).
+  - Still code for want of an engine piece: interpose.mjs damage redirects, sneak-attack.mjs eligibility,
+    prompt-and-limit damage reductions, Defeat-save flag writes, turn-order tags (Oorah!, Goin' Heels), the
+    core Ram size bonus.
+  - Pinpoint (ignore N Armor Upgrades) and Drilling Shot (ignore Defense bonuses) need a Defense-side rule piece.
+  - Spell save cards post on any successful cast; before, a cast whose attacks all missed posted none.
+  - Several conversions change small edge cases, each recorded in its proposals file: banks stacking instead of overwriting,
+    the `combat` tag meaning a started combat, and the GM relay for unowned allies.
+  - Movement Perks (Fast, Bulwark, Sprinter...) need a rule phase inside `_prepareMovement`, before climb/swim derive
+    from ground and before the doublings and gravity; a plain DerivedStat lands too late.
+  - Defeat saves still in code: Immortal Rebel Soul (it shares its use with the Essence half), Life Supporting
+    (recharge), Defender's Oath (needs the protected-target link), Not Done Yet and Aegis (they share flags with
+    reckless-abandon.mjs), and We are the Coinless (it asks the rescuer).
+
+- **Left for later (superseded above):**
+  - A dedicated pass for the simple dialog-checkbox Perks. Several batches would edit the same five expected-dataset fixtures in `dice.test.js`, so it should be one pass.
+  - Wheel Struggle never fires: it is a Hang-Up checked with `actorHasPerk`.
+
+- **Held back**, needing a decision or a feature: Key to Whinnypeg and Subtle Snake (exclusivity
+  between items), The Right Of All Sentient Beings, Bullbar, Wheel Excited, Spacewalker,
+  Trade Experience.
+
 ### First conversion batch (2026-10-01)
 
 Eleven pack items moved from code to rules: Broadcaster (Hang-Up), Traitor, Universal Translator, Stellar Experience, Eager to Explode, Whimsical, Lifelike (both printings), Insectoid Components (both printings) and Pet Venom Adaptation.
@@ -497,6 +859,23 @@ item.system.rules ──► RuleIndex (per actor, built in prepareDerivedData)
 ---
 
 ## 9. Editor
+
+> **Built 2026-10-01: one tab for everything an item does.** The item sheet no longer has an
+> Effects tab.
+>
+> - **One list.** The Rules tab lists the item's Active Effects (tagged "Always on", "Off" or
+>   "Temporary", each with its Effect Wizard summary) and its rules (tagged "Rule") together.
+> - **One Add button.** It asks "What should it do?" in game words. "Change a stat" goes straight
+>   to the Effect Wizard and makes an Active Effect, or a blank effect for users whose
+>   `effectAddBehavior` is "always blank". Every other choice adds a rule and opens the JSON editor
+>   on it until the guided forms exist.
+> - **Defense and number changes start with a condition.** "Change a Defense, only when…" and
+>   "Change a number, only when…" start with a `when`, so a flat change has one obvious home.
+> - **The data is still two things.** Active Effects remain core documents, needed for conditions,
+>   expiry and area effects.
+> - **The actor sheet keeps its Effects tab for now.** Merging it the same way is to be looked at
+>   later.
+> - The item-authoring tour now points at the Rules tab.
 
 The editor is a **Rules tab** on every item sheet. It builds on the Effect Wizard
 (`module/apps/effect-wizard.mjs`, `docs/ACTIVE_EFFECTS_UI_PLAN.md`) and keeps its two-audience

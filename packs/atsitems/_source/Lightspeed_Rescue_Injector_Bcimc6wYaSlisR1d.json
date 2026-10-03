@@ -5,6 +5,9 @@
   "_id": "Bcimc6wYaSlisR1d",
   "img": "icons/svg/combat.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Lightspeed Rescue Injector (Science (Medicine))","when":["skill:science"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks roll Targeting with the listed damage and alternate effect. While it is equipped, Science tests get ↑1 (shown as a switch in the Roll Options Dialog).</p>"

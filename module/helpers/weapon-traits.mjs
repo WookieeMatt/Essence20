@@ -1,4 +1,5 @@
 import { isMonsterGrown } from "./monster-grow.mjs";
+import { ruleFiresAsReinforced, ruleHardpoints, ruleWeaponTraits } from "../rules/adapter.mjs";
 
 /**
  * Weapon and armor trait rules that used to be labels only, and the Perks and gear that bend them.
@@ -37,7 +38,7 @@ export const TRAIT_UPGRADE = {
 };
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? '';
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? '';
 }
 
 const idOf = uuid => String(uuid ?? '').split('.').pop();
@@ -69,17 +70,8 @@ export function perkGrantedTraits(weapon, traits) {
     return add;
   }
 
-  if (actorHas(actor, TRAIT_PERK.demolisher)) {
-    add.push('wrecker');
-  }
-
-  if (actorHas(actor, TRAIT_PERK.bigLobber) && (traits.includes('thrown') || /grenade/i.test(weapon.name ?? ''))) {
-    add.push('indirect');
-  }
-
-  if (actorHas(actor, TRAIT_PERK.fireball) && traits.includes('fire')) {
-    add.push('antiTank');
-  }
+  // Demolisher, Big Lobber and Fireball are WeaponTrait item rules (rules/adapter.mjs#ruleWeaponTraits).
+  add.push(...ruleWeaponTraits(actor, weapon, traits));
 
   if (weapon.flags?.essence20?.customized) {
     add.push('temperamental');
@@ -217,29 +209,10 @@ const REINFORCED_HARDPOINT_UPGRADE = 'YDOmBfuUnYFalIVY';
  * @returns {{external: Number, integrated: Number, nonWeapon: Number}}
  */
 export function hardpointBonus(actor) {
-  const bonus = { external: 0, integrated: 0, nonWeapon: 0 };
-  if (actorHas(actor, HARDPOINT_PERK.armament)) {
-    bonus.integrated += 1;
-  }
-
-  const experiment = actor?.items?.find?.(item => sourceOf(item) == HARDPOINT_PERK.experiment);
-  if (experiment?.system?.choice == 'hardpoint') {
-    bonus.integrated += 1;
-  }
-
-  if (actorHas(actor, HARDPOINT_PERK.inCaseOfEmergency)) {
-    bonus.nonWeapon += 2;
-  }
-
-  if (actorHas(actor, HARDPOINT_PERK.fiercestAmongYou)) {
-    bonus.integrated += 1;
-  }
-
-  if (actorHas(actor, HARDPOINT_PERK.quickDraw)) {
-    bonus.external += 2;
-  }
-
-  return bonus;
+  // Armament, Experiment's hardpoint option, In Case of Emergency, The Fiercest Among You and Quick
+  // Draw are Hardpoints item rules (rules/adapter.mjs#ruleHardpoints).
+  const { external, integrated, nonWeapon } = ruleHardpoints(actor);
+  return { external, integrated, nonWeapon };
 }
 
 /**
@@ -248,7 +221,7 @@ export function hardpointBonus(actor) {
  * Hardpoint."
  */
 export function integratedHardpointsPerWeapon(actor) {
-  return actorHas(actor, HARDPOINT_PERK.titanHardpointUpgrades) ? 1 : 0;
+  return ruleHardpoints(actor).perWeapon;
 }
 
 /**
@@ -259,8 +232,8 @@ export function integratedHardpointsPerWeapon(actor) {
 export function firesAsReinforced(actor, weapon) {
   return !!weapon?.system?.hardpoint?.reinforced
     || weaponHasUpgrade(weapon, REINFORCED_HARDPOINT_UPGRADE)
-    || actorHas(actor, HARDPOINT_PERK.fiercestAmongYou)
-    || (actorHas(actor, HARDPOINT_PERK.gunRunner) && (weapon?.system?.traits ?? []).includes('ballistic'));
+    // The Fiercest Among You and Gun Runner - Hardpoints item rules.
+    || ruleFiresAsReinforced(actor, weapon);
 }
 
 const BOARDER = 'BJpJWK7oDfw51Dxl';

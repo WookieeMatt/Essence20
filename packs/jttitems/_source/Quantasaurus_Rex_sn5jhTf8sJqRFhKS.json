@@ -5,6 +5,10 @@
   "_id": "sn5jhTf8sJqRFhKS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Quantasaurus Rex","path":"system.canHaveZord","op":"set","value":1},
+      {"type":"RollModifier","label":"Piloting Quantasaurus Rex: no untrained Snag","immune":["untrainedSnag"],"when":[{"any":["skill:driving","skill:animalHandling"]},"vehicle:driving","vehicle:type:zord"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: gives you a Zord, and while you pilot it you take no Snag on Animal Handling or Driving.</p>"

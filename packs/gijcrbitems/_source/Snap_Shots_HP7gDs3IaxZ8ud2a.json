@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:targeting>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: after attacking with a pistol or thrown Finesse weapon, one more attack with the same kind of weapon costs two Free actions, once per turn. The tracker offers it.</p>"

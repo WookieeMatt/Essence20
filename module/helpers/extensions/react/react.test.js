@@ -273,16 +273,12 @@ describe('triggers', () => {
 });
 
 describe('forms', () => {
-  test('Monster Form path and Stone Resistance', () => {
+  test('Monster Form path', () => {
     const role = item('Compendium.essence20.finster_s_monster_matic_cookbook.Item.TEjkVjIEFEbRI736', { type: 'role' });
     const stone = makeActor('sto', [role]);
     expect(monsterPath(stone)).toBeNull();
     stone.flags.essence20 = { monsterFormActive: true };
     expect(monsterPath(stone)).toBe('stone');
-    const attack = type => registrySnapshot().rollSources.map(fn => fn(makeActor('a'), stone, { isAttack: true, item: { system: { damageType: type } } }))
-      .filter(Boolean).flatMap(s => s.sources).some(s => s.id == 'reactStoneForm');
-    expect(attack('blunt')).toBe(true);
-    expect(attack('psychic')).toBe(false);
   });
 
   test('Iron Bravado shares immunity with the listed allies', () => {

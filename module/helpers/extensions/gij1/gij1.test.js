@@ -119,28 +119,6 @@ describe('perks', () => {
     expect(findExtUse(beast).canUse(beast)).toBe(false);
   });
 
-  test('Chemist lists ↓1 on Persuasion; Cover Job ↑1 on its skill', () => {
-    const a = actor([
-      item('hangUp', { source: CCX('cHNytkkeP7iizzgK') }),
-      item('perk', { source: CCX('3SiGvDR98s0FQtdf'), flags: { gij1Choice: { skill: 'persuasion', text: 'Lawyer' } } }),
-    ]);
-    const sources = perks.gij1Sources(a, null, { rolledSkill: 'persuasion' });
-    expect(sources.find(s => s.id == 'gij1Chemist').shiftDown).toBe(1);
-    expect(sources.some(s => s.id.startsWith('gij1CoverJob') && s.shiftUp == 1)).toBe(true);
-    expect(perks.gij1Sources(a, null, { rolledSkill: 'science' })).toHaveLength(0);
-  });
-
-  test('toggles: Bootlicker ↑1, Double Life Edge + Specialized, Cover Job out of combat', () => {
-    const dl = item('perk', { id: 'dl', source: CCX('Bl14FV81J88Um0Ls'), flags: { gij1Choice: { skill: 'science', text: 'Chemistry' } } });
-    const a = actor([item('perk', { source: CCX('drtmA1p3q4y7LMTk') }), dl,
-      item('perk', { id: 'cj', source: CCX('3SiGvDR98s0FQtdf'), flags: { gij1Choice: { skill: 'persuasion', text: 'Lawyer' } } })]);
-    const names = perks.gij1Toggles(a, { rolledSkill: 'science', rolledEssence: 'smarts' }).map(t => t.name);
-    expect(names).toEqual(expect.arrayContaining(['gij1Bootlicker', 'gij1DoubleLife-dl', 'gij1CoverJob-cj']));
-    const options = { shiftUp: 0, ext: { gij1Bootlicker: true, 'gij1DoubleLife-dl': true } };
-    perks.applyGij1Toggles(a, options);
-    expect(options).toMatchObject({ shiftUp: 1, edge: true, isSpecialized: true });
-  });
-
   test('Sea Legs: 30 with no swim, +15 on top of existing swim', () => {
     const legs = item('perk', { source: CCX('mKsSa2HBOimHqS7i') });
     const a = actor([legs], { movement: { swim: { total: 0 } } });

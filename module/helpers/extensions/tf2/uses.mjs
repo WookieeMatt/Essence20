@@ -20,10 +20,6 @@
  *   action that requires a Skill Test, you can use a Free action to run a simulation in your head...
  *   If this simulated Skill Test succeeds, you can use your Standard action to use the results of the
  *   simulated Skill Test instead of making another Skill Test."
- * - Electro-Disruptor (Infiltrator, 17th level, p.61): "As a Standard action outside of Combat, roll a
- *   Technology Skill Test against the Willpower or Cleverness of a creature... On a success, the
- *   target becomes Mesmerized by you or an ally of your choice that they can see for the remainder of
- *   the scene."
  * - Energon Bank (Scientist, 9th level, p.79): "allies within 30ft can spend your Energon Points
  *   instead of their own". Handed over one point at a time, as the ally needs it.
  * - Flexible Directives (Field Commander, 10th level, p.66): "once per scene, you can modify the
@@ -31,10 +27,6 @@
  *   button keeps the once-per-scene count and says what was changed.
  * - Applied Science (Scientist, 12th level, p.79): "once per scene, you can use Broad Understanding
  *   and Thesis in Combat."
- * - Dominant Thought (Enigma of Combination, 20th level, p.35): "If the target is willing, there is no
- *   Skill Test necessary. If the target is unwilling (or unknowing), you must succeed at a Persuasion
- *   Skill Test versus their Willpower Defense. If the target is Asleep or Unconscious, you gain Edge on
- *   this roll." The implanted Contingency itself is the table's.
  * - We Are One! (Enigma of Combination, 10th level, p.30-31): "Choose a number of allies equal to your
  *   half of Social Essence Score (rounded up)... Then, choose two Skills from two different Essence
  *   Scores. You and your teammates can reroll 1s on Skill Dice when using those Skills." The team goes
@@ -430,31 +422,6 @@ export const USES = [
     },
   },
   {
-    id: 'tf2ElectroDisruptor', matches: isFrom(TF2.electroDisruptor),
-    async run(item, economy, pay) {
-      const actor = item.parent;
-      if (game.combat?.started) {
-        ui.notifications.warn(T('Tf2OutOfCombatOnly', { name: item.name }));
-        return null;
-      }
-
-      const target = needTarget();
-      const defense = target ? await chooseDefense(item.name) : null;
-      if (!defense || !(await pay('standard'))) {
-        return null;
-      }
-
-      const { rollTest } = await grants();
-      const { success } = await rollTest(actor, 'technology', defenseOf(target, defense) ?? 10);
-      if (!success) {
-        return T('Tf2ElectroDisruptorFailed', { name: actor.name, target: target.name });
-      }
-
-      await writeActor(target, 'toggleStatusEffect', ['mesmerized', { active: true }]);
-      return T('Tf2ElectroDisruptorHit', { name: actor.name, target: target.name });
-    },
-  },
-  {
     id: 'tf2EnergonBank', matches: isFrom(TF2.energonBank),
     canUse: item => energonOf(item.parent) > 0,
     async run(item) {
@@ -503,32 +470,6 @@ export const USES = [
       await markUsed(actor, 'tf2AppliedScience', { window: 'scene' });
       await actor.setFlag('essence20', APPLIED_SCIENCE_FLAG, true);
       return T('Tf2AppliedScience', { name: actor.name });
-    },
-  },
-  {
-    id: 'tf2DominantThought', matches: isFrom(TF2.dominantThought),
-    async run(item) {
-      const actor = item.parent;
-      const target = needTarget();
-      if (!target) {
-        return null;
-      }
-
-      const { chooseButtons, rollTest } = await grants();
-      const willing = await chooseButtons(item.name, T('Tf2DominantWilling', { target: target.name }), [
-        ['yes', T('Tf2DominantWillingYes')], ['no', T('Tf2DominantWillingNo')],
-      ]);
-      if (!willing) {
-        return null;
-      }
-
-      if (willing == 'yes') {
-        return T('Tf2DominantImplanted', { name: actor.name, target: target.name });
-      }
-
-      const asleep = ['asleep', 'unconscious'].some(status => target.statuses?.has?.(status));
-      const { success } = await rollTest(actor, 'persuasion', defenseOf(target, 'willpower') ?? 10, asleep ? { edge: true } : {});
-      return T(success ? 'Tf2DominantImplanted' : 'Tf2DominantResisted', { name: actor.name, target: target.name });
     },
   },
   { id: 'tf2WeAreOne', matches: isFrom(TF2.weAreOne), run: weAreOne },

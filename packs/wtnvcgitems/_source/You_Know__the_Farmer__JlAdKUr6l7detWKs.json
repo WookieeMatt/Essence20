@@ -5,6 +5,7 @@
   "_id": "JlAdKUr6l7detWKs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:role:Farmer","self:level>=1"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Granted: comes with the Farmer Role at level 1, and the Role adds the +1 Strength and +1 Smarts Essence increases on its own.</p><p>Left to the table: picking and adding the one Strength and one Smarts Skill Rank from the listed Skills.</p>"

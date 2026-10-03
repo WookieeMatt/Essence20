@@ -26,7 +26,7 @@ const DEFENSIVE_FLEXIBILITY_ID = "Compendium.essence20.pr_crb.Item.7kHQ53hZFgwhS
  */
 export function hasDefensiveFlexibilityOption(actor, option) {
   return !!actor?.items?.some(item => {
-    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
     return sourceId == DEFENSIVE_FLEXIBILITY_ID && item.system.choice == option;
   });
 }

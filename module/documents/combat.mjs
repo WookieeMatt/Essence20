@@ -1,5 +1,5 @@
 import { runRoundStart, runTurnEnd, runTurnStart } from "../helpers/extensions.mjs";
-import { onCompanionTurnStart, onFirstCombatTurn } from "../helpers/companions.mjs";
+import { onCompanionTurnStart } from "../helpers/companions.mjs";
 import { onSpiritsHostTurn } from "../helpers/team-actions.mjs";
 import { onRoundChange } from "../helpers/summons.mjs";
 import { onTurnStartZones } from "../helpers/target-riders.mjs";
@@ -87,13 +87,10 @@ export class Essence20Combat extends Combat {
     // one is offered to its owner - helpers/target-riders.mjs.
     if (combatant?.actor) {
       await onTurnStartZones(combatant.actor);
-      // Companions (Artificial Intelligence, Constrictor, the tractor beam), Spirit's Host, and Perch on
-      // the first round - helpers/companions.mjs, helpers/team-actions.mjs.
+      // Companions (Artificial Intelligence, Constrictor, the tractor beam) and Spirit's Host -
+      // helpers/companions.mjs, helpers/team-actions.mjs. (Perch is a Trigger rule on its item.)
       await onCompanionTurnStart(combatant.actor, this);
       await onSpiritsHostTurn(combatant.actor);
-      if ((context?.round ?? this.round) == 1) {
-        await onFirstCombatTurn(combatant.actor);
-      }
     }
 
     // A vehicle called "like a Zord" turns up on its round (helpers/summons.mjs).

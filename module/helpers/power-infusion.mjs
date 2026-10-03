@@ -37,7 +37,7 @@ const ALLY_ACTOR_TYPES = ["playerCharacter"];
 function getPowerInfusionItem(actor) {
   return actor.items.find(item =>
     item.type == "perk"
-    && (item.flags.core?.sourceId == POWER_INFUSION_PERK_ID || item._stats?.compendiumSource == POWER_INFUSION_PERK_ID));
+    && (item.flags.core?.sourceId == POWER_INFUSION_PERK_ID || item._stats?.compendiumSource == POWER_INFUSION_PERK_ID || item?.flags?.essence20?.rulesSource == POWER_INFUSION_PERK_ID));
 }
 
 export function actorHasPowerInfusion(actor) {

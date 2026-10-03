@@ -5,6 +5,9 @@
   "_id": "q9ObJy6Ipqn7lPHM",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Could have used Deception (Hard Habit to Break: ↓1)","when":["not:skill:deception"],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a ↓1 switch for tests where you could have used Deception instead.</p>"

@@ -32,19 +32,14 @@ export const G3 = {
   secondSkin: U('gi_joe_crb', 'Txn7a7v4gQOCYPhC'),
   stalk: U('gi_joe_crb', 'BOuJREcROMkMjbM1'),
   touchMove: U('gi_joe_crb', 'wv5vpbiCZXiwTpdm'),
-  brutish: U('ferocious_fighters', '2STwn9zH3aInPsS9'),
   subtleSnake: U('ferocious_fighters', 'ZCgcPAQzeMYTti7g'),
   dreadnokRecruit: U('intercontinental_adventures', 'QIoKmEIelV7it5xE'),
-  meansToAnEnd: U('intercontinental_adventures', 'llLxndbUKCtKIUMW'),
   peakPerformance: U('general_hawk_s_personel_files', 'Uzs2Ms6MgPsxV8uU'),
   personOfCulture: U('general_hawk_s_personel_files', 'UASxRYtsWV1CnE8y'),
   oldHand: U('general_hawk_s_personel_files', 'KjGQyRLheKp8zT8v'),
-  onceAMarauder: U('sgt_slaughter_sourcebook', 'Prmh2Lie5CEOp71i'),
-  broadcaster: U('quartermasters_guide_to_gear', 'IvmCWJUuntY3KALM'),
   earlyAdopter: U('quartermasters_guide_to_gear', 'WrRChund2zAcHYfe'),
   fieldTrials: U('quartermasters_guide_to_gear', 'HBSVeVpRVBXiPgSW'),
   junker: U('quartermasters_guide_to_gear', 'VpQqwE8GNeqFAHbg'),
-  petrolhead: U('quartermasters_guide_to_gear', 'JlJrEfRcrupprYMC'),
   pillage: U('quartermasters_guide_to_gear', 'G7bEjhamqov7tb9w'),
   pillageFinesse: U('quartermasters_guide_to_gear', 'Gij3PillageFin01'),
   pillageMight: U('quartermasters_guide_to_gear', 'Gij3PillageMgt01'),
@@ -66,7 +61,6 @@ const FLAG = {
   freePick: 'gij3FreePick',
   personOfCulture: 'gij3PersonOfCulture',
   dreadnokPresent: 'gij3DreadnokPresent',
-  meansSkills: 'gij3MeansSkills',
   peakGranted: 'gij3PeakPerformanceGranted',
 };
 
@@ -74,7 +68,7 @@ const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18
 const escape = text => foundry.utils.escapeHTML(String(text ?? ''));
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function listOf(collection) {
@@ -109,78 +103,10 @@ export const deps = {
 
 /**
  * Each switch: which item grants it, when it shows, and what it does once ticked.
- * - Second Skin (GI Joe CRB, Juggernaut, 3rd level, p.112): "you gain an Edge in skills related to
- *   armor, from analyzing, maintaining, creating, and other information surrounding personal body
- *   armor." Any non-attack Skill Test.
- * - Brutish Hang-Up (Ferocious Fighters p.76): "You suffer Snag on Social Skill Tests when
- *   interacting with others in polite society or formal settings such as government offices,
- *   interviews, or military tribunals."
- * - Once a Marauder Hang-Up (Sgt Slaughter Sourcebook p.7): "You suffer ↓1 on Social Skill Tests
- *   dealing with figures whom society believes should have authority over you."
- * - Broadcaster Influence Perk (p.8): "You gain Edge on Social Skill Tests involving people you're
- *   communicating with using technological devices" (the Technology (Communications) half is in
- *   dice.mjs).
- * - Means To An End (Intercontinental Adventures p.102): "When you use one of the Skills tied to
- *   your International Syndicate's means in a way that works toward your International Syndicate's
- *   endgame, you gain ↑1 on the Skill Test." Offered on the four Means Skills once they're set with
- *   the Perk's Use button (on every Skill until then).
- * - Petrolhead (Quartermaster's Guide p.18): "You roll as if Specialized in that vehicle when
- *   attempting ... Technology Skill Tests to repair or improve that type of vehicle." (The Driving
- *   half is in dice.mjs.)
  * - Pillage (p.25): "Attempts to pillage a two-handed weapon (or item of similar size, at GM
  *   discretion) suffer ↓1." Ticking it also lets the hit take a two-handed weapon.
  */
 const SWITCHES = [
-  {
-    name: 'gij3SecondSkin', id: G3.secondSkin, label: 'Gij3SecondSkinToggle',
-    shows: (actor, ctx) => !isAttackItem(ctx.item),
-    apply: options => {
-      options.edge = true; 
-    },
-  },
-  {
-    name: 'gij3Brutish', id: G3.brutish, label: 'Gij3BrutishToggle',
-    shows: (actor, ctx) => isSocial(ctx),
-    apply: options => {
-      options.snag = true; 
-    },
-  },
-  {
-    name: 'gij3OnceAMarauder', id: G3.onceAMarauder, label: 'Gij3OnceAMarauderToggle',
-    shows: (actor, ctx) => isSocial(ctx),
-    apply: options => {
-      options.shiftDown = (Number(options.shiftDown) || 0) + 1; 
-    },
-  },
-  {
-    name: 'gij3Broadcaster', id: G3.broadcaster, label: 'Gij3BroadcasterToggle',
-    shows: (actor, ctx) => isSocial(ctx),
-    apply: options => {
-      options.edge = true; 
-    },
-  },
-  {
-    name: 'gij3MeansToAnEnd', id: G3.meansToAnEnd, label: 'Gij3MeansToAnEndToggle',
-    shows: (actor, ctx) => {
-      const skills = findSourced(actor, G3.meansToAnEnd)?.flags?.essence20?.[FLAG.meansSkills];
-      return !Array.isArray(skills) || !skills.length || skills.includes(ctx.rolledSkill);
-    },
-    apply: options => {
-      options.shiftUp = (Number(options.shiftUp) || 0) + 1; 
-    },
-  },
-  {
-    name: 'gij3Petrolhead', id: G3.petrolhead, label: 'Gij3PetrolheadToggle',
-    shows: (actor, ctx) => ctx.rolledSkill == 'technology',
-    labelData: actor => {
-      const choice = findSourced(actor, G3.petrolhead)?.system?.choice;
-      const key = choice && E20.movementTypes?.[choice];
-      return { vehicle: key ? game.i18n.localize(key) : (choice || '') };
-    },
-    apply: options => {
-      options.isSpecialized = true; 
-    },
-  },
   {
     name: 'gij3PillageTwoHanded', id: G3.pillage, label: 'Gij3PillageTwoHandedToggle',
     shows: (actor, ctx) => isPillageEffect(ctx.item),
@@ -776,28 +702,6 @@ export const USES = [
       await item.setFlag('essence20', FLAG.peakGranted, true);
       const names = got.filter(Boolean).map(i => i.name).join(', ') || picks.entries.map(e => e.name).join(', ');
       return T(picks.role == 'Ranger' ? 'Gij3PeakPerformanceRanger' : 'Gij3PeakPerformanceDone', { name: actor.name, perks: names, role: picks.role });
-    },
-  },
-  {
-    // Means To An End - set the Syndicate's four Means Skills ("designate four Skills, one from each
-    // Essence", Intercontinental Adventures p.101), so the roll switch shows only on those.
-    id: 'gij3MeansToAnEnd',
-    matches: item => sourceOf(item) == G3.meansToAnEnd,
-    async run(item) {
-      const { chooseSelect } = await import("../../grants.mjs");
-      const skills = [];
-      for (const essence of ['strength', 'speed', 'smarts', 'social']) {
-        const options = (E20.skillsByEssence?.[essence] ?? []).map(skill => ({ value: skill, label: game.i18n.localize(E20.skills?.[skill] ?? skill) }));
-        const picked = await chooseSelect(item.name, T('Gij3MeansPick', { essence: game.i18n.localize(E20.essences?.[essence] ?? essence) }), options);
-        if (!picked) {
-          return null;
-        }
-
-        skills.push(picked);
-      }
-
-      await item.setFlag('essence20', FLAG.meansSkills, skills);
-      return T('Gij3MeansSet', { name: item.parent.name, skills: skills.map(s => game.i18n.localize(E20.skills?.[s] ?? s)).join(', ') });
     },
   },
   {

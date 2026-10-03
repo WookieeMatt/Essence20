@@ -39,7 +39,7 @@ const COMBINE_READY_ROUND_FLAG = 'combineReadyRound';
  */
 export function getCombineDie(zord) {
   const reductions = Array.from(zord?.items ?? []).filter(item => {
-    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
     return item.type == 'feature' && sourceId == FAST_MODULATION_ID;
   }).length;
 

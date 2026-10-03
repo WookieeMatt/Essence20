@@ -38,6 +38,23 @@ const ENERGY_AFFINITY_ALTERED_FLAG = 'energyAffinityAltered';
  * @param {Actor} actor
  * @returns {String|null}
  */
+/**
+ * Whether this weaponEffect deals damage of the Element chosen for the actor's Energy Affinity -
+ * natively, or through Energy Affinity's live alteration of that attack style (the rule check
+ * `check:energyAffinityAttack`).
+ * @param {Actor} actor
+ * @param {Item} item
+ * @returns {Boolean}
+ */
+export function isEnergyAffinityElementAttack(actor, item) {
+  const choice = item?.type == 'weaponEffect' ? findPerk(actor, ENERGY_AFFINITY_ID)?.system?.choice : null;
+  if (!choice) {
+    return false;
+  }
+
+  return item.system.damageType == choice || getEnergyAffinityAlteredStyle(actor) == item.system.classification?.style;
+}
+
 export function getEnergyAffinityAlteredStyle(actor) {
   const flag = actor?.getFlag?.('essence20', ENERGY_AFFINITY_ALTERED_FLAG);
   if (!flag || flag.epoch !== getSceneEpoch()) {

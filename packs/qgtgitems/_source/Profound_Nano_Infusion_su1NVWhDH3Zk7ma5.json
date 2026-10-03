@@ -5,6 +5,7 @@
   "_id": "su1NVWhDH3Zk7ma5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:level>=12"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted: pick one Restricted nanomite power when you take it. You can take it again for another.</p>"

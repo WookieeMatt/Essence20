@@ -5,6 +5,9 @@
   "_id": "2I9z9FdCqMZFcR2O",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Shower Power","event":"hit","when":["item:own"],"steps":[{"do":"applyCondition","to":"target","condition":"prone"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: a Spellcasting attack with a jet of water. A hit knocks the target Prone.</p>"

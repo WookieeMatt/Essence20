@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Qualification","label":"Standard Weapon Training (Qualified: Standard weapons)","access":"qualified","items":["item:type:weapon","item:availability<=standard"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you are Qualified with weapons at Standard Availability (after upgrades), so Requisition grants them without a test.</p>"

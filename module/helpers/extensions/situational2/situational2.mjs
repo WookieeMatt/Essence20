@@ -4,9 +4,9 @@ import {
 } from "../../extensions.mjs";
 import { getEmpathyChoice } from "../../tender.mjs";
 import {
-  S2, FLAG, deps, T, findById, has, wornGear, sceneOf, terrainOf, isUrban, isWild, isInWater, isOnLand,
-  isSeaOrWetlands, isAquaticVehicle, isAboardAquaticVessel, isCompleteDarkness, isLibrarySituation,
-  isStrexAgent, currentTarget, sameSide, parentWeapon, weaponHasUpgradeId, idOf, sourceOf,
+  S2, FLAG, deps, T, findById, has, wornGear, sceneOf, terrainOf, isInWater, isOnLand,
+  isSeaOrWetlands, isAquaticVehicle, isAboardAquaticVessel, isCompleteDarkness,
+  isStrexAgent, sameSide, parentWeapon, weaponHasUpgradeId, idOf, sourceOf,
 } from "./common.mjs";
 import { situationalInitiative, takeInASceneButton, misplacedConfidenceRound } from "./initiative.mjs";
 
@@ -24,7 +24,6 @@ import { situationalInitiative, takeInASceneButton, misplacedConfidenceRound } f
  * the Tracking Outfit / Bookworm Initiative halves) live in initiative.mjs.
  */
 
-const SOCIAL_LIES = ['persuasion', 'deception'];
 const POISON_PATTERN = /poison|venom|toxi|disease|illness|sick|plague|infect/i;
 
 /* -------------------------------------------- */
@@ -186,29 +185,6 @@ export function situational2RollSources(actor, target, ctx = {}) {
     sources.push({ id: `s2-${id}`, label: findById(actor, itemId, type)?.name ?? fallback, ...effect });
   };
 
-  // Stumble Through the City (Knights of Canterlot, Hang-Up, p.19): "When you're in a town, city,
-  // or village, you suffer Snag on all Persuasion or Deception Skill Tests."
-  if (SOCIAL_LIES.includes(rolledSkill) && has(actor, S2.stumbleThroughTheCity, 'hangUp') && isUrban(actor) === true) {
-    add('stumble', S2.stumbleThroughTheCity, 'Stumble Through the City', { snag: true }, 'hangUp');
-  }
-
-  // Bookworm (WTNV Citizens' Guide, Hang-Up, p.28): "When you're in a library or facing a Librarian,
-  // you suffer ↓1 on all Skill Tests."
-  if (has(actor, S2.bookworm, 'hangUp') && isLibrarySituation(actor, target) === true) {
-    add('bookworm', S2.bookworm, 'Bookworm', { shiftDown: 1 }, 'hangUp');
-  }
-
-  // Tracking Outfit (WTNV Citizens' Guide, Clothing, p.71): "Grants ↑1 on Initiative, Targeting, and
-  // Survival Skill Tests in the wild; however... wearers suffer ↓1 on all Awareness and Culture
-  // Skill Tests in an urban environment." Awareness is this system's Alertness.
-  if (wornGear(actor, S2.trackingOutfit)) {
-    if (['targeting', 'survival'].includes(rolledSkill) && isWild(actor) === true) {
-      add('trackingWild', S2.trackingOutfit, 'Tracking Outfit', { shiftUp: 1 });
-    } else if (['alertness', 'culture'].includes(rolledSkill) && isUrban(actor) === true) {
-      add('trackingUrban', S2.trackingOutfit, 'Tracking Outfit', { shiftDown: 1 });
-    }
-  }
-
   // Seafarer (Quartermaster's Guide, Influence Perk, p.12): "You gain Edge on Athletics (Swimming)
   // and Driving (Sea) Skill Tests." The Driving half is dice.mjs; this is the swimming half.
   if (rolledSkill == 'athletics' && has(actor, S2.seafarer, 'perk') && isInWater(actor)) {
@@ -270,22 +246,6 @@ export function situational2Toggles(actor, ctx = {}) {
   const { item, rolledSkill, dataset } = ctx;
   const isAttack = isWeaponEffect(item);
   const toggles = [];
-  const target = currentTarget();
-
-  if (SOCIAL_LIES.includes(rolledSkill) && has(actor, S2.stumbleThroughTheCity, 'hangUp') && isUrban(actor) === null) {
-    toggles.push({ name: 's2Stumble', label: T('S2StumbleToggle'), type: 'checkbox', value: false });
-  }
-
-  if (rolledSkill && has(actor, S2.bookworm, 'hangUp') && isLibrarySituation(actor, target) === null) {
-    toggles.push({ name: 's2Bookworm', label: T('S2BookwormToggle'), type: 'checkbox', value: false });
-  }
-
-  if (['targeting', 'survival', 'alertness', 'culture'].includes(rolledSkill) && wornGear(actor, S2.trackingOutfit) && !terrainOf(actor)) {
-    toggles.push({
-      name: 's2Tracking', label: T('S2TrackingToggle'), type: 'select', value: '',
-      options: [{ value: '', label: T('S2TrackingNeither') }, { value: 'wild', label: T('S2TrackingWild') }, { value: 'urban', label: T('S2TrackingUrban') }],
-    });
-  }
 
   if (rolledSkill == 'athletics' && has(actor, S2.seafarer, 'perk') && !isInWater(actor)) {
     toggles.push({ name: 's2SeafarerSwim', label: T('S2SeafarerSwimToggle'), type: 'checkbox', value: false });
@@ -300,38 +260,16 @@ export function situational2Toggles(actor, ctx = {}) {
     toggles.push({ name: 's2Tritium', label: T('S2TritiumToggle'), type: 'checkbox', value: false });
   }
 
-  // Stubbornly Loyal (MLP CRB, Spirit of Loyalty, 9th level, p.90): "...or tries to get you to turn
-  // on them (such as with a spell), they suffer Snag on the effect's Skill Test." The Deception half
-  // is dice.mjs; turning someone on a BFF is the caster's declaration, so it's a checkbox.
-  if (target && rolledSkill != 'deception' && !isAttack && has(target, S2.stubbornlyLoyal, 'perk')) {
-    toggles.push({ name: 's2StubbornlyLoyal', label: T('S2StubbornlyLoyalToggle', { name: target.name }), type: 'checkbox', value: false });
-  }
-
   return toggles;
 }
 
-export function situational2ApplyDialog(actor, options, ctx = {}) {
+export function situational2ApplyDialog(actor, options) {
   const ext = options?.ext ?? {};
-  const { rolledSkill } = ctx;
-  if (ext.s2Stumble) {
-    options.snag = true;
-  }
-
-  if (ext.s2Bookworm) {
-    options.shiftDown = (options.shiftDown ?? 0) + 1;
-  }
-
-  if (ext.s2Tracking == 'wild' && ['targeting', 'survival'].includes(rolledSkill)) {
-    options.shiftUp = (options.shiftUp ?? 0) + 1;
-  } else if (ext.s2Tracking == 'urban' && ['alertness', 'culture'].includes(rolledSkill)) {
-    options.shiftDown = (options.shiftDown ?? 0) + 1;
-  }
-
   if (ext.s2SeafarerSwim) {
     options.edge = true;
   }
 
-  if (ext.s2SeafarerResist || ext.s2StubbornlyLoyal) {
+  if (ext.s2SeafarerResist) {
     options.snag = true;
   }
 

@@ -13,7 +13,7 @@
 export function findPower(actor, powerId) {
   return actor?.items?.find(item =>
     item.type == 'power'
-    && (item.flags?.core?.sourceId == powerId || item._stats?.compendiumSource == powerId),
+    && (item.flags?.core?.sourceId == powerId || item._stats?.compendiumSource == powerId || item?.flags?.essence20?.rulesSource == powerId),
   );
 }
 

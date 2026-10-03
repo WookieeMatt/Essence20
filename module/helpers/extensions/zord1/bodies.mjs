@@ -11,8 +11,8 @@ import { T, cc, dd, dsoe, findSourced, flagOf, isUnarmed, itemsOf, sourceOf, wri
  *   class." Cost: "You can only wear Battledress with the Restricted [Limited] Alteration Accommodation
  *   Upgrade (see page 101)."
  * - Revolutionary Shape-Shifting (Dark Skies over Equestria, spell, p.22).
- * - Additional Pair of Limbs, Plated Carapace, Titan Frame (Decepticon Directive, p.76) - Alt/Bot Mode
- *   gated (system.isTransformed = Alt Mode).
+ * - Additional Pair of Limbs (Decepticon Directive, p.76) - Alt/Bot Mode gated (system.isTransformed =
+ *   Alt Mode). Plated Carapace and Titan Frame (same page) are item rules now (system.rules).
  */
 
 export const BODY = {
@@ -20,8 +20,6 @@ export const BODY = {
   shrunk: cc('nvyLaYW6EOcAdHDo'),
   shapeShifting: dsoe('ojIyM3QMD0QgRGca'),
   limbs: dd('pedTP4vV1qwoBJvn'),
-  platedCarapace: dd('txkHR1vr7NRWoIhW'),
-  titanFrame: dd('ncKndgd7OjDoIwHx'),
 };
 
 /* -------------------------------------------- */
@@ -152,16 +150,6 @@ export async function endShapeShift(actor) {
 /*  Decepticon Directive mode items              */
 /* -------------------------------------------- */
 
-/** Whether an armor upgrade is actually being worn (same rule as Essence20Actor#_prepareDefenses). */
-export function upgradeWorn(actor, upgrade) {
-  const parentId = flagOf(upgrade, 'parentId');
-  if (parentId) {
-    return !!(actor.items?.get?.(parentId) ?? itemsOf(actor).find(i => i.id == parentId))?.system?.equipped;
-  }
-
-  return !!(actor.system?.canTransform || flagOf(upgrade, 'alterationWorn'));
-}
-
 export function bodiesDerived(actor) {
   const system = actor?.system;
   const defenses = system?.defenses;
@@ -170,35 +158,6 @@ export function bodiesDerived(actor) {
   }
 
   const altMode = !!system.isTransformed;
-  const add = (defense, amount, label) => {
-    const d = defenses[defense];
-    if (d && amount) {
-      d.total = (Number(d.total) || 0) + amount;
-      d.string = `${d.string ?? ''} ${amount < 0 ? '-' : '+'} ${Math.abs(amount)} (${label})`;
-    }
-  };
-
-  for (const upgrade of itemsOf(actor)) {
-    const source = sourceOf(upgrade);
-    if (upgrade.type != 'upgrade' || ![BODY.platedCarapace, BODY.titanFrame].includes(source) || !upgradeWorn(actor, upgrade)) {
-      continue;
-    }
-
-    // Plated Carapace: "Grants +2 plating bonus to Toughness, increased to +4 in Alt Mode".
-    if (source == BODY.platedCarapace && altMode) {
-      add('toughness', 2, upgrade.name);
-    }
-
-    // Titan Frame: "Grants +4 deflective bonus to Toughness, but imparts -2 penalty to Evasion (Bot Mode
-    // only)" - "snap into place when the user converts into their Bot Mode", so neither half in Alt Mode.
-    if (source == BODY.titanFrame) {
-      if (altMode) {
-        add('toughness', -(Number(upgrade.system?.armorBonus?.value) || 4), upgrade.name);
-      } else {
-        add('evasion', -2, upgrade.name);
-      }
-    }
-  }
 
   // Additional Pair of Limbs, Alt Mode: "Adds 10ft to your Ground Movement".
   const limbs = findSourced(actor, BODY.limbs);

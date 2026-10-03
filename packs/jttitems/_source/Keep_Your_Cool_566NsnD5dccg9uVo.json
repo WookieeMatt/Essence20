@@ -5,6 +5,10 @@
   "_id": "566NsnD5dccg9uVo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Keep Your Cool","scope":"incoming","when":["skill:intimidation"],"snag":true},
+      {"type":"ConditionImmunity","label":"Immune to frightened","conditions":["frightened"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you can't be given the Frightened condition, and Intimidation tests that target you take a Snag, listed as Keep Your Cool next to Snag in the roller's Roll Options Dialog.</p>"

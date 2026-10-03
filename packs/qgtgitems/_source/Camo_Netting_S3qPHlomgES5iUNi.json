@@ -5,6 +5,13 @@
   "_id": "S3qPHlomgES5iUNi",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Put up or pack away the netting","when":["self:type:vehicle"],"steps":[{"do":"setToggle","key":"camo"},{"do":"chat","text":"{name}'s Camo Netting is up: Edge to hide it, but -2 on Speed tests and -10ft Movement if driven.","when":["self:toggle:camo"]},{"do":"chat","text":"{name}'s Camo Netting is packed away.","when":["not:self:toggle:camo"]}]},
+      {"type":"RollModifier","scope":"crew","edge":true,"when":["self:toggle:camo","skill:infiltration"]},
+      {"type":"RollModifier","edge":true,"when":["self:type:vehicle","self:toggle:camo","skill:infiltration"]},
+      {"type":"RollModifier","scope":"crew","downshift":2,"when":["self:toggle:camo",{"any":["skill:acrobatics","skill:driving","skill:finesse","skill:infiltration","skill:initiative","skill:targeting"]}]},
+      {"type":"RollModifier","downshift":2,"when":["self:type:vehicle","self:toggle:camo",{"any":["skill:acrobatics","skill:driving","skill:finesse","skill:infiltration","skill:initiative","skill:targeting"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: switch the netting on or off. While on, crew Infiltration tests get Edge and the vehicle's Speed tests take ↓2, both shown as Camo Netting in the Roll Options Dialog, and the vehicle's Movement drops by 10 ft on the sheet.</p>"

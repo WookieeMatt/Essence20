@@ -37,7 +37,7 @@ const ITEM = {
 };
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function itemsOf(actor) {
@@ -733,7 +733,8 @@ export async function commandPet(actor) {
 
   const drone = pet.system?.type == 'drone' && !hasSourced(pet, ITEM.animalGij);
   const { rollTest } = await import("./grants.mjs");
-  // Agreeable (MLP): "Any Animal Handling Skill Test (by anyone) gains ↑1."
+  // Agreeable (MLP): "Any Animal Handling Skill Test (by anyone) gains ↑1." A roll that targets the pet gets
+  // it from the Perk's own incoming RollModifier; commanding it need not target it, so it is added here.
   const shiftUp = hasSourced(pet, COMP.agreeableMlp) ? 1 : 0;
   const { success } = await rollTest(actor, drone ? 'technology' : 'animalHandling', commandDif(pet), { shiftUp });
   if (!success) {
@@ -822,18 +823,6 @@ export async function onOwnerDefeated(owner) {
     await deployMiniCon(owner, miniCon, { free: true });
     await miniCon.update({ 'system.health.origin': 2, 'system.health.value': 2, 'flags.essence20.miniCon.emergencyHealth': true });
     ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: miniCon }), content: T('E20.MiniConEmergency', { name: miniCon.name }) });
-  }
-}
-
-/**
- * Perch (Cobra Codex p.100): "Your Small animal pet ... gain[s] an additional Move action on the first
- * turn of combat." Called on each combatant's first turn.
- */
-export async function onFirstCombatTurn(actor) {
-  const owner = ownerOf(actor);
-  if (actor?.type == 'companion' && actor.system?.size == 'small' && owner && hasSourced(owner, COMP.perch)) {
-    const economy = await import("./action-economy.mjs");
-    await economy.grantActionsThisTurn?.(actor, { move: 1 }, T('E20.Perch'));
   }
 }
 
@@ -1070,13 +1059,6 @@ const HANDLERS = {
   favoriteCommandGij: (pet, item) => chooseFavoriteSkill(pet, item),
   favoriteCommandMlp: (pet, item) => chooseFavoriteSkill(pet, item),
   favoriteCommandWtnv: (pet, item) => chooseFavoriteSkill(pet, item),
-
-  // Altered Pet (Cobra Codex p.103): "Your pet gains a Standard Alteration".
-  async alteredPet(pet, item) {
-    const { pickAndGrant } = await import("./grants.mjs");
-    const got = await pickAndGrant(pet, item, item.name, { type: 'alteration', availabilities: ['standard'] });
-    return got ? T('E20.GrantGained', { name: pet.name, item: item.name, what: got.name }) : null;
-  },
 
   // Direct Control (Quartermaster's Guide p.21): "replace your Standard drone with a Limited drone. You
   // may choose one Standard upgrade as a free upgrade". Master Control Program: "a Restricted drone ...

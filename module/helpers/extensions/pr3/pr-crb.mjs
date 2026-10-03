@@ -1,10 +1,9 @@
 import {
-  registerApplyDialog, registerDerived, registerDialogToggles, registerPostRoll, registerRollSources, registerUse,
+  registerDerived, registerPostRoll, registerRollSources, registerUse,
 } from "../../extensions.mjs";
 import { worldActors } from "../../companion-link.mjs";
-import { getUses, markUsed } from "../../scene-clock.mjs";
 import {
-  IDS, T, escapeHtml, giveEdge, holding, isItem, isThisRound, itemsOf, parentWeaponOf, personalPower,
+  IDS, T, escapeHtml, holding, isItem, isThisRound, itemsOf, parentWeaponOf, personalPower,
   postLine, sizeIndex, spendPower, turnStamp, writeActor,
 } from "./common.mjs";
 
@@ -241,84 +240,6 @@ export async function issueSuitAndWeapon(actor) {
 Hooks.on('updateItem', (item, changes, options, userId) => {
   if (userId == game.user?.id && item.parent instanceof Actor && isStandardIssueLanding(item, changes)) {
     issueSuitAndWeapon(item.parent);
-  }
-});
-
-/* -------------------------------------------- */
-/*  Student                                      */
-/* -------------------------------------------- */
-
-// Student (PR CRB, Influence Perk, p.72): "When attempting to recall facts or performing a task in
-// relation to this subject, you gain Edge on your Skill Test." The Use button notes the subject;
-// the Roll Options Dialog offers the Edge on any Skill Test, and the player ticks it when the test
-// is about that subject.
-registerUse({
-  id: 'pr3Student',
-  matches: item => isItem(item, IDS.student),
-  run: async (item) => {
-    const subject = await foundry.applications.api.DialogV2.prompt({
-      window: { title: item.name },
-      classes: ["window-app", "e20-window"],
-      content: `<p>${T('Pr3StudentPrompt')}</p><input type="text" name="subject" value="${escapeHtml(item.flags?.essence20?.pr3Subject ?? '')}">`,
-      ok: { callback: (event, button) => button.form.elements.subject.value },
-      rejectClose: false,
-    });
-    if (!subject) {
-      return null;
-    }
-
-    await item.setFlag('essence20', 'pr3Subject', subject);
-    return T('Pr3StudentSet', { name: escapeHtml(item.parent.name), subject: escapeHtml(subject) });
-  },
-});
-
-/* -------------------------------------------- */
-/*  Vast Wealth                                  */
-/* -------------------------------------------- */
-
-// Vast Wealth (PR CRB, General Perk, p.98): "Once per game session, you may choose to automatically
-// pass any Skill Tests whose success could feasibly be bought with enough money. You gain Edge on
-// Social-based Skill Tests where you can flaunt your wealth." (The Wealth Test Edge is the item's
-// Active Effect.) A session is read as the GM's mission window.
-const VAST_WEALTH_USES = 'pr3VastWealth';
-
-registerUse({
-  id: 'pr3VastWealth',
-  matches: item => isItem(item, IDS.vastWealth),
-  canUse: item => getUses(item.parent, VAST_WEALTH_USES, 'mission') < 1,
-  run: async (item) => {
-    await markUsed(item.parent, VAST_WEALTH_USES, { window: 'mission' });
-    return T('Pr3VastWealthBought', { name: escapeHtml(item.parent.name) });
-  },
-});
-
-/* -------------------------------------------- */
-/*  Dialog toggles: Student, Vast Wealth         */
-/* -------------------------------------------- */
-
-registerDialogToggles((actor, ctx) => {
-  const toggles = [];
-  const isAttack = ctx?.item?.type == 'weaponEffect';
-  const student = holding(actor, IDS.student);
-  if (student && !isAttack) {
-    const subject = student.flags?.essence20?.pr3Subject;
-    toggles.push({ name: 'pr3Student', type: 'checkbox', label: subject ? T('Pr3StudentToggle', { subject }) : T('Pr3StudentToggleBare') });
-  }
-
-  if (holding(actor, IDS.vastWealth) && ctx?.rolledEssence == 'social') {
-    toggles.push({ name: 'pr3Flaunt', type: 'checkbox', label: T('Pr3VastWealthFlaunt') });
-  }
-
-  return toggles;
-});
-
-registerApplyDialog((actor, options) => {
-  if (options.ext?.pr3Student) {
-    giveEdge(options);
-  }
-
-  if (options.ext?.pr3Flaunt) {
-    giveEdge(options);
   }
 });
 

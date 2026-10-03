@@ -540,7 +540,7 @@ export function resetMigrationCaches() {
  * @returns {Promise<String|null>}
  */
 async function compendiumActionType(item) {
-  const source = item._stats?.compendiumSource ?? item.flags?.core?.sourceId;
+  const source = item._stats?.compendiumSource ?? item.flags?.core?.sourceId ?? item?.flags?.essence20?.rulesSource;
   if (!source?.startsWith('Compendium.essence20.')) {
     return null;
   }

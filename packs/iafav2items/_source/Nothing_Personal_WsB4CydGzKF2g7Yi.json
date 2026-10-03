@@ -5,6 +5,10 @@
   "_id": "WsB4CydGzKF2g7Yi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Nothing Personal (no untrained Snag, land)","when":["skill:driving","vehicle:driving","vehicle:moves:ground"],"immune":["untrainedSnag"]},
+      {"type":"DialogSwitch","label":"Winning over a new Contact (Nothing Personal: Edge)","edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Cleverness and training with assault rifles. Automatic: no Snag driving Land vehicles. Use button: fit a free Silencer to a pistol. Roll Options Dialog: a switch for Edge when winning over a new Contact.</p>"

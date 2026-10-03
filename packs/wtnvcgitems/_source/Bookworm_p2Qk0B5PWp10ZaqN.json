@@ -5,6 +5,9 @@
   "_id": "p2Qk0B5PWp10ZaqN",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"In a library or facing a Librarian (Bookworm: ↓1)","when":[{"any":["target:tag:librarian","target:name~librarian","scene:name~librar","ask:in a library or facing a Librarian"]}],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when the scene's name includes \"library\" or your target is a Librarian, every Skill Test (Initiative too) takes ↓1, labelled Bookworm in the Roll Options Dialog. Roll Options Dialog: otherwise, a Bookworm switch adds the ↓1 for other library situations.</p>"

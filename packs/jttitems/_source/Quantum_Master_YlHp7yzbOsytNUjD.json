@@ -5,6 +5,9 @@
   "_id": "YlHp7yzbOsytNUjD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"all","stage":"final","op":"multiply","value":2,"label":"Morphed: every Movement doubled","when":["self:morphed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while Morphed you gain +2 to all four Defenses and your Movement is doubled. Chat card: once per turn, a reroll button for Skill-die 1s (you keep the new result).</p>"

@@ -5,6 +5,7 @@
   "_id": "8sUOMdsOyxfF0o1s",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:hasType:perk:Quills","self:hasType:perk:Serrated Tail"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: the pet's hits offer an extra 1 Acid damage alongside the weapon's own damage.</p>"

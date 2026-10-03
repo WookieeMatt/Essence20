@@ -5,6 +5,11 @@
   "_id": "gCbl6p64cEJjF2eJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:streetwise>=d6"]},
+    "rules": [
+      {"type":"MovementAction","label":"Push Yourself: 10 ft per Free action","pushFeet":10},
+      {"type":"MovementAction","label":"Ignores Rough Terrain in the city","ignoreRoughTerrain":true,"when":["terrain:urban"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in scenes tagged as urban you ignore Rough Terrain, and Push Yourself adds 10ft of Movement.</p>"

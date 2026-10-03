@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"spec","label":"Scavenger Specialization","from":"text"},
+      {"type":"DialogSwitch","label":"Using {choice.spec} (Scavenger: Edge)","when":["skill:streetwise"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: when you add the Perk, choose a Streetwise Specialization. Automatic: rolls using that Specialization get Edge, already selected when the Roll Options Dialog opens.</p>"

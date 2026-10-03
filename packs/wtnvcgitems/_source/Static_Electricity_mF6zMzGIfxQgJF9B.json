@@ -5,6 +5,10 @@
   "_id": "mF6zMzGIfxQgJF9B",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"ground","stage":"base","op":"set","value":35,"label":"Base Ground Movement 35 ft"}
+    ],
+    "prerequisites": {"when":["self:skill:weird>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 Evasion. Automatic: your ground Movement becomes 35 feet.</p>"

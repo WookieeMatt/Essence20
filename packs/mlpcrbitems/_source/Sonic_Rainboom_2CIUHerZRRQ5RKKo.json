@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:data:system.movement.aerial.total>=50"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: when you Sprint you fly up to double your aerial Movement, and after two rounds of Sprinting while flying, your friends get the listed bonus on Skill Tests until your next turn.</p>"

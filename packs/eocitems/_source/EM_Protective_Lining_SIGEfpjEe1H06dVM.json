@@ -5,6 +5,7 @@
   "_id": "SIGEfpjEe1H06dVM",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:skill:science>=d4","self:skill:technology>=d4"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while worn (or in Alt Mode), Electromagnetic attacks lose their bonus against you for being Computerized; they take ↓3 and your computerized armor Evasion counts.</p>"

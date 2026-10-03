@@ -30,7 +30,7 @@ export const NANOFLAGE_ID = `${QGTG}22p3l2vFsFZqfOET`;
 export const MIMIC_ID = `${QGTG}WI0QTzlWkEusSQqY`;
 const NANOFLAGE_MIMIC_FLAG = 'nanoflageMimicUsed';
 
-const sourceIdOf = (item) => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+const sourceIdOf = (item) => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 
 /**
  * A Nanoflage holder's Mimic: one use a scene instead of two a day.

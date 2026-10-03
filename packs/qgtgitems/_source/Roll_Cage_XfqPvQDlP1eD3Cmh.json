@@ -5,6 +5,9 @@
   "_id": "XfqPvQDlP1eD3Cmh",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","path":"system.traits.rollCage","op":"set","value":1,"when":["self:type:vehicle"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the vehicle gains the Roll Cage trait, and when it's Defeated its crew roll their Emergency Disembark tests with a second chance.</p>"

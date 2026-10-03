@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import {
-  canRiseAgainPreventDefeat, canUseRiseAgainDefense, consumeRiseAgainDefense, RISE_AGAIN_ID,
+  canUseRiseAgainDefense, consumeRiseAgainDefense, RISE_AGAIN_ID,
 } from './rise-again.mjs';
 
 global.game = { combat: { id: 'combat1', round: 1, turn: 0 } };
@@ -52,28 +52,5 @@ describe("consumeRiseAgainDefense", () => {
 
   test("returns 0 with nothing banked", async () => {
     expect(await consumeRiseAgainDefense(makeActor(), 'toughness')).toBe(0);
-  });
-});
-
-describe("canRiseAgainPreventDefeat", () => {
-  test("true while Morphed, holding the Perk, not a crit, and not yet used this scene", () => {
-    expect(canRiseAgainPreventDefeat(makeActor({ isMorphed: true }), false)).toBe(true);
-  });
-
-  test("false on a Critical Success", () => {
-    expect(canRiseAgainPreventDefeat(makeActor({ isMorphed: true }), true)).toBe(false);
-  });
-
-  test("false while not Morphed", () => {
-    expect(canRiseAgainPreventDefeat(makeActor({ isMorphed: false }), false)).toBe(false);
-  });
-
-  test("false without the Perk", () => {
-    expect(canRiseAgainPreventDefeat(makeActor({ hasPerk: false, isMorphed: true }), false)).toBe(false);
-  });
-
-  test("false if already used this scene", () => {
-    const usedFlags = { riseAgainDefeatUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } };
-    expect(canRiseAgainPreventDefeat(makeActor({ isMorphed: true, usedFlags }), false)).toBe(false);
   });
 });

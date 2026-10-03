@@ -5,6 +5,7 @@
   "_id": "oNhv37mjkiWdKhu2",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:data:system.traits.land","self:data:system.traits.sea"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per encounter, damage to the vehicle from an Explosive weapon is reduced by 1 when it's applied.</p>"

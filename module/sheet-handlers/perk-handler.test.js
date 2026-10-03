@@ -1,13 +1,10 @@
 import { jest } from '@jest/globals';
 import {
-  anyGeneralPerkChoices, BATTLIZER_ACCESS_OPTIONS, gameLineOf, getAlreadyChosenExpertiseSkills, grantBattlizerAccess,
-  pickBattlizer,
-  grantBeatdownWeapon, grantBlendIn, grantColonyChangelingInfatuated,
-  grantDutyOfTheSilverArmorTraining, grantEmtCrashCourse, grantForTheSyndicateMentor,
-  grantIntoTheVoidDigDeep, grantJackhammerWeapon, grantMetamorphosis, grantNanoflageMimic,
-  grantNaturalScienceQualification, grantPerkEquipmentMap, grantPetCompanionAnimalPet,
-  grantsAnyGeneralPerk, grantShadowSaber, nanoInfusionAvailability, nanomitePowerChoices, grantSynchronizationStayInFormation,
-  grantYoungButExperiencedVeteran, onMultiSkillPerkDrop, onPerkDelete, onPerkDrop,
+  anyGeneralPerkChoices, gameLineOf, getAlreadyChosenExpertiseSkills,
+  grantDutyOfTheSilverArmorTraining, grantMetamorphosis,
+  grantPerkEquipmentMap,
+  grantsAnyGeneralPerk, nanoInfusionAvailability, nanomitePowerChoices,
+  onMultiSkillPerkDrop, onPerkDelete, onPerkDrop,
   setPerkAdvancesName, setPerkValues, setRoleVatiantPerks,
 } from "./perk-handler.mjs";
 
@@ -110,41 +107,6 @@ describe("setRoleVatiantPerks (Be A Hero style role-variant container Perks)", (
     const actor = {};
 
     await setRoleVatiantPerks(containerPerk, { name: "Commando" }, actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("grantBeatdownWeapon (Cobra Codex, Vanguard Warthog Focus, 3rd level, p.69)", () => {
-  const CLOSE_COMBAT_HEAVY_BLUDGEONING_ID = "Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("grants a copy of Close Combat Heavy Bludgeoning when the actor has none", async () => {
-    const actor = makeActor([]);
-
-    await grantBeatdownWeapon(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(CLOSE_COMBAT_HEAVY_BLUDGEONING_ID);
-    expect(global.Item.create).toHaveBeenCalledWith(
-      { uuid: CLOSE_COMBAT_HEAVY_BLUDGEONING_ID }, { parent: actor },
-    );
-  });
-
-  test("does nothing if the actor already has one (e.g. from Signature Weapon)", async () => {
-    const actor = makeActor([
-      { type: 'weapon', flags: { core: { sourceId: CLOSE_COMBAT_HEAVY_BLUDGEONING_ID } } },
-    ]);
-
-    await grantBeatdownWeapon(actor);
 
     expect(global.Item.create).not.toHaveBeenCalled();
   });
@@ -328,348 +290,6 @@ describe("grantPerkEquipmentMap (Perks whose compendium grant map IS the mechani
   });
 });
 
-describe("grantJackhammerWeapon (Cobra Codex, Vanguard Warthog Focus, 20th level, p.69)", () => {
-  const POWER_TOOL_ID = "Compendium.essence20.gi_joe_crb.Item.Jnjio1DtAx0QgE85";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("grants a copy of Power Tool when the actor has none", async () => {
-    const actor = makeActor([]);
-
-    await grantJackhammerWeapon(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(POWER_TOOL_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: POWER_TOOL_ID }, { parent: actor });
-  });
-
-  test("does nothing if the actor already has one (e.g. from Signature Weapon)", async () => {
-    const actor = makeActor([{ type: 'weapon', flags: { core: { sourceId: POWER_TOOL_ID } } }]);
-
-    await grantJackhammerWeapon(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("grantShadowSaber (Across the Stars, Shadow Morph [Form] General Perk, p.70)", () => {
-  const SHADOW_SABER_ID = "Compendium.essence20.across_the_stars.Item.PQ2msfDzjTGz8aXN";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("grants a copy of the Shadow Saber when the actor has none", async () => {
-    const actor = makeActor([]);
-
-    await grantShadowSaber(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(SHADOW_SABER_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: SHADOW_SABER_ID }, { parent: actor });
-  });
-
-  test("does nothing if the actor already has one", async () => {
-    const actor = makeActor([{ type: 'weapon', flags: { core: { sourceId: SHADOW_SABER_ID } } }]);
-
-    await grantShadowSaber(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("grantBattlizerAccess (Across the Stars, General Perk, p.68 / Beneath the Helmet, General Perk, p.52)", () => {
-  const SPD_BATTLIZER_ID = "Compendium.essence20.across_the_stars.Item.qc82QDtZN3qVWqxV";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("grants a copy of the chosen Battlizer when the actor has none", async () => {
-    const actor = makeActor([]);
-
-    await grantBattlizerAccess(actor, SPD_BATTLIZER_ID);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(SPD_BATTLIZER_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: SPD_BATTLIZER_ID }, { parent: actor });
-  });
-
-  test("does nothing if the actor already has that Battlizer", async () => {
-    const actor = makeActor([{ type: 'armor', flags: { core: { sourceId: SPD_BATTLIZER_ID } } }]);
-
-    await grantBattlizerAccess(actor, SPD_BATTLIZER_ID);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("pickBattlizer (Battlizer Access's 'select a Battlizer')", () => {
-  const ATS_ACCESS = "Compendium.essence20.across_the_stars.Item.JGAOozVnu9Nou5Xj";
-  const BTH_ACCESS = "Compendium.essence20.beneath_the_helmet.Item.oJAdvdKs1XLmsH0z";
-
-  beforeEach(() => {
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid, name: `Battlizer ${uuid.split('.').pop()}` }));
-    global.game = { ...(global.game ?? {}), i18n: { localize: key => key } };
-  });
-
-  test("offers every Battlizer from each book, not just one", () => {
-    expect(BATTLIZER_ACCESS_OPTIONS[ATS_ACCESS]).toHaveLength(7);
-    expect(BATTLIZER_ACCESS_OPTIONS[BTH_ACCESS]).toHaveLength(3);
-  });
-
-  test("asks the player and returns the picked Battlizer", async () => {
-    const choose = jest.fn(async (title, prompt, rows) => rows[1].value);
-
-    const picked = await pickBattlizer({ name: 'Battlizer Access' }, BATTLIZER_ACCESS_OPTIONS[BTH_ACCESS], choose);
-
-    expect(choose).toHaveBeenCalledWith('Battlizer Access', 'E20.GrantPickLabel', expect.any(Array));
-    expect(choose.mock.calls[0][2]).toHaveLength(3);
-    expect(picked).toBe(BATTLIZER_ACCESS_OPTIONS[BTH_ACCESS][1]);
-  });
-
-  test("returns null when the dialog is closed", async () => {
-    const picked = await pickBattlizer({ name: 'x' }, BATTLIZER_ACCESS_OPTIONS[ATS_ACCESS], async () => null);
-
-    expect(picked).toBeNull();
-  });
-
-  test("skips the dialog when only one Battlizer is available", async () => {
-    global.fromUuid = jest.fn(async (uuid) => (uuid.endsWith('sVYZLXhPZqdVhNax') ? { uuid, name: 'Triassic' } : null));
-    const choose = jest.fn();
-
-    const picked = await pickBattlizer({ name: 'x' }, BATTLIZER_ACCESS_OPTIONS[BTH_ACCESS], choose);
-
-    expect(choose).not.toHaveBeenCalled();
-    expect(picked).toBe("Compendium.essence20.beneath_the_helmet.Item.sVYZLXhPZqdVhNax");
-  });
-});
-
-describe("grantEmtCrashCourse (Ferocious Fighters, Combat Lifesaver, p.9)", () => {
-  const EMT_CRASH_COURSE_ID = "Compendium.essence20.gi_joe_crb.Item.jDAu1zaZpv1IylJ8";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("grants a copy of EMT Crash Course when the actor has none", async () => {
-    const actor = makeActor([]);
-
-    await grantEmtCrashCourse(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(EMT_CRASH_COURSE_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: EMT_CRASH_COURSE_ID }, { parent: actor });
-  });
-
-  test("does nothing if the actor already has EMT Crash Course", async () => {
-    const actor = makeActor([
-      { type: 'perk', flags: { core: { sourceId: EMT_CRASH_COURSE_ID } } },
-    ]);
-
-    await grantEmtCrashCourse(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-
-  test("does nothing if the actor already has it via _stats.compendiumSource", async () => {
-    const actor = makeActor([
-      { type: 'perk', _stats: { compendiumSource: EMT_CRASH_COURSE_ID } },
-    ]);
-
-    await grantEmtCrashCourse(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("grantForTheSyndicateMentor (Factions in Action Vol. 2, International Syndicate Faction Perk, p.102)", () => {
-  const MENTOR_ID = "Compendium.essence20.gi_joe_crb.Item.jUZrNJbPzSd1zVLa";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("grants a copy of Mentor when the actor has none", async () => {
-    const actor = makeActor([]);
-
-    await grantForTheSyndicateMentor(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(MENTOR_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: MENTOR_ID }, { parent: actor });
-  });
-
-  test("does nothing if the actor already has Mentor", async () => {
-    const actor = makeActor([
-      { type: 'perk', flags: { core: { sourceId: MENTOR_ID } } },
-    ]);
-
-    await grantForTheSyndicateMentor(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("grantYoungButExperiencedVeteran (General Hawk's Personnel Files, Old Hand Advanced Role Perk)", () => {
-  const VETERAN_ID = "Compendium.essence20.gi_joe_crb.Item.3ahVUG1yKCGNyscK";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("grants a copy of Veteran when the actor has none", async () => {
-    const actor = makeActor([]);
-
-    await grantYoungButExperiencedVeteran(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(VETERAN_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: VETERAN_ID }, { parent: actor });
-  });
-
-  test("does nothing if the actor already has Veteran", async () => {
-    const actor = makeActor([
-      { type: 'perk', flags: { core: { sourceId: VETERAN_ID } } },
-    ]);
-
-    await grantYoungButExperiencedVeteran(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("grantIntoTheVoidDigDeep (Factions in Action Vol 2, Arashikage Faction Perk)", () => {
-  const DIG_DEEP_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.QJkcVXT7K4yNWFoT";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("grants a copy of Dig Deep when the actor has none", async () => {
-    const actor = makeActor([]);
-
-    await grantIntoTheVoidDigDeep(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(DIG_DEEP_GIJ_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: DIG_DEEP_GIJ_ID }, { parent: actor });
-  });
-
-  test("does nothing if the actor already has Dig Deep", async () => {
-    const actor = makeActor([
-      { type: 'perk', flags: { core: { sourceId: DIG_DEEP_GIJ_ID } } },
-    ]);
-
-    await grantIntoTheVoidDigDeep(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("grantSynchronizationStayInFormation (Quartermaster's Guide to Gear, Tech Officer Focus, p.22)", () => {
-  const STAY_IN_FORMATION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.pU3dKGNWYAhgRY6B";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("grants a copy of Stay In Formation when the actor has none", async () => {
-    const actor = makeActor([]);
-
-    await grantSynchronizationStayInFormation(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(STAY_IN_FORMATION_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: STAY_IN_FORMATION_ID }, { parent: actor });
-  });
-
-  test("does nothing if the actor already has Stay In Formation", async () => {
-    const actor = makeActor([
-      { type: 'perk', flags: { core: { sourceId: STAY_IN_FORMATION_ID } } },
-    ]);
-
-    await grantSynchronizationStayInFormation(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("grantPetCompanionAnimalPet (Cobra Codex, Wildlife Division Perk, p.78)", () => {
-  const ANIMAL_PET_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.6oF71x58kaB302bH";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("grants a copy of Animal Pet when the actor has none", async () => {
-    const actor = makeActor([]);
-
-    await grantPetCompanionAnimalPet(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(ANIMAL_PET_GIJ_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: ANIMAL_PET_GIJ_ID }, { parent: actor });
-  });
-
-  test("does nothing if the actor already has Animal Pet", async () => {
-    const actor = makeActor([
-      { type: 'perk', flags: { core: { sourceId: ANIMAL_PET_GIJ_ID } } },
-    ]);
-
-    await grantPetCompanionAnimalPet(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
 describe("grantMetamorphosis (Dark Skies Over Equestria, General Perk, p.20)", () => {
   const COLONY_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.FRUWPAePJzm7Mlf0";
   const METAMORPHOSED_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.aD130X44xDxZ6o2U";
@@ -709,6 +329,19 @@ describe("grantMetamorphosis (Dark Skies Over Equestria, General Perk, p.20)", (
     );
   });
 
+  test("keeps the Infatuated Influence that Colony Changeling's Grant rule gave", async () => {
+    const colonyChangeling = { id: 'cc', type: 'perk', flags: { core: { sourceId: COLONY_CHANGELING_ID } }, delete: jest.fn() };
+    const infatuated = { id: 'inf', type: 'influence', flags: { essence20: { grantedBy: 'cc' } }, unsetFlag: jest.fn() };
+    const other = { id: 'x', type: 'perk', flags: {}, unsetFlag: jest.fn() };
+    const actor = makeActor([colonyChangeling, infatuated, other]);
+
+    await grantMetamorphosis(actor);
+
+    expect(infatuated.unsetFlag).toHaveBeenCalledWith('essence20', 'grantedBy');
+    expect(other.unsetFlag).not.toHaveBeenCalled();
+    expect(infatuated.unsetFlag.mock.invocationCallOrder[0]).toBeLessThan(colonyChangeling.delete.mock.invocationCallOrder[0]);
+  });
+
   test("is a no-op deletion when the actor has no Colony Changeling", async () => {
     const actor = makeActor([]);
 
@@ -727,52 +360,6 @@ describe("grantMetamorphosis (Dark Skies Over Equestria, General Perk, p.20)", (
     await grantMetamorphosis(actor);
 
     expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("grantColonyChangelingInfatuated (Dark Skies Over Equestria, Natural Shape choice, p.17)", () => {
-  const INFATUATED_ID = "Compendium.essence20.dark_skies_over_equestria.Item.2Kw4msw0l4j6fTOm";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn() };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("grants Infatuated when the actor doesn't already have it", async () => {
-    const actor = makeActor([]);
-
-    await grantColonyChangelingInfatuated(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(INFATUATED_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: INFATUATED_ID }, { parent: actor });
-  });
-
-  test("does nothing if the actor already has Infatuated", async () => {
-    const actor = makeActor([
-      { type: 'influence', flags: { core: { sourceId: INFATUATED_ID } } },
-    ]);
-
-    await grantColonyChangelingInfatuated(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("grantNaturalScienceQualification (Cobra Codex, Ranger Firestarter Focus, 1st level, p.58)", () => {
-  test("writes Element Jet weapon qualification and training onto the actor", async () => {
-    const actor = { update: jest.fn() };
-
-    await grantNaturalScienceQualification(actor);
-
-    expect(actor.update).toHaveBeenCalledWith({
-      "system.qualified.weapons.element": true,
-      "system.trained.weapons.element": true,
-    });
   });
 });
 
@@ -807,91 +394,6 @@ describe("setPerkValues - Combiner Specialization (Enigma of Combination, Compon
     await setPerkValues(actor, perk);
 
     expect(actor.update).toHaveBeenCalledWith({ 'system.health.bonus': 1 });
-  });
-});
-
-describe("grantNanoflageMimic (Quartermaster's Guide to Gear, Chameleonite Focus, p.22)", () => {
-  const MIMIC_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.WI0QTzlWkEusSQqY";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = { create: jest.fn(async () => ({ type: 'power', system: { items: {} } })) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid, type: 'power', system: { items: {} } }));
-  });
-
-  test("grants a copy of Mimic when the actor has none", async () => {
-    const actor = makeActor([]);
-
-    await grantNanoflageMimic(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(MIMIC_ID);
-    expect(global.Item.create).toHaveBeenCalledWith(
-      { uuid: MIMIC_ID, type: 'power', system: { items: {} } }, { parent: actor },
-    );
-  });
-
-  test("does nothing if the actor already has Mimic", async () => {
-    const actor = makeActor([
-      { type: 'power', flags: { core: { sourceId: MIMIC_ID } } },
-    ]);
-
-    await grantNanoflageMimic(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("grantBlendIn (Ferocious Fighters, Tiger Force General Perk / Change Its Stripes grant, p.37)", () => {
-  const BLEND_IN_ID = "Compendium.essence20.ferocious_fighters.Item.mnze6jJ6eSYbS8Pr";
-  const SILENT_UPGRADE_ID = "Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU";
-  const STEALTH_UPGRADE_ID = "Compendium.essence20.gi_joe_crb.Item.ThXrre0RHTcr1BEp";
-
-  function makeArmorItem() {
-    const armorItem = { type: 'armor', _id: 'armor1', system: { equipped: true, items: {} } };
-    armorItem.update = jest.fn(async (data) => {
-      for (const [path, value] of Object.entries(data)) {
-        const match = path.match(/^system\.items\.(.+)$/);
-        if (match && !(value instanceof foundry.data.operators.ForcedDeletion)) {
-          armorItem.system.items[match[1]] = value;
-        }
-      }
-    });
-    return armorItem;
-  }
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    items.find = Array.prototype.find.bind(items);
-    return { items };
-  }
-
-  beforeEach(() => {
-    global.Item = {
-      create: jest.fn(async (doc) => ({ uuid: doc.uuid, type: doc.type, system: doc.system, setFlag: jest.fn() })),
-    };
-    global.fromUuid = jest.fn(async (uuid) => {
-      if (uuid == BLEND_IN_ID) {
-        return { uuid, type: 'perk' };
-      }
-
-      return { uuid, type: 'upgrade', system: { type: 'armor', description: '' } };
-    });
-  });
-
-  test("grants the Blend In Perk and attaches Silent/Stealth to the actor's equipped armor", async () => {
-    const armorItem = makeArmorItem();
-    const actor = makeActor([armorItem]);
-
-    await grantBlendIn(actor);
-
-    expect(global.fromUuid).toHaveBeenCalledWith(BLEND_IN_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: BLEND_IN_ID, type: 'perk' }, { parent: actor });
-    const attachedUuids = Object.values(armorItem.system.items).map(entry => entry.uuid);
-    expect(attachedUuids).toEqual(expect.arrayContaining([SILENT_UPGRADE_ID, STEALTH_UPGRADE_ID]));
   });
 });
 
@@ -1490,12 +992,6 @@ describe("Quantasaurus Rex (A Jump Through Time, Quantum Ranger Role Perk, 4th l
     };
   }
 
-  test("setPerkValues grants system.canHaveZord, same as the PR CRB Zord Perk", async () => {
-    const actor = { update: jest.fn(), items: [], system: { level: 4 } };
-    await setPerkValues(actor, makePerk());
-    expect(actor.update).toHaveBeenCalledWith({ "system.canHaveZord": true });
-  });
-
   test("onPerkDelete revokes system.canHaveZord", async () => {
     const actor = { update: jest.fn(), system: { level: 4 }, items: [] };
     await onPerkDelete(actor, makePerk());
@@ -1514,12 +1010,6 @@ describe("Phantom Ship (Across the Stars, Phantom Ranger Role Perk, 1st level, p
       system: { hasChoice: false, isRoleVariant: false, advances: { canAdvance: false } },
     };
   }
-
-  test("setPerkValues grants system.canHaveZord, same as the PR CRB Zord Perk", async () => {
-    const actor = { update: jest.fn(), items: [], system: { level: 1 } };
-    await setPerkValues(actor, makePerk());
-    expect(actor.update).toHaveBeenCalledWith({ "system.canHaveZord": true });
-  });
 
   test("onPerkDelete revokes system.canHaveZord", async () => {
     const actor = { update: jest.fn(), system: { level: 1 }, items: [] };
@@ -1597,7 +1087,7 @@ describe("Sorcery / Cost of Sorcery (Finster's Monster-Matic Cookbook, p.271)", 
     };
   }
 
-  test("setPerkValues sets sorcerous.levelTaken and auto-grants Cost of Sorcery", async () => {
+  test("setPerkValues sets sorcerous.levelTaken; Cost of Sorcery is left to Sorcery's Grant rule", async () => {
     const actor = { update: jest.fn(), items: [], system: { level: 6 } };
     global.Item = { create: jest.fn(async () => ({})) };
     global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
@@ -1605,19 +1095,7 @@ describe("Sorcery / Cost of Sorcery (Finster's Monster-Matic Cookbook, p.271)", 
     await setPerkValues(actor, makePerk());
 
     expect(actor.update).toHaveBeenCalledWith({ "system.powers.sorcerous.levelTaken": 6 });
-    expect(global.fromUuid).toHaveBeenCalledWith(COST_OF_SORCERY_ID);
-    expect(global.Item.create).toHaveBeenCalledWith({ uuid: COST_OF_SORCERY_ID }, { parent: actor });
-  });
-
-  test("setPerkValues doesn't grant a second Cost of Sorcery if the actor already has one", async () => {
-    const items = [{ _id: 'cos1', flags: { core: { sourceId: COST_OF_SORCERY_ID } }, getFlag: jest.fn(() => null) }];
-    items.get = jest.fn((id) => items.find(i => i._id == id) ?? null);
-    const actor = { update: jest.fn(), items, system: { level: 6 } };
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-
-    await setPerkValues(actor, makePerk());
-
+    expect(global.fromUuid).not.toHaveBeenCalledWith(COST_OF_SORCERY_ID);
     expect(global.Item.create).not.toHaveBeenCalled();
   });
 
@@ -1633,6 +1111,20 @@ describe("Sorcery / Cost of Sorcery (Finster's Monster-Matic Cookbook, p.271)", 
 
     expect(actor.update).toHaveBeenCalledWith({ "system.powers.sorcerous.levelTaken": 0 });
     expect(costOfSorcery.delete).toHaveBeenCalled();
+  });
+
+  test("onPerkDelete leaves a Cost of Sorcery the Grant rule gave to that rule", async () => {
+    const costOfSorcery = {
+      _id: 'cos1', flags: { core: { sourceId: COST_OF_SORCERY_ID }, essence20: { grantedBy: 'sorcery1' } }, delete: jest.fn(), getFlag: jest.fn(() => null),
+    };
+    const items = [costOfSorcery];
+    items.get = jest.fn((id) => items.find(i => i._id == id) ?? null);
+    const actor = { update: jest.fn(), items, system: { level: 6 } };
+
+    await onPerkDelete(actor, makePerk());
+
+    expect(actor.update).toHaveBeenCalledWith({ "system.powers.sorcerous.levelTaken": 0 });
+    expect(costOfSorcery.delete).not.toHaveBeenCalled();
   });
 
   test("onPerkDelete doesn't error when Cost of Sorcery was already removed separately", async () => {

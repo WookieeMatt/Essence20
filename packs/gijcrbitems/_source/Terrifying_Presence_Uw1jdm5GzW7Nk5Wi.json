@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:intimidation>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Intimidation also counts as a Social skill for you. Automatic: when you attack a Willpower Defense with Intimidation, you choose +1 damage, or on a hit making the target Frightened or Stunned.</p>"

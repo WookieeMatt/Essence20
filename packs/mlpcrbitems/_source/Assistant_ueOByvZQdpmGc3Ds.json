@@ -5,6 +5,7 @@
   "_id": "ueOByvZQdpmGc3Ds",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Favorite Command"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: command your pet to Lend Assistance with its Favorite Command as a Free action.</p>"

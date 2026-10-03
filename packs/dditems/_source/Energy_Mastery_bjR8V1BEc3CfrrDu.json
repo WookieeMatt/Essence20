@@ -5,6 +5,10 @@
   "_id": "bjR8V1BEc3CfrrDu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Energy Affinity attack (Energy Mastery: Edge)","edge":true,"when":["check:energyAffinityAttack"]},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["check:energyAffinityAttack"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks dealing your Energy Affinity Element open the Roll Options Dialog with Edge selected, and a hit deals +1 damage, noted on the chat card. You're Immune to damage of that Element.</p>"

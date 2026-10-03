@@ -5,6 +5,11 @@
   "_id": "Bl14FV81J88Um0Ls",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Double Life Skill","from":"skill"},
+      {"type":"ChoiceSet","key":"spec","label":"Double Life Specialization","from":"text"},
+      {"type":"DialogSwitch","label":"Had time to reach out, {choice.spec} (Double Life: Edge, Specialized)","when":["skill:{choice.skill}"],"edge":true,"specialize":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when gained, pick a Skill and Specialization. Roll Options Dialog: on that Skill, a switch for Edge and Specialized when the GM allows time to prepare.</p>"

@@ -5,6 +5,9 @@
   "_id": "b4UMfiQUFohGIrb4",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Smoke Beam","event":"hit","when":["item:own"],"steps":[{"do":"applyCondition","to":"target","condition":"blinded","rounds":3}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: casting it is an attack; a hit makes the target Blinded for 3 rounds.</p>"

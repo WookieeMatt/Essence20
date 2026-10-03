@@ -173,26 +173,6 @@ export async function useGearWeapon(item) {
 }
 
 /* -------------------------------------------- */
-/*  Nose for Trouble                             */
-/* -------------------------------------------- */
-
-/**
- * Nose for Trouble: "You can spend a Story Point to modify your location in a minor way, such as adding
- * an exit". The point is spent; what it buys is the GM's.
- */
-export async function useNoseForTrouble(item) {
-  const actor = item.parent;
-  const { canSpendForActor, spendForActor } = await import("../../story-points.mjs");
-  if (!canSpendForActor(actor, 1)) {
-    ui.notifications.warn(T('Tf3NoStoryPoint'));
-    return null;
-  }
-
-  await spendForActor(actor, 1, { announce: false });
-  return T('Tf3NoseModified', { name: actor.name, perk: item.name });
-}
-
-/* -------------------------------------------- */
 /*  Stoic                                        */
 /* -------------------------------------------- */
 
@@ -432,7 +412,6 @@ export const USES = [
     id: 'tf3GearWeapon', matches: item => !!GEAR_WEAPONS[sourceOf(item)],
     canUse: item => !gearWeaponOf(item.parent, item), run: useGearWeapon,
   },
-  { id: 'tf3NoseForTrouble', matches: bySource(TF3.noseForTrouble), run: useNoseForTrouble },
   { id: 'tf3Stoic', matches: bySource(TF3.stoic), canUse: () => !!game.combat, run: useStoic },
   { id: 'tf3TargetBreakdown', matches: bySource(TF3.targetBreakdown), run: useTargetBreakdown },
   {

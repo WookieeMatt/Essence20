@@ -5,6 +5,10 @@
   "_id": "NSweXvUIBdqLiOsz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Free attack, first in round one","when":["combat:first","combat:round:1"],"limit":{"per":"encounter"},"steps":[{"do":"bonusAttack","cost":"free"},{"do":"chat","text":"{name} can make one attack as a Free action."}]}
+    ],
+    "prerequisites": {"when":["self:skill:initiative>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: if you are first in the Initiative order, make one attack as a Free action in the first round.</p>"

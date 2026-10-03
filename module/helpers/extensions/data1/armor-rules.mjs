@@ -11,7 +11,7 @@ export const REINFORCED_SHELL = "Compendium.essence20.technorganic_secrets.Item.
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 function itemsOf(actor) {

@@ -44,13 +44,6 @@ const KNIGHTS_OF_CANTERLOT = "Compendium.essence20.knights_of_canterlot.Item.";
 const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 
-// Adaptable (GI Joe CRB, Scout Focus, 3rd level, p.91): "you gain twice the number of Adaptation
-// Points as the Ranger Role chart at this level and as you advance in this Role." Doubles the
-// computed resource.max specifically for the actor's own Adaptation Points rolePoints item - see
-// _prepareRolePoints()'s own doubling check below, gated tightly on ADAPTION_POINTS_ID so no other
-// rolePoints item across any book is affected.
-const ADAPTION_POINTS_ID = `${GI_JOE_CRB}tqiseYDXnEngUlvd`;
-const ADAPTABLE_ID = `${GI_JOE_CRB}98q6O79HKMPEh4aZ`;
 const FIELDTEST_ID = `${GI_JOE_CRB}bPMgz1ct8T0kgQ6K`;
 
 // Brutal Might (Enigma of Combination, Pugilist Focus, Warrior, 3rd level, p.38): "any of your
@@ -71,60 +64,6 @@ const BRUTAL_MIGHT_ID = "Compendium.essence20.enigma_of_combination.Item.l0STCEY
 // comment for the Grappled/Immobilized/Prone/Restrained negation these two ids gate.
 const OBSCURING_MATRIX_BASIC_ID = "Compendium.essence20.enigma_of_combination.Item.L8ZXz1h0DlCy85UC";
 const OBSCURING_MATRIX_ADVANCED_ID = "Compendium.essence20.enigma_of_combination.Item.HH4q8lx09mV2hhcv";
-
-// Beastly (Ferocious Fighters, New Influence, p.75) / its own Hang-Up (p.78): "Your Unarmed
-// Combat attack's Blunt damage Alternate Effect no longer suffers -1" (Perk) / "Your Unarmed
-// Combat attack's Stun effect suffers -1" (Hang-Up). Both target one SPECIFIC weaponEffect item's
-// own inherent system.shiftDown (confirmed via the real compendium JSON: Unarmed Combat Alternate
-// Effect 1 - Blunt - already carries shiftDown:1, matching "no longer suffers -1" meaning it drops
-// to 0; Unarmed Combat Effect - the base Stun attack - carries shiftDown:0, and the Hang-Up adds
-// the -1 it doesn't otherwise have) rather than any actor-level field, so unlike a plain
-// compendium Active Effect this has to be a live check at the exact point below where a
-// weaponEffect's own system.shiftDown folds into the roll - gated on the item actually being one
-// of these two specific compendium items (same flags.core.sourceId-vs-_stats.compendiumSource
-// dual check the weaponSourceId lookups elsewhere in this project already use). Not a one-time
-// item.update() (the Weapon Conversion/grant idiom) since the actor may add Unarmed Combat to
-// their sheet AFTER taking either the Perk or the Hang-Up - a live check catches that
-// automatically, a one-time mutation at grant time would not.
-// GI Joe CRB and TF CRB ship both effects under the same ids in two packs, so both printings are
-// listed. This is the ONLY place Beastly's waiver is applied - dice.mjs used to add a second
-// cancelling ↑1 on top, which netted the GI Joe copy ↑1 instead of 0.
-const UNARMED_COMBAT_ALTERNATE_EFFECT_1_IDS = [
-  `${GI_JOE_CRB}gA0rOFD3lmwzkZq4`,
-  "Compendium.essence20.tf_crb.Item.gA0rOFD3lmwzkZq4",
-];
-const UNARMED_COMBAT_EFFECT_IDS = [
-  `${GI_JOE_CRB}eDjovjfygGq8dlQy`,
-  "Compendium.essence20.tf_crb.Item.eDjovjfygGq8dlQy",
-];
-const BEASTLY_PERK_ID = "Compendium.essence20.ferocious_fighters.Item.3Y0ETFpJUwdUqgUQ";
-const BEASTLY_HANG_UP_ID = "Compendium.essence20.ferocious_fighters.Item.9o0Qbe6lgqNPnm2R";
-
-// Wrestler (Slammer Focus, Sgt Slaughter Sourcebook, 10th level, p.13): "you no longer suffer
-// downshifts for using the Maneuver alternate effect of Melee weapons." RE-CATEGORIZED - dice.mjs
-// own WRESTLER_SLAMMER_ID comment called this unbuildable ("no automated downshift for a weapon's
-// own Alternate Effects at all... a build-time customization concept, not yet modeled anywhere"),
-// written before helpers/unique-strike.mjs existed - that file's own applyAlternateEffect now
-// confirms the Maneuver Alternate Effect IS modeled exactly as `damageType: 'maneuver'` +
-// `shiftDown: 1` on a weaponEffect, the same live check point Beastly's own item-level shiftDown
-// suppression just above already established. Suppresses THIS weapon's own inherent shiftDown
-// entirely for any Melee weaponEffect whose damageType is 'maneuver' while the actor holds the
-// Perk - other shiftDown sources (checkboxes, Skill-level penalties) are untouched, since RAW only
-// waives the ALTERNATE EFFECT's own downshift, not every downshift on the roll.
-const WRESTLER_SLAMMER_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Item.ro5hMv4XMhOmANao";
-
-// One With Your Weapon(s) (Intercontinental Adventures, Silent Weapons Expert Focus, 10th level,
-// p.13): "you no longer suffer any penalty when you use your Silent Martial Arts weapons'
-// alternate effects." A broader, trait-scoped sibling of Wrestler's own identical shiftDown-
-// suppression shape just above - "Silent Martial Arts weapons" is a real trait pair (the same
-// martialArts+silent check Quiet One's own dice.mjs#_getParentWeapon lookup already establishes),
-// not a damageType, so this resolves the weaponEffect's own PARENT Weapon item directly via its
-// flags.essence20.parentId (the same lookup _onUpdate above already uses to keep a parent's own
-// system.items entry in sync) rather than dice.mjs's actor-scoped _getParentWeapon helper, which
-// isn't available from this file. "Switching... is a Free action" isn't built - action economy is
-// unenforced everywhere in this project, the same accepted no-op idiom as every other Free-action
-// clause.
-const ONE_WITH_YOUR_WEAPON_ID = "Compendium.essence20.intercontinental_adventures.Item.RH3AFV38EBAfTvW1";
 
 // Enchant (MLP CRB, Elementary Enchantment spell, p.136) - see helpers/enchant.mjs's own doc
 // comment. The one hardcoded per-spell-id check in this otherwise fully generic spell-cast
@@ -157,13 +96,6 @@ const DARK_SKIES_OVER_EQUESTRIA = "Compendium.essence20.dark_skies_over_equestri
 // helpers/get-to-know.mjs's own doc comment. A sixth per-spell-id pre-roll hook - picks the
 // related Skill before the roll fires.
 const GET_TO_KNOW_ID = `${DARK_SKIES_OVER_EQUESTRIA}pyRy1dFwuiJpAKj2`;
-
-// Efficient Spellcaster / Master Spellcaster (General Perks, p.38): "reduce the total casting
-// cost of any Elementary/Superior spell you cast by ↓1, to a minimum of ↓1." Casting cost is
-// already a real tracked field (spell.mjs's own system.cost, read below) - no new mastery/rank
-// tracking is needed, despite an earlier categorization pass assuming otherwise.
-const EFFICIENT_SPELLCASTER_ID = `${KNIGHTS_OF_CANTERLOT}eQDQwKQfRQU8obWF`;
-const MASTER_SPELLCASTER_ID = `${KNIGHTS_OF_CANTERLOT}tEOoAvzj42d20QHu`;
 
 // Power Conservationist / Power Mastery (General Perks, p.38): "delay the cost of casting the
 // spell until after you have cast it - your Spellcasting Skill Test is made before it is
@@ -416,7 +348,7 @@ export class Essence20Item extends Item {
       return;
     }
 
-    const sourceUuid = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+    const sourceUuid = this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource;
     const original = sourceUuid ? globalThis.fromUuidSync?.(sourceUuid, { strict: false }) : null;
     const automation = foundry.utils.getProperty(original ?? {}, 'system.automation');
     if (automation) {
@@ -432,7 +364,7 @@ export class Essence20Item extends Item {
    */
   async loadAutomationNotes() {
     const stored = this._source?.system?.automation;
-    const sourceUuid = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+    const sourceUuid = this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource;
     if (!this.system.automation || this.pack || !sourceUuid || stored?.status || stored?.notes?.trim()) {
       return;
     }
@@ -462,7 +394,7 @@ export class Essence20Item extends Item {
     // the uuid it came from instead, which is the same key its compendium original uses.
     const sourceUuid = this.pack
       ? this.uuid
-      : (this.flags?.core?.sourceId ?? this._stats?.compendiumSource);
+      : (this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource);
     if (!sourceUuid) {
       return;
     }
@@ -747,12 +679,6 @@ export class Essence20Item extends Item {
         this.system.resource.max = this.system.resource.level20Value;
       } else {
         this.system.resource.max = this.system.resource.startingMax + (this.system.resource.increase * resourceLevelIncreases);
-      }
-
-      // Adaptable - see ADAPTABLE_ID's own comment above.
-      const sourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
-      if (sourceId == ADAPTION_POINTS_ID && actorHasPerk(this.actor, ADAPTABLE_ID)) {
-        this.system.resource.max *= 2;
       }
     }
 
@@ -1050,7 +976,7 @@ export class Essence20Item extends Item {
       // Salvo) - see helpers/limited-weapon-effects.mjs's own doc comment. Checked before any of
       // the pre-roll work below, refunding the action economy spend just like a cancelled roll,
       // so a blocked attack never costs the actor their turn.
-      const weaponEffectSourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+      const weaponEffectSourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource;
       if (isLimitedWeaponEffect(weaponEffectSourceId) && !canRollLimitedWeaponEffect(roller, weaponEffectSourceId)) {
         if (spent?.spendId) {
           await refund(roller, spent.spendId);
@@ -1117,27 +1043,9 @@ export class Essence20Item extends Item {
         && this.actor.system.skills?.[skill] ? this.actor : roller;
       const shift = skillSource.system.skills[skill].shift;
       const shiftUp = skillSource.system.skills[skill].shiftUp;
-      // Beastly / its own Hang-Up - see BEASTLY_PERK_ID's own comment above.
-      const itemSourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
-      let itemShiftDown = this.system.shiftDown;
-      if (UNARMED_COMBAT_ALTERNATE_EFFECT_1_IDS.includes(itemSourceId) && actorHasPerk(roller, BEASTLY_PERK_ID)) {
-        itemShiftDown = 0;
-      } else if (UNARMED_COMBAT_EFFECT_IDS.includes(itemSourceId) && actorHasPerk(roller, BEASTLY_HANG_UP_ID)) {
-        itemShiftDown = this.system.shiftDown + 1;
-      } else if (
-        this.system.damageType == 'maneuver' && this.system.classification.style == 'melee'
-        && actorHasPerk(roller, WRESTLER_SLAMMER_ID)
-      ) {
-        itemShiftDown = 0;
-      } else if (actorHasPerk(roller, ONE_WITH_YOUR_WEAPON_ID)) {
-        const parentWeapon = this.actor?.items?.get(this.flags?.essence20?.parentId);
-        const weaponTraits = parentWeapon?.system.traits ?? [];
-        if (weaponTraits.includes('martialArts') && weaponTraits.includes('silent')) {
-          itemShiftDown = 0;
-        }
-      }
-
-      const shiftDown = roller.system.skills[skill].shiftDown + itemShiftDown;
+      // The weaponEffect's own printed ↓ - Beastly, Wrestler and One With Your Weapon change it with
+      // their ItemModifier rules (rules/adapter.mjs#ruleDerived).
+      const shiftDown = roller.system.skills[skill].shiftDown + this.system.shiftDown;
       const isSpecialized = roller.system.skills[skill].isSpecialized;
       // Accurate (Weapon Effects and Traits, p.106) - see WeaponEffectItemData#accurateShiftUp's
       // own comment (data/item/weapon-effect.mjs) for why this weaponEffect-level field is the
@@ -1276,15 +1184,8 @@ export class Essence20Item extends Item {
       // cost, on top of any downshift already lingering from an earlier cast this scene.
       const priorDownshift = this.actor.system.skills.spellcasting.shiftDown;
 
-      // Efficient Spellcaster / Master Spellcaster (Knights of Canterlot, General Perks, p.38) -
-      // see EFFICIENT_SPELLCASTER_ID's own comment above. Reduces THIS spell's own cost (never
-      // below 1), scoped to Elementary/Superior tier respectively.
+      // Efficient / Master Spellcaster lower system.cost itself (their ItemModifier rules).
       let castingCost = this.system.cost;
-      if (this.system.tier == 'elementary' && actorHasPerk(this.actor, EFFICIENT_SPELLCASTER_ID)) {
-        castingCost = Math.max(1, castingCost - 1);
-      } else if (this.system.tier == 'superior' && actorHasPerk(this.actor, MASTER_SPELLCASTER_ID)) {
-        castingCost = Math.max(1, castingCost - 1);
-      }
 
       // Block Magic (Knights of Canterlot, Virtuoso Enchantment spell, p.49) - see
       // helpers/block-magic.mjs's own doc comment. "+1 to the cost of any spell you cast" while a
@@ -1311,7 +1212,7 @@ export class Essence20Item extends Item {
 
       // Enchant - see ENCHANT_ID's own comment above. Picked before the roll so a cancelled cast
       // spends nothing.
-      const sourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource;
+      const sourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource;
       const enchantSkill = sourceId == ENCHANT_ID ? await pickEnchantSkill() : null;
       if (sourceId == ENCHANT_ID && !enchantSkill) {
         return;

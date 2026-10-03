@@ -1,8 +1,8 @@
 import { movementPenaltyFor } from "./forced-movement.mjs";
 import { E20 } from "./config.mjs";
-import { actorHasPerk } from "./perks.mjs";
 import { getRemaining, isBlocking, isConfirming, isSprinting, isTracking, spend } from "./action-economy.mjs";
 import { isJuryRigBenefitActive } from "./jury-rig.mjs";
+import { ruleMovement } from "../rules/adapter.mjs";
 
 /**
  * Token movement against the action economy.
@@ -123,27 +123,9 @@ const PUSH_CAP_MULTIPLIER = 2;
 const SPRINT_MULTIPLIER = 2;
 const PUSH_FEET_DOUBLED = 10;
 
-/* Sewer Tunneler (Hawk's Personnel Files p.177): "You also add 10 feet to your Movement instead of
-   5 feet when you Push Yourself." Unconditional - the Perk's other clause ("In an urban
-   environment, you ignore Rough Terrain") is a separate sentence with its own condition, handled
-   by helpers/rough-terrain.mjs - whose doubled Rough Terrain cost reaches this file through the
-   measured movementHistory cost like any other terrain. */
-const SEWER_TUNNELER_ID = "Compendium.essence20.general_hawk_s_personel_files.Item.gCbl6p64cEJjF2eJ";
-
-/* Earlier is Better Than Later (TF CRB p.108, and again for the Cycle Drones in Technorganic
-   Secrets p.136): "While in Alt Mode, Free Actions used for additional Movement add 10 feet to his
-   Movement instead of 5. Additionally, exchanging Free Actions for additional movement is not
-   limited." Both halves at once, and only while transformed. */
-const EARLIER_IS_BETTER_ID = "Compendium.essence20.tf_crb.Item.uyeLgTc55ixz31j1";
-
-/* Burn Rubber (TF CRB, Scout, 1st level, p.86): "On the first round of Combat, if you Push
-   Yourself to buy additional movement, you gain an additional 10ft of Movement for every Free
-   action you spend... and you can buy up to your Movement in additional movement. If you are
-   surprised, you can... use the regular rules to Push Yourself." "Up to your Movement in
-   additional movement" is just the existing 2x-rating cap already in force by default
-   (PUSH_CAP_MULTIPLIER), so the only real change is the 10ft rate - gated on round 1 and NOT
-   Surprised, same statuses.has('surprised') proxy dice.mjs already uses for "you are surprised". */
-export const BURN_RUBBER_ID = "Compendium.essence20.tf_crb.Item.Kn1LyTMvqzMY8LnA";
+/* Sewer Tunneler (10 ft a Free action), Earlier is Better Than Later (10 ft and no cap, in Alt Mode)
+   and Burn Rubber (10 ft on the first round, unless Surprised) are MovementAction item rules on
+   their packs, read through rules/adapter.mjs#ruleMovement in getPushRules. */
 
 /**
  * Whether this actor is a vehicle someone is currently driving.
@@ -189,21 +171,11 @@ export function getPushRules(actor) {
     canPush: true,
   };
 
-  if (actorHasPerk(actor, SEWER_TUNNELER_ID)) {
-    rules.feetPerFreeAction = PUSH_FEET_DOUBLED;
-  }
-
   // Improve Aerodynamics (Jury Rig, Factions in Action Vol. 2, p.73) - see
-  // helpers/jury-rig.mjs's own doc comment. Same doubling as Sewer Tunneler just above, banked on
-  // the vehicle instead of being a Perk it holds outright.
+  // helpers/jury-rig.mjs's own doc comment. The same 10 ft a Free action as Sewer Tunneler, banked
+  // on the vehicle instead of being a Perk it holds outright.
   if (isJuryRigBenefitActive(actor, 'improveAerodynamics')) {
     rules.feetPerFreeAction = Math.max(rules.feetPerFreeAction, PUSH_FEET_DOUBLED);
-  }
-
-  if (actor?.system?.isTransformed && actorHasPerk(actor, EARLIER_IS_BETTER_ID)) {
-    rules.feetPerFreeAction = PUSH_FEET_DOUBLED;
-    // "not limited" - no doubling cap at all, so nothing is ever beyondCap.
-    rules.capMultiplier = Infinity;
   }
 
   // Evacuation Vents (A Jump Through Time p.32): "there is no limit to how high your value can go
@@ -217,9 +189,13 @@ export function getPushRules(actor) {
     }
   }
 
-  // Burn Rubber - see BURN_RUBBER_ID's own comment above.
-  if (game?.combat?.round === 1 && !actor?.statuses?.has?.('surprised') && actorHasPerk(actor, BURN_RUBBER_ID)) {
-    rules.feetPerFreeAction = Math.max(rules.feetPerFreeAction, PUSH_FEET_DOUBLED);
+  // MovementAction item rules (rules/adapter.mjs#ruleMovement).
+  {
+    const fromRules = ruleMovement(actor);
+    rules.feetPerFreeAction = Math.max(rules.feetPerFreeAction, fromRules.pushFeet);
+    if (fromRules.pushUnlimited) {
+      rules.capMultiplier = Infinity;
+    }
   }
 
   /* The Push cap is a ceiling on the BASE rating - "a character cannot spend Free actions on

@@ -5,6 +5,10 @@
   "_id": "cGGEXSdCI170AaM4",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "rules": [
+      {"type":"Grant","label":"Spiked Ram (special attack)","uuid":"Compendium.essence20.decepticon_directive.Item.leQVbl8vdpkwiCdw","skipIfOwned":true},
+      {"type":"Use","label":"Get the Spiked Ram attack back","when":["not:self:hasItem:Compendium.essence20.decepticon_directive.Item.leQVbl8vdpkwiCdw"],"steps":[{"do":"grant","uuid":"Compendium.essence20.decepticon_directive.Item.leQVbl8vdpkwiCdw"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: in this Alt Mode you are Long with 45ft Ground Movement, 1 Crew and 1 Firepoint. Automatic: Limited Articulation blocks Athletics and Finesse tests while you're in it. Taking the Alt Mode adds the Spiked Ram attack (Use button re-adds it).</p>"

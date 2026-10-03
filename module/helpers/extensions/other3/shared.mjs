@@ -15,7 +15,6 @@ export const O3 = {
   // Power Rangers
   followMe: `${C('pr_crb')}ALq37Ch25nKvZ454`,
   betterTogether: `${C('through_the_shattered_grid')}tOoyMHVtV6wjvlxd`,
-  drKMorpher: `${C('through_the_shattered_grid')}cjLsZGJhMeGoy1uO`,
   guardianBlast: `${C('through_the_shattered_grid')}GuardianBlast000`,
   megaDefender: `${C('through_the_shattered_grid')}rZjP9CN55D5qKW0s`,
   metallicArmor: `${C('through_the_shattered_grid')}LotTM0zOcCBLkki4`,
@@ -31,21 +30,15 @@ export const O3 = {
   emLining: `${C('enigma_of_combination')}SIGEfpjEe1H06dVM`,
   perfectPlacement: `${C('enigma_of_combination')}wueeFv0eN8eh7RbS`,
   preciseChronometrics: `${C('enigma_of_combination')}Q6G07IGoYXAcoRzF`,
-  whatCover: `${C('enigma_of_combination')}A2gJlm0YEFlpVNLg`,
   puissance: `${C('enigma_of_combination')}N8nkrj2hSrLv9NFP`,
   hiddenInPlainSight: `${C('tf_crb')}tKpYLu7ml5czsMqq`,
   nowYouDont: `${C('tf_crb')}iW9TjN9X6SsYm2Ql`,
   overchargeEngines: `${C('tf_crb')}BPHwAfGvLPZuJ1m1`,
   multiplication: `${C('tf_crb')}K3FNcAMjjek1UaJk`,
-  pistolWhip: `${C('tf_crb')}fiSowblyLmO9dN8F`,
   popOut: `${C('tf_crb')}xAAzOb9sYmEN7qmv`,
   samePrinciple: `${C('tf_crb')}GTUn1LOxb3D4FgHF`,
-  specialtyFlexibility: `${C('tf_crb')}2XuM8xyiRhMdNBMg`,
   telltaleSign: `${C('tf_crb')}LM5pwZWroo1QKrSN`,
-  longRangeRifle: `${C('tf_crb')}8Hi76APCo9QRnbLE`,
   // Welcome to Night Vale
-  dazed: `${C('wtnv_citizens_guide')}byRfPI0ud1wj43Qv`,
-  naive: `${C('wtnv_citizens_guide')}gT3jMGYcF8Gbi0O5`,
   glutenTolerant: `${C('wtnv_citizens_guide')}dzYRdi2cSlZSHozs`,
   gravityOptional: `${C('wtnv_citizens_guide')}F5mrzupd6TG2kj3x`,
   weird: `${C('wtnv_citizens_guide')}RO0a3eX8MIo5g1Tv`,
@@ -54,7 +47,7 @@ export const O3 = {
 export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? '';
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? '';
 }
 
 /** The last segment of a compendium uuid (the item _id), matching reprints across packs. */

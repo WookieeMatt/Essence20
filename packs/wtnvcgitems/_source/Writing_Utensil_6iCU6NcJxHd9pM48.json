@@ -5,6 +5,9 @@
   "_id": "6iCU6NcJxHd9pM48",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Writing Utensil","when":[{"any":["skill:science","skill:technology"]}],"ignoreDownshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic, while carried: Science and Technology tests open the Roll Options Dialog with the Downshift box 1 lower, cancelling the first ↓1.</p>"

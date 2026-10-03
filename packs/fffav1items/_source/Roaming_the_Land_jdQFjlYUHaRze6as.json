@@ -5,6 +5,10 @@
   "_id": "jdQFjlYUHaRze6as",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Qualification","label":"Roaming the Land (Qualified: Traumatic upgrade)","upgrades":[{"any":["item:id:zXPxC1yLlK2xgGEl","item:data:name=traumatic"]}]},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:melee","rule:data:system.choice=smallerDamage","self:sizeDiff>=1"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Toughness, +1 Evasion and ↑1 Intimidation. Granted: choose +1 damage on melee attacks against smaller creatures or +1 Stun on melee hits against larger ones; the bonus is added to the damage on the chat card. Automatic: the Requisition Qualifications and training it lists.</p>"

@@ -5,6 +5,9 @@
   "_id": "EQK0bAGpmYkGPcRi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Take the Wheel (no untrained Snag, land)","when":["skill:driving","vehicle:driving","vehicle:moves:ground"],"immune":["untrainedSnag"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: ↑1 on Driving. Automatic: no untrained Snag when driving Land vehicles.</p><p>Use button: take a fresh Limited Driving kit each mission, no prerequisite needed.</p>"

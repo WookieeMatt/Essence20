@@ -5,6 +5,9 @@
   "_id": "YMG6nH32Y8yaYqZ9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Agreeable","scope":"incoming","when":["skill:animalHandling"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Animal Handling tests that target this pet get ↑1, listed as Agreeable in the Roll Options Dialog, and commands given to it with the command button get ↑1 too.</p>"

@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Purpose is a Smarts or Social Skill"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: the Mini-Con can use its purpose Skill on targets up to 50ft away.</p>"

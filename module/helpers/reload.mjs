@@ -185,7 +185,7 @@ export async function requireReload(actor, weapon) {
   }
 
   // Reload ×2 (A Jump Through Time p.78): two reloads before it fires again.
-  const sourceId = String(weapon.flags?.core?.sourceId ?? weapon._stats?.compendiumSource ?? '').split('.').pop();
+  const sourceId = String(weapon.flags?.core?.sourceId ?? weapon._stats?.compendiumSource ?? weapon?.flags?.essence20?.rulesSource ?? '').split('.').pop();
   // Reload xN printed on the weapon itself (Cannonade x2, Catapult x4) - flags.essence20.reloadCount.
   const printedCount = Number(weapon.flags?.essence20?.reloadCount) || 1;
   await markWeaponNeedsReload(weapon, RELOAD_TWICE.includes(sourceId) ? 2 : printedCount);

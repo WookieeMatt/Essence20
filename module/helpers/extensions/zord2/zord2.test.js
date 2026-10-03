@@ -192,20 +192,7 @@ test('Power Matrix reserve, spectrum and combine eligibility', () => {
   expect(ineligibleZords([versatile, plain, actor('zord')])).toHaveLength(1);
 });
 
-test('Deflecting Weapons, Dozer Blade and Beast Mode movement', () => {
-  const nunchaku = item('weapon', { source: ZORD2.combatNunchaku, name: 'Nunchaku', system: { equipped: true } });
-  const joe = actor('playerCharacter', [nunchaku], { defenses: defenses() });
-  gearDerived(joe);
-  expect(joe.system.defenses.evasion.total).toBe(11);
-  nunchaku.flags.essence20.zord2ShieldMode = true;
-  joe.system.defenses = defenses();
-  gearDerived(joe);
-  expect(joe.system.defenses.toughness.total).toBe(11);
-
-  const dozer = actor('playerCharacter', [item('gear', { source: ZORD2.dozerBlade })], { canTransform: true, isTransformed: false, defenses: defenses() });
-  gearDerived(dozer);
-  expect(dozer.system.defenses.toughness.total).toBe(12);
-
+test('Beast Mode movement', () => {
   const primate = item('altMode', { source: ZORD2.primateCommon });
   const ape = actor('playerCharacter', [primate], { isTransformed: true, altModeId: primate.id, defenses: defenses(), movement: { climb: { total: 25 }, ground: { total: 50 } } });
   gearDerived(ape);

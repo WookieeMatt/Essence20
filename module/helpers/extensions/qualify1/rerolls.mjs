@@ -1,5 +1,5 @@
 import {
-  registerApplyDialog, registerChatButton, registerChatDecorator, registerDerived, registerDialogToggles, registerUse,
+  registerChatButton, registerChatDecorator, registerDerived, registerUse,
 } from "../../extensions.mjs";
 import { getSceneEpoch, getUses } from "../../scene-clock.mjs";
 import { worldActors } from "../../companion-link.mjs";
@@ -30,27 +30,6 @@ export function dangerSenseDerived(actor) {
   }
 
   initiative.formula = withInitiativeRerolls(initiative.formula);
-}
-
-export function dangerSenseToggles(actor) {
-  const toggles = [];
-  if (has(actor, Q1.dangerSense)) {
-    toggles.push({ name: 'q1DangerSense', label: T('E20.Q1DangerSenseToggle'), type: 'checkbox', value: false });
-  }
-
-  // Nothing Personal (Intercontinental Adventures p.100): "When attempting to win over a new
-  // Contact, you gain an Edge on one of the Skill Tests."
-  if (has(actor, Q1.nothingPersonal)) {
-    toggles.push({ name: 'q1NothingPersonal', label: T('E20.Q1NothingPersonalToggle'), type: 'checkbox', value: false });
-  }
-
-  return toggles;
-}
-
-export function dangerSenseApply(actor, options) {
-  if (options.ext?.q1DangerSense || options.ext?.q1NothingPersonal) {
-    options.edge = true;
-  }
 }
 
 /* -------------------------------------------- */
@@ -268,8 +247,6 @@ export const PLANS_USE = {
 
 export function registerRerolls() {
   registerDerived(dangerSenseDerived);
-  registerDialogToggles(dangerSenseToggles);
-  registerApplyDialog(dangerSenseApply);
   registerUse(PLANS_USE);
   registerChatDecorator(decorateRerolls);
   registerChatButton('q1PlansReroll', onPlansReroll);

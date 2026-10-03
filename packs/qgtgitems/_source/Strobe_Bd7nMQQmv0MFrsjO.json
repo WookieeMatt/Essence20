@@ -5,6 +5,10 @@
   "_id": "Bd7nMQQmv0MFrsjO",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"AlternateEffect","label":"Strobe: a Blinding alternate","scope":"host","key":"strobe","name":"E20.DamageBlindingBlast","changes":{"damageType":"blindingBlast","damageValue":1,"secondaryDamage.type":null,"secondaryDamage.value":0},"unlessType":"blindingBlast"}
+    ],
+    "prerequisites": {"when":[{"any":["ask:Has a flashlight","host:trait:laser"]}]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: the weapon gains the Blinding trait. If the weapon has its own Blinding alternate effect, only that effect blinds (until the end of the target's next turn).</p><p>Left to the table: a weapon without a Blinding alternate effect blinds on every hit instead.</p>"

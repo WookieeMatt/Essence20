@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Goading them into action (Martial Artist: Edge)","when":["essence:social","ask:goading them into action"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: when someone makes a Social Skill test with you targeted, they see a Martial Artist switch (off by default). Ticking it because they're goading you into action gives their roll Edge.</p>"

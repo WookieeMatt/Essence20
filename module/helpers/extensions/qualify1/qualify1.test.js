@@ -4,7 +4,7 @@ import {
   effectiveAvailability, isQualifiedUpgrade, onKitPrerequisite, onRequisitionAccess, onRequisitionAvailability, perkAccess,
   isBiomechanicalArmor, isBiomechanicalVehicle, qualificationApplyDialog, qualificationSources, vehicleQualifier,
 } from './qualification.mjs';
-import { dangerSenseApply, dangerSenseDerived, dangerSenseToggles, lastChanceHolderFor, planPoolSize, withInitiativeRerolls } from './rerolls.mjs';
+import { dangerSenseDerived, lastChanceHolderFor, planPoolSize, withInitiativeRerolls } from './rerolls.mjs';
 import { burningOf, igniteHitRider } from './ignite.mjs';
 import {
   combatThreatSummary, domeDerived, effectiveThreatLevel, endingThisTurn, isSaveRoll, nobilityPenalty, onAddictPreUpdate, onPartyPreUpdate,
@@ -82,9 +82,9 @@ describe('registration', () => {
 
 describe('common', () => {
   test('itemsFrom matches full uuid or bare id', () => {
-    const actor = makeActor([perk(Q1.tradeGoods), { type: 'upgrade', flags: { core: { sourceId: `Compendium.essence20.tf_crb.Item.${Q1_UPGRADE.traumatic}` } } }]);
+    const actor = makeActor([perk(Q1.tradeGoods), { type: 'upgrade', flags: { core: { sourceId: `Compendium.essence20.tf_crb.Item.${Q1_UPGRADE.acclimating}` } } }]);
     expect(itemsFrom(actor, Q1.tradeGoods)).toHaveLength(1);
-    expect(itemsFrom(actor, Q1_UPGRADE.traumatic)).toHaveLength(1);
+    expect(itemsFrom(actor, Q1_UPGRADE.acclimating)).toHaveLength(1);
     expect(itemsFrom(actor, null)).toEqual([]);
   });
 
@@ -100,8 +100,8 @@ describe('common', () => {
 describe('qualification', () => {
   const weapon = (availability, extra = {}) => ({ type: 'weapon', name: extra.name ?? 'Gun', system: { availability, totalAvailability: extra.total ?? availability, traits: extra.traits ?? [], items: extra.items ?? {} }, flags: {} });
 
-  test('Standard Weapon Training qualifies Standard weapons only', () => {
-    const actor = makeActor([perk(Q1.standardWeaponTraining)]);
+  test('Nu, Pogodi! qualifies Standard weapons only', () => {
+    const actor = makeActor([perk(Q1.nuPogodi)]);
     expect(perkAccess(actor, weapon('standard'))).toBe('qualified');
     expect(perkAccess(actor, weapon('limited'))).toBeNull();
   });
@@ -115,22 +115,10 @@ describe('qualification', () => {
     expect(perkAccess(trained, rifle)).toBe('trained');
   });
 
-  test('Injection trait and If It Shoots', () => {
-    expect(perkAccess(makeActor([perk(Q1.surgicalOperators)]), weapon('limited', { traits: ['injection'] }))).toBe('qualified');
-    expect(perkAccess(makeActor([perk(Q1.ifItShoots)]), weapon('restricted'))).toBe('trained');
-    expect(perkAccess(makeActor([perk(Q1.ifItShoots)]), weapon('unique'))).toBeNull();
-  });
-
-  test('Mega Training: Computerized armor qualified, other armor trained', () => {
-    const actor = makeActor([perk(Q1.megaTrainingRegimen)]);
-    expect(perkAccess(actor, { type: 'armor', system: { availability: 'limited', traits: ['computerized'] } })).toBe('qualified');
-    expect(perkAccess(actor, { type: 'armor', system: { availability: 'limited', traits: [] } })).toBe('trained');
-  });
-
   test('qualified upgrades drop out of the requisition availability', () => {
     CONFIG.E20.upgradeAvailabilityMatrix = { standard: { limited: 'limited', standard: 'standard' } };
-    const actor = makeActor([perk(Q1.minimalists)]);
-    const gun = weapon('standard', { total: 'limited', items: { a: { type: 'upgrade', uuid: `Compendium.essence20.gi_joe_crb.Item.${Q1_UPGRADE.microtechWeapon}`, availability: 'limited' } } });
+    const actor = makeActor([perk(Q1.nuPogodi)]);
+    const gun = weapon('standard', { total: 'limited', items: { a: { type: 'upgrade', uuid: `Compendium.essence20.gi_joe_crb.Item.${Q1_UPGRADE.acclimating}`, availability: 'limited' } } });
     expect(isQualifiedUpgrade(actor, { uuid: gun.system.items.a.uuid })).toBe(true);
     expect(effectiveAvailability(actor, gun)).toBe('standard');
     const out = { availability: 'limited' };
@@ -140,7 +128,7 @@ describe('qualification', () => {
   });
 
   test('requisition access only widens', () => {
-    const actor = makeActor([perk(Q1.standardWeaponTraining)]);
+    const actor = makeActor([perk(Q1.nuPogodi)]);
     const out = { access: 'unknown' };
     onRequisitionAccess(actor, weapon('standard'), out);
     expect(out.access).toBe('qualified');
@@ -223,13 +211,6 @@ describe('rerolls', () => {
     dangerSenseDerived(actor);
     dangerSenseDerived(actor);
     expect(actor.system.initiative.formula).toBe('d20 + d8r<=2 + 0');
-  });
-
-  test('Danger Sense / Nothing Personal edge toggles', () => {
-    expect(dangerSenseToggles(makeActor([perk(Q1.dangerSense), perk(Q1.nothingPersonal)]))).toHaveLength(2);
-    const options = { edge: false, ext: { q1DangerSense: true } };
-    dangerSenseApply(makeActor(), options);
-    expect(options.edge).toBe(true);
   });
 
   test('Best-Laid Plans pool size', () => {

@@ -5,6 +5,9 @@
   "_id": "UTJumLUCsoKuUfVT",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a Prototype armor upgrade, worn as skin","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","from":{"type":"upgrade","availabilities":["prototype"],"tags":["item:data:system.type=armor"]},"flags":{"alterationWorn":true}},{"do":"setToggle","key":"granted","value":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: -1 maximum Health.</p><p>Use button: pick a battledress upgrade of the matching tier; its benefit works on you without wearing armor.</p>"

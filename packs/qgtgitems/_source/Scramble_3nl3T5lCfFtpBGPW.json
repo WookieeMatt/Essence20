@@ -5,6 +5,7 @@
   "_id": "3nl3T5lCfFtpBGPW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:skill:athletics>=d2","self:skill:acrobatics>=d2"]}]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing applies automatically.</p><p>Left to the table: getting in or out of a vehicle as a Free action with no Movement spent, and ↑1 on tests to board a moving vehicle.</p>"

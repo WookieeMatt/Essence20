@@ -5,6 +5,11 @@
   "_id": "sHJakOYf1rgVP6Pv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"AlternateEffect","label":"Big Swing: a heavy bludgeon","key":"bigSwing","name":"E20.WeaponAltHeavyBludgeon","items":["item:data:system.classification.size=heavy",{"any":["item:trait:antiTank","item:trait:ballistic"]}],"changes":{"classification.skill":"might","classification.style":"melee","range.value":null,"range.long":null,"range.reachMultiplier":1,"radius":0,"shape":null,"numTargets":1,"shiftDown":0,"defenseType":"toughness","damageType":"blunt","damageValue":1,"secondaryDamage.type":"stun","secondaryDamage.value":1}},
+      {"type":"AlternateEffect","label":"Big Swing: a two-handed heavy bludgeon","key":"bigSwing2","name":"E20.WeaponAltHeavyBludgeonTwoHands","items":["item:data:system.classification.size=heavy",{"any":["item:trait:antiTank","item:trait:ballistic"]}],"changes":{"classification.skill":"might","classification.style":"melee","range.value":null,"range.long":null,"range.reachMultiplier":1,"radius":0,"shape":null,"numTargets":1,"shiftDown":0,"defenseType":"toughness","damageType":"blunt","damageValue":2,"secondaryDamage.type":null,"secondaryDamage.value":0}}
+    ],
+    "prerequisites": {"when":["ask:Trained with a heavy Anti-Tank or Ballistic weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your heavy Anti-Tank or Ballistic weapons gain the extra alternate effect this Perk grants, shown as its own attack option.</p>"

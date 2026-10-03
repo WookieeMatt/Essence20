@@ -130,3 +130,62 @@ export function getColonyChangelingEvasionBonus(actor) {
 
   return Math.min(nearbyCount, COLONY_CHANGELING_MAX_BONUS);
 }
+
+/**
+ * Prompts for which nearby ally/allies to bank a Perk's bonus on - defaults to whichever tokens
+ * are already targeted (the same "auto-detect, player confirms" idiom Sneak Attack's own
+ * checkbox uses), as long as there are between 1 and maxCount of them, and falls back to a plain
+ * single-ally picker dialog over the given candidates otherwise. The dialog only ever picks one,
+ * even when maxCount is 2 (Inspiration's own "one additional ally") - a multi-select dialog isn't
+ * built, so reaching the 2nd-ally case without it requires actually targeting 2 tokens first.
+ * @param {Actor} actor   The actor using the Perk (not the one/ones who'll receive the bonus).
+ * @param {Array<Actor>} candidateAllies   Allies eligible to be picked from the dialog fallback -
+ *   callers resolve their own radius/eligibility filter (e.g. "within 60 feet and Morphed" for
+ *   Helping Hand vs. "anywhere on the scene" for Plan of Action/Inspiration) before calling this.
+ * @param {String} perkName   The Perk's own display name, shown in the dialog's title/warning.
+ * @param {Number} maxCount   The most allies this use can target at once (1 normally, 2 with
+ *   Inspiration).
+ * @returns {Promise<Array<Actor>>}   Empty if there's no ally to pick, or the picker was
+ *   cancelled.
+ */
+export async function pickAllyTargets(actor, candidateAllies, perkName, maxCount = 1) {
+  // Deliberately NOT filtered against candidateAllies - an explicit target is a trusted override
+  // of whatever radius/eligibility scan the caller used to build that list (same as before this
+  // function took a candidate list as a parameter at all).
+  const targetedAllies = Array.from(game.user.targets ?? [])
+    .map(token => token.actor)
+    .filter(a => a && a != actor);
+  if (targetedAllies.length >= 1 && targetedAllies.length <= maxCount) {
+    return targetedAllies;
+  }
+
+  if (!candidateAllies.length) {
+    ui.notifications.warn(game.i18n.format('E20.PickAllyNoAllies', { perk: perkName }));
+    return [];
+  }
+
+  const options = candidateAllies.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+  const chosenId = await foundry.applications.api.DialogV2.wait({
+    window: { title: game.i18n.format('E20.PickAllyTitle', { perk: perkName }) },
+    classes: ["window-app", "e20-window"],
+    content: `<div class="form-group"><label>${
+      game.i18n.localize('E20.PickAllyLabel')
+    }</label><select name="allyId">${options}</select></div>`,
+    modal: true,
+    buttons: [
+      {
+        label: game.i18n.localize('E20.DialogConfirmButton'),
+        action: 'confirm',
+        callback: (event, button) => button.form.elements.allyId.value,
+      },
+      { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
+    ],
+  });
+
+  if (!chosenId || chosenId == 'cancel') {
+    return [];
+  }
+
+  const chosen = candidateAllies.find(a => a.id == chosenId);
+  return chosen ? [chosen] : [];
+}

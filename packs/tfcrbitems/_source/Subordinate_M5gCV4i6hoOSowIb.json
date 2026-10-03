@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Not related to your mission (Subordinate: ↓1)","downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch for ↓1 on Skill Tests that aren't directly related to your mission.</p>"

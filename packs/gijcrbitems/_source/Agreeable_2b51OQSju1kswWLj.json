@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:A Limited or Restricted animal pet"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your pet counts as one step more available when working out the DIF to command it.</p>"

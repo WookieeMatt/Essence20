@@ -5,6 +5,9 @@
   "_id": "GUcQm2RuUIEWzd4X",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Air Vehicle Qualification (no untrained Snag)","when":["skill:driving","vehicle:driving","vehicle:moves:aerial"],"immune":["untrainedSnag"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you drive a vehicle with Aerial movement, rolling Driving without ranks doesn't add the untrained Snag, and with Driving ranks you get ↑1, already added to the shift in the Roll Options Dialog.</p>"

@@ -5,6 +5,7 @@
   "_id": "wzSFWbER1HgckIIt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:skill:driving>=d4","self:skill:technology>=d4"]}]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing applies automatically.</p><p>Left to the table: once per scene in a vehicle, roll Driving or Technology against a Limited upgrade's Availability DIF; on a success add that upgrade to the vehicle for the scene, then remove it.</p>"

@@ -3,7 +3,7 @@ import { isAutomated } from "./named-actions.mjs";
 import { canUsePerk, hasItemUse } from "./banked-buffs.mjs";
 import { actorHasPerk, hasUsedThisTurn, offerThisICommand } from "./perks.mjs";
 import {
-  attackMatchesFilter, bindEconomy, describeAttack, getAttacksPerAction, getTurnStartGrants, recordRuleUse,
+  attackMatchesFilter, bindEconomy, describeAttack, getAttacksPerAction, recordRuleUse,
   resolveCost,
 } from "./action-perks.mjs";
 
@@ -803,17 +803,6 @@ export async function resetTurn(document) {
     }
 
     for (const source of next.sources ?? []) {
-      ledger.log.push({ id: foundry.utils.randomID(), actionType: 'grant', cost: {}, source });
-    }
-  }
-
-  // Granted every turn by something the actor has - Zephyr Grace.
-  const turnStart = getTurnStartGrants(document.actor);
-  if (turnStart.free || turnStart.move || turnStart.standard) {
-    ledger.freeGranted += turnStart.free;
-    ledger.moveGranted += turnStart.move;
-    ledger.standardGranted += turnStart.standard;
-    for (const source of turnStart.sources) {
       ledger.log.push({ id: foundry.utils.randomID(), actionType: 'grant', cost: {}, source });
     }
   }

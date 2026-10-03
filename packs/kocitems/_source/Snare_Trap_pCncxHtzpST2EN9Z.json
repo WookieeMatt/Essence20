@@ -5,6 +5,9 @@
   "_id": "pCncxHtzpST2EN9Z",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Capturing with a set trap (Snare Trap: ↑1)","upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a ↑1 switch while you carry it, for capturing a creature once the trap is set.</p>"

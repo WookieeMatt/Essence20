@@ -5,6 +5,9 @@
   "_id": "ukfZOGZeuyJv6I5M",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Ultimate Magna Defender","when":["attack:melee"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: while Morphed, +2 to all four Defenses and an Edge on Strength tests. Automatic: +1 damage on your melee attacks (and on Mega Defender's and the Defender Torozord's), shown on each hit's chat card as \"Includes +1 from Ultimate Magna Defender\".</p>"

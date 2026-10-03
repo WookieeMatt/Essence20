@@ -7,7 +7,7 @@ import { spendDailyUse } from "../helpers/nanomite-uses.mjs";
 // less Personal Power to activate the Zeo Crystal Boost Grid Power."
 const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
 const ZEO_CRYSTAL_WIELDER_ID = "Compendium.essence20.through_the_shattered_grid.Item.lNCrjjiiUhI6ROal";
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 
 /** A fixed-cost Power's Personal Power cost for this actor, after discounts. */
 export function fixedPowerCost(actor, power) {

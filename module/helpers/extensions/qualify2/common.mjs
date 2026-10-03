@@ -7,7 +7,6 @@ const ID = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 
 export const Q2 = {
   // G.I. Joe
-  promiseOfRiches: ID('intercontinental_adventures', 'wW4xugDI7Sea2Btg'),
   upgradeTraining: ID('intercontinental_adventures', 'zhwJbYTopQB2RuuM'),
   whisperWarrior: ID('intercontinental_adventures', 'T4p7oPq8Kk0SHVb3'),
   doOrDie: ID('general_hawk_s_personel_files', '4NG56r746V7BLt8W'),
@@ -42,7 +41,7 @@ export const SILENT_BATTLEDRESS = ID('gi_joe_crb', 'nftZIaQ3MVn2nviU');
 export const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 export function itemsOf(actor) {

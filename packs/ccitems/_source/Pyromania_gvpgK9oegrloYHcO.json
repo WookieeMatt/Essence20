@@ -5,6 +5,10 @@
   "_id": "gvpgK9oegrloYHcO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Pyromania","when":["attack","weapon:trait:fire"],"upshift":"1 + floor(min(@level, 20) / 10)"},
+      {"type":"RollModifier","label":"Pyromania","when":["attack","not:weapon:trait:fire"],"downshift":"1 + floor(min(@level, 20) / 10)"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ↑1 on attacks with Fire-trait weapons and ↓1 with any other weapon, growing to ↑2/↓2 at 10th level and ↑3/↓3 at 20th. Both show in the Roll Options Dialog.</p>"

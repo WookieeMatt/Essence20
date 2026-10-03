@@ -9,21 +9,15 @@ import { activatePenetratingStrikes } from "./penetrating-strikes.mjs";
 import { activateIlluminate } from "./illuminate.mjs";
 import { activateRepairZord } from "./repair-zord.mjs";
 import { activatePowerHeal } from "./power-heal.mjs";
-import { activateGridPowerStrike } from "./grid-power-strike.mjs";
 import { activatePowerBlast } from "./power-blast.mjs";
 import { activateZeoCrystalBoost, canUseZeoCrystalBoost, pickZeoCrystalBoostOption } from "./zeo-crystal-boost.mjs";
 import { revealTargetChronoFile } from "./chrono-file-access.mjs";
-import { activateWillfulStrength } from "./willful-strength.mjs";
 import { activateBlazingStrikes } from "./blazing-strikes.mjs";
 import { activateVoidWarrior } from "./void-warrior.mjs";
-import { activateRevYourEngines } from "./rev-your-engines.mjs";
 import { activateMorphblast } from "./morphblast.mjs";
-import { activateMegazordLink } from "./megazord-link.mjs";
 import { activateFutureVision } from "./future-vision.mjs";
 import { activateMobileMode, pickMobileModeType } from "./mobile-mode.mjs";
 import { activateMetallicArmor } from "./metallic-armor.mjs";
-import { activateGridEmpowered } from "./grid-empowered.mjs";
-import { applyShatteredMemoriesOption, pickShatteredMemoriesOption } from "./shattered-memories.mjs";
 import { toggleProtectionBoost } from "./protection.mjs";
 import { toggleReactiveBoost } from "./reactive.mjs";
 import { toggleAugmentedCombat } from "./augmented-combat.mjs";
@@ -36,7 +30,6 @@ import { activateBolsterDefense } from "./bolster-defense.mjs";
 import { activateChronomanticPulse } from "./chronomantic-pulse.mjs";
 import { activateMonsterGrow } from "./monster-grow.mjs";
 import { activateLuckyCharm } from "./lucky-charm.mjs";
-import { activateIllusoryDisguiseRoll } from "./illusory-disguise.mjs";
 import { activateCreateWeapon, CREATE_WEAPON_ID } from "./create-weapon.mjs";
 import { activateChargeItUp, CHARGE_IT_UP_ID } from "./charge-it-up.mjs";
 import { activateRapidMorph } from "./rapid-morph.mjs";
@@ -61,7 +54,7 @@ export function canUsePower(item) {
     return false;
   }
 
-  const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+  const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 
   if (sourceId == ZEO_CRYSTAL_BOOST_ID) {
     return canUseZeoCrystalBoost(item.parent);
@@ -109,7 +102,7 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
 
   // A Power used straight from a compendium (nanomite equipment - helpers/nanomite-gear.mjs) has no
   // source flags of its own, so the caller names it.
-  const sourceId = sourceIdOverride ?? item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+  const sourceId = sourceIdOverride ?? item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 
   // Create Weapon - see helpers/create-weapon.mjs's own doc comment.
   if (sourceId == CREATE_WEAPON_ID) {
@@ -218,11 +211,6 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
     return;
   }
 
-  if (sourceId == GRID_POWER_STRIKE_ID) {
-    await activateGridPowerStrike(actor, amountSpent);
-    return;
-  }
-
   if (sourceId == POWER_BLAST_ID) {
     await activatePowerBlast(actor, amountSpent);
     return;
@@ -242,23 +230,12 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
     return;
   }
 
-  // Mnemonic Recall (p.100) and Power Transfer (p.101) - both spend Power for a purely narrative
-  // effect (recalling a memory; donating Power to another creature/object "an equitable amount,
-  // GM's discretion") with nothing further to compute or write - the Power spend itself is already
-  // handled generically before this dispatch runs, so these just confirm the activation happened,
-  // the same minimal "spend the cost, narrate the rest" idiom already established for e.g. Duty of
-  // the Silver's own teleport-destination half.
   if (sourceId == CHRONO_FILE_ACCESS_ID) {
     const content = revealTargetChronoFile(actor);
     if (content) {
       postPerkUseChatCard(actor, content);
     }
 
-    return;
-  }
-
-  if (sourceId == WILLFUL_STRENGTH_ID) {
-    await activateWillfulStrength(actor);
     return;
   }
 
@@ -280,18 +257,8 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
     return;
   }
 
-  if (sourceId == REV_YOUR_ENGINES_ID) {
-    await activateRevYourEngines(actor, amountSpent);
-    return;
-  }
-
   if (sourceId == MORPHBLAST_ID) {
     await activateMorphblast(actor);
-    return;
-  }
-
-  if (sourceId == MEGAZORD_LINK_ID) {
-    await activateMegazordLink(actor);
     return;
   }
 
@@ -314,27 +281,6 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
     const changed = await activateMetallicArmor(actor);
     if (changed) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == GRID_EMPOWERED_ID) {
-    const applied = await activateGridEmpowered(actor);
-    if (applied) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == SHATTERED_MEMORIES_ID) {
-    const option = await pickShatteredMemoriesOption();
-    if (option) {
-      const applied = await applyShatteredMemoriesOption(actor, option);
-      if (applied) {
-        postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-      }
     }
 
     return;
@@ -423,20 +369,6 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
     await activateLuckyCharm(actor, item);
     return;
   }
-
-  if (sourceId == ILLUSORY_DISGUISE_ID) {
-    await activateIllusoryDisguiseRoll(actor);
-    return;
-  }
-
-  // Longevity (Beneath the Helmet, Grid Power, p.57) - "By spending 1 Personal Power, you can
-  // recall facts or rely on a relationship from the past... that would be useful to remember
-  // today." Same purely narrative "spend the cost, narrate the rest" shape as Mnemonic Recall/
-  // Power Transfer just below.
-  if (sourceId == MNEMONIC_RECALL_ID || sourceId == POWER_TRANSFER_ID || sourceId == LONGEVITY_ID) {
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
 }
 
 // Speed Boost (Power Rangers Core Rulebook, Grid Power, p.101): "you can spend 1 Power to gain Edge
@@ -456,25 +388,16 @@ const AUGMENT_POWER_WEAPON_ID = "Compendium.essence20.pr_crb.Item.n7kXeiPmmdg55K
 const PENETRATING_STRIKES_ID = "Compendium.essence20.pr_crb.Item.fgufss1xeV96LDcu";
 const ILLUMINATE_ID = "Compendium.essence20.pr_crb.Item.c6Kh8WrtHYfsXZmK";
 const REPAIR_ZORD_ID = "Compendium.essence20.pr_crb.Item.9S0fkRqxjfiOJ8ip";
-const MNEMONIC_RECALL_ID = "Compendium.essence20.pr_crb.Item.jOYqRnHMYz6nETD0";
-const POWER_TRANSFER_ID = "Compendium.essence20.pr_crb.Item.QYluNF8M04MmP40d";
 const POWER_HEAL_ID = "Compendium.essence20.pr_crb.Item.eiTUR08GXw03M21m";
-const GRID_POWER_STRIKE_ID = "Compendium.essence20.pr_crb.Item.DT0TOaHfuJzkgUeO";
 const POWER_BLAST_ID = "Compendium.essence20.pr_crb.Item.EeNQjO1VHh1SiNzy";
 const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
-const LONGEVITY_ID = "Compendium.essence20.beneath_the_helmet.Item.2PWhz49B168yOdU6";
 const CHRONO_FILE_ACCESS_ID = "Compendium.essence20.jump_through_time.Item.PDOUlIOgO7YoPVvm";
-const WILLFUL_STRENGTH_ID = "Compendium.essence20.jump_through_time.Item.8a7YRcCUxcx6KgQl";
 const BLAZING_STRIKES_ID = "Compendium.essence20.across_the_stars.Item.hr0SY24JAM7I91qA";
 const VOID_WARRIOR_ID = "Compendium.essence20.across_the_stars.Item.gyDCPmqswCQJYN6e";
-const REV_YOUR_ENGINES_ID = "Compendium.essence20.jump_through_time.Item.Eu8CsCA470XBEer0";
 const MORPHBLAST_ID = "Compendium.essence20.jump_through_time.Item.jPTF96WV19T37AqG";
-const MEGAZORD_LINK_ID = "Compendium.essence20.jump_through_time.Item.c7e7enVe96wOikd9";
 const FUTURE_VISION_ID = "Compendium.essence20.jump_through_time.Item.z9ZMxCd5DZDHlDYL";
 const MOBILE_MODE_ID = "Compendium.essence20.through_the_shattered_grid.Item.TO3TazEeI35FUOOU";
 const METALLIC_ARMOR_ID = "Compendium.essence20.through_the_shattered_grid.Item.LotTM0zOcCBLkki4";
-const GRID_EMPOWERED_ID = "Compendium.essence20.through_the_shattered_grid.Item.17iN2ZzSaTvqX0PL";
-const SHATTERED_MEMORIES_ID = "Compendium.essence20.through_the_shattered_grid.Item.faME3nQl9NjbafOG";
 const PROTECTION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.IF9v9C3tCJSQYRjd";
 const REACTIVE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.toDyl8zb0XVvqPuj";
 const AUGMENTED_COMBAT_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.6Ku40JiKZCMbGMtM";
@@ -493,4 +416,3 @@ const BOLSTER_DEFENSE_ID = "Compendium.essence20.finster_s_monster_matic_cookboo
 const CHRONOMANTIC_PULSE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.YjPFCWa3KxDIJXGW";
 const MONSTER_GROW_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.KR4KuZlalNywMvSb";
 const LUCKY_CHARM_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Rv3Bhyeo4XBxHLpX";
-const ILLUSORY_DISGUISE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.7r9RSyoSvZxNx7El";

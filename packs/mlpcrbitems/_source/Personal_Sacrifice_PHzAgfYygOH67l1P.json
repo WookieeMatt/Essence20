@@ -5,6 +5,9 @@
   "_id": "PHzAgfYygOH67l1P",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"↑1 on an ally's next roll","steps":[{"do":"pickAlly"},{"do":"choose","when":["self:hasItem:Compendium.essence20.cobra_codex.Item.SUc3emTvPnwB6W93"],"prompt":"This, I Command: deal 1 Psychic to the ally to double it?","options":[{"label":"Double it: ↑2","steps":[{"do":"damage","to":"target","amount":1,"damageType":"psychic"},{"do":"bank","to":"target","label":"Personal Sacrifice","upshift":2}]},{"label":"Keep ↑1","steps":[{"do":"bank","to":"target","label":"Personal Sacrifice","upshift":1}]}]},{"do":"bank","when":["not:self:hasItem:Compendium.essence20.cobra_codex.Item.SUc3emTvPnwB6W93"],"to":"target","label":"Personal Sacrifice","upshift":1}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: your targeted friend gets ↑1 on their next Skill Test, labelled Personal Sacrifice in their Roll Options Dialog. Left to the table: you take the consequence of failure in their place.</p>"

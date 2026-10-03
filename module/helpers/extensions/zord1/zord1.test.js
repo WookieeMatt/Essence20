@@ -146,7 +146,7 @@ describe('Forms', () => {
     expect(formState.isFormActive(actor, forms.FORM.operator)).toBe(false);
   });
 
-  test('Ranger Operator swaps the armor bonus for +2 Toughness and Evasion', () => {
+  test('Ranger Operator swaps the armor bonus for +2 Toughness (its Evasion +2 is an item rule)', () => {
     const actor = makeActor({
       items: [{ type: 'perk', name: 'Ranger Operator', flags: src(forms.FORM.operator) }],
       system: {
@@ -157,7 +157,7 @@ describe('Forms', () => {
     });
     forms.formDerived(actor);
     expect(actor.system.defenses.toughness.total).toBe(15);
-    expect(actor.system.defenses.evasion.total).toBe(14);
+    expect(actor.system.defenses.evasion.total).toBe(12);
   });
 
   test('Ranger Operator gear depends on Core vs Advanced Role', () => {
@@ -188,7 +188,7 @@ describe('Forms', () => {
     expect(sources).toEqual([expect.objectContaining({ shiftUp: 2 })]);
   });
 
-  test('Ninja Storm Wind Ranger: a 1 Personal Power Morph Form that doubles Ground movement and adds ↑1 to Stealth', () => {
+  test('Ninja Storm Wind Ranger: a 1 Personal Power Morph Form that doubles Ground movement', () => {
     const ninja = makeActor({
       items: [{ type: 'perk', name: 'Ninja Storm Wind Ranger', flags: src(forms.FORM.ninjaStorm) }],
       system: { isMorphed: true, defenses: {}, movement: { ground: { total: 30 } } },
@@ -198,9 +198,6 @@ describe('Forms', () => {
     expect(forms.formSpec(ninja, forms.FORM.ninjaStorm).cost).toBe(1);
     forms.formDerived(ninja);
     expect(ninja.system.movement.ground.total).toBe(60);
-    expect(forms.formRollSources(ninja, null, { rolledSkill: 'infiltration' }).sources)
-      .toEqual([expect.objectContaining({ id: 'zord1NinjaStealth', shiftUp: 1 })]);
-    expect(forms.formRollSources(ninja, null, { rolledSkill: 'athletics' }).sources).toHaveLength(0);
 
     const inactive = makeActor({
       items: [{ type: 'perk', flags: src(forms.FORM.ninjaStorm) }],
@@ -315,20 +312,11 @@ describe('Forms', () => {
     });
   });
 
-  test('Solar Power resists Cold and Energy attacks as a Snag', () => {
-    const target = makeActor({ items: [{ type: 'perk', flags: src(forms.FORM.solar) }], system: { isMorphed: true }, flags: { essence20: { zord1Form: { uuid: forms.FORM.solar } } } });
-    const attacker = makeActor();
-    const fire = forms.formRollSources(attacker, target, { item: { type: 'weaponEffect', system: { damageType: 'fire' } } });
-    expect(fire.sources[0]).toMatchObject({ snag: true });
-    const blunt = forms.formRollSources(attacker, target, { item: { type: 'weaponEffect', system: { damageType: 'blunt' } } });
-    expect(blunt.sources).toHaveLength(0);
-  });
-
-  test('Lightspeed and Time Force healing/time Edge toggles', async () => {
-    const actor = makeActor({ system: { isMorphed: true }, flags: { essence20: { zord1Form: { uuid: forms.FORM.lightspeed } } } });
+  test('Time Force: a time-travel Edge toggle', async () => {
+    const actor = makeActor({ system: { isMorphed: true }, flags: { essence20: { zord1Form: { uuid: forms.FORM.timeForce } } } });
     const toggles = forms.formToggles(actor, { rolledSkill: 'science', item: null });
-    expect(toggles[0]).toMatchObject({ name: 'zord1Lightspeed', value: true });
-    const options = { ext: { zord1Lightspeed: true }, snag: true };
+    expect(toggles[0]).toMatchObject({ name: 'zord1TimeForce', value: false });
+    const options = { ext: { zord1TimeForce: true }, snag: true };
     await forms.formApplyDialog(actor, options, {});
     expect(options).toMatchObject({ snag: false });
   });
@@ -552,21 +540,6 @@ describe('Bodies', () => {
     expect(bodies.shiftSize('common', 1)).toBe('large');
     expect(bodies.shiftSize('extended', 1)).toBe('gigantic');
     expect(bodies.shiftSize('small', -1)).toBe('small');
-  });
-
-  test('Titan Frame and Plated Carapace follow the mode', () => {
-    const upgrades = [
-      { type: 'upgrade', name: 'Titan Frame', flags: src(bodies.BODY.titanFrame), system: { armorBonus: { value: 4 } } },
-      { type: 'upgrade', name: 'Plated Carapace', flags: src(bodies.BODY.platedCarapace), system: { armorBonus: { value: 2 } } },
-    ];
-    const bot = makeActor({ items: upgrades, system: { canTransform: true, isTransformed: false, defenses: { toughness: { total: 20 }, evasion: { total: 12 } } } });
-    bodies.bodiesDerived(bot);
-    expect(bot.system.defenses.toughness.total).toBe(20);
-    expect(bot.system.defenses.evasion.total).toBe(10);
-    const alt = makeActor({ items: upgrades, system: { canTransform: true, isTransformed: true, defenses: { toughness: { total: 20 }, evasion: { total: 12 } } } });
-    bodies.bodiesDerived(alt);
-    expect(alt.system.defenses.toughness.total).toBe(18);
-    expect(alt.system.defenses.evasion.total).toBe(12);
   });
 
   test('Enlarged needs Restricted Accommodation on armor', () => {

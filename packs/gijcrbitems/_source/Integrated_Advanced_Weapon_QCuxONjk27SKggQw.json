@@ -5,6 +5,10 @@
   "_id": "QCuxONjk27SKggQw",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a Limited weapon to build into the drone","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","from":{"type":"weapon","availabilities":["limited"]},"integrated":true,"flags":{"droneWeapon":true}},{"do":"setToggle","key":"granted","value":true}]}
+    ],
+    "prerequisites": {"when":["self:has:Integrated Basic Weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a Limited weapon and it's built into the drone.</p>"

@@ -5,6 +5,11 @@
   "_id": "QrrpYF2M89jDng82",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"crew","edge":true,"when":["item:data:system.isRam"]},
+      {"type":"RollModifier","edge":true,"when":["self:type:vehicle","item:data:system.isRam"]}
+    ],
+    "prerequisites": {"when":["self:data:system.traits.ram"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the vehicle's Ram attacks get Edge, shown as Cowcatcher next to Edge in the Roll Options Dialog.</p>"

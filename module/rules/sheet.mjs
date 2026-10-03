@@ -4,11 +4,48 @@ import { askChoice, choiceOptions } from "./lifecycle.mjs";
 import { rulesAreInherited } from "./inherit.mjs";
 import { ruleHelper } from "./code.mjs";
 import { RULE_TYPES, summarizeRule, validateRule } from "./types.mjs";
+import { describePrerequisite, prerequisitesOf } from "./prerequisites.mjs";
+import { contextFor, evaluate } from "./predicate.mjs";
 
 /**
- * The item sheet's Rules tab (docs/RULES_ENGINE_PLAN.md §9) - a read-out of the item's rules in
- * plain English, their live state on an owned copy (toggles, pools, choices), and a JSON editor.
- * The guided editor comes in a later phase; this is the raw view it will sit beside.
+ * "Acts as" (docs/RULES_ENGINE_PLAN.md §10, phase 5): an item with no compendium source of its own -
+ * homebrew, or made in the world - can name a book item it stands in for. It then runs that item's
+ * rules (rules/inherit.mjs) and every hard-coded behaviour keyed on that item's id, which falls back
+ * to flags.essence20.rulesSource. A real copy already is its book item, so it isn't offered there.
+ */
+export function actsAsContext(item) {
+  const own = item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  if (own && !item?.flags?.essence20?.rulesSource) {
+    return null;
+  }
+
+  const uuid = item?.flags?.essence20?.rulesSource ?? null;
+  const name = uuid ? globalThis.fromUuidSync?.(uuid, { strict: false })?.name ?? uuid : null;
+  return { uuid, name };
+}
+
+/**
+ * The item's prerequisites for its sheet: each in plain words and, on a character's copy, whether
+ * that character meets it ("met", "unmet", "ask"); "none" off a character.
+ */
+export function prerequisiteLines(item) {
+  const actor = item.parent?.documentName == 'Actor' ? item.parent : null;
+  const parentId = item.flags?.essence20?.parentId;
+  const host = actor && parentId ? actor.items?.get?.(parentId) ?? null : null;
+  return prerequisitesOf(item).map(entry => {
+    const answer = actor ? evaluate([entry], contextFor({ self: actor, ruleItem: item, host, combat: null })) : undefined;
+    return { words: describePrerequisite(entry), state: answer === undefined ? 'none' : answer === true ? 'met' : answer === false ? 'unmet' : 'ask' };
+  });
+}
+
+/**
+ * The item sheet's Rules tab (docs/RULES_ENGINE_PLAN.md §9) - everything the item does, in one list:
+ * its Active Effects (always-on stat changes, shown as "Always on") and its rules, each in plain
+ * English, with a rule's live state on an owned copy (toggles, pools, choices), and a JSON editor.
+ * One Add button asks what the author wants in game words and makes the right kind - an Active Effect
+ * for a flat stat change, a rule for anything with a condition, a button or a choice - so nobody has
+ * to know there are two. The data stays two things: Active Effects are core Foundry documents the
+ * system relies on for conditions, expiry and area effects.
  */
 
 /** A starting rule of each type, for "Add rule" - valid enough to edit, never valid enough to do harm. */
@@ -17,15 +54,116 @@ export const SKELETONS = {
   DialogSwitch: { type: 'DialogSwitch', label: 'Situational', upshift: 1 },
   Reroll: { type: 'Reroll', mode: 'ones', reset: 'scene', maxUses: 1 },
   SkillSubstitution: { type: 'SkillSubstitution', from: 'might', to: 'finesse' },
-  Defense: { type: 'Defense', defense: 'toughness', amount: 1 },
-  DerivedStat: { type: 'DerivedStat', path: 'system.health.max', op: 'add', value: 1 },
+  Defense: { type: 'Defense', defense: 'toughness', amount: 1, when: ['self:morphed'] },
+  DerivedStat: { type: 'DerivedStat', path: 'system.health.max', op: 'add', value: 1, when: ['self:morphed'] },
   DamageModifier: { type: 'DamageModifier', direction: 'taken', amount: -1 },
   Grant: { type: 'Grant', uuid: '' },
   Toggle: { type: 'Toggle', key: 'active', label: 'Active' },
   Pool: { type: 'Pool', key: 'uses', label: 'Uses', max: 1, reset: 'scene' },
   ChoiceSet: { type: 'ChoiceSet', key: 'skill', label: 'Skill', from: 'skill' },
   Code: { type: 'Code', helper: '' },
+  ActionCost: { type: 'ActionCost', action: 'sprint', to: 'free', limit: { per: 'turn', max: 1 } },
+  SurpriseExemption: { type: 'SurpriseExemption', mode: 'normal' },
+  Sense: { type: 'Sense', mode: 'darkvision', range: 30 },
+  MovementAction: { type: 'MovementAction', ignoreRoughTerrain: true },
+  ConditionImmunity: { type: 'ConditionImmunity', conditions: ['frightened'] },
+  Assist: { type: 'Assist', side: 'receive', effect: 'refuse' },
+  AimBonus: { type: 'AimBonus', atLeast: 2 },
+  CritOnD2: { type: 'CritOnD2', when: ['roll:edge'] },
+  Cover: { type: 'Cover', mode: 'reduce', amount: 1 },
+  Movement: { type: 'Movement', movement: 'ground', op: 'add', value: 10 },
+  AlternateEffect: { type: 'AlternateEffect', scope: 'host', key: 'stun', name: 'E20.DamageStun', changes: { damageType: 'stun' }, formulas: { damageValue: '@base.damageValue' } },
+  AttackCount: { type: 'AttackCount', count: 2, when: ['weapon:trait:ballistic'] },
+  WeaponTrait: { type: 'WeaponTrait', traits: ['wrecker'] },
+  CriticalOption: { type: 'CriticalOption', damageValue: 2, damageType: 'stun', when: ['item:own'] },
+  Hardpoints: { type: 'Hardpoints', integrated: 1 },
+  Qualification: { type: 'Qualification', items: ['item:type:weapon', 'item:data:system.availability=standard'], access: 'qualified' },
+  ItemModifier: { type: 'ItemModifier', items: ['item:type:weapon'], path: 'system.range.max', op: 'add', value: 10 },
+  Use: { type: 'Use', label: 'Use', cost: { action: 'standard' }, limit: { per: 'scene', max: 1 }, steps: [{ do: 'chat', text: '{name} uses it.' }] },
+  Trigger: { type: 'Trigger', event: 'turnStart', steps: [{ do: 'chat', text: 'Turn start for {name}.' }] },
 };
+
+/**
+ * What "Add" offers, in game words, in this order. `effect` makes an Active Effect; every other key
+ * is a rule type (SKELETONS). Labels and hints are i18n keys under E20.Rules.Add.
+ */
+export const ADD_CHOICES = [
+  { key: 'effect', icon: 'fa-solid fa-sliders' },
+  { key: 'Use', icon: 'fa-solid fa-hand-pointer' },
+  { key: 'Trigger', icon: 'fa-solid fa-bolt' },
+  { key: 'RollModifier', icon: 'fa-solid fa-dice-d20' },
+  { key: 'ActionCost', icon: 'fa-solid fa-person-running' },
+  { key: 'Sense', icon: 'fa-solid fa-eye' },
+  { key: 'MovementAction', icon: 'fa-solid fa-shoe-prints' },
+  { key: 'ConditionImmunity', icon: 'fa-solid fa-shield-heart' },
+  { key: 'Assist', icon: 'fa-solid fa-handshake-angle' },
+  { key: 'AimBonus', icon: 'fa-solid fa-crosshairs' },
+  { key: 'CritOnD2', icon: 'fa-solid fa-dice-two' },
+  { key: 'Cover', icon: 'fa-solid fa-shield-halved' },
+  { key: 'Movement', icon: 'fa-solid fa-person-running' },
+  { key: 'AlternateEffect', icon: 'fa-solid fa-code-branch' },
+  { key: 'AttackCount', icon: 'fa-solid fa-burst' },
+  { key: 'WeaponTrait', icon: 'fa-solid fa-tags' },
+  { key: 'CriticalOption', icon: 'fa-solid fa-star' },
+  { key: 'Hardpoints', icon: 'fa-solid fa-gears' },
+  { key: 'Qualification', icon: 'fa-solid fa-id-card' },
+  { key: 'ItemModifier', icon: 'fa-solid fa-screwdriver-wrench' },
+  { key: 'SurpriseExemption', icon: 'fa-solid fa-person-rays' },
+  { key: 'DialogSwitch', icon: 'fa-solid fa-toggle-on' },
+  { key: 'Reroll', icon: 'fa-solid fa-rotate' },
+  { key: 'SkillSubstitution', icon: 'fa-solid fa-right-left' },
+  { key: 'Defense', icon: 'fa-solid fa-shield-halved' },
+  { key: 'DerivedStat', icon: 'fa-solid fa-hashtag' },
+  { key: 'DamageModifier', icon: 'fa-solid fa-burst' },
+  { key: 'Grant', icon: 'fa-solid fa-gift' },
+  { key: 'Toggle', icon: 'fa-solid fa-power-off' },
+  { key: 'Pool', icon: 'fa-solid fa-battery-half' },
+  { key: 'ChoiceSet', icon: 'fa-solid fa-list-check' },
+  { key: 'Code', icon: 'fa-solid fa-code' },
+];
+
+/**
+ * Ask what to add. Resolves to an ADD_CHOICES key, or null when the dialog is closed.
+ * @returns {Promise<String|null>}
+ */
+export async function chooseAddKind() {
+  const T = key => game.i18n.localize(`E20.Rules.Add.${key}`);
+  const items = ADD_CHOICES.map(({ key, icon }) => `<li><button type="button" data-kind="${key}"><i class="${icon}"></i><span class="e20-rules-add-label">${T(`${key}.Label`)}</span><span class="e20-rules-add-hint">${T(`${key}.Hint`)}</span></button></li>`).join('');
+  const { DialogV2 } = foundry.applications.api;
+  return new Promise(resolve => {
+    let picked = null;
+    const dialog = new DialogV2({
+      window: { title: T('Title') },
+      classes: ['essence20', 'e20-window', 'e20-rules-add-dialog'],
+      position: { width: 640 },
+      content: `<p>${T('Prompt')}</p><ul class="e20-rules-add-choices">${items}</ul>`,
+      buttons: [{ action: 'cancel', label: game.i18n.localize('Cancel'), default: true }],
+      submit: () => resolve(picked),
+    });
+    dialog.addEventListener('close', () => resolve(picked));
+    dialog.render({ force: true }).then(() => {
+      for (const button of dialog.element.querySelectorAll('[data-kind]')) {
+        button.addEventListener('click', () => {
+          picked = button.dataset.kind;
+          dialog.close();
+        });
+      }
+    });
+  });
+}
+
+/**
+ * The item's Active Effects as entries in the same list as its rules.
+ * @param {Array<ActiveEffect>} effects   Each already given e20Summaries (helpers/effects.mjs).
+ * @returns {Array<Object>}
+ */
+export function effectEntries(effects) {
+  return [...(effects ?? [])].map(effect => ({
+    effect,
+    state: effect.disabled ? 'off' : effect.isTemporary ? 'temporary' : 'on',
+    summaries: effect.e20Summaries ?? [],
+  }));
+}
 
 /**
  * The tab's context.
@@ -63,6 +201,8 @@ export function rulesContext(item) {
     rulesOwned: !!actor && item.isOwner,
     rulesInherited: rulesAreInherited(item),
     rulesJson: JSON.stringify(rulesOf(item), null, 2),
+    prerequisites: { text: item.system?.prerequisite ?? '', lines: prerequisiteLines(item) },
+    actsAs: actsAsContext(item),
     ruleTypes: Object.keys(RULE_TYPES),
   };
 }

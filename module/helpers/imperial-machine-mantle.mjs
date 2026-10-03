@@ -23,7 +23,7 @@ const BROKEN_FLAG = "imperialMachineMantleBroken";
 export function findIntactMachineMantle(actor) {
   return actor?.items?.find(item =>
     item.type == 'upgrade'
-    && (item.flags?.core?.sourceId == IMPERIAL_MACHINE_MANTLE_ID || item._stats?.compendiumSource == IMPERIAL_MACHINE_MANTLE_ID)
+    && (item.flags?.core?.sourceId == IMPERIAL_MACHINE_MANTLE_ID || item._stats?.compendiumSource == IMPERIAL_MACHINE_MANTLE_ID || item?.flags?.essence20?.rulesSource == IMPERIAL_MACHINE_MANTLE_ID)
     && !item.getFlag?.('essence20', BROKEN_FLAG),
   );
 }

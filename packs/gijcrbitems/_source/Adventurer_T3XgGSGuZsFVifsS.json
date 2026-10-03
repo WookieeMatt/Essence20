@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Adventurer","when":[{"any":["essence:smarts","essence:social"]}],"edge":true,"limit":{"per":"encounter","max":1}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per encounter, your first Smarts or Social Skill Test has Edge already selected in the Roll Options Dialog.</p>"

@@ -1,4 +1,4 @@
-import { hasVehicleUpgrade, tryRedundantBackups, VU } from "./vehicle-upgrades.mjs";
+import { hasVehicleUpgrade, VU } from "./vehicle-upgrades.mjs";
 import { applyDamage } from "./combat.mjs";
 import { getAllNearbyTokens } from "./allies.mjs";
 import { E20 } from "./config.mjs";
@@ -55,7 +55,7 @@ const HEAVY_WATER_COOLANT_BRAWN_DIF = 10;
 function hasHeavyWaterCoolant(actor) {
   return !!actor.items?.find(item =>
     item.type == 'upgrade'
-    && (item.flags?.core?.sourceId == HEAVY_WATER_COOLANT_ID || item._stats?.compendiumSource == HEAVY_WATER_COOLANT_ID),
+    && (item.flags?.core?.sourceId == HEAVY_WATER_COOLANT_ID || item._stats?.compendiumSource == HEAVY_WATER_COOLANT_ID || item?.flags?.essence20?.rulesSource == HEAVY_WATER_COOLANT_ID),
   );
 }
 
@@ -119,7 +119,7 @@ async function emergencyDisembarkCrew(vehicleActor, vehicleCrashDamage) {
     let { success } = pr3AutoPasses(crewMember, entry) ? { success: true } : await rollBetterOfAthleticsOrAcrobatics(crewMember, DISEMBARK_DIF);
     const { autoPassesDisembark } = await import("./extensions/gij2/vehicles.mjs");
     success ||= autoPassesDisembark(crewMember, vehicleActor);
-    if (!success && (vehicleActor.system.traits?.rollCage || hasVehicleUpgrade(vehicleActor, VU.rollCage))) {
+    if (!success && vehicleActor.system.traits?.rollCage) {
       ({ success } = await rollBetterOfAthleticsOrAcrobatics(crewMember, DISEMBARK_DIF));
     }
 
@@ -261,16 +261,6 @@ async function handleZordZeroHealthTransition(actor) {
  * @param {Actor} actor
  */
 export async function handleVehicleZeroHealthTransition(actor) {
-  // Redundant Backups: "Once per mission, if the vehicle would be Defeated, it drops to 1 Health
-  // instead." (helpers/vehicle-upgrades.mjs)
-  if (await tryRedundantBackups(actor)) {
-    ChatMessage.create({
-      content: game.i18n.format('E20.VehicleRedundantBackups', { name: actor.name }),
-      speaker: ChatMessage.getSpeaker({ actor }),
-    });
-    return;
-  }
-
   await actor.toggleStatusEffect('defeated', { active: true });
 
   if (actor.type == 'zord') {
@@ -309,6 +299,6 @@ const CHANGE_ITS_STRIPES = "Compendium.essence20.ferocious_fighters.Item.8tz9aZS
 function crewHasChangeItsStripes(vehicle) {
   return Object.values(vehicle.system?.actors ?? {}).some(entry => {
     const crew = globalThis.fromUuidSync?.(entry?.uuid);
-    return !!crew?.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == CHANGE_ITS_STRIPES);
+    return !!crew?.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == CHANGE_ITS_STRIPES);
   });
 }

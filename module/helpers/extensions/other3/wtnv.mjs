@@ -1,67 +1,17 @@
 /**
- * Welcome to Night Vale: Citizens' Guide - Dazed and Naive (Defense formula Hang-Ups), Gluten-
- * Tolerant, and Gravity Optional's tripled jump.
+ * Welcome to Night Vale: Citizens' Guide - Gluten-Tolerant's Weird prerequisite and Gravity
+ * Optional's tripled jump.
  */
-import { registerApplyDialog, registerDerived, registerDialogToggles } from "../../extensions.mjs";
+import { registerApplyDialog, registerDialogToggles } from "../../extensions.mjs";
 import { O3, T, has, say } from "./shared.mjs";
 
 /*
- * Dazed (p.29): "Your Evasion Defense is 9 + your Speed Essence."
- * Naive (p.29): "Your Willpower Defense is 9 + your Smarts Essence."
- * Every other part of the Defense (armor, bonuses, Perks) still adds on top - the Hang-Up replaces
- * the base the Essence is added to, so the total moves by (9 - base) and the breakdown says why.
- */
-export const DEFENSE_OVERRIDES = [
-  { id: O3.dazed, defense: 'evasion', essence: 'speed', base: 9, label: 'Dazed' },
-  { id: O3.naive, defense: 'willpower', essence: 'smarts', base: 9, label: 'Naive' },
-];
-
-export function applyDefenseOverrides(actor) {
-  const defenses = actor?.system?.defenses;
-  if (!defenses) {
-    return;
-  }
-
-  for (const rule of DEFENSE_OVERRIDES) {
-    const defense = defenses[rule.defense];
-    if (!defense || !has(actor, rule.id)) {
-      continue;
-    }
-
-    // The Essence the Hang-Up names, in case a Perk has moved which Essence this Defense uses.
-    const essences = actor.system.essences ?? {};
-    const current = Number(essences[defense.essence]?.max ?? essences[defense.essence]?.value) || 0;
-    const wanted = Number(essences[rule.essence]?.max ?? essences[rule.essence]?.value) || 0;
-    const delta = (rule.base - (Number(defense.base) || 0)) + (wanted - current);
-    if (!delta) {
-      continue;
-    }
-
-    defense.total = (Number(defense.total) || 0) + delta;
-    defense.string = `${defense.string ?? ''} ${delta < 0 ? '-' : '+'} ${Math.abs(delta)} (${rule.label})`;
-  }
-}
-
-registerDerived(applyDefenseOverrides);
-
-/*
  * Gluten-Tolerant (p.29): "You can't take the Weird General Perk, and you suffer ↓1 on Contested
- * Skill Tests against someone else's Weird Skill." The contest itself is two ordinary rolls in this
- * system, so the holder declares it on the Roll Options Dialog; the prerequisite is refused when the
- * Perk is dropped on the sheet.
+ * Skill Tests against someone else's Weird Skill." The ↓1 is the Hang-Up's own rule (a Roll Options
+ * Dialog switch); the prerequisite is refused here when the Perk is dropped on the sheet.
  */
-registerDialogToggles((actor) => (has(actor, O3.glutenTolerant)
-  ? [{ name: 'o3GlutenTolerant', label: T('O3GlutenTolerantToggle'), type: 'checkbox', value: false }]
-  : []));
-
-registerApplyDialog((actor, options) => {
-  if (options.ext?.o3GlutenTolerant && has(actor, O3.glutenTolerant)) {
-    options.shiftDown = (Number(options.shiftDown) || 0) + 1;
-  }
-});
-
 export function blocksWeird(actor, data) {
-  const source = data?.flags?.core?.sourceId ?? data?._stats?.compendiumSource;
+  const source = data?.flags?.core?.sourceId ?? data?._stats?.compendiumSource ?? data?.flags?.essence20?.rulesSource;
   return source == O3.weird && has(actor, O3.glutenTolerant);
 }
 

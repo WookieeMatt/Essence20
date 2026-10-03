@@ -42,19 +42,6 @@ beforeEach(() => {
   global.ui.notifications.warn.mockClear();
 });
 
-test('Acute Sense: ↑1 checkbox off Alertness, Enhanced Sensors Edge on Alertness', () => {
-  const holder = actor([item(G2.acuteSense, { system: { choice: 'sight' }, name: 'Acute Sense' })]);
-  expect(senses.acuteSenseToggles(holder, { rolledSkill: 'alertness' })).toEqual([]);
-  expect(senses.acuteSenseToggles(holder, { rolledSkill: 'might' })[0].name).toBe(senses.ACUTE_TOGGLE);
-  const options = { shiftUp: 0, ext: { [senses.ACUTE_TOGGLE]: true } };
-  senses.acuteSenseApply(holder, options);
-  expect(options.shiftUp).toBe(1);
-
-  const drone = actor([item(G2.enhancedSensors, { type: 'upgrade', name: 'Enhanced Sensors' })]);
-  expect(senses.acuteSenseSources(drone, null, { rolledSkill: 'alertness' }).sources[0].edge).toBe(true);
-  expect(senses.acuteSenseSources(holder, null, { rolledSkill: 'alertness' })).toBeNull();
-});
-
 test('Empathetic lifts a robot drone\'s Social Condition immunity', () => {
   const robot = actor([item(G2.robot)]);
   expect(senses.robotRefusesCondition(robot, 'frightened')).toBe(true);
@@ -86,20 +73,9 @@ test('Expert Knowledge posts one or two extra benefits', async () => {
   expect(global.ChatMessage.create).toHaveBeenCalledTimes(1);
 });
 
-test('Nose For Trouble and Duck & Cover dialog choices', () => {
+test('Nose For Trouble: Streetwise is offered when it is the better die', () => {
   const nose = actor([item(G2.noseForTrouble)], { system: { skills: { streetwise: { shift: 'd6' }, alertness: { shift: 'd20' } } } });
   expect(perks.streetwiseIsBetter(nose)).toBe(true);
-  expect(perks.perkToggles(nose, { rolledSkill: 'might' }).map(t => t.name)).toContain(perks.NOSE_TRAPS);
-  const options = { snag: false, edge: false, ext: { [perks.NOSE_TRAPS]: true } };
-  perks.perkApplyDialog(nose, options);
-  expect(options.edge).toBe(true);
-
-  const duck = actor([item(G2.duckAndCover)]);
-  global.game.user.targets = new Set([{ actor: duck }]);
-  expect(perks.perkToggles(actor(), { rolledSkill: 'targeting', item: { system: {} } }).map(t => t.name)).toContain(perks.DUCK_TRAP);
-  const trap = { edge: false, snag: false, ext: { [perks.DUCK_TRAP]: true } };
-  perks.perkApplyDialog(actor(), trap);
-  expect(trap.snag).toBe(true);
 });
 
 test('Machinesmith turns the Electromagnetic ↓3 into ↑3 against the living', () => {

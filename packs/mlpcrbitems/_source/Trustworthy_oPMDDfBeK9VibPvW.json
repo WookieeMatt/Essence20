@@ -5,6 +5,9 @@
   "_id": "oPMDDfBeK9VibPvW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Trustworthy (+4 Cleverness against Deception)","defense":"cleverness","amount":4,"when":["skill:deception"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your own Deception tests against a target always come up as failures on the chat card. When anyone rolls Deception against your Cleverness, their chat card's DIF is 4 higher. Moving any Deception ranks to another Social Skill is up to you.</p>"

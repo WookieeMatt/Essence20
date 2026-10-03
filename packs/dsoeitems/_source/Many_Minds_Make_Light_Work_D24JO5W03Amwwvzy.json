@@ -5,6 +5,9 @@
   "_id": "D24JO5W03Amwwvzy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Many Minds Make Light Work: help at any rank","side":"give","effect":"anyRank","when":["self:skill:persuasion>d20","not:roll:untrained"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while trained in Persuasion, you can Lend Assistance on any Skill you have a rank in, even if your ally is better at it.</p>"

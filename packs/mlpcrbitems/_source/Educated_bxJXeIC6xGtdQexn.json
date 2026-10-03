@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Add a Friendship Point to the pool","limit":{"per":"encounter","key":"educated"},"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} adds a Friendship Point to the group's pool."}]}
+    ],
+    "prerequisites": {"when":["self:essence:smarts>=3"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: once per scene, add a Friendship Point to the group's pool (a GM needs to be connected). Left to the table: once per day, tick Specialized yourself on a Smarts Skill test, and the per-session limit on the Friendship Point.</p>"

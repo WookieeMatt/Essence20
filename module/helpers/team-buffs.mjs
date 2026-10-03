@@ -44,25 +44,12 @@ export const SHINING_LEADER_EDGE_FLAG = 'pendingShiningLeaderEdge';
 
 const BENEATH_THE_HELMET = "Compendium.essence20.beneath_the_helmet.Item.";
 
-// Environmental Assist (Beneath the Helmet, Aqua Ranger, Grid Science II choice, p.42): "By
-// spending 1 Personal Power, you and any Power Rangers within 60 feet of you may add 1 to the
-// damage of their Attacks until the start of your next turn." Unlike One For All/Power Burst/
-// Shining Leader above, this explicitly includes the GRANTER themselves ("you AND any... within
-// 60 feet"), not just other allies - see includeSelf below. "Choose the damage type based on
-// elements in the immediate environment" isn't tracked - this system's own damageType field is
-// per-hit and can't represent "the weapon's normal type, plus 1 point of a different chosen
-// type" as a genuine mix (the same "closest single-field approximation" idiom this project's own
-// Element/Energy reclassification pass already applied to a mixed-type stat block elsewhere) - so
-// this is built as a plain flat +1 damage bonus, the type left unspecified.
-export const ENVIRONMENTAL_ASSIST_ID = `${BENEATH_THE_HELMET}5gPWxUEkFKDQf6lM`;
-export const PENDING_ENVIRONMENTAL_ASSIST_FLAG_KEY = 'pendingEnvironmentalAssist';
-
 // Elemental Shield (Beneath the Helmet, Aqua Ranger, 9th/18th level, p.42, replaces Power
 // Infusion): "Once per scene... you and each of your Morphed Power Ranger teammates within 60
 // feet may ignore 1 Energy damage that they take from their next attack by an energy weapon."
 // (2 at 18th, via the Perk's own scaling advances.currentValue - same selectionLimit:2 pattern as
 // Precision Aim/Power Boost). Also includes the granter ("you AND each of your... teammates"),
-// same as Environmental Assist above. Unlike every other entry here, this is a DEFENSIVE
+// as Environmental Assist does. Unlike every other entry here, this is a DEFENSIVE
 // damage-REDUCTION grant (consumed against the next hit the target actually TAKES, not their own
 // next attack) - see PENDING_ELEMENTAL_SHIELD_FLAG_KEY's own consumption in
 // helpers/combat.mjs#applyDamage. "Energy weapon" is this project's own established equivalence
@@ -123,14 +110,12 @@ export const NANO_MED_MASTERY_EDGE_FLAG = 'pendingNanoMedMasteryEdge';
 // advances.currentValue instead of a fixed table value" - Power Burst's own scaling); effect
 // 'edge' bans a 2-round Edge-on-attacks flag instead (which flag - edgeFlagKey - defaults to
 // SHINING_LEADER_EDGE_FLAG when unset, for the two PR CRB Perks that already relied on that
-// default); effect 'damageBonus' banks a flat +1 damage flag (see
-// PENDING_ENVIRONMENTAL_ASSIST_FLAG_KEY's own comment above, consumed the same way every other
-// flat damage bonus already folds into dice.mjs's own damageBonusValue); effect 'damageReduction'
+// default); effect 'damageReduction'
 // banks a scaling "ignore N Energy damage" flag instead, consumed defensively in
 // combat.mjs#applyDamage rather than offensively in dice.mjs; effect 'tempHealth' adds a flat,
 // immediate system.health.bonus to each target (same field Protected Target's own Temporary
 // Health grant already uses - no automatic removal, the same "GM manages the edges" idiom that
-// grant already accepts). Environmental Assist and Elemental Shield both set includeSelf - every
+// grant already accepts). Elemental Shield and Nano-Med Mastery set includeSelf - every
 // other entry here only ever affects OTHER allies, matching getNearbyAllyTokens' own "excludes the
 // actor's own token" default. radiusFeet defaults to Infinity (every existing entry's own "any
 // ally on the scene" approximation) when unset. requiresMorphed defaults to true (every existing
@@ -144,9 +129,6 @@ const TEAM_BUFF_PERKS = {
   [ONE_FOR_ALL_ID]: { powerCost: 3, onceEncounterFlag: ONE_FOR_ALL_ENCOUNTER_FLAG, effect: 'power', dieFaces: 2 },
   [POWER_BURST_ID]: { powerCost: 0, onceEncounterFlag: POWER_BURST_ENCOUNTER_FLAG, effect: 'power', dieFaces: null },
   [SHINING_LEADER_ID]: { powerCost: 1, onceEncounterFlag: SHINING_LEADER_ENCOUNTER_FLAG, effect: 'edge' },
-  // No onceEncounterFlag - unlike the other three entries above, RAW never limits Environmental
-  // Assist to once per scene/day, only the Power cost itself.
-  [ENVIRONMENTAL_ASSIST_ID]: { powerCost: 1, effect: 'damageBonus', includeSelf: true },
   [ELEMENTAL_SHIELD_ID]: {
     powerCost: 1, onceEncounterFlag: ELEMENTAL_SHIELD_ENCOUNTER_FLAG, effect: 'damageReduction', includeSelf: true,
   },
@@ -170,7 +152,7 @@ const TEAM_BUFF_PERKS = {
  * @returns {Boolean}
  */
 export function isTeamBuffPerk(item) {
-  const sourceId = item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  const sourceId = item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
   return !!TEAM_BUFF_PERKS[sourceId];
 }
 
@@ -182,7 +164,7 @@ export function isTeamBuffPerk(item) {
  * @returns {Boolean}
  */
 export function canUseTeamBuffPerk(item, actor) {
-  const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+  const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
   const config = TEAM_BUFF_PERKS[sourceId];
   if (!config || (config.onceEncounterFlag && hasUsedThisEncounter(actor, config.onceEncounterFlag))) {
     return false;
@@ -202,7 +184,7 @@ export function canUseTeamBuffPerk(item, actor) {
  * @param {Actor} actor
  */
 export async function onTeamBuffPerkUse(item, actor) {
-  const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+  const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
   const config = TEAM_BUFF_PERKS[sourceId];
   if (!config) {
     return;
@@ -224,9 +206,9 @@ export async function onTeamBuffPerkUse(item, actor) {
   // Burst/Shining Leader/Environmental Assist/Elemental Shield already affect.
   const allNearbyAllies = getNearbyAllyTokens(actor, config.radiusFeet ?? Infinity).map(token => token.actor);
   const nearbyAllies = (config.requiresMorphed ?? true) ? allNearbyAllies.filter(a => a?.system.isMorphed) : allNearbyAllies;
-  // Environmental Assist is the one entry here that also affects the granter themselves ("you
-  // AND any... within 60 feet") - see its own comment on TEAM_BUFF_PERKS above. getNearbyAllyTokens
-  // excludes the actor's own token by design, so it's added back in here rather than widened there.
+  // includeSelf entries (Elemental Shield, Nano-Med Mastery) also affect the granter themselves -
+  // getNearbyAllyTokens excludes the actor's own token by design, so it's added back in here rather
+  // than widened there.
   const targets = config.includeSelf ? [actor, ...nearbyAllies] : nearbyAllies;
 
   if (config.powerCost) {
@@ -249,10 +231,6 @@ export async function onTeamBuffPerkUse(item, actor) {
         combatId: game.combat?.id ?? null,
         round: game.combat?.round ?? null,
       });
-    }
-  } else if (config.effect == 'damageBonus') {
-    for (const target of targets) {
-      await bankPendingBonus(target, PENDING_ENVIRONMENTAL_ASSIST_FLAG_KEY);
     }
   } else if (config.effect == 'damageReduction') {
     const amount = item.system.advances.currentValue;

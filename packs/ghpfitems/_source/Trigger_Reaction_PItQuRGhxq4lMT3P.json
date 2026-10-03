@@ -5,6 +5,7 @@
   "_id": "PItQuRGhxq4lMT3P",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:skill:science>=d8","self:skill:survival>=d8"]}]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: choose Science or Survival and roll the DIF 5 test; the chat card shows how far you beat it.</p><p>Left to the table: what the environmental tricks do.</p>"

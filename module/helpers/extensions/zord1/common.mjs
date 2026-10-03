@@ -25,7 +25,7 @@ export const T = (key, data) => {
 };
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 /** Every embedded item as a plain array (Collections, arrays and Maps all work). */

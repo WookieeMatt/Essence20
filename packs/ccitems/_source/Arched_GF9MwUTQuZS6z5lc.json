@@ -5,6 +5,7 @@
   "_id": "GF9MwUTQuZS6z5lc",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Melee weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: gives the melee weapon it is attached to the Bypassing trait.</p>"

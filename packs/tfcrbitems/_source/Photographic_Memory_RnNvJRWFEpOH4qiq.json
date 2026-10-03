@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:essence:smarts>=4"]},
     "automation": {
       "status": "manual",
       "notes": "<p>The table handles this: you recall fine details of anything you saw in the last six months.</p>"

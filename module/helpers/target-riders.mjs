@@ -1,4 +1,5 @@
 import { zord2WeaponUnusable } from "./extensions/zord2/unusable.mjs";
+import { ruleCriticalOptions } from "../rules/adapter.mjs";
 import { extDefenseAdjust, extRollSources, runConsumer, runHitRiders, runPostRoll } from "./extensions.mjs";
 import { acidSacsDamage, consumeSocial, socialDamageBonus, socialDefenseAdjust, socialRollSources } from "./social-rolls.mjs";
 import { noteRolledAgainst } from "./companions.mjs";
@@ -8,7 +9,7 @@ import { actorHasHangUp, actorHasPerk, bankPendingBonus, findPerk, getPendingBon
 import { getSceneEpoch, markUsed } from "./scene-clock.mjs";
 import { applyTimedCondition } from "./timed-status.mjs";
 import {
-  isImmuneToSkill, isMachineEmpire, isMechanical, isNonHuman, isNonHumanoid, isObjectOrStructure, isPuttyOrTenga, isRobotic,
+  isImmuneToSkill, isMechanical, isObjectOrStructure,
 } from "./creature-tags.mjs";
 import { essenceDamageOf } from "./essence-damage.mjs";
 import { distanceFeet, pickCanvasPoint, placeActorAt, pushActor, slowNextTurn } from "./forced-movement.mjs";
@@ -57,7 +58,7 @@ const ZONE_FLAG = 'riderZone';
 /* -------------------------------------------- */
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 /** Any item (not only a Perk) from the given compendium entry. */
@@ -355,18 +356,6 @@ export function rollRiderSources(actor, target, ctx = {}) {
     add('enhancedImpactPoints', nameOf(actor, RIDER.enhancedImpactPoints, 'Enhanced Impact Points'), { shiftUp: item.system.shiftDown });
   }
 
-  // In the Rain (WTNV Citizen's Guide, General Perk, p.47): "ignore ... the first ↓1 when Shoving or
-  // Tripping a target in Combat."
-  if (actorHasPerk(actor, RIDER.inTheRain) && (ctx.isShove || damageType == 'knocProne' || damageType == 'maneuver') && (ctx.pendingShiftDown ?? 0) > 0) {
-    add('inTheRain', nameOf(actor, RIDER.inTheRain, 'In the Rain'), { shiftUp: 1 });
-  }
-
-  // Chunky (WTNV Citizen's Guide, Pet Perk, p.74): "They can use a Free action to gain an Edge when
-  // attempting to Shove an enemy during combat."
-  if (ctx.isShove && actorHasPerk(actor, RIDER.chunky)) {
-    add('chunky', nameOf(actor, RIDER.chunky, 'Chunky'), { edge: true });
-  }
-
   // Loader (TF CRB p.134, Alt Mode): "gain ↑2 on Might Skill Tests to shove objects and creatures".
   if (ctx.isShove && loaderShoveBonus(actor)) {
     add('loader', game.i18n.localize('E20.KitLoader'), { shiftUp: loaderShoveBonus(actor) });
@@ -422,18 +411,6 @@ export function rollRiderSources(actor, target, ctx = {}) {
     add('weakWilled', game.i18n.localize('E20.Imperfection.8'), { edge: true });
   }
 
-  // Tough Enough (GI Joe CRB, Juggernaut, 6th level, p.99): "when you are subjected to a non-attack
-  // effect against your Toughness, the effect suffers a Snag."
-  if (!isAttack && item?.system?.defenseType == 'toughness' && actorHasPerk(target, RIDER.toughEnough)) {
-    add('toughEnough', nameOf(target, RIDER.toughEnough, 'Tough Enough'), { snag: true });
-  }
-
-  // Frag It (Quartermaster's Guide, Disruptor, 3rd level, p.24): "you gain Resistance to area
-  // effects." Resistance is a Snag on the attack.
-  if (isAttack && isArea(item) && actorHasPerk(target, RIDER.fragIt)) {
-    add('fragIt', nameOf(target, RIDER.fragIt, 'Frag It'), { snag: true });
-  }
-
   // Intervene (Field Guide, p.65): the ally "gain[s] Resistance against the next attack dealing
   // Blunt or Sharp damage that targets them."
   if (isAttack && ['blunt', 'sharp'].includes(damageType) && findMark(target, 'intervene')) {
@@ -445,12 +422,6 @@ export function rollRiderSources(actor, target, ctx = {}) {
   // Resistance" - a Snag on the attack, and the damage lands (attackRiders).
   if (isAttack && ctx.concentratedFire && target.system?.immunities?.fire) {
     add('concentratedFire', nameOf(actor, RIDER.concentratedFire, 'Concentrated Fire'), { snag: true });
-  }
-
-  // Air Supply (Cobra Codex, armor upgrade, p.100): "You gain Resistance to Inhaled poisons."
-  const weapon = parentWeaponOf(actor, item);
-  if (isAttack && weapon?.system?.isPoison && weapon.system.poisonApplication?.inhaled && wearsUpgrade(target, RIDER.airSupply)) {
-    add('airSupply', nameOf(target, RIDER.airSupply, 'Air Supply'), { snag: true });
   }
 
   // All Out Attack (GI Joe CRB, General Perk, p.129): "enemies gain an equal number of upshifts to
@@ -482,44 +453,6 @@ export function rollRiderSources(actor, target, ctx = {}) {
   // your next turn."
   if (['deception', 'intimidation', 'persuasion'].includes(rolledSkill) && findMark(target, 'shotsFired', actor.uuid)) {
     add('shotsFired', nameOf(actor, RIDER.shotsFired, 'Shots Fired'), { edge: true });
-  }
-
-  // Grid Champion (PR CRB, General Perk, p.95): "You have a ↑1 bonus to hit Putties and Tengas of any
-  // variety."
-  if (isAttack && isPuttyOrTenga(target) && actorHasPerk(actor, RIDER.gridChampion)) {
-    add('gridChampion', nameOf(actor, RIDER.gridChampion, 'Grid Champion'), { shiftUp: 1 });
-  }
-
-  // Machinist Revolutionary (Across the Stars, p.69): "You gain Edge on any Alertness or Streetwise
-  // Skill Tests to locate Machine Empire assets. When interacting with the Machine Empire, you gain
-  // ↑1 on Smarts and Social Skill Tests."
-  if (isMachineEmpire(target) && actorHasPerk(actor, RIDER.machinistRevolutionary)) {
-    const label = nameOf(actor, RIDER.machinistRevolutionary, 'Machinist Revolutionary');
-    if (['alertness', 'streetwise'].includes(rolledSkill)) {
-      add('machinistEdge', label, { edge: true });
-    }
-
-    if (['smarts', 'social'].includes(rolledEssence) || SOCIAL_SKILLS.includes(rolledSkill)) {
-      add('machinist', label, { shiftUp: 1 });
-    }
-  }
-
-  // Monster Hunter (Across the Stars, p.70): "You gain Edge on Survival (Tracking) Skill Tests to
-  // follow or learn about a non-humanoid."
-  if (rolledSkill == 'survival' && isNonHumanoid(target) && actorHasPerk(actor, RIDER.monsterHunter)) {
-    add('monsterHunter', nameOf(actor, RIDER.monsterHunter, 'Monster Hunter'), { edge: true });
-  }
-
-  // Bot-Hunter (A Jump Through Time, p.54): "You enjoy ↑1 on all Skill Tests against mechanical
-  // Threats." The Defense half is in riderDefenseAdjust.
-  if (isMechanical(target) && target.type != 'playerCharacter' && actorHasPerk(actor, RIDER.botHunter)) {
-    add('botHunter', nameOf(actor, RIDER.botHunter, 'Bot-Hunter'), { shiftUp: 1 });
-  }
-
-  // Earth Defenders (Field Guide, p.69): "You gain an Edge on Smarts and Social Skill Tests
-  // involving non-human creatures."
-  if (['smarts', 'social'].includes(rolledEssence) && isNonHuman(target) && actorHasPerk(actor, RIDER.earthDefenders)) {
-    add('earthDefenders', nameOf(actor, RIDER.earthDefenders, 'Earth Defenders'), { edge: true });
   }
 
   // Snatch (Ferocious Fighters p.37): "Disarm attempts suffer ↓1 when targeting a two-handed weapon."
@@ -575,11 +508,6 @@ function coDependentPartner(actor) {
   }
 
   return game.actors?.get?.(bondUuid.split('.').pop()) ?? canvas?.tokens?.placeables?.find(t => t.actor?.uuid == bondUuid)?.actor ?? null;
-}
-
-function wearsUpgrade(actor, id) {
-  return !!actor?.items?.some?.(item => item.type == 'upgrade' && sourceOf(item) == id
-    && (!item.flags?.essence20?.parentId || actor.items.get(item.flags.essence20.parentId)?.system?.equipped !== false));
 }
 
 const DEVICE_RADIUS_FEET = 30;
@@ -677,12 +605,6 @@ export function riderDefenseAdjust(actor, target, defenseType, ctx = {}) {
   if (isAttack && defenseType == 'toughness' && shields && target.system?.isMorphed
     && riderChoiceOf(shields) && riderChoiceOf(shields) == item?.system?.damageType) {
     adjust += 3;
-  }
-
-  // Bot-Hunter (A Jump Through Time, p.54): "Gain +1 to all Defenses against the actions of robotic
-  // Threats."
-  if (isRobotic(actor) && actor.type != 'playerCharacter' && actorHasPerk(target, RIDER.botHunter)) {
-    adjust += 1;
   }
 
   // A Hint of Independence's Vulnerability: "Choose a damage type, your Toughness Defense is halved
@@ -816,7 +738,8 @@ export function buildRiderContext(actor, item, dataset, options, consumes = []) 
 
   return {
     spec,
-    itemUuid: item?.uuid ?? null,
+    // A roll launched by an item's Use carries that item's uuid in its dataset (rules/steps.mjs roll).
+    itemUuid: item?.uuid ?? dataset?.itemUuid ?? null,
     itemSource: sourceOf(item) ?? null,
     weaponId: weapon?.id ?? null,
     weaponSource: sourceOf(weapon) ?? null,
@@ -854,6 +777,11 @@ export async function applyRollRiders(actor, results, checkContext, { isCrit = f
   for (const consume of rider.consumes ?? []) {
     if (consume.companionKey || consume.rightHandsShield || consume.leaveItToMe) {
       await consumeSocial(consume);
+      continue;
+    }
+
+    // Rule-banked bonuses were already spent when the roll was made (dice.mjs, next to clearPendingBonus).
+    if (['rulesBank', 'rulesLimit'].includes(consume.ext)) {
       continue;
     }
 
@@ -1011,16 +939,6 @@ async function scapegoatHangUp(hits) {
 /* -------------------------------------------- */
 /*  After an attack                              */
 /* -------------------------------------------- */
-
-const CRIT_WEAPON_OPTIONS = {
-  // Mauler (Decepticon Directive p.73): "Alternate Effects: 1 Strength Essence damage".
-  [RIDER.mauler]: { key: 'mauler', essence: 'strength' },
-  // Arm Claws (Across the Stars p.86): "Critical Effect: Stun 2".
-  [RIDER.armClaws]: { key: 'armClaws', damageValue: 2, damageType: 'stun' },
-  // Chest Blast (Across the Stars p.86): "Critical Effect: Make an additional Chest Blast Attack
-  // immediately against the same target (maximum of 2 additional Attacks per turn)".
-  [RIDER.chestBlast]: { key: 'chestBlast', rider: 'bonusAttack' },
-};
 
 async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
   const localize = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
@@ -1223,14 +1141,11 @@ async function conditionRiders(actor, target, result, rider) {
  */
 function critRiders(actor, target, result, rider) {
   const own = [];
-  const weaponOption = CRIT_WEAPON_OPTIONS[rider.weaponSource] ?? CRIT_WEAPON_OPTIONS[rider.itemSource];
-  if (weaponOption?.essence) {
-    own.push({ key: weaponOption.key, label: game.i18n.localize(CONFIG.E20.essences?.[weaponOption.essence] ?? weaponOption.essence), damageValue: 1, damageType: 'special', essence: weaponOption.essence });
-  } else if (weaponOption?.rider) {
-    own.push({ key: weaponOption.key, label: game.i18n.localize('E20.ChestBlastCrit'), damageValue: 1, damageType: 'special', rider: weaponOption.rider });
-  } else if (weaponOption) {
-    own.push({ key: weaponOption.key, label: game.i18n.localize(CONFIG.E20.damageTypes[weaponOption.damageType]), damageValue: weaponOption.damageValue, damageType: weaponOption.damageType });
-  }
+  // Mauler, Arm Claws, Chest Blast, Blazing Strikes, Machinist Revolutionary, Monster Hunter and
+  // Ravaging Critical are CriticalOption item rules (rules/adapter.mjs#ruleCriticalOptions).
+  const item = rider.itemUuid ? globalThis.fromUuidSync?.(rider.itemUuid) ?? null : null;
+  const fromRules = ruleCriticalOptions(actor, target, item);
+  own.push(...fromRules.options);
 
   // Genetic Decoding (Cobra Codex, Test Subject, 17th level, p.65): "Choose an Essence Score. Your
   // attacks gain an Alternate Effect that deals 1 damage to that Essence Score."
@@ -1242,24 +1157,6 @@ function critRiders(actor, target, result, rider) {
     }
   }
 
-  // Blazing Strikes - its unarmed strikes "gain 'Critical Effect: Next ally gains ↑2 against this
-  // foe'".
-  if (rider.isUnarmed && actor.getFlag?.('essence20', 'blazingStrikesActive')) {
-    own.push({ key: 'blazingStrikes', label: game.i18n.localize('E20.BlazingStrikesCrit'), damageValue: 2, damageType: 'special', rider: 'blazingStrikes' });
-  }
-
-  // Machinist Revolutionary: "Your Attack Skill Tests against Machine Empire creatures gain the
-  // following Critical Effect: 'Target is stunned until the end of your next turn.'"
-  if (isMachineEmpire(target) && actorHasPerk(actor, RIDER.machinistRevolutionary)) {
-    own.push({ key: 'machinist', label: nameOf(actor, RIDER.machinistRevolutionary, 'Machinist Revolutionary'), damageValue: 1, damageType: 'special', status: 'stunned' });
-  }
-
-  // Monster Hunter: "Your Attack Skill Tests targeting a non-humanoid gain the following: 'Critical
-  // Effect: Target suffers Snag on their next Attack Skill Test.'"
-  if (isNonHumanoid(target) && actorHasPerk(actor, RIDER.monsterHunter)) {
-    own.push({ key: 'monsterHunter', label: game.i18n.localize('E20.MonsterHunterCrit'), damageValue: 1, damageType: 'special', rider: 'nextAttackSnag' });
-  }
-
   result.criticalOptions = [...(result.criticalOptions ?? []), ...own.map(option => ({
     ...option,
     damageTypeLabel: option.damageTypeLabel ?? (option.essence
@@ -1268,17 +1165,12 @@ function critRiders(actor, target, result, rider) {
         : game.i18n.localize(CONFIG.E20.damageTypes?.[option.damageType] ?? option.damageType)),
   }))];
 
-  // Ravaging Critical (GI Joe CRB, Blitzer, 8th level, p.97): "when you have a critical success on a
-  // Might melee attack roll or an attack within 30 feet, your critical effects increase one step."
-  // A step is one more point of the effect.
-  if (actorHasPerk(actor, RIDER.ravagingCritical) && (isMightMelee(rider) || withinFeet(actor, target, 30))) {
+  // A step is one more point of a damage option (never an Essence, Condition or effect one).
+  if (fromRules.improve > 0) {
+    const by = fromRules.improvedBy.join(', ');
     result.criticalOptions = result.criticalOptions.map(option => (option.essence || option.status || option.rider
-      ? option : { ...option, damageValue: option.damageValue + 1, label: `${option.label} (${nameOf(actor, RIDER.ravagingCritical, 'Ravaging Critical')})` }));
+      ? option : { ...option, damageValue: option.damageValue + fromRules.improve, label: `${option.label} (${by})` }));
   }
-}
-
-function isMightMelee(rider) {
-  return rider.style == 'melee' && rider.skill == 'might';
 }
 
 function withinFeet(actor, target, feet) {
@@ -1484,43 +1376,6 @@ async function spellRiders(actor, hits, checkContext) {
     return;
   }
 
-  // Bellowbreath (Knights of Canterlot p.49): "If you use it on an unwilling subject, they must
-  // succeed at a DIF 15 Brawn Skill Test or be knocked prone."
-  if (spell == RIDER.bellowbreath) {
-    await postSaveCard(actor, targetsOrHits(hits), { title, skills: ['brawn'], dif: 15, status: 'prone' });
-  }
-
-  // Big Honking Boom (p.46): "Those are standing next to you are knocked Prone for 1 round unless
-  // they succeed at a DIF 12 Brawn Skill Test."
-  if (spell == RIDER.bigHonkingBoom) {
-    const { getAllNearbyTokens } = await import("./allies.mjs");
-    await postSaveCard(actor, getAllNearbyTokens(actor, 5).map(t => t.actor), { title, skills: ['brawn'], dif: 12, status: 'prone', rounds: 1 });
-  }
-
-  // Lullaby (p.50): "Everyone in the area that hears this lullaby must succeed at a DIF 15 Alertness
-  // Skill Test or slip gently into slumber... For the next four rounds... they have the Asleep
-  // condition." 60 feet.
-  if (spell == RIDER.lullaby) {
-    const { getAllNearbyTokens } = await import("./allies.mjs");
-    await postSaveCard(actor, getAllNearbyTokens(actor, 60).map(t => t.actor), { title, skills: ['alertness'], dif: 15, status: 'asleep', rounds: 4 });
-  }
-
-  // Flower Power (p.46): "Each time a pony brushes up against this plant, or for each round they are
-  // in the area it suddenly grows, they suffer 1 Sharp damage. Anyone in the area of effect must
-  // also make a DIF 12 Acrobatics Skill Test to get out of the way or be trapped inside the
-  // briars. Trapped characters ... make a DIF 10 Brawn Skill Test each round to climb out, taking
-  // another 1 Sharp damage for each attempt they make."
-  if (spell == RIDER.flowerPower) {
-    const caught = targetsOrHits(hits);
-    await postSaveCard(actor, caught, {
-      title, skills: ['acrobatics'], dif: 12, status: 'restrained', damageAlways: { value: 1, type: 'sharp' },
-    });
-    await postSaveCard(actor, caught, {
-      title: game.i18n.format('E20.FlowerPowerEscape', { spell: title }), skills: ['brawn'], dif: 10, status: 'restrained',
-      removeOnSuccess: true, damageAlways: { value: 1, type: 'sharp' },
-    });
-  }
-
   // Scarefying Appearance (p.51): "Threats of the same or smaller size categories as you gain the
   // Frightened condition unless they can succeed at a DIF 14 Intimidation Skill Test. You can also
   // pick two of the following benefits".
@@ -1533,14 +1388,6 @@ async function spellRiders(actor, hits, checkContext) {
     await postSaveCard(actor, threats, { title, skills: ['intimidation'], dif: 14, status: 'frightened' });
     await pickScarefyingBenefits(actor, title);
   }
-}
-
-function targetsOrHits(hits) {
-  if (hits.length) {
-    return hits.map(h => h.target);
-  }
-
-  return [...(game.user?.targets ?? [])].map(token => token.actor).filter(Boolean);
 }
 
 const SCAREFYING_FLAG = 'scarefyingBenefits';
@@ -1994,26 +1841,6 @@ export async function useRider(item, economy) {
     }
 
     await rollShove(actor, { bowlOver: true });
-    return null;
-  }
-
-  // Power Quake (PR CRB, Grid Power, p.100): "While Morphed, you can take an action to punch the
-  // ground and spend 1 to 3 Power to send a tremor out in a 15' radius, radiating from you. Every
-  // creature or vehicle caught in the area must pass a Athletics or Acrobatics Skill Test or be
-  // knocked Prone. The DIF for this test is equal to 12 plus 3 for each Power spent."
-  case 'powerQuake': {
-    const available = Number(actor.system?.powers?.personal?.value) || 0;
-    const spent = Number(await pickFrom(item.name, [1, 2, 3].filter(n => n <= available)
-      .map(n => ({ value: String(n), label: game.i18n.format('E20.PowerQuakeSpend', { n, dif: 12 + 3 * n }) }))));
-    if (!spent || !(await pay('standard'))) {
-      return null;
-    }
-
-    await actor.update({ 'system.powers.personal.value': available - spent });
-    const { getAllNearbyTokens } = await import("./allies.mjs");
-    await postSaveCard(actor, getAllNearbyTokens(actor, 15).map(t => t.actor), {
-      title: item.name, skills: ['athletics', 'acrobatics'], dif: 12 + 3 * spent, status: 'prone',
-    });
     return null;
   }
 

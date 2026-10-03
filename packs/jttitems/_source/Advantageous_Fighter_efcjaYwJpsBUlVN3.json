@@ -5,6 +5,7 @@
   "_id": "efcjaYwJpsBUlVN3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:skill:finesse>=d4","self:skill:might>=d4"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: on a melee attack that goes ahead with Edge, any Downshift above ↓2 is cut to ↓2 as the roll is made, so the chat card never shows more than ↓2.</p>"

@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Bureaucrat: help gives an Edge","side":"give","effect":"boost","edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you Lend Assistance on a Skill Test, the ally's bonus is both Edge and ↑1 instead of just the ↑1; both are already set when their Roll Options Dialog opens for that Skill.</p>"

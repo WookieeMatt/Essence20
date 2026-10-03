@@ -5,6 +5,9 @@
   "_id": "4M5y5ZcO5DNlnqwK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","self:morphed","item:data:system.classification.skill=finesse"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect (while Morphed): Resistance to Blunt and Sharp damage and Edge on Speed tests. Automatic: while Morphed, your Finesse attacks deal +1 damage, shown on the attack's chat card as \"Includes +1 from Yellow Ranger Prime\".</p>"

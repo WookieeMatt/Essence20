@@ -5,6 +5,7 @@
   "_id": "hPUmdnAN0FjRaal3",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["host:trait:burstFire","host:trait:reload"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per scene, the weapon skips a reload.</p>"

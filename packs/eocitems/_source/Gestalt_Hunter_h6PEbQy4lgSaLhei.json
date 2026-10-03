@@ -5,6 +5,7 @@
   "_id": "h6PEbQy4lgSaLhei",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:targeting>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: when you target a Combiner and focus on one component, you take ↓1 instead of the usual Snag.</p>"

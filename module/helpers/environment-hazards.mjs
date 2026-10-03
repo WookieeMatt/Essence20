@@ -87,7 +87,7 @@ const SCUBA_GEAR_ITEM_ID = "cZpeYK7VoLJKGKL6";
  * @private
  */
 function _isFrom(item, sourceIds) {
-  const source = item?._stats?.compendiumSource ?? item?.flags?.core?.sourceId;
+  const source = item?._stats?.compendiumSource ?? item?.flags?.core?.sourceId ?? item?.flags?.essence20?.rulesSource;
   return !!source && sourceIds.includes(source);
 }
 
@@ -181,7 +181,7 @@ export function getEnvironmentProtection(actor, environment) {
   }
 
   if (['thickAtmosphere', 'thinAtmosphere'].includes(environment)
-    && _hasEquippedGear(actor, item => (item._stats?.compendiumSource ?? item.flags?.core?.sourceId ?? '').endsWith(`.Item.${SCUBA_GEAR_ITEM_ID}`))) {
+    && _hasEquippedGear(actor, item => (item._stats?.compendiumSource ?? item.flags?.core?.sourceId ?? item?.flags?.essence20?.rulesSource ?? '').endsWith(`.Item.${SCUBA_GEAR_ITEM_ID}`))) {
     return game.i18n.localize('E20.EnvironmentProtectionBreathingGear');
   }
 

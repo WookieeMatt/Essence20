@@ -5,6 +5,9 @@
   "_id": "z38SPXkEqeuxuypj",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a Power Rangers Role Perk","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickPerk","from":"role","line":"pr","notAdvanced":true,"maxLevel":"@level - 3","excludeName":"extra attack|general perk|grid power|zord"},{"do":"setToggle","key":"granted","value":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a Role Perk from a standard Power Rangers Role at least 3 levels below yours (not Extra Attack, General Perk, Grid Power or Zord) and add it to your sheet.</p>"

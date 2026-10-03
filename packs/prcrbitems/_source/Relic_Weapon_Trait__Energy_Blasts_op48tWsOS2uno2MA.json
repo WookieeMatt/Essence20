@@ -5,6 +5,7 @@
   "_id": "op48tWsOS2uno2MA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Grid Relic Weapon"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: three blasts per day with a Reach of 100 feet and ↑1 to hit.</p>"

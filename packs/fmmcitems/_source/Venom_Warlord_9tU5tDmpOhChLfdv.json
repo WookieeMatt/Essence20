@@ -5,6 +5,9 @@
   "_id": "9tU5tDmpOhChLfdv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Venom Warlord","when":["attack:unarmed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: attacks with your natural Reach deal +1 damage, shown on the chat card as \"Includes +1 from Venom Warlord\". Use button: spend 1 Personal Power to remove a Condition from yourself.</p>"

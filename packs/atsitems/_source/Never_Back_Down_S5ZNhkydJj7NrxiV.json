@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:data:system.conditioning>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 Health.</p>"

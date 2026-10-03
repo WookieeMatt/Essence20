@@ -5,6 +5,10 @@
   "_id": "IZeAhxUAZkdehxAF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a Perk from your Branch","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickPerk","from":"branch","maxLevel":"@level"},{"do":"setToggle","key":"granted","value":true}]}
+    ],
+    "prerequisites": {"when":["self:has:Branch Leader"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick one Role Perk from your Branch that you have the level for; it is added to your sheet.</p>"

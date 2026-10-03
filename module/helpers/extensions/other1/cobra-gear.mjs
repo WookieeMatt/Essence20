@@ -7,14 +7,13 @@ import { getSceneEpoch } from "../../scene-clock.mjs";
 import { CC, T, findSourced, isFrom, itemsOf, parentWeapon, post, sourceOf } from "./shared.mjs";
 
 /**
- * Cobra Codex gear and Perks: Dielectric/Insulator against Electromagnetic attacks, Poison
- * Resistance, the Deflecting Weapon upgrades, Shield Fighter's Element, Onslaught and the
- * Disenfranchised Hang-Up's Willpower check.
+ * Cobra Codex gear and Perks: Dielectric/Insulator against Electromagnetic attacks, the Deflecting
+ * Weapon upgrades, Shield Fighter's Element, Onslaught and the Disenfranchised Hang-Up's Willpower
+ * check. (Poison Resistance is its own item rule.)
  */
 export const O1_CC = {
   dielectric: CC('A36q5SNroIR8xoyd'),
   insulator: CC('AMIKCJX1DDz1sLVb'),
-  poisonResistance: CC('TLTJHkOpPC07D2dB'),
   limitedDeflecting: CC('KFoF9nEHJrRaJzZA'),
   standardDeflecting: CC('Z1OIoelOdyUdtyl7'),
   shieldFighter: CC('MRbKuQlNI2tOfpLM'),
@@ -103,28 +102,6 @@ registerRollSources((actor, target, ctx) => {
   }
 
   return { sources };
-});
-
-/* -------------------------------------------- */
-/*  Poison Resistance                            */
-/* -------------------------------------------- */
-
-// Poison Resistance (Cobra Codex, battledress upgrade, p.101): "You are Resistant to poison effects."
-// Resistance is a Snag on the attack that would apply it (GI Joe CRB p.170) - the same shape as Air
-// Supply's inhaled-poison Resistance (helpers/target-riders.mjs).
-registerRollSources((actor, target, ctx) => {
-  const item = ctx?.item;
-  if (!target || !ctx?.isAttack || !wears(target, O1_CC.poisonResistance)) {
-    return null;
-  }
-
-  const weapon = parentWeapon(actor, item);
-  if (!weapon?.system?.isPoison && item?.system?.damageType != 'poison') {
-    return null;
-  }
-
-  const upgrade = itemsOf(target).find(i => sourceOf(i) == O1_CC.poisonResistance);
-  return { sources: [{ id: 'o1PoisonResistance', label: upgrade?.name ?? 'Poison Resistance', snag: true }] };
 });
 
 /* -------------------------------------------- */

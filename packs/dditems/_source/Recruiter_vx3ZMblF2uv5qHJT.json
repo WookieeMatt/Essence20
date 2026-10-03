@@ -5,6 +5,9 @@
   "_id": "vx3ZMblF2uv5qHJT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Recruiter","when":[{"any":["skill:deception","skill:persuasion"]}],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your Deception and Persuasion Tests open the Roll Options Dialog with Edge already selected.</p><p>Left to the table: switch it back to Normal when you have nothing to barter.</p>"

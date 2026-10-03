@@ -13,7 +13,7 @@ const BOOSTED_VIGOR_HEALTH_BONUS = 3;
  */
 export function hasPhantomFocusOption(actor, option) {
   return !!actor?.items?.some(item => {
-    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
     return sourceId == PHANTOM_FOCUS_ID && item.system.choice == option;
   });
 }

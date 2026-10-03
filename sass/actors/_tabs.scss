@@ -209,6 +209,12 @@
   mask-border-slice: var(--e20-theme-accent-slice, 15);
   mask-border-width: 22px;
   mask-border-repeat: stretch;
+  /* Firefox supports neither mask-border nor -webkit-mask-box-image, so the mask above is dropped and
+     this overlay would paint as a solid block over the content. There, draw a plain accent border instead. */
+  @supports not ((-webkit-mask-box-image-source: none) or (mask-border-source: none)) {
+    background-color: transparent;
+    border: 2px solid var(--e20-system-color, var(--e20-theme-accent));
+  }
 }
 
 /* Needs to match the specificity of the `.sheet-header .profile-img` border shorthand

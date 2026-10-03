@@ -5,6 +5,7 @@
   "_id": "Bu1RZJu2q1o9mESr",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:ballistic"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon it's attached to gains Armor Piercing, so its attacks ignore Deflective armor bonuses to Toughness.</p>"

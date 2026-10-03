@@ -8,8 +8,6 @@ export const Q1 = {
   dangerSense: 'Compendium.essence20.across_the_stars.Item.lwzD2ZvCLLf8PGRF',
   // Cobra Codex, Firestarter Ranger, 10th level, p.58
   ignite: 'Compendium.essence20.cobra_codex.Item.zherN6ArBKv6wyGc',
-  // Cobra Codex, Jungle Division, p.74
-  minimalists: 'Compendium.essence20.cobra_codex.Item.38e9TBYm8XB4pGoj',
   // Decepticon Directive
   addictedDarkEnergon: 'Compendium.essence20.decepticon_directive.Item.e3c7wuCA7JQS7rTA',
   bestLaidPlans: 'Compendium.essence20.decepticon_directive.Item.qsISoMxGSAu6D2m2',
@@ -17,10 +15,8 @@ export const Q1 = {
   // Field Guide to Action and Adventure
   nobility: 'Compendium.essence20.field_guide_action_adventure.Item.gdWzwO7FpX9QOFQF',
   service: 'Compendium.essence20.field_guide_action_adventure.Item.T7oYyl70KYmFT1lt',
-  standardWeaponTraining: 'Compendium.essence20.field_guide_action_adventure.Item.eDycLymLyvCZIrei',
   // G.I. Joe CRB
   domeGenerator: 'rrJ1kpQfk0627aJq',
-  ifItShoots: 'Compendium.essence20.gi_joe_crb.Item.NUiyY9qOCPmuyjQN',
   tenacity: 'Compendium.essence20.gi_joe_crb.Item.dyjdCTOs83bLiCxC',
   // Ferocious Fighters
   megaTrainingRegimen: 'Compendium.essence20.ferocious_fighters.Item.nLT8HSCCGWEBiRlq',
@@ -40,13 +36,8 @@ export const Q1 = {
 
 /** Upgrades, by compendium _id (the same upgrade is reprinted under one _id across books). */
 export const Q1_UPGRADE = {
-  microtechWeapon: 'ihSql0Px1kNgTBfP',
-  microtechBattledress: 'ERqpa98s445vypnL',
   organicArmor: 'W6fiSzyPOE2VGj8k',
   biomechanicalWeapon: '7qniIaOGp8Mqwt6O',
-  pythonized: 'CaYTsrxD2JEs2dQM',
-  traumatic: 'zXPxC1yLlK2xgGEl',
-  antiVenom: '3X0MqAV7JsYEiv5A',
   acclimating: 'HSmtPttbJvaNy5Tf',
   silentBattledress: 'nftZIaQ3MVn2nviU',
   silencer: 'rSP76BWjYaifJLIZ',
@@ -55,7 +46,7 @@ export const Q1_UPGRADE = {
 export const SILENCER_UUID = `Compendium.essence20.gi_joe_crb.Item.${Q1_UPGRADE.silencer}`;
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 /** The trailing 16-char _id of a compendium uuid (or the id itself). */

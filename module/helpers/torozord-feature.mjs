@@ -63,7 +63,7 @@ export async function grantTorozordFeature(actor, perk) {
  */
 export async function buildTorozordFeatureChoices(zord) {
   const alreadyHeldSourceIds = new Set(
-    zord.items.map(item => item.flags.core?.sourceId ?? item._stats?.compendiumSource),
+    zord.items.map(item => item.flags.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource),
   );
 
   const choices = {};

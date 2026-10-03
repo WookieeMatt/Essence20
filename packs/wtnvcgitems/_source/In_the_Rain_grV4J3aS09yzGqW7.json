@@ -5,6 +5,9 @@
   "_id": "grV4J3aS09yzGqW7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"In the Rain","when":[{"any":["roll:shove","item:damageType:knocProne","item:damageType:maneuver"]},"roll:downshifted"],"upshift":1}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: when a Shove, Trip or Maneuver has a ↓ on it, ↑1 cancels the first ↓1, labelled In the Rain in the Roll Options Dialog.</p><p>Left to the table: ignoring weather penalties to visibility.</p>"

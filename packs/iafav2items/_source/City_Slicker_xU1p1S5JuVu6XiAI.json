@@ -5,6 +5,11 @@
   "_id": "xU1p1S5JuVu6XiAI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"City Slicker","when":["skill:alertness"],"upshift":1},
+      {"type":"DialogSwitch","forget":true,"label":"Roll Streetwise instead (City Slicker)","when":["skill:infiltration"],"useSkill":"streetwise"}
+    ],
+    "prerequisites": {"when":["self:skill:streetwise>=d4"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: a switch to use your Streetwise die for Infiltration (ticked for you on urban terrain). Automatic: ↑1 on Alertness tests.</p><p>Left to the table: the Alertness bonus is only meant for large crowds.</p>"

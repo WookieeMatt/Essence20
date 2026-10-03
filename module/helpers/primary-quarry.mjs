@@ -54,5 +54,5 @@ export function checkPrimaryQuarry(actor, target) {
   // (helpers/target-riders.mjs).
   return actor?.getFlag?.('essence20', PRIMARY_QUARRY_FLAG) == target.uuid
     || (actor?.getFlag?.('essence20', 'secondaryQuarryUuid') == target.uuid
-      && !!actor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == SECONDARY_MARK_ID));
+      && !!actor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == SECONDARY_MARK_ID));
 }

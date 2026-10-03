@@ -1,7 +1,8 @@
 import { jest } from '@jest/globals';
+import { existsSync, readdirSync, readFileSync } from 'fs';
 import {
   applyToVehicle, applyToVehicleEffect, canUseDrivingForIntimidation, canUseVehicleUpgrade, crewSources, defenderSources,
-  driverDefenseBonus, getCrewedVehicle, isSealedAboard, jammingRadiusFeet, reduceVehicleDamage, spendDefenderSources, tryRedundantBackups,
+  getCrewedVehicle, isSealedAboard, jammingRadiusFeet, reduceVehicleDamage, spendDefenderSources,
   useVehicleUpgrade, usesVehicleTargeting, vehicleWeaponTraits, VU,
 } from './vehicle-upgrades.mjs';
 import {
@@ -73,24 +74,16 @@ beforeEach(() => {
 });
 
 describe("the vehicle's own numbers", () => {
-  test("plating, shocks, granted traits, Lead Lining, a chosen resistance", () => {
-    const vehicle = makeVehicle([
-      vUpgrade(VU.armorPlating), vUpgrade(VU.enhancedShocks), vUpgrade(VU.artificialIntelligence), vUpgrade(VU.leadLining),
-      vUpgrade(VU.energyResistant, { flags: { essence20: { elementChoice: 'fire' } } }),
-    ]);
+  test("a chosen resistance", () => {
+    const vehicle = makeVehicle([vUpgrade(VU.energyResistant, { flags: { essence20: { elementChoice: 'fire' } } })]);
     applyToVehicle(vehicle);
-    expect(vehicle.system.defenses.toughness.total).toBe(11);
-    expect(vehicle.system.defenses.evasion.total).toBe(11);
-    expect(vehicle.system.traits.ai).toBe(true);
-    expect(vehicle.system.traits.computerized).toBe(false);
     expect(vehicle.system.resistances.fire).toBe(true);
   });
 
-  test("Movement: rocket fuel doubles, Optimized Seating takes 10ft and doubles passengers", () => {
+  test("Movement: rocket fuel doubles, Optimized Seating takes 10ft", () => {
     const vehicle = makeVehicle([vUpgrade(VU.nitroFuel), vUpgrade(VU.optimizedSeating)]);
     applyToVehicle(vehicle);
     expect(vehicle.system.movement.ground.total).toBe(110);
-    expect(vehicle.system.crew.numPassengers).toBe(4);
   });
 
   test("ECM and Afterburners while switched on", async () => {
@@ -112,33 +105,31 @@ describe("the vehicle's own numbers", () => {
 });
 
 describe("crew and defenders", () => {
-  test("a driver gets the vehicle's Racing Stripes and the Early-Warning Alarm; Kill Counter lends Driving", () => {
-    const vehicle = makeVehicle([vUpgrade(VU.racingStripes), vUpgrade(VU.earlyWarningAlarm), vUpgrade(VU.killCounter)], {
+  test("a driver crews the vehicle; Kill Counter lends Driving", () => {
+    const vehicle = makeVehicle([vUpgrade(VU.killCounter)], {
       actors: { a: { uuid: 'Actor.d', vehicleRole: 'driver' } },
     });
     game.actors = [vehicle];
     const driver = { uuid: 'Actor.d' };
 
     expect(getCrewedVehicle(driver).role).toBe('driver');
-    expect(crewSources(driver, 'initiative', null).map(s => s.shiftUp)).toEqual([2]);
-    expect(driverDefenseBonus(driver)).toEqual({ willpower: 1, cleverness: 0 });
     expect(canUseDrivingForIntimidation(driver)).toBe(true);
   });
 
-  test("Stealthy offers ↑1 and a stationary ↑1; the vehicle's own Might gets the Titanium Chassis", () => {
-    const vehicle = makeVehicle([vUpgrade(VU.stealthy), vUpgrade(VU.titaniumChassis)]);
-    expect(crewSources(vehicle, 'infiltration', null).length).toBe(2);
-    expect(crewSources(vehicle, 'might', null).map(s => s.id)).toContain(VU.titaniumChassis);
+  test("Treads give Edge on Driving in Rough Terrain only", () => {
+    const vehicle = makeVehicle([vUpgrade(VU.treads)]);
+    expect(crewSources(vehicle, 'driving', null, { inRoughTerrain: true }).map(s => s.edge)).toEqual([true]);
+    expect(crewSources(vehicle, 'driving', null)).toEqual([]);
   });
 
-  test("Ablative Armor, JAFF once per combat, Shielded counting", async () => {
-    const vehicle = makeVehicle([vUpgrade(VU.ablativeArmor), vUpgrade(VU.jaff)], { shieldedRating: 1 });
+  test("Shielded counting", async () => {
+    const vehicle = makeVehicle([], { shieldedRating: 1 });
     const shot = { type: 'weaponEffect', system: { damageType: 'sharp', classification: { style: 'projectile' } } };
     const sources = defenderSources({}, shot, vehicle, { weaponTraits: ['computerized'] });
-    expect(sources.map(s => s.id)).toEqual(['ablativeArmor', 'jaff', 'shielded']);
+    expect(sources.map(s => s.id)).toEqual(['shielded']);
 
     await spendDefenderSources(vehicle, sources);
-    expect(defenderSources({}, shot, vehicle, { weaponTraits: ['computerized'] }).map(s => s.id)).toEqual(['ablativeArmor']);
+    expect(defenderSources({}, shot, vehicle, { weaponTraits: ['computerized'] })).toEqual([]);
   });
 
   test("Spiked costs a melee attacker ↓1 - or 1 Sharp if they turn it down", () => {
@@ -147,10 +138,11 @@ describe("crew and defenders", () => {
     expect(spiked).toMatchObject({ shiftDown: 1, declinedDamage: { value: 1, type: 'sharp' } });
   });
 
-  test("a Pressurized Cabin keeps its crew from poison", () => {
-    const vehicle = makeVehicle([vUpgrade(VU.pressurizedCabin)], { actors: { a: { uuid: 'Actor.p' } } });
-    game.actors = [vehicle];
+  test("a sealed (pressurized) cabin keeps its crew from poison", () => {
+    const vehicle = makeVehicle([], { actors: { a: { uuid: 'Actor.p' } }, pressurized: 1 });
+    game.actors = [vehicle, makeVehicle([], { actors: { b: { uuid: 'Actor.q' } } })];
     expect(isSealedAboard({ uuid: 'Actor.p' })).toBe(true);
+    expect(isSealedAboard({ uuid: 'Actor.q' })).toBe(false);
   });
 });
 
@@ -161,14 +153,6 @@ describe("damage and Defeat", () => {
     expect((await reduceVehicleDamage(vehicle, 3, { style: 'explosive' })).amount).toBe(0);
     expect((await reduceVehicleDamage(vehicle, 3, { style: 'explosive' })).amount).toBe(1);
     expect((await reduceVehicleDamage(vehicle, 3, { style: 'projectile', damageType: 'sharp' })).amount).toBe(3);
-  });
-
-  test("Redundant Backups saves the vehicle once", async () => {
-    const vehicle = makeVehicle([vUpgrade(VU.redundantBackups)]);
-    vehicle.getFlag = (s, k) => vehicle.flags?.[s]?.[k];
-    expect(await tryRedundantBackups(vehicle)).toBe(true);
-    expect(vehicle.update).toHaveBeenCalledWith({ 'system.health.value': 1 });
-    expect(await tryRedundantBackups(vehicle)).toBe(false);
   });
 });
 
@@ -186,14 +170,14 @@ describe("Use buttons", () => {
     expect(canUseVehicleUpgrade(ecm)).toBe(false);
   });
 
-  test("Camo Netting toggles on and off", async () => {
-    const vehicle = makeVehicle();
-    const camo = { ...vUpgrade(VU.camoNetting), parent: vehicle };
-    vehicle.items.push(camo);
-    await useVehicleUpgrade(camo, { spend: jest.fn() });
-    expect(vehicle.flags.essence20.camoNetting).toBe(true);
+  test("Camo Netting switched on takes 10ft off Movement; Biotech adds 20ft Ground", () => {
+    const on = key => ({ flags: { essence20: { rules: { toggles: { [key]: true } } } } });
+    const vehicle = makeVehicle([vUpgrade(VU.camoNetting, on('camo'))]);
     applyToVehicle(vehicle);
     expect(vehicle.system.movement.ground.total).toBe(50);
+    const boosted = makeVehicle([vUpgrade(VU.biotechEnhancer, on('boost'))]);
+    applyToVehicle(boosted);
+    expect(boosted.system.movement.ground.total).toBe(80);
   });
 });
 
@@ -207,7 +191,21 @@ describe("jamming", () => {
 });
 
 describe("weapon and armor traits", () => {
-  const perkItem = uuid => ({ type: 'perk', flags: { core: { sourceId: uuid } } });
+  // A Perk built from its id carries that pack item's rules (WeaponTrait / Hardpoints), as a real copy inherits them.
+  let nextPerk = 1;
+  const perkItem = uuid => {
+    const id = String(uuid).split('.').pop();
+    let rules = [];
+    for (const dir of readdirSync('packs')) {
+      const src = `packs/${dir}/_source`;
+      const file = existsSync(src) ? readdirSync(src).find(name => name.endsWith(`_${id}.json`)) : null;
+      if (file) {
+        rules = JSON.parse(readFileSync(`${src}/${file}`, 'utf8')).system?.rules ?? [];
+      }
+    }
+
+    return { id: `perk${nextPerk++}`, type: 'perk', flags: { core: { sourceId: uuid } }, system: { rules } };
+  };
 
   test("Demolisher gives Wrecker, Fireball gives fire weapons Anti-Tank, a customized weapon is Temperamental", () => {
     const actor = { items: [perkItem(TRAIT_PERK.demolisher), perkItem(TRAIT_PERK.fireball)] };

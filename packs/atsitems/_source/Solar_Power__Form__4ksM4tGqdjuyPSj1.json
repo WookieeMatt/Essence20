@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:level>=12"]},
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Resists Cold and Energy (Solar Power: Snag)","snag":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.4ksM4tGqdjuyPSj1","item:type:weaponEffect",{"any":["item:data:system.damageType=element","item:data:system.damageType=acid","item:data:system.damageType=cold","item:data:system.damageType=electric","item:data:system.damageType=emp","item:data:system.damageType=fire","item:data:system.damageType=laser","item:data:system.damageType=sonic"]}]},
+      {"type":"DialogSwitch","label":"Seeing through illusions or noticing the Void (Solar Power: Edge)","edge":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.4ksM4tGqdjuyPSj1","skill:alertness"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Pay 1 Personal Power when you Morph to activate the Form: Cold and Energy attacks on you take a Snag, your blaster adds 1 Fire damage, and your Power Weapon gets +1 damage in an Element you pick. Roll Options Dialog: Edge on Alertness against illusions.</p>"

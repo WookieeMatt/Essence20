@@ -5,6 +5,9 @@
   "_id": "N36G5U8c8HSX3e9c",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Easy In, Easy Out","scope":"incoming","when":["skill:alertness"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Alertness Tests made against you (with you targeted) take a Snag, labelled Easy In, Easy Out in the roller's Roll Options Dialog. When you use Disappear in combat, you stay invisible until the start of your next turn.</p>"

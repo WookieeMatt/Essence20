@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Basic Armor Training"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: your animal pet is trained in Medium armor.</p><p>Left to the table: treating the pet's armor as one step less available at requisition.</p>"

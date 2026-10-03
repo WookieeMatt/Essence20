@@ -5,6 +5,7 @@
   "_id": "yr4WwrEZHXsyfN1q",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Smarts d8"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: the drone acts on its own unless Commanded, and may take General Perks in place of Standard upgrades.</p>"

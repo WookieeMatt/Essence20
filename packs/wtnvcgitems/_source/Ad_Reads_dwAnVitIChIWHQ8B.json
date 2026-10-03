@@ -5,6 +5,7 @@
   "_id": "dwAnVitIChIWHQ8B",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:focus:Radio"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: Edge on Streetwise.</p><p>Left to the table: the Edge is meant only for tests about Night Vale deals, events and sacrifices, so switch the effect off otherwise.</p>"

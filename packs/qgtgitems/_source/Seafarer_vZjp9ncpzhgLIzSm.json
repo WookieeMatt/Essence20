@@ -5,6 +5,9 @@
   "_id": "vZjp9ncpzhgLIzSm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Seafarer (Driving at sea)","when":["skill:driving","vehicle:driving","vehicle:moves:swim"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you drive a vehicle with Aquatic Movement, Driving tests open the Roll Options Dialog with Edge selected; Athletics tests while underwater or swimming get Edge, shown as Seafarer next to Edge. Roll Options Dialog: a switch gives the Athletics Edge when you're swimming somewhere the system can't tell is water.</p>"

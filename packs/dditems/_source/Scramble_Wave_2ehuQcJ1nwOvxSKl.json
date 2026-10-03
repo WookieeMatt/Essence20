@@ -5,6 +5,9 @@
   "_id": "2ehuQcJ1nwOvxSKl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CriticalOption","status":"stunned"}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your attacks deal +1 Electromagnetic damage, and a Critical Success offers to Stun the target until the end of its next turn. Left to the table: the extra damage on attacks that already deal a second damage type.</p>"

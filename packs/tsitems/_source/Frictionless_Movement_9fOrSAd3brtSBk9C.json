@@ -5,6 +5,10 @@
   "_id": "9fOrSAd3brtSBk9C",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"all","stage":"adjust","op":"multiply","value":2,"label":"Active: every Movement doubled","when":["check:frictionlessMovement"]}
+    ],
+    "prerequisites": {"when":["self:hasType:influence:Mutant Beast"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (once per scene): doubles all your Movement, clearing at the end of your turn. Left to the table: keeping it through your next turn, and using it only in the Alt Mode you chose.</p>"

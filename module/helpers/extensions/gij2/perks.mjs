@@ -1,5 +1,5 @@
 import {
-  registerAfterDamage, registerApplyDialog, registerChatButton, registerChatDecorator, registerDerived, registerDialogToggles, registerPostRoll,
+  registerAfterDamage, registerChatButton, registerChatDecorator, registerDerived, registerPostRoll,
   registerPreRoll, registerRollSources, registerTurnStart, registerUse,
 } from "../../extensions.mjs";
 import { getUses, markUsed } from "../../scene-clock.mjs";
@@ -8,7 +8,7 @@ import { G2, T, escape, findSourced, hasItem, itemsOf, perkUseCard, post, source
 
 /**
  * GI JOE CRB Perks that needed a Use button, a roll hook or a follow-up reminder: Expert Knowledge,
- * Mentor, Martial Artist, Nose For Trouble, Machinesmith, En Passant, Duck & Cover's traps, Energy
+ * Mentor, Martial Artist, Nose For Trouble's Streetwise swap, Machinesmith, En Passant, Energy
  * Resistant, Queen's Gambit, BRRRRRRRRRRRRRRT's Sprint, Castling's move, Plan of Action's split and
  * Fearsome Presence's range, count and expiry.
  */
@@ -229,9 +229,6 @@ registerUse({
 /*  Nose For Trouble                             */
 /* -------------------------------------------- */
 
-export const NOSE_TRAPS = 'gij2NoseTraps';
-export const DUCK_TRAP = 'gij2DuckTrap';
-
 // Nose For Trouble (General Perk, p.132): "You may use Streetwise in place of Alertness to search for
 // clues or look for traps." Offered on a plain Alertness test when Streetwise is the better die (the
 // Initiative bullet is dice.mjs's own checkbox).
@@ -258,65 +255,6 @@ registerPreRoll(async (actor, dataset, item) => {
     dataset.essence = CONFIG.E20.skillToEssence.streetwise;
     dataset.isSpecialized = false;
   }
-});
-
-// Nose For Trouble: "You gain an Edge when setting or disarming traps." Duck & Cover (Infantry base,
-// p.80): "gain resistance to damage from explosives, traps, and other harmful area of effect attacks"
-// - dice.mjs gives the Snag against explosive and area weapons; a trap isn't a weapon the system can
-// see, so whoever rolls a trap's attack against a Duck & Cover holder ticks this box.
-export function perkToggles(actor, { item, rolledSkill } = {}) {
-  const toggles = [];
-  if (rolledSkill && hasItem(actor, G2.noseForTrouble)) {
-    toggles.push({ name: NOSE_TRAPS, label: T('E20.Gij2NoseTrapsToggle', { perk: findSourced(actor, G2.noseForTrouble).name }), type: 'checkbox' });
-  }
-
-  const explosive = item?.system?.classification?.style == 'explosive';
-  const duck = [...(game.user?.targets ?? [])].map(t => t.actor).find(target => hasItem(target, G2.duckAndCover));
-  if (duck && !explosive) {
-    toggles.push({ name: DUCK_TRAP, label: T('E20.Gij2DuckTrapToggle', { name: duck.name, perk: findSourced(duck, G2.duckAndCover).name }), type: 'checkbox' });
-  }
-
-  return toggles;
-}
-
-export function perkApplyDialog(actor, options) {
-  const ext = options?.ext ?? {};
-  if (ext[NOSE_TRAPS]) {
-    if (options.snag) {
-      options.snag = false;
-    } else {
-      options.edge = true;
-    }
-  }
-
-  if (ext[DUCK_TRAP]) {
-    if (options.edge) {
-      options.edge = false;
-    } else {
-      options.snag = true;
-    }
-  }
-}
-
-registerDialogToggles(perkToggles);
-registerApplyDialog(perkApplyDialog);
-
-// Nose For Trouble: "You may spend a Story Point to modify your location in a minor way, such as
-// adding an escape." The Use button spends the point; the GM describes the escape.
-registerUse({
-  id: 'gij2NoseEscape',
-  matches: item => sourceOf(item) == G2.noseForTrouble && !!item.parent,
-  run: async (item) => {
-    const actor = item.parent;
-    const { canSpendForActor, spendForActor } = await import("../../story-points.mjs");
-    if (!canSpendForActor(actor, 1)) {
-      ui.notifications.warn(T('E20.Gij2NoStoryPoint'));
-      return null;
-    }
-
-    await spendForActor(actor, 1);
-    return T('E20.Gij2NoseEscape', { name: actor.name, perk: item.name });
-  },
 });
 
 /* -------------------------------------------- */

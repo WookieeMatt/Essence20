@@ -5,6 +5,7 @@
   "_id": "aExhIUpfJTx6fJeU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Grid Relic Weapon"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: halving your Zord's summon time and ↑1 on its attacks.</p>"

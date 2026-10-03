@@ -1,5 +1,6 @@
 import { poolMax } from "./adapter.mjs";
 import { rulesOf, ruleState } from "./index.mjs";
+import { interpolate } from "./predicate.mjs";
 
 /**
  * What an item's rules do when it joins or leaves an actor (docs/RULES_ENGINE_PLAN.md §4):
@@ -15,7 +16,7 @@ import { rulesOf, ruleState } from "./index.mjs";
 const T = (key, data) => (data ? game.i18n.format(`E20.Rules.${key}`, data) : game.i18n.localize(`E20.Rules.${key}`));
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 /** The options a ChoiceSet offers: [{value, label}]. */
@@ -38,19 +39,22 @@ export function choiceOptions(rule) {
 /** Ask one ChoiceSet's question. Resolves to the value picked, or null if the dialog was closed. */
 export async function askChoice(rule, item) {
   const options = choiceOptions(rule);
-  if (!options.length) {
+  if (!options.length && rule.from != 'text') {
     return null;
   }
 
   const escape = text => String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   const current = ruleState(item).choices?.[rule.key];
-  const select = `<select name="choice">${options.map(o => `<option value="${escape(o.value)}"${o.value == current ? ' selected' : ''}>${escape(o.label)}</option>`).join('')}</select>`;
+  // `from: 'text'` - the player types the answer (a subject studied, a person named).
+  const select = rule.from == 'text'
+    ? `<input type="text" name="choice" value="${escape(current ?? '')}" autofocus>`
+    : `<select name="choice">${options.map(o => `<option value="${escape(o.value)}"${o.value == current ? ' selected' : ''}>${escape(o.label)}</option>`).join('')}</select>`;
   const { DialogV2 } = foundry.applications.api;
   return DialogV2.prompt({
     window: { title: `${item.name}: ${rule.label || rule.key}` },
     classes: ['essence20', 'e20-rules-choice'],
     content: `<p>${escape(T('ChoicePrompt', { name: rule.label || rule.key }))}</p><div class="form-group">${select}</div>`,
-    ok: { label: T('ChoiceConfirm'), callback: (event, button) => button.form.elements.choice.value },
+    ok: { label: T('ChoiceConfirm'), callback: (event, button) => button.form.elements.choice.value.trim() || null },
     rejectClose: false,
   }).catch(() => null);
 }
@@ -92,23 +96,42 @@ export async function grantData(item, actor, { load = uuid => fromUuid(uuid) } =
       continue;
     }
 
-    if (rule.skipIfOwned && owned.has(rule.uuid)) {
+    // "{choice.x}" - the item a ChoiceSet on this item picked (the choices are asked first).
+    const uuid = interpolate(String(rule.uuid), item);
+    if (!uuid || (rule.skipIfOwned && owned.has(uuid))) {
       continue;
     }
 
-    const source = await load(rule.uuid);
+    const source = await load(uuid);
     if (!source) {
       continue;
     }
 
     const data = source.toObject();
     delete data._id;
-    foundry.utils.setProperty(data, '_stats.compendiumSource', rule.uuid);
+    foundry.utils.setProperty(data, '_stats.compendiumSource', uuid);
     foundry.utils.setProperty(data, 'flags.essence20.grantedBy', item.id);
     created.push(data);
   }
 
   return created;
+}
+
+/**
+ * A granted weapon, armor or shield arrives with its own attached items - its attacks (weaponEffects)
+ * and upgrades - the same as dropping it on the sheet (helpers/grants.mjs#grantCopy does this too).
+ */
+export async function attachGrantedChildren(actor, created) {
+  const { createItemCopies } = await import("../sheet-handlers/attachment-handler.mjs");
+  for (const item of created ?? []) {
+    if (['armor', 'weapon'].includes(item?.type)) {
+      await createItemCopies(item.system?.items ?? {}, actor, 'upgrade', item);
+    }
+
+    if (['shield', 'weapon'].includes(item?.type)) {
+      await createItemCopies(item.system?.items ?? {}, actor, 'weaponEffect', item);
+    }
+  }
 }
 
 /** The ids of the items this item granted. */
@@ -129,8 +152,12 @@ async function onCreateItem(item, options, userId) {
 
   const grants = await grantData(item, actor);
   if (grants.length) {
-    await actor.createEmbeddedDocuments('Item', grants);
+    await attachGrantedChildren(actor, await actor.createEmbeddedDocuments('Item', grants));
   }
+
+  // The item's own 'added' Triggers (rules/triggers.mjs), once its state is set up.
+  const { fireItemAdded } = await import("./triggers.mjs");
+  await fireItemAdded(actor, item);
 }
 
 async function onDeleteItem(item, options, userId) {

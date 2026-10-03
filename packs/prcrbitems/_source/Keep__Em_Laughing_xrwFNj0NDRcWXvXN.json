@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Made people laugh","steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} adds a Story Point to the team's pool."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: add a Story Point to the pool whenever you make people laugh.</p>"

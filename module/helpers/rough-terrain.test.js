@@ -1,5 +1,7 @@
 import { jest } from '@jest/globals';
-import { ENVIRONMENT_EFFECT_PREFIX, ENVIRONMENT_REGION_BEHAVIOR_TYPE, ROUGH_TERRAIN_EFFECT } from './environment.mjs';
+import { readFileSync } from 'fs';
+import { ENVIRONMENT_EFFECT_PREFIX, ENVIRONMENT_REGION_BEHAVIOR_TYPE, ROUGH_TERRAIN_EFFECT, getTerrain } from './environment.mjs';
+import { setWorldLookups } from '../rules/predicate.mjs';
 import {
   resolveEnvironmentEffect,
   applyWreckerOnAutoFail, applyWreckerRoughTerrain, buildRoughTerrainRegionData, createRoughTerrainRegion, getTerrainCostMultiplier,
@@ -8,15 +10,18 @@ import {
 } from './rough-terrain.mjs';
 
 const perk = sourceId => ({ type: 'perk', flags: { core: { sourceId } } });
-const gear = sourceId => ({ type: 'gear', flags: { core: { sourceId } } });
+// An item carrying its pack's rules (MovementAction), the way a character's copy does.
+let ruledId = 1;
+const ruled = (file, type = 'perk') => ({ id: `ruled${ruledId++}`, type, flags: {}, system: { rules: JSON.parse(readFileSync(`packs/${file}`, 'utf8')).system.rules } });
+setWorldLookups({ terrain: actor => getTerrain(actor) });
 
 const ENVIRONMENTAL_EXPERTISE_ID = "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ";
-const OVER_THE_CANDLESTICK_ID = "Compendium.essence20.technorganic_secrets.Item.zKngKkwDyNv2nnH5";
-const SEWER_TUNNELER_ID = "Compendium.essence20.general_hawk_s_personel_files.Item.gCbl6p64cEJjF2eJ";
-const URBAN_JUNGLE_ID = "Compendium.essence20.cobra_codex.Item.wIesQd7U5W2azAWY";
+const OVER_THE_CANDLESTICK = 'tsitems/_source/Over_the_Candlestick_zKngKkwDyNv2nnH5.json';
+const SEWER_TUNNELER = 'ghpfitems/_source/Sewer_Tunneler_gCbl6p64cEJjF2eJ.json';
+const URBAN_JUNGLE = 'ccitems/_source/Urban_Jungle_wIesQd7U5W2azAWY.json';
 const FEET_WET_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7u3xCPPjxJlI7c61";
-const HARD_TREAD_WHEELS_ID = "Compendium.essence20.enigma_of_combination.Item.ia0rEwWo5WP1zH58";
-const CLAWED_FEET_ID = "Compendium.essence20.enigma_of_combination.Item.uDCcdAjDkKdDdlAm";
+const HARD_TREAD_WHEELS = 'eocitems/_source/Hard_Tread_Wheels_ia0rEwWo5WP1zH58.json';
+const CLAWED_FEET = 'eocitems/_source/Clawed_Feet_uDCcdAjDkKdDdlAm.json';
 
 // A scene tagged with a terrain and one token on it, optionally inside Rough Terrain.
 function makeTokenDoc({ terrain, rough = false, actor = null } = {}) {
@@ -54,7 +59,7 @@ describe("ignoresRoughTerrain", () => {
 
   test("Take Point and Over the Candlestick ignore it unconditionally", () => {
     expect(ignoresRoughTerrain(makeActor({ items: [perk(TAKE_POINT_ID)] }))).toBe(true);
-    expect(ignoresRoughTerrain(makeActor({ items: [perk(OVER_THE_CANDLESTICK_ID)] }))).toBe(true);
+    expect(ignoresRoughTerrain(makeActor({ items: [ruled(OVER_THE_CANDLESTICK)] }))).toBe(true);
   });
 
   test("Environmental Expertise ignores it in an environment of expertise", () => {
@@ -68,10 +73,10 @@ describe("ignoresRoughTerrain", () => {
   });
 
   test("Sewer Tunneler and Urban Jungle ignore it only on urban terrain", () => {
-    for (const id of [SEWER_TUNNELER_ID, URBAN_JUNGLE_ID]) {
-      expect(ignoresRoughTerrain(makeActor({ items: [perk(id)], terrain: 'urban' }))).toBe(true);
-      expect(ignoresRoughTerrain(makeActor({ items: [perk(id)], terrain: 'woodlands' }))).toBe(false);
-      expect(ignoresRoughTerrain(makeActor({ items: [perk(id)] }))).toBe(false);
+    for (const file of [SEWER_TUNNELER, URBAN_JUNGLE]) {
+      expect(ignoresRoughTerrain(makeActor({ items: [ruled(file)], terrain: 'urban' }))).toBe(true);
+      expect(ignoresRoughTerrain(makeActor({ items: [ruled(file)], terrain: 'woodlands' }))).toBe(false);
+      expect(ignoresRoughTerrain(makeActor({ items: [ruled(file)] }))).toBe(false);
     }
   });
 
@@ -81,9 +86,9 @@ describe("ignoresRoughTerrain", () => {
   });
 
   test("Hard Tread Wheels and Clawed Feet (gear) ignore it only in Alt Mode", () => {
-    for (const id of [HARD_TREAD_WHEELS_ID, CLAWED_FEET_ID]) {
-      expect(ignoresRoughTerrain(makeActor({ items: [gear(id)], transformed: true }))).toBe(true);
-      expect(ignoresRoughTerrain(makeActor({ items: [gear(id)], transformed: false }))).toBe(false);
+    for (const file of [HARD_TREAD_WHEELS, CLAWED_FEET]) {
+      expect(ignoresRoughTerrain(makeActor({ items: [ruled(file, 'gear')], transformed: true }))).toBe(true);
+      expect(ignoresRoughTerrain(makeActor({ items: [ruled(file, 'gear')], transformed: false }))).toBe(false);
     }
   });
 

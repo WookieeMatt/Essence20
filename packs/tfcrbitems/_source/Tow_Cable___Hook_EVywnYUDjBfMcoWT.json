@@ -5,6 +5,9 @@
   "_id": "EVywnYUDjBfMcoWT",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Pulling something on your tow cable (Tow Cable & Hook: Edge)","when":["skill:brawn","self:transformed"],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: adds the cable as a Grappler for Bot Mode, with ↑1 if you're trained with Grapplers. Roll Options Dialog: Edge on Brawn to pull a towed load in Alt Mode. Left to the table: the lower DIF steps for dragging extra weight.</p>"

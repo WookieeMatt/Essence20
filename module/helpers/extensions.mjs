@@ -31,6 +31,7 @@ const REGISTRY = {
   chatButtons: {},
   uses: [],
   costRules: [],
+  costRuleProviders: [],
   namedActions: {},
   spellCost: [],
   rerollGrants: [],
@@ -170,6 +171,12 @@ export const registerUse = use => REGISTRY.uses.push(use);
  * limit?, ask?}.
  */
 export const registerCostRule = rule => REGISTRY.costRules.push(rule);
+
+/**
+ * Cost rules that depend on the actor - fn(actor) => rules of the registerCostRule shape. The rules
+ * engine's ActionCost rules (rules/actions.mjs) come through here, one per rule on the actor's items.
+ */
+export const registerCostRuleProvider = fn => REGISTRY.costRuleProviders.push(fn);
 
 /**
  * A spell's casting cost, just before it's cast. async fn(item, cost, dataset) => new cost, or null to
@@ -328,8 +335,14 @@ export function findExtUse(item) {
   }) ?? null;
 }
 
-export function extCostRules() {
-  return REGISTRY.costRules;
+export function extCostRules(actor = null) {
+  if (!actor || !REGISTRY.costRuleProviders.length) {
+    return REGISTRY.costRules;
+  }
+
+  const provided = [];
+  each(REGISTRY.costRuleProviders, 'costRuleProviders', fn => provided.push(...(fn(actor) ?? [])));
+  return [...REGISTRY.costRules, ...provided];
 }
 
 export async function runSpellCost(item, cost, dataset) {

@@ -29,6 +29,11 @@ export function isItemActive(item) {
     return false;
   }
 
+  // A Hang-Up the Matured Perk lets its holder ignore (helpers/matured.mjs).
+  if (item.flags?.essence20?.maturedIgnored) {
+    return false;
+  }
+
   if (['armor', 'weapon', 'shield', 'gear'].includes(item.type) && !item.system?.isPowerArmor && item.system?.equipped === false) {
     return false;
   }
@@ -129,6 +134,28 @@ export function collectRules(actor) {
 
 const INDEX = Symbol('essence20.rules');
 
+/** Scopes that reach another actor (rules/links.mjs). */
+const LINKED = ['crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'];
+
+/**
+ * Ids of actors holding a rule that reaches another actor - so rules/links.mjs can skip its world
+ * scan entirely when no actor has one, which is the usual case.
+ */
+export const LINK_HOLDERS = new Set();
+
+function noteLinkHolder(actor, buckets) {
+  if (!actor?.id) {
+    return;
+  }
+
+  const has = Object.values(buckets).some(list => list.some(entry => LINKED.includes(entry.rule.scope)));
+  if (has) {
+    LINK_HOLDERS.add(actor.id);
+  } else {
+    LINK_HOLDERS.delete(actor.id);
+  }
+}
+
 /**
  * The actor's rule index, cached on the actor by the last derived-data pass (rules/adapter.mjs).
  * Built on demand when there isn't one yet (an actor no prepare has touched, a test double).
@@ -138,13 +165,19 @@ export function rulesIndex(actor) {
     return {};
   }
 
-  return actor[INDEX] ?? (actor[INDEX] = collectRules(actor));
+  if (!actor[INDEX]) {
+    actor[INDEX] = collectRules(actor);
+    noteLinkHolder(actor, actor[INDEX]);
+  }
+
+  return actor[INDEX];
 }
 
 /** Rebuild the cached index - called once per derived-data pass. */
 export function rebuildIndex(actor) {
   if (actor) {
     actor[INDEX] = collectRules(actor);
+    noteLinkHolder(actor, actor[INDEX]);
   }
 
   return actor?.[INDEX] ?? {};
@@ -168,5 +201,13 @@ export function ruleId(item, index) {
 
 /** The label a rule shows in the roll dialog's sources and switches. */
 export function ruleLabel(rule, item) {
-  return rule.label || item?.name || rule.type;
+  if (!rule.label) {
+    return item?.name || rule.type;
+  }
+
+  // "Studying {choice.subject}" - filled from the item's ChoiceSet picks; "…" until one is made.
+  return String(rule.label).replace(/\{(choice\.[\w-]+|item\.choice)\}/g, (match, ref) => {
+    const value = ref == 'item.choice' ? item?.system?.choice : item?.flags?.essence20?.rules?.choices?.[ref.slice(7)];
+    return value === undefined || value === null || value === '' ? '…' : String(value);
+  });
 }

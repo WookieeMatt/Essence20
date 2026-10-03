@@ -5,6 +5,7 @@
   "_id": "c3vKS59Bynt41oTk",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:data:system.traits.land","self:data:system.traits.sea"]},"self:data:system.traits.ram"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the vehicle's Ram attack deals 1 extra Sharp damage.</p>"

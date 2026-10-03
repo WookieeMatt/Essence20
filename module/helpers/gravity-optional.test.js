@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { getGravityOptionalHeight, isGravityOptionalActive, toggleGravityOptional } from './gravity-optional.mjs';
+import { isGravityOptionalActive, toggleGravityOptional } from './gravity-optional.mjs';
 
 global.game = { combat: null };
 
@@ -25,20 +25,6 @@ describe("isGravityOptionalActive", () => {
 
   test("false when the flag is unset", () => {
     expect(isGravityOptionalActive(makeActor({ active: false }))).toBe(false);
-  });
-});
-
-describe("getGravityOptionalHeight", () => {
-  test("5 feet at level 1", () => {
-    expect(getGravityOptionalHeight(makeActor({ level: 1 }))).toBe(5);
-  });
-
-  test("10 feet at level 5", () => {
-    expect(getGravityOptionalHeight(makeActor({ level: 5 }))).toBe(10);
-  });
-
-  test("15 feet at level 12", () => {
-    expect(getGravityOptionalHeight(makeActor({ level: 12 }))).toBe(15);
   });
 });
 

@@ -19,4 +19,8 @@ export const itemDescription = () => ({
   // Deliberately a list of plain objects, not a typed schema: the engine validates them
   // (rules/types.mjs#validateRule), so a rule this version doesn't know is kept, not stripped.
   rules: new fields.ArrayField(new fields.ObjectField()),
+  // What taking this item requires: {when: [tags]} in the rules' condition language, checked when
+  // it's added or attached (rules/prerequisites.mjs, docs/PREREQUISITES_PLAN.md). The printed text
+  // stays in a Perk's or Upgrade's own `prerequisite` field.
+  prerequisites: new fields.ObjectField(),
 });

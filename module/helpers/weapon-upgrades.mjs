@@ -1,4 +1,7 @@
 import { applyToVehicleEffect } from "./vehicle-upgrades.mjs";
+import { hostOf, rulesOfType } from "../rules/index.mjs";
+import { contextFor, evaluate } from "../rules/predicate.mjs";
+import { resolveValue } from "../rules/formula.mjs";
 /**
  * Weapon Upgrades that change the weapon they're attached to.
  *
@@ -42,11 +45,6 @@ export const UPGRADE = {
   proximityBomb: 'I2nS9xXN8ioV5jJ5',
   detonatorBomb: 'DMl6kKJe0iwW430D',
   chronoTrigger: 'eFsOmJPMyuUHhcQD',
-  nonlethal: 'QbfY2NGNmUmKa6uO',
-  covering: 'UfDHKErREKIeojVl',
-  strobe: 'Bd7nMQQmv0MFrsjO',
-  heavyHitting: '4yjmk8tENyBSPJrx',
-  tracerRounds: 'uT2aZsKK307koPCu',
   surging: 'iDSVcsovl4V2uQmj',
   bewildering: '5T8ZrImJXHWqETnf',
   traumatic: 'zXPxC1yLlK2xgGEl',
@@ -66,15 +64,12 @@ export const UPGRADE = {
   aerodynamics: 'NoENOcMYq0YkkhAk',
   balancedGrip: '7xyCdYAorscGuwBT',
   // PR CRB p.117 / TF CRB - both packs carry it under this id.
-  manipulative: 'IJBeoPW2yUDWh2Wh',
   // Quartermaster's Guide to Gear p.34.
-  foldingStock: 'bChPSldjpYZgAnIh',
 };
 
 // Perks (by full uuid) that change weapons the same way.
 export const WEAPON_PERK = {
   fluidMotion: 'Compendium.essence20.intercontinental_adventures.Item.TESyOcJFtd9Qn9Tk',
-  bigSwing: 'Compendium.essence20.ferocious_fighters.Item.sHJakOYf1rgVP6Pv',
   scrambleWave: 'Compendium.essence20.decepticon_directive.Item.2ehuQcJ1nwOvxSKl',
   hyperkineticHarness: 'Compendium.essence20.ferocious_fighters.Item.O4IT5jCPRBqGkXGr',
 };
@@ -129,7 +124,7 @@ export function idOf(uuid) {
 }
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 /**
@@ -424,12 +419,6 @@ export function applyToEffect(system, effect) {
     set('secondaryDamage.value', 1);
   }
 
-  // Fluid Motion (Intercontinental Adventures p.13): "Silent Martial Arts weapons that already have a
-  // Maneuver alternate effect lose any penalty for using this alternate effect."
-  if (system.damageType == 'maneuver' && actorHas(actor, WEAPON_PERK.fluidMotion) && isSilentMartialArts(weapon)) {
-    set('shiftDown', 0);
-  }
-
   system.upgradeTouched = [...touched];
 }
 
@@ -499,12 +488,20 @@ export { MOTOR_LANCER_FLAG };
 const MODULAR = [UPGRADE.modularStandard, UPGRADE.modularLimited, UPGRADE.modularRestricted];
 
 /**
+ * The key a generated alternate effect was made under - or undefined for a printed one. Effects made
+ * before Pistol Whip and Specialty Flexibility became rules carry the same key as o3GeneratedKey.
+ */
+export function generatedKeyOf(item) {
+  return item?.flags?.essence20?.generatedKey ?? item?.flags?.essence20?.o3GeneratedKey;
+}
+
+/**
  * The weapon's own printed effect every generated alternate is modelled on: its first damaging
  * effect, else its first effect.
  */
 export function primaryEffect(weapon) {
   const effects = (weapon?.parent?.items ?? []).filter(item => item.type == 'weaponEffect'
-    && item.flags?.essence20?.parentId == weapon.id && !item.flags?.essence20?.generatedKey);
+    && item.flags?.essence20?.parentId == weapon.id && !generatedKeyOf(item));
   return effects.find(effect => !NON_DAMAGE_TYPES.includes(effect._source?.system?.damageType ?? effect.system.damageType))
     ?? effects[0] ?? null;
 }
@@ -530,48 +527,20 @@ export function desiredGeneratedEffects(weapon) {
   // The weapon's own printed effects only - a generated one may be about to go (a Laser Stun when the
   // element changes to Cold), and must not stop its replacement being made.
   const existingTypes = (actor?.items ?? []).filter(item => item.type == 'weaponEffect' && item.flags?.essence20?.parentId == weapon.id
-    && !item.flags?.essence20?.generatedKey)
+    && !generatedKeyOf(item))
     .map(item => item._source?.system?.damageType ?? item.system.damageType);
 
-  // Nonlethal (p.148): "The weapon's Blunt or Sharp damage effect can deal an equivalent amount of
-  // Stun damage as an alternate effect."
-  if (hasUpgrade(weapon, UPGRADE.nonlethal) && ['blunt', 'sharp'].includes(base.damageType)) {
-    add('nonlethal', i18n('E20.DamageStun'), { damageType: 'stun', damageValue: base.damageValue });
+  // Item rules (AlternateEffect): Nonlethal, Strobe, Covering, Heavy Hitting, Folding Stock,
+  // Manipulative and Tracer Rounds on the weapon's upgrades; Big Swing on the wielder.
+  for (const want of ruleAlternateEffects(weapon, primary, base, existingTypes)) {
+    add(want.key, want.label, want.changes);
   }
 
-  // Strobe (Quartermaster's Guide p.34): "Weapon gains Blinding trait as an alternate effect." Only
-  // when the weapon doesn't already print one (Molecular Reducer/Enlarger does).
-  if (hasUpgrade(weapon, UPGRADE.strobe) && !existingTypes.includes('blindingBlast')) {
-    add('strobe', i18n('E20.DamageBlindingBlast'), { damageType: 'blindingBlast', damageValue: 1, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
-  }
-
-  // Covering (Intercontinental Adventures p.92): "The weapon gains Cover 1 as an Alternate Effect."
-  if (hasUpgrade(weapon, UPGRADE.covering)) {
-    add('covering', i18n('E20.DamageCover'), { damageType: 'cover', damageValue: 1, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
-  }
-
-  // Heavy Hitting (p.93): "This weapon gains Shove (↑1) as an Alternate Effect."
-  if (hasUpgrade(weapon, UPGRADE.heavyHitting)) {
-    add('heavyHitting', i18n('E20.WeaponAltShove'), { damageType: 'maneuver', damageValue: 1, accurateShiftUp: 1, shiftDown: 0, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
-  }
-
-  // Folding Stock (Quartermaster's Guide p.34): "allowing for fewer hands at the cost of accuracy" -
-  // printed on stat blocks (Hawk's Personnel Files) as the main effect again, "(1 hand, ↓2)".
-  if (hasUpgrade(weapon, UPGRADE.foldingStock)) {
-    add('foldingStock', `${primary.name} - ${i18n('E20.WeaponAltOneHand')}`, { numHands: 1, shiftDown: (base.shiftDown ?? 0) + 2 });
-  }
-
-  // Manipulative (PR CRB p.117): "Modified to reposition the target rather than harm them outright.
-  // ... The weapon gains Maneuver as an alternate effect."
-  if (hasUpgrade(weapon, UPGRADE.manipulative) && !existingTypes.includes('maneuver')) {
-    add('manipulative', i18n('E20.DamageManeuver'), { damageType: 'maneuver', damageValue: 1, shiftDown: 0, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
-  }
-
-  // Tracer Rounds (p.94): "The weapon gains Spot as an Alternate Effect." Laser (p.207): "Laser
-  // weapons gain Stun 1 as an alternate effect, and can be used to Spot targets as an alternate
-  // effect." Only for a GAINED Laser trait - printed laser weapons already list both.
+  // Laser (p.207): "Laser weapons gain Stun 1 as an alternate effect, and can be used to Spot targets
+  // as an alternate effect." Only for a GAINED Laser trait - printed laser weapons already list both.
+  // (Tracer Rounds' Spot is its rule, under the same key.)
   const gained = gainedElementTraits(weapon);
-  if (hasUpgrade(weapon, UPGRADE.tracerRounds) || gained.includes('laser')) {
+  if (gained.includes('laser')) {
     add('spot', i18n('E20.DamageSpot'), { damageType: 'spot', damageValue: 1, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
   }
 
@@ -592,7 +561,8 @@ export function desiredGeneratedEffects(weapon) {
   }
 
   // Fluid Motion (Intercontinental Adventures p.13): "Silent Martial Arts weapons gain Maneuver as an
-  // alternate effect when you use them."
+  // alternate effect when you use them." Its other half (a Maneuver they already have loses its
+  // penalty) is an ItemModifier rule on the Perk.
   if (actorHas(actor, WEAPON_PERK.fluidMotion) && isSilentMartialArts(weapon) && !existingTypes.includes('maneuver')) {
     add('fluidMotion', i18n('E20.DamageManeuver'), { damageType: 'maneuver', damageValue: 1, shiftDown: 0, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
   }
@@ -605,20 +575,45 @@ export function desiredGeneratedEffects(weapon) {
     add('versatile', `${primary.name} - ${i18n(CONFIG.E20.skills?.[versatileSkill] ?? versatileSkill)}`, { 'classification.skill': versatileSkill });
   }
 
-  // Big Swing (Ferocious Fighters p.37): "When wielding a heavy Anti-Tank or Ballistic weapon, [you]
-  // also count as wielding a close combat heavy bludgeon" - its 1 Blunt and 1 Stun, and 2 Blunt.
-  const traits = weapon.system?.traits ?? [];
-  if (actorHas(actor, WEAPON_PERK.bigSwing) && (weapon.system?.classification?.size == 'heavy')
-    && (traits.includes('antiTank') || traits.includes('ballistic'))) {
-    const bludgeon = {
-      'classification.skill': 'might', 'classification.style': 'melee', 'range.value': null, 'range.long': null,
-      'range.reachMultiplier': 1, radius: 0, shape: null, numTargets: 1, shiftDown: 0, defenseType: 'toughness',
-    };
-    add('bigSwing', i18n('E20.WeaponAltHeavyBludgeon'), { ...bludgeon, damageType: 'blunt', damageValue: 1, 'secondaryDamage.type': 'stun', 'secondaryDamage.value': 1 });
-    add('bigSwing2', i18n('E20.WeaponAltHeavyBludgeonTwoHands'), { ...bludgeon, damageType: 'blunt', damageValue: 2, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
+  // One effect per key (a rule and the code above may both ask for Spot).
+  return wanted.filter((want, index) => wanted.findIndex(other => other.key == want.key) == index);
+}
+
+/**
+ * The alternates AlternateEffect rules ask for on this weapon: host-scoped ones on its own upgrades, and
+ * the wielder's own (self) ones whose `items` tags match it.
+ * @returns {Array<{key, label, changes}>}
+ */
+function ruleAlternateEffects(weapon, primary, base, existingTypes) {
+  const actor = weapon.parent;
+  const out = [];
+  for (const { rule, item } of rulesOfType(actor, 'AlternateEffect')) {
+    const scope = rule.scope ?? 'self';
+    if (scope == 'host' ? hostOf(item)?.id != weapon.id : scope != 'self') {
+      continue;
+    }
+
+    const ctx = contextFor({ self: actor, ruleItem: item, item: weapon });
+    if ((scope == 'self' && evaluate(rule.items ?? [], ctx) !== true) || evaluate(rule.when, ctx) !== true) {
+      continue;
+    }
+
+    if ((rule.baseTypes?.length && !rule.baseTypes.includes(base.damageType)) || (rule.unlessType && existingTypes.includes(rule.unlessType))) {
+      continue;
+    }
+
+    const changes = { ...(rule.changes ?? {}) };
+    for (const [path, formula] of Object.entries(rule.formulas ?? {})) {
+      changes[path] = resolveValue(formula, { actor, item, base }, 0);
+    }
+
+    const label = String(rule.name ?? rule.key)
+      .replace(/\{primary\}/g, primary.name)
+      .replace(/\{(E20\.[\w.]+)\}/g, (match, key) => game.i18n.localize(key));
+    out.push({ key: rule.key, label: /^E20\.[\w.]+$/.test(label) ? game.i18n.localize(label) : label, changes });
   }
 
-  return wanted;
+  return out;
 }
 
 /**
@@ -658,7 +653,7 @@ export async function syncGeneratedEffects(actor) {
 
 async function doSync(actor) {
   const weapons = actor.items.filter(item => item.type == 'weapon');
-  const existing = actor.items.filter(item => item.type == 'weaponEffect' && item.flags?.essence20?.generatedKey);
+  const existing = actor.items.filter(item => item.type == 'weaponEffect' && generatedKeyOf(item));
   const keep = new Set();
   const toCreate = [];
 
@@ -667,7 +662,7 @@ async function doSync(actor) {
     for (const want of desiredGeneratedEffects(weapon)) {
       const key = `${weapon.id}:${want.key}`;
       keep.add(key);
-      if (!existing.some(item => item.flags.essence20.generatedKey == key) && primary) {
+      if (!existing.some(item => generatedKeyOf(item) == key) && primary) {
         const data = primary.toObject();
         delete data._id;
         data.name = want.name;
@@ -689,7 +684,7 @@ async function doSync(actor) {
       for (const [index, entry] of entries.entries()) {
         const key = `${weapon.id}:modular:${upgrade.id}:${index}`;
         keep.add(key);
-        if (existing.some(item => item.flags.essence20.generatedKey == key)) {
+        if (existing.some(item => generatedKeyOf(item) == key)) {
           continue;
         }
 
@@ -708,7 +703,7 @@ async function doSync(actor) {
     }
   }
 
-  const stale = existing.filter(item => !keep.has(item.flags.essence20.generatedKey));
+  const stale = existing.filter(item => !keep.has(generatedKeyOf(item)));
   if (stale.length) {
     await removeFromWeapons(actor, stale);
     await actor.deleteEmbeddedDocuments('Item', stale.map(item => item.id));
@@ -756,11 +751,13 @@ export function affectsGeneratedEffects(item, changes = null) {
   }
 
   if (item?.type == 'weapon') {
-    return !changes || changes.system?.elementChoice !== undefined || changes.system?.traits !== undefined;
+    return !changes || changes.system?.elementChoice !== undefined || changes.system?.traits !== undefined
+      || changes.system?.hardpoint !== undefined;
   }
 
   if (item?.type == 'perk') {
-    return [WEAPON_PERK.fluidMotion, WEAPON_PERK.bigSwing, FIREBALL].includes(sourceOf(item));
+    return [WEAPON_PERK.fluidMotion, FIREBALL].includes(sourceOf(item))
+      || (item.system?.rules ?? []).some(rule => rule?.type == 'AlternateEffect');
   }
 
   return false;

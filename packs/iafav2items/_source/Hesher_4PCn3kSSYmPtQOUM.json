@@ -5,6 +5,10 @@
   "_id": "4PCn3kSSYmPtQOUM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Performance instead (Hesher)","when":["skill:{item.choice}"],"useSkill":"performance"}
+    ],
+    "prerequisites": {"when":["self:skill:performance>=d2"]},
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: choose Deception, Intimidation or Persuasion. Roll Options Dialog: when rolling that Skill, a switch to roll Performance instead.</p>"

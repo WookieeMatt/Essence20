@@ -5,6 +5,9 @@
   "_id": "B4fDw9HuMS7qAjs7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CritOnD2","label":"Miracle Worker: crit on the d2 on Science and Technology","when":[{"any":["skill:science","skill:technology"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Science and Technology tests can Critically Succeed on the d2.</p>"

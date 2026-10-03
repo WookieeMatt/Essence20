@@ -1,8 +1,7 @@
 import { jest } from '@jest/globals';
+import { existsSync, readdirSync, readFileSync } from 'fs';
 import { buildCombatModifierSourceFields, RollDialog } from './roll-dialog.mjs';
 
-const PRESENCE_ID = "Compendium.essence20.gi_joe_crb.Item.EdP0LqcYh2tkMygI";
-const I_LL_MAKE_IT_WORK_ID = "Compendium.essence20.jump_through_time.Item.nxgmUTaPwFcg94ia";
 
 function makeActor(perkIds = []) {
   return { items: perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } })) };
@@ -12,7 +11,7 @@ function makeActor(perkIds = []) {
 describe("_isUntrainedSnag", () => {
   const rollDialog = new RollDialog();
 
-  test("true for an untrained (d20-shift) skill, no Presence", async () => {
+  test("true for an untrained (d20-shift) skill", async () => {
     const actor = makeActor();
     expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(true);
   });
@@ -22,157 +21,68 @@ describe("_isUntrainedSnag", () => {
     expect(await rollDialog._isUntrainedSnag({ shift: 'd8' }, actor)).toBe(false);
   });
 
-  test("false for an untrained skill when the actor has Presence", async () => {
-    const actor = makeActor([PRESENCE_ID]);
-    expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
-  });
+  // Item rules now (immune: ["untrainedSnag"] while driving a Zord): each actor's Perk carries its
+  // pack rules, and the vehicle lists it as crew.
+  describe("Zord / Phantom Ship / Quantasaurus Rex while piloting a Zord", () => {
+    const ZORD = 'rCpCrfzMYPupoYNI';
+    const PHANTOM_SHIP = 'OfsTu9GpONWPV88t';
+    const QUANTASAURUS_REX = 'sn5jhTf8sJqRFhKS';
+    let next = 1;
 
-  test("Presence doesn't matter for an already-trained skill", async () => {
-    const actor = makeActor([PRESENCE_ID]);
-    expect(await rollDialog._isUntrainedSnag({ shift: 'd8' }, actor)).toBe(false);
-  });
-
-  test("false for an untrained skill when the actor has I'll Make It Work instead", async () => {
-    const actor = makeActor([I_LL_MAKE_IT_WORK_ID]);
-    expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
-  });
-
-  describe("Air/Land/Sea Vehicle Qualification (Factions in Action Vol. 2, Dreadnok General Perks, p.63)", () => {
-    const LAND_VEHICLE_QUALIFICATION_ID = "Compendium.essence20.intercontinental_adventures.Item.xLeoc9xLx06SpK7S";
-    const AIR_VEHICLE_QUALIFICATION_ID = "Compendium.essence20.intercontinental_adventures.Item.GUcQm2RuUIEWzd4X";
-
-    function makeDrivingActor(perkIds, pilotedVehicle) {
-      return { ...makeActor(perkIds), _dice: { _getPilotedVehicle: jest.fn(() => pilotedVehicle) } };
-    }
-
-    function makeVehicle(movementType) {
-      return { system: { movement: { aerial: { base: 0 }, ground: { base: 0 }, swim: { base: 0 }, [movementType]: { base: 30 } } } };
-    }
-
-    test("false for an untrained Driving Test while piloting a matching-type vehicle with the Perk", async () => {
-      const actor = makeDrivingActor([LAND_VEHICLE_QUALIFICATION_ID], makeVehicle('ground'));
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
-    });
-
-    test("true when the Perk doesn't match the piloted vehicle's own movement type", async () => {
-      const actor = makeDrivingActor([LAND_VEHICLE_QUALIFICATION_ID], makeVehicle('aerial'));
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(true);
-    });
-
-    test("true without a piloted vehicle, even with the Perk", async () => {
-      const actor = makeDrivingActor([LAND_VEHICLE_QUALIFICATION_ID], null);
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(true);
-    });
-
-    test("true for a non-Driving Skill Test, even while piloting a matching vehicle with the Perk", async () => {
-      const actor = makeDrivingActor([LAND_VEHICLE_QUALIFICATION_ID], makeVehicle('ground'));
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'targeting')).toBe(true);
-    });
-
-    test("false when a different Qualification (Air) matches an aerial vehicle", async () => {
-      const actor = makeDrivingActor([AIR_VEHICLE_QUALIFICATION_ID], makeVehicle('aerial'));
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
-    });
-
-    test("false for Skyward (Quartermaster's Guide to Gear, Influence Perk, p.13) piloting an aerial vehicle", async () => {
-      const SKYWARD_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.1IlTYXe8k5Aj63Mn";
-      const actor = makeDrivingActor([SKYWARD_ID], makeVehicle('aerial'));
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
-    });
-
-    test("true for Skyward piloting a ground vehicle", async () => {
-      const SKYWARD_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.1IlTYXe8k5Aj63Mn";
-      const actor = makeDrivingActor([SKYWARD_ID], makeVehicle('ground'));
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(true);
-    });
-
-    test("false for Nu, Pogodi! (Oktober Guard Faction Perk) piloting a ground vehicle", async () => {
-      const NU_POGODI_ID = "Compendium.essence20.intercontinental_adventures.Item.sItc8nD7ockbQ1mn";
-      const actor = makeDrivingActor([NU_POGODI_ID], makeVehicle('ground'));
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
-    });
-
-    test("false for The Promise of Riches (Mercenary Faction Perk) piloting any of the three movement types", async () => {
-      const THE_PROMISE_OF_RICHES_ID = "Compendium.essence20.intercontinental_adventures.Item.wW4xugDI7Sea2Btg";
-      for (const movementType of ['aerial', 'ground', 'swim']) {
-        const actor = makeDrivingActor([THE_PROMISE_OF_RICHES_ID], makeVehicle(movementType));
-        expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
+    function rulesOf(id) {
+      for (const dir of readdirSync('packs')) {
+        const src = `packs/${dir}/_source`;
+        const file = existsSync(src) ? readdirSync(src).find(name => name.endsWith(`_${id}.json`)) : null;
+        if (file) {
+          return JSON.parse(readFileSync(`${src}/${file}`, 'utf8')).system.rules;
+        }
       }
+
+      return [];
+    }
+
+    function makeDrivingActor(id, vehicleType) {
+      const actor = { id: `a${next}`, uuid: `Actor.a${next++}`, statuses: new Set(), system: {}, flags: {} };
+      actor.items = [{ id: `i${next++}`, type: 'perk', flags: {}, system: { rules: rulesOf(id) }, parent: actor }];
+      const vehicle = vehicleType ? { type: vehicleType, system: { actors: { a: { uuid: actor.uuid, vehicleRole: 'driver' } } } } : null;
+      global.game = { ...(global.game ?? {}), actors: { contents: vehicle ? [actor, vehicle] : [actor] } };
+      return actor;
+    }
+
+    afterEach(() => {
+      global.game.actors = undefined;
     });
 
     test("false for Zord (PR CRB, Role Perk, p.35) while piloting a Zord", async () => {
-      const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
-      const actor = makeDrivingActor([ZORD_PERK_ID], { type: 'zord', ...makeVehicle('ground') });
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, makeDrivingActor(ZORD, 'zord'), 'driving')).toBe(false);
     });
 
     test("true for Zord piloting a non-Zord vehicle", async () => {
-      const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
-      const actor = makeDrivingActor([ZORD_PERK_ID], makeVehicle('ground'));
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(true);
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, makeDrivingActor(ZORD, 'vehicle'), 'driving')).toBe(true);
     });
 
     test("true for Zord with no piloted vehicle", async () => {
-      const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
-      const actor = makeDrivingActor([ZORD_PERK_ID], null);
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(true);
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, makeDrivingActor(ZORD, null), 'driving')).toBe(true);
     });
 
     test("false for Phantom Ship (Across the Stars, p.62) on Driving while piloting a Zord", async () => {
-      const PHANTOM_SHIP_ID = "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWPV88t";
-      const actor = makeDrivingActor([PHANTOM_SHIP_ID], { type: 'zord', ...makeVehicle('ground') });
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, makeDrivingActor(PHANTOM_SHIP, 'zord'), 'driving')).toBe(false);
     });
 
     test("true for Phantom Ship piloting a non-Zord vehicle", async () => {
-      const PHANTOM_SHIP_ID = "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWPV88t";
-      const actor = makeDrivingActor([PHANTOM_SHIP_ID], makeVehicle('ground'));
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(true);
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, makeDrivingActor(PHANTOM_SHIP, 'vehicle'), 'driving')).toBe(true);
     });
 
     test("false for Quantasaurus Rex (A Jump Through Time, p.46) on Driving while piloting a Zord", async () => {
-      const QUANTASAURUS_REX_ID = "Compendium.essence20.jump_through_time.Item.sn5jhTf8sJqRFhKS";
-      const actor = makeDrivingActor([QUANTASAURUS_REX_ID], { type: 'zord', ...makeVehicle('ground') });
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, makeDrivingActor(QUANTASAURUS_REX, 'zord'), 'driving')).toBe(false);
     });
 
     test("false for Quantasaurus Rex on Animal Handling while piloting a Zord", async () => {
-      const QUANTASAURUS_REX_ID = "Compendium.essence20.jump_through_time.Item.sn5jhTf8sJqRFhKS";
-      const actor = makeDrivingActor([QUANTASAURUS_REX_ID], { type: 'zord', ...makeVehicle('ground') });
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'animalHandling')).toBe(false);
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, makeDrivingActor(QUANTASAURUS_REX, 'zord'), 'animalHandling')).toBe(false);
     });
 
     test("true for Quantasaurus Rex on Animal Handling with no piloted Zord", async () => {
-      const QUANTASAURUS_REX_ID = "Compendium.essence20.jump_through_time.Item.sn5jhTf8sJqRFhKS";
-      const actor = makeDrivingActor([QUANTASAURUS_REX_ID], null);
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'animalHandling')).toBe(true);
-    });
-
-    function makeGoodToGoActor(choice, pilotedVehicle) {
-      const GOOD_TO_GO_ID = "Compendium.essence20.intercontinental_adventures.Item.Yt3muowN1aALcqOj";
-      return {
-        items: [{ type: 'perk', flags: { core: { sourceId: GOOD_TO_GO_ID } }, system: { choice } }],
-        _dice: { _getPilotedVehicle: jest.fn(() => pilotedVehicle) },
-      };
-    }
-
-    test("false for Good To Go (Freedom Fighters Faction Perk) piloting the chosen movement type", async () => {
-      const actor = makeGoodToGoActor('ground', makeVehicle('ground'));
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
-    });
-
-    test("true for Good To Go piloting a movement type other than the one chosen", async () => {
-      const actor = makeGoodToGoActor('ground', makeVehicle('aerial'));
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(true);
-    });
-
-    test("false for For The Syndicate (International Syndicate Faction Perk) piloting the chosen movement type", async () => {
-      const FOR_THE_SYNDICATE_ID = "Compendium.essence20.intercontinental_adventures.Item.opygNwRWgeIyU1mE";
-      const actor = {
-        items: [{ type: 'perk', flags: { core: { sourceId: FOR_THE_SYNDICATE_ID } }, system: { choice: 'swim' } }],
-        _dice: { _getPilotedVehicle: jest.fn(() => makeVehicle('swim')) },
-      };
-      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor, 'driving')).toBe(false);
+      expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, makeDrivingActor(QUANTASAURUS_REX, null), 'animalHandling')).toBe(true);
     });
   });
 

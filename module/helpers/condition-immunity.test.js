@@ -1,5 +1,41 @@
 import { jest } from '@jest/globals';
+import { readdirSync, readFileSync, existsSync } from 'fs';
 import { isImmuneToCondition } from './condition-immunity.mjs';
+import { rebuildIndex } from '../rules/index.mjs';
+
+// Most immunities are ConditionImmunity rules on the items now: a test character's copy carries its
+// pack item's rules, the way a real copy inherits them.
+const PACK_RULES = new Map();
+for (const dir of readdirSync('packs')) {
+  const src = `packs/${dir}/_source`;
+  if (!existsSync(src)) {
+    continue;
+  }
+
+  for (const file of readdirSync(src).filter(name => name.endsWith('.json'))) {
+    const id = file.slice(-21, -5);
+    if (['pJcXVybdqjcWHpJq', 'UYaPTaAQH5SDXxnz', 'Um9sT730VGgHPxLh', 'CXnb6i4d7XhkhFNr', '566NsnD5dccg9uVo', 'mOgEBZIbiaT07eAq', 'edU8dyL3poLU6IuM', '6r0sYiTEtGsge6cB', 'Vo5IeXooKE9OBoJH', 'oXyaZOw6L1AXiyCj', 'ZBOmQradsrZi9sc5', 'LXK3ATRjFLfPg4mb', 'pQvXMpk7uAvfuGMl', 'LtUei3Rd9ygf2dQa', 'AbKqzmAMQZsetwY0', 'rEoZEFQR2puQxpIW', 'xsFS0pGQFx1w2qTd'].includes(id)) {
+      PACK_RULES.set(id, JSON.parse(readFileSync(`${src}/${file}`, 'utf8')).system?.rules ?? []);
+    }
+  }
+}
+
+let nextActor = 1;
+function withRules(actor) {
+  actor.id ??= `ci${nextActor++}`;
+  actor.statuses ??= new Set();
+  actor.system ??= {};
+  for (const item of actor.items) {
+    const uuid = item.flags?.core?.sourceId ?? '';
+    item.id ??= `i${nextActor++}`;
+    item.system ??= {};
+    item.system.rules ??= PACK_RULES.get(uuid.split('.').pop()) ?? [];
+    item.parent = actor;
+  }
+
+  rebuildIndex(actor);
+  return actor;
+}
 
 const CAUTION_ID = "Compendium.essence20.gi_joe_crb.Item.pJcXVybdqjcWHpJq";
 const AMBUSH_MASTER_ID = "Compendium.essence20.gi_joe_crb.Item.UYaPTaAQH5SDXxnz";
@@ -21,7 +57,7 @@ global.canvas = {
 
 function makeActor(perkIds = []) {
   const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
-  return { items };
+  return withRules({ items });
 }
 
 describe("isImmuneToCondition (Stalk, GI Joe CRB Predator base, 1st level, p.93)", () => {

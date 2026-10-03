@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Edge on your next Smarts or Social test","limit":{"per":"encounter"},"steps":[{"do":"choose","prompt":"Which Essence?","options":[{"label":"Smarts","steps":[{"do":"bank","label":"Wild Tales","edge":true,"appliesWhen":["essence:smarts"]}]},{"label":"Social","steps":[{"do":"bank","label":"Wild Tales","edge":true,"appliesWhen":["essence:social"]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene, pick Smarts or Social. Your next test with a Skill of that Essence gets Edge, labelled Wild Tales in your Roll Options Dialog.</p>"

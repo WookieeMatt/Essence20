@@ -1,9 +1,8 @@
 import {
   registerApplyDialog, registerChatButton, registerDamageModifier, registerDialogToggles, registerHitRider, registerPostRoll,
-  registerPreRoll, registerRollSources, registerSceneAdvanced, registerTurnStart, registerUse,
+  registerPreRoll, registerSceneAdvanced, registerTurnStart, registerUse,
 } from "../../extensions.mjs";
 import { hasSourced } from "../../companion-link.mjs";
-import { creatureTagsOf } from "../../creature-tags.mjs";
 import {
   ATS, BTH, JTT, T, actorsInPlay, combatStamp, damageOrOffer, findSourced, firstTarget, isFrom, itemsOf, parentWeapon, payPower, post,
   safeSetFlag, safeUnsetFlag, safeUpdate, sourceOf,
@@ -35,19 +34,6 @@ export const O1_JTT = {
 /** Whether every compared result of a roll failed - "if you fail a Skill Test". */
 export function allFailed(results) {
   return Array.isArray(results) && results.length > 0 && results.every(result => result && result.success === false);
-}
-
-/**
- * Lance of Light: "Enemies with direct ties to the Dark Dimensions: Dark Dimension Phantasms, Dark
- * Dimension Possessed, Darkonda, and others". A creature tag ("dark dimension") or its name.
- */
-export function isDarkDimension(actor) {
-  const tags = creatureTagsOf(actor);
-  if (tags.has('dark dimension') || tags.has('dark dimensions') || tags.has('dark-dimension') || tags.has('darkdimension')) {
-    return true;
-  }
-
-  return /dark dimension|darkonda/i.test(String(actor?.name ?? ''));
 }
 
 /** Quantum Trigger's "cumulative ↓1": the nth retry of a chain suffers ↓n. */
@@ -499,7 +485,8 @@ Hooks.on('createItem', async (item, options, userId) => {
 // Lance of Light (A Jump Through Time, General Perk, p.55), while summoned (helpers/lance-of-light.mjs
 // holds the toggle and the Resistance): "You may spend your Standard action to inflict 1 Energy
 // damage to any target within 10 feet without a Skill Test." and "Enemies with direct ties to the
-// Dark Dimensions... suffer ↓2 on any Skill Tests against you."
+// Dark Dimensions... suffer ↓2 on any Skill Tests against you." The ↓2 is an incoming rule on the
+// pack item (a Dark Dimension creature tag or name, while the lanceOfLightActive flag is set).
 const lanceActive = actor => !!actor?.flags?.essence20?.lanceOfLightActive;
 
 registerUse({
@@ -528,14 +515,6 @@ registerUse({
     await damageOrOffer(actor, target, 1, 'element', item.name);
     return null;
   },
-});
-
-registerRollSources((actor, target) => {
-  if (!target || !lanceActive(target) || !isDarkDimension(actor)) {
-    return null;
-  }
-
-  return { sources: [{ id: 'o1LanceOfLight', label: findSourced(target, O1_JTT.lanceOfLight)?.name ?? 'Lance of Light', shiftDown: 2 }] };
 });
 
 /* -------------------------------------------- */

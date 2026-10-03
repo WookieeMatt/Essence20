@@ -5,6 +5,7 @@
   "_id": "2gURwr6VrgTuIRFQ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Two-handed weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene): the weapon counts as one-handed until the end of your turn.</p>"

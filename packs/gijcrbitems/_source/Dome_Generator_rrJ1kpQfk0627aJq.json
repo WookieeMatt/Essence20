@@ -5,6 +5,7 @@
   "_id": "rrJ1kpQfk0627aJq",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:computerized"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button, once per scene for each copy: a Free action that doubles your armor's Defense bonus until the start of your next turn.</p>"

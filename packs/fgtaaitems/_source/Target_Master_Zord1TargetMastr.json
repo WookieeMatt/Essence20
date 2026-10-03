@@ -5,6 +5,7 @@
   "_id": "Zord1TargetMastr",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["host:type:armor",{"any":["host:data:system.classification=medium","host:data:system.classification=heavy","host:data:system.classification=ultraHeavy"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your weapons (and their effects) are copied onto any Megaform you join, so the Megaform can attack with them.</p>"

@@ -5,6 +5,9 @@
   "_id": "NnHqdvBfYNq7J0l2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Searching a hidden compartment (Storage Compartments: Snag)","when":["ask:searching for a hidden compartment"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: anyone searching you for a hidden item gets a switch that gives their test a Snag. What you keep in the compartments is up to you.</p>"

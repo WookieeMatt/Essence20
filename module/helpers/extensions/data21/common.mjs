@@ -31,7 +31,6 @@ export const D21 = {
   psychoTrident: fmmc('yyg2pmTVJmxCiYFF'),
   psychoBladeEffects: [fmmc('04vQyKGeDIKmBaBZ'), fmmc('SlQRp4ghRuoyeoRG'), fmmc('JYrWES4zfCrAYGeE')],
   psychoStaffEffects: [fmmc('NX0WE3tH2ZZPa9iI'), fmmc('EqdelDXgGy3Akw91')],
-  sorcerousTremors: fmmc('zU6fU3xsjC6gU0MZ'),
   largerThanLife: fmmc('Gwhns0NfDQYhCVPK'),
   mystic: fmmc('SBlOGEnend5WYwgd'),
   sorcery: fmmc('xUBOE1s5pgVyUrwj'),
@@ -55,7 +54,7 @@ export const D21 = {
 export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 export function itemsOf(actor) {

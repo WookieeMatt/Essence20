@@ -5,6 +5,10 @@
   "_id": "nZYtfaowY0EH3Z0R",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:data:system.powers.personal.max>=2","self:skill:survival>=d4"]},
+    "rules": [
+      {"type":"Defense","defense":"evasion","amount":2,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.jump_through_time.Item.nZYtfaowY0EH3Z0R"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: pick this Form when you Morph. You get +2 Toughness and Evasion in place of your armor-training bonus, ↑1 on Driving and Survival (already counted in the Upshift number of your Roll Options Dialog), and the Form's weapons replace your Blade Blaster until you de-Morph.</p><p>Left to the table: swapping your Morpher for an R.P.M. Morpher.</p>"

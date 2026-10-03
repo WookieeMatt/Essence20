@@ -5,6 +5,9 @@
   "_id": "QJ1Uw4VZxy3zrxa1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Unscrupulous","when":[{"any":["skill:deception","skill:intimidation","skill:persuasion"]}],"snag":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: Deception, Intimidation and Persuasion Tests against you take a Snag.</p><p>Left to the table: drop the Snag when the test isn't an appeal to your better nature.</p>"

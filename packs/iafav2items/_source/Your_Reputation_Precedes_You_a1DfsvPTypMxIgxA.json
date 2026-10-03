@@ -5,6 +5,10 @@
   "_id": "a1DfsvPTypMxIgxA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Intimidation for Initiative (Your Reputation Precedes You)","when":["roll:initiative"],"useSkill":"intimidation"}
+    ],
+    "prerequisites": {"when":["self:skill:intimidation>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on Initiative, a switch to roll Intimidation instead. Use it when you saw the fight coming.</p>"

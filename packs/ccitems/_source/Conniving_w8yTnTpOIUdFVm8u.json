@@ -5,6 +5,9 @@
   "_id": "w8yTnTpOIUdFVm8u",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Conniving: no help from allies","side":"receive","effect":"refuse"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: allies cannot Lend Assistance to you.</p>"

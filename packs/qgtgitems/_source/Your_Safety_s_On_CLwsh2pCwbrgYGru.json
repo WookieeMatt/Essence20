@@ -5,6 +5,7 @@
   "_id": "CLwsh2pCwbrgYGru",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:deception>=d2"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: roll Deception against the targeted enemy's Cleverness. On a success its next attack has Snag; on a Critical Success its attacks have Snag until the end of your next turn.</p>"

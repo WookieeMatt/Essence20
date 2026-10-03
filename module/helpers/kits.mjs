@@ -1,6 +1,5 @@
 import { companionsOf } from "./companion-link.mjs";
 import { getSceneEpoch } from "./scene-clock.mjs";
-import { actorHasPerk } from "./perks.mjs";
 
 /**
  * Kits (GI Joe CRB p.159-160, TF CRB p.133, Quartermaster's Guide p.42-47, Cobra Codex p.90-92,
@@ -123,7 +122,7 @@ const BOOSTS_FLAG = 'kitBoosts';
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function itemsOf(actor) {
@@ -1072,27 +1071,14 @@ export async function applyDialogKits(actor, options, { skill, spec = null, cons
 /* -------------------------------------------- */
 
 /**
- * A kit (or consumable) created on an actor: what comes inside it, and who handed it over.
+ * A consumable created on an actor: who handed it over. (What comes inside a kit - Night Vale's
+ * Science Kit and Travel Reporter Kit - is the kit's own Grant rule.)
  * @param {Item} item
  */
 export async function onKitCreated(item) {
   const actor = item?.parent;
   if (!actor || item.flags?.essence20?.grantedBy) {
     return;
-  }
-
-  // Science Kit / Travel Reporter Kit.
-  const contents = KIT_CONTENTS[sourceOf(item)];
-  if (contents?.length) {
-    const pack = game.packs?.get('essence20.wtnv_citizens_guide');
-    const index = pack ? await pack.getIndex() : [];
-    for (const name of contents) {
-      const entry = [...index].find(e => e.name == name);
-      if (entry) {
-        const { grantCopy } = await import("./grants.mjs");
-        await grantCopy(actor, entry.uuid ?? `Compendium.essence20.wtnv_citizens_guide.Item.${entry._id}`, { grantedBy: item });
-      }
-    }
   }
 
   // Take Mine - handed over from another actor's inventory.
@@ -1256,19 +1242,8 @@ export function loaderShoveBonus(actor) {
   return loader && (actor?.system?.isTransformed || !loader.flags?.essence20?.loaderShield) ? 2 : 0;
 }
 
-export function brawnCritsOnD2(actor, skill) {
-  return skill == 'brawn' && actorHasPerk(actor, KIT.competitiveStrength);
-}
-
 /** Loader used as a shield in Bot Mode: "+1 Deflection to Toughness". */
 export function loaderShieldToughness(actor) {
   const loader = itemsOf(actor).find(i => sourceOf(i) == KIT.loader);
   return loader && !actor?.system?.isTransformed && loader.flags?.essence20?.loaderShield ? 1 : 0;
 }
-
-/** Items that come inside a kit - Night Vale's Science Kit "contains a lab coat", its Travel Reporter
- * Kit "contains a Recording Microphone weapon". */
-export const KIT_CONTENTS = {
-  [KIT.wtnvScienceKit]: ['Lab Coat'],
-  [KIT.wtnvTravelReporterKit]: ['Recording Microphone'],
-};

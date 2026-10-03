@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Hiding or blending in (Object Alt Mode: Edge)","when":["self:transformed","skill:infiltration","not:attack"],"edge":true,"default":true},
+      {"type":"DialogSwitch","label":"Eavesdropping (Object Alt Mode: Edge)","when":["self:transformed","skill:alertness","not:attack"],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: while you are in Alt Mode, Infiltration and Alertness tests show an Object Alt Mode switch for Edge. It starts on for Infiltration and off for Alertness; tick it when the test is about hiding, blending in or eavesdropping.</p><p>Left to the table: giving this Alt Mode 0 Movement on its Alt Mode item.</p>"

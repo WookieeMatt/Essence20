@@ -5,6 +5,7 @@
   "_id": "Qdb9Jj4UAAE0YbhE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:role:Journalist"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: during combat's surprise round, when you roll a DIF 10 Performance test with enemies targeted, a success gives the first targeted enemy the Surprised condition (up to three on a Critical Success).</p><p>Left to the table: checking the enemies are within your reach.</p>"

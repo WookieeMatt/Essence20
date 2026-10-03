@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:hasType:perk:Linguistics","ask:Knows 4+ languages"]}]},
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: a switch for an Edge on Culture tests that involve language, like codes, ciphers or banter.</p><p>Left to the table: which Languages you know, and free clues when rolling won't help.</p>"

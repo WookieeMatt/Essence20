@@ -5,6 +5,9 @@
   "_id": "EiS24nGsgSsroa16",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Civilians or government, about your work (Gridlock Authority: Edge)","when":[{"any":["essence:social","skill:intimidation"]}],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch for Edge with civilians and government agents about your work. Automatic: civilian or government Contacts start with 1 extra Allegiance Point.</p>"

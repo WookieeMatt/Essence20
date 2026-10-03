@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:skill:might>=d6","self:skill:finesse>=d6","self:skill:targeting>=d6"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on your own turn, a number box on Might, Finesse and Targeting attacks sets how many ↓ you take. Until your next turn starts, attacks against you take the same ↓, labelled Evasive Fighting in the attacker's Roll Options Dialog.</p>"

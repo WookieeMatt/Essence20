@@ -5,6 +5,13 @@
   "_id": "xL0lmmS7P046RNqO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"ground","stage":"adjust","op":"multiply","value":2,"label":"Quicken: Ground Movement doubled","when":["self:data:flags.essence20.expandedMysticismQuickenType=ground"]},
+      {"type":"Movement","movement":"aerial","stage":"adjust","op":"multiply","value":2,"label":"Quicken: Aerial Movement doubled","when":["self:data:flags.essence20.expandedMysticismQuickenType=aerial"]},
+      {"type":"Movement","movement":"climb","stage":"adjust","op":"multiply","value":2,"label":"Quicken: Climb Movement doubled","when":["self:data:flags.essence20.expandedMysticismQuickenType=climb"]},
+      {"type":"Movement","movement":"swim","stage":"adjust","op":"multiply","value":2,"label":"Quicken: Aquatic Movement doubled","when":["self:data:flags.essence20.expandedMysticismQuickenType=swim"]},
+      {"type":"Movement","movement":"burrow","stage":"adjust","op":"multiply","value":2,"label":"Quicken: Underground Movement doubled","when":["self:data:flags.essence20.expandedMysticismQuickenType=burrow"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend Mystical Points on Fortify (+1 Toughness or Evasion for the scene), Heal (1 Health per point) or Quicken (double one Movement until your turn ends). Each option works once per scene.</p>"

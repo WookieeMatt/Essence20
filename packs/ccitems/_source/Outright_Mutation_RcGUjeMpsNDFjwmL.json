@@ -5,6 +5,7 @@
   "_id": "RcGUjeMpsNDFjwmL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:has:Evolving Mutation","self:level>=12"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when gained (or via the Use button), pick a Restricted Alteration you don't already have; it is added as a genetic Alteration. Counts as a genetic Alteration and as an Alteration Perk for Additional Alteration.</p>"

@@ -5,6 +5,10 @@
   "_id": "iOmrgWu6h9qvP89n",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","path":"system.traits.autopilot","op":"set","value":1,"when":["self:type:vehicle"]}
+    ],
+    "prerequisites": {"when":["self:data:system.traits.computerized","not:self:data:system.traits.autopilot"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: gives the vehicle the Autopilot trait, so its computer can Lend Assistance as a Free action.</p>"

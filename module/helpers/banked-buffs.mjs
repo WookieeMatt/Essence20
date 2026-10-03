@@ -1,3 +1,4 @@
+import { pickAllyTargets } from "./allies.mjs";
 import { canUseActionPerk, isActionPerkUse, useActionPerk } from "./action-perks.mjs";
 import { spend } from "./action-economy.mjs";
 import {
@@ -65,7 +66,6 @@ import { isPhantomSuiteActive, togglePhantomSuite } from "./phantom-suite.mjs";
 import { AGELESS_KNOWLEDGE_FLAG, pickAgelessKnowledgeSkill } from "./ageless-knowledge.mjs";
 import { PARADOX_FLAG, pickParadoxSkill } from "./paradox.mjs";
 import { applyThroughTheArchesSnag } from "./through-the-arches.mjs";
-import { getTerrorAvailable, spendTerror } from "./terror.mjs";
 import { activateAbsoluteMenace } from "./absolute-menace.mjs";
 import { activateAvalancheStomp } from "./avalanche-stomp.mjs";
 import { activateFrighteningDisplay } from "./frightening-display.mjs";
@@ -104,7 +104,6 @@ import {
   activateBioEnergyConversion, BIO_ENERGY_CONVERSION_ID, canUseBioEnergyConversion,
 } from "./bio-energy-conversion.mjs";
 import { activateAugmentPower, AUGMENT_POWER_ID, canUseAugmentPower } from "./augment-power.mjs";
-import { activateRightfulPlace, canUseRightfulPlace, RIGHTFUL_PLACE_ID } from "./rightful-place.mjs";
 import { activateConsultMemories, canUseConsultMemories, CONSULT_MEMORIES_ID } from "./consult-memories.mjs";
 import { activateResourceful, canUseResourceful, RESOURCEFUL_ID } from "./resourceful.mjs";
 import { activateWorkTheNumbers, canUseWorkTheNumbers } from "./work-the-numbers.mjs";
@@ -119,7 +118,6 @@ import { activateYourSafetysOn } from "./your-safetys-on.mjs";
 import {
   applyUninterruptedBreakBenefit, canUseUninterruptedBreak, pickUninterruptedBreakBenefit,
 } from "./uninterrupted-break.mjs";
-import { activateCalculatedAttack } from "./calculated-attack.mjs";
 import { activateTender, getEmpathyChoice } from "./tender.mjs";
 import { activateTakedown } from "./takedown.mjs";
 import { activateSelfRevive, canUseSelfRevive } from "./self-revive.mjs";
@@ -149,7 +147,6 @@ import { activateDirtyTrick } from "./dirty-trick.mjs";
 import { canUseEyeForAppraisal, markEyeForAppraisal } from "./eye-for-appraisal.mjs";
 import { canUseWrestlerPin, activateWrestlerPin } from "./wrestler-pin.mjs";
 import { activateElementalStorm } from "./elemental-storm.mjs";
-import { PENDING_WILD_TALES_FLAG_KEY, pickWildTalesEssence } from "./wild-tales.mjs";
 import { applyComicFlair } from "./comic-flair.mjs";
 import { getGridSoldierImpairedTarget } from "./grid-soldier.mjs";
 import { activateEngineOverride } from "./engine-override.mjs";
@@ -287,27 +284,6 @@ const TIMELY_TEAMMATE_ID = "Compendium.essence20.ferocious_fighters.Item.yrhhCOX
 // Timely Teammate just above.
 const ROAR_ID = "Compendium.essence20.ferocious_fighters.Item.AaI58jYka8MfhIbc";
 
-// Brutish (Ferocious Fighters, Influence Perk, p.76): "Once per scene, you gain Edge on a Skill
-// Test prompted by acting based on instinct, frustration, gut feeling, or a similar impulse (at GM
-// discretion)." RE-CATEGORIZED 2026-09-15 out of a 12-item narrative bucket after a fresh pdf.js
-// pull of this book. The trigger is pure GM discretion, so this is deliberately NOT auto-applied
-// the way Adventurer's own once-per-scene Edge is - an unscoped Edge fired automatically would
-// land on whatever the actor happened to roll first that scene, which is not what RAW describes.
-// A "Use" button instead puts the judgment call where RAW puts it (the player declares the
-// impulsive act, the GM allows it), banking a plain unscoped Edge consumed on the very next roll -
-// the same bank-now/consume-next shape as Bait and Switch, minus its Story Point cost and skill
-// scoping, since RAW gives this neither. See its BANKABLE_PERKS entry below and the consumption
-// half in dice.mjs. Its paired Hang-Up (Snag in polite society/formal settings) stays unbuilt -
-// no social-setting classification exists anywhere in this codebase.
-const BRUTISH_ID = "Compendium.essence20.ferocious_fighters.Item.29GLZcbjQhJHdsg0";
-const BRUTISH_ENCOUNTER_FLAG = 'brutishUsedThisEncounter';
-
-// Capable of Anything (WTNV Citizens' Guide, Influence Perk, p.27): "Once per scene, you gain an
-// Edge on a single Skill Test of your choice." "Of your choice" is the player's declaration, so
-// this is Brutish's own Use-button shape exactly (bank an unscoped Edge, consumed on the next
-// roll - dice.mjs), gated once per scene. It had been built as a reroll-1s grant instead.
-const CAPABLE_OF_ANYTHING_WTNV_ID = "Compendium.essence20.wtnv_citizens_guide.Item.r9F7KVy6UqcB2x49";
-
 // Nemesis Drain (Finster's Monster-Matic Cookbook, all 6 Psycho Paths, 7th level) - see
 // helpers/nemesis-drain.mjs's own doc comment. Same once-per-scene AoE dispatch shape as
 // Elemental Storm.
@@ -379,20 +355,6 @@ const KNIGHTS_JUMP_TURN_FLAG = 'knightsJumpUsedThisTurn';
 // plain, unconditionally-usable dispatch, same as Outwit above.
 const DIRTY_TRICK_ID = "Compendium.essence20.gi_joe_crb.Item.e5nMmMPpV3WU9P92";
 
-// Curb Your Enthusiasm (MLP Loyalty, 5th level, p.90; upgraded to a Move action instead of a
-// Standard one by Balance Your Enthusiasm at 15th - this system has no action-economy cost to
-// distinguish the two, so both levels behave identically here): "you can gain a Friendship Point
-// as a Standard action once per scene." Neither a bank-now/consume-later Perk nor an ally-heal, so
-// it's dispatched directly here too, the same way Mark Target is - "once per scene" is
-// approximated as "once per encounter" (this codebase's existing idiom for a scene-scoped gate,
-// see Augment Power/One For All), which only actually gates during an active Combat (no-op
-// outside one, same documented limitation those already accept). Grants via
-// helpers/story-points.mjs#requestStoryPointGrant - MLP's own "Friendship Point" is just the
-// existing world Story Points pool under its own relabeled display name
-// (E20.pointsNameOptions.friendship), so no separate resource exists to grant into.
-const CURB_YOUR_ENTHUSIASM_ID = "Compendium.essence20.mlp_crb.Item.nWb2wRNaQBrP5z0p";
-const CURB_YOUR_ENTHUSIASM_ENCOUNTER_FLAG = 'curbYourEnthusiasmUsedThisEncounter';
-
 // Honorific Token (A Jump Through Time, Medieval Equipment, p.67): "If someone is granted an
 // honorific token... they may spend a Move action once per day to regain a Story Point after
 // spending it." A `gear` item, not a Perk - joins canUsePerk's own existing 'gear' allowlist
@@ -403,67 +365,6 @@ const CURB_YOUR_ENTHUSIASM_ENCOUNTER_FLAG = 'curbYourEnthusiasmUsedThisEncounter
 const HONORIFIC_TOKEN_ID = "Compendium.essence20.jump_through_time.Item.z9NkwgoIx2JRrPBA";
 const HONORIFIC_TOKEN_ENCOUNTER_FLAG = 'honorificTokenUsedThisEncounter';
 
-// Stargazer (Field Guide to Action & Adventure, Influence Perk, p.61): "Twice per scene, you can
-// gain an Edge on a Smarts-based Skill Test." A bank-now/consume-later Edge grant like Think On
-// It, but capped at 2 uses per scene rather than gated purely by "no unspent bank yet" - tracked
-// via getUsesThisScene/markUsedThisScene (this codebase's usual scene-boundary counter) alongside
-// the pending flag, and consumed only on a Smarts-essence roll (dice.mjs), unlike Think On It's
-// own unscoped-to-any-skill grant.
-export const STARGAZER_ID = "Compendium.essence20.field_guide_action_adventure.Item.SnAIok2KD1f77DyV";
-export const PENDING_STARGAZER_FLAG = 'pendingStargazer';
-const STARGAZER_SCENE_FLAG = 'stargazerUsedThisScene';
-
-// Grid Gifted (Field Guide to Action & Adventure, Gridthropologist Origin Benefit, p.63): "Once
-// per scene, when faced with a Smarts or Social Skill Test involving Grid or alien technology, you
-// may either gain an Edge or choose to roll as if specialized in the subject of the Test." Same
-// bank-now/consume-later/once-per-scene shape as Stargazer above, but with a mode choice (Edge or
-// Specialized) made at bank time via a confirm prompt, same idiom as skill-substitution-perks.mjs's
-// own pickIsSocialSubstitution. "Involving Grid or alien technology" is dropped as an unenforceable
-// narrative qualifier (this codebase has no subject-matter tag on a Skill Test to check), same
-// simplification as Bits To Spare/Truthseeker elsewhere in this project.
-//
-// The other two halves of this Origin Benefit: "begin play with 1 Personal Power Point" is a plain
-// compendium Active Effect (system.powers.personal.max, mode ADD) and needs no code - see the
-// compendium item's own effects array. "Begin play with one Grid Power you meet all prerequisites
-// for" is NOT built - this needs an open "pick any compendium Power whose prerequisites you
-// currently meet" chooser, and no picker anywhere in this codebase works off an unbounded
-// compendium search like that (every existing hasChoice:'perks' picker offers a FIXED map the
-// granting item itself lists, e.g. perk-handler.mjs's choices-selector.mjs dispatch) - a genuinely
-// new subsystem, not attempted this pass.
-export const GRID_GIFTED_ID = "Compendium.essence20.field_guide_action_adventure.Item.MS8KLmY19EyKR1Ww";
-export const PENDING_GRID_GIFTED_FLAG = 'pendingGridGifted';
-const GRID_GIFTED_SCENE_FLAG = 'gridGiftedUsedThisScene';
-
-/**
- * Prompts for Grid Gifted's own Edge-or-Specialized choice.
- * @returns {Promise<'edge'|'specialized'>}
- */
-async function pickGridGiftedMode() {
-  const wantsSpecialized = await foundry.applications.api.DialogV2.confirm({
-    window: { title: game.i18n.localize('E20.GridGiftedPromptTitle') },
-    content: `<p>${game.i18n.localize('E20.GridGiftedPromptLabel')}</p>`,
-    modal: true,
-  });
-
-  return wantsSpecialized ? 'specialized' : 'edge';
-}
-
-// "[Element] Is Magic" (MLP CRB, every Spirit's own 1st-level Role Perk, p.73/77/81/85/89/92):
-// "Once per scene, when you act in the spirit of [Element], you gain a Friendship point." Six
-// textually-identical Perks (one per Spirit Role), all dispatched the same way Curb Your
-// Enthusiasm's own identical clause already is - see CURB_YOUR_ENTHUSIASM_ID's own doc comment
-// above for the "once per scene" -> "once per encounter" approximation and the Friendship
-// Point -> Story Points reasoning, both unchanged here.
-const ELEMENT_IS_MAGIC_IDS = [
-  "Compendium.essence20.mlp_crb.Item.kcsCU7i1qaekbMrn", // Generosity is Magic, p.73
-  "Compendium.essence20.mlp_crb.Item.mwOU0SXnPC6mc2JZ", // Honesty Is Magic, p.77
-  "Compendium.essence20.mlp_crb.Item.89GCYHXO3chKVOAj", // Kindness is Magic, p.81
-  "Compendium.essence20.mlp_crb.Item.A5hgERkbkkVzoMwL", // Laughter Is Magic, p.85
-  "Compendium.essence20.mlp_crb.Item.V8SoDjHYVCUqfMhY", // Loyalty Is Magic, p.89
-  "Compendium.essence20.mlp_crb.Item.oZ8y7o3JjFM2Nevm", // Magic Is Friendship, p.92
-];
-const ELEMENT_IS_MAGIC_ENCOUNTER_FLAG = 'elementIsMagicUsedThisEncounter';
-
 // Party Power (MLP CRB, Party Maestro Influence, p.56): "You can use this ability three times a
 // day, and when you do, not only does the party begin, but the group gains a Friendship Point."
 // Same Friendship-Point-is-the-world-Story-Points-pool reasoning as Curb Your Enthusiasm/the
@@ -473,29 +374,6 @@ const ELEMENT_IS_MAGIC_ENCOUNTER_FLAG = 'elementIsMagicUsedThisEncounter';
 const PARTY_POWER_ID = "Compendium.essence20.mlp_crb.Item.GKez5xeu5ZllzGOI";
 const PARTY_POWER_SCENE_FLAG = 'partyPowerUsedThisScene';
 const PARTY_POWER_MAX_USES = 3;
-
-// Public Television (WTNV Citizens' Guide, General Perk, p.51) - see its own check in dice.mjs
-// (next to the Adaptable check). A deliberate once/day activation dispatched directly here (not
-// through BANKABLE_PERKS, since what it grants isn't a bankPendingBonus shape at all - it's a
-// scene-long isSpecialized-on-any-Smarts-roll flag, read live off this same flag by dice.mjs
-// rather than consumed/cleared). Flag name/id duplicated (not imported) rather than pulled in from
-// dice.mjs, matching this project's own "each file keeps its own compendium ID constants rather
-// than sharing them across files" convention - also sidesteps a dice.mjs <-> banked-buffs.mjs
-// circular import into dice.mjs specifically, which nothing else in this codebase does yet.
-const PUBLIC_TELEVISION_ID = "Compendium.essence20.wtnv_citizens_guide.Item.ymtH7qBwRKqohlyF";
-const PUBLIC_TELEVISION_ENCOUNTER_FLAG = 'publicTelevisionUsedThisEncounter';
-// "Once per day": the Scene Clock's mission window is this system's stand-in for a day or a
-// session. The encounter flag above is the "for one scene" duration dice.mjs reads.
-const PUBLIC_TELEVISION_MISSION_FLAG = 'publicTelevisionUsedThisMission';
-
-// Scientific Method's own banned-tech ↑1 benefit (WTNV Citizens' Guide, University of What It Is
-// Scientist Role Perk, p.44) - see PENDING_SCIENTIFIC_METHOD_FLAG's own comment in dice.mjs for
-// consumption. The Science-Specialized half is unconditional (no button, no cap) and lives
-// entirely in dice.mjs.
-const SCIENTIFIC_METHOD_ID = "Compendium.essence20.wtnv_citizens_guide.Item.vnYDLY5Fe2pasHyF";
-const PENDING_SCIENTIFIC_METHOD_FLAG = 'pendingScientificMethod';
-// "Once per session" - the Scene Clock's mission window.
-const SCIENTIFIC_METHOD_MISSION_FLAG = 'scientificMethodUsedThisMission';
 
 // Concentrate Fire (GI Joe CRB, Vanguard base, 15th level, p.109) - see
 // helpers/concentrate-fire.mjs's own doc comment. Once per encounter, spends 1 Story Point (same
@@ -525,24 +403,6 @@ const I_KNOW_A_GUY_ID = "Compendium.essence20.pr_crb.Item.anfEVX8bI2eQh40E";
 // (same shape Concentrate Fire above already establishes) only when turning ON, since the 1 Story
 // Point cost is paid at that moment via the skill picker inside the toggle itself.
 const TIME_TRAVELER_PERK_ID = "Compendium.essence20.jump_through_time.Item.bXkXXr0VMXpoAiv0";
-
-// Clued In (GI Joe CRB, Intelligence Origin Benefit, p.64): "Once per scene, you may spend a Story
-// Point to get a clue pertinent to a character, current scene, or current mission. Alternatively,
-// you may ask the GM a single question with a yes or no answer." Purely narrative payoff (a clue/
-// answer only the GM can actually provide) - same canWriteStoryPoints()/hasStoryPointsAvailable() gate
-// Concentrate Fire establishes, but with nothing to mark, so the dispatch is just spend + announce.
-// The "once per scene" cap is dropped as unenforceable outside combat - same reasoning Specialist's
-// own once-per-encounter cap was already dropped for (this codebase's only once-per-encounter
-// tracking is keyed on an active game.combat, the opposite of what an outside-combat ability needs).
-const CLUED_IN_ID = "Compendium.essence20.gi_joe_crb.Item.QPKjeNGLdT1QqNOY";
-
-// Always in Contact (GI Joe CRB, Covert Ops Origin Benefit, p.64): "Once per scene, you may spend
-// a Story Point to add a useful ally to the scene or declare that you have a previous favorable
-// relationship with an NPC." Same purely-narrative-payoff shape as Clued In just above (a GM-
-// adjudicated grant, nothing to bank) - same canWriteStoryPoints()/hasStoryPointsAvailable() gate,
-// spend + announce dispatch. The "once per scene" cap is dropped the same unenforceable-outside-
-// combat way Clued In's own identical cap already is.
-const ALWAYS_IN_CONTACT_ID = "Compendium.essence20.gi_joe_crb.Item.1m1pdHboGB7gem34";
 
 // Phantom (GI Joe CRB, Infiltrator Focus, 17th level, p.74): "In dim light or darkness, spend a
 // Free action to become invisible to natural eyesight until the beginning of your next turn. This
@@ -608,43 +468,11 @@ const DEADSTICK_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.SDw
 // see helpers/ground-suppression.mjs's own doc comment.
 const GROUND_SUPPRESSION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.nCjrhYaUuN4omhDm";
 
-// Wild Tales (MLP Adventurer Influence, p.42) - see helpers/wild-tales.mjs's own doc comment. No
-// Power/resource cost, just a once-per-scene gate (same no-cost shape as Orange Ranger Prime's
-// own Power-regen "Use" button below).
-const WILD_TALES_ID = "Compendium.essence20.mlp_crb.Item.FkBnUmwiOQgNnmLs";
-const WILD_TALES_ENCOUNTER_FLAG = 'wildTalesUsedThisEncounter';
-
-// Bait and Switch (MLP Tricky Influence, p.63): "You may spend a Friendship Point to get your
-// allies to help you distract and confuse onlookers. If you do, you gain Edge on any Deception or
-// Infiltration Skill Tests you make until your next turn." A plain BANKABLE_PERKS entry (its
-// default `data = { edge: true }` is exactly what's needed - see onPerkUse's own generic bankable
-// dispatch) with a new worldStoryPointCost field, gated/consumed in dice.mjs#_getAutomaticCombat
-// Modifiers scoped to Deception/Infiltration specifically (see BAIT_AND_SWITCH_ID's own comment
-// there). MLP's own "Friendship Point" is the world Story Points pool under its relabeled name,
-// same resource Curb Your Enthusiasm above grants into.
-const BAIT_AND_SWITCH_ID = "Compendium.essence20.mlp_crb.Item.E6QEmhG9S1skhLLs";
-const IF_I_RECALL_CORRECTLY_ID = "Compendium.essence20.knights_of_canterlot.Item.IHwRuoKUDhYAjTqa";
-const TRICK_SHOT_ID = "Compendium.essence20.knights_of_canterlot.Item.sZDDuJOzRq9vg1sP";
-
 // Superb Soloist (Knights of Canterlot, Bard Influence, p.15) - see SUPERB_SOLOIST_ID's own
 // comment in dice.mjs. Dispatched directly here (not through team-buffs.mjs's own Morphed-only
 // generic dispatcher) - broadcasts an unscoped Edge bank to every nearby ally, once per scene.
 const SUPERB_SOLOIST_ID = "Compendium.essence20.knights_of_canterlot.Item.S3t5zNlhPp7evXbh";
 const SUPERB_SOLOIST_ENCOUNTER_FLAG = 'superbSoloistUsedThisEncounter';
-
-// Calm Hearted (Dark Skies Over Equestria, General Perk, p.43) - see CALM_HEARTED_ID's own
-// comment in dice.mjs. A plain BANKABLE_PERKS entry (default data={edge:true}), just with a
-// once-per-scene gate and no cost, same no-cost shape as If I Recall Correctly/Trick Shot above.
-const CALM_HEARTED_ID = "Compendium.essence20.dark_skies_over_equestria.Item.uZX4nbGjbQ0b6u2i";
-
-// The Nine Hand Seals (Factions in Action Vol. 2, Arashikage Apprentice Origin Perk, p.10): "Once
-// per Combat, you can spend a Free action to perform the kuji-in, giving yourself an Edge on your
-// next Attack or other Skill Test." "Once per Combat" maps directly onto hasUsedThisEncounter's
-// own combat-id-scoped gate (the same "once per combat" -> "once per encounter" idiom Roadside
-// Assistant/Interdiction/Stick In The Spokes already establish). Same plain no-cost self-Edge
-// shape as Trick Shot/Calm Hearted just above - this Perk item didn't exist in the compendium at
-// all until this pass (the Arashikage Apprentice Origin it belongs to had never been created).
-const NINE_HAND_SEALS_ID = "Compendium.essence20.intercontinental_adventures.Item.2qjDEWrhBYFjkYDs";
 
 // Dig In (Decepticon Directive Raider, Siegemaster Focus, 10th level, p.64) - see
 // helpers/dig-in.mjs's own doc comment. A toggle (not a bank-once, ally-heal, or self-grant), so
@@ -944,14 +772,6 @@ const PHANTOM_FOCUS_ID = "Compendium.essence20.across_the_stars.Item.aXGMEoVsYSt
 // heal, so it's dispatched directly here too.
 const THROUGH_THE_ARCHES_ID = "Compendium.essence20.across_the_stars.Item.f372LpDqqiO2XoEi";
 
-// Menacing Laugh (Beneath the Helmet, Dark Ranger, 7th level, p.40): "As a Free action, once per
-// turn, you can spend 1 Terror to regenerate 1 Personal Power." Once-per-turn (hasUsedThisTurn/
-// markUsedThisTurn, same idiom Augment Power's own onceTurnFlag already uses), gated on actually
-// holding at least 1 Terror to spend - dispatched directly here since it's neither a bankable
-// shiftUp/edge grant nor an ally-heal.
-const MENACING_LAUGH_ID = "Compendium.essence20.beneath_the_helmet.Item.RzQ4LahiaHPl6ZzU";
-const MENACING_LAUGH_TURN_FLAG = 'menacingLaughUsedThisTurn';
-
 // Rush the Line (Factions in Action Vol. 2, Renegade Focus, p.68) - see helpers/rush-the-line.mjs's
 // own doc comment. Same once-per-turn shape as Menacing Laugh above, but a Story Point spend
 // (via the GM-relay mechanism Withering Fire/Dependable Tanker/Read The Land already established)
@@ -1019,30 +839,6 @@ const DATA_BRIDGE_TURN_FLAG = 'dataBridgeUsedThisTurn';
 // there being both an afflicted ally to cure and a Data-Bridged ally to receive the Condition.
 const MISERY_LOVES_COMPANY_ID = "Compendium.essence20.enigma_of_combination.Item.JJ8ffuxjYeXJ9KJ2";
 
-// Disappear (Transformers CRB, Scout base, Cybertronian Perk, p.85): "As a Free action, you can
-// spend an Energon Point to turn Invisible until the end of your turn." Toggles this system's own
-// real `invisible` status Condition, the same idiom Invisibility (helpers/invisibility.mjs)
-// already established for its own Perk - but Disappear has no once-per-scene gate (repeatable any
-// time the actor can afford it) and costs Energon rather than being free, so it's dispatched
-// directly here (reading/toggling `invisible` straight off actor.statuses) rather than reusing
-// that file's own scene-gated, cost-free toggleInvisibility/canUseInvisibility helpers. Turning it
-// back OFF is always free, same "deactivating never costs anything" idiom as Invisibility's own
-// toggle. "Until the end of your turn" has no auto-expiry hook (same accepted "grant, don't
-// auto-revoke" gap Invisibility's own "1 minute" duration already lives with) - the player toggles
-// it off manually, or activates a Free action version of this same Perk to switch off for free.
-const DISAPPEAR_ID = "Compendium.essence20.tf_crb.Item.aD6N6hTvFhsQFZnB";
-
-// Vanish (Transformers CRB, Manipulator Focus, 20th level, p.63): "you can turn Invisible as a
-// Move action. This lasts until the end of the scene, you successfully attack a target, an enemy
-// successfully attacks you, or you end the effect as a Free action." Same direct `invisible`
-// status toggle as Disappear above, but free (no Energon cost, no frequency cap at all). "Until
-// the end of the scene"/"an enemy successfully attacks you" have no auto-clear hook (this
-// project's usual gap for narrative-timed durations); the player's own attacks already auto-clear
-// Invisibility-Perk-granted invisibility via deactivateInvisibilityOnAttack, but that helper is
-// scoped to that Perk's own private flag, not this raw status toggle, so Vanish's own "ends on your
-// successful attack" clause is left to the same manual-toggle-off idiom as its other two clauses.
-const VANISH_ID = "Compendium.essence20.tf_crb.Item.RESovNstSU5Sq3GM";
-
 // Work the Numbers (Transformers CRB, Scout base, Cybertronian Perk, p.58) - see
 // helpers/work-the-numbers.mjs's own doc comment. Spends 1 Energon Point, dispatched directly
 // here since the combat-tracker reorder itself lives in that file, not a table entry.
@@ -1086,24 +882,6 @@ const ENERGON_CUBE_ID = "Compendium.essence20.decepticon_directive.Item.5p3lMU4v
 // instead of 2.
 const ENERGON_SNACK_ID = "Compendium.essence20.decepticon_directive.Item.y72ZEiWUa3AYxcXl";
 
-// Teleportation (Technorganic Secrets, Mutant Beast Influence Perk, p.49): "Once per scene, you
-// may use your Move action to teleport up to 30 feet to an unoccupied space you can see." Same
-// once-per-scene Use button as Invisibility/Deep Breathing (hasUsedThisEncounter/
-// markUsedThisEncounter), no resource cost. The teleport itself is pure narrative/token movement,
-// the same established gap Duty of the Silver/Duty of the Graphite/Through the Arches all already
-// leave ungeometried.
-const TELEPORTATION_ID = "Compendium.essence20.technorganic_secrets.Item.tGbqMWSRLdV1l4oo";
-const TELEPORTATION_ENCOUNTER_FLAG = 'teleportationUsedThisEncounter';
-
-// Ultimate Utility (Decepticon Directive, Mimic Focus, 20th level, p.49): "You can, by spending an
-// Energon Point, gain temporary access to a minor piece of equipment or tool useful in the scene.
-// This is a similar benefit you can gain by spending a Story Point... but costs an Energon Point
-// instead." Pure narrative payoff (like I Know A Guy) with no roll or fixed mechanical shape at
-// all - just the Energon spend and a chat notification, the same Story-Point-style Use button
-// idiom the "what" the PC gains is entirely GM/player narration. No frequency cap named in RAW
-// beyond having an Energon Point to spend.
-const ULTIMATE_UTILITY_ID = "Compendium.essence20.decepticon_directive.Item.LQkSWoIABnPUhecg";
-
 // I Got You (Enigma of Combination, Team Leader Focus, 3rd level, p.30): "once each round, you
 // can spend 1 Energon Point to give your teammate an upshift 1 on any Skill Test, even when it is
 // not your turn." Same plain target:'ally'/fixedShiftUp shape as Plan of Action/Personal
@@ -1116,18 +894,6 @@ const I_GOT_YOU_ID = "Compendium.essence20.enigma_of_combination.Item.h8DuSX4N1b
 // doc comment. A Standard action, no other cost - available while either of its two built
 // once-per-Combat clauses hasn't been used yet.
 const LIKE_WATER_ID = "Compendium.essence20.intercontinental_adventures.Item.HSjShnVmoDdzEDT1";
-
-// Can't Afford to Miss (Cobra Codex, Infantry Be Ruthless replacement Perk, p.53): "When you miss
-// with an attack, you can spend a Story Point to get ↑1 on your next attack. Every consecutive
-// time you miss, you can spend another Story Point to get an additional, cumulative ↑1 on the
-// following attack." The reactive "only after an actual miss" precondition isn't checked here -
-// same self-policed "click Use when the fictional trigger is true" idiom this project already
-// accepts pervasively (Concentrate Fire/Clued In etc.) rather than building a new reactive chat
-// button, since the plain generic "Use" bolt icon (E20.PerkUse, already localized) needs no new
-// UI string either way. Cumulative: each use adds another point onto whatever's already pending,
-// consumed on the actor's next Attack roll (see dice.mjs's own pendingCantAffordToMiss check).
-const CANT_AFFORD_TO_MISS_ID = "Compendium.essence20.cobra_codex.Item.nb4xPr4kA5ra12PL";
-export const CANT_AFFORD_TO_MISS_FLAG = 'pendingCantAffordToMiss';
 
 // Impossible Expectations (Cobra Codex, Officer Be Ruthless replacement Perk, p.56): "The turn
 // after a Cobra in your unit is Defeated, you can spend a Story Point to give them 1 Health."
@@ -1205,18 +971,6 @@ const PSEUDO_SCIENCE_ID = "Compendium.essence20.wtnv_citizens_guide.Item.MTo42tK
 // Power, then triggers a whole roll rather than banking a flag - dispatched directly here.
 const DUTY_OF_THE_GRAPHITE_ID = "Compendium.essence20.beneath_the_helmet.Item.Rr7ucZahtHI9yXwA";
 
-// Duty of the Silver (Across the Stars, Silver Ranger, 7th level, p.59): "You can spend one of
-// your Grid Surges and 2 Personal Power to instantly teleport to the closest concentration of
-// Power Rangers on that dimension or timeline." The same 1-Grid-Surge/2-Personal-Power spend as
-// Duty of the Graphite above (the Perk this one is replaced BY at Grid Power level, not a
-// different resource shape) - but no arrival check/roll attached here, just the teleport itself,
-// so this dispatches a plain notification rather than triggering a Skill Test. The teleport is
-// pure narrative/token movement, the same established gap Duty of the Graphite/Through the
-// Arches/Wisdom of the Elders' own Teleportation option all already leave ungeometried. The
-// automatic Heavy/Ultra-Heavy Armor proficiency grant is already built (perk-handler.mjs's own
-// grantDutyOfTheSilverArmorTraining).
-const DUTY_OF_THE_SILVER_ID = "Compendium.essence20.across_the_stars.Item.KhV5GeGIMJNWlWhr";
-
 // Your Safety's On (Quartermaster's Guide to Gear, General Perk, p.31) - see
 // helpers/your-safetys-on.mjs's own doc comment. No resource cost beyond the Standard action
 // itself (unenforced, the standing action-economy gap) - always available.
@@ -1230,10 +984,6 @@ const TRIGGER_REACTION_ID = "Compendium.essence20.general_hawk_s_personel_files.
 // Uninterrupted Break (Quartermaster's Guide to Gear, General Perk, p.28) - see
 // helpers/uninterrupted-break.mjs's own doc comment.
 const UNINTERRUPTED_BREAK_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.1vrQxY1nzjMjeU7D";
-
-// Calculated Attack (Transformers CRB, Gunner base, Sharpshooter Focus, 3rd level, p.70) - see
-// helpers/calculated-attack.mjs's own doc comment. No Power cost or frequency cap named in RAW.
-const CALCULATED_ATTACK_ID = "Compendium.essence20.tf_crb.Item.hYWoZnrFKaVTZFuG";
 
 // Tender (MLP CRB, Spirit of Kindness, 6th level, p.85) - see helpers/tender.mjs's own doc
 // comment. No Power cost or frequency cap in RAW, so canUsePerk just gates on the actor actually
@@ -1274,16 +1024,6 @@ const JUMP_THROUGH_TIME = "Compendium.essence20.jump_through_time.Item.";
 const ORANGE_RANGER_PRIME_ID = `${JUMP_THROUGH_TIME}8s9HHpmk633e6PLM`;
 const ORANGE_RANGER_PRIME_ENCOUNTER_FLAG = 'orangeRangerPrimeUsedThisEncounter';
 
-// Purple Ranger Prime (A Jump Through Time, 20th level, p.39): "You may remove the Frightened,
-// Mesmerized, and Stunned Conditions from yourself as a Free action." Self-only, no cost, no
-// once-per-X gate - dispatched directly here as a plain toggleStatusEffect sweep. Its "+2 all
-// Defenses" bullet is already a compendium Active Effect; "immune to Psychic damage" is a plain
-// system.immunities.psychic Active Effect (same family as Shape Shifter's own damage-type
-// immunity), added directly to the compendium item alongside the Defenses effect - neither needed
-// any code.
-const PURPLE_RANGER_PRIME_ID = `${JUMP_THROUGH_TIME}EfkIx0B3AN0HipH8`;
-const PURPLE_RANGER_PRIME_CONDITIONS = ['frightened', 'mesmerized', 'stunned'];
-
 // Comic Flair (A Jump Through Time, Orange Ranger, Modified Shell I option, p.32) - see
 // helpers/comic-flair.mjs's own doc comment. A plain "Use" button, no cost/gate, acting on
 // whichever token is currently targeted - dispatched directly here like Mark Target/Fight Me!.
@@ -1304,18 +1044,6 @@ const GRID_SOLDIER_ID = "Compendium.essence20.jump_through_time.Item.y9F6PkCIw7g
 // Once per session (approximated as once per encounter), pick a Skill and bank a shiftUp on it.
 const PARADOX_ID = "Compendium.essence20.jump_through_time.Item.TYebczV8RvTTbWnL";
 const PARADOX_ENCOUNTER_FLAG = 'paradoxUsedThisEncounter';
-
-// Mind of No Mind (Factions in Action Vol 2: Intercontinental Adventures, Arashikage General
-// Perk, p.30): "You gain +2 to your Willpower. Once per scene, you may gain ↑1 on an Alertness
-// Skill Test. You are immune to the Frightened Condition." The Willpower AE and Frightened
-// immunity (helpers/condition-immunity.mjs) were already built; only the once-per-scene Alertness
-// upshift was missing. Same bank-on-a-fixed-skill shape as Paradox just above, minus the picker
-// (Paradox lets you choose any skill; this one is always Alertness, so there's nothing to pick).
-// "Once per scene" -> onceEncounterFlag's usual scene/encounter idiom (see BANKABLE_PERKS' own
-// doc comment on the same approximation).
-const MIND_OF_NO_MIND_ID = "Compendium.essence20.intercontinental_adventures.Item.edU8dyL3poLU6IuM";
-const MIND_OF_NO_MIND_ENCOUNTER_FLAG = 'mindOfNoMindUsedThisEncounter';
-export const MIND_OF_NO_MIND_FLAG = 'pendingMindOfNoMind';
 
 // Explosive Morph (A Jump Through Time, Quantum Ranger, Quantum Power option, p.45) - see
 // helpers/explosive-morph.mjs's own doc comment. Dispatched directly here (a whole roll, not a
@@ -1413,13 +1141,6 @@ const PR_CRB = "Compendium.essence20.pr_crb.Item.";
 // wording, the same accepted over-granting simplification used throughout this project.
 const GIJ_QUICK_STUDY_ID = `${GI_JOE_CRB}IoOFcSJK3sHLAbgR`;
 
-// Auxiliary Brain (GI Joe CRB, Technician/Expert Focus, 6th level, p.104): "You can Lend
-// Assistance to yourself as a Free action once per turn." This system's only generic reading of
-// "Lend Assistance" applied to a Skill Test is granting Edge on it - functionally the same
-// self-Edge grant as Think On It (see its own BANKABLE_PERKS entry below), just gated per-turn
-// instead of lasting until the start of your next turn.
-const AUXILIARY_BRAIN_ID = `${GI_JOE_CRB}wddBU7QaDgEe9FhR`;
-
 // Fast Learner (GI Joe CRB, Technician/Tinkerer Focus, 1st level, p.106) - see
 // helpers/fast-learner.mjs's own doc comment. A standing reallocation, dispatched directly here
 // (neither a bankable nor an ally-heal).
@@ -1498,38 +1219,6 @@ const WHIRLWIND_STRIKE_ID = `${PR_CRB}SV8nqua9koRB3lvm`;
 // own doc comment.
 const WHATEVER_WE_NEED_ID = `${PR_CRB}1DphEJt2hPswKDzI`;
 
-// You Got This! (PR CRB, Black Ranger, 2nd/7th/12th/17th level, p.33) - see its own
-// IMMEDIATE_ALLY_PERKS entry below.
-const YOU_GOT_THIS_ID = `${PR_CRB}FDQFMkT2fUjxVxZY`;
-
-// Educated (PR CRB, General Perk, p.94): "Add an additional Story Point to your team's pool each
-// game session." Dispatched directly here (once/scene approximates "each session," the same
-// established idiom Curb Your Enthusiasm's own identical Story-Point-grant clause already uses),
-// reusing the exact same requestStoryPointGrant call and once-per-encounter gate. Its other 2
-// clauses need no code: "gain fluency in 1 language" is pure narrative, and "may act as though
-// specialized in any Smarts-based skill once per day" is already covered by the pre-existing,
-// always-available isSpecialized checkbox (the same verify-only finding as Mightier Than the
-// Sword/Mind Like a Steel Trap/Public Television/Third Eye elsewhere in this project).
-const EDUCATED_ID = `${PR_CRB}Jq0jnOgj6oPkMlse`;
-
-// Educated (GI Joe CRB, General Perk, p.131) - a DIFFERENT compendium item from PR CRB's own
-// identically-named/worded Perk just above (same 3 clauses: language fluency, a Story Point
-// grant, and "act as Specialized once per day"), so it shares the exact same dispatch rather than
-// duplicating it. "Gain fluency in 1 Language" is narrative; "may act as though Specialized in
-// any single Smarts skill once per day" needs no code, already covered by the pre-existing,
-// always-available isSpecialized checkbox (the same verify-only finding already confirmed for PR
-// CRB's own identical clause).
-const EDUCATED_GIJ_ID = `${GI_JOE_CRB}cAcLWtKOUdF0pTJA`;
-
-// Remove & Rebuild (Transformers CRB, General Perk, p.111) - see its own IMMEDIATE_ALLY_PERKS
-// entry's doc comment below. REMOVE_AND_REBUILD_DEFENSE_FLAG banks the Perk's own second clause
-// ("their Toughness and Evasion Defense increase by +1 until the end of their next turn") onto the
-// revived ally right alongside the heal - see consumeBankedDefenseBonus's own doc comment near the
-// bottom of this file for the shared "banked Defense bonus, on whichever actor is the beneficiary"
-// primitive this and Force Field/Stalwart Defense/Sword And Board/Stronger Together all now use.
-const REMOVE_AND_REBUILD_ID = "Compendium.essence20.tf_crb.Item.q63dZJjGuZHcE2gH";
-export const REMOVE_AND_REBUILD_DEFENSE_FLAG = 'pendingRemoveAndRebuildDefense';
-
 // Force Field (Transformers CRB, Armor Upgrade, p.132): "As a Free action once per scene, increase
 // your Toughness and Evasion by 2 each until the beginning of your next turn." Self-targeted,
 // unlike the ally-facing Perks above/below sharing this same banked-Defense-bonus primitive - the
@@ -1566,37 +1255,6 @@ const STALWART_DEFENSE_TURN_FLAG = 'stalwartDefenseUsedThisTurn';
 // bank a fresh, fixed amount).
 const STAND_FIRM_ID = "Compendium.essence20.tf_crb.Item.rAxKrR4ObFGeH5yP";
 
-// Sword And Board (Transformers CRB, Sentinel Focus, 17th level, p.91): "On your turn, you can
-// choose to gain any one of the following bonuses to Defense until the beginning of your next
-// turn: +3 Toughness; +3 Evasion; +2 Toughness, +1 Evasion; +1 Toughness, +2 Evasion." Same
-// per-turn allocation-picker shape as Stalwart Defense above, different amounts. The "gain ↑1 on
-// offhand attacks" clause is the same always-on skill-shift trait Stalwart Defense's own Weapon
-// option carries, and is out of scope for the same reason.
-const SWORD_AND_BOARD_ID = "Compendium.essence20.tf_crb.Item.4ArjV6NInx6snUaZ";
-export const SWORD_AND_BOARD_FLAG = 'pendingSwordAndBoard';
-const SWORD_AND_BOARD_TURN_FLAG = 'swordAndBoardUsedThisTurn';
-
-// Stronger Together (Transformers CRB, Strategist Focus, 20th level, p.68): "As a Free action, you
-// can reduce this bonus by 1 to grant an ally within 60ft +1 to all of their Defenses until the
-// beginning of your next turn." The passive "+1 per nearby ally" half is already built directly in
-// dice.mjs; this is the ally-facing transfer half, banking on a CHOSEN ALLY (all: 1, i.e. every
-// Defense) via the ordinary target:'ally' dispatch below, while also banking a matching -1 "all"
-// reduction on the GRANTER via selfPenaltyDefenseAmounts (a Defense-bonus sibling to Generosity of
-// Spirit's own selfPenaltyFlagKey/selfPenaltyShiftDown, consumed at the same dice.mjs Stronger
-// Together site that reads the live per-ally count).
-const STRONGER_TOGETHER_ID = "Compendium.essence20.tf_crb.Item.ZeOj3mmjnXJ7iXj1";
-export const STRONGER_TOGETHER_ALLY_FLAG = 'pendingStrongerTogetherAllyDefense';
-export const STRONGER_TOGETHER_REDUCTION_FLAG = 'pendingStrongerTogetherReduction';
-
-// Field Repair (Transformers CRB, General Perk, p.109) - see its own IMMEDIATE_ALLY_PERKS entry's
-// doc comment below.
-const FIELD_REPAIR_ID = "Compendium.essence20.tf_crb.Item.a8aIMf7h41eg8wCN";
-const FIELD_REPAIR_ENCOUNTER_FLAG = 'fieldRepairUsedThisEncounter';
-
-// Intrafilum (Transformers CRB, Autobot Cybertronian Perk, p.78) - see its own IMMEDIATE_ALLY_PERKS
-// entry's doc comment below.
-const INTRAFILUM_ID = "Compendium.essence20.tf_crb.Item.WafAMRknIe5AL40t";
-
 // Squad Guardian (General Hawk's Personnel Files, Old Hand Role Perk, 9th level, p.166): "you can
 // spend a Moxie Point as a Standard action to give a Defeated ally who you can see 1 Health and
 // remove the Defeated Condition." Same IMMEDIATE_ALLY_PERKS shape as Remove & Rebuild/Failure
@@ -1623,68 +1281,10 @@ const SQUAD_GUARDIAN_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}Li2y6KqFu2OGRkrX`;
 // canUsePerk is unconditionally true.
 const FORWARD_OBSERVATION_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}wOxrMAMHJWFs1DBN`;
 
-// Legacy (General Hawk's Personnel Files, Influence Perk, p.169) - the Story Point grant half
-// only ("add an additional Story Point to your team's pool at the start of every session"), same
-// requestStoryPointGrant dispatch as Educated/Heroic Intervention's identical clauses, but its own
-// dedicated flag rather than joining their shared chain - Heroic Intervention/Keep 'Em Laughing
-// already establish that precedent (an actor holding more than one such Perk should be able to use
-// EACH once per scene, not share a single flag across unrelated grants). The level-bump clause
-// ("treat your level as 3 higher for prerequisites") is NOT automatable - this codebase's Perk/
-// Focus prerequisites are display text only, never code-enforced anywhere (nothing gates Perk
-// selection on level), so there's no check to bypass - a player/GM bookkeeping note when picking
-// Perks, same reasoning already confirmed for Specced Out's own prerequisite-bypass grant.
-const LEGACY_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}j8OsGvCyIstjGyKZ`;
-const LEGACY_ENCOUNTER_FLAG = 'legacyUsedThisEncounter';
-
-// Investigator (Field Guide to Action & Adventure, Influence Perk, p.56) - the Story Point grant
-// half only ("In scenes that advance a mystery, you receive an additional Story Point when you
-// uncover a significant clue" - the Snag-immunity half lives in dice.mjs's own rollSkill instead,
-// next to Quiet's identical idiom). "When you uncover a significant clue" has no detectable
-// trigger (a GM/narrative call, not a game-state check), so - same as Legacy/Done the Impossible's
-// own narrative-triggered grants just above - this is a manual "Use" button, approximated to once
-// per scene via the same once-per-encounter flag idiom.
-const INVESTIGATOR_ID = "Compendium.essence20.field_guide_action_adventure.Item.eI07csKf4P0lC2DS";
-const INVESTIGATOR_ENCOUNTER_FLAG = 'investigatorUsedThisEncounter';
-
-// Done the Impossible (General Hawk's Personnel Files, General Perk, p.174) - the Story Point
-// grant half only ("add an additional Story Point to your team's pool at the start of every
-// session"), same dispatch/dedicated-flag shape as Legacy above. The reroll-widening half ("when
-// you spend a Story Point to reroll, you may reroll any die, not just 1s") and the mission-counter
-// prerequisite for Old Hand are queued separately, not built this pass.
-const DONE_THE_IMPOSSIBLE_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}wWwI0ngCDCGWN0uB`;
-const DONE_THE_IMPOSSIBLE_ENCOUNTER_FLAG = 'doneTheImpossibleUsedThisEncounter';
-
-// Folklorist (Factions in Action Vol 1: Ferocious Fighters, Peacekeeper Focus, 17th Role Level,
-// p.16): "at the start of each session, you add two additional Story Points to your group's
-// pool." Same Story-Point-grant/once-per-session-approximated-as-encounter shape as Done the
-// Impossible/Legacy/Educated above, just granting 2 points instead of 1.
-const FOLKLORIST_ID = "Compendium.essence20.ferocious_fighters.Item.TU96vM4aq15QOfM4";
-const FOLKLORIST_ENCOUNTER_FLAG = 'folkloristUsedThisEncounter';
-
-// Chivalrous / Puzzle Solver (Beneath the Helmet, backstory Perks, p.50) - the Story Point grant
-// half only ("Add an additional Story Point to your team's pool each game session"), same
-// requestStoryPointGrant dispatch as Educated/Heroic Intervention/Legacy's identical clauses, each
-// with its own dedicated flag rather than joining a shared chain - same precedent as Legacy/Done
-// the Impossible above (an actor holding several such Perks uses EACH once per scene). Their own
-// Skill-Test halves live in dice.mjs - see CHIVALROUS_ID's own doc comment there. Chivalrous's
-// third clause ("once per day, act as though specialized in any Social Skill") needs no code, the
-// same verify-only finding as Educated's own identical clause.
-const CHIVALROUS_ID = "Compendium.essence20.beneath_the_helmet.Item.E6bnHJFn2QHSru4p";
-const CHIVALROUS_ENCOUNTER_FLAG = 'chivalrousUsedThisEncounter';
-const PUZZLE_SOLVER_ID = "Compendium.essence20.beneath_the_helmet.Item.AS1G8dp4t09G1k6N";
-const PUZZLE_SOLVER_ENCOUNTER_FLAG = 'puzzleSolverUsedThisEncounter';
-
 // Hearty Meal (General Hawk's Personnel Files, General Perk, p.174) - see
 // helpers/hearty-meal.mjs's own doc comment. Same unconditional-dispatch shape as Forward
 // Observation above (a real dialog roll, no resource cost or frequency cap stated in RAW).
 const HEARTY_MEAL_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}NULhQcWctFcXXdDH`;
-
-// Educated (Transformers CRB, General Perk, p.109) - a THIRD compendium item with the exact same
-// 3 clauses as PR CRB's/GI Joe CRB's own Educated above (language fluency, a Story Point grant,
-// "act as Specialized once per day") - same dispatch, same verify-only finding for the
-// isSpecialized clause.
-const EDUCATED_TF_ID = "Compendium.essence20.tf_crb.Item.hXBK58yrv1s8IdA4";
-const EDUCATED_ENCOUNTER_FLAG = 'educatedUsedThisEncounter';
 
 // Heroic Intervention (PR CRB, General Perk, p.96, Level 8+): the Story Point grant clause
 // ("Add one additional Story Point to the team pool each session"), dispatched the exact same
@@ -1702,16 +1302,6 @@ const EDUCATED_ENCOUNTER_FLAG = 'educatedUsedThisEncounter';
 const HEROIC_INTERVENTION_ID = `${PR_CRB}T95n2lwh3F5OHjnB`;
 const HEROIC_INTERVENTION_ENCOUNTER_FLAG = 'heroicInterventionUsedThisEncounter';
 
-// Keep 'Em Laughing (PR CRB, Comedic Origin Benefit, p.23): "Anytime you make your teammates, your
-// opponents, or both laugh with your antics, add one Story Point to the pool." Same
-// requestStoryPointGrant dispatch as Educated/Heroic Intervention's identical clauses, but
-// deliberately UNGATED - unlike either of those, RAW places no "once per scene/session" cap here
-// at all, so canUsePerk is unconditionally true and onPerkUse sets no encounter flag. "Make people
-// laugh" is unenforceable (no humor-detection anywhere in this codebase) - the same "narrative
-// trigger, player/GM self-polices" idiom Bits To Spare/Truthseeker's own unconditional Edge grants
-// already accept, just applied to a clickable grant instead of a passive one.
-const KEEP_EM_LAUGHING_ID = `${PR_CRB}xrwFNj0NDRcWXvXN`;
-
 // Ninja Power (PR CRB, General Perk, p.97) - see helpers/ninja-power.mjs's own doc comment.
 const NINJA_POWER_ID = `${PR_CRB}wN5rjEQIJH68rWCd`;
 
@@ -1721,28 +1311,12 @@ const VOLLEY_ID = `${PR_CRB}Xi2sHKmBi21c3wbu`;
 // Group Strike (PR CRB, Pink Ranger, 5th/10th/15th level, p.49) - see its own doc comment below.
 const GROUP_STRIKE_ID = `${PR_CRB}coGMtK50t3Ojeklx`;
 
-// Lightning Fast (PR CRB, Yellow Ranger, 13th level, p.57): "spending 1 Personal Power while
-// Morphed, instead of moving normally, you can instantly appear anywhere within 60 feet and line
-// of sight." Dispatched directly here (spend the cost, narrate the rest) - the same "the button
-// exists to spend the cost, the actual repositioning is a manual GM/player token move" idiom
-// Wisdom of the Elders' own Teleportation option and Duty of the Silver's teleport clause already
-// established, with no state to bank since it's a one-shot instant effect.
-const LIGHTNING_FAST_ID = `${PR_CRB}Aws6Y5RODeyDhOxD`;
-
-// Hidden Whispers (Politician Role, Mayoral Candidate Focus, p.41) - see its own BANKABLE_PERKS
-// entry below and dice.mjs's own consumption comment.
-const HIDDEN_WHISPERS_ID = `${WTNV_CITIZENS_GUIDE}ihphiMNUuj710MzH`;
-const HIDDEN_WHISPERS_ENCOUNTER_FLAG = 'hiddenWhispersUsedThisEncounter';
-
 // More Heads are Better than One (Dragon Origin, p.30) - see its own BANKABLE_PERKS entry below
 // and dice.mjs's own consumption comment (stacked alongside Inspiration's identical bonusDie
 // shape).
 const MORE_HEADS_ID = `${WTNV_CITIZENS_GUIDE}jsaByB9ui8k1VUfG`;
 // "Once per session" - the Scene Clock's mission window (onceMissionFlag).
 const MORE_HEADS_MISSION_FLAG = 'moreHeadsUsedThisMission';
-
-// Heart of the Team (Black Ranger, 1st level, p.33) - see its own BANKABLE_PERKS entry below.
-const HEART_OF_THE_TEAM_ID = `${PR_CRB}7EyU0Hf6T3YVels4`;
 
 const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
 
@@ -1766,94 +1340,17 @@ const HORSE_AROUND_ID = `${MLP_CRB}6uhfHYeuUkFuGEEN`;
 const CRACK_UP_THE_4TH_WALL_ID = `${MLP_CRB}km6HV50h6XWKTIm1`;
 const CRACK_UP_THE_4TH_WALL_ENCOUNTER_FLAG = 'crackUpThe4thWallUsedThisEncounter';
 
-// To The Rescue (MLP CRB, Spirit of Loyalty, 6th level, p.90): "you can spend a Friendship Point
-// to take an extra move action on another player's turn, once per round." Dispatched directly
-// (spend the cost, narrate the rest) the same idiom as Horse Around/Lightning Fast above - the
-// actual extra move is a manual token move. Gated with hasUsedThisRound/markUsedThisRound
-// (perks.mjs) rather than the more common hasUsedThisEncounter, since RAW's own cap here is
-// "once per round," not "once per scene."
-const TO_THE_RESCUE_ID = `${MLP_CRB}r8DtD9tdoJy5E4od`;
-const TO_THE_RESCUE_ROUND_FLAG = 'toTheRescueUsedThisRound';
-
-// Educated (MLP CRB, General Perk, p.123, RE-CATEGORIZED 2026-09-15 - found via a duplicate-
-// Perk-name sweep, RAW-verified via a fresh pdf.js pull since this book's own copy was never
-// checked against the other 3, see EDUCATED_ID's own comment above): "Add an additional
-// Friendship Point to your team's pool each game session. Once per day, you can act as though you
-// have a Specialization in any Smarts Skill." Only 2 of the 3 clauses PR CRB's/GI Joe CRB's/TF
-// CRB's own identical Perk has (no language-fluency clause here) - the 2 it does have match
-// exactly, so it joins the same shared dispatch; requestStoryPointGrant already resolves through
-// this book's own Friendship Point relabel (pointsNameOptions.friendship) transparently, no
-// special-casing needed. The Specialized clause again needs no code, same verify-only finding as
-// the other 3.
-const EDUCATED_MLP_ID = `${MLP_CRB}bxJXeIC6xGtdQexn`;
-
 // Honest Assessment (Spirit of Honesty, 14th level, p.79) - see helpers/honest-assessment.mjs's
 // own doc comment and the consumption half in dice.mjs's shift-computation block. A free-either-
 // way on/off toggle (no Power/Health cost, unlike Power Boost/Phantom Suite/Observer), same
 // dispatch shape as Dig In.
 const HONEST_ASSESSMENT_ID = `${MLP_CRB}eIDYxShici5rRpg3`;
 
-// Vulnerability (Kindness, 3rd level, p.82): "as a Free action, you can suffer a -1 Penalty to
-// all your Defenses until the beginning of your next turn to gain [an upshift 1] on a Skill Test
-// this turn." Same self-bank/fixedShiftUp shape as Think On It/Augment Power below (the +1 half
-// only) - the -1-to-all-Defenses cost isn't automated: unlike Hard Target's own converse bonus
-// (a single Defense, consumed by the one attack that actually compares against it), this would
-// need a second, independently-consumed bank on the SAME click (one read by the actor's own next
-// roll, one read by whoever attacks them next, in either order) - onPerkUse's one-flag-per-click
-// shape doesn't support that without real widening. Flagged as a gap, not silently skipped.
-const VULNERABILITY_ID = `${MLP_CRB}LOLY9yLoljdn9319`;
-
-// Street Smarts (MLP CRB, Shrewd Influence, p.59): "Once per day, when performing a Skill Test
-// you can try to cheat or make the Test in an underhanded way... you may use Edge on the Test."
-// Same plain self-Edge bank as Think On It (target:'self', no data override needed - the generic
-// activation's own default is {edge: true}). "Once per day" approximated as once/scene via
-// onceEncounterFlag. The GM-approval clause ("if the GM agrees") and the failure penalty ("you
-// may not gain a Friendship point for the rest of the scene" on a failed Test) are NOT built -
-// the approval is an unenforceable narrative gate (same looseness this project already accepts
-// elsewhere), and the failure penalty would need this codebase to both detect a specific roll's
-// pass/fail AND block a later, unrelated Story Point grant request, neither of which any existing
-// hook here does - flagged as a gap, not silently dropped.
-const STREET_SMARTS_ID = `${MLP_CRB}M9G2fSExDSG7DKSW`;
-const STREET_SMARTS_ENCOUNTER_FLAG = 'streetSmartsUsedThisEncounter';
-
-// Able To Adapt (Field Guide to Action & Adventure, Alien Ambassador Focus, 6th level, p.67): "as
-// a Free action once per turn, you can give yourself ↑1 to a Skill Test until the beginning of
-// your next turn." "Until the beginning of your next turn" approximated as "the very next Skill
-// Test" (same idiom Inner Magic's own scoped shiftUp and Ageless Knowledge already use for a
-// bank that outlives the roll it was granted on) - consumed in dice.mjs next to Vulnerability's
-// own identical pendingVulnerability check (see PENDING_ABLE_TO_ADAPT_FLAG there).
-const ABLE_TO_ADAPT_ID = "Compendium.essence20.field_guide_action_adventure.Item.Ta7SsJbPcCreAHge";
-
 // Inner Magic (Magic, 2nd level, p.94) - see its own comment in dice.mjs's
-// _getAutomaticCombatModifiers, where the Spellcasting-gated consumption half lives. Same
-// unautomated-cost caveat as Vulnerability above (the Willpower Defense reduction isn't applied).
+// _getAutomaticCombatModifiers, where the Spellcasting-gated consumption half lives. The
+// Willpower Defense reduction isn't applied here.
 const INNER_MAGIC_ID = `${MLP_CRB}E6GWRHzP9tOAxQP6`;
 const TERRIFYING_ID = `${GI_JOE_CRB}tXHd0LBkVCB2QPPO`;
-
-// Generosity of Spirit (Generosity, 1st level, p.74): "You can grant another player character an
-// upshift 1 to any Skill Test... On the next Skill Test you make (whatever it is), you suffer a
-// downshift 1 on that Skill Test. You cannot use this ability again until you have made a Skill
-// Test and suffered the penalty." Unlike every other BANKABLE_PERKS entry, this banks on TWO
-// actors from the same click - see selfPenaltyFlagKey/selfPenaltyShiftDown below for the small,
-// reusable widening this needed (rather than a one-off special case): the granted ally shiftUp
-// uses the existing target:'ally'/fixedShiftUp shape unchanged, and the self downshift is banked
-// as its own separate flag with a shiftDown (not a negative shiftUp - this codebase keeps shiftUp
-// and shiftDown as two independently-accumulated non-negative counters, only netted against each
-// other at the very end in _getFormula, e.g. Expertise's downshift-immunity clamp operates on
-// calculatedShiftDown specifically). canUsePerk blocks re-use for as long as that self-penalty
-// flag is still unconsumed, matching RAW's own reuse gate.
-const GENEROSITY_OF_SPIRIT_ID = `${MLP_CRB}hufRaDWtFbAszTmq`;
-export const PENDING_GENEROSITY_OF_SPIRIT_PENALTY_FLAG_KEY = 'pendingGenerosityOfSpiritPenalty';
-
-// Personal Sacrifice (Generosity, 7th level, p.74): "if a friend is attempting a Skill Test with
-// a negative consequence for failing, you can offer to take the negative effect for them. If they
-// accept, they gain 1 on the roll." Same plain target:'ally'/fixedShiftUp shape as Plan of Action
-// - only the granted +1 is automated; "taking the negative effect instead" covers things RAW
-// itself lists as unmechanizable (damage, a Condition, "condescending mockery," "a pie in the
-// face," an embarrassing nickname) and stays a GM-adjudicated narrative trade, same as every
-// other pure-GM-judgment clause left alone elsewhere in this project.
-const PERSONAL_SACRIFICE_ID = `${MLP_CRB}PHzAgfYygOH67l1P`;
-const BIRD_EYE_VIEW_ID = "Compendium.essence20.technorganic_secrets.Item.tXFkcJfvuZ1LEUAX";
 
 // Hard Target (Pink Ranger, 2nd level, p.50): "As part of a Move action, you are allowed to roll
 // your Acrobatics skill die to augment your Evasion score by the result until the beginning of
@@ -1877,11 +1374,6 @@ export const PENDING_HARD_TARGET_FLAG_KEY = 'pendingHardTarget';
 // of it (lower regression risk to already-shipped, tested code).
 const RESILIENCE_ID = `${PR_CRB}TomU7e31oHoRsIrT`;
 export const PENDING_RESILIENCE_FLAG_KEY = 'pendingResilience';
-
-// Momentary Blur (A Jump Through Time, Quantum Ranger, Quantum Power option, p.45) - see its own
-// BANKABLE_PERKS entry above.
-const MOMENTARY_BLUR_ID = `${JUMP_THROUGH_TIME}MB1UsageEvasion1`;
-export const PENDING_MOMENTARY_BLUR_FLAG_KEY = 'pendingMomentaryBlur';
 
 // Inspiration (White Ranger, 5th/10th/15th level, p.65): "as a Free action, say something
 // positive to an ally; they may add [a scaling die] to the result of any d20 roll on their next
@@ -1938,23 +1430,6 @@ const SLAMMER_ROLL_WITH_THE_PUNCHES_ENCOUNTER_FLAG = 'slammerRollWithThePunchesU
 // below) - Plan of Action's own text is "grant an ally", not "grant yourself." needsDefenseChoice/
 // onceEncounterFlag are Roll With the Punches-specific, see its own doc comment above.
 export const BANKABLE_PERKS = {
-  // Think On It (Technician/Grandmaster Focus, 5th level, p.103): "as a Free action, you can
-  // grant yourself an Edge on one Skill Test before the beginning of your next turn."
-  [`${GI_JOE_CRB}M7HNdhqViy0xbUkz`]: { flagKey: 'pendingThinkOnIt', target: 'self' },
-
-  // Auxiliary Brain - see AUXILIARY_BRAIN_ID's own comment above.
-  [AUXILIARY_BRAIN_ID]: { flagKey: 'pendingAuxiliaryBrain', target: 'self', onceTurnFlag: 'auxiliaryBrainUsedThisTurn' },
-
-  // Battle Commander (Officer base, 1st level, p.85): "during the Yo Joe! Battle Cry, you may
-  // give Edge to one ally for their first attack." "Yo Joe!'s own Battle Cry" is this book's own
-  // shared 1st-round-of-combat ability every GI Joe gets (a flat Move-action range bonus, no code
-  // needed for that half) - Battle Commander's own Edge grant is gated to round 1 via
-  // combatRoundOneOnly below, banking the generic default `data = { edge: true }` onto a chosen
-  // ally (the same BANKABLE_PERKS `target:'ally'` shape Plan of Action already establishes),
-  // "their first attack" approximated as "their next roll" same as every other bank-now/consume-
-  // later grant in this project.
-  [`${GI_JOE_CRB}PIWYZyWFw9EYZeom`]: { flagKey: 'pendingBattleCommander', target: 'ally', combatRoundOneOnly: true },
-
   // Plan of Action (Officer base, 1st level, p.85): "as a Move action, you can grant an ally
   // within line of sight [shiftN] to a Skill Test on their next turn." "Line of sight" is
   // approximated as "any ally on the current scene" - this system has no line-of-sight
@@ -1986,11 +1461,6 @@ export const BANKABLE_PERKS = {
     flagKey: 'pendingMoreHeads', target: 'self', fixedBonusDie: '2d2', onceMissionFlag: MORE_HEADS_MISSION_FLAG,
   },
 
-  // Hidden Whispers (Politician Role, Mayoral Candidate Focus, p.41) - see its own comment above.
-  [HIDDEN_WHISPERS_ID]: {
-    flagKey: 'pendingHiddenWhispers', target: 'self', fixedShiftUp: 3, onceEncounterFlag: HIDDEN_WHISPERS_ENCOUNTER_FLAG,
-  },
-
   [ROLL_WITH_THE_PUNCHES_ID]: {
     flagKey: PENDING_ROLL_WITH_THE_PUNCHES_FLAG_KEY,
     target: 'self',
@@ -2012,16 +1482,6 @@ export const BANKABLE_PERKS = {
   // Inspiration (Power Ranger White Ranger) - see INSPIRATION_PR_ID's own comment above.
   [INSPIRATION_PR_ID]: { flagKey: 'pendingInspiration', target: 'ally' },
 
-  // Heart of the Team (Black Ranger, 1st/5th/10th/15th level, p.33): "As a Free action, you can
-  // apply a [+1, scaling to +4] shift to the roll of any ally within 60 feet of you... This costs
-  // one of your Quips & Speeches per long rest." Same bank-on-an-ally shape as Plan of Action, but
-  // spends a Quips & Speeches point (a rolePoints resource, same as Idea Points) at bank time
-  // rather than being free - spendsRolePoint below reads the actor's own base rolePoints item via
-  // the same actor._getBaseRolePoints() generic lookup Eureka!'s Idea Points spend already uses.
-  // "Within 60 feet" and "can understand what you are saying" aren't checked - same "any ally on
-  // the scene" approximation Plan of Action's own line-of-sight clause already accepts.
-  [HEART_OF_THE_TEAM_ID]: { flagKey: 'pendingHeartOfTheTeam', target: 'ally', spendsRolePoint: true },
-
   // Hard Target (Pink Ranger, 2nd level) - see its own comment above.
   [HARD_TARGET_ID]: { flagKey: PENDING_HARD_TARGET_FLAG_KEY, target: 'self', rollsSkillDie: 'acrobatics' },
 
@@ -2030,30 +1490,10 @@ export const BANKABLE_PERKS = {
     flagKey: PENDING_RESILIENCE_FLAG_KEY, target: 'self', rollsSkillDie: 'athletics', powerCost: 1,
   },
 
-  // Momentary Blur (A Jump Through Time, Quantum Ranger, Quantum Power option, p.45): "As a Free
-  // action, spend 1 Personal Power to increase your Evasion Defense by 3 until the beginning of
-  // your next turn." Same self-target/powerCost shape as Resilience above, but a fixed amount
-  // (see MOMENTARY_BLUR_ID's own fixedDefenseBonus field) rather than a rolled skill die -
-  // consumeMomentaryBlur below is Evasion-only, the same defenseType restriction consumeHardTarget
-  // already established for its own fixed-shape counterpart.
-  [MOMENTARY_BLUR_ID]: {
-    flagKey: PENDING_MOMENTARY_BLUR_FLAG_KEY, target: 'self', fixedDefenseBonus: 3, powerCost: 1,
-  },
-
   // Augment Power (Transformers CRB Scientist, 7th level, p.80) - deliberately NOT added here
   // (see AUGMENT_POWER_ID below). Its own 2-tier once-per-turn/once-per-combat shape needs a real
   // benefit picker this generic single-config-per-button table can't express, the same reason
   // Dig Deep (PR CRB) got its own file - see helpers/augment-power.mjs's own doc comment.
-
-  // Vulnerability (Kindness, 3rd level) - see its own comment above. Self-target, no cost/gate at
-  // all in RAW beyond the (unautomated) Defense penalty.
-  [VULNERABILITY_ID]: { flagKey: 'pendingVulnerability', target: 'self', fixedShiftUp: 1 },
-
-  // Able To Adapt - see ABLE_TO_ADAPT_ID's own comment above.
-  [ABLE_TO_ADAPT_ID]: { flagKey: 'pendingAbleToAdapt', target: 'self', fixedShiftUp: 1, onceTurnFlag: 'ableToAdaptUsedThisTurn' },
-
-  // Street Smarts - see STREET_SMARTS_ID's own comment above.
-  [STREET_SMARTS_ID]: { flagKey: 'pendingStreetSmarts', target: 'self', onceEncounterFlag: STREET_SMARTS_ENCOUNTER_FLAG },
 
   // Inner Magic (Magic, 2nd level) - see its own comment above. Self-target, no cost/gate here
   // beyond the (unautomated) Willpower Defense reduction; the Spellcasting gate lives entirely on
@@ -2068,67 +1508,6 @@ export const BANKABLE_PERKS = {
   // one-shot bonus in this table already uses.
   [TERRIFYING_ID]: { flagKey: 'pendingTerrifying', target: 'self', fixedShiftUp: 1 },
 
-  // Bait and Switch - see BAIT_AND_SWITCH_ID's own comment above. No fixedShiftUp/rollsSkillDie
-  // override, so the generic dispatch's own default `data = { edge: true }` applies as-is.
-  [BAIT_AND_SWITCH_ID]: { flagKey: 'pendingBaitAndSwitch', target: 'self', worldStoryPointCost: 1 },
-
-  // Brutish - see BRUTISH_ID's own comment above. Same no-override default `data = { edge: true }`
-  // as Bait and Switch just above, but gated once per scene instead of costing a Story Point, and
-  // unscoped by skill (RAW names no skill at all).
-  [BRUTISH_ID]: {
-    flagKey: 'pendingBrutish', target: 'self', onceEncounterFlag: BRUTISH_ENCOUNTER_FLAG,
-  },
-
-  // Capable of Anything (WTNV) - see CAPABLE_OF_ANYTHING_WTNV_ID's own comment above. Brutish's
-  // exact shape.
-  [CAPABLE_OF_ANYTHING_WTNV_ID]: {
-    flagKey: 'pendingCapableOfAnything', target: 'self', onceEncounterFlag: 'capableOfAnythingUsedThisEncounter',
-  },
-
-  // If I Recall Correctly (Knights of Canterlot, Spell Scribe Influence, p.34) - see
-  // IF_I_RECALL_CORRECTLY_ID's own comment in dice.mjs. No cost/gate beyond a plain once-per-
-  // scene use (RAW: "Once per a scene"), same as Orange Ranger Prime's own no-cost shape - but
-  // this needs its own onceEncounterFlag since, unlike that Perk, it has no Power cost to also
-  // gate on.
-  [IF_I_RECALL_CORRECTLY_ID]: {
-    flagKey: 'pendingIfIRecallCorrectly', target: 'self', onceEncounterFlag: 'ifIRecallCorrectlyUsedThisEncounter',
-  },
-
-  // Trick Shot (Knights of Canterlot, Archer, p.14) - see TRICK_SHOT_ID's own comment in dice.mjs.
-  // Same no-cost once-per-scene shape as If I Recall Correctly just above.
-  [TRICK_SHOT_ID]: { flagKey: 'pendingTrickShot', target: 'self', onceEncounterFlag: 'trickShotUsedThisEncounter' },
-
-  // Calm Hearted - see CALM_HEARTED_ID's own comment above.
-  [CALM_HEARTED_ID]: { flagKey: 'pendingCalmHearted', target: 'self', onceEncounterFlag: 'calmHeartedUsedThisEncounter' },
-
-  // The Nine Hand Seals - see NINE_HAND_SEALS_ID's own comment above.
-  [NINE_HAND_SEALS_ID]: {
-    flagKey: 'pendingNineHandSeals', target: 'self', onceEncounterFlag: 'nineHandSealsUsedThisEncounter',
-  },
-
-  // Personal Sacrifice (Generosity, 7th level) - see its own comment above.
-  [PERSONAL_SACRIFICE_ID]: { flagKey: 'pendingPersonalSacrifice', target: 'ally', fixedShiftUp: 1 },
-  // Bird's Eye View (Technorganic Secrets, Origin Perk, p.39): "Once per scene, while moving in
-  // your Alt Mode, you can use the Lend Assistance action to grant 2 in addition to the normal
-  // effects of the action." The general standalone Lend Assistance action itself isn't built
-  // anywhere in this codebase (only a narrow weaponEffect-triggered Spot slice exists) - this
-  // grants just the "+2" bonus itself as a plain bank-now/consume-on-next-roll shiftUp on a
-  // chosen ally, the same target:'ally'/fixedShiftUp shape as Personal Sacrifice just above.
-  // "Once per scene" -> onceEncounterFlag, this project's usual scene/encounter idiom.
-  [BIRD_EYE_VIEW_ID]: {
-    flagKey: 'pendingBirdEyeView', target: 'ally', fixedShiftUp: 2,
-    onceEncounterFlag: 'birdEyeViewUsedThisEncounter', requireTransformed: true,
-  },
-
-  // Generosity of Spirit (Generosity, 1st level) - see its own comment above.
-  [GENEROSITY_OF_SPIRIT_ID]: {
-    flagKey: 'pendingGenerosityOfSpirit',
-    target: 'ally',
-    fixedShiftUp: 1,
-    selfPenaltyFlagKey: PENDING_GENEROSITY_OF_SPIRIT_PENALTY_FLAG_KEY,
-    selfPenaltyShiftDown: 1,
-  },
-
   // Guidance (GI Joe CRB, Focus: Scout, 10th level, p.94) - see
   // helpers/environmental-expertise.mjs's own GUIDANCE_ID comment. Spends 1 Adaptation Point (the
   // Ranger base's own rolePoints resource, same actor._getBaseRolePoints() lookup Heart of the
@@ -2138,8 +1517,10 @@ export const BANKABLE_PERKS = {
   [GUIDANCE_ID]: { flagKey: PENDING_GUIDANCE_FLAG_KEY, target: 'ally', spendsRolePoint: true },
 
   // I Got You - see its own comment above.
+  // ruleBank: banked through the rules engine's bank (rules/bank.mjs), which every roll reads - its old
+  // pendingIGotYou flag had no consumer anywhere, so the ↑1 never landed.
   [I_GOT_YOU_ID]: {
-    flagKey: 'pendingIGotYou', target: 'ally', fixedShiftUp: 1, energonCost: 1, onceRoundFlag: 'iGotYouUsedThisRound',
+    flagKey: 'pendingIGotYou', target: 'ally', fixedShiftUp: 1, energonCost: 1, onceRoundFlag: 'iGotYouUsedThisRound', ruleBank: true,
   },
 
   // Force Field - see FORCE_FIELD_ID's own comment above.
@@ -2158,53 +1539,7 @@ export const BANKABLE_PERKS = {
       { labelKey: 'E20.StalwartDefenseBothOption', amounts: { toughness: 1, evasion: 1 } },
     ],
   },
-
-  // Sword And Board - see SWORD_AND_BOARD_ID's own comment above. Same per-turn allocation-picker
-  // shape as Stalwart Defense just above, different amounts.
-  [SWORD_AND_BOARD_ID]: {
-    flagKey: SWORD_AND_BOARD_FLAG, target: 'self', onceTurnFlag: SWORD_AND_BOARD_TURN_FLAG,
-    defenseAllocationChoices: [
-      { labelKey: 'E20.SwordAndBoardToughnessOption', amounts: { toughness: 3 } },
-      { labelKey: 'E20.SwordAndBoardEvasionOption', amounts: { evasion: 3 } },
-      { labelKey: 'E20.SwordAndBoardToughnessEvasionOption', amounts: { toughness: 2, evasion: 1 } },
-      { labelKey: 'E20.SwordAndBoardEvasionToughnessOption', amounts: { toughness: 1, evasion: 2 } },
-    ],
-  },
-
-  // Stronger Together - see STRONGER_TOGETHER_ID's own comment above. `all: 1` reads as "+1 to
-  // every Defense" (see consumeBankedDefenseBonus's own doc comment) rather than naming all four
-  // keys individually.
-  [STRONGER_TOGETHER_ID]: {
-    flagKey: STRONGER_TOGETHER_ALLY_FLAG, target: 'ally', defenseAmounts: { all: 1 },
-    selfPenaltyFlagKey: STRONGER_TOGETHER_REDUCTION_FLAG, selfPenaltyDefenseAmounts: { all: -1 },
-  },
 };
-
-// Helping Hand (Blue Ranger, 2nd level, p.38): "As a Free action, you may spend 1 Personal Power
-// to heal any Morphed member of a Power Rangers team within 60 feet one Health." Unlike every
-// Perk in BANKABLE_PERKS above, this applies its effect immediately when clicked - there's no
-// bank-now/consume-later step, so it doesn't fit that table's shape - but it shares the exact same
-// sheet "Use" button/click wiring (canUsePerk/onPerkUse) and the ally-picker below, so it lives in
-// this same file rather than a new one.
-const HELPING_HAND_ID = `${PR_CRB}U5xY4e0Wro9XyooS`;
-
-// Whatever Helps (Generosity, 14th level, p.75): "as a Standard action, you can inflict 1 Damage
-// to yourself in order to heal 2 Health to an adjacent creature." Same immediate-ally-heal shape
-// as Helping Hand, but paid for with the GRANTER's own Health instead of Personal Power - widened
-// IMMEDIATE_ALLY_PERKS/onImmediateAllyPerkUse below (a healthCost alongside powerCost, both
-// optional and independently checked/paid) rather than special-casing this one entry. "Adjacent"
-// is approximated as 5ft, the same single-square radius this system's own grid uses elsewhere.
-const WHATEVER_HELPS_ID = `${MLP_CRB}NyZxFpc8Aop7PDDa`;
-
-// Power Heal (Across the Stars, Silver Ranger, 1st/7th/13th level, p.55): "Spend Personal Power
-// as a Free action to heal yourself [1/2/4, by level] Health per point spent." Self-only (unlike
-// Helping Hand/Whatever Helps' own ally targeting) - see selfTarget below, a small widening of
-// this table/onImmediateAllyPerkUse rather than a separate mechanism. Only a single-Power spend is
-// automated (heal the Perk's own current `advances.currentValue`, see scalesWithAdvances below) -
-// "per point spent" implies spending several at once for a bigger single heal, which would need a
-// new "how many points?" numeric prompt this codebase has no precedent for; clicking the button
-// multiple times nets the same total Health restored, just as separate log entries instead of one.
-const POWER_HEAL_ID = `${ACROSS_THE_STARS}2mStsiWlvvv14YQz`;
 
 // Healing Light (Across the Stars, Phantom Ranger, Phantom Focus choice, 10th/15th level, p.62):
 // "spend 1 Personal Power and 1 Health to heal 2d2 Health to any target." Unlike every other
@@ -2216,46 +1551,6 @@ const POWER_HEAL_ID = `${ACROSS_THE_STARS}2mStsiWlvvv14YQz`;
 // item - see PHANTOM_FOCUS_ID's own comment below for why this is dispatched by system.choice
 // instead of sourceId like every other entry in this table.
 const HEALING_LIGHT_CONFIG = { powerCost: 1, healthCost: 1, rollsHeal: '2d2', radiusFeet: Infinity, requireMorphed: false };
-
-// Deep Breathing (Welcome to Night Vale: Citizens' Guide, General Perk, p.47): "Once per scene,
-// you can heal one Health by taking a Standard action to breathe and relax." Self-only, free
-// (unlike every other IMMEDIATE_ALLY_PERKS entry, which costs Power and/or Health) but limited to
-// once per scene - see onceEncounterFlag below, a small widening of this table/canUsePerk/
-// onImmediateAllyPerkUse (the same hasUsedThisEncounter/markUsedThisEncounter idiom
-// BANKABLE_PERKS' own onceEncounterFlag already established) rather than a separate mechanism.
-const DEEP_BREATHING_ID = `${WTNV_CITIZENS_GUIDE}SIR01xUOHbtLwNa2`;
-const DEEP_BREATHING_ENCOUNTER_FLAG = 'deepBreathingUsedThisEncounter';
-
-const THERAPEUTIC_NANOTECHNOLOGY_ID = "Compendium.essence20.technorganic_secrets.Item.SwXglwZwj64m3zFF";
-const THERAPEUTIC_NANOTECHNOLOGY_ENCOUNTER_FLAG = 'therapeuticNanotechnologyUsedThisEncounter';
-
-// Tourniquet Line Chef (Welcome to Night Vale: Citizens' Guide, General Perk, p.51): "In combat,
-// you can use your Standard action to heal one damage on yourself OR an ally without a Skill
-// Test." Unlike every other IMMEDIATE_ALLY_PERKS entry (either strictly self via selfTarget, or
-// strictly an ally via the picker), this is the first entry offering BOTH - see includeSelf below,
-// a small widening (prepend the granter to the ally-picker's own candidate list, same
-// config.includeSelf concept team-buffs.mjs already established for Environmental Assist) rather
-// than a separate mechanism. No cost and no once-per-scene gate - RAW's only limiter is the
-// Standard action itself, which this system doesn't track as a spendable resource. The Perk's own
-// second clause ("Edge on Science (Medicine) Skill Tests for healing injuries or examining dead
-// bodies") is a Specialization-name match, not an ally heal - see dice.mjs's own check alongside
-// Calm Beast's identical "match by Specialization name" idiom.
-const TOURNIQUET_LINE_CHEF_ID = `${WTNV_CITIZENS_GUIDE}fxH2GPkDGvJEpI8s`;
-
-// MacGyver (GI Joe CRB, Engineer Origin Benefit, p.65): "As an action, you can fix or hamper a
-// machine for one scene... For vehicles and equipment with the capacity for taking damage, you
-// may heal it for 1 Health." Only the vehicle-healing half is built, via a new requireVehicle
-// field on IMMEDIATE_ALLY_PERKS (getNearbyAllyTokens is already disposition/distance-based, not
-// actor-type-filtered, so a friendly vehicle was always a valid candidate - this field just
-// narrows the picker to vehicles specifically, matching RAW's own scope). "Fix or hamper a
-// machine" is pure GM narrative judgment (no generic "machine" state to flip); "equipment" isn't
-// a targetable actor at all in this system (no item-level HP tracking exists to heal), so that
-// half stays unbuilt too. No stated Power/Health cost beyond the action itself.
-const MACGYVER_ID = `${GI_JOE_CRB}EIENttpS41hxvvzn`;
-
-// Failure Isn't an Option (Factions in Action Vol. 2, Officer Focus, p.68) - see its own
-// IMMEDIATE_ALLY_PERKS comment below.
-const FAILURE_ISNT_AN_OPTION_ID = "Compendium.essence20.intercontinental_adventures.Item.EtIdcWWazTDKo3fH";
 
 // EMT Crash Course (GI Joe CRB, General Perk, p.132): "Once per scene, as long as you have a
 // medicine kit on you, you can spend a Standard action to heal one damage on yourself or an ally
@@ -2280,114 +1575,21 @@ const EMT_CRASH_COURSE_HEAL_CONFIG = {
   healAmount: 1, includeSelf: true, radiusFeet: Infinity, onceEncounterFlag: EMT_CRASH_COURSE_ENCOUNTER_FLAG,
 };
 
-// Lightspeed Response (Form) (Across the Stars, General Perk, p.69): "you may spend 2 Personal
-// Power to heal 1 Health to an adjacent target as a Free action." Same IMMEDIATE_ALLY_PERKS shape
-// as Helping Hand - "adjacent" read as the same 5ft radiusFeet Whatever Helps' own identical
-// close-range clause already uses. The "target can only benefit once per scene" cap isn't
-// enforced (no per-TARGET reuse tracking exists on this table, only per-GRANTER via
-// onceEncounterFlag) - the same unenforced-frequency-cap idiom this project already accepts
-// elsewhere. This Perk's own other clauses (Edge on healing/repair Skill Tests - genuinely
-// ambiguous across Science/Medicine vs. Technology, no single skill RAW clearly implies; +10ft to
-// all Movement types - a plain compendium Active Effect, see its own JSON; weapon-replacement
-// clauses - item-grant/swap mechanism, no precedent) are handled separately or deferred.
-const LIGHTSPEED_RESPONSE_ID = `${ACROSS_THE_STARS}E3WLZpN7iKL9uzeB`;
-
-// Perk -> { powerCost, healthCost, healAmount, radiusFeet, requireMorphed, requireTransformed,
-// selfTarget, includeSelf, scalesWithAdvances, rollsHeal, onceEncounterFlag }. Every entry heals
-// one target, at a flat cost
-// - Personal Power (powerCost) and/or the granter's own Health (healthCost), both independently
-// checked/paid (only Healing Light above charges both at once; every other entry sets just one,
-// and Deep Breathing/Tourniquet Line Chef below set neither). The target is a chosen nearby ally
-// by default, or the granter themselves if selfTarget is set (skips the ally-picker/radius scan
-// entirely), or the granter alongside the normal ally candidates if includeSelf is set instead
-// (Tourniquet Line Chef's own "yourself OR an ally" choice). healAmount is a fixed number, or - if
-// scalesWithAdvances is set - read live from the Perk item's own `system.advances.currentValue`
-// (a level-scaling number, e.g. Power Heal's 1/2/4), or - if rollsHeal is set - rolled fresh each
-// use (Healing Light's 2d2). onceEncounterFlag (Deep Breathing only so far) gates re-use the same
-// way a bankable Perk's own onceEncounterFlag does.
+// Perk -> { powerCost, healthCost, healAmount, radiusFeet, requireMorphed, includeSelf,
+// rollsHeal, onceEncounterFlag, rolePointCost, rolePointsName, requireDefeatedStatus,
+// removeDefeated }. Every entry heals one target - Personal Power (powerCost) and/or the granter's
+// own Health (healthCost) are independently checked/paid (Healing Light above charges both at
+// once). The target is a chosen nearby ally by default, or the granter alongside the normal ally
+// candidates if includeSelf is set (EMT Crash Course's own "yourself or an ally" heal above).
+// healAmount is a fixed number, or - if rollsHeal is set - rolled fresh each use (Healing Light's
+// 2d2). onceEncounterFlag (EMT Crash Course's heal) gates re-use the same way a bankable Perk's own
+// onceEncounterFlag does.
 const IMMEDIATE_ALLY_PERKS = {
-  [HELPING_HAND_ID]: { powerCost: 1, healAmount: 1, radiusFeet: 60, requireMorphed: true },
-  [WHATEVER_HELPS_ID]: { healthCost: 1, healAmount: 2, radiusFeet: 5, requireMorphed: false },
-  [POWER_HEAL_ID]: { powerCost: 1, scalesWithAdvances: true, selfTarget: true },
-  [DEEP_BREATHING_ID]: { healAmount: 1, selfTarget: true, onceEncounterFlag: DEEP_BREATHING_ENCOUNTER_FLAG },
-  [TOURNIQUET_LINE_CHEF_ID]: { healAmount: 1, radiusFeet: Infinity, requireMorphed: false, includeSelf: true },
-  [YOU_GOT_THIS_ID]: { rolePointCost: true, scalesWithAdvances: true, radiusFeet: 30, requireMorphed: false, isTempHealth: true },
-  [LIGHTSPEED_RESPONSE_ID]: { powerCost: 2, healAmount: 1, radiusFeet: 5, requireMorphed: true },
-  [MACGYVER_ID]: { healAmount: 1, radiusFeet: Infinity, requireVehicle: true },
-
-  // Failure Isn't an Option (Factions in Action Vol. 2, Officer Focus, p.68): "If an ally is
-  // reduced to 0 Health, you can spend a Story Point to give them 1 temporary Health, putting them
-  // back into the scene and able to act." Any ally on the scene (Infinity radius, the same
-  // Tourniquet Line Chef/MacGyver idiom), narrowed to only those actually AT 0 Health via the new
-  // requireZeroHealth filter - the first IMMEDIATE_ALLY_PERKS entry to filter candidates by their
-  // own Health rather than Morphed/vehicle status, and the first to cost a Story Point
-  // (worldStoryPointCost, the same GM-relay mechanism Withering Fire/Dependable Tanker/Read The
-  // Land/Rush the Line's own dice.mjs/banked-buffs.mjs Story Point spends already established) -
-  // both new, small, generically reusable widenings rather than a bespoke one-off. "Temporary
-  // Health" reuses You Got This!'s own isTempHealth shape (system.health.bonus, not real healing).
-  [FAILURE_ISNT_AN_OPTION_ID]: {
-    worldStoryPointCost: 1, healAmount: 1, radiusFeet: Infinity, requireMorphed: false, requireZeroHealth: true,
-    isTempHealth: true,
-  },
-
-  // Remove & Rebuild (Transformers CRB, General Perk, p.111): "If an ally is Defeated, you can
-  // use a Standard action and expend a Repair Kit to revive that ally with one remaining Health.
-  // Additionally, their Toughness and Evasion Defense increase by +1 until the end of their next
-  // turn." Only the revive-to-1-Health half is built - same requireZeroHealth filter/shape as
-  // Failure Isn't an Option above (a real Health value, not temporary, since this is a Repair, not
-  // a battlefield rally), healAmount:1 naturally lands at exactly 1 from a 0 starting point. The
-  // "expend a Repair Kit" cost is unenforceable (confirmed no inventory-item-gating concept exists
-  // anywhere in this codebase, same gap already blocking EMT Crash Course) - granted for free, the
-  // same "the resource cost stays narrative, the roll-time mechanic still gets built" idiom this
-  // project already accepts elsewhere. The +1 Toughness/Evasion-until-end-of-next-turn half is now
-  // built too, via defenseAmounts/REMOVE_AND_REBUILD_DEFENSE_FLAG below - banked onto the same
-  // revived ally right alongside the heal, consumed by consumeBankedDefenseBonus (see its own doc
-  // comment near the bottom of this file).
-  [REMOVE_AND_REBUILD_ID]: {
-    healAmount: 1, radiusFeet: Infinity, requireMorphed: false, requireZeroHealth: true,
-    defenseAmounts: { toughness: 1, evasion: 1 }, defenseFlagKey: REMOVE_AND_REBUILD_DEFENSE_FLAG,
-  },
-
-  // Therapeutic Nanotechnology (Technorganic Secrets, Technorganic Influence choice, p.35): "Once
-  // per day, while in your Alt Mode, you may use a Free action to heal 1 Health." Self only, Alt
-  // Mode gated (the new requireTransformed field, this table's first mode-gated entry) - "once per
-  // day" approximated as once/scene, the standing idiom. The "recover 2 Essence damage after 6
-  // hours of rest" clause stays unbuilt - this codebase has no rest/downtime hook at all (confirmed
-  // while triaging Plant Plasticity's own identical rest-recovery clause this same session).
-  [THERAPEUTIC_NANOTECHNOLOGY_ID]: {
-    healAmount: 1, selfTarget: true, requireTransformed: true,
-    onceEncounterFlag: THERAPEUTIC_NANOTECHNOLOGY_ENCOUNTER_FLAG,
-  },
-
-  // Field Repair (Transformers CRB, General Perk, p.109) - heal clause only: "Once per scene, as
-  // long as you have a Repair Kit, Repair 1 Health on yourself or a Cybertronian ally as a
-  // Standard action without making a Technology Skill Test." Same "yourself OR an ally" shape as
-  // Tourniquet Line Chef (includeSelf), once per scene. The Repair-Kit cost is unenforceable (same
-  // gap as Remove & Rebuild above); "Cybertronian" ally is unenforceable too (no species/faction
-  // classification on companions/allies), so any nearby ally qualifies. The Tech-Edge clause
-  // ("offline/stasis-locked Cybertronians") is deliberately NOT built - too narrow a context to
-  // flatten sensibly, per this project's own established judgment call for similar situational
-  // qualifiers.
-  [FIELD_REPAIR_ID]: {
-    healAmount: 1, radiusFeet: Infinity, requireMorphed: false, includeSelf: true,
-    onceEncounterFlag: FIELD_REPAIR_ENCOUNTER_FLAG,
-  },
-
   // Squad Guardian - see SQUAD_GUARDIAN_ID's own comment above.
   [SQUAD_GUARDIAN_ID]: {
     rolePointCost: true, rolePointsName: "Moxie", healAmount: 1, radiusFeet: Infinity,
     requireMorphed: false, requireDefeatedStatus: true, removeDefeated: true,
   },
-
-  // Intrafilum (Transformers CRB, Autobot Cybertronian Perk, p.78): "When treating an adjacent
-  // Cybertronian, as a Free action, you can spend an Energon Point to restore 1 Health." The first
-  // IMMEDIATE_ALLY_PERKS entry costing Energon rather than Personal Power/Health/Role
-  // points/Story Points - new `energonCost` field on this table/canUsePerk/onImmediateAllyPerkUse
-  // below, the same "one new cost field, checked the same way as every other one" widening
-  // rolePointCost/worldStoryPointCost each already were. "Adjacent" reuses the smallest existing
-  // radius on this table (Whatever Helps' own 5ft). "Cybertronian" ally is unenforceable (same gap
-  // already accepted for Field Repair above) - any nearby ally qualifies.
-  [INTRAFILUM_ID]: { energonCost: 1, healAmount: 1, radiusFeet: 5, requireMorphed: false },
 };
 
 /**
@@ -2440,7 +1642,7 @@ export function canUsePerk(item) {
     return canUseTeamBuffPerk(item, actor);
   }
 
-  const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+  const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 
   if (sourceId == MARK_TARGET_ID) {
     return true;
@@ -2614,24 +1816,8 @@ export function canUsePerk(item) {
     return true;
   }
 
-  if (sourceId == CURB_YOUR_ENTHUSIASM_ID) {
-    return !hasUsedThisEncounter(actor, CURB_YOUR_ENTHUSIASM_ENCOUNTER_FLAG);
-  }
-
   if (sourceId == HONORIFIC_TOKEN_ID) {
     return !hasUsedThisEncounter(actor, HONORIFIC_TOKEN_ENCOUNTER_FLAG);
-  }
-
-  if (sourceId == STARGAZER_ID) {
-    return getUsesThisScene(actor, STARGAZER_SCENE_FLAG) < 2 && !getPendingBonus(actor, PENDING_STARGAZER_FLAG);
-  }
-
-  if (sourceId == GRID_GIFTED_ID) {
-    return getUsesThisScene(actor, GRID_GIFTED_SCENE_FLAG) < 1 && !getPendingBonus(actor, PENDING_GRID_GIFTED_FLAG);
-  }
-
-  if (ELEMENT_IS_MAGIC_IDS.includes(sourceId)) {
-    return !hasUsedThisEncounter(actor, ELEMENT_IS_MAGIC_ENCOUNTER_FLAG);
   }
 
   if (sourceId == PARTY_POWER_ID) {
@@ -2657,14 +1843,6 @@ export function canUsePerk(item) {
   if (sourceId == CONCENTRATE_FIRE_ID) {
     return !hasUsedThisEncounter(actor, CONCENTRATE_FIRE_ENCOUNTER_FLAG)
       && canWriteStoryPoints() && hasStoryPointsAvailable(1);
-  }
-
-  if (sourceId == CLUED_IN_ID) {
-    return canWriteStoryPoints() && hasStoryPointsAvailable(1);
-  }
-
-  if (sourceId == ALWAYS_IN_CONTACT_ID) {
-    return canWriteStoryPoints() && hasStoryPointsAvailable(1);
   }
 
   if (sourceId == PHANTOM_GIJ_ID) {
@@ -2709,10 +1887,6 @@ export function canUsePerk(item) {
 
   if (sourceId == GROUND_SUPPRESSION_ID) {
     return true;
-  }
-
-  if (sourceId == WILD_TALES_ID) {
-    return !hasUsedThisEncounter(actor, WILD_TALES_ENCOUNTER_FLAG);
   }
 
   if (sourceId == SUPERB_SOLOIST_ID) {
@@ -2856,26 +2030,10 @@ export function canUsePerk(item) {
       && getAffectedDataBridgeAllies(actor).length > 0 && getDataBridgedAllyTokens(actor).length > 0;
   }
 
-  if (sourceId == ULTIMATE_UTILITY_ID) {
-    return actor.system.energon?.normal?.value >= 1;
-  }
-
-  // Self-Preservation - see helpers/self-preservation.mjs's own doc comment. Same upfront-
-  // affordability gate as Ultimate Utility just above.
+  // Self-Preservation - see helpers/self-preservation.mjs's own doc comment. Needs an Energon
+  // Point up front.
   if (sourceId == SELF_PRESERVATION_ID) {
     return actor.system.energon?.normal?.value >= 1;
-  }
-
-  if (sourceId == DISAPPEAR_ID) {
-    return !!actor.statuses?.has('invisible') || actor.system.energon?.normal?.value >= 1;
-  }
-
-  if (sourceId == VANISH_ID) {
-    return true;
-  }
-
-  if (sourceId == TELEPORTATION_ID) {
-    return !hasUsedThisEncounter(actor, TELEPORTATION_ENCOUNTER_FLAG);
   }
 
   if (sourceId == ARCHKEY_ID) {
@@ -2892,14 +2050,6 @@ export function canUsePerk(item) {
 
   if (sourceId == LIKE_WATER_ID) {
     return getAvailableLikeWaterOptions(actor).length > 0;
-  }
-
-  if (sourceId == MIND_OF_NO_MIND_ID) {
-    return !hasUsedThisEncounter(actor, MIND_OF_NO_MIND_ENCOUNTER_FLAG);
-  }
-
-  if (sourceId == CANT_AFFORD_TO_MISS_ID) {
-    return canWriteStoryPoints() && hasStoryPointsAvailable(1);
   }
 
   if (sourceId == IMPOSSIBLE_EXPECTATIONS_ID) {
@@ -3035,7 +2185,7 @@ export function canUsePerk(item) {
     return actor.system.powers.personal.value >= 1;
   }
 
-  if (sourceId == WHIRLWIND_STRIKE_ID || sourceId == LIGHTNING_FAST_ID) {
+  if (sourceId == WHIRLWIND_STRIKE_ID) {
     return !!actor.system.isMorphed && actor.system.powers.personal.value >= 1;
   }
 
@@ -3043,41 +2193,9 @@ export function canUsePerk(item) {
     return !!actor._getBaseRolePoints?.()?.system.resource.value;
   }
 
-  if (sourceId == EDUCATED_ID || sourceId == EDUCATED_GIJ_ID || sourceId == EDUCATED_TF_ID || sourceId == EDUCATED_MLP_ID) {
-    return !hasUsedThisEncounter(actor, EDUCATED_ENCOUNTER_FLAG);
-  }
-
   if (sourceId == HEROIC_INTERVENTION_ID) {
     return !hasUsedThisEncounter(actor, HEROIC_INTERVENTION_ENCOUNTER_FLAG)
       || (actor.system?.powers?.personal?.value ?? 0) >= 1;
-  }
-
-  if (sourceId == LEGACY_ID) {
-    return !hasUsedThisEncounter(actor, LEGACY_ENCOUNTER_FLAG);
-  }
-
-  if (sourceId == INVESTIGATOR_ID) {
-    return !hasUsedThisEncounter(actor, INVESTIGATOR_ENCOUNTER_FLAG);
-  }
-
-  if (sourceId == DONE_THE_IMPOSSIBLE_ID) {
-    return !hasUsedThisEncounter(actor, DONE_THE_IMPOSSIBLE_ENCOUNTER_FLAG);
-  }
-
-  if (sourceId == FOLKLORIST_ID) {
-    return !hasUsedThisEncounter(actor, FOLKLORIST_ENCOUNTER_FLAG);
-  }
-
-  if (sourceId == CHIVALROUS_ID) {
-    return !hasUsedThisEncounter(actor, CHIVALROUS_ENCOUNTER_FLAG);
-  }
-
-  if (sourceId == PUZZLE_SOLVER_ID) {
-    return !hasUsedThisEncounter(actor, PUZZLE_SOLVER_ENCOUNTER_FLAG);
-  }
-
-  if (sourceId == KEEP_EM_LAUGHING_ID) {
-    return true;
   }
 
   if (sourceId == NINJA_POWER_ID) {
@@ -3172,10 +2290,6 @@ export function canUsePerk(item) {
     return actor.system.powers.personal.value >= 2;
   }
 
-  if (sourceId == MENACING_LAUGH_ID) {
-    return getTerrorAvailable(actor) >= 1 && !hasUsedThisTurn(actor, MENACING_LAUGH_TURN_FLAG);
-  }
-
   if (sourceId == RUSH_THE_LINE_ID) {
     return canWriteStoryPoints() && hasStoryPointsAvailable(1) && !hasUsedThisTurn(actor, RUSH_THE_LINE_TURN_FLAG);
   }
@@ -3223,10 +2337,6 @@ export function canUsePerk(item) {
   }
 
   if (sourceId == DUTY_OF_THE_GRAPHITE_ID) {
-    return !!actor._getBaseRolePoints?.()?.system.resource.value && actor.system.powers.personal.value >= 2;
-  }
-
-  if (sourceId == DUTY_OF_THE_SILVER_ID) {
     return !!actor._getBaseRolePoints?.()?.system.resource.value && actor.system.powers.personal.value >= 2;
   }
 
@@ -3278,10 +2388,6 @@ export function canUsePerk(item) {
     return !hasUsedThisEncounter(actor, CRACK_UP_THE_4TH_WALL_ENCOUNTER_FLAG);
   }
 
-  if (sourceId == TO_THE_RESCUE_ID) {
-    return !hasUsedThisRound(actor, TO_THE_RESCUE_ROUND_FLAG) && canWriteStoryPoints() && hasStoryPointsAvailable(1);
-  }
-
   if (sourceId == SIPHON_ID) {
     return true;
   }
@@ -3291,10 +2397,6 @@ export function canUsePerk(item) {
   }
 
   if (sourceId == HEARTY_MEAL_ID) {
-    return true;
-  }
-
-  if (sourceId == CALCULATED_ATTACK_ID) {
     return true;
   }
 
@@ -3332,10 +2434,6 @@ export function canUsePerk(item) {
 
   if (sourceId == ORANGE_RANGER_PRIME_ID) {
     return !hasUsedThisEncounter(actor, ORANGE_RANGER_PRIME_ENCOUNTER_FLAG);
-  }
-
-  if (sourceId == PURPLE_RANGER_PRIME_ID) {
-    return PURPLE_RANGER_PRIME_CONDITIONS.some(condition => actor.statuses?.has(condition));
   }
 
   if (sourceId == COMIC_FLAIR_ID) {
@@ -3484,24 +2582,12 @@ export function canUsePerk(item) {
     return canUseAugmentPower(actor);
   }
 
-  if (sourceId == RIGHTFUL_PLACE_ID) {
-    return canUseRightfulPlace(actor);
-  }
-
   if (sourceId == CONSULT_MEMORIES_ID) {
     return canUseConsultMemories(actor);
   }
 
   if (sourceId == RESOURCEFUL_ID) {
     return canUseResourceful(actor);
-  }
-
-  if (sourceId == PUBLIC_TELEVISION_ID) {
-    return getUses(actor, PUBLIC_TELEVISION_MISSION_FLAG, 'mission') < 1;
-  }
-
-  if (sourceId == SCIENTIFIC_METHOD_ID) {
-    return getUses(actor, SCIENTIFIC_METHOD_MISSION_FLAG, 'mission') < 1;
   }
 
   if (sourceId == THE_RETURNED_ID) {
@@ -3511,7 +2597,7 @@ export function canUsePerk(item) {
   const immediate = IMMEDIATE_ALLY_PERKS[sourceId];
   if (immediate) {
     // Unlike a bankable Perk's own already-pending gate, the only things that could make this
-    // unusable right now are the once-per-scene gate (Deep Breathing) or not being able to afford
+    // unusable right now are a once-per-scene gate (onceEncounterFlag) or not being able to afford
     // it - there's no nearby-ally check here since that's a "nothing to pick" case surfaced via a
     // warning at click time (onImmediateAllyPerkUse below), not a reason to hide the button
     // entirely. Both costs are checked independently (Healing Light charges both at once; every
@@ -3521,21 +2607,13 @@ export function canUsePerk(item) {
       return false;
     }
 
-    // Therapeutic Nanotechnology (Technorganic Secrets, Technorganic Influence choice, p.35) - see
-    // its own IMMEDIATE_ALLY_PERKS comment below. The only entry gated on being in Alt Mode.
-    if (immediate.requireTransformed && !actor.system.isTransformed) {
-      return false;
-    }
-
     if (immediate.healthCost && actor.system.health.value < immediate.healthCost) {
       return false;
     }
 
-    // You Got This! (PR CRB, Black Ranger, 2nd/7th/12th/17th level, p.34) - see its own
-    // IMMEDIATE_ALLY_PERKS comment above. A Quips & Speeches spend (the same rolePoints resource
-    // Heart of the Team's own spendsRolePoint already reads) rather than Power/Health. Squad
-    // Guardian's own rolePointsName ("Moxie") looks the resource up by name instead of assuming
-    // the actor's base Role's own points - see SQUAD_GUARDIAN_ID's own comment above for why.
+    // Squad Guardian - a Moxie spend (a rolePoints resource) rather than Power/Health, looked up by
+    // name (rolePointsName) instead of assuming the actor's base Role's own points - see
+    // SQUAD_GUARDIAN_ID's own comment above for why.
     if (immediate.rolePointCost) {
       const rolePoints = immediate.rolePointsName
         ? findRolePointsItem(actor, immediate.rolePointsName)
@@ -3543,19 +2621,6 @@ export function canUsePerk(item) {
       if (!rolePoints?.system.resource.value) {
         return false;
       }
-    }
-
-    // Failure Isn't an Option (Factions in Action Vol. 2, Officer Focus, p.68) - see its own
-    // IMMEDIATE_ALLY_PERKS comment above. Same upfront-affordability idiom hasRerollCost/Bait and
-    // Switch's own worldStoryPoints check already uses.
-    if (immediate.worldStoryPointCost && !(canWriteStoryPoints() && hasStoryPointsAvailable(immediate.worldStoryPointCost))) {
-      return false;
-    }
-
-    // Intrafilum - see its own IMMEDIATE_ALLY_PERKS comment above. Same upfront-affordability
-    // idiom powerCost's own check uses, just against the Energon pool instead.
-    if (immediate.energonCost && !(actor.system.energon?.normal?.value >= immediate.energonCost)) {
-      return false;
     }
 
     return !immediate.powerCost || actor.system.powers.personal.value >= immediate.powerCost;
@@ -3572,13 +2637,6 @@ export function canUsePerk(item) {
 
   // "Once per session/day" - the Scene Clock's mission window.
   if (bankable.onceMissionFlag && getUses(actor, bankable.onceMissionFlag, 'mission') >= 1) {
-    return false;
-  }
-
-  // Bird's Eye View (Technorganic Secrets, Origin Perk, p.39) - "while moving in your Alt Mode."
-  // A small generic gate (like onceEncounterFlag above), reusable by any future Alt-Mode-gated
-  // bankable Perk, rather than a one-off special case.
-  if (bankable.requireTransformed && !actor.system?.isTransformed) {
     return false;
   }
 
@@ -3613,87 +2671,14 @@ export function canUsePerk(item) {
     return false;
   }
 
-  // Bait and Switch - see BAIT_AND_SWITCH_ID's own comment above. Same upfront-affordability
+  // Benefits of Command - see its own BANKABLE_PERKS comment above. Same upfront-affordability
   // idiom hasRerollCost's own worldStoryPoints check already uses.
   if (bankable.worldStoryPointCost && !(canWriteStoryPoints() && hasStoryPointsAvailable(bankable.worldStoryPointCost))) {
     return false;
   }
 
-  // Battle Commander - see its own comment above. RAW's own "during the Yo Joe! Battle Cry" -
-  // this system's own established "round 1 of combat" reading of that shared base ability,
-  // same idiom Who Dares Wins/Silver Ranger Prime's identical round-1 checks already use.
-  if (bankable.combatRoundOneOnly && game.combat?.round != 1) {
-    return false;
-  }
-
-  // Generosity of Spirit (see its own comment above): blocked for as long as the self-inflicted
-  // downshift from a PRIOR use is still unconsumed, regardless of this Perk's own target being
-  // 'ally' (which the plain self-target check just below doesn't otherwise gate on).
-  if (bankable.selfPenaltyFlagKey && getPendingBonus(actor, bankable.selfPenaltyFlagKey)) {
-    return false;
-  }
-
   const targetActor = bankable.target == 'self' ? actor : null;
   return targetActor ? !getPendingBonus(targetActor, bankable.flagKey) : true;
-}
-
-/**
- * Prompts for which nearby ally/allies to bank a Perk's bonus on - defaults to whichever tokens
- * are already targeted (the same "auto-detect, player confirms" idiom Sneak Attack's own
- * checkbox uses), as long as there are between 1 and maxCount of them, and falls back to a plain
- * single-ally picker dialog over the given candidates otherwise. The dialog only ever picks one,
- * even when maxCount is 2 (Inspiration's own "one additional ally") - a multi-select dialog isn't
- * built, so reaching the 2nd-ally case without it requires actually targeting 2 tokens first.
- * @param {Actor} actor   The actor using the Perk (not the one/ones who'll receive the bonus).
- * @param {Array<Actor>} candidateAllies   Allies eligible to be picked from the dialog fallback -
- *   callers resolve their own radius/eligibility filter (e.g. "within 60 feet and Morphed" for
- *   Helping Hand vs. "anywhere on the scene" for Plan of Action/Inspiration) before calling this.
- * @param {String} perkName   The Perk's own display name, shown in the dialog's title/warning.
- * @param {Number} maxCount   The most allies this use can target at once (1 normally, 2 with
- *   Inspiration).
- * @returns {Promise<Array<Actor>>}   Empty if there's no ally to pick, or the picker was
- *   cancelled.
- */
-export async function pickAllyTargets(actor, candidateAllies, perkName, maxCount = 1) {
-  // Deliberately NOT filtered against candidateAllies - an explicit target is a trusted override
-  // of whatever radius/eligibility scan the caller used to build that list (same as before this
-  // function took a candidate list as a parameter at all).
-  const targetedAllies = Array.from(game.user.targets ?? [])
-    .map(token => token.actor)
-    .filter(a => a && a != actor);
-  if (targetedAllies.length >= 1 && targetedAllies.length <= maxCount) {
-    return targetedAllies;
-  }
-
-  if (!candidateAllies.length) {
-    ui.notifications.warn(game.i18n.format('E20.PickAllyNoAllies', { perk: perkName }));
-    return [];
-  }
-
-  const options = candidateAllies.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
-  const chosenId = await foundry.applications.api.DialogV2.wait({
-    window: { title: game.i18n.format('E20.PickAllyTitle', { perk: perkName }) },
-    classes: ["window-app", "e20-window"],
-    content: `<div class="form-group"><label>${
-      game.i18n.localize('E20.PickAllyLabel')
-    }</label><select name="allyId">${options}</select></div>`,
-    modal: true,
-    buttons: [
-      {
-        label: game.i18n.localize('E20.DialogConfirmButton'),
-        action: 'confirm',
-        callback: (event, button) => button.form.elements.allyId.value,
-      },
-      { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
-    ],
-  });
-
-  if (!chosenId || chosenId == 'cancel') {
-    return [];
-  }
-
-  const chosen = candidateAllies.find(a => a.id == chosenId);
-  return chosen ? [chosen] : [];
 }
 
 /**
@@ -3874,10 +2859,6 @@ async function onImmediateAllyPerkUse(item, actor, config) {
     return;
   }
 
-  if (config.requireTransformed && !actor.system.isTransformed) {
-    return;
-  }
-
   if (config.healthCost && actor.system.health.value < config.healthCost) {
     ui.notifications.warn(game.i18n.localize('E20.HealthOverSpent'));
     return;
@@ -3896,34 +2877,18 @@ async function onImmediateAllyPerkUse(item, actor, config) {
     return;
   }
 
-  if (config.worldStoryPointCost && !(canWriteStoryPoints() && hasStoryPointsAvailable(config.worldStoryPointCost))) {
-    ui.notifications.warn(game.i18n.localize('E20.StoryPointUnavailable'));
-    return;
-  }
-
-  // Intrafilum - see its own IMMEDIATE_ALLY_PERKS comment above.
-  if (config.energonCost && !(actor.system.energon?.normal?.value >= config.energonCost)) {
-    ui.notifications.warn(game.i18n.localize('E20.EnergonOverSpent'));
-    return;
-  }
-
   let targetActor;
-  if (config.selfTarget) {
-    targetActor = actor;
-  } else {
-    const candidateAllies = getNearbyAllyTokens(actor, config.radiusFeet)
-      .map(token => token.actor)
-      .filter(a => a && (!config.requireMorphed || a.system.isMorphed) && (!config.requireVehicle || a.type == 'vehicle')
-        && (!config.requireZeroHealth || a.system.health?.value <= 0)
-        && (!config.requireDefeatedStatus || a.statuses?.has('defeated')));
-    if (config.includeSelf) {
-      candidateAllies.unshift(actor);
-    }
+  const candidateAllies = getNearbyAllyTokens(actor, config.radiusFeet)
+    .map(token => token.actor)
+    .filter(a => a && (!config.requireMorphed || a.system.isMorphed)
+      && (!config.requireDefeatedStatus || a.statuses?.has('defeated')));
+  if (config.includeSelf) {
+    candidateAllies.unshift(actor);
+  }
 
-    [targetActor] = await pickAllyTargets(actor, candidateAllies, item.name);
-    if (!targetActor) {
-      return;
-    }
+  [targetActor] = await pickAllyTargets(actor, candidateAllies, item.name);
+  if (!targetActor) {
+    return;
   }
 
   if (config.healthCost) {
@@ -3938,42 +2903,18 @@ async function onImmediateAllyPerkUse(item, actor, config) {
     await rolePoints.update({ 'system.resource.value': rolePoints.system.resource.value - 1 });
   }
 
-  if (config.worldStoryPointCost) {
-    requestStoryPointSpend(actor, config.worldStoryPointCost);
-  }
-
-  // Intrafilum - see its own IMMEDIATE_ALLY_PERKS comment above.
-  if (config.energonCost) {
-    await actor.update({ 'system.energon.normal.value': actor.system.energon.normal.value - config.energonCost });
-  }
-
   // Healing Light (Across the Stars, Phantom Ranger, Phantom Focus choice, p.62) - a rolled
   // amount (2d2), unlike every other entry's fixed/scaling number - see its own comment above.
   const healAmount = config.rollsHeal
     ? (await new Roll(config.rollsHeal, actor.getRollData()).evaluate()).total
-    : config.scalesWithAdvances ? (item.system.advances?.currentValue || 1) : config.healAmount;
+    : config.healAmount;
 
-  // You Got This! (PR CRB, Black Ranger, 2nd/7th/12th/17th level, p.34) - "a number of temporary
-  // Health that lasts until the end of the current combat scene," unlike every other entry's real
-  // Health restoration - the same flat system.health.bonus add Boosted Vigor's own Morph-time
-  // Temp Health grant already established, rather than raising system.health.value.
-  if (config.isTempHealth) {
-    await targetActor.update({ 'system.health.bonus': (targetActor.system.health.bonus ?? 0) + healAmount });
-  } else {
-    await targetActor.update({
-      'system.health.value': Math.min(targetActor.system.health.max, targetActor.system.health.value + healAmount),
-    });
-  }
+  await targetActor.update({
+    'system.health.value': Math.min(targetActor.system.health.max, targetActor.system.health.value + healAmount),
+  });
 
   if (config.removeDefeated) {
     await targetActor.toggleStatusEffect('defeated', { active: false });
-  }
-
-  // Remove & Rebuild - see its own IMMEDIATE_ALLY_PERKS comment above. Banked on the same
-  // targetActor the heal just went to, consumed by consumeBankedDefenseBonus (see its own doc
-  // comment near the bottom of this file).
-  if (config.defenseAmounts) {
-    await bankPendingBonus(targetActor, config.defenseFlagKey, { defenseAmounts: config.defenseAmounts });
   }
 
   if (config.onceEncounterFlag) {
@@ -3990,7 +2931,7 @@ async function onImmediateAllyPerkUse(item, actor, config) {
  */
 export async function onPerkUse(item) {
   const actor = item?.parent;
-  const sourceId = item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  const sourceId = item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
   if (!actor) {
     return;
   }
@@ -4414,18 +3355,6 @@ export async function onPerkUse(item) {
     return;
   }
 
-  if (sourceId == CURB_YOUR_ENTHUSIASM_ID) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointGrant(actor);
-    await markUsedThisEncounter(actor, CURB_YOUR_ENTHUSIASM_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
   if (sourceId == HONORIFIC_TOKEN_ID) {
     if (!canWriteStoryPoints()) {
       ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
@@ -4434,33 +3363,6 @@ export async function onPerkUse(item) {
 
     requestStoryPointGrant(actor);
     await markUsedThisEncounter(actor, HONORIFIC_TOKEN_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == STARGAZER_ID) {
-    await bankPendingBonus(actor, PENDING_STARGAZER_FLAG, {});
-    await markUsedThisScene(actor, STARGAZER_SCENE_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == GRID_GIFTED_ID) {
-    const mode = await pickGridGiftedMode();
-    await bankPendingBonus(actor, PENDING_GRID_GIFTED_FLAG, { mode });
-    await markUsedThisScene(actor, GRID_GIFTED_SCENE_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (ELEMENT_IS_MAGIC_IDS.includes(sourceId)) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointGrant(actor);
-    await markUsedThisEncounter(actor, ELEMENT_IS_MAGIC_ENCOUNTER_FLAG);
     postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     return;
   }
@@ -4508,28 +3410,6 @@ export async function onPerkUse(item) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
 
-    return;
-  }
-
-  if (sourceId == CLUED_IN_ID) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointSpend(actor, 1);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == ALWAYS_IN_CONTACT_ID) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointSpend(actor, 1);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     return;
   }
 
@@ -5120,24 +4000,6 @@ export async function onPerkUse(item) {
     return;
   }
 
-  if (sourceId == WILD_TALES_ID) {
-    if (hasUsedThisEncounter(actor, WILD_TALES_ENCOUNTER_FLAG)) {
-      return;
-    }
-
-    // The Essence picker runs BEFORE the once-per-scene use is marked, same "a cancelled prompt
-    // doesn't burn the use" idiom Elemental Storm's own picker already establishes.
-    const essence = await pickWildTalesEssence();
-    if (!essence) {
-      return;
-    }
-
-    await bankPendingBonus(actor, PENDING_WILD_TALES_FLAG_KEY, { essence });
-    await markUsedThisEncounter(actor, WILD_TALES_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
   if (sourceId == SUPERB_SOLOIST_ID) {
     if (hasUsedThisEncounter(actor, SUPERB_SOLOIST_ENCOUNTER_FLAG)) {
       return;
@@ -5207,18 +4069,6 @@ export async function onPerkUse(item) {
     return;
   }
 
-  if (sourceId == EDUCATED_ID || sourceId == EDUCATED_GIJ_ID || sourceId == EDUCATED_TF_ID || sourceId == EDUCATED_MLP_ID) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointGrant(actor);
-    await markUsedThisEncounter(actor, EDUCATED_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
   if (sourceId == HEROIC_INTERVENTION_ID) {
     if (!hasUsedThisEncounter(actor, HEROIC_INTERVENTION_ENCOUNTER_FLAG)) {
       if (!canWriteStoryPoints()) {
@@ -5240,89 +4090,6 @@ export async function onPerkUse(item) {
     }
 
     await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == LEGACY_ID) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointGrant(actor);
-    await markUsedThisEncounter(actor, LEGACY_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == INVESTIGATOR_ID) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointGrant(actor);
-    await markUsedThisEncounter(actor, INVESTIGATOR_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == DONE_THE_IMPOSSIBLE_ID) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointGrant(actor);
-    await markUsedThisEncounter(actor, DONE_THE_IMPOSSIBLE_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == FOLKLORIST_ID) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointGrant(actor, 2);
-    await markUsedThisEncounter(actor, FOLKLORIST_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == CHIVALROUS_ID) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointGrant(actor);
-    await markUsedThisEncounter(actor, CHIVALROUS_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == PUZZLE_SOLVER_ID) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointGrant(actor);
-    await markUsedThisEncounter(actor, PUZZLE_SOLVER_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == KEEP_EM_LAUGHING_ID) {
-    if (!canWriteStoryPoints()) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointGrant(actor);
     postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     return;
   }
@@ -5357,17 +4124,6 @@ export async function onPerkUse(item) {
 
     await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
     activateGroupStrike(actor, item.system.advances?.currentValue || 10);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == LIGHTNING_FAST_ID) {
-    if (!actor.system.isMorphed || actor.system.powers.personal.value < 1) {
-      ui.notifications.warn(game.i18n.localize('E20.PowerOverSpent'));
-      return;
-    }
-
-    await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
     postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     return;
   }
@@ -5561,19 +4317,6 @@ export async function onPerkUse(item) {
     return;
   }
 
-  if (sourceId == MENACING_LAUGH_ID) {
-    if (getTerrorAvailable(actor) < 1 || hasUsedThisTurn(actor, MENACING_LAUGH_TURN_FLAG)) {
-      ui.notifications.warn(game.i18n.localize('E20.MenacingLaughUnavailable'));
-      return;
-    }
-
-    await spendTerror(actor, 1);
-    await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value + 1 });
-    await markUsedThisTurn(actor, MENACING_LAUGH_TURN_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
   if (sourceId == RUSH_THE_LINE_ID) {
     if (!canWriteStoryPoints() || !hasStoryPointsAvailable(1) || hasUsedThisTurn(actor, RUSH_THE_LINE_TURN_FLAG)) {
       ui.notifications.warn(game.i18n.localize('E20.StoryPointUnavailable'));
@@ -5687,19 +4430,6 @@ export async function onPerkUse(item) {
     return;
   }
 
-  if (sourceId == DUTY_OF_THE_SILVER_ID) {
-    const rolePoints = actor._getBaseRolePoints?.();
-    if (!rolePoints?.system.resource.value || actor.system.powers.personal.value < 2) {
-      ui.notifications.warn(game.i18n.localize('E20.PowerOverSpent'));
-      return;
-    }
-
-    await rolePoints.update({ 'system.resource.value': rolePoints.system.resource.value - 1 });
-    await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 2 });
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
   if (sourceId == IVE_GOT_YOU_ID) {
     await activateIveGotYou(actor);
     return;
@@ -5747,12 +4477,6 @@ export async function onPerkUse(item) {
     return;
   }
 
-  if (sourceId == RIGHTFUL_PLACE_ID) {
-    await activateRightfulPlace(actor);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
   if (sourceId == CONSULT_MEMORIES_ID) {
     const activated = await activateConsultMemories(actor);
     if (activated) {
@@ -5768,20 +4492,6 @@ export async function onPerkUse(item) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
 
-    return;
-  }
-
-  if (sourceId == PUBLIC_TELEVISION_ID) {
-    await markUsedThisEncounter(actor, PUBLIC_TELEVISION_ENCOUNTER_FLAG);
-    await markUsed(actor, PUBLIC_TELEVISION_MISSION_FLAG, { window: 'mission' });
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == SCIENTIFIC_METHOD_ID) {
-    await bankPendingBonus(actor, PENDING_SCIENTIFIC_METHOD_FLAG, {});
-    await markUsed(actor, SCIENTIFIC_METHOD_MISSION_FLAG, { window: 'mission' });
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     return;
   }
 
@@ -5872,18 +4582,6 @@ export async function onPerkUse(item) {
     const max = rolePoints.system.resource.max ?? Infinity;
     await rolePoints.update({ 'system.resource.value': Math.min(max, rolePoints.system.resource.value + 1) });
     await markUsedThisEncounter(actor, CRACK_UP_THE_4TH_WALL_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == TO_THE_RESCUE_ID) {
-    if (!canWriteStoryPoints() || !hasStoryPointsAvailable(1) || hasUsedThisRound(actor, TO_THE_RESCUE_ROUND_FLAG)) {
-      ui.notifications.warn(game.i18n.localize('E20.StoryPointUnavailable'));
-      return;
-    }
-
-    requestStoryPointSpend(actor, 1);
-    await markUsedThisRound(actor, TO_THE_RESCUE_ROUND_FLAG);
     postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     return;
   }
@@ -6051,11 +4749,6 @@ export async function onPerkUse(item) {
     return;
   }
 
-  if (sourceId == CALCULATED_ATTACK_ID) {
-    await activateCalculatedAttack(actor);
-    return;
-  }
-
   if (sourceId == TENDER_ID) {
     await activateTender(actor);
     return;
@@ -6091,19 +4784,6 @@ export async function onPerkUse(item) {
     await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value + roll.total });
     await markUsedThisEncounter(actor, ORANGE_RANGER_PRIME_ENCOUNTER_FLAG);
     postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == PURPLE_RANGER_PRIME_ID) {
-    const toRemove = PURPLE_RANGER_PRIME_CONDITIONS.filter(condition => actor.statuses?.has(condition));
-    for (const condition of toRemove) {
-      await actor.toggleStatusEffect(condition, { active: false });
-    }
-
-    if (toRemove.length) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
     return;
   }
 
@@ -6331,56 +5011,8 @@ export async function onPerkUse(item) {
     return;
   }
 
-  if (sourceId == TELEPORTATION_ID) {
-    if (hasUsedThisEncounter(actor, TELEPORTATION_ENCOUNTER_FLAG)) {
-      return;
-    }
-
-    await markUsedThisEncounter(actor, TELEPORTATION_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
   if (sourceId == ARCHKEY_ID) {
     await actor._dice.rollSkill({ skill: 'technology', essence: 'smarts', shiftUp: 0, shiftDown: 0, dif: '10' }, actor);
-    return;
-  }
-
-  if (sourceId == ULTIMATE_UTILITY_ID) {
-    if (!(actor.system.energon?.normal?.value >= 1)) {
-      ui.notifications.warn(game.i18n.localize('E20.EnergonOverSpent'));
-      return;
-    }
-
-    await actor.update({ 'system.energon.normal.value': actor.system.energon.normal.value - 1 });
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == DISAPPEAR_ID) {
-    const nowActive = !actor.statuses?.has('invisible');
-    if (nowActive) {
-      if (!(actor.system.energon?.normal?.value >= 1)) {
-        ui.notifications.warn(game.i18n.localize('E20.EnergonOverSpent'));
-        return;
-      }
-
-      await actor.update({ 'system.energon.normal.value': actor.system.energon.normal.value - 1 });
-    }
-
-    await actor.toggleStatusEffect('invisible', { active: nowActive });
-    postPerkUseChatCard(actor, game.i18n.format(
-      nowActive ? 'E20.InvisibilityActivated' : 'E20.InvisibilityDeactivated', { actor: actor.name },
-    ));
-    return;
-  }
-
-  if (sourceId == VANISH_ID) {
-    const nowActive = !actor.statuses?.has('invisible');
-    await actor.toggleStatusEffect('invisible', { active: nowActive });
-    postPerkUseChatCard(actor, game.i18n.format(
-      nowActive ? 'E20.InvisibilityActivated' : 'E20.InvisibilityDeactivated', { actor: actor.name },
-    ));
     return;
   }
 
@@ -6432,30 +5064,6 @@ export async function onPerkUse(item) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
 
-    return;
-  }
-
-  if (sourceId == MIND_OF_NO_MIND_ID) {
-    if (hasUsedThisEncounter(actor, MIND_OF_NO_MIND_ENCOUNTER_FLAG)) {
-      return;
-    }
-
-    await markUsedThisEncounter(actor, MIND_OF_NO_MIND_ENCOUNTER_FLAG);
-    await bankPendingBonus(actor, MIND_OF_NO_MIND_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == CANT_AFFORD_TO_MISS_ID) {
-    if (!canWriteStoryPoints() || !hasStoryPointsAvailable(1)) {
-      ui.notifications.warn(game.i18n.localize('E20.SptNoGmConnected'));
-      return;
-    }
-
-    requestStoryPointSpend(actor, 1);
-    const pending = getPendingBonus(actor, CANT_AFFORD_TO_MISS_FLAG);
-    await bankPendingBonus(actor, CANT_AFFORD_TO_MISS_FLAG, { shiftUp: (pending?.shiftUp ?? 0) + 1 });
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     return;
   }
 
@@ -6645,7 +5253,6 @@ export async function onPerkUse(item) {
   }
 
   const isPlanOfAction = bankable.flagKey == 'pendingPlanOfAction';
-  const isHeartOfTheTeam = bankable.flagKey == 'pendingHeartOfTheTeam';
   const hasInspiration = isPlanOfAction && actorHasPerk(actor, INSPIRATION_ID);
   const baseValue = item.system.advances?.currentValue || 1;
   const grantValue = hasInspiration ? baseValue + 1 : baseValue;
@@ -6656,9 +5263,8 @@ export async function onPerkUse(item) {
   // added to the target's next roll, not a shiftUp/edge.
   const isInspirationPR = bankable.flagKey == 'pendingInspiration';
 
-  // Heart of the Team's own Quips & Speeches cost (see HEART_OF_THE_TEAM_ID's own comment above) -
-  // checked before the ally picker even opens, same "afford it before you pick a target" order
-  // Helping Hand's own Power-cost check above uses.
+  // Guidance's own Adaptation Point cost (spendsRolePoint) - checked before the ally picker even
+  // opens, so nobody is picked for a grant that can't be paid.
   if (bankable.spendsRolePoint) {
     const rolePoints = actor._getBaseRolePoints?.();
     if (!rolePoints?.system.resource.value) {
@@ -6681,7 +5287,7 @@ export async function onPerkUse(item) {
   const isGuidance = bankable.flagKey == PENDING_GUIDANCE_FLAG_KEY;
 
   let data = { edge: true };
-  if (isPlanOfAction || isHeartOfTheTeam) {
+  if (isPlanOfAction) {
     data = { shiftUp: grantValue };
   } else if (isInspirationPR) {
     data = { bonusDie: `1d${baseValue}` };
@@ -6721,7 +5327,7 @@ export async function onPerkUse(item) {
     await actor.update({ 'system.energon.normal.value': actor.system.energon.normal.value - bankable.energonCost });
   }
 
-  // Bait and Switch - see BAIT_AND_SWITCH_ID's own comment above. canUsePerk already gated the
+  // Benefits of Command - see its own BANKABLE_PERKS comment above. canUsePerk already gated the
   // button on canWriteStoryPoints()/hasStoryPointsAvailable() above, so this just fires the spend.
   if (bankable.worldStoryPointCost) {
     requestStoryPointSpend(actor, bankable.worldStoryPointCost);
@@ -6735,13 +5341,6 @@ export async function onPerkUse(item) {
     const shift = actor.system.skills[bankable.rollsSkillDie].shift;
     const roll = await new Roll(shift, actor.getRollData()).evaluate();
     data = { defenseBonus: roll.total };
-  }
-
-  // Momentary Blur (A Jump Through Time, Quantum Ranger, Quantum Power option, p.45) - see its
-  // own BANKABLE_PERKS entry above. A flat, non-rolled amount, unlike Hard Target/Resilience's
-  // own rollsSkillDie shape just above.
-  if (bankable.fixedDefenseBonus) {
-    data = { defenseBonus: bankable.fixedDefenseBonus };
   }
 
   // Force Field/Remove & Rebuild/Stronger Together - a fixed Defense bonus (possibly to more than
@@ -6765,20 +5364,15 @@ export async function onPerkUse(item) {
   }
 
   for (const targetActor of targetActors) {
+    if (bankable.ruleBank) {
+      const { bankRollBonus } = await import("../rules/bank.mjs");
+      const { needsGmRelay, relayToGm } = await import("./gm-relay.mjs");
+      const write = (doc, method, args) => (needsGmRelay(doc) ? relayToGm(doc, method, args) : doc[method](...args));
+      await bankRollBonus(targetActor, { label: item.name, shiftUp: data.shiftUp ?? 0, edge: !!data.edge, source: item.id }, write);
+      continue;
+    }
+
     await bankPendingBonus(targetActor, bankable.flagKey, data, { granter: actor });
-  }
-
-  // Generosity of Spirit (see its own comment above): the self downshift is banked on the
-  // GRANTER (actor), separately from whatever was just banked on the chosen ally above.
-  if (bankable.selfPenaltyFlagKey) {
-    await bankPendingBonus(actor, bankable.selfPenaltyFlagKey, { shiftDown: bankable.selfPenaltyShiftDown });
-  }
-
-  // Stronger Together - see STRONGER_TOGETHER_ID's own comment above. A Defense-bonus sibling to
-  // the shiftDown self-penalty just above, banked on the GRANTER separately from the defenseAmounts
-  // bonus just banked on the chosen ally.
-  if (bankable.selfPenaltyDefenseAmounts) {
-    await bankPendingBonus(actor, bankable.selfPenaltyFlagKey, { defenseAmounts: bankable.selfPenaltyDefenseAmounts });
   }
 
   if (bankable.onceEncounterFlag) {
@@ -6864,25 +5458,7 @@ export async function consumeResilience(targetActor, defenseType) {
   return pending.defenseBonus;
 }
 
-/**
- * Reads back a target's own pending Momentary Blur bank (see MOMENTARY_BLUR_ID's own comment
- * above) and returns/consumes it - Evasion-only, the same defenseType restriction consumeHardTarget
- * already established for its own fixed-shape counterpart.
- * @param {Actor} targetActor   The actor being attacked (not the attacker).
- * @param {String} defenseType   The Defense this attack is actually being compared against.
- * @returns {Promise<Number>}   The banked bonus (0 if there's nothing to consume).
- */
-export async function consumeMomentaryBlur(targetActor, defenseType) {
-  const pending = getPendingBonus(targetActor, PENDING_MOMENTARY_BLUR_FLAG_KEY);
-  if (!pending || defenseType != 'evasion') {
-    return 0;
-  }
-
-  await clearPendingBonus(targetActor, PENDING_MOMENTARY_BLUR_FLAG_KEY);
-  return pending.defenseBonus;
-}
-
-const UNTIL_NEXT_TURN_DEFENSE_FLAGS = [STALWART_DEFENSE_FLAG, SWORD_AND_BOARD_FLAG];
+const UNTIL_NEXT_TURN_DEFENSE_FLAGS = [STALWART_DEFENSE_FLAG];
 
 /** Whether combat has reached the holder's next turn since the bonus was banked (on their own turn). */
 function pastStartOfNextTurn(actor, pending) {
@@ -6908,7 +5484,7 @@ function pastStartOfNextTurn(actor, pending) {
  * one shared CONSUMING function plus each Perk's own ally-picker/BANKABLE_PERKS `target: 'ally'`
  * entry, both of which already existed - see Plan of Action/Inspiration/Heart of the Team etc.
  * above). Read (and, if it matches, consumed) at the same dice.mjs site as consumeHardTarget/
- * consumeResilience/consumeMomentaryBlur/consumeRiseAgainDefense above - the TARGET's own banked
+ * consumeResilience/consumeRiseAgainDefense above - the TARGET's own banked
  * effect applying against someone ELSE's attack roll, not the banking actor's own next one.
  *
  * `defenseAmounts` is a plain { toughness, evasion, willpower, cleverness } map, only some of
@@ -6930,8 +5506,8 @@ export async function consumeBankedDefenseBonus(targetActor, flagKey, defenseTyp
     return 0;
   }
 
-  // Stalwart Defense / Sword And Board last "until the beginning of your next turn" - every attack
-  // in between gets them, so they stay banked until the holder's next turn comes round.
+  // Stalwart Defense lasts "until the beginning of your next turn" - every attack in between gets
+  // it, so it stays banked until the holder's next turn comes round.
   if (UNTIL_NEXT_TURN_DEFENSE_FLAGS.includes(flagKey) && game?.combat && pending.round != null) {
     if (pastStartOfNextTurn(targetActor, pending)) {
       await clearPendingBonus(targetActor, flagKey);
@@ -6949,3 +5525,5 @@ export async function consumeBankedDefenseBonus(targetActor, flagKey, defenseTyp
   await clearPendingBonus(targetActor, flagKey);
   return amount;
 }
+
+export { pickAllyTargets };

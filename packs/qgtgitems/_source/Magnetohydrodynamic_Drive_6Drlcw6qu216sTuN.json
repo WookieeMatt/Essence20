@@ -5,6 +5,13 @@
   "_id": "6Drlcw6qu216sTuN",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"crew","upshift":2,"stack":"vehicleStealth","when":["skill:infiltration"]},
+      {"type":"RollModifier","upshift":2,"stack":"vehicleStealth","when":["self:type:vehicle","skill:infiltration"]},
+      {"type":"RollModifier","scope":"crew","label":"Magnetohydrodynamic Drive (stationary)","upshift":2,"stack":"vehicleStealthStationary","when":["skill:infiltration"]},
+      {"type":"RollModifier","label":"Magnetohydrodynamic Drive (stationary)","upshift":2,"stack":"vehicleStealthStationary","when":["self:type:vehicle","skill:infiltration"]}
+    ],
+    "prerequisites": {"when":[{"any":["self:data:system.traits.air","self:data:system.traits.sea"]}]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: Infiltration tests by anyone crewing the vehicle get two ↑2 switches under Automatic Modifiers in the Roll Options Dialog: Magnetohydrodynamic Drive, and Magnetohydrodynamic Drive (stationary), which you switch off while the vehicle is moving.</p><p>Left to the table: its silent running and being invisible to radar.</p>"

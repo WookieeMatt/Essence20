@@ -5,6 +5,11 @@
   "_id": "MXW4BmGWCfuV1Lu9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Perimeter Defender: Specialized on Alertness","specialize":true,"when":["skill:alertness"]},
+      {"type":"CritOnD2","label":"Perimeter Defender: crit on the d2 on Alertness","when":["skill:alertness"]}
+    ],
+    "prerequisites": {"when":["self:skill:alertness>=d8"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you are Specialized on Alertness tests and can score a Critical Success with a d2 on them.</p>"

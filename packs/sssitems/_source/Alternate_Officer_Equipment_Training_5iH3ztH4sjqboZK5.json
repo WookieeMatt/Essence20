@@ -5,6 +5,7 @@
   "_id": "5iH3ztH4sjqboZK5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Officer","self:level>=1"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: swaps your Officer training for Light Armor, melee weapons and explosives, then asks for one Limited melee weapon. You get a copy of it, and Requisition counts it as Qualified.</p>"

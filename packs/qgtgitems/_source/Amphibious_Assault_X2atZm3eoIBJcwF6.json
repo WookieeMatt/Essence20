@@ -5,6 +5,10 @@
   "_id": "X2atZm3eoIBJcwF6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"swim","stage":"adjust","op":"set","value":"max(@actor.system.movement.swim.total, @actor.system.movement.ground.total) + 15","label":"Aquatic Movement +15 ft over the better option","when":["self:data:system.movement.swim.base>0"]},
+      {"type":"Movement","movement":"swim","stage":"adjust","op":"set","value":"@actor.system.movement.ground.total","label":"Aquatic Movement equal to Ground","when":["not:self:data:system.movement.swim.base>0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: on the sheet, you gain Aquatic Movement equal to your Ground Movement, or the better of the two +15 ft if you already have Aquatic Movement. When you roll Initiative while underwater or moving by swimming, you get ↑1, added after the Roll Options Dialog so it shows in the chat roll.</p>"

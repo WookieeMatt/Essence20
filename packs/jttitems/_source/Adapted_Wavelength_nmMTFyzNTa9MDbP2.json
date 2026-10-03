@@ -5,6 +5,15 @@
   "_id": "nmMTFyzNTa9MDbP2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"acid","amount":-1,"when":["rule:data:system.choice=acid"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"cold","amount":-1,"when":["rule:data:system.choice=cold"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"electric","amount":-1,"when":["rule:data:system.choice=electric"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"emp","amount":-1,"when":["rule:data:system.choice=emp"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"fire","amount":-1,"when":["rule:data:system.choice=fire"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"laser","amount":-1,"when":["rule:data:system.choice=laser"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"sonic","amount":-1,"when":["rule:data:system.choice=sonic"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: choose an Element damage type. Automatic: damage of that type against you is reduced by 1. Take it again for a second element.</p>"

@@ -39,8 +39,6 @@ export const ZORD2 = {
   versatileCombiner: C('through_the_shattered_grid', 'XbRfajp9KwfzDG5c'),
   // G.I. Joe
   shinobi: C('intercontinental_adventures', 'JFfMXY6aMxhDbKa6'),
-  combatNunchaku: C('quartermasters_guide_to_gear', 'qfelSaHiGknDHjXj'),
-  excalibur: C('quartermasters_guide_to_gear', 'GNuActe2QRVyWH3o'),
   // Transformers
   carapacedCommon: C('technorganic_secrets', 'aTevGfLML1dlbErs'),
   carapacedLarge: C('technorganic_secrets', '2mSP6mVx0axvOlXf'),
@@ -54,7 +52,7 @@ export const ZORD2 = {
   massShift: C('tf_crb', '0JiAkBjJzsuezfaI'),
 };
 
-export const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+export const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 
 export function itemsOf(actor) {
   const items = actor?.items;

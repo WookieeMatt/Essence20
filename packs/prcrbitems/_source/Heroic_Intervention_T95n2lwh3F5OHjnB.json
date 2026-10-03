@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:level>=8"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: while an ally is within 5 ft of you, attacks against you have their DIF raised by 1 on the attacker's chat card (leave the switchable effect off). Use button: the first press each scene adds a Story Point to the team's pool; later presses spend 1 Personal Power for the 15-foot move. Left to the table: the Story Point is once per session, and moving your token.</p>"

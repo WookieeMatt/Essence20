@@ -6,22 +6,20 @@ import { hasSourced, worldActors } from "../../companion-link.mjs";
 
 /**
  * Welcome to Night Vale Citizens' Guide and Field Guide to Action & Adventure items that needed a
- * roll hook, a Use button or a natural attack: Obsessive, Community Martial Arts, Dog Person, Double
- * Vision, The List, Third Eye, Vehicle Whisperer, the Night Vale Animal Perks, Nobility, Staggering
- * Sway, Universal Translator, More Than Worldly and Gridlock Authority.
+ * roll hook, a Use button or a natural attack: Obsessive, Dog Person, Double Vision, The List, Third
+ * Eye, the Night Vale Animal Perks, Nobility's Use, Staggering Sway and More Than Worldly. (Community
+ * Martial Arts, Vehicle Whisperer, Acute Senses, Nobility and Gridlock Authority's roll switches are
+ * their own item rules now.)
  */
 
 const wtnv = id => `Compendium.essence20.wtnv_citizens_guide.Item.${id}`;
 const fgaa = id => `Compendium.essence20.field_guide_action_adventure.Item.${id}`;
 export const WTNV = {
   obsessive: wtnv('eOgtG24LKGR6OE0v'),
-  communityMartialArts: wtnv('uY9wPJH31z5kAtdB'),
   dogPerson: wtnv('U5arLtyo8eEgl2Ck'),
   doubleVision: wtnv('lyQvLPv3enKlVpHj'),
   theList: wtnv('uqGXmxShRuAWsJd1'),
   thirdEye: wtnv('XolO5C6pgFt8WQJZ'),
-  vehicleWhisperer: wtnv('dLCMo7SrmVIP69Mj'),
-  acuteSenses: wtnv('ygxNBnUhFIfqg349'),
   delicateStomach: wtnv('W04dEJSSgaWOeebQ'),
   pincers: wtnv('WwU4Ebk3IY6Yr2jy'),
   quills: wtnv('m9rPGuVLv5cmfqkm'),
@@ -30,14 +28,12 @@ export const WTNV = {
   nobility: fgaa('5ZUcDuVx1pJ1R1RG'),
   staggeringSway: fgaa('DulMH7OAwrg3G85A'),
   moreThanWorldly: fgaa('NtRsn6nTuys26ltH'),
-  gridlockAuthority: fgaa('EiS24nGsgSsroa16'),
 };
 
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
-const SOCIAL_SMARTS = ['smarts', 'social'];
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function itemOf(actor, uuid) {
@@ -45,8 +41,6 @@ function itemOf(actor, uuid) {
   const list = Array.isArray(items?.contents) ? items.contents : (items && typeof items[Symbol.iterator] == 'function' ? [...items] : []);
   return list.find(item => sourceOf(item) == uuid) ?? null;
 }
-
-const essenceOf = skill => CONFIG.E20?.skillToEssence?.[skill];
 
 /* -------------------------------------------- */
 /*  Roll sources                                 */
@@ -105,21 +99,9 @@ export function wtnvSpecializes(actor, skill) {
  * The situational halves the table decides: each is a switch in the Roll Options Dialog, shown only
  * when it could apply.
  */
-export function wtnvToggles(actor, { rolledSkill } = {}) {
+export function wtnvToggles(actor) {
   const toggles = [];
-  const essence = essenceOf(rolledSkill);
   const add = (name, label) => toggles.push({ name, label, type: 'checkbox' });
-
-  // Community Martial Arts (p.47): "↑1 on Social and Smarts Skill Tests related to fighting."
-  if (SOCIAL_SMARTS.includes(essence) && hasSourced(actor, WTNV.communityMartialArts)) {
-    add('communityMartialArts', T('E20.WtnvToggleFighting', { perk: itemOf(actor, WTNV.communityMartialArts).name }));
-  }
-
-  // Vehicle Whisperer (p.47): "↑1 ... on Smarts and Social Skill Tests when dealing with Night Vale
-  // vehicles outside of driving or riding them."
-  if (SOCIAL_SMARTS.includes(essence) && hasSourced(actor, WTNV.vehicleWhisperer)) {
-    add('vehicleWhisperer', T('E20.WtnvToggleVehicles', { perk: itemOf(actor, WTNV.vehicleWhisperer).name }));
-  }
 
   // Dog Person, with no dog targeted: "When you interact with a feral dog or even a Radon Canyon coyote".
   const target = globalThis.game?.user?.targets?.first?.()?.actor;
@@ -132,24 +114,6 @@ export function wtnvToggles(actor, { rolledSkill } = {}) {
     add('thirdEye', T('E20.WtnvToggleVision', { perk: itemOf(actor, WTNV.thirdEye).name }));
   }
 
-  // Acute Senses (Animal Perk, p.74-75): "an Edge when making a Skill Test for Alertness or Weird
-  // (Witness) if your chosen sense ... can be applied" and "↑1 on a non-Alertness or Weird (Witness)
-  // Skill Test where you can apply some use of your chosen sense".
-  if (hasSourced(actor, WTNV.acuteSenses)) {
-    add('acuteSenses', T(['alertness', 'weird'].includes(rolledSkill) ? 'E20.WtnvToggleSenseEdge' : 'E20.WtnvToggleSenseShift'));
-  }
-
-  // Nobility (Field Guide p.57): "↑1 on Social Skill Tests with those who recognize your nobility".
-  if (essence == 'social' && hasSourced(actor, WTNV.nobility)) {
-    add('nobility', T('E20.WtnvToggleNobility', { perk: itemOf(actor, WTNV.nobility).name }));
-  }
-
-  // Gridlock Authority (Field Guide p.70): "an Edge on Intimidate and Social Skill Tests with NPC
-  // civilians and other government organizations regarding your work."
-  if ((essence == 'social' || rolledSkill == 'intimidation') && hasSourced(actor, WTNV.gridlockAuthority)) {
-    add('gridlockAuthority', T('E20.WtnvToggleGridlock', { perk: itemOf(actor, WTNV.gridlockAuthority).name }));
-  }
-
   return toggles;
 }
 
@@ -159,21 +123,6 @@ export async function wtnvApplyDialog(actor, options, { rolledSkill } = {}) {
     options.shiftUp = (options.shiftUp ?? 0) + n;
   };
 
-  const edge = () => {
-    if (options.snag) {
-      options.snag = false;
-    } else {
-      options.edge = true;
-    }
-  };
-
-  if (ext.communityMartialArts) {
-    up(1);
-  }
-
-  if (ext.vehicleWhisperer) {
-    up(1);
-  }
 
   if (ext.dogPerson) {
     up(1);
@@ -186,21 +135,6 @@ export async function wtnvApplyDialog(actor, options, { rolledSkill } = {}) {
     options.shiftDown -= 1;
   }
 
-  if (ext.acuteSenses) {
-    if (['alertness', 'weird'].includes(rolledSkill)) {
-      edge();
-    } else {
-      up(1);
-    }
-  }
-
-  if (ext.nobility) {
-    up(1);
-  }
-
-  if (ext.gridlockAuthority) {
-    edge();
-  }
 }
 
 /* -------------------------------------------- */

@@ -5,6 +5,9 @@
   "_id": "UYaPTaAQH5SDXxnz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ConditionImmunity","label":"Immune to blinded, deafened","conditions":["blinded","deafened"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: immune to Blinded and Deafened. Use button: once per combat while an enemy is Surprised, make a bonus attack.</p><p>Left to the table: making that bonus attack with a shotgun or submachine gun.</p>"

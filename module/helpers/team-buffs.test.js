@@ -2,8 +2,7 @@ import { jest } from '@jest/globals';
 import { legacyPoolParty } from '../jest.legacy-pool-party.js';
 import {
   canUseTeamBuffPerk, isTeamBuffPerk, onTeamBuffPerkUse, ONE_FOR_ALL_ID, POWER_BURST_ID,
-  SHINING_LEADER_ID, SHINING_LEADER_EDGE_FLAG, ENVIRONMENTAL_ASSIST_ID,
-  PENDING_ENVIRONMENTAL_ASSIST_FLAG_KEY, ELEMENTAL_SHIELD_ID, PENDING_ELEMENTAL_SHIELD_FLAG_KEY,
+  SHINING_LEADER_ID, SHINING_LEADER_EDGE_FLAG, ELEMENTAL_SHIELD_ID, PENDING_ELEMENTAL_SHIELD_FLAG_KEY,
   RALLYING_CRY_ID, RALLYING_CRY_EDGE_FLAG, HEART_OF_THE_TEAM_GIJ_ID, NANO_MED_MASTERY_ID, NANO_MED_MASTERY_EDGE_FLAG,
 } from './team-buffs.mjs';
 
@@ -83,21 +82,6 @@ describe("canUseTeamBuffPerk", () => {
   test("Power Burst has no Power cost", () => {
     const actor = makeActor({ power: 0 });
     expect(canUseTeamBuffPerk(makeItem(POWER_BURST_ID), actor)).toBe(true);
-  });
-
-  test("Environmental Assist has no onceEncounterFlag - affordable and reusable in the same encounter", () => {
-    const actor = makeActor({ power: 1 });
-    // A stray "used this encounter" flag under some unrelated key shouldn't matter - there's no
-    // onceEncounterFlag on this entry at all, so canUseTeamBuffPerk must never even ask
-    // hasUsedThisEncounter about it (an undefined flagKey would otherwise look up game.actor's own
-    // undefined-keyed flag, an existing bug this guard specifically prevents).
-    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
-    expect(canUseTeamBuffPerk(makeItem(ENVIRONMENTAL_ASSIST_ID), actor)).toBe(true);
-  });
-
-  test("Environmental Assist false when it can't be afforded", () => {
-    const actor = makeActor({ power: 0 });
-    expect(canUseTeamBuffPerk(makeItem(ENVIRONMENTAL_ASSIST_ID), actor)).toBe(false);
   });
 
   test("Elemental Shield true when affordable and not yet used this encounter", () => {
@@ -229,37 +213,6 @@ describe("onTeamBuffPerkUse", () => {
     expect(ally2.setFlag).toHaveBeenCalledWith(
       'essence20', RALLYING_CRY_EDGE_FLAG, { combatId: 'combat1', round: 3 },
     );
-  });
-
-  test("Environmental Assist spends 1 Power and banks the damage bonus on the granter too, not just allies", async () => {
-    const actor = makeActor({ id: 'leader', power: 1 });
-    const ally1 = makeActor({ id: 'ally1' });
-    setAllies([ally1], { document: { disposition: 1 }, center: {} });
-
-    await onTeamBuffPerkUse(makeItem(ENVIRONMENTAL_ASSIST_ID), actor);
-
-    expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 0 });
-    expect(actor.setFlag).toHaveBeenCalledWith(
-      'essence20', PENDING_ENVIRONMENTAL_ASSIST_FLAG_KEY, { combatId: 'combat1', round: 3 },
-    );
-    expect(ally1.setFlag).toHaveBeenCalledWith(
-      'essence20', PENDING_ENVIRONMENTAL_ASSIST_FLAG_KEY, { combatId: 'combat1', round: 3 },
-    );
-  });
-
-  test("Environmental Assist doesn't gate reuse on hasUsedThisEncounter - no onceEncounterFlag exists to mark", async () => {
-    const actor = makeActor({ id: 'leader', power: 2 });
-    setAllies([], { document: { disposition: 1 }, center: {} });
-
-    await onTeamBuffPerkUse(makeItem(ENVIRONMENTAL_ASSIST_ID), actor);
-    await onTeamBuffPerkUse(makeItem(ENVIRONMENTAL_ASSIST_ID), actor);
-
-    // actor.update is mocked (doesn't actually mutate system.powers.personal.value), so both
-    // calls independently compute a spend from the same starting value - the point being tested
-    // is just that a SECOND use isn't silently blocked, unlike One For All/Power Burst/Shining
-    // Leader's own once-per-encounter gate.
-    expect(actor.update).toHaveBeenCalledTimes(2);
-    expect(actor.update).toHaveBeenLastCalledWith({ 'system.powers.personal.value': 1 });
   });
 
   test("Elemental Shield spends 1 Power and banks a scaling damage-reduction flag on the granter and each ally", async () => {

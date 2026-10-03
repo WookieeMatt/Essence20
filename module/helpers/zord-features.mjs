@@ -15,7 +15,7 @@
 export function findZordFeature(actor, featureId) {
   return actor?.items?.find(item =>
     item.type == 'feature'
-    && (item.flags?.core?.sourceId == featureId || item._stats?.compendiumSource == featureId),
+    && (item.flags?.core?.sourceId == featureId || item._stats?.compendiumSource == featureId || item?.flags?.essence20?.rulesSource == featureId),
   );
 }
 

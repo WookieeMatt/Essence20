@@ -5,6 +5,7 @@
   "_id": "92V9QrCXJYmY2p7O",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:reload"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per scene, reloading the weapon is a Free action instead of a Move action.</p>"

@@ -5,6 +5,7 @@
   "_id": "FL7xnRUhVwmtKj2N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Grid Relic Weapon"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect (starts off): Edge on Initiative. Switch it on while the Relic is in your hand.</p><p>Left to the table: summoning the Relic as a Free action while Morphed.</p>"

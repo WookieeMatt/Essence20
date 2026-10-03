@@ -5,6 +5,9 @@
   "_id": "UpZjnv99mGdT4lLL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Another attack or move","when":[{"any":["combat","combat:round:0"]}],"limit":{"per":"turn"},"steps":[{"do":"choose","prompt":"Another attack, or another move?","options":[{"label":"Another attack","steps":[{"do":"bonusAttack","cost":"free"},{"do":"chat","text":"{name} can make another attack as a Free action."}]},{"label":"Another move","steps":[{"do":"grantActions","move":1},{"do":"chat","text":"{name} gains an extra Move action."}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button, once per turn after a successful Sneak Attack: choose a free extra attack or a free move.</p>"

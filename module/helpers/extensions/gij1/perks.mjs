@@ -1,113 +1,35 @@
 import {
-  registerApplyDialog, registerDerived, registerDialogToggles, registerRollSources, registerUse,
+  registerDerived, registerRollSources, registerUse,
 } from "../../extensions.mjs";
 import { hasSourced } from "../../companion-link.mjs";
 import { hasUsedThisTurn, markUsedThisTurn } from "../../perks.mjs";
 import { getUses, markUsed } from "../../scene-clock.mjs";
 import {
-  CC, G1, SIGNATURE_WEAPONS, T, askSkillAndText, findSourced, firstTarget, inCombat, isFrom, isStampActive, itemsOf,
-  post, skillsOf, sourceOf, turnStamp,
+  CC, G1, SIGNATURE_WEAPONS, T, findSourced, firstTarget, inCombat, isFrom, isStampActive, itemsOf,
+  post, sourceOf, turnStamp,
 } from "./shared.mjs";
 import { ONE_HANDED_FLAG } from "./gear.mjs";
 
 /**
- * Cobra Codex Perks and Hang-Ups: Bootlicker, Chemist, Cover Job, Cybernetic Part, Double Life,
+ * Cobra Codex Perks and Hang-Ups: Cybernetic Part,
  * Demolition Artist / Improvise Bomb, Extract Poison, Primal Fear / Feed On Fear, Let It Rip,
  * Metier, Scavenger, Sea Legs and Shielded.
  */
 
-// A Perk's own pick (Cover Job's skill + profession, Double Life's skill + Specialization, Metier's
-// option) lives on the Perk copy, so taking the Perk twice keeps two picks.
+// A Perk's own pick (Metier's option) lives on the Perk copy, so taking the Perk twice keeps two picks.
 export const CHOICE_FLAG = 'gij1Choice';
 export const choiceOf = item => item?.flags?.essence20?.[CHOICE_FLAG] ?? null;
-const allSourced = (actor, uuid) => itemsOf(actor).filter(item => sourceOf(item) == uuid);
-
-/* -------------------------------------------- */
-/*  Self-declared toggles                        */
-/* -------------------------------------------- */
-
-// Bootlicker (General Perk, p.79): "Gain ↑1 on Skill Tests when interacting with superior
-// officers."
-// Cover Job (Crimson Guard Division Perk, p.72): "outside of combat, you are considered Specialized
-// in Skill Tests that relate to your chosen profession." Double Life (General Perk, p.79): "When
-// you have time before making a Skill Test related to that Specialization to reach out to someone
-// from your fake life ... you gain Edge and the benefits of that Specialization on your roll.
-// Whether you have time to contact them is up to your GM." Each hinges on what the test is about,
-// so each is an off-by-default checkbox shown only on the rolls it could apply to.
-export function gij1Toggles(actor, ctx = {}) {
-  const toggles = [];
-  const isAttack = ctx.item?.type == 'weaponEffect';
-  const bootlicker = findSourced(actor, G1.bootlicker);
-  if (bootlicker && !isAttack) {
-    toggles.push({ name: 'gij1Bootlicker', type: 'checkbox', label: T('G1BootlickerToggle', { perk: bootlicker.name }) });
-  }
-
-  if (!inCombat(actor)) {
-    for (const perk of allSourced(actor, G1.coverJob)) {
-      const choice = choiceOf(perk);
-      if (choice?.text) {
-        toggles.push({ name: `gij1CoverJob-${perk.id}`, type: 'checkbox', label: T('G1CoverJobToggle', { profession: choice.text }) });
-      }
-    }
-  }
-
-  for (const perk of allSourced(actor, G1.doubleLife)) {
-    const choice = choiceOf(perk);
-    if (choice?.skill && choice.skill == ctx.rolledSkill) {
-      toggles.push({ name: `gij1DoubleLife-${perk.id}`, type: 'checkbox', label: T('G1DoubleLifeToggle', { spec: choice.text || perk.name }) });
-    }
-  }
-
-  return toggles;
-}
-
-export function applyGij1Toggles(actor, options) {
-  const ext = options.ext ?? {};
-  if (ext.gij1Bootlicker) {
-    options.shiftUp = (options.shiftUp ?? 0) + 1;
-  }
-
-  for (const [name, on] of Object.entries(ext)) {
-    if (!on) {
-      continue;
-    }
-
-    if (name.startsWith('gij1CoverJob-')) {
-      options.isSpecialized = true;
-    } else if (name.startsWith('gij1DoubleLife-')) {
-      options.edge = true;
-      options.isSpecialized = true;
-    }
-  }
-}
-
-registerDialogToggles(gij1Toggles);
-registerApplyDialog(applyGij1Toggles);
 
 /* -------------------------------------------- */
 /*  Automatic roll sources                       */
 /* -------------------------------------------- */
 
-// Chemist's Hang-Up (Influence, p.27): "You suffer ↓1 to Persuasion Skill Tests that don't involve
-// science." Listed on every Persuasion roll; the player unticks it when the test is about science.
-// Cover Job: "Pick a profession and a Smarts or Social skill. You gain ↑1 in that skill."
 // Primal Fear (Ranger Guerilla Focus, 3rd level, p.59): "On a success, you gain ↑1 on Skill Tests
 // targeting that creature for the remainder of your turn." (the Use below sets the mark).
 export const PRIMAL_FEAR_FLAG = 'gij1PrimalFear';
 
-export function gij1Sources(actor, target, ctx = {}) {
+export function gij1Sources(actor, target) {
   const sources = [];
-  const chemist = findSourced(actor, G1.chemistHangUp);
-  if (chemist && ctx.rolledSkill == 'persuasion') {
-    sources.push({ id: 'gij1Chemist', label: T('G1ChemistLabel', { name: chemist.name }), shiftDown: 1 });
-  }
-
-  for (const perk of allSourced(actor, G1.coverJob)) {
-    if (choiceOf(perk)?.skill && choiceOf(perk).skill == ctx.rolledSkill) {
-      sources.push({ id: `gij1CoverJob-${perk.id}`, label: perk.name, shiftUp: 1 });
-    }
-  }
-
   const mark = actor?.getFlag?.('essence20', PRIMAL_FEAR_FLAG);
   if (target?.uuid && mark?.targetUuid == target.uuid && isStampActive(mark)) {
     sources.push({ id: 'gij1PrimalFear', label: findSourced(actor, G1.primalFear)?.name ?? 'Primal Fear', shiftUp: 1 });
@@ -116,35 +38,11 @@ export function gij1Sources(actor, target, ctx = {}) {
   return sources;
 }
 
-registerRollSources((actor, target, ctx) => ({ sources: gij1Sources(actor, target, ctx), consumes: [] }));
+registerRollSources((actor, target) => ({ sources: gij1Sources(actor, target), consumes: [] }));
 
 /* -------------------------------------------- */
 /*  Picks made when the Perk is taken            */
 /* -------------------------------------------- */
-
-async function setupCoverJob(item) {
-  const picked = await askSkillAndText(item.name, T('G1CoverJobPrompt'), skillsOf(['smarts', 'social']), T('G1CoverJobProfession'));
-  if (!picked) {
-    return null;
-  }
-
-  const skillName = game.i18n.localize(CONFIG.E20.skills[picked.skill]);
-  const text = picked.text || skillName;
-  await item.update({ name: `${item.name} (${text}, ${skillName})`, [`flags.essence20.${CHOICE_FLAG}`]: { skill: picked.skill, text } });
-  return T('G1ChoiceMade', { name: item.parent?.name, perk: item.name, choice: `${text}, ${skillName}` });
-}
-
-async function setupDoubleLife(item) {
-  const picked = await askSkillAndText(item.name, T('G1DoubleLifePrompt'), skillsOf(null), T('G1DoubleLifeSpec'));
-  if (!picked) {
-    return null;
-  }
-
-  const skillName = game.i18n.localize(CONFIG.E20.skills[picked.skill]);
-  const text = picked.text || skillName;
-  await item.update({ name: `${item.name} (${text})`, [`flags.essence20.${CHOICE_FLAG}`]: { skill: picked.skill, text } });
-  return T('G1ChoiceMade', { name: item.parent?.name, perk: item.name, choice: `${skillName}: ${text}` });
-}
 
 // Metier (Assassin Origin Benefit, p.40): "You are either trained in poisons ... or all weapons with
 // one of the following Traits: Silent, Sniper, or Wrecker. If another option grants you training
@@ -242,8 +140,6 @@ async function grantShield(item) {
 }
 
 const SETUPS = [
-  { uuid: G1.coverJob, needs: item => !choiceOf(item), run: setupCoverJob },
-  { uuid: G1.doubleLife, needs: item => !choiceOf(item), run: setupDoubleLife },
   { uuid: G1.metier, needs: item => !choiceOf(item), run: setupMetier },
   ...Object.keys(ALTERATION_PERKS).map(uuid => ({
     uuid, needs: item => !item.flags?.essence20?.granted && !isBeastModeCopy(item), run: grantAlterationPerk,

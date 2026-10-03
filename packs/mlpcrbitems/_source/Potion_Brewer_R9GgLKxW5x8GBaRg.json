@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:spellcasting>=d4"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: you can craft potion Magic Baubles from spells you haven't Mastered, without researching them first.</p>"

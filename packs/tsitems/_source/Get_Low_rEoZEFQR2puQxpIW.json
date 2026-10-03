@@ -5,6 +5,11 @@
   "_id": "rEoZEFQR2puQxpIW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Get Low","when":["skill:infiltration","self:transformed"],"upshift":1},
+      {"type":"RollModifier","label":"Get Low","scope":"incoming","when":["attack:ranged","self:transformed"],"downshift":2},
+      {"type":"ConditionImmunity","label":"Immune to prone","conditions":["prone"],"when":["self:transformed"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: in Alt Mode you can't be knocked Prone, ranged attacks against you take ↓2 (labelled Get Low in the attacker's Roll Options Dialog), and your Infiltration tests get ↑1, already applied when your Roll Options Dialog opens.</p><p>Left to the table: taking cover behind short obstacles.</p>"

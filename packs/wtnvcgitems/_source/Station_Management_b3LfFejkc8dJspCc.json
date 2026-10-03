@@ -5,6 +5,10 @@
   "_id": "b3LfFejkc8dJspCc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","defense:cleverness"]}
+    ],
+    "prerequisites": {"when":["self:hasType:origin:Intern"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 Cleverness. Automatic: attacks you roll against a target's Cleverness deal +1 damage, shown on the hit's chat card as \"Includes +1 from Station Management\".</p>"

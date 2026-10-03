@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Out of Touch","when":["not:skill:performance"],"snag":true,"limit":{"per":"mission","key":"crowdpleaserHangUp"}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your first Skill Test other than Performance each day takes a Snag, in or out of combat; the Roll Options Dialog opens with Snag already selected. A new day starts when the GM starts a new mission on the Scene Clock.</p>"

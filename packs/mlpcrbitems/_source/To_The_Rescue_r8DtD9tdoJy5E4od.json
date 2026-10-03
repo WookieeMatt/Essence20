@@ -5,6 +5,9 @@
   "_id": "r8DtD9tdoJy5E4od",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Spend a Story Point for an extra Move action","limit":{"per":"round"},"cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"chat","text":"{name} spends a Story Point to take an extra Move action on another turn."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per round, spend a Friendship Point to take an extra Move action on someone else's turn; move your token yourself.</p>"

@@ -11,9 +11,9 @@ import {
 } from "./core.mjs";
 
 /**
- * Reactions tied to a form or a standing state: Monster Morph's per-Path riders and Path of Stone's
- * Resistance, Iron Bravado's shared immunities, Cyborg's damage-to-Essence, and Mind Beam's Calm /
- * Confused, default effect and 3-round duration.
+ * Reactions tied to a form or a standing state: Monster Morph's per-Path riders, Iron Bravado's
+ * shared immunities, Cyborg's damage-to-Essence, and Mind Beam's Calm / Confused, default effect and
+ * 3-round duration. (Path of Stone's Resistance is an incoming rule on the Path of Stone Role.)
  */
 
 const FMMC = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.";
@@ -158,18 +158,6 @@ registerChatButton('reactMonsterFollow', async (message, button) => {
   if (!cancelled && success) {
     await damageButton(actor, target, 1, follow.type, T('ReactFollowHit', { name: esc(actor.name), target: esc(target.name) }));
   }
-});
-
-// Path of Stone (p.295): "Resistance to all damage types except Psychic, Sonic, and Void damage."
-// Resistance is a Snag on the attack (target-riders.mjs, Frag It).
-const STONE_EXCEPT = ['psychic', 'sonic', 'void'];
-registerRollSources((actor, target, ctx) => {
-  const type = ctx?.item?.system?.damageType;
-  if (!target || !ctx?.isAttack || !type || STONE_EXCEPT.includes(type) || monsterPath(target) != 'stone') {
-    return null;
-  }
-
-  return { sources: [{ id: 'reactStoneForm', label: T('ReactStoneForm'), snag: true }] };
 });
 
 /* -------------------------------------------- */

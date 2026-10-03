@@ -5,6 +5,12 @@
   "_id": "7CuDik9Vtpou9iDJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Qualification","label":"Oorah! (Qualified: Standard weapons)","access":"qualified","items":["item:type:weapon",{"any":["item:data:system.availability=automatic","item:data:system.availability=standard"]}]},
+      {"type":"Qualification","label":"Oorah! (Qualified: Silent battledress upgrade)","upgrades":["item:source:Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU"]},
+      {"type":"Qualification","label":"Oorah! (Qualified: Silent battledress upgrade)","upgrades":["item:type:upgrade","item:data:name=silent","item:data:system.type=armor"]},
+      {"type":"RollModifier","label":"Oorah!","when":["skill:infiltration"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Toughness and Willpower. Automatic: Infiltration tests open the Roll Options Dialog with Edge selected; hits on Surprised targets deal +1 damage, shown on the chat card as \"Includes +1 from Oorah!\"; and you count as Qualified with Standard weapons, the Silent battledress upgrade and land vehicles, so Driving them never takes the untrained Snag.</p>"

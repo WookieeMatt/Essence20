@@ -5,6 +5,10 @@
   "_id": "5Z9vkcfZYwmtA6R4",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Clawed Armor","when":["skill:alertness"],"edge":true},
+      {"type":"RollModifier","scope":"incoming","label":"Clawed Armor","when":[{"any":["roll:shove","item:damageType:grapple","item:damageType:maneuver","item:damageType:knocProne","item:trait:grapple","item:trait:shove","item:trait:trip"]}],"snag":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic while equipped: its Toughness bonus, -5ft ground movement, and Edge on your Alertness rolls, labelled Clawed Armor in the Roll Options Dialog. Anyone trying to shove or grapple you, or hit you with an attack that moves you, takes a Snag labelled Clawed Armor. Its attacks are separate weapons.</p><p>Left to the table: paying the 3 Personal Power summon cost.</p>"

@@ -5,6 +5,7 @@
   "_id": "5GDpvzG3x2ZgrrQj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:focus:Tiller"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Standard action): roll DIF 10 Intimidation; on a success one enemy within 30 ft, plus one more for every 5 points over, takes a Snag on its first test on its turn.</p>"

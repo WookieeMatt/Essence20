@@ -1,4 +1,5 @@
 import { getNearbyAllyTokens } from "./allies.mjs";
+import { ruleSenses } from "../rules/adapter.mjs";
 
 /**
  * Picks the vision grant an actor's items actually confer.
@@ -86,7 +87,7 @@ export function getBestVisionGrant(actor) {
       continue;
     }
 
-    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
     if (sourceId == USED_TO_THE_DARK_ID) {
       hasUsedToTheDark = true;
     } else {
@@ -113,6 +114,14 @@ export function getBestVisionGrant(actor) {
     if (allyGrant && (!best || allyGrant.range > best.range)) {
       best = allyGrant;
       otherSources += 1;
+    }
+  }
+
+  // Sense item rules (rules/adapter.mjs#ruleSenses) - with conditions, or reaching a Party or an aura.
+  for (const grant of ruleSenses(actor)) {
+    otherSources += 1;
+    if (!best || grant.range > best.range) {
+      best = grant;
     }
   }
 

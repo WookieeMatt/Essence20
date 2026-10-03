@@ -33,7 +33,7 @@ export const WHY_DO_I_KNOW_THAT_ID = "Compendium.essence20.across_the_stars.Item
 export async function findGrantableGeneralPerks(actor) {
   const held = new Set((actor?.items ?? [])
     .filter(item => item.type == 'perk')
-    .map(item => item.flags?.core?.sourceId ?? item._stats?.compendiumSource)
+    .map(item => item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource)
     .filter(Boolean));
 
   const rows = await findCompendiumItems({

@@ -5,6 +5,9 @@
   "_id": "QbfY2NGNmUmKa6uO",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"AlternateEffect","label":"Nonlethal: a Stun alternate","scope":"host","key":"nonlethal","name":"E20.DamageStun","changes":{"damageType":"stun"},"formulas":{"damageValue":"@base.damageValue"},"baseTypes":["blunt","sharp"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attached to a weapon with a Blunt or Sharp effect, it adds a matching Stun alternate effect to that weapon. Remove the upgrade and the alternate goes away.</p>"

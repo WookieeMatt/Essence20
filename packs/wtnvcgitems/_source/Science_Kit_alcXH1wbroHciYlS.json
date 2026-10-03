@@ -5,6 +5,9 @@
   "_id": "alcXH1wbroHciYlS",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Grant","label":"Comes with a Lab Coat","uuid":"Compendium.essence20.wtnv_citizens_guide.Item.gDIWKiVdCNn5ViV0"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: counts as a Science kit for rolls that call for one, and adds a Lab Coat when you get it. Use button: spend it for temporary Specialization (or an Edge if already Specialized), or restock it.</p>"

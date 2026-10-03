@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:trained:armors.medium"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: you're trained in Heavy armor, so you can requisition it.</p>"

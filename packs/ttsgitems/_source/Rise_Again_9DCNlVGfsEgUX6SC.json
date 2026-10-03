@@ -5,6 +5,9 @@
   "_id": "9DCNlVGfsEgUX6SC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"wouldBeDefeated","label":"Rise Again: stay at 1 Health while Morphed","when":["self:morphed","not:damage:crit"],"limit":{"per":"scene"},"steps":[{"do":"leaveAt","value":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene): +5 to a Defense you pick until your next turn. Automatic: once per scene, if you drop to 0 Health while Morphed from anything but a critical hit, you heal 1 Health.</p>"

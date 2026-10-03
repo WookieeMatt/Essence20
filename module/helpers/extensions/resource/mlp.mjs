@@ -367,7 +367,7 @@ const CIRCLE_SPELL_FLAG = 'resCircleSpell';
 
 /** Spells (by source uuid, falling back to name) held by some members and not others. */
 export function spellsToShare(members) {
-  const key = item => item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? `name:${item.name}`;
+  const key = item => item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? `name:${item.name}`;
   const all = new Map();
   for (const member of members) {
     for (const spell of itemsOf(member).filter(i => i.type == 'spell' && !i.flags?.essence20?.[CIRCLE_SPELL_FLAG])) {

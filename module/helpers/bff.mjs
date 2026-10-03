@@ -28,7 +28,7 @@ const COOLER_FLAG = 'twentyPercentCoolerUses';
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function has(actor, id) {

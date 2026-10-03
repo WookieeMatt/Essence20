@@ -5,6 +5,9 @@
   "_id": "EYs9qvg6oQkIbPTH",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","scope":"host","label":"Spend Energon for +1 Fire damage each (Solus Charge)","when":["attack"],"spend":{"resource":{"path":"system.energon.normal.value"},"max":2},"damage":"@spent"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: when attacking with the upgraded weapon, spend up to 2 Energon for +1 Fire damage each.</p>"

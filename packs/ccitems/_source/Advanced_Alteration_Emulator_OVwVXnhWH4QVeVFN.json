@@ -5,6 +5,7 @@
   "_id": "OVwVXnhWH4QVeVFN",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:computerized"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a Limited Alteration; as a Standard action you gain its benefit and cost for 1 minute. The same button then rolls the Technology test to recharge it.</p>"

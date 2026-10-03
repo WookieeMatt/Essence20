@@ -5,6 +5,10 @@
   "_id": "erZl8Udy03P7vHTe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Athletics (Swimming) Specialization"]},
+    "rules": [
+      {"type":"RollModifier","label":"Diver","when":["skill:alertness","environment:underwater"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +10ft Aquatic Movement. Automatic: ↑1 on Alertness in scenes set to underwater, labelled Diver in the Roll Options Dialog. Use button (once per mission): adds the free Athletics (Swimming) kit and scuba gear.</p>"

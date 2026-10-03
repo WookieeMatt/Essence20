@@ -5,6 +5,7 @@
   "_id": "O4IT5jCPRBqGkXGr",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:brawn>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: lets you wield a two-handed weapon in one hand.</p>"

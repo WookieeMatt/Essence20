@@ -5,6 +5,9 @@
   "_id": "Gin9Zn2ASQXSO62K",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Technostalgic","when":["attack",{"any":["weapon:data:system.totalAvailability=prototype","weapon:data:system.totalAvailability=theoretical"]}],"downshift":1}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: attacks with Prototype or Theoretical weapons take ↓1, already counted in the Shift Down box of the Roll Options Dialog.</p><p>Left to the table: the ↓1 on other rolls using Prototype or Theoretical gear.</p>"

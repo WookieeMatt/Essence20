@@ -5,6 +5,11 @@
   "_id": "oejdA1Iw5UJB5tVT",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"crew","upshift":1,"when":["item:type:weaponEffect","item:data:parent.type=vehicle"]},
+      {"type":"RollModifier","upshift":1,"when":["self:type:vehicle","item:type:weaponEffect","item:data:parent.type=vehicle"]}
+    ],
+    "prerequisites": {"when":["self:data:system.traits.computerized"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks with the vehicle's own weapons get ↑1, listed as a LIDAR Targeting Unit switch under Automatic Modifiers in the Roll Options Dialog.</p>"

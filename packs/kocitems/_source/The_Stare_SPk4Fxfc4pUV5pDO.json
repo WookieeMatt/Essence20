@@ -5,6 +5,9 @@
   "_id": "SPk4Fxfc4pUV5pDO",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"The Stare","event":"hit","when":["item:own"],"steps":[{"do":"applyCondition","to":"target","condition":"frightened","rounds":3}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: a Spellcasting attack against one target. A hit makes them Frightened for 3 rounds.</p>"

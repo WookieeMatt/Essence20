@@ -5,6 +5,7 @@
   "_id": "morpUx0UgeCaB5Xm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:role:Soldier","self:level>=1"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Granted: comes with the Soldier Role at level 1, and the Role adds the +1 Speed and +1 Strength Essence increases on its own.</p><p>Left to the table: picking and adding the one Speed and one Strength Skill Rank from the listed Skills.</p>"

@@ -104,7 +104,7 @@ registerChatButton('reactAuraStrike', async (message, button) => {
     return;
   }
 
-  const aura = AURA.find(a => a.uuid == (upgrade.flags?.core?.sourceId ?? upgrade._stats?.compendiumSource));
+  const aura = AURA.find(a => a.uuid == (upgrade.flags?.core?.sourceId ?? upgrade._stats?.compendiumSource ?? upgrade?.flags?.essence20?.rulesSource));
   let type = aura?.type ?? upgrade.getFlag?.(SCOPE, 'reactElement');
   if (!type) {
     type = await choose(upgrade.name, T('ReactAuraElement'), ELEMENTS.map(e => [e, game.i18n.localize(CONFIG.E20?.damageTypes?.[e] ?? e)]));

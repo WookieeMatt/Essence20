@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Former Senator Skill","from":"list","options":[{"value":"deception","label":"Deception"},{"value":"persuasion","label":"Persuasion"}]},
+      {"type":"ChoiceSet","key":"spec","label":"Former Senator Specialization","from":"text"},
+      {"type":"DialogSwitch","label":"Using {choice.spec} (Former Senator: Edge)","when":["skill:{choice.skill}"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: when you add the Perk, choose a Deception or Persuasion Specialization. Automatic: rolls using that Specialization get Edge, already selected when the Roll Options Dialog opens.</p>"

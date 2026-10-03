@@ -6,12 +6,6 @@ import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 import { onPerkDelete, onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
-import {
-  actorHadMagicalBeforeGrant,
-  actorHasPrincessPerk,
-  applySpellcastingUpshift,
-  roleGrantsPrincessPerk,
-} from "../helpers/princess-perks.mjs";
 
 const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 
@@ -45,7 +39,7 @@ export async function performSpectrumShift(actor, newRole) {
       // Spectrum Shifted (A Jump Through Time p.42, Table 2-16) - see
       // helpers/extensions/pr1/spectrum.mjs for which Perks and pools each old Role keeps.
       if (newRole.system.hasSpectrumShifted && ['perk', 'rolePoints'].includes(item.type)) {
-        const sourceId = item.flags.core?.sourceId ?? item._stats?.compendiumSource;
+        const sourceId = item.flags.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
         const oldAttachment = Object.values(oldRole.system.items).find(entry => entry.uuid == sourceId);
         if (await spectrumShiftedRetains(actor, oldRole, item, oldAttachment)) {
           await item.setFlag('essence20', 'parentId', newRoleItem._id);
@@ -233,18 +227,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   const lastPerkLevel = previousPerkLevel ?? previousLevel;
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
     // Drop or level up
-    // MLP CRB "Princess of X" capstones (p.86-87/91/97): "If you already have Magical, you gain
-    // an ongoing upshift 1 to Spellcasting" - "already have" must be checked BEFORE this exact
-    // grant also hands out a fresh copy of Magical alongside the Princess Perk itself. See
-    // helpers/princess-perks.mjs's own doc comment.
-    const grantsPrincessPerk = roleGrantsPrincessPerk(role) && !actorHasPrincessPerk(actor);
-    const hadMagicalBeforeGrant = grantsPrincessPerk && actorHadMagicalBeforeGrant(actor);
-
     await createItemCopies(role.system.items, actor, "perk", role, lastPerkLevel, currentPerkLevel);
-
-    if (grantsPrincessPerk && hadMagicalBeforeGrant && actorHasPrincessPerk(actor)) {
-      await applySpellcastingUpshift(actor);
-    }
   } else {
     // Level down
     await deleteAttachmentsForItem(role, actor, lastPerkLevel, currentPerkLevel);
@@ -317,7 +300,8 @@ export async function onFocusDrop(actor, focus, dropFunc) {
     return false;
   }
 
-  const sourceId = role[0]._stats.compendiumSource;
+  // A homebrew Role that acts as a book Role (Rules tab) takes that Role's Focuses.
+  const sourceId = role[0]._stats?.compendiumSource ?? role[0].flags?.core?.sourceId ?? role[0].flags?.essence20?.rulesSource;
 
   if (sourceId != attachedRole[0].uuid) {
     ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
@@ -597,7 +581,7 @@ export async function onRoleDrop(actor, role, dropFunc) {
 
   // Morphed toughness bonus updates
   for (const item of actor.items) {
-    if (item._stats.compendiumSource == MORPHIN_TIME_PERK_ID) {
+    if ((item._stats?.compendiumSource ?? item.flags?.essence20?.rulesSource) == MORPHIN_TIME_PERK_ID) {
       setMorphedToughnessBonus(actor);
     }
   }

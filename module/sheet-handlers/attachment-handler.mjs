@@ -76,7 +76,7 @@ export async function grantItemEntry(key, item, owner, parentItem) {
 
   if (itemToCreate.type == 'perk' && itemToCreate.system.advances.canAdvance) {
     for (const ownerItem of owner.items) {
-      const ownerItemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats?.compendiumSource;
+      const ownerItemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats?.compendiumSource ?? ownerItem?.flags?.essence20?.rulesSource;
       if (ownerItemSourceId == itemToCreate.uuid) {
         const newValue = ownerItem.system.advances.currentValue + ownerItem.system.advances.increaseValue;
         await ownerItem.update({
@@ -307,6 +307,10 @@ export async function _attachItem(actor, targetItem, dropFunc) {
     if (newattachedItem.type == 'upgrade' && newattachedItem.system.linkedWeaponEffect) {
       await grantLinkedWeaponEffect(actor, newattachedItem, targetItem);
     }
+
+    // Its prerequisites, now that the item it went on is known (rules/prerequisites.mjs).
+    const { checkAttached } = await import("../rules/prerequisites.mjs");
+    await checkAttached(actor, newattachedItem, targetItem);
   }
 }
 
@@ -567,7 +571,7 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null, 
     // nothing. flags.core.sourceId is set explicitly by createItemCopies() (and by Foundry's
     // own drag-drop-from-compendium handling), so prefer that and fall back to
     // compendiumSource for items that only have it set some other way.
-    const itemSourceId = actorItem.flags.core?.sourceId ?? actorItem._stats?.compendiumSource;
+    const itemSourceId = actorItem.flags.core?.sourceId ?? actorItem._stats?.compendiumSource ?? actorItem?.flags?.essence20?.rulesSource;
     const parentId = await actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
     const collectionId = await actor.items.get(actorItem._id).getFlag('essence20', 'collectionId');
 

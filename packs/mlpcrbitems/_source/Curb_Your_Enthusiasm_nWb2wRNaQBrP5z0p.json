@@ -5,6 +5,9 @@
   "_id": "nWb2wRNaQBrP5z0p",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Gain a Friendship Point","limit":{"per":"encounter"},"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} adds a Friendship Point to the group's pool."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene, gain a Friendship Point for the group (a GM needs to be connected).</p>"

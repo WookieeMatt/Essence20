@@ -5,6 +5,13 @@
   "_id": "llLxndbUKCtKIUMW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"strength","label":"Means Skill (Strength)","from":"list","options":[{"value":"athletics","label":"Athletics"},{"value":"brawn","label":"Brawn"},{"value":"intimidation","label":"Intimidation"},{"value":"might","label":"Might"}]},
+      {"type":"ChoiceSet","key":"speed","label":"Means Skill (Speed)","from":"list","options":[{"value":"acrobatics","label":"Acrobatics"},{"value":"driving","label":"Driving"},{"value":"finesse","label":"Finesse"},{"value":"infiltration","label":"Infiltration"},{"value":"initiative","label":"Initiative"},{"value":"targeting","label":"Targeting"}]},
+      {"type":"ChoiceSet","key":"smarts","label":"Means Skill (Smarts)","from":"list","options":[{"value":"alertness","label":"Alertness"},{"value":"culture","label":"Culture"},{"value":"science","label":"Science"},{"value":"survival","label":"Survival"},{"value":"technology","label":"Technology"}]},
+      {"type":"ChoiceSet","key":"social","label":"Means Skill (Social)","from":"list","options":[{"value":"animalHandling","label":"Animal Handling"},{"value":"deception","label":"Deception"},{"value":"performance","label":"Performance"},{"value":"persuasion","label":"Persuasion"},{"value":"streetwise","label":"Streetwise"}]},
+      {"type":"DialogSwitch","label":"Works toward the Syndicate's endgame (Means To An End: ↑1)","when":[{"any":["skill:{choice.strength}","skill:{choice.speed}","skill:{choice.smarts}","skill:{choice.social}"]}],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: set your Syndicate's four Means Skills, one per Essence. Roll Options Dialog: on those Skills, a switch for ↑1 when the test serves the Syndicate's goals.</p>"

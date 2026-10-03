@@ -5,6 +5,7 @@
   "_id": "mnze6jJ6eSYbS8Pr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:infiltration>=d4"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: when you gain this Perk, your equipped battledress gets the Silent and Stealth upgrades without changing its Availability.</p><p>Left to the table: battledress you put on later needs the upgrades added by hand.</p>"

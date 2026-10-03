@@ -5,6 +5,9 @@
   "_id": "Sq4EwIr6RIYmZ5K6",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Target Snagged on its next roll","when":["item:own"],"steps":[{"do":"bank","snag":true,"to":"target"}]}
+    ],
     "originalId": "",
     "actionType": "standard",
     "classification": {

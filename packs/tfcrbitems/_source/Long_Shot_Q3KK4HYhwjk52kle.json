@@ -5,6 +5,9 @@
   "_id": "Q3KK4HYhwjk52kle",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Long Shot: no long-range Snag","immune":["longRangeSnag"],"when":["attack","not:attack:melee"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your ranged attacks at long range don't take a Snag.</p>"

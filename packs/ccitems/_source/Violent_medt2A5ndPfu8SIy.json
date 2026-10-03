@@ -5,6 +5,9 @@
   "_id": "medt2A5ndPfu8SIy",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Violent (no damage)","when":["combat",{"any":["not:attack","not:item:data:system.damageValue>0"]}],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: during combat, ↓1 on any test that doesn't deal damage; it shows in the Roll Options Dialog.</p>"

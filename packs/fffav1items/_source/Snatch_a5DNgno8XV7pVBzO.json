@@ -5,6 +5,7 @@
   "_id": "a5DNgno8XV7pVBzO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:finesse>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Disarm is offered in the Maneuver prompt, with ↓1 against two-handed weapons.</p>"

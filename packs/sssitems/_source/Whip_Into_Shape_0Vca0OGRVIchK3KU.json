@@ -5,6 +5,9 @@
   "_id": "0Vca0OGRVIchK3KU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Use your Intimidation die instead (Whip Into Shape)","useSkill":"intimidation","when":[{"any":["essence:strength","essence:speed"]}],"limit":{"per":"encounter"},"forget":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: once per scene, on a Strength or Speed Skill test, a switch rolls your Intimidation die instead.</p>"

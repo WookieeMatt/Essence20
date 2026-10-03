@@ -3,7 +3,7 @@ import { getUses, markUsed } from "./scene-clock.mjs";
 /**
  * Finds the given actor's copy of a specific Perk, identified by its compendium Item id (the same
  * hardcoded-ID pattern perk-handler.mjs already uses for SORCERY_PERK_ID/ZORD_PERK_ID -
- * `item.flags.core?.sourceId == perkId || item._stats?.compendiumSource == perkId` - generalized
+ * `item.flags.core?.sourceId == perkId || item._stats?.compendiumSource == perkId || item?.flags?.essence20?.rulesSource == perkId` - generalized
  * here to scan across all of an actor's Perks instead of checking one specific dropped Item).
  * @param {Actor} actor
  * @param {String} perkId   A full compendium UUID, e.g.
@@ -13,7 +13,7 @@ import { getUses, markUsed } from "./scene-clock.mjs";
 export function findPerk(actor, perkId) {
   return actor?.items?.find(item =>
     item.type == 'perk'
-    && (item.flags?.core?.sourceId == perkId || item._stats?.compendiumSource == perkId),
+    && (item.flags?.core?.sourceId == perkId || item._stats?.compendiumSource == perkId || item?.flags?.essence20?.rulesSource == perkId),
   );
 }
 
@@ -42,7 +42,7 @@ export function actorHasPerk(actor, perkId) {
 export function findAllPerks(actor, perkId) {
   return actor?.items?.filter(item =>
     item.type == 'perk'
-    && (item.flags?.core?.sourceId == perkId || item._stats?.compendiumSource == perkId),
+    && (item.flags?.core?.sourceId == perkId || item._stats?.compendiumSource == perkId || item?.flags?.essence20?.rulesSource == perkId),
   ) ?? [];
 }
 
@@ -68,7 +68,7 @@ export function findHangUp(actor, hangUpId) {
     // actorHasHangUp) automatically honors it, without each individual check needing its own
     // awareness of Matured.
     && !item.getFlag?.('essence20', 'maturedIgnored')
-    && (item.flags?.core?.sourceId == hangUpId || item._stats?.compendiumSource == hangUpId),
+    && (item.flags?.core?.sourceId == hangUpId || item._stats?.compendiumSource == hangUpId || item?.flags?.essence20?.rulesSource == hangUpId),
   );
 }
 
@@ -93,7 +93,7 @@ export function actorHasHangUp(actor, hangUpId) {
 export function findAlteration(actor, alterationId) {
   return actor?.items?.find(item =>
     item.type == 'alteration'
-    && (item.flags?.core?.sourceId == alterationId || item._stats?.compendiumSource == alterationId),
+    && (item.flags?.core?.sourceId == alterationId || item._stats?.compendiumSource == alterationId || item?.flags?.essence20?.rulesSource == alterationId),
   );
 }
 

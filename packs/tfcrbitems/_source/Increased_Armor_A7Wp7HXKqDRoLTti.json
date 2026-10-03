@@ -5,6 +5,7 @@
   "_id": "A7Wp7HXKqDRoLTti",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:might>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while the armor is worn: +1 Toughness for each copy.</p>"

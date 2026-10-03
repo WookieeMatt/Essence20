@@ -5,6 +5,7 @@
   "_id": "OBjcj6ordJi60Cdd",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Smarts d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: on any turn you don't command the drone, it repeats its last Command on its own.</p>"

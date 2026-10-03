@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Can't Catch Me! (unaware)","defense":"evasion","amount":-1,"when":[{"any":["self:status:asleep","self:status:mesmerized","self:status:unconscious","self:status:defeated","target:status:invisible"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Evasion. Automatic: the bonus drops away against an Invisible attacker, or while you are asleep, Mesmerized or unconscious.</p>"

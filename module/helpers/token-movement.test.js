@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
+import { readFileSync } from 'fs';
 import {
-  BURN_RUBBER_ID,
   configureMovementActions,
   consumeForMovement,
   getMovementAllowance,
@@ -547,10 +547,14 @@ describe("every mode explains why a Push failed", () => {
 
 describe("getPushRules", () => {
   // The printed defaults: 5ft a Free action, capped at double the rating (GI Joe CRB p.194).
-  const withPerk = (id, extra = {}) => ({
+  // A character holding a pack item, carrying that item's own rules (MovementAction).
+  let ruledId = 1;
+  const ruled = file => ({ id: `ruled${ruledId++}`, type: 'perk', flags: {}, system: { rules: JSON.parse(readFileSync(`packs/${file}`, 'utf8')).system.rules } });
+  const withPerk = (file, extra = {}) => ({
     type: 'playerCharacter',
     system: { ...extra },
-    items: [{ type: 'perk', flags: { core: { sourceId: id } } }],
+    statuses: new Set(),
+    items: [ruled(file)],
   });
 
   test("an ordinary character pushes 5ft a Free action, capped at double", () => {
@@ -564,7 +568,7 @@ describe("getPushRules", () => {
 
   // Sewer Tunneler (Hawk's Personnel Files p.177) - 10ft a Free action, but still capped.
   test("Sewer Tunneler doubles the distance each Free action buys", () => {
-    expect(getPushRules(withPerk('Compendium.essence20.general_hawk_s_personel_files.Item.gCbl6p64cEJjF2eJ')))
+    expect(getPushRules(withPerk('ghpfitems/_source/Sewer_Tunneler_gCbl6p64cEJjF2eJ.json')))
       .toEqual({ feetPerFreeAction: 10, capMultiplier: 2, canPush: true });
   });
 
@@ -594,12 +598,12 @@ describe("getPushRules", () => {
 
   // Earlier is Better Than Later (TF CRB p.108) - both halves, but only in Alt Mode.
   test("Earlier is Better Than Later doubles the step AND lifts the cap, while transformed", () => {
-    expect(getPushRules(withPerk('Compendium.essence20.tf_crb.Item.uyeLgTc55ixz31j1', { isTransformed: true })))
+    expect(getPushRules(withPerk('tfcrbitems/_source/Earlier_is_Better_Than_Later_uyeLgTc55ixz31j1.json', { isTransformed: true })))
       .toEqual({ feetPerFreeAction: 10, capMultiplier: Infinity, canPush: true });
   });
 
   test("Earlier is Better Than Later does nothing in Bot Mode", () => {
-    expect(getPushRules(withPerk('Compendium.essence20.tf_crb.Item.uyeLgTc55ixz31j1', { isTransformed: false })))
+    expect(getPushRules(withPerk('tfcrbitems/_source/Earlier_is_Better_Than_Later_uyeLgTc55ixz31j1.json', { isTransformed: false })))
       .toEqual({ feetPerFreeAction: 5, capMultiplier: 2, canPush: true });
   });
 
@@ -642,7 +646,7 @@ describe("getPushRules", () => {
       type: 'playerCharacter',
       system: {},
       statuses: new Set(),
-      items: [{ type: 'perk', flags: { core: { sourceId: BURN_RUBBER_ID } } }],
+      items: [ruled('tfcrbitems/_source/Burn_Rubber_Kn1LyTMvqzMY8LnA.json')],
       ...extra,
     });
 

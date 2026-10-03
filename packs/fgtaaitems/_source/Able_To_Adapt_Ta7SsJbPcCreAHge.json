@@ -5,6 +5,9 @@
   "_id": "Ta7SsJbPcCreAHge",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"↑1 on your next Skill Test","cost":{"action":"free"},"limit":{"per":"turn","max":1},"steps":[{"do":"bank","label":"Able To Adapt","upshift":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per turn, Free action): bank ↑1 for your next Skill Test.</p>"

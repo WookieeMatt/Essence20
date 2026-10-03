@@ -5,6 +5,9 @@
   "_id": "sItc8nD7ockbQ1mn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Nu, Pogodi! (no untrained Snag, land or air)","when":["skill:driving","vehicle:driving",{"any":["vehicle:moves:aerial","vehicle:moves:ground"]}],"immune":["untrainedSnag"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Cold Resistance. Automatic: Qualified with Standard weapons, the Acclimating upgrade, and Land and Air vehicles. Use button: pick your two-handed Limited weapon, swap vehicle seats, or clear a Condition once per mission.</p>"

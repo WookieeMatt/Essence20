@@ -5,6 +5,10 @@
   "_id": "BEAZ1oLp9XeibJoh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SurpriseExemption","label":"Ready For Anything: act normally with Reckless Abandon","mode":"normal","when":["self:recklessAbandon"]},
+      {"type":"RollModifier","label":"Ready For Anything (Initiative: Edge)","when":["roll:initiative"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: you can roll Brawn or Might for Initiative. Automatic: your Initiative roll opens the Roll Options Dialog with Edge selected, and if your Reckless Abandon is on when you roll Initiative, you act normally in a surprise round.</p>"

@@ -3,9 +3,14 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"battlizer","label":"Battlizer","from":"list","options":[{"value":"Compendium.essence20.across_the_stars.Item.yWsLaZOGVlaCXh1Y","label":"Battle Warrior"},{"value":"Compendium.essence20.across_the_stars.Item.5Z9vkcfZYwmtA6R4","label":"Clawed Armor"},{"value":"Compendium.essence20.across_the_stars.Item.aCPFmjY80u9671Hl","label":"Power Wing"},{"value":"Compendium.essence20.across_the_stars.Item.uUFaA9XsLcvFiKky","label":"Falcon Armor"},{"value":"Compendium.essence20.across_the_stars.Item.xSdIoYCSbfbudtBx","label":"Savage Warrior"},{"value":"Compendium.essence20.across_the_stars.Item.Q3Yn4CzFxkuDiPnZ","label":"Trans-Armor Cycle"},{"value":"Compendium.essence20.across_the_stars.Item.qc82QDtZN3qVWqxV","label":"S.P.D. Battlizer"}]},
+      {"type":"Trigger","label":"Battlizer Access","event":"added","steps":[{"do":"grant","uuid":"{choice.battlizer}","when":["not:self:hasItem:{choice.battlizer}"]}]}
+    ],
+    "prerequisites": {"when":["self:level>=5","ask:GM approval"]},
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: when you take this Perk you pick one of Across the Stars' Battlizers. It lands on your sheet with its own Use button to summon it while Morphed.</p>"
+      "notes": "<p>Granted: right after you take this Perk you pick one of Across the Stars' Battlizers. It lands on your sheet with its own Use button to summon it while Morphed. Removing the Perk removes the Battlizer it gave.</p>"
     },
     "originalId": "",
     "description": "",

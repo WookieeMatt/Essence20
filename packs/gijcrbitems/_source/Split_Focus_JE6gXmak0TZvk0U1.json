@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a Perk from another of your Role's Focuses","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickPerk","from":"focus","notOwn":true,"ofOwnRole":true,"maxLevel":"floor(@level / 2)"},{"do":"setToggle","key":"granted","value":true}]}
+    ],
+    "prerequisites": {"when":["self:level>=4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a Perk from another Focus of your Role, up to half your level, and it's added to your sheet.</p>"

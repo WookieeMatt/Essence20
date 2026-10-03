@@ -5,6 +5,9 @@
   "_id": "PuMnUtkl1eZ0HmY7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Camouflage Hide","when":["skill:infiltration"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Infiltration Tests open the Roll Options Dialog with Edge already selected.</p>"

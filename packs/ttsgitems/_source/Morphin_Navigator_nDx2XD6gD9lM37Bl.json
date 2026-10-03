@@ -5,6 +5,9 @@
   "_id": "nDx2XD6gD9lM37Bl",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Navigating the Grid (Morphin Navigator: Edge)","when":["not:attack"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per mission, Standard action): a Grid Power Bloom that restores 1d2 Personal Power to each Party member. Roll Options Dialog: a switch for Edge on tests to navigate the Grid.</p>"

@@ -5,6 +5,9 @@
   "_id": "YZivdMV6wIhdrcKt",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Shining Light","when":["attack:ranged","self:type:zord"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ranged attacks against the Zord have a Snag, labelled Shining Light in the attacker's Roll Options Dialog.</p>"

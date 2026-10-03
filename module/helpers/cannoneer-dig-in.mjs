@@ -18,10 +18,8 @@
  * a no-op - Mounted has zero mechanical effect anywhere in this codebase (same confirmed finding
  * as Snipe From The Hip/Ordnance Expert).
  *
- * The Cover-penalty-additional-1 half is read directly in dice.mjs's own Cover shift-down check
- * (right alongside Maximize Cover/What Cover?); the Aim-bonus-becomes-2 half is read in
- * dice.mjs's own aimBonus computation, alongside Distance Vision's identical "2 instead of 1"
- * upgrade.
+ * The Cover-penalty-additional-1 half (a Cover rule, mode add) and the Aim-bonus-becomes-2 half
+ * (an AimBonus rule) are the Perk's own item rules, both reading this flag.
  */
 const CANNONEER_DIG_IN_FLAG = 'cannoneerDugIn';
 

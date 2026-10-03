@@ -3,14 +3,78 @@
     <p class="e20-rules-intro">{{localize "E20.Rules.Intro"}}</p>
     {{#if rulesInherited}}<p class="e20-rules-intro">{{localize "E20.Rules.Inherited"}}</p>{{/if}}
 
-    {{#if rules.length}}
+    {{#if actsAs}}
+      <div class="e20-acts-as" data-acts-as>
+        <div class="e20-rule-line">
+          <span class="e20-rule-type">{{localize "E20.Rules.ActsAs"}}</span>
+          <span class="e20-rule-summary">{{#if actsAs.name}}{{actsAs.name}}{{else}}{{localize "E20.Rules.ActsAsNone"}}{{/if}}</span>
+          {{#if (and @root.editable actsAs.uuid)}}
+            <a class="e20-rule-control" data-action="actsAsClear" data-tooltip="E20.Rules.ActsAsClear"><i class="fas fa-times"></i></a>
+          {{/if}}
+        </div>
+        {{#if @root.editable}}<p class="e20-rules-intro">{{localize "E20.Rules.ActsAsHint"}}</p>{{/if}}
+      </div>
+    {{/if}}
+
+    {{#if (or prerequisites.lines.length prerequisites.text editable)}}
+      <div class="e20-prerequisites">
+        <div class="e20-rule-line">
+          <span class="e20-rule-type">{{localize "E20.Rules.Prerequisites"}}</span>
+          <span class="e20-rule-summary">{{#if prerequisites.text}}{{prerequisites.text}}{{else}}{{#unless prerequisites.lines.length}}{{localize "E20.Rules.NoPrerequisites"}}{{/unless}}{{/if}}</span>
+          {{#if @root.editable}}
+            <a class="e20-rule-control" data-action="prerequisitesEdit" data-tooltip="E20.Rules.EditPrerequisites"><i class="fas fa-edit"></i></a>
+          {{/if}}
+        </div>
+        {{#if prerequisites.lines.length}}
+          <ul class="e20-prerequisite-lines">
+            {{#each prerequisites.lines}}
+              <li class="is-{{state}}">
+                {{#if (eq state "met")}}<i class="fas fa-check"></i>{{else if (eq state "unmet")}}<i class="fas fa-times"></i>{{else if (eq state "ask")}}<i class="fas fa-question"></i>{{else}}<i class="fas fa-circle-small"></i>{{/if}}
+                {{words}}
+              </li>
+            {{/each}}
+          </ul>
+        {{/if}}
+      </div>
+    {{/if}}
+
+    {{#if (or ruleEffects.length rules.length)}}
       <ol class="e20-rules-list">
+        {{#each ruleEffects as |entry|}}
+          <li class="e20-rule is-effect{{#if entry.effect.disabled}} is-disabled{{/if}}" data-effect-id="{{entry.effect.id}}">
+            <div class="e20-rule-line">
+              <span class="e20-rule-type">{{localize (concat "E20.Rules.EffectState." entry.state)}}</span>
+              <span class="e20-rule-summary">{{entry.effect.name}}</span>
+              {{#if @root.editable}}
+                <a class="e20-rule-control" data-action="toggleEffect" data-uuid="{{entry.effect.uuid}}"
+                  data-tooltip="{{#if entry.effect.disabled}}E20.ActiveEffectEnable{{else}}E20.ActiveEffectDisable{{/if}}">
+                  <i class="fas {{#if entry.effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+                </a>
+                <a class="e20-rule-control" data-action="editEffect" data-uuid="{{entry.effect.uuid}}" data-tooltip="E20.ActiveEffectEdit">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <a class="e20-rule-control" data-action="deleteEffect" data-key="{{entry.effect.id}}" data-tooltip="E20.ActiveEffectDelete">
+                  <i class="fas fa-trash"></i>
+                </a>
+              {{/if}}
+            </div>
+            {{#if entry.summaries.length}}
+              <ul class="e20-rule-details">
+                {{#each entry.summaries}}<li>{{this}}</li>{{/each}}
+              </ul>
+            {{/if}}
+          </li>
+        {{/each}}
+
         {{#each rules as |entry|}}
           <li class="e20-rule{{#if entry.errors.length}} has-errors{{/if}}{{#if entry.rule.disabled}} is-disabled{{/if}}">
             <div class="e20-rule-line">
-              <span class="e20-rule-type">{{entry.rule.type}}</span>
+              <span class="e20-rule-type">{{localize "E20.Rules.RuleTag"}}</span>
               <span class="e20-rule-summary">{{entry.summary}}</span>
               {{#if @root.editable}}
+                <a class="e20-rule-control" data-action="rulesEdit" data-index="{{entry.index}}" data-tooltip="E20.Rules.Edit">
+                  <i class="fas fa-edit"></i>
+                </a>
                 <a class="e20-rule-control" data-action="rulesDelete" data-index="{{entry.index}}" data-tooltip="E20.Rules.Delete">
                   <i class="fas fa-trash"></i>
                 </a>
@@ -59,20 +123,19 @@
 
     {{#if editable}}
       <div class="e20-rules-add">
-        <select data-rules-add-type>
-          {{#each ruleTypes}}<option value="{{this}}">{{this}}</option>{{/each}}
-        </select>
-        <button type="button" data-action="rulesAdd"><i class="fas fa-plus"></i> {{localize "E20.Rules.Add"}}</button>
+        <button type="button" data-action="rulesAdd"><i class="fas fa-plus"></i> {{localize "E20.Rules.AddButton"}}</button>
       </div>
 
-      <details class="e20-rules-json"{{#if rulesJsonOpen}} open{{/if}}>
-        <summary>{{localize "E20.Rules.Json"}}</summary>
-        <textarea data-rules-json rows="12" spellcheck="false">{{rulesJson}}</textarea>
-        <div class="e20-rules-json-actions">
-          <span class="e20-rules-json-error" data-rules-json-error></span>
-          <button type="button" data-action="rulesSaveJson"><i class="fas fa-save"></i> {{localize "E20.Rules.SaveJson"}}</button>
-        </div>
-      </details>
+      {{#if rules.length}}
+        <details class="e20-rules-json"{{#if rulesJsonOpen}} open{{/if}}>
+          <summary>{{localize "E20.Rules.JsonAdvanced"}}</summary>
+          <textarea data-rules-json rows="12" spellcheck="false">{{rulesJson}}</textarea>
+          <div class="e20-rules-json-actions">
+            <span class="e20-rules-json-error" data-rules-json-error></span>
+            <button type="button" data-action="rulesSaveJson"><i class="fas fa-save"></i> {{localize "E20.Rules.SaveJson"}}</button>
+          </div>
+        </details>
+      {{/if}}
     {{/if}}
   </div>
 </section>

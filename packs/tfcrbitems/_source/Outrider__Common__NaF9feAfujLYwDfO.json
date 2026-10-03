@@ -3,6 +3,10 @@
   "type": "altMode",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "rules": [
+      {"type":"Grant","label":"Ram (special attack)","uuid":"Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m","skipIfOwned":true},
+      {"type":"Use","label":"Get the Ram attack back","when":["not:self:hasItem:Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m"],"steps":[{"do":"grant","uuid":"Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: converting into this Alt Mode makes you Common-sized with 45ft Ground Movement; Limited Articulation blocks Athletics and Finesse tests while you're in it. Its Ram attack is added when you take the Alt Mode (Use button re-adds it). Crew and Firepoints show on the sheet.</p>"

@@ -1,5 +1,5 @@
 /**
- * Energon: the spend choke point, scene-start regain, an over-maximum bonus point, and the
+ * Energon: the spend choke point, an over-maximum bonus point, and the
  * alternate Energon strains (Decepticon Directive p.80-82).
  *
  * Every write to system.energon.normal.value passes the actor update hooks; a decrease is a
@@ -8,9 +8,6 @@
  * Fuel Efficient (Transformers CRB, General Perk, p.109): "When you spend an Energon Point, roll a
  * d4. On a 4, regain the spent Energon Point." - one d4 per point spent, on any spend. (dice.mjs's
  * own copy on the Converting cost is removed by the integration patch so it isn't rolled twice.)
- *
- * Spark of the Ancients (Enigma of Combination, p.41): "Your maximum Energon Pool is increased by
- * 2, and you regain a single Energon Point at the beginning of any scene." (+2 is the pack AE.)
  *
  * Repair Progress, 10 minutes or less (Cobra/Con Fusion, Table 1-1, p.10): "All PCs, including
  * G.I. Joes, gain 1 bonus Energon Point. This can exceed their normal Energon point maximum, but
@@ -21,12 +18,12 @@
  */
 import {
   registerApplyDialog, registerDerived, registerDialogToggles, registerRollSources,
-  registerRerollGrant, registerSceneAdvanced, registerUse,
+  registerRerollGrant, registerUse,
 } from "../../extensions.mjs";
 import { activateForWindow, isActiveForWindow } from "../../scene-clock.mjs";
 import { ENERGON_CAP_EXTRAS } from "./temp-resources.mjs";
 import {
-  IDS, T, onHook, changed, setChanged, findItem, has, isActiveGm, isItem, num, say, worldActors,
+  IDS, T, onHook, changed, setChanged, findItem, has, isItem, num, say,
 } from "./common.mjs";
 
 const ENERGON = 'system.energon.normal.value';
@@ -114,24 +111,6 @@ onHook('updateActor', (actor, changes, options, userId) => {
   const spent = options.essence20PrevEnergon - num(next);
   if (spent > 0) {
     onEnergonSpend(actor, options.essence20PrevEnergon, spent).catch(error => console.error('Essence20 | Energon spend', error));
-  }
-});
-
-/* -------------------------------------------- */
-/*  Spark of the Ancients                        */
-/* -------------------------------------------- */
-
-registerSceneAdvanced(async () => {
-  if (!isActiveGm()) {
-    return;
-  }
-
-  for (const actor of worldActors().filter(a => has(a, IDS.sparkOfTheAncients))) {
-    const energon = actor.system?.energon?.normal;
-    if (energon && num(energon.value) < num(energon.max)) {
-      await actor.update({ [ENERGON]: num(energon.value) + 1 }, { essence20Refund: true });
-      await say(actor, T('ResSparkOfTheAncients', { name: actor.name }));
-    }
   }
 });
 

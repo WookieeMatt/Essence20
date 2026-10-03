@@ -5,6 +5,11 @@
   "_id": "DyIbIDlzOJX5GiO2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"tier","label":"Mastery specialty: spell tier","from":"list","options":[{"value":"elementary","label":"Elementary"},{"value":"superior","label":"Superior"},{"value":"virtuoso","label":"Virtuoso"}]},
+      {"type":"ChoiceSet","key":"circle","label":"Mastery specialty: spell circle","from":"list","options":[{"value":"aid","label":"Aid"},{"value":"beam","label":"Beam"},{"value":"enchantment","label":"Enchantment"},{"value":"utility","label":"Utility"}]},
+      {"type":"RollModifier","label":"Mastery Power ({choice.tier} {choice.circle} spells: ↑1)","when":["item:type:spell","item:data:system.circle={choice.circle}","item:data:system.tier={choice.tier}"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a spell tier and circle. Casting a spell of that kind gets ↑1, listed as Mastery Power in the Roll Options Dialog.</p>"

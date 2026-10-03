@@ -5,6 +5,9 @@
   "_id": "JgJRqxXzTPBOlOBz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"wouldBeDefeated","label":"Renegade Commander: drop to 1 Health","when":["self:data:system.level>=5"],"limit":{"per":"scene"},"steps":[{"do":"leaveAt","value":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend a Reckless Abandon use to give an ally in Light or no armor its benefits for the scene (yourself too from 9th level). Automatic: from 5th level, once per scene, you drop to 1 Health instead of being Defeated.</p>"

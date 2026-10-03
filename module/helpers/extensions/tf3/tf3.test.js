@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 import { TF3 } from './common.mjs';
 import {
-  BREAKDOWN_FLAG, consumeBreakdown, HOLO_FLAG, MARTYR_FLAG, stoicDefense, tf3ApplyDialog, tf3Derived, tf3RollSources, tf3Toggles, UNEXPECTED_FLAG,
+  BREAKDOWN_FLAG, consumeBreakdown, HOLO_FLAG, MARTYR_FLAG, stoicDefense, tf3Derived, tf3RollSources, tf3Toggles, UNEXPECTED_FLAG,
 } from './rolls.mjs';
 import { useHoloDoubles, useRightOfAll, useStoic } from './uses.mjs';
 import {
@@ -73,13 +73,6 @@ describe('roll sources', () => {
     expect(tf3RollSources(attacker, holder, { isAttack: true }).sources).toEqual([]);
   });
 
-  test('Siren ↑2 Intimidation in Bot Mode only', () => {
-    const bot = actor([item(TF3.siren, { type: 'gear' })], { system: { canTransform: true, isTransformed: false } });
-    expect(tf3RollSources(bot, null, { rolledSkill: 'intimidation' }).sources[0].shiftUp).toBe(2);
-    bot.system.isTransformed = true;
-    expect(tf3RollSources(bot, null, { rolledSkill: 'intimidation' }).sources).toEqual([]);
-  });
-
   test('Martyr gives allies Edge for the rest of the combat', () => {
     const martyr = actor([item(TF3.martyr)], { id: 'm', flags: { [MARTYR_FLAG]: 'c1' } });
     const ally = actor([], { id: 'b' });
@@ -118,24 +111,6 @@ describe('roll sources', () => {
 });
 
 describe('dialog toggles', () => {
-  test('Nose for Trouble rolls Streetwise for a search, and Edge on traps', async () => {
-    const holder = actor([item(TF3.noseForTrouble)], { system: { skills: { alertness: { shift: 'd4' }, streetwise: { shift: 'd8' } } } });
-    const names = tf3Toggles(holder, { rolledSkill: 'alertness' }).map(t => t.name);
-    expect(names).toEqual(expect.arrayContaining(['tf3NoseSearch', 'tf3NoseTrap']));
-    const options = { shiftUp: 0, shiftDown: 0, ext: { tf3NoseSearch: true, tf3NoseTrap: true } };
-    await tf3ApplyDialog(holder, options);
-    expect(options).toMatchObject({ shiftUp: 2, shiftDown: 0, edge: true });
-  });
-
-  test('Hindsight, Mimicry Vocoder and Subordinate', async () => {
-    const holder = actor([item(TF3.hindsight), item(TF3.mimicryVocoder), item(TF3.subordinate, { type: 'hangUp' })]);
-    expect(tf3Toggles(holder, { rolledSkill: 'alertness' }).map(t => t.name)).toEqual(expect.arrayContaining(['tf3Hindsight', 'tf3Subordinate']));
-    expect(tf3Toggles(holder, { rolledSkill: 'deception' }).map(t => t.name)).toContain('tf3Mimicry');
-    const options = { shiftUp: 0, shiftDown: 0, snag: true, ext: { tf3Hindsight: true, tf3Subordinate: true } };
-    await tf3ApplyDialog(holder, options);
-    expect(options).toMatchObject({ snag: false, shiftDown: 1 });
-  });
-
   test("Ladder: an ally's extended ladder gives ↑2 on Athletics", async () => {
     const truck = actor([item(TF3.ladder, { type: 'gear' })], { id: 't', system: { isTransformed: true, size: 'large' }, flags: { tf3LadderOut: { scene: 1 } } });
     const climber = actor([], { id: 'c', system: { size: 'common' } });

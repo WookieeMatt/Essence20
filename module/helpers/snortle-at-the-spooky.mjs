@@ -29,7 +29,7 @@ const PLAY_TO_THE_CROWD_PERK_ID = "Compendium.essence20.mlp_crb.Item.2LZ9H8bmrME
 function actorHasPlayToTheCrowd(actor) {
   return actor.items.some(item =>
     item.type == "perk"
-    && (item.flags.core?.sourceId == PLAY_TO_THE_CROWD_PERK_ID || item._stats?.compendiumSource == PLAY_TO_THE_CROWD_PERK_ID));
+    && (item.flags.core?.sourceId == PLAY_TO_THE_CROWD_PERK_ID || item._stats?.compendiumSource == PLAY_TO_THE_CROWD_PERK_ID || item?.flags?.essence20?.rulesSource == PLAY_TO_THE_CROWD_PERK_ID));
 }
 
 // Every currently-Foundry-targeted token whose actor actually has something Snortle at the

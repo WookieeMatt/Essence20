@@ -5,6 +5,7 @@
   "_id": "K2mYSJgYuViWFMAb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:culture>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: on Culture and Streetwise tests, a reroll button for any one die (you keep the new result). Use it when you're recalling a people, place or item. The languages are for your notes.</p>"

@@ -16,6 +16,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 import { validateRule } from "../module/rules/types.mjs";
+import { unknownTags } from "../module/rules/predicate.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const PACKS = join(ROOT, "packs");
@@ -25,6 +26,7 @@ const errors = [];
 const warnings = [];
 let itemsWithRules = 0;
 let rulesScanned = 0;
+let prerequisitesScanned = 0;
 
 /** An item document and every item embedded in an actor document. */
 function itemsOf(doc) {
@@ -54,6 +56,20 @@ for (const pack of readdirSync(PACKS, { withFileTypes: true })) {
     }
 
     for (const item of itemsOf(doc)) {
+      // Prerequisites (docs/PREREQUISITES_PLAN.md): the same tag language as rule conditions.
+      const prerequisites = item?.system?.prerequisites;
+      if (prerequisites?.when !== undefined) {
+        prerequisitesScanned++;
+        const place = `${pack.name}/${file}${item !== doc ? ` > ${item.name}` : ""}`;
+        if (!Array.isArray(prerequisites.when)) {
+          errors.push(`${place}: system.prerequisites.when must be a list`);
+        } else {
+          for (const tag of unknownTags(prerequisites.when)) {
+            errors.push(`${place} prerequisites: unknown tag "${tag}"`);
+          }
+        }
+      }
+
       const rules = item?.system?.rules;
       if (rules === undefined) {
         continue;
@@ -88,7 +104,7 @@ for (const error of errors) {
   console.error(`error: ${error}`);
 }
 
-console.log(`Checked ${rulesScanned} rule(s) on ${itemsWithRules} item(s): ${errors.length} error(s), ${warnings.length} warning(s).`);
+console.log(`Checked ${rulesScanned} rule(s) on ${itemsWithRules} item(s) and ${prerequisitesScanned} prerequisite list(s): ${errors.length} error(s), ${warnings.length} warning(s).`);
 if (VERBOSE && !rulesScanned) {
   console.log("No pack item carries system.rules yet.");
 }

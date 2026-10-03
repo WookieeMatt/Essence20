@@ -1,9 +1,10 @@
 import { jest } from '@jest/globals';
+import { existsSync, readdirSync, readFileSync } from 'fs';
 import {
   activateLendAssistance, canAssistWithSkill, getAssistEdge, getAssistShiftUp, LEND_ASSISTANCE_EDGE_FLAG,
   LEND_ASSISTANCE_RANGE_FEET, LEND_ASSISTANCE_SHIFT_FLAG, lendAssistanceSkill, pickArmchairGeneralWeapon,
 } from './lend-assistance.mjs';
-import { extCostRules, findExtUse } from './extensions.mjs';
+import { findExtUse } from './extensions.mjs';
 
 /**
  * An actor with a token on the canvas, since both the ally scan and the range check measure from
@@ -63,7 +64,8 @@ function setWorld({ tokens = [], combatId = 'c1' } = {}) {
       localize: jest.fn(k => k),
       format: jest.fn(k => k),
     },
-    combat: { id: combatId, round: 1 },
+    // Started, as the rules' `combat` tag asks (Armchair General's ↑1, Teacher's Edge).
+    combat: { id: combatId, round: 1, started: true },
     // A getter, so a test may call setTarget before or after this without the order mattering.
     get user() {
       return { targets };
@@ -307,8 +309,23 @@ describe('the skill half', () => {
 
 /* Perks that change the action - see the ids' own comments in lend-assistance.mjs. Ported from the
    2026-09-15 suite onto this file's fixtures. */
-const perk = id => ({ type: 'perk', flags: { core: { sourceId: id } } });
-const hangUp = id => ({ type: 'hangUp', flags: { core: { sourceId: id } } });
+// Each item carries its pack rules, like a real copy (Hang-Ups and Perks moved onto Assist rules).
+function packRules(id) {
+  const key = id.split('.').pop();
+  for (const dir of readdirSync('packs')) {
+    const src = `packs/${dir}/_source`;
+    const file = existsSync(src) ? readdirSync(src).find(name => name.endsWith(`_${key}.json`)) : null;
+    if (file) {
+      return JSON.parse(readFileSync(`${src}/${file}`, 'utf8')).system.rules ?? [];
+    }
+  }
+
+  return [];
+}
+
+let nextItem = 1;
+const perk = id => ({ id: `p${nextItem++}`, type: 'perk', flags: { core: { sourceId: id } }, system: { rules: packRules(id) } });
+const hangUp = id => ({ id: `h${nextItem++}`, type: 'hangUp', flags: { core: { sourceId: id } }, system: { rules: packRules(id) } });
 const withItems = (made, ...items) => {
   made.actor.items = items;
   return made;
@@ -410,21 +427,6 @@ describe('canAssistWithSkill', () => {
     expect(canAssistWithSkill(actor, ally, 'technology')).toBe(false);
   });
 
-  test("Technological Assistance registers an asked Free-action discount on Lend Assistance, for its holder only", () => {
-    const TECHNOLOGICAL_ASSISTANCE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7b01zSdekhUugIod";
-    const rule = extCostRules().find(r => r.id == 'technologicalAssistance');
-    const { actor } = withItems(makeActor({ shift: 'd20' }), perk(TECHNOLOGICAL_ASSISTANCE_ID));
-    const { actor: noPerk } = makeActor({ shift: 'd20' });
-
-    expect(rule).toBeDefined();
-    expect(rule.has(actor)).toBe(true);
-    expect(rule.has(noPerk)).toBe(false);
-    expect(rule.matches({ key: 'lendAssistance' })).toBe(true);
-    expect(rule.matches({ key: 'hide' })).toBe(false);
-    expect(rule.to('standard')).toBe('free');
-    expect(rule.ask).toBe('E20.ActionPerkAskTechnologicalAssistance');
-  });
-
   test("Ship's Crew lifts the rank gate only while aboard a vehicle", () => {
     const made = withItems(makeActor({ shift: 'd20' }), perk(SHIPS_CREW_ID));
     made.actor.uuid = 'Actor.me';
@@ -462,7 +464,7 @@ describe('getAssistShiftUp', () => {
     game.combat = null;
     expect(getAssistShiftUp(actor, ally(), 'might')).toBe(1); // no bonus outside combat
 
-    game.combat = { id: 'c1', round: 1 };
+    game.combat = { id: 'c1', round: 1, started: true };
     const stacked = withItems(makeActor({ shift: 'd6' }), perk(PUTTING_OTHERS_ID), perk(ARMCHAIR_GENERAL_ID)).actor;
     expect(getAssistShiftUp(stacked, ally(), 'might')).toBe(3); // 2 Putting Others + 1 Armchair General
   });
@@ -557,6 +559,41 @@ describe('lendAssistanceSkill', () => {
     dialogResult = { allyId: 'al', mode: 'skill', skill: 'might' };
 
     expect(await lendAssistanceSkill(me.actor, { radiusFeet: 15 })).toBe(true);
+  });
+
+  // Round 14: Team Player's Trigger answers the Lend Assistance action only - Help Yourself's clone (or a
+  // pet) assisting through this path never paid out, and still doesn't.
+  test("Team Player's Story Point comes from the action, not from the skill half on its own", async () => {
+    const { setStoryPointHelpers } = await import('../rules/steps.mjs');
+    const granted = [];
+    setStoryPointHelpers({ requestStoryPointGrant: async (a, n) => granted.push(n), poolFor: () => null, canSpendForActor: () => true });
+    try {
+      const TEAM_PLAYER_WTNV_ID = "Compendium.essence20.wtnv_citizens_guide.Item.57KqLyhUgAHpCskm";
+      const me = withItems(makeActor({ id: 'me', shift: 'd10' }), perk(TEAM_PLAYER_WTNV_ID));
+      const ally = makeActor({ id: 'al', x: 10, shift: 'd6' });
+      setWorld({ tokens: [me.token, ally.token] });
+      dialogResult = { allyId: 'al', mode: 'skill', skill: 'might' };
+
+      expect(await lendAssistanceSkill(me.actor, { radiusFeet: 15 })).toBe(true);
+      expect(granted).toEqual([]);
+
+      expect((await activateLendAssistance(me.actor)).cancelled).toBeUndefined();
+      expect(granted).toEqual([1]);
+    } finally {
+      setStoryPointHelpers(null);
+    }
+  });
+
+  test('Treacherous (an Assist refuse rule) also refuses the Lend Assistance action itself', async () => {
+    const me = withItems(makeActor({ id: 'me', shift: 'd10' }), hangUp(TREACHEROUS_HANGUP_ID));
+    const ally = makeActor({ id: 'al', x: 10, shift: 'd6' });
+    setWorld({ tokens: [me.token, ally.token] });
+    dialogResult = { allyId: 'al', mode: 'skill', skill: 'might' };
+
+    expect(await activateLendAssistance(me.actor)).toEqual({ cancelled: true });
+    expect(ui.notifications.warn).toHaveBeenCalledWith('E20.LendAssistanceTreacherous');
+    expect(ally.actor.setFlag).not.toHaveBeenCalled();
+    expect(canAssistWithSkill(me.actor, ally.actor, 'might')).toBe(false);
   });
 });
 

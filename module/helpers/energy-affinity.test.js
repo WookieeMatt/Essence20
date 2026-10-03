@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { activateEnergyAffinity, ENERGY_AFFINITY_ID, getEnergyAffinityAlteredStyle, onEnergyAffinityUse } from './energy-affinity.mjs';
+import { activateEnergyAffinity, ENERGY_AFFINITY_ID, getEnergyAffinityAlteredStyle, isEnergyAffinityElementAttack, onEnergyAffinityUse } from './energy-affinity.mjs';
 
 function setGame({ sceneEpoch = 1 } = {}) {
   global.game = {
@@ -88,5 +88,20 @@ describe("Energy Affinity (Decepticon Directive, Elementalist Focus, p.53-54) - 
     foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
     await onEnergyAffinityUse(actor);
     expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+});
+
+describe('isEnergyAffinityElementAttack', () => {
+  test('an attack of the chosen Element, or of the altered style; nothing without the Perk', () => {
+    setGame();
+    const actor = makeActor({ choice: 'fire' });
+    const fire = { type: 'weaponEffect', system: { damageType: 'fire', classification: { style: 'ranged' } } };
+    const blunt = { type: 'weaponEffect', system: { damageType: 'blunt', classification: { style: 'melee' } } };
+    expect(isEnergyAffinityElementAttack(actor, fire)).toBe(true);
+    expect(isEnergyAffinityElementAttack(actor, blunt)).toBe(false);
+    actor.getFlag = () => ({ epoch: 1, style: 'melee' });
+    expect(isEnergyAffinityElementAttack(actor, blunt)).toBe(true);
+    expect(isEnergyAffinityElementAttack({ ...actor, items: [] }, fire)).toBe(false);
+    expect(isEnergyAffinityElementAttack(actor, { type: 'perk' })).toBe(false);
   });
 });

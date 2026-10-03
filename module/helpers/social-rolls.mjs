@@ -20,7 +20,7 @@ import { ownerOf } from "./companion-link.mjs";
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function has(actor, id) {
@@ -58,17 +58,6 @@ export function socialRollSources(actor, target, ctx = {}) {
   if (isAttack && target && rightHandsShieldSnag(target)) {
     add({ id: 'rightHandsShield', label: T('E20.RightHands.shield'), shiftUp: 0, shiftDown: 0, edge: false, snag: true });
     consumes.push({ actorUuid: target.uuid, rightHandsShield: true });
-  }
-
-  // Agreeable (MLP Animal Perk): "Any Animal Handling Skill Test (by anyone) gains ↑1." - on this pet.
-  if (rolledSkill == 'animalHandling' && target && has(target, COMP.agreeableMlp)) {
-    add({ id: 'agreeable', label: T('E20.Agreeable'), shiftUp: 1, shiftDown: 0, edge: false, snag: false });
-  }
-
-  // Bowl-Over (MLP Animal Perk): "They can use a Free action to gain Edge when attempting to shove
-  // another creature that round."
-  if (isShove && has(actor, COMP.bowlOverMlp)) {
-    add({ id: 'bowlOver', label: T('E20.BowlOver'), shiftUp: 0, shiftDown: 0, edge: true, snag: false });
   }
 
   // Let's Bring 'Em Together!'s combined attack: "an additional ↑2 to hit".

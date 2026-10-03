@@ -196,9 +196,9 @@ describe("poisons", () => {
 describe("Use buttons", () => {
   test("which items get one", () => {
     const actor = makeActor();
-    const quake = perk(RIDER.powerQuake);
+    const quake = perk(RIDER.gremlinsMischief);
     quake.parent = actor;
-    expect(riderUseFor(quake)).toBe('powerQuake');
+    expect(riderUseFor(quake)).toBe('gremlinsMischief');
     expect(isRiderUse({ type: 'weapon', system: { isPoison: true, poisonApplication: { contact: true } }, flags: {} })).toBe(true);
     expect(canUseRider(quake)).toBe(true);
     expect(isRiderUse({ flags: {} })).toBe(false);
@@ -237,20 +237,20 @@ describe("marks, stances and Conditions", () => {
 
 describe("before the roll", () => {
   test("a target's stance, marks and tags", () => {
-    const attacker = makeActor([perk(RIDER.gridChampion), perk(RIDER.botHunter)], { id: 'att' });
-    const target = makeActor([perk(RIDER.fragIt)], { id: 'tgt', name: 'Putty', system: { creatureTags: 'putty, robot' } });
+    const attacker = makeActor([], { id: 'att' });
+    const target = makeActor([], { id: 'tgt', name: 'Putty', system: { creatureTags: 'putty, robot' } });
     target.flags.essence20.riderStance = { allOutAttack: 2, evasiveFighting: 1 };
     const { sources } = rollRiderSources(attacker, target, { item: { type: 'weaponEffect', system: { radius: 10 } }, isAttack: true });
     const ids = sources.map(s => s.id);
-    expect(ids).toEqual(expect.arrayContaining(['rider-fragIt', 'rider-allOutAttack', 'rider-evasiveFighting', 'rider-gridChampion', 'rider-botHunter']));
+    expect(ids).toEqual(expect.arrayContaining(['rider-allOutAttack', 'rider-evasiveFighting']));
   });
 
-  test("Defense changes: Energic Shields and Bot-Hunter", () => {
+  test("Defense changes: Energic Shields", () => {
     const shields = perk(RIDER.energicShields);
     shields.flags.essence20.riderChoice = 'fire';
-    const target = makeActor([shields, perk(RIDER.botHunter)], { system: { isMorphed: true } });
+    const target = makeActor([shields], { system: { isMorphed: true } });
     const robot = makeActor([], { system: { creatureTags: 'robot' } });
-    expect(riderDefenseAdjust(robot, target, 'toughness', { item: { system: { damageType: 'fire' } }, isAttack: true })).toBe(4);
+    expect(riderDefenseAdjust(robot, target, 'toughness', { item: { system: { damageType: 'fire' } }, isAttack: true })).toBe(3);
   });
 
   test("Armor Upgrade bonuses on worn armor", () => {

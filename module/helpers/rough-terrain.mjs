@@ -1,11 +1,11 @@
 import { ignoresMissEffects } from "./extensions/gij3/dice-hooks.mjs";
-import { hasVehicleUpgrade, VU } from "./vehicle-upgrades.mjs";
 import {
   ENVIRONMENT_EFFECT_PREFIX, ENVIRONMENT_REGION_BEHAVIOR_TYPE, getSceneEnvironment, getTerrain, isInRoughTerrain,
   ROUGH_TERRAIN_EFFECT,
 } from "./environment.mjs";
 import { hasActiveEnvironmentalExpertise } from "./environmental-expertise.mjs";
 import { actorHasPerk } from "./perks.mjs";
+import { ruleMovement } from "../rules/adapter.mjs";
 
 /**
  * Rough Terrain (GI Joe CRB p.219; TF CRB, PR CRB and MLP CRB say the same): "Moving through rough
@@ -54,30 +54,17 @@ const NON_GROUND_MOVEMENT_ACTIONS = ['fly', 'swim', 'burrow'];
 
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 const TF_CRB = "Compendium.essence20.tf_crb.Item.";
-const ENIGMA_OF_COMBINATION = "Compendium.essence20.enigma_of_combination.Item.";
 
 // Take Point (TF CRB, Outrider Origin Benefit, p.52): "You never suffer the negative effects of
 // Rough Terrain, and on any turn in which you end your move in Rough Terrain, you are considered to
 // be in Cover until the beginning of your next turn." The Cover half is hasTakePointCover below.
 export const TAKE_POINT_ID = `${TF_CRB}efPOy3Owf2XIAykS`;
-// Over the Candlestick (Technorganic Secrets, Climber/Nimble Origin Benefit, p.38): "...are
-// unimpeded by rough terrain."
-const OVER_THE_CANDLESTICK_ID = "Compendium.essence20.technorganic_secrets.Item.zKngKkwDyNv2nnH5";
-// Sewer Tunneler (Hawk's Personnel Files p.177): "In an urban environment, you ignore Rough
-// Terrain." - the scene's terrain (helpers/environment.mjs#getTerrain) says whether it's urban.
-const SEWER_TUNNELER_ID = "Compendium.essence20.general_hawk_s_personel_files.Item.gCbl6p64cEJjF2eJ";
-// Urban Jungle (Cobra Codex, Vanguard Citystriker Focus, 3rd level, p.68): "when in urban
-// environments... You ignore the penalties for moving through Rough Terrain."
-const URBAN_JUNGLE_ID = "Compendium.essence20.cobra_codex.Item.wIesQd7U5W2azAWY";
+// Over the Candlestick, Sewer Tunneler, Urban Jungle, Hard Tread Wheels and Clawed Feet ignore Rough
+// Terrain through MovementAction item rules on their packs (first entry below).
 // Feet Wet (Quartermaster's Guide to Gear p.25): "while on board an aquatic vessel or in a sea
 // environment... You ignore the penalties for moving through Rough Terrain." Only the "sea
 // environment" half is checkable (the scene's terrain); being aboard a vessel isn't tracked.
 const FEET_WET_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7u3xCPPjxJlI7c61";
-// Hard Tread Wheels (Enigma of Combination, Combiner Feature, p.56): "Alt Mode: You ignore Rough
-// Terrain..." and Clawed Feet (same page): "Alt Mode: You ignore Rough Terrain." Both are `gear`
-// items, so they're matched by source id without actorHasPerk's perk-only type filter.
-const HARD_TREAD_WHEELS_ID = `${ENIGMA_OF_COMBINATION}ia0rEwWo5WP1zH58`;
-const CLAWED_FEET_ID = `${ENIGMA_OF_COMBINATION}uDCcdAjDkKdDdlAm`;
 // Environmental Expertise (GI Joe CRB, Ranger base, p.90): "You ignore the penalties for moving
 // through Rough Terrain in your environment of expertise." Read through
 // hasActiveEnvironmentalExpertise, so it follows the scene's terrain when one is set.
@@ -101,11 +88,10 @@ const ROUGH_TERRAIN_IGNORING_VEHICLE_TRAITS = ['allTerrain', 'heavyWheels', 'Six
  */
 function _hasItemFrom(actor, sourceId) {
   return !!actor?.items?.some?.(item =>
-    item.flags?.core?.sourceId == sourceId || item._stats?.compendiumSource == sourceId);
+    item.flags?.core?.sourceId == sourceId || item._stats?.compendiumSource == sourceId || item?.flags?.essence20?.rulesSource == sourceId);
 }
 
 const isAltMode = actor => actor.system?.isTransformed === true;
-const isUrban = actor => getTerrain(actor) == 'urban';
 
 // Every "ignore Rough Terrain" grant this file knows how to check, each `{id, isActive?, anyItem?}`
 // or `{checkFn}` - the same table shape helpers/condition-immunity.mjs uses. Deliberately NOT here:
@@ -116,20 +102,14 @@ const isUrban = actor => getTerrain(actor) == 'urban';
 export const ROUGH_TERRAIN_IMPOSERS = [];
 
 export const ROUGH_TERRAIN_IGNORERS = [
+  // MovementAction item rules with ignoreRoughTerrain (rules/adapter.mjs#ruleMovement).
+  { checkFn: actor => ruleMovement(actor).ignoreRoughTerrain },
   // Wrecking Ball (GI Joe CRB, Juggernaut, 17th level, p.112): "You ignore Rough Terrain" for the
   // Sprint it was bought for - helpers/target-riders.mjs.
   { checkFn: actor => isWreckingBallFlagActive(actor) },
-  // All-Terrain Steel-Reinforced Wheels (Quartermaster's Guide p.57): "The vehicle ignores Rough
-  // Terrain."
-  { id: 'allTerrainWheels', checkFn: actor => hasVehicleUpgrade(actor, VU.allTerrainWheels) },
   { id: ENVIRONMENTAL_EXPERTISE_ID, checkFn: hasActiveEnvironmentalExpertise },
   { id: TAKE_POINT_ID },
-  { id: OVER_THE_CANDLESTICK_ID },
-  { id: SEWER_TUNNELER_ID, isActive: isUrban },
-  { id: URBAN_JUNGLE_ID, isActive: isUrban },
   { id: FEET_WET_ID, isActive: actor => getTerrain(actor) == 'sea' },
-  { id: HARD_TREAD_WHEELS_ID, anyItem: true, isActive: isAltMode },
-  { id: CLAWED_FEET_ID, anyItem: true, isActive: isAltMode },
   {
     checkFn: actor => actor.type == 'vehicle'
       && ROUGH_TERRAIN_IGNORING_VEHICLE_TRAITS.some(trait => actor.system?.traits?.[trait]),
@@ -444,7 +424,7 @@ export async function applyWreckerOnAutoFail(actor, item, targets) {
  * @returns {Boolean}
  */
 export function isPiledriver(item) {
-  return item?.flags?.core?.sourceId == PILEDRIVER_ID || item?._stats?.compendiumSource == PILEDRIVER_ID;
+  return item?.flags?.core?.sourceId == PILEDRIVER_ID || item?._stats?.compendiumSource == PILEDRIVER_ID || item?.flags?.essence20?.rulesSource == PILEDRIVER_ID;
 }
 
 /**

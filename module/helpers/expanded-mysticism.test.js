@@ -3,7 +3,7 @@ import {
   activateExpandedMysticism, activateExpandedMysticismFortify, activateExpandedMysticismHeal,
   activateExpandedMysticismQuicken, canUseExpandedMysticism, canUseExpandedMysticismFortify,
   canUseExpandedMysticismHeal, canUseExpandedMysticismQuicken, deactivateExpandedMysticismQuickenAtTurnEnd,
-  getExpandedMysticismFortifyBonus, isExpandedMysticismQuickenActive,
+  getExpandedMysticismFortifyBonus,
 } from './expanded-mysticism.mjs';
 
 global.game = { i18n: { localize: (k) => k }, scenes: { current: { id: 'scene1' } } };
@@ -160,7 +160,7 @@ describe("canUseExpandedMysticismQuicken", () => {
   });
 });
 
-describe("activateExpandedMysticismQuicken / isExpandedMysticismQuickenActive", () => {
+describe("activateExpandedMysticismQuicken", () => {
   beforeEach(() => foundry.applications.api.DialogV2.wait.mockReset());
 
   test("spends 1 point and activates the chosen Movement type", async () => {
@@ -170,8 +170,7 @@ describe("activateExpandedMysticismQuicken / isExpandedMysticismQuickenActive", 
     await activateExpandedMysticismQuicken(actor);
 
     expect(actor._getBaseRolePoints().update).toHaveBeenCalledWith({ 'system.resource.value': 1 });
-    expect(isExpandedMysticismQuickenActive(actor, 'aerial')).toBe(true);
-    expect(isExpandedMysticismQuickenActive(actor, 'ground')).toBe(false);
+    expect(actor.getFlag('essence20', 'expandedMysticismQuickenType')).toBe('aerial');
   });
 
   test("does nothing when the picker is cancelled", async () => {
@@ -191,7 +190,7 @@ describe("deactivateExpandedMysticismQuickenAtTurnEnd", () => {
 
     await deactivateExpandedMysticismQuickenAtTurnEnd(actor);
 
-    expect(isExpandedMysticismQuickenActive(actor, 'ground')).toBe(false);
+    expect(actor.getFlag('essence20', 'expandedMysticismQuickenType')).toBeNull();
   });
 
   test("no-ops without an active Quicken flag", async () => {
@@ -246,6 +245,6 @@ describe("activateExpandedMysticism", () => {
 
     await activateExpandedMysticism(actor);
 
-    expect(isExpandedMysticismQuickenActive(actor, 'ground')).toBe(true);
+    expect(actor.getFlag('essence20', 'expandedMysticismQuickenType')).toBe('ground');
   });
 });

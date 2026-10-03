@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:skill:deception>=d6","self:skill:persuasion>=d6"]}]},
     "automation": {
       "status": "manual",
       "notes": "<p>The table handles this: roll Deception or Persuasion instead of Alertness to spot lies or hidden motives, and the GM gives you a detail or answers a question on a success.</p>"

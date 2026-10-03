@@ -8,7 +8,7 @@ import {
   ruleDialogSwitches, ruleRerollGrants, ruleRollSources, ruleSpecializes,
 } from './adapter.mjs';
 import { choiceOptions, grantData, grantedBy, initialState } from './lifecycle.mjs';
-import { parseRulesJson, rulesContext } from './sheet.mjs';
+import { ADD_CHOICES, SKELETONS, effectEntries, parseRulesJson, rulesContext } from './sheet.mjs';
 import { registrySnapshot } from '../helpers/extensions.mjs';
 
 /* -------------------------------------------- */
@@ -574,6 +574,31 @@ describe('lifecycle', () => {
 });
 
 describe('sheet', () => {
+  test('Add offers an Active Effect first, then every rule type, each with a valid starting rule', () => {
+    expect(ADD_CHOICES[0].key).toBe('effect');
+    const ruleKinds = ADD_CHOICES.slice(1).map(choice => choice.key);
+    expect(ruleKinds.sort()).toEqual(Object.keys(SKELETONS).sort());
+    for (const kind of ruleKinds.filter(k => !['Grant', 'Code'].includes(k))) {
+      expect(validateRule(SKELETONS[kind])).toEqual([]);
+    }
+
+    // A Defense or number change starts with a condition - with none it belongs in an Active Effect.
+    expect(SKELETONS.Defense.when).toBeTruthy();
+    expect(SKELETONS.DerivedStat.when).toBeTruthy();
+  });
+
+  test('Active Effects become entries tagged on, off or temporary', () => {
+    const entries = effectEntries([
+      { id: 'e1', disabled: false, isTemporary: false, e20Summaries: ['Toughness +2'] },
+      { id: 'e2', disabled: true },
+      { id: 'e3', disabled: false, isTemporary: true },
+    ]);
+    expect(entries.map(e => e.state)).toEqual(['on', 'off', 'temporary']);
+    expect(entries[0].summaries).toEqual(['Toughness +2']);
+    expect(entries[1].summaries).toEqual([]);
+    expect(effectEntries(null)).toEqual([]);
+  });
+
   test('JSON parsing', () => {
     expect(parseRulesJson('[{"type":"RollModifier"}]')).toEqual({ rules: [{ type: 'RollModifier' }] });
     expect(parseRulesJson('')).toEqual({ rules: [] });

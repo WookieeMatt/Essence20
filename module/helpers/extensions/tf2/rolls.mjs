@@ -1,8 +1,6 @@
 /**
- * The tf2 slice's roll hooks: ↑/↓/Edge/Snag sources, Roll Options Dialog switches and on-hit damage.
+ * The tf2 slice's roll hooks: ↑/↓/Edge/Snag sources and Roll Options Dialog switches.
  *
- * - Acute Sense (TF CRB, General Perk, p.107): "↑1 on a non-Alertness Skill Test where your chosen
- *   Sense can be applied." The Alertness Edge half is dice.mjs's ACUTE_SENSE_IDS.
  * - All Out Attack (p.107) / Evasive Fighting (p.109): "During your turn, you can voluntarily take
  *   Downshifts on your attacks with Might, Finesse, or Targeting. For each Downshift you take, you
  *   deal 1 additional damage to a single target hit by the attack, but enemies gain an equal number
@@ -13,23 +11,9 @@
  *   Science Specialization, you roll all Science Skill Tests as though you were Specialized,
  *   although Skill Tests outside your Specialization suffer ↓2." Applied Science (12th level, p.79):
  *   "once per scene, you can use Broad Understanding and Thesis in Combat" (Use button, ./uses.mjs).
- * - Bullbar (Alt Mode feature, p.134): "Alt Mode: You always have an Edge on Ram attacks."
- * - Caterpillar Tread (p.134): "Alt Mode: You gain an Edge on Driving Skill Tests made while
- *   navigating Rough Terrain. Bot Mode: When shoving a creature or object, you count as one Size
- *   Class larger than you are, and are treated as having moved 20ft immediately before the action"
- *   - each of those is one ↑1 on the Shove (TF CRB p.97: "↑1 for each Size Class larger...", "↑1 for
- *   each 20 feet of straight-line movement taken toward the target immediately before the action").
  * - Cage (p.134): "To escape, a prisoner must make an Infiltration Skill Test against your Cleverness
  *   or a Brawn Skill Test against your Toughness. They have ↓2 on those Skill Tests. Additionally, if
  *   you use a Free action to focus on a passenger, their roll suffers a Snag."
- * - Supporting Cast (Enigma of Combination, Hang-Up, p.25): "suffer ↓1 on non-combat Skill Tests in
- *   front of a large audience (ten or more people who aren't your allies)".
- * - Distressed (TF CRB, Hang-Up, p.42): "When making an Alertness Skill Test to gain a better
- *   understanding of potential danger to others, take a ↓1."
- * - Earthspoiled (p.42): "When exposed to a gorgeous piece of Earth art or culture, your Skill Tests
- *   suffer ↓1."
- * - For The Allspark! (p.56): "↑1 to Infiltration Skill Tests when in Alt Mode, or ↑2 if the Alt Mode
- *   is appropriate to the environment."
  * - Diversion (p.60): "On a success, if they attack you on their next turn, they suffer a Snag. If
  *   they don't attack you, your allies gain an Edge on attacks that target them. This lasts until the
  *   end of the next round." The mark is set by the Use button (./uses.mjs).
@@ -38,9 +22,6 @@
  * - Deconstruct (p.81): "Weapon: The attacker suffers a Snag using this weapon unless it's subject to
  *   a DIF 10 Technology Skill Test to repair it."
  * - Sustained Beam (Enigma of Combination, weapon upgrade, p.54): the second attack is "with Edge".
- * - Roller Drum (Enigma of Combination, p.56): "Alt Mode: Your Ram attacks inflict 1 additional Blunt
- *   damage against Prone targets... Bot Mode: Your Unarmed Combat attack deals Stun 2 (instead of
- *   Stun 1)."
  * - Bestial Articulation (Monstrosity Alt Mode, Decepticon Directive p.37, Technorganic Secrets p.41):
  *   "You must use body parts not designed for articulation or precision, such as mouths, claws, or
  *   hooves, to perform certain tasks. Whenever this applies, you suffer a penalty of ↓ 1." Which tasks
@@ -52,11 +33,11 @@
  *   extension, so this warns before the dice land.
  */
 import {
-  registerApplyDialog, registerConsumer, registerDialogToggles, registerHitRider, registerPreRoll, registerRollSources, registerSpecializes,
+  registerApplyDialog, registerConsumer, registerDialogToggles, registerPreRoll, registerRollSources, registerSpecializes,
 } from "../../extensions.mjs";
 import { getSceneEpoch } from "../../scene-clock.mjs";
 import {
-  ALT_MODES, T, TF2, has, isOwnTurn, itemsOf, nameOf, parentWeaponOf, sourceOf, targetedActors,
+  T, TF2, has, isOwnTurn, nameOf, parentWeaponOf, targetedActors,
 } from "./common.mjs";
 
 export const MARK = {
@@ -174,12 +155,11 @@ export function tf2Specializes(actor, skill) {
  * @returns {{sources: Array, consumes: Array}}
  */
 export function tf2RollSources(actor, target, ctx = {}) {
-  const { item, rolledSkill, isAttack, isShove } = ctx;
+  const { item, rolledSkill, isAttack } = ctx;
   // dice.mjs doesn't hand the dataset to roll sources, so the pre-roll hook keeps what it needs.
   const dataset = ctx.dataset ?? lastRoll.get(actor?.uuid) ?? {};
   const sources = [];
   const consumes = [];
-  const system = actor?.system ?? {};
 
   // Broad Understanding: "Skill Tests outside your Specialization suffer ↓2."
   if (rolledSkill == 'science' && broadUnderstandingApplies(actor)) {
@@ -190,23 +170,6 @@ export function tf2RollSources(actor, target, ctx = {}) {
     if (globalThis.game?.combat && actor.flags?.essence20?.[APPLIED_SCIENCE_FLAG]) {
       consumes.push({ ext: 'tf2AppliedScience', actorUuid: actor.uuid });
     }
-  }
-
-  // Bullbar: "Alt Mode: You always have an Edge on Ram attacks."
-  if (item?.system?.isRam && system.isTransformed && has(actor, TF2.bullbar)) {
-    sources.push({ id: 'tf2Bullbar', label: nameOf(actor, TF2.bullbar, 'Bullbar'), edge: true });
-  }
-
-  // Caterpillar Tread, Bot Mode shove: one Size Class larger (↑1) and a 20ft run-up (↑1).
-  if (isShove && system.canTransform && !system.isTransformed && has(actor, TF2.caterpillarTread)) {
-    const label = nameOf(actor, TF2.caterpillarTread, 'Caterpillar Tread');
-    sources.push({ id: 'tf2TreadSize', label: T('Tf2TreadSize', { name: label }), shiftUp: 1 });
-    sources.push({ id: 'tf2TreadMomentum', label: T('Tf2TreadMomentum', { name: label }), shiftUp: 1 });
-  }
-
-  // For The Allspark!: "↑1 to Infiltration Skill Tests when in Alt Mode".
-  if (rolledSkill == 'infiltration' && system.isTransformed && has(actor, TF2.forTheAllspark)) {
-    sources.push({ id: 'tf2Allspark', label: nameOf(actor, TF2.forTheAllspark, 'For The Allspark!'), shiftUp: 1 });
   }
 
   // Cage: a prisoner's escape tests are at ↓2, and Snagged when the captor focused on them.
@@ -281,34 +244,14 @@ export function sameSide(actor, uuid) {
 /* -------------------------------------------- */
 
 export const TOGGLE = {
-  acuteSense: 'tf2AcuteSense',
   allOut: 'tf2AllOutAttack',
   evasive: 'tf2EvasiveFighting',
-  tread: 'tf2TreadRough',
-  supportingCast: 'tf2SupportingCast',
-  distressed: 'tf2Distressed',
-  earthspoiled: 'tf2Earthspoiled',
-  allspark: 'tf2AllsparkFits',
-  bestial: 'tf2BestialArticulation',
 };
 
-/** The Alt Mode the actor is converted into, if it has Bestial Articulation. */
-export function bestialAltMode(actor) {
-  const id = actor?.system?.isTransformed ? actor.system.altModeId : null;
-  const mode = id ? itemsOf(actor).find(item => item.id == id) : null;
-  return mode && ALT_MODES.monstrosity.includes(sourceOf(mode)) ? mode : null;
-}
-
-export function tf2Toggles(actor, { item, rolledSkill } = {}) {
+export function tf2Toggles(actor, { item } = {}) {
   const toggles = [];
   const add = (name, label, type = 'checkbox', extra = {}) => toggles.push({ name, label, type, ...extra });
-  const system = actor?.system ?? {};
   const isAttack = item?.type == 'weaponEffect';
-
-  // Acute Sense - the G.I. JOE printing has its own switch (extensions/gij2/senses.mjs).
-  if (rolledSkill && rolledSkill != 'alertness' && has(actor, TF2.acuteSense) && !has(actor, TF2.gijAcuteSense)) {
-    add(TOGGLE.acuteSense, T('Tf2AcuteSenseToggle', { perk: nameOf(actor, TF2.acuteSense, 'Acute Sense') }));
-  }
 
   // All Out Attack / Evasive Fighting - "During your turn", on Might, Finesse or Targeting attacks.
   const ownTurn = !globalThis.game?.combat || isOwnTurn(actor);
@@ -322,65 +265,17 @@ export function tf2Toggles(actor, { item, rolledSkill } = {}) {
     }
   }
 
-  // Caterpillar Tread, Alt Mode: Driving through Rough Terrain.
-  if (rolledSkill == 'driving' && system.isTransformed && has(actor, TF2.caterpillarTread)) {
-    add(TOGGLE.tread, T('Tf2TreadRoughToggle', { name: nameOf(actor, TF2.caterpillarTread, 'Caterpillar Tread') }));
-  }
-
-  // Supporting Cast: non-combat tests only.
-  if (rolledSkill && !isAttack && has(actor, TF2.supportingCast)) {
-    add(TOGGLE.supportingCast, T('Tf2SupportingCastToggle', { name: nameOf(actor, TF2.supportingCast, 'Supporting Cast') }));
-  }
-
-  // Distressed: Alertness about danger to others.
-  if (rolledSkill == 'alertness' && has(actor, TF2.distressed)) {
-    add(TOGGLE.distressed, T('Tf2DistressedToggle', { name: nameOf(actor, TF2.distressed, 'Distressed') }));
-  }
-
-  // Earthspoiled: any Skill Test while exposed to Earth art or culture.
-  if (rolledSkill && has(actor, TF2.earthspoiled)) {
-    add(TOGGLE.earthspoiled, T('Tf2EarthspoiledToggle', { name: nameOf(actor, TF2.earthspoiled, 'Earthspoiled') }));
-  }
-
-  // Bestial Articulation: a task done with mouth, claws or hooves instead of hands.
-  const bestial = rolledSkill ? bestialAltMode(actor) : null;
-  if (bestial) {
-    add(TOGGLE.bestial, T('Tf2BestialArticulationToggle', { name: bestial.name }));
-  }
-
-  // For The Allspark!: the extra ↑1 when the Alt Mode fits the environment.
-  if (rolledSkill == 'infiltration' && system.isTransformed && has(actor, TF2.forTheAllspark)) {
-    add(TOGGLE.allspark, T('Tf2AllsparkToggle', { name: nameOf(actor, TF2.forTheAllspark, 'For The Allspark!') }));
-  }
+  // Bestial Articulation is the Monstrosity Alt Modes' own DialogSwitch rule (rule:altMode).
 
   return toggles;
 }
 
 export async function tf2ApplyDialog(actor, options) {
   const ext = options.ext ?? {};
-  const up = n => {
-    options.shiftUp = (Number(options.shiftUp) || 0) + n;
-  };
 
   const down = n => {
     options.shiftDown = (Number(options.shiftDown) || 0) + n;
   };
-
-  const edge = () => {
-    if (options.snag) {
-      options.snag = false;
-    } else {
-      options.edge = true;
-    }
-  };
-
-  if (ext[TOGGLE.acuteSense]) up(1);
-  if (ext[TOGGLE.tread]) edge();
-  if (ext[TOGGLE.supportingCast]) down(1);
-  if (ext[TOGGLE.distressed]) down(1);
-  if (ext[TOGGLE.earthspoiled]) down(1);
-  if (ext[TOGGLE.allspark]) up(1);
-  if (ext[TOGGLE.bestial]) down(1);
 
   const allOut = Math.max(0, Math.min(5, Number(ext[TOGGLE.allOut]) || 0));
   const evasive = Math.max(0, Math.min(5, Number(ext[TOGGLE.evasive]) || 0));
@@ -458,41 +353,6 @@ export async function tf2PreRoll(actor, dataset, item) {
 }
 
 /* -------------------------------------------- */
-/*  On hit                                       */
-/* -------------------------------------------- */
-
-export async function tf2HitRider(actor, target, result, rider, tools) {
-  if (!result?.damageValue || !has(actor, TF2.rollerDrum)) {
-    return;
-  }
-
-  const label = nameOf(actor, TF2.rollerDrum, 'Roller Drum');
-  const system = actor.system ?? {};
-  const damageType = rider?.damageType ?? result.damageType;
-
-  // Alt Mode: +1 Blunt on a Ram against a Prone target.
-  if (system.isTransformed && target?.statuses?.has?.('prone')) {
-    let effect = null;
-    try {
-      effect = rider?.itemUuid ? await fromUuid(rider.itemUuid) : null;
-    } catch (error) {
-      effect = null;
-    }
-
-    if (effect?.system?.isRam) {
-      tools.damageBonusNote(result, 1, label);
-      return;
-    }
-  }
-
-  // Bot Mode: Unarmed Combat deals Stun 2 instead of Stun 1.
-  const unarmed = rider?.isUnarmed || rider?.weaponSource == TF2.unarmedCombat;
-  if (!system.isTransformed && unarmed && damageType == 'stun') {
-    tools.damageBonusNote(result, 1, label);
-  }
-}
-
-/* -------------------------------------------- */
 /*  Registration                                 */
 /* -------------------------------------------- */
 
@@ -501,7 +361,6 @@ registerSpecializes(tf2Specializes);
 registerDialogToggles(tf2Toggles);
 registerApplyDialog(tf2ApplyDialog);
 registerPreRoll(tf2PreRoll);
-registerHitRider(tf2HitRider);
 
 // Applied Science: the once-per-scene combat use is spent by the Science roll it was for.
 registerConsumer('tf2AppliedScience', async consume => {

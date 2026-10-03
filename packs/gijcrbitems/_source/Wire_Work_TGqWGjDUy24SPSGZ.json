@@ -5,6 +5,10 @@
   "_id": "TGqWGjDUy24SPSGZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Acrobatics instead (Wire Work)","when":["skill:athletics"],"useSkill":"acrobatics"},
+      {"type":"Movement","movement":"climb","stage":"adjust","op":"set","value":"@actor.system.movement.ground.total","label":"Climb Movement equal to Ground"}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: a Climb movement equal to your Ground movement. Roll Options Dialog: a switch to roll Acrobatics in place of Athletics.</p><p>Left to the table: climbing most surfaces without a test, and your longer jumps.</p>"

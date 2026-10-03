@@ -14,14 +14,11 @@ const uuid = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 // Several of these ids exist in more than one pack (the MLP CRB clothing and the PR Weatherproof are
 // copies of the GI Joe CRB entries), so items are matched by their compendium _id, not the full uuid.
 export const S2 = {
-  stumbleThroughTheCity: 'sTmqok0MEmOQeboN',
-  ambushProne: 'k4gjxfSo6BkE6wd0',
   arcticExpedition: 'pWRpmsOcWIv9trHP',
   competitive: 'Vk2EFSSBfmunP5fk',
   desertExpedition: 'SQzr6PhXZQ338BBh',
   forgiving: '985JSL4ANRcKb1EX',
   misplacedConfidence: 'LcKUw5rQd19ovk4I',
-  stubbornlyLoyal: 'zqsFMIRKaA0Ev62Y',
   takeInAScene: 'gT6SEHJIK6ob0v7T',
   caltrops: 'LN0w8SB1fHhidIVp',
   amphibiousAssault: 'X2atZm3eoIBJcwF6',
@@ -63,7 +60,7 @@ export const deps = {
 export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? '';
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? '';
 }
 
 export const idOf = value => String(value ?? '').split('.').pop();
@@ -118,12 +115,6 @@ export function sceneOf(actor) {
 }
 
 export const terrainOf = actor => deps.getTerrain(actor) ?? null;
-
-/** Urban terrain: true/false when the scene says, null when no terrain is set. */
-export function isUrban(actor) {
-  const terrain = terrainOf(actor);
-  return terrain ? terrain == 'urban' : null;
-}
 
 /** "In the wild" (Tracking Outfit) - any terrain the GM set that isn't urban. */
 export function isWild(actor) {
@@ -217,13 +208,6 @@ export function isLibrarySituation(actor, target) {
   }
 
   return null;
-}
-
-/** The first targeted token's actor on this client. */
-export function currentTarget() {
-  const targets = game?.user?.targets;
-  const first = targets?.first?.() ?? (targets && typeof targets[Symbol.iterator] == 'function' ? [...targets][0] : null);
-  return first?.actor ?? null;
 }
 
 /** Same side: both tokens share a disposition, or (no tokens) both are Player Characters. */

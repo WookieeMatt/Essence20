@@ -5,6 +5,7 @@
   "_id": "jaUwQUvv1rXlXQUA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:skill:athletics>=d10","self:skill:acrobatics>=d10"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: enter the fall height and grapple with your better of Athletics or Acrobatics against Toughness. On a hit the target takes the fall damage and goes Prone; any excess comes back to you. The GM gets a button for targets you don't own.</p>"

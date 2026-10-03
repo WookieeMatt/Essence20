@@ -5,6 +5,12 @@
   "_id": "ki9HVmle77qJ5Yo8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"essence","label":"Persuasion also draws from","from":"list","options":[{"value":"strength","label":"Strength"},{"value":"speed","label":"Speed"},{"value":"smarts","label":"Smarts"}]},
+      {"type":"DerivedStat","label":"Persuasion draws from Strength (Speak Your Truth)","path":"system.skills.persuasion.essences.strength","op":"set","value":1,"when":["rule:data:flags.essence20.rules.choices.essence=strength"]},
+      {"type":"DerivedStat","label":"Persuasion draws from Speed (Speak Your Truth)","path":"system.skills.persuasion.essences.speed","op":"set","value":1,"when":["rule:data:flags.essence20.rules.choices.essence=speed"]},
+      {"type":"DerivedStat","label":"Persuasion draws from Smarts (Speak Your Truth)","path":"system.skills.persuasion.essences.smarts","op":"set","value":1,"when":["rule:data:flags.essence20.rules.choices.essence=smarts"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: pick Strength, Speed or Smarts when you gain it; Persuasion then also counts as a Skill of that Essence when you spend its Skill Points.</p>"

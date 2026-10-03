@@ -98,7 +98,7 @@ beforeEach(() => {
 describe('registration', () => {
   test('uses register', () => {
     const uses = ext.registrySnapshot().uses.map(u => u.id);
-    expect(uses).toEqual(expect.arrayContaining(['pr2Instructor', 'pr2DinoDrive', 'pr2KeenEye', 'pr2Privileged']));
+    expect(uses).toEqual(expect.arrayContaining(['pr2Instructor', 'pr2DinoDrive']));
   });
 });
 
@@ -159,14 +159,6 @@ describe('Primal Rage / Instructor / Graphite Prime', () => {
     expect(team.stepShift('d20', 1)).toBe('d2');
     expect(team.stepShift('d12', 1)).toBe('d12');
     expect(team.stepShift('d2', -1)).toBe('d20');
-  });
-
-  test('Graphite Ranger Prime Snags attacks on it in round 1', () => {
-    const target = makeActor({ system: { isMorphed: true }, items: [{ flags: src(common.PR2.graphitePrime) }] });
-    global.game.combat = { started: true, round: 1 };
-    expect(team.graphitePrimeSources(makeActor(), target, { isAttack: true }).sources[0].snag).toBe(true);
-    global.game.combat = { started: true, round: 2 };
-    expect(team.graphitePrimeSources(makeActor(), target, { isAttack: true })).toBeNull();
   });
 });
 

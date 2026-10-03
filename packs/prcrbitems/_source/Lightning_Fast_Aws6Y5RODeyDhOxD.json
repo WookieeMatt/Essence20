@@ -5,6 +5,9 @@
   "_id": "Aws6Y5RODeyDhOxD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Appear anywhere within 60 ft","when":["self:morphed"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"chat","text":"{name} spends 1 Personal Power and appears somewhere within 60 feet."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (while Morphed): spend 1 Personal Power, then move your token up to 60 feet to a spot you can see.</p>"

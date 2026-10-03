@@ -72,49 +72,10 @@ beforeEach(() => {
 const sourcesOf = (actor, target, ctx) => mod.situational2RollSources(actor, target, ctx).sources.map(s => s.id);
 
 describe('roll sources', () => {
-  test('Stumble Through the City: Snag on Persuasion in town, checkbox when terrain unknown', () => {
-    const actor = makeActor([makeItem('hangUp', 'knights_of_canterlot', 'sTmqok0MEmOQeboN')]);
-    deps.getTerrain = () => 'urban';
-    expect(sourcesOf(actor, null, { rolledSkill: 'persuasion' })).toContain('s2-stumble');
-    expect(sourcesOf(actor, null, { rolledSkill: 'athletics' })).not.toContain('s2-stumble');
-    deps.getTerrain = () => 'woodlands';
-    expect(sourcesOf(actor, null, { rolledSkill: 'persuasion' })).not.toContain('s2-stumble');
-    deps.getTerrain = () => null;
-    expect(mod.situational2Toggles(actor, { rolledSkill: 'deception' }).map(t => t.name)).toContain('s2Stumble');
-    const options = { ext: { s2Stumble: true } };
-    mod.situational2ApplyDialog(actor, options, { rolledSkill: 'deception' });
-    expect(options.snag).toBe(true);
-  });
-
-  test('Bookworm: ↓1 facing a Librarian', () => {
-    const actor = makeActor([makeItem('hangUp', 'wtnv_citizens_guide', 'p2Qk0B5PWp10ZaqN')]);
-    const librarian = makeActor([], { name: 'The Librarian' });
-    expect(mod.situational2RollSources(actor, librarian, { rolledSkill: 'alertness' }).sources[0]).toMatchObject({ id: 's2-bookworm', shiftDown: 1 });
-    expect(sourcesOf(actor, makeActor([], { name: 'Carlos' }), { rolledSkill: 'alertness' })).toEqual([]);
-  });
-
   test('Matured-ignored Hang-Ups do nothing', () => {
-    const hangUp = makeItem('hangUp', 'wtnv_citizens_guide', 'p2Qk0B5PWp10ZaqN', { flags: { essence20: { maturedIgnored: true } } });
-    const actor = makeActor([hangUp]);
-    expect(sourcesOf(actor, makeActor([], { name: 'Librarian' }), { rolledSkill: 'alertness' })).toEqual([]);
-  });
-
-  test('Tracking Outfit: ↑1 in the wild, ↓1 urban, only while worn', () => {
-    const outfit = makeItem('gear', 'wtnv_citizens_guide', 'NHhNnkBBM29NpGpL', { system: { equipped: true } });
-    const actor = makeActor([outfit]);
-    deps.getTerrain = () => 'desert';
-    expect(mod.situational2RollSources(actor, null, { rolledSkill: 'survival' }).sources[0]).toMatchObject({ shiftUp: 1 });
-    deps.getTerrain = () => 'urban';
-    expect(mod.situational2RollSources(actor, null, { rolledSkill: 'culture' }).sources[0]).toMatchObject({ shiftDown: 1 });
-    outfit.system.equipped = false;
-    expect(sourcesOf(actor, null, { rolledSkill: 'culture' })).toEqual([]);
-    outfit.system.equipped = true;
-    deps.getTerrain = () => null;
-    const toggle = mod.situational2Toggles(actor, { rolledSkill: 'targeting' }).find(t => t.name == 's2Tracking');
-    expect(toggle.type).toBe('select');
-    const options = { shiftUp: 0, ext: { s2Tracking: 'wild' } };
-    mod.situational2ApplyDialog(actor, options, { rolledSkill: 'targeting' });
-    expect(options.shiftUp).toBe(1);
+    const hangUp = makeItem('hangUp', 'quartermasters_guide_to_gear', 'ahWxUG3w6KkfgUDw', { flags: { essence20: { maturedIgnored: true } } });
+    const save = { riderSpec: JSON.stringify({ kind: 'save', spec: { title: 'Toxic gas', damage: { value: 1, type: 'poison' } } }) };
+    expect(sourcesOf(makeActor([hangUp]), null, { rolledSkill: 'conditioning', dataset: save })).toEqual([]);
   });
 
   test('Seafarer: Edge swimming underwater; Hang-Up gives poison Edge vs holder on land', () => {
@@ -194,13 +155,6 @@ describe('roll sources', () => {
     await mod.watchCompetitive({ speakerActor: ally, flags: { essence20: { skill: 'athletics' } }, rolls: [{ total: 9 }] }, 1100);
     await mod.watchCompetitive({ speakerActor: ally, flags: { essence20: { skill: 'brawn' } }, rolls: [{ total: 20 }] }, 1200);
     expect(holder.flags.essence20[FLAG.competitive]).toBeUndefined();
-  });
-
-  test('Stubbornly Loyal: checkbox when turning the holder, not for Deception', () => {
-    const loyal = makeActor([makeItem('perk', 'mlp_crb', 'zqsFMIRKaA0Ev62Y')], { name: 'Dash' });
-    game.user.targets = new Set([{ actor: loyal }]);
-    expect(mod.situational2Toggles(makeActor(), { rolledSkill: 'spellcasting' }).map(t => t.name)).toContain('s2StubbornlyLoyal');
-    expect(mod.situational2Toggles(makeActor(), { rolledSkill: 'deception' }).map(t => t.name)).not.toContain('s2StubbornlyLoyal');
   });
 });
 

@@ -1,11 +1,12 @@
 import { jest } from '@jest/globals';
+import { existsSync, readdirSync, readFileSync } from 'fs';
 import {
   consumeForItem, getLedger, getRemaining, getSheetContext, grantBonusAttack, isBraced, resetTurn, setBraced,
   setNextTurn, spend,
 } from './action-economy.mjs';
 import {
   ACTION_PERK_IDS as P, attackMatchesFilter, canUseActionPerk, describeAttack, getAttacksPerAction, getCostOptions,
-  getLaughtractingBlock, getLendAssistanceGrantModes, getSecretHelperPenalty, getTurnStartGrants, onPowerUsed,
+  getLaughtractingBlock, getLendAssistanceGrantModes, getSecretHelperPenalty, onPowerUsed,
   resetDailyActionPerkUses,
   isHarmonyUnleashedActive, useActionPerk,
 } from './action-perks.mjs';
@@ -35,7 +36,27 @@ function makeCombatant(actor = null, tokenId = 'token1') {
   };
 }
 
-const sourced = (uuid, name = 'Perk', type = 'perk', system = {}) => ({ type, name, system, flags: { core: { sourceId: uuid } } });
+// An item built from a compendium id carries that pack item's rules (AttackCount and the rest), the
+// way a real copy inherits them.
+const PACK_RULES = new Map();
+for (const dir of readdirSync('packs')) {
+  const src = `packs/${dir}/_source`;
+  if (existsSync(src)) {
+    for (const file of readdirSync(src).filter(name => name.endsWith('.json'))) {
+      PACK_RULES.set(file.slice(-21, -5), src + '/' + file);
+    }
+  }
+}
+
+const packRules = uuid => {
+  const file = PACK_RULES.get(String(uuid ?? '').split('.').pop());
+  return file ? JSON.parse(readFileSync(file, 'utf8')).system?.rules ?? [] : [];
+};
+
+let nextSourced = 1;
+const sourced = (uuid, name = 'Perk', type = 'perk', system = {}) => ({
+  id: `src${nextSourced++}`, type, name, system: { rules: packRules(uuid), ...system }, flags: { core: { sourceId: uuid } },
+});
 
 function makeActor({ items = [], name = 'Duke', standard = 1, move = 1, free = 2, system = {}, id = null } = {}) {
   const flags = {};
@@ -152,18 +173,18 @@ describe("cost rules", () => {
   });
 
   test("choosing the normal cost keeps the discount for later", async () => {
-    const actor = makeActor({ items: [sourced(P.makeAnOpening, 'Make An Opening')] });
+    const actor = makeActor({ items: [sourced(P.detailOriented, 'Detail Oriented')] });
     setGame([actor]);
     wait.mockResolvedValueOnce('base');
 
-    const result = await spend(actor, 'contingency', { context: { key: 'contingency' } });
+    const result = await spend(actor, 'standard', { context: { key: 'useASkill' } });
 
-    expect(result.actionType).toBe('contingency');
-    expect(getCostOptions(actor, 'contingency', { key: 'contingency' }, getLedger(actor)).offers).toHaveLength(1);
+    expect(result.actionType).toBe('standard');
+    expect(getCostOptions(actor, 'standard', { key: 'useASkill' }, getLedger(actor)).offers).toHaveLength(1);
   });
 
   test("closing the dialog takes no action at all", async () => {
-    const actor = makeActor({ items: [sourced(P.vigilance, 'Vigilance')] });
+    const actor = makeActor({ items: [sourced(P.talentForKindness, 'A Talent for Kindness')] });
     setGame([actor]);
     wait.mockResolvedValueOnce(null);
 
@@ -175,33 +196,12 @@ describe("cost rules", () => {
   });
 
   test("with prompts turned off, only the discounts the system can verify apply", () => {
-    const actor = makeActor({ items: [sourced(P.vigilance, 'Vigilance'), sourced(P.overwatch, 'Overwatch')] });
+    const actor = makeActor({ items: [sourced(P.talentForKindness, 'A Talent for Kindness'), sourced(P.hereToHelp, 'Here To Help')] });
     setGame([actor], { prompts: false });
 
-    const { auto, offers } = getCostOptions(actor, 'contingency', { key: 'contingency' }, getLedger(actor));
+    const { auto, offers } = getCostOptions(actor, 'standard', { key: 'lendAssistance' }, getLedger(actor));
     expect(offers).toHaveLength(0);
-    expect(auto.actionType).toBe('none');
-  });
-
-  test("Strategize: Contingencies are Free up to the actor's Smarts each turn", async () => {
-    const actor = makeActor({ items: [sourced(P.strategize, 'Strategize')] });
-    setGame([actor]);
-    const types = [];
-    for (let i = 0; i < 4; i++) {
-      types.push((await spend(actor, 'contingency', { context: { key: 'contingency' } })).actionType);
-    }
-
-    expect(types).toEqual(['free', 'free', 'free', 'contingency']);
-  });
-
-  test("Tight Bond commands the pet as a Free action once per turn, plus one per 3 levels past 3rd", () => {
-    const actor = makeActor({ items: [sourced(P.tightBond, 'Tight Bond')], system: { level: 9 } });
-    setGame([actor]);
-    const ledger = getLedger(actor);
-    ledger.perkUses = { tightBond: 2 };
-    expect(getCostOptions(actor, 'standard', { key: 'commandPet' }, ledger).auto.actionType).toBe('free');
-    ledger.perkUses = { tightBond: 3 };
-    expect(getCostOptions(actor, 'standard', { key: 'commandPet' }, ledger).auto).toBeNull();
+    expect(auto.actionType).toBe('free');
   });
 
   test("Desperate Times: a Move action for Lend Assistance only after a Standard one this round", async () => {
@@ -210,16 +210,6 @@ describe("cost rules", () => {
 
     expect((await spend(actor, 'standard', { context: { key: 'lendAssistance' } })).actionType).toBe('standard');
     expect((await spend(actor, 'standard', { context: { key: 'lendAssistance' } })).actionType).toBe('move');
-  });
-
-  test("Canny Combatant can Defend with two Free actions", async () => {
-    const actor = makeActor({ items: [sourced(P.cannyCombatant, 'Canny Combatant')] });
-    setGame([actor]);
-    wait.mockResolvedValueOnce('offer0');
-
-    await spend(actor, 'standard', { context: { key: 'defend' } });
-
-    expect(getRemaining(actor)).toEqual({ standard: 1, move: 1, free: 0 });
   });
 
   test("no Perk, no dialog and no change", async () => {
@@ -337,15 +327,6 @@ describe("bonus attacks and the next turn", () => {
     setGame([actor]);
     expect(getLendAssistanceGrantModes(actor).map(m => m.grant)).toEqual([{ move: 1 }, { standard: 1 }]);
   });
-
-  test("Zephyr Grace adds two Free actions each turn while Morphed", async () => {
-    const actor = makeActor({ items: [sourced(P.zephyrGrace, 'Zephyr Grace', 'power')], system: { isMorphed: true } });
-    const [combatant] = setGame([actor]);
-
-    expect(getTurnStartGrants(actor).free).toBe(2);
-    await resetTurn(combatant);
-    expect(getRemaining(actor).free).toBe(4);
-  });
 });
 
 describe("Use buttons", () => {
@@ -409,47 +390,6 @@ describe("Use buttons", () => {
     expect(ui.notifications.warn).toHaveBeenCalled();
   });
 
-  test("Adrenaline Surge gives a whole extra turn, once per encounter", async () => {
-    const perk = sourced(P.adrenalineSurge, 'Adrenaline Surge');
-    const actor = makeActor({ items: [perk] });
-    perk.parent = actor;
-    setGame([actor]);
-
-    await useActionPerk(perk);
-
-    expect(getRemaining(actor)).toEqual({ standard: 2, move: 2, free: 4 });
-  });
-
-  test("Instant Kill Mode makes attacks Free for the rest of the turn", async () => {
-    const perk = sourced(P.instantKillMode, 'Instant Kill Mode');
-    const actor = makeActor({ items: [perk] });
-    perk.parent = actor;
-    setGame([actor]);
-
-    await useActionPerk(perk);
-    const result = await consumeForItem(attackItem(actor));
-
-    expect(result.actionType).toBe('free');
-    expect(getRemaining(actor).standard).toBe(1);
-  });
-
-  test("a once-per-turn Use button hides after use; Ready for Action needs round one, first up", async () => {
-    const hits = sourced(P.theHitsKeepComing, 'The Hits Keep Coming');
-    const ready = sourced(P.readyForAction, 'Ready for Action');
-    const actor = makeActor({ items: [hits, ready] });
-    hits.parent = actor;
-    ready.parent = actor;
-    setGame([actor]);
-
-    expect(canUseActionPerk(ready)).toBe(true);
-    game.combat.round = 2;
-    expect(canUseActionPerk(ready)).toBe(false);
-
-    await useActionPerk(hits);
-    expect(canUseActionPerk(hits)).toBe(false);
-    expect(getLedger(actor).bonusAttacks[0].filter).toEqual({ mightMelee: true });
-  });
-
   test("no Use button outside combat", () => {
     const perk = sourced(P.motivate);
     perk.parent = makeActor();
@@ -492,18 +432,6 @@ describe("the second batch", () => {
     expect(getLedger(actor).standard).toBe(1);
   });
 
-  test("Shogun Upgrade Defends as a Free action; Opportunist's free Contingency is once per encounter", async () => {
-    const zord = makeActor({ items: [sourced(P.shogunUpgrade, 'Upgraded Zord (Shogun Upgrade)', 'feature')] });
-    setGame([zord]);
-    expect((await spend(zord, 'standard', { context: { key: 'defend' } })).actionType).toBe('free');
-
-    const bot = makeActor({ items: [sourced(P.opportunist, 'Opportunist')] });
-    setGame([bot]);
-    const offers = getCostOptions(bot, 'contingency', { key: 'contingency' }, getLedger(bot)).offers;
-    expect(offers[0].actionType).toBe('none');
-    expect(offers[0].rule.limit.window).toBe('encounter');
-  });
-
   test("Barrage Attack gives one attack per other ranged weapon", async () => {
     const feature = sourced(P.barrageAttack, 'Barrage Attack', 'feature');
     const effects = ['x', 'y', 'z'].map(id => ({ id, type: 'weaponEffect', system: { classification: { style: 'energy' } }, flags: {} }));
@@ -531,15 +459,6 @@ describe("the last four", () => {
     expect(await resetDailyActionPerkUses(actor)).toBe(true);
     expect(getCostOptions(actor, 'standard', { key: 'useASkill' }, getLedger(actor)).offers).toHaveLength(1);
     expect(await resetDailyActionPerkUses(actor)).toBe(false);
-  });
-
-  test("A Genius For A Patient and Docking Tool discount Use a Skill", () => {
-    const doctor = makeActor({ items: [sourced(P.aGeniusForAPatient, 'A Genius For A Patient')] });
-    setGame([doctor]);
-    expect(getCostOptions(doctor, 'standard', { key: 'useASkill' }, getLedger(doctor)).offers[0].actionType).toBe('free');
-
-    const drone = makeActor({ items: [sourced(P.dockingTool, 'Docking Tool', 'upgrade')] });
-    expect(getCostOptions(drone, 'standard', { key: 'useASkill' }, getLedger(drone)).offers[0].actionType).toBe('move');
   });
 
   test("Shoot, You Fools! gives every ally an attack that costs them nothing and stings on a miss", async () => {
@@ -596,10 +515,16 @@ describe("bracing", () => {
     actor.statuses.add('prone');
     expect(isBraced(actor)).toBe(true);
   });
+});
 
-  test("Sustained Fire makes bracing a Free action", async () => {
-    const actor = makeActor({ items: [sourced(P.sustainedFire, 'Sustained Fire')] });
-    setGame([actor]);
-    expect((await spend(actor, 'move', { context: { key: 'brace' } })).actionType).toBe('free');
+// A table entry naming an id it never defined used to match any item without a source (findSourced
+// with undefined) - Curb Your Enthusiasm was offered as a Move action to nearly everyone.
+describe("findSourced with no id", () => {
+  test("matches nothing, and Balance Your Enthusiasm needs its own Perk", async () => {
+    const { findSourced, ACTION_PERK_IDS } = await import("./action-perks.mjs");
+    const actor = { items: [{ name: 'Homebrew', flags: {} }] };
+    expect(findSourced(actor, undefined)).toBeUndefined();
+    expect(ACTION_PERK_IDS.balanceYourEnthusiasm).toBe('Compendium.essence20.mlp_crb.Item.0oLVEe94tZ0drQTo');
+    expect(findSourced(actor, ACTION_PERK_IDS.balanceYourEnthusiasm)).toBeUndefined();
   });
 });

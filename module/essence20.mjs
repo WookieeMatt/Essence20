@@ -4,8 +4,65 @@ import "./helpers/extensions/index.mjs";
 // Item rules (system.rules) - one more extension, plus their add/remove lifecycle (docs/RULES_ENGINE_PLAN.md).
 import "./rules/adapter.mjs";
 import "./rules/lifecycle.mjs";
+import "./rules/triggers.mjs";
+import "./rules/actions.mjs";
 import { linkExistingCopies, loadSourceIndexes } from "./rules/inherit.mjs";
 import { registerRuleHelper } from "./rules/code.mjs";
+import { registerCheck, setWorldLookups } from "./rules/predicate.mjs";
+import { hasActiveEnvironmentalExpertise } from "./helpers/environmental-expertise.mjs";
+import { isCannoneerDugIn } from "./helpers/cannoneer-dig-in.mjs";
+import { isBulwarkActive } from "./helpers/bulwark.mjs";
+import { isSkiing } from "./helpers/skier.mjs";
+import { hasNearbyDefeatedAlly } from "./helpers/field-aid.mjs";
+import { isGravityOptionalActive } from "./helpers/gravity-optional.mjs";
+import { isWisdomOfTheEldersActive } from "./helpers/wisdom-of-the-elders.mjs";
+import { isMonsterFormActive } from "./helpers/monster-morph.mjs";
+import { isWarriorModeActive } from "./helpers/warrior-mode.mjs";
+import { isHighGearActive } from "./helpers/high-gear.mjs";
+import { isTheToughGetGoingActive } from "./helpers/the-tough-get-going.mjs";
+import { isEnergyAffinityElementAttack } from "./helpers/energy-affinity.mjs";
+import "./rules/prerequisites.mjs";
+import { isRecklessAbandonActive } from "./helpers/reckless-abandon.mjs";
+import { setStoryPointHelpers } from "./rules/steps.mjs";
+import { canSpendForActor, canWriteStoryPoints, poolFor, requestStoryPointGrant, spendForActor } from "./helpers/story-points.mjs";
+import { getEnvironment, getTerrain } from "./helpers/environment.mjs";
+import { getNearbyAllyTokens } from "./helpers/allies.mjs";
+
+// The rules engine's terrain: and environment: tags read where an actor is through these.
+setWorldLookups({
+  terrain: actor => getTerrain(actor),
+  environment: actor => getEnvironment(actor),
+  recklessAbandon: actor => isRecklessAbandonActive(actor),
+  isAiming: actor => isAiming(actor),
+  alliesWithin: (actor, feet) => getNearbyAllyTokens(actor, feet).map(token => token.actor),
+});
+
+// The rules engine's `check:<name>` tags - state the system's own helpers keep (rules/predicate.mjs#CHECK_NAMES).
+for (const [name, fn] of Object.entries({
+  environmentalExpertise: actor => hasActiveEnvironmentalExpertise(actor),
+  cannoneerDugIn: actor => isCannoneerDugIn(actor),
+  bulwark: actor => isBulwarkActive(actor),
+  rushTheLine: actor => isRushTheLineActive(actor),
+  sprinterBoost: actor => isSprinterBoostActive(actor),
+  skiing: actor => isSkiing(actor),
+  nearbyDefeatedAlly: actor => hasNearbyDefeatedAlly(actor),
+  frictionlessMovement: actor => isFrictionlessMovementActive(actor),
+  gravityOptional: actor => isGravityOptionalActive(actor),
+  wisdomOfTheElders: (actor, option) => isWisdomOfTheEldersActive(actor, option),
+  monsterForm: actor => isMonsterFormActive(actor),
+  warriorMode: actor => isWarriorModeActive(actor),
+  powerAdaptation: (actor, option) => isPowerAdaptationActive(actor, option),
+  highGear: actor => isHighGearActive(actor),
+  theToughGetGoing: actor => isTheToughGetGoingActive(actor),
+  energyAffinityAttack: (actor, option, ctx) => isEnergyAffinityElementAttack(actor, ctx?.item),
+  // An equipped weapon with the Fire trait ("wielding" - Wildfire).
+  equippedFireWeapon: actor => !!actor?.items?.find(item => item.type == 'weapon' && item.system.equipped && item.system.traits?.includes('fire')),
+})) {
+  registerCheck(name, fn);
+}
+
+// Story Point costs and gains in rule steps go through the same helpers as the hand-written ones.
+setStoryPointHelpers({ canSpendForActor, canWriteStoryPoints, poolFor, requestStoryPointGrant, spendForActor });
 import { decorateSocialCard, onGroupResultChanged } from "./helpers/social-cards.mjs";
 import { endSceneTeamEffects, onMorphChanged } from "./helpers/team-actions.mjs";
 import { onInitiativeRolled } from "./helpers/commands.mjs";
@@ -51,7 +108,7 @@ import { handleStoryPointGrantRequest, handleStoryPointSpendRequest } from "./he
 import { ensurePrimaryParty } from "./helpers/party.mjs";
 import { expireCircleAtTurnEnd } from "./helpers/friendship-circle.mjs";
 import { handleRemoteChoiceRequest, handleRemoteChoiceResponse } from "./helpers/remote-request.mjs";
-import { handleSetActionLedger } from "./helpers/action-economy.mjs";
+import { handleSetActionLedger, isAiming } from "./helpers/action-economy.mjs";
 // Registers the "chooseDefense" remote prompt against remote-request.mjs's own registry -
 // imported for this side effect alone (see defense-choice.mjs's own registerRemotePrompt call at
 // its bottom), same reason-for-import-with-no-named-use as any other registration-pattern file.
@@ -75,13 +132,13 @@ import { getWeaponEffectDamages } from "./helpers/damage-display.mjs";
 import { getSummonReadyRound, isSummonReady } from "./helpers/zord-summon.mjs";
 import { healStunAtTurnStart } from "./helpers/combat.mjs";
 import { applyTimeToThinkEdge } from "./helpers/time-to-think.mjs";
-import { healRegeneratingShellAtTurnEnd } from "./helpers/power-adaptation.mjs";
+import { healRegeneratingShellAtTurnEnd, isPowerAdaptationActive } from "./helpers/power-adaptation.mjs";
 import { healRapidRescueResponseAtRoundEnd } from "./helpers/rapid-rescue-response.mjs";
-import { deactivateRushTheLineAtTurnEnd } from "./helpers/rush-the-line.mjs";
-import { deactivateFrictionlessMovementAtTurnEnd } from "./helpers/frictionless-movement.mjs";
+import { deactivateRushTheLineAtTurnEnd, isRushTheLineActive } from "./helpers/rush-the-line.mjs";
+import { deactivateFrictionlessMovementAtTurnEnd, isFrictionlessMovementActive } from "./helpers/frictionless-movement.mjs";
 import { applyOngoingEffectsAtTurnEnd } from "./helpers/ongoing-effects.mjs";
 import { deactivateExpandedMysticismQuickenAtTurnEnd } from "./helpers/expanded-mysticism.mjs";
-import { deactivateSprinterBoostAtTurnEnd } from "./helpers/sprinter-boost.mjs";
+import { deactivateSprinterBoostAtTurnEnd, isSprinterBoostActive } from "./helpers/sprinter-boost.mjs";
 import { healUnbeatableAtTurnStart } from "./helpers/unbeatable.mjs";
 import { applyBravado } from "./helpers/bravado.mjs";
 import { applyHardCorpsDeferredDefeat } from "./helpers/hard-corps.mjs";
@@ -178,7 +235,7 @@ function runMigrations() {
 Hooks.once("init", async function () {
   // Item automation notes ride in the compendium index, so a copy on an actor can show its
   // original's current notes without loading the compendium document (documents/item.mjs).
-  CONFIG.Item.compendiumIndexFields = [...new Set([...(CONFIG.Item.compendiumIndexFields ?? []), 'system.automation', 'system.rules'])];
+  CONFIG.Item.compendiumIndexFields = [...new Set([...(CONFIG.Item.compendiumIndexFields ?? []), 'system.automation', 'system.rules', 'system.prerequisites'])];
 
   // Blindsight needs its detection mode to exist before any token is drawn - see
   // helpers/blindsight.mjs's own doc comment.
@@ -905,7 +962,7 @@ for (const hookName of ["createItem", "updateItem", "deleteItem"]) {
       applyVisionToTokens(item.parent);
     }
 
-    // What comes inside a kit, and who handed a consumable over (Take Mine) - helpers/kits.mjs.
+    // Who handed a consumable over (Take Mine) - helpers/kits.mjs.
     if (hookName == 'createItem' && userId == game.user.id && item.parent instanceof Actor && item.type == 'gear') {
       onKitCreated(item);
     }

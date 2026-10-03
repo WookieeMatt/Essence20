@@ -13,10 +13,8 @@ export const pradv = pack('power_rangers_adventures');
 export const PR1 = {
   // A Jump Through Time
   chronicler: jtt('Psds3JLg4UmugRkT'),
-  cloudHatchet: jtt('RNP5lNTQLostQKSB'),
   mobileHeadquarters: jtt('soCSwGBp0AZbEeZC'),
   overdrive: jtt('2JZSo4C7xDUMlPG2'),
-  personalHeirloom: jtt('LQGOwXCGvKlL4pzl'),
   profiteerHangUp: jtt('FDf9ZhuajJb3U5un'),
   prospectorToolkit: jtt('anD2xly3g2CS45et'),
   spectrumShifted: jtt('sgRiSOX0hDIKkcMh'),
@@ -24,24 +22,17 @@ export const PR1 = {
   warheadMagazines: jtt('57an1eB6FMmcpKlk'),
   // Across the Stars
   beAnExample: ats('zkxPG5mwAQl1vZOT'),
-  cantCatchMe: ats('vic68loeBd3vXbmB'),
-  clawedArmor: ats('5Z9vkcfZYwmtA6R4'),
   destinyHangUp: ats('PRf5WTMgof11YCeE'),
   lightspeedBoost: ats('sap5gMPDrWvjLCCu'),
-  rescueInjector: ats('Bcimc6wYaSlisR1d'),
   nemesis: ats('bxGgq6PpfxeSRr7Q'),
-  phantomRangerPrime: ats('PHgWjT0syOOBOOK5'),
   powerFlux: ats('zhfG2gH4IgIjMAzT'),
   powerWing: ats('aCPFmjY80u9671Hl'),
   swatUpgrade: ats('Ce5f5pQTNTSY6xgF'),
   standBehindMe: ats('PcezfGdjUtNUZHYH'),
   tacticalSizeShift: ats('tS3P7BZqnH9GGLux'),
   warzord: ats('jX5IHpydHimdjbGb'),
-  xenoLocationStudy: ats('lT1xJuxw29luNgUj'),
   combiner: 'Compendium.essence20.pr_crb.Item.ZZMBVjmosr0VViMU',
-  machineMerge: 'Compendium.essence20.pr_crb.Item.JYo3Kzg7eEHHhxbm',
-  // Adventures in Angel Grove / Beneath the Helmet
-  dragonDagger: pradv('BJDwsJcx9DPZFJSe'),
+  // Beneath the Helmet
   advancedDinoGem: bth('K4CUMFhAjXRFzGbA'),
 };
 
@@ -57,7 +48,7 @@ export const T = (key, data) => {
 };
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 /** Every embedded item as a plain array (Collections, arrays and Maps all work). */

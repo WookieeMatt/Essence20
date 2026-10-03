@@ -5,6 +5,7 @@
   "_id": "ITvnVU4crafDWfjF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:brawn>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you wear no armor, you get a deflective bonus to Toughness equal to your Brawn Ranks.</p>"

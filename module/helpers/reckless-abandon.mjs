@@ -42,7 +42,7 @@ export function isRecklessAbandonItem(rolePoints) {
     return false;
   }
 
-  const sourceId = rolePoints.flags?.core?.sourceId ?? rolePoints._stats?.compendiumSource;
+  const sourceId = rolePoints.flags?.core?.sourceId ?? rolePoints._stats?.compendiumSource ?? rolePoints?.flags?.essence20?.rulesSource;
   return sourceId == RECKLESS_ABANDON_ID;
 }
 

@@ -5,6 +5,9 @@
   "_id": "Z4lShGtDBa2zQ5ov",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Tooth and Claw (Accurate)","when":["attack:unarmed","self:transformed"],"upshift":1,"stack":"toothAndClaw"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Alt Mode your unarmed attacks get ↑1 (already applied when the Roll Options Dialog opens) and deal Sharp or Blunt damage, whichever you picked on the Perk (Sharp if you haven't picked).</p>"

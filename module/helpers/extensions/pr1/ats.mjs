@@ -4,12 +4,6 @@
  * - Be an Example (Noble Blood Origin, p.40): "You can spend a Free action to reflect on your
  *   training and traditions to gain ↑1 to the skill you chose to increase or advance as part of this
  *   Origin." A Use button (Free action) banks ↑1 on system.originSkillsIncrease for the next test.
- * - Can't Catch Me! (Origin, p.40): "As long as you are aware of an effect targeting you, you gain +1
- *   to your Evasion." The +1 is the Perk's own Active Effect (now on); an attack the defender can't
- *   be aware of (asleep, Mesmerized, or an Invisible attacker) takes it back off.
- * - Clawed Armor (Battlizer, p.85): "The internal sensors grant the wearer Edge on all Alertness Skill
- *   Tests. The anchoring boots... impose a Snag on all attempts to grapple, push, or forcefully move
- *   the wearer." (The -5ft is the item's own Active Effect.)
  * - Destiny, Hang-Up (p.45): "Once per scene, the GM can spend 1 Story Point to turn a regular
  *   failure of yours on a Skill Test into a Fumble." A GM-only button on a failed roll card.
  * - Lightspeed Boost, Zord Feature (p.103): "Increase its Health by 2 [Active Effect] and choose one of
@@ -18,12 +12,9 @@
  *   Poison, Sonic), Medical (+10ft to existing Movement, ↑2 on Science/Technology first aid or repair
  *   by the Zord or its crew), Pyrotechnic (Immunity to Fire; a Standard action extinguishes a 20x20ft
  *   area). "In flight"/"submerged" read the Zord token's elevation (above/below 0).
- * - Lightspeed Rescue Injector (p.78): "Adds ↑1 to Science (Medicine)" while carried.
  * - Nemesis (Specific Threat) (p.70) - the half helpers/nemesis.mjs leaves open: "Once per scene
  *   involving your Nemesis, you may reroll a Skill Test and choose which results to keep." A button
  *   on the roll card rerolls it and shows both results against every Difficulty.
- * - Phantom Ranger Prime (p.62) - the last bullet: "Edge on Skill Tests when using a Grid Power"
- *   while Morphed. Automatic for a Grid Power's own attack roll; a checkbox otherwise.
  * - Power Flux, Zord Feature (p.103): "After any scene involving your Zord, the piloting Power Ranger
  *   and any Power Rangers or characters possessing Personal Power in the Crew Compartment regain up
  *   to 6 Personal Power each." On the GM's "new scene", for Zords with a token in the scene.
@@ -60,7 +51,7 @@ import {
 import { getSceneEpoch, getUses, markUsed } from "../../scene-clock.mjs";
 import { worldActors } from "../../companion-link.mjs";
 import {
-  PR1, T, allSourced, crewOf, equipped, feetBetween, findSourced, flagOf, giveEdge, has, isEnemyOf,
+  PR1, T, allSourced, crewOf, feetBetween, findSourced, flagOf, has, isEnemyOf,
   isItem, isRanged, kept, num, pending, postLine, seatsOf, setPending, tokenOf, writeDoc,
 } from "./common.mjs";
 
@@ -101,42 +92,6 @@ registerUse({
     return T('Pr1BeAnExampleLine', { name: actor.name, skill: game.i18n.localize(CONFIG.E20?.skills?.[skill] ?? skill) });
   },
 });
-
-/* -------------------------------------------- */
-/*  Can't Catch Me!                              */
-/* -------------------------------------------- */
-
-const UNAWARE = ['asleep', 'mesmerized', 'unconscious', 'defeated'];
-
-export function cantCatchMeAdjust(attacker, defender, defenseType) {
-  if (defenseType != 'evasion' || !has(defender, PR1.cantCatchMe)) {
-    return 0;
-  }
-
-  const unaware = UNAWARE.some(s => defender.statuses?.has?.(s)) || attacker?.statuses?.has?.('invisible');
-  return unaware ? -1 : 0;
-}
-
-/* -------------------------------------------- */
-/*  Clawed Armor                                 */
-/* -------------------------------------------- */
-
-const MOVING = ['grapple', 'maneuver', 'knocProne'];
-const MOVING_TRAITS = ['grapple', 'shove', 'trip'];
-
-export function isForcedMoveAttempt(actor, item, isShove) {
-  if (isShove) {
-    return true;
-  }
-
-  if (item?.type != 'weaponEffect') {
-    return false;
-  }
-
-  const parentId = item.flags?.essence20?.parentId;
-  const traits = parentId ? actor?.items?.get?.(parentId)?.system?.traits ?? [] : [];
-  return MOVING.includes(item.system?.damageType) || traits.some(t => MOVING_TRAITS.includes(t));
-}
 
 /* -------------------------------------------- */
 /*  Destiny Hang-Up                              */
@@ -398,13 +353,6 @@ registerSceneAdvanced(async () => {
 /*  Power Wing                                   */
 /* -------------------------------------------- */
 
-export function powerWingDerived(actor) {
-  const personal = actor?.system?.powers?.personal;
-  if (personal && equipped(actor, PR1.powerWing)) {
-    personal.max = num(personal.max) + 2;
-  }
-}
-
 globalThis.Hooks?.on?.('updateItem', async (item, changes, options, userId) => {
   if (userId != globalThis.game?.user?.id || !isItem(item, PR1.powerWing) || changes?.system?.equipped === undefined) {
     return;
@@ -430,10 +378,6 @@ const SWAT_LAST = 'pr1SwatLastTarget';
 export function swatCards(zord) {
   const record = flagOf(zord, SWAT_CARDS);
   return record?.scene == getSceneEpoch() ? num(record.left) : 6;
-}
-
-export function swatPilotZord(actor) {
-  return seatsOf(actor).find(({ vehicle, role }) => role == 'driver' && has(vehicle, PR1.swatUpgrade))?.vehicle ?? null;
 }
 
 registerAfterDamage(async (actor, dealt, damageType, { newValue, wasAlreadyDefeated } = {}) => {
@@ -654,32 +598,13 @@ globalThis.Hooks?.on?.('updateActor', async (actor, changes, options, userId) =>
 /*  Roll sources, dialog, riders                 */
 /* -------------------------------------------- */
 
-const XENO_SKILLS = ['animalHandling', 'deception', 'persuasion', 'survival'];
-
 export function atsSources(actor, target, ctx = {}) {
   const sources = [];
-  const { rolledSkill, item } = ctx;
+  const { rolledSkill } = ctx;
 
   const example = flagOf(actor, EXAMPLE_FLAG);
   if (example?.skill && example.skill == rolledSkill) {
     pushTo(sources, { id: 'pr1BeAnExample', label: findSourced(actor, PR1.beAnExample)?.name ?? 'Be an Example', shiftUp: 1 });
-  }
-
-  if (rolledSkill == 'alertness' && equipped(actor, PR1.clawedArmor)) {
-    pushTo(sources, { id: 'pr1ClawedArmor', label: equipped(actor, PR1.clawedArmor).name, edge: true });
-  }
-
-  if (target && equipped(target, PR1.clawedArmor) && isForcedMoveAttempt(actor, item, ctx.isShove)) {
-    pushTo(sources, { id: 'pr1ClawedAnchor', label: equipped(target, PR1.clawedArmor).name, snag: true });
-  }
-
-  if (rolledSkill == 'science' && equipped(actor, PR1.rescueInjector)) {
-    pushTo(sources, { id: 'pr1RescueInjector', label: T('Pr1RescueInjectorLabel', { name: equipped(actor, PR1.rescueInjector).name }), shiftUp: 1 });
-  }
-
-  // Phantom Ranger Prime - a Grid Power's own attack.
-  if (actor?.system?.isMorphed && has(actor, PR1.phantomRangerPrime) && item?.type == 'power' && (item.system?.type ?? 'grid') == 'grid') {
-    pushTo(sources, { id: 'pr1PhantomPrime', label: findSourced(actor, PR1.phantomRangerPrime).name, edge: true });
   }
 
   // Lightspeed Boost (Medical): the Zord itself, or anyone seated in it.
@@ -695,23 +620,10 @@ export function atsSources(actor, target, ctx = {}) {
 
 registerRollSources((actor, target, ctx) => ({ sources: atsSources(actor, target, ctx) }));
 
-registerDefenseAdjust((attacker, defender, defenseType) => cantCatchMeAdjust(attacker, defender, defenseType)
-  + lightspeedDefenseAdjust(defender, defenseType));
+registerDefenseAdjust((attacker, defender, defenseType) => lightspeedDefenseAdjust(defender, defenseType));
 
-registerDialogToggles((actor, { item, rolledSkill } = {}) => {
+registerDialogToggles((actor, { item } = {}) => {
   const toggles = [];
-  if (actor?.system?.isMorphed && has(actor, PR1.phantomRangerPrime) && item?.type != 'power') {
-    toggles.push({ name: 'pr1PhantomGrid', label: T('Pr1PhantomGridToggle'), type: 'checkbox', value: false });
-  }
-
-  if (has(actor, PR1.xenoLocationStudy) && XENO_SKILLS.includes(rolledSkill)) {
-    toggles.push({ name: 'pr1Xeno', label: T('Pr1XenoToggle'), type: 'checkbox', value: false });
-  }
-
-  if (['intimidation', 'persuasion'].includes(rolledSkill) && swatPilotZord(actor)) {
-    toggles.push({ name: 'pr1SwatLoudspeaker', label: T('Pr1SwatLoudspeakerToggle'), type: 'checkbox', value: true });
-  }
-
   if (actor?.type == 'zord' && has(actor, PR1.swatUpgrade) && isRanged(item)) {
     toggles.push({ name: 'pr1SwatStun', label: T('Pr1SwatStunToggle'), type: 'checkbox', value: false });
   }
@@ -721,10 +633,6 @@ registerDialogToggles((actor, { item, rolledSkill } = {}) => {
 
 registerApplyDialog(async (actor, options) => {
   const ext = options.ext ?? {};
-  if (ext.pr1PhantomGrid || ext.pr1Xeno || ext.pr1SwatLoudspeaker) {
-    giveEdge(options);
-  }
-
   if (ext.pr1SwatStun) {
     setPending(actor, { swatStun: true });
   }
@@ -738,14 +646,6 @@ registerApplyDialog(async (actor, options, ctx = {}) => {
 });
 
 registerHitRider(async (actor, target, result, rider, tools) => {
-  const effect = rider?.itemUuid ? globalThis.fromUuidSync?.(rider.itemUuid) : null;
-
-  // Warzord: "All the Zord's Might or Finesse-based attacks increase their base damage by 1."
-  if (actor?.type == 'zord' && has(actor, PR1.warzord) && result?.damageValue
-    && ['might', 'finesse'].includes(effect?.system?.classification?.skill)) {
-    tools.damageBonusNote(result, 1, findSourced(actor, PR1.warzord).name);
-  }
-
   // Incapacitation Ammo: Stun, one higher than the damage.
   if (pending(actor).swatStun && result?.damageValue) {
     tools.addRiderOption(result, { key: 'pr1SwatStun', label: T('Pr1SwatStunApply'), damageValue: num(result.damageValue) + 1, damageType: 'stun' });
@@ -759,7 +659,6 @@ registerHitRider(async (actor, target, result, rider, tools) => {
 
 registerDerived(actor => {
   lightspeedDerived(actor);
-  powerWingDerived(actor);
   sizeShiftDerived(actor);
 });
 

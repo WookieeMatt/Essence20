@@ -1,5 +1,4 @@
 import { getNearbyEnemyTokens } from "./enemies.mjs";
-import { actorHasPerk } from "./perks.mjs";
 
 /**
  * Supreme Guardian (Through the Shattered Grid, Guardian of Eltar, 20th level, p.73): "When you
@@ -19,18 +18,12 @@ import { actorHasPerk } from "./perks.mjs";
  * actively expired (no duration-tracking hook exists) - the same "grant, don't auto-revoke" idiom
  * every other Perk-applied status in this project already uses.
  *
- * Bullet 2 (getSupremeGuardianTechAvailable/spendSupremeGuardianTech, also this file, consumed in
- * dice.mjs): "spend any number of Eltarian Tech Points for +1 Energy damage each" on a melee Power
- * Weapon hit - the same "spend any amount of a banked resource for that much bonus damage" shape
- * Terror's own spend-for-damage half already established (helpers/terror.mjs), just against the
- * Guardian of Eltar's own base rolePoints resource (actor._getBaseRolePoints(), the same generic
- * lookup Eltarian Tech's own Edge-spend checkbox already uses) instead of a dedicated Terror
- * Capacity pool.
+ * Bullet 2 ("spend any number of Eltarian Tech Points for +1 Energy damage each" on a melee Power
+ * Weapon attack) is a DialogSwitch spend rule on the Perk itself (its base Role Points).
  *
  * Bullet 3 - a passive d20-vs-10 Eltarian Tech regen on taking Energy damage - lives in
  * combat.mjs instead (not here, no AoE target resolution needed).
  */
-const SUPREME_GUARDIAN_ID = "Compendium.essence20.through_the_shattered_grid.Item.wrBndkBQoKkn3dLy";
 const RADIUS_FEET = 20;
 
 /**
@@ -51,33 +44,3 @@ export async function activateSupremeGuardianBlind(actor) {
   }, actor);
 }
 
-/**
- * The actor's own currently-available Eltarian Tech Points to spend on bullet 2's bonus damage
- * (0 if they don't hold Supreme Guardian at all).
- * @param {Actor} actor
- * @returns {Number}
- */
-export function getSupremeGuardianTechAvailable(actor) {
-  if (!actorHasPerk(actor, SUPREME_GUARDIAN_ID)) {
-    return 0;
-  }
-
-  return actor._getBaseRolePoints?.()?.system.resource.value ?? 0;
-}
-
-/**
- * Spends the given amount of Eltarian Tech Points (capped at what's actually available by the
- * caller via getSupremeGuardianTechAvailable, so a stale/tampered dialog value can never
- * overspend).
- * @param {Actor} actor
- * @param {Number} amount
- */
-export async function spendSupremeGuardianTech(actor, amount) {
-  const eltarianTech = actor._getBaseRolePoints?.();
-  if (!eltarianTech || amount <= 0) {
-    return;
-  }
-
-  const newValue = Math.max(0, eltarianTech.system.resource.value - amount);
-  await eltarianTech.update({ 'system.resource.value': newValue });
-}

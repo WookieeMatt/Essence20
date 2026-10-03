@@ -2,7 +2,7 @@
  * PR CRB / Beneath the Helmet General and Role Perk leftovers: Keen Eye, Privileged and the White
  * Ranger's Grid Relic Weapon.
  */
-import { registerApplyDialog, registerUse } from "../../extensions.mjs";
+import { registerApplyDialog } from "../../extensions.mjs";
 import { PR2, T, holds, itemsOf, sourceOf } from "./common.mjs";
 import { giveEdge, postLine } from "../zord1/common.mjs";
 
@@ -30,39 +30,6 @@ export function keenEyeApply(actor, options, ctx = {}) {
 }
 
 registerApplyDialog(keenEyeApply);
-
-registerUse({
-  id: 'pr2KeenEye',
-  matches: item => sourceOf(item) == PR2.keenEye,
-  run: async item => {
-    const { rollTest } = await import("../../grants.mjs");
-    const { success } = await rollTest(item.parent, 'alertness', 12);
-    return T(success ? 'Pr2KeenEyeRecall' : 'Pr2KeenEyeNoRecall', { name: item.parent?.name ?? '' });
-  },
-});
-
-/* -------------------------------------------- */
-/*  Privileged                                   */
-/* -------------------------------------------- */
-
-// Privileged (Beneath the Helmet p.50): "Spend a Story Point to gain a temporary ally for the rest
-// of the game session." The Story Point is spent here; who the ally is stays the GM's. (The Social
-// Edge is the Perk's opt-in effect; "access to a person or area normally barred" is narrative.)
-registerUse({
-  id: 'pr2Privileged',
-  matches: item => sourceOf(item) == PR2.privileged,
-  run: async item => {
-    const actor = item.parent;
-    const { canSpendForActor, spendForActor } = await import("../../story-points.mjs");
-    if (!canSpendForActor(actor, 1)) {
-      ui.notifications?.warn(T('Pr2NoStoryPoint'));
-      return null;
-    }
-
-    await spendForActor(actor, 1, { announce: false });
-    return T('Pr2PrivilegedAlly', { name: actor.name });
-  },
-});
 
 /* -------------------------------------------- */
 /*  Grid Relic Weapon                            */

@@ -5,6 +5,7 @@
   "_id": "ddLUrsn3t96NpUqL",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Integrated Advanced Weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a Restricted weapon and it's built into the drone.</p>"

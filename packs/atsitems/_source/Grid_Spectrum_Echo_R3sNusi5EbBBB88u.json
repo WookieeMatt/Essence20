@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a Perk from another Power Rangers Role","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickPerk","from":"role","line":"pr","notOwn":true,"maxLevel":"@level","excludeName":"extra attack|general perk|grid power|zord"},{"do":"setToggle","key":"granted","value":true}]}
+    ],
+    "prerequisites": {"when":["self:hasType:perk:Spectrum Shift","ask:Levels in a former Spectrum Role"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a Role Perk at or below your level from another Power Rangers Role (choose one from your former Spectrum Role) and add it to your sheet.</p>"

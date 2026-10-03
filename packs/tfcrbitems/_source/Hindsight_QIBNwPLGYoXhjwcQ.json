@@ -5,6 +5,9 @@
   "_id": "QIBNwPLGYoXhjwcQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Recalling a previous scene (Hindsight: Edge)","when":["skill:alertness"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch for Edge on Alertness tests about a scene you are recalling.</p>"

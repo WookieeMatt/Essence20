@@ -5,6 +5,10 @@
   "_id": "hF2rJtS3SzcjqnLr",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "rules": [
+      {"type":"Grant","label":"SMASH! (special attack)","uuid":"Compendium.essence20.technorganic_secrets.Item.e2LbSl8llOCJ2I6o","skipIfOwned":true},
+      {"type":"Use","label":"Get the SMASH! attack back","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.e2LbSl8llOCJ2I6o"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.e2LbSl8llOCJ2I6o"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: converting into this Alt Mode makes you Huge with 60ft Ground Movement. Taking it adds SMASH!, a Might attack at double Reach for 2 Blunt with Stun and Maneuver alternate effects (Use button re-adds it).</p>"

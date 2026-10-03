@@ -19,7 +19,7 @@ const VAINGLORIOUS_FLAG = 'vainglorAlreadyActedThisCombat';
 function hasVainglorious(actor) {
   return !!actor?.items?.find(item =>
     item.type == 'hangUp'
-    && (item.flags?.core?.sourceId == VAINGLORIOUS_ID || item._stats?.compendiumSource == VAINGLORIOUS_ID),
+    && (item.flags?.core?.sourceId == VAINGLORIOUS_ID || item._stats?.compendiumSource == VAINGLORIOUS_ID || item?.flags?.essence20?.rulesSource == VAINGLORIOUS_ID),
   );
 }
 

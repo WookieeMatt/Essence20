@@ -5,6 +5,9 @@
   "_id": "roPkOVTlYMpd675h",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CritOnD2","label":"Let Cool Heads Prevail: crit on the d2 on Specialized Social tests out of combat","when":["not:combat","essence:social","roll:specialized"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: outside combat, Specialized Social Skill Tests can Critically Succeed on the d2.</p>"

@@ -5,6 +5,7 @@
   "_id": "yFlxX1ErTOlXXjz7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:count:alteration>=1"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted: an always-equipped Riot Shield. Automatic: when you raise it, its Evasion bonus equals the number of Alterations you have.</p>"

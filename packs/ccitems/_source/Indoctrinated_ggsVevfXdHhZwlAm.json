@@ -5,6 +5,9 @@
   "_id": "ggsVevfXdHhZwlAm",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Indoctrinated (Hang-Up)","when":["skill:deception"],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: anyone targeting you with a Deception roll gets Edge, labelled Indoctrinated in their Roll Options Dialog.</p><p>Left to the table: limiting it to appeals that reinforce how you feel about Cobra.</p>"

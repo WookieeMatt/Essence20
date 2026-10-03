@@ -5,6 +5,9 @@
   "_id": "TESyOcJFtd9Qn9Tk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"No penalty on Maneuver (Fluid Motion)","items":["item:type:weaponEffect","item:damageType:maneuver","weapon:trait:silent","weapon:trait:martialArts"],"path":"system.shiftDown","op":"set","value":0}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Silent Martial Arts weapons gain a Maneuver alternate effect, and any Maneuver alternate they already have loses its penalty.</p>"

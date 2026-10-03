@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Magical","self:skill:spellcasting>=d2"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: ↑1 on Spellcasting.</p>"

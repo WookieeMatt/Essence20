@@ -5,6 +5,7 @@
   "_id": "RUlNdBVlWqFvkYLv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:size>=large"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose your bonded partner, then link or unlink the pair and draw Energon from the partner's module. While linked, Energy and Laser hits you take refill that module.</p>"

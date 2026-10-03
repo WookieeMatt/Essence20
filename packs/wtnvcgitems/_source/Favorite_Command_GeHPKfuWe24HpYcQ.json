@@ -5,6 +5,9 @@
   "_id": "GeHPKfuWe24HpYcQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Favorite Command","action":"commandPet","to":"move","ask":"E20.ActionPerkAskFavoriteCommand"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (on the pet): choose its favourite Skill. When you Command the pet you're asked if it's that Skill; if so the command costs a Move action instead of a Standard action.</p>"

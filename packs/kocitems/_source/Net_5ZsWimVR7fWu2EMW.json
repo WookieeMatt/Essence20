@@ -5,6 +5,9 @@
   "_id": "5ZsWimVR7fWu2EMW",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Catching something (Net: ↑1)","upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a ↑1 switch while you carry it, for catching fish or troublesome creatures.</p>"

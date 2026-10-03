@@ -78,7 +78,7 @@ export function isSneakAttackDamageItem(rolePoints) {
     return false;
   }
 
-  const sourceId = rolePoints.flags?.core?.sourceId ?? rolePoints._stats?.compendiumSource;
+  const sourceId = rolePoints.flags?.core?.sourceId ?? rolePoints._stats?.compendiumSource ?? rolePoints?.flags?.essence20?.rulesSource;
   return sourceId == SNEAK_ATTACK_DAMAGE_ID;
 }
 
@@ -318,7 +318,7 @@ export function hasPredatorSneakAttack(actor) {
   }
 
   const parent = actor.items.get(perkItem.flags?.essence20?.parentId);
-  const parentSourceId = parent?.flags?.core?.sourceId ?? parent?._stats?.compendiumSource;
+  const parentSourceId = parent?.flags?.core?.sourceId ?? parent?._stats?.compendiumSource ?? parent?.flags?.essence20?.rulesSource;
   return parentSourceId == PREDATOR_FOCUS_ID;
 }
 

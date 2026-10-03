@@ -49,8 +49,8 @@ beforeEach(() => {
 const ids = out => out.sources.map(s => s.id);
 
 test('Spacewalker: Edge on Athletics, ↑1 others in zero-G, +5 Evasion', () => {
-  const holder = actor([item(S1.spacewalker)], { system: { defenses: { evasion: { total: 10, string: '10' } } } });
   deps.getEnvironment = () => 'zeroGravity';
+  const holder = actor([item(S1.spacewalker)], { system: { defenses: { evasion: { total: 10, string: '10' } } } });
   expect(situationalRollSources(holder, null, { rolledSkill: 'athletics' }).sources[0]).toMatchObject({ edge: true });
   expect(situationalRollSources(holder, null, { rolledSkill: 'science' }).sources[0]).toMatchObject({ shiftUp: 1 });
   situationalDerived(holder);
@@ -108,17 +108,10 @@ test('Urban Adaptation pool and abilities', () => {
 
 test('Earth Defense Command Space Force', () => {
   const holder = actor([item(S1.earthDefenseCommand)]);
-  deps.getEnvironment = () => 'zeroGravity';
-  expect(situationalRollSources(holder, null, { item: { type: 'weaponEffect', system: {} } }).sources[0].shiftUp).toBe(2);
   const plane = { type: 'vehicle', system: { movement: { aerial: { total: 60 } }, actors: { x: { uuid: holder.uuid, vehicleRole: 'driver' } } } };
   global.game.actors = [plane];
   deps.getEnvironment = () => 'normal';
   expect(ids(situationalRollSources(holder, null, { rolledSkill: 'driving' }))).toContain('s1-spaceForceDriving');
-});
-
-test('Diver ↑1 Alertness underwater', () => {
-  deps.getEnvironment = () => 'underwater';
-  expect(situationalRollSources(actor([item(S1.diver)]), null, { rolledSkill: 'alertness' }).sources[0].shiftUp).toBe(1);
 });
 
 test('Weatherproof cancels the chosen environment penalty', () => {
@@ -133,15 +126,6 @@ test('Weatherproof cancels the chosen environment penalty', () => {
   expect(situationalRollSources(holder, null, { item: effect }).sources).toEqual([]);
 });
 
-test('Every Trick cancels an invisible attacker, Thermal Scope sees one', () => {
-  const effect = { type: 'weaponEffect', system: {}, flags: { essence20: { parentId: 'w' } } };
-  const attacker = actor([{ id: 'w', type: 'weapon', system: {} }, item(S1.thermalScope, { type: 'upgrade', flags: { parentId: 'w' } }), effect], { statuses: ['invisible'] });
-  const defender = actor([item(S1.everyTrick)], { id: 'd', statuses: ['invisible'] });
-  const out = situationalRollSources(attacker, defender, { item: effect });
-  expect(out.sources.find(s => s.id == 's1-everyTrick').snag).toBe(true);
-  expect(out.sources.find(s => s.id == 's1-thermalScope').edge).toBe(true);
-});
-
 test('Environmental Enforcer: Edge on Maneuver attacks in a chosen terrain', () => {
   const holder = actor([item(S1.environmentalEnforcer, { flags: { s1Environments: ['arctic'] } })], { system: { skills: { survival: { shift: 'd4' } } } });
   const maneuver = { type: 'weaponEffect', system: { damageType: 'maneuver' } };
@@ -151,18 +135,18 @@ test('Environmental Enforcer: Edge on Maneuver attacks in a chosen terrain', () 
   expect(survivalRanks(holder)).toBe(2);
 });
 
-test('dialog: Fast Tracking, Swerve, City Slicker and Layered Armor', async () => {
+test('dialog: Fast Tracking, City Slicker and Layered Armor', async () => {
   const layered = item(S1.layeredArmor, { type: 'armor', system: { equipped: true } });
-  const holder = actor([item(S1.swerve), item(S1.citySlicker), layered], {
+  const holder = actor([item(S1.citySlicker), layered], {
     system: { skills: { infiltration: { shift: 'd20' }, streetwise: { shift: 'd6' } } },
   });
-  expect(situationalToggles(holder, { rolledSkill: 'driving' }).map(t => t.name)).toEqual(['s1Swerve']);
+  expect(situationalToggles(holder, { rolledSkill: 'driving' })).toEqual([]);
   deps.getTerrain = () => 'urban';
   expect(situationalToggles(holder, { rolledSkill: 'infiltration' })[0]).toMatchObject({ name: 's1CitySlicker', value: true });
   expect(skillSwapDelta(holder, 'infiltration', 'streetwise')).toBe(3);
-  const options = { shiftUp: 0, shiftDown: 0, ext: { s1Swerve: true, s1CitySlicker: true } };
+  const options = { shiftUp: 0, shiftDown: 0, ext: { s1CitySlicker: true } };
   await situationalApplyDialog(holder, options, { rolledSkill: 'infiltration' });
-  expect(options).toMatchObject({ edge: true, shiftUp: 3 });
+  expect(options).toMatchObject({ shiftUp: 3 });
   const persuade = { shiftUp: 0, ext: {} };
   await situationalApplyDialog(holder, persuade, { rolledSkill: 'persuasion', dataset: { specializationKey: 'leadership' } });
   expect(persuade.skillEffectModifierBonus).toBe(1);

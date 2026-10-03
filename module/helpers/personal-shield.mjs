@@ -55,7 +55,7 @@ export function isPersonalShieldItem(rolePoints) {
     return false;
   }
 
-  const sourceId = rolePoints.flags?.core?.sourceId ?? rolePoints._stats?.compendiumSource;
+  const sourceId = rolePoints.flags?.core?.sourceId ?? rolePoints._stats?.compendiumSource ?? rolePoints?.flags?.essence20?.rulesSource;
   return sourceId == PERSONAL_SHIELD_ROLE_POINTS_ID;
 }
 

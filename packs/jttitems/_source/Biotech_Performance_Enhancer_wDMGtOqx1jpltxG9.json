@@ -5,6 +5,11 @@
   "_id": "wDMGtOqx1jpltxG9",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Boost for the scene","when":["self:type:vehicle"],"limit":{"per":"scene"},"steps":[{"do":"setToggle","key":"boost","value":true,"until":"scene"},{"do":"chat","text":"{name}'s Biotech Performance Enhancer: +20ft Ground, +10ft other Movement, +2 Evasion and +1 hardpoint damage for the scene."}]},
+      {"type":"Defense","defense":"evasion","amount":2,"when":["self:type:vehicle","self:toggle:boost"]}
+    ],
+    "prerequisites": {"when":["ask:Ranger Operator"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene, switch it on. For the scene the vehicle gains +2 Evasion, extra Movement (+20 feet Ground, +10 feet others) and +1 damage on its hardpoint weapons.</p>"

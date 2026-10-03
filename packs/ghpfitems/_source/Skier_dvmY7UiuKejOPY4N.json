@@ -5,6 +5,10 @@
   "_id": "dvmY7UiuKejOPY4N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"ground","stage":"final","op":"add","value":10,"label":"Skiing: Ground Movement +10 ft","when":["check:skiing"]}
+    ],
+    "prerequisites": {"when":["ask:Skiing or Arctic Specialization"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: switches skiing on or off; while on, +10ft Ground Movement and +1 Evasion.</p><p>Left to the table: the free kits and skis at requisition.</p>"

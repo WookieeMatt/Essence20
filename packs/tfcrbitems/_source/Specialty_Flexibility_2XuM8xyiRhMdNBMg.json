@@ -5,6 +5,11 @@
   "_id": "2XuM8xyiRhMdNBMg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"AlternateEffect","label":"Specialty Flexibility: Stun 2","key":"sfStun","name":"{E20.DamageStun} 2","items":[{"any":["item:source:Compendium.essence20.tf_crb.Item.8Hi76APCo9QRnbLE","item:name~long range rifle"]}],"changes":{"range.long":null,"secondaryDamage.type":null,"secondaryDamage.value":0,"shiftDown":0,"damageType":"stun","damageValue":2}},
+      {"type":"AlternateEffect","label":"Specialty Flexibility: Intimidate","key":"sfIntimidate","name":"E20.DamageIntimidate","items":[{"any":["item:source:Compendium.essence20.tf_crb.Item.8Hi76APCo9QRnbLE","item:name~long range rifle"]}],"changes":{"range.long":null,"secondaryDamage.type":null,"secondaryDamage.value":0,"shiftDown":0,"damageType":"intimidate","damageValue":null}},
+      {"type":"AlternateEffect","label":"Specialty Flexibility: Maneuver","key":"sfManeuver","name":"E20.DamageManeuver","items":[{"any":["item:source:Compendium.essence20.tf_crb.Item.8Hi76APCo9QRnbLE","item:name~long range rifle"]}],"changes":{"range.long":null,"secondaryDamage.type":null,"secondaryDamage.value":0,"shiftDown":0,"damageType":"maneuver","damageValue":null}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Long Range Rifle gains Stun 2, Intimidate and Maneuver alternate effects, usable within its normal range.</p>"

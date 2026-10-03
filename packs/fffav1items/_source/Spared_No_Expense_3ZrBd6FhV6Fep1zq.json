@@ -5,6 +5,10 @@
   "_id": "3ZrBd6FhV6Fep1zq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Spared No Expense","when":["skill:{item.choice}"],"upshift":1},
+      {"type":"RollModifier","label":"Larger target (Spared No Expense)","when":["attack","target:sizeDiff>=1"],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: trained in medium and heavy armor. Automatic: driving Qualification for Large/Long and smaller land vehicles.</p><p>Left to the table: training with the silent battledress upgrade.</p>"

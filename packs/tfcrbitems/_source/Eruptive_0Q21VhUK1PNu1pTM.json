@@ -5,6 +5,7 @@
   "_id": "0Q21VhUK1PNu1pTM",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Explosive weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while attached: the explosive's blast radius doubles.</p>"

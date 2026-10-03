@@ -67,7 +67,7 @@ export async function markEyeForAppraisal(actor, item = null) {
   // canvas when it matters to something: Vantage Point's "from within an area defined by the Eye
   // For Appraisal Role Perk gain Edge" (Decepticon Directive p.64).
   let area = null;
-  if (actor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == VANTAGE_POINT_ID)) {
+  if (actor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == VANTAGE_POINT_ID)) {
     const { pickCanvasPoint } = await import("./forced-movement.mjs");
     const point = await pickCanvasPoint(game.i18n.localize('E20.EyeForAppraisalPickArea'));
     area = point ? { x: point.x, y: point.y, sceneId: canvas?.scene?.id ?? null } : null;

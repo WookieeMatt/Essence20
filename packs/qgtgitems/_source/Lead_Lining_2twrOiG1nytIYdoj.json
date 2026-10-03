@@ -5,6 +5,10 @@
   "_id": "2twrOiG1nytIYdoj",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","path":"system.traits.computerized","op":"set","value":0,"when":["self:type:vehicle"],"priority":1,"label":"Lead Lining (not Computerized)"}
+    ],
+    "prerequisites": {"when":["self:data:system.traits.computerized"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: removes the vehicle's Computerized trait, so it cannot be targeted as Computerized.</p>"

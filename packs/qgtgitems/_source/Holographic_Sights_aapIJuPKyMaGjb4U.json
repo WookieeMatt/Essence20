@@ -5,6 +5,7 @@
   "_id": "aapIJuPKyMaGjb4U",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Targeting weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: multi-target Targeting effects of this weapon get ↑ equal to their printed ↓, listed as a Holographic Sights switch under Automatic Modifiers in the Roll Options Dialog, so the two cancel out.</p>"

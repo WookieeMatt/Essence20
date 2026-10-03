@@ -5,6 +5,9 @@
   "_id": "gFYCwicMMwjKQ9fx",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Leadfoot (not driving)","when":["skill:alertness","not:vehicle:driving"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you are not driving a vehicle, your Alertness tests open the Roll Options Dialog with Snag already selected.</p>"

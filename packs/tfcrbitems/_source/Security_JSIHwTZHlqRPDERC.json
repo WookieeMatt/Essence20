@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SurpriseExemption","label":"Security: Move and Skill Tests while Surprised","mode":"move"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while Surprised you still get your Move action (and can roll a Skill Test); your Standard action stays blocked.</p>"

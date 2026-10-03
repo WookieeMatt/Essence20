@@ -1,6 +1,6 @@
 import { renegadeHolderFor } from "./helpers/summons.mjs";
 import { handleRiderButton, onDamageDealt } from "./helpers/target-riders.mjs";
-import { hasVehicleUpgrade, reduceVehicleDamage, VU } from "./helpers/vehicle-upgrades.mjs";
+import { reduceVehicleDamage } from "./helpers/vehicle-upgrades.mjs";
 import { applyTimedCondition } from "./helpers/timed-status.mjs";
 import { applyEssenceDamage } from "./helpers/environment-hazards.mjs";
 import { applyEssenceAttack, describeEssenceAttack, isEssenceDamageType } from "./helpers/essence-attack.mjs";
@@ -940,15 +940,6 @@ export async function onApplyDamage(message, button) {
     }
 
     damage = cut.amount;
-
-    // Reactive Shocks: "Once per turn, when the vehicle takes damage it can immediately move 10ft away
-    // from the attack's source."
-    if (damage > 0 && hasVehicleUpgrade(target, VU.reactiveShocks)) {
-      ChatMessage.create({
-        content: game.i18n.format('E20.VehicleReactiveShocks', { name: target.name }),
-        speaker: ChatMessage.getSpeaker({ actor: target }),
-      });
-    }
   }
 
   // The weaponEffect's own second damage component on this same hit, if it has one - see

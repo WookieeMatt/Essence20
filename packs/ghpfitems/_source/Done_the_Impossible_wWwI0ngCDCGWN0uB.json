@@ -5,6 +5,10 @@
   "_id": "wWwI0ngCDCGWN0uB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Add a Story Point to the pool","limit":{"per":"encounter"},"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} adds a Story Point to the team's pool."}]}
+    ],
+    "prerequisites": {"when":["ask:3+ successful missions"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: adds a Story Point to the team pool (once per encounter).</p><p>Left to the table: rerolling any die, not just 1s, when you spend a Story Point to reroll.</p>"

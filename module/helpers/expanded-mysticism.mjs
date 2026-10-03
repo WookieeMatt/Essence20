@@ -30,7 +30,7 @@ import { E20 } from "./config.mjs";
  *   resistance-after-hit half) - same shape as Powered Plating's Toughness bonus, just picking
  *   between Toughness/Evasion via a DialogV2 select instead of being fixed to one Defense.
  * - Quicken: "double one of your Movements until the end of your turn." Same on/off-flag-plus-
- *   turn-end-clear shape as Frictionless Movement (documents/actor.mjs#_prepareMovement +
+ *   turn-end-clear shape as Frictionless Movement (the item's own Movement rules +
  *   essence20.mjs's own combatTurn/combatRound hook, "the activating actor's own current turn"
  *   approximation already established there) - but scoped to ONE player-chosen Movement type
  *   (RAW: "one of your Movements") rather than Frictionless Movement's own "every type" reading.
@@ -234,15 +234,6 @@ export async function activateExpandedMysticismQuicken(actor) {
   await mysticalPoints.update({ 'system.resource.value': mysticalPoints.system.resource.value - 1 });
   await actor.setFlag('essence20', QUICKEN_TYPE_FLAG, movementType);
   await markUsedThisScene(actor, QUICKEN_USES_THIS_SCENE_FLAG);
-}
-
-/**
- * @param {Actor} actor
- * @param {String} movementType
- * @returns {Boolean}
- */
-export function isExpandedMysticismQuickenActive(actor, movementType) {
-  return actor?.getFlag?.('essence20', QUICKEN_TYPE_FLAG) == movementType;
 }
 
 /**

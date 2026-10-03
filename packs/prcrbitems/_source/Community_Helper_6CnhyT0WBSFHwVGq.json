@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Community Helper","when":["skill:{item.choice}",{"any":["not:skill:brawn","not:attack"]}],"edge":true},
+      {"type":"RollModifier","label":"Community Helper (Initiative: Edge)","when":["roll:initiative","rule:data:system.choice=initiative","not:skill:initiative"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>When added you choose your service. Automatic: tests with its Skill open the Roll Options Dialog with Edge already selected (Brawn only outside attacks; for the military option, your Initiative).</p>"

@@ -91,7 +91,7 @@ function isAttachedMode(modeChoice, isEnteringBotMode, altModeId) {
  */
 export async function triggerModeAttachmentCheck(actor, isEnteringBotMode, altModeId = null) {
   const hangUp = actor.items?.find(item => item.type == 'hangUp'
-    && (item.flags?.core?.sourceId == MODE_ATTACHMENT_ID || item._stats?.compendiumSource == MODE_ATTACHMENT_ID));
+    && (item.flags?.core?.sourceId == MODE_ATTACHMENT_ID || item._stats?.compendiumSource == MODE_ATTACHMENT_ID || item?.flags?.essence20?.rulesSource == MODE_ATTACHMENT_ID));
   if (!hangUp || !isAttachedMode(hangUp.system.choice, isEnteringBotMode, altModeId)) {
     return;
   }

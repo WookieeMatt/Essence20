@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Acrobatic Outlook: no help on Speed Skills","side":"give","effect":"refuse","when":["essence:speed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you can't Lend Assistance on Speed-based tests.</p>"

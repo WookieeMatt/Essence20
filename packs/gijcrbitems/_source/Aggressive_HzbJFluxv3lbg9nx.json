@@ -5,6 +5,9 @@
   "_id": "HzbJFluxv3lbg9nx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Extra move for a Story Point","when":["combat"],"cost":{"resource":{"storyPoints":true},"amount":1},"limit":{"per":"turn"},"steps":[{"do":"grantActions","move":1},{"do":"chat","text":"{name} gains an extra Move action this turn."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: once per turn, spend a Story Point to move your full Movement on top of your Move action.</p><p>Left to the table: ignoring Rough Terrain and Contingency attacks during that move.</p>"

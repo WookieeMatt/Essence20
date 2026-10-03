@@ -108,8 +108,8 @@ beforeEach(() => {
 describe('registration', () => {
   test('Use buttons and hooks are registered', () => {
     const ids = ext.registrySnapshot().uses.map(u => u.id);
-    expect(ids).toEqual(expect.arrayContaining(['pr3MegaformTrait', 'pr3NinjaPower', 'pr3PowerHealCondition', 'pr3Student',
-      'pr3VastWealth', 'pr3UniqueWeapon', 'pr3UniqueStore', 'pr3ElementalFury', 'pr3Overload', 'pr3ZordMount', 'pr3Camouflage',
+    expect(ids).toEqual(expect.arrayContaining(['pr3MegaformTrait', 'pr3NinjaPower', 'pr3PowerHealCondition',
+      'pr3UniqueWeapon', 'pr3UniqueStore', 'pr3ElementalFury', 'pr3Overload', 'pr3ZordMount',
       'pr3EmissarysGift', 'pr3Navigator', 'pr3Safehaven']));
     expect(global.Hooks.on).toHaveBeenCalledWith('updateItem', expect.any(Function));
     expect(global.Hooks.on).toHaveBeenCalledWith('updateActor', expect.any(Function));
@@ -237,27 +237,6 @@ describe('Unique Weapon', () => {
   });
 });
 
-describe('Dialog ticks', () => {
-  test('Student, Vast Wealth and the Hang-Ups offer their ticks', () => {
-    const actor = makeActor({ items: [
-      { flags: src(common.IDS.student) }, { flags: src(common.IDS.vastWealth) },
-      { type: 'hangUp', flags: src(common.IDS.hartunian) }, { type: 'hangUp', flags: src(common.IDS.returnedHangUp) },
-    ] });
-    const names = ext.extDialogToggles(actor, { rolledEssence: 'social', item: null }).map(t => t.name);
-    expect(names).toEqual(expect.arrayContaining(['pr3Student', 'pr3Flaunt', 'pr3Hartunian', 'pr3Returned']));
-  });
-
-  test('ticks apply their shifts', async () => {
-    const options = { ext: { pr3Hartunian: true, pr3Returned: true } };
-    await ext.runApplyDialog(makeActor(), options, {});
-    expect(options.shiftDown).toBe(1);
-    expect(options.snag).toBe(true);
-    const edge = { ext: { pr3Student: true } };
-    await ext.runApplyDialog(makeActor(), edge, {});
-    expect(edge.edge).toBe(true);
-  });
-});
-
 describe('Through the Shattered Grid', () => {
   test('Elemental Fury uses the strongest ranged attack', () => {
     const zord = makeActor({ items: [
@@ -275,12 +254,6 @@ describe('Through the Shattered Grid', () => {
     expect(sourcesFor(zord, null, { isAttack: true }).find(s => s.id == 'ext-pr3Overload')?.edge).toBe(true);
     global.game.combat.turn = 1;
     expect(sourcesFor(zord, null, { isAttack: true }).find(s => s.id == 'ext-pr3Overload')).toBeUndefined();
-  });
-
-  test('Eltarian Camouflage imposes ↓1 on seeing through it', () => {
-    const target = makeActor({ items: [{ type: 'gear', flags: { ...src(common.IDS.camouflage), essence20: { pr3Disguised: true } } }] });
-    expect(sourcesFor(makeActor(), target, { rolledSkill: 'alertness' }).find(s => s.id == 'ext-pr3Camouflage')?.shiftDown).toBe(1);
-    expect(sourcesFor(makeActor(), target, { rolledSkill: 'might', isAttack: true }).find(s => s.id == 'ext-pr3Camouflage')).toBeUndefined();
   });
 
   test('an active Rhino Sentry Shield is cover against ranged attacks', () => {

@@ -403,7 +403,10 @@ export function canSpendForActor(actor, amount = 1) {
  * @param {number} [amount]
  */
 export function spendForActor(actor, amount = 1, options = {}) {
-  return requestStoryPointSpend(actor, amount, { ...options, pool: poolFor(actor) });
+  const result = requestStoryPointSpend(actor, amount, { ...options, pool: poolFor(actor) });
+  // Item rules' 'storyPointSpent' Triggers (rules/triggers.mjs) listen for this.
+  globalThis.Hooks?.callAll?.('essence20.storyPointSpent', actor, amount);
+  return result;
 }
 
 /* -------------------------------------------- */

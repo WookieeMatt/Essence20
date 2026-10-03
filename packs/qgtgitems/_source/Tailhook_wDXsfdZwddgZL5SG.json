@@ -5,6 +5,7 @@
   "_id": "wDXsfdZwddgZL5SG",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["self:data:system.traits.air"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing applies automatically.</p><p>Left to the table: the aircraft can land on any flat surface allies have prepared.</p>"

@@ -5,6 +5,7 @@
   "_id": "eKmiGE7NChwZ2E96",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:infiltration>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: when an ally drove or made a non-Silent attack this round, spend a Free action for Edge on Infiltration tests this turn.</p>"

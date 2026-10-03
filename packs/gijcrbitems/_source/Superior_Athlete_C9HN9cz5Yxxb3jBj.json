@@ -5,6 +5,10 @@
   "_id": "C9HN9cz5Yxxb3jBj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Superior Athlete","when":["skill:athletics"],"upshift":2},
+      {"type":"ActionCost","label":"Superior Athlete","action":"sprint","to":"free","limit":{"per":"turn","max":1}}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: ↑2 on Athletics tests, listed as its own source - untick it unless you're jumping or climbing. Automatic: one Sprint per turn costs a Free action.</p><p>Left to the table: your jump distance is doubled.</p>"

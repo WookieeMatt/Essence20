@@ -5,6 +5,10 @@
   "_id": "gx0xOFKcKOPyaUto",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Torozord","path":"system.canHaveZord","op":"set","value":1},
+      {"type":"RollModifier","label":"Driving the Torozord: no Snag","immune":["snag"],"when":["skill:driving","vehicle:driving","vehicle:type:zord"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: unlocks a Zord slot on your sheet to link your Torozord. While you're in the driver's seat of a Zord, your Driving tests can't take a Snag: the Roll Options Dialog opens on Normal instead.</p><p>Left to the table: the Torozord's stats and starting Features.</p>"

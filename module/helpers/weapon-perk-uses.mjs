@@ -49,7 +49,7 @@ const GRID_SHELL_FLAG = 'gridShell';
 const AVAILABILITY_ORDER = ['standard', 'limited', 'restricted', 'prototype'];
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function has(actor, uuid) {

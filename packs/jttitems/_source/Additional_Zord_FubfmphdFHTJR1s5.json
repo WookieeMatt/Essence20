@@ -5,6 +5,7 @@
   "_id": "FubfmphdFHTJR1s5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:level>=6","self:hasType:perk:Zord"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick which of your Zords is the extra one; it gains Auxiliary Zord and two Zord Feature picks. Automatic: only one of your Zords can be summoned per scene.</p>"

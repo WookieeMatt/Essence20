@@ -5,6 +5,9 @@
   "_id": "RNP5lNTQLostQKSB",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Cloud Hatchet","path":"system.movement.aerial.total","op":"max","value":30}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks roll Athletics with the listed damage; its traits apply. While equipped, your Aerial Movement is at least 30 feet.</p>"

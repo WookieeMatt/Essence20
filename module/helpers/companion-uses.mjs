@@ -30,11 +30,8 @@ export const COMP = {
   backupMaster: uuid('gi_joe_crb', 'VV2qGG2gqmjKYcPl'),
   extraFriend: uuid('mlp_crb', 'Hg3B2BkTNnqTzRmr'),
   attackMlp: uuid('mlp_crb', 'G1yDcOArg2EonV9a'),
-  bowlOverMlp: uuid('mlp_crb', 'BysTCPE8xJCT2nsM'),
-  alteredPet: uuid('cobra_codex', 'GHV4MdFKH3eTo7sd'),
   constrictor: uuid('cobra_codex', 'S63cNsFogI1Ahh2C'),
   acidSacs: uuid('wtnv_citizens_guide', '8sUOMdsOyxfF0o1s'),
-  perch: uuid('cobra_codex', '8Qr2SNMkMxXr4BEG'),
   // Drones.
   artificialIntelligence: uuid('gi_joe_crb', 'OBjcj6ordJi60Cdd'),
   directControl: uuid('quartermasters_guide_to_gear', 'DzzgWT7OGa7bYB42'),
@@ -59,7 +56,6 @@ export const COMP = {
   miniConAffinity: uuid('decepticon_directive', 'vUA6Abi5IGqxBngI'),
   miniConHub: uuid('decepticon_directive', 'pTwyIvr5RbNaHmRf'),
   miniConMaster: uuid('decepticon_directive', 'FI1XThm3ns0V4bJU'),
-  prowl: uuid('decepticon_directive', 'asauzG2f81zWbOxu'),
   reinforcedBondDd: uuid('decepticon_directive', 'bEqDYxyIKdUrWZj6'),
   // Companions.
   humanCompanion: uuid('tf_crb', 'xPW26L1cpi3ax3Ag'),
@@ -69,7 +65,7 @@ export const COMP = {
 /** Items whose Use button runs something in companions.mjs, and what. */
 const USE_KINDS = new Set([
   'animalPetGij', 'robotPet', 'animalPetMlp', 'adoptionCenter', 'faithfulCompanion', 'morphinPet', 'roboticAnimalPet',
-  'assistantGij', 'assistantMlp', 'alteredPet', 'directControl', 'masterControlProgram', 'telemetryData', 'terminalGuidance',
+  'assistantGij', 'assistantMlp', 'directControl', 'masterControlProgram', 'telemetryData', 'terminalGuidance',
   'buzzTheTower', 'ric', 'miniConAlly', 'multiPurpose', 'enhancedSensors', 'additionalMiniCon', 'miniConAffinity', 'miniConHub',
   'miniConMaster', 'loyalMinions', 'humanCompanion', 'alienCompanion',
   'backupMaster', 'extraFriend', 'favoriteCommandGij', 'favoriteCommandMlp', 'favoriteCommandWtnv',
@@ -78,7 +74,7 @@ const USE_KINDS = new Set([
 const BY_SOURCE = Object.fromEntries(Object.entries(COMP).filter(([kind]) => USE_KINDS.has(kind)).map(([kind, id]) => [id, kind]));
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 export function companionKindOf(item) {
@@ -90,7 +86,7 @@ export function isCompanionUse(item) {
 }
 
 /** Used once and done - the drone upgrades a focus hands out at a level. */
-const ONCE = new Set(['directControl', 'masterControlProgram', 'telemetryData', 'alteredPet', 'enhancedSensors']);
+const ONCE = new Set(['directControl', 'masterControlProgram', 'telemetryData', 'enhancedSensors']);
 
 export function canUseCompanion(item) {
   const kind = companionKindOf(item);

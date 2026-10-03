@@ -5,6 +5,10 @@
   "_id": "1j1vpae13QKgPZGp",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"crew","upshift":2,"when":["skill:technology"]},
+      {"type":"RollModifier","upshift":2,"when":["self:type:vehicle","skill:technology"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: Technology tests made by anyone crewing the vehicle get ↑2, listed as an Interchangeable Parts switch under Automatic Modifiers. Switch it off when the test isn't repairing or adjusting the vehicle.</p>"

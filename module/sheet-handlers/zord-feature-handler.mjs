@@ -24,11 +24,9 @@ const ADDITIONAL_ATTACK_TYPE_ID = `${PR_CRB}j5arWXvkd5fHbe0Q`;
 const BLAST_ATTACK_ID = `${PR_CRB}Wb8UARwQKKyiwy77`;
 // Increase (Essence) (PR CRB, Zord Feature, p.137): "This Zord Feature increases one of these two
 // ability scores [Strength or Speed] by +2." The compendium item ships both bonuses as its own
-// Active Effects, one per Essence, both disabled - the exact "prompt, then enable the matching
-// bundled Active Effect" shape helpers/speak-your-truth.mjs#grantSpeakYourTruthEssence already
-// uses for a Perk; this is that idiom's Zord Feature equivalent, run after dropFunc() (unlike
-// Speak Your Truth, which runs on an already-embedded Perk) since a dropped Feature is still the
-// compendium source item at this point - see this file's own dropFunc-last idiom above.
+// Active Effects, one per Essence, both disabled - prompt, then enable the matching bundled
+// Active Effect, run after dropFunc() since a dropped Feature is still the compendium source item
+// at this point - see this file's own dropFunc-last idiom above.
 const INCREASE_ESSENCE_ID = `${PR_CRB}oKGzWCOUCuefWuqD`;
 
 // Light Chassis (PR CRB, Zord Feature, p.137, 2nd ptg): "increases the Zord's Speed by 1 and adds
@@ -93,7 +91,7 @@ const BASELINE_ATTACKS = {
  * @returns {String|null}
  */
 function featureSourceId(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.uuid ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? item?.uuid ?? null;
 }
 
 /**

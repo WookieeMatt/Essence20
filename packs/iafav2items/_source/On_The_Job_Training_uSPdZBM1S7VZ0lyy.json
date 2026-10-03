@@ -5,6 +5,7 @@
   "_id": "uSPdZBM1S7VZ0lyy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:essence:smarts>=6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick another G.I. JOE Origin and gain its Origin Benefit.</p>"

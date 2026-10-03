@@ -5,6 +5,9 @@
   "_id": "uQQbRbwADVtVwsym",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Earth Defense Command Benefits (zero-G attack)","when":["attack","environment:zeroGravity"],"upshift":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: its weapon Qualifications. Automatic: ↑2 on attacks in scenes set to zero gravity and on Driving tests while piloting a vehicle with Aerial Movement, labelled Earth Defense Command Benefits in the Roll Options Dialog. Use button: a Space Kit once per mission. The extra language is noted on the sheet.</p>"

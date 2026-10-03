@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:essence:speed>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when an adjacent ally is hit in melee and you wield a Finesse weapon with a Finesse Specialization, a button rolls your Finesse die to lower the attack, cancelling the hit if it drops below the target's Defense.</p>"

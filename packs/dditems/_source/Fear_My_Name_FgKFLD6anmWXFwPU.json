@@ -5,6 +5,9 @@
   "_id": "FgKFLD6anmWXFwPU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Fear My Name","when":[{"any":["skill:intimidation","skill:persuasion"]}],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your Intimidation and Persuasion Tests open the Roll Options Dialog with Edge already selected.</p><p>Left to the table: switch it back to Normal when the target hasn't been targeted by your faction before.</p>"

@@ -5,6 +5,7 @@
   "_id": "CiDQxCxgnnosvBDo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:focus:University of What It Is"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: roll Science against your target's Willpower; on a success they are Stunned until the end of their next turn.</p><p>Left to the table: what happens on a critical success.</p>"

@@ -5,6 +5,7 @@
   "_id": "BJpJWK7oDfw51Dxl",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Melee weapon"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: while it's on your sheet, your Athletics and Acrobatics tests get an Edge, listed as a source in the Roll Options Dialog. Set the roll back to normal when it isn't a boarding attempt.</p><p>Left to the table: the Snag on attempts to throw you off a vehicle.</p>"

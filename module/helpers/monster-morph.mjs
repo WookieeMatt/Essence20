@@ -17,12 +17,9 @@
  * Size-toggle shape follows this same book's own Monster... Grow! (helpers/monster-grow.mjs) -
  * save the actor's original Size on activation, restore it on deactivation. Health is a flat
  * system.health.bonus add/remove (Boosted Vigor's own established shape - actor.update(), not a
- * change to _prepareHealth itself). The Toughness bonus is deliberately NOT written to
- * system.defenses.toughness.bonus (that field is reserved for the player/GM's own manual Stat
- * Editor entry and compendium Active Effects - see documents/actor.mjs's own doc comment on why
- * runtime code must never write there) - instead it's a live, non-consumed read in dice.mjs's own
- * per-target checkEntries construction, the same shape Powered Plating/Phantom Suite's own
- * Morph-time Toughness/Evasion bonuses already established.
+ * change to _prepareHealth itself). The Toughness bonus and the Skill upshifts are item rules on
+ * each Path's own Role item (a Defense and a RollModifier, gated on
+ * self:data:flags.essence20.monsterFormActive), so this file only switches the form on and off.
  *
  * NOT built this pass: each Path's own unique 7th bullet (a reactive rider - Cruelty/Frost trigger
  * off TAKING 2+ damage, Flame/Thorns/Venom trigger off successfully LANDING a melee hit, each with
@@ -42,13 +39,14 @@ const PATH_STONE_ID = `${FMMC}TEjkVjIEFEbRI736`;
 const PATH_THORNS_ID = `${FMMC}0ICOTyVDXK1i6l1S`;
 const PATH_VENOM_ID = `${FMMC}rWoVOcNc3lXKDbhg`;
 
+// Toughness and Skill upshifts are rules on each Path's Role item; only the Health bonus is written here.
 const MONSTER_FORM_BY_PATH = {
-  [PATH_CRUELTY_ID]: { toughnessBonus: 2, healthBonus: 2, skills: ['alertness', 'intimidation', 'might'] },
-  [PATH_FLAME_ID]: { toughnessBonus: 2, healthBonus: 2, skills: ['alertness', 'athletics', 'brawn'] },
-  [PATH_FROST_ID]: { toughnessBonus: 2, healthBonus: 2, skills: ['brawn', 'might', 'initiative'] },
-  [PATH_STONE_ID]: { toughnessBonus: 4, healthBonus: 2, skills: ['intimidation', 'might', 'survival'] },
-  [PATH_THORNS_ID]: { toughnessBonus: 1, healthBonus: 2, skills: ['alertness', 'intimidation', 'survival'] },
-  [PATH_VENOM_ID]: { toughnessBonus: 2, healthBonus: 2, skills: ['intimidation', 'survival'] },
+  [PATH_CRUELTY_ID]: { healthBonus: 2 },
+  [PATH_FLAME_ID]: { healthBonus: 2 },
+  [PATH_FROST_ID]: { healthBonus: 2 },
+  [PATH_STONE_ID]: { healthBonus: 2 },
+  [PATH_THORNS_ID]: { healthBonus: 2 },
+  [PATH_VENOM_ID]: { healthBonus: 2 },
 };
 
 const MONSTER_FORM_ACTIVE_FLAG = 'monsterFormActive';
@@ -63,41 +61,12 @@ const ACTIVATION_COST = 3;
  */
 function getMonsterFormConfig(actor) {
   const roleItem = actor?.items?.find(item => item.type == 'role');
-  const sourceId = roleItem?.flags?.core?.sourceId ?? roleItem?._stats?.compendiumSource;
+  const sourceId = roleItem?.flags?.core?.sourceId ?? roleItem?._stats?.compendiumSource ?? roleItem?.flags?.essence20?.rulesSource;
   return MONSTER_FORM_BY_PATH[sourceId] ?? null;
 }
 
 export function isMonsterFormActive(actor) {
   return !!actor?.getFlag?.('essence20', MONSTER_FORM_ACTIVE_FLAG);
-}
-
-/**
- * The live, non-consumed Toughness Defense bonus while in Monster Form - see this file's own doc
- * comment for why it's read here rather than written into system.defenses.toughness.bonus.
- * @param {Actor} actor
- * @returns {Number}
- */
-export function getMonsterFormToughnessBonus(actor) {
-  if (!isMonsterFormActive(actor)) {
-    return 0;
-  }
-
-  return getMonsterFormConfig(actor)?.toughnessBonus ?? 0;
-}
-
-/**
- * The Skill upshift granted by Monster Form for the actor's own Path, if `rolledSkill` is one of
- * that Path's 2-3 named Skills.
- * @param {Actor} actor
- * @param {String} rolledSkill
- * @returns {Number}
- */
-export function getMonsterFormSkillBonus(actor, rolledSkill) {
-  if (!isMonsterFormActive(actor)) {
-    return 0;
-  }
-
-  return getMonsterFormConfig(actor)?.skills.includes(rolledSkill) ? 1 : 0;
 }
 
 /**
@@ -165,7 +134,6 @@ export const GROW_ID = `${FMMC}ZqE7kDEMylFQK6Oa`;
 const GROW_ACTIVE_FLAG = 'monsterGrowSelfActive';
 const GROW_SIZE_FLAG = 'monsterGrowSelfPreviousSize';
 const GROW_SIZE = 'towering';
-const GROW_DAMAGE_BONUS = 1;
 const GROW_DEFENSE_BONUS = 2;
 
 function hasGrowFlag(actor) {
@@ -174,10 +142,6 @@ function hasGrowFlag(actor) {
 
 export function isGrowActive(actor) {
   return isMonsterFormActive(actor) && hasGrowFlag(actor);
-}
-
-export function getGrowDamageBonus(actor) {
-  return isGrowActive(actor) ? GROW_DAMAGE_BONUS : 0;
 }
 
 export function getGrowDefenseBonus(actor) {

@@ -17,7 +17,8 @@ import {
   onEditActiveEffect,
   onToggleActiveEffect,
 } from "../helpers/effects.mjs";
-import { addRule, changeChoice, deleteRule, rulesContext, saveRulesJson, setToggle, stepPool } from "../rules/sheet.mjs";
+import { SKELETONS, changeChoice, chooseAddKind, deleteRule, effectEntries, rulesContext, saveRulesJson, setToggle, stepPool } from "../rules/sheet.mjs";
+import { rulesOf } from "../rules/index.mjs";
 
 /**
  * Handles retrieving all existing roles of the system version selected.
@@ -100,6 +101,9 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       toggleEffect: this.#toggleActiveEffect,
       rulesSaveJson: this.#rulesSaveJson,
       rulesAdd: this.#rulesAdd,
+      rulesEdit: this.#rulesEdit,
+      prerequisitesEdit: this.#prerequisitesEdit,
+      actsAsClear: this.#actsAsClear,
       rulesDelete: this.#rulesDelete,
       rulesToggle: this.#rulesToggle,
       rulesPool: this.#rulesPool,
@@ -144,7 +148,6 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       tabs: [
         { id: "description", group: 'primary', label: "Description"},
         { id: "details", group: 'primary', label: "Details"},
-        { id: "effects", group: 'primary', label: "Effects"},
         { id: "rules", group: 'primary', label: "E20.Rules.Tab"},
       ],
       initial: "description",
@@ -170,10 +173,6 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     details: {
       template: "systems/essence20/templates/item/tabs/detail-base.hbs",
       scrollable: [''],
-    },
-    effects: {
-      template: "systems/essence20/templates/item/tabs/effects.hbs",
-      scrollable: [""],
     },
     rules: {
       template: "systems/essence20/templates/item/tabs/rules.hbs",
@@ -261,8 +260,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     switch ( partId ) {
     case "description": context = await this._prepareDescriptionContext(context); break;
     case "details": context = await this._prepareDetailsContext(context); break;
-    case "effects": context = await this._prepareEffectsContext(context); break;
-    case "rules": Object.assign(context, rulesContext(this.document)); break;
+    case "rules": context = await this._prepareRulesContext(context); break;
     }
 
     return context;
@@ -281,14 +279,22 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     return context;
   }
 
-  async _prepareDetailsContext(context) {
-    const path = "systems/essence20/templates/item/details";
-    context.detailPath = `${path}/${this.document.type}.hbs`;
+  /**
+   * The Rules tab lists the item's Active Effects and its rules together (rules/sheet.mjs) - the
+   * effects first, since an always-on change is what most items carry.
+   */
+  async _prepareRulesContext(context) {
+    const categories = await prepareActiveEffectCategories(this.document.effects);
+    Object.assign(context, rulesContext(this.document), {
+      ruleEffects: effectEntries([...categories.passive.effects, ...categories.temporary.effects, ...categories.inactive.effects]),
+      rulesJsonOpen: this._rulesJsonOpen,
+    });
     return context;
   }
 
-  async _prepareEffectsContext(context) {
-    context.effects = await prepareActiveEffectCategories(this.document.effects);
+  async _prepareDetailsContext(context) {
+    const path = "systems/essence20/templates/item/details";
+    context.detailPath = `${path}/${this.document.type}.hbs`;
     return context;
   }
 
@@ -301,6 +307,15 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
 
   async _onDrop(event) {
     const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
+    // "Acts as" on the Rules tab - see rules/sheet.mjs#actsAsContext.
+    if (event.target?.closest?.('[data-acts-as]')) {
+      if (data?.type == 'Item' && data.uuid?.startsWith('Compendium.') && this.isEditable) {
+        await this.document.update({ 'flags.essence20.rulesSource': data.uuid });
+      }
+
+      return;
+    }
+
     const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.document;
     if (droppedItem.type == "base") {
@@ -471,9 +486,41 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     await saveRulesJson(this.document, this.element);
   }
 
-  static async #rulesAdd() {
-    const type = this.element.querySelector('[data-rules-add-type]')?.value;
-    await addRule(this.document, type);
+  /**
+   * One Add for everything the item does: ask in game words, then make an Active Effect for a flat
+   * stat change (through the usual wizard-or-blank choice) or a rule for anything else - opening the
+   * JSON editor on the new rule until the guided editor exists.
+   */
+  static async #rulesAdd(event) {
+    const kind = await chooseAddKind();
+    if (!kind) {
+      return;
+    }
+
+    if (kind == 'effect') {
+      // Picked in plain words already, so straight to the Wizard - unless this user always wants a blank effect.
+      const behavior = game.settings.get('essence20', 'effectAddBehavior') == 'blank' ? 'blank' : 'wizard';
+      await onCreateActiveEffect(event, this.document, { dataset: { effectType: 'passive' } }, { behavior });
+      return;
+    }
+
+    // A rule opens in the guided editor; it lands on the item only when saved there.
+    const { default: RuleEditor } = await import("../apps/rule-editor.mjs");
+    RuleEditor.open(this.document, rulesOf(this.document).length, SKELETONS[kind]);
+  }
+
+  static async #actsAsClear() {
+    await this.document.update({ 'flags.essence20.-=rulesSource': null });
+  }
+
+  static async #prerequisitesEdit() {
+    const { default: RuleEditor } = await import("../apps/rule-editor.mjs");
+    RuleEditor.openPrerequisites(this.document);
+  }
+
+  static async #rulesEdit(event, target) {
+    const { default: RuleEditor } = await import("../apps/rule-editor.mjs");
+    RuleEditor.open(this.document, Number(target.dataset.index));
   }
 
   static async #rulesDelete(event, target) {
@@ -520,7 +567,7 @@ export async function prepareAutomationContext(item) {
   }
 
   const stored = item._source?.system?.automation ?? {};
-  const sourced = !item.pack && !!(item.flags?.core?.sourceId ?? item._stats?.compendiumSource);
+  const sourced = !item.pack && !!(item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource);
   const inherited = sourced && !stored.status && !stored.notes?.trim();
   const status = automation.status || '';
   return {

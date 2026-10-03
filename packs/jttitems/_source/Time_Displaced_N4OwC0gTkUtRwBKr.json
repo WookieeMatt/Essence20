@@ -5,6 +5,9 @@
   "_id": "N4OwC0gTkUtRwBKr",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Unfamiliar with this era (Time Displaced: ↓2)","downshift":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a ↓2 switch for tests your era would leave you unfamiliar with. Use button: rolls the Continuum Anomaly risk die one size larger, hidden for the GM.</p>"

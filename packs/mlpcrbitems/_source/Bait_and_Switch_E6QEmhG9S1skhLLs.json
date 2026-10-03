@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Story Point: Edge on your next Deception or Infiltration test","when":["not:rule:banked"],"cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"bank","label":"Bait and Switch","edge":true,"appliesWhen":[{"any":["skill:deception","skill:infiltration"]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend a Friendship Point to bank Edge on your next Deception or Infiltration test.</p>"

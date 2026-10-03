@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ConditionImmunity","label":"Immune to frightened","conditions":["frightened"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: immune to fear (Frightened). Use button (while Morphed): pick a damage type to resist until the end of your next turn.</p>"

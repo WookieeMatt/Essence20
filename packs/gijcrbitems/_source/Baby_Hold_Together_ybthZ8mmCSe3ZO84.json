@@ -5,6 +5,9 @@
   "_id": "ybthZ8mmCSe3ZO84",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"wouldBeDefeated","label":"Baby Hold Together: the vehicle drops to 2 Health","scope":"driven","limit":{"per":"encounter"},"steps":[{"do":"leaveAt","value":2}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the first time in an encounter your vehicle would be Defeated, it drops to 2 Health instead.</p>"

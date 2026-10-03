@@ -6,14 +6,14 @@ const CONNIVING_PERK_ID = "Compendium.essence20.cobra_codex.Item.dJoVvMG3wjowbWJ
 import { getLendAssistanceGrantModes } from "./action-perks.mjs";
 import { describeGrant, setNextTurn } from "./action-economy.mjs";
 import { E20 } from "./config.mjs";
-import { registerCostRule, registerUse } from "./extensions.mjs";
-import { actorHasHangUp, actorHasPerk, bankPendingBonus, getUsesThisScene, markUsedThisScene } from "./perks.mjs";
+import { registerUse } from "./extensions.mjs";
+import { actorHasPerk, bankPendingBonus, getUsesThisScene, markUsedThisScene } from "./perks.mjs";
 import { getNearbyAllyTokens } from "./allies.mjs";
 import { getSkillRanks } from "./combat.mjs";
-import { canSpendForActor, requestStoryPointGrant, spendForActor } from "./story-points.mjs";
+import { ruleAssist } from "../rules/adapter.mjs";
+import { canSpendForActor, spendForActor } from "./story-points.mjs";
 import { clearVoiceOfPrimusAssistReady, hasVoiceOfPrimusAssistReady } from "./voice-of-primus.mjs";
 import { hasRemoteOperationsReady } from "./remote-operations.mjs";
-import { PSYCHOLOGICAL_SWAY_ID } from "./psychological-sway.mjs";
 import { isBlockedByFunExhaustion } from "./fun-exhaustion.mjs";
 
 /**
@@ -132,13 +132,6 @@ const LESSON_PLAN_ID = "Compendium.essence20.wtnv_citizens_guide.Item.MRJ2g8hLTs
 // this adds is the Edge.
 const GREENSHIRT_PERK_ID = "Compendium.essence20.gi_joe_crb.Item.XVu6skoSL0A3Hnve";
 
-// Greenshirt's own paired Hang-Up (p.49): "Other Joes can't Lend you Assistance on Skill Tests
-// unless they also have the Greenshirt Influence." A recipient-side refusal like Conniving's, and
-// keyed on the HANG-UP Item for the same reason - the penalty belongs to the Hang-Up, never to the
-// Influence Perk. Unlike Conniving's absolute refusal, this one has an escape hatch written into
-// RAW: a fellow Greenshirt can still help.
-const GREENSHIRT_HANGUP_ID = "Compendium.essence20.gi_joe_crb.Item.Exn9xZtJ9qoCNnZ8";
-
 // Bureaucrat (Transformers CRB, Influence Perk, p.32): "When using the Lend Assistance action,
 // you can grant the recipient both an Edge and a ↑1 to their Skill Test." An upgrade to the SKILL
 // half specifically - "the recipient"/"their Skill Test" is the assisted ally, whereas the combat
@@ -182,80 +175,6 @@ const BETTER_TOGETHER_JTT_ID = "Compendium.essence20.jump_through_time.Item.8ZGm
 // in Persuasion and have at least one rank in the skill being assisted.
 const MANY_MINDS_MAKE_LIGHT_WORK_ID = "Compendium.essence20.dark_skies_over_equestria.Item.D24JO5W03Amwwvzy";
 
-// Ship's Crew (Across the Stars, Influence Perk, p.48): "...while on the vessel, you can offer aid
-// to your crewmates and Lend Assistance even if you are unskilled in the Skill in question." The
-// second Perk in this codebase to lift canAssistWithSkill's own rank gate, and a stronger lift
-// than Many Minds Make Light Work's: that one still requires real training in both Persuasion and
-// the assisted Skill, whereas this explicitly covers being UNSKILLED. RAW scopes it to being
-// aboard the vessel; "a familiar ship" is not enforceable, so this checks only that the assister
-// is actually aboard some vehicle right now, via the same _getPilotedVehicle-style crew lookup
-// Peerless Pilot/Roadside Assistant already rely on - read inline here rather than through
-// dice.mjs's own private method, which this file can't reach (the same reason Baby Hold Together
-// reads a vehicle's crew map directly in combat.mjs).
-const SHIPS_CREW_ID = "Compendium.essence20.across_the_stars.Item.HPEU2YVjQM6pEZ3i";
-
-// Walk Them Through It (Transformers CRB, Scientist Role, 2nd level, p.79): "You help others help
-// you. Allies without ranks in Technology or Science can Lend Assistance to you on Technology and
-// Science Skill Tests." Held by the ALLY being helped (like Many Minds/Ship's Crew above, this
-// lifts canAssistWithSkill's own rank gate), but unlike either of those it's scoped to the two
-// named skills rather than being general, and the escape hatch belongs to the recipient's own Perk
-// rather than the assister's.
-const WALK_THEM_THROUGH_IT_ID = "Compendium.essence20.tf_crb.Item.7eWiN6w2TIBeSMoi";
-
-// Conniving's own Hang-Up (Cobra Codex, p.28): "Suspicious that others are trying to manipulate
-// you, you can't benefit from an ally who Lends Assistance." The first RECIPIENT-side gate on this
-// action - every other check here is about the assister's own fitness to help (the rank gate, Many
-// Minds, Ship's Crew). Keyed on the HANG-UP Item rather than Conniving's own Influence Perk, per
-// the direction invariant this project just established: a penalty belongs to the Hang-Up, and
-// Conniving's Influence offers a choice of Hang-Ups, so a holder who picked a different one must
-// NOT be silently saddled with this. Its paired Perk ("once per scene, an ally who Lends Assistance
-// may roll the Skill Test FOR you, and suffers the consequences of failing") is a role-reversal of
-// the whole action and is not built - see the ledger.
-const CONNIVING_HANGUP_ID = "Compendium.essence20.cobra_codex.Item.w8yTnTpOIUdFVm8u";
-
-// Acrobatic Outlook's own Hang-Up (MLP CRB, Nimble Influence, p.55): "You don't see as many
-// obstacles in your path as others... You cannot Lend Assistance on Speed based Skill Tests." An
-// ASSISTER-side refusal scoped to one essence's skills (E20.skillsByEssence.speed), unlike
-// Treacherous's own total refusal.
-const ACROBATIC_OUTLOOK_HANGUP_ID = "Compendium.essence20.mlp_crb.Item.rLku8lFIvdPxDC2D";
-
-// Show Off's own Hang-Up (WTNV Citizens' Guide, p.31): "You gain no benefits when an ally uses
-// Lend Assistance on you." Word for word Skeptical's own clause, just a third RECIPIENT-side
-// refusal to join Conniving/Skeptical below.
-const SHOW_OFF_HANGUP_ID = "Compendium.essence20.wtnv_citizens_guide.Item.R7DMglLJxy9d9und";
-
-// Skeptical's own Hang-Up (Transformers CRB, p.43): "You are an objective observer, and concepts
-// such as hope and inspiration don't impact you. You gain no benefits when an ally uses Lend
-// Assistance on you." A second, unconditional RECIPIENT-side refusal, the same shape as
-// Conniving's above - no escape hatch at all, unlike Greenshirt's own Hang-Up.
-const SKEPTICAL_HANGUP_ID = "Compendium.essence20.tf_crb.Item.yoyifVDjpnLloHbK";
-
-// Treacherous's own Hang-Up (Transformers CRB, p.43): "You are untrustworthy, unreliable, and
-// everyone knows it. You can never use the Lend Assistance action, not because you don't want
-// to, but because no one accepts your help." The first ASSISTER-side refusal in this file -
-// every other gate here is about whether the ALLY benefits, not whether the actor can even take
-// the action at all.
-const TREACHEROUS_HANGUP_ID = "Compendium.essence20.tf_crb.Item.KwvsyHeuUqRbto9u";
-
-/**
- * Whether the actor is currently aboard any vehicle as crew - see SHIPS_CREW_ID's own comment.
- * @param {Actor} actor
- * @returns {Boolean}
- */
-function isAboardVehicle(actor) {
-  // Requiring a real uuid up front matters: a crew entry with no uuid would otherwise match an
-  // actor with no uuid via undefined == undefined, the same false positive that has bitten Eye for
-  // Appraisal, Menacing Glare and One-Upping in this project already.
-  if (!actor?.uuid) {
-    return false;
-  }
-
-  return !!game.actors?.find(
-    candidate => candidate.type == 'vehicle'
-      && Object.values(candidate.system?.actors ?? {}).some(crew => crew.uuid == actor.uuid),
-  );
-}
-
 // Those Who Know, Teach (MLP CRB, Mentor Influence, p.53): "Three times per day, when you Lend
 // Assistance, the creature you assist gains the benefits of your help for the rest of the
 // scene/encounter instead of 1 Skill Test." A duration upgrade to the SKILL half (the combat
@@ -278,15 +197,6 @@ const THOSE_WHO_KNOW_TEACH_SCENE_FLAG = 'thoseWhoKnowTeachUsedThisScene';
 // qualifiers ("you perceive as able to give you commands", "believable verbal command") are
 // unenforceable narrative framing, dropped the same way as Bits To Spare/Truthseeker's own.
 const LACKEY_ID = "Compendium.essence20.decepticon_directive.Item.dXZpwsbvn6Jdgpsn";
-
-// One Pony Show (MLP CRB, Spirit of Laughter, 13th level, p.87): "you can Lend Assistance to
-// yourself as a Move action." getNearbyAllyTokens excludes the actor's own token by design (see
-// its own doc comment) - this Perk is the one deliberate exception, added back into the ally list
-// at activation time rather than widened generically. The Move-action cost (instead of Standard)
-// is left unenforced, the same "action-cost changes aren't modeled" gap every other Perk that
-// changes THIS action's own cost has (Partnered's Free action, To The Rescue's Free action) -
-// this codebase's action costs come from a fixed per-named-action lookup, not a per-Perk one.
-const ONE_PONY_SHOW_ID = "Compendium.essence20.mlp_crb.Item.8Idk7YjylEf8c43U";
 
 // Armchair General (Field Guide to Action and Adventure, Envoy Origin benefit, p.65) - see
 // getAssistShiftUp's own comment below. Its other clause, "You are qualified in a weapon type of
@@ -319,7 +229,7 @@ export async function pickArmchairGeneralWeapon(item, choose = null) {
 
 registerUse({
   id: 'armchairGeneralWeapon',
-  matches: item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == ARMCHAIR_GENERAL_ID,
+  matches: item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == ARMCHAIR_GENERAL_ID,
   canUse: item => !item.flags?.essence20?.[ARMCHAIR_WEAPON_FLAG],
   run: item => pickArmchairGeneralWeapon(item),
 });
@@ -328,20 +238,11 @@ registerUse({
 // "you can Lend Assistance as a Free action. However, allies can only take advantage of this for
 // Driving, Targeting, or Technology Skill Tests." Read as: the Free-action Lend Assistance only
 // helps with those three Skills - an assist with anything else still costs its usual Standard
-// action. So it is an action-economy discount (registerCostRule below), offered when Lend
+// action. So it is an action-economy discount (an ActionCost rule on the item), offered when Lend
 // Assistance is paid for and asked, since only the player knows which Skill the ally is about to
 // roll. The ordinary "at least as many ranks as your ally" gate still applies. (It used to be
 // built as a lift of that rank gate on those three Skills, which the book doesn't say.)
 const TECHNOLOGICAL_ASSISTANCE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7b01zSdekhUugIod";
-
-registerCostRule({
-  id: 'technologicalAssistance',
-  label: 'Technological Assistance',
-  has: actor => actorHasPerk(actor, TECHNOLOGICAL_ASSISTANCE_ID),
-  matches: ctx => ctx?.key == 'lendAssistance',
-  to: () => 'free',
-  ask: 'E20.ActionPerkAskTechnologicalAssistance',
-});
 
 /**
  * Whether an actor has any real rank in a skill - i.e. its shift is an actually-trained die rather
@@ -350,9 +251,6 @@ registerCostRule({
  * @param {String} skill
  * @returns {Boolean}
  */
-function isTrainedIn(actor, skill) {
-  return E20.skillRollableShifts.includes(actor?.system?.skills?.[skill]?.shift);
-}
 
 // Perks whose own sheet "Use" button takes the Lend Assistance action. This is a stand-in for the
 // Combat Actions menu this codebase doesn't have (see activateLendAssistance's own comment) - the
@@ -400,24 +298,16 @@ export const LEND_ASSISTANCE_PERK_IDS = [
  * @returns {Boolean}
  */
 export function canAssistWithSkill(actor, ally, skill) {
-  if (actorHasHangUp(ally, CONNIVING_HANGUP_ID) || actorHasHangUp(ally, SKEPTICAL_HANGUP_ID)
-    || actorHasHangUp(ally, SHOW_OFF_HANGUP_ID)) {
+  // Item rules (rules/adapter.mjs#ruleAssist): Hang-Ups that refuse help (Conniving, Skeptical, Show
+  // Off, Greenshirt, Acrobatic Outlook) and Perks that lift the rank requirement (Walk Them Through
+  // It, Many Minds Make Light Work, Ship's Crew).
+  const essence = Object.keys(E20.skillsByEssence ?? {}).find(key => E20.skillsByEssence[key].includes(skill)) ?? null;
+  const assist = ruleAssist(actor, ally, skill, essence);
+  if (assist.refused) {
     return false;
   }
 
-  if (actorHasHangUp(ally, GREENSHIRT_HANGUP_ID) && !actorHasPerk(actor, GREENSHIRT_PERK_ID)) {
-    return false;
-  }
-
-  if (E20.skillsByEssence.speed.includes(skill) && actorHasHangUp(actor, ACROBATIC_OUTLOOK_HANGUP_ID)) {
-    return false;
-  }
-
-  if (getSkillRanks(actor, skill) >= getSkillRanks(ally, skill)) {
-    return true;
-  }
-
-  if (['technology', 'science'].includes(skill) && actorHasPerk(ally, WALK_THEM_THROUGH_IT_ID)) {
+  if (getSkillRanks(actor, skill) >= getSkillRanks(ally, skill) || assist.anyRank) {
     return true;
   }
 
@@ -432,11 +322,6 @@ export function canAssistWithSkill(actor, ally, skill) {
   // Voice of Primus just above, but NOT consumed here - see remote-operations.mjs's own doc
   // comment for why (RAW grants repeated assists "for the rest of this turn", not a single one).
   if (hasRemoteOperationsReady(actor)) {
-    return true;
-  }
-
-  if (actorHasPerk(actor, MANY_MINDS_MAKE_LIGHT_WORK_ID)
-    && isTrainedIn(actor, 'persuasion') && isTrainedIn(actor, skill)) {
     return true;
   }
 
@@ -460,7 +345,7 @@ export function canAssistWithSkill(actor, ally, skill) {
     return true;
   }
 
-  return actorHasPerk(actor, SHIPS_CREW_ID) && isAboardVehicle(actor);
+  return false;
 }
 
 export const ASSIST_RANK_BYPASSES = [];
@@ -484,36 +369,10 @@ function isCommandAndControlPair(actor, ally) {
  * @returns {Number}
  */
 export function getAssistShiftUp(actor, ally, skill) {
-  let shiftUp = 1;
-
-  if (actorHasPerk(actor, PUTTING_OTHERS_BEFORE_YOURSELF_ID)) {
-    shiftUp = 2;
-  }
-
-  // Psychological Sway (Enigma of Combination, Counselor Focus, 10th level, p.37) - see its own
-  // comment above PSYCHOLOGICAL_SWAY_ID. "Can grant ↑2 (instead of the normal ↑1)" - same
-  // unconditional-upgrade shape as Putting Others Before Yourself just above ("who can hear your
-  // voice and understand your words" is an unenforced narrative qualifier, same idiom this
-  // codebase already accepts for similarly unverifiable conditions elsewhere).
-  if (actorHasPerk(actor, PSYCHOLOGICAL_SWAY_ID)) {
-    shiftUp = Math.max(shiftUp, 2);
-  }
-
-  if (actorHasPerk(actor, BETTER_TOGETHER_JTT_ID) && getSkillRanks(actor, skill) > getSkillRanks(ally, skill)) {
-    shiftUp = Math.max(shiftUp, (actor?.system?.level ?? 0) >= 13 ? 3 : 2);
-  }
-
-  // Armchair General (Field Guide to Action and Adventure, Envoy Origin benefit, p.65): "When you
-  // lend assistance in combat, your ally gains an additional ↑1 on their Skill Test." Additive on
-  // top of whatever the shift is otherwise (it stacks with Putting Others Before Yourself/Better
-  // Together above, unlike those two which only ever raise the base amount), and gated on
-  // game.combat - the one Perk in this file whose bonus is conditioned on being IN a combat scene
-  // rather than the more common "outside combat" gate (Teacher/Lesson Plan's own Edge).
-  if (game.combat && actorHasPerk(actor, ARMCHAIR_GENERAL_ID)) {
-    shiftUp += 1;
-  }
-
-  return shiftUp;
+  // Item rules (Assist, effect boost): Putting Others Before Yourself, Psychological Sway and Better
+  // Together raise it to at least ↑2 (↑3); Armchair General adds ↑1 in combat.
+  const boost = ruleAssist(actor, ally, skill);
+  return Math.max(1, boost.atLeast) + boost.extra;
 }
 
 /**
@@ -523,9 +382,8 @@ export function getAssistShiftUp(actor, ally, skill) {
  * @returns {Boolean}
  */
 export function getAssistEdge(actor) {
-  return actorHasPerk(actor, BUREAUCRAT_TF_ID)
-    || actorHasPerk(actor, GREENSHIRT_PERK_ID)
-    || (!game.combat && (actorHasPerk(actor, TEACHER_ID) || actorHasPerk(actor, LESSON_PLAN_ID)));
+  // Item rules (Assist, effect boost, edge): Bureaucrat and Greenshirt; Teacher and Lesson Plan out of combat.
+  return ruleAssist(actor, null, null).edge;
 }
 
 /**
@@ -535,7 +393,27 @@ export function getAssistEdge(actor) {
  * @param {String} skill
  * @returns {Promise<Boolean>}   Whether anything was banked.
  */
+/**
+ * Item rule Triggers for a finished assist (rules/triggers.mjs): `lendAssistance` on the helper,
+ * aimed at the ally, and `assisted` on the ally, aimed at the helper. `kind` is 'skill' or 'attack'
+ * (tags: `assist:skill`, `assist:attack`).
+ */
+async function fireAssistTriggers(actor, ally, kind) {
+  const { fireTriggers } = await import("../rules/triggers.mjs");
+  await fireTriggers(actor, 'lendAssistance', { roll: { assistKind: kind }, targets: [ally] });
+  await fireTriggers(ally, 'assisted', { roll: { assistKind: kind }, targets: [actor] });
+}
+
 async function bankSkillAssist(actor, ally, skill) {
+  const banked = await bankSkillAssistBonus(actor, ally, skill);
+  if (banked) {
+    await fireAssistTriggers(actor, ally, 'skill');
+  }
+
+  return banked;
+}
+
+async function bankSkillAssistBonus(actor, ally, skill) {
   /* The one hard prerequisite in the action (plus the Perks that move it). Refused rather than
      warned-and-allowed, because unlike the duration and range clauses this one decides whether
      the grant exists at all. */
@@ -594,19 +472,6 @@ async function bankSkillAssist(actor, ally, skill) {
     assisterUuid: actor.uuid ?? null,
   });
   return true;
-}
-
-/**
- * Team Player's payoff - one Story Point when the action lands. The Transformers and Night Vale
- * printings have no qualifier this system can check; G.I. Joe's says "in a combat", which it can.
- * @param {Actor} actor
- */
-function grantTeamPlayerStoryPoint(actor) {
-  if (actorHasPerk(actor, TEAM_PLAYER_TF_ID)
-    || actorHasPerk(actor, TEAM_PLAYER_WTNV_ID)
-    || (game.combat && actorHasPerk(actor, TEAM_PLAYER_GIJ_ID))) {
-    requestStoryPointGrant(actor);
-  }
 }
 
 /**
@@ -703,7 +568,8 @@ async function pickAssistance(allies, targetName, grantModes = []) {
  * @returns {Promise<Object>}
  */
 export async function activateLendAssistance(actor) {
-  if (actorHasHangUp(actor, TREACHEROUS_HANGUP_ID)) {
+  // An Assist rule refusing the helper outright, whatever the Skill (Treacherous's Hang-Up).
+  if (ruleAssist(actor, null, null).refused) {
     ui.notifications.warn(game.i18n.format('E20.LendAssistanceTreacherous', { name: actor.name }));
     return { cancelled: true };
   }
@@ -718,7 +584,8 @@ export async function activateLendAssistance(actor) {
 
   const nearbyAllies = getNearbyAllyTokens(actor, Infinity).map(token => token.actor).filter(Boolean)
     .filter(ally => !isBlockedByFunExhaustion(ally));
-  const allies = actorHasPerk(actor, ONE_PONY_SHOW_ID) ? [...nearbyAllies, actor] : nearbyAllies;
+  // An Assist rule letting the actor help themselves (One Pony Show).
+  const allies = ruleAssist(actor, null, null).self ? [...nearbyAllies, actor] : nearbyAllies;
   if (!allies.length) {
     ui.notifications.warn(game.i18n.localize('E20.LendAssistanceNoAllies'));
     return { cancelled: true };
@@ -786,7 +653,7 @@ export async function activateLendAssistance(actor) {
       targetId: targetToken.actor?.id ?? null,
       edge: true,
     });
-    grantTeamPlayerStoryPoint(actor);
+    await fireAssistTriggers(actor, ally, 'attack');
 
     return {
       message: game.i18n.format('E20.LendAssistanceAttackActivated', {
@@ -801,7 +668,6 @@ export async function activateLendAssistance(actor) {
     return { cancelled: true };
   }
 
-  grantTeamPlayerStoryPoint(actor);
   // That's What Best Friends Are For - a Friendship Point for a Standard-action assist to a BFF
   // (helpers/bff.mjs). BFF's own Free-action assist doesn't count.
   await onAssistedBff(actor, ally, await wasFreeBffAssist(actor));
@@ -839,21 +705,23 @@ async function wasFreeBffAssist(actor) {
 /**
  * The skill half on its own, from a shorter reach - Help Yourself's clone helps from 15 ft
  * (helpers/help-yourself.mjs). Allies holding Lackey are offered at any distance, since that Perk
- * lets them be assisted from anywhere. No Team Player payoff: here the clone acts, not the caster.
+ * lets them be assisted from anywhere. No lendAssistance / assisted Triggers (Team Player's Story
+ * Point): here the clone or pet acts, not the actor taking the action.
  * @param {Actor} actor
  * @param {Object} [options]
  * @param {Number} [options.radiusFeet]
  * @returns {Promise<Boolean>}   Whether an assist was banked.
  */
 export async function lendAssistanceSkill(actor, { radiusFeet = LEND_ASSISTANCE_RANGE_FEET } = {}) {
-  if (actorHasHangUp(actor, TREACHEROUS_HANGUP_ID)) {
+  if (ruleAssist(actor, null, null).refused) {
     ui.notifications.warn(game.i18n.format('E20.LendAssistanceTreacherous', { name: actor.name }));
     return false;
   }
 
   const nearby = getNearbyAllyTokens(actor, radiusFeet).map(token => token.actor).filter(Boolean);
+  // Allies whose Assist rule lets them be helped from any distance (Lackey).
   const lackeys = getNearbyAllyTokens(actor, Infinity).map(token => token.actor)
-    .filter(ally => ally && actorHasPerk(ally, LACKEY_ID));
+    .filter(ally => ally && ruleAssist(actor, ally, null).anyRange);
   const allies = [...new Set([...nearby, ...lackeys])];
   if (!allies.length) {
     ui.notifications.warn(game.i18n.localize('E20.LendAssistanceNoAllies'));
@@ -866,5 +734,5 @@ export async function lendAssistanceSkill(actor, { radiusFeet = LEND_ASSISTANCE_
     return false;
   }
 
-  return bankSkillAssist(actor, ally, choice.skill);
+  return bankSkillAssistBonus(actor, ally, choice.skill);
 }

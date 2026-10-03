@@ -5,6 +5,10 @@
   "_id": "1Bp1o4k9VhkKPXnd",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Shogun Upgrade","action":"defend","to":"free"},
+      {"type":"RollModifier","label":"Shogun Upgrade","when":["attack:melee","self:type:zord"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Strength for the Zord. Automatic: its melee attacks get ↑1, already counted in the upshift its Roll Options Dialog opens with, and Defend costs it only a Free action.</p>"

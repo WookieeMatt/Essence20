@@ -5,6 +5,7 @@
   "_id": "td5xX3OaNFbaMtvG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:focus:Mayoral Candidate"]},
     "automation": {
       "status": "manual",
       "notes": "<p>The system has no language tracking. Left to the table: letting you use Persuasion, Deception and similar Skills on someone who shares no language with you.</p>"

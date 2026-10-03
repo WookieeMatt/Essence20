@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:essence:social>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: switches for Edge when suggesting a non-aggressive solution and when getting food, water, medicine or shelter for others. Use button: a DIF 12 Persuasion test that heals your target 1 on a success.</p>"

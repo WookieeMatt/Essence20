@@ -16,18 +16,14 @@
  *     (Might): Might Skill, Reach (1 Blunt or Sharp damage) Alternate Effect: Maneuver" (Finesse or
  *     Might for the Climber/Nimble), the Flora's Reach x2 one, the Flyer's Natural Weapon Flyby and
  *     the Behemoth's SMASH!. "Blunt or Sharp" and "Finesse or Might" are asked when the weapon arrives.
+ *   Only the Charger, the Monolith and the chassis with a choice stay here: every Alt Mode whose printed
+ *   attack needs no change carries it as a Grant rule (plus a Use to get it back) on its own item.
  * - Mode Lock (Enigma of Combination, p.49): "the character can remove the Condition by performing an
  *   Energon flush, which requires spending 1 Energon and succeeding at a DIF 12 Technology Skill Test
  *   as a Standard action." Conversion itself is already refused (sheet-handlers/transformer-handler.mjs);
  *   the flush is a button on the chat card posted when the Condition lands.
- * - Obscuring Matrix (Enigma of Combination, armor upgrade, p.55): "this bonus is negated while the
- *   wearer has the Grappled, Immobilized, Prone, or Restrained Condition." documents/item.mjs already
- *   negates it for an upgrade fitted to armor; a Cybertronian's loose (chassis) upgrade is added by
- *   documents/actor.mjs and is taken back off here.
  * - Roller Drum (p.56): "Combined Mode: You add +1 Health to your part of a combined form's Health
  *   array."
- * - Bullbar (TF CRB p.134): "Bot Mode: You're immune to effects that would shove you." Read by
- *   helpers/forced-movement.mjs (see the tf2 patch spec) off system.tf2ShoveImmune.
  * - Dust Up (Racer, 20th level, p.86): "when you use your Move action to move, you gain the benefits
  *   of Concealment until the beginning of your next turn." This system's Concealment is the Cover
  *   status (dice.mjs: "Smoke and a wall are both Cover here").
@@ -51,16 +47,15 @@
  *   may not acquire a third Alt Mode via Perks or other means".
  */
 import {
-  registerChatButton, registerChatDecorator, registerDerived, registerPostRoll, registerTurnEnd, registerTurnStart, registerUse,
+  registerChatButton, registerChatDecorator, registerDerived, registerPostRoll, registerTurnEnd, registerTurnStart,
 } from "../../extensions.mjs";
 import { hasUsedThisRound, markUsedThisRound } from "../../perks.mjs";
 import {
-  ALT_MODES, T, TF2, feetBetween, has, isOwnTurn, isResponsible, itemsOf, nameOf, say, sourceOf, upgradesOn, worldActors,
+  T, TF2, feetBetween, has, isOwnTurn, isResponsible, itemsOf, nameOf, say, upgradesOn, worldActors,
 } from "./common.mjs";
 import { MARK, SUSTAINED_BEAM_EDGE, addMarkTo, marksOf } from "./rolls.mjs";
 import { WE_ARE_ONE_FLAG } from "./uses.mjs";
 
-const NEGATING = ['grappled', 'immobilized', 'prone', 'restrained'];
 const DUST_UP_FLAG = 'tf2DustUp';
 const OWED_FLAG = 'tf2NotLikeThatOwed';
 const FOLLOW_UP_FLAG = 'tf2SustainedBeamFollowUp';
@@ -98,33 +93,6 @@ function card(actor, text, button = null) {
 /*  Derived data                                 */
 /* -------------------------------------------- */
 
-function adjustDefense(system, type, amount, label) {
-  const defense = system?.defenses?.[type];
-  if (!defense || !amount) {
-    return;
-  }
-
-  defense.total = (defense.total ?? 0) + amount;
-  if (typeof defense.string == 'string') {
-    defense.string += ` ${amount < 0 ? '-' : '+'} ${Math.abs(amount)} (${label})`;
-  }
-}
-
-/** The Evasion a loose Obscuring Matrix gives right now, that the wearer's Conditions negate. */
-export function negatedObscuringMatrix(actor) {
-  const system = actor?.system;
-  const statuses = actor?.statuses;
-  if (!system?.canTransform || !statuses?.has || !NEGATING.some(status => statuses.has(status))) {
-    return { amount: 0, label: null };
-  }
-
-  const matrices = itemsOf(actor).filter(item => item.type == 'upgrade' && item.system?.type == 'armor'
-    && !item.flags?.essence20?.parentId && item.system?.armorBonus?.defense == 'evasion'
-    && [TF2.obscuringMatrixBasic, TF2.obscuringMatrixAdvanced].includes(sourceOf(item)));
-  const amount = matrices.reduce((sum, item) => sum + (Number(item.system.armorBonus.value) || 0), 0);
-  return { amount, label: matrices[0]?.name ?? null };
-}
-
 const componentsOf = form => Object.values(form?.system?.actors ?? {}).map(entry => resolve(entry?.uuid))
   .filter(member => member && !['zord', 'vehicle', 'megaform'].includes(member.type));
 const isCombinerForm = form => form?.type == 'megaform' && !!form.system?.subtype?.includes?.('megaformCombiner');
@@ -134,13 +102,6 @@ export function tf2Derived(actor) {
   if (!system) {
     return;
   }
-
-  const { amount, label } = negatedObscuringMatrix(actor);
-  if (amount) {
-    adjustDefense(system, 'evasion', -amount, label);
-  }
-
-  system.tf2ShoveImmune = !!(system.canTransform && !system.isTransformed && has(actor, TF2.bullbar));
 
   if (isCombinerForm(actor)) {
     for (const component of componentsOf(actor).filter(member => has(member, TF2.rollerDrum))) {
@@ -159,145 +120,6 @@ export function tf2Derived(actor) {
     }
   }
 }
-
-/* -------------------------------------------- */
-/*  Alt Modes: special attacks                   */
-/* -------------------------------------------- */
-
-// damage: the Blunt hit's value when the chassis prints more than the weapon's own; types / skills: the
-// chassis prints a choice ("1 Blunt or Sharp", "Finesse or Might"), asked when the weapon arrives.
-const BLUNT_OR_SHARP = ['blunt', 'sharp'];
-const FINESSE_OR_MIGHT = ['finesse', 'might'];
-const each = (uuids, spec) => Object.fromEntries(uuids.map(uuid => [uuid, spec]));
-
-export const SPECIAL_ATTACKS = {
-  [TF2.charger]: { attacks: [TF2.ram, TF2.flyby], damage: 2 },
-  [TF2.pillarExtended]: { attacks: [TF2.ram], damage: 1 },
-  [TF2.pillarLong]: { attacks: [TF2.ram], damage: 1 },
-  [TF2.speakerAerial]: { attacks: [TF2.ram], damage: 1 },
-  [TF2.speakerGround]: { attacks: [TF2.ram], damage: 1 },
-  [TF2.speakerLongAerial]: { attacks: [TF2.ram], damage: 1 },
-  [TF2.speakerLongGround]: { attacks: [TF2.ram], damage: 1 },
-  ...each(ALT_MODES.crbRam, { attacks: [TF2.ram], damage: 1 }),
-  [ALT_MODES.monolith]: { attacks: [TF2.ram], damage: 2 },
-  [ALT_MODES.seeker]: { attacks: [TF2.flyby], damage: 1 },
-  [ALT_MODES.salvaged]: { attacks: [TF2.spikedRam] },
-  ...each(ALT_MODES.miniVehicle, { attacks: [TF2.miniVehicleRam] }),
-  ...each([...ALT_MODES.natural, ...ALT_MODES.monstrosity], { attacks: [TF2.naturalWeapon], types: BLUNT_OR_SHARP }),
-  ...each(ALT_MODES.climber, { attacks: [TF2.naturalWeapon], types: BLUNT_OR_SHARP, skills: FINESSE_OR_MIGHT }),
-  ...each(ALT_MODES.flora, { attacks: [TF2.floraWeapon], skills: FINESSE_OR_MIGHT }),
-  ...each(ALT_MODES.flyer, { attacks: [TF2.naturalFlyby], types: BLUNT_OR_SHARP }),
-  ...each(ALT_MODES.behemoth, { attacks: [TF2.smash] }),
-};
-
-/** The special attacks this Alt Mode brings that the actor doesn't have yet. */
-export function missingSpecialAttacks(actor, altMode) {
-  const spec = SPECIAL_ATTACKS[sourceOf(altMode)];
-  if (!spec) {
-    return [];
-  }
-
-  const held = new Set(itemsOf(actor).map(sourceOf));
-  return spec.attacks.filter(uuid => !held.has(uuid));
-}
-
-/**
- * The updates that fit a freshly granted special-attack weapon to its chassis: the Blunt hit's
- * damage and type (the alternate effects are left alone) and the rolled Skill of every effect using
- * one of the offered Skills. `effects` are the weapon's embedded weaponEffect items.
- */
-export function specialAttackUpdates(weapon, effects, { damage = null, type = null, skill = null, skills = [] } = {}) {
-  const patch = system => {
-    const out = {};
-    if (system?.damageType == 'blunt') {
-      if (damage != null && damage != system.damageValue) {
-        out.damageValue = damage;
-      }
-
-      if (type && type != 'blunt') {
-        out.damageType = type;
-      }
-    }
-
-    if (skill && skills.includes(system?.classification?.skill) && system.classification.skill != skill) {
-      out['classification.skill'] = skill;
-    }
-
-    return out;
-  };
-
-  const effectUpdates = effects.map(effect => ({ _id: effect.id, ...Object.fromEntries(Object.entries(patch(effect.system)).map(([k, v]) => [`system.${k}`, v])) }))
-    .filter(update => Object.keys(update).length > 1);
-  const weaponUpdate = {};
-  for (const [key, entry] of Object.entries(weapon?.system?.items ?? {})) {
-    if (entry?.type == 'weaponEffect') {
-      for (const [path, value] of Object.entries(patch(entry))) {
-        weaponUpdate[`system.items.${key}.${path}`] = value;
-      }
-    }
-  }
-
-  const traits = weapon?.system?.traits;
-  if (type && type != 'blunt' && Array.isArray(traits) && traits.includes('blunt')) {
-    weaponUpdate['system.traits'] = [...new Set(traits.map(trait => (trait == 'blunt' ? type : trait)))];
-  }
-
-  return { effectUpdates, weaponUpdate };
-}
-
-const LABELS = { blunt: 'E20.DamageBlunt', sharp: 'E20.DamageSharp', finesse: 'E20.SkillFinesse', might: 'E20.SkillMight' };
-
-async function askChoice(altMode, weapon, key, values) {
-  if (!values?.length) {
-    return null;
-  }
-
-  const { chooseButtons } = await import("../../grants.mjs");
-  const choice = await chooseButtons(altMode.name, T(key, { mode: altMode.name, weapon: weapon.name }),
-    values.map(value => [value, globalThis.game.i18n.localize(LABELS[value] ?? value)]));
-  return values.includes(choice) ? choice : null;
-}
-
-export async function grantSpecialAttacks(actor, altMode) {
-  const spec = SPECIAL_ATTACKS[sourceOf(altMode)];
-  const missing = missingSpecialAttacks(actor, altMode);
-  if (!spec || !missing.length) {
-    return [];
-  }
-
-  const { grantCopy } = await import("../../grants.mjs");
-  const granted = [];
-  for (const uuid of missing) {
-    const weapon = await grantCopy(actor, uuid, { grantedBy: altMode });
-    if (!weapon) {
-      continue;
-    }
-
-    granted.push(weapon.name);
-    const type = await askChoice(altMode, weapon, 'Tf2SpecialAttackType', spec.types);
-    const skill = await askChoice(altMode, weapon, 'Tf2SpecialAttackSkill', spec.skills);
-    const effects = itemsOf(actor).filter(item => item.type == 'weaponEffect' && item.flags?.essence20?.parentId == weapon.id);
-    const { effectUpdates, weaponUpdate } = specialAttackUpdates(weapon, effects, { damage: spec.damage ?? null, type, skill, skills: spec.skills ?? [] });
-    if (effectUpdates.length) {
-      await actor.updateEmbeddedDocuments('Item', effectUpdates);
-    }
-
-    if (Object.keys(weaponUpdate).length) {
-      await weapon.update(weaponUpdate);
-    }
-  }
-
-  return granted;
-}
-
-registerUse({
-  id: 'tf2AltModeAttacks', matches: item => item?.type == 'altMode' && !!SPECIAL_ATTACKS[sourceOf(item)],
-  canUse: item => missingSpecialAttacks(item.parent, item).length > 0,
-  async run(item) {
-    const granted = await grantSpecialAttacks(item.parent, item);
-    return granted.length ? T('Tf2SpecialAttackGranted', { name: item.parent.name, mode: item.name, attacks: granted.join(', ') }) : null;
-  },
-});
 
 /* -------------------------------------------- */
 /*  Mode Lock                                    */
@@ -618,10 +440,6 @@ H?.on?.('createItem', async (item, options, userId) => {
   const actor = item?.parent;
   if (userId != globalThis.game?.user?.id || item?.type != 'altMode' || actor?.documentName != 'Actor') {
     return;
-  }
-
-  if (SPECIAL_ATTACKS[sourceOf(item)]) {
-    await grantSpecialAttacks(actor, item);
   }
 
   if (has(actor, TF2.lingeringSideEffects) && itemsOf(actor).filter(other => other.type == 'altMode').length > 2) {

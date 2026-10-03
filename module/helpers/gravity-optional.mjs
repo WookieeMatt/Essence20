@@ -1,4 +1,3 @@
-import { getEffectiveLevel } from "./combat.mjs";
 import { hasUsedThisEncounter, markUsedThisEncounter } from "./perks.mjs";
 
 /**
@@ -12,26 +11,15 @@ import { hasUsedThisEncounter, markUsedThisEncounter } from "./perks.mjs";
  * anything). The floating half is an on/off toggle (like Power Boost's own isPowerBoostActive/
  * togglePowerBoost), gated on hasUsedThisEncounter to switch ON (once per scene) but free to
  * switch back OFF - the same "approximate duration, don't hard-enforce the 10-minute window"
- * idiom this project already accepts for Dig In/Got To Get Tough. Read in
- * documents/actor.mjs#_prepareMovement (the one permitted movement-math touch-point), overriding
- * aerial Movement to 5 feet + 5 more for every 5 character levels (getEffectiveLevel, this
- * project's own PC-Level/NPC-Threat-Level equivalence).
+ * idiom this project already accepts for Dig In/Got To Get Tough. While it's on, the item's own
+ * Movement rule (tag check:gravityOptional) sets aerial Movement to 5 feet + 5 more for every 5
+ * character levels.
  */
 const GRAVITY_OPTIONAL_FLAG = 'gravityOptionalActive';
 const GRAVITY_OPTIONAL_ENCOUNTER_FLAG = 'gravityOptionalUsedThisEncounter';
 
 export function isGravityOptionalActive(actor) {
   return !!actor.getFlag?.('essence20', GRAVITY_OPTIONAL_FLAG);
-}
-
-/**
- * How high (in feet) this actor's own Gravity Optional float currently reaches - see this file's
- * own doc comment above.
- * @param {Actor} actor
- * @returns {Number}
- */
-export function getGravityOptionalHeight(actor) {
-  return 5 + 5 * Math.floor(getEffectiveLevel(actor) / 5);
 }
 
 /**

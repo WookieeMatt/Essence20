@@ -33,7 +33,7 @@ const REACTIONS = [];
 
 /** Compendium uuid of an item (sourceId or compendiumSource). */
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 export function itemsOf(actor) {

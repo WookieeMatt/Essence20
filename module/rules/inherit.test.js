@@ -70,6 +70,11 @@ describe('linking existing copies', () => {
     ];
     expect(linkUpdates(items, byName, () => null)).toEqual([{ _id: 'i1', 'flags.essence20.rulesSource': 'Compendium.e.p.Item.w' }]);
     expect(linkUpdates(null, byName)).toEqual([]);
+
+    // A copy of a different printing that still exists keeps its own source.
+    const printing = { id: 'i5', name: 'Whimsical', type: 'hangUp', _source: { system: { rules: [] } }, flags: {}, _stats: { compendiumSource: 'Compendium.e.p.Item.other' } };
+    expect(linkUpdates([printing], byName, uuid => (uuid == 'Compendium.e.p.Item.other' ? { system: { rules: [] } } : null))).toEqual([]);
+    expect(linkUpdates([printing], byName, () => null)).toEqual([{ _id: 'i5', 'flags.essence20.rulesSource': 'Compendium.e.p.Item.w' }]);
   });
 
   test('the migration runs once per system version, GM only', async () => {

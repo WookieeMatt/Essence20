@@ -5,6 +5,7 @@
   "_id": "6dRdxCRjWqjrt8Wc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:persuasion>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Persuasion also counts as a Strength Skill. Use button: roll Persuasion against a target's Cleverness; on a success, pick ↓1 or Edge for the target's next Skill Test.</p>"

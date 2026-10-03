@@ -5,6 +5,9 @@
   "_id": "ddSnDksWfxPkekda",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","when":["essence:social","self:data:flags.essence20.noFightingSnagPending"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when a Combat you're in ends, your next Social Skill Test takes a Snag, listed as No Fighting?! next to Snag in its Roll Options Dialog.</p>"

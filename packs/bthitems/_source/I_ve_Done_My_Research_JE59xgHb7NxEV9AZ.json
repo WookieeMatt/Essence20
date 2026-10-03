@@ -5,6 +5,9 @@
   "_id": "JE59xgHb7NxEV9AZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"I've Done My Research","when":["skill:{item.choice}"],"upshift":1,"stack":"iveDoneMyResearch"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: pick the Smarts Skills it covers when you gain it; rolls with those Skills get ↑1, already counted in the Roll Options Dialog's Shift Up box.</p>"

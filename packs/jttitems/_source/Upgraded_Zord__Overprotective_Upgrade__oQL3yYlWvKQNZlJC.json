@@ -5,6 +5,10 @@
   "_id": "oQL3yYlWvKQNZlJC",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Overprotective Upgrade (driver)","scope":"pilot","defense":"willpower","amount":2,"when":[{"any":["self:type:playerCharacter","self:type:npc"]}]},
+      {"type":"Defense","label":"Overprotective Upgrade (driver)","scope":"pilot","defense":"cleverness","amount":2,"when":[{"any":["self:type:playerCharacter","self:type:npc"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: the Zord gets +1 Strength. Automatic: its driver gets +2 Willpower and Cleverness.</p><p>Left to the table: the driver's ↑1 when an ally took damage that turn.</p>"

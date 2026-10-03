@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Cover","mode":"grant","against":true,"label":"Counts as in Cover while in Alt Mode","when":["self:transformed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Alt Mode, ranged attacks against you take the Cover ↓ even when you are in the open, shown as Cover in the attacker's Roll Options Dialog. Roll Options Dialog: in Alt Mode, a Hide switch adds 5 to your Infiltration result.</p>"

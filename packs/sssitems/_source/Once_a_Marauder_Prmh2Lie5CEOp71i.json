@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Dealing with an authority figure (Once a Marauder: ↓1)","when":["essence:social"],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on Social tests, a switch for ↓1 when dealing with someone society expects to have authority over you.</p>"

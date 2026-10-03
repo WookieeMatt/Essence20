@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a free sniper weapon and a weapon upgrade","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","from":{"type":"weapon","availabilities":["standard","limited"],"tags":["item:trait:sniper"]}},{"do":"setToggle","key":"granted","value":true},{"do":"pickGrant","from":{"type":"upgrade","availabilities":["standard","limited"],"tags":["item:data:system.type=weapon"]}}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: Alertness counts as a Speed skill for you. Use button: adds your free Limited sniper weapon and upgrade. The Speed increases come with the Focus.</p><p>Left to the table: your Qualification in Sniper weapons.</p>"

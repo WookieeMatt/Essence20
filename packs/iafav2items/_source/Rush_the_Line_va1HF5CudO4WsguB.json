@@ -5,6 +5,9 @@
   "_id": "va1HF5CudO4WsguB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"ground","stage":"adjust","op":"multiply","value":2,"label":"Rushing: Ground Movement doubled","when":["check:rushTheLine"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend a Story Point to double your Ground Movement until the end of your turn; your next melee attack that turn gains Edge.</p>"

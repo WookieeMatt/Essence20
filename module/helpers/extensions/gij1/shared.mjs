@@ -17,13 +17,9 @@ export const G1 = {
   // Weapon upgrade (p.97).
   recoilBrace: CC('2gURwr6VrgTuIRFQ'),
   // General Perks (p.79-81).
-  bootlicker: CC('drtmA1p3q4y7LMTk'),
   cyberneticPart: CC('wCL3rJOEDZVHVg6g'),
-  doubleLife: CC('Bl14FV81J88Um0Ls'),
   scavenger: CC('VjLTohjkJJtJPXdE'),
   seaLegs: CC('mKsSa2HBOimHqS7i'),
-  // Division Perks.
-  coverJob: CC('3SiGvDR98s0FQtdf'),
   // Role / Focus Perks.
   demolitionArtist: CC('QzcZLhyVvdbn09Es'),
   improviseBomb: CC('BUqXOt90M4yAsA7b'),
@@ -35,8 +31,6 @@ export const G1 = {
   // Origin (Assassin, p.40).
   metier: CC('EcVOkUJE40sKSg8v'),
   assassin: CC('HCIbetyFvjJGuDcV'),
-  // Hang-Up (Chemist, p.27).
-  chemistHangUp: CC('cHNytkkeP7iizzgK'),
   // Elsewhere.
   weaponTraining: GIJ('rFnoQTbnYQX2tlMe'),
   inundation: GIJ('Q09tkHIaVX65lokl'),
@@ -44,7 +38,7 @@ export const G1 = {
 };
 
 // Troublemaker's Signature Weapon (Cobra Codex p.63) grants one of these four GI Joe CRB weapons -
-// the same list dice.mjs's SIGNATURE_WEAPON_IDS keys Overwhelming on.
+// the same list Overwhelming's own item rule keys on.
 export const SIGNATURE_WEAPONS = [
   GIJ('PFuzUrcYw14JRLf9'), GIJ('xthnRWfhbfXvpmZN'), GIJ('vy8VGcdoFiacJ3bT'), GIJ('Jnjio1DtAx0QgE85'),
 ];
@@ -52,7 +46,7 @@ export const SIGNATURE_WEAPONS = [
 export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 export function itemsOf(actor) {

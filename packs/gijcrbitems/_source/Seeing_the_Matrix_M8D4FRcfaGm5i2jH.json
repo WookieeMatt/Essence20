@@ -5,6 +5,9 @@
   "_id": "M8D4FRcfaGm5i2jH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Use your Technology die instead (Seeing the Matrix)","useSkill":"technology","when":["not:roll:initiative"],"limit":{"per":"encounter"},"forget":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch to roll Technology in place of the skill being tested, once per encounter.</p>"

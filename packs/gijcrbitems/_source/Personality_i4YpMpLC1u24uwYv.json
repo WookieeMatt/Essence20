@@ -5,6 +5,7 @@
   "_id": "i4YpMpLC1u24uwYv",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Social d6"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: the drone makes Social Skill tests, and helps with yours, without being Commanded.</p>"

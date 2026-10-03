@@ -38,7 +38,6 @@ export const IDS = {
   synthEn: `${C('decepticon_directive')}SgYkXSFLiLT8hjMP`,
   addictedDarkEnergon: `${C('decepticon_directive')}e3c7wuCA7JQS7rTA`,
   togetherWeStand: `${C('enigma_of_combination')}oj7vUwpB9EW8stUG`,
-  sparkOfTheAncients: `${C('enigma_of_combination')}zqPSjUwr1Y7OvGfD`,
   weImprovise: `${C('transformers_one_sourcebook')}qnRFb2A0sLpSg2sL`,
   circleOfMagicalFriends: `${C('mlp_crb')}Evg7HVLPles0X9DM`,
   extensiveResearch: `${C('mlp_crb')}TwW8c51b3bCL9Rul`,
@@ -49,7 +48,7 @@ export const IDS = {
 };
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? '';
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? '';
 }
 
 /** Whether an item is (a copy of) the given compendium item. Never matches an empty uuid. */

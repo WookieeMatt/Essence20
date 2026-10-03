@@ -1,12 +1,10 @@
 import { jest } from '@jest/globals';
 import {
-  getGrowDamageBonus, getGrowDefenseBonus, getMonsterFormSkillBonus, getMonsterFormToughnessBonus,
+  getGrowDefenseBonus,
   isGrowActive, isMonsterFormActive, toggleGrow, toggleMonsterMorph,
 } from './monster-morph.mjs';
 
 const PATH_CRUELTY_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.vWie8Dy4u54sf1hy";
-const PATH_STONE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.TEjkVjIEFEbRI736";
-const PATH_VENOM_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.rWoVOcNc3lXKDbhg";
 
 function makeActor({ active = false, power = 3, pathId = PATH_CRUELTY_ID, size = 'common', healthBonus = 0 } = {}) {
   const flagStore = { monsterFormActive: active };
@@ -37,45 +35,6 @@ describe("isMonsterFormActive", () => {
 
   test("true once the flag is set", () => {
     expect(isMonsterFormActive(makeActor({ active: true }))).toBe(true);
-  });
-});
-
-describe("getMonsterFormToughnessBonus", () => {
-  test("0 while inactive", () => {
-    expect(getMonsterFormToughnessBonus(makeActor({ active: false }))).toBe(0);
-  });
-
-  test("the Path's own scaling Toughness bonus while active (Cruelty: +2)", () => {
-    expect(getMonsterFormToughnessBonus(makeActor({ active: true, pathId: PATH_CRUELTY_ID }))).toBe(2);
-  });
-
-  test("Path of Stone's own higher +4 Toughness bonus", () => {
-    expect(getMonsterFormToughnessBonus(makeActor({ active: true, pathId: PATH_STONE_ID }))).toBe(4);
-  });
-});
-
-describe("getMonsterFormSkillBonus", () => {
-  test("0 while inactive", () => {
-    expect(getMonsterFormSkillBonus(makeActor({ active: false }), 'might')).toBe(0);
-  });
-
-  test("+1 on one of the Path's own named Skills while active", () => {
-    const actor = makeActor({ active: true, pathId: PATH_CRUELTY_ID });
-    expect(getMonsterFormSkillBonus(actor, 'might')).toBe(1);
-    expect(getMonsterFormSkillBonus(actor, 'intimidation')).toBe(1);
-    expect(getMonsterFormSkillBonus(actor, 'alertness')).toBe(1);
-  });
-
-  test("0 on a Skill not named by the Path", () => {
-    const actor = makeActor({ active: true, pathId: PATH_CRUELTY_ID });
-    expect(getMonsterFormSkillBonus(actor, 'deception')).toBe(0);
-  });
-
-  test("Path of Venom only names 2 Skills, not 3", () => {
-    const actor = makeActor({ active: true, pathId: PATH_VENOM_ID });
-    expect(getMonsterFormSkillBonus(actor, 'intimidation')).toBe(1);
-    expect(getMonsterFormSkillBonus(actor, 'survival')).toBe(1);
-    expect(getMonsterFormSkillBonus(actor, 'might')).toBe(0);
   });
 });
 
@@ -159,16 +118,14 @@ describe("isGrowActive", () => {
   });
 });
 
-describe("getGrowDamageBonus / getGrowDefenseBonus", () => {
-  test("0/0 while inactive", () => {
+describe("getGrowDefenseBonus", () => {
+  test("0 while inactive", () => {
     const actor = makeGrowActor({ growActive: false });
-    expect(getGrowDamageBonus(actor)).toBe(0);
     expect(getGrowDefenseBonus(actor)).toBe(0);
   });
 
-  test("1/2 while active", () => {
+  test("2 while active", () => {
     const actor = makeGrowActor({ growActive: true });
-    expect(getGrowDamageBonus(actor)).toBe(1);
     expect(getGrowDefenseBonus(actor)).toBe(2);
   });
 });

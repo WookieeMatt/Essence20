@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Treacherous: can't Lend Assistance","side":"give","effect":"refuse"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you can't use Lend Assistance.</p>"

@@ -25,7 +25,7 @@ const AVAILABILITY = ['standard', 'limited', 'restricted', 'prototype', 'unique'
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function itemsOf(actor) {
@@ -221,7 +221,7 @@ async function roleAndFocusIndex() {
   const { getVisibleItemPacks } = await import("./compendium-browser.mjs");
   const rows = [];
   for (const pack of getVisibleItemPacks()) {
-    const index = await pack.getIndex({ fields: ['type', 'system.items'] });
+    const index = await pack.getIndex({ fields: ['type', 'system.items', 'system.isAdvanced'] });
     for (const entry of index.values()) {
       if (['role', 'focus'].includes(entry.type)) {
         rows.push(entry);
@@ -281,6 +281,56 @@ async function pickRolePerk(actor, grantor, { containers, allow, subtype = 'role
   const created = itemsOf(actor).find(item => sourceOf(item) == uuid);
   await created?.setFlag?.('essence20', 'grantedBy', grantor.id);
   return created;
+}
+
+/**
+ * The `pickPerk` rule step (rules/steps.mjs): pickRolePerk from a declarative spec.
+ * @param {Object} spec
+ * @param {String} spec.from   'role' | 'focus' | 'branch' (the Role stored by Branch Leader).
+ * @param {String} [spec.line]   'same' (the grantor's own game line) or a line key (gij, pr, tf, mlp, wtnv).
+ * @param {Boolean} [spec.notOwn]   Not the actor's own Role / Focus.
+ * @param {Boolean} [spec.ofOwnRole]   Focuses only: those belonging to the actor's own Role.
+ * @param {Boolean} [spec.notAdvanced]   Not an Advanced Role (Gold, Silver, Phantom... Rangers).
+ * @param {Number} [spec.minLevel]
+ * @param {Number} [spec.maxLevel]
+ * @param {Boolean} [spec.notOwnPerkNames]   Not a Perk sharing a name with one of the actor's own Role's.
+ * @param {String} [spec.excludeName]   A case-insensitive pattern of Perk names to leave out.
+ * @param {String|null} [spec.subtype]   The Perk subtype offered ('role'; null for any).
+ * @returns {Promise<Item|null>}   The granted Perk.
+ */
+export async function pickPerkFrom(actor, grantor, spec = {}) {
+  const role = ownRole(actor);
+  const focus = ownFocus(actor);
+  const line = spec.line == 'same' ? lineOf(sourceOf(grantor)) : spec.line;
+  const own = spec.notOwnPerkNames ? ownRolePerkNames(actor) : new Set();
+  const exclude = spec.excludeName ? new RegExp(spec.excludeName, 'i') : null;
+  const branch = actor.getFlag?.('essence20', 'exemplarBranch');
+  if (spec.from == 'branch' && !branch) {
+    ui.notifications.warn(T('E20.GrantNeedsBranch'));
+    return null;
+  }
+
+  return pickRolePerk(actor, grantor, {
+    subtype: spec.subtype === undefined ? (spec.from == 'focus' ? null : 'role') : spec.subtype,
+    containers: index => index.filter(e => {
+      if (spec.from == 'branch') {
+        return e.uuid == branch;
+      }
+
+      if (e.type != spec.from || (line && lineOf(e.uuid) != line) || (spec.notAdvanced && e.system?.isAdvanced)) {
+        return false;
+      }
+
+      if (spec.notOwn && (spec.from == 'role' ? e.name == role?.name : e.uuid == sourceOf(focus))) {
+        return false;
+      }
+
+      return !spec.ofOwnRole || Object.values(e.system?.items ?? {}).some(x => x?.type == 'role' && (x.uuid == sourceOf(role) || x.name == role?.name));
+    }),
+    allow: entry => (spec.minLevel === undefined || entry.level >= spec.minLevel)
+      && (spec.maxLevel === undefined || entry.level <= spec.maxLevel)
+      && !own.has(entry.name?.toLowerCase()) && !(exclude && exclude.test(entry.name ?? '')),
+  });
 }
 
 function ownRole(actor) {
@@ -404,37 +454,6 @@ const HANDLERS = {
     return techGrant(actor, item, true);
   },
 
-  // Customized Armor (GI Joe CRB, Juggernaut, 6th level, p.112): "you gain 2 Limited or 1 Restricted
-  // armor upgrades. These picks do not count against the mission budget."
-  async customizedArmor(actor, item) {
-    const tier = await chooseButtons(item.name, T('E20.GrantCustomizedArmorPrompt'), [['limited', T('E20.GrantTwoLimited')], ['restricted', T('E20.GrantOneRestricted')]]);
-    if (!tier) {
-      return null;
-    }
-
-    const got = [];
-    for (let i = 0; i < (tier == 'limited' ? 2 : 1); i++) {
-      got.push(await pickAndGrant(actor, item, item.name, { type: 'upgrade', availabilities: [tier], matches: e => e.system?.type == 'armor' }));
-    }
-
-    return got.some(Boolean) ? done(actor, item, got) : null;
-  },
-
-  // Safety First (GI Joe CRB, Combat Medic, 1st level, p.82): "You are assigned a Limited medicine kit
-  // that does not count against your requisition budget".
-  async safetyFirst(actor, item) {
-    const got = await pickAndGrant(actor, item, item.name, { type: 'gear', matches: e => e.system?.gearType == 'kits' && /medic/i.test(e.name) }, { system: { availability: 'limited' } });
-    return got ? done(actor, item, [got]) : null;
-  },
-
-  // Spotter's Scope (GI Joe CRB, Sniper, 1st level, p.75): "You gain access to a limited weapon with the
-  // Sniper trait and a Limited upgrade for it".
-  async spottersScope(actor, item) {
-    const weapon = await pickAndGrant(actor, item, item.name, { type: 'weapon', availabilities: ['standard', 'limited'], matches: hasTrait('sniper') });
-    const upgrade = weapon ? await pickAndGrant(actor, item, item.name, { type: 'upgrade', availabilities: ['standard', 'limited'], matches: e => e.system?.type == 'weapon' }) : null;
-    return weapon ? done(actor, item, [weapon, upgrade]) : null;
-  },
-
   // Ghillie Suit Sniping (GI Joe CRB, Sniper, 10th level, p.75): "You may choose a weapon with the sniper
   // quality up to Restricted availability and a Restricted upgrade for free" - and, in the first round,
   // "replace the Battle Cry benefit to place yourself prone and hidden in any natural environment within
@@ -507,33 +526,6 @@ const HANDLERS = {
     return what ? kitbash(actor, item, pay, 'free', { kind: 'turn' }, { kind: 'nextTurn' }) : null;
   },
 
-  // Cross-Training (GI Joe CRB p.130, TF CRB p.108): "Choose a Role other than your own. You may
-  // select one of that Role's Perks with a level requirement no higher than half your current level.
-  // You cannot choose a Role Perk with the same name as one in your own Role..., a Focus Perk, or a
-  // level 1 Role Perk."
-  async crossTrainingGij(actor, item) {
-    return crossTraining(actor, item);
-  },
-  async crossTrainingTf(actor, item) {
-    return crossTraining(actor, item);
-  },
-
-  // Split Focus (GI Joe CRB p.134): "Choose one of your Role's available Focus options that is not your
-  // own. You may select one of that Focus's Perks with a level requirement no higher than half your
-  // current level."
-  async splitFocus(actor, item) {
-    const role = ownRole(actor);
-    const focus = ownFocus(actor);
-    const roleSource = sourceOf(role);
-    const got = await pickRolePerk(actor, item, {
-      subtype: null,
-      containers: index => index.filter(e => e.type == 'focus' && e.uuid != sourceOf(focus)
-        && Object.values(e.system?.items ?? {}).some(x => x?.type == 'role' && (x.uuid == roleSource || x.name == role?.name))),
-      allow: entry => entry.level <= Math.floor(level(actor) / 2),
-    });
-    return got ? done(actor, item, [got]) : null;
-  },
-
   // Branch Leader (Cobra Codex, Exemplar, 1st level, p.56): "Choose another Role. This is your Branch."
   async branchLeader(actor, item) {
     const index = await roleAndFocusIndex();
@@ -546,50 +538,6 @@ const HANDLERS = {
 
     await actor.setFlag('essence20', 'exemplarBranch', branch);
     return T('E20.GrantBranchSet', { name: actor.name, branch: options.find(o => o.value == branch)?.label ?? '' });
-  },
-
-  // Branch Perk (3rd, 6th, 10th, 17th, 20th): "Choose one of the Perks your Branch grants by that level
-  // ... Branch Perk does not grant you your Branch's Focus Perks or General Perks." Each copy of Branch
-  // Perk grants one.
-  async branchPerk(actor, item) {
-    const branch = actor.getFlag?.('essence20', 'exemplarBranch');
-    if (!branch) {
-      ui.notifications.warn(T('E20.GrantNeedsBranch'));
-      return null;
-    }
-
-    const got = await pickRolePerk(actor, item, {
-      containers: index => index.filter(e => e.uuid == branch),
-      allow: entry => entry.level <= level(actor),
-    });
-    if (got) {
-      await item.setFlag('essence20', 'granted', true);
-    }
-
-    return got ? done(actor, item, [got]) : null;
-  },
-
-  // Grid Spectrum Echo (Across the Stars, p.69): "Choose any Role Perk you once accessed in your
-  // previous Spectrum Role(s); you now possess that Role Perk."
-  async gridSpectrumEcho(actor, item) {
-    const role = ownRole(actor);
-    const got = await pickRolePerk(actor, item, {
-      containers: index => index.filter(e => e.type == 'role' && lineOf(e.uuid) == 'pr' && e.name != role?.name),
-      allow: entry => entry.level <= level(actor) && !/extra attack|general perk|grid power|zord/i.test(entry.name),
-    });
-    return got ? done(actor, item, [got]) : null;
-  },
-
-  // Prismatic Boon (Across the Stars, Grid Power, p.73): "gain one Role Perk from any standard
-  // Spectrum Role (not Advanced Spectrum Roles). You must choose a Perk from a Level at least 3 levels
-  // lower than your current level ... You cannot choose Extra Attack, General Perk, Grid Power, Zord,
-  // or Zord Feature."
-  async prismaticBoon(actor, item) {
-    const got = await pickRolePerk(actor, item, {
-      containers: index => index.filter(e => e.type == 'role' && lineOf(e.uuid) == 'pr' && !e.system?.isAdvanced),
-      allow: entry => entry.level <= level(actor) - 3 && !/extra attack|general perk|grid power|zord/i.test(entry.name),
-    });
-    return got ? done(actor, item, [got]) : null;
   },
 
   // Cybertronian Perk (Field Guide, p.70): "Pick a Transformers Role. You gain the benefits of that
@@ -634,18 +582,6 @@ const HANDLERS = {
     return originBenefit(actor, item, 'pr', () => true, perk => perk.system?.type != 'general');
   },
 
-  // Grid Power (Field Guide, Grid Psychic, 6th level, p.68): "You gain a Grid Power. Additionally, you
-  // gain +1 Personal Power per day."
-  async gridPowerFg(actor, item) {
-    const got = await pickAndGrant(actor, item, item.name, { type: 'power', matches: e => e.system?.type == 'grid' });
-    if (!got) {
-      return null;
-    }
-
-    await actor.update({ 'system.powers.personal.regeneration': (Number(actor.system?.powers?.personal?.regeneration) || 0) + 1 });
-    return done(actor, item, [got]);
-  },
-
   // Personal Power Supply (Field Guide, General Perk, p.71): "you can choose Grid Powers as General
   // Perks. You can never have more Grid Powers than your Personal Power Point capacity."
   async personalPowerSupply(actor, item) {
@@ -653,15 +589,9 @@ const HANDLERS = {
     return got ? done(actor, item, [got]) : null;
   },
 
-  // Integrated Basic/Advanced/Specialized Weapon (GI Joe CRB, drone upgrades, p.168-169): "The drone
-  // gains a Standard weapon" / "a Limited weapon" / "The drone replaces its weapon. It gains a weapon
-  // with an Availability one step less Available than the drone's Availability."
-  async droneBasicWeapon(actor, item) {
-    return droneWeapon(actor, item, ['standard']);
-  },
-  async droneAdvancedWeapon(actor, item) {
-    return droneWeapon(actor, item, ['limited']);
-  },
+  // Integrated Specialized Weapon (GI Joe CRB, drone upgrade, p.169): "The drone replaces its weapon. It
+  // gains a weapon with an Availability one step less Available than the drone's Availability." Integrated
+  // Basic/Advanced Weapon are Use rules on their items; the weapons they give carry the same droneWeapon flag.
   async droneSpecializedWeapon(actor, item) {
     const own = AVAILABILITY.indexOf(actor.system?.availability ?? 'standard');
     return droneWeapon(actor, item, [AVAILABILITY[Math.min(AVAILABILITY.length - 1, Math.max(0, own) + 1)]], true);
@@ -696,28 +626,10 @@ const HANDLERS = {
     return true;
   },
 
-  // Skin Tempering / Zeta Skin Transplant (Cobra Codex p.84-87): "Gain the benefits of a Standard
-  // [Limited, Restricted, Prototypical] Battledress Upgrade, whether you're wearing armor or not. You
-  // need not meet the prerequisites of the Upgrade to gain its benefits." The upgrade is kept loose on
-  // the actor and counted as worn (documents/actor.mjs#_prepareDefenses).
-  async standardSkinTempering(actor, item) {
-    return skinUpgrade(actor, item, 'standard');
-  },
-  async limitedSkinTempering(actor, item) {
-    return skinUpgrade(actor, item, 'limited');
-  },
-  async restrictedSkinTempering(actor, item) {
-    return skinUpgrade(actor, item, 'restricted');
-  },
-  async zetaSkinTransplant(actor, item) {
-    return skinUpgrade(actor, item, 'prototype');
-  },
-
   // Weaponization (Cobra Codex p.84-87). Standard/Limited: "Gain a Standard [Limited] Weapon with a Range
   // of Reach as an Integrated weapon." Martial: "Gain a ranged weapon as an Integrated weapon. The
   // weapon must be Standard or Limited availability, Medium or Sidearm sized, and take one hand to
-  // wield." Y-Series: "Gain a weapon as an Integrated weapon. The weapon can be of any availability,
-  // any size, and take one or two hands to wield."
+  // wield." (Y-Series Weaponization is a Use rule on its item.)
   async standardWeaponization(actor, item) {
     return integratedWeapon(actor, item, { type: 'weapon', availabilities: ['standard'], matches: isMeleeEntry });
   },
@@ -729,9 +641,6 @@ const HANDLERS = {
       type: 'weapon', availabilities: ['standard', 'limited'],
       matches: e => isRangedEntry(e) && ['medium', 'sidearm'].includes(e.system?.classification?.size) && oneHanded(e),
     });
-  },
-  async ySeriesWeaponization(actor, item) {
-    return integratedWeapon(actor, item, { type: 'weapon' });
   },
 
   // Armed (Cobra Codex, Trooper, 1st level, p.52): "You gain the Weapon Training General Perk. The three
@@ -900,35 +809,6 @@ const HANDLERS = {
     }
 
     const got = await grantCopy(actor, uuid, { grantedBy: item, flags: { brainstorm: true, endsOnFumble: true } });
-    return got ? done(actor, item, [got]) : null;
-  },
-
-  // S.P.D. Asset (Across the Stars, p.71): "the S.P.D. awards you access to one of the following: A set
-  // of five Delta Blasters, DeltaMax Striker, Delta Patrol Cycle, R.I.C. (Robotic Interactive Canine),
-  // Confiscated Xenotech (one Limited item, per GM's approval)."
-  async spdAsset(actor, item) {
-    const asset = await chooseButtons(item.name, T('E20.SpdAssetPrompt'), [
-      ['blasters', 'Delta Blasters (5)'], ['striker', 'DeltaMax Striker'], ['cycle', 'Delta Patrol Cycle'], ['ric', 'R.I.C.'], ['xenotech', 'Xenotech'],
-    ]);
-    const ids = {
-      blasters: 'Compendium.essence20.across_the_stars.Item.4oahai24Cxroir20',
-      striker: 'Compendium.essence20.across_the_stars.Item.jUWANIOv9MCwKnN9',
-      ric: 'Compendium.essence20.across_the_stars.Item.GGu11SYwOALYkJ61',
-    };
-    if (!asset) {
-      return null;
-    }
-
-    if (asset == 'cycle') {
-      return T('E20.SpdAssetCycle', { name: actor.name });
-    }
-
-    if (asset == 'xenotech') {
-      const got = await pickAndGrant(actor, item, item.name, { type: 'weapon', availabilities: ['limited'] });
-      return got ? done(actor, item, [got]) : null;
-    }
-
-    const got = await grantCopy(actor, ids[asset], { grantedBy: item, ...(asset == 'blasters' ? { system: { quantity: 5 } } : {}) });
     return got ? done(actor, item, [got]) : null;
   },
 
@@ -1274,7 +1154,7 @@ async function forageFor(actor, item, type, matches, flags = {}) {
   const dif = CONFIG.E20.availabilityDifficulties?.[source.system?.availability ?? kitAvailability(source.name)] ?? 0;
   // Forage Familiarity (Ferocious Fighters, General Perk, p.14): "You gain an Edge on Skill Tests made
   // when using Forage."
-  const familiar = itemsOf(actor).some(i => (i.flags?.core?.sourceId ?? i._stats?.compendiumSource) == GRANT.forageFamiliarity);
+  const familiar = itemsOf(actor).some(i => (i.flags?.core?.sourceId ?? i._stats?.compendiumSource ?? i?.flags?.essence20?.rulesSource) == GRANT.forageFamiliarity);
   if (!(await rollTest(actor, 'survival', dif, familiar ? { edge: true } : {})).success) {
     return T('E20.GrantFailed', { name: actor.name, item: item.name });
   }
@@ -1410,17 +1290,6 @@ async function kitbashUpgrade(actor, item, pay) {
   return T('E20.WeaponUseTemporaryUpgrade', { name: actor.name, perk: item.name, weapon: weapon.name, upgrade: source.name });
 }
 
-async function crossTraining(actor, item) {
-  const role = ownRole(actor);
-  const own = ownRolePerkNames(actor);
-  const line = lineOf(sourceOf(item));
-  const got = await pickRolePerk(actor, item, {
-    containers: index => index.filter(e => e.type == 'role' && e.name != role?.name && lineOf(e.uuid) == line),
-    allow: entry => entry.level > 1 && entry.level <= Math.floor(level(actor) / 2) && !own.has(entry.name?.toLowerCase()),
-  });
-  return got ? done(actor, item, [got]) : null;
-}
-
 async function originBenefit(actor, item, line, originOk, perkOk = () => true) {
   const origins = await findCompendiumItems({ type: 'origin', fields: ['system.items'] });
   const ownOrigin = itemsOf(actor).find(i => i.type == 'origin');
@@ -1462,11 +1331,6 @@ async function droneWeapon(actor, item, availabilities, replace = false) {
   }
 
   const got = await pickAndGrant(actor, item, item.name, { type: 'weapon', availabilities }, { integrated: true, flags: { droneWeapon: true } });
-  return got ? done(actor, item, [got]) : null;
-}
-
-async function skinUpgrade(actor, item, availability) {
-  const got = await pickAndGrant(actor, item, item.name, { type: 'upgrade', availabilities: [availability], matches: e => e.system?.type == 'armor' }, { flags: { alterationWorn: true } });
   return got ? done(actor, item, [got]) : null;
 }
 

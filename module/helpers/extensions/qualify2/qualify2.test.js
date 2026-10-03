@@ -1,8 +1,8 @@
 import { jest } from '@jest/globals';
-import { Q2, SILENT_BATTLEDRESS } from './common.mjs';
+import { Q2 } from './common.mjs';
 import {
   activeEvolution, applyMentor, effectiveAvailability, enthusiastBlocks, enthusiastPreRoll, evolutionSpecializes, isHardwareWeapon,
-  isQualifiedUpgrade, onRequisitionAccess, onRequisitionAvailability, perkAccess, tradeSchoolPreRoll, tradeSchoolSpecializes,
+  isQualifiedUpgrade, onRequisitionAvailability, perkAccess, tradeSchoolPreRoll, tradeSchoolSpecializes,
   weaponIsType, WHISPER_WARRIOR_RULE,
 } from './qualifications.mjs';
 import { canDoOrDie, decorateDoOrDie, doOrDieCost, doOrDieDie, oldHandLevel, rescore, wildIdeaApply, wildIdeaToggles } from './old-hand.mjs';
@@ -77,12 +77,6 @@ beforeEach(() => {
 });
 
 describe('requisition access', () => {
-  test('Oorah qualifies Standard weapons only', () => {
-    const actor = makeActor([item('perk', Q2.oorah)]);
-    expect(perkAccess(actor, weapon({ system: { availability: 'standard' } }))).toBe('qualified');
-    expect(perkAccess(actor, weapon({ system: { availability: 'limited' } }))).toBeNull();
-  });
-
   test('Whisper Warrior needs both Martial Arts and Silent', () => {
     const actor = makeActor([item('perk', Q2.whisperWarrior)]);
     expect(perkAccess(actor, weapon({ system: { availability: 'restricted', traits: ['martialArts', 'silent'] } }))).toBe('qualified');
@@ -95,18 +89,6 @@ describe('requisition access', () => {
     expect(isHardwareWeapon(big)).toBe(true);
     expect(isHardwareWeapon(small)).toBe(false);
     expect(perkAccess(makeActor([item('perk', Q2.hardwareTraining)]), big)).toBe('qualified');
-  });
-
-  test('Promise of Riches trains Limited weapons and armor', () => {
-    const actor = makeActor([item('perk', Q2.promiseOfRiches)]);
-    expect(perkAccess(actor, item('armor', null, { system: { availability: 'limited' } }))).toBe('trained');
-    expect(perkAccess(actor, weapon({ system: { availability: 'restricted' } }))).toBeNull();
-    const out = { access: 'none' };
-    onRequisitionAccess(actor, weapon({ system: { availability: 'limited' } }), out);
-    expect(out.access).toBe('trained');
-    const kept = { access: 'qualified' };
-    onRequisitionAccess(actor, weapon({ system: { availability: 'limited' } }), kept);
-    expect(kept.access).toBe('qualified');
   });
 
   test('Weapon Enthusiast: the chosen Limited type', () => {
@@ -124,10 +106,9 @@ describe('requisition access', () => {
   test('qualified upgrades drop out of the Availability stacking', () => {
     CONFIG.E20.upgradeAvailabilityMatrix = { standard: { standard: 'standard', restricted: 'restricted' }, restricted: { standard: 'restricted' } };
     const training = item('perk', Q2.upgradeTraining, { flags: { q2Chosen: [{ uuid: 'Compendium.x.Item.up1', name: 'Scope' }] } });
-    const actor = makeActor([training, item('perk', Q2.oorah)]);
+    const actor = makeActor([training]);
     const gun = weapon({ system: { availability: 'standard', totalAvailability: 'restricted', items: { u: { type: 'upgrade', uuid: 'Compendium.x.Item.up1', availability: 'restricted' } } } });
     expect(isQualifiedUpgrade(actor, { uuid: 'Compendium.x.Item.up1' })).toBe(true);
-    expect(isQualifiedUpgrade(actor, { uuid: SILENT_BATTLEDRESS })).toBe(true);
     expect(effectiveAvailability(actor, gun)).toBe('standard');
     const out = { availability: 'restricted' };
     onRequisitionAvailability(actor, gun, out);

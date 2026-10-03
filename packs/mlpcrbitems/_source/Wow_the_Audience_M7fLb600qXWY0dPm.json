@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Wow the Audience: 10+ watching","when":["skill:performance"],"upshift":1},
+      {"type":"DialogSwitch","label":"Wow the Audience: 100+ watching","when":["skill:performance"],"upshift":1},
+      {"type":"DialogSwitch","label":"Wow the Audience: 1,000+ watching","when":["skill:performance"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on Performance tests, switches for 10+, 100+ and 1,000+ onlookers, each adding ↑1.</p>"

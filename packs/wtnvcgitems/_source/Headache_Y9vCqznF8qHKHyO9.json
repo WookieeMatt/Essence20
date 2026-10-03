@@ -5,6 +5,7 @@
   "_id": "Y9vCqznF8qHKHyO9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:weird>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once you've taken Essence damage, your unarmed melee hits show a Headache button that deals extra Psychic damage equal to it.</p>"

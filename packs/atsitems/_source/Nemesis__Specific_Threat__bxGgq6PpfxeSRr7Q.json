@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Defeated a Threat Level 12+ enemy"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: name your Nemesis. Automatic: every roll that targets them gets ↑2, labelled Nemesis (Specific Threat) in the Roll Options Dialog. Chat card: once per scene with them, a Reroll button lets you keep either result.</p>"

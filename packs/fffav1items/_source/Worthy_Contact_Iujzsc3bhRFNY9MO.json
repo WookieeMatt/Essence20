@@ -5,6 +5,7 @@
   "_id": "Iujzsc3bhRFNY9MO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:One or more Contacts"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per mission): summon a Contact a second time, with its Allegiance Points refilled.</p>"

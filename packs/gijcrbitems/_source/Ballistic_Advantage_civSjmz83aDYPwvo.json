@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","when":["attack:ranged","weapon:trait:sniper"],"immune":["longRangeSnag"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks with Sniper-trait weapons never get the Long Range Snag in the Roll Options Dialog, and your Sneak Attack works at any range with them.</p>"

@@ -5,6 +5,7 @@
   "_id": "8h7PzFKPoGh6RLYX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:essence:social>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 Cleverness on the sheet, and a Bluffing Specialization on Deception. Deception rolls made with that Specialization open the Roll Options Dialog with Edge already selected.</p>"

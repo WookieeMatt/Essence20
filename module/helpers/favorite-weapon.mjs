@@ -91,7 +91,7 @@ export async function pickFavoriteWeapon(actor) {
  */
 export function getFavoriteWeaponItem(actor) {
   const perk = actor?.items?.find(item => item.type == 'perk'
-    && (item.flags?.core?.sourceId == FAVORITE_WEAPON_ID || item._stats?.compendiumSource == FAVORITE_WEAPON_ID));
+    && (item.flags?.core?.sourceId == FAVORITE_WEAPON_ID || item._stats?.compendiumSource == FAVORITE_WEAPON_ID || item?.flags?.essence20?.rulesSource == FAVORITE_WEAPON_ID));
   const choice = perk?.system.choice;
   return choice ? actor.items.get(choice) ?? null : null;
 }

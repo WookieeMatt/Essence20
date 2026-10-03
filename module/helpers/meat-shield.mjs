@@ -101,7 +101,7 @@ function getPermanentBonus(actor) {
 export function getMeatShieldBonus(actor) {
   const item = actor.items?.find(actorItem =>
     actorItem.type == 'perk'
-    && (actorItem.flags?.core?.sourceId == MEAT_SHIELD_ID || actorItem._stats?.compendiumSource == MEAT_SHIELD_ID));
+    && (actorItem.flags?.core?.sourceId == MEAT_SHIELD_ID || actorItem._stats?.compendiumSource == MEAT_SHIELD_ID || actorItem?.flags?.essence20?.rulesSource == MEAT_SHIELD_ID));
   if (!item) {
     return 0;
   }

@@ -5,6 +5,7 @@
   "_id": "Yo1la1g1Mc3fNBbH",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:ballistic"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while attached: the Aiming switch in this weapon's Roll Options Dialog gives ↑1 more than usual.</p>"

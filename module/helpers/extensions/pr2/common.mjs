@@ -13,8 +13,6 @@ export const PR2 = {
   bendPhysics: bth('EITAjh6GBuc2SVSY'),
   primalRage: bth('4gkRa5plNeMNXSmL'),
   instructor: bth('zitiiHIQ4miPU5pa'),
-  graphitePrime: bth('nVOpdhr6aFnuY0ks'),
-  privileged: bth('J8kK8oU2rF7eWTRc'),
   dedicatedCarrier: bth('GShizr9G3xrMB3O5'),
   dinoDriveMode: bth('fpfH5KgJ3BdWAFtM'),
   dinoGemIntegration: bth('q9lciavy0Nfh0rR8'),

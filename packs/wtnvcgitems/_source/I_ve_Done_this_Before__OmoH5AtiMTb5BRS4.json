@@ -5,6 +5,7 @@
   "_id": "OmoH5AtiMTb5BRS4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:origin:Brought Back"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Chat card: once per day, when a Skill Die on your Skill Test came up 1, a reroll button rerolls your Skill Die one size bigger (↑1), keeping your d20.</p><p>Left to the table: keeping it to once per session.</p>"

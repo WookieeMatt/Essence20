@@ -5,6 +5,10 @@
   "_id": "rCpCrfzMYPupoYNI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Zord","path":"system.canHaveZord","op":"set","value":1},
+      {"type":"RollModifier","label":"Driving your Zord: no untrained Snag","immune":["untrainedSnag"],"when":["skill:driving","vehicle:driving","vehicle:type:zord"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: lets you link a Zord to your character. Automatic: while you drive a Zord, your Driving tests don't take the Snag for being untrained, so the Roll Options Dialog opens on Normal.</p>"

@@ -5,6 +5,7 @@
   "_id": "HSmtPttbJvaNy5Tf",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:computerized"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while the battledress is worn, it protects you from extreme cold and heat penalties in the current environment.</p>"

@@ -1,3 +1,5 @@
+import { legacyChoiceUpdates } from "./legacy-choices.mjs";
+
 /**
  * A copy of a compendium item reads its rules from the original, live - the same arrangement as its
  * automation notes (documents/item.mjs#_prepareAutomation). So a book item's rules can be fixed in
@@ -157,6 +159,13 @@ export function linkUpdates(items, byName, lookup = undefined) {
       continue;
     }
 
+    // A copy whose own compendium original still exists is that item, whatever it's called - only
+    // homebrew, world-made items and copies of a removed duplicate are matched by name.
+    const own = sourceUuidOf(item);
+    if (own && (lookup ?? (uuid => globalThis.fromUuidSync?.(uuid, { strict: false })))(own)) {
+      continue;
+    }
+
     const uuid = byName.get(`${item.type}|${String(item.name ?? '').trim().toLowerCase()}`);
     if (uuid && item.flags?.essence20?.rulesSource != uuid) {
       updates.push({ _id: item.id, 'flags.essence20.rulesSource': uuid });
@@ -206,6 +215,12 @@ export async function linkExistingCopies() {
     if (updates.length) {
       await actor.updateEmbeddedDocuments('Item', updates);
       linked += updates.length;
+    }
+
+    // Picks items stored their own way before they became ChoiceSet rules (rules/legacy-choices.mjs).
+    const choices = legacyChoiceUpdates(actor);
+    if (choices.length) {
+      await actor.updateEmbeddedDocuments('Item', choices);
     }
   }
 

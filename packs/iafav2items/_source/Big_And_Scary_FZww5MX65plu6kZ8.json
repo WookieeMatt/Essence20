@@ -5,6 +5,7 @@
   "_id": "FZww5MX65plu6kZ8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:brawn>=d6"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your Intimidation tests get ↑1 for each Size Class you're larger than the target, counting yourself one size larger, labelled Big And Scary in the Roll Options Dialog.</p><p>Left to the table: counting as one size larger in other situations where it helps.</p>"

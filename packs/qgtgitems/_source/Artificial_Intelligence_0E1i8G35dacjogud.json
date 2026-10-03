@@ -5,6 +5,10 @@
   "_id": "0E1i8G35dacjogud",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","path":"system.traits.ai","op":"set","value":1,"when":["self:type:vehicle"]},
+      {"type":"DerivedStat","path":"system.traits.computerized","op":"set","value":1,"when":["self:type:vehicle"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: gives the vehicle the A.I. and Computerized traits.</p>"

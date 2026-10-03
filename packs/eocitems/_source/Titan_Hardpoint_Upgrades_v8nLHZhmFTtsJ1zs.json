@@ -5,6 +5,10 @@
   "_id": "v8nLHZhmFTtsJ1zs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Hardpoints","label":"Titan Hardpoint Upgrades","perWeapon":1}
+    ],
+    "prerequisites": {"when":["self:size>=huge"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: lets you mount Titan-class weapons regardless of Size; each one uses a second Integrated Hardpoint.</p>"

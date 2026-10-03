@@ -5,6 +5,9 @@
   "_id": "gG1nTctk40oLyJJH",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Grant","label":"Comes with a Recording Microphone","uuid":"Compendium.essence20.wtnv_citizens_guide.Item.ab9XMJpujnX7aRSS"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: counts as a Streetwise kit for rolls that call for one, and adds a Recording Microphone when you get it. Use button: spend it for temporary Specialization (or an Edge if already Specialized), or restock it.</p>"

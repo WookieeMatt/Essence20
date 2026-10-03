@@ -5,6 +5,9 @@
   "_id": "PPP3Zm8cYiduQEC1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Reckless Driving","when":["attack:ram"],"upshift":1}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: ↑1 on Ram attacks, already counted in the Roll Options Dialog's starting ↑ total but not listed under its own name.</p><p>Left to the table: spending a Standard action to Ram several different targets during one move.</p>"

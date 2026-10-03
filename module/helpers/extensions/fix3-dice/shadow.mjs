@@ -7,7 +7,7 @@ import { isInfiltrating } from "../../infiltrating.mjs";
  * Infiltrating suffer ↓2. Only detection rolls qualify, so this is a Roll Options Dialog switch on
  * the roller's side rather than an automatic ↓2 on every roll at the holder. Offered on any roll at
  * an Infiltrating holder; on by default for a non-attack Alertness test (the detection Skill), off
- * otherwise. (Martial Artist's matching switch is extensions/fix3-prmlp/martial-artist.mjs.)
+ * otherwise. (Martial Artist's matching switch is an item rule on the Hang-Up.)
  */
 
 export const SHADOW_ID = "Compendium.essence20.gi_joe_crb.Item.PDiRwnTcNCtzJbDn";

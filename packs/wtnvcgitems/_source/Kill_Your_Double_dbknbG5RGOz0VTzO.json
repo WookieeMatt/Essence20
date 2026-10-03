@@ -5,6 +5,9 @@
   "_id": "dbknbG5RGOz0VTzO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Kill Your Double","when":["attack","target:skill:weird>d20"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: an Edge on attacks against a target that has trained the Weird Skill. The Roll Options Dialog lists it as a source.</p>"

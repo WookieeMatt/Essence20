@@ -5,6 +5,7 @@
   "_id": "OWVl8HRXBI7mwJ0j",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:perk:Forage"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: forage a weapon at your Forage tier, optionally with the Salvaged upgrade.</p>"

@@ -5,6 +5,7 @@
   "_id": "JJ1KynH9FfYeOG7N",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["host:data:system.isPoison","host:data:system.poisonType=poison",{"any":["host:data:system.poisonApplication.ingested","host:data:system.poisonApplication.inhaled"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the poison it's attached to counts as a contact poison.</p>"

@@ -5,6 +5,7 @@
   "_id": "I2nS9xXN8ioV5jJ5",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Grenade"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the grenade's range becomes Reach, and rolling it plants the bomb instead of throwing it. When someone enters its blast area, a card lets the planter set it off, rolling Technology against everyone inside.</p>"

@@ -5,6 +5,9 @@
   "_id": "JLwbWSlHn5q3rqnH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Cover","mode":"ignore","label":"Ignores Cover with a shotgun or submachine gun","when":[{"any":["weapon:source:Compendium.essence20.gi_joe_crb.Item.2qW1YLopvjKyezNQ","weapon:source:Compendium.essence20.gi_joe_crb.Item.oJInlAgdYZzjH7bk"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your shotgun and submachine gun attacks ignore the target's cover and any Deflective armor bonus to its Defense.</p>"

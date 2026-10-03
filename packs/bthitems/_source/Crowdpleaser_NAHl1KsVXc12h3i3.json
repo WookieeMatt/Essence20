@@ -5,6 +5,9 @@
   "_id": "NAHl1KsVXc12h3i3",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Crowdpleaser","when":["not:skill:performance"],"snag":true,"limit":{"per":"mission","key":"crowdpleaserHangUp"}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your first Skill Test other than Performance each day opens the Roll Options Dialog with Snag selected, in or out of combat. A new day starts when the GM starts a new mission on the Scene Clock.</p>"

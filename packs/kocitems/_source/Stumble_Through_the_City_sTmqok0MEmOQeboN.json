@@ -5,6 +5,9 @@
   "_id": "sTmqok0MEmOQeboN",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"In a town, city or village (Stumble Through the City: Snag)","when":[{"any":["skill:persuasion","skill:deception"]},"terrain:urban"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Snag on Persuasion and Deception when the scene or region is tagged as urban. On untagged scenes, the Roll Options Dialog gives a switch instead.</p>"

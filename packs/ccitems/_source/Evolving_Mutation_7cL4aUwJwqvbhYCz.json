@@ -5,6 +5,7 @@
   "_id": "7cL4aUwJwqvbhYCz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:has:Engrafted Mutation","self:level>=8"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when gained (or via the Use button), pick a Limited Alteration you don't already have; it is added as a genetic Alteration. You count as having genetic Alterations for Retrogen weapons, and Beast Mode offers its extra picks.</p>"

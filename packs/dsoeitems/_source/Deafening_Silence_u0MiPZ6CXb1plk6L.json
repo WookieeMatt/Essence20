@@ -5,6 +5,9 @@
   "_id": "u0MiPZ6CXb1plk6L",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"No ally within 50 ft (Deafening Silence)","when":[{"any":["essence:smarts","essence:social"]},"not:ally:within:50"],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when no ally is within 50 ft, your Smarts and Social Skill Tests take ↓1. It's already counted in the Roll Options Dialog's starting ↓ total, but isn't listed under its own name.</p>"

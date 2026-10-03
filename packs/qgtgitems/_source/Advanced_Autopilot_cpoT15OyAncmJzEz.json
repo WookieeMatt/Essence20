@@ -5,6 +5,10 @@
   "_id": "cpoT15OyAncmJzEz",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","path":"system.traits.autopilotAdvanced","op":"set","value":1,"when":["self:type:vehicle"]}
+    ],
+    "prerequisites": {"when":["self:data:system.traits.autopilot"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: gives the vehicle the Advanced Autopilot trait.</p>"

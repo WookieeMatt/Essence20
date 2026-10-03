@@ -5,6 +5,10 @@
   "_id": "2mSP6mVx0axvOlXf",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Its special attack arrives with it","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"},{"do":"fitAttack","types":["blunt","sharp"]}]},
+      {"type":"Use","label":"Get its special attack back","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"},{"do":"fitAttack","types":["blunt","sharp"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: converting into this Alt Mode makes you Large with 40ft Ground Movement. Use button: choose +20ft Ground or a 25ft Underground Movement for this mode. Taking it adds the Natural Weapon (you pick Blunt or Sharp; Use button re-adds it).</p>"

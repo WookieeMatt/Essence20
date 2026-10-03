@@ -5,6 +5,10 @@
   "_id": "T75CELkuLUUgmxXZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Brawn instead (Brute Force)","when":["item:type:weaponEffect","skill:targeting","weapon:data:system.classification.size=heavy"],"useSkill":"brawn"}
+    ],
+    "prerequisites": {"when":["self:skill:brawn>=d8"]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch to roll Brawn instead of Targeting when you attack with a heavy ranged weapon.</p>"

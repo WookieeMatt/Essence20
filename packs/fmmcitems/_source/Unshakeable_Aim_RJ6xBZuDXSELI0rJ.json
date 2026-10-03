@@ -5,6 +5,9 @@
   "_id": "RJ6xBZuDXSELI0rJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Unshakeable Aim: ↑2 instead of the Aim bonus (1 Personal Power)","upshift":2,"replacesAim":true,"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"when":["attack","not:attack:melee"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: on a ranged attack, a switch spends 1 Personal Power for ↑2 instead of the normal Aim bonus.</p><p>Left to the table: adding the Ballistic trait to that attack.</p>"

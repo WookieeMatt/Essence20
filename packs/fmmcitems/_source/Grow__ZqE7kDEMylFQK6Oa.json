@@ -5,6 +5,9 @@
   "_id": "ZqE7kDEMylFQK6Oa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Grow!","when":["self:data:flags.essence20.monsterFormActive","self:data:flags.essence20.monsterGrowSelfActive"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: while in Monster Form, switches you to Towering Size with +1 damage and +2 to Toughness and Evasion. It ends automatically when Monster Form does.</p>"

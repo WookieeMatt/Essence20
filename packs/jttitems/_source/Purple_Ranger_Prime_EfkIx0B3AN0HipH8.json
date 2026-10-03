@@ -5,6 +5,9 @@
   "_id": "EfkIx0B3AN0HipH8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Shake off Frightened, Mesmerized and Stunned","when":[{"any":["self:status:frightened","self:status:mesmerized","self:status:stunned"]}],"steps":[{"do":"removeCondition","condition":"frightened"},{"do":"removeCondition","condition":"mesmerized"},{"do":"removeCondition","condition":"stunned"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effects: +2 to all Defenses while Morphed, and immunity to Psychic damage. Use button: a Free action to remove Frightened, Mesmerized and Stunned from yourself.</p>"

@@ -8,7 +8,7 @@ import {
 } from "../../extensions.mjs";
 import { worldActors } from "../../companion-link.mjs";
 import {
-  PR2, T, findSourced, holds, isRangedAttack, itemsOf, parentOf, sourceOf, teamHolds,
+  PR2, T, holds, isRangedAttack, itemsOf, parentOf, sourceOf, teamHolds,
 } from "./common.mjs";
 import { postLine, writeActor } from "../zord1/common.mjs";
 
@@ -209,30 +209,6 @@ export async function grantAimApparatus(item) {
   await item.setFlag('essence20', AIM_FLAG, target.uuid);
   await postLine(actor, T('Pr2AimApparatusGranted', { name: actor.name, target: target.name }));
 }
-
-/* -------------------------------------------- */
-/*  Graphite Ranger Prime                        */
-/* -------------------------------------------- */
-
-// Graphite Ranger Prime (p.48): "During the first turn of a combat scene, all enemies must attack
-// you and suffer Snag on their Attack Skill Tests." (Its Cleverness Snag and +2 Defenses were
-// already built - dice.mjs PRIME_DEFENSE_SNAG_PERKS and the compendium effect.) The first turn of
-// the combat is round 1; "must attack you" is the GM's to play.
-export function graphitePrimeSources(actor, target, ctx = {}) {
-  const combat = globalThis.game?.combat;
-  if (!ctx.isAttack || !target || !combat?.started || combat.round != 1) {
-    return null;
-  }
-
-  if (!target.system?.isMorphed || !holds(target, PR2.graphitePrime)) {
-    return null;
-  }
-
-  const name = findSourced(target, PR2.graphitePrime)?.name ?? 'Graphite Ranger Prime';
-  return { sources: [{ id: 'pr2-graphitePrime', label: name, snag: true }] };
-}
-
-registerRollSources(graphitePrimeSources);
 
 /* -------------------------------------------- */
 /*  Drop / remove hooks                          */

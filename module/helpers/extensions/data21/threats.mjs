@@ -1,5 +1,5 @@
-import { registerDefenseAdjust, registerDerived, registerRollSources, registerUse } from "../../extensions.mjs";
-import { D21, T, escape, findSourced, itemsOf, sourceOf } from "./common.mjs";
+import { registerDefenseAdjust, registerDerived, registerRollSources } from "../../extensions.mjs";
+import { D21, findSourced, itemsOf, sourceOf } from "./common.mjs";
 
 /**
  * Finster's Monster-Matic Cookbook's new rules (p.7):
@@ -83,39 +83,3 @@ export function mysticDefense(attacker, defender, defenseType) {
 
 registerRollSources(mysticSources);
 registerDefenseAdjust(mysticDefense);
-
-/* -------------------------------------------- */
-/*  Sorcerous Tremors                            */
-/* -------------------------------------------- */
-
-export async function useSorcerousTremors(item, economy, pay) {
-  const actor = item?.parent;
-  if (!actor) {
-    return null;
-  }
-
-  const { chooseSelect, rollTest } = await import("../../grants.mjs");
-  const strength = Number(await chooseSelect(item.name, T('D21TremorsPrompt'),
-    [1, 2, 3].map(n => ({ value: String(n), label: T('D21TremorsStrength', { n, dif: 12 + 3 * n }) }))));
-  if (!strength || !(await pay('standard'))) {
-    return null;
-  }
-
-  const { success } = await rollTest(actor, 'culture', 12);
-  if (!success) {
-    return T('D21TremorsFailed', { name: escape(actor.name) });
-  }
-
-  const { getAllNearbyTokens } = await import("../../allies.mjs");
-  const { postSaveCard } = await import("../../save-riders.mjs");
-  await postSaveCard(actor, getAllNearbyTokens(actor, 15).map(token => token.actor), {
-    title: item.name, skills: ['athletics', 'acrobatics'], dif: 12 + 3 * strength, status: 'prone',
-  });
-  return null;
-}
-
-registerUse({
-  id: 'd21SorcerousTremors',
-  matches: item => sourceOf(item) == D21.sorcerousTremors,
-  run: (item, economy, pay) => useSorcerousTremors(item, economy, pay),
-});

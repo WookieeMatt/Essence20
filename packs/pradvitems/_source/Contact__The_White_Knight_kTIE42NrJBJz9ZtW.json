@@ -5,6 +5,7 @@
   "_id": "kTIE42NrJBJz9ZtW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:level>=4","ask:Performed a heroic act"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: summoning the White Knight, spending its Allegiance Points and resolving what it does each round.</p>"

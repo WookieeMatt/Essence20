@@ -5,6 +5,10 @@
   "_id": "jkqhVz3ahtRGqqya",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Fire Master","when":["attack","item:damageType:fire"],"upshift":1}
+    ],
+    "prerequisites": {"when":["self:skill:survival>=d10"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Resistance to Fire. Automatic: your attacks that deal Fire damage get ↑1, already added to the shift in the Roll Options Dialog.</p>"

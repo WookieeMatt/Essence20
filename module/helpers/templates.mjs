@@ -147,7 +147,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/app/parts/threat-builder-drop.hbs",
 
     //Item Tabs
-    "systems/essence20/templates/item/tabs/effects.hbs",
+    "systems/essence20/templates/item/tabs/rules.hbs",
     "systems/essence20/templates/item/tabs/description.hbs",
     "systems/essence20/templates/item/tabs/detail-base.hbs",
     // Item partials.

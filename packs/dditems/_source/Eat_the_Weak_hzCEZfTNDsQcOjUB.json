@@ -5,6 +5,7 @@
   "_id": "hzCEZfTNDsQcOjUB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Word of Unicron","self:skill:culture>=d2"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: target someone addicted to Dark Energon and roll Culture against their Willpower; on a success their Addicted Hang-Up is removed.</p>"

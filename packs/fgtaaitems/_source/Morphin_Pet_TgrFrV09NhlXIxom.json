@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:perk:It's Morphin Time!","self:skill:animalHandling>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: builds your pet or drone from the table (function, size, Movement), then improves it one tier each time you pick it again.</p>"

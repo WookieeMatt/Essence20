@@ -201,18 +201,6 @@ describe("Roll Options Dialog switches", () => {
     expect(snagged.edge).toBeUndefined();
   });
 
-  test("Object Alt Mode: only in Alt Mode, Infiltration on by default, Alertness off", () => {
-    const items = [perk(FIX3_TF.objectAltMode, { name: 'Object Alt Mode' })];
-    const alt = makeActor({ items, system: { isTransformed: true } });
-    expect(tfFixToggles(alt, { rolledSkill: 'infiltration' })[0]).toMatchObject({ name: 'fix3ObjectAltMode', value: true });
-    expect(tfFixToggles(alt, { rolledSkill: 'alertness' })[0]).toMatchObject({ value: false });
-    expect(tfFixToggles(makeActor({ items, system: { isTransformed: false } }), { rolledSkill: 'infiltration' })).toEqual([]);
-
-    const options = { ext: { fix3ObjectAltMode: true } };
-    tfFixApplyDialog(null, options);
-    expect(options.edge).toBe(true);
-  });
-
   test("Experiment (Shove): ↑1 on a Shove and a switch for breaking a grapple", () => {
     const items = [perk(FIX3_TF.experiment, { name: 'Experiment', system: { choice: 'shove' } })];
     const actor = makeActor({ items, statuses: ['grappled'] });

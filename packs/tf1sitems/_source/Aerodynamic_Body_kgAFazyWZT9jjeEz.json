@@ -5,6 +5,7 @@
   "_id": "kgAFazyWZT9jjeEz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:canTransform","ask:Alt Mode with Crew 1+"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing applies automatically.</p><p>Left to the table: lower your Alt Mode's Crew and Firepoints by the amount you choose and raise its Movement by 5ft for each.</p>"

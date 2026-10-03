@@ -200,7 +200,7 @@ export const REV_MORPHER_ID = "Compendium.essence20.jump_through_time.Item.iOCPW
 /** The action Morphing takes this actor: 'move' with a Rev Morpher, otherwise 'standard'. */
 export function morphActionType(actor) {
   const items = actor?.items?.contents ?? [...(actor?.items ?? [])];
-  const hasRevMorpher = items.some(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == REV_MORPHER_ID);
+  const hasRevMorpher = items.some(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == REV_MORPHER_ID);
   return hasRevMorpher ? 'move' : 'standard';
 }
 

@@ -5,6 +5,9 @@
   "_id": "uj9MrbSdm0CABElw",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Someone is trying to surprise you (All-Around Vision: ↑2)","when":["skill:alertness"],"upshift":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch for ↑2 on Alertness when someone is trying to surprise you.</p>"

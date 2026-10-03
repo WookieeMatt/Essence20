@@ -13,7 +13,7 @@
 export const COMPANION_FLAG = 'companionOf';
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function itemsOf(actor) {

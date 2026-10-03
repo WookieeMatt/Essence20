@@ -5,6 +5,7 @@
   "_id": "SCaKhmiYKC5VSPqU",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:ballistic"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: the extra +2 Defense that Deflective and Plating armor get against these rounds, what they won't punch through, and keeping it off weapons with other ammunition upgrades.</p>"

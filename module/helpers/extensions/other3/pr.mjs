@@ -1,11 +1,11 @@
 /**
- * Power Rangers - Follow Me! (PR CRB), and Through the Shattered Grid's Better Together, Dr. K's
- * Modified Morpher, Guardian Blast, Mega Defender, the rest of Metallic Armor Power Up!, the Solarix
- * Shard and the Void Touched Origin's Essence trade.
+ * Power Rangers - Follow Me! (PR CRB), and Through the Shattered Grid's Better Together, Guardian
+ * Blast, Mega Defender, the rest of Metallic Armor Power Up!, the Solarix Shard and the Void Touched
+ * Origin's Essence trade.
  */
 import {
-  registerAfterDamage, registerApplyDialog, registerChatButton, registerDerived, registerDialogToggles,
-  registerHitRider, registerPostRoll, registerRollSources, registerSceneAdvanced, registerTurnStart, registerUse,
+  registerAfterDamage, registerChatButton, registerDerived, registerHitRider, registerPostRoll, registerRollSources,
+  registerSceneAdvanced, registerTurnStart, registerUse,
 } from "../../extensions.mjs";
 import { getSceneEpoch, getUses, markUsed } from "../../scene-clock.mjs";
 import {
@@ -216,27 +216,6 @@ registerRollSources((actor) => {
   }
 
   return { sources };
-});
-
-/* -------------------------------------------- */
-/*  Dr. K's Modified Morpher                     */
-/* -------------------------------------------- */
-
-/*
- * Dr. K's Modified Morpher (Through the Shattered Grid, p.25): "Attacks that would make you lose
- * Personal Power or make you unable to spend it suffer ↓2 when targeting you." No attack in the
- * packs is flagged as draining Power, so the attacker declares it: the dialog offers the ↓2 on any
- * attack against a holder.
- */
-registerDialogToggles((actor, ctx) => (ctx?.item?.type == 'weaponEffect' || ctx?.item?.type == 'power' || ctx?.item?.type == 'spell'
-  ? (targetedActors().some(target => has(target, O3.drKMorpher))
-    ? [{ name: 'o3DrK', label: T('O3DrKToggle'), type: 'checkbox', value: false }] : [])
-  : []));
-
-registerApplyDialog((actor, options) => {
-  if (options.ext?.o3DrK) {
-    options.shiftDown = num(options.shiftDown) + 2;
-  }
 });
 
 /* -------------------------------------------- */

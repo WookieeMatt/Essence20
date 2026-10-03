@@ -5,6 +5,9 @@
   "_id": "faME3nQl9NjbafOG",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Use","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"choose","options":[{"label":"Recall a character (Edge on Social tests against the target)","steps":[{"do":"target"},{"do":"mark","key":"shatteredMemories","to":"target","until":"encounter"},{"do":"bank","edge":true,"appliesWhen":["essence:social","target:marked:shatteredMemories"],"until":"encounter"}]},{"label":"Recall timeline details (↑1 on Smarts tests)","steps":[{"do":"bank","upshift":1,"appliesWhen":["essence:smarts"],"until":"encounter"}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (1 Personal Power): pick an Edge on your next Social test against the creature you have targeted, or ↑1 on your next Smarts test. Either shows as Shattered Memories in that roll's Roll Options Dialog and is used up by it.</p><p>Left to the table: gaining new Contacts through it.</p>"

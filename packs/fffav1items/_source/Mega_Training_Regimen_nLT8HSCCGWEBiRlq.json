@@ -5,6 +5,14 @@
   "_id": "nLT8HSCCGWEBiRlq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Mega Training Regimen","when":["attack","not:roll:shove",{"any":["item:damageType:grapple","item:damageType:knocProne"]}],"snag":true},
+      {"type":"RollModifier","scope":"incoming","label":"Mega Training Regimen","when":["roll:shove","not:item:damageType:maneuver"],"snag":true},
+      {"type":"Qualification","label":"Mega Training Regimen (Qualified: Computerized armor)","access":"qualified","items":["item:type:armor","item:trait:computerized"]},
+      {"type":"Qualification","label":"Mega Training Regimen (Trained: all armor)","access":"trained","items":["item:type:armor"]},
+      {"type":"Qualification","label":"Mega Training Regimen (Qualified: Organic Armor upgrade)","upgrades":[{"any":["item:id:W6fiSzyPOE2VGj8k","item:data:name=organic armor"]}]},
+      {"type":"RollModifier","scope":"incoming","label":"Mega Training Regimen","when":["attack","item:damageType:maneuver"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: trained in all armor and Qualified in Computerized armor. Automatic: its Requisition and driving Qualifications; ↑1 on attacks with vehicle and hardpoint weapons; and attempts to Grapple, Shove or Trip you (Maneuver, Grapple and Knock Prone attacks, or a Shove) take a Snag. Both are labelled Mega Training Regimen in the Roll Options Dialog.</p>"

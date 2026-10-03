@@ -1,5 +1,6 @@
 import { registerApplyDialog, registerRollSources, registerUse } from "../../extensions.mjs";
 import { has, idOf, itemFrom, itemsFrom, Q1, Q1_UPGRADE, SILENCER_UUID, sourceOf, T } from "./common.mjs";
+import { ruleQualifiedUpgrade } from "../../../rules/adapter.mjs";
 
 /**
  * Equipment Training and Qualification from Perks - "In addition to your Role's Equipment Training
@@ -30,27 +31,16 @@ const CHOSEN_FLAG = 'q1Chosen';
 /*  Rules                                        */
 /* -------------------------------------------- */
 
-// "Qualified in all Standard weapons": Standard Weapon Training (Field Guide p.72), The Glory of
-// Cobra-La (Ferocious Fighters p.73), Ultra-Secret Strike Force (p.42), Nu, Pogodi! (Intercontinental
-// Adventures p.68).
-const STANDARD_WEAPON_QUALIFIERS = [Q1.standardWeaponTraining, Q1.gloryOfCobraLa, Q1.ultraSecretStrikeForce, Q1.nuPogodi];
+// "Qualified in all Standard weapons": Nu, Pogodi! (Intercontinental Adventures p.68). Standard Weapon
+// Training, The Glory of Cobra-La and Ultra-Secret Strike Force are Qualification rules on their items
+// (item:availability<=standard reads the same effective tier, rules/adapter.mjs#requisitionTier).
+const STANDARD_WEAPON_QUALIFIERS = [Q1.nuPogodi];
 
-// Upgrade Qualifications.
-// Minimalists (Cobra Codex p.74): "You are Qualified in Microtech Weapon and Microtech Armor upgrades."
-// Mega Training Regimen (Ferocious Fighters p.74): "Qualified in ... the Organic battledress upgrade."
-// Roaming the Land (p.75): "Qualified with the Traumatic weapon upgrade."
-// Surgical Operators (p.72): "the Anti-V.E.N.O.M. weapon upgrade, and the Rebreather battledress upgrade."
-// The Glory of Cobra-La (p.73): "the Organic Armor battledress upgrade and Biomechanical weapon upgrade."
-// Ultra-Secret Strike Force (p.42): "the Pythonized Battledress upgrade."
-// Nu, Pogodi! (Intercontinental Adventures p.68): "the Acclimating battledress upgrade."
-// Rebreather has no compendium item, so upgrades also match by name.
+// Upgrade Qualifications: Nu, Pogodi! (Intercontinental Adventures p.68) - the Acclimating battledress
+// upgrade, by compendium _id or name. Minimalists, Mega Training Regimen, Roaming the Land, Surgical
+// Operators, The Glory of Cobra-La and Ultra-Secret Strike Force carry theirs as Qualification rules
+// (`upgrades`), which isQualifiedUpgrade asks through ruleQualifiedUpgrade.
 const UPGRADE_QUALIFIERS = [
-  [Q1.minimalists, [Q1_UPGRADE.microtechWeapon, Q1_UPGRADE.microtechBattledress], ['microtech weapon', 'microtech battledress', 'microtech armor']],
-  [Q1.megaTrainingRegimen, [Q1_UPGRADE.organicArmor], ['organic armor']],
-  [Q1.roamingTheLand, [Q1_UPGRADE.traumatic], ['traumatic']],
-  [Q1.surgicalOperators, [Q1_UPGRADE.antiVenom], ['anti-v.e.n.o.m.', 'rebreather']],
-  [Q1.gloryOfCobraLa, [Q1_UPGRADE.organicArmor, Q1_UPGRADE.biomechanicalWeapon], ['organic armor', 'biomechanical weapon']],
-  [Q1.ultraSecretStrikeForce, [Q1_UPGRADE.pythonized], ['pythonized']],
   [Q1.nuPogodi, [Q1_UPGRADE.acclimating], ['acclimating']],
 ];
 
@@ -65,7 +55,7 @@ export function isQualifiedUpgrade(actor, upgrade) {
   const id = idOf(sourceOf(upgrade) ?? upgrade?.uuid);
   const name = norm(upgrade?.name);
   return UPGRADE_QUALIFIERS.some(([perk, ids, names]) => has(actor, perk)
-    && (ids.includes(id) || names.includes(name)));
+    && (ids.includes(id) || names.includes(name))) || ruleQualifiedUpgrade(actor, upgrade);
 }
 
 /** The upgrades attached to a weapon or armor - owned upgrade Items, else the item's own entries. */
@@ -179,23 +169,6 @@ export function perkAccess(actor, item) {
     if (tierRank(availability) <= tierRank('standard') && STANDARD_WEAPON_QUALIFIERS.some(uuid => has(actor, uuid))) {
       return 'qualified';
     }
-
-    // Surgical Operators: "Qualified in all weapons with the Injection trait".
-    if (traitsOf(item).includes('injection') && has(actor, Q1.surgicalOperators)) {
-      return 'qualified';
-    }
-  }
-
-  if (item.type == 'armor') {
-    // Mega Training Regimen: "Qualified in Computerized armor".
-    if (traitsOf(item).includes('computerized') && has(actor, Q1.megaTrainingRegimen)) {
-      return 'qualified';
-    }
-
-    // "You are Trained in all armor."
-    if (has(actor, Q1.megaTrainingRegimen)) {
-      return 'trained';
-    }
   }
 
   for (const uuid of CHOSEN_TRAINED) {
@@ -205,11 +178,6 @@ export function perkAccess(actor, item) {
   }
 
   if (item.type == 'weapon') {
-    // If It Shoots... (G.I. Joe CRB p.53): "You are trained in all weapons, other than unique weapons."
-    if (has(actor, Q1.ifItShoots) && (item.system?.availability ?? 'standard') != 'unique') {
-      return 'trained';
-    }
-
     // Roaming the Land: "trained in energized close combat weapons".
     if (has(actor, Q1.roamingTheLand) && isMeleeWeapon(item) && traitsOf(item).some(trait => ENERGIZED_TRAITS.includes(trait))) {
       return 'trained';

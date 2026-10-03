@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+import { existsSync, readdirSync, readFileSync } from 'fs';
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({ setEntryAndAddItem: jest.fn(async () => 'key1') }));
 const {
   affectsGeneratedEffects, applyToEffect, applyToWeapon, chosenElement, desiredGeneratedEffects, gainedElementTraits,
@@ -21,10 +22,27 @@ global.foundry = {
   },
 };
 
+// The pack's own rules ride along, like a real copy (generated alternates are AlternateEffect rules).
+function packRules(id) {
+  for (const dir of readdirSync('packs')) {
+    const src = `packs/${dir}/_source`;
+    const file = existsSync(src) ? readdirSync(src).find(name => name.endsWith(`_${id}.json`)) : null;
+    if (file) {
+      return JSON.parse(readFileSync(`${src}/${file}`, 'utf8')).system.rules ?? [];
+    }
+  }
+
+  return [];
+}
+
+let nextUpgrade = 1;
 const upgrade = (id, weaponId, extra = {}) => ({
-  type: 'upgrade', name: id, flags: { core: { sourceId: `Compendium.essence20.tf_crb.Item.${id}` }, essence20: { parentId: weaponId, ...extra.flags } },
-  system: { traits: extra.traits ?? [] },
+  id: `u${nextUpgrade++}`, type: 'upgrade', name: id, flags: { core: { sourceId: `Compendium.essence20.tf_crb.Item.${id}` }, essence20: { parentId: weaponId, ...extra.flags } },
+  system: { traits: extra.traits ?? [], rules: packRules(id) },
 });
+const NONLETHAL = 'QbfY2NGNmUmKa6uO';
+const FOLDING_STOCK = 'bChPSldjpYZgAnIh';
+const TRACER_ROUNDS = 'uT2aZsKK307koPCu';
 
 function makeActor(items) {
   const list = [...items];
@@ -189,7 +207,7 @@ describe("granted alternate effects", () => {
   test("Nonlethal, Tracer Rounds and a gained Laser trait each ask for their alternate", () => {
     const weapon = makeWeapon();
     const effect = makeEffect();
-    makeActor([weapon, effect, upgrade(UPGRADE.nonlethal, 'w1'), upgrade('Reactor', 'w1', { traits: ['laser'] })]);
+    makeActor([weapon, effect, upgrade(NONLETHAL, 'w1'), upgrade('Reactor', 'w1', { traits: ['laser'] })]);
     const keys = desiredGeneratedEffects(weapon).map(w => w.key);
     expect(keys).toEqual(expect.arrayContaining(['nonlethal', 'spot', 'laserStun']));
     expect(gainedElementTraits(weapon)).toEqual(['laser']);
@@ -204,7 +222,7 @@ describe("granted alternate effects", () => {
 
   test("Folding Stock copies the primary as a one-handed alternate at ↓2", () => {
     const weapon = makeWeapon();
-    makeActor([weapon, makeEffect(), upgrade(UPGRADE.foldingStock, 'w1')]);
+    makeActor([weapon, makeEffect(), upgrade(FOLDING_STOCK, 'w1')]);
     const folding = desiredGeneratedEffects(weapon).find(w => w.key == 'foldingStock');
     expect(folding.changes).toEqual({ numHands: 1, shiftDown: 2 });
   });
@@ -213,13 +231,52 @@ describe("granted alternate effects", () => {
     const weapon = makeWeapon();
     const effect = makeEffect();
     const stale = { id: 'old', type: 'weaponEffect', flags: { essence20: { parentId: 'w1', generatedKey: 'w1:covering' } }, system: {} };
-    const actor = makeActor([weapon, effect, stale, upgrade(UPGRADE.tracerRounds, 'w1')]);
+    const actor = makeActor([weapon, effect, stale, upgrade(TRACER_ROUNDS, 'w1')]);
 
     const result = await syncGeneratedEffects(actor);
 
     expect(result).toEqual({ created: 1, deleted: 1 });
     expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('Item', ['old']);
     expect(actor.createEmbeddedDocuments.mock.calls[0][1][0].flags.essence20.generatedKey).toBe('w1:spot');
+  });
+
+  test("Big Swing (a Perk's rule) gives heavy Ballistic weapons the two bludgeon alternates, and nothing else", () => {
+    const heavy = makeWeapon('w1', { traits: ['ballistic'], classification: { size: 'heavy' } });
+    const rifle = makeWeapon('w2', { traits: ['ballistic'] });
+    const perk = { id: 'p1', type: 'perk', name: 'Big Swing', flags: { core: { sourceId: 'Compendium.essence20.ferocious_fighters.Item.sHJakOYf1rgVP6Pv' } }, system: { rules: packRules('sHJakOYf1rgVP6Pv') } };
+    makeActor([heavy, rifle, makeEffect('w1'), { ...makeEffect('w2'), id: 'e2' }, perk]);
+    const swing = desiredGeneratedEffects(heavy).filter(w => w.key.startsWith('bigSwing'));
+    expect(swing.map(w => [w.key, w.changes.damageValue, w.changes['classification.skill']])).toEqual([['bigSwing', 1, 'might'], ['bigSwing2', 2, 'might']]);
+    expect(desiredGeneratedEffects(rifle).filter(w => w.key.startsWith('bigSwing'))).toEqual([]);
+    expect(affectsGeneratedEffects(perk)).toBe(true);
+  });
+
+  test("Strobe is skipped when the weapon already prints a Blinding effect", () => {
+    const weapon = makeWeapon();
+    const blinding = { ...makeEffect('w1', { damageType: 'blindingBlast' }), id: 'e9' };
+    makeActor([weapon, makeEffect(), blinding, upgrade('Bd7nMQQmv0MFrsjO', 'w1')]);
+    expect(desiredGeneratedEffects(weapon).map(w => w.key)).not.toContain('strobe');
+    const plain = makeWeapon();
+    makeActor([plain, makeEffect(), upgrade('Bd7nMQQmv0MFrsjO', 'w1')]);
+    expect(desiredGeneratedEffects(plain).map(w => w.key)).toContain('strobe');
+  });
+
+  test("Pistol Whip (an External Ballistic weapon) and Specialty Flexibility (the Long Range Rifle) generate their alternates", () => {
+    const gun = makeWeapon('g', { traits: ['ballistic'], hardpoint: { type: 'external' } });
+    const lrr = { ...makeWeapon('l', { traits: ['ballistic'], hardpoint: { type: 'integrated' } }), name: 'Long Range Rifle' };
+    const perk = id => ({ id, type: 'perk', name: id, flags: {}, system: { rules: packRules(id) } });
+    makeActor([gun, lrr, makeEffect('g'), { ...makeEffect('l'), id: 'e2' }, perk('fiSowblyLmO9dN8F'), perk('2XuM8xyiRhMdNBMg')]);
+    expect(desiredGeneratedEffects(gun).map(w => w.key)).toEqual(['pistolWhipStun', 'pistolWhipBlunt', 'pistolWhipManeuver']);
+    expect(desiredGeneratedEffects(lrr).map(w => w.key)).toEqual(['sfStun', 'sfIntimidate', 'sfManeuver']);
+  });
+
+  test("an effect the old other3 sync made is kept, not made again", async () => {
+    const gun = makeWeapon('g', { traits: ['ballistic'] });
+    const old = { id: 'old', type: 'weaponEffect', flags: { essence20: { parentId: 'g', o3GeneratedKey: 'g:pistolWhipStun' } }, system: {} };
+    const perk = { id: 'p', type: 'perk', name: 'Pistol Whip', flags: {}, system: { rules: packRules('fiSowblyLmO9dN8F') } };
+    const actor = makeActor([gun, makeEffect('g'), old, perk]);
+    const result = await syncGeneratedEffects(actor);
+    expect(result).toEqual({ created: 2, deleted: 0 });
   });
 
   test("which changes trigger a sync", () => {

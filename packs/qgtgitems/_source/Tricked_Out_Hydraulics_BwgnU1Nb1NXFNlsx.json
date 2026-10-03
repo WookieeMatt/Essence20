@@ -5,6 +5,10 @@
   "_id": "BwgnU1Nb1NXFNlsx",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Tricked-Out Hydraulics (Ballistic attack)","snag":true,"limit":{"per":"encounter"},"when":["item:type:weaponEffect","weapon:trait:ballistic","not:item:name~pistol whip"]}
+    ],
+    "prerequisites": {"when":["self:has:Hydraulic Bounce"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per combat, the first attack on the vehicle with a Ballistic weapon takes a Snag, shown as Tricked-Out Hydraulics next to Snag in the attacker's Roll Options Dialog.</p>"

@@ -44,7 +44,7 @@ export function hasGeneticAlterations(actor) {
       return true;
     }
 
-    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource;
+    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
     return !!sourceId && GENETIC_ALTERATION_SOURCE_IDS.includes(sourceId);
   });
 }

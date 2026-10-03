@@ -5,6 +5,7 @@
   "_id": "HLVof9JCEdRTt2zU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Technology (Computers) Specialization"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: target a Computerized item within 100ft and roll a contested Technology test (or against its Availability). A jammed weapon can't attack and jammed armor loses its bonus until a chat-card Reboot button (a Move action) clears it.</p><p>Left to the table: the free Technology (Computers) kit.</p>"

@@ -53,9 +53,9 @@
 
   {{#if aimBonus}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogAiming'}} (<i class="fas fa-arrow-up"></i> {{aimBonus}})</span>
+    <span>{{localize 'E20.RollDialogAiming'}} (<i class="fas fa-arrow-up"></i> {{aimBonus}}){{#if aimedByAction}} - {{localize 'E20.RollDialogAimedByAction'}}{{/if}}</span>
     <label class="switch">
-      <input type="checkbox" name="isAiming" />
+      <input type="checkbox" name="isAiming" {{checked aimedByAction}} />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -261,16 +261,6 @@
   </div>
   {{/if}}
 
-  {{#if allAroundVisionAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogAllAroundVision'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyAllAroundVision" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if pressureCookerAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogPressureCooker'}}</span>
@@ -301,31 +291,11 @@
   </div>
   {{/if}}
 
-  {{#if machinistAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogMachinist'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyMachinist" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if pythonizedAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogPythonized'}}</span>
     <label class="switch">
       <input type="checkbox" name="applyPythonized" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if bootlickerAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogBootlicker'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyBootlicker" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -346,36 +316,6 @@
     <span>{{localize 'E20.RollDialogInventor'}}</span>
     <label class="switch">
       <input type="checkbox" name="applyInventor" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if goodSocietyAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogGoodSociety'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyGoodSociety" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if tonguesAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogTongues'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyTongues" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if huntersProwessAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogHuntersProwess'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyHuntersProwess" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -406,36 +346,6 @@
     <span>{{localize 'E20.RollDialogDoubleAgent'}}</span>
     <label class="switch">
       <input type="checkbox" name="applyDoubleAgent" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if cubePlayerAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogCubePlayer'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyCubePlayer" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if wealthAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogWealth'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyWealth" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if beastOfBurdenAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogBeastOfBurden'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyBeastOfBurden" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -492,101 +402,11 @@
   </div>
   {{/if}}
 
-  {{#if howStrangeAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogHowStrange'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyHowStrange" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if kindButFirmAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogKindButFirm'}}</span>
     <label class="switch">
       <input type="checkbox" name="applyKindButFirm" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if wireWorkAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogWireWork'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyWireWork" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if ambushPredatorAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogAmbushPredator'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyAmbushPredator" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if citySlickerAvailable}}
-  <div class="flexrow align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogCitySlicker'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyCitySlicker" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if hesherAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogHesher'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyHesher" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if bruteForceIaf2Available}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogBruteForceIaf2'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyBruteForceIaf2" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if roaringEngineAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogRoaringEngine'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyRoaringEngine" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if whipIntoShapeAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogWhipIntoShape'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyWhipIntoShape" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if technicallyCorrectAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogTechnicallyCorrect'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyTechnicallyCorrect" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -602,148 +422,11 @@
   </div>
   {{/if}}
 
-  {{#if everVigilantAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogEverVigilant'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyEverVigilant" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if noseForTroubleAvailable}}
-  <div class="flexrow align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogNoseForTrouble'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyNoseForTrouble" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if dangerSenseAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogDangerSense'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyDangerSense" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if tf1sDeceptiveWarfareAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogDeceptiveWarfareDeception'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyTf1sDeceptiveWarfareDeception" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogDeceptiveWarfareInfiltration'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyTf1sDeceptiveWarfareInfiltration" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if needleDropAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogNeedleDrop'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyNeedleDrop" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if rapidDeploymentDrillsAlertnessAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogRapidDeploymentDrillsAlertness'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyRapidDeploymentDrillsAlertness" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if rapidDeploymentDrillsInfiltrationAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogRapidDeploymentDrillsInfiltration'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyRapidDeploymentDrillsInfiltration" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if spoofDeceptionAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogSpoofDeception'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applySpoofDeception" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if spoofInfiltrationAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogSpoofInfiltration'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applySpoofInfiltration" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if yourReputationPrecedesYouAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogYourReputationPrecedesYou'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyYourReputationPrecedesYou" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if deceptiveWarfareAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogDeceptiveWarfare'}}</span>
     <label class="switch">
       <input type="checkbox" name="applyDeceptiveWarfare" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if brainPowerAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogBrainPower'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyBrainPower" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if seeingTheMatrixAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogSeeingTheMatrix'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applySeeingTheMatrix" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if mightierThanTheSwordAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogMightierThanTheSword'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyMightierThanTheSword" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -804,70 +487,6 @@
     <span>{{localize 'E20.RollDialogObserverSnagSubstitution'}} (<i class="fas fa-arrow-down"></i> 2)</span>
     <label class="switch">
       <input type="checkbox" name="applyObserverSnagSubstitution" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if precisionAimAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogPrecisionAim' value=precisionAimAvailable}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyPrecisionAim" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if barrelThroughRamAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogBarrelThroughRam'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyBarrelThroughRam" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if kocSneakAttackAvailable}}
-  <div class="flexrow align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogSneakAttackKoc'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applySneakAttackKoc" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if wowTheAudienceAvailable}}
-  <div class="flexrow align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogWowTheAudience10'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyWowTheAudience10" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  <div class="flexrow align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogWowTheAudience100'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyWowTheAudience100" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  <div class="flexrow align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogWowTheAudience1000'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyWowTheAudience1000" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if allINeedIsOneShotAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogAllINeedIsOneShot'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyAllINeedIsOneShot" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -1033,31 +652,11 @@
   </div>
   {{/if}}
 
-  {{#if chargeAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogCharge'}} (<i class="fas fa-arrow-up"></i> 1)</span>
-    <label class="switch">
-      <input type="checkbox" name="applyCharge" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if bumpAndRunAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogBumpAndRun'}} (<i class="fas fa-arrow-up"></i> 1)</span>
     <label class="switch">
       <input type="checkbox" name="applyBumpAndRun" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if targetingSuiteAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogTargetingSuite'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyTargetingSuite" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -1073,31 +672,11 @@
   </div>
   {{/if}}
 
-  {{#if unshakeableAimAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogUnshakeableAim'}} (<i class="fas fa-arrow-up"></i> 2)</span>
-    <label class="switch">
-      <input type="checkbox" name="applyUnshakeableAim" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if jackOfAllTradesAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogJackOfAllTrades'}}</span>
     <label class="switch">
       <input type="checkbox" name="applyJackOfAllTrades" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if targetVulnerabilityAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogTargetVulnerability'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyTargetVulnerability" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -1183,13 +762,6 @@
   </div>
   {{/if}}
 
-  {{#if terrorAvailable}}
-  <div class="flexrow e20-align-center">
-    {{localize 'E20.RollDialogSpendTerror'}}
-    <input class="roll-dialog-shift-input" type="number" name="spendTerror" value="0" min="0" max={{terrorAvailable}} step="1" />
-  </div>
-  {{/if}}
-
   {{#if demolitionDriverAvailable}}
   <div class="flexrow e20-align-center">
     {{localize 'E20.RollDialogSpendDemolitionDriver'}}
@@ -1211,13 +783,6 @@
   </div>
   {{/if}}
 
-  {{#if solusChargeAvailable}}
-  <div class="flexrow e20-align-center">
-    {{localize 'E20.RollDialogSpendSolusCharge'}}
-    <input class="roll-dialog-shift-input" type="number" name="spendSolusCharge" value="0" min="0" max={{solusChargeAvailable}} step="1" />
-  </div>
-  {{/if}}
-
   {{#if sizeMattersAvailable}}
   <div class="flexrow e20-align-center">
     {{localize 'E20.RollDialogSpendSizeMatters'}}
@@ -1229,13 +794,6 @@
   <div class="flexrow e20-align-center">
     {{localize 'E20.RollDialogSpendCautionToTheWind'}}
     <input class="roll-dialog-shift-input" type="number" name="spendCautionToTheWind" value="0" min="0" max={{cautionToTheWindAvailable}} step="1" />
-  </div>
-  {{/if}}
-
-  {{#if supremeGuardianTechAvailable}}
-  <div class="flexrow e20-align-center">
-    {{localize 'E20.RollDialogSpendSupremeGuardianTech'}}
-    <input class="roll-dialog-shift-input" type="number" name="spendSupremeGuardianTech" value="0" min="0" max={{supremeGuardianTechAvailable}} step="1" />
   </div>
   {{/if}}
 
@@ -1343,26 +901,6 @@
   </div>
   {{/if}}
 
-  {{#if explosiveEngineerScienceAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogExplosiveEngineerScience'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyExplosiveEngineerScience" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if explosiveEngineerTechnologyAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogExplosiveEngineerTechnology'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyExplosiveEngineerTechnology" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if alwaysReadyAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogAlwaysReady'}}</span>
@@ -1393,16 +931,6 @@
   </div>
   {{/if}}
 
-  {{#if streetSmartsAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogStreetSmarts'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyStreetSmarts" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if wildAnimalKit}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{wildAnimalKit.name}}</span>
@@ -1420,86 +948,6 @@
     <span>{{localize 'E20.RollDialogIntimidatingWeapon' skill=intimidatingWeaponSkillLabel}}</span>
     <label class="switch">
       <input type="checkbox" name="applyIntimidatingWeapon" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if primalFearAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogPrimalFear'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyPrimalFear" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if naturalScienceToSurvivalAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogNaturalScienceToSurvival'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyNaturalScienceToSurvival" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if naturalScienceToScienceAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogNaturalScienceToScience'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyNaturalScienceToScience" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if scienceFixesAllAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogScienceFixesAll'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyScienceFixesAll" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if urbanJungleAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogUrbanJungle'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyUrbanJungle" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if fearIsUniversalAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogFearIsUniversal'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyFearIsUniversal" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if cobraBattleCryDeceptionAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogCobraBattleCryDeception'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyCobraBattleCryDeception" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if cobraBattleCryIntimidationAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogCobraBattleCryIntimidation'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyCobraBattleCryIntimidation" />
       <span class="switch-slider"></span>
     </label>
   </div>

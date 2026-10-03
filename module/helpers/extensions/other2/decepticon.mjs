@@ -1,14 +1,15 @@
 import {
-  registerChatButton, registerHitRider, registerPostRoll, registerRollSources, registerRoundStart, registerUse,
+  registerChatButton, registerHitRider, registerPostRoll, registerRoundStart, registerUse,
 } from "../../extensions.mjs";
 import {
-  DD, T, feetBetween, findSourced, firstTarget, has, isFrom, itemsOf, num, onHook, post, rollDif, sourceOf,
+  DD, T, feetBetween, firstTarget, isFrom, itemsOf, num, onHook, post, rollDif, sourceOf,
   wears, writeItems,
 } from "./shared.mjs";
 
 /**
  * Decepticon Directive gear and Rites: Junkplate / Pit Plates, Rust Derivatives, Stasis Cuffs and
- * the Rites of the All-Consuming (Grant His Hunger, In His Image, See Through Him).
+ * the Rites of the All-Consuming (Grant His Hunger, In His Image). See Through Him is a rule on its
+ * pack item.
  */
 export const O2_DD = {
   junkplate: DD('qhxYoMHmnerakacO'),
@@ -17,7 +18,6 @@ export const O2_DD = {
   stasisCuffs: DD('YEvGNwsxSNGoHY3S'),
   grantHisHunger: DD('TuXN8c83c1CDiMUD'),
   inHisImage: DD('DegS9JawsaAzOCR1'),
-  seeThroughHim: DD('WspexDF4xge4b3To'),
 };
 
 export const RUST_FLAG = 'o2Rusted';
@@ -61,22 +61,6 @@ registerHitRider((actor, target, result, rider) => {
   if (rider?.isUnarmed && hasSharpUnarmed(actor)) {
     sharpenResult(result);
   }
-});
-
-registerRollSources((actor, target, ctx) => {
-  const sources = [];
-  if (ctx?.rolledSkill == 'intimidation' && wears(actor, O2_DD.pitPlate)) {
-    sources.push({ id: 'o2PitPlate', label: findSourced(actor, O2_DD.pitPlate)?.name ?? 'Pit Plates', shiftUp: 1 });
-  }
-
-  // See Through Him (Decepticon Directive, Rites of the All-Consuming, p.111): "The Follower gains
-  // Edge on Alertness Skill Tests while under the influence of Dark Energon" - which is "having at
-  // least one Dark Energon Point" (p.79).
-  if (ctx?.rolledSkill == 'alertness' && has(actor, O2_DD.seeThroughHim) && num(actor.system?.energon?.dark?.value) >= 1) {
-    sources.push({ id: 'o2SeeThroughHim', label: findSourced(actor, O2_DD.seeThroughHim)?.name ?? 'See Through Him', edge: true });
-  }
-
-  return { sources };
 });
 
 /** Junkplate's fumble retaliation - once per roll, whoever the fumbled unarmed attack was aimed at. */

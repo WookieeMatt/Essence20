@@ -5,6 +5,9 @@
   "_id": "jKWyWKHb8iDwQvB4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Barista Experience","when":[{"any":["essence:smarts","essence:social"]}],"upshift":2}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: every Smarts and Social test starts with ↑2 already added to the Roll Options Dialog's Upshift box.</p><p>Left to the table: the bonus is meant only when dealing with Night Vale's baristas, so lower the Upshift box by 2 for other rolls.</p>"

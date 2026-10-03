@@ -353,54 +353,6 @@ describe("_prepareRolePoints", () => {
     item._prepareRolePoints();
     expect(item.system.bonus.value).toBeUndefined();
   });
-
-  describe("Adaptable (GI Joe CRB, Scout Focus, 3rd level, p.91) - doubles Adaptation Points", () => {
-    const ADAPTION_POINTS_ID = "Compendium.essence20.gi_joe_crb.Item.tqiseYDXnEngUlvd";
-    const ADAPTABLE_ID = "Compendium.essence20.gi_joe_crb.Item.98q6O79HKMPEh4aZ";
-
-    function makeActor({ hasPerk = true } = {}) {
-      const perkItems = hasPerk
-        ? [{ type: 'perk', flags: { core: { sourceId: ADAPTABLE_ID } } }]
-        : [];
-      return { system: { level: 10 }, items: { get: () => undefined, find: p => perkItems.find(p) } };
-    }
-
-    test("doubles the computed max with the Perk", () => {
-      const item = makeItem('rolePoints', {
-        resource: { startingMax: 2, increase: 1, increaseLevels: ["5"], level20Value: 99 },
-        bonus: { startingValue: null, type: 'none' },
-      }, makeActor());
-      item.flags = { core: { sourceId: ADAPTION_POINTS_ID } };
-
-      item._prepareRolePoints();
-
-      expect(item.system.resource.max).toBe(6); // (2 + 1) * 2
-    });
-
-    test("doesn't double without the Perk", () => {
-      const item = makeItem('rolePoints', {
-        resource: { startingMax: 2, increase: 1, increaseLevels: ["5"], level20Value: 99 },
-        bonus: { startingValue: null, type: 'none' },
-      }, makeActor({ hasPerk: false }));
-      item.flags = { core: { sourceId: ADAPTION_POINTS_ID } };
-
-      item._prepareRolePoints();
-
-      expect(item.system.resource.max).toBe(3);
-    });
-
-    test("doesn't double an unrelated rolePoints item, even with the Perk", () => {
-      const item = makeItem('rolePoints', {
-        resource: { startingMax: 2, increase: 1, increaseLevels: ["5"], level20Value: 99 },
-        bonus: { startingValue: null, type: 'none' },
-      }, makeActor());
-      item.flags = { core: { sourceId: "Compendium.essence20.gi_joe_crb.Item.otherRolePoints" } };
-
-      item._prepareRolePoints();
-
-      expect(item.system.resource.max).toBe(3);
-    });
-  });
 });
 
 describe("_prepareTotalAvailability", () => {
@@ -783,235 +735,6 @@ describe("roll", () => {
     });
   });
 
-  describe("Beastly (Ferocious Fighters, New Influence, p.75) / its own Hang-Up (p.78)", () => {
-    const UNARMED_COMBAT_ALTERNATE_EFFECT_1_ID = "Compendium.essence20.gi_joe_crb.Item.gA0rOFD3lmwzkZq4";
-    const UNARMED_COMBAT_EFFECT_ID = "Compendium.essence20.gi_joe_crb.Item.eDjovjfygGq8dlQy";
-    const BEASTLY_PERK_ID = "Compendium.essence20.ferocious_fighters.Item.3Y0ETFpJUwdUqgUQ";
-    const BEASTLY_HANG_UP_ID = "Compendium.essence20.ferocious_fighters.Item.9o0Qbe6lgqNPnm2R";
-
-    function makeBeastlyActor(perkIds = []) {
-      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
-      items.get = jest.fn(() => undefined);
-      return {
-        system: {
-          skills: { finesse: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false } },
-        },
-        items,
-      };
-    }
-
-    test("removes the Blunt Alternate Effect's own -1 shiftDown when the Perk is held", async () => {
-      const actor = makeBeastlyActor([BEASTLY_PERK_ID]);
-      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
-      item.flags = { core: { sourceId: UNARMED_COMBAT_ALTERNATE_EFFECT_1_ID } };
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 0 }), actor, item,
-      );
-    });
-
-    test("also covers the Transformers CRB printing of the Blunt Alternate Effect", async () => {
-      const actor = makeBeastlyActor([BEASTLY_PERK_ID]);
-      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
-      item.flags = { core: { sourceId: "Compendium.essence20.tf_crb.Item.gA0rOFD3lmwzkZq4" } };
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 0 }), actor, item,
-      );
-    });
-
-    test("leaves the Blunt Alternate Effect's -1 in place without the Perk", async () => {
-      const actor = makeBeastlyActor();
-      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
-      item.flags = { core: { sourceId: UNARMED_COMBAT_ALTERNATE_EFFECT_1_ID } };
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 1 }), actor, item,
-      );
-    });
-
-    test("adds a -1 shiftDown to the base Stun effect when the Hang-Up is held", async () => {
-      const actor = makeBeastlyActor([BEASTLY_HANG_UP_ID]);
-      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 0 }, actor);
-      item.flags = { core: { sourceId: UNARMED_COMBAT_EFFECT_ID } };
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 1 }), actor, item,
-      );
-    });
-
-    test("leaves the base Stun effect's own 0 shiftDown alone without the Hang-Up, or for an unrelated weaponEffect", async () => {
-      const actor = makeBeastlyActor();
-      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 0 }, actor);
-      item.flags = { core: { sourceId: UNARMED_COMBAT_EFFECT_ID } };
-      item._dice.handleSkillItemRoll = jest.fn();
-      await item.roll({});
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 0 }), actor, item,
-      );
-
-      const perkedActor = makeBeastlyActor([BEASTLY_PERK_ID, BEASTLY_HANG_UP_ID]);
-      const unrelatedItem = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, perkedActor);
-      unrelatedItem.flags = { core: { sourceId: "Compendium.essence20.gi_joe_crb.Item.someOtherWeaponEffect" } };
-      unrelatedItem._dice.handleSkillItemRoll = jest.fn();
-      await unrelatedItem.roll({});
-      expect(unrelatedItem._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 1 }), perkedActor, unrelatedItem,
-      );
-    });
-  });
-
-  describe("Wrestler (Slammer Focus, Sgt Slaughter Sourcebook, 10th level, p.13) - Maneuver shiftDown suppression", () => {
-    const WRESTLER_SLAMMER_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Item.ro5hMv4XMhOmANao";
-
-    function makeWrestlerActor(perkIds = []) {
-      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
-      items.get = jest.fn(() => undefined);
-      return {
-        system: {
-          skills: { finesse: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false } },
-        },
-        items,
-      };
-    }
-
-    test("suppresses the Maneuver Alternate Effect's own shiftDown on a Melee weaponEffect with the Perk", async () => {
-      const actor = makeWrestlerActor([WRESTLER_SLAMMER_ID]);
-      const item = makeItem('weaponEffect', {
-        classification: { skill: 'finesse', style: 'melee' }, damageType: 'maneuver', shiftDown: 1,
-      }, actor);
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 0 }), actor, item,
-      );
-    });
-
-    test("leaves the shiftDown in place without the Perk", async () => {
-      const actor = makeWrestlerActor();
-      const item = makeItem('weaponEffect', {
-        classification: { skill: 'finesse', style: 'melee' }, damageType: 'maneuver', shiftDown: 1,
-      }, actor);
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 1 }), actor, item,
-      );
-    });
-
-    test("leaves the shiftDown in place for a Ranged Maneuver attack (RAW says Melee weapons only)", async () => {
-      const actor = makeWrestlerActor([WRESTLER_SLAMMER_ID]);
-      const item = makeItem('weaponEffect', {
-        classification: { skill: 'finesse', style: 'ranged' }, damageType: 'maneuver', shiftDown: 1,
-      }, actor);
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 1 }), actor, item,
-      );
-    });
-
-    test("leaves the shiftDown in place for a non-Maneuver Melee attack", async () => {
-      const actor = makeWrestlerActor([WRESTLER_SLAMMER_ID]);
-      const item = makeItem('weaponEffect', {
-        classification: { skill: 'finesse', style: 'melee' }, damageType: 'blunt', shiftDown: 1,
-      }, actor);
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 1 }), actor, item,
-      );
-    });
-  });
-
-  describe("One With Your Weapon (Intercontinental Adventures, Silent Weapons Expert Focus, 10th level, p.13) - Silent Martial Arts shiftDown suppression", () => {
-    const ONE_WITH_YOUR_WEAPON_ID = "Compendium.essence20.intercontinental_adventures.Item.RH3AFV38EBAfTvW1";
-
-    function makeActorWithParentWeapon(perkIds, weaponTraits) {
-      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
-      const parentWeapon = { system: { traits: weaponTraits } };
-      items.get = jest.fn((id) => (id == 'weapon1' ? parentWeapon : undefined));
-      return {
-        system: {
-          skills: { finesse: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false } },
-        },
-        items,
-      };
-    }
-
-    test("suppresses the shiftDown on a Silent + Martial Arts weapon with the Perk", async () => {
-      const actor = makeActorWithParentWeapon([ONE_WITH_YOUR_WEAPON_ID], ['martialArts', 'silent']);
-      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
-      item.flags = { essence20: { parentId: 'weapon1' } };
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 0 }), actor, item,
-      );
-    });
-
-    test("leaves the shiftDown in place without the Perk", async () => {
-      const actor = makeActorWithParentWeapon([], ['martialArts', 'silent']);
-      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
-      item.flags = { essence20: { parentId: 'weapon1' } };
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 1 }), actor, item,
-      );
-    });
-
-    test("leaves the shiftDown in place when the parent weapon is missing only one of the two traits", async () => {
-      const actor = makeActorWithParentWeapon([ONE_WITH_YOUR_WEAPON_ID], ['martialArts']);
-      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
-      item.flags = { essence20: { parentId: 'weapon1' } };
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 1 }), actor, item,
-      );
-    });
-
-    test("leaves the shiftDown in place with no resolvable parent weapon", async () => {
-      const actor = makeActorWithParentWeapon([ONE_WITH_YOUR_WEAPON_ID], ['martialArts', 'silent']);
-      const item = makeItem('weaponEffect', { classification: { skill: 'finesse' }, shiftDown: 1 }, actor);
-      item.flags = { essence20: { parentId: 'someOtherWeapon' } };
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 1 }), actor, item,
-      );
-    });
-  });
-
   describe("Accurate (Weapon Effects and Traits, p.106) - weaponEffect-level accurateShiftUp", () => {
     function makeFinesseActor() {
       const items = [];
@@ -1048,8 +771,6 @@ describe("roll", () => {
   });
 
   describe("spell casting cost (Knights of Canterlot, General Perks, p.38)", () => {
-    const EFFICIENT_SPELLCASTER_ID = "Compendium.essence20.knights_of_canterlot.Item.eQDQwKQfRQU8obWF";
-    const MASTER_SPELLCASTER_ID = "Compendium.essence20.knights_of_canterlot.Item.tEOoAvzj42d20QHu";
     const POWER_CONSERVATIONIST_ID = "Compendium.essence20.knights_of_canterlot.Item.75H9N2YqaSDUhiCQ";
     const POWER_MASTERY_ID = "Compendium.essence20.knights_of_canterlot.Item.qDsWwo5ipmzMMuO4";
 
@@ -1074,54 +795,6 @@ describe("roll", () => {
         expect.objectContaining({ shiftDown: 2 }), actor, item,
       );
       expect(actor.update).toHaveBeenCalledWith({ 'system.skills.spellcasting.shiftDown': 2 });
-    });
-
-    test("Efficient Spellcaster reduces an Elementary spell's cost by 1", async () => {
-      const actor = makeCasterActor([EFFICIENT_SPELLCASTER_ID]);
-      const item = makeItem('spell', { cost: 2, tier: 'elementary' }, actor);
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 1 }), actor, item,
-      );
-    });
-
-    test("Efficient Spellcaster never reduces cost below 1", async () => {
-      const actor = makeCasterActor([EFFICIENT_SPELLCASTER_ID]);
-      const item = makeItem('spell', { cost: 1, tier: 'elementary' }, actor);
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 1 }), actor, item,
-      );
-    });
-
-    test("Efficient Spellcaster doesn't apply to a Superior spell", async () => {
-      const actor = makeCasterActor([EFFICIENT_SPELLCASTER_ID]);
-      const item = makeItem('spell', { cost: 2, tier: 'superior' }, actor);
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 2 }), actor, item,
-      );
-    });
-
-    test("Master Spellcaster reduces a Superior spell's cost by 1", async () => {
-      const actor = makeCasterActor([MASTER_SPELLCASTER_ID]);
-      const item = makeItem('spell', { cost: 3, tier: 'superior' }, actor);
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ shiftDown: 2 }), actor, item,
-      );
     });
 
     test("Power Conservationist defers this spell's cost so it doesn't affect the roll, but still lands afterward", async () => {
@@ -1150,9 +823,9 @@ describe("roll", () => {
       expect(actor.update).toHaveBeenCalledWith({ 'system.skills.spellcasting.shiftDown': 2 });
     });
 
-    test("Efficient Spellcaster and Power Conservationist stack (cost reduced, then deferred)", async () => {
-      const actor = makeCasterActor([EFFICIENT_SPELLCASTER_ID, POWER_CONSERVATIONIST_ID], 0);
-      const item = makeItem('spell', { cost: 2, tier: 'elementary' }, actor);
+    test("Power Conservationist defers an already-reduced cost (Efficient Spellcaster's rule lowers system.cost)", async () => {
+      const actor = makeCasterActor([POWER_CONSERVATIONIST_ID], 0);
+      const item = makeItem('spell', { cost: 1, tier: 'elementary' }, actor);
       item._dice.handleSkillItemRoll = jest.fn();
 
       await item.roll({});

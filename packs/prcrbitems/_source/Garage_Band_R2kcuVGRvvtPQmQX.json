@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:performance>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effects (start off): Edge on Streetwise and ↑2 on Persuasion. Switch on the first at or after a performance, and the second when talking to fans of your band.</p>"

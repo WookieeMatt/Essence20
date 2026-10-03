@@ -1,11 +1,6 @@
 /**
  * Adventures in Angel Grove / Beneath the Helmet items for the pr1 slice.
  *
- * - Dragon Dagger (Adventures in Angel Grove, p.84): "Allows for the wielder to use the Machine Merge
- *   Grid Power (see the Power Rangers Roleplaying Game Core Rulebook, page 100) with the Dragonzord;
- *   but only after a successful DIF 16 Performance (Flute) Skill Test." A Use button on the dagger
- *   rolls the test; on a success the wielder can use Machine Merge for the rest of the scene (a
- *   scene-long copy of the Power when they don't already have it).
  * - Advanced Dino Gem Integration, Zord Feature (Beneath the Helmet, p.71-72): one of - Dino Shield
  *   "Snag to ranged attacks targeting the Zord specifically"; Dino Sense "Gain ↑2 on all Alertness
  *   Skill Tests"; Primordial Power "May choose to take a Snag on melee attacks to inflict +2 damage";
@@ -16,44 +11,10 @@
 import {
   registerApplyDialog, registerDerived, registerDialogToggles, registerHitRider, registerRollSources, registerUse,
 } from "../../extensions.mjs";
-import { getSceneEpoch } from "../../scene-clock.mjs";
 import {
-  PR1, T, allSourced, driverOf, equipped, findSourced, flagOf, giveSnag, has, isItem, isMeleeEffect, isRanged,
+  PR1, T, allSourced, driverOf, findSourced, flagOf, giveSnag, isItem, isMeleeEffect, isRanged,
   num, pending, postLine, seatsOf, setPending,
 } from "./common.mjs";
-
-/* -------------------------------------------- */
-/*  Dragon Dagger                                */
-/* -------------------------------------------- */
-
-const DAGGER_FLAG = 'pr1DragonDaggerTune';
-
-export const daggerTuned = actor => flagOf(actor, DAGGER_FLAG) == getSceneEpoch();
-
-registerUse({
-  id: 'pr1-dragon-dagger',
-  matches: item => isItem(item, PR1.dragonDagger),
-  canUse: item => !!equipped(item.parent, PR1.dragonDagger) && !daggerTuned(item.parent),
-  run: async (item, economy, pay) => {
-    const actor = item.parent;
-    if (!(await pay('standard'))) {
-      return null;
-    }
-
-    const { rollTest, grantCopy, temporary } = await import("../../grants.mjs");
-    const { success } = await rollTest(actor, 'performance', 16);
-    if (!success) {
-      return T('Pr1DaggerFailed', { name: actor.name });
-    }
-
-    await actor.setFlag('essence20', DAGGER_FLAG, getSceneEpoch());
-    if (!has(actor, PR1.machineMerge)) {
-      await grantCopy(actor, PR1.machineMerge, { grantedBy: item, temporary: temporary('scene') });
-    }
-
-    return T('Pr1DaggerTuned', { name: actor.name });
-  },
-});
 
 /* -------------------------------------------- */
 /*  Advanced Dino Gem Integration                */

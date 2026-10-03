@@ -324,36 +324,6 @@ registerPostRoll(async (actor, results, checkContext, { hits = [], rider } = {})
 });
 
 /* -------------------------------------------- */
-/*  Eltarian Camouflage (gear)                   */
-/* -------------------------------------------- */
-
-// Eltarian Camouflage (TtSG, p.31): "When activated, you immediately take that appearance. Skill
-// Test attempts to glean or suspect your true appearance suffer ↓1." The Use button switches the
-// disguise on and off; perception-type Skill Tests aimed at the wearer list the ↓1 (it can be
-// unticked in the dialog when the test isn't about the disguise).
-const DISGUISE_FLAG = 'pr3Disguised';
-const SEEING_SKILLS = ['alertness', 'culture', 'streetwise', 'technology'];
-
-registerUse({
-  id: 'pr3Camouflage',
-  matches: item => isItem(item, IDS.camouflage),
-  run: async (item) => {
-    const on = !item.flags?.essence20?.[DISGUISE_FLAG];
-    await item.setFlag('essence20', DISGUISE_FLAG, on);
-    return T(on ? 'Pr3CamouflageOn' : 'Pr3CamouflageOff', { name: escapeHtml(item.parent.name) });
-  },
-});
-
-registerRollSources((actor, target, ctx) => {
-  const gear = holding(target, IDS.camouflage);
-  if (!gear?.flags?.essence20?.[DISGUISE_FLAG] || ctx?.isAttack || !SEEING_SKILLS.includes(ctx?.rolledSkill)) {
-    return {};
-  }
-
-  return { sources: [{ id: 'pr3Camouflage', label: gear.name, shiftDown: 1 }] };
-});
-
-/* -------------------------------------------- */
 /*  Jungle Fury Rhino Sentry Shield              */
 /* -------------------------------------------- */
 
@@ -513,24 +483,6 @@ registerUse({
 
 registerDialogToggles((actor, ctx) => {
   const toggles = [];
-  const isAttack = isAttackEffect(ctx?.item);
-  if (!isAttack && holding(actor, IDS.navigator)) {
-    toggles.push({ name: 'pr3Navigating', type: 'checkbox', label: T('Pr3NavigatorToggle') });
-  }
-
-  // Not From Around Here (Hartunian) (TtSG, Hang-Up, p.19): "You suffer ↓1 when you confront a
-  // problem with another tactic that could [be solved with physical combat]".
-  if (!isAttack && holding(actor, IDS.hartunian)) {
-    toggles.push({ name: 'pr3Hartunian', type: 'checkbox', label: T('Pr3HartunianToggle') });
-  }
-
-  // The Returned (TtSG, Hang-Up, p.112): "You suffer a Snag on all Social-based Skill Tests about
-  // your past before you left, how you returned, and thoughts regarding your future. You may also
-  // suffer a Snag on Smarts-based Skill Tests about information from yo[ur past]".
-  if (holding(actor, IDS.returnedHangUp) && ['social', 'smarts'].includes(ctx?.rolledEssence)) {
-    toggles.push({ name: 'pr3Returned', type: 'checkbox', label: T('Pr3ReturnedToggle') });
-  }
-
   const boon = safehavenBoon(actor);
   if (boon == 'upgrade' && ctx?.rolledSkill == 'technology') {
     toggles.push({ name: 'pr3SafehavenUpgrade', type: 'checkbox', label: T('Pr3SafehavenUpgradeToggle') });
@@ -545,24 +497,12 @@ registerDialogToggles((actor, ctx) => {
 
 registerApplyDialog((actor, options) => {
   const ext = options.ext ?? {};
-  if (ext.pr3Navigating || ext.pr3SafehavenUpgrade) {
+  if (ext.pr3SafehavenUpgrade) {
     giveEdge(options);
-  }
-
-  if (ext.pr3Hartunian) {
-    options.shiftDown = (Number(options.shiftDown) || 0) + 1;
   }
 
   if (ext.pr3SafehavenSocial) {
     options.shiftUp = (Number(options.shiftUp) || 0) + 1;
-  }
-
-  if (ext.pr3Returned) {
-    if (options.edge) {
-      options.edge = false;
-    } else {
-      options.snag = true;
-    }
   }
 });
 

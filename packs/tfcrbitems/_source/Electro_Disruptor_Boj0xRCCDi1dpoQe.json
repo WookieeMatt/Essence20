@@ -5,6 +5,9 @@
   "_id": "Boj0xRCCDi1dpoQe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Scramble a target's senses (Technology)","cost":{"action":"standard"},"when":["not:combat"],"steps":[{"do":"target"},{"do":"choose","prompt":"Against which Defense?","options":[{"label":"Willpower","steps":[{"do":"roll","skill":"technology","difDefense":"willpower","onSuccess":[{"do":"applyCondition","condition":"mesmerized","to":"target"}],"onFail":[{"do":"chat","text":"{target} shakes off the interference."}]}]},{"label":"Cleverness","steps":[{"do":"roll","skill":"technology","difDefense":"cleverness","onSuccess":[{"do":"applyCondition","condition":"mesmerized","to":"target"}],"onFail":[{"do":"chat","text":"{target} shakes off the interference."}]}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: outside combat, roll Technology against a target's Willpower or Cleverness; on a success it becomes Mesmerized.</p><p>Left to the table: range, and when the Mesmerized condition ends.</p>"

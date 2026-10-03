@@ -5,6 +5,10 @@
   "_id": "B0yM8ewEoYJb1GBg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"all","stage":"adjust","op":"add","value":15,"label":"Driven vehicle in combat: Movement +15 ft","when":["self:type:vehicle",{"any":["combat","combat:round:0"]}],"scope":"driven"},
+      {"type":"Movement","movement":"all","stage":"adjust","op":"multiply","value":1.2,"label":"Driven vehicle out of combat: Movement +20%","when":["self:type:vehicle","not:combat","not:combat:round:0"],"scope":"driven"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a vehicle you're driving gets +15 ft Movement in combat, or +20% outside combat.</p>"

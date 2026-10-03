@@ -5,6 +5,9 @@
   "_id": "f9Xl8sawCJ7EBwGw",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Clean, straight cuts (Handsaw: Edge)","edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: an Edge switch while you carry it, for making clean cuts.</p>"

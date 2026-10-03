@@ -5,6 +5,10 @@
   "_id": "SwXglwZwj64m3zFF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Self-repair in Alt Mode (heal 1)","when":["self:transformed"],"limit":{"per":"encounter"},"steps":[{"do":"heal","amount":1}]}
+    ],
+    "prerequisites": {"when":[{"any":["self:hasType:influence:Mutant Beast","self:hasType:influence:Transmetal II","self:hasType:influence:Technorganic"]}]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (once per scene, in Alt Mode): heal 1 Health. Left to the table: recovering 2 Essence damage after a long rest.</p>"

@@ -5,6 +5,9 @@
   "_id": "cHNytkkeP7iizzgK",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Chemist (untick if the test involves science)","when":["skill:persuasion"],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ↓1 on every Persuasion test. Roll Options Dialog: untick it when the test involves science.</p>"

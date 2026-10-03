@@ -5,6 +5,7 @@
   "_id": "zKyFqePOc7wElWcL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:origin:Student"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted: pick a non-Smarts Skill when you gain it; it rolls as a Smarts Skill for you. Automatic: a Fumble with that Skill adds 2 Story Points to the pool instead of 1.</p>"

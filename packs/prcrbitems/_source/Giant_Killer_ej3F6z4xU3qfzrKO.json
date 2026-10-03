@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Target 2+ sizes larger (Giant-Killer)","when":["attack","target:sizeDiff>=2"],"upshift":1,"stack":"giantKiller"},
+      {"type":"RollModifier","label":"Target 6+ sizes larger (Giant-Killer)","when":["attack","target:sizeDiff>=6"],"edge":true,"stack":"giantKillerEdge"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your attacks get ↑1 against targets two or more sizes larger than you, and Edge against targets more than five sizes larger, both labelled Giant-Killer in the Roll Options Dialog.</p>"

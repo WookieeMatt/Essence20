@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:data:system.powers.personal.max>=4","self:skill:survival>=d6"]},
+    "rules": [
+      {"type":"DialogSwitch","label":"First aid, repair or other healing effort (Lightspeed Response: Edge)","edge":true,"default":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.E3WLZpN7iKL9uzeB","not:item:type:weaponEffect",{"any":["skill:science","skill:technology"]}]},
+      {"type":"DialogSwitch","label":"First aid, repair or other healing effort (Lightspeed Response: Edge)","edge":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.E3WLZpN7iKL9uzeB","not:item:type:weaponEffect","not:skill:science","not:skill:technology"]},
+      {"type":"Use","label":"2 Power: heal an adjacent Morphed ally 1 Health","when":["self:data:system.powers.personal.value>=2"],"steps":[{"do":"pickAlly","within":5,"filter":["target:morphed"]},{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":2},{"do":"heal","to":"target","amount":1}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Pay 1 Personal Power when you Morph to activate the Form: +10ft movement, a Roll Options Dialog switch for Edge on healing and repair, and the Lightspeed weapon swaps. Use button: 2 Personal Power heals an adjacent target 1 Health.</p><p>Left to the table: the once-per-scene limit per healed target.</p>"

@@ -5,6 +5,9 @@
   "_id": "nVOpdhr6aFnuY0ks",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Graphite Ranger Prime","when":["attack","combat","combat:round:1","self:morphed"],"snag":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: +2 to all four Defenses while Morphed. Automatic: attacks against your Cleverness get a Snag, shown in the attacker's rolled dice. In round 1 of combat, every attack against you while Morphed takes a Snag, labelled Graphite Ranger Prime in the attacker's Roll Options Dialog.</p><p>Left to the table: making enemies attack you that round.</p>"

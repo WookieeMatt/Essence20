@@ -5,6 +5,9 @@
   "_id": "WZA3q9BRESFVx6SS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Sirens Blaring (Initiative: Edge, ↑1)","when":["roll:initiative"],"upshift":1,"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Initiative rolls get Edge and ↑1, already applied when the Roll Options Dialog opens.</p>"

@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"aerial","stage":"total","op":"add","value":-10,"label":"No +10 to a Aerial Movement you lack","when":[{"any":["not:self:transformed","not:self:data:system.movement.aerial.altMode"]},{"any":["self:transformed","not:self:data:system.movement.aerial.base"]}]},
+      {"type":"Movement","movement":"climb","stage":"total","op":"add","value":-10,"label":"No +10 to a Climb Movement you lack","when":[{"any":["not:self:transformed","not:self:data:system.movement.climb.altMode"]},{"any":["self:transformed","not:self:data:system.movement.climb.base"]}]},
+      {"type":"Movement","movement":"swim","stage":"total","op":"add","value":-10,"label":"No +10 to a Aquatic Movement you lack","when":[{"any":["not:self:transformed","not:self:data:system.movement.swim.altMode"]},{"any":["self:transformed","not:self:data:system.movement.swim.base"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: ↑2 on Initiative and +10 ft to every Movement type you have.</p>"

@@ -5,6 +5,7 @@
   "_id": "VMZ8PDom0sJGyofl",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Grenade"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the grenade's range becomes Reach. Setting it plants a bomb with a timer; when it goes off, the planter's Technology roll is made against everyone in the blast.</p>"

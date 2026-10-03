@@ -5,6 +5,10 @@
   "_id": "hYWoZnrFKaVTZFuG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Calculate the shot (Science)","steps":[{"do":"target"},{"do":"choose","prompt":"Against which Defense?","options":[{"label":"Evasion","steps":[{"do":"roll","skill":"science","difDefense":"evasion","onSuccess":[{"do":"setToggle","key":"primed","value":true},{"do":"chat","text":"Calculated: the next aimed Long Range Rifle shot gets ↑2."}],"onFail":[{"do":"chat","text":"No calculated shot this time."}]}]},{"label":"Cleverness","steps":[{"do":"roll","skill":"science","difDefense":"cleverness","onSuccess":[{"do":"setToggle","key":"primed","value":true},{"do":"chat","text":"Calculated: the next aimed Long Range Rifle shot gets ↑2."}],"onFail":[{"do":"chat","text":"No calculated shot this time."}]}]}]}]},
+      {"type":"AimBonus","label":"Calculated Attack: Aiming gives ↑2 with the Long Range Rifle","atLeast":2,"when":["self:toggle:primed","weapon:source:Compendium.essence20.tf_crb.Item.8Hi76APCo9QRnbLE"],"clearToggle":"primed"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: roll Science against the target's Evasion or Cleverness. On a success, your next Aim with your Long Range Rifle gives ↑2 instead of ↑1.</p>"

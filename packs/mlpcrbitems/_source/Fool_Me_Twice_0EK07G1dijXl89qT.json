@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Deceiving them again this scene (Fool Me Twice: ↓1)","when":["skill:deception","target:marked:foolMeTwice"],"downshift":1},
+      {"type":"Trigger","label":"Fool Me Twice","event":"afterRoll","when":["skill:deception"],"steps":[{"do":"target","min":0},{"do":"mark","key":"foolMeTwice","to":"targets","until":"scene"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once your Deception test has hit a creature this scene, your later Deception tests targeting that same creature take ↓1, labelled Fool Me Twice in your Roll Options Dialog.</p>"

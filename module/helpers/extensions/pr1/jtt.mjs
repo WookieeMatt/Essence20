@@ -4,8 +4,6 @@
  * - Chronicler, Hang-Up (p.18): "After failing any Skill Test about accessing your chronicled
  *   information, you gain the Impaired Condition for the next minute." A roll-dialog checkbox marks
  *   the test as one about the chronicle; failing it applies Impaired for 10 rounds.
- * - Cloud Hatchet (p.80): "Can be used to generate Aerial Movement value of 30ft" - while it's
- *   equipped the wielder's Aerial Movement is at least 30ft.
  * - Mobile Headquarters, Zord Feature (p.83): "+1 to Culture, Science, and Technology Skill Tests
  *   performed by those in the control area" (↑1 for everyone seated in the Zord); "Adds Edge to the
  *   Initiative rolls of all allied vehicles and Zords within the scene"; "Allows a Megaform your Zord
@@ -15,9 +13,6 @@
  *   for each": +1 to Energy-damage attacks until the end of your turn; +20ft to all Movement until
  *   the end of your turn; Accurate (↑1) on one ranged Attack; ↑2 to Group Skill Tests made by the
  *   Zord's pilot until the beginning of their next turn. Prerequisite: Personal Power Capacity 4+.
- * - Personal Heirloom (p.55) - the "piece of standard equipment" half. helpers/personal-heirloom.mjs
- *   only lets a weapon be designated (the one kind of item a roll can be traced to); an Heirloom
- *   that is equipment is offered as a roll-dialog checkbox (↑1) when no weapon has been designated.
  * - Profiteer, Hang-Up (p.22): "During a scene where anyone asks how or where you acquired your
  *   wealth or a piece of equipment, you suffer ↓1 on all Social-based Skill Tests for one minute."
  *   Ticking the dialog's "questioned" box starts the minute (10 rounds, or the rest of the scene out
@@ -43,9 +38,9 @@ import {
 } from "../../extensions.mjs";
 import { getSceneEpoch, getUses, markUsed } from "../../scene-clock.mjs";
 import {
-  PR1, T, allSourced, clearPending, componentsOf, crewOf, driverOf, equipped, findSourced, flagOf, has, isAllyOf,
+  PR1, T, allSourced, clearPending, componentsOf, crewOf, driverOf, findSourced, flagOf, has, isAllyOf,
   isAreaAttack, isItem, isRanged, isThisTurn, isUntilLive, kept, num, payAction, pending,
-  postLine, sceneActors, seatsOf, setPending, turnStamp, untilNextTurn, writeDoc,
+  postLine, sceneActors, setPending, turnStamp, untilNextTurn, writeDoc,
 } from "./common.mjs";
 
 const socialSkill = (skill, essence) => essence == 'social' || globalThis.CONFIG?.E20?.skillToEssence?.[skill] == 'social';
@@ -83,30 +78,8 @@ export async function chroniclerPostRoll(actor, results) {
 registerPostRoll((actor, results) => chroniclerPostRoll(actor, results));
 
 /* -------------------------------------------- */
-/*  Cloud Hatchet                                */
-/* -------------------------------------------- */
-
-export function cloudHatchetDerived(actor) {
-  const aerial = actor?.system?.movement?.aerial;
-  if (aerial && equipped(actor, PR1.cloudHatchet)) {
-    aerial.total = Math.max(num(aerial.total), 30);
-  }
-}
-
-/* -------------------------------------------- */
 /*  Mobile Headquarters                          */
 /* -------------------------------------------- */
-
-const MHQ_SKILLS = ['culture', 'science', 'technology'];
-
-export function mobileHqSources(actor, rolledSkill) {
-  if (!MHQ_SKILLS.includes(rolledSkill)) {
-    return [];
-  }
-
-  const seat = seatsOf(actor).find(({ vehicle }) => has(vehicle, PR1.mobileHeadquarters));
-  return seat ? [{ id: 'pr1MobileHq', label: findSourced(seat.vehicle, PR1.mobileHeadquarters).name, shiftUp: 1 }] : [];
-}
 
 const SHIFTS = () => globalThis.CONFIG?.E20?.skillShiftList ?? [];
 
@@ -286,28 +259,6 @@ registerHitRider((actor, target, result, rider, tools) => {
 });
 
 /* -------------------------------------------- */
-/*  Personal Heirloom (equipment)                */
-/* -------------------------------------------- */
-
-export function heirloomIsEquipment(actor) {
-  if (!has(actor, PR1.personalHeirloom)) {
-    return false;
-  }
-
-  const designated = flagOf(actor, 'personalHeirloomItemId');
-  const weapon = designated ? actor.items?.get?.(designated) : null;
-  return !weapon || weapon.type != 'weapon';
-}
-
-registerDialogToggles((actor, { item } = {}) => {
-  if (item?.type == 'weaponEffect' || !heirloomIsEquipment(actor)) {
-    return [];
-  }
-
-  return [{ name: 'pr1Heirloom', label: T('Pr1HeirloomToggle'), type: 'checkbox', value: false }];
-});
-
-/* -------------------------------------------- */
 /*  Profiteer Hang-Up                            */
 /* -------------------------------------------- */
 
@@ -413,10 +364,6 @@ export async function prospectorPreRoll(actor, dataset) {
 /*  Time Displaced Hang-Up                       */
 /* -------------------------------------------- */
 
-registerDialogToggles(actor => (has(actor, PR1.timeDisplaced)
-  ? [{ name: 'pr1TimeDisplaced', label: T('Pr1TimeDisplacedToggle'), type: 'checkbox', value: false }]
-  : []));
-
 const LADDER = ['1d2', '1d4', '1d6', '1d8', '1d10', '1d12', '2d8'];
 export const largerDie = formula => LADDER[Math.min(LADDER.length - 1, Math.max(0, LADDER.indexOf(formula)) + 1)];
 
@@ -517,7 +464,6 @@ registerPreRoll(async (actor, dataset) => {
 
 registerRollSources((actor, target, ctx = {}) => ({
   sources: [
-    ...mobileHqSources(actor, ctx.rolledSkill),
     ...overdriveSources(actor, ctx),
     ...profiteerSources(actor, ctx.rolledSkill, ctx.rolledEssence),
   ],
@@ -527,14 +473,6 @@ registerApplyDialog(async (actor, options, ctx = {}) => {
   const ext = options.ext ?? {};
   if (ext.pr1OverdriveGroup) {
     options.shiftUp = num(options.shiftUp) + 2;
-  }
-
-  if (ext.pr1Heirloom) {
-    options.shiftUp = num(options.shiftUp) + 1;
-  }
-
-  if (ext.pr1TimeDisplaced) {
-    options.shiftDown = num(options.shiftDown) + 2;
   }
 
   if (ext.pr1Profiteer) {
@@ -554,7 +492,6 @@ registerApplyDialog(async (actor, options, ctx = {}) => {
 });
 
 registerDerived(actor => {
-  cloudHatchetDerived(actor);
   mobileHqDerived(actor);
   overdriveDerived(actor);
 });

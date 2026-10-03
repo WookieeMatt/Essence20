@@ -8,22 +8,17 @@ const tf1s = id => `Compendium.essence20.transformers_one_sourcebook.Item.${id}`
 
 export const TF3 = {
   helicalSpring: tf('OmGdMZlotKHVFzhR'),
-  hindsight: tf('QIBNwPLGYoXhjwcQ'),
   holographicDoubles: tf('rWrU13LenH7mukyV'),
   intensive: tf('lupxm8SNDLvbjoDt'),
   irrefutableOrder: tf('fz3s9ay6oOPujwTh'),
   ladder: tf('CjJGz1LLzFoveqZK'),
   lastStand: tf('uXX6ZCaHlM4gErua'),
   martyr: tf('3CyKdsMYYq0lGj06'),
-  mimicryVocoder: tf('Sa7fFCDKf6hMwmBx'),
   multiplication: tf('K3FNcAMjjek1UaJk'),
   noEscape: tf('xxMeliFHeWYxtGVI'),
-  noseForTrouble: tf('VUal4FUlNIrwo2MG'),
   rollWithIt: tf('DWlnFrFC8GrjNKVf'),
   rotorBlades: tf('jkZQIpL661klm5sP'),
-  siren: tf('W0C7U2GimuTwHom5'),
   stoic: tf('p9Obyw2krF0pks8D'),
-  subordinate: tf('M5gCV4i6hoOSowIb'),
   synchUp: tf('gaDAXIEkSt0B25RZ'),
   targetBreakdown: tf('aLdjHmWG171RCSpA'),
   rightOfAll: tf('Ycrb7vHTOZ79nC9U'),
@@ -50,7 +45,7 @@ export const SCOPE = 'essence20';
 export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
 
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 export function itemsOf(actor) {
@@ -190,19 +185,4 @@ export function stampOpen(stamp, sceneEpoch = null) {
   }
 
   return !combat && stamp.scene === sceneEpoch;
-}
-
-export const SKILL_LADDER = () => CONFIG.E20?.skillShiftList ?? [];
-
-/** Shifts that turn a roll on skill `from` into one on skill `to` (the shift-position delta). */
-export function substitutionShifts(actor, from, to) {
-  const list = SKILL_LADDER();
-  const a = list.indexOf(actor?.system?.skills?.[from]?.shift ?? 'd20');
-  const b = list.indexOf(actor?.system?.skills?.[to]?.shift ?? 'd20');
-  if (a < 0 || b < 0) {
-    return { shiftUp: 0, shiftDown: 0 };
-  }
-
-  const delta = a - b;
-  return { shiftUp: Math.max(0, delta), shiftDown: Math.max(0, -delta) };
 }

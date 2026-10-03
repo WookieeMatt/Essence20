@@ -5,6 +5,10 @@
   "_id": "nTwviKh1ND0jGVvr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Merit Badges","when":["skill:{item.choice}"],"immune":["snag"]}
+    ],
+    "prerequisites": {"when":["self:hasType:origin:Scout"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted: you pick one Smarts Skill when you add it. Automatic: tests with that Skill can't take a Snag from any source; the Roll Options Dialog opens on Normal instead.</p>"

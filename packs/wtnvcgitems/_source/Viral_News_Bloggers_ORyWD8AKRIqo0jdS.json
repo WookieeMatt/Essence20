@@ -5,6 +5,11 @@
   "_id": "ORyWD8AKRIqo0jdS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Viral News Bloggers","when":["attack","target:type:vehicle"],"edge":true},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Viral News Bloggers","when":["attack","target:type:vehicle"]}
+    ],
+    "prerequisites": {"when":["self:hasType:focus:Print"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: attacks against a vehicle get an Edge, labelled Viral News Bloggers in the Roll Options Dialog, and +1 damage, shown on the hit's chat card.</p><p>Left to the table: the same bonus against other machines and non-organic enemies.</p>"

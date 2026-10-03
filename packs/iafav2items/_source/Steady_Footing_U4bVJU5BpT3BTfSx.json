@@ -5,6 +5,10 @@
   "_id": "U4bVJU5BpT3BTfSx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","when":["attack",{"any":["item:damageType:maneuver","item:damageType:grapple"]}],"downshift":1}
+    ],
+    "prerequisites": {"when":[{"any":["self:skill:acrobatics>=d6","self:skill:athletics>=d6"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Maneuver and Grapple attacks against you take ↓1, listed as Steady Footing in the attacker's Roll Options Dialog. Chat card: if one Fumbles, a button banks your counter-maneuver against the attacker at ↑1.</p>"

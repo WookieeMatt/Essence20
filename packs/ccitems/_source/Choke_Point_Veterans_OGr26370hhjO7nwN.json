@@ -5,6 +5,7 @@
   "_id": "OGr26370hhjO7nwN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Defeated the Joes at Red Quarry"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: the temporary Contact this reward grants.</p>"

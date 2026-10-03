@@ -5,6 +5,10 @@
   "_id": "JlJrEfRcrupprYMC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Repairing or improving your vehicle type (Petrolhead: Specialized)","when":["skill:technology"],"specialize":true},
+      {"type":"RollModifier","label":"Petrolhead (Driving your vehicle type)","when":["skill:driving","vehicle:driving","vehicle:moves:{item.choice}"],"specialize":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you drive a vehicle with the Movement type chosen on the Perk, your Driving tests open with the Specialized switch on in the Roll Options Dialog. Roll Options Dialog: a switch makes a Technology test Specialized when repairing or improving that type of vehicle.</p>"

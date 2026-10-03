@@ -1,5 +1,5 @@
 import {
-  registerApplyDialog, registerConsumer, registerDialogToggles, registerHitRider, registerPostRoll, registerRollSources, registerSpellCost,
+  registerApplyDialog, registerDialogToggles, registerHitRider, registerPostRoll, registerRollSources, registerSpellCost,
   registerUse, registerChatButton, registerChatDecorator,
 } from "../../extensions.mjs";
 import { activateForWindow, getSceneEpoch, getUses, isActiveForWindow, markUsed } from "../../scene-clock.mjs";
@@ -9,7 +9,7 @@ import { hasSourced, worldActors } from "../../companion-link.mjs";
  * My Little Pony - Dark Skies over Equestria, In a Jam and Knights of Canterlot items: shape-shifting
  * (Basic Shape-Shifting, Face-Shift, Identity Crisis, Master Morph, Size-Shift), Prize Honey,
  * Honorary Apple, Key to Whinnypeg, the Knights of Canterlot tools and Hang-Ups, and the spell Perks
- * (Illusion Casting, Mastery Power, Reach Out, Sharpcaster, Sorcerous Support) and spells (Brilliant
+ * (Illusion Casting, Reach Out, Sharpcaster, Sorcerous Support) and spells (Brilliant
  * Sight, Pinkie Sense, Softenblows).
  */
 
@@ -25,23 +25,14 @@ export const MLP1 = {
   sizeShift: dse('44UMuF7vQM094oQq'),
   shapeShiftOrigin: dse('yi2Z2ebEmTuow5LL'),
   ponymorph: pack('mlp_crb', '3Tm9SWc060Z62e4Q'),
-  honoraryApple: pack('in_a_jam', 'bYx0fmWfkOTjr97q'),
   keyToWhinnypeg: pack('in_a_jam', '6HJlO4qnOTRqrOmF'),
   brilliantSight: koc('Oc8NpQa5ylK2Ix0B'),
   farSighted: koc('Sm7INWZQAIXlu5HC'),
-  handAxe: koc('7crNgIuylYGHUES8'),
-  handsaw: koc('f9Xl8sawCJ7EBwGw'),
-  hardHabit: koc('q9ObJy6Ipqn7lPHM'),
-  hiddenInPlainSight: koc('Sm5LWv4KkiQJNYyI'),
   illusionCasting: koc('UadqOmn6aZKAvXT1'),
-  masteryPower: koc('DyIbIDlzOJX5GiO2'),
-  miredInAcademia: koc('EC7Xzefmh7AEHBrr'),
-  net: koc('5ZsWimVR7fWu2EMW'),
   pinkieSense: koc('hER4hs3jrIHM8gF3'),
   reachOut: koc('gu2V2C4aH0fsDYXN'),
   sharpcaster: koc('Cnv01qtQwEdrUh8I'),
   smokeBomb: koc('L5KOGeqX43EdO3b3'),
-  snareTrap: koc('pCncxHtzpST2EN9Z'),
   softenblows: koc('j5qSt58bw2YLeDMq'),
   sorcerousSupport: koc('PhK5KSV4IXpOcTYP'),
 };
@@ -50,7 +41,7 @@ const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localiz
 const SHAPE_FLAG = 'mlpShape';
 
 function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
+  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function itemsOf(actor) {
@@ -136,7 +127,7 @@ export async function changeShape(actor) {
 /*  Roll sources                                 */
 /* -------------------------------------------- */
 
-export function mlp1RollSources(actor, target, { item, rolledSkill } = {}) {
+export function mlp1RollSources(actor, target, { rolledSkill } = {}) {
   const sources = [];
   const consumes = [];
   const shape = shapeOf(actor);
@@ -160,22 +151,10 @@ export function mlp1RollSources(actor, target, { item, rolledSkill } = {}) {
     sources.push({ id: 'masterMorph', label: nameOf(actor, MLP1.masterMorph, 'Master Morph'), shiftUp: 2 });
   }
 
-  // Mastery Power (KoC p.38): "You gain ↑1 when you cast any spell from the chosen mastery specialty."
-  const mastery = itemOf(actor, MLP1.masteryPower)?.flags?.essence20?.mastery;
-  if (item?.type == 'spell' && mastery && item.system?.circle == mastery.circle && item.system?.tier == mastery.tier) {
-    sources.push({ id: 'masteryPower', label: nameOf(actor, MLP1.masteryPower, 'Mastery Power'), shiftUp: 1 });
-  }
-
   // Smoke Bomb (KoC p.20): "making their targets in a 10x10 foot area suffer ↓1 to any Alertness Skill
   // Tests." Anyone rolling Alertness from inside a live cloud.
   if (rolledSkill == 'alertness' && inSmoke(actor)) {
     sources.push({ id: 'smokeBomb', label: T('E20.Mlp1SmokeBomb'), shiftDown: 1 });
-  }
-
-  // Honorary Apple's banked Edge (Free action, once per session).
-  if (actor?.flags?.essence20?.honoraryAppleEdge) {
-    sources.push({ id: 'honoraryApple', label: nameOf(actor, MLP1.honoraryApple, 'Honorary Apple'), edge: true });
-    consumes.push({ ext: 'honoraryApple', actorUuid: actor.uuid });
   }
 
   return { sources, consumes };
@@ -211,7 +190,7 @@ function hasRangedWeapon(actor) {
     && list.some(e => e.type == 'weaponEffect' && e.flags?.essence20?.parentId == w.id && e.system?.classification?.style != 'melee'));
 }
 
-export function mlp1Toggles(actor, { item, rolledSkill } = {}) {
+export function mlp1Toggles(actor, { rolledSkill } = {}) {
   const toggles = [];
   const add = (name, label, extra = {}) => toggles.push({ name, label, type: 'checkbox', ...extra });
   const essence = essenceOf(rolledSkill);
@@ -234,11 +213,6 @@ export function mlp1Toggles(actor, { item, rolledSkill } = {}) {
     add('prizeHoney', T('E20.Mlp1ToggleHoney'));
   }
 
-  // Honorary Apple: "You gain Edge on Social-based Skill Tests with members of the Apple family."
-  if (essence == 'social' && hasSourced(actor, MLP1.honoraryApple)) {
-    add('honoraryApple', T('E20.Mlp1ToggleApple'));
-  }
-
   // Key to Whinnypeg: "↑2 on Social-based Skill Tests when dealing with Whinnypeg politicians, business
   // owners, and influencers, and ↑1 ... with non-Whinnypeg" ones.
   if (essence == 'social' && carries(actor, MLP1.keyToWhinnypeg)) {
@@ -246,39 +220,9 @@ export function mlp1Toggles(actor, { item, rolledSkill } = {}) {
       options: [{ value: '', label: T('E20.None') }, { value: '2', label: T('E20.Mlp1WhinnypegLocal') }, { value: '1', label: T('E20.Mlp1WhinnypegOther') }] });
   }
 
-  // The tools (KoC p.20): Hand Axe ↑1 chopping, Handsaw Edge on clean cuts, Net ↑1 catching, Snare Trap
-  // ↑1 capturing once set.
-  if (carries(actor, MLP1.handAxe)) {
-    add('handAxe', T('E20.Mlp1ToggleHandAxe'));
-  }
-
-  if (carries(actor, MLP1.handsaw)) {
-    add('handsaw', T('E20.Mlp1ToggleHandsaw'));
-  }
-
-  if (carries(actor, MLP1.net)) {
-    add('net', T('E20.Mlp1ToggleNet'));
-  }
-
-  if (carries(actor, MLP1.snareTrap)) {
-    add('snareTrap', T('E20.Mlp1ToggleSnare'));
-  }
-
   // Hang-Ups.
   if (rolledSkill == 'alertness' && hasSourced(actor, MLP1.farSighted) && hasRangedWeapon(actor)) {
     add('farSighted', T('E20.Mlp1ToggleFarSighted'), { value: true });
-  }
-
-  if (rolledSkill != 'deception' && hasSourced(actor, MLP1.hardHabit)) {
-    add('hardHabit', T('E20.Mlp1ToggleHardHabit'));
-  }
-
-  if (hasSourced(actor, MLP1.hiddenInPlainSight)) {
-    add('hiddenInPlainSight', T('E20.Mlp1ToggleNoticed'));
-  }
-
-  if (hasSourced(actor, MLP1.miredInAcademia)) {
-    add('miredInAcademia', T('E20.Mlp1ToggleTeaching'));
   }
 
   return toggles;
@@ -290,14 +234,10 @@ export async function mlp1ApplyDialog(actor, options) {
     options.shiftUp = (options.shiftUp ?? 0) + n;
   };
 
-  const down = n => {
-    options.shiftDown = (options.shiftDown ?? 0) + n;
-  };
-
   const edge = () => (options.snag ? (options.snag = false) : (options.edge = true));
   const snag = () => (options.edge ? (options.edge = false) : (options.snag = true));
 
-  if (ext.faceShiftPass || ext.identityCrisis || ext.honoraryApple || ext.handsaw) {
+  if (ext.faceShiftPass || ext.identityCrisis) {
     edge();
   }
 
@@ -309,18 +249,9 @@ export async function mlp1ApplyDialog(actor, options) {
     up(Number(ext.keyToWhinnypeg));
   }
 
-  if (ext.handAxe || ext.net || ext.snareTrap) {
-    up(1);
-  }
-
-  // Hard Habit to Break: "you suffer ↓1 to your Skill
-  // Test". Far-Sighted: "Snag on any Alertness Skill Tests within 10 feet of you if you're currently using
-  // a ranged weapon". Hidden in Plain Sight / Mired in Academia: a Snag.
-  if (ext.hardHabit) {
-    down(1);
-  }
-
-  if (ext.farSighted || ext.hiddenInPlainSight || ext.miredInAcademia) {
+  // Far-Sighted: "Snag on any Alertness Skill Tests within 10 feet of you if you're currently using a
+  // ranged weapon".
+  if (ext.farSighted) {
     snag();
   }
 }
@@ -488,46 +419,6 @@ const USES = [
     },
   },
   {
-    // Honorary Apple: "as a Free action, you can gain Edge on a Skill Test related to agriculture per
-    // session." Once per mission here.
-    id: 'mlp1Apple', matches: item => sourceOf(item) == MLP1.honoraryApple,
-    canUse: item => getUses(item.parent, 'honoraryApple', 'mission') < 1,
-    async run(item, economy, pay) {
-      if (!(await pay('free'))) {
-        return null;
-      }
-
-      await markUsed(item.parent, 'honoraryApple', { window: 'mission' });
-      await item.parent.setFlag('essence20', 'honoraryAppleEdge', true);
-      return T('E20.Mlp1AppleEdge', { name: item.parent.name });
-    },
-  },
-  {
-    // Mastery Power: "Choose one of your Mastery specialties (such as 'Elementary Beam spells')."
-    id: 'mlp1Mastery', matches: item => sourceOf(item) == MLP1.masteryPower,
-    async run(item) {
-      const circles = Object.entries(CONFIG.E20.spellCircles ?? {}).map(([k, v]) => `<option value="${k}">${T(v)}</option>`).join('');
-      const tiers = Object.entries(CONFIG.E20.spellTiers ?? {}).map(([k, v]) => `<option value="${k}">${T(v)}</option>`).join('');
-      const answer = await foundry.applications.api.DialogV2.wait({
-        window: { title: item.name },
-        classes: ["window-app", "e20-window"],
-        content: `<div class="form-group"><label>${T('E20.Mlp1Tier')}</label><select name="tier">${tiers}</select></div>
-          <div class="form-group"><label>${T('E20.Mlp1Circle')}</label><select name="circle">${circles}</select></div>`,
-        buttons: [
-          { action: 'ok', label: T('E20.DialogConfirmButton'), default: true, callback: (event, button) => ({ tier: button.form.elements.tier.value, circle: button.form.elements.circle.value }) },
-          { action: 'cancel', label: T('E20.DialogCancelButton') },
-        ],
-        rejectClose: false,
-      });
-      if (!answer || answer == 'cancel') {
-        return null;
-      }
-
-      await item.setFlag('essence20', 'mastery', answer);
-      return T('E20.Mlp1MasterySet', { name: item.parent.name });
-    },
-  },
-  {
     // Smoke Bomb: a 10x10 cloud where it's thrown, for the scene.
     id: 'mlp1Smoke', matches: item => sourceOf(item) == MLP1.smokeBomb,
     async run(item, economy, pay) {
@@ -622,12 +513,6 @@ registerPostRoll(mlp1PostRoll);
 registerHitRider(mlp1HitRider);
 registerChatButton('mlp1Sharpcaster', sharpcasterAgain);
 registerChatButton('mlp1Sorcerous', sorcerousReroll);
-registerConsumer('honoraryApple', async consume => {
-  const actor = await fromUuid(consume.actorUuid);
-  if (actor?.flags?.essence20?.honoraryAppleEdge) {
-    await actor.unsetFlag('essence20', 'honoraryAppleEdge');
-  }
-});
 USES.forEach(registerUse);
 
 registerChatDecorator(decorateFumble);

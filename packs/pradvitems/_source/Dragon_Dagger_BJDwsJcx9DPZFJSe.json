@@ -5,6 +5,9 @@
   "_id": "BJDwsJcx9DPZFJSe",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Play the Dragonzord's call","cost":{"action":"standard"},"limit":{"per":"scene","onlyOnSuccess":true},"steps":[{"do":"roll","skill":"performance","dif":16,"onSuccess":[{"do":"grant","uuid":"Compendium.essence20.pr_crb.Item.JYo3Kzg7eEHHhxbm","until":"scene","when":["not:self:hasItem:Compendium.essence20.pr_crb.Item.JYo3Kzg7eEHHhxbm"]},{"do":"chat","text":"{name} can use Machine Merge with the Dragonzord for the rest of the scene."}],"onFail":[{"do":"chat","text":"{name} can't find the Dragonzord's tune."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks roll its Skill with the listed damage and traits.</p><p>Use button (while equipped): make a DIF 16 Performance test; on a success you get Machine Merge for the rest of the scene if you don't already have it.</p>"

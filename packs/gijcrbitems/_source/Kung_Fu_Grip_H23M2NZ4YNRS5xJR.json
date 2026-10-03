@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Kung Fu Grip","when":["attack","item:data:system.damageType=grapple"],"edge":true}
+    ],
+    "prerequisites": {"when":["self:essence:strength>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your grapple attacks open the Roll Options Dialog with Edge already selected. Roll Options Dialog: a switch for an Edge on Athletics when you're climbing or hanging on.</p>"

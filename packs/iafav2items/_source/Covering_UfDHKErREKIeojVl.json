@@ -5,6 +5,10 @@
   "_id": "UfDHKErREKIeojVl",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"AlternateEffect","label":"Covering: a Cover 1 alternate","scope":"host","key":"covering","name":"E20.DamageCover","changes":{"damageType":"cover","damageValue":1,"secondaryDamage.type":null,"secondaryDamage.value":0}}
+    ],
+    "prerequisites": {"when":[{"any":["host:trait:area","ask:Blast weapon"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the area weapon it's attached to gets a Cover 1 alternate effect.</p>"

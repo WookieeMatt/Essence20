@@ -310,7 +310,7 @@ export async function onDropActor(data, actorSheet) {
       // Carrier (PR CRB, Zord Feature, p.136): "holds up to five Vehicular Scale Zords and their Crew
       // inside itself" (helpers/team-actions.mjs).
       const { carrierCapacityLeft, TEAM } = await import("../helpers/team-actions.mjs");
-      const isCarrier = targetActor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == TEAM.carrier);
+      const isCarrier = targetActor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == TEAM.carrier);
       if (isCarrier && carrierCapacityLeft(targetActor) > 0) {
         await setEntryAndAddActor(droppedActor, targetActor, 'passenger');
         dropIsValid = true;

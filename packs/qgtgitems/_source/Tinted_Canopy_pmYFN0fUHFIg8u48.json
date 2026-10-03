@@ -5,6 +5,7 @@
   "_id": "pmYFN0fUHFIg8u48",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["ask:Enclosed crew compartment"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: Laser attacks against anyone aboard the vehicle take a Snag, shown as Tinted Canopy next to Snag in the attacker's Roll Options Dialog.</p><p>Left to the table: occupants ignoring light-based effects that would give ↓ on Driving.</p>"

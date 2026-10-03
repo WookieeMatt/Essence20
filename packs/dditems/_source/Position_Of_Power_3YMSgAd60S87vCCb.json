@@ -5,6 +5,9 @@
   "_id": "3YMSgAd60S87vCCb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Position of Power","when":["attack:melee","target:data:statuses.size>0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when your melee attack hits a target that has any Condition, it deals +1 damage, noted on the chat card (\"Includes +1 from Position of Power\").</p>"

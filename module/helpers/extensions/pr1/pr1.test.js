@@ -67,29 +67,18 @@ beforeEach(() => {
 test('every module registers its Use buttons', () => {
   expect(registry.uses.map(u => u.id)).toEqual(expect.arrayContaining([
     'pr1-overdrive', 'pr1-prospector-toolkit', 'pr1-time-displaced', 'pr1-warhead-magazines', 'pr1-be-an-example',
-    'pr1-lightspeed-boost', 'pr1-tactical-size-shift', 'pr1-dragon-dagger', 'pr1-advanced-dino-gem',
+    'pr1-lightspeed-boost', 'pr1-tactical-size-shift', 'pr1-advanced-dino-gem',
   ]));
   expect(Object.keys(registry.chatButtons)).toEqual(expect.arrayContaining(['pr1DestinyFumble', 'pr1NemesisReroll', 'pr1TauntTest']));
 });
 
-test('Cloud Hatchet gives 30ft Aerial only while equipped', () => {
-  const a = actor('playerCharacter', [item('weapon', common.PR1.cloudHatchet, { system: { equipped: true } })], { movement: { aerial: { total: 0 } } });
-  jtt.cloudHatchetDerived(a);
-  expect(a.system.movement.aerial.total).toBe(30);
-  const b = actor('playerCharacter', [item('weapon', common.PR1.cloudHatchet, { system: { equipped: false } })], { movement: { aerial: { total: 0 } } });
-  jtt.cloudHatchetDerived(b);
-  expect(b.system.movement.aerial.total).toBe(0);
-});
-
-test('Mobile Headquarters: ↑1 for the crew, Megaform initiative', () => {
+test('Mobile Headquarters: Megaform initiative', () => {
   const ranger = actor('playerCharacter');
   const zord = actor('zord', [item('feature', common.PR1.mobileHeadquarters, { name: 'Mobile HQ' })], {
     actors: { x: { uuid: ranger.uuid, vehicleRole: 'passenger' } },
     skills: { initiative: { shift: 'd4', edge: false } }, initiative: { skill: 'initiative' },
   });
   global.game.actors = [ranger, zord];
-  expect(jtt.mobileHqSources(ranger, 'science')).toEqual([{ id: 'pr1MobileHq', label: 'Mobile HQ', shiftUp: 1 }]);
-  expect(jtt.mobileHqSources(ranger, 'might')).toEqual([]);
 
   jtt.mobileHqDerived(zord);
   expect(zord.system.skills.initiative.edge).toBe(true);
@@ -165,32 +154,6 @@ test('Time Displaced rolls one die larger; Warhead picks accumulate', () => {
   expect(jtt.warheadChoices(zord)).toEqual(['acid', 'fire', 'cold', 'sonic']);
 });
 
-test('Personal Heirloom equipment half only when no weapon is designated', () => {
-  const weapon = item('weapon', null, { id: 'w1' });
-  const a = actor('playerCharacter', [item('perk', common.PR1.personalHeirloom), weapon]);
-  expect(jtt.heirloomIsEquipment(a)).toBe(true);
-  a.flags.essence20.personalHeirloomItemId = 'w1';
-  expect(jtt.heirloomIsEquipment(a)).toBe(false);
-});
-
-test("Can't Catch Me! loses its +1 when the defender can't be aware", () => {
-  const d = actor('playerCharacter', [item('perk', common.PR1.cantCatchMe)]);
-  expect(ats.cantCatchMeAdjust(actor('npc'), d, 'evasion')).toBe(0);
-  expect(ats.cantCatchMeAdjust(actor('npc', [], {}, { statuses: ['invisible'] }), d, 'evasion')).toBe(-1);
-  d.statuses.add('asleep');
-  expect(ats.cantCatchMeAdjust(actor('npc'), d, 'toughness')).toBe(0);
-  expect(ats.cantCatchMeAdjust(actor('npc'), d, 'evasion')).toBe(-1);
-});
-
-test('Clawed Armor: Alertness Edge, Snag to move the wearer', () => {
-  const wearer = actor('playerCharacter', [item('armor', common.PR1.clawedArmor, { name: 'Clawed Armor', system: { equipped: true } })]);
-  expect(ats.atsSources(wearer, null, { rolledSkill: 'alertness' })[0]).toMatchObject({ edge: true });
-  const grab = item('weaponEffect', null, { system: { damageType: 'grapple' } });
-  const attacker = actor('npc', [grab]);
-  expect(ats.isForcedMoveAttempt(attacker, grab, false)).toBe(true);
-  expect(ats.atsSources(attacker, wearer, { rolledSkill: 'athletics', item: grab })[0]).toMatchObject({ id: 'pr1ClawedAnchor', snag: true });
-});
-
 test('Destiny offers the Fumble to the GM on a plain failure', () => {
   const a = actor('playerCharacter', [item('hangUp', common.PR1.destinyHangUp)]);
   expect(ats.destinyOffer({ flags: { essence20: { rollFailed: true } } }, a, true)).toBe(true);
@@ -218,15 +181,12 @@ test('Lightspeed Boost options', () => {
   expect(ats.lightspeedDefenseAdjust(zord, 'toughness')).toBe(0);
 });
 
-test('Power Flux tops up to 6 each; Power Wing adds 2 max', () => {
+test('Power Flux tops up to 6 each', () => {
   const pilot = actor('playerCharacter', [], { powers: { personal: { value: 1, max: 10 } } });
   const low = actor('playerCharacter', [], { powers: { personal: { value: 2, max: 4 } } });
   const zord = actor('zord', [], { actors: { a: { uuid: pilot.uuid, vehicleRole: 'driver' }, b: { uuid: low.uuid, vehicleRole: 'passenger' } } });
   global.game.actors = [pilot, low, zord];
   expect(ats.powerFluxGains(zord).map(g => g.gain)).toEqual([6, 2]);
-  const wing = actor('playerCharacter', [item('armor', common.PR1.powerWing, { system: { equipped: true } })], { powers: { personal: { max: 4 } } });
-  ats.powerWingDerived(wing);
-  expect(wing.system.powers.personal.max).toBe(6);
 });
 
 test('Tactical Size Shift and Warzord sizes', () => {
@@ -254,17 +214,12 @@ test('Stand Behind Me! blocks an attack on anyone but the taunter', () => {
   expect(ats.tauntBlocks(foe, attack, [])).toBeNull();
 });
 
-test('Be an Example, Rescue Injector and Phantom Ranger Prime sources', () => {
+test('Be an Example source', () => {
   const a = actor('playerCharacter', [
     item('perk', common.PR1.beAnExample, { name: 'Be an Example' }),
-    item('weapon', common.PR1.rescueInjector, { system: { equipped: true } }),
-    item('perk', common.PR1.phantomRangerPrime, { name: 'Phantom Ranger Prime' }),
   ], { isMorphed: true, originSkillsIncrease: 'culture', skills: { culture: {} } }, { flags: { pr1BeAnExample: { skill: 'culture' } } });
   expect(ats.originSkillOf(a)).toBe('culture');
   expect(ats.atsSources(a, null, { rolledSkill: 'culture' }).map(s => s.id)).toEqual(['pr1BeAnExample']);
-  expect(ats.atsSources(a, null, { rolledSkill: 'science' }).map(s => s.id)).toEqual(['pr1RescueInjector']);
-  const grid = item('power', null, { system: { type: 'grid' } });
-  expect(ats.atsSources(a, null, { rolledSkill: 'might', item: grid }).map(s => s.id)).toEqual(['pr1PhantomPrime']);
 });
 
 test('Advanced Dino Gem Integration', () => {

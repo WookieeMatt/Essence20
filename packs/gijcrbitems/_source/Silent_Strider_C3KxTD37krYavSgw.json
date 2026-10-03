@@ -5,6 +5,9 @@
   "_id": "C3KxTD37krYavSgw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","when":["skill:alertness","self:data:flags.essence20.infiltratingActive"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while your Infiltrating switch is on, anyone rolling Alertness against you takes a Snag, labelled Silent Strider in their Roll Options Dialog.</p>"

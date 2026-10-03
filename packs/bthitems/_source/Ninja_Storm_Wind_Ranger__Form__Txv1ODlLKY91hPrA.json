@@ -5,6 +5,9 @@
   "_id": "Txv1ODlLKY91hPrA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","upshift":1,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.beneath_the_helmet.Item.Txv1ODlLKY91hPrA","skill:infiltration"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Offered when you Morph, for 1 Personal Power: doubled Ground Movement, a Roll Options Dialog ↑1 on Infiltration, and anyone targeting you gets a mind-control Snag switch. Use button: pick your element, then activate it (1 Personal Power, 3 rounds) for Air Blast, Water Blast or Earth's Duplication (-1 Health while split).</p><p>Left to the table: hovering, burrowing, shaping earth or water, walking on water, and the duplicate's own token.</p>"
