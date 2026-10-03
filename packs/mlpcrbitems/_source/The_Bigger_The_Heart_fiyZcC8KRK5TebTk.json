@@ -5,6 +5,9 @@
   "_id": "fiyZcC8KRK5TebTk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","upshift":"@target.size - @size","when":["skill:choiceOf:Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ","target:sizeDiff>=1"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: tests with your Empathy Skill get ↑1 for each Size Class the target is larger than you, labelled The Bigger The Heart in your Roll Options Dialog.</p>"

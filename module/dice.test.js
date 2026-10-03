@@ -10595,7 +10595,11 @@ describe("rollSkill", () => {
 
   describe("Move Like a Song (Green Ranger, Survival Boon choice, p.44) - forced-miss half (the Snag half lives in _getAutomaticCombatModifiers, tested separately)", () => {
     const MOVE_LIKE_A_SONG_ID = "Compendium.essence20.pr_crb.Item.3ax1l5TpluxcSp4o";
-    const SECONDS_BETWEEN_CLICK_AND_BOOM_ID = "Compendium.essence20.gi_joe_crb.Item.ofiG5IwlURUwORYV";
+    // Seconds Between Click & Boom's Snag is an incoming item rule on the Perk.
+    const SECONDS_BETWEEN_CLICK_AND_BOOM = {
+      type: 'perk', name: 'Seconds Between Click & Boom', flags: {},
+      system: { rules: [{ type: 'RollModifier', scope: 'incoming', snag: true, when: ['attack', 'defense:evasion'] }] },
+    };
 
     function makeActor() {
       return {
@@ -10653,7 +10657,9 @@ describe("rollSkill", () => {
         canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'evasion',
       });
       dice._rollSkillHelper = jest.fn();
-      game.user.targets = makeTargetsSet(makeTargetActor([MOVE_LIKE_A_SONG_ID, SECONDS_BETWEEN_CLICK_AND_BOOM_ID]));
+      const target = makeTargetActor([MOVE_LIKE_A_SONG_ID]);
+      target.items.push(SECONDS_BETWEEN_CLICK_AND_BOOM);
+      game.user.targets = makeTargetsSet(target);
 
       await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength' }, makeActor(), meleeEvasionWeaponEffect);
 
@@ -24980,7 +24986,6 @@ describe("_getAutomaticCombatModifiers", () => {
   const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
   const DECEPTICON_DIRECTIVE = "Compendium.essence20.decepticon_directive.Item.";
   const FIRST_STRIKE_ID = `${GI_JOE_CRB}qxqtfBobduwSkfRM`;
-  const SECONDS_BETWEEN_CLICK_AND_BOOM_ID = `${GI_JOE_CRB}ofiG5IwlURUwORYV`;
   const TF_CRB = "Compendium.essence20.tf_crb.Item.";
   const JUST_THE_FACTS_ID = `${TF_CRB}v6A7mQwdKQR6J5fR`;
 
@@ -25580,30 +25585,12 @@ describe("_getAutomaticCombatModifiers", () => {
       });
     });
 
-    describe("Contingency Shot (A Jump Through Time, Pink Spectrum Modification, p.47) ignores it", () => {
+    // Contingency Shot's cover-ignore half is a Cover item rule (module/rules/conversions.test.js).
+    describe("Cover with and without Contingency Shot (A Jump Through Time, Pink Spectrum Modification, p.47)", () => {
       const CONTINGENCY_SHOT_ID = "Compendium.essence20.pr_crb.Item.DAqOZsEq03rJWWQo";
       const rangedWeaponEffectWithParent = {
         ...rangedWeaponEffect, flags: { essence20: { parentId: 'weapon1' } },
       };
-
-      test("no -2 shift attacking a Cover target with the Perk on another combatant's turn, no weapon-trait gate needed", () => {
-        game.user.targets.first.mockReturnValue({ actor: makeActor('common', ['cover']) });
-        const actor = makeActor('common', [], { perkIds: [CONTINGENCY_SHOT_ID] });
-        game.combat = { id: 'combat1', round: 1, combatant: { actor: { id: 'someoneElse' } } };
-
-        try {
-          expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffectWithParent)).toEqual(defaultModifiers);
-        } finally {
-          game.combat = null;
-        }
-      });
-
-      test("Cover still applies with the Perk outside a Contingency (no combat)", () => {
-        game.user.targets.first.mockReturnValue({ actor: makeActor('common', ['cover']) });
-        const actor = makeActor('common', [], { perkIds: [CONTINGENCY_SHOT_ID] });
-
-        expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffectWithParent).shiftDown).toBe(2);
-      });
 
       test("still applies without the Perk", () => {
         game.user.targets.first.mockReturnValue({ actor: makeActor('common', ['cover']) });
@@ -26647,33 +26634,6 @@ describe("_getAutomaticCombatModifiers", () => {
     });
   });
 
-  describe("Big Preds Are My Specialty (Technorganic Secrets, General Perk, p.45)", () => {
-    const BIG_PREDS_ARE_MY_SPECIALTY_ID = "Compendium.essence20.technorganic_secrets.Item.igkuus7jkoqYV5Fr";
-
-    test("upshifts Infiltration by the Size Class difference against a larger target", () => {
-      const target = makeActor('long'); // common(1) -> long(3), diff 2
-      game.user.targets.first.mockReturnValue({ actor: target });
-      const actor = makeActor('common', [], { perkIds: [BIG_PREDS_ARE_MY_SPECIALTY_ID] });
-
-      const result = dice._getAutomaticCombatModifiers(actor, null, null, 'infiltration');
-      expect(result.shiftUp).toBe(2);
-      expect(result.sources.some(s => s.id == 'bigPredsAreMySpecialty')).toBe(true);
-    });
-
-    test("doesn't apply on an unrelated skill, without the Perk, or against a same/smaller target", () => {
-      const target = makeActor('long');
-      game.user.targets.first.mockReturnValue({ actor: target });
-      const actor = makeActor('common', [], { perkIds: [BIG_PREDS_ARE_MY_SPECIALTY_ID] });
-      expect(dice._getAutomaticCombatModifiers(actor, null, null, 'athletics').shiftUp).toBe(0);
-
-      expect(dice._getAutomaticCombatModifiers(makeActor('common'), null, null, 'infiltration').shiftUp).toBe(0);
-
-      const sameSizeTarget = makeActor('common');
-      game.user.targets.first.mockReturnValue({ actor: sameSizeTarget });
-      expect(dice._getAutomaticCombatModifiers(actor, null, null, 'infiltration').shiftUp).toBe(0);
-    });
-  });
-
   describe("Sadistic (Decepticon Directive, Hang-Up, p.31)", () => {
     const SADISTIC_HANGUP_ID = "Compendium.essence20.decepticon_directive.Item.a7ch8kMSbxLSxbAB";
 
@@ -26742,13 +26702,13 @@ describe("_getAutomaticCombatModifiers", () => {
     // Math.floor(distance/2)) is always 0 and doesn't confound Exterminator's own +1 - a real
     // gotcha caught while writing this: the first draft used non-adjacent sizes (large vs. small,
     // huge vs. large) and got tripped up by that unrelated generic modifier also firing.
-    test("grants a ↑1 shiftUp against a smaller Common/Small target", () => {
+    test("marks the roll (smallerTarget reroll) against a smaller Common/Small target - the ↑1 is an item rule", () => {
       game.user.targets.first.mockReturnValue({ actor: makeSizedActor('small') });
       const actor = makeSizedActor('common', [EXTERMINATOR_ID]);
 
       const result = dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect);
 
-      expect(result.shiftUp).toBe(1);
+      expect(result.shiftUp).toBe(0);
       expect(result.exterminatorEligible).toBe(true);
     });
 
@@ -28330,124 +28290,6 @@ describe("_getAutomaticCombatModifiers", () => {
     });
   });
 
-  describe("Big And Scary (Factions in Action Vol. 2, General Perk, p.63)", () => {
-    const BIG_AND_SCARY_ID = "Compendium.essence20.intercontinental_adventures.Item.FZww5MX65plu6kZ8";
-
-    test("upshifts Intimidation by 1 + Size Class difference, counting the actor as 1 larger", () => {
-      const target = makeActor('common'); // common(1)
-      game.user.targets.first.mockReturnValue({ actor: target });
-      const actor = makeActor('common', [], { perkIds: [BIG_AND_SCARY_ID] }); // common(1) + 1 = large(2) equivalent -> diff 1
-
-      const result = dice._getAutomaticCombatModifiers(actor, null, null, 'intimidation');
-      expect(result.shiftUp).toBe(1);
-      expect(result.sources.some(s => s.id == 'bigAndScary')).toBe(true);
-    });
-
-    test("stacks additional Size Classes actually larger than the target", () => {
-      const target = makeActor('small'); // small(0)
-      game.user.targets.first.mockReturnValue({ actor: target });
-      const actor = makeActor('long', [], { perkIds: [BIG_AND_SCARY_ID] }); // long(3) + 1 - small(0) = 4
-
-      const result = dice._getAutomaticCombatModifiers(actor, null, null, 'intimidation');
-      expect(result.shiftUp).toBe(4);
-    });
-
-    test("doesn't apply to a Skill Test other than Intimidation, or without the Perk", () => {
-      const target = makeActor('common');
-      game.user.targets.first.mockReturnValue({ actor: target });
-
-      const actor = makeActor('common', [], { perkIds: [BIG_AND_SCARY_ID] });
-      expect(dice._getAutomaticCombatModifiers(actor, null, null, 'persuasion')).toEqual(defaultModifiers);
-
-      const noPerkActor = makeActor('common');
-      expect(dice._getAutomaticCombatModifiers(noPerkActor, null, null, 'intimidation')).toEqual(defaultModifiers);
-    });
-  });
-
-  describe("Bend A Knee Or Stand Tall (Transformers CRB, Officer Role, 1st level, p.65)", () => {
-    const BEND_A_KNEE_OR_STAND_TALL_ID = "Compendium.essence20.tf_crb.Item.JjCRN28P9CDBibVg";
-
-    test("upshifts Intimidation by the Size Class difference against a LARGER target", () => {
-      const target = makeActor('long'); // long(3)
-      game.user.targets.first.mockReturnValue({ actor: target });
-      const actor = makeActor('common', [], { perkIds: [BEND_A_KNEE_OR_STAND_TALL_ID] }); // common(1), diff 2
-
-      const result = dice._getAutomaticCombatModifiers(actor, null, null, 'intimidation');
-      expect(result.shiftUp).toBe(2);
-      expect(result.sources.some(s => s.id == 'bendAKneeOrStandTall')).toBe(true);
-    });
-
-    test("also upshifts Persuasion by the Size Class difference against a SMALLER target (RAW's own worked example)", () => {
-      const target = makeActor('small'); // small(0)
-      game.user.targets.first.mockReturnValue({ actor: target });
-      const actor = makeActor('long', [], { perkIds: [BEND_A_KNEE_OR_STAND_TALL_ID] }); // long(3), diff 3
-
-      const result = dice._getAutomaticCombatModifiers(actor, null, null, 'persuasion');
-      expect(result.shiftUp).toBe(3);
-    });
-
-    test("doesn't apply to a same-sized target, a different Skill Test, or without the Perk", () => {
-      const target = makeActor('common');
-      game.user.targets.first.mockReturnValue({ actor: target });
-
-      const actor = makeActor('common', [], { perkIds: [BEND_A_KNEE_OR_STAND_TALL_ID] });
-      expect(dice._getAutomaticCombatModifiers(actor, null, null, 'intimidation')).toEqual(defaultModifiers);
-
-      const largerTarget = makeActor('long');
-      game.user.targets.first.mockReturnValue({ actor: largerTarget });
-      expect(dice._getAutomaticCombatModifiers(actor, null, null, 'deception')).toEqual(defaultModifiers);
-
-      const noPerkActor = makeActor('common');
-      expect(dice._getAutomaticCombatModifiers(noPerkActor, null, null, 'intimidation')).toEqual(defaultModifiers);
-    });
-  });
-
-  describe("The Bigger The Heart (MLP CRB, Spirit of Kindness, 9th level, p.85)", () => {
-    const EMPATHY_MLP_ID = "Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ";
-    const BIGGER_THE_HEART_ID = "Compendium.essence20.mlp_crb.Item.fiyZcC8KRK5TebTk";
-
-    function makeKindActor(size, choice = 'survival') {
-      const actor = makeActor(size, [], { perkIds: [BIGGER_THE_HEART_ID] });
-      actor.items.push({ type: 'perk', flags: { core: { sourceId: EMPATHY_MLP_ID } }, system: { choice } });
-      return actor;
-    }
-
-    test("upshifts the chosen Empathy skill by 1 per Size Class the target is larger", () => {
-      const target = makeActor('long'); // long(3)
-      game.user.targets.first.mockReturnValue({ actor: target });
-      const actor = makeKindActor('common'); // common(1), diff 2
-
-      const result = dice._getAutomaticCombatModifiers(actor, null, null, 'survival');
-      expect(result.shiftUp).toBe(2);
-      expect(result.sources.some(s => s.id == 'biggerTheHeart')).toBe(true);
-    });
-
-    test("doesn't apply against an equal or smaller target", () => {
-      const target = makeActor('common');
-      game.user.targets.first.mockReturnValue({ actor: target });
-      const actor = makeKindActor('common');
-
-      expect(dice._getAutomaticCombatModifiers(actor, null, null, 'survival')).toEqual(defaultModifiers);
-    });
-
-    test("doesn't apply to a Skill Test other than the chosen Empathy skill", () => {
-      const target = makeActor('long');
-      game.user.targets.first.mockReturnValue({ actor: target });
-      const actor = makeKindActor('common');
-
-      expect(dice._getAutomaticCombatModifiers(actor, null, null, 'persuasion')).toEqual(defaultModifiers);
-    });
-
-    test("doesn't apply without the Perk, or without an Empathy choice made", () => {
-      const target = makeActor('long');
-      game.user.targets.first.mockReturnValue({ actor: target });
-
-      const noPerkActor = makeActor('common');
-      noPerkActor.items.push({ type: 'perk', flags: { core: { sourceId: EMPATHY_MLP_ID } }, system: { choice: 'survival' } });
-      expect(dice._getAutomaticCombatModifiers(noPerkActor, null, null, 'survival')).toEqual(defaultModifiers);
-    });
-  });
-
   describe("Menacing Glare's own Edge effect (Beneath the Helmet, Dark Ranger, 2nd level, p.39)", () => {
     test("grants Edge when the roll targets the specific actor it was banked against", () => {
       const target = makeActor('common');
@@ -29257,11 +29099,12 @@ describe("_getAutomaticCombatModifiers", () => {
     });
 
     test("forces a miss instead when the attack is already Snagged from another source", () => {
-      // Seconds Between Click & Boom (9th level): "attacks against your Evasion Defense suffer a
-      // Snag" - checked earlier in the same target block, so by the time Move Like a Song's own
-      // check runs, `snag` is already true.
-      const target = makeActor('common', [], {
-        perkIds: [MOVE_LIKE_A_SONG_ID, SECONDS_BETWEEN_CLICK_AND_BOOM_ID],
+      // Seconds Between Click & Boom's incoming item rule Snags attacks against the holder's
+      // Evasion - a rider source, read before Move Like a Song's own check runs.
+      const target = makeActor('common', [], { perkIds: [MOVE_LIKE_A_SONG_ID] });
+      target.items.push({
+        id: 'sbcb', type: 'perk', name: 'Seconds Between Click & Boom', flags: {},
+        system: { rules: [{ type: 'RollModifier', scope: 'incoming', snag: true, when: ['attack', 'defense:evasion'] }] },
       });
       game.user.targets.first.mockReturnValue({ actor: target });
       const actor = makeActor('common');
@@ -29271,7 +29114,7 @@ describe("_getAutomaticCombatModifiers", () => {
         .toEqual({ ...defaultModifiers, snag: true, forcedMiss: true, moveLikeASongTriggered: true, sources: [
           {
             "edge": false,
-            "id": "secondsBetweenClickAndBoom",
+            "id": "ext-rule-sbcb-0",
             "label": "Seconds Between Click & Boom",
             "shiftDown": 0,
             "shiftUp": 0,
@@ -29788,41 +29631,6 @@ describe("_getAutomaticCombatModifiers", () => {
 
       game.combat = { id: 'combat1', round: 3 };
       expect(dice._getAutomaticCombatModifiers(makeActorWithFlag(undefined), meleeWeaponEffect)).toEqual(defaultModifiers);
-    });
-  });
-
-  describe("Seconds Between Click & Boom (9th level)", () => {
-    const evasionWeaponEffect = {
-      type: 'weaponEffect',
-      system: { classification: { style: 'melee' }, defenseType: 'evasion' },
-    };
-
-    test("attacks against Evasion suffer a Snag when the target has the Perk", () => {
-      game.user.targets.first.mockReturnValue({
-        actor: makeActor('common', [], { perkIds: [SECONDS_BETWEEN_CLICK_AND_BOOM_ID] }),
-      });
-      const actor = makeActor('common');
-
-      expect(dice._getAutomaticCombatModifiers(actor, evasionWeaponEffect))
-        .toEqual({ ...defaultModifiers, snag: true, sources: [
-          {
-            "edge": false,
-            "id": "secondsBetweenClickAndBoom",
-            "label": "Seconds Between Click & Boom",
-            "shiftDown": 0,
-            "shiftUp": 0,
-            "snag": true,
-          },
-        ] });
-    });
-
-    test("doesn't apply to attacks against a different Defense", () => {
-      game.user.targets.first.mockReturnValue({
-        actor: makeActor('common', [], { perkIds: [SECONDS_BETWEEN_CLICK_AND_BOOM_ID] }),
-      });
-      const actor = makeActor('common');
-
-      expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect)).toEqual(defaultModifiers);
     });
   });
 

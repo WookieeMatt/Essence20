@@ -5966,3 +5966,93 @@ test("Hail Megatron!: ↑1 Intimidation in Bot Mode against a smaller Cybertroni
   actor.system.isTransformed = true;
   expect(up(target('common'))).toBe(0);
 });
+
+// regC batch (dice.mjs, _getAutomaticCombatModifiers to the end): size-difference upshifts against the target
+// (@size / @target.size with target:sizeDiff), Seconds Between Click & Boom's incoming Snag, and Exterminator's ↑1.
+
+const regCTarget = size => ({ type: 'npc', flags: {}, statuses: new Set(), system: { size } });
+const regCUp = (actor, target, ctx) => ruleRollSources(actor, target, ctx).sources.reduce((n, source) => n + source.shiftUp, 0);
+
+test('Big And Scary: ↑ on Intimidation for each Size Class larger than the target, counting one size larger', () => {
+  const actor = holder(['iafav2items/_source/Big_And_Scary_FZww5MX65plu6kZ8.json'], { system: { size: 'common' } });
+  expect(regCUp(actor, regCTarget('common'), { rolledSkill: 'intimidation' })).toBe(1);
+  expect(ruleRollSources(actor, regCTarget('common'), { rolledSkill: 'intimidation' }).sources[0].label).toBe('Big And Scary');
+  expect(regCUp(actor, regCTarget('large'), { rolledSkill: 'intimidation' })).toBe(0);
+  expect(regCUp(actor, regCTarget('common'), { rolledSkill: 'persuasion' })).toBe(0);
+  expect(regCUp(actor, null, { rolledSkill: 'intimidation' })).toBe(0);
+  actor.system.size = 'long';
+  expect(regCUp(actor, regCTarget('small'), { rolledSkill: 'intimidation' })).toBe(4);
+  expect(switchNames(actor, { rolledSkill: 'intimidation' })).toEqual([]);
+});
+
+test('Bend A Knee Or Stand Tall: ↑ equal to the size difference either way on Intimidation and Persuasion', () => {
+  const actor = holder(['tfcrbitems/_source/Bend_A_Knee_Or_Stand_Tall_JjCRN28P9CDBibVg.json'], { system: { size: 'common' } });
+  expect(regCUp(actor, regCTarget('long'), { rolledSkill: 'intimidation' })).toBe(2);
+  expect(regCUp(actor, regCTarget('common'), { rolledSkill: 'intimidation' })).toBe(0);
+  expect(ruleRollSources(actor, regCTarget('common'), { rolledSkill: 'intimidation' }).sources).toEqual([]);
+  expect(regCUp(actor, regCTarget('long'), { rolledSkill: 'deception' })).toBe(0);
+  expect(regCUp(actor, null, { rolledSkill: 'persuasion' })).toBe(0);
+  actor.system.size = 'long';
+  expect(regCUp(actor, regCTarget('small'), { rolledSkill: 'persuasion' })).toBe(3);
+});
+
+test('Big Preds Are My Specialty: ↑ on Infiltration for each Size Class the target is larger', () => {
+  const actor = holder(['tsitems/_source/Big_Preds_Are_My_Specialty_igkuus7jkoqYV5Fr.json'], { system: { size: 'common' } });
+  expect(regCUp(actor, regCTarget('long'), { rolledSkill: 'infiltration' })).toBe(2);
+  expect(regCUp(actor, regCTarget('long'), { rolledSkill: 'athletics' })).toBe(0);
+  expect(regCUp(actor, regCTarget('common'), { rolledSkill: 'infiltration' })).toBe(0);
+  expect(regCUp(actor, regCTarget('small'), { rolledSkill: 'infiltration' })).toBe(0);
+  expect(regCUp(actor, null, { rolledSkill: 'infiltration' })).toBe(0);
+});
+
+test('The Bigger The Heart: ↑ on the chosen Empathy Skill for each Size Class the target is larger', () => {
+  const empathy = choice => ({ type: 'perk', name: 'Empathy', flags: { core: { sourceId: 'Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ' } }, system: { choice } });
+  const actor = misc7Holder(['mlpcrbitems/_source/The_Bigger_The_Heart_fiyZcC8KRK5TebTk.json'], { system: { size: 'common' } }, [empathy('survival')]);
+  expect(regCUp(actor, regCTarget('long'), { rolledSkill: 'survival' })).toBe(2);
+  expect(regCUp(actor, regCTarget('common'), { rolledSkill: 'survival' })).toBe(0);
+  expect(regCUp(actor, regCTarget('long'), { rolledSkill: 'persuasion' })).toBe(0);
+  expect(switchNames(actor, { rolledSkill: 'survival' })).toEqual([]);
+  const noChoice = misc7Holder(['mlpcrbitems/_source/The_Bigger_The_Heart_fiyZcC8KRK5TebTk.json'], { system: { size: 'common' } }, [empathy('')]);
+  expect(regCUp(noChoice, regCTarget('long'), { rolledSkill: 'survival' })).toBe(0);
+});
+
+test("Seconds Between Click & Boom: attacks against the holder's Evasion take a Snag", () => {
+  const defender = holder(['gijcrbitems/_source/Seconds_Between_Click___Boom_ofiG5IwlURUwORYV.json']);
+  const attacker = holder([]);
+  const attack = defenseType => ({ type: 'weaponEffect', flags: {}, system: { classification: { style: 'melee' }, defenseType } });
+  expect(ruleRollSources(attacker, defender, { item: attack('evasion') }).sources).toEqual([
+    expect.objectContaining({ snag: true, label: 'Seconds Between Click & Boom' }),
+  ]);
+  expect(ruleRollSources(attacker, defender, { item: attack('toughness') }).sources).toEqual([]);
+  expect(ruleRollSources(attacker, defender, { rolledSkill: 'persuasion' }).sources).toEqual([]);
+  // The holder's own attacks are untouched.
+  expect(ruleRollSources(defender, attacker, { item: attack('evasion') }).sources).toEqual([]);
+});
+
+test('Exterminator: ↑1 on attacks against a smaller Common or Small target', () => {
+  const actor = holder(['dditems/_source/Exterminator_B5HgQeurLyvio1t7.json'], { system: { size: 'common' } });
+  const attack = { item: { type: 'weaponEffect', flags: {}, system: { classification: { style: 'melee' } } } };
+  expect(regCUp(actor, regCTarget('small'), attack)).toBe(1);
+  expect(regCUp(actor, regCTarget('small'), { rolledSkill: 'persuasion' })).toBe(0);
+  expect(regCUp(actor, regCTarget('common'), attack)).toBe(0);
+  expect(regCUp(actor, null, attack)).toBe(0);
+  actor.system.size = 'huge';
+  expect(regCUp(actor, regCTarget('common'), attack)).toBe(1);
+  expect(regCUp(actor, regCTarget('large'), attack)).toBe(0);
+  actor.system.size = 'small';
+  expect(regCUp(actor, regCTarget('small'), attack)).toBe(0);
+});
+
+test("Contingency Shot: a ranged attack on someone else's turn ignores Cover", () => {
+  const actor = holder(['prcrbitems/_source/Contingency_Shot_DAqOZsEq03rJWWQo.json']);
+  const turn = id => ({ started: true, combatant: { actor: { id } } });
+  const ranged = { type: 'weaponEffect', flags: {}, system: { classification: { style: 'projectile' }, defenseType: 'toughness' } };
+  const melee = { type: 'weaponEffect', flags: {}, system: { classification: { style: 'melee' }, defenseType: 'toughness' } };
+  expect(ruleCover(actor, regCTarget('common'), { item: ranged, combat: turn('someoneElse') }).ignore).toBe(true);
+  // Outside a Contingency (no combat, or on the holder's own turn) Cover still applies.
+  expect(ruleCover(actor, regCTarget('common'), { item: ranged, combat: null }).ignore).toBe(false);
+  expect(ruleCover(actor, regCTarget('common'), { item: ranged, combat: turn(actor.id) }).ignore).toBe(false);
+  expect(ruleCover(actor, regCTarget('common'), { item: melee, combat: turn('someoneElse') }).ignore).toBe(false);
+  // Without the Perk, nothing.
+  expect(ruleCover(holder([]), regCTarget('common'), { item: ranged, combat: turn('someoneElse') }).ignore).toBe(false);
+});

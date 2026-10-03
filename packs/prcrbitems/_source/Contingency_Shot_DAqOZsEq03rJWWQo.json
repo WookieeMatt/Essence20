@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Contingency Shot","when":["attack:ranged","defense:toughness","combat","not:ownTurn"],"edge":true}
+      {"type":"RollModifier","label":"Contingency Shot","when":["attack:ranged","defense:toughness","combat","not:ownTurn"],"edge":true},
+      {"type":"Cover","mode":"ignore","label":"Contingency Shot (ignores Cover)","when":["attack:ranged","combat","not:ownTurn"]}
     ],
     "automation": {
       "status": "full",

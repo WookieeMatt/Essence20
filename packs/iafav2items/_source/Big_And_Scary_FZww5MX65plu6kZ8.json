@@ -5,6 +5,9 @@
   "_id": "FZww5MX65plu6kZ8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","upshift":"@size + 1 - @target.size","when":["skill:intimidation","target:sizeDiff<=0"]}
+    ],
     "prerequisites": {"when":["self:skill:brawn>=d6"]},
     "automation": {
       "status": "partial",
