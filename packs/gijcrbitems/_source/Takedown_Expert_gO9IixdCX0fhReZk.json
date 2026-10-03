@@ -5,6 +5,9 @@
   "_id": "gO9IixdCX0fhReZk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Takedown Expert","when":["roll:dataset:isTakedown"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Takedown rolls open the Roll Options Dialog with Edge selected. When a Takedown fails against a target of your level or lower, a prompt lets you make it Disarmed, Immobilized or Silenced as well as grappled.</p>"

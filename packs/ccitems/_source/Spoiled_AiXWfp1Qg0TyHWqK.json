@@ -5,6 +5,9 @@
   "_id": "AiXWfp1Qg0TyHWqK",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Spoiled (Requisition)","when":["roll:dataset:requisitionItemName"],"snag":true,"limit":{"per":"scene"}}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: the first Requisition Test you make each scene opens its Roll Options Dialog with Snag already selected.</p><p>Left to the table: it resets each scene rather than each mission, so switch it back to Normal if you've already had it this mission.</p>"

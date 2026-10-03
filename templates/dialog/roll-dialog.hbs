@@ -81,16 +81,6 @@
   </div>
   {{/if}}
 
-  {{#if strikeBonusAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogStrikeBonus'}} (<i class="fas fa-arrow-up"></i> {{strikeBonusAvailable}})</span>
-    <label class="switch">
-      <input type="checkbox" name="applyStrikeBonus" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if hardpointMovement}}
   <div class="roll-dialog-hardpoint-move">
     <span>{{localize 'E20.RollDialogHardpointMove'}}</span>
@@ -221,26 +211,6 @@
   </div>
   {{/if}}
 
-  {{#if heavyForceAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogHeavyForce'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyHeavyForce" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if ideaPointAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogEureka'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="spendIdeaPoint" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if cunningPlanAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogCunningPlan'}}</span>
@@ -331,41 +301,11 @@
   </div>
   {{/if}}
 
-  {{#if isolatedAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogIsolated'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyIsolated" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if doubleAgentAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogDoubleAgent'}}</span>
     <label class="switch">
       <input type="checkbox" name="applyDoubleAgent" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if iRememberReadingAboutAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogIRememberReadingAbout'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyIRememberReadingAbout" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if gutterChampionAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogGutterChampion'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyGutterChampion" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -379,16 +319,6 @@
       <option value="upshift">{{localize 'E20.BelovedUpshift'}}</option>
       <option value="removeSnag">{{localize 'E20.BelovedRemoveSnag'}}</option>
     </select>
-  </div>
-  {{/if}}
-
-  {{#if thrillseekerAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogThrillseeker'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyThrillseeker" />
-      <span class="switch-slider"></span>
-    </label>
   </div>
   {{/if}}
 
@@ -457,16 +387,6 @@
     <span>{{localize 'E20.RollDialogSoloShot'}}</span>
     <label class="switch">
       <input type="checkbox" name="applySoloShot" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if eltarianTechAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogEltarianTech'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="spendEltarianTech" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -692,16 +612,6 @@
   </div>
   {{/if}}
 
-  {{#if twoHandedAssaultAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogTwoHandedAssault'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="twoHandedAssault" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
   {{#if alphaStrikeAvailable}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogAlphaStrike'}}</span>
@@ -776,13 +686,6 @@
   </div>
   {{/if}}
 
-  {{#if militaryFormalityAvailable}}
-  <div class="flexrow e20-align-center">
-    {{localize 'E20.RollDialogSpendMilitaryFormality'}}
-    <input class="roll-dialog-shift-input" type="number" name="spendMilitaryFormality" value="0" min="0" max={{militaryFormalityAvailable}} step="1" />
-  </div>
-  {{/if}}
-
   {{#if sizeMattersAvailable}}
   <div class="flexrow e20-align-center">
     {{localize 'E20.RollDialogSpendSizeMatters'}}
@@ -826,26 +729,6 @@
     <span>{{localize 'E20.RollDialogWitheringFire'}}</span>
     <label class="switch">
       <input type="checkbox" name="applyWitheringFire" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if dependableTankerAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogDependableTanker'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyDependableTanker" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if hackingAlgorithmsAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogHackingAlgorithms'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyHackingAlgorithms" />
       <span class="switch-slider"></span>
     </label>
   </div>
@@ -896,16 +779,6 @@
     <span>{{localize 'E20.RollDialogLegendaryDependability'}} (+1 {{localize 'E20.OldHandMoxie'}})</span>
     <label class="switch">
       <input type="checkbox" name="applyLegendaryDependability" />
-      <span class="switch-slider"></span>
-    </label>
-  </div>
-  {{/if}}
-
-  {{#if alwaysReadyAvailable}}
-  <div class="flexrow e20-align-center roll-dialog-toggle">
-    <span>{{localize 'E20.RollDialogAlwaysReady'}}</span>
-    <label class="switch">
-      <input type="checkbox" name="applyAlwaysReady" />
       <span class="switch-slider"></span>
     </label>
   </div>

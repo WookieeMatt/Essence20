@@ -5,6 +5,9 @@
   "_id": "ELktMVNYsiBPTX2c",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Perfect Disguise","when":[{"any":["skill:deception","skill:persuasion","skill:intimidation","skill:streetwise"]},"self:data:flags.essence20.perfectDisguiseActive","not:roll:dataset:isInitiative"],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: switches the disguise on (once per encounter). While on, your Deception, Persuasion, Intimidation and Streetwise rolls open with Edge selected, and your attacks count as sneak attacks. Your first attack ends it.</p><p>Left to the table: the once-per-Mission limit and whether the person can be copied.</p>"

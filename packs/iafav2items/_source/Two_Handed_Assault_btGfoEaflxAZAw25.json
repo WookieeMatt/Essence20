@@ -5,6 +5,10 @@
   "_id": "btGfoEaflxAZAw25",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Two-Handed Assault (↑1)","when":["rule:data:system.choice=dualWieldLight","attack:melee","weapon:trait:silent","weapon:trait:martialArts","weapon:data:system.classification.size=light"],"upshift":1,"forget":true},
+      {"type":"DialogSwitch","label":"Two-Handed Assault (↑1)","when":["rule:data:system.choice=twoHanded","attack:melee","weapon:trait:silent","weapon:trait:martialArts","item:data:system.numHands=2"],"upshift":1,"forget":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: choose two light weapons or one two-handed weapon. Roll Options Dialog: on melee attacks with a matching Silent Martial Arts weapon, a switch for ↑1.</p>"

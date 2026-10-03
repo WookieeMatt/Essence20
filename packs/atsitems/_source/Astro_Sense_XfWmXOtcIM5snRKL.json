@@ -5,6 +5,10 @@
   "_id": "XfWmXOtcIM5snRKL",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Astro-Sense (Space)","when":["skill:survival","roll:specialization~space"],"edge":true},
+      {"type":"RollModifier","label":"Astro-Sense (Astro-Nav)","when":["skill:technology","roll:specialization~astro-nav"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Survival rolls made with a Specialization named Space, and Technology rolls made with one named Astro-Nav, open the Roll Options Dialog with Edge already selected.</p>"

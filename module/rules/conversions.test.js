@@ -308,7 +308,8 @@ test('Once a Marauder: a ↓1 switch on Social tests', () => {
 test('Broadcaster: an Edge switch on Social tests', () => {
   const actor = holder(['qgtgitems/_source/Broadcaster_IvmCWJUuntY3KALM.json']);
   expect(switchNames(actor, { rolledSkill: 'deception', rolledEssence: 'social' })).toHaveLength(1);
-  expect(switchNames(actor, { rolledSkill: 'technology', rolledEssence: 'smarts' })).toEqual([]);
+  // A real roll always carries its dataset (the Communications RollModifier reads the Specialization from it).
+  expect(switchNames(actor, { rolledSkill: 'technology', rolledEssence: 'smarts', dataset: {} })).toEqual([]);
   expect(tick(actor, { rolledEssence: 'social' })).toMatchObject({ edge: true });
 });
 
@@ -5965,4 +5966,358 @@ test("Hail Megatron!: ↑1 Intimidation in Bot Mode against a smaller Cybertroni
   expect(up(target('common'), 'persuasion')).toBe(0);
   actor.system.isTransformed = true;
   expect(up(target('common'))).toBe(0);
+});
+
+// regA (dice.mjs rollSkill, before the Roll Options Dialog): Perk / Hang-Up / Power checks moved onto
+// RollModifier and DialogSwitch rules on their own items.
+
+const regASources = (actor, ctx, target = null) => ruleRollSources(actor, target, { dataset: {}, ...ctx }).sources;
+const regAUp = (actor, ctx) => regASources(actor, ctx).reduce((n, source) => n + source.shiftUp, 0);
+const regAEdge = (actor, ctx) => regASources(actor, ctx).some(source => source.edge);
+const regAInitiative = skill => ({ rolledSkill: skill, dataset: { isInitiative: true } });
+
+/** ruleDialogSwitches / applyRuleSwitches with every offered switch set to `value` (true, or a number). */
+async function regATick(actor, ctx, options = {}, value = true) {
+  const full = { dataset: {}, ...ctx };
+  const ext = Object.fromEntries(ruleDialogSwitches(actor, full).map(s => [s.name, value]));
+  const result = { shiftUp: 0, shiftDown: 0, ...options, ext };
+  await applyRuleSwitches(actor, result, full);
+  return result;
+}
+
+const regASwitches = (actor, ctx) => ruleDialogSwitches(actor, { dataset: {}, ...ctx });
+
+/** A writable Role Points item for actor._getBaseRolePoints() (Idea Points, Eltarian Tech...). */
+function regARolePoints(actor, value) {
+  const points = { type: 'rolePoints', name: 'Points', flags: {}, system: { resource: { value } } };
+  points.update = async data => {
+    points.system.resource.value = data['system.resource.value'];
+  };
+
+  actor._getBaseRolePoints = () => points;
+  return points;
+}
+
+/** Writable actor numbers (system.powers.personal.value) for a cost paid by path. */
+function regAWritable(actor) {
+  actor.update = async data => Object.entries(data).forEach(([key, value]) => {
+    const parts = key.split('.');
+    parts.slice(0, -1).reduce((o, part) => (o[part] ??= {}), actor)[parts.at(-1)] = value;
+  });
+
+  return actor;
+}
+
+test.each([
+  ['Calm Beast', 'bthitems/_source/Calm_Beast_Ib4BIJKAmuMoWKJP.json', 'animalHandling', 'Calming', 1],
+  ['Chivalrous', 'bthitems/_source/Chivalrous_E6bnHJFn2QHSru4p.json', 'persuasion', 'Diplomacy', 2],
+  ['Puzzle Solver', 'bthitems/_source/Puzzle_Solver_AS1G8dp4t09G1k6N.json', 'alertness', 'Investigation', 1],
+])('%s: its ↑ on rolls made with the named Specialization only', (name, file, skill, spec, up) => {
+  const actor = misc7Holder([file], { system: { skills: { [skill]: { shift: 'd8', specializations: { s1: { name: spec } } } } } });
+  expect(regASources(actor, { rolledSkill: skill, dataset: { specializationName: spec } })).toEqual([expect.objectContaining({ shiftUp: up, label: expect.stringContaining(name) })]);
+  // The sheet's specializationKey alone finds the name on the actor.
+  expect(regAUp(actor, { rolledSkill: skill, dataset: { specializationKey: 's1' } })).toBe(up);
+  expect(regASources(actor, { rolledSkill: skill, dataset: { specializationName: 'Other' } })).toEqual([]);
+  expect(regASources(actor, { rolledSkill: skill })).toEqual([]);
+  expect(regASources(actor, { rolledSkill: 'athletics', dataset: { specializationName: spec } })).toEqual([]);
+  expect(regASources(holder([]), { rolledSkill: skill, dataset: { specializationName: spec } })).toEqual([]);
+});
+
+test('Psych 101: ↑2 on Culture while holding any Science Specialization', () => {
+  const file = 'eocitems/_source/Psych_101_pfkMVppvtLbdDTG7.json';
+  const actor = misc7Holder([file], { system: { skills: { culture: { shift: 'd8' }, science: { shift: 'd8', specializations: { chem: { name: 'Chemistry' } } } } } });
+  expect(regAUp(actor, { rolledSkill: 'culture' })).toBe(2);
+  expect(regAUp(actor, { rolledSkill: 'athletics' })).toBe(0);
+  expect(regAUp(actor, regAInitiative('culture'))).toBe(0);
+  const none = misc7Holder([file], { system: { skills: { culture: { shift: 'd8' }, science: { shift: 'd8', specializations: {} } } } });
+  expect(regAUp(none, { rolledSkill: 'culture' })).toBe(0);
+});
+
+test.each([
+  'wtnvcgitems/_source/Tourniquet_Line_Chef_fxH2GPkDGvJEpI8s.json',
+  'gijcrbitems/_source/EMT_Crash_Course_jDAu1zaZpv1IylJ8.json',
+  'prcrbitems/_source/EMT_Crash_Course_cBezxXDBMpsRwYbP.json',
+])('%s: Edge on Science rolled with the Medicine Specialization', file => {
+  const actor = misc7Holder([file]);
+  expect(regAEdge(actor, { rolledSkill: 'science', dataset: { specializationName: 'Medicine' } })).toBe(true);
+  expect(regAEdge(actor, { rolledSkill: 'science', dataset: { specializationName: 'Chemistry' } })).toBe(false);
+  expect(regAEdge(actor, { rolledSkill: 'science' })).toBe(false);
+  expect(regAEdge(actor, { rolledSkill: 'alertness', dataset: { specializationName: 'Medicine' } })).toBe(false);
+});
+
+test('Astro-Sense: Edge on Survival (Space) and Technology (Astro-Nav)', () => {
+  const actor = misc7Holder(['atsitems/_source/Astro_Sense_XfWmXOtcIM5snRKL.json']);
+  expect(regAEdge(actor, { rolledSkill: 'survival', dataset: { specializationName: 'Space' } })).toBe(true);
+  expect(regAEdge(actor, { rolledSkill: 'technology', dataset: { specializationName: 'Astro-Nav' } })).toBe(true);
+  expect(regAEdge(actor, { rolledSkill: 'survival', dataset: { specializationName: 'Astro-Nav' } })).toBe(false);
+  expect(regAEdge(actor, { rolledSkill: 'technology', dataset: { specializationName: 'Hacking' } })).toBe(false);
+});
+
+test('Broadcaster: Edge on Technology (Communications) outside combat only', () => {
+  const actor = misc7Holder(['qgtgitems/_source/Broadcaster_IvmCWJUuntY3KALM.json']);
+  const ctx = { rolledSkill: 'technology', dataset: { specializationName: 'Communications' } };
+  expect(regAEdge(actor, ctx)).toBe(true);
+  expect(regAEdge(actor, { ...ctx, dataset: { specializationName: 'Repair' } })).toBe(false);
+  game.combat = { started: true };
+  expect(regAEdge(actor, ctx)).toBe(false);
+  game.combat = null;
+});
+
+test('Takedown Expert: Edge on a Takedown attempt only', () => {
+  const actor = misc7Holder(['gijcrbitems/_source/Takedown_Expert_gO9IixdCX0fhReZk.json']);
+  expect(regAEdge(actor, { rolledSkill: 'might', dataset: { isTakedown: true } })).toBe(true);
+  expect(regAEdge(actor, { rolledSkill: 'might' })).toBe(false);
+});
+
+test('Spoiled: a Snag on one Requisition test a scene', async () => {
+  const actor = misc7Holder(['ccitems/_source/Spoiled_AiXWfp1Qg0TyHWqK.json']);
+  const ctx = { rolledSkill: 'wealth', dataset: { requisitionItemName: 'Rifle' } };
+  const first = ruleRollSources(actor, null, ctx);
+  expect(first.sources).toEqual([expect.objectContaining({ snag: true })]);
+  expect(regASources(actor, { rolledSkill: 'wealth' })).toEqual([]);
+  for (const consume of first.consumes) {
+    await consumeLimited(consume, () => actor);
+  }
+
+  expect(regASources(actor, ctx)).toEqual([]);
+});
+
+test('Honest Assessment: ↑2 on the chosen Skill while active (its ↓2 on Deception/Persuasion stays code)', () => {
+  const actor = misc7Holder(['mlpcrbitems/_source/Honest_Assessment_eIDYxShici5rRpg3.json']);
+  actor.items.contents[0].system.choice = 'wealth';
+  actor.flags.essence20.honestAssessmentActive = true;
+  expect(regAUp(actor, { rolledSkill: 'wealth' })).toBe(2);
+  expect(regAUp(actor, { rolledSkill: 'deception' })).toBe(0);
+  expect(regAUp(actor, regAInitiative('wealth'))).toBe(0);
+  actor.flags.essence20.honestAssessmentActive = false;
+  expect(regAUp(actor, { rolledSkill: 'wealth' })).toBe(0);
+});
+
+test('Metallikato: ↓1 on Bot Mode melee attacks while Multiple Targets is on', () => {
+  const actor = misc7Holder(['dditems/_source/Metallikato_ouLZnb7j0kAfCrLx.json'], { system: { isTransformed: false } });
+  actor.flags.essence20.metallikatoMultipleTargetsActive = true;
+  const melee = { item: { type: 'weaponEffect', flags: {}, system: { classification: { style: 'melee' } } }, rolledSkill: 'might' };
+  const ranged = { item: { type: 'weaponEffect', flags: {}, system: { classification: { style: 'projectile' } } }, rolledSkill: 'targeting' };
+  expect(regASources(actor, melee)).toEqual([expect.objectContaining({ shiftDown: 1 })]);
+  expect(regASources(actor, ranged)).toEqual([]);
+  actor.system.isTransformed = true;
+  expect(regASources(actor, melee)).toEqual([]);
+  actor.system.isTransformed = false;
+  actor.flags.essence20.metallikatoMultipleTargetsActive = false;
+  expect(regASources(actor, melee)).toEqual([]);
+});
+
+test('Ninja Power: Edge on Speed tests while Morphed with it active', () => {
+  const actor = misc7Holder(['prcrbitems/_source/Ninja_Power_wN5rjEQIJH68rWCd.json'], { system: { isMorphed: true } });
+  actor.flags.essence20.ninjaPowerActive = true;
+  expect(regAEdge(actor, { rolledSkill: 'acrobatics', rolledEssence: 'speed' })).toBe(true);
+  expect(regAEdge(actor, { rolledSkill: 'might', rolledEssence: 'strength' })).toBe(false);
+  actor.system.isMorphed = false;
+  expect(regAEdge(actor, { rolledSkill: 'acrobatics', rolledEssence: 'speed' })).toBe(false);
+  actor.system.isMorphed = true;
+  actor.flags.essence20.ninjaPowerActive = false;
+  expect(regAEdge(actor, { rolledSkill: 'acrobatics', rolledEssence: 'speed' })).toBe(false);
+});
+
+test('Perfect Disguise: Edge on Deception, Persuasion, Intimidation and Streetwise while disguised', () => {
+  const actor = misc7Holder(['gijcrbitems/_source/Perfect_Disguise_ELktMVNYsiBPTX2c.json']);
+  actor.flags.essence20.perfectDisguiseActive = true;
+  for (const skill of ['deception', 'persuasion', 'intimidation', 'streetwise']) {
+    expect(regAEdge(actor, { rolledSkill: skill })).toBe(true);
+  }
+
+  expect(regAEdge(actor, { rolledSkill: 'athletics' })).toBe(false);
+  actor.flags.essence20.perfectDisguiseActive = false;
+  expect(regAEdge(actor, { rolledSkill: 'deception' })).toBe(false);
+});
+
+test('Tracker (Environmental): ↑2 on Survival in the environment of expertise', async () => {
+  const { registerCheck } = await import('./predicate.mjs');
+  const { hasActiveEnvironmentalExpertise } = await import('../helpers/environmental-expertise.mjs');
+  registerCheck('environmentalExpertise', hasActiveEnvironmentalExpertise);
+  if (!('canvas' in global)) {
+    global.canvas = undefined;
+  }
+
+  const expertise = { type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ' } } };
+  const actor = misc7Holder(['gijcrbitems/_source/Tracker__Environmental__mgvaFU9Kgr3awtfB.json'], {}, [expertise]);
+  actor.flags.essence20.environmentalExpertiseActive = true;
+  expect(regASources(actor, { rolledSkill: 'survival' })).toEqual([expect.objectContaining({ shiftUp: 2, label: 'Tracker (Environmental)' })]);
+  expect(regAUp(actor, { rolledSkill: 'alertness' })).toBe(0);
+  actor.flags.essence20.environmentalExpertiseActive = false;
+  expect(regAUp(actor, { rolledSkill: 'survival' })).toBe(0);
+});
+
+test('Peerless Pilot (GI Joe): ↑2 on Driving while driving with a Driving Specialization', () => {
+  const file = 'gijcrbitems/_source/Peerless_Pilot_y39VC0CIsI8mdLKK.json';
+  const specialized = { skills: { driving: { shift: 'd8', specializations: { car: { name: 'Cars' } } } } };
+  expect(regAUp(diceACrew([file], { system: specialized }), { rolledSkill: 'driving' })).toBe(2);
+  expect(regAUp(diceACrew([file], { system: specialized }), { rolledSkill: 'athletics' })).toBe(0);
+  expect(regAUp(diceACrew([file], { system: specialized, role: 'passenger' }), { rolledSkill: 'driving' })).toBe(0);
+  expect(regAUp(diceACrew([file], { system: specialized, type: null }), { rolledSkill: 'driving' })).toBe(0);
+  expect(regAUp(diceACrew([file], { system: { skills: { driving: { shift: 'd8', specializations: {} } } } }), { rolledSkill: 'driving' })).toBe(0);
+  delete game.actors;
+});
+
+test.each([
+  ['Eureka!', 'prcrbitems/_source/Eureka__DU5oZEhhd45VDmRg.json', { rolledSkill: 'science', rolledEssence: 'smarts' }, { rolledSkill: 'persuasion', rolledEssence: 'social' }],
+  ['Eltarian Tech', 'ttsgitems/_source/Eltarian_Tech_jaqxs1OPQuaI9KJZ.json', { rolledSkill: 'technology', rolledEssence: 'smarts' }, { rolledSkill: 'science', rolledEssence: 'smarts' }],
+])('%s: a switch spending a Role Point for an Edge that clears a Snag', async (name, file, ctx, other) => {
+  const actor = misc7Holder([file]);
+  const points = regARolePoints(actor, 1);
+  expect(regASwitches(actor, ctx)).toHaveLength(1);
+  expect(regASwitches(actor, other)).toEqual([]);
+  const options = await regATick(actor, ctx, { snag: true });
+  expect([options.edge, options.snag, points.system.resource.value]).toEqual([true, false, 0]);
+  expect(regASwitches(actor, ctx)).toEqual([]);
+});
+
+test('Eltarian Tech: not offered on Initiative', () => {
+  const actor = misc7Holder(['ttsgitems/_source/Eltarian_Tech_jaqxs1OPQuaI9KJZ.json']);
+  regARolePoints(actor, 1);
+  expect(regASwitches(actor, regAInitiative('technology'))).toEqual([]);
+});
+
+test('Always Ready: an Edge switch on the chosen function\'s two Skills, once per scene', async () => {
+  const actor = misc7Holder(['ghpfitems/_source/Always_Ready_g8IpStvApoftBiNq.json']);
+  actor.items.contents[0].system.choice = 'engineer';
+  expect(regASwitches(actor, { rolledSkill: 'brawn' })).toHaveLength(1);
+  expect(regASwitches(actor, { rolledSkill: 'technology' })).toHaveLength(1);
+  expect(regASwitches(actor, { rolledSkill: 'athletics' })).toEqual([]);
+  expect(regASwitches(actor, regAInitiative('brawn'))).toEqual([]);
+  const options = await regATick(actor, { rolledSkill: 'brawn' }, { snag: true });
+  expect([options.edge, options.snag]).toEqual([true, false]);
+  expect(regASwitches(actor, { rolledSkill: 'technology' })).toEqual([]);
+  expect(regASwitches(holder(['ghpfitems/_source/Always_Ready_g8IpStvApoftBiNq.json']), { rolledSkill: 'brawn' })).toEqual([]);
+});
+
+test.each([
+  ['Dependable Tanker', 'iafav2items/_source/Dependable_Tanker_mHqern3w5iGWBi02.json', ['driving', 'technology']],
+  ['Hacking Algorithms', 'iafav2items/_source/Hacking_Algorithms_6IxjVPikwpSdrYpd.json', ['technology']],
+])('%s: a Story Point switch for an Edge that clears a Snag', async (name, file, skills) => {
+  const actor = misc7Holder([file]);
+  for (const skill of skills) {
+    expect(regASwitches(actor, { rolledSkill: skill })).toEqual([expect.objectContaining({ entry: expect.objectContaining({ rule: expect.objectContaining({ cost: { resource: { storyPoints: true }, amount: 1 } }) }) })]);
+  }
+
+  expect(regASwitches(actor, { rolledSkill: 'athletics' })).toEqual([]);
+  expect(regASwitches(actor, regAInitiative(skills[0]))).toEqual([]);
+  const options = await regATick(actor, { rolledSkill: skills[0] }, { snag: true });
+  expect([options.edge, options.snag]).toEqual([true, false]);
+});
+
+test('Strike Bonus: a melee switch spending 1 Personal Power for ↑(its advance), once per round', async () => {
+  const actor = regAWritable(misc7Holder(['prcrbitems/_source/Strike_Bonus_eCTmc2BbsrCLrjkw.json'], { system: { powers: { personal: { value: 1 } } } }));
+  actor.items.contents[0].system.advances = { currentValue: 2 };
+  const melee = { item: { type: 'weaponEffect', flags: {}, system: { classification: { style: 'melee' } } } };
+  const ranged = { item: { type: 'weaponEffect', flags: {}, system: { classification: { style: 'projectile' } } } };
+  expect(regASwitches(actor, ranged)).toEqual([]);
+  expect(regASwitches(actor, melee)).toHaveLength(1);
+  game.combat = { started: true, id: 'c1', round: 1, turn: 0 };
+  const options = await regATick(actor, melee);
+  expect([options.shiftUp, actor.system.powers.personal.value]).toEqual([2, 0]);
+  actor.system.powers.personal.value = 1;
+  expect(regASwitches(actor, melee)).toEqual([]);
+  game.combat = { started: true, id: 'c1', round: 2, turn: 0 };
+  expect(regASwitches(actor, melee)).toHaveLength(1);
+  actor.system.powers.personal.value = 0;
+  expect(regASwitches(actor, melee)).toEqual([]);
+  actor.system.powers.personal.value = 1;
+  actor.items.contents[0].system.advances.currentValue = 0;
+  expect(regASwitches(actor, melee)).toEqual([]);
+  game.combat = null;
+});
+
+test('Heavy Force: while Morphed, a melee or shove switch spending 1 Personal Power for ↑2, once per turn', async () => {
+  const actor = regAWritable(misc7Holder(['prcrbitems/_source/Heavy_Force_E4hk9pHESLuYQuO7.json'], { system: { isMorphed: true, powers: { personal: { value: 2 } } } }));
+  const melee = { item: { type: 'weaponEffect', flags: {}, system: { classification: { style: 'melee' } } } };
+  const ranged = { item: { type: 'weaponEffect', flags: {}, system: { classification: { style: 'projectile' } } } };
+  expect(regASwitches(actor, ranged)).toEqual([]);
+  expect(regASwitches(actor, { rolledSkill: 'athletics', dataset: { isShove: true } })).toHaveLength(1);
+  expect(regASwitches(actor, { rolledSkill: 'athletics' })).toEqual([]);
+  game.combat = { started: true, id: 'c1', round: 1, turn: 0 };
+  const options = await regATick(actor, melee);
+  expect([options.shiftUp, actor.system.powers.personal.value]).toEqual([2, 1]);
+  expect(regASwitches(actor, melee)).toEqual([]);
+  game.combat = { started: true, id: 'c1', round: 1, turn: 1 };
+  expect(regASwitches(actor, melee)).toHaveLength(1);
+  actor.system.isMorphed = false;
+  expect(regASwitches(actor, melee)).toEqual([]);
+  actor.system.isMorphed = true;
+  actor.system.powers.personal.value = 0;
+  expect(regASwitches(actor, melee)).toEqual([]);
+  game.combat = null;
+});
+
+test('Isolated: a ↑1 switch on any roll, once per encounter', async () => {
+  const actor = misc7Holder(['tf1sitems/_source/Isolated_DUTXCfxZP1kjh9m6.json']);
+  expect(regASwitches(actor, { rolledSkill: 'athletics' })).toHaveLength(1);
+  expect(regASwitches(actor, regAInitiative('initiative'))).toEqual([]);
+  const options = await regATick(actor, { rolledSkill: 'athletics' });
+  expect(options.shiftUp).toBe(1);
+  expect(regASwitches(actor, { rolledSkill: 'culture' })).toEqual([]);
+});
+
+test('Gutter Champion: a ↑1 switch on any roll, once per turn', async () => {
+  const actor = misc7Holder(['dditems/_source/Gutter_Champion_pByfeAj3iyANNR68.json']);
+  game.combat = { started: true, id: 'c1', round: 1, turn: 0 };
+  expect(regASwitches(actor, { rolledSkill: 'athletics' })).toHaveLength(1);
+  const options = await regATick(actor, { rolledSkill: 'athletics' });
+  expect(options.shiftUp).toBe(1);
+  expect(regASwitches(actor, { rolledSkill: 'athletics' })).toEqual([]);
+  game.combat = { started: true, id: 'c1', round: 1, turn: 1 };
+  expect(regASwitches(actor, { rolledSkill: 'athletics' })).toHaveLength(1);
+  game.combat = null;
+});
+
+test('Thrillseeker: a self-imposed Snag switch on Strength / Speed tests, three times a scene', async () => {
+  const actor = misc7Holder(['gijcrbitems/_source/Thrillseeker_7ISxvemsGVWGIzna.json']);
+  const ctx = { rolledSkill: 'athletics', rolledEssence: 'strength' };
+  expect(regASwitches(actor, { rolledSkill: 'acrobatics', rolledEssence: 'speed' })).toHaveLength(1);
+  expect(regASwitches(actor, { rolledSkill: 'science', rolledEssence: 'smarts' })).toEqual([]);
+  for (let use = 0; use < 3; use++) {
+    expect((await regATick(actor, ctx)).snag).toBe(true);
+  }
+
+  expect(regASwitches(actor, ctx)).toEqual([]);
+});
+
+test('"I remember reading about…": a Specialized switch on Smarts tests, once per encounter', async () => {
+  const actor = misc7Holder(['prcrbitems/_source/_I_remember_reading_about______m3yGoT712SFkaV7W.json']);
+  const ctx = { rolledSkill: 'science', rolledEssence: 'smarts' };
+  expect(regASwitches(actor, { rolledSkill: 'athletics', rolledEssence: 'strength' })).toEqual([]);
+  expect(regASwitches(actor, ctx)).toHaveLength(1);
+  expect((await regATick(actor, ctx)).isSpecialized).toBe(true);
+  expect(regASwitches(actor, ctx)).toEqual([]);
+});
+
+test('Military Formality: a 0-3 number box on Deception, Intimidation and Persuasion, ↑1 each', async () => {
+  const actor = misc7Holder(['fgtaaitems/_source/Military_Formality_eZh6jtzHA9dhywF9.json']);
+  expect(regASwitches(actor, { rolledSkill: 'persuasion' })).toEqual([expect.objectContaining({ type: 'number', max: 3 })]);
+  expect(regASwitches(actor, { rolledSkill: 'athletics' })).toEqual([]);
+  expect(regASwitches(actor, regAInitiative('intimidation'))).toEqual([]);
+  expect((await regATick(actor, { rolledSkill: 'deception' }, {}, 2)).shiftUp).toBe(2);
+  expect((await regATick(actor, { rolledSkill: 'intimidation' }, {}, 5)).shiftUp).toBe(3);
+  expect((await regATick(actor, { rolledSkill: 'intimidation' }, {}, 0)).shiftUp).toBe(0);
+});
+
+test('Two-Handed Assault: a ↑1 switch with a Silent Martial Arts weapon matching the chosen handedness', async () => {
+  const file = 'iafav2items/_source/Two_Handed_Assault_btGfoEaflxAZAw25.json';
+  const attack = (actor, size, numHands, traits = ['silent', 'martialArts']) => {
+    const ctx = diceAArmed(actor, { traits, classification: { size } });
+    ctx.item.system.numHands = numHands;
+    return ctx;
+  };
+
+  const light = misc7Holder([file]);
+  light.items.contents[0].system.choice = 'dualWieldLight';
+  expect(regASwitches(light, attack(light, 'light', 1))).toHaveLength(1);
+  expect((await regATick(light, attack(light, 'light', 1))).shiftUp).toBe(1);
+  expect(regASwitches(light, attack(light, 'heavy', 2))).toEqual([]);
+  expect(regASwitches(light, attack(light, 'light', 1, ['silent']))).toEqual([]);
+  const two = misc7Holder([file]);
+  two.items.contents[0].system.choice = 'twoHanded';
+  expect(regASwitches(two, attack(two, 'heavy', 2))).toHaveLength(1);
+  expect(regASwitches(two, attack(two, 'light', 1))).toEqual([]);
+  expect(regASwitches(two, { item: { type: 'weaponEffect', flags: {}, system: { classification: { style: 'melee' }, numHands: 2 } } })).toEqual([]);
 });

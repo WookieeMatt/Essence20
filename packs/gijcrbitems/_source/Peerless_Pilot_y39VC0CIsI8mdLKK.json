@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Peerless Pilot (driving, Specialized: Initiative Edge)","when":["roll:initiative","vehicle:driving","self:specializedIn:driving"],"edge":true}
+      {"type":"RollModifier","label":"Peerless Pilot (driving, Specialized: Initiative Edge)","when":["roll:initiative","vehicle:driving","self:specializedIn:driving"],"edge":true},
+      {"type":"RollModifier","label":"Peerless Pilot (driving, Specialized: Driving ↑2)","when":["skill:driving","vehicle:driving","self:specializedIn:driving","not:roll:dataset:isInitiative"],"upshift":2}
     ],
     "prerequisites": {"when":["self:skill:driving>=d6","ask:A Driving Specialization"]},
     "automation": {

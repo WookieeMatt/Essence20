@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"I remember reading about... (Specialized, once per encounter)","when":["essence:smarts"],"specialize":true,"limit":{"per":"encounter"}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: once per scene, a switch on Smarts Skill tests to roll as if Specialized.</p>"

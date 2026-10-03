@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Thrillseeker (take a Snag)","when":[{"any":["essence:strength","essence:speed"]}],"snag":true,"limit":{"per":"scene","max":3}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on Strength and Speed tests, a switch to take the Hang-Up's Snag, up to three times per mission. The GM decides when it applies.</p>"

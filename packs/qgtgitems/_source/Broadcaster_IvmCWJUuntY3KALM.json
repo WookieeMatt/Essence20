@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Talking over a technological device (Broadcaster: Edge)","when":["essence:social"],"edge":true}
+      {"type":"DialogSwitch","label":"Talking over a technological device (Broadcaster: Edge)","when":["essence:social"],"edge":true},
+      {"type":"RollModifier","label":"Broadcaster (Communications, outside combat)","when":["skill:technology","roll:specialization~communications","not:combat"],"edge":true}
     ],
     "automation": {
       "status": "full",

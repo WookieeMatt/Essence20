@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"hit","outcome":"crit","label":"Bot Mode melee Critical Success: target Prone","when":["attack:melee","self:data:system.isTransformed=false"],"steps":[{"do":"applyCondition","condition":"prone","to":"target"}]}
+      {"type":"Trigger","event":"hit","outcome":"crit","label":"Bot Mode melee Critical Success: target Prone","when":["attack:melee","self:data:system.isTransformed=false"],"steps":[{"do":"applyCondition","condition":"prone","to":"target"}]},
+      {"type":"RollModifier","label":"Metallikato (Multiple Targets)","when":["attack:melee","self:data:system.isTransformed=false","self:data:flags.essence20.metallikatoMultipleTargetsActive"],"downshift":1}
     ],
     "prerequisites": {"when":[{"any":["self:skill:finesse>=d6","self:skill:might>=d6"]},"ask:A blades Specialization"]},
     "automation": {

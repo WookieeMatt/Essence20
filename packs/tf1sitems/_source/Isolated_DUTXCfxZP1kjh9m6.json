@@ -5,6 +5,9 @@
   "_id": "DUTXCfxZP1kjh9m6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Isolated (↑1, once per encounter)","when":["not:roll:dataset:isInitiative"],"upshift":1,"limit":{"per":"encounter"}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: once per scene, a switch for ↑1 when nobody is Lending Assistance on the test.</p>"

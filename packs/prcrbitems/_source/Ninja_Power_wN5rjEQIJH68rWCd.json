@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:unarmed","self:morphed","self:data:flags.essence20.ninjaPowerActive"]}
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:unarmed","self:morphed","self:data:flags.essence20.ninjaPowerActive"]},
+      {"type":"RollModifier","label":"Ninja Power","when":["essence:speed","self:morphed","self:data:flags.essence20.ninjaPowerActive"],"edge":true}
     ],
     "prerequisites": {"when":["self:data:system.powers.personal.max>=4"]},
     "automation": {

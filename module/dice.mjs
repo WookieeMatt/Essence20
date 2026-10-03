@@ -273,7 +273,6 @@ import { applyDontNoticeMeField, isDontNoticeMeFieldActive } from "./helpers/don
 import { applyLightningSpeed } from "./helpers/lightning-speed.mjs";
 import { PENDING_RUSH_THE_LINE_EDGE_FLAG } from "./helpers/rush-the-line.mjs";
 import { isObserverDisguiseActive } from "./helpers/observer.mjs";
-import { isPerfectDisguiseActive } from "./helpers/perfect-disguise.mjs";
 import { checkCombatStance, COMBAT_STANCE_ID, getCombatStanceNumber } from "./helpers/combat-stance.mjs";
 import { hasNearbyTacticalMeditation } from "./helpers/tactical-meditation.mjs";
 import { AGELESS_KNOWLEDGE_FLAG } from "./helpers/ageless-knowledge.mjs";
@@ -339,7 +338,6 @@ import { checkTeamFocus, markAttackedByAlly } from "./helpers/team-focus.mjs";
 import { getQuietOneEdge, markQuietOneNoisyAction } from "./helpers/quiet-one.mjs";
 import { getInfluentialShiftUp } from "./helpers/influential.mjs";
 import { isMultipleTargetsWeapon } from "./helpers/multiple-targets.mjs";
-import { isMetallikatoMultipleTargetsActive } from "./helpers/metallikato.mjs";
 import { applyReroll, findRolePointsItem } from "./helpers/reroll.mjs";
 import { HELP_YOURSELF_ID, summonHelpYourselfClone } from "./helpers/help-yourself.mjs";
 import {
@@ -480,27 +478,8 @@ const ADVANTAGEOUS_FIGHTER_ID = "Compendium.essence20.jump_through_time.Item.efc
 const LOW_TECH_PRIORITIES_ID = "Compendium.essence20.jump_through_time.Item.khD9UfuqUQ4rWSUP";
 const LOW_TECH_PRIORITIES_FLAG = 'lowTechPrioritiesUsedThisTurn';
 
-// Always Ready (Coast Guard Origin Perk, p.172): "Choose which function you fulfilled. Once per
-// scene when in an aquatic environment, or once per mission in any other environment, you gain an
-// Edge on one of the two Skills tied to that function." "Aquatic vs. other environment" has no
-// hook to check (no environment-tagging anywhere in this codebase, the same gap already flagged
-// for several other Perks) - approximated as a flat once/scene, the wider of the two stated
-// windows. `system.choice` (set via the new alwaysReadyFunction choiceType - see
-// perk-handler.mjs/E20.alwaysReadyOptions) names the chosen function; this maps it to its own
-// pair of skills - kept here rather than in config.mjs since it's a roll-mechanics lookup, not a
-// display-label table.
-const ALWAYS_READY_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}g8IpStvApoftBiNq`;
-
 // Disarming Shot - see updatedShiftDataset.disarmingShotAvailable's own comment above.
 const DISARMING_SHOT_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}b4v1GUBwSqnCTozq`;
-const ALWAYS_READY_FUNCTION_SKILLS = {
-  admin: ['culture', 'persuasion'],
-  biologist: ['animalHandling', 'science'],
-  engineer: ['brawn', 'technology'],
-  pilot: ['alertness', 'driving'],
-  rescue: ['athletics', 'survival'],
-  security: ['intimidation', 'targeting'],
-};
 
 // Bear Hug (Factions in Action Vol. 2, General Perk, p.94) - its +1 is the Perk's own scaled
 // DamageModifier rule; the Grapple-to-Blunt damage type override is its own check below.
@@ -543,22 +522,6 @@ const SEA_VEHICLE_QUALIFICATION_ID = "Compendium.essence20.intercontinental_adve
 // alone). Found by the same self-side-direction scan that caught Indoctrinated and Unscrupulous,
 // extended from Edge/Snag to shiftUp/shiftDown. The Hang-Up's rule is keyed on that item for the same reason.
 const SKYWARD_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.1IlTYXe8k5Aj63Mn";
-
-// Broadcaster (Quartermaster's Guide to Gear, Influence Perk, p.8): "You gain Edge on Social Skill
-// Tests involving people you're communicating with using technological devices and Technology
-// (Communications) Skill Tests when you're not in combat." Only the Technology(Communications)
-// half is built - the same "match by Specialization name" idiom Calm Beast/Tourniquet Line Chef
-// already establish, gated on `!game.combat` for the "when you're not in combat" clause (no other
-// Perk in this project has needed that specific gate on a flat skill-Edge grant before, but it's a
-// plain read of the same `game.combat` global everything else here already uses). The Social half
-// ("people you're communicating with using technological devices") stays unbuilt - unlike
-// Communications' own fixed name, there's no way to detect "is this specific Social roll about a
-// tech-mediated conversation" at roll time, and granting it as a blanket Social Edge would be a
-// much bigger overreach than this project's usual narrative-qualifier simplifications (those never
-// touch WHICH skill, just WHY it's being rolled). Its own Hang-Up ("Snag on Social Skill Tests
-// involving people you haven't met before") needs a "have I met this NPC" tracking concept that
-// doesn't exist anywhere - also unbuilt.
-const BROADCASTER_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.IvmCWJUuntY3KALM";
 
 const WEAK_POINT_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.opTZmlt97a9TWHSk";
 
@@ -694,11 +657,6 @@ const TACTICAL_TRIANGULATION_ID = "Compendium.essence20.enigma_of_combination.It
 // E20.roamingTheLandOptions' own doc comment for the RAW text and the choice mechanism.
 const ROAMING_THE_LAND_ID = "Compendium.essence20.ferocious_fighters.Item.jdQFjlYUHaRze6as";
 
-// Two-Handed Assault (Factions in Action Vol. 2, Silent Weapons Expert Focus, 3rd level, p.12) -
-// see E20.twoHandedAssaultOptions' own doc comment and its own checkbox below, right alongside
-// Akimbo's identical manual-toggle idiom.
-const TWO_HANDED_ASSAULT_ID = "Compendium.essence20.intercontinental_adventures.Item.btGfoEaflxAZAw25";
-
 // Big And Scary (Factions in Action Vol. 2, General Perk, p.63): "You count as 1 Size Class larger
 // when it is to your advantage. Additionally, you gain ↑1 on Intimidation Skill Tests per Size
 // Class you are larger than the target of your Skill Test." Folded into one check: since being
@@ -753,18 +711,6 @@ const SUPPORT_YOURSELF_ID = "Compendium.essence20.mlp_crb.Item.OZrtQuRwCCzeKfV9"
 // distinction) - checked via target.statuses.has('stunned') in _rollSkillHelper's post-hit
 // processing, alongside the attack's own damageType.
 const ICE_MACHINE_ID = "Compendium.essence20.intercontinental_adventures.Item.m4iS0VQn9z8o6FWy";
-
-// Dependable Tanker (Technician Focus, p.70): "You may spend a Story Point before a Driving or
-// Technology Skill Test related to vehicles to gain Edge on the Skill Test." "Related to
-// vehicles" is dropped as the same accepted looseness Bits To Spare/Truthseeker's own narrower
-// qualifiers already use - available on any Driving/Technology roll.
-const DEPENDABLE_TANKER_ID = "Compendium.essence20.intercontinental_adventures.Item.mHqern3w5iGWBi02";
-
-// Hacking Algorithms (Commando Focus, p.70): "You can spend a Story Point before a Technology
-// Skill Test related to computers to gain Edge on the Skill Test." Same shape as Dependable
-// Tanker just above (a single-skill Story-Point-Edge checkbox), "related to computers" dropped
-// the same accepted-looseness way.
-const HACKING_ALGORITHMS_ID = "Compendium.essence20.intercontinental_adventures.Item.6IxjVPikwpSdrYpd";
 
 // Hierarchy Rank (Mercenary/Crime-syndicate Faction Perk, p.100): "You gain ↑1 on the Skill Tests
 // that target characters of a lower level or whose Threat Level is lower than your level.
@@ -896,13 +842,6 @@ const EXPLOSIVE_AFTERSHOCK_ID = `${GI_JOE_CRB}Kvq0MfPqSya2mf5b`;
 // limitation isSneakAttackDamageItem() already has for a renamed Sneak Attack Damage Item.
 const SHOTGUN_ID = `${GI_JOE_CRB}2qW1YLopvjKyezNQ`;
 const SUBMACHINE_GUN_ID = `${GI_JOE_CRB}oJInlAgdYZzjH7bk`;
-// Tracker (Ranger's Environmental Exposure choice, p.91): "You get up 2 when using Survival to
-// track a target in your environment of expertise." "To track a target" narrows to no distinct
-// Survival sub-check this system tracks, so - same "no narrower sub-classification to check
-// against" approximation Caretaker/Bits To Spare already accept - applied to any Survival Skill
-// Test while Environmental Expertise is active, the same unconditional-while-gated shape
-// Safecracker's own upshift 2 uses.
-const TRACKER_ENVIRONMENTAL_ID = `${GI_JOE_CRB}mgvaFU9Kgr3awtfB`;
 const QUIET_AS_THE_GRAVE_ROUND_FLAG = 'quietAsTheGraveLastRound';
 const FIELD_ID = `${GI_JOE_CRB}qHLeKSMin2F19O3C`;
 const EXPERT_IN_YOUR_FIELD_ID = `${GI_JOE_CRB}mnLXHQ2TwR3A42fS`;
@@ -980,14 +919,6 @@ const PR_CRB = "Compendium.essence20.pr_crb.Item.";
 // Weapon (parent weapon's own `powerWeapon` trait, same check Power Boost/Red Ranger Prime's
 // identical clauses already use).
 
-// Strike Bonus (Yellow Ranger, 2nd/5th/8th/11th level, p.56): "At the beginning of any round you
-// may spend 1 Personal Power to apply a [scaling] shift to the first melee attack you make during
-// your action." this.system.advances.currentValue is a pure display label everywhere else in
-// this codebase (setPerkAdvancesName, perk-handler.mjs) - this is the one place its number
-// actually does something.
-const STRIKE_BONUS_ID = `${PR_CRB}eCTmc2BbsrCLrjkw`;
-const STRIKE_BONUS_ROUND_FLAG = 'strikeBonusUsedThisRound';
-
 // Cunning Plan (A Jump Through Time, Orange Ranger, 1st level, p.32): "spend a Personal Power to
 // substitute your Cunning Skill value... for any Skill during a Skill Test." Cunning is the
 // Orange Ranger's own tracked roleSkillDie (system.skills.roleSkillDie - the same generic
@@ -1023,15 +954,6 @@ const QUANTUM_DEFENDER_BLASTER_ID = "Compendium.essence20.jump_through_time.Item
 const QUANTUM_CUT_ID = "Compendium.essence20.jump_through_time.Item.9DhE4UzSl40c8lW4";
 const SOLO_SHOT_ID = "Compendium.essence20.jump_through_time.Item.SS1IgnoreRange10";
 
-// Eltarian Tech (Through the Shattered Grid, Guardian of Eltar, 1st level, p.72): "spend 1
-// Eltarian Tech to gain Edge on a Technology Skill Test." Functionally identical in shape to
-// Eureka! above ("spend an Idea Point to gain Edge on a Smarts Skill Test") - actor._getBaseRolePoints()
-// already resolves generically to whichever rolePoints item is THIS actor's own base one (Idea
-// Points for a Blue Ranger, Eltarian Tech for a Guardian of Eltar - see its own doc comment in
-// documents/actor.mjs), so the same lookup works unchanged. Scoped to the Technology SKILL
-// specifically (not the whole Smarts essence, unlike Eureka!'s own wider scope).
-const ELTARIAN_TECH_ID = "Compendium.essence20.through_the_shattered_grid.Item.jaqxs1OPQuaI9KJZ";
-
 // Mystical Understanding - Spellcialize (MLP CRB, Spirit of Magic, 1st level, p.95): "When you
 // roll a Skill Test that you have at least one Rank in but you aren't Specialized, you can spend
 // a Mystical Point as a Free action to roll as though you are Specialized."
@@ -1059,14 +981,6 @@ const CHARGE_INTO_BATTLE_ID = "Compendium.essence20.through_the_shattered_grid.I
 // own damage-bonus comment below. Its "+2 all Defenses" and "Edge on Strength" bullets are already
 // compendium Active Effects.
 const ULTIMATE_MAGNA_DEFENDER_ID = "Compendium.essence20.through_the_shattered_grid.Item.ukfZOGZeuyJv6I5M";
-
-// Eureka! (Blue Ranger, 1st level, p.38) - distinct from the unrelated GI Joe CRB "Eureka" already
-// named EUREKA_ID above (a different compendium Item entirely, just a same-named Perk): "you may
-// spend an Idea Point to gain Edge on [a Smarts Skill Test]." Idea Points is Blue Ranger's own
-// `rolePoints` item (bonus.type: "none", a plain limited-use pool) - actor._getBaseRolePoints()
-// already resolves to it for any actor with this Perk, same as the damageBonus block below does
-// for Power Strike, so no separate Idea-Points-specific ID/lookup is needed.
-const EUREKA_PR_ID = `${PR_CRB}DU5oZEhhd45VDmRg`;
 
 // Devastating Strike (Yellow Ranger, 18th level, p.57): "You now inflict triple damage when you
 // make a critical hit on a target instead of the normal double damage." This system already
@@ -1325,11 +1239,6 @@ const FAST_DRAW_ID = "Compendium.essence20.decepticon_directive.Item.gKa6h1IXhYe
 // ignore reuses Eltarian Training's own Math.max(0, shiftDown - 1) idiom.
 const INVENTOR_ID = "Compendium.essence20.tf_crb.Item.0A8SSXo0HkjyFcEA";
 
-// Gutter Champion (Decepticon Directive, Influence Perk, p.26): "In any action where you are
-// breaking local laws or ignoring government edicts, you gain ↑1 once each turn." Same
-// self-attested checkbox idiom as Bootlicker, but with a real once-per-turn frequency cap RAW
-// itself states (unlike Bootlicker's own unstated frequency).
-const GUTTER_CHAMPION_ID = "Compendium.essence20.decepticon_directive.Item.pByfeAj3iyANNR68";
 // Beloved (A Jump Through Time, Influence Perk, p.16, built 2026-09-12): "In any scene where you
 // act on behalf of your beloved's desires, safety, or guidance, you may choose to gain ↑1 or
 // remove Snag from one Skill Test per turn." (The book prints the arrow, ↑1 - an upshift, not a
@@ -1338,24 +1247,6 @@ const GUTTER_CHAMPION_ID = "Compendium.essence20.decepticon_directive.Item.pByfe
 // checkbox, since the two halves are mutually exclusive. The "remove Snag" half clears the final
 // Snag after the dialog, the same "checkbox wins outright" shape Ambitious uses.
 const BELOVED_ID = "Compendium.essence20.jump_through_time.Item.wXbkcyQTziLjCYEC";
-
-// Thrillseeker (GI Joe CRB, Hang-Up, p.55): "Three times per mission, you feel the need to make
-// things more difficult just to prove you can overcome. You suffer a Snag on a single Strength or
-// Speed Skill Test as you make things more difficult." Unlike every other checkbox above (an
-// upside the player opts into), this is a Hang-Up's own downside the player VOLUNTARILY imposes
-// on themselves - same self-policed checkbox idiom, but checking it sets Snag rather than granting
-// a shiftUp, and the frequency cap is a genuine COUNT (up to 3) rather than the usual once-per-
-// turn/-scene boolean. This codebase has no automatic "mission" boundary at all (see
-// helpers/reroll.mjs#getRerollResetBucket's own comment on the identical gap), so 'scene' - the
-// widest window this project tracks automatically, wider than 'encounter' and not cleared when a
-// fight ends - is the closest available approximation, via getUsesThisScene/markUsedThisScene (the
-// counting scene-window sibling of hasUsedThisEncounter Green's own 3x/day counter already
-// established, just exposed to the player as an opt-in choice here instead of a silent
-// suppression). PREVIOUSLY used getUsesThisEncounter/markUsedThisEncounterCount, which reset this
-// 3-per-MISSION cap every time a single encounter ended - wrong direction (too generous, not too
-// strict), corrected here.
-const THRILLSEEKER_HANGUP_ID = `${GI_JOE_CRB}7ISxvemsGVWGIzna`;
-const THRILLSEEKER_SCENE_FLAG = 'thrillseekerUsedThisScene';
 
 // Leech Siphons (Decepticon Directive, Weapon Upgrade, p.75; prerequisite: Close Combat Blade):
 // "With a Critical Success hit, target loses 1 Energon Point (or 1 Strength Essence Damage if
@@ -1463,16 +1354,6 @@ const WHEN_PUSH_COMES_TO_SHOVE_ID = "Compendium.essence20.enigma_of_combination.
 // updatedShiftDataset.programmableAvailable's own comment above.
 const PROGRAMMABLE_ID = "Compendium.essence20.field_guide_action_adventure.Item.qPPgeJcB5BMd1jHB";
 
-// Military Formality (Field Guide to Action & Adventure, Military Attache Focus, 6th level, p.68):
-// "you can use Deception, Intimidation, or Persuasion in place of Performance. Additionally, you
-// gain up to ↑3 on Deception, Intimidation, and Persuasion Skill Tests, depending on how much the
-// target values formality." The "in place of Performance" half needs no code - the player can
-// already just roll Deception/Intimidation/Persuasion instead of Performance whenever the fiction
-// calls for it, the same "positive finding, nothing to build" category as Evasive/Megaform Trait's
-// own doc comments. The "up to ↑3, GM's call" half is the same fixed-cap-3 self-attested Free
-// numeric spend as Programmable just above - offered whenever one of the 3 named Skills is rolled.
-const MILITARY_FORMALITY_ID = "Compendium.essence20.field_guide_action_adventure.Item.eZh6jtzHA9dhywF9";
-
 // Evolved Instincts (A Jump Through Time, Zord Feature, p.83, prerequisite an animal/beast Zord):
 // "The Zord gains +1 Evasion Defense [plain compendium Active Effect - defenses.evasion.bonus,
 // needs no code] and upshift 1 on its or its driver's melee Attack rolls when fighting an enemy
@@ -1535,24 +1416,6 @@ const YOUR_SAFETYS_ON_ALL_ATTACKS_FLAG = 'yourSafetysOnAllAttacksSnag';
 
 const AMBITIOUS_ID = "Compendium.essence20.transformers_one_sourcebook.Item.eLoPulLITRqroJu5";
 const AMBITIOUS_ENCOUNTER_FLAG = 'ambitiousUsedThisEncounter';
-
-// Isolated (Transformers One Sourcebook, Influence Perk, p.14): "Once per scene, when you make a
-// Skill Test without the benefits of Lend Assistance, you can give yourself ↑1 on the Skill Test
-// as a Free action." "Without the benefits of Lend Assistance" is unenforceable (this codebase
-// only has a narrow Spot-triggered slice of Lend Assistance, not full tracking of every roll's own
-// assistance state) - dropped, same idiom as every other narrative-qualifier flattening, leaving a
-// once/scene self-declared shiftUp checkbox (the real, stated frequency cap this time, unlike
-// Bootlicker/Hunter's Prowess's own unconditional grants).
-const ISOLATED_ID = "Compendium.essence20.transformers_one_sourcebook.Item.DUTXCfxZP1kjh9m6";
-const ISOLATED_ENCOUNTER_FLAG = 'isolatedUsedThisEncounter';
-
-// "I remember reading about…." (PR CRB, Brainy Origin Benefit, p.23): "Once per scene, you can
-// attempt a Skill Test in a Smarts-based skill as if you were Specialized in that skill." Same
-// isSpecialized pre-fill idiom as Analytical/Warfighter/Genius, but a real once/scene checkbox
-// (RAW's own stated frequency cap) rather than an unconditional grant, gated to Smarts-essence
-// skills only.
-const I_REMEMBER_READING_ABOUT_ID = "Compendium.essence20.pr_crb.Item.m3yGoT712SFkaV7W";
-const I_REMEMBER_READING_ABOUT_ENCOUNTER_FLAG = 'iRememberReadingAboutUsedThisEncounter';
 
 // We Improvise (Transformers One Sourcebook, Autonomous Bots Faction Perk, p.15): "The first time
 // you roll an Initiative Skill Test in combat, add a Story Point to the team's pool." Built in
@@ -1686,8 +1549,6 @@ const SADISTIC_HANGUP_ID = "Compendium.essence20.decepticon_directive.Item.a7ch8
 // Extension Initiative rules, async fn(actor, skillRollOptions) - mutate the dialog's options
 // (helpers/extensions/situational2/initiative.mjs).
 export const INITIATIVE_EXTENSIONS = [];
-
-const HONEST_ASSESSMENT_ID = `${MLP_CRB}eIDYxShici5rRpg3`;
 
 // Agency (Across the Stars, Influence Perk, p.42, RE-CATEGORIZED 2026-09-15 out of a 17-item
 // narrative bucket that was never individually RAW-verified): "You gain Edge on the Skill
@@ -2039,22 +1900,6 @@ const ITS_RIGHT_THERE_ID = `${WTNV_CITIZENS_GUIDE}PHg5CJEy13v6G7a1`;
 // is 35 feet." The +2 Evasion half is a compendium Active Effect; the flat-35ft Movement half
 // needs documents/actor.mjs#_prepareMovement (the one permitted movement-math touch-point).
 
-// Tourniquet Line Chef (General Perk, p.51): "Edge on Science (Medicine) Skill Tests for healing
-// injuries or examining dead bodies." The narrative qualifier is dropped (unconditional Edge on a
-// Science roll with a "Medicine" Specialization, same "match by Specialization name" idiom as Calm
-// Beast, since a Specialization has no stable id a compendium item could target). Its own immediate
-// self-or-ally heal half is a Use rule on the item itself, no code needed here.
-const TOURNIQUET_LINE_CHEF_ID = `${WTNV_CITIZENS_GUIDE}fxH2GPkDGvJEpI8s`;
-
-// EMT Crash Course (GI Joe CRB, General Perk, p.132): "Edge on Science (Medicine) Skill Tests to
-// learn clues from injuries or deceased persons" - textually the same clause as Tourniquet Line
-// Chef's own above, so the check below is widened to an OR across both rather than duplicated
-// (same "shared/reused dispatch across two same-named-but-distinct items" idiom this project
-// already established for Educated). This Perk's own heal/Essence-restore halves are dispatched
-// in helpers/banked-buffs.mjs/helpers/emt-crash-course.mjs, not here. Widened to an array
-// (built 2026-09-12) since PR CRB (p.94) reprints this Perk verbatim under the same name.
-const EMT_CRASH_COURSE_IDS = [`${GI_JOE_CRB}jDAu1zaZpv1IylJ8`, `${PR_CRB}cBezxXDBMpsRwYbP`];
-
 // "A" for Effort! (Intern Origin, p.30) - see usesAForEffort's own comment above.
 const A_FOR_EFFORT_ID = `${WTNV_CITIZENS_GUIDE}O8o96wtAeeMeCmUc`;
 
@@ -2159,12 +2004,6 @@ const INSTINCTUAL_CASTER_ID = `${KNIGHTS_OF_CANTERLOT}ixNXVuXWjNf8fZHY`;
 // wording already accepts, leaving a plain once-per-scene Edge on Targeting.
 
 const COBRA_CODEX = "Compendium.essence20.cobra_codex.Item.";
-
-// Spoiled's own Hang-Up - see its own check next to Spot Weld's identical synthetic-dataset-flag
-// shape above.
-const SPOILED_HANGUP_ID = `${COBRA_CODEX}AiXWfp1Qg0TyHWqK`;
-
-const SPOILED_USES_FLAG = 'spoiledRequisitionUsedThisScene';
 
 // Dispersion - see its own check next to Lance of Light's identical Resistance shape above.
 const DISPERSION_ID = `${COBRA_CODEX}WHJLWQRUiCqSqLrK`;
@@ -2315,7 +2154,6 @@ const SUPER_SPECIALIZED_ID = `${MLP_CRB}TuSb6usDweSzf5S9`;
 // _getPilotedVehicle finds which vehicle (if any) they're currently seated in.
 const DOGFIGHTER_ID = "Compendium.essence20.across_the_stars.Item.twl2N01FD8XKO0s1";
 
-const PEERLESS_PILOT_GIJ_ID = `${GI_JOE_CRB}y39VC0CIsI8mdLKK`;
 // Peerless Pilot (PR CRB, General Perk, p.97) - a distinct compendium item from GI Joe CRB's own
 // Peerless Pilot above (same name, different RAW): "Edge on Initiative Skill Tests" and "Edge on
 // Driving Skill Tests while piloting a vehicle you are skilled with at d6 or higher" (its own
@@ -2563,12 +2401,6 @@ const FRIENDLY_FIRE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item
 const FRIENDLY_FIRE_ENCOUNTER_FLAG = 'friendlyFireUsedThisEncounter';
 const FRIENDLY_FIRE_SPOOF_FLAG = 'friendlyFireSpoofCombat';
 
-// Perfect Disguise (GI Joe CRB, Spy Focus, 10th level, p.76) - see helpers/perfect-disguise.mjs's
-// own doc comment for the toggle itself. "All social interactions" is read as the same 4 Social
-// Essence skills this book's own Presence Perk already enumerates.
-const PERFECT_DISGUISE_ID = `${GI_JOE_CRB}ELktMVNYsiBPTX2c`;
-const PERFECT_DISGUISE_SKILLS = ['deception', 'persuasion', 'intimidation', 'streetwise'];
-
 // Basic Intelligence (GI Joe CRB, Focus: Expert, 10th level, p.104): "you roll untrained Skill
 // Tests without a Snag." Identical mechanic to "A For Effort!"'s own floor-to-d2-without-Snag
 // behavior (see its own comment above), just unconditional/unlimited instead of once-per-session -
@@ -2598,9 +2430,6 @@ const CQB_TRAINING_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.
 // their shared "+2 all Defenses" bullet as a plain compendium Active Effect (same shape as the 7
 // base CRB Primes above) - only their remaining bullets need code, checked individually below.
 const ACROSS_THE_STARS = "Compendium.essence20.across_the_stars.Item.";
-
-// Astro-Sense (Across the Stars, Grid Power, p.72) - see its own check below.
-const ASTRO_SENSE_ID = `${ACROSS_THE_STARS}XfWmXOtcIM5snRKL`;
 
 // Ranger Operator [Form] (A Jump Through Time, General Perk, p.55, RAW-verified 2026-09-15 via a
 // fresh PDF pull - this row had sat flagged "not yet individually verified"): "You have ↑1 on all
@@ -2716,31 +2545,6 @@ const MENACING_GLARE_ID = `${BENEATH_THE_HELMET}eWlflRHYAVB9p5Z0`;
 // comment.
 const UNLUCKY_FOR_YOU_ID = `${BENEATH_THE_HELMET}hSzY2uhu3L9nGP6o`;
 
-// Calm Beast (Aqua Ranger, Grid Science I choice, p.41) - see its own check in rollSkill() above.
-const CALM_BEAST_ID = `${BENEATH_THE_HELMET}Ib4BIJKAmuMoWKJP`;
-
-// Chivalrous (Beneath the Helmet, General Perk, p.50) and Puzzle Solver (same page) - both
-// RE-CATEGORIZED 2026-09-15 out of a 14-item "backstory/reputation Perks" narrative bundle that
-// was never individually RAW-verified. Neither is flavor: Chivalrous grants "↑2 on Persuasion
-// (Diplomacy) Skill Tests" and Puzzle Solver "↑1 on Alertness (Investigation) Skill Tests",
-// both specialization-scoped shiftUps matched by the Specialization's own NAME - the exact idiom
-// Calm Beast's own "Animal Handling (Calming)" check just below already establishes, and for the
-// same reason (a Specialization has no stable id a compendium effect could target).
-//
-// Each Perk's own "add an additional Story Point to your team's pool each game session" clause is
-// built separately, sharing Educated's own requestStoryPointGrant dispatch (see
-// helpers/banked-buffs.mjs). Their remaining clauses need no code: Chivalrous's "once per day,
-// act as though specialized in any Social Skill" is already covered by the pre-existing,
-// always-available isSpecialized checkbox (the same verify-only finding Educated's own identical
-// clause already documents), and Puzzle Solver's "spend a Story Point to see the connections
-// between parts of a puzzle" is pure GM-narrated information with no numeric effect.
-//
-// RAW's own narrative qualifiers are dropped the way this project always drops them: Puzzle
-// Solver's "that directly involve resolving the current adventure" has no hook to verify, the
-// same reasoning as Bits To Spare/Truthseeker's own purpose-qualifiers.
-const CHIVALROUS_ID = `${BENEATH_THE_HELMET}E6bnHJFn2QHSru4p`;
-const PUZZLE_SOLVER_ID = `${BENEATH_THE_HELMET}AS1G8dp4t09G1k6N`;
-
 // Augmented's own mandatory Hang-Up (Across the Stars, p.44): "The processes that augmented you
 // had some unexpected side-effects that weakened you to certain substances, wavelengths, energy, or
 // other stimuli. Choose one damage type... You halve your Defenses (rounding up) when targeted by
@@ -2807,10 +2611,6 @@ const NON_DAMAGE_EFFECT_TYPES = [
 // effect's own shiftDown before it reaches the roller. A second cancelling ↑1 used to live here
 // too and double-counted it (fix pass 3).
 
-// Psych 101 (Enigma of Combination, Counselor Focus, 1st level, p.34) - see its own check in
-// rollSkill() above.
-const PSYCH_101_ID = "Compendium.essence20.enigma_of_combination.Item.pfkMVppvtLbdDTG7";
-
 // Unseen Strike (Phantom Ranger, 9th level, p.61): "On your first Attack Skill Test each turn
 // while your Phantom Suite is active, the target's Evasion Defense is halved (round up) against
 // that Attack." The "first... each turn" gate is checked/marked the moment the roll is attempted
@@ -2829,17 +2629,6 @@ const NINJA_POWER_ID = `${PR_CRB}wN5rjEQIJH68rWCd`;
 // "spend 1 Power to mirror your own active Conditions onto nearby allies" half needs a novel
 // mirror-my-own-active-Conditions-onto-allies mechanic with no precedent anywhere in this project.
 const IRON_BRAVADO_ID = `${PR_CRB}8bmqJ7hyOAcVNB1Y`;
-
-// Heavy Force (Yellow Spectrum Modification, replaces Nimble Fighter, p.45): "While Morphed, when
-// pushing, shoving, or making your first melee Attack each turn, you may spend 1 Personal Power to
-// gain a ↑2 bonus... you may not Move until the beginning of your next turn." Only the melee
-// Attack half is built (no Push/Shove action exists) - same Roll Options Dialog checkbox shape as
-// Strike Bonus, just a flat +2 instead of a scaling advances value, and per-turn instead of
-// per-round. The "can't Move afterward" downside isn't enforced - action economy, the same
-// accepted "grant the upside, skip the unenforceable restriction" idiom this project already uses
-// broadly (e.g. Reckless Abandon's own unenforced restrictions).
-const HEAVY_FORCE_ID = `${PR_CRB}E4hk9pHESLuYQuO7`;
-const HEAVY_FORCE_TURN_FLAG = 'heavyForceUsedThisTurn';
 
 // Pay It Forward (Red Spectrum Modification, replaces Let's Bring 'Em Together!, p.45): "While
 // Morphed, allies within 10 feet of you gain +1 to all Defenses." Only this clause is built - the
@@ -3520,46 +3309,7 @@ export class Dice {
       await clearPendingBonus(actor, SHOULDER_TO_SHOULDER_FLAG);
     }
 
-    // Calm Beast (Beneath the Helmet, Aqua Ranger, Grid Science I choice, p.41): "↑1 on Animal
-    // Handling (Calming) Skill Tests." Unlike a Perk-driven flat system.skills.<skill>.shiftUp
-    // Active Effect, a Specialization has no stable id a compendium item could target - each
-    // actor creates their own Specializations with their own opaque, player-generated ids (see
-    // data/actor/templates/common.mjs's own comment on specializations) - so this matches by the
-    // Specialization's own NAME instead, the same "look up an actor-defined resource by exact
-    // name" idiom helpers/reroll.mjs#findRolePointsItem already established for named RolePoints
-    // items (e.g. "Cheer Points").
-    if (rolledSkill == 'animalHandling' && specialization?.name?.toLowerCase() == 'calming'
-      && actorHasPerk(actor, CALM_BEAST_ID)) {
-      calculatedShiftUp += 1;
-    }
-
-    // Chivalrous - see CHIVALROUS_ID's own comment above. Same specialization-name match as Calm
-    // Beast just above, scoped to Persuasion (Diplomacy).
-    if (rolledSkill == 'persuasion' && specialization?.name?.toLowerCase() == 'diplomacy'
-      && actorHasPerk(actor, CHIVALROUS_ID)) {
-      calculatedShiftUp += 2;
-    }
-
-    // Puzzle Solver - see PUZZLE_SOLVER_ID's own comment above. RAW's "that directly involve
-    // resolving the current adventure" is an unenforceable narrative qualifier, dropped.
-    if (rolledSkill == 'alertness' && specialization?.name?.toLowerCase() == 'investigation'
-      && actorHasPerk(actor, PUZZLE_SOLVER_ID)) {
-      calculatedShiftUp += 1;
-    }
-
-    // Psych 101 (Enigma of Combination, Counselor Focus, 1st level, p.34): "If you have any
-    // Specialization in the Science Skill, you gain upshift 2 on all Culture Skill Tests
-    // concerning living beings." Unlike Calm Beast/Astro-Sense above (which match the
-    // Specialization actually being ROLLED WITH), this is a static prerequisite check against the
-    // actor's own Science skill's Specializations table - any Specialization at all qualifies, not
-    // a specific named one, and it grants a bonus on a DIFFERENT skill (Culture) than the one the
-    // Specialization lives on. "Concerning living beings" is dropped as an unenforceable narrative
-    // qualifier, the same idiom already applied throughout this project.
-    if (rolledSkill == 'culture' && actorHasPerk(actor, PSYCH_101_ID)
-      && Object.keys(actor.system.skills.science?.specializations ?? {}).length) {
-      calculatedShiftUp += 2;
-    }
-
+    // Calm Beast, Chivalrous, Puzzle Solver and Psych 101 are item rules (RollModifier).
     // Charge Into Battle (Through the Shattered Grid, Guardian of Eltar, 2nd level, p.72): "↑1 on
     // Attack Skill Tests against multiple direct targets." Computed here (before the shift total
     // is finalized and handed to the dialog), a separate, earlier call to the same
@@ -3595,17 +3345,11 @@ export class Dice {
     }
 
     // Honest Assessment (MLP CRB, Spirit of Honesty, 14th level, p.79) - see
-    // helpers/honest-assessment.mjs's own doc comment. While active: ↑2 on the actor's own chosen
-    // Skill (system.choice, same choiceType:'skills' mechanism as Awesome), ↓2 on both Deception
-    // and Persuasion (RAW's own fixed self-cost, not player-chosen).
-    if (isHonestAssessmentActive(actor)) {
-      if (findPerk(actor, HONEST_ASSESSMENT_ID)?.system.choice == rolledSkill) {
-        calculatedShiftUp += 2;
-      }
-
-      if (rolledSkill == 'deception' || rolledSkill == 'persuasion') {
-        calculatedShiftDown += 2;
-      }
+    // helpers/honest-assessment.mjs's own doc comment. While active: ↓2 on both Deception and
+    // Persuasion (RAW's own fixed self-cost, not player-chosen). The ↑2 on the chosen Skill is the
+    // item's own rule.
+    if (isHonestAssessmentActive(actor) && (rolledSkill == 'deception' || rolledSkill == 'persuasion')) {
+      calculatedShiftDown += 2;
     }
 
     // Powerful Suggestions (Enigma of Combination, Counselor Focus, 17th level, p.34) - "fail"
@@ -3904,19 +3648,7 @@ export class Dice {
       skillDataset.snag = true;
     }
 
-    // Spoiled's own Hang-Up (Cobra Codex, Influence, p.34): "You suffer Snag on one requisition
-    // check during a mission's Equipment Requisition phase." Detected the same way Ground
-    // Suppression/Voice of Night Vale are - a synthetic dataset flag, here already threaded
-    // through by helpers/requisition.mjs#rollRequisition's own requisitionItemName field on every
-    // Requisition Test - rather than a Perk-lookup keyed on rolledSkill, since a Requisition Test
-    // can use any of several different Skills (requisitionSkill()) depending on the item.
-    // "One... during a mission" is this project's usual once-per-mission-approximated-as-once-per-
-    // scene idiom (getUsesThisScene/markUsedThisScene, same as Green's own GI Joe CRB printing).
-    if (dataset.requisitionItemName && actorHasHangUp(actor, SPOILED_HANGUP_ID)
-      && getUsesThisScene(actor, SPOILED_USES_FLAG) < 1) {
-      skillDataset.snag = true;
-      await markUsedThisScene(actor, SPOILED_USES_FLAG);
-    }
+    // Spoiled's own Hang-Up (its Snag on one Requisition test a scene) is the item's own rule.
 
     // Observer (Through the Shattered Grid, Guardian of Eltar, 10th level, p.72): "If you suffer
     // a Snag on any Social-based Skill Test regarding understanding another species, you may
@@ -4011,29 +3743,13 @@ export class Dice {
     // training, Essence shifts, and every automatic combat modifier above - "already have an Edge
     // from elsewhere" vs. "this Perk is the only source" - rather than just setting edge
     // unconditionally and silently losing the upgrade the book describes.
-    // Eureka! (Blue Ranger, 1st level, p.38) - see EUREKA_PR_ID's own comment above. Applies to
-    // any Smarts Skill Test, not just weaponEffect attacks, so it's checked here alongside the
-    // other essence-scoped grants rather than in the weaponEffect-only block below.
+    // Eureka! (Blue Ranger), Eltarian Tech and "I remember reading about…." are DialogSwitch rules on
+    // their own items.
     const ideaPoints = actor._getBaseRolePoints?.();
-    updatedShiftDataset.ideaPointAvailable = rolledEssence == 'smarts'
-      && actorHasPerk(actor, EUREKA_PR_ID)
-      && !!ideaPoints?.system.resource.value;
-
-    // "I remember reading about…." - see I_REMEMBER_READING_ABOUT_ID's own comment above.
-    updatedShiftDataset.iRememberReadingAboutAvailable = rolledEssence == 'smarts'
-      && actorHasPerk(actor, I_REMEMBER_READING_ABOUT_ID)
-      && !hasUsedThisEncounter(actor, I_REMEMBER_READING_ABOUT_ENCOUNTER_FLAG);
-
-    // Eltarian Tech - see ELTARIAN_TECH_ID's own comment above. Reuses the same
-    // actor._getBaseRolePoints() lookup as Eureka! just above (never both at once - Idea Points
-    // and Eltarian Tech belong to different Roles).
-    updatedShiftDataset.eltarianTechAvailable = rolledSkill == 'technology'
-      && actorHasPerk(actor, ELTARIAN_TECH_ID)
-      && !!ideaPoints?.system.resource.value;
 
     // Mystical Understanding - Spellcialize - see MYSTICAL_UNDERSTANDING_ID's own comment above.
-    // Same actor._getBaseRolePoints() reuse as Eureka!/Eltarian Tech above, gated on "trained but
-    // not already Specialized" instead of a fixed skill/essence.
+    // Spends the actor's base Role Points (actor._getBaseRolePoints()), gated on "trained but not
+    // already Specialized" instead of a fixed skill/essence.
     updatedShiftDataset.spellcializeAvailable = actorHasPerk(actor, MYSTICAL_UNDERSTANDING_ID)
       && actorSkillData?.shift != 'd20'
       && !actor.system.skills[rolledSkill]?.isSpecialized
@@ -4077,11 +3793,7 @@ export class Dice {
     updatedShiftDataset.pressureCookerAvailable = actorHasPerk(actor, PRESSURE_COOKER_ID)
       && actor.system.health?.value == 1 && !!moxie && moxie.system.resource.value >= 1;
 
-    // Always Ready - see ALWAYS_READY_ID's own comment above.
-    const alwaysReadyFunction = findPerk(actor, ALWAYS_READY_ID)?.system.choice;
-    const alwaysReadySkills = ALWAYS_READY_FUNCTION_SKILLS[alwaysReadyFunction] ?? [];
-    updatedShiftDataset.alwaysReadyAvailable = alwaysReadySkills.includes(rolledSkill)
-      && getUsesThisScene(actor, 'alwaysReadyUsesThisScene') < 1;
+    // Always Ready is a DialogSwitch rule on its own item (one per function).
 
     if (isFieldSkillTest && actorHasPerk(actor, EXPERT_IN_YOUR_FIELD_ID)) {
       if (skillDataset.edge) {
@@ -4122,30 +3834,11 @@ export class Dice {
       skillDataset.edge = true;
     }
 
-    // Tourniquet Line Chef / EMT Crash Course - see their own comments above. Same "match by
-    // Specialization name" idiom as Calm Beast; EMT Crash Course shares this check rather than
-    // duplicating it, same as Educated's own widened dispatch.
-    if (rolledSkill == 'science' && specialization?.name?.toLowerCase() == 'medicine'
-      && (actorHasPerk(actor, TOURNIQUET_LINE_CHEF_ID) || EMT_CRASH_COURSE_IDS.some(id => actorHasPerk(actor, id)))) {
-      skillDataset.edge = true;
-    }
-
-    // Astro-Sense - see ASTRO_SENSE_ID's own comment above. Same "match by Specialization name"
-    // idiom as Calm Beast/Tourniquet Line Chef.
-    if (((rolledSkill == 'survival' && specialization?.name?.toLowerCase() == 'space')
-      || (rolledSkill == 'technology' && specialization?.name?.toLowerCase() == 'astro-nav'))
-      && actorHasPower(actor, ASTRO_SENSE_ID)) {
-      skillDataset.edge = true;
-    }
+    // Tourniquet Line Chef / EMT Crash Course (Medicine), Astro-Sense (Space / Astro-Nav) and
+    // Broadcaster (Communications) are RollModifier rules on their own items.
 
     // Surgical Operators - its Edge only applies when treating a poison or toxin, so it is an
     // off-by-default Roll Options Dialog switch on Science tests (helpers/extensions/fix3-gij/gij-fixes.mjs).
-
-    // Broadcaster's Technology(Communications) half - see BROADCASTER_ID's own comment above.
-    if (rolledSkill == 'technology' && specialization?.name?.toLowerCase() == 'communications'
-      && !game.combat && actorHasPerk(actor, BROADCASTER_ID)) {
-      skillDataset.edge = true;
-    }
 
     // Environmental Expertise (Ranger base, 1st/9th/18th level, p.90) - see
     // helpers/environmental-expertise.mjs's own doc comment. "Non-combat Skill Tests" is
@@ -4315,12 +4008,8 @@ export class Dice {
       await markUsedThisEncounter(actor, FRIENDLY_FIRE_ENCOUNTER_FLAG);
     }
 
-    // Takedown Expert (GI Joe CRB, Infiltrator Focus, 6th level, p.73): "Edge on Takedown
-    // attempts." The bonus-Condition-on-a-non-outmatched-miss half is applied in
-    // _rollSkillHelper's post-hit processing (see isTakedownAttempt's own comment there).
-    if (dataset.isTakedown && actorHasPerk(actor, TAKEDOWN_EXPERT_ID)) {
-      skillDataset.edge = true;
-    }
+    // Takedown Expert's Edge on Takedown attempts is the item's own rule. Its bonus-Condition half is
+    // applied in _rollSkillHelper's post-hit processing (see isTakedownAttempt's own comment there).
 
     // Exemplary - see helpers/exemplary.mjs's own doc comment.
     if (hasNearbyExemplaryMatch(actor, rolledSkill)) {
@@ -4546,24 +4235,8 @@ export class Dice {
     // Tests for the roller's own (possibly different, or absent) Field.
     updatedShiftDataset.shiftUp += getInfluentialShiftUp(actor, rolledSkill);
 
-    // Strike Bonus (Yellow Ranger, 2nd/5th/8th/11th level, p.56) - see STRIKE_BONUS_ID's own
-    // comment above. Only the first melee attack of the round, gated the same way Quiet as the
-    // Grave/Predator Sneak Attack track their own once-per-round use.
-    const strikeBonusPerk = findPerk(actor, STRIKE_BONUS_ID);
+    // Strike Bonus and Heavy Force are DialogSwitch rules on their own items (1 Personal Power each).
     const isMeleeWeaponEffect = item?.type == 'weaponEffect' && item.system.classification.style == 'melee';
-    updatedShiftDataset.strikeBonusAvailable = isMeleeWeaponEffect
-      && !!strikeBonusPerk
-      && actor.system.powers?.personal?.value > 0
-      && !hasUsedThisRound(actor, STRIKE_BONUS_ROUND_FLAG)
-      ? strikeBonusPerk.system.advances.currentValue
-      : 0;
-
-    // Heavy Force - see HEAVY_FORCE_ID's own comment above.
-    updatedShiftDataset.heavyForceAvailable = (isMeleeWeaponEffect || !!updatedShiftDataset.isShove)
-      && actor.system.isMorphed
-      && actorHasPerk(actor, HEAVY_FORCE_ID)
-      && actor.system.powers?.personal?.value > 0
-      && !hasUsedThisTurn(actor, HEAVY_FORCE_TURN_FLAG);
 
     // Charge It Up! - see helpers/charge-it-up.mjs's own doc comment. Unlike Quantum Cut just
     // below, the Power was already spent when the player clicked the Power's own activation icon
@@ -4597,7 +4270,7 @@ export class Dice {
     // Solo Shot: "spend a Personal Power to consider the target in close Range and ignore all die
     // shift penalties for a single Attack" - consumed post-dialog by forcing
     // skillRollOptions.snag = false directly, the same "checkbox overrides the final Edge/Snag
-    // choice" shape Eureka!'s own spendIdeaPoint already uses (see its own consumption below) -
+    // choice" shape -
     // sidesteps the documented _getAutomaticCombatModifiers-runs-before-the-dialog timing gap
     // (the same one blocking several Ranger Prime capstones' own reciprocal Snag bullets)
     // entirely, since this never needs to touch that function at all.
@@ -4641,9 +4314,7 @@ export class Dice {
     updatedShiftDataset.ambitiousAvailable = actorHasPerk(actor, AMBITIOUS_ID)
       && !hasUsedThisEncounter(actor, AMBITIOUS_ENCOUNTER_FLAG);
 
-    // Isolated - see ISOLATED_ID's own comment above.
-    updatedShiftDataset.isolatedAvailable = actorHasPerk(actor, ISOLATED_ID)
-      && !hasUsedThisEncounter(actor, ISOLATED_ENCOUNTER_FLAG);
+    // Isolated, Gutter Champion and Thrillseeker are DialogSwitch rules on their own items.
 
     // Double Agent - see DOUBLE_AGENT_ID's own comment above. Offered on a Smarts/Social Skill
     // Test (the shiftUp half) or on any attack (the Defense-penalty half, applied where
@@ -4651,18 +4322,9 @@ export class Dice {
     updatedShiftDataset.doubleAgentAvailable = actorHasPerk(actor, DOUBLE_AGENT_ID)
       && (rolledEssence == 'smarts' || rolledEssence == 'social' || item?.type == 'weaponEffect' || item?.type == 'power');
 
-    // Gutter Champion - see GUTTER_CHAMPION_ID's own comment above.
-    updatedShiftDataset.gutterChampionAvailable = actorHasPerk(actor, GUTTER_CHAMPION_ID)
-      && !hasUsedThisTurn(actor, 'gutterChampionUsedThisTurn');
-
     // Beloved - see BELOVED_ID's own comment above.
     updatedShiftDataset.belovedAvailable = actorHasPerk(actor, BELOVED_ID)
       && !hasUsedThisTurn(actor, 'belovedUsedThisTurn');
-
-    // Thrillseeker - see THRILLSEEKER_HANGUP_ID's own comment above.
-    updatedShiftDataset.thrillseekerAvailable = (rolledEssence == 'strength' || rolledEssence == 'speed')
-      && actorHasHangUp(actor, THRILLSEEKER_HANGUP_ID)
-      && getUsesThisScene(actor, THRILLSEEKER_SCENE_FLAG) < 3;
 
     // Straight Shooter - see STRAIGHT_SHOOTER_TF_ID's own comment above.
     updatedShiftDataset.straightShooterAvailable = item?.type == 'weaponEffect'
@@ -4888,15 +4550,8 @@ export class Dice {
     updatedShiftDataset.metallikatoIgnoreArmorAvailable = isMeleeWeaponEffect
       && actor.system.isTransformed === false && actorHasPerk(actor, METALLIKATO_ID);
 
-    // Metallikato - Multiple (2) Targets (↓1)'s own paired downshift. The trait GRANT itself
-    // lives in helpers/multiple-targets.mjs (isMultipleTargetsWeapon, checked well before this
-    // point) - this just applies the ↓1 cost automatically whenever that toggle is actually
-    // active on a melee roll, no separate checkbox (unlike the armor-ignore benefit, this one has
-    // no "how much" choice to make, so nothing for a checkbox to add).
-    if (isMeleeWeaponEffect && actor.system.isTransformed === false
-      && actorHasPerk(actor, METALLIKATO_ID) && isMetallikatoMultipleTargetsActive(actor)) {
-      updatedShiftDataset.shiftDown += 1;
-    }
+    // Metallikato - Multiple (2) Targets (↓1)'s own paired downshift is the item's own rule; the trait
+    // grant itself lives in helpers/multiple-targets.mjs.
 
     // Demolition Driver - see DEMOLITION_DRIVER_ID's own comment above. Capped at a fixed 3
     // (RAW's own "downshift 1, 2, or 3"), not a banked resource's current value like Terror.
@@ -4911,9 +4566,7 @@ export class Dice {
     // _getFinalShift resolves the whole roll (see skillRollOptions.programmableCapD12 below).
     updatedShiftDataset.programmableAvailable = actorHasPerk(actor, PROGRAMMABLE_ID) ? 3 : 0;
 
-    // Military Formality - see MILITARY_FORMALITY_ID's own comment above.
-    updatedShiftDataset.militaryFormalityAvailable = ['deception', 'intimidation', 'persuasion'].includes(rolledSkill)
-      && actorHasPerk(actor, MILITARY_FORMALITY_ID) ? 3 : 0;
+    // Military Formality is a DialogSwitch rule on its own item (a 0-3 number box).
 
     // Caution To The Wind - see CAUTION_TO_THE_WIND_ID's own comment above. Offered on any Skill
     // Test (not attack-only, unlike Terror/Demolition Driver above), capped at RAW's own flat 3.
@@ -4997,13 +4650,7 @@ export class Dice {
     // Deconstructionist just above, scoped to Deception.
     updatedShiftDataset.noFactorAvailable = rolledSkill == 'deception' && actorHasPerk(actor, NO_FACTOR_ID);
 
-    // Dependable Tanker - see DEPENDABLE_TANKER_ID's own comment above.
-    updatedShiftDataset.dependableTankerAvailable = ['driving', 'technology'].includes(rolledSkill)
-      && actorHasPerk(actor, DEPENDABLE_TANKER_ID) && canWriteStoryPoints() && hasStoryPointsAvailable(1);
-
-    // Hacking Algorithms - see HACKING_ALGORITHMS_ID's own comment above.
-    updatedShiftDataset.hackingAlgorithmsAvailable = rolledSkill == 'technology'
-      && actorHasPerk(actor, HACKING_ALGORITHMS_ID) && canWriteStoryPoints() && hasStoryPointsAvailable(1);
+    // Dependable Tanker and Hacking Algorithms are DialogSwitch rules on their own items.
 
     // Bump & Run - see BUMP_AND_RUN_ID's own comment above. Any Attack Skill Test, not scoped to a
     // specific skill (unlike Charge's own Might-only wording).
@@ -5096,25 +4743,9 @@ export class Dice {
       }
     }
 
-    // Peerless Pilot (GI Joe CRB, p.132) - Driving Skill Test half (the Initiative Edge is the item's
-    // own rule). "Specialized in" the vehicle is approximated as "has any Driving Specialization at
-    // all" - specializations have no stable id to match a particular vehicle's type against.
-    if (rolledSkill == 'driving' && actorHasPerk(actor, PEERLESS_PILOT_GIJ_ID)
-      && this._getPilotedVehicle(actor, 'driver')
-      && Object.keys(actor.system.skills.driving?.specializations ?? {}).length > 0) {
-      updatedShiftDataset.shiftUp += 2;
-    }
+    // Peerless Pilot (GI Joe CRB) - both halves (Driving ↑2, Initiative Edge) are the item's own rules.
 
-    // Tracker - see TRACKER_ENVIRONMENTAL_ID's own comment above.
-    if (rolledSkill == 'survival' && actorHasPerk(actor, TRACKER_ENVIRONMENTAL_ID) && hasActiveEnvironmentalExpertise(actor)) {
-      updatedShiftDataset.shiftUp += 2;
-      // Listed (and untickable, e.g. when not actually tracking) in the Roll Options Dialog.
-      combatModifiers.sources.push({
-        id: 'trackerEnvironmental',
-        label: getEnvironmentOfExpertiseSourceLabel(actor, findPerk(actor, TRACKER_ENVIRONMENTAL_ID)?.name ?? 'Tracker'),
-        shiftUp: 2, shiftDown: 0, edge: false, snag: false,
-      });
-    }
+    // Tracker (Environmental)'s ↑2 is the item's own rule (check:environmentalExpertise).
 
     // Martial Zord / Zero-G - see their own ID comments above. Both are Zord Features (checked
     // on the actor actually making the roll - the Zord itself, not its pilot), gated on the
@@ -5211,12 +4842,7 @@ export class Dice {
       updatedShiftDataset.shiftUp += 2;
     }
 
-    // Ninja Power (PR CRB, General Perk, p.97) - see helpers/ninja-power.mjs's own doc comment.
-    // "Edge on all Speed-based skills" while Morphed with Ninja Power active.
-    if (rolledEssence == 'speed' && actor.system.isMorphed && isNinjaPowerActive(actor)
-      && actorHasPerk(actor, NINJA_POWER_ID)) {
-      skillDataset.edge = true;
-    }
+    // Ninja Power's Speed Edge (while Morphed with it active) is the item's own rule.
 
     // Observer (Through the Shattered Grid, Guardian of Eltar, 10th level, p.72): "↑2 to
     // Deception Skill Tests" while the disguise is active - same shape as Enhanced Reflexes just
@@ -5225,12 +4851,7 @@ export class Dice {
       updatedShiftDataset.shiftUp += 2;
     }
 
-    // Perfect Disguise (GI Joe CRB, Spy Focus, 10th level, p.76) - see PERFECT_DISGUISE_ID's own
-    // comment above. "Edge on all social interactions" while the disguise is active.
-    if (PERFECT_DISGUISE_SKILLS.includes(rolledSkill) && actorHasPerk(actor, PERFECT_DISGUISE_ID)
-      && isPerfectDisguiseActive(actor)) {
-      skillDataset.edge = true;
-    }
+    // Perfect Disguise's Edge while the disguise is active is the item's own rule.
 
     // Ookie Spookies (Knights of Canterlot, Virtuoso Enchantment spell, p.50) - see
     // helpers/ookie-spookies.mjs's own doc comment. "Edge on any Skill Tests to sneak about" while
@@ -5413,22 +5034,7 @@ export class Dice {
     // with their off-hand while dual-wielding a qualifying pair, not anything auto-detected.
     updatedShiftDataset.akimboAvailable = isRangedAttack && this._hasFightingStyle(actor, 'akimbo');
 
-    // Two-Handed Assault - see TWO_HANDED_ASSAULT_ID's own comment above. Available when the
-    // actual weapon being rolled carries the Martial Arts + Silent traits AND matches whichever
-    // handedness the actor's own choice named (a light one-handed weapon for dualWieldLight, a
-    // two-handed weapon for twoHanded) - "dual-wielding a SECOND light weapon" itself can't be
-    // verified (no hand-tracking exists), same limitation Akimbo's own identical checkbox has.
-    {
-      const isTwoHandedAssaultEligibleItem = item?.type == 'weaponEffect' && item.system.classification.style == 'melee';
-      const twoHandedAssaultPerk = isTwoHandedAssaultEligibleItem ? findPerk(actor, TWO_HANDED_ASSAULT_ID) : null;
-      const twoHandedAssaultWeapon = isTwoHandedAssaultEligibleItem ? this._getParentWeapon(actor, item) : null;
-      const hasQualifyingTraits = !!twoHandedAssaultWeapon?.system.traits?.includes('silent')
-        && !!twoHandedAssaultWeapon?.system.traits?.includes('martialArts');
-      const matchesChoice = twoHandedAssaultPerk?.system.choice == 'dualWieldLight'
-        ? twoHandedAssaultWeapon?.system.classification?.size == 'light'
-        : twoHandedAssaultPerk?.system.choice == 'twoHanded' && item?.system.numHands == 2;
-      updatedShiftDataset.twoHandedAssaultAvailable = !!twoHandedAssaultPerk && hasQualifyingTraits && matchesChoice;
-    }
+    // Two-Handed Assault is a DialogSwitch rule on its own item (one per handedness choice).
 
     // Alpha Strike - see _isAlphaStrikeAttack's own doc comment above for why this is only gated
     // on the attack type, not the Perk's own (unenforced) range condition.
@@ -5573,26 +5179,12 @@ export class Dice {
       skillRollOptions.shiftDown = Math.max(0, skillRollOptions.shiftDown - 1);
     }
 
-    // Gutter Champion - see updatedShiftDataset.gutterChampionAvailable's own comment above.
-    if (skillRollOptions.applyGutterChampion) {
-      skillRollOptions.shiftUp += 1;
-      await markUsedThisTurn(actor, 'gutterChampionUsedThisTurn');
-    }
-
     // Beloved - see updatedShiftDataset.belovedAvailable's own comment above. The ↑1 half; the
     // "remove Snag" half (belovedRemoveSnag) is resolved further down, next to Ambitious, so it
     // also clears Snags added after the dialog.
     if (skillRollOptions.applyBeloved) {
       skillRollOptions.shiftUp += 1;
       await markUsedThisTurn(actor, 'belovedUsedThisTurn');
-    }
-
-    // Thrillseeker - see updatedShiftDataset.thrillseekerAvailable's own comment above. The
-    // player is voluntarily imposing a Snag on themselves, so this doesn't clear edge - the same
-    // "edge == snag cancels out" rule other Snag grants already rely on applies here too.
-    if (skillRollOptions.applyThrillseeker) {
-      skillRollOptions.snag = true;
-      await markUsedThisScene(actor, THRILLSEEKER_SCENE_FLAG);
     }
 
     // Straight Shooter - see updatedShiftDataset.straightShooterAvailable's own comment above.
@@ -5661,27 +5253,6 @@ export class Dice {
 
     if (skillRollOptions.akimbo) {
       skillRollOptions.shiftUp += 1;
-    }
-
-    if (skillRollOptions.twoHandedAssault) {
-      skillRollOptions.shiftUp += 1;
-    }
-
-    // Strike Bonus - see its own comment above. applyStrikeBonus is only ever offered (per
-    // updatedShiftDataset.strikeBonusAvailable) when the actor can actually afford it, so no
-    // further guard is needed here before spending.
-    if (skillRollOptions.applyStrikeBonus) {
-      skillRollOptions.shiftUp += updatedShiftDataset.strikeBonusAvailable;
-      await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
-      await markUsedThisRound(actor, STRIKE_BONUS_ROUND_FLAG);
-    }
-
-    // Heavy Force - see HEAVY_FORCE_ID's own comment above. Same "only ever offered when
-    // affordable" idiom as Strike Bonus just above, a fixed +2 instead of a scaling value.
-    if (skillRollOptions.applyHeavyForce) {
-      skillRollOptions.shiftUp += 2;
-      await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
-      await markUsedThisTurn(actor, HEAVY_FORCE_TURN_FLAG);
     }
 
     // Cunning Plan - see CUNNING_PLAN_ID's own comment above and updatedShiftDataset.cunningPlanAvailable's
@@ -5890,22 +5461,10 @@ export class Dice {
       }
     }
 
-    // Isolated - see ISOLATED_ID's own comment above.
-    if (skillRollOptions.applyIsolated) {
-      skillRollOptions.shiftUp += 1;
-      await markUsedThisEncounter(actor, ISOLATED_ENCOUNTER_FLAG);
-    }
-
     // Double Agent - see DOUBLE_AGENT_ID's own comment above. The Skill Test half; the Defense
     // penalty half is applied directly against difficulty where the target is resolved.
     if (skillRollOptions.applyDoubleAgent && (rolledEssence == 'smarts' || rolledEssence == 'social')) {
       skillRollOptions.shiftUp += 1;
-    }
-
-    // "I remember reading about…." - see I_REMEMBER_READING_ABOUT_ID's own comment above.
-    if (skillRollOptions.applyIRememberReadingAbout) {
-      skillRollOptions.isSpecialized = true;
-      await markUsedThisEncounter(actor, I_REMEMBER_READING_ABOUT_ENCOUNTER_FLAG);
     }
 
     // Disarming Shot - see updatedShiftDataset.disarmingShotAvailable's own comment above.
@@ -5945,15 +5504,6 @@ export class Dice {
     if (spentProgrammable > 0) {
       skillRollOptions.shiftUp += spentProgrammable;
       skillRollOptions.programmableCapD12 = true;
-    }
-
-    // Military Formality - see MILITARY_FORMALITY_ID's own comment above. Same fixed-cap Free
-    // numeric spend shape as Programmable just above, minus its d12 cap flag (RAW states no such
-    // ceiling for this Perk).
-    const spentMilitaryFormality = Math.min(
-      skillRollOptions.spendMilitaryFormality || 0, updatedShiftDataset.militaryFormalityAvailable || 0);
-    if (spentMilitaryFormality > 0) {
-      skillRollOptions.shiftUp += spentMilitaryFormality;
     }
 
     // Size Matters - see SIZE_MATTERS_ID's own comment above. The trade-in itself reduces the
@@ -6083,34 +5633,12 @@ export class Dice {
       await markUsedThisEncounter(actor, INTERDICTION_ENCOUNTER_FLAG);
     }
 
-    // Eureka! - see EUREKA_PR_ID's own comment above. Same "only ever offered when affordable"
-    // reasoning as Strike Bonus - ideaPointAvailable already checked resource.value > 0. snag is
-    // explicitly cleared, not just edge set - _getd20Operand() treats edge == snag as cancelling
-    // out to a plain roll, and an untrained (still-d20) Smarts Skill Test already defaults to
-    // Snag (see _isUntrainedSnag) - exactly the case Eureka! exists to help with, so leaving that
-    // default Snag in place would silently turn this into a no-op instead of an Edge.
-    if (skillRollOptions.spendIdeaPoint) {
-      skillRollOptions.edge = true;
-      skillRollOptions.snag = false;
-      const ideaPoints = actor._getBaseRolePoints();
-      await ideaPoints.update({ 'system.resource.value': ideaPoints.system.resource.value - 1 });
-    }
-
-    // Eltarian Tech - see ELTARIAN_TECH_ID's own comment above. Same edge-grant/snag-clear/spend
-    // shape as spendIdeaPoint just above.
-    if (skillRollOptions.spendEltarianTech) {
-      skillRollOptions.edge = true;
-      skillRollOptions.snag = false;
-      const eltarianTech = actor._getBaseRolePoints();
-      await eltarianTech.update({ 'system.resource.value': eltarianTech.system.resource.value - 1 });
-    }
-
     // Enviro-Sealed's checkbox needs nothing here: the dialog moves its Snag/Normal/Edge radio with
     // the checkbox (helpers/edge-toggle-link.mjs), so skillRollOptions.edge/snag already carry it.
 
     // Mystical Understanding - Spellcialize - see MYSTICAL_UNDERSTANDING_ID's own comment above.
     // Grants isSpecialized directly (not an Edge/Snag change) and spends the actor's own base
-    // rolePoints resource, same shape as spendIdeaPoint/spendEltarianTech above.
+    // rolePoints resource.
     if (skillRollOptions.applySpellcialize) {
       skillRollOptions.isSpecialized = true;
       const mysticalPoints = actor._getBaseRolePoints();
@@ -6124,38 +5652,12 @@ export class Dice {
       skillRollOptions.snag = false;
     }
 
-    // Always Ready - see ALWAYS_READY_ID's own comment above. Same edge-grant/snag-clear shape as
-    // spendIdeaPoint/spendEltarianTech above, but free (no resource cost), gated once/scene.
-    if (skillRollOptions.applyAlwaysReady) {
-      skillRollOptions.edge = true;
-      skillRollOptions.snag = false;
-      await markUsedThisScene(actor, 'alwaysReadyUsesThisScene');
-    }
-
     // Angry - see ANGRY_ID's own comment above. Free (no resource cost), gated once/encounter;
     // its own Hang-Up (if the actor holds it) is triggered the moment the Perk is used.
     if (skillRollOptions.applyAngry) {
       skillRollOptions.edge = true;
       await markUsedThisEncounter(actor, 'angryUsedThisEncounter');
       await applyAngryHangUp(actor, ANGRY_HANGUP_ID);
-    }
-
-    // Dependable Tanker - see DEPENDABLE_TANKER_ID's own comment above. Same edge-grant/snag-clear
-    // shape as spendIdeaPoint/spendEltarianTech above, but spending a Story Point (via the same
-    // GM-relay mechanism Withering Fire's own spend just above already uses) instead of a
-    // rolePoints resource.
-    if (skillRollOptions.applyDependableTanker) {
-      skillRollOptions.edge = true;
-      skillRollOptions.snag = false;
-      requestStoryPointSpend(actor, 1);
-    }
-
-    // Hacking Algorithms - see HACKING_ALGORITHMS_ID's own comment above. Same edge-grant/
-    // snag-clear/Story-Point-spend shape as Dependable Tanker just above.
-    if (skillRollOptions.applyHackingAlgorithms) {
-      skillRollOptions.edge = true;
-      skillRollOptions.snag = false;
-      requestStoryPointSpend(actor, 1);
     }
 
     // Alpha Strike - grants Edge on this qualifying roll directly, and marks the round so the
