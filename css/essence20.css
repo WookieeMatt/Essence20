@@ -8022,6 +8022,7 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  justify-content: flex-start;
 }
 .essence20.e20-rules-add-dialog .form-footer {
   flex: none;

@@ -202,10 +202,13 @@
     flex-direction: column;
   }
 
+  // flex-start: Foundry centres a dialog's content, and centred content that overflows spills above
+  // the top edge too, where it can't be scrolled to.
   .dialog-content {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
+    justify-content: flex-start;
   }
 
   .form-footer {
