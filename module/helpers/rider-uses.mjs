@@ -34,7 +34,6 @@ export const RIDER = {
   worstNightmare: uuid('general_hawk_s_personel_files', 'eju1fItsi7O0utmh'),
   snatch: uuid('ferocious_fighters', 'a5DNgno8XV7pVBzO'),
   dismantleFirearm: uuid('intercontinental_adventures', '6XYgRBQGPm7gF41b'),
-  precisionIsPerfection: uuid('intercontinental_adventures', '2BYtrKD35dJ6jlV5'),
   energicShields: uuid('pr_crb', 'Lxmp3gfs8TmtUOI5'),
   bowlOver: uuid('pr_crb', '3oeSWdRfUpOq6b9y'),
   enhancedImpactPoints: uuid('jump_through_time', 'FLV4BgCGfPPDxoAY'),

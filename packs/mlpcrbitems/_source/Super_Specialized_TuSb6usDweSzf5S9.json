@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollDice","label":"Specialized in the chosen Skill (Super Specialized: ↑1)","stepUp":1,"when":["roll:dataset:isSpecialized","skill:{item.choice}"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: pick a Skill when you gain it. When you roll that Skill with Specialized ticked, the die is shifted up one more step after the Roll Options Dialog closes, so it shows in the die on the chat card.</p>"

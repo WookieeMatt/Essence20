@@ -306,7 +306,7 @@ function combatantOf(combat, actor) {
 function versusTag(rest, actor, other, combat) {
   if (rest == 'notActed') {
     const mine = combatantOf(combat, actor);
-    return !!combat && !!mine && (combat.turns ?? []).indexOf(mine) > Number(combat.turn ?? -1);
+    return !!combat && !!mine && (combat.turns ?? []).indexOf(mine) > (Number(combat.turn) || 0);
   }
 
   const level = /^levelDiff(>=|<=|>|<|=)(-?\d+)$/.exec(rest);

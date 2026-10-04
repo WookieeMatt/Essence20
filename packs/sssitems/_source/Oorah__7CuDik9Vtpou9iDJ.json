@@ -9,7 +9,8 @@
       {"type":"Qualification","label":"Oorah! (Qualified: Standard weapons)","access":"qualified","items":["item:type:weapon",{"any":["item:data:system.availability=automatic","item:data:system.availability=standard"]}]},
       {"type":"Qualification","label":"Oorah! (Qualified: Silent battledress upgrade)","upgrades":["item:source:Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU"]},
       {"type":"Qualification","label":"Oorah! (Qualified: Silent battledress upgrade)","upgrades":["item:type:upgrade","item:data:name=silent","item:data:system.type=armor"]},
-      {"type":"RollModifier","label":"Oorah!","when":["skill:infiltration"],"edge":true}
+      {"type":"RollModifier","label":"Oorah!","when":["skill:infiltration"],"edge":true},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","target:notActed"]}
     ],
     "automation": {
       "status": "full",

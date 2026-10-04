@@ -544,7 +544,8 @@ export function ruleDefenseAdjust(attacker, defender, defenseType, ctx = {}) {
       continue;
     }
 
-    const answer = evaluate(rule.when, contextFor({ ...ctx, ...rollFacts(ctx.item, ctx), defenseType, self, ruleItem: item, other }));
+    // holder: the actor whose item it is - another actor for an aura / party rule (holder: tags).
+    const answer = evaluate(rule.when, contextFor({ ...ctx, ...rollFacts(ctx.item, ctx), defenseType, self, holder, ruleItem: item, other }));
     if (answer !== true) {
       continue;
     }
@@ -861,7 +862,8 @@ export function ruleCover(actor, target, roll = {}) {
         continue;
       }
 
-      if (evaluate(rule.when, contextFor({ ...facts, self: holder, other, ruleItem: item })) !== true) {
+      // holder: the actor whose item it is (differs from self only for an aura - Bulwark's planted stance).
+      if (evaluate(rule.when, contextFor({ ...facts, self: holder, holder: owner, other, ruleItem: item })) !== true) {
         continue;
       }
 

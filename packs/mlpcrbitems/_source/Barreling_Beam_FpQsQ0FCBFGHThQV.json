@@ -5,6 +5,9 @@
   "_id": "FpQsQ0FCBFGHThQV",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","outcome":"x2","label":"Critical Success (Barreling Beam: knocked Prone)","when":["item:own"],"steps":[{"do":"applyCondition","condition":"prone","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: a Spellcasting attack against one target. A hit pushes them up to 15 ft away from you.</p>"

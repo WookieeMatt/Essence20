@@ -29,7 +29,6 @@ export const Q2 = {
   sensitive: ID('mlp_crb', 'cLe7ettmAIaBUYIj'),
   detailOriented: ID('mlp_crb', 'FBIg9BWG2CyjqgBP'),
   // Welcome to Night Vale
-  aForEffort: ID('wtnv_citizens_guide', 'O8o96wtAeeMeCmUc'),
   everythingIsInspiration: ID('wtnv_citizens_guide', 'c1gIi1A6MKHkOwdy'),
   realAngels: ID('wtnv_citizens_guide', 'i5hL9SSARFDMf6UH'),
   timelineAnomaly: ID('wtnv_citizens_guide', 'NQXcQL05DLCs75xb'),

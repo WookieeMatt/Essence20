@@ -5,6 +5,9 @@
   "_id": "idhVrfBIKELsl3OW",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Driving with no driver (Zord Sentience: ↑1)","upshift":1,"when":["self:type:zord","skill:driving","not:check:zordHasDriver","not:roll:dataset:isInitiative"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while nobody is piloting it, the Zord uses a Smarts and Social of 2 for its Defenses on the sheet, and its own Driving rolls get ↑1, already counted in the Roll Options Dialog's Shift Up box.</p>"

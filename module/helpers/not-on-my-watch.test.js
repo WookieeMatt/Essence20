@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { getNotOnMyWatchDefenseBonus, grantNotOnMyWatchReaction, hasDefeatedAllyInReach } from './not-on-my-watch.mjs';
+import { grantNotOnMyWatchReaction, hasDefeatedAllyInReach } from './not-on-my-watch.mjs';
 
 const NOT_ON_MY_WATCH_ID = "Compendium.essence20.intercontinental_adventures.Item.xH3iQ0NcXp1eFO35";
 
@@ -65,40 +65,6 @@ describe("hasDefeatedAllyInReach", () => {
   test("false with no token on the scene at all", () => {
     const actor = { getActiveTokens: jest.fn(() => []) };
     expect(hasDefeatedAllyInReach(actor)).toBe(false);
-  });
-});
-
-describe("getNotOnMyWatchDefenseBonus", () => {
-  beforeEach(() => {
-    canvas.tokens.placeables = [];
-  });
-
-  test("+1 for Toughness and Evasion while a Defeated ally is in Reach", () => {
-    const actorToken = makeActorToken();
-    const actor = { getActiveTokens: jest.fn(() => [actorToken]) };
-    canvas.tokens.placeables = [actorToken, makeAllyToken({ defeated: true })];
-    canvas.grid.measurePath.mockReturnValue({ distance: 5 });
-
-    expect(getNotOnMyWatchDefenseBonus(actor, 'toughness')).toBe(1);
-    expect(getNotOnMyWatchDefenseBonus(actor, 'evasion')).toBe(1);
-  });
-
-  test("0 for a different Defense type", () => {
-    const actorToken = makeActorToken();
-    const actor = { getActiveTokens: jest.fn(() => [actorToken]) };
-    canvas.tokens.placeables = [actorToken, makeAllyToken({ defeated: true })];
-    canvas.grid.measurePath.mockReturnValue({ distance: 5 });
-
-    expect(getNotOnMyWatchDefenseBonus(actor, 'willpower')).toBe(0);
-  });
-
-  test("0 with no Defeated ally in Reach", () => {
-    const actorToken = makeActorToken();
-    const actor = { getActiveTokens: jest.fn(() => [actorToken]) };
-    canvas.tokens.placeables = [actorToken];
-    canvas.grid.measurePath.mockReturnValue({ distance: 0 });
-
-    expect(getNotOnMyWatchDefenseBonus(actor, 'toughness')).toBe(0);
   });
 });
 

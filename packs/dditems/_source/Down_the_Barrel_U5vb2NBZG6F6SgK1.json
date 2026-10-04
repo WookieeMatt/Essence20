@@ -5,6 +5,9 @@
   "_id": "U5vb2NBZG6F6SgK1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Favorite Weapon equipped (Down the Barrel: Edge)","edge":true,"when":[{"any":["skill:intimidation","skill:persuasion"]},"check:favoriteWeaponEquipped","not:roll:dataset:isInitiative"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while your Favorite Weapon is equipped, your Intimidation and Persuasion Tests open the Roll Options Dialog with Edge already selected.</p>"

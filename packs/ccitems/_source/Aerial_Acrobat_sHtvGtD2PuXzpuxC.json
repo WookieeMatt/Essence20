@@ -5,6 +5,9 @@
   "_id": "sHtvGtD2PuXzpuxC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DieSubstitution","label":"Best of the Acrobatics / Driving die on attacks (Aerial Acrobat)","mode":"best","skills":["acrobatics","driving"],"when":["attack"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your attacks use Acrobatics or Driving when either is better than the attack Skill. Left to the table: only doing so on turns you moved with your Jet Pack.</p>"

@@ -95,7 +95,6 @@ import { deactivateInvisibilityOnAttack } from "./helpers/invisibility.mjs";
 import { deactivatePhantomOnAttack } from "./helpers/phantom.mjs";
 import { isConcentrateFireTarget } from "./helpers/concentrate-fire.mjs";
 import { isProtectedTarget } from "./helpers/protected-target.mjs";
-import { isBulwarkActive } from "./helpers/bulwark.mjs";
 import { getAllNearbyTokens, getNearbyAllyTokens } from "./helpers/allies.mjs";
 import { getNearbyEnemyTokens } from "./helpers/enemies.mjs";
 import { getShieldUpgradeBonus, isPersonalShieldActive } from "./helpers/personal-shield.mjs";
@@ -146,10 +145,9 @@ import { addToxicTerrorStack, getToxicTerrorShiftDown, isToxicTerrorActive } fro
 // explains why) - re-exported here so existing importers of it from dice.mjs keep working.
 export { ACT_WHILE_DEFEATED_FLAG };
 const WARLORD_FMMC = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.";
-const CRUEL_WARLORD_ID = `${WARLORD_FMMC}F3TRKmoaUOtHrlzq`;
 // Bad Temper / Something To Prove (Decepticon Directive, Traitor Origin, suggested Hang-Ups,
 // p.31-32) - see their own checks in _getAutomaticCombatModifiers, set in _rollSkillHelper's
-// isFumble section next to Cruel Warlord's identical hook just above.
+// isFumble section.
 const BAD_TEMPER_HANGUP_ID = "Compendium.essence20.decepticon_directive.Item.pTaF0TVS3ZiWerzs";
 const BAD_TEMPER_FLAG = 'badTemperActive';
 const SOMETHING_TO_PROVE_HANGUP_ID = "Compendium.essence20.decepticon_directive.Item.LopI86yM8zyBHU7O";
@@ -162,17 +160,6 @@ const SOMETHING_TO_PROVE_FLAG = 'somethingToProveActive';
 // round-scoped self-expiry just above - this is a single-use consumption, not a window.
 const NO_FIGHTING_HANGUP_ID = "Compendium.essence20.knights_of_canterlot.Item.ddSnDksWfxPkekda";
 
-// Cost of Sorcery (Finster's Monster-Matic Cookbook, mandatory Hang-Up on the Sorcery Perk, p.271):
-// "Whenever you Fumble a Skill Test involving a Sorcerous Power or an attack with the Sorcerous
-// trait, you lose 1 Health. This Health loss cannot be prevented." The Item itself already exists
-// in the compendium (packs/fmmcitems/_source/Cost_of_Sorcery_BRpf0FNey5oDEvq3.json) and is now
-// auto-granted alongside the Sorcery Perk (see sheet-handlers/perk-handler.mjs's own
-// SORCERY_PERK_ID hook) - this constant is only for the isFumble check below. "Cannot be
-// prevented" is a direct actor.update() of system.health.value, the same "bypass applyDamage's
-// own resistance/immunity/shield chain entirely" idiom banked-buffs.mjs's own healthCost self-pay
-// (e.g. Push Through the Pain) already establishes, rather than routing through applyDamage with
-// a damageType nothing resists anyway.
-const COST_OF_SORCERY_ID = `${WARLORD_FMMC}BRpf0FNey5oDEvq3`;
 const FLAME_WARLORD_ID = `${WARLORD_FMMC}TPrNnDxBKHIajafY`;
 const THORN_WARLORD_ID = `${WARLORD_FMMC}GKNjCEwhgEbBiKQn`;
 
@@ -203,7 +190,6 @@ const LETS_GO_PSYCHO_ID = "Compendium.essence20.finster_s_monster_matic_cookbook
 // Gang Up (Finster's Monster-Matic Cookbook, Path of Cruelty, Gang Up Role Points, p.282) - see
 // its own check in _getAutomaticCombatModifiers.
 const GANG_UP_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Y18J55UVsdm2aB7E";
-const GOIN_HEELS_ID = "Compendium.essence20.jump_through_time.Item.8QaqczkkaPaUivEC";
 
 import { isWisdomOfTheEldersActive } from "./helpers/wisdom-of-the-elders.mjs";
 import { getProtectionBoostBonus } from "./helpers/protection.mjs";
@@ -238,7 +224,6 @@ import { DECONSTRUCTIONIST_FLAG, DECONSTRUCTIONIST_ID, markDeconstructionist } f
 import { NO_FACTOR_ID, isNoFactorFooled, markNoFactorFooled, clearNoFactorDisguise } from "./helpers/no-factor.mjs";
 import { TEAR_DOWN_ID, isTearDownPending, markTearDownPending, clearTearDownPending } from "./helpers/tear-down.mjs";
 import { getLikeWaterDefenseBonus } from "./helpers/like-water.mjs";
-import { getNotOnMyWatchDefenseBonus } from "./helpers/not-on-my-watch.mjs";
 import { activateTheToughGetGoing } from "./helpers/the-tough-get-going.mjs";
 import { applyLuckyCharm } from "./helpers/lucky-charm.mjs";
 import { applyDsoeDisguise, isDsoeDisguiseActive } from "./helpers/dsoe-disguise.mjs";
@@ -330,7 +315,6 @@ import { applyBrazenStrike } from "./helpers/brazen-strike.mjs";
 import { applyStylishStrike } from "./helpers/stylish-strike.mjs";
 import { isBlazingStrikesActive } from "./helpers/blazing-strikes.mjs";
 import { isNinjaPowerActive } from "./helpers/ninja-power.mjs";
-import { ENERGY_AFFINITY_ID, getEnergyAffinityAlteredStyle } from "./helpers/energy-affinity.mjs";
 import { isVoidWarriorActive } from "./helpers/void-warrior.mjs";
 import { checkEnemyNumberOne, markAttackedEnemyNumberOne } from "./helpers/enemy-number-one.mjs";
 import { checkTeamFocus, markAttackedByAlly } from "./helpers/team-focus.mjs";
@@ -357,7 +341,6 @@ import {
 import { applyFaceMeEffect, FACE_ME_COMPELLER_FLAG } from "./helpers/face-me.mjs";
 import { FLYING_NUISANCE_SNAG_FLAG, markFlyingNuisanceSnag } from "./helpers/flying-nuisance.mjs";
 import { PSYCHO_STRIKE_SNAG_FLAG } from "./helpers/psycho-strike.mjs";
-import { MISTRUSTFUL_HANGUP_ID, MISTRUSTFUL_SNAG_FLAG, markMistrustfulSnag } from "./helpers/mistrustful.mjs";
 import { hasNumbnessResistance } from "./helpers/numbness.mjs";
 import { hasRighteousHeartResistance, RIGHTEOUS_HEART_RESISTANCE_FLAG } from "./helpers/righteous-heart.mjs";
 import { hasAquaElementalAdaptation } from "./helpers/aqua-elemental-adaptation.mjs";
@@ -473,10 +456,6 @@ const LOW_TECH_PRIORITIES_FLAG = 'lowTechPrioritiesUsedThisTurn';
 
 // Disarming Shot - see updatedShiftDataset.disarmingShotAvailable's own comment above.
 const DISARMING_SHOT_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}b4v1GUBwSqnCTozq`;
-
-// Bear Hug (Factions in Action Vol. 2, General Perk, p.94) - its +1 is the Perk's own scaled
-// DamageModifier rule; the Grapple-to-Blunt damage type override is its own check below.
-const BEAR_HUG_ID = "Compendium.essence20.intercontinental_adventures.Item.id5IVoPuSC03mKfZ";
 
 // Evasive (Factions in Action Vol. 2, Red Ninja Faction Perk, p.10): "If you are aware of an
 // Attack, you may always use Evasion for Defense." Same "substitute in whenever it's better" idiom
@@ -610,17 +589,10 @@ const VEHICLE_QUALIFICATION_PERKS_BY_MOVEMENT_TYPE = {
   swim: [SEA_VEHICLE_QUALIFICATION_ID, THE_PROMISE_OF_RICHES_ID],
 };
 
-// Not On My Watch (Factions in Action Vol. 2, Oktober Guard General Perk, p.95) - see
-// helpers/not-on-my-watch.mjs's own doc comment. Only the +1 Toughness/+1 Evasion "while a
-// Defeated teammate is within your Reach" half is built - the reactive "Move towards a
-// newly-Defeated ally" half needs the still-missing "react to an event" hook.
-const NOT_ON_MY_WATCH_ID = "Compendium.essence20.intercontinental_adventures.Item.xH3iQ0NcXp1eFO35";
-
 // Without a Word (Factions in Action Vol. 2, Red Ninja Origin Benefit, p.10): "In Combat, as long
 // as at least one enemy is Frightened, Mesmerized, or Surprised, you gain +1 to all Defenses. This
 // bonus applies to enemies not suffering any of the listed Conditions as long as one of their
-// allies is affected." No printed range ("at least one enemy," full stop) - same unbounded-scan
-// idiom Not On My Watch's own comment above establishes for an identically rangeless clause. The
+// allies is affected." No printed range ("at least one enemy," full stop) - an unbounded scan. The
 // Qualifications half (Cover Grenades/melee weapon upgrades/Stealth upgrade/Limited Athletics
 // (Climbing) Kits) is a plain Requisition-access grant this codebase has no per-item Qualification
 // list to check against (see requisition.mjs's own "returns 'unknown' wherever the item simply
@@ -681,16 +653,6 @@ const SUPPORT_YOURSELF_ID = "Compendium.essence20.mlp_crb.Item.OZrtQuRwCCzeKfV9"
 // processing, alongside the attack's own damageType.
 const ICE_MACHINE_ID = "Compendium.essence20.intercontinental_adventures.Item.m4iS0VQn9z8o6FWy";
 
-// Hierarchy Rank (Mercenary/Crime-syndicate Faction Perk, p.100): "You gain ↑1 on the Skill Tests
-// that target characters of a lower level or whose Threat Level is lower than your level.
-// However, you suffer ↓1 on the Skill Tests that target characters of a higher level or whose
-// Threat Level is higher than your level." A plain getEffectiveLevel(actor) vs
-// getEffectiveLevel(target) comparison (the same PC-Level/NPC-Threat-Level equivalence Just the
-// Facts already established) - see its own check next to the other target-based self-status
-// checks, not gated on isAttack since RAW says "Skill Tests" broadly.
-const HIERARCHY_RANK_ID = "Compendium.essence20.intercontinental_adventures.Item.J9XS0xqlSQwkEwll";
-const GRID_SOLDIER_ID = "Compendium.essence20.jump_through_time.Item.y9F6PkCIw7g6tiqL";
-
 // Coax Surrender (General Hawk's Personnel Files, General Perk, p.174): "As a Standard action, you
 // roll a Persuasion Skill Test against the Willpower or Cleverness of a target. On a success, the
 // target suffers 1 Stun." RAW pulled fresh from the actual PDF - the earlier categorization pass
@@ -749,12 +711,6 @@ const SPLIT_SECOND_REACTION_ID = "Compendium.essence20.jump_through_time.Item.Qh
 // rolls through rollSkill() in practice (see that method's own top comment).
 const ROADSIDE_ASSISTANT_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}AAacA8jm6dyG0WEH`;
 const ROADSIDE_ASSISTANT_ENCOUNTER_FLAG = 'roadsideAssistantUsedThisEncounter';
-const FIRST_STRIKE_ID = `${GI_JOE_CRB}qxqtfBobduwSkfRM`;
-// Kill Shot (Sniper Focus, 20th level, p.75) - see _getd20Operand's own comment for its own
-// 3d20kh half. The reroll-any-Targeting-skill-die half is pure compendium JSON (system.reroll,
-// target:"skillDice", mode:"single", skills:["targeting"]) - the generic reroll engine already
-// handles it, no code needed for that half.
-const KILL_SHOT_ID = `${GI_JOE_CRB}K82Mlwef1QMEsRrP`;
 const DEBILITATING_STRIKE_ID = `${GI_JOE_CRB}dYaTU9IYI3vB5eHs`;
 const QUIET_AS_THE_GRAVE_ID = `${GI_JOE_CRB}UJTt3hP5OwQHBcpf`;
 // Hard Hitter - see its own comment near appliesRolePointsDamage below.
@@ -765,12 +721,6 @@ const HARD_HITTER_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.It
 // being targeted, computed right alongside the ordinary difficulty lookup below.
 const PSYCHOLOGICAL_WARFARE_ID = `${GI_JOE_CRB}GvXCxr0Uj7jPhqJR`;
 
-// Shatter Resolve (Decepticon Directive, Interrogator base, 6th level, p.41): "all Willpower and
-// Cleverness Defenses take a -2 penalty against your Deception and Persuasion Skill Tests." A
-// plain flat subtraction from difficulty, gated on the ATTACKER's own rolled skill and the
-// resolved Defense - computed alongside Psychological Warfare/Ground Suppression just below it.
-const SHATTER_RESOLVE_ID = "Compendium.essence20.decepticon_directive.Item.s3rsoMHOjWY9WfLF";
-
 // Double Agent (Technorganic Secrets, General Perk, p.46): "When interacting with members of the
 // faction, culture, community, or organization you have infiltrated, you gain upshift 1 to all
 // Smarts- and Social-based Skill Tests. Additionally... these members take a -1 penalty to their
@@ -780,8 +730,7 @@ const SHATTER_RESOLVE_ID = "Compendium.essence20.decepticon_directive.Item.s3rso
 // establish - this is a single Roll Options Dialog checkbox (doubleAgentAvailable/
 // applyDoubleAgent) the player checks when the fiction applies, granting whichever half is
 // relevant to the roll: the Smarts/Social shiftUp on a Skill Test, or this -1 Defense penalty
-// (read here, alongside Shatter Resolve/Ground Suppression's own difficulty adjustments) on an
-// attack.
+// (read here, alongside Ground Suppression's own difficulty adjustment) on an attack.
 const DOUBLE_AGENT_ID = "Compendium.essence20.technorganic_secrets.Item.WjTeOJJJmntm6JgT";
 
 // Scapegoat (Cobra Codex, Influence Perk, p.33): "Once per scene, when an effect targets your
@@ -795,7 +744,6 @@ const DOUBLE_AGENT_ID = "Compendium.essence20.technorganic_secrets.Item.WjTeOJJJ
 // carries scapegoatSwapped so its paired Hang-Up ("take 1 point of Essence damage to your Smarts"
 // when the effect still succeeds) lands afterwards - see scapegoatHangUp in helpers/target-riders.mjs.
 const SCAPEGOAT_ID = "Compendium.essence20.cobra_codex.Item.yMihdpSe5ntjRN3R";
-const SILVER_TONGUE_ID = `${GI_JOE_CRB}69ijP0SuQ4demwd9`;
 const SHOCK_AND_AWE_ID = `${GI_JOE_CRB}a5HptfB7nYFLVHkc`;
 // Explosive Aftershock - see its own comment near isExplosiveAftershockAttack below.
 const EXPLOSIVE_AFTERSHOCK_ID = `${GI_JOE_CRB}Kvq0MfPqSya2mf5b`;
@@ -831,7 +779,6 @@ const IMMOVABLE_OBJECT_ID = `${GI_JOE_CRB}QSHsA1peMncG196r`;
 // Protector's Shield (Bodyguard Focus, 10th level, p.110) - see
 // _applyImmovableObjectImmunity's own widened doc comment below for the crit-immunity half.
 const PROTECTORS_SHIELD_ID = `${GI_JOE_CRB}tGdWBibKFTYfXzVu`;
-const IMPENETRABLE_SHIELD_ID = `${GI_JOE_CRB}eEUl7OA9yWAk0QD3`;
 const PLATE_PIERCING_ID = `${GI_JOE_CRB}II5giKn7vCDeB2nk`;
 // Shared by Infantry and Vanguard - a single compendium Perk both Roles grant, whose chosen
 // Fighting Style lives on its own system.choice field (see documents/actor.mjs's own identical
@@ -843,17 +790,6 @@ const ALPHA_STRIKE_ROUND_FLAG = 'alphaStrikeLastRound';
 const HEAVY_ORDNANCE_ID = `${GI_JOE_CRB}b2viBBrNk08Kc9ts`;
 const EMPTY_THE_MAG_ID = `${GI_JOE_CRB}zbrr3W30rFTDTayX`;
 const NOWHERE_IS_SAFE_ID = `${GI_JOE_CRB}oUAeJZ7K1P7Fu8Bc`;
-
-// BRRRRRRRRRRRRRRT (GI Joe CRB, Heavy Ordnance Focus, 10th level, p.111): "Once per encounter when
-// you make a Multiple Targets attack, your allies gain ↑1 shift for the next turn and may
-// immediately take a Sprint action." Only the ally shiftUp broadcast half is built - "may
-// immediately take a Sprint action" is action economy. Triggers on making a qualifying attack at
-// all (no hit/success check in RAW, unlike You Can Do It, Too!'s own Critical-Success gate), so
-// it's checked in _rollSkillHelper's post-hit processing anyway (the same place
-// checkContext.isMultipleTargetsWeapon is already available) but unconditional on `results`.
-// "For the next turn" approximated as "their own next roll," this project's usual duration idiom.
-const BRRRRRRRRRRRRRRT_ID = `${GI_JOE_CRB}U3NTi35bk2qI8oB6`;
-const BRRRRRRRRRRRRRRT_ENCOUNTER_FLAG = 'brrrrrrrrrrrrrrtUsedThisEncounter';
 
 // MLP CRB p.123 / PR CRB p.95 "Expertise": "Ignore the first ↓1 dice downshift applied to your
 // Skill Tests" - scoped to whichever one skill the player chose for this Perk instance (system
@@ -903,7 +839,7 @@ const BRAZEN_STRIKE_ID = "Compendium.essence20.jump_through_time.Item.zUmuHsSmS3
 // Warrior (both one-way flag toggles switched on via a Power click), this half of Cryogenic Touch
 // is a free, no-cost, always-on characteristic once the Power is taken at all - so it's checked via
 // a plain actorHasPower, not a flag. The separate "spend 1 Power on hit to inflict Impaired" half
-// is built independently below (cryogenicTouchAvailable).
+// is the Power's own DialogSwitch (key cryogenicTouch) and hit Trigger.
 const CRYOGENIC_TOUCH_ID = "Compendium.essence20.jump_through_time.Item.dDHjUwjLlGJhiQvI";
 
 // Stylish Strike (A Jump Through Time, Grid Power, p.58) - see helpers/stylish-strike.mjs's own
@@ -936,10 +872,6 @@ const SOLO_SHOT_ID = "Compendium.essence20.jump_through_time.Item.SS1IgnoreRange
 // In (grant Skill ranks for the scene) built as a same-day follow-on - see
 // helpers/magically-fit-in.mjs's own doc comment; MYSTICAL_UNDERSTANDING_ID itself is exported
 // from and owned by that file since it's the more involved of this Perk's 2 built benefits.
-
-// Charge Into Battle (Through the Shattered Grid, Guardian of Eltar, 2nd level, p.72) - see its
-// own comment near calculatedShiftUp above and multiple-targets.mjs's own widening.
-const CHARGE_INTO_BATTLE_ID = "Compendium.essence20.through_the_shattered_grid.Item.34O7Y77lZpuhng3G";
 
 // Ultimate Magna Defender (Through the Shattered Grid, Magna Defender, 20th level, p.25) - see its
 // own damage-bonus comment below. Its "+2 all Defenses" and "Edge on Strength" bullets are already
@@ -997,10 +929,6 @@ const DOWNSHIFT_IMMUNITY_GEAR = [
 // long-range Snag it suppresses.
 
 const LONG_RANGE_RIFLE_ID = `${TF_CRB}8Hi76APCo9QRnbLE`;
-
-// Just the Facts (Analyst, 16th level, p.62) - see its own check, next to First Strike above (the
-// non-combat-targeting infrastructure both of these share).
-const JUST_THE_FACTS_ID = `${TF_CRB}v6A7mQwdKQR6J5fR`;
 
 const DRILLING_SHOT_ID = `${TF_CRB}M0aeDLMOUTy7ju90`;
 const ANALYZE_TARGET_ID = `${TF_CRB}UjzBPz4iUBoi8Kyk`;
@@ -1327,10 +1255,6 @@ const EVOLVED_INSTINCTS_ID = "Compendium.essence20.jump_through_time.Item.fQM1ke
 // helpers/two-heads-are-better-than-one.mjs's own doc comment for the self-Lend-Assistance half
 // (the ↑1 Alertness half is a plain compendium ActiveEffect, no code needed).
 
-// Tooth And Claw - the Accurate ↑1 is a RollModifier on both printings; the damage-type half is the
-// unarmed damage-type override chain below.
-const TOOTH_AND_CLAW_ID = "Compendium.essence20.technorganic_secrets.Item.Z4lShGtDBa2zQ5ov";
-
 // Over the Candlestick (Technorganic Secrets, Climber/Nimble Origin Benefit, p.38): "you gain ↑1
 // on Acrobatics and Infiltration Skill Tests and are unimpeded by rough terrain. Additionally,
 // choose one: Agile Reflexes (once/scene, when an attack targets your Toughness, you may use
@@ -1401,15 +1325,6 @@ const ENERGON_EFFICIENCY_ID = "Compendium.essence20.decepticon_directive.Item.Zt
 const IMAGINATIVE_ENGINEERING_ID = "Compendium.essence20.decepticon_directive.Item.DWWXdrhaWMDnNhNQ";
 const IMAGINATIVE_ENGINEERING_ROUND_FLAG = 'imaginativeEngineeringUsedThisRound';
 
-// Two Steps to the Right (Enigma of Combination, Surveyor Focus, 10th level, p.36) - shares Lay
-// of the Land's own benefits (both halves) with allies within 60ft. See its own checks below and
-// next to the Cover shift-down above.
-const TWO_STEPS_TO_THE_RIGHT_ID = "Compendium.essence20.enigma_of_combination.Item.a5xcpj3rHW5EW354";
-
-// Bulwark (GI Joe CRB, Tank Focus, 17th level, p.99) - see helpers/bulwark.mjs's own doc comment
-// and _hasNearbyBulwarkCover's own comment below for the "provide cover to adjacent allies" half.
-const BULWARK_ID = `${GI_JOE_CRB}7758n3XWOzhSjdOk`;
-
 // Raze and Ruin (Raider, Siegemaster Focus, 20th level, p.64) - see its own
 // _applyRazeAndRuinDamage doc comment.
 const RAZE_AND_RUIN_ID = `${DECEPTICON_DIRECTIVE}eYvcwtOPZ1Pt8q9X`;
@@ -1468,7 +1383,6 @@ const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
 const ENERGY_BEAM_ID = `${MLP_CRB}tQHr5bWsrkrm1ZHZ`;
 const LANCING_BEAM_ID = `${MLP_CRB}MaHixiXm7JuS1tCq`;
 const EXPLOSIVE_BEAM_ID = `${MLP_CRB}VLdz7YvUq2AaUFNz`;
-const BARRELING_BEAM_ID = `${MLP_CRB}FpQsQ0FCBFGHThQV`;
 const BEAM_VOLLEY_ID = `${MLP_CRB}UhkhFqFDYjub1a8k`;
 const MIND_BEAM_ID = `${MLP_CRB}gF8otV8Ag9axRp2Z`;
 
@@ -1498,41 +1412,9 @@ const SADISTIC_HANGUP_ID = "Compendium.essence20.decepticon_directive.Item.a7ch8
 // (helpers/extensions/situational2/initiative.mjs).
 export const INITIATIVE_EXTENSIONS = [];
 
-// Agency (Across the Stars, Influence Perk, p.42, RE-CATEGORIZED 2026-09-15 out of a 17-item
-// narrative bucket that was never individually RAW-verified): "You gain Edge on the Skill
-// associated with your agency... your Wealth Tests may never use a die of a lesser value than the
-// Skill Rank of your agency's Skill." Same choiceType:'skills' + system.choice shape as Eltarian
-// Observer for the Edge half (built alongside that check below); the Wealth-floor half lives
-// earlier in this function, alongside Jacket Wrestler's own shift-substitution. The Hang-Up
-// ("when you Fumble in your agency's Skill, you don't generate a Story Point") has nothing to
-// suppress - this codebase doesn't automate the base "Fumble grants a Story Point" core rule
-// anywhere yet (the same already-flagged gap blocking Academic Studies' own Fumble-doubling half),
-// so it stays unbuilt for the same reason, not a new one.
-const AGENCY_ID = "Compendium.essence20.across_the_stars.Item.bGKG7artYs7uHHz4";
-
 // Surgical Operators (Ferocious Fighters, Anti-Venom Task Force Faction Perk, p.72) - a Roll
 // Options Dialog switch in helpers/extensions/fix3-gij/gij-fixes.mjs.
 
-// Percussive Maintenance (Technorganic Secrets, General Perk, p.46): "Technology is a Strength
-// Essence Skill for you in addition to a Smarts Essence Skill" (already a plain compendium Active
-// Effect on this Item - system.skills.technology.essences.strength). "In addition, when you get a
-// Critical Success on a Technology Skill Test to repair a device, you may roll with an Edge the
-// next time you use that device." "That device" is approximated as "your own next Technology
-// Skill Test" - this codebase has no per-item device-use tracking to scope a bank to one specific
-// Item, the same closest-existing-mechanism idiom this project already accepts elsewhere (e.g.
-// Adventurer/Scientific Method's own unscoped-by-target banks). Banked on a Critical Success
-// (multiplier >= 2, this system's own Degrees-of-Success proxy) in the results.map() section below
-// - see PENDING_PERCUSSIVE_MAINTENANCE_FLAG's own bank site - consumed here on the very next
-// Technology roll, same scoped-consumption shape as Inner Magic/Terrifying above.
-const PERCUSSIVE_MAINTENANCE_ID = "Compendium.essence20.technorganic_secrets.Item.qZ7QX3nEt6C1blcj";
-const PENDING_PERCUSSIVE_MAINTENANCE_FLAG = 'pendingPercussiveMaintenance';
-
-// Down the Barrel (Decepticon Directive, Triggerbot Focus, 3rd level, p.49): "you gain Edge on
-// all Intimidation and Persuasion Skill Tests when you are wielding your favorite weapon." Reads
-// the Favorite Weapon choice back via helpers/favorite-weapon.mjs's own getFavoriteWeaponItem() -
-// "wielding" reads as that weapon's own system.equipped flag, the same equipped-weapon idiom
-// Linked/Wait For An Opening already establish elsewhere in this file.
-const DOWN_THE_BARREL_ID = "Compendium.essence20.decepticon_directive.Item.U5vb2NBZG6F6SgK1";
 
 // Ricochet (Decepticon Directive, Triggerbot Focus, 17th level, p.49): "once per turn when making
 // an attack using your favorite weapon, you can angle your shot so it comes at your target
@@ -1597,10 +1479,6 @@ const ANIMAL_IDS = [
 // Martial Artist (PR CRB, Hang-Up, p.70 / GI Joe CRB, Hang-Up, p.50) - a Roll Options Dialog
 // switch on the roller's side (only goading rolls qualify): an incoming item rule on the Hang-Up.
 
-// Trustworthy (Honesty, 2nd level, p.78) - the roller's own half (Deception always fails), next to
-// Just the Facts' own Immune-half idiom it reuses. Its +4 Cleverness half is a Defense rule on the item.
-const TRUSTWORTHY_ID = `${MLP_CRB}oPMDDfBeK9VibPvW`;
-
 // Stay Humble (Honesty, 9th level, p.78): "when you fail a Persuasion Skill Test, you gain a
 // Friendship Point." A reactive trigger (unlike Curb Your Enthusiasm's own "Use" button - see
 // helpers/banked-buffs.mjs's own CURB_YOUR_ENTHUSIASM_ID comment) - flagged onto checkContext
@@ -1650,19 +1528,6 @@ const MIGHT_MAKES_RIGHT_ID = "Compendium.essence20.decepticon_directive.Item.lIi
 // "combat" elsewhere; applied in _rollSkillHelper's post-hit loop, same unconditional
 // single-target Frightened shape as Snarl's own identical clause.
 const PREDACON_ID = "Compendium.essence20.technorganic_secrets.Item.jRD6G5Z6eblTvxeO";
-
-// Force (Heavy Hitter Influence, p.51): "If you make a successful unarmed attack using Might, you
-// may do an additional point of Health damage. But using this ability is exhausting so you may
-// only use it once per scene." Fleeting Energy (its own paired Hang-Up, p.51): "After you use the
-// Heavy Hitter Influence's Force Perk, you suffer ↓1 on Strength based Skill Tests until the end
-// of your next turn." Once/scene approximated via hasUsedThisEncounter (always available outside
-// combat, the same accepted looseness Specialist's own doc comment already establishes) - "unarmed"
-// detected via no parent weapon Item, the same proxy Phantom Ranger Prime/Power Adaptation's own
-// unarmed clauses already use.
-const FORCE_ID = `${MLP_CRB}p4qXDtj2RCJcibCh`;
-// The penalty belongs to the Hang-Up, not to Force itself - a Force user without Fleeting Energy
-// (or ignoring it via Matured) never banks it.
-const FLEETING_ENERGY_HANGUP_ID = `${MLP_CRB}PblwqCeE7Zyb3jF4`;
 
 // Shoots and Scores (Sporty Influence, p.60): "When you achieve Critical Success at an Athletics
 // Skill Test, you gain a Friendship point." A reactive trigger flagged onto checkContext and
@@ -1848,9 +1713,6 @@ const ITS_RIGHT_THERE_ID = `${WTNV_CITIZENS_GUIDE}PHg5CJEy13v6G7a1`;
 // is 35 feet." The +2 Evasion half is a compendium Active Effect; the flat-35ft Movement half
 // needs documents/actor.mjs#_prepareMovement (the one permitted movement-math touch-point).
 
-// "A" for Effort! (Intern Origin, p.30) - see usesAForEffort's own comment above.
-const A_FOR_EFFORT_ID = `${WTNV_CITIZENS_GUIDE}O8o96wtAeeMeCmUc`;
-
 // Everything is Inspiration (Hobbyist Origin, p.32): "You add an additional Story Point to the
 // player pool at the beginning of each game session and once per scene when you fail a Skill
 // Test." The session-start half isn't automated - this codebase has no "a new game session has
@@ -1895,16 +1757,6 @@ const SABER_TOOTHED_ID = `${FEROCIOUS_FIGHTERS}RVGlDHOKipqZ1e7i`;
 // actionType of its own), refunding the first if the second can't be afforded, rather than adding
 // a new "twoFree" cost key nothing else would ever use.
 const GET_A_GRIP_ID = `${DECEPTICON_DIRECTIVE}CkeKNYNaotNlxWxd`;
-
-// Tooth and Claw, Decepticon Directive printing (Monstrosity Origin Benefit, p.36) - same RAW text
-// as the Technorganic Secrets printing above (TOOTH_AND_CLAW_ID), reprinted with a different
-// compendium id; both are checked together everywhere TOOTH_AND_CLAW_ID appears below. Its own
-// 'toothAndClaw' choiceType (helpers/perk-handler.mjs) now lets the damage-type half - "inflict
-// Sharp or Blunt damage (based on the attack)" - join the unarmed damage-type override chain
-// further down, something the Technorganic Secrets copy's own older comment above said wasn't
-// possible; that's no longer true now that this chain exists, but only THIS printing carries the
-// choiceType field so far (see codeneeds_packs.json for adding it to the older printing too).
-const TOOTH_AND_CLAW_DD_ID = "Compendium.essence20.decepticon_directive.Item.bHQGteFX7pdnslOx";
 
 // Takedown Expert - see its own Edge-grant comment above, and isTakedownAttempt's own comment for
 // its post-hit half.
@@ -2064,14 +1916,6 @@ const BUMP_AND_RUN_ID = "Compendium.essence20.enigma_of_combination.Item.4eA2ktw
 // Claw/Bite/Bash/Ram/Fly-By) is inherently melee-range in this system. See _applySmashDamage.
 const SMASH_ID = "Compendium.essence20.enigma_of_combination.Item.psPOXCaZFo7yiRzD";
 
-// Super Specialized (General Perk, p.127): "Choose a Skill you have at least one Specialization
-// in. You gain ↑1 with that Skill when your Specializations apply." Which Skill is chosen via the
-// existing choiceType:'skills' + system.choice mechanism (same as Awesome/Cutie Mark Perk) -
-// "when your Specializations apply" is read as skillRollOptions.isSpecialized (the actual
-// Specialized die-pool being used on this roll), checked post-dialog alongside Watchful Eyes'
-// own post-dialog-resolution reads.
-const SUPER_SPECIALIZED_ID = `${MLP_CRB}TuSb6usDweSzf5S9`;
-
 // Air Born (Pegasus Origin Perk, p.37): "Choose one of the following as your starting Movement:
 // 15ft ground/45ft aerial, 30ft/30ft, or 45ft/15ft." Sets the actor's own BASE ground/aerial
 // Movement outright (not an added bonus) - see AIR_BORN_MOVEMENT_OPTIONS' own doc comment in
@@ -2111,18 +1955,6 @@ const DOGFIGHTER_ID = "Compendium.essence20.across_the_stars.Item.twl2N01FD8XKO0
 // wording actually names a die size). The "automatically pass the emergency disembark Skill Test"
 // clause stays unbuilt - no such Skill Test exists anywhere in this codebase to auto-pass.
 const PEERLESS_PILOT_PR_ID = `${PR_CRB}dHDCKO4k7dlzyXbC`;
-// Martial Zord (PR CRB, Zord Feature, p.137): "The Zord's melee attacks are more in tune with
-// the driver, granting +1." A Zord Feature (a `feature` item on the ZORD itself, matched via
-// helpers/zord-features.mjs - not a Perk on the pilot), so this checks the ROLLING actor (the
-// Zord) for the Feature and _getVehicleDriver for "is it actually being piloted right now,"
-// the mirror image of Motor Lancer (a Perk on the pilot boosting their own attack
-// while riding ANY vehicle) - here it's the Zord's own attack, gated on having a driver at all.
-const MARTIAL_ZORD_ID = `${PR_CRB}nQcU1SrVChPaXXpq`;
-// Zero-G (PR CRB, Zord Feature, p.138): "this Zord's ranged attacks all gain +1." The Aerial
-// Movement half (+60ft) is a static compendium Active Effect on the Feature item itself; this
-// covers the live combat-roll half, checked the same "Feature on the rolling Zord" way as
-// Martial Zord above.
-const ZERO_G_ID = `${PR_CRB}8xV4xaz8Hnqk4TgQ`;
 // Titan Body (PR CRB, Zord Feature, p.140): "The Zord's base melee attacks deal 3 damage." The
 // Towering Size/+2 Health/Strength+1/Speed-2 halves are already a static compendium Active
 // Effect on the item itself (predates this session). This is the one live half: a FLOOR (not a
@@ -2288,39 +2120,6 @@ const ELTARIAN_TRAINING_ID = "Compendium.essence20.through_the_shattered_grid.It
 // (if simplified) treatment of Push/Shove rather than opening a new mechanic from scratch.
 const JACKET_WRESTLER_ID = "Compendium.essence20.intercontinental_adventures.Item.59masYwRaPC1AuhQ";
 
-// Aerial Acrobat (Cobra Codex, Technician Rocketeer Focus, 3rd level, p.66): "At 3rd level, you
-// can use Acrobatics or Driving for attacks, as long as you used your Jet Pack to move this
-// turn." "Used your Jet Pack to move this turn" is dropped, the same narrow-qualifier idiom
-// Human Bullet's own identical Jet Pack clause already established (helpers/human-bullet.mjs) -
-// this codebase has no "moved via Jet Pack this turn" tracking at all. Unlike every "may use X"
-// substitution offered as a Roll Options Dialog checkbox elsewhere in this project, this is built
-// unconditionally (Jacket Wrestler's own shape above) rather than adding a new dialog checkbox:
-// since a lower shift-list position is strictly better, auto-substituting whichever of the
-// actor's own Acrobatics/Driving/current attack skill is best costs the player nothing they'd
-// ever decline.
-const AERIAL_ACROBAT_ID = `${COBRA_CODEX}sHtvGtD2PuXzpuxC`;
-const CIRCUIT_BREAKER_ID = `${TF_CRB}9Tnrm8Nb1xDaNCao`;
-
-// Cultural Connection (Ferocious Fighters, Diplomat Focus, 1st level, p.14): "You can use Culture
-// instead of Deception or Persuasion Skill Tests as long as you have at least a d2 in the Skill
-// you're replacing. At the 10th Role Level, when you use Culture in place of Deception or
-// Persuasion, you roll your Skill Test with the benefits of being specialized." Unlike Jacket
-// Wrestler/Aerial Acrobat above, this isn't attack-scoped, so it's checked directly against
-// rolledSkill instead of gating on item?.type == 'weaponEffect'. "At least a d2 in the Skill
-// you're replacing" is read as "the replaced Skill is actually trained" - d20 is this project's
-// own untrained-Skill placeholder (see E20.skillShiftList), the one value strictly worse than d2.
-const CULTURAL_CONNECTION_ID = `${FEROCIOUS_FIGHTERS}m90eNtuZvLWouyRc`;
-
-// Brutal Verbalities (Sgt. Slaughter Sourcebook, Officer, 1st level, p.10-11): "Intimidation is a
-// Social Skill as well as a Strength Skill for you" (a separate, already-existing essence-override
-// Active Effect, not touched here). "You can use Intimidation in place of Deception and Persuasion
-// for Officer Role Perks, such as Rouse" is narrowed to just Rouse (helpers/rouse.mjs) - the only
-// Officer Role Perk in this codebase that actually fires a hardcoded Deception/Persuasion Skill
-// Test (dataset.isRouseAttempt), so it's the only place with anything to substitute into. "You can
-// spend a Story Point to use Intimidation on a creature normally immune to it" needs an
-// immunity-check hook this codebase doesn't have for Skill Tests (only for damage types), so it's
-// not built.
-const BRUTAL_VERBALITIES_ID = `${SGT_SLAUGHTER_SOURCEBOOK}S9AyX2OtvvrE9oM0`;
 // Robot (GI Joe CRB, pet/drone Perk): "You are susceptible to effects that affect machines, such as the
 // Electromagnetic element" - a holder counts as a robot for Electromagnetic's ↑3.
 const ROBOT_PERK_ID = `${GI_JOE_CRB}xV4nnjMxlb4dmyxo`;
@@ -2463,15 +2262,6 @@ export const PENDING_NOW_IM_ANGRY_FLAG = 'pendingNowImAngry';
 // categorization pass (see project plan's own writeup).
 const BENEATH_THE_HELMET = "Compendium.essence20.beneath_the_helmet.Item.";
 
-// Zord Sentience (Beneath the Helmet, Zord Feature, p.72, prerequisite Energem Infusion): "The
-// Zord's Driving (Autopilot) Skill gains ↑1." The reciprocal "default Smarts and Social of 2
-// while unpiloted" half is a Defense substitution living in helpers/combat.mjs#getDefenseValue
-// instead (the same split Relic Key already uses between its own Defense/Skill halves). Unlike
-// Relic Key (which has no Skill half at all), this bonus only ever matters unpiloted - a driven
-// Zord rolls its DRIVER's Driving, not its own - so it's gated on !_getVehicleDriver the same way
-// Martial Zord/Zero-G below are gated on driver PRESENCE (the opposite condition).
-const ZORD_SENTIENCE_ID = `${BENEATH_THE_HELMET}idhVrfBIKELsl3OW`;
-
 // Menacing Glare (Dark Ranger, 2nd level, p.39) - see helpers/menacing-glare.mjs's own doc
 // comment.
 const MENACING_GLARE_ID = `${BENEATH_THE_HELMET}eWlflRHYAVB9p5Z0`;
@@ -2564,14 +2354,6 @@ const NINJA_POWER_ID = `${PR_CRB}wN5rjEQIJH68rWCd`;
 // "spend 1 Power to mirror your own active Conditions onto nearby allies" half needs a novel
 // mirror-my-own-active-Conditions-onto-allies mechanic with no precedent anywhere in this project.
 const IRON_BRAVADO_ID = `${PR_CRB}8bmqJ7hyOAcVNB1Y`;
-
-// Pay It Forward (Red Spectrum Modification, replaces Let's Bring 'Em Together!, p.45): "While
-// Morphed, allies within 10 feet of you gain +1 to all Defenses." Only this clause is built - the
-// "Lend Assistance offers +2 instead of +1" clause needs the still-unbuilt general Lend Assistance
-// action, and "+1 on Skill Tests that are part of a Group Test" has no Group Test concept anywhere
-// in this codebase (checked directly, not assumed). See its own check in the per-target
-// checkEntries construction.
-const PAY_IT_FORWARD_ID = `${PR_CRB}M3pQgNMsU5hU5dMN`;
 
 // Defensive Flexibility (Blue Spectrum Modification, replaces Grid Tech, p.45) - see
 // helpers/defensive-flexibility.mjs's own doc comment for both halves' full build note.
@@ -3244,19 +3026,8 @@ export class Dice {
       await clearPendingBonus(actor, SHOULDER_TO_SHOULDER_FLAG);
     }
 
-    // Calm Beast, Chivalrous, Puzzle Solver and Psych 101 are item rules (RollModifier).
-    // Charge Into Battle (Through the Shattered Grid, Guardian of Eltar, 2nd level, p.72): "↑1 on
-    // Attack Skill Tests against multiple direct targets." Computed here (before the shift total
-    // is finalized and handed to the dialog), a separate, earlier call to the same
-    // isMultipleTargetsWeapon() check dice.mjs's own damage-bonus block calls again later for its
-    // own checkContext bookkeeping - cheap and pure, no need to thread the result through. The
-    // "grants Multiple Targets (2) to a wielded Melee Power Weapon lacking it" clause widens
-    // isMultipleTargetsWeapon() itself (see its own doc comment in multiple-targets.mjs), so it's
-    // already reflected here automatically, not a separate check.
-    if (item?.type == 'weaponEffect' && isMultipleTargetsWeapon(actor, item)
-      && actorHasPerk(actor, CHARGE_INTO_BATTLE_ID)) {
-      calculatedShiftUp += 1;
-    }
+    // Calm Beast, Chivalrous, Puzzle Solver, Psych 101 and Charge Into Battle (check:multipleTargetsWeapon)
+    // are item rules (RollModifier).
 
     // Expertise cancels one point of downshift out of the fully-stacked total ("the first"),
     // not any one particular source of it - see EXPERTISE_PERK_IDS's own doc comment.
@@ -3349,23 +3120,6 @@ export class Dice {
       }
     }
 
-    // Aerial Acrobat - see AERIAL_ACROBAT_ID's own comment above. Same unconditional-substitution
-    // shape as Jacket Wrestler just above, but over any Attack (not one fixed damageType) and
-    // between two alternate skills instead of one - keeps whichever of the current attack skill,
-    // Acrobatics, or Driving has the best (lowest-index) shift-list position.
-    if (item?.type == 'weaponEffect' && actorHasPerk(actor, AERIAL_ACROBAT_ID)) {
-      const rollData = actor.getRollData();
-      let bestIndex = E20.skillShiftList.indexOf(initialShift);
-      for (const altSkill of ['acrobatics', 'driving']) {
-        const altShift = rollData.skills[altSkill]?.shift;
-        const altIndex = E20.skillShiftList.indexOf(altShift);
-        if (altShift && altIndex >= 0 && (bestIndex < 0 || altIndex < bestIndex)) {
-          initialShift = altShift;
-          bestIndex = altIndex;
-        }
-      }
-    }
-
     // Kill Counter (Quartermaster's Guide p.56): "Crew can use Driving in place of Intimidation against
     // intelligent creatures who can see the vehicle" - the better of the two.
     if (rolledSkill == 'intimidation' && canUseDrivingForIntimidation(actor)) {
@@ -3377,86 +3131,23 @@ export class Dice {
       }
     }
 
-    // Circuit Breaker (Transformers CRB, Scientist, base grant, p.79): "You can use the Technology
-    // Skill for attacks with Electric weapons." Same unconditional best-of substitution shape as
-    // Jacket Wrestler above (a fixed damageType, one alternate skill), gated on the attack's own
-    // Electric damage type or trait the same way _getAutomaticCombatModifiers' own Electric-weapon
-    // check already reads it.
-    if (item?.type == 'weaponEffect' && actorHasPerk(actor, CIRCUIT_BREAKER_ID)
-      && (item.system.damageType == 'electric'
-        || this._getParentWeapon(actor, item)?.system.itemAndUpgradeTraits?.includes('electric'))) {
-      const technologyShift = actor.getRollData().skills.technology?.shift;
-      const currentIndex = E20.skillShiftList.indexOf(initialShift);
-      const technologyIndex = E20.skillShiftList.indexOf(technologyShift);
-      if (technologyShift && technologyIndex >= 0 && (currentIndex < 0 || technologyIndex < currentIndex)) {
-        initialShift = technologyShift;
-      }
-    }
-
-    // Cultural Connection - see CULTURAL_CONNECTION_ID's own comment above. Same unconditional
-    // best-of substitution as Aerial Acrobat just above, gated on the replaced Skill actually
-    // being trained (not d20), plus the 10th-Role-Level Specialized upgrade.
-    if (['deception', 'persuasion'].includes(rolledSkill) && actorHasPerk(actor, CULTURAL_CONNECTION_ID)
-      && initialShift != 'd20') {
-      const cultureShift = actor.getRollData().skills.culture?.shift;
-      const currentIndex = E20.skillShiftList.indexOf(initialShift);
-      const cultureIndex = E20.skillShiftList.indexOf(cultureShift);
-      if (cultureShift && cultureIndex >= 0 && cultureIndex < currentIndex) {
-        initialShift = cultureShift;
-        if (getEffectiveLevel(actor) >= 10) {
-          updatedShiftDataset.isSpecialized = true;
-        }
-      }
-    }
-
-    // Brutal Verbalities - see BRUTAL_VERBALITIES_ID's own comment above. Same unconditional
-    // best-of substitution shape as Aerial Acrobat/Cultural Connection above, scoped to Rouse's
-    // own flat Persuasion check.
-    if (dataset.isRouseAttempt && rolledSkill == 'persuasion' && actorHasPerk(actor, BRUTAL_VERBALITIES_ID)) {
-      const intimidationShift = actor.getRollData().skills.intimidation?.shift;
-      const currentIndex = E20.skillShiftList.indexOf(initialShift);
-      const intimidationIndex = E20.skillShiftList.indexOf(intimidationShift);
-      if (intimidationShift && intimidationIndex >= 0 && intimidationIndex < currentIndex) {
-        initialShift = intimidationShift;
-      }
-    }
-
-    // Agency - see AGENCY_ID's own comment above. Wealth-floor half: unlike Jacket Wrestler's own
-    // unconditional substitution, this only raises the shift, never lowers it (a real "floor" -
-    // "may never use a die of a LESSER value than"), so it compares both shifts' own position in
-    // the shared skillShiftList (a lower index is a better die) and keeps whichever is best.
-    const agencyChoice = findPerk(actor, AGENCY_ID)?.system.choice;
-    if (rolledSkill == 'wealth' && agencyChoice) {
-      const agencySkillShift = actor.getRollData().skills[agencyChoice]?.shift;
-      const currentIndex = E20.skillShiftList.findIndex(s => s == initialShift);
-      const agencyIndex = E20.skillShiftList.findIndex(s => s == agencySkillShift);
-      if (agencyIndex != -1 && agencyIndex < currentIndex) {
-        initialShift = agencySkillShift;
-      }
-    }
-
     // Item rules' DieSubstitution (rules/adapter.mjs#ruleDieSubstitution): another Skill's die, the best
-    // of several, or a floor - after the hand-written substitutions above.
+    // of several, or a floor - after the hand-written substitutions above (Aerial Acrobat, Circuit
+    // Breaker, Cultural Connection, Brutal Verbalities and Agency's Wealth die are best-of rules, so
+    // their order among themselves and Kill Counter doesn't matter; Jacket Wrestler's outright swap
+    // stays above, ahead of them).
     const dieRules = ruleDieSubstitution(actor, game.user?.targets?.first?.()?.actor ?? null, { item, rolledSkill, rolledEssence, dataset }, initialShift);
     initialShift = dieRules.shift;
     if (dieRules.specialize) {
       updatedShiftDataset.isSpecialized = true;
     }
 
-    // "A" for Effort! (Intern Origin, p.30): "Once per session, when you attempt an untrained
-    // Skill Test, you still roll a d2 Skill Die and don't suffer a Snag." Auto-applied and
-    // auto-consumed (no dialog, no "Use" button) the first time it actually matters in the scene -
-    // same hasUsedThisEncounter/markUsedThisEncounter idiom as Adaptable above. Checked against
-    // dataset.shift directly (the raw, pre-computation value) rather than initialShift, since
-    // initialShift may already have been floored to d2 above for an unrelated reason.
-    const usesAForEffort = dataset.shift == 'd20' && actorHasPerk(actor, A_FOR_EFFORT_ID)
-      && !hasUsedThisEncounter(actor, 'aForEffortUsedThisEncounter');
-    if (usesAForEffort) {
-      initialShift = 'd2';
-    }
+    // "A" for Effort!'s once-per-session d2 and no Snag on an untrained roll is the Origin's own
+    // DieSubstitution floor rule (roll:dataset:shift=d20, limit per session), just above.
 
-    // Basic Intelligence - see BASIC_INTELLIGENCE_ID's own comment above. Same floor-to-d2 shape
-    // as "A" for Effort! just above, but unconditional/unlimited (no once-per-session gate).
+    // Basic Intelligence - see BASIC_INTELLIGENCE_ID's own comment above. Checked against
+    // dataset.shift directly (the raw, pre-computation value) rather than initialShift, and set
+    // outright - even over a die a substitution above improved.
     const usesBasicIntelligence = dataset.shift == 'd20' && actorHasPerk(actor, BASIC_INTELLIGENCE_ID);
     if (usesBasicIntelligence) {
       initialShift = 'd2';
@@ -3570,16 +3261,8 @@ export class Dice {
         || !!specialization?.snag,
     };
 
-    // "A" for Effort! - see usesAForEffort's own comment above. Cancels Snag from ANY source
-    // (same "override the last write before the dialog" idiom Merit Badges already established)
-    // and marks the scene used, now that the roll is confirmed to actually be untrained.
-    if (usesAForEffort) {
-      skillDataset.snag = false;
-      await markUsedThisEncounter(actor, 'aForEffortUsedThisEncounter');
-    }
-
     // Basic Intelligence - see usesBasicIntelligence's own comment above. Cancels Snag from ANY
-    // source, same idiom as "A" for Effort! - no encounter flag to mark, this one has no cap.
+    // source (the "override the last write before the dialog" idiom) - no cap to mark.
     if (usesBasicIntelligence) {
       skillDataset.snag = false;
     }
@@ -3775,14 +3458,7 @@ export class Dice {
     updatedShiftDataset.angryAvailable = rolledEssence == 'strength' && actorHasPerk(actor, ANGRY_ID)
       && !hasUsedThisEncounter(actor, 'angryUsedThisEncounter');
 
-    // Two Steps to the Right - see TWO_STEPS_TO_THE_RIGHT_ID's own comment above. Lay of the
-    // Land's own Infiltration/Survival Edge is a plain compendium Active Effect (so a holder
-    // already gets it for free); this only needs to broadcast it to a NEARBY ally who doesn't
-    // hold Lay of the Land themselves.
-    if ((rolledSkill == 'infiltration' || rolledSkill == 'survival')
-      && getNearbyAllyTokens(actor, 60).some(token => actorHasPerk(token.actor, TWO_STEPS_TO_THE_RIGHT_ID))) {
-      skillDataset.edge = true;
-    }
+    // Two Steps to the Right's Edge for allies within 60 ft is the Perk's own aura RollModifier.
 
     // Tourniquet Line Chef / EMT Crash Course (Medicine), Astro-Sense (Space / Astro-Nav) and
     // Broadcaster (Communications) are RollModifier rules on their own items.
@@ -3837,11 +3513,7 @@ export class Dice {
       }
     }
 
-    // Down the Barrel - see DOWN_THE_BARREL_ID's own comment above.
-    if (['intimidation', 'persuasion'].includes(rolledSkill) && actorHasPerk(actor, DOWN_THE_BARREL_ID)
-      && getFavoriteWeaponItem(actor)?.system.equipped) {
-      skillDataset.edge = true;
-    }
+    // Down the Barrel's Edge (check:favoriteWeaponEquipped) is the Perk's own RollModifier.
 
     // Genius (Technician, 15th level, p.104): "treat all Skill Tests related to your Role Skills
     // as Specialized." "Role Skills" is a real, per-actor list - the actor's own base Role Item's
@@ -3858,14 +3530,6 @@ export class Dice {
     if (isConsultMemoriesActive(actor, rolledSkill)) {
       updatedShiftDataset.isSpecialized = true;
       updatedShiftDataset.shiftUp += 2;
-    }
-
-    // Percussive Maintenance - see PERCUSSIVE_MAINTENANCE_ID's own comment above. Scoped to
-    // Technology, same shape as Inner Magic/Terrifying's own scoped shiftUp consumption.
-    const pendingPercussiveMaintenance = getPendingBonus(actor, PENDING_PERCUSSIVE_MAINTENANCE_FLAG);
-    if (pendingPercussiveMaintenance && rolledSkill == 'technology') {
-      skillDataset.edge = true;
-      await clearPendingBonus(actor, PENDING_PERCUSSIVE_MAINTENANCE_FLAG);
     }
 
     // Data Bridge (Enigma of Combination, Hub Focus, Analyst, 1st level, p.29) - see
@@ -3892,15 +3556,6 @@ export class Dice {
     }
 
     // Technical Mastery's direct half, Perimeter Defender and Fancy Flier are item rules (CritOnD2 above).
-
-    // Fleeting Energy (MLP Heavy Hitter Hang-Up, p.51) - see FORCE_ID's own comment above.
-    // Consumed on the actor's own next Strength Skill Test, same "bank now, consume on the next
-    // matching roll" idiom as Inner Magic's own scoped shiftUp.
-    const pendingFleetingEnergy = getPendingBonus(actor, 'pendingFleetingEnergy');
-    if (pendingFleetingEnergy && rolledEssence == 'strength') {
-      updatedShiftDataset.shiftDown += pendingFleetingEnergy.shiftDown;
-      clearPendingBonus(actor, 'pendingFleetingEnergy');
-    }
 
     // Combat Exoskeleton - see COMBAT_EXOSKELETON_ID's own comment above. Unconditional (RAW has no
     // "as a Free action"/opt-in language, unlike Pythonized's own checkbox just below), so applied
@@ -4343,9 +3998,9 @@ export class Dice {
       }
     }
 
-    // Saber-Toothed - see SABER_TOOTHED_ID's own comment above. Gated the same way the pre-existing
-    // cryogenicTouchAvailable pre-fill already is (isUnarmedAttack itself isn't computed until
-    // later in this function, so this re-derives the same "no parent weapon" check independently).
+    // Saber-Toothed - see SABER_TOOTHED_ID's own comment above. Gated on "no parent weapon"
+    // (isUnarmedAttack itself isn't computed until later in this function, so this re-derives the
+    // check independently).
     updatedShiftDataset.saberToothedAvailable = item?.type == 'weaponEffect' && !this._getParentWeapon(actor, item)
       && actorHasPerk(actor, SABER_TOOTHED_ID);
 
@@ -4447,12 +4102,7 @@ export class Dice {
       updatedShiftDataset.shiftUp += 2;
     }
 
-    // Cryogenic Touch (A Jump Through Time, Grid Power, p.57) - the Impaired-on-hit half; the
-    // damage-type-override half is unconditional, see CRYOGENIC_TOUCH_ID's own comment above.
-    // "You may spend 1 Personal Power when you hit" - offered whenever affordable on an unarmed
-    // attack.
-    updatedShiftDataset.cryogenicTouchAvailable = item?.type == 'weaponEffect' && !this._getParentWeapon(actor, item)
-      && actorHasPower(actor, CRYOGENIC_TOUCH_ID) && actor.system.powers.personal.value > 0;
+    // Cryogenic Touch's Impaired-on-hit checkbox is the Power's own DialogSwitch + hit Trigger.
 
     // Guardian Strikes - see GUARDIAN_STRIKES_ID's own comment above.
     updatedShiftDataset.guardianStrikesAvailable = item?.type == 'weaponEffect'
@@ -4697,26 +4347,8 @@ export class Dice {
 
     // Tracker (Environmental)'s ↑2 is the item's own rule (check:environmentalExpertise).
 
-    // Martial Zord / Zero-G - see their own ID comments above. Both are Zord Features (checked
-    // on the actor actually making the roll - the Zord itself, not its pilot), gated on the
-    // Zord currently having a driver seated (_getVehicleDriver, the same pilot-lookup Heavy
-    // Ordnance/Sideswipe/Demolition Driver already use).
-    if (item?.type == 'weaponEffect' && item.system.classification.style == 'melee'
-      && actor?.type == 'zord' && actorHasZordFeature(actor, MARTIAL_ZORD_ID) && this._getVehicleDriver(actor)) {
-      updatedShiftDataset.shiftUp += 1;
-    }
-
-    if (item?.type == 'weaponEffect' && item.system.classification.style != 'melee'
-      && actor?.type == 'zord' && actorHasZordFeature(actor, ZERO_G_ID) && this._getVehicleDriver(actor)) {
-      updatedShiftDataset.shiftUp += 1;
-    }
-
-    // Zord Sentience - see ZORD_SENTIENCE_ID's own comment above. Only its own Driving
-    // (Autopilot) Skill Tests, and only while nobody is actually driving it.
-    if (rolledSkill == 'driving' && actor?.type == 'zord' && actorHasZordFeature(actor, ZORD_SENTIENCE_ID)
-      && !this._getVehicleDriver(actor)) {
-      updatedShiftDataset.shiftUp += 1;
-    }
+    // Martial Zord, Zero-G and Zord Sentience are RollModifier rules on the Zord Features
+    // themselves (check:zordHasDriver).
 
     // Power Adaptation - Crushing Strength (Across the Stars, Silver Ranger, 9th/18th level,
     // p.57) - see helpers/power-adaptation.mjs's own doc comment. "↑2 to all Athletics and Brawn
@@ -5555,13 +5187,6 @@ export class Dice {
       skillRollOptions.shiftDown += 1;
     }
 
-    // Cryogenic Touch - see updatedShiftDataset.cryogenicTouchAvailable's own comment above. Spent
-    // here (before the roll); the Impaired application itself happens post-hit in
-    // _rollSkillHelper via checkContext.cryogenicTouchAttempt.
-    if (skillRollOptions.applyCryogenicTouch) {
-      await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
-    }
-
     // Guardian Strikes - see GUARDIAN_STRIKES_ID's own comment above. No cost to declare; forgoes
     // this attack's own damage (folded into damageValue below) in exchange for a Condition applied
     // post-hit (see checkContext.guardianStrikesAttempt).
@@ -5724,24 +5349,8 @@ export class Dice {
     const modifier = Number(actorSkillData.modifier || 0) + Number(skillRollOptions.skillEffectModifierBonus || 0)
       + chargedUpModifier + muscleModeModifier;
 
-    // Super Specialized - see SUPER_SPECIALIZED_ID's own comment above. Only known once
-    // isSpecialized itself is resolved (the player's own dialog choice, not something pre-filled
-    // before it opens), so this bumps the already-finalized shift up one more step rather than
-    // folding into shiftUp like every other essence/skill-scoped grant above.
-    if (isSpecialized && findPerk(actor, SUPER_SPECIALIZED_ID)?.system.choice == rolledSkill) {
-      // skillShiftList is ordered best-to-worst, so a shift UP moves to a LOWER index (matching
-      // _getFinalShift's own optionsShiftTotal subtraction above), not a higher one.
-      const shiftIndex = E20.skillShiftList.indexOf(finalShift);
-      if (shiftIndex > 0) {
-        finalShift = E20.skillShiftList[shiftIndex - 1];
-      }
-    }
-
-    // Silver Tongue (Spy Focus, 6th level): "whenever you roll a Social Essence Skill Test, you
-    // treat a d20 roll of 9 or less as a 10" - floors the d20 term(s) at 10 via Foundry's own
-    // `min` dice modifier, applied before Edge/Snag's keep-highest/keep-lowest selection so that
-    // selection sees the already-floored values.
-    // Item rules' RollDice (rules/adapter.mjs#ruleRollDice): a cap, steps up, a d20 floor, a third d20.
+    // Item rules' RollDice (rules/adapter.mjs#ruleRollDice), once the final die is known: a cap, steps up
+    // (Super Specialized), a d20 floor (Silver Tongue) and a third d20 (Kill Shot, Precision is Perfection).
     const diceRules = ruleRollDice(actor, game.user?.targets?.first?.()?.actor ?? null, {
       item, rolledSkill, rolledEssence, edge: !!skillRollOptions.edge, snag: !!skillRollOptions.snag,
       dataset: { ...dataset, isSpecialized },
@@ -5761,22 +5370,9 @@ export class Dice {
       }
     }
 
-    const floorD20At10 = (rolledEssence == 'social' && actorHasPerk(actor, SILVER_TONGUE_ID)) || diceRules.d20Floor >= 10;
-
-    // Kill Shot (Sniper Focus, 20th level, p.75) - see _getd20Operand's own comment for the
-    // 3d20kh mechanics. "A ranged attack with a sniper weapon" - the same weaponEffect/style/
-    // parent-weapon-trait check Piercing Shot's identical sniper-trait clause already establishes,
-    // gated on the actor's own already-resolved Edge (skillRollOptions.edge, not just the
-    // automatic combatModifiers.edge) so it also picks up Edge from skill training/Essence shifts.
-    const rollsThreeD20 = diceRules.thirdD20 || (item?.type == 'weaponEffect' && item.system.classification.style != 'melee'
-      && skillRollOptions.edge && actorHasPerk(actor, KILL_SHOT_ID)
-      && this._getParentWeapon(actor, item)?.system.traits.includes('sniper'))
-      // Precision is Perfection (Intercontinental Adventures, Martial Artist, 17th level, p.13):
-      // "when making a melee Attack with a Silent Martial Arts weapon when you have an Edge, you may
-      // roll a third d20 and choose the highest among them."
-      || (item?.type == 'weaponEffect' && item.system.classification.style == 'melee' && skillRollOptions.edge
-        && actorHasPerk(actor, RIDER.precisionIsPerfection)
-        && ['silent', 'martialArts'].every(trait => this._getParentWeapon(actor, item)?.system.traits?.includes(trait)));
+    // See _getd20Operand's own comment for the min10 and 3d20kh mechanics.
+    const floorD20At10 = diceRules.d20Floor >= 10;
+    const rollsThreeD20 = diceRules.thirdD20;
 
     // Dependable/Old Reliable/Legendary Dependability - see DEPENDABLE_ID's/OLD_RELIABLE_ID's own
     // comments above. Edge/Snag is finally resolved by this point (skillRollOptions.edge/snag,
@@ -5861,7 +5457,6 @@ export class Dice {
     const fanningVolley = [];
     if (fanningShots > 1) {
       fanningVolley.push({ formula, shift: finalShift, autoFail: false });
-      const isSuperSpecialized = isSpecialized && findPerk(actor, SUPER_SPECIALIZED_ID)?.system.choice == rolledSkill;
       for (let shotNumber = 2; shotNumber <= fanningShots; shotNumber++) {
         const shot = getFanningShotShifts(shotNumber, fanningHasStormOfLead);
         const shotShift = this._getFinalShift({
@@ -5872,7 +5467,8 @@ export class Dice {
         const adjusted = adjustFanningShotShift(shotShift, {
           programmableCapD12: !!skillRollOptions.programmableCapD12,
           savant: !!skillRollOptions.applySavantSkill,
-          superSpecialized: isSuperSpecialized,
+          // A RollDice step up (Super Specialized) steps every later shot up once more too.
+          superSpecialized: diceRules.stepUp > 0,
         });
         fanningVolley.push({
           shift: adjusted.shift,
@@ -6131,17 +5727,6 @@ export class Dice {
           difficulty -= getGroundSuppressionReduction(token.actor);
         }
 
-        // Shatter Resolve - see SHATTER_RESOLVE_ID's own comment above. Scoped to the ATTACKER's
-        // own Perk (unlike Ground Suppression just above, which benefits anyone), same "gated on
-        // the attacker" shape as Penetrating Aim/Metallikato earlier in this construction.
-        if (
-          ['willpower', 'cleverness'].includes(resolvedDefenseType)
-          && ['deception', 'persuasion'].includes(rolledSkill)
-          && actorHasPerk(actor, SHATTER_RESOLVE_ID)
-        ) {
-          difficulty -= 2;
-        }
-
         // Double Agent - see DOUBLE_AGENT_ID's own comment above. Self-declared, same checkbox
         // offered for both halves - only the attack half touches difficulty; the Skill Test half
         // is applied directly to skillRollOptions.shiftUp further down.
@@ -6234,16 +5819,7 @@ export class Dice {
           difficulty = Math.max(difficulty, splitSecondReactionEvasionDifficulty);
         }
 
-        // Just the Facts (Analyst, 16th level, p.62) - the Immune half (see
-        // _getAutomaticCombatModifiers's own doc comment for why it's split from its Resistant/
-        // Snag half): a guaranteed failure, modeled as an unreachable difficulty rather than a
-        // new success/failure code path, since computeMultiplier(total, difficulty) already
-        // treats any finite roll against Infinity as multiplier 0 - the same "one combined
-        // number" precision Roll With the Punches just below already relies on.
-        if (rolledSkill == 'deception' && actorHasPerk(token.actor, JUST_THE_FACTS_ID)
-          && getEffectiveLevel(actor) <= getEffectiveLevel(token.actor)) {
-          difficulty = Infinity;
-        }
+        // Just the Facts' Immune half is a Defense rule on the Perk (mode: fail).
 
         // Move Like a Song (Green Ranger, Survival Boon choice, p.44) - the "automatically
         // misses" half; the Snag half is computed in _getAutomaticCombatModifiers like any other
@@ -6365,17 +5941,8 @@ export class Dice {
           difficulty += 2;
         }
 
-        // Pay It Forward - see PAY_IT_FORWARD_ID's own comment above. Checked from the TARGET's
-        // own side (is there a nearby Morphed Pay It Forward holder near them) since the bonus
-        // travels with the holder rather than being a fixed per-holder count.
-        if (getNearbyAllyTokens(token.actor, 10).some(
-          t => t.actor && actorHasPerk(t.actor, PAY_IT_FORWARD_ID) && t.actor.system?.isMorphed,
-        )) {
-          difficulty += 1;
-        }
-
-        // Defensive Flexibility - see helpers/defensive-flexibility.mjs's own doc comment. Same
-        // "add to the fully-computed difficulty" shape as Pay It Forward above.
+        // Defensive Flexibility - see helpers/defensive-flexibility.mjs's own doc comment. Added to
+        // the fully-computed difficulty.
         difficulty += getDefensiveFlexibilityDefenseBonus(token.actor, resolvedDefenseType);
 
         // Mysterious Aura - see helpers/mysterious-aura.mjs's own doc comment. Imposing (a
@@ -6390,13 +5957,6 @@ export class Dice {
           && getNearbyEnemyTokens(token.actor, Infinity).some(enemyToken =>
             ['frightened', 'mesmerized', 'surprised'].some(status => enemyToken.actor?.statuses?.has(status)))) {
           difficulty += 1;
-        }
-
-        // Trustworthy (Honesty, 2nd level, p.78) - the roller's own half: their Deception always fails,
-        // the same difficulty-vs-Infinity idiom Just the Facts uses. The target's +4 Cleverness against
-        // Deception is a Defense rule on the item (rules/adapter.mjs#ruleDefenseAdjust, below).
-        if (rolledSkill == 'deception' && actorHasPerk(actor, TRUSTWORTHY_ID)) {
-          difficulty = Infinity;
         }
 
         // Roll With the Punches (Renegade/Tank Focus, 6th level, p.97) - "double your Toughness,
@@ -6565,13 +6125,6 @@ export class Dice {
         // just above, activated once per Combat instead of via a triggered roll.
         difficulty += getLikeWaterDefenseBonus(token.actor, resolvedDefenseType);
 
-        // Not On My Watch (Factions in Action Vol. 2, Oktober Guard General Perk, p.95) - see
-        // helpers/not-on-my-watch.mjs's own doc comment. A passive, always-live check (no
-        // activation at all) rather than a banked/toggled state like Like Water just above.
-        if (actorHasPerk(token.actor, NOT_ON_MY_WATCH_ID)) {
-          difficulty += getNotOnMyWatchDefenseBonus(token.actor, resolvedDefenseType);
-        }
-
         // Defender Step (Through the Shattered Grid, Magna Defender, 2nd level, p.24) - see
         // helpers/defender-step.mjs's own doc comment. A THIRD PARTY's own triggered choice
         // (unlike every bonus above, which is either passive or the target's own activation), so
@@ -6650,17 +6203,6 @@ export class Dice {
       checkEntries = [{ name: actor.name, targetUuid: null, difficulty: parseInt(dataset.dif) }];
     }
 
-    // Bear Hug (Factions in Action Vol. 2, General Perk, p.94): "When you Grapple a creature, they
-    // suffer 1 Blunt damage." Grapple attacks are a real, existing damageType
-    // (E20.damageTypes.grapple, always damageValue 0 - see e.g. Grappling Hook Effect) rather than
-    // dealing normal damage, so this both adds +1 to damageBonusValue AND overrides the attack's
-    // own damageType to Blunt for this hit specifically (see overriddenDamageType below) - a flat
-    // damageBonusValue alone would have landed as 0+1 "grapple" damage, not the Blunt type RAW
-    // actually names (which matters for anything Resistant to Blunt specifically).
-    // (The +1 itself is the Perk's own scaled DamageModifier rule; this is only the type override.)
-    const isBearHugGrapple = item?.type == 'weaponEffect' && item.system.damageType == 'grapple'
-      && actorHasPerk(actor, BEAR_HUG_ID);
-
     // Ram (TF CRB, p.49): "For every full Size Class above Large (Huge, Gigantic, Towering, etc,
     // but not Long, Extended, etc), your Ram attack deals 1 additional Blunt Damage." Matched via
     // weapon-effect.mjs's own isRam flag, same as the GI Joe/PR Ram checks elsewhere in this file
@@ -6689,21 +6231,6 @@ export class Dice {
     // own scaled DamageModifier rule; the "larger creatures" Stun half is applied post-hit (see
     // checkContext.roamingTheLandStun below), since Stun isn't a plain damageValue add.
     const roamingTheLandPerk = findPerk(actor, ROAMING_THE_LAND_ID);
-
-    // Force (MLP Heavy Hitter Influence, p.51) - see FORCE_ID's own comment above. Once/scene,
-    // gated via hasUsedThisEncounter (always available outside combat - accepted looseness). Also
-    // banks Fleeting Energy's own ↓1-Strength penalty right when Force is actually used, consumed
-    // in the self-status section above.
-    const forceEligible = checkEntries && item?.type == 'weaponEffect' && rolledSkill == 'might'
-      && !this._getParentWeapon(actor, item) && actorHasPerk(actor, FORCE_ID)
-      && !hasUsedThisEncounter(actor, 'forceUsedThisEncounter');
-    const forceDamageBonus = forceEligible ? 1 : 0;
-    if (forceEligible) {
-      await markUsedThisEncounter(actor, 'forceUsedThisEncounter');
-      if (actorHasHangUp(actor, FLEETING_ENERGY_HANGUP_ID)) {
-        await bankPendingBonus(actor, 'pendingFleetingEnergy', { shiftDown: 1 });
-      }
-    }
 
     // Zeo Crystal Boost, Zord option's "single successful Zord Attack" damage half - see
     // helpers/zeo-crystal-boost.mjs's own doc comment. The Zord rolls its own weaponEffect attacks as
@@ -6825,20 +6352,6 @@ export class Dice {
     // there; growingSmolderStacks is reused here as-is, not re-consumed).
     if (checkEntries && growingSmolderStacks) {
       damageBonusSources.add(findPerk(actor, GROWING_SMOLDER_ID)?.name ?? 'Growing Smolder');
-    }
-
-    // Oorah! - see OORAH_ID's own comment in _getAutomaticCombatModifiers above. Same
-    // "computed there, folded in here" shape as Zordbane just above.
-    const oorahDamageBonus = combatModifiers.oorahDamageBonus;
-    if (oorahDamageBonus) {
-      damageBonusSources.add(findPerk(actor, OORAH_ID)?.name ?? 'Oorah!');
-    }
-
-    // Goin' Heels - see GOIN_HEELS_ID's own comment in _getAutomaticCombatModifiers above. Same
-    // "computed there, folded in here" shape as Oorah! just above.
-    const goinHeelsDamageBonus = combatModifiers.goinHeelsDamageBonus;
-    if (goinHeelsDamageBonus) {
-      damageBonusSources.add(findPerk(actor, GOIN_HEELS_ID)?.name ?? "Goin' Heels");
     }
 
     // Tear Down - see helpers/tear-down.mjs's own doc comment. Read against whichever token is
@@ -6977,9 +6490,9 @@ export class Dice {
       + acidDamageBonus + fireDamageBonus
       + nowImAngryDamageBonus
       + zeoCrystalBoostZordAttackDamageBonus + spentDemolitionDriver
-      + forceDamageBonus + zeoCrystalBoostMegaformDamageBonus
+      + zeoCrystalBoostMegaformDamageBonus
       + bioEnergyConversionDamageBonus
-      + combatStanceDamageBonus + ultimateMagnaDefenderDamageBonus + psychoAssaultDamageBonus + oorahDamageBonus + goinHeelsDamageBonus + growingSmolderStacks
+      + combatStanceDamageBonus + ultimateMagnaDefenderDamageBonus + psychoAssaultDamageBonus + growingSmolderStacks
       + tearDownDamageBonus
       + angerDamageBonus
       + ramSizeDamageBonus
@@ -6987,10 +6500,6 @@ export class Dice {
       + (appliesRolePointsDamage ? damageRolePoints.value : 0);
     if (ramSizeDamageBonus) {
       damageBonusSources.add('Ram (Size Class)');
-    }
-
-    if (forceDamageBonus) {
-      damageBonusSources.add(findPerk(actor, FORCE_ID)?.name ?? 'Force');
     }
 
     if (zeoCrystalBoostZordAttackDamageBonus) {
@@ -7045,16 +6554,6 @@ export class Dice {
     // has no access to `item` itself.
     const isUnarmedAttack = this._isUnarmedWeaponEffect(actor, item);
 
-    // Cost of Sorcery - see COST_OF_SORCERY_ID's own comment above. "A Skill Test involving a
-    // Sorcerous Power or Sorcerous-trait attack" - a Power whose own system.type is 'sorcerous'
-    // (the same field _prepareSorcerousPower/power-handler.mjs already key their own Sorcerous
-    // logic off), or a weaponEffect whose parent weapon carries the 'sorcerous' trait (the same
-    // traits.includes() idiom every other weapon-trait check in this file already uses). Threaded
-    // through checkContext for the same "_rollSkillHelper has no access to `item`" reason as
-    // isUnarmedAttack just above.
-    const isSorcerousAttempt = (item?.type == 'power' && item.system.type == 'sorcerous')
-      || !!this._getParentWeapon(actor, item)?.system.traits?.includes('sorcerous');
-
     // No Fighting?! - see NO_FIGHTING_HANGUP_ID's own comment above. Recomputes the same
     // condition _getAutomaticCombatModifiers already read (to decide whether to actually Snag),
     // purely so _rollSkillHelper (which has no access to `item`/rolledEssence itself) knows
@@ -7106,20 +6605,6 @@ export class Dice {
       // computed. Re-checks actorHasPerk directly here (not just the checkbox flag) matching every
       // sibling check in this chain's own defensive shape.
       overriddenDamageType = 'sharp';
-    } else if (isUnarmedAttack && actor.system.isTransformed
-      && (actorHasPerk(actor, TOOTH_AND_CLAW_ID) || actorHasPerk(actor, TOOTH_AND_CLAW_DD_ID))) {
-      // Tooth And Claw - see TOOTH_AND_CLAW_DD_ID's own comment above. Alt Mode only. Both
-      // printings carry a choiceType to pick Sharp vs. Blunt; an unmade choice defaults to Sharp.
-      overriddenDamageType = (findPerk(actor, TOOTH_AND_CLAW_DD_ID) ?? findPerk(actor, TOOTH_AND_CLAW_ID))?.system?.choice || 'sharp';
-    } else if (isBearHugGrapple) {
-      // Bear Hug - see BEAR_HUG_ID's own comment above.
-      overriddenDamageType = 'blunt';
-    } else if (item?.type == 'weaponEffect' && actorHasPerk(actor, ENERGY_AFFINITY_ID)
-      && getEnergyAffinityAlteredStyle(actor) == item.system.classification?.style) {
-      // Energy Affinity - see ENERGY_AFFINITY_ID's own comment (helpers/energy-affinity.mjs) for
-      // the activation/scene-duration mechanism. Scoped to whichever style (melee/ranged) was
-      // activated, same as every check in this chain reading a live per-attack condition.
-      overriddenDamageType = findPerk(actor, ENERGY_AFFINITY_ID)?.system.choice || null;
     } else if (item?.type == 'weaponEffect' && isIlluminateActive(actor)
       && this._getParentWeapon(actor, item)?.system.traits?.includes('martialArts')) {
       // Illuminate (PR CRB, Grid Power, p.100) - see helpers/illuminate.mjs's own doc comment.
@@ -7418,13 +6903,7 @@ export class Dice {
         // Get A Grip - see GET_A_GRIP_ID's own comment above. Carries the declared attempt through
         // to _rollSkillHelper's own post-hit Size Class check and Free-action spend.
         getAGripAttempt: !!skillRollOptions.applyGetAGrip,
-        // Cost of Sorcery - see COST_OF_SORCERY_ID's own comment above. Read back on a Fumble,
-        // right alongside Cruel Warlord/Bad Temper/Something To Prove's own isFumble checks.
-        isSorcerousAttempt,
         noFightingSnagApplied,
-        // Cryogenic Touch (A Jump Through Time, Grid Power, p.57) - see checkContext's own
-        // cryogenicTouchAttempt consumption in _rollSkillHelper below.
-        cryogenicTouchAttempt: !!skillRollOptions.applyCryogenicTouch,
         // Guardian Strikes (A Jump Through Time, Grid Power, p.57) - see checkContext's own
         // guardianStrikesAttempt consumption in _rollSkillHelper below.
         guardianStrikesAttempt: guardianStrikesForgoDamage,
@@ -8117,8 +7596,6 @@ export class Dice {
     let balanceOfJusticeTriggered = false;
     let dontUnderestimateMeTriggered = false;
     let disgustTriggered = false;
-    let oorahDamageBonus = 0;
-    let goinHeelsDamageBonus = 0;
     let isCatchOffGuardAttempt = false;
     let rumbleInTheJungleEligible = false;
     let exterminatorEligible = false;
@@ -8397,8 +7874,8 @@ export class Dice {
 
     // Bad Temper (Decepticon Directive, Traitor Origin, suggested Hang-Up, p.31): "The turn after
     // you Fumble for any reason...you suffer ↓1 on all Skill Tests until the end of your next
-    // turn." Set on Fumble (see BAD_TEMPER_HANGUP_ID's own check in _rollSkillHelper, next to
-    // Cruel Warlord's identical isFumble hook) as a round-scoped flag - same {combatId, round}
+    // turn." Set on Fumble (see BAD_TEMPER_HANGUP_ID's own check in _rollSkillHelper's isFumble
+    // section) as a round-scoped flag - same {combatId, round}
     // shape every other round-scoped flag in this codebase already uses - checked here on every
     // roll while it's active. "The turn after" (not the fumbling turn itself) is approximated as
     // "the following round," the same round-granularity idiom Team Focus's own "since your last
@@ -8474,15 +7951,6 @@ export class Dice {
       shiftUp += pendingYouCanDoItToo.shiftUp;
       pendingBonusesToClear.push('pendingYouCanDoItToo');
       addSource('youCanDoItToo', 'You Can Do It, Too!', { shiftUp: pendingYouCanDoItToo.shiftUp });
-    }
-
-    // BRRRRRRRRRRRRRRT - see BRRRRRRRRRRRRRRT_ID's own comment above. Same unscoped self-shiftUp
-    // consumption shape as You Can Do It, Too! just above.
-    const pendingBrrrrrrrrrrrrrrt = getPendingBonus(actor, 'pendingBrrrrrrrrrrrrrrt');
-    if (pendingBrrrrrrrrrrrrrrt) {
-      shiftUp += pendingBrrrrrrrrrrrrrrt.shiftUp;
-      pendingBonusesToClear.push('pendingBrrrrrrrrrrrrrrt');
-      addSource('brrrrrrrrrrrrrrt', 'Brrrrrrrrrrrrrrt', { shiftUp: pendingBrrrrrrrrrrrrrrt.shiftUp });
     }
 
     // Rush the Line - see helpers/rush-the-line.mjs's own doc comment. Scoped to a melee
@@ -8730,15 +8198,6 @@ export class Dice {
       snag = true;
       pendingBonusesToClear.push(FLYING_NUISANCE_SNAG_FLAG);
       addSource('flyingNuisance', 'Flying Nuisance', { snag: true });
-    }
-
-    // Mistrustful - see MISTRUSTFUL_SNAG_FLAG's own comment above / helpers/mistrustful.mjs. Same
-    // unscoped, consumed-on-next-roll shape as Flying Nuisance just above.
-    const pendingMistrustfulSnag = getPendingBonus(actor, MISTRUSTFUL_SNAG_FLAG);
-    if (pendingMistrustfulSnag) {
-      snag = true;
-      pendingBonusesToClear.push(MISTRUSTFUL_SNAG_FLAG);
-      addSource('mistrustfulSnag', 'Mistrustful', { snag: true });
     }
 
     // Psycho Strike Snag Effect - see PSYCHO_STRIKE_SNAG_FLAG's own comment above / helpers/
@@ -9123,7 +8582,7 @@ export class Dice {
         ...(riders.consumes.length ? { riderConsumes: riders.consumes } : {}),
         shiftUp, shiftDown, edge, snag, debilitatedConsumed, enemyNumberOneTankId, tooCloseForMinimumRange,
         pendingBonusesToClear, bonusDie, forcedMiss, moveLikeASongTriggered, spottedTarget, eyeForAppraisalTarget,
-        sources, oorahDamageBonus, goinHeelsDamageBonus, isCatchOffGuardAttempt, rumbleInTheJungleEligible,
+        sources, isCatchOffGuardAttempt, rumbleInTheJungleEligible,
         exterminatorEligible, twoHeadsAssistanceConsumed, balanceOfJusticeTriggered,
         disgustTriggered, dontUnderestimateMeTriggered,
       };
@@ -9186,19 +8645,7 @@ export class Dice {
         addSource('retrogen', this._localize('E20.WeaponTraitRetrogen'), { shiftUp: 1 });
       }
 
-      // First Strike (7th level): "you gain an Edge on Attacks... against opponents who haven't
-      // acted yet in combat." RAW also covers plain Skill Tests against such an opponent, and
-      // this check touches no weapon/damage fields, so - unlike everything else in this block -
-      // it isn't gated behind isAttack.
-      if (game.combat && actorHasPerk(actor, FIRST_STRIKE_ID)) {
-        const targetCombatant = game.combat.combatants.find(c => c.actor?.uuid == target.uuid);
-        const targetHasNotActedYet = targetCombatant
-          && game.combat.turns.indexOf(targetCombatant) > game.combat.turn;
-        if (targetHasNotActedYet) {
-          edge = true;
-          addSource('firstStrike', findPerk(actor, FIRST_STRIKE_ID)?.name ?? 'First Strike', { edge: true });
-        }
-      }
+      // First Strike's Edge against an opponent who hasn't acted yet is an item rule (target:notActed).
 
       /* Lend Assistance, attack half (GI Joe CRB p.197): "Until the beginning of your next
          turn, the first attack against the specific target gains an Edge."
@@ -9340,19 +8787,8 @@ export class Dice {
         addSource('glittermane', 'Glittermane', { shiftDown: 1 });
       }
 
-      // Just the Facts (Analyst, 16th level, p.62): "Immune to Deception Skill Tests from
-      // creatures your level or lower and Resistant to Deception Skill Tests from creatures
-      // higher level than you." "You" here is the Perk holder being deceived, i.e. this
-      // function's target, not the roller - same reciprocal shape as Alpha Strike's own check
-      // below, just not gated behind isAttack since Deception is never a weaponEffect. Only the
-      // Resistant (Snag) case is handled here; the Immune case (a guaranteed failure, not just a
-      // worse die) is applied per-target against rollSkill()'s own checkEntries difficulty
-      // instead - see this function's own doc comment above.
-      if (rolledSkill == 'deception' && actorHasPerk(target, JUST_THE_FACTS_ID)
-        && getEffectiveLevel(actor) > getEffectiveLevel(target)) {
-        snag = true;
-        addSource('justTheFacts', findPerk(target, JUST_THE_FACTS_ID)?.name ?? 'Just the Facts', { snag: true });
-      }
+      // Just the Facts (the Snag against a higher-level deceiver, and the Immune half) is item rules on
+      // the Perk (self:levelDiff).
 
       // Emotional Mastery: Disgust (A Jump Through Time, Purple Ranger, p.37) - "The first Skill
       // Test to target you each turn suffers ↓1." RAW says "Skill Test," not "Attack," so - like
@@ -9385,28 +8821,7 @@ export class Dice {
         }
       }
 
-      // Hierarchy Rank - see HIERARCHY_RANK_ID's own comment above. Not gated on isAttack - RAW
-      // says "Skill Tests," not "Attacks."
-      if (actorHasPerk(actor, HIERARCHY_RANK_ID)) {
-        const actorLevel = getEffectiveLevel(actor);
-        const targetLevel = getEffectiveLevel(target);
-        if (actorLevel > targetLevel) {
-          shiftUp += 1;
-          addSource('hierarchyRank', findPerk(actor, HIERARCHY_RANK_ID)?.name ?? 'Hierarchy Rank', { shiftUp: 1 });
-        } else if (actorLevel < targetLevel) {
-          shiftDown += 1;
-          addSource('hierarchyRank', findPerk(actor, HIERARCHY_RANK_ID)?.name ?? 'Hierarchy Rank', { shiftDown: 1 });
-        }
-      }
-
-      // Grid Soldier (A Jump Through Time, General Perk, p.54, built 2026-09-12) - the Threat
-      // Level comparison half only; the "spend Power to remove Impaired" half is dispatched in
-      // banked-buffs.mjs instead. Same getEffectiveLevel PC-Level/NPC-Threat-Level equivalence as
-      // Hierarchy Rank just above, not gated on isAttack (RAW says "Skill Tests").
-      if (actorHasPerk(actor, GRID_SOLDIER_ID) && getEffectiveLevel(actor) - getEffectiveLevel(target) >= 3) {
-        shiftUp += 1;
-        addSource('gridSoldier', findPerk(actor, GRID_SOLDIER_ID)?.name ?? 'Grid Soldier', { shiftUp: 1 });
-      }
+      // Hierarchy Rank and Grid Soldier (level comparisons with the target) are item rules (target:levelDiff).
 
       // Big And Scary, Bend A Knee Or Stand Tall, Big Preds Are My Specialty and The Bigger The
       // Heart (size-difference upshifts against the target) are item rules on each Perk.
@@ -9844,13 +9259,8 @@ export class Dice {
       // Penetrating Rounds, Kentucky Windage, Contingency Shot, What Cover?, Lay of the Land,
       // Nowhere's Safe x2, Maximize Cover, Hard Target (TF), Dig In (Cannoneer) and Now You Don't are
       // item Cover rules (coverRules below).
-      // Bulwark (Tank Focus, 17th level, p.99): "provide cover to allies adjacent to you" - a
-      // live reciprocal check (the target counts as having Cover whenever a planted Bulwark
-      // holder is within 5ft), rather than toggling a real 'cover' status on every nearby ally as
-      // the Bulwark holder moves (no movement-completion hook exists to keep that in sync). Same
-      // "scan canvas.tokens.placeables for a qualifying nearby granter" shape
-      // hasNearbyDefendersOathProtection/_hasNearbyProtectorsShieldImmunity already establish.
-      const hasBulwarkCover = !isMelee && targetToken && this._hasNearbyBulwarkCover(targetToken);
+      // Bulwark (a planted holder within 5 ft gives the target Cover) and Two Steps to the Right
+      // (allies within 60 ft share Lay of the Land's -1) are aura Cover rules.
       // Take Point - see helpers/rough-terrain.mjs#hasTakePointCover. Same "counts as Cover".
       const hasTakePointCoverGrant = hasTakePointCover(target, targetToken);
       // Indirect - see _isIndirectAttack's own doc comment. Unlike the Perk-based bypasses (Cover
@@ -9861,16 +9271,11 @@ export class Dice {
       // Item rules' Cover (rules/adapter.mjs#ruleCover): ignore / reduce on the attacker's side,
       // counts-as-Cover / base / add on the target's.
       const coverRules = ruleCover(isMelee ? null : actor, isMelee ? null : target, { item, rolledSkill, rolledEssence, isAttack, isMelee, dataset: rollDataset });
-      if (!isMelee && (targetStatuses.has('cover') || targetStatuses.has('totalCover') || hasBulwarkCover || hasTakePointCoverGrant || coverRules.grant)
+      if (!isMelee && (targetStatuses.has('cover') || targetStatuses.has('totalCover') || hasTakePointCoverGrant || coverRules.grant)
         && !indirectIgnoresCover && !coverRules.ignore) {
-        // Two Steps to the Right (Enigma of Combination, Surveyor Focus, 10th level, p.36) shares
-        // Lay of the Land's -1 (that item's own Cover rule) with allies within 60ft - "open
-        // communication" dropped as unenforceable. Only the biggest reduction counts (they don't
-        // stack), never below ↓0; the rules' `add` (Dig In while dug in) comes on top.
-        const twoStepsReduction = getNearbyAllyTokens(actor, 60)
-          .some(token => actorHasPerk(token.actor, TWO_STEPS_TO_THE_RIGHT_ID)) ? 1 : 0;
-        const coverShiftDown = Math.max(0, Math.max(2, coverRules.base) - Math.max(twoStepsReduction, coverRules.reduce))
-          + coverRules.add;
+        // Only the biggest reduction counts (they don't stack), never below ↓0; the rules' `add`
+        // (Dig In while dug in) comes on top.
+        const coverShiftDown = Math.max(0, Math.max(2, coverRules.base) - coverRules.reduce) + coverRules.add;
 
         shiftDown += coverShiftDown;
         addSource('cover', this._localize('E20.StatusCover'), { shiftDown: coverShiftDown });
@@ -10178,22 +9583,12 @@ export class Dice {
         addSource('gallantry', findPerk(target, GALLANTRY_ID)?.name ?? 'Gallantry', { snag: true });
       }
 
-      // Impenetrable Shield (Vanguard base, 18th level, p.109): "resistance to all [damage]
-      // other [than EMP]" while the shield is active - Resistance (p.170) is already established
-      // in this file as "a Snag on the attack roll," same as Duck & Cover's own resistance clause
-      // above, so this just extends that same idiom to every damage type except EMP. (The EMP
-      // immunity half lives in helpers/combat.mjs#applyDamage instead, since immunity zeroes
-      // damage after a hit rather than affecting the attack roll itself.)
-      if (
-        item.system.damageType != 'emp' && isPersonalShieldActive(target)
-        && actorHasPerk(target, IMPENETRABLE_SHIELD_ID)
-      ) {
-        snag = true;
-        addSource('impenetrableShield', findPerk(target, IMPENETRABLE_SHIELD_ID)?.name ?? 'Impenetrable Shield', { snag: true });
-      }
+      // Impenetrable Shield's Resistance-as-Snag (every damage type but EMP, while the Personal
+      // Shield is up) is an incoming item rule on the Perk; its EMP immunity half lives in
+      // helpers/combat.mjs#applyDamage.
 
-      // Shield Modulation (Vanguard base, 13th level, p.109) - same Resistance-is-a-Snag idiom
-      // as Impenetrable Shield right above, keyed on the damage type chosen when the shield was
+      // Shield Modulation (Vanguard base, 13th level, p.109) - the same Resistance-is-a-Snag idiom
+      // as Impenetrable Shield, keyed on the damage type chosen when the shield was
       // last activated (helpers/shield-modulation.mjs) instead of unconditional. RAW covers "you
       // and any allies protected by your shield" - isProtectedByShieldModulation() also extends
       // this to allies within 10 feet once the holder has Shield Upgrade, same as
@@ -10224,59 +9619,24 @@ export class Dice {
         addSource('heavyOrdnance', findPerk(this._getVehicleDriver(actor), HEAVY_ORDNANCE_ID)?.name ?? 'Heavy Ordnance', { edge: true });
       }
 
-      // Oorah!/Catch Off Guard - see OORAH_ID/CATCH_OFF_GUARD_ID's own comments above. Both key
-      // off the same "Surprised" proxy (the target hasn't acted yet this combat, the same First
-      // Strike-established check above, re-derived here since First Strike's own version isn't
-      // gated on isAttack and this needs to be). Oorah!'s +1 damage is reported back via
-      // oorahDamageBonus, "computed here, folded into damageBonusValue there"; Catch Off Guard's
-      // Stun bonus needs the attack to
-      // actually land, so it's only flagged here (isCatchOffGuardAttempt) and applied in
-      // _rollSkillHelper's own post-hit processing.
+      // Catch Off Guard - see CATCH_OFF_GUARD_ID's own comment above. Keyed off a "Surprised" proxy
+      // (the target hasn't acted yet this combat, the same check First Strike's and Oorah!'s item
+      // rules use). Its Stun bonus needs the attack to actually land, so it's only flagged here
+      // (isCatchOffGuardAttempt) and applied in _rollSkillHelper's own post-hit processing.
       const targetCombatantForSurprise = game.combat?.combatants?.find(c => c.actor?.uuid == target?.uuid);
       const isSurprisedTarget = !!targetCombatantForSurprise
         && game.combat.turns.indexOf(targetCombatantForSurprise) > game.combat.turn;
-      if (isSurprisedTarget && actorHasPerk(actor, OORAH_ID)) {
-        oorahDamageBonus = 1;
-      }
-
       isCatchOffGuardAttempt = isSurprisedTarget && actorHasPerk(actor, CATCH_OFF_GUARD_ID);
 
       // Rumble in the Jungle - see RUMBLE_IN_THE_JUNGLE_ID's own comment above. Shares the same
-      // Surprised proxy as the two just above, plus RAW's own "with a weapon that does not have
-      // the Silent trait" gate. Reported back as an eligibility flag; rollSkill() resolves the
-      // actual Intimidation die and folds it into the formula, the same "computed here, applied
-      // there" shape Oorah!'s own damage bonus uses.
+      // Surprised proxy as Catch Off Guard just above, plus RAW's own "with a weapon that does not
+      // have the Silent trait" gate. Reported back as an eligibility flag; rollSkill() resolves the
+      // actual Intimidation die and folds it into the formula.
       rumbleInTheJungleEligible = isSurprisedTarget && actorHasPerk(actor, RUMBLE_IN_THE_JUNGLE_ID)
         && !this._getParentWeapon(actor, item)?.system.traits?.includes('silent');
 
-      // Goin' Heels (A Jump Through Time, General Perk, p.54) - the "against enemies lower in the
-      // Initiative order" shiftUp half (built 2026-09-12), scoped to a one-handed Targeting
-      // Sidearm attack (the parent weapon's own classification fields). The "+1 base damage while
-      // highest in Initiative" half is now also built just below - reported back via
-      // goinHeelsDamageBonus, the same "computed here, folded into damageBonusValue there" shape
-      // Oorah!'s own damage bonus uses, since this function is synchronous and rollSkill() owns
-      // the actual damage formula.
-      const goinHeelsWeapon = this._getParentWeapon(actor, item);
-      if (actorHasPerk(actor, GOIN_HEELS_ID) && game.combat
-        && goinHeelsWeapon?.system.classification?.skill == 'targeting'
-        && goinHeelsWeapon?.system.classification?.size == 'sidearm' && goinHeelsWeapon?.system.numHands == 1) {
-        const actorCombatantForGoinHeels = game.combat.combatants.find(c => c.actor?.uuid == actor.uuid);
-        const targetCombatantForGoinHeels = game.combat.combatants.find(c => c.actor?.uuid == target?.uuid);
-        if (actorCombatantForGoinHeels?.initiative != null && targetCombatantForGoinHeels?.initiative != null
-          && actorCombatantForGoinHeels.initiative > targetCombatantForGoinHeels.initiative) {
-          shiftUp += 1;
-          addSource('goinHeels', findPerk(actor, GOIN_HEELS_ID)?.name ?? "Goin' Heels", { shiftUp: 1 });
-        }
-
-        // "If you have the highest Initiative order in the scene" - every OTHER combatant with a
-        // rolled Initiative must be lower than the actor's own (an actor tied for highest, or the
-        // only combatant with Initiative rolled so far, still counts - RAW gives no tie-breaker).
-        const combatantsWithInitiative = game.combat.combatants.filter(c => c.initiative != null);
-        if (actorCombatantForGoinHeels?.initiative != null && combatantsWithInitiative.every(c =>
-          c === actorCombatantForGoinHeels || c.initiative <= actorCombatantForGoinHeels.initiative)) {
-          goinHeelsDamageBonus = 1;
-        }
-      }
+      // Oorah!'s +1 damage against a Surprised target and Goin' Heels' Initiative ↑1 / +1 damage are
+      // item rules (a scaled DamageModifier, and a RollModifier with combat:aheadOfTarget).
 
       // Seconds Between Click & Boom's Snag on attacks against the holder's Evasion is an incoming
       // item rule on the Perk.
@@ -10794,37 +10154,6 @@ export class Dice {
    * @returns {Boolean}
    * @private
    */
-  /**
-   * Bulwark - see BULWARK_ID's own comment above. Unlike _hasNearbyProtectorsShieldImmunity below,
-   * this is called with the already-resolved targetToken directly (this function only ever
-   * considers one target - game.user.targets.first(), already in hand) rather than re-deriving it
-   * from an actor.
-   * @param {Token} targetToken
-   * @returns {Boolean}
-   * @private
-   */
-  _hasNearbyBulwarkCover(targetToken) {
-    if (!canvas?.tokens) {
-      return false;
-    }
-
-    for (const token of canvas.tokens.placeables) {
-      if (token === targetToken || !token.actor) {
-        continue;
-      }
-
-      if (!actorHasPerk(token.actor, BULWARK_ID) || !isBulwarkActive(token.actor)) {
-        continue;
-      }
-
-      if (canvas.grid.measurePath([token.center, targetToken.center]).distance <= 5) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   _hasNearbyProtectorsShieldImmunity(targetActor) {
     const targetToken = targetActor.getActiveTokens?.()?.[0];
     if (!targetToken || !canvas?.tokens) {
@@ -11488,14 +10817,8 @@ export class Dice {
       });
     }
 
-    // Cruel Warlord (Finster's Monster-Matic Cookbook, 20th level, p.284): "Whenever you Fumble a
-    // Skill Test... you regain 2 Personal Power." (The "...or suffer Psychic damage" half lives in
-    // combat.mjs#applyDamage's own grantCruelWarlordPsychicRegen instead.)
-    if (isFumble && actorHasPerk(actor, CRUEL_WARLORD_ID) && actor.system.powers?.personal) {
-      await actor.update({
-        'system.powers.personal.value': Math.min(actor.system.powers.personal.max, actor.system.powers.personal.value + 2),
-      });
-    }
+    // Cruel Warlord's "regain 2 Personal Power on a Fumble" and Cost of Sorcery's Health loss are
+    // fumbled Triggers on the items (rules/triggers.mjs).
 
     // Bad Temper / Something To Prove - see their own checks in _getAutomaticCombatModifiers for
     // the RAW text and the round-scoped flag shape. Stamped here, on the Fumble itself, for
@@ -11510,12 +10833,6 @@ export class Dice {
       if (actorHasHangUp(actor, SOMETHING_TO_PROVE_HANGUP_ID)) {
         await actor.setFlag('essence20', SOMETHING_TO_PROVE_FLAG, { combatId: game.combat.id, round: game.combat.round + 1 });
       }
-    }
-
-    // Cost of Sorcery - see COST_OF_SORCERY_ID's own comment above. Not gated on game.combat -
-    // RAW's own Fumble clause isn't Combat-only, unlike Bad Temper/Something To Prove just above.
-    if (isFumble && checkContext.isSorcerousAttempt && actorHasHangUp(actor, COST_OF_SORCERY_ID)) {
-      await actor.update({ 'system.health.value': Math.max(0, actor.system.health.value - 1) });
     }
 
     // Temperamental (Quartermaster's Guide to Gear p.35; a weapon AND weapon-upgrade trait):
@@ -12344,25 +11661,6 @@ export class Dice {
       }
     }
 
-    // Barreling Beam (MLP CRB, Elementary Beam spell, p.136) - Prone-on-Critical-Success half
-    // only: "If you aren't pushing them into danger, then your target is knocked Prone on a
-    // Critical Success." Only this half is built - the "move your target up to 15ft away"
-    // knockback half needs the already-confirmed forced-movement/knockback gap this project
-    // doesn't have anywhere. Critical Success reads as multiplier >= 2, the same idiom Shoots and
-    // Scores/Stylish Strike already established.
-    if (checkContext.spellSourceId == BARRELING_BEAM_ID) {
-      for (const result of results) {
-        if (!result.success || result.multiplier < 2 || !result.targetUuid) {
-          continue;
-        }
-
-        const barrelingBeamTarget = await fromUuid(result.targetUuid);
-        if (barrelingBeamTarget) {
-          await barrelingBeamTarget.toggleStatusEffect('prone', { active: true });
-        }
-      }
-    }
-
     // Mind Beam (MLP CRB, Virtuoso Beam spell, p.139) - see helpers/mind-beam.mjs's own doc
     // comment. On a successful Attack, applies whichever of Frightened/Impaired/Stunned was
     // picked before the roll.
@@ -12568,22 +11866,6 @@ export class Dice {
         }
 
         break;
-      }
-    }
-
-    // Cryogenic Touch (A Jump Through Time, Grid Power, p.57) - see
-    // updatedShiftDataset.cryogenicTouchAvailable's own comment above. Fixed Impaired application,
-    // no picker needed (unlike Hobble's own 3-way choice).
-    if (checkContext.cryogenicTouchAttempt) {
-      for (const result of results) {
-        if (!result.success || !result.targetUuid) {
-          continue;
-        }
-
-        const targetActor = await fromUuid(result.targetUuid);
-        if (targetActor) {
-          await targetActor.toggleStatusEffect('impaired', { active: true });
-        }
       }
     }
 
@@ -13550,14 +12832,6 @@ export class Dice {
       requestStoryPointGrant(actor);
     }
 
-    // Percussive Maintenance - see PERCUSSIVE_MAINTENANCE_ID's own comment above. Banked here, on
-    // a Critical Success on a Technology roll, consumed in rollSkill()'s own scoped-consumption
-    // section (rolledSkill == 'technology').
-    if (rollContext.skill == 'technology' && actorHasPerk(actor, PERCUSSIVE_MAINTENANCE_ID)
-      && results.some(result => result.multiplier >= 2)) {
-      await bankPendingBonus(actor, PENDING_PERCUSSIVE_MAINTENANCE_FLAG, { edge: true });
-    }
-
     // Vibrating Palm - see VIBRATING_PALM_ID's own comment above. Any Critical Success on this
     // unarmed Attack counts, once per mission (approximated as once per encounter).
     if (checkContext.isVibratingPalmAttempt && results.some(result => result.multiplier >= 2)) {
@@ -13576,19 +12850,6 @@ export class Dice {
           await bankPendingBonus(token.actor, 'pendingYouCanDoItToo', { shiftUp: 1, ...untilStartOfNextTurn(actor) });
         }
       }
-    }
-
-    // BRRRRRRRRRRRRRRT - see BRRRRRRRRRRRRRRT_ID's own comment above. Unlike You Can Do It, Too!
-    // just above, this fires on making a qualifying attack at all, not on any particular outcome.
-    if (checkContext.isMultipleTargetsWeapon && actorHasPerk(actor, BRRRRRRRRRRRRRRT_ID)
-      && !hasUsedThisEncounter(actor, BRRRRRRRRRRRRRRT_ENCOUNTER_FLAG)) {
-      for (const token of getNearbyAllyTokens(actor, Infinity)) {
-        if (token.actor) {
-          await bankPendingBonus(token.actor, 'pendingBrrrrrrrrrrrrrrt', { shiftUp: 1 });
-        }
-      }
-
-      await markUsedThisEncounter(actor, BRRRRRRRRRRRRRRT_ENCOUNTER_FLAG);
     }
 
     // 'Til All Are One (Enigma of Combination, Origin Benefit, p.28) - see
@@ -13960,13 +13221,6 @@ export class Dice {
     // reading Cheer/Stay Humble's own rollFailed checks already use), scoped to that same skill.
     if (rollContext.skill && results.every(entry => !entry.success) && actorHasPerk(actor, TRY_TRY_AGAIN_ID)) {
       await bankPendingBonus(actor, TRY_TRY_AGAIN_FLAG, { skill: rollContext.skill });
-    }
-
-    // Mistrustful - see MISTRUSTFUL_HANGUP_ID's own comment above / helpers/mistrustful.mjs.
-    // Same "none of the compared entries succeeded" whole-roll failure reading as Try, Try Again
-    // just above, scoped to a failed Alertness Test specifically.
-    if (rollContext.skill == 'alertness' && results.every(entry => !entry.success) && actorHasHangUp(actor, MISTRUSTFUL_HANGUP_ID)) {
-      await markMistrustfulSnag(actor);
     }
 
     // Smashmouth Offense (Cobra Codex, Vanguard Be Ruthless replacement Perk, p.68) - see

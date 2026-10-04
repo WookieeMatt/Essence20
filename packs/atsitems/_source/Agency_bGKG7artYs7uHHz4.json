@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Agency","when":["skill:{item.choice}"],"edge":true}
+      {"type":"RollModifier","label":"Agency","when":["skill:{item.choice}"],"edge":true},
+      {"type":"DieSubstitution","label":"Wealth: at least the chosen Skill's die (Agency)","mode":"best","skills":["choice"],"when":["skill:wealth"]}
     ],
     "automation": {
       "status": "full",

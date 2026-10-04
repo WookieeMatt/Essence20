@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Defense","label":"Trustworthy (+4 Cleverness against Deception)","defense":"cleverness","amount":4,"when":["skill:deception"]}
+      {"type":"Defense","label":"Trustworthy (+4 Cleverness against Deception)","defense":"cleverness","amount":4,"when":["skill:deception"]},
+      {"type":"Defense","label":"Own Deception always fails (Trustworthy)","defense":"any","mode":"fail","outgoing":true,"when":["skill:deception"]}
     ],
     "automation": {
       "status": "full",

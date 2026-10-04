@@ -38,22 +38,6 @@ export function hasDefeatedAllyInReach(actor) {
 }
 
 /**
- * The live, non-consumed Defense bonus Not On My Watch grants while a Defeated teammate is within
- * Reach - +1 to both Toughness and Evasion, same shape as helpers/bolster-defense.mjs's own
- * getBolsterDefenseBonus but unconditional on holding the Perk rather than an activated flag.
- * @param {Actor} actor
- * @param {String} defenseType
- * @returns {Number}
- */
-export function getNotOnMyWatchDefenseBonus(actor, defenseType) {
-  if (defenseType != 'toughness' && defenseType != 'evasion') {
-    return 0;
-  }
-
-  return hasDefeatedAllyInReach(actor) ? 1 : 0;
-}
-
-/**
  * Called from combat.mjs#applyDamage the moment defeatedActor's Health crosses from >0 to 0.
  * Posts a chat prompt for every nearby ally holding Not On My Watch, letting that player know
  * they can now move their own token towards defeatedActor.

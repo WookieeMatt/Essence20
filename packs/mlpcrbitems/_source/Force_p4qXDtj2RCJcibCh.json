@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:unarmed","skill:might"],"limit":{"per":"encounter"},"steps":[{"do":"bank","label":"Fleeting Energy","downshift":1,"appliesWhen":["essence:strength"],"until":"encounter","when":["self:hasItem:Compendium.essence20.mlp_crb.Item.PblwqCeE7Zyb3jF4"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your first unarmed Might attack each scene deals +1 damage, listed as a Force bonus on the attack's chat card.</p>"

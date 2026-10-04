@@ -5,6 +5,9 @@
   "_id": "qZ7QX3nEt6C1blcj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"x2","label":"Critical Success on Technology (Percussive Maintenance: Edge next time)","when":["skill:technology"],"steps":[{"do":"bank","edge":true,"appliesWhen":["skill:technology","not:roll:initiative"],"until":"encounter"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Technology also counts as a Strength Skill for you. Automatic: after a Critical Success on a Technology roll, your next Technology roll gets Edge, already selected when its Roll Options Dialog opens.</p>"

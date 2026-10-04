@@ -139,7 +139,6 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       applyCripplingBlow: form?.applyCripplingBlow?.checked,
       applyDirtyBlows: form?.applyDirtyBlows?.checked,
       applyGrinder: form?.applyGrinder?.checked,
-      applyCryogenicTouch: form?.applyCryogenicTouch?.checked,
       applyGuardianStrikes: form?.applyGuardianStrikes?.checked,
       applyStickInTheSpokes: form?.applyStickInTheSpokes?.checked,
       applyInterdiction: form?.applyInterdiction?.checked,

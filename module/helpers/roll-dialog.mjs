@@ -185,7 +185,6 @@ export class RollDialog {
       penetratingShotAvailable: dataset.penetratingShotAvailable,
       hobbleAvailable: dataset.hobbleAvailable,
       cripplingBlowAvailable: dataset.cripplingBlowAvailable,
-      cryogenicTouchAvailable: dataset.cryogenicTouchAvailable,
       guardianStrikesAvailable: dataset.guardianStrikesAvailable,
       stickInTheSpokesAvailable: dataset.stickInTheSpokesAvailable,
       interdictionAvailable: dataset.interdictionAvailable,

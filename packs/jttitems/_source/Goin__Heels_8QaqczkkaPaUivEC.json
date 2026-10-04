@@ -5,6 +5,10 @@
   "_id": "8QaqczkkaPaUivEC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Ahead of the target in Initiative (Goin' Heels: ↑1)","upshift":1,"when":["attack","weapon:data:system.classification.skill=targeting","weapon:data:system.classification.size=sidearm","weapon:data:system.numHands=1","combat:aheadOfTarget"]},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","weapon:data:system.classification.skill=targeting","weapon:data:system.classification.size=sidearm","weapon:data:system.numHands=1","target:data:system","combat:highestInitiative"]}
+    ],
     "prerequisites": {"when":["self:skill:initiative>=d4"]},
     "automation": {
       "status": "full",

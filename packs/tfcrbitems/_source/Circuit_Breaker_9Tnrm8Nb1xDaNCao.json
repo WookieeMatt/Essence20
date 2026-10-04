@@ -5,6 +5,9 @@
   "_id": "9Tnrm8Nb1xDaNCao",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DieSubstitution","label":"Technology die on Electric attacks (Circuit Breaker)","mode":"best","skills":["technology"],"when":["attack",{"any":["item:damageType:electric","weapon:trait:electric"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks with Electric weapons roll Technology instead when your Technology is better.</p>"
