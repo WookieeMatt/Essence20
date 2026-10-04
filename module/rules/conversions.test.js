@@ -6524,3 +6524,254 @@ test("Contingency Shot: a ranged attack on someone else's turn ignores Cover", (
   // Without the Perk, nothing.
   expect(ruleCover(holder([]), regCTarget('common'), { item: ranged, combat: turn('someoneElse') }).ignore).toBe(false);
 });
+
+// regB2 (dice.mjs rollSkill after the dialog, second pass): the dice pieces (RollDice), the attacker-side and
+// aura Defense rules, a damage-type override (DamageType) and Force's limited, banking scaled damage.
+describe('regB2: RollDice, Defense modes, DamageType and Force', () => {
+  const DEFENSES = ['toughness', 'evasion', 'willpower', 'cleverness'];
+  const sheet = () => ({ defenses: Object.fromEntries(DEFENSES.map(key => [key, { total: 10 }])) });
+  const plain = () => ({ id: `p${nextId++}`, type: 'npc', statuses: new Set(), flags: {}, items: { contents: [] }, system: sheet() });
+
+  // A weapon effect on a weapon with these traits, held by the actor (weapon: tags read it).
+  function weaponEffect(actor, traits, style) {
+    const weapon = { id: `w${nextId++}`, type: 'weapon', flags: {}, parent: actor, system: { traits } };
+    actor.items.contents.push(weapon);
+    return { type: 'weaponEffect', parent: actor, flags: { essence20: { parentId: weapon.id } }, system: { classification: { style } } };
+  }
+
+  test('Silver Tongue: d20s count as at least 10 on Social Skill Tests only', async () => {
+    const { ruleRollDice } = await import('./adapter.mjs');
+    const actor = holder(['gijcrbitems/_source/Silver_Tongue_69ijP0SuQ4demwd9.json']);
+    expect(ruleRollDice(actor, null, { rolledSkill: 'persuasion', rolledEssence: 'social', dataset: {} }).d20Floor).toBe(10);
+    expect(ruleRollDice(actor, null, { rolledSkill: 'athletics', rolledEssence: 'strength', dataset: {} }).d20Floor).toBe(0);
+    expect(ruleRollDice(holder([]), null, { rolledEssence: 'social', dataset: {} }).d20Floor).toBe(0);
+  });
+
+  test('Kill Shot: a third d20 on a ranged sniper-weapon attack with an Edge', async () => {
+    const { ruleRollDice } = await import('./adapter.mjs');
+    const actor = holder(['gijcrbitems/_source/Kill_Shot_K82Mlwef1QMEsRrP.json']);
+    const sniper = weaponEffect(actor, ['sniper'], 'projectile');
+    expect(ruleRollDice(actor, null, { item: sniper, edge: true, dataset: {} }).thirdD20).toBe(true);
+    // Not without the Edge, with a non-sniper weapon, on a melee attack, or without the Perk.
+    expect(ruleRollDice(actor, null, { item: sniper, edge: false, dataset: {} }).thirdD20).toBe(false);
+    expect(ruleRollDice(actor, null, { item: weaponEffect(actor, ['ballistic'], 'projectile'), edge: true, dataset: {} }).thirdD20).toBe(false);
+    expect(ruleRollDice(actor, null, { item: weaponEffect(actor, ['sniper'], 'melee'), edge: true, dataset: {} }).thirdD20).toBe(false);
+    const without = holder([]);
+    expect(ruleRollDice(without, null, { item: weaponEffect(without, ['sniper'], 'projectile'), edge: true, dataset: {} }).thirdD20).toBe(false);
+  });
+
+  test('Precision is Perfection: a third d20 on a Silent Martial Arts melee attack with an Edge', async () => {
+    const { ruleRollDice } = await import('./adapter.mjs');
+    const actor = holder(['iafav2items/_source/Precision_is_Perfection_2BYtrKD35dJ6jlV5.json']);
+    const strike = weaponEffect(actor, ['silent', 'martialArts'], 'melee');
+    expect(ruleRollDice(actor, null, { item: strike, edge: true, dataset: {} }).thirdD20).toBe(true);
+    expect(ruleRollDice(actor, null, { item: strike, edge: false, dataset: {} }).thirdD20).toBe(false);
+    expect(ruleRollDice(actor, null, { item: weaponEffect(actor, ['martialArts'], 'melee'), edge: true, dataset: {} }).thirdD20).toBe(false);
+    expect(ruleRollDice(actor, null, { item: weaponEffect(actor, ['silent', 'martialArts'], 'projectile'), edge: true, dataset: {} }).thirdD20).toBe(false);
+  });
+
+  test('Super Specialized: one step up when Specialized on the chosen Skill', async () => {
+    const { ruleRollDice } = await import('./adapter.mjs');
+    const actor = holder(['mlpcrbitems/_source/Super_Specialized_TuSb6usDweSzf5S9.json']);
+    actor.items.contents[0].system.choice = 'alertness';
+    expect(ruleRollDice(actor, null, { rolledSkill: 'alertness', dataset: { isSpecialized: true } }).stepUp).toBe(1);
+    // Not unless the roll is Specialized, and not on another Skill.
+    expect(ruleRollDice(actor, null, { rolledSkill: 'alertness', dataset: { isSpecialized: false } }).stepUp).toBe(0);
+    expect(ruleRollDice(actor, null, { rolledSkill: 'might', dataset: { isSpecialized: true } }).stepUp).toBe(0);
+    actor.items.contents[0].system.choice = '';
+    expect(ruleRollDice(actor, null, { rolledSkill: 'alertness', dataset: { isSpecialized: true } }).stepUp).toBe(0);
+  });
+
+  test('Bear Hug: a Grapple attack deals Blunt damage', async () => {
+    const { ruleDamageType } = await import('./adapter.mjs');
+    const actor = holder(['iafav2items/_source/Bear_Hug_id5IVoPuSC03mKfZ.json']);
+    const grapple = { type: 'weaponEffect', flags: {}, system: { classification: {}, damageType: 'grapple' } };
+    const blunt = { type: 'weaponEffect', flags: {}, system: { classification: {}, damageType: 'blunt' } };
+    expect(ruleDamageType(actor, null, { item: grapple })).toBe('blunt');
+    expect(ruleDamageType(actor, null, { item: blunt })).toBeNull();
+    expect(ruleDamageType(holder([]), null, { item: grapple })).toBeNull();
+  });
+
+  test('Energy Affinity: the chosen Element on attacks of the activated style; Bear Hug still comes first', async () => {
+    const { ruleDamageType } = await import('./adapter.mjs');
+    const { registerCheck } = await import('./predicate.mjs');
+    const { isEnergyAffinityElementAttack } = await import('../helpers/energy-affinity.mjs');
+    const { getSceneEpoch } = await import('../helpers/scene-clock.mjs');
+    registerCheck('energyAffinityAttack', (actor, option, ctx) => isEnergyAffinityElementAttack(actor, ctx?.item));
+    const actor = misc7Holder(['iafav2items/_source/Bear_Hug_id5IVoPuSC03mKfZ.json', 'dditems/_source/Energy_Affinity_DgFY0ZmAtClAobiA.json']);
+    const affinity = actor.items.contents[1];
+    affinity.flags = { core: { sourceId: 'Compendium.essence20.decepticon_directive.Item.DgFY0ZmAtClAobiA' } };
+    affinity.system.choice = 'fire';
+    const effect = (style, damageType = 'blunt') => ({ type: 'weaponEffect', flags: {}, system: { classification: { style }, damageType } });
+    expect(ruleDamageType(actor, null, { item: effect('melee') })).toBeNull();
+    actor.flags.essence20.energyAffinityAltered = { epoch: getSceneEpoch(), style: 'melee' };
+    expect(ruleDamageType(actor, null, { item: effect('melee') })).toBe('fire');
+    expect(ruleDamageType(actor, null, { item: effect('projectile') })).toBeNull();
+    expect(ruleDamageType(actor, null, { item: effect('melee', 'grapple') })).toBe('blunt');
+  });
+
+  test.each([
+    ['Decepticon Directive', 'dditems/_source/Tooth_and_Claw_bHQGteFX7pdnslOx.json'],
+    ['Technorganic Secrets', 'tsitems/_source/Tooth_and_Claw_Z4lShGtDBa2zQ5ov.json'],
+  ])('Tooth and Claw (%s): an unarmed Alt Mode attack deals the chosen Sharp / Blunt (Sharp if unchosen), ahead of Bear Hug', async (name, file) => {
+    const { ruleDamageType } = await import('./adapter.mjs');
+    const actor = holder(['iafav2items/_source/Bear_Hug_id5IVoPuSC03mKfZ.json', file], { system: { isTransformed: true } });
+    const claw = actor.items.contents[1];
+    claw.system.choice = 'blunt';
+    const punch = (damageType = 'stun') => ({ type: 'weaponEffect', parent: actor, flags: {}, system: { classification: { style: 'melee' }, damageType } });
+    expect(ruleDamageType(actor, null, { item: punch() })).toBe('blunt');
+    claw.system.choice = null;
+    expect(ruleDamageType(actor, null, { item: punch() })).toBe('sharp');
+    expect(ruleDamageType(actor, null, { item: punch('grapple') })).toBe('sharp');
+    // The printed Unarmed Combat weapons count as unarmed; any other weapon doesn't.
+    const printed = { id: 'fists', type: 'weapon', flags: { core: { sourceId: 'Compendium.essence20.tf_crb.Item.OU9rXvoKfXtcpvFy' } }, parent: actor, system: { traits: [] } };
+    const sword = { id: 'sword', type: 'weapon', flags: {}, parent: actor, system: { traits: [] } };
+    actor.items.contents.push(printed, sword);
+    expect(ruleDamageType(actor, null, { item: { ...punch(), flags: { essence20: { parentId: 'fists' } } } })).toBe('sharp');
+    expect(ruleDamageType(actor, null, { item: { ...punch(), flags: { essence20: { parentId: 'sword' } } } })).toBeNull();
+    actor.system.isTransformed = false;
+    expect(ruleDamageType(actor, null, { item: punch() })).toBeNull();
+  });
+
+  test('Shatter Resolve: the target\'s Willpower / Cleverness -2 against the holder\'s Deception / Persuasion', () => {
+    const attacker = holder(['dditems/_source/Shatter_Resolve_s3rsoMHOjWY9WfLF.json'], { system: sheet() });
+    const target = plain();
+    const adjust = (who, defense, rolledSkill, on = target) => ruleDefenseAdjust(who, on, defense, { item: null, rolledSkill, difficulty: 10 });
+    expect(adjust(attacker, 'willpower', 'deception')).toBe(-2);
+    expect(adjust(attacker, 'cleverness', 'persuasion')).toBe(-2);
+    expect(adjust(attacker, 'toughness', 'deception')).toBe(0);
+    expect(adjust(attacker, 'willpower', 'intimidation')).toBe(0);
+    expect(adjust(holder([]), 'willpower', 'deception')).toBe(0);
+    // The holder's own Defenses are untouched, on the sheet and when attacked.
+    expect(adjust(holder([]), 'willpower', 'deception', attacker)).toBe(0);
+    ruleDerived(attacker);
+    expect(attacker.system.defenses.willpower.total).toBe(10);
+  });
+
+  test('Trustworthy: the holder\'s own Deception can\'t succeed; a Trustworthy target still gets +4 Cleverness', () => {
+    const liar = holder(['mlpcrbitems/_source/Trustworthy_oPMDDfBeK9VibPvW.json'], { system: sheet() });
+    const adjust = (who, on, defense, rolledSkill) => ruleDefenseAdjust(who, on, defense, { item: null, rolledSkill, difficulty: 10 });
+    for (const defense of DEFENSES) {
+      expect(adjust(liar, plain(), defense, 'deception')).toBe(Infinity);
+    }
+
+    expect(adjust(liar, plain(), 'cleverness', 'persuasion')).toBe(0);
+    expect(adjust(holder([]), plain(), 'cleverness', 'deception')).toBe(0);
+    const honest = holder(['mlpcrbitems/_source/Trustworthy_oPMDDfBeK9VibPvW.json'], { system: sheet() });
+    expect(adjust(holder([]), honest, 'cleverness', 'deception')).toBe(4);
+    expect(adjust(liar, honest, 'cleverness', 'deception')).toBe(Infinity);
+  });
+
+  describe('on the canvas', () => {
+    afterEach(async () => {
+      const { setWorldLookups } = await import('./predicate.mjs');
+      const { useAllyLookup } = await import('./links.mjs');
+      const { LINK_HOLDERS } = await import('./index.mjs');
+      setWorldLookups({ alliesWithin: null });
+      useAllyLookup(false);
+      LINK_HOLDERS.clear();
+      delete global.canvas;
+    });
+
+    // Tokens at x feet, all on one side; allies counted the system's way (helpers/allies.mjs#getNearbyAllyTokens).
+    async function place(entries) {
+      const { getNearbyAllyTokens } = await import('../helpers/allies.mjs');
+      const { setWorldLookups } = await import('./predicate.mjs');
+      const { useAllyLookup } = await import('./links.mjs');
+      const tokens = entries.map(([who, x]) => {
+        const token = { actor: who, center: { x, y: 0 }, document: { disposition: 1 } };
+        who.getActiveTokens = () => [token];
+        who.items.find ??= fn => who.items.contents.find(fn);
+        return token;
+      });
+      global.canvas = { grid: { measurePath: ([a, b]) => ({ distance: Math.abs(a.x - b.x) }) }, tokens: { placeables: tokens } };
+      setWorldLookups({ alliesWithin: (who, feet) => getNearbyAllyTokens(who, feet).map(token => token.actor) });
+      useAllyLookup(true);
+    }
+
+    const PAY_IT_FORWARD = 'prcrbitems/_source/Pay_It_Forward_M3pQgNMsU5hU5dMN.json';
+    const adjust = (target, defense = 'toughness') => ruleDefenseAdjust(plain(), target, defense, { item: null, difficulty: 10 });
+
+    test('Pay It Forward: +1 to every Defense with a Morphed holder within 10 ft, once however many', async () => {
+      const target = holder([], { system: sheet() });
+      const giver = holder([PAY_IT_FORWARD], { system: { isMorphed: true } });
+      await place([[target, 0], [giver, 10]]);
+      expect(DEFENSES.map(defense => adjust(target, defense))).toEqual([1, 1, 1, 1]);
+      ruleDerived(target);
+      expect(target.system.defenses.toughness.total).toBe(10);
+      const second = holder([PAY_IT_FORWARD], { system: { isMorphed: true } });
+      await place([[target, 0], [giver, 10], [second, 5]]);
+      expect(adjust(target)).toBe(1);
+      // Not out of range, not while the holder isn't Morphed, and never for the holder itself.
+      await place([[target, 0], [giver, 15]]);
+      expect(adjust(target)).toBe(0);
+      giver.system.isMorphed = false;
+      await place([[target, 0], [giver, 5]]);
+      expect(adjust(target)).toBe(0);
+      giver.system.isMorphed = true;
+      giver.system.defenses = sheet().defenses;
+      expect(adjust(giver)).toBe(0);
+    });
+
+    test('Not On My Watch: +1 Toughness and Evasion with a Defeated ally within 5 ft', async () => {
+      const { registerCheck } = await import('./predicate.mjs');
+      const { hasDefeatedAllyInReach } = await import('../helpers/not-on-my-watch.mjs');
+      registerCheck('defeatedAllyInReach', hasDefeatedAllyInReach);
+      const actor = holder(['iafav2items/_source/Not_On_My_Watch_xH3iQ0NcXp1eFO35.json'], { system: sheet() });
+      const ally = holder([], { statuses: ['defeated'] });
+      await place([[actor, 0], [ally, 5]]);
+      expect(DEFENSES.map(defense => adjust(actor, defense))).toEqual([1, 1, 0, 0]);
+      ruleDerived(actor);
+      expect(actor.system.defenses.toughness.total).toBe(10);
+      await place([[actor, 0], [ally, 10]]);
+      expect(adjust(actor)).toBe(0);
+      ally.statuses = new Set();
+      await place([[actor, 0], [ally, 5]]);
+      expect(adjust(actor)).toBe(0);
+    });
+  });
+
+  describe('Force / Fleeting Energy', () => {
+    const FORCE = 'mlpcrbitems/_source/Force_p4qXDtj2RCJcibCh.json';
+    const FLEETING_ENERGY = { type: 'hangUp', name: 'Fleeting Energy', flags: { core: { sourceId: 'Compendium.essence20.mlp_crb.Item.PblwqCeE7Zyb3jF4' } } };
+    const punch = { type: 'weaponEffect', flags: {}, system: { classification: { style: 'melee' } } };
+
+    function forceHolder(extra = []) {
+      const actor = misc7Holder([FORCE], {}, extra);
+      actor.update = async data => {
+        for (const [key, value] of Object.entries(data)) {
+          const keys = key.split('.');
+          const last = keys.pop();
+          keys.reduce((o, k) => (o[k] ??= {}), actor)[last] = value;
+        }
+      };
+
+      return actor;
+    }
+
+    test('+1 damage on an unarmed Might attack, once per encounter, banking Fleeting Energy\'s ↓1 on Strength tests', async () => {
+      const { bankedSources } = await import('./bank.mjs');
+      const actor = forceHolder([FLEETING_ENERGY]);
+      const first = ruleScaledDamage(actor, null, { item: punch, rolledSkill: 'might' });
+      expect(first).toMatchObject({ amount: 1, sources: ['Force'] });
+      await first.spend();
+      expect(ruleScaledDamage(actor, null, { item: punch, rolledSkill: 'might' }).amount).toBe(0);
+      expect(bankedSources(actor, null, { rolledEssence: 'strength', rolledSkill: 'athletics' }).sources).toEqual([
+        expect.objectContaining({ label: 'Fleeting Energy', shiftDown: 1 }),
+      ]);
+      expect(bankedSources(actor, null, { rolledEssence: 'smarts', rolledSkill: 'alertness' }).sources).toEqual([]);
+    });
+
+    test('nothing banked without the Hang-Up; nothing at all on an armed or non-Might attack', async () => {
+      const actor = forceHolder();
+      const first = ruleScaledDamage(actor, null, { item: punch, rolledSkill: 'might' });
+      expect(first.amount).toBe(1);
+      await first.spend();
+      expect(actor.flags.essence20.ruleBank).toBeUndefined();
+      const fresh = forceHolder();
+      const armed = { ...punch, flags: { essence20: { parentId: 'w1' } } };
+      expect(ruleScaledDamage(fresh, null, { item: armed, rolledSkill: 'might' }).amount).toBe(0);
+      expect(ruleScaledDamage(fresh, null, { item: punch, rolledSkill: 'finesse' }).amount).toBe(0);
+    });
+  });
+});

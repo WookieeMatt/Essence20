@@ -2680,162 +2680,53 @@ describe("rollSkill", () => {
     });
   });
 
-  describe("Kill Shot (Sniper Focus, 20th level, p.75) - the 3d20kh half", () => {
-    const KILL_SHOT_ID = "Compendium.essence20.gi_joe_crb.Item.K82Mlwef1QMEsRrP";
-    const targetingDataset = { ...dataset, skill: 'targeting', essence: 'speed' };
-    const sniperWeaponEffect = {
-      name: 'Sniper Rifle Effect',
-      type: 'weaponEffect',
-      flags: { essence20: { parentId: 'weapon1' } },
-      system: { classification: { skill: "targeting" }, damageType: "ballistic", damageValue: 1 },
+  describe("item rules' RollDice (Silver Tongue, Kill Shot, Super Specialized) reach the formula", () => {
+    const sniperEffect = {
+      name: 'Sniper Rifle Effect', type: 'weaponEffect', flags: { essence20: { parentId: 'weapon1' } },
+      system: { classification: { skill: 'targeting' }, damageType: 'ballistic', damageValue: 1 },
     };
 
-    function makeActor({ perkIds = [], traits = ['sniper'] } = {}) {
-      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
-      items.get = jest.fn(id => (id == 'weapon1' ? { system: { traits } } : null));
-
-      return {
-        ...mockActor,
-        items,
-        getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20', edge: true } } })),
-      };
+    function makeActor(rules, skills) {
+      const items = [
+        { id: 'perk1', type: 'perk', name: 'Perk', flags: {}, system: { rules, choice: 'alertness' } },
+        { id: 'weapon1', type: 'weapon', name: 'Rifle', flags: {}, system: { traits: ['sniper'] } },
+      ];
+      items.get = jest.fn(id => items.find(item => item.id == id) ?? null);
+      // mockActor's own fields only - not a rule index cached on it by an earlier test.
+      const actor = { ...Object.fromEntries(Object.entries(mockActor)), items, getRollData: jest.fn(() => ({ skills })) };
+      items.forEach(item => (item.parent = actor));
+      sniperEffect.parent = actor;
+      return actor;
     }
 
-    test("rolls 3d20kh with a sniper weapon and Edge", async () => {
+    async function formulaFor(rules, rolled, options = {}, item = null) {
       const rollDialog = createMockRollDialog();
       rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: true, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, ...options,
       });
       dice._rollSkillHelper = jest.fn();
-
-      await dice.rollSkill(targetingDataset, makeActor({ perkIds: [KILL_SHOT_ID] }), sniperWeaponEffect);
-
-      expect(dice._rollSkillHelper.mock.calls[0][0]).toContain('3d20kh');
-    });
-
-    test("stays the ordinary 2d20kh without the Perk", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: true, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-
-      await dice.rollSkill(targetingDataset, makeActor(), sniperWeaponEffect);
-
-      expect(dice._rollSkillHelper.mock.calls[0][0]).toContain('2d20kh');
-      expect(dice._rollSkillHelper.mock.calls[0][0]).not.toContain('3d20');
-    });
-
-    test("doesn't apply without Edge, even with the Perk and a sniper weapon", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-      const actor = makeActor({ perkIds: [KILL_SHOT_ID] });
-      actor.getRollData = jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20', edge: false } } }));
-
-      await dice.rollSkill(targetingDataset, actor, sniperWeaponEffect);
-
-      expect(dice._rollSkillHelper.mock.calls[0][0]).not.toContain('3d20');
-    });
-
-    test("doesn't apply to a non-sniper weapon", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: true, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-
-      await dice.rollSkill(targetingDataset, makeActor({ perkIds: [KILL_SHOT_ID], traits: ['ballistic'] }), sniperWeaponEffect);
-
-      expect(dice._rollSkillHelper.mock.calls[0][0]).not.toContain('3d20');
-    });
-
-    test("doesn't apply to a melee attack", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: true, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-      const meleeSniperEffect = {
-        ...sniperWeaponEffect,
-        system: { ...sniperWeaponEffect.system, classification: { skill: 'targeting', style: 'melee' } },
-      };
-
-      await dice.rollSkill(targetingDataset, makeActor({ perkIds: [KILL_SHOT_ID] }), meleeSniperEffect);
-
-      expect(dice._rollSkillHelper.mock.calls[0][0]).not.toContain('3d20');
-    });
-  });
-
-  describe("Bear Hug (Factions in Action Vol. 2, General Perk, p.94)", () => {
-    const BEAR_HUG_ID = "Compendium.essence20.intercontinental_adventures.Item.id5IVoPuSC03mKfZ";
-    const grappleWeaponEffect = {
-      name: 'Grappler Effect',
-      type: 'weaponEffect',
-      flags: {},
-      system: { classification: { skill: "finesse" }, damageType: "grapple", damageValue: 0 },
-    };
-    const bluntWeaponEffect = {
-      name: 'Fist',
-      type: 'weaponEffect',
-      flags: {},
-      system: { classification: { skill: "finesse" }, damageType: "blunt", damageValue: 1 },
-    };
-    const difDataset = { ...dataset, skill: 'finesse', essence: 'strength', dif: '10' };
-
-    function makeActor(perkIds = []) {
-      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
-      items.get = jest.fn(() => null);
-
-      return {
-        ...mockActor,
-        items,
-        getRollData: jest.fn(() => ({ skills: { finesse: { modifier: '0', shift: 'd20' } } })),
-      };
+      await dice.rollSkill({ ...dataset, ...rolled }, makeActor(rules, { [rolled.skill]: { modifier: '0', shift: rolled.shift ?? 'd20' } }), item);
+      return dice._rollSkillHelper.mock.calls[0][0];
     }
 
-    test("turns a Grapple attack's damage Blunt (its +1 is the Perk's own rule)", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-
-      await dice.rollSkill(difDataset, makeActor([BEAR_HUG_ID]), grappleWeaponEffect);
-
-      const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-      expect(checkContext.damageValue).toBe(0); // the +1 is the item's scaled DamageModifier rule
-      expect(checkContext.damageType).toBe('blunt');
+    test("a d20 floor of 10 (min10), only when its condition holds", async () => {
+      const rules = [{ type: 'RollDice', d20Floor: 10, when: ['essence:social'] }];
+      expect(await formulaFor(rules, { skill: 'persuasion', essence: 'social' })).toContain('min10');
+      expect(await formulaFor(rules, { skill: 'athletics', essence: 'strength' })).not.toContain('min10');
     });
 
-    test("doesn't apply to a non-Grapple attack", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-
-      await dice.rollSkill(difDataset, makeActor([BEAR_HUG_ID]), bluntWeaponEffect);
-
-      const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-      expect(checkContext.damageValue).toBe(1);
-      expect(checkContext.damageType).toBe('blunt');
+    test("a third d20 with an Edge (3d20kh)", async () => {
+      const rules = [{ type: 'RollDice', thirdD20: true, when: ['attack:ranged', 'roll:edge', 'weapon:trait:sniper'] }];
+      expect(await formulaFor(rules, { skill: 'targeting', essence: 'speed' }, { edge: true }, sniperEffect)).toContain('3d20kh');
+      expect(await formulaFor(rules, { skill: 'targeting', essence: 'speed' }, { edge: false }, sniperEffect)).not.toContain('3d20');
     });
 
-    test("doesn't apply without the Perk", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-
-      await dice.rollSkill(difDataset, makeActor(), grappleWeaponEffect);
-
-      const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-      expect(checkContext.damageValue).toBe(0);
-      expect(checkContext.damageType).toBe('grapple');
+    test("a step up once the final die is known (d6 to d8 when Specialized)", async () => {
+      const rules = [{ type: 'RollDice', stepUp: 1, when: ['roll:dataset:isSpecialized', 'skill:{item.choice}'] }];
+      expect(await formulaFor(rules, { skill: 'alertness', essence: 'smarts', shift: 'd6' }, { isSpecialized: true })).toContain('d8');
+      const plainRoll = await formulaFor(rules, { skill: 'alertness', essence: 'smarts', shift: 'd6' }, { isSpecialized: false });
+      expect(plainRoll).toContain('d6');
+      expect(plainRoll).not.toContain('d8');
     });
   });
 
@@ -3535,10 +3426,13 @@ describe("rollSkill", () => {
     };
 
     function makeActor({ hasPerk = true, choice = 'fire', alteredStyle = 'melee' } = {}) {
-      const items = hasPerk ? [{ type: 'perk', flags: { core: { sourceId: ENERGY_AFFINITY_ID } }, system: { choice } }] : [];
+      // The override is the Perk's own DamageType rule (the same as its pack source).
+      const rules = [{ type: 'DamageType', to: 'choice', priority: 1, when: ['check:energyAffinityAttack'] }];
+      const items = hasPerk ? [{ type: 'perk', flags: { core: { sourceId: ENERGY_AFFINITY_ID } }, system: { choice, rules } }] : [];
       items.get = jest.fn(() => null);
       return {
-        ...mockActor,
+        // mockActor's own fields only - not a rule index cached on it by an earlier test.
+        ...Object.fromEntries(Object.entries(mockActor)),
         items,
         getFlag: jest.fn((scope, key) => (key == 'energyAffinityAltered' && alteredStyle ? { epoch: 1, style: alteredStyle } : undefined)),
         getRollData: jest.fn(() => ({
@@ -3546,6 +3440,12 @@ describe("rollSkill", () => {
         })),
       };
     }
+
+    beforeAll(async () => {
+      const { registerCheck } = await import('./rules/predicate.mjs');
+      const { isEnergyAffinityElementAttack } = await import('./helpers/energy-affinity.mjs');
+      registerCheck('energyAffinityAttack', (actor, option, ctx) => isEnergyAffinityElementAttack(actor, ctx?.item));
+    });
 
     test("overrides a melee attack's damage type to the chosen Element while melee is activated", async () => {
       const rollDialog = createMockRollDialog();
@@ -3733,11 +3633,18 @@ describe("rollSkill", () => {
 
   describe("Tooth And Claw - damage-type half (Decepticon Directive reprint, p.36)", () => {
     const TOOTH_AND_CLAW_DD_ID = "Compendium.essence20.decepticon_directive.Item.bHQGteFX7pdnslOx";
+    // The override is each printing's own DamageType rules (the same as their pack sources).
+    const unarmed = ['self:transformed', { any: ['attack:unarmed', 'weapon:source:Compendium.essence20.tf_crb.Item.OU9rXvoKfXtcpvFy'] }];
+    const rules = [
+      { type: 'DamageType', to: 'choice', priority: -1, when: unarmed },
+      { type: 'DamageType', to: 'sharp', priority: -1, when: unarmed },
+    ];
 
     function makeActor({ hasPerk = true, isTransformed = true, choice = 'blunt' } = {}) {
       return {
-        ...mockActor,
-        items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: TOOTH_AND_CLAW_DD_ID } }, system: { choice } }] : [],
+        // mockActor's own fields only - not a rule index cached on it by an earlier test.
+        ...Object.fromEntries(Object.entries(mockActor)),
+        items: hasPerk ? [{ type: 'perk', flags: { core: { sourceId: TOOTH_AND_CLAW_DD_ID } }, system: { choice, rules } }] : [],
         system: { ...mockActor.system, isTransformed },
         getRollData: jest.fn(() => ({ skills: { athletics: { modifier: '0', shift: 'd20' } } })),
       };
@@ -3771,7 +3678,7 @@ describe("rollSkill", () => {
       dice._rollSkillHelper = jest.fn();
       const actor = {
         ...makeActor({ hasPerk: false }),
-        items: [{ type: 'perk', flags: { core: { sourceId: "Compendium.essence20.technorganic_secrets.Item.Z4lShGtDBa2zQ5ov" } }, system: { choice: 'blunt' } }],
+        items: [{ type: 'perk', flags: { core: { sourceId: "Compendium.essence20.technorganic_secrets.Item.Z4lShGtDBa2zQ5ov" } }, system: { choice: 'blunt', rules } }],
       };
 
       await dice.rollSkill({ ...dataset, dif: '10', skill: 'athletics', essence: 'strength' }, actor, unarmedWeaponEffect);
@@ -9744,51 +9651,6 @@ describe("rollSkill", () => {
     });
   });
 
-  describe("Silver Tongue (Spy Focus, 6th level)", () => {
-    const SILVER_TONGUE_ID = "Compendium.essence20.gi_joe_crb.Item.69ijP0SuQ4demwd9";
-    const socialDataset = { ...dataset, skill: 'persuasion', essence: 'social' };
-
-    function makeActor(perkIds = []) {
-      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
-      items.get = jest.fn(() => null);
-
-      return {
-        ...mockActor,
-        items,
-        getRollData: jest.fn(() => ({
-          skills: {
-            persuasion: { modifier: '0', shift: 'd20' },
-            athletics: { modifier: '0', shift: 'd20' },
-          },
-        })),
-      };
-    }
-
-    test("floors the d20 term at 10 on a Social roll", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-
-      await dice.rollSkill(socialDataset, makeActor([SILVER_TONGUE_ID]), null);
-
-      expect(dice._rollSkillHelper.mock.calls[0][0]).toContain('min10');
-    });
-
-    test("doesn't apply to a non-Social roll", async () => {
-      const rollDialog = createMockRollDialog();
-      rollDialog.getSkillRollOptions.mockReturnValue({
-        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-      });
-      dice._rollSkillHelper = jest.fn();
-
-      await dice.rollSkill(dataset, makeActor([SILVER_TONGUE_ID]), null);
-
-      expect(dice._rollSkillHelper.mock.calls[0][0]).not.toContain('min10');
-    });
-  });
-
   describe("Power Ranger Tier 1 Perks", () => {
     const meleeWeaponEffect = { type: 'weaponEffect', system: { classification: { style: 'melee' } } };
 
@@ -15163,106 +15025,6 @@ describe("rollSkill", () => {
       });
     });
 
-    describe("Pay It Forward (A Jump Through Time, Red Spectrum Modification, replaces Let's Bring 'Em Together!, p.45)", () => {
-      const PAY_IT_FORWARD_ID = "Compendium.essence20.pr_crb.Item.M3pQgNMsU5hU5dMN";
-      const targetingDataset = { ...dataset, skill: 'targeting', essence: 'speed', defenseType: 'toughness' };
-      const rangedWeaponEffect = {
-        type: 'weaponEffect', flags: {},
-        system: { classification: { skill: 'targeting', style: 'ranged' }, damageType: 'ballistic', damageValue: 3 },
-      };
-
-      function makeAttackerActor() {
-        const items = [];
-        items.get = jest.fn(() => null);
-
-        return { ...mockActor, items, getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20' } } })) };
-      }
-
-      function makeTargetActor() {
-        const token = { document: { disposition: -1 }, center: { x: 0, y: 0 } };
-
-        return {
-          name: 'Target', uuid: 'Actor.target1',
-          system: { defenses: { toughness: { total: 10 } }, immunities: {}, size: 'common' },
-          statuses: new Set(), items: [],
-          getActiveTokens: jest.fn(() => [token]),
-        };
-      }
-
-      function makeTargetsSet(targetActor) {
-        const token = { actor: targetActor, center: { x: 0, y: 0 } };
-        const set = new Set([token]);
-        set.first = () => token;
-
-        return set;
-      }
-
-      let originalTargets;
-      beforeEach(() => {
-        originalTargets = game.user.targets;
-        canvas.tokens.placeables = [];
-        canvas.grid.measurePath.mockReturnValue({ distance: 0 });
-      });
-      afterEach(() => {
-        game.user.targets = originalTargets;
-        canvas.tokens.placeables = [];
-      });
-
-      test("adds +1 to the target's Defense with a nearby Morphed Pay It Forward holder", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = makeTargetActor();
-        const targetToken = targetActor.getActiveTokens()[0];
-        const holderActor = { items: [{ type: 'perk', flags: { core: { sourceId: PAY_IT_FORWARD_ID } } }], system: { isMorphed: true } };
-        const holderToken = { actor: holderActor, document: { disposition: -1 }, center: { x: 5, y: 0 } };
-        canvas.tokens.placeables = [targetToken, holderToken];
-        game.user.targets = makeTargetsSet(targetActor);
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(11);
-      });
-
-      test("doesn't apply when the nearby holder isn't Morphed", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = makeTargetActor();
-        const targetToken = targetActor.getActiveTokens()[0];
-        const holderActor = { items: [{ type: 'perk', flags: { core: { sourceId: PAY_IT_FORWARD_ID } } }], system: { isMorphed: false } };
-        const holderToken = { actor: holderActor, document: { disposition: -1 }, center: { x: 5, y: 0 } };
-        canvas.tokens.placeables = [targetToken, holderToken];
-        game.user.targets = makeTargetsSet(targetActor);
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-      });
-
-      test("doesn't apply with no nearby holder at all", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = makeTargetActor();
-        canvas.tokens.placeables = [targetActor.getActiveTokens()[0]];
-        game.user.targets = makeTargetsSet(targetActor);
-
-        await dice.rollSkill(targetingDataset, makeAttackerActor(), rangedWeaponEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-      });
-    });
-
     describe("Defensive Flexibility (A Jump Through Time, Blue Spectrum Modification, replaces Grid Tech, p.45) - Defense bonus half", () => {
       const DEFENSIVE_FLEXIBILITY_ID = "Compendium.essence20.pr_crb.Item.7kHQ53hZFgwhSFVi";
       const targetingDataset = { ...dataset, skill: 'targeting', essence: 'speed', defenseType: 'toughness' };
@@ -15766,8 +15528,6 @@ describe("rollSkill", () => {
   });
 
   describe("My Little Pony Roles", () => {
-    const TRUSTWORTHY_ID = "Compendium.essence20.mlp_crb.Item.oPMDDfBeK9VibPvW";
-
     function makeActor({ perkIds = [], choice = null } = {}) {
       const items = perkIds.map(perkId => ({
         type: 'perk', flags: { core: { sourceId: perkId } }, system: { choice },
@@ -16904,69 +16664,6 @@ describe("rollSkill", () => {
       });
     });
 
-    describe("Trustworthy (Honesty, 2nd level, p.78)", () => {
-      const deceptionDataset = { ...dataset, skill: 'deception', essence: 'social', defenseType: 'cleverness' };
-
-      function makeTargetsSet(targetActor) {
-        const token = { actor: targetActor, center: { x: 0, y: 0 } };
-        const set = new Set([token]);
-        set.first = () => token;
-
-        return set;
-      }
-
-      let originalTargets;
-      beforeEach(() => {
-        originalTargets = game.user.targets;
-      });
-      afterEach(() => {
-        game.user.targets = originalTargets;
-      });
-
-      test("forces an unbeatable difficulty when the ROLLER holds Trustworthy (auto-fails their own Deception)", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'cleverness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = {
-          name: 'Target', uuid: 'Actor.target1',
-          system: { defenses: { cleverness: { total: 10 } }, immunities: {}, size: 'common' },
-          statuses: new Set(), items: [],
-        };
-        game.user.targets = makeTargetsSet(targetActor);
-        const actor = makeActor({ perkIds: [TRUSTWORTHY_ID] });
-
-        await dice.rollSkill(deceptionDataset, actor, null);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(Infinity);
-      });
-
-      test("doesn't apply to a non-Deception roll, or without the Perk", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'cleverness',
-        });
-        dice._rollSkillHelper = jest.fn();
-        const targetActor = {
-          name: 'Target', uuid: 'Actor.target1',
-          system: { defenses: { cleverness: { total: 10 } }, immunities: {}, size: 'common' },
-          statuses: new Set(), items: [],
-        };
-        game.user.targets = makeTargetsSet(targetActor);
-
-        await dice.rollSkill(deceptionDataset, makeActor(), null);
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.entries[0].difficulty).toBe(10);
-
-        const actor = makeActor({ perkIds: [TRUSTWORTHY_ID] });
-        await dice.rollSkill({ ...dataset, skill: 'persuasion', essence: 'social', defenseType: 'cleverness' }, actor, null);
-        const checkContext2 = dice._rollSkillHelper.mock.calls[1][4];
-        expect(checkContext2.entries[0].difficulty).toBe(10);
-      });
-    });
-
     describe("Scapegoat (Cobra Codex, Influence Perk, p.33)", () => {
       const SCAPEGOAT_ID = "Compendium.essence20.cobra_codex.Item.yMihdpSe5ntjRN3R";
 
@@ -17120,75 +16817,6 @@ describe("rollSkill", () => {
         });
         await dice.rollSkill({ ...dataset, skill: 'persuasion', essence: 'social' }, makeActor(), null);
         expect(dice._rollSkillHelper.mock.calls[1][4].entries[0].difficulty).toBe(8);
-      });
-    });
-
-    describe("Shatter Resolve (Decepticon Directive, Interrogator base, 6th level, p.41)", () => {
-      const SHATTER_RESOLVE_ID = "Compendium.essence20.decepticon_directive.Item.s3rsoMHOjWY9WfLF";
-
-      function makeTargetsSet(targetActor) {
-        const token = { actor: targetActor, center: { x: 0, y: 0 } };
-        const set = new Set([token]);
-        set.first = () => token;
-
-        return set;
-      }
-
-      let originalTargets;
-      beforeEach(() => {
-        originalTargets = game.user.targets;
-      });
-      afterEach(() => {
-        game.user.targets = originalTargets;
-      });
-
-      function makeTargetActor() {
-        return {
-          name: 'Target', uuid: 'Actor.target1',
-          system: {
-            defenses: { willpower: { total: 10 }, cleverness: { total: 10 }, toughness: { total: 8 } },
-            immunities: {}, size: 'common',
-          },
-          statuses: new Set(),
-          items: [],
-        };
-      }
-
-      async function difficultyFor(skill, defenseType, { hasPerk = true } = {}) {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType,
-        });
-        dice._rollSkillHelper = jest.fn();
-        game.user.targets = makeTargetsSet(makeTargetActor());
-
-        await dice.rollSkill(
-          { ...dataset, skill, essence: 'social' },
-          makeActor({ perkIds: hasPerk ? [SHATTER_RESOLVE_ID] : [] }),
-          null,
-        );
-
-        return dice._rollSkillHelper.mock.calls[0][4].entries[0].difficulty;
-      }
-
-      test("applies the -2 penalty to Willpower against the attacker's own Deception", async () => {
-        expect(await difficultyFor('deception', 'willpower')).toBe(8);
-      });
-
-      test("applies the -2 penalty to Cleverness against the attacker's own Persuasion", async () => {
-        expect(await difficultyFor('persuasion', 'cleverness')).toBe(8);
-      });
-
-      test("doesn't apply without the Perk", async () => {
-        expect(await difficultyFor('deception', 'willpower', { hasPerk: false })).toBe(10);
-      });
-
-      test("doesn't apply to a Defense outside the Willpower/Cleverness pair", async () => {
-        expect(await difficultyFor('deception', 'toughness')).toBe(8);
-      });
-
-      test("doesn't apply on a Skill Test other than Deception/Persuasion", async () => {
-        expect(await difficultyFor('intimidation', 'willpower')).toBe(10);
       });
     });
 
@@ -18850,8 +18478,6 @@ describe("rollSkill", () => {
   });
 
   describe("MLP General/Origin/Influence Perks (2026-09-09)", () => {
-    const FORCE_ID = "Compendium.essence20.mlp_crb.Item.p4qXDtj2RCJcibCh";
-    const SUPER_SPECIALIZED_ID = "Compendium.essence20.mlp_crb.Item.TuSb6usDweSzf5S9";
     const POINTY_ID = "Compendium.essence20.dark_skies_over_equestria.Item.kwkUWzNVdSKDx0jt";
     const DIFFERENT_PERSPECTIVE_ID = "Compendium.essence20.dark_skies_over_equestria.Item.Q4npyOz8iYHHy2LV";
 
@@ -19246,78 +18872,6 @@ describe("rollSkill", () => {
 
         expect(rollDialog.getSkillRollOptions.mock.calls[0][0].canCritD2).toBe(true);
         global.game.actors = originalActors;
-      });
-    });
-
-    describe("Force (Heavy Hitter Influence, p.51) / Fleeting Energy (its own Hang-Up)", () => {
-      const unarmedMightEffect = { type: 'weaponEffect', flags: {}, system: { classification: { skill: 'might' } } };
-
-      const FLEETING_ENERGY_ID = "Compendium.essence20.mlp_crb.Item.PblwqCeE7Zyb3jF4";
-
-      test("doesn't bank Fleeting Energy for a Force user without that Hang-Up", async () => {
-        game.combat = { id: 'c1' };
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-        });
-        dice._rollSkillHelper = jest.fn();
-        const actor = makeActor({ perkIds: [FORCE_ID] });
-
-        await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength', dif: '10' }, actor, unarmedMightEffect);
-
-        expect(dice._rollSkillHelper.mock.calls[0][4].damageBonusValue).toBe(1);
-        expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'pendingFleetingEnergy', expect.anything());
-      });
-
-      test("adds +1 damage on an unarmed Might attack, once per scene, and banks Fleeting Energy's shiftDown", async () => {
-        game.combat = { id: 'c1' };
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-        });
-        dice._rollSkillHelper = jest.fn();
-        const actor = makeActor({ perkIds: [FORCE_ID] });
-        actor.items.push({ type: 'hangUp', flags: { core: { sourceId: FLEETING_ENERGY_ID } } });
-
-        await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength', dif: '10' }, actor, unarmedMightEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.damageBonusValue).toBe(1);
-        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'forceUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
-        expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'pendingFleetingEnergy', { shiftDown: 1, combatId: 'c1', round: null });
-      });
-
-      test("doesn't apply a second time in the same scene", async () => {
-        game.combat = { id: 'c1' };
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-        });
-        dice._rollSkillHelper = jest.fn();
-        const actor = makeActor({
-          perkIds: [FORCE_ID], flags: { forceUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } },
-        });
-
-        await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength', dif: '10' }, actor, unarmedMightEffect);
-
-        const checkContext = dice._rollSkillHelper.mock.calls[0][4];
-        expect(checkContext.damageBonusValue).toBe(0);
-      });
-
-      test("Fleeting Energy's banked shiftDown applies to the actor's next Strength roll and clears", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-        });
-        dice._rollSkillHelper = jest.fn();
-        const actor = makeActor({
-          flags: { pendingFleetingEnergy: { shiftDown: 1, combatId: null, round: null } },
-        });
-
-        await dice.rollSkill({ ...dataset, skill: 'might', essence: 'strength' }, actor, null);
-
-        expect(rollDialog.getSkillRollOptions.mock.calls[0][0].shiftDown).toBe(1);
-        expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'pendingFleetingEnergy');
       });
     });
 
@@ -19800,58 +19354,6 @@ describe("rollSkill", () => {
 
         await dice.rollSkill({ ...dataset, dif: '10', skill: 'might' }, makeSmolderActor({ stacks: null }), meleeWeaponEffect);
         expect(rollDialog.getSkillRollOptions.mock.calls[1][0].shiftUp).toBe(0);
-      });
-    });
-
-    describe("Super Specialized (General Perk, p.127)", () => {
-      test("bumps the final shift up one step when Specialized on the chosen Skill", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-          isSpecialized: true,
-        });
-        dice._rollSkillHelper = jest.fn();
-        const actor = makeActor({ perkIds: [SUPER_SPECIALIZED_ID], choice: 'alertness' });
-        actor.getRollData = jest.fn(() => ({ skills: { alertness: { modifier: '0', shift: 'd6' } } }));
-
-        await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts', shift: 'd6' }, actor, null);
-
-        const formula = dice._rollSkillHelper.mock.calls[0][0];
-        expect(formula).toContain('d8'); // d6 bumped up to d8
-      });
-
-      test("doesn't bump the shift without isSpecialized actually being true", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-          isSpecialized: false,
-        });
-        dice._rollSkillHelper = jest.fn();
-        const actor = makeActor({ perkIds: [SUPER_SPECIALIZED_ID], choice: 'alertness' });
-        actor.getRollData = jest.fn(() => ({ skills: { alertness: { modifier: '0', shift: 'd6' } } }));
-
-        await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts', shift: 'd6' }, actor, null);
-
-        const formula = dice._rollSkillHelper.mock.calls[0][0];
-        expect(formula).toContain('d6');
-        expect(formula).not.toContain('d8');
-      });
-
-      test("doesn't bump the shift on an unrelated skill even while Specialized", async () => {
-        const rollDialog = createMockRollDialog();
-        rollDialog.getSkillRollOptions.mockReturnValue({
-          canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
-          isSpecialized: true,
-        });
-        dice._rollSkillHelper = jest.fn();
-        const actor = makeActor({ perkIds: [SUPER_SPECIALIZED_ID], choice: 'might' });
-        actor.getRollData = jest.fn(() => ({ skills: { alertness: { modifier: '0', shift: 'd6' } } }));
-
-        await dice.rollSkill({ ...dataset, skill: 'alertness', essence: 'smarts', shift: 'd6' }, actor, null);
-
-        const formula = dice._rollSkillHelper.mock.calls[0][0];
-        expect(formula).toContain('d6');
-        expect(formula).not.toContain('d8');
       });
     });
 

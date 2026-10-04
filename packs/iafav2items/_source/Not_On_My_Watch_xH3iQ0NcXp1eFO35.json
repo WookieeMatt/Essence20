@@ -5,6 +5,9 @@
   "_id": "xH3iQ0NcXp1eFO35",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Defeated ally within Reach (Not On My Watch: +1 Toughness/Evasion)","defense":"any","amount":1,"when":[{"any":["defense:toughness","defense:evasion"]},"check:defeatedAllyInReach"]}
+    ],
     "prerequisites": {"when":["self:skill:alertness>=d10"]},
     "automation": {
       "status": "full",
