@@ -1291,6 +1291,11 @@ describe('round 35: scaled damage', () => {
     expect(evaluateTag('target:levelDiff<0', ctx)).toBe(true);
     expect(evaluateTag('self:levelDiff<0', contextFor({ self: me, other: npc, combat }))).toBe(true);
     expect(evaluateTag('target:notActed', contextFor({ self: me, other: foe, combat: null }))).toBe(false);
+    // An NPC's Threat Level wins over the template's default level of 1.
+    const threat = makeActor([], { name: 'Threat', type: 'npc' });
+    threat.system.level = 1;
+    threat.system.threatLevel = 8;
+    expect(evaluateTag('target:levelDiff>=3', contextFor({ self: me, other: threat }))).toBe(true);
   });
 
   test('DieSubstitution: use / best / floor change the starting die; specialize and clearSnag only when it applies', async () => {

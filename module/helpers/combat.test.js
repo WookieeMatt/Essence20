@@ -330,6 +330,15 @@ describe("getEffectiveLevel", () => {
   test("falls back to 0 if neither field is set", () => {
     expect(getEffectiveLevel({ system: {} })).toBe(0);
   });
+
+  test("an NPC or Vehicle uses its Threat Level over the template's default level", () => {
+    expect(getEffectiveLevel({ type: 'npc', system: { level: 1, threatLevel: 6 } })).toBe(6);
+    expect(getEffectiveLevel({ type: 'vehicle', system: { level: 1, threatLevel: 3 } })).toBe(3);
+    // No Threat Level set yet: its level, as before.
+    expect(getEffectiveLevel({ type: 'npc', system: { level: 4, threatLevel: 0 } })).toBe(4);
+    // A PC never reads a Threat Level.
+    expect(getEffectiveLevel({ type: 'playerCharacter', system: { level: 5, threatLevel: 9 } })).toBe(5);
+  });
 });
 
 describe("applyDamage", () => {

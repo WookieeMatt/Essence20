@@ -585,13 +585,19 @@ export function computeMultiplier(total, difficulty) {
  * effects (e.g. Just The Facts below, Sudden Death's own Threat-Level compare in chat.mjs) - a
  * PC/Companion's system.level and an NPC/Vehicle's system.threatLevel are treated as the same
  * number line, unlike chat.mjs's own Sudden Death compare (which deliberately only reads
- * threatLevel, since RAW scopes that Perk to NPC targets specifically). Falls back to 0 if
- * somehow neither field is set.
+ * threatLevel, since RAW scopes that Perk to NPC targets specifically). NPCs and Vehicles also
+ * carry a system.level (a shared template field, 1 by default), so their Threat Level is read
+ * first - their level only while no Threat Level is set (0). Falls back to 0 if neither is set.
  * @param {Actor} actor
  * @returns {Number}
  */
 export function getEffectiveLevel(actor) {
-  return actor.system.level ?? actor.system.threatLevel ?? 0;
+  const threat = Number(actor?.system?.threatLevel) || 0;
+  if (['npc', 'vehicle'].includes(actor?.type) && threat > 0) {
+    return threat;
+  }
+
+  return actor?.system?.level ?? actor?.system?.threatLevel ?? 0;
 }
 
 /**

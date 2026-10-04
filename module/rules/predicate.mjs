@@ -311,7 +311,12 @@ function versusTag(rest, actor, other, combat) {
 
   const level = /^levelDiff(>=|<=|>|<|=)(-?\d+)$/.exec(rest);
   if (level) {
-    const levelOf = who => Number(who?.system?.level ?? who?.system?.threatLevel ?? 0) || 0;
+    // Threat Level for an NPC / Vehicle (helpers/combat.mjs#getEffectiveLevel), else its level.
+    const levelOf = who => {
+      const threat = Number(who?.system?.threatLevel) || 0;
+      return ['npc', 'vehicle'].includes(who?.type) && threat > 0 ? threat : Number(who?.system?.level ?? who?.system?.threatLevel ?? 0) || 0;
+    };
+
     return actor && other ? compare(levelOf(actor) - levelOf(other), level[1], level[2]) : null;
   }
 
