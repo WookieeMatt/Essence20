@@ -18,7 +18,81 @@ import { contextFor, evaluate, interpolate, sideActorsWithin, unknownTags as unk
 export const STEP_TYPES = [
   'chat', 'spend', 'gainResource', 'heal', 'loseHealth', 'damage', 'applyCondition', 'removeCondition', 'roll', 'grant', 'bank',
   'grantActions', 'setToggle', 'choose', 'target', 'negateDamage', 'leaveAt', 'mark', 'unmark', 'askNumber', 'pickGrant', 'bonusAttack', 'setForm', 'save', 'pickAlly', 'pickPerk', 'fitAttack',
+  'createItem', 'deleteItem', 'updateItem', 'spendQuantity', 'pick', 'button',
 ];
+
+const PICK_FROM = ['skill', 'essence', 'damageType', 'ownedItem', 'ally', 'enemy', 'target', 'list'];
+
+/** What a pick step offers: [{value, label}]. */
+function pickOptions(step, ctx) {
+  const E20 = globalThis.CONFIG?.E20 ?? {};
+  const localize = key => globalThis.game?.i18n?.localize?.(key) ?? key;
+  const table = (keys, names = {}) => keys.map(key => ({ value: key, label: localize(names[key] ?? key) }));
+  const actor = ctx.actor;
+  switch (step.from) {
+  case 'skill': return table(Object.keys(actor?.system?.skills ?? {}), E20.skills);
+  case 'essence': return table(['strength', 'speed', 'smarts', 'social'], E20.essences);
+  case 'damageType': return table(Object.keys(E20.damageTypes ?? {}), E20.damageTypes);
+  case 'ownedItem': {
+    const types = [step.itemType ?? []].flat();
+    const items = actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
+    return items.filter(item => (!types.length || types.includes(item.type)) && (!step.equipped || item.system?.equipped))
+      .map(item => ({ value: item.id, label: item.name }));
+  }
+
+  case 'ally':
+  case 'enemy':
+    return sideActorsWithin(actor, Number(step.within) || 100000, step.from).map(other => ({ value: other.uuid, label: other.name }));
+  case 'target': return ctx.targets.map(other => ({ value: other.uuid, label: other.name }));
+  case 'list': return (Array.isArray(step.options) ? step.options : []).map(option => (Array.isArray(option)
+    ? { value: option[0], label: localize(option[1] ?? option[0]) } : { value: option, label: localize(option) }));
+  }
+
+  return [];
+}
+
+async function askPick(step, options, ctx) {
+  const { chooseSelect } = await import("../helpers/grants.mjs");
+  return chooseSelect(ctx.item?.name ?? '', escape(step.prompt ?? T('PickPrompt')), options);
+}
+
+/** An item's book source (or the item it acts as). */
+const sourceOfItem = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
+
+/**
+ * The items an item step acts on, on one actor. `item` picks them:
+ *   "self"            the rule's own item (on another actor: their copy of the same book item)
+ *   "granted"         items this rule's item granted (grant / createItem)
+ *   "source:<uuid>"   copies of that book item
+ *   "name~<text>"     a name containing the text
+ *   "type:<type>"     items of that type (weapon, armor, upgrade...)
+ *   "choice:<key>"    the item whose id a pick step stored under that key
+ * The first match, or every match with `all: true`.
+ * @returns {Array<Item>}
+ */
+export function itemsFor(step, actor, ctx) {
+  const items = actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
+  const pick = String(step.item ?? 'self');
+  const own = ctx.item;
+  let found = [];
+  if (pick == 'self') {
+    found = actor === ctx.actor && own ? items.filter(item => item === own || item.id == own.id) : items.filter(item => sourceOfItem(own) && sourceOfItem(item) == sourceOfItem(own));
+  } else if (pick == 'granted') {
+    found = items.filter(item => own?.id && item.flags?.essence20?.grantedBy == own.id);
+  } else if (pick.startsWith('source:')) {
+    found = items.filter(item => sourceOfItem(item) == pick.slice(7) || item.uuid == pick.slice(7));
+  } else if (pick.startsWith('name~')) {
+    const text = pick.slice(5).toLowerCase();
+    found = items.filter(item => String(item.name ?? '').toLowerCase().includes(text));
+  } else if (pick.startsWith('type:')) {
+    found = items.filter(item => item.type == pick.slice(5));
+  } else if (pick.startsWith('choice:')) {
+    const id = own?.flags?.essence20?.rules?.choices?.[pick.slice(7)];
+    found = items.filter(item => id && (item.id == id || item.uuid == id));
+  }
+
+  return step.all ? found : found.slice(0, 1);
+}
 
 const T = (key, data) => {
   const i18n = globalThis.game?.i18n;
@@ -369,6 +443,137 @@ const HANDLERS = {
     const branch = result.crit && step.onCrit ? step.onCrit : result.success ? step.onSuccess : step.onFail;
     if (branch) {
       return runSteps(branch, ctx);
+    }
+  },
+
+  // Choose something and store it on the rule's item under `key` (flags.essence20.rules.choices): a Skill,
+  // an Essence, a damage type, one of the actor's items (itemType, equipped), an ally / enemy (within), a
+  // target, or a list. Read back with {choice.<key>}, item:picked:<key>, self: / target:picked:<key> and the
+  // item steps' choice:<key>. ifUnset keeps an earlier pick. @var.picked is the value.
+  async pick(step, ctx) {
+    const key = String(step.key ?? '');
+    const own = ctx.item;
+    if (!key || !own) {
+      return false;
+    }
+
+    const stored = own.flags?.essence20?.rules?.choices?.[key];
+    if (step.ifUnset && stored) {
+      ctx.vars.picked = stored;
+      return;
+    }
+
+    const options = pickOptions(step, ctx);
+    if (!options.length) {
+      ctx.chat.push(T('NothingToPick', { item: escape(own.name) }));
+      return false;
+    }
+
+    const value = await (ctx.askPick ?? askPick)(step, options, ctx);
+    const chosen = options.find(option => option.value == value);
+    if (!chosen) {
+      return false;
+    }
+
+    await write(own, 'update', [{ [`flags.essence20.rules.choices.${key}`]: chosen.value }]);
+    globalThis.foundry?.utils?.setProperty?.(own, `flags.essence20.rules.choices.${key}`, chosen.value);
+    ctx.vars.picked = chosen.value;
+    ctx.chat.push(T('Picked', { item: escape(own.name), choice: escape(chosen.label) }));
+  },
+
+  // A chat card with a button that runs `steps` when pressed (rules/buttons.mjs): who may press it (owner,
+  // gm, anyone, targets, others), runAs (holder, or the clicker's own character), once (default true).
+  // The current targets go with it.
+  async button(step, ctx) {
+    if (!globalThis.ChatMessage?.create || !Array.isArray(step.steps)) {
+      return false;
+    }
+
+    const label = step.label || ctx.item?.name || '';
+    const intro = step.intro ? `<p>${escape(step.intro)}</p>` : '';
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker?.({ actor: ctx.actor }),
+      content: `<div class="e20-rule-button-card">${intro}<button type="button" data-e20-rule-button>${escape(label)}</button></div>`,
+      flags: { essence20: { ruleButton: {
+        actorUuid: ctx.actor?.uuid ?? null, itemUuid: ctx.item?.uuid ?? null, targets: ctx.targets.map(target => target.uuid),
+        steps: step.steps, label, who: step.who ?? 'owner', runAs: step.runAs ?? 'holder', once: step.once !== false, used: false,
+      } } },
+    });
+  },
+
+  // An item made from inline data (a temporary natural weapon, a token of an effect...), like a grant.
+  async createItem(step, ctx) {
+    if (!step.data || typeof step.data != 'object' || !step.data.name || !step.data.type) {
+      return false;
+    }
+
+    for (const actor of recipients(step, ctx)) {
+      const data = globalThis.foundry?.utils?.deepClone?.(step.data) ?? JSON.parse(JSON.stringify(step.data));
+      globalThis.foundry?.utils?.setProperty?.(data, 'flags.essence20.grantedBy', ctx.item?.id ?? null);
+      if (step.until) {
+        const { stampFor } = await import("./expiry.mjs");
+        globalThis.foundry?.utils?.setProperty?.(data, 'flags.essence20.rulesExpiry', { until: step.until, stamp: stampFor(step.until, undefined, ctx.actor) });
+      }
+
+      const created = await write(actor, 'createEmbeddedDocuments', ['Item', [data]]);
+      ctx.vars.granted = created?.[0] ?? null;
+      ctx.chat.push(T('Granted', { name: escape(actor.name), item: escape(data.name) }));
+    }
+  },
+
+  // Remove items (its own grants, a target's weapon...).
+  async deleteItem(step, ctx) {
+    for (const actor of recipients(step, ctx)) {
+      const items = itemsFor(step, actor, ctx);
+      if (items.length) {
+        await write(actor, 'deleteEmbeddedDocuments', ['Item', items.map(item => item.id)]);
+        ctx.chat.push(T('ItemRemoved', { name: escape(actor.name), item: items.map(item => escape(item.name)).join(', ') }));
+      } else if (step.required) {
+        ctx.chat.push(T('NoSuchItem', { name: escape(actor.name) }));
+        return false;
+      }
+    }
+  },
+
+  // Change numbers or values on items: set {path: value} (a formula for numbers), add {path: formula}.
+  async updateItem(step, ctx) {
+    for (const actor of recipients(step, ctx)) {
+      for (const item of itemsFor(step, actor, ctx)) {
+        const update = {};
+        for (const [path, value] of Object.entries(step.set ?? {})) {
+          update[path] = typeof value == 'number' || /^[\d@(]/.test(String(value)) ? amountOf(value, ctx, 0) : value;
+        }
+
+        for (const [path, value] of Object.entries(step.add ?? {})) {
+          const current = Number(globalThis.foundry?.utils?.getProperty?.(item, path)) || 0;
+          update[path] = current + amountOf(value, ctx, 0);
+        }
+
+        if (Object.keys(update).length) {
+          await write(item, 'update', [update]);
+        }
+      }
+    }
+  },
+
+  // Use up some of an item's quantity (a dart, a charge); deleteAtZero removes it once none are left.
+  async spendQuantity(step, ctx) {
+    const amount = Math.max(0, amountOf(step.amount ?? 1, ctx, 1));
+    for (const actor of recipients(step, ctx)) {
+      const [item] = itemsFor(step, actor, ctx);
+      const have = Number(item?.system?.quantity) || 0;
+      if (!item || have < amount) {
+        ctx.chat.push(T('NoSuchItem', { name: escape(actor.name) }));
+        return false;
+      }
+
+      if (have - amount <= 0 && step.deleteAtZero) {
+        await write(actor, 'deleteEmbeddedDocuments', ['Item', [item.id]]);
+      } else {
+        await write(item, 'update', [{ 'system.quantity': have - amount }]);
+      }
+
+      ctx.chat.push(T('QuantitySpent', { name: escape(actor.name), item: escape(item.name), amount, left: Math.max(0, have - amount) }));
     }
   },
 
@@ -748,6 +953,35 @@ export function stepErrors(steps, path = 'steps') {
 
     if (step.difDefense && !['toughness', 'evasion', 'willpower', 'cleverness'].includes(step.difDefense)) {
       errors.push(`${where}: difDefense must be toughness, evasion, willpower or cleverness`);
+    }
+
+    if (['deleteItem', 'updateItem', 'spendQuantity'].includes(step.do) && step.item !== undefined
+      && !/^(self|granted|(source|type|choice):.+|name~.+)$/.test(String(step.item))) {
+      errors.push(`${where}: item must be self, granted, source:<uuid>, name~<text>, type:<type> or choice:<key>`);
+    }
+
+    if (step.do == 'button') {
+      if (!Array.isArray(step.steps) || !step.steps.length) {
+        errors.push(`${where}: button needs steps`);
+      } else {
+        errors.push(...stepErrors(step.steps, `${where}.steps`));
+      }
+
+      if (step.who && !['owner', 'gm', 'anyone', 'targets', 'others'].includes(step.who)) {
+        errors.push(`${where}: who must be owner, gm, anyone, targets or others`);
+      }
+
+      if (step.runAs && !['holder', 'clicker'].includes(step.runAs)) {
+        errors.push(`${where}: runAs must be holder or clicker`);
+      }
+    }
+
+    if (step.do == 'pick' && (!step.key || !PICK_FROM.includes(step.from))) {
+      errors.push(`${where}: pick needs a key and from: ${PICK_FROM.join(', ')}`);
+    }
+
+    if (step.do == 'createItem' && !(step.data?.name && step.data?.type)) {
+      errors.push(`${where}: createItem needs data with a name and a type`);
     }
 
     if (step.do == 'pickGrant' && step.from?.tags) {

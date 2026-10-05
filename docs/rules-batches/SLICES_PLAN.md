@@ -46,3 +46,18 @@ push `rules/slB`; **slC** – `gij1`, `gij2`, `gij3`, `fix3-gij`, `situational1`
 push `rules/slC`; **slD** – `react`, `resource`, `other1`, `other3`, from `rules/slC`, push `rules/slD`;
 **slE** – `qualify1`, `qualify2`, `data1`, `data21`, `data22`, `mlp1`, `mlp2`, `wtnv`, `r2misc`, `rules`,
 `fix3-dice`, from `rules/slD`, push `rules/slE`.
+
+## Round 2 (re-check the slice skips against the 2026-10-04 engine pieces)
+
+Same five groups, chained again, each re-checking its round-1 write-up's **Skipped** and **Partial** items against the
+newest engine sections of `docs/RULES_CONVERSION_GUIDE.md` (targeted / dealtDamage / defeatedEnemy Triggers, the item
+steps, `pick`, `button`, SkillSubstitution `scope: item`, `defaultWhen`, the new `check:` names). Each batch stands on
+its own, so stopping after any one of them leaves a usable branch.
+
+| Batch | Slices | Re-checks | Starts from | Pushes |
+|---|---|---|---|---|
+| **slA2** | `zord1`, `zord2`, `pr1`, `pr2`, `pr3` | `slA.md` | `Rules-Engine-Phase-1` | `rules/slA2` |
+| **slB2** | `tf1`, `tf2`, `tf3`, `fix3-tf`, `other2` | `slB.md` | `rules/slA2` | `rules/slB2` |
+| **slC2** | `gij1`, `gij2`, `gij3`, `fix3-gij`, `situational1`, `situational2` | `slC.md` | `rules/slB2` | `rules/slC2` |
+| **slD2** | `react`, `resource`, `other1`, `other3` | `slD.md` | `rules/slC2` | `rules/slD2` |
+| **slE2** | `qualify1`, `qualify2`, `data1`, `data21`, `data22`, `mlp1`, `mlp2`, `wtnv`, `r2misc`, `rules`, `fix3-dice` | `slE.md` | `rules/slD2` | `rules/slE2` |

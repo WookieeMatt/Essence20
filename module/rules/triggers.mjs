@@ -172,7 +172,7 @@ async function post(actor, lines) {
  * @param {Object} [extra]   {roll: tag context, outcome, damage: {amount}, ask, prompt}
  * @returns {Promise<Object|null>}   The damage object, for wouldBeDefeated.
  */
-export async function fireTriggers(actor, event, { roll = {}, outcome = null, facts = null, damage = null, targets = [], ask = null, prompt = confirm } = {}) {
+export async function fireTriggers(actor, event, { roll = {}, outcome = null, facts = null, damage = null, targets = [], ask = null, prompt = confirm, vars = null } = {}) {
   // An aura / party / vehicle Trigger fires for the actor it reaches, never for its holder; its
   // limit is the holder's ("once per encounter" for whoever holds the Perk).
   const own = rulesOfType(actor, 'Trigger').filter(entry => !LINK_SCOPES.includes(entry.rule.scope)).map(entry => ({ ...entry, holder: actor }));
@@ -182,7 +182,7 @@ export async function fireTriggers(actor, event, { roll = {}, outcome = null, fa
       continue;
     }
 
-    if (['afterRoll', 'hit'].includes(event) && !outcomeMatches(rule.outcome, outcome, facts)) {
+    if (['afterRoll', 'hit', 'targeted'].includes(event) && !outcomeMatches(rule.outcome, outcome, facts)) {
       continue;
     }
 
@@ -199,6 +199,8 @@ export async function fireTriggers(actor, event, { roll = {}, outcome = null, fa
     }
 
     const ctx = stepContext({ actor, item, rule, targets, damage, ask });
+    // Numbers the event hands the steps (@var.margin for targeted).
+    Object.assign(ctx.vars, vars ?? {});
     const finished = await runSteps(rule.steps, ctx);
     if (finished && countsTowardLimit(rule, ctx)) {
       await recordUse(holder, rule, item, index);
@@ -346,13 +348,21 @@ registerMissionAdvanced(async () => {
     await fireTriggers(actor, 'missionStart');
   }
 });
-registerAfterDamage(async (actor, dealt, damageType, { newValue, wasAlreadyDefeated } = {}) => {
+registerAfterDamage(async (actor, dealt, damageType, { newValue, wasAlreadyDefeated, source = null } = {}) => {
   if (dealt > 0) {
-    await fireTriggers(actor, 'takesDamage', { damage: { amount: dealt, damageType }, roll: { damageType, damageAmount: dealt } });
+    await fireTriggers(actor, 'takesDamage', { damage: { amount: dealt, damageType }, roll: { damageType, damageAmount: dealt }, targets: source ? [source] : [] });
+  }
+
+  // The one who dealt it: dealtDamage, and defeatedEnemy when this hit Defeated them (target = who took it).
+  if (source && source !== actor && dealt > 0) {
+    await fireTriggers(source, 'dealtDamage', { damage: { amount: dealt, damageType }, roll: { damageType, damageAmount: dealt }, targets: [actor] });
   }
 
   if (!wasAlreadyDefeated && Number(newValue) <= 0) {
     await fireTriggers(actor, 'defeated');
+    if (source && source !== actor) {
+      await fireTriggers(source, 'defeatedEnemy', { targets: [actor] });
+    }
   }
 });
 registerPostRoll(async (actor, results, checkContext, extra = {}) => {
@@ -367,10 +377,12 @@ registerPostRoll(async (actor, results, checkContext, extra = {}) => {
   // (`attack` tags stay weapon-only; `item:own` / `skill:` narrow it down).
   for (const { target, hit, result } of extra.hits ?? []) {
     if (target) {
-      await fireTriggers(actor, hit ? 'hit' : 'miss', {
-        roll, outcome: hitOutcome(hit, result, extra.isCrit), targets: [target],
-        facts: { results: [result ?? { success: !!hit }], isCrit: !!extra.isCrit, isFumble: !!extra.isFumble },
-      });
+      const hitFacts = { results: [result ?? { success: !!hit }], isCrit: !!extra.isCrit, isFumble: !!extra.isFumble };
+      await fireTriggers(actor, hit ? 'hit' : 'miss', { roll, outcome: hitOutcome(hit, result, extra.isCrit), targets: [target], facts: hitFacts });
+      // The defender's side: "an attack against you" - outcome success means it hit them; the target of its
+      // steps is the attacker; @var.margin is how far the roll beat (or missed) the Defense.
+      const margin = Number.isFinite(Number(result?.total)) && Number.isFinite(Number(result?.difficulty)) ? Number(result.total) - Number(result.difficulty) : 0;
+      await fireTriggers(target, 'targeted', { roll, outcome: hitOutcome(hit, result, extra.isCrit), targets: [actor], facts: hitFacts, vars: { margin } });
     }
   }
 });

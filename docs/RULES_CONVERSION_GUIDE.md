@@ -453,3 +453,29 @@ Built for the skip lists in `docs/rules-batches/reg*.md` - re-check those skips 
   Crisis), `grappleEscape` (the rolled Skill is one of this actor's grapple-escape Skills - Experiment),
   `infiltrating` (the Infiltrating toggle - Shadow, Silent Strider).
 - Bookworm's rule skips Initiative (`not:roll:initiative`): `situational2/initiative.mjs` still adds its Initiative ↓1.
+
+## Engine features added 2026-10-04 (the bigger pieces)
+
+- **Trigger events on other actors' doings:**
+  - `targeted` - fires on each defender a roll was made against. `outcome` is from the attacker's side
+    (`success` = it hit you, `failure` = it missed, `x2`/`crit`/... as usual); the Trigger's target (`to: target`)
+    is the attacker; `@var.margin` is the roll total minus the Defense (negative on a miss). Counterstrike, Sidestep-
+    style "when an attack against you misses" Perks.
+  - `dealtDamage` - fires on whoever's chat-card damage landed (target = who took it; the damage is `damage:` tags).
+  - `defeatedEnemy` - fires on whoever's damage Defeated someone (target = the Defeated).
+  - `takesDamage` now gets the damage dealer as its target when known.
+- **Item steps** (`item` picks which: `self`, `granted` (items this rule's item granted), `source:<uuid>`,
+  `name~<text>`, `type:<type>`, `choice:<key>`; first match, or every match with `all: true`; `to` as usual):
+  - `createItem {data: {name, type, system...}, until?}` - an item from inline data, like a grant.
+  - `deleteItem {item, all?, required?}` - remove items (a target's too).
+  - `updateItem {item, set: {path: value|formula}, add: {path: formula}}` - change numbers or values.
+  - `spendQuantity {item, amount, deleteAtZero?}` - use up quantity; stops the run if there isn't enough.
+- **`pick {key, from, ...}`** - choose and remember on the rule's item (`flags.essence20.rules.choices.<key>`):
+  `from` skill | essence | damageType | ownedItem (`itemType`, `equipped`) | ally / enemy (`within`) | target | list
+  (`options`). `ifUnset` keeps an earlier pick. Read back with `{choice.<key>}` in tags (`skill:{choice.skill}`),
+  `item:picked:<key>` (the rolled item or its weapon is the picked one), `self:` / `target:picked:<key>`, and the
+  item steps' `choice:<key>`. `@var.picked` is the value.
+- **`button {label, intro?, steps, who?, runAs?, once?}`** - posts a chat card whose button runs `steps` when pressed
+  (rules/buttons.mjs). `who`: owner (default - its owners and the GM) | gm | anyone | targets | others; `runAs`:
+  holder (default) | clicker (the presser's own character - "Follow Me!"); `once` (default true) marks it used. The
+  current targets go with it. Use it for hit follow-ups, GM damage buttons and offers to the rest of the party.

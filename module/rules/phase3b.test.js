@@ -1434,6 +1434,109 @@ describe('round 35: scaled damage', () => {
     expect(actor.system.health.value).toBe(0);
   });
 
+  test('targeted fires on the defender with the margin; dealtDamage / defeatedEnemy on the one who dealt it', async () => {
+    const { runPostRoll, runAfterDamage } = await import('../helpers/extensions.mjs');
+    const attacker = makeActor([
+      { type: 'Trigger', event: 'dealtDamage', steps: [{ do: 'mark', key: 'hurtSomeone' }] },
+      { type: 'Trigger', event: 'defeatedEnemy', steps: [{ do: 'mark', key: 'downedOne', to: 'target' }] },
+    ], { name: 'Attacker' });
+    const defender = makeActor([
+      { type: 'Trigger', event: 'targeted', outcome: 'failure', when: ['attack'], steps: [{ do: 'mark', key: 'dodged' }] },
+      { type: 'Trigger', event: 'targeted', outcome: 'success', steps: [{ do: 'mark', key: 'tagged', to: 'target' }] },
+      { type: 'Trigger', event: 'targeted', steps: [{ do: 'gainResource', resource: { path: 'system.lastMargin' }, amount: '@var.margin' }] },
+    ], { name: 'Defender' });
+    defender.system.lastMargin = 0;
+    const blade = { uuid: 'Item.blade', type: 'weaponEffect', system: { classification: { style: 'melee' } } };
+    global.fromUuidSync = uuid => (uuid == blade.uuid ? blade : null);
+    try {
+      await runPostRoll(attacker, [], {}, { rider: { itemUuid: blade.uuid, style: 'melee' }, hits: [{ target: defender, hit: false, result: { success: false, total: 9, difficulty: 12 } }] });
+      expect(markOf(defender, 'dodged')).toBe(true);
+      expect(markOf(attacker, 'tagged')).toBe(false);
+      expect(defender.system.lastMargin).toBe(0);
+      await runPostRoll(attacker, [], {}, { rider: { itemUuid: blade.uuid, style: 'melee' }, hits: [{ target: defender, hit: true, result: { success: true, multiplier: 1, total: 15, difficulty: 12 } }] });
+      expect(markOf(attacker, 'tagged')).toBe(true);
+      expect(defender.system.lastMargin).toBe(3);
+    } finally {
+      delete global.fromUuidSync;
+    }
+
+    await runAfterDamage(defender, 3, 'blunt', { newValue: 2, previousValue: 5, wasAlreadyDefeated: false, source: attacker });
+    expect(markOf(attacker, 'hurtSomeone')).toBe(true);
+    expect(markOf(defender, 'downedOne')).toBe(false);
+    await runAfterDamage(defender, 2, 'blunt', { newValue: 0, previousValue: 2, wasAlreadyDefeated: false, source: attacker });
+    expect(markOf(defender, 'downedOne')).toBe(true);
+    expect(validateRule({ type: 'Trigger', event: 'targeted', outcome: 'failure', steps: [] })).toEqual([]);
+  });
+
+  test('item steps: createItem, updateItem, spendQuantity and deleteItem by selector', async () => {
+    const { itemsFor } = await import('./steps.mjs');
+    const actor = makeActor([{ type: 'Use', steps: [] }], { name: 'Tinkerer' });
+    const own = actor.items.contents[0];
+    const list = actor.items.contents;
+    const item = data => ({ id: `n${nextId++}`, flags: {}, system: {}, ...data, parent: actor, async update(changes) {
+      for (const [key, value] of Object.entries(changes)) {
+        foundry.utils.setProperty(this, key, value);
+      }
+    } });
+    actor.createEmbeddedDocuments = async (type, docs) => docs.map(data => {
+      const made = item(data);
+      list.push(made);
+      return made;
+    });
+    actor.deleteEmbeddedDocuments = async (type, ids) => ids.forEach(id => list.splice(list.findIndex(i => i.id == id), 1));
+    list.push(item({ name: 'Stim Dart', type: 'equipment', system: { quantity: 2 } }));
+    const ctx = stepContext({ actor, item: own, targets: [] });
+    await runSteps([{ do: 'createItem', data: { name: 'Bone Spur', type: 'weapon', system: { damage: 1 } }, until: 'scene' }], ctx);
+    const spur = list.find(i => i.name == 'Bone Spur');
+    expect(spur.flags.essence20.grantedBy).toBe(own.id);
+    expect(spur.flags.essence20.rulesExpiry.until).toBe('scene');
+    expect(itemsFor({ item: 'granted' }, actor, ctx)).toEqual([spur]);
+    await runSteps([{ do: 'updateItem', item: 'granted', set: { 'system.damage': '1 + 2' }, add: { 'system.uses': 1 } }], ctx);
+    expect(spur.system).toMatchObject({ damage: 3, uses: 1 });
+    await runSteps([{ do: 'spendQuantity', item: 'name~stim', amount: 1 }], ctx);
+    expect(list.find(i => i.name == 'Stim Dart').system.quantity).toBe(1);
+    await runSteps([{ do: 'spendQuantity', item: 'name~stim', deleteAtZero: true }], ctx);
+    expect(list.find(i => i.name == 'Stim Dart')).toBeUndefined();
+    // Not enough left: the run stops.
+    expect(await runSteps([{ do: 'spendQuantity', item: 'name~stim' }, { do: 'mark', key: 'after' }], ctx)).toBe(false);
+    expect(markOf(actor, 'after')).toBe(false);
+    await runSteps([{ do: 'deleteItem', item: 'granted' }], ctx);
+    expect(list.find(i => i.name == 'Bone Spur')).toBeUndefined();
+    expect(stepErrors([{ do: 'deleteItem', item: 'everything' }])).toHaveLength(1);
+    expect(stepErrors([{ do: 'createItem', data: { name: 'x' } }])).toHaveLength(1);
+    expect(stepErrors([{ do: 'updateItem', item: 'type:weapon', all: true, set: {} }])).toEqual([]);
+  });
+
+  test('pick stores a choice on the item; {choice.key}, item:picked, target:picked and choice: read it back', async () => {
+    const { itemsFor } = await import('./steps.mjs');
+    const blade = { id: 'blade1', name: 'Favoured Blade', type: 'weapon', flags: {}, system: {} };
+    const pistol = { id: 'pistol1', name: 'Pistol', type: 'weapon', flags: {}, system: {} };
+    const actor = makeActor([{ type: 'RollModifier', label: 'Picked weapon', upshift: 1, when: ['item:picked:weapon'] }], { name: 'Duelist', items: [blade, pistol] });
+    const own = actor.items.contents.find(item => item.system.rules);
+    actor.system.skills = { athletics: {}, culture: {} };
+    const rival = makeActor([], { name: 'Rival' });
+    const asked = [];
+    const ctx = stepContext({ actor, item: own, targets: [rival] });
+    ctx.askPick = async (step, options) => (asked.push(options.map(o => o.label)), options.at(-1).value);
+    await runSteps([{ do: 'pick', key: 'weapon', from: 'ownedItem', itemType: 'weapon' }], ctx);
+    expect(asked[0]).toEqual(['Favoured Blade', 'Pistol']);
+    expect(own.flags.essence20.rules.choices.weapon).toBe('pistol1');
+    await runSteps([{ do: 'pick', key: 'skill', from: 'skill' }, { do: 'pick', key: 'rival', from: 'target' }], ctx);
+    expect(own.flags.essence20.rules.choices).toMatchObject({ skill: 'culture', rival: rival.uuid });
+    // ifUnset: no second question.
+    await runSteps([{ do: 'pick', key: 'weapon', from: 'ownedItem', ifUnset: true }], ctx);
+    expect(asked).toHaveLength(3);
+    // Reading it back.
+    const shot = { type: 'weaponEffect', flags: { essence20: { parentId: 'pistol1' } }, system: {} };
+    expect(ruleRollSources(actor, null, { item: shot, dataset: {} }).sources.map(s => s.shiftUp)).toEqual([1]);
+    expect(ruleRollSources(actor, null, { item: { ...shot, flags: { essence20: { parentId: 'blade1' } } }, dataset: {} }).sources).toEqual([]);
+    expect(evaluateTag('target:picked:rival', contextFor({ self: actor, other: rival, ruleItem: own }))).toBe(true);
+    expect(evaluateTag('target:picked:rival', contextFor({ self: actor, other: actor, ruleItem: own }))).toBe(false);
+    expect(evaluateTag('skill:{choice.skill}', contextFor({ self: actor, rolledSkill: 'culture', ruleItem: own }))).toBe(true);
+    expect(itemsFor({ item: 'choice:weapon' }, actor, ctx).map(i => i.name)).toEqual(['Pistol']);
+    expect(stepErrors([{ do: 'pick', key: 'x', from: 'anything' }])).toHaveLength(1);
+  });
+
   test('roll:dataset:, roll:specialization~ and combat:first', () => {
     const me = makeActor([], { name: 'Me' });
     me.system.skills = { science: { specializations: { s1: { name: 'Chemistry' } } } };

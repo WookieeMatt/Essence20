@@ -674,7 +674,7 @@ export function getSkillRanks(actor, skill) {
  * @returns {Promise<Number>}   The amount actually applied (0 if Immune), clamped to how much
  *   Health the actor had left when damageType isn't 'stun'.
  */
-export async function applyDamage(actor, damageValue, damageType, isCrit = false, { ignoreImmunity = false } = {}) {
+export async function applyDamage(actor, damageValue, damageType, isCrit = false, { ignoreImmunity = false, source = null } = {}) {
   // Not On My Watch - see grantNotOnMyWatchReaction's own doc comment. Captured before any of
   // this function's own mutations, the same "read Defeated status once, up front" idiom
   // chat.mjs#onApplyDamage's own wasAlreadyDefeated already uses - both branches below only fire
@@ -869,7 +869,8 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     await onBondedHit(actor, damageType);
   }
 
-  await runAfterDamage(actor, previousValue - newValue, damageType, { newValue, previousValue, wasAlreadyDefeated });
+  // source: who dealt it (the chat card's speaker), for their dealtDamage / defeatedEnemy Triggers.
+  await runAfterDamage(actor, previousValue - newValue, damageType, { newValue, previousValue, wasAlreadyDefeated, source });
 
   await grantHardenedArmorResistance(actor, damageType, previousValue - newValue);
   await grantGridElementalAdaptationResistance(actor, damageType, previousValue - newValue);

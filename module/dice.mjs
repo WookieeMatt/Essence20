@@ -11015,6 +11015,8 @@ export class Dice {
         showDifficulty: true,
         success,
         multiplier,
+        // The roll's total (a defender's targeted Trigger reads the margin: total - difficulty).
+        total: roll.total,
         damageValue: canApplyDamage ? checkContext.damageValue * multiplier : null,
         // Scaled by this target's own multiplier, same as damageValue above, so "+2" here always
         // means "2 of the number on the button", not the flat pre-Degrees-of-Success amount.

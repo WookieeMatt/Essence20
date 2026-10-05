@@ -235,6 +235,9 @@ function fieldHtml(field, value, path, rule, context, depth) {
       <a class="e20-editor-add" data-edit="addTag" data-path="${escape(path)}"><i class="fas fa-plus"></i> ${escape(fieldLabel('AddCondition'))}</a>`;
   }
 
+  // A small object edited as JSON (an item's data, the values to set) - kept as typed while it doesn't parse.
+  case 'json':
+    return `<textarea ${attrs(path, 'json')} rows="3" class="e20-editor-json">${escape(value === undefined ? '' : JSON.stringify(value))}</textarea>`;
   case 'resource':
     return resourceHtml(path, value);
   case 'steps':
@@ -311,6 +314,21 @@ export function readInput(rule, path, kind, raw, row = null) {
   case 'checkbox':
     setPath(rule, path, raw ? true : undefined);
     break;
+  case 'json': {
+    if (String(raw ?? '').trim() === '') {
+      setPath(rule, path, undefined);
+      break;
+    }
+
+    try {
+      setPath(rule, path, JSON.parse(raw));
+    } catch (error) {
+      // Not valid yet - leave the stored value until it is.
+    }
+
+    break;
+  }
+
   case 'stacks':
     setPath(rule, path, raw === '' ? undefined : raw === 'true');
     break;

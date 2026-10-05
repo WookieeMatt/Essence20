@@ -5,6 +5,7 @@ import "./helpers/extensions/index.mjs";
 import "./rules/adapter.mjs";
 import "./rules/lifecycle.mjs";
 import "./rules/triggers.mjs";
+import "./rules/buttons.mjs";
 import "./rules/actions.mjs";
 import { linkExistingCopies, loadSourceIndexes } from "./rules/inherit.mjs";
 import { registerRuleHelper } from "./rules/code.mjs";

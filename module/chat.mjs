@@ -1197,10 +1197,11 @@ export async function onApplyDamage(message, button) {
 
   // Concentrated Fire "treats Fire Immunity as Fire Resistance" (helpers/target-riders.mjs) - its
   // button carries data-ignore-immunity.
-  const amount = await applyDamage(target, damage, button.dataset.damageType, isCrit, { ignoreImmunity: button.dataset.ignoreImmunity == 'true' });
+  const source = game.actors?.get?.(message.speaker?.actor) ?? null;
+  const amount = await applyDamage(target, damage, button.dataset.damageType, isCrit, { ignoreImmunity: button.dataset.ignoreImmunity == 'true', source });
   // Shots Fired - "when you deal damage to a creature" (helpers/target-riders.mjs).
   await onDamageDealt(game.actors.get(message.speaker?.actor), target, amount);
-  const secondaryAmount = secondary?.value > 0 ? await applyDamage(target, secondary.value, secondary.type, isCrit) : 0;
+  const secondaryAmount = secondary?.value > 0 ? await applyDamage(target, secondary.value, secondary.type, isCrit, { source }) : 0;
   // Health actually lost to this hit - Stun never reduces Health (see applyDamage), and nor does a
   // second damage that is Essence damage.
   const secondaryHitsHealth = !!secondary && secondary.type != 'stun' && !isEssenceDamageType(secondary.type);

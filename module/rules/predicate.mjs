@@ -208,6 +208,16 @@ export function registerCheck(name, fn) {
   CHECKS.set(name, fn);
 }
 
+/** Whether an actor is the one a pick step stored on the rule's item (null when nothing is picked yet). */
+function pickedActor(ruleItem, key, actor) {
+  const stored = ruleItem?.flags?.essence20?.rules?.choices?.[key];
+  if (!stored) {
+    return null;
+  }
+
+  return !!actor && (stored == actor.uuid || stored == actor.id);
+}
+
 function runCheck(rest, actor, ctx) {
   const [name, ...option] = rest.split(':');
   const fn = CHECKS.get(name);
@@ -644,6 +654,16 @@ export function evaluateTag(tag, ctx) {
       return item && have >= 0 && want >= 0 ? compare(have, tier[1], want) : null;
     }
 
+    // picked:<key> - the rolled item, or the weapon it belongs to, is the one a pick step stored.
+    if (key == 'picked') {
+      const stored = ctx.ruleItem?.flags?.essence20?.rules?.choices?.[arg];
+      if (!stored) {
+        return null;
+      }
+
+      return !!item && [item.id, item.uuid, item.flags?.essence20?.parentId].includes(stored);
+    }
+
     // id:<16-char _id> - printed from this compendium entry, in any book (reprints share the _id).
     if (key == 'id') {
       const source = sourceOf(item) ?? item?.uuid ?? '';
@@ -708,6 +728,11 @@ export function evaluateTag(tag, ctx) {
     return ctx.host ? evaluateTag(`item:${rest}`, { ...ctx, item: ctx.host }) : null;
   case 'check': return runCheck(rest, ctx.self, ctx);
   case 'self': {
+    // picked:<key> - this actor is the one a pick step stored under that key.
+    if (rest.startsWith('picked:')) {
+      return pickedActor(ctx.ruleItem, rest.slice(7), ctx.self);
+    }
+
     if (rest.startsWith('check:')) {
       return runCheck(rest.slice(6), ctx.self, ctx);
     }
@@ -754,6 +779,10 @@ export function evaluateTag(tag, ctx) {
 
     if (rest.startsWith('check:')) {
       return runCheck(rest.slice(6), ctx.other, { ...ctx, self: ctx.other, other: ctx.self });
+    }
+
+    if (rest.startsWith('picked:')) {
+      return pickedActor(ctx.ruleItem, rest.slice(7), ctx.other);
     }
 
     const versus = versusTag(rest, ctx.other, ctx.self, ctx.combat);

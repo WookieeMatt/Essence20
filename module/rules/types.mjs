@@ -17,6 +17,7 @@ export const TRIGGER_EVENTS = [
   'turnStart', 'turnEnd', 'roundStart', 'rest', 'sceneStart', 'missionStart', 'takesDamage', 'wouldBeDefeated', 'defeated',
   'morph', 'unmorph', 'transform', 'untransform', 'afterRoll', 'hit', 'miss', 'added', 'conditionGained',
   'lendAssistance', 'assisted', 'combatStart', 'combatEnd', 'initiativeRolled', 'storyPointSpent',
+  'targeted', 'dealtDamage', 'defeatedEnemy',
 ];
 
 function costErrors(cost) {
@@ -764,6 +765,7 @@ function signed(value) {
 }
 
 const EVENT_WORDS = {
+  targeted: 'you are attacked or rolled against', dealtDamage: 'your damage lands on someone', defeatedEnemy: 'your damage Defeats someone',
   turnStart: 'your turn starts', turnEnd: 'your turn ends', roundStart: 'a round starts', rest: 'you rest',
   sceneStart: 'a scene starts', missionStart: 'a mission starts', takesDamage: 'you take damage',
   wouldBeDefeated: 'you would be Defeated', defeated: 'you are Defeated', morph: 'you Morph', unmorph: 'you un-Morph',
