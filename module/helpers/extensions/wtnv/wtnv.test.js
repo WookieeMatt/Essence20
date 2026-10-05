@@ -33,13 +33,6 @@ test('dialog toggles and what they do', async () => {
   expect(options).toMatchObject({ shiftUp: 1, shiftDown: 0 });
 });
 
-test('More Than Worldly Edge is a consumed source', () => {
-  const ally = actor([], { flags: { moreThanWorldlyEdge: { label: 'More Than Worldly' } } });
-  const out = wtnvRollSources(ally, null, { rolledSkill: 'might' });
-  expect(out.sources[0].edge).toBe(true);
-  expect(out.consumes[0].ext).toBe('moreThanWorldly');
-});
-
 test('Staggering Sway adds 1 Stun for an ally', async () => {
   const holder = actor([perk(WTNV.staggeringSway)], { uuid: 'Actor.h' });
   global.game.actors = [holder];

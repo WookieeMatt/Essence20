@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"afterRoll","label":"Multiple Targets attack (Brrrrrrrrrrrrrrt: allies ↑1 on their next test)","when":["check:multipleTargetsWeapon"],"limit":{"per":"encounter"},"steps":[{"do":"bank","to":"allies:100000","upshift":1,"appliesWhen":["not:roll:initiative"],"until":"encounter"}]}
+      {"type":"Trigger","event":"afterRoll","label":"Multiple Targets attack (Brrrrrrrrrrrrrrt: allies ↑1 on their next test)","when":["check:multipleTargetsWeapon"],"limit":{"per":"encounter"},"steps":[{"do":"bank","to":"allies:100000","upshift":1,"appliesWhen":["not:roll:initiative"],"until":"encounter"},{"do":"chat","text":"{name}'s allies may immediately take a Sprint action."}]}
     ],
     "automation": {
       "status": "full",

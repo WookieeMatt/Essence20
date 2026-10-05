@@ -48,15 +48,16 @@ beforeEach(() => {
 
 const ids = out => out.sources.map(s => s.id);
 
-test('Spacewalker: Edge on Athletics, ↑1 others in zero-G, +5 Evasion', () => {
+test('Spacewalker: +5 Evasion in low or zero gravity (its roll bonuses are item rules)', () => {
   deps.getEnvironment = () => 'zeroGravity';
   const holder = actor([item(S1.spacewalker)], { system: { defenses: { evasion: { total: 10, string: '10' } } } });
-  expect(situationalRollSources(holder, null, { rolledSkill: 'athletics' }).sources[0]).toMatchObject({ edge: true });
-  expect(situationalRollSources(holder, null, { rolledSkill: 'science' }).sources[0]).toMatchObject({ shiftUp: 1 });
+  expect(situationalRollSources(holder, null, { rolledSkill: 'athletics' }).sources).toEqual([]);
   situationalDerived(holder);
   expect(holder.system.defenses.evasion.total).toBe(15);
-  deps.getEnvironment = () => 'lowGravity';
-  expect(situationalRollSources(holder, null, { rolledSkill: 'science' }).sources).toEqual([]);
+  deps.getEnvironment = () => 'normal';
+  const grounded = actor([item(S1.spacewalker)], { system: { defenses: { evasion: { total: 10, string: '10' } } } });
+  situationalDerived(grounded);
+  expect(grounded.system.defenses.evasion.total).toBe(10);
 });
 
 test('Environmental Warrior matches Survival specializations to the terrain', () => {
@@ -82,7 +83,12 @@ test('Jungle Fighter: terrain, manual toggle, Out of the Jungle', () => {
   expect(situationalSpecializes(holder, 'targeting', { type: 'weaponEffect' })).toBe(true);
   expect(situationalRollSources(holder, null, { rolledSkill: 'survival' }).sources[0].edge).toBe(true);
   deps.getTerrain = () => 'desert';
-  expect(isInJungle(actor([item(S1.outOfTheJungle)]))).toBe(true);
+  // Out of the Jungle's Edge, Specialized attacks and Rough Terrain are item rules now.
+  const outside = actor([item(S1.outOfTheJungle)]);
+  expect(isInJungle(outside)).toBe(false);
+  expect(situationalRollSources(outside, null, { rolledSkill: 'survival' }).sources).toEqual([]);
+  expect(situationalSpecializes(outside, 'targeting', { type: 'weaponEffect' })).toBe(false);
+  expect(ignoresRoughTerrainS1(outside)).toBe(false);
 });
 
 test('Jungle Fighter hands back the light-armor noise on Infiltration', () => {
@@ -135,18 +141,15 @@ test('Environmental Enforcer: Edge on Maneuver attacks in a chosen terrain', () 
   expect(survivalRanks(holder)).toBe(2);
 });
 
-test('dialog: Fast Tracking, City Slicker and Layered Armor', async () => {
+test('dialog: Fast Tracking and Layered Armor (City Slicker is a rule now)', async () => {
   const layered = item(S1.layeredArmor, { type: 'armor', system: { equipped: true } });
-  const holder = actor([item(S1.citySlicker), layered], {
+  const holder = actor([layered], {
     system: { skills: { infiltration: { shift: 'd20' }, streetwise: { shift: 'd6' } } },
   });
   expect(situationalToggles(holder, { rolledSkill: 'driving' })).toEqual([]);
   deps.getTerrain = () => 'urban';
-  expect(situationalToggles(holder, { rolledSkill: 'infiltration' })[0]).toMatchObject({ name: 's1CitySlicker', value: true });
+  expect(situationalToggles(holder, { rolledSkill: 'infiltration' })).toEqual([]);
   expect(skillSwapDelta(holder, 'infiltration', 'streetwise')).toBe(3);
-  const options = { shiftUp: 0, shiftDown: 0, ext: { s1CitySlicker: true } };
-  await situationalApplyDialog(holder, options, { rolledSkill: 'infiltration' });
-  expect(options).toMatchObject({ shiftUp: 3 });
   const persuade = { shiftUp: 0, ext: {} };
   await situationalApplyDialog(holder, persuade, { rolledSkill: 'persuasion', dataset: { specializationKey: 'leadership' } });
   expect(persuade.skillEffectModifierBonus).toBe(1);
@@ -180,11 +183,30 @@ test('Misguide imposes Rough Terrain on the stamped turn', async () => {
   expect(imposesRoughTerrainS1({ actor: target })).toBe(true);
 });
 
-test('Danger Sense and Every Trick block Surprised', () => {
-  const holder = actor([item(S1.dangerSense)]);
-  expect(onPreCreateEffect({ parent: holder, statuses: new Set(['surprised']) })).toBe(false);
-  expect(onPreCreateEffect({ parent: holder, statuses: new Set(['prone']) })).toBe(true);
-  expect(onPreCreateEffect({ parent: actor([]), statuses: new Set(['surprised']) })).toBe(true);
+test("Danger Sense keeps Surprised off its Protected Target within 10 feet (the holder's own immunity is an item rule)", () => {
+  const ward = actor([], { id: 'w1', uuid: 'Actor.w1' });
+  const bodyguard = actor([item(S1.dangerSense, { name: 'Danger Sense' })], { id: 'b1', uuid: 'Actor.b1', flags: { protectedTargetUuid: 'Actor.w1' } });
+  const token = (who, x) => ({ actor: who, center: { x, y: 0 }, document: { disposition: 1 } });
+  const wardToken = token(ward, 0);
+  const guardToken = token(bodyguard, 5);
+  for (const [who, own] of [[ward, wardToken], [bodyguard, guardToken]]) {
+    who.getActiveTokens = () => [own];
+    who.items.find = fn => who.items.contents.find(fn);
+  }
+
+  global.canvas = { tokens: { placeables: [wardToken, guardToken] }, grid: { measurePath: ([a, b]) => ({ distance: Math.abs(a.x - b.x) }) } };
+  try {
+    expect(onPreCreateEffect({ parent: ward, statuses: new Set(['surprised']) })).toBe(false);
+    expect(onPreCreateEffect({ parent: ward, statuses: new Set(['prone']) })).toBe(true);
+    expect(onPreCreateEffect({ parent: bodyguard, statuses: new Set(['surprised']) })).toBe(true);
+    guardToken.center.x = 15;
+    expect(onPreCreateEffect({ parent: ward, statuses: new Set(['surprised']) })).toBe(true);
+    guardToken.center.x = 5;
+    bodyguard.flags.essence20.protectedTargetUuid = 'Actor.other';
+    expect(onPreCreateEffect({ parent: ward, statuses: new Set(['surprised']) })).toBe(true);
+  } finally {
+    delete global.canvas;
+  }
 });
 
 test('Adapted Vehicle follows its driver', () => {

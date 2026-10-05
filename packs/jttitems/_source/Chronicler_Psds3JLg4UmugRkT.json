@@ -5,6 +5,10 @@
   "_id": "Psds3JLg4UmugRkT",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Recalling chronicled information (Chronicler: Impaired on a failure)","when":["not:item:type:weaponEffect"],"key":"chronicler","forget":true},
+      {"type":"Trigger","event":"afterRoll","outcome":"allFailed","label":"Failed a chronicled recall (Chronicler: Impaired)","when":["roll:switch:chronicler"],"steps":[{"do":"applyCondition","condition":"impaired","rounds":10}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch for when you're recalling something you chronicled. If that test fails, you're Impaired for 10 rounds.</p>"

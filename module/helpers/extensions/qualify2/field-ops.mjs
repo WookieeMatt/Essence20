@@ -1,14 +1,13 @@
-import { registerChatButton, registerPostRoll, registerRest, registerRoundStart, registerTurnEnd, registerUse } from "../../extensions.mjs";
-import { escape, has, itemOf, Q2, sourceOf, T, traitsOf } from "./common.mjs";
+import { registerChatButton, registerPostRoll, registerRoundStart, registerTurnEnd, registerUse } from "../../extensions.mjs";
+import { escape, has, Q2, sourceOf, T, traitsOf } from "./common.mjs";
 
 /**
  * qualify2 Use buttons and reactions that aren't about Qualification:
- * At Ease, Disease; Cascading Failure; Destructive Overcharge; Morale Booster; Opportunist; Sensitive.
+ * At Ease, Disease; Cascading Failure; Destructive Overcharge; Opportunist; Sensitive.
  */
 
 const CASCADE_FLAG = 'q2Cascades';
 const OVERCHARGE_FLAG = 'q2Overcharges';
-const MORALE_FLAG = 'q2MoraleUses';
 const SENSITIVE_IGNORE_FLAG = 'q2SensitiveIgnore';
 
 /* -------------------------------------------- */
@@ -399,52 +398,6 @@ export async function onCascadeButton(message, button) {
 }
 
 /* -------------------------------------------- */
-/*  Morale Booster                               */
-/* -------------------------------------------- */
-
-// Morale Booster (Enigma of Combination, Influence Perk, p.23): "As a Standard action, you can remove
-// the Frightened or Impaired condition from all allies within 30 feet that can hear you; you can do
-// this a number of times per day equal to your Social Essence Score." A Rest is the new day.
-export function moraleUsesLeft(actor, item) {
-  const social = Number(actor?.system?.essences?.social?.max ?? actor?.system?.essences?.social?.value ?? actor?.system?.essences?.social) || 0;
-  return Math.max(0, social - (Number(item?.flags?.essence20?.[MORALE_FLAG]) || 0));
-}
-
-async function moraleBooster(item, pay) {
-  const actor = item.parent;
-  if (moraleUsesLeft(actor, item) <= 0) {
-    ui.notifications.warn(T('E20.Q2MoraleNoUses'));
-    return null;
-  }
-
-  const { getNearbyAllyTokens } = await import("../../allies.mjs");
-  const allies = getNearbyAllyTokens(actor, 30).filter(token => token.actor?.statuses?.has?.('frightened') || token.actor?.statuses?.has?.('impaired'));
-  if (!(await pay('standard'))) {
-    return null;
-  }
-
-  await item.setFlag('essence20', MORALE_FLAG, (Number(item.flags?.essence20?.[MORALE_FLAG]) || 0) + 1);
-  // Targeted, so a player's client may have the GM clear another player's Conditions (gm-relay).
-  canvas.tokens?.setTargets?.(allies.map(token => token.id));
-  for (const token of allies) {
-    for (const status of ['frightened', 'impaired']) {
-      if (token.actor.statuses.has(status)) {
-        await token.actor.toggleStatusEffect(status, { active: false });
-      }
-    }
-  }
-
-  return T('E20.Q2MoraleUsed', { name: actor.name, allies: allies.map(token => token.name).join(', ') || T('E20.Q2Nobody'), left: moraleUsesLeft(actor, item) - 1 });
-}
-
-export async function moraleRest(actor) {
-  const item = itemOf(actor, Q2.moraleBooster);
-  if (item?.flags?.essence20?.[MORALE_FLAG]) {
-    await item.unsetFlag('essence20', MORALE_FLAG);
-  }
-}
-
-/* -------------------------------------------- */
 /*  Opportunist                                  */
 /* -------------------------------------------- */
 
@@ -543,7 +496,6 @@ const USES = {
   [Q2.atEaseDisease]: atEaseDisease,
   [Q2.destructiveOvercharge]: destructiveOvercharge,
   [Q2.cascadingFailure]: cascadingFailure,
-  [Q2.moraleBooster]: moraleBooster,
   [Q2.sensitive]: ignoreSensitive,
 };
 
@@ -552,10 +504,6 @@ export const FIELD_OPS_USE = {
   matches: item => !!USES[sourceOf(item)],
   canUse: item => {
     const source = sourceOf(item);
-    if (source == Q2.moraleBooster) {
-      return moraleUsesLeft(item.parent, item) > 0;
-    }
-
     if (source == Q2.sensitive) {
       return detailOrientedLeft(item.parent) > 0;
     }
@@ -573,7 +521,6 @@ registerChatButton('q2Overcharge', onOverchargeButton);
 registerChatButton('q2Cascade', onCascadeButton);
 registerTurnEnd(overchargeTurnEnd);
 registerRoundStart(cascadeRoundStart);
-registerRest(moraleRest);
 registerPostRoll(opportunistPostRoll);
 if (globalThis.Hooks?.on) {
   Hooks.on('updateActor', sensitiveOnUpdate);

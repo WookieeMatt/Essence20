@@ -7,7 +7,7 @@
   "system": {
     "rules": [
       {"type":"RollModifier","label":"City Slicker","when":["skill:alertness"],"upshift":1},
-      {"type":"DialogSwitch","forget":true,"label":"Roll Streetwise instead (City Slicker)","when":["skill:infiltration"],"useSkill":"streetwise"}
+      {"type":"DialogSwitch","forget":true,"label":"Roll Streetwise instead (City Slicker)","when":["skill:infiltration","terrain:urban"],"defaultWhen":["terrain:urban"],"useSkill":"streetwise"}
     ],
     "prerequisites": {"when":["self:skill:streetwise>=d4"]},
     "automation": {

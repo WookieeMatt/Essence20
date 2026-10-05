@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","forget":true,"label":"Roll Alertness for Initiative, ↑2 (Danger Sense)","when":["roll:initiative"],"useSkill":"alertness","upshift":2}
+      {"type":"DialogSwitch","forget":true,"label":"Roll Alertness for Initiative, ↑2 (Danger Sense)","when":["roll:initiative"],"useSkill":"alertness","upshift":2},
+      {"type":"ConditionImmunity","label":"Can't be Surprised (Danger Sense)","conditions":["surprised"]}
     ],
     "automation": {
       "status": "full",

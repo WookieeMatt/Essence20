@@ -5,6 +5,9 @@
   "_id": "9XITV6O09Up8QiwL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Qualification","label":"Trained in Limited weapons (Training Through Familiarity)","items":["item:type:weapon","item:data:system.availability=limited"],"access":"trained"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you're trained in Limited weapons, and can requisition Standard and Limited Kits without meeting their prerequisites.</p>"

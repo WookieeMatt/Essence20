@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","upshift":1,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.beneath_the_helmet.Item.Txv1ODlLKY91hPrA","skill:infiltration"]}
+      {"type":"RollModifier","upshift":1,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.beneath_the_helmet.Item.Txv1ODlLKY91hPrA","skill:infiltration"]},
+      {"type":"DerivedStat","label":"Ninja Storm Wind Ranger (Ground ×2)","path":"system.movement.ground.total","op":"multiply","value":2,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.beneath_the_helmet.Item.Txv1ODlLKY91hPrA"]}
     ],
     "automation": {
       "status": "partial",

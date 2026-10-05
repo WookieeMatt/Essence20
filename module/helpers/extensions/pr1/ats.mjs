@@ -11,7 +11,8 @@
  *   Evasion while submerged), HAZMAT (Resistance to two or Immunity to one of Acid, Cold, Electricity,
  *   Poison, Sonic), Medical (+10ft to existing Movement, ↑2 on Science/Technology first aid or repair
  *   by the Zord or its crew), Pyrotechnic (Immunity to Fire; a Standard action extinguishes a 20x20ft
- *   area). "In flight"/"submerged" read the Zord token's elevation (above/below 0).
+ *   area). "In flight"/"submerged" read the Zord token's elevation (above/below 0). Medical's ↑2 is
+ *   the item's own rules (they read the pick below).
  * - Nemesis (Specific Threat) (p.70) - the half helpers/nemesis.mjs leaves open: "Once per scene
  *   involving your Nemesis, you may reroll a Skill Test and choose which results to keep." A button
  *   on the roll card rerolls it and shows both results against every Difficulty.
@@ -52,7 +53,7 @@ import { getSceneEpoch, getUses, markUsed } from "../../scene-clock.mjs";
 import { worldActors } from "../../companion-link.mjs";
 import {
   PR1, T, allSourced, crewOf, feetBetween, findSourced, flagOf, has, isEnemyOf,
-  isItem, isRanged, kept, num, pending, postLine, seatsOf, setPending, tokenOf, writeDoc,
+  isItem, isRanged, kept, num, pending, postLine, setPending, tokenOf, writeDoc,
 } from "./common.mjs";
 
 const pushTo = (list, entry) => {
@@ -605,14 +606,6 @@ export function atsSources(actor, target, ctx = {}) {
   const example = flagOf(actor, EXAMPLE_FLAG);
   if (example?.skill && example.skill == rolledSkill) {
     pushTo(sources, { id: 'pr1BeAnExample', label: findSourced(actor, PR1.beAnExample)?.name ?? 'Be an Example', shiftUp: 1 });
-  }
-
-  // Lightspeed Boost (Medical): the Zord itself, or anyone seated in it.
-  if (['science', 'technology'].includes(rolledSkill)) {
-    const zord = actor?.type == 'zord' ? actor : seatsOf(actor).map(s => s.vehicle).find(v => lightspeedOf(v).some(c => c.option == 'medical'));
-    if (zord && lightspeedOf(zord).some(c => c.option == 'medical')) {
-      pushTo(sources, { id: 'pr1LightspeedMedical', label: T('Pr1LightspeedMedicalLabel'), shiftUp: 2 });
-    }
   }
 
   return sources;

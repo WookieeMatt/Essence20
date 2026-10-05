@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"In a library or facing a Librarian (Bookworm: ↓1)","when":[{"any":["target:tag:librarian","target:name~librarian","scene:name~librar","ask:in a library or facing a Librarian"]}],"downshift":1}
+      {"type":"RollModifier","label":"In a library or facing a Librarian (Bookworm: ↓1)","when":["not:roll:initiative",{"any":["target:tag:librarian","target:name~librarian","scene:name~librar","ask:in a library or facing a Librarian"]}],"downshift":1}
     ],
     "automation": {
       "status": "full",

@@ -31,31 +31,20 @@ const CHOSEN_FLAG = 'q1Chosen';
 /*  Rules                                        */
 /* -------------------------------------------- */
 
-// "Qualified in all Standard weapons": Nu, Pogodi! (Intercontinental Adventures p.68). Standard Weapon
-// Training, The Glory of Cobra-La and Ultra-Secret Strike Force are Qualification rules on their items
-// (item:availability<=standard reads the same effective tier, rules/adapter.mjs#requisitionTier).
-const STANDARD_WEAPON_QUALIFIERS = [Q1.nuPogodi];
-
-// Upgrade Qualifications: Nu, Pogodi! (Intercontinental Adventures p.68) - the Acclimating battledress
-// upgrade, by compendium _id or name. Minimalists, Mega Training Regimen, Roaming the Land, Surgical
-// Operators, The Glory of Cobra-La and Ultra-Secret Strike Force carry theirs as Qualification rules
-// (`upgrades`), which isQualifiedUpgrade asks through ruleQualifiedUpgrade.
-const UPGRADE_QUALIFIERS = [
-  [Q1.nuPogodi, [Q1_UPGRADE.acclimating], ['acclimating']],
-];
+// "Qualified in all Standard weapons" (Standard Weapon Training, Nu, Pogodi!, The Glory of Cobra-La,
+// Ultra-Secret Strike Force) and every upgrade Qualification are Qualification rules on their items
+// (item:availability<=standard reads the effective tier, rules/adapter.mjs#requisitionTier).
 
 const norm = name => String(name ?? '').trim().toLowerCase();
 
 /**
- * Whether the actor is Qualified in this upgrade (an attached entry or an upgrade Item).
+ * Whether the actor is Qualified in this upgrade (an attached entry or an upgrade Item) - the
+ * Qualification rules' `upgrades`.
  * @param {Actor} actor
  * @param {{uuid?: String, name?: String}|Item} upgrade
  */
 export function isQualifiedUpgrade(actor, upgrade) {
-  const id = idOf(sourceOf(upgrade) ?? upgrade?.uuid);
-  const name = norm(upgrade?.name);
-  return UPGRADE_QUALIFIERS.some(([perk, ids, names]) => has(actor, perk)
-    && (ids.includes(id) || names.includes(name))) || ruleQualifiedUpgrade(actor, upgrade);
+  return ruleQualifiedUpgrade(actor, upgrade);
 }
 
 /** The upgrades attached to a weapon or armor - owned upgrade Items, else the item's own entries. */
@@ -157,16 +146,8 @@ export function perkAccess(actor, item) {
     return null;
   }
 
-  const availability = effectiveAvailability(actor, item);
-
   for (const uuid of CHOSEN_QUALIFIED) {
     if (itemsFrom(actor, uuid).some(perk => chosenOn(perk).some(chosen => matchesChosen(item, chosen)))) {
-      return 'qualified';
-    }
-  }
-
-  if (item.type == 'weapon') {
-    if (tierRank(availability) <= tierRank('standard') && STANDARD_WEAPON_QUALIFIERS.some(uuid => has(actor, uuid))) {
       return 'qualified';
     }
   }
@@ -270,18 +251,6 @@ function drivenVehicle(actor) {
 
 const skillRanked = (actor, skill) => (actor?.system?.skills?.[skill]?.shift ?? 'd20') != 'd20';
 
-/** Is this weapon effect part of a vehicle's weapon systems, or an Integrated hardpoint weapon? */
-function isVehicleOrHardpointWeapon(effect) {
-  const parent = effect?.parent;
-  if (['vehicle', 'zord'].includes(parent?.type)) {
-    return true;
-  }
-
-  const weaponId = effect?.flags?.essence20?.parentId;
-  const weapon = weaponId ? parent?.items?.get?.(weaponId) : null;
-  return weapon?.system?.hardpoint?.type == 'integrated';
-}
-
 /* -------------------------------------------- */
 /*  Roll sources                                 */
 /* -------------------------------------------- */
@@ -345,11 +314,6 @@ export function qualificationSources(actor, target, ctx = {}) {
   }
 
   if (ctx.isAttack && ctx.item?.type == 'weaponEffect') {
-    // Mega Training Regimen: "You gain ↑1 when using vehicle weapon systems and hardpoint weapons."
-    if (has(actor, Q1.megaTrainingRegimen) && isVehicleOrHardpointWeapon(ctx.item)) {
-      sources.push({ id: 'q1MegaVehicleWeapon', label: perkName(Q1.megaTrainingRegimen), shiftUp: 1 });
-    }
-
     // The Glory of Cobra-La: Snag with weapons that do not have the Biomechanical trait.
     if (has(actor, Q1.gloryOfCobraLa) && !isBiomechanicalWeapon(ctx.item)) {
       sources.push({ id: 'q1CobraLaWeapon', label: perkName(Q1.gloryOfCobraLa), snag: true });

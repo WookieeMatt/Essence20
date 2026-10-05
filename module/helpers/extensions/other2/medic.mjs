@@ -1,23 +1,22 @@
 import {
-  registerDerived, registerNamedAction, registerRollSources, registerRoundStart, registerUse,
+  registerDerived, registerNamedAction, registerRoundStart, registerUse,
 } from "../../extensions.mjs";
 import { activeKits } from "../../kits.mjs";
 import { getUses, markUsed } from "../../scene-clock.mjs";
 import {
-  GIJ, HAWK, T, feetBetween, findSourced, firstTarget, has, isFrom, itemsOf, num, onHook, post, rollDif,
+  GIJ, HAWK, T, feetBetween, firstTarget, has, isFrom, itemsOf, num, onHook, post, rollDif,
 } from "./shared.mjs";
 
 /**
  * Healing: the Core Rules' "restore Health with a Skill Test" as an action anyone can take, and the
- * GI Joe Medic/Hawk's Personnel Files Perks and gear that change it - Peaceable, Hearty Meal,
- * Proper Protection, Stim Dart and the Defibrillator.
+ * GI Joe Medic/Hawk's Personnel Files Perks and gear that change it - Hearty Meal, Proper
+ * Protection, Stim Dart and the Defibrillator. Peaceable's ↑1 on healing rolls is a rule on its pack item.
  */
 export const O2_MED = {
   iveGotYou: GIJ('6wbY17kDGkxeGBPp'),
   properProtection: GIJ('CUV2gVVGb7U7yU5J'),
   stimDart: GIJ('5Gx1CuLTEbjFqV8F'),
   defibrillator: GIJ('IP0hnNhERC4OCc0k'),
-  peaceable: HAWK('BHum6Sd6Zz7cra5b'),
   heartyMeal: HAWK('NULhQcWctFcXXdDH'),
 };
 
@@ -28,27 +27,6 @@ const DEFIB_FLAG = 'o2Defibrillating';
 
 /** RAW's DIF to restore Health: "5 + (5 per Health you want to restore)" (GI Joe CRB p.210). */
 export const restoreDif = amount => 5 + (5 * amount);
-
-/** Every roll this system makes to heal injuries, by the dataset flag that marks it. */
-export const HEAL_FLAGS = ['isIveGotYou', 'isMindOverMatter', 'isRegeneration', 'isPatchUp', 'isPreventativeMeasures', 'isToughItOut', 'o2Heal'];
-
-export function isHealingRoll(dataset) {
-  return HEAL_FLAGS.some(flag => dataset?.[flag] && dataset[flag] !== 'false');
-}
-
-/* -------------------------------------------- */
-/*  Peaceable                                    */
-/* -------------------------------------------- */
-
-// Peaceable (Hawk's Personnel Files, Influence Perk, p.166): "You gain ↑1 on Skill Tests to heal
-// injuries." The Stun-only attack half is in dice.mjs.
-registerRollSources((actor, target, ctx) => {
-  if (!has(actor, O2_MED.peaceable) || !isHealingRoll(ctx?.dataset)) {
-    return { sources: [] };
-  }
-
-  return { sources: [{ id: 'o2Peaceable', label: findSourced(actor, O2_MED.peaceable)?.name ?? 'Peaceable', shiftUp: 1 }] };
-});
 
 /* -------------------------------------------- */
 /*  Proper Protection                            */

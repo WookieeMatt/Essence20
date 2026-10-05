@@ -5,6 +5,9 @@
   "_id": "T4p7oPq8Kk0SHVb3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Take a Silent Martial Arts weapon (Qualified)","steps":[{"do":"pickGrant","from":{"type":"weapon","tags":["item:trait:martialArts","item:trait:silent"]},"flags":{"qualified":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: take a Silent Martial Arts weapon you're Qualified with. Automatic: Defend costs a Free action while you wield one.</p>"

@@ -7,7 +7,7 @@ import { bankedSources, bankedSpecializes, consumeBanked } from "./bank.mjs";
 import { recordUse, usesLeft } from "./limits.mjs";
 import { ruleHelper } from "./code.mjs";
 import { resolveValue } from "./formula.mjs";
-import { hostOf, rebuildIndex, ruleId, ruleLabel, rulesOfType } from "./index.mjs";
+import { hostOf, rebuildIndex, ruleId, ruleLabel, rulesOf, rulesOfType } from "./index.mjs";
 import { contextFor, evaluate, interpolate, isStatic } from "./predicate.mjs";
 import { canAfford, readResource } from "./steps.mjs";
 import { linkedEntries } from "./links.mjs";
@@ -333,13 +333,25 @@ export function ruleDialogSwitches(actor, ctx = {}) {
       type: 'checkbox',
       // A DialogSwitch starts at its own default; a RollModifier that has to ask starts off unless it
       // says `default: true`.
-      // forget (or a limit): always starts at its default, like a plain one-roll checkbox.
-      value: cost?.resource ? false : rule.forget || rule.limit ? !!rule.default : rememberedSwitch(actor, ruleId(item, index)) ?? !!rule.default,
+      // forget (or a limit): always starts at its default, like a plain one-roll checkbox. defaultWhen:
+      // starts ticked when those tags are known true (City Slicker in an urban scene).
+      value: cost?.resource ? false : rule.forget || rule.limit
+        ? !!rule.default || switchDefaultHolds(rule, actor, item, ctx)
+        : rememberedSwitch(actor, ruleId(item, index)) ?? (!!rule.default || switchDefaultHolds(rule, actor, item, ctx)),
       entry: { rule, item, owner, index },
     });
   }
 
   return switches;
+}
+
+/** Whether a DialogSwitch's defaultWhen tags are known true for this roll. */
+function switchDefaultHolds(rule, actor, item, ctx = {}) {
+  if (!Array.isArray(rule.defaultWhen) || !rule.defaultWhen.length) {
+    return false;
+  }
+
+  return evaluate(rule.defaultWhen, contextFor({ ...ctx, ...rollFacts(ctx.item, ctx), self: actor, ruleItem: item, other: firstTarget() })) === true;
 }
 
 /**
@@ -471,7 +483,10 @@ export function applySkillSubstitution(actor, dataset, item) {
     return null;
   }
 
-  for (const { rule, item: ruleItem } of affecting(actor, 'SkillSubstitution', ['self', 'host'])) {
+  // The roller's own rules, then (scope item) the rolled item's own - whoever rolls it.
+  const onItem = rulesOf(item).filter(rule => rule?.type == 'SkillSubstitution' && rule.scope == 'item' && !rule.disabled)
+    .map(rule => ({ rule, item }));
+  for (const { rule, item: ruleItem } of [...affecting(actor, 'SkillSubstitution', ['self', 'host']), ...onItem]) {
     if ((rule.scope ?? 'self') == 'host' && !hostMatches(ruleItem, item)) {
       continue;
     }

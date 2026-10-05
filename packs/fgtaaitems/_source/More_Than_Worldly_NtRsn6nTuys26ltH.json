@@ -5,6 +5,9 @@
   "_id": "NtRsn6nTuys26ltH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Edge on the next roll (you or the targeted ally)","cost":{"action":"free"},"limit":{"per":"turn"},"steps":[{"do":"bank","edge":true,"appliesWhen":["not:roll:initiative"],"to":"targetOrSelf"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per turn, Free action): Edge for you or a targeted ally.</p>"

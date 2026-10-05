@@ -14,8 +14,9 @@
  *   bonus to Toughness." The Bot Mode +2 is an item rule now (system.rules); the Alt Mode Use stays here.
  * - Carapaced (Technorganic Secrets, p.37): "Alt Mode Movement: 40 feet Ground. Choose either to add
  *   20 feet to your Ground speed or gain a 25 feet Underground speed." Primate (p.42): "Alt Mode
- *   Movement: 50 feet Ground, 30 feet Climb." The Alt Mode item only stores ground/aerial/aquatic,
- *   so the Climb/Underground/+20 part is added to the derived movement while in that Alt Mode.
+ *   Movement: 50 feet Ground, 30 feet Climb." The Alt Mode item only stores ground/aerial/aquatic;
+ *   the Climb and Underground speeds are item rules now, the +20 Ground is added here while in that
+ *   Alt Mode.
  * - Shinobi of the 63rd Hexagram (Intercontinental Adventures, p.9): "You gain +1 to either
  *   Toughness or Evasion and +1 to either Willpower or Cleverness" - the item carries all four as
  *   disabled Active Effects; this turns on the chosen two. "Trained in all weapons with the Martial
@@ -34,17 +35,12 @@ export function gearDerived(actor) {
   if (!system?.defenses) return;
   const items = itemsOf(actor);
 
+  // Primate's Climb 30 and Carapaced's Underground 25 are DerivedStat rules on the Alt Mode items.
   if (system.isTransformed && system.altModeId && system.movement) {
     const altMode = items.find(i => i.id == system.altModeId);
-    const source = sourceOf(altMode);
-    if ([ZORD2.primateCommon, ZORD2.primateLarge].includes(source) && system.movement.climb) {
-      system.movement.climb.total = Math.max(system.movement.climb.total ?? 0, 30);
-    } else if ([ZORD2.carapacedCommon, ZORD2.carapacedLarge].includes(source)) {
-      if (flagOf(altMode, CARAPACED_FLAG) == 'burrow') {
-        if (system.movement.burrow) system.movement.burrow.total = Math.max(system.movement.burrow.total ?? 0, 25);
-      } else if (system.movement.ground) {
-        system.movement.ground.total = (system.movement.ground.total ?? 0) + 20;
-      }
+    if ([ZORD2.carapacedCommon, ZORD2.carapacedLarge].includes(sourceOf(altMode)) && flagOf(altMode, CARAPACED_FLAG) != 'burrow'
+      && system.movement.ground) {
+      system.movement.ground.total = (system.movement.ground.total ?? 0) + 20;
     }
   }
 }

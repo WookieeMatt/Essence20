@@ -82,9 +82,9 @@ describe('registration', () => {
 
 describe('common', () => {
   test('itemsFrom matches full uuid or bare id', () => {
-    const actor = makeActor([perk(Q1.tradeGoods), { type: 'upgrade', flags: { core: { sourceId: `Compendium.essence20.tf_crb.Item.${Q1_UPGRADE.acclimating}` } } }]);
+    const actor = makeActor([perk(Q1.tradeGoods), { type: 'upgrade', flags: { core: { sourceId: `Compendium.essence20.tf_crb.Item.${Q1_UPGRADE.organicArmor}` } } }]);
     expect(itemsFrom(actor, Q1.tradeGoods)).toHaveLength(1);
-    expect(itemsFrom(actor, Q1_UPGRADE.acclimating)).toHaveLength(1);
+    expect(itemsFrom(actor, Q1_UPGRADE.organicArmor)).toHaveLength(1);
     expect(itemsFrom(actor, null)).toEqual([]);
   });
 
@@ -100,12 +100,6 @@ describe('common', () => {
 describe('qualification', () => {
   const weapon = (availability, extra = {}) => ({ type: 'weapon', name: extra.name ?? 'Gun', system: { availability, totalAvailability: extra.total ?? availability, traits: extra.traits ?? [], items: extra.items ?? {} }, flags: {} });
 
-  test('Nu, Pogodi! qualifies Standard weapons only', () => {
-    const actor = makeActor([perk(Q1.nuPogodi)]);
-    expect(perkAccess(actor, weapon('standard'))).toBe('qualified');
-    expect(perkAccess(actor, weapon('limited'))).toBeNull();
-  });
-
   test('chosen item qualifies (Trade Goods) or trains (Service)', () => {
     const chosen = [{ uuid: 'Compendium.essence20.x.Item.gun', name: 'Sniper Rifle' }];
     const actor = makeActor([perk(Q1.tradeGoods, { flags: { q1Chosen: chosen } })]);
@@ -115,22 +109,20 @@ describe('qualification', () => {
     expect(perkAccess(trained, rifle)).toBe('trained');
   });
 
-  test('qualified upgrades drop out of the requisition availability', () => {
-    CONFIG.E20.upgradeAvailabilityMatrix = { standard: { limited: 'limited', standard: 'standard' } };
-    const actor = makeActor([perk(Q1.nuPogodi)]);
-    const gun = weapon('standard', { total: 'limited', items: { a: { type: 'upgrade', uuid: `Compendium.essence20.gi_joe_crb.Item.${Q1_UPGRADE.acclimating}`, availability: 'limited' } } });
-    expect(isQualifiedUpgrade(actor, { uuid: gun.system.items.a.uuid })).toBe(true);
-    expect(effectiveAvailability(actor, gun)).toBe('standard');
-    const out = { availability: 'limited' };
-    onRequisitionAvailability(actor, gun, out);
-    expect(out.availability).toBe('standard');
+  test('no qualified upgrade: the requisition availability is the combined total', () => {
+    const gun = weapon('standard', { total: 'limited', items: { a: { type: 'upgrade', uuid: 'Compendium.essence20.gi_joe_crb.Item.zzzzzzzzzzzzzzzz', availability: 'limited' } } });
+    expect(isQualifiedUpgrade(makeActor(), { uuid: gun.system.items.a.uuid })).toBe(false);
     expect(effectiveAvailability(makeActor(), gun)).toBe('limited');
+    const out = { availability: 'limited' };
+    onRequisitionAvailability(makeActor(), gun, out);
+    expect(out.availability).toBe('limited');
   });
 
   test('requisition access only widens', () => {
-    const actor = makeActor([perk(Q1.nuPogodi)]);
+    const chosen = [{ uuid: 'Compendium.essence20.x.Item.gun', name: 'Gun' }];
+    const actor = makeActor([perk(Q1.tradeGoods, { flags: { q1Chosen: chosen } })]);
     const out = { access: 'unknown' };
-    onRequisitionAccess(actor, weapon('standard'), out);
+    onRequisitionAccess(actor, weapon('limited'), out);
     expect(out.access).toBe('qualified');
     const none = { access: 'qualified' };
     onRequisitionAccess(makeActor(), weapon('standard'), none);
@@ -167,13 +159,11 @@ describe('qualification', () => {
     expect(options.snag).toBe(false);
   });
 
-  test('Cobra-La snag on non-biomechanical weapons; Mega Training up 1 on vehicle weapons', () => {
+  test('Cobra-La snag on non-biomechanical weapons', () => {
     const actor = makeActor([perk(Q1.gloryOfCobraLa), perk(Q1.megaTrainingRegimen), { id: 'w1', type: 'weapon', name: 'Rifle', system: {} }]);
     const effect = { type: 'weaponEffect', parent: actor, flags: { essence20: { parentId: 'w1' } } };
     const sources = qualificationSources(actor, null, { isAttack: true, item: effect }).sources.map(s => s.id);
-    expect(sources).toContain('q1CobraLaWeapon');
-    const vehicleEffect = { type: 'weaponEffect', parent: { type: 'vehicle', items: { get: () => null } }, flags: {} };
-    expect(qualificationSources(actor, null, { isAttack: true, item: vehicleEffect }).sources.map(s => s.id)).toContain('q1MegaVehicleWeapon');
+    expect(sources).toEqual(['q1CobraLaWeapon']);
   });
 });
 

@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Compassionate: suggesting a non-aggressive solution (Edge)","edge":true,"forget":true,"when":["skill:persuasion"]},
+      {"type":"DialogSwitch","label":"Compassionate: acquiring food, water, medicine or shelter for others (Edge)","edge":true,"forget":true},
+      {"type":"Use","label":"Heal 1 (DIF 12 Persuasion)","steps":[{"do":"roll","skill":"persuasion","dif":12,"onSuccess":[{"do":"heal","amount":1,"to":"targetOrSelf"}],"onFail":[{"do":"chat","text":"{name} tries to help, but the Persuasion test falls short."}]}]}
+    ],
     "prerequisites": {"when":["self:essence:social>=3"]},
     "automation": {
       "status": "full",

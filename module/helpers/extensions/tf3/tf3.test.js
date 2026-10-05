@@ -157,15 +157,13 @@ describe('defenses and derived data', () => {
 describe('requisition and movement', () => {
   const weapon = (availability, hands) => ({ type: 'weapon', name: 'W', uuid: 'Item.w', system: { availability, items: { a: { type: 'weaponEffect', numHands: hands } } } });
 
-  test('Unassuming qualifies one-handed Limited weapons; Training Through Familiarity trains Limited', () => {
+  test('Unassuming qualifies one-handed Limited weapons', () => {
     const out = { access: 'unknown' };
     onRequisitionAccess(actor([item(TF3.unassuming)]), weapon('limited', '1'), out);
     expect(out.access).toBe('qualified');
     const two = { access: 'unknown' };
     onRequisitionAccess(actor([item(TF3.unassuming)]), weapon('limited', '2'), two);
     expect(two.access).toBe('unknown');
-    onRequisitionAccess(actor([item(TF3.trainingThroughFamiliarity)]), weapon('limited', '2'), two);
-    expect(two.access).toBe('trained');
   });
 
   test('One Bot Over Another qualifies the weapons picked on it', () => {

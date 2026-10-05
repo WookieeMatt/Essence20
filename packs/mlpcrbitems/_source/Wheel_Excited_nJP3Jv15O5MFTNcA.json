@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Land vehicle test (Wheel Excited: Edge)","when":["rule:data:flags.essence20.vehicleType=land"],"edge":true},
+      {"type":"DialogSwitch","forget":true,"label":"Sea vehicle test (Wheel Excited: Edge)","when":["rule:data:flags.essence20.vehicleType=sea"],"edge":true},
+      {"type":"DialogSwitch","forget":true,"label":"Air vehicle test (Wheel Excited: Edge)","when":["rule:data:flags.essence20.vehicleType=air"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick Land, Sea or Air. Roll Options Dialog: every Skill Test then shows a switch for that vehicle type; tick it for Edge when the test is about driving, fixing or otherwise dealing with that kind of vehicle.</p>"

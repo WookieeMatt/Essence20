@@ -392,8 +392,8 @@ registerUse({
 
 // Inspirational Leader (Across the Stars, General Perk, p.69): "In a combat scene, after you succeed
 // (or Critically Succeed) at a Skill Test in view of allies and teammates, they gain ↑1 when using
-// the same Skill until the end of the round." The out-of-combat Lend Assistance half is a patch to
-// lend-assistance.mjs#canAssistWithSkill (scratchpad integration/react-patch.cjs).
+// the same Skill until the end of the round." The out-of-combat Lend Assistance half is an Assist
+// rule on the Perk.
 registerPostRoll(async (actor, results, checkContext) => {
   const skill = checkContext?.riderContext?.skill;
   if (!game.combat || !skill || !actorHasPerk(actor, TRIG.inspirationalLeader) || !(results ?? []).some(r => r.success)) {

@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"Trigger","event":"added","label":"Its special attack arrives with it","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"},{"do":"fitAttack","types":["blunt","sharp"]}]},
-      {"type":"Use","label":"Get its special attack back","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"},{"do":"fitAttack","types":["blunt","sharp"]}]}
+      {"type":"Use","label":"Get its special attack back","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"},{"do":"fitAttack","types":["blunt","sharp"]}]},
+      {"type":"DerivedStat","label":"Carapaced Alt Mode (Underground 25 ft)","path":"system.movement.burrow.total","op":"max","value":25,"when":["rule:altMode","rule:data:flags.essence20.zord2CarapacedChoice=burrow"]}
     ],
     "automation": {
       "status": "full",

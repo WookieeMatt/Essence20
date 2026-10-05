@@ -14,10 +14,8 @@ import { escape, has, Q2, T } from "./common.mjs";
  * markUsedThisEncounter record, epoch-stamped by helpers/scene-clock.mjs) keep reading as used for the
  * rest of the session: when a gated record is written its session is noted, and each time the
  * encounter counter advances the active GM re-stamps the records used this session onto the new
- * encounter. A new session clears them all. ("A" for Effort! is the Origin's own rule now, with a
- * per-session limit.)
- *   - Real Angels (p.47): "Once per session, you can use your Standard action in combat to call on ...
- *     Erika to provide you with cover until the start of your next turn."
+ * encounter. A new session clears them all. ("A" for Effort! and Real Angels are their items' own
+ * rules now, with a per-session limit.)
  *   - Timeline Anomaly (p.47): once per session, the Initiative swap.
  *
  * Everything is Inspiration (p.32): "You add an additional Story Point to the player pool at the
@@ -28,7 +26,6 @@ const SETTING = 'q2SessionEpoch';
 const USES_FLAG = 'q2SessionUses';
 
 export const SESSION_GATED = {
-  realAngelsUsedThisEncounter: Q2.realAngels,
   timelineAnomalyUsedThisEncounter: Q2.timelineAnomaly,
 };
 

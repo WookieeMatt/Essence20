@@ -10,16 +10,15 @@ import {
 
 /**
  * A Jump Through Time (Quantum Ranger and General Perks), Across the Stars and Beneath the Helmet
- * items: Interspatial Pause, Quantum Trigger, Timeslide, Time Strike, Evacuation Vents, Special
- * Program, Lance of Light's strike and Dark Dimension ↓2, Savant Skill's Story Point refund, Good
- * with Both and Unlucky (For You)'s Terror.
+ * items: Interspatial Pause, Quantum Trigger, Timeslide, Time Strike, Special Program, Lance of
+ * Light's strike and Dark Dimension ↓2, Savant Skill's Story Point refund, Good with Both and Unlucky
+ * (For You)'s Terror. (Evacuation Vents is item rules on its pack item.)
  */
 export const O1_JTT = {
   interspatialPause: JTT('InterspatialPaus'),
   quantumTrigger: JTT('QuantumTriggerJT'),
   timeslide: JTT('e70Jm3uH5A3mKmSM'),
   timeStrike: JTT('T7nfBj9GjUHz8alo'),
-  evacuationVents: JTT('Tft06zzgFsVCx2B7'),
   specialProgram: JTT('wKGrImiofaMrni0m'),
   lanceOfLight: JTT('HUdL1MryICmRmWnP'),
   savantSkill: JTT('ZnuLgh6jdUHi9F75'),
@@ -347,29 +346,6 @@ registerUse({
 
     await safeUpdate(token.document, { x: Math.round(position.x), y: Math.round(position.y) });
     return T('O1Timeslide', { name: actor.name });
-  },
-});
-
-/* -------------------------------------------- */
-/*  Evacuation Vents                             */
-/* -------------------------------------------- */
-
-// Evacuation Vents (A Jump Through Time, Morphin Shell modification, p.32): "When spending Free
-// actions to enhance your Move action, there is no limit to how high your value can go as long as
-// you are moving away from all visible enemies." Declared with the Use button for this turn; the
-// Push cap in helpers/token-movement.mjs#getPushRules reads the flag (see other1-patch.cjs).
-export function evacuationKey() {
-  const combat = game?.combat;
-  return combat ? `${combat.id}.${combat.round}.${combat.turn}` : null;
-}
-
-registerUse({
-  id: 'o1EvacuationVents',
-  matches: isFrom(O1_JTT.evacuationVents),
-  canUse: item => !!game.combat && !!item.parent?.system?.isMorphed,
-  run: async (item) => {
-    await item.parent.setFlag('essence20', 'o1Evacuating', { key: evacuationKey() });
-    return T('O1EvacuationVents', { name: item.parent.name });
   },
 });
 

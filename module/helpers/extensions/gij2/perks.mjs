@@ -8,9 +8,8 @@ import { G2, T, escape, findSourced, hasItem, itemsOf, perkUseCard, post, source
 
 /**
  * GI JOE CRB Perks that needed a Use button, a roll hook or a follow-up reminder: Expert Knowledge,
- * Mentor, Martial Artist, Nose For Trouble's Streetwise swap, Machinesmith, En Passant, Energy
- * Resistant, Queen's Gambit, BRRRRRRRRRRRRRRT's Sprint, Castling's move, Plan of Action's split and
- * Fearsome Presence's range, count and expiry.
+ * Mentor, Martial Artist, Nose For Trouble's Streetwise swap, Machinesmith, Energy Resistant, Queen's
+ * Gambit, Castling's move, Plan of Action's split and Fearsome Presence's range, count and expiry.
  */
 
 const skillLabel = skill => game.i18n.localize(CONFIG.E20?.skills?.[skill] ?? skill);
@@ -285,31 +284,6 @@ export function machinesmithSources(actor, target, { item } = {}) {
 registerRollSources(machinesmithSources);
 
 /* -------------------------------------------- */
-/*  En Passant                                   */
-/* -------------------------------------------- */
-
-// En Passant (Grandmaster Focus, 3rd level, p.87): "when you are aware of an enemy coming within your
-// reach or range, you may attempt a DIF 15 Alertness Skill Test. On a success, you interrupt their
-// turn to make an immediate attack." The Use button rolls the test; a success hands over one attack
-// that costs no action (helpers/action-economy.mjs#grantBonusAttack), to be made right away.
-registerUse({
-  id: 'gij2EnPassant',
-  matches: item => sourceOf(item) == G2.enPassant && !!item.parent,
-  run: async (item, economy) => {
-    const actor = item.parent;
-    const { rollTest } = await grantsApi();
-    const { success } = await rollTest(actor, 'alertness', 15);
-    if (!success) {
-      return T('E20.Gij2EnPassantFail', { name: actor.name, perk: item.name });
-    }
-
-    const eco = economy ?? await import("../../action-economy.mjs");
-    await eco.grantBonusAttack?.(actor, { source: item.name, cost: 'none' });
-    return T('E20.Gij2EnPassantHit', { name: actor.name, perk: item.name });
-  },
-});
-
-/* -------------------------------------------- */
 /*  Queen's Gambit                               */
 /* -------------------------------------------- */
 
@@ -414,25 +388,8 @@ registerChatButton('gij2QueensGambit', async (message, button) => {
 });
 
 /* -------------------------------------------- */
-/*  BRRRRRRRRRRRRRRT and Castling reminders      */
+/*  Castling and Plan of Action reminders        */
 /* -------------------------------------------- */
-
-// BRRRRRRRRRRRRRRT (Heavy Ordnance Focus, 10th level, p.111): "your allies gain ↑1 shift for the next
-// turn and may immediately take a Sprint action." dice.mjs banks the ↑1 and stamps the Perk's
-// once-per-encounter flag; the Sprint is out of turn (token movement off-turn isn't charged), so the
-// card tells the table who may move and how far.
-globalThis.Hooks?.on?.('updateActor', async (actor, changes, options, userId) => {
-  if (userId != game.user?.id || !changes?.flags?.essence20?.brrrrrrrrrrrrrrtUsedThisEncounter) {
-    return;
-  }
-
-  const { getNearbyAllyTokens } = await import("../../allies.mjs");
-  const names = getNearbyAllyTokens(actor, Infinity).map(t => t.actor?.name).filter(Boolean);
-  await post(actor, T('E20.Gij2BrrrtSprint', {
-    perk: findSourced(actor, G2.brrrt)?.name ?? 'BRRRRRRRRRRRRRRT',
-    allies: names.length ? escape(names.join(', ')) : T('E20.Gij2Allies'),
-  }));
-});
 
 // Castling (Grandmaster Focus, 10th level, p.87): "They each gain one Temporary Health and may
 // immediately move up to their full Movement Rating." castling.mjs gives the Temporary Health; the

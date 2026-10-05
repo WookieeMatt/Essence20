@@ -7,7 +7,9 @@
   "system": {
     "prerequisites": {"when":["self:data:system.powers.personal.max>=2","self:skill:survival>=d4"]},
     "rules": [
-      {"type":"Defense","defense":"evasion","amount":2,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.jump_through_time.Item.nZYtfaowY0EH3Z0R"]}
+      {"type":"Defense","defense":"evasion","amount":2,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.jump_through_time.Item.nZYtfaowY0EH3Z0R"]},
+      {"type":"Defense","label":"Ranger Operator (+2 Toughness instead of the armor bonus)","defense":"toughness","amount":"2 - @actor.system.defenses.toughness.morphed","when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.jump_through_time.Item.nZYtfaowY0EH3Z0R"]},
+      {"type":"RollModifier","label":"Ranger Operator (Driving and Survival: ↑1)","upshift":1,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.jump_through_time.Item.nZYtfaowY0EH3Z0R",{"any":["skill:driving","skill:survival"]}]}
     ],
     "automation": {
       "status": "partial",

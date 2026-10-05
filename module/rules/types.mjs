@@ -105,7 +105,7 @@ export const RULE_TYPES = {
   DialogSwitch: {
     // damage: added to the attack's own damage bonus when ticked (multiplied by Degrees of Success).
     // useSkill: roll that Skill's die instead (the shift difference, like "roll Deception instead of Initiative").
-    params: { ...SHIFT_PARAMS, default: { kind: 'bool' }, replacesAim: { kind: 'bool' }, cost: { kind: 'object' }, damage: { kind: 'formula' }, useSkill: { kind: 'string' }, forget: { kind: 'bool' }, spend: { kind: 'object' }, clearSnag: { kind: 'bool' }, key: { kind: 'string' }, steps: { kind: 'object' }, limit: { kind: 'object' } },
+    params: { ...SHIFT_PARAMS, default: { kind: 'bool' }, replacesAim: { kind: 'bool' }, cost: { kind: 'object' }, damage: { kind: 'formula' }, useSkill: { kind: 'string' }, forget: { kind: 'bool' }, spend: { kind: 'object' }, clearSnag: { kind: 'bool' }, key: { kind: 'string' }, steps: { kind: 'object' }, defaultWhen: { kind: 'strings' }, limit: { kind: 'object' } },
     scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
     validate: rule => [
       ...(['upshift', 'downshift', 'edge', 'snag', 'specialize', 'damage', 'replacesAim', 'useSkill', 'key', 'steps', 'clearSnag'].some(key => rule[key]) ? [] : ['changes nothing']),
@@ -131,7 +131,9 @@ export const RULE_TYPES = {
       to: { kind: 'string', required: true },
       mode: { kind: 'enum', options: ['replace', 'bestOf'] },
     },
-    scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    // item: the rule sits on the rolled item itself (a weapon effect) and applies to whoever rolls it -
+    // its owner, or a crew member / pilot firing a vehicle's or Zord's weapon.
+    scopes: ['self', 'host', 'item', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
   },
   // A Defense. Static (no roll condition): added to the sheet's total. Otherwise decided per attack
   // (dice.mjs, the target's difficulty), where mode can also be: best (use the better of the current
@@ -665,7 +667,7 @@ export function summarizeRule(rule) {
   const when = describeWhen(rule.when);
   const tail = when ? ` ${when}` : '';
   const who = {
-    incoming: 'Rolls against you: ', host: 'Attached item: ', crew: 'Its crew: ', pilot: 'Its driver: ', vehicle: 'Their vehicle: ', driven: 'The vehicle they drive: ', companion: 'Their companions: ', owner: 'Its owner: ', party: 'Their Party: ',
+    incoming: 'Rolls against you: ', host: 'Attached item: ', item: 'Rolling this: ', crew: 'Its crew: ', pilot: 'Its driver: ', vehicle: 'Their vehicle: ', driven: 'The vehicle they drive: ', companion: 'Their companions: ', owner: 'Its owner: ', party: 'Their Party: ',
     aura: `${{ enemies: 'Enemies', all: 'Everyone' }[rule.affects] ?? 'Allies'} within ${rule.radius ?? '?'} ft: `,
   }[rule.scope] ?? '';
   switch (rule.type) {

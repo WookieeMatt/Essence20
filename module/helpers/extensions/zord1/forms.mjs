@@ -298,33 +298,17 @@ export const pendingSnag = new Set();
 export function formRollSources(actor, target, ctx = {}) {
   const sources = [];
   const consumes = [];
-  const { item, rolledSkill } = ctx;
-  // Solar Power's Resistance to Cold and Energy (a Snag on the attack) and Ninja Storm's ↑1 on
-  // Infiltration are rules on their pack items, gated on the active Form (flags.essence20.zord1Form).
+  const { rolledSkill } = ctx;
+  // Solar Power's Resistance to Cold and Energy (a Snag on the attack), Ninja Storm's ↑1 on
+  // Infiltration, Supersonic's Xenotech weapon Edge and Beast Morpher's Gorilla ↑2 on Brawn are rules on
+  // their pack items, gated on the active Form (flags.essence20.zord1Form).
 
-  // Supersonic: "You suffer no penalties for using Xenotech of any kind." Cancels the Xenotech weapon
-  // Snag with an Edge, and gives back the Xenotech armor ↓1 on Athletics/Acrobatics.
-  if (isFormActive(actor, FORM.supersonic)) {
-    const weapon = parentWeaponOf(actor, item);
-    if (weapon?.system?.traits?.includes?.('xenotech') && !weapon.getFlag?.('essence20', 'xenotechCritted')) {
-      sources.push({ id: 'zord1SupersonicXenotech', label: findSourced(actor, FORM.supersonic).name, edge: true });
-    }
-
-    if (['athletics', 'acrobatics'].includes(rolledSkill)) {
-      const worn = itemsOf(actor).filter(i => i.type == 'armor' && i.system?.equipped && i.system?.traits?.includes?.('xenotech')).length;
-      if (worn) {
-        sources.push({ id: 'zord1SupersonicXenoArmor', label: findSourced(actor, FORM.supersonic).name, shiftUp: worn });
-      }
-    }
-  }
-
-  // Beast Morpher.
-  const beast = beastChoice(actor);
-  if (beast && isFormActive(actor, FORM.beast)) {
-    const perkName = findSourced(actor, FORM.beast).name;
-    // Gorilla: "You gain ↑2 on Brawn Skill Tests".
-    if (beast == 'gorilla' && rolledSkill == 'brawn') {
-      sources.push({ id: 'zord1Gorilla', label: perkName, shiftUp: 2 });
+  // Supersonic: "You suffer no penalties for using Xenotech of any kind." Gives back the Xenotech armor
+  // ↓1 on Athletics/Acrobatics, one per worn piece.
+  if (isFormActive(actor, FORM.supersonic) && ['athletics', 'acrobatics'].includes(rolledSkill)) {
+    const worn = itemsOf(actor).filter(i => i.type == 'armor' && i.system?.equipped && i.system?.traits?.includes?.('xenotech')).length;
+    if (worn) {
+      sources.push({ id: 'zord1SupersonicXenoArmor', label: findSourced(actor, FORM.supersonic).name, shiftUp: worn });
     }
   }
 
@@ -343,26 +327,15 @@ export function formRollSources(actor, target, ctx = {}) {
   return { sources, consumes };
 }
 
-export function formToggles(actor, { item, rolledSkill, dataset } = {}) {
+export function formToggles(actor, { item, rolledSkill } = {}) {
   const toggles = [];
-  // Lightspeed Response's healing Edge (pre-ticked on Science/Technology) and Solar Power's Alertness
-  // Edge are DialogSwitch rules on their pack items.
-
-  // Time Force: "You have Edge on all Skill Tests with a Specialization concerning time travel."
-  if (isFormActive(actor, FORM.timeForce) && item?.type != 'weaponEffect') {
-    const key = dataset?.specializationKey;
-    const spec = String((key && actor.system?.skills?.[rolledSkill]?.specializations?.[key]?.name) ?? '');
-    toggles.push({ name: 'zord1TimeForce', type: 'checkbox', label: T('Zord1ToggleTimeForce'), value: /time|chrono|tempor/i.test(spec) });
-  }
+  // Lightspeed Response's healing Edge (pre-ticked on Science/Technology), Solar Power's Alertness
+  // Edge, Time Force's time-travel Edge and Beast Morpher's Jackrabbit jump are DialogSwitch rules on
+  // their pack items.
 
   // Supersonic: "All of your unarmed Attacks may inflict Energy damage."
   if (isFormActive(actor, FORM.supersonic) && isUnarmed(actor, item)) {
     toggles.push({ name: 'zord1SupersonicEnergy', type: 'checkbox', label: T('Zord1ToggleSupersonicEnergy') });
-  }
-
-  // Jackrabbit: "You gain Edge and are considered specialized when you jump with an Athletics Skill Test."
-  if (beastChoice(actor) == 'jackrabbit' && isFormActive(actor, FORM.beast) && rolledSkill == 'athletics') {
-    toggles.push({ name: 'zord1Jump', type: 'checkbox', label: T('Zord1ToggleJump') });
   }
 
   // Ninja Storm Wind Ranger: "Any attempts to control your mind suffer Snag." It's the TARGET's Form, and
@@ -379,15 +352,6 @@ export function formToggles(actor, { item, rolledSkill, dataset } = {}) {
 
 export async function formApplyDialog(actor, options, ctx = {}) {
   const ext = options.ext ?? {};
-  if (ext.zord1TimeForce) {
-    giveEdge(options);
-  }
-
-  if (ext.zord1Jump) {
-    giveEdge(options);
-    options.isSpecialized = true;
-  }
-
   if (ext.zord1NinjaMind) {
     giveSnag(options);
   }
@@ -470,35 +434,8 @@ export function formDerived(actor) {
     return;
   }
 
-  // Ranger Operator: "Instead of gaining a Toughness armor bonus based on your armor proficiency, you
-  // gain a +2 Armor bonus to Toughness and Evasion." The Evasion +2 is a Defense rule on the pack item.
-  if (isFormActive(actor, FORM.operator)) {
-    const name = findSourced(actor, FORM.operator).name;
-    const toughness = system.defenses.toughness;
-    if (toughness) {
-      const delta = 2 - (Number(toughness.morphed) || 0);
-      toughness.total = (Number(toughness.total) || 0) + delta;
-      toughness.string = `${toughness.string ?? ''} + ${delta} (${name})`;
-    }
-  }
-
-  const beast = beastChoice(actor);
-  if (beast && isFormActive(actor, FORM.beast)) {
-    // Cheetah: "Your Ground movement increases by 20 feet."
-    if (beast == 'cheetah' && system.movement?.ground) {
-      system.movement.ground.total = (Number(system.movement.ground.total) || 0) + 20;
-    }
-
-    // Gorilla: "...and add 2 to your Health."
-    if (beast == 'gorilla' && system.health) {
-      system.health.max = (Number(system.health.max) || 0) + 2;
-    }
-  }
-
-  // Ninja Storm Wind Ranger: "Your Ground Movement is doubled. This includes jumping."
-  if (isFormActive(actor, FORM.ninjaStorm) && system.movement?.ground) {
-    system.movement.ground.total = (Number(system.movement.ground.total) || 0) * 2;
-  }
+  // Ranger Operator's +2 Toughness and Evasion (in place of the armor bonus), Beast Morpher's Cheetah
+  // +20 Ground and Gorilla +2 Health, and Ninja Storm's doubled Ground are rules on their pack items.
 
   // Earth's Duplication: "this reduces the Health of both you and your duplicate by 1" while split.
   if (isNinjaDuplicated(actor) && system.health) {

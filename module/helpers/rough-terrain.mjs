@@ -1,6 +1,6 @@
 import { ignoresMissEffects } from "./extensions/gij3/dice-hooks.mjs";
 import {
-  ENVIRONMENT_EFFECT_PREFIX, ENVIRONMENT_REGION_BEHAVIOR_TYPE, getSceneEnvironment, getTerrain, isInRoughTerrain,
+  ENVIRONMENT_EFFECT_PREFIX, ENVIRONMENT_REGION_BEHAVIOR_TYPE, getSceneEnvironment, isInRoughTerrain,
   ROUGH_TERRAIN_EFFECT,
 } from "./environment.mjs";
 import { hasActiveEnvironmentalExpertise } from "./environmental-expertise.mjs";
@@ -59,12 +59,8 @@ const TF_CRB = "Compendium.essence20.tf_crb.Item.";
 // Rough Terrain, and on any turn in which you end your move in Rough Terrain, you are considered to
 // be in Cover until the beginning of your next turn." The Cover half is hasTakePointCover below.
 export const TAKE_POINT_ID = `${TF_CRB}efPOy3Owf2XIAykS`;
-// Over the Candlestick, Sewer Tunneler, Urban Jungle, Hard Tread Wheels and Clawed Feet ignore Rough
-// Terrain through MovementAction item rules on their packs (first entry below).
-// Feet Wet (Quartermaster's Guide to Gear p.25): "while on board an aquatic vessel or in a sea
-// environment... You ignore the penalties for moving through Rough Terrain." Only the "sea
-// environment" half is checkable (the scene's terrain); being aboard a vessel isn't tracked.
-const FEET_WET_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7u3xCPPjxJlI7c61";
+// Over the Candlestick, Sewer Tunneler, Urban Jungle, Hard Tread Wheels, Clawed Feet and Feet Wet (sea
+// terrain) ignore Rough Terrain through MovementAction item rules on their packs (first entry below).
 // Environmental Expertise (GI Joe CRB, Ranger base, p.90): "You ignore the penalties for moving
 // through Rough Terrain in your environment of expertise." Read through
 // hasActiveEnvironmentalExpertise, so it follows the scene's terrain when one is set.
@@ -109,7 +105,6 @@ export const ROUGH_TERRAIN_IGNORERS = [
   { checkFn: actor => isWreckingBallFlagActive(actor) },
   { id: ENVIRONMENTAL_EXPERTISE_ID, checkFn: hasActiveEnvironmentalExpertise },
   { id: TAKE_POINT_ID },
-  { id: FEET_WET_ID, isActive: actor => getTerrain(actor) == 'sea' },
   {
     checkFn: actor => actor.type == 'vehicle'
       && ROUGH_TERRAIN_IGNORING_VEHICLE_TRAITS.some(trait => actor.system?.traits?.[trait]),

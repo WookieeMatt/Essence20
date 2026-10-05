@@ -1,9 +1,6 @@
 /**
  * A Jump Through Time (Power Rangers) items for the pr1 slice.
  *
- * - Chronicler, Hang-Up (p.18): "After failing any Skill Test about accessing your chronicled
- *   information, you gain the Impaired Condition for the next minute." A roll-dialog checkbox marks
- *   the test as one about the chronicle; failing it applies Impaired for 10 rounds.
  * - Mobile Headquarters, Zord Feature (p.83): "+1 to Culture, Science, and Technology Skill Tests
  *   performed by those in the control area" (↑1 for everyone seated in the Zord); "Adds Edge to the
  *   Initiative rolls of all allied vehicles and Zords within the scene"; "Allows a Megaform your Zord
@@ -33,8 +30,8 @@
  *   the chosen type.
  */
 import {
-  registerApplyDialog, registerDerived, registerDialogToggles, registerHitRider, registerPostRoll,
-  registerPreRoll, registerRollSources, registerUse,
+  registerApplyDialog, registerDerived, registerDialogToggles, registerHitRider, registerPreRoll,
+  registerRollSources, registerUse,
 } from "../../extensions.mjs";
 import { getSceneEpoch, getUses, markUsed } from "../../scene-clock.mjs";
 import {
@@ -44,38 +41,6 @@ import {
 } from "./common.mjs";
 
 const socialSkill = (skill, essence) => essence == 'social' || globalThis.CONFIG?.E20?.skillToEssence?.[skill] == 'social';
-
-/* -------------------------------------------- */
-/*  Chronicler Hang-Up                           */
-/* -------------------------------------------- */
-
-registerDialogToggles((actor, { item } = {}) => {
-  if (!has(actor, PR1.chronicler) || item?.type == 'weaponEffect') {
-    return [];
-  }
-
-  return [{ name: 'pr1Chronicler', label: T('Pr1ChroniclerToggle'), type: 'checkbox', value: false }];
-});
-
-registerApplyDialog((actor, options) => {
-  if (options.ext?.pr1Chronicler) {
-    setPending(actor, { chronicler: true });
-  }
-});
-
-export async function chroniclerPostRoll(actor, results) {
-  if (!pending(actor).chronicler || !results?.length || results.some(r => r.success)) {
-    return false;
-  }
-
-  const { applyTimedCondition } = await import("../../timed-status.mjs");
-  // "for the next minute" - ten 6-second rounds.
-  await applyTimedCondition(actor, 'impaired', 10);
-  await postLine(actor, T('Pr1ChroniclerImpaired', { name: actor.name }));
-  return true;
-}
-
-registerPostRoll((actor, results) => chroniclerPostRoll(actor, results));
 
 /* -------------------------------------------- */
 /*  Mobile Headquarters                          */

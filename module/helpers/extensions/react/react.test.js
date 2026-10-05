@@ -16,7 +16,7 @@ const { REACT, megaformDefenderPilots } = await import('./reactions.mjs');
 const { TRIG, lossAndGain, suppressesFumbleStoryPoint, inspiringLeaders, onCheckCard, giverFor } = await import('./triggers.mjs');
 const { FORM, monsterPath, sharedImmunity } = await import('./forms.mjs');
 const { AURA, isPlainReach, auraTargets } = await import('./auras.mjs');
-const { inspirationalLeaderAssist } = await import('./hooks-in.mjs');
+await import('./hooks-in.mjs');
 
 function flagged(obj) {
   obj.flags ??= {};
@@ -248,9 +248,7 @@ describe('triggers', () => {
     expect(inspiringLeaders(ally, 'might')).toEqual([leader]);
     expect(inspiringLeaders(ally, 'finesse')).toEqual([]);
     expect(inspiringLeaders(leader, 'might')).toEqual([]);
-    expect(inspirationalLeaderAssist(leader)).toBe(false);
     global.game.combat = null;
-    expect(inspirationalLeaderAssist(leader)).toBe(true);
   });
 
   test('All For One gives from the user\'s own character', () => {

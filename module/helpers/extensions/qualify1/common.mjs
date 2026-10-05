@@ -38,8 +38,6 @@ export const Q1 = {
 export const Q1_UPGRADE = {
   organicArmor: 'W6fiSzyPOE2VGj8k',
   biomechanicalWeapon: '7qniIaOGp8Mqwt6O',
-  acclimating: 'HSmtPttbJvaNy5Tf',
-  silentBattledress: 'nftZIaQ3MVn2nviU',
   silencer: 'rSP76BWjYaifJLIZ',
 };
 

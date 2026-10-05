@@ -5,7 +5,7 @@ import { hasSourced } from "../../companion-link.mjs";
 import { getUses, markUsed } from "../../scene-clock.mjs";
 import { getNearbyAllyTokens } from "../../allies.mjs";
 import {
-  G1, T, actorFromUuid, addToDefense, firstTarget, isFrom, isStampActive, itemsOf, turnStamp, wornUpgrade,
+  G1, T, actorFromUuid, firstTarget, isFrom, isStampActive, itemsOf, turnStamp, wornUpgrade,
 } from "./shared.mjs";
 
 /**
@@ -19,36 +19,10 @@ import {
 /*  Adjustable Faceplate                         */
 /* -------------------------------------------- */
 
-// Adjustable Faceplate (p.100): "Your helmet includes additional armor with two settings...
-// Closed: ... Gain +1 to Toughness; Open: ... Gain +1 to Evasion." The setting is stored on the
-// upgrade (flags.essence20.gij1Faceplate, 'closed' by default) and switched with its Use button.
-// Counted like any other armor bonus: only on a worn suit, and not while Morphed (the Morphed form
-// replaces armor - documents/actor.mjs#_prepareDefenses).
+// Adjustable Faceplate (p.100): the setting is stored on the upgrade (flags.essence20.gij1Faceplate,
+// 'closed' by default) and switched with this Use button. The +1 Toughness / Evasion it gives is the
+// upgrade's own Defense rules now (rules/conversions.test.js), which read that flag.
 export const FACEPLATE_FLAG = 'gij1Faceplate';
-
-export function faceplateSetting(upgrade) {
-  return upgrade?.flags?.essence20?.[FACEPLATE_FLAG] == 'open' ? 'open' : 'closed';
-}
-
-export function faceplateBonus(actor) {
-  if (actor?.type != 'playerCharacter' || actor.system?.isMorphed) {
-    return null;
-  }
-
-  const upgrade = wornUpgrade(actor, G1.adjustableFaceplate);
-  if (!upgrade) {
-    return null;
-  }
-
-  return { defense: faceplateSetting(upgrade) == 'open' ? 'evasion' : 'toughness', label: upgrade.name };
-}
-
-registerDerived(actor => {
-  const bonus = faceplateBonus(actor);
-  if (bonus) {
-    addToDefense(actor.system?.defenses?.[bonus.defense], 1, bonus.label);
-  }
-});
 
 registerUse({
   id: 'gij1Faceplate',

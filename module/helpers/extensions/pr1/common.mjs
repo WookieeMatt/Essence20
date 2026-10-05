@@ -12,7 +12,6 @@ export const pradv = pack('power_rangers_adventures');
 
 export const PR1 = {
   // A Jump Through Time
-  chronicler: jtt('Psds3JLg4UmugRkT'),
   mobileHeadquarters: jtt('soCSwGBp0AZbEeZC'),
   overdrive: jtt('2JZSo4C7xDUMlPG2'),
   profiteerHangUp: jtt('FDf9ZhuajJb3U5un'),

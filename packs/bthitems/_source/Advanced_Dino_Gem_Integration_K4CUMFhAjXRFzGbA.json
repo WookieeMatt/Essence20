@@ -5,6 +5,13 @@
   "_id": "K4CUMFhAjXRFzGbA",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Advanced Dino Gem Integration","when":["skill:alertness","self:type:zord","rule:data:flags.essence20.pr1DinoGem=sense"],"upshift":2,"stack":"advancedDinoGemSense"},
+      {"type":"RollModifier","scope":"pilot","label":"Advanced Dino Gem Integration","when":["skill:alertness","rule:data:flags.essence20.pr1DinoGem=sense"],"upshift":2,"stack":"advancedDinoGemSense"},
+      {"type":"RollModifier","label":"Moving quietly (Advanced Dino Gem Integration: ↑2)","when":["skill:infiltration","self:type:zord","rule:data:flags.essence20.pr1DinoGem=stealth"],"upshift":2,"stack":"advancedDinoGemStealth"},
+      {"type":"RollModifier","scope":"pilot","label":"Moving quietly (Advanced Dino Gem Integration: ↑2)","when":["skill:infiltration","rule:data:flags.essence20.pr1DinoGem=stealth"],"upshift":2,"stack":"advancedDinoGemStealth"},
+      {"type":"RollModifier","scope":"incoming","label":"Advanced Dino Gem Integration","when":["item:type:weaponEffect","attack:ranged","item:data:system.classification.style","self:type:zord","rule:data:flags.essence20.pr1DinoGem=shield"],"snag":true,"stack":"advancedDinoGemShield"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted on drop: pick the Zord's power. Shield: ranged attacks at it take a Snag; Sense: ↑2 on Alertness; Stealth: +10ft movement and ↑2 on Infiltration, each labelled with this feature in the Roll Options Dialog. Primordial: a dialog switch on melee attacks trades a Snag for +2 damage. Resonance: it arrives 2 rounds sooner.</p>"

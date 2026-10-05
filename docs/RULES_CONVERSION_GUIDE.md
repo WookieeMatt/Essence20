@@ -436,3 +436,20 @@ Built for the skip lists in `docs/rules-batches/reg*.md` - re-check those skips 
   (Down the Barrel, Ricochet), `zordHasDriver` (Martial Zord, Zero-G, Zord Sentience), `personalShield`
   (Impenetrable Shield).
 - **`roll:specialization=<name>`** - exact name (ignoring case); `~` is "contains". Prefer `=`.
+
+## Engine features added 2026-10-04 (after the slice round)
+
+- **SkillSubstitution `scope: "item"`** - the rule sits on the rolled item itself (a weapon effect) and applies to
+  whoever rolls it: its owner, or a crew member / pilot firing a vehicle's or Zord's weapon. All 66 "Finesse or Might"
+  weapon effects now carry `{from: finesse, to: might, mode: bestOf}` and the reverse this way; `data21/weapons.mjs`'s
+  pre-roll swap is gone.
+- **DialogSwitch `defaultWhen: [tags]`** - starts ticked when those tags are known true (otherwise its `default`).
+  Pair it with a `when` that answers "unknown" when the fact isn't set: City Slicker is
+  `when: ["skill:infiltration", "terrain:urban"], defaultWhen: ["terrain:urban"]` - offered in an urban or untagged
+  scene, pre-ticked only when urban (its slice toggle is gone).
+- **More `check:` names:** `computerizedGear` (robot / part Perks / worn computerized gear - Machinesmith, Dielectric,
+  Insulator), `outsideEnvironmentOfExpertise` (Stalk), `nonMystical` (Mystic), `medicineKit` (carries a Science
+  (Medicine) kit - Proper Protection), `shapeShifted` (an MLP changed shape this scene) and `disguised` (Identity
+  Crisis), `grappleEscape` (the rolled Skill is one of this actor's grapple-escape Skills - Experiment),
+  `infiltrating` (the Infiltrating toggle - Shadow, Silent Strider).
+- Bookworm's rule skips Initiative (`not:roll:initiative`): `situational2/initiative.mjs` still adds its Initiative ↓1.

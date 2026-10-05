@@ -2,7 +2,7 @@ import { registerCostRule, registerDerived, registerPreRoll, registerPostRoll, r
 import { getMissionEpoch, getSceneEpoch } from "../../scene-clock.mjs";
 import { worldActors } from "../../companion-link.mjs";
 import { ruleQualifiedUpgrade } from "../../../rules/adapter.mjs";
-import { effectsOf, has, itemOf, itemsOf, parentWeapon, Q2, SILENT_BATTLEDRESS, sourceOf, T, traitsOf } from "./common.mjs";
+import { effectsOf, has, itemOf, itemsOf, parentWeapon, Q2, sourceOf, T, traitsOf } from "./common.mjs";
 
 /**
  * Equipment Training and Qualification Perks (qualify2 slice).
@@ -531,21 +531,8 @@ async function upgradeTrainingUse(perk) {
   return T('E20.Q2TookQualified', { name: perk.parent.name, item: chosen.map(c => c.name).join(', ') });
 }
 
-async function oorahUse(perk) {
-  const { chooseButtons, grantCopy } = await import("../../grants.mjs");
-  const which = await chooseButtons(perk.name, T('E20.Q2OorahPrompt'), [['weapon', T('E20.Q2StandardWeapon')], ['silent', T('E20.Q2SilentUpgrade')]]);
-  if (which == 'silent') {
-    const got = await grantCopy(perk.parent, SILENT_BATTLEDRESS, { grantedBy: perk, flags: { qualified: true } });
-    return got ? T('E20.Q2TookQualified', { name: perk.parent.name, item: got.name }) : null;
-  }
-
-  return which == 'weapon' ? takeQualified(perk, { type: 'weapon', availabilities: ['standard'] }) : null;
-}
-
 const USES = {
   [Q2.upgradeTraining]: upgradeTrainingUse,
-  [Q2.oorah]: oorahUse,
-  [Q2.whisperWarrior]: perk => takeQualified(perk, { type: 'weapon', matches: isSilentMartialArts }),
   [Q2.hardwareTraining]: perk => takeQualified(perk, { type: 'weapon', availabilities: ['standard', 'limited', 'restricted'], matches: isHardwareWeapon }),
   [Q2.weaponEnthusiast]: enthusiastUse,
   [Q2.trainingEvolution]: chooseEvolution,

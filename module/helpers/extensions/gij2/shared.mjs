@@ -6,13 +6,8 @@
 export const GIJ = id => `Compendium.essence20.gi_joe_crb.Item.${id}`;
 
 export const G2 = {
-  acuteSense: GIJ('WvjGJ5AcC0z07d0J'),
-  empathetic: GIJ('SQgxzDgyhIjuOMaa'),
-  robot: GIJ('xV4nnjMxlb4dmyxo'),
   artillerySupport: GIJ('MrDZK2ifJWpiH24D'),
-  brrrt: GIJ('U3NTi35bk2qI8oB6'),
   castling: GIJ('eB7jbgbevLVPxW4e'),
-  enPassant: GIJ('eVRb1Fp43QMdxV1N'),
   energyResistant: GIJ('lKnjgN4TdHHNktpF'),
   expertKnowledge: GIJ('9H78lRwXzJW6tj9e'),
   fearsomePresence: GIJ('Jbx3ei70ZsoabVuL'),
@@ -20,7 +15,6 @@ export const G2 = {
   martialArtist: GIJ('9Elbb94OPCPVSTxL'),
   mentor: GIJ('jUZrNJbPzSd1zVLa'),
   noseForTrouble: GIJ('MH630UTgsJtbf3Y5'),
-  noseForTroubleTf: 'Compendium.essence20.tf_crb.Item.VUal4FUlNIrwo2MG',
   peerlessPilot: GIJ('y39VC0CIsI8mdLKK'),
   personalShield: GIJ('84JYgd6kZgY41wge'),
   impenetrableShield: GIJ('eEUl7OA9yWAk0QD3'),

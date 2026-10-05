@@ -11,7 +11,8 @@
       {"type":"Qualification","label":"Mega Training Regimen (Qualified: Computerized armor)","access":"qualified","items":["item:type:armor","item:trait:computerized"]},
       {"type":"Qualification","label":"Mega Training Regimen (Trained: all armor)","access":"trained","items":["item:type:armor"]},
       {"type":"Qualification","label":"Mega Training Regimen (Qualified: Organic Armor upgrade)","upgrades":[{"any":["item:id:W6fiSzyPOE2VGj8k","item:data:name=organic armor"]}]},
-      {"type":"RollModifier","scope":"incoming","label":"Mega Training Regimen","when":["attack","item:damageType:maneuver"],"snag":true}
+      {"type":"RollModifier","scope":"incoming","label":"Mega Training Regimen","when":["attack","item:damageType:maneuver"],"snag":true},
+      {"type":"RollModifier","when":["attack","item:type:weaponEffect",{"any":["item:data:parent.type=vehicle","item:data:parent.type=zord","weapon:data:system.hardpoint.type=integrated"]}],"upshift":1}
     ],
     "automation": {
       "status": "full",

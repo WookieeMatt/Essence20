@@ -7,7 +7,6 @@ const tf = id => `Compendium.essence20.tf_crb.Item.${id}`;
 const tf1s = id => `Compendium.essence20.transformers_one_sourcebook.Item.${id}`;
 
 export const TF3 = {
-  helicalSpring: tf('OmGdMZlotKHVFzhR'),
   holographicDoubles: tf('rWrU13LenH7mukyV'),
   intensive: tf('lupxm8SNDLvbjoDt'),
   irrefutableOrder: tf('fz3s9ay6oOPujwTh'),

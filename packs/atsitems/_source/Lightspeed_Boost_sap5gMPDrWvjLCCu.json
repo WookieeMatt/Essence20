@@ -5,6 +5,10 @@
   "_id": "sap5gMPDrWvjLCCu",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Medical (Lightspeed Boost: ↑2)","when":[{"any":["skill:science","skill:technology"]},"self:type:zord","rule:data:flags.essence20.pr1LightspeedBoost.option=medical"],"upshift":2,"stack":"lightspeedMedical"},
+      {"type":"RollModifier","scope":"crew","label":"Medical (Lightspeed Boost: ↑2)","when":[{"any":["skill:science","skill:technology"]},"rule:data:flags.essence20.pr1LightspeedBoost.option=medical"],"upshift":2,"stack":"lightspeedMedical"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 Health for the Zord. When added you pick its power; flight or swimming speed and Evasion, Resistances, the Medical bonuses and fire immunity then apply on their own. Pyrotechnic's action has a Use button.</p>"

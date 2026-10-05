@@ -13,7 +13,7 @@ import { ONE_HANDED_FLAG } from "./gear.mjs";
 /**
  * Cobra Codex Perks and Hang-Ups: Cybernetic Part,
  * Demolition Artist / Improvise Bomb, Extract Poison, Primal Fear / Feed On Fear, Let It Rip,
- * Metier, Scavenger, Sea Legs and Shielded.
+ * Metier, Scavenger and Sea Legs. (Shielded is an item rule now - rules/conversions-uses.test.js.)
  */
 
 // A Perk's own pick (Metier's option) lives on the Perk copy, so taking the Perk twice keeps two picks.
@@ -125,26 +125,11 @@ async function grantAlterationPerk(item) {
     : T('Pr3GrantedItem', { name: actor.name, item: created.name, source: item.name });
 }
 
-// Shielded (Citystriker Focus, 1st level, p.68): "You gain a Standard shield (see page 98) as
-// personal gear". (Using Medium weapons one-handed alongside it needs no rule change - nothing here
-// blocks a weapon for the hands it needs.)
-async function grantShield(item) {
-  const { pickAndGrant } = await import("../../grants.mjs");
-  const got = await pickAndGrant(item.parent, item, item.name, { type: 'shield', availabilities: ['standard'] });
-  if (!got) {
-    return null;
-  }
-
-  await item.setFlag('essence20', 'granted', true);
-  return T('G1ShieldGranted', { name: item.parent.name, shield: got.name });
-}
-
 const SETUPS = [
   { uuid: G1.metier, needs: item => !choiceOf(item), run: setupMetier },
   ...Object.keys(ALTERATION_PERKS).map(uuid => ({
     uuid, needs: item => !item.flags?.essence20?.granted && !isBeastModeCopy(item), run: grantAlterationPerk,
   })),
-  { uuid: G1.shielded, needs: item => !item.flags?.essence20?.granted, run: grantShield },
 ];
 
 for (const setup of SETUPS) {

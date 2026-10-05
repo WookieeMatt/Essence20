@@ -1,35 +1,9 @@
 /**
- * PR CRB / Beneath the Helmet General and Role Perk leftovers: Keen Eye, Privileged and the White
- * Ranger's Grid Relic Weapon.
+ * PR CRB / Beneath the Helmet General and Role Perk leftovers: Privileged and the White Ranger's
+ * Grid Relic Weapon.
  */
-import { registerApplyDialog } from "../../extensions.mjs";
-import { PR2, T, holds, itemsOf, sourceOf } from "./common.mjs";
-import { giveEdge, postLine } from "../zord1/common.mjs";
-
-/* -------------------------------------------- */
-/*  Keen Eye                                     */
-/* -------------------------------------------- */
-
-// Keen Eye (PR CRB p.96): "You gain Edge on all Alertness (Perception) tests." Only the Perception
-// Specialization - matched by name, as dice.mjs does for Calm Beast/Puzzle Solver. "↑1 on Skill
-// Tests based on your sense of sight" is the Perk's own opt-in effect; "a DIF 12 Alertness Skill Test
-// to recall any visual detail from the last 24 hours" is its Use button.
-export function isPerceptionRoll(actor, rolledSkill, dataset) {
-  if (rolledSkill != 'alertness' || !dataset?.specializationKey) {
-    return false;
-  }
-
-  const spec = actor?.system?.skills?.alertness?.specializations?.[dataset.specializationKey];
-  return /perception/i.test(spec?.name ?? '');
-}
-
-export function keenEyeApply(actor, options, ctx = {}) {
-  if (holds(actor, PR2.keenEye) && isPerceptionRoll(actor, ctx.rolledSkill, ctx.dataset)) {
-    giveEdge(options);
-  }
-}
-
-registerApplyDialog(keenEyeApply);
+import { PR2, T, itemsOf, sourceOf } from "./common.mjs";
+import { postLine } from "../zord1/common.mjs";
 
 /* -------------------------------------------- */
 /*  Grid Relic Weapon                            */

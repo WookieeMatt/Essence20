@@ -5,6 +5,5 @@
 import "./weapons.mjs";
 import "./psycho.mjs";
 import "./gear.mjs";
-import "./compassionate.mjs";
 import "./threats.mjs";
 import "./officer.mjs";

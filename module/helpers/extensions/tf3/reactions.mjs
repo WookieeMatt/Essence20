@@ -12,9 +12,9 @@ import { CHOSEN_FLAG, GEAR_WEAPONS, gearWeaponOf, ORDER_FLAG } from "./uses.mjs"
 /**
  * What happens to tf3 items outside the dice dialog: being Defeated (Martyr, Last Stand), taking damage
  * (Roll With It), an ally missing (Synch Up), an enemy stepping into Reach (No Escape), converting
- * (Helical Spring, Unexpected Alternative, the Alt Mode Gear weapons), turns starting (Stoic,
+ * (Unexpected Alternative, the Alt Mode Gear weapons), turns starting (Stoic,
  * Irrefutable Order), Holographic doubles popping, Intensive's group Repair, Requisition access
- * (Unassuming, Training Through Familiarity, One Bot Over Another) and Third Dimension's movement.
+ * (Unassuming, One Bot Over Another), Kit prerequisites (Training Through Familiarity) and Third Dimension's movement.
  */
 
 const SEEN_FLAG = 'tf3SeenModes';
@@ -390,13 +390,6 @@ export async function onConverted(actor, changes) {
         await weapon.update({ 'system.equipped': !inAlt });
       }
     }
-
-    // Helical Spring (Modemaster, 13th level, p.74): "when you Convert to Bot Mode, you can move 10ft as
-    // part of the action to Convert. When you Convert to Alt Mode, you can Ram without needing to move
-    // 10ft first."
-    if (holds(actor, TF3.helicalSpring)) {
-      await say(actor, T(inAlt ? 'Tf3HelicalAlt' : 'Tf3HelicalBot', { name: esc(actor.name), perk: esc(nameOf(actor, TF3.helicalSpring)) }));
-    }
   }
 
   if (inAlt && actor.system?.altModeId) {
@@ -432,7 +425,6 @@ const isOneHanded = item => {
 
 /**
  * Unassuming (Infiltrator, 1st level, p.61): "you're Qualified with all one-handed Limited Weapons."
- * Training Through Familiarity (Scientist, 10th level, p.81): "you become trained in Limited Weapons".
  * One Bot Over Another (Transformers One Sourcebook p.16): the weapons picked on the Perk.
  */
 export function tf3Access(actor, item) {
@@ -449,10 +441,6 @@ export function tf3Access(actor, item) {
 
   if (availability == 'limited' && holds(actor, TF3.unassuming) && isOneHanded(item)) {
     return 'qualified';
-  }
-
-  if (availability == 'limited' && holds(actor, TF3.trainingThroughFamiliarity)) {
-    return 'trained';
   }
 
   return null;

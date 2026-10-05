@@ -1,15 +1,14 @@
 import {
-  registerApplyDialog, registerConsumer, registerDialogToggles, registerHitRider, registerRollSources, registerSpecializes, registerUse,
+  registerApplyDialog, registerDialogToggles, registerHitRider, registerRollSources, registerSpecializes, registerUse,
 } from "../../extensions.mjs";
-import { getUses, markUsed } from "../../scene-clock.mjs";
 import { hasSourced, worldActors } from "../../companion-link.mjs";
 
 /**
  * Welcome to Night Vale Citizens' Guide and Field Guide to Action & Adventure items that needed a
- * roll hook, a Use button or a natural attack: Obsessive, Dog Person, Double Vision, The List, Third
- * Eye, the Night Vale Animal Perks, Nobility's Use, Staggering Sway and More Than Worldly. (Community
- * Martial Arts, Vehicle Whisperer, Acute Senses, Nobility and Gridlock Authority's roll switches are
- * their own item rules now.)
+ * roll hook, a Use button or a natural attack: Obsessive, Dog Person, Third Eye, the Night Vale Animal
+ * Perks and Staggering Sway. (Community Martial Arts, Vehicle Whisperer, Acute Senses, Nobility and
+ * Gridlock Authority's roll switches, and the Use buttons of Double Vision, The List, Nobility and
+ * More Than Worldly, are their own item rules now.)
  */
 
 const wtnv = id => `Compendium.essence20.wtnv_citizens_guide.Item.${id}`;
@@ -17,17 +16,13 @@ const fgaa = id => `Compendium.essence20.field_guide_action_adventure.Item.${id}
 export const WTNV = {
   obsessive: wtnv('eOgtG24LKGR6OE0v'),
   dogPerson: wtnv('U5arLtyo8eEgl2Ck'),
-  doubleVision: wtnv('lyQvLPv3enKlVpHj'),
-  theList: wtnv('uqGXmxShRuAWsJd1'),
   thirdEye: wtnv('XolO5C6pgFt8WQJZ'),
   delicateStomach: wtnv('W04dEJSSgaWOeebQ'),
   pincers: wtnv('WwU4Ebk3IY6Yr2jy'),
   quills: wtnv('m9rPGuVLv5cmfqkm'),
   serratedTail: wtnv('MZCPG1uZPRUMzz4N'),
   replacementTeeth: wtnv('wuHnZ1qtGrd8il8a'),
-  nobility: fgaa('5ZUcDuVx1pJ1R1RG'),
   staggeringSway: fgaa('DulMH7OAwrg3G85A'),
-  moreThanWorldly: fgaa('NtRsn6nTuys26ltH'),
 };
 
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
@@ -51,7 +46,6 @@ function itemOf(actor, uuid) {
  */
 export function wtnvRollSources(actor, target, { rolledSkill } = {}) {
   const sources = [];
-  const consumes = [];
 
   // Obsessive (Hang-Up, p.29): "Whenever you make a Skill Test that doesn't directly relate to your
   // current obsession, you take ↓1." The obsession is the Skill chosen on the Hang-Up; the ↓1 is a
@@ -67,14 +61,7 @@ export function wtnvRollSources(actor, target, { rolledSkill } = {}) {
     sources.push({ id: 'dogPerson', label: itemOf(actor, WTNV.dogPerson).name, shiftUp: 1 });
   }
 
-  // More Than Worldly (Field Guide p.67): the Edge granted from the Use button, on the next Skill Test.
-  const edge = actor?.flags?.essence20?.moreThanWorldlyEdge;
-  if (edge) {
-    sources.push({ id: 'moreThanWorldly', label: edge.label ?? 'More Than Worldly', edge: true });
-    consumes.push({ ext: 'moreThanWorldly', actorUuid: actor.uuid });
-  }
-
-  return { sources, consumes };
+  return { sources, consumes: [] };
 }
 
 export function isDogOrCoyote(actor) {
@@ -225,31 +212,6 @@ const USES = [
     },
   },
   {
-    // Double Vision (p.47): "Once per session, if the Contingency set for an action fails, you can take a
-    // different Standard action at the end of the conflict round." Once per mission here.
-    id: 'wtnvDoubleVision', matches: item => sourceOf(item) == WTNV.doubleVision,
-    canUse: item => getUses(item.parent, 'doubleVision', 'mission') < 1,
-    async run(item) {
-      const actor = item.parent;
-      await markUsed(actor, 'doubleVision', { window: 'mission' });
-      const economy = await import("../../action-economy.mjs");
-      if (game.combat) {
-        await economy.grantActionsThisTurn?.(actor, { standard: 1 }, item.name);
-      }
-
-      return T('E20.WtnvDoubleVision', { name: actor.name });
-    },
-  },
-  {
-    // The List (p.47): "Once per scene, you can avoid triggering an enemy's Contingency action."
-    id: 'wtnvTheList', matches: item => sourceOf(item) == WTNV.theList,
-    canUse: item => getUses(item.parent, 'theList', 'scene') < 1,
-    async run(item) {
-      await markUsed(item.parent, 'theList', { window: 'scene' });
-      return T('E20.WtnvTheList', { name: item.parent.name });
-    },
-  },
-  {
     // Replacement Teeth (Animal Perk, p.76): "As a Standard action, your pet can clamp down on an enemy and
     // give them the Immobilized Condition until the end of their next turn."
     id: 'wtnvReplacementTeeth', matches: item => sourceOf(item) == WTNV.replacementTeeth,
@@ -278,48 +240,6 @@ const USES = [
       return name ? T('E20.GrantGained', { name: item.parent.name, item: item.name, what: name }) : null;
     },
   },
-  {
-    // Nobility (Field Guide p.57): "Once per session, you may call upon familial resources and forego the
-    // dice on a Wealth test, automatically receiving a result of 25." Once per mission here.
-    id: 'wtnvNobility', matches: item => sourceOf(item) == WTNV.nobility,
-    canUse: item => getUses(item.parent, 'nobilityWealth', 'mission') < 1,
-    async run(item) {
-      await markUsed(item.parent, 'nobilityWealth', { window: 'mission' });
-      return T('E20.WtnvNobilityWealth', { name: item.parent.name });
-    },
-  },
-  {
-    // More Than Worldly (Field Guide, Alien Ambassador, 20th level, p.67): "once per turn as a Free
-    // action, you can give yourself or an ally an Edge on a Skill Test." Yourself, or the targeted ally.
-    id: 'wtnvMoreThanWorldly', matches: item => sourceOf(item) == WTNV.moreThanWorldly,
-    async run(item, economy, pay) {
-      const actor = item.parent;
-      const { hasUsedThisTurn, markUsedThisTurn } = await import("../../perks.mjs");
-      if (game.combat && hasUsedThisTurn(actor, 'moreThanWorldly')) {
-        ui.notifications.warn(T('E20.WtnvOncePerTurn'));
-        return null;
-      }
-
-      if (!(await pay('free'))) {
-        return null;
-      }
-
-      const ally = game.user?.targets?.first?.()?.actor ?? actor;
-      const { needsGmRelay, relayToGm } = await import("../../gm-relay.mjs");
-      const value = { label: item.name, by: actor.uuid };
-      if (needsGmRelay(ally)) {
-        await relayToGm(ally, 'setFlag', ['essence20', 'moreThanWorldlyEdge', value]);
-      } else {
-        await ally.setFlag('essence20', 'moreThanWorldlyEdge', value);
-      }
-
-      if (game.combat) {
-        await markUsedThisTurn(actor, 'moreThanWorldly');
-      }
-
-      return T('E20.WtnvMoreThanWorldly', { name: actor.name, ally: ally.name });
-    },
-  },
 ];
 
 /* -------------------------------------------- */
@@ -332,13 +252,6 @@ registerDialogToggles(wtnvToggles);
 registerApplyDialog(wtnvApplyDialog);
 registerHitRider(staggeringSwayHit);
 USES.forEach(registerUse);
-
-registerConsumer('moreThanWorldly', async consume => {
-  const actor = await fromUuid(consume.actorUuid);
-  if (actor?.flags?.essence20?.moreThanWorldlyEdge) {
-    await actor.unsetFlag('essence20', 'moreThanWorldlyEdge');
-  }
-});
 
 // A pet gaining an attack Animal Perk gets the attack with it.
 globalThis.Hooks?.on?.('createItem', (item, options, userId) => {

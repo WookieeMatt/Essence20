@@ -182,32 +182,10 @@ describe("Get To Know", () => {
 });
 
 describe("Roll Options Dialog switches", () => {
-  test("Dinobot: a switch on the chosen Skill, on by default for a Specialization roll", () => {
-    const actor = makeActor({ items: [perk(FIX3_TF.dinobot, { name: 'Dinobot', system: { choice: 'brawn' } })] });
-    const [spec] = tfFixToggles(actor, { rolledSkill: 'brawn', dataset: { specializationKey: 'k' } });
-    expect(spec).toMatchObject({ name: 'fix3Influence-dinobot', value: true });
-    expect(tfFixToggles(actor, { rolledSkill: 'brawn', dataset: {} })[0].value).toBe(false);
-    expect(tfFixToggles(actor, { rolledSkill: 'survival', dataset: {} })).toEqual([]);
-  });
-
-  test("the influence switch gives Edge, or cancels a Snag", () => {
-    const options = { ext: { 'fix3Influence-maximal': true } };
-    tfFixApplyDialog(null, options);
-    expect(options.edge).toBe(true);
-
-    const snagged = { snag: true, ext: { 'fix3Influence-predacon': true } };
-    tfFixApplyDialog(null, snagged);
-    expect(snagged).toMatchObject({ snag: false });
-    expect(snagged.edge).toBeUndefined();
-  });
-
-  test("Experiment (Shove): ↑1 on a Shove and a switch for breaking a grapple", () => {
+  test("Experiment (Shove): a switch for breaking a grapple (the Shove ↑1 is a rule)", () => {
     const items = [perk(FIX3_TF.experiment, { name: 'Experiment', system: { choice: 'shove' } })];
     const actor = makeActor({ items, statuses: ['grappled'] });
-    expect(tfFixRollSources(actor, null, { rolledSkill: 'athletics', isShove: true }).sources)
-      .toContainEqual({ id: 'fix3ExperimentShove', label: 'Experiment', shiftUp: 1 });
-    expect(tfFixRollSources(actor, null, { rolledSkill: 'athletics', isAttack: true, item: { type: 'weaponEffect', system: { damageType: 'grapple' } } }).sources)
-      .toEqual([]);
+    expect(tfFixRollSources(actor, null, { rolledSkill: 'athletics', isShove: true }).sources).toEqual([]);
 
     const [toggle] = tfFixToggles(actor, { rolledSkill: 'athletics' });
     expect(toggle).toMatchObject({ name: 'fix3ExperimentEscape', value: true });
@@ -220,7 +198,6 @@ describe("Roll Options Dialog switches", () => {
 
   test("Experiment with another option does nothing here", () => {
     const actor = makeActor({ items: [perk(FIX3_TF.experiment, { system: { choice: 'technology' } })], statuses: ['grappled'] });
-    expect(tfFixRollSources(actor, null, { rolledSkill: 'athletics', isShove: true }).sources).toEqual([]);
     expect(tfFixToggles(actor, { rolledSkill: 'athletics' })).toEqual([]);
   });
 });

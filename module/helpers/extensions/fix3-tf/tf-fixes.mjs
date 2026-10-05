@@ -21,10 +21,8 @@ import { grappleEscapeSkills } from "../rules/grappled.mjs";
  *   Strike's flag, so it was labelled Debilitating Strike.
  * - Predacon (Technorganic Secrets): "they gain the Frightened Condition until the end of their next
  *   turn" - dice.mjs applies Frightened; nothing ever took it off.
- * - Dinobot / Maximal / Predacon: "Choose a ... Specialization ... You gain an Edge on Skill Tests
- *   when that Specialization comes into play" - was an automatic Edge on every test of the Skill.
  * - Experiment (TF CRB, Shove option): "Gain ↑1 when Shoving or attempting to break from a Grapple" -
- *   was ↑1 on Grapple-type attacks, which are neither.
+ *   was ↑1 on Grapple-type attacks, which are neither. (The Shove ↑1 is now a rule on the item.)
  * - Get To Know (Dark Skies Over Equestria): the spell's Edge lasts "1 Scene" - an unspent Edge now
  *   goes when the GM starts a new scene.
  */
@@ -35,8 +33,6 @@ export const FIX3_TF = {
   coveringFire: `${TF_CRB}cAm087BkiExKIJrY`,
   watchfulEyes: `${TF_CRB}RmHSzuVLnIoqeczy`,
   experiment: `${TF_CRB}EcSOADOOb3PZMolz`,
-  dinobot: `${TS}tx4mlGvMhiWXA4mp`,
-  maximal: `${TS}z3Ig9tbOEq4erPU5`,
   predacon: `${TS}jRD6G5Z6eblTvxeO`,
 };
 
@@ -49,12 +45,6 @@ export const KIND = {
 };
 const MARKS_FLAG = 'riderMarks';
 const GET_TO_KNOW_EDGE_FLAG = 'pendingGetToKnowEdge';
-
-const INFLUENCE_EDGE = [
-  { key: 'dinobot', skills: ['brawn', 'survival'] },
-  { key: 'maximal', skills: ['persuasion', 'science', 'technology'] },
-  { key: 'predacon', skills: ['intimidation'] },
-];
 
 /* -------------------------------------------- */
 /*  Small helpers                                */
@@ -248,12 +238,6 @@ export function tfFixRollSources(actor, target, ctx = {}) {
     }
   }
 
-  // Experiment, Shove option: "Gain ↑1 when Shoving".
-  const experiment = ctx.isShove ? findSourced(actor, FIX3_TF.experiment) : null;
-  if (experiment?.system?.choice == 'shove') {
-    sources.push({ id: 'fix3ExperimentShove', label: experiment.name, shiftUp: 1 });
-  }
-
   return { sources, consumes };
 }
 
@@ -343,25 +327,13 @@ export async function tfFixSceneAdvanced() {
 /*  Roll Options Dialog switches                 */
 /* -------------------------------------------- */
 
-export function tfFixToggles(actor, { rolledSkill, item, dataset } = {}) {
+export function tfFixToggles(actor, { rolledSkill, item } = {}) {
   if (!rolledSkill || !actor) {
     return [];
   }
 
   const toggles = [];
   const isAttack = item?.type == 'weaponEffect';
-
-  // Dinobot / Maximal / Predacon: the Perk's pick is a Skill; the Edge is for the one Specialization
-  // chosen from it, which only the player knows. On by default when rolling a Specialization.
-  for (const { key, skills } of INFLUENCE_EDGE) {
-    const perk = findSourced(actor, FIX3_TF[key]);
-    if (perk && skills.includes(rolledSkill) && perk.system?.choice == rolledSkill) {
-      toggles.push({
-        name: `fix3Influence-${key}`, type: 'checkbox', value: !!dataset?.specializationKey,
-        label: label('Fix3TfSpecializationEdge', { name: perk.name }, `${perk.name}: Edge (your chosen Specialization comes into play)`),
-      });
-    }
-  }
 
   // Experiment, Shove option: "attempting to break from a Grapple" - a non-attack test with an escape
   // Skill while Grappled, on by default the same way the Grappled switch assumes an escape.
@@ -377,21 +349,8 @@ export function tfFixToggles(actor, { rolledSkill, item, dataset } = {}) {
   return toggles;
 }
 
-function giveEdge(options) {
-  if (options.snag) {
-    options.snag = false;
-  } else {
-    options.edge = true;
-  }
-}
-
 export function tfFixApplyDialog(actor, options) {
   const ext = options.ext ?? {};
-  const influence = INFLUENCE_EDGE.some(({ key }) => ext[`fix3Influence-${key}`]);
-  if (influence) {
-    giveEdge(options);
-  }
-
   if (ext.fix3ExperimentEscape) {
     options.shiftUp = (Number(options.shiftUp) || 0) + 1;
   }

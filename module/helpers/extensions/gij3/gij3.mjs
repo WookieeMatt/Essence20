@@ -35,7 +35,6 @@ export const G3 = {
   subtleSnake: U('ferocious_fighters', 'ZCgcPAQzeMYTti7g'),
   dreadnokRecruit: U('intercontinental_adventures', 'QIoKmEIelV7it5xE'),
   peakPerformance: U('general_hawk_s_personel_files', 'Uzs2Ms6MgPsxV8uU'),
-  personOfCulture: U('general_hawk_s_personel_files', 'UASxRYtsWV1CnE8y'),
   oldHand: U('general_hawk_s_personel_files', 'KjGQyRLheKp8zT8v'),
   earlyAdopter: U('quartermasters_guide_to_gear', 'WrRChund2zAcHYfe'),
   fieldTrials: U('quartermasters_guide_to_gear', 'HBSVeVpRVBXiPgSW'),
@@ -59,7 +58,6 @@ const FLAG = {
   earlyAdopterUsed: 'gij3EarlyAdopterUsed',
   fieldTrialsUsed: 'gij3FieldTrialsUsed',
   freePick: 'gij3FreePick',
-  personOfCulture: 'gij3PersonOfCulture',
   dreadnokPresent: 'gij3DreadnokPresent',
   peakGranted: 'gij3PeakPerformanceGranted',
 };
@@ -648,31 +646,6 @@ export const USES = [
       await markUsed(actor, FLAG.junkerUsed, { window: 'mission' });
       await bankPendingBonus(actor, FLAG.junkerEdge, { edge: true });
       return T(party ? 'Gij3JunkerUsed' : 'Gij3JunkerUsedNoParty', { name: actor.name, party: party?.name ?? '' });
-    },
-  },
-  {
-    // Person of Culture (Hawk's Personnel Files, General Perk, p.174): "When you spend a Story Point
-    // to get a hint, roll a DIF 15 Culture Skill Test. On a success, you do not need to spend the
-    // Story Point. You can only benefit from this Perk once per scene."
-    id: 'gij3PersonOfCulture',
-    matches: item => sourceOf(item) == G3.personOfCulture,
-    canUse: item => getUses(item.parent, FLAG.personOfCulture, 'scene') < 1,
-    async run(item) {
-      const actor = item.parent;
-      const { rollTest } = await import("../../grants.mjs");
-      const test = await rollTest(actor, 'culture', 15);
-      if (test.success) {
-        await markUsed(actor, FLAG.personOfCulture, { window: 'scene' });
-        return T('Gij3PersonOfCultureFree', { name: actor.name });
-      }
-
-      const points = await import("../../story-points.mjs");
-      if (!points.canSpendForActor(actor, 1)) {
-        return T('Gij3PersonOfCultureNoPoint', { name: actor.name });
-      }
-
-      await points.spendForActor(actor, 1);
-      return T('Gij3PersonOfCulturePaid', { name: actor.name });
     },
   },
   {

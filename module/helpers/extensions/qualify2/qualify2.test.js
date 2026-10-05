@@ -7,7 +7,7 @@ import {
 } from './qualifications.mjs';
 import { canDoOrDie, decorateDoOrDie, doOrDieCost, doOrDieDie, oldHandLevel, rescore, wildIdeaApply, wildIdeaToggles } from './old-hand.mjs';
 import {
-  detailOrientedLeft, FIELD_OPS_USE, isStunned, moraleRest, moraleUsesLeft, opportunistPostRoll, overchargeable, overchargeTurnEnd,
+  detailOrientedLeft, FIELD_OPS_USE, isStunned, opportunistPostRoll, overchargeable, overchargeTurnEnd,
   sensitiveIgnored, sensitiveOnUpdate,
 } from './field-ops.mjs';
 import { carryGatedUses, isSessionReset, noteGatedUse, startNewSession } from './session.mjs';
@@ -215,14 +215,6 @@ describe('Old Hand', () => {
 });
 
 describe('field ops', () => {
-  test('Morale Booster uses per day from Social', async () => {
-    const perk = item('perk', Q2.moraleBooster, { flags: { q2MoraleUses: 2 } });
-    const actor = makeActor([perk], { system: { essences: { social: { max: 3 } } } });
-    expect(moraleUsesLeft(actor, perk)).toBe(1);
-    await moraleRest(actor);
-    expect(moraleUsesLeft(actor, perk)).toBe(3);
-  });
-
   test('Opportunist extends Stun on a hit', async () => {
     global.ChatMessage.create = jest.fn();
     const actor = makeActor([item('perk', Q2.opportunist)]);
@@ -270,18 +262,18 @@ describe('sessions', () => {
   });
 
   test('a session-gated use survives the next encounter and clears with the session', async () => {
-    const actor = makeActor([item('perk', Q2.everythingIsInspiration)], { flags: { realAngelsUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } } });
+    const actor = makeActor([item('perk', Q2.everythingIsInspiration)], { flags: { timelineAnomalyUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 } } });
     game.actors = [actor];
     game.settings.set = jest.fn();
-    await noteGatedUse(actor, { flags: { essence20: { realAngelsUsedThisEncounter: { epoch: 1 } } } }, {}, 'u1');
-    expect(actor.flags.essence20.q2SessionUses).toEqual({ realAngelsUsedThisEncounter: 1 });
+    await noteGatedUse(actor, { flags: { essence20: { timelineAnomalyUsedThisEncounter: { epoch: 1 } } } }, {}, 'u1');
+    expect(actor.flags.essence20.q2SessionUses).toEqual({ timelineAnomalyUsedThisEncounter: 1 });
     await carryGatedUses(2);
-    expect(actor.flags.essence20.realAngelsUsedThisEncounter.epoch).toBe(2);
+    expect(actor.flags.essence20.timelineAnomalyUsedThisEncounter.epoch).toBe(2);
     global.ChatMessage.create = jest.fn();
     game.socket = { emit: jest.fn() };
     await startNewSession();
     expect(game.socket.emit).toHaveBeenCalled();
-    expect(actor.flags.essence20.realAngelsUsedThisEncounter).toBeUndefined();
+    expect(actor.flags.essence20.timelineAnomalyUsedThisEncounter).toBeUndefined();
     expect(game.settings.set).toHaveBeenCalled();
   });
 });

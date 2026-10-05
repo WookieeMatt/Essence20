@@ -5,6 +5,10 @@
   "_id": "DHTCWLVAKNmtm2iu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Time-travel Specialization (Time Force: Edge)","edge":true,"default":true,"forget":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.jump_through_time.Item.DHTCWLVAKNmtm2iu","not:item:type:weaponEffect",{"any":["roll:specialization~time","roll:specialization~chrono","roll:specialization~tempor"]}]},
+      {"type":"DialogSwitch","label":"Time-travel Specialization (Time Force: Edge)","edge":true,"forget":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.jump_through_time.Item.DHTCWLVAKNmtm2iu","not:item:type:weaponEffect","not:roll:specialization~time","not:roll:specialization~chrono","not:roll:specialization~tempor"]}
+    ],
     "prerequisites": {"when":["self:data:system.powers.personal.max>=2","self:skill:culture>=d4"]},
     "automation": {
       "status": "full",

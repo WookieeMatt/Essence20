@@ -196,6 +196,8 @@ export const CHECK_NAMES = [
   'highGear', 'theToughGetGoing', 'energyAffinityAttack', 'equippedFireWeapon',
   'defeatedAllyInReach', 'decepticonNemesis', 'nemesisInScene', 'multipleTargetsWeapon', 'favoriteWeaponEquipped',
   'favoriteWeaponRolled', 'zordHasDriver', 'personalShield',
+  'computerizedGear', 'outsideEnvironmentOfExpertise', 'nonMystical', 'medicineKit', 'shapeShifted', 'disguised',
+  'grappleEscape', 'infiltrating',
 ];
 const CHECKS = new Map();
 export function registerCheck(name, fn) {

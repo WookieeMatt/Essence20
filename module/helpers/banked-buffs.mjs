@@ -629,25 +629,12 @@ const NATURAL_MOVEMENT_ID = "Compendium.essence20.gi_joe_crb.Item.TLI74oM0tbDtQ2
 // comment. Same on/off toggle shape as Dig In just above.
 const POINTY_ID = "Compendium.essence20.dark_skies_over_equestria.Item.kwkUWzNVdSKDx0jt";
 
-// Real Angels (Welcome to Night Vale: Citizens' Guide, General Perk, p.51): "Once per session, you
-// can use your Standard action in combat to call on one of the choir of Erika to provide you with
-// cover until the start of your next turn." A one-shot self-status grant (not a toggle like Dig
-// In/Pointy above - there's no reason to switch it back off early), gated the same
-// hasUsedThisEncounter/markUsedThisEncounter way Curb Your Enthusiasm's own once-per-scene grant
-// already is ("once per session" approximated as "once per scene," this project's usual idiom for
-// a daily/session-scoped resource). Toggles Foundry's own real "cover" status effect - the same
-// one Maximize Cover/the existing ranged-attack downshift check already read - directly on the
-// actor; "until the start of your next turn" isn't actively cleared (no such hook exists), the
-// same "GM manages the edges" idiom Dig In's own manual toggle-off already established.
-const REAL_ANGELS_ID = "Compendium.essence20.wtnv_citizens_guide.Item.i5hL9SSARFDMf6UH";
-const REAL_ANGELS_ENCOUNTER_FLAG = 'realAngelsUsedThisEncounter';
-
 // Dig Deep (Welcome to Night Vale: Citizens' Guide, General Perk, p.47): "Once per scene, you can
 // ignore 1 damage, but you suffer a Snag on all Skill Tests until the end of your next turn." A
 // one-shot self bank of TWO independent flags from the same click (the damage-reduction half
 // consumed in helpers/combat.mjs#applyDamage, the Snag half a timed mark on the holder read by
 // extensions/fix3-tf/tf-fixes.mjs until the end of their next turn) - doesn't fit BANKABLE_PERKS' single-flagKey shape, so it
-// gets its own dedicated dispatch here, same as Real Angels/Dig In above.
+// gets its own dedicated dispatch here, same as Dig In above.
 const DIG_DEEP_ID = "Compendium.essence20.wtnv_citizens_guide.Item.A2Xay6rHrBK9l8eo";
 const DIG_DEEP_ENCOUNTER_FLAG = 'digDeepUsedThisEncounter';
 
@@ -2127,10 +2114,6 @@ export function canUsePerk(item) {
 
   if (sourceId == POINTY_ID) {
     return true;
-  }
-
-  if (sourceId == REAL_ANGELS_ID) {
-    return !hasUsedThisEncounter(actor, REAL_ANGELS_ENCOUNTER_FLAG);
   }
 
   if (sourceId == DIG_DEEP_ID || sourceId == DIG_DEEP_TF_ID || sourceId == DIG_DEEP_GIJ_ID || sourceId == DIG_DEEP_MLP_ID) {
@@ -3878,17 +3861,6 @@ export async function onPerkUse(item) {
   if (sourceId == HONEST_ASSESSMENT_ID) {
     const nowActive = await toggleHonestAssessment(actor);
     postPerkUseChatCard(actor, game.i18n.format(nowActive ? 'E20.HonestAssessmentActivated' : 'E20.HonestAssessmentDeactivated', { actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == REAL_ANGELS_ID) {
-    if (hasUsedThisEncounter(actor, REAL_ANGELS_ENCOUNTER_FLAG)) {
-      return;
-    }
-
-    await actor.toggleStatusEffect('cover', { active: true });
-    await markUsedThisEncounter(actor, REAL_ANGELS_ENCOUNTER_FLAG);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     return;
   }
 

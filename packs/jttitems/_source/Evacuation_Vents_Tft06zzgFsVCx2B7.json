@@ -5,6 +5,10 @@
   "_id": "Tft06zzgFsVCx2B7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Vent away from the enemy this turn","when":["combat","self:morphed"],"steps":[{"do":"mark","key":"evacuationVents","until":"endOfTurn"},{"do":"chat","text":"{name} vents away from the enemy - no limit on Free actions spent on movement this turn while moving away from every visible enemy."}]},
+      {"type":"MovementAction","label":"Venting: no Push Yourself limit this turn","pushUnlimited":true,"when":["self:marked:evacuationVents"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: while Morphed in Combat, declare you're moving away from enemies this turn; your Free actions can then push your Move with no upper limit.</p>"

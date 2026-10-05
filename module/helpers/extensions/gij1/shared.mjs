@@ -27,7 +27,6 @@ export const G1 = {
   primalFear: CC('xoD8fbVVqymTidNJ'),
   feedOnFear: CC('dZkRZSH5X88PrSyK'),
   letItRip: CC('dtB9EUFE45oZNAOR'),
-  shielded: CC('GiVoFUU6sd9A9V5X'),
   // Origin (Assassin, p.40).
   metier: CC('EcVOkUJE40sKSg8v'),
   assassin: CC('HCIbetyFvjJGuDcV'),
@@ -77,17 +76,6 @@ export function isWorn(upgrade) {
 /** The actor's worn copy of an upgrade, if any. */
 export function wornUpgrade(actor, uuid) {
   return itemsOf(actor).find(item => item.type == 'upgrade' && sourceOf(item) == uuid && isWorn(item)) ?? null;
-}
-
-export function addToDefense(defense, amount, label) {
-  if (!defense || !amount) {
-    return;
-  }
-
-  defense.total = (Number(defense.total) || 0) + amount;
-  if (typeof defense.string == 'string') {
-    defense.string += ` ${amount < 0 ? '-' : '+'} ${Math.abs(amount)} (${label})`;
-  }
 }
 
 /** The user's first targeted token's actor, if any. */

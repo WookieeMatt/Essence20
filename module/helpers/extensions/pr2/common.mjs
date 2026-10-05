@@ -20,7 +20,6 @@ export const PR2 = {
   combiner: prcrb('ZZMBVjmosr0VViMU'),
   carrier: prcrb('h1b0cjGJP1xqtfVv'),
   aimApparatus: prcrb('8Kyl6XMzRCZGBzbW'),
-  keenEye: prcrb('Z4YwTrUSDQIrDkQT'),
   gridRelicWeapon: prcrb('82Ld65NsKwfMZaSC'),
   auraOfDecay: fmmc('Vza1muNXrpw4IyKG'),
   flamesOfHateWeapon: fmmc('ogROcCjAwDs7iTXl'),

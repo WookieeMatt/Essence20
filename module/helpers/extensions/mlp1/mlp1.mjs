@@ -6,9 +6,9 @@ import { activateForWindow, getSceneEpoch, getUses, isActiveForWindow, markUsed 
 import { hasSourced, worldActors } from "../../companion-link.mjs";
 
 /**
- * My Little Pony - Dark Skies over Equestria, In a Jam and Knights of Canterlot items: shape-shifting
- * (Basic Shape-Shifting, Face-Shift, Identity Crisis, Master Morph, Size-Shift), Prize Honey,
- * Honorary Apple, Key to Whinnypeg, the Knights of Canterlot tools and Hang-Ups, and the spell Perks
+ * My Little Pony - Dark Skies over Equestria and Knights of Canterlot items: shape-shifting
+ * (Basic Shape-Shifting, Face-Shift, Identity Crisis, Master Morph, Size-Shift), Prize Honey's Use,
+ * the Knights of Canterlot tools and Hang-Ups, and the spell Perks
  * (Illusion Casting, Reach Out, Sharpcaster, Sorcerous Support) and spells (Brilliant
  * Sight, Pinkie Sense, Softenblows).
  */
@@ -25,7 +25,6 @@ export const MLP1 = {
   sizeShift: dse('44UMuF7vQM094oQq'),
   shapeShiftOrigin: dse('yi2Z2ebEmTuow5LL'),
   ponymorph: pack('mlp_crb', '3Tm9SWc060Z62e4Q'),
-  keyToWhinnypeg: pack('in_a_jam', '6HJlO4qnOTRqrOmF'),
   brilliantSight: koc('Oc8NpQa5ylK2Ix0B'),
   farSighted: koc('Sm7INWZQAIXlu5HC'),
   illusionCasting: koc('UadqOmn6aZKAvXT1'),
@@ -51,7 +50,6 @@ function itemsOf(actor) {
 
 const itemOf = (actor, uuid) => itemsOf(actor).find(i => sourceOf(i) == uuid) ?? null;
 const nameOf = (actor, uuid, fallback) => itemOf(actor, uuid)?.name ?? fallback;
-const essenceOf = skill => CONFIG.E20?.skillToEssence?.[skill];
 
 /* -------------------------------------------- */
 /*  Shape-shifting                               */
@@ -182,8 +180,6 @@ function inSmoke(actor) {
 /*  Dialog choices                               */
 /* -------------------------------------------- */
 
-const carries = (actor, uuid) => itemsOf(actor).some(i => sourceOf(i) == uuid && (i.system?.quantity ?? 1) > 0);
-
 function hasRangedWeapon(actor) {
   const list = itemsOf(actor);
   return list.some(w => w.type == 'weapon' && w.system?.equipped
@@ -193,7 +189,6 @@ function hasRangedWeapon(actor) {
 export function mlp1Toggles(actor, { rolledSkill } = {}) {
   const toggles = [];
   const add = (name, label, extra = {}) => toggles.push({ name, label, type: 'checkbox', ...extra });
-  const essence = essenceOf(rolledSkill);
   const shaped = !!shapeOf(actor) || !!actor?.flags?.essence20?.dsoeDisguiseActive;
 
   // Face-Shift: "You gain Edge on Skill Tests to pass as that individual".
@@ -207,19 +202,6 @@ export function mlp1Toggles(actor, { rolledSkill } = {}) {
     add('identityCrisis', T('E20.Mlp1ToggleBelieved'));
   }
 
-  // Prize Honey: "allowing the chef to gain ↑2 when attempting to create a memorable and tasty food".
-  const honey = itemOf(actor, MLP1.prizeHoney);
-  if (honey && (honey.flags?.essence20?.usesLeft ?? 3) > 0) {
-    add('prizeHoney', T('E20.Mlp1ToggleHoney'));
-  }
-
-  // Key to Whinnypeg: "↑2 on Social-based Skill Tests when dealing with Whinnypeg politicians, business
-  // owners, and influencers, and ↑1 ... with non-Whinnypeg" ones.
-  if (essence == 'social' && carries(actor, MLP1.keyToWhinnypeg)) {
-    toggles.push({ name: 'keyToWhinnypeg', label: T('E20.Mlp1ToggleWhinnypeg'), type: 'select',
-      options: [{ value: '', label: T('E20.None') }, { value: '2', label: T('E20.Mlp1WhinnypegLocal') }, { value: '1', label: T('E20.Mlp1WhinnypegOther') }] });
-  }
-
   // Hang-Ups.
   if (rolledSkill == 'alertness' && hasSourced(actor, MLP1.farSighted) && hasRangedWeapon(actor)) {
     add('farSighted', T('E20.Mlp1ToggleFarSighted'), { value: true });
@@ -230,23 +212,11 @@ export function mlp1Toggles(actor, { rolledSkill } = {}) {
 
 export async function mlp1ApplyDialog(actor, options) {
   const ext = options.ext ?? {};
-  const up = n => {
-    options.shiftUp = (options.shiftUp ?? 0) + n;
-  };
-
   const edge = () => (options.snag ? (options.snag = false) : (options.edge = true));
   const snag = () => (options.edge ? (options.edge = false) : (options.snag = true));
 
   if (ext.faceShiftPass || ext.identityCrisis) {
     edge();
-  }
-
-  if (ext.prizeHoney) {
-    up(2);
-  }
-
-  if (Number(ext.keyToWhinnypeg)) {
-    up(Number(ext.keyToWhinnypeg));
   }
 
   // Far-Sighted: "Snag on any Alertness Skill Tests within 10 feet of you if you're currently using a

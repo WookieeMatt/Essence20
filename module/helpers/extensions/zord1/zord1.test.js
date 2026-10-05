@@ -146,20 +146,6 @@ describe('Forms', () => {
     expect(formState.isFormActive(actor, forms.FORM.operator)).toBe(false);
   });
 
-  test('Ranger Operator swaps the armor bonus for +2 Toughness (its Evasion +2 is an item rule)', () => {
-    const actor = makeActor({
-      items: [{ type: 'perk', name: 'Ranger Operator', flags: src(forms.FORM.operator) }],
-      system: {
-        isMorphed: true,
-        defenses: { toughness: { total: 16, morphed: 3, string: '' }, evasion: { total: 12, morphed: 0, string: '' } },
-      },
-      flags: { essence20: { zord1Form: { uuid: forms.FORM.operator } } },
-    });
-    forms.formDerived(actor);
-    expect(actor.system.defenses.toughness.total).toBe(15);
-    expect(actor.system.defenses.evasion.total).toBe(12);
-  });
-
   test('Ranger Operator gear depends on Core vs Advanced Role', () => {
     const core = makeActor({ items: [{ type: 'role', system: { isAdvanced: false } }] });
     const adv = makeActor({ items: [{ type: 'role', system: { isAdvanced: true } }] });
@@ -168,27 +154,19 @@ describe('Forms', () => {
     expect(forms.formSpec(core, forms.FORM.solar).cost).toBe(1);
   });
 
-  test('Beast Morpher: Cheetah speed, Gorilla Health and Brawn', () => {
+  test('Beast Morpher: the animal is read from the Perk (its speed, Health and ↑2 are item rules)', () => {
     const cheetah = makeActor({
       items: [{ type: 'perk', flags: { ...src(forms.FORM.beast), essence20: { zord1Beast: 'cheetah' } } }],
       system: { isMorphed: true, defenses: {}, movement: { ground: { total: 30 } }, health: { max: 5 } },
       flags: { essence20: { zord1Form: { uuid: forms.FORM.beast } } },
     });
+    expect(forms.beastChoice(cheetah)).toBe('cheetah');
     forms.formDerived(cheetah);
-    expect(cheetah.system.movement.ground.total).toBe(50);
-
-    const gorilla = makeActor({
-      items: [{ type: 'perk', flags: { ...src(forms.FORM.beast), essence20: { zord1Beast: 'gorilla' } } }],
-      system: { isMorphed: true, defenses: {}, movement: {}, health: { max: 5 } },
-      flags: { essence20: { zord1Form: { uuid: forms.FORM.beast } } },
-    });
-    forms.formDerived(gorilla);
-    expect(gorilla.system.health.max).toBe(7);
-    const { sources } = forms.formRollSources(gorilla, null, { rolledSkill: 'brawn' });
-    expect(sources).toEqual([expect.objectContaining({ shiftUp: 2 })]);
+    expect(cheetah.system.movement.ground.total).toBe(30);
+    expect(forms.formRollSources(cheetah, null, { rolledSkill: 'brawn' }).sources).toEqual([]);
   });
 
-  test('Ninja Storm Wind Ranger: a 1 Personal Power Morph Form that doubles Ground movement', () => {
+  test('Ninja Storm Wind Ranger: a 1 Personal Power Morph Form (its doubled Ground is an item rule)', () => {
     const ninja = makeActor({
       items: [{ type: 'perk', name: 'Ninja Storm Wind Ranger', flags: src(forms.FORM.ninjaStorm) }],
       system: { isMorphed: true, defenses: {}, movement: { ground: { total: 30 } } },
@@ -197,14 +175,7 @@ describe('Forms', () => {
     expect(forms.heldForms(ninja)).toEqual([forms.FORM.ninjaStorm]);
     expect(forms.formSpec(ninja, forms.FORM.ninjaStorm).cost).toBe(1);
     forms.formDerived(ninja);
-    expect(ninja.system.movement.ground.total).toBe(60);
-
-    const inactive = makeActor({
-      items: [{ type: 'perk', flags: src(forms.FORM.ninjaStorm) }],
-      system: { isMorphed: true, defenses: {}, movement: { ground: { total: 30 } } },
-    });
-    forms.formDerived(inactive);
-    expect(inactive.system.movement.ground.total).toBe(30);
+    expect(ninja.system.movement.ground.total).toBe(30);
   });
 
   describe('Ninja Storm Wind Ranger element', () => {
@@ -312,15 +283,6 @@ describe('Forms', () => {
     });
   });
 
-  test('Time Force: a time-travel Edge toggle', async () => {
-    const actor = makeActor({ system: { isMorphed: true }, flags: { essence20: { zord1Form: { uuid: forms.FORM.timeForce } } } });
-    const toggles = forms.formToggles(actor, { rolledSkill: 'science', item: null });
-    expect(toggles[0]).toMatchObject({ name: 'zord1TimeForce', value: false });
-    const options = { ext: { zord1TimeForce: true }, snag: true };
-    await forms.formApplyDialog(actor, options, {});
-    expect(options).toMatchObject({ snag: false });
-  });
-
   test('Supersonic makes the Blade Blaster Sonic', async () => {
     const blaster = { id: 'w1', type: 'weapon', name: 'Blade Blaster', system: { traits: ['powerWeapon'] } };
     const actor = makeActor({ system: { isMorphed: true }, flags: { essence20: { zord1Form: { uuid: forms.FORM.supersonic } } } });
@@ -328,6 +290,16 @@ describe('Forms', () => {
     const result = { damageValue: 2, damageType: 'energy' };
     await forms.formHitRider(actor, null, result, { weaponId: 'w1' }, { damageBonusNote: jest.fn(), addRiderOption: jest.fn() });
     expect(result.damageType).toBe('sonic');
+  });
+
+  test('Supersonic gives back the Xenotech armor ↓1 on Athletics, per worn piece', () => {
+    const actor = makeActor({
+      items: [{ type: 'perk', name: 'Supersonic', flags: src(forms.FORM.supersonic) }, { type: 'armor', system: { equipped: true, traits: ['xenotech'] } }],
+      system: { isMorphed: true },
+      flags: { essence20: { zord1Form: { uuid: forms.FORM.supersonic } } },
+    });
+    expect(forms.formRollSources(actor, null, { rolledSkill: 'athletics' }).sources).toEqual([expect.objectContaining({ shiftUp: 1 })]);
+    expect(forms.formRollSources(actor, null, { rolledSkill: 'brawn' }).sources).toEqual([]);
   });
 
   test('Dino Thunder: Tricera Skin and Shield Projection', () => {
@@ -413,7 +385,7 @@ describe('Zord slots', () => {
     expect(slots.checkOneZordPerScene(zordB, summon)).toBe(false);
   });
 
-  test('Megafauna: essences, Evasion, melee ↑1 and Animal Handling driving', () => {
+  test('Megafauna: essences and Animal Handling driving', () => {
     const zord = makeActor({
       type: 'zord', uuid: 'Actor.z',
       items: [{ type: 'feature', name: 'Megafauna', flags: src(slots.ZS.megafauna) }],
@@ -424,8 +396,8 @@ describe('Zord slots', () => {
     worldList.push(zord, pilot);
     slots.zordDerived(zord);
     expect(zord.system.essences.smarts.value).toBe(3);
-    expect(zord.system.defenses.evasion.total).toBe(13);
-    expect(slots.zordRollSources(zord, null, { isAttack: true, isMelee: true }).sources[0]).toMatchObject({ shiftUp: 1 });
+    expect(zord.system.defenses.evasion.total).toBe(10);
+    expect(slots.zordRollSources(zord, null, { isAttack: true, isMelee: true }).sources).toEqual([]);
     const dataset = { skill: 'driving' };
     slots.megafaunaPreRoll(pilot, dataset);
     expect(dataset.skill).toBe('animalHandling');

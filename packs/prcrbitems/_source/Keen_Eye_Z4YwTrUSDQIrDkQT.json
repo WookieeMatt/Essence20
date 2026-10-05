@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Recall a visual detail","steps":[{"do":"roll","skill":"alertness","dif":12,"onSuccess":[{"do":"chat","text":"{name} recalls the visual detail."}],"onFail":[{"do":"chat","text":"{name} can't quite recall the detail."}]}]}
+      {"type":"Use","label":"Recall a visual detail","steps":[{"do":"roll","skill":"alertness","dif":12,"onSuccess":[{"do":"chat","text":"{name} recalls the visual detail."}],"onFail":[{"do":"chat","text":"{name} can't quite recall the detail."}]}]},
+      {"type":"RollModifier","label":"Perception (Keen Eye: Edge)","when":["skill:alertness","roll:specialization~perception"],"edge":true}
     ],
     "automation": {
       "status": "full",

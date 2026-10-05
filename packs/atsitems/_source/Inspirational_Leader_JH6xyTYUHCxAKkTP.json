@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Lend Assistance at any rank outside combat (Inspirational Leader)","side":"give","effect":"anyRank","when":["not:combat","not:combat:round:0"]}
+    ],
     "prerequisites": {"when":["self:skill:persuasion>=d6"]},
     "automation": {
       "status": "full",

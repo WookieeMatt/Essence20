@@ -19,7 +19,6 @@ const ENVIRONMENTAL_EXPERTISE_ID = "Compendium.essence20.gi_joe_crb.Item.EbbSUA2
 const OVER_THE_CANDLESTICK = 'tsitems/_source/Over_the_Candlestick_zKngKkwDyNv2nnH5.json';
 const SEWER_TUNNELER = 'ghpfitems/_source/Sewer_Tunneler_gCbl6p64cEJjF2eJ.json';
 const URBAN_JUNGLE = 'ccitems/_source/Urban_Jungle_wIesQd7U5W2azAWY.json';
-const FEET_WET_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7u3xCPPjxJlI7c61";
 const HARD_TREAD_WHEELS = 'eocitems/_source/Hard_Tread_Wheels_ia0rEwWo5WP1zH58.json';
 const CLAWED_FEET = 'eocitems/_source/Clawed_Feet_uDCcdAjDkKdDdlAm.json';
 
@@ -78,11 +77,6 @@ describe("ignoresRoughTerrain", () => {
       expect(ignoresRoughTerrain(makeActor({ items: [ruled(file)], terrain: 'woodlands' }))).toBe(false);
       expect(ignoresRoughTerrain(makeActor({ items: [ruled(file)] }))).toBe(false);
     }
-  });
-
-  test("Feet Wet ignores it on sea terrain", () => {
-    expect(ignoresRoughTerrain(makeActor({ items: [perk(FEET_WET_ID)], terrain: 'sea' }))).toBe(true);
-    expect(ignoresRoughTerrain(makeActor({ items: [perk(FEET_WET_ID)], terrain: 'arctic' }))).toBe(false);
   });
 
   test("Hard Tread Wheels and Clawed Feet (gear) ignore it only in Alt Mode", () => {

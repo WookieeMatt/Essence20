@@ -5,7 +5,6 @@
 
 const uuid = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 const fmmc = id => uuid('finster_s_monster_matic_cookbook', id);
-const ia = id => uuid('intercontinental_adventures', id);
 
 export const D21 = {
   // Finster's Monster-Matic Cookbook
@@ -29,24 +28,11 @@ export const D21 = {
   psychoSlinger: fmmc('NTy3KQc1Lcg4LlyX'),
   psychoSword: fmmc('gZoFLl1P4qVeJ1xR'),
   psychoTrident: fmmc('yyg2pmTVJmxCiYFF'),
-  psychoBladeEffects: [fmmc('04vQyKGeDIKmBaBZ'), fmmc('SlQRp4ghRuoyeoRG'), fmmc('JYrWES4zfCrAYGeE')],
-  psychoStaffEffects: [fmmc('NX0WE3tH2ZZPa9iI'), fmmc('EqdelDXgGy3Akw91')],
   largerThanLife: fmmc('Gwhns0NfDQYhCVPK'),
   mystic: fmmc('SBlOGEnend5WYwgd'),
   sorcery: fmmc('xUBOE1s5pgVyUrwj'),
-  // Intercontinental Adventures
-  hobnailedBootEffects: [ia('ReeqwVjlTrE1VeJv'), ia('E9rtUBRIgt039HZN'), ia('4KC2IK7KNiyrWmQg')],
-  ironClawEffects: [ia('3FNuMBoWp4WtgzsS'), ia('cApOuns5qiokKyQl'), ia('BCYK3w1QYgeyiz2r')],
-  // Beneath the Helmet
-  meleeWeaponEffects: [uuid('beneath_the_helmet', 'ipbTrbEZCVBKEXUS'), uuid('beneath_the_helmet', 'JsdC4NFStH1gfSft')],
-  // G.I. Joe CRB drone upgrades
-  basicDefenses: uuid('gi_joe_crb', 'CQYBJKyLfPIUp1JG'),
-  advancedDefenses: uuid('gi_joe_crb', 'kow4o1ubo29p8b0D'),
-  specializedDefenses: uuid('gi_joe_crb', 'qPYov7nAiPjYrD4Q'),
   // A Jump Through Time
   skyMorpher: uuid('jump_through_time', '2FlXYjY1AFSFq8Jz'),
-  // My Little Pony CRB
-  compassionate: uuid('mlp_crb', 'TARp0NItPetoMUv2'),
   // Sgt Slaughter Sourcebook
   alternateOfficer: uuid('sgt_slaughter_sourcebook', '5iH3ztH4sjqboZK5'),
 };

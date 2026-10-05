@@ -223,14 +223,6 @@ test('Be an Example source', () => {
 });
 
 test('Advanced Dino Gem Integration', () => {
-  const pilot = actor('playerCharacter');
-  const zord = actor('zord', [item('feature', common.PR1.advancedDinoGem, { name: 'ADGI', flags: { pr1DinoGem: 'sense' } })],
-    { actors: { a: { uuid: pilot.uuid, vehicleRole: 'driver' } } });
-  global.game.actors = [pilot, zord];
-  expect(misc.dinoSources(pilot, null, { rolledSkill: 'alertness' })).toEqual([{ id: 'pr1DinoSense', label: 'ADGI', shiftUp: 2 }]);
-  const shielded = actor('zord', [item('feature', common.PR1.advancedDinoGem, { flags: { pr1DinoGem: 'shield' } })]);
-  const shot = item('weaponEffect', null, { system: { classification: { style: 'energy' } } });
-  expect(misc.dinoSources(actor('npc'), shielded, { isAttack: true, item: shot })[0]).toMatchObject({ snag: true });
   const stealth = actor('zord', [item('feature', common.PR1.advancedDinoGem, { flags: { pr1DinoGem: 'stealth' } })], { movement: { ground: { total: 40 }, swim: { total: 0 } } });
   misc.dinoDerived(stealth);
   expect(stealth.system.movement).toEqual({ ground: { total: 50 }, swim: { total: 0 } });

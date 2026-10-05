@@ -5,6 +5,10 @@
   "_id": "E9rtUBRIgt039HZN",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"finesse","to":"might","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"might","to":"finesse","mode":"bestOf"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the boot's Sharp attack, rolling whichever of Finesse or Might is better, with the listed damage and reach.</p>"

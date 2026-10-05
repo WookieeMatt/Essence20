@@ -414,12 +414,9 @@ async function runShipIntegration(item) {
 /*  Hooks into rolls and data                    */
 /* -------------------------------------------- */
 
-export function zordRollSources(actor, target, { isAttack, isMelee, rolledSkill } = {}) {
+export function zordRollSources(actor, target, { rolledSkill } = {}) {
   const sources = [];
-  // Megafauna: "All melee attacks gain ↑1 due to bestial ferocity."
-  if (actor?.type == 'zord' && isAttack && isMelee && inMegafaunaForm(actor)) {
-    sources.push({ id: 'zord1Megafauna', label: findSourced(actor, ZS.megafauna).name, shiftUp: 1 });
-  }
+  // Megafauna's melee ↑1 is a rule on its pack item.
 
   // Ship Integration: the ship uses the pilot's Phantom Suite - "↑1 and Edge to all Infiltration
   // (Stealth) Skill Tests".
@@ -476,7 +473,8 @@ export function zordDerived(actor) {
     }
   }
 
-  // Megafauna: "The Zord has Smarts and Social Essence Scores of 3... Evasion Defense gains a +3 bonus."
+  // Megafauna: "The Zord has Smarts and Social Essence Scores of 3" - after Terrorzord Nature's 5 and 4.
+  // Its Evasion +3 is a rule on its pack item.
   if (actor.type == 'zord' && inMegafaunaForm(actor)) {
     if (system.essences?.smarts) {
       system.essences.smarts.value = 3;
@@ -484,12 +482,6 @@ export function zordDerived(actor) {
 
     if (system.essences?.social) {
       system.essences.social.value = 3;
-    }
-
-    const evasion = system.defenses?.evasion;
-    if (evasion) {
-      evasion.total = (Number(evasion.total) || 0) + 3;
-      evasion.string = `${evasion.string ?? ''} + 3 (${findSourced(actor, ZS.megafauna).name})`;
     }
   }
 

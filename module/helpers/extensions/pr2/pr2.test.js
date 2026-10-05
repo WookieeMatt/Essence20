@@ -234,19 +234,6 @@ describe("Finster's", () => {
 });
 
 describe('Perks', () => {
-  test('Keen Eye Edge on Alertness (Perception) only', () => {
-    const actor = makeActor({
-      items: [{ flags: src(common.PR2.keenEye) }],
-      system: { skills: { alertness: { specializations: { a: { name: 'Perception' }, b: { name: 'Investigation' } } } } },
-    });
-    const options = {};
-    perks.keenEyeApply(actor, options, { rolledSkill: 'alertness', dataset: { specializationKey: 'a' } });
-    expect(options.edge).toBe(true);
-    const other = {};
-    perks.keenEyeApply(actor, other, { rolledSkill: 'alertness', dataset: { specializationKey: 'b' } });
-    expect(other.edge).toBeUndefined();
-  });
-
   test('Grid Relic weapon rolls the Role skill die for Energy damage', () => {
     const { weapon, effect } = perks.relicData('might', { id: 'p' });
     expect(weapon.system.traits).toContain('powerWeapon');

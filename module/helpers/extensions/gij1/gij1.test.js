@@ -56,17 +56,6 @@ describe('gear', () => {
     gear = await import('./gear.mjs');
   });
 
-  test('Adjustable Faceplate adds to Toughness closed, Evasion open, only when worn', () => {
-    const armor = item('armor', { id: 'arm', system: { equipped: true } });
-    const plate = item('upgrade', { source: CCX('kEJP9jn7Q0LLufmG'), flags: { parentId: 'arm' } });
-    const a = actor([armor, plate]);
-    expect(gear.faceplateBonus(a).defense).toBe('toughness');
-    plate.flags.essence20.gij1Faceplate = 'open';
-    expect(gear.faceplateBonus(a).defense).toBe('evasion');
-    armor.system.equipped = false;
-    expect(gear.faceplateBonus(a)).toBeNull();
-  });
-
   test('Anonymous snags a repeat Outwit from an Inundation holder', () => {
     const target = actor([item('upgrade', { source: CCX('yFikSROr3NzaEoaL') })], {}, { uuid: 'Actor.t' });
     const attacker = actor([item('perk', { source: 'Compendium.essence20.gi_joe_crb.Item.Q09tkHIaVX65lokl' })], {}, {

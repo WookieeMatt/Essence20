@@ -10,7 +10,7 @@ const actor = (items = [], extra = {}) => ({
   items: { contents: items, get: id => items.find(i => i.id == id) }, statuses: new Set(), setFlag: jest.fn(), unsetFlag: jest.fn(),
 });
 
-let senses, perks, shield, reckless, vehicles, artillery, G2;
+let perks, shield, reckless, vehicles, artillery, G2;
 
 beforeAll(async () => {
   global.game = { i18n: { localize: k => k, format: k => k }, user: { id: 'u', targets: new Set() }, actors: { get: () => null }, combat: null };
@@ -27,7 +27,6 @@ beforeAll(async () => {
   global.Hooks = { on: jest.fn(), once: jest.fn(), callAll: jest.fn() };
   global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
   ({ G2 } = await import('./shared.mjs'));
-  senses = await import('./senses.mjs');
   perks = await import('./perks.mjs');
   shield = await import('./shield.mjs');
   reckless = await import('./reckless.mjs');
@@ -40,13 +39,6 @@ beforeEach(() => {
   global.game.user.targets = new Set();
   global.ChatMessage.create.mockClear();
   global.ui.notifications.warn.mockClear();
-});
-
-test('Empathetic lifts a robot drone\'s Social Condition immunity', () => {
-  const robot = actor([item(G2.robot)]);
-  expect(senses.robotRefusesCondition(robot, 'frightened')).toBe(true);
-  expect(senses.robotRefusesCondition(robot, 'prone')).toBe(false);
-  expect(senses.robotRefusesCondition(actor([item(G2.robot), item(G2.empathetic)]), 'mesmerized')).toBe(false);
 });
 
 test('Mentor adds an Essence to a Skill; Energy Resistant makes worn armor Resistant', () => {

@@ -1050,13 +1050,13 @@ test('Ninja Storm Wind Ranger: ↑1 on Infiltration while the Form is active', (
   expect(ruleRollSources(ninja, null, { rolledSkill: 'athletics' }).sources).toEqual([]);
 });
 
-test('Ranger Operator: +2 Evasion while the Form is active', () => {
+test('Ranger Operator: +2 Evasion (and Toughness, with no Morphed armor bonus) while the Form is active', () => {
   const file = 'jttitems/_source/Ranger_Operator_nZYtfaowY0EH3Z0R.json';
   const operator = holder([file], { system: { isMorphed: true, defenses: pass2Defenses() } });
   operator.flags = formFlags('Compendium.essence20.jump_through_time.Item.nZYtfaowY0EH3Z0R');
   ruleDerived(operator);
   expect(operator.system.defenses.evasion.total).toBe(13);
-  expect(operator.system.defenses.toughness.total).toBe(12);
+  expect(operator.system.defenses.toughness.total).toBe(14);
   const other = holder([file], { system: { isMorphed: true, defenses: pass2Defenses() } });
   other.flags = formFlags('Compendium.essence20.across_the_stars.Item.4ksM4tGqdjuyPSj1');
   ruleDerived(other);
@@ -7420,4 +7420,804 @@ describe('regC2', () => {
       expect(ruleCover(surveyor, target, { item: weaponEffect() }).reduce).toBe(0);
     });
   });
+});
+
+// slA zord
+
+describe('slA zord: Forms, Zord Features and Alt Modes from the zord1/zord2 slices', () => {
+  const OPERATOR = 'Compendium.essence20.jump_through_time.Item.nZYtfaowY0EH3Z0R';
+  const BEAST = 'Compendium.essence20.beneath_the_helmet.Item.8FGJyvGaCOd8hrSA';
+  const TIME_FORCE = 'Compendium.essence20.jump_through_time.Item.DHTCWLVAKNmtm2iu';
+  const SUPERSONIC = 'Compendium.essence20.across_the_stars.Item.Ylo4AY4LCHTXjuuE';
+
+  test('Ranger Operator: +2 Toughness in place of the Morphed armor bonus, ↑1 on Driving and Survival', () => {
+    const file = 'jttitems/_source/Ranger_Operator_nZYtfaowY0EH3Z0R.json';
+    const defenses = () => ({ ...pass2Defenses(), toughness: { total: 16, morphed: 3, string: '16' } });
+    const operator = holder([file], { system: { isMorphed: true, defenses: defenses() } });
+    operator.flags = formFlags(OPERATOR);
+    ruleDerived(operator);
+    expect(operator.system.defenses.toughness.total).toBe(15);
+    expect(operator.system.defenses.evasion.total).toBe(13);
+    for (const skill of ['driving', 'survival']) {
+      expect(ruleRollSources(operator, null, { rolledSkill: skill }).sources).toEqual([expect.objectContaining({ shiftUp: 1 })]);
+    }
+
+    expect(ruleRollSources(operator, null, { rolledSkill: 'athletics' }).sources).toEqual([]);
+    // Un-Morphed, or another Form active: nothing.
+    const unmorphed = holder([file], { system: { isMorphed: false, defenses: defenses() } });
+    unmorphed.flags = formFlags(OPERATOR);
+    ruleDerived(unmorphed);
+    expect(unmorphed.system.defenses.toughness.total).toBe(16);
+    expect(ruleRollSources(unmorphed, null, { rolledSkill: 'driving' }).sources).toEqual([]);
+    const other = holder([file], { system: { isMorphed: true, defenses: defenses() } });
+    other.flags = formFlags(SUPERSONIC);
+    expect(ruleRollSources(other, null, { rolledSkill: 'driving' }).sources).toEqual([]);
+  });
+
+  test('Beast Morpher: Gorilla ↑2 Brawn and +2 Health, Jackrabbit jump switch', () => {
+    const file = 'bthitems/_source/Beast_Morpher__Form__8FGJyvGaCOd8hrSA.json';
+    const morpher = beast => {
+      const actor = holder([file], { system: { isMorphed: true, health: { max: 5 }, defenses: pass2Defenses() } });
+      actor.flags = formFlags(BEAST);
+      actor.items.contents[0].flags = { essence20: { zord1Beast: beast } };
+      rebuildIndex(actor);
+      return actor;
+    };
+
+    const cheetah = morpher('cheetah');
+    cheetah.system.movement = { ground: { total: 30 } };
+    ruleDerived(cheetah);
+    expect(cheetah.system.movement.ground.total).toBe(50);
+    expect(cheetah.system.health.max).toBe(5);
+
+    const gorilla = morpher('gorilla');
+    gorilla.system.movement = { ground: { total: 30 } };
+    ruleDerived(gorilla);
+    expect(gorilla.system.movement.ground.total).toBe(30);
+    expect(gorilla.system.health.max).toBe(7);
+    expect(ruleRollSources(gorilla, null, { rolledSkill: 'brawn' }).sources).toEqual([expect.objectContaining({ shiftUp: 2 })]);
+    expect(ruleRollSources(gorilla, null, { rolledSkill: 'athletics' }).sources).toEqual([]);
+    expect(switchNames(gorilla, { rolledSkill: 'athletics' })).toEqual([]);
+
+    const rabbit = morpher('jackrabbit');
+    ruleDerived(rabbit);
+    expect(rabbit.system.health.max).toBe(5);
+    expect(ruleRollSources(rabbit, null, { rolledSkill: 'brawn' }).sources).toEqual([]);
+    const [jump] = ruleDialogSwitches(rabbit, { rolledSkill: 'athletics' });
+    expect(jump).toMatchObject({ label: 'Jumping (Jackrabbit: Edge, Specialized)', value: false });
+    expect(tick(rabbit, { rolledSkill: 'athletics' })).toMatchObject({ edge: true, isSpecialized: true });
+    expect(switchNames(rabbit, { rolledSkill: 'acrobatics' })).toEqual([]);
+
+    // Not the active Form: nothing.
+    gorilla.flags = formFlags(OPERATOR);
+    expect(ruleRollSources(gorilla, null, { rolledSkill: 'brawn' }).sources).toEqual([]);
+  });
+
+  test('Ninja Storm Wind Ranger: Ground Movement doubled while the Form is active', () => {
+    const ninja = holder(['bthitems/_source/Ninja_Storm_Wind_Ranger__Form__Txv1ODlLKY91hPrA.json'], { system: { isMorphed: true, movement: { ground: { total: 30 } } } });
+    ruleDerived(ninja);
+    expect(ninja.system.movement.ground.total).toBe(30);
+    ninja.flags = formFlags('Compendium.essence20.beneath_the_helmet.Item.Txv1ODlLKY91hPrA');
+    ruleDerived(ninja);
+    expect(ninja.system.movement.ground.total).toBe(60);
+  });
+
+  test('Time Force: an Edge switch, ticked when the Specialization is about time travel', () => {
+    const actor = holder(['jttitems/_source/Time_Force_DHTCWLVAKNmtm2iu.json'], {
+      system: { isMorphed: true, skills: { science: { specializations: { s1: { name: 'Chronometry' }, s2: { name: 'Robotics' } } } } },
+    });
+    actor.flags = formFlags(TIME_FORCE);
+    const switches = ctx => ruleDialogSwitches(actor, ctx).map(({ label, value }) => ({ label, value }));
+    const label = 'Time-travel Specialization (Time Force: Edge)';
+    expect(switches({ rolledSkill: 'science', dataset: { specializationKey: 's1' } })).toEqual([{ label, value: true }]);
+    expect(switches({ rolledSkill: 'science', dataset: { specializationKey: 's2' } })).toEqual([{ label, value: false }]);
+    expect(switches({ rolledSkill: 'science', dataset: {} })).toEqual([{ label, value: false }]);
+    expect(tick(actor, { rolledSkill: 'science', dataset: {} })).toMatchObject({ edge: true });
+    expect(switches({ rolledSkill: 'targeting', dataset: {}, item: { type: 'weaponEffect', system: {} } })).toEqual([]);
+    actor.system.isMorphed = false;
+    expect(switches({ rolledSkill: 'science', dataset: {} })).toEqual([]);
+  });
+
+  test('Supersonic: an Edge against the Xenotech weapon Snag, unless the weapon was critted', () => {
+    const actor = holder(['atsitems/_source/Supersonic__Form__Ylo4AY4LCHTXjuuE.json'], { system: { isMorphed: true } });
+    actor.flags = formFlags(SUPERSONIC);
+    const weapon = { id: 'w1', type: 'weapon', name: 'Xeno Rifle', flags: {}, system: { traits: ['xenotech'] }, parent: actor };
+    const effect = { id: 'e1', type: 'weaponEffect', flags: { essence20: { parentId: 'w1' } }, system: { classification: { style: 'projectile' } }, parent: actor };
+    actor.items.contents.push(weapon, effect);
+    const roll = { item: effect, isAttack: true, isMelee: false };
+    expect(ruleRollSources(actor, null, roll).sources).toEqual([expect.objectContaining({ edge: true, label: 'No Xenotech weapon penalty (Supersonic: Edge)' })]);
+    weapon.flags = { essence20: { xenotechCritted: true } };
+    expect(ruleRollSources(actor, null, roll).sources).toEqual([]);
+    weapon.flags = {};
+    weapon.system.traits = [];
+    expect(ruleRollSources(actor, null, roll).sources).toEqual([]);
+  });
+
+  test('Megafauna: melee ↑1 and +3 Evasion while the Zord is in its Megafauna Form', () => {
+    const zord = holder(['atsitems/_source/Megafauna_c6plguiUVmJzGNsw.json'], { system: { defenses: pass2Defenses() } });
+    zord.type = 'zord';
+    zord.flags = { essence20: { zord1Megafauna: true } };
+    ruleDerived(zord);
+    expect(zord.system.defenses.evasion.total).toBe(14);
+    expect(ruleRollSources(zord, null, { isAttack: true, isMelee: true }).sources).toEqual([expect.objectContaining({ shiftUp: 1 })]);
+    expect(ruleRollSources(zord, null, { isAttack: true, isMelee: false }).sources).toEqual([]);
+    zord.flags.essence20.zord1Megafauna = false;
+    zord.system.defenses = pass2Defenses();
+    ruleDerived(zord);
+    expect(zord.system.defenses.evasion.total).toBe(11);
+    expect(ruleRollSources(zord, null, { isAttack: true, isMelee: true }).sources).toEqual([]);
+    // Only on a Zord.
+    zord.type = 'playerCharacter';
+    zord.flags.essence20.zord1Megafauna = true;
+    expect(ruleRollSources(zord, null, { isAttack: true, isMelee: true }).sources).toEqual([]);
+  });
+
+  test('Hybridization (Fast Shift): Mass Shift costs a Free action', async () => {
+    const { costRulesFor } = await import('./actions.mjs');
+    const actor = holder(['tfcrbitems/_source/Hybridization_R5SobOsimfa7mvdy.json']);
+    const massShift = { type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.tf_crb.Item.0JiAkBjJzsuezfaI' } } };
+    const offers = ctx => costRulesFor(actor).filter(rule => rule.matches(ctx));
+    expect(offers({ kind: 'item', item: massShift })).toEqual([]);
+    actor.items.contents[0].flags = { essence20: { zord2Hybrid: 'fastShift' } };
+    rebuildIndex(actor);
+    const [rule] = offers({ kind: 'item', item: massShift });
+    expect(rule.to('move')).toBe('free');
+    expect(offers({ kind: 'item', item: { type: 'perk', flags: {} } })).toEqual([]);
+  });
+
+  test.each([
+    ['tsitems/_source/Primate__Common__Kj8DtQoNrUf2dmI5.json'],
+    ['tsitems/_source/Primate__Large__yeeGDdU2LDKyNhBd.json'],
+  ])('%s: Climb at least 30 ft in that Alt Mode', file => {
+    const actor = holder([file], { system: { isTransformed: true, movement: { climb: { total: 25 }, ground: { total: 50 } } } });
+    actor.system.altModeId = actor.items.contents[0].id;
+    ruleDerived(actor);
+    expect(actor.system.movement.climb.total).toBe(30);
+    actor.system.movement.climb.total = 40;
+    ruleDerived(actor);
+    expect(actor.system.movement.climb.total).toBe(40);
+    actor.system.isTransformed = false;
+    actor.system.movement.climb.total = 25;
+    ruleDerived(actor);
+    expect(actor.system.movement.climb.total).toBe(25);
+  });
+
+  test.each([
+    ['tsitems/_source/Carapaced__Common__aTevGfLML1dlbErs.json'],
+    ['tsitems/_source/Carapaced__Large__2mSP6mVx0axvOlXf.json'],
+  ])('%s: Underground 25 ft in that Alt Mode when picked', file => {
+    const actor = holder([file], { system: { isTransformed: true, movement: { burrow: { total: 0 }, ground: { total: 40 } } } });
+    const altMode = actor.items.contents[0];
+    actor.system.altModeId = altMode.id;
+    ruleDerived(actor);
+    expect(actor.system.movement.burrow.total).toBe(0);
+    altMode.flags = { essence20: { zord2CarapacedChoice: 'burrow' } };
+    rebuildIndex(actor);
+    ruleDerived(actor);
+    expect(actor.system.movement).toMatchObject({ burrow: { total: 25 }, ground: { total: 40 } });
+  });
+});
+
+// slA pr1
+
+describe('slA pr1', () => {
+  const dinoFile = 'bthitems/_source/Advanced_Dino_Gem_Integration_K4CUMFhAjXRFzGbA.json';
+  const lightspeedFile = 'atsitems/_source/Lightspeed_Boost_sap5gMPDrWvjLCCu.json';
+
+  /** A Zord holding the feature with this pick (its flag), and a driver and a passenger seated in it. */
+  function seatedZord(file, flags) {
+    const zord = holder([file]);
+    Object.assign(zord, { type: 'zord', uuid: `Actor.slA${zord.id}` });
+    zord.items.contents[0].flags = { essence20: flags };
+    const pilot = holder([]);
+    const rider = holder([]);
+    pilot.uuid = `Actor.slA${pilot.id}`;
+    rider.uuid = `Actor.slA${rider.id}`;
+    zord.system.actors = { a: { uuid: pilot.uuid, vehicleRole: 'driver' }, b: { uuid: rider.uuid, vehicleRole: 'passenger' } };
+    rebuildIndex(zord);
+    game.actors = { contents: [pilot, rider, zord] };
+    return { zord, pilot, rider };
+  }
+
+  afterEach(() => {
+    game.actors = undefined;
+    delete global.ChatMessage;
+  });
+
+  test('Chronicler: a switch on non-attack rolls; a failed roll with it ticked leaves the holder Impaired', async () => {
+    const { fireTriggers } = await import('./triggers.mjs');
+    const actor = holder(['jttitems/_source/Chronicler_Psds3JLg4UmugRkT.json']);
+    const toggled = [];
+    actor.toggleStatusEffect = async (...args) => toggled.push(args);
+    actor.isOwner = true;
+    global.ChatMessage = { create: async () => {}, getSpeaker: () => ({}) };
+    expect(ruleDialogSwitches(actor, { rolledSkill: 'culture' })).toEqual([expect.objectContaining({ value: false })]);
+    expect(switchNames(actor, { item: { type: 'weaponEffect', system: {}, flags: {} } })).toEqual([]);
+    const options = tick(actor, { rolledSkill: 'culture' });
+    expect(options.ruleKeys).toEqual(['chronicler']);
+    expect([options.shiftUp, options.shiftDown, !!options.edge, !!options.snag]).toEqual([0, 0, false, false]);
+
+    const failed = { results: [{ success: false }, { success: false }] };
+    await fireTriggers(actor, 'afterRoll', { roll: { rolledSkill: 'culture', switches: [] }, outcome: 'failure', facts: failed });
+    expect(toggled).toEqual([]);
+    await fireTriggers(actor, 'afterRoll', { roll: { rolledSkill: 'culture', switches: ['chronicler'] }, outcome: 'success', facts: { results: [{ success: false }, { success: true }] } });
+    expect(toggled).toEqual([]);
+    await fireTriggers(actor, 'afterRoll', { roll: { rolledSkill: 'culture', switches: ['chronicler'] }, outcome: 'failure', facts: failed });
+    expect(toggled).toEqual([['impaired', { active: true }]]);
+  });
+
+  test('Advanced Dino Gem Integration: Sense and Stealth ↑2 for the Zord and its driver', () => {
+    const { zord, pilot, rider } = seatedZord(dinoFile, { pr1DinoGem: 'sense' });
+    expect(ruleRollSources(pilot, null, { rolledSkill: 'alertness' }).sources).toEqual([expect.objectContaining({ label: 'Advanced Dino Gem Integration', shiftUp: 2 })]);
+    expect(ruleRollSources(zord, null, { rolledSkill: 'alertness' }).sources).toEqual([expect.objectContaining({ shiftUp: 2 })]);
+    expect(ruleRollSources(rider, null, { rolledSkill: 'alertness' }).sources).toEqual([]);
+    expect(ruleRollSources(pilot, null, { rolledSkill: 'infiltration' }).sources).toEqual([]);
+    zord.items.contents[0].flags.essence20.pr1DinoGem = 'stealth';
+    expect(ruleRollSources(pilot, null, { rolledSkill: 'infiltration' }).sources).toEqual([expect.objectContaining({ shiftUp: 2 })]);
+    expect(ruleRollSources(zord, null, { rolledSkill: 'infiltration' }).sources).toEqual([expect.objectContaining({ shiftUp: 2 })]);
+    expect(ruleRollSources(pilot, null, { rolledSkill: 'alertness' }).sources).toEqual([]);
+    // Not chosen yet: nothing.
+    delete zord.items.contents[0].flags.essence20.pr1DinoGem;
+    expect(ruleRollSources(zord, null, { rolledSkill: 'infiltration' }).sources).toEqual([]);
+  });
+
+  test('Advanced Dino Gem Integration: two copies with the same pick still give one ↑2', () => {
+    const zord = holder([dinoFile, dinoFile]);
+    zord.type = 'zord';
+    for (const feature of zord.items.contents) {
+      feature.flags = { essence20: { pr1DinoGem: 'sense' } };
+    }
+
+    expect(ruleRollSources(zord, null, { rolledSkill: 'alertness' }).sources).toHaveLength(1);
+  });
+
+  test('Advanced Dino Gem Integration: Dino Shield puts a Snag on ranged attacks at the Zord', () => {
+    const zord = holder([dinoFile]);
+    zord.type = 'zord';
+    zord.items.contents[0].flags = { essence20: { pr1DinoGem: 'shield' } };
+    const attacker = holder([]);
+    const attack = style => ({ item: { type: 'weaponEffect', flags: {}, system: { classification: { style } } }, isAttack: true, isMelee: style == 'melee' });
+    expect(ruleRollSources(attacker, zord, attack('energy')).sources).toEqual([expect.objectContaining({ label: 'Advanced Dino Gem Integration', snag: true })]);
+    expect(ruleRollSources(attacker, zord, attack('melee')).sources).toEqual([]);
+    expect(ruleRollSources(attacker, zord, { rolledSkill: 'athletics' }).sources).toEqual([]);
+    zord.items.contents[0].flags.essence20.pr1DinoGem = 'sense';
+    expect(ruleRollSources(attacker, zord, attack('energy')).sources).toEqual([]);
+  });
+
+  test('Lightspeed Boost (Medical): ↑2 on Science and Technology for the Zord and everyone seated in it', () => {
+    const { zord, pilot, rider } = seatedZord(lightspeedFile, { pr1LightspeedBoost: { option: 'medical' } });
+    for (const who of [zord, pilot, rider]) {
+      expect(ruleRollSources(who, null, { rolledSkill: 'science' }).sources).toEqual([expect.objectContaining({ label: 'Medical (Lightspeed Boost: ↑2)', shiftUp: 2 })]);
+      expect(ruleRollSources(who, null, { rolledSkill: 'technology' }).sources).toHaveLength(1);
+      expect(ruleRollSources(who, null, { rolledSkill: 'culture' }).sources).toEqual([]);
+    }
+
+    expect(ruleRollSources(holder([]), null, { rolledSkill: 'science' }).sources).toEqual([]);
+    zord.items.contents[0].flags.essence20.pr1LightspeedBoost = { option: 'aeronautic' };
+    expect(ruleRollSources(pilot, null, { rolledSkill: 'science' }).sources).toEqual([]);
+    expect(ruleRollSources(zord, null, { rolledSkill: 'science' }).sources).toEqual([]);
+  });
+});
+
+// slA pr2/pr3
+describe('slA pr2/pr3', () => {
+  test('Keen Eye: Edge on Alertness rolled with a Perception Specialization only', () => {
+    const specializations = { a: { name: 'Perception' }, b: { name: 'Investigation' } };
+    const actor = holder(['prcrbitems/_source/Keen_Eye_Z4YwTrUSDQIrDkQT.json'], { system: { skills: { alertness: { specializations } } } });
+    const edges = (rolledSkill, dataset) => ruleRollSources(actor, null, { rolledSkill, dataset }).sources.filter(s => s.edge);
+    expect(edges('alertness', { specializationKey: 'a' })).toHaveLength(1);
+    expect(edges('alertness', { specializationKey: 'b' })).toEqual([]);
+    expect(edges('alertness', {})).toEqual([]);
+    expect(edges('science', { specializationKey: 'a' })).toEqual([]);
+  });
+
+  test('Unique Weapon (Versatile Melee): ↑2 against targets at least 3 sizes larger, counted once', () => {
+    const actor = holder([
+      'prcrbitems/_source/Unique_Weapon_Versatile_Melee_Might_Effect_Pr3UniqEffVersMt.json',
+      'prcrbitems/_source/Unique_Weapon_Versatile_Melee_Finesse_Effect_Pr3UniqEffVersFn.json',
+    ], { system: { size: 'common' } });
+    const weapon = { id: 'w', name: 'Unique Weapon (Versatile Melee)', type: 'weapon', parent: actor, flags: { core: { sourceId: 'Compendium.essence20.pr_crb.Item.Pr3UniqWpnVersat' } }, system: {} };
+    const [might, finesse] = actor.items.contents;
+    actor.items.contents.push(weapon);
+    for (const effect of [might, finesse]) {
+      effect.flags = { essence20: { parentId: 'w' } };
+    }
+
+    rebuildIndex(actor);
+    const up = (item, size) => ruleRollSources(actor, size ? { system: { size } } : null, { item, isAttack: true, isMelee: true }).sources.reduce((sum, s) => sum + s.shiftUp, 0);
+    expect(up(might, 'huge')).toBe(2);
+    expect(up(finesse, 'gigantic')).toBe(2);
+    expect(up(might, 'long')).toBe(0);
+    expect(up(might, null)).toBe(0);
+    // Another weapon's attack.
+    const other = { id: 'x', type: 'weaponEffect', parent: actor, flags: { essence20: { parentId: 'o' } }, system: {} };
+    actor.items.contents.push({ id: 'o', type: 'weapon', parent: actor, flags: {}, system: {} }, other);
+    expect(up(other, 'gigantic')).toBe(0);
+  });
+
+  test('Jungle Fury Rhino Sentry Shield: ranged attacks against an active one take ↓2 unless the wielder is in Cover', () => {
+    const target = holder(['ttsgitems/_source/Jungle_Fury_Rhino_Sentry_Shield_WXcEsB0FYQGJZrsD.json']);
+    const shield = target.items.contents[0];
+    const attacker = holder([]);
+    const down = (isMelee = false) => ruleRollSources(attacker, target, { isAttack: true, isMelee, item: { type: 'weaponEffect', system: {} } }).sources.reduce((sum, s) => sum + s.shiftDown, 0);
+    expect(down()).toBe(0);
+    shield.system.equipped = true;
+    rebuildIndex(target);
+    expect(down()).toBe(0);
+    shield.system.active = true;
+    expect(down()).toBe(2);
+    expect(down(true)).toBe(0);
+    expect(ruleRollSources(attacker, null, { isAttack: true, isMelee: false }).sources).toEqual([]);
+    target.statuses.add('cover');
+    expect(down()).toBe(0);
+    target.statuses.delete('cover');
+    target.statuses.add('totalCover');
+    expect(down()).toBe(0);
+  });
+});
+
+// slB tf1
+describe('slB tf1', () => {
+  test('Fearsome Additions: ↑1 on Intimidation in Bot Mode only', () => {
+    const actor = holder(['dditems/_source/Fearsome_Additions_jh4FiaiLPb40jqkv.json'], { system: { isTransformed: false } });
+    expect(ruleRollSources(actor, null, { rolledSkill: 'intimidation' }).sources).toEqual([expect.objectContaining({ shiftUp: 1, label: 'Fearsome Additions' })]);
+    expect(ruleRollSources(actor, null, { rolledSkill: 'persuasion' }).sources).toEqual([]);
+    actor.system.isTransformed = true;
+    expect(ruleRollSources(actor, null, { rolledSkill: 'intimidation' }).sources).toEqual([]);
+  });
+
+  test('Experiment (Shove): ↑1 on a Shove, not on other rolls or with another option', () => {
+    const actor = holder(['tfcrbitems/_source/Experiment_EcSOADOOb3PZMolz.json']);
+    const perk = actor.items.contents[0];
+    perk.system = { ...perk.system, choice: 'shove' };
+    expect(ruleRollSources(actor, null, { rolledSkill: 'athletics', isShove: true }).sources).toEqual([expect.objectContaining({ shiftUp: 1, label: 'Experiment' })]);
+    expect(ruleRollSources(actor, null, { rolledSkill: 'athletics', isAttack: true, item: { type: 'weaponEffect', system: { damageType: 'grapple' } } }).sources).toEqual([]);
+    perk.system = { ...perk.system, choice: 'technology' };
+    expect(ruleRollSources(actor, null, { rolledSkill: 'athletics', isShove: true }).sources).toEqual([]);
+  });
+
+  test.each([
+    ['Dinobot', 'tsitems/_source/Dinobot_tx4mlGvMhiWXA4mp.json', 'brawn', 'survival'],
+    ['Maximal', 'tsitems/_source/Maximal_z3Ig9tbOEq4erPU5.json', 'science', 'technology'],
+    ['Predacon', 'tsitems/_source/Predacon_jRD6G5Z6eblTvxeO.json', 'intimidation', 'persuasion'],
+  ])('%s: an Edge switch on the chosen Skill, on by default for a Specialization roll', (name, file, skill, other) => {
+    const actor = holder([file]);
+    const perk = actor.items.contents[0];
+    expect(ruleDialogSwitches(actor, { rolledSkill: skill, dataset: {} })).toEqual([]);
+    perk.system = { ...perk.system, choice: skill };
+    const [spec, ...more] = ruleDialogSwitches(actor, { rolledSkill: skill, dataset: { specializationKey: 'k' } });
+    expect(more).toEqual([]);
+    expect(spec).toMatchObject({ value: true, label: `${name}: Edge (chosen Specialization)` });
+    const [plain, ...extra] = ruleDialogSwitches(actor, { rolledSkill: skill, dataset: {} });
+    expect(extra).toEqual([]);
+    expect(plain.value).toBe(false);
+    expect(ruleDialogSwitches(actor, { rolledSkill: other, dataset: {} })).toEqual([]);
+    expect(tick(actor, { rolledSkill: skill, dataset: {} })).toMatchObject({ edge: true });
+    // Edge and a Snag cancel when the roll is made (the old switch cleared the Snag instead).
+    expect(tick(actor, { rolledSkill: skill, dataset: {} }, { snag: true })).toMatchObject({ edge: true, snag: true });
+  });
+
+  test('Predacon: a Skill outside its list never gets the switch', () => {
+    const actor = holder(['tsitems/_source/Predacon_jRD6G5Z6eblTvxeO.json']);
+    actor.items.contents[0].system = { ...actor.items.contents[0].system, choice: 'persuasion' };
+    expect(ruleDialogSwitches(actor, { rolledSkill: 'persuasion', dataset: {} })).toEqual([]);
+  });
+
+  test('Partnered: Lend Assistance as a Free action, asked, once a partner is chosen', async () => {
+    const { costRulesFor } = await import('./actions.mjs');
+    const actor = holder(['dditems/_source/Partnered_6I4IIvDP3SOCJ5cR.json']);
+    const [rule] = costRulesFor(actor);
+    expect(rule).toMatchObject({ label: 'Partnered', ask: 'E20.Tf1AskPartnered' });
+    expect(rule.to()).toBe('free');
+    expect(rule.matches({ key: 'lendAssistance' })).toBe(false);
+    actor.items.contents[0].flags = { essence20: { partner: { uuid: 'Actor.p', name: 'P' } } };
+    expect(rule.matches({ key: 'lendAssistance' })).toBe(true);
+    expect(rule.matches({ key: 'sprint' })).toBe(false);
+  });
+});
+
+// slB tf3
+describe('slB tf3', () => {
+  test('Helical Spring: a chat reminder when converting either way', async () => {
+    const { jest } = await import('@jest/globals');
+    const { fireTriggers } = await import('./triggers.mjs');
+    const saved = global.ChatMessage;
+    global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
+    try {
+      const actor = holder(['tfcrbitems/_source/Helical_Spring_OmGdMZlotKHVFzhR.json']);
+      actor.name = 'Blades';
+      await fireTriggers(actor, 'untransform');
+      expect(ChatMessage.create).toHaveBeenCalledTimes(1);
+      expect(ChatMessage.create.mock.calls[0][0].content).toContain('Blades can move 10ft as part of converting to Bot Mode.');
+      await fireTriggers(actor, 'transform');
+      expect(ChatMessage.create).toHaveBeenCalledTimes(2);
+      expect(ChatMessage.create.mock.calls[1][0].content).toContain('Blades can Ram without moving 10ft first.');
+      await fireTriggers(holder([]), 'transform');
+      expect(ChatMessage.create).toHaveBeenCalledTimes(2);
+    } finally {
+      global.ChatMessage = saved;
+    }
+  });
+
+  test('Training Through Familiarity: Trained in Limited weapons only', () => {
+    const weapon = availability => ({ type: 'weapon', name: 'Gun', flags: {}, system: { availability } });
+    const actor = holder(['tfcrbitems/_source/Training_Through_Familiarity_9XITV6O09Up8QiwL.json']);
+    expect(ruleRequisitionAccess(actor, weapon('limited'))).toBe('trained');
+    expect(ruleRequisitionAccess(actor, weapon('standard'))).toBeNull();
+    expect(ruleRequisitionAccess(actor, weapon('restricted'))).toBeNull();
+    expect(ruleRequisitionAccess(actor, { type: 'armor', name: 'Vest', flags: {}, system: { availability: 'limited' } })).toBeNull();
+    expect(ruleRequisitionAccess(holder([]), weapon('limited'))).toBeNull();
+  });
+});
+
+// slB other2
+describe('slB other2', () => {
+  test('Peaceable: ↑1 on rolls to heal injuries', () => {
+    const actor = holder(['ghpfitems/_source/Peaceable_BHum6Sd6Zz7cra5b.json']);
+    const healing = dataset => ruleRollSources(actor, null, { rolledSkill: 'science', dataset }).sources;
+    for (const flag of ['isIveGotYou', 'isMindOverMatter', 'isRegeneration', 'isPatchUp', 'isPreventativeMeasures', 'isToughItOut', 'o2Heal']) {
+      expect(healing({ [flag]: true })).toEqual([expect.objectContaining({ label: 'Peaceable (healing)', shiftUp: 1, shiftDown: 0 })]);
+    }
+
+    expect(healing({ isPatchUp: 'true' })).toHaveLength(1);
+    expect(healing({ isIveGotYou: 'false' })).toEqual([]);
+    expect(healing({ isIveGotYou: false })).toEqual([]);
+    expect(healing({ isShove: true })).toEqual([]);
+    expect(healing({})).toEqual([]);
+    expect(ruleDialogSwitches(actor, { rolledSkill: 'science', dataset: {} })).toEqual([]);
+    // Initiative never counts.
+    expect(healing({ isInitiative: true })).toEqual([]);
+  });
+});
+
+// slC gij1
+describe('slC gij1', () => {
+  const FACEPLATE = 'ccitems/_source/Adjustable_Faceplate_kEJP9jn7Q0LLufmG.json';
+  const defenses = () => ({ toughness: { total: 12, string: '12' }, evasion: { total: 10, string: '10' } });
+
+  test('Adjustable Faceplate: +1 Toughness closed, +1 Evasion open, on a worn suit, not Morphed, player characters only', () => {
+    const build = ({ setting, equipped = true, type = 'playerCharacter', morphed = false, attached = true } = {}) => {
+      const actor = holder([FACEPLATE], { system: { isMorphed: morphed, defenses: defenses() } });
+      actor.type = type;
+      const plate = actor.items.contents[0];
+      plate.flags = { essence20: { ...(attached ? { parentId: 'arm' } : {}), ...(setting ? { gij1Faceplate: setting } : {}) } };
+      actor.items.contents.push({ id: 'arm', name: 'Armor', type: 'armor', flags: {}, system: { equipped }, parent: actor });
+      ruleDerived(actor);
+      return actor.system.defenses;
+    };
+
+    // Closed is the default.
+    expect(build()).toEqual({ toughness: { total: 13, string: '12 + 1 (Adjustable Faceplate)' }, evasion: { total: 10, string: '10' } });
+    expect(build({ setting: 'closed' }).toughness.total).toBe(13);
+    expect(build({ setting: 'open' })).toEqual({ toughness: { total: 12, string: '12' }, evasion: { total: 11, string: '10 + 1 (Adjustable Faceplate)' } });
+    // A loose upgrade counts; one on an unequipped suit doesn't.
+    expect(build({ attached: false }).toughness.total).toBe(13);
+    expect(build({ equipped: false })).toEqual(defenses());
+    expect(build({ morphed: true })).toEqual(defenses());
+    expect(build({ type: 'npc' })).toEqual(defenses());
+  });
+
+  test('Adjustable Faceplate: two copies still give one +1, set by the first worn one', () => {
+    const actor = holder([FACEPLATE, FACEPLATE], { system: { defenses: defenses() } });
+    const [first, second] = actor.items.contents;
+    const source = { _stats: { compendiumSource: 'Compendium.essence20.cobra_codex.Item.kEJP9jn7Q0LLufmG' } };
+    Object.assign(first, source, { flags: { essence20: { gij1Faceplate: 'open' } } });
+    Object.assign(second, source, { flags: { essence20: { gij1Faceplate: 'closed' } } });
+    ruleDerived(actor);
+    expect(actor.system.defenses).toMatchObject({ toughness: { total: 12 }, evasion: { total: 11 } });
+
+    // The first copy sits on an unequipped suit: the second one's setting counts.
+    const again = holder([FACEPLATE, FACEPLATE], { system: { defenses: defenses() } });
+    const [off, on] = again.items.contents;
+    Object.assign(off, source, { flags: { essence20: { gij1Faceplate: 'open', parentId: 'arm' } } });
+    Object.assign(on, source, { flags: { essence20: { gij1Faceplate: 'closed' } } });
+    again.items.contents.push({ id: 'arm', name: 'Armor', type: 'armor', flags: {}, system: { equipped: false }, parent: again });
+    ruleDerived(again);
+    expect(again.system.defenses).toMatchObject({ toughness: { total: 13 }, evasion: { total: 10 } });
+  });
+});
+
+// slC gij2
+
+describe('slC gij2', () => {
+  test('Robot: a drone refuses Frightened and Mesmerized until it has Empathetic', async () => {
+    const { ruleConditionImmune } = await import('./adapter.mjs');
+    const drone = holder(['gijcrbitems/_source/Robot_xV4nnjMxlb4dmyxo.json']);
+    expect(ruleConditionImmune(drone, 'frightened')).toBe(true);
+    expect(ruleConditionImmune(drone, 'mesmerized')).toBe(true);
+    expect(ruleConditionImmune(drone, 'prone')).toBe(false);
+    drone.items.contents.push({
+      id: 'emp', name: 'Empathetic', type: 'upgrade', parent: drone, system: {},
+      flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.SQgxzDgyhIjuOMaa' } },
+    });
+    rebuildIndex(drone);
+    expect(ruleConditionImmune(drone, 'frightened')).toBe(false);
+    expect(ruleConditionImmune(drone, 'mesmerized')).toBe(false);
+  });
+});
+
+// slC sit1
+describe('slC sit1', () => {
+  test('Spacewalker: Edge on Athletics/Acrobatics in low or zero gravity, ↑1 on other tests in zero gravity, not while crewing a vehicle', async () => {
+    const { setWorldLookups } = await import('./predicate.mjs');
+    const actor = holder(['atsitems/_source/Spacewalker_OasmncqkxGO3QCXv.json']);
+    actor.uuid = 'Actor.spacewalker';
+    const sources = ctx => ruleRollSources(actor, null, ctx).sources;
+    const savedActors = global.game.actors;
+    try {
+      setWorldLookups({ environment: () => 'zeroGravity' });
+      expect(sources({ rolledSkill: 'athletics' })).toEqual([expect.objectContaining({ edge: true, shiftUp: 0, label: 'Spacewalker (Athletics, Acrobatics in low or zero gravity)' })]);
+      expect(sources({ rolledSkill: 'acrobatics' })).toEqual([expect.objectContaining({ edge: true, shiftUp: 0 })]);
+      expect(sources({ rolledSkill: 'science' })).toEqual([expect.objectContaining({ edge: false, shiftUp: 1, label: 'Spacewalker (zero gravity)' })]);
+      expect(sources({ item: { type: 'weaponEffect', system: {}, flags: {} }, rolledSkill: 'targeting' })).toEqual([expect.objectContaining({ shiftUp: 1 })]);
+      expect(sources({})).toEqual([expect.objectContaining({ shiftUp: 1 })]);
+      // Initiative never counts.
+      expect(sources({ rolledSkill: 'alertness', dataset: { isInitiative: true } })).toEqual([]);
+      setWorldLookups({ environment: () => 'lowGravity' });
+      expect(sources({ rolledSkill: 'athletics' })).toEqual([expect.objectContaining({ edge: true })]);
+      expect(sources({ rolledSkill: 'science' })).toEqual([]);
+      setWorldLookups({ environment: () => 'normal' });
+      expect(sources({ rolledSkill: 'athletics' })).toEqual([]);
+      expect(sources({ rolledSkill: 'science' })).toEqual([]);
+      expect(ruleDialogSwitches(actor, { rolledSkill: 'athletics' })).toEqual([]);
+      // "As an individual": not while crewing a vehicle.
+      setWorldLookups({ environment: () => 'zeroGravity' });
+      global.game.actors = [{ type: 'vehicle', system: { actors: { x: { uuid: 'Actor.spacewalker', vehicleRole: 'passenger' } } } }];
+      expect(sources({ rolledSkill: 'athletics' })).toEqual([]);
+      expect(sources({ rolledSkill: 'science' })).toEqual([]);
+    } finally {
+      global.game.actors = savedActors;
+      setWorldLookups({ environment: undefined });
+    }
+  });
+
+  test('Out of the Jungle: Edge on non-attack tests, Specialized attacks, ignores Rough Terrain', () => {
+    const actor = holder(['sssitems/_source/Out_of_the_Jungle_5jc5fjieruLuWQm1.json']);
+    const attack = { type: 'weaponEffect', system: { classification: { style: 'ranged' } }, flags: {} };
+    expect(ruleRollSources(actor, null, { rolledSkill: 'survival' }).sources).toEqual([expect.objectContaining({ edge: true, label: 'Out of the Jungle (non-attack tests)' })]);
+    expect(ruleRollSources(actor, null, {}).sources).toEqual([expect.objectContaining({ edge: true })]);
+    expect(ruleRollSources(actor, null, { item: attack, rolledSkill: 'targeting' }).sources).toEqual([]);
+    expect(ruleRollSources(actor, null, { rolledSkill: 'alertness', dataset: { isInitiative: true } }).sources).toEqual([]);
+    expect(ruleSpecializes(actor, 'targeting', attack)).toBe(true);
+    expect(ruleSpecializes(actor, 'survival', null)).toBe(false);
+    expect(ruleMovement(actor).ignoreRoughTerrain).toBe(true);
+    expect(ruleDialogSwitches(actor, { rolledSkill: 'survival' })).toEqual([]);
+    expect(ruleMovement(holder([])).ignoreRoughTerrain).toBe(false);
+  });
+
+  test.each([
+    'gijcrbitems/_source/Danger_Sense_2hwFRZ67xIGt1XTm.json',
+    'gijcrbitems/_source/Every_Trick_in_the_Book_HKv38GCtVdSV2qMH.json',
+  ])('%s: the holder can\'t be Surprised', async file => {
+    const { ruleConditionImmune } = await import('./adapter.mjs');
+    const actor = holder([file]);
+    expect(ruleConditionImmune(actor, 'surprised')).toBe(true);
+    expect(ruleConditionImmune(actor, 'prone')).toBe(false);
+    expect(ruleConditionImmune(holder([]), 'surprised')).toBe(false);
+  });
+});
+
+// slC sit2
+describe('slC sit2', () => {
+  test('Feet Wet: ignores Rough Terrain on sea terrain only', async () => {
+    const { setWorldLookups } = await import('./predicate.mjs');
+    const actor = holder(['qgtgitems/_source/Feet_Wet_7u3xCPPjxJlI7c61.json']);
+    try {
+      setWorldLookups({ terrain: () => 'sea' });
+      expect(ruleMovement(actor).ignoreRoughTerrain).toBe(true);
+      setWorldLookups({ terrain: () => 'arctic' });
+      expect(ruleMovement(actor).ignoreRoughTerrain).toBe(false);
+      setWorldLookups({ terrain: () => 'wetlands' });
+      expect(ruleMovement(actor).ignoreRoughTerrain).toBe(false);
+      setWorldLookups({ terrain: () => null });
+      expect(ruleMovement(actor).ignoreRoughTerrain).toBe(false);
+      expect(ruleMovement(holder([])).ignoreRoughTerrain).toBe(false);
+    } finally {
+      setWorldLookups({ terrain: undefined });
+    }
+  });
+});
+
+// slD react
+describe('slD react', () => {
+  test('Inspirational Leader: Lend Assistance at any Skill rank only while no combat exists', async () => {
+    const { ruleAssist } = await import('./adapter.mjs');
+    const leader = holder(['atsitems/_source/Inspirational_Leader_JH6xyTYUHCxAKkTP.json']);
+    const ally = holder([]);
+    const saved = global.game.combat;
+    try {
+      global.game.combat = null;
+      expect(ruleAssist(leader, ally, 'might').anyRank).toBe(true);
+      expect(ruleAssist(ally, leader, 'might').anyRank).toBe(false);
+      global.game.combat = { round: 0, started: false };
+      expect(ruleAssist(leader, ally, 'might').anyRank).toBe(false);
+      global.game.combat = { round: 2, started: true };
+      expect(ruleAssist(leader, ally, 'might').anyRank).toBe(false);
+      global.game.combat = null;
+      expect(ruleAssist(holder([]), ally, 'might').anyRank).toBe(false);
+    } finally {
+      global.game.combat = saved;
+    }
+  });
+});
+
+// slD resource
+describe('slD resource', () => {
+  test('History Buff: a ↑2 switch on Culture tests, ticked with a History Specialization', () => {
+    const actor = holder(['jttitems/_source/History_Buff_b3O5i3HMtaIHl6PD.json'], {
+      system: { skills: { culture: { specializations: { s1: { name: 'History' }, s2: { name: 'Art' } } } } },
+    });
+    const switches = ctx => ruleDialogSwitches(actor, ctx).map(({ label, value }) => ({ label, value }));
+    const label = 'History test (History Buff: ↑2)';
+    expect(switches({ rolledSkill: 'culture', dataset: { specializationKey: 's1' } })).toEqual([{ label, value: true }]);
+    expect(switches({ rolledSkill: 'culture', dataset: { specializationName: 'Ancient history' } })).toEqual([{ label, value: true }]);
+    expect(switches({ rolledSkill: 'culture', dataset: { specializationKey: 's2' } })).toEqual([{ label, value: false }]);
+    expect(switches({ rolledSkill: 'culture', dataset: {} })).toEqual([{ label, value: false }]);
+    expect(switches({ rolledSkill: 'science', dataset: { specializationKey: 's1' } })).toEqual([]);
+    expect(tick(actor, { rolledSkill: 'culture', dataset: {} })).toMatchObject({ shiftUp: 2 });
+    expect(tick(actor, { rolledSkill: 'culture', dataset: { specializationKey: 's1' } })).toMatchObject({ shiftUp: 2 });
+    // Never remembered: left unticked, it starts at its default again on the next roll.
+    const result = { shiftUp: 0, shiftDown: 0, ext: {} };
+    applyRuleSwitches(actor, result, { rolledSkill: 'culture', dataset: { specializationKey: 's1' } });
+    expect(result.shiftUp).toBe(0);
+    expect(switches({ rolledSkill: 'culture', dataset: { specializationKey: 's1' } })).toEqual([{ label, value: true }]);
+  });
+});
+
+// slE q1
+describe('slE q1', () => {
+  const gun = (availability, total = availability) => ({ type: 'weapon', name: 'Gun', flags: {}, system: { availability, totalAvailability: total, traits: [], items: {} } });
+  const entry = (id, name) => ({ type: 'upgrade', name, uuid: `Compendium.essence20.gi_joe_crb.Item.${id}`, availability: 'limited' });
+
+  test('Nu, Pogodi!: Qualified in Standard weapons (by the combined tier) and the Acclimating upgrade (id or name)', () => {
+    const actor = holder(['iafav2items/_source/Nu__Pogodi__sItc8nD7ockbQ1mn.json']);
+    expect(ruleRequisitionAccess(actor, gun('standard'))).toBe('qualified');
+    expect(ruleRequisitionAccess(actor, gun('automatic'))).toBe('qualified');
+    expect(ruleRequisitionAccess(actor, gun('limited'))).toBeNull();
+    expect(ruleRequisitionAccess(actor, gun('standard', 'limited'))).toBeNull();
+    expect(ruleRequisitionAccess(actor, { type: 'armor', name: 'Vest', flags: {}, system: { availability: 'standard' } })).toBeNull();
+    expect(ruleRequisitionAccess(holder([]), gun('standard'))).toBeNull();
+    expect(ruleQualifiedUpgrade(actor, entry('HSmtPttbJvaNy5Tf', 'Anything'))).toBe(true);
+    expect(ruleQualifiedUpgrade(actor, entry('zzzzzzzzzzzzzzzz', 'Acclimating'))).toBe(true);
+    expect(ruleQualifiedUpgrade(actor, { type: 'upgrade', name: 'acclimating', flags: {}, system: { availability: 'limited' } })).toBe(true);
+    expect(ruleQualifiedUpgrade(actor, entry('zzzzzzzzzzzzzzzz', 'Acclimating Mk II'))).toBe(false);
+    expect(ruleQualifiedUpgrade(holder([]), entry('HSmtPttbJvaNy5Tf', 'Acclimating'))).toBe(false);
+  });
+
+  test('Mega Training Regimen: ↑1 on attacks with vehicle weapon systems and Integrated hardpoint weapons', () => {
+    const actor = holder(['fffav1items/_source/Mega_Training_Regimen_nLT8HSCCGWEBiRlq.json']);
+    const integrated = { id: 'w1', type: 'weapon', name: 'Cannon', flags: {}, system: { hardpoint: { type: 'integrated' } } };
+    const external = { id: 'w2', type: 'weapon', name: 'Rifle', flags: {}, system: { hardpoint: { type: 'external' } } };
+    actor.items.contents.push(integrated, external);
+    const effectOf = (weapon, parent = actor) => ({ type: 'weaponEffect', system: {}, parent, flags: weapon ? { essence20: { parentId: weapon.id } } : {} });
+    const sources = ctx => ruleRollSources(actor, null, ctx).sources.map(({ label, shiftUp }) => ({ label, shiftUp }));
+    const mega = [{ label: 'Mega Training Regimen', shiftUp: 1 }];
+    expect(sources({ isAttack: true, item: effectOf(null, { type: 'vehicle', items: { get: () => null } }) })).toEqual(mega);
+    expect(sources({ isAttack: true, item: effectOf(null, { type: 'zord', items: { get: () => null } }) })).toEqual(mega);
+    expect(sources({ isAttack: true, item: effectOf(integrated) })).toEqual(mega);
+    expect(sources({ isAttack: true, item: effectOf(external) })).toEqual([]);
+    expect(sources({ isAttack: true, item: effectOf(null) })).toEqual([]);
+    expect(sources({ isAttack: false, item: effectOf(integrated) })).toEqual([]);
+    expect(sources({ isAttack: true, item: { type: 'spell', system: {}, parent: { type: 'vehicle' }, flags: {} } })).toEqual([]);
+    // A renamed copy is labelled with its own name, as before.
+    actor.items.contents[0].name = 'Mega Training';
+    expect(sources({ isAttack: true, item: effectOf(integrated) })).toEqual([{ label: 'Mega Training', shiftUp: 1 }]);
+  });
+});
+
+// slE dmlp
+describe('slE dmlp', () => {
+  const SOCIAL = ['animalHandling', 'deception', 'performance', 'persuasion', 'streetwise'];
+
+  test('Key to Whinnypeg: ↑2 or ↑1 switches on Social Skill tests while carried; only the bigger counts', () => {
+    const actor = holder(['iajitems/_source/Key_to_Whinnypeg_6HJlO4qnOTRqrOmF.json']);
+    for (const rolledSkill of SOCIAL) {
+      expect(switchNames(actor, { rolledSkill })).toEqual([
+        'Dealing with Whinnypeg VIPs (Key to Whinnypeg: ↑2)', 'Dealing with other VIPs (Key to Whinnypeg: ↑1)',
+      ]);
+    }
+
+    // The Skill's own Essence decides, as before - not an Essence the roll was switched to.
+    expect(switchNames(actor, { rolledSkill: 'alertness', rolledEssence: 'social' })).toEqual([]);
+    expect(switchNames(actor, { rolledSkill: 'spellcasting' })).toEqual([]);
+    expect(tick(actor, { rolledSkill: 'persuasion' })).toMatchObject({ shiftUp: 2 });
+    const [local, other] = ruleDialogSwitches(actor, { rolledSkill: 'persuasion' });
+    expect(local.value).toBe(false);
+    const result = { shiftUp: 0, shiftDown: 0, ext: { [other.name]: true } };
+    applyRuleSwitches(actor, result, { rolledSkill: 'persuasion' });
+    expect(result.shiftUp).toBe(1);
+
+    // None left, or put away: no switches.
+    actor.items.contents[0].system.quantity = 0;
+    expect(switchNames(actor, { rolledSkill: 'persuasion' })).toEqual([]);
+    actor.items.contents[0].system.quantity = 1;
+    actor.items.contents[0].system.equipped = false;
+    rebuildIndex(actor);
+    expect(switchNames(actor, { rolledSkill: 'persuasion' })).toEqual([]);
+  });
+
+  test("Mrs. Doubleshoe's Prize Honey: a ↑2 switch on any test while uses are left", () => {
+    const actor = holder(['dsoeitems/_source/Mrs__Doubleshoe_s_Prize_Honey_tbBjkVhSSc3Zj9zp.json']);
+    const honey = actor.items.contents[0];
+    expect(switchNames(actor, { rolledSkill: 'science' })).toEqual(['Cooking with Prize Honey (Prize Honey: ↑2)']);
+    expect(ruleDialogSwitches(actor, { rolledSkill: 'science' })[0].value).toBe(false);
+    expect(tick(actor, { rolledSkill: 'science' })).toMatchObject({ shiftUp: 2 });
+    honey.flags = { essence20: { usesLeft: 1 } };
+    expect(switchNames(actor, { rolledSkill: 'science' })).toHaveLength(1);
+    honey.flags.essence20.usesLeft = 0;
+    expect(switchNames(actor, { rolledSkill: 'science' })).toEqual([]);
+  });
+
+  test('Wheel Excited: an Edge switch on any test once a vehicle type is picked', () => {
+    const actor = holder(['mlpcrbitems/_source/Wheel_Excited_nJP3Jv15O5MFTNcA.json']);
+    const perk = actor.items.contents[0];
+    expect(switchNames(actor, { rolledSkill: 'driving' })).toEqual([]);
+    for (const [type, label] of [['land', 'Land'], ['sea', 'Sea'], ['air', 'Air']]) {
+      perk.flags = { essence20: { vehicleType: type } };
+      expect(switchNames(actor, { rolledSkill: 'technology' })).toEqual([`${label} vehicle test (Wheel Excited: Edge)`]);
+    }
+
+    expect(ruleDialogSwitches(actor, { rolledSkill: 'driving' })[0].value).toBe(false);
+    expect(tick(actor, { rolledSkill: 'driving' })).toMatchObject({ edge: true });
+  });
+});
+
+/* Fixes 2026-10-04: City Slicker's Streetwise switch (exact terrain gate, pre-ticked when urban - the slice toggle is
+   gone) and Bookworm's rule skipping Initiative (situational2/initiative.mjs handles it there). */
+
+test('City Slicker: Streetwise switch on Infiltration in an urban or untagged scene, pre-ticked only when urban', async () => {
+  const { setWorldLookups } = await import('./predicate.mjs');
+  const actor = holder(['iafav2items/_source/City_Slicker_xU1p1S5JuVu6XiAI.json'], { system: { skills: { infiltration: { shift: 'd20' }, streetwise: { shift: 'd6' } } } });
+  const offered = () => ruleDialogSwitches(actor, { rolledSkill: 'infiltration', dataset: {} }).filter(s => /City Slicker/.test(s.label));
+  try {
+    setWorldLookups({ terrain: () => 'urban' });
+    expect(offered().map(s => s.value)).toEqual([true]);
+    setWorldLookups({ terrain: () => null });
+    expect(offered().map(s => s.value)).toEqual([false]);
+    setWorldLookups({ terrain: () => 'forest' });
+    expect(offered()).toEqual([]);
+    expect(ruleDialogSwitches(actor, { rolledSkill: 'athletics', dataset: {} }).filter(s => /City Slicker/.test(s.label))).toEqual([]);
+  } finally {
+    setWorldLookups({ terrain: undefined });
+  }
+});
+
+test('Bookworm: ↓1 in a library scene, but not on Initiative (its slice adds that one)', () => {
+  const actor = holder(['wtnvcgitems/_source/Bookworm_p2Qk0B5PWp10ZaqN.json']);
+  global.game.scenes = { active: { name: 'Night Vale Public Library' } };
+  try {
+    expect(ruleRollSources(actor, null, { rolledSkill: 'culture', dataset: {} }).sources.map(s => s.shiftDown)).toEqual([1]);
+    expect(ruleRollSources(actor, null, { rolledSkill: 'initiative', dataset: { isInitiative: true } }).sources).toEqual([]);
+    expect(ruleDialogSwitches(actor, { rolledSkill: 'initiative', dataset: { isInitiative: true } })).toEqual([]);
+  } finally {
+    delete global.game.scenes;
+  }
+});
+
+/* Finesse or Might (data21/weapons.mjs, 2026-10-04): 66 weapon effects carry SkillSubstitution rules with scope item -
+   read off the rolled effect itself, so whoever rolls it (its owner, or a crew member firing a vehicle's weapon) swaps. */
+
+test('Finesse or Might: the rolled effect switches to the better of Finesse and Might, for whoever rolls it', async () => {
+  const { applySkillSubstitution } = await import('./adapter.mjs');
+  global.CONFIG = { ...(global.CONFIG ?? {}), E20: { ...(global.CONFIG?.E20 ?? {}), skillShiftList: ['d12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd20'], skillToEssence: { finesse: 'speed', might: 'strength' } } };
+  const effectOf = file => ({ id: `e${nextId++}`, type: 'weaponEffect', name: fromPack(file).name, flags: {}, system: fromPack(file).system });
+  const files = [
+    'gijcrbitems/_source/Close_Combat_Blade_Effect_hb5fKPK5GNTSlKvY.json',
+    'iafav2items/_source/Hobnailed_Boot_Effect_ReeqwVjlTrE1VeJv.json',
+  ];
+  // A roller who doesn't own the weapon (a vehicle's gunner): no items of their own.
+  const gunner = holder([], { system: { skills: { finesse: { shift: 'd4' }, might: { shift: 'd8' } } } });
+  for (const file of files) {
+    const effect = effectOf(file);
+    const dataset = { skill: 'finesse', essence: 'speed', shift: 'd4' };
+    expect(applySkillSubstitution(gunner, dataset, effect)).toBe('might');
+    expect(dataset).toMatchObject({ skill: 'might', essence: 'strength', shift: 'd8' });
+    // Already the better one: no change.
+    const might = { skill: 'might', essence: 'strength', shift: 'd8' };
+    expect(applySkillSubstitution(gunner, might, effect)).toBeNull();
+  }
+
+  // An ordinary weapon effect never swaps.
+  const plain = { type: 'weaponEffect', flags: {}, system: { rules: [] } };
+  expect(applySkillSubstitution(gunner, { skill: 'finesse', shift: 'd4' }, plain)).toBeNull();
 });

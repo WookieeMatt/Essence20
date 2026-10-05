@@ -108,7 +108,7 @@ beforeEach(() => {
 describe('registration', () => {
   test('Use buttons and hooks are registered', () => {
     const ids = ext.registrySnapshot().uses.map(u => u.id);
-    expect(ids).toEqual(expect.arrayContaining(['pr3MegaformTrait', 'pr3NinjaPower', 'pr3PowerHealCondition',
+    expect(ids).toEqual(expect.arrayContaining(['pr3NinjaPower', 'pr3PowerHealCondition',
       'pr3UniqueWeapon', 'pr3UniqueStore', 'pr3ElementalFury', 'pr3Overload', 'pr3ZordMount',
       'pr3EmissarysGift', 'pr3Navigator', 'pr3Safehaven']));
     expect(global.Hooks.on).toHaveBeenCalledWith('updateItem', expect.any(Function));
@@ -116,8 +116,8 @@ describe('registration', () => {
   });
 
   test('Use buttons match only their own items', () => {
-    const perk = makeItem({ flags: src(common.IDS.megaformTrait) });
-    expect(useFor(perk)?.id).toBe('pr3MegaformTrait');
+    const perk = makeItem({ flags: src(common.IDS.ninjaPower) });
+    expect(useFor(perk)?.id).toBe('pr3NinjaPower');
     expect(useFor(makeItem({ flags: src('Compendium.essence20.pr_crb.Item.other') }))).toBeNull();
     expect(useFor(makeItem({}))).toBeNull();
   });
@@ -214,14 +214,6 @@ describe('Unique Weapon', () => {
     expect(crb.halveSummonRounds(makeActor(), 5)).toBe(5);
   });
 
-  test('Versatile gains ↑2 against targets 3+ sizes larger', () => {
-    const actor = makeActor({ system: { size: 'common' }, items: [{ id: 'w', type: 'weapon', flags: src(common.IDS.uwVersatile) }, { id: 'e', type: 'weaponEffect', flags: { essence20: { parentId: 'w' } } }] });
-    const effect = actor.items.get('e');
-    const big = makeActor({ system: { size: 'gigantic' } });
-    expect(sourcesFor(actor, big, { isAttack: true, item: effect }).find(s => s.id == 'ext-pr3UniqueVersatile')?.shiftUp).toBe(2);
-    expect(sourcesFor(actor, makeActor({ system: { size: 'huge' } }), { isAttack: true, item: effect }).find(s => s.id == 'ext-pr3UniqueVersatile')).toBeUndefined();
-  });
-
   test('Two-Handed slows every movement type by 10ft while equipped', () => {
     const actor = makeActor({ system: { movement: { ground: { total: 30 }, aerial: { total: 0 } } }, items: [{ type: 'weapon', flags: src(common.IDS.uwTwoHanded), system: { equipped: true } }] });
     ext.runDerived(actor);
@@ -254,12 +246,6 @@ describe('Through the Shattered Grid', () => {
     expect(sourcesFor(zord, null, { isAttack: true }).find(s => s.id == 'ext-pr3Overload')?.edge).toBe(true);
     global.game.combat.turn = 1;
     expect(sourcesFor(zord, null, { isAttack: true }).find(s => s.id == 'ext-pr3Overload')).toBeUndefined();
-  });
-
-  test('an active Rhino Sentry Shield is cover against ranged attacks', () => {
-    const target = makeActor({ items: [{ type: 'shield', flags: src(common.IDS.rhinoShield), system: { equipped: true, active: true } }] });
-    expect(sourcesFor(makeActor(), target, { isAttack: true, isMelee: false }).find(s => s.id == 'ext-pr3RhinoCover')?.shiftDown).toBe(2);
-    expect(sourcesFor(makeActor(), target, { isAttack: true, isMelee: true }).find(s => s.id == 'ext-pr3RhinoCover')).toBeUndefined();
   });
 
   test("Emissary's Gift offers Role Perks at or below level, minus the excluded ones", () => {

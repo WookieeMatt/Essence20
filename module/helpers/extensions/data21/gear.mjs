@@ -1,56 +1,13 @@
-import { registerDerived, registerRollSources } from "../../extensions.mjs";
+import { registerRollSources } from "../../extensions.mjs";
 import { worldActors } from "../../companion-link.mjs";
-import { D21, T, findSourced, itemsOf, sourceOf } from "./common.mjs";
+import { D21, findSourced } from "./common.mjs";
 
 /**
  * Gear with a data-only gap:
- * - Drone Defenses upgrades (G.I. Joe CRB, Drone Upgrades, p.168-169): Basic "The drone gains a bonus
- *   to +1 Toughness or Evasion as though it was wearing battledress", Advanced +2, Specialized +3.
- *   Stored as armorBonus {defense, value} on the upgrade, but the actor's armor pass only reads armor
- *   upgrades - so a drone's Defense upgrades are added here. "As though it was wearing battledress":
- *   armor doesn't stack, so the best one per Defense counts.
  * - Sky Morpher (A Jump Through Time, R.P.M. Morphers, p.68): "The Sky Morpher links to a Ranger's
  *   Zord Attack Vehicles, granting an additional ↑1 bonus to Driving their own Zord."
+ * (The G.I. Joe drone Defenses upgrades are item rules now.)
  */
-
-const DRONE_DEFENSES = [D21.basicDefenses, D21.advancedDefenses, D21.specializedDefenses];
-
-export function droneDefenseBonus(actor) {
-  const best = {};
-  if (actor?.type != 'companion' || actor.system?.type != 'drone') {
-    return best;
-  }
-
-  for (const upgrade of itemsOf(actor)) {
-    if (upgrade.type != 'upgrade' || upgrade.system?.type != 'drone' || !DRONE_DEFENSES.includes(sourceOf(upgrade))) {
-      continue;
-    }
-
-    const defense = upgrade.system?.armorBonus?.defense;
-    const value = parseInt(upgrade.system?.armorBonus?.value) || 0;
-    if (defense && value > (best[defense] ?? 0)) {
-      best[defense] = value;
-    }
-  }
-
-  return best;
-}
-
-export function applyDroneDefenses(actor) {
-  for (const [defenseType, value] of Object.entries(droneDefenseBonus(actor))) {
-    const defense = actor.system?.defenses?.[defenseType];
-    if (!defense || !value) {
-      continue;
-    }
-
-    defense.total = (Number(defense.total) || 0) + value;
-    if (typeof defense.string == 'string') {
-      defense.string += ` + ${value} (${T('D21DroneDefenses')})`;
-    }
-  }
-}
-
-registerDerived(applyDroneDefenses);
 
 /* -------------------------------------------- */
 /*  Sky Morpher                                  */

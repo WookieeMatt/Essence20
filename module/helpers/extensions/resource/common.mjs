@@ -9,13 +9,10 @@ import { hasSourced, worldActors } from "../../companion-link.mjs";
 const C = pack => `Compendium.essence20.${pack}.Item.`;
 
 export const IDS = {
-  gotToGetTough: `${C('gi_joe_crb')}bIoMrn9aP9x6QYVL`,
   motorPool: `${C('quartermasters_guide_to_gear')}Lyb8wPzI0XUuwF3o`,
-  desperate: `${C('cobra_codex')}ZBhsKnZBy9SmjGvO`,
   moneyTalks: `${C('cobra_codex')}sAY8uesn2NTTcDqi`,
   playFavorites: `${C('cobra_codex')}5HimuCoEpjYRiOSV`,
   playFavoritesAgainst: `${C('cobra_codex')}f6hlQSJhLCTSAILh`,
-  profitDirector: `${C('cobra_codex')}dcwQ9rAAXGlsQ8p1`,
   ruthlessEfficiency: `${C('cobra_codex')}KQWE1o3PjguwjAD0`,
   thisICommand: `${C('cobra_codex')}SUc3emTvPnwB6W93`,
   beastMode: `${C('cobra_codex')}o4lqILvsxyU3LhBS`,
@@ -25,7 +22,6 @@ export const IDS = {
   capableFreelancer: `${C('intercontinental_adventures')}PTEnW3QDpejzj27c`,
   repairProgressEnergon: `${C('cobra_con_fusion')}rPbEnrg7Qx2Lm9Vd`,
   bodyOfEnergy: `${C('across_the_stars')}L2X2rIz2frulSajQ`,
-  voidWarrior: `${C('across_the_stars')}gyDCPmqswCQJYN6e`,
   dinoCharged: `${C('beneath_the_helmet')}n9ME10p6mfOJnUdE`,
   thinkFast: `${C('jump_through_time')}Sjx8BBENyDUTRJvs`,
   historyBuff: `${C('jump_through_time')}b3O5i3HMtaIHl6PD`,

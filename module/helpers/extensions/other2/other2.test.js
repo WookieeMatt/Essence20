@@ -114,12 +114,9 @@ describe('medic', () => {
     med = await import('./medic.mjs');
   });
 
-  test('restore DIF and healing rolls', () => {
+  test('restore DIF', () => {
     expect(med.restoreDif(1)).toBe(10);
     expect(med.restoreDif(4)).toBe(25);
-    expect(med.isHealingRoll({ isIveGotYou: true })).toBe(true);
-    expect(med.isHealingRoll({ o2Heal: true })).toBe(true);
-    expect(med.isHealingRoll({ isShove: true })).toBe(false);
   });
 
   test('Hearty Meal adds Culture/Performance out of combat, once per mission', () => {

@@ -3,7 +3,7 @@
  * Perks, Hang-Ups, gear and Zord Features). The generic readers come from zord1/common.mjs.
  */
 export {
-  T, findSourced, flagOf, gainPower, giveEdge, hasItem, isStampLive, itemsOf, parentWeaponOf, personalPower,
+  T, findSourced, flagOf, gainPower, giveEdge, hasItem, isStampLive, itemsOf, personalPower,
   postLine, sourceOf, spendPower, writeActor,
 } from "../zord1/common.mjs";
 
@@ -14,7 +14,6 @@ export const TTSG = id => `Compendium.essence20.through_the_shattered_grid.Item.
 
 export const IDS = {
   megaformExpeditor: PR_CRB('NJfcNgMJYcatsTCB'),
-  megaformTrait: PR_CRB('98UpgxgT8GkrE207'),
   ninjaPower: PR_CRB('wN5rjEQIJH68rWCd'),
   peerlessPilot: PR_CRB('dHDCKO4k7dlzyXbC'),
   powerHeal: PR_CRB('eiTUR08GXw03M21m'),
@@ -26,7 +25,6 @@ export const IDS = {
   uwTwoHanded: PR_CRB('Pr3UniqWpnTwoHnd'),
   elementalFury: TTSG('larsGRE5U4ZOVxzw'),
   emissarysGift: TTSG('L3ps91zsJJQl71cw'),
-  rhinoShield: TTSG('WXcEsB0FYQGJZrsD'),
   navigator: TTSG('nDx2XD6gD9lM37Bl'),
   overload: TTSG('GNT0qv91JUTXfS0n'),
   powerConstruct: TTSG('34CRvsE7ncW4kmE8'),
@@ -82,10 +80,4 @@ export async function applyStatus(actor, statusId, rounds = null) {
   } else {
     await actor.toggleStatusEffect(statusId, { active: true });
   }
-}
-
-/** Sizes in order, smallest first. */
-export function sizeIndex(actor) {
-  const order = Object.keys(globalThis.CONFIG?.E20?.actorSizes ?? {});
-  return order.indexOf(actor?.system?.size);
 }

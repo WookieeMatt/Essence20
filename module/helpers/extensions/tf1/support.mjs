@@ -11,7 +11,7 @@ import {
 /**
  * Decepticon Directive social, utility and chassis Perks: Collection of Secrets, Loaded Questions,
  * the Traitor Hang-Up, Storage Compartments, the Infiltrator Analyst's Comms Probe / Feedback Field /
- * False Data / Eidetic Buffer, Mine!, Picking Up the Trail, They Called It A Glitch!, Partnered,
+ * False Data, Mine!, Picking Up the Trail, They Called It A Glitch!, Partnered,
  * Flexible Switch, Alt Mode Mimicry, the Drone Origin's copied chassis, and the Tox-En and
  * Solid-State Energon hazards.
  */
@@ -166,15 +166,6 @@ export const SUPPORT_USES = [
     },
   },
   {
-    // Eidetic Buffer (10th level): "you can always attempt a DIF 14 Alertness Skill Test to remember a
-    // specific fact or previously learned piece of information."
-    id: 'tf1Eidetic', matches: item => sourceOf(item) == TF1.eideticBuffer,
-    async run(item) {
-      const { success } = await rollTest(item.parent, 'alertness', 14);
-      return T(success ? 'Tf1RecallYes' : 'Tf1RecallNo', { name: item.parent.name });
-    },
-  },
-  {
     // Mine! (Decepticon Directive, Scavenger, 1st level, p.63): "As a Free action, you can grab an
     // unattended one-handed (or smaller) item within your natural reach ... If you are trying to do
     // this without someone noticing, attempt an Infiltration Skill Test contested by any onlookers'
@@ -284,7 +275,7 @@ export const SUPPORT_USES = [
   {
     // Partnered (Decepticon Directive, General Perk, p.66): "You have a deep connection with a single
     // creature, chosen when you take this Perk." Picks the creature; the Free-action Lend Assistance is
-    // the cost rule below.
+    // an ActionCost rule on the item, which reads the partner flag set here.
     id: 'tf1Partnered', matches: item => sourceOf(item) == TF1.partnered,
     async run(item) {
       const actor = item.parent;
@@ -523,14 +514,6 @@ async function toxHit(victim) {
 /*  Cost rules                                   */
 /* -------------------------------------------- */
 
-// Partnered: "You can always Lend Assistance using a Free Action to that creature as long as they are
-// within your line of sight."
-export const PARTNERED_RULE = {
-  id: 'tf1Partnered', label: 'Partnered', ask: 'E20.Tf1AskPartnered',
-  has: actor => !!itemOf(actor, TF1.partnered)?.flags?.essence20?.partner,
-  matches: ctx => ctx?.key == 'lendAssistance', to: () => 'free',
-};
-
 // Flexible Switch (Modemaster, 3rd level, p.48): "you gain the benefits of the Quick Change General
 // Perk that applies only to a conversion sequence from one Alt Mode to another."
 export const FLEXIBLE_SWITCH_RULE = {
@@ -553,6 +536,5 @@ export const FLEXIBLE_SWITCH_RULE = {
 
 registerRollSources(tf1SupportSources);
 registerPostRoll(tf1SupportPostRoll);
-registerCostRule(PARTNERED_RULE);
 registerCostRule(FLEXIBLE_SWITCH_RULE);
 SUPPORT_USES.forEach(registerUse);

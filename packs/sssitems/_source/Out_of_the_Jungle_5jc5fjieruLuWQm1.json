@@ -5,6 +5,11 @@
   "_id": "5jc5fjieruLuWQm1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Out of the Jungle (non-attack tests)","when":["not:attack","not:roll:initiative"],"edge":true},
+      {"type":"RollModifier","label":"Out of the Jungle (attacks are Specialized)","when":["attack"],"specialize":true},
+      {"type":"MovementAction","label":"Out of the Jungle (ignores Rough Terrain)","ignoreRoughTerrain":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Jungle Fighter benefits apply everywhere.</p>"

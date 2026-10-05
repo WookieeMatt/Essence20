@@ -16,12 +16,11 @@
  *
  * History Buff (A Jump Through Time, Influence Perk, p.54): "You gain a ↑2 bonus on Culture
  * (History) Skill Tests. ... Your actions and activities roll one die smaller (minimum of d2) when
- * determining if they create Continuum Anomalies (see page 113)." The ↑2 is a roll-dialog checkbox
- * on Culture tests (ticked when the History Specialization is rolled); the anomaly half is a Use
- * button that rolls the Continuum Anomaly risk die (Table 4-7) one size smaller and reads the
- * result band (p.113).
+ * determining if they create Continuum Anomalies (see page 113)." The ↑2 is the Perk's own
+ * DialogSwitch rules (pack data); the anomaly half is a Use button here that rolls the Continuum
+ * Anomaly risk die (Table 4-7) one size smaller and reads the result band (p.113).
  */
-import { registerApplyDialog, registerDialogToggles, registerUse } from "../../extensions.mjs";
+import { registerUse } from "../../extensions.mjs";
 import { IDS, onHook, T, changed, has, isActiveGm, isItem, num, say } from "./common.mjs";
 
 /* -------------------------------------------- */
@@ -115,21 +114,6 @@ onHook('deleteCombat', async (combat) => {
 /* -------------------------------------------- */
 /*  History Buff                                 */
 /* -------------------------------------------- */
-
-registerDialogToggles((actor, { rolledSkill, dataset }) => {
-  if (rolledSkill != 'culture' || !has(actor, IDS.historyBuff)) {
-    return [];
-  }
-
-  const spec = String(dataset?.specializationName ?? dataset?.specialization ?? dataset?.specializationKey ?? '').toLowerCase();
-  return [{ name: 'resHistoryBuff', label: T('ResHistoryBuffToggle'), type: 'checkbox', value: spec.includes('history') }];
-});
-
-registerApplyDialog((actor, options) => {
-  if (options.ext?.resHistoryBuff) {
-    options.shiftUp = num(options.shiftUp) + 2;
-  }
-});
 
 // Table 4-7: Risk Severity for Anomaly.
 export const RISK_DICE = { trivial: '1d2', small: '1d4', modest: '1d6', average: '1d8', high: '1d10', serious: '1d12', catastrophic: '2d8' };

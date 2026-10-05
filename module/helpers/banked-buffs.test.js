@@ -21,7 +21,6 @@ const DIG_IN_ID = "Compendium.essence20.decepticon_directive.Item.9tIkV50YiO3xqx
 const EYE_FOR_APPRAISAL_ID = "Compendium.essence20.decepticon_directive.Item.JlwxiwZDpq7UkYXn";
 const WEAPON_CONVERSION_ID = "Compendium.essence20.decepticon_directive.Item.WbXurpieXjFkmS8h";
 const PLAN_OF_ACTION_WTNV_ID = "Compendium.essence20.wtnv_citizens_guide.Item.D3uXlXL7jNn0eD8T";
-const REAL_ANGELS_ID = "Compendium.essence20.wtnv_citizens_guide.Item.i5hL9SSARFDMf6UH";
 const DIG_DEEP_ID = "Compendium.essence20.wtnv_citizens_guide.Item.A2Xay6rHrBK9l8eo";
 const TIMELINE_ANOMALY_ID = "Compendium.essence20.wtnv_citizens_guide.Item.NQXcQL05DLCs75xb";
 const QUICK_STUDY_ID = "Compendium.essence20.wtnv_citizens_guide.Item.adJm4dpjD04TICkd";
@@ -9080,49 +9079,6 @@ describe("Skill substitution Perks (Infiltrator, Chatter Flashback, Muscle Over 
       'essence20', 'infiltratorUsedThisScene', expect.objectContaining({ window: 'scene', count: 1 }),
     );
     expect(global.ChatMessage.create).toHaveBeenCalled();
-  });
-});
-
-describe("Real Angels (Welcome to Night Vale: Citizens' Guide, General Perk, p.51)", () => {
-  function makeRealAngelsActor({ id, name } = {}) {
-    return { ...makeActor({ id, name }), toggleStatusEffect: jest.fn() };
-  }
-
-  beforeEach(() => {
-    game.combat = { id: 'combat1' };
-  });
-
-  test("canUsePerk is true with no cost, as long as it hasn't been used this session", () => {
-    const actor = makeRealAngelsActor();
-    const item = makePerkItem({ sourceId: REAL_ANGELS_ID, actor });
-    expect(canUsePerk(item)).toBe(true);
-  });
-
-  test("canUsePerk is false once already used this session", () => {
-    const actor = makeRealAngelsActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'realAngelsUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
-    const item = makePerkItem({ sourceId: REAL_ANGELS_ID, actor });
-    expect(canUsePerk(item)).toBe(false);
-  });
-
-  test("grants Cover to the actor and marks the session used", async () => {
-    const actor = makeRealAngelsActor({ id: 'citizen', name: 'Cecil' });
-    const item = makePerkItem({ sourceId: REAL_ANGELS_ID, actor });
-
-    await onPerkUse(item);
-
-    expect(actor.toggleStatusEffect).toHaveBeenCalledWith('cover', { active: true });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'realAngelsUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
-  });
-
-  test("does nothing once already used this session", async () => {
-    const actor = makeRealAngelsActor({ id: 'citizen' });
-    actor.getFlag = jest.fn((scope, key) => (key == 'realAngelsUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
-    const item = makePerkItem({ sourceId: REAL_ANGELS_ID, actor });
-
-    await onPerkUse(item);
-
-    expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
   });
 });
 

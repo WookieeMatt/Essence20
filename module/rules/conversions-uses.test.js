@@ -2989,3 +2989,595 @@ test('Flux Additives: an attack dealing the Energy Affinity Element gives a Free
   await fireTriggers(actor, 'afterRoll', { roll: { item: attack('fire'), isAttack: true }, outcome: 'success' });
   expect(free()).toBe(start + 1);
 });
+
+// slA pr2/pr3
+describe('slA pr2/pr3', () => {
+  const traitFakes = (cancel = false) => {
+    const calls = [];
+    const granted = [];
+    return {
+      calls, granted,
+      helpers: {
+        findItems: async filter => (calls.push(filter), [{ uuid: 'C.trait', type: 'megaformTrait', name: 'Trait' }]),
+        pickOne: async (title, rows) => (cancel ? null : rows[0].uuid),
+        grantCopy: async (who, uuid, options) => (granted.push({ who, uuid, grantedBy: options.grantedBy }), { name: 'Trait' }),
+      },
+    };
+  };
+
+  test('Megaform Trait: picks a second Megaform Trait from the compendium, once', async () => {
+    const { actor, item } = holder('prcrbitems/_source/Megaform_Trait_98UpgxgT8GkrE207.json');
+    expect(grantUseOpen(item)).toBe(true);
+    const fakes = traitFakes();
+    expect(await pressGrant(item, fakes)).toBe(true);
+    expect(fakes.calls).toEqual([expect.objectContaining({ type: 'megaformTrait', availabilities: null, matches: null })]);
+    expect(fakes.granted).toEqual([{ who: actor, uuid: 'C.trait', grantedBy: item }]);
+    expect(grantUseOpen(item)).toBe(false);
+  });
+
+  test('Megaform Trait: a cancelled pick keeps the button; one granted under the old code stays hidden', async () => {
+    const { item } = holder('prcrbitems/_source/Megaform_Trait_98UpgxgT8GkrE207.json');
+    const fakes = traitFakes(true);
+    expect(await pressGrant(item, fakes)).toBe(false);
+    expect(fakes.granted).toEqual([]);
+    expect(grantUseOpen(item)).toBe(true);
+    item.flags = { essence20: { pr3Granted: 'old' } };
+    expect(grantUseOpen(item)).toBe(false);
+  });
+});
+
+// slB tf1
+describe('slB tf1', () => {
+  test('Eidetic Buffer: a DIF 14 Alertness test, no action', async () => {
+    const { actor, item } = holder('dditems/_source/Eidetic_Buffer_DlyxYU8RfDeSmS1q.json');
+    const previous = global.CONFIG;
+    global.CONFIG = { ...(global.CONFIG ?? {}), E20: { ...(global.CONFIG?.E20 ?? {}), skillToEssence: { alertness: 'smarts' } } };
+    let success = true;
+    actor._dice = { rollSkill: jest.fn(async () => ({ success, outcomes: [{ results: [{ multiplier: 1 }] }] })) };
+    const paid = pay();
+    expect(await runUse(item, paid)).toContain('recalls the information');
+    expect(paid).not.toHaveBeenCalled();
+    expect(actor._dice.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ skill: 'alertness', essence: 'smarts', dif: '14' }), actor);
+    success = false;
+    expect(await runUse(item, pay())).toContain('recall it');
+    expect(useAvailable(item, item.system.rules[0], 0)).toBe(true);
+    global.CONFIG = previous;
+  });
+});
+
+// slC gij1
+describe('slC gij1', () => {
+  const SHIELDED = 'ccitems/_source/Shielded_GiVoFUU6sd9A9V5X.json';
+
+  /** findItems / pickOne / grantCopy stand-ins: one Standard shield on offer. */
+  function shieldFakes(cancel = false) {
+    const calls = [];
+    const granted = [];
+    return {
+      calls, granted,
+      helpers: {
+        findItems: async filter => {
+          calls.push(filter);
+          return [{ uuid: 'C.buckler', type: 'shield', name: 'Buckler', system: { availability: 'standard' } }];
+        },
+        pickOne: async (title, rows) => (cancel ? null : rows[0].uuid),
+        grantCopy: async (who, uuid, options) => {
+          granted.push({ who, uuid, ...options });
+          return { name: 'Buckler' };
+        },
+      },
+    };
+  }
+
+  async function run(item, rule, fakes) {
+    const ctx = stepContext({ actor: item.parent, item, rule, targets: [], ask: null });
+    ctx.grantHelpers = fakes.helpers;
+    return runSteps(rule.steps, ctx);
+  }
+
+  const useOf = item => item.system.rules.find(rule => rule.type == 'Use');
+  const useOpen = item => useAvailable(item, useOf(item), item.system.rules.indexOf(useOf(item)));
+
+  test('Shielded: the Use picks a Standard shield once; a cancelled pick keeps the button', async () => {
+    const { actor, item } = holder(SHIELDED);
+    expect(useOpen(item)).toBe(true);
+    const none = shieldFakes(true);
+    expect(await run(item, useOf(item), none)).toBe(false);
+    expect(none.granted).toEqual([]);
+    expect(useOpen(item)).toBe(true);
+
+    const fakes = shieldFakes();
+    expect(await run(item, useOf(item), fakes)).toBe(true);
+    expect(fakes.calls).toEqual([{ type: 'shield', availabilities: ['standard'], matches: null }]);
+    expect(fakes.granted).toEqual([{ who: actor, uuid: 'C.buckler', grantedBy: item, integrated: false, flags: {}, system: {} }]);
+    expect(useOpen(item)).toBe(false);
+  });
+
+  test('Shielded: asked as soon as it is added, with the same steps and gate as the Use', async () => {
+    const { item } = holder(SHIELDED);
+    const trigger = item.system.rules.find(rule => rule.type == 'Trigger');
+    expect(trigger).toMatchObject({ event: 'added', when: useOf(item).when, steps: useOf(item).steps });
+    const fakes = shieldFakes();
+    expect(await run(item, trigger, fakes)).toBe(true);
+    expect(fakes.granted.map(g => g.uuid)).toEqual(['C.buckler']);
+    expect(useOpen(item)).toBe(false);
+  });
+
+  test('Shielded: a copy already granted under the old code keeps its button hidden', () => {
+    const { item } = holder(SHIELDED);
+    item.flags = { essence20: { granted: true } };
+    expect(useOpen(item)).toBe(false);
+  });
+});
+
+// slC gij2
+
+describe('slC gij2', () => {
+  test('En Passant: a DIF 15 Alertness test, no action; a success gives one attack at no action cost', async () => {
+    const { getLedger } = await import('../helpers/action-economy.mjs');
+    const { actor, item } = holder('gijcrbitems/_source/En_Passant_eVRb1Fp43QMdxV1N.json', { system: ACTION_BUDGET });
+    actor.items.find = fn => actor.items.contents.find(fn);
+    const previous = global.CONFIG;
+    global.CONFIG = { ...(global.CONFIG ?? {}), E20: { ...(global.CONFIG?.E20 ?? {}), skillToEssence: { alertness: 'smarts' } } };
+    let success = false;
+    actor._dice = { rollSkill: jest.fn(async () => ({ success, outcomes: [{ results: [{ multiplier: 1 }] }] })) };
+    try {
+      actionCombat(actor);
+      const paid = pay();
+      expect(await runUse(item, paid)).toContain('react in time');
+      expect(paid).not.toHaveBeenCalled();
+      expect(actor._dice.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ skill: 'alertness', essence: 'smarts', dif: '15' }), actor);
+      expect(getLedger(actor).bonusAttacks ?? []).toEqual([]);
+      success = true;
+      expect(await runUse(item, pay())).toContain('make one attack now');
+      expect(getLedger(actor).bonusAttacks).toEqual([{ source: 'En Passant', cost: 'none', filter: null, psychicOnMiss: 0 }]);
+      // No limit: usable again.
+      expect(useAvailable(item, item.system.rules[0], 0)).toBe(true);
+    } finally {
+      global.CONFIG = previous;
+    }
+  });
+
+  test('Brrrrrrrrrrrrrrt: its Multiple Targets Trigger also says the allies may Sprint', async () => {
+    const { registerCheck, setWorldLookups } = await import('./predicate.mjs');
+    const { isMultipleTargetsWeapon } = await import('../helpers/multiple-targets.mjs');
+    registerCheck('multipleTargetsWeapon', (actor, option, ctx) => (ctx?.item ? isMultipleTargetsWeapon(actor, ctx.item) : null));
+    const { actor, item } = holder('gijcrbitems/_source/Brrrrrrrrrrrrrrt_U3NTi35bk2qI8oB6.json');
+    const minigun = { id: 'w1', type: 'weapon', name: 'Minigun', system: { traits: ['multipleTargets'], itemAndUpgradeTraits: ['multipleTargets'] } };
+    actor.items.contents.push(minigun);
+    actor.items.get = id => actor.items.contents.find(i => i.id == id);
+    const effect = { type: 'weaponEffect', parent: actor, flags: { essence20: { parentId: 'w1' } }, system: { classification: { skill: 'targeting', style: 'projectile' } } };
+    const posted = [];
+    const savedChat = global.ChatMessage;
+    global.ChatMessage = { create: async data => posted.push(data.content), getSpeaker: () => ({}) };
+    setWorldLookups({ alliesWithin: () => [] });
+    try {
+      await fireTriggers(actor, 'afterRoll', { roll: { item: effect, isAttack: true }, outcome: 'failure', facts: { results: [{ success: false }] } });
+      expect(posted).toHaveLength(1);
+      expect(posted[0]).toContain('Hero&#39;s allies may immediately take a Sprint action.');
+      expect(item.system.rules[0].steps.map(step => step.do)).toEqual(['bank', 'chat']);
+    } finally {
+      global.ChatMessage = savedChat;
+      setWorldLookups({ alliesWithin: null });
+    }
+  });
+});
+
+// slC gij3
+describe('slC gij3', () => {
+  test('Person of Culture: a DIF 15 Culture test; a success costs no Story Point and uses the scene', async () => {
+    const { setStoryPointHelpers } = await import('./steps.mjs');
+    const { actor, item } = holder('ghpfitems/_source/Person_of_Culture_UASxRYtsWV1CnE8y.json');
+    const index = item.system.rules.findIndex(rule => rule.type == 'Use');
+    const spent = [];
+    let points = 1;
+    let success = false;
+    actor._dice = { rollSkill: jest.fn(async () => ({ success })) };
+    try {
+      setStoryPointHelpers({
+        canSpendForActor: (a, n) => points >= n,
+        spendForActor: async (a, n) => {
+          spent.push(n);
+          points -= n;
+        },
+      });
+
+      // A failure spends the Story Point and leaves the Use free for the scene.
+      const paid = pay();
+      expect(await runUse(item, paid)).toContain('a Story Point is spent');
+      expect(paid).not.toHaveBeenCalled();
+      expect(actor._dice.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ skill: 'culture', dif: '15' }), actor);
+      expect(spent).toEqual([1]);
+      expect(useAvailable(item, item.system.rules[index], index)).toBe(true);
+
+      // A failure with no Story Point left spends nothing and still leaves the Use free.
+      expect(await runUse(item, pay())).not.toContain('a Story Point is spent');
+      expect(spent).toEqual([1]);
+      expect(useAvailable(item, item.system.rules[index], index)).toBe(true);
+
+      // A success spends nothing and uses up the scene.
+      success = true;
+      expect(await runUse(item, pay())).toContain('no Story Point spent');
+      expect(spent).toEqual([1]);
+      expect(useAvailable(item, item.system.rules[index], index)).toBe(false);
+    } finally {
+      setStoryPointHelpers(null);
+    }
+  });
+});
+
+// slD other1
+describe('slD other1', () => {
+  test('Evacuation Vents: while Morphed in a started combat, no Push Yourself cap for the rest of that turn', async () => {
+    const { ruleMovement } = await import('./adapter.mjs');
+    const { actor, item } = holder('jttitems/_source/Evacuation_Vents_Tft06zzgFsVCx2B7.json');
+    const [use] = item.system.rules;
+
+    // Not offered out of combat, in a combat that hasn't started, or unmorphed.
+    expect(useAvailable(item, use, 0)).toBe(false);
+    game.combat = { started: false, id: 'c', round: 0, turn: null };
+    actor.system.isMorphed = true;
+    expect(useAvailable(item, use, 0)).toBe(false);
+    game.combat = { started: true, id: 'c', round: 1, turn: 0 };
+    actor.system.isMorphed = false;
+    expect(useAvailable(item, use, 0)).toBe(false);
+    actor.system.isMorphed = true;
+    expect(useAvailable(item, use, 0)).toBe(true);
+
+    expect(ruleMovement(actor).pushUnlimited).toBe(false);
+    const paid = pay();
+    expect(await runUse(item, paid)).toContain('vents away from the enemy');
+    expect(paid).not.toHaveBeenCalled();
+    expect(ruleMovement(actor).pushUnlimited).toBe(true);
+
+    // The next turn (anyone's) ends it, and so does a new round or another combat.
+    game.combat.turn = 1;
+    expect(ruleMovement(actor).pushUnlimited).toBe(false);
+    game.combat = { started: true, id: 'c', round: 1, turn: 0 };
+    expect(ruleMovement(actor).pushUnlimited).toBe(true);
+    game.combat = { started: true, id: 'c', round: 2, turn: 0 };
+    expect(ruleMovement(actor).pushUnlimited).toBe(false);
+    game.combat = { started: true, id: 'd', round: 1, turn: 0 };
+    expect(ruleMovement(actor).pushUnlimited).toBe(false);
+
+    // No limit on the button.
+    expect(useAvailable(item, use, 0)).toBe(true);
+  });
+});
+
+// slE q2
+describe('slE q2', () => {
+  const statusActor = actor => {
+    actor.toggleStatusEffect = jest.fn(async (id, { active }) => (active ? actor.statuses.add(id) : actor.statuses.delete(id)));
+    return actor;
+  };
+
+  /** helpers/grants.mjs stand-ins: every row is offered, pickOne takes the first (or cancels). */
+  function fakeGrants(rows, { cancel = false } = {}) {
+    const calls = [];
+    const granted = [];
+    return {
+      calls, granted,
+      helpers: {
+        findItems: async ({ type, availabilities, matches }) => {
+          calls.push({ type, availabilities });
+          return rows.filter(row => row.type == type && (!availabilities || availabilities.includes(row.system.availability)) && (!matches || matches(row)));
+        },
+        pickOne: async (title, found) => (cancel ? null : found[0]?.uuid ?? null),
+        grantCopy: async (who, uuid, options) => {
+          granted.push({ uuid, grantedBy: options.grantedBy?.id, flags: options.flags });
+          return { name: uuid };
+        },
+      },
+    };
+  }
+
+  async function press(item, fakes, ask = null) {
+    const index = item.system.rules.findIndex(rule => rule.type == 'Use');
+    const rule = item.system.rules[index];
+    const ctx = stepContext({ actor: item.parent, item, rule, targets: [], ask });
+    ctx.grantHelpers = fakes.helpers;
+    return { finished: await runSteps(rule.steps, ctx), ctx };
+  }
+
+  test('Real Angels: Cover on yourself, no action, once per session', async () => {
+    const { actor, item } = holder('wtnvcgitems/_source/Real_Angels_i5hL9SSARFDMf6UH.json');
+    statusActor(actor);
+    const [use] = item.system.rules;
+    expect(useAvailable(item, use, 0)).toBe(true);
+    const paid = pay();
+    expect(await runUse(item, paid)).toBeTruthy();
+    expect(paid).not.toHaveBeenCalled();
+    expect(actor.toggleStatusEffect).toHaveBeenCalledWith('cover', { active: true });
+    expect(useAvailable(item, use, 0)).toBe(false);
+
+    // A new encounter doesn't free it; a new session does.
+    game.combat = { started: true, id: 'c2', round: 1, turn: 0 };
+    expect(useAvailable(item, use, 0)).toBe(false);
+    game.settings.get = () => 2;
+    expect(useAvailable(item, use, 0)).toBe(true);
+  });
+
+  test('Morale Booster: a Standard action clears Frightened and Impaired from allies within 30 ft, Social uses per Rest', async () => {
+    const { setWorldLookups } = await import('./predicate.mjs');
+    const { restClears } = await import('./limits.mjs');
+    const { actor, item } = holder('eocitems/_source/Morale_Booster_TQCvGZe5npeJ4heO.json', { system: { essences: { social: { max: 2, value: 1 } } } });
+    const scared = statusActor({ name: 'Scared', isOwner: true, statuses: new Set(['frightened', 'impaired']) });
+    const calm = statusActor({ name: 'Calm', isOwner: true, statuses: new Set() });
+    const seen = [];
+    setWorldLookups({ alliesWithin: (who, feet) => {
+      seen.push(feet);
+      return [scared, calm];
+    } });
+    try {
+      const [use] = item.system.rules;
+      const paid = pay();
+      expect(await runUse(item, paid)).toContain('clears Frightened and Impaired');
+      expect(paid).toHaveBeenCalledWith('standard');
+      expect(seen).toEqual([30, 30]);
+      expect([...scared.statuses]).toEqual([]);
+      expect(calm.toggleStatusEffect).not.toHaveBeenCalled();
+
+      // Uses: the Social Essence's max (not its current value).
+      expect(useAvailable(item, use, 0)).toBe(true);
+      expect(await runUse(item, pay())).toBeTruthy();
+      expect(useAvailable(item, use, 0)).toBe(false);
+
+      // A Rest clears the count.
+      expect(restClears(actor)).toHaveLength(1);
+      actor.flags.essence20.ruleUses = {};
+      expect(useAvailable(item, use, 0)).toBe(true);
+
+      // A refused action spends nothing.
+      expect(await runUse(item, jest.fn(async () => false))).toBeNull();
+      expect(useAvailable(item, use, 0)).toBe(true);
+      expect(actor.flags.essence20.ruleUses).toEqual({});
+    } finally {
+      setWorldLookups({ alliesWithin: null });
+    }
+  });
+
+  test('Whisper Warrior: takes a compendium weapon with both Martial Arts and Silent, flagged Qualified', async () => {
+    const { item } = holder('iafav2items/_source/Whisper_Warrior_T4p7oPq8Kk0SHVb3.json');
+    const rows = [
+      { uuid: 'C.silentOnly', type: 'weapon', system: { availability: 'standard', traits: ['silent'] } },
+      { uuid: 'C.both', type: 'weapon', system: { availability: 'restricted', traits: ['martialArts', 'silent'] } },
+      { uuid: 'C.armor', type: 'armor', system: { availability: 'standard', traits: ['martialArts', 'silent'] } },
+    ];
+    const fakes = fakeGrants(rows);
+    const { finished, ctx } = await press(item, fakes);
+    expect(finished).toBe(true);
+    expect(fakes.calls).toEqual([{ type: 'weapon', availabilities: null }]);
+    expect(fakes.granted).toEqual([{ uuid: 'C.both', grantedBy: item.id, flags: { qualified: true } }]);
+    expect(ctx.chat).toHaveLength(1);
+
+    const cancelled = fakeGrants(rows, { cancel: true });
+    expect((await press(item, cancelled)).finished).toBe(false);
+    expect(cancelled.granted).toEqual([]);
+  });
+
+  test('Oorah!: a Standard weapon, or the Silent battledress upgrade, flagged Qualified', async () => {
+    const { actor, item } = holder('sssitems/_source/Oorah__7CuDik9Vtpou9iDJ.json');
+    const rows = [
+      { uuid: 'C.limited', type: 'weapon', system: { availability: 'limited' } },
+      { uuid: 'C.standard', type: 'weapon', system: { availability: 'standard' } },
+    ];
+    const weapon = fakeGrants(rows);
+    expect((await press(item, weapon, async () => 0)).finished).toBe(true);
+    expect(weapon.calls).toEqual([{ type: 'weapon', availabilities: ['standard'] }]);
+    expect(weapon.granted).toEqual([{ uuid: 'C.standard', grantedBy: item.id, flags: { qualified: true } }]);
+
+    const silent = 'Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU';
+    const previous = global.fromUuid;
+    global.fromUuid = jest.fn(async () => ({ name: 'Silent', toObject: () => ({ _id: 'x', name: 'Silent', type: 'upgrade', system: { type: 'armor' } }) }));
+    actor.createEmbeddedDocuments = jest.fn(async (type, docs) => docs);
+    try {
+      const upgrade = fakeGrants(rows);
+      expect((await press(item, upgrade, async () => 1)).finished).toBe(true);
+      expect(upgrade.calls).toEqual([]);
+      expect(global.fromUuid).toHaveBeenCalledWith(silent);
+      const [[, [data]]] = actor.createEmbeddedDocuments.mock.calls;
+      expect(data).toMatchObject({ name: 'Silent', type: 'upgrade', flags: { essence20: { qualified: true, grantedBy: item.id } } });
+      expect(data._id).toBeUndefined();
+
+      // Closing the choice does nothing.
+      expect(await runUse(item, pay(), { ask: async () => null })).toBeNull();
+      expect(actor.createEmbeddedDocuments).toHaveBeenCalledTimes(1);
+    } finally {
+      global.fromUuid = previous;
+    }
+  });
+});
+
+// slE data
+describe('slE data', () => {
+  const COMPASSIONATE = 'mlpcrbitems/_source/Compassionate_TARp0NItPetoMUv2.json';
+
+  test('Compassionate: two unticked Edge switches, the first only on Persuasion', async () => {
+    const { applyRuleSwitches } = await import('./adapter.mjs');
+    const { actor } = holder(COMPASSIONATE);
+    const switches = ctx => ruleDialogSwitches(actor, ctx);
+    expect(switches({ rolledSkill: 'persuasion' }).map(s => [s.label, s.value])).toEqual([
+      ['Compassionate: suggesting a non-aggressive solution (Edge)', false],
+      ['Compassionate: acquiring food, water, medicine or shelter for others (Edge)', false],
+    ]);
+    expect(switches({ rolledSkill: 'athletics' }).map(s => s.label)).toEqual(['Compassionate: acquiring food, water, medicine or shelter for others (Edge)']);
+
+    for (const index of [0, 1]) {
+      const options = { shiftUp: 0, shiftDown: 0, edge: false, ext: { [switches({ rolledSkill: 'persuasion' })[index].name]: true } };
+      await applyRuleSwitches(actor, options, { rolledSkill: 'persuasion' });
+      expect(options.edge).toBe(true);
+    }
+
+    const untouched = { shiftUp: 0, shiftDown: 0, edge: false, ext: {} };
+    await applyRuleSwitches(actor, untouched, { rolledSkill: 'persuasion' });
+    expect(untouched.edge).toBe(false);
+    // Never remembered: each starts unticked again.
+    expect(switches({ rolledSkill: 'persuasion' }).every(s => s.value === false)).toBe(true);
+  });
+
+  test('Compassionate: a free DIF 12 Persuasion test heals the target (or yourself) 1, never past the maximum', async () => {
+    const { actor, item } = holder(COMPASSIONATE);
+    const previous = global.CONFIG;
+    global.CONFIG = { ...(global.CONFIG ?? {}), E20: { ...(global.CONFIG?.E20 ?? {}), skillToEssence: { persuasion: 'social' } } };
+    try {
+      const index = item.system.rules.findIndex(rule => rule.type == 'Use');
+      let success = true;
+      actor._dice = { rollSkill: jest.fn(async () => ({ success, outcomes: [{ results: [{ multiplier: 1 }] }] })) };
+      const friend = {
+        name: 'Friend', isOwner: true, system: { health: { value: 3, max: 5 } },
+        update: jest.fn(async data => {
+          friend.system.health.value = data['system.health.value'];
+        }),
+      };
+      game.user.targets = new Set([{ actor: friend }]);
+
+      const paid = pay();
+      expect(await runUse(item, paid)).toBeTruthy();
+      expect(paid).not.toHaveBeenCalled();
+      expect(actor._dice.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ skill: 'persuasion', essence: 'social', dif: '12' }), actor);
+      expect(friend.update).toHaveBeenCalledWith({ 'system.health.value': 4 });
+
+      friend.system.health.value = 5;
+      await runUse(item, pay());
+      expect(friend.system.health.value).toBe(5);
+
+      success = false;
+      friend.system.health.value = 2;
+      expect(await runUse(item, pay())).toContain('falls short');
+      expect(friend.system.health.value).toBe(2);
+
+      // Nothing targeted: the holder heals itself. No limit.
+      success = true;
+      game.user.targets = new Set();
+      actor.system.health = { value: 5, max: 10 };
+      await runUse(item, pay());
+      expect(actor.system.health.value).toBe(6);
+      expect(useAvailable(item, item.system.rules[index], index)).toBe(true);
+    } finally {
+      global.CONFIG = previous;
+    }
+  });
+
+  const DEFENSES = {
+    basic: 'gijcrbitems/_source/Basic_Defenses_CQYBJKyLfPIUp1JG.json',
+    advanced: 'gijcrbitems/_source/Advanced_Defenses_kow4o1ubo29p8b0D.json',
+    specialized: 'gijcrbitems/_source/Specialized_Defenses_qPYov7nAiPjYrD4Q.json',
+  };
+
+  /** A drone companion holding these upgrades, each with its {defense, value}. */
+  function drone(entries, { type = 'companion', droneType = 'drone' } = {}) {
+    const [first, ...rest] = entries;
+    const { actor, item } = holder(first.file);
+    item.system = { ...item.system, armorBonus: { defense: first.defense, value: first.value } };
+    for (const entry of rest) {
+      const doc = fromPack(entry.file);
+      actor.items.contents.push({
+        id: `c${nextId++}`, name: doc.name, type: doc.type, flags: {}, parent: actor,
+        system: { ...doc.system, armorBonus: { defense: entry.defense, value: entry.value } },
+      });
+    }
+
+    actor.type = type;
+    actor.system = {
+      ...actor.system, type: droneType,
+      defenses: {
+        toughness: { total: 12, string: '12' }, evasion: { total: 11, string: '11' },
+        willpower: { total: 10, string: '10' }, cleverness: { total: 10, string: '10' },
+      },
+    };
+    return actor;
+  }
+
+  test('Drone Defenses: the best upgrade per Defense counts, on a drone only', async () => {
+    const { ruleDerived } = await import('./adapter.mjs');
+    const actor = drone([
+      { file: DEFENSES.basic, defense: 'toughness', value: 1 },
+      { file: DEFENSES.advanced, defense: 'toughness', value: 2 },
+      { file: DEFENSES.specialized, defense: 'evasion', value: 3 },
+    ]);
+    ruleDerived(actor);
+    expect(actor.system.defenses.toughness).toEqual({ total: 14, string: '12 + 2 (Drone Defenses)' });
+    expect(actor.system.defenses.evasion).toEqual({ total: 14, string: '11 + 3 (Drone Defenses)' });
+    expect(actor.system.defenses.willpower.total).toBe(10);
+
+    const willpower = drone([{ file: DEFENSES.specialized, defense: 'willpower', value: 3 }]);
+    ruleDerived(willpower);
+    expect(willpower.system.defenses.willpower.total).toBe(13);
+    expect(willpower.system.defenses.toughness.total).toBe(12);
+
+    for (const other of [
+      drone([{ file: DEFENSES.basic, defense: 'toughness', value: 1 }], { droneType: 'pet' }),
+      drone([{ file: DEFENSES.basic, defense: 'toughness', value: 1 }], { type: 'playerCharacter' }),
+      drone([{ file: DEFENSES.basic, defense: 'toughness', value: 0 }]),
+      drone([{ file: DEFENSES.basic, defense: 'toughness', value: -1 }]),
+    ]) {
+      ruleDerived(other);
+      expect(other.system.defenses.toughness.total).toBe(12);
+    }
+  });
+});
+
+// slE misc
+
+describe('slE misc', () => {
+  test('The List: a once-per-scene Use that only posts to chat, no action', async () => {
+    const { item } = holder('wtnvcgitems/_source/The_List_uqGXmxShRuAWsJd1.json');
+    const use = item.system.rules[0];
+    expect(use).toMatchObject({ type: 'Use', limit: { per: 'scene' } });
+    expect(use.cost).toBeUndefined();
+    const paid = pay();
+    expect(await runUse(item, paid)).toContain('avoids triggering an enemy&#39;s Contingency');
+    expect(paid).not.toHaveBeenCalled();
+    expect(useAvailable(item, use, 0)).toBe(false);
+  });
+
+  test('Nobility: the Wealth Use works once per mission, beside the ↑1 switch', async () => {
+    const { item } = holder('fgtaaitems/_source/Nobility_5ZUcDuVx1pJ1R1RG.json');
+    const index = item.system.rules.findIndex(rule => rule.type == 'Use');
+    expect(item.system.rules[index].limit).toMatchObject({ per: 'mission' });
+    const paid = pay();
+    expect(await runUse(item, paid)).toContain('the Wealth test is a 25');
+    expect(paid).not.toHaveBeenCalled();
+    expect(useAvailable(item, item.system.rules[index], index)).toBe(false);
+  });
+
+  test('Double Vision: once per mission, grants a Standard action (none outside combat)', async () => {
+    const { item } = holder('wtnvcgitems/_source/Double_Vision_lyQvLPv3enKlVpHj.json');
+    const use = item.system.rules[0];
+    expect(use).toMatchObject({ limit: { per: 'mission' } });
+    expect(use.steps[0]).toEqual({ do: 'grantActions', standard: 1 });
+    const paid = pay();
+    expect(await runUse(item, paid)).toContain('takes a different Standard action');
+    expect(paid).not.toHaveBeenCalled();
+    expect(useAvailable(item, use, 0)).toBe(false);
+  });
+
+  test('More Than Worldly: a Free action banks an Edge on your own next roll (not Initiative)', async () => {
+    const { actor, item } = holder('fgtaaitems/_source/More_Than_Worldly_NtRsn6nTuys26ltH.json');
+    const paid = pay();
+    expect(await runUse(item, paid)).toBeTruthy();
+    expect(paid).toHaveBeenCalledWith('free');
+    expect(ruleRollSources(actor, null, { rolledSkill: 'might', dataset: { isInitiative: true } }).sources).toEqual([]);
+    const out = ruleRollSources(actor, null, { rolledSkill: 'might' });
+    expect(out.sources[0]).toMatchObject({ label: 'More Than Worldly', edge: true });
+    for (const consume of out.consumes) {
+      await consumeBanked(consume, async () => actor);
+    }
+
+    expect(ruleRollSources(actor, null, { rolledSkill: 'might' }).sources).toEqual([]);
+  });
+
+  test('More Than Worldly: the Edge goes to the targeted ally, once per turn in combat', async () => {
+    const { actor, item } = holder('fgtaaitems/_source/More_Than_Worldly_NtRsn6nTuys26ltH.json');
+    const { actor: ally } = holder('wtnvcgitems/_source/The_List_uqGXmxShRuAWsJd1.json');
+    game.combat = { started: true, id: 'c', round: 1, turn: 0 };
+    game.user.targets = new Set([{ actor: ally }]);
+    expect(await runUse(item, pay())).toBeTruthy();
+    expect(ruleRollSources(ally, null, { rolledSkill: 'persuasion' }).sources[0]).toMatchObject({ edge: true });
+    expect(ruleRollSources(actor, null, { rolledSkill: 'persuasion' }).sources).toEqual([]);
+    expect(useAvailable(item, item.system.rules[0], 0)).toBe(false);
+    game.combat.turn = 1;
+    expect(useAvailable(item, item.system.rules[0], 0)).toBe(true);
+  });
+});

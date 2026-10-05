@@ -27,17 +27,14 @@ const MINUTE_ROUNDS = 10;
 const isRamLike = item => item?.type == 'weaponEffect'
   && (!!item.system?.isRam || !!item.system?.isFlyby || /\b(ram|slam|flyby)\b/i.test(item.name ?? ''));
 
-export function tf1CombatSources(actor, target, { item, rolledSkill } = {}) {
+export function tf1CombatSources(actor, target, { item } = {}) {
   const sources = [];
   // Fearsome Additions (Decepticon Directive p.76): "Alt Mode: Spikes, blades, and flame-belching
-  // vents grant ↑1 to your Flyby, Ram, or Slam attack. Bot Mode: You gain a ↑1 on Intimidation
-  // Skill Tests."
+  // vents grant ↑1 to your Flyby, Ram, or Slam attack." The Bot Mode Intimidation ↑1 is a rule on the
+  // item.
   const additions = itemOf(actor, TF1.fearsomeAdditions);
-  if (additions) {
-    const transformed = !!actor.system?.isTransformed;
-    if ((transformed && isRamLike(item)) || (!transformed && rolledSkill == 'intimidation')) {
-      sources.push({ id: 'fearsomeAdditions', label: additions.name, shiftUp: 1 });
-    }
+  if (additions && actor.system?.isTransformed && isRamLike(item)) {
+    sources.push({ id: 'fearsomeAdditions', label: additions.name, shiftUp: 1 });
   }
 
   return { sources, consumes: [] };

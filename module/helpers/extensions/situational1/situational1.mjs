@@ -40,7 +40,6 @@ export const S1 = {
   adaptedVehicle: uuid('gi_joe_crb', 'ht26M90320SgdhMK'),
   ambushMaster: uuid('gi_joe_crb', 'UYaPTaAQH5SDXxnz'),
   dangerSense: uuid('gi_joe_crb', '2hwFRZ67xIGt1XTm'),
-  everyTrick: uuid('gi_joe_crb', 'HKv38GCtVdSV2qMH'),
   ghost: uuid('gi_joe_crb', 'MKK6kj54yVmCliPd'),
   weatherGear: uuid('gi_joe_crb', 'toav8R7TF92WnQ8G'),
   weatherproof: uuid('gi_joe_crb', 'Vo0m83m6fHo4BHOY'),
@@ -50,7 +49,6 @@ export const S1 = {
   scubaGear: uuid('gi_joe_crb', 'cZpeYK7VoLJKGKL6'),
   environmentalCamouflage: uuid('ferocious_fighters', 'SyHx2pheoELFpvTF'),
   arashikageShozoku: uuid('intercontinental_adventures', 'TBpflYvZ0lWQ65Cp'),
-  citySlicker: uuid('intercontinental_adventures', 'xU1p1S5JuVu6XiAI'),
   izunaDrop: uuid('intercontinental_adventures', 'jaUwQUvv1rXlXQUA'),
   contort: uuid('general_hawk_s_personel_files', 'PPMvpsNSpvUMFwMs'),
   diver: uuid('general_hawk_s_personel_files', 'erZl8Udy03P7vHTe'),
@@ -212,16 +210,13 @@ function crewedVehicleOf(actor) {
  * an Edge on non-Attack Skill Tests, and all your Attacks are considered Specialized. Additionally,
  * in the jungle, treat Light Armor as if it had the silent battledress upgrade."
  * Out of the Jungle (p.14, 20th level): "you gain the benefits of Jungle Fighter even outside of the
- * jungle."
+ * jungle." Its Edge, Specialized attacks and Rough Terrain are item rules; only the light-armor
+ * noise below still reads it.
  *
  * A jungle is the GI Joe CRB's own "Forest or Jungle" biome (p.239) - the `woodlands` terrain. On a
  * scene with no terrain set, the Perk's Use button toggles "in the jungle" by hand.
  */
 export function isInJungle(actor) {
-  if (has(actor, S1.outOfTheJungle)) {
-    return true;
-  }
-
   if (!has(actor, S1.jungleFighter)) {
     return false;
   }
@@ -418,20 +413,6 @@ export function situationalRollSources(actor, target, ctx = {}) {
     return { sources, consumes: [] };
   }
 
-  const environment = environmentOf(actor);
-
-  // Spacewalker (Across the Stars, General Perk, p.71): "While operating as an individual in a low-
-  // or zero-gravity environment, you have Edge on all Athletics and Acrobatics Skill Tests. You gain
-  // ↑1 on all other Skill Tests in zero-G." (The +5 Evasion is derived data, below.)
-  // "As an individual" - not while crewing a vehicle.
-  if (has(actor, S1.spacewalker) && ['lowGravity', 'zeroGravity'].includes(environment) && !crewedVehicleOf(actor)) {
-    if (['athletics', 'acrobatics'].includes(rolledSkill)) {
-      add('spacewalker', S1.spacewalker, { edge: true });
-    } else if (environment == 'zeroGravity') {
-      add('spacewalker', S1.spacewalker, { shiftUp: 1 });
-    }
-  }
-
   // Environmental Warrior - see survivalSpecializationMatches. Untagged scenes get a dialog toggle.
   if (isAttack && has(actor, S1.environmentalWarrior) && survivalSpecializationMatches(actor) === true) {
     add('environmentalWarrior', S1.environmentalWarrior, { shiftUp: 1 });
@@ -458,10 +439,12 @@ export function situationalRollSources(actor, target, ctx = {}) {
     sources.push({ id: 's1-adaptedVehicle', label: findSourced(adaptedVehicleDriver(actor), S1.adaptedVehicle)?.name ?? 'Adapted Vehicles', edge: true });
   }
 
-  // Jungle Fighter / Out of the Jungle - Edge on non-Attack tests; light armor counts as Silent.
-  if (isInJungle(actor)) {
+  // Jungle Fighter - Edge on non-Attack tests (Out of the Jungle's is an item rule); light armor
+  // counts as Silent, in the jungle or with Out of the Jungle.
+  const inJungle = isInJungle(actor);
+  if (inJungle || has(actor, S1.outOfTheJungle)) {
     const perk = has(actor, S1.jungleFighter) ? S1.jungleFighter : S1.outOfTheJungle;
-    if (!isAttack) {
+    if (inJungle && !isAttack) {
       add('jungleFighter', perk, { edge: true });
     }
 
@@ -511,7 +494,7 @@ export function looksLikeContingency(actor) {
 }
 
 export function situationalToggles(actor, ctx = {}) {
-  const { item, rolledSkill } = ctx;
+  const { item } = ctx;
   const isAttack = isAttackItem(item);
   const toggles = [];
 
@@ -533,13 +516,7 @@ export function situationalToggles(actor, ctx = {}) {
     toggles.push({ name: 's1EnvironmentalEnforcer', label: T('S1EnvironmentalEnforcerToggle'), type: 'checkbox' });
   }
 
-  // City Slicker (Intercontinental Adventures, General Perk, p.94): "In an urban environment, you
-  // use Streetwise instead of Infiltration for Skill Tests related to Stealth." Pre-ticked when the
-  // scene's terrain is urban; offered on an untagged scene too.
-  const terrain = terrainOf(actor);
-  if (rolledSkill == 'infiltration' && has(actor, S1.citySlicker) && (!terrain || terrain == 'urban')) {
-    toggles.push({ name: 's1CitySlicker', label: T('S1CitySlickerToggle'), type: 'checkbox', value: terrain == 'urban' });
-  }
+  // City Slicker's Streetwise switch is a rule on the Perk (terrain:urban, pre-ticked when urban).
 
   return toggles;
 }
@@ -561,15 +538,6 @@ export async function situationalApplyDialog(actor, options, ctx = {}) {
 
   if (ext.s1EnvironmentalWarrior) {
     options.shiftUp = (options.shiftUp ?? 0) + 1;
-  }
-
-  if (ext.s1CitySlicker) {
-    const delta = skillSwapDelta(actor, 'infiltration', 'streetwise');
-    if (delta > 0) {
-      options.shiftUp = (options.shiftUp ?? 0) + delta;
-    } else if (delta < 0) {
-      options.shiftDown = (options.shiftDown ?? 0) - delta;
-    }
   }
 
   // Layered Armor (A Jump Through Time, p.67): "adding a +1 bonus to Persuasion (Leadership) Skill
@@ -715,16 +683,9 @@ export function attireProtection(actor, environment, hazard) {
 /**
  * Danger Sense (GI Joe CRB, Bodyguard, 6th level, p.110): "You can't be Surprised, and your
  * Protected Target is also immune to surprise as long as they are within 10 feet of you."
- * Every Trick in the Book (Commando, 12th level, p.73): "You can no longer be surprised."
+ * The holder's own immunity is a ConditionImmunity item rule; this is the Protected Target half.
  */
 export function surpriseImmunitySource(actor) {
-  for (const id of [S1.dangerSense, S1.everyTrick]) {
-    const perk = findSourced(actor, id);
-    if (perk) {
-      return perk.name;
-    }
-  }
-
   let near = [];
   try {
     near = getNearbyAllyTokens(actor, 10) ?? [];

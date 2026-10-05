@@ -324,22 +324,6 @@ registerPostRoll(async (actor, results, checkContext, { hits = [], rider } = {})
 });
 
 /* -------------------------------------------- */
-/*  Jungle Fury Rhino Sentry Shield              */
-/* -------------------------------------------- */
-
-// Rhino Sentry Shields (TtSG, p.32): active, "+3 Toughness, you have cover from ranged Attacks".
-// The Toughness numbers are the shield's own data; the cover is the system's usual ↓2 on ranged
-// Attacks, listed only when the defender doesn't already have the Cover Condition.
-registerRollSources((actor, target, ctx) => {
-  if (!target || !ctx?.isAttack || ctx.isMelee || target.statuses?.has?.('cover') || target.statuses?.has?.('totalCover')) {
-    return {};
-  }
-
-  const shield = itemsOf(target).find(item => isItem(item, IDS.rhinoShield) && item.system?.equipped && item.system?.active);
-  return shield ? { sources: [{ id: 'pr3RhinoCover', label: T('Pr3RhinoCover', { name: shield.name }), shiftDown: 2 }] } : {};
-});
-
-/* -------------------------------------------- */
 /*  Emissary's Gift                              */
 /* -------------------------------------------- */
 

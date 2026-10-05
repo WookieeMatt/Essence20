@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","scope":"incoming","label":"Every Trick in the Book (invisible attacker)","when":["attack","target:status:invisible"],"snag":true}
+      {"type":"RollModifier","scope":"incoming","label":"Every Trick in the Book (invisible attacker)","when":["attack","target:status:invisible"],"snag":true},
+      {"type":"ConditionImmunity","label":"Can't be Surprised (Every Trick in the Book)","conditions":["surprised"]}
     ],
     "automation": {
       "status": "full",

@@ -11,7 +11,8 @@
  * - Evasive Conversion H: "When an enemy attacks you, you can immediately Convert to give the enemy
  *   a Snag on their attack." Readied from the button; the next attack against you takes the Snag.
  * - Extra Shift: "an additional use of Mass Shift per day" (stacks).
- * - Fast Shift: "You use Mass Shift as a Free action instead of a Move action." A cost rule.
+ * - Fast Shift: "You use Mass Shift as a Free action instead of a Move action." An ActionCost rule on
+ *   the pack item (the H buttons below still pay Free instead of Move with it).
  * - Half Track H: "Gain the Movement of your Alt Mode when in Bot Mode."
  * - Helping Hand: "Ignore your Origin's Limited Articulation drawback." (./snag.mjs)
  * - Hold That Shape: "You gain the benefits of Mass Shift until you use Mass Shift again or until
@@ -31,7 +32,7 @@
  * scene flag; that change is counted here).
  */
 import {
-  registerConsumer, registerCostRule, registerDerived, registerRest, registerRollSources, registerUse,
+  registerConsumer, registerDerived, registerRest, registerRollSources, registerUse,
 } from "../../extensions.mjs";
 import { activateForWindow, getUses, isActiveForWindow, markUsed } from "../../scene-clock.mjs";
 import { chat, holds, itemsOf, sizeIndex, sourceOf, sourced, T, writeDoc, ZORD2 } from "./common.mjs";
@@ -97,7 +98,7 @@ export function hybridDerived(actor) {
 registerDerived(hybridDerived);
 
 /* -------------------------------------------- */
-/*  Evasive Conversion, Fast Shift               */
+/*  Evasive Conversion                           */
 /* -------------------------------------------- */
 
 export function evasiveSources(attacker, target, ctx) {
@@ -115,14 +116,6 @@ registerRollSources(evasiveSources);
 registerConsumer('zord2Evasive', async (consume) => {
   const target = await fromUuid(consume.uuid);
   if (target) await writeDoc(target, 'unsetFlag', 'essence20', EVASIVE_FLAG);
-});
-
-registerCostRule({
-  id: 'zord2FastShift',
-  label: 'E20.Zord2Hybrid.fastShift',
-  has: actor => hybridsOf(actor).includes('fastShift'),
-  matches: ctx => sourceOf(ctx?.item) == ZORD2.massShift,
-  to: () => 'free',
 });
 
 /* -------------------------------------------- */

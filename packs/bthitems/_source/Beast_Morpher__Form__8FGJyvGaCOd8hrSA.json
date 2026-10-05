@@ -5,6 +5,12 @@
   "_id": "8FGJyvGaCOd8hrSA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Gorilla (Beast Morpher: ↑2 Brawn)","upshift":2,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.beneath_the_helmet.Item.8FGJyvGaCOd8hrSA","rule:data:flags.essence20.zord1Beast=gorilla","skill:brawn"]},
+      {"type":"DerivedStat","label":"Gorilla (Beast Morpher: +2 Health)","path":"system.health.max","op":"add","value":2,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.beneath_the_helmet.Item.8FGJyvGaCOd8hrSA","rule:data:flags.essence20.zord1Beast=gorilla"]},
+      {"type":"DialogSwitch","label":"Jumping (Jackrabbit: Edge, Specialized)","edge":true,"specialize":true,"forget":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.beneath_the_helmet.Item.8FGJyvGaCOd8hrSA","rule:data:flags.essence20.zord1Beast=jackrabbit","skill:athletics"]},
+      {"type":"DerivedStat","label":"Cheetah (Beast Morpher: +20 ft Ground)","path":"system.movement.ground.total","op":"add","value":20,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.beneath_the_helmet.Item.8FGJyvGaCOd8hrSA","rule:data:flags.essence20.zord1Beast=cheetah"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Pick your animal when you add it; its benefits apply while Morphed in this Form. Cheetah speed and vortex, Gorilla Brawn and Health, the Jackrabbit jump switch, and each animal's Hang-Up are handled for you.</p><p>Left to the table: wall-running, jump distances and carrying capacity.</p>"

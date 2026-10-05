@@ -42,14 +42,11 @@ export const ZORD2 = {
   // Transformers
   carapacedCommon: C('technorganic_secrets', 'aTevGfLML1dlbErs'),
   carapacedLarge: C('technorganic_secrets', '2mSP6mVx0axvOlXf'),
-  primateCommon: C('technorganic_secrets', 'Kj8DtQoNrUf2dmI5'),
-  primateLarge: C('technorganic_secrets', 'yeeGDdU2LDKyNhBd'),
   rotaryBladeShield: C('technorganic_secrets', 'ixzkIrq0X9k57754'),
   rotaryBladeWeapon: C('technorganic_secrets', '9OuJzchTaiJEMcff'),
   dozerBlade: C('tf_crb', 'P3t8JOiCH5bR0N5r'),
   hybridization: C('tf_crb', 'R5SobOsimfa7mvdy'),
   mercurialNature: C('tf_crb', 'G5LYO99aCFly6oq0'),
-  massShift: C('tf_crb', '0JiAkBjJzsuezfaI'),
 };
 
 export const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;

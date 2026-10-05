@@ -9,7 +9,7 @@ import { hasSourced, worldActors } from "../../companion-link.mjs";
  * My Little Pony Core Rulebook, Knights of Canterlot and Story of the Seasons items: Waterrunning,
  * Acute Sense, the Hang-Ups (Bad with People, Jarring, Wanderlust), Extra Effective Spell and Long
  * Lasting Spell, Mystical Understanding (Refocus, Spellcosting, Essential Research) and Friendship Is
- * Mystical, Reactionary, Thick Skin, Wheel Excited, Competitor, Screech, Something Is Off, and Bestow
+ * Mystical, Reactionary, Thick Skin, Wheel Excited's vehicle pick, Competitor, Screech, Something Is Off, and Bestow
  * Expertise's scene limit.
  */
 
@@ -76,17 +76,10 @@ export function mlp2Toggles(actor, { rolledSkill } = {}) {
   const toggles = [];
   const add = (name, label) => toggles.push({ name, label, type: 'checkbox' });
   const essence = essenceOf(rolledSkill);
-  const label = (uuid, key, data = {}) => T(key, { perk: itemOf(actor, uuid)?.name ?? '', ...data });
 
   // Waterrunning (KoC p.48): the Acrobatics ↓1 for sharp turns and sudden stops on liquid.
   if (rolledSkill == 'acrobatics' && isActiveForWindow(actor, 'waterrunning', 'scene')) {
     add('waterrunning', T('E20.Mlp2ToggleWaterrunning'));
-  }
-
-  // Wheel Excited (p.65): "Edge on Skill Tests related to one type of vehicle".
-  const wheel = itemOf(actor, MLP2.wheelExcited)?.flags?.essence20?.vehicleType;
-  if (wheel) {
-    add('wheelExcited', label(MLP2.wheelExcited, 'E20.Mlp2ToggleVehicle', { type: T(`E20.Mlp2Vehicle.${wheel}`) }));
   }
 
   // Something Is Off (Story of the Seasons p.131) is the DEFENDER's Perk, but only the roller knows whether
@@ -102,12 +95,7 @@ export function mlp2Toggles(actor, { rolledSkill } = {}) {
 
 export async function mlp2ApplyDialog(actor, options) {
   const ext = options.ext ?? {};
-  const edge = () => (options.snag ? (options.snag = false) : (options.edge = true));
   options.shiftDown = (options.shiftDown ?? 0) + (ext.waterrunning ? 1 : 0);
-
-  if (ext.wheelExcited) {
-    edge();
-  }
 }
 
 /* -------------------------------------------- */

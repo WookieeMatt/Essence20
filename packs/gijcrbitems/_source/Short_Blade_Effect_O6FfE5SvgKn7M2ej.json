@@ -5,6 +5,10 @@
   "_id": "O6FfE5SvgKn7M2ej",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"finesse","to":"might","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"might","to":"finesse","mode":"bestOf"}
+    ],
     "originalId": "",
     "actionType": "standard",
     "classification": {

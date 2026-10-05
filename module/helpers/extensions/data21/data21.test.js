@@ -3,10 +3,9 @@ import { jest } from '@jest/globals';
 global.Hooks = { on: jest.fn() };
 
 const { D21 } = await import('./common.mjs');
-const { finesseOrMight, psychoRiderOf, halveMovementDerived, HALVE_KIND } = await import('./weapons.mjs');
+const { psychoRiderOf, halveMovementDerived, HALVE_KIND } = await import('./weapons.mjs');
 const { kitWeaponsFor, KIT_WEAPONS, ALL_PSYCHO_WEAPONS } = await import('./psycho.mjs');
-const { droneDefenseBonus, applyDroneDefenses, skyMorpherSources } = await import('./gear.mjs');
-const { compassionateToggles, compassionateApply, healOne } = await import('./compassionate.mjs');
+const { skyMorpherSources } = await import('./gear.mjs');
 const { largerThanLifeReach, isNonMystical, mysticSources, mysticDefense } = await import('./threats.mjs');
 const { isMeleeWeaponEntry, isOfficerWeapon, officerTrainingUpdate, onOfficerRequisitionAccess } = await import('./officer.mjs');
 
@@ -26,31 +25,6 @@ beforeEach(() => {
       actorReach: { small: 2, common: 5, large: 5 },
     },
   };
-});
-
-test('Finesse or Might rolls the better Skill', () => {
-  const pc = actor([], { system: { skills: { finesse: { shift: 'd4' }, might: { shift: 'd8' } } } });
-  const dataset = { skill: 'finesse', essence: 'speed', shift: 'd4' };
-  expect(finesseOrMight(pc, dataset, sourced(D21.ironClawEffects[0], { type: 'weaponEffect' }))).toBe('might');
-  expect(dataset).toMatchObject({ skill: 'might', essence: 'strength', shift: 'd8' });
-
-  const other = { skill: 'finesse', essence: 'speed' };
-  expect(finesseOrMight(pc, other, sourced('Compendium.x.y.Item.z', { type: 'weaponEffect' }))).toBeNull();
-  expect(other.skill).toBe('finesse');
-});
-
-test('Core-book and Night Vale "Finesse or Might" melee weapons roll the better Skill', () => {
-  const pc = actor([], { system: { skills: { finesse: { shift: 'd4' }, might: { shift: 'd8' } } } });
-  for (const uuid of [
-    'Compendium.essence20.gi_joe_crb.Item.hb5fKPK5GNTSlKvY', // Close Combat Blade (TF CRB reuses it)
-    'Compendium.essence20.tf_crb.Item.JWm06vX4u4QSDf4D', // Close Combat Heavy Bludgeon
-    'Compendium.essence20.wtnv_citizens_guide.Item.UiASUn7CGDbl0WU3', // Baseball Bat
-    'Compendium.essence20.transformers_one_sourcebook.Item.FtKYfRmtLtRynYo9', // Turbo-Pliers
-    'Compendium.essence20.decepticon_directive.Item.D21ckSdkrSJQHu0U', // Antimatter Close Combat Weapon
-  ]) {
-    const dataset = { skill: 'finesse', essence: 'speed', shift: 'd4' };
-    expect(finesseOrMight(pc, dataset, sourced(uuid, { type: 'weaponEffect' }))).toBe('might');
-  }
 });
 
 test('Psycho alternate riders read their flags', () => {
@@ -73,18 +47,6 @@ test('Psycho Kit weapons follow the Path', () => {
   expect(kitWeaponsFor(actor())).toBe(ALL_PSYCHO_WEAPONS);
 });
 
-test('drone Defense upgrades: best one per Defense', () => {
-  const upgrade = (uuid, defense, value) => sourced(uuid, { type: 'upgrade', system: { type: 'drone', armorBonus: { defense, value } } });
-  const drone = actor([upgrade(D21.basicDefenses, 'toughness', 1), upgrade(D21.advancedDefenses, 'toughness', 2), upgrade(D21.specializedDefenses, 'evasion', 3)], {
-    type: 'companion', system: { type: 'drone', defenses: { toughness: { total: 12, string: '12' }, evasion: { total: 11, string: '11' } } },
-  });
-  expect(droneDefenseBonus(drone)).toEqual({ toughness: 2, evasion: 3 });
-  applyDroneDefenses(drone);
-  expect(drone.system.defenses.toughness.total).toBe(14);
-  expect(drone.system.defenses.evasion.total).toBe(14);
-  expect(droneDefenseBonus(actor([], { type: 'companion', system: { type: 'pet' } }))).toEqual({});
-});
-
 test('Sky Morpher: ↑1 Driving own Zord', () => {
   const pc = actor([sourced(D21.skyMorpher, { type: 'gear', name: 'Sky Morpher' })], { uuid: 'Actor.pc', system: { actors: { a: { uuid: 'Actor.z' } } } });
   const zord = actor([], { uuid: 'Actor.z', type: 'zord', system: { actors: { d: { uuid: 'Actor.pc', vehicleRole: 'driver' } } } });
@@ -94,21 +56,6 @@ test('Sky Morpher: ↑1 Driving own Zord', () => {
   expect(skyMorpherSources(pc, null, { rolledSkill: 'might' }).sources).toEqual([]);
   pc.system.actors = {};
   expect(skyMorpherSources(pc, null, { rolledSkill: 'driving' }).sources).toEqual([]);
-});
-
-test('Compassionate toggles give Edge, heal caps at max', async () => {
-  const pony = actor([sourced(D21.compassionate)]);
-  expect(compassionateToggles(pony, { rolledSkill: 'persuasion' }).map(t => t.name)).toEqual(['d21CompassionPeace', 'd21CompassionNeeds']);
-  expect(compassionateToggles(actor(), { rolledSkill: 'persuasion' })).toEqual([]);
-  const options = { edge: false, ext: { d21CompassionNeeds: true } };
-  compassionateApply(pony, options);
-  expect(options.edge).toBe(true);
-
-  const hurt = actor([], { system: { health: { value: 3, max: 5 } } });
-  hurt.canUserModify = () => true;
-  expect(await healOne(hurt)).toBe(true);
-  expect(hurt.update).toHaveBeenCalledWith({ 'system.health.value': 4 });
-  expect(await healOne(actor([], { system: { health: { value: 5, max: 5 } } }))).toBe(false);
 });
 
 test('Larger Than Life reach and Mystic', () => {

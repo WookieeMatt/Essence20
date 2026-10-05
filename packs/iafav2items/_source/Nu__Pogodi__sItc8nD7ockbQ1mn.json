@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Nu, Pogodi! (no untrained Snag, land or air)","when":["skill:driving","vehicle:driving",{"any":["vehicle:moves:aerial","vehicle:moves:ground"]}],"immune":["untrainedSnag"]}
+      {"type":"RollModifier","label":"Nu, Pogodi! (no untrained Snag, land or air)","when":["skill:driving","vehicle:driving",{"any":["vehicle:moves:aerial","vehicle:moves:ground"]}],"immune":["untrainedSnag"]},
+      {"type":"Qualification","label":"Nu, Pogodi! (Qualified: Standard weapons)","access":"qualified","items":["item:type:weapon","item:availability<=standard"]},
+      {"type":"Qualification","label":"Nu, Pogodi! (Qualified: Acclimating upgrade)","upgrades":[{"any":["item:id:HSmtPttbJvaNy5Tf","item:data:name=acclimating"]}]}
     ],
     "automation": {
       "status": "full",

@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"RollModifier","label":"Peaceable (Stun attack)","when":["attack","item:damageType:stun"],"upshift":1},
-      {"type":"RollModifier","label":"Peaceable (damaging attack)","when":["attack","item:data:system.damageType","not:item:damageType:stun"],"downshift":1}
+      {"type":"RollModifier","label":"Peaceable (damaging attack)","when":["attack","item:data:system.damageType","not:item:damageType:stun"],"downshift":1},
+      {"type":"RollModifier","label":"Peaceable (healing)","when":[{"any":["roll:dataset:isIveGotYou","roll:dataset:isMindOverMatter","roll:dataset:isRegeneration","roll:dataset:isPatchUp","roll:dataset:isPreventativeMeasures","roll:dataset:isToughItOut","roll:dataset:o2Heal"]}],"upshift":1}
     ],
     "automation": {
       "status": "full",

@@ -10,7 +10,7 @@ import { linkExistingCopies, loadSourceIndexes } from "./rules/inherit.mjs";
 import { registerRuleHelper } from "./rules/code.mjs";
 import { registerCheck, setWorldLookups } from "./rules/predicate.mjs";
 import { useAllyLookup } from "./rules/links.mjs";
-import { hasActiveEnvironmentalExpertise } from "./helpers/environmental-expertise.mjs";
+import { hasActiveEnvironmentalExpertise, isKnownOutsideEnvironmentOfExpertise } from "./helpers/environmental-expertise.mjs";
 import { isCannoneerDugIn } from "./helpers/cannoneer-dig-in.mjs";
 import { isBulwarkActive } from "./helpers/bulwark.mjs";
 import { isSkiing } from "./helpers/skier.mjs";
@@ -27,6 +27,13 @@ import { isDecepticonNemesis, isNemesisInScene } from "./helpers/nemesis-decepti
 import { isMultipleTargetsWeapon } from "./helpers/multiple-targets.mjs";
 import { favoriteWeaponOf } from "./helpers/extensions/tf1/common.mjs";
 import { isPersonalShieldActive } from "./helpers/personal-shield.mjs";
+import { hasComputerizedGear } from "./helpers/extensions/other1/cobra-gear.mjs";
+import { isNonMystical } from "./helpers/extensions/data21/threats.mjs";
+import { hasMedicineKit } from "./helpers/extensions/other2/medic.mjs";
+import { shapeOf as mlpShapeOf } from "./helpers/extensions/mlp1/mlp1.mjs";
+import { isDsoeDisguiseActive } from "./helpers/dsoe-disguise.mjs";
+import { grappleEscapeSkills } from "./helpers/extensions/rules/grappled.mjs";
+import { isInfiltrating } from "./helpers/infiltrating.mjs";
 import "./rules/prerequisites.mjs";
 import { isRecklessAbandonActive } from "./helpers/reckless-abandon.mjs";
 import { setStoryPointHelpers } from "./rules/steps.mjs";
@@ -78,6 +85,20 @@ for (const [name, fn] of Object.entries({
   // A Zord / vehicle with someone in the driver's seat.
   zordHasDriver: actor => !!getVehicleDriver(actor),
   personalShield: actor => isPersonalShieldActive(actor),
+  // Robot, part Perks, or worn computerized gear (Machinesmith, Dielectric, Insulator).
+  computerizedGear: actor => hasComputerizedGear(actor),
+  // Known to be outside the environment of expertise (Stalk).
+  outsideEnvironmentOfExpertise: actor => isKnownOutsideEnvironmentOfExpertise(actor),
+  nonMystical: actor => isNonMystical(actor),
+  // Carries a Science (Medicine) kit (Proper Protection).
+  medicineKit: actor => hasMedicineKit(actor),
+  // A changed shape this scene (MLP shape-shifting) / a disguise (Identity Crisis).
+  shapeShifted: actor => !!mlpShapeOf(actor),
+  disguised: actor => isDsoeDisguiseActive(actor),
+  // The rolled Skill is one this actor uses to break free of a grapple (its game line's list).
+  grappleEscape: (actor, option, ctx) => (ctx?.rolledSkill ? grappleEscapeSkills(actor).includes(ctx.rolledSkill) : null),
+  // The Infiltrating toggle is on (Shadow / Silent Strider).
+  infiltrating: actor => isInfiltrating(actor),
 })) {
   registerCheck(name, fn);
 }

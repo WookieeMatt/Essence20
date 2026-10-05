@@ -3,8 +3,8 @@ import {
 } from "../../extensions.mjs";
 import { worldActors } from "../../companion-link.mjs";
 import {
-  IDS, T, escapeHtml, holding, isItem, isThisRound, itemsOf, parentWeaponOf, personalPower,
-  postLine, sizeIndex, spendPower, turnStamp, writeActor,
+  IDS, T, escapeHtml, holding, isItem, isThisRound, itemsOf, personalPower,
+  postLine, spendPower, turnStamp, writeActor,
 } from "./common.mjs";
 
 /**
@@ -37,36 +37,6 @@ export function expeditorOwnerOf(zord) {
   return worldActors().find(actor => !!holding(actor, IDS.megaformExpeditor)
     && Object.values(actor.system?.actors ?? {}).some(entry => entry?.uuid && entry.uuid == zord?.uuid)) ?? null;
 }
-
-/* -------------------------------------------- */
-/*  Megaform Trait (Zord Feature)                */
-/* -------------------------------------------- */
-
-// Megaform Trait (PR CRB, Zord Feature, p.137, prerequisite Combiner): "This feature allows you to
-// choose a second Megaform Trait for your Zord to contribute to any Megaform they are a part of."
-// A Use button on the Feature picks the trait and puts the real megaformTrait item on the Zord, so
-// the Megaform aggregates it like the first one.
-registerUse({
-  id: 'pr3MegaformTrait',
-  matches: item => isItem(item, IDS.megaformTrait),
-  canUse: item => !item.flags?.essence20?.pr3Granted,
-  run: async (item) => {
-    const zord = item.parent;
-    const { findItems, grantCopy, pickOne } = await import("../../grants.mjs");
-    const uuid = await pickOne(item.name, await findItems({ type: 'megaformTrait' }));
-    if (!uuid) {
-      return null;
-    }
-
-    const created = await grantCopy(zord, uuid, { grantedBy: item });
-    if (!created) {
-      return null;
-    }
-
-    await item.setFlag('essence20', 'pr3Granted', created.id);
-    return T('Pr3GrantedItem', { name: escapeHtml(zord.name), item: escapeHtml(created.name), source: escapeHtml(item.name) });
-  },
-});
 
 /* -------------------------------------------- */
 /*  Ninja Power - the 20ft jump                  */
@@ -380,23 +350,6 @@ registerPostRoll(async (actor, results, checkContext, { isFumble, rider } = {}) 
 export function halveSummonRounds(pilot, rounds) {
   return equippedUnique(pilot, IDS.uwSmall) ? Math.max(1, Math.ceil(rounds / 2)) : rounds;
 }
-
-// Versatile Melee (Might or Finesse): "Gains ↑2 shift when attacking targets at least 3 sizes
-// larger." (Its risk - it doesn't Morph with you - is narrative.)
-registerRollSources((actor, target, ctx) => {
-  if (!target || !ctx?.isAttack) {
-    return {};
-  }
-
-  const weapon = parentWeaponOf(actor, ctx.item);
-  if (!isItem(weapon, IDS.uwVersatile)) {
-    return {};
-  }
-
-  const mine = sizeIndex(actor);
-  const theirs = sizeIndex(target);
-  return mine >= 0 && theirs - mine >= 3 ? { sources: [{ id: 'pr3UniqueVersatile', label: weapon.name, shiftUp: 2 }] } : {};
-});
 
 // Two-Handed Melee (Might): "Inflicts energy damage instead of its normal type" (its weapon effect)
 // and "Slows all of wielder's movement types down by 10 ft." while it's equipped.

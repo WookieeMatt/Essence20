@@ -48,7 +48,7 @@ beforeEach(() => {
 test('every module registers with the extension registry', () => {
   const reg = registrySnapshot();
   expect(reg.uses.map(u => u.id)).toEqual(expect.arrayContaining(['zord2-megaform-trait', 'zord2-combiner-merge', 'zord2-zord-features', 'zord2-gear-modes', 'zord2-hybridization']));
-  expect(reg.costRules.some(r => r.id == 'zord2FastShift')).toBe(true);
+  expect(reg.costRules.some(r => r.id == 'zord2FastShift')).toBe(false);
 });
 
 test('scaledEffect triples damage and doubles reach or range', () => {
@@ -192,16 +192,16 @@ test('Power Matrix reserve, spectrum and combine eligibility', () => {
   expect(ineligibleZords([versatile, plain, actor('zord')])).toHaveLength(1);
 });
 
-test('Beast Mode movement', () => {
-  const primate = item('altMode', { source: ZORD2.primateCommon });
-  const ape = actor('playerCharacter', [primate], { isTransformed: true, altModeId: primate.id, defenses: defenses(), movement: { climb: { total: 25 }, ground: { total: 50 } } });
-  gearDerived(ape);
-  expect(ape.system.movement.climb.total).toBe(30);
-
-  const shell = item('altMode', { source: ZORD2.carapacedLarge, flags: { zord2CarapacedChoice: 'burrow' } });
+test('Beast Mode movement: Carapaced adds 20 Ground unless Underground was picked', () => {
+  const shell = item('altMode', { source: ZORD2.carapacedLarge, flags: { zord2CarapacedChoice: 'ground' } });
   const crab = actor('playerCharacter', [shell], { isTransformed: true, altModeId: shell.id, defenses: defenses(), movement: { burrow: { total: 0 }, ground: { total: 40 } } });
   gearDerived(crab);
-  expect(crab.system.movement).toMatchObject({ burrow: { total: 25 }, ground: { total: 40 } });
+  expect(crab.system.movement).toMatchObject({ burrow: { total: 0 }, ground: { total: 60 } });
+
+  shell.flags.essence20.zord2CarapacedChoice = 'burrow';
+  crab.system.movement.ground.total = 40;
+  gearDerived(crab);
+  expect(crab.system.movement).toMatchObject({ burrow: { total: 0 }, ground: { total: 40 } });
 });
 
 test('Dozer Blade finds single-square Rough Terrain under a point', () => {

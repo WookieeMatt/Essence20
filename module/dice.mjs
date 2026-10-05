@@ -1,5 +1,4 @@
 import { betterThanTheBestMultiplier, ignoresMissEffects, takedownExpertChoice } from "./helpers/extensions/gij3/dice-hooks.mjs";
-import { isFormActive } from "./helpers/extensions/zord1/form-state.mjs";
 import { zord2IgnoresLimitedArticulation } from "./helpers/extensions/zord2/snag.mjs";
 import { extDialogToggles, extSpecializes, runApplyDialog, runConsumer, runPreRoll } from "./helpers/extensions.mjs";
 import { battlizerAttackUsedUp, markBattlizerAttack, racerRecklessShifts } from "./helpers/summons.mjs";
@@ -2165,26 +2164,6 @@ const CQB_TRAINING_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.
 // base CRB Primes above) - only their remaining bullets need code, checked individually below.
 const ACROSS_THE_STARS = "Compendium.essence20.across_the_stars.Item.";
 
-// Ranger Operator [Form] (A Jump Through Time, General Perk, p.55, RAW-verified 2026-09-15 via a
-// fresh PDF pull - this row had sat flagged "not yet individually verified"): "You have ↑1 on all
-// Driving and Survival Skill Tests" while in this Form. Form Perks apply while Morphed (you pick
-// a Form when activating It's Morphin Time!), the same gate Gold Ranger Prime's own clause uses -
-// and the same way this book's other Form Perks (Lightspeed Response, Supersonic, Turbocharged)
-// already scope themselves via .morphed-suffixed fields. Skills have no .morphed variant of their
-// own, so this half is code rather than a compendium Active Effect.
-//
-// Deliberately NOT built, both flagged rather than approximated:
-// - "Instead of gaining a Toughness armor bonus based on your armor proficiency, you gain a +2
-//   Armor bonus to Toughness and Evasion." The +2 alone would be a plain pair of .morphed Active
-//   Effects, but RAW is a REPLACEMENT - honoring "instead of" means suppressing the ordinary
-//   armor-proficiency Toughness bonus, which lives in _prepareDefenses, under this project's own
-//   standing hold until the user's pending Defense-math migration lands. Granting only the +2
-//   would over-grant (armor bonus AND +2), so neither half ships.
-// - The four gear-replacement clauses (Morpher -> RPM Morpher, Blade Blaster -> Nitro Blaster,
-//   Power Weapon -> Rail Saber, or Cloud Hatchet for an Advanced Spectrum Role) are the
-//   already-tracked item-grant/equipment-swap gap.
-const RANGER_OPERATOR_ID = "Compendium.essence20.jump_through_time.Item.nZYtfaowY0EH3Z0R";
-
 // Savant Skill (A Jump Through Time, General Perk, p.56, RAW-verified 2026-09-15 via a fresh PDF
 // pull - this row had sat flagged "not yet individually verified"): "You must choose a Skill from
 // the following list... When using that Skill: you may roll your Skill Test as 1d20+1d4,
@@ -3634,12 +3613,6 @@ export class Dice {
       if (cultureIndex != -1 && rolledIndex != -1 && cultureIndex <= rolledIndex) {
         updatedShiftDataset.shiftUp += 1;
       }
-    }
-
-    // Ranger Operator [Form] - see RANGER_OPERATOR_ID's own comment above.
-    if (['driving', 'survival'].includes(rolledSkill) && actor.system.isMorphed
-      && actorHasPerk(actor, RANGER_OPERATOR_ID) && isFormActive(actor, RANGER_OPERATOR_ID)) {
-      updatedShiftDataset.shiftUp += 1;
     }
 
     // Analyze Target (Analyst, 1st level, p.59): "As a Standard action, make an Alertness Skill

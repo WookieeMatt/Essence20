@@ -5,7 +5,7 @@ import {
   tf1CombatPostRoll, tf1CombatSources, tf1CombatToggles, tf1DefenseAdjust, tf1Derived,
 } from './combat.mjs';
 import {
-  FLEXIBLE_SWITCH_RULE, PARTNERED_RULE, SUPPORT_USES, mimicrySizeOk, sizeClass, tf1SupportPostRoll,
+  FLEXIBLE_SWITCH_RULE, SUPPORT_USES, mimicrySizeOk, sizeClass, tf1SupportPostRoll,
   tf1SupportSources,
 } from './support.mjs';
 import { registrySnapshot } from '../../extensions.mjs';
@@ -46,7 +46,7 @@ test('every Use and rule is registered', () => {
     expect(ids).toContain(use.id);
   }
 
-  expect(registry.costRules).toEqual(expect.arrayContaining([PARTNERED_RULE, FLEXIBLE_SWITCH_RULE]));
+  expect(registry.costRules).toEqual(expect.arrayContaining([FLEXIBLE_SWITCH_RULE]));
   expect(typeof registry.chatButtons.tf1Damage).toBe('function');
 });
 
@@ -58,12 +58,12 @@ test('Use buttons match their own items only', () => {
   expect(byId.tf1ToxEn.matches(owned(TF1.toxEn, { type: 'gear' }))).toBe(true);
 });
 
-test('Fearsome Additions: Ram in Alt Mode, Intimidation in Bot Mode', () => {
+test('Fearsome Additions: Ram in Alt Mode (the Bot Mode Intimidation ↑1 is a rule)', () => {
   const gear = owned(TF1.fearsomeAdditions, { type: 'gear', name: 'Fearsome Additions' });
   const bot = makeActor([gear], { system: { isTransformed: false } });
   const alt = makeActor([gear], { system: { isTransformed: true } });
   const ram = { type: 'weaponEffect', name: 'Ram', system: { isRam: true } };
-  expect(tf1CombatSources(bot, null, { rolledSkill: 'intimidation' }).sources[0].shiftUp).toBe(1);
+  expect(tf1CombatSources(bot, null, { rolledSkill: 'intimidation' }).sources).toEqual([]);
   expect(tf1CombatSources(bot, null, { item: ram, rolledSkill: 'might' }).sources).toEqual([]);
   expect(tf1CombatSources(alt, null, { item: ram, rolledSkill: 'might' }).sources[0].shiftUp).toBe(1);
   expect(tf1CombatSources(alt, null, { rolledSkill: 'intimidation' }).sources).toEqual([]);
@@ -141,7 +141,7 @@ test('Alt Mode Mimicry size limit', () => {
   expect(mimicrySizeOk('huge', 'small')).toBe(true);
 });
 
-test('Flexible Switch and Partnered cost rules', () => {
+test('Flexible Switch cost rule', () => {
   const perk = owned(TF1.flexibleSwitch, { flags: { switchModes: ['m1', 'm2'] } });
   const modes = [{ id: 'm1', type: 'altMode' }, { id: 'm2', type: 'altMode' }, { id: 'm3', type: 'altMode' }];
   const holder = makeActor([perk, ...modes], { system: { isTransformed: true, altModeId: 'm1' } });
@@ -149,10 +149,6 @@ test('Flexible Switch and Partnered cost rules', () => {
   holder.system.altModeId = 'm3';
   expect(FLEXIBLE_SWITCH_RULE.has(holder)).toBe(false);
   expect(FLEXIBLE_SWITCH_RULE.matches({ kind: 'conversion' })).toBe(true);
-  const partnered = makeActor([owned(TF1.partnered, { flags: { partner: { uuid: 'Actor.p' } } })]);
-  expect(PARTNERED_RULE.has(partnered)).toBe(true);
-  expect(PARTNERED_RULE.has(makeActor([owned(TF1.partnered)]))).toBe(false);
-  expect(PARTNERED_RULE.matches({ key: 'lendAssistance' })).toBe(true);
 });
 
 test('small helpers', () => {

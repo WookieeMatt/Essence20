@@ -5,6 +5,9 @@
   "_id": "tbBjkVhSSc3Zj9zp",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Cooking with Prize Honey (Prize Honey: ↑2)","when":["not:rule:data:flags.essence20.usesLeft<=0"],"upshift":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: heal the target up to 3 Health, three uses. Roll Options Dialog: a switch for ↑2 when cooking with it.</p>"

@@ -123,9 +123,10 @@ const PUSH_CAP_MULTIPLIER = 2;
 const SPRINT_MULTIPLIER = 2;
 const PUSH_FEET_DOUBLED = 10;
 
-/* Sewer Tunneler (10 ft a Free action), Earlier is Better Than Later (10 ft and no cap, in Alt Mode)
-   and Burn Rubber (10 ft on the first round, unless Surprised) are MovementAction item rules on
-   their packs, read through rules/adapter.mjs#ruleMovement in getPushRules. */
+/* Sewer Tunneler (10 ft a Free action), Earlier is Better Than Later (10 ft and no cap, in Alt Mode),
+   Burn Rubber (10 ft on the first round, unless Surprised) and Evacuation Vents (no cap for the turn
+   it was used) are MovementAction item rules on their packs, read through
+   rules/adapter.mjs#ruleMovement in getPushRules. */
 
 /**
  * Whether this actor is a vehicle someone is currently driving.
@@ -176,17 +177,6 @@ export function getPushRules(actor) {
   // on the vehicle instead of being a Perk it holds outright.
   if (isJuryRigBenefitActive(actor, 'improveAerodynamics')) {
     rules.feetPerFreeAction = Math.max(rules.feetPerFreeAction, PUSH_FEET_DOUBLED);
-  }
-
-  // Evacuation Vents (A Jump Through Time p.32): "there is no limit to how high your value can go
-  // as long as you are moving away from all visible enemies" - declared for this turn with the
-  // Perk's Use button (helpers/extensions/other1/jtt.mjs).
-  {
-    const combat = game?.combat;
-    const evacuating = actor?.flags?.essence20?.o1Evacuating?.key;
-    if (combat && evacuating && evacuating == `${combat.id}.${combat.round}.${combat.turn}`) {
-      rules.capMultiplier = Infinity;
-    }
   }
 
   // MovementAction item rules (rules/adapter.mjs#ruleMovement).

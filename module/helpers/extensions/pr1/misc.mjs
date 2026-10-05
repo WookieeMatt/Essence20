@@ -7,13 +7,14 @@
  *   Enhanced Stealth "Increase all Movement types by 10 feet. Gain ↑2 on Infiltration Skill Tests to
  *   move quietly and avoid detection"; Genetic Resonance "Reduce the time it takes for the Zord to
  *   arrive when summoned to the conflict by 2 rounds to a minimum of 1 round."
+ *   Dino Shield's Snag and the Sense / Stealth ↑2 are the item's own rules (they read the pick below).
  */
 import {
-  registerApplyDialog, registerDerived, registerDialogToggles, registerHitRider, registerRollSources, registerUse,
+  registerApplyDialog, registerDerived, registerDialogToggles, registerHitRider, registerUse,
 } from "../../extensions.mjs";
 import {
-  PR1, T, allSourced, driverOf, findSourced, flagOf, giveSnag, isItem, isMeleeEffect, isRanged,
-  num, pending, postLine, seatsOf, setPending,
+  PR1, T, allSourced, driverOf, findSourced, flagOf, giveSnag, isItem, isMeleeEffect,
+  num, pending, postLine, setPending,
 } from "./common.mjs";
 
 /* -------------------------------------------- */
@@ -44,31 +45,6 @@ registerUse({
   canUse: item => !flagOf(item, DINO_FLAG),
   run: item => pickDino(item),
 });
-
-/** The Zord a roll draws on: the Zord itself, or the one its roller is driving. */
-function zordFor(actor) {
-  return actor?.type == 'zord' ? actor : seatsOf(actor).find(s => s.role == 'driver' && s.vehicle?.type == 'zord')?.vehicle ?? null;
-}
-
-export function dinoSources(actor, target, { rolledSkill, item, isAttack } = {}) {
-  const sources = [];
-  const label = zord => findSourced(zord, PR1.advancedDinoGem)?.name ?? 'Advanced Dino Gem Integration';
-  const zord = zordFor(actor);
-  if (rolledSkill == 'alertness' && dinoHas(zord, 'sense')) {
-    sources.push({ id: 'pr1DinoSense', label: label(zord), shiftUp: 2 });
-  }
-
-  if (rolledSkill == 'infiltration' && dinoHas(zord, 'stealth')) {
-    sources.push({ id: 'pr1DinoStealth', label: T('Pr1DinoStealthLabel', { name: label(zord) }), shiftUp: 2 });
-  }
-
-  // Dino Shield: "Snag to ranged attacks targeting the Zord specifically."
-  if (isAttack && isRanged(item) && dinoHas(target, 'shield')) {
-    sources.push({ id: 'pr1DinoShield', label: label(target), snag: true });
-  }
-
-  return sources;
-}
 
 export function dinoDerived(actor) {
   if (!dinoHas(actor, 'stealth')) {
@@ -117,7 +93,6 @@ registerHitRider((actor, target, result, rider, tools) => {
   }
 });
 
-registerRollSources((actor, target, ctx) => ({ sources: dinoSources(actor, target, ctx) }));
 registerDerived(dinoDerived);
 
 globalThis.Hooks?.on?.('createItem', async (item, options, userId) => {

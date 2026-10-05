@@ -5,6 +5,9 @@
   "_id": "eVRb1Fp43QMdxV1N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Interrupt (DIF 15 Alertness)","steps":[{"do":"roll","skill":"alertness","dif":15,"onSuccess":[{"do":"chat","text":"{name} interrupts: make one attack now, at no action cost."},{"do":"bonusAttack","cost":"none"}],"onFail":[{"do":"chat","text":"{name} doesn't react in time."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: rolls Alertness against DIF 15. On a success you get one free attack to make right away, interrupting the enemy's turn.</p>"

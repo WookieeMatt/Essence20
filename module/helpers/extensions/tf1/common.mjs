@@ -13,7 +13,6 @@ export const TF1 = {
   commsProbe: dd('kcU17jzso2caxVJ1'),
   drone: dd('ZdvE8MB35jg1A8wK'),
   easyInEasyOut: dd('N36G5U8c8HSX3e9c'),
-  eideticBuffer: dd('DlyxYU8RfDeSmS1q'),
   falseData: dd('Xo62YAhi8lULOZpR'),
   fearsomeAdditions: dd('jh4FiaiLPb40jqkv'),
   fearsomeVoice: dd('ZQl2qzyBNHUYYHS5'),
