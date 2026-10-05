@@ -11,7 +11,6 @@ export const G2 = {
   energyResistant: GIJ('lKnjgN4TdHHNktpF'),
   expertKnowledge: GIJ('9H78lRwXzJW6tj9e'),
   fearsomePresence: GIJ('Jbx3ei70ZsoabVuL'),
-  machinesmith: GIJ('101HiYiWfoxoO1hL'),
   martialArtist: GIJ('9Elbb94OPCPVSTxL'),
   mentor: GIJ('jUZrNJbPzSd1zVLa'),
   noseForTrouble: GIJ('MH630UTgsJtbf3Y5'),

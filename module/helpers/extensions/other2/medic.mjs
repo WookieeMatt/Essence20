@@ -1,16 +1,17 @@
 import {
-  registerDerived, registerNamedAction, registerRoundStart, registerUse,
+  registerNamedAction, registerRoundStart, registerUse,
 } from "../../extensions.mjs";
 import { activeKits } from "../../kits.mjs";
 import { getUses, markUsed } from "../../scene-clock.mjs";
 import {
-  GIJ, HAWK, T, feetBetween, firstTarget, has, isFrom, itemsOf, num, onHook, post, rollDif,
+  GIJ, HAWK, T, feetBetween, firstTarget, has, isFrom, itemsOf, num, post, rollDif,
 } from "./shared.mjs";
 
 /**
  * Healing: the Core Rules' "restore Health with a Skill Test" as an action anyone can take, and the
  * GI Joe Medic/Hawk's Personnel Files Perks and gear that change it - Hearty Meal, Proper
- * Protection, Stim Dart and the Defibrillator. Peaceable's ↑1 on healing rolls is a rule on its pack item.
+ * Protection, Stim Dart and the Defibrillator. Peaceable's ↑1 on healing rolls and Proper Protection's
+ * immunities are rules on their pack items.
  */
 export const O2_MED = {
   iveGotYou: GIJ('6wbY17kDGkxeGBPp'),
@@ -37,33 +38,9 @@ export function hasMedicineKit(actor) {
   return activeKits(actor).some(kit => kit.skill == 'science' && /medic/i.test(kit.spec ?? ''));
 }
 
-/**
- * Proper Protection (GI Joe CRB, Medic, 7th level, p.82): "while you have a medicine kit, you are
- * immune to diseases and poisons." The kit gate is why this is derived data rather than the old
- * unconditional Active Effect.
- */
-export function properProtectionActive(actor) {
-  return has(actor, O2_MED.properProtection) && hasMedicineKit(actor);
-}
-
-registerDerived(actor => {
-  if (actor?.system?.immunities && properProtectionActive(actor)) {
-    actor.system.immunities.poison = true;
-    actor.system.immunities.disease = true;
-  }
-});
-
-// Immune to poison: the Poisoned Condition doesn't land.
-onHook('preCreateActiveEffect', (effect) => {
-  const actor = effect?.parent;
-  const statuses = [...(effect?.statuses ?? effect?._source?.statuses ?? [])];
-  if (actor?.documentName == 'Actor' && statuses.includes('poisoned') && properProtectionActive(actor)) {
-    ui.notifications?.info?.(T('O2PoisonImmune', { name: actor.name }));
-    return false;
-  }
-
-  return true;
-});
+// Proper Protection's immunities (poison, disease, the Poisoned Condition) while a medicine kit is
+// carried are rules on its pack item (check:medicineKit asks hasMedicineKit); its crit note on curing
+// poison stays in the Heal action below.
 
 /* -------------------------------------------- */
 /*  The Heal action                              */

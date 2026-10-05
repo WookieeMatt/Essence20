@@ -7,12 +7,12 @@ import {
   T, TF3, tokenOf, writeActor,
 } from "./common.mjs";
 import { HOLO_FLAG, holoDoubles, MARTYR_FLAG, STOIC_FLAG, UNEXPECTED_FLAG } from "./rolls.mjs";
-import { CHOSEN_FLAG, GEAR_WEAPONS, gearWeaponOf, ORDER_FLAG } from "./uses.mjs";
+import { CHOSEN_FLAG, ORDER_FLAG } from "./uses.mjs";
 
 /**
  * What happens to tf3 items outside the dice dialog: being Defeated (Martyr, Last Stand), taking damage
  * (Roll With It), an ally missing (Synch Up), an enemy stepping into Reach (No Escape), converting
- * (Unexpected Alternative, the Alt Mode Gear weapons), turns starting (Stoic,
+ * (Unexpected Alternative), turns starting (Stoic,
  * Irrefutable Order), Holographic doubles popping, Intensive's group Repair, Requisition access
  * (Unassuming, One Bot Over Another), Kit prerequisites (Training Through Familiarity) and Third Dimension's movement.
  */
@@ -380,19 +380,7 @@ export async function onConverted(actor, changes) {
     return;
   }
 
-  const inAlt = !!actor.system?.isTransformed;
-
-  // The Alt Mode Gear weapons are the Bot Mode half: in hand in Bot Mode, stowed in Alt Mode.
-  if ('isTransformed' in system) {
-    for (const uuid of Object.keys(GEAR_WEAPONS)) {
-      const weapon = gearWeaponOf(actor, held(actor, uuid));
-      if (weapon && !!weapon.system?.equipped == inAlt) {
-        await weapon.update({ 'system.equipped': !inAlt });
-      }
-    }
-  }
-
-  if (inAlt && actor.system?.altModeId) {
+  if (actor.system?.isTransformed && actor.system?.altModeId) {
     const enemies = (canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(other => other && areEnemies(actor, other));
     const updates = unexpectedUpdates(actor, actor.system.altModeId, enemies);
     if (updates) {

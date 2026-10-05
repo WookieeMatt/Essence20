@@ -158,24 +158,25 @@ describe('cobra gear', () => {
     gear = await import('./cobra-gear.mjs');
   });
 
-  test('computerized gear and the EM upshift against it', () => {
+  test('computerized gear', () => {
     const armor = item('armor', { id: 'arm', system: { equipped: true, traits: ['computerized'] } });
-    const insulator = item('upgrade', { source: gear.O1_CC.insulator, flags: { parentId: 'arm' } });
-    const t = actor([armor, insulator]);
+    const t = actor([armor]);
     expect(gear.hasComputerizedGear(t)).toBe(true);
-    expect(gear.emUpshiftAgainst(t)).toBe(2);
-    t.items.push(Object.assign(item('upgrade', { source: gear.O1_CC.dielectric }), { parent: t }));
-    expect(gear.emUpshiftAgainst(t)).toBe(1);
+    armor.system.equipped = false;
+    expect(gear.hasComputerizedGear(t)).toBe(false);
+    expect(gear.hasComputerizedGear(actor([item('perk', { source: gear.O1_CC.enhancedPart })]))).toBe(true);
     expect(gear.hasComputerizedGear(actor([]))).toBe(false);
   });
 
   test('an upgrade on unequipped armor is not worn', () => {
     const armor = item('armor', { id: 'arm2', system: { equipped: false } });
-    const up = item('upgrade', { source: gear.O1_CC.dielectric, flags: { parentId: 'arm2' } });
+    const up = item('upgrade', { flags: { parentId: 'arm2' }, system: { traits: ['computerized'] } });
     const t = actor([armor, up]);
-    expect(gear.wears(t, gear.O1_CC.dielectric)).toBe(false);
+    expect(gear.isWorn(up)).toBe(false);
+    expect(gear.hasComputerizedGear(t)).toBe(false);
     armor.system.equipped = true;
-    expect(gear.wears(t, gear.O1_CC.dielectric)).toBe(true);
+    expect(gear.isWorn(up)).toBe(true);
+    expect(gear.hasComputerizedGear(t)).toBe(true);
   });
 
   test('Onslaught offers the other effects, or a Maneuver', () => {

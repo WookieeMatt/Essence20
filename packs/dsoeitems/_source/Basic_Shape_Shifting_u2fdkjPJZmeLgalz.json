@@ -5,6 +5,9 @@
   "_id": "u2fdkjPJZmeLgalz",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Keeping up the changed shape (Basic Shape-Shifting: Edge)","when":[{"any":["skill:deception","skill:infiltration"]},"not:roll:initiative","check:shapeShifted","self:data:flags.essence20.mlpShape.spell","self:data:flags.essence20.mlpShape.spell!=Compendium.essence20.mlp_crb.Item.3Tm9SWc060Z62e4Q"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a successful cast changes your shape for the scene. While changed, your Deception and Infiltration Tests get Edge, labelled Basic Shape-Shifting in the Roll Options Dialog.</p>"

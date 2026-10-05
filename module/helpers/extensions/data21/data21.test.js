@@ -6,7 +6,7 @@ const { D21 } = await import('./common.mjs');
 const { psychoRiderOf, halveMovementDerived, HALVE_KIND } = await import('./weapons.mjs');
 const { kitWeaponsFor, KIT_WEAPONS, ALL_PSYCHO_WEAPONS } = await import('./psycho.mjs');
 const { skyMorpherSources } = await import('./gear.mjs');
-const { largerThanLifeReach, isNonMystical, mysticSources, mysticDefense } = await import('./threats.mjs');
+const { largerThanLifeReach, isNonMystical } = await import('./threats.mjs');
 const { isMeleeWeaponEntry, isOfficerWeapon, officerTrainingUpdate, onOfficerRequisitionAccess } = await import('./officer.mjs');
 
 const sourced = (uuid, extra = {}) => ({ id: extra.id ?? uuid.slice(-5), name: extra.name ?? 'Item', type: extra.type ?? 'perk', system: extra.system ?? {}, flags: { core: { sourceId: uuid }, essence20: extra.flags ?? {} } });
@@ -58,7 +58,7 @@ test('Sky Morpher: ↑1 Driving own Zord', () => {
   expect(skyMorpherSources(pc, null, { rolledSkill: 'driving' }).sources).toEqual([]);
 });
 
-test('Larger Than Life reach and Mystic', () => {
+test('Larger Than Life reach and who is Non-Mystical', () => {
   const claw = { type: 'weaponEffect', system: { classification: { style: 'melee' }, totalReach: 2, range: { reachMultiplier: 1 } }, flags: {} };
   const threat = actor([sourced(D21.largerThanLife), claw]);
   largerThanLifeReach(threat);
@@ -69,10 +69,6 @@ test('Larger Than Life reach and Mystic', () => {
   expect(isNonMystical(mundane)).toBe(true);
   expect(isNonMystical(mystic)).toBe(false);
   expect(isNonMystical(actor([], { flags: { d21Mystical: true } }))).toBe(false);
-  expect(mysticSources(mystic, mundane, { isAttack: true }).sources[0].shiftUp).toBe(1);
-  expect(mysticSources(mystic, mystic, { isAttack: true }).sources).toEqual([]);
-  expect(mysticDefense(mystic, mundane, 'toughness')).toBe(-3);
-  expect(mysticDefense(mystic, mundane, 'evasion')).toBe(0);
 });
 
 test('Alternate Officer training update', () => {

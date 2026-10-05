@@ -7,7 +7,7 @@ import { hasSourced, worldActors } from "../../companion-link.mjs";
 
 /**
  * My Little Pony - Dark Skies over Equestria and Knights of Canterlot items: shape-shifting
- * (Basic Shape-Shifting, Face-Shift, Identity Crisis, Master Morph, Size-Shift), Prize Honey's Use,
+ * (Basic Shape-Shifting's shape, Face-Shift, Master Morph, Size-Shift), Prize Honey's Use,
  * the Knights of Canterlot tools and Hang-Ups, and the spell Perks
  * (Illusion Casting, Reach Out, Sharpcaster, Sorcerous Support) and spells (Brilliant
  * Sight, Pinkie Sense, Softenblows).
@@ -19,7 +19,6 @@ const koc = id => pack('knights_of_canterlot', id);
 export const MLP1 = {
   basicShapeShifting: dse('u2fdkjPJZmeLgalz'),
   faceShift: dse('E1ZaVoP0yjYfyj6F'),
-  identityCrisis: dse('R6XROOkbI2dKmn5R'),
   masterMorph: dse('0fKppLmw0TSNAn5z'),
   prizeHoney: dse('tbBjkVhSSc3Zj9zp'),
   sizeShift: dse('44UMuF7vQM094oQq'),
@@ -130,17 +129,6 @@ export function mlp1RollSources(actor, target, { rolledSkill } = {}) {
   const consumes = [];
   const shape = shapeOf(actor);
 
-  // Basic Shape-Shifting (DSoE p.22): "You gain Edge on Deception and Infiltration Skill Tests to maintain
-  // your deception".
-  if (shape?.spell && ['deception', 'infiltration'].includes(rolledSkill)) {
-    // shape.spell holds which spell set the shape (true on shapes saved before Ponymorph was told apart).
-    const ponymorph = shape.spell == MLP1.ponymorph;
-    sources.push({
-      id: 'basicShapeShifting', edge: true,
-      label: ponymorph ? nameOf(actor, MLP1.ponymorph, 'Ponymorph') : nameOf(actor, MLP1.basicShapeShifting, 'Basic Shape-Shifting'),
-    });
-  }
-
   if (shape?.faceSkill && shape.faceSkill == rolledSkill) {
     sources.push({ id: 'faceShift', label: nameOf(actor, MLP1.faceShift, 'Face-Shift'), shiftUp: 1 });
   }
@@ -189,17 +177,10 @@ function hasRangedWeapon(actor) {
 export function mlp1Toggles(actor, { rolledSkill } = {}) {
   const toggles = [];
   const add = (name, label, extra = {}) => toggles.push({ name, label, type: 'checkbox', ...extra });
-  const shaped = !!shapeOf(actor) || !!actor?.flags?.essence20?.dsoeDisguiseActive;
 
   // Face-Shift: "You gain Edge on Skill Tests to pass as that individual".
   if (shapeOf(actor) && hasSourced(actor, MLP1.faceShift)) {
     add('faceShiftPass', T('E20.Mlp1TogglePassAs'));
-  }
-
-  // Identity Crisis: "You gain an Edge on Skill Tests targeting creatures who believe you are
-  // somecreature else".
-  if (shaped && hasSourced(actor, MLP1.identityCrisis)) {
-    add('identityCrisis', T('E20.Mlp1ToggleBelieved'));
   }
 
   // Hang-Ups.
@@ -215,7 +196,7 @@ export async function mlp1ApplyDialog(actor, options) {
   const edge = () => (options.snag ? (options.snag = false) : (options.edge = true));
   const snag = () => (options.edge ? (options.edge = false) : (options.snag = true));
 
-  if (ext.faceShiftPass || ext.identityCrisis) {
+  if (ext.faceShiftPass) {
     edge();
   }
 

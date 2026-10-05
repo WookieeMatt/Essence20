@@ -5,6 +5,9 @@
   "_id": "3Tm9SWc060Z62e4Q",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Keeping up the changed shape (Ponymorph: Edge)","when":[{"any":["skill:deception","skill:infiltration"]},"not:roll:initiative","check:shapeShifted","self:data:flags.essence20.mlpShape.spell=Compendium.essence20.mlp_crb.Item.3Tm9SWc060Z62e4Q"],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: a successful cast marks you as changed shape for the rest of the scene. Until then your Deception and Infiltration tests get Edge, labelled Ponymorph in your Roll Options Dialog. Left to the table: casting it on another creature, and what the new shape looks like.</p>"

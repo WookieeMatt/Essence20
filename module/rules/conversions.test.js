@@ -8221,3 +8221,449 @@ test('Finesse or Might: the rolled effect switches to the better of Finesse and 
   const plain = { type: 'weaponEffect', flags: {}, system: { rules: [] } };
   expect(applySkillSubstitution(gunner, { skill: 'finesse', shift: 'd4' }, plain)).toBeNull();
 });
+
+// slA2 zord
+
+describe('slA2 zord', () => {
+  const HYBRIDIZATION = 'Compendium.essence20.tf_crb.Item.R5SobOsimfa7mvdy';
+
+  test('Mercurial Nature: grants a Hybridization when added, even beside one bought separately', async () => {
+    const { grantData } = await import('./lifecycle.mjs');
+    const { hybridsOf } = await import('../helpers/extensions/zord2/snag.mjs');
+    const saved = global.foundry.utils;
+    global.foundry.utils = {
+      ...saved,
+      setProperty: (object, key, value) => {
+        const keys = key.split('.');
+        const last = keys.pop();
+        keys.reduce((o, k) => (o[k] ??= {}), object)[last] = value;
+      },
+    };
+    try {
+      const actor = holder(['tfcrbitems/_source/Mercurial_Nature_G5LYO99aCFly6oq0.json']);
+      const [perk] = actor.items.contents;
+      const load = async id => (id == HYBRIDIZATION ? { toObject: () => ({ _id: 'x', name: 'Hybridization', type: 'perk', system: {} }) } : null);
+      const [granted, ...rest] = await grantData(perk, actor, { load });
+      expect(rest).toEqual([]);
+      expect(granted).toMatchObject({ type: 'perk', _stats: { compendiumSource: HYBRIDIZATION }, flags: { essence20: { grantedBy: perk.id } } });
+      expect(granted._id).toBeUndefined();
+
+      // The old hook granted one whatever other Hybridizations the actor held (no skipIfOwned).
+      actor.items.contents.push({ id: 'bought', type: 'perk', flags: { core: { sourceId: HYBRIDIZATION }, essence20: { zord2Hybrid: 'fastShift' } }, system: {} });
+      expect(await grantData(perk, actor, { load })).toHaveLength(1);
+
+      // The granted copy (marked with _stats.compendiumSource) is still a Hybridization to the slice.
+      actor.items.contents.push({ id: 'granted', type: 'perk', _stats: { compendiumSource: HYBRIDIZATION }, flags: { essence20: { grantedBy: perk.id, zord2Hybrid: 'extraShift' } }, system: {} });
+      expect(hybridsOf(actor)).toEqual(['fastShift', 'extraShift']);
+    } finally {
+      global.foundry.utils = saved;
+    }
+  });
+});
+
+// slB2 tf1
+describe('slB2 tf1', () => {
+  const EXPERIMENT = 'tfcrbitems/_source/Experiment_EcSOADOOb3PZMolz.json';
+  const ESCAPE = 'Experiment: ↑1 (breaking free of the grapple)';
+  let savedSettings;
+
+  beforeAll(async () => {
+    const { registerCheck } = await import('./predicate.mjs');
+    const { grappleEscapeSkills } = await import('../helpers/extensions/rules/grappled.mjs');
+    registerCheck('grappleEscape', (actor, option, ctx) => (ctx?.rolledSkill ? grappleEscapeSkills(actor).includes(ctx.rolledSkill) : null));
+    savedSettings = global.game.settings;
+  });
+
+  afterEach(() => {
+    global.game.settings = savedSettings;
+  });
+
+  function experiment(choice, statuses = ['grappled']) {
+    const actor = holder([EXPERIMENT], { statuses });
+    const perk = actor.items.contents[0];
+    perk.system = { ...perk.system, choice };
+    return actor;
+  }
+
+  test('Experiment (Shove): a ↑1 switch for breaking a grapple, on by default, never remembered', () => {
+    const actor = experiment('shove');
+    actor.flags = { essence20: { ruleSwitches: { [`rule-${actor.items.contents[0].id}-3`]: false } } };
+    const switches = ruleDialogSwitches(actor, { rolledSkill: 'athletics', dataset: {} });
+    expect(switches).toEqual([expect.objectContaining({ label: ESCAPE, value: true })]);
+    expect(tick(actor, { rolledSkill: 'athletics', dataset: {} }, { shiftUp: 1 })).toMatchObject({ shiftUp: 2 });
+  });
+
+  test('Experiment escape switch: only while Grappled, with the Shove option, on a non-attack escape Skill roll', () => {
+    expect(switchNames(experiment('shove', []), { rolledSkill: 'athletics' })).toEqual([]);
+    expect(switchNames(experiment('technology'), { rolledSkill: 'athletics' })).toEqual([]);
+    expect(switchNames(experiment('hardpoint'), { rolledSkill: 'athletics' })).toEqual([]);
+    const actor = experiment('shove');
+    expect(switchNames(actor, { rolledSkill: 'athletics', isAttack: true, item: { type: 'weaponEffect', system: {} } })).toEqual([]);
+    expect(switchNames(actor, {})).toEqual([]);
+    expect(switchNames(actor, { rolledSkill: 'technology' })).toEqual([]);
+    // No game line: any Skill some book escapes with.
+    expect(switchNames(actor, { rolledSkill: 'might' })).toEqual([ESCAPE]);
+    expect(switchNames(actor, { rolledSkill: 'acrobatics' })).toEqual([ESCAPE]);
+  });
+
+  test("Experiment escape switch follows the world's game line", () => {
+    global.game.settings = { get: (scope, key) => (key == 'gameLine' ? 'transformers' : undefined) };
+    const actor = experiment('shove');
+    expect(switchNames(actor, { rolledSkill: 'acrobatics' })).toEqual([ESCAPE]);
+    expect(switchNames(actor, { rolledSkill: 'might' })).toEqual([]);
+  });
+});
+
+// slB2 tf3
+describe('slB2 tf3', () => {
+  const GEAR = {
+    'Rotor Blades': 'tfcrbitems/_source/Rotor_Blades_jkZQIpL661klm5sP.json',
+    'Tow Cable & Hook': 'tfcrbitems/_source/Tow_Cable___Hook_EVywnYUDjBfMcoWT.json',
+    'Water Cannon': 'tfcrbitems/_source/Water_Cannon_FUOOqATSqU6habEt.json',
+  };
+
+  /** A Transformer holding the gear, the weapon its Use made, and an unrelated weapon. */
+  async function geared(file, { equipped = true, gearEquipped } = {}) {
+    const { jest } = await import('@jest/globals');
+    const actor = holder([file]);
+    const [gear] = actor.items.contents;
+    if (gearEquipped !== undefined) {
+      gear.system = { ...gear.system, equipped: gearEquipped };
+    }
+
+    const doc = (id, flags) => {
+      const item = { id, name: id, type: 'weapon', flags: { essence20: flags }, system: { equipped } };
+      item.update = jest.fn(async changes => {
+        item.system.equipped = changes['system.equipped'];
+      });
+      item.parent = actor;
+      return item;
+    };
+
+    const weapon = doc('made', { grantedBy: gear.id });
+    const other = doc('other', {});
+    actor.items.contents.push(weapon, other);
+    rebuildIndex(actor);
+    return { actor, weapon, other };
+  }
+
+  test('Alt Mode Gear: the made weapon is stowed in Alt Mode and in hand in Bot Mode', async () => {
+    const { jest } = await import('@jest/globals');
+    const { fireTriggers } = await import('./triggers.mjs');
+    const saved = global.ChatMessage;
+    global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
+    try {
+      for (const file of Object.values(GEAR)) {
+        const { actor, weapon, other } = await geared(file);
+        await fireTriggers(actor, 'transform');
+        expect(weapon.update).toHaveBeenCalledWith({ 'system.equipped': false });
+        expect(weapon.system.equipped).toBe(false);
+        await fireTriggers(actor, 'untransform');
+        expect(weapon.update).toHaveBeenLastCalledWith({ 'system.equipped': true });
+        expect(weapon.system.equipped).toBe(true);
+        expect(other.update).not.toHaveBeenCalled();
+      }
+
+      // Nothing to post.
+      expect(ChatMessage.create).not.toHaveBeenCalled();
+    } finally {
+      global.ChatMessage = saved;
+    }
+  });
+
+  test('Alt Mode Gear: no made weapon, or the gear itself unequipped, changes nothing', async () => {
+    const { fireTriggers } = await import('./triggers.mjs');
+    const bare = holder([GEAR['Rotor Blades']]);
+    await expect(fireTriggers(bare, 'transform')).resolves.toBeNull();
+
+    const { actor, weapon } = await geared(GEAR['Water Cannon'], { gearEquipped: false });
+    await fireTriggers(actor, 'transform');
+    expect(weapon.update).not.toHaveBeenCalled();
+  });
+});
+
+// slC2 gij2
+describe('slC2 gij2', () => {
+  const MACHINESMITH = 'gijcrbitems/_source/Machinesmith_101HiYiWfoxoO1hL.json';
+
+  beforeAll(async () => {
+    const { registerCheck } = await import('./predicate.mjs');
+    const { hasComputerizedGear } = await import('../helpers/extensions/other1/cobra-gear.mjs');
+    registerCheck('computerizedGear', actor => hasComputerizedGear(actor));
+  });
+
+  /** A weapon effect (and its weapon) on the roller. */
+  function attack(actor, { damageType = 'blunt', traits = [] } = {}) {
+    const weapon = { id: `w${nextId++}`, name: 'Gun', type: 'weapon', flags: {}, system: { traits }, parent: actor };
+    const effect = { id: `e${nextId++}`, name: 'Shot', type: 'weaponEffect', flags: { essence20: { parentId: weapon.id } }, system: { damageType }, parent: actor };
+    actor.items.contents.push(weapon, effect);
+    return effect;
+  }
+
+  const living = (extra = {}) => ({ id: `t${nextId++}`, type: 'npc', system: {}, items: { contents: [], get: () => null }, ...extra });
+
+  test('Machinesmith: ↑6 on an Electromagnetic attack against a living, non-computerized target', () => {
+    const smith = holder([MACHINESMITH]);
+    const emp = attack(smith, { damageType: 'emp' });
+    const trait = attack(smith, { traits: ['electromagnetic'] });
+    const plain = attack(smith);
+    expect(ruleRollSources(smith, living(), { item: emp }).sources).toEqual([expect.objectContaining({ label: 'Machinesmith', shiftUp: 6 })]);
+    expect(ruleRollSources(smith, living(), { item: trait }).sources[0].shiftUp).toBe(6);
+    expect(ruleRollSources(smith, living(), { item: plain }).sources).toEqual([]);
+    // No target, or not a weapon effect.
+    expect(ruleRollSources(smith, null, { item: emp }).sources).toEqual([]);
+    expect(ruleRollSources(smith, living(), { item: { type: 'weapon', system: { damageType: 'emp' }, flags: {} } }).sources).toEqual([]);
+  });
+
+  test('Machinesmith: nothing against a Computerized target or one in computerized gear', () => {
+    const smith = holder([MACHINESMITH]);
+    const emp = attack(smith, { damageType: 'emp' });
+    expect(ruleRollSources(smith, living({ system: { traits: { computerized: true } } }), { item: emp }).sources).toEqual([]);
+    const gear = { id: 'g1', type: 'armor', flags: {}, system: { traits: ['computerized'], equipped: true } };
+    const geared = () => living({ items: { contents: [gear], get: () => gear } });
+    expect(ruleRollSources(smith, geared(), { item: emp }).sources).toEqual([]);
+    gear.system.equipped = false;
+    expect(ruleRollSources(smith, geared(), { item: emp }).sources[0].shiftUp).toBe(6);
+  });
+});
+
+// slC2 gij3
+describe('slC2 gij3', () => {
+  const STALK = 'gijcrbitems/_source/Stalk_BOuJREcROMkMjbM1.json';
+
+  /** A Stalk holder on a scene with this terrain (undefined: untagged); environment of expertise woodlands. */
+  function stalker(terrain, { adaptationFlag = false } = {}) {
+    const actor = holder([STALK], { system: { environments: ['woodlands'] } });
+    const scene = { getFlag: (scope, key) => (key == 'terrain' ? terrain : undefined) };
+    actor.documentName = 'Actor';
+    actor.getActiveTokens = () => [{ regions: [], parent: scene }];
+    actor.getFlag = (scope, key) => (key == 'environmentalExpertiseActive' ? adaptationFlag : undefined);
+    return searchable(actor);
+  }
+
+  /** condition-immunity.mjs's hand-written table still asks actor.items.find. */
+  function searchable(actor) {
+    actor.items.find = fn => actor.items.contents.find(fn);
+    return actor;
+  }
+
+  beforeAll(async () => {
+    const { registerCheck } = await import('./predicate.mjs');
+    const { isKnownOutsideEnvironmentOfExpertise } = await import('../helpers/environmental-expertise.mjs');
+    registerCheck('outsideEnvironmentOfExpertise', actor => isKnownOutsideEnvironmentOfExpertise(actor));
+  });
+
+  const edge = actor => ruleRollSources(actor, null, { rolledSkill: 'infiltration', dataset: {} }).sources.filter(source => source.edge);
+
+  test('Stalk: Edge on Infiltration unless known to be outside the environment of expertise', () => {
+    expect(edge(stalker(undefined))).toHaveLength(1);
+    expect(edge(stalker('woodlands'))[0]).toMatchObject({ edge: true, label: expect.stringContaining('Stalk') });
+    expect(edge(stalker('urban'))).toEqual([]);
+    expect(edge(stalker('urban', { adaptationFlag: true }))).toHaveLength(1);
+    // Other Skills, and Initiative (the old roll source never reached Initiative).
+    expect(ruleRollSources(stalker(undefined), null, { rolledSkill: 'athletics', dataset: {} }).sources).toEqual([]);
+    expect(ruleRollSources(stalker(undefined), null, { rolledSkill: 'infiltration', dataset: { isInitiative: true } }).sources).toEqual([]);
+    // A ctx without a dataset still gets it.
+    expect(ruleRollSources(stalker(undefined), null, { rolledSkill: 'infiltration' }).sources).toHaveLength(1);
+  });
+
+  test('Stalk: immune to Surprised unless known to be outside the environment of expertise', async () => {
+    const { isImmuneToCondition } = await import('../helpers/condition-immunity.mjs');
+    expect(isImmuneToCondition(stalker(undefined), 'surprised')).toBe(true);
+    expect(isImmuneToCondition(stalker('woodlands'), 'surprised')).toBe(true);
+    expect(isImmuneToCondition(stalker('urban'), 'surprised')).toBe(false);
+    expect(isImmuneToCondition(stalker('urban', { adaptationFlag: true }), 'surprised')).toBe(true);
+    expect(isImmuneToCondition(stalker(undefined), 'frightened')).toBe(false);
+    expect(isImmuneToCondition(searchable(holder([])), 'surprised')).toBe(false);
+  });
+});
+
+// slD2 other1
+describe('slD2 other1', () => {
+  const DIELECTRIC = 'ccitems/_source/Dielectric_A36q5SNroIR8xoyd.json';
+  const INSULATOR = 'ccitems/_source/Insulator_AMIKCJX1DDz1sLVb.json';
+
+  beforeAll(async () => {
+    const { registerCheck } = await import('./predicate.mjs');
+    const { hasComputerizedGear } = await import('../helpers/extensions/other1/cobra-gear.mjs');
+    registerCheck('computerizedGear', actor => hasComputerizedGear(actor));
+  });
+
+  /** A defender wearing these upgrades on armor (computerized: the armor's trait; trait: the actor's). */
+  function wearer(files, { computerized = true, trait = false, equipped = true } = {}) {
+    const actor = holder(files, { system: trait ? { traits: { computerized: true } } : {} });
+    const armor = { id: `arm${nextId++}`, name: 'Armor', type: 'armor', flags: {}, system: { equipped, traits: computerized ? ['computerized'] : [] }, parent: actor };
+    for (const upgrade of actor.items.contents) {
+      upgrade.flags = { essence20: { parentId: armor.id } };
+    }
+
+    actor.items.contents.push(armor);
+    rebuildIndex(actor);
+    return actor;
+  }
+
+  /** An attacker's weapon effect (and its weapon); owner: whose items they are (default the attacker). */
+  function attacker({ damageType = 'blunt', traits = [], owner = null } = {}) {
+    const actor = { id: `r${nextId++}`, type: 'playerCharacter', system: {}, items: { contents: [], get: id => actor.items.contents.find(i => i.id == id) } };
+    const parent = owner ?? actor;
+    const weapon = { id: `w${nextId++}`, name: 'Gun', type: 'weapon', flags: {}, system: { traits }, parent };
+    const effect = { id: `e${nextId++}`, name: 'Shot', type: 'weaponEffect', flags: { essence20: { parentId: weapon.id } }, system: { damageType }, parent };
+    parent.items.contents.push(weapon, effect);
+    return { actor, effect };
+  }
+
+  const down = (roller, target, item) => ruleRollSources(roller, target, { item }).sources.reduce((sum, source) => sum + source.shiftDown, 0);
+
+  test('Dielectric / Insulator: an Electromagnetic attack gets ↓2 / ↓1 against computerized gear', () => {
+    const emp = attacker({ damageType: 'emp' });
+    expect(down(emp.actor, wearer([DIELECTRIC]), emp.effect)).toBe(2);
+    expect(down(emp.actor, wearer([INSULATOR]), emp.effect)).toBe(1);
+    // Both worn: only Dielectric's cut counts.
+    expect(down(emp.actor, wearer([DIELECTRIC, INSULATOR]), emp.effect)).toBe(2);
+    expect(down(emp.actor, wearer([INSULATOR, DIELECTRIC]), emp.effect)).toBe(2);
+    // The Computerized trait instead of gear (the old "coating" branch).
+    expect(down(emp.actor, wearer([DIELECTRIC], { computerized: false, trait: true }), emp.effect)).toBe(2);
+    // An Electromagnetic-trait weapon counts too.
+    const trait = attacker({ traits: ['electromagnetic'] });
+    expect(down(trait.actor, wearer([INSULATOR]), trait.effect)).toBe(1);
+  });
+
+  test('Dielectric / Insulator: nothing on other attacks, without computerized gear, or while the armor is off', () => {
+    const plain = attacker();
+    expect(down(plain.actor, wearer([DIELECTRIC]), plain.effect)).toBe(0);
+    const emp = attacker({ damageType: 'emp' });
+    expect(down(emp.actor, wearer([DIELECTRIC], { computerized: false }), emp.effect)).toBe(0);
+    expect(down(emp.actor, wearer([DIELECTRIC], { equipped: false }), emp.effect)).toBe(0);
+    expect(down(emp.actor, wearer([DIELECTRIC]), { type: 'weapon', flags: {}, system: { damageType: 'emp' } })).toBe(0);
+  });
+
+  test("Dielectric / Insulator: a vehicle's Electromagnetic-trait weapon fired by its crew isn't looked up (as before)", () => {
+    const vehicle = { id: `v${nextId++}`, type: 'vehicle', system: {}, items: { contents: [], get: id => vehicle.items.contents.find(i => i.id == id) } };
+    const crewTrait = attacker({ traits: ['electromagnetic'], owner: vehicle });
+    expect(down(crewTrait.actor, wearer([DIELECTRIC]), crewTrait.effect)).toBe(0);
+    // An emp effect still counts; so does the vehicle firing its own weapon.
+    const crewEmp = attacker({ damageType: 'emp', owner: vehicle });
+    expect(down(crewEmp.actor, wearer([DIELECTRIC]), crewEmp.effect)).toBe(2);
+    expect(down(vehicle, wearer([DIELECTRIC]), crewTrait.effect)).toBe(2);
+  });
+});
+
+// slE2 data
+describe('slE2 data', () => {
+  const MYSTIC = 'fmmcitems/_source/Mystic_SBlOGEnend5WYwgd.json';
+  const weaponEffect = { type: 'weaponEffect', system: { classification: { style: 'melee' } }, flags: {} };
+  const defender = ({ armor = 3, morphed = 5, isMorphed = false, statuses = [], items = [], flags = {} } = {}) => {
+    const actor = { id: `d${nextId++}`, type: 'npc', flags: { essence20: flags }, statuses: new Set(statuses), system: { isMorphed, defenses: { toughness: { armor, morphed, total: 10 } } } };
+    actor.items = { contents: items, get: id => items.find(item => item.id == id) };
+    rebuildIndex(actor);
+    return actor;
+  };
+
+  beforeAll(async () => {
+    const { registerCheck } = await import('./predicate.mjs');
+    const { isNonMystical } = await import('../helpers/extensions/data21/threats.mjs');
+    registerCheck('nonMystical', actor => isNonMystical(actor));
+  });
+
+  test('Mystic: ↑1 on attacks against a Non-Mystical target', () => {
+    const mystic = holder([MYSTIC]);
+    const up = (target, ctx = { item: weaponEffect, isAttack: true }) => ruleRollSources(mystic, target, ctx).sources.reduce((sum, s) => sum + (s.shiftUp ?? 0), 0);
+    expect(up(defender())).toBe(1);
+    expect(ruleRollSources(mystic, defender(), { item: weaponEffect, isAttack: true }).sources[0].label).toBe('Mystic');
+    // A Mystical target (the GM's flag, or holding Mystic / a sorcerous Power or trait) gets none.
+    expect(up(defender({ flags: { d21Mystical: true } }))).toBe(0);
+    expect(up(defender({ items: [{ id: 'p1', type: 'power', system: { type: 'sorcerous' }, flags: {} }] }))).toBe(0);
+    expect(up(defender({ items: [{ id: 'w1', type: 'weapon', system: { traits: ['sorcerous'] }, flags: {} }] }))).toBe(0);
+    // Not an attack, or no target: none.
+    expect(up(defender(), { rolledSkill: 'persuasion', isAttack: false })).toBe(0);
+    expect(up(null)).toBe(0);
+  });
+
+  test('Mystic: Toughness without its armor part, every target', () => {
+    const mystic = holder([MYSTIC]);
+    expect(ruleDefenseAdjust(mystic, defender({ armor: 3 }), 'toughness', { difficulty: 10 })).toBe(-3);
+    expect(ruleDefenseAdjust(mystic, defender({ armor: 3, flags: { d21Mystical: true } }), 'toughness', { difficulty: 10 })).toBe(-3);
+    // Morphed: the morphed bonus instead.
+    expect(ruleDefenseAdjust(mystic, defender({ armor: 3, morphed: 5, isMorphed: true }), 'toughness', { difficulty: 10 })).toBe(-5);
+    // Armor already stripped, another Defense, or the holder being attacked: nothing.
+    expect(ruleDefenseAdjust(mystic, defender({ statuses: ['armorStripped'] }), 'toughness', { difficulty: 10 })).toBe(0);
+    expect(ruleDefenseAdjust(mystic, defender(), 'evasion', { difficulty: 10 })).toBe(0);
+    expect(ruleDefenseAdjust(defender(), mystic, 'toughness', { difficulty: 10 })).toBe(0);
+    expect(ruleDefenseAdjust(holder([]), defender(), 'toughness', { difficulty: 10 })).toBe(0);
+  });
+});
+
+// slE2 dmlp
+
+describe('slE2 dmlp', () => {
+  const PONY = 'Compendium.essence20.mlp_crb.Item.3Tm9SWc060Z62e4Q';
+  const BASIC = 'Compendium.essence20.dark_skies_over_equestria.Item.u2fdkjPJZmeLgalz';
+  let savedSettings;
+
+  beforeAll(async () => {
+    const { registerCheck } = await import('./predicate.mjs');
+    const { shapeOf } = await import('../helpers/extensions/mlp1/mlp1.mjs');
+    const { isDsoeDisguiseActive } = await import('../helpers/dsoe-disguise.mjs');
+    registerCheck('shapeShifted', actor => !!shapeOf(actor));
+    registerCheck('disguised', actor => isDsoeDisguiseActive(actor));
+    savedSettings = global.game.settings;
+    global.game.settings = { get: () => 1 };
+  });
+
+  afterAll(() => {
+    global.game.settings = savedSettings;
+  });
+
+  const withFlags = (actor, flags) => {
+    actor.flags = { essence20: flags };
+    actor.getFlag = (scope, key) => actor.flags?.[scope]?.[key];
+    return actor;
+  };
+
+  test('Identity Crisis: an Edge switch while shape-shifted this scene or disguised', () => {
+    const actor = withFlags(holder(['dsoeitems/_source/Identity_Crisis_R6XROOkbI2dKmn5R.json']), {});
+    const label = "They believe you're someone else (Identity Crisis: Edge)";
+    expect(switchNames(actor, { rolledSkill: 'persuasion' })).toEqual([]);
+
+    withFlags(actor, { mlpShape: { scene: 1 } });
+    expect(switchNames(actor, { rolledSkill: 'persuasion' })).toEqual([label]);
+    expect(ruleDialogSwitches(actor, { rolledSkill: 'persuasion' })[0].value).toBe(false);
+    expect(tick(actor, { rolledSkill: 'persuasion' })).toMatchObject({ edge: true });
+
+    // A shape from an earlier scene doesn't count; a Disguise this scene does.
+    withFlags(actor, { mlpShape: { scene: 0 } });
+    expect(switchNames(actor, { rolledSkill: 'persuasion' })).toEqual([]);
+    withFlags(actor, { dsoeDisguiseActive: { epoch: 1, window: 'scene', count: 1 } });
+    expect(switchNames(actor, { rolledSkill: 'athletics' })).toEqual([label]);
+    withFlags(actor, { dsoeDisguiseActive: { epoch: 0, window: 'scene', count: 1 } });
+    expect(switchNames(actor, { rolledSkill: 'athletics' })).toEqual([]);
+  });
+
+  test("Basic Shape-Shifting / Ponymorph: Edge on Deception and Infiltration while the spell's shape lasts, labelled by the spell", () => {
+    const files = ['dsoeitems/_source/Basic_Shape_Shifting_u2fdkjPJZmeLgalz.json', 'mlpcrbitems/_source/Ponymorph_3Tm9SWc060Z62e4Q.json'];
+    const actor = withFlags(holder(files), {});
+    const sources = (rolledSkill, dataset = {}) => ruleRollSources(actor, null, { rolledSkill, dataset }).sources.filter(s => s.edge).map(s => s.label);
+    expect(sources('deception')).toEqual([]);
+
+    // A shape with no spell (Shape-Shift's own Use) gives nothing here.
+    withFlags(actor, { mlpShape: { scene: 1, faceSkill: 'persuasion' } });
+    expect(sources('deception')).toEqual([]);
+
+    withFlags(actor, { mlpShape: { scene: 1, spell: BASIC } });
+    expect(sources('deception')).toEqual(['Keeping up the changed shape (Basic Shape-Shifting: Edge)']);
+    expect(sources('infiltration')).toEqual(['Keeping up the changed shape (Basic Shape-Shifting: Edge)']);
+    expect(sources('persuasion')).toEqual([]);
+    expect(sources('infiltration', { isInitiative: true })).toEqual([]);
+
+    // Shapes saved before Ponymorph was told apart (spell: true) count as Basic Shape-Shifting.
+    withFlags(actor, { mlpShape: { scene: 1, spell: true } });
+    expect(sources('deception')).toEqual(['Keeping up the changed shape (Basic Shape-Shifting: Edge)']);
+
+    withFlags(actor, { mlpShape: { scene: 1, spell: PONY } });
+    expect(sources('infiltration')).toEqual(['Keeping up the changed shape (Ponymorph: Edge)']);
+
+    // Last scene's shape is over.
+    withFlags(actor, { mlpShape: { scene: 0, spell: PONY } });
+    expect(sources('infiltration')).toEqual([]);
+  });
+});

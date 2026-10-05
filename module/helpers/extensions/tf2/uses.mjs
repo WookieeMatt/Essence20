@@ -22,9 +22,6 @@
  *   simulated Skill Test instead of making another Skill Test."
  * - Energon Bank (Scientist, 9th level, p.79): "allies within 30ft can spend your Energon Points
  *   instead of their own". Handed over one point at a time, as the ally needs it.
- * - Flexible Directives (Field Commander, 10th level, p.66): "once per scene, you can modify the
- *   numeric value of one of your other Perks by 1." Which number changes is the table's call; the
- *   button keeps the once-per-scene count and says what was changed.
  * - Applied Science (Scientist, 12th level, p.79): "once per scene, you can use Broad Understanding
  *   and Thesis in Combat."
  * - We Are One! (Enigma of Combination, 10th level, p.30-31): "Choose a number of allies equal to your
@@ -443,23 +440,6 @@ export const USES = [
 
       await writeActor(ally, 'update', [{ 'system.energon.normal.value': energonOf(ally) + 1 }]);
       return T('Tf2EnergonBankGave', { name: actor.name, ally: ally.name });
-    },
-  },
-  {
-    id: 'tf2FlexibleDirectives', matches: isFrom(TF2.flexibleDirectives),
-    canUse: item => getUses(item.parent, 'tf2FlexibleDirectives', 'scene') < 1,
-    async run(item) {
-      const actor = item.parent;
-      const perks = itemsOf(actor).filter(other => other.type == 'perk' && other.id != item.id);
-      const { chooseSelect } = await grants();
-      const id = await chooseSelect(item.name, T('Tf2FlexiblePick'), perks.map(other => ({ value: other.id, label: other.name })));
-      const perk = perks.find(other => other.id == id);
-      if (!perk) {
-        return null;
-      }
-
-      await markUsed(actor, 'tf2FlexibleDirectives', { window: 'scene' });
-      return T('Tf2FlexibleUsed', { name: actor.name, perk: perk.name });
     },
   },
   {

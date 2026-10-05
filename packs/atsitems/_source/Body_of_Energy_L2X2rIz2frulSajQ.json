@@ -5,6 +5,9 @@
   "_id": "L2X2rIz2frulSajQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Health into Power","when":["self:morphed","self:data:system.health.value>1","self:data:system.powers.personal.value<$system.powers.personal.max"],"steps":[{"do":"askNumber","var":"moved","prompt":"Move how much Health into Personal Power?","min":1,"max":"min(@actor.system.health.value - 1, @actor.system.powers.personal.max - @actor.system.powers.personal.value)"},{"do":"spend","resource":{"path":"system.health.value"},"amount":"@var.moved"},{"do":"gainResource","resource":{"path":"system.powers.personal.value"},"amount":"@var.moved"},{"do":"chat","text":"{name} turns Health into Personal Power."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while Morphed: damage beyond your Health comes out of Personal Power. Use button: move Health into Personal Power. When you unmorph, both are reset to half the shared pool.</p>"

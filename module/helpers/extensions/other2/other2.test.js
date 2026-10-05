@@ -127,11 +127,10 @@ describe('medic', () => {
     expect(med.healSkills(cook, { inCombat: false })).toEqual(['science', 'technology']);
   });
 
-  test('Proper Protection needs a medicine kit', () => {
-    const perk = item('perk', { source: med.O2_MED.properProtection });
-    expect(med.properProtectionActive(actor([perk]))).toBe(false);
+  test('a carried Science (Medicine) kit counts as a medicine kit (check:medicineKit)', () => {
+    expect(med.hasMedicineKit(actor([item('perk', { source: med.O2_MED.properProtection })]))).toBe(false);
     const kit = item('gear', { name: 'Standard Science (Medicine) Kit', system: { gearType: 'kits' } });
-    expect(med.properProtectionActive(actor([item('perk', { source: med.O2_MED.properProtection }), kit]))).toBe(true);
+    expect(med.hasMedicineKit(actor([kit]))).toBe(true);
   });
 
   test('Stim darts: one per mission plus carried extras', () => {

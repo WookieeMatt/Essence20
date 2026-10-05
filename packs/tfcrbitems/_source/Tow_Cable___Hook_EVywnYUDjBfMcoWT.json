@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Pulling something on your tow cable (Tow Cable & Hook: Edge)","when":["skill:brawn","self:transformed"],"edge":true}
+      {"type":"DialogSwitch","label":"Pulling something on your tow cable (Tow Cable & Hook: Edge)","when":["skill:brawn","self:transformed"],"edge":true},
+      {"type":"Trigger","label":"Alt Mode: stow the cable (Tow Cable & Hook)","event":"transform","steps":[{"do":"updateItem","item":"granted","set":{"system.equipped":false}}]},
+      {"type":"Trigger","label":"Bot Mode: cable in hand (Tow Cable & Hook)","event":"untransform","steps":[{"do":"updateItem","item":"granted","set":{"system.equipped":true}}]}
     ],
     "automation": {
       "status": "partial",

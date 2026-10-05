@@ -1,5 +1,5 @@
 import {
-  registerChatButton, registerHitRider, registerPostRoll, registerRoundStart, registerUse,
+  registerChatButton, registerHitRider, registerRoundStart, registerUse,
 } from "../../extensions.mjs";
 import {
   DD, T, feetBetween, firstTarget, isFrom, itemsOf, num, onHook, post, rollDif, sourceOf,
@@ -63,21 +63,8 @@ registerHitRider((actor, target, result, rider) => {
   }
 });
 
-/** Junkplate's fumble retaliation - once per roll, whoever the fumbled unarmed attack was aimed at. */
-registerPostRoll(async (actor, results, checkContext, { isFumble, hits, rider } = {}) => {
-  if (!isFumble || !rider?.isUnarmed) {
-    return;
-  }
-
-  const wearer = (hits ?? []).map(h => h.target).find(t => t && t.id != actor.id && wears(t, O2_DD.junkplate));
-  if (!wearer) {
-    return;
-  }
-
-  const { applyDamage } = await import("../../combat.mjs");
-  await applyDamage(actor, 1, 'sharp');
-  await post(wearer, T('O2JunkplateFumble', { name: actor.name, wearer: wearer.name }));
-});
+// Junkplate's fumble retaliation (1 Sharp to whoever Fumbles an unarmed attack against the wearer) is a
+// `targeted` Trigger on its pack item.
 
 /* -------------------------------------------- */
 /*  Rust Derivatives                             */

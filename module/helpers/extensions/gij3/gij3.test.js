@@ -8,7 +8,7 @@ beforeAll(() => {
 
 const mod = await import('./gij3.mjs');
 const {
-  G3, deps, gij3Toggles, gij3ApplyDialog, gij3RollSources, gij3PreRoll, gij3Derived, isTargetingEyeLive, qualifiesForSoundOfAngels,
+  G3, gij3Toggles, gij3ApplyDialog, gij3RollSources, gij3PreRoll, gij3Derived, isTargetingEyeLive, qualifiesForSoundOfAngels,
   peakPerformancePerks, dreadnokInScene, gij3TurnStart, USES, isPillageEffect, addSilencedStatus, onTouchMoveInitiative,
 } = mod;
 const hooks = await import('./dice-hooks.mjs');
@@ -50,7 +50,6 @@ beforeEach(() => {
   global.canvas = { scene: { tokens: [] } };
   global.CONFIG = { statusEffects: [], E20: {} };
   global.ChatMessage = { create: jest.fn(async () => ({})), getSpeaker: () => ({}) };
-  deps.isKnownOutsideEnvironmentOfExpertise = () => false;
 });
 
 const names = out => out.map(t => t.name);
@@ -66,13 +65,6 @@ test('Subtle Snake: a Social switch and what each choice does', () => {
   const outsider = { shiftDown: 0, ext: { gij3SubtleSnake: 'outsider' } };
   gij3ApplyDialog(holder, outsider);
   expect(outsider).toMatchObject({ snag: true, shiftDown: 0 });
-});
-
-test('Stalk: Edge on Infiltration unless known to be outside the environment', () => {
-  const holder = actor([item(G3.stalk, { name: 'Stalk' })]);
-  expect(gij3RollSources(holder, null, { rolledSkill: 'infiltration' }).sources[0]).toMatchObject({ id: 'gij3Stalk', edge: true });
-  deps.isKnownOutsideEnvironmentOfExpertise = () => true;
-  expect(gij3RollSources(holder, null, { rolledSkill: 'infiltration' }).sources).toEqual([]);
 });
 
 test('Junker: banked Edge on the next requisition, consumed', () => {

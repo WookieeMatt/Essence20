@@ -30,7 +30,6 @@ import {
 const U = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 export const G3 = {
   secondSkin: U('gi_joe_crb', 'Txn7a7v4gQOCYPhC'),
-  stalk: U('gi_joe_crb', 'BOuJREcROMkMjbM1'),
   touchMove: U('gi_joe_crb', 'wv5vpbiCZXiwTpdm'),
   subtleSnake: U('ferocious_fighters', 'ZCgcPAQzeMYTti7g'),
   dreadnokRecruit: U('intercontinental_adventures', 'QIoKmEIelV7it5xE'),
@@ -89,11 +88,6 @@ const has = (actor, id) => !!findSourced(actor, id);
 const essenceOf = (skill, rolledEssence) => rolledEssence || E20.skillToEssence?.[skill] || null;
 const isSocial = ctx => essenceOf(ctx?.rolledSkill, ctx?.rolledEssence) == 'social';
 const isAttackItem = item => item?.type == 'weaponEffect';
-
-/** Loaded at setup - heavy modules used from synchronous hooks. */
-export const deps = {
-  isKnownOutsideEnvironmentOfExpertise: () => false,
-};
 
 /* -------------------------------------------- */
 /*  Roll Options Dialog switches                 */
@@ -177,16 +171,8 @@ export function gij3ApplyDialog(actor, options) {
 export function gij3RollSources(actor, target, ctx = {}) {
   const sources = [];
   const consumes = [];
-  const { item, rolledSkill, isMelee, dataset } = ctx;
+  const { item, isMelee, dataset } = ctx;
   const isAttack = ctx.isAttack ?? isAttackItem(item);
-
-  // Stalk (GI Joe CRB, Predator, p.93): "any time you are in your environment of expertise, you ...
-  // gain an Edge on Infiltration Skill Tests." Off only where the scene's terrain says the actor is
-  // outside every environment of expertise (helpers/environmental-expertise.mjs) - the same gate
-  // this Perk's surprise immunity already uses (helpers/condition-immunity.mjs).
-  if (rolledSkill == 'infiltration' && has(actor, G3.stalk) && !deps.isKnownOutsideEnvironmentOfExpertise(actor)) {
-    sources.push({ id: 'gij3Stalk', label: findSourced(actor, G3.stalk).name, edge: true });
-  }
 
   // Junker (Quartermaster's Guide p.9): "When you requisition gear, you gain an additional
   // requisition attempt. You gain Edge on this attempt." The Use button adds the attempt and banks
@@ -732,11 +718,6 @@ export function peakPerformancePerks(actor) {
 /*  Registration                                 */
 /* -------------------------------------------- */
 
-export async function loadDeps() {
-  const expertise = await import("../../environmental-expertise.mjs");
-  deps.isKnownOutsideEnvironmentOfExpertise = expertise.isKnownOutsideEnvironmentOfExpertise;
-}
-
 /** Takedown Expert's "silenced" - no such Condition in the system before this. */
 export function addSilencedStatus() {
   const list = CONFIG?.statusEffects;
@@ -767,7 +748,6 @@ USES.forEach(use => registerUse(use));
 if (typeof Hooks != 'undefined') {
   Hooks.once('setup', () => {
     addSilencedStatus();
-    loadDeps().catch(error => console.error('Essence20 | gij3 deps failed', error));
   });
   Hooks.on('updateCombatant', (combatant, changes) => {
     onTouchMoveInitiative(combatant, changes).catch(error => console.error('Essence20 | Touch Move', error));

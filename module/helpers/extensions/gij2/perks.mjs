@@ -1,14 +1,13 @@
 import {
   registerAfterDamage, registerChatButton, registerChatDecorator, registerDerived, registerPostRoll,
-  registerPreRoll, registerRollSources, registerTurnStart, registerUse,
+  registerPreRoll, registerTurnStart, registerUse,
 } from "../../extensions.mjs";
 import { getUses, markUsed } from "../../scene-clock.mjs";
-import { hasComputerizedGear } from "../other1/cobra-gear.mjs";
 import { G2, T, escape, findSourced, hasItem, itemsOf, perkUseCard, post, sourceOf } from "./shared.mjs";
 
 /**
  * GI JOE CRB Perks that needed a Use button, a roll hook or a follow-up reminder: Expert Knowledge,
- * Mentor, Martial Artist, Nose For Trouble's Streetwise swap, Machinesmith, Energy Resistant, Queen's
+ * Mentor, Martial Artist, Nose For Trouble's Streetwise swap, Energy Resistant, Queen's
  * Gambit, Castling's move, Plan of Action's split and Fearsome Presence's range, count and expiry.
  */
 
@@ -255,33 +254,6 @@ registerPreRoll(async (actor, dataset, item) => {
     dataset.isSpecialized = false;
   }
 });
-
-/* -------------------------------------------- */
-/*  Machinesmith                                 */
-/* -------------------------------------------- */
-
-// Machinesmith (Tinkerer Focus, 20th level, p.105): "You treat all targets as if they had the AI and
-// Robot perks when it is beneficial for you to do so." The one place that is a number: an
-// Electromagnetic attack is "↑3 against computers ... and robots, but ↓3 against all other targets"
-// (p.207). Against a living target with nothing computerized, dice.mjs gives the ↓3; this undoes it
-// and adds the robot ↑3. (A target already counted as computerized - dice.mjs's Computerized trait,
-// or other1's computerized gear - already gets the ↑.) Using Technology to give first aid and the
-// like is the GM's call.
-export function machinesmithSources(actor, target, { item } = {}) {
-  if (!target || !hasItem(actor, G2.machinesmith) || item?.type != 'weaponEffect') {
-    return null;
-  }
-
-  const weapon = actor?.items?.get?.(item.flags?.essence20?.parentId);
-  const em = item.system?.damageType == 'emp' || !!weapon?.system?.traits?.includes?.('electromagnetic');
-  if (!em || target.system?.traits?.computerized || hasComputerizedGear(target)) {
-    return null;
-  }
-
-  return { sources: [{ id: 'gij2Machinesmith', label: findSourced(actor, G2.machinesmith).name, shiftUp: 6 }] };
-}
-
-registerRollSources(machinesmithSources);
 
 /* -------------------------------------------- */
 /*  Queen's Gambit                               */

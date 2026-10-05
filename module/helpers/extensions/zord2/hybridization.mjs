@@ -25,8 +25,8 @@
  * - Weaponize H: "Add a weapon which you are trained in to an External Hardpoint." A temporary copy.
  *
  * Mercurial Nature (TF CRB, Modemaster, 20th level, p.76): "you gain a
- * Hybridization, and unlimited uses of Mass Shift per day." Adding it grants a Hybridization (whose
- * picker then runs), and lifts the daily cap.
+ * Hybridization, and unlimited uses of Mass Shift per day." Its Hybridization is a Grant rule on the
+ * pack item (the granted copy's picker runs below); this file lifts the daily cap.
  *
  * The daily count also counts the Mass Shift Role Perk's own uses (helpers/mass-shift.mjs marks its
  * scene flag; that change is counted here).
@@ -35,7 +35,7 @@ import {
   registerConsumer, registerDerived, registerRest, registerRollSources, registerUse,
 } from "../../extensions.mjs";
 import { activateForWindow, getUses, isActiveForWindow, markUsed } from "../../scene-clock.mjs";
-import { chat, holds, itemsOf, sizeIndex, sourceOf, sourced, T, writeDoc, ZORD2 } from "./common.mjs";
+import { chat, holds, itemsOf, sizeIndex, sourceOf, T, writeDoc, ZORD2 } from "./common.mjs";
 import { HYBRID_FLAG, hybridsOf, STEADY_HANDS_FLAG } from "./snag.mjs";
 
 export const HYBRIDS = ['changeSize', 'evasiveConversion', 'extraShift', 'fastShift', 'halfTrack', 'helpingHand', 'holdThatShape',
@@ -231,9 +231,6 @@ if (typeof Hooks != 'undefined') {
     if (source == ZORD2.hybridization && !item.flags?.essence20?.[HYBRID_FLAG]) {
       const line = await pickHybridization(item);
       if (line) await chat(item.parent, line);
-    } else if (source == ZORD2.mercurialNature && !sourced(item.parent, ZORD2.hybridization).some(h => h.flags?.essence20?.grantedBy == item.id)) {
-      const { grantCopy } = await import("../../grants.mjs");
-      await grantCopy(item.parent, ZORD2.hybridization, { grantedBy: item });
     }
   });
 

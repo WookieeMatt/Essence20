@@ -281,7 +281,7 @@ describe('registration', () => {
   test('Use buttons match their items', () => {
     const uses = registrySnapshot().uses;
     const find = uuid => uses.find(use => use.matches(item(uuid)));
-    for (const uuid of [IDS.playFavorites, IDS.motorPool, IDS.bodyOfEnergy, IDS.darkEnergon, IDS.historyBuff,
+    for (const uuid of [IDS.playFavorites, IDS.motorPool, IDS.darkEnergon, IDS.historyBuff,
       IDS.honestCompassion, IDS.camper, IDS.zapAppleJam, IDS.circleOfMagicalFriends, IDS.extensiveResearch]) {
       expect(find(uuid)).toBeTruthy();
     }

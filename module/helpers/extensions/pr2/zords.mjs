@@ -1,6 +1,6 @@
 /**
- * Beneath the Helmet's new Zord Features (p.71-73): Dino Gem Integration, Energem Infusion, Dino
- * Drive Mode and Dedicated Carrier. The two "enhance one ranged energy attack" Features are applied
+ * Beneath the Helmet's new Zord Features (p.71-73): Dino Gem Integration, Energem Infusion and Dino
+ * Drive Mode. The two "enhance one ranged energy attack" Features are applied
  * at drop time as a one-off mutation of the chosen weaponEffect - the same idiom
  * sheet-handlers/zord-feature-handler.mjs uses for Enhance (Attack).
  */
@@ -133,28 +133,6 @@ export function dinoGemSources(actor, target, ctx = {}) {
 }
 
 registerRollSources(dinoGemSources);
-
-/* -------------------------------------------- */
-/*  Dedicated Carrier                            */
-/* -------------------------------------------- */
-
-// Dedicated Carrier (p.73): "The Zord loses the Combiner Zord Feature and instead gains the Carrier
-// Zord Feature / +3 to their Armor Plating Bonus / 2 additional health." The plating and Health
-// are the Feature's own Active Effect; the swap happens here.
-export async function applyDedicatedCarrier(feature) {
-  const actor = feature.parent;
-  const combiner = itemsOf(actor).filter(i => sourceOf(i) == PR2.combiner);
-  if (combiner.length) {
-    await actor.deleteEmbeddedDocuments('Item', combiner.map(i => i.id));
-  }
-
-  if (!holds(actor, PR2.carrier)) {
-    const { grantCopy } = await import("../../grants.mjs");
-    await grantCopy(actor, PR2.carrier, { grantedBy: feature });
-  }
-
-  await postLine(actor, T('Pr2DedicatedCarrierDone', { name: actor.name }));
-}
 
 /* -------------------------------------------- */
 /*  Dino Drive Mode                              */
@@ -294,9 +272,7 @@ export async function onZordFeatureCreated(item, options, userId) {
   }
 
   const source = sourceOf(item);
-  if (source == PR2.dedicatedCarrier) {
-    await applyDedicatedCarrier(item);
-  } else if (source == PR2.dinoGemIntegration && !item.flags?.essence20?.[GEM_FLAG]) {
+  if (source == PR2.dinoGemIntegration && !item.flags?.essence20?.[GEM_FLAG]) {
     await applyDinoGem(item);
   } else if (source == PR2.energemInfusion && !item.flags?.essence20?.[GEM_FLAG]) {
     await applyEnergem(item);

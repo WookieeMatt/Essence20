@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Involves fire (Water Cannon: Edge)","when":["self:transformed"],"edge":true}
+      {"type":"DialogSwitch","label":"Involves fire (Water Cannon: Edge)","when":["self:transformed"],"edge":true},
+      {"type":"Trigger","label":"Alt Mode: stow the cannon (Water Cannon)","event":"transform","steps":[{"do":"updateItem","item":"granted","set":{"system.equipped":false}}]},
+      {"type":"Trigger","label":"Bot Mode: cannon in hand (Water Cannon)","event":"untransform","steps":[{"do":"updateItem","item":"granted","set":{"system.equipped":true}}]}
     ],
     "automation": {
       "status": "full",

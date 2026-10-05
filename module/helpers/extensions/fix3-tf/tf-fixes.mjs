@@ -1,11 +1,10 @@
 import {
-  registerApplyDialog, registerDialogToggles, registerPostRoll, registerRollSources, registerSceneAdvanced, registerTurnEnd,
+  registerPostRoll, registerRollSources, registerSceneAdvanced, registerTurnEnd,
 } from "../../extensions.mjs";
 import { worldActors } from "../../companion-link.mjs";
 import { getSceneEpoch } from "../../scene-clock.mjs";
 import { personalVehicleEdge, SUMMON } from "../../summons.mjs";
 import { getCrewedVehicle } from "../../vehicle-upgrades.mjs";
-import { grappleEscapeSkills } from "../rules/grappled.mjs";
 
 /**
  * Suspected-bug fix pass 3, Transformers group (plus the personal vehicles that share its gap):
@@ -21,8 +20,6 @@ import { grappleEscapeSkills } from "../rules/grappled.mjs";
  *   Strike's flag, so it was labelled Debilitating Strike.
  * - Predacon (Technorganic Secrets): "they gain the Frightened Condition until the end of their next
  *   turn" - dice.mjs applies Frightened; nothing ever took it off.
- * - Experiment (TF CRB, Shove option): "Gain ↑1 when Shoving or attempting to break from a Grapple" -
- *   was ↑1 on Grapple-type attacks, which are neither. (The Shove ↑1 is now a rule on the item.)
  * - Get To Know (Dark Skies Over Equestria): the spell's Edge lasts "1 Scene" - an unspent Edge now
  *   goes when the GM starts a new scene.
  */
@@ -32,7 +29,6 @@ const TS = 'Compendium.essence20.technorganic_secrets.Item.';
 export const FIX3_TF = {
   coveringFire: `${TF_CRB}cAm087BkiExKIJrY`,
   watchfulEyes: `${TF_CRB}RmHSzuVLnIoqeczy`,
-  experiment: `${TF_CRB}EcSOADOOb3PZMolz`,
   predacon: `${TS}jRD6G5Z6eblTvxeO`,
 };
 
@@ -58,16 +54,6 @@ function itemsOf(actor) {
 }
 
 const findSourced = (actor, uuid) => itemsOf(actor).find(item => sourceOf(item) == uuid) ?? null;
-
-function label(key, data, fallback) {
-  const i18n = globalThis.game?.i18n;
-  const full = `E20.${key}`;
-  if (i18n?.has?.(full)) {
-    return i18n.format(full, data);
-  }
-
-  return fallback;
-}
 
 function sceneEpoch() {
   try {
@@ -323,42 +309,7 @@ export async function tfFixSceneAdvanced() {
   }
 }
 
-/* -------------------------------------------- */
-/*  Roll Options Dialog switches                 */
-/* -------------------------------------------- */
-
-export function tfFixToggles(actor, { rolledSkill, item } = {}) {
-  if (!rolledSkill || !actor) {
-    return [];
-  }
-
-  const toggles = [];
-  const isAttack = item?.type == 'weaponEffect';
-
-  // Experiment, Shove option: "attempting to break from a Grapple" - a non-attack test with an escape
-  // Skill while Grappled, on by default the same way the Grappled switch assumes an escape.
-  const experiment = findSourced(actor, FIX3_TF.experiment);
-  if (experiment?.system?.choice == 'shove' && actor.statuses?.has?.('grappled') && !isAttack
-    && grappleEscapeSkills(actor).includes(rolledSkill)) {
-    toggles.push({
-      name: 'fix3ExperimentEscape', type: 'checkbox', value: true,
-      label: label('Fix3TfExperimentEscape', { name: experiment.name }, `${experiment.name}: ↑1 (breaking free of the grapple)`),
-    });
-  }
-
-  return toggles;
-}
-
-export function tfFixApplyDialog(actor, options) {
-  const ext = options.ext ?? {};
-  if (ext.fix3ExperimentEscape) {
-    options.shiftUp = (Number(options.shiftUp) || 0) + 1;
-  }
-}
-
 registerRollSources(tfFixRollSources);
 registerPostRoll(tfFixPostRoll);
 registerTurnEnd(tfFixTurnEnd);
 registerSceneAdvanced(tfFixSceneAdvanced);
-registerDialogToggles(tfFixToggles);
-registerApplyDialog(tfFixApplyDialog);

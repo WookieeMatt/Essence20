@@ -53,6 +53,8 @@ const LEGACY = {
   '5Z0xtNOeSCD2YoRc': (item) => chosenSpecialization(item),
   KjcoQiDoT7WEVsZX: (item) => chosenSpecialization(item),
   '95RyaWIi0HQOlyJN': (item) => chosenSpecialization(item),
+  // Obsessive: flags.essence20.obsession (the Skill)
+  eOgtG24LKGR6OE0v: (item) => (item.flags?.essence20?.obsession ? { obsession: item.flags.essence20.obsession } : null),
 };
 
 function sourceId(item) {

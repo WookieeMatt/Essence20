@@ -9,37 +9,11 @@ import {
 } from "./shared.mjs";
 
 /**
- * Cobra Codex gear: the Battledress upgrades Adjustable Faceplate, Anonymous, Ceremonial and
- * Uniform (Table 3-5, p.100-101) and the Recoil Brace weapon upgrade (p.97). The armors that come
- * pre-fitted with Anonymous/Ceremonial (Ballistic/Tactical Armor (Anonymous), Momentum/Tactical
- * Armor (Ceremonial)) carry the upgrade as an embedded entry, so they work through these too.
+ * Cobra Codex gear: the Battledress upgrades Anonymous, Ceremonial and Uniform (Table 3-5,
+ * p.100-101) and the Recoil Brace weapon upgrade (p.97). Adjustable Faceplate is item rules now
+ * (rules/conversions-uses.test.js). The armors that come pre-fitted with Anonymous/Ceremonial
+ * (Ballistic/Tactical Armor (Anonymous), Momentum/Tactical Armor (Ceremonial)) carry the upgrade as an embedded entry, so they work through these too.
  */
-
-/* -------------------------------------------- */
-/*  Adjustable Faceplate                         */
-/* -------------------------------------------- */
-
-// Adjustable Faceplate (p.100): the setting is stored on the upgrade (flags.essence20.gij1Faceplate,
-// 'closed' by default) and switched with this Use button. The +1 Toughness / Evasion it gives is the
-// upgrade's own Defense rules now (rules/conversions.test.js), which read that flag.
-export const FACEPLATE_FLAG = 'gij1Faceplate';
-
-registerUse({
-  id: 'gij1Faceplate',
-  matches: isFrom(G1.adjustableFaceplate),
-  run: async (item) => {
-    const { chooseButtons } = await import("../../grants.mjs");
-    const choice = await chooseButtons(item.name, T('G1FaceplatePrompt'), [
-      ['closed', T('G1FaceplateClosed')], ['open', T('G1FaceplateOpen')],
-    ]);
-    if (!['closed', 'open'].includes(choice)) {
-      return null;
-    }
-
-    await item.setFlag('essence20', FACEPLATE_FLAG, choice);
-    return T('G1FaceplateSet', { name: item.parent?.name, setting: T(choice == 'open' ? 'G1FaceplateOpen' : 'G1FaceplateClosed') });
-  },
-});
 
 /* -------------------------------------------- */
 /*  Anonymous                                    */

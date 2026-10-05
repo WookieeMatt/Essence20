@@ -9,12 +9,6 @@ beforeEach(() => {
   global.CONFIG = { E20: { skillToEssence: { persuasion: 'social', alertness: 'smarts', might: 'strength', animalHandling: 'social' }, skills: {} } };
 });
 
-test('Obsessive gives ↓1 to other Skills', () => {
-  const holder = actor([perk(WTNV.obsessive, { flags: { obsession: 'science' } })]);
-  expect(wtnvRollSources(holder, null, { rolledSkill: 'might' }).sources[0]).toMatchObject({ id: 'obsessive', shiftDown: 1 });
-  expect(wtnvRollSources(holder, null, { rolledSkill: 'science' }).sources).toEqual([]);
-});
-
 test('Dog Person with a dog targeted', () => {
   const holder = actor([perk(WTNV.dogPerson)]);
   const dog = { name: 'Feral Dog', system: {} };

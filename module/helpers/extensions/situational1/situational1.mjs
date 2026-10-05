@@ -46,12 +46,10 @@ export const S1 = {
   environmentalExpertise: uuid('gi_joe_crb', 'EbbSUA2vSHyv3MjQ'),
   shotgun: uuid('gi_joe_crb', '2qW1YLopvjKyezNQ'),
   submachineGun: uuid('gi_joe_crb', 'oJInlAgdYZzjH7bk'),
-  scubaGear: uuid('gi_joe_crb', 'cZpeYK7VoLJKGKL6'),
   environmentalCamouflage: uuid('ferocious_fighters', 'SyHx2pheoELFpvTF'),
   arashikageShozoku: uuid('intercontinental_adventures', 'TBpflYvZ0lWQ65Cp'),
   izunaDrop: uuid('intercontinental_adventures', 'jaUwQUvv1rXlXQUA'),
   contort: uuid('general_hawk_s_personel_files', 'PPMvpsNSpvUMFwMs'),
-  diver: uuid('general_hawk_s_personel_files', 'erZl8Udy03P7vHTe'),
   environmentalEnforcer: uuid('general_hawk_s_personel_files', 'eZuijWvAUzOXD8DR'),
   jungleFighter: uuid('sgt_slaughter_sourcebook', 'RWgIeFdT0c1vIcS1'),
   outOfTheJungle: uuid('sgt_slaughter_sourcebook', '5jc5fjieruLuWQm1'),
@@ -69,7 +67,6 @@ const FLAG = {
   environment: 's1Environment',
   inEnvironment: 's1InEnvironmentNow',
   ambushMaster: 's1AmbushMasterUsed',
-  diverKit: 's1DiverKit',
   spaceKit: 's1SpaceKit',
 };
 
@@ -927,22 +924,6 @@ const USES = [
     id: 's1-izunaDrop',
     matches: item => sourceOf(item) == S1.izunaDrop,
     run: async (item, economy, pay) => izunaDrop(item, pay),
-  },
-  {
-    // Diver: "You gain a Limited Athletics (Swimming) kit and scuba gear during the Equipment
-    // Assignment and Requisition phase" - once per mission.
-    id: 's1-diver',
-    matches: item => sourceOf(item) == S1.diver,
-    canUse: item => getUses(item.parent, FLAG.diverKit, 'mission') < 1,
-    run: async (item) => {
-      const actor = item.parent;
-      const { makeKit } = await import("../../kits.mjs");
-      const { grantCopy } = await grants();
-      await makeKit(actor, item, 'limited', 'athletics', 'Swimming');
-      await grantCopy(actor, S1.scubaGear, { grantedBy: item.id });
-      await markUsed(actor, FLAG.diverKit, { window: 'mission' });
-      return T('S1DiverKit', { actor: actor.name });
-    },
   },
   {
     // Earth Defense Command, Space Kit: "During Equipment Requisition, you receive a free Limited Kit

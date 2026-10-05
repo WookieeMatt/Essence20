@@ -5,7 +5,6 @@ import { isBulwarkActive } from "./bulwark.mjs";
 import { isGreasedLightningActive } from "./greased-lightning.mjs";
 import { isCalmingWordsBuffActive } from "./calming-words.mjs";
 import { isIronBravadoFrightenedImmune } from "./iron-bravado.mjs";
-import { isKnownOutsideEnvironmentOfExpertise } from "./environmental-expertise.mjs";
 import { ruleConditionImmune } from "../rules/adapter.mjs";
 
 /**
@@ -28,25 +27,10 @@ const DECEPTICON_DIRECTIVE = "Compendium.essence20.decepticon_directive.Item.";
 // what a Perk might cover.
 // Most of these are ConditionImmunity rules on their own items now (rules/adapter.mjs#ruleConditionImmune):
 // Caution, Ambush Master, Shape Shifter, Indomitable, Keep Your Cool, Righteous Heart, Mind of No Mind,
-// Always Alert (every printing), Rapid Deployment Drills, True Self, Power From Loss, Get Low and
-// Battlefield Titan's aura. What's left reads a state the rules don't track.
+// Always Alert (every printing), Rapid Deployment Drills, True Self, Power From Loss, Get Low,
+// Battlefield Titan's aura and Stalk (with check:outsideEnvironmentOfExpertise). What's left reads a
+// state the rules don't track.
 const CONDITION_IMMUNITY_PERKS = [
-  {
-    // Stalk (GI Joe CRB, Predator base, 1st level, p.93): "any time you are in your environment
-    // of expertise, you can not be surprised, and gain an Edge on Infiltration Skill Tests."
-    // (Its Infiltration Edge is helpers/extensions/gij3's, gated on the same environment check.)
-    // The first Perk to key off the Surprised status, added the same day (helpers/config.mjs) -
-    // before it there was no Condition for this clause to name.
-    //
-    // "In your environment of expertise" is checked against the scene's terrain when the GM has
-    // set one (helpers/environmental-expertise.mjs): outside every environment of expertise, with
-    // no Adaptation / Read The Land flag covering it, the immunity is off. On a scene with no
-    // terrain set it stays unconditional, as it always was. The Infiltration Edge half is a plain
-    // compendium Active Effect on the item itself and needs no code.
-    id: `${GI_JOE_CRB}BOuJREcROMkMjbM1`,
-    conditions: ['surprised'],
-    isActive: (actor) => !isKnownOutsideEnvironmentOfExpertise(actor),
-  },
   {
     // Dig In (Decepticon Directive Raider, Siegemaster Focus, 10th level, p.64): "you're immune
     // to the Prone Condition" - but only WHILE dug in (a toggled stance, see helpers/dig-in.mjs),

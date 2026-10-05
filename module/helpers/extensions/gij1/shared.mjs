@@ -10,7 +10,6 @@ export const GIJ = id => `Compendium.essence20.gi_joe_crb.Item.${id}`;
 
 export const G1 = {
   // Battledress upgrades (Cobra Codex, Table 3-5, p.100-101).
-  adjustableFaceplate: CC('kEJP9jn7Q0LLufmG'),
   anonymous: CC('yFikSROr3NzaEoaL'),
   ceremonial: CC('vf9rJxOwuxDzrPKp'),
   uniform: CC('VkSI68BkpXLOC5ys'),

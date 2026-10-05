@@ -70,13 +70,6 @@ test('Nose For Trouble: Streetwise is offered when it is the better die', () => 
   expect(perks.streetwiseIsBetter(nose)).toBe(true);
 });
 
-test('Machinesmith turns the Electromagnetic ↓3 into ↑3 against the living', () => {
-  const smith = actor([item(G2.machinesmith)]);
-  const effect = { type: 'weaponEffect', system: { damageType: 'emp' }, flags: {} };
-  expect(perks.machinesmithSources(smith, actor(), { item: effect }).sources[0].shiftUp).toBe(6);
-  expect(perks.machinesmithSources(smith, actor([], { system: { traits: { computerized: true } } }), { item: effect })).toBeNull();
-});
-
 test('Queen\'s Gambit slots an ally right after the current turn', () => {
   expect(perks.initiativeAfterCurrent({ turn: 0, turns: [{ initiative: 20 }, { initiative: 10 }] })).toBe(15);
   expect(perks.initiativeAfterCurrent({ turn: 1, turns: [{ initiative: 20 }, { initiative: 10 }] })).toBe(9);

@@ -1,4 +1,4 @@
-import { registerDefenseAdjust, registerDerived, registerRollSources } from "../../extensions.mjs";
+import { registerDerived } from "../../extensions.mjs";
 import { D21, findSourced, itemsOf, sourceOf } from "./common.mjs";
 
 /**
@@ -61,25 +61,3 @@ export function isMystical(actor) {
 }
 
 export const isNonMystical = actor => !!actor && !isMystical(actor);
-
-export function mysticSources(actor, target, { isAttack } = {}) {
-  const mystic = findSourced(actor, D21.mystic);
-  if (!mystic || !isAttack || !target || !isNonMystical(target)) {
-    return { sources: [] };
-  }
-
-  return { sources: [{ id: 'd21Mystic', label: mystic.name, shiftUp: 1 }] };
-}
-
-export function mysticDefense(attacker, defender, defenseType) {
-  if (defenseType != 'toughness' || !findSourced(attacker, D21.mystic) || defender?.statuses?.has?.('armorStripped')) {
-    return 0;
-  }
-
-  const defense = defender?.system?.defenses?.toughness;
-  const armor = Number(defender?.system?.isMorphed ? defense?.morphed : defense?.armor) || 0;
-  return -armor;
-}
-
-registerRollSources(mysticSources);
-registerDefenseAdjust(mysticDefense);

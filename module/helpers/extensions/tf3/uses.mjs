@@ -146,8 +146,8 @@ export async function useLadder(item, economy, pay) {
  * Grappler ... You ignore the Athletics or Finesse requirements of using a Grappler." Water Cannon:
  * "Bot Mode: The Water Cannon counts as a Directed Element Rifle (Cold), but only requires one hardpoint
  * to operate (instead of 2) and waives the Technology requirement." The weapon is made once, from the
- * compendium copy, named for the gear, requirements waived; ./reactions.mjs equips it in Bot Mode and
- * stows it in Alt Mode.
+ * compendium copy, named for the gear, requirements waived; the gear's own Triggers (its pack rules) equip
+ * it in Bot Mode and stow it in Alt Mode.
  */
 export const GEAR_WEAPONS = {
   [TF3.rotorBlades]: { weapon: TF3_WEAPON.heavyBlade, system: {} },

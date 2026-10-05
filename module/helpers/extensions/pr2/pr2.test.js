@@ -178,12 +178,6 @@ describe('Zord Features', () => {
     expect(zords.dinoGemSources(zord, null, { isAttack: true, item: { type: 'weaponEffect', flags: {} } })).toBeNull();
   });
 
-  test('Dedicated Carrier removes Combiner', async () => {
-    const zord = makeActor({ type: 'zord', items: [{ id: 'c', type: 'feature', flags: src(common.PR2.combiner) }, { type: 'feature', flags: src(common.PR2.carrier) }, { type: 'feature', flags: src(common.PR2.dedicatedCarrier) }] });
-    await zords.applyDedicatedCarrier(zord.items.contents[2]);
-    expect(zord.deleteEmbeddedDocuments).toHaveBeenCalledWith('Item', ['c']);
-  });
-
   test('Dino Drive speed penalty keeps Speed at 1', () => {
     expect(zords.speedPenalty(6)).toBe(3);
     expect(zords.speedPenalty(2)).toBe(1);

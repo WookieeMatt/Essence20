@@ -5,16 +5,15 @@ import { hasSourced, worldActors } from "../../companion-link.mjs";
 
 /**
  * Welcome to Night Vale Citizens' Guide and Field Guide to Action & Adventure items that needed a
- * roll hook, a Use button or a natural attack: Obsessive, Dog Person, Third Eye, the Night Vale Animal
- * Perks and Staggering Sway. (Community Martial Arts, Vehicle Whisperer, Acute Senses, Nobility and
- * Gridlock Authority's roll switches, and the Use buttons of Double Vision, The List, Nobility and
- * More Than Worldly, are their own item rules now.)
+ * roll hook, a Use button or a natural attack: Dog Person, Third Eye, the Night Vale Animal Perks and
+ * Staggering Sway. (Community Martial Arts, Vehicle Whisperer, Acute Senses, Nobility and Gridlock
+ * Authority's roll switches, the Use buttons of Double Vision, The List, Nobility and More Than
+ * Worldly, and Obsessive, are their own item rules now.)
  */
 
 const wtnv = id => `Compendium.essence20.wtnv_citizens_guide.Item.${id}`;
 const fgaa = id => `Compendium.essence20.field_guide_action_adventure.Item.${id}`;
 export const WTNV = {
-  obsessive: wtnv('eOgtG24LKGR6OE0v'),
   dogPerson: wtnv('U5arLtyo8eEgl2Ck'),
   thirdEye: wtnv('XolO5C6pgFt8WQJZ'),
   delicateStomach: wtnv('W04dEJSSgaWOeebQ'),
@@ -44,16 +43,8 @@ function itemOf(actor, uuid) {
 /**
  * @returns {{sources: Array, consumes: Array}}
  */
-export function wtnvRollSources(actor, target, { rolledSkill } = {}) {
+export function wtnvRollSources(actor, target) {
   const sources = [];
-
-  // Obsessive (Hang-Up, p.29): "Whenever you make a Skill Test that doesn't directly relate to your
-  // current obsession, you take ↓1." The obsession is the Skill chosen on the Hang-Up; the ↓1 is a
-  // listed source the player can untick when the test does relate.
-  const obsession = itemOf(actor, WTNV.obsessive)?.flags?.essence20?.obsession;
-  if (obsession && rolledSkill && rolledSkill != obsession) {
-    sources.push({ id: 'obsessive', label: itemOf(actor, WTNV.obsessive).name, shiftDown: 1 });
-  }
 
   // Dog Person (p.47): "When you interact with a feral dog or even a Radon Canyon coyote, you gain ↑1
   // on Skill Tests". Read off the target's creature tags or name.
@@ -153,11 +144,6 @@ export function staggeringSwayHolder(actor) {
 /*  Use buttons                                  */
 /* -------------------------------------------- */
 
-async function chooseSkill(title) {
-  const { chooseSelect } = await import("../../grants.mjs");
-  return chooseSelect(title, T('E20.WtnvObsessionPrompt'), Object.entries(CONFIG.E20.skills).map(([value, label]) => ({ value, label: T(label) })));
-}
-
 /** A pet's natural attack, as the weapon + effect pair. */
 function naturalAttack(name, { damage, type, range = null, traits = [], skill = 'might' }) {
   const id = foundry.utils.randomID();
@@ -198,19 +184,6 @@ export async function grantPetAttack(pet, perk) {
 }
 
 const USES = [
-  {
-    // Obsessive: pick the current obsession.
-    id: 'wtnvObsessive', matches: item => sourceOf(item) == WTNV.obsessive,
-    async run(item) {
-      const skill = await chooseSkill(item.name);
-      if (!skill) {
-        return null;
-      }
-
-      await item.setFlag('essence20', 'obsession', skill);
-      return T('E20.WtnvObsessionSet', { name: item.parent.name, skill: T(CONFIG.E20.skills[skill]) });
-    },
-  },
   {
     // Replacement Teeth (Animal Perk, p.76): "As a Standard action, your pet can clamp down on an enemy and
     // give them the Immobilized Condition until the end of their next turn."

@@ -34,7 +34,6 @@ export const TF2 = {
   energonBank: C('tf_crb', 'W87huLqKeOCJJ66L'),
   evasiveFighting: C('tf_crb', 'fQJF7zvHjd39qw99'),
   extraCrewCapacity: C('tf_crb', 'PCwgQWKmTOl8va3I'),
-  flexibleDirectives: C('tf_crb', 'YCLo0a3kpBeB67HW'),
   forTheAllspark: C('tf_crb', 'UMlH70vmM3kJzWvS'),
   // Special-attack weapons the Technorganic Secrets Alt Modes print.
   // The G.I. JOE printings of All Out Attack / Evasive Fighting, already wired in target-riders.mjs.

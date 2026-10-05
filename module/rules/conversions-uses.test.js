@@ -3581,3 +3581,373 @@ describe('slE misc', () => {
     expect(useAvailable(item, item.system.rules[0], 0)).toBe(true);
   });
 });
+
+// slA2 pr23
+describe('slA2 pr23', () => {
+  const COMBINER = 'Compendium.essence20.pr_crb.Item.ZZMBVjmosr0VViMU';
+  const CARRIER = 'Compendium.essence20.pr_crb.Item.h1b0cjGJP1xqtfVv';
+
+  /** A Zord holding Dedicated Carrier plus the given items, with document writes mocked. */
+  function carrierZord(others = []) {
+    const { actor, item } = holder('bthitems/_source/Dedicated_Carrier_GShizr9G3xrMB3O5.json');
+    actor.type = 'zord';
+    const items = [...others, item];
+    actor.items = { contents: items, get: id => items.find(other => other.id == id), [Symbol.iterator]: () => items[Symbol.iterator]() };
+    actor.createEmbeddedDocuments = jest.fn(async (type, docs) => docs.map((doc, index) => ({ ...doc, id: `new${index}` })));
+    actor.deleteEmbeddedDocuments = jest.fn(async () => []);
+    rebuildIndex(actor);
+    return { actor, item };
+  }
+
+  async function added(actor, item) {
+    const { fireItemAdded } = await import('./triggers.mjs');
+    const saved = { fromUuid: global.fromUuid, ChatMessage: global.ChatMessage };
+    global.fromUuid = jest.fn(async uuid => (uuid == CARRIER ? { name: 'Carrier', toObject: () => ({ _id: 'x', name: 'Carrier', type: 'feature', system: {} }) } : null));
+    global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
+    try {
+      await fireItemAdded(actor, item);
+      return { fromUuid: global.fromUuid, chat: global.ChatMessage.create };
+    } finally {
+      global.fromUuid = saved.fromUuid;
+      global.ChatMessage = saved.ChatMessage;
+    }
+  }
+
+  test('Dedicated Carrier: when added, removes every Combiner and grants Carrier', async () => {
+    const combiners = [
+      { id: 'cb1', name: 'Combiner', type: 'feature', flags: { core: { sourceId: COMBINER } }, system: {} },
+      { id: 'cb2', name: 'Combiner', type: 'feature', flags: {}, _stats: { compendiumSource: COMBINER }, system: {} },
+      { id: 'other', name: 'Weapon Systems', type: 'feature', flags: {}, system: {} },
+    ];
+    const { actor, item } = carrierZord(combiners);
+    const { fromUuid, chat } = await added(actor, item);
+    expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledTimes(1);
+    expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('Item', ['cb1', 'cb2']);
+    expect(fromUuid).toHaveBeenCalledWith(CARRIER);
+    expect(actor.createEmbeddedDocuments).toHaveBeenCalledTimes(1);
+    expect(actor.createEmbeddedDocuments).toHaveBeenCalledWith('Item', [expect.objectContaining({
+      name: 'Carrier', type: 'feature', _stats: { compendiumSource: CARRIER }, flags: { essence20: { grantedBy: item.id } },
+    })]);
+    expect(chat).toHaveBeenCalledTimes(1);
+  });
+
+  test('Dedicated Carrier: no Combiner to remove, and no second Carrier', async () => {
+    const owned = { id: 'car', name: 'Carrier', type: 'feature', flags: { core: { sourceId: CARRIER } }, system: {} };
+    const { actor, item } = carrierZord([owned]);
+    await added(actor, item);
+    expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled();
+    expect(actor.createEmbeddedDocuments).not.toHaveBeenCalled();
+
+    // Nothing at all on the Zord: just the Carrier.
+    const bare = carrierZord();
+    await added(bare.actor, bare.item);
+    expect(bare.actor.deleteEmbeddedDocuments).not.toHaveBeenCalled();
+    expect(bare.actor.createEmbeddedDocuments).toHaveBeenCalledTimes(1);
+  });
+});
+
+// slB2 tf2
+describe('slB2 tf2', () => {
+  const FILE = 'tfcrbitems/_source/Flexible_Directives_YCLo0a3kpBeB67HW.json';
+
+  /** Flexible Directives plus other items, and the picker answering with `answer` (null = cancel). */
+  function directives(others, answer) {
+    const { actor, item } = holder(FILE);
+    const items = [item, ...others];
+    actor.items = { contents: items, get: id => items.find(other => other.id == id), [Symbol.iterator]: () => items[Symbol.iterator]() };
+    rebuildIndex(actor);
+    const offered = [];
+    global.foundry.utils.escapeHTML = text => String(text);
+    global.foundry.applications = {
+      api: { DialogV2: { wait: jest.fn(async ({ content }) => (offered.push(content), answer)) } },
+    };
+    return { actor, item, offered };
+  }
+
+  afterEach(() => {
+    delete global.foundry.applications;
+  });
+
+  test('Flexible Directives: names one of the actor\'s Perks, once per scene, free', async () => {
+    const perk = { id: 'p1', name: 'Tactician', type: 'perk', flags: {}, system: {} };
+    const gear = { id: 'g1', name: 'Rope', type: 'gear', flags: {}, system: {} };
+    const { actor, item, offered } = directives([perk, gear], 'p1');
+    const paid = pay();
+    const out = await runUse(item, paid);
+    expect(out).toContain('Tactician');
+    expect(offered[0]).toContain('Tactician');
+    expect(offered[0]).not.toContain('Rope');
+    // The pick lists every owned Perk, Flexible Directives itself included.
+    expect(offered[0]).toContain('Flexible Directives');
+    expect(paid).not.toHaveBeenCalled();
+    expect(item.flags.essence20.rules.choices.perk).toBe('p1');
+    // Used up for the scene.
+    expect(useAvailable(item, item.system.rules[0], 0)).toBe(false);
+    expect(await runUse(item, paid)).toBeNull();
+    expect(actor.flags.essence20.ruleUses).toBeDefined();
+  });
+
+  test('Flexible Directives: a cancelled pick costs nothing', async () => {
+    const perk = { id: 'p1', name: 'Tactician', type: 'perk', flags: {}, system: {} };
+    const { item } = directives([perk], null);
+    expect(await runUse(item, pay())).toBeNull();
+    expect(useAvailable(item, item.system.rules[0], 0)).toBe(true);
+  });
+});
+
+// slB2 other2
+describe('slB2 other2', () => {
+  const PROPER_PROTECTION = 'gijcrbitems/_source/Proper_Protection_CUV2gVVGb7U7yU5J.json';
+  const JUNKPLATE = 'dditems/_source/Junkplate_qhxYoMHmnerakacO.json';
+  const kit = { id: 'kit', name: 'Standard Science (Medicine) Kit', type: 'gear', flags: {}, system: { gearType: 'kits' } };
+
+  beforeAll(async () => {
+    const { registerCheck } = await import('./predicate.mjs');
+    const { hasMedicineKit } = await import('../helpers/extensions/other2/medic.mjs');
+    registerCheck('medicineKit', actor => hasMedicineKit(actor));
+  });
+
+  function withKit(actor, carried) {
+    const items = carried ? [...actor.items.contents, carried] : [...actor.items.contents];
+    for (const owned of items) {
+      owned.parent = actor;
+    }
+
+    actor.items = { contents: items, get: id => items.find(owned => owned.id == id), [Symbol.iterator]: () => items[Symbol.iterator]() };
+    rebuildIndex(actor);
+    return actor;
+  }
+
+  test('Proper Protection: immune to poison and disease, and to the Poisoned Condition, only while carrying a medicine kit', async () => {
+    const { ruleDerived, ruleConditionImmune } = await import('./adapter.mjs');
+    const bare = withKit(holder(PROPER_PROTECTION, { system: { immunities: { poison: false, fire: false } } }).actor, null);
+    ruleDerived(bare);
+    expect(bare.system.immunities.poison).toBeFalsy();
+    expect(bare.system.immunities.disease).toBeFalsy();
+    expect(ruleConditionImmune(bare, 'poisoned')).toBe(false);
+
+    const kitted = withKit(holder(PROPER_PROTECTION, { system: { immunities: { poison: false, fire: false } } }).actor, { ...kit });
+    ruleDerived(kitted);
+    expect(kitted.system.immunities.poison).toBeTruthy();
+    expect(kitted.system.immunities.disease).toBeTruthy();
+    expect(kitted.system.immunities.fire).toBe(false);
+    expect(ruleConditionImmune(kitted, 'poisoned')).toBe(true);
+    expect(ruleConditionImmune(kitted, 'stunned')).toBe(false);
+  });
+
+  test('Junkplate: whoever Fumbles an unarmed attack against the wearer takes 1 Sharp; not a weapon attack, not a plain miss', async () => {
+    const saved = global.ChatMessage;
+    const create = jest.fn(async () => ({}));
+    global.ChatMessage = { create, getSpeaker: () => ({}) };
+    try {
+      const { actor: wearer } = holder(JUNKPLATE);
+      // The roller's client owns the attacker, so the damage lands there; here the attacker isn't owned,
+      // so the step only reports it (no damage helper needed).
+      const attacker = { id: 'atk', uuid: 'Actor.atk', name: 'Brute', isOwner: false, items: { contents: [] }, system: {}, flags: {} };
+      const unarmed = { type: 'weaponEffect', flags: {}, system: {} };
+      const weaponEffect = { type: 'weaponEffect', flags: { essence20: { parentId: 'w1' } }, system: {} };
+      const roll = item => ({ item, isAttack: true, isMelee: true, switches: [] });
+
+      await fireTriggers(wearer, 'targeted', { roll: roll(unarmed), outcome: 'failure', targets: [attacker], facts: { results: [{ success: false }], isFumble: true } });
+      expect(create).toHaveBeenCalledTimes(1);
+      expect(create.mock.calls[0][0].content).toContain('DamageForGm');
+
+      await fireTriggers(wearer, 'targeted', { roll: roll(unarmed), outcome: 'failure', targets: [attacker], facts: { results: [{ success: false }], isFumble: false } });
+      await fireTriggers(wearer, 'targeted', { roll: roll(weaponEffect), outcome: 'failure', targets: [attacker], facts: { results: [{ success: false }], isFumble: true } });
+      expect(create).toHaveBeenCalledTimes(1);
+      expect(wearer.items.contents[0].system.rules[0]).toMatchObject({ event: 'targeted', outcome: 'fumbled', steps: [{ do: 'damage', to: 'target', amount: 1, damageType: 'sharp' }] });
+    } finally {
+      global.ChatMessage = saved;
+    }
+  });
+});
+
+// slC2 gij1
+describe('slC2 gij1', () => {
+  const FACEPLATE = 'ccitems/_source/Adjustable_Faceplate_kEJP9jn7Q0LLufmG.json';
+
+  test('Adjustable Faceplate: the Use sets the stored faceplate flag (open / closed) the Defense rules read; a cancel changes nothing', async () => {
+    const { item } = holder(FACEPLATE);
+    const paid = pay();
+    expect(await runUse(item, paid, { ask: async () => null })).toBeNull();
+    expect(item.flags.essence20?.gij1Faceplate).toBeUndefined();
+
+    const opened = await runUse(item, paid, { ask: async (step, options) => options.findIndex(option => option.label.startsWith('Open')) });
+    expect(item.flags.essence20.gij1Faceplate).toBe('open');
+    expect(opened).toContain('Hero opens the faceplate.');
+
+    const closed = await runUse(item, paid, { ask: async (step, options) => options.findIndex(option => option.label.startsWith('Closed')) });
+    expect(item.flags.essence20.gij1Faceplate).toBe('closed');
+    expect(closed).toContain('Hero closes the faceplate.');
+    // No action and no limit: it can be pressed again at once.
+    expect(paid).not.toHaveBeenCalled();
+    const index = item.system.rules.findIndex(rule => rule.type == 'Use');
+    expect(useAvailable(item, item.system.rules[index], index)).toBe(true);
+  });
+});
+
+// slC2 sit1
+describe('slC2 sit1', () => {
+  test('Diver: the Use makes a Limited Athletics (Swimming) kit and grants Scuba Gear, once per mission', async () => {
+    const scuba = 'Compendium.essence20.gi_joe_crb.Item.cZpeYK7VoLJKGKL6';
+    const previous = global.fromUuid;
+    global.fromUuid = jest.fn(async () => ({ name: 'Scuba Gear', toObject: () => ({ _id: 'x', name: 'Scuba Gear', type: 'gear', system: {} }) }));
+    try {
+      const { actor, item } = holder('ghpfitems/_source/Diver_erZl8Udy03P7vHTe.json');
+      actor.createEmbeddedDocuments = jest.fn(async (type, data) => data);
+      const index = item.system.rules.findIndex(rule => rule.type == 'Use');
+      const paid = pay();
+      expect(useAvailable(item, item.system.rules[index], index)).toBe(true);
+      expect(await runUse(item, paid)).toBeTruthy();
+      expect(paid).not.toHaveBeenCalled();
+      expect(actor.createEmbeddedDocuments).toHaveBeenCalledTimes(2);
+      expect(actor.createEmbeddedDocuments.mock.calls[0][1]).toEqual([{
+        name: 'Limited Athletics (Swimming) Kit', type: 'gear', system: { gearType: 'kits', quantity: 1 },
+        flags: { essence20: { grantedBy: item.id, kit: { tier: 'limited', skill: 'athletics', spec: 'Swimming', essence: null } } },
+      }]);
+      expect(global.fromUuid).toHaveBeenCalledWith(scuba);
+      expect(actor.createEmbeddedDocuments.mock.calls[1][1]).toEqual([expect.objectContaining({
+        name: 'Scuba Gear', type: 'gear', _stats: { compendiumSource: scuba }, flags: { essence20: { grantedBy: null } },
+      })]);
+      expect(useAvailable(item, item.system.rules[index], index)).toBe(false);
+    } finally {
+      global.fromUuid = previous;
+    }
+  });
+});
+
+// slD2 resource
+describe('slD2 resource', () => {
+  const file = 'atsitems/_source/Body_of_Energy_L2X2rIz2frulSajQ.json';
+  const morphed = (health, power, powerMax = 6, isMorphed = true) => ({
+    isMorphed, health: { value: health, max: 10 }, powers: { personal: { value: power, max: powerMax } },
+  });
+
+  test('Body of Energy: moves the picked amount of Health into Personal Power, no action', async () => {
+    const { actor, item } = holder(file, { system: morphed(5, 2) });
+    const prompt = jest.fn(async () => 3);
+    global.foundry.applications = { api: { DialogV2: { prompt } } };
+    try {
+      const paid = pay();
+      expect(await runUse(item, paid)).toBeTruthy();
+      expect(paid).not.toHaveBeenCalled();
+      // Offered 1 up to min(Health - 1, room in Power) = min(4, 4).
+      expect(prompt.mock.calls[0][0].content).toContain('max="4"');
+    } finally {
+      delete global.foundry.applications;
+    }
+
+    expect(actor.system.health.value).toBe(2);
+    expect(actor.system.powers.personal.value).toBe(5);
+  });
+
+  test('Body of Energy: the most it offers is capped by Health - 1 and by the room in Power', async () => {
+    const low = holder(file, { system: morphed(3, 0) });
+    const prompt = jest.fn(async () => 99);
+    global.foundry.applications = { api: { DialogV2: { prompt } } };
+    try {
+      expect(await runUse(low.item, pay())).toBeTruthy();
+      expect(prompt.mock.calls[0][0].content).toContain('max="2"');
+    } finally {
+      delete global.foundry.applications;
+    }
+
+    expect(low.actor.system.health.value).toBe(1);
+    expect(low.actor.system.powers.personal.value).toBe(2);
+
+    // Only one point of room: no question, just 1.
+    const one = holder(file, { system: morphed(8, 5) });
+    expect(await runUse(one.item, pay())).toBeTruthy();
+    expect(one.actor.system.health.value).toBe(7);
+    expect(one.actor.system.powers.personal.value).toBe(6);
+  });
+
+  test('Body of Energy: only while Morphed, above 1 Health and with room in Power', () => {
+    const at = system => {
+      const { item } = holder(file, { system });
+      return useAvailable(item, item.system.rules[0], 0);
+    };
+
+    expect(at(morphed(5, 2))).toBe(true);
+    expect(at(morphed(5, 2, 6, false))).toBe(false);
+    expect(at(morphed(1, 2))).toBe(false);
+    expect(at(morphed(5, 6))).toBe(false);
+  });
+});
+
+// slE2 misc
+describe('slE2 misc', () => {
+  const OBSESSIVE = 'wtnvcgitems/_source/Obsessive_eOgtG24LKGR6OE0v.json';
+  const OBSESSIVE_UUID = 'Compendium.essence20.wtnv_citizens_guide.Item.eOgtG24LKGR6OE0v';
+
+  /** Obsessive, with the Skill picker answering `answer` (null = cancel). */
+  function obsessive(answer) {
+    const { actor, item } = holder(OBSESSIVE);
+    const offered = [];
+    global.foundry.utils.escapeHTML = text => String(text);
+    global.foundry.applications = {
+      api: { DialogV2: { wait: jest.fn(async ({ content, window }) => (offered.push({ content, title: window.title }), answer)) } },
+    };
+    return { actor, item, offered };
+  }
+
+  afterEach(() => {
+    delete global.foundry.applications;
+  });
+
+  test('Obsessive: the Use picks the obsession from the Skill list, no action', async () => {
+    const { item, offered } = obsessive('science');
+    const paid = pay();
+    const out = await runUse(item, paid);
+    expect(out).toContain('E20.SkillScience');
+    expect(paid).not.toHaveBeenCalled();
+    expect(offered[0].title).toBe('Obsessive');
+    expect(offered[0].content).toContain('Which Skill is your current obsession?');
+    // The same 22 Skills, in the same order, as CONFIG.E20.skills.
+    const values = [...offered[0].content.matchAll(/value="(\w+)"/g)].map(match => match[1]);
+    expect(values).toEqual(['athletics', 'brawn', 'intimidation', 'might', 'acrobatics', 'driving', 'finesse', 'infiltration', 'initiative',
+      'targeting', 'alertness', 'culture', 'science', 'survival', 'technology', 'animalHandling', 'deception', 'performance', 'persuasion',
+      'spellcasting', 'streetwise', 'weird']);
+    expect(item.flags.essence20.rules.choices.obsession).toBe('science');
+    // It can be re-picked any time.
+    expect(useAvailable(item, item.system.rules[0], 0)).toBe(true);
+  });
+
+  test('Obsessive: a cancelled pick changes nothing and posts nothing', async () => {
+    const { item } = obsessive(null);
+    expect(await runUse(item, pay())).toBeNull();
+    expect(item.flags.essence20?.rules?.choices?.obsession).toBeUndefined();
+  });
+
+  test('Obsessive: ↓1 on every other Skill once picked, as a listed source', async () => {
+    const { actor, item } = obsessive('science');
+    // Nothing picked yet: no ↓1.
+    expect(ruleRollSources(actor, null, { rolledSkill: 'might', dataset: { skill: 'might' } }).sources).toEqual([]);
+    await runUse(item, pay());
+    expect(ruleRollSources(actor, null, { rolledSkill: 'might', dataset: { skill: 'might' } }).sources)
+      .toEqual([expect.objectContaining({ label: 'Obsessive', shiftDown: 1, shiftUp: 0 })]);
+    expect(ruleRollSources(actor, null, { rolledSkill: 'science', dataset: { skill: 'science' } }).sources).toEqual([]);
+    // A roll with no Skill, and Initiative (which never read the old source), get nothing.
+    expect(ruleRollSources(actor, null, { dataset: {} }).sources).toEqual([]);
+    expect(ruleRollSources(actor, null, { rolledSkill: 'initiative', dataset: { skill: 'initiative', isInitiative: true } }).sources).toEqual([]);
+  });
+
+  test('Obsessive: an ignored (Matured) Hang-Up gives no ↓1', async () => {
+    const { actor, item } = obsessive('science');
+    await runUse(item, pay());
+    item.flags.essence20.maturedIgnored = true;
+    rebuildIndex(actor);
+    expect(ruleRollSources(actor, null, { rolledSkill: 'might', dataset: { skill: 'might' } }).sources).toEqual([]);
+  });
+
+  test('Obsessive: a pick stored by the old Use moves into the rule choice', async () => {
+    const { legacyChoiceUpdates } = await import('./legacy-choices.mjs');
+    const copy = (id, essence20) => ({ id, name: 'Obsessive', flags: { core: { sourceId: OBSESSIVE_UUID }, essence20 } });
+    const items = [
+      copy('o1', { obsession: 'culture' }),
+      copy('o2', { obsession: 'culture', rules: { choices: { obsession: 'science' } } }),
+      copy('o3', {}),
+    ];
+    expect(legacyChoiceUpdates({ items })).toEqual([{ _id: 'o1', 'flags.essence20.rules.choices.obsession': 'culture' }]);
+  });
+});

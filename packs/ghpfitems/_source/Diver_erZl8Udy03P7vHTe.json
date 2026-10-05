@@ -7,7 +7,8 @@
   "system": {
     "prerequisites": {"when":["ask:Athletics (Swimming) Specialization"]},
     "rules": [
-      {"type":"RollModifier","label":"Diver","when":["skill:alertness","environment:underwater"],"upshift":1}
+      {"type":"RollModifier","label":"Diver","when":["skill:alertness","environment:underwater"],"upshift":1},
+      {"type":"Use","label":"Swimming kit and Scuba Gear","limit":{"per":"mission","max":1},"steps":[{"do":"createItem","data":{"name":"Limited Athletics (Swimming) Kit","type":"gear","system":{"gearType":"kits","quantity":1},"flags":{"essence20":{"kit":{"tier":"limited","skill":"athletics","spec":"Swimming","essence":null}}}}},{"do":"grant","uuid":"Compendium.essence20.gi_joe_crb.Item.cZpeYK7VoLJKGKL6","flags":{"grantedBy":null}}]}
     ],
     "automation": {
       "status": "full",

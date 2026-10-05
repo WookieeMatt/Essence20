@@ -30,13 +30,14 @@
  * exit your Morphed form for any reason other than being Defeated, your Health and Personal Power
  * return to a value equal to half of your remaining combined pool points."
  * Damage past the last point of Health comes out of Power (Health is only emptied with the pool);
- * a Use button moves Health into Power for a spend; leaving Morph splits the pool in half.
+ * leaving Morph splits the pool in half. Moving Health into Power for a spend is the Perk's own Use
+ * rule (pack data).
  */
 import {
-  registerDamageModifier, registerSceneAdvanced, registerUse,
+  registerDamageModifier, registerSceneAdvanced,
 } from "../../extensions.mjs";
 import { getUses, markUsed } from "../../scene-clock.mjs";
-import { IDS, onHook, T, changed, setChanged, has, isActiveGm, isItem, num, say, worldActors } from "./common.mjs";
+import { IDS, onHook, T, changed, setChanged, has, isActiveGm, num, say, worldActors } from "./common.mjs";
 
 const POWER = 'system.powers.personal.value';
 const VOID_FLAG = 'voidWarriorActive';
@@ -190,36 +191,6 @@ registerDamageModifier(async (actor, amount) => {
   const split = bodyOfEnergySplit(health, power, amount);
   await actor.update({ [POWER]: split.power }, { essence20Loss: true });
   return health - split.health;
-});
-
-registerUse({
-  id: 'resBodyOfEnergy',
-  matches: item => isItem(item, IDS.bodyOfEnergy),
-  canUse: item => !!item.parent?.system?.isMorphed && num(item.parent.system.health?.value) > 1,
-  run: async (item) => {
-    const actor = item.parent;
-    const health = num(actor.system.health.value);
-    const room = num(actor.system.powers?.personal?.max) - num(actor.system.powers?.personal?.value);
-    const most = Math.min(health - 1, Math.max(0, room));
-    if (most <= 0) {
-      ui.notifications.warn(T('ResBodyOfEnergyNothing'));
-      return null;
-    }
-
-    const { chooseSelect } = await import("../../grants.mjs");
-    const pick = await chooseSelect(item.name, T('ResBodyOfEnergyPrompt'),
-      Array.from({ length: most }, (_, i) => ({ value: String(i + 1), label: String(i + 1) })));
-    const amount = Number(pick);
-    if (!amount) {
-      return null;
-    }
-
-    await actor.update({
-      'system.health.value': health - amount,
-      [POWER]: num(actor.system.powers.personal.value) + amount,
-    }, { essence20Refund: true });
-    return T('ResBodyOfEnergyLine', { name: actor.name, amount });
-  },
 });
 
 /* -------------------------------------------- */

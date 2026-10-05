@@ -7,13 +7,11 @@ import { getSceneEpoch } from "../../scene-clock.mjs";
 import { CC, T, findSourced, isFrom, itemsOf, parentWeapon, post, sourceOf } from "./shared.mjs";
 
 /**
- * Cobra Codex gear and Perks: Dielectric/Insulator against Electromagnetic attacks, the Deflecting
+ * Cobra Codex gear and Perks: Electromagnetic attacks against computerized gear, the Deflecting
  * Weapon upgrades, Shield Fighter's Element, Onslaught and the Disenfranchised Hang-Up's Willpower
- * check. (Poison Resistance is its own item rule.)
+ * check. (Poison Resistance, Dielectric and Insulator are item rules.)
  */
 export const O1_CC = {
-  dielectric: CC('A36q5SNroIR8xoyd'),
-  insulator: CC('AMIKCJX1DDz1sLVb'),
   limitedDeflecting: CC('KFoF9nEHJrRaJzZA'),
   standardDeflecting: CC('Z1OIoelOdyUdtyl7'),
   shieldFighter: CC('MRbKuQlNI2tOfpLM'),
@@ -33,12 +31,8 @@ export function isWorn(upgrade) {
   return !parentId || !!upgrade.parent?.items?.get?.(parentId)?.system?.equipped;
 }
 
-export function wears(actor, uuid) {
-  return itemsOf(actor).some(item => item.type == 'upgrade' && sourceOf(item) == uuid && isWorn(item));
-}
-
 /* -------------------------------------------- */
-/*  Dielectric / Insulator                       */
+/*  Electromagnetic vs computerized gear         */
 /* -------------------------------------------- */
 
 /**
@@ -66,20 +60,7 @@ export function hasComputerizedGear(actor) {
   });
 }
 
-/**
- * The upshift an Electromagnetic attack really gets against this target: 3, or 2 with Insulator
- * ("Electromagnetic attacks gain only ↑2 against you for using computerized equipment, including
- * your cybernetic alterations, rather than the normal ↑3", Cobra Codex p.100) or 1 with Dielectric
- * (p.101, "only ↑1").
- */
-export function emUpshiftAgainst(target) {
-  if (wears(target, O1_CC.dielectric)) {
-    return 1;
-  }
-
-  return wears(target, O1_CC.insulator) ? 2 : 3;
-}
-
+// Dielectric / Insulator (the ↑3 cut to ↑1 / ↑2) are incoming item rules on their pack items.
 function isElectromagneticAttack(actor, item) {
   return item?.type == 'weaponEffect'
     && (item.system?.damageType == 'emp' || !!parentWeapon(actor, item)?.system?.traits?.includes?.('electromagnetic'));
@@ -96,9 +77,7 @@ registerRollSources((actor, target, ctx) => {
   if (!target.system?.traits?.computerized && hasComputerizedGear(target)) {
     // Undo dice.mjs's "all other targets" ↓3, then the real ↑.
     sources.push({ id: 'o1EmNotOther', label: T('O1EmComputerizedGear', { label }), shiftUp: 3 });
-    sources.push({ id: 'o1EmVsGear', label: T('O1EmVsGear', { label }), shiftUp: emUpshiftAgainst(target) });
-  } else if (target.system?.traits?.computerized && emUpshiftAgainst(target) < 3) {
-    sources.push({ id: 'o1EmCoating', label: T('O1EmCoating'), shiftDown: 3 - emUpshiftAgainst(target) });
+    sources.push({ id: 'o1EmVsGear', label: T('O1EmVsGear', { label }), shiftUp: 3 });
   }
 
   return { sources };

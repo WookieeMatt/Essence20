@@ -5,6 +5,11 @@
   "_id": "SBlOGEnend5WYwgd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Mystic","upshift":1,"when":["attack","target:check:nonMystical"]},
+      {"type":"Defense","label":"Target's Toughness armor ignored (Mystic)","defense":"toughness","amount":"-@target.system.defenses.toughness.armor","outgoing":true,"when":["not:target:morphed","not:target:status:armorStripped"]},
+      {"type":"Defense","label":"Target's morphed Toughness ignored (Mystic)","defense":"toughness","amount":"-@target.system.defenses.toughness.morphed","outgoing":true,"when":["target:morphed","not:target:status:armorStripped"]}
+    ],
     "prerequisites": {"when":["self:type:npc"]},
     "automation": {
       "status": "partial",
