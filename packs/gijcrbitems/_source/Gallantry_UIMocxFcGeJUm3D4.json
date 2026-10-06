@@ -14,7 +14,7 @@
     ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: the Frightening rolls the system knows about take a Snag against you, labelled Gallantry in the attacker's Roll Options Dialog: Trigger Happy attacks, Snarl and Predacon Intimidation, and Might Makes Right Persuasion.</p><p>Automatic: a Frightened Condition the system's rules put on you lasts half as long (Trigger Happy's ends as your next turn starts).</p><p>Left to the table: other Frightening effects.</p>"
+      "notes": "<p>Automatic: the Frightening rolls the system knows about take a Snag against you, labelled Gallantry in the attacker's Roll Options Dialog: Trigger Happy attacks, Snarl and Predacon Intimidation, and Might Makes Right Persuasion.</p><p>Automatic: a Frightened Condition the system's rules put on you lasts half as long: half its rounds, rounded down (at least 1), and one lasting until the end of a next turn ends as that turn starts instead.</p><p>Left to the table: other Frightening effects.</p>"
     },
     "originalId": "",
     "description": "",

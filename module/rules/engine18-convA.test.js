@@ -101,21 +101,22 @@ beforeEach(() => {
 });
 
 describe('ConditionHalving', () => {
-  test('validates; rounds halve rounded up (never below 1), and only the listed Conditions', () => {
+  test('validates; rounds halve rounded down (never below 1), and only the listed Conditions', () => {
     expect(validateRule({ type: 'ConditionHalving', conditions: ['frightened'] })).toEqual([]);
     expect(validateRule({ type: 'ConditionHalving', conditions: [] })).not.toEqual([]);
     const holder = makeActor([withRules([{ type: 'ConditionHalving', conditions: ['frightened'] }])]);
-    expect(halvedDuration(holder, 'frightened', { rounds: 5 })).toEqual({ rounds: 3 });
+    expect(halvedDuration(holder, 'frightened', { rounds: 5 })).toEqual({ rounds: 2 });
+    expect(halvedDuration(holder, 'frightened', { rounds: 3 })).toEqual({ rounds: 1 });
     expect(halvedDuration(holder, 'frightened', { rounds: 1 })).toEqual({ rounds: 1 });
     expect(halvedDuration(holder, 'prone', { rounds: 4 })).toBeNull();
   });
 
-  test("'until the end of your next turn' ends as it starts - only when it counts the holder's own turns", () => {
+  test("'until the end of your next turn' ends as that turn starts - whoever's turn it counts", () => {
     const holder = makeActor([withRules([{ type: 'ConditionHalving', conditions: ['frightened'] }])]);
     const other = makeActor();
     expect(halvedDuration(holder, 'frightened', { until: 'endOfNextTurn', rounds: 0, untilActor: holder })).toEqual({ until: 'nextTurn' });
     expect(halvedDuration(holder, 'frightened', { until: 'endOfNextTurnOrScene', untilActor: holder })).toEqual({ until: 'nextTurnOrScene' });
-    expect(halvedDuration(holder, 'frightened', { until: 'endOfNextTurn', untilActor: other })).toEqual({});
+    expect(halvedDuration(holder, 'frightened', { until: 'endOfNextTurn', untilActor: other })).toEqual({ until: 'nextTurn' });
   });
 
   test("its `when` sees the one applying it as target:, and applyCondition reads it per recipient", async () => {

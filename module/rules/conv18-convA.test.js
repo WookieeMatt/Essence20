@@ -190,6 +190,7 @@ function target(...actors) {
 const { runUse, fireTriggers } = await import('./triggers.mjs');
 const { applySkillSubstitution, ruleCritD2, ruleRollSources } = await import('./adapter.mjs');
 const { validateRule } = await import('./types.mjs');
+const { isExpired } = await import('./expiry.mjs');
 const { runSteps, stepContext } = await import('./steps.mjs');
 const { pressRuleButton } = await import('./buttons.mjs');
 const { runPreRoll } = await import('../mechanics/item-hooks.mjs');
@@ -285,7 +286,7 @@ describe('Gallantry', () => {
     const ctx = stepContext({ actor: foe, item: null, rule: {}, targets: [gallant] });
     await runSteps([{ do: 'applyCondition', condition: 'frightened', rounds: 3, to: 'target' }, { do: 'applyCondition', condition: 'prone', rounds: 3, to: 'target' }], ctx);
     expect(conditions).toEqual([
-      { name: 'Gallant', status: 'frightened', rounds: 2, until: null, of: null },
+      { name: 'Gallant', status: 'frightened', rounds: 1, until: null, of: null },
       { name: 'Gallant', status: 'prone', rounds: 3, until: null, of: null },
     ]);
   });
@@ -355,7 +356,7 @@ describe('Stand Behind Me!', () => {
     const far = makeActor([], { name: 'Far', x: 100, disposition: -1, type: 'npc' });
     const friend = makeActor([], { name: 'Friend', x: 10, disposition: 1 });
     placeOnCanvas(ranger, foe, far, friend);
-    global.game.combat = { id: 'c1', started: true, round: 2, turn: 0, turns: [], combatants: { contents: [] } };
+    global.game.combat = { id: 'c1', started: true, round: 2, turn: 0, turns: [{ actor: ranger }, { actor: foe }], combatants: { contents: [] } };
     return { ranger, foe, far, friend, item: ranger.items.contents[0] };
   }
 
@@ -372,6 +373,13 @@ describe('Stand Behind Me!', () => {
     expect(Object.keys(foe.flags.essence20.ruleMarks)).toEqual([`standBehindMe--${ranger.id}`]);
     expect(far.flags.essence20.ruleMarks).toBeUndefined();
     expect(friend.flags.essence20.ruleMarks).toBeUndefined();
+    // User ruling 2026-10-07: the taunt lasts until the start of the Gold Ranger's next turn.
+    const entry = Object.values(foe.flags.essence20.ruleMarks)[0];
+    expect(entry.until).toBe('nextTurn');
+    global.game.combat.turn = 1;
+    expect(isExpired(entry)).toBe(false);
+    Object.assign(global.game.combat, { round: 3, turn: 0 });
+    expect(isExpired(entry)).toBe(true);
   });
 
   test("a taunted enemy's turn start posts the Alertness card; failing it, only attacks at the taunter go ahead", async () => {
@@ -402,8 +410,8 @@ describe('Stand Behind Me!', () => {
     chat.length = 0;
     await fireTriggers(foe, 'turnStart');
     expect(cardButton()).toBeUndefined();
-    // Two rounds on, the taunt is over.
-    global.game.combat.round = 4;
+    // At the Gold Ranger's next turn, the taunt is over.
+    Object.assign(global.game.combat, { round: 3, turn: 0 });
     const later = { skill: 'targeting' };
     await runPreRoll(foe, later, gun);
     expect(later.cancelRoll).toBeUndefined();
@@ -423,7 +431,11 @@ describe('Stand Behind Me!', () => {
     global.game.combat = null;
     const calm = makeActor([], { name: 'Calm', x: 20, disposition: -1 });
     placeOnCanvas(ranger, calm);
+    const before = ranger.system.powers.personal.value;
     await runUse(item, pay);
+    // Out of combat the Use refuses before paying, and nobody is taunted.
+    expect(ranger.system.powers.personal.value).toBe(before);
+    expect(calm.flags?.essence20?.ruleMarks).toBeUndefined();
     chat.length = 0;
     await fireTriggers(calm, 'turnStart');
     expect(cardButton()).toBeUndefined();

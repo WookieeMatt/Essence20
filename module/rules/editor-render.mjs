@@ -18,7 +18,16 @@ const escape = text => String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp
 export function fieldLabel(key) {
   const full = `E20.Rules.Field.${key}`;
   const text = globalThis.game?.i18n?.localize?.(full);
-  return text && text != full ? text : String(key).replace(/^.*\./, '').replace(/([a-z])([A-Z])/g, '$1 $2');
+  if (text && text != full) {
+    return text;
+  }
+
+  // No label: the key in words. A condition family reads lower case like its labelled siblings (markedByMe -> marked by
+  // me); other fields keep their capitals (onSuccess -> On Success).
+  const words = String(key).replace(/^.*\./, '');
+  return /^Tag(Hint)?\./.test(String(key))
+    ? words.replace(/([a-z])([A-Z])/g, (match, low, high) => `${low} ${high.toLowerCase()}`)
+    : words.replace(/([a-z])([A-Z])/g, '$1 $2');
 }
 
 const getPath = (object, path) => path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), object);

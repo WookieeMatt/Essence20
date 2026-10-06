@@ -1,6 +1,7 @@
 import { isValidUntil, UNTIL } from "./expiry.mjs";
 import { formulaError, resolveValue } from "./formula.mjs";
 import { LIMIT_WINDOWS } from "./limits.mjs";
+import { flattenPaths } from "./rule-paths.mjs";
 import { contextFor, evaluate, interpolate, sideActorsWithin, unknownTags as unknownTagsOf, wieldedAttacks } from "./predicate.mjs";
 import { sourceOf as sourceOfItem } from "../items/shared/item-lookups.mjs";
 
@@ -293,6 +294,11 @@ function untilActor(step, ctx, recipient) {
   // turn" counted on the partner who assisted, for both marks).
   if (step.untilOf == 'target') {
     return ctx.targets?.[0] ?? ctx.actor;
+  }
+
+  // untilOf: holder - the rule item's owner, even when the step runs for someone else (a marked creature's Trigger).
+  if (step.untilOf == 'holder') {
+    return ctx.item?.parent ?? ctx.actor;
   }
 
   return step.untilOf == 'recipient' ? recipient ?? ctx.actor : ctx.actor;
@@ -983,14 +989,14 @@ const HANDLERS = {
       const high = step.max === undefined ? Infinity : amountOf(step.max, ctx, Infinity, actor);
       const clamp = value => Math.min(high, Math.max(low, value));
       // set / add paths may read a pick too (system.essences.{choice.essence}.max); with no pick, left alone.
-      for (const [rawPath, value] of Object.entries(step.set ?? {})) {
+      for (const [rawPath, value] of Object.entries(flattenPaths(step.set))) {
         const path = interpolate(rawPath, ctx.item);
         if (path) {
           update[path] = typeof value == 'boolean' ? value : typeof value == 'number' || /^[\d@(-]/.test(String(value)) ? clamp(amountOf(value, ctx, 0, actor)) : fillText(String(value), ctx);
         }
       }
 
-      for (const [rawPath, value] of Object.entries(step.add ?? {})) {
+      for (const [rawPath, value] of Object.entries(flattenPaths(step.add))) {
         const path = interpolate(rawPath, ctx.item);
         if (!path) {
           continue;

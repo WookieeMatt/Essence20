@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 import { formulaError, resolveValue } from './formula.mjs';
 import { contextFor, evaluate, evaluateTag, interpolate, isStatic, unknownTags } from './predicate.mjs';
-import { describeWhen, summarizeRule, validateRule } from './types.mjs';
+import { describeWhen, registerRuleType, summarizeRule, validateRule } from './types.mjs';
 import { collectRules, isItemActive, rebuildIndex, ruleStacks, rulesIndex } from './index.mjs';
 import {
   applyRuleSwitches, applySkillSubstitution, hostMatches, poolResets, ruleDamageDealt, ruleDamageTaken, ruleDefenseAdjust, ruleDerived,
@@ -254,6 +254,12 @@ describe('types', () => {
     expect(summarizeRule({ type: 'ChoiceSet', key: 'k', from: 'skill' })).toBe('Choice: K (skill)');
     expect(summarizeRule({ type: 'Code', helper: 'h' })).toBe('Runs H');
     expect(summarizeRule({ type: 'Aura' })).toBe('Aura (not supported yet)');
+    // A plug-in type reads its label (or its own summary, or the type in words) - never 'not supported yet'.
+    registerRuleType('ZzPluginType', { params: {} });
+    expect(summarizeRule({ type: 'ZzPluginType', label: 'Big Rigger' })).toBe('Big Rigger');
+    expect(summarizeRule({ type: 'ZzPluginType', when: ['combat'] })).toBe('Zz Plugin Type, in combat');
+    registerRuleType('ZzPluginOwn', { params: {}, summary: rule => `Own ${rule.n}` });
+    expect(summarizeRule({ type: 'ZzPluginOwn', n: 2 })).toBe('Own 2');
     expect(summarizeRule(null)).toBe('');
   });
 

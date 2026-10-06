@@ -891,7 +891,14 @@
           "roll": "the roll is",
           "self": "this character",
           "skill": "the Skill is",
-          "target": "the target"
+          "target": "the target",
+          "weapon": "the weapon",
+          "rule": "this rule's item",
+          "check": "a special check passes",
+          "markedBy": "marked by the other character with",
+          "markedByMe": "marked by this character with",
+          "assist": "the help is for",
+          "damage": "the damage is"
         },
         "TagHint": {
           "any": "skill:might | skill:athletics",
@@ -912,7 +919,14 @@
           "roll": "initiative",
           "self": "morphed, status:prone, level>=5",
           "skill": "athletics",
-          "target": "status:stunned, tag:robot"
+          "target": "status:stunned, tag:robot",
+          "weapon": "trait:fire, name~rifle",
+          "rule": "altMode, banked, data:…",
+          "check": "which check, e.g. inWater",
+          "markedBy": "a mark key, e.g. taunted",
+          "markedByMe": "a mark key, e.g. taunted",
+          "assist": "skill or attack",
+          "damage": "stun, sharp, crit or >=1"
         },
         "Text": "Message",
         "To": "Use",

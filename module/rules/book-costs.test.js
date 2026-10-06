@@ -200,7 +200,14 @@ describe('only while Morphed: refused before anything is paid', () => {
     expect(pay).not.toHaveBeenCalled();
 
     ranger.system.isMorphed = true;
+    // Stand Behind Me! also needs a running combat (user ruling 2026-10-07: the taunt ends at your next turn).
+    const combat = global.game.combat;
+    if (key == 'standBehindMe') {
+      global.game.combat = { id: 'c1', started: true, round: 1, turn: 0, turns: [{ actor: ranger }], combatants: { contents: [] } };
+    }
+
     expect(await runUse(item, pay, options)).not.toContain('requires being Morphed');
+    global.game.combat = combat;
     expect(ranger.system.powers.personal.value).toBeLessThan(before);
     if (action) {
       expect(pay).toHaveBeenCalledWith(action);

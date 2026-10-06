@@ -7,10 +7,9 @@ import { registerConditionDuration } from "../../steps.mjs";
  * Round 18 (convA): rule type `ConditionHalving {conditions: [status ids]}` - a Condition from that list put on the
  * holder by an `applyCondition` step lasts half as long ("if they are successful, the effect only lasts half as long" -
  * Gallantry):
- * - `rounds: N` becomes half of N, rounded up (never below 1);
- * - "until the end of your next turn" counted on the holder's own turns (`until: endOfNextTurn`, `untilOf: recipient`)
- *   ends as that turn starts instead (`nextTurn`); the `...OrScene` spelling likewise.
- * A duration counted on someone else's turns is left alone. `when` is asked with self = the holder and target = the
+ * - `rounds: N` becomes half of N, rounded down (never below 1) - user ruling 2026-10-07;
+ * - "until the end of ... next turn" (`until: endOfNextTurn`, whoever's turn it counts) ends as that turn starts instead
+ *   (`nextTurn`); the `...OrScene` spelling likewise (user ruling 2026-10-07). `when` is asked with self = the holder and target = the
  * actor whose step applies it. Read through rules/steps.mjs#registerConditionDuration, so only Conditions the rules apply
  * are halved.
  */
@@ -23,8 +22,6 @@ registerRuleType('ConditionHalving', {
 
 const SHORTER = { endOfNextTurn: 'nextTurn', endOfNextTurnOrScene: 'nextTurnOrScene' };
 
-const same = (a, b) => !!a && !!b && (a === b || (!!a.uuid && a.uuid == b.uuid));
-
 /** Whether the recipient holds a ConditionHalving rule for this Condition that holds now. */
 export function halvesCondition(recipient, condition, applier = null) {
   return rulesOfType(recipient, 'ConditionHalving').some(({ rule, item }) => !rule.disabled
@@ -33,17 +30,17 @@ export function halvesCondition(recipient, condition, applier = null) {
 }
 
 /** The halved duration ({until, rounds}), or null when nothing changes. */
-export function halvedDuration(recipient, condition, { until, rounds, untilActor } = {}, applier = null) {
+export function halvedDuration(recipient, condition, { until, rounds } = {}, applier = null) {
   if (!recipient || !halvesCondition(recipient, condition, applier)) {
     return null;
   }
 
   const out = {};
   if (Number(rounds) > 0) {
-    out.rounds = Math.max(1, Math.ceil(Number(rounds) / 2));
+    out.rounds = Math.max(1, Math.floor(Number(rounds) / 2));
   }
 
-  if (SHORTER[until] && same(untilActor, recipient)) {
+  if (SHORTER[until]) {
     out.until = SHORTER[until];
   }
 

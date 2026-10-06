@@ -788,6 +788,19 @@ export function summarizeRule(rule) {
   case 'Trigger': return `When ${rule.watch ? `${{ ally: 'an ally', enemy: 'an enemy', any: 'someone else' }[rule.watch] ?? humanize(rule.watch).toLowerCase()}${Number(rule.within) > 0 ? ` within ${rule.within} ft` : ''} - ` : ''}${EVENT_WORDS[rule.event] ?? humanize(rule.event).toLowerCase()}${['afterRoll', 'hit'].includes(rule.event) && rule.outcome && rule.outcome != 'any' ? ` (${humanize(rule.outcome).toLowerCase()})` : ''}${tail ? `,${tail}` : ''}: ${stepWords(rule.steps)}${limitPhrase(rule.limit)}`;
   }
 
+  // A plug-in type: its own summary if it gives one, else the rule's label (or the type in words).
+  const plugin = RULE_TYPES[rule.type];
+  if (plugin) {
+    const own = typeof plugin.summary == 'function' ? plugin.summary(rule, { who, tail }) : null;
+    if (own) {
+      return own;
+    }
+
+    const label = rule.label ? String(rule.label) : '';
+    const text = label.startsWith('E20.') ? word(label, humanize(rule.type)) : label || humanize(rule.type);
+    return `${who}${text}${tail ? `,${tail}` : ''}`;
+  }
+
   return `${rule.type ?? 'Rule'} (not supported yet)`;
 }
 
