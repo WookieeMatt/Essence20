@@ -23,7 +23,7 @@ import {
   onToggleActiveEffect,
 } from "../mechanics/characters/active-effect-controls.mjs";
 import { summarizeEffect } from "../mechanics/characters/effect-catalog.mjs";
-import { actorRulesContext } from "../rules/actor-view.mjs";
+import { actorRulesContext, ruleChatContent } from "../rules/actor-view.mjs";
 import { applySystemActorsColorCssVariables, applySystemColorCssVariables } from "../util/system-color.mjs";
 import { getNumActions } from "../mechanics/actions/action-counts.mjs";
 import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../items/defenses/personal-shield.mjs";
@@ -93,6 +93,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       itemCreate: this.#onItemCreate,
       openCompendiumBrowser: this.#onOpenCompendiumBrowser,
       openRuleSource: this.#onOpenRuleSource,
+      sendRuleToChat: this.#onSendRuleToChat,
       startingEssences: this.#onStartingEssences,
       itemDelete: this.#onItemDelete,
       itemEdit: this.#onItemEdit,
@@ -1024,6 +1025,17 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     event.preventDefault();
     const item = target.dataset.uuid ? await fromUuid(target.dataset.uuid) : null;
     item?.sheet?.render(true);
+  }
+
+  /** The Rules tab: post one rule (as the sheet shows it) to chat, with a link to its item. */
+  static async #onSendRuleToChat(event, target) {
+    event.preventDefault();
+    const item = target.dataset.uuid ? await fromUuid(target.dataset.uuid) : null;
+    const { type, summary, state } = target.dataset;
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content: ruleChatContent(item ?? { name: this.document.name }, { type, summary, state }),
+    });
   }
 
   static #onPerkUse(event, target) {

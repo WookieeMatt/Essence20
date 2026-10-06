@@ -115,13 +115,93 @@ export async function syncMorphState(actor, changed, options, userId) {
  */
 async function syncStatuses(actor, transitions) {
   if (transitions.morphed !== undefined) {
-    await setStatus(actor, MORPHED_STATUS, transitions.morphed);
+    await setStatus(actor, MORPHED_STATUS, transitions.morphed, { showIcon: stateShowIcon(actor, MORPHED_STATUS) });
   }
 
   if (transitions.altMode) {
     const { active, name, img } = transitions.altMode;
-    await setStatus(actor, ALT_MODE_STATUS, active, { name, img });
+    await setStatus(actor, ALT_MODE_STATUS, active, { name, img, showIcon: stateShowIcon(actor, ALT_MODE_STATUS) });
   }
+}
+
+/* The token icon (world setting `stateTokenIcons`, 2026-10-07). The status effect always stays - macros, rules and the
+   Combat Tracker read it - only its icon on the token (ActiveEffect#showIcon) follows the setting:
+     always  shown
+     art     hidden when the state swaps the token's art (Morphed art, the Alt Mode's token image), which shows it
+     never   hidden */
+
+const SHOW_ICON = () => globalThis.CONST?.ACTIVE_EFFECT_SHOW_ICON ?? { NEVER: 0, ALWAYS: 2 };
+
+function iconMode() {
+  try {
+    return game.settings.get("essence20", "stateTokenIcons") ?? "art";
+  } catch (error) {
+    return "art";
+  }
+}
+
+/**
+ * Whether entering the state swaps the token to art of its own.
+ * @param {Actor} actor
+ * @param {string} statusId   MORPHED_STATUS or ALT_MODE_STATUS.
+ * @returns {boolean}
+ */
+export function stateHasArt(actor, statusId) {
+  if (statusId === MORPHED_STATUS) return !!actor?.system?.image?.morphed;
+  if (statusId === ALT_MODE_STATUS) return !!actor?.items?.get?.(actor?.system?.altModeId)?.system?.tokenImage;
+  return false;
+}
+
+/**
+ * The showIcon a Morphed / Alt Mode status effect should carry.
+ * @param {Actor} actor
+ * @param {string} statusId
+ * @param {string} [mode]   always | art | never; defaults to the world setting.
+ * @returns {number}   A CONST.ACTIVE_EFFECT_SHOW_ICON value.
+ */
+export function stateShowIcon(actor, statusId, mode = iconMode()) {
+  const { NEVER, ALWAYS } = SHOW_ICON();
+  if (mode === "never") return NEVER;
+  if (mode === "always") return ALWAYS;
+  return stateHasArt(actor, statusId) ? NEVER : ALWAYS;
+}
+
+/**
+ * After the setting changes: bring every existing Morphed / Alt Mode status (world actors and unlinked tokens) in line.
+ * The active GM only, so it is written once.
+ * @returns {Promise<number>}   How many effects were updated.
+ */
+export async function refreshStateIcons() {
+  if (!game.users?.activeGM?.isSelf) return 0;
+
+  const actors = new Set(game.actors ?? []);
+  for (const scene of game.scenes ?? []) {
+    for (const token of scene.tokens ?? []) {
+      if (!token.actorLink && token.actor) actors.add(token.actor);
+    }
+  }
+
+  let updated = 0;
+  for (const actor of actors) {
+    const updates = [];
+    for (const effect of actor.effects ?? []) {
+      const statusId = [MORPHED_STATUS, ALT_MODE_STATUS].find(id => effect.statuses?.has?.(id));
+      const showIcon = statusId ? stateShowIcon(actor, statusId) : null;
+      if (statusId && effect.showIcon !== showIcon) updates.push({ _id: effect.id, showIcon });
+    }
+
+    if (updates.length) {
+      await actor.updateEmbeddedDocuments("ActiveEffect", updates);
+      updated += updates.length;
+    }
+  }
+
+  return updated;
+}
+
+// On load the active GM brings statuses set before the setting existed (or changed) in line; it writes only what differs.
+if (globalThis.Hooks?.once) {
+  Hooks.once("ready", () => refreshStateIcons().catch(error => console.error("Essence20 | state icon refresh failed", error)));
 }
 
 /**
@@ -133,7 +213,7 @@ async function syncStatuses(actor, transitions) {
  * @param {{name?: string|null, img?: string|null}} [dress]
  * @returns {Promise<void>}
  */
-async function setStatus(actor, statusId, active, { name = null, img = null } = {}) {
+async function setStatus(actor, statusId, active, { name = null, img = null, showIcon = null } = {}) {
   const existing = (actor.effects?.contents ?? [...(actor.effects ?? [])]).filter(e => e.statuses?.has?.(statusId));
 
   if (!active) {
@@ -141,7 +221,7 @@ async function setStatus(actor, statusId, active, { name = null, img = null } = 
     return;
   }
 
-  const dress = { ...(name ? { name } : {}), ...(img ? { img } : {}) };
+  const dress = { ...(name ? { name } : {}), ...(img ? { img } : {}), ...(showIcon !== null ? { showIcon } : {}) };
   if (existing.length) {
     if (Object.keys(dress).length) await existing[0].update(dress);
     return;

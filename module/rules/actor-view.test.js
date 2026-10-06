@@ -1,5 +1,5 @@
 import {
-  EFFECT_GROUPS, actorEffectGroups, actorRuleGroups, actorRulesContext, classifyEffect, effectSourceItem, isRegionEffect,
+  EFFECT_GROUPS, actorEffectGroups, actorRuleGroups, actorRulesContext, classifyEffect, effectSourceItem, isRegionEffect, ruleChatContent,
 } from './actor-view.mjs';
 
 const T = key => `T(${key})`;
@@ -241,5 +241,23 @@ describe('actorRulesContext', () => {
     expect(context.transientCount).toBe(1);
     expect(context.effectGroups).toHaveLength(EFFECT_GROUPS.length);
     expect(context.ruleGroups).toHaveLength(1);
+  });
+});
+
+describe('ruleChatContent', () => {
+  test('the item link, the type, the summary and the state, escaped', () => {
+    const anchor = { outerHTML: '<a class="content-link">Yo Joe!</a>' };
+    const html = ruleChatContent({ name: 'Yo Joe!', img: 'icons/joe.svg', toAnchor: () => anchor }, { type: 'Movement', summary: 'Ground Movement +10 <in round 1>', state: 'On' });
+    expect(html).toContain('<a class="content-link">Yo Joe!</a>');
+    expect(html).toContain('<img src="icons/joe.svg" alt="">');
+    expect(html).toContain('<span class="e20-rule-type">Movement</span> Ground Movement +10 &lt;in round 1&gt;');
+    expect(html).toContain('<p class="e20-rule-chat-state">On</p>');
+  });
+
+  test('no anchor: the name in bold; no state: no state line', () => {
+    const html = ruleChatContent({ name: 'A & B' }, { summary: 'Edge' });
+    expect(html).toContain('<strong>A &amp; B</strong>');
+    expect(html).not.toContain('e20-rule-chat-state');
+    expect(html).not.toContain('<img');
   });
 });

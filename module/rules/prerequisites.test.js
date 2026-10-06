@@ -129,3 +129,67 @@ describe('choosers', () => {
     expect(choicePrerequisites(hero(), 'U.big')).toBeNull();
   });
 });
+
+describe('strict mode: GMs are asked, granted items are never checked', () => {
+  const actorOf = () => ({ ...hero(), documentName: 'Actor', name: 'Hero' });
+  test('a GM dropping an unmet item is asked; yes adds it, no stops it; met items, warn mode and players are not asked', async () => {
+    const { confirmGmDrop } = await import('./prerequisites.mjs');
+    const confirm = jest.fn(async () => true);
+    global.foundry = { applications: { api: { DialogV2: { confirm } } } };
+    settings.prerequisiteMode = 'strict';
+    game.user.isGM = true;
+    expect(await confirmGmDrop(actorOf(), perk(['self:level>=9']))).toBe(true);
+    expect(confirm).toHaveBeenCalledTimes(1);
+    expect(confirm.mock.calls[0][0].content).toContain('Level 9+');
+    confirm.mockResolvedValueOnce(false);
+    expect(await confirmGmDrop(actorOf(), perk(['self:level>=9']))).toBe(false);
+    confirm.mockResolvedValueOnce(null);
+    expect(await confirmGmDrop(actorOf(), perk(['self:level>=9']))).toBe(false);
+    confirm.mockClear();
+    expect(await confirmGmDrop(actorOf(), perk(['self:level>=2']))).toBe(true);
+    expect(await confirmGmDrop(actorOf(), perk(['self:level>=9'], { type: 'upgrade' }))).toBe(true);
+    settings.prerequisiteMode = 'warn';
+    expect(await confirmGmDrop(actorOf(), perk(['self:level>=9']))).toBe(true);
+    settings.prerequisiteMode = 'strict';
+    game.user.isGM = false;
+    expect(await confirmGmDrop(actorOf(), perk(['self:level>=9']))).toBe(true);
+    expect(confirm).not.toHaveBeenCalled();
+  });
+
+  test('a player is refused an unmet item, but not one a rule grants; a granted item gets no GM note either', async () => {
+    const { onPreCreateItem, onCreateItem } = await import('./prerequisites.mjs');
+    settings.prerequisiteMode = 'strict';
+    game.user.id = 'p';
+    const parent = actorOf();
+    expect(onPreCreateItem({ ...perk(['self:level>=9']), parent }, {}, {}, 'p')).toBe(false);
+    expect(onPreCreateItem({ ...perk(['self:level>=9'], { flags: { essence20: { grantedBy: 'x' } } }), parent }, {}, {}, 'p')).toBeUndefined();
+    settings.prerequisiteMode = 'warn';
+    ChatMessage.create.mockClear();
+    await onCreateItem({ ...perk(['self:level>=9'], { flags: { essence20: { grantedBy: 'x' } } }), parent }, {}, 'p');
+    expect(ChatMessage.create).not.toHaveBeenCalled();
+    await onCreateItem({ ...perk(['self:level>=9']), parent }, {}, 'p');
+    expect(ChatMessage.create).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('the GM pop-up', () => {
+  test('warn mode: the unmet note carries a pop-up that shows on GM clients only', async () => {
+    const { onCreateItem, onGmNote } = await import('./prerequisites.mjs');
+    settings.prerequisiteMode = 'warn';
+    game.user.id = 'p';
+    ChatMessage.create.mockClear();
+    await onCreateItem({ ...perk(['self:level>=9']), parent: { ...hero(), documentName: 'Actor', name: 'Hero' } }, {}, 'p');
+    const note = ChatMessage.create.mock.calls[0][0];
+    expect(note.whisper).toEqual(['gm']);
+    expect(note.flags.essence20.prerequisiteToast).toContain('AddedUnmetGm');
+    expect(note.flags.essence20.prerequisiteToast).toContain('Level 9+');
+    ui.notifications.warn.mockClear();
+    onGmNote(note);
+    expect(ui.notifications.warn).not.toHaveBeenCalled();
+    game.user.isGM = true;
+    onGmNote(note);
+    expect(ui.notifications.warn).toHaveBeenCalledWith(note.flags.essence20.prerequisiteToast);
+    onGmNote({ flags: {} });
+    expect(ui.notifications.warn).toHaveBeenCalledTimes(1);
+  });
+});

@@ -102,6 +102,10 @@
                 <span class="e20-rule-type">{{rule.typeLabel}}</span>
                 <span class="e20-rule-summary">{{rule.summary}}</span>
                 {{#if rule.state}}<span class="e20-actor-rule-state">{{rule.state}}</span>{{/if}}
+                <span class="e20-actor-rule-controls">
+                  <a class="e20-actor-rule-control" data-action="openRuleSource" data-uuid="{{group.uuid}}" data-tooltip="E20.ActorRules.OpenItem" aria-label="{{localize 'E20.ActorRules.OpenItem'}}"><i class="fa-solid fa-up-right-from-square"></i></a>
+                  <a class="e20-actor-rule-control" data-action="sendRuleToChat" data-uuid="{{group.uuid}}" data-type="{{rule.typeLabel}}" data-summary="{{rule.summary}}" data-state="{{rule.state}}" data-tooltip="E20.ActorRules.SendToChat" aria-label="{{localize 'E20.ActorRules.SendToChat'}}"><i class="fa-solid fa-comment-dots"></i></a>
+                </span>
               </li>
             {{/each}}
           </ul>

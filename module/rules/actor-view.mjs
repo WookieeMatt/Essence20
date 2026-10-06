@@ -263,3 +263,21 @@ export function actorRulesContext(actor, options = {}) {
     transientCount: effectGroups.filter(group => group.transient).reduce((total, group) => total + group.effects.length, 0),
   };
 }
+
+const escapeHtml = text => String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
+/**
+ * A chat card for one rule from the Rules tab: its item (a link, when Foundry can make one), the rule's type, its
+ * summary and its live state, all as shown on the sheet.
+ * @param {Object} item                       The rule's item ({name, img, toAnchor?}).
+ * @param {{type: String, summary: String, state?: String}} rule
+ * @returns {String}   HTML.
+ */
+export function ruleChatContent(item, { type = '', summary = '', state = '' } = {}) {
+  const link = typeof item?.toAnchor == 'function' ? item.toAnchor().outerHTML : `<strong>${escapeHtml(item?.name)}</strong>`;
+  return `<div class="essence20 e20-rule-chat">`
+    + `<header class="e20-rule-chat-header">${item?.img ? `<img src="${escapeHtml(item.img)}" alt="">` : ''}${link}</header>`
+    + `<p class="e20-rule-chat-body">${type ? `<span class="e20-rule-type">${escapeHtml(type)}</span> ` : ''}${escapeHtml(summary)}</p>`
+    + (state ? `<p class="e20-rule-chat-state">${escapeHtml(state)}</p>` : '')
+    + `</div>`;
+}

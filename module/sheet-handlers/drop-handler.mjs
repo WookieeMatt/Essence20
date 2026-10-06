@@ -13,6 +13,7 @@ import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
 import { DETACHED_THIS_SCENE_FLAG } from "./vehicle-handler.mjs";
 import { hasUsedThisEncounter } from "../mechanics/characters/perks.mjs";
 import { clearWarriorMode } from "../items/zords/warrior-mode.mjs";
+import { confirmGmDrop } from "../rules/prerequisites.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
@@ -33,6 +34,11 @@ export async function onDropItem(data, actor, dropFunc) {
   // Don't drop a new item if they're just sorting
   if (actor.uuid === sourceItem?.parent?.uuid) {
     return await _onDropDefault(data, dropFunc, false);
+  }
+
+  // Strict prerequisites: a GM is asked before adding an item the character doesn't qualify for.
+  if (!(await confirmGmDrop(actor, sourceItem))) {
+    return false;
   }
 
   let result = null;

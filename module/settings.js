@@ -4,6 +4,7 @@ import AdventureImporter from "./apps/adventure-importer.mjs";
 import { invalidateImportedDescriptions } from "./importers/book-descriptions-store.mjs";
 import { applyGameLineToSourcebooks } from "./util/compendium-browser.mjs";
 import { E20 } from "./util/config.mjs";
+import { refreshStateIcons } from "./mechanics/characters/morph-state.mjs";
 
 export const setting = (key) => {
   return game.settings?.get("essence20", key) ?? "default";
@@ -417,6 +418,23 @@ export const registerSettings = function () {
     default: "ask",
     type: String,
     choices: EFFECT_ADD_OPTIONS,
+  });
+
+  // Whether the Morphed / Alt Mode status shows its icon on the token (the status itself stays - macros, rules and the
+  // Combat Tracker read it). "art": hidden when the state swaps the token's art, which already shows it.
+  game.settings.register(systemName, "stateTokenIcons", {
+    name: game.i18n.localize("E20.StateTokenIcons"),
+    hint: game.i18n.localize("E20.StateTokenIconsHint"),
+    scope: "world",
+    config: true,
+    default: "art",
+    type: String,
+    choices: {
+      always: game.i18n.localize("E20.StateTokenIconsAlways"),
+      art: game.i18n.localize("E20.StateTokenIconsArt"),
+      never: game.i18n.localize("E20.StateTokenIconsNever"),
+    },
+    onChange: () => refreshStateIcons(),
   });
 
   /* -------------------------------------------- */

@@ -8442,6 +8442,58 @@
   border: 1px solid var(--e20-theme-border-color);
   border-radius: 3px;
 }
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule-controls {
+  flex: none;
+  display: flex;
+  gap: 0.4rem;
+  margin-left: auto;
+  opacity: 0.55;
+  transition: opacity 0.15s ease;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule:hover .e20-actor-rule-controls,
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule-controls:focus-within {
+  opacity: 1;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule-control {
+  cursor: pointer;
+  color: inherit;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule-control:hover, .essence20 .tab.effects .e20-actor-rules .e20-actor-rule-control:focus-visible {
+  color: var(--e20-theme-accent);
+}
+
+.essence20.e20-rule-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.essence20.e20-rule-chat .e20-rule-chat-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: bold;
+}
+.essence20.e20-rule-chat .e20-rule-chat-header img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border: none;
+}
+.essence20.e20-rule-chat .e20-rule-chat-body,
+.essence20.e20-rule-chat .e20-rule-chat-state {
+  margin: 0;
+}
+.essence20.e20-rule-chat .e20-rule-type {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.75;
+}
+.essence20.e20-rule-chat .e20-rule-chat-state {
+  font-size: 0.8rem;
+  font-style: italic;
+}
 
 .essence20 select {
   color: var(--e20-theme-text-color);

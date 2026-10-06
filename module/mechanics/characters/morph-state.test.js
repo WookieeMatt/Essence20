@@ -1,6 +1,7 @@
 import { jest } from '@jest/globals';
 import {
-  ALT_MODE_STATUS, MORPHED_STATUS, announcementsFor, morphTransitions, syncMorphState, warnMissingStateImage,
+  ALT_MODE_STATUS, MORPHED_STATUS, announcementsFor, morphTransitions, refreshStateIcons, stateHasArt, stateShowIcon, syncMorphState,
+  warnMissingStateImage,
 } from './morph-state.mjs';
 
 const altMode = { id: 'am1', name: 'Ground Vehicle Mode', img: 'alt.png', system: { tokenImage: 'alt-token.png' } };
@@ -108,7 +109,8 @@ describe("syncMorphState", () => {
     await syncMorphState(actor, { system: { isTransformed: true, altModeId: 'am1' } }, {}, 'u1');
 
     expect(actor.toggleStatusEffect).toHaveBeenCalledWith(ALT_MODE_STATUS, { active: true });
-    expect(created.update).toHaveBeenCalledWith({ name: 'Ground Vehicle Mode', img: 'alt-token.png' });
+    // The Alt Mode has token art, so by default (the art setting) its icon is hidden: showIcon NEVER (0).
+    expect(created.update).toHaveBeenCalledWith({ name: 'Ground Vehicle Mode', img: 'alt-token.png', showIcon: 0 });
     expect(global.ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: '<p>E20.TransformAnnounceOn:Jason:Ground Vehicle Mode</p>' }));
   });
 
@@ -118,7 +120,7 @@ describe("syncMorphState", () => {
 
     await syncMorphState(actor, { system: { altModeId: 'am1' } }, {}, 'u1');
 
-    expect(existing.update).toHaveBeenCalledWith({ name: 'Ground Vehicle Mode', img: 'alt-token.png' });
+    expect(existing.update).toHaveBeenCalledWith({ name: 'Ground Vehicle Mode', img: 'alt-token.png', showIcon: 0 });
     expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
   });
 
@@ -158,5 +160,60 @@ describe("warnMissingStateImage", () => {
   test("an Alt Mode without token art", () => {
     expect(warnMissingStateImage(makeActor(), 'altMode', { name: 'Jet Mode', system: { tokenImage: '' } })).toBe(true);
     expect(warnMissingStateImage(makeActor(), 'altMode', altMode)).toBe(false);
+  });
+});
+
+describe("token icons (stateTokenIcons)", () => {
+  afterEach(() => {
+    delete global.game.settings;
+  });
+
+  test("art: hidden when the state swaps the token art, shown otherwise; always / never override", () => {
+    const plain = makeActor({ isMorphed: true });
+    const withArt = makeActor({ isMorphed: true });
+    withArt.system.image.morphed = 'morphed.png';
+    const transformed = makeActor({ isTransformed: true, altModeId: 'am1' });
+    expect([stateHasArt(plain, MORPHED_STATUS), stateHasArt(withArt, MORPHED_STATUS), stateHasArt(transformed, ALT_MODE_STATUS)]).toEqual([false, true, true]);
+    expect(stateShowIcon(plain, MORPHED_STATUS, 'art')).toBe(2);
+    expect(stateShowIcon(withArt, MORPHED_STATUS, 'art')).toBe(0);
+    expect(stateShowIcon(transformed, ALT_MODE_STATUS, 'art')).toBe(0);
+    expect(stateShowIcon(withArt, MORPHED_STATUS, 'always')).toBe(2);
+    expect(stateShowIcon(plain, MORPHED_STATUS, 'never')).toBe(0);
+    global.game.settings = { get: () => 'never' };
+    expect(stateShowIcon(plain, MORPHED_STATUS)).toBe(0);
+  });
+
+  test("morphing without Morphed art keeps the icon; with the setting at never it is hidden", async () => {
+    global.game.user = { id: 'u1' };
+    global.game.i18n = { format: jest.fn(() => ''), localize: jest.fn(k => k) };
+    const created = { update: jest.fn() };
+    const actor = makeActor({ isMorphed: true });
+    actor.toggleStatusEffect.mockResolvedValue(created);
+    await syncMorphState(actor, { system: { isMorphed: true } }, {}, 'u1');
+    expect(created.update).toHaveBeenCalledWith({ showIcon: 2 });
+    global.game.settings = { get: () => 'never' };
+    const hidden = { update: jest.fn() };
+    actor.toggleStatusEffect.mockResolvedValue(hidden);
+    await syncMorphState(actor, { system: { isMorphed: true } }, {}, 'u1');
+    expect(hidden.update).toHaveBeenCalledWith({ showIcon: 0 });
+  });
+
+  test("a setting change brings existing statuses in line, on the active GM only", async () => {
+    const effect = { ...makeEffect(MORPHED_STATUS), showIcon: 2 };
+    const other = { id: 'x', statuses: new Set(['prone']), showIcon: 2 };
+    const actor = { ...makeActor({ isMorphed: true }), effects: [effect, other], updateEmbeddedDocuments: jest.fn() };
+    const unlinked = { ...makeActor({ isMorphed: true }), effects: [{ ...makeEffect(MORPHED_STATUS), showIcon: 0 }], updateEmbeddedDocuments: jest.fn() };
+    global.game.actors = [actor];
+    global.game.scenes = [{ tokens: [{ actorLink: false, actor: unlinked }] }];
+    global.game.settings = { get: () => 'never' };
+    global.game.users = { activeGM: { isSelf: false } };
+    expect(await refreshStateIcons()).toBe(0);
+    global.game.users = { activeGM: { isSelf: true } };
+    expect(await refreshStateIcons()).toBe(1);
+    expect(actor.updateEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', [{ _id: 'e-morphed', showIcon: 0 }]);
+    expect(unlinked.updateEmbeddedDocuments).not.toHaveBeenCalled();
+    delete global.game.actors;
+    delete global.game.scenes;
+    delete global.game.users;
   });
 });

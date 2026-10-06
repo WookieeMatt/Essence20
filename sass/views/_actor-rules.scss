@@ -266,4 +266,68 @@
     border: 1px solid var(--e20-theme-border-color);
     border-radius: 3px;
   }
+
+  // Per rule: open its item, send it to chat. Pushed to the right; quiet until the row is hovered.
+  .e20-actor-rule-controls {
+    flex: none;
+    display: flex;
+    gap: 0.4rem;
+    margin-left: auto;
+    opacity: 0.55;
+    transition: opacity 0.15s ease;
+  }
+
+  .e20-actor-rule:hover .e20-actor-rule-controls,
+  .e20-actor-rule-controls:focus-within {
+    opacity: 1;
+  }
+
+  .e20-actor-rule-control {
+    cursor: pointer;
+    color: inherit;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--e20-theme-accent);
+    }
+  }
+}
+
+// A rule sent to chat from the actor Rules tab (rules/actor-view.mjs#ruleChatContent).
+.essence20.e20-rule-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+
+  .e20-rule-chat-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: bold;
+
+    img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      border: none;
+    }
+  }
+
+  .e20-rule-chat-body,
+  .e20-rule-chat-state {
+    margin: 0;
+  }
+
+  .e20-rule-type {
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.75;
+  }
+
+  .e20-rule-chat-state {
+    font-size: 0.8rem;
+    font-style: italic;
+  }
 }

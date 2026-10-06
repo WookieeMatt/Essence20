@@ -147,18 +147,30 @@ function mode() {
 
 const listHtml = lines => `<ul>${lines.map(line => `<li>${escape(line)}</li>`).join('')}</ul>`;
 
-/** A chat note only GMs see. */
-async function noteGm(content) {
+/**
+ * A chat note only GMs see. `toast` (a pop-up's text) also shows it on every GM's screen as a warning (onGmNote) - for
+ * an item added without its prerequisites, by anyone, in warn or strict mode (user ruling 2026-10-07).
+ */
+async function noteGm(content, toast = null) {
   const whisper = game.users.filter(user => user.isGM).map(user => user.id);
   if (whisper.length) {
-    await ChatMessage.create({ content, whisper, speaker: { alias: T('Title') } });
+    await ChatMessage.create({ content, whisper, speaker: { alias: T('Title') }, ...(toast ? { flags: { essence20: { prerequisiteToast: toast } } } : {}) });
+  }
+}
+
+/** On each GM's client: a prerequisite note that carries a toast pops up as a warning. */
+export function onGmNote(message) {
+  const toast = message?.flags?.essence20?.prerequisiteToast;
+  if (toast && game.user?.isGM) {
+    ui.notifications.warn(toast);
   }
 }
 
 /** What adding (or attaching) an unmet item tells the GM, and the player. */
 async function reportAdded(actor, item, result) {
   if (result.unmet.length) {
-    await noteGm(`<p>${escape(T('AddedUnmet', { actor: actor.name, item: item.name, user: game.user.name }))}</p>${listHtml(result.unmet)}`);
+    await noteGm(`<p>${escape(T('AddedUnmet', { actor: actor.name, item: item.name, user: game.user.name }))}</p>${listHtml(result.unmet)}`,
+      T('AddedUnmetGm', { actor: actor.name, item: item.name, missing: result.unmet.join('; ') }));
     if (!game.user.isGM) {
       ui.notifications.warn(T('AddedUnmetPlayer', { item: item.name, missing: result.unmet.join('; ') }));
     }
@@ -192,10 +204,38 @@ export function choicePrerequisites(actor, uuid) {
   return result.met ? null : { missing: result.unmet.join('; '), blocked: mode() == 'strict' && !game.user?.isGM };
 }
 
+/**
+ * Strict mode, a GM dropping an item onto a character who doesn't meet its prerequisites: asked "add it anyway?"
+ * first (user ruling 2026-10-07; players stay refused by onPreCreateItem). Called by the sheet's drop handler before
+ * anything is created, so the drop's own set-up (a Perk's values, a Role's picks) runs as usual on a yes. A yes still
+ * leaves the GM the usual chat note (onCreateItem). Upgrades are checked once attached (checkAttached).
+ * @returns {Promise<Boolean>} false to stop the drop.
+ */
+export async function confirmGmDrop(actor, item) {
+  if (!game.user?.isGM || mode() != 'strict' || !actor || item?.type == 'upgrade' || !prerequisitesOf(item).length) {
+    return true;
+  }
+
+  const result = checkPrerequisites(actor, item);
+  if (result.met) {
+    return true;
+  }
+
+  const answer = await foundry.applications.api.DialogV2.confirm({
+    window: { title: T('Title') },
+    content: `<p>${escape(T('GmConfirm', { actor: actor.name, item: item.name }))}</p>${listHtml(result.unmet)}<p>${escape(T('GmConfirmQuestion'))}</p>`,
+    rejectClose: false,
+  });
+  return answer === true;
+}
+
+/** An item a rule gives (flags.essence20.grantedBy) isn't the character taking it: no prerequisite check. */
+const isGranted = item => !!item?.flags?.essence20?.grantedBy;
+
 /** Strict mode stops a player adding an item whose prerequisites aren't met. Sync: preCreate can't wait. */
-function onPreCreateItem(item, data, options, userId) {
+export function onPreCreateItem(item, data, options, userId) {
   const actor = item.parent;
-  if (userId != game.user.id || actor?.documentName != 'Actor' || options.e20SkipPrerequisites || !prerequisitesOf(item).length) {
+  if (userId != game.user.id || actor?.documentName != 'Actor' || options.e20SkipPrerequisites || !prerequisitesOf(item).length || isGranted(item)) {
     return;
   }
 
@@ -210,9 +250,9 @@ function onPreCreateItem(item, data, options, userId) {
   }
 }
 
-async function onCreateItem(item, options, userId) {
+export async function onCreateItem(item, options, userId) {
   const actor = item.parent;
-  if (userId != game.user.id || actor?.documentName != 'Actor' || options.e20SkipPrerequisites || mode() == 'off' || !prerequisitesOf(item).length) {
+  if (userId != game.user.id || actor?.documentName != 'Actor' || options.e20SkipPrerequisites || mode() == 'off' || !prerequisitesOf(item).length || isGranted(item)) {
     return;
   }
 
@@ -311,6 +351,7 @@ if (globalThis.Hooks?.on) {
   });
   Hooks.on('preCreateItem', onPreCreateItem);
   Hooks.on('createItem', onCreateItem);
+  Hooks.on('createChatMessage', onGmNote);
   Hooks.on('updateActor', actor => recheckSoon(actor));
   Hooks.on('createItem', item => recheckSoon(item.parent));
   Hooks.on('deleteItem', item => recheckSoon(item.parent));
