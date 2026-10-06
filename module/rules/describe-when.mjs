@@ -87,7 +87,8 @@ const YOU = {
   who: 'you', is: 'are', isnt: "aren't", has: 'have', hasnt: "don't have", does: 'do', doesnt: "don't", poss: 'your', its: 'your',
   havent: "haven't", hasDone: "you've", s: '', es: '', ies: 'y', was: 'were', wasnt: "weren't", self: 'yourself',
 };
-const third = (who, poss = `${who}'s`) => ({
+// A plural noun takes a bare apostrophe ("one of your targets' Threat Level"), not "targets's".
+const third = (who, poss = /[^s]s$/.test(who) ? `${who}'` : `${who}'s`) => ({
   who, is: 'is', isnt: "isn't", has: 'has', hasnt: "doesn't have", does: 'does', doesnt: "doesn't", poss, its: 'its',
   havent: "hasn't", hasDone: `${who} has`, s: 's', es: 'es', ies: 'ies', was: 'was', wasnt: "wasn't", self: 'itself',
 });
@@ -100,7 +101,7 @@ export const SUBJECTS = {
   enemy: third('an enemy in the fight'),
   ally: third('an ally in the fight'),
   someone: third('someone else in the scene'),
-  anyTarget: third('one of your targets'),
+  anyTarget: third('one of your targets', "one of your targets'"),
   item: third('the item', "the item's"),
   weapon: third('the weapon'),
   host: third('the item it is attached to', "the host item's"),
@@ -111,7 +112,7 @@ export const SUBJECTS = {
 
 /** Fill a phrase template: {who}, {is}, {has}, {poss} ... from the subject; {arg} (as words), {raw}, {name}, {ft}. */
 function fill(template, arg, who) {
-  return String(template).replace(/\{(\w+)\}/g, (match, key) => {
+  const text = String(template).replace(/\{(\w+)\}/g, (match, key) => {
     switch (key) {
     case 'arg': return humanize(arg);
     case 'raw': return String(arg ?? '');
@@ -122,6 +123,8 @@ function fill(template, arg, who) {
 
     return who[key] ?? match;
   });
+  // An item it can't name reads "a particular item" - no possessive in front of that ("your a particular item").
+  return text.replace(/\b(?:your|its|their|[\w-]+'s?) a particular item\b/g, 'a particular item');
 }
 
 /* -------------------------------------------- */

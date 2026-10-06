@@ -344,6 +344,9 @@ registerRuleType('BeforeRoll', {
     ...(rule.steps === undefined && !rule.cancel ? ['needs steps or cancel'] : []),
     ...(rule.steps !== undefined ? stepErrors(rule.steps) : []),
   ],
+  // A cancel rule's `when` says when the roll is refused, so its summary says so ("Energy Attack (once per encounter)
+  // - blocked if you used it this encounter"); a steps-only rule reads its label.
+  summary: (rule, { who = '', tail = '' } = {}) => (rule.cancel ? `${who}${rule.label ?? 'This roll'} - blocked${tail}` : null),
 });
 
 /**

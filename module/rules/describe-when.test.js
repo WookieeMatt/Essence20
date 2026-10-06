@@ -256,6 +256,14 @@ describe('every pack tag reads as plain English', () => {
     expect(leaks).toEqual([]);
   });
 
+  test('no plugin-type "not supported yet", no doubled possessives, and a BeforeRoll block reads as one', () => {
+    const texts = packRules.map(rule => summarizeRule(rule));
+    expect(texts.filter(text => /not supported yet|\w+s's\b|\b(?:your|its) a particular item/.test(text))).toEqual([]);
+    expect(summarizeRule({ type: 'BeforeRoll', scope: 'item', label: 'Energy Attack (once per encounter)', cancel: true, when: ['combat'] }))
+      .toBe('Rolling this: Energy Attack (once per encounter) - blocked in combat');
+    expect(describeWhen(['roll:anyTarget:target:level>=3'])).not.toMatch(/targets's/);
+  });
+
   test('formula amounts in summaries read as words: no raw @refs or functions', () => {
     const formulas = packRules.map(rule => summarizeRule(rule)).filter(text => /@|\b(?:max|min|floor|ceil|abs|round)\(|calculated amount/.test(unquoted(text)));
     expect(formulas).toEqual([]);
