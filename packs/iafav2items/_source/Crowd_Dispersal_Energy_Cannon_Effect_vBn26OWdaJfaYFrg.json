@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: rolls Targeting along a 100 ft line; each target hit is Impaired until the end of their next turn.</p>"
+      "notes": "<p>Automatic: rolls Targeting along a 100 ft line; each target hit is Impaired for 1 round.</p>"
     },
     "originalId": "",
     "actionType": "standard",

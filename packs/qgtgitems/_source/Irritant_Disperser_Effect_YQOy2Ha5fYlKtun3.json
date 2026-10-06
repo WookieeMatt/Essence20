@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a Targeting blast at 20/50 ft that Blinds.</p>"
+      "notes": "<p>Automatic: a Targeting blast at 20/50 ft that Blinds until the end of the target's next turn.</p>"
     },
     "originalId": "",
     "actionType": "standard",

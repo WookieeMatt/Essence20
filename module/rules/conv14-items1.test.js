@@ -434,7 +434,7 @@ describe('hits', () => {
     expect(ruleDialogSwitches(actor, { rolledSkill: 'technology' }).some(s => /Deconstructionist/.test(s.label))).toBe(true);
     expect(ruleDialogSwitches(actor, { rolledSkill: 'athletics' }).some(s => /Deconstructionist/.test(s.label))).toBe(false);
     // A vehicle: every test it makes (a creature's: only those using the picked equipment - book-followups.test.js).
-    const target = makeActor([], { name: 'Tank', type: 'vehicle' });
+    const target = makeActor([], { name: 'Tank', type: 'vehicle', system: { traits: { computerized: true } } });
     await hit(actor, target, { rolledSkill: 'technology', switches: ['deconstructionist'] }, [{ success: true }]);
     expect(bankedEntries(target)).toHaveLength(1);
     expect(bankedSources(target, null, { rolledSkill: 'athletics' }).sources[0]).toMatchObject({ snag: true });

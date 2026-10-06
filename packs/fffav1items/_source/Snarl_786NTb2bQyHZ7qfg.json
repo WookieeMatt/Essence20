@@ -6,12 +6,12 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"hit","label":"Snarl (Frightened 1 round)","when":["skill:intimidation"],"steps":[{"do":"applyCondition","condition":"frightened","rounds":1,"to":"target"}]}
+      {"type":"Trigger","event":"hit","label":"Snarl (Frightened for its next turn)","when":["skill:intimidation"],"steps":[{"do":"applyCondition","condition":"frightened","until":"endOfNextTurn","untilOf":"recipient","to":"target"}]}
     ],
     "prerequisites": {"when":["self:skill:intimidation>=d6"]},
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: when you roll Intimidation with a creature targeted, a success gives it the Frightened condition. In combat it lasts 1 round and the combat tracker removes it.</p><p>Left to the table: removing Frightened out of combat.</p>"
+      "notes": "<p>Automatic: when you roll Intimidation with a creature targeted, a success gives it the Frightened condition until the end of its next turn (its one turn); out of combat, for 1 round (6 seconds of game time).</p>"
     },
     "originalId": "",
     "actionType": "standard",

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: rolls Targeting along a 100 ft line; a hit leaves the target Blinded until the end of their next turn.</p>"
+      "notes": "<p>Automatic: rolls Targeting along a 100 ft line; a hit leaves the target Blinded for 1 round.</p>"
     },
     "originalId": "",
     "actionType": "standard",

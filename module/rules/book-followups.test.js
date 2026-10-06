@@ -289,7 +289,8 @@ describe('Growing Smolder: a Free action; the bonus is on the following turn\'s 
     expect(shiftUp(monster, effect)).toBe(0);
     game.combat.round = 2;
     expect([shiftUp(monster, effect), shiftUp(monster, effect)]).toEqual([1, 1]);
-    expect(ruleScaledDamage(monster, null, { item: effect }).amount).toBe(1);
+    // The +1 is Fire damage now (book-followups2.test.js): a hit rider option, not the attack's own damage bonus.
+    expect(ruleScaledDamage(monster, null, { item: effect }).amount).toBe(0);
     game.combat.round = 3;
     expect(shiftUp(monster, effect)).toBe(0);
   });
@@ -365,6 +366,7 @@ describe('Deconstructionist: a vehicle\'s tests all take the Snag; a creature\'s
     const tech = makeActor('Tech', { items: [packItem('decon')] });
     const trooper = makeActor('Trooper', { type: 'npc', disposition: -1 });
     const rifle = weaponWith(trooper, 'Rifle');
+    rifle.weapon.system.traits = ['computerized'];
     const other = weaponWith(trooper, 'Knife');
     startCombat(1, 0, [tech, trooper]);
     values = [rifle.weapon.uuid];
@@ -375,7 +377,7 @@ describe('Deconstructionist: a vehicle\'s tests all take the Snag; a creature\'s
 
   test('against a vehicle: every test it makes', async () => {
     const tech = makeActor('Tech', { items: [packItem('decon')] });
-    const truck = makeActor('Truck', { type: 'vehicle', disposition: -1 });
+    const truck = makeActor('Truck', { type: 'vehicle', disposition: -1, system: { traits: { computerized: true } } });
     startCombat(1, 0, [tech, truck]);
     await fireTriggers(tech, 'hit', { roll: { rolledSkill: 'technology', switches: ['deconstructionist'] }, outcome: 'success', targets: [truck], facts: { results: [{ success: true }] } });
     expect(bankedSources(truck, null, { rolledSkill: 'driving' }).sources.some(source => source.snag)).toBe(true);

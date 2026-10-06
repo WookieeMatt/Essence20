@@ -10,7 +10,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: rolls Targeting against the Cleverness of everyone in a 60ft line, ignoring armor bonuses; a hit leaves the target Blinded.</p>"
+      "notes": "<p>Automatic: rolls Targeting against the Cleverness of everyone in a 60ft line, ignoring armor bonuses; a hit leaves the target Blinded until the end of its next turn.</p>"
     },
     "originalId": "",
     "actionType": "standard",

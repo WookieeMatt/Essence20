@@ -114,7 +114,7 @@ import { isGreasedLightningActive } from "./items/magic/greased-lightning.mjs";
 import { isMysterySenseActive } from "./items/magic/mystery-sense.mjs";
 import { isGlittermaneActive } from "./items/magic/glittermane.mjs";
 import { isOokieSpookiesActive } from "./items/magic/ookie-spookies.mjs";
-import { applyTimedCondition } from "./mechanics/combat/timed-status.mjs";
+import { applyTimedCondition, turnBoundTiming } from "./mechanics/combat/timed-status.mjs";
 import { isFoolscarrotActive } from "./items/magic/foolscarrot.mjs";
 import { getSummonArmorDefenseBonus } from "./items/magic/summon-armor.mjs";
 import { isDontNoticeMeFieldActive } from "./items/magic/dont-notice-me-field.mjs";
@@ -4383,8 +4383,10 @@ export class Dice {
     // _applyBlindingBlast), its other effects don't blind. Only a weapon without one falls back to
     // blinding on every hit.
     if (traits.includes('blinding') && checkContext.damageType != 'blindingBlast' && !checkContext.weaponHasBlindingEffect) {
+      // Until the end of the target's own next turn (book check 2026-10-06, follow-ups 2); out of combat, or not in
+      // the turn order, 1 round.
       for (const target of hits) {
-        await applyTimedCondition(target, 'blinded', 1);
+        await applyTimedCondition(target, 'blinded', 1, turnBoundTiming('endOfNextTurn', target));
       }
     }
 
@@ -4459,8 +4461,11 @@ export class Dice {
    * the end of their next turn." Represented by damageType 'blindingBlast' - the same "measured
    * from real compendium data" idiom rules/plugins/tags/violent-tags.mjs#NON_DAMAGE_EFFECT_TYPES uses for Trip's
    * 'knocProne' - applying the existing 'blinded' status via mechanics/combat/timed-status.mjs's own
-   * applyTimedCondition(..., 1), the same "until the end of their next turn" 1-round idiom
-   * Painmonger's own Impaired application already establishes.
+   * applyTimedCondition, ending as the target's own next turn ends (book check 2026-10-06, follow-ups 2:
+   * the Blinding effect, Irritant Disperser, Molecular Reducer / Strobe; Finster's Flames of Hate, Pollen
+   * Cloud and Stinger Spray say the same). A weapon with the Condition trait - the Crowd Dispersal
+   * Energy Cannon's "Blinded 1" (Intercontinental Adventures p.92) - blinds for 1 round instead. Out
+   * of combat, or a target not in the turn order: 1 round.
    * @param {Array<Object>} results   The rollSkill()-built per-target result rows.
    * @param {Object} checkContext   Its own damageType field, set by rollSkill() above.
    * @private
@@ -4470,6 +4475,7 @@ export class Dice {
       return;
     }
 
+    const oneRound = (checkContext.weaponTraits ?? []).includes('condition');
     for (const result of results) {
       if (!result.success || !result.targetUuid) {
         continue;
@@ -4477,15 +4483,16 @@ export class Dice {
 
       const targetActor = await fromUuid(result.targetUuid);
       if (targetActor) {
-        await applyTimedCondition(targetActor, 'blinded', 1);
+        await applyTimedCondition(targetActor, 'blinded', 1, oneRound ? null : turnBoundTiming('endOfNextTurn', targetActor));
       }
     }
   }
 
   /**
    * Deafened (the Crowd Dispersal Energy Cannon's "Deafened 1" alternate effect, Intercontinental
-   * Adventures p.92): damageType 'deafened' leaves a hit target Deafened until the end of their next
-   * turn - the same applyTimedCondition(..., 1) shape as _applyBlindingBlast just above.
+   * Adventures p.92): damageType 'deafened' leaves a hit target Deafened for 1 round (the book's
+   * "Deafened 1", read as rounds like its "Stunned 1d2 rounds" stat lines - book check 2026-10-06,
+   * follow-ups 2) - applyTimedCondition(..., 1).
    * @param {Array<Object>} results   The rollSkill()-built per-target result rows.
    * @param {Object} checkContext   Its own damageType field, set by rollSkill() above.
    * @private

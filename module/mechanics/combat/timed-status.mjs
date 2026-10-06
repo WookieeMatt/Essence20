@@ -88,14 +88,15 @@ export async function applyTimedCondition(targetActor, statusId, rounds, timing 
  * of your next turn" (until: nextTurn) or "until the end of their next turn" (until: endOfNextTurn). v14's own effect
  * expiry (duration.expiry turnStart / turnEnd, matched against start.combatant) does the ending. Its next turn is this
  * round's when it hasn't acted yet, else the next round's. Null with no running combat or when the creature isn't in
- * it (the caller then falls back to plain rounds).
- * @param {String} until        nextTurn | endOfNextTurn (the ...OrScene spellings too)
+ * it (the caller then falls back to plain rounds). until: endOfTurn (book check 2026-10-06, follow-ups 2 - "until the end
+ * of your turn", Beast Morpher's dog Hang-Up) ends as its current turn ends, or its next one when it isn't acting now.
+ * @param {String} until        endOfTurn | nextTurn | endOfNextTurn (the ...OrScene spellings too)
  * @param {Actor} actor         Whose turn counts.
  * @param {Combat} [combat]
  * @returns {{value: Number, expiry: String, combatantId: String}|null}
  */
 export function turnBoundTiming(until, actor, combat = globalThis.game?.combat) {
-  const expiry = { nextTurn: 'turnStart', nextTurnOrScene: 'turnStart', endOfNextTurn: 'turnEnd', endOfNextTurnOrScene: 'turnEnd' }[until];
+  const expiry = { endOfTurn: 'turnEnd', nextTurn: 'turnStart', nextTurnOrScene: 'turnStart', endOfNextTurn: 'turnEnd', endOfNextTurnOrScene: 'turnEnd' }[until];
   if (!expiry || !combat?.started || !actor) {
     return null;
   }
@@ -106,5 +107,6 @@ export function turnBoundTiming(until, actor, combat = globalThis.game?.combat) 
     return null;
   }
 
-  return { value: index > (Number(combat.turn) || 0) ? 0 : 1, expiry, combatantId: turns[index].id };
+  const current = Number(combat.turn) || 0;
+  return { value: (until == 'endOfTurn' ? index >= current : index > current) ? 0 : 1, expiry, combatantId: turns[index].id };
 }

@@ -1216,7 +1216,7 @@ describe('Forms as data', () => {
     const { applyTimedCondition } = await import('../mechanics/combat/timed-status.mjs');
     expect(applyTimedCondition).toHaveBeenCalledWith(target, 'prone', 0);
 
-    // The dog: a d20 under 10 Stuns for a round.
+    // The dog: a d20 under 10 Stuns until the end of the turn (out of combat, as here: 1 round - book-followups2.test.js).
     const random = jest.spyOn(Math, 'random').mockReturnValue(0.2);
     expect(await use('A dog appears')).toContain('freezes at the sight of the dog (5)');
     expect(applyTimedCondition).toHaveBeenLastCalledWith(actor, 'stunned', 1);

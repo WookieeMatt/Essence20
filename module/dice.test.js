@@ -7892,6 +7892,39 @@ describe("_applyBlindingBlast (Quartermaster's Guide to Gear p.33)", () => {
     expect(targetActor.toggleStatusEffect).toHaveBeenCalledWith('blinded', { active: true });
   });
 
+  // Book check 2026-10-06 (follow-ups 2): "blind until the end of their next turn" - in a running combat the
+  // effect ends as the TARGET's next turn ends; the Crowd Dispersal Energy Cannon's "Blinded 1" (Condition trait)
+  // is 1 round.
+  function blindable() {
+    const effects = [];
+    return {
+      id: 'target1', effects,
+      toggleStatusEffect: jest.fn(async status => effects.push({ statuses: new Set([status]), update: jest.fn() })),
+    };
+  }
+
+  test("in combat: blinded until the end of the target's own next turn", async () => {
+    const targetActor = blindable();
+    fromUuid.mockResolvedValue(targetActor);
+    game.combat = { id: 'c1', started: true, round: 2, turn: 0, turns: [{ id: 'cb0', actor: { id: 'shooter' } }, { id: 'cb1', actor: targetActor }] };
+
+    await dice._applyBlindingBlast([makeResult()], { damageType: 'blindingBlast', weaponTraits: [] });
+
+    expect(targetActor.effects[0].update).toHaveBeenCalledWith(expect.objectContaining({
+      'duration.value': 0, 'duration.expiry': 'turnEnd', 'start.combatant': 'cb1',
+    }));
+  });
+
+  test("a Condition-trait weapon (Crowd Dispersal's Blinded 1): 1 round", async () => {
+    const targetActor = blindable();
+    fromUuid.mockResolvedValue(targetActor);
+    game.combat = { id: 'c1', started: true, round: 2, turn: 0, turns: [{ id: 'cb0', actor: { id: 'shooter' } }, { id: 'cb1', actor: targetActor }] };
+
+    await dice._applyBlindingBlast([makeResult()], { damageType: 'blindingBlast', weaponTraits: ['computerized', 'condition'] });
+
+    expect(targetActor.effects[0].update).toHaveBeenCalledWith({ 'duration.rounds': 1, 'duration.startRound': 2, 'duration.startTurn': 0 });
+  });
+
   test("doesn't apply for a non-Blinding effect", async () => {
     const results = [makeResult()];
 
@@ -7924,6 +7957,17 @@ describe("_applyDeafeningEffect (Crowd Dispersal Energy Cannon, Intercontinental
     expect(targetActor.toggleStatusEffect).toHaveBeenCalledWith('deafened', { active: true });
   });
 
+  test("in combat: Deafened 1 lasts 1 round (book check follow-ups 2)", async () => {
+    const effects = [];
+    const targetActor = { id: 'target1', effects, toggleStatusEffect: jest.fn(async status => effects.push({ statuses: new Set([status]), update: jest.fn() })) };
+    fromUuid.mockResolvedValue(targetActor);
+    game.combat = { id: 'c1', started: true, round: 3, turn: 1, turns: [] };
+
+    await dice._applyDeafeningEffect([{ targetUuid: 'Actor.target1', success: true }], { damageType: 'deafened' });
+
+    expect(effects[0].update).toHaveBeenCalledWith({ 'duration.rounds': 1, 'duration.startRound': 3, 'duration.startTurn': 1 });
+  });
+
   test("doesn't apply on a miss or for another effect", async () => {
     await dice._applyDeafeningEffect([{ targetUuid: 'Actor.target1', success: false }], { damageType: 'deafened' });
     await dice._applyDeafeningEffect([{ targetUuid: 'Actor.target1', success: true }], { damageType: 'blindingBlast' });
@@ -7947,6 +7991,20 @@ describe("_applyTraitRiders - Blinding trait vs. Strobe's alternate effect", () 
     });
 
     expect(targetActor.toggleStatusEffect).toHaveBeenCalledWith('blinded', { active: true });
+  });
+
+  test("the Blinding trait in combat: until the end of the target's next turn (book check follow-ups 2)", async () => {
+    const effects = [];
+    const targetActor = { id: 'target1', effects, toggleStatusEffect: jest.fn(async status => effects.push({ statuses: new Set([status]), update: jest.fn() })) };
+    fromUuid.mockResolvedValue(targetActor);
+    // The target has already acted this round: its next turn is next round's.
+    game.combat = { id: 'c1', started: true, round: 1, turn: 1, turns: [{ id: 'cb0', actor: targetActor }, { id: 'cb1', actor: { id: 'shooter' } }] };
+
+    await dice._applyTraitRiders({}, [{ targetUuid: 'Actor.target1', success: true }], {
+      weaponTraits: ['blinding'], damageType: 'laser', weaponHasBlindingEffect: false,
+    });
+
+    expect(effects[0].update).toHaveBeenCalledWith(expect.objectContaining({ 'duration.value': 1, 'duration.expiry': 'turnEnd', 'start.combatant': 'cb0' }));
   });
 
   test("once the weapon has its Blinding alternate effect, its normal effect doesn't blind", async () => {

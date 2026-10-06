@@ -1091,7 +1091,7 @@ E20.damageTypes = {
   blunt: "E20.DamageBlunt",
   cold: "E20.DamageCold",
   cover: "E20.DamageCover",
-  // Deafened until the end of the target's next turn (dice.mjs#_applyDeafeningEffect) - the
+  // Deafened for 1 round (dice.mjs#_applyDeafeningEffect) - the
   // Crowd Dispersal Energy Cannon's "Deafened 1" alternate effect.
   deafened: "E20.DamageDeafened",
   electric: "E20.DamageElectric",

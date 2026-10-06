@@ -273,8 +273,21 @@ function essenceLabel(key) {
   return label ? globalThis.game?.i18n?.localize?.(label) ?? key : key;
 }
 
+/**
+ * More `untilOf` values (book check 2026-10-06, follow-ups 2): `fn(ctx, recipient)` returns whose turns count, or null
+ * for the holder (rules/plugins/book/followups2.mjs: `user` - the crew member using a vehicle's Use).
+ */
+const UNTIL_OF = new Map();
+export function registerUntilOf(name, fn) {
+  UNTIL_OF.set(name, fn);
+}
+
 /** Whose turns a step's `until` counts: the rule's holder, or (untilOf: "recipient") the one it lands on. */
 function untilActor(step, ctx, recipient) {
+  if (UNTIL_OF.has(step.untilOf)) {
+    return UNTIL_OF.get(step.untilOf)(ctx, recipient) ?? ctx.actor;
+  }
+
   // untilOf: target - the run's first target's turns, whoever it lands on (Better Together: "until the end of your next
   // turn" counted on the partner who assisted, for both marks).
   if (step.untilOf == 'target') {
@@ -1636,7 +1649,8 @@ const HANDLERS = {
     const value = step.value === 'toggle' || step.value === undefined ? !current : step.value === true || step.value === 'true';
     await ctx.item.update({
       [`flags.essence20.rules.toggles.${step.key}`]: value,
-      [`flags.essence20.rules.toggleUntil.${step.key}`]: value && step.until ? { until: step.until, stamp: stampFor(step.until, undefined, ctx.actor) } : null,
+      // untilOf: whose turns the until counts (Electronic Countermeasures: the crew member who used it).
+      [`flags.essence20.rules.toggleUntil.${step.key}`]: value && step.until ? { until: step.until, stamp: stampFor(step.until, undefined, untilActor(step, ctx, ctx.actor)) } : null,
     });
   },
 
@@ -2134,9 +2148,10 @@ export function stepErrors(steps, path = 'steps') {
       errors.push(`${where}: until must be ${UNTIL.join(', ')} or rounds:N`);
     }
 
-    // A Condition's until ends with a creature's next turn (book check 2026-10-06, durations).
-    if (step.do == 'applyCondition' && step.until && !['nextTurn', 'endOfNextTurn', 'nextTurnOrScene', 'endOfNextTurnOrScene'].includes(step.until)) {
-      errors.push(`${where}: applyCondition until must be nextTurn or endOfNextTurn`);
+    // A Condition's until ends with a creature's next turn (book check 2026-10-06, durations), or (endOfTurn, follow-ups
+    // 2) as its current turn ends - its next one when it isn't acting now.
+    if (step.do == 'applyCondition' && step.until && !['endOfTurn', 'nextTurn', 'endOfNextTurn', 'nextTurnOrScene', 'endOfNextTurnOrScene'].includes(step.until)) {
+      errors.push(`${where}: applyCondition until must be endOfTurn, nextTurn or endOfNextTurn`);
     }
 
     if (['essenceDamage', 'healEssence'].includes(step.do) && (step.do == 'essenceDamage' || step.essence)
@@ -2210,7 +2225,7 @@ export function stepErrors(steps, path = 'steps') {
       errors.push(`${where}: lowerTotal needs an amount${step.amount === undefined ? '' : ` (${formulaError(step.amount)})`}`);
     }
 
-    if (step.untilOf && !['holder', 'recipient', 'target'].includes(step.untilOf)) {
+    if (step.untilOf && !['holder', 'recipient', 'target', ...UNTIL_OF.keys()].includes(step.untilOf)) {
       errors.push(`${where}: untilOf must be holder, recipient or target`);
     }
 

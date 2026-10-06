@@ -565,3 +565,7 @@ import "./book/effects.mjs";
 // Tag item:usesItem (Deconstructionist), Alteration undo on rule removal (Beast Mode), out-of-combat timed Conditions.
 import "./book/followups.mjs";
 // ---- Book check (follow-ups) - end ----
+// ---- Book check 2026-10-06 (follow-ups 2 - docs/rules-batches/book-followups2.md) - start ----
+// untilOf: user - the crew member using a vehicle's Use (Electronic Countermeasures).
+import "./book/followups2.mjs";
+// ---- Book check (follow-ups 2) - end ----

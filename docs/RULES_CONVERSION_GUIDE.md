@@ -2673,3 +2673,36 @@ Tests: `module/rules/engine17-perm.test.js` (7 tests); the items in `module/rule
   powerUsed steps with the gear as the item).
 - **Defense adjust ctx `armorIgnored`** (dice.mjs -> riderDefenseAdjust -> ignore-armor.mjs): the outgoing ignoreArmor rules
   take nothing off when the attack's Defense was already worked out without armor.
+
+## Engine features added 2026-10-06 (book check, follow-ups) - `module/rules/plugins/book/followups.mjs`
+
+- **Tag `item:usesItem:<uuid or id>`** - the roll is made with that item: the rolled item is it, belongs to it (a weapon's
+  attack), or the roll's `dataset.markedItemUuid` names it. Bank it with `appliesWhen: ["item:usesItem:{var.picked}"]`
+  after a `pick from: targetItem` ("tests using the equipment" - Deconstructionist).
+- **Alterations undone when a rule removes them** (`undoAlterations(actor, ids)`): rules/triggers.mjs#sweepExpired (timed
+  items running out) and rules/lifecycle.mjs (items deleted with the item that granted them) run
+  sheet-handlers/alteration-handler.mjs#onAlterationDelete for each Alteration first - the same undo the sheet's delete
+  button does. A Beast Mode Mutation's scene-long Alteration, an Engrafted Mutation deleted from the sheet.
+- **Round-limited Conditions out of combat** (mechanics/combat/timed-status.mjs + `sweepTimedConditions`): a round is 6
+  seconds (PR CRB p.179). `applyTimedCondition(actor, status, N)` with no running combat stamps the effect with
+  `flags.essence20.oocConditionExpiry = {until: "rounds:N", stamp}` (expiry.mjs's own out-of-combat rounds stamp); the
+  sweep (turn starts, scene changes, world-time changes - the active GM's client) deletes the effect once N x 6 seconds of
+  game time have passed or the scene has ended; a combat started meanwhile counts the rounds still left. This covers the
+  `applyCondition` step (`rounds: N`, and `until: nextTurn | endOfNextTurn` out of combat = 1 round) and every other
+  caller of applyTimedCondition (save cards, spell riders, cover blasts...). A combat set up but not started counts as out
+  of combat now (it used to get the legacy duration.rounds from round 0).
+- **`unreducibleDamage` on someone else's character** (plugins/book/effects.mjs): posts a GM button (`who: gm`) running the
+  same step on that target, so the GM's apply is still unreducible.
+
+## Engine features added 2026-10-06 (book check, follow-ups 2)
+
+- **`applyCondition {until: "endOfTurn"}`** (mechanics/combat/timed-status.mjs#turnBoundTiming + the steps.mjs validator):
+  "until the end of your turn" - v14 expiry `turnEnd` on the holder's (or `untilOf`'s) combatant with value 0 when it is
+  acting now or still to act this round, else 1 (next round's turn). Not in a running combat / not in the turn order:
+  1 round, like the other turn-bound values.
+- **`untilOf` registry** (steps.mjs `registerUntilOf(name, fn(ctx, recipient))`): more answers to "whose turns does this
+  `until` count"; null falls back to the holder. The validator accepts registered names.
+- **`untilOf: "user"`** (rules/plugins/book/followups2.mjs#usingCrewMember): on a vehicle / Zord's Use, the crew member
+  using it - the seated crew member (system.actors) whose turn it is, else game.user.character when aboard, else (not as
+  GM) the first crew member this user owns.
+- **`setToggle` honours `untilOf`** (it always stamped the holder before).

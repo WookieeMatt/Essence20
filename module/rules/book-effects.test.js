@@ -319,7 +319,8 @@ test('Heart Of The Team and Inner Magic take a Standard action', async () => {
 
 test('Deconstructionist: a success banks a Snag on every test the target makes until the end of its next turn', async () => {
   const tech = makeActor('Tech', { items: [packItem('decon')] });
-  const truck = makeActor('Truck', { type: 'vehicle', disposition: -1 });
+  // A Computerized vehicle (book check follow-ups 2: the equipment must be Computerized).
+  const truck = makeActor('Truck', { type: 'vehicle', disposition: -1, system: { traits: { computerized: true } } });
   startCombat(1, 0, [tech, truck]);
   await fireTriggers(tech, 'hit', { roll: { rolledSkill: 'technology', switches: ['deconstructionist'] }, outcome: 'success', targets: [truck], facts: { results: [{ success: true }] } });
   expect(bankedEntries(truck).map(entry => [entry.snag, entry.uses, entry.until])).toEqual([[true, 99, 'endOfNextTurnOrScene']]);
