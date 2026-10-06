@@ -51,4 +51,21 @@ describe("makeEssence20Token", () => {
     expect(icon.addChild).toHaveBeenCalledWith(expect.objectContaining({ text: "3" }));
     delete global.PIXI;
   });
+
+  test("a status filter waits until the token has drawn its mesh (core applies it again on draw)", () => {
+    const calls = [];
+    class CoreToken {
+      _configureFilterEffect(statusId, active) {
+        calls.push([statusId, active]);
+      }
+    }
+
+    const Token = makeEssence20Token(CoreToken);
+    const token = new Token();
+    expect(() => token._configureFilterEffect('invisible', true)).not.toThrow();
+    expect(calls).toEqual([]);
+    token.mesh = {};
+    token._configureFilterEffect('invisible', true);
+    expect(calls).toEqual([['invisible', true]]);
+  });
 });

@@ -26,6 +26,7 @@
   },
   "effects": [
     {
+      "name": "Diver",
       "img": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.general_hawk_s_personel_files.Item.erZl8Udy03P7vHTe",
       "duration": {

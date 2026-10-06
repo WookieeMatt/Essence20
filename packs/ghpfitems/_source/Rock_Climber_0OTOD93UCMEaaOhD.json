@@ -22,6 +22,7 @@
   },
   "effects": [
     {
+      "name": "Rock Climber",
       "img": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.general_hawk_s_personel_files.Item.0OTOD93UCMEaaOhD",
       "duration": {

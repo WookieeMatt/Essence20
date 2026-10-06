@@ -2195,6 +2195,20 @@ describe("_prepareLoadout", () => {
     expect(() => actor._prepareLoadout()).not.toThrow();
   });
 
+  test("Ram and Flyby (the Alt Mode's own Special Attacks, TF CRB p.49) take no hands and no Hardpoint", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [
+        weapon({ derivedHands: 0, isRam: true }),
+        weapon({ derivedHands: 0, isFlyby: true, hardpoint: { type: 'integrated' } }),
+        weapon({ derivedHands: 1 }),
+      ],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(1);
+    expect(actor.system.hardpoints.external.used).toBe(1);
+    expect(actor.system.hardpoints.integrated.used).toBe(0);
+  });
+
   test("sums equipped external weapon hands into loadout.handsUsed", () => {
     const actor = makeActor('playerCharacter', loadoutSystem(), {
       weapon: [

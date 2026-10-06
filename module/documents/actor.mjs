@@ -704,6 +704,11 @@ export class Essence20Actor extends Actor {
         continue;
       }
 
+      // Ram and Flyby are the Alt Mode's own Special Attacks (TF CRB p.49), not equipment: no hands, no Hardpoint.
+      if (item.system.isRam || item.system.isFlyby) {
+        continue;
+      }
+
       const hands = item.system.derivedHands ?? 1;
       const hardpointType = item.system.hardpoint?.type ?? 'external';
 

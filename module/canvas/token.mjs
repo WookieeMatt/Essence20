@@ -33,6 +33,20 @@ export function getStackBadges(actor) {
  */
 export function makeEssence20Token(Token) {
   return class Essence20Token extends Token {
+    /**
+     * A status filter (Invisible) applied before the token has drawn its mesh - a Condition landing on a token placed a
+     * moment ago - threw inside core and failed the whole actor's data preparation (play-through 2026-10-07). Core
+     * applies the filter again once the token draws (_updateSpecialStatusFilterEffects), so waiting is safe.
+     * @override
+     */
+    _configureFilterEffect(statusId, active) {
+      if (!this.mesh) {
+        return;
+      }
+
+      return super._configureFilterEffect(statusId, active);
+    }
+
     /** @override */
     async _drawEffects() {
       await super._drawEffects();
