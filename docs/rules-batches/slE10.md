@@ -3,7 +3,7 @@
 **Scope:** section "## E" of the round-10 groups list - the skips that slB9 (2, 8, 12, 13: Training Through Familiarity),
 slC9 (1, 2, 5, 6: Weather Gear, Acclimating, Misguide, Plow; 9: Peak Performance; 10), slD9 (1, 2, 3, 9, 12: Revengeful) and slE9
 (7, 8, 9, 15: Thick Skin, Sensitive, Detail Oriented, Good To Go; 16) traced to "Picks, grants, item data, small tags / events".
-Every piece was built as a plug-in (`module/rules/ext/e.mjs` + `module/rules/ext/e/`) plus a few small engine edits, and every
+Every piece was built as a plug-in (`module/rules/plugins/picks/picks-and-grants-setup.mjs` + `module/rules/ext/e/`) plus a few small engine edits, and every
 item it unblocks was converted. Edited in place in the shared checkout (no branch, no commit).
 
 | Verdict | Count |
@@ -20,7 +20,7 @@ items (`conv5-slC5`, `conv7-slC7`, `conv8-slC8`, `conv8-slE8`, `conv9-slE9`, `co
 
 ## Engine features added 2026-10-06 (round 10, group E)
 
-- **Steps** (rules/ext/e/steps.mjs):
+- **Steps** (rules/plugins/picks/pick-and-loop-steps.mjs):
   - `pickEntry {from: {type, availabilities?, tags?, fields?} | children: {of: <var>, type}, var?, title?, prompt?, auto?, record?,
     key?, max?, until?, legacy?}` - choose a compendium entry WITHOUT granting it. The run keeps `@var.<var>` (default `picked`, its
     uuid) and `<var>Name`, `<var>Availability`, `<var>Dif` (its Availability DIF, CONFIG.E20.availabilityDifficulties),
@@ -61,7 +61,7 @@ items (`conv5-slC5`, `conv7-slC7`, `conv8-slC8`, `conv8-slE8`, `conv9-slE9`, `co
   came with damage); `self:` / `holder:onRecordedScene:<path>`; `self:itemEffect:<uuid>:<change key>` (that book item's copy has an
   enabled effect changing the key).
 - **Formula ref** `@alliesWearing.<compendium id>.<ft>` - allies within range (the system's ally count) wearing that upgrade.
-- **Rule types** read by the hand-written registries (rules/ext/e/types.mjs, joined at `setup`):
+- **Rule types** read by the hand-written registries (rules/plugins/combat/hazard-terrain-targets.mjs, joined at `setup`):
   - `HazardProtection {categories?, environments?}` - environment-hazards.mjs ENVIRONMENT_PROTECTORS; `{choice.x}` in
     environments reads a pick (an unmade pick covers nothing); labelled with the item's name.
   - `RoughTerrainImposer {}` - rough-terrain.mjs ROUGH_TERRAIN_IMPOSERS; `when` is asked with self = the holder and target = the
@@ -219,8 +219,8 @@ items (`conv5-slC5`, `conv7-slC7`, `conv8-slC8`, `conv8-slE8`, `conv9-slE9`, `co
 ## Still code, and why
 
 - **We Are One!'s reroll-effect sync** (tf2/modes.mjs) - effects created on other actors; it reads the rule's picks. Effectively permanent.
-- **Early Adopter's Requisition DIF −5** (helpers/requisition.mjs) - not in this list.
-- **Detail Oriented's Finesse test as a Move action** (helpers/action-perks.mjs) - a day-limited ActionCost (ActionCost limits have no
+- **Early Adopter's Requisition DIF −5** (mechanics/resources/requisition.mjs) - not in this list.
+- **Detail Oriented's Finesse test as a Move action** (mechanics/actions/action-perks.mjs) - a day-limited ActionCost (ActionCost limits have no
   day window).
 
 ## Shared-file edits
@@ -231,15 +231,15 @@ items (`conv5-slC5`, `conv7-slC7`, `conv8-slC8`, `conv8-slE8`, `conv9-slE9`, `co
 - `module/rules/adapter.mjs`: `ruleSurpriseModes` passes `holder`; the DerivedStat pass skips `stage: "early"`.
 - `module/rules/triggers.mjs`: a Trigger's `when` context carries `results`.
 - `module/rules/types.mjs`: DerivedStat `stage` (early); Movement stage `derived`.
-- `module/documents/actor.mjs`: imports `earlyDerivedStats` (rules/ext/e/derived.mjs) and calls it before `_preparePoisonTraining`.
+- `module/documents/actor.mjs`: imports `earlyDerivedStats` (rules/plugins/effects/derived-stages.mjs) and calls it before `_preparePoisonTraining`.
 - `module/dice.mjs`: Sensitive's banked-Snag read, Revengeful's const / ↑1 source / hit-time flag removed (Now I'm Angry's loop kept),
   `PENDING_SENSITIVE_SNAG_FLAG_KEY` import removed. `module/dice.test.js`: the Sensitive and two Revengeful describe blocks.
-- `module/helpers/combat.mjs` (+ `combat.test.js`): Sensitive's `grantSensitiveSnag`, its two calls, the constants, the
+- `module/mechanics/combat/combat.mjs` (+ `combat.test.js`): Sensitive's `grantSensitiveSnag`, its two calls, the constants, the
   `bankPendingBonus` import.
 - Slices (code of my items only): `gij1/perks.mjs`, `gij1/shared.mjs`, `gij1/gear.mjs`, `gij1.test.js`; `gij3/gij3.mjs`,
   `gij3.test.js`; `tf2/uses.mjs`, `tf2/modes.mjs` (We Are One! reads the picks; `WE_ARE_ONE_FLAG` moved here), `tf2.test.js`;
   `other3/mlp.mjs`, `other3/shared.mjs`, `other3.test.js`; `other2/decepticon.mjs` (now an empty module - the generated
-  `helpers/extensions/index.mjs` imports it), `other2/gij.mjs`, `other2.test.js`; `resource/mlp.mjs`, `resource.test.js`;
+  `items/index.mjs` imports it), `other2/gij.mjs`, `other2.test.js`; `resource/mlp.mjs`, `resource.test.js`;
   `qualify1/qualification.mjs`, `qualify1/common.mjs`, `qualify1.test.js`; `qualify2/qualifications.mjs`, `qualify2/field-ops.mjs`,
   `qualify2/common.mjs`, `qualify2.test.js`; `tf3/reactions.mjs`, `tf3/common.mjs`, `tf3.test.js`; `react/triggers.mjs`,
   `react.test.js`; `situational1/situational1.mjs`, `situational1.test.js`; `situational2/situational2.mjs`,
@@ -274,10 +274,10 @@ Style's existing mark steps gained `legacy`.
 
 ## For the merge
 
-- **Group C's `registerTag('combat:round', ...)` (rules/ext/c/tags.mjs) shadows the core `combat:round:<n>` tag** - with it,
+- **Group C's `registerTag('combat:round', ...)` (rules/plugins/tags/checks-and-refs.mjs) shadows the core `combat:round:<n>` tag** - with it,
   `combat:round:1` / `not:combat:round:0` answer false (Inspirational Leader's existing Assist rule uses `not:combat:round:0`). It
   should hand plain numbers back to the core reading (or use another name). Yo Joe! uses group D's `combat:roundIs:1` meanwhile.
 - Not mine, seen while checking: `other2/magic.mjs` and `mlp2/mlp2.mjs` have unused imports after other groups' removals; `dice.test.js`
   "Takedown Expert also Immobilizes on a miss" fails; `conv3-slA3`, `conv5-slA5`, `conv6-slA6`, `conv5-slD5` fail validation on rule
-  types other groups registered (those tests don't import `rules/ext/index.mjs`).
+  types other groups registered (those tests don't import `rules/plugins/index.mjs`).
 - Insert `lang-e.json` under `E20`.

@@ -163,8 +163,8 @@ with two holders; the `roll-dialog.mjs` comment tidies for Shinobi and Instructo
 
 ## Files touched
 
-- `module/helpers/extensions/pr2/team.mjs`, `pr2/common.mjs`, `pr2/pr2.test.js`
-- `module/helpers/extensions/pr3/ttsg.mjs`, `pr3/common.mjs`, `pr3/pr3.test.js`
+- `module/items/social/instructor-legacy-students.mjs`, `pr2/common.mjs`, `pr2/pr2.test.js`
+- `module/items/zords/elemental-fury.mjs`, `pr3/common.mjs`, `pr3/pr3.test.js`
 - `packs/prcrbitems/_source/Aim_Apparatus_8Kyl6XMzRCZGBzbW.json`,
   `packs/ttsgitems/_source/Protector_of_Safehaven_YJRejmHoASYm67lQ.json` (both CRLF, kept)
 - `module/rules/conv9-slA9.test.js` (new, CRLF), `docs/rules-batches/slA9.md` (this file)

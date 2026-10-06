@@ -1,4 +1,4 @@
-import { E20 } from "../helpers/config.mjs";
+import { E20 } from "../util/config.mjs";
 
 import { makeInt, makeStr, makeStrWithChoices } from "./generic-makers.mjs";
 
@@ -14,7 +14,7 @@ const fields = foundry.data.fields;
  * like "4 rounds or until disrupted" and "Special". Nothing could tell an Instant spell from a
  * four-round one, which is precisely the distinction an Area of Effect needs in order to know
  * whether its placed Region is thrown away immediately or persists on the scene (see
- * helpers/aoe-targeting.mjs's own `create` flag).
+ * mechanics/combat/aoe-targeting.mjs's own `create` flag).
  *
  * `text` exists so restructuring stays LOSSLESS. A phrase like "4 rounds or until disrupted"
  * carries a cap this system CAN automate (4 rounds) plus an early-end condition it can't; parsing

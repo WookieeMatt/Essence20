@@ -11,12 +11,12 @@ import { fileURLToPath } from 'node:url';
  * each turn). Each is loaded from its pack source and must do what the removed slice code did.
  */
 
-// The picker the pick steps ask (helpers/grants.mjs) and the damage step's applyDamage (helpers/combat.mjs).
+// The picker the pick steps ask (mechanics/resources/grants.mjs) and the damage step's applyDamage (mechanics/combat/combat.mjs).
 // (Mocked paths resolve from module/jest.setup.js.)
 const chooseSelect = jest.fn();
 const applyDamage = jest.fn();
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({ chooseSelect, rollTest: jest.fn(), markIntegrated: jest.fn() }));
-jest.unstable_mockModule('./helpers/combat.mjs', () => ({ applyDamage }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({ chooseSelect, rollTest: jest.fn(), markIntegrated: jest.fn() }));
+jest.unstable_mockModule('./mechanics/combat/combat.mjs', () => ({ applyDamage }));
 
 const { rebuildIndex } = await import('./index.mjs');
 const { fireTriggers, runUse } = await import('./triggers.mjs');

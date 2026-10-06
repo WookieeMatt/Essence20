@@ -127,7 +127,7 @@ and 0 warnings. No slice file became empty.
 
 | Item | Already rules (slE) | Still code, re-checked |
 |---|---|---|
-| Nu, Pogodi! | Standard weapons Qualification; Acclimating upgrade Qualification | The chosen two-handed Limited weapon: needs a compendium pick with filters, stored as a Qualification tag (see above). The seat swap: no step changes a vehicle's crew roles (`system.actors.<key>.vehicleRole`, through the GM relay). The Use menu is shared with `helpers/nu-pogodi.mjs`' Condition removal, which is outside this slice. |
+| Nu, Pogodi! | Standard weapons Qualification; Acclimating upgrade Qualification | The chosen two-handed Limited weapon: needs a compendium pick with filters, stored as a Qualification tag (see above). The seat swap: no step changes a vehicle's crew roles (`system.actors.<key>.vehicleRole`, through the GM relay). The Use menu is shared with `items/healing/nu-pogodi.mjs`' Condition removal, which is outside this slice. |
 | Mega Training Regimen | ↑1 on vehicle-system and Integrated-hardpoint weapon attacks | The driving Qualification (Huge and larger land vehicles). Vehicle tags still stop at `vehicle:crew` / `driving` / `type:` / `moves:`. There is no `vehicle:size>=`. |
 
 #### Behaviour differences

@@ -39,7 +39,7 @@ const grants = {
   rollTest: jest.fn(async () => ({ success: true })),
   essenceRedirect: jest.fn(),
 };
-jest.unstable_mockModule('./helpers/grants.mjs', () => grants);
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => grants);
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fromPack = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8'));
@@ -161,16 +161,16 @@ function makeActor(items = [], extra = {}) {
 }
 
 const { rebuildIndex } = await import('./index.mjs');
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { runUse, fireTriggers } = await import('./triggers.mjs');
 const { ruleRollSources, ruleRequisitionAccess, ruleDialogSwitches, applyRuleSwitches } = await import('./adapter.mjs');
 const { validateRule } = await import('./types.mjs');
 const { legacyChoiceUpdates } = await import('./legacy-choices.mjs');
-const { pickedRerollGrants, legacyRerollEffects } = await import('./ext/i/scopes.mjs');
-const { runPostRoll } = await import('../helpers/extensions.mjs');
-const { requisitionDif } = await import('../helpers/requisition.mjs');
-const { tempestDamage } = await import('../helpers/extensions/other2/magic.mjs');
-const { getCostOptions, recordRuleUse, resetDailyActionPerkUses } = await import('../helpers/action-perks.mjs');
+const { pickedRerollGrants, legacyRerollEffects } = await import('./plugins/rolls/ally-and-picked-scopes.mjs');
+const { runPostRoll } = await import('../mechanics/item-hooks.mjs');
+const { requisitionDif } = await import('../mechanics/resources/requisition.mjs');
+const { tempestDamage } = await import('../items/magic/temper-tempest-sorcery-builder.mjs');
+const { getCostOptions, recordRuleUse, resetDailyActionPerkUses } = await import('../mechanics/actions/action-perks.mjs');
 await import('./actions.mjs');
 
 const pay = jest.fn(async () => true);

@@ -1,4 +1,4 @@
-import { E20 } from "../../helpers/config.mjs";
+import { E20 } from "../../util/config.mjs";
 
 import {
   makeBool,
@@ -48,7 +48,7 @@ export class ArmorItemData extends foundry.abstract.TypeDataModel {
       // Modular (Across the Stars, Armor Traits, p.85): "The number listed with this trait is the
       // allowance for attaching Medium or smaller weapons" - the printed "(X)", same magnitude-
       // field shape as bulwarkHealthBonus above. modularWeaponIds holds the embedded weapon ids
-      // socketed into it; see helpers/modular-armor.mjs for how they gain Integrated.
+      // socketed into it; see items/defenses/modular-armor.mjs for how they gain Integrated.
       modularAllowance: makeInt(0),
       modularWeaponIds: makeStrArray(),
       traits: makeStrArrayWithChoices(Object.keys(E20.armorTraits)),

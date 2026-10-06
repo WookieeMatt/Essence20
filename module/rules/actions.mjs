@@ -1,4 +1,4 @@
-import { registerCostRuleProvider } from "../helpers/extensions.mjs";
+import { registerCostRuleProvider } from "../mechanics/item-hooks.mjs";
 import { resolveValue } from "./formula.mjs";
 import { ruleLabel, rulesOfType } from "./index.mjs";
 import { contextFor, evaluate } from "./predicate.mjs";
@@ -7,7 +7,7 @@ import { contextFor, evaluate } from "./predicate.mjs";
  * ActionCost rules (docs/RULES_ENGINE_PLAN.md §4.9) - "you can Sprint as a Free action once per
  * turn", "drawing a weapon costs no action".
  *
- * The action economy already offers cheaper ways to pay (helpers/action-perks.mjs#getCostOptions,
+ * The action economy already offers cheaper ways to pay (mechanics/actions/action-perks.mjs#getCostOptions,
  * its COST_RULES table). Each ActionCost rule on an actor's items becomes one more entry in that
  * table, in the same shape, through registerCostRuleProvider - so it is offered, limited and logged
  * exactly like the hand-written ones.

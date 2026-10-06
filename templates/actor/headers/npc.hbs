@@ -1,7 +1,7 @@
 {{#>"systems/essence20/templates/actor/headers/common.hbs"}}
 {{!-- Used as an NPC, a Contact, or both (both ticked) - each box shows or hides its own tab.
      No name attribute: the click action saves it, so it can refuse to untick the last one
-     (helpers/contacts.mjs#npcUseToggle). --}}
+     (mechanics/companions/contacts.mjs#npcUseToggle). --}}
 {{#*inline "topRowFields"}}
 <div class="sliced-border e20-npc-use">
   <label class="sliced-border__label">{{localize 'E20.NpcUsedAs'}}</label>

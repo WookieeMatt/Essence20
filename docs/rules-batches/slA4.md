@@ -172,7 +172,7 @@ None.
 
 ## Files touched
 
-- `module/helpers/extensions/zord2/gear-modes.mjs`, `zord2/common.mjs`, `zord2/unusable.mjs` (all LF, kept)
+- `module/items/gear/dozer-blade-shinobi.mjs`, `zord2/common.mjs`, `zord2/unusable.mjs` (all LF, kept)
 - `packs/tsitems/_source/Rotary_Blade_9OuJzchTaiJEMcff.json`, `packs/tsitems/_source/Rotary_Blade_ixzkIrq0X9k57754.json` (CRLF, kept)
 - `module/rules/conv4-slA4.test.js` (new, CRLF), `docs/rules-batches/slA4.md` (this file)
 

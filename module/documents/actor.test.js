@@ -1,6 +1,6 @@
 import { Essence20Actor } from "./actor.mjs";
 import { jest } from '@jest/globals';
-import { applyModularIntegration } from "../helpers/modular-armor.mjs";
+import { applyModularIntegration } from "../items/defenses/modular-armor.mjs";
 import { setWorldLookups } from "../rules/predicate.mjs";
 
 /**
@@ -1519,7 +1519,7 @@ describe("_prepareMegaformZordData", () => {
         ...megaformTraitItems.map(system => ({ type: 'megaformTrait', system })),
         // Zord Features (Light Chassis, Hardened Chassis, ...) are matched by compendium
         // sourceId via actorHasZordFeature, not a system.type enum like megaformTrait items -
-        // see helpers/zord-features.mjs's own doc comment.
+        // see mechanics/vehicles/zord-features.mjs's own doc comment.
         ...featureIds.map(sourceId => ({ type: 'feature', flags: { core: { sourceId } } })),
       ],
       system: {
@@ -2395,7 +2395,7 @@ describe("_prepareActions", () => {
 
   // A Defeated actor who spent a Story Point to "momentarily act as though it has not been
   // Defeated" (GI Joe CRB p.209) gets this turn's actions back - the one exception the shared
-  // isUnableToAct() (helpers/action-economy.mjs) carves out of the blanket zero-out above.
+  // isUnableToAct() (mechanics/actions/action-economy.mjs) carves out of the blanket zero-out above.
   test("a Defeated actor who has spent their act-while-Defeated Story Point this turn keeps their budget", () => {
     const previousCombat = global.game.combat;
     global.game.combat = { id: 'c1', round: 2, turn: 0 };
@@ -2534,7 +2534,7 @@ describe("_prepareActions", () => {
 });
 
 describe("_prepareActions agrees with getNumActions", () => {
-  /* The budget used to be derived here a second time, independently of helpers/actor.mjs#
+  /* The budget used to be derived here a second time, independently of mechanics/characters/actor-token-helpers.mjs#
      getNumActions - the helper that already drove the sheet's own "1M, 1S, 1F" readout. The two
      silently disagreed whenever Speed's .max and .value differed, so the sheet showed one number
      beside a different set of pips. Live testing caught it; these pin the agreement. */

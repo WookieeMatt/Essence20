@@ -2,8 +2,8 @@ import { applyThemeClass } from "../settings.js";
 import {
   NARRATIVE_TYPES, normalizeBookTitle, findWatermark, findBodyFontSize, findTextFloor,
   calibrateFolioOffset, buildReadingOrder, findEntry, findFurnitureBands, findBodyFonts, findBestOffset,
-} from "../helpers/book-descriptions.mjs";
-import { readPdf } from "../helpers/pdf-reader.mjs";
+} from "../importers/book-descriptions.mjs";
+import { readPdf } from "../importers/pdf-reader.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 

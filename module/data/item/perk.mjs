@@ -1,4 +1,4 @@
-import { E20 } from "../../helpers/config.mjs";
+import { E20 } from "../../util/config.mjs";
 
 import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 
@@ -55,7 +55,7 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
         // Vision Focuser (PR CRB, Blue Ranger Grid Tech II pick, p.38): "While Morphed, you and
         // your team can see in darkness..." - the first visionGrant in this codebase that isn't
         // simply always-on (every other holder, e.g. Night Eyes/Used to the Dark, has no such
-        // condition). Read in helpers/vision-grant.mjs#getBestVisionGrant, the same
+        // condition). Read in mechanics/characters/vision-grant.mjs#getBestVisionGrant, the same
         // isSuppressedWhileUnmorphed idiom morph-gated-effects.mjs already established for
         // ActiveEffects, applied here to this plain data field instead.
         whileMorphed: makeBool(false),

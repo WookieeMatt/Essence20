@@ -2329,7 +2329,7 @@ test('All-Around Vision: a ↑2 switch on Alertness tests', () => {
   expect(tick(actor, { rolledSkill: 'alertness' })).toMatchObject({ shiftUp: 2 });
 });
 
-/* Riders batch: per-target roll modifiers and Defense riders (helpers/target-riders.mjs), damage reductions (helpers/combat.mjs). */
+/* Riders batch: per-target roll modifiers and Defense riders (mechanics/combat/target-riders.mjs), damage reductions (mechanics/combat/combat.mjs). */
 
 /** A non-player creature with these creature tags. */
 function creature(tags, type = 'npc') {
@@ -2446,7 +2446,7 @@ test('Frost Warlord: Energy damage taken is 2 less in Monster Form', () => {
   expect(ruleDamageTaken(actor, 3, 'cold')).toBe(3);
 });
 
-/* actions slice (helpers/action-perks.mjs COST_RULES): cheaper actions moved to ActionCost rules. */
+/* actions slice (mechanics/actions/action-perks.mjs COST_RULES): cheaper actions moved to ActionCost rules. */
 
 async function actionCosts(files, ctx, options) {
   const { costRulesFor } = await import('./actions.mjs');
@@ -2706,7 +2706,7 @@ test('Technological Assistance: Lend Assistance can cost a Free action, asked fi
   expect(costRulesFor(holder([]))).toEqual([]);
 });
 
-/* vehicles batch: Vehicle Upgrades (helpers/vehicle-upgrades.mjs) moved to item rules. */
+/* vehicles batch: Vehicle Upgrades (mechanics/vehicles/vehicle-upgrades.mjs) moved to item rules. */
 
 const vuFile = name => `qgtgitems/_source/${name}.json`;
 let vuNext = 1;
@@ -2815,7 +2815,7 @@ test('All-Terrain Steel-Reinforced Wheels: the vehicle ignores Rough Terrain', (
 });
 
 /* Batch powers: Monster Form's Toughness and Skill upshifts on the six Psycho Path Role items
-   (helpers/monster-morph.mjs). */
+   (items/forms/monster-morph.mjs). */
 
 test.each([
   ['Path_Of_Cruelty_vWie8Dy4u54sf1hy', 2, ['alertness', 'intimidation', 'might'], 'deception'],
@@ -2842,7 +2842,7 @@ test.each([
   expect(ruleRollSources(actor, null, { rolledSkill: other }).sources).toEqual([]);
 });
 
-// Batch wupg (helpers/weapon-upgrades.mjs): Fluid Motion's no-penalty Maneuver.
+// Batch wupg (items/attacks/weapon-upgrades.mjs): Fluid Motion's no-penalty Maneuver.
 test('Fluid Motion: Maneuver on a Silent Martial Arts weapon loses its penalty', () => {
   const actor = holder(['iafav2items/_source/Fluid_Motion_TESyOcJFtd9Qn9Tk.json']);
   const weapon = (id, traits) => ({ id, type: 'weapon', name: id, flags: {}, system: { traits } });
@@ -2867,7 +2867,7 @@ test('Fluid Motion: Maneuver on a Silent Martial Arts weapon loses its penalty',
 
 
 /* unblocked batch: JAFF / Tricked-Out Hydraulics (incoming rules now honour their limit) and the
-   untrained-Snag immunities moved out of helpers/roll-dialog.mjs. */
+   untrained-Snag immunities moved out of mechanics/rolls/roll-dialog.mjs. */
 
 function vuLimited(name) {
   const vehicle = vuVehicle([name]);
@@ -3225,7 +3225,7 @@ test('Nothing Personal: an Edge switch, off by default, on any roll', () => {
   expect(tick(actor, { rolledSkill: 'persuasion' })).toMatchObject({ edge: true });
 });
 
-/* grants2 batch (helpers/social-rolls.mjs, helpers/action-perks.mjs): MLP Bowl-Over and Agreeable as roll rules,
+/* grants2 batch (items/social/social-rolls.mjs, mechanics/actions/action-perks.mjs): MLP Bowl-Over and Agreeable as roll rules,
    Prowl (Mini-Con Perk) as an ActionCost. */
 
 test('Bowl-Over (MLP Animal Perk): Edge on a shove, and on nothing else', () => {
@@ -3342,7 +3342,7 @@ test('Standard Weapon Training: Qualified in Standard (and Automatic) weapons, b
 });
 
 test('Standard Weapon Training + Minimalists: a Qualified upgrade leaves the stacking, so the weapon is Standard again', async () => {
-  const { onRequisitionAvailability } = await import('../helpers/extensions/qualify1/qualification.mjs');
+  const { onRequisitionAvailability } = await import('../items/gear/equipment-qualification.mjs');
   const matrix = CONFIG.E20.upgradeAvailabilityMatrix;
   const call = globalThis.Hooks.call;
   CONFIG.E20.upgradeAvailabilityMatrix = { standard: { standard: 'standard', limited: 'limited' }, limited: { standard: 'limited', limited: 'limited' } };
@@ -4353,7 +4353,7 @@ test('Tooth and Claw (both printings): ↑1 on unarmed attacks in Alt Mode, once
 
 /* tonight batch (2026-10-02): Beatdown, Jackhammer and Shadow Morph [Form] give their weapon by a Grant rule (it now
    arrives with its own attacks, lifecycle#attachGrantedChildren), and so do the Alt Modes whose printed special
-   attack needs no change (helpers/extensions/tf2/modes.mjs keeps the Charger, the Monolith and the chassis that ask). */
+   attack needs no change (items/forms/alt-mode-attacks-mode-lock.mjs keeps the Charger, the Monolith and the chassis that ask). */
 
 const TONIGHT_WEAPONS = {
   ram: 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m',
@@ -4997,7 +4997,7 @@ test('Absolutely Nowhere\'s Safe takes precedence over Nowhere\'s Safe (no doubl
 
 test('Dig In (Cannoneer): Cover ↓1 more against the holder only while dug in', async () => {
   const { registerCheck } = await import('./predicate.mjs');
-  const { isCannoneerDugIn } = await import('../helpers/cannoneer-dig-in.mjs');
+  const { isCannoneerDugIn } = await import('../items/defenses/cannoneer-dig-in.mjs');
   registerCheck('cannoneerDugIn', actor => isCannoneerDugIn(actor));
   const target = holder([coverFile('eocitems', 'RQjNiRZxDFwTPHN8')], { statuses: ['cover'] });
   target.flags = { essence20: { cannoneerDugIn: false } };
@@ -5330,14 +5330,14 @@ describe('move batch: Movement rules through _prepareMovement', () => {
     }
 
     const { registerCheck } = await import('./predicate.mjs');
-    const { isBulwarkActive } = await import('../helpers/bulwark.mjs');
-    const { isRushTheLineActive } = await import('../helpers/rush-the-line.mjs');
-    const { isSprinterBoostActive } = await import('../helpers/sprinter-boost.mjs');
-    const { isSkiing } = await import('../helpers/skier.mjs');
-    const { hasNearbyDefeatedAlly } = await import('../helpers/field-aid.mjs');
-    const { isFrictionlessMovementActive } = await import('../helpers/frictionless-movement.mjs');
-    const { isGravityOptionalActive } = await import('../helpers/gravity-optional.mjs');
-    const { hasActiveEnvironmentalExpertise } = await import('../helpers/environmental-expertise.mjs');
+    const { isBulwarkActive } = await import('../items/defenses/bulwark.mjs');
+    const { isRushTheLineActive } = await import('../items/movement/rush-the-line.mjs');
+    const { isSprinterBoostActive } = await import('../items/movement/sprinter-boost.mjs');
+    const { isSkiing } = await import('../items/movement/skier.mjs');
+    const { hasNearbyDefeatedAlly } = await import('../items/movement/field-aid.mjs');
+    const { isFrictionlessMovementActive } = await import('../items/movement/frictionless-movement.mjs');
+    const { isGravityOptionalActive } = await import('../items/movement/gravity-optional.mjs');
+    const { hasActiveEnvironmentalExpertise } = await import('../mechanics/world/environmental-expertise.mjs');
     registerCheck('bulwark', isBulwarkActive);
     registerCheck('rushTheLine', isRushTheLineActive);
     registerCheck('sprinterBoost', isSprinterBoostActive);
@@ -5534,7 +5534,7 @@ describe('move batch: Movement rules through _prepareMovement', () => {
   });
 });
 
-// Batch misc6 (helpers/combat.mjs, documents/item.mjs): Adapted Wavelength's damage reduction, Dogfighter's
+// Batch misc6 (mechanics/combat/combat.mjs, documents/item.mjs): Adapted Wavelength's damage reduction, Dogfighter's
 // vehicle Evasion, and the item-number Perks (Adaptable, Beastly x2, Wrestler, One With Your Weapon,
 // Efficient / Master Spellcaster) moved onto DamageModifier / Defense / ItemModifier rules.
 test('Adapted Wavelength: the chosen Element damage taken is 1 less, never below 0; one copy per Element', () => {
@@ -5906,7 +5906,7 @@ test('Springy: every Initiative roll is Specialized', () => {
 
 test('Recon: Edge on Alertness, Survival and Initiative in the environment of expertise', async () => {
   const { registerCheck } = await import('./predicate.mjs');
-  const { hasActiveEnvironmentalExpertise } = await import('../helpers/environmental-expertise.mjs');
+  const { hasActiveEnvironmentalExpertise } = await import('../mechanics/world/environmental-expertise.mjs');
   registerCheck('environmentalExpertise', hasActiveEnvironmentalExpertise);
   if (!('canvas' in global)) {
     global.canvas = undefined;
@@ -5930,7 +5930,7 @@ const misc7Attack = damageType => ({ type: 'weaponEffect', flags: {}, system: { 
 
 async function misc7Affinity(file, element = 'fire') {
   const { registerCheck } = await import('./predicate.mjs');
-  const { isEnergyAffinityElementAttack } = await import('../helpers/energy-affinity.mjs');
+  const { isEnergyAffinityElementAttack } = await import('../items/attacks/energy-affinity.mjs');
   registerCheck('energyAffinityAttack', (actor, option, ctx) => isEnergyAffinityElementAttack(actor, ctx?.item));
   return misc7Holder([file], {}, [{ type: 'perk', name: 'Energy Affinity', flags: { core: { sourceId: MISC7_ENERGY_AFFINITY } }, system: { choice: element } }]);
 }
@@ -6133,7 +6133,7 @@ test('Perfect Disguise: Edge on Deception, Persuasion, Intimidation and Streetwi
 
 test('Tracker (Environmental): ↑2 on Survival in the environment of expertise', async () => {
   const { registerCheck } = await import('./predicate.mjs');
-  const { hasActiveEnvironmentalExpertise } = await import('../helpers/environmental-expertise.mjs');
+  const { hasActiveEnvironmentalExpertise } = await import('../mechanics/world/environmental-expertise.mjs');
   registerCheck('environmentalExpertise', hasActiveEnvironmentalExpertise);
   if (!('canvas' in global)) {
     global.canvas = undefined;
@@ -6330,9 +6330,9 @@ describe('regB: per-attack Defense rules', () => {
   const sheet = () => ({ defenses: Object.fromEntries(DEFENSES.map(key => [key, { total: 10 }])) });
   const adjust = (actor, defense = 'toughness') => ruleDefenseAdjust(ATTACKER, actor, defense, { item: null });
 
-  // A token for each actor at x feet, allies counted the system's way (helpers/allies.mjs#getNearbyAllyTokens).
+  // A token for each actor at x feet, allies counted the system's way (mechanics/combat/nearby-allies.mjs#getNearbyAllyTokens).
   async function onCanvas(actor, allyFeet) {
-    const { getNearbyAllyTokens } = await import('../helpers/allies.mjs');
+    const { getNearbyAllyTokens } = await import('../mechanics/combat/nearby-allies.mjs');
     const { setWorldLookups } = await import('./predicate.mjs');
     const place = (who, x) => {
       const token = { actor: who, center: { x, y: 0 }, document: { disposition: 1 } };
@@ -6354,7 +6354,7 @@ describe('regB: per-attack Defense rules', () => {
 
   test('Skier: +1 Evasion against an attack while skiing, not on the sheet', async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { isSkiing } = await import('../helpers/skier.mjs');
+    const { isSkiing } = await import('../items/movement/skier.mjs');
     registerCheck('skiing', isSkiing);
     const actor = misc7Holder(['ghpfitems/_source/Skier_dvmY7UiuKejOPY4N.json'], { system: sheet() });
     actor.flags.essence20.isSkiingActive = true;
@@ -6394,7 +6394,7 @@ describe('regB: per-attack Defense rules', () => {
 
   test('Environmental Armor: +1 to every Defense in the environment of expertise', async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { hasActiveEnvironmentalExpertise } = await import('../helpers/environmental-expertise.mjs');
+    const { hasActiveEnvironmentalExpertise } = await import('../mechanics/world/environmental-expertise.mjs');
     registerCheck('environmentalExpertise', hasActiveEnvironmentalExpertise);
     global.canvas = undefined;
     const expertise = { type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ' } } };
@@ -6610,7 +6610,7 @@ describe('regA2', () => {
 
   test('Charge Into Battle: ↑1 on an attack with a Multiple Targets weapon', async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { isMultipleTargetsWeapon } = await import('../helpers/multiple-targets.mjs');
+    const { isMultipleTargetsWeapon } = await import('../mechanics/combat/multiple-targets.mjs');
     registerCheck('multipleTargetsWeapon', (actor, option, ctx) => (ctx?.item ? isMultipleTargetsWeapon(actor, ctx.item) : null));
     const make = (traits, files = ['ttsgitems/_source/Charge_Into_Battle_34O7Y77lZpuhng3G.json']) => misc7Holder(files, {},
       [{ id: 'weapon1', type: 'weapon', name: 'Sword', system: { traits: [], itemAndUpgradeTraits: traits } }]);
@@ -6623,7 +6623,7 @@ describe('regA2', () => {
 
   test('Down the Barrel: Edge on Intimidation / Persuasion while the Favorite Weapon is equipped', async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { favoriteWeaponOf } = await import('../helpers/extensions/tf1/common.mjs');
+    const { favoriteWeaponOf } = await import('../items/shared/condition-damage-buttons.mjs');
     registerCheck('favoriteWeaponEquipped', actor => !!favoriteWeaponOf(actor)?.system?.equipped);
     const make = ({ equipped = true, barrel = true } = {}) => {
       const files = ['dditems/_source/Favorite_Weapon_emaXxo2XzoHMoNCe.json', ...(barrel ? ['dditems/_source/Down_the_Barrel_U5vb2NBZG6F6SgK1.json'] : [])];
@@ -6659,7 +6659,7 @@ describe('regA2', () => {
 
     beforeAll(async () => {
       const { registerCheck } = await import('./predicate.mjs');
-      const { getVehicleDriver } = await import('../helpers/combat.mjs');
+      const { getVehicleDriver } = await import('../mechanics/combat/combat.mjs');
       registerCheck('zordHasDriver', actor => !!getVehicleDriver(actor));
       global.fromUuidSync = uuid => (uuid == pilot.uuid ? pilot : null);
     });
@@ -6847,8 +6847,8 @@ describe('regB2: RollDice, Defense modes, DamageType and Force', () => {
   test('Energy Affinity: the chosen Element on attacks of the activated style; Bear Hug still comes first', async () => {
     const { ruleDamageType } = await import('./adapter.mjs');
     const { registerCheck } = await import('./predicate.mjs');
-    const { isEnergyAffinityElementAttack } = await import('../helpers/energy-affinity.mjs');
-    const { getSceneEpoch } = await import('../helpers/scene-clock.mjs');
+    const { isEnergyAffinityElementAttack } = await import('../items/attacks/energy-affinity.mjs');
+    const { getSceneEpoch } = await import('../mechanics/resources/scene-clock.mjs');
     registerCheck('energyAffinityAttack', (actor, option, ctx) => isEnergyAffinityElementAttack(actor, ctx?.item));
     const actor = misc7Holder(['iafav2items/_source/Bear_Hug_id5IVoPuSC03mKfZ.json', 'dditems/_source/Energy_Affinity_DgFY0ZmAtClAobiA.json']);
     const affinity = actor.items.contents[1];
@@ -6925,9 +6925,9 @@ describe('regB2: RollDice, Defense modes, DamageType and Force', () => {
       delete global.canvas;
     });
 
-    // Tokens at x feet, all on one side; allies counted the system's way (helpers/allies.mjs#getNearbyAllyTokens).
+    // Tokens at x feet, all on one side; allies counted the system's way (mechanics/combat/nearby-allies.mjs#getNearbyAllyTokens).
     async function place(entries) {
-      const { getNearbyAllyTokens } = await import('../helpers/allies.mjs');
+      const { getNearbyAllyTokens } = await import('../mechanics/combat/nearby-allies.mjs');
       const { setWorldLookups } = await import('./predicate.mjs');
       const { useAllyLookup } = await import('./links.mjs');
       const tokens = entries.map(([who, x]) => {
@@ -6967,7 +6967,7 @@ describe('regB2: RollDice, Defense modes, DamageType and Force', () => {
 
     test('Not On My Watch: +1 Toughness and Evasion with a Defeated ally within 5 ft', async () => {
       const { registerCheck } = await import('./predicate.mjs');
-      const { hasDefeatedAllyInReach } = await import('../helpers/not-on-my-watch.mjs');
+      const { hasDefeatedAllyInReach } = await import('../items/defenses/not-on-my-watch.mjs');
       registerCheck('defeatedAllyInReach', hasDefeatedAllyInReach);
       const actor = holder(['iafav2items/_source/Not_On_My_Watch_xH3iQ0NcXp1eFO35.json'], { system: sheet() });
       const ally = holder([], { statuses: ['defeated'] });
@@ -7060,7 +7060,7 @@ describe('regC2', () => {
   /** The dice landed: the system's post-roll hook (rules/triggers.mjs's afterRoll / hit Triggers). */
   async function rolled(actor, results, extra = {}) {
     await import('./triggers.mjs');
-    const { runPostRoll } = await import('../helpers/extensions.mjs');
+    const { runPostRoll } = await import('../mechanics/item-hooks.mjs');
     await runPostRoll(actor, results, {}, { rider: {}, hits: [], ...extra });
   }
 
@@ -7190,7 +7190,7 @@ describe('regC2', () => {
 
   test('Brrrrrrrrrrrrrrt: a Multiple Targets attack banks ↑1 on every ally, hit or miss, once per encounter', async () => {
     const { registerCheck, setWorldLookups } = await import('./predicate.mjs');
-    const { isMultipleTargetsWeapon } = await import('../helpers/multiple-targets.mjs');
+    const { isMultipleTargetsWeapon } = await import('../mechanics/combat/multiple-targets.mjs');
     registerCheck('multipleTargetsWeapon', (actor, option, ctx) => (ctx?.item ? isMultipleTargetsWeapon(actor, ctx.item) : null));
     const actor = writable(['gijcrbitems/_source/Brrrrrrrrrrrrrrt_U3NTi35bk2qI8oB6.json'], {}, [
       { id: 'w1', type: 'weapon', name: 'Minigun', system: { traits: ['multipleTargets'], itemAndUpgradeTraits: ['multipleTargets'] } },
@@ -7289,7 +7289,7 @@ describe('regC2', () => {
 
   test('Impenetrable Shield: attacks other than EMP against the holder take a Snag while the Personal Shield is up', async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { isPersonalShieldActive } = await import('../helpers/personal-shield.mjs');
+    const { isPersonalShieldActive } = await import('../items/defenses/personal-shield.mjs');
     registerCheck('personalShield', actor => isPersonalShieldActive(actor));
     const defender = holder(['gijcrbitems/_source/Impenetrable_Shield_eEUl7OA9yWAk0QD3.json']);
     let active = true;
@@ -8230,7 +8230,7 @@ describe('slA2 zord', () => {
 
   test('Mercurial Nature: grants a Hybridization when added, even beside one bought separately', async () => {
     const { grantData } = await import('./lifecycle.mjs');
-    await import('./ext/h/copies.mjs');
+    await import('./plugins/tags/item-copies.mjs');
     const { contextFor, evaluate } = await import('./predicate.mjs');
     const saved = global.foundry.utils;
     global.foundry.utils = {
@@ -8255,7 +8255,7 @@ describe('slA2 zord', () => {
       expect(await grantData(perk, actor, { load })).toHaveLength(1);
 
       // The granted copy (marked with _stats.compendiumSource) is another copy of the bought one to its rules
-      // (rule:copy - Hybridization's Fast Shift / Hold That Shape reads, module/rules/ext/h/copies.mjs).
+      // (rule:copy - Hybridization's Fast Shift / Hold That Shape reads, module/rules/plugins/tags/item-copies.mjs).
       const grantedCopy = { id: 'granted', type: 'perk', _stats: { compendiumSource: HYBRIDIZATION }, flags: { essence20: { grantedBy: perk.id, zord2Hybrid: 'extraShift' } }, system: {} };
       actor.items.contents.push(grantedCopy);
       expect(evaluate(['rule:copy:data:flags.essence20.zord2Hybrid=fastShift'], contextFor({ self: actor, ruleItem: grantedCopy }))).toBe(true);
@@ -8273,7 +8273,7 @@ describe('slB2 tf1', () => {
 
   beforeAll(async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { grappleEscapeSkills } = await import('../helpers/extensions/rules/grappled.mjs');
+    const { grappleEscapeSkills } = await import('../mechanics/combat/grappled-snag.mjs');
     registerCheck('grappleEscape', (actor, option, ctx) => (ctx?.rolledSkill ? grappleEscapeSkills(actor).includes(ctx.rolledSkill) : null));
     savedSettings = global.game.settings;
   });
@@ -8392,7 +8392,7 @@ describe('slC2 gij2', () => {
 
   beforeAll(async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { hasComputerizedGear } = await import('../helpers/extensions/other1/cobra-gear.mjs');
+    const { hasComputerizedGear } = await import('../items/attacks/electromagnetic-deflecting-weapons.mjs');
     registerCheck('computerizedGear', actor => hasComputerizedGear(actor));
   });
 
@@ -8453,7 +8453,7 @@ describe('slC2 gij3', () => {
 
   beforeAll(async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { isKnownOutsideEnvironmentOfExpertise } = await import('../helpers/environmental-expertise.mjs');
+    const { isKnownOutsideEnvironmentOfExpertise } = await import('../mechanics/world/environmental-expertise.mjs');
     registerCheck('outsideEnvironmentOfExpertise', actor => isKnownOutsideEnvironmentOfExpertise(actor));
   });
 
@@ -8472,7 +8472,7 @@ describe('slC2 gij3', () => {
   });
 
   test('Stalk: immune to Surprised unless known to be outside the environment of expertise', async () => {
-    const { isImmuneToCondition } = await import('../helpers/condition-immunity.mjs');
+    const { isImmuneToCondition } = await import('../mechanics/combat/condition-immunity.mjs');
     expect(isImmuneToCondition(stalker(undefined), 'surprised')).toBe(true);
     expect(isImmuneToCondition(stalker('woodlands'), 'surprised')).toBe(true);
     expect(isImmuneToCondition(stalker('urban'), 'surprised')).toBe(false);
@@ -8489,7 +8489,7 @@ describe('slD2 other1', () => {
 
   beforeAll(async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { hasComputerizedGear } = await import('../helpers/extensions/other1/cobra-gear.mjs');
+    const { hasComputerizedGear } = await import('../items/attacks/electromagnetic-deflecting-weapons.mjs');
     registerCheck('computerizedGear', actor => hasComputerizedGear(actor));
   });
 
@@ -8565,7 +8565,7 @@ describe('slE2 data', () => {
 
   beforeAll(async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { isNonMystical } = await import('../helpers/extensions/data21/threats.mjs');
+    const { isNonMystical } = await import('../items/magic/mystic-non-mystical.mjs');
     registerCheck('nonMystical', actor => isNonMystical(actor));
   });
 
@@ -8606,8 +8606,8 @@ describe('slE2 dmlp', () => {
 
   beforeAll(async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { shapeOf } = await import('../helpers/extensions/mlp1/mlp1.mjs');
-    const { isDsoeDisguiseActive } = await import('../helpers/dsoe-disguise.mjs');
+    const { shapeOf } = await import('../items/forms/pony-shape-shifting.mjs');
+    const { isDsoeDisguiseActive } = await import('../items/magic/disguise-spell.mjs');
     registerCheck('shapeShifted', actor => !!shapeOf(actor));
     registerCheck('disguised', actor => isDsoeDisguiseActive(actor));
     savedSettings = global.game.settings;

@@ -1,14 +1,14 @@
-import { runRest } from "../helpers/extensions.mjs";
-import { restBff } from "../helpers/bff.mjs";
-import { restBond } from "../helpers/bonded.mjs";
-import { restContact } from "../helpers/contacts.mjs";
-import { restKits } from "../helpers/kits.mjs";
-import { imperfectionOf } from "../helpers/grants.mjs";
-import { clearDefenseDamage } from "../helpers/essence-damage.mjs";
-import { getCrewedVehicle, resetDailyVehicleUses } from "../helpers/vehicle-upgrades.mjs";
-import { resetDailyActionPerkUses } from "../helpers/action-perks.mjs";
+import { runRest } from "../mechanics/item-hooks.mjs";
+import { restBff } from "../items/social/best-friends-forever.mjs";
+import { restBond } from "../mechanics/companions/bonded-partners.mjs";
+import { restContact } from "../mechanics/companions/contacts.mjs";
+import { restKits } from "../mechanics/resources/kits.mjs";
+import { imperfectionOf } from "../mechanics/resources/grants.mjs";
+import { clearDefenseDamage } from "../mechanics/combat/essence-damage.mjs";
+import { getCrewedVehicle, resetDailyVehicleUses } from "../mechanics/vehicles/vehicle-upgrades.mjs";
+import { resetDailyActionPerkUses } from "../mechanics/actions/action-perks.mjs";
 import { powerCost } from "./power-handler.mjs";
-import { resetDailyPowerUses } from "../helpers/nanomite-uses.mjs";
+import { resetDailyPowerUses } from "../mechanics/resources/nanomite-uses.mjs";
 import RollerSelector from "../apps/roller-selector.mjs";
 import DefenseModificationSelector from "../apps/defense-modification.mjs";
 
@@ -202,13 +202,13 @@ async function _applyRestBenefits(actor, completeMessageKey) {
     ui.notifications.info(game.i18n.localize("E20.RestPowerUsesReset"));
   }
 
-  // ...and Perks usable a number of times a day (Detail Oriented) - helpers/action-perks.mjs.
+  // ...and Perks usable a number of times a day (Detail Oriented) - mechanics/actions/action-perks.mjs.
   await resetDailyActionPerkUses(actor);
 
-  // ...and any Defense damage (helpers/essence-damage.mjs).
+  // ...and any Defense damage (mechanics/combat/essence-damage.mjs).
   await clearDefenseDamage(actor);
 
-  // ...and what kits and gear recharge overnight (helpers/kits.mjs).
+  // ...and what kits and gear recharge overnight (mechanics/resources/kits.mjs).
   await restKits(actor);
 
   // ...and About Twenty-Percent Cooler, a Powermaster's module, and daily Contacts.
@@ -217,7 +217,7 @@ async function _applyRestBenefits(actor, completeMessageKey) {
   await restContact(actor);
   await runRest(actor);
 
-  // ...and the vehicle they crew (Nameplate) - helpers/vehicle-upgrades.mjs.
+  // ...and the vehicle they crew (Nameplate) - mechanics/vehicles/vehicle-upgrades.mjs.
   const crewed = getCrewedVehicle(actor);
   if (crewed) {
     await resetDailyVehicleUses(crewed.vehicle);

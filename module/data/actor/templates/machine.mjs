@@ -11,7 +11,7 @@ const fields = foundry.data.fields;
  * the "Vehicle" trait; PR CRB p.136's baseline Zord stat block footnote "*Use the pilot's
  * Defense"), a Vehicle/Zord has no Willpower/Cleverness of its own by default - effects
  * targeting those Defenses instead target its current driver/pilot. See
- * helpers/combat.mjs#getDefenseValue for where that substitution is actually applied.
+ * mechanics/combat/combat.mjs#getDefenseValue for where that substitution is actually applied.
  */
 export function makeDefensesFields(name, essence, usesDrivers, base, armor = 0) {
   return new fields.SchemaField({
@@ -23,7 +23,7 @@ export function makeDefensesFields(name, essence, usesDrivers, base, armor = 0) 
 }
 
 // `base` is what the sheet edits; `value` is worked out from it each prep, with the Features' Active Effects and item
-// rules on top (helpers/machine-essences.mjs). A Megaform's value comes from its Zords instead.
+// rules on top (mechanics/vehicles/machine-essences.mjs). A Megaform's value comes from its Zords instead.
 export function makeEssencesFields(usesDrivers, init) {
   return new fields.SchemaField({
     base: makeInt(init),

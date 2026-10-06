@@ -7,7 +7,7 @@ unblocks was converted. Edited in place in the shared checkout (no branch, no co
 
 ## Engine features added 2026-10-06 (round 10, group A)
 
-Everything below is registered on import of `module/rules/ext/a.mjs` (loaded first by `module/rules/ext/index.mjs`).
+Everything below is registered on import of `module/rules/ext/a.mjs` (loaded first by `module/rules/plugins/index.mjs`).
 Strings are under `E20.RulesExtA.*`.
 
 ### Linked scopes
@@ -76,7 +76,7 @@ Strings are under `E20.RulesExtA.*`.
   (Named so because group D's `askText` exists.)
 - `spendFrom {to, resource, amount}` - each recipient pays from its own resource; stops (with a chat line) when one
   can't; `@var.paidBy`.
-- `formStart` / `formEnd` - activate the rule item's Form / end the active one (helpers/extensions/zord1/forms.mjs).
+- `formStart` / `formEnd` - activate the rule item's Form / end the active one (items/forms/ranger-form-perks.mjs).
 - `rollAs {to, skill, dif, snag?, onSuccess?, onFail?}` - each recipient rolls; its branch runs with it as the target.
 - `transformInto {item}` - convert into the Alt Mode the item selector finds (`choice:<key>` after a pick); `@var.mode`.
 - `noteEntries {key, count, from: {type}, title?, legacy?}` - choose up to `count` different compendium entries one
@@ -115,12 +115,12 @@ Strings are under `E20.RulesExtA.*`.
 - **`megaformCombined`** - a Megaform's roster changed (on the client that changed it): `@var.participants`,
   `@var.zords`; participants reach it with `scope: megaform`.
 - **Movement `stage: derivedHook`** - applied where a slice calls `applyDerivedHookMovement` among the derived hooks
-  (`module/rules/ext/a/movement-hook.mjs`, import-free so a slice can load it early; pr2/team.mjs registers it).
+  (`module/rules/plugins/effects/derived-hook-movement.mjs`, import-free so a slice can load it early; pr2/team.mjs registers it).
   A `ready` hook re-prepares the Player Characters when one holds team-scoped Movement / DerivedStat / Defense rules.
 
 ### Helper hooks
 
-- `helpers/grants.mjs#pickPerkFrom` takes `pack` (only that compendium's Roles / Focuses) - the `pickPerk` step passes it.
+- `mechanics/resources/grants.mjs#pickPerkFrom` takes `pack` (only that compendium's Roles / Focuses) - the `pickPerk` step passes it.
 
 Tests: `module/rules/engine10-a.test.js` (32 tests).
 
@@ -214,7 +214,7 @@ Expeditor, Peerless Pilot, Unique Weapon small / two-handed), `ttsg.mjs` (Emissa
 - **Megaform Defender** - its reactor is the defending participant's pilot (a PC not on the canvas), found from a
   Megaform Trait of type `defender` on any participant (homebrew traits too). `rules/reactions.mjs` only offers to
   canvas tokens holding the Reaction rule; a `who: holderPilot` would need a reactor lookup there. Left as
-  `helpers/extensions/react/reactions.mjs` code rather than reshape a shared core file another group may also touch.
+  `items/defenses/attack-card-reactions.mjs` code rather than reshape a shared core file another group may also touch.
 
 ## Shared-file edits
 
@@ -222,12 +222,12 @@ Expeditor, Peerless Pilot, Unique Weapon small / two-handed), `ttsg.mjs` (Emissa
 - `module/rules/links.mjs`: `EXTRA_LINKS`, `registerLinkScope`, the plug-in loop in `linkedEntries` (`stacks: false`
   dedupe).
 - `module/rules/adapter.mjs`: `rollRules` passes `holder: entry.holder`.
-- `module/helpers/grants.mjs`: `pickPerkFrom` `spec.pack` filter + JSDoc.
-- `module/helpers/combiner-timer.mjs`, `zord-summon.mjs`, `vehicle-defeat.mjs`, `emotional-mastery.mjs`: dynamic
+- `module/mechanics/resources/grants.mjs`: `pickPerkFrom` `spec.pack` filter + JSDoc.
+- `module/mechanics/vehicles/combiner-timer.mjs`, `zord-summon.mjs`, `vehicle-defeat.mjs`, `emotional-mastery.mjs`: dynamic
   imports of `ruleJoinTime`, `ruleSummonRounds`, `ruleAutoDisembark`, `ensureKnownOptions` (dynamic so the derived-hook
   order doesn't change).
 - `module/dice.mjs` / `dice.test.js`: the PR Peerless Pilot Edge and its tests removed.
-- `module/helpers/extensions/index.mjs`: the bodies / data21 gear / data22 gear imports removed.
+- `module/items/index.mjs`: the bodies / data21 gear / data22 gear imports removed.
 - Slices: zord1, zord2, tf2, pr1, pr2, pr3, gij2, other2, data21, data22 (files above) and their tests.
 - `module/rules/conv3-slA3.test.js`, `conv5-slA5.test.js`, `conv6-slA6.test.js`: import `./ext/index.mjs` so
   their validity checks know the plug-in types (Advanced Dino Gem's SummonTime, Bend Physics' `derivedHook`).

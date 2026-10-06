@@ -192,14 +192,14 @@ qualify1/2, resource, gij3, mlp2, tf2, tf3, react, kits, banked-buffs, dice.mjs,
   (another agent also added `registerLinkScope` here).
 - `module/rules/adapter.mjs`: `shiftsOf` takes a 6th parameter `rolled` (`scope.rolled`); `ruleRollSources` passes
   `ctx.item`; `consumeFrom: "roller"` uses up the roller's mark; ItemModifier values resolve per item with `otherItem`.
-- `module/helpers/extensions/index.mjs`: removed the imports of `qualify1/ignite.mjs`, `react/auras.mjs`;
+- `module/items/index.mjs`: removed the imports of `qualify1/ignite.mjs`, `react/auras.mjs`;
   `fix3-dice/shadow.mjs` import removed earlier.
 - Slices edited to cut the converted code (and their tests): fix3-gij, situational1, situational2, other2 (gij, magic,
   medic), other3 (tf, shared), data1/armor-rules, data21 (threats, common, data21, weapons test), data22/weapons, qualify1
   (misc, common, index), qualify2 (old-hand, common, qualifications), resource (story-spend, common), gij3, mlp2, tf2 (rolls,
   uses, modes, common), tf3 (rolls, uses, reactions, common), react (index, test), wtnv test.
-- `module/helpers/kits.mjs` (+ test), `module/helpers/banked-buffs.mjs` (+ test), `module/dice.mjs` (Thorn Warlord regen,
-  Bump & Run, Hearty Meal), `module/dice.test.js` (removed those describes), `module/helpers/roll-dialog.mjs`,
+- `module/mechanics/resources/kits.mjs` (+ test), `module/mechanics/resources/banked-buffs.mjs` (+ test), `module/dice.mjs` (Thorn Warlord regen,
+  Bump & Run, Hearty Meal), `module/dice.test.js` (removed those describes), `module/mechanics/rolls/roll-dialog.mjs`,
   `module/apps/roll-options-dialog.mjs`, `templates/dialog/roll-dialog.hbs` (the Bump & Run row).
 - Pack file not on the list: `ghpfitems/_source/Explosive_Engineer_1MCKcleeXZZf5PQF.json` (the `when` fix above).
 

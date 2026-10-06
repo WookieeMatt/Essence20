@@ -22,7 +22,7 @@ const { rebuildIndex } = await import('./index.mjs');
 const { runUse, useAvailable } = await import('./triggers.mjs');
 const { legacyChoiceUpdates } = await import('./legacy-choices.mjs');
 const { validateRule } = await import('./types.mjs');
-const { zord2WeaponUnusable } = await import('../helpers/extensions/zord2/unusable.mjs');
+const { zord2WeaponUnusable } = await import('../items/attacks/shield-mode-unusable-weapons.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fromPack = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8'));

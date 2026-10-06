@@ -11,13 +11,13 @@ import { fileURLToPath } from 'node:url';
  */
 
 global.Hooks = { on: () => 0, once: () => 0, callAll: () => {} };
-jest.unstable_mockModule('./helpers/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { applyRuleSwitches, ruleDialogSwitches } = await import('./adapter.mjs');
 const { validateRule } = await import('./types.mjs');
-const { runSceneAdvanced, runTurnStart } = await import('../helpers/extensions.mjs');
+const { runSceneAdvanced, runTurnStart } = await import('../mechanics/item-hooks.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fromPack = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8'));

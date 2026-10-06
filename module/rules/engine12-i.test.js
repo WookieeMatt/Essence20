@@ -13,20 +13,20 @@ const grants = {
   grantCopy: jest.fn(async () => ({ name: 'Gun' })),
   chooseSelect: jest.fn(async (title, prompt, options) => options[0]?.value ?? null),
 };
-jest.unstable_mockModule('./helpers/grants.mjs', () => grants);
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => grants);
 
 const { rebuildIndex } = await import('./index.mjs');
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { runSteps, stepContext, stepErrors, pickOptions } = await import('./steps.mjs');
 const { resolveValue } = await import('./formula.mjs');
 const { evaluate, contextFor } = await import('./predicate.mjs');
 const { validateRule } = await import('./types.mjs');
 const { ruleDialogSwitches } = await import('./adapter.mjs');
-const { pickedRerollGrants, legacyRerollEffects } = await import('./ext/i/scopes.mjs');
-const { ruleRequisitionDif } = await import('./ext/i/requisition.mjs');
-const { castHitDamage } = await import('./ext/i/cast.mjs');
+const { pickedRerollGrants, legacyRerollEffects } = await import('./plugins/rolls/ally-and-picked-scopes.mjs');
+const { ruleRequisitionDif } = await import('./plugins/resources/requisition-dif.mjs');
+const { castHitDamage } = await import('./plugins/combat/cast-hit-damage.mjs');
 const { costRulesFor } = await import('./actions.mjs');
-const { rerollGrants } = await import('../helpers/extensions.mjs');
+const { rerollGrants } = await import('../mechanics/item-hooks.mjs');
 
 let nextId = 1;
 const ALL = [];
@@ -183,7 +183,7 @@ describe('Reroll scope picked', () => {
     perk.system.rules[0].includeHolder = true;
     rebuildIndex(holder);
     expect(pickedRerollGrants(holder)).toHaveLength(1);
-    // The reroll engine asks it (helpers/extensions.mjs#rerollGrants).
+    // The reroll engine asks it (mechanics/item-hooks.mjs#rerollGrants).
     expect(rerollGrants()).toContain(pickedRerollGrants);
   });
 

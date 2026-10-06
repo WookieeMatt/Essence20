@@ -1,4 +1,4 @@
-import { creatureTagsOf } from "../helpers/creature-tags.mjs";
+import { creatureTagsOf } from "../mechanics/characters/creature-tags.mjs";
 import { isExpired } from "./expiry.mjs";
 
 /**
@@ -14,7 +14,7 @@ import { isExpired } from "./expiry.mjs";
  *    instead (rules/adapter.mjs), and the player decides.
  *
  * Evaluated against a context built by contextFor() - the same facts the roll pipeline already
- * hands the extension hooks (helpers/extensions.mjs), so nothing new is computed per roll.
+ * hands the extension hooks (mechanics/item-hooks.mjs), so nothing new is computed per roll.
  *
  * Plain Node safe: no Foundry globals at import time, so the CI validator and Jest can use TAGS.
  */
@@ -145,7 +145,7 @@ export function feetBetween(a, b) {
  * @returns {Array<Actor>}
  */
 export function sideActorsWithin(self, feet, side) {
-  // Allies the way the rest of the system counts them (helpers/allies.mjs#getNearbyAllyTokens):
+  // Allies the way the rest of the system counts them (mechanics/combat/nearby-allies.mjs#getNearbyAllyTokens):
   // Frenemy, Betrayal and Ally Awareness included.
   if (side == 'ally' && worldLookups.alliesWithin) {
     return [...new Set(worldLookups.alliesWithin(self, feet).filter(actor => actor && actor !== self))];
@@ -193,7 +193,7 @@ export function markOf(actor, key) {
 /**
  * Where an actor is: its terrain (an E20.environments biome key, or null when nothing set one) and
  * its environment ("normal", "lowGravity", "vacuum"...). Read through lookups the system hands in at
- * start-up (essence20.mjs, from helpers/environment.mjs) - that file extends Foundry classes, so it
+ * start-up (essence20.mjs, from mechanics/world/environment.mjs) - that file extends Foundry classes, so it
  * can't be imported here, where plain Node has to load.
  */
 let worldLookups = {};
@@ -420,7 +420,7 @@ function versusTag(rest, actor, other, combat) {
 
   const level = /^levelDiff(>=|<=|>|<|=)(-?\d+)$/.exec(rest);
   if (level) {
-    // Threat Level for an NPC / Vehicle (helpers/combat.mjs#getEffectiveLevel), else its level.
+    // Threat Level for an NPC / Vehicle (mechanics/combat/combat.mjs#getEffectiveLevel), else its level.
     const levelOf = who => {
       const threat = Number(who?.system?.threatLevel) || 0;
       return ['npc', 'vehicle'].includes(who?.type) && threat > 0 ? threat : Number(who?.system?.level ?? who?.system?.threatLevel ?? 0) || 0;
@@ -563,7 +563,7 @@ function actorTag(actor, ruleItem, rest) {
 
   // onCanvas - the actor has a token in the scene being viewed.
   case 'onCanvas': return (globalThis.canvas?.tokens?.placeables ?? []).some(token => token.actor === actor || (actor.id && token.actor?.id == actor.id));
-  // actionUsed:<standard|move|free> - spent that kind of action this turn (helpers/action-economy.mjs's ledger).
+  // actionUsed:<standard|move|free> - spent that kind of action this turn (mechanics/actions/action-economy.mjs's ledger).
   case 'actionUsed': {
     const ledger = worldLookups.actionLedger?.(actor);
     return ledger ? (Number(ledger[arg]) || 0) > 0 : null;
@@ -602,7 +602,7 @@ function actorTag(actor, ruleItem, rest) {
 
   case 'toggle': return !!toggleOf(ruleItem, arg);
   case 'marked': return markOf(actor, arg);
-  // Acting with Reckless Abandon (helpers/reckless-abandon.mjs, handed in at start-up).
+  // Acting with Reckless Abandon (items/rolls/reckless-abandon.mjs, handed in at start-up).
   case 'recklessAbandon': return !!worldLookups.recklessAbandon?.(actor);
   }
 
@@ -761,7 +761,7 @@ export function evaluateTag(tag, ctx) {
     case 'edge': return ctx.edge === undefined ? null : !!ctx.edge;
     // snag: the roll has a Snag (ctx.snag, once the dialog has settled it).
     case 'snag': return ctx.snag === undefined ? null : !!ctx.snag;
-    // aimed: a ranged attack the actor took the Aim action for (helpers/action-economy.mjs#isAiming);
+    // aimed: a ranged attack the actor took the Aim action for (mechanics/actions/action-economy.mjs#isAiming);
     // ctx.aimed when the roll already knows (the dialog's Aiming switch).
     case 'aimed': {
       if (ctx.aimed !== undefined) {

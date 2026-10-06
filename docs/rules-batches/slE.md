@@ -99,7 +99,7 @@ unchanged.
 
 | Item | Converted | Rules | Still code |
 |---|---|---|---|
-| Nu, Pogodi! | "Qualified in all Standard weapons", and Qualified in the Acclimating upgrade | Qualification `access: qualified`, items `item:type:weapon` + `item:availability<=standard`. Qualification `upgrades` `{"any": ["item:id:HSmtPttbJvaNy5Tf", "item:data:name=acclimating"]}`. | The chosen two-handed Limited weapon (Use button pick, stored in `flags.essence20.q1Chosen`), the seat swap, and the Use button's menu (which also offers `helpers/nu-pogodi.mjs`' Condition removal). `dice.mjs` / `banked-buffs.mjs` code for its other effects isn't in this slice. |
+| Nu, Pogodi! | "Qualified in all Standard weapons", and Qualified in the Acclimating upgrade | Qualification `access: qualified`, items `item:type:weapon` + `item:availability<=standard`. Qualification `upgrades` `{"any": ["item:id:HSmtPttbJvaNy5Tf", "item:data:name=acclimating"]}`. | The chosen two-handed Limited weapon (Use button pick, stored in `flags.essence20.q1Chosen`), the seat swap, and the Use button's menu (which also offers `items/healing/nu-pogodi.mjs`' Condition removal). `dice.mjs` / `banked-buffs.mjs` code for its other effects isn't in this slice. |
 | Mega Training Regimen | ↑1 on attacks with vehicle weapon systems and Integrated hardpoint weapons | RollModifier `upshift: 1`, when `attack`, `item:type:weaponEffect`, any of `item:data:parent.type=vehicle`, `item:data:parent.type=zord`, `weapon:data:system.hardpoint.type=integrated`. No label, so it shows the owned copy's name, as before. | The driving Qualification (Huge and larger land vehicles: ↑1 driving with Ranks, no untrained Snag) in `vehicleQualifier` / `qualificationSources` / `qualificationApplyDialog`. |
 
 Why these are exact:
@@ -230,8 +230,8 @@ No cross-line differences.
 ## Batch slE (part): the `qualify2` extension slice
 
 **Scope:** every item in the id table of `module/helpers/extensions/qualify2/` (`Q2` in `common.mjs`, 22 items),
-plus every other place in `module/` that uses those ids (`helpers/banked-buffs.mjs`, `dice.mjs`,
-`helpers/combat.mjs`, `helpers/action-perks.mjs`, `helpers/trade-school.mjs`, `helpers/tech-specs.mjs`). Started
+plus every other place in `module/` that uses those ids (`mechanics/resources/banked-buffs.mjs`, `dice.mjs`,
+`mechanics/combat/combat.mjs`, `mechanics/actions/action-perks.mjs`, `items/rolls/trade-school.mjs`, `items/attacks/tech-specs.mjs`). Started
 from `rules/slD` at 426d9555, pushed as `rules/slE-q2`.
 
 Not item-specific (no verdict): `common.mjs` (the id table plus item/actor lookups shared by the other files),
@@ -328,7 +328,7 @@ posts nothing.
 - **Sensitive** - spends a Detail Oriented daily use to ignore the banked Snag this round. *Needs:* a Use cost on
   another item's daily counter (`actionPerkDailyUses.detailOriented`) and a round-scoped "ignore" mark read by the
   Snag bank.
-- **Detail Oriented** - only read here for Sensitive's count; its own uses are `helpers/action-perks.mjs`
+- **Detail Oriented** - only read here for Sensitive's count; its own uses are `mechanics/actions/action-perks.mjs`
   (`ACTION_PERK_USES`). Goes with Sensitive.
 
 ##### Old Hand (`old-hand.mjs`)
@@ -348,7 +348,7 @@ posts nothing.
 #### Dead table entries, removed (2)
 
 - **Trade School** and **Technical Mastery** - nothing in the slice read `Q2.tradeSchool` / `Q2.technicalMastery`.
-  Their code lives elsewhere and stays: Trade School's Use (`helpers/trade-school.mjs`, `banked-buffs.mjs`) and its
+  Their code lives elsewhere and stays: Trade School's Use (`items/rolls/trade-school.mjs`, `banked-buffs.mjs`) and its
   scene-long coach die (`qualifications.mjs`, keyed by the `pendingTradeSchool` flag) - *needs* a lend-another-actor's
   Skill die for a scene piece; Technical Mastery's remaining halves (`tech-specs.mjs`, `trade-school.mjs`).
 
@@ -369,7 +369,7 @@ posts nothing.
 
 #### Files touched outside the slice
 
-- `module/helpers/banked-buffs.mjs` - Real Angels' constants and both branches removed (one stale comment reference fixed).
+- `module/mechanics/resources/banked-buffs.mjs` - Real Angels' constants and both branches removed (one stale comment reference fixed).
 - `module/helpers/banked-buffs.test.js` - Real Angels' tests and id removed.
 - `module/rules/conversions-uses.test.js` - the `// slE q2` block appended at the end (import line unchanged).
 - `lang/en.json` - removed `E20.Q2MoraleNoUses`, `E20.Q2MoraleUsed`, `E20.Q2Nobody`, `E20.Q2OorahPrompt`,
@@ -565,7 +565,7 @@ None.
 
 - `packs/mlpcrbitems/_source/Compassionate_TARp0NItPetoMUv2.json`,
   `packs/gijcrbitems/_source/{Basic,Advanced,Specialized}_Defenses_*.json` (rules inserted as text, LF kept).
-- `module/helpers/extensions/index.mjs` (the `data21/compassionate.mjs` import line removed).
+- `module/items/index.mjs` (the `data21/compassionate.mjs` import line removed).
 - `lang/en.json` (six keys removed as lines).
 - `module/rules/conversions-uses.test.js` (one `describe('slE data')` block appended at the end; import line
   unchanged).
@@ -581,7 +581,7 @@ keys). That is 37 entries: 36 items, plus the Demolecularization Gun Effect, whi
 as the Demolecularization Gun. Branch `rules/slE-dmlp`, from `rules/slD` at 426d9555.
 
 Outside the slices, two places touch these ids or flags:
-- `helpers/magically-fit-in.mjs` reads the Mystical Understanding id. It stays, because Mystical Understanding stays code.
+- `items/rolls/magically-fit-in.mjs` reads the Mystical Understanding id. It stays, because Mystical Understanding stays code.
 - `extensions/rules/grappled.mjs` reads the `d22AssaultClawGrapple` flag that the Assault Claw sets. It belongs to the
   `rules` slice and is unchanged.
 
@@ -740,8 +740,8 @@ functions only added theirs too (the guide's Edge/Snag equivalence covers `edge(
 
 **Scope:** every item in the id tables of `module/helpers/extensions/wtnv/`, `r2misc/`, `rules/` and `fix3-dice/`, plus
 every other place in `module/` that uses those ids. The tables are `WTNV` (`wtnv.mjs`, 13 keys), `DOMINATE_ID`
-(`r2misc/dominate.mjs`, also read by `helpers/power-use.mjs`) and `SHADOW_ID` (`fix3-dice/shadow.mjs`, also read by
-`helpers/banked-buffs.mjs` and `dice.test.js`). That makes 15 items. Branch `rules/slE-misc`, from `rules/slD` at 426d9555.
+(`r2misc/dominate.mjs`, also read by `mechanics/characters/power-use.mjs`) and `SHADOW_ID` (`fix3-dice/shadow.mjs`, also read by
+`mechanics/resources/banked-buffs.mjs` and `dice.test.js`). That makes 15 items. Branch `rules/slE-misc`, from `rules/slD` at 426d9555.
 
 | Verdict | wtnv | r2misc | rules | fix3-dice | Total |
 |---|---|---|---|---|---|

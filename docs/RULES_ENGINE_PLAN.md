@@ -25,7 +25,7 @@ Built on `Rules-Engine-Phase-1`, branched from `30-remaining-still-open-items`. 
 | `module/rules/formula.mjs` | The whitelist formula parser: `@level`, `@essence.x`, `@pool.x`, `@choice.x`, + − × ÷, min / max / floor / ceil / abs |
 | `module/rules/types.mjs` | The type catalogue: validator and plain-English summaries |
 | `module/rules/index.mjs` | The per-actor rule index, rebuilt in derived data and cached on the actor; when an item counts as active |
-| `module/rules/adapter.mjs` | One registration into `helpers/extensions.mjs` for every hook the Phase 1 types use |
+| `module/rules/adapter.mjs` | One registration into `mechanics/item-hooks.mjs` for every hook the Phase 1 types use |
 | `module/rules/lifecycle.mjs` | When an item is added: ChoiceSet prompt, Toggle default, Pool filled, Grant items. When it is removed: the items it granted are removed too |
 | `module/rules/sheet.mjs`, `templates/item/tabs/rules.hbs`, `sass/views/_rules.scss` | The Rules tab: summaries, errors, live toggle / pool / choice state, Add rule, JSON editor |
 | `scripts/check-rules.mjs` | Validates every pack rule; added to the unit-test CI workflow |
@@ -283,7 +283,7 @@ and the numeric dialog input.
   - **New tag `damage:crit`; new step `setForm`** (Morph / Alt Mode on or off).
   - Converted Defeat saves: Avoid The Inevitable, Do Not Go Quietly, Renegade Commander, Rise Again (its Defeat half),
     It's Morphin Time! and Let's Go Psycho!.
-  - **New step `save`** (a save card, `helpers/save-riders.mjs`), new recipients `all:<ft>` and `targetOrSelf`.
+  - **New step `save`** (a save card, `mechanics/combat/save-riders.mjs`), new recipients `all:<ft>` and `targetOrSelf`.
     Converted: Power Quake and Sorcerous Tremors.
   - **Trigger outcomes:** `outcome: success` now takes a Critical Success too, and `failure` takes a Fumble.
   - **Linked Triggers:** a Trigger with a linked scope (aura, party, vehicle, crew, pilot, companion, owner and the new
@@ -320,7 +320,7 @@ and the numeric dialog input.
       Mind of No Mind, Can't Afford to Miss, Grid Gifted).
   - **New engine pieces:**
     - **Steps:** `pickAlly` (the targeted ally, else a picker over `getNearbyAllyTokens`; `pickAllyTargets` moved to
-      `helpers/allies.mjs`) and `pickPerk` (`grants.mjs#pickPerkFrom`, a Perk from another Role / Focus / the Branch).
+      `mechanics/combat/nearby-allies.mjs`) and `pickPerk` (`grants.mjs#pickPerkFrom`, a Perk from another Role / Focus / the Branch).
     - **`bank` Defense bonuses:** `defense` / `defenseBonus` / `persist`, read by `rules/bank.mjs#bankedDefense` in `dice.mjs` beside
       `riderDefenseAdjust`.
     - **Tags:** `rule:banked` (an unspent bonus this item banked); `item:availability<=tier`, read against the effective tier via
@@ -370,7 +370,7 @@ and the numeric dialog input.
     - `Cover` rule type: ignore / reduce on the holder's attacks; counts-as-Cover / base / add against the holder.
     - Tags `self:` / `target:sizeDiff>=N`; formula `@size`.
     - `ally:within` (and pickAlly, `@count.allies`) count allies the system way: Frenemy, Betrayal, Ally Awareness.
-    - `fitAttack` step (Alt Mode special attacks: damage, Blunt/Sharp, Finesse/Might), `helpers/weapon-fit.mjs`.
+    - `fitAttack` step (Alt Mode special attacks: damage, Blunt/Sharp, Finesse/Might), `mechanics/resources/weapon-fit.mjs`.
   - **Fixes:**
     - Exploit Trust and Hard Hitter's Edge never applied: it was set after the dice were picked. Now set before.
     - Phase 5: ten id lookups that missed the "Acts as" fallback now have it (Quantum Defender, Drilling Shot,
@@ -806,7 +806,7 @@ site each.
 item.system.rules ──► RuleIndex (per actor, built in prepareDerivedData)
                         │  byHook: { rollSources: [...], defenseAdjust: [...], uses: [...], ... }
                         ▼
-              module/rules/adapter.mjs  — registers ONCE into helpers/extensions.mjs
+              module/rules/adapter.mjs  — registers ONCE into mechanics/item-hooks.mjs
                         │  registerRollSources(ctx => index(actor).rollSources.filter(when).map(toSource))
                         │  registerDefenseAdjust(...), registerUse({matches: item => item.system.rules.some(Use)}), ...
                         ▼

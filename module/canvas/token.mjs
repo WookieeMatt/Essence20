@@ -1,4 +1,4 @@
-import { getEffectStacks } from "../helpers/vessel-conditions.mjs";
+import { getEffectStacks } from "../mechanics/vehicles/vessel-conditions.mjs";
 
 /**
  * The effects core's Token#_drawEffects draws as small status icons, in the order it draws them
@@ -14,7 +14,7 @@ export function getDrawnStatusEffects(actor) {
 
 /**
  * The stack badges one token needs: `{index, stacks}` for every drawn effect carrying more than
- * one stack (Space Vessel Conditions - see helpers/vessel-conditions.mjs).
+ * one stack (Space Vessel Conditions - see mechanics/vehicles/vessel-conditions.mjs).
  * @param {Actor} actor
  * @returns {Array<{index: Number, stacks: Number}>}
  */

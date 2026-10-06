@@ -1,5 +1,5 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
-import { getActionsTabContext } from "../helpers/action-economy.mjs";
+import { getActionsTabContext } from "../mechanics/actions/action-economy.mjs";
 
 export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
   /**@inheritDoc */

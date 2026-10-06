@@ -50,7 +50,7 @@
        skill-name link right above (no icon, no separate roll button). Adding and removing both
        live in the Skill Picker (module/apps/skill-picker.mjs) now, not here - see
        essence20-specialization-redesign; this is roll-only display. Keyed by an opaque id (see
-       helpers/utils.mjs#createId), not by name, since a Perk automation targeting one specific
+       util/utils.mjs#createId), not by name, since a Perk automation targeting one specific
        specialization needs to survive a rename. --}}
   <ol class="items-list">
     {{#each fields.specializations as |specialization key|}}

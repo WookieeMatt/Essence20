@@ -7,21 +7,21 @@ import { jest } from '@jest/globals';
  */
 
 global.Hooks = { on: () => 0, once: () => 0, callAll: () => {} };
-jest.unstable_mockModule('./helpers/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
 const applyDamage = jest.fn();
-jest.unstable_mockModule('./helpers/combat.mjs', () => ({ applyDamage, getVehicleDriver: jest.fn() }));
+jest.unstable_mockModule('./mechanics/combat/combat.mjs', () => ({ applyDamage, getVehicleDriver: jest.fn() }));
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { runSteps, stepContext, stepErrors } = await import('./steps.mjs');
 const { validateRule, TRIGGER_EVENTS } = await import('./types.mjs');
 const { contextFor, evaluate, unknownTags } = await import('./predicate.mjs');
 const { resolveValue } = await import('./formula.mjs');
-const { calcTag } = await import('./ext/h/copies.mjs');
-const { fill } = await import('./ext/h/effects.mjs');
-const { ruleIgnoresDrawback } = await import('./ext/h/drawback.mjs');
-const { damageReduction, grantDoubleRule, initiativeEdge, initiativeEdgeFor, massShiftUsed, offerGrantDouble } = await import('./ext/h/types.mjs');
-const common = await import('./ext/h/common.mjs');
+const { calcTag } = await import('./plugins/tags/item-copies.mjs');
+const { fill } = await import('./plugins/effects/rule-effects.mjs');
+const { ruleIgnoresDrawback } = await import('./plugins/rolls/ignore-drawback.mjs');
+const { damageReduction, grantDoubleRule, initiativeEdge, initiativeEdgeFor, massShiftUsed, offerGrantDouble } = await import('./plugins/combat/damage-reduction-initiative-edge.mjs');
+const common = await import('./plugins/shared/copy-and-data-helpers.mjs');
 
 let nextId = 1;
 const getPath = (object, key) => String(key).split('.').reduce((o, k) => (o === null || o === undefined ? o : o[k]), object);

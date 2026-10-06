@@ -5,8 +5,8 @@ import {
   buildChange,
   buildChanges,
   summarize,
-} from "../helpers/effect-catalog.mjs";
-import { slugifySpecializationName, titleCaseSpecializationName } from "../helpers/utils.mjs";
+} from "../mechanics/characters/effect-catalog.mjs";
+import { slugifySpecializationName, titleCaseSpecializationName } from "../util/utils.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
@@ -15,7 +15,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
  *
  * Deliberately NOT a replacement for Foundry's own effect sheet: anyone who already knows the
  * keys keeps the editor they have, and this is an opt-in tool reached from the Effects tab's add
- * button (see helpers/effects.mjs#onCreateActiveEffect) or an effect sheet's own header menu.
+ * button (see mechanics/characters/active-effect-controls.mjs#onCreateActiveEffect) or an effect sheet's own header menu.
  * The rows it writes are ordinary changes with core change types, indistinguishable from
  * hand-authored ones - see docs/ACTIVE_EFFECTS_UI_PLAN.md §2.
  *

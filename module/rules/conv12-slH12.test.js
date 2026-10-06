@@ -14,31 +14,31 @@ import { fileURLToPath } from 'node:url';
 global.Hooks = { on: () => 0, once: () => 0, callAll: () => {} };
 
 const spend = jest.fn(async () => ({ blocked: false }));
-jest.unstable_mockModule('./helpers/action-economy.mjs', () => ({ spend, setNextTurn: jest.fn(), getLedger: () => null, isTracking: () => true }));
+jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({ spend, setNextTurn: jest.fn(), getLedger: () => null, isTracking: () => true }));
 const chooseSelect = jest.fn();
 const findItems = jest.fn();
 const pickOne = jest.fn();
 const grantCopy = jest.fn(async () => ({ name: 'Copy', system: {} }));
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({
   chooseSelect, chooseButtons: jest.fn(), findItems, pickOne, grantCopy, rollTest: jest.fn(), pickPerkFrom: jest.fn(), markIntegrated: jest.fn(),
 }));
-jest.unstable_mockModule('./helpers/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
 const applyDamage = jest.fn();
-jest.unstable_mockModule('./helpers/combat.mjs', () => ({ applyDamage, getVehicleDriver: jest.fn() }));
+jest.unstable_mockModule('./mechanics/combat/combat.mjs', () => ({ applyDamage, getVehicleDriver: jest.fn() }));
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({ createItemCopies: jest.fn(), setEntryAndAddItem: jest.fn() }));
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { fireItemAdded, fireTriggers, runUse, useAvailable } = await import('./triggers.mjs');
 const { ruleDialogSwitches, ruleNoUntrainedSnag, ruleRollSources } = await import('./adapter.mjs');
 const { validateRule } = await import('./types.mjs');
-const { extDialogToggles, runApplyDialog } = await import('../helpers/extensions.mjs');
-const { hitRiderOnAttack } = await import('./ext/b/hit-rider.mjs');
-const { derivedMovement } = await import('./ext/e/derived.mjs');
-const { ruleFormSpec, ruleFormUuids } = await import('./ext/a/forms.mjs');
-const { ruleIgnoresDrawback } = await import('./ext/h/drawback.mjs');
-const { damageReduction, initiativeEdgeFor, massShiftUsed, offerGrantDouble } = await import('./ext/h/types.mjs');
-const perks = await import('../helpers/perks.mjs');
+const { extDialogToggles, runApplyDialog } = await import('../mechanics/item-hooks.mjs');
+const { hitRiderOnAttack } = await import('./plugins/combat/hit-rider.mjs');
+const { derivedMovement } = await import('./plugins/effects/derived-stages.mjs');
+const { ruleFormSpec, ruleFormUuids } = await import('./plugins/zords/form-perks.mjs');
+const { ruleIgnoresDrawback } = await import('./plugins/rolls/ignore-drawback.mjs');
+const { damageReduction, initiativeEdgeFor, massShiftUsed, offerGrantDouble } = await import('./plugins/combat/damage-reduction-initiative-edge.mjs');
+const perks = await import('../mechanics/characters/perks.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fromPack = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8'));

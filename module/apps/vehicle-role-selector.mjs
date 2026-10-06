@@ -1,5 +1,5 @@
 ﻿import { setEntryAndAddActor, verifyDropSelection } from "../sheet-handlers/drop-handler.mjs";
-import { getFormData } from "../helpers/application.mjs";
+import { getFormData } from "../util/application.mjs";
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";

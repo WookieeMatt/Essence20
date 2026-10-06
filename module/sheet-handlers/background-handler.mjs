@@ -1,6 +1,6 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
-import { applyHangUpChoice } from "../helpers/hang-up-choice.mjs";
-import { getItemsOfTypeFromSystemItems, getShiftedSkill } from "../helpers/utils.mjs";
+import { applyHangUpChoice } from "../mechanics/characters/hang-up-choice.mjs";
+import { getItemsOfTypeFromSystemItems, getShiftedSkill } from "../util/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
 /**
@@ -311,7 +311,7 @@ export async function _hangUpSelect(actor, uuid, parentItem) {
   newItem.setFlag('essence20', 'parentId', parentItem._id);
 
   // Some Hang-Ups record a player choice of their own (Augmented's damage type) - see
-  // helpers/hang-up-choice.mjs. A no-op for every Hang-Up that declares none.
+  // mechanics/characters/hang-up-choice.mjs. A no-op for every Hang-Up that declares none.
   await applyHangUpChoice(newItem);
 }
 

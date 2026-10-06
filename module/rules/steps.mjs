@@ -13,7 +13,7 @@ import { contextFor, evaluate, interpolate, sideActorsWithin, unknownTags as unk
  * A run carries a context: {actor, item, rule, targets, damage, chat, vars}. A step that can't go
  * ahead (no target, not enough of a resource) stops the run, and says why in chat.
  *
- * Writes to an actor this user doesn't own go through the GM (helpers/gm-relay.mjs), the same as the
+ * Writes to an actor this user doesn't own go through the GM (mechanics/world/gm-relay.mjs), the same as the
  * hand-written Perks do. Heavy helpers are imported lazily, so this file loads under plain Node.
  */
 
@@ -105,7 +105,7 @@ function cardRows(step, ctx, filter = () => true) {
 
 /** A lowered total: rows that no longer reach their DIF miss, the others say they still hit. */
 async function lowerCardTotal(step, ctx, total) {
-  const core = await import("../helpers/extensions/react/core.mjs");
+  const core = await import("../mechanics/combat/reaction-engine.mjs");
   const { info } = ctx.card;
   for (const row of cardRows(step, ctx, r => r.success && !core.isNegated(info.message, r.targetUuid))) {
     const target = globalThis.fromUuidSync?.(row.targetUuid, { strict: false });
@@ -249,7 +249,7 @@ export function pickOptions(step, ctx) {
 }
 
 async function askPick(step, options, ctx) {
-  const { chooseSelect } = await import("../helpers/grants.mjs");
+  const { chooseSelect } = await import("../mechanics/resources/grants.mjs");
   return chooseSelect(ctx.item?.name ?? '', escape(step.prompt ?? T('PickPrompt')), options);
 }
 
@@ -442,7 +442,7 @@ function partyOf(actor) {
 
 /** Update a document, through the GM when this user can't write to it. */
 async function write(doc, method, args) {
-  const { needsGmRelay, relayToGm } = await import("../helpers/gm-relay.mjs");
+  const { needsGmRelay, relayToGm } = await import("../mechanics/world/gm-relay.mjs");
   if (needsGmRelay(doc)) {
     return relayToGm(doc, method, args);
   }
@@ -455,7 +455,7 @@ async function write(doc, method, args) {
 /* -------------------------------------------- */
 
 /**
- * The Story Point helpers (helpers/story-points.mjs), handed in at start-up by essence20.mjs - that file
+ * The Story Point helpers (mechanics/resources/story-points.mjs), handed in at start-up by essence20.mjs - that file
  * pulls in the settings module, which plain Node can't load. {canSpendForActor, spendForActor,
  * requestStoryPointGrant, poolFor}. Without them (tests), Story Point costs are treated as payable.
  */
@@ -692,10 +692,10 @@ const HANDLERS = {
         continue;
       }
 
-      // tracked: temporary Health through the resource slice's ledger (helpers/extensions/resource/temp-resources.mjs) -
+      // tracked: temporary Health through the resource slice's ledger (mechanics/resources/temporary-resources.mjs) -
       // raises the bonus and the value, and is taken back when it runs out (scene end, or damage with untilDamage).
       if (step.temporary && step.tracked) {
-        const { grantTemp } = await import("../helpers/extensions/resource/temp-resources.mjs");
+        const { grantTemp } = await import("../mechanics/resources/temporary-resources.mjs");
         await grantTemp(actor, { kind: 'health', amount, source: ctx.item?.name ?? '', by: ctx.actor?.uuid ?? null, untilDamage: !!step.untilDamage });
         ctx.chat.push(T('TempHealth', { name: escape(actor.name), amount }));
         continue;
@@ -723,7 +723,7 @@ const HANDLERS = {
     const amount = amountOf(step.amount ?? 1, ctx, 1);
     // damageType may read a pick ({choice.<key>}) or a value stored in the run ({var.<key>}).
     const type = fillText(String(step.damageType ?? 'blunt'), ctx) || 'blunt';
-    const { applyDamage } = await import("../helpers/combat.mjs");
+    const { applyDamage } = await import("../mechanics/combat/combat.mjs");
     for (const actor of recipients(step, ctx)) {
       if (actor.isOwner) {
         await applyDamage(actor, amount, type);
@@ -735,7 +735,7 @@ const HANDLERS = {
   },
 
   // Essence damage: `essence` (strength, speed, smarts, social, {choice.<key>}, or "choose" to ask), amount
-  // points, never below 0 - the same system.essences.<x>.value a Rest restores (helpers/environment-hazards.mjs).
+  // points, never below 0 - the same system.essences.<x>.value a Rest restores (mechanics/world/environment-hazards.mjs).
   async essenceDamage(step, ctx) {
     const amount = Math.max(0, amountOf(step.amount ?? 1, ctx, 1));
     const essence = await essenceFor(step, ctx);
@@ -749,13 +749,13 @@ const HANDLERS = {
         continue;
       }
 
-      const { needsGmRelay } = await import("../helpers/gm-relay.mjs");
+      const { needsGmRelay } = await import("../mechanics/world/gm-relay.mjs");
       let dealt = 0;
       if (needsGmRelay(actor)) {
         dealt = Math.min(value, amount);
         await write(actor, 'update', [{ [`system.essences.${essence}.value`]: value - dealt }]);
       } else {
-        const { applyEssenceDamage } = await import("../helpers/environment-hazards.mjs");
+        const { applyEssenceDamage } = await import("../mechanics/world/environment-hazards.mjs");
         for (let i = 0; i < amount; i++) {
           dealt += (await applyEssenceDamage(actor, [essence])).length;
         }
@@ -782,7 +782,7 @@ const HANDLERS = {
           await write(actor, 'update', [{ [`system.essences.${essence}.value`]: Number(value) + healed }]);
         }
       } else {
-        const { healEssenceDamage } = await import("../helpers/essence-damage.mjs");
+        const { healEssenceDamage } = await import("../mechanics/combat/essence-damage.mjs");
         healed = await healEssenceDamage(actor, amount);
       }
 
@@ -856,7 +856,7 @@ const HANDLERS = {
 
   // Spend an action (free | move | standard) through the action economy - a Trigger's own cost. Stops when it can't.
   async spendAction(step, ctx) {
-    const { spend } = await import("../helpers/action-economy.mjs");
+    const { spend } = await import("../mechanics/actions/action-economy.mjs");
     const paid = await spend(ctx.actor, step.action ?? 'free', { source: ctx.item?.name ?? null });
     return paid?.blocked ? false : undefined;
   },
@@ -870,7 +870,7 @@ const HANDLERS = {
       return false;
     }
 
-    const { rollVsMany } = await import("../helpers/extensions/react/core.mjs");
+    const { rollVsMany } = await import("../mechanics/combat/reaction-engine.mjs");
     const rows = await rollVsMany(ctx.actor, skillFor(step, ctx), others, step.defense ?? 'toughness');
     const saved = ctx.targets;
     ctx.vars.hits = 0;
@@ -891,10 +891,10 @@ const HANDLERS = {
     ctx.targets = saved;
   },
 
-  // Knock a held weapon out of each recipient's hands (helpers/target-riders.mjs#disarm - the owner picks it back up by
+  // Knock a held weapon out of each recipient's hands (mechanics/combat/target-riders.mjs#disarm - the owner picks it back up by
   // equipping it): maxHands (weapons held in that many hands or fewer), optional (the player may skip).
   async disarm(step, ctx) {
-    const { disarm } = await import("../helpers/target-riders.mjs");
+    const { disarm } = await import("../mechanics/combat/target-riders.mjs");
     let dropped = 0;
     for (const other of recipients({ ...step, to: step.to ?? 'target' }, ctx)) {
       const weapon = await disarm(ctx.actor, other, { maxHands: amountOf(step.maxHands ?? 2, ctx, 2), optional: !!step.optional, source: ctx.item?.name ?? '' });
@@ -999,15 +999,15 @@ const HANDLERS = {
   async applyCondition(step, ctx) {
     const rounds = amountOf(step.rounds ?? 0, ctx, 0);
     for (const actor of recipients(step, ctx)) {
-      const { needsGmRelay, relayToGm } = await import("../helpers/gm-relay.mjs");
+      const { needsGmRelay, relayToGm } = await import("../mechanics/world/gm-relay.mjs");
       if (needsGmRelay(actor) && rounds) {
         // Through the GM with its rounds (react/core.mjs's status op runs applyTimedCondition there).
-        const { gmDo } = await import("../helpers/extensions/react/core.mjs");
+        const { gmDo } = await import("../mechanics/combat/reaction-engine.mjs");
         await gmDo({ kind: 'status', uuid: actor.uuid, status: step.condition, rounds }, null, ctx.actor);
       } else if (needsGmRelay(actor)) {
         await relayToGm(actor, 'toggleStatusEffect', [step.condition, { active: true }]);
       } else {
-        const { applyTimedCondition } = await import("../helpers/timed-status.mjs");
+        const { applyTimedCondition } = await import("../mechanics/combat/timed-status.mjs");
         await applyTimedCondition(actor, step.condition, rounds);
       }
 
@@ -1024,7 +1024,7 @@ const HANDLERS = {
   },
 
   async roll(step, ctx) {
-    const { rollTest } = await import("../helpers/grants.mjs");
+    const { rollTest } = await import("../mechanics/resources/grants.mjs");
     // difDefense: the target's Defense is the DIF (Toughness, Evasion...), like an attack.
     let dif = amountOf(step.dif ?? 10, ctx, 10);
     if (step.difDefense) {
@@ -1077,7 +1077,7 @@ const HANDLERS = {
     }
 
     const result = ctx.card
-      ? await (await import("../helpers/extensions/react/core.mjs")).rollVs(ctx.actor, skill, dif, extra)
+      ? await (await import("../mechanics/combat/reaction-engine.mjs")).rollVs(ctx.actor, skill, dif, extra)
       : await rollTest(ctx.actor, skill, dif, extra);
     if (ctx.card && result.cancelled) {
       return false;
@@ -1290,7 +1290,7 @@ const HANDLERS = {
       }
 
       if (step.integrated) {
-        const { markIntegrated } = await import("../helpers/grants.mjs");
+        const { markIntegrated } = await import("../mechanics/resources/grants.mjs");
         markIntegrated(data);
       }
 
@@ -1340,7 +1340,7 @@ const HANDLERS = {
   },
 
   async grantActions(step, ctx) {
-    const { grantActionsThisTurn } = await import("../helpers/action-economy.mjs");
+    const { grantActionsThisTurn } = await import("../mechanics/actions/action-economy.mjs");
     const grants = { free: amountOf(step.free ?? 0, ctx), move: amountOf(step.move ?? 0, ctx), standard: amountOf(step.standard ?? 0, ctx) };
     for (const actor of recipients(step, ctx)) {
       await grantActionsThisTurn(actor, grants, ctx.item?.name, { granter: ctx.actor });
@@ -1374,11 +1374,11 @@ const HANDLERS = {
     return runSteps(options[picked].steps ?? [], ctx);
   },
 
-  // A Perk from another Role or Focus, granted outright (helpers/grants.mjs#pickPerkFrom): {from: role |
+  // A Perk from another Role or Focus, granted outright (mechanics/resources/grants.mjs#pickPerkFrom): {from: role |
   // focus | branch, line?: same | <line>, notOwn?, ofOwnRole?, minLevel?, maxLevel? (formulas),
   // notOwnPerkNames?, excludeName?, subtype?, notAdvanced?}. The granted Perk's uuid is @var.picked's source.
   async pickPerk(step, ctx) {
-    const { pickPerkFrom } = await import("../helpers/grants.mjs");
+    const { pickPerkFrom } = await import("../mechanics/resources/grants.mjs");
     const spec = { ...step };
     for (const key of ['minLevel', 'maxLevel']) {
       if (step[key] !== undefined) {
@@ -1395,7 +1395,7 @@ const HANDLERS = {
     ctx.chat.push(T('Granted', { name: escape(ctx.actor.name), item: escape(granted.name) }));
   },
 
-  // Fit the weapon the last grant step made to what gave it (helpers/weapon-fit.mjs): its Blunt hit's
+  // Fit the weapon the last grant step made to what gave it (mechanics/resources/weapon-fit.mjs): its Blunt hit's
   // damage, and Blunt or Sharp / Finesse or Might asked when offered. {damage?, types?, skills?}
   async fitAttack(step, ctx) {
     const weapon = ctx.vars.granted;
@@ -1403,7 +1403,7 @@ const HANDLERS = {
       return;
     }
 
-    const { fitGrantedWeapon } = await import("../helpers/weapon-fit.mjs");
+    const { fitGrantedWeapon } = await import("../mechanics/resources/weapon-fit.mjs");
     await fitGrantedWeapon(weapon.parent ?? ctx.actor, weapon, {
       title: ctx.item?.name ?? '', damage: step.damage ?? null, types: step.types ?? [], skills: step.skills ?? [],
     });
@@ -1413,7 +1413,7 @@ const HANDLERS = {
   // `within` feet (default: anywhere on the scene) whose `filter` tags (target: ...) hold - and the actor
   // too with `includeSelf`. Sets the targets.
   async pickAlly(step, ctx) {
-    const { getNearbyAllyTokens, pickAllyTargets } = await import("../helpers/allies.mjs");
+    const { getNearbyAllyTokens, pickAllyTargets } = await import("../mechanics/combat/nearby-allies.mjs");
     const { contextFor, evaluate } = await import("./predicate.mjs");
     const within = step.within === undefined ? Infinity : amountOf(step.within, ctx, 0);
     const candidates = [...(step.includeSelf ? [ctx.actor] : []), ...getNearbyAllyTokens(ctx.actor, within).map(token => token.actor)].filter(Boolean)
@@ -1440,12 +1440,12 @@ const HANDLERS = {
     ctx.targets = step.max ? targets.slice(0, step.max) : targets;
   },
 
-  // Pick a compendium item and give it (helpers/grants.mjs): from {type, availabilities?, tags?} -
+  // Pick a compendium item and give it (mechanics/resources/grants.mjs): from {type, availabilities?, tags?} -
   // `tags` are item: tags tested against each compendium entry (item:trait:x, item:data:system.y=z).
   // integrated: give it the Integrated trait; until: it goes when that runs out. The picked uuid is
   // kept as @var.picked for later steps' text.
   async pickGrant(step, ctx) {
-    const helpers = ctx.grantHelpers ?? await import("../helpers/grants.mjs");
+    const helpers = ctx.grantHelpers ?? await import("../mechanics/resources/grants.mjs");
     const from = step.from ?? {};
     const tags = Array.isArray(from.tags) ? from.tags : [];
     const rows = await helpers.findItems({
@@ -1508,11 +1508,11 @@ const HANDLERS = {
     ctx.vars.picked = uuid;
   },
 
-  // Extra attacks this turn (helpers/action-economy.mjs#grantBonusAttack): each costs `cost` (none,
+  // Extra attacks this turn (mechanics/actions/action-economy.mjs#grantBonusAttack): each costs `cost` (none,
   // free, move, standard) when taken; `when` is the attack it has to be (weapon:trait:ballistic,
   // attack:melee...); psychicOnMiss adds that much Psychic damage on a miss. Needs a combat.
   async bonusAttack(step, ctx) {
-    const economy = ctx.economy ?? await import("../helpers/action-economy.mjs");
+    const economy = ctx.economy ?? await import("../mechanics/actions/action-economy.mjs");
     const count = Math.max(0, amountOf(step.count ?? 1, ctx, 1));
     const filter = Array.isArray(step.when) && step.when.length ? { when: step.when } : null;
     let granted = 0;
@@ -1591,7 +1591,7 @@ const HANDLERS = {
       return false;
     }
 
-    const core = await import("../helpers/extensions/react/core.mjs");
+    const core = await import("../mechanics/combat/reaction-engine.mjs");
     for (const row of cardRows(step, ctx, r => r.success && !core.isNegated(ctx.card.info.message, r.targetUuid))) {
       await core.negateHit(ctx.card.info.message, row.targetUuid, null, ctx.actor);
       ctx.chat.push(T('CardNegated', { target: escape(globalThis.fromUuidSync?.(row.targetUuid, { strict: false })?.name ?? '') }));
@@ -1611,7 +1611,7 @@ const HANDLERS = {
       return false;
     }
 
-    const core = await import("../helpers/extensions/react/core.mjs");
+    const core = await import("../mechanics/combat/reaction-engine.mjs");
     const snagged = await core.lateSnag(ctx.card.info);
     ctx.chat.push(T('CardLateSnag', { die: snagged.die, total: snagged.total }));
     await lowerCardTotal(step, ctx, snagged.total);
@@ -1622,7 +1622,7 @@ const HANDLERS = {
       return false;
     }
 
-    const core = await import("../helpers/extensions/react/core.mjs");
+    const core = await import("../mechanics/combat/reaction-engine.mjs");
     // Rows with no target too: a plain Skill Test against a flat DIF still says it now succeeds (core.convertRows).
     const { info, row } = ctx.card;
     const rows = (row && step.rows != 'all' ? [row] : info.rows).filter(r => !!step.crit || !r.success);
@@ -1634,7 +1634,7 @@ const HANDLERS = {
     await core.convertRows(ctx.card.info, rows, { crit: !!step.crit, speaker: ctx.actor, reason });
   },
 
-  // Reroll the card's roll (helpers/reroll.mjs): target d20 (default) | allDice | anyDie | skillDice, mode all |
+  // Reroll the card's roll (mechanics/rolls/reroll.mjs): target d20 (default) | allDice | anyDie | skillDice, mode all |
   // ones | onesAndTwos, keepBetter. Rows the new total no longer reaches miss; rows it now reaches become hits.
   async rerollCard(step, ctx) {
     if (!ctx.card) {
@@ -1642,7 +1642,7 @@ const HANDLERS = {
     }
 
     const { info } = ctx.card;
-    const { applyReroll, normalizeRerollConfig } = await import("../helpers/reroll.mjs");
+    const { applyReroll, normalizeRerollConfig } = await import("../mechanics/rolls/reroll.mjs");
     const config = normalizeRerollConfig({ mode: step.mode ?? 'all', target: step.target ?? 'd20', keepBetter: !!step.keepBetter, maxUses: 0 });
     const rerolled = globalThis.Roll.fromData(info.roll.toJSON());
     if (!(await applyReroll(rerolled, config))) {
@@ -1651,7 +1651,7 @@ const HANDLERS = {
 
     const total = Number(rerolled.total ?? rerolled._total);
     await rerolled.toMessage?.({ speaker: globalThis.ChatMessage?.getSpeaker?.({ actor: info.attacker }), flavor: T('CardRerolled', { by: escape(ctx.actor?.name ?? '') }) });
-    const core = await import("../helpers/extensions/react/core.mjs");
+    const core = await import("../mechanics/combat/reaction-engine.mjs");
     const gained = cardRows(step, ctx, r => !r.success && total >= r.difficulty);
     await lowerCardTotal(step, ctx, total);
     if (gained.length) {
@@ -1665,10 +1665,10 @@ const HANDLERS = {
     }
   },
 
-  // A save card (helpers/save-riders.mjs): everyone it reaches rolls one of `skills` against `dif`,
+  // A save card (mechanics/combat/save-riders.mjs): everyone it reaches rolls one of `skills` against `dif`,
   // a failure gives `status` (for `rounds`) and/or `damage`; `removeOnSuccess` makes it an escape.
   async save(step, ctx) {
-    const { postSaveCard } = await import("../helpers/save-riders.mjs");
+    const { postSaveCard } = await import("../mechanics/combat/save-riders.mjs");
     const spec = {
       title: step.title || ctx.item?.name || '',
       skills: [step.skills ?? []].flat().filter(Boolean),
@@ -1704,7 +1704,7 @@ const HANDLERS = {
         continue;
       }
 
-      const { needsGmRelay, relayToGm } = await import("../helpers/gm-relay.mjs");
+      const { needsGmRelay, relayToGm } = await import("../mechanics/world/gm-relay.mjs");
       await (needsGmRelay(actor) ? relayToGm(actor, 'update', [{ [path]: value }]) : actor.update({ [path]: value }));
     }
   },

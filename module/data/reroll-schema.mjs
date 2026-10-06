@@ -1,4 +1,4 @@
-import { E20 } from "../helpers/config.mjs";
+import { E20 } from "../util/config.mjs";
 
 import { makeBool, makeInt, makeStr, makeStrArrayWithChoices, makeStrWithChoices } from "./generic-makers.mjs";
 
@@ -9,14 +9,14 @@ const fields = foundry.data.fields;
  * RerollEffectData (module/data/effect.mjs) - a Perk and an ActiveEffect can each grant a reroll
  * ability, and both need the exact same shape. Previously this was copy-pasted between the two
  * files; factored out here so a future field addition (or fix) only needs to happen once - see
- * helpers/reroll.mjs for the runtime logic that actually reads these fields.
+ * mechanics/rolls/reroll.mjs for the runtime logic that actually reads these fields.
  * @returns {Object}   A plain object of schema fields, spread into the caller's own defineSchema().
  */
 export const rerollSchema = () => ({
   reroll: new fields.SchemaField({
     enabled: makeBool(false),
     // 0 means unlimited (e.g. MLP's "Luck"/"Adolescent Attitude", which have no stated
-    // frequency limit at all) - see helpers/reroll.mjs#canUseReroll.
+    // frequency limit at all) - see mechanics/rolls/reroll.mjs#canUseReroll.
     maxUses: makeInt(1),
     mode: makeStrWithChoices(Object.keys(E20.rerollModes), 'all'),
     reset: makeStrWithChoices(Object.keys(E20.rerollResets), 'none'),
@@ -31,7 +31,7 @@ export const rerollSchema = () => ({
       amount: makeInt(0),
       // A separate, world-level (not per-actor) cost: Story Points (GI Joe CRB "In My Sights"),
       // shared by the whole table rather than held by any one actor. 0 means no such cost - see
-      // helpers/story-points.mjs for why spending this needs a GM's own client to perform it.
+      // mechanics/resources/story-points.mjs for why spending this needs a GM's own client to perform it.
       worldStoryPoints: makeInt(0),
       // Spends 1 use from a named rolePoints-type Item on the actor instead of resourcePath (e.g.
       // MLP CRB "Cheer" spending 1 of its own "Cheer Points"). Exists alongside resourcePath
@@ -39,12 +39,12 @@ export const rerollSchema = () => ({
       // Bits To Spare, etc.) is modeled as its own Item document with a level-scaling
       // system.resource.{value,max} (see item type "rolePoints", granted via a Role's own
       // system.items map) - not a field on the actor itself the way Personal Power/Energon are.
-      // Looked up by exact Item name at reroll time via helpers/reroll.mjs's own
+      // Looked up by exact Item name at reroll time via mechanics/rolls/reroll.mjs's own
       // findRolePointsItem(); empty string (the default) means "not this kind of cost".
       rolePointsName: makeStr(''),
     }),
     // A single named precondition beyond simple usage-counting (e.g. Power Infusion's "while
-    // Morphed"). See E20.rerollConditions (helpers/config.mjs) for the full set and why this is a
+    // Morphed"). See E20.rerollConditions (util/config.mjs) for the full set and why this is a
     // small fixed enum rather than a generic expression evaluator.
     condition: makeStrWithChoices(Object.keys(E20.rerollConditions), 'none'),
     // Scopes this reroll to only apply when one of these specific skills was rolled (e.g. PR
@@ -58,7 +58,7 @@ export const rerollSchema = () => ({
     // your Origin skill") - a genuinely per-actor dynamic scope, unlike the static `skills` array
     // above, since Gifted's own Origin Skill is a free player choice ("trained in any one skill"),
     // not a fixed name the compendium item could name in advance. Resolved in
-    // helpers/reroll.mjs#getRerollConfigs (which already has the actor in scope) by overriding
+    // mechanics/rolls/reroll.mjs#getRerollConfigs (which already has the actor in scope) by overriding
     // `skills` with `[actor.system.originSkillsIncrease]` when this is set - left false (the
     // default) for every other existing grant, which all name their own skills statically.
     scopeToOriginSkill: makeBool(false),
@@ -71,7 +71,7 @@ export const rerollSchema = () => ({
     // third roll) or is rerolled exactly once and the new result is kept regardless (false - PR
     // CRB "Weapon Mastery": "...you can reroll the die and must use the new roll, even if the
     // new roll is a 1 or a 2"). Only meaningful for the 'ones'/'onesAndTwos'/values-based
-    // matching in helpers/reroll.mjs#applyRerollToDie - the unconditional "reroll this whole die"
+    // matching in mechanics/rolls/reroll.mjs#applyRerollToDie - the unconditional "reroll this whole die"
     // and single-die-target cases are already inherently one-shot.
     recursive: makeBool(true),
     // Excludes any skillDice-target die below this face size (e.g. MLP/PR CRB "Luck" - "any
@@ -80,7 +80,7 @@ export const rerollSchema = () => ({
     minDieFaces: makeInt(0),
     // A grant can add a side benefit beyond the reroll itself (GI Joe CRB "In My Sights": "When
     // you use this ability, you may crit on the d2") - forced onto the rerolled message's own
-    // canCritD2 flag (helpers/combat.mjs#_isCritIsFumble reads it for crit highlighting)
+    // canCritD2 flag (mechanics/combat/combat.mjs#_isCritIsFumble reads it for crit highlighting)
     // regardless of whether the original roll had it. See chat.mjs#rerollMessage.
     grantsCanCritD2: makeBool(false),
     // A flat bonus added to the REROLLED result itself, on top of whatever the new dice show. No
@@ -90,7 +90,7 @@ export const rerollSchema = () => ({
     // Upshifts applied to a re-rolled Skill Test (Across the Stars "Mending the Grid": "...the
     // re-rolled Skill Test gains a ↑2 bonus!"). Unlike `bonus` above this is a real shift: a
     // non-zero value re-rolls the WHOLE test from its formula with the skill die raised this many
-    // steps (see helpers/reroll.mjs#upshiftFormula and chat.mjs#rerollMessage), rather than
+    // steps (see mechanics/rolls/reroll.mjs#upshiftFormula and chat.mjs#rerollMessage), rather than
     // mutating dice in place. 0 (the default) means no shift.
     shiftUp: makeInt(0),
     // Every other existing grant unconditionally commits to the rerolled result, even a worse one
@@ -99,7 +99,7 @@ export const rerollSchema = () => ({
     // player isn't forced into a worse reroll. Since this system compares a Skill Test's total
     // against a Difficulty (higher is always at least as good), "either result" is expressed as
     // keeping whichever of the two totals is higher, rather than reconstructing the pre-reroll
-    // dice state for a genuine side-by-side choice - see helpers/reroll.mjs#applyReroll.
+    // dice state for a genuine side-by-side choice - see mechanics/rolls/reroll.mjs#applyReroll.
     keepBetter: makeBool(false),
   }),
 });

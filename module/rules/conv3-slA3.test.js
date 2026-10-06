@@ -9,7 +9,7 @@ import { runSteps, stepContext } from './steps.mjs';
 import { legacyChoiceUpdates } from './legacy-choices.mjs';
 import { validateRule } from './types.mjs';
 // Round-10 plug-ins: rule types some of these items now also carry (Advanced Dino Gem's SummonTime).
-import './ext/index.mjs';
+import './plugins/index.mjs';
 
 /**
  * Batch slA3 (docs/rules-batches/slA3.md): slice items of zord1 / zord2 / pr1 / pr2 / pr3 converted

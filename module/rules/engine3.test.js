@@ -215,7 +215,7 @@ describe('Reaction rules', () => {
   beforeAll(async () => {
     ({ rebuildIndex } = await import('./index.mjs'));
     ({ reactionOffers, pressReaction } = await import('./reactions.mjs'));
-    ({ cardInfo } = await import('../helpers/extensions/react/core.mjs'));
+    ({ cardInfo } = await import('../mechanics/combat/reaction-engine.mjs'));
     ({ validateRule } = await import('./types.mjs'));
   });
 

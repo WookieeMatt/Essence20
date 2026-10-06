@@ -7,8 +7,8 @@ import { ruleDialogSwitches, ruleMovement, ruleMovementStages, ruleRollSources, 
 import { registerCheck, setWorldLookups } from './predicate.mjs';
 import { useAvailable } from './triggers.mjs';
 import { runSteps, stepContext } from './steps.mjs';
-import { runPostRoll } from '../helpers/extensions.mjs';
-import * as sit2 from '../helpers/extensions/situational2/common.mjs';
+import { runPostRoll } from '../mechanics/item-hooks.mjs';
+import * as sit2 from '../items/shared/situation-checks.mjs';
 
 /**
  * Round 6 of the slC slices (gij1, gij2, gij3, fix3-gij, situational1, situational2): items moved from
@@ -17,7 +17,7 @@ import * as sit2 from '../helpers/extensions/situational2/common.mjs';
  * is loaded from its pack source and must do what the removed code did.
  *
  * The position checks are registered here the way essence20.mjs registers them - on situational2's own
- * readings (helpers/extensions/situational2/common.mjs), fed by the same lookups.
+ * readings (items/shared/situation-checks.mjs), fed by the same lookups.
  */
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');

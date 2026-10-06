@@ -146,7 +146,7 @@ and `Q2.aForEffort`, `helpers/extensions/qualify2/`). The rules limit `per: sess
 | Hobble, Crippling Blow, Disarming Shot | Their switch downshifts would land before Inventor / Ambitious (same line) instead of after them, and Hobble / Crippling Blow use a Condition picker on the hit. |
 | Dirty Blows, Guardian Strikes, Stick In The Spokes, Interdiction | Forgoing the attack's damage has no rule piece; Guardian Strikes also picks a Condition. |
 | Get A Grip | The size gate and the 2-Free-action spend on the first legal hit target. |
-| Bump and Run | The ↑1 switch with `key` and a `hit` Trigger (`outcome: x2`, Stunned) would match. But `helpers/extensions/other3/tf.mjs` also reads `checkContext.bumpAndRunAttempt` for its "move after the attack or be Impaired" check, so that hook would have to read `riderContext.switches` first. |
+| Bump and Run | The ↑1 switch with `key` and a `hit` Trigger (`outcome: x2`, Stunned) would match. But `items/attacks/attack-zones-scramble-field.mjs` also reads `checkContext.bumpAndRunAttempt` for its "move after the attack or be Impaired" check, so that hook would have to read `riderContext.switches` first. |
 | Grinder | Its checkbox also feeds a synthetic 2 Blunt damage into the plain Skill Test's damage pipeline. No rule piece does that. |
 | Analyze Target, Psychoanalyst, Coax Surrender, Menacing Glare, Instill Weakness, Deconstructionist, No Factor, Deceptive Warfare, Withering Fire | Post-roll results through their own helpers: an action charge, the synthetic Stun damage, prompts, Story Point requests. |
 | Watchful Eyes, Rallying Cry (WTNV) | Detected by their DIF, with post-roll effects. |

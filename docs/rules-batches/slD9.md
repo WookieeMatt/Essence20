@@ -212,7 +212,7 @@ One test line, already made (the rule fix needs it):
   `expect(allChat()).not.toContain('DiceRolled');`. Revert both if Fuel Efficient's `quiet` is not wanted.
 
 Nothing else needed. Optional and comment-only: `module/dice.mjs` lines 1308-1309 still say Fuel Efficient
-"rolls on every Energon spend, from the actor update hooks - helpers/extensions/resource/energon.mjs" (slD8 note).
+"rolls on every Energon spend, from the actor update hooks - items/resources/energon-spend-strains.mjs" (slD8 note).
 
 ## Unused strings
 

@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 // Round-4 engine: the rerollCard step (a Reaction's card reroll), with the reroll engine mocked.
 
 let rerollTo = 5;
-jest.unstable_mockModule('./helpers/reroll.mjs', () => ({
+jest.unstable_mockModule('./mechanics/rolls/reroll.mjs', () => ({
   normalizeRerollConfig: config => ({ ...config }),
   applyReroll: jest.fn(async (roll, config) => {
     roll.total = rerollTo;
@@ -36,7 +36,7 @@ beforeEach(() => {
 
 describe('rerollCard', () => {
   test('rerolls the card d20: rows the new total misses are cancelled, rows it now reaches become hits', async () => {
-    const { cardInfo } = await import('../helpers/extensions/react/core.mjs');
+    const { cardInfo } = await import('../mechanics/combat/reaction-engine.mjs');
     const attacker = makeActor('Goon');
     const near = makeActor('Near');
     const far = makeActor('Far');

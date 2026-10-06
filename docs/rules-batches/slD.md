@@ -207,7 +207,7 @@ attacked.
   within 10 ft (`rollVsMany`). Flame / Thorns / Venom: on a melee hit, a whispered follow-up roll against the target's
   better of Toughness and Evasion. *Needs:* a roll step against many targets' Defense at once, a "best of Defenses"
   DIF, and chat buttons. (`check:monsterForm` exists, so the gate could be expressed.)
-  `helpers/monster-morph.mjs#MONSTER_MORPH_ID` is core code (form toggling) and stays.
+  `items/forms/monster-morph.mjs#MONSTER_MORPH_ID` is core code (form toggling) and stays.
 - **Iron Bravado (share half).** Pay 1 Power to give allies within 30 ft the holder's current Condition immunities
   until the holder's next turn. *Needs:* a step that copies a computed immunity list onto other actors with an expiry.
   The `dice.mjs` `IRON_BRAVADO_ID` stamp stays core code.
@@ -248,7 +248,7 @@ attacked.
 
 - `packs/atsitems/_source/Inspirational_Leader_JH6xyTYUHCxAKkTP.json`: the Assist rule (text insertion, LF kept).
 - `module/rules/conversions.test.js`: the `// slD react` block, appended at the end. The import line is unchanged.
-- `module/helpers/lend-assistance.mjs`: **not changed.** `ASSIST_RANK_BYPASSES` and its loop now have no entries.
+- `module/mechanics/actions/lend-assistance.mjs`: **not changed.** `ASSIST_RANK_BYPASSES` and its loop now have no entries.
   They're left as an extension point, so other parts don't conflict.
 
 ---
@@ -258,9 +258,9 @@ attacked.
 **Scope:** every item in the id table of `module/helpers/extensions/resource/` (`IDS` in `common.mjs`, 36 keys), plus
 the one compendium uuid written inline in `energon.mjs` (Word of Unicron, in the Dark Energon addiction roll). Each
 item was checked against the slice's code and every other use of its id in `module/`. Those other uses are
-`helpers/got-to-get-tough.mjs` (Got To Get Tough), `helpers/power-use.mjs` (Void Warrior), `helpers/perks.mjs` (This,
-I Command's Upshift half), `helpers/banked-buffs.mjs` and `helpers/beast-mode.mjs` (Beast Mode), `dice.mjs` (We
-Improvise's Story Point grant), `helpers/retrogen.mjs`, `other1/alterations.mjs` and `gij1/perks.mjs` (the three
+`items/healing/got-to-get-tough.mjs` (Got To Get Tough), `mechanics/characters/power-use.mjs` (Void Warrior), `mechanics/characters/perks.mjs` (This,
+I Command's Upshift half), `mechanics/resources/banked-buffs.mjs` and `items/forms/beast-mode.mjs` (Beast Mode), `dice.mjs` (We
+Improvise's Story Point grant), `items/attacks/retrogen.mjs`, `other1/alterations.mjs` and `gij1/perks.mjs` (the three
 Mutation Perks), and `other1/more.mjs` / `qualify1/common.mjs` (Addicted (Dark Energon)). Branch `rules/slD-resource`,
 from `rules/slC` at a1291212.
 
@@ -276,9 +276,9 @@ That is 29 items with behaviour in this slice. The table also holds:
   packages grant. Addicted (Dark Energon) is the Hang-Up the addiction attack grants, and its presence stops further
   attacks. They stay with the code that reads them.
 - **Unused keys (4), removed:** `gotToGetTough`, `desperate`, `profitDirector` and `voidWarrior`. No code in the slice
-  read them. Got To Get Tough's grant is `helpers/got-to-get-tough.mjs`, which keys on its own constant and calls this
+  read them. Got To Get Tough's grant is `items/healing/got-to-get-tough.mjs`, which keys on its own constant and calls this
   slice's `recordTempHealth`. Desperate and Profit Director are Active Effects on the pack items
-  (`system.skills.wealth.shiftDown` / `shiftUp`). Void Warrior is activated by `helpers/power-use.mjs`. The
+  (`system.skills.wealth.shiftDown` / `shiftUp`). Void Warrior is activated by `mechanics/characters/power-use.mjs`. The
   regain block and scene-end clear in `power-spend.mjs` read the actor flag `voidWarriorActive`, not the id.
 
 **Files with no item-specific behaviour:** `common.mjs` (the id table and Foundry wrappers) and `index.mjs` (imports).
@@ -330,7 +330,7 @@ half, and the registration test still lists History Buff's Use. The new test is 
   The Against version changes the cost to a Move action and offers sharing. *Needs:* a personal Story Point resource
   (records with an expiry, shared ids, spent before the pool).
 - **This, I Command** (the Ruthless Point half). It is a prompt inside Play Favorites that doubles the points for 1
-  Psychic damage. It goes with Play Favorites. The Upshift half is `helpers/perks.mjs`, outside this slice.
+  Psychic damage. It goes with Play Favorites. The Upshift half is `mechanics/characters/perks.mjs`, outside this slice.
 - **Ruthless Efficiency.** Any same-type actor ending a turn with an unspent point gives every holder a point at the
   start of their next turn. *Needs:* a Trigger on another actor's turn end, plus the personal points above.
 - **Money Talks** and **Capable Freelancer.** Before a Requisition roll, a button prompt can turn the roll into a
@@ -389,7 +389,7 @@ half, and the registration test still lists History Buff's Use. The new test is 
 
 ##### Beast Mode
 
-- **Beast Mode** (the 10th/20th-level packages and scene end). When `helpers/beast-mode.mjs` sets its grant flag,
+- **Beast Mode** (the 10th/20th-level packages and scene end). When `items/forms/beast-mode.mjs` sets its grant flag,
   this offers a level-gated choice of packages. It can replace the first grant and grants the extra Mutation copies,
   then removes them when the flag clears or the scene ends. *Needs:* a choice with level-gated options, a "replace the
   tracked grant" step and an `until: scene` grant tied to a flag.
@@ -450,8 +450,8 @@ is the Perk's rules. No slice file became empty, and `resource.test.js` is uncha
 
 **Scope:** every item in the id tables of `module/helpers/extensions/other1/`: `O1_JTT` (`jtt.mjs`), `O1_ALT`
 (`alterations.mjs`), `O1_CC` (`cobra-gear.mjs`) and `O1_MORE` / `RITE_COPIES` (`more.mjs`). It also covers every other place
-in `module/` that uses those ids: `helpers/token-movement.mjs` (Evacuation Vents), `dice.mjs` (Savant Skill's d20+d4 and
-Unlucky (For You)'s Snag), `helpers/banked-buffs.mjs` and `helpers/lance-of-light.mjs` (Lance of Light's toggle), and
+in `module/` that uses those ids: `mechanics/combat/token-movement.mjs` (Evacuation Vents), `dice.mjs` (Savant Skill's d20+d4 and
+Unlucky (For You)'s Snag), `mechanics/resources/banked-buffs.mjs` and `items/defenses/lance-of-light.mjs` (Lance of Light's toggle), and
 `gij2/perks.mjs` (it imports `hasComputerizedGear`). Branch `rules/slD-other1`, from `rules/slC` at a1291212.
 
 | Verdict | Items |
@@ -564,7 +564,7 @@ No slice file became empty.
 ### Files touched outside the slice
 
 - `packs/jttitems/_source/Evacuation_Vents_Tft06zzgFsVCx2B7.json` - the two rules (LF, inserted as text).
-- `module/helpers/token-movement.mjs` - removed the `o1Evacuating` block in `getPushRules`; the comment listing the
+- `module/mechanics/combat/token-movement.mjs` - removed the `o1Evacuating` block in `getPushRules`; the comment listing the
   MovementAction Perks names Evacuation Vents.
 - `lang/en.json` - removed `O1EvacuationVents`.
 - `module/rules/conversions-uses.test.js` - the `// slD other1` block at the end (no import-line change; it imports
@@ -592,7 +592,7 @@ That is 25 items with behaviour of their own. Three table entries are only refer
 - Puissance: Again and Again and Again needs it on the actor.
 - Weird: the Perk Gluten-Tolerant refuses.
 
-Other uses of these ids outside the slice: Metallic Armor Power Up! (`helpers/power-use.mjs`, its activation and
+Other uses of these ids outside the slice: Metallic Armor Power Up! (`mechanics/characters/power-use.mjs`, its activation and
 upkeep) and Bump & Run (`dice.mjs`, its ↑1 and Stun) have halves that were converted or kept by earlier rounds; only
 the halves in this slice were judged here. Gluten-Tolerant's ↓1, Now You Don't's Cover half and Gravity Optional's
 float half are already rules (`conversions.test.js`).
@@ -744,6 +744,6 @@ None. No behaviour changed.
 
 ### Files touched outside the slice
 
-- None. Only `module/helpers/extensions/other3/shared.mjs` changed (the dead key), plus this file.
+- None. Only `module/items/shared/turn-stamps-and-sides.mjs` changed (the dead key), plus this file.
 - No tests were added or removed (nothing converted, and the dead key had no test). No `lang/en.json` strings became
   unused. `extensions/index.mjs` is unchanged.

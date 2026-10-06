@@ -1,7 +1,7 @@
-import { checkIsLocked } from "../helpers/actor.mjs";
+import { checkIsLocked } from "../mechanics/characters/actor-token-helpers.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
-import { markUsedThisEncounter } from "../helpers/perks.mjs";
+import { markUsedThisEncounter } from "../mechanics/characters/perks.mjs";
 
 // Detachable (Across the Stars, p.104): "the Combiner participant can remove itself... roll its
 // Initiative Skill Test for the following Combat round, and become a separate combatant...
@@ -108,7 +108,7 @@ export async function onSystemActorsDelete(event, actorSheet) {
   }
 
   await actor.update({[updateString]: new foundry.data.operators.ForcedDeletion()});
-  // A companion taken off the list stops being this character's (helpers/companion-link.mjs).
+  // A companion taken off the list stops being this character's (mechanics/companions/companion-link.mjs).
   if (removedActor?.flags?.essence20?.companionOf == actor.uuid) {
     await removedActor.unsetFlag('essence20', 'companionOf');
   }

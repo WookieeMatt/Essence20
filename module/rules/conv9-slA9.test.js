@@ -19,8 +19,8 @@ const findItems = jest.fn();
 const pickOne = jest.fn();
 const grantCopy = jest.fn();
 const grantTemp = jest.fn();
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({ chooseSelect, findItems, pickOne, grantCopy, rollTest: jest.fn(), markIntegrated: jest.fn() }));
-jest.unstable_mockModule('./helpers/extensions/resource/temp-resources.mjs', () => ({ grantTemp }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({ chooseSelect, findItems, pickOne, grantCopy, rollTest: jest.fn(), markIntegrated: jest.fn() }));
+jest.unstable_mockModule('./mechanics/resources/temporary-resources.mjs', () => ({ grantTemp }));
 
 const { rebuildIndex } = await import('./index.mjs');
 const { fireItemAdded, runUse } = await import('./triggers.mjs');

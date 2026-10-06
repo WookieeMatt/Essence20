@@ -12,32 +12,32 @@ import { fileURLToPath } from 'node:url';
 global.Hooks = { on: () => {}, once: () => {}, callAll: () => {} };
 
 const spend = jest.fn(async () => ({ blocked: false }));
-jest.unstable_mockModule('./helpers/action-economy.mjs', () => ({ spend, setNextTurn: jest.fn(), getLedger: () => null, isTracking: () => true }));
+jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({ spend, setNextTurn: jest.fn(), getLedger: () => null, isTracking: () => true }));
 const answers = [];
 const chooseSelect = jest.fn(async (title, prompt, options) => (answers.length ? answers.shift() : options[0]?.value ?? null));
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({ chooseSelect, rollTest: jest.fn(async () => ({ success: true })), chooseButtons: jest.fn() }));
-jest.unstable_mockModule('./helpers/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({ chooseSelect, rollTest: jest.fn(async () => ({ success: true })), chooseButtons: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
 const timed = [];
-jest.unstable_mockModule('./helpers/timed-status.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({
   applyTimedCondition: jest.fn(async (actor, status, rounds) => {
     timed.push({ name: actor.name, status, rounds });
     actor.statuses.add(status);
   }),
 }));
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { validateRule } = await import('./types.mjs');
 const { fireItemAdded, runUse, useAvailable } = await import('./triggers.mjs');
 const { pressRuleButton } = await import('./buttons.mjs');
-const { runApplyDialog, extDialogToggles, runPostRoll, runDerived } = await import('../helpers/extensions.mjs');
-const { hitRiderOnAttack } = await import('./ext/b/hit-rider.mjs');
-const { pressCardButton } = await import('./ext/g/cards.mjs');
-const { rolls } = await import('./ext/g/rolls.mjs');
-const { isHidden } = await import('./ext/g/hidden.mjs');
+const { runApplyDialog, extDialogToggles, runPostRoll, runDerived } = await import('../mechanics/item-hooks.mjs');
+const { hitRiderOnAttack } = await import('./plugins/combat/hit-rider.mjs');
+const { pressCardButton } = await import('./plugins/cards/card-buttons.mjs');
+const { rolls } = await import('./plugins/rolls/roll-vs-all.mjs');
+const { isHidden } = await import('./plugins/combat/hidden.mjs');
 const { legacyChoiceUpdates } = await import('./legacy-choices.mjs');
 // The generic Hide code: attacking while Hidden ends it and fires brokeHiding.
-await import('../helpers/extensions/other3/hide.mjs');
+await import('../mechanics/actions/hidden-state.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fromPack = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8'));

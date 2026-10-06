@@ -12,9 +12,9 @@ import { fileURLToPath } from 'node:url';
  * loaded from its pack source and must do what the removed slice code did.
  */
 
-// The picker the pick steps ask (helpers/grants.mjs). (Mocked paths resolve from module/jest.setup.js.)
+// The picker the pick steps ask (mechanics/resources/grants.mjs). (Mocked paths resolve from module/jest.setup.js.)
 const chooseSelect = jest.fn();
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({ chooseSelect, rollTest: jest.fn(), markIntegrated: jest.fn() }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({ chooseSelect, rollTest: jest.fn(), markIntegrated: jest.fn() }));
 
 const { LINK_HOLDERS, rebuildIndex } = await import('./index.mjs');
 const { ruleNoUntrainedSnag, ruleRollSources } = await import('./adapter.mjs');

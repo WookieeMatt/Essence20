@@ -162,7 +162,7 @@ export async function chooseAddKind() {
 
 /**
  * The item's Active Effects as entries in the same list as its rules.
- * @param {Array<ActiveEffect>} effects   Each already given e20Summaries (helpers/effects.mjs).
+ * @param {Array<ActiveEffect>} effects   Each already given e20Summaries (mechanics/characters/active-effect-controls.mjs).
  * @returns {Array<Object>}
  */
 export function effectEntries(effects) {

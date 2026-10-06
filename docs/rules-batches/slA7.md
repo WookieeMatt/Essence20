@@ -68,7 +68,7 @@ folders plus `module/rules/conv7-slA7.test.js`, `conv6-slA6.test.js` and `conv5-
   `chooseInstructorSkill`, the `pr2Instructor` Use, the Instructor branch of `onTeamItemCreated`, the `registerRollSources` /
   `registerUse` imports. **Kept as a legacy reader:** `pr2NoUntrainedSnag` + `INSTRUCTOR_FLAG` - students taught before
   the rules version sit in the old flag's `students` list, which no pick or mark can carry over, so they keep their lift
-  through it (and `helpers/roll-dialog.mjs` still imports it). The slice test now covers only that reader.
+  through it (and `mechanics/rolls/roll-dialog.mjs` still imports it). The slice test now covers only that reader.
 
 New tests: `module/rules/conv7-slA7.test.js` (13 tests, each item loaded from its pack source; the Power Flux one
 repeats the old `[6, 2]` case).
@@ -195,9 +195,9 @@ repeats the old `[6, 2]` case).
      const facts = { targetCount: globalThis.game?.user?.targets?.size, ...roll, ...rollFacts(roll.item, roll) };
    ```
    (With no `game`, `targetCount` stays undefined and `roll:targets` answers "unknown", as now.)
-2. Optional comment tidy: `module/helpers/roll-dialog.mjs` line 104
-   `// Instructor's taught Skill - helpers/extensions/pr2/team.mjs.` could become
-   `// Instructor students taught before the rules version - helpers/extensions/pr2/team.mjs (new ones are item rules).`
+2. Optional comment tidy: `module/mechanics/rolls/roll-dialog.mjs` line 104
+   `// Instructor's taught Skill - items/social/instructor-legacy-students.mjs.` could become
+   `// Instructor students taught before the rules version - items/social/instructor-legacy-students.mjs (new ones are item rules).`
 3. Carried from slA6, still optional: the `links.mjs` `team` + `stacks: false` edit (Bend Physics with two holders) and the
    `roll-dialog.mjs` line 99 Shinobi comment.
 
@@ -209,8 +209,8 @@ repeats the old `[6, 2]` case).
 
 ## Files touched
 
-- `module/helpers/extensions/pr1/ats.mjs`, `pr1/common.mjs`, `pr1/pr1.test.js`
-- `module/helpers/extensions/pr2/team.mjs`, `pr2/pr2.test.js`
+- `module/items/zords/lightspeed-swat-features.mjs`, `pr1/common.mjs`, `pr1/pr1.test.js`
+- `module/items/social/instructor-legacy-students.mjs`, `pr2/pr2.test.js`
 - `module/helpers/extensions/zord1/bodies.mjs`, `zord1/zord1.test.js`
 - `packs/atsitems/_source/Power_Flux_zhfG2gH4IgIjMAzT.json`, `packs/dditems/_source/Additional_Pair_of_Limbs_pedTP4vV1qwoBJvn.json`,
   `packs/bthitems/_source/Instructor_zitiiHIQ4miPU5pa.json` (all CRLF, kept)

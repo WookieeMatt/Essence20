@@ -12,7 +12,7 @@ global.Hooks = { on: (name, fn) => (hooks[name] = [...(hooks[name] ?? []), fn]),
 
 let lastApply = null;
 const flatRolls = [];
-jest.unstable_mockModule('./helpers/extensions/react/core.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/reaction-engine.mjs', () => ({
   lastApplyContext: () => lastApply,
   rollVsMany: jest.fn(async () => []),
   rollVs: jest.fn(async (actor, skill, dif) => {
@@ -21,37 +21,37 @@ jest.unstable_mockModule('./helpers/extensions/react/core.mjs', () => ({
   }),
 }));
 const pushed = [];
-jest.unstable_mockModule('./helpers/forced-movement.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/forced-movement.mjs', () => ({
   pushActor: jest.fn(async (actor, from, feet) => {
     pushed.push({ name: actor.name, from: from.name, feet });
     return from.name != 'Wall';
   }),
 }));
 const restored = [];
-jest.unstable_mockModule('./helpers/extensions/other2/medic.mjs', () => ({
+jest.unstable_mockModule('./items/healing/heal-action-medic-gear.mjs', () => ({
   restoreHealth: jest.fn(async (healer, target, amount) => restored.push({ healer: healer.name, target: target.name, amount })),
 }));
 const stamped = [];
-jest.unstable_mockModule('./helpers/perks.mjs', () => ({
+jest.unstable_mockModule('./mechanics/characters/perks.mjs', () => ({
   markUsedThisTurn: jest.fn(async (actor, key) => stamped.push({ name: actor.name, key })),
   actorHasPerk: () => false,
 }));
-jest.unstable_mockModule('./helpers/action-economy.mjs', () => ({ ACT_WHILE_DEFEATED_FLAG: 'actWhileDefeatedThisTurn', spend: jest.fn(async () => ({})) }));
+jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({ ACT_WHILE_DEFEATED_FLAG: 'actWhileDefeatedThisTurn', spend: jest.fn(async () => ({})) }));
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { runSteps, stepContext, stepErrors } = await import('./steps.mjs');
 const { validateRule } = await import('./types.mjs');
 const { evaluateTag, contextFor } = await import('./predicate.mjs');
 const { recordUse } = await import('./limits.mjs');
-const { hitRiderOnAttack, hitRiderOnCast } = await import('./ext/b/hit-rider.mjs');
-const { checkActorUpdate, itemVeto, ruleAllowsArmorPair } = await import('./ext/b/veto.mjs');
-const { ignoreArmorAdjust, armorShredDerived } = await import('./ext/b/armor.mjs');
-const { firePatchedUp } = await import('./ext/b/steps.mjs');
-const { ruleIgnoresMissEffects, ruleSneakAttackImmune, crashProtectionOf, ruleHideBonus } = await import('./ext/b/readers.mjs');
-const { attackRange } = await import('./ext/b/attack.mjs');
+const { hitRiderOnAttack, hitRiderOnCast } = await import('./plugins/combat/hit-rider.mjs');
+const { checkActorUpdate, itemVeto, ruleAllowsArmorPair } = await import('./plugins/effects/veto.mjs');
+const { ignoreArmorAdjust, armorShredDerived } = await import('./plugins/combat/ignore-armor.mjs');
+const { firePatchedUp } = await import('./plugins/combat/combat-steps.mjs');
+const { ruleIgnoresMissEffects, ruleSneakAttackImmune, crashProtectionOf, ruleHideBonus } = await import('./plugins/combat/immunity-readers.mjs');
+const { attackRange } = await import('./plugins/combat/rule-attacks.mjs');
 const { recipients } = await import('./steps.mjs');
-const { runPostRoll } = await import('../helpers/extensions.mjs');
+const { runPostRoll } = await import('../mechanics/item-hooks.mjs');
 await import('./triggers.mjs');
 
 let nextId = 1;

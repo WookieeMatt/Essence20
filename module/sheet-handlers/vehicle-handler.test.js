@@ -166,7 +166,7 @@ describe("onSystemActorsDelete - Detachable flagging (Across the Stars, p.104)",
 
   // This test used to assert the opposite - that detaching outside combat set no flag at all,
   // because markUsedThisEncounter began `if (!game.combat) return`. That was the bug the Scene
-  // Clock fixed (helpers/scene-clock.mjs): a Zord detached between encounters was silently allowed
+  // Clock fixed (mechanics/resources/scene-clock.mjs): a Zord detached between encounters was silently allowed
   // to reattach, and more generally every once-per-scene ability was unlimited out of combat.
   test("flags the detachment even outside combat, so it still blocks a reattach", async () => {
     const removedActor = {

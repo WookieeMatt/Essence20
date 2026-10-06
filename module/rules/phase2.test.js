@@ -6,7 +6,7 @@ import { fireTriggers, rollOutcome, runUse, useAvailable, useRulesOf, wouldBeDef
 import { rebuildIndex } from './index.mjs';
 import { ruleRollSources } from './adapter.mjs';
 import { summarizeRule, validateRule } from './types.mjs';
-import { registrySnapshot } from '../helpers/extensions.mjs';
+import { registrySnapshot } from '../mechanics/item-hooks.mjs';
 
 let nextId = 1;
 

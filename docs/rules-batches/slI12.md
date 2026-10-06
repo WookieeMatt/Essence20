@@ -13,7 +13,7 @@ group's work included). Full jest suite: 557 suites, all passing.
 
 ## Engine features added 2026-10-06 (round 12, group I)
 
-Everything below is registered on import of `module/rules/ext/i.mjs` (loaded last by `module/rules/ext/index.mjs`). No new
+Everything below is registered on import of `module/rules/ext/i.mjs` (loaded last by `module/rules/plugins/index.mjs`). No new
 strings (`E20.RulesExtI` is empty).
 
 - **Refs** (`ext/i/values.mjs`): `@rolePoints` - what the actor's base Role Points item holds (Mystical Points, Cheer...);
@@ -33,12 +33,12 @@ strings (`E20.RulesExtI` is empty).
 - **Reroll `scope: "picked"` + `picked: <key>`** - the reroll reaches every actor whose uuid is in the list a pick
   (`pickMany`, `pickEach`) stored on the rule's item under that key (an unlinked token's actor counts as its world actor);
   `includeHolder: true` adds the holder. `skills` may hold `{choice.<key>}`; while the list or a skill pick is missing,
-  nobody gets it. Read through `registerRerollGrant` (helpers/reroll.mjs#getRerollConfigs), so it is offered like any
+  nobody gets it. Read through `registerRerollGrant` (mechanics/rolls/reroll.mjs#getRerollConfigs), so it is offered like any
   item reroll. **`legacyEffects: "<flag>"`** - Active Effects an older version handed out for the grant (flagged
   `flags.essence20.<flag>` = the holder's uuid) are deleted once at start-up by the active GM.
 - **Rule `RequisitionDif {amount, items?, min?}`** (`ext/i/requisition.mjs`) - the holder's Requisition Test DIF changes by
   `amount` (a formula) for items matching `items` (item tags; `item:availability` reads the tier the DIF comes from - after
-  the Qualified-upgrade listeners), never below `min` (default 0). Read by helpers/requisition.mjs#requisitionDif; several
+  the Qualified-upgrade listeners), never below `min` (default 0). Read by mechanics/resources/requisition.mjs#requisitionDif; several
   rules apply in turn, each floored. `when` sees the actor.
 - **`castHitDamage(caster, spell, damage, damageType)`** (`ext/i/cast.mjs`) - a spell's later damage (a storm's strike)
   counted as one of its cast hits: the caster's `on: "cast"` HitRider rules whose `when` holds for that spell change it the
@@ -141,25 +141,25 @@ like it would do it. Temper Tempest's storm (other2/magic.mjs) is that spell's o
 
 ## Shared-file edits
 
-- `module/rules/ext/index.mjs`: `import "./i.mjs";`.
-- `module/rules/ext/b/hit-rider.mjs`: `hitRiderOnCast` takes `rider.item`.
+- `module/rules/plugins/index.mjs`: `import "./i.mjs";`.
+- `module/rules/plugins/combat/hit-rider.mjs`: `hitRiderOnCast` takes `rider.item`.
 - `module/rules/adapter.mjs`: `ruleDialogSwitches` fills `{holder}` in checkbox labels.
 - `module/rules/steps.mjs`: `updateActor` set / add paths fill `{choice.x}`; `pickGrant` text flags fill `{choice.x}` / `{var.x}`.
 - `module/rules/types.mjs`: ActionCost `limit.per` may be `day`. `module/rules/actions.mjs`: the cost rule's id is
   `limit.key` when given. `module/rules/actions.test.js`: the new validation message.
-- `module/helpers/requisition.mjs` (+ `requisition.test.js`): `requisitionDif` asks `ruleRequisitionDif`; Early Adopter's
+- `module/mechanics/resources/requisition.mjs` (+ `requisition.test.js`): `requisitionDif` asks `ruleRequisitionDif`; Early Adopter's
   constant and check gone.
-- `module/helpers/extensions/other2/magic.mjs` (+ `other2.test.js`): `tempestDamage` through `castHitDamage`.
-- `module/helpers/extensions/tf3/rolls.mjs`, `uses.mjs`, `common.mjs` (+ `tf3.test.js`): Ladder's toggle, apply-dialog, Use,
+- `module/items/magic/temper-tempest-sorcery-builder.mjs` (+ `other2.test.js`): `tempestDamage` through `castHitDamage`.
+- `module/items/rolls/unexpected-alternative.mjs`, `uses.mjs`, `common.mjs` (+ `tf3.test.js`): Ladder's toggle, apply-dialog, Use,
   flag and constant gone.
-- `module/helpers/extensions/tf2/modes.mjs`, `common.mjs`, `uses.mjs` (+ `tf2.test.js`): We Are One!'s sync gone.
-- `module/helpers/extensions/qualify2/qualifications.mjs`, `common.mjs` (+ `qualify2.test.js`): Weapon Enthusiast gone.
-- `module/helpers/extensions/mlp1/mlp1.mjs`: Brilliant Sight's darkvision and its constant gone.
-- `module/helpers/extensions/mlp2/mlp2.mjs`: the Mystical Understanding Use, its rest handler and constant gone;
+- `module/items/forms/alt-mode-attacks-mode-lock.mjs`, `common.mjs`, `uses.mjs` (+ `tf2.test.js`): We Are One!'s sync gone.
+- `module/items/gear/qualification-perks.mjs`, `common.mjs` (+ `qualify2.test.js`): Weapon Enthusiast gone.
+- `module/items/forms/pony-shape-shifting.mjs`: Brilliant Sight's darkvision and its constant gone.
+- `module/items/magic/friendship-is-mystical.mjs`: the Mystical Understanding Use, its rest handler and constant gone;
   `mlp2-mystical.test.js` deleted (all of it was that Use).
-- `module/helpers/magically-fit-in.mjs` (+ `magically-fit-in.test.js`, rewritten to the flag half): the picker gone.
-- `module/helpers/banked-buffs.mjs`: the Magically Fit In dispatch and import gone.
-- `module/helpers/action-perks.mjs` (+ `action-perks.test.js`): Detail Oriented's cost rule gone (the "normal cost keeps the
+- `module/items/rolls/magically-fit-in.mjs` (+ `magically-fit-in.test.js`, rewritten to the flag half): the picker gone.
+- `module/mechanics/resources/banked-buffs.mjs`: the Magically Fit In dispatch and import gone.
+- `module/mechanics/actions/action-perks.mjs` (+ `action-perks.test.js`): Detail Oriented's cost rule gone (the "normal cost keeps the
   discount" test now uses Talented).
 - `module/dice.mjs`: a comment only (the Magically Fit In flag read is Friendship Is Mystical's now).
 - `module/rules/conv10-slE10.test.js`: We Are One!'s test no longer expects the sync bump.

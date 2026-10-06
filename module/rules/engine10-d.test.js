@@ -8,25 +8,25 @@ import { jest } from '@jest/globals';
 global.Hooks = { on: () => {}, once: () => {}, callAll: () => {} };
 
 const economySpend = jest.fn(async () => ({}));
-jest.unstable_mockModule('./helpers/action-economy.mjs', () => ({ spend: economySpend, isTracking: () => true, grantActionsThisTurn: jest.fn(async () => {}) }));
+jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({ spend: economySpend, isTracking: () => true, grantActionsThisTurn: jest.fn(async () => {}) }));
 const grantTemp = jest.fn(async () => {});
-jest.unstable_mockModule('./helpers/extensions/resource/temp-resources.mjs', () => ({ grantTemp }));
+jest.unstable_mockModule('./mechanics/resources/temporary-resources.mjs', () => ({ grantTemp }));
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { validateRule, TRIGGER_EVENTS } = await import('./types.mjs');
 const { runSteps, stepContext, stepErrors, recipients } = await import('./steps.mjs');
 const { contextFor, evaluate, unknownTags } = await import('./predicate.mjs');
 const { resolveValue } = await import('./formula.mjs');
-const cards = await import('./ext/d/cards.mjs');
-const story = await import('./ext/d/story.mjs');
-const spellcost = await import('./ext/d/spellcost.mjs');
-const initiative = await import('./ext/d/initiative.mjs');
-const contest = await import('./ext/d/contest.mjs');
-const canvasExt = await import('./ext/d/canvas.mjs');
-const misc = await import('./ext/d/misc.mjs');
-const items = await import('./ext/d/items.mjs');
-const blast = await import('./ext/d/blast.mjs');
+const cards = await import('./plugins/cards/card-offer.mjs');
+const story = await import('./plugins/resources/personal-story-points.mjs');
+const spellcost = await import('./plugins/resources/spell-cost.mjs');
+const initiative = await import('./plugins/rolls/initiative.mjs');
+const contest = await import('./plugins/rolls/contest.mjs');
+const canvasExt = await import('./plugins/combat/canvas-points.mjs');
+const misc = await import('./plugins/tags/small-steps-and-refs.mjs');
+const items = await import('./plugins/marks/item-marks.mjs');
+const blast = await import('./plugins/combat/rigs-and-blasts.mjs');
 
 function setPath(object, path, value) {
   const keys = path.split('.');
@@ -551,7 +551,7 @@ describe('lent Alterations', () => {
   });
 
   test('a lend of an own Alteration\'s benefit and cost', async () => {
-    const alt = await import('../helpers/extensions/other1/alterations.mjs');
+    const alt = await import('../mechanics/characters/alteration-adjustments.mjs');
     const lender = makeActor('Lender', [{ name: 'Gills', type: 'alteration', system: { type: 'movement', bonusMovementType: 'swim', bonusMovement: 10, costMovementType: 'ground', costMovement: 5 } }]);
     const friend = makeActor('Friend');
     world(lender, friend);

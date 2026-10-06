@@ -30,8 +30,8 @@ const grants = {
   chooseButtons: jest.fn(),
   pickPerkFrom: jest.fn(),
 };
-jest.unstable_mockModule('./helpers/grants.mjs', () => grants);
-jest.unstable_mockModule('./helpers/requisition.mjs', () => ({ requisitionSkill: item => (item.type == 'armor' ? 'athletics' : 'targeting') }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => grants);
+jest.unstable_mockModule('./mechanics/resources/requisition.mjs', () => ({ requisitionSkill: item => (item.type == 'armor' ? 'athletics' : 'targeting') }));
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({
   createItemCopies: jest.fn(async () => {}),
   setEntryAndAddItem: jest.fn(async () => 'k1'),
@@ -128,11 +128,11 @@ const { validateRule, RULE_TYPES } = await import('./types.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { legacyPaths } = await import('./legacy-choices.mjs');
 const { linkedEntries } = await import('./links.mjs');
-await import('./ext/index.mjs');
-const eTypes = await import('./ext/e/types.mjs');
-const eDerived = await import('./ext/e/derived.mjs');
-const eLegacy = await import('./ext/e/legacy.mjs');
-const { skillsFor, recordedEntries } = await import('./ext/e/tags.mjs');
+await import('./plugins/index.mjs');
+const eTypes = await import('./plugins/combat/hazard-terrain-targets.mjs');
+const eDerived = await import('./plugins/effects/derived-stages.mjs');
+const eLegacy = await import('./plugins/marks/legacy-marks.mjs');
+const { skillsFor, recordedEntries } = await import('./plugins/tags/actor-state-tags.mjs');
 const { ruleDerived, ruleSurpriseModes } = await import('./adapter.mjs');
 
 const run = (list, ctx) => runSteps(list, ctx);

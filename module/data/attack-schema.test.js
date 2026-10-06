@@ -3,7 +3,7 @@ import { PowerItemData } from "./item/power.mjs";
 import { SpellItemData } from "./item/spell.mjs";
 
 // Same reasoning as aoe-schema.test.js's own doc comment: the point is the SHARING between
-// SpellItemData and PowerItemData, so helpers/power-attack.mjs (and dice.mjs's own Defense
+// SpellItemData and PowerItemData, so mechanics/characters/attack-powers.mjs (and dice.mjs's own Defense
 // pre-select) can treat either type identically - a test that only checked attackSchema() in
 // isolation would still pass if someone forgot to spread it into one of the two data models.
 const ATTACK_FIELDS = ["damageType", "damageValue", "defenseType", "numTargets"];

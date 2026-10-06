@@ -1,4 +1,4 @@
-import { getSheetContext } from "../helpers/action-economy.mjs";
+import { getSheetContext } from "../mechanics/actions/action-economy.mjs";
 
 const { CombatTracker } = foundry.applications.sidebar.tabs;
 
@@ -15,7 +15,7 @@ const { CombatTracker } = foundry.applications.sidebar.tabs;
  * rendered rows costs one querySelectorAll and keeps working when that template changes.
  *
  * No refresh logic is needed either: the ledger lives on the Combatant (see
- * helpers/action-economy.mjs), so spending an action updates a Combatant flag, and core already
+ * mechanics/actions/action-economy.mjs), so spending an action updates a Combatant flag, and core already
  * re-renders this tracker on combatant updates.
  */
 export class Essence20CombatTracker extends CombatTracker {

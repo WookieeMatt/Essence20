@@ -133,7 +133,7 @@ sheet), plus a range edge for each ally count and the passenger / Zord / no-Perk
   - Kill Shot and Precision is Perfection (a third d20);
   - Super Specialized (a step up after the final shift, after the caps and autofail);
   - Advantageous Fighter (caps the total downshift at 2 with Edge);
-  - Storm of Lead (Fanning's first-shot ↑1, inside helpers/fanning.mjs).
+  - Storm of Lead (Fanning's first-shot ↑1, inside items/attacks/fanning.mjs).
 - **Energon box consequences:**
   - Imaginative Engineering (↑1 extra when the core Energon box is ticked, once per round). Needs: a tag
     for that box.
@@ -152,7 +152,7 @@ sheet), plus a range edge for each ally count and the passenger / Zord / no-Perk
   count allies the `getNearbyAllyTokens` way.
   - Needs: a non-stacking aura that counts allies the system way.
 - **Without a Word.** Needs a tag for "an enemy anywhere has one of these statuses".
-- **Not On My Watch.** Needs a check `defeatedAllyInReach` (helpers/not-on-my-watch.mjs#hasDefeatedAllyInReach).
+- **Not On My Watch.** Needs a check `defeatedAllyInReach` (items/defenses/not-on-my-watch.mjs#hasDefeatedAllyInReach).
   The existing `nearbyDefeatedAlly` is Field Aid's unlimited range.
 - **The Dependable Hang-Up.** It only gates the Dependable checkbox (regA).
 - **Spell damage tables:** Energy Beam, Lancing Beam, Explosive Beam, Beam Volley and Fireball (KoC).

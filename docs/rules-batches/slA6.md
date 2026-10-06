@@ -252,7 +252,7 @@ the holder in `LINK_HOLDERS` by hand, as `rules/index.mjs` will once `team` is o
      }
    ```
    (Both `team` rules added here already carry `stacks: false`.)
-3. Optional comment tidy, carried from slA5: `module/helpers/roll-dialog.mjs` line 99
+3. Optional comment tidy, carried from slA5: `module/mechanics/rolls/roll-dialog.mjs` line 99
    `// Shinobi of the 63rd Hexagram / Steady Hands - helpers/extensions/zord2/snag.mjs.` could become
    `// Steady Hands - helpers/extensions/zord2/snag.mjs (Shinobi's motorcycle Driving is its own item rule).`
 
@@ -264,11 +264,11 @@ the holder in `LINK_HOLDERS` by hand, as `rules/index.mjs` will once `team` is o
 
 ## Files touched
 
-- `module/helpers/extensions/pr2/team.mjs`, `pr2/common.mjs`, `pr2/pr2.test.js`
-- `module/helpers/extensions/pr3/ttsg.mjs`, `pr3/common.mjs`, `pr3/pr3.test.js`
-- `module/helpers/extensions/pr1/ats.mjs`
+- `module/items/social/instructor-legacy-students.mjs`, `pr2/common.mjs`, `pr2/pr2.test.js`
+- `module/items/zords/elemental-fury.mjs`, `pr3/common.mjs`, `pr3/pr3.test.js`
+- `module/items/zords/lightspeed-swat-features.mjs`
 - `module/helpers/extensions/zord1/bodies.mjs`, `zord1/zord1.test.js`
-- `module/helpers/extensions/zord2/gear-modes.mjs`, `zord2/common.mjs` (both LF, kept), `zord2/zord2.test.js`
+- `module/items/gear/dozer-blade-shinobi.mjs`, `zord2/common.mjs` (both LF, kept), `zord2/zord2.test.js`
 - `packs/bthitems/_source/Primal_Rage_4gkRa5plNeMNXSmL.json`, `Bend_Physics_EITAjh6GBuc2SVSY.json`;
   `packs/atsitems/_source/S_W_A_T__Upgrade_Ce5f5pQTNTSY6xgF.json`; `packs/ttsgitems/_source/Morphin_Navigator_nDx2XD6gD9lM37Bl.json`;
   `packs/tsitems/_source/Carapaced__Common__aTevGfLML1dlbErs.json`, `Carapaced__Large__2mSP6mVx0axvOlXf.json`;

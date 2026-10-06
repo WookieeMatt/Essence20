@@ -1,5 +1,5 @@
-import { getRemaining, isTracking } from "../helpers/action-economy.mjs";
-import { getMovementAllowance, getPushRules, isMovementTracked, movementTypeFor, planPush } from "../helpers/token-movement.mjs";
+import { getRemaining, isTracking } from "../mechanics/actions/action-economy.mjs";
+import { getMovementAllowance, getPushRules, isMovementTracked, movementTypeFor, planPush } from "../mechanics/combat/token-movement.mjs";
 
 const { TokenRuler } = foundry.canvas.placeables.tokens;
 
@@ -24,7 +24,7 @@ const PATH_COLORS = {
 /**
  * Token drag ruler that says, while you are still dragging, what this move is going to cost.
  *
- * The action economy already charged Pushing correctly (helpers/token-movement.mjs), but it only
+ * The action economy already charged Pushing correctly (mechanics/combat/token-movement.mjs), but it only
  * told you afterwards, in a toast that is easy to miss and arrives once the move is already made.
  * The ruler is where a player is actually looking mid-drag, and v14 measures the planned path for
  * us, so the warning can be live. Two things carry it:

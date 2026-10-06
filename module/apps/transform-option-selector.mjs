@@ -1,5 +1,5 @@
 ﻿import { _altModeSelect } from "../sheet-handlers/transformer-handler.mjs";
-import { getFormData } from "../helpers/application.mjs";
+import { getFormData } from "../util/application.mjs";
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";

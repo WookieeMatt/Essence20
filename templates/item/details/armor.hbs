@@ -69,7 +69,7 @@
 
   {{#inArray system.itemAndUpgradeTraits 'exoFrame'}}
     {{#if @root.document.isEmbedded}}
-    {{!-- Exo-Frame - manual Driving test, see helpers/exo-frame.mjs --}}
+    {{!-- Exo-Frame - manual Driving test, see items/defenses/exo-frame.mjs --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTraitExoFrame'}}
     {{#*inline "item-field-inputs"}}
     <button type="button" class="item-field-inputs" data-action="rollExoFrameTest" data-tooltip="{{localize 'E20.ExoFrameTestHint'}}">
@@ -81,7 +81,7 @@
   {{/inArray}}
 
   {{#inArray system.itemAndUpgradeTraits 'modular'}}
-    {{!-- Modular (X) - see helpers/modular-armor.mjs --}}
+    {{!-- Modular (X) - see items/defenses/modular-armor.mjs --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorModularAllowance'}}
     {{#*inline "item-field-inputs"}}
     {{numberInput system.modularAllowance name="system.modularAllowance" min=0 step=1}}

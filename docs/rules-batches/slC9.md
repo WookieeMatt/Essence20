@@ -86,7 +86,7 @@ Not changed: the automation notes (written only via apply.cjs). The converted it
 - **Metier:** needs renaming the rule's own item with a pick and a derived stage before `_preparePoisonTraining` (the Assassin effect's poison step taken back). Small-medium.
 - **Improvise Bomb, Demolition Artist (2):** `pickGrant {record}` keeps the pick, but no roll can take its DIF from the picked entry's Availability, the crit's second copy needs a grant of the recorded pick, and the cost depends on another Perk. Needs a picked-entry formula ref plus `grant {uuid: picked}`. Small-medium.
 - **Scavenger:** the same, plus the Availability one step harder and the Requisition Skill of the picked entry; `appendTraits` exists on `grant` but not on `pickGrant`. Medium.
-- **Angry (fix3-gij):** a tag comparing the rolled Skill with the value `helpers/angry.mjs` stores (`skill:data:<path>` or a `check:` name). Small.
+- **Angry (fix3-gij):** a tag comparing the rolled Skill with the value `items/rolls/angry-influence.mjs` stores (`skill:data:<path>` or a `check:` name). Small.
 - **Extract Poison (Use; partial, unchanged):** a roll whose DIF is the picked compendium entry's Availability, then the grant. Small-medium (same piece as Improvise Bomb).
 
 ### gij2 (11)

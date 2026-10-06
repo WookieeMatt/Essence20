@@ -6,7 +6,7 @@ import { applyRuleImmunity, consumeLimited, ruleDerived, ruleRollSources, ruleSp
 import { runSteps, stepContext, stepErrors } from './steps.mjs';
 import { fireItemAdded, fireTriggers, sweepExpired } from './triggers.mjs';
 import { summarizeRule, validateRule } from './types.mjs';
-import { registrySnapshot } from '../helpers/extensions.mjs';
+import { registrySnapshot } from '../mechanics/item-hooks.mjs';
 import './links.mjs';
 
 let nextId = 1;

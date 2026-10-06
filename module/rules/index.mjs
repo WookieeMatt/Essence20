@@ -29,7 +29,7 @@ export function isItemActive(item) {
     return false;
   }
 
-  // A Hang-Up the Matured Perk lets its holder ignore (helpers/matured.mjs).
+  // A Hang-Up the Matured Perk lets its holder ignore (items/social/matured.mjs).
   if (item.flags?.essence20?.maturedIgnored) {
     return false;
   }

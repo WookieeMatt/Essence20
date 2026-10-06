@@ -93,7 +93,7 @@ One rule was added to one pack item. After this part, `scripts/check-rules.mjs` 
 Removed: `FIX3_TF.experiment`, `tfFixToggles` / `tfFixApplyDialog` and their `registerDialogToggles` /
 `registerApplyDialog` calls, the now-unused `label` helper and the `grappleEscapeSkills` import in
 `fix3-tf/tf-fixes.mjs`, its header bullet, the two Experiment tests in `fix3-tf/tf-fixes.test.js`, and the lang key
-`E20.Fix3TfExperimentEscape`. Experiment's Hardpoint option still reads its own id in `helpers/weapon-traits.mjs`,
+`E20.Fix3TfExperimentEscape`. Experiment's Hardpoint option still reads its own id in `mechanics/combat/weapon-traits.mjs`,
 which is outside this slice and unchanged. Experiment is now fully rules except that Hardpoint lookup.
 
 #### Partial (0)

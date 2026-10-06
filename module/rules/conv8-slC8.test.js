@@ -6,7 +6,7 @@ import { rebuildIndex } from './index.mjs';
 import { ruleMovement, ruleRollSources } from './adapter.mjs';
 import { registerCheck, setWorldLookups } from './predicate.mjs';
 import { fireTriggers, runUse } from './triggers.mjs';
-import { runPostRoll } from '../helpers/extensions.mjs';
+import { runPostRoll } from '../mechanics/item-hooks.mjs';
 
 /**
  * Round 8 of the slC slices (gij1, gij2, gij3, fix3-gij, situational1, situational2): items moved from

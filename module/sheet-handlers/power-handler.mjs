@@ -1,7 +1,7 @@
 import PowerCostSelector from "../apps/power-cost-selector.mjs";
-import { parseId } from "../helpers/utils.mjs";
-import { onPowerUse } from "../helpers/power-use.mjs";
-import { spendDailyUse } from "../helpers/nanomite-uses.mjs";
+import { parseId } from "../util/utils.mjs";
+import { onPowerUse } from "../mechanics/characters/power-use.mjs";
+import { spendDailyUse } from "../mechanics/resources/nanomite-uses.mjs";
 
 // Zeo Crystal Wielder (Through the Shattered Grid, Zeo Rangers Team Perk, p.27): "It costs you 1
 // less Personal Power to activate the Zeo Crystal Boost Grid Power."
@@ -53,7 +53,7 @@ export async function onPowerDrop(actor, power, dropFunc) {
 /**
  * Handles determining the cost of a Power activation, then - once the cost is actually spent (or
  * confirmed there's nothing to spend) - dispatches to the Power's own bespoke mechanic via
- * helpers/power-use.mjs#onPowerUse. That dispatch is the Power-side equivalent of Perks' own
+ * mechanics/characters/power-use.mjs#onPowerUse. That dispatch is the Power-side equivalent of Perks' own
  * onPerkUse - see that file's own doc comment for why nothing analogous existed here before.
  * @param {Actor} actor The Actor activating the Power
  * @param {Power} power The Power being activated
@@ -84,7 +84,7 @@ export async function powerCost(actor, power, payer = actor) {
   }
 
   // G.I. Joe nanomite powers cost no Power points - they're limited to uses per day instead. See
-  // helpers/nanomite-uses.mjs.
+  // mechanics/resources/nanomite-uses.mjs.
   if (power.system.type == "nanomite") {
     if (await spendDailyUse(actor, power)) {
       await onPowerUse(actor, power, 0);

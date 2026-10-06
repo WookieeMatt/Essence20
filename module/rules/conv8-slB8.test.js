@@ -18,7 +18,7 @@ const { rebuildIndex } = await import('./index.mjs');
 const { ruleDefenseAdjust, ruleRollSources } = await import('./adapter.mjs');
 const { registerCheck, setWorldLookups } = await import('./predicate.mjs');
 const { fireTriggers, runUse } = await import('./triggers.mjs');
-const { favoriteWeaponOf, TF1 } = await import('../helpers/extensions/tf1/common.mjs');
+const { favoriteWeaponOf, TF1 } = await import('../items/shared/condition-damage-buttons.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fromPack = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8'));

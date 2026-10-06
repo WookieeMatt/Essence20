@@ -82,7 +82,7 @@ export const ACTIONS = {
    * and the sheet header draws its action pips.
    *
    * The header's action block only renders for an actor that is a combatant in the ACTIVE
-   * encounter (helpers/action-economy.mjs#getSheetContext), so without this the combat tour
+   * encounter (mechanics/actions/action-economy.mjs#getSheetContext), so without this the combat tour
    * described pips nobody could see.
    *
    * Deliberately does nothing when an encounter is already running here: making another one

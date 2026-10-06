@@ -137,7 +137,7 @@ export const RULE_TYPES = {
     ],
   },
   // The same settings as a Perk's own system.reroll (data/reroll-schema.mjs), checked there - so
-  // existing reroll data moves into a rule unchanged. helpers/reroll.mjs#normalizeRerollConfig
+  // existing reroll data moves into a rule unchanged. mechanics/rolls/reroll.mjs#normalizeRerollConfig
   // fills the defaults.
   Reroll: {
     params: Object.fromEntries(['mode', 'target', 'reset', 'maxUses', 'values', 'cost', 'condition', 'skills', 'essence',
@@ -181,7 +181,7 @@ export const RULE_TYPES = {
       op: { kind: 'enum', options: ['add', 'set', 'multiply', 'max', 'min'] },
       // A number / formula, or true / false (set as it is). The path may read a pick: system.skills.{choice.skill}.x
       value: { kind: 'any', required: true },
-      // early: before the poison training is worked out from system.poisonTraining (rules/ext/e/derived.mjs).
+      // early: before the poison training is worked out from system.poisonTraining (rules/plugins/effects/derived-stages.mjs).
       stage: { kind: 'enum', options: ['early'] },
     },
     scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
@@ -250,7 +250,7 @@ export const RULE_TYPES = {
   // Acting in a surprise round (documents/actor.mjs#_prepareActions): "normal" acts as usual,
   // "move" may still take a Move action and Skill Tests (no Standard), "speedAsLevel" acts with Speed
   // treated as the character's level (up to their real Speed).
-  // Critical Effects (helpers/target-riders.mjs#critRiders): an option a Critical Success can pick -
+  // Critical Effects (mechanics/combat/target-riders.mjs#critRiders): an option a Critical Success can pick -
   // damage of a type, Essence damage, a Condition, or a named effect (bonusAttack, blazingStrikes,
   // nextAttackSnag) - or `improve`: every damage option gets that many more points. The condition reads
   // the attack and its target (item:own for "attacks with this weapon", target:within:30...).
@@ -262,14 +262,14 @@ export const RULE_TYPES = {
     scopes: ['self'],
     validate: rule => (rule.improve !== undefined || rule.damageType || rule.essence || rule.status || rule.effect ? [] : ['changes nothing']),
   },
-  // Traits on the actor's weapons (helpers/weapon-traits.mjs#perkGrantedTraits): every weapon the `items`
+  // Traits on the actor's weapons (mechanics/combat/weapon-traits.mjs#perkGrantedTraits): every weapon the `items`
   // tags match (item:trait:fire, item:name~grenade...; none means every weapon) gains `traits`.
   WeaponTrait: {
     params: { traits: { kind: 'strings', required: true }, items: { kind: 'object' } },
     scopes: ['self'],
     validate: rule => (Array.isArray(rule.items) ? unknownTags(rule.items).map(tag => `unknown tag "${tag}" in items`) : []),
   },
-  // Hardpoints (helpers/weapon-traits.mjs): extra External / Integrated / Non-Weapon slots, more
+  // Hardpoints (mechanics/combat/weapon-traits.mjs): extra External / Integrated / Non-Weapon slots, more
   // Integrated slots per weapon, and Integrated weapons firing as Reinforced (those the `items` tags
   // match, or all).
   Hardpoints: {
@@ -280,7 +280,7 @@ export const RULE_TYPES = {
     scopes: ['self'],
     validate: rule => (['external', 'integrated', 'nonWeapon', 'perWeapon', 'reinforced'].some(key => rule[key]) ? [] : ['changes nothing']),
   },
-  // Several attacks per Attack action (helpers/action-perks.mjs#getAttacksPerAction): `count` attacks
+  // Several attacks per Attack action (mechanics/actions/action-perks.mjs#getAttacksPerAction): `count` attacks
   // in all (the best one counts), or `additional` on top of whichever count applies. The condition
   // reads the attack: weapon:trait:ballistic, attack:melee...
   AttackCount: {
@@ -301,7 +301,7 @@ export const RULE_TYPES = {
   Movement: {
     params: {
       movement: { kind: 'enum', required: true, options: ['ground', 'aerial', 'climb', 'swim', 'burrow', 'all'] },
-      // derived: inside the extensions' derived pass, before afterDerived (rules/ext/e/derived.mjs).
+      // derived: inside the extensions' derived pass, before afterDerived (rules/plugins/effects/derived-stages.mjs).
       stage: { kind: 'enum', options: ['base', 'total', 'adjust', 'final', 'afterGravity', 'derived', 'afterDerived'] },
       round: { kind: 'enum', options: ['nearest', 'floor', 'ceil'] },
       op: { kind: 'enum', required: true, options: ['set', 'multiply', 'add', 'max', 'min'] },
@@ -379,7 +379,7 @@ export const RULE_TYPES = {
       ...limitErrors(rule.limit),
     ],
   },
-  // An alternate effect generated on weapons (helpers/weapon-upgrades.mjs#desiredGeneratedEffects): a copy of
+  // An alternate effect generated on weapons (items/attacks/weapon-upgrades.mjs#desiredGeneratedEffects): a copy of
   // the weapon's primary effect with `changes` (system paths to values) and `formulas` (system paths to
   // formulas; @base.<path> reads the primary's own value). On an upgrade, scope host: its weapon. On a Perk,
   // scope self: every weapon its `items` tags match. `name`: an i18n key or text, where {primary} is the
@@ -402,7 +402,7 @@ export const RULE_TYPES = {
       ...(/^[\w-]+$/.test(rule.key ?? '') ? [] : ['key must be a plain name']),
     ],
   },
-  // Who may Lend Assistance to whom (helpers/lend-assistance.mjs#canAssistWithSkill). side: give (the
+  // Who may Lend Assistance to whom (mechanics/actions/lend-assistance.mjs#canAssistWithSkill). side: give (the
   // holder helping) or receive (the holder being helped); effect: refuse, anyRank (no need for as many
   // Skill ranks as the ally), or boost - the help grants at least `atLeast` upshifts, `extra` more on
   // top, and/or an Edge (getAssistShiftUp / getAssistEdge); anyRange (receive: helped from any distance);
@@ -417,14 +417,14 @@ export const RULE_TYPES = {
     },
     scopes: ['self'],
   },
-  // Immune to Conditions (helpers/condition-immunity.mjs#isImmuneToCondition): the Condition is refused
+  // Immune to Conditions (mechanics/combat/condition-immunity.mjs#isImmuneToCondition): the Condition is refused
   // when something tries to apply it. Status ids from CONFIG.statusEffects (frightened, surprised...).
   ConditionImmunity: {
     params: { conditions: { kind: 'strings', required: true } },
     scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
     validate: rule => (Array.isArray(rule.conditions) && rule.conditions.length ? [] : ['conditions must list at least one Condition']),
   },
-  // Requisition access (helpers/requisition.mjs): Trained or Qualified in every item the `items` tags
+  // Requisition access (mechanics/resources/requisition.mjs): Trained or Qualified in every item the `items` tags
   // match (item:type:weapon, item:data:system.availability=standard, item:name~microtech...).
   // Only ever widens what the character's Role already gives.
   // `upgrades` (item: tags on each upgrade): Qualified in those upgrades - left out of Table 8-2's
@@ -438,7 +438,7 @@ export const RULE_TYPES = {
       ...(Array.isArray(rule.upgrades) ? unknownTags(rule.upgrades).map(tag => `unknown tag "${tag}" in upgrades`) : []),
     ],
   },
-  // Token movement (helpers/rough-terrain.mjs, helpers/token-movement.mjs): ignore Rough Terrain, and
+  // Token movement (mechanics/world/rough-terrain.mjs, mechanics/combat/token-movement.mjs): ignore Rough Terrain, and
   // Push Yourself at more feet per Free action, or with no doubling cap.
   MovementAction: {
     params: { ignoreRoughTerrain: { kind: 'bool' }, pushFeet: { kind: 'formula' }, pushUnlimited: { kind: 'bool' } },
@@ -461,7 +461,7 @@ export const RULE_TYPES = {
       ...(String(rule.path ?? '').startsWith('system.') ? [] : ['path must start with system.']),
     ],
   },
-  // Seeing in the dark (helpers/vision-grant.mjs): offered alongside items' own visionGrant, best range wins.
+  // Seeing in the dark (mechanics/characters/vision-grant.mjs): offered alongside items' own visionGrant, best range wins.
   Sense: {
     params: {
       mode: { kind: 'enum', options: ['darkvision', 'monochromatic', 'lightAmplification'] },
@@ -482,7 +482,7 @@ export const RULE_TYPES = {
       ask: { kind: 'string' },
     },
     scopes: ['self'],
-    // day: counted on the actor until a Rest (helpers/action-perks.mjs); limit.key names the counter (shared with others).
+    // day: counted on the actor until a Rest (mechanics/actions/action-perks.mjs); limit.key names the counter (shared with others).
     validate: rule => (rule.limit === undefined || ['turn', 'scene', 'encounter', 'day'].includes(rule.limit?.per) ? [] : ['limit.per must be turn, scene, encounter or day']),
   },
   // A Use button (rules/triggers.mjs): pay the cost, count the limit, run the steps.

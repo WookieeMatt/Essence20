@@ -1,7 +1,7 @@
 import {
   registerAfterDamage, registerMissionAdvanced, registerPostRoll, registerRest, registerRoundStart,
   registerSceneAdvanced, registerTurnEnd, registerTurnStart, registerUse,
-} from "../helpers/extensions.mjs";
+} from "../mechanics/item-hooks.mjs";
 import { isItemActive, ruleLabel, rulesOf, rulesOfType } from "./index.mjs";
 import { recordUse, restClears, usesLeft } from "./limits.mjs";
 import { LINK_SCOPES, linkedEntries } from "./links.mjs";
@@ -13,7 +13,7 @@ import { resolveValue } from "./formula.mjs";
  * Phase 2 of the rules engine (docs/RULES_ENGINE_PLAN.md §4.12-4.13): Use buttons and Triggers.
  *
  * A **Use** rule puts a Use button on its item - the same button every hand-written Use has
- * (helpers/action-perks.mjs, through helpers/extensions.mjs#registerUse). Pressing it checks the
+ * (mechanics/actions/action-perks.mjs, through mechanics/item-hooks.mjs#registerUse). Pressing it checks the
  * rule's condition and limit, pays its cost (an action, then a resource), runs its steps and posts
  * what happened. An item with several Use rules asks which.
  *

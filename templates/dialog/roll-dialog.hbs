@@ -97,8 +97,8 @@
   </div>
   {{/if}}
 
-  {{!-- Fanning (X) / Retrogen weapon traits - see helpers/fanning.mjs and helpers/retrogen.mjs. --}}
-  {{!-- All Out Attack / Evasive Fighting / Pinpoint / Make an Opening - see helpers/target-riders.mjs. --}}
+  {{!-- Fanning (X) / Retrogen weapon traits - see items/attacks/fanning.mjs and items/attacks/retrogen.mjs. --}}
+  {{!-- All Out Attack / Evasive Fighting / Pinpoint / Make an Opening - see mechanics/combat/target-riders.mjs. --}}
   {{#if allOutAttackMax}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogAllOutAttack'}}</span>
@@ -135,7 +135,7 @@
   </div>
   {{/if}}
 
-  {{!-- Extension controls (helpers/extensions.mjs#registerDialogToggles), read back as options.ext. --}}
+  {{!-- Extension controls (mechanics/item-hooks.mjs#registerDialogToggles), read back as options.ext. --}}
   {{#each extToggles as |toggle|}}
   <div class="flexrow e20-align-center roll-dialog-toggle">
     <span>{{toggle.label}}</span>
@@ -870,7 +870,7 @@
   <div>
     {{!-- Which Defense this attack is tested against is the DEFENDER's own choice (or the item's
          fixed suggestion, when they don't override it) - not something to let the attacker pick
-         here (see helpers/defense-choice.mjs's own doc comment for the full RAW citation and why
+         here (see mechanics/combat/defense-choice.mjs's own doc comment for the full RAW citation and why
          this used to be an editable dropdown). This is display-only, so the defending side's own
          prompt always starts from the weapon's actual suggestion regardless of what this shows;
          the hidden input still submits it through as that suggestion. --}}

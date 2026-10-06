@@ -12,14 +12,14 @@ const hooks = {};
 global.Hooks = { on: (name, fn) => (hooks[name] = [...(hooks[name] ?? []), fn]), once: () => {}, callAll: () => {} };
 
 const timed = [];
-jest.unstable_mockModule('./helpers/timed-status.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({
   applyTimedCondition: jest.fn(async (actor, status, rounds) => {
     timed.push({ name: actor.name, status, rounds });
     actor.statuses.add(status);
   }),
 }));
 const dealt = [];
-jest.unstable_mockModule('./helpers/combat.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/combat.mjs', () => ({
   applyDamage: jest.fn(async (actor, amount, type) => dealt.push({ name: actor.name, amount, type })),
 }));
 const grants = {
@@ -28,41 +28,41 @@ const grants = {
   findItems: jest.fn(async () => []),
   pickOne: jest.fn(async () => null),
 };
-jest.unstable_mockModule('./helpers/grants.mjs', () => grants);
-jest.unstable_mockModule('./helpers/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => grants);
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
 let lastApply = null;
 const react = {
   lastApplyContext: () => lastApply,
   rollVsMany: jest.fn(async (actor, skill, others) => others.map(other => ({ targetUuid: other.uuid, success: other.name != 'Lucky' }))),
   rollVs: jest.fn(async () => ({ success: true })),
 };
-jest.unstable_mockModule('./helpers/extensions/react/core.mjs', () => react);
+jest.unstable_mockModule('./mechanics/combat/reaction-engine.mjs', () => react);
 const disarmed = [];
-jest.unstable_mockModule('./helpers/target-riders.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/target-riders.mjs', () => ({
   disarm: jest.fn(async (actor, target, options) => {
     disarmed.push({ name: target.name, maxHands: options.maxHands });
     return { name: 'Rifle' };
   }),
 }));
 const pushed = [];
-jest.unstable_mockModule('./helpers/forced-movement.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/forced-movement.mjs', () => ({
   pushActor: jest.fn(async (actor, from, feet) => {
     pushed.push({ name: actor.name, from: from.name, feet });
     return true;
   }),
 }));
 const restored = [];
-jest.unstable_mockModule('./helpers/extensions/other2/medic.mjs', () => ({
+jest.unstable_mockModule('./items/healing/heal-action-medic-gear.mjs', () => ({
   restoreHealth: jest.fn(async (healer, target, amount) => restored.push({ healer: healer.name, target: target.name, amount })),
 }));
 const stamped = [];
-jest.unstable_mockModule('./helpers/perks.mjs', () => ({
+jest.unstable_mockModule('./mechanics/characters/perks.mjs', () => ({
   markUsedThisTurn: jest.fn(async (actor, key) => stamped.push({ name: actor.name, key })),
   actorHasPerk: () => false,
 }));
 const granted = [];
 const spent = [];
-jest.unstable_mockModule('./helpers/action-economy.mjs', () => ({
+jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({
   ACT_WHILE_DEFEATED_FLAG: 'actWhileDefeatedThisTurn',
   spend: jest.fn(async (actor, action) => {
     spent.push({ name: actor.name, action });
@@ -71,26 +71,26 @@ jest.unstable_mockModule('./helpers/action-economy.mjs', () => ({
   grantActionsThisTurn: jest.fn(async (actor, grants) => granted.push({ name: actor.name, ...grants })),
 }));
 const essenceHits = [];
-jest.unstable_mockModule('./helpers/environment-hazards.mjs', () => ({
+jest.unstable_mockModule('./mechanics/world/environment-hazards.mjs', () => ({
   applyEssenceDamage: jest.fn(async (actor, essences) => {
     essenceHits.push({ name: actor.name, essences });
     return essences;
   }),
 }));
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { runUse } = await import('./triggers.mjs');
 const { pressRuleButton } = await import('./buttons.mjs');
 const { ruleDialogSwitches, ruleWeaponTraits } = await import('./adapter.mjs');
 const { validateRule } = await import('./types.mjs');
-const { runPostRoll, runAfterDamage, registrySnapshot } = await import('../helpers/extensions.mjs');
-const { hitRiderOnAttack, hitRiderOnCast } = await import('./ext/b/hit-rider.mjs');
-const { checkActorUpdate, itemVeto, ruleAllowsArmorPair } = await import('./ext/b/veto.mjs');
-const { ignoreArmorAdjust, armorShredDerived } = await import('./ext/b/armor.mjs');
-const { firePatchedUp } = await import('./ext/b/steps.mjs');
-const { ruleIgnoresMissEffects, ruleSneakAttackImmune, crashProtectionOf, ruleHideBonus } = await import('./ext/b/readers.mjs');
-const { extDialogToggles } = await import('../helpers/extensions.mjs');
+const { runPostRoll, runAfterDamage, registrySnapshot } = await import('../mechanics/item-hooks.mjs');
+const { hitRiderOnAttack, hitRiderOnCast } = await import('./plugins/combat/hit-rider.mjs');
+const { checkActorUpdate, itemVeto, ruleAllowsArmorPair } = await import('./plugins/effects/veto.mjs');
+const { ignoreArmorAdjust, armorShredDerived } = await import('./plugins/combat/ignore-armor.mjs');
+const { firePatchedUp } = await import('./plugins/combat/combat-steps.mjs');
+const { ruleIgnoresMissEffects, ruleSneakAttackImmune, crashProtectionOf, ruleHideBonus } = await import('./plugins/combat/immunity-readers.mjs');
+const { extDialogToggles } = await import('../mechanics/item-hooks.mjs');
 const { registerCheck } = await import('./predicate.mjs');
 // essence20.mjs registers this check from tf1/common.mjs#favoriteWeaponOf: the Favorite Weapon Perk's choice.
 registerCheck('favoriteWeaponRolled', (actor, option, ctx) => {

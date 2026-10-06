@@ -127,7 +127,7 @@ One comment was also touched: Spellcialize's "same shape as spendIdeaPoint/spend
 regB changed, and regC is untouched.
 
 Other files:
-- **`helpers/roll-dialog.mjs`:** removed the 13 matching `xxxAvailable` context lines.
+- **`mechanics/rolls/roll-dialog.mjs`:** removed the 13 matching `xxxAvailable` context lines.
 - **`apps/roll-options-dialog.mjs`:** removed the 13 matching form reads.
 - **`templates/dialog/roll-dialog.hbs`:** removed the 13 checkbox blocks.
 - **Constants and imports at the top of `dice.mjs`:**

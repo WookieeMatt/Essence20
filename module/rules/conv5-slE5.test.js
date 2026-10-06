@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 // The roll, the picker and the Health-test helpers the steps reach for.
 const rollTest = jest.fn(async () => ({ success: true, crit: false }));
 const chooseSelect = jest.fn();
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({ rollTest, chooseSelect }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({ rollTest, chooseSelect }));
 
 const { rebuildIndex } = await import('./index.mjs');
 const { applyRuleImmunity, ruleDerived, ruleMovementStages, ruleRollSources } = await import('./adapter.mjs');

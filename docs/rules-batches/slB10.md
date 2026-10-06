@@ -269,18 +269,18 @@ its pack source, asserting what the old tests did and more).
 
 ## Shared-file edits
 
-- `module/helpers/target-riders.mjs` - `buildRiderContext` keeps the roll's plain dataset values (`dataset`).
+- `module/mechanics/combat/target-riders.mjs` - `buildRiderContext` keeps the roll's plain dataset values (`dataset`).
 - `module/rules/triggers.mjs` - post-roll Trigger context gets `dataset: rider.dataset`; hit / miss Triggers get
   `vars: {rolledItem}`; the afterDamage `defeated` call passes `targets: [source]`.
 - `module/dice.mjs` - the import line (no `takedownExpertChoice`), the Takedown Expert call and `TAKEDOWN_EXPERT_ID`, a comment;
   the Fearsome Presence checkContext flag and its Frightened block.
 - `module/dice.test.js` - the Takedown Expert outcome test (dice.mjs now only Grapples), the Fearsome Presence describe block.
-- `module/helpers/banked-buffs.mjs` (+ `.test.js`) - Fearsome Presence's id, its two branches, the `activateFearsomePresence` and
+- `module/mechanics/resources/banked-buffs.mjs` (+ `.test.js`) - Fearsome Presence's id, its two branches, the `activateFearsomePresence` and
   `isRecklessAbandonActive` imports; its describe block.
 - **Deleted:** `module/helpers/fearsome-presence.mjs` and its test (their only use was the activation), and
   `module/helpers/extensions/wtnv/wtnv.test.js` (it held only the Staggering Sway test).
-- `module/helpers/sneak-attack.mjs` (+ `.test.js` fixtures) - the three Every Trick checks ask `ruleSneakAttackImmune`.
-- `module/helpers/extensions/gij3/dice-hooks.mjs` - `ignoresMissEffects` reads MissImmunity rules; `takedownExpertChoice`, the two
+- `module/mechanics/combat/sneak-attack.mjs` (+ `.test.js` fixtures) - the three Every Trick checks ask `ruleSneakAttackImmune`.
+- `module/items/rolls/better-than-the-best-miss-immunity.mjs` - `ignoresMissEffects` reads MissImmunity rules; `takedownExpertChoice`, the two
   ids and `GIJ_CRB` gone. `gij3/gij3.mjs` header comment; `gij3/gij3.test.js` (Seconds Between via a rule item; Takedown test gone).
 - `gij2/vehicles.mjs`, `gij2/shared.mjs`, `gij2/gij2.test.js`, `gij2/perks.mjs` (Fearsome Presence section, its helpers and imports).
 - `pr2/finster.mjs`, `pr2/common.mjs`, `pr2/pr2.test.js`; `pr1/ats.mjs`; `pr3/ttsg.mjs`, `pr3/common.mjs`.
@@ -291,7 +291,7 @@ its pack source, asserting what the old tests did and more).
 - `other1/more.mjs`, `other1/cobra-gear.mjs`, `other1/jtt.mjs`, `other1/other1.test.js`; `other2/decepticon.mjs`, `other2/gij.mjs`,
   `other2/magic.mjs`, `other2/medic.mjs`, `other2/other2.test.js`; `other3/wtnv.mjs` (now an empty module - helpers/extensions/
   index.mjs and other3/index.mjs import it), `other3/pr.mjs`, `other3/hide.mjs`, `other3/shared.mjs`, `other3/other3.test.js`.
-- `wtnv/wtnv.mjs` (now an empty module - helpers/extensions/index.mjs imports it); `mlp1/mlp1.mjs`; `react/forms.mjs`,
+- `wtnv/wtnv.mjs` (now an empty module - items/index.mjs imports it); `mlp1/mlp1.mjs`; `react/forms.mjs`,
   `react/react.test.js`.
 - `module/rules/conv9-slB9.test.js` (Comms Assault drives `ignoreArmorAdjust`), `module/rules/conv5-slD5.test.js` (imports
   `ext/index.mjs` - Solarix Shard's pack item carries a HitRider now).
@@ -334,5 +334,5 @@ Now You Don't 1, the five Paths 1 each, Fearsome Presence 2.
 - Jest: `engine10-b` (28) and `conv10-slB10` (47) pass; all of `module/rules` passes except other groups' in-progress suites
   (`conv3-slA3`, `conv5-slA5` - group A's `SummonTime` type not loaded there; `conv6-slA6` - a Movement `stage: derived`;
   `conv10-slC10` Synch Up); the touched slice folders, `sneak-attack`, `banked-buffs`, `dice.test.js` pass except
-  `zord1.test.js`'s Forms tests (group A's Form lifecycle) and `helpers/extensions/index.test.js` (a missing
+  `zord1.test.js`'s Forms tests (group A's Form lifecycle) and `items/index.test.js` (a missing
   `react/auras.mjs` - not mine).

@@ -147,7 +147,7 @@ plus the rules' own additions. They don't see the other rider and extension adju
 | Silver / Graphite / Orange Ranger Prime | A `late` RollModifier is applied in `runApplyDialog`. That is before Solo Shot's and Observer's Snag clears (Solo Shot is A Jump Through Time, the same book as Orange Ranger Prime). It is also inside the same `applyRuleImmunity` pass whose `immune: ["snag"]` then clears it (Daredevil at 1 Health and the Torozord are Power Rangers). The old Snag came after all three and survived them. Needs a late stage after the hand-written post-dialog code, or `late` Snags exempt from that pass's immunity. |
 | Emergency Care Equipment, Vehicle Repair Equipment | Zero the downshifts after the post-dialog die-substitution deltas (Intimidating, Transformers too). `immune` runs earlier. |
 | Advantageous Fighter | Caps the total downshift at ↓2 with an Edge. RollDice `maxDie` caps the die, not the downshift. Needs a shift cap. |
-| Storm of Lead | Fanning's first-shot ↑1, inside `helpers/fanning.mjs`. |
+| Storm of Lead | Fanning's first-shot ↑1, inside `items/attacks/fanning.mjs`. |
 
 ### Damage types
 

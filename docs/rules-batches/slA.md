@@ -365,7 +365,7 @@ code (`extDialogToggles` / `runApplyDialog` / `runPostRoll`), Initiative include
 | Be an Example | The ↑1 banks onto the actor's Origin Skill (`system.originSkillsIncrease`, with a Skill picker as fallback). A bank's `appliesWhen` can't name a Skill held in actor data. Needs a `skill:data:<path>` tag, or `appliesWhen` interpolated when it is banked. |
 | Destiny (Hang-Up) | A GM-only button on a failed roll's card that spends a GM Story Point and turns the failure into a Fumble, once per scene. Needs a chat-card action rule and a Fumble conversion. |
 | Lightspeed Boost (rest) | **Aerial / Swim at least 40 ft and Medical's +10 ft** run at the end of derived data, only on speeds above 0. A Movement rule's `final` stage comes before gravity. **+2 Evasion** depends on token elevation: needs an elevation tag. **Hazmat / Pyrotechnic** set boolean Resistances / Immunities, which DerivedStat can't. **The picks** include sub-choices (how, which types). **The Pyrotechnic button** shares the item with the picker's Use. |
-| Nemesis (Specific Threat) (the reroll; its ↑2 is `helpers/nemesis.mjs`) | A once-per-scene chat-card reroll that shows the new total against every DIF. Needs a chat-card reroll rule. |
+| Nemesis (Specific Threat) (the reroll; its ↑2 is `items/rolls/nemesis.mjs`) | A once-per-scene chat-card reroll that shows the new total against every DIF. Needs a chat-card reroll rule. |
 | Power Flux | It fires on a new scene, for Zords with a token on the canvas, and tops up each crew member's Personal Power by up to 6. Triggers only fire for actors that hold Trigger rules, and no step reaches a vehicle's crew. Needs `to: "crew"` (or `sceneStart` Triggers reaching linked actors) and an "on the canvas" tag. |
 | Power Wing (rest; its +2 maximum was already a rule) | Current Personal Power ±2 when it is equipped or unequipped. Needs equip / unequip Trigger events. |
 | S.W.A.T. Upgrade (rest; its Edge was already a rule) | **Incapacitation Ammo:** a switch whose hit offers Stun damage one higher. Needs a rider-option step. **Incarceration Protocols:** 6 per scene, counted on enemies defeated by the Zord's attacks. Needs a "defeated by this actor's attack" event and a counter. |
@@ -377,8 +377,8 @@ code (`extDialogToggles` / `runApplyDialog` / `runPostRoll`), Initiative include
 
 ## Batch slA, slices pr2 and pr3
 
-**Scope:** every item in the id tables of `module/helpers/extensions/pr2/common.mjs` (`PR2`) and
-`module/helpers/extensions/pr3/common.mjs` (`IDS`). That covers all the code in those slices that uses each id, and
+**Scope:** every item in the id tables of `module/items/shared/ranger-leftover-item-ids.mjs` (`PR2`) and
+`module/items/shared/pr-crb-ttsg-item-ids.mjs` (`IDS`). That covers all the code in those slices that uses each id, and
 every other place in `module/` that calls into them (`combiner-timer.mjs`, `vehicle-defeat.mjs`, `zord-summon.mjs`).
 Helper ids that only support another item are counted with that item: `combiner` and `carrier` with Dedicated
 Carrier, the Flames of Hate weapon and its two effects as one item, and the Incineration Blast weapon and its effect as
@@ -503,4 +503,4 @@ it) and its slice test. The behaviour is now tested in `module/rules/conversions
 - `lang/en.json`: `E20.Pr3RhinoCover` removed (one line, edited as text).
 - Pack sources: `prcrbitems` Keen Eye, Megaform Trait, the two Unique Weapon (Versatile Melee) effects, and
   `ttsgitems` Jungle Fury Rhino Sentry Shield.
-- `module/helpers/extensions/index.mjs` is unchanged: none of the slice files became empty.
+- `module/items/index.mjs` is unchanged: none of the slice files became empty.

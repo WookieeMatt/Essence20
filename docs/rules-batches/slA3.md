@@ -183,9 +183,9 @@ every file I touched; jest passes on the five slice folders plus `module/rules/c
 ## Edits outside my files
 
 None required. Optional cleanup, now that `pr2/perks.mjs` is an empty module: remove the line
-`import "./pr2/perks.mjs";` from `module/helpers/extensions/index.mjs`, delete `module/helpers/extensions/pr2/perks.mjs`,
+`import "./pr2/perks.mjs";` from `module/items/index.mjs`, delete `module/helpers/extensions/pr2/perks.mjs`,
 and drop the `expect(Object.keys(await import('./perks.mjs'))).toEqual([]);` line (and its comment) from
-`module/helpers/extensions/pr2/pr2.test.js`.
+`module/items/tests/instructor-nemesis-drain.test.js`.
 
 ## Unused strings
 
@@ -195,9 +195,9 @@ and drop the `expect(Object.keys(await import('./perks.mjs'))).toEqual([]);` lin
 
 ## Files touched
 
-- `module/helpers/extensions/pr1/jtt.mjs`, `pr1/misc.mjs`, `pr1/common.mjs`, `pr1/pr1.test.js`
+- `module/items/rolls/time-displaced.mjs`, `pr1/misc.mjs`, `pr1/common.mjs`, `pr1/pr1.test.js`
 - `module/helpers/extensions/pr2/perks.mjs`, `pr2/common.mjs`, `pr2/pr2.test.js`
-- `module/helpers/extensions/pr3/ttsg.mjs`, `pr3/pr-crb.mjs`, `pr3/common.mjs`, `pr3/pr3.test.js`
+- `module/items/zords/elemental-fury.mjs`, `pr3/pr-crb.mjs`, `pr3/common.mjs`, `pr3/pr3.test.js`
 - `packs/jttitems/_source/Profiteer_FDf9ZhuajJb3U5un.json`, `packs/ttsgitems/_source/Overload_GNT0qv91JUTXfS0n.json`,
   `packs/prcrbitems/_source/Grid_Relic_Weapon_82Ld65NsKwfMZaSC.json`,
   `packs/prcrbitems/_source/Unique_Weapon_Ranged__Pr3UniqWpnRanged.json`,

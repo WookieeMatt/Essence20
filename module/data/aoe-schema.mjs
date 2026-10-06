@@ -1,4 +1,4 @@
-import { E20 } from "../helpers/config.mjs";
+import { E20 } from "../util/config.mjs";
 
 import { makeNum, makeStrWithChoices } from "./generic-makers.mjs";
 
@@ -11,9 +11,9 @@ import { makeNum, makeStrWithChoices } from "./generic-makers.mjs";
  * the reroll grant shared between Perks and ActiveEffects.
  *
  * `shape` deliberately stores Foundry's OWN region shape type names (see E20.aoeShapes in
- * helpers/config.mjs) rather than a system-flavoured vocabulary of its own, so the value passes
+ * util/config.mjs) rather than a system-flavoured vocabulary of its own, so the value passes
  * straight through to canvas.regions.placeRegion() with no translation table in between - see
- * helpers/aoe-targeting.mjs. Null for an ordinary single-target or Multiple-Targets attack with no
+ * mechanics/combat/aoe-targeting.mjs. Null for an ordinary single-target or Multiple-Targets attack with no
  * AoE shape at all.
  *
  * `radius` is in feet (this system's own grid unit - every other radius/range field in this

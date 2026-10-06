@@ -1,44 +1,44 @@
-import { runSpellCost } from "../helpers/extensions.mjs";
-import { endOnFumble } from "../helpers/grants.mjs";
-import { ablativeLossOf, pickConcentratedArea, weaponUnusable } from "../helpers/target-riders.mjs";
-import { wipeCoating } from "../helpers/poison-coating.mjs";
-import { usesVehicleTargeting, vehicleWeaponTraits } from "../helpers/vehicle-upgrades.mjs";
-import { applyAugur, perkGrantedTraits, TRAIT_UPGRADE, weaponHasUpgrade } from "../helpers/weapon-traits.mjs";
-import { bombKind, plantBomb } from "../helpers/planted-bombs.mjs";
-import { resolveWeaponChangesAfterAttack } from "../helpers/weapon-perk-uses.mjs";
-import { affectsGeneratedEffects, applyToWeapon as applyUpgradesToWeapon, chosenElement, ELEMENTS, syncGeneratedEffects } from "../helpers/weapon-upgrades.mjs";
-import { applyDamage } from "../helpers/combat.mjs";
-import { onPowerUsed } from "../helpers/action-perks.mjs";
+import { runSpellCost } from "../mechanics/item-hooks.mjs";
+import { endOnFumble } from "../mechanics/resources/grants.mjs";
+import { ablativeLossOf, pickConcentratedArea, weaponUnusable } from "../mechanics/combat/target-riders.mjs";
+import { wipeCoating } from "../items/gear/poison-coating.mjs";
+import { usesVehicleTargeting, vehicleWeaponTraits } from "../mechanics/vehicles/vehicle-upgrades.mjs";
+import { applyAugur, perkGrantedTraits, TRAIT_UPGRADE, weaponHasUpgrade } from "../mechanics/combat/weapon-traits.mjs";
+import { bombKind, plantBomb } from "../items/attacks/planted-bombs.mjs";
+import { resolveWeaponChangesAfterAttack } from "../items/attacks/weapon-perk-uses.mjs";
+import { affectsGeneratedEffects, applyToWeapon as applyUpgradesToWeapon, chosenElement, ELEMENTS, syncGeneratedEffects } from "../items/attacks/weapon-upgrades.mjs";
+import { applyDamage } from "../mechanics/combat/combat.mjs";
+import { onPowerUsed } from "../mechanics/actions/action-perks.mjs";
 import { Dice } from "../dice.mjs";
 import { ensureSourceIndex, inheritedRules, rulesSnapshotToStrip } from "../rules/inherit.mjs";
-import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { consumeForItem, describeCost, refund, setAiming, spend } from "../helpers/action-economy.mjs";
-import { clearWeaponReload, reloadsNeeded, getReloadCost, hasBurstFiredThisRound, markBurstFiredThisRound, requireReload, weaponNeedsReload } from "../helpers/reload.mjs";
-import { isMountedWeaponSetUp } from "../helpers/mounted.mjs";
-import { isInactiveMythicForm } from "../helpers/mythically-modular.mjs";
-import { checkVehicularEligibility } from "../helpers/vehicular.mjs";
-import { addOngoingEffect } from "../helpers/ongoing-effects.mjs";
+import { RollDialog } from "../mechanics/rolls/roll-dialog.mjs";
+import { consumeForItem, describeCost, refund, setAiming, spend } from "../mechanics/actions/action-economy.mjs";
+import { clearWeaponReload, reloadsNeeded, getReloadCost, hasBurstFiredThisRound, markBurstFiredThisRound, requireReload, weaponNeedsReload } from "../mechanics/combat/reload-trait.mjs";
+import { isMountedWeaponSetUp } from "../items/attacks/mounted-weapons.mjs";
+import { isInactiveMythicForm } from "../items/attacks/mythically-modular.mjs";
+import { checkVehicularEligibility } from "../mechanics/combat/vehicular-trait.mjs";
+import { addOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
-import { betterShift, updateRoleCache } from "../helpers/utils.mjs";
-import { placeAoeTemplate } from "../helpers/aoe-targeting.mjs";
-import { applyShapedCharges } from "../helpers/shaped-charges.mjs";
-import { pickBringItAllDownEffect } from "../helpers/bring-it-all-down.mjs";
-import { applyHorseshoesAndHandgrenades } from "../helpers/horseshoes-and-handgrenades.mjs";
-import { applyMightyStrikes } from "../helpers/mighty-strikes.mjs";
-import { applyNoNeedToAim } from "../helpers/no-need-to-aim.mjs";
-import { actorHasPerk } from "../helpers/perks.mjs";
-import { pickEnchantSkill } from "../helpers/enchant.mjs";
-import { importedDescription } from "../helpers/book-descriptions-store.mjs";
-import { autoTargetBeamVolley } from "../helpers/beam-volley.mjs";
-import { pickBestowExpertise } from "../helpers/bestow-expertise.mjs";
-import { pickMindBeamEffect } from "../helpers/mind-beam.mjs";
-import { pickGetToKnowSkill } from "../helpers/get-to-know.mjs";
-import { isBlockMagicActive } from "../helpers/block-magic.mjs";
-import { consumeMegaWeaponAttack } from "../helpers/zord-mega-weapon.mjs";
-import { isPiledriver, offerPiledriverRoughTerrain } from "../helpers/rough-terrain.mjs";
+import { betterShift, updateRoleCache } from "../util/utils.mjs";
+import { placeAoeTemplate } from "../mechanics/combat/aoe-targeting.mjs";
+import { applyShapedCharges } from "../items/attacks/shaped-charges.mjs";
+import { pickBringItAllDownEffect } from "../items/attacks/bring-it-all-down.mjs";
+import { applyHorseshoesAndHandgrenades } from "../items/attacks/horseshoes-and-handgrenades.mjs";
+import { applyMightyStrikes } from "../items/attacks/mighty-strikes.mjs";
+import { applyNoNeedToAim } from "../items/attacks/no-need-to-aim.mjs";
+import { actorHasPerk } from "../mechanics/characters/perks.mjs";
+import { pickEnchantSkill } from "../items/magic/enchant.mjs";
+import { importedDescription } from "../importers/book-descriptions-store.mjs";
+import { autoTargetBeamVolley } from "../items/magic/beam-volley.mjs";
+import { pickBestowExpertise } from "../items/magic/bestow-expertise.mjs";
+import { pickMindBeamEffect } from "../items/magic/mind-beam.mjs";
+import { pickGetToKnowSkill } from "../items/magic/get-to-know.mjs";
+import { isBlockMagicActive } from "../items/magic/block-magic.mjs";
+import { consumeMegaWeaponAttack } from "../items/zords/zord-mega-weapon.mjs";
+import { isPiledriver, offerPiledriverRoughTerrain } from "../mechanics/world/rough-terrain.mjs";
 import {
   canRollLimitedWeaponEffect, isLimitedWeaponEffect, markLimitedWeaponEffectUsed,
-} from "../helpers/limited-weapon-effects.mjs";
+} from "../items/attacks/limited-weapon-effects.mjs";
 
 const KNIGHTS_OF_CANTERLOT = "Compendium.essence20.knights_of_canterlot.Item.";
 const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
@@ -65,27 +65,27 @@ const BRUTAL_MIGHT_ID = "Compendium.essence20.enigma_of_combination.Item.l0STCEY
 const OBSCURING_MATRIX_BASIC_ID = "Compendium.essence20.enigma_of_combination.Item.L8ZXz1h0DlCy85UC";
 const OBSCURING_MATRIX_ADVANCED_ID = "Compendium.essence20.enigma_of_combination.Item.HH4q8lx09mV2hhcv";
 
-// Enchant (MLP CRB, Elementary Enchantment spell, p.136) - see helpers/enchant.mjs's own doc
+// Enchant (MLP CRB, Elementary Enchantment spell, p.136) - see items/magic/enchant.mjs's own doc
 // comment. The one hardcoded per-spell-id check in this otherwise fully generic spell-cast
 // branch below, needed because the skill choice must be picked BEFORE the roll (nothing else in
 // this codebase intercepts a spell cast pre-roll the way onPowerUse does for Grid/Sorcerous
 // Powers).
 const ENCHANT_ID = `${MLP_CRB}afYeCCAX0o2Cwf2I`;
 
-// Beam Volley (MLP CRB, Virtuoso Beam spell, p.138) - see helpers/beam-volley.mjs's own doc
+// Beam Volley (MLP CRB, Virtuoso Beam spell, p.138) - see items/magic/beam-volley.mjs's own doc
 // comment. Auto-targets the 3 nearest enemies before the roll fires (no picker, so no
 // early-return-on-cancel like Enchant). Explosive Beam used to sit alongside it here; its own
 // "15ft diameter circle" is a real AoE shape, so it now carries system.shape/radius and goes
-// through helpers/aoe-targeting.mjs like any other area spell. Beam Volley's "3 targets in range"
+// through mechanics/combat/aoe-targeting.mjs like any other area spell. Beam Volley's "3 targets in range"
 // is Multiple Targets, not an area, so it stays a bespoke auto-targeter.
 const BEAM_VOLLEY_ID = `${MLP_CRB}UhkhFqFDYjub1a8k`;
 
 // Bestow Expertise (MLP CRB, Superior Enchantment spell, p.137) - see
-// helpers/bestow-expertise.mjs's own doc comment. A third per-spell-id pre-roll hook, alongside
+// items/magic/bestow-expertise.mjs's own doc comment. A third per-spell-id pre-roll hook, alongside
 // Enchant's own - picks the Skill AND the new Specialization's own free-typed name before rolling.
 const BESTOW_EXPERTISE_ID = `${MLP_CRB}stwnP4um6j1xxzIo`;
 
-// Mind Beam (MLP CRB, Virtuoso Beam spell, p.139) - see helpers/mind-beam.mjs's own doc comment.
+// Mind Beam (MLP CRB, Virtuoso Beam spell, p.139) - see items/magic/mind-beam.mjs's own doc comment.
 // A fifth per-spell-id pre-roll hook, alongside Enchant/Bestow Expertise's own - picks which
 // Condition this cast applies before the roll fires.
 const MIND_BEAM_ID = `${MLP_CRB}gF8otV8Ag9axRp2Z`;
@@ -93,7 +93,7 @@ const MIND_BEAM_ID = `${MLP_CRB}gF8otV8Ag9axRp2Z`;
 const DARK_SKIES_OVER_EQUESTRIA = "Compendium.essence20.dark_skies_over_equestria.Item.";
 
 // Get To Know (Dark Skies Over Equestria, Elementary Utility spell, p.21) - see
-// helpers/get-to-know.mjs's own doc comment. A sixth per-spell-id pre-roll hook - picks the
+// items/magic/get-to-know.mjs's own doc comment. A sixth per-spell-id pre-roll hook - picks the
 // related Skill before the roll fires.
 const GET_TO_KNOW_ID = `${DARK_SKIES_OVER_EQUESTRIA}pyRy1dFwuiJpAKj2`;
 
@@ -130,7 +130,7 @@ export class Essence20Item extends Item {
     super._onCreate(data, options, userId);
 
     // An upgrade, element or Perk that grants alternate effects arrived - see
-    // helpers/weapon-upgrades.mjs#syncGeneratedEffects. The client that made the change does it.
+    // items/attacks/weapon-upgrades.mjs#syncGeneratedEffects. The client that made the change does it.
     if (userId == game.user?.id && this.actor && affectsGeneratedEffects(this)) {
       syncGeneratedEffects(this.actor);
     }
@@ -200,7 +200,7 @@ export class Essence20Item extends Item {
       change.name = CONFIG.E20.megaformTraitTypes[change.system.type];
     }
 
-    // Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/vehicular.mjs's own
+    // Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148) - see mechanics/combat/vehicular-trait.mjs's own
     // doc comment. The "equip" half of "can only be mounted on a vehicle": strips the equip
     // toggle back out of this update (rather than throwing, which would abort the whole submit)
     // when checkVehicularEligibility refuses it - a no-op in 'off'/'track'/'warn' mode, where that
@@ -217,7 +217,7 @@ export class Essence20Item extends Item {
   /** @override */
   /**
    * An upgrade leaving a weapon takes the alternate effects it granted with it - see
-   * helpers/weapon-upgrades.mjs#syncGeneratedEffects.
+   * items/attacks/weapon-upgrades.mjs#syncGeneratedEffects.
    */
   _onDelete(options, userId) {
     super._onDelete(options, userId);
@@ -284,7 +284,7 @@ export class Essence20Item extends Item {
       this._prepareTotalAvailability();
     }
 
-    // Augur's Sharp Flyby/Ram/Bash (helpers/weapon-traits.mjs).
+    // Augur's Sharp Flyby/Ram/Bash (mechanics/combat/weapon-traits.mjs).
     applyAugur(this);
 
     if (this.type == 'armor') {
@@ -293,7 +293,7 @@ export class Essence20Item extends Item {
       this._prepareAimShiftBonus();
       this._prepareWeaponHands();
       this._prepareHardpointDerived();
-      // Size steps and one-handed wielding from upgrades and Perks (helpers/weapon-upgrades.mjs).
+      // Size steps and one-handed wielding from upgrades and Perks (items/attacks/weapon-upgrades.mjs).
       applyUpgradesToWeapon(this);
     } else if (this.type == 'rolePoints') {
       this._prepareRolePoints();
@@ -435,7 +435,7 @@ export class Essence20Item extends Item {
     }
 
     // The element an Element weapon was set to deals that element - so it has that element's trait,
-    // which is what the Acid/Fire/Electromagnetic rules read (helpers/weapon-upgrades.mjs).
+    // which is what the Acid/Fire/Electromagnetic rules read (items/attacks/weapon-upgrades.mjs).
     if (this.type == 'weapon') {
       const element = chosenElement(this);
       if (element && !combined.includes(ELEMENTS[element])) {
@@ -450,14 +450,14 @@ export class Essence20Item extends Item {
       }
 
       // Traits a Perk gives the wielder's weapons - Demolisher, Big Lobber, Fireball, Weapon
-      // Customizer (helpers/weapon-traits.mjs).
+      // Customizer (mechanics/combat/weapon-traits.mjs).
       for (const trait of perkGrantedTraits(this, combined)) {
         if (!combined.includes(trait)) {
           combined.push(trait);
         }
       }
 
-      // Utility Loaders' added trait, while it lasts (helpers/weapon-perk-uses.mjs).
+      // Utility Loaders' added trait, while it lasts (items/attacks/weapon-perk-uses.mjs).
       for (const trait of this.flags?.essence20?.mutation?.addTraits ?? []) {
         if (!combined.includes(trait)) {
           combined.push(trait);
@@ -497,7 +497,7 @@ export class Essence20Item extends Item {
           continue;
         }
 
-        // Ablative Matrix loses a point to every Critical Success that hits (helpers/target-riders.mjs).
+        // Ablative Matrix loses a point to every Critical Success that hits (mechanics/combat/target-riders.mjs).
         const value = Math.max(0, (item.armorBonus.value ?? 0) - ablativeLossOf(this.actor?.items?.get?.(key)));
         if (item.armorBonus.defense == 'toughness') {
           armorBonusToughness += value;
@@ -758,7 +758,7 @@ export class Essence20Item extends Item {
   async roll(dataset, childRoller=null) {
     /* Action economy. This one insertion covers every weapon, weapon effect, Power and spell in
        the game, because every sheet click funnels through here - see
-       helpers/action-economy.mjs#consumeForItem.
+       mechanics/actions/action-economy.mjs#consumeForItem.
 
        Placed above the rollType == 'info' branch and skipped for it, so posting an item's details
        to chat stays free; only an actual use spends. In every mode except 'strict' this records
@@ -767,7 +767,7 @@ export class Essence20Item extends Item {
     let spent = null;
     // The weaponEffect's own parent weapon, resolved once here so both the Reload gate just below
     // and the Reload/Consumable consumption further down (this.type == 'weaponEffect' branch) see
-    // the same lookup - see helpers/reload.mjs's own doc comment.
+    // the same lookup - see mechanics/combat/reload-trait.mjs's own doc comment.
     let parentWeapon = null;
     if (dataset.rollType != 'info') {
       const roller = childRoller || this.actor;
@@ -776,14 +776,14 @@ export class Essence20Item extends Item {
 
         // Reload (GI Joe CRB, Weapon Effects and Traits, p.147) / Burst-Fire (Quartermaster's
         // Guide to Gear p.33, "counts as if it had the Reload trait for the turn" after a second
-        // shot in the same round - see helpers/reload.mjs's own doc comment) - gated ahead of the
+        // shot in the same round - see mechanics/combat/reload-trait.mjs's own doc comment) - gated ahead of the
         // ordinary action-economy spend below: an unreloaded weapon shouldn't cost its own Attack
         // action at all.
         // Fanning weapons join in only once a Fanning Attack has flagged them (see the fanned check
         // below); a High-Density follow-up is the same shot as the Attack it follows, so it never
-        // stops to reload (helpers/high-density.mjs).
+        // stops to reload (items/attacks/high-density.mjs).
         // Any weapon a "must reload" rule flagged - Empty the Mag can flag one without the trait.
-        // Rapid Reload / the Ammo Belt make the reload a Free action (helpers/reload.mjs).
+        // Rapid Reload / the Ammo Belt make the reload a Free action (mechanics/combat/reload-trait.mjs).
         if (!dataset.highDensityFollowUp && weaponNeedsReload(parentWeapon)) {
           const reloadCost = await getReloadCost(roller, parentWeapon);
           const reloadSpend = await spend(roller, reloadCost.action, {
@@ -820,14 +820,14 @@ export class Essence20Item extends Item {
         }
 
         // Knocked away (Snatch, Disarming Shot) or pulled apart (Dismantle Firearm) - see
-        // helpers/target-riders.mjs#weaponUnusable.
+        // mechanics/combat/target-riders.mjs#weaponUnusable.
         const unusable = weaponUnusable(parentWeapon);
         if (unusable) {
           ui.notifications.warn(unusable);
           return;
         }
 
-        // Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/mounted.mjs's own
+        // Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see items/attacks/mounted-weapons.mjs's own
         // doc comment. A hard block, not an action-economy spend of its own: setting the weapon up
         // is its own separate Standard-action spend (the sheet's Set Up/Pick Up control), not
         // something the Attack itself pays for.
@@ -836,14 +836,14 @@ export class Essence20Item extends Item {
           return;
         }
 
-        // Mythically Modular (Through the Shattered Grid p.116) - see helpers/mythically-modular.mjs.
+        // Mythically Modular (Through the Shattered Grid p.116) - see items/attacks/mythically-modular.mjs.
         // Another form of this combined weapon is the one in use; switch first (a Free action).
         if (isInactiveMythicForm(roller, parentWeapon)) {
           ui.notifications.warn(game.i18n.format('E20.MythicallyModularInactive', { name: parentWeapon.name }));
           return;
         }
 
-        // Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/vehicular.mjs's
+        // Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148) - see mechanics/combat/vehicular-trait.mjs's
         // own doc comment for the RAW quote and the strictness-mode shape.
         if (parentWeapon?.system.traits?.includes('vehicular') && !checkVehicularEligibility(roller, parentWeapon.name)) {
           return;
@@ -866,7 +866,7 @@ export class Essence20Item extends Item {
 
       /* The shot the aim was for. An aim improves the next roll and then it is gone, which is
          what makes Aim once per roll rather than once per turn - see
-         helpers/action-economy.mjs#isAiming. The weapon effect is the attack: a weapon itself
+         mechanics/actions/action-economy.mjs#isAiming. The weapon effect is the attack: a weapon itself
          has no roll button anywhere in the sheet, only its effects do. Cleared after the spend
          rather than after the roll resolves so a blocked or cancelled attack keeps the aim. */
       if (this.type == 'weaponEffect') {
@@ -911,7 +911,7 @@ export class Essence20Item extends Item {
       });
 
       // Piledriver - posting it is the gear's only sheet action; see
-      // helpers/rough-terrain.mjs#offerPiledriverRoughTerrain (Alt Mode only).
+      // mechanics/world/rough-terrain.mjs#offerPiledriverRoughTerrain (Alt Mode only).
       if (this.type == 'gear' && isPiledriver(this)) {
         await offerPiledriverRoughTerrain(this.actor, this);
       }
@@ -932,7 +932,7 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'power') {
-      // Relentless Blows and the like - a Power that grants attacks (helpers/action-perks.mjs).
+      // Relentless Blows and the like - a Power that grants attacks (mechanics/actions/action-perks.mjs).
       await onPowerUsed(childRoller || this.actor, this);
 
       // Initialize chat data.
@@ -961,7 +961,7 @@ export class Essence20Item extends Item {
       const roller = childRoller || this.actor;
 
       // Time / Proximity / Detonator Bomb - rolling it plants it rather than attacking; it attacks
-      // when it goes off (helpers/planted-bombs.mjs). The Standard action was the one paid above.
+      // when it goes off (items/attacks/planted-bombs.mjs). The Standard action was the one paid above.
       const bombWeapon = this._dice._getParentWeapon(roller, this);
       if (!dataset.bombDetonation && bombKind(bombWeapon)) {
         const planted = await plantBomb(roller, this, bombWeapon);
@@ -973,7 +973,7 @@ export class Essence20Item extends Item {
       }
 
       // Once-per-encounter weapon effects (Turbo Thunder Cannon's Energy Attack, Wing Missile
-      // Salvo) - see helpers/limited-weapon-effects.mjs's own doc comment. Checked before any of
+      // Salvo) - see items/attacks/limited-weapon-effects.mjs's own doc comment. Checked before any of
       // the pre-roll work below, refunding the action economy spend just like a cancelled roll,
       // so a blocked attack never costs the actor their turn.
       const weaponEffectSourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource;
@@ -987,16 +987,16 @@ export class Essence20Item extends Item {
       }
 
       // Bring It All Down (Decepticon Directive, Demolitionist Focus, 20th level, p.57) - see
-      // helpers/bring-it-all-down.mjs's own doc comment. Resolved before AoE placement (rather
+      // items/attacks/bring-it-all-down.mjs's own doc comment. Resolved before AoE placement (rather
       // than as a Roll Options Dialog checkbox like most declared-intent Perks) because its own
       // radius-doubling option has to be known before the shape is even placed. A no-op prompt on
       // a non-explosive attack or without the Perk - see pickBringItAllDownEffect's own gate.
       const bringItAllDownEffect = await pickBringItAllDownEffect(roller, this);
 
-      // Area of Effect (GitHub #824) - see helpers/aoe-targeting.mjs's own doc comment. Only
+      // Area of Effect (GitHub #824) - see mechanics/combat/aoe-targeting.mjs's own doc comment. Only
       // Blast/AoE-shaped attacks (system.shape set) trigger this; an ordinary single-target or
       // Multiple-Targets attack rolls exactly as it always has, targets chosen by hand as usual.
-      // Concentrated Explosion / Concentrated Fire - helpers/target-riders.mjs#pickConcentratedArea.
+      // Concentrated Explosion / Concentrated Fire - mechanics/combat/target-riders.mjs#pickConcentratedArea.
       const concentrated = await pickConcentratedArea(roller, this);
       if (concentrated?.single) {
         dataset = { ...dataset, concentratedFire: true };
@@ -1033,7 +1033,7 @@ export class Essence20Item extends Item {
       await applyNoNeedToAim(roller, this);
 
       let weaponDataset = {};
-      // A detonated bomb rolls its planter's Technology (helpers/planted-bombs.mjs).
+      // A detonated bomb rolls its planter's Technology (items/attacks/planted-bombs.mjs).
       const baseSkill = dataset.skillOverride ?? parentWeapon?.flags?.essence20?.attackSkill ?? this.system.classification.skill;
       // Brutal Might - see BRUTAL_MIGHT_ID's own comment above.
       const skill = baseSkill == 'might' && actorHasPerk(roller, BRUTAL_MIGHT_ID) ? 'brawn' : baseSkill;
@@ -1083,31 +1083,31 @@ export class Essence20Item extends Item {
         });
       }
 
-      // Weapons changed for a while (helpers/weapon-perk-uses.mjs): Backblast's 1 Fire to everyone
+      // Weapons changed for a while (items/attacks/weapon-perk-uses.mjs): Backblast's 1 Fire to everyone
       // within 5 feet (or the attacker, on a Fumble), Airburst's Prone/Impaired, one-use traps, and
       // a Fumble ending Explosive Ammo / Utility Loaders.
       if (parentWeapon && weaponRollResult && !weaponRollResult.cancelled) {
         await resolveWeaponChangesAfterAttack(roller, parentWeapon, weaponRollResult);
-        // A poison on the weapon is used up by the attack, hit or miss (helpers/poison-coating.mjs).
+        // A poison on the weapon is used up by the attack, hit or miss (items/gear/poison-coating.mjs).
         await wipeCoating(parentWeapon);
-        // Never Unarmed / Brainstorm items fall apart on a Fumble (helpers/grants.mjs).
+        // Never Unarmed / Brainstorm items fall apart on a Fumble (mechanics/resources/grants.mjs).
         await endOnFumble(roller, parentWeapon, weaponRollResult);
       }
 
       // Shoot, You Fools! (Cobra Codex p.57) - "Any ally who attacks and fails suffers 1 Psychic
-      // Damage." Carried on the bonus attack it granted (helpers/action-perks.mjs).
+      // Damage." Carried on the bonus attack it granted (mechanics/actions/action-perks.mjs).
       if (spent?.psychicOnMiss && weaponRollResult && !weaponRollResult.cancelled && !weaponRollResult.success) {
         await applyDamage(roller, spent.psychicOnMiss, 'psychic');
       }
 
-      // Reload - see helpers/reload.mjs's own doc comment. Flags the weapon for next time
+      // Reload - see mechanics/combat/reload-trait.mjs's own doc comment. Flags the weapon for next time
       // regardless of whether this shot hit; "fired" is what matters, "landed" isn't.
       if (!weaponRollResult?.cancelled && parentWeapon?.system.traits?.includes('reload')) {
         await requireReload(roller, parentWeapon);
       }
 
       // Fanning (A Jump Through Time, p.74): "After a Fanning Attack, the weapon gains the Reload
-      // trait" - see helpers/fanning.mjs. The gate above already honours the flag on a Fanning weapon.
+      // trait" - see items/attacks/fanning.mjs. The gate above already honours the flag on a Fanning weapon.
       if (!weaponRollResult?.cancelled && weaponRollResult?.fanned) {
         await requireReload(roller, parentWeapon);
       }
@@ -1118,7 +1118,7 @@ export class Essence20Item extends Item {
         await requireReload(roller, parentWeapon);
       }
 
-      // Burst-Fire - see helpers/reload.mjs's own doc comment. A second shot in the same round
+      // Burst-Fire - see mechanics/combat/reload-trait.mjs's own doc comment. A second shot in the same round
       // (the flag from a first shot already stamped this round) counts as if it had the Reload
       // trait for the turn; either way, this shot itself stamps "fired this round" for next time.
       if (!weaponRollResult?.cancelled && parentWeapon?.system.itemAndUpgradeTraits?.includes('burstFire')) {
@@ -1130,7 +1130,7 @@ export class Essence20Item extends Item {
       }
 
       // Ongoing / Poison / Toxin (Cobra Codex, New Weapon Effects and Traits, p.93-94) - see
-      // helpers/ongoing-effects.mjs's own doc comment. Only the repeating-DAMAGE half; per
+      // mechanics/combat/ongoing-effects.mjs's own doc comment. Only the repeating-DAMAGE half; per
       // explicit direction this project has no Poisoned status, so Poison/Toxin's own "causes the
       // Poisoned Condition" clause stays narrative. Only a target the attack actually hit (and
       // whose own damageValue for THIS entry is real) gets a pending effect - a pure-Condition
@@ -1188,14 +1188,14 @@ export class Essence20Item extends Item {
       let castingCost = this.system.cost;
 
       // Block Magic (Knights of Canterlot, Virtuoso Enchantment spell, p.49) - see
-      // helpers/block-magic.mjs's own doc comment. "+1 to the cost of any spell you cast" while a
+      // items/magic/block-magic.mjs's own doc comment. "+1 to the cost of any spell you cast" while a
       // target is under its effect. Applied after the Efficient/Master Spellcaster reduction (a
       // real cost increase, not something those Perks should shrink away).
       if (isBlockMagicActive(this.actor)) {
         castingCost += 1;
       }
 
-      // Extensions - Illusion Casting, Reach Out, Sharpcaster's free second roll (helpers/extensions.mjs).
+      // Extensions - Illusion Casting, Reach Out, Sharpcaster's free second roll (mechanics/item-hooks.mjs).
       castingCost = await runSpellCost(this, castingCost, dataset);
       if (castingCost === null) {
         return;
@@ -1237,7 +1237,7 @@ export class Essence20Item extends Item {
         return;
       }
 
-      // Area of Effect - see helpers/aoe-targeting.mjs. Only an area spell (system.shape set)
+      // Area of Effect - see mechanics/combat/aoe-targeting.mjs. Only an area spell (system.shape set)
       // places a shape; an ordinary single-target spell is targeted by hand as usual. Placed
       // after every cancellable picker above, so backing out of one of those never costs the
       // player a placement gesture, and before the roll, so dice.mjs's own checkEntries sees the

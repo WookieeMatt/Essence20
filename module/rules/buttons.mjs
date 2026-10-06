@@ -1,4 +1,4 @@
-import { registerChatDecorator } from "../helpers/extensions.mjs";
+import { registerChatDecorator } from "../mechanics/item-hooks.mjs";
 import { recordUse, usesLeft } from "./limits.mjs";
 import { runSteps, stepContext } from "./steps.mjs";
 
@@ -80,7 +80,7 @@ export async function pressRuleButton(message, user = globalThis.game?.user) {
   // Marked used first, so a quick second click (or another player) can't run it twice - unless usedWhenDone, which
   // waits for the steps to finish (a cancelled choice or a missing resource leaves the card pressable).
   if (data.once !== false && !data.usedWhenDone) {
-    const { needsGmRelay, relayToGm } = await import("../helpers/gm-relay.mjs");
+    const { needsGmRelay, relayToGm } = await import("../mechanics/world/gm-relay.mjs");
     const update = [{ [`flags.essence20.${FLAG}.used`]: true }];
     await (needsGmRelay(message) ? relayToGm(message, 'update', update) : message.update(...update));
   }
@@ -88,11 +88,11 @@ export async function pressRuleButton(message, user = globalThis.game?.user) {
   const targets = (data.targets ?? []).map(lookup).filter(Boolean);
   const ctx = stepContext({ actor, item: lookup(data.itemUuid), targets });
   Object.assign(ctx.vars, data.vars ?? {});
-  // The card itself, for steps that act on it (rules/ext/d/misc.mjs claimCard).
+  // The card itself, for steps that act on it (rules/plugins/tags/small-steps-and-refs.mjs claimCard).
   ctx.buttonMessage = message;
   const finished = await runSteps(data.steps ?? [], ctx);
   if (data.once !== false && data.usedWhenDone && finished !== false) {
-    const { needsGmRelay, relayToGm } = await import("../helpers/gm-relay.mjs");
+    const { needsGmRelay, relayToGm } = await import("../mechanics/world/gm-relay.mjs");
     const update = [{ [`flags.essence20.${FLAG}.used`]: true }];
     await (needsGmRelay(message) ? relayToGm(message, 'update', update) : message.update(...update));
   }

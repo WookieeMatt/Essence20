@@ -7,7 +7,7 @@ const MIN_LEVEL = 1;
 const MAX_LEVEL = 20;
 
 import Essence20CompendiumBrowser from "../apps/compendium-browser.mjs";
-import { useGearNanomitePower } from "../helpers/nanomite-gear.mjs";
+import { useGearNanomitePower } from "../items/gear/nanomite-gear.mjs";
 import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
 import ThreatBuilder from "../apps/threat-builder.mjs";
 import SheetOptions from "../apps/sheet-options.mjs";
@@ -22,15 +22,15 @@ import {
   onEditActiveEffect,
   onToggleActiveEffect,
   prepareActiveEffectCategories,
-} from "../helpers/effects.mjs";
-import { applySystemActorsColorCssVariables, applySystemColorCssVariables, getNumActions } from "../helpers/actor.mjs";
+} from "../mechanics/characters/active-effect-controls.mjs";
+import { applySystemActorsColorCssVariables, applySystemColorCssVariables, getNumActions } from "../mechanics/characters/actor-token-helpers.mjs";
 import {
   needsShieldModulationChoice, pickShieldModulationDamageType, setShieldModulationDamageType,
-} from "../helpers/shield-modulation.mjs";
-import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../helpers/personal-shield.mjs";
-import { applyAegisDefeatCheck, isRecklessAbandonItem } from "../helpers/reckless-abandon.mjs";
+} from "../items/defenses/shield-modulation.mjs";
+import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../items/defenses/personal-shield.mjs";
+import { applyAegisDefeatCheck, isRecklessAbandonItem } from "../items/rolls/reckless-abandon.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
-import { announceLevelChange, levelSnapshot } from "../helpers/level-announce.mjs";
+import { announceLevelChange, levelSnapshot } from "../mechanics/characters/level-announce.mjs";
 import { prepareSystemActors,
   onAttachedActorHealthUpdate,
   onAttachedActorStunUpdate,
@@ -40,17 +40,17 @@ import { prepareSystemActors,
   onVehicleRoleUpdate,
 } from "../sheet-handlers/vehicle-handler.mjs";
 import { onActivatePowerInfusion, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
-import { actorHasZordFeature } from "../helpers/zord-features.mjs";
-import { isWarriorModeActive, toggleWarriorMode, WARRIOR_MODE_ID } from "../helpers/warrior-mode.mjs";
-import { HIGH_GEAR_ID, isHighGearActive, toggleHighGear } from "../helpers/high-gear.mjs";
-import { getMegaWeaponAttacksRemaining, MEGA_WEAPON_ID, summonMegaWeapon } from "../helpers/zord-mega-weapon.mjs";
-import { onSummonZord } from "../helpers/zord-summon.mjs";
-import { onActivateSnortleAtTheSpooky } from "../helpers/snortle-at-the-spooky.mjs";
-import { onActivateConsummatePerformer } from "../helpers/consummate-performer.mjs";
+import { actorHasZordFeature } from "../mechanics/vehicles/zord-features.mjs";
+import { isWarriorModeActive, toggleWarriorMode, WARRIOR_MODE_ID } from "../items/zords/warrior-mode.mjs";
+import { HIGH_GEAR_ID, isHighGearActive, toggleHighGear } from "../items/zords/high-gear.mjs";
+import { getMegaWeaponAttacksRemaining, MEGA_WEAPON_ID, summonMegaWeapon } from "../items/zords/zord-mega-weapon.mjs";
+import { onSummonZord } from "../mechanics/vehicles/zord-summon.mjs";
+import { onActivateSnortleAtTheSpooky } from "../items/healing/snortle-at-the-spooky.mjs";
+import { onActivateConsummatePerformer } from "../items/resources/consummate-performer.mjs";
 import {
   adjust, getNamedActionType, getSheetContext, isAiming, refund, spend, tradeStandardForFree,
-} from "../helpers/action-economy.mjs";
-import { runNamedAction } from "../helpers/named-actions.mjs";
+} from "../mechanics/actions/action-economy.mjs";
+import { runNamedAction } from "../mechanics/actions/named-actions.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onEditMorphToughnessBonus,
@@ -73,11 +73,11 @@ import {
   onShieldActivationToggle,
   onShieldEquipToggle,
 } from "../sheet-handlers/listener-item-handler.mjs";
-import { onManageSelectTrait } from "../helpers/traits.mjs";
+import { onManageSelectTrait } from "../mechanics/characters/manage-traits.mjs";
 import { deleteSpecialization } from "../sheet-handlers/specialization-handler.mjs";
-import { isMountedWeaponSetUp, pickUpMountedWeapon, setUpMountedWeapon } from "../helpers/mounted.mjs";
-import { switchMythicForm } from "../helpers/mythically-modular.mjs";
-import { treatOngoingEffect } from "../helpers/ongoing-effects.mjs";
+import { isMountedWeaponSetUp, pickUpMountedWeapon, setUpMountedWeapon } from "../items/attacks/mounted-weapons.mjs";
+import { switchMythicForm } from "../items/attacks/mythically-modular.mjs";
+import { treatOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
 
 export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
@@ -438,14 +438,14 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         const item = this.actor.items.get(itemId);
         const activating = !item.system.isActive;
         if (activating) {
-          const { canActivatePersonalShield } = await import("../helpers/extensions/gij2/shield.mjs");
+          const { canActivatePersonalShield } = await import("../items/defenses/personal-shield-uses.mjs");
           if (!canActivatePersonalShield(this.actor, item)) {
             return;
           }
         }
 
         // Shield Modulation (Vanguard base, 13th level) - "when you activate your shield, choose
-        // one damage type." See helpers/shield-modulation.mjs's own doc comment for why this has
+        // one damage type." See items/defenses/shield-modulation.mjs's own doc comment for why this has
         // to intercept the plain Activate toggle instead of getting its own control.
         if (activating && needsShieldModulationChoice(this.actor, item)) {
           const damageType = await pickShieldModulationDamageType();
@@ -463,7 +463,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         // activatable rolePoints item.
         if (isPersonalShieldItem(item)) {
           // "activating the shield requires a Standard action" (GI Joe CRB, Vanguard, p.108) - Quick
-          // Shield makes it a Free action (helpers/action-perks.mjs).
+          // Shield makes it a Free action (mechanics/actions/action-perks.mjs).
           if (activating) {
             const paid = await spend(this.actor, 'standard', { source: item.name, context: { kind: 'personalShield' } });
             if (paid.blocked) {
@@ -590,7 +590,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
     // Per-turn action budget for the header pip row. Null - and so the whole block is skipped -
     // whenever the actor isn't in the active encounter or the world has tracking switched off;
-    // see helpers/action-economy.mjs#getSheetContext. Read from this.actor rather than the
+    // see mechanics/actions/action-economy.mjs#getSheetContext. Read from this.actor rather than the
     // toObject(false) clone above, because the budget's own `max` is derived data.
     context.actionEconomy = getSheetContext(this.actor);
 
@@ -609,19 +609,19 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
     context.canMorphOrTransform = context.document.system.canMorph || context.document.system.canTransform;
 
-    // Warrior Mode (PR CRB, Zord Feature, p.140) - see helpers/warrior-mode.mjs's own doc
+    // Warrior Mode (PR CRB, Zord Feature, p.140) - see items/zords/warrior-mode.mjs's own doc
     // comment. Only ever true for a Zord actually holding the Feature, so the sidebar's toggle
     // button only shows up for one.
     context.hasWarriorMode = this.document.type == 'zord' && actorHasZordFeature(this.document, WARRIOR_MODE_ID);
     context.isWarriorModeActive = isWarriorModeActive(this.document);
 
-    // High Gear (A Jump Through Time, Zord Feature, p.83) - see helpers/high-gear.mjs's own doc
+    // High Gear (A Jump Through Time, Zord Feature, p.83) - see items/zords/high-gear.mjs's own doc
     // comment. Same "only show the toggle on a Zord that actually holds the Feature" shape as
     // Warrior Mode above.
     context.hasHighGear = this.document.type == 'zord' && actorHasZordFeature(this.document, HIGH_GEAR_ID);
     context.isHighGearActive = isHighGearActive(this.document);
 
-    // Zord Mega-Weapon System - see helpers/zord-mega-weapon.mjs. Same "only show the control on a
+    // Zord Mega-Weapon System - see items/zords/zord-mega-weapon.mjs. Same "only show the control on a
     // Zord that actually holds the Feature" shape as Warrior Mode above; the remaining-attacks
     // count doubles as the button's own summoned/not-summoned state.
     context.hasMegaWeapon = this.document.type == 'zord' && actorHasZordFeature(this.document, MEGA_WEAPON_ID);
@@ -1083,9 +1083,9 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     onSummonZord(target, this.document);
   }
 
-  /** Summon a Contact from the Contacts tab - helpers/contacts.mjs. */
+  /** Summon a Contact from the Contacts tab - mechanics/companions/contacts.mjs. */
   static async #onSummonContact(event, target) {
-    const { onSummonContact } = await import("../helpers/contacts.mjs");
+    const { onSummonContact } = await import("../mechanics/companions/contacts.mjs");
     await onSummonContact(target, this.document);
   }
 
@@ -1181,12 +1181,12 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     }
 
     // Dodgy (MLP CRB, General Perk, p.123) can turn Defend into a Free action - see
-    // helpers/action-economy.mjs#getNamedActionType's own doc comment.
+    // mechanics/actions/action-economy.mjs#getNamedActionType's own doc comment.
     const actionType = getNamedActionType(this.actor, key);
 
     /* One aim per shot. Aim is a Free action and a character may well have Free actions left,
        so this is not a budget refusal and must be checked separately - see
-       helpers/action-economy.mjs#isAiming. The aim clears when the shot is taken. */
+       mechanics/actions/action-economy.mjs#isAiming. The aim clears when the shot is taken. */
     if (key == 'aim' && isAiming(this.actor)) {
       ui.notifications.warn(game.i18n.format('E20.ActionEconomyAlreadyAiming', {
         name: this.actor.name,
@@ -1194,7 +1194,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       return;
     }
 
-    // The key lets a Perk make this action cheaper - see helpers/action-perks.mjs.
+    // The key lets a Perk make this action cheaper - see mechanics/actions/action-perks.mjs.
     const result = await spend(this.actor, actionType, { source: game.i18n.localize(action.label), context: { key } });
     if (result.blocked && !result.cancelled) {
       ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
@@ -1203,7 +1203,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       }));
     }
 
-    /* What the action actually DOES, once its cost is paid - see helpers/named-actions.mjs.
+    /* What the action actually DOES, once its cost is paid - see mechanics/actions/named-actions.mjs.
        Only on a spend that went through: a refused Defend must not leave the actor defending
        for free. Returns null for the actions that are still cost-only. */
     if (!result.blocked) {
@@ -1236,7 +1236,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   /**
    * "Alternatively, a character may trade in a Standard action for two Free actions"
-   * (GI Joe CRB p.193) - see helpers/action-economy.mjs#tradeStandardForFree.
+   * (GI Joe CRB p.193) - see mechanics/actions/action-economy.mjs#tradeStandardForFree.
    */
   static async #onActionTradeForFree() {
     await tradeStandardForFree(this.actor);
@@ -1268,10 +1268,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   /**
-   * Mythically Modular (Through the Shattered Grid p.116) - see helpers/mythically-modular.mjs.
+   * Mythically Modular (Through the Shattered Grid p.116) - see items/attacks/mythically-modular.mjs.
    */
   /**
-   * Nanomite equipment - uses the gear's linked nanomite Power. See helpers/nanomite-gear.mjs.
+   * Nanomite equipment - uses the gear's linked nanomite Power. See items/gear/nanomite-gear.mjs.
    */
   static async #onUseGearNanomite(event, target) {
     const gear = this.actor.items.get(target.dataset.itemId);
@@ -1288,7 +1288,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   /**
-   * Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/mounted.mjs's own doc
+   * Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see items/attacks/mounted-weapons.mjs's own doc
    * comment. One control toggling between the Standard-action Set Up and the Free-action Pick Up,
    * depending on the weapon's own current state.
    */
@@ -1308,7 +1308,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   /**
-   * Ongoing / Poison / Toxin (Cobra Codex p.93-94) - see helpers/ongoing-effects.mjs's own doc
+   * Ongoing / Poison / Toxin (Cobra Codex p.93-94) - see mechanics/combat/ongoing-effects.mjs's own doc
    * comment. "Until treated" - the header badge itself is the only control, clicking it clears
    * that one pending effect early.
    */

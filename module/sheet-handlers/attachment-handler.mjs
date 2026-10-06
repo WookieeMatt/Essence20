@@ -1,6 +1,6 @@
-import { promptUpgradeChoice } from "../helpers/weapon-upgrades.mjs";
+import { promptUpgradeChoice } from "../items/attacks/weapon-upgrades.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
-import { createId } from "../helpers/utils.mjs";
+import { createId } from "../util/utils.mjs";
 import { onPerkDelete, setPerkValues, setPerkAdvancesName } from "./perk-handler.mjs";
 
 /**
@@ -299,7 +299,7 @@ export async function _attachItem(actor, targetItem, dropFunc) {
     // onAttachableParentDrop above) - system.linkedWeaponEffect names the compendium weaponEffect
     // this Upgrade grants, attached here exactly like a directly-dropped weaponEffect would be.
     // Elemental Projector, Biomechanical Weapon and the Modular upgrades need a choice when they go on
-    // (helpers/weapon-upgrades.mjs#promptUpgradeChoice).
+    // (items/attacks/weapon-upgrades.mjs#promptUpgradeChoice).
     if (newattachedItem.type == 'upgrade') {
       await promptUpgradeChoice(newattachedItem);
     }

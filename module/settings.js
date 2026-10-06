@@ -1,9 +1,9 @@
 import CompendiumBrowserSourceConfig from "./apps/compendium-browser-sources.mjs";
 import BookDescriptionImporter from "./apps/book-description-importer.mjs";
 import AdventureImporter from "./apps/adventure-importer.mjs";
-import { invalidateImportedDescriptions } from "./helpers/book-descriptions-store.mjs";
-import { applyGameLineToSourcebooks } from "./helpers/compendium-browser.mjs";
-import { E20 } from "./helpers/config.mjs";
+import { invalidateImportedDescriptions } from "./importers/book-descriptions-store.mjs";
+import { applyGameLineToSourcebooks } from "./util/compendium-browser.mjs";
+import { E20 } from "./util/config.mjs";
 
 export const setting = (key) => {
   return game.settings?.get("essence20", key) ?? "default";
@@ -333,7 +333,7 @@ export const registerSettings = function () {
 
   /* Default is "track", not "strict", and not as a hedge: the overwhelming majority of compendium
      items carry no authored action cost yet, so blocking on absent data would break every table on
-     upgrade. See helpers/action-economy.mjs's own doc comment. */
+     upgrade. See mechanics/actions/action-economy.mjs's own doc comment. */
   game.settings.register(systemName, "actionEconomyMode", {
     name: game.i18n.localize("E20.ActionEconomyOptionMode"),
     hint: game.i18n.localize("E20.ActionEconomyOptionModeHint"),
@@ -346,7 +346,7 @@ export const registerSettings = function () {
 
   /* Charging token movement against the Move action. Off by default and separate from the main
      mode setting, because Foundry fires preMoveToken only on the client initiating the move - so
-     anything decided there is advisory rather than authoritative. See helpers/token-movement.mjs. */
+     anything decided there is advisory rather than authoritative. See mechanics/combat/token-movement.mjs. */
   game.settings.register(systemName, "actionEconomyMovement", {
     name: game.i18n.localize("E20.ActionEconomyOptionMovement"),
     hint: game.i18n.localize("E20.ActionEconomyOptionMovementHint"),
@@ -359,7 +359,7 @@ export const registerSettings = function () {
   /* Whether the "how do you pay for this?" question appears for Perks whose discount depends on
      the fiction - A Talent for Kindness, Vigilance, Quick Change. Per client: a player with a Talent
      Perk may prefer to track it by hand rather than be asked on every action. Discounts the system
-     can verify on its own (Mobility, Here To Help...) apply either way. See helpers/action-perks.mjs. */
+     can verify on its own (Mobility, Here To Help...) apply either way. See mechanics/actions/action-perks.mjs. */
   game.settings.register(systemName, "actionPerkPrompts", {
     name: game.i18n.localize("E20.ActionPerkOptionPrompts"),
     hint: game.i18n.localize("E20.ActionPerkOptionPromptsHint"),
@@ -373,7 +373,7 @@ export const registerSettings = function () {
   /* Whether a combat ending refreshes once-per-encounter abilities. On by default, because that
      is exactly what they did before the Scene Clock existed - they were stamped with the combat's
      own id, so every new combat refreshed them. Once-per-SCENE abilities are unaffected either
-     way; only the GM's own "New Scene" refreshes those. See helpers/scene-clock.mjs. */
+     way; only the GM's own "New Scene" refreshes those. See mechanics/resources/scene-clock.mjs. */
   game.settings.register(systemName, "sceneClockAdvanceOnCombatEnd", {
     name: game.i18n.localize("E20.SceneClockOptionAdvanceOnCombatEnd"),
     hint: game.i18n.localize("E20.SceneClockOptionAdvanceOnCombatEndHint"),
@@ -423,7 +423,7 @@ export const registerSettings = function () {
   /*  Threats                                     */
   /* -------------------------------------------- */
   // How a Threat's Health carries across when a placed token is swapped between its Normal and
-  // Grown forms - see helpers/monster-grow-swap.mjs#carryOverHealth for why both behaviours are
+  // Grown forms - see mechanics/characters/monster-grow-swap.mjs#carryOverHealth for why both behaviours are
   // canon.
   game.settings.register(systemName, "monsterGrowHealthMode", {
     name: game.i18n.localize("E20.MonsterGrowHealthMode"),
@@ -484,7 +484,7 @@ export const registerSettings = function () {
     config: false,
   });
 
-  // Where the points lived before they moved onto the primary Party (helpers/party.mjs moves
+  // Where the points lived before they moved onto the primary Party (mechanics/resources/party.mjs moves
   // them across once and zeroes these). Still registered so that migration can read them.
   game.settings.register(systemName, "sptGmPoints", {
     scope: "world",
@@ -501,7 +501,7 @@ export const registerSettings = function () {
   });
 
   // The Party actor pinned as primary (Essence20Actors#party), which holds the Story Point
-  // pool. "" = none - only ever briefly, since helpers/party.mjs pins one at every GM ready.
+  // pool. "" = none - only ever briefly, since mechanics/resources/party.mjs pins one at every GM ready.
   game.settings.register(systemName, "primaryParty", {
     scope: "world",
     default: "",

@@ -419,7 +419,7 @@ test('Adventurer: Edge on the first Smarts or Social test each encounter', async
   expect(ruleRollSources(actor, null, { rolledSkill: 'science', rolledEssence: 'smarts' }).sources).toEqual([]);
 });
 
-/* Batch banked: Use buttons moved out of helpers/banked-buffs.mjs. */
+/* Batch banked: Use buttons moved out of mechanics/resources/banked-buffs.mjs. */
 
 /** A holder whose status Conditions really switch on and off. */
 function withStatuses(file, statuses = [], options = {}) {
@@ -579,7 +579,7 @@ test("Power Heal: 1 Personal Power heals you by the Perk's advance value (at lea
   expect(full.system.health.value).toBe(10);
 });
 
-/* actions slice (helpers/action-perks.mjs): Instant Kill Mode, Adrenaline Surge, Aggressive, Lookout and Zephyr Grace. */
+/* actions slice (mechanics/actions/action-perks.mjs): Instant Kill Mode, Adrenaline Surge, Aggressive, Lookout and Zephyr Grace. */
 
 const ACTION_BUDGET = { actions: { enabled: true, standard: { max: 1 }, move: { max: 1 }, free: { max: 2 } } };
 
@@ -606,7 +606,7 @@ const useIndex = item => item.system.rules.findIndex(rule => rule.type == 'Use')
 
 test('Instant Kill Mode: once per encounter, attacks are Free actions for the rest of the turn', async () => {
   const { costRulesFor } = await import('./actions.mjs');
-  const { consumeForItem, getRemaining } = await import('../helpers/action-economy.mjs');
+  const { consumeForItem, getRemaining } = await import('../mechanics/actions/action-economy.mjs');
   const { actor, item } = holder('gijcrbitems/_source/Instant_Kill_Mode_JxTGMCJPHgWPQWbJ.json', { system: ACTION_BUDGET });
   actor.items.find = fn => actor.items.contents.find(fn);
   const index = useIndex(item);
@@ -628,7 +628,7 @@ test('Instant Kill Mode: once per encounter, attacks are Free actions for the re
 });
 
 test('Adrenaline Surge gives a whole extra turn, once per encounter', async () => {
-  const { getRemaining } = await import('../helpers/action-economy.mjs');
+  const { getRemaining } = await import('../mechanics/actions/action-economy.mjs');
   const { actor, item } = holder('gijcrbitems/_source/Adrenaline_Surge_TeCGfRZW9Ax9ajmB.json', { system: ACTION_BUDGET });
   actionCombat(actor);
   const paid = pay();
@@ -639,7 +639,7 @@ test('Adrenaline Surge gives a whole extra turn, once per encounter', async () =
 
 test('Aggressive: a Story Point buys an extra Move action, once per turn, only in combat', async () => {
   const { setStoryPointHelpers } = await import('./steps.mjs');
-  const { getRemaining } = await import('../helpers/action-economy.mjs');
+  const { getRemaining } = await import('../mechanics/actions/action-economy.mjs');
   const { actor, item } = holder('gijcrbitems/_source/Aggressive_HzbJFluxv3lbg9nx.json', { system: ACTION_BUDGET });
   const rule = item.system.rules[useIndex(item)];
   const spent = [];
@@ -660,7 +660,7 @@ test('Aggressive: a Story Point buys an extra Move action, once per turn, only i
 });
 
 test('Lookout: a free Move action before the surprise round, round one only', async () => {
-  const { getRemaining } = await import('../helpers/action-economy.mjs');
+  const { getRemaining } = await import('../mechanics/actions/action-economy.mjs');
   const { actor, item } = holder('gijcrbitems/_source/Lookout__Environmental__y7PlJwTFIWQBjJmP.json', { system: ACTION_BUDGET });
   const rule = item.system.rules[useIndex(item)];
   actionCombat(actor, { round: 2 });
@@ -674,7 +674,7 @@ test('Lookout: a free Move action before the surprise round, round one only', as
 });
 
 test('Zephyr Grace adds two Free actions each turn while Morphed', async () => {
-  const { getRemaining } = await import('../helpers/action-economy.mjs');
+  const { getRemaining } = await import('../mechanics/actions/action-economy.mjs');
   const { actor } = holder('ttsgitems/_source/Zephyr_Grace_grOi10SLawqjUB8g.json', { system: { ...ACTION_BUDGET, isMorphed: false } });
   actionCombat(actor);
   await fireTriggers(actor, 'turnStart');
@@ -765,8 +765,8 @@ test('Reactive Shocks: a chat reminder whenever the vehicle takes damage', async
   delete global.ChatMessage;
 });
 
-/* Batch powers: Grid and Sorcerous Power Use buttons (helpers/power-use.mjs), and the Princess Perks'
-   Spellcasting upshift (helpers/princess-perks.mjs). */
+/* Batch powers: Grid and Sorcerous Power Use buttons (mechanics/characters/power-use.mjs), and the Princess Perks'
+   Spellcasting upshift (items/magic/princess-perks.mjs). */
 
 const personalPower = value => ({ powers: { personal: { value } } });
 
@@ -918,7 +918,7 @@ test.each([
   expect(unicorn.actor.system.skills.spellcasting.shiftUp).toBe(1);
 });
 
-/* Grants batch (helpers/grants.mjs): once-ever pick-and-grant Uses. The toggle gate replaces the old
+/* Grants batch (mechanics/resources/grants.mjs): once-ever pick-and-grant Uses. The toggle gate replaces the old
    flags.essence20.granted, which still hides the button on items granted before the move. */
 
 const GRANT_ROWS = [
@@ -931,7 +931,7 @@ const GRANT_ROWS = [
   { uuid: 'C.weaponUpS', type: 'upgrade', name: 'Scope', system: { availability: 'standard', type: 'weapon' } },
 ];
 
-/** Stand-ins for helpers/grants.mjs: the compendium is GRANT_ROWS; pickOne takes the first row, or cancels on pick number `cancelAt`. */
+/** Stand-ins for mechanics/resources/grants.mjs: the compendium is GRANT_ROWS; pickOne takes the first row, or cancels on pick number `cancelAt`. */
 function grantFakes(cancelAt = -1) {
   const calls = [];
   const granted = [];
@@ -1027,7 +1027,7 @@ test.each([
 });
 
 
-/* unblocked batch: the Story Point grant Use buttons moved out of helpers/banked-buffs.mjs, now that a
+/* unblocked batch: the Story Point grant Use buttons moved out of mechanics/resources/banked-buffs.mjs, now that a
    Story Point gainResource stops (keeping the Use) when no GM is connected. */
 
 test.each([
@@ -1083,7 +1083,7 @@ test.each([
   }
 });
 
-/* bonus slice (helpers/action-perks.mjs ACTION_PERK_USES): bonus attacks from a Use button. */
+/* bonus slice (mechanics/actions/action-perks.mjs ACTION_PERK_USES): bonus attacks from a Use button. */
 
 /** A melee or ranged weapon effect with no weapon behind it, rolled with this skill. */
 const bonusShot = (actor, style, skill) => ({ name: 'Shot', type: 'weaponEffect', actor, flags: { essence20: {} }, system: { actionType: 'standard', classification: { style, skill } } });
@@ -1101,7 +1101,7 @@ test.each([
   ['Mayhem Attack', 'tfcrbitems/_source/Mayhem_Attack_kFyggRo3fEFsHqcJ.json', 'free', 'turn'],
   ['Surface Invasion', 'tfcrbitems/_source/Surface_Invasion_foFGF3OSzj9NpQ3M.json', 'free', 'scene'],
 ])('%s: a Use in combat grants one bonus attack (%s), once per %s', async (name, file, cost, per) => {
-  const { getLedger } = await import('../helpers/action-economy.mjs');
+  const { getLedger } = await import('../mechanics/actions/action-economy.mjs');
   const { actor, item, available } = bonusHolder(file);
   expect(available()).toBe(false);
   actionCombat(actor);
@@ -1116,14 +1116,14 @@ test.each([
 });
 
 test('The Hits Keep Coming: a Free bonus attack that only a melee Might attack can use, once per turn', async () => {
-  const { consumeForItem, getLedger, getRemaining } = await import('../helpers/action-economy.mjs');
+  const { consumeForItem, getLedger, getRemaining } = await import('../mechanics/actions/action-economy.mjs');
   const { actor, item, available } = bonusHolder('gijcrbitems/_source/The_Hits_Keep_Coming_FGrl4swULa62vet8.json');
   actionCombat(actor);
   expect(await runUse(item, pay())).toBeTruthy();
   expect(available()).toBe(false);
   expect(getLedger(actor).bonusAttacks).toHaveLength(1);
 
-  const { attackMatchesFilter, describeAttack } = await import('../helpers/action-perks.mjs');
+  const { attackMatchesFilter, describeAttack } = await import('../mechanics/actions/action-perks.mjs');
   const fits = (style, skill) => attackMatchesFilter(getLedger(actor).bonusAttacks[0].filter, describeAttack(actor, bonusShot(actor, style, skill)));
   expect(fits('melee', 'finesse')).toBe(false);
   expect(fits('projectile', 'might')).toBe(false);
@@ -1135,7 +1135,7 @@ test('The Hits Keep Coming: a Free bonus attack that only a melee Might attack c
 });
 
 test('Follow Through: Morphed only; a no-cost Might or Finesse bonus attack, once per turn', async () => {
-  const { consumeForItem, getLedger } = await import('../helpers/action-economy.mjs');
+  const { consumeForItem, getLedger } = await import('../mechanics/actions/action-economy.mjs');
   const { actor, item, available } = bonusHolder('atsitems/_source/Follow_Through_QsFiUE0YYjwQHPgh.json', { isMorphed: false });
   actionCombat(actor);
   expect(available()).toBe(false);
@@ -1144,7 +1144,7 @@ test('Follow Through: Morphed only; a no-cost Might or Finesse bonus attack, onc
   expect(await runUse(item, pay())).toBeTruthy();
   expect(available()).toBe(false);
   expect(getLedger(actor).bonusAttacks[0].cost).toBe('none');
-  const { attackMatchesFilter, describeAttack } = await import('../helpers/action-perks.mjs');
+  const { attackMatchesFilter, describeAttack } = await import('../mechanics/actions/action-perks.mjs');
   const fits = (style, skill) => attackMatchesFilter(getLedger(actor).bonusAttacks[0].filter, describeAttack(actor, bonusShot(actor, style, skill)));
   expect(fits('projectile', 'targeting')).toBe(false);
   expect(fits('melee', 'might')).toBe(true);
@@ -1154,7 +1154,7 @@ test('Follow Through: Morphed only; a no-cost Might or Finesse bonus attack, onc
 
 test('Shoot First: a Story Point for an attack at no action cost, once per encounter, even before the combat starts', async () => {
   const { setStoryPointHelpers } = await import('./steps.mjs');
-  const { getLedger } = await import('../helpers/action-economy.mjs');
+  const { getLedger } = await import('../mechanics/actions/action-economy.mjs');
   const { actor, item, available } = bonusHolder('ccitems/_source/Shoot_First_QN5iC2K5VaMItBVX.json');
   const spent = [];
   try {
@@ -1172,7 +1172,7 @@ test('Shoot First: a Story Point for an attack at no action cost, once per encou
 });
 
 test('Fight or Flight: another attack or another move as a Free action, once per turn', async () => {
-  const { getLedger, getRemaining } = await import('../helpers/action-economy.mjs');
+  const { getLedger, getRemaining } = await import('../mechanics/actions/action-economy.mjs');
   const { actor, item, available } = bonusHolder('gijcrbitems/_source/Fight_or_Flight_UpZjnv99mGdT4lLL.json');
   actionCombat(actor);
   // Backing out of the choice uses nothing.
@@ -1189,7 +1189,7 @@ test('Fight or Flight: another attack or another move as a Free action, once per
 });
 
 test('Triple Strike Attacks: 1 Personal Power for two attacks at no action cost, once per turn', async () => {
-  const { getLedger } = await import('../helpers/action-economy.mjs');
+  const { getLedger } = await import('../mechanics/actions/action-economy.mjs');
   const { actor, item, available } = bonusHolder('prcrbitems/_source/Triple_Strike_Attacks_hnbSzD1qg9P0RiAH.json', { powers: { personal: { value: 0 } } });
   actionCombat(actor);
   expect(available()).toBe(false);
@@ -1460,7 +1460,7 @@ test('Smoke Beam: a Critical Success counts; a miss, or a hit with something els
 
 test('The Stare: the roll pipeline fires hit only for the targets the cast hit', async () => {
   spellSaveCards();
-  const { runPostRoll } = await import('../helpers/extensions.mjs');
+  const { runPostRoll } = await import('../mechanics/item-hooks.mjs');
   const { actor, item } = holder('kocitems/_source/The_Stare_SPk4Fxfc4pUV5pDO.json');
   item.uuid = 'Item.stare';
   global.fromUuidSync = uuid => (uuid == item.uuid ? item : null);
@@ -1549,7 +1549,7 @@ test.each([
 });
 
 test('Perch: its holder\'s Small companion gets an extra Move action on its turn in round one only', async () => {
-  const { getRemaining } = await import('../helpers/action-economy.mjs');
+  const { getRemaining } = await import('../mechanics/actions/action-economy.mjs');
   const { LINK_HOLDERS } = await import('./index.mjs');
   const { actor: owner } = holder('ccitems/_source/Perch_8Qr2SNMkMxXr4BEG.json');
   const companion = (size, type = 'companion') => {
@@ -1646,7 +1646,7 @@ test.each([
   }
 });
 
-/* Banked batch 2: self-banked roll bonuses moved off helpers/banked-buffs.mjs onto Use rules with a bank
+/* Banked batch 2: self-banked roll bonuses moved off mechanics/resources/banked-buffs.mjs onto Use rules with a bank
    step (Think On It, Auxiliary Brain, Street Smarts, Brutish, If I Recall Correctly, Trick Shot, Hidden
    Whispers, Mind of No Mind, Can't Afford to Miss, Grid Gifted). No action is charged, as before. */
 
@@ -1758,7 +1758,7 @@ test('Grid Gifted: Edge or Specialized on the next Smarts or Social test, once p
   expect(ruleSpecializes(fresh.actor, 'science', null, { rolledEssence: 'smarts' })).toBe(false);
 });
 
-/* grants3 batch (helpers/grants.mjs): Cross-Training (GI Joe, TF), Split Focus, Branch Perk, Grid Spectrum Echo and
+/* grants3 batch (mechanics/resources/grants.mjs): Cross-Training (GI Joe, TF), Split Focus, Branch Perk, Grid Spectrum Echo and
    Prismatic Boon as once-ever pickPerk Uses. The step runs the real grants.mjs#pickPerkFrom over a fake compendium
    index (game.packs); the select dialog answers with the first option it was offered. */
 
@@ -1924,7 +1924,7 @@ test.each([
 });
 
 /* Banked batch 3: ally banks and heals (pickAlly), banked Defense bonuses, banks gated on their own unspent
-   bonus (rule:banked) and Role Point costs, moved off helpers/banked-buffs.mjs onto Use rules (Battle
+   bonus (rule:banked) and Role Point costs, moved off mechanics/resources/banked-buffs.mjs onto Use rules (Battle
    Commander, Personal Sacrifice, Bird's Eye View, Generosity of Spirit, Helping Hand, Whatever Helps, MacGyver,
    Lightspeed Response, Intrafilum, Momentary Blur, Stronger Together, Bait and Switch, Vulnerability, Stargazer,
    Menacing Laugh, Duty of the Silver, Wild Tales). No action is charged, as before. */
@@ -2256,7 +2256,7 @@ test.each([
   ['Excalibur', 'qgtgitems/_source/Excalibur_GNuActe2QRVyWH3o.json', { evasion: 10, toughness: 11 }, { evasion: 12, toughness: 10 }],
 ])('%s: weapon or shield, a Move action to switch; no attacks as a shield', async (name, file, weapon, shield) => {
   const { ruleDerived } = await import('./adapter.mjs');
-  const { zord2WeaponUnusable } = await import('../helpers/extensions/zord2/unusable.mjs');
+  const { zord2WeaponUnusable } = await import('../items/attacks/shield-mode-unusable-weapons.mjs');
   const defenses = () => ({ toughness: { total: 10, string: '10' }, evasion: { total: 10, string: '10' } });
   const { actor, item } = holder(file, { system: { defenses: defenses() } });
   const totals = () => ({ evasion: actor.system.defenses.evasion.total, toughness: actor.system.defenses.toughness.total });
@@ -2289,7 +2289,7 @@ test.each([
 /* Banked batch 4: Uses whose ally pick comes before the cost (Heart of the Team, You Got This!, Failure Isn't an
    Option), self-or-ally heals (Tourniquet Line Chef, Field Repair), a heal + a two-Defense bank (Remove & Rebuild),
    temporary Health and an "until your next turn" Defense bonus (Sword And Board), moved off
-   helpers/banked-buffs.mjs onto Use rules. No action is charged, as before. Reuses the banked batch 3 helpers. */
+   mechanics/resources/banked-buffs.mjs onto Use rules. No action is charged, as before. Reuses the banked batch 3 helpers. */
 
 /** A Role Points item (Quips & Speeches) the holder spends from. */
 function banked4Points(actor, value) {
@@ -2569,10 +2569,10 @@ test("Impulsive: rolling Initiative banks one ↓1 for the next Skill Test", asy
   expect(ruleRollSources(actor, null, { rolledSkill: 'athletics' }).sources).toEqual([]);
 });
 
-/* tonight batch (helpers/grants.mjs): Skin Tempering x3 and Zeta Skin Transplant (flags alterationWorn), Integrated
+/* tonight batch (mechanics/resources/grants.mjs): Skin Tempering x3 and Zeta Skin Transplant (flags alterationWorn), Integrated
    Basic/Advanced Weapon (integrated + flags droneWeapon) and Safety First (system availability) as once-ever pickGrant
    Uses with overrides; S.P.D. Asset as a once-ever choose Use; and the plain Alt Mode chassis' "get the attack back" Use
-   (was helpers/extensions/tf2/modes.mjs's tf2AltModeAttacks button). */
+   (was items/forms/alt-mode-attacks-mode-lock.mjs's tf2AltModeAttacks button). */
 
 const TONIGHT_ROWS = [
   { uuid: 'T.scopeS', type: 'upgrade', name: 'Scope', system: { availability: 'standard', type: 'weapon' } },
@@ -2874,7 +2874,7 @@ test('Alt Mode special attacks: the Charger grants Ram and Flyby fitted to 2; a 
   expect(charger.filter(r => r.type == 'Trigger').map(r => [r.event, r.steps[0].uuid, r.steps[1].damage])).toEqual([
     ['added', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m', 2], ['added', 'Compendium.essence20.tf_crb.Item.3L0eAnm4GVoQi7Df', 2]]);
   expect(charger.filter(r => r.type == 'Use')).toHaveLength(2);
-  const { specialAttackUpdates } = await import('../helpers/weapon-fit.mjs');
+  const { specialAttackUpdates } = await import('../mechanics/resources/weapon-fit.mjs');
   const weapon = { system: { traits: ['blunt'], items: { a: { type: 'weaponEffect', damageType: 'blunt', damageValue: 1, classification: { skill: 'might' } } } } };
   const effects = [{ id: 'e1', system: { damageType: 'blunt', damageValue: 1, classification: { skill: 'might' } } }];
   expect(specialAttackUpdates(weapon, effects, { type: 'sharp' }).effectUpdates).toEqual([{ _id: 'e1', 'system.damageType': 'sharp' }]);
@@ -2951,7 +2951,7 @@ test('Power Strike: 1-3 Personal Power for that much damage on the next Power We
    Energy Affinity attack, once per turn). */
 
 test('Ready for Action: first in the Initiative order in round 1, a Free bonus attack, once per encounter', async () => {
-  const { getLedger } = await import('../helpers/action-economy.mjs');
+  const { getLedger } = await import('../mechanics/actions/action-economy.mjs');
   const { actor, item, available } = bonusHolder('ghpfitems/_source/Ready_for_Action_NSweXvUIBdqLiOsz.json');
   expect(available()).toBe(false);
   actionCombat(actor, { round: 2 });
@@ -2970,9 +2970,9 @@ test('Ready for Action: first in the Initiative order in round 1, a Free bonus a
 
 test('Flux Additives: an attack dealing the Energy Affinity Element gives a Free action back, once per turn', async () => {
   const { registerCheck } = await import('./predicate.mjs');
-  const { isEnergyAffinityElementAttack } = await import('../helpers/energy-affinity.mjs');
+  const { isEnergyAffinityElementAttack } = await import('../items/attacks/energy-affinity.mjs');
   registerCheck('energyAffinityAttack', (who, option, ctx) => isEnergyAffinityElementAttack(who, ctx?.item));
-  const { getRemaining } = await import('../helpers/action-economy.mjs');
+  const { getRemaining } = await import('../mechanics/actions/action-economy.mjs');
   const { actor } = holder('dditems/_source/Flux_Additives_8JrHJjPowijfAMCE.json', { system: { ...ACTION_BUDGET } });
   const affinity = { id: 'affinity', type: 'perk', name: 'Energy Affinity', flags: { core: { sourceId: 'Compendium.essence20.decepticon_directive.Item.DgFY0ZmAtClAobiA' } }, system: { choice: 'fire' }, parent: actor };
   const all = [...actor.items.contents, affinity];
@@ -3114,7 +3114,7 @@ describe('slC gij1', () => {
 
 describe('slC gij2', () => {
   test('En Passant: a DIF 15 Alertness test, no action; a success gives one attack at no action cost', async () => {
-    const { getLedger } = await import('../helpers/action-economy.mjs');
+    const { getLedger } = await import('../mechanics/actions/action-economy.mjs');
     const { actor, item } = holder('gijcrbitems/_source/En_Passant_eVRb1Fp43QMdxV1N.json', { system: ACTION_BUDGET });
     actor.items.find = fn => actor.items.contents.find(fn);
     const previous = global.CONFIG;
@@ -3140,7 +3140,7 @@ describe('slC gij2', () => {
 
   test('Brrrrrrrrrrrrrrt: its Multiple Targets Trigger also says the allies may Sprint', async () => {
     const { registerCheck, setWorldLookups } = await import('./predicate.mjs');
-    const { isMultipleTargetsWeapon } = await import('../helpers/multiple-targets.mjs');
+    const { isMultipleTargetsWeapon } = await import('../mechanics/combat/multiple-targets.mjs');
     registerCheck('multipleTargetsWeapon', (actor, option, ctx) => (ctx?.item ? isMultipleTargetsWeapon(actor, ctx.item) : null));
     const { actor, item } = holder('gijcrbitems/_source/Brrrrrrrrrrrrrrt_U3NTi35bk2qI8oB6.json');
     const minigun = { id: 'w1', type: 'weapon', name: 'Minigun', system: { traits: ['multipleTargets'], itemAndUpgradeTraits: ['multipleTargets'] } };
@@ -3252,7 +3252,7 @@ describe('slE q2', () => {
     return actor;
   };
 
-  /** helpers/grants.mjs stand-ins: every row is offered, pickOne takes the first (or cancels). */
+  /** mechanics/resources/grants.mjs stand-ins: every row is offered, pickOne takes the first (or cancels). */
   function fakeGrants(rows, { cancel = false } = {}) {
     const calls = [];
     const granted = [];
@@ -3703,7 +3703,7 @@ describe('slB2 other2', () => {
 
   beforeAll(async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { hasMedicineKit } = await import('../helpers/extensions/other2/medic.mjs');
+    const { hasMedicineKit } = await import('../items/healing/heal-action-medic-gear.mjs');
     registerCheck('medicineKit', actor => hasMedicineKit(actor));
   });
 

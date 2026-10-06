@@ -1,5 +1,5 @@
 import { applyThemeClass } from "../settings.js";
-import { getGroupedItemPacks, getVisibleItemPacks } from "../helpers/compendium-browser.mjs";
+import { getGroupedItemPacks, getVisibleItemPacks } from "../util/compendium-browser.mjs";
 import CompendiumBrowserSourceConfig from "./compendium-browser-sources.mjs";
 import { checkPrerequisites } from "../rules/prerequisites.mjs";
 

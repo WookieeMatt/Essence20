@@ -1,7 +1,7 @@
 # Extension slices → rules: cloud batch plan
 
 The extension slices (`module/helpers/extensions/<slice>/`, ~37,000 lines in 31 folders) are the hand-written
-Perk/item code that registers into `helpers/extensions.mjs`. No conversion round has targeted them yet. This
+Perk/item code that registers into `mechanics/item-hooks.mjs`. No conversion round has targeted them yet. This
 plan splits them into five **chained** cloud batches: each one starts from the branch the previous one pushed,
 so they never conflict with each other.
 
@@ -19,7 +19,7 @@ next one is ideal but not required - chaining is what prevents conflicts.
 ## How the slices work (for the cloud session)
 
 - Each slice folder has a `common.mjs` / `shared.mjs` with its item-id table (e.g. `TF1 = { brutalDisplay: dd('…') }`)
-  and files that call the `register*` functions of `module/helpers/extensions.mjs` (Use buttons, roll sources,
+  and files that call the `register*` functions of `module/mechanics/item-hooks.mjs` (Use buttons, roll sources,
   dialog toggles, post-roll riders, defense adjusts, derived data...). `extensions/index.mjs` imports every file.
 - Converting an item = writing its rules into its pack `_source` JSON, then removing its entry from the slice:
   the id-table key, the code that reads it, and its tests (replace them with rule-based tests in

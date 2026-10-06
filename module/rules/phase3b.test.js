@@ -1248,7 +1248,7 @@ describe('round 35: scaled damage', () => {
   });
 
   test('outcomes read the results themselves: x2, anyFailed, allFailed, fumbled', async () => {
-    const { runPostRoll } = await import('../helpers/extensions.mjs');
+    const { runPostRoll } = await import('../mechanics/item-hooks.mjs');
     const mark = (key, outcome) => ({ type: 'Trigger', event: 'afterRoll', outcome, steps: [{ do: 'mark', key }] });
     const roll = async (results, extra = {}) => {
       const actor = makeActor([mark('x2', 'x2'), mark('any', 'anyFailed'), mark('all', 'allFailed'), mark('fum', 'fumbled'), mark('double', 'double')]);
@@ -1381,7 +1381,7 @@ describe('round 35: scaled damage', () => {
   });
 
   test('DialogSwitch key travels with the roll for hit Triggers; its steps run when ticked', async () => {
-    const { runPostRoll } = await import('../helpers/extensions.mjs');
+    const { runPostRoll } = await import('../mechanics/item-hooks.mjs');
     const foe = makeActor([], { name: 'Foe' });
     const actor = makeActor([
       { type: 'DialogSwitch', label: 'Hobble', downshift: 2, key: 'hobble', forget: true, steps: [{ do: 'mark', key: 'declared' }] },
@@ -1435,7 +1435,7 @@ describe('round 35: scaled damage', () => {
   });
 
   test('targeted fires on the defender with the margin; dealtDamage / defeatedEnemy on the one who dealt it', async () => {
-    const { runPostRoll, runAfterDamage } = await import('../helpers/extensions.mjs');
+    const { runPostRoll, runAfterDamage } = await import('../mechanics/item-hooks.mjs');
     const attacker = makeActor([
       { type: 'Trigger', event: 'dealtDamage', steps: [{ do: 'mark', key: 'hurtSomeone' }] },
       { type: 'Trigger', event: 'defeatedEnemy', steps: [{ do: 'mark', key: 'downedOne', to: 'target' }] },
@@ -1558,7 +1558,7 @@ describe('round 35: scaled damage', () => {
   });
 
   test('hit / miss fire for any roll against a target, not only attacks', async () => {
-    const { runPostRoll } = await import('../helpers/extensions.mjs');
+    const { runPostRoll } = await import('../mechanics/item-hooks.mjs');
     const foe = makeActor([], { name: 'Foe' });
     const missed = makeActor([], { name: 'Other' });
     const actor = makeActor([
@@ -1572,7 +1572,7 @@ describe('round 35: scaled damage', () => {
   });
 
   test('outcome double: a success by double the DIF (or a crit); success still matches it', async () => {
-    const { runPostRoll } = await import('../helpers/extensions.mjs');
+    const { runPostRoll } = await import('../mechanics/item-hooks.mjs');
     const foe = makeActor([], { name: 'Foe' });
     const actor = makeActor([
       { type: 'Trigger', event: 'hit', outcome: 'double', steps: [{ do: 'mark', key: 'big', to: 'target' }] },

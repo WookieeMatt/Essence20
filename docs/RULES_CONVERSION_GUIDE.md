@@ -179,12 +179,12 @@ New rule types (see module/rules/types.mjs + adapter.mjs):
 - Trigger events `combatStart`, `combatEnd`, `initiativeRolled`, `storyPointSpent`.
 - Step `askNumber` {var, min, max, prompt} -> `@var.<var>`.
 - Tags `roll:untrained`, `vehicle:moves:<aerial|ground|swim>`; RollModifier `immune: ["untrainedSnag"]` lifts only the
-  automatic untrained Snag (read by helpers/roll-dialog.mjs#_isUntrainedSnag).
+  automatic untrained Snag (read by mechanics/rolls/roll-dialog.mjs#_isUntrainedSnag).
 
 ## Engine features added 2026-10-02 (round 8)
-- Rule type `ConditionImmunity` {conditions: [status ids]} - read by helpers/condition-immunity.mjs#isImmuneToCondition; any scope incl. aura/party.
+- Rule type `ConditionImmunity` {conditions: [status ids]} - read by mechanics/combat/condition-immunity.mjs#isImmuneToCondition; any scope incl. aura/party.
 - Step `pickGrant` {from: {type, availabilities?: [...], tags?: [item: tags tested on each compendium entry]}, integrated?, until?, to?, title?}
-  - uses helpers/grants.mjs findItems/pickOne/grantCopy; the picked uuid is @var.picked. (No role-perk/origin pickers, no quantity/rename overrides.)
+  - uses mechanics/resources/grants.mjs findItems/pickOne/grantCopy; the picked uuid is @var.picked. (No role-perk/origin pickers, no quantity/rename overrides.)
 
 ## IMPORTANT lint note (2026-10-02)
 Lint with `node node_modules/eslint/bin/eslint.js <paths> --ext .js,.mjs --rule 'linebreak-style: off'`. Without `--ext`, a
@@ -192,10 +192,10 @@ directory argument only lints .js files and skips every .mjs. ROOT is fully lint
 Also: some pack sources are LF (e.g. packs/iafav2items) - match each file's own line endings when inserting rules.
 
 ## Engine features added 2026-10-02 (round 9)
-- Rule type `AttackCount` {count | additional, when} - attacks per Attack action, read by helpers/action-perks.mjs#getAttacksPerAction;
+- Rule type `AttackCount` {count | additional, when} - attacks per Attack action, read by mechanics/actions/action-perks.mjs#getAttacksPerAction;
   the rule's `when` (attack tags) also filters the chained attacks.
 - Step `bonusAttack` {count?, cost: none|free|move|standard, when?: attack tags the bonus attack must match, psychicOnMiss?, to?}
-  - wraps helpers/action-economy.mjs#grantBonusAttack; fails (stops the run) outside combat.
+  - wraps mechanics/actions/action-economy.mjs#grantBonusAttack; fails (stops the run) outside combat.
 - `weapon:` tags work on items whose owner is `item.actor` too.
 - A Use that stops with nothing in chat posts no card.
 
@@ -216,7 +216,7 @@ Also: some pack sources are LF (e.g. packs/iafav2items) - match each file's own 
   and every reduction), not as a damage modifier. Steps `leaveAt {value}` / `negateDamage`. Tag `damage:crit` (the hit was a crit).
 - Step `setForm` {form: morphed|transformed, value: true|false, to?} - Morph / Alt Mode on or off.
 - Step `save` {to, skills: [...], dif (formula), status?, rounds?, damage?: {value, type}, damageAlways?, removeOnSuccess?, title?}
-  - posts helpers/save-riders.mjs#postSaveCard; everyone reached rolls one of the skills, failure applies status/damage.
+  - posts mechanics/combat/save-riders.mjs#postSaveCard; everyone reached rolls one of the skills, failure applies status/damage.
 - Recipient `all:<ft>` - every other token's actor in range, either side (= allies.mjs#getAllNearbyTokens).
 - Trigger `outcome: success` now also matches a Critical Success; `failure` also a Fumble.
 - afterRoll Triggers see the rolled item (spells too: riderContext.itemUuid), so a spell's own effect is
@@ -242,7 +242,7 @@ Also: some pack sources are LF (e.g. packs/iafav2items) - match each file's own 
   (a Perk: every weapon `items` matches) - weapon-upgrades.mjs#desiredGeneratedEffects. Converted: Nonlethal, Strobe,
   Covering, Heavy Hitting, Folding Stock, Manipulative, Tracer Rounds, Big Swing. Formula ref `@base.<path>` added.
 - Step `pickAlly` {within?: formula ft (default anywhere), filter?: [target: tags on each ally], max?} - the targeted ally/allies
-  (1..max), else a picker over helpers/allies.mjs#getNearbyAllyTokens (Frenemy, Ally Awareness, Betrayal). Sets the
+  (1..max), else a picker over mechanics/combat/nearby-allies.mjs#getNearbyAllyTokens (Frenemy, Ally Awareness, Betrayal). Sets the
   targets, so following steps use `to: "target"` / `"targets"` (bank, heal...). (= banked-buffs pickAllyTargets.)
 - Use `cost.resource` may be `{rolePoints: true}`.
 - `bank` may carry a Defense bonus instead: {defense: toughness|evasion|willpower|cleverness|any, defenseBonus: formula,
@@ -257,7 +257,7 @@ Also: some pack sources are LF (e.g. packs/iafav2items) - match each file's own 
   essence20.requisitionAvailability listener = what qualify1/qualify2 effectiveAvailability give), elsewhere totalAvailability.
   `item:id:<16-char _id>` - any printing of that compendium entry.
 - Step `pickPerk` {from: role|focus|branch, line?: same|gij|pr|tf|mlp|wtnv, notOwn?, ofOwnRole?, minLevel?, maxLevel? (formulas),
-  notOwnPerkNames?, excludeName? (regex), subtype? ('role' default for role/branch, any for focus)} = helpers/grants.mjs#pickPerkFrom
+  notOwnPerkNames?, excludeName? (regex), subtype? ('role' default for role/branch, any for focus)} = mechanics/resources/grants.mjs#pickPerkFrom
   over pickRolePerk (grantPerkOutright + grantedBy flag). Fails (stops) on cancel. Chat "Granted".
 - `until: "nextTurn"` (bank, mark, setToggle, grant): ends when the rule actor's next turn starts.
 - `pickAlly` {includeSelf: true} offers the actor too. `bank.defense` may be a list ["toughness","evasion"] (one entry,
@@ -290,7 +290,7 @@ Also: some pack sources are LF (e.g. packs/iafav2items) - match each file's own 
 - `until: "endOfNextRound"`; tags `markedBy:<key>` (this actor carries mark <key>, set by the other party) and `markedByMe:<key>` (the other party carries it, set by this actor).
 - Actor tag `specializedIn:<skill>` (self:/target:) - holds a Specialization item in that Skill.
 - Step `fitAttack` {damage?, types?: ["blunt","sharp"], skills?: ["finesse","might"]} after a `grant` of a weapon: sets the
-  granted weapon's Blunt hit damage and asks the offered damage type / Skill (helpers/weapon-fit.mjs). `grant` sets ctx.vars.granted.
+  granted weapon's Blunt hit damage and asks the offered damage type / Skill (mechanics/resources/weapon-fit.mjs). `grant` sets ctx.vars.granted.
 - Specialization fix: `specializedIn:<skill>` reads system.skills.<skill>.specializations (falls back to items).
 - FIXED: Exploit Trust / Hard Hitter's Edge now set before _getFormula (it never applied before).
 
@@ -322,7 +322,7 @@ Also: some pack sources are LF (e.g. packs/iafav2items) - match each file's own 
   Object.keys(E20.actorSizes).indexOf compare the hand-written Perks use) and `target:sizeDiff>=N` (the target's minus this
   actor's); ops >= <= > < =, N may be negative; null when either size is unknown or there's no other party.
   Formula ref `@size` - the actor's size index (small 0, common 1, large 2, long 3, huge 4 ... titanic 10).
-- `ally:within:N` (and pickAlly / @count.allies) now count allies via helpers/allies.mjs#getNearbyAllyTokens (Frenemy,
+- `ally:within:N` (and pickAlly / @count.allies) now count allies via mechanics/combat/nearby-allies.mjs#getNearbyAllyTokens (Frenemy,
   Betrayal, Ally Awareness x5) - so it IS exact for code that used getNearbyAllyTokens (On My Own, Deafening Silence...).
 - Edits may carry `"all": true` - replace EVERY occurrence of `find` (at least one). Use it for a line repeated in several
   identical expected-dataset literals in dice.test.js (e.g. `      cubePlayerAvailable: false,\n`), which earlier rounds
@@ -533,11 +533,11 @@ Built for the skip lists in `docs/rules-batches/reg*.md` - re-check those skips 
   `@target.mark.<key>` read it (0 when unmarked or run out). `add: true` adds to a running mark (the duration restarts).
 - **Steps:**
   - `essenceDamage {essence, amount, to}` - `essence`: strength | speed | smarts | social | `{choice.<key>}` | `choose`
-    (asks). Never below 0; Immortal Rebel Soul still applies (helpers/environment-hazards.mjs).
+    (asks). Never below 0; Immortal Rebel Soul still applies (mechanics/world/environment-hazards.mjs).
   - `healEssence {essence?, amount, to}` - one Essence up to its maximum, or with none named the most-damaged first.
   - `extendCondition {condition, rounds, to}` - a timed Condition lasts `rounds` longer (an untimed one is left alone).
   - `rerollCard {target?, mode?, keepBetter?, rows?}` (Reaction only) - rerolls the card's roll through
-    helpers/reroll.mjs (target d20 by default) and posts it; rows the new total no longer reaches miss
+    mechanics/rolls/reroll.mjs (target d20 by default) and posts it; rows the new total no longer reaches miss
     (`negateHit`), rows it now reaches become hits (`convertRows`).
   - `roll` gains `snag: true` and `open: true` (an ordinary roll with no DIF, against whoever is targeted; its `then`
     steps run after, with `@var.rollTotal`; a cancelled roll stops the run).
@@ -726,7 +726,7 @@ them with `await import('./ext/index.mjs')` after any `jest.unstable_mockModule`
 
 ## Engine features added 2026-10-06 (round 10, group A)
 
-Everything below is registered on import of `module/rules/ext/a.mjs` (loaded first by `module/rules/ext/index.mjs`).
+Everything below is registered on import of `module/rules/ext/a.mjs` (loaded first by `module/rules/plugins/index.mjs`).
 Strings are under `E20.RulesExtA.*`.
 
 ### Linked scopes
@@ -795,7 +795,7 @@ Strings are under `E20.RulesExtA.*`.
   (Named so because group D's `askText` exists.)
 - `spendFrom {to, resource, amount}` - each recipient pays from its own resource; stops (with a chat line) when one
   can't; `@var.paidBy`.
-- `formStart` / `formEnd` - activate the rule item's Form / end the active one (helpers/extensions/zord1/forms.mjs).
+- `formStart` / `formEnd` - activate the rule item's Form / end the active one (items/forms/ranger-form-perks.mjs).
 - `rollAs {to, skill, dif, snag?, onSuccess?, onFail?}` - each recipient rolls; its branch runs with it as the target.
 - `transformInto {item}` - convert into the Alt Mode the item selector finds (`choice:<key>` after a pick); `@var.mode`.
 - `noteEntries {key, count, from: {type}, title?, legacy?}` - choose up to `count` different compendium entries one
@@ -834,12 +834,12 @@ Strings are under `E20.RulesExtA.*`.
 - **`megaformCombined`** - a Megaform's roster changed (on the client that changed it): `@var.participants`,
   `@var.zords`; participants reach it with `scope: megaform`.
 - **Movement `stage: derivedHook`** - applied where a slice calls `applyDerivedHookMovement` among the derived hooks
-  (`module/rules/ext/a/movement-hook.mjs`, import-free so a slice can load it early; pr2/team.mjs registers it).
+  (`module/rules/plugins/effects/derived-hook-movement.mjs`, import-free so a slice can load it early; pr2/team.mjs registers it).
   A `ready` hook re-prepares the Player Characters when one holds team-scoped Movement / DerivedStat / Defense rules.
 
 ### Helper hooks
 
-- `helpers/grants.mjs#pickPerkFrom` takes `pack` (only that compendium's Roles / Focuses) - the `pickPerk` step passes it.
+- `mechanics/resources/grants.mjs#pickPerkFrom` takes `pack` (only that compendium's Roles / Focuses) - the `pickPerk` step passes it.
 
 Tests: `module/rules/engine10-a.test.js` (32 tests).
 
@@ -991,7 +991,7 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
 
 ## Engine features added 2026-10-06 (round 10, group D)
 
-- **CardOffer rules** (rules/ext/d/cards.mjs) - a button on posted roll cards, offered by an item to its holder or to
+- **CardOffer rules** (rules/plugins/cards/card-offer.mjs) - a button on posted roll cards, offered by an item to its holder or to
   others: `{type: CardOffer, label, whose: self | party | side | any, pressedBy: roller | holderOwner | gm, when?,
   pool?: {mark: key}, limit?, counter?: {per}, cost?: {resource, amount}, reroll?: {target: d20 | allDice | formula,
   keep: new | choose}, addDie?: {faces}, steps?}`.
@@ -1008,7 +1008,7 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
     `limit` counts presses; `counter: {per}` only counts them (`@var.used` in the cost formula - a rising cost).
   - `cost` is paid by the holder; `{gmStoryPoints: true}` spends the GM's pool; Role Points honour
     `useUnlimitedResource`. Labels fill `{count}`, `{cost}`, `{die}`, `{holder}`.
-  - `reroll`: `d20` / `allDice` post a fresh check card (helpers/reroll.mjs, marked as a reroll); `formula` rolls the
+  - `reroll`: `d20` / `allDice` post a fresh check card (mechanics/rolls/reroll.mjs, marked as a reroll); `formula` rolls the
     whole formula again (`keep: choose` lists both totals against every DIF for the player to choose). `addDie {faces}`
     rolls 1d<faces> onto the card's total and rescored rows, with damage buttons for targets now hit (or hit harder).
   - `steps` run after, as the holder, the roller as target, `@var.used`, `@var.total`. Card-only step
@@ -1016,19 +1016,19 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
   - **Trigger event `rerolled`** - a Story Point reroll card this user posted (chat.mjs rerollMessage): `@var.source`
     (storyPoint...), `@var.total`, `@var.failed` (1 when the new total reaches none of the original DIFs), the original
     card's Skill as `skill:`.
-- **Personal Story Points** (rules/ext/d/story.mjs) - the Ruthless Point ledger is engine data now
-  (`flags.essence20.personalPoints`; helpers/story-points.mjs spends them first). Step **`givePersonalPoints {to, count,
+- **Personal Story Points** (rules/plugins/resources/personal-story-points.mjs) - the Ruthless Point ledger is engine data now
+  (`flags.essence20.personalPoints`; mechanics/resources/story-points.mjs spends them first). Step **`givePersonalPoints {to, count,
   shared?, max?, ownTurn?}`** (shared: one point every recipient shares; max: the first N recipients). Trigger events
   **`personalPointUnspent`** (an actor ended its turn holding points - fired on every actor listening, that actor as
   target, before they tick down) and **`storyPointNarrative`** (the tracker's narrative spend, `@var.kind`). Tag
   **`target:sameType`**.
-- **SpellCost rules** (rules/ext/d/spellcost.mjs) - `{type: SpellCost, label, op: set | add | multiply | spend, value?,
+- **SpellCost rules** (rules/plugins/resources/spell-cost.mjs) - `{type: SpellCost, label, op: set | add | multiply | spend, value?,
   spend?: {resource, max?}, note?, quiet?, steps?, when?}`: every SpellCost rule of the caster whose `when` holds
   (`item:` = the spell; `item:own` for a spell's own option) is a row in ONE dialog before the cast; ticked rows apply set,
   then add, then multiply, then spend (a number box, paid, taken off the Cost, never below 0), post their `note` and
   run their `steps`. Cancelling cancels the cast. Step **`recastFree {item}`** casts a spell again at no cost (dataset
   `freeCast`). afterRoll Triggers get **`@var.itemUuid`** (the rolled item).
-- **Initiative** (rules/ext/d/initiative.mjs) - rule type **`InitiativeReroll {atMost}`** (the Initiative formula rerolls
+- **Initiative** (rules/plugins/rolls/initiative.mjs) - rule type **`InitiativeReroll {atMost}`** (the Initiative formula rerolls
   Skill dice showing atMost or less, once); Trigger event **`initiativeRolling`** (from the roll itself, before the
   formula - dice.mjs INITIATIVE_EXTENSIONS); steps **`rollInitiative {to}`**, **`swapInitiative {requireLower?}`** (with
   the first target), **`distribute {to, total, prompt?, steps}`** (share up to `total` points among the recipients - each
@@ -1036,7 +1036,7 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
   tags **`self:initiative`** / **`target:initiative`** (rolled in the running combat); recipients **`protectedTarget`**
   and **`markers:<key>`** (actors who set that per-setter mark on this actor). `ruleConditionImmune` now passes
   `holder` (aura ConditionImmunity with `holder:protects`).
-- **Contested rolls and item states** (rules/ext/d/contest.mjs, items.mjs) - step **`contest {skill | skills, edge?,
+- **Contested rolls and item states** (rules/plugins/rolls/contest.mjs, items.mjs) - step **`contest {skill | skills, edge?,
   plain?, against: {skill | skills}, to?, onWin?, onLose?}`** (the actor's Skill against the recipient's own roll, a tie to
   the resisting side; `plain`: both roll their best listed Skill die as 1d20 + the die; when this user can't roll for the
   other side, its owner rolls from a card - `contestAnswer`). Steps **`markItem {item, key, effects: {blockRolls?,
@@ -1044,7 +1044,7 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
   Toughness or Evasion), tag **`item:marked:<key>`**, recipient **`operator`** (a vehicle's / Zord's driver, else the
   target), step **`rollPlain {skill, to, var}`**, step **`spendActionFor {action, to}`**, ref
   **`@availabilityDif.<choiceKey>`**, tag **`target:withinOrUnknown:<ft>`**.
-- **Canvas points, zones, delayed cards, blasts** (rules/ext/d/canvas.mjs, blast.mjs) - step **`pickPoint {prompt?,
+- **Canvas points, zones, delayed cards, blasts** (rules/plugins/combat/canvas-points.mjs, blast.mjs) - step **`pickPoint {prompt?,
   at?: targetOrSelf | actorOrKept, actor?}`** (`@var.pointX/pointY`, `{var.pointScene}`); recipient **`around:<ft>`**;
   step **`placeZone {key, label?, half?, until?, modifier: {when, upshift?, downshift?, edge?, snag?}}`** (anyone rolling
   from inside a live zone gets its modifier as a roll source); step **`scheduleCard {turnEnds? | rounds?, steps}`**
@@ -1054,7 +1054,7 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
   `defense: ask` or a number 1-4); **`explosion {radius, formula, saveSkills, saveDif, damageType, title}`** (damage
   rolled once, a plain save each for half); **`damageCard {actor, amount, damageType, title}`**; **`explodeVehicle
   {actor}`**.
-- **Banks and team grants** (rules/ext/d/misc.mjs, alteration.mjs) - step **`bankDie {die, appliesWhen}`** (a bonus die
+- **Banks and team grants** (rules/plugins/tags/small-steps-and-refs.mjs, alteration.mjs) - step **`bankDie {die, appliesWhen}`** (a bonus die
   for the next matching roll, moved into the More Heads slot before the dialog and back if another roll comes first; tag
   **`rule:bankedDie`**); step **`tempResource {kind: health | energon, amount, to, untilDamage?}`** (tracked temporary
   Health / Energon - amount worked out per recipient); recipient / ref **`teamCombatants`** (teammates in the running
@@ -1075,7 +1075,7 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
 
 ## Engine features added 2026-10-06 (round 10, group E)
 
-- **Steps** (rules/ext/e/steps.mjs):
+- **Steps** (rules/plugins/picks/pick-and-loop-steps.mjs):
   - `pickEntry {from: {type, availabilities?, tags?, fields?} | children: {of: <var>, type}, var?, title?, prompt?, auto?, record?,
     key?, max?, until?, legacy?}` - choose a compendium entry WITHOUT granting it. The run keeps `@var.<var>` (default `picked`, its
     uuid) and `<var>Name`, `<var>Availability`, `<var>Dif` (its Availability DIF, CONFIG.E20.availabilityDifficulties),
@@ -1116,7 +1116,7 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
   came with damage); `self:` / `holder:onRecordedScene:<path>`; `self:itemEffect:<uuid>:<change key>` (that book item's copy has an
   enabled effect changing the key).
 - **Formula ref** `@alliesWearing.<compendium id>.<ft>` - allies within range (the system's ally count) wearing that upgrade.
-- **Rule types** read by the hand-written registries (rules/ext/e/types.mjs, joined at `setup`):
+- **Rule types** read by the hand-written registries (rules/plugins/combat/hazard-terrain-targets.mjs, joined at `setup`):
   - `HazardProtection {categories?, environments?}` - environment-hazards.mjs ENVIRONMENT_PROTECTORS; `{choice.x}` in
     environments reads a pick (an unmade pick covers nothing); labelled with the item's name.
   - `RoughTerrainImposer {}` - rough-terrain.mjs ROUGH_TERRAIN_IMPOSERS; `when` is asked with self = the holder and target = the
@@ -1140,13 +1140,13 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
 
 ## Engine features added 2026-10-06 (round 11, group F)
 
-Everything below is registered on import of `module/rules/ext/f.mjs` (loaded by `module/rules/ext/index.mjs` after e).
+Everything below is registered on import of `module/rules/ext/f.mjs` (loaded by `module/rules/plugins/index.mjs` after e).
 Strings are under `E20.RulesExtF.*`.
 
 ### Window counters shared by flag name (`ext/f/window.mjs`)
 
 A rule `limit` keeps its own record (`ruleUses.<key>`); these name a Scene Clock flag outright - the `{epoch, window,
-count}` records `helpers/scene-clock.mjs#markUsed` writes - so a count hand-written code (or another item) already keeps
+count}` records `mechanics/resources/scene-clock.mjs#markUsed` writes - so a count hand-written code (or another item) already keeps
 carries on unchanged.
 
 - **Tags** `self:windowUsed:<flag>:<window>[:<n>]`, `target:windowUsed:...`, `holder:windowUsed:...` - the actor's count
@@ -1213,7 +1213,7 @@ the actor it happened to (token actor or not). Steps act as the holder; `target`
 
 ### Helper hooks
 
-- `helpers/extensions.mjs#registerHitRider(fn, {before})` - insert ahead of an already-registered rider.
+- `mechanics/item-hooks.mjs#registerHitRider(fn, {before})` - insert ahead of an already-registered rider.
 
 Tests: `module/rules/engine11-f.test.js` (18 tests).
 
@@ -1267,7 +1267,7 @@ Tests: `module/rules/engine11-f.test.js` (18 tests).
 
 ## Engine features added 2026-10-06 (round 12, group H)
 
-Everything below is registered on import of `module/rules/ext/h.mjs` (loaded by `module/rules/ext/index.mjs` after g).
+Everything below is registered on import of `module/rules/ext/h.mjs` (loaded by `module/rules/plugins/index.mjs` after g).
 Strings are under `E20.RulesExtH.*`.
 
 ### Copies and formula comparisons (`ext/h/copies.mjs`)
@@ -1306,22 +1306,22 @@ Strings are under `E20.RulesExtH.*`.
   prototype's) while the holder has a token on the viewed scene. `when` sees self = the roller, holder = the rule's holder.
   Read only at roll time - never in derived data (other tokens' actors aren't touched while one prepares).
 - **`GrantDouble {grants: [upshift | actions], prompt?, damage?: {amount, type}}`** - when the holder grants another actor
-  upshifts on a banked bonus (`helpers/perks.mjs#bankPendingBonus`) or extra actions this turn
-  (`helpers/action-economy.mjs#grantActionsThisTurn`), the holder is asked (a confirm titled with the item's name; `prompt`, an
+  upshifts on a banked bonus (`mechanics/characters/perks.mjs#bankPendingBonus`) or extra actions this turn
+  (`mechanics/actions/action-economy.mjs#grantActionsThisTurn`), the holder is asked (a confirm titled with the item's name; `prompt`, an
   `E20.` key or text, fills `{granter}`, `{ally}`, `{what}`); yes doubles the grant and deals `damage` to the one receiving it.
   `when`: self = the granter, target = the ally. Never for a grant to oneself. `perks.mjs#offerGrantDouble` is the hook.
 - **`DamageReduction {amount, damageTypes?, limit?, message?}`** - damage about to land on the holder (an extensions damage
   modifier) of one of those types is lowered by `amount` (a formula - `1d2` rolls), never below 0; `limit` {per: turn | round
   | scene | encounter | mission} counts uses (a round / turn limit never runs out outside a combat, as the combat-stamped
   helpers read it); `message` (an `E20.` key or text with `{name}`, `{n}`) is posted. `when` sees the holder.
-- **Trigger event `massShiftUsed`** - the Mass Shift Role Perk was used (`helpers/mass-shift.mjs#activateMassShift`, right after
+- **Trigger event `massShiftUsed`** - the Mass Shift Role Perk was used (`items/forms/mass-shift.mjs#activateMassShift`, right after
   it marks its scene use).
 
 Tests: `module/rules/engine12-h.test.js` (13 tests).
 
 ## Engine features added 2026-10-06 (round 12, group I)
 
-Everything below is registered on import of `module/rules/ext/i.mjs` (loaded last by `module/rules/ext/index.mjs`). No new
+Everything below is registered on import of `module/rules/ext/i.mjs` (loaded last by `module/rules/plugins/index.mjs`). No new
 strings (`E20.RulesExtI` is empty).
 
 - **Refs** (`ext/i/values.mjs`): `@rolePoints` - what the actor's base Role Points item holds (Mystical Points, Cheer...);
@@ -1341,12 +1341,12 @@ strings (`E20.RulesExtI` is empty).
 - **Reroll `scope: "picked"` + `picked: <key>`** - the reroll reaches every actor whose uuid is in the list a pick
   (`pickMany`, `pickEach`) stored on the rule's item under that key (an unlinked token's actor counts as its world actor);
   `includeHolder: true` adds the holder. `skills` may hold `{choice.<key>}`; while the list or a skill pick is missing,
-  nobody gets it. Read through `registerRerollGrant` (helpers/reroll.mjs#getRerollConfigs), so it is offered like any
+  nobody gets it. Read through `registerRerollGrant` (mechanics/rolls/reroll.mjs#getRerollConfigs), so it is offered like any
   item reroll. **`legacyEffects: "<flag>"`** - Active Effects an older version handed out for the grant (flagged
   `flags.essence20.<flag>` = the holder's uuid) are deleted once at start-up by the active GM.
 - **Rule `RequisitionDif {amount, items?, min?}`** (`ext/i/requisition.mjs`) - the holder's Requisition Test DIF changes by
   `amount` (a formula) for items matching `items` (item tags; `item:availability` reads the tier the DIF comes from - after
-  the Qualified-upgrade listeners), never below `min` (default 0). Read by helpers/requisition.mjs#requisitionDif; several
+  the Qualified-upgrade listeners), never below `min` (default 0). Read by mechanics/resources/requisition.mjs#requisitionDif; several
   rules apply in turn, each floored. `when` sees the actor.
 - **`castHitDamage(caster, spell, damage, damageType)`** (`ext/i/cast.mjs`) - a spell's later damage (a storm's strike)
   counted as one of its cast hits: the caster's `on: "cast"` HitRider rules whose `when` holds for that spell change it the
@@ -1374,7 +1374,7 @@ Tests: `module/rules/engine12-i.test.js` (12 tests).
   extensions on `game.users.activeGM?.isSelf`; the session hook and world-time sweep check `isActiveGM`), so each fires
   once per actor per event. `turnStart` / `turnEnd` / `roundStart` were already per combatant - `combatant.actor`, which
   for an unlinked token IS its synthetic actor - and are unchanged.
-- **Tag `roll:skillSpecialized`** (`rules/ext/j.mjs`) - the rolled Skill is itself Specialized on the roller
+- **Tag `roll:skillSpecialized`** (`rules/plugins/tags/skill-specialized-tag.mjs`) - the rolled Skill is itself Specialized on the roller
   (`system.skills.<skill>.isSpecialized`, the Skill's own flag - not a Specialization being rolled, which is
   `roll:specialized`). Unknown (null) with no roller or no rolled Skill.
 

@@ -1,10 +1,10 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../../util/config.mjs";
 
 import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 /**
  * What an item costs to use, in action economy terms - read by
- * helpers/action-economy.mjs#consumeForItem, which every item roll funnels through.
+ * mechanics/actions/action-economy.mjs#consumeForItem, which every item roll funnels through.
  *
  * `actionType` keeps the name the `power` item type has always used for this field rather than
  * moving to something tidier, precisely so the 103 compendium Powers that already store a value

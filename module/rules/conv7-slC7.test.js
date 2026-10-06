@@ -99,7 +99,7 @@ beforeEach(() => {
   global.game = {
     combat: null, combats: { get: () => null }, user: { id: 'u', isGM: true, targets: new Set() }, users: { contents: [] }, actors: { contents: [] },
     i18n: { localize: k => k, format: k => k },
-    // The Scene Clock reads its epochs from settings (helpers/scene-clock.mjs).
+    // The Scene Clock reads its epochs from settings (mechanics/resources/scene-clock.mjs).
     settings: { get: () => sceneEpoch, set: async () => {} },
   };
   global.ChatMessage = { create: jest.fn(async data => data), getSpeaker: () => ({}) };

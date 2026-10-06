@@ -1,7 +1,7 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
-import { computeEssenceSpend } from "../helpers/skill-picker.mjs";
-import { getActionsTabContext } from "../helpers/action-economy.mjs";
-import { currentBase, maxEssenceFor, needsStartingEssences } from "../helpers/starting-essences.mjs";
+import { computeEssenceSpend } from "../mechanics/rolls/skill-picker-math.mjs";
+import { getActionsTabContext } from "../mechanics/actions/action-economy.mjs";
+import { currentBase, maxEssenceFor, needsStartingEssences } from "../mechanics/characters/starting-essences.mjs";
 import { getGameLine } from "../settings.js";
 
 export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
@@ -101,7 +101,7 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
    * Prepare skill rank allocation calculations for PCs by adding the number of shifts,
    * Specializations, Conditioning, and (for Spellcasting/Weird) essenceAttribution present for
    * each Essence. Delegates to the same math the Skill Picker app uses for NPC-like actors
-   * (module/helpers/skill-picker.mjs) rather than duplicating it - that function already reads
+   * (module/mechanics/rolls/skill-picker-math.mjs) rather than duplicating it - that function already reads
    * everything it needs straight off the actor, so this just needs to assign its result into the
    * shape pc-skills.hbs already expects.
    * @param {Object} context The actor data to prepare.

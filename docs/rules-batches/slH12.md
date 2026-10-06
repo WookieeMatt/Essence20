@@ -8,7 +8,7 @@ checkout (no branch, no commit).
 
 ## Engine features added 2026-10-06 (round 12, group H)
 
-Everything below is registered on import of `module/rules/ext/h.mjs` (loaded by `module/rules/ext/index.mjs` after g).
+Everything below is registered on import of `module/rules/ext/h.mjs` (loaded by `module/rules/plugins/index.mjs` after g).
 Strings are under `E20.RulesExtH.*`.
 
 ### Copies and formula comparisons (`ext/h/copies.mjs`)
@@ -47,15 +47,15 @@ Strings are under `E20.RulesExtH.*`.
   prototype's) while the holder has a token on the viewed scene. `when` sees self = the roller, holder = the rule's holder.
   Read only at roll time - never in derived data (other tokens' actors aren't touched while one prepares).
 - **`GrantDouble {grants: [upshift | actions], prompt?, damage?: {amount, type}}`** - when the holder grants another actor
-  upshifts on a banked bonus (`helpers/perks.mjs#bankPendingBonus`) or extra actions this turn
-  (`helpers/action-economy.mjs#grantActionsThisTurn`), the holder is asked (a confirm titled with the item's name; `prompt`, an
+  upshifts on a banked bonus (`mechanics/characters/perks.mjs#bankPendingBonus`) or extra actions this turn
+  (`mechanics/actions/action-economy.mjs#grantActionsThisTurn`), the holder is asked (a confirm titled with the item's name; `prompt`, an
   `E20.` key or text, fills `{granter}`, `{ally}`, `{what}`); yes doubles the grant and deals `damage` to the one receiving it.
   `when`: self = the granter, target = the ally. Never for a grant to oneself. `perks.mjs#offerGrantDouble` is the hook.
 - **`DamageReduction {amount, damageTypes?, limit?, message?}`** - damage about to land on the holder (an extensions damage
   modifier) of one of those types is lowered by `amount` (a formula - `1d2` rolls), never below 0; `limit` {per: turn | round
   | scene | encounter | mission} counts uses (a round / turn limit never runs out outside a combat, as the combat-stamped
   helpers read it); `message` (an `E20.` key or text with `{name}`, `{n}`) is posted. `when` sees the holder.
-- **Trigger event `massShiftUsed`** - the Mass Shift Role Perk was used (`helpers/mass-shift.mjs#activateMassShift`, right after
+- **Trigger event `massShiftUsed`** - the Mass Shift Role Perk was used (`items/forms/mass-shift.mjs#activateMassShift`, right after
   it marks its scene use).
 
 Tests: `module/rules/engine12-h.test.js` (13 tests).
@@ -118,7 +118,7 @@ createItem branch), `pr1/misc.mjs` (deleted - Primordial; with pr1/common.mjs's 
 (`PR1.mobileHeadquarters`, `tacticalSizeShift`, `advancedDinoGem`), `pr2/zords.mjs` (deleted - Dino Drive Mode; with
 `PR2.dinoDriveMode`), `zord1/forms.mjs` (Solar Power's spec, `MORPH_FORMS`, the `zord1Form` Use, the Ninja mind toggle and
 apply, `FORM.solar` / `FORM.ninjaStorm`), `zord2/hybridization.mjs` and `zord2/snag.mjs` (deleted; with
-`ZORD2.hybridization` / `mercurialNature`), `helpers/perks.mjs` (`THIS_I_COMMAND_ID`, `offerThisICommand`),
+`ZORD2.hybridization` / `mercurialNature`), `mechanics/characters/perks.mjs` (`THIS_I_COMMAND_ID`, `offerThisICommand`),
 `helpers/this-i-command.test.js` (deleted - moved into conv12-slH12).
 
 ## Behaviour differences worth a decision
@@ -145,18 +145,18 @@ None.
 
 ## Shared-file edits
 
-- `module/rules/ext/index.mjs` - `import "./h.mjs";`.
-- `module/helpers/extensions/index.mjs` - the pr1/misc, pr2/zords, zord2/hybridization and zord2/snag imports removed.
+- `module/rules/plugins/index.mjs` - `import "./h.mjs";`.
+- `module/items/index.mjs` - the pr1/misc, pr2/zords, zord2/hybridization and zord2/snag imports removed.
 - Slices: `pr1/ats.mjs`, `pr1/jtt.mjs`, `pr1/common.mjs`, `pr1/misc.mjs` (deleted), `pr1/pr1.test.js`; `pr2/zords.mjs` (deleted),
   `pr2/common.mjs`, `pr2/pr2.test.js`; `zord1/forms.mjs`, `zord1/zord1.test.js`; `zord2/hybridization.mjs` and `zord2/snag.mjs`
   (deleted), `zord2/index.mjs`, `zord2/common.mjs`, `zord2/zord2.test.js`.
-- `module/dice.mjs` - imports `ruleIgnoresDrawback` (rules/ext/h/drawback.mjs) for the Limited Articulation check (was
+- `module/dice.mjs` - imports `ruleIgnoresDrawback` (rules/plugins/rolls/ignore-drawback.mjs) for the Limited Articulation check (was
   zord2/snag.mjs).
-- `module/helpers/roll-dialog.mjs` - the Steady Hands check and its import removed (it's a rule's `immune: untrainedSnag`).
-- `module/helpers/mass-shift.mjs` - `activateMassShift` fires `massShiftUsed` (a guarded dynamic import of rules/ext/h/types.mjs).
-- `module/helpers/perks.mjs` - `offerThisICommand` / `THIS_I_COMMAND_ID` replaced by `offerGrantDouble(granter, ally, kind, what)`
-  (a dynamic import of rules/ext/h/types.mjs); `bankPendingBonus` calls it with `upshift` and `E20.RulesExtH.Upshift`.
-- `module/helpers/action-economy.mjs` - `grantActionsThisTurn` calls `offerGrantDouble(..., 'actions', ...)`;
+- `module/mechanics/rolls/roll-dialog.mjs` - the Steady Hands check and its import removed (it's a rule's `immune: untrainedSnag`).
+- `module/items/forms/mass-shift.mjs` - `activateMassShift` fires `massShiftUsed` (a guarded dynamic import of rules/plugins/combat/damage-reduction-initiative-edge.mjs).
+- `module/mechanics/characters/perks.mjs` - `offerThisICommand` / `THIS_I_COMMAND_ID` replaced by `offerGrantDouble(granter, ally, kind, what)`
+  (a dynamic import of rules/plugins/combat/damage-reduction-initiative-edge.mjs); `bankPendingBonus` calls it with `upshift` and `E20.RulesExtH.Upshift`.
+- `module/mechanics/actions/action-economy.mjs` - `grantActionsThisTurn` calls `offerGrantDouble(..., 'actions', ...)`;
   `action-economy.test.js` - the This, I Command test's officer item carries the GrantDouble rule.
 - `module/helpers/this-i-command.test.js` - deleted (its checks are in conv12-slH12.test.js).
 - `module/rules/conversions.test.js` - the Mercurial Nature test checks the granted copy through `rule:copy` instead of

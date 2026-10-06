@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 const { rebuildIndex } = await import('./index.mjs');
 const { reactionOffers, pressReaction } = await import('./reactions.mjs');
-const { cardInfo } = await import('../helpers/extensions/react/core.mjs');
+const { cardInfo } = await import('../mechanics/combat/reaction-engine.mjs');
 const { validateRule } = await import('./types.mjs');
 const { fireTriggers, runUse, useAvailable } = await import('./triggers.mjs');
 const { runSteps, stepContext } = await import('./steps.mjs');

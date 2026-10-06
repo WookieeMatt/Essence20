@@ -121,7 +121,7 @@ describe("onApplyDamage", () => {
   }
 
   // Places targetActor and allyActor on a scene distanceFeet apart, sharing a Disposition -
-  // the minimal canvas.tokens/canvas.grid fixture findEligibleProtector() (helpers/interpose.mjs)
+  // the minimal canvas.tokens/canvas.grid fixture findEligibleProtector() (items/defenses/interpose-attack.mjs)
   // needs, same technique interpose.test.js's own setScene() establishes.
   function setNearbyAlly(targetActor, allyActor, distanceFeet) {
     const targetToken = targetActor.getActiveTokens()[0];
@@ -584,7 +584,7 @@ describe("onApplyDamage", () => {
     const target = makeTarget({
       perkIds: [DIDNT_EVEN_FEEL_IT_ID], recklessAbandonActive: true,
       // A flag left over from an earlier encounter. What makes it stale is now the Scene Clock's
-      // encounter counter having moved on, not a different combat id - see helpers/scene-clock.mjs.
+      // encounter counter having moved on, not a different combat id - see mechanics/resources/scene-clock.mjs.
       didntEvenFeelItFlag: { epoch: 0, window: 'encounter', count: 1 },
     });
     fromUuid.mockResolvedValue(target);
@@ -676,7 +676,7 @@ describe("onApplyDamage", () => {
     });
   });
 
-  describe("Essence damage types (helpers/essence-attack.mjs)", () => {
+  describe("Essence damage types (mechanics/combat/essence-attack.mjs)", () => {
     function makeEssenceTarget() {
       const target = makeTarget({ perkIds: [FORTITUDE_ID], health: 10 });
       target.system.essences = {
@@ -1173,7 +1173,7 @@ describe("onApplyDamage", () => {
   });
 
   // Tough Enough: "you have resistance to the damage" of a non-attack effect against Toughness - that
-  // hit is halved, rounded up (helpers/combat.mjs#toughEnoughDamage), nothing is granted for later.
+  // hit is halved, rounded up (mechanics/combat/combat.mjs#toughEnoughDamage), nothing is granted for later.
   describe("Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99) - halves a non-attack effect against Toughness", () => {
     const TOUGH_ENOUGH_ID = "Compendium.essence20.gi_joe_crb.Item.RoIa80w6EAZR0uFP";
 

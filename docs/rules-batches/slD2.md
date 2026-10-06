@@ -351,7 +351,7 @@ The 2026-10-04 pieces don't reach these. What each one still needs:
 
 #### Beast Mode
 
-- **Beast Mode** (10th/20th-level packages, scene end): reacts to a flag set by `helpers/beast-mode.mjs`. `deleteItem
+- **Beast Mode** (10th/20th-level packages, scene end): reacts to a flag set by `items/forms/beast-mode.mjs`. `deleteItem
   {item: granted}` and `grant` could swap items, but nothing fires on that flag. *Still needs:* a level-gated choice,
   "replace the tracked grant", and grants tied to the flag / scene.
 

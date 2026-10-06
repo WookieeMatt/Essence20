@@ -119,7 +119,7 @@ export async function grantData(item, actor, { load = uuid => fromUuid(uuid) } =
 
 /**
  * A granted weapon, armor or shield arrives with its own attached items - its attacks (weaponEffects)
- * and upgrades - the same as dropping it on the sheet (helpers/grants.mjs#grantCopy does this too).
+ * and upgrades - the same as dropping it on the sheet (mechanics/resources/grants.mjs#grantCopy does this too).
  */
 export async function attachGrantedChildren(actor, created) {
   const { createItemCopies } = await import("../sheet-handlers/attachment-handler.mjs");

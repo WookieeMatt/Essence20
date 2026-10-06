@@ -9,7 +9,7 @@ the last run, the other groups' work included).
 
 ## Engine features added 2026-10-06 (round 10, group D)
 
-- **CardOffer rules** (rules/ext/d/cards.mjs) - a button on posted roll cards, offered by an item to its holder or to
+- **CardOffer rules** (rules/plugins/cards/card-offer.mjs) - a button on posted roll cards, offered by an item to its holder or to
   others: `{type: CardOffer, label, whose: self | party | side | any, pressedBy: roller | holderOwner | gm, when?,
   pool?: {mark: key}, limit?, counter?: {per}, cost?: {resource, amount}, reroll?: {target: d20 | allDice | formula,
   keep: new | choose}, addDie?: {faces}, steps?}`.
@@ -26,7 +26,7 @@ the last run, the other groups' work included).
     `limit` counts presses; `counter: {per}` only counts them (`@var.used` in the cost formula - a rising cost).
   - `cost` is paid by the holder; `{gmStoryPoints: true}` spends the GM's pool; Role Points honour
     `useUnlimitedResource`. Labels fill `{count}`, `{cost}`, `{die}`, `{holder}`.
-  - `reroll`: `d20` / `allDice` post a fresh check card (helpers/reroll.mjs, marked as a reroll); `formula` rolls the
+  - `reroll`: `d20` / `allDice` post a fresh check card (mechanics/rolls/reroll.mjs, marked as a reroll); `formula` rolls the
     whole formula again (`keep: choose` lists both totals against every DIF for the player to choose). `addDie {faces}`
     rolls 1d<faces> onto the card's total and rescored rows, with damage buttons for targets now hit (or hit harder).
   - `steps` run after, as the holder, the roller as target, `@var.used`, `@var.total`. Card-only step
@@ -34,19 +34,19 @@ the last run, the other groups' work included).
   - **Trigger event `rerolled`** - a Story Point reroll card this user posted (chat.mjs rerollMessage): `@var.source`
     (storyPoint...), `@var.total`, `@var.failed` (1 when the new total reaches none of the original DIFs), the original
     card's Skill as `skill:`.
-- **Personal Story Points** (rules/ext/d/story.mjs) - the Ruthless Point ledger is engine data now
-  (`flags.essence20.personalPoints`; helpers/story-points.mjs spends them first). Step **`givePersonalPoints {to, count,
+- **Personal Story Points** (rules/plugins/resources/personal-story-points.mjs) - the Ruthless Point ledger is engine data now
+  (`flags.essence20.personalPoints`; mechanics/resources/story-points.mjs spends them first). Step **`givePersonalPoints {to, count,
   shared?, max?, ownTurn?}`** (shared: one point every recipient shares; max: the first N recipients). Trigger events
   **`personalPointUnspent`** (an actor ended its turn holding points - fired on every actor listening, that actor as
   target, before they tick down) and **`storyPointNarrative`** (the tracker's narrative spend, `@var.kind`). Tag
   **`target:sameType`**.
-- **SpellCost rules** (rules/ext/d/spellcost.mjs) - `{type: SpellCost, label, op: set | add | multiply | spend, value?,
+- **SpellCost rules** (rules/plugins/resources/spell-cost.mjs) - `{type: SpellCost, label, op: set | add | multiply | spend, value?,
   spend?: {resource, max?}, note?, quiet?, steps?, when?}`: every SpellCost rule of the caster whose `when` holds
   (`item:` = the spell; `item:own` for a spell's own option) is a row in ONE dialog before the cast; ticked rows apply set,
   then add, then multiply, then spend (a number box, paid, taken off the Cost, never below 0), post their `note` and
   run their `steps`. Cancelling cancels the cast. Step **`recastFree {item}`** casts a spell again at no cost (dataset
   `freeCast`). afterRoll Triggers get **`@var.itemUuid`** (the rolled item).
-- **Initiative** (rules/ext/d/initiative.mjs) - rule type **`InitiativeReroll {atMost}`** (the Initiative formula rerolls
+- **Initiative** (rules/plugins/rolls/initiative.mjs) - rule type **`InitiativeReroll {atMost}`** (the Initiative formula rerolls
   Skill dice showing atMost or less, once); Trigger event **`initiativeRolling`** (from the roll itself, before the
   formula - dice.mjs INITIATIVE_EXTENSIONS); steps **`rollInitiative {to}`**, **`swapInitiative {requireLower?}`** (with
   the first target), **`distribute {to, total, prompt?, steps}`** (share up to `total` points among the recipients - each
@@ -54,7 +54,7 @@ the last run, the other groups' work included).
   tags **`self:initiative`** / **`target:initiative`** (rolled in the running combat); recipients **`protectedTarget`**
   and **`markers:<key>`** (actors who set that per-setter mark on this actor). `ruleConditionImmune` now passes
   `holder` (aura ConditionImmunity with `holder:protects`).
-- **Contested rolls and item states** (rules/ext/d/contest.mjs, items.mjs) - step **`contest {skill | skills, edge?,
+- **Contested rolls and item states** (rules/plugins/rolls/contest.mjs, items.mjs) - step **`contest {skill | skills, edge?,
   plain?, against: {skill | skills}, to?, onWin?, onLose?}`** (the actor's Skill against the recipient's own roll, a tie to
   the resisting side; `plain`: both roll their best listed Skill die as 1d20 + the die; when this user can't roll for the
   other side, its owner rolls from a card - `contestAnswer`). Steps **`markItem {item, key, effects: {blockRolls?,
@@ -62,7 +62,7 @@ the last run, the other groups' work included).
   Toughness or Evasion), tag **`item:marked:<key>`**, recipient **`operator`** (a vehicle's / Zord's driver, else the
   target), step **`rollPlain {skill, to, var}`**, step **`spendActionFor {action, to}`**, ref
   **`@availabilityDif.<choiceKey>`**, tag **`target:withinOrUnknown:<ft>`**.
-- **Canvas points, zones, delayed cards, blasts** (rules/ext/d/canvas.mjs, blast.mjs) - step **`pickPoint {prompt?,
+- **Canvas points, zones, delayed cards, blasts** (rules/plugins/combat/canvas-points.mjs, blast.mjs) - step **`pickPoint {prompt?,
   at?: targetOrSelf | actorOrKept, actor?}`** (`@var.pointX/pointY`, `{var.pointScene}`); recipient **`around:<ft>`**;
   step **`placeZone {key, label?, half?, until?, modifier: {when, upshift?, downshift?, edge?, snag?}}`** (anyone rolling
   from inside a live zone gets its modifier as a roll source); step **`scheduleCard {turnEnds? | rounds?, steps}`**
@@ -72,7 +72,7 @@ the last run, the other groups' work included).
   `defense: ask` or a number 1-4); **`explosion {radius, formula, saveSkills, saveDif, damageType, title}`** (damage
   rolled once, a plain save each for half); **`damageCard {actor, amount, damageType, title}`**; **`explodeVehicle
   {actor}`**.
-- **Banks and team grants** (rules/ext/d/misc.mjs, alteration.mjs) - step **`bankDie {die, appliesWhen}`** (a bonus die
+- **Banks and team grants** (rules/plugins/tags/small-steps-and-refs.mjs, alteration.mjs) - step **`bankDie {die, appliesWhen}`** (a bonus die
   for the next matching roll, moved into the More Heads slot before the dialog and back if another roll comes first; tag
   **`rule:bankedDie`**); step **`tempResource {kind: health | energon, amount, to, untilDamage?}`** (tracked temporary
   Health / Energon - amount worked out per recipient); recipient / ref **`teamCombatants`** (teammates in the running
@@ -97,14 +97,14 @@ the last run, the other groups' work included).
 |---|---|---|
 | Play Favorites | ccitems | converted |
 | Play Favorites Against Each Other | ccitems | converted |
-| This, I Command | ccitems | partial - its Ruthless Point doubling is in Play Favorites' rules; the ↑ / extra-action doubling stays in helpers/perks.mjs (not in this list) |
+| This, I Command | ccitems | partial - its Ruthless Point doubling is in Play Favorites' rules; the ↑ / extra-action doubling stays in mechanics/characters/perks.mjs (not in this list) |
 | Ruthless Efficiency | ccitems | converted |
 | Think Fast! (A Jump Through Time) | jttitems | converted |
 | Best Laid Plans | dditems | converted |
 | One Last Chance | dditems | converted |
 | Sorcerous Support | kocitems | converted |
 | Do Or Die | ghpfitems | converted (the rising Moxie cost too) |
-| Nemesis (Specific Threat) | atsitems | converted (the reroll; the Nemesis pick is helpers/nemesis.mjs) |
+| Nemesis (Specific Threat) | atsitems | converted (the reroll; the Nemesis pick is items/rolls/nemesis.mjs) |
 | Destiny (Hang-Up) | atsitems | converted |
 | Quantum Trigger | jttitems | converted |
 | Savant Skill | jttitems | converted (its Story Point refund; the d20+d4 half is dice.mjs's) |
@@ -242,7 +242,7 @@ the last run, the other groups' work included).
 ## Still code (0)
 
 None of the group D items. Two items are partial because their other parts were never in this list: **This, I Command**
-(its ↑ / extra-action doubling, helpers/perks.mjs#offerThisICommand) and **Mystical Understanding** (Refocus, Essential
+(its ↑ / extra-action doubling, mechanics/characters/perks.mjs#offerThisICommand) and **Mystical Understanding** (Refocus, Essential
 Research, Magically Fit In); Brilliant Sight's darkvision grant also stays in mlp1PostRoll.
 
 ## Shared-file edits
@@ -251,17 +251,17 @@ Research, Magically Fit In); Brilliant Sight's darkvision grant also stays in ml
 - `module/rules/triggers.mjs` - afterRoll vars gain `itemUuid`.
 - `module/rules/adapter.mjs` - `ruleConditionImmune` passes `holder`.
 - `module/rules/buttons.mjs` - `ctx.buttonMessage` (the pressed card) for steps.
-- `module/helpers/grants.mjs` - `rollTest` returns the roll's `total` too.
-- `module/helpers/story-points.mjs` - imports the personal-point ledger from `rules/ext/d/story.mjs`.
-- `module/helpers/banked-buffs.mjs` (+ `.test.js`) - the Danger Sense and Timeline Anomaly dispatch removed.
-- `module/helpers/extensions/index.mjs` - four imports removed (below).
+- `module/mechanics/resources/grants.mjs` - `rollTest` returns the roll's `total` too.
+- `module/mechanics/resources/story-points.mjs` - imports the personal-point ledger from `rules/plugins/resources/personal-story-points.mjs`.
+- `module/mechanics/resources/banked-buffs.mjs` (+ `.test.js`) - the Danger Sense and Timeline Anomaly dispatch removed.
+- `module/items/index.mjs` - four imports removed (below).
 - Deleted: `helpers/danger-sense.mjs` (+ test), `helpers/extensions/resource/personal-points.mjs`,
   `helpers/extensions/qualify1/rerolls.mjs`, `helpers/extensions/data22/mlp.mjs` (+ test),
   `helpers/extensions/qualify2/field-ops.mjs`.
 - Slice files (my items' code and tests only): resource (`index`, `common`, `story-spend`, `temp-resources`,
   `resource.test`), qualify1 (`index`, `common`, test), qualify2 (`old-hand`, `common`, `session`, test), mlp1 (+ test),
   mlp2, pr1 (`ats`, `jtt`, `common`, test), pr3 (`ttsg`, `common`, test), other1 (`jtt`, `alterations` - its lending
-  helpers exported for rules/ext/d/alteration.mjs, test), other2 (`gij`, test), other3 (`pr`, `tf`, `shared`, test),
+  helpers exported for rules/plugins/effects/lent-alterations.mjs, test), other2 (`gij`, test), other3 (`pr`, `tf`, `shared`, test),
   situational1 (+ test), situational2 (`initiative`, `common`, `situational2` doc line, test), tf2 (`rolls`, `common`,
   test), tf3 (`uses`, `reactions`, `rolls`, `common`, test), react (`triggers`, test), gij3 (+ test).
 

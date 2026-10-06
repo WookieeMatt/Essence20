@@ -67,7 +67,7 @@ both doubles the swap.
 **Scope:** every item in the id tables of `module/helpers/extensions/gij1/` (`G1` in `shared.mjs`, the five sibling
 Alteration Perks written inline in `perks.mjs#ALTERATION_PERKS`, and `SIGNATURE_WEAPONS`) and
 `module/helpers/extensions/fix3-gij/` (`ID` in `gij-fixes.mjs`), plus every other place in `module/` that uses those ids
-(`helpers/skill-effects.mjs` holds Ceremonial, `dice.mjs` and `helpers/angry.mjs` hold Angry, and `other1/` holds the
+(`mechanics/rolls/skill-effects.mjs` holds Ceremonial, `dice.mjs` and `items/rolls/angry-influence.mjs` hold Angry, and `other1/` holds the
 Alteration Perks for its own Alteration handling). Branch `rules/slC-gij1`, from `rules/slB` at 0d39fc0e.
 
 | Verdict | Items |
@@ -85,7 +85,7 @@ references:
 - The four Signature Weapons: Let It Rip's weapon list.
 
 The Asleep / Defeated Condition code in `gij1/conditions.mjs` is keyed by status ids, not items, so it is out of
-scope. So is Pack Attack's ↑1 in `fix3-gij`: it is read from a flag that `helpers/pack-attack.mjs` writes on the
+scope. So is Pack Attack's ↑1 in `fix3-gij`: it is read from a flag that `items/attacks/pack-attack.mjs` writes on the
 allies, and is not in the `ID` table. It is a skip all the same (see below).
 
 This part added 4 rules to 2 pack items. After it, `scripts/check-rules.mjs` counts 1352 rules on 966 items (the base
@@ -140,7 +140,7 @@ Removed: `faceplateSetting`, `faceplateBonus`, the faceplate `registerDerived` h
   party's per-target records keyed by this actor's uuid. An `incoming` RollModifier could carry it.
 - **Ceremonial.** A Free-action Use stamps the turn. The ↑1 then applies to every Persuasion test that turn without
   being used up. Out of combat, the next Persuasion test uses it up, and it ends when the scene changes.
-  `helpers/skill-effects.mjs` also hides its old disabled effect. *Needs:* a `bank` that isn't used up in combat but
+  `mechanics/rolls/skill-effects.mjs` also hides its old disabled effect. *Needs:* a `bank` that isn't used up in combat but
   is used up out of combat (or a mark read by a RollModifier that a roll can clear), with "until end of turn, else
   the scene" timing.
 - **Uniform.** An off-by-default switch whenever the user's first target wears a Uniform: ↓1, plus ↓1 for each ally
@@ -191,7 +191,7 @@ Removed: `faceplateSetting`, `faceplateBonus`, the faceplate `registerDerived` h
 #### fix3-gij (`gij-fixes.mjs`)
 
 - **Angry (Hang-Up).** A Snag on the Skill chosen when Angry Influence is used, for the rest of the scene. The record
-  is a scene-window flag written by `helpers/angry.mjs`. *Needs:* a tag comparing the rolled Skill with a value stored
+  is a scene-window flag written by `items/rolls/angry-influence.mjs`. *Needs:* a tag comparing the rolled Skill with a value stored
   on the actor (`skill:` against `self:data:flags.essence20.angryHangUpSnag.skill`), and a scene-window check on that
   record.
 - **Pack Attack (not in the id table).** Its ↑1 lives in a record on each ally within 60 ft, naming the Growled target.
@@ -224,9 +224,9 @@ Removed: `faceplateSetting`, `faceplateBonus`, the faceplate `registerDerived` h
 
 ## Batch slC (part): the `gij2` extension slice
 
-**Scope:** every item in the `G2` id table of `module/helpers/extensions/gij2/shared.mjs`, plus The Beat Goes On
+**Scope:** every item in the `G2` id table of `module/items/shared/gij-crb-item-lookups.mjs`, plus The Beat Goes On
 (its id is written inline in `reckless.mjs`), plus every other place in `module/` that uses those ids
-(`helpers/kits.mjs`, `sheets/base-actor-sheet.mjs` and `helpers/vehicle-defeat.mjs` call into the slice;
+(`mechanics/resources/kits.mjs`, `sheets/base-actor-sheet.mjs` and `mechanics/vehicles/vehicle-defeat.mjs` call into the slice;
 `banked-buffs.mjs` holds the Castling / Plan of Action / Fearsome Presence Use buttons; `combat.mjs`,
 `reckless-abandon.mjs` and `personal-shield.mjs` hold Aegis / Reckless Abandon / Personal Shield code of their own).
 Branch `rules/slC-gij2`, from `rules/slB` at 0d39fc0e.
@@ -361,7 +361,7 @@ All four stay with the code that reads them.
 
 - `packs/gijcrbitems/_source/Robot_xV4nnjMxlb4dmyxo.json`, `En_Passant_eVRb1Fp43QMdxV1N.json` (new `rules`),
   `Brrrrrrrrrrrrrrt_U3NTi35bk2qI8oB6.json` (one step added). All LF, inserted as text.
-- `module/helpers/extensions/index.mjs`: the `./gij2/senses.mjs` import line removed (only that line).
+- `module/items/index.mjs`: the `./gij2/senses.mjs` import line removed (only that line).
 - `lang/en.json`: `E20.Gij2Allies`, `E20.Gij2BrrrtSprint`, `E20.Gij2EnPassantFail`, `E20.Gij2EnPassantHit` removed
   (edited as text).
 - `module/rules/conversions.test.js`, `module/rules/conversions-uses.test.js`: one `describe('slC gij2')` block
@@ -379,8 +379,8 @@ lost the Empathetic test and its `senses` import.
 (`SECONDS_BETWEEN_CLICK_AND_BOOM_ID`, `BETTER_THAN_THE_BEST_ID`, `TAKEDOWN_EXPERT_ID`) and the three in `disrupt.mjs`
 (`TECHNICAL_GLITCH_ID`, `SOME_ASSEMBLY_REQUIRED_ID`, `COMPLETE_SYSTEM_FAILURE_ID`). Each item was checked against the
 slice's code and every other use of its id in `module/`. Those other uses are `dice.mjs` (Better than the Best, Seconds
-Between Click & Boom, Takedown Expert), `helpers/rough-terrain.mjs` (Seconds Between Click & Boom),
-`helpers/requisition.mjs` (Early Adopter's DIF −5) and `helpers/condition-immunity.mjs` (Stalk's Surprised immunity).
+Between Click & Boom, Takedown Expert), `mechanics/world/rough-terrain.mjs` (Seconds Between Click & Boom),
+`mechanics/resources/requisition.mjs` (Early Adopter's DIF −5) and `mechanics/combat/condition-immunity.mjs` (Stalk's Surprised immunity).
 `G3.oldHand` is only a reference: Peak Performance uses it to skip the Old Hand Role, so it is not counted. Pillage's two
 weapon effects (`pillageFinesse`, `pillageMight`) are counted under Pillage. Branch `rules/slC-gij3`, from `rules/slB`
 at 0d39fc0e.
@@ -508,10 +508,10 @@ The gij3 tests had no Person of Culture test (only the registry check, which doe
 
 ## Batch slC, slice situational1: `module/helpers/extensions/situational1/`
 
-**Scope:** every item in the `S1` id table of `module/helpers/extensions/situational1/situational1.mjs`, plus every
-other place in `module/` that uses those ids (`helpers/sneak-attack.mjs` for Every Trick in the Book,
-`helpers/banked-buffs.mjs` for Danger Sense, `dice.mjs` for Urban Jungle, Shotgun and Submachine Gun,
-`helpers/environment-hazards.mjs` for Scuba Gear, `helpers/environmental-expertise.mjs` / `rough-terrain.mjs` for
+**Scope:** every item in the `S1` id table of `module/items/rolls/terrain-environment-perks.mjs`, plus every
+other place in `module/` that uses those ids (`mechanics/combat/sneak-attack.mjs` for Every Trick in the Book,
+`mechanics/resources/banked-buffs.mjs` for Danger Sense, `dice.mjs` for Urban Jungle, Shotgun and Submachine Gun,
+`mechanics/world/environment-hazards.mjs` for Scuba Gear, `mechanics/world/environmental-expertise.mjs` / `rough-terrain.mjs` for
 Environmental Expertise, `qualify1/common.mjs` for Acclimating). Branch `rules/slC-sit1`, from `rules/slB` at
 0d39fc0e.
 
@@ -540,7 +540,7 @@ None in full. Every item with a rule here keeps some code (below).
 | Spacewalker | The roll bonuses: Edge on Athletics / Acrobatics in low or zero gravity, ↑1 on every other roll in zero gravity, not while crewing a vehicle | Two RollModifiers: Edge with `{any: [skill:athletics, skill:acrobatics]}`, `{any: [environment:lowGravity, environment:zeroGravity]}`; ↑1 with `environment:zeroGravity`, `not:skill:athletics`, `not:skill:acrobatics`. Both carry `not:vehicle:type:vehicle` and `not:roll:initiative` | The +5 Evasion (derived data). The old code reads the environment there with `includeInterior: false`; the `environment:` tag reads it with the vessel interior, which differs aboard a Decompressed / Leaking vessel, so a static Defense rule would not be exact. `S1.spacewalker` stays for it and for the `updateToken` refresh. |
 | Out of the Jungle | Edge on non-attack tests, attacks Specialized, ignores Rough Terrain | RollModifier Edge (`not:attack`, `not:roll:initiative`); RollModifier `specialize` (`attack`); MovementAction `ignoreRoughTerrain` | Light Armor counting as Silent on Infiltration (the summed armor bonus of every equipped Light battledress without Silent as a ↑; no formula sums over items). `isInJungle` no longer counts Out of the Jungle; the noise source asks `isInJungle(actor) \|\| has(actor, S1.outOfTheJungle)` instead, with the same label as before. |
 | Danger Sense | The holder can't be Surprised | ConditionImmunity `["surprised"]`, appended after the item's existing Initiative switch | The Protected Target's immunity within 10 ft (`surpriseImmunitySource`). An aura ConditionImmunity with `holder:protects` would reach the same actors (aura allies use `getNearbyAllyTokens` from the Protected Target's side, as the old code does), but `ruleConditionImmune` does not pass `holder` to the condition, so `holder:protects` reads the Protected Target's own flag. The Protected-Target Initiative sync in `banked-buffs.mjs` is out of the slice and unchanged. |
-| Every Trick in the Book | Can't be Surprised | ConditionImmunity `["surprised"]`, appended after the item's existing incoming Snag rule | The sneak-attack immunity in `helpers/sneak-attack.mjs` (no rule type answers "not a valid sneak attack target"). `S1.everyTrick` is removed from the slice. |
+| Every Trick in the Book | Can't be Surprised | ConditionImmunity `["surprised"]`, appended after the item's existing incoming Snag rule | The sneak-attack immunity in `mechanics/combat/sneak-attack.mjs` (no rule type answers "not a valid sneak attack target"). `S1.everyTrick` is removed from the slice. |
 
 Why the converted parts are exact:
 
@@ -690,7 +690,7 @@ and Danger Sense tests reworked; the Danger Sense test now covers the Protected 
 
 **Scope:** every item in the id table of `module/helpers/extensions/situational2/` (`S2` in `common.mjs`, used by
 `situational2.mjs` and `initiative.mjs`), plus every other place in `module/` that uses those ids. The only other
-code user is `helpers/rough-terrain.mjs`, which reads Feet Wet. Bookworm, Tracking Outfit, Seafarer, Amphibious
+code user is `mechanics/world/rough-terrain.mjs`, which reads Feet Wet. Bookworm, Tracking Outfit, Seafarer, Amphibious
 Assault and Lay of the Land already have pack rules from earlier rounds. Their remaining code is the part judged
 here. Branch `rules/slC-sit2`, from `rules/slB` at 0d39fc0e.
 
@@ -719,7 +719,7 @@ None.
 
 | Item | Converted | Rule | Still code |
 |---|---|---|---|
-| Feet Wet | Ignoring Rough Terrain on sea terrain: the `FEET_WET_ID` entry in `helpers/rough-terrain.mjs`'s `ROUGH_TERRAIN_IGNORERS` | MovementAction `ignoreRoughTerrain`, `when: ["terrain:sea"]` | The whole slice side (`isFeetWetActive`): sea, aboard an aquatic vessel, and wetlands with Ship Shape, for Rough Terrain, the non-combat Edge and the Specialized attacks. That code already covered the sea case, so the old `rough-terrain.mjs` entry was a subset of it. |
+| Feet Wet | Ignoring Rough Terrain on sea terrain: the `FEET_WET_ID` entry in `mechanics/world/rough-terrain.mjs`'s `ROUGH_TERRAIN_IGNORERS` | MovementAction `ignoreRoughTerrain`, `when: ["terrain:sea"]` | The whole slice side (`isFeetWetActive`): sea, aboard an aquatic vessel, and wetlands with Ship Shape, for Rough Terrain, the non-combat Edge and the Specialized attacks. That code already covered the sea case, so the old `rough-terrain.mjs` entry was a subset of it. |
 
 Why the rule is exact: `ruleMovement` is the first entry of `ROUGH_TERRAIN_IGNORERS`, and the list is an OR, so
 the rule sits where the old entry sat. `terrain:sea` reads the same `environment.mjs#getTerrain(actor)` that the old
@@ -838,7 +838,7 @@ There are no same-line differences.
 ### Files touched outside the slice
 
 - `packs/qgtgitems/_source/Feet_Wet_7u3xCPPjxJlI7c61.json`: the rule, inserted as text (LF, like the file).
-- `module/helpers/rough-terrain.mjs`: removed `FEET_WET_ID` and its `ROUGH_TERRAIN_IGNORERS` entry, dropped the
+- `module/mechanics/world/rough-terrain.mjs`: removed `FEET_WET_ID` and its `ROUGH_TERRAIN_IGNORERS` entry, dropped the
   now-unused `getTerrain` import, and added Feet Wet to the comment listing the MovementAction-rule items.
 - `module/helpers/rough-terrain.test.js`: removed the Feet Wet test and its id constant.
 - `module/rules/conversions.test.js`: appended the `describe('slC sit2', ...)` block. The import line is unchanged

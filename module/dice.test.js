@@ -29,7 +29,7 @@ global.game = {
       first: jest.fn(() => undefined),
     },
   },
-  // Empty by default so helpers/defense-choice.mjs#chooseDefenderDefense (called for every
+  // Empty by default so mechanics/combat/defense-choice.mjs#chooseDefenderDefense (called for every
   // attack roll with a real target, as of dice.mjs's own per-target resolvedDefenseType) finds no
   // player owner and no GM to ask, falling straight through to its own "return the suggested
   // Defense" fallback - preserving every one of this file's existing tests' own assumption that
@@ -40,7 +40,7 @@ global.game = {
   combat: null,
 };
 
-// Only Enemy Number One (helpers/enemy-number-one.mjs) actually reaches into canvas from this
+// Only Enemy Number One (items/social/enemy-number-one.mjs) actually reaches into canvas from this
 // file's own tests - every other canvas-touching helper (e.g. getShieldUpgradeBonus) short-
 // circuits first on a falsy actor.getActiveTokens?.()?.[0], which none of this file's other mock
 // actors define.
@@ -1200,7 +1200,7 @@ describe("rollSkill", () => {
   });
 
   // Frenzied Attack (Decepticon Directive, Shredder Focus, 10th level, p.58) - see
-  // helpers/frenzied-attack.mjs's own doc comment. chat.mjs#addFrenziedAttackButton needs the
+  // items/attacks/frenzied-attack.mjs's own doc comment. chat.mjs#addFrenziedAttackButton needs the
   // rolled weaponEffect's own uuid to roll it again, so rollSkill's checkContext has to carry it
   // through whenever the item actually has one (an embedded Item does; the plain object literals
   // the other tests in this file use as their "item" don't, hence itemUuid: null above).
@@ -2298,7 +2298,7 @@ describe("rollSkill", () => {
   });
 
   describe("damageBonus Role Points (e.g. Sneak Attack Damage)", () => {
-    // dataset.dif drives the flat-Difficulty checkContext path (helpers/enrichers.mjs's
+    // dataset.dif drives the flat-Difficulty checkContext path (util/enrichers.mjs's
     // @Check[dif=...] links use it too) - avoids needing to mock game.user.targets/canvas as a
     // real targeted-token scene just to get a non-null checkContext out of rollSkill().
     const difDataset = { ...dataset, dif: '10' };
@@ -3069,7 +3069,7 @@ describe("rollSkill", () => {
 
     beforeAll(async () => {
       const { registerCheck } = await import('./rules/predicate.mjs');
-      const { isEnergyAffinityElementAttack } = await import('./helpers/energy-affinity.mjs');
+      const { isEnergyAffinityElementAttack } = await import('./items/attacks/energy-affinity.mjs');
       registerCheck('energyAffinityAttack', (actor, option, ctx) => isEnergyAffinityElementAttack(actor, ctx?.item));
     });
 
@@ -8515,7 +8515,7 @@ describe("rollSkill", () => {
       }
 
       // items needs to behave like a real Foundry EmbeddedCollection - array-like (.find()/.some(),
-      // used by helpers/perks.mjs#actorHasPerk against the target inside _getAutomaticCombatModifiers)
+      // used by mechanics/characters/perks.mjs#actorHasPerk against the target inside _getAutomaticCombatModifiers)
       // AND carry .documentsByType (used by this describe block's own armor scan).
       const items = [];
       items.documentsByType = { armor: armorItems };
@@ -17394,7 +17394,7 @@ describe("rollSkill", () => {
         expect(rollDialog.getSkillRollOptions.mock.calls[1][1].edge).toBeFalsy();
       });
 
-      // The scene's terrain (helpers/environment.mjs#getTerrain) decides it without the toggle.
+      // The scene's terrain (mechanics/world/environment.mjs#getTerrain) decides it without the toggle.
       function makeActorOnTerrain(terrain) {
         const actor = makeActor({ perkIds: [ENVIRONMENTAL_EXPERTISE_ID] });
         const scene = { getFlag: (scope, key) => (key == 'terrain' ? terrain : undefined) };
@@ -18282,7 +18282,7 @@ describe("rollSkill", () => {
       });
     });
 
-    // Moved to helpers/extensions/resource/energon.mjs (every Energon spend, not just this one).
+    // Moved to items/resources/energon-spend-strains.mjs (every Energon spend, not just this one).
     describe("Energon Efficiency (Decepticon Directive, Cybertronian Perk, p.62)", () => {
       const ENERGON_EFFICIENCY_ID = "Compendium.essence20.decepticon_directive.Item.ZtRBGtnV5HCA7zhl";
 
@@ -20435,7 +20435,7 @@ describe("_applyCritMultiplier (Energy Sword Time Strike, A Jump Through Time p.
   });
 });
 
-describe("1/scene Battlizer attacks (helpers/summons.mjs)", () => {
+describe("1/scene Battlizer attacks (mechanics/companions/summons.mjs)", () => {
   test("a used-up Energy Sword Time Strike can't be rolled again this scene", async () => {
     const weapon = {
       id: 'w1', type: 'weapon', name: 'Energy Sword Time Strike',
@@ -20671,7 +20671,7 @@ describe("_getAutomaticCombatModifiers", () => {
   const TF_CRB = "Compendium.essence20.tf_crb.Item.";
 
   // actor.items needs to behave like a real Foundry EmbeddedCollection - array-like (.some(),
-  // used by helpers/perks.mjs#actorHasPerk) AND .get()-able (used for weapon lookups) - a plain
+  // used by mechanics/characters/perks.mjs#actorHasPerk) AND .get()-able (used for weapon lookups) - a plain
   // array with a .get() method attached satisfies both.
   function makeActor(size, statuses = [], { perkIds = [], weapon = null, debilitated = false, level } = {}) {
     const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
@@ -25121,7 +25121,7 @@ describe("_getAutomaticCombatModifiers", () => {
       expect(dice._getAutomaticCombatModifiers(actor, null, null, 'athletics')).toEqual(defaultModifiers);
     });
 
-    // Harass is a roll source now (helpers/harass.mjs: Edge on every attack until the start of the
+    // Harass is a roll source now (items/attacks/harass.mjs: Edge on every attack until the start of the
     // holder's next turn), so a leftover banked flag no longer does anything here.
     test("a leftover Harass bank is ignored on an Attack", () => {
       const weaponEffect = {
@@ -29584,7 +29584,7 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
   });
 
   describe("Space Vessel Conditions (Across the Stars p.25-26) - post-roll", () => {
-    // A vessel whose statuses toggle for real, enough for helpers/vessel-conditions.mjs to count.
+    // A vessel whose statuses toggle for real, enough for mechanics/vehicles/vessel-conditions.mjs to count.
     function makeShip(statuses = []) {
       const ship = {
         uuid: 'Actor.ship', name: 'Ship', isOwner: true, statuses: new Set(statuses), effects: [], system: { health: { max: 10 } },
@@ -34515,7 +34515,7 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
 });
 
 /* Trait rules pass B - environment subsystem + Inertial/Aquatic/Amphibious/Enviro-Sealed. See
-   helpers/environment.mjs for getEnvironment()/getSceneEnvironment()'s own unit tests - these
+   mechanics/world/environment.mjs for getEnvironment()/getSceneEnvironment()'s own unit tests - these
    exercise dice.mjs's own _getAutomaticCombatModifiers wiring on top of that. */
 describe("Environment-reading weapon/armor traits (Across the Stars p.24-25/79/85, GI Joe CRB p.147/212)", () => {
   // Several unrelated target-gated checks elsewhere in _getAutomaticCombatModifiers read
@@ -34735,7 +34735,7 @@ describe("Environment-reading weapon/armor traits (Across the Stars p.24-25/79/8
 // incoming rules and banked bonuses never applied to it (the early `if (!isAttack)` return).
 describe("non-attack rolls with a target still get the per-target riders", () => {
   test("a registered roll source applies to a targeted Skill Test", async () => {
-    const { registerRollSources } = await import("./helpers/extensions.mjs");
+    const { registerRollSources } = await import("./mechanics/item-hooks.mjs");
     registerRollSources((actor, target, ctx) => (ctx.rolledSkill == 'zzRiderCheck' && target?.name == 'Rider Target'
       ? { sources: [{ id: 'zzRider', label: 'Rider check', shiftUp: 1 }] }
       : null));

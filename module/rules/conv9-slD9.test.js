@@ -14,7 +14,7 @@ const hooks = {};
 global.Hooks = { on: (name, fn) => (hooks[name] = [...(hooks[name] ?? []), fn]), once: () => {}, callAll: () => {} };
 
 const grantActionsThisTurn = jest.fn(async () => {});
-jest.unstable_mockModule('./helpers/action-economy.mjs', () => ({ grantActionsThisTurn }));
+jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({ grantActionsThisTurn }));
 
 const { rebuildIndex } = await import('./index.mjs');
 const { validateRule } = await import('./types.mjs');

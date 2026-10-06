@@ -104,8 +104,8 @@ Where a new 2026-10-05 piece now covers part of an item, that is said. Otherwise
 - **Demolition Artist:** goes with Improvise Bomb.
 - **Let It Rip:** as Recoil Brace, plus a `pick` filter by book source (the four Signature Weapons).
 - **Scavenger:** a two-stage pick (type, then entry), a Requisition roll one Availability step harder than the picked entry, appending Temperamental to the copy's traits.
-- **Angry (fix3-gij):** a tag comparing the rolled Skill with a value on the actor (`angryHangUpSnag.skill`, written by `helpers/angry.mjs`).
-- *(Pack Attack, uncounted:)* its records are written by `helpers/pack-attack.mjs` from the Growl bank (outside the slice). The expiry is "start of the user's next turn, else the scene", and `nextTurn` has no scene fallback.
+- **Angry (fix3-gij):** a tag comparing the rolled Skill with a value on the actor (`angryHangUpSnag.skill`, written by `items/rolls/angry-influence.mjs`).
+- *(Pack Attack, uncounted:)* its records are written by `items/attacks/pack-attack.mjs` from the Growl bank (outside the slice). The expiry is "start of the user's next turn, else the scene", and `nextTurn` has no scene fallback.
 
 ### gij2 (14)
 

@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
  * pick read by pickedSource, `{var.picked}` in a grant's uuid).
  */
 
-// The compendium browser (helpers/grants.mjs) over a small catalog; the pick is named by the test.
+// The compendium browser (mechanics/resources/grants.mjs) over a small catalog; the pick is named by the test.
 // (Mocked paths resolve from module/jest.setup.js.)
 let picks = [];
 let offered = [];
@@ -25,10 +25,10 @@ const pickOne = jest.fn(async (title, rows) => {
   return rows.find(row => row.name == name)?.uuid ?? null;
 });
 const chooseButtons = jest.fn(async () => null);
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({
   findItems, pickOne, chooseButtons, chooseSelect: jest.fn(), grantCopy: jest.fn(), markIntegrated: jest.fn(), rollTest: jest.fn(),
 }));
-jest.unstable_mockModule('./helpers/nu-pogodi.mjs', () => ({
+jest.unstable_mockModule('./items/healing/nu-pogodi.mjs', () => ({
   canUseNuPogodiCondition: jest.fn(() => false), applyNuPogodiCondition: jest.fn(),
 }));
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({
@@ -40,8 +40,8 @@ const { rebuildIndex } = await import('./index.mjs');
 const { ruleQualifiedUpgrade, ruleRequisitionAccess } = await import('./adapter.mjs');
 const { runUse, useAvailable } = await import('./triggers.mjs');
 const { legacyChoiceUpdates } = await import('./legacy-choices.mjs');
-const { QUALIFY_USE } = await import('../helpers/extensions/qualify1/qualification.mjs');
-const { effectiveAvailability, isQualifiedUpgrade } = await import('../helpers/extensions/qualify2/qualifications.mjs');
+const { QUALIFY_USE } = await import('../items/gear/equipment-qualification.mjs');
+const { effectiveAvailability, isQualifiedUpgrade } = await import('../items/gear/qualification-perks.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fromPack = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8'));

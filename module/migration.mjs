@@ -1,4 +1,4 @@
-import { createId, slugifySpecializationName } from "./helpers/utils.mjs";
+import { createId, slugifySpecializationName } from "./util/utils.mjs";
 import { parseDurationString } from "./data/duration-schema.mjs";
 
 /**
@@ -408,7 +408,7 @@ export const migrateActorData = async function(actor, compendiumActor) {
      converted this pass, not just what's already on the actor. Keyed by a slug of the Item's own
      name (not a random id) so a Perk's Active Effect can target it directly - e.g.
      system.skills.science.specializations.medicine.shiftUp - now that a Specialization can no
-     longer be renamed after the fact (see helpers/utils.mjs#slugifySpecializationName). */
+     longer be renamed after the fact (see util/utils.mjs#slugifySpecializationName). */
   const newSpecializationsBySkill = {};
   for (const item of actor.items) {
     if (item.type == 'specialization') {

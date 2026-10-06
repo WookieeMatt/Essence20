@@ -1,5 +1,5 @@
 ﻿import { _powerCountUpdate } from "../sheet-handlers/power-handler.mjs";
-import { getFormData } from "../helpers/application.mjs";
+import { getFormData } from "../util/application.mjs";
 import { applyThemeClass } from "../settings.js";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;

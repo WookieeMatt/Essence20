@@ -17,8 +17,8 @@ import { fileURLToPath } from 'node:url';
 // module/jest.setup.js.)
 const disarm = jest.fn();
 const spend = jest.fn(async () => ({ blocked: false }));
-jest.unstable_mockModule('./helpers/target-riders.mjs', () => ({ disarm }));
-jest.unstable_mockModule('./helpers/action-economy.mjs', () => ({ spend }));
+jest.unstable_mockModule('./mechanics/combat/target-riders.mjs', () => ({ disarm }));
+jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({ spend }));
 
 const { rebuildIndex } = await import('./index.mjs');
 const { fireTriggers, runUse } = await import('./triggers.mjs');

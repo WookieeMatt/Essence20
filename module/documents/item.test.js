@@ -1,7 +1,7 @@
 import { Essence20Item } from "./item.mjs";
 import { jest } from '@jest/globals';
-import { getLedger, spend } from "../helpers/action-economy.mjs";
-import { invalidateImportedDescriptions } from "../helpers/book-descriptions-store.mjs";
+import { getLedger, spend } from "../mechanics/actions/action-economy.mjs";
+import { invalidateImportedDescriptions } from "../importers/book-descriptions-store.mjs";
 
 /**
  * Builds a bare Essence20Item instance with the given type/system/actor,
@@ -127,7 +127,7 @@ describe("_preUpdate", () => {
     expect(change.name).toBeUndefined();
   });
 
-  describe("Vehicular equip gate - see helpers/vehicular.mjs's own doc comment", () => {
+  describe("Vehicular equip gate - see mechanics/combat/vehicular-trait.mjs's own doc comment", () => {
     const originalGame = global.game;
 
     afterEach(() => {
@@ -920,7 +920,7 @@ describe("roll", () => {
     });
   });
 
-  // An area spell (system.shape set) places a real Region shape via helpers/aoe-targeting.mjs,
+  // An area spell (system.shape set) places a real Region shape via mechanics/combat/aoe-targeting.mjs,
   // rather than each such spell carrying its own bespoke auto-targeting helper keyed on its
   // compendium id. Explosive Beam (MLP CRB, Superior Beam spell, p.137 - "a 15ft diameter circle
   // of the chosen space", so a 7.5ft radius) was the last spell to do it the old way and now
@@ -1154,7 +1154,7 @@ describe("roll", () => {
 describe("_rollWithRefund", () => {
   // The action economy spends at the TOP of roll(), long before the roll options dialog opens.
   // Backing out of that dialog is an ordinary thing for a player to do, so the action has to come
-  // back - see helpers/action-economy.mjs#refund.
+  // back - see mechanics/actions/action-economy.mjs#refund.
   function makeRollingItem(rollResult) {
     const item = makeItem('weaponEffect', {}, { name: 'Duke' });
     item._dice = { handleSkillItemRoll: jest.fn(async () => rollResult) };
@@ -1240,7 +1240,7 @@ describe("_rollWithRefund", () => {
   });
 });
 
-describe("Reload / Consumable (weaponEffect roll() integration - see helpers/reload.mjs)", () => {
+describe("Reload / Consumable (weaponEffect roll() integration - see mechanics/combat/reload-trait.mjs)", () => {
   function makeWeapon(traits = [], { quantity = 1 } = {}) {
     const flags = {};
     return {
@@ -1431,7 +1431,7 @@ describe("Reload / Consumable (weaponEffect roll() integration - see helpers/rel
     }
   });
 
-  describe("Fanning (A Jump Through Time, p.74) - see helpers/fanning.mjs", () => {
+  describe("Fanning (A Jump Through Time, p.74) - see items/attacks/fanning.mjs", () => {
     test("a Fanning Attack flags the weapon for a reload; an ordinary shot doesn't", async () => {
       const fannedWeapon = makeWeapon(['fanning']);
       await makeWeaponEffectItem(fannedWeapon, { name: 'Duke' }, { fanned: true }).roll({});
@@ -1474,7 +1474,7 @@ describe("Reload / Consumable (weaponEffect roll() integration - see helpers/rel
     }
   });
 
-  describe("Ongoing / Poison / Toxin (Cobra Codex p.93-94) - see helpers/ongoing-effects.mjs's own doc comment", () => {
+  describe("Ongoing / Poison / Toxin (Cobra Codex p.93-94) - see mechanics/combat/ongoing-effects.mjs's own doc comment", () => {
     const originalFromUuid = global.fromUuid;
 
     afterEach(() => {
@@ -1531,7 +1531,7 @@ describe("Reload / Consumable (weaponEffect roll() integration - see helpers/rel
     });
   });
 
-  describe("Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/mounted.mjs's own doc comment", () => {
+  describe("Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see items/attacks/mounted-weapons.mjs's own doc comment", () => {
     test("can't attack with a Mounted weapon that hasn't been set up yet", async () => {
       const weapon = makeWeapon(['mounted']);
       weapon.getFlag.mockImplementation(() => undefined);
@@ -1553,7 +1553,7 @@ describe("Reload / Consumable (weaponEffect roll() integration - see helpers/rel
     });
   });
 
-  describe("Mythically Modular (Through the Shattered Grid p.116) - see helpers/mythically-modular.mjs", () => {
+  describe("Mythically Modular (Through the Shattered Grid p.116) - see items/attacks/mythically-modular.mjs", () => {
     function mythicForms(activeEquipped) {
       const active = { ...makeWeapon(['mythicallyModular']), id: 'axe', type: 'weapon' };
       active.system.equipped = activeEquipped;
@@ -1582,7 +1582,7 @@ describe("Reload / Consumable (weaponEffect roll() integration - see helpers/rel
     });
   });
 
-  describe("Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/vehicular.mjs's own doc comment", () => {
+  describe("Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148) - see mechanics/combat/vehicular-trait.mjs's own doc comment", () => {
     const originalGame = global.game;
 
     afterEach(() => {
@@ -1619,7 +1619,7 @@ describe("Reload / Consumable (weaponEffect roll() integration - see helpers/rel
     });
   });
 
-  describe("Burst-Fire (Quartermaster's Guide to Gear p.33) - see helpers/reload.mjs's own doc comment", () => {
+  describe("Burst-Fire (Quartermaster's Guide to Gear p.33) - see mechanics/combat/reload-trait.mjs's own doc comment", () => {
     test("firing once this round doesn't flag needing reload", async () => {
       const { actor, restore } = withCombat({ moveMax: 1 });
       try {
@@ -1929,7 +1929,7 @@ describe("_prepareHardpointDerived", () => {
   });
 });
 
-// Descriptions a GM imported from their own rulebook PDF (helpers/book-descriptions-store.mjs,
+// Descriptions a GM imported from their own rulebook PDF (importers/book-descriptions-store.mjs,
 // filled by apps/book-description-importer.mjs). The compendium ships these empty because this
 // system does not redistribute the publisher's text.
 describe("_prepareDescription", () => {

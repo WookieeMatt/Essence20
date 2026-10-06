@@ -1,9 +1,9 @@
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
-import { linkEdgeToggle } from "../helpers/edge-toggle-link.mjs";
+import { linkEdgeToggle } from "../mechanics/rolls/edge-toggle-link.mjs";
 /**
- * The extension controls (helpers/extensions.mjs#registerDialogToggles): every ext_* field, by name -
+ * The extension controls (mechanics/item-hooks.mjs#registerDialogToggles): every ext_* field, by name -
  * a checkbox as true/false, anything else as its value.
  * @param {HTMLFormElement} form
  * @returns {Object}
@@ -85,7 +85,7 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
     super._onRender(context, options);
 
     applyThemeClass(this.element);
-    // Enviro-Sealed's switch moves the Snag/Normal/Edge radio with it - see helpers/edge-toggle-link.mjs.
+    // Enviro-Sealed's switch moves the Snag/Normal/Edge radio with it - see mechanics/rolls/edge-toggle-link.mjs.
     linkEdgeToggle(this.element, "applyEnviroSealedAdverseSituation");
   }
 
@@ -105,7 +105,7 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
   static myFormHandler(event, form) {
     this._resolved = true;
     // Dynamic - one checkbox per currently-disabled effect relevant to this roll (see
-    // helpers/skill-effects.mjs), named by the effect's own id rather than a fixed field like
+    // mechanics/rolls/skill-effects.mjs), named by the effect's own id rather than a fixed field like
     // every option above, so this can't be read by a fixed name the way isAiming/akimbo/etc. are.
     const selectedSkillEffectIds = (this._context.availableSkillEffects ?? [])
       .filter(skillEffect => form[`skillEffect-${skillEffect.id}`]?.checked)

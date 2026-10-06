@@ -6,7 +6,7 @@ const hooks = {};
 global.Hooks = { on: (name, fn) => (hooks[name] = [...(hooks[name] ?? []), fn]), callAll: () => {} };
 
 const rows = [];
-jest.unstable_mockModule('./helpers/extensions/react/core.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/reaction-engine.mjs', () => ({
   rollVsMany: jest.fn(async (actor, skill, actors) => actors.map((other, i) => ({ targetUuid: other.uuid, success: rows[i] ?? false }))),
 }));
 

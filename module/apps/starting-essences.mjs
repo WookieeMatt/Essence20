@@ -1,14 +1,14 @@
 import { applyThemeClass, getGameLine } from "../settings.js";
-import { computeEssenceSpend } from "../helpers/skill-picker.mjs";
+import { computeEssenceSpend } from "../mechanics/rolls/skill-picker-math.mjs";
 import {
   checkStartingEssences, currentBase, ESSENCES, essencesOverspentBy, maxEssenceFor, MIN_ESSENCE,
   recommendedSpread, STARTING_ESSENCE_POINTS, startingEssencesUpdate,
-} from "../helpers/starting-essences.mjs";
+} from "../mechanics/characters/starting-essences.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
  * Spend a player character's 12 starting Essence points, within the book's limits - see
- * helpers/starting-essences.mjs for the rules and where they come from.
+ * mechanics/characters/starting-essences.mjs for the rules and where they come from.
  *
  * Opens by itself when a new character is created (essence20.mjs's createActor hook), and from
  * the bar above the Skills tab's Essence columns (pc-skills.hbs) any time after. Nothing is

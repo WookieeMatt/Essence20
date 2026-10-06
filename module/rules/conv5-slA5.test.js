@@ -14,10 +14,10 @@ import { fileURLToPath } from 'node:url';
  * slice code did.
  */
 
-// The picker the pick steps ask (helpers/grants.mjs); attachment copying is Foundry-heavy and not needed.
+// The picker the pick steps ask (mechanics/resources/grants.mjs); attachment copying is Foundry-heavy and not needed.
 // (Mocked paths resolve from module/jest.setup.js, hence ./helpers and ./sheet-handlers.)
 const chooseSelect = jest.fn();
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({ chooseSelect, rollTest: jest.fn(), markIntegrated: jest.fn() }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({ chooseSelect, rollTest: jest.fn(), markIntegrated: jest.fn() }));
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({
   ...Object.fromEntries(['onAttachableParentDrop', 'onEquipmentPackageDrop', 'grantItemEntry', 'onAttachmentDrop', '_attachSelectedItemOptionHandler',
     '_attachItem', 'grantLinkedWeaponEffect', 'createEntry', '_addItemIfUnique', 'deleteAttachmentsForItem'].map(name => [name, jest.fn()])),
@@ -26,7 +26,7 @@ jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({
 }));
 
 // Round-10 plug-ins: rule types some of these items now also carry (Advanced Dino Gem's SummonTime).
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { ruleDerived, ruleMovementStages, ruleNoUntrainedSnag, ruleRollSources } = await import('./adapter.mjs');
 const { fireItemAdded, fireTriggers, runUse, useAvailable } = await import('./triggers.mjs');

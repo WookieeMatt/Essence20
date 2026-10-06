@@ -9,14 +9,14 @@
  * added an inert item and changed nothing at all.
  *
  * Each of these applies its choice as a one-time mutation of the chosen weapon/weaponEffect, the
- * same idiom helpers/weapon-conversion.mjs#convertWeapon already uses for Weapon Conversion ("pick
+ * same idiom items/attacks/weapon-conversion.mjs#convertWeapon already uses for Weapon Conversion ("pick
  * an eligible weapon, permanently rewrite these fields"), rather than inventing a per-item Active
  * Effect mechanism this system doesn't have (effects target the ACTOR, never one owned item).
  */
 
 import {
   MEGA_WEAPON_DAMAGE, MEGA_WEAPON_EFFECT_FLAG, MEGA_WEAPON_ID,
-} from "../helpers/zord-mega-weapon.mjs";
+} from "../items/zords/zord-mega-weapon.mjs";
 
 const PR_CRB = "Compendium.essence20.pr_crb.Item.";
 const ENHANCE_ATTACK_ID = `${PR_CRB}OibmwLDNcXE6eJIO`;
@@ -86,7 +86,7 @@ const BASELINE_ATTACKS = {
  * Resolves the compendium id a dropped Feature came from. A drop straight off a compendium hands us
  * the compendium document itself (its uuid IS the compendium uuid); a copy already living in the
  * world carries it on _stats.compendiumSource instead (or flags.core.sourceId on documents created
- * before v12) - the same dual lookup helpers/zord-features.mjs#actorHasZordFeature does.
+ * before v12) - the same dual lookup mechanics/vehicles/zord-features.mjs#actorHasZordFeature does.
  * @param {Item} item
  * @returns {String|null}
  */
@@ -320,7 +320,7 @@ async function onAdditionalAttackTypeDrop(actor, dropFunc) {
 /**
  * Blast Attack (PR CRB, Zord Feature, p.136): "Your Zord's ranged attack is designed to deal with
  * groups of targets instead of a single foe. Your ranged attack now deals damage in 10ft radius
- * blast area of attack." radius + shape are the two fields helpers/aoe-targeting.mjs already keys
+ * blast area of attack." radius + shape are the two fields mechanics/combat/aoe-targeting.mjs already keys
  * its area placement off (see weapon-effect.mjs's own `shape` comment), so this is exactly the
  * "burst" shape an ordinary Blast weapon already uses.
  * @param {Actor} actor
@@ -353,7 +353,7 @@ async function onBlastAttackDrop(actor, dropFunc) {
 }
 
 /**
- * Zord Mega-Weapon System (PR CRB, Zord Feature, p.139) - see helpers/zord-mega-weapon.mjs for the
+ * Zord Mega-Weapon System (PR CRB, Zord Feature, p.139) - see items/zords/zord-mega-weapon.mjs for the
  * pooled cost and duration counter. The drop half handled here is RAW's "the weapon system and its
  * kind of damage (energy, fire, etc.) are decided when the Zord Feature is acquired": pick melee or
  * ranged and a damage type once, and the weapon exists on the sheet from then on, flagged so

@@ -8,7 +8,7 @@
            (see base-actor-sheet.mjs#_applyLockedState). Zords themselves stay editable. --}}
       {{#if (and (isdefined essence.base) (ne @root.document.type 'megaform'))}}
       {{!-- Zord / Vehicle: the input is the typed base; Features' Active Effects and item rules add on top
-           (helpers/machine-essences.mjs), and the worked-out value shows beside it when they differ. --}}
+           (mechanics/vehicles/machine-essences.mjs), and the worked-out value shows beside it when they differ. --}}
       <input class="two-digit-input" type="number" name="system.essences.{{@key}}.base" value="{{essence.base}}" min="0" step="1" />
       {{#if (ne essence.base essence.value)}}
       <span class="e20-essence-adjusted" data-tooltip="{{localize 'E20.MachineEssenceBase' essence=(localize (lookup @root.config.essences @key)) value=essence.value}}">&rarr; {{essence.value}}</span>

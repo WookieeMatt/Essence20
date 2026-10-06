@@ -208,7 +208,7 @@ New tests: `module/rules/conv5-slA5.test.js` (27 tests, each item loaded from it
 
 ## Edits outside my files
 
-None needed. Optional comment tidy: `module/helpers/roll-dialog.mjs` line 99 reads
+None needed. Optional comment tidy: `module/mechanics/rolls/roll-dialog.mjs` line 99 reads
 `// Shinobi of the 63rd Hexagram / Steady Hands - helpers/extensions/zord2/snag.mjs.` - could become
 `// Steady Hands - helpers/extensions/zord2/snag.mjs (Shinobi's motorcycle Driving is its own item rule).`
 
@@ -222,8 +222,8 @@ gem items' pick lists. `E20.Pr3GrantedItem` is still used by Emissary's Gift.)
 
 ## Files touched
 
-- `module/helpers/extensions/pr3/pr-crb.mjs`, `pr3/common.mjs`, `pr3/pr3.test.js`
-- `module/helpers/extensions/pr1/ats.mjs`, `pr1/misc.mjs`, `pr1/common.mjs`, `pr1/pr1.test.js`
+- `module/items/healing/power-heal-ninja-standard-issue.mjs`, `pr3/common.mjs`, `pr3/pr3.test.js`
+- `module/items/zords/lightspeed-swat-features.mjs`, `pr1/misc.mjs`, `pr1/common.mjs`, `pr1/pr1.test.js`
 - `module/helpers/extensions/pr2/zords.mjs`, `pr2/common.mjs`, `pr2/pr2.test.js`
 - `module/helpers/extensions/zord2/snag.mjs`, `zord2/zord2.test.js`
 - `packs/prcrbitems/_source/Survivor_YmSnQxVytktWfZTZ.json`, `Unique_Weapon_TG2rarEjGgDeOsc5.json`,

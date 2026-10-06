@@ -1,4 +1,4 @@
-import { getUses, markUsed } from "../helpers/scene-clock.mjs";
+import { getUses, markUsed } from "../mechanics/resources/scene-clock.mjs";
 import { resolveValue } from "./formula.mjs";
 
 /**
@@ -9,7 +9,7 @@ import { resolveValue } from "./formula.mjs";
  *   max   a number or formula (default 1)
  *   key   optional - two items naming the same key share one limit (Wing Missile Salvo)
  *
- * Scene, encounter and mission ride the existing Scene Clock (helpers/scene-clock.mjs), so they
+ * Scene, encounter and mission ride the existing Scene Clock (mechanics/resources/scene-clock.mjs), so they
  * work in and out of combat and reset when the GM advances them. Turn and round are stamped with the
  * combat, round and turn, and count as unused outside combat. Rest counts until the sheet's Rest
  * clears it (rules/adapter.mjs).

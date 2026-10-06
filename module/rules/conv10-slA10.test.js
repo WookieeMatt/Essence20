@@ -17,24 +17,24 @@ const grantCopy = jest.fn();
 const rollTest = jest.fn();
 const pickPerkFrom = jest.fn();
 const applyDamage = jest.fn();
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({
   chooseSelect, chooseButtons, findItems, pickOne, grantCopy, rollTest, pickPerkFrom, markIntegrated: jest.fn(),
 }));
-jest.unstable_mockModule('./helpers/combat.mjs', () => ({ applyDamage, getVehicleDriver: jest.fn() }));
+jest.unstable_mockModule('./mechanics/combat/combat.mjs', () => ({ applyDamage, getVehicleDriver: jest.fn() }));
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({ createItemCopies: jest.fn(), setEntryAndAddItem: jest.fn() }));
-jest.unstable_mockModule('./helpers/timed-status.mjs', () => ({ applyTimedCondition: jest.fn() }));
+jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({ applyTimedCondition: jest.fn() }));
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { fireTriggers, runUse } = await import('./triggers.mjs');
 const { ruleRollSources, ruleDamageDealt, ruleDialogSwitches, ruleDerived } = await import('./adapter.mjs');
 const { validateRule } = await import('./types.mjs');
 const { runSteps, stepContext } = await import('./steps.mjs');
-const megaformExt = await import('./ext/a/megaform.mjs');
-const formsExt = await import('./ext/a/forms.mjs');
-const zordsExt = await import('./ext/a/zords.mjs');
-const hooksExt = await import('./ext/a/hooks.mjs');
-const sizeExt = await import('./ext/a/size.mjs');
+const megaformExt = await import('./plugins/zords/megaform.mjs');
+const formsExt = await import('./plugins/zords/form-perks.mjs');
+const zordsExt = await import('./plugins/zords/zords.mjs');
+const hooksExt = await import('./plugins/zords/zord-timing-hooks.mjs');
+const sizeExt = await import('./plugins/effects/size.mjs');
 const { fireItemAdded } = await import('./triggers.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -1129,7 +1129,7 @@ describe('Forms as data', () => {
 
   test('Form specs: Ranger Operator\'s gear depends on Core vs Advanced Role; held Forms come from the rules', async () => {
     const { ruleFormSpec } = formsExt;
-    const forms = await import('../helpers/extensions/zord1/forms.mjs');
+    const forms = await import('../items/forms/ranger-form-perks.mjs');
     const { actor: core } = ranger2('operator');
     addItem(core, { name: 'Red Ranger', type: 'role', system: { isAdvanced: false } });
     expect(ruleFormSpec(core, FORM_SOURCES.operator)).toEqual({ key: FORM_SOURCES.operator, cost: 0, swaps: [
@@ -1144,7 +1144,7 @@ describe('Forms as data', () => {
   });
 
   test('Lightspeed Response: 1 Power, a picked blaster and the V-Lancer swapped in; put back when the Form ends', async () => {
-    const forms = await import('../helpers/extensions/zord1/forms.mjs');
+    const forms = await import('../items/forms/ranger-form-perks.mjs');
     const { actor, perk } = ranger2('lightspeed');
     chooseButtons.mockResolvedValue('Compendium.essence20.across_the_stars.Item.yOltN3CfcfQ1qrxk');
     grantCopy.mockImplementation(async (who, uuid, options) => addItem(who, { name: uuid.slice(-4), type: 'weapon', flags: { essence20: { ...options.flags, grantedBy: options.grantedBy.id } } }));
@@ -1210,7 +1210,7 @@ describe('Forms as data', () => {
     rollTest.mockResolvedValue({ success: false });
     expect(await use('Cheetah vortex')).toContain('knocks them Prone');
     expect(rollTest).toHaveBeenCalledWith(target, 'athletics', 4, { snag: true });
-    const { applyTimedCondition } = await import('../helpers/timed-status.mjs');
+    const { applyTimedCondition } = await import('../mechanics/combat/timed-status.mjs');
     expect(applyTimedCondition).toHaveBeenCalledWith(target, 'prone', 0);
 
     // The dog: a d20 under 10 Stuns for a round.

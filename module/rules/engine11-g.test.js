@@ -7,24 +7,24 @@ import { jest } from '@jest/globals';
  */
 
 const spend = jest.fn(async () => ({ blocked: false }));
-jest.unstable_mockModule('./helpers/action-economy.mjs', () => ({ spend, setNextTurn: jest.fn(), getLedger: () => null, isTracking: () => true }));
+jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({ spend, setNextTurn: jest.fn(), getLedger: () => null, isTracking: () => true }));
 const chooseSelect = jest.fn(async (title, prompt, options) => options[0]?.value ?? null);
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({ chooseSelect, rollTest: jest.fn(async () => ({ success: true })), chooseButtons: jest.fn() }));
-jest.unstable_mockModule('./helpers/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({ chooseSelect, rollTest: jest.fn(async () => ({ success: true })), chooseButtons: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
 
 const { rebuildIndex } = await import('./index.mjs');
 const { contextFor, evaluate } = await import('./predicate.mjs');
 const { runSteps, stepContext, stepErrors } = await import('./steps.mjs');
 const { validateRule } = await import('./types.mjs');
-const { runApplyDialog, extDialogToggles, runDerived } = await import('../helpers/extensions.mjs');
-await import('./ext/index.mjs');
-const { fillSwitch, selectChoices, pickedValues } = await import('./ext/g/select.mjs');
-const { copiesHold } = await import('./ext/g/picks.mjs');
-const { isHidden, setHidden, fireBrokeHiding } = await import('./ext/g/hidden.mjs');
-const { cardButtons, pressCardButton, decorateCardButtons } = await import('./ext/g/cards.mjs');
-const { rolls, bestDefense } = await import('./ext/g/rolls.mjs');
-const { onlyBestDerived } = await import('./ext/g/best.mjs');
-const { hitRiderOnAttack } = await import('./ext/b/hit-rider.mjs');
+const { runApplyDialog, extDialogToggles, runDerived } = await import('../mechanics/item-hooks.mjs');
+await import('./plugins/index.mjs');
+const { fillSwitch, selectChoices, pickedValues } = await import('./plugins/dialog/dialog-select-options.mjs');
+const { copiesHold } = await import('./plugins/picks/pick-each.mjs');
+const { isHidden, setHidden, fireBrokeHiding } = await import('./plugins/combat/hidden.mjs');
+const { cardButtons, pressCardButton, decorateCardButtons } = await import('./plugins/cards/card-buttons.mjs');
+const { rolls, bestDefense } = await import('./plugins/rolls/roll-vs-all.mjs');
+const { onlyBestDerived } = await import('./plugins/combat/only-best-defense.mjs');
+const { hitRiderOnAttack } = await import('./plugins/combat/hit-rider.mjs');
 
 let nextId = 1;
 const byUuid = new Map();

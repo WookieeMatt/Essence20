@@ -14,7 +14,7 @@ global.Combat = class Combat {
 global.ChatMessage = { getSpeaker: () => ({}), create: jest.fn() };
 
 const { Essence20Combat } = await import('./combat.mjs');
-const { getRemaining } = await import('../helpers/action-economy.mjs');
+const { getRemaining } = await import('../mechanics/actions/action-economy.mjs');
 
 /**
  * A combat instance without running the real constructor, which wants a live Dice/RollDialog.

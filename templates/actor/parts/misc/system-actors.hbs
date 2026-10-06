@@ -58,7 +58,7 @@
         {{#if (eq attachedActor.type "zord")}}
           <div>{{localize 'E20.ActorSize'}}: {{lookup @root.config.actorSizes attachedActor.system.size}}</div>
           {{#unless (eq @root.document.type "megaform")}}
-            {{!-- Call to Action (PR CRB, Zord Feature, p.136-137) - see helpers/zord-summon.mjs's
+            {{!-- Call to Action (PR CRB, Zord Feature, p.136-137) - see mechanics/vehicles/zord-summon.mjs's
                  own doc comment. Only meaningful from the piloting Ranger's own sheet, not a
                  Megaform's read-only participant list. --}}
             {{#unless (isZordSummonReady attachedActor)}}

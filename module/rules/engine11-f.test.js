@@ -11,7 +11,7 @@ global.Hooks = { on: () => 0, once: () => 0, callAll: () => {} };
 
 const chooseSelect = jest.fn();
 const rollTest = jest.fn();
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({ chooseSelect, rollTest, chooseButtons: jest.fn(), findItems: jest.fn() }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({ chooseSelect, rollTest, chooseButtons: jest.fn(), findItems: jest.fn() }));
 
 let nextId = 1;
 const clock = { sceneClockScene: 1, sceneClockEncounter: 1, sceneClockMission: 1 };
@@ -57,19 +57,19 @@ global.foundry = {
   utils: { ...(global.foundry?.utils ?? {}), getProperty: getPath, setProperty: setPath, deepClone: value => JSON.parse(JSON.stringify(value)), escapeHTML: text => String(text) },
 };
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 // The megaformPilot lookup registers once rules/reactions.mjs has loaded (lazily).
-await (await import('./ext/f/reactors.mjs')).lookupReady;
+await (await import('./plugins/zords/megaform-pilot-reactors.mjs')).lookupReady;
 const { rebuildIndex } = await import('./index.mjs');
 const { runSteps, stepContext, stepErrors, recipients, pickOptions } = await import('./steps.mjs');
 const { validateRule } = await import('./types.mjs');
 const { contextFor, evaluate } = await import('./predicate.mjs');
 const { reactionOffers, pressReaction, REACTION_WHO } = await import('./reactions.mjs');
-const { cardInfo } = await import('../helpers/extensions/react/core.mjs');
-const watch = await import('./ext/f/watch.mjs');
-const { hitMultiplierOnAttack } = await import('./ext/f/finisher.mjs');
-const { skillDieDerived } = await import('./ext/f/skill-die.mjs');
-const { windowUsed } = await import('./ext/f/window.mjs');
+const { cardInfo } = await import('../mechanics/combat/reaction-engine.mjs');
+const watch = await import('./plugins/tags/world-watch.mjs');
+const { hitMultiplierOnAttack } = await import('./plugins/zords/megaform-finisher.mjs');
+const { skillDieDerived } = await import('./plugins/rolls/skill-die.mjs');
+const { windowUsed } = await import('./plugins/resources/scene-window-counters.mjs');
 
 function asItem(data, actor) {
   const item = {
@@ -294,7 +294,7 @@ describe('HitMultiplier', () => {
   });
 
   test('runs ahead of the rules\' flat damage bonuses (registerHitRider before), so they aren\'t multiplied', async () => {
-    const { registrySnapshot } = await import('../helpers/extensions.mjs');
+    const { registrySnapshot } = await import('../mechanics/item-hooks.mjs');
     const { ruleDamageDealt } = await import('./adapter.mjs');
     const riders = registrySnapshot().hitRiders;
     expect(riders.indexOf(hitMultiplierOnAttack)).toBeGreaterThanOrEqual(0);

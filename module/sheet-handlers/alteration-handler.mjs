@@ -4,7 +4,7 @@ import AlterationEssenceSelector from "../apps/alteration-essence-selector.mjs";
 import {
   getShiftedSkill,
   parseId,
-} from "../helpers/utils.mjs";
+} from "../util/utils.mjs";
 import { grantIntegratedWeapon } from "./perk-handler.mjs";
 
 // Power Fist (Quartermaster's Guide to Gear, p.93, Standard Cybernetic/Genetic Alteration):

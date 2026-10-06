@@ -116,20 +116,20 @@ Derivatives' +1 Acid in weapon-upgrades.mjs - see slB10.)
 
 ## Shared-file edits
 
-- `module/rules/ext/index.mjs` - `import "./g.mjs";`.
-- `module/rules/ext/c/dialog.mjs` - imports `payOption`, `selectChoices`, `selectOption` from `../g/select.mjs`; `ask`
+- `module/rules/plugins/index.mjs` - `import "./g.mjs";`.
+- `module/rules/plugins/dialog/dialog-select.mjs` - imports `payOption`, `selectChoices`, `selectOption` from `../g/select.mjs`; `ask`
   context on incoming / own select entries; `control` builds a DialogSelect's options from `selectChoices` (null - no
   select - under two); `registerDialogToggles` filters nulls; the apply step reads `selectOption` and runs `payOption` first.
-- `module/rules/ext/b/hit-rider.mjs` - imports `fillSwitch`; an option's damageType fills `{switch.<prefix>}`.
-- `module/helpers/extensions/other3/hide.mjs` - Pop Out / Telltale code, `observerDefense` and the Hidden helpers gone (now
+- `module/rules/plugins/combat/hit-rider.mjs` - imports `fillSwitch`; an option's damageType fills `{switch.<prefix>}`.
+- `module/mechanics/actions/hidden-state.mjs` - Pop Out / Telltale code, `observerDefense` and the Hidden helpers gone (now
   `ext/g/hidden.mjs`, `isHidden` re-exported); the postRoll ends Hidden and calls `fireBrokeHiding`.
-- `module/helpers/extensions/other3/shared.mjs` - `O3.popOut`, `O3.telltaleSign` removed.
-- `module/helpers/extensions/other3/other3.test.js` - the observerDefense test removed.
-- `module/helpers/extensions/pr1/jtt.mjs` - the Warhead section, its dialog / apply / hit-rider / createItem hooks and imports
+- `module/items/shared/turn-stamps-and-sides.mjs` - `O3.popOut`, `O3.telltaleSign` removed.
+- `module/items/tests/hidden-state-mega-defender-zones.test.js` - the observerDefense test removed.
+- `module/items/rolls/time-displaced.mjs` - the Warhead section, its dialog / apply / hit-rider / createItem hooks and imports
   gone (the shared `clearPending` preRoll stays - misc.mjs's Primordial Power uses it).
-- `module/helpers/extensions/pr1/common.mjs` - `PR1.warheadMagazines`, `parentWeaponOf`, `isAreaAttack`, `payAction` removed.
-- `module/helpers/extensions/pr1/pr1.test.js` - the Warhead use id and `warheadChoices` test removed.
-- `module/helpers/extensions/other1/more.mjs` - `isArmorMatrix`, `extraMatrixToughness`, the matrix ids and the derived pass
+- `module/items/shared/crew-allies-turn-stamps.mjs` - `PR1.warheadMagazines`, `parentWeaponOf`, `isAreaAttack`, `payAction` removed.
+- `module/items/tests/lightspeed-spectrum-time-displaced.test.js` - the Warhead use id and `warheadChoices` test removed.
+- `module/items/forms/multimorph-rites.mjs` - `isArmorMatrix`, `extraMatrixToughness`, the matrix ids and the derived pass
   gone; `other1/other1.test.js` - its test removed.
 
 ## Unused strings

@@ -36,7 +36,7 @@
     {{#inArray item.system.traits "obfuscated"}}
       <span data-tooltip="{{localize 'E20.WeaponTraitObfuscatedHint'}}"><i class="fas fa-eye-slash"></i></span>
     {{/inArray}}
-    {{!-- Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/mounted.mjs's own
+    {{!-- Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see items/attacks/mounted-weapons.mjs's own
          doc comment. A Standard action to deploy, a Free action to fold back down; the weapon
          can't be fired (item.mjs#roll) until this has been done. --}}
     {{#inArray item.system.traits "mounted"}}
@@ -49,7 +49,7 @@
       </a>
     {{/inArray}}
     {{!-- Mythically Modular (Through the Shattered Grid p.116) - switch to this form as a Free
-         action; see helpers/mythically-modular.mjs. --}}
+         action; see items/attacks/mythically-modular.mjs. --}}
     {{#inArray item.system.itemAndUpgradeTraits "mythicallyModular"}}
       {{#unless item.system.equipped}}
       <a data-action="mythicSwitchForm" data-item-id="{{item._id}}" data-tooltip="{{localize 'E20.MythicallyModularSwitch'}}">

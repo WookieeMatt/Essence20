@@ -4,7 +4,7 @@ import { SpellItemData } from "./item/spell.mjs";
 import { WeaponEffectItemData } from "./item/weapon-effect.mjs";
 
 // The point of this file is the SHARING, not the two fields themselves: a weaponEffect, a spell and
-// a Power must all expose the identical `shape`/`radius` pair, because helpers/aoe-targeting.mjs
+// a Power must all expose the identical `shape`/`radius` pair, because mechanics/combat/aoe-targeting.mjs
 // reads those two names off whatever item it's handed without caring which type it is. A test that
 // only checked aoeSchema() in isolation would still pass if someone forgot to spread it into one of
 // the three data models, which is exactly the regression worth catching.

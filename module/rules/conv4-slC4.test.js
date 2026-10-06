@@ -8,7 +8,7 @@ import { fireTriggers, runUse, useAvailable, useRulesOf } from './triggers.mjs';
 import { runSteps, stepContext } from './steps.mjs';
 import { initialState } from './lifecycle.mjs';
 import { legacyChoiceUpdates } from './legacy-choices.mjs';
-import { runPostRoll } from '../helpers/extensions.mjs';
+import { runPostRoll } from '../mechanics/item-hooks.mjs';
 
 /**
  * Round 4 of the slC slices (gij1, gij2, gij3, fix3-gij, situational1, situational2): Expert Knowledge,

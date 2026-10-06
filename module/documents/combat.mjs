@@ -1,20 +1,20 @@
-import { runRoundStart, runTurnEnd, runTurnStart } from "../helpers/extensions.mjs";
-import { onCompanionTurnStart } from "../helpers/companions.mjs";
-import { onSpiritsHostTurn } from "../helpers/team-actions.mjs";
-import { onRoundChange } from "../helpers/summons.mjs";
-import { onTurnStartZones } from "../helpers/target-riders.mjs";
-import { checkSelfDestruct } from "../helpers/vehicle-upgrades.mjs";
-import { sweepTemporary } from "../helpers/weapon-perk-uses.mjs";
-import { checkTimeBombs } from "../helpers/planted-bombs.mjs";
+import { runRoundStart, runTurnEnd, runTurnStart } from "../mechanics/item-hooks.mjs";
+import { onCompanionTurnStart } from "../mechanics/companions/companions.mjs";
+import { onSpiritsHostTurn } from "../mechanics/actions/team-actions.mjs";
+import { onRoundChange } from "../mechanics/companions/summons.mjs";
+import { onTurnStartZones } from "../mechanics/combat/target-riders.mjs";
+import { checkSelfDestruct } from "../mechanics/vehicles/vehicle-upgrades.mjs";
+import { sweepTemporary } from "../items/attacks/weapon-perk-uses.mjs";
+import { checkTimeBombs } from "../items/attacks/planted-bombs.mjs";
 import { Dice } from "../dice.mjs";
-import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { applyGotToGetTough } from "../helpers/got-to-get-tough.mjs";
-import { advanceEncounter } from "../helpers/scene-clock.mjs";
-import { expireAoeRegions } from "../helpers/aoe-expiry.mjs";
-import { isTracking, resetTurn } from "../helpers/action-economy.mjs";
-import { DEFENDING_STATUS } from "../helpers/named-actions.mjs";
-import { applyVainglorious } from "../helpers/vainglorious.mjs";
-import { applyEnvironmentAtTurnEnd } from "../helpers/environment-hazards.mjs";
+import { RollDialog } from "../mechanics/rolls/roll-dialog.mjs";
+import { applyGotToGetTough } from "../items/healing/got-to-get-tough.mjs";
+import { advanceEncounter } from "../mechanics/resources/scene-clock.mjs";
+import { expireAoeRegions } from "../mechanics/combat/aoe-expiry.mjs";
+import { isTracking, resetTurn } from "../mechanics/actions/action-economy.mjs";
+import { DEFENDING_STATUS } from "../mechanics/actions/named-actions.mjs";
+import { applyVainglorious } from "../items/social/vainglorious.mjs";
+import { applyEnvironmentAtTurnEnd } from "../mechanics/world/environment-hazards.mjs";
 
 export class Essence20Combat extends Combat {
   constructor(data, context) {
@@ -39,7 +39,7 @@ export class Essence20Combat extends Combat {
   }
 
   /**
-   * Refill the incoming combatant's action budget - see helpers/action-economy.mjs#resetTurn.
+   * Refill the incoming combatant's action budget - see mechanics/actions/action-economy.mjs#resetTurn.
    *
    * Foundry v14 calls _onStartTurn AFTER the Combat document's own update has committed, and only
    * on one designated GM client. That buys three things the combatTurn/combatRound hook pair used
@@ -58,7 +58,7 @@ export class Essence20Combat extends Combat {
     if (isTracking()) {
       await resetTurn(combatant);
       // Vainglorious (Transformers CRB p.43): forced Standard-action spend on the actor's first
-      // turn of this combat - see helpers/vainglorious.mjs for why it's per-combat rather than
+      // turn of this combat - see items/social/vainglorious.mjs for why it's per-combat rather than
       // assumed to be round 1.
       await applyVainglorious(combatant.actor);
     }
@@ -73,7 +73,7 @@ export class Essence20Combat extends Combat {
     }
 
     // Temporary upgrades and effects whose time is up (Beatdown, Armament Upgrade, Knuckle Up...),
-    // and Time Bombs coming due - helpers/weapon-perk-uses.mjs, helpers/planted-bombs.mjs.
+    // and Time Bombs coming due - items/attacks/weapon-perk-uses.mjs, items/attacks/planted-bombs.mjs.
     for (const other of this.combatants ?? []) {
       if (other.actor) {
         await sweepTemporary(other.actor);
@@ -84,22 +84,22 @@ export class Essence20Combat extends Combat {
     await checkSelfDestruct(this);
 
     // Suppressing Fire areas: gone at their owner's next turn, and an enemy starting a turn in
-    // one is offered to its owner - helpers/target-riders.mjs.
+    // one is offered to its owner - mechanics/combat/target-riders.mjs.
     if (combatant?.actor) {
       await onTurnStartZones(combatant.actor);
       // Companions (Artificial Intelligence, Constrictor, the tractor beam) and Spirit's Host -
-      // helpers/companions.mjs, helpers/team-actions.mjs. (Perch is a Trigger rule on its item.)
+      // mechanics/companions/companions.mjs, mechanics/actions/team-actions.mjs. (Perch is a Trigger rule on its item.)
       await onCompanionTurnStart(combatant.actor, this);
       await onSpiritsHostTurn(combatant.actor);
     }
 
-    // A vehicle called "like a Zord" turns up on its round (helpers/summons.mjs).
+    // A vehicle called "like a Zord" turns up on its round (mechanics/companions/summons.mjs).
     if ((context?.turn ?? this.turn) == 0) {
       await onRoundChange(this);
       await runRoundStart(this);
     }
 
-    // Extensions (helpers/extensions.mjs).
+    // Extensions (mechanics/item-hooks.mjs).
     if (combatant?.actor) {
       await runTurnStart(combatant.actor, this, context);
     }
@@ -108,7 +108,7 @@ export class Essence20Combat extends Combat {
   /**
    * Environmental damage over time for whoever's turn just ended - Vacuum's Essence damage "at the
    * end of each turn", and the round-counted damage of a Corrosive, Extreme Temperature or Toxic
-   * environment (see helpers/environment-hazards.mjs). v14 runs this once, on the active GM, after
+   * environment (see mechanics/world/environment-hazards.mjs). v14 runs this once, on the active GM, after
    * the turn change has committed - so exactly one tick per turn reaches the database.
    *
    * @param {Combatant} combatant             The Combatant whose turn just ended
@@ -128,7 +128,7 @@ export class Essence20Combat extends Combat {
 
   /**
    * Expire any lingering Area of Effect region whose duration is counted in rounds - see
-   * helpers/aoe-expiry.mjs.
+   * mechanics/combat/aoe-expiry.mjs.
    *
    * This is the only place a round-based area can expire while a fight is still running.
    * `updateWorldTime` can't do it: CONFIG.time.roundTime is 0 in this system, so advancing a round
@@ -167,7 +167,7 @@ export class Essence20Combat extends Combat {
    * once-per-encounter ability - which is what those abilities already did before the clock
    * existed, since they were stamped with the ending combat's own id. Once-per-SCENE abilities
    * deliberately do not refresh here; only the GM's own New Scene does that. See
-   * helpers/scene-clock.mjs.
+   * mechanics/resources/scene-clock.mjs.
    *
    * v14 has no _onEndCombat extension point, so this runs through _onDelete, guarded by
    * game.user.isActiveGM - the same designated-GM idiom core itself uses a few lines further down

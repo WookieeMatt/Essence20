@@ -72,7 +72,7 @@ export function bankedSources(actor, target, roll = {}) {
   return { sources, consumes };
 }
 
-/** Whether a banked bonus makes this roll Specialized (helpers/extensions.mjs#registerSpecializes). */
+/** Whether a banked bonus makes this roll Specialized (mechanics/item-hooks.mjs#registerSpecializes). */
 export function bankedSpecializes(actor, target, roll = {}) {
   return bankedEntries(actor).some(entry => !entry.defense && entry.specialize && evaluate(entry.when, contextFor({ ...roll, self: actor, other: target })) === true);
 }

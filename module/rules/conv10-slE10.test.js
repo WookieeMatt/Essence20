@@ -43,8 +43,8 @@ const grants = {
   chooseButtons: jest.fn(async () => null),
 };
 const rollsMade = [];
-jest.unstable_mockModule('./helpers/grants.mjs', () => grants);
-jest.unstable_mockModule('./helpers/requisition.mjs', () => ({ requisitionSkill: item => (item.type == 'armor' ? 'athletics' : 'targeting') }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => grants);
+jest.unstable_mockModule('./mechanics/resources/requisition.mjs', () => ({ requisitionSkill: item => (item.type == 'armor' ? 'athletics' : 'targeting') }));
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({
   createItemCopies: jest.fn(async () => {}),
   setEntryAndAddItem: jest.fn(async () => 'k1'),
@@ -201,15 +201,15 @@ function makeActor(items = [], extra = {}) {
 }
 
 const { rebuildIndex } = await import('./index.mjs');
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { runUse, useAvailable, fireTriggers } = await import('./triggers.mjs');
 const { pressRuleButton } = await import('./buttons.mjs');
 const { ruleRollSources, ruleRequisitionAccess, ruleSpecializes, ruleDialogSwitches, applyRuleSwitches, ruleMovement, ruleSurpriseModes } = await import('./adapter.mjs');
 const { validateRule } = await import('./types.mjs');
 const { registerCheck, setWorldLookups } = await import('./predicate.mjs');
-const eTypes = await import('./ext/e/types.mjs');
-const eDerived = await import('./ext/e/derived.mjs');
-const eLegacy = await import('./ext/e/legacy.mjs');
+const eTypes = await import('./plugins/combat/hazard-terrain-targets.mjs');
+const eDerived = await import('./plugins/effects/derived-stages.mjs');
+const eLegacy = await import('./plugins/marks/legacy-marks.mjs');
 
 const pay = jest.fn(async () => true);
 const use = (item, option = 0) => runUse(item, pay, { ask: async () => option });

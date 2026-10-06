@@ -14,37 +14,37 @@ const hooks = {};
 global.Hooks = { on: (name, fn) => (hooks[name] = [...(hooks[name] ?? []), fn]), once: () => {}, callAll: () => {} };
 
 const applyDamage = jest.fn(async () => {});
-jest.unstable_mockModule('./helpers/combat.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/combat.mjs', () => ({
   applyDamage, computeMultiplier: (total, dif) => (!dif || total < dif ? 0 : 1 + Math.floor((total - dif) / 5)),
   buildCheckChatData: async (roll, data) => ({ rolls: [roll], speaker: data.speaker, flags: { essence20: { canCritD2: data.canCritD2, ...data.rollContext } }, flavor: data.flavor }),
 }));
 const economySpend = jest.fn(async () => ({}));
-jest.unstable_mockModule('./helpers/action-economy.mjs', () => ({
+jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({
   spend: economySpend, isTracking: () => true, grantActionsThisTurn: jest.fn(async () => {}),
 }));
 
 const applyReroll = jest.fn(async () => true);
-jest.unstable_mockModule('./helpers/reroll.mjs', () => ({ applyReroll, normalizeRerollConfig: config => config }));
+jest.unstable_mockModule('./mechanics/rolls/reroll.mjs', () => ({ applyReroll, normalizeRerollConfig: config => config }));
 const storyApi = { getGmPoints: jest.fn(() => 2), requestStoryPointSpend: jest.fn(async () => true) };
-jest.unstable_mockModule('./helpers/story-points.mjs', () => storyApi);
+jest.unstable_mockModule('./mechanics/resources/story-points.mjs', () => storyApi);
 const pickCanvasPoint = jest.fn(async () => null);
-jest.unstable_mockModule('./helpers/forced-movement.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/forced-movement.mjs', () => ({
   pickCanvasPoint, IMMOVABLE_OBJECT_ID: 'x', resistsForcedMovement: async () => false, pushDestination: () => null, pushActor: async () => {},
   placeActorAt: async () => {}, distanceFeet: () => 0, slowNextTurn: async () => {}, movementPenaltyFor: () => 0,
 }));
 const explodeVehicle = jest.fn(async () => {});
-jest.unstable_mockModule('./helpers/vehicle-defeat.mjs', () => ({ explodeVehicle, crashVehicle: jest.fn(), handleVehicleZeroHealthTransition: jest.fn() }));
+jest.unstable_mockModule('./mechanics/vehicles/vehicle-defeat.mjs', () => ({ explodeVehicle, crashVehicle: jest.fn(), handleVehicleZeroHealthTransition: jest.fn() }));
 const applyTimedCondition = jest.fn(async () => {});
-jest.unstable_mockModule('./helpers/timed-status.mjs', () => ({ applyTimedCondition }));
+jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({ applyTimedCondition }));
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { validateRule } = await import('./types.mjs');
 const { fireTriggers, runUse } = await import('./triggers.mjs');
 const { setStoryPointHelpers } = await import('./steps.mjs');
-const story = await import('./ext/d/story.mjs');
-const cards = await import('./ext/d/cards.mjs');
-const misc = await import('./ext/d/misc.mjs');
+const story = await import('./plugins/resources/personal-story-points.mjs');
+const cards = await import('./plugins/cards/card-offer.mjs');
+const misc = await import('./plugins/tags/small-steps-and-refs.mjs');
 const { pressRuleButton } = await import('./buttons.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -629,7 +629,7 @@ describe('Prospector Toolkit: a banked Wealth die', () => {
 
 describe('Danger Sense (Across the Stars): Initiative rerolls 1s and 2s on Skill dice', () => {
   test('the formula gains r<=2 on each Skill die, once', async () => {
-    const { withInitiativeRerolls, initiativeRerollDerived } = await import('./ext/d/initiative.mjs');
+    const { withInitiativeRerolls, initiativeRerollDerived } = await import('./plugins/rolls/initiative.mjs');
     expect(withInitiativeRerolls('2d20kl + d6 + 0')).toBe('2d20kl + d6r<=2 + 0');
     expect(withInitiativeRerolls('d20 + {d2,d4,d6}kh + 1')).toBe('d20 + {d2,d4r<=2,d6r<=2}kh + 1');
     const ranger = makeActor('Ranger', FILES.dangerSenseAts, { system: { initiative: { formula: 'd20 + d8 + 0' } } });
@@ -647,7 +647,7 @@ describe('Danger Sense (Across the Stars): Initiative rerolls 1s and 2s on Skill
 /* -------------------------------------------- */
 
 describe('spell-cost options: one dialog, set then add then multiply then spend', () => {
-  const spellcost = () => import('./ext/d/spellcost.mjs');
+  const spellcost = () => import('./plugins/resources/spell-cost.mjs');
 
   function caster(files) {
     const points = { name: 'Mystical Points', type: 'rolePoints', system: { resource: { value: 3, max: 5 } } };
@@ -777,7 +777,7 @@ describe('smoke: Smoke Screen blinds a 20 ft radius, Smoke Bomb leaves an Alertn
   });
 
   test('Smoke Bomb: the point is picked first; anyone rolling Alertness inside the square for the scene takes ↓1', async () => {
-    const { zoneSources } = await import('./ext/d/canvas.mjs');
+    const { zoneSources } = await import('./plugins/combat/canvas-points.mjs');
     const pony = makeActor('Pony', FILES.smokeBomb);
     const inside = makeActor('Inside', [], { x: 90 });
     const outside = makeActor('Outside', [], { x: 250 });
@@ -871,7 +871,7 @@ describe('Timeline Anomaly: swap Initiative with your target once a session', ()
 
 describe("Shark's Fin: at sea or in the wetlands, Initiative lifts Surprise and says how far you can move", () => {
   test('fired from the Initiative roll itself', async () => {
-    const { initiativeRolling } = await import('./ext/d/initiative.mjs');
+    const { initiativeRolling } = await import('./plugins/rolls/initiative.mjs');
     const { registerCheck } = await import('./predicate.mjs');
     let wet = true;
     registerCheck('seaOrWetlands', () => wet);
@@ -1130,7 +1130,7 @@ describe('The Sound of Angels: after a qualifying attack, ticked allies within 5
     global.game.combat = { id: 'cb', round: 3, combatants: { contents: [] } };
     target(foe);
     const asked = [];
-    const { getNearbyAllyTokens } = await import('../helpers/allies.mjs');
+    const { getNearbyAllyTokens } = await import('../mechanics/combat/nearby-allies.mjs');
     expect(typeof getNearbyAllyTokens).toBe('function');
     global.foundry.applications = { api: { DialogV2: { wait: jest.fn(async ({ content }) => {
       asked.push(content);
@@ -1200,7 +1200,7 @@ describe('All For One: at 0 Health or Power, each teammate may give 1 Health and
 
 describe('Frequency Interference: jam a piece of computerized equipment until its owner reboots it', () => {
   test('a contested Technology test against its operator; a jammed weapon cannot attack, jammed armor gives no Defense', async () => {
-    const items = await import('./ext/d/items.mjs');
+    const items = await import('./plugins/marks/item-marks.mjs');
     const hacker = makeActor('Hacker', FILES.frequencyInterference);
     const trooper = makeActor('Trooper', [], { type: 'npc', x: 30, disposition: -1, system: { skills: { technology: { shift: 'd6' } }, defenses: { toughness: { total: 14, string: '14' }, evasion: { total: 12, string: '12' } } } });
     const visor = makeItem(trooper, { name: 'Visor', type: 'armor', system: { traits: ['computerized'], equipped: true, totalBonusToughness: 2, totalBonusEvasion: 1, availability: 'standard' } });
@@ -1240,7 +1240,7 @@ describe('Frequency Interference: jam a piece of computerized equipment until it
   });
 
   test('an unmanned vehicle: the DIF is the item\'s Availability; an old jammed list still counts', async () => {
-    const items = await import('./ext/d/items.mjs');
+    const items = await import('./plugins/marks/item-marks.mjs');
     const hacker = makeActor('Hacker', FILES.frequencyInterference);
     const truck = makeActor('Truck', [], { type: 'vehicle', x: 30, disposition: -1, system: { actors: {} } });
     const radio = makeItem(truck, { name: 'Radio', type: 'gear', system: { traits: ['computerized'], availability: 'limited' } });
@@ -1265,7 +1265,7 @@ describe('Overload, Genetic Support and the Advanced Alteration Emulator lend Al
   const wing = () => ({ name: 'Wings', type: 'alteration', system: { type: 'movement', bonusMovementType: 'aerial', bonusMovement: 20, costMovementType: 'ground', costMovement: 10, benefit: '<p>Fly.</p>', cost: '<p>Slow.</p>' } });
 
   test('Overload: the benefit for a Free action until the lender\'s turn, or the cost after a test against Evasion', async () => {
-    const alt = await import('../helpers/extensions/other1/alterations.mjs');
+    const alt = await import('../mechanics/characters/alteration-adjustments.mjs');
     const viper = makeActor('Viper', FILES.overload, { extra: [wing()] });
     const foe = makeActor('Foe', [], { type: 'npc', disposition: -1 });
     scene(viper, foe);
@@ -1310,7 +1310,7 @@ describe('Overload, Genetic Support and the Advanced Alteration Emulator lend Al
   });
 
   test('the Emulator: the kept Limited Alteration for a minute, then a DIF 20 Technology test to recharge', async () => {
-    const alt = await import('../helpers/extensions/other1/alterations.mjs');
+    const alt = await import('../mechanics/characters/alteration-adjustments.mjs');
     const trooper = makeActor('Trooper', FILES.alterationEmulator);
     scene(trooper);
     const emulator = itemNamed(trooper, 'Advanced Alteration Emulator');
@@ -1341,7 +1341,7 @@ describe('Destructive Overcharge and Cascading Failure: rigged equipment, delaye
   const buttonCards = () => createCalls().filter(data => data.flags?.essence20?.ruleButton);
 
   test('Destructive Overcharge: due at the end of the rigger\'s next turn; a Technology test against the chosen Defense of everyone within 20 ft', async () => {
-    const { scheduledTurnEnd } = await import('./ext/d/blast.mjs');
+    const { scheduledTurnEnd } = await import('./plugins/combat/rigs-and-blasts.mjs');
     const rigger = makeActor('Rigger', FILES.destructiveOvercharge, { extra: [{ name: 'Radio', type: 'gear', system: { traits: ['computerized'] } }] });
     const foe = makeActor('Foe', [], { type: 'npc', x: 10, disposition: -1 });
     const far = makeActor('Far', [], { type: 'npc', x: 60, disposition: -1 });
@@ -1386,7 +1386,7 @@ describe('Destructive Overcharge and Cascading Failure: rigged equipment, delaye
   });
 
   test('Cascading Failure: disable or explode from the cards; a timer ends the rig', async () => {
-    const { scheduledRoundStart } = await import('./ext/d/blast.mjs');
+    const { scheduledRoundStart } = await import('./plugins/combat/rigs-and-blasts.mjs');
     const tech = makeActor('Tech', FILES.cascadingFailure, { system: { skills: {} } });
     const near = makeActor('Near', [], { x: 10, system: { skills: { athletics: { shift: 'd6', modifier: 0 } } } });
     scene(tech, near);

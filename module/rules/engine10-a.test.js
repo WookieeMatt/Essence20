@@ -14,7 +14,7 @@ const hooks = {};
 global.Hooks = { on: (name, fn) => (hooks[name] = [...(hooks[name] ?? []), fn]), once: () => {}, callAll: () => {} };
 
 const formCalls = [];
-jest.unstable_mockModule('./helpers/extensions/zord1/forms.mjs', () => ({
+jest.unstable_mockModule('./items/forms/ranger-form-perks.mjs', () => ({
   activateForm: jest.fn(async (actor, uuid) => {
     formCalls.push(['start', actor.name, uuid]);
     return uuid != 'Compendium.x.Item.refused';
@@ -22,9 +22,9 @@ jest.unstable_mockModule('./helpers/extensions/zord1/forms.mjs', () => ({
   endForm: jest.fn(async actor => formCalls.push(['end', actor.name])),
 }));
 const tally = jest.fn();
-jest.unstable_mockModule('./helpers/group-tests.mjs', () => ({ tally }));
+jest.unstable_mockModule('./mechanics/rolls/group-tests.mjs', () => ({ tally }));
 const visiblePacks = [];
-jest.unstable_mockModule('./helpers/compendium-browser.mjs', () => ({ getVisibleItemPacks: () => visiblePacks }));
+jest.unstable_mockModule('./util/compendium-browser.mjs', () => ({ getVisibleItemPacks: () => visiblePacks }));
 
 let nextId = 1;
 let sceneEpoch = 1;
@@ -61,7 +61,7 @@ global.foundry = {
   applications: { api: { DialogV2: { wait: jest.fn(async () => null), prompt: jest.fn(async () => null) } } },
 };
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { linkedEntries } = await import('./links.mjs');
 const { runSteps, stepContext, stepErrors, recipients, pickOptions } = await import('./steps.mjs');
@@ -70,14 +70,14 @@ const { contextFor, evaluate } = await import('./predicate.mjs');
 const { resolveValue } = await import('./formula.mjs');
 const { fireTriggers, runUse } = await import('./triggers.mjs');
 const { ruleRollSources } = await import('./adapter.mjs');
-const { runPreRoll } = await import('../helpers/extensions.mjs');
-const { pickPerkFrom } = await import('../helpers/grants.mjs');
-const megaformExt = await import('./ext/a/megaform.mjs');
-const sizeExt = await import('./ext/a/size.mjs');
-const zordsExt = await import('./ext/a/zords.mjs');
-const hooksExt = await import('./ext/a/hooks.mjs');
-const formsExt = await import('./ext/a/forms.mjs');
-const linksExt = await import('./ext/a/links.mjs');
+const { runPreRoll } = await import('../mechanics/item-hooks.mjs');
+const { pickPerkFrom } = await import('../mechanics/resources/grants.mjs');
+const megaformExt = await import('./plugins/zords/megaform.mjs');
+const sizeExt = await import('./plugins/effects/size.mjs');
+const zordsExt = await import('./plugins/zords/zords.mjs');
+const hooksExt = await import('./plugins/zords/zord-timing-hooks.mjs');
+const formsExt = await import('./plugins/zords/form-perks.mjs');
+const linksExt = await import('./plugins/zords/zord-link-scopes.mjs');
 
 function asItem(data, actor) {
   const item = {

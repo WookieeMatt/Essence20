@@ -168,8 +168,8 @@ with two holders; the `roll-dialog.mjs` comment tidies for Shinobi and Instructo
 
 ## Files touched
 
-- `module/helpers/extensions/pr2/finster.mjs`, `pr2/common.mjs`, `pr2/pr2.test.js`
-- `module/helpers/extensions/pr3/ttsg.mjs`, `pr3/common.mjs`, `pr3/pr3.test.js`
+- `module/items/defenses/nemesis-drain-expiry.mjs`, `pr2/common.mjs`, `pr2/pr2.test.js`
+- `module/items/zords/elemental-fury.mjs`, `pr3/common.mjs`, `pr3/pr3.test.js`
 - `packs/fmmcitems/_source/Incineration_Blast_Effect_q415Hdvrl2rrCu9y.json`,
   `packs/ttsgitems/_source/Zord_Mount_5IKuaL41Ebd4ll8i.json` (both CRLF, kept)
 - `module/rules/conv8-slA8.test.js` (new, CRLF), `docs/rules-batches/slA8.md` (this file)

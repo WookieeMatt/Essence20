@@ -1,4 +1,4 @@
-import { epochFor } from "../helpers/scene-clock.mjs";
+import { epochFor } from "../mechanics/resources/scene-clock.mjs";
 
 /**
  * Durations for rule effects (docs/RULES_ENGINE_PLAN.md §5.4) - shared by banked bonuses

@@ -155,9 +155,9 @@ skipped). No slice file became empty.
 #### fix3-gij (`gij-fixes.mjs`)
 
 - **Angry (Hang-Up).** Still needs a tag comparing the rolled Skill with a value on the actor
-  (`flags.essence20.angryHangUpSnag.skill`, a scene-window record from `helpers/angry.mjs`). `skill:{choice.<key>}`
+  (`flags.essence20.angryHangUpSnag.skill`, a scene-window record from `items/rolls/angry-influence.mjs`). `skill:{choice.<key>}`
   reads only the rule item's own picks.
-- **Pack Attack (not in the id table).** Its records are written by `helpers/pack-attack.mjs` from the Growl bank, not
+- **Pack Attack (not in the id table).** Its records are written by `items/attacks/pack-attack.mjs` from the Growl bank, not
   by a rule. The expiry is "until the start of the user's next turn, else the scene". `mark {until: nextTurn}` has no
   expiry out of combat, and the ally's attacks would have to read a mark set by someone else against a named target.
   Still a skip.
@@ -432,7 +432,7 @@ share (Power Rangers) sees the same answer as before.
 
 #### Files touched outside the slice
 
-- `module/helpers/condition-immunity.mjs`: the Stalk table entry and the `isKnownOutsideEnvironmentOfExpertise`
+- `module/mechanics/combat/condition-immunity.mjs`: the Stalk table entry and the `isKnownOutsideEnvironmentOfExpertise`
   import removed; Stalk added to the comment listing the converted immunities.
 - `module/helpers/condition-immunity.test.js`: the Stalk `describe` removed (it is replaced in conversions.test.js).
 - `module/rules/conversions.test.js`: the `// slC2 gij3` block, appended at the end. No import change.

@@ -7,13 +7,13 @@ on `registerHitRider`). All five items converted. Edited in place in the shared 
 
 ## Engine features added 2026-10-06 (round 11, group F)
 
-Everything below is registered on import of `module/rules/ext/f.mjs` (loaded by `module/rules/ext/index.mjs` after e).
+Everything below is registered on import of `module/rules/ext/f.mjs` (loaded by `module/rules/plugins/index.mjs` after e).
 Strings are under `E20.RulesExtF.*`.
 
 ### Window counters shared by flag name (`ext/f/window.mjs`)
 
 A rule `limit` keeps its own record (`ruleUses.<key>`); these name a Scene Clock flag outright - the `{epoch, window,
-count}` records `helpers/scene-clock.mjs#markUsed` writes - so a count hand-written code (or another item) already keeps
+count}` records `mechanics/resources/scene-clock.mjs#markUsed` writes - so a count hand-written code (or another item) already keeps
 carries on unchanged.
 
 - **Tags** `self:windowUsed:<flag>:<window>[:<n>]`, `target:windowUsed:...`, `holder:windowUsed:...` - the actor's count
@@ -80,7 +80,7 @@ the actor it happened to (token actor or not). Steps act as the holder; `target`
 
 ### Helper hooks
 
-- `helpers/extensions.mjs#registerHitRider(fn, {before})` - insert ahead of an already-registered rider.
+- `mechanics/item-hooks.mjs#registerHitRider(fn, {before})` - insert ahead of an already-registered rider.
 
 Tests: `module/rules/engine11-f.test.js` (18 tests).
 
@@ -121,9 +121,9 @@ Tests: `module/rules/engine11-f.test.js` (18 tests).
   step `lateSnag`, label "Defender: Snag the attack (1 Personal Power)".
 
 Removed code: `helpers/extensions/zord1/megaform.mjs` and `zord1/emotions.mjs` (deleted; imports dropped from
-`zord1/zord1.mjs` and `helpers/extensions/index.mjs`); `helpers/emotional-mastery.mjs#checkEmotionalStrengthAngerTrigger`
+`zord1/zord1.mjs` and `items/index.mjs`); `items/resources/emotional-mastery.mjs#checkEmotionalStrengthAngerTrigger`
 with `EMOTIONAL_STRENGTH_ID`, `EMOTIONAL_STRENGTH_ENCOUNTER_FLAG` and the perks.mjs imports only it used; its two calls
-and import in `helpers/combat.mjs`; `pr1/jtt.mjs#mobileHqDerived` (+ its `registerDerived`, `SHIFTS`, the `componentsOf`
+and import in `mechanics/combat/combat.mjs`; `pr1/jtt.mjs#mobileHqDerived` (+ its `registerDerived`, `SHIFTS`, the `componentsOf`
 import); `react/reactions.mjs`'s `REACT`, `megaformDefenderPilots`, the Megaform Defender `registerReaction`, `lowered`,
 `_test` and the imports only they used. Old tests removed: zord1.test.js (Emotional Mastery, Megaforms), pr1.test.js
 (Megaform initiative + the derived half of the allied test), react.test.js (two Megaform Defender tests),
@@ -160,14 +160,14 @@ None of the five. Mobile Headquarters' Edge for the other allied vehicles and Zo
 
 - `module/rules/reactions.mjs`: `REACTOR_LOOKUPS`, `registerReactorLookup`, `lookedUpEntries`; `reactionOffers` walks the
   canvas actors' rules (skipping looked-up `who`s) then the looked-up entries, `holder` in the `when` context.
-- `module/rules/ext/index.mjs`: `import "./f.mjs";` (after e, before g).
-- `module/helpers/extensions.mjs`: `registerHitRider(fn, {before})`.
-- `module/helpers/extensions/index.mjs`: zord1 `emotions.mjs` / `megaform.mjs` imports removed.
+- `module/rules/plugins/index.mjs`: `import "./f.mjs";` (after e, before g).
+- `module/mechanics/item-hooks.mjs`: `registerHitRider(fn, {before})`.
+- `module/items/index.mjs`: zord1 `emotions.mjs` / `megaform.mjs` imports removed.
 - `module/helpers/extensions/zord1/zord1.mjs` (rewritten whole - 10 lines, imports + header), `megaform.mjs` and
   `emotions.mjs` deleted, `zord1.test.js`.
-- `module/helpers/emotional-mastery.mjs` / `.test.js`, `module/helpers/combat.mjs` / `.test.js`.
-- `module/helpers/extensions/pr1/jtt.mjs` / `pr1.test.js` (Mobile Headquarters only - Warhead Magazines untouched).
-- `module/helpers/extensions/react/reactions.mjs` / `react.test.js`.
+- `module/items/resources/emotional-mastery.mjs` / `.test.js`, `module/mechanics/combat/combat.mjs` / `.test.js`.
+- `module/items/rolls/time-displaced.mjs` / `pr1.test.js` (Mobile Headquarters only - Warhead Magazines untouched).
+- `module/items/defenses/attack-card-reactions.mjs` / `react.test.js`.
 - Pack sources (text inserts, CRLF kept): the five items above (Mobile Headquarters appended to its rules array).
 - `zord1/common.mjs`'s `isAllyOf` / `isEnemyOf` are now unused exports (left in place).
 

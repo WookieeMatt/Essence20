@@ -23,7 +23,7 @@ no item code left), **0 still code**. **1 rule added** (Mystical Understanding).
   extensions on `game.users.activeGM?.isSelf`; the session hook and world-time sweep check `isActiveGM`), so each fires
   once per actor per event. `turnStart` / `turnEnd` / `roundStart` were already per combatant - `combatant.actor`, which
   for an unlinked token IS its synthetic actor - and are unchanged.
-- **Tag `roll:skillSpecialized`** (`rules/ext/j.mjs`) - the rolled Skill is itself Specialized on the roller
+- **Tag `roll:skillSpecialized`** (`rules/plugins/tags/skill-specialized-tag.mjs`) - the rolled Skill is itself Specialized on the roller
   (`system.skills.<skill>.isSpecialized`, the Skill's own flag - not a Specialization being rolled, which is
   `roll:specialized`). Unknown (null) with no roller or no rolled Skill.
 
@@ -52,8 +52,8 @@ Tests: `module/rules/engine13-j.test.js` (10 tests).
   no action is spent. Never on Initiative (the old checkbox lived in `rollSkill` only, which Initiative doesn't use).
   Removed: dice.mjs's comment block, `spellcializeAvailable` and the `applySpellcialize` spend (and the now-unused
   `ideaPoints` read and `MYSTICAL_UNDERSTANDING_ID` import), the `applySpellcialize` / `spellcializeAvailable` plumbing in
-  `apps/roll-options-dialog.mjs` and `helpers/roll-dialog.mjs`, the template's checkbox, `MYSTICAL_UNDERSTANDING_ID` in
-  `helpers/magically-fit-in.mjs` (nothing else read it), and dice.test.js's Spellcialize describe block (3 tests) and its
+  `apps/roll-options-dialog.mjs` and `mechanics/rolls/roll-dialog.mjs`, the template's checkbox, `MYSTICAL_UNDERSTANDING_ID` in
+  `items/rolls/magically-fit-in.mjs` (nothing else read it), and dice.test.js's Spellcialize describe block (3 tests) and its
   five `spellcializeAvailable: false` dataset expectations.
 
 ## Behaviour differences worth a decision
@@ -78,14 +78,14 @@ None.
 
 - `module/rules/triggers.mjs` - new exported `sweepActors()`; `worldActors()` and `sweepWorld()` walk it.
 - `module/rules/adapter.mjs` - `resetAllPools` walks `sweepActors()` (lazy import of triggers.mjs).
-- `module/rules/ext/index.mjs` - `import "./j.mjs";`.
+- `module/rules/plugins/index.mjs` - `import "./j.mjs";`.
 - `module/dice.mjs` - Spellcialize's comment, availability and spend removed (the `MYSTICAL_UNDERSTANDING_ID` import with
   them); a one-line comment points to the rule.
 - `module/dice.test.js` - the Spellcialize describe block and five `spellcializeAvailable: false` lines removed.
-- `module/apps/roll-options-dialog.mjs`, `module/helpers/roll-dialog.mjs` - the `applySpellcialize` /
+- `module/apps/roll-options-dialog.mjs`, `module/mechanics/rolls/roll-dialog.mjs` - the `applySpellcialize` /
   `spellcializeAvailable` lines removed.
 - `templates/dialog/roll-dialog.hbs` - the Spellcialize checkbox removed.
-- `module/helpers/magically-fit-in.mjs` - `MYSTICAL_UNDERSTANDING_ID` removed, a comment updated.
+- `module/items/rolls/magically-fit-in.mjs` - `MYSTICAL_UNDERSTANDING_ID` removed, a comment updated.
 - Pack source (text insert, file's EOL kept): Mystical Understanding (one rule appended).
 
 ## Unused strings

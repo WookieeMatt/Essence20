@@ -1,5 +1,5 @@
 import { applyThemeClass } from "../settings.js";
-import { getGroupedItemPacks, syncSourcebookOwnership } from "../helpers/compendium-browser.mjs";
+import { getGroupedItemPacks, syncSourcebookOwnership } from "../util/compendium-browser.mjs";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;

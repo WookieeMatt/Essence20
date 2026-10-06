@@ -3,21 +3,21 @@ import { jest } from '@jest/globals';
 /**
  * Round 13, group J (docs/rules-batches/slJ13.md): world sweeps reaching unlinked tokens' actors
  * (rules/triggers.mjs#sweepActors - sceneStart / missionStart / sessionStart Triggers, scene / mission Pool resets and
- * the timed-item sweep), and the roll:skillSpecialized tag (rules/ext/j.mjs).
+ * the timed-item sweep), and the roll:skillSpecialized tag (rules/plugins/tags/skill-specialized-tag.mjs).
  */
 
 const hooks = {};
 const onHook = (name, fn) => (hooks[name] ??= []).push(fn);
 global.Hooks = { on: onHook, once: () => 0, callAll: () => {} };
-jest.unstable_mockModule('./helpers/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 await import('./adapter.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { sweepActors, fireTriggers } = await import('./triggers.mjs');
 const { contextFor, evaluate } = await import('./predicate.mjs');
 const { validateRule } = await import('./types.mjs');
-const { runMissionAdvanced, runSceneAdvanced, runTurnStart } = await import('../helpers/extensions.mjs');
+const { runMissionAdvanced, runSceneAdvanced, runTurnStart } = await import('../mechanics/item-hooks.mjs');
 
 let nextId = 1;
 const clock = { sceneClockScene: 3, sceneClockEncounter: 3, sceneClockMission: 7 };

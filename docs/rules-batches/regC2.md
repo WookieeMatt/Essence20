@@ -28,7 +28,7 @@ still used by other code) and its old `dice.test.js` describe. Their behaviour i
 
 | Item | Rule | Why it is exact |
 |---|---|---|
-| Cruel Warlord (the Fumble half) | Trigger `afterRoll`, `outcome: fumbled`, `self:data:system.powers.personal.max>0` → `gainResource` 2 on `system.powers.personal.value` | `fumbled` reads `isFumble` itself (a crit that also Fumbled counts), the same `isFumble` the old check read (Time Traveler's widening included). gainResource stops at `.max`. The Psychic-damage half is still in `helpers/combat.mjs` (outside this region). |
+| Cruel Warlord (the Fumble half) | Trigger `afterRoll`, `outcome: fumbled`, `self:data:system.powers.personal.max>0` → `gainResource` 2 on `system.powers.personal.value` | `fumbled` reads `isFumble` itself (a crit that also Fumbled counts), the same `isFumble` the old check read (Time Traveler's widening included). gainResource stops at `.max`. The Psychic-damage half is still in `mechanics/combat/combat.mjs` (outside this region). |
 | Cost of Sorcery | Two Triggers `afterRoll`, `outcome: fumbled` → `loseHealth` 1: one for `item:type:power` + `item:data:system.type=sorcerous`, one for `weapon:trait:sorcerous` | The same two clauses as the old `isSorcerousAttempt`. `loseHealth` is the same direct `max(0, value - 1)` write. `isSorcerousAttempt` and its checkContext entry are gone. |
 | Barreling Beam (the Prone half) | Trigger `hit`, `outcome: x2`, `item:own` → `applyCondition prone` to the target | The `hit` facts are that target's own result: `success && multiplier >= 2`, the old test. The push half stays in `target-riders.mjs`. |
 | Mistrustful | Trigger `afterRoll`, `outcome: allFailed`, `skill:alertness` → `bank` Snag, `appliesWhen: not:roll:initiative`, `until: encounter` | `allFailed` is "every result failed", as before. Its consumer was in `_getAutomaticCombatModifiers`, where rules banks are read too. `helpers/mistrustful.mjs` and its test are removed (nothing else used them). |
@@ -38,7 +38,7 @@ still used by other code) and its old `dice.test.js` describe. Their behaviour i
 | Hierarchy Rank | RollModifier ↑1 `target:levelDiff<0`; RollModifier ↓1 `target:levelDiff>0` | `levelDiff` uses Level, else Threat Level, as `getEffectiveLevel` does. It applies to any roll with a target. |
 | Grid Soldier (the level half) | RollModifier ↑1, `target:levelDiff<=-3` | The same comparison. The Power-spend half stays in `banked-buffs.mjs`. |
 | Just The Facts (both halves) | Incoming RollModifier Snag, `skill:deception` + `self:levelDiff<0`; Defense `any`, `mode: fail`, `skill:deception` + `self:levelDiff>=0` | The Snag is on the first target, as before. The Immune half was an `Infinity` difficulty per target; `fail` gives `Infinity` at the rules' step (see the differences). regB2 left this half for regC2. |
-| Impenetrable Shield (the Snag half) | Incoming RollModifier Snag, `attack` + `not:item:damageType:emp` + `check:personalShield` | `check:personalShield` is `isPersonalShieldActive`. The Snag still reaches Move Like a Song, which runs after the rule sources. The EMP-immunity half stays in `helpers/combat.mjs`. |
+| Impenetrable Shield (the Snag half) | Incoming RollModifier Snag, `attack` + `not:item:damageType:emp` + `check:personalShield` | `check:personalShield` is `isPersonalShieldActive`. The Snag still reaches Move Like a Song, which runs after the rule sources. The EMP-immunity half stays in `mechanics/combat/combat.mjs`. |
 | Goin' Heels | RollModifier ↑1 and scaled DamageModifier +1, both on `attack` + the parent weapon's Targeting / Sidearm / one hand (`weapon:data:`). The ↑1 needs `combat:aheadOfTarget`; the damage needs `target:data:system` (a target) + `combat:highestInitiative` | Both tags are the old comparisons: both Initiatives rolled and mine higher; nobody higher, ties count. The scaled rule joins `damageBonusValue` like the removed `goinHeelsDamageBonus` term, under the item's name. |
 | Oorah! (the +1 damage) | Scaled DamageModifier +1, `attack` + `target:notActed` | The same "Surprised" proxy, and the same `damageBonusValue` slot and label. The Catch Off Guard / Rumble in the Jungle checks keep their own copy of the proxy. |
 | Two Steps to the Right (the Cover half) | Cover `reduce` 1, `scope: aura`, `radius: 60`, `affects: allies`, `stacks: false`, `attack:ranged` | The ally aura counts allies through `getNearbyAllyTokens(attacker, 60)`, the old lookup. The biggest reduction wins, as the old `max(twoSteps, rules.reduce)` did. regA2 converted the Edge half. |
@@ -198,7 +198,7 @@ Also still skipped, unchanged from regC:
 
 | Item | Still code because |
 |---|---|
-| Seconds Between Click & Boom | The "a miss has no effect" half is in `helpers/extensions/gij3/dice-hooks.mjs`, outside this region. |
+| Seconds Between Click & Boom | The "a miss has no effect" half is in `items/rolls/better-than-the-best-miss-immunity.mjs`, outside this region. |
 | Exterminator | The `exterminatorEligible` flag that rollSkill reads for the Reroll condition. A rule can't hand "this roll matched rule X" to the reroll. |
 
 ## What would unblock the most

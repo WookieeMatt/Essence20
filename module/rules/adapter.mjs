@@ -2,7 +2,7 @@ import {
   registerApplyDialog, registerConsumer, registerDamageModifier, registerDefenseAdjust, registerDerived, registerDialogToggles, registerHitRider,
   registerMissionAdvanced, registerPreRoll, registerRerollGrant, registerRest, registerRollSources, registerSceneAdvanced,
   registerSpecializes,
-} from "../helpers/extensions.mjs";
+} from "../mechanics/item-hooks.mjs";
 import { bankedSources, bankedSpecializes, consumeBanked } from "./bank.mjs";
 import { recordUse, usesLeft } from "./limits.mjs";
 import { ruleHelper } from "./code.mjs";
@@ -26,7 +26,7 @@ function affecting(actor, type, scopes = ['self']) {
  * The rules engine's one connection to the rest of the system (docs/RULES_ENGINE_PLAN.md §6).
  *
  * Item rules don't get hook sites of their own. This file registers once into the same extension
- * registry the hand-written Perk slices use (helpers/extensions.mjs), and each registration reads
+ * registry the hand-written Perk slices use (mechanics/item-hooks.mjs), and each registration reads
  * the actor's rule index (rules/index.mjs) instead of checking compendium ids. The roll pipeline
  * doesn't know rules exist.
  *
@@ -187,7 +187,7 @@ export function ruleRollSources(actor, target, ctx = {}) {
     }
 
     // consumeMark: the mark this modifier reads is used up by the roll (on the roller, or consumeFrom: target).
-    // consumeFrom roller: the actor rolling (a rule a mark carried onto it - rules/ext/c/marks.mjs).
+    // consumeFrom roller: the actor rolling (a rule a mark carried onto it - rules/plugins/marks/rule-marks.mjs).
     const marked = rule.consumeMark ? (rule.consumeFrom == 'target' ? target : rule.consumeFrom == 'roller' ? actor : owner) : null;
     if (marked?.uuid) {
       consumes.push({ ext: 'rulesMark', actorUuid: marked.uuid, key: rule.consumeMark });
@@ -262,7 +262,7 @@ export function applyRuleImmunity(actor, options, ctx = {}) {
 
 /**
  * Whether a rule lifts the automatic untrained Snag on this Skill (immune: ["untrainedSnag"]) -
- * asked by helpers/roll-dialog.mjs#_isUntrainedSnag, before the dialog opens.
+ * asked by mechanics/rolls/roll-dialog.mjs#_isUntrainedSnag, before the dialog opens.
  */
 /**
  * Whether a rule lifts the automatic long-range Snag on this ranged attack (immune: ["longRangeSnag"]) -
@@ -647,7 +647,7 @@ function writeNumber(target, path, op, value, label) {
 }
 
 /**
- * Critical Effects from CriticalOption rules (helpers/target-riders.mjs#critRiders): the options to
+ * Critical Effects from CriticalOption rules (mechanics/combat/target-riders.mjs#critRiders): the options to
  * add, and how many steps to improve the damage ones by (the strongest per `stack` group).
  * @param {Actor} actor     The attacker.
  * @param {Actor} target
@@ -692,7 +692,7 @@ function heldRules(actor, type) {
 }
 
 /**
- * Traits WeaponTrait rules give this weapon (helpers/weapon-traits.mjs#perkGrantedTraits).
+ * Traits WeaponTrait rules give this weapon (mechanics/combat/weapon-traits.mjs#perkGrantedTraits).
  * @param {Actor} actor
  * @param {Item} weapon
  * @param {String[]} traits   Its traits so far - `items` tags see these.
@@ -733,7 +733,7 @@ export function ruleFiresAsReinforced(actor, weapon) {
 }
 
 /**
- * AttackCount rules that apply to this attack: [{count?, additional?, label}] (helpers/action-perks.mjs
+ * AttackCount rules that apply to this attack: [{count?, additional?, label}] (mechanics/actions/action-perks.mjs
  * #getAttacksPerAction picks the best count and adds the additional ones).
  * @param {Actor} actor
  * @param {Item} item   The weapon effect being attacked with.
@@ -1015,7 +1015,7 @@ export function ruleRequisitionAccess(actor, item) {
 
 /**
  * The Availability tier this actor requisitions the item at: its combined total, lowered by every
- * listener that leaves Qualified upgrades out (helpers/requisition.mjs#requisitionDif asks the same).
+ * listener that leaves Qualified upgrades out (mechanics/resources/requisition.mjs#requisitionDif asks the same).
  */
 export function requisitionTier(actor, item) {
   const out = { availability: item?.system?.totalAvailability ?? item?.system?.availability ?? 'standard' };
@@ -1037,7 +1037,7 @@ export function ruleQualifiedUpgrade(actor, upgrade) {
     && evaluate(rule.upgrades, contextFor({ self: actor, item: probe, ruleItem })) === true);
 }
 
-// helpers/requisition.mjs asks every listener, and keeps the widest answer.
+// mechanics/resources/requisition.mjs asks every listener, and keeps the widest answer.
 globalThis.Hooks?.on?.('essence20.requisitionAccess', (actor, item, out) => {
   const access = ruleRequisitionAccess(actor, item);
   if (access && ACCESS_ORDER.indexOf(access) > ACCESS_ORDER.indexOf(out.access ?? 'unknown')) {
@@ -1047,7 +1047,7 @@ globalThis.Hooks?.on?.('essence20.requisitionAccess', (actor, item, out) => {
 
 /**
  * What MovementAction rules allow this actor right now: {ignoreRoughTerrain, pushFeet, pushUnlimited}.
- * Read when a token moves (helpers/rough-terrain.mjs, helpers/token-movement.mjs) - the index is
+ * Read when a token moves (mechanics/world/rough-terrain.mjs, mechanics/combat/token-movement.mjs) - the index is
  * already current by then.
  */
 export function ruleMovement(actor) {
@@ -1104,7 +1104,7 @@ export function ruleMovementStages(actor) {
 }
 
 /**
- * Vision from Sense rules (helpers/vision-grant.mjs#getBestVisionGrant): [{mode, range}] for every
+ * Vision from Sense rules (mechanics/characters/vision-grant.mjs#getBestVisionGrant): [{mode, range}] for every
  * one whose condition holds. Vision is prepared before the derived-data pass, so the index is
  * rebuilt here too - but only when some item on the actor (or a linked one) has rules.
  */
@@ -1155,7 +1155,7 @@ export function ruleDerived(actor) {
   for (const { rule, item, holder } of affecting(actor, 'DerivedStat', ['self', 'host'])) {
     // {choice.<key>} in the path reads a pick (Mentor's Skill); with no pick yet the rule does nothing.
     const path = interpolate(String(rule.path ?? ''), item);
-    // stage early: applied before the poison training is worked out (rules/ext/e/derived.mjs), not here.
+    // stage early: applied before the poison training is worked out (rules/plugins/effects/derived-stages.mjs), not here.
     if (rule.stage == 'early' || !isStatic(rule.when) || evaluate(rule.when, staticCtx(item)) !== true || !path?.startsWith('system.')) {
       continue;
     }
@@ -1186,7 +1186,7 @@ export function ruleDerived(actor) {
         // @other.<path>: the item being changed (its own reach multiplier...).
         const value = resolveValue(rule.value, { actor, item, otherItem: other });
         writeNumber(other, rule.path, rule.op, value, ruleLabel(rule, item));
-        // Derived only - listed like an upgrade's own changes (helpers/weapon-upgrades.mjs), so the
+        // Derived only - listed like an upgrade's own changes (items/attacks/weapon-upgrades.mjs), so the
         // item sheet keeps editing the stored value rather than saving the changed one back.
         if (other.system && typeof other.system == 'object') {
           other.system.upgradeTouched = [...new Set([...(other.system.upgradeTouched ?? []), rule.path.slice(7)])];
@@ -1319,7 +1319,7 @@ export function ruleScaledDamage(actor, target, roll = {}) {
 /*  Rerolls and pools                            */
 /* -------------------------------------------- */
 
-/** Reroll rules as reroll configs (helpers/reroll.mjs#getRerollConfigs). */
+/** Reroll rules as reroll configs (mechanics/rolls/reroll.mjs#getRerollConfigs). */
 const RULE_KEYS = ['type', 'label', 'when', 'scope', 'priority', 'disabled', 'stacks'];
 
 export function ruleRerollGrants(actor) {
@@ -1390,7 +1390,7 @@ registerConsumer('rulesMark', async consume => {
   // The key's own mark and every setter's copy of it.
   const keys = Object.keys(actor?.flags?.essence20?.ruleMarks ?? {}).filter(name => name == consume.key || name.startsWith(`${consume.key}--`));
   if (keys.length) {
-    const { needsGmRelay, relayToGm } = await import("../helpers/gm-relay.mjs");
+    const { needsGmRelay, relayToGm } = await import("../mechanics/world/gm-relay.mjs");
     const update = [Object.fromEntries(keys.map(name => [`flags.essence20.ruleMarks.-=${name}`, null]))];
     await (needsGmRelay(actor) ? relayToGm(actor, 'update', update) : actor.update(...update));
   }

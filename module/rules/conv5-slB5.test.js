@@ -7,7 +7,7 @@ import { ruleDamageDealt, ruleMovementStages, ruleRollSources, ruleSpecializes }
 import { fireTriggers, runUse, useAvailable, useRulesOf } from './triggers.mjs';
 import { evaluate, contextFor } from './predicate.mjs';
 import { legacyChoiceUpdates } from './legacy-choices.mjs';
-import { runConsumer } from '../helpers/extensions.mjs';
+import { runConsumer } from '../mechanics/item-hooks.mjs';
 
 /**
  * Slice round 5, part slB5 (tf1, tf2, tf3, fix3-tf, other2): items converted from hand-written code to

@@ -94,7 +94,7 @@ if (skillRollOptions.cancelled) {
 }
 ```
 
-`helpers/roll-dialog.mjs` builds the fields — including `buildCombatModifierSourceFields`, which
+`mechanics/rolls/roll-dialog.mjs` builds the fields — including `buildCombatModifierSourceFields`, which
 turns the recorded sources into the labelled **Automatic Modifiers** list — and
 `apps/roll-options-dialog.mjs` renders them.
 
@@ -172,7 +172,7 @@ features (rerolls that only apply to failures, for instance) can read it back of
 
 ### Areas of effect
 
-An area attack still rolls **once**. `helpers/aoe-targeting.mjs` turns a placed shape into a set
+An area attack still rolls **once**. `mechanics/combat/aoe-targeting.mjs` turns a placed shape into a set
 of targeted tokens, and the existing `checkEntries` machinery compares that single result against
 each one — exactly what the rules require. Nothing in the roll pipeline changes for areas.
 
@@ -269,7 +269,7 @@ shape.
 `_rollSkillHelper` ends at the posted message. Anything the player does *to* that message —
 rerolls, applying damage — lives in `module/chat.mjs` and is wired through the
 `renderChatMessageHTML` hook. `chat.mjs` exports `onApplyDamage`; the reroll buttons call into
-`helpers/reroll.mjs`.
+`mechanics/rolls/reroll.mjs`.
 
 ---
 

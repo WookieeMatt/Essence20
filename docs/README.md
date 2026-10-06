@@ -41,7 +41,7 @@ will usually answer "why is it like this?" and stop you from "fixing" a delibera
 | [ACTIVE_EFFECTS_UI_PLAN.md](ACTIVE_EFFECTS_UI_PLAN.md) | The Effect Wizard and the effect catalog | Built — `apps/effect-wizard.mjs` |
 | [TOURS_PLAN.md](TOURS_PLAN.md) | The guided tour suite | Built — `tours/`, `module/tours/` |
 | [STAT_BLOCK_IMPORTER_PLAN.md](STAT_BLOCK_IMPORTER_PLAN.md) | The stat block importer and "Make My Monster Grow" | Built — `apps/stat-block-importer.mjs`, `apps/monster-grow-dialog.mjs`. **The plan's own header still says "design only, nothing implemented" — that line is stale.** |
-| [SPELL_POWER_AOE_PLAN.md](SPELL_POWER_AOE_PLAN.md) | Areas of effect for spells and Powers | Built — `helpers/aoe-targeting.mjs`, `helpers/aoe-expiry.mjs`, `data/aoe-schema.mjs` |
+| [SPELL_POWER_AOE_PLAN.md](SPELL_POWER_AOE_PLAN.md) | Areas of effect for spells and Powers | Built — `mechanics/combat/aoe-targeting.mjs`, `mechanics/combat/aoe-expiry.mjs`, `data/aoe-schema.mjs` |
 
 > A plan's status line reflects the day it was written. Trust the code, not the header. If you
 > finish something a plan describes, update its status — or move the plan's conclusions into

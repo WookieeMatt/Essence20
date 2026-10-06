@@ -21,7 +21,7 @@ function makeEffectsCollection(effects) {
 }
 
 // Speed Boost is the dispatch probe here: activating it switches its own Ground Movement effect on
-// (see helpers/speed-boost.mjs), which is what these tests observe.
+// (see items/movement/speed-boost.mjs), which is what these tests observe.
 function makeEffect(disabled) {
   return { disabled, changes: [{ key: 'system.movement.ground.morphed' }], update: jest.fn(async function (data) {
     this.disabled = data.disabled;
@@ -117,7 +117,7 @@ describe("powerCost", () => {
     expect(ground.disabled).toBe(false);
   });
 
-  // G.I. Joe nanomite powers: no Power points, two uses a day (helpers/nanomite-uses.mjs).
+  // G.I. Joe nanomite powers: no Power points, two uses a day (mechanics/resources/nanomite-uses.mjs).
   test("a nanomite power spends a daily use, never Power points", async () => {
     const actor = makeActor(5);
     actor.items = [];

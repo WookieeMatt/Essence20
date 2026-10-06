@@ -58,7 +58,7 @@ blocks appended at the end of `module/rules/conversions.test.js`; all are kept.
 **Scope:** every item in the id tables of `module/helpers/extensions/tf1/` (`TF1` in `common.mjs`, plus the Alt
 Mode Mastery id written inline in `support.mjs`) and `module/helpers/extensions/fix3-tf/` (`FIX3_TF` in
 `tf-fixes.mjs`), plus every other place in `module/` that uses those ids (`dice.mjs` holds Watchful Eyes and
-Predacon; `helpers/weapon-traits.mjs` holds Experiment's Hardpoint option; `helpers/favorite-weapon.mjs` holds
+Predacon; `mechanics/combat/weapon-traits.mjs` holds Experiment's Hardpoint option; `items/attacks/favorite-weapon.mjs` holds
 Favorite Weapon). Branch `rules/slB-tf1`, from `rules/slA` at 3305a9bc.
 
 | Verdict | Items |
@@ -220,9 +220,9 @@ Use, `PARTNERED_RULE`), `fix3-tf/tf-fixes.mjs` (the influence switches, the Expe
 
 ## Batch slB, slice tf2: `module/helpers/extensions/tf2/`
 
-**Scope:** every item in the `TF2` id table of `module/helpers/extensions/tf2/common.mjs` (Technorganic Secrets,
+**Scope:** every item in the `TF2` id table of `module/items/shared/weapon-target-lookups.mjs` (Technorganic Secrets,
 The Enigma of Combination, Transformers Core Rulebook), plus every other place in `module/` that uses those ids.
-Outside the slice, only `helpers/rider-uses.mjs` uses an id from the table (the G.I. JOE printings of All Out Attack
+Outside the slice, only `mechanics/combat/rider-uses.mjs` uses an id from the table (the G.I. JOE printings of All Out Attack
 and Evasive Fighting, which are not tf2 items). Several of these items already carry rules from earlier rounds
 (Roller Drum's damage, For The Allspark!'s Infiltration ↑1, and the Alt Mode special attacks that tf2 used to grant).
 This part looks only at what is still code in the slice.
@@ -373,7 +373,7 @@ unchanged.
 
 **Scope:** every item in the tf3 id table (`TF3` in `extensions/tf3/common.mjs`): Transformers Core Rulebook and
 Transformers One Sourcebook items. Each was checked against the slice's code and every other use of its id in
-`module/` (`helpers/patch-up.mjs` also reads Intensive). `TF3.multiplication` is not read by any tf3 code: it is an
+`module/` (`items/healing/patch-up.mjs` also reads Intensive). `TF3.multiplication` is not read by any tf3 code: it is an
 unused reference (Multiplication's code lives in tf2, other3, flashy.mjs, skill-substitution-perks.mjs and
 augment-power.mjs), so it is left as it was and not counted. `TF3_WEAPON` holds the compendium weapons the Alt Mode
 Gear "counts as" (references only).
@@ -435,7 +435,7 @@ Familiarity trains Limited" lost its Training Through Familiarity half, which mo
   attack against them. *Needs:* a counter resource with a scene expiry, read as a formula on an `incoming`
   RollModifier, and Trigger events for "an attack against me missed".
 - **Intensive.** A successful Technology Patch Up offers the same Repair to every other injured ally within 30 ft (a
-  chat button). `helpers/patch-up.mjs` also reads its id to lift the once-per-turn Patch Up limit. *Needs:* a Patch Up
+  chat button). `items/healing/patch-up.mjs` also reads its id to lift the once-per-turn Patch Up limit. *Needs:* a Patch Up
   event carrying the amount, and a `check:` or rule hook for patch-up.mjs's limit.
 - **Irrefutable Order.** A level-gated Persuasion test against a chosen Defense, a typed one-word order, and the
   target's Move action spent when its next turn starts. *Needs:* a text prompt step, a step that spends another

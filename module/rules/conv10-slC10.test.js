@@ -12,25 +12,25 @@ import { fileURLToPath } from 'node:url';
 const spend = jest.fn(async () => ({ blocked: false }));
 const setNextTurn = jest.fn(async () => true);
 const grantBonusAttack = jest.fn(async () => true);
-jest.unstable_mockModule('./helpers/action-economy.mjs', () => ({ spend, setNextTurn, grantBonusAttack, getLedger: () => null, isTracking: () => true }));
-// The pickers and the plain Skill Test a roll step makes (helpers/grants.mjs).
+jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({ spend, setNextTurn, grantBonusAttack, getLedger: () => null, isTracking: () => true }));
+// The pickers and the plain Skill Test a roll step makes (mechanics/resources/grants.mjs).
 const chooseSelect = jest.fn(async (title, prompt, options) => options[0]?.value ?? null);
 const rollTest = jest.fn(async () => ({ success: true }));
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({ chooseSelect, rollTest, chooseButtons: jest.fn() }));
-// Damage lands through helpers/combat.mjs#applyDamage.
-jest.unstable_mockModule('./helpers/combat.mjs', () => ({ applyDamage: jest.fn(async () => true) }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({ chooseSelect, rollTest, chooseButtons: jest.fn() }));
+// Damage lands through mechanics/combat/combat.mjs#applyDamage.
+jest.unstable_mockModule('./mechanics/combat/combat.mjs', () => ({ applyDamage: jest.fn(async () => true) }));
 
 const { rebuildIndex } = await import('./index.mjs');
 const { fireTriggers, runUse } = await import('./triggers.mjs');
 const { ruleDialogSwitches, ruleDerived, ruleRollSources, applyRuleSwitches } = await import('./adapter.mjs');
 const { validateRule } = await import('./types.mjs');
 const { registerCheck, setWorldLookups } = await import('./predicate.mjs');
-const { runApplyDialog, runPreRoll, extDefenseAdjust } = await import('../helpers/extensions.mjs');
-await import('./ext/index.mjs');
-const { lazy } = await import('./ext/c/core.mjs');
-const { lateDefenseAdjust } = await import('./ext/c/defense.mjs');
-const { ruleItemLadders } = await import('./ext/c/equipment.mjs');
-const { ruleBrawnBonus } = await import('./ext/c/brawn.mjs');
+const { runApplyDialog, runPreRoll, extDefenseAdjust } = await import('../mechanics/item-hooks.mjs');
+await import('./plugins/index.mjs');
+const { lazy } = await import('./plugins/shared/lazy-helpers-and-targets.mjs');
+const { lateDefenseAdjust } = await import('./plugins/combat/defense-modes.mjs');
+const { ruleItemLadders } = await import('./plugins/effects/item-ladder.mjs');
+const { ruleBrawnBonus } = await import('./plugins/effects/brawn-requirement.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fromPack = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8'));
@@ -615,7 +615,7 @@ describe('Waterrunning: the target (or the caster) gets the ↓1 sharp-turn swit
 
 describe('Laser Designator: ↑2 on anyone\'s Targeting against the designated creature this scene', () => {
   test('the Use designates the target; others\' Targeting rolls against it get ↑2', async () => {
-    const { extRollSources } = await import('../helpers/extensions.mjs');
+    const { extRollSources } = await import('../mechanics/item-hooks.mjs');
     const designator = packItem(FILES.laserDesignator);
     const spotter = makeActor([designator], { name: 'Flint' });
     const tank = makeActor([], { name: 'HISS' });
@@ -641,7 +641,7 @@ describe('Laser Designator: ↑2 on anyone\'s Targeting against the designated c
 
 describe('Demolecularization Gun: a hit target is demolecularized for the scene', () => {
   test('Edge on anyone\'s Sharp attacks against it', async () => {
-    const { extRollSources } = await import('../helpers/extensions.mjs');
+    const { extRollSources } = await import('../mechanics/item-hooks.mjs');
     const gun = packItem(FILES.demolecularizationGun, { system: { equipped: true } });
     const shot = makeItem({ type: 'weaponEffect', flags: { essence20: { parentId: gun.id } }, system: { damageType: 'energy' } });
     const shooter = makeActor([gun, shot], { name: 'Shockwave' });
@@ -715,7 +715,7 @@ describe('Cage: prisoners up to capacity, ↓2 to escape, and a focus Snag for o
 
 describe('Diversion', () => {
   test('a success marks the target: Snag attacking the diverter, Edge for the diverter\'s allies until it goes for the diverter', async () => {
-    const { extRollSources } = await import('../helpers/extensions.mjs');
+    const { extRollSources } = await import('../mechanics/item-hooks.mjs');
     const perk = packItem(FILES.diversion);
     const token = disposition => ({ document: { disposition }, center: { x: 0, y: 0 } });
     const diverter = makeActor([perk], { name: 'Jazz', token: token(1), system: { skills: {} } });
@@ -921,7 +921,7 @@ describe('Synch Up: an ally\'s miss within range offers an out-of-turn attack, o
 
 describe('No Escape: an enemy moving into melee Reach offers an attack', () => {
   test('a whispered button when an enemy\'s move ends inside the Reach, having started outside', async () => {
-    const { onMoveToken } = await import('./ext/c/reach.mjs');
+    const { onMoveToken } = await import('./plugins/combat/reach.mjs');
     canvas.grid = { size: 100, measurePath: ([a, b]) => ({ distance: Math.abs(b.x - a.x) / 20 }) };
     const sentinelToken = { document: { disposition: 1 }, center: { x: 50, y: 50 } };
     const sentinel = makeActor([packItem(FILES.noEscape)], { name: 'Ironhide', token: sentinelToken, system: { size: 'common' } });
@@ -954,7 +954,7 @@ describe('Energized, Spiked, Energy Field: the attacker takes the ↓ or lets th
   const melee = { item: { type: 'weaponEffect', system: { classification: { style: 'melee' }, range: {}, totalReach: 5 } }, isAttack: true };
 
   test('a select on plain Reach melee attacks at the wearer, ↓ by default', async () => {
-    const { extDialogToggles } = await import('../helpers/extensions.mjs');
+    const { extDialogToggles } = await import('../mechanics/item-hooks.mjs');
     CONFIG.E20.actorReach.common = 5;
     const { armor, actor: wearer } = wearing(FILES.spiked);
     const attacker = makeActor([], { name: 'Cobra', system: { size: 'common' } });
@@ -974,7 +974,7 @@ describe('Energized, Spiked, Energy Field: the attacker takes the ↓ or lets th
     const { actor: wearer } = wearing(FILES.energized);
     const attacker = makeActor([], { name: 'Cobra', system: { size: 'common', defenses: { toughness: { total: 13 }, evasion: { total: 16 } } } });
     target(wearer);
-    const { extDialogToggles } = await import('../helpers/extensions.mjs');
+    const { extDialogToggles } = await import('../mechanics/item-hooks.mjs');
     const select = extDialogToggles(attacker, melee).find(t => t.type == 'select');
     const strike = { shiftDown: 0, ext: { [select.name]: '1' } };
     await runApplyDialog(attacker, strike, melee);
@@ -1018,8 +1018,8 @@ describe('Hearty Meal', () => {
   });
 
   test('the heal action: Culture or Performance out of combat, once per mission', async () => {
-    const { healSkills } = await import('../helpers/extensions/other2/medic.mjs');
-    const { spendActionSkill } = await import('./ext/c/actions.mjs');
+    const { healSkills } = await import('../items/healing/heal-action-medic-gear.mjs');
+    const { spendActionSkill } = await import('./plugins/rolls/action-skills.mjs');
     const cook = makeActor([packItem(FILES.heartyMeal)]);
     expect(healSkills(cook, { inCombat: false })).toEqual(['science', 'technology', 'culture', 'performance']);
     expect(healSkills(cook, { inCombat: true })).toEqual(['science', 'technology']);
@@ -1033,7 +1033,7 @@ describe('Hearty Meal', () => {
 
 describe('Weapon Enthusiast (Hang-Up): no Lend Assistance with the chosen weapon type', () => {
   test('banked Lend Assistance is set aside for that weapon\'s attacks and put back after', async () => {
-    const { runPostRoll } = await import('../helpers/extensions.mjs');
+    const { runPostRoll } = await import('../mechanics/item-hooks.mjs');
     const hangUp = packItem(FILES.weaponEnthusiastHangUp, { flags: { essence20: { q2WeaponType: 'shotguns' } } });
     hangUp.flags.core.sourceId = 'Compendium.essence20.quartermasters_guide_to_gear.Item.GcMPz5MICXwTzKOq';
     const gun = makeItem({ type: 'weapon', name: 'Pump Shotgun', system: { equipped: true } });
@@ -1080,7 +1080,7 @@ describe('Ignite (and Fireball\'s Edge)', () => {
   });
 
   test('at the end of the burning creature\'s turn the igniter rolls Science against its Evasion: a hit burns for 1, a miss puts it out', async () => {
-    const { applyDamage } = await import('../helpers/combat.mjs');
+    const { applyDamage } = await import('../mechanics/combat/combat.mjs');
     const fireball = makeItem({ type: 'perk', name: 'Fireball', flags: { core: { sourceId: 'Compendium.essence20.cobra_codex.Item.20lv1ecNs4ORVwWu' } } });
     const igniter = makeActor([packItem(FILES.ignite), fireball], { name: 'Firefly' });
     const rolls = [];
@@ -1185,7 +1185,7 @@ describe('Subtle Snake: a three-way select on Social tests', () => {
   test('none, ↓1 or a Snag', async () => {
     const actor = makeActor([packItem(FILES.subtleSnake)]);
     const ctx = { rolledSkill: 'persuasion', rolledEssence: 'social' };
-    const { extDialogToggles } = await import('../helpers/extensions.mjs');
+    const { extDialogToggles } = await import('../mechanics/item-hooks.mjs');
     const select = extDialogToggles(actor, ctx).find(t => t.type == 'select');
     expect(select.options.map(o => o.label)).toEqual(['E20.Gij3SubtleSnakeNone', 'E20.Gij3SubtleSnakeCobra', 'E20.Gij3SubtleSnakeOutsider']);
     expect(select.value).toBe('0');
@@ -1212,7 +1212,7 @@ describe('Shadow: the roller\'s ↓2 switch against an Infiltrating holder', () 
 
   test('offered against the holder, ticked by default on a non-attack Alertness test', async () => {
     infiltrating = true;
-    const { extDialogToggles } = await import('../helpers/extensions.mjs');
+    const { extDialogToggles } = await import('../mechanics/item-hooks.mjs');
     const snake = makeActor([packItem(FILES.shadow)], { name: 'Snake' });
     const roller = makeActor();
     expect(extDialogToggles(roller, { rolledSkill: 'alertness' }).filter(t => /Shadow/.test(t.label))).toEqual([]);
@@ -1234,7 +1234,7 @@ describe('Shadow: the roller\'s ↓2 switch against an Infiltrating holder', () 
 
 describe('Something Is Off: +1 Cleverness per pick (up to 4) when the roller says it\'s a con', () => {
   test('the roller\'s switch on Social or Deception tests; ticked, the holder\'s Cleverness rises', async () => {
-    const { extDialogToggles } = await import('../helpers/extensions.mjs');
+    const { extDialogToggles } = await import('../mechanics/item-hooks.mjs');
     const mark = makeActor([1, 2, 3, 4, 5].map(() => packItem(FILES.somethingIsOff)), { name: 'Rarity' });
     const roller = makeActor();
     target(mark);
@@ -1279,7 +1279,7 @@ describe('Explosive Engineer (Hang-Up): the Perk\'s Science / Technology swap st
 
 describe('Second Skin: an armor requisition with Technology or Science', () => {
   test('asked before the dialog on an Athletics / Acrobatics requisition only', async () => {
-    const { ask } = await import('./ext/c/dialog.mjs');
+    const { ask } = await import('./plugins/dialog/dialog-select.mjs');
     const asked = [];
     ask.skill = async (title, prompt, skills) => {
       asked.push(skills);
@@ -1319,7 +1319,7 @@ describe('Wild Idea: the Do Or Die die as a bonus Skill Die for a Moxie Point', 
   });
 
   test('the die grows with Old Hand level', async () => {
-    const { bonusDieOf } = await import('./ext/c/dialog.mjs');
+    const { bonusDieOf } = await import('./plugins/dialog/dialog-select.mjs');
     const rule = fromPack(FILES.wildIdea).system.rules[0];
     const die = (level, transition = 0) => bonusDieOf(rule.bonusDie, makeActor([], { system: { level, oldHandTransitionLevel: transition } }), null);
     expect([die(5), die(6), die(11), die(16), die(20)]).toEqual(['d2', 'd4', 'd6', 'd8', 'd8']);

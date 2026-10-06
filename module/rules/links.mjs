@@ -1,4 +1,4 @@
-import { companionsOf, ownerOf, worldActors } from "../helpers/companion-link.mjs";
+import { companionsOf, ownerOf, worldActors } from "../mechanics/companions/companion-link.mjs";
 import { LINK_HOLDERS, addLinkedScope, rulesOfType } from "./index.mjs";
 import { feetBetween, setCrewLookup, sideActorsWithin } from "./predicate.mjs";
 import { resolveValue } from "./formula.mjs";
@@ -17,8 +17,8 @@ import { resolveValue } from "./formula.mjs";
  *              side `affects` names: "allies" (the default), "enemies" or "all". Never the holder.
  *
  * Vehicles and Zords record their crew in system.actors ({uuid, vehicleRole}), the same collection
- * helpers/vehicle-upgrades.mjs#getCrewedVehicle reads. Companions carry their owner in
- * flags.essence20.companionOf (helpers/companion-link.mjs).
+ * mechanics/vehicles/vehicle-upgrades.mjs#getCrewedVehicle reads. Companions carry their owner in
+ * flags.essence20.companionOf (mechanics/companions/companion-link.mjs).
  *
  * In a linked rule, `self:` tags still mean the actor the rule is changing - the one rolling or
  * being prepared - while formulas (@level, @pool...) read the actor and item that hold the rule.
@@ -26,7 +26,7 @@ import { resolveValue } from "./formula.mjs";
 
 /**
  * Other ways a rule can reach an actor, added by plug-ins: fn(actor, type) => [{rule, item, index, holder}]
- * (rules/ext/c/marks.mjs - rules a mark carries onto the marked creature).
+ * (rules/plugins/marks/rule-marks.mjs - rules a mark carries onto the marked creature).
  */
 export const LINK_SOURCES = [];
 

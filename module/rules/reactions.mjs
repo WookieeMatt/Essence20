@@ -1,5 +1,5 @@
-import { registerChatDecorator } from "../helpers/extensions.mjs";
-import { canAct, cardInfo, claim, claimKey, isClaimed, isNegated, placeFor, areAllies, distanceBetween } from "../helpers/extensions/react/core.mjs";
+import { registerChatDecorator } from "../mechanics/item-hooks.mjs";
+import { canAct, cardInfo, claim, claimKey, isClaimed, isNegated, placeFor, areAllies, distanceBetween } from "../mechanics/combat/reaction-engine.mjs";
 import { ruleId, ruleLabel, rulesOfType } from "./index.mjs";
 import { recordUse, usesLeft } from "./limits.mjs";
 import { contextFor, evaluate } from "./predicate.mjs";
@@ -11,7 +11,7 @@ import { canAfford, changeResource, runSteps, stepContext } from "./steps.mjs";
  * whoever the rule says may answer it - the one it targeted, the attacker, an ally of either, an
  * enemy of the attacker. Pressing it pays the rule's resource cost and runs its steps, which can
  * change the card: negateHit, lowerTotal, lateSnag, convertRows (rules/steps.mjs). Built on the react
- * slice's card reading (helpers/extensions/react/core.mjs), so a hit a rule cancels is cancelled the
+ * slice's card reading (mechanics/combat/reaction-engine.mjs), so a hit a rule cancels is cancelled the
  * same way a hand-written reaction cancels it.
  *
  *   who        target (default) | attacker | allyOfTarget | allyOfAttacker | enemyOfAttacker

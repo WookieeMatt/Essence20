@@ -1,7 +1,7 @@
 import { rebuildIndex } from './index.mjs';
 import { actionMatches, costRulesFor } from './actions.mjs';
 import { summarizeRule, validateRule } from './types.mjs';
-import { extCostRules, registrySnapshot } from '../helpers/extensions.mjs';
+import { extCostRules, registrySnapshot } from '../mechanics/item-hooks.mjs';
 
 let nextId = 1;
 

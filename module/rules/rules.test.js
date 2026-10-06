@@ -9,7 +9,7 @@ import {
 } from './adapter.mjs';
 import { choiceOptions, grantData, grantedBy, initialState } from './lifecycle.mjs';
 import { ADD_CHOICES, SKELETONS, effectEntries, parseRulesJson, rulesContext } from './sheet.mjs';
-import { registrySnapshot } from '../helpers/extensions.mjs';
+import { registrySnapshot } from '../mechanics/item-hooks.mjs';
 
 /* -------------------------------------------- */
 /*  Doubles                                      */

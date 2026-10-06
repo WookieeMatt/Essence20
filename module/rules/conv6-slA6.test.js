@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
  */
 
 // Round-10 plug-ins: rule options some of these items now also use (Bend Physics' derivedHook Movement stage).
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 const { LINK_HOLDERS, rebuildIndex } = await import('./index.mjs');
 const { ruleDefenseAdjust, ruleMovementStages, ruleRollSources } = await import('./adapter.mjs');
 const { fireTriggers, runUse, useAvailable } = await import('./triggers.mjs');

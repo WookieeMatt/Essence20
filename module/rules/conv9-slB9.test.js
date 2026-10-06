@@ -14,13 +14,13 @@ const hooks = {};
 global.Hooks = { on: (name, fn) => (hooks[name] = [...(hooks[name] ?? []), fn]), once: () => {}, callAll: () => {} };
 
 const timed = [];
-jest.unstable_mockModule('./helpers/timed-status.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({
   applyTimedCondition: jest.fn(async (actor, status, rounds) => {
     timed.push({ name: actor.name, status, rounds });
   }),
 }));
 const dealt = [];
-jest.unstable_mockModule('./helpers/combat.mjs', () => ({
+jest.unstable_mockModule('./mechanics/combat/combat.mjs', () => ({
   applyDamage: jest.fn(async (actor, amount, type) => {
     dealt.push({ name: actor.name, amount, type });
   }),
@@ -30,7 +30,7 @@ const grants = {
   findItems: jest.fn(async () => []),
   pickOne: jest.fn(async () => null),
 };
-jest.unstable_mockModule('./helpers/grants.mjs', () => grants);
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => grants);
 
 const { rebuildIndex } = await import('./index.mjs');
 const { ruleRequisitionAccess } = await import('./adapter.mjs');
@@ -38,13 +38,13 @@ const { runUse } = await import('./triggers.mjs');
 const { costRulesFor } = await import('./actions.mjs');
 const { pressRuleButton } = await import('./buttons.mjs');
 const { legacyChoiceUpdates } = await import('./legacy-choices.mjs');
-const { runPostRoll, registrySnapshot } = await import('../helpers/extensions.mjs');
-const { COMBAT_USES } = await import('../helpers/extensions/tf1/combat.mjs');
-// slB10: Comms Assault's armor-ignoring is an ignoreArmor Defense rule on the Perk (rules/ext/b/armor.mjs).
-const { ignoreArmorAdjust } = await import('./ext/b/armor.mjs');
+const { runPostRoll, registrySnapshot } = await import('../mechanics/item-hooks.mjs');
+const { COMBAT_USES } = await import('../items/attacks/show-respect.mjs');
+// slB10: Comms Assault's armor-ignoring is an ignoreArmor Defense rule on the Perk (rules/plugins/combat/ignore-armor.mjs).
+const { ignoreArmorAdjust } = await import('./plugins/combat/ignore-armor.mjs');
 const COMMS_MARK = 'tf1CommsAssault';
-const { SUPPORT_USES } = await import('../helpers/extensions/tf1/support.mjs');
-const { USES: TF3_USES } = await import('../helpers/extensions/tf3/uses.mjs');
+const { SUPPORT_USES } = await import('../items/forms/chassis-mimicry-support-perks.mjs');
+const { USES: TF3_USES } = await import('../items/rolls/deceptive-warfare.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fromPack = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8'));

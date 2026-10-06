@@ -1,60 +1,60 @@
-import { runDerived } from "../helpers/extensions.mjs";
-import { COMMANDER_SKILLS_FLAG } from "../helpers/extensions/r2misc/commander.mjs";
-import { linkedBonuses } from "../helpers/companions.mjs";
-import { BOND, bondBonuses } from "../helpers/bonded.mjs";
-import { hardTargetBonus, vehicleHands } from "../helpers/summons.mjs";
-import { socialStandingDefense } from "../helpers/social-rolls.mjs";
-import { carryPercent, extraCarriedHands, loaderShieldToughness } from "../helpers/kits.mjs";
-import { imperfectionOf, thickSkullsShift } from "../helpers/grants.mjs";
-import { GRANT } from "../helpers/grant-uses.mjs";
-import { ablativeLossOf, RIDER, riderChoiceOf, sourceOf as sourceOfItem } from "../helpers/target-riders.mjs";
-import { defenseDamageOf } from "../helpers/essence-damage.mjs";
-import { hardpointBonus, integratedHardpointsPerWeapon } from "../helpers/weapon-traits.mjs";
-import { applyToVehicle as applyVehicleUpgrades, getCrewedVehicle } from "../helpers/vehicle-upgrades.mjs";
-import { isUndoEngineMovementDisabled } from "../helpers/undo-engine.mjs";
-import { isGridShellActive, WEAPON_USE_IDS } from "../helpers/weapon-perk-uses.mjs";
-import { handlePartyDeleted, preventLastPartyDelete, preventPrimaryDeleteByPlayer } from "../helpers/party.mjs";
+import { runDerived } from "../mechanics/item-hooks.mjs";
+import { COMMANDER_SKILLS_FLAG } from "../items/zords/commander-combiner-feature.mjs";
+import { linkedBonuses } from "../mechanics/companions/companions.mjs";
+import { BOND, bondBonuses } from "../mechanics/companions/bonded-partners.mjs";
+import { hardTargetBonus, vehicleHands } from "../mechanics/companions/summons.mjs";
+import { socialStandingDefense } from "../items/social/social-rolls.mjs";
+import { carryPercent, extraCarriedHands, loaderShieldToughness } from "../mechanics/resources/kits.mjs";
+import { imperfectionOf, thickSkullsShift } from "../mechanics/resources/grants.mjs";
+import { GRANT } from "../mechanics/resources/grant-uses.mjs";
+import { ablativeLossOf, RIDER, riderChoiceOf, sourceOf as sourceOfItem } from "../mechanics/combat/target-riders.mjs";
+import { defenseDamageOf } from "../mechanics/combat/essence-damage.mjs";
+import { hardpointBonus, integratedHardpointsPerWeapon } from "../mechanics/combat/weapon-traits.mjs";
+import { applyToVehicle as applyVehicleUpgrades, getCrewedVehicle } from "../mechanics/vehicles/vehicle-upgrades.mjs";
+import { isUndoEngineMovementDisabled } from "../items/vehicles/undo-engine.mjs";
+import { isGridShellActive, WEAPON_USE_IDS } from "../items/attacks/weapon-perk-uses.mjs";
+import { handlePartyDeleted, preventLastPartyDelete, preventPrimaryDeleteByPlayer } from "../mechanics/resources/party.mjs";
 import { Dice } from "../dice.mjs";
-import { isUnableToAct } from "../helpers/action-economy.mjs";
-import { E20 } from "../helpers/config.mjs";
-import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { getNumActions, resizeTokens, sceneResistancesOf } from "../helpers/actor.mjs";
-import { syncMorphState } from "../helpers/morph-state.mjs";
-import { actorHasPerk, findPerk } from "../helpers/perks.mjs";
-import { getBlindsightRange } from "../helpers/blindsight.mjs";
-import { getBestVisionGrant } from "../helpers/vision-grant.mjs";
+import { isUnableToAct } from "../mechanics/actions/action-economy.mjs";
+import { E20 } from "../util/config.mjs";
+import { RollDialog } from "../mechanics/rolls/roll-dialog.mjs";
+import { getNumActions, resizeTokens, sceneResistancesOf } from "../mechanics/characters/actor-token-helpers.mjs";
+import { syncMorphState } from "../mechanics/characters/morph-state.mjs";
+import { actorHasPerk, findPerk } from "../mechanics/characters/perks.mjs";
+import { getBlindsightRange } from "../items/senses/blindsight.mjs";
+import { getBestVisionGrant } from "../mechanics/characters/vision-grant.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransformUuid } from "../sheet-handlers/transformer-handler.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
 import { normalizeSpecializations } from "../sheet-handlers/specialization-handler.mjs";
-import { isPowerAdaptationActive } from "../helpers/power-adaptation.mjs";
-import { isWisdomOfTheEldersActive } from "../helpers/wisdom-of-the-elders.mjs";
-import { getMobileModeType } from "../helpers/mobile-mode.mjs";
-import { getAnimalGaitType } from "../helpers/animal-gait.mjs";
-import { getSwiftnessBonusFeet } from "../helpers/swiftness.mjs";
-import { getFlutteryWingsBonus } from "../helpers/fluttery-wings.mjs";
-import { isEvasiveManeuversActive } from "../helpers/evasive-maneuvers.mjs";
-import { isLightningSpeedActive } from "../helpers/lightning-speed.mjs";
-import { isHighGearActive } from "../helpers/high-gear.mjs";
-import { isHotToTrotActive } from "../helpers/hot-to-trot.mjs";
-import { convertEssenceWrites, resetEssencesFromBase, usesEssenceBase } from "../helpers/machine-essences.mjs";
-import { isEngineOverrideBoostActive } from "../helpers/engine-override.mjs";
-import { getHupHupHupHupHupBonus } from "../helpers/hup-hup-hup-hup-hup.mjs";
-import { isJuryRigBenefitActive } from "../helpers/jury-rig.mjs";
-import { isTheToughGetGoingActive } from "../helpers/the-tough-get-going.mjs";
-import { getNaturalMovementType } from "../helpers/natural-movement.mjs";
-import { getHissColumnBonus, getColonyChangelingEvasionBonus } from "../helpers/allies.mjs";
-import { actorHasZordFeature } from "../helpers/zord-features.mjs";
-import { getDistressMovementBonus } from "../helpers/emotional-mastery.mjs";
-import { getMachineMantleBonus } from "../helpers/imperial-machine-mantle.mjs";
-import { ENERGY_AFFINITY_ID } from "../helpers/energy-affinity.mjs";
-import { SELF_PRESERVATION_ID } from "../helpers/self-preservation.mjs";
-import { getInnerMagicWillpowerReduction } from "../helpers/inner-magic.mjs";
-import { applyModularIntegration } from "../helpers/modular-armor.mjs";
-import { DEFAULT_ENVIRONMENT, getEnvironment } from "../helpers/environment.mjs";
-import { changeVesselConditionStacks, getVesselConditionStacks, isStackingVesselCondition } from "../helpers/vessel-conditions.mjs";
-import { needsGmRelay, relayToGm } from "../helpers/gm-relay.mjs";
+import { isPowerAdaptationActive } from "../items/forms/power-adaptation.mjs";
+import { isWisdomOfTheEldersActive } from "../items/forms/wisdom-of-the-elders.mjs";
+import { getMobileModeType } from "../items/movement/mobile-mode.mjs";
+import { getAnimalGaitType } from "../items/movement/animal-gait.mjs";
+import { getSwiftnessBonusFeet } from "../items/movement/swiftness.mjs";
+import { getFlutteryWingsBonus } from "../items/magic/fluttery-wings.mjs";
+import { isEvasiveManeuversActive } from "../items/vehicles/evasive-maneuvers.mjs";
+import { isLightningSpeedActive } from "../items/magic/lightning-speed.mjs";
+import { isHighGearActive } from "../items/zords/high-gear.mjs";
+import { isHotToTrotActive } from "../items/magic/hot-to-trot.mjs";
+import { convertEssenceWrites, resetEssencesFromBase, usesEssenceBase } from "../mechanics/vehicles/machine-essences.mjs";
+import { isEngineOverrideBoostActive } from "../items/vehicles/engine-override.mjs";
+import { getHupHupHupHupHupBonus } from "../items/social/hup-hup-hup-hup-hup.mjs";
+import { isJuryRigBenefitActive } from "../items/vehicles/jury-rig.mjs";
+import { isTheToughGetGoingActive } from "../items/movement/the-tough-get-going.mjs";
+import { getNaturalMovementType } from "../items/movement/natural-movement.mjs";
+import { getHissColumnBonus, getColonyChangelingEvasionBonus } from "../mechanics/combat/nearby-allies.mjs";
+import { actorHasZordFeature } from "../mechanics/vehicles/zord-features.mjs";
+import { getDistressMovementBonus } from "../items/resources/emotional-mastery.mjs";
+import { getMachineMantleBonus } from "../items/defenses/imperial-machine-mantle.mjs";
+import { ENERGY_AFFINITY_ID } from "../items/attacks/energy-affinity.mjs";
+import { SELF_PRESERVATION_ID } from "../items/defenses/self-preservation.mjs";
+import { getInnerMagicWillpowerReduction } from "../items/magic/inner-magic.mjs";
+import { applyModularIntegration } from "../items/defenses/modular-armor.mjs";
+import { DEFAULT_ENVIRONMENT, getEnvironment } from "../mechanics/world/environment.mjs";
+import { changeVesselConditionStacks, getVesselConditionStacks, isStackingVesselCondition } from "../mechanics/vehicles/vessel-conditions.mjs";
+import { needsGmRelay, relayToGm } from "../mechanics/world/gm-relay.mjs";
 
 // GI Joe CRB Vanguard Perks that grant a flat, condition-gated Toughness/Evasion bonus - computed
 // fresh in _prepareDefenses() below (like rolePointsDefense already is) rather than written into
@@ -75,7 +75,7 @@ import { needsGmRelay, relayToGm } from "../helpers/gm-relay.mjs";
 // compendium's own Active Effects.
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 // Colony Changeling (Dark Skies Over Equestria, Natural Shape choice, p.17) - see
-// helpers/allies.mjs#getColonyChangelingEvasionBonus's own doc comment.
+// mechanics/combat/nearby-allies.mjs#getColonyChangelingEvasionBonus's own doc comment.
 const COLONY_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.FRUWPAePJzm7Mlf0";
 // Shared by Infantry and Vanguard - a single compendium Perk both Roles grant, whose chosen
 // Fighting Style lives on its own system.choice field (see sheet-handlers/perk-handler.mjs's
@@ -98,11 +98,11 @@ const TITANSPARK_ID = "Compendium.essence20.enigma_of_combination.Item.ldnUTXw5w
 const ARMORED_DEFENSE_ID = "Compendium.essence20.enigma_of_combination.Item.GQHo1Tv5jIJ65GW3";
 const isArmoredDefense = item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == ARMORED_DEFENSE_ID;
 
-// Inner Magic - see helpers/inner-magic.mjs's own doc comment. The ↑1 Spellcasting half is already
-// built (helpers/banked-buffs.mjs); this constant/method cover the stacking Willpower Defense
+// Inner Magic - see items/magic/inner-magic.mjs's own doc comment. The ↑1 Spellcasting half is already
+// built (mechanics/resources/banked-buffs.mjs); this constant/method cover the stacking Willpower Defense
 // reduction half only.
 
-// Animal Gait (Cobra Codex, Ranger Guerilla Focus, 6th level, p.61) - see helpers/animal-gait.mjs's
+// Animal Gait (Cobra Codex, Ranger Guerilla Focus, 6th level, p.61) - see items/movement/animal-gait.mjs's
 // own doc comment. Checked in _prepareMovement() below, same permitted movement-math touch-point
 // Wisdom of the Elders' Lightfoil Wings/Warrior Rush already use.
 
@@ -136,9 +136,9 @@ const LIGHT_CHASSIS_ID = `${PR_CRB}rVW7mvnV4MbGuxoq`;
 // local variable below, the same aggregate Defender/Core Defenses already feed into
 // system.defenses.toughness.armor.
 const HARDENED_CHASSIS_ID = `${PR_CRB}7vwrFKj2UAxG4ocf`;
-import { createId } from "../helpers/utils.mjs";
+import { createId } from "../util/utils.mjs";
 import { ruleMovementStages, ruleSurpriseModes } from "../rules/adapter.mjs";
-import { earlyDerivedStats } from "../rules/ext/e/derived.mjs";
+import { earlyDerivedStats } from "../rules/plugins/effects/derived-stages.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -147,7 +147,7 @@ import { earlyDerivedStats } from "../rules/ext/e/derived.mjs";
 export class Essence20Actor extends Actor {
   /**
    * The last Party cannot be deleted, and only a GM can delete the primary: it holds the
-   * Story Point pool (see helpers/party.mjs). Returning false here is the one place a deletion
+   * Story Point pool (see mechanics/resources/party.mjs). Returning false here is the one place a deletion
    * can still be refused.
    * @override
    */
@@ -161,7 +161,7 @@ export class Essence20Actor extends Actor {
 
   /**
    * A deleted primary Party hands its pin, and its points, to the next one. Every client
-   * hears this; helpers/party.mjs decides which one acts.
+   * hears this; mechanics/resources/party.mjs decides which one acts.
    * @override
    */
   _onDelete(options, userId) {
@@ -176,7 +176,7 @@ export class Essence20Actor extends Actor {
 
   /**
    * Writes to an actor this user can't modify - on-hit effects written to a player's NPC target -
-   * go to the active GM instead of failing with a permission error. See helpers/gm-relay.mjs.
+   * go to the active GM instead of failing with a permission error. See mechanics/world/gm-relay.mjs.
    * @override
    */
   async update(data = {}, operation = {}) {
@@ -206,13 +206,13 @@ export class Essence20Actor extends Actor {
   }
 
   /**
-   * Space Vessel Conditions that stack (Across the Stars p.25-26 - see helpers/vessel-conditions.mjs):
+   * Space Vessel Conditions that stack (Across the Stars p.25-26 - see mechanics/vehicles/vessel-conditions.mjs):
    * applying one the actor already has adds a stack rather than doing nothing. Every other status,
    * and every removal or plain toggle, is core's own behavior.
    * @override
    */
   async toggleStatusEffect(statusId, options = {}) {
-    // A target this user can't modify (a player hitting an NPC) - the GM applies it. See helpers/gm-relay.mjs.
+    // A target this user can't modify (a player hitting an NPC) - the GM applies it. See mechanics/world/gm-relay.mjs.
     if (needsGmRelay(this)) {
       return relayToGm(this, 'toggleStatusEffect', [statusId, options]);
     }
@@ -281,7 +281,7 @@ export class Essence20Actor extends Actor {
       // item through, so an auto-added Feature ends up identical to a hand-dropped one. This used
       // to hand-build the item data from name/type/img/system, which silently dropped two things:
       // the item's own Active Effects, and _stats.compendiumSource - the provenance
-      // helpers/zord-features.mjs#actorHasZordFeature matches Features by. Both of these Features
+      // mechanics/vehicles/zord-features.mjs#actorHasZordFeature matches Features by. Both of these Features
       // were therefore invisible to every sourceId-based check, and would have quietly lost any
       // effect added to them in the compendium later.
       //
@@ -477,7 +477,7 @@ export class Essence20Actor extends Actor {
     // Movement math.
     this._prepareActions();
 
-    // Extensions' derived data - Health, Defenses and Movement adjustments (helpers/extensions.mjs).
+    // Extensions' derived data - Health, Defenses and Movement adjustments (mechanics/item-hooks.mjs).
     runDerived(this);
 
     // Item rules' Movement at stage afterDerived: after every derived adjustment above (rules/adapter.mjs#ruleMovementStages).
@@ -501,7 +501,7 @@ export class Essence20Actor extends Actor {
    *
    * So Free actions are NOT unlimited - a Speed 3 character gets exactly one, and a Speed 1 or 2
    * character gets none by default. Speed 1's "one or the other" is carried by `shared`, which
-   * helpers/action-economy.mjs#getRemaining reads to zero BOTH categories once either is spent.
+   * mechanics/actions/action-economy.mjs#getRemaining reads to zero BOTH categories once either is spent.
    *
    * An actor type with no Essences at all (nothing on the common template guarantees them - see
    * data/actor/templates/character.mjs, machine.mjs and zord-base.mjs, which each declare their
@@ -524,7 +524,7 @@ export class Essence20Actor extends Actor {
       return;
     }
 
-    /* The per-Speed counts come from helpers/actor.mjs#getNumActions, which already existed to
+    /* The per-Speed counts come from mechanics/characters/actor-token-helpers.mjs#getNumActions, which already existed to
        drive the sheet's own "1M, 1S, 1F" readout. Deriving them a second time here was a mistake:
        it silently disagreed with that readout for any actor whose Speed .max and .value differ,
        and for the Perks that move Free actions off Speed entirely (Quick Thinker and University
@@ -533,7 +533,7 @@ export class Essence20Actor extends Actor {
        The one deliberate difference is Speed 1. getNumActions reports it as one Move and zero
        Standards, but the rules say "Move OR Standard action... then ends their turn" (CRB p.193) -
        a choice, not a fixed Move. Both budgets are granted and `shared` makes them mutually
-       exclusive, which helpers/action-economy.mjs#getRemaining honours. */
+       exclusive, which mechanics/actions/action-economy.mjs#getRemaining honours. */
     const speedEssence = this.system.essences?.speed;
     const statuses = this.statuses ?? new Set();
 
@@ -559,7 +559,7 @@ export class Essence20Actor extends Actor {
     const counts = !speedEssence
       ? { free: 0, movement: 1, standard: 1 }
       : hasUnsurprising
-        // Same Speed-derived formula getNumActions uses (helpers/actor.mjs), against the
+        // Same Speed-derived formula getNumActions uses (mechanics/characters/actor-token-helpers.mjs), against the
         // level-capped speed above rather than the actor's real one.
         ? { free: Math.max(0, speed - 2), movement: speed > 0 ? 1 : 0, standard: speed > 1 ? 1 : 0 }
         : getNumActions(this);
@@ -573,7 +573,7 @@ export class Essence20Actor extends Actor {
 
     // Asleep/Defeated/Stunned (GI Joe CRB, Conditions, p.226: "Stunned characters can't take
     // actions (Standard, Movement, or Free)")/Unconscious all zero out every action budget - see
-    // isUnableToAct's own doc comment (helpers/action-economy.mjs) for the Defeated exception and
+    // isUnableToAct's own doc comment (mechanics/actions/action-economy.mjs) for the Defeated exception and
     // why this used to be a second, separately-maintained copy of that same list.
     const incapacitated = isUnableToAct(this);
     const surprisedZeroed = isSurprised && !hasUnsurprising && !(hasReadyForAnything && !incapacitated);
@@ -638,7 +638,7 @@ export class Essence20Actor extends Actor {
     // is exactly that guarantee; nothing currently makes a 0-driver Vehicle fully immobile for
     // Advanced Autopilot to be an exception to.
     // Undo Engine (Intercontinental Adventures p.71): "the vehicle's Movement is reduced to 0 until
-    // the driver uses their Standard action to restart the engines" (helpers/undo-engine.mjs).
+    // the driver uses their Standard action to restart the engines" (items/vehicles/undo-engine.mjs).
     if (isUndoEngineMovementDisabled(this)) {
       for (const movementType of Object.keys(this.system.movement)) {
         this.system.movement[movementType].total = 0;
@@ -796,12 +796,12 @@ export class Essence20Actor extends Actor {
     handsUsed = Math.max(0, handsUsed - extraCarriedHands(this, carried));
     // Skybound: "your Jet Pack counts as 2 hands of equipment."
     handsUsed += vehicleHands(this);
-    // Carrying capacity as a share of body weight (PR CRB Table 6-1) - helpers/kits.mjs.
+    // Carrying capacity as a share of body weight (PR CRB Table 6-1) - mechanics/resources/kits.mjs.
     system.loadout.carryPercent = carryPercent(this);
     system.loadout.handsUsed = handsUsed;
     system.loadout.handsOver = handsUsed > handsMax;
 
-    // Hardpoints Perks add (helpers/weapon-traits.mjs#hardpointBonus).
+    // Hardpoints Perks add (mechanics/combat/weapon-traits.mjs#hardpointBonus).
     const perkHardpoints = hardpointBonus(this);
     for (const [key, used] of [['external', externalUsed], ['integrated', integratedUsed]]) {
       const slot = system.hardpoints[key];
@@ -833,7 +833,7 @@ export class Essence20Actor extends Actor {
    * Also sets this.system.visionSuppressed for the Asleep/Unconscious statuses, so a sleeping
    * actor doesn't get a bonus grant from equipped Night Vision Goggles etc. while unconscious.
    * This does NOT block a token's vision outright - actually blacking out perception for
-   * Asleep/Unconscious is handled by syncAutoBlindStatus() (helpers/actor.mjs) applying the
+   * Asleep/Unconscious is handled by syncAutoBlindStatus() (mechanics/characters/actor-token-helpers.mjs) applying the
    * real "blinded" status, which reuses Foundry's own CONFIG.specialStatusEffects.BLIND
    * handling (see essence20.mjs) rather than trying to force TokenDocument.sight.enabled off
    * directly, which does not actually block perception.
@@ -841,12 +841,12 @@ export class Essence20Actor extends Actor {
   _prepareVision() {
     this.system.visionSuppressed = this.statuses?.has('asleep') || this.statuses?.has('unconscious') || false;
 
-    // Selection (and Used to the Dark's own doubling clause) lives in helpers/vision-grant.mjs
+    // Selection (and Used to the Dark's own doubling clause) lives in mechanics/characters/vision-grant.mjs
     // so it can be unit tested directly.
     this.system.visionGrant = this.system.visionSuppressed ? null : getBestVisionGrant(this);
 
     // Blindsight is deliberately computed OUTSIDE the visionSuppressed guard above - see
-    // helpers/blindsight.mjs#getBlindsightRange's own doc comment for why suppressing it would
+    // items/senses/blindsight.mjs#getBlindsightRange's own doc comment for why suppressing it would
     // cancel the only Perk it exists for.
     this.system.blindsightRange = getBlindsightRange(this);
   }
@@ -855,7 +855,7 @@ export class Essence20Actor extends Actor {
    * Self-Preservation (Decepticon Directive, Elementalist Focus, 3rd level, p.53): "You gain
    * Resistance to the Element chosen for your Energy Affinity." Same additive-only, "read the
    * chosen Element off Energy Affinity's own system.choice" shape Fireproof's own comment above
-   * establishes - the Immunity-until-next-hit half lives in helpers/self-preservation.mjs instead,
+   * establishes - the Immunity-until-next-hit half lives in items/defenses/self-preservation.mjs instead,
    * since it's a manual spend rather than an always-on derived value.
    */
   _prepareSelfPreservationResistance() {
@@ -867,7 +867,7 @@ export class Essence20Actor extends Actor {
 
   /**
    * Resistances granted "for the rest of the scene" (Hardened Armor, Elemental Adaptation) - see
-   * helpers/actor.mjs#grantSceneResistance. Additive only, like Fireproof above.
+   * mechanics/characters/actor-token-helpers.mjs#grantSceneResistance. Additive only, like Fireproof above.
    */
   _prepareSceneResistances() {
     if (!this.system.resistances) {
@@ -880,7 +880,7 @@ export class Essence20Actor extends Actor {
   }
 
   /**
-   * Inner Magic - see helpers/inner-magic.mjs's own doc comment. Subtracts this scene's stacked
+   * Inner Magic - see items/magic/inner-magic.mjs's own doc comment. Subtracts this scene's stacked
    * reduction count from Willpower Defense's own bonus field.
    */
   _prepareInnerMagicWillpowerReduction() {
@@ -1065,11 +1065,11 @@ export class Essence20Actor extends Actor {
 
     // Compromised (Across the Stars, Space Vessel Condition, p.25): "each instance of the Condition
     // reduces the vessel's maximum Health by another point." Defeat at 0 is
-    // helpers/vessel-conditions.mjs#syncVesselConditionConsequences.
+    // mechanics/vehicles/vessel-conditions.mjs#syncVesselConditionConsequences.
     const compromised = getVesselConditionStacks(this, 'compromised');
 
     // Tough Together, a Mini-Con's Linked Health, Advanced/Perfect Link, Hard Target - the
-    // companion and bond Perks (helpers/companions.mjs, bonded.mjs, summons.mjs).
+    // companion and bond Perks (mechanics/companions/companions.mjs, bonded.mjs, summons.mjs).
     const linkedHealth = linkedBonuses(this).health + bondBonuses(this).health + hardTargetBonus(this, getCrewedVehicle(this)?.vehicle).health;
     health.max = Math.max(0, originStartingHealth + rolePointsBonusHealth + conditioning + bonus + bulwarkBonusHealth - compromised + linkedHealth);
     health.string = `${originStartingHealth} (${originName}) + ${rolePointsBonusHealth} (${rolePointsName}) + ${conditioning} (${conditionName}) + ${bonus} (${bonusName})`
@@ -1139,7 +1139,7 @@ export class Essence20Actor extends Actor {
 
       // A loose armor upgrade counts when the actor can transform (an alt-mode upgrade), or when an
       // Alteration grants its benefit "whether you're wearing armor or not" (Skin Tempering,
-      // helpers/grants.mjs).
+      // mechanics/resources/grants.mjs).
       {
         for (const upgrade of this.items.documentsByType?.upgrade ?? []) {
           if (upgrade.getFlag('essence20', 'parentId') || upgrade.system?.type != 'armor'
@@ -1189,7 +1189,7 @@ export class Essence20Actor extends Actor {
           // Hardened Armor (PR ATS Gold Ranger, p.52): "your Toughness Defense increases while
           // Morphed" - most defenseBonus Role Points apply unconditionally, so this is opt-in
           // per item via bonus.whileMorphed, same flag name/shape as an Active Effect's own
-          // whileMorphed gate (helpers/morph-gated-effects.mjs).
+          // whileMorphed gate (mechanics/characters/morph-gated-effects.mjs).
           && (!rolePoints.system.bonus.whileMorphed || system.isMorphed)) {
           rolePointsName = rolePoints.name;
 
@@ -1233,7 +1233,7 @@ export class Essence20Actor extends Actor {
       }
 
       // Colony Changeling (Dark Skies Over Equestria, Natural Shape choice, p.17) - see
-      // helpers/allies.mjs#getColonyChangelingEvasionBonus's own doc comment. The flat +1 Evasion
+      // mechanics/combat/nearby-allies.mjs#getColonyChangelingEvasionBonus's own doc comment. The flat +1 Evasion
       // half already lives on this Perk's own compendium Active Effect (defense.bonus above); this
       // is only the SCALING +1-per-adjacent-Colony-Changeling half, up to +3.
       if (defenseType == 'evasion' && actorHasPerk(this, COLONY_CHANGELING_ID)) {
@@ -1251,7 +1251,7 @@ export class Essence20Actor extends Actor {
       defense.string += ` + ${perkDefenseBonus} (${perkName})`;
 
       // Imperial Machine Mantle (Power Rangers Adventures, Adventures in Angel Grove, p.90) - see
-      // helpers/imperial-machine-mantle.mjs's own doc comment. Toughness only, and reads whichever
+      // items/defenses/imperial-machine-mantle.mjs's own doc comment. Toughness only, and reads whichever
       // of morphed/armor was just added above as the "existing Armor Bonus" it melds onto.
       if (defenseType == 'toughness') {
         const machineMantleBonus = getMachineMantleBonus(this, system.isMorphed ? morphed : armor);
@@ -1262,7 +1262,7 @@ export class Essence20Actor extends Actor {
       }
 
       // Thick Skulls (Intercontinental Adventures p.36): Smarts increases that raised Toughness
-      // instead of Willpower (helpers/grants.mjs#thickSkullsShift).
+      // instead of Willpower (mechanics/resources/grants.mjs#thickSkullsShift).
       const thickSkulls = thickSkullsShift(this);
       if (thickSkulls && ['toughness', 'willpower'].includes(defenseType)) {
         const shift = defenseType == 'toughness' ? thickSkulls : -thickSkulls;
@@ -1292,7 +1292,7 @@ export class Essence20Actor extends Actor {
       }
 
       // Defense damage - the Transformers Bewildering/Maiming/Surgical/Traumatic Critical Effects
-      // (helpers/essence-damage.mjs), until a rest.
+      // (mechanics/combat/essence-damage.mjs), until a rest.
       const defenseDamage = defenseDamageOf(this)[defenseType] ?? 0;
       if (defenseDamage) {
         defense.total -= defenseDamage;
@@ -1362,7 +1362,7 @@ export class Essence20Actor extends Actor {
         movement.total = Math.max(movement.total, halfGround);
       }
 
-      // Natural Movement - see helpers/natural-movement.mjs's own doc comment. "Half your Ground
+      // Natural Movement - see items/movement/natural-movement.mjs's own doc comment. "Half your Ground
       // Movement" is the same formula the default climb/swim fallback above already computes, but
       // this OVERRIDES regardless of whatever that movement type's total already was (unlike the
       // fallback, which only kicks in when it's still 0) - real value for an actor whose actual
@@ -1373,7 +1373,7 @@ export class Essence20Actor extends Actor {
 
       applyMovementRule('adjust', movementType);
 
-      // High Gear (A Jump Through Time, Zord Feature, p.83) - see helpers/high-gear.mjs's own doc
+      // High Gear (A Jump Through Time, Zord Feature, p.83) - see items/zords/high-gear.mjs's own doc
       // comment. Ground only. this.type == 'zord' isn't
       // strictly required (the flag can only ever be set on a Zord in the first place, per
       // toggleHighGear's own guard), but stated explicitly since Megaform participants have
@@ -1391,13 +1391,13 @@ export class Essence20Actor extends Actor {
       system.movement[movementType].total += getDistressMovementBonus(this);
 
       // The Tough Get Going (Factions in Action Vol. 2, Oktober Guard General Perk, p.95) - see
-      // helpers/the-tough-get-going.mjs's own doc comment. Ground only.
+      // items/movement/the-tough-get-going.mjs's own doc comment. Ground only.
       if (movementType == 'ground' && isTheToughGetGoingActive(this)) {
         system.movement[movementType].total *= 2;
       }
 
       // Power Adaptation - Boost of Speed (Across the Stars, Silver Ranger, 9th/18th level,
-      // p.57) - see helpers/power-adaptation.mjs's own doc comment. "Increase Movement by 20
+      // p.57) - see items/forms/power-adaptation.mjs's own doc comment. "Increase Movement by 20
       // feet" is read as the ground Movement specifically (this system's default "Movement"
       // stat), same reasoning Warrior Rush's own doubling above already applies broadly instead.
       if (movementType == 'ground' && isPowerAdaptationActive(this, 'boostOfSpeed')) {
@@ -1405,14 +1405,14 @@ export class Essence20Actor extends Actor {
       }
 
       // Engine Override (Factions in Action Vol. 2, Engineer Troop Focus, 3rd level, p.72) - see
-      // helpers/engine-override.mjs's own doc comment. +15ft Ground Movement to whichever vehicle
+      // items/vehicles/engine-override.mjs's own doc comment. +15ft Ground Movement to whichever vehicle
       // this was activated on - checked on THIS actor directly (not gated on actorHasPerk, since
       // the flag lives on the boosted vehicle, not the Perk holder).
       if (movementType == 'ground' && isEngineOverrideBoostActive(this)) {
         system.movement[movementType].total += 15;
       }
 
-      // Hup! Hup! Hup! Hup! Hup! - see helpers/hup-hup-hup-hup-hup.mjs's own doc comment. Checked
+      // Hup! Hup! Hup! Hup! Hup! - see items/social/hup-hup-hup-hup-hup.mjs's own doc comment. Checked
       // directly on THIS actor, not gated on actorHasPerk - the flag lives on the boosted ally,
       // not the Officer who granted it, same shape as Engine Override's own +15ft grant above.
       if (movementType == 'ground') {
@@ -1420,7 +1420,7 @@ export class Essence20Actor extends Actor {
       }
 
       // Jury Rig - Engine Turbo-Boost / Watertight Seals (Factions in Action Vol. 2, Engineer
-      // Troop Focus, 17th level, p.73) - see helpers/jury-rig.mjs's own doc comment. Both grant
+      // Troop Focus, 17th level, p.73) - see items/vehicles/jury-rig.mjs's own doc comment. Both grant
       // "an Aerial/Aquatic Movement equal to its Ground Movement" - same override shape as Wisdom
       // of the Elders' identical Lightfoil Wings clause, checked on THIS actor directly (the flag
       // lives on the boosted vehicle, not the Engineer who granted it). Read ground's own .base +
@@ -1436,7 +1436,7 @@ export class Essence20Actor extends Actor {
       }
 
       // Swiftness (Quartermaster's Guide to Gear, Grid Power, p.94) - see
-      // helpers/swiftness.mjs's own doc comment. +20ft to whichever of ground/aerial was chosen
+      // items/movement/swiftness.mjs's own doc comment. +20ft to whichever of ground/aerial was chosen
       // at activation, same live-override shape as Boost of Speed just above.
       if (movementType == 'ground' || movementType == 'aerial') {
         system.movement[movementType].total += getSwiftnessBonusFeet(this, movementType);
@@ -1457,7 +1457,7 @@ export class Essence20Actor extends Actor {
           + (system.isMorphed ? system.movement.ground.morphed : 0);
       }
 
-      // Animal Gait - see ANIMAL_GAIT_ID's own comment above / helpers/animal-gait.mjs. Same
+      // Animal Gait - see ANIMAL_GAIT_ID's own comment above / items/movement/animal-gait.mjs. Same
       // aerial-before-ground ordering wrinkle Lightfoil Wings already hit (computed from ground's
       // own base/bonus/morphed inputs, not .total, when the chosen type is 'aerial'); climb/swim
       // both process after ground in this same loop, so reading ground.total directly is safe for
@@ -1470,7 +1470,7 @@ export class Essence20Actor extends Actor {
 
       // Mobile Mode (Through the Shattered Grid, Grid Power, p.26): "gain that type of Movement at
       // 30 feet" while active and Morphed - a floor, not a reduction, if the actor already has more
-      // of that movement type some other way. See helpers/mobile-mode.mjs's own doc comment for why
+      // of that movement type some other way. See items/movement/mobile-mode.mjs's own doc comment for why
       // the movement type is picked fresh at each activation rather than a permanent build-time
       // choice.
       if (system.isMorphed && movementType == getMobileModeType(this)) {
@@ -1478,13 +1478,13 @@ export class Essence20Actor extends Actor {
       }
 
       // Fluttery Wings (MLP CRB, Elementary Aid spell, p.136) - see
-      // helpers/fluttery-wings.mjs's own doc comment. +15ft Aerial Movement while active.
+      // items/magic/fluttery-wings.mjs's own doc comment. +15ft Aerial Movement while active.
       if (movementType == 'aerial') {
         system.movement.aerial.total += getFlutteryWingsBonus(this);
       }
 
       // Hot To Trot (Knights of Canterlot, Elementary Enchantment spell, p.43) - see
-      // helpers/hot-to-trot.mjs's own doc comment. "Move 15ft further with each Movement action" -
+      // items/magic/hot-to-trot.mjs's own doc comment. "Move 15ft further with each Movement action" -
       // read as ground Movement (the spell's own flavor text, "quickly catch up to a friend
       // across town," points at ordinary ground travel, not flight).
       if (movementType == 'ground' && isHotToTrotActive(this)) {
@@ -1492,13 +1492,13 @@ export class Essence20Actor extends Actor {
       }
 
       // Lightning Speed (MLP CRB, Virtuoso Utility spell, p.139) - see
-      // helpers/lightning-speed.mjs's own doc comment. "Doubles all Movement rates" while active -
+      // items/magic/lightning-speed.mjs's own doc comment. "Doubles all Movement rates" while active -
       // applied after the hand-written additions above (not gated on isMorphed).
       if (isLightningSpeedActive(this)) {
         system.movement[movementType].total *= 2;
       }
 
-      // Fly In The Future's evasive maneuvers - see helpers/evasive-maneuvers.mjs's own doc
+      // Fly In The Future's evasive maneuvers - see items/vehicles/evasive-maneuvers.mjs's own doc
       // comment. The COST half of that toggle ("you may halve the speed of your Aerial vehicle"),
       // scoped to aerial movement specifically and applied after Lightning Speed above. Rounded
       // down, this project's standard halving.
@@ -1525,11 +1525,11 @@ export class Essence20Actor extends Actor {
    * type the creature already has). Zero-G: "Treat all Movement like Aerospace Movement, with a rate
    * of 20 feet/10 feet" - Aerial becomes 20 and every other type 0; the 10-foot inertia minimum has
    * no field to live in and stays a table rule. High Gravity's tripled cost is a movement-cost rule
-   * instead (helpers/rough-terrain.mjs), so the ruler shows it.
+   * instead (mechanics/world/rough-terrain.mjs), so the ruler shows it.
    *
    * Creatures only - vehicles, Zords and Megaforms print their own Aerospace Movement for this.
    * Records the environment it prepared against, so a token walking between Regions re-prepares
-   * (helpers/environment.mjs#refreshTerrainDependentActor).
+   * (mechanics/world/environment.mjs#refreshTerrainDependentActor).
    */
   _applyGravityMovement() {
     if (!['playerCharacter', 'npc', 'companion'].includes(this.type) || this.pack) {
@@ -1893,7 +1893,7 @@ export class Essence20Actor extends Actor {
 
     // Stun (p.170: "shown on the sheet as 'Stun / Health'... every hit that deals Stun damage
     // adds to this instead of subtracting from Health") isn't pooled either, for the same reason
-    // Health isn't - each participant tracks its own, and helpers/megaform-damage.mjs's
+    // Health isn't - each participant tracks its own, and mechanics/vehicles/megaform-damage.mjs's
     // applyMegaformDamage already correctly routes Stun-type damage to each participant's own
     // system.stun.value (it just calls the ordinary applyDamage() per participant, which
     // branches on damageType itself). This is purely the same kind of display mirror as
@@ -2326,7 +2326,7 @@ export class Essence20Actor extends Actor {
    * Every visible sign of being Morphed or in an Alt Mode - status effect, ring tint, chat line -
    * follows the two flags from here, so it does not matter which path flipped them (the sheet
    * buttons, the TAH helpers below, or a Perk toggling the flag directly). See
-   * helpers/morph-state.mjs.
+   * mechanics/characters/morph-state.mjs.
    * @override
    */
   _onUpdate(changed, options, userId) {

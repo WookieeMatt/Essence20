@@ -2,12 +2,12 @@
 const { ContextMenu } = foundry.applications.ux;
 
 import { applyThemeClass } from "../settings.js";
-import { setGearNanomitePower } from "../helpers/nanomite-gear.mjs";
+import { setGearNanomitePower } from "../items/gear/nanomite-gear.mjs";
 import { serializeFormSubmits } from "../apps/serialize-form-submits.mjs";
-import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { getModularCandidates, normalizeModularWeaponIds } from "../helpers/modular-armor.mjs";
-import { rollExoFrameTest } from "../helpers/exo-frame.mjs";
-import { updateRoleCache } from "../helpers/utils.mjs";
+import { onManageSelectTrait } from "../mechanics/characters/manage-traits.mjs";
+import { getModularCandidates, normalizeModularWeaponIds } from "../items/defenses/modular-armor.mjs";
+import { rollExoFrameTest } from "../items/defenses/exo-frame.mjs";
+import { updateRoleCache } from "../util/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 import {
   prepareActiveEffectCategories,
@@ -16,7 +16,7 @@ import {
   onDropActiveEffect,
   onEditActiveEffect,
   onToggleActiveEffect,
-} from "../helpers/effects.mjs";
+} from "../mechanics/characters/active-effect-controls.mjs";
 import { SKELETONS, changeChoice, chooseAddKind, deleteRule, effectEntries, rulesContext, saveRulesJson, setToggle, stepPool } from "../rules/sheet.mjs";
 import { rulesOf } from "../rules/index.mjs";
 
@@ -217,7 +217,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
     // A weapon effect's range, skill, damage or targets may be changed by upgrades on its weapon
-    // (helpers/weapon-upgrades.mjs) - in derived data only. The form edits the STORED values, or
+    // (items/attacks/weapon-upgrades.mjs) - in derived data only. The form edits the STORED values, or
     // saving any other field would write the upgraded number back as the base one.
     const touched = itemData.system.upgradeTouched ?? [];
     if (touched.length) {
@@ -238,7 +238,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     }
 
     // An Element weapon's element is chosen on its sheet (GI Joe CRB p.207) - any weapon whose own
-    // effects are printed as "Element" damage (helpers/weapon-upgrades.mjs).
+    // effects are printed as "Element" damage (items/attacks/weapon-upgrades.mjs).
     if (this.document.type == 'weapon') {
       const own = this.document.parent?.items?.filter(i => i.type == 'weaponEffect' && i.flags?.essence20?.parentId == this.document.id) ?? [];
       context.dealsElementDamage = own.some(e => e._source?.system?.damageType == 'element')
@@ -299,7 +299,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
   }
 
   /**
-   * Unlinks a gear item's nanomite Power - see helpers/nanomite-gear.mjs.
+   * Unlinks a gear item's nanomite Power - see items/gear/nanomite-gear.mjs.
    */
   static async #clearGearNanomite() {
     await this.document.update({ 'system.nanomite.powerUuid': null, 'system.nanomite.spent': 0 });
@@ -321,7 +321,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     if (droppedItem.type == "base") {
       onDropActiveEffect(droppedItem, targetItem);
     } else if (targetItem.type == "gear" && droppedItem.type == "power") {
-      // Nanomite equipment - see helpers/nanomite-gear.mjs.
+      // Nanomite equipment - see items/gear/nanomite-gear.mjs.
       await setGearNanomitePower(targetItem, droppedItem);
     } else {
       await setEntryAndAddItem(droppedItem, targetItem);
@@ -346,7 +346,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
         .filter(Boolean);
     }
 
-    // Modular armor's socketed-weapon checkboxes - see helpers/modular-armor.mjs.
+    // Modular armor's socketed-weapon checkboxes - see items/defenses/modular-armor.mjs.
     const modularWeaponIds = normalizeModularWeaponIds(formData.object["system.modularWeaponIds"]);
     if (modularWeaponIds) {
       formData.object["system.modularWeaponIds"] = modularWeaponIds;
@@ -446,7 +446,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
 
   /**
    * Exo-Frame armor (Across the Stars p.85) - the manual Driving test, DIF from the wearer's
-   * recorded movement this turn. See helpers/exo-frame.mjs.
+   * recorded movement this turn. See items/defenses/exo-frame.mjs.
    */
   static async #rollExoFrameTest() {
     const actor = this.document.parent;

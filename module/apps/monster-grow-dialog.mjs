@@ -1,9 +1,9 @@
 import { applyThemeClass } from "../settings.js";
-import { actorToIr, createActorFromStatBlock } from "../helpers/stat-block-import.mjs";
-import { computeGrownStatBlock, multipliersForIncrease } from "../helpers/monster-grow-generator.mjs";
+import { actorToIr, createActorFromStatBlock } from "../importers/stat-block-import.mjs";
+import { computeGrownStatBlock, multipliersForIncrease } from "../importers/monster-grow-generator.mjs";
 import {
   getLinkCandidates, getLinkedForm, linkGrownForm, unlinkGrownForm,
-} from "../helpers/monster-grow-swap.mjs";
+} from "../mechanics/characters/monster-grow-swap.mjs";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 

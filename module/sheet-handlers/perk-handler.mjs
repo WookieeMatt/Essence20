@@ -1,25 +1,25 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import MultiChoiceSelector from "../apps/multi-choice-selector.mjs";
-import { E20 } from "../helpers/config.mjs";
-import { actorHasPower } from "../helpers/powers.mjs";
+import { E20 } from "../util/config.mjs";
+import { actorHasPower } from "../mechanics/characters/powers.mjs";
 import { createItemCopies, deleteAttachmentsForItem, setEntryAndAddItem } from "./attachment-handler.mjs";
-import { getVisibleItemPacks } from "../helpers/compendium-browser.mjs";
+import { getVisibleItemPacks } from "../util/compendium-browser.mjs";
 import { performSpectrumShift } from "./role-handler.mjs";
-import { isPrincessPerk, removeSpellcastingUpshift } from "../helpers/princess-perks.mjs";
-import { grantBlendInUpgrades } from "../helpers/blend-in.mjs";
-import { grantSilentRunningUpgrades } from "../helpers/silent-running.mjs";
-import { grantTorozordFeature } from "../helpers/torozord-feature.mjs";
-import { HEARTS_CALLING_ID, pickHeartsCallingOption } from "../helpers/emotional-mastery.mjs";
+import { isPrincessPerk, removeSpellcastingUpshift } from "../items/magic/princess-perks.mjs";
+import { grantBlendInUpgrades } from "../items/senses/blend-in.mjs";
+import { grantSilentRunningUpgrades } from "../items/gear/silent-running.mjs";
+import { grantTorozordFeature } from "../items/zords/torozord-feature.mjs";
+import { HEARTS_CALLING_ID, pickHeartsCallingOption } from "../items/resources/emotional-mastery.mjs";
 import {
   applyEnhanceStrike, ENHANCE_STRIKE_ID, grantUniqueStrike, UNIQUE_STRIKE_MELEE_ID, UNIQUE_STRIKE_RANGED_ID,
-} from "../helpers/unique-strike.mjs";
-import { applyZordAlteration, ZORD_ALTERATION_ID } from "../helpers/zord-alteration.mjs";
-import { grantWindWhispersEvasion, WIND_WHISPERS_ID } from "../helpers/wind-whispers.mjs";
-import { grantSurvivalTrainingHealth, SURVIVAL_TRAINING_ID } from "../helpers/survival-training.mjs";
-import { grantPrimalMovement, PRIMAL_MOVEMENT_ID } from "../helpers/primal-movement.mjs";
-import { grantPrimalTools, PRIMAL_TOOLS_ID } from "../helpers/primal-tools.mjs";
-import { AQUA_ELEMENTAL_ADAPTATION_ID, grantAquaElementalAdaptation } from "../helpers/aqua-elemental-adaptation.mjs";
-import { activateWhyDoIKnowThat, WHY_DO_I_KNOW_THAT_ID } from "../helpers/why-do-i-know-that.mjs";
+} from "../items/attacks/unique-strike.mjs";
+import { applyZordAlteration, ZORD_ALTERATION_ID } from "../items/zords/zord-alteration.mjs";
+import { grantWindWhispersEvasion, WIND_WHISPERS_ID } from "../items/defenses/wind-whispers.mjs";
+import { grantSurvivalTrainingHealth, SURVIVAL_TRAINING_ID } from "../items/healing/survival-training.mjs";
+import { grantPrimalMovement, PRIMAL_MOVEMENT_ID } from "../items/movement/primal-movement.mjs";
+import { grantPrimalTools, PRIMAL_TOOLS_ID } from "../items/attacks/primal-tools.mjs";
+import { AQUA_ELEMENTAL_ADAPTATION_ID, grantAquaElementalAdaptation } from "../items/defenses/aqua-elemental-adaptation.mjs";
+import { activateWhyDoIKnowThat, WHY_DO_I_KNOW_THAT_ID } from "../items/gear/why-do-i-know-that.mjs";
 
 // Combiner Specialization (Enigma of Combination, Component Ace Focus, 1st level, p.34): "You gain
 // the Gestalt Combiner or Matched Combiner General Perk. If you already have either of these
@@ -61,7 +61,7 @@ const PHANTOM_SHIP_ID = "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWP
 // book was first built.
 const TOROZORD_ID = "Compendium.essence20.through_the_shattered_grid.Item.gx0xOFKcKOPyaUto";
 // Torozord Feature (Through the Shattered Grid, Magna Defender Role Perk, 6th/10th/14th/17th
-// level, p.25) - see helpers/torozord-feature.mjs's own doc comment for the full mechanic. Also
+// level, p.25) - see items/zords/torozord-feature.mjs's own doc comment for the full mechanic. Also
 // never wired despite the compendium item existing; The_Magna_Defender's own system.items grant
 // map was additionally missing all 4 of this Perk's own level entries entirely (a genuine
 // authoring gap, corrected alongside this).
@@ -104,7 +104,7 @@ const GRID_SCIENCE_TECH_IDS = new Set([
 const CHANGE_ITS_STRIPES_ID = "Compendium.essence20.ferocious_fighters.Item.8tz9aZSqmUntS20H";
 const BLEND_IN_ID = "Compendium.essence20.ferocious_fighters.Item.mnze6jJ6eSYbS8Pr";
 
-// Silent Running - see helpers/silent-running.mjs's own doc comment.
+// Silent Running - see items/gear/silent-running.mjs's own doc comment.
 const SILENT_RUNNING_ID = "Compendium.essence20.ferocious_fighters.Item.58OZMB7WbAgqgpkX";
 
 // Expertise (GI Joe CRB, Commando base, 1st/7th level, p.72): "Choose two skills... You choose
@@ -692,7 +692,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     const localizedSelection = selectionType == 'movement' || selectionType == 'altModeMovement'
       ? game.i18n.localize(E20.movementTypes[selection])
       // Field's choices are a restricted subset of the same skill list 'skills' already uses
-      // (see E20.fieldSkills, helpers/config.mjs), not a distinct label set of their own.
+      // (see E20.fieldSkills, util/config.mjs), not a distinct label set of their own.
       : selectionType == 'field'
         ? game.i18n.localize(E20.skills[selection])
         : game.i18n.localize(E20[selectionType][selection]);
@@ -704,7 +704,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
 
     // Unlike environments/senses/movement (which write to a shared actor-level field), a
     // skill-scoped reroll grant's scope lives on the granted Perk instance itself - see
-    // helpers/reroll.mjs#canMeetRerollScope, which reads system.reroll.skills off each Perk.
+    // mechanics/rolls/reroll.mjs#canMeetRerollScope, which reads system.reroll.skills off each Perk.
     if (selectionType == 'skills') {
       updateData["system.reroll.skills"] = [selection];
     }
@@ -798,7 +798,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
     }
   }
 
-  // Why Do I Know That? - see helpers/why-do-i-know-that.mjs's own doc comment. Prompts for any
+  // Why Do I Know That? - see items/gear/why-do-i-know-that.mjs's own doc comment. Prompts for any
   // General Perk and grants it, the same drop-time resolution Change Its Stripes uses for its own
   // fixed grant - the only difference being that the choice is open rather than predetermined.
   if (perkUuid == WHY_DO_I_KNOW_THAT_ID) {
@@ -880,7 +880,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
       // by the generic Essence Increase flow this Perk also grants, same division of labor as
       // Renegade's own Training (Essence Increase generic, the skill-choice itself Perk-specific).
       // Eureka/Expert in Your Field both read this choice back via findPerk(actor,
-      // FIELD_ID)?.system.choice (helpers/perks.mjs), same shape Fighting Style already uses.
+      // FIELD_ID)?.system.choice (mechanics/characters/perks.mjs), same shape Fighting Style already uses.
       prompt = game.i18n.localize("E20.SelectField");
       for (const skill of E20.fieldSkills) {
         const localizedLabel = game.i18n.localize(E20.skills[skill]);
@@ -1137,7 +1137,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
 
     case 'powerAdaptation':
       // Across the Stars, Silver Ranger, 9th/18th level, p.57 - see
-      // helpers/power-adaptation.mjs's own doc comment. Same "no numeric field of its own, read
+      // items/forms/power-adaptation.mjs's own doc comment. Same "no numeric field of its own, read
       // directly off system.choice" shape as fightingStyle just below - the actor's own "Use"
       // button (banked-buffs.mjs) reads this Perk's system.choice to know which option to
       // activate/deactivate, rather than any consumption branch happening here at drop time.
@@ -1156,7 +1156,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
 
     case 'electromagneticDisruption':
       // Technorganic Secrets, Technorganic Influence Perks, p.47 - see
-      // helpers/electromagnetic-disruption.mjs's own doc comment. Same "no numeric field of its
+      // items/attacks/electromagnetic-disruption.mjs's own doc comment. Same "no numeric field of its
       // own, read directly off system.choice" shape as viciousOrVenom below.
       prompt = game.i18n.localize("E20.SelectElectromagneticDisruption");
       for (const option of Object.keys(E20.electromagneticDisruptionOptions)) {
@@ -1173,7 +1173,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
 
     case 'defensiveFlexibility':
       // A Jump Through Time, Blue Spectrum Modification, replaces Grid Tech, p.45 - see
-      // helpers/defensive-flexibility.mjs's own doc comment. Same "no numeric field of its own,
+      // items/defenses/defensive-flexibility.mjs's own doc comment. Same "no numeric field of its own,
       // read directly off system.choice" shape as powerAdaptation above - a single flat option
       // list combining both of RAW's own choice categories.
       prompt = game.i18n.localize("E20.SelectDefensiveFlexibility");
@@ -1329,7 +1329,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
 
     case 'elementDamageType':
       // A Jump Through Time, Orange Ranger, Modified Shell III option, p.33 ("Adapted
-      // Wavelength") - see helpers/combat.mjs#ENERGY_DAMAGE_TYPES's own doc comment for why this
+      // Wavelength") - see mechanics/combat/combat.mjs#ENERGY_DAMAGE_TYPES's own doc comment for why this
       // is scoped to the 7 concrete Element sub-types rather than every damage type. Same "no
       // numeric field of its own, read directly off system.choice" shape as powerAdaptation/
       // phantomFocus above - applyDamage() reads every matching instance's own choice directly,
@@ -1349,7 +1349,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
 
     case 'stoneWarlordDamageType':
       // Finster's Monster-Matic Cookbook, Path of Stone, Stone Warlord, 20th level, p.297 - see
-      // helpers/numbness.mjs's own doc comment. Same "no numeric field of its own, read directly
+      // items/defenses/numbness.mjs's own doc comment. Same "no numeric field of its own, read directly
       // off system.choice" shape as elementDamageType just above.
       prompt = game.i18n.localize("E20.SelectStoneWarlordDamageType");
       for (const damageType of Object.keys(E20.stoneWarlordDamageTypes)) {
@@ -1366,7 +1366,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
 
     case 'wisdomOfTheElders':
       // Through the Shattered Grid, Guardian of Eltar, 9th/18th level, p.72 - see
-      // helpers/wisdom-of-the-elders.mjs's own doc comment. Same "no numeric field of its own,
+      // items/forms/wisdom-of-the-elders.mjs's own doc comment. Same "no numeric field of its own,
       // read directly off system.choice" shape as powerAdaptation/phantomFocus above.
       prompt = game.i18n.localize("E20.SelectWisdomOfTheElders");
       for (const option of Object.keys(E20.wisdomOfTheEldersOptions)) {
@@ -1383,7 +1383,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
 
     case 'phantomFocus':
       // Across the Stars, Phantom Ranger, 10th/15th level, p.62 - see
-      // helpers/banked-buffs.mjs's own PHANTOM_FOCUS_ID comment. Same "no numeric field of its
+      // mechanics/resources/banked-buffs.mjs's own PHANTOM_FOCUS_ID comment. Same "no numeric field of its
       // own, read directly off system.choice" shape as powerAdaptation/fightingStyle.
       prompt = game.i18n.localize("E20.SelectPhantomFocus");
       for (const option of Object.keys(E20.phantomFocusOptions)) {
@@ -1660,7 +1660,7 @@ export async function setRoleVatiantPerks(newPerk, currentRole, actor) {
         createdPerk.setFlag('essence20', 'collectionId', key);
         createdPerk.setFlag('essence20', 'parentId', newPerk._id);
         // The variant Perk's OWN uuid, not the container's (newPerk, e.g. Be A Hero) - findPerk()
-        // (helpers/perks.mjs) matches a specific Perk ID against exactly this field, so stamping
+        // (mechanics/characters/perks.mjs) matches a specific Perk ID against exactly this field, so stamping
         // the container's id here made every ID-keyed hook checking for the variant itself
         // silently never match.
         createdPerk.update({

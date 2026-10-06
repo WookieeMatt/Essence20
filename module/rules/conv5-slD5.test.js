@@ -13,11 +13,11 @@ import { fileURLToPath } from 'node:url';
  * do what the removed code did.
  */
 
-// slB10: Solarix Shard's pack item carries a HitRider rule now (rules/ext/b/hit-rider.mjs).
-await import('./ext/index.mjs');
+// slB10: Solarix Shard's pack item carries a HitRider rule now (rules/plugins/combat/hit-rider.mjs).
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { reactionOffers, pressReaction } = await import('./reactions.mjs');
-const { cardInfo } = await import('../helpers/extensions/react/core.mjs');
+const { cardInfo } = await import('../mechanics/combat/reaction-engine.mjs');
 const { validateRule } = await import('./types.mjs');
 const { fireItemAdded, fireTriggers, runUse, useAvailable } = await import('./triggers.mjs');
 const { bankedSources } = await import('./bank.mjs');

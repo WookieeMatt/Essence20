@@ -14,7 +14,7 @@ global.Hooks = { on: () => 0, once: () => 0, callAll: () => {} };
 
 const chooseSelect = jest.fn();
 const rollTest = jest.fn();
-jest.unstable_mockModule('./helpers/grants.mjs', () => ({ chooseSelect, rollTest, chooseButtons: jest.fn(), findItems: jest.fn() }));
+jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({ chooseSelect, rollTest, chooseButtons: jest.fn(), findItems: jest.fn() }));
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fromPack = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8'));
@@ -71,19 +71,19 @@ global.foundry = {
   utils: { ...(global.foundry?.utils ?? {}), getProperty: getPath, setProperty: setPath, deepClone: value => JSON.parse(JSON.stringify(value)), escapeHTML: text => String(text) },
 };
 
-await import('./ext/index.mjs');
+await import('./plugins/index.mjs');
 // The megaformPilot lookup registers once rules/reactions.mjs has loaded (lazily).
-await (await import('./ext/f/reactors.mjs')).lookupReady;
+await (await import('./plugins/zords/megaform-pilot-reactors.mjs')).lookupReady;
 const { rebuildIndex } = await import('./index.mjs');
 const { validateRule } = await import('./types.mjs');
 const { fireTriggers, fireItemAdded, runUse, useRulesOf, useAvailable } = await import('./triggers.mjs');
 const { ruleDialogSwitches, applyRuleSwitches } = await import('./adapter.mjs');
 const { reactionOffers, pressReaction } = await import('./reactions.mjs');
-const { cardInfo } = await import('../helpers/extensions/react/core.mjs');
-const { registrySnapshot } = await import('../helpers/extensions.mjs');
-const watch = await import('./ext/f/watch.mjs');
-const { hitMultiplierOnAttack } = await import('./ext/f/finisher.mjs');
-const { skillDieDerived } = await import('./ext/f/skill-die.mjs');
+const { cardInfo } = await import('../mechanics/combat/reaction-engine.mjs');
+const { registrySnapshot } = await import('../mechanics/item-hooks.mjs');
+const watch = await import('./plugins/tags/world-watch.mjs');
+const { hitMultiplierOnAttack } = await import('./plugins/zords/megaform-finisher.mjs');
+const { skillDieDerived } = await import('./plugins/rolls/skill-die.mjs');
 
 function asItem(data, actor) {
   const item = {

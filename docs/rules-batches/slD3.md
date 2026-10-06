@@ -337,7 +337,7 @@ These `lang/en.json` keys (under `E20`) have no code use left: `ReactCruelty`, `
   - `packs/sssitems/_source/That_s_Right__Perfect_dAoJG7ZwVEhOQZY0.json`
   - `packs/dditems/_source/Energon_Manipulator_cOVq7EH6HPrXmhBC.json`
   - `packs/atsitems/_source/Body_of_Energy_L2X2rIz2frulSajQ.json` (the chat text only)
-- Slice: `module/helpers/extensions/react/reactions.mjs`, `react/triggers.mjs`, `react/react.test.js`.
+- Slice: `module/items/defenses/attack-card-reactions.mjs`, `react/triggers.mjs`, `react/react.test.js`.
 - New: `module/rules/conv3-slD3.test.js` (19 tests) and this file.
 
 **Rules added: 8** (on 7 items), plus 1 existing rule's chat text changed.

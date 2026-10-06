@@ -1,5 +1,5 @@
-import { afterSpectrumShifted, spectrumShiftedRetains } from "../helpers/extensions/pr1/spectrum.mjs";
-import { essenceRedirect } from "../helpers/grants.mjs";
+import { afterSpectrumShifted, spectrumShiftedRetains } from "../mechanics/characters/spectrum-shifted.mjs";
+import { essenceRedirect } from "../mechanics/resources/grants.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
@@ -37,7 +37,7 @@ export async function performSpectrumShift(actor, newRole) {
   for (const item of [...actor.items]) {
     if (item.getFlag('essence20', 'parentId') == oldRole.id) {
       // Spectrum Shifted (A Jump Through Time p.42, Table 2-16) - see
-      // helpers/extensions/pr1/spectrum.mjs for which Perks and pools each old Role keeps.
+      // mechanics/characters/spectrum-shifted.mjs for which Perks and pools each old Role keeps.
       if (newRole.system.hasSpectrumShifted && ['perk', 'rolePoints'].includes(item.type)) {
         const sourceId = item.flags.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
         const oldAttachment = Object.values(oldRole.system.items).find(entry => entry.uuid == sourceId);
@@ -148,7 +148,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   const currentEssenceLevel = essenceLevel ?? newLevel ?? actor.system.level;
   for (const roleEssence in role.system.essenceLevels) {
     const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[roleEssence], previousLevel);
-    // Cordial / Rough and Takes No Guff move an increase to another Essence (helpers/grants.mjs).
+    // Cordial / Rough and Takes No Guff move an increase to another Essence (mechanics/resources/grants.mjs).
     const essence = totalChange > 0 ? essenceRedirect(actor, role, roleEssence) : roleEssence;
     const essenceMax = actor.system.essences[essence].max + totalChange;
     const essenceMaxString = `system.essences.${essence}.max`;
