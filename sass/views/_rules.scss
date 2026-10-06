@@ -229,21 +229,44 @@
     grid-column: 1 / -1;
   }
 
+  // Each item fills its grid cell, so the two choices in a row are the same height.
+  .e20-rules-add-choices li {
+    display: flex;
+  }
+
   .e20-rules-add-choices button {
+    flex: 1;
     display: grid;
     grid-template-columns: 1.5rem 1fr;
-    grid-template-rows: auto auto;
+    grid-template-rows: auto 1fr;
     column-gap: 0.4rem;
-    align-items: center;
+    align-content: start;
+    align-items: start;
     width: 100%;
     height: auto;
     padding: 0.35rem 0.5rem;
     text-align: left;
     line-height: 1.2;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 
     i {
       grid-row: 1 / span 2;
+      align-self: center;
       justify-self: center;
+      transition: color 0.15s ease;
+    }
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--e20-theme-accent);
+      background: color-mix(in srgb, var(--e20-theme-accent) 14%, transparent);
+      box-shadow: 0 0 0 1px var(--e20-theme-accent), 0 0 6px color-mix(in srgb, var(--e20-theme-accent) 45%, transparent);
+      outline: none;
+
+      i,
+      .e20-rules-add-label {
+        color: var(--e20-theme-accent);
+      }
     }
   }
 
