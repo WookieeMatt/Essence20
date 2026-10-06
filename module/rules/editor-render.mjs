@@ -142,10 +142,12 @@ function tagRow(path, tag, index) {
   const text = typeof tag == 'string' ? tag : `any:${(tag?.any ?? []).join(' | ')}`;
   const negated = text.startsWith('not:');
   const bare = negated ? text.slice(4) : text;
+  // self:level>=N shows as its own "level" row (a plain number; another comparison keeps its sign).
+  const level = /^self:level(>=|<=|>|<|=)(\d+)$/.exec(bare);
   const cut = bare.indexOf(':');
-  const family = cut < 0 ? bare : bare.slice(0, cut);
-  const arg = cut < 0 ? '' : bare.slice(cut + 1);
-  const families = [...TAG_FAMILIES.map(([key]) => key), 'any'];
+  const family = level ? 'level' : cut < 0 ? bare : bare.slice(0, cut);
+  const arg = level ? (level[1] == '>=' ? level[2] : `${level[1]}${level[2]}`) : cut < 0 ? '' : bare.slice(cut + 1);
+  const families = ['level', ...TAG_FAMILIES.map(([key]) => key), 'any'];
   const listId = `e20-tag-args-${family}`;
   return `<li class="e20-tag-row" data-index="${index}">
     <label class="e20-tag-not"><input type="checkbox" name="${escape(`${path}.${index}`)}" data-kind="tagNot"${negated ? ' checked' : ''}> ${escape(fieldLabel('Not'))}</label>
@@ -157,7 +159,8 @@ function tagRow(path, tag, index) {
 
 /** The datalists the tag argument inputs suggest from - one per family. */
 export function tagDatalists(context = {}) {
-  return TAG_FAMILIES.map(([family, args]) => {
+  const levels = `<datalist id="e20-tag-args-level">${Array.from({ length: 20 }, (_, i) => `<option value="${i + 1}"></option>`).join('')}</datalist>`;
+  return levels + TAG_FAMILIES.map(([family, args]) => {
     const values = typeof args == 'string' ? (args == 'text' ? [] : optionList(args, context).map(([v]) => v)) : args;
     const statusArgs = ['self', 'target'].includes(family) ? optionList('statuses', context).map(([v]) => `status:${v}`) : [];
     return `<datalist id="e20-tag-args-${family}">${[...values, ...statusArgs].map(v => `<option value="${escape(v)}"></option>`).join('')}</datalist>`;
@@ -284,6 +287,13 @@ export function composeTag(not, family, arg) {
     return { any: inner };
   }
 
+  // The editor's "level" row: a level number (or <=N, =N ...) stored as self:level>=N.
+  if (family == 'level') {
+    const match = /^\s*(>=|<=|>|<|=)?\s*(\d+)?\s*$/.exec(String(arg ?? ''));
+    const body = `self:level${match?.[1] ?? '>='}${match?.[2] ?? 1}`;
+    return not ? `not:${body}` : body;
+  }
+
   const body = arg === '' || arg === undefined ? family : `${family}:${arg}`;
   return not ? `not:${body}` : body;
 }
@@ -386,6 +396,7 @@ export function applyEdit(rule, edit, path, index = 0) {
   switch (edit) {
   case 'addStep': list.push(newStep()); break;
   case 'addTag': list.push('skill:athletics'); break;
+  case 'addLevelTag': list.push('self:level>=1'); break;
   case 'addChoice': list.push({ label: '', steps: [] }); break;
   case 'remove': list.splice(index, 1); break;
   case 'up':
@@ -409,7 +420,9 @@ export function applyEdit(rule, edit, path, index = 0) {
 /** The live summary line shown above the form. */
 /** The prerequisites form (rules/prerequisites.mjs): the condition picker on its own. */
 export function prerequisitesFormHtml(value, context = {}) {
-  return `${fieldsHtml([{ path: 'when', kind: 'tags', label: 'PrereqWhen' }], value, '', value, context)}${tagDatalists(context)}`;
+  // A level requirement is common enough for its own button (the row reads "level is at least [n]").
+  const addLevel = `<a class="e20-editor-add" data-edit="addLevelTag" data-path="when"><i class="fas fa-plus"></i> ${escape(fieldLabel('AddLevel'))}</a>`;
+  return `${fieldsHtml([{ path: 'when', kind: 'tags', label: 'PrereqWhen' }], value, '', value, context)}${addLevel}${tagDatalists(context)}`;
 }
 
 export function previewLine(rule) {

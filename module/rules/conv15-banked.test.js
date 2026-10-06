@@ -242,18 +242,20 @@ test('every banked-part rule validates', () => {
 });
 
 describe('rollVsEach area and synthetic-damage Uses', () => {
-  test('Avalanche Stomp: 1 Personal Power, everyone within 30 ft; a hit Stuns, a Critical Success also knocks Prone', async () => {
+  // Book check (effects): a hit deals Stun 2 (the damage type), not the Stunned Condition.
+  test('Avalanche Stomp: 1 Personal Power, everyone within 30 ft; a hit deals Stun 2, a Critical Success also knocks Prone', async () => {
     const brute = makeActor('Brute', FILES.avalancheStomp);
-    const near = makeActor('Near', [], { x: 20, disposition: -1 });
-    const crit = makeActor('Crit', [], { x: 25 });
+    const near = makeActor('Near', [], { x: 20, disposition: -1, system: { stun: { value: 0 } } });
+    const crit = makeActor('Crit', [], { x: 25, system: { stun: { value: 0 } } });
     const far = makeActor('Far', [], { x: 40, disposition: -1 });
     scene(brute, near, crit, far);
     rolls.rows = others => others.map(other => ({ targetUuid: other.uuid, success: true, multiplier: other === crit ? 2 : 1 }));
     await runUse(itemNamed(brute, 'Avalanche Stomp'), pay);
     expect(rollVsMany).toHaveBeenCalledWith(brute, 'athletics', [near, crit], 'toughness');
     expect(brute.system.powers.personal.value).toBe(2);
-    expect([...near.statuses]).toEqual(['stunned']);
-    expect([...crit.statuses].sort()).toEqual(['prone', 'stunned']);
+    expect([near.system.stun.value, crit.system.stun.value]).toEqual([2, 2]);
+    expect(near.statuses.has('prone')).toBe(false);
+    expect(crit.statuses.has('prone')).toBe(true);
     expect(far.statuses.size).toBe(0);
   });
 
@@ -321,7 +323,8 @@ describe('Tender: the Empathy Perk\'s chosen Skill against Willpower', () => {
 });
 
 describe("Your Safety's On", () => {
-  test('a success banks a Snag on the enemy\'s next test; a Critical Success in a combat marks it until the end of next round', async () => {
+  // Book check follow-ups 2026-10-06: the Critical Success mark lasts until the end of YOUR next turn (QGtG p.31).
+  test('a success banks a Snag on the enemy\'s next test; a Critical Success in a combat marks it until the end of your next turn', async () => {
     const officer = makeActor('Officer', FILES.yourSafetysOn);
     const plain = makeActor('Plain', [], { x: 10, disposition: -1 });
     const flustered = makeActor('Flustered', [], { x: 10, disposition: -1 });
@@ -333,7 +336,7 @@ describe("Your Safety's On", () => {
     expect(rollVsMany).toHaveBeenCalledWith(officer, 'deception', [plain, flustered], 'cleverness');
     expect(plain.flags.essence20.ruleBank).toEqual([expect.objectContaining({ snag: true })]);
     expect(flustered.flags.essence20.ruleBank).toBeUndefined();
-    expect(flustered.flags.essence20.ruleMarks.yourSafetysOn).toEqual(expect.objectContaining({ by: officer.uuid, until: 'endOfNextRound' }));
+    expect(flustered.flags.essence20.ruleMarks.yourSafetysOn).toEqual(expect.objectContaining({ by: officer.uuid, until: 'endOfNextTurn' }));
   });
 
   test('a Critical Success out of combat is the plain Snag; the mark Snags the marked creature\'s own attacks', async () => {
@@ -424,14 +427,17 @@ describe('rolled Skill dice (@skillDie)', () => {
     expect(bankedEntries(ranger)).toEqual([]);
   });
 
-  test('Resilience: 1 Personal Power, its Athletics die on every Defense, used up by the first attack', async () => {
-    const ranger = makeActor('Ranger', FILES.resilience, { system: { skills: { athletics: { shift: '2d8' } } } });
+  // Book check 2026-10-06 (docs/rules-batches/book-costs.md): only while Morphed.
+  // Book check 2026-10-06 (docs/rules-batches/book-durations.md): every incoming attack until the start of your next turn.
+  test('Resilience: 1 Personal Power while Morphed, its Athletics die on every Defense against every attack until your next turn', async () => {
+    const ranger = makeActor('Ranger', FILES.resilience, { system: { isMorphed: true, skills: { athletics: { shift: '2d8' } } } });
     scene(ranger);
     jest.spyOn(Math, 'random').mockReturnValue(0);
     await runUse(itemNamed(ranger, 'Resilience'), pay);
     expect(ranger.system.powers.personal.value).toBe(2);
     expect(await bankedDefense(ranger, 'willpower')).toBe(2);
-    expect(await bankedDefense(ranger, 'toughness')).toBe(0);
+    expect(await bankedDefense(ranger, 'toughness')).toBe(2);
+    expect(ranger.flags.essence20.ruleBank[0]).toMatchObject({ persist: true, until: 'nextTurnOrScene' });
   });
 
   test('Surface Read: a Story Point, then its Alertness die says how many questions', async () => {
@@ -739,12 +745,16 @@ describe('Vehicle Perks (pilotedVehicleOrTarget)', () => {
     const ask = async (step, options) => (asked++ == 0 ? options.findIndex(o => o.label.startsWith('Free')) : options.findIndex(o => o.label == 'Harden Armor'));
     await runUse(itemNamed(engineer, 'Jury Rig'), pay, { ask });
     expect(engineer._dice.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ skill: 'technology', dif: '16' }), engineer);
-    expect(other.flags.essence20.pendingJuryRigBenefit).toEqual({ option: 'hardenArmor', expiresRound: 3 });
+    // Book check 2026-10-06 (docs/rules-batches/book-limits.md): once per turn; the Standard version once per scene and
+    // stamped with the scene it ends with.
+    expect(other.flags.essence20.pendingJuryRigBenefit).toEqual({ option: 'hardenArmor', expiresRound: 3, scene: 0 });
+    global.game.combat = { id: 'c1', started: true, round: 2, turn: 1, turns: [] };
     asked = 0;
     const standard = async (step, options) => (asked++ == 0 ? options.findIndex(o => o.label.startsWith('Standard')) : options.findIndex(o => o.label == 'Clean Barrels'));
     await runUse(itemNamed(engineer, 'Jury Rig'), pay, { ask: standard });
-    expect(other.flags.essence20.pendingJuryRigBenefit).toEqual({ option: 'cleanBarrels', expiresRound: 999999 });
-    expect(engineer.flags.essence20.juryRigUsedThisSceneAsStandardAction).toEqual(expect.objectContaining({ window: 'encounter', count: 1 }));
+    expect(other.flags.essence20.pendingJuryRigBenefit).toEqual({ option: 'cleanBarrels', expiresRound: 999999, scene: expect.any(Number) });
+    expect(other.flags.essence20.pendingJuryRigBenefit.scene).toBeGreaterThan(0);
+    expect(engineer.flags.essence20.juryRigUsedThisSceneAsStandardAction).toEqual(expect.objectContaining({ window: 'scene', count: 1 }));
   });
 
   test('Improvise Armor: temporary Health = (total - 10) / 5 rounded down, never below 0; once per scene', async () => {
@@ -1214,7 +1224,7 @@ describe('Smashmouth Offense', () => {
 
 describe('Stand Behind Me!', () => {
   test("1 Personal Power stamps the taunt the taunt reader keys on (this combat's round; nulls out of combat)", async () => {
-    const ranger = makeActor('Ranger', FILES.standBehindMe);
+    const ranger = makeActor('Ranger', FILES.standBehindMe, { system: { isMorphed: true } });
     scene(ranger);
     const item = itemNamed(ranger, 'Stand Behind Me!');
     global.game.combat = { id: 'c1', started: true, round: 3, turn: 1, turns: [], combatants: { contents: [] } };
@@ -1279,7 +1289,7 @@ describe('Grid Surge', () => {
 
 describe('Mysterious Aura', () => {
   test('1 Personal Power: the picked aura (and, for Protective, its Defense) goes in the flag the aura readers use', async () => {
-    const ranger = makeActor('Ranger', FILES.mysteriousAura);
+    const ranger = makeActor('Ranger', FILES.mysteriousAura, { system: { isMorphed: true } });
     scene(ranger);
     const item = itemNamed(ranger, 'Mysterious Aura');
     dialogAnswers('evasion');

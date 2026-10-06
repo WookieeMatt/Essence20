@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
     "rules": [
-      {"type":"ItemModifier","label":"Range doubled (Aerodynamics)","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.range.value>0","item:data:_source.system.range.value>0"],"path":"system.range.value","op":"multiply","value":2},
-      {"type":"ItemModifier","label":"Long range doubled (Aerodynamics)","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.range.value>0","item:data:_source.system.range.value>0","item:data:system.range.long>0"],"path":"system.range.long","op":"multiply","value":2}
+      {"type":"ItemModifier","label":"Range doubled (Aerodynamics)","stacks":true,"items":["item:type:weaponEffect","item:onHost",{"any":["item:weaponType:grenades","item:weaponType:thrown"]},"item:data:system.range.value>0","item:data:_source.system.range.value>0"],"path":"system.range.value","op":"multiply","value":2},
+      {"type":"ItemModifier","label":"Long range doubled (Aerodynamics)","stacks":true,"items":["item:type:weaponEffect","item:onHost",{"any":["item:weaponType:grenades","item:weaponType:thrown"]},"item:data:system.range.value>0","item:data:_source.system.range.value>0","item:data:system.range.long>0"],"path":"system.range.long","op":"multiply","value":2}
     ],
     "prerequisites": {"when":[{"any":["ask:Grenade","host:trait:thrown"]}]},
     "automation": {

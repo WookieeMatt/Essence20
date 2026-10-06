@@ -1171,15 +1171,25 @@ const HANDLERS = {
 
     for (const actor of recipients(step, ctx)) {
       const { needsGmRelay, relayToGm } = await import("../mechanics/world/gm-relay.mjs");
-      if (needsGmRelay(actor) && rounds) {
+      // until: nextTurn | endOfNextTurn (+ untilOf) - ends with the holder's (or recipient's) next turn (book check
+      // 2026-10-06, durations: timed-status.mjs#turnBoundTiming); not in the turn order: 1 round.
+      let timing = null;
+      let roundsHere = rounds;
+      if (step.until) {
+        const { turnBoundTiming } = await import("../mechanics/combat/timed-status.mjs");
+        timing = typeof turnBoundTiming == 'function' ? turnBoundTiming(step.until, untilActor(step, ctx, actor)) : null;
+        roundsHere = timing || rounds ? rounds : 1;
+      }
+
+      if (needsGmRelay(actor) && (roundsHere || timing)) {
         // Through the GM with its rounds (react/core.mjs's status op runs applyTimedCondition there).
         const { gmDo } = await import("../mechanics/combat/reaction-engine.mjs");
-        await gmDo({ kind: 'status', uuid: actor.uuid, status: condition, rounds }, null, ctx.actor);
+        await gmDo({ kind: 'status', uuid: actor.uuid, status: condition, rounds: roundsHere, ...(timing ? { timing } : {}) }, null, ctx.actor);
       } else if (needsGmRelay(actor)) {
         await relayToGm(actor, 'toggleStatusEffect', [condition, { active: true }]);
       } else {
         const { applyTimedCondition } = await import("../mechanics/combat/timed-status.mjs");
-        await applyTimedCondition(actor, condition, rounds);
+        await (timing ? applyTimedCondition(actor, condition, roundsHere, timing) : applyTimedCondition(actor, condition, roundsHere));
       }
 
       ctx.chat.push(T('Condition', { name: escape(actor.name), condition: escape(condition) }));
@@ -2122,6 +2132,11 @@ export function stepErrors(steps, path = 'steps') {
 
     if (step.until && !isValidUntil(step.until)) {
       errors.push(`${where}: until must be ${UNTIL.join(', ')} or rounds:N`);
+    }
+
+    // A Condition's until ends with a creature's next turn (book check 2026-10-06, durations).
+    if (step.do == 'applyCondition' && step.until && !['nextTurn', 'endOfNextTurn', 'nextTurnOrScene', 'endOfNextTurnOrScene'].includes(step.until)) {
+      errors.push(`${where}: applyCondition until must be nextTurn or endOfNextTurn`);
     }
 
     if (['essenceDamage', 'healEssence'].includes(step.do) && (step.do == 'essenceDamage' || step.essence)

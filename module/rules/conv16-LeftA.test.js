@@ -594,7 +594,9 @@ describe('Growl and Get The Horns', () => {
     expect(actor._dice.rollSkill).toHaveBeenCalled();
   });
 
-  test('a hit on the first row marks the target; the next attack on it gets ↑1 (using up only this Growler\'s mark); Get The Horns re-marks on a melee hit', async () => {
+  // Book check (effects): Growl's ↑1 covers every attack on the target for the rest of the turn - the mark lasts the turn
+  // and no attack uses it up.
+  test('a hit on the first row marks the target for this turn; every attack on it gets ↑1; Get The Horns re-marks on a melee hit', async () => {
     const actor = makeActor([packItem('growl'), packItem('horns')], { id: 'warthog' });
     const other = makeActor([], { id: 'boar' });
     const foe = makeActor([], { name: 'Foe' });
@@ -603,16 +605,17 @@ describe('Growl and Get The Horns', () => {
     await fireTriggers(actor, 'hit', { roll: { dataset: { isGrowl: true } }, outcome: 'success', targets: [foe], facts: { results: [{ success: true }] }, vars: { row: 1 } });
     expect(foe.flags.essence20.ruleMarks).toBeUndefined();
     await fireTriggers(actor, 'hit', { roll: { dataset: { isGrowl: true } }, outcome: 'success', targets: [foe], facts: { results: [{ success: true }] }, vars: { row: 0 } });
-    expect(foe.flags.essence20.ruleMarks['growl--warthog']).toEqual(expect.objectContaining({ by: actor.uuid, until: 'combat' }));
+    expect(foe.flags.essence20.ruleMarks['growl--warthog']).toEqual(expect.objectContaining({ by: actor.uuid, until: 'endOfTurn' }));
     foe.flags.essence20.ruleMarks['growl--boar'] = { by: other.uuid, until: null };
     const melee = attack(actor);
     const { sources, consumes } = ruleRollSources(actor, foe, { item: melee });
     expect(sources).toEqual([expect.objectContaining({ label: 'Growl', shiftUp: 1, key: 'growl' })]);
     expect(ruleRollSources(actor, makeActor(), { item: melee }).sources).toEqual([]);
     expect(ruleRollSources(actor, foe, { rolledSkill: 'persuasion' }).sources).toEqual([]);
-    const { consumeOwnMark } = await import('./plugins/rolls/once-per-roll.mjs');
-    await consumeOwnMark(consumes.find(consume => consume.ext == 'rulesMarkOwn'));
-    expect(Object.keys(foe.flags.essence20.ruleMarks)).toEqual(['growl--boar']);
+    expect(consumes.find(consume => consume.ext == 'rulesMarkOwn')).toBeUndefined();
+    game.combat.turn = 1;
+    expect(ruleRollSources(actor, foe, { item: melee }).sources).toEqual([]);
+    game.combat.turn = 0;
     // Get The Horns: a melee hit with Growl's ↑ on the roll - the first such hit marks again.
     const once = new Set();
     const second = makeActor();

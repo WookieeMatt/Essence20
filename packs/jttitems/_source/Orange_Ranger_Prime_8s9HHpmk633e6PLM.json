@@ -7,7 +7,7 @@
   "system": {
     "rules": [
       {"type":"RollModifier","label":"Orange Ranger Prime","scope":"incoming","late":true,"snag":true,"when":["defense:cleverness"]},
-      {"type":"Use","label":"Orange Ranger Prime (regain 2d2 Personal Power)","limit":{"per":"encounter"},"steps":[{"do":"updateActor","to":"self","add":{"system.powers.personal.value":"2d2"}}]}
+      {"type":"Use","label":"Orange Ranger Prime (regain 2d2 Personal Power)","limit":{"per":"scene"},"steps":[{"do":"updateActor","to":"self","add":{"system.powers.personal.value":"2d2"}}]}
     ],
     "automation": {
       "status": "full",

@@ -53,14 +53,15 @@ describe('durations: endOfNextTurn, rounds:N, turnOrScene / roundOrScene', () =>
     expect(stampFor('endOfNextTurn', null, combat.b)).toBeNull();
   });
 
-  test('rounds:N ends at the same point in the order N rounds on; out of combat it lasts the scene', () => {
+  test('rounds:N ends at the same point in the order N rounds on; out of combat 6 seconds a round, or the scene', () => {
     const combat = combatAt(2, 1);
     const entry = { until: 'rounds:2', stamp: stampFor('rounds:2', combat) };
     expect(isExpired(entry, { ...combat, round: 4, turn: 0 })).toBe(false);
     expect(isExpired(entry, { ...combat, round: 4, turn: 1 })).toBe(true);
     expect(isExpired(entry, { ...combat, id: 'other' })).toBe(true);
+    // Out of combat (book check 2026-10-06): a round is 6 seconds of game time; the scene ending also ends it.
     const outOfCombat = { until: 'rounds:2', stamp: stampFor('rounds:2', null) };
-    expect(outOfCombat.stamp).toEqual({ epoch: 1 });
+    expect(outOfCombat.stamp).toEqual({ oocRounds: 2, time: 0, sceneEpoch: 1 });
     expect(isExpired(outOfCombat, null)).toBe(false);
     epoch = 2;
     expect(isExpired(outOfCombat, null)).toBe(true);

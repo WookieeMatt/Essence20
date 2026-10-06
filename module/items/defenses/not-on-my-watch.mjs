@@ -1,32 +1,15 @@
 import { getNearbyAllyTokens } from "../../mechanics/combat/nearby-allies.mjs";
-import { actorHasPerk } from "../../mechanics/characters/perks.mjs";
 
 /**
  * Not On My Watch (Factions in Action Vol. 2: Intercontinental Adventures, Oktober Guard General
- * Perk, p.95): "If a member of your unit that you can see gains the Defeated Condition, you can
- * immediately Move your Ground Movement towards them. You gain +1 Toughness and +1 Evasion while
- * a Defeated teammate is within your Reach."
+ * Perk, p.95): an ally gaining the Defeated Condition lets you move toward them at once, and you
+ * get +1 Toughness and Evasion while a Defeated teammate is within your Reach.
  *
- * The first clause ("immediately Move towards a newly-Defeated ally") is a reaction to a
- * Condition being applied to someone ELSE - the "an ally's own Health just crossed to 0" hook
- * this project has repeatedly flagged as missing (Fe-BURN!, Defender Step, Projectile Deflector,
- * etc.). The ordinary Health-loss case is the item's own droppedToZero watch Trigger (a button
- * granting the Move); mechanics/combat/combat.mjs#applyDamage calls grantNotOnMyWatchReaction()
- * below ONLY for the Stun-crosses-remaining-Health Defeat, which leaves Health alone and so never
- * fires droppedToZero (audit fix 2026-10-07 - the Health branch used to call it too, a double).
- *
- * "You can see" has no visibility check to hook (same unenforceable-narrative-precondition idiom
- * already accepted throughout this project) - approximated as "anywhere on the scene," the same
- * Infinity-radius idiom Field Aid's own hasNearbyDefeatedAlly already established for an
- * identical "no way to verify LOS/direction" gap.
- *
- * "You can immediately Move your Ground Movement towards them" has no action-economy or
- * token-movement-execution concept to grant into (this system has none, for any Perk) - the
- * closest honest automation is a chat prompt telling the eligible player their reaction is
- * available, same as every other movement-granting Perk in this codebase already settles for.
- * Actually moving the token remains the player's own action.
+ * The "move toward them" half is the item's own watch Triggers (a button granting the Move): one on
+ * droppedToZero (Health reaching 0) and one on defeatedByStun (Stun reaching the remaining Health -
+ * mechanics/combat/combat.mjs#applyDamage fires it, rules/plugins/book/effects.mjs). The Defense half
+ * is a Defense rule reading check:defeatedAllyInReach, answered by hasDefeatedAllyInReach below.
  */
-const NOT_ON_MY_WATCH_ID = "Compendium.essence20.intercontinental_adventures.Item.xH3iQ0NcXp1eFO35";
 const REACH_FEET = 5;
 
 /**
@@ -36,26 +19,4 @@ const REACH_FEET = 5;
  */
 export function hasDefeatedAllyInReach(actor) {
   return getNearbyAllyTokens(actor, REACH_FEET).some(token => token.actor?.statuses?.has('defeated'));
-}
-
-/**
- * Called from combat.mjs#applyDamage the moment a Stun hit Defeats defeatedActor (Stun reaching
- * its remaining Health) - the Health-to-0 case is the item's droppedToZero Trigger.
- * Posts a chat prompt for every nearby ally holding Not On My Watch, letting that player know
- * they can now move their own token towards defeatedActor.
- * @param {Actor} defeatedActor The actor who was just Defeated.
- */
-export async function grantNotOnMyWatchReaction(defeatedActor) {
-  const reactors = getNearbyAllyTokens(defeatedActor, Infinity)
-    .map(token => token.actor)
-    .filter(actor => actor && actorHasPerk(actor, NOT_ON_MY_WATCH_ID));
-
-  for (const reactor of reactors) {
-    ChatMessage.create({
-      content: game.i18n.format('E20.NotOnMyWatchReactionPrompt', {
-        reactor: reactor.name, ally: defeatedActor.name,
-      }),
-      speaker: ChatMessage.getSpeaker({ actor: reactor }),
-    });
-  }
 }

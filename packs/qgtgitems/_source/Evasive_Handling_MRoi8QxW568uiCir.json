@@ -8,13 +8,12 @@
     "rules": [
       {"type":"Use","when":["self:type:vehicle"],"cost":{"action":"free"},"steps":[{"do":"setToggle","key":"evasive"},{"do":"updateActor","to":"self","set":{"flags.essence20.evasiveManeuversActive":true},"when":["self:toggle:evasive"]},{"do":"updateActor","to":"self","set":{"flags.essence20.evasiveManeuversActive":false},"when":["not:self:toggle:evasive"]},{"do":"chat","text":"{name} handles evasively: Movement halved, attacks against it target Evasion.","when":["self:toggle:evasive"]},{"do":"chat","text":"{name} stops handling evasively.","when":["not:self:toggle:evasive"]}]},
       {"type":"Movement","label":"Evasive Handling (Ground halved)","movement":"ground","op":"multiply","value":0.5,"round":"floor","stage":"afterDerived","when":["self:type:vehicle","self:toggle:evasive"]},
-      {"type":"Movement","label":"Evasive Handling (Aerial halved)","movement":"aerial","op":"multiply","value":0.5,"round":"floor","stage":"afterDerived","when":["self:type:vehicle","self:toggle:evasive"]},
       {"type":"Movement","label":"Evasive Handling (Aquatic halved)","movement":"swim","op":"multiply","value":0.5,"round":"floor","stage":"afterDerived","when":["self:type:vehicle","self:toggle:evasive"]}
     ],
     "prerequisites": {"when":["self:essence:speed>=4"]},
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: as a Free action, halve the vehicle's Movement so attacks against it must target Evasion until the driver's next turn. Press again to switch it off.</p>"
+      "notes": "<p>Use button: as a Free action, halve the vehicle's Movement (once, rounded down) so attacks against it must target Evasion until the driver's next turn. Press again to switch it off.</p>"
     },
     "originalId": "",
     "description": "",

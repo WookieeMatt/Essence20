@@ -6,12 +6,12 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Give your deployed Mini-Cons their orders (Loyal Minions)","cost":{"action":"free"},"steps":[{"do":"choose","beforeCost":true,"prompt":"Command or Leadership?","options":[{"label":"Intimidation (Command)","steps":[{"do":"setVar","key":"skill","value":"intimidation"}]},{"label":"Persuasion (Leadership)","steps":[{"do":"setVar","key":"skill","value":"persuasion"}]}]},{"do":"roll","skill":"{var.skill}","dif":10,"onSuccess":[{"do":"setToggle","key":"orders","value":true,"until":"endOfRound"},{"do":"chat","text":"{name}'s Mini-Cons have their orders (↑1 this round)."}],"onFail":[{"do":"chat","text":"{name}'s orders don't land."}]}]},
+      {"type":"Use","label":"Give your deployed Mini-Cons their orders (Loyal Minions)","cost":{"action":"free"},"steps":[{"do":"choose","beforeCost":true,"prompt":"Command or Leadership?","options":[{"label":"Intimidation (Command)","steps":[{"do":"setVar","key":"skill","value":"intimidation"}]},{"label":"Persuasion (Leadership)","steps":[{"do":"setVar","key":"skill","value":"persuasion"}]}]},{"do":"roll","skill":"{var.skill}","dif":10,"onSuccess":[{"do":"setToggle","key":"orders","value":true,"until":"nextTurnOrScene"},{"do":"chat","text":"{name}'s Mini-Cons have their orders (↑1 until your next turn)."}],"onFail":[{"do":"chat","text":"{name}'s orders don't land."}]}]},
       {"type":"RollModifier","label":"Loyal Minions","scope":"companion","upshift":1,"when":["self:data:system.type=miniCon","self:toggle:orders"]}
     ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: pick Intimidation or Persuasion and roll against DIF 10 as a Free action; on a success your Mini-Cons get ↑1 on their rolls for the rest of the round. Left to the table: which of their tests relate to your orders.</p>"
+      "notes": "<p>Use button: pick Intimidation or Persuasion and roll against DIF 10 as a Free action; on a success your Mini-Cons get ↑1 on their rolls until the start of your next turn (out of combat, the scene). Left to the table: which of their tests relate to your orders.</p>"
     },
     "originalId": "",
     "description": "",

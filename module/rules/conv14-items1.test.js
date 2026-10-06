@@ -361,21 +361,24 @@ describe('Reach (weapon-effect.mjs used to double it)', () => {
     expect([claw.system.totalReach, held.system.totalReach, spit.system.totalReach, pike.system.totalReach]).toEqual([10, 5, 5, 15]);
   });
 
-  test('Extended Attack: the Use switches Melee Reach x2 on and off, with the old chat lines', async () => {
+  // Book check 2026-10-06 (docs/rules-batches/book-durations.md): a Move action, lasting until your next turn starts.
+  // Book check follow-ups 2026-10-06: ONE picked Melee weapon (the pick and its doubling: book-followups.test.js).
+  test('Extended Attack: a Move action doubles a picked Melee weapon\'s Reach until your next turn (out of combat, the scene)', async () => {
     const perk = packItem('extendedAttack');
     const actor = makeActor([perk]);
     const sword = effect(actor, { totalReach: 5, parentId: 'w1' });
     const gun = effect(actor, { style: 'projectile', totalReach: 5 });
-    ruleDerived(actor);
-    expect(sword.system.totalReach).toBe(5);
-    expect(await use(perk)).toContain('extends their reach');
-    expect(pay).not.toHaveBeenCalled();
+    // Picked (the weapon w1), switched on until the next turn.
+    perk.flags.essence20.rules = { choices: { extended: 'w1' }, toggles: { on: true }, toggleUntil: { on: { until: 'nextTurnOrScene', stamp: { epoch: 1 } } } };
+    rebuildIndex(actor);
     ruleDerived(actor);
     expect([sword.system.totalReach, gun.system.totalReach]).toEqual([10, 5]);
-    expect(await use(perk)).toContain('returns to normal');
+    global.game.settings = { ...global.game.settings, get: () => 2 };
     sword.system.totalReach = 5;
     ruleDerived(actor);
     expect(sword.system.totalReach).toBe(5);
+    const [use] = perk.system.rules;
+    expect([use.cost, use.steps[0].do, use.steps[0].from, use.steps[1].until]).toEqual([{ action: 'move' }, 'pick', 'ownedItem', 'nextTurnOrScene']);
   });
 });
 
@@ -430,7 +433,8 @@ describe('hits', () => {
     const actor = makeActor([packItem('deconstructionist')]);
     expect(ruleDialogSwitches(actor, { rolledSkill: 'technology' }).some(s => /Deconstructionist/.test(s.label))).toBe(true);
     expect(ruleDialogSwitches(actor, { rolledSkill: 'athletics' }).some(s => /Deconstructionist/.test(s.label))).toBe(false);
-    const target = makeActor([], { name: 'Tank' });
+    // A vehicle: every test it makes (a creature's: only those using the picked equipment - book-followups.test.js).
+    const target = makeActor([], { name: 'Tank', type: 'vehicle' });
     await hit(actor, target, { rolledSkill: 'technology', switches: ['deconstructionist'] }, [{ success: true }]);
     expect(bankedEntries(target)).toHaveLength(1);
     expect(bankedSources(target, null, { rolledSkill: 'athletics' }).sources[0]).toMatchObject({ snag: true });
@@ -548,10 +552,10 @@ describe('Uses', () => {
     await fireTriggers(actor, 'afterRoll', { roll: { item: hitWith, isAttack: true, isMelee: true }, outcome: 'success', facts: { results: [{ success: true }] } });
     expect(markOf(actor, 'chargeItUp')).toBe(false);
 
-    // Not Morphed: the Power is spent first (as the Power's activation did), then refused.
+    // Not Morphed: refused before anything is spent (book check 2026-10-06 - docs/rules-batches/book-costs.md).
     actor.system.isMorphed = false;
     expect(await use(power)).toContain('requires being Morphed');
-    expect(actor.system.powers.personal.value).toBe(1);
+    expect(actor.system.powers.personal.value).toBe(2);
     expect(markOf(actor, 'chargeItUp')).toBe(false);
   });
 
@@ -779,9 +783,11 @@ describe('Uses', () => {
 
   test('Not Dead Yet: +1 Health (bonus and value) once per scene, +2 once per encounter with CSTO Personnel nearby', async () => {
     const perk = packItem('notDeadYet');
-    const actor = makeActor([perk], { system: { health: { value: 5, max: 10, bonus: 0 } } });
+    makeActor([perk], { name: 'Soldier', system: { health: { value: 5, max: 10, bonus: 0 } } });
+    temp.length = 0;
     await use(perk);
-    expect(actor.system.health).toMatchObject({ value: 6, bonus: 1 });
+    // Book check follow-ups 2026-10-06: temporary Health that goes with the scene (the temporary-resources ledger).
+    expect(temp).toEqual([expect.objectContaining({ name: 'Soldier', kind: 'health', amount: 1 })]);
     expect(available(perk)).toBe(false);
   });
 
@@ -914,25 +920,8 @@ describe('Defenses and resistances', () => {
     expect(rule).toMatchObject({ event: 'initiativeRolling', steps: [{ do: 'heal', amount: 1, temporary: true, tracked: true, untilDamage: true, to: 'allies:30' }] });
   });
 
-  test('Weapon Implant: a successful Technology roll at DIF 14 / 18 (Major Augments) / 20 (Extensive Enhancements) grafts a weapon of that tier', async () => {
-    CATALOG.push({ uuid: 'Compendium.essence20.x.Item.blade', name: 'Arm Blade', type: 'weapon', system: { availability: 'standard', traits: [] } },
-      { uuid: 'Compendium.essence20.x.Item.nade', name: 'Grenade', type: 'weapon', system: { availability: 'standard', traits: ['consumable'] } },
-      { uuid: 'Compendium.essence20.x.Item.gun', name: 'Arm Gun', type: 'weapon', system: { availability: 'limited', traits: [] } });
-    const actor = makeActor([packItem('weaponImplant')]);
-    const roll = (dif, skill = 'technology') => fireTriggers(actor, 'afterRoll', { roll: { rolledSkill: skill }, outcome: 'success', facts: { results: [{ success: true }] }, vars: { dif } });
-    await roll(14, 'science');
-    await roll(18);
-    expect(offered).toEqual([]);
-    picks = ['Arm Blade'];
-    await roll(14);
-    expect(offered[0]).toEqual(['Arm Blade']);
-    expect(actor.items.contents.some(item => item.name == 'Arm Blade')).toBe(true);
-    actor.items.contents.push(Object.assign(sourced('0XjyYHChhc0VStRn', { name: 'Major Augments' }), { parent: actor }));
-    rebuildIndex(actor);
-    picks = ['Arm Gun'];
-    await roll(18);
-    expect(offered[1]).toEqual(['Arm Gun']);
-  });
+  // (Weapon Implant is a once-per-mission Use button that rolls its own test now - book check 2026-10-06:
+  // rules/book-limits.test.js.)
 
   test('Sneak Attack (Force Recon): an attack switch adding a Commando\'s sneak attack damage of the actor\'s level', () => {
     const actor = makeActor([packItem('sneakAttack')]);

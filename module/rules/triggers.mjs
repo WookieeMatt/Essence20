@@ -470,6 +470,8 @@ export async function sweepExpired(actor) {
   const items = actor?.items?.contents ?? [...(actor?.items ?? [])];
   const ids = items.filter(item => item.flags?.essence20?.rulesExpiry && isExpired(item.flags.essence20.rulesExpiry)).map(item => item.id);
   if (ids.length && actor.isOwner) {
+    // An Alteration that runs out takes back what its drop wrote onto the actor (book check follow-ups: Beast Mode).
+    await (await import("./plugins/book/followups.mjs")).undoAlterations(actor, ids);
     await actor.deleteEmbeddedDocuments('Item', ids);
   }
 

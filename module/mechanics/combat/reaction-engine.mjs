@@ -417,7 +417,8 @@ export async function runOp(op) {
       await actor.toggleStatusEffect(op.status, { active: false });
     } else {
       const { applyTimedCondition } = await import("./timed-status.mjs");
-      await applyTimedCondition(actor, op.status, op.rounds ?? 0);
+      // op.timing: a Condition ending with a creature's next turn (rules applyCondition until - book check 2026-10-06).
+      await (op.timing ? applyTimedCondition(actor, op.status, op.rounds ?? 0, op.timing) : applyTimedCondition(actor, op.status, op.rounds ?? 0));
     }
 
     break;

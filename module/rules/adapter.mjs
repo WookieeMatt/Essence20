@@ -465,10 +465,11 @@ export async function applyRuleSwitches(actor, options, ctx = {}) {
     }
   }
 
-  // Ticked switches' damage joins the attack's own damage bonus (dice.mjs damageBonusValue).
+  // Ticked switches' damage joins the attack's own damage bonus (dice.mjs damageBonusValue). @rolled.<path> reads the
+  // item the roll is made with (Penetrating Shot: the weapon's damage once more per extra Volley shot).
   for (const entry of on) {
     const damage = entry.rule.type == 'DialogSwitch' && entry.rule.damage
-      ? Math.round(resolveValue(entry.rule.damage, { actor: entry.owner, item: entry.item, vars: { spent: entry.spent ?? 0 } }, 0)) : 0;
+      ? Math.round(resolveValue(entry.rule.damage, { actor: entry.owner, item: entry.item, vars: { spent: entry.spent ?? 0 }, rolled: ctx.item ?? null }, 0)) : 0;
     if (damage) {
       options.ruleDamage = (Number(options.ruleDamage) || 0) + damage;
       options.ruleDamageSources = [...(options.ruleDamageSources ?? []), ruleLabel(entry.rule, entry.item)];

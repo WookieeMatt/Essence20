@@ -61,6 +61,12 @@ function armorShare(defender, defenseType, kind) {
 
 /** What the attacker's ignoreArmor rules take off the defender's Defense for this attack. */
 export function ignoreArmorAdjust(attacker, defender, defenseType, ctx = {}) {
+  // armorIgnored (book check, effects): dice.mjs already worked this attack's Defense out without armor (Armor Piercing,
+  // a noArmor rule...) - armor is only ignored once (Charge It Up! + Armor Piercing).
+  if (ctx.armorIgnored) {
+    return 0;
+  }
+
   let total = 0;
   for (const { rule, item } of rulesOfType(attacker, 'Defense')) {
     // lookup (round 17, split1 - plugins/combat/lookup-armor-points.mjs): taken off at the Defense lookup instead.

@@ -713,13 +713,19 @@ describe('companions', () => {
     expect(hit(keeper)).toEqual([]);
   });
 
+  // Book check (effects): "a target it is grappling" - the pet's own Grapple / Maneuver hit marks what it holds (the old
+  // `grappling` flag was never written).
   test('Constrictor: at its turn start the pet deals 1 Blunt to the grappled creature it holds', async () => {
     const owner = makeActor([], { name: 'Owner' });
     const prey = makeActor([], { name: 'Prey', statuses: ['grappled'] });
+    const bystander = makeActor([], { name: 'Bystander', statuses: ['grappled'] });
     const snake = companion(owner, 'pet', { name: 'Snake', items: [packItem('constrictor')] });
     await fireTriggers(snake, 'turnStart');
     expect(dealt).toEqual([]);
-    snake.flags.essence20.grappling = prey.uuid;
+    const bite = { name: 'Bite', type: 'weaponEffect', system: { damageType: 'sharp' }, flags: {} };
+    await fireTriggers(snake, 'hit', { roll: { item: bite, isAttack: true }, outcome: 'success', targets: [bystander], facts: { results: [{ success: true }] } });
+    const squeeze = { name: 'Squeeze', type: 'weaponEffect', system: { damageType: 'grapple' }, flags: {} };
+    await fireTriggers(snake, 'hit', { roll: { item: squeeze, isAttack: true }, outcome: 'success', targets: [prey], facts: { results: [{ success: true }] } });
     await fireTriggers(snake, 'turnStart');
     expect(dealt).toEqual([{ name: 'Prey', amount: 1, type: 'blunt' }]);
     prey.statuses.clear();
@@ -1698,18 +1704,22 @@ describe('areas and Condition durations', () => {
     expect(wait()).not.toHaveBeenCalled();
     expect(await ruleAreaExclusions(makeActor(), grenade, tokens)).toBe(tokens);
 
+    // Book check (effects): "double damage" doubles the whole row, the flat hit bonuses on it included - a stage "late"
+    // HitMultiplier (the row's 3 here stands for 2 damage + a +1 rider), not the early one that left those out.
     const notes = [];
-    const hit = (victim, item) => {
-      const result = { damageValue: 3 };
-
-      hitMultiplierOnAttack(actor, victim, result, { itemUuid: item.uuid, style: item.system.classification.style }, { damageBonusNote: (r, amount, label) => notes.push([victim.name, amount, label]) });
+    hitMultiplierOnAttack(actor, makeActor([], { name: 'Wall', system: { creatureTags: 'wall' } }), { damageValue: 3 }, { itemUuid: grenade.uuid, style: 'explosive' }, { damageBonusNote: (r, amount, label) => notes.push([amount, label]) });
+    expect(notes).toEqual([]);
+    const { applyLateHitMultipliers } = await import('./plugins/combat/card-hit-multiplier.mjs');
+    const row = async (victim, item) => {
+      const results = [{ damageValue: 3, targetUuid: victim.uuid }];
+      await applyLateHitMultipliers(actor, results, { riderContext: { itemUuid: item.uuid, style: item.system.classification.style } });
+      return results[0].damageValue;
     };
 
-    hit(makeActor([], { name: 'Wall', system: { creatureTags: 'wall' } }), grenade);
-    hit(makeActor([], { name: 'Bunker', system: { creatureTags: 'structure' } }), grenade);
-    hit(makeActor([], { name: 'Wall', system: { creatureTags: 'wall' } }), rifle);
-    hit(makeActor([], { name: 'Soldier' }), grenade);
-    expect(notes).toEqual([['Wall', 3, 'Shaped Charges'], ['Bunker', 3, 'Shaped Charges']]);
+    expect(await row(makeActor([], { name: 'Wall', system: { creatureTags: 'wall' } }), grenade)).toBe(6);
+    expect(await row(makeActor([], { name: 'Bunker', system: { creatureTags: 'structure' } }), grenade)).toBe(6);
+    expect(await row(makeActor([], { name: 'Wall', system: { creatureTags: 'wall' } }), rifle)).toBe(3);
+    expect(await row(makeActor([], { name: 'Soldier' }), grenade)).toBe(3);
   });
 
   test('Concentrated Explosion: an explosive area 5 ft bigger / smaller (above 5 ft) or another shape, asked before it is placed', async () => {

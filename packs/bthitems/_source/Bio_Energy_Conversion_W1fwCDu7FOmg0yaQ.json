@@ -6,9 +6,9 @@
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Harness bio-energy for next round","steps":[{"do":"mark","key":"bioEnergyNow","to":"self","until":"endOfRound"},{"do":"mark","key":"bioEnergyNext","to":"self","until":"endOfNextRound"}]},
-      {"type":"RollModifier","label":"Bio-Energy Conversion (↑2)","upshift":2,"when":["attack","self:marked:bioEnergyNext","not:self:marked:bioEnergyNow"]},
-      {"type":"DamageModifier","label":"Bio-Energy Conversion","direction":"dealt","scaled":true,"amount":2,"when":["attack","self:marked:bioEnergyNext","not:self:marked:bioEnergyNow"]}
+      {"type":"Use","label":"Harness bio-energy for your next turn","cost":{"action":"standard"},"steps":[{"do":"mark","key":"bioEnergyWait","to":"self","until":"nextTurnOrScene"},{"do":"mark","key":"bioEnergyNext","to":"self","until":"endOfNextTurnOrScene"}]},
+      {"type":"RollModifier","label":"Bio-Energy Conversion (↑2)","upshift":2,"when":["attack","self:marked:bioEnergyNext","not:self:marked:bioEnergyWait"]},
+      {"type":"DamageModifier","label":"Bio-Energy Conversion","direction":"dealt","scaled":true,"amount":2,"when":["attack","self:marked:bioEnergyNext","not:self:marked:bioEnergyWait"]}
     ],
     "automation": {
       "status": "full",
@@ -17,7 +17,7 @@
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Across the Stars",
+      "book": "Beneath the Helmet",
       "page": 72
     }
   },

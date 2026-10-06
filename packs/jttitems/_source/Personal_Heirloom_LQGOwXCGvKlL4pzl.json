@@ -8,7 +8,7 @@
     "rules": [
       {"type":"DialogSwitch","label":"Using your Heirloom (Personal Heirloom: ↑1)","when":["not:attack","not:rule:data:flags.essence20.rules.choices.heirloom"],"upshift":1},
       {"type":"Use","label":"Choose your Heirloom","when":["self:itemCount:weapon>=1"],"steps":[{"do":"pick","key":"heirloom","from":"ownedItem","itemType":"weapon","filter":["not:item:trait:powerWeapon"],"prompt":"E20.PersonalHeirloomPickLabel","legacy":"actor.flags.essence20.personalHeirloomItemId"},{"do":"chat","text":"{name} names an Heirloom."}]},
-      {"type":"RollModifier","label":"Your Heirloom (Personal Heirloom: ↑1)","upshift":1,"when":["attack","item:picked:heirloom"]}
+      {"type":"RollModifier","label":"Your Heirloom (Personal Heirloom: ↑1)","upshift":1,"when":["attack","rule:data:flags.essence20.rules.choices.heirloom","item:picked:heirloom"]}
     ],
     "automation": {
       "status": "full",

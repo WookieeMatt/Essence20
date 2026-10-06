@@ -830,7 +830,7 @@ export async function consumeForItem(item, { actor = null, bypass = false } = {}
     const chain = ledger.attackChain;
     if (chain?.remaining > 0 && attackMatchesFilter(chain.filter, attack)) {
       ledger.attackChain = { ...chain, remaining: chain.remaining - 1 };
-      ledger.log.push({ id: foundry.utils.randomID(), actionType: 'none', cost: {}, source: `${item.name} (${chain.source})` });
+      ledger.log.push({ id: foundry.utils.randomID(), actionType: 'none', cost: {}, source: `${item.name} (${chain.source})`, attack: true });
       await writeLedger(document, ledger);
       return { ok: true, actionType, spendId: null, cost: {}, shortfall: [], blocked: false, chained: true };
     }
@@ -839,7 +839,7 @@ export async function consumeForItem(item, { actor = null, bypass = false } = {}
     if (bonusIndex >= 0) {
       const [bonus] = ledger.bonusAttacks.splice(bonusIndex, 1);
       await writeLedger(document, ledger);
-      const paid = await spend(roller, bonus.cost ?? 'none', { source: `${item.name} (${bonus.source})` });
+      const paid = await spend(roller, bonus.cost ?? 'none', { source: `${item.name} (${bonus.source})`, logExtra: { attack: true } });
       if (paid.blocked) {
         // Hand the unused bonus back rather than losing it to a refused Free action.
         const restored = getLedger(roller);
@@ -853,8 +853,10 @@ export async function consumeForItem(item, { actor = null, bypass = false } = {}
   }
 
   const snapShotWeapon = !!attack && (attack.size == 'sidearm' || (attack.traits.includes('thrown') && attack.skill == 'finesse'));
+  // attack: the log says an attack was made this turn (self:actionLog:flag:attack - Growing Smolder's "no attacks this turn").
+  const logFacts = { ...(snapShotWeapon ? { snapShotWeapon: true } : {}), ...(isAttack ? { attack: true } : {}) };
   const result = await spend(roller, actionType, {
-    source: item?.name ?? null, bypass, context, logExtra: snapShotWeapon ? { snapShotWeapon: true } : null,
+    source: item?.name ?? null, bypass, context, logExtra: Object.keys(logFacts).length ? logFacts : null,
   });
 
   // This attack took the Attack action: set up the rest of it.

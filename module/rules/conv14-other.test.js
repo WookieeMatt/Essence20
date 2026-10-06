@@ -192,8 +192,8 @@ describe('MLP Light and Heavy Armor', () => {
     }
 
     expect(sources(actor, { rolledSkill: 'might' })).toEqual([]);
-    // Initiative never reached the old penalty (it rolls through prepareInitiativeRoll, not this path).
-    expect(sources(actor, { rolledSkill: 'initiative' })).toEqual([]);
+    // Book check 2026-10-06 (docs/rules-batches/book-limits.md): the MLP CRB puts Initiative under the penalty too.
+    expect(sources(actor, { rolledSkill: 'initiative' })).toEqual([expect.objectContaining({ shiftDown: 1 })]);
     expect(sources(makeActor([worn(FILES.lightArmor, false)]), { rolledSkill: 'athletics' })).toEqual([]);
   });
 
@@ -383,17 +383,20 @@ describe('Read the Land and Adaptation: a toggle on the Environmental Expertise 
     expect(available(holding(FILES.adaptation, { points: 0, active: true }).item).map(({ rule }) => rule.label)).toEqual(['Switch off']);
   });
 
-  test('Adaptation: spends 1 Adaptation Point to switch on (no action), nothing to switch off', async () => {
+  // Book check 2026-10-06 (docs/rules-batches/book-costs.md): switching on is a Free action.
+  test('Adaptation: spends 1 Adaptation Point and a Free action to switch on, nothing to switch off', async () => {
     const { actor, item, rolePoints } = holding(FILES.adaptation, { points: 2 });
     const paid = pay();
     expect(await runUse(item, paid)).toBeTruthy();
     expect(rolePoints.system.resource.value).toBe(1);
     expect(actor.flags.essence20[FLAG]).toBe(true);
-    expect(paid).not.toHaveBeenCalled();
+    expect(paid).toHaveBeenCalledTimes(1);
+    expect(paid).toHaveBeenCalledWith('free');
 
     expect(await runUse(item, paid)).toBeTruthy();
     expect(rolePoints.system.resource.value).toBe(1);
     expect(actor.flags.essence20[FLAG]).toBe(false);
+    expect(paid).toHaveBeenCalledTimes(1);
   });
 });
 

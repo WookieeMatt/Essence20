@@ -273,7 +273,10 @@ describe('Trade School', () => {
     expect(ruleCritD2(ally, null, { ...tech(), rolledSkill: 'might' })).toBe(false);
     // The coach's own Technology tests: its direct rule.
     expect(ruleCritD2(coach, null, tech())).toBe(true);
+    // Book check 2026-10-06 (docs/rules-batches/book-durations.md): it lasts the whole coached scene (the tradeSchool mark).
     await ally.update({ 'flags.essence20.ruleMarks.-=tradeSchoolPending': null });
+    expect(ruleCritD2(ally, null, tech())).toBe(true);
+    await ally.update({ 'flags.essence20.ruleMarks.-=tradeSchool': null });
     expect(ruleCritD2(ally, null, tech())).toBe(false);
   });
 

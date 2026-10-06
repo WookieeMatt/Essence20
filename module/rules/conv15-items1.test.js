@@ -1604,7 +1604,9 @@ describe('Cybernetic Part and its siblings: an Alteration of the tier through th
     expect(available(perk)).toBe(false);
   });
 
-  test('Beast Mode\'s scene copies and an already-granted (old flag) copy hand out nothing', async () => {
+  // Book check (effects): Beast Mode gives "the benefits of" the Mutation Perk for the scene, and that benefit is the
+  // Alteration - so its scene copy picks one too, lasting the scene (no Use button left on the copy).
+  test('Beast Mode\'s scene copy picks an Alteration for the scene; an already-granted (old flag) copy hands out nothing', async () => {
     catalog();
     const beast = packItem('engraftedMutation', { flags: { beastMode: true } });
     const done = packItem('cyberneticPart', { flags: { granted: true } });
@@ -1612,7 +1614,9 @@ describe('Cybernetic Part and its siblings: an Alteration of the tier through th
     picks = ['Claws', 'Claws'];
     await fireItemAdded(actor, beast);
     await fireItemAdded(actor, done);
-    expect(offered).toEqual([]);
+    expect(offered).toEqual([['Claws', 'Gills']]);
+    const made = actor.items.contents.find(item => item.type == 'alteration');
+    expect([made?.name, made?.flags.essence20.grantedBy, made?.flags.essence20.rulesExpiry?.until]).toEqual(['Claws', beast.id, 'scene']);
     expect(available(beast)).toBe(false);
     expect(available(done)).toBe(false);
   });

@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Absolute Menace","cost":{"resource":{"path":"system.powers.personal.value"},"amount":2},"limit":{"per":"turn"},"steps":[{"do":"rollVsEach","skill":"intimidation","defense":"willpower","essence":"social","to":"nearbyEnemies:10","onHit":[{"do":"applyCondition","condition":"frightened","to":"target"}]}]}
+      {"type":"Use","label":"Absolute Menace","cost":{"resource":{"path":"system.powers.personal.value"},"amount":2},"limit":{"per":"turn"},"steps":[{"do":"rollVsEach","skill":"intimidation","defense":"willpower","essence":"social","to":"nearbyEnemies:10","onHit":[{"do":"applyCondition","condition":"frightened","to":"target","until":"endOfNextTurn"}],"dataset":{"absoluteMenace":true}}]}
     ],
     "automation": {
       "status": "full",

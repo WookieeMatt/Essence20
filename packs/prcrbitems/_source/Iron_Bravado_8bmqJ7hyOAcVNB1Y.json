@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"beforeRoll","label":"Iron Bravado (immune to Frightened after attacking)","when":["item:type:weaponEffect"],"steps":[{"do":"mark","key":"ironBravado","to":"self","until":"endOfNextRound","filter":["combat"]},{"do":"mark","key":"ironBravado","to":"self","until":"turnOrUntilCombat","filter":["not:combat"]}]},
+      {"type":"Trigger","event":"beforeRoll","label":"Iron Bravado (immune to Frightened after attacking)","when":["item:type:weaponEffect"],"steps":[{"do":"mark","key":"ironBravado","to":"self","until":"nextTurn","filter":["combat"]},{"do":"mark","key":"ironBravado","to":"self","until":"turnOrUntilCombat","filter":["not:combat"]}]},
       {"type":"ConditionImmunity","label":"Iron Bravado","conditions":["frightened"],"when":["self:marked:ironBravado"]}
     ],
     "automation": {

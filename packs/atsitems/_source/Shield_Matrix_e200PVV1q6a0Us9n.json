@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
     "rules": [
-      {"type":"DerivedStat","label":"Shielded (Shield Matrix)","path":"system.shieldedRating","op":"set","value":"max(2, @item.system.advances.currentValue)","when":["not:self:data:system.shieldedRating>0","not:self:data:system.traits.shielded"]}
+      {"type":"DerivedStat","label":"Shielded (Shield Matrix)","path":"system.shieldedRating","op":"set","value":"min(6, 2 * max(1, @copiesWith.type.feature))","when":["not:self:data:system.shieldedRating>0","not:self:data:system.traits.shielded"]}
     ],
     "automation": {
       "status": "full",

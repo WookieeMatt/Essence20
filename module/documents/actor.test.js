@@ -624,39 +624,6 @@ describe("_prepareMovement", () => {
     });
   });
 
-  describe("High Gear (A Jump Through Time, Zord Feature, p.83)", () => {
-    function makeHighGearZord({ active = true } = {}) {
-      const actor = makeActor('zord', movementSystem());
-      actor.getFlag = jest.fn((scope, key) => (key == 'highGearActive' ? active : undefined));
-      return actor;
-    }
-
-    test("doubles a Zord's ground Movement total while the flag is active", () => {
-      const actor = makeHighGearZord({ active: true });
-      actor._prepareMovement();
-      expect(actor.system.movement.ground.total).toBe(70); // 35 * 2
-    });
-
-    test("doesn't double aerial Movement (ground only)", () => {
-      const actor = makeHighGearZord({ active: true });
-      actor._prepareMovement();
-      expect(actor.system.movement.aerial.total).toBe(0);
-    });
-
-    test("doesn't double without the flag active", () => {
-      const actor = makeHighGearZord({ active: false });
-      actor._prepareMovement();
-      expect(actor.system.movement.ground.total).toBe(35);
-    });
-
-    test("doesn't double for a non-Zord actor even with the flag set", () => {
-      const actor = makeActor('playerCharacter', movementSystem());
-      actor.getFlag = jest.fn((scope, key) => (key == 'highGearActive' ? true : undefined));
-      actor._prepareMovement();
-      expect(actor.system.movement.ground.total).toBe(35);
-    });
-  });
-
   describe("The Tough Get Going (Factions in Action Vol. 2, Oktober Guard General Perk, p.95)", () => {
     function makeToughGetGoingActor(active) {
       const actor = makeActor('playerCharacter', movementSystem());

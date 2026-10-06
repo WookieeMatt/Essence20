@@ -1273,23 +1273,26 @@ describe('action costs that read the turn\'s ledger: self:actionLog, @ledger', (
     const paid = [];
     await runUse(perk, async action => paid.push(action) > 0);
     expect(paid).toEqual([]);
-    target(makeActor('Viper'));
+    const viper = makeActor('Viper');
+    target(viper);
     await runUse(perk, async action => paid.push(action) > 0);
     expect(paid).toEqual(['standard']);
     expect(actor.toggleStatusEffect).toHaveBeenCalledWith('prone', { active: true });
 
     const punch = attack(actor);
-    const down = () => ruleRollSources(actor, null, { item: punch, rolledSkill: 'might', dataset: {} }).sources.reduce((n, s) => n + (Number(s.shiftDown) || 0), 0);
+    // Book check (effects): the ↓ is on the attacks against the boxed-in target only.
+    const down = (other = viper) => ruleRollSources(actor, other, { item: punch, rolledSkill: 'might', dataset: {} }).sources.reduce((n, s) => n + (Number(s.shiftDown) || 0), 0);
     expect((await consumeForItem(punch)).actionType).toBe('free');
     expect(down()).toBe(0);
     expect((await consumeForItem(punch)).actionType).toBe('free');
     expect(getLedger(actor).perkUses.groundAndPound).toBe(2);
     expect(down()).toBe(1);
+    expect(down(makeActor('Bystander'))).toBe(0);
     // An armed attack isn't one of them; the next turn it's over.
     const armed = attack(actor, { traits: [] });
     expect((await consumeForItem(armed)).actionType).toBe('standard');
     combat.turn = 1;
-    expect(ruleRollSources(actor, null, { item: punch, rolledSkill: 'might', dataset: {} }).sources).toEqual([]);
+    expect(ruleRollSources(actor, viper, { item: punch, rolledSkill: 'might', dataset: {} }).sources).toEqual([]);
   });
 });
 

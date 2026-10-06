@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { COMMON_FIELDS, RULE_FORMS, STEP_FORMS, formFor, stepChoices } from './editor-spec.mjs';
-import { applyEdit, composeTag, fieldLabel, fieldsHtml, optionList, previewLine, readInput, ruleFormHtml, tagDatalists, tidy } from './editor-render.mjs';
+import { applyEdit, composeTag, fieldLabel, fieldsHtml, optionList, prerequisitesFormHtml, previewLine, readInput, ruleFormHtml, tagDatalists, tidy } from './editor-render.mjs';
 import { RULE_TYPES } from './types.mjs';
 import { STEP_TYPES } from './steps.mjs';
 import { SKELETONS } from './sheet.mjs';
@@ -169,5 +169,27 @@ describe('reading it back', () => {
     for (const skeleton of Object.values(SKELETONS)) {
       expect(ruleFormHtml(skeleton)).toContain('data-kind="ruleType"');
     }
+  });
+});
+
+describe('the level requirement row', () => {
+  test('self:level>=N shows as a level row and writes back as self:level', () => {
+    expect(composeTag(false, 'level', '5')).toBe('self:level>=5');
+    expect(composeTag(false, 'level', '<=4')).toBe('self:level<=4');
+    expect(composeTag(true, 'level', '')).toBe('not:self:level>=1');
+    const html = fieldsHtml([{ path: 'when', kind: 'tags', label: 'PrereqWhen' }], { when: ['self:level>=12', 'self:level<=4'] }, '', {});
+    expect(html).toMatch(/<option value="level" selected>/);
+    expect(html).toContain('value="12"');
+    expect(html).toContain('value="&lt;=4"');
+    expect(tagDatalists()).toContain('id="e20-tag-args-level"');
+  });
+
+  test('the prerequisites form has an Add level button that adds self:level>=1', () => {
+    expect(prerequisitesFormHtml({ when: [] })).toContain('data-edit="addLevelTag"');
+    const rule = { when: [] };
+    applyEdit(rule, 'addLevelTag', 'when');
+    expect(rule.when).toEqual(['self:level>=1']);
+    readInput(rule, 'when.0', 'tagArg', '7', { not: false, family: 'level', arg: '7' });
+    expect(rule.when).toEqual(['self:level>=7']);
   });
 });

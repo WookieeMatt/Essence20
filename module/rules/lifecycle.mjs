@@ -190,6 +190,8 @@ async function onDeleteItem(item, options, userId) {
     .filter(other => granted.includes(other.flags?.essence20?.parentId) && !granted.includes(other.id)).map(other => other.id);
   const ids = [...granted, ...attached];
   if (ids.length) {
+    // A granted Alteration takes back what its drop wrote onto the actor (book check follow-ups: Beast Mode).
+    await (await import("./plugins/book/followups.mjs")).undoAlterations(actor, ids);
     await actor.deleteEmbeddedDocuments('Item', ids);
   }
 }

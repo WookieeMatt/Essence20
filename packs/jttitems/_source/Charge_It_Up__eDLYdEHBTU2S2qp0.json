@@ -6,13 +6,13 @@
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Charge your next melee Power Weapon attack","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"require","check":["self:morphed"],"message":"Charge It Up! requires being Morphed."},{"do":"mark","key":"chargeItUp","to":"self","until":"combat"}]},
+      {"type":"Use","label":"Charge your next melee Power Weapon attack","cost":{"action":"standard","resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"require","check":["self:morphed"],"message":"Charge It Up! requires being Morphed.","beforeCost":true},{"do":"mark","key":"chargeItUp","to":"self","until":"combat"}]},
       {"type":"Defense","label":"Ignores armor (Charge It Up!)","defense":"any","mode":"ignoreArmor","armor":"defense","outgoing":true,"when":["attack:melee","weapon:trait:powerWeapon","self:marked:chargeItUp"]},
       {"type":"Trigger","event":"afterRoll","outcome":"any","label":"Charge It Up! spent","when":["attack:melee","weapon:trait:powerWeapon","self:marked:chargeItUp"],"steps":[{"do":"unmark","key":"chargeItUp","to":"self"}]}
     ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: spend 1 Personal Power while Morphed; your next melee Power Weapon attack ignores the target's armor.</p><p>Left to the table: also ignoring the target's Resistances, immunities and other damage reduction.</p>"
+      "notes": "<p>Use button: spend your Standard action and 1 Personal Power while Morphed (when not Morphed it refuses and spends nothing); your next melee Power Weapon attack ignores the target's armor.</p><p>Left to the table: also ignoring the target's Resistances, immunities and other damage reduction.</p>"
     },
     "originalId": "",
     "description": "",

@@ -2330,9 +2330,11 @@ describe('Fly In The Future', () => {
     rebuildIndex(jet);
     expect(useAvailable(perk, perk.system.rules[1], 1)).toBe(true);
     expect(ruleEvasiveManeuvers(jet)).toBe(false);
-    await use(perk, { which: "Evasive maneuvers on / off (halves your Aerial vehicle's speed)" });
+    // Book check 2026-10-06 (docs/rules-batches/book-durations.md): on until your next turn; a second button ends it early.
+    await use(perk, { which: "Evasive maneuvers until your next turn (halves your Aerial vehicle's speed)" });
     expect(ruleEvasiveManeuvers(jet)).toBe(true);
-    await use(perk, { which: "Evasive maneuvers on / off (halves your Aerial vehicle's speed)" });
+    expect(perk.flags.essence20.rules.toggleUntil.evasive.until).toBe('nextTurnOrScene');
+    await use(perk, { which: 'Stop evasive maneuvers' });
     expect(ruleEvasiveManeuvers(jet)).toBe(false);
     // Evasive Handling's own flag on a vehicle counts too.
     expect(ruleEvasiveManeuvers(makeActor('Truck', { type: 'vehicle', flags: { evasiveManeuversActive: true } }))).toBe(true);

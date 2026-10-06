@@ -7,12 +7,13 @@
   "system": {
     "rules": [
       {"type":"ItemModifier","label":"Thrown long range 50 ft (Tossable Vial)","stacks":true,"items":["item:type:weaponEffect","item:onHost","not:item:data:system.range.value>0"],"path":"system.range.long","op":"set","value":50},
-      {"type":"ItemModifier","label":"Thrown range 20 ft (Tossable Vial)","stacks":true,"items":["item:type:weaponEffect","item:onHost","not:item:data:system.range.value>0"],"path":"system.range.value","op":"set","value":20}
+      {"type":"ItemModifier","label":"Thrown range 20 ft (Tossable Vial)","stacks":true,"items":["item:type:weaponEffect","item:onHost","not:item:data:system.range.value>0"],"path":"system.range.value","op":"set","value":20},
+      {"type":"WeaponTrait","label":"Counts as a thrown weapon (Tossable Vial)","traits":["thrown"],"items":["item:isHost"]}
     ],
     "prerequisites": {"when":["host:data:system.isPoison",{"any":["host:data:system.poisonApplication.contact","host:data:system.poisonApplication.inhaled"]}]},
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the poison gains a 20/50 ft thrown range on top of Reach.</p>"
+      "notes": "<p>Automatic: the poison gains a 20/50 ft thrown range on top of Reach, and counts as a thrown weapon (it has the Thrown trait).</p>"
     },
     "originalId": "",
     "description": "",

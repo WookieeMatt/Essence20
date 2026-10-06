@@ -10,7 +10,8 @@ import { epochFor } from "../mechanics/resources/scene-clock.mjs";
  *           endOfNextTurn: through the end of that actor's next turn (its current one doesn't count).
  *           endOfNextRound: through the rest of this round and all of the next.
  *           turnOrScene / roundOrScene: endOfTurn / endOfRound in a running combat, else the scene.
- *           rounds:N: for N rounds (until the same point in the turn order N rounds on), else the scene.
+ *           rounds:N: for N rounds (until the same point in the turn order N rounds on); out of combat N x 6 seconds
+ *           of game time, also ending with the scene (a combat starting meanwhile gets the rounds still left).
  *           combat: while the combat it started in exists (started or not); with no combat, until ended otherwise.
  *           nextTurnOrScene: nextTurn in a running combat, else the scene.
  *           endOfNextTurnOrScene: endOfNextTurn in a running combat (also ending with the scene), else the scene.
@@ -20,7 +21,7 @@ import { epochFor } from "../mechanics/resources/scene-clock.mjs";
  * An effect is stamped when it starts and checked when it is read - nothing has to sweep it away for
  * it to stop counting. Turn and round need a running combat to be stamped against; one started out of
  * combat carries no stamp and lasts until something else ends it (used up, switched off) - except the
- * "...OrScene" and rounds:N ones, which last the scene instead.
+ * "...OrScene" ones, which last the scene instead, and rounds:N (6 seconds a round, or the scene).
  *
  * Whose turn: the `actor` given to stampFor (the rule's holder, or a step's recipient with untilOf: "target").
  */
@@ -32,6 +33,9 @@ function secondsOf(until) {
   const match = /^worldTime:(\d+)$/.exec(String(until ?? ''));
   return match ? Number(match[1]) : 0;
 }
+
+/** Seconds in a combat round (Core Rulebook, Time: 10 rounds make a minute). */
+const ROUND_SECONDS = 6;
 
 /** Rounds in a "rounds:N" duration (0 for anything else). */
 function roundsOf(until) {
@@ -96,6 +100,12 @@ export function stampFor(until, combat = globalThis.game?.combat, actor = null) 
     return { combatId: combat.id, unstarted: true, actorId: actor?.id ?? null };
   }
 
+  // rounds:N out of combat (book check 2026-10-06, durations): a round is 6 seconds (Core Rulebook, Time), so it lasts
+  // N x 6 seconds of game time, also ending with the scene; a combat starting meanwhile counts the rounds still left.
+  if (!combat?.started && roundsOf(until)) {
+    return { oocRounds: roundsOf(until), time: Number(globalThis.game?.time?.worldTime) || 0, sceneEpoch: epochFor('scene') };
+  }
+
   if (!combat?.started) {
     return scenesOutOfCombat(until) ? { epoch: epochFor('scene') } : null;
   }
@@ -149,6 +159,21 @@ export function isExpired(entry, combat = globalThis.game?.combat) {
 
   if (stamp.untilCombat) {
     return !!combat?.started;
+  }
+
+  // rounds:N begun out of combat: N x 6 seconds of game time, or the scene, whichever ends first. In a running combat
+  // (which moves no game time in this system) the rounds not yet used up out of combat last from its first round.
+  if (stamp.oocRounds) {
+    if (stamp.sceneEpoch !== undefined && stamp.sceneEpoch != epochFor('scene')) {
+      return true;
+    }
+
+    const left = stamp.oocRounds - Math.floor(Math.max(0, (Number(globalThis.game?.time?.worldTime) || 0) - (stamp.time ?? 0)) / ROUND_SECONDS);
+    if (left <= 0) {
+      return true;
+    }
+
+    return !!combat?.started && (Number(combat.round) || 0) > left;
   }
 
   if (stamp.sceneEpoch !== undefined && stamp.sceneEpoch != epochFor('scene')) {

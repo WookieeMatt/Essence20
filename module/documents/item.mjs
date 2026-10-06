@@ -10,6 +10,7 @@ import { affectsGeneratedEffects, applyToWeapon as applyUpgradesToWeapon, chosen
 import { applyDamage } from "../mechanics/combat/combat.mjs";
 import { Dice } from "../dice.mjs";
 import { ensureSourceIndex, inheritedRules, rulesSnapshotToStrip } from "../rules/inherit.mjs";
+import { gearPowerRules } from "../rules/plugins/book/effects.mjs";
 import { RollDialog } from "../mechanics/rolls/roll-dialog.mjs";
 import { consumeForItem, describeCost, refund, setAiming, spend } from "../mechanics/actions/action-economy.mjs";
 import { clearWeaponReload, reloadsNeeded, getReloadCost, hasBurstFiredThisRound, markBurstFiredThisRound, requireReload, weaponNeedsReload } from "../mechanics/combat/reload-trait.mjs";
@@ -233,6 +234,11 @@ export class Essence20Item extends Item {
     // A compendium copy with no rules of its own runs its original's (rules/inherit.mjs).
     if (Array.isArray(this.system.rules)) {
       this.system.rules = inheritedRules(this);
+      // Nanomite gear runs its linked Power's lasting rules as its own (rules/plugins/book/effects.mjs).
+      const powerRules = gearPowerRules(this);
+      if (powerRules.length) {
+        this.system.rules = [...this.system.rules, ...powerRules];
+      }
     }
 
     this._prepareTraits();

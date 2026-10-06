@@ -29,8 +29,8 @@ describe("applyTimedCondition", () => {
     expect(actor.toggleStatusEffect).toHaveBeenCalledWith('frightened', { active: true });
   });
 
-  test("stamps a round duration onto the created effect when a combat is active", async () => {
-    global.game.combat = { round: 2, turn: 1 };
+  test("stamps a round duration onto the created effect when a combat is running", async () => {
+    global.game.combat = { round: 2, turn: 1, started: true };
     const effect = makeEffect('frightened');
     const actor = makeActor([effect]);
 
@@ -53,13 +53,15 @@ describe("applyTimedCondition", () => {
     expect(effect.update).not.toHaveBeenCalled();
   });
 
-  test("does nothing beyond the toggle with no active combat", async () => {
+  // Book check 2026-10-06 (follow-ups): out of combat a round is 6 seconds - a rounds:N stamp the follow-ups sweep reads.
+  test("with no running combat, stamps a rounds:N expiry (6 seconds a round) instead", async () => {
+    global.game.time = { worldTime: 100 };
     const effect = makeEffect('frightened');
     const actor = makeActor([effect]);
 
     await applyTimedCondition(actor, 'frightened', 3);
 
-    expect(effect.update).not.toHaveBeenCalled();
+    expect(effect.update).toHaveBeenCalledWith({ 'flags.essence20.oocConditionExpiry': { until: 'rounds:3', stamp: expect.objectContaining({ oocRounds: 3, time: 100 }) } });
   });
 
   test("no matching effect on the actor is a no-op past the toggle", async () => {

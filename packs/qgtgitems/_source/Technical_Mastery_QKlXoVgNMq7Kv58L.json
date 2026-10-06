@@ -8,6 +8,7 @@
     "rules": [
       {"type":"CritOnD2","label":"Technical Mastery: crit on the d2 on Technology","when":["skill:technology"]},
       {"type":"RollModifier","label":"Technical Mastery (with Tech Specs)","scope":"markedTarget","mark":"techSpecs","edge":true,"when":["attack","self:sameSideAsHolder"]},
+      {"type":"CritOnD2","label":"Technical Mastery (an ally coached by your Trade School, for the scene)","scope":"marked","mark":"tradeSchool","when":["skill:technology"]},
       {"type":"CritOnD2","label":"Technical Mastery (an ally's first roll with your Trade School)","scope":"marked","mark":"tradeSchoolPending","when":["skill:technology"]}
     ],
     "automation": {

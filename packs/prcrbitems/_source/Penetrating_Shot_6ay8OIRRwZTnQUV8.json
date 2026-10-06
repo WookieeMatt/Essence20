@@ -6,11 +6,11 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Penetrating Shot (one Volley attack: +1 damage per extra shot)","damage":"@volleyShots - 1","when":["attack","not:attack:melee","self:data:flags.essence20.volleyActive","calc:@volleyShots>=2"]}
+      {"type":"DialogSwitch","label":"Penetrating Shot (1 Personal Power: one roll for the whole Volley, ↑1 per extra shot)","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"upshift":"@volleyShots - 1","damage":"(@volleyShots - 1) * @rolled.system.damageValue","when":["attack","not:attack:melee","self:data:flags.essence20.volleyActive","calc:@volleyShots>=2"]}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Roll Options Dialog: while Volley is active, spend 1 more Personal Power to fold the shots into one attack at ↑1 per extra shot.</p>"
+      "notes": "<p>Roll Options Dialog: while Volley is active, spend 1 more Personal Power to fold the shots into one attack roll against one target, at ↑1 per extra shot. Every shot lands with it: the attack adds the weapon's damage once more for each extra shot.</p>"
     },
     "originalId": "",
     "description": "",

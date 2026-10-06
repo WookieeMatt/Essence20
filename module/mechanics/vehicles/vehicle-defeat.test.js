@@ -299,5 +299,34 @@ describe("handleVehicleZeroHealthTransition", () => {
 
       expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: 'E20.VehicleExploded' }));
     });
+
+    // Book check 2026-10-06 (docs/rules-batches/book-limits.md): with Brawn ranks the test is Specialized.
+    test("its specialize: true rolls the Specialized staircase when the vehicle has Brawn ranks", async () => {
+      const formulas = [];
+      const Base = global.Roll;
+      global.Roll = class extends Base {
+        constructor(formula) {
+          super(formula);
+          formulas.push(formula);
+        }
+      };
+      const vehicle = withHeavyWaterCoolant(makeVehicle());
+      vehicle.items[0].system.rules[0].specialize = true;
+      rollQueue = [12];
+      await handleVehicleZeroHealthTransition(vehicle);
+      expect(formulas[0]).toBe('d20 + {d2,d4,d6}kh + 0');
+
+      const untrained = withHeavyWaterCoolant(makeVehicle());
+      untrained.items[0].system.rules[0].specialize = true;
+      untrained.system.skills.brawn.shift = 'd20';
+      rollQueue = [12];
+      await handleVehicleZeroHealthTransition(untrained);
+      expect(formulas[1]).toBe('d20 + 0');
+
+      const plain = makeVehicle();
+      rollQueue = [12];
+      await handleVehicleZeroHealthTransition(plain);
+      expect(formulas[2]).toBe('d20 + d6 + 0');
+    });
   });
 });

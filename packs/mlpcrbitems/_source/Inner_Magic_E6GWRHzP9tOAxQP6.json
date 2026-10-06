@@ -6,12 +6,12 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"↑1 on your next Spellcasting test","when":["not:rule:banked"],"steps":[{"do":"mark","key":"innerMagic","to":"self","count":1,"add":true,"until":"scene"},{"do":"bank","upshift":1,"appliesWhen":["skill:spellcasting"],"until":"combat"}]},
+      {"type":"Use","label":"↑1 on your next Spellcasting test","when":["not:rule:banked"],"steps":[{"do":"mark","key":"innerMagic","to":"self","count":1,"add":true,"until":"scene"},{"do":"bank","upshift":1,"appliesWhen":["skill:spellcasting"],"until":"combat"}],"cost":{"action":"standard"}},
       {"type":"Defense","label":"Inner Magic","defense":"willpower","amount":"0 - @mark.innerMagic","when":["self:marked:innerMagic"]}
     ],
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button: your next Spellcasting test gets ↑1, labelled Inner Magic in your Roll Options Dialog. Left to the table: lowering your Willpower by 1 until the scene ends each time you use it.</p>"
+      "status": "full",
+      "notes": "<p>Use button (Standard action): your next Spellcasting test gets ↑1, labelled Inner Magic in your Roll Options Dialog, and your Willpower drops by 1 until the end of the scene (1 more each time you use it).</p>"
     },
     "originalId": "",
     "actionType": "standard",

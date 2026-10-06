@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"MLP armor (↓2 Athletics, Acrobatics, Infiltration)","when":[{"any":["skill:athletics","skill:acrobatics","skill:infiltration"]}],"downshift":2}
+      {"type":"RollModifier","label":"MLP armor (↓2 Athletics, Acrobatics, Infiltration, Initiative)","when":[{"any":["skill:athletics","skill:acrobatics","skill:infiltration","roll:initiative"]}],"downshift":2}
     ],
     "automation": {
       "status": "full",

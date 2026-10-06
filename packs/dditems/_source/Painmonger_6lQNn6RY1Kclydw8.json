@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"hit","label":"Painmonger (Stun: Impaired)","when":["roll:damaging","roll:damageType:stun"],"steps":[{"do":"applyCondition","condition":"impaired","rounds":1,"to":"target"}]}
+      {"type":"Trigger","event":"hit","label":"Painmonger (Stun: Impaired)","when":["roll:damaging","roll:damageType:stun"],"steps":[{"do":"applyCondition","condition":"impaired","until":"endOfNextTurn","untilOf":"recipient","to":"target"}]}
     ],
     "automation": {
       "status": "partial",

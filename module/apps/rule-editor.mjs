@@ -87,7 +87,7 @@ export default class RuleEditor extends ApplicationV2 {
       <label class="e20-editor-advanced-toggle"><input type="checkbox" data-advanced${this._showAdvanced ? ' checked' : ''}> ${game.i18n.localize('E20.Rules.Field.ShowAdvanced')}</label>
       <footer class="e20-editor-footer">
         <button type="button" data-action="cancel">${game.i18n.localize('Cancel')}</button>
-        <button type="button" data-action="save"><i class="fas fa-save"></i> ${game.i18n.localize('E20.Rules.Editor.Save')}</button>
+        <button type="button" data-action="save"><i class="fas fa-save"></i> ${game.i18n.localize(this.prerequisites ? 'E20.Rules.Editor.SavePrerequisites' : 'E20.Rules.Editor.Save')}</button>
       </footer>
     </form>`;
   }

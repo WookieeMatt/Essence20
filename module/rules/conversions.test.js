@@ -1142,7 +1142,8 @@ test('Personal Heirloom: the equipment switch only while no weapon is designated
   expect(switchNames(actor, { rolledSkill: 'technology' })).toHaveLength(1);
   expect(switchNames(actor, { item: { type: 'weaponEffect', system: {} } })).toEqual([]);
   expect(tick(actor, { rolledSkill: 'technology' })).toMatchObject({ shiftUp: 1 });
-  actor.flags = { essence20: { personalHeirloomItemId: 'w1' } };
+  // Designated: its Use rule's pick (round 17 - rules/conv17-split2.test.js).
+  actor.items.contents[0].flags = { essence20: { rules: { choices: { heirloom: 'w1' } } } };
   expect(switchNames(actor, { rolledSkill: 'technology' })).toEqual([]);
 });
 
@@ -2526,9 +2527,9 @@ test('New Herd, Favorite Command, Biscuit Factory: pet commands and pet attacks 
   const [herd] = await actionCosts(['wtnvcgitems/_source/New_Herd_zwm8CrmmYvMj3bMc.json'], { key: 'commandPet' });
   expect(herd.ask).toBeUndefined();
   expect(herd.to()).toBe('move');
-  const [favorite] = await actionCosts(['wtnvcgitems/_source/Favorite_Command_GeHPKfuWe24HpYcQ.json'], { key: 'commandPet' });
-  expect(favorite).toMatchObject({ ask: 'E20.ActionPerkAskFavoriteCommand' });
-  expect(favorite.to()).toBe('move');
+  // Book check (effects): Favorite Command is the pet's Perk - its Move-action command is the code entry reading the pet's
+  // copy (action-perks.mjs favoriteCommand), so the WTNV printing carries no commander-side ActionCost rule any more.
+  expect(await actionCosts(['wtnvcgitems/_source/Favorite_Command_GeHPKfuWe24HpYcQ.json'], { key: 'commandPet' })).toEqual([]);
   const [biscuit] = await actionCosts(['wtnvcgitems/_source/Biscuit_Factory_0f9ZSctK20tO99Wt.json'], { kind: 'attack' });
   expect(biscuit.to()).toBe('move');
   expect(await actionCosts(['wtnvcgitems/_source/Biscuit_Factory_0f9ZSctK20tO99Wt.json'], { kind: 'item' })).toEqual([]);

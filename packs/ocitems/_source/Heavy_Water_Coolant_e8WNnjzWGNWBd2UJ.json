@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
     "rules": [
-      {"type":"VehicleDefeat","label":"Heavy Water Coolant","brawnDif":10}
+      {"type":"VehicleDefeat","label":"Heavy Water Coolant","brawnDif":10,"specialize":true}
     ],
     "automation": {
       "status": "full",

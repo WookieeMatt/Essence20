@@ -11,7 +11,8 @@ import { registerRuleType } from "../../types.mjs";
  * the lowest. Heavy Water Coolant: DIF 10. `when` sees the vehicle.
  */
 registerRuleType('VehicleDefeat', {
-  params: { brawnDif: { kind: 'formula', required: true } },
+  // specialize (book check 2026-10-06): a vehicle with Brawn ranks makes that test Specialized (Heavy Water Coolant).
+  params: { brawnDif: { kind: 'formula', required: true }, specialize: { kind: 'bool' } },
   scopes: ['self'],
 });
 
@@ -30,4 +31,19 @@ export function ruleVehicleDefeatDif(vehicle) {
     .map(({ rule, item }) => Number(resolveValue(rule.brawnDif, { actor: vehicle, item }, NaN)))
     .filter(Number.isFinite);
   return difs.length ? Math.min(...difs) : null;
+}
+
+/**
+ * Whether a VehicleDefeat rule makes the explosion Brawn Test Specialized (`specialize: true`, its `when` holding). The
+ * caller still needs the vehicle to have Brawn ranks.
+ * @param {Actor} vehicle
+ * @returns {Boolean}
+ */
+export function ruleVehicleDefeatSpecialized(vehicle) {
+  if (!vehicle) {
+    return false;
+  }
+
+  return rulesOfType(vehicle, 'VehicleDefeat').some(({ rule, item }) => rule.specialize === true
+    && evaluate(rule.when, contextFor({ self: vehicle, holder: vehicle, ruleItem: item })) === true);
 }

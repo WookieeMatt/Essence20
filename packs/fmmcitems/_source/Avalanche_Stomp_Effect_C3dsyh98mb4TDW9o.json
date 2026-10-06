@@ -9,8 +9,8 @@
       {"type":"Trigger","event":"hit","label":"Avalanche Stomp: Prone","outcome":"x2","when":["item:own"],"steps":[{"do":"applyCondition","condition":"prone","to":"target"}]}
     ],
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: rolls Athletics against the Toughness of creatures within 30ft for Stun 2.</p><p>Left to the table: knocking the target Prone on a Critical Success.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: rolls Athletics against the Toughness of creatures within 30ft for Stun 2; a Critical Success also knocks the target Prone.</p>"
     },
     "originalId": "",
     "actionType": "standard",

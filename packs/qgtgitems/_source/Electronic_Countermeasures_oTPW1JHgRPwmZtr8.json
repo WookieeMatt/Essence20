@@ -12,7 +12,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: once per combat, as a Move action, the vehicle gets +5 Toughness and Evasion until that crew member's next turn.</p>"
+      "notes": "<p>Use button: once per encounter, as a Move action, the vehicle gets +5 Toughness and Evasion until that crew member's next turn.</p>"
     },
     "originalId": "",
     "description": "",

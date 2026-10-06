@@ -433,24 +433,29 @@ describe('hit Triggers', () => {
     expect(conditions.map(c => c.name)).toEqual(['Mook']);
   });
 
-  test("Catch Off Guard: Stun 1 to a hit target that hasn't acted yet this round", async () => {
+  // Book check (effects): the book's "a surprised target" is the Surprised Condition, not "hasn't acted yet".
+  test('Catch Off Guard: Stun 1 to a hit target with the Surprised Condition', async () => {
     const marauder = makeActor([packItem('catchOffGuard')]);
     const late = target('Late');
-    const early = target('Early');
-    global.game.combat = { id: 'c', started: true, round: 1, turn: 0, turns: [{ actor: early }, { actor: marauder }, { actor: late }] };
+    const surprised = target('Surprised', { statuses: ['surprised'] });
+    global.game.combat = { id: 'c', started: true, round: 1, turn: 0, turns: [{ actor: surprised }, { actor: marauder }, { actor: late }] };
     global.game.combat.combatants = global.game.combat.turns;
     global.game.combat.turn = 1;
     await hit(marauder, late, effect(marauder));
-    await hit(marauder, early, effect(marauder));
-    expect(dealt).toEqual([{ name: 'Late', amount: 1, type: 'stun' }]);
+    await hit(marauder, surprised, effect(marauder));
+    expect(dealt).toEqual([{ name: 'Surprised', amount: 1, type: 'stun' }]);
   });
 
-  test('Snarl: Intimidation success Frightens 1 round; Might Makes Right: a double Persuasion success Frightens (untimed)', async () => {
+  // Book check (effects): Might Makes Right's Frightened is offered (prompt) and lasts 1 minute (12 rounds).
+  test('Snarl: Intimidation success Frightens 1 round; Might Makes Right: a double Persuasion success offers Frightened for 12 rounds', async () => {
     const tiger = makeActor([packItem('snarl'), packItem('mightMakesRight')]);
     await hit(tiger, target('A'), null, { extra: { rolledSkill: 'intimidation' } });
     await hit(tiger, target('B'), null, { extra: { rolledSkill: 'persuasion' } });
     await hit(tiger, target('C'), null, { outcome: 'double', extra: { rolledSkill: 'persuasion' } });
-    expect(conditions).toEqual([{ name: 'A', status: 'frightened', rounds: 1 }, { name: 'C', status: 'frightened', rounds: 0 }]);
+    expect(conditions).toEqual([{ name: 'A', status: 'frightened', rounds: 1 }, { name: 'C', status: 'frightened', rounds: 12 }]);
+    global.foundry.applications.api.DialogV2.confirm.mockResolvedValueOnce(false);
+    await hit(tiger, target('D'), null, { outcome: 'double', extra: { rolledSkill: 'persuasion' } });
+    expect(conditions.map(c => c.name)).toEqual(['A', 'C']);
   });
 
   test("Ice Machine: a Cold hit on an already Stunned target Immobilizes it (the card's damage type)", async () => {
@@ -696,20 +701,8 @@ describe('afterRoll Triggers', () => {
 /* -------------------------------------------- */
 
 describe('roll modifiers, switches and Uses', () => {
-  test('Growing Smolder: each Use adds a stack (max 3) to one banked ↑ / +damage for the next attack', async () => {
-    const perk = packItem('growingSmolder');
-    const monster = makeActor([perk]);
-    for (let i = 0; i < 4; i++) {
-      await use(perk);
-    }
-
-    const attack = effect(monster);
-    expect(bankedSources(monster, null, { item: attack, isAttack: true }).sources.map(s => [s.shiftUp, s.damage])).toEqual([[3, 3]]);
-    expect(bankedSources(monster, null, { rolledSkill: 'athletics' }).sources).toEqual([]);
-    monster.update({ 'flags.essence20.ruleBank': [] });
-    await use(perk);
-    expect(bankedSources(monster, null, { item: attack, isAttack: true }).sources.map(s => s.shiftUp)).toEqual([1]);
-  });
+  // Growing Smolder: the bonus is now on the following turn's attacks, not banked for the next one (book check
+  // follow-ups 2026-10-06) - tested in book-followups.test.js.
 
   test('Cunning Plan: rolls the Cunning die instead (the shift difference) for 1 Personal Power; Pseudo-Science: Science while active', async () => {
     const orange = makeActor([packItem('cunningPlan')], { system: { skills: { athletics: { shift: 'd20' }, roleSkillDie: { shift: 'd8' } } } });

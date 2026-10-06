@@ -13,7 +13,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: once per combat, double one of the vehicle's Movement rates for the turn.</p>"
+      "notes": "<p>Use button: once per encounter, double one of the vehicle's Movement rates for the turn.</p>"
     },
     "originalId": "",
     "description": "",

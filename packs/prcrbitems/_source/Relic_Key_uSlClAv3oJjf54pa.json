@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Edge on the next roll (once per encounter)","limit":{"per":"encounter"},"when":["self:type:zord","not:rule:banked"],"steps":[{"do":"bank","to":"self","edge":true,"label":"Relic Key"}]},
+      {"type":"Use","label":"Edge on the next roll (once per scene)","limit":{"per":"scene"},"when":["self:type:zord","not:rule:banked"],"steps":[{"do":"bank","to":"self","edge":true,"label":"Relic Key"}]},
       {"type":"DriverlessEssence","label":"Relic Key: Smarts and Social 3 while no one drives","essence":3}
     ],
     "automation": {

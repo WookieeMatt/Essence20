@@ -472,13 +472,26 @@ describe("applyDamage", () => {
       expect(global.ChatMessage.create).not.toHaveBeenCalled();
     });
 
-    test("prompts a nearby ally holding the Perk when Stun defeats the target", async () => {
+    // A Stun Defeat fires the defeatedByStun event, which the item's second watch Trigger answers with the same button
+    // as a Health Defeat (rules/book-effects.test.js) - no separate code prompt any more.
+    test("a Stun Defeat posts no code prompt of its own (the item's defeatedByStun Trigger offers the Move)", async () => {
       const actor = makeDefeatedActor({ health: 5, stun: 3 });
       placeHolderNearby(actor);
 
       await applyDamage(actor, 2, 'stun'); // 3 + 2 = 5, matches Health
 
-      expect(global.ChatMessage.create).toHaveBeenCalledTimes(1);
+      expect(actor.toggleStatusEffect).toHaveBeenCalledWith('defeated', { active: true });
+      expect(global.ChatMessage.create).not.toHaveBeenCalled();
+    });
+
+    test("unreducible damage ignores Immunity, Wisdom of the Elders and damage shields (Better You Than Me)", async () => {
+      const actor = {
+        system: { health: { value: 10 }, immunities: { void: true } }, update: jest.fn(),
+        getFlag: jest.fn((scope, key) => (key == 'wisdomOfTheEldersActive' ? { resilientArmor: true } : undefined)),
+      };
+      expect(await applyDamage(actor, 1, 'void')).toBe(0);
+      expect(await applyDamage(actor, 1, 'void', false, { unreducible: true })).toBe(1);
+      expect(actor.update).toHaveBeenLastCalledWith({ 'system.health.value': 9 });
     });
 
     test("doesn't prompt again for Stun against an actor who was already Defeated", async () => {

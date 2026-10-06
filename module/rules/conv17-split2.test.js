@@ -336,6 +336,8 @@ describe('Personal Heirloom', () => {
     addItem(actor, { name: 'Power Sword', type: 'weapon', system: { traits: ['powerWeapon'] } });
     const perk = itemNamed(actor, 'Personal Heirloom');
     expect(answerOf(actor, null, { rolledSkill: 'athletics' }, 'Using your Heirloom', 'DialogSwitch')).toBe(true);
+    // Nothing designated yet: no question on an attack either.
+    expect(answerOf(actor, null, { item: attackOf(sword) }, 'Your Heirloom')).toBe(false);
     grants.chooseSelect.mockImplementationOnce(async (title, prompt, options) => {
       expect(options.map(o => o.label)).toEqual(['Sword']);
       return options[0].value;

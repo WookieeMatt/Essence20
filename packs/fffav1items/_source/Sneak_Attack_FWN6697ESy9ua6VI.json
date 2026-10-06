@@ -6,11 +6,11 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Sneak Attack (+damage of a Commando of your level)","damage":"1 + min(1, floor(@level / 4)) + min(1, floor(@level / 8)) + min(1, floor(@level / 13)) + min(1, floor(@level / 17)) + min(1, floor(@level / 20))","forget":true,"when":["attack"]}
+      {"type":"DialogSwitch","label":"Sneak Attack (+damage of a Commando of your level)","damage":"1 + min(1, floor(@level / 4)) + min(1, floor(@level / 8)) + min(1, floor(@level / 13)) + min(1, floor(@level / 17)) + min(1, floor(@level / 20))","forget":true,"limit":{"per":"encounter","max":"1 + @owned.6OxGuWzQz0Fiivas"},"when":["attack"]}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Roll Options Dialog: on attacks, a Sneak Attack switch adds bonus damage equal to a Commando's Sneak Attack at your level. Turn it on only when the target is within 30ft and isn't fully aware of you, and you have a use left this combat (one per combat).</p>"
+      "notes": "<p>Roll Options Dialog: on attacks, a Sneak Attack switch adds bonus damage equal to a Commando's Sneak Attack at your level. Once per combat (twice with Veiled Attacker), used up when the switch is ticked. Turn it on only when the target is within 30ft and isn't fully aware of you.</p>"
     },
     "originalId": "",
     "description": "",

@@ -10,7 +10,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: when the crystal takes damage, roll the explosion check (with damage buttons for everyone in the blast), or roll DIF 14 Science to refine it into usable Energon. Either way the crystal is used up.</p>"
+      "notes": "<p>Use button: when the crystal takes damage, roll the explosion check - if it detonates it is used up, with damage buttons for everyone in the blast. Or roll DIF 14 Science to refine it into usable Energon, which uses it up on a success.</p>"
     },
     "originalId": "",
     "description": "",

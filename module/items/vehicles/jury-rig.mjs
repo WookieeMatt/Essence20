@@ -3,7 +3,8 @@
  * benefit a vehicle carries. The Use (pick the action type and the benefit, the Technology test against 10 + the
  * vehicle's Threat Level, once per scene as a Standard action) is a rule on the Perk (rules/conv15-banked.test.js); on a
  * success it writes `flags.essence20.pendingJuryRigBenefit` {option, expiresRound} on the vehicle - the round after the
- * current one for the Free action, 999999 (the scene) for the Standard one. The readers below are what the vehicle's
+ * current one for the Free action, 999999 plus `scene` (the Scene Clock's scene it ends with) for the Standard one. The
+ * Use is once per turn, its Standard version once per scene (book check 2026-10-06). The readers below are what the vehicle's
  * Defenses (dice.mjs), damage, long-range Snag, Movement (documents/actor.mjs) and Push Yourself
  * (mechanics/combat/token-movement.mjs) ask.
  *
@@ -11,6 +12,8 @@
  * hardenArmor (+1 Toughness), improveAerodynamics (Push Yourself moves 10 ft), jacketAmmunition (+1 damage on its
  * attacks), watertightSeals (Aquatic Movement = Ground).
  */
+
+import { epochFor } from "../../mechanics/resources/scene-clock.mjs";
 
 const FLAG_KEY = 'pendingJuryRigBenefit';
 
@@ -24,6 +27,11 @@ const FLAG_KEY = 'pendingJuryRigBenefit';
 export function isJuryRigBenefitActive(targetActor, option) {
   const flag = targetActor?.getFlag?.('essence20', FLAG_KEY);
   if (!flag || flag.option != option) {
+    return false;
+  }
+
+  // The Standard-action version lasts the scene: it stores the Scene Clock's scene (@clock.scene) and ends with it.
+  if (Number(flag.scene) > 0 && Number(flag.scene) != Number(epochFor('scene'))) {
     return false;
   }
 

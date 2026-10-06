@@ -1434,7 +1434,7 @@ test.each([
   spellSaveCards();
   const { actor, item } = holder(file);
   const { target, effects } = conditionTarget();
-  game.combat = { round: 2, turn: 1 };
+  game.combat = { started: true, round: 2, turn: 1 };
   await fireTriggers(actor, 'hit', { roll: { item }, outcome: 'success', targets: [target] });
   expect(target.toggleStatusEffect.mock.calls).toEqual(conditions.map(id => [id, { active: true }]));
   for (const effect of effects) {
@@ -1446,7 +1446,8 @@ test.each([
   }
 });
 
-test('Smoke Beam: a Critical Success counts; a miss, or a hit with something else, applies nothing; no combat, no duration', async () => {
+// Book check follow-ups 2026-10-06: out of combat a round is 6 seconds - the Condition carries a rounds:N stamp.
+test('Smoke Beam: a Critical Success counts; a miss, or a hit with something else, applies nothing; no combat, 3 rounds of game time', async () => {
   spellSaveCards();
   const { actor, item } = holder('dsoeitems/_source/Smoke_Beam_b4UMfiQUFohGIrb4.json');
   const { target, effects } = conditionTarget();
@@ -1455,7 +1456,7 @@ test('Smoke Beam: a Critical Success counts; a miss, or a hit with something els
   expect(target.toggleStatusEffect).not.toHaveBeenCalled();
   await fireTriggers(actor, 'hit', { roll: { item }, outcome: 'crit', targets: [target] });
   expect(target.toggleStatusEffect).toHaveBeenCalledWith('blinded', { active: true });
-  expect(effects[0].update).not.toHaveBeenCalled();
+  expect(effects[0].update).toHaveBeenCalledWith({ 'flags.essence20.oocConditionExpiry': expect.objectContaining({ until: 'rounds:3' }) });
 });
 
 test('The Stare: the roll pipeline fires hit only for the targets the cast hit', async () => {

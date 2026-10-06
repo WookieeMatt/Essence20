@@ -552,3 +552,16 @@ import "./effects/role-dropped-event.mjs";
 // Pick source damagedEssences (EMT Crash Course), ref @countSubtype (Personal Power Supply).
 import "./picks/damaged-essences.mjs";
 // ---- Round 17 (split3) - end ----
+// ---- Book check 2026-10-06 (limits - docs/rules-batches/book-limits.md) - start ----
+// Ref @clock.<scene|encounter|mission|session> (Cache I's Private Barter once per session, Jury Rig's scene-long benefit).
+import "./resources/clock-ref.mjs";
+// ---- Book check (limits) - end ----
+// ---- Book check 2026-10-06 (effects - docs/rules-batches/book-effects.md) - start ----
+// Tag rule:firstOnHost (Deadly, Lingering, Chrono-Trigger once per weapon), step unreducibleDamage (Better You Than Me),
+// event defeatedByStun (Not On My Watch).
+import "./book/effects.mjs";
+// ---- Book check (effects) - end ----
+// ---- Book check 2026-10-06 (follow-ups - docs/rules-batches/book-followups.md) - start ----
+// Tag item:usesItem (Deconstructionist), Alteration undo on rule removal (Beast Mode), out-of-combat timed Conditions.
+import "./book/followups.mjs";
+// ---- Book check (follow-ups) - end ----

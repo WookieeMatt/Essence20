@@ -49,8 +49,12 @@ export async function firePowerUsed(actor, power, spent = 0) {
     return;
   }
 
-  // Not on the actor (a compendium Power run by nanomite gear): its own powerUsed Triggers, for the holder.
+  // Not on the actor (a compendium Power run by nanomite gear): its own powerUsed Triggers, for the holder. Their steps
+  // act on the gear that holds it (toggles, marks), whose rules carry the Power's lasting ones (book check, effects -
+  // rules/plugins/book/effects.mjs#gearPowerRules).
   const { runSteps, stepContext } = await import("../../steps.mjs");
+  const { gearHolding } = await import("../book/effects.mjs");
+  const gear = gearHolding(actor, power);
   for (const rule of rulesOf(power)) {
     if (rule?.type != 'Trigger' || rule.event != 'powerUsed' || rule.disabled) {
       continue;
@@ -60,7 +64,7 @@ export async function firePowerUsed(actor, power, spent = 0) {
       continue;
     }
 
-    const ctx = stepContext({ actor, item: power, rule, targets });
+    const ctx = stepContext({ actor, item: gear ?? power, rule, targets });
     Object.assign(ctx.vars, vars);
     await runSteps(rule.steps, ctx);
     if (ctx.chat.length && globalThis.ChatMessage?.create) {

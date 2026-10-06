@@ -1,4 +1,4 @@
-import { ruleVehicleDefeatDif } from "../../rules/plugins/zords/vehicle-defeat-dif.mjs";
+import { ruleVehicleDefeatDif, ruleVehicleDefeatSpecialized } from "../../rules/plugins/zords/vehicle-defeat-dif.mjs";
 import { ruleExplosionSteps } from "../../rules/plugins/zords/explosion-step.mjs";
 import { applyDamage } from "../combat/combat.mjs";
 import { getAllNearbyTokens } from "../combat/nearby-allies.mjs";
@@ -36,8 +36,9 @@ const DISEMBARK_DIF = 13;
 const EXPLOSION_SAVE_DIF = 14;
 
 // A lower explosion Brawn DIF (Heavy Water Coolant's 10) is a VehicleDefeat rule on the vehicle's own Upgrade
-// (rules/plugins/zords/vehicle-defeat-dif.mjs). Only the DIF is built - rollSkillTest() below is a flat total-vs-DIF
-// background check with no crit/fumble concept, so "considered specialized" has nothing to change here.
+// (rules/plugins/zords/vehicle-defeat-dif.mjs). Its `specialize: true` (book check 2026-10-06, Operation Cold Iron p.49:
+// a vehicle with Brawn ranks is Specialized for that test) rolls the Specialized staircase - every die up to the Skill's,
+// the highest kept, as dice.mjs#_getFormula does.
 
 /**
  * Rolls a single actor's own Skill (shift + modifier, no Edge/Snag/Roll-Options-Dialog - this is
@@ -47,15 +48,18 @@ const EXPLOSION_SAVE_DIF = 14;
  * @param {Actor} actor
  * @param {String} skillKey
  * @param {Number} dif
+ * @param {Boolean} [specialized]   Roll every die up to the Skill's and keep the highest.
  * @returns {Promise<{total: Number, success: Boolean}>}
  */
-async function rollSkillTest(actor, skillKey, dif) {
+async function rollSkillTest(actor, skillKey, dif, specialized = false) {
   const skill = actor.system.skills?.[skillKey];
   if (!skill) {
     return { total: 0, success: false };
   }
 
-  const formula = skill.shift == 'd20' ? 'd20' : `d20 + ${skill.shift}`;
+  const ladder = E20.skillRollableShifts ?? [];
+  const staircase = specialized && ladder.includes(skill.shift) ? ladder.slice(0, ladder.indexOf(skill.shift) + 1) : null;
+  const formula = skill.shift == 'd20' ? 'd20' : staircase?.length > 1 ? `d20 + {${staircase.join(',')}}kh` : `d20 + ${skill.shift}`;
   const roll = await new Roll(`${formula} + ${skill.modifier ?? 0}`).evaluate();
   return { total: roll.total, success: roll.total >= dif };
 }
@@ -260,9 +264,10 @@ export async function handleVehicleZeroHealthTransition(actor) {
   // gains Edge on the Brawn Skill Test to avoid exploding." A crew member with Change Its Stripes
   // (p.12) makes any vehicle their unit is assigned count.
   const tigerStripes = actor.system.traits?.tigerStripes || crewHasChangeItsStripes(actor);
-  let brawnTest = await rollSkillTest(actor, 'brawn', brawnDif);
+  const specialized = ruleVehicleDefeatSpecialized(actor);
+  let brawnTest = await rollSkillTest(actor, 'brawn', brawnDif, specialized);
   if (tigerStripes) {
-    const second = await rollSkillTest(actor, 'brawn', brawnDif);
+    const second = await rollSkillTest(actor, 'brawn', brawnDif, specialized);
     brawnTest = second.total > brawnTest.total ? second : brawnTest;
   }
 

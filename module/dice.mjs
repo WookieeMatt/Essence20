@@ -87,7 +87,8 @@ import { applyCardHitMultipliers, applyLateHitMultipliers } from "./rules/plugin
 import { checkMarkTarget } from "./items/rolls/mark-target.mjs";
 import { checkPrimaryQuarry } from "./items/rolls/primary-quarry.mjs";
 import { getNearbyAllyTokens } from "./mechanics/combat/nearby-allies.mjs";
-// DefenseAura rules (Shield Upgrade) - an ally's lent Defense bonus, inside each per-attack Defense value.
+// DefenseAura rules (Shield Upgrade) - an ally's lent Defense bonus, inside each per-attack Defense value. A Personal
+// Shield isn't armor (GI JOE CRB p.108), so the ignore-armor recomputes below keep the lent bonus too.
 import { ruleDefenseAura } from "./rules/plugins/combat/defense-aura.mjs";
 import { isRecklessAbandonActive } from "./items/rolls/reckless-abandon.mjs";
 import {
@@ -2208,6 +2209,10 @@ export class Dice {
           difficulty = Infinity;
         }
 
+        // Whether this attack's Defense was already worked out without armor (below, or the key / Void ignore above) -
+        // armor is ignored once: the outgoing ignoreArmor Defense rules (Charge It Up!) then take nothing more off.
+        let armorIgnored = keyIgnoresArmor || voidIgnoresArmor;
+
         // Armor Piercing (Weapon Effects and Traits, p.106) - "Attacks with this weapon ignore
         // deflective bonuses to Toughness from armor." A live property of the weaponEffect
         // ITSELF (item.system.hasArmorPiercing - see that field's own doc comment in
@@ -2223,14 +2228,16 @@ export class Dice {
           resolvedDefenseType == 'toughness' && item?.type == 'weaponEffect'
           && (item.system.hasArmorPiercing || dataset.attackChoiceArmorPiercing)
         ) {
-          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true });
+          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true }) + ruleDefenseAura(token.actor, resolvedDefenseType);
+          armorIgnored = true;
         }
 
         // Omega Enhancement's own Electro Mode - its Use rule's rollVsEach carries dataset.omegaEnhancementMode.
         // "A Targeting Attack that ignores armor" - keeps whatever Defense the dialog's dropdown was set to,
         // unlike Quantum Cut, which also forces Toughness.
         if (dataset.omegaEnhancementMode == 'electro') {
-          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true });
+          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true }) + ruleDefenseAura(token.actor, resolvedDefenseType);
+          armorIgnored = true;
         }
 
         // Over the Candlestick - Agile Reflexes (Technorganic Secrets, Climber/Nimble Origin
@@ -2252,13 +2259,15 @@ export class Dice {
         // Item rules' Defense mode noArmor (rules/plugins/combat/no-armor-defense.mjs - Penetrating Strikes, Drilling Shot,
         // Quantum Cut): the target's Defense worked out again without its armor.
         if (ruleNoArmor(actor, token.actor, resolvedDefenseType, { item, rolledSkill, rolledEssence, switches: skillRollOptions.ruleKeys ?? [] })) {
-          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true });
+          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true }) + ruleDefenseAura(token.actor, resolvedDefenseType);
+          armorIgnored = true;
         }
 
         // A noArmor Defense rule riding a mark the target carries (scope markedTarget - Exploit Weakness: the marker and
         // their teammates ignore its armor for the scene - rules/plugins/combat/marked-no-armor.mjs).
         if (ruleMarkedNoArmor(actor, token.actor, resolvedDefenseType, { item, rolledSkill, rolledEssence, switches: skillRollOptions.ruleKeys ?? [] })) {
-          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true });
+          difficulty = getDefenseValue(token.actor, resolvedDefenseType, { ignoreArmor: true }) + ruleDefenseAura(token.actor, resolvedDefenseType);
+          armorIgnored = true;
         }
 
         // Emotional Mastery: Fear/Sadness (A Jump Through Time, Purple Ranger, p.37) - see
@@ -2361,7 +2370,7 @@ export class Dice {
           ext: skillRollOptions.ext ?? {},
           // Item rules' Defense rules (rules/adapter.mjs#ruleDefenseAdjust) can ask about the rolled Skill, and the
           // ticked switches' keys (roll:switch:<key> - Double Agent).
-          rolledSkill, rolledEssence, switches: skillRollOptions.ruleKeys ?? [],
+          rolledSkill, rolledEssence, switches: skillRollOptions.ruleKeys ?? [], armorIgnored,
         });
 
         // (Unseen Strike's Evasion halving is a Defense mode: halve rule on the Perk.)

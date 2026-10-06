@@ -245,10 +245,11 @@ test('every changed item\'s rules validate', () => {
 
 describe('weapon upgrades (ItemModifier rules on the upgrade)', () => {
   test('Scope (every printing) and Aerodynamics double both ranges; two copies double twice; only their own weapon', () => {
+    // Book check 2026-10-06 (docs/rules-batches/book-limits.md): Aerodynamic needs a grenade or thrown weapon.
     for (const key of ['scope', 'scopePr', 'scopeTf', 'aero', 'aeroPr', 'aeroTf']) {
       const actor = makeActor('Joe');
-      const { weapon, effect } = weaponWith(actor);
-      const other = weaponWith(actor);
+      const { weapon, effect } = weaponWith(actor, {}, { traits: ['thrown'] });
+      const other = weaponWith(actor, {}, { traits: ['thrown'] });
       onWeapon(actor, weapon, key);
       prepare(actor);
       expect([key, effect.system.range]).toEqual([key, { value: 200, long: 800 }]);
@@ -257,7 +258,7 @@ describe('weapon upgrades (ItemModifier rules on the upgrade)', () => {
     }
 
     const actor = makeActor('Joe');
-    const { weapon, effect } = weaponWith(actor, { range: { value: 20, long: 50 } });
+    const { weapon, effect } = weaponWith(actor, { range: { value: 20, long: 50 } }, { traits: ['thrown'] });
     onWeapon(actor, weapon, 'scope');
     onWeapon(actor, weapon, 'aero');
     prepare(actor);
@@ -836,12 +837,13 @@ describe('vehicle upgrades', () => {
     expect(incomingEntries(attacker, { item: shot })).toHaveLength(0);
   });
 
-  test('Shield Matrix: Shielded 2 (or its advances), unless the vehicle has a rating or the trait of its own', () => {
+  // Book check 2026-10-06 (docs/rules-batches/book-limits.md): +2 per copy, up to 6 (Features have no advances).
+  test('Shield Matrix: Shielded 2 per copy (up to 6), unless the vehicle has a rating or the trait of its own', () => {
     const zord = makeActor('Zord', { type: 'zord' });
-    const feature = addPack(zord, 'matrix');
+    addPack(zord, 'matrix');
     prepare(zord);
     expect(zord.system.shieldedRating).toBe(2);
-    feature.system.advances = { currentValue: 4 };
+    addPack(zord, 'matrix');
     zord.system.shieldedRating = undefined;
     prepare(zord);
     expect(zord.system.shieldedRating).toBe(4);

@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"ActionCost","action":"any","to":"downgrade","ask":"E20.ActionPerkAskLaughter","limit":{"per":"turn","max":1,"freeIsUnlimited":true}}
+      {"type":"ActionCost","action":"any","to":"downgrade","ask":"E20.ActionPerkAskLaughter","limit":{"per":"round","max":1,"freeIsUnlimited":true}}
     ],
     "automation": {
       "status": "full",

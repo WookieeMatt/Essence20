@@ -11,7 +11,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: enter Beast Mode. At 10th and 20th level it also offers the listed Mutations to pick; everything it grants ends with the scene.</p>"
+      "notes": "<p>Use button: enter Beast Mode. At 10th and 20th level it also offers the listed Mutations to pick; everything it grants ends with the scene, and the Alteration a Mutation adds takes back its Essence, Skill or Movement changes when it goes.</p>"
     },
     "originalId": "",
     "description": "",

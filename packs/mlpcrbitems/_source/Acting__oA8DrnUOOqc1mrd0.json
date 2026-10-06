@@ -6,11 +6,11 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Use Performance instead","cost":{"resource":{"rolePoints":"Cheer Points"},"amount":1},"steps":[]}
+      {"type":"DialogSwitch","label":"Acting! (1 Cheer: roll Performance instead)","key":"acting","useSkill":"performance","cost":{"resource":{"rolePoints":"Cheer Points"},"amount":1},"forget":true,"when":[{"any":["skill:persuasion","skill:deception","skill:infiltration"]}]}
     ],
     "automation": {
-      "status": "full",
-      "notes": "<p>Roll Options Dialog: spend 1 Cheer to roll Performance in place of Persuasion, Deception or Infiltration when a disguise is involved.</p>"
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: on Persuasion, Deception and Infiltration tests, a switch spends 1 Cheer to roll Performance instead. Left to the table: whether the test involves a disguise.</p>"
     },
     "originalId": "",
     "description": "",

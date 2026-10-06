@@ -6,13 +6,14 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Phantom","steps":[{"do":"setToggle","key":"on","value":true},{"do":"applyCondition","condition":"invisible"}]},
+      {"type":"Use","label":"Phantom","cost":{"action":"free"},"steps":[{"do":"setToggle","key":"on","value":true},{"do":"applyCondition","condition":"invisible"}]},
+      {"type":"Trigger","label":"Phantom ends (your next turn)","event":"turnStart","when":["self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":false},{"do":"removeCondition","condition":"invisible"}]},
       {"type":"Trigger","label":"Phantom ends (damage)","event":"takesDamage","when":["self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":false},{"do":"removeCondition","condition":"invisible"}]},
       {"type":"Trigger","label":"Phantom ends (attack)","event":"afterRoll","outcome":"any","when":["self:toggle:on","attack","not:roll:dataset:isTakedown"],"steps":[{"do":"setToggle","key":"on","value":false},{"do":"removeCondition","condition":"invisible"}]}
     ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button (Free action): makes you Invisible until the start of your next turn. It ends early if you make a non-Takedown attack or take damage.</p><p>Left to the table: needing dim light or darkness, and ending it in bright light.</p>"
+      "notes": "<p>Use button (Free action): makes you Invisible until the start of your next turn (out of combat, until switched off). It ends early if you make a non-Takedown attack or take damage.</p><p>Left to the table: needing dim light or darkness, and ending it in bright light.</p>"
     },
     "originalId": "",
     "description": "",

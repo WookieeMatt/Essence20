@@ -720,14 +720,7 @@ describe('Skill substitution Perks', () => {
     expect(ask2).not.toHaveBeenCalled();
   });
 
-  test('Acting! spends 1 Cheer Point, and isn\'t offered without one', async () => {
-    const pony = makeActor('Pony', { items: [packItem('acting'), { name: 'Cheer Points', type: 'rolePoints', system: { resource: { value: 1, max: 3 } } }] });
-    const item = itemNamed(pony, 'Acting!');
-    expect(left(item)).toBe(true);
-    await use(item);
-    expect(itemNamed(pony, 'Cheer Points').system.resource.value).toBe(0);
-    expect(left(item)).toBe(false);
-  });
+  // (Acting! is a Roll Options Dialog switch now - book check, effects: rules/book-effects.test.js.)
 });
 
 describe('Tactical Meditation', () => {
@@ -1106,7 +1099,8 @@ describe('Face Me!', () => {
 });
 
 describe('Remote Operations', () => {
-  test('a DIF 10 Alertness success lets the holder Lend Assistance at any rank for the combat', async () => {
+  // Book check 2026-10-06 (docs/rules-batches/book-durations.md): for the rest of this turn only.
+  test('a DIF 10 Alertness success lets the holder Lend Assistance at any rank for the rest of the turn', async () => {
     const recon = makeActor('Recon', { items: [packItem('remoteOps')] });
     const ally = makeActor('Ally');
     startCombat(1, 0);
@@ -1114,9 +1108,7 @@ describe('Remote Operations', () => {
     await use(itemNamed(recon, 'Remote Operations'));
     expect(grants.rollTest).toHaveBeenCalledWith(recon, 'alertness', 10, expect.anything());
     expect(ruleAssist(recon, ally, 'athletics').anyRank).toBe(true);
-    game.combat.round = 5;
-    expect(ruleAssist(recon, ally, 'athletics').anyRank).toBe(true);
-    game.combats = { get: () => null };
+    game.combat.turn = 1;
     expect(ruleAssist(recon, ally, 'athletics').anyRank).toBe(false);
   });
 
@@ -1132,16 +1124,18 @@ describe('Team broadcasts (One For All, Power Burst, Shining Leader, Rallying Cr
   const ranger = (key, extra = {}) => makeActor('Leader', { items: [packItem(key, extra)], x: 0, system: { powers: { personal: { value: 3, max: 3 } } } });
   const teammate = (name, x, isMorphed = true, power = 0) => makeActor(name, { x, system: { isMorphed, powers: { personal: { value: power, max: 2 } } } });
 
-  test('One For All: 3 Power, every Morphed teammate regains 1d2 (past their maximum); once per encounter', async () => {
+  // Book check 2026-10-06 (docs/rules-batches/book-costs.md): the user must be Morphed; every teammate regains, Morphed or not.
+  test('One For All: 3 Power while Morphed, every teammate regains 1d2 (past their maximum); once per encounter', async () => {
     jest.spyOn(Math, 'random').mockReturnValue(0.99);
     const leader = ranger('oneForAll');
+    leader.system.isMorphed = true;
     const a = teammate('A', 500, true, 2);
     const b = teammate('B', 10, false);
     const item = itemNamed(leader, 'One For All');
     await use(item);
     expect(leader.system.powers.personal.value).toBe(0);
     expect(a.system.powers.personal.value).toBe(4);
-    expect(b.system.powers.personal.value).toBe(0);
+    expect(b.system.powers.personal.value).toBe(2);
     expect(useAvailable(item, useRulesOf(item)[0].rule, 0)).toBe(false);
     expect(useAvailable(itemNamed(ranger('oneForAll'), 'One For All'), useRulesOf(item)[0].rule, 0)).toBe(true);
   });
@@ -1158,8 +1152,10 @@ describe('Team broadcasts (One For All, Power Burst, Shining Leader, Rallying Cr
     expect(a.system.powers.personal.value).toBe(4);
   });
 
-  test('Shining Leader: 1 Power, Morphed allies get Edge on attacks this round and the next (in combat only)', async () => {
+  // Book check 2026-10-06 (docs/rules-batches/book-costs.md): the user must be Morphed; every ally gets it, Morphed or not.
+  test('Shining Leader: 1 Power while Morphed, allies get Edge on attacks this round and the next (in combat only)', async () => {
     const leader = ranger('shiningLeader');
+    leader.system.isMorphed = true;
     const a = teammate('A', 300);
     const b = teammate('B', 5, false);
     const attack = { type: 'weaponEffect', system: {} };
@@ -1168,7 +1164,7 @@ describe('Team broadcasts (One For All, Power Burst, Shining Leader, Rallying Cr
     expect(leader.system.powers.personal.value).toBe(2);
     expect(shifts(sources(a, null, { item: attack })).edge).toBe(true);
     expect(shifts(sources(a, null, { rolledSkill: 'athletics' })).edge).toBe(false);
-    expect(shifts(sources(b, null, { item: attack })).edge).toBe(false);
+    expect(shifts(sources(b, null, { item: attack })).edge).toBe(true);
     expect(shifts(sources(leader, null, { item: attack })).edge).toBe(false);
     game.combat.round = 4;
     expect(shifts(sources(a, null, { item: attack })).edge).toBe(true);
@@ -1177,6 +1173,7 @@ describe('Team broadcasts (One For All, Power Burst, Shining Leader, Rallying Cr
 
     // Outside combat the window never opens.
     const other = ranger('shiningLeader');
+    other.system.isMorphed = true;
     const c = teammate('C', 10);
     game.combat = null;
     await use(itemNamed(other, 'Shining Leader'));

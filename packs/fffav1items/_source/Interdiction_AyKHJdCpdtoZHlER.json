@@ -6,12 +6,12 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Interdiction, Defeat the target instead of dealing damage","key":"interdiction","noDamage":true,"limit":{"per":"encounter"},"forget":true,"when":["attack","target:levelDiff<0"]},
+      {"type":"DialogSwitch","label":"Interdiction (a target not aware of you): Defeat it instead of dealing damage","key":"interdiction","noDamage":true,"limit":{"per":"encounter"},"forget":true,"when":["attack","target:levelDiff<0","ask:The target is not aware of you"]},
       {"type":"Trigger","event":"hit","label":"Interdiction","when":["roll:switch:interdiction"],"steps":[{"do":"applyCondition","condition":"defeated","to":"target"}]}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Roll Options Dialog: once per combat, a switch to Defeat a hit target whose Threat Level is below your level instead of dealing damage.</p>"
+      "notes": "<p>Roll Options Dialog: once per combat, a switch to Defeat a hit target whose Threat Level is below your level instead of dealing damage. It is offered on every such attack; ticking it says the target isn't aware of you (the system can't tell awareness).</p>"
     },
     "originalId": "",
     "description": "",

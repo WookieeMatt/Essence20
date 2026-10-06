@@ -16,6 +16,8 @@ global.Hooks = { on: (name, fn) => (hooks[name] = [...(hooks[name] ?? []), fn]),
 const grantActionsThisTurn = jest.fn(async () => {});
 jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({ grantActionsThisTurn }));
 
+// Not On My Watch's defeatedByStun Trigger is a plug-in event (book check, effects).
+await import('./plugins/book/effects.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { validateRule } = await import('./types.mjs');
 const { fireTriggers, fireItemAdded } = await import('./triggers.mjs');
@@ -216,6 +218,24 @@ describe('Not On My Watch (Intercontinental Adventures): an ally at 0 Health off
     // Used: a second press does nothing.
     message.flags.essence20.ruleButton.used = true;
     expect(await pressRuleButton(message)).toBe(false);
+  });
+
+  // Book check (effects): "gains the Defeated Condition" - a Stun Defeat (combat.mjs fires defeatedByStun) offers the same.
+  test('an ally Defeated by Stun (defeatedByStun) gets the same button; an enemy or a vehicle doesn\'t', async () => {
+    const watcher = makeActor('Duke', FILES.notOnMyWatch);
+    const ally = makeActor('Scarlett', [], { x: 5, system: { health: { value: 5, max: 10 } } });
+    const enemy = makeActor('Cobra', [], { x: 5, disposition: -1, system: { health: { value: 5, max: 10 } } });
+    const jeep = makeActor('Jeep', [], { x: 5, type: 'vehicle', system: { health: { value: 5, max: 10 } } });
+    scene(watcher, ally, enemy, jeep);
+    await fireTriggers(enemy, 'defeatedByStun');
+    await fireTriggers(jeep, 'defeatedByStun');
+    expect(buttonCards()).toHaveLength(0);
+    await fireTriggers(ally, 'defeatedByStun');
+    const cards = buttonCards();
+    expect(cards).toHaveLength(1);
+    expect(cards[0].flags.essence20.ruleButton.actorUuid).toBe(watcher.uuid);
+    await pressRuleButton(asMessage(cards[0]));
+    expect(allChat()).toContain('rushes up to 30 ft');
   });
 
   test('out of combat the press only posts the line', async () => {

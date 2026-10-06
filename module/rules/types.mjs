@@ -495,7 +495,8 @@ export const RULE_TYPES = {
     },
     scopes: ['self'],
     // day: counted on the actor until a Rest (mechanics/actions/action-perks.mjs); limit.key names the counter (shared with others).
-    validate: rule => (rule.limit === undefined || ['turn', 'scene', 'encounter', 'day'].includes(rule.limit?.per) ? [] : ['limit.per must be turn, scene, encounter or day']),
+    // round: the combat round (the Talents' "once per round" - book check 2026-10-06, docs/rules-batches/book-limits.md).
+    validate: rule => (rule.limit === undefined || ['turn', 'round', 'scene', 'encounter', 'day'].includes(rule.limit?.per) ? [] : ['limit.per must be turn, round, scene, encounter or day']),
   },
   // A Use button (rules/triggers.mjs): pay the cost, count the limit, run the steps.
   Use: {

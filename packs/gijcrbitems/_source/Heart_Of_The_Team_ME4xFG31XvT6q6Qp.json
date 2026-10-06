@@ -6,11 +6,11 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Allies within 30 ft: Temporary Health and a move","limit":{"per":"encounter"},"cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"heal","to":"allies:30","amount":1,"temporary":true},{"do":"grantActions","to":"allies:30","move":1}]}
+      {"type":"Use","label":"Allies within 30 ft: Temporary Health and a move","limit":{"per":"encounter"},"cost":{"action":"standard","resource":{"storyPoints":true},"amount":1},"steps":[{"do":"heal","to":"allies:30","amount":1,"temporary":true},{"do":"grantActions","to":"allies:30","move":1}]}
     ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button, once per encounter: spend a Story Point, and allies within 30 ft gain 1 Temporary Health.</p><p>Left to the table: letting them move right away, and an ally choosing to end one Condition instead of the Temporary Health.</p>"
+      "notes": "<p>Use button (Standard action), once per encounter: spend a Story Point; allies within 30 ft gain 1 Temporary Health and an extra Move action to move right away. Left to the table: an ally ending one Condition instead of taking the Temporary Health.</p>"
     },
     "originalId": "",
     "description": "",

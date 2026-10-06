@@ -131,7 +131,7 @@ function rank(actionType) {
  *   ctx      {key} for a named action (E20.namedActions), or {kind, item, attack} otherwise.
  *   to       the action type to pay instead; a rule that returns the same or a dearer type is
  *            simply not offered.
- *   limit    {window: 'turn'|'scene'|'encounter', max: Number|fn(actor)} - omitted = unlimited.
+ *   limit    {window: 'turn'|'round'|'scene'|'encounter'|'day', max: Number|fn(actor)} - omitted = unlimited.
  *   ask      a localization key for the question the player answers - omitted = applies itself.
  *   blocks   rule ids this one shares a limit with (Mobility's once per turn covers Sprint AND Hide).
  */
@@ -186,7 +186,26 @@ function usesOf(actor, rule, ledger) {
     return actor?.getFlag?.('essence20', DAILY_FLAG)?.[rule.id] ?? 0;
   }
 
+  if (rule.limit.window == 'round') {
+    return roundUsesOf(actor, rule.id);
+  }
+
   return getUses(actor, `actionPerk.${rule.id}`, rule.limit.window);
+}
+
+/* "Once per round" (the Talents - book check 2026-10-06, docs/rules-batches/book-limits.md): counted on the actor, stamped
+   with the started combat and its round; outside a started combat it never runs out (as "per turn" with no ledger). */
+const ROUND_FLAG = 'actionPerkRoundUses';
+
+function roundStamp() {
+  const combat = globalThis.game?.combat;
+  return combat?.started ? { combatId: combat.id, round: combat.round } : null;
+}
+
+function roundUsesOf(actor, id) {
+  const stamp = roundStamp();
+  const record = actor?.getFlag?.('essence20', ROUND_FLAG)?.[id];
+  return stamp && record && record.combatId == stamp.combatId && record.round == stamp.round ? Number(record.count) || 0 : 0;
 }
 
 /**
@@ -242,9 +261,8 @@ export function getCostOptions(actor, actionType, ctx, ledger) {
       continue;
     }
 
-    // The same question for the same cost is one offer, not two: Favorite Command's code entry above (the pet's Perk,
-    // every printing) and the WTNV printing's own ActionCost rule (a commander holding it) both ask
-    // E20.ActionPerkAskFavoriteCommand for commandPet -> move.
+    // The same question for the same cost is one offer, not two (two rules asking the same thing - Favorite Command's
+    // WTNV printing once carried a commander-side ActionCost beside the code entry above).
     if (rule.ask && options.some(option => option.rule.ask == rule.ask && option.actionType == to)) {
       continue;
     }
@@ -356,6 +374,15 @@ export async function recordRuleUse(actor, option, ledger) {
   if (rule.limit.window == 'day') {
     const used = actor.getFlag?.('essence20', DAILY_FLAG) ?? {};
     await actor.setFlag('essence20', DAILY_FLAG, { ...used, [rule.id]: (used[rule.id] ?? 0) + 1 });
+    return;
+  }
+
+  if (rule.limit.window == 'round') {
+    const stamp = roundStamp();
+    if (stamp) {
+      await actor.setFlag('essence20', `${ROUND_FLAG}.${rule.id}`, { ...stamp, count: roundUsesOf(actor, rule.id) + 1 });
+    }
+
     return;
   }
 

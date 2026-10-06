@@ -8,7 +8,6 @@ import { isWisdomOfTheEldersActive } from "../../items/forms/wisdom-of-the-elder
 import { applyAtAllCostDamage, isAtAllCostActive } from "../../items/defenses/at-all-cost.mjs";
 import { E20 } from "../../util/config.mjs";
 import { applyEssenceAttack, isEssenceDamageType } from "./essence-attack.mjs";
-import { grantNotOnMyWatchReaction } from "../../items/defenses/not-on-my-watch.mjs";
 import { ruleDriverlessEssence } from "../../rules/plugins/zords/driverless-essence.mjs";
 import { ruleDamageImmune } from "../../rules/plugins/combat/damage-immunity.mjs";
 import { getMegaformParticipants } from "../vehicles/megaform-participants.mjs";
@@ -282,7 +281,7 @@ export function getSkillRanks(actor, skill) {
  * @returns {Promise<Number>}   The amount actually applied (0 if Immune), clamped to how much
  *   Health the actor had left when damageType isn't 'stun'.
  */
-export async function applyDamage(actor, damageValue, damageType, isCrit = false, { ignoreImmunity = false, source = null } = {}) {
+export async function applyDamage(actor, damageValue, damageType, isCrit = false, { ignoreImmunity = false, source = null, unreducible = false } = {}) {
   // Not On My Watch (Stun branch) and onOwnerDefeated (Health branch) - captured before any of
   // this function's own mutations, the same "read Defeated status once, up front" idiom
   // chat.mjs#onApplyDamage's own wasAlreadyDefeated already uses - both branches below only fire
@@ -312,17 +311,21 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   // "per hit while active" - this codebase has no per-turn-reset bucket to track a once-per-turn
   // use separately from the toggle itself, the same "closest existing mechanism" idiom already
   // used throughout this project for a duration this system can't literally enforce).
-  if (isWisdomOfTheEldersActive(actor, 'resilientArmor')) {
+  // unreducible: damage that "can't be reduced in any way" (Better You Than Me's Void damage - the rules step
+  // unreducibleDamage, rules/plugins/book/effects.mjs) skips every reduction, Immunity and damage shield below.
+  if (!unreducible && isWisdomOfTheEldersActive(actor, 'resilientArmor')) {
     damageValue = Math.max(0, damageValue - 1);
   }
 
   // Pressurized Cabin / Submarine Mode: "The sealed compartment grants immunity to Poison and
   // Disease" to everyone aboard (mechanics/vehicles/vehicle-upgrades.mjs).
   const sealedFromPoison = damageType == 'poison' && isSealedAboard(actor);
-  let amount = (!ignoreImmunity && (actor.system.immunities?.[damageType] || ruleDamageImmune(actor, damageType) || sealedFromPoison)) ? 0 : damageValue;
+  let amount = (!ignoreImmunity && !unreducible && (actor.system.immunities?.[damageType] || ruleDamageImmune(actor, damageType) || sealedFromPoison)) ? 0 : damageValue;
   // Extensions (mechanics/item-hooks.mjs) - Protomatter Injection Layer's DamageReduction rule among them.
-  amount = await runDamageModifiers(actor, amount, damageType, { isCrit, ignoreImmunity });
-  amount = await consumeDamageShield(actor, damageType, amount);
+  if (!unreducible) {
+    amount = await runDamageModifiers(actor, amount, damageType, { isCrit, ignoreImmunity });
+    amount = await consumeDamageShield(actor, damageType, amount);
+  }
 
   if (damageType == 'stun') {
     const newStunValue = actor.system.stun.value + amount;
@@ -359,8 +362,9 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
 
       if (!wasAlreadyDefeated) {
         // Not On My Watch: its item's droppedToZero Trigger only hears Health reaching 0, and a Stun Defeat leaves
-        // Health alone - so this Stun-path prompt is the Perk's one remaining code path (no double).
-        await grantNotOnMyWatchReaction(actor);
+        // Health alone - its second watch Trigger hears this defeatedByStun event (rules/plugins/book/effects.mjs).
+        const { defeatedByStun } = await import("../../rules/plugins/book/effects.mjs");
+        await defeatedByStun(actor);
         // The dealer's defeatedEnemyStun Triggers (rules/plugins/combat/stun-defeat-event.mjs - CBRN Defender).
         const { stunDefeated } = await import("../../rules/plugins/combat/stun-defeat-event.mjs");
         await stunDefeated(actor, source);

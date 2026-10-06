@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Manipulate","steps":[{"do":"rollVsEach","skill":"persuasion","defense":"willpower","onHit":[{"do":"applyCondition","condition":"grappled","to":"target","rounds":1}]}]}
+      {"type":"Use","label":"Manipulate","steps":[{"do":"rollVsEach","skill":"persuasion","defense":"willpower","onHit":[{"do":"applyCondition","condition":"grappled","to":"target","until":"nextTurn"}]}]}
     ],
     "automation": {
       "status": "partial",

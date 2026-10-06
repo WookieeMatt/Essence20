@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>On the sheet: add the Ice Flechettes attack to use this; it rolls its own damage and targets.</p><p>Left to the table: the 1 Personal Power cost, the Monster Form requirement and the Critical Success armor loss.</p>"
+      "notes": "<p>On the sheet: add the Ice Flechettes attack to use this; it rolls its own damage and targets, and its Critical Success armor loss. Left to the table: the 1 Personal Power cost and the Monster Form requirement.</p>"
     },
     "originalId": "",
     "actionType": "standard",

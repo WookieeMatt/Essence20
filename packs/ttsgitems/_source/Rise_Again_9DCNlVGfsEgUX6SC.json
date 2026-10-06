@@ -7,11 +7,11 @@
   "system": {
     "rules": [
       {"type":"Trigger","event":"wouldBeDefeated","label":"Rise Again: stay at 1 Health while Morphed","when":["self:morphed","not:damage:crit"],"limit":{"per":"scene"},"steps":[{"do":"leaveAt","value":1}]},
-      {"type":"Use","label":"Rise Again: +5 to a Defense against the next attack","limit":{"per":"encounter"},"steps":[{"do":"choose","prompt":"Which Defense gains +5 against the next attack?","options":[{"label":"E20.DefenseCleverness","steps":[{"do":"bank","defense":"cleverness","defenseBonus":5}]},{"label":"E20.DefenseEvasion","steps":[{"do":"bank","defense":"evasion","defenseBonus":5}]},{"label":"E20.DefenseToughness","steps":[{"do":"bank","defense":"toughness","defenseBonus":5}]},{"label":"E20.DefenseWillpower","steps":[{"do":"bank","defense":"willpower","defenseBonus":5}]}]}]}
+      {"type":"Use","label":"Rise Again: +5 to a Defense until your next turn","cost":{"action":"free"},"limit":{"per":"scene"},"steps":[{"do":"choose","prompt":"Which Defense gains +5 until your next turn?","options":[{"label":"E20.DefenseCleverness","steps":[{"do":"bank","defense":"cleverness","defenseBonus":5,"persist":true,"until":"nextTurnOrScene"}]},{"label":"E20.DefenseEvasion","steps":[{"do":"bank","defense":"evasion","defenseBonus":5,"persist":true,"until":"nextTurnOrScene"}]},{"label":"E20.DefenseToughness","steps":[{"do":"bank","defense":"toughness","defenseBonus":5,"persist":true,"until":"nextTurnOrScene"}]},{"label":"E20.DefenseWillpower","steps":[{"do":"bank","defense":"willpower","defenseBonus":5,"persist":true,"until":"nextTurnOrScene"}]}]}]}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button (once per scene): +5 to a Defense you pick until your next turn. Automatic: once per scene, if you drop to 0 Health while Morphed from anything but a critical hit, you heal 1 Health.</p>"
+      "notes": "<p>Use button (Free action, once per scene): +5 to a Defense you pick against every attack until the start of your next turn (out of combat, the scene). Automatic: once per scene, if you drop to 0 Health while Morphed from anything but a critical hit, you heal 1 Health.</p>"
     },
     "originalId": "",
     "actionType": "free",

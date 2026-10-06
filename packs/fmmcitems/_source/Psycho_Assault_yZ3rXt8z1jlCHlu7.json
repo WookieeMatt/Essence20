@@ -6,13 +6,13 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Attack ↑1 and +1 damage for the rest of the turn","when":["self:morphed","not:check:monsterForm"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"mark","key":"psychoAssault","to":"self","until":"endOfTurn","when":["combat"]}]},
+      {"type":"Use","label":"Attack ↑1 and +1 damage for the rest of the turn","when":["self:morphed","not:check:monsterForm"],"cost":{"action":"free","resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"mark","key":"psychoAssault","to":"self","until":"endOfTurn","when":["combat"]}]},
       {"type":"RollModifier","label":"Psycho Assault","upshift":1,"when":["attack","self:marked:psychoAssault"]},
       {"type":"DamageModifier","label":"Psycho Assault","direction":"dealt","scaled":true,"amount":1,"when":["self:marked:psychoAssault"]}
     ],
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button: spends 1 Personal Power; for the rest of your turn your attacks get ↑1, listed as Psycho Assault in the Roll Options Dialog, and +1 damage, shown on the chat card as \"Includes +1 from Psycho Assault\".</p><p>Left to the table: only using it while Morphed and out of Monster Form.</p>"
+      "status": "full",
+      "notes": "<p>Use button (Free action, only while Morphed and out of Monster Form): spends 1 Personal Power; for the rest of your turn your attacks get ↑1, listed as Psycho Assault in the Roll Options Dialog, and +1 damage, shown on the chat card as \"Includes +1 from Psycho Assault\".</p>"
     },
     "originalId": "",
     "actionType": "free",
